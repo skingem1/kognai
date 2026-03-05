@@ -1,0 +1,117 @@
+---
+title: Installation
+description: "Install and configure the Invoica SDK in your project."
+---
+
+# Installation
+
+## Install the Package
+
+<CodeGroup>
+
+```bash npm
+npm install @invoica/sdk
+```
+
+```bash yarn
+yarn add @invoica/sdk
+```
+
+```bash pnpm
+pnpm add @invoica/sdk
+```
+
+</CodeGroup>
+
+## Requirements
+
+- Node.js 18 or later
+- TypeScript 5.0 or later (recommended)
+
+## Basic Setup
+
+### 1. Create a Client Instance
+
+```typescript
+import { InvoicaClient } from '@invoica/sdk';
+
+const client = new InvoicaClient({
+  apiKey: process.env.INVOICA_API_KEY!,
+  baseUrl: 'https://api.invoica.ai', // default
+});
+```
+
+### 2. Make Your First API Call
+
+```typescript
+const invoices = await client.invoices.list({ limit: 5 });
+console.log(`Found ${invoices.total} invoices`);
+```
+
+## Configuration Options
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `apiKey` | string | required | Your Invoica API key |
+| `baseUrl` | string | `https://api.invoica.ai` | API base URL |
+| `timeout` | number | 30000 | Request timeout in ms |
+| `retries` | number | 3 | Max retry attempts |
+| `debug` | boolean | false | Enable debug logging |
+
+## Environment Variables
+
+We recommend storing your API key in environment variables:
+
+```bash
+# .env
+INVOICA_API_KEY=inv_your_key_here
+INVOICA_BASE_URL=https://api.invoica.ai
+```
+
+```typescript
+import { InvoicaClient } from '@invoica/sdk';
+
+const client = new InvoicaClient({
+  apiKey: process.env.INVOICA_API_KEY!,
+});
+```
+
+## Using with React
+
+For React applications, import hooks directly:
+
+```tsx
+import { useDebounce } from '@invoica/sdk/hooks/use-debounce';
+import { Button } from '@invoica/sdk/components/Button';
+import { Badge } from '@invoica/sdk/components/Badge';
+
+function InvoiceSearch() {
+  const [query, setQuery] = useState('');
+  const debouncedQuery = useDebounce(query, 300);
+
+  return (
+    <div>
+      <input value={query} onChange={(e) => setQuery(e.target.value)} />
+      <Badge variant="info">Searching...</Badge>
+      <Button onClick={() => search(debouncedQuery)}>Search</Button>
+    </div>
+  );
+}
+```
+
+## Sandbox Mode
+
+Use the sandbox environment for testing:
+
+```typescript
+const client = new InvoicaClient({
+  apiKey: 'inv_test_your_sandbox_key',
+  baseUrl: 'https://sandbox.api.invoica.ai',
+});
+```
+
+Sandbox invoices use test data and do not trigger real blockchain settlements.
+
+<Info>
+  Get a sandbox API key from the [Dashboard](https://app.invoica.ai/api-keys) by toggling to "Test Mode".
+</Info>

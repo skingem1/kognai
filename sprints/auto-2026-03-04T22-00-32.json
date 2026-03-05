@@ -1,0 +1,238 @@
+{
+  "tasks": [
+    {
+      "id": "QFIX-001",
+      "agent": "agents",
+      "type": "feature",
+      "priority": "critical",
+      "dependencies": [],
+      "description": "Deploy CTO-20260305-001 validator to production",
+      "context": "Copy validator logic from approved ADR CTO-20260305-001 into agents/src/core/task-validator.ts. Add single-concern rule check, deliverable completeness validation, and scope boundary enforcement. Must restore 80%+ approval rate.",
+      "deliverables": {
+        "code": [
+          "agents/src/core/task-validator.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "rejected"
+    },
+    {
+      "id": "QFIX-002",
+      "agent": "agents",
+      "type": "bugfix",
+      "priority": "critical",
+      "dependencies": [
+        "QFIX-001"
+      ],
+      "description": "Decompose QUALITY-002 into single-concern tasks",
+      "context": "In agents/src/executors/backend-executor.ts, split multi-file changes into atomic tasks. Each task targets one file only. Add dependency chains for ordering. Remove cross-cutting changes that violate scope boundaries.",
+      "deliverables": {
+        "code": [
+          "agents/src/executors/backend-executor.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "skipped",
+      "skippedReason": "Blocked by rejected dependency: ['QFIX-001']"
+    },
+    {
+      "id": "QFIX-003",
+      "agent": "agents",
+      "type": "bugfix",
+      "priority": "high",
+      "dependencies": [
+        "QFIX-001"
+      ],
+      "description": "Decompose QUALITY-003 into single-concern tasks",
+      "context": "In agents/src/executors/frontend-executor.ts, separate component changes from type changes. Each task modifies one file. Add explicit deliverables for tests when test files exist. Remove documentation-only tasks.",
+      "deliverables": {
+        "code": [
+          "agents/src/executors/frontend-executor.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "skipped",
+      "skippedReason": "Blocked by rejected dependency: ['QFIX-001']"
+    },
+    {
+      "id": "QFIX-004",
+      "agent": "agents",
+      "type": "bugfix",
+      "priority": "high",
+      "dependencies": [
+        "QFIX-001"
+      ],
+      "description": "Decompose QUALITY-004 into single-concern tasks",
+      "context": "In agents/src/executors/infra-executor.ts, separate config changes from deployment changes. One file per task. Add dependencies for sequential deploys. Remove multi-service coordination tasks.",
+      "deliverables": {
+        "code": [
+          "agents/src/executors/infra-executor.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "skipped",
+      "skippedReason": "Blocked by rejected dependency: ['QFIX-001']"
+    },
+    {
+      "id": "QFIX-005",
+      "agent": "agents",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [
+        "QFIX-001"
+      ],
+      "description": "Add one-concern rule to Skills prompt",
+      "context": "In agents/prompts/skills.md, add explicit rule: 'Each task modifies exactly one file. Multi-file changes must be decomposed with dependencies.' Add examples of good vs bad task decomposition. Keep under 100 words.",
+      "deliverables": {
+        "code": [
+          "agents/prompts/skills.md"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "skipped",
+      "skippedReason": "Blocked by rejected dependency: ['QFIX-001']"
+    },
+    {
+      "id": "QFIX-006",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "medium",
+      "dependencies": [],
+      "description": "Implement spam domain blacklist validator",
+      "context": "In backend/src/types/spam-blacklist.ts, add function validateEmailDomain that checks domain against hardcoded blacklist. Return boolean. Blacklist: temp-mail.org, guerrillamail.com, 10minutemail.com. No database, just in-memory array.",
+      "deliverables": {
+        "code": [
+          "backend/src/types/spam-blacklist.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "backend/src/types/spam-blacklist.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 90,
+          "summary": "Dual-approved: Claude (85/100) + Codex (95/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "backend/src/types/spam-blacklist.ts",
+              "description": "Missing unit tests - should have Jest tests covering valid emails, invalid emails, edge cases like missing @ symbol"
+            },
+            {
+              "severity": "low",
+              "file": "backend/src/types/spam-blacklist.ts",
+              "description": "Function name 'validateEmailDomain' could be more descriptive - 'isEmailDomainBlacklisted' would be clearer about return value meaning"
+            }
+          ],
+          "strengths": [
+            "Follows task spec exactly - hardcoded blacklist, no database, returns boolean",
+            "Proper TypeScript with const assertion and type safety",
+            "Good error handling for malformed emails (missing domain)",
+            "Clean JSDoc documentation",
+            "Efficient implementation using array includes",
+            "Proper case normalization with toLowerCase()",
+            "No code fences or syntax errors",
+            "Minimal, focused code without overengineering",
+            "No markdown fences in source file",
+            "Domain extraction and normalization implemented correctly",
+            "Uses a readonly const tuple for the blacklist",
+            "Well-documented with JSDoc",
+            "No use of `any` and no external dependencies"
+          ]
+        }
+      }
+    },
+    {
+      "id": "QFIX-007",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "medium",
+      "dependencies": [
+        "QFIX-006"
+      ],
+      "description": "Add spam blacklist management UI",
+      "context": "In apps/x-admin/src/components/SpamBlacklistTable.tsx, add simple table showing blacklisted domains. Read-only view, no CRUD yet. Display domain and reason columns. Use existing table component patterns from file.",
+      "deliverables": {
+        "code": [
+          "apps/x-admin/src/components/SpamBlacklistTable.tsx"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "rejected",
+      "_integrityFailed": true,
+      "_integrityDetails": "File apps/x-admin/src/components/SpamBlacklistTable.tsx shrank from 326 to 94 lines (29%). Possible destructive rewrite.",
+      "output": {
+        "files": [
+          "apps/x-admin/src/components/SpamBlacklistTable.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "REJECTED",
+          "score": 15,
+          "summary": "Dual-rejected: Claude (15/100) + Codex (20/100). Task completely failed requirements. Generated full CRUD functionality instead of simple read-only table, ignored existing file content (destructive rewrite), and added unnecessary complexity not requested in spec. | The submitted rewrite of SpamBlacklistTable.tsx is a destructive overhaul that removes existing functionality and over\u2010implements beyond the read\u2010only table specified. It shrank dramatically (from 326 to 94 lines), introduces unsupported CRUD/dialog components, unused imports, and fails to match the brief.",
+          "issues": [
+            {
+              "severity": "critical",
+              "file": "apps/x-admin/src/components/SpamBlacklistTable.tsx",
+              "description": "Destructive rewrite detected - file shrank from 326 to 94 lines (29%), indicating existing functionality was lost"
+            },
+            {
+              "severity": "critical",
+              "file": "apps/x-admin/src/components/SpamBlacklistTable.tsx",
+              "description": "Task spec explicitly requested 'Read-only view, no CRUD yet' but generated full CRUD functionality with add/delete operations"
+            },
+            {
+              "severity": "high",
+              "file": "apps/x-admin/src/components/SpamBlacklistTable.tsx",
+              "description": "Task requested 'domain and reason columns' but generated email/IP validation and multiple entry types not requested"
+            },
+            {
+              "severity": "high",
+              "file": "apps/x-admin/src/components/SpamBlacklistTable.tsx",
+              "description": "Task requested to 'use existing table component patterns from file' but completely rewrote the file instead of extending it"
+            },
+            {
+              "severity": "medium",
+              "file": "apps/x-admin/src/components/SpamBlacklistTable.tsx",
+              "description": "Added complex validation logic, dialog components, and state management not requested in simple read-only table spec"
+            },
+            {
+              "severity": "medium",
+              "file": "apps/x-admin/src/components/SpamBlacklistTable.tsx",
+              "description": "Mock data includes email/IP entries instead of domain entries as requested"
+            },
+            {
+              "severity": "critical",
+              "file": "apps/x-admin/src/components/SpamBlacklistTable.tsx",
+              "description": "Destructive rewrite: file size reduced by ~70%, original functionality lost. This breaks existing behavior and is not acceptable."
+            },
+            {
+              "severity": "high",
+              "file": "apps/x-admin/src/components/SpamBlacklistTable.tsx",
+              "description": "Does not comply with spec: instead of a simple read-only domain/reason table, it adds add-entry dialog, validation, and CRUD patterns which were not requested."
+            },
+            {
+              "severity": "medium",
+              "file": "apps/x-admin/src/components/SpamBlacklistTable.tsx",
+              "description": "Multiple unused imports (Plus, Trash2, Input, Select, Label, Dialog, etc.) and incomplete code snippet (unclosed function block)."
+            }
+          ],
+          "strengths": []
+        }
+      }
+    }
+  ]
+}

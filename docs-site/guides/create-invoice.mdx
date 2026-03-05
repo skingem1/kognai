@@ -1,0 +1,120 @@
+---
+title: Create Your First Invoice
+description: "Step-by-step guide to creating and managing invoices with the Invoica API."
+---
+
+# Create Your First Invoice
+
+This guide walks you through creating an invoice, checking its status, and handling the complete lifecycle.
+
+## Prerequisites
+
+- An Invoica API key ([get one here](https://app.invoica.ai/api-keys))
+- The Invoica SDK installed (`npm install @invoica/sdk`)
+
+## Step 1: Initialize the Client
+
+```typescript
+import { InvoicaClient } from '@invoica/sdk';
+
+const client = new InvoicaClient({
+  apiKey: process.env.INVOICA_API_KEY,
+  baseUrl: 'https://api.invoica.ai',
+});
+```
+
+## Step 2: Create an Invoice
+
+```typescript
+const invoice = await client.invoices.create({
+  amount: 5000,        // $50.00 in cents
+  currency: 'USD',
+  description: 'GPT-4 API calls - Agent Alpha - February 2026',
+  buyer: {
+    companyName: 'Acme AI Corp',
+    email: 'billing@acme-ai.com',
+    address: '123 Agent Street, San Francisco, CA 94105',
+    vat: 'US-987654321',
+  },
+  seller: {
+    name: 'My AI Platform',
+    address: '456 Tech Blvd, Austin, TX 78701',
+    vat: 'US-123456789',
+    wallet: '0x742d35Cc6634C0532925a3b844Bc9e7595f2bD18',
+  },
+});
+```
+
+### Response
+
+```json
+{
+  "id": "inv_8a7b6c5d4e3f2a1b",
+  "invoiceNumber": "INV-2026-0001",
+  "status": "draft",
+  "amount": 5000,
+  "currency": "USD",
+  "tax": 412,
+  "total": 5412,
+  "createdAt": "2026-02-18T10:30:00Z",
+  "buyer": { "companyName": "Acme AI Corp" },
+  "seller": { "name": "My AI Platform" }
+}
+```
+
+## Step 3: List Your Invoices
+
+```typescript
+const { invoices, total, page } = await client.invoices.list({
+  limit: 10,
+  status: 'draft',
+});
+
+invoices.forEach(inv => {
+  console.log(`${inv.invoiceNumber}: $${(inv.total / 100).toFixed(2)} - ${inv.status}`);
+});
+```
+
+## Step 4: Monitor Invoice Status
+
+```typescript
+// Poll for status changes
+const checkStatus = async (invoiceId: string) => {
+  const invoice = await client.invoices.get(invoiceId);
+  console.log(`Status: ${invoice.status}`);
+  return invoice.status;
+};
+
+// Or use webhooks (recommended for production)
+// See the Webhooks guide for setup
+```
+
+## Invoice Status Flow
+
+```
+draft → sent → paid → settled → completed
+```
+
+Each status transition triggers a webhook event if configured.
+
+## Error Handling
+
+```typescript
+try {
+  const invoice = await client.invoices.create(payload);
+} catch (error) {
+  if (error.status === 400) {
+    console.error('Invalid invoice data:', error.message);
+  } else if (error.status === 402) {
+    console.error('Budget exceeded:', error.message);
+  } else if (error.status === 429) {
+    console.error('Rate limit hit, retrying...');
+  }
+}
+```
+
+## Next Steps
+
+- [Set up webhooks](/guides/webhooks) to receive real-time invoice status updates
+- [Configure tax compliance](/guides/tax-compliance) for automatic tax calculation
+- [Explore the full API](/api-reference/invoices) for advanced invoice operations

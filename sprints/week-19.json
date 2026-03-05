@@ -1,0 +1,509 @@
+{
+  "tasks": [
+    {
+      "id": "BE-170",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "status": "done",
+      "context": "Create a centralized error module for the Countable backend at backend/src/errors/index.ts. This module should export typed error classes that all API handlers can use for consistent error responses. Classes needed: (1) ApiError extends Error — base class with statusCode, code, and details fields. (2) ValidationError extends ApiError — 400 status, code 'VALIDATION_ERROR'. (3) NotFoundError extends ApiError — 404 status, code 'NOT_FOUND'. (4) AuthenticationError extends ApiError — 401 status, code 'UNAUTHORIZED'. (5) RateLimitError extends ApiError — 429 status, code 'RATE_LIMIT_EXCEEDED'. Each class constructor takes (message: string, details?: Record<string, unknown>). Export all classes as named exports. Use TypeScript strict mode. Keep it simple — no external dependencies.",
+      "deliverables": {
+        "code": [
+          "backend/src/errors/index.ts"
+        ],
+        "tests": []
+      },
+      "description": "Create centralized error classes (ApiError, ValidationError, NotFoundError, AuthenticationError, RateLimitError) at backend/src/errors/index.ts. ~40 lines.",
+      "constraints": "NEW file only. No external dependencies. Each class extends ApiError which extends Error. Export all as named exports. Keep under 50 lines.",
+      "output": {
+        "files": [
+          "backend/src/errors/index.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "Dual-approved: Claude (95/100) + Codex (95/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "backend/src/errors/index.ts",
+              "description": "Missing JSDoc comments on public classes - would improve developer experience"
+            }
+          ],
+          "strengths": [
+            "All 5 required error classes implemented correctly with proper inheritance",
+            "Proper TypeScript strict mode compliance - no any types, proper readonly fields",
+            "Correct HTTP status codes and error codes as specified",
+            "Good error handling with Error.captureStackTrace for better debugging",
+            "Clean constructor signatures matching the spec exactly",
+            "No external dependencies as required",
+            "Proper use of public readonly fields for immutability",
+            "Constructor name preservation with this.name = this.constructor.name",
+            "Strict TypeScript usage with no any types",
+            "Clear inheritance structure and consistent error metadata",
+            "Uses Error.captureStackTrace for proper stack traces",
+            "No external dependencies or hardcoded secrets",
+            "Exports all classes as named exports as specified"
+          ]
+        }
+      }
+    },
+    {
+      "id": "BE-171",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "medium",
+      "status": "done",
+      "context": "Create a structured logging utility for the Countable backend at backend/src/utils/logger.ts. The logger should wrap console methods with structured JSON output for production use. Export a 'logger' object with methods: info(message, meta?), warn(message, meta?), error(message, meta?), debug(message, meta?). Each method outputs a JSON line: { timestamp: ISO string, level: 'info'|'warn'|'error'|'debug', message: string, ...meta }. In development (NODE_ENV !== 'production'), use readable format instead of JSON. Export the logger as default export and also as named export { logger }.",
+      "deliverables": {
+        "code": [
+          "backend/src/utils/logger.ts"
+        ],
+        "tests": []
+      },
+      "description": "Create structured JSON logger at backend/src/utils/logger.ts with info/warn/error/debug methods. ~35 lines.",
+      "constraints": "NEW file only. No external dependencies (use console.log internally). Keep under 45 lines. Export as both default and named export.",
+      "output": {
+        "files": [
+          "backend/src/utils/logger.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 94,
+          "summary": "Dual-approved: Claude (92/100) + Codex (95/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "backend/src/utils/logger.ts",
+              "description": "Could benefit from unit tests to verify JSON output format and development vs production behavior"
+            },
+            {
+              "severity": "low",
+              "file": "backend/src/utils/logger.ts",
+              "description": "No explicit handling of circular references in meta objects that could cause JSON.stringify to throw"
+            }
+          ],
+          "strengths": [
+            "Exact compliance with task specification - all required methods and exports present",
+            "Proper TypeScript interfaces and types with no 'any' usage",
+            "Comprehensive JSDoc documentation on all public functions",
+            "Clean separation of concerns with helper functions",
+            "Environment-aware formatting (JSON for production, readable for development)",
+            "Proper use of console methods (log, warn, error, debug) mapped to appropriate levels",
+            "Both default and named exports as requested",
+            "Good error handling approach using switch statement",
+            "Immutable approach to log object construction",
+            "Meets all requirements for structured JSON logging in production",
+            "Readable fallback format for development",
+            "Strict TypeScript (no `any`), proper types and JSDoc",
+            "Default and named exports as specified",
+            "No extraneous code or dependencies"
+          ]
+        }
+      }
+    },
+    {
+      "id": "BE-172",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "medium",
+      "status": "done",
+      "context": "Create a request ID middleware for the Countable backend at backend/src/middleware/request-id.ts. This middleware generates a unique request ID for each incoming request, attaches it to the request object, and includes it in the response headers. Implementation: (1) Generate ID using crypto.randomUUID() or a simple 'req-' + Date.now() + '-' + Math.random().toString(36).slice(2,8) pattern. (2) Check if x-request-id header already exists — if so, use that (for tracing through proxies). (3) Set req.requestId = id (extend Express Request type). (4) Set res.setHeader('x-request-id', id). (5) Call next(). Export as default middleware function. Also export the RequestWithId interface extending Express Request.",
+      "deliverables": {
+        "code": [
+          "backend/src/middleware/request-id.ts"
+        ],
+        "tests": []
+      },
+      "description": "Create request ID middleware at backend/src/middleware/request-id.ts — generates/propagates unique request IDs. ~30 lines.",
+      "constraints": "NEW file only. Use crypto.randomUUID() for ID generation. Respect existing x-request-id header. Keep under 40 lines.",
+      "output": {
+        "files": [
+          "backend/src/middleware/request-id.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "backend/src/middleware/request-id.ts",
+              "description": "Could add input validation to ensure existing x-request-id header is a string and not an array (Express headers can be string | string[])"
+            },
+            {
+              "severity": "low",
+              "file": "backend/src/middleware/request-id.ts",
+              "description": "Missing unit tests - should include test file for middleware functionality"
+            },
+            {
+              "severity": "low",
+              "file": "backend/src/middleware/request-id.ts",
+              "description": "Accessing req.headers['x-request-id'] may yield string|string[]; consider normalizing or handling the array case explicitly."
+            }
+          ],
+          "strengths": [
+            "Implements all required functionality exactly as specified",
+            "Proper TypeScript interfaces with RequestWithId extension",
+            "Good JSDoc documentation on all functions",
+            "Handles existing x-request-id header correctly for proxy tracing",
+            "Clean, readable code structure with proper separation of concerns",
+            "Uses the specified ID generation pattern as requested",
+            "Proper Express middleware signature and error handling",
+            "No hardcoded values or security issues",
+            "Follows project TypeScript patterns",
+            "Follows specification: checks existing header, generates ID, attaches to request and response",
+            "Proper TypeScript typing and interface export",
+            "Clear JSDoc documentation on functions and interfaces",
+            "No security or performance concerns identified"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-090",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "status": "done",
+      "context": "Create a retry utility for the Countable TypeScript SDK at sdk/typescript/src/retry.ts. This utility wraps async operations with configurable retry logic for resilient API calls. Export a function: retryWithBackoff<T>(fn: () => Promise<T>, options?: RetryOptions): Promise<T>. RetryOptions interface: { maxRetries?: number (default 3), initialDelayMs?: number (default 200), maxDelayMs?: number (default 5000), retryableStatuses?: number[] (default [408, 429, 500, 502, 503, 504]) }. Implementation: (1) Try fn(). (2) If error has a 'status' property matching retryableStatuses, wait and retry. (3) Use exponential backoff: delay = min(initialDelayMs * 2^attempt, maxDelayMs) + random jitter (0-50ms). (4) After maxRetries, throw the last error. Export both the function and the RetryOptions interface.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/retry.ts"
+        ],
+        "tests": []
+      },
+      "description": "Create retry utility with exponential backoff at sdk/typescript/src/retry.ts for resilient SDK API calls. ~45 lines.",
+      "constraints": "NEW file only. No external dependencies. Exponential backoff with jitter. Keep under 55 lines. Export function and RetryOptions interface.",
+      "output": {
+        "files": [
+          "sdk/typescript/src/retry.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/retry.ts",
+              "description": "Missing unit tests - while not in the generated files, the task spec implies this is a utility that should have comprehensive test coverage"
+            },
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/retry.ts",
+              "description": "Could benefit from debug logging for retry attempts in development mode"
+            }
+          ],
+          "strengths": [
+            "Excellent TypeScript implementation with proper generic typing and no 'any' types",
+            "Comprehensive JSDoc documentation with clear examples",
+            "Correct exponential backoff algorithm with jitter implementation",
+            "Proper error handling with custom ErrorWithStatus interface",
+            "All required exports present (RetryOptions interface and retryWithBackoff function)",
+            "Sensible defaults matching the task specification exactly",
+            "Clean, readable code structure with appropriate constants",
+            "Proper async/await usage throughout",
+            "Type-safe error handling with fallback error case",
+            "Faithful implementation of exponential backoff with jitter and configurable options",
+            "No use of any or untyped errors – leverages strong TypeScript typings",
+            "Clean, self-contained code with JSDoc examples",
+            "Adheres to default values and retry logic as specified",
+            "No markdown fences or syntax errors"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-091",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "status": "done",
+      "context": "Create a pagination helper for the Countable TypeScript SDK at sdk/typescript/src/pagination.ts. This utility provides an async iterator interface for paginated API responses. Export: (1) PaginatedResponse<T> interface: { data: T[], total: number, page: number, pageSize: number, hasMore: boolean }. (2) paginate<T>(fetchPage: (page: number, pageSize: number) => Promise<PaginatedResponse<T>>, options?: { pageSize?: number }): AsyncGenerator<T[], void, unknown>. The generator yields each page's data array, automatically fetching next pages until hasMore is false. Also export a collectAll<T>(generator: AsyncGenerator<T[]>) helper that collects all pages into a flat array. Default pageSize: 20.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/pagination.ts"
+        ],
+        "tests": []
+      },
+      "description": "Create pagination helper with async generator at sdk/typescript/src/pagination.ts for paginated API responses. ~40 lines.",
+      "constraints": "NEW file only. No external dependencies. Use AsyncGenerator for lazy page loading. Keep under 50 lines.",
+      "output": {
+        "files": [
+          "sdk/typescript/src/pagination.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 92,
+          "summary": "CEO resolved conflict (Claude approved, Codex rejected): **APPROVE — The code meets all task spec requirements and is production-ready**\n\nThe disagreement is over missing tests, not code quality. Codex scored it 85/100 and confirmed it \"aligns with the task spec\" with \"robust error handling and documentation.\" Claude scored it 92/100 with comprehensive st",
+          "issues": [
+            {
+              "severity": "medium",
+              "file": "sdk/typescript/src/pagination.ts",
+              "line": 1,
+              "description": "Missing Jest unit tests for paginate() and collectAll() to ensure correct pagination logic and edge-case handling."
+            }
+          ],
+          "strengths": [
+            "Proper TypeScript interfaces with generic types - no 'any' usage",
+            "Comprehensive error handling with descriptive error messages",
+            "Excellent JSDoc documentation with usage examples",
+            "Input validation for response structure and data arrays",
+            "Clean async generator implementation following modern JavaScript patterns",
+            "Sensible defaults (pageSize: 20) and optional configuration",
+            "Proper separation of concerns - pagination logic separate from data collection",
+            "Edge case handling for empty responses and invalid data",
+            "Follows functional programming principles with pure functions"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-110",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "high",
+      "status": "done",
+      "context": "Create a reusable data table component for the Countable dashboard at frontend/components/ui/data-table.tsx. This is a generic table component used by invoices, settlements, API keys, and webhooks list pages. Props interface DataTableProps<T>: { columns: Array<{ key: keyof T, label: string, render?: (value: T[keyof T], row: T) => React.ReactNode }>, data: T[], loading?: boolean, emptyMessage?: string, onRowClick?: (row: T) => void }. Implementation: (1) Render a styled table with Tailwind (bg-white, rounded-lg, border). (2) Show LoadingSpinner from '../loading-spinner' when loading=true. (3) Show EmptyState from '../empty-state' when data is empty. (4) Map columns to <th> headers and data to <tr> rows. (5) Use render function if provided, otherwise display raw value. (6) Add hover effect on rows when onRowClick is provided. Export as named export.",
+      "deliverables": {
+        "code": [
+          "frontend/components/ui/data-table.tsx"
+        ],
+        "tests": []
+      },
+      "description": "Create reusable DataTable<T> component at frontend/components/ui/data-table.tsx with columns, loading, empty states. ~55 lines.",
+      "constraints": "NEW file only. Import LoadingSpinner and EmptyState from existing components (use relative '../loading-spinner' and '../empty-state'). Keep under 60 lines. Use TypeScript generics for type-safe columns.",
+      "output": {
+        "files": [
+          "frontend/components/ui/data-table.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/components/ui/data-table.tsx",
+              "description": "Using rowIndex as key instead of a unique identifier could cause React rendering issues if data order changes"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/components/ui/data-table.tsx",
+              "description": "String(value ?? '') conversion might not handle complex objects gracefully - consider typeof check"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/components/ui/data-table.tsx",
+              "description": "Using the array index as the React key for table rows can lead to rendering issues if the data order changes. Consider using a unique identifier from the row object if available."
+            }
+          ],
+          "strengths": [
+            "Proper TypeScript generics implementation with correct constraint usage",
+            "Clean separation of loading and empty states as specified",
+            "Conditional hover styling only when onRowClick is provided",
+            "Proper Tailwind styling matching requirements (bg-white, rounded-lg, border)",
+            "Good use of optional chaining and nullish coalescing",
+            "Named export as required",
+            "Handles edge cases like null/undefined data gracefully",
+            "Clean component structure with proper prop destructuring",
+            "Fully generic TypeScript implementation with strict typing (no `any` usage).",
+            "Proper handling of loading and empty states via LoadingSpinner and EmptyState components.",
+            "Adheres to Tailwind styling requirements (bg-white, rounded-lg, border).",
+            "Supports optional custom cell rendering via the `render` callback.",
+            "Optional row hover effect and click handler implemented correctly."
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-111",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "medium",
+      "status": "done",
+      "context": "Create a confirmation dialog component for the Countable dashboard at frontend/components/ui/confirm-dialog.tsx. This reusable modal is used for destructive actions (delete API key, revoke webhook, etc.). Props interface ConfirmDialogProps: { open: boolean, onClose: () => void, onConfirm: () => void, title: string, message: string, confirmLabel?: string (default 'Confirm'), cancelLabel?: string (default 'Cancel'), variant?: 'danger' | 'warning' | 'info' (default 'danger') }. Implementation: (1) Render a centered modal overlay (fixed inset-0, bg-black/50, z-50). (2) Dialog box: bg-white, rounded-xl, p-6, max-w-md, mx-auto, mt-[20vh]. (3) Title as h3, message as p text-slate-600. (4) Two buttons: Cancel (outline) and Confirm (red bg for danger, amber for warning, blue for info). (5) Close on overlay click and Escape key. Use 'use client' directive.",
+      "deliverables": {
+        "code": [
+          "frontend/components/ui/confirm-dialog.tsx"
+        ],
+        "tests": []
+      },
+      "description": "Create reusable ConfirmDialog component at frontend/components/ui/confirm-dialog.tsx with danger/warning/info variants. ~55 lines.",
+      "constraints": "NEW file only. 'use client' directive required. Close on overlay click and Escape key. Keep under 60 lines.",
+      "output": {
+        "files": [
+          "frontend/components/ui/confirm-dialog.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/components/ui/confirm-dialog.tsx",
+              "description": "Uses Tailwind animate-in classes that may not be available in all configurations - should verify these are included in the project's Tailwind setup"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/components/ui/confirm-dialog.tsx",
+              "description": "Missing JSDoc documentation for the component and interface"
+            }
+          ],
+          "strengths": [
+            "Proper TypeScript interface with all required props and optional defaults",
+            "Excellent accessibility implementation with ARIA attributes and semantic HTML",
+            "Proper keyboard navigation (Escape key handling)",
+            "Body scroll lock during modal display prevents background scrolling",
+            "Clean event handling with proper overlay click detection",
+            "Responsive design with mobile-first button layout",
+            "Proper variant styling system for different dialog types",
+            "Good UX pattern of calling onClose after onConfirm",
+            "Proper event cleanup in useEffect",
+            "No hardcoded values, all styling matches requirements exactly",
+            "Follows the provided props interface with correct defaults",
+            "Implements overlay click and Escape key to close the modal",
+            "Provides variant-based styling for confirm button",
+            "Includes ARIA attributes for accessibility",
+            "Locks background scrolling when open and restores it on close"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-112",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "medium",
+      "status": "done",
+      "context": "Create a page header component for the Countable dashboard at frontend/components/ui/page-header.tsx. This component provides a consistent header layout for all dashboard pages. Props interface PageHeaderProps: { title: string, description?: string, action?: { label: string, onClick: () => void, icon?: React.ReactNode } }. Implementation: (1) Wrapper div with flex justify-between items-center mb-6. (2) Left side: h1 text-2xl font-bold text-slate-900 for title, p text-sm text-slate-500 for description. (3) Right side: if action provided, render a button with bg-sky-600 text-white rounded-lg px-4 py-2 hover:bg-sky-700. (4) If action.icon provided, render it before the label. Use 'use client' directive.",
+      "deliverables": {
+        "code": [
+          "frontend/components/ui/page-header.tsx"
+        ],
+        "tests": []
+      },
+      "description": "Create reusable PageHeader component at frontend/components/ui/page-header.tsx with title, description, and action button. ~35 lines.",
+      "constraints": "NEW file only. 'use client' directive required. Keep under 40 lines. Simple layout component — no data fetching.",
+      "output": {
+        "files": [
+          "frontend/components/ui/page-header.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 92,
+          "summary": "Dual-approved: Claude (92/100) + Codex (92/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/components/ui/page-header.tsx",
+              "description": "Missing JSDoc documentation for the public API component and interface"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/components/ui/page-header.tsx",
+              "description": "No test file provided - component should have unit tests for props handling and click events"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/components/ui/page-header.tsx",
+              "description": "The ```<button>``` lacks an explicit type attribute (e.g., type=\"button\"), which can be important to prevent unintended form submissions when used inside forms."
+            }
+          ],
+          "strengths": [
+            "Exact implementation matches task specification requirements",
+            "Proper TypeScript interface with correct prop types",
+            "Clean conditional rendering for optional props (description, action)",
+            "Good accessibility with semantic HTML (h1, p, button)",
+            "Proper Tailwind CSS classes matching the specified design",
+            "Added nice UX touches: transition-colors, gap-2, mt-1 spacing",
+            "Correct 'use client' directive for Next.js client component",
+            "No hardcoded values or security issues",
+            "Clean, readable code structure with proper React patterns",
+            "Accurate application of specified Tailwind classes and layout structure.",
+            "Conditional rendering of description and action per spec.",
+            "Support for optional icon in the action button.",
+            "Includes `use client` directive as required by Next.js 14."
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-092",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "medium",
+      "status": "done",
+      "context": "Create a rate limit handler for the Countable TypeScript SDK at sdk/typescript/src/rate-limit.ts. This utility tracks API rate limits from response headers and provides wait-if-needed behavior. Export: (1) RateLimitInfo interface: { limit: number, remaining: number, resetAt: Date }. (2) RateLimitTracker class with methods: update(headers: Record<string, string>): void — parses x-ratelimit-limit, x-ratelimit-remaining, x-ratelimit-reset headers. getInfo(): RateLimitInfo | null. shouldWait(): boolean — returns true if remaining <= 0. getWaitMs(): number — returns ms until reset, or 0. waitIfNeeded(): Promise<void> — sleeps if rate limited. The class should handle missing headers gracefully (return null from getInfo). Export both the class and interface.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/rate-limit.ts"
+        ],
+        "tests": []
+      },
+      "description": "Create rate limit tracking utility at sdk/typescript/src/rate-limit.ts — parses response headers, auto-waits when limited. ~50 lines.",
+      "constraints": "NEW file only. No external dependencies. Parse standard rate limit headers. Keep under 55 lines.",
+      "output": {
+        "files": [
+          "sdk/typescript/src/rate-limit.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/rate-limit.ts",
+              "description": "Missing unit tests - should include Jest tests for all public methods and edge cases"
+            },
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/rate-limit.ts",
+              "description": "Could add JSDoc @example tags to demonstrate usage patterns"
+            }
+          ],
+          "strengths": [
+            "Proper TypeScript strict typing with no 'any' types used",
+            "Comprehensive error handling - gracefully handles missing/invalid headers",
+            "Clean separation of concerns with private helper methods",
+            "Proper async/await pattern in waitIfNeeded method",
+            "Case-insensitive header handling as expected in HTTP",
+            "Unix timestamp conversion handled correctly (seconds to milliseconds)",
+            "Edge case handling - negative wait times, past reset times",
+            "Good JSDoc documentation on all public methods",
+            "Interface and class properly exported as specified",
+            "No hardcoded values or magic numbers",
+            "Follows single responsibility principle",
+            "No unnecessary dependencies added",
+            "Implements all required methods (update, getInfo, shouldWait, getWaitMs, waitIfNeeded) as specified.",
+            "Gracefully handles missing or invalid headers by resetting internal state to null.",
+            "Uses clear JSDoc comments on public methods and private helpers.",
+            "No use of `any`, no hardcoded values, and no syntax errors.",
+            "Proper case-insensitive header normalization and robust numeric parsing."
+          ]
+        }
+      }
+    }
+  ]
+}

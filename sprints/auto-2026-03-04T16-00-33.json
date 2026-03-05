@@ -1,0 +1,122 @@
+{
+  "tasks": [
+    {
+      "id": "EMER-001",
+      "agent": "agents",
+      "type": "feature",
+      "priority": "critical",
+      "dependencies": [],
+      "description": "Add hard-coded file-count limit constants to task decomposer",
+      "context": "In backend/src/services/task-decomposer.ts (or create if missing), add constants MAX_CODE_FILES=1, MAX_TEST_FILES=1, MAX_TOTAL_FILES=2. These limits will gate all task decomposition logic.",
+      "deliverables": {
+        "code": [
+          "backend/src/services/task-decomposer.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "rejected"
+    },
+    {
+      "id": "EMER-002",
+      "agent": "agents",
+      "type": "feature",
+      "priority": "critical",
+      "dependencies": [
+        "EMER-001"
+      ],
+      "description": "Implement pre-execution complexity gate in orchestrator",
+      "context": "In backend/src/services/orchestrator.ts, add validateTaskComplexity() function that rejects tasks with deliverables.code.length + deliverables.tests.length > 2. Throw error with decomposition instructions if limit exceeded.",
+      "deliverables": {
+        "code": [
+          "backend/src/services/orchestrator.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "skipped",
+      "reason": "skipped: dependency EMER-001 rejected (MiniMax truncation). Target file backend/src/services/task-decomposer.ts does not exist in repo."
+    },
+    {
+      "id": "EMER-003",
+      "agent": "agents",
+      "type": "feature",
+      "priority": "critical",
+      "dependencies": [
+        "EMER-001"
+      ],
+      "description": "Add force-split logic for 3+ file tasks in decomposer",
+      "context": "In backend/src/services/task-decomposer.ts, add splitOversizedTask() that takes any task with 3+ files and generates N subtasks (1 file each) with dependency chains. First subtask has no deps, subsequent depend on prior.",
+      "deliverables": {
+        "code": [
+          "backend/src/services/task-decomposer.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "skipped",
+      "reason": "skipped: dependency EMER-001 rejected (MiniMax truncation). Target file backend/src/services/task-decomposer.ts does not exist in repo."
+    },
+    {
+      "id": "EMER-004",
+      "agent": "agents",
+      "type": "feature",
+      "priority": "critical",
+      "dependencies": [
+        "EMER-002",
+        "EMER-003"
+      ],
+      "description": "Wire decomposer to orchestrator task intake",
+      "context": "In backend/src/services/orchestrator.ts, modify task creation flow to call splitOversizedTask() before queueing. If split occurs, queue all subtasks and return parent ID mapping. Ensure validateTaskComplexity runs post-split.",
+      "deliverables": {
+        "code": [
+          "backend/src/services/orchestrator.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "skipped",
+      "reason": "skipped: dependency EMER-001 rejected (MiniMax truncation). Target file backend/src/services/task-decomposer.ts does not exist in repo."
+    },
+    {
+      "id": "EMER-005",
+      "agent": "agents",
+      "type": "test",
+      "priority": "high",
+      "dependencies": [
+        "EMER-004"
+      ],
+      "description": "Add integration test for auto-split on 5-file task",
+      "context": "In backend/tests/services/orchestrator.test.ts, create test that submits a mock task with 5 code files. Verify it splits into 5 subtasks with correct dependencies (chain pattern). Assert each subtask passes complexity gate.",
+      "deliverables": {
+        "code": [],
+        "tests": [
+          "backend/tests/services/orchestrator.test.ts"
+        ],
+        "docs": []
+      },
+      "status": "skipped",
+      "reason": "skipped: dependency EMER-001 rejected (MiniMax truncation). Target file backend/src/services/task-decomposer.ts does not exist in repo."
+    },
+    {
+      "id": "EMER-006",
+      "agent": "agents",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [
+        "EMER-004"
+      ],
+      "description": "Add metrics tracking for rejection rate in orchestrator",
+      "context": "In backend/src/services/orchestrator.ts, add trackTaskOutcome() that logs to Redis/metrics store: {taskId, approved:bool, reason:string}. Call on every task completion. Calculate rolling 7-day approval rate for dashboard.",
+      "deliverables": {
+        "code": [
+          "backend/src/services/orchestrator.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "skipped",
+      "reason": "skipped: dependency EMER-001 rejected (MiniMax truncation). Target file backend/src/services/task-decomposer.ts does not exist in repo."
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "report": {
+    "totalReviews": 19,
+    "totalRejections": 13,
+    "tasksFailedMaxAttempts": [
+      "FE-031"
+    ],
+    "contradictions": [
+      {
+        "taskId": "FE-031",
+        "type": "moving_goalposts",
+        "description": "Score stuck at 75/100 for 10 consecutive reviews — supervisor may be inventing new issues each time",
+        "attempts": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ]
+      }
+    ],
+    "hallucinations": [],
+    "averageAttemptsPerApproval": 1.5,
+    "performanceGrade": "C",
+    "recommendation": "WARN — some issues detected, monitor closely next sprint"
+  },
+  "ceoDecision": "```json\n{\n  \"supervisor_evaluation\": {\n    \"sprint\": \"week-10\",\n    \"grade\": \"C\",\n    \"decision\": \"WARN\",\n    \"contradictions_found\": 1,\n    \"hallucinations_found\": 0,\n    \"reasoning\": \"Mixed performance with concerning pattern. Good: 68% approval rate, low average attempts (1.5), no hallucinations. Bad: FE-031 stuck at exactly 75/100 for 10 consecutive attempts suggests moving goalposts - supervisor likely inventing new issues each time instead of checking if previous feedback was addressed. This wasted an entire task and forced manual completion.\",\n    \"improvement_requirements\": [\n      \"Must track which issues were raised in previous attempts and verify they were fixed before raising new ones\",\n      \"Must not give identical scores (like 75/100) repeatedly - score should improve if agent addresses feedback\",\n      \"Must be specific about what constitutes 'done' - avoid vague feedback that can't be satisfied\",\n      \"Must explain score changes - if score stays same, explain why previous fixes weren't sufficient\"\n    ],\n    \"termination_instructions\": null\n  }\n}\n```\n\n**Action Items for Next Sprint:**\n1. Monitor FE tasks closely - if supervisor shows same moving goalposts pattern on 2+ tasks, escalate to TERMINATE\n2. Log this warning to `reports/supervisor-performance/warning-week-10.md`\n3. Include improvement requirements in next sprint briefing\n4. If performance doesn't improve by week-11, prepare termination with enhanced prompt focusing on consistency and feedback tracking\n\nThe supervisor gets ONE more sprint to prove they can avoid the moving goalposts trap. The 75/100 × 10 pattern on FE-031 is exactly the kind of waste that kills sprint velocity."
+}

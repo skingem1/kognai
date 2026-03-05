@@ -1,0 +1,111 @@
+[
+  {
+    "id": "CHAIN-001",
+    "github_issue": 42,
+    "agent": "backend-core",
+    "type": "feature",
+    "priority": "high",
+    "dependencies": [],
+    "context": "Create a multi-chain configuration registry at backend/src/config/chains.ts. This is the foundation for Polygon and Arbitrum support (CEO issue #42 - Sprint 10 Multi-chain architecture).\n\nThe file should export:\n1. A SUPPORTED_CHAINS constant: a Map<string, ChainConfig> with entries for:\n   - 'base': { id: 8453, name: 'Base', rpcUrl: process.env.BASE_RPC_URL || 'https://mainnet.base.org', usdcAddress: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913', explorerUrl: 'https://basescan.org', isTestnet: false }\n   - 'polygon': { id: 137, name: 'Polygon', rpcUrl: process.env.POLYGON_RPC_URL || 'https://polygon-rpc.com', usdcAddress: '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359', explorerUrl: 'https://polygonscan.com', isTestnet: false }\n   - 'arbitrum': { id: 42161, name: 'Arbitrum One', rpcUrl: process.env.ARBITRUM_RPC_URL || 'https://arb1.arbitrum.io/rpc', usdcAddress: '0xaf88d065e77c8cC2239327C5EDb3A432268e5831', explorerUrl: 'https://arbiscan.io', isTestnet: false }\n2. A getChain(chainId: string): ChainConfig function that throws if chain not found\n3. A isChainSupported(chainId: string): boolean helper\n4. A DEFAULT_CHAIN = 'base' constant\n5. A ChainConfig interface with: id (number), name (string), rpcUrl (string), usdcAddress (string), explorerUrl (string), isTestnet (boolean)\n\nAlso update backend/src/types/index.ts (or create it if it doesn't exist) to export the ChainConfig type.",
+    "deliverables": {
+      "code": [
+        "backend/src/config/chains.ts"
+      ]
+    },
+    "acceptance_criteria": "getChain('base'), getChain('polygon'), getChain('arbitrum') all return valid ChainConfig objects. getChain('unknown') throws.",
+    "status": "done",
+    "output": {
+      "files": [
+        "backend/src/types/index.ts",
+        "backend/src/config/chains.ts"
+      ],
+      "commit": "3efff77",
+      "model": "MiniMax-M2.5"
+    }
+  },
+  {
+    "id": "CHAIN-002",
+    "github_issue": 42,
+    "agent": "backend-core",
+    "type": "feature",
+    "priority": "high",
+    "dependencies": [
+      "CHAIN-001"
+    ],
+    "context": "Add chain field to the invoices and settlements database tables (CEO issue #42 - multi-chain support).\n\nCreate a Supabase migration file at supabase/migrations/20260301000001_add_chain_support.sql that:\n1. Adds column: ALTER TABLE invoices ADD COLUMN IF NOT EXISTS chain VARCHAR(20) NOT NULL DEFAULT 'base';\n2. Adds column: ALTER TABLE settlements ADD COLUMN IF NOT EXISTS chain VARCHAR(20) NOT NULL DEFAULT 'base';\n3. Adds column: ALTER TABLE settlements ADD COLUMN IF NOT EXISTS chain_id INTEGER;\n4. Adds index: CREATE INDEX IF NOT EXISTS idx_invoices_chain ON invoices(chain);\n5. Adds index: CREATE INDEX IF NOT EXISTS idx_settlements_chain ON settlements(chain);\n6. Adds a comment: COMMENT ON COLUMN invoices.chain IS 'Blockchain network: base, polygon, arbitrum';\n\nAlso update backend/src/routes/invoices.ts: in the POST /v1/invoices route, read req.body.chain (default 'base') and include it in the insert. Add validation: if chain is provided and not in ['base','polygon','arbitrum'], return 400 with error 'Unsupported chain'.",
+    "deliverables": {
+      "code": [
+        "supabase/migrations/20260301000001_add_chain_support.sql",
+        "backend/src/routes/invoices.ts"
+      ]
+    },
+    "acceptance_criteria": "Migration file is valid SQL. POST /v1/invoices accepts chain field. Invalid chain returns 400.",
+    "status": "done",
+    "output": {
+      "files": [
+        "backend/src/routes/invoices.ts"
+      ],
+      "commit": "a5e7f0d",
+      "model": "MiniMax-M2.5"
+    }
+  },
+  {
+    "id": "SDK-200",
+    "github_issue": 45,
+    "agent": "backend-core",
+    "type": "feature",
+    "priority": "high",
+    "dependencies": [],
+    "context": "Finalize the Invoica TypeScript SDK for npm publication as @invoica/sdk (CEO issue #45).\n\nThe SDK source is in sdk/ directory. Create or update the following files:\n\n1. sdk/package.json — production-ready package manifest:\n   { \"name\": \"@invoica/sdk\", \"version\": \"1.0.0\", \"description\": \"Official TypeScript SDK for Invoica — Financial OS for AI Agents\", \"main\": \"dist/index.js\", \"types\": \"dist/index.d.ts\", \"exports\": { \".\": { \"import\": \"./dist/index.js\", \"types\": \"./dist/index.d.ts\" } }, \"files\": [\"dist\", \"README.md\"], \"scripts\": { \"build\": \"tsc\", \"prepublishOnly\": \"npm run build\" }, \"keywords\": [\"invoica\", \"x402\", \"ai-agents\", \"payments\", \"usdc\", \"blockchain\"], \"license\": \"MIT\", \"peerDependencies\": {} }\n\n2. sdk/tsconfig.json — TypeScript config for building:\n   { \"compilerOptions\": { \"target\": \"ES2020\", \"module\": \"CommonJS\", \"lib\": [\"ES2020\"], \"declaration\": true, \"declarationMap\": true, \"sourceMap\": true, \"outDir\": \"./dist\", \"rootDir\": \"./src\", \"strict\": true, \"esModuleInterop\": true, \"skipLibCheck\": true }, \"include\": [\"src/**/*\"], \"exclude\": [\"node_modules\", \"dist\", \"**/*.test.ts\"] }\n\n3. sdk/src/index.ts — main SDK entry: re-export everything from client.ts, types.ts\n\n4. sdk/src/types.ts — comprehensive TypeScript types:\n   - Invoice interface (id, number, amount, currency, status, customerId, dueDate, chain, createdAt, updatedAt, metadata)\n   - CreateInvoiceRequest interface\n   - Settlement interface (id, invoiceId, txHash, chain, amount, currency, status, confirmedAt)\n   - InvoiceStatus enum: 'draft' | 'sent' | 'paid' | 'overdue' | 'cancelled'\n   - ListInvoicesParams interface (status?, customerId?, page?, limit?, chain?)\n   - InvoicaConfig interface (apiKey: string, baseUrl?: string)\n\n5. sdk/src/client.ts — InvoicaClient class:\n   - constructor(config: InvoicaConfig) — stores apiKey and baseUrl (default: 'https://api.invoica.ai')\n   - async createInvoice(data: CreateInvoiceRequest): Promise<Invoice>\n   - async getInvoice(id: string): Promise<Invoice>\n   - async getInvoiceByNumber(number: string): Promise<Invoice>\n   - async listInvoices(params?: ListInvoicesParams): Promise<{ invoices: Invoice[], total: number, page: number }>\n   - async updateInvoice(id: string, data: Partial<CreateInvoiceRequest>): Promise<Invoice>\n   - async trackSettlement(invoiceId: string): Promise<Settlement>\n   - private async request<T>(method: string, path: string, body?: unknown): Promise<T> — uses native fetch (Node 18+), adds Authorization: Bearer header, handles errors\n\n6. sdk/README.md — quickstart guide:\n   - Installation: npm install @invoica/sdk\n   - Quick start with 3 examples: create invoice, list invoices, track settlement\n   - TypeScript example showing full flow\n   - Link to https://invoica.ai/docs",
+    "deliverables": {
+      "code": [
+        "sdk/package.json",
+        "sdk/tsconfig.json",
+        "sdk/src/index.ts",
+        "sdk/src/types.ts",
+        "sdk/src/client.ts"
+      ],
+      "docs": [
+        "sdk/README.md"
+      ]
+    },
+    "acceptance_criteria": "sdk/src/client.ts exports InvoicaClient class with all 7 methods. sdk/package.json has name @invoica/sdk version 1.0.0.",
+    "status": "done",
+    "output": {
+      "files": [
+        "sdk/package.json",
+        "sdk/tsconfig.json",
+        "sdk/src/index.ts",
+        "sdk/src/types.ts",
+        "sdk/src/client.ts"
+      ],
+      "commit": "cdcbbb6",
+      "model": "MiniMax-M2.5"
+    }
+  },
+  {
+    "id": "AUTH-003",
+    "github_issue": 36,
+    "agent": "backend-core",
+    "type": "feature",
+    "priority": "medium",
+    "dependencies": [],
+    "context": "Create an API key rotation service at backend/src/services/api-key-rotation.ts (GitHub issue #36 - AUTH-002: Create API key rotation service).\n\nThe service should:\n1. Export an ApiKeyRotationService class with:\n   - async rotateKey(oldKeyId: string, userId: string): Promise<{ newKey: string, newKeyId: string, expiresOldKeyAt: Date }>\n     - Generates a new secure API key (format: 'ik_live_' + 32 random hex chars)\n     - Inserts new key into api_keys table (Supabase)\n     - Sets old key's expires_at to NOW() + 24 hours (grace period)\n     - Returns the new key and its ID\n   - async revokeKey(keyId: string, userId: string): Promise<void>\n     - Sets is_active = false on the key immediately\n     - Only allows if userId owns the key (security check)\n   - async listKeys(userId: string): Promise<ApiKey[]>\n     - Returns all active keys for user (never returns the raw key value, only prefix + last 4 chars)\n2. Export an ApiKey interface: { id: string, userId: string, prefix: string, lastFour: string, createdAt: Date, expiresAt: Date | null, isActive: boolean }\n3. Use the Supabase client from backend/src/lib/supabase.ts (or wherever it's defined)\n\nAlso add the rotation endpoint to backend/src/routes/api-keys.ts:\n   POST /v1/api-keys/:id/rotate — calls rotateKey, returns { apiKey: newKey, keyId: newKeyId, expiresOldKeyAt }\n   DELETE /v1/api-keys/:id — calls revokeKey\n   GET /v1/api-keys — calls listKeys, returns { keys: ApiKey[] }",
+    "deliverables": {
+      "code": [
+        "backend/src/services/api-key-rotation.ts",
+        "backend/src/routes/api-keys.ts"
+      ]
+    },
+    "acceptance_criteria": "ApiKeyRotationService class exported with rotateKey, revokeKey, listKeys methods. Route file exports router with 3 endpoints.",
+    "status": "done",
+    "output": {
+      "files": [
+        "backend/src/services/api-key-rotation.ts",
+        "backend/src/routes/api-keys.ts"
+      ],
+      "commit": "eba87fc",
+      "model": "MiniMax-M2.5"
+    }
+  }
+]

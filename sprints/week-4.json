@@ -1,0 +1,221 @@
+{
+  "tasks": [
+    {
+      "id": "BC-020",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "context": "Create an environment config validator utility. File: backend/src/utils/env-validator.ts. Export these: (1) interface EnvConfig with fields: PORT (number), NODE_ENV ('development'|'production'|'test'), DATABASE_URL (string), ANTHROPIC_API_KEY (string), MINIMAX_API_KEY (string), optional SUPERVISOR_URL (string), optional LOG_LEVEL ('debug'|'info'|'warn'|'error' default 'info'). (2) function validateEnv(): EnvConfig that reads process.env, validates all required fields exist and are non-empty, coerces PORT to number (default 3000), throws descriptive Error listing ALL missing vars (not just first). (3) function maskSecret(value: string): string that shows first 4 and last 4 chars with *** in between (or '****' if value is under 10 chars). TypeScript strict mode. No external dependencies.",
+      "deliverables": {
+        "code": [
+          "backend/src/utils/env-validator.ts"
+        ],
+        "tests": [
+          "backend/tests/utils/env-validator.test.ts"
+        ]
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "backend/src/utils/env-validator.ts",
+          "backend/tests/utils/env-validator.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 92,
+          "summary": "Well-implemented environment validator with proper TypeScript types, comprehensive error handling, and good test coverage. Minor issues with type assertions and test completeness.",
+          "issues": [
+            {
+              "severity": "medium",
+              "file": "backend/src/utils/env-validator.ts",
+              "description": "Uses type assertions (as string) instead of proper validation for NODE_ENV, DATABASE_URL, etc. after checking they exist - could be more type-safe"
+            },
+            {
+              "severity": "low",
+              "file": "backend/tests/utils/env-validator.test.ts",
+              "description": "Missing test cases for LOG_LEVEL validation, invalid PORT values, and SUPERVISOR_URL optional field"
+            },
+            {
+              "severity": "low",
+              "file": "backend/src/utils/env-validator.ts",
+              "description": "coercePort function could validate port range (1-65535) for better error handling"
+            }
+          ],
+          "strengths": [
+            "Excellent TypeScript strict mode compliance with proper types and no 'any' usage",
+            "Comprehensive error handling that lists ALL missing variables as required",
+            "Clean separation of concerns with helper functions (coercePort, maskSecret)",
+            "Good JSDoc documentation on all public functions",
+            "Proper handling of optional fields (SUPERVISOR_URL, LOG_LEVEL with default)",
+            "No external dependencies as specified",
+            "maskSecret function correctly implements the masking logic",
+            "Test structure follows Jest best practices with proper setup/teardown"
+          ]
+        }
+      }
+    },
+    {
+      "id": "BC-021",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "context": "Create a global Express error handler middleware. File: backend/src/middleware/error-handler.ts. Export: (1) interface AppError extends Error with optional statusCode (number, default 500), optional code (string like 'VALIDATION_ERROR', 'NOT_FOUND', 'UNAUTHORIZED'), optional isOperational (boolean, default true). (2) function createAppError(message: string, statusCode: number, code: string): AppError. (3) function errorHandler(err: Error, req: Request, res: Response, next: NextFunction): void — Express error middleware. In production, hide error details (just message + code). In development, include stack trace. Always log error to console.error as JSON with timestamp, method, path, statusCode, message. Always return JSON { error: { message, code, statusCode } }. TypeScript strict mode. Import only express types.",
+      "deliverables": {
+        "code": [
+          "backend/src/middleware/error-handler.ts"
+        ],
+        "tests": [
+          "backend/tests/middleware/error-handler.test.ts"
+        ]
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "backend/src/middleware/error-handler.ts",
+          "backend/tests/middleware/error-handler.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 92,
+          "summary": "High-quality error handler implementation that meets all requirements with proper TypeScript, comprehensive testing, and production-ready error handling patterns.",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "backend/src/middleware/error-handler.ts",
+              "description": "Stack trace is included in development response payload but not mentioned in task spec - could be considered scope creep"
+            },
+            {
+              "severity": "low",
+              "file": "backend/tests/middleware/error-handler.test.ts",
+              "description": "Test coverage could include edge cases like undefined req.path or req.method"
+            }
+          ],
+          "strengths": [
+            "Perfect adherence to task specification - all required exports and functionality implemented",
+            "Excellent TypeScript usage with proper typing and no 'any' types",
+            "Comprehensive error handling with production vs development environment logic",
+            "Well-structured JSON logging with all required fields (timestamp, method, path, statusCode, message)",
+            "Proper operational vs non-operational error distinction in production",
+            "Clean JSDoc documentation on all public APIs",
+            "Comprehensive test suite covering all major scenarios including production/development modes",
+            "Proper Express middleware signature with all 4 parameters",
+            "Security-conscious approach hiding internal details in production",
+            "Clean separation of concerns and readable code structure"
+          ]
+        }
+      }
+    },
+    {
+      "id": "BC-022",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "medium",
+      "dependencies": [],
+      "context": "Create a simple request ID middleware. File: backend/src/middleware/request-id.ts. Export: (1) function requestId(): Express middleware that checks for an existing X-Request-Id header on the incoming request. If present, use it. If not, generate a new one using crypto.randomUUID(). Attach it to req.headers['x-request-id'] and also set it on the response header X-Request-Id. (2) function getRequestId(req: Request): string that reads the X-Request-Id from req.headers and returns it (or 'unknown' if missing). TypeScript strict mode. Only import express types and node:crypto.",
+      "deliverables": {
+        "code": [
+          "backend/src/middleware/request-id.ts"
+        ],
+        "tests": [
+          "backend/tests/middleware/request-id.test.ts"
+        ]
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "backend/src/middleware/request-id.ts",
+          "backend/tests/middleware/request-id.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 92,
+          "summary": "Clean, well-structured middleware implementation that meets all requirements. Good TypeScript usage, proper error handling, and comprehensive tests.",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "backend/src/middleware/request-id.ts",
+              "description": "The generateRequestId() helper function is not exported but could be useful for testing or other modules"
+            },
+            {
+              "severity": "low",
+              "file": "backend/tests/middleware/request-id.test.ts",
+              "description": "Could add test case for array header values (Express headers can be string | string[] | undefined)"
+            }
+          ],
+          "strengths": [
+            "Follows TypeScript strict mode with proper type annotations",
+            "Only imports required dependencies (express types and node:crypto) as specified",
+            "Proper JSDoc documentation on all exported functions",
+            "Handles edge cases (empty string, missing header) correctly",
+            "Clean separation of concerns with helper functions",
+            "Comprehensive test coverage including UUID validation regex",
+            "Proper Express middleware pattern with next() call",
+            "Sets both request header and response header as required",
+            "Good error handling - returns 'unknown' instead of throwing",
+            "Tests use proper mocking and cleanup with beforeEach"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-020",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "medium",
+      "dependencies": [],
+      "context": "Create a LoadingSpinner React component. File: frontend/components/ui/loading-spinner.tsx. Export a LoadingSpinner component that accepts props: size ('sm'|'md'|'lg', default 'md') and optional className (string). Render a div with an animated spinning circle using TailwindCSS. Sizes: sm=h-4 w-4 border-2, md=h-8 w-8 border-2, lg=h-12 w-12 border-4. Use border-gray-200 for the circle background and border-t-blue-600 for the spinning arc. Apply animate-spin class. TypeScript with proper prop types. No external dependencies.",
+      "deliverables": {
+        "code": [
+          "frontend/components/ui/loading-spinner.tsx"
+        ]
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "frontend/components/ui/loading-spinner.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "task_id": "FE-020",
+          "verdict": "APPROVED",
+          "score": 92,
+          "summary": "Well-implemented LoadingSpinner component that meets all requirements with proper TypeScript types, accessibility features, and clean code structure.",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/components/ui/loading-spinner.tsx",
+              "line": 1,
+              "description": "Redundant React import - not needed in modern React with JSX transform"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/components/ui/loading-spinner.tsx",
+              "line": 25,
+              "description": "Could add aria-hidden='true' to prevent screen readers from announcing the visual spinner when aria-label is present"
+            }
+          ],
+          "strengths": [
+            "Exact adherence to task specifications - all size classes, colors, and props match requirements",
+            "Proper TypeScript implementation with exported types and interfaces",
+            "Good accessibility with role='status' and aria-label",
+            "Clean separation of concerns with sizeClasses lookup object",
+            "Proper default parameter handling",
+            "No external dependencies as required",
+            "Follows React functional component best practices",
+            "Proper className concatenation for extensibility"
+          ],
+          "action": "approve"
+        }
+      }
+    }
+  ]
+}

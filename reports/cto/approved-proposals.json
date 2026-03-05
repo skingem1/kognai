@@ -1,0 +1,609 @@
+{
+  "proposals": [
+    {
+      "id": "CTO-20260215-001",
+      "title": "Add Execution Verification Agent to catch silent failures",
+      "category": "new_agent",
+      "description": "The daily report reveals 91% execution failure rate was silently reported as 'excellent results' by the CTO system. A new verification agent should cross-check sprint results against actual task execution logs to catch false positives before executive reporting.",
+      "implementation_steps": [
+        "Create verification agent that compares sprint approval status against actual execution logs",
+        "Run verification check before CEO daily report is generated",
+        "Flag any discrepancy between reported success and actual execution outcomes",
+        "Require manual audit of tasks where verification fails"
+      ],
+      "approved_date": "2026-02-15",
+      "ceo_conditions": [
+        "Agent must run BEFORE CEO daily report generation",
+        "Must flag ANY discrepancy between reported vs actual execution",
+        "Must require manual audit when verification fails",
+        "Use Anthropic Claude for reasoning - this is too critical for MiniMax"
+      ],
+      "priority": "immediate",
+      "implementation_status": "pending",
+      "verification_notes": ""
+    },
+    {
+      "id": "CTO-20260215-002",
+      "title": "Add Redis health check to orchestrator startup",
+      "category": "process_change",
+      "description": "The learnings document mentions Redis is used for health checks but the health check task (too complex) was rejected 3x. Adding a simple Redis connectivity check at orchestrator startup ensures the execution environment is valid before tasks run, reducing false failures.",
+      "implementation_steps": [
+        "Add Redis ping to orchestrator init sequence using existing ioredis client",
+        "Log connection status at startup; fail fast if Redis unavailable",
+        "Add Redis health to /health endpoint"
+      ],
+      "approved_date": "2026-02-15",
+      "ceo_conditions": [
+        "Keep it simple - just Redis ping, not complex health monitoring",
+        "Fail fast at startup if Redis unavailable",
+        "Log connection status for debugging"
+      ],
+      "priority": "next_sprint",
+      "implementation_status": "pending",
+      "verification_notes": ""
+    },
+    {
+      "id": "CTO-20260216-001",
+      "title": "Add Sprint-Retrospective Agent to Capture Learnings",
+      "category": "new_agent",
+      "description": "The learnings.md file contains critical insights about MiniMax token limits (4500 max), task decomposition rules, and rejection patterns. However, these learnings aren't systematically applied to new tasks. The daily report shows 3 rejections (SDK-060, BE-110, BE-111) and stalled execution, suggesting the same issues may repeat. A dedicated agent to capture and apply sprint learnings would improve task success rates.",
+      "implementation_steps": [
+        "Create agent directory: agents/sprint-retrospective/",
+        "Implement agent to read previous sprint results and learnings before new task creation",
+        "Add pattern matching: if task type matches previously failed types, inject decomposition rules into prompt",
+        "Run every_sprint to analyze rejected tasks and update learnings.md with new patterns",
+        "Test by comparing SDK-060 failure pattern against new task prompts"
+      ],
+      "approved_date": "2026-02-15",
+      "ceo_conditions": [
+        "Agent must read both learnings.md AND previous sprint results before each run",
+        "Pattern matching must be specific - inject concrete rules, not generic advice",
+        "Must update learnings.md with new patterns discovered from rejected tasks"
+      ],
+      "priority": "next_sprint",
+      "implementation_status": "superseded",
+      "verification_notes": "Superseded by autonomous CTO post-sprint-analysis built into orchestrator Phase 5b (2026-02-15)"
+    },
+    {
+      "id": "CTO-20260217-003",
+      "title": "Debug Backend-Core Execution Blocker",
+      "category": "tooling",
+      "description": "Daily report indicates backend-core agent not executing pending tasks (SDK-061, SDK-062) despite 100% Week-9 success rate. This is a critical infrastructure issue - tasks planned but not executed. Need immediate diagnostic to identify root cause.",
+      "implementation_steps": [
+        "1. Check orchestrator logs for backend-core agent errors or hangs",
+        "2. Verify agent dynamic loading is working (agents/backend-core/)",
+        "3. Check if PM2 process for backend-core is running",
+        "4. Test agent invocation manually with a simple task",
+        "5. Verify no changes to orchestrator config broke agent execution",
+        "6. Report findings and fix to CEO"
+      ],
+      "approved_date": "2026-02-15",
+      "ceo_conditions": [
+        "Report findings within 2 hours",
+        "If fix requires code changes, get Supervisor review"
+      ],
+      "priority": "immediate",
+      "implementation_status": "pending",
+      "verification_notes": ""
+    },
+    {
+      "id": "CTO-20260217-001",
+      "title": "Implement Sprint-Retrospective Agent",
+      "category": "new_agent",
+      "description": "CEO approved sprint-retrospective agent in previous cycle to prevent recurring rejection patterns. This agent should analyze sprint results, identify failure patterns, and recommend task decomposition or process changes before next sprint. The critical execution blocker in current sprint demonstrates why systematic retrospective is needed.",
+      "implementation_steps": [
+        "1. Use Skills Agent to create sprint-retrospective agent with MiniMax LLM",
+        "2. Configure trigger: every_sprint (runs after sprint results are available)",
+        "3. Agent reads: sprint results, rejection patterns, learnings.md, previous retrospectives",
+        "4. Agent outputs: pattern analysis, decomposition recommendations, process improvement suggestions",
+        "5. Store outputs in reports/sprint-retrospective/ for CEO review"
+      ],
+      "approved_date": "2026-02-15",
+      "ceo_conditions": [
+        "Agent must read all sprint data before analysis",
+        "Output format must be structured for CEO review"
+      ],
+      "priority": "next_sprint",
+      "implementation_status": "superseded",
+      "verification_notes": "Superseded by autonomous CTO post-sprint-analysis built into orchestrator Phase 5b (2026-02-15)"
+    },
+    {
+      "id": "CTO-20260217-002",
+      "title": "Enhance Execution-Verifier to Monitor Agent Health",
+      "category": "process_change",
+      "description": "The execution-verifier agent exists but failed to detect the critical backend-core execution blocker. Current implementation verifies task execution but doesn't monitor agent health or detect when approved tasks aren't being processed. Need to add proactive health checks.",
+      "implementation_steps": [
+        "1. Review current execution-verifier implementation in agents/execution-verifier/",
+        "2. Add agent health check: verify all scheduled agents processed their task queues",
+        "3. Add pending task alert: if tasks remain pending >1 hour, trigger alert",
+        "4. Add execution failure pattern detection: flag agents with >2 consecutive empty sprints",
+        "5. Update orchestrator to emit agent heartbeat events for monitoring"
+      ],
+      "approved_date": "2026-02-15",
+      "ceo_conditions": [
+        "Must include rollback plan for health check changes",
+        "Alert thresholds must be configurable"
+      ],
+      "priority": "next_sprint",
+      "implementation_status": "pending",
+      "verification_notes": ""
+    },
+    {
+      "id": "CTO-20260215-003",
+      "title": "Verify OpenClaw v2026.2.12 for Pipeline Fixes",
+      "category": "tooling",
+      "description": "Check OpenClaw GitHub for releases since v2026.2.12 that may address orchestrator execution issues or provide better error handling for pipeline failures.",
+      "implementation_steps": [
+        "Check https://github.com/openclaw/openclaw/releases for versions > v2026.2.12",
+        "Review changelog for orchestrator fixes, error handling improvements, or execution monitoring",
+        "If newer version available: test in staging before production upgrade",
+        "Note: OpenClaw may have community fixes for the exact pipeline failure we're experiencing"
+      ],
+      "approved_date": "2026-02-15",
+      "ceo_conditions": [
+        "Check releases first - if newer version exists, review changelog for execution fixes",
+        "Test any upgrades in staging environment only",
+        "Document findings even if no relevant updates found"
+      ],
+      "priority": "immediate",
+      "implementation_status": "pending",
+      "verification_notes": ""
+    },
+    {
+      "id": "CTO-20260216-003",
+      "title": "Add response caching for repeated LLM calls",
+      "category": "cost_optimization",
+      "description": "Review learnings mention caching opportunities. Implement caching layer for identical LLM calls (e.g., system prompts, common validation logic) to reduce redundant API calls.",
+      "implementation_steps": [
+        "Audit recent sprint logs for repeated identical prompts",
+        "Implement Redis-backed prompt cache with TTL",
+        "Add cache hit/miss metrics to monitoring",
+        "Test cache effectiveness over 1-2 sprints"
+      ],
+      "approved_date": "2026-02-15",
+      "ceo_conditions": [
+        "Implement cache invalidation strategy",
+        "Add monitoring for cache hit rates",
+        "Start with 1-hour TTL for safety"
+      ],
+      "priority": "next_sprint",
+      "implementation_status": "pending",
+      "verification_notes": ""
+    },
+    {
+      "id": "CTO-20260215-004",
+      "title": "Add post-write file integrity check to orchestrator",
+      "category": "process_change",
+      "description": "MiniMax destructive rewrites destroyed router.ts (lost all routes) and api-client.ts (replaced 170-line file with 15-line stub) in Week 18. Add a pre-commit integrity check: after MiniMax writes a file, compare line count with the original. If new file is <50% the size of the original AND the task was fix/add, flag for manual review.",
+      "implementation_steps": [
+        "In orchestrator executeTask(), save original file line count before MiniMax writes",
+        "After write, compare new line count. If new < 50% of original AND task type is fix/add, reject automatically",
+        "Log warning: File shrank from N to M lines — possible destructive rewrite",
+        "Add to supervisor prompt: Check if the file lost existing functionality"
+      ],
+      "approved_date": "2026-02-15",
+      "ceo_conditions": [
+        "Only apply to task types 'fix' and 'add' — full 'feature' rewrites are expected to change file size",
+        "Log the warning but also show the original vs new line count in supervisor review context",
+        "Threshold should be configurable (start at 50%, can adjust based on data)"
+      ],
+      "priority": "immediate",
+      "implementation_status": "verified",
+      "verification_notes": "IMPLEMENTED 2026-02-15. Added to orchestrate-agents-v2.ts CodingAgent.execute(): (1) Pre-write integrity check comparing original vs new line count, (2) 50% threshold (configurable INTEGRITY_THRESHOLD), (3) Applies to bugfix tasks + all existing files >10 lines, (4) Logs warning with line counts, (5) Preserves original file on failure, (6) Passes integrity alert to supervisor prompts"
+    },
+    {
+      "id": "CTO-20260215-005",
+      "title": "Upgrade code fence stripping to handle all MiniMax variants",
+      "category": "tooling",
+      "description": "Code fence contamination persists despite Week 11 fix. FE-100, FE-101, and FE-102 all had code fences in Week 18. FE-102 was even auto-approved WITH fences (supervisor false negative). Need comprehensive post-processing.",
+      "implementation_steps": [
+        "In orchestrator, after receiving MiniMax output: apply aggressive fence strip regex",
+        "Pattern: remove any line matching /^\\s*```\\w*\\s*$/ at start and end of output",
+        "Also strip <think>...</think> tags and any markdown headers before first code line",
+        "Add fence detection to supervisor checklist: if output contains ``` anywhere, auto-reject",
+        "Test against FE-100, FE-101, FE-102 outputs from Week 18"
+      ],
+      "approved_date": "2026-02-15",
+      "ceo_conditions": [
+        "Fence stripping must happen BEFORE file is written to disk, not after",
+        "Add a simple automated test: if any line in output matches /^\\s*```/, strip it",
+        "Supervisor prompt must explicitly check: Does the file start with a markdown code fence?"
+      ],
+      "priority": "immediate",
+      "implementation_status": "verified",
+      "verification_notes": "IMPLEMENTED 2026-02-15. Added to orchestrate-agents-v2.ts: (1) Enhanced extractCodeBlocks() with broader regex for all fence variants, (2) New stripResidualFences() method removes ALL fence markers + markdown headers before code, (3) Applied BEFORE file write to disk (CEO condition met), (4) Residual fence detection warning logged, (5) Both supervisor prompts (Claude+Codex) now explicitly check for code fences and auto-reject"
+    },
+    {
+      "id": "CTO-20260215-006",
+      "title": "Split large frontend files into composable components before task assignment",
+      "category": "architecture",
+      "description": "Frontend files >65 lines consistently fail (sidebar 105 lines, api-keys 227 lines). MiniMax 4500-token output limit is a hard ceiling. Pre-split large components into smaller files (<60 lines each) and assign tasks to individual files.",
+      "implementation_steps": [
+        "Before sprint creation: scan target files for line count",
+        "If file >65 lines: split into composable sub-components",
+        "Task description should target the specific sub-component file, not the parent",
+        "Add to task creation rules: Frontend tasks must target files <65 lines",
+        "Apply to Week 19: pre-split sidebar.tsx and api-keys/page.tsx before assigning tasks"
+      ],
+      "approved_date": "2026-02-15",
+      "ceo_conditions": [
+        "Start with sidebar.tsx only — it has failed 2 consecutive sprints, so it's the best test case",
+        "Do NOT auto-split files — CTO/CEO should review the split plan before each sprint",
+        "Add line count check to sprint design phase: warn if any task targets a file >65 lines",
+        "Track success rate before/after split to validate the approach"
+      ],
+      "priority": "next_sprint",
+      "implementation_status": "in_progress",
+      "verification_notes": "STARTED 2026-02-15. sidebar.tsx split: 114 lines → sidebar.tsx (53 lines) + sidebar-nav-items.ts (75 lines data). Week 19 sprint tasks all target files <65 lines. api-keys/page.tsx split deferred — no api-keys tasks in Week 19."
+    },
+    {
+      "id": "CTO-20260219-001",
+      "title": "Investigate SDK-200 quality gate failure - score 15 auto-approved",
+      "category": "tooling",
+      "description": "SDK-200 (query string utilities) received a score of 15 but was auto-approved. This is a critical quality gate failure - tasks with scores below 60 should require manual review. Investigate: (1) was score calculation correct, (2) did supervisor properly evaluate, (3) is auto-approval threshold misconfigured",
+      "implementation_steps": [
+        "Review SDK-200 supervisor review output to confirm score calculation",
+        "Check orchestrator logs for auto-approval decision for SDK-200",
+        "Verify auto-approval threshold configuration (likely should be >60)",
+        "If score 15 is correct, implement code review to fix the query string utilities"
+      ],
+      "approved_date": "2026-02-18",
+      "ceo_conditions": [
+        "Investigation must be completed within 24 hours",
+        "If SDK-200 code is actually broken, create hotfix task immediately",
+        "Document findings in quality-gate-failure-analysis.md",
+        "Verify all other recent low-scoring tasks weren't incorrectly approved"
+      ],
+      "priority": "immediate",
+      "implementation_status": "pending",
+      "verification_notes": ""
+    },
+    {
+      "id": "CTO-20260219-002",
+      "title": "Add minimum score gate before auto-approval",
+      "category": "process_change",
+      "description": "Current auto-approval allows tasks with scores as low as 15 to pass. Based on learnings.md showing that scores below 90 typically indicate truncation or missing functionality, implement a minimum score threshold (e.g., 80) below which tasks require manual review regardless of other factors.",
+      "implementation_steps": [
+        "1. Check orchestrator code for auto-approval logic in supervisor.ts or orchestrator.ts",
+        "2. Identify where score threshold is defined (if exists)",
+        "3. Add minimum score gate: auto-approve only if score >= 80 AND no critical issues",
+        "4. Document threshold rationale in learnings.md"
+      ],
+      "approved_date": "2026-02-18",
+      "ceo_conditions": [
+        "Set minimum threshold at 80 (not lower)",
+        "Include override mechanism for emergency fixes with CEO approval",
+        "Test threshold logic before deployment"
+      ],
+      "priority": "immediate",
+      "implementation_status": "pending",
+      "verification_notes": ""
+    },
+    {
+      "id": "CTO-20260219-003",
+      "title": "Monitor for score-15 pattern in future sprints",
+      "category": "tooling",
+      "description": "Add sprint retrospective to flag any task scoring below 50 as anomaly requiring investigation. SDK-200 is the first observed case of a sub-20 score auto-approving. This pattern may indicate a systematic issue with specific task types or MiniMax failure modes.",
+      "implementation_steps": [
+        "1. Add score<50 alert in sprint-retrospective agent prompt",
+        "2. Create checklist item: 'Investigate any score below 50'",
+        "3. Track historical low scores in metrics for trend analysis"
+      ],
+      "approved_date": "2026-02-18",
+      "ceo_conditions": [
+        "Set alert threshold at score < 50 (not just retrospective)",
+        "Include task type and agent in anomaly report",
+        "Track monthly trend of low scores"
+      ],
+      "priority": "next_sprint",
+      "implementation_status": "pending",
+      "verification_notes": ""
+    },
+    {
+      "id": "CTO-20260220-002",
+      "title": "Implement approved complexity validation (CTO-20260219-002)",
+      "category": "process_change",
+      "description": "The daily report confirms CTO-20260219-002 (Add complexity validation for utility tasks) was APPROVED but implementation status is unclear. SDK-217 failure suggests this was either not implemented or was insufficient. Before proposing new changes, I need to verify if CTO-20260219-002 was actually implemented. If not, this is the priority - it would have flagged SDK-217 as a re-verification task (retry) which has higher complexity.",
+      "implementation_steps": [
+        "1. Check reports/cto/approved-proposals.json for CTO-20260219-002 status",
+        "2. If status is not 'verified', implement the complexity validation logic in the orchestrator",
+        "3. Test against SDK-217 type tasks to confirm it would have flagged them",
+        "4. Update proposal status to verified once implementation confirmed"
+      ],
+      "approved_date": "2026-02-18",
+      "ceo_conditions": [
+        "Verify implementation by testing against SDK-217 type tasks",
+        "Update approved-proposals.json status to 'verified' once confirmed"
+      ],
+      "priority": "immediate",
+      "implementation_status": "pending",
+      "verification_notes": ""
+    },
+    {
+      "id": "CTO-20260220-001",
+      "title": "Add stateful pattern detection to complexity validation",
+      "category": "process_change",
+      "description": "SDK-217 (circuit-breaker re-verification tests) was rejected - the daily report explicitly notes 'MiniMax struggles with stateful test scenarios' and 'circuit-breaker patterns may need different approach'. The approved complexity validation (CTO-20260219-002) checks for utility task complexity but does not specifically detect stateful testing patterns (state machines, circuit breakers, retry logic with state). We need to add pattern detection for: (1) any test file containing 'circuit-breaker' or 'stateful' in the name, (2) test scenarios that require managing state across multiple test cases, (3) async state transitions that need verification. When detected, these tasks should either route to a different agent or require manual scoping.",
+      "implementation_steps": [
+        "1. Update task complexity validation in orchestrator to detect stateful patterns: check task name/description for keywords: circuit-breaker, stateful, state-machine, retry-logic, async-state",
+        "2. Add validation rule: if stateful pattern detected, require explicit task decomposition into separate files OR manual agent assignment",
+        "3. Document stateful testing guidelines in docs/learnings.md under 'Task Decomposition Rules'",
+        "4. Verify implementation by checking SDK-217 type tasks would now be flagged before MiniMax execution"
+      ],
+      "approved_date": "2026-02-18",
+      "ceo_conditions": [
+        "Must implement after CTO-20260220-002 is verified",
+        "Add stateful testing guidelines to docs/learnings.md"
+      ],
+      "priority": "next_sprint",
+      "implementation_status": "pending",
+      "verification_notes": ""
+    },
+    {
+      "id": "CTO-20260221-001",
+      "title": "Upgrade OpenClaw from v2026.2.12 to v2026.2.14",
+      "category": "tooling",
+      "description": "OpenClaw is 2 versions behind (v2026.2.12 vs v2026.2.14). Check GitHub release notes for new features, bug fixes, or cost optimizations that could benefit Invoica.",
+      "implementation_steps": [
+        "Check GitHub releases for v2026.2.13 and v2026.2.14 changelog",
+        "Identify any breaking changes or new features relevant to Invoica",
+        "Update OpenClaw dependency in package.json",
+        "Test orchestrator compatibility after upgrade"
+      ],
+      "approved_date": "2026-02-18",
+      "ceo_conditions": [
+        "Test orchestrator compatibility thoroughly before deploying",
+        "Have rollback plan ready if compatibility issues arise",
+        "Document any new features that could benefit our agent workflows"
+      ],
+      "priority": "next_sprint",
+      "implementation_status": "pending",
+      "verification_notes": ""
+    },
+    {
+      "id": "CTO-20260225-001",
+      "title": "Verify CTO-20260220-001 Implementation Status",
+      "category": "process_change",
+      "description": "CTO-20260220-001 (stateful pattern detection) was approved in the Feb 18 daily report to prevent circuit-breaker test failures. SDK-217 (circuit-breaker re-verification) was rejected this sprint, indicating the fix wasn't implemented or isn't working. Need to verify implementation status.",
+      "implementation_steps": [
+        "Check reports/cto/approved-proposals.json for CTO-20260220-001 status",
+        "If not implemented: escalate to CEO for immediate implementation",
+        "If implemented but failing: analyze why pattern detection didn't catch SDK-217"
+      ],
+      "approved_date": "2026-02-18",
+      "ceo_conditions": [
+        "Report back within 24 hours with implementation status",
+        "If not implemented, escalate to immediate priority",
+        "If implemented but failing, provide root cause analysis"
+      ],
+      "priority": "immediate",
+      "implementation_status": "pending",
+      "verification_notes": ""
+    },
+    {
+      "id": "CTO-20260225-002",
+      "title": "Add Pre-Execution Block for Stateful Test Patterns",
+      "category": "process_change",
+      "description": "Until MiniMax improves at stateful tests, add orchestrator validation to reject tasks matching: 'circuit-breaker', 'state-machine', 'retry-logic', 'rate-limiter', 'connection-pool' with 'test' or 'verify' keywords. These consistently fail.",
+      "implementation_steps": [
+        "Add keyword blocklist to orchestrator: ['circuit-breaker', 'state-machine'] + 'test'",
+        "Task matching blocklist should be flagged for manual review before MiniMax execution",
+        "Document blocked patterns in docs/learnings.md"
+      ],
+      "approved_date": "2026-02-18",
+      "ceo_conditions": [
+        "Implement keyword blocklist: ['circuit-breaker', 'state-machine', 'retry-logic', 'rate-limiter', 'connection-pool'] + 'test'",
+        "Tasks matching blocklist require manual CEO review before execution",
+        "Document all blocked patterns in docs/learnings.md"
+      ],
+      "priority": "next_sprint",
+      "implementation_status": "pending",
+      "verification_notes": ""
+    },
+    {
+      "id": "CTO-20260222-001",
+      "title": "Verify implementation of approved proposals",
+      "category": "process_change",
+      "description": "Two CEO-approved proposals are pending: (1) OpenClaw upgrade v2026.2.12→v2026.2.14 and (2) stateful pattern detection. Both were approved but daily report indicates they may not be implemented. Need to verify actual implementation status before proposing new work.",
+      "implementation_steps": [
+        "Check reports/cto/approved-proposals.json for CTO-20260221-001 and CTO-20260220-001 status",
+        "Verify OpenClaw version in package.json or lock file",
+        "Check if stateful pattern detection logic exists in orchestrator or supervisor",
+        "Report verification status to CEO"
+      ],
+      "approved_date": "2026-02-18",
+      "ceo_conditions": [
+        "Report verification results within 24 hours",
+        "If proposals are unimplemented, provide implementation timeline",
+        "Update approved-proposals.json with accurate status"
+      ],
+      "priority": "immediate",
+      "implementation_status": "pending",
+      "verification_notes": ""
+    },
+    {
+      "id": "CTO-20260222-002",
+      "title": "Investigate CMO/Manus AI connectivity",
+      "category": "tooling",
+      "description": "CMO has produced no output for multiple cycles - Manus task is silent. Daily report flags this as a risk. Without market intelligence, Invoica cannot make data-driven strategic decisions. Need to diagnose Manus AI connectivity and restore CMO functionality.",
+      "implementation_steps": [
+        "Check CMO agent logs for error messages",
+        "Verify Manus API credentials and endpoint configuration",
+        "Test Manus AI connectivity manually",
+        "Propose fix or alternative if Manus is unavailable"
+      ],
+      "approved_date": "2026-02-18",
+      "ceo_conditions": [
+        "Diagnose root cause within 48 hours",
+        "If Manus AI is permanently unavailable, propose alternative market intelligence solution",
+        "Restore CMO functionality or implement backup system"
+      ],
+      "priority": "immediate",
+      "implementation_status": "pending",
+      "verification_notes": ""
+    },
+    {
+      "id": "CTO-20260224-001",
+      "title": "Add stateful pattern pre-screening to orchestrator",
+      "category": "process_change",
+      "description": "SDK-217 (circuit-breaker re-verification) failed - this is the 3rd+ attempt on stateful test patterns. The learnings doc states 'If retry #2 fails, decompose it' but we've gone far beyond that. Before assigning tasks, the orchestrator should detect stateful patterns (circuit-breaker, state machines, complex mocks) and either route to Claude or decompose.",
+      "implementation_steps": [
+        "Add pattern detection in orchestrator task queue: keywords like 'circuit-breaker', 'state machine', 'complex mock', 're-verification' trigger flag",
+        "For flagged tasks: either decompose into simpler sub-tasks OR route to Claude coding agent",
+        "Document stateful patterns that fail with MiniMax in learnings.md"
+      ],
+      "approved_date": "2026-02-18",
+      "ceo_conditions": [
+        "Pattern detection must be conservative - only flag obvious stateful patterns",
+        "Document all flagged patterns in learnings.md for refinement",
+        "Include rollback mechanism if pre-screening becomes too aggressive"
+      ],
+      "priority": "next_sprint",
+      "implementation_status": "pending",
+      "verification_notes": ""
+    },
+    {
+      "id": "CTO-20260224-003",
+      "title": "Implement max-retry auto-skip for persistently failing tasks",
+      "category": "process_change",
+      "description": "SDK-217 was a retry from Week 52 and failed again. The learnings doc says to decompose after 2 failures, but we have no enforcement. Add automatic task suspension after 5 total attempts (initial + 4 retries) to prevent infinite retry loops. Suspended tasks go to CEO queue for manual decision.",
+      "implementation_steps": [
+        "Add attempt counter to task metadata in orchestrator",
+        "After 5 attempts, auto-suspend task and flag for CEO review",
+        "CEO can: skip, decompose into sub-tasks, or route to specialist agent",
+        "Log suspension to learnings.md for pattern analysis"
+      ],
+      "approved_date": "2026-02-18",
+      "ceo_conditions": [
+        "Suspended tasks must include full failure history for CEO review",
+        "CEO queue notifications must be actionable - include decomposition suggestions",
+        "Track suspension patterns to identify systemic issues"
+      ],
+      "priority": "immediate",
+      "implementation_status": "pending",
+      "verification_notes": ""
+    },
+    {
+      "id": "CTO-20260218-001",
+      "title": "Add stateful pattern pre-check to task scoping",
+      "category": "process_change",
+      "description": "MiniMax consistently fails on stateful testing patterns (circuit-breaker tests SDK-217). The learnings document confirms MiniMax struggles with stateful patterns after multiple retries. Instead of retrying, we should detect stateful requirements during task scoping and either decompose the task upfront or route to Claude for these specific cases.",
+      "implementation_steps": [
+        "Add pre-check in orchestrator: if task description contains 'stateful', 'circuit-breaker', 'counter', 'timer', 'cache' → flag as high-risk for MiniMax",
+        "For flagged tasks: either (a) decompose into simpler sub-tasks before assignment, or (b) route to Claude coding agent instead of MiniMax",
+        "Document stateful pattern detection rules in docs/learnings.md"
+      ],
+      "approved_date": "2026-02-18",
+      "ceo_conditions": [
+        "Document the stateful pattern detection keywords clearly",
+        "Implement fallback to Claude only for flagged stateful tasks, not all tasks",
+        "Track success rate improvement over next 2 sprints to validate impact"
+      ],
+      "priority": "next_sprint",
+      "implementation_status": "pending",
+      "verification_notes": ""
+    },
+    {
+      "id": "CTO-20260218-002",
+      "title": "Enhance test-failure-predictor to detect MiniMax failure patterns",
+      "category": "process_change",
+      "description": "The test-failure-predictor agent exists but isn't preventing the recurring stateful pattern failures. We should enhance its prompt to specifically flag tasks with known MiniMax failure patterns and recommend alternative approaches before coding begins.",
+      "implementation_steps": [
+        "Update test-failure-predictor prompt to include known failure patterns: stateful logic, complex async flows, multi-step transactions",
+        "Add recommendation output: 'ROUTE: Claude' or 'DECOMPOSE' for flagged tasks",
+        "Integrate predictor output into task assignment decision"
+      ],
+      "approved_date": "2026-02-18",
+      "ceo_conditions": [
+        "Ensure predictor recommendations integrate cleanly with proposal 1's routing logic",
+        "Test predictor accuracy on historical failed tasks before full deployment",
+        "Keep predictor lightweight - don't over-engineer pattern detection"
+      ],
+      "priority": "next_sprint",
+      "implementation_status": "pending",
+      "verification_notes": ""
+    },
+    {
+      "id": "CTO-20260225-003",
+      "title": "Verify approved CTO proposals implementation status",
+      "category": "process_change",
+      "description": "Daily report (2026-02-18) states CEO requested verification for CTO-20260222-001 and CTO-20260222-002 but no verification output exists. Need to close the loop on previous approvals before proposing new work.",
+      "implementation_steps": [
+        "1. Check reports/cto/approved-proposals.json for CTO-20260222-001 and CTO-20260222-002 status",
+        "2. If pending/in_progress → verify implementation evidence exists",
+        "3. Update status to verified/partial/not_started with verification_notes",
+        "4. Report status in next CTO scan"
+      ],
+      "approved_date": "2026-02-18",
+      "ceo_conditions": [
+        "Include implementation evidence (file changes, test results)",
+        "If proposals weren't implemented, explain why and update process"
+      ],
+      "priority": "immediate",
+      "implementation_status": "pending",
+      "verification_notes": ""
+    },
+    {
+      "id": "CTO-20260218-003",
+      "title": "Verify Implementation of Approved Stateful Pattern Proposals",
+      "category": "process_change",
+      "description": "CEO daily report explicitly requests verification of CTO-20260218-001 and CTO-20260218-002 (stateful pattern fixes). Need to confirm whether the approved solutions were actually implemented in the codebase.",
+      "implementation_steps": [
+        "Check reports/cto/approved-proposals.json for CTO-20260218-001 and CTO-20260218-002 status",
+        "Search codebase for implemented stateful pattern fixes (look for mocking patterns, test utilities)",
+        "If not implemented: identify what blockers exist and report to CEO",
+        "If partially implemented: note gaps and propose completion steps"
+      ],
+      "approved_date": "2026-02-18",
+      "ceo_conditions": [
+        "Report findings within 24 hours",
+        "If not implemented, identify specific blockers preventing implementation"
+      ],
+      "priority": "immediate",
+      "implementation_status": "pending",
+      "verification_notes": ""
+    },
+    {
+      "id": "CTO-20260218-005",
+      "title": "Implement Proactive Task Decomposition for Stateful Tests",
+      "category": "process_change",
+      "description": "Current decomposition only triggers after 3 consecutive rejections. For stateful tests (known failure category), decompose upfront into separate test file + mock utility file.",
+      "implementation_steps": [
+        "Add stateful-test detection to orchestrator (keywords: circuit-breaker, cache, rate-limit, stateful)",
+        "When detected, automatically decompose into 2 sub-tasks: mock-utility.ts + test.ts",
+        "Apply one-file-per-call rule strictly for stateful test tasks",
+        "Track rejection rates on stateful tasks pre/post change"
+      ],
+      "approved_date": "2026-02-18",
+      "ceo_conditions": [
+        "Implement detection keywords: circuit-breaker, cache, rate-limit, stateful, redis, timeout",
+        "Track before/after rejection rates to validate effectiveness",
+        "Rollback if decomposition creates more overhead than it saves"
+      ],
+      "priority": "next_sprint",
+      "implementation_status": "pending",
+      "verification_notes": ""
+    },
+    {
+      "id": "CTO-20260220-003",
+      "title": "Add task complexity checkpoint before execution",
+      "category": "process_change",
+      "description": "Learnings.md notes 'Complex tasks with multiple concerns fail repeatedly' and 'A health check with Redis + DB + error types was too ambitious → rejected 3x.' SDK-217 follows this pattern. Add a pre-execution checkpoint for tasks that have failed 2x to force decomposition review.",
+      "implementation_steps": [
+        "Track failure count per task ID in sprint results",
+        "If task fails 2x, auto-flag for decomposition review before retry 3",
+        "Require explicit 'proceed anyway' justification or decomposition plan"
+      ],
+      "approved_date": "2026-02-18",
+      "ceo_conditions": [
+        "Implement failure tracking per task ID",
+        "Auto-flag tasks at 2 failures for mandatory decomposition review",
+        "Require explicit justification to proceed with complex tasks"
+      ],
+      "priority": "next_sprint",
+      "implementation_status": "pending",
+      "verification_notes": ""
+    }
+  ],
+  "last_updated": "2026-03-02"
+}

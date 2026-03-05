@@ -1,0 +1,81 @@
+{
+  "tasks": [
+    {
+      "id": "QUALITY-001",
+      "agent": "agents",
+      "type": "feature",
+      "priority": "critical",
+      "dependencies": [],
+      "description": "Add CSS prompt template to MiniMax agent",
+      "context": "Update src/agents/minimax/index.ts to include CSS-specific prompt template that enforces Tailwind-only rules, no custom CSS, semantic HTML standards. Add template selection logic based on file extension (.css, .tsx with styles).",
+      "deliverables": {
+        "code": [
+          "src/agents/minimax/index.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "rejected"
+    },
+    {
+      "id": "QUALITY-002",
+      "agent": "agents",
+      "type": "feature",
+      "priority": "critical",
+      "dependencies": [
+        "QUALITY-001"
+      ],
+      "description": "Enforce 2-file maximum in MiniMax task execution",
+      "context": "Update src/agents/minimax/index.ts task validation to reject tasks with >2 files in deliverables.code. Return clear error message to coordinator when limit exceeded. Prevents context overflow failures.",
+      "deliverables": {
+        "code": [
+          "src/agents/minimax/index.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "skipped",
+      "skippedReason": "Blocked by rejected dependency: ['QUALITY-001']"
+    },
+    {
+      "id": "QUALITY-003",
+      "agent": "agents",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [
+        "QUALITY-002"
+      ],
+      "description": "Add x-admin escalation spam filtering",
+      "context": "Update src/routes/x-admin.ts escalation listing endpoint to filter out spam patterns: generic test failures, timeout errors without context, duplicate messages. Add spam detection regex for common patterns identified in manual review.",
+      "deliverables": {
+        "code": [
+          "src/routes/x-admin.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "skipped",
+      "skippedReason": "Blocked by: ['QUALITY-002']"
+    },
+    {
+      "id": "QUALITY-004",
+      "agent": "agents",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [
+        "QUALITY-003"
+      ],
+      "description": "Add spam flag column to escalations UI",
+      "context": "Update src/routes/x-admin.ts escalation list view template to display spam flag indicator. Add CSS class for visual distinction. Shows filtered spam count vs real escalations needing CTO review.",
+      "deliverables": {
+        "code": [
+          "src/routes/x-admin.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "skipped",
+      "skippedReason": "Blocked by: ['QUALITY-003']"
+    }
+  ]
+}

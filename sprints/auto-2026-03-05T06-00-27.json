@@ -1,0 +1,80 @@
+{
+  "tasks": [
+    {
+      "id": "INFRA-001",
+      "agent": "infra",
+      "type": "bugfix",
+      "priority": "critical",
+      "dependencies": [],
+      "description": "SSH deploy orchestrator rejection-handling fix",
+      "context": "Manually SSH into production server, pull latest orchestrator code with rejection loop fix, restart service. Orchestrator currently stops processing after first rejection. Verify service restart and queue resumption via logs.",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": []
+      },
+      "status": "rejected"
+    },
+    {
+      "id": "INFRA-002",
+      "agent": "infra",
+      "type": "bugfix",
+      "priority": "critical",
+      "dependencies": [
+        "INFRA-001"
+      ],
+      "description": "Deploy complexity validator CTO-20260305-001",
+      "context": "SSH deploy backend/src/utils/task-complexity-validator.ts approved 5 days ago. This validator prevents invalid tasks from entering queue. Copy file to production, restart backend service, verify validator is active in logs.",
+      "deliverables": {
+        "code": [
+          "backend/src/utils/task-complexity-validator.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "skipped",
+      "skippedReason": "Blocked by rejected dependency: ['INFRA-001']"
+    },
+    {
+      "id": "INFRA-003",
+      "agent": "agents",
+      "type": "feature",
+      "priority": "critical",
+      "dependencies": [
+        "INFRA-001",
+        "INFRA-002"
+      ],
+      "description": "Add orchestrator health monitoring",
+      "context": "Add health check endpoint to agents/orchestrator that reports queue status, last task processed timestamp, error count. Must expose metrics for detecting when orchestrator stops processing. Single file addition.",
+      "deliverables": {
+        "code": [
+          "backend/src/api/health.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "skipped",
+      "skippedReason": "Blocked by rejected dependency: ['INFRA-001']"
+    },
+    {
+      "id": "INFRA-004",
+      "agent": "infra",
+      "type": "test",
+      "priority": "high",
+      "dependencies": [
+        "INFRA-001",
+        "INFRA-002",
+        "INFRA-003"
+      ],
+      "description": "Verify end-to-end sprint task processing",
+      "context": "Submit test task through full pipeline: task creation \u2192 queue \u2192 orchestrator \u2192 MiniMax \u2192 approval. Verify rejection handling works (orchestrator continues) and complexity validator blocks invalid tasks. Document results in logs.",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": []
+      },
+      "status": "skipped",
+      "skippedReason": "Blocked by rejected dependency: ['INFRA-001']"
+    }
+  ]
+}

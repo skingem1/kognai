@@ -1,0 +1,471 @@
+{
+  "tasks": [
+    {
+      "id": "FE-350",
+      "agent": "frontend",
+      "type": "test",
+      "priority": "high",
+      "status": "done",
+      "dependencies": [],
+      "context": "Write unit tests for frontend/hooks/use-clipboard.ts. This is a React hook for clipboard operations.\n\nSource file at frontend/hooks/use-clipboard.ts:\n```typescript\nimport { useState, useCallback } from 'react';\n\nexport interface UseClipboardReturn {\n  copy: (text: string) => Promise<void>;\n  copied: boolean;\n  error: Error | null;\n}\n\nexport function useClipboard(resetDelay: number = 2000): UseClipboardReturn {\n  const [copied, setCopied] = useState<boolean>(false);\n  const [error, setError] = useState<Error | null>(null);\n\n  const copy = useCallback(\n    async (text: string): Promise<void> => {\n      try {\n        await navigator.clipboard.writeText(text);\n        setCopied(true);\n        setError(null);\n        setTimeout(() => setCopied(false), resetDelay);\n      } catch (err) {\n        setError(err instanceof Error ? err : new Error('Copy failed'));\n        setCopied(false);\n      }\n    },\n    [resetDelay]\n  );\n\n  return { copy, copied, error };\n}\n```\n\nRequirements:\n1. Import { renderHook, act } from '@testing-library/react'\n2. Import { useClipboard } from '../use-clipboard'\n3. Use jest.useFakeTimers() in beforeEach and jest.useRealTimers() in afterEach\n4. Mock navigator.clipboard in beforeEach: Object.assign(navigator, { clipboard: { writeText: jest.fn().mockResolvedValue(undefined) } })\n5. Test initial state: copied is false, error is null\n6. Test copy sets copied to true: await act(async () => { await result.current.copy('hello'); }); expect(result.current.copied).toBe(true)\n7. Test copy calls navigator.clipboard.writeText with correct text\n8. Test copied resets to false after delay: after copy succeeds, act(() => { jest.advanceTimersByTime(2000); }); expect(result.current.copied).toBe(false)\n9. Test custom delay: useClipboard(1000) — copied stays true at 500ms, resets at 1000ms\n10. Test error handling: (navigator.clipboard.writeText as jest.Mock).mockRejectedValueOnce(new Error('Clipboard denied')); await act(async () => { await result.current.copy('text'); }); expect(result.current.error).toBeInstanceOf(Error); expect(result.current.copied).toBe(false)\n11. Test error is cleared on successful copy after failure\n12. Do NOT use waitFor. Use act() for async operations and jest.advanceTimersByTime for timers.",
+      "deliverables": {
+        "code": [
+          "frontend/hooks/__tests__/use-clipboard.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/hooks/__tests__/use-clipboard.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/hooks/__tests__/use-clipboard.test.ts",
+              "description": "Error message assertion could be more specific - tests for Error instance but not the actual message content"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/hooks/__tests__/use-clipboard.test.ts",
+              "description": "Could add edge case test for empty string input to copy function"
+            }
+          ],
+          "strengths": [
+            "All 12 specified requirements implemented correctly",
+            "Proper use of act() for async operations and state updates",
+            "Correct timer mocking with jest.useFakeTimers/useRealTimers lifecycle",
+            "Navigator.clipboard properly mocked in beforeEach",
+            "Tests both default (2000ms) and custom (1000ms) delay scenarios",
+            "Error handling test covers both failure and recovery paths",
+            "Clean test structure with descriptive test names",
+            "No code fences or syntax issues",
+            "Follows React Testing Library best practices",
+            "Proper TypeScript usage with no any types",
+            "Correct use of jest.useFakeTimers and jest.useRealTimers",
+            "Navigator.clipboard.writeText is properly mocked and verified",
+            "Covers initial state, success, default and custom delays, error handling, and error clearance",
+            "No invalid code fences or extra dependencies"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-190",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create a new header utility module for the SDK. These are pure functions for building and parsing HTTP headers used in API requests.\n\nCreate file sdk/typescript/src/headers.ts with these exact exports:\n\n```typescript\n/**\n * Build standard Invoica API request headers.\n * buildHeaders('sk-test-key') => { 'Authorization': 'Bearer sk-test-key', 'Content-Type': 'application/json', 'X-SDK-Version': '1.0.0' }\n */\nexport function buildHeaders(apiKey: string, extra?: Record<string, string>): Record<string, string>\n\n/**\n * Parse a retry-after header value to milliseconds.\n * parseRetryAfter('30') => 30000 (seconds to ms)\n * parseRetryAfter('Wed, 18 Feb 2026 12:00:00 GMT') => <ms until that date>\n * parseRetryAfter(null) => null\n * parseRetryAfter('invalid') => null\n */\nexport function parseRetryAfter(value: string | null): number | null\n\n/**\n * Extract rate limit info from response headers.\n * extractRateLimitInfo({ 'x-ratelimit-limit': '100', 'x-ratelimit-remaining': '95', 'x-ratelimit-reset': '1708300800' })\n * => { limit: 100, remaining: 95, resetAt: Date }\n */\nexport function extractRateLimitInfo(headers: Record<string, string>): { limit: number; remaining: number; resetAt: Date } | null\n\n/**\n * Build idempotency key header.\n * buildIdempotencyHeader('idem_123') => { 'Idempotency-Key': 'idem_123' }\n * buildIdempotencyHeader() => {} (no header when no key)\n */\nexport function buildIdempotencyHeader(key?: string): Record<string, string>\n\n/**\n * Merge multiple header objects (later objects override earlier).\n * mergeHeaders({ 'A': '1' }, { 'B': '2' }, { 'A': '3' }) => { 'A': '3', 'B': '2' }\n */\nexport function mergeHeaders(...headerSets: Record<string, string>[]): Record<string, string>\n```\n\nImplementation rules:\n1. buildHeaders: return { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json', 'X-SDK-Version': '1.0.0', ...extra }\n2. parseRetryAfter: if null/empty return null. If numeric string, return parseInt * 1000. Otherwise try new Date(value) — if valid return getTime() - Date.now(). If invalid return null.\n3. extractRateLimitInfo: read x-ratelimit-limit, x-ratelimit-remaining, x-ratelimit-reset from headers. If any missing return null. Parse limit and remaining as parseInt, resetAt as new Date(parseInt(reset) * 1000).\n4. buildIdempotencyHeader: if key provided return { 'Idempotency-Key': key }, else return {}\n5. mergeHeaders: return Object.assign({}, ...headerSets)\n6. No external dependencies\n7. Export all five functions",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/headers.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/src/headers.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 94,
+          "summary": "Dual-approved: Claude (92/100) + Codex (95/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/headers.ts",
+              "description": "Added SDK_VERSION constant not explicitly requested in task spec, though it's a reasonable abstraction"
+            },
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/headers.ts",
+              "description": "Uses spread syntax {...headers, ...extra} instead of Object.assign for buildHeaders, though functionally equivalent"
+            }
+          ],
+          "strengths": [
+            "All 5 required functions exported with exact signatures",
+            "Comprehensive JSDoc documentation on all functions",
+            "Proper TypeScript typing with no 'any' types used",
+            "Robust error handling in parseRetryAfter and extractRateLimitInfo",
+            "Correct implementation of all business logic requirements",
+            "Good input validation (null checks, NaN checks, regex validation)",
+            "Clean, readable code structure",
+            "No external dependencies as required",
+            "Proper handling of edge cases (empty strings, invalid dates, missing headers)",
+            "Accurately implements all five functions according to the spec.",
+            "No external dependencies, purely using built-in APIs.",
+            "Strong TypeScript typing without any `any` usage.",
+            "Comprehensive JSDoc comments for all exports.",
+            "Handles edge cases (null/empty values, invalid dates, missing headers) gracefully."
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-191",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "status": "done",
+      "dependencies": [
+        "SDK-190"
+      ],
+      "context": "Write unit tests for sdk/typescript/src/headers.ts. This module exports 5 pure functions: buildHeaders, parseRetryAfter, extractRateLimitInfo, buildIdempotencyHeader, mergeHeaders.\n\nRequirements:\n1. Import { buildHeaders, parseRetryAfter, extractRateLimitInfo, buildIdempotencyHeader, mergeHeaders } from '../headers'\n\nTest cases for buildHeaders:\n- buildHeaders('sk-key') should have Authorization 'Bearer sk-key'\n- buildHeaders('sk-key') should have Content-Type 'application/json'\n- buildHeaders('sk-key') should have X-SDK-Version '1.0.0'\n- buildHeaders('sk-key', { 'X-Custom': 'val' }) should include X-Custom header\n- Extra headers should override defaults if same key\n\nTest cases for parseRetryAfter:\n- parseRetryAfter('30') => 30000\n- parseRetryAfter('0') => 0\n- parseRetryAfter(null) => null\n- parseRetryAfter('invalid') => null\n- parseRetryAfter('') => null\n\nTest cases for extractRateLimitInfo:\n- With all three headers: returns { limit, remaining, resetAt } with correct types\n- Missing x-ratelimit-limit: returns null\n- Missing x-ratelimit-remaining: returns null\n- Missing x-ratelimit-reset: returns null\n- With all headers: limit and remaining are numbers, resetAt is a Date\n\nTest cases for buildIdempotencyHeader:\n- buildIdempotencyHeader('idem_123') => { 'Idempotency-Key': 'idem_123' }\n- buildIdempotencyHeader() => {} (empty object)\n- buildIdempotencyHeader(undefined) => {}\n\nTest cases for mergeHeaders:\n- mergeHeaders({ 'A': '1' }, { 'B': '2' }) => { 'A': '1', 'B': '2' }\n- mergeHeaders({ 'A': '1' }, { 'A': '2' }) => { 'A': '2' } (later overrides)\n- mergeHeaders() => {}\n- mergeHeaders({ 'A': '1' }, { 'B': '2' }, { 'C': '3' }) => all three keys\n\nGroup tests in describe blocks per function. No external mocking needed — these are pure functions. For parseRetryAfter with date strings, you may need jest.useFakeTimers() to test deterministically.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/__tests__/headers.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/src/__tests__/headers.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 92,
+          "summary": "CEO resolved conflict (Claude approved, Codex rejected): APPROVE — The code meets all task spec requirements. Claude correctly identifies that the test file covers all 5 functions with comprehensive test cases, including the custom header scenario that Codex claims is missing. The spec explicitly requires testing \"buildHeaders('sk-key', { 'X-Custom': 'val",
+          "issues": [
+            {
+              "severity": "medium",
+              "file": "sdk/typescript/src/__tests__/headers.test.ts",
+              "description": "Missing test case: verify that passing a custom header (e.g. { 'X-Custom': 'val' }) to buildHeaders actually includes that header in the result."
+            }
+          ],
+          "strengths": [
+            "All 5 functions have dedicated describe blocks as required",
+            "Comprehensive test coverage for edge cases (null, empty string, invalid input)",
+            "Proper TypeScript usage with correct imports",
+            "Clean, readable test structure using Jest best practices",
+            "Tests parseRetryAfter conversion logic correctly (30 -> 30000)",
+            "Validates extractRateLimitInfo return types (numbers and Date instance)",
+            "Tests mergeHeaders override behavior correctly",
+            "No code fences or syntax issues",
+            "Follows pure function testing approach without unnecessary mocking"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-351",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "medium",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create a new array utility module for the frontend. These are pure utility functions for common array operations used in data display.\n\nCreate file frontend/lib/array-utils.ts with these exact exports:\n\n```typescript\n/**\n * Group an array of objects by a key.\n * groupBy([{status:'pending',id:1},{status:'paid',id:2},{status:'pending',id:3}], 'status')\n * => { pending: [{status:'pending',id:1},{status:'pending',id:3}], paid: [{status:'paid',id:2}] }\n */\nexport function groupBy<T extends Record<string, unknown>>(items: T[], key: keyof T): Record<string, T[]>\n\n/**\n * Remove duplicate items from array based on a key.\n * uniqueBy([{id:1,name:'a'},{id:2,name:'b'},{id:1,name:'c'}], 'id')\n * => [{id:1,name:'a'},{id:2,name:'b'}]\n */\nexport function uniqueBy<T extends Record<string, unknown>>(items: T[], key: keyof T): T[]\n\n/**\n * Sort an array of objects by a key.\n * sortBy([{name:'Charlie'},{name:'Alice'},{name:'Bob'}], 'name')\n * => [{name:'Alice'},{name:'Bob'},{name:'Charlie'}]\n * sortBy([{age:30},{age:20}], 'age', 'desc') => [{age:30},{age:20}]\n */\nexport function sortBy<T extends Record<string, unknown>>(items: T[], key: keyof T, direction?: 'asc' | 'desc'): T[]\n\n/**\n * Chunk an array into groups of a specified size.\n * chunk([1,2,3,4,5], 2) => [[1,2],[3,4],[5]]\n * chunk([], 3) => []\n */\nexport function chunk<T>(items: T[], size: number): T[][]\n\n/**\n * Get the sum of a numeric property in an array of objects.\n * sumBy([{amount:10},{amount:20},{amount:30}], 'amount') => 60\n * sumBy([], 'amount') => 0\n */\nexport function sumBy<T extends Record<string, unknown>>(items: T[], key: keyof T): number\n```\n\nImplementation rules:\n1. groupBy: reduce over items, use String(item[key]) as group key, push item to that group\n2. uniqueBy: use a Set to track seen values of item[key], filter to keep first occurrence\n3. sortBy: slice to avoid mutation, sort with comparator. Default direction 'asc'. Compare with < and > operators. For strings use localeCompare if both values are strings.\n4. chunk: iterate with step of size, slice items from i to i+size\n5. sumBy: reduce over items, cast item[key] to Number, add to accumulator, start at 0\n6. No external dependencies — pure functions only\n7. Export all five functions",
+      "deliverables": {
+        "code": [
+          "frontend/lib/array-utils.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/lib/array-utils.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/lib/array-utils.ts",
+              "description": "sortBy function is more complex than specified - task asked for simple < and > comparison, but implementation includes numeric type checking and fallback logic"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/lib/array-utils.ts",
+              "description": "sumBy includes NaN handling which wasn't specified, though this is actually a good defensive practice"
+            }
+          ],
+          "strengths": [
+            "All 5 required functions exported with correct signatures",
+            "Proper TypeScript generics and type constraints",
+            "Comprehensive JSDoc with examples matching the spec exactly",
+            "No external dependencies - pure functions only",
+            "Good error handling (chunk size validation, NaN handling in sumBy)",
+            "Follows implementation rules correctly (reduce for groupBy, Set for uniqueBy, slice for sortBy, etc.)",
+            "Clean, readable code with proper variable naming",
+            "Handles edge cases well (empty arrays, invalid chunk sizes)",
+            "No code fences or syntax errors",
+            "File structure matches requirements exactly",
+            "No code fences or invalid syntax in source files.",
+            "All exports and type signatures match the spec exactly.",
+            "No use of `any`; proper generics and `unknown` are used.",
+            "Pure functions with no external dependencies as required.",
+            "Good handling of edge cases (e.g., casting non-numeric values to Number in sumBy, guarding against size ≤ 0 in chunk).",
+            "Clear JSDoc examples and descriptions on all public functions."
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-352",
+      "agent": "frontend",
+      "type": "test",
+      "priority": "medium",
+      "status": "done",
+      "dependencies": [
+        "FE-351"
+      ],
+      "context": "Write unit tests for frontend/lib/array-utils.ts. This module exports 5 pure functions: groupBy, uniqueBy, sortBy, chunk, sumBy.\n\nRequirements:\n1. Import { groupBy, uniqueBy, sortBy, chunk, sumBy } from '../array-utils'\n\nTest cases for groupBy:\n- groupBy([{status:'pending',id:1},{status:'paid',id:2},{status:'pending',id:3}], 'status') should have 2 groups\n- 'pending' group should have 2 items, 'paid' group should have 1 item\n- groupBy([], 'key') => {}\n- Each group should contain the correct items\n\nTest cases for uniqueBy:\n- uniqueBy([{id:1,name:'a'},{id:2,name:'b'},{id:1,name:'c'}], 'id') should return 2 items\n- First item with id:1 should be kept (name:'a'), not the duplicate\n- uniqueBy([], 'id') => []\n- uniqueBy([{id:1}], 'id') => [{id:1}]\n\nTest cases for sortBy:\n- sortBy([{name:'Charlie'},{name:'Alice'},{name:'Bob'}], 'name') => alphabetical order\n- sortBy([{age:30},{age:10},{age:20}], 'age') => [10, 20, 30] ascending\n- sortBy([{age:30},{age:10},{age:20}], 'age', 'desc') => [30, 20, 10] descending\n- Original array should not be mutated\n- sortBy([], 'name') => []\n\nTest cases for chunk:\n- chunk([1,2,3,4,5], 2) => [[1,2],[3,4],[5]]\n- chunk([1,2,3,4], 2) => [[1,2],[3,4]]\n- chunk([], 3) => []\n- chunk([1], 5) => [[1]]\n\nTest cases for sumBy:\n- sumBy([{amount:10},{amount:20},{amount:30}], 'amount') => 60\n- sumBy([], 'amount') => 0\n- sumBy([{amount:0}], 'amount') => 0\n- sumBy([{amount:1.5},{amount:2.5}], 'amount') => 4\n\nGroup tests in describe blocks per function. No mocking needed — these are pure functions.",
+      "deliverables": {
+        "code": [
+          "frontend/lib/__tests__/array-utils.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/lib/__tests__/array-utils.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/lib/__tests__/array-utils.test.ts",
+              "description": "Could benefit from more descriptive test names - some tests combine multiple assertions that could be split for better clarity"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/lib/__tests__/array-utils.test.ts",
+              "description": "Missing explicit type annotations on test data arrays, though TypeScript inference handles this adequately"
+            }
+          ],
+          "strengths": [
+            "All 5 required functions have dedicated describe blocks",
+            "Covers all specified test cases from the requirements",
+            "Proper use of Jest matchers (toHaveLength, toContainEqual, toEqual, toBe)",
+            "Tests edge cases like empty arrays and single items",
+            "Verifies immutability for sortBy function",
+            "Clean, readable test structure with logical grouping",
+            "No code fences or syntax issues",
+            "Tests are focused on pure function behavior without unnecessary mocking",
+            "Comprehensive coverage for groupBy, uniqueBy, sortBy, chunk, and sumBy",
+            "Well-organized describe/it blocks following the spec",
+            "Edge cases handled (empty inputs, single items, non-mutating sort)",
+            "No invalid markdown fences or syntax errors"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-192",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "medium",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create a new error formatting utility module for the SDK. These are pure functions for formatting, categorizing, and enriching API errors for better developer experience.\n\nCreate file sdk/typescript/src/error-formatter.ts with these exact exports:\n\n```typescript\n/**\n * Format an error into a user-friendly message.\n * formatErrorMessage(401, 'Unauthorized') => 'Authentication failed: Unauthorized'\n * formatErrorMessage(404, 'Not found') => 'Resource not found: Not found'\n * formatErrorMessage(429, 'Too many') => 'Rate limit exceeded: Too many'\n * formatErrorMessage(500, 'Server error') => 'Server error: Server error'\n * formatErrorMessage(400, 'Bad input') => 'Invalid request: Bad input'\n */\nexport function formatErrorMessage(statusCode: number, message: string): string\n\n/**\n * Determine if an error is retryable based on status code.\n * isRetryableStatus(429) => true\n * isRetryableStatus(500) => true\n * isRetryableStatus(502) => true\n * isRetryableStatus(503) => true\n * isRetryableStatus(504) => true\n * isRetryableStatus(400) => false\n * isRetryableStatus(401) => false\n * isRetryableStatus(404) => false\n */\nexport function isRetryableStatus(statusCode: number): boolean\n\n/**\n * Get a suggested action for an error status code.\n * getSuggestedAction(401) => 'Check your API key and ensure it is valid'\n * getSuggestedAction(403) => 'Verify your account has the required permissions'\n * getSuggestedAction(404) => 'Verify the resource ID exists'\n * getSuggestedAction(429) => 'Wait and retry after the rate limit resets'\n * getSuggestedAction(500) => 'Retry the request or contact support'\n * getSuggestedAction(418) => 'Unexpected error occurred'\n */\nexport function getSuggestedAction(statusCode: number): string\n\n/**\n * Create a structured error object for logging.\n * toErrorLog(404, 'Not found', '/invoices/123', 'req_abc')\n * => { statusCode: 404, message: 'Not found', path: '/invoices/123', requestId: 'req_abc', retryable: false, timestamp: '...' }\n */\nexport function toErrorLog(statusCode: number, message: string, path: string, requestId?: string): {\n  statusCode: number;\n  message: string;\n  path: string;\n  requestId: string | null;\n  retryable: boolean;\n  timestamp: string;\n}\n\n/**\n * Categorize error by type.\n * categorizeError(401) => 'authentication'\n * categorizeError(403) => 'authorization'\n * categorizeError(404) => 'not_found'\n * categorizeError(422) => 'validation'\n * categorizeError(429) => 'rate_limit'\n * categorizeError(500) => 'server'\n * categorizeError(418) => 'unknown'\n */\nexport function categorizeError(statusCode: number): string\n```\n\nImplementation rules:\n1. formatErrorMessage: use a map { 400: 'Invalid request', 401: 'Authentication failed', 403: 'Access denied', 404: 'Resource not found', 429: 'Rate limit exceeded' }. For 500+ use 'Server error'. Default: 'API error'. Return `${prefix}: ${message}`\n2. isRetryableStatus: return [429, 500, 502, 503, 504].includes(statusCode)\n3. getSuggestedAction: use a map for 401, 403, 404, 429, 500. Default: 'Unexpected error occurred'\n4. toErrorLog: return object with all fields, requestId defaults to null, retryable from isRetryableStatus, timestamp from new Date().toISOString()\n5. categorizeError: map { 400:'validation', 401:'authentication', 403:'authorization', 404:'not_found', 422:'validation', 429:'rate_limit' }. 500+ => 'server'. Default: 'unknown'\n6. No external dependencies — pure functions only\n7. Export all five functions",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/error-formatter.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/src/error-formatter.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "CEO resolved conflict (Claude approved, Codex rejected): **APPROVE — Code meets spec perfectly**\n\nThe task explicitly asked for \"pure functions for formatting\" with specific exports, and the implementation delivers exactly that. All 5 functions match the spec precisely with proper TypeScript types and documentation.\n\nCodex's test requirement is valid engi",
+          "issues": [
+            {
+              "severity": "medium",
+              "file": "sdk/typescript/src/error-formatter.ts",
+              "description": "Missing unit tests. Every new module should include Jest tests to ensure >80% coverage and prevent regressions."
+            }
+          ],
+          "strengths": [
+            "Perfect adherence to task specification - all 5 functions implemented exactly as requested",
+            "Clean TypeScript implementation with proper type annotations and Record types",
+            "Comprehensive JSDoc documentation with examples matching the spec",
+            "Pure functions with no external dependencies as required",
+            "Correct implementation of all mapping logic (status codes, categories, actions)",
+            "Proper error handling with fallback defaults using nullish coalescing",
+            "Good use of TypeScript features like Record<number, string> for type safety",
+            "All function signatures match the spec exactly",
+            "Code is readable and maintainable with clear variable names"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-193",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "medium",
+      "status": "done",
+      "dependencies": [
+        "SDK-192"
+      ],
+      "context": "Write unit tests for sdk/typescript/src/error-formatter.ts. This module exports 5 pure functions: formatErrorMessage, isRetryableStatus, getSuggestedAction, toErrorLog, categorizeError.\n\nRequirements:\n1. Import { formatErrorMessage, isRetryableStatus, getSuggestedAction, toErrorLog, categorizeError } from '../error-formatter'\n\nTest cases for formatErrorMessage:\n- formatErrorMessage(401, 'Unauthorized') should contain 'Authentication failed'\n- formatErrorMessage(404, 'Not found') should contain 'Resource not found'\n- formatErrorMessage(429, 'Too many') should contain 'Rate limit exceeded'\n- formatErrorMessage(500, 'Internal') should contain 'Server error'\n- formatErrorMessage(400, 'Bad') should contain 'Invalid request'\n\nTest cases for isRetryableStatus:\n- isRetryableStatus(429) => true\n- isRetryableStatus(500) => true\n- isRetryableStatus(502) => true\n- isRetryableStatus(503) => true\n- isRetryableStatus(504) => true\n- isRetryableStatus(400) => false\n- isRetryableStatus(401) => false\n- isRetryableStatus(404) => false\n\nTest cases for getSuggestedAction:\n- getSuggestedAction(401) should mention 'API key'\n- getSuggestedAction(404) should mention 'resource'\n- getSuggestedAction(429) should mention 'retry' or 'rate limit'\n- getSuggestedAction(500) should mention 'retry' or 'support'\n- getSuggestedAction(418) should return default message\n\nTest cases for toErrorLog:\n- Returns object with all expected fields\n- statusCode, message, path match inputs\n- requestId is string when provided, null when not\n- retryable matches isRetryableStatus result\n- timestamp is a valid ISO string (check with Date.parse)\n- toErrorLog(500, 'err', '/path') should have retryable: true\n- toErrorLog(404, 'err', '/path') should have retryable: false\n\nTest cases for categorizeError:\n- categorizeError(401) => 'authentication'\n- categorizeError(403) => 'authorization'\n- categorizeError(404) => 'not_found'\n- categorizeError(422) => 'validation'\n- categorizeError(429) => 'rate_limit'\n- categorizeError(500) => 'server'\n- categorizeError(502) => 'server'\n- categorizeError(418) => 'unknown'\n\nGroup tests in describe blocks per function. No mocking needed except for toErrorLog timestamp test (optional — just check it parses as a valid date).",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/__tests__/error-formatter.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/src/__tests__/error-formatter.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/__tests__/error-formatter.test.ts",
+              "description": "Test descriptions could be more descriptive (e.g., 'should return true for 429' instead of '429 is true')"
+            },
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/__tests__/error-formatter.test.ts",
+              "description": "Could add edge case tests (e.g., negative status codes, undefined inputs) for more robust coverage"
+            }
+          ],
+          "strengths": [
+            "All 5 functions are properly imported and tested",
+            "Test cases exactly match the task specification requirements",
+            "Proper use of Jest matchers (toBe, toContain, toMatch, not.toBeNaN)",
+            "Good organization with describe blocks per function",
+            "Covers both positive and negative test cases for boolean functions",
+            "Uses regex matching appropriately for string content validation",
+            "Validates timestamp as parseable date without unnecessary mocking",
+            "Concise but complete test coverage",
+            "No code fences or syntax issues",
+            "All five functions are covered with the required test cases.",
+            "Tests are grouped by function using describe blocks for clarity.",
+            "Use of regex matchers for flexible string checks.",
+            "Timestamp validity is checked with Date.parse.",
+            "No hardcoded secrets or forbidden syntax (no markdown fences)."
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-353",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "medium",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create a new object utility module for the frontend. These are pure utility functions for common object operations.\n\nCreate file frontend/lib/object-utils.ts with these exact exports:\n\n```typescript\n/**\n * Pick specified keys from an object.\n * pick({ a: 1, b: 2, c: 3 }, ['a', 'c']) => { a: 1, c: 3 }\n * pick({ a: 1 }, ['b']) => {}\n */\nexport function pick<T extends Record<string, unknown>>(obj: T, keys: (keyof T)[]): Partial<T>\n\n/**\n * Omit specified keys from an object.\n * omit({ a: 1, b: 2, c: 3 }, ['b']) => { a: 1, c: 3 }\n * omit({}, ['a']) => {}\n */\nexport function omit<T extends Record<string, unknown>>(obj: T, keys: (keyof T)[]): Partial<T>\n\n/**\n * Check if an object is empty (no own enumerable keys).\n * isEmpty({}) => true\n * isEmpty({ a: 1 }) => false\n */\nexport function isEmpty(obj: Record<string, unknown>): boolean\n\n/**\n * Deep compare two values for equality.\n * isEqual({ a: 1 }, { a: 1 }) => true\n * isEqual({ a: 1 }, { a: 2 }) => false\n * isEqual([1, 2], [1, 2]) => true\n * isEqual('hello', 'hello') => true\n */\nexport function isEqual(a: unknown, b: unknown): boolean\n\n/**\n * Flatten a nested object with dot-notation keys.\n * flatten({ a: { b: 1, c: { d: 2 } } }) => { 'a.b': 1, 'a.c.d': 2 }\n * flatten({ a: 1 }) => { a: 1 }\n */\nexport function flatten(obj: Record<string, unknown>, prefix?: string): Record<string, unknown>\n```\n\nImplementation rules:\n1. pick: create new object, iterate keys, if key exists in obj add it\n2. omit: create new object from Object.entries, filter out keys in the omit list\n3. isEmpty: return Object.keys(obj).length === 0\n4. isEqual: use JSON.stringify comparison — return JSON.stringify(a) === JSON.stringify(b)\n5. flatten: recursive. For each key, if value is a plain object (not null, not array, typeof === 'object'), recurse with prefix. Otherwise set flatKey = prefix ? prefix + '.' + key : key.\n6. No external dependencies — pure functions only\n7. Export all five functions",
+      "deliverables": {
+        "code": [
+          "frontend/lib/object-utils.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/lib/object-utils.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 93,
+          "summary": "Dual-approved: Claude (95/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/lib/object-utils.ts",
+              "description": "JSON.stringify comparison in isEqual has edge cases (key order sensitivity, undefined handling) but matches the specified implementation rule"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/lib/object-utils.ts",
+              "description": "No accompanying unit tests were provided. Consider adding Jest tests to validate behavior and guard against regressions."
+            }
+          ],
+          "strengths": [
+            "All 5 functions implemented exactly as specified in the task",
+            "Proper TypeScript generics and type safety throughout",
+            "Clean JSDoc documentation with examples for each function",
+            "Follows all implementation rules precisely (pick iteration, omit with Object.entries, isEmpty with Object.keys, etc.)",
+            "No external dependencies - pure functions only",
+            "Proper handling of edge cases (null checks in flatten, Set optimization in omit)",
+            "Consistent code style and formatting",
+            "Recursive flatten implementation correctly handles nested objects and arrays",
+            "No hardcoded values or security issues",
+            "Strict TypeScript types with no use of any.",
+            "All required functions implemented according to spec.",
+            "No external dependencies; pure utility functions.",
+            "Correct handling of nested objects in flatten.",
+            "Simple, readable, and maintainable code."
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-354",
+      "agent": "frontend",
+      "type": "test",
+      "priority": "medium",
+      "status": "done",
+      "dependencies": [
+        "FE-353"
+      ],
+      "context": "Write unit tests for frontend/lib/object-utils.ts. This module exports 5 pure functions: pick, omit, isEmpty, isEqual, flatten.\n\nRequirements:\n1. Import { pick, omit, isEmpty, isEqual, flatten } from '../object-utils'\n\nTest cases for pick:\n- pick({ a: 1, b: 2, c: 3 }, ['a', 'c']) => { a: 1, c: 3 }\n- pick({ a: 1, b: 2 }, ['a']) => { a: 1 }\n- pick({ a: 1 }, ['b' as any]) should return {} or not have b\n- pick({}, []) => {}\n\nTest cases for omit:\n- omit({ a: 1, b: 2, c: 3 }, ['b']) should have a and c but not b\n- omit({ a: 1, b: 2 }, ['a', 'b']) => {}\n- omit({}, ['a' as any]) => {}\n- omit({ a: 1 }, []) => { a: 1 }\n\nTest cases for isEmpty:\n- isEmpty({}) => true\n- isEmpty({ a: 1 }) => false\n- isEmpty({ a: undefined }) => false (key still exists)\n\nTest cases for isEqual:\n- isEqual({ a: 1 }, { a: 1 }) => true\n- isEqual({ a: 1 }, { a: 2 }) => false\n- isEqual([1, 2, 3], [1, 2, 3]) => true\n- isEqual([1, 2], [1, 3]) => false\n- isEqual('hello', 'hello') => true\n- isEqual(1, 1) => true\n- isEqual(null, null) => true\n- isEqual({ a: 1 }, { b: 1 }) => false\n\nTest cases for flatten:\n- flatten({ a: { b: 1 } }) => { 'a.b': 1 }\n- flatten({ a: { b: { c: 2 } } }) => { 'a.b.c': 2 }\n- flatten({ a: 1, b: 2 }) => { a: 1, b: 2 } (already flat)\n- flatten({}) => {}\n- flatten({ a: { b: 1 }, c: 3 }) => { 'a.b': 1, c: 3 }\n\nGroup tests in describe blocks per function. No mocking needed — these are pure functions.",
+      "deliverables": {
+        "code": [
+          "frontend/lib/__tests__/object-utils.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/lib/__tests__/object-utils.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 93,
+          "summary": "Dual-approved: Claude (95/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/lib/__tests__/object-utils.test.ts",
+              "description": "Could add more edge cases like testing with null/undefined inputs, or testing flatten with arrays as values"
+            }
+          ],
+          "strengths": [
+            "Perfect file structure - no code fences, proper TypeScript syntax",
+            "Comprehensive test coverage for all 5 functions (pick, omit, isEmpty, isEqual, flatten)",
+            "Proper describe blocks grouping tests by function as requested",
+            "All specified test cases from requirements are implemented correctly",
+            "Good use of descriptive test names that explain the behavior being tested",
+            "Proper Jest syntax with expect().toEqual() and expect().toBe() usage",
+            "Tests pure functions without mocking as specified",
+            "Handles edge cases like empty objects, non-existent keys, and mixed scenarios",
+            "Clean, readable test code that follows testing best practices",
+            "Covers all specified test cases from the task spec",
+            "Organized describe and it blocks for clarity",
+            "Uses appropriate Jest matchers (toEqual, toBe)"
+          ]
+        }
+      }
+    }
+  ]
+}

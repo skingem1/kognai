@@ -1,0 +1,443 @@
+{
+  "tasks": [
+    {
+      "id": "BE-140",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "critical",
+      "dependencies": [],
+      "context": "Create the backend errors module at backend/src/errors/index.ts. This file is imported by router.ts as '../errors' but does NOT exist yet. The middleware/error-handler.ts already has an AppError interface — this new file provides classes.\n\nExport these items:\n\n(1) export class AppError extends Error { statusCode: number; code: string; isOperational: boolean; constructor(message: string, statusCode: number, code: string) { super(message); this.name = 'AppError'; this.statusCode = statusCode; this.code = code; this.isOperational = true; } }\n(2) export class ValidationError extends AppError { details: unknown[]; constructor(message: string, details: unknown[]) { super(message, 400, 'VALIDATION_ERROR'); this.name = 'ValidationError'; this.details = details; } }\n(3) export class NotFoundError extends AppError { constructor(resource: string) { super(`${resource} not found`, 404, 'NOT_FOUND'); this.name = 'NotFoundError'; } }\n(4) export class AuthenticationError extends AppError { constructor(message?: string) { super(message || 'Unauthorized', 401, 'UNAUTHORIZED'); this.name = 'AuthenticationError'; } }\n\nImport nothing. Under 30 lines total. No external dependencies.",
+      "deliverables": {
+        "code": [
+          "backend/src/errors/index.ts"
+        ],
+        "tests": []
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "backend/src/errors/index.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "Excellent implementation that exactly matches the task specification. Clean, minimal error classes with proper inheritance hierarchy.",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "backend/src/errors/index.ts",
+              "description": "Missing JSDoc comments on public classes, though not strictly required for this simple module"
+            }
+          ],
+          "strengths": [
+            "Exact match to task specification - all 4 classes implemented correctly",
+            "Proper TypeScript class structure with explicit property types",
+            "Correct inheritance hierarchy (ValidationError, NotFoundError, AuthenticationError extend AppError)",
+            "No external dependencies as required",
+            "Under 30 lines as specified (29 lines)",
+            "Proper error class naming conventions",
+            "Correct status codes and error codes for each class",
+            "Clean, readable code structure",
+            "No unnecessary abstractions or overengineering"
+          ]
+        }
+      }
+    },
+    {
+      "id": "BE-141",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "critical",
+      "dependencies": [],
+      "context": "Create a logger utility at backend/src/utils/logger.ts. This file is imported by router.ts and api-keys.ts as '../utils/logger' but does NOT exist yet.\n\nExport one object:\n\nexport const logger = { info(message: string, meta?: Record<string, unknown>): void { console.log(JSON.stringify({ level: 'info', message, ...meta, timestamp: new Date().toISOString() })); }, warn(message: string, meta?: Record<string, unknown>): void { console.warn(JSON.stringify({ level: 'warn', message, ...meta, timestamp: new Date().toISOString() })); }, error(message: string, meta?: Record<string, unknown>): void { console.error(JSON.stringify({ level: 'error', message, ...meta, timestamp: new Date().toISOString() })); }, debug(message: string, meta?: Record<string, unknown>): void { if (process.env.NODE_ENV !== 'production') { console.debug(JSON.stringify({ level: 'debug', message, ...meta, timestamp: new Date().toISOString() })); } } };\n\nThis is a simple structured JSON logger. No external dependencies. Under 20 lines total.",
+      "deliverables": {
+        "code": [
+          "backend/src/utils/logger.ts"
+        ],
+        "tests": []
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "backend/src/utils/logger.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "task_id": "BE-141",
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "Clean, minimal logger implementation that exactly matches the task specification. No overengineering, proper TypeScript types, and follows the structured JSON logging pattern.",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "backend/src/utils/logger.ts",
+              "description": "Missing JSDoc comments for public API methods, though not critical for a utility this simple"
+            }
+          ],
+          "strengths": [
+            "Exact match to task specification - no extra features or files",
+            "Proper TypeScript typing with Record<string, unknown> for meta",
+            "Structured JSON output suitable for log aggregation",
+            "Environment-aware debug logging (production check)",
+            "Clean, readable code under 20 lines as required",
+            "No external dependencies as specified",
+            "Proper use of console methods (log, warn, error, debug)",
+            "ISO timestamp format for consistent log parsing"
+          ],
+          "action": "approve"
+        }
+      }
+    },
+    {
+      "id": "BE-142",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "critical",
+      "dependencies": [],
+      "context": "Create the invoices barrel module at backend/src/api/invoices.ts. The router.ts imports { listInvoices, createInvoice, getInvoice, updateInvoice } from './invoices' but this file does NOT exist. Individual handler files exist: invoices-list.ts exports listInvoices, invoices-create.ts exports createInvoice, invoices-get.ts exports getInvoiceById.\n\nCreate backend/src/api/invoices.ts that re-exports from the individual files AND adds the missing handlers:\n\n(1) export { listInvoices } from './invoices-list';\n(2) export { createInvoice } from './invoices-create';\n(3) Re-export getInvoiceById as getInvoice: import { getInvoiceById } from './invoices-get'; export { getInvoiceById as getInvoice };\n(4) Create and export updateInvoice: export async function updateInvoice(req: Request, res: Response): Promise<void> { const { id } = req.params; const updates = req.body; res.json({ id, ...updates, updatedAt: new Date().toISOString() }); }\n\nImport { Request, Response } from 'express' for the updateInvoice function. Under 12 lines total.",
+      "deliverables": {
+        "code": [
+          "backend/src/api/invoices.ts"
+        ],
+        "tests": []
+      },
+      "status": "rejected",
+      "output": {
+        "files": [
+          "backend/src/api/invoices.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "REJECTED",
+          "score": 25,
+          "summary": "Code significantly overengineered beyond task requirements. Added unnecessary validation, error handling, and database operations when task explicitly requested a simple 12-line barrel module with a basic stub function.",
+          "issues": [
+            {
+              "severity": "high",
+              "file": "backend/src/api/invoices.ts",
+              "description": "Task violation: Required 'under 12 lines total' but delivered 40+ lines with complex validation and database operations"
+            },
+            {
+              "severity": "high",
+              "file": "backend/src/api/invoices.ts",
+              "description": "Overengineering: Added Zod schema validation, Prisma database operations, and complex error handling when task only asked for a simple stub function returning { id, ...updates, updatedAt }"
+            },
+            {
+              "severity": "medium",
+              "file": "backend/src/api/invoices.ts",
+              "description": "Unnecessary imports: Added 'z' from 'zod' and 'prisma' imports that weren't requested and violate the simplicity requirement"
+            },
+            {
+              "severity": "medium",
+              "file": "backend/src/api/invoices.ts",
+              "description": "Task spec violation: updateInvoice function should be a simple stub returning { id, ...updates, updatedAt: new Date().toISOString() } but instead implements full database update logic"
+            }
+          ],
+          "strengths": [
+            "Correct re-exports from individual handler files",
+            "Proper TypeScript typing with Request/Response from express",
+            "Correct alias export of getInvoiceById as getInvoice"
+          ]
+        }
+      }
+    },
+    {
+      "id": "BE-143",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "critical",
+      "dependencies": [],
+      "context": "Create the merchants API handler at backend/src/api/merchants.ts. The router.ts imports { listMerchants, createMerchant, getMerchant } from './merchants' but this file does NOT exist.\n\nImport { Request, Response } from 'express'.\n\nExport 3 functions:\n\n(1) export async function listMerchants(req: Request, res: Response): Promise<void> — returns mock data: res.json({ merchants: [{ id: 'merch_001', name: 'Acme Corp', email: 'billing@acme.com', status: 'active', createdAt: '2026-01-15T10:00:00Z' }, { id: 'merch_002', name: 'Globex Inc', email: 'pay@globex.io', status: 'active', createdAt: '2026-02-01T08:30:00Z' }], total: 2, limit: Number(req.query.limit) || 10, offset: Number(req.query.offset) || 0 });\n\n(2) export async function createMerchant(req: Request, res: Response): Promise<void> — returns: res.status(201).json({ id: 'merch_' + Date.now().toString(36), name: req.body.name || 'New Merchant', email: req.body.email || '', status: 'active', createdAt: new Date().toISOString() });\n\n(3) export async function getMerchant(req: Request, res: Response): Promise<void> — returns: res.json({ id: req.params.id, name: 'Acme Corp', email: 'billing@acme.com', status: 'active', createdAt: '2026-01-15T10:00:00Z' });\n\nMock handlers for frontend development. Under 25 lines total.",
+      "deliverables": {
+        "code": [
+          "backend/src/api/merchants.ts"
+        ],
+        "tests": []
+      },
+      "status": "rejected",
+      "output": {
+        "files": [
+          "backend/src/api/merchants.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "REJECTED",
+          "score": 25,
+          "summary": "Code is significantly overengineered for a simple mock API task. Adds unnecessary complexity with Zod validation, interfaces, type generics, and error handling that wasn't requested. Violates the 25-line limit (70+ lines vs 25).",
+          "issues": [
+            {
+              "severity": "high",
+              "file": "backend/src/api/merchants.ts",
+              "description": "Massive overengineering - task asked for simple mock handlers under 25 lines, got 70+ lines with unnecessary abstractions"
+            },
+            {
+              "severity": "high",
+              "file": "backend/src/api/merchants.ts",
+              "description": "Added Zod validation schema that wasn't requested - this is mock data for frontend development"
+            },
+            {
+              "severity": "medium",
+              "file": "backend/src/api/merchants.ts",
+              "description": "Added unnecessary TypeScript interfaces and generics - simple mock handlers don't need this complexity"
+            },
+            {
+              "severity": "medium",
+              "file": "backend/src/api/merchants.ts",
+              "description": "Added try-catch error handling that wasn't requested - overcomplicates simple mock responses"
+            },
+            {
+              "severity": "medium",
+              "file": "backend/src/api/merchants.ts",
+              "description": "Added input validation and sanitization (limit/offset bounds) not in spec - this is mock data"
+            },
+            {
+              "severity": "low",
+              "file": "backend/src/api/merchants.ts",
+              "description": "Excessive JSDoc comments for simple mock functions"
+            }
+          ],
+          "strengths": [
+            "Correct function signatures and exports as requested",
+            "Proper TypeScript types for Express Request/Response",
+            "Mock data matches the specified format exactly"
+          ]
+        }
+      }
+    },
+    {
+      "id": "BE-144",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "critical",
+      "dependencies": [],
+      "context": "Create the payments API handler at backend/src/api/payments.ts. The router.ts imports { createPayment, getPayment } from './payments' but this file does NOT exist.\n\nImport { Request, Response } from 'express'.\n\nExport 2 functions:\n\n(1) export async function createPayment(req: Request, res: Response): Promise<void> — returns: res.status(201).json({ id: 'pay_' + Date.now().toString(36), invoiceId: req.body.invoiceId || '', amount: req.body.amount || 0, currency: req.body.currency || 'USD', method: req.body.method || 'crypto', status: 'pending', createdAt: new Date().toISOString() });\n\n(2) export async function getPayment(req: Request, res: Response): Promise<void> — returns: res.json({ id: req.params.id, invoiceId: 'inv_sample', amount: 1000, currency: 'USD', method: 'crypto', status: 'confirmed', createdAt: '2026-02-10T12:00:00Z', confirmedAt: '2026-02-10T12:05:00Z' });\n\nMock handlers for frontend development. Under 18 lines total.",
+      "deliverables": {
+        "code": [
+          "backend/src/api/payments.ts"
+        ],
+        "tests": []
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "backend/src/api/payments.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 85,
+          "summary": "Clean implementation that exactly matches the task spec. Simple mock handlers for frontend development with proper TypeScript types and Express response handling.",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "backend/src/api/payments.ts",
+              "description": "No input validation on req.body or req.params, but acceptable for mock handlers"
+            },
+            {
+              "severity": "low",
+              "file": "backend/src/api/payments.ts",
+              "description": "No error handling, but appropriate for simple mock endpoints"
+            }
+          ],
+          "strengths": [
+            "Exactly matches the task specification - both function signatures and return values",
+            "Proper TypeScript imports and types",
+            "Clean, readable code under the 18 line requirement (16 lines total)",
+            "Correct Express response patterns with appropriate status codes",
+            "Proper async function declarations",
+            "Sensible default values and mock data structure",
+            "No unnecessary abstractions or overengineering"
+          ]
+        }
+      }
+    },
+    {
+      "id": "BE-145",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "context": "Add the missing getSettlements function to backend/src/api/settlements.ts. The file ALREADY exists and exports getSettlement(req, res). The router.ts also imports getSettlements (plural) but it does NOT exist in the file.\n\nKeep ALL existing code in settlements.ts exactly as-is. ADD this one new function at the end of the file:\n\nexport async function getSettlements(req: Request, res: Response): Promise<void> {\n  const limit = Number(req.query.limit) || 10;\n  const offset = Number(req.query.offset) || 0;\n  const settlements = [{ id: 'stl_001', invoiceId: 'inv_001', status: 'confirmed', txHash: '0xabc123', chain: 'base', amount: 1000, currency: 'USD', confirmedAt: '2026-02-10T12:05:00Z', createdAt: '2026-02-10T12:00:00Z' }, { id: 'stl_002', invoiceId: 'inv_002', status: 'pending', txHash: null, chain: 'ethereum', amount: 2500, currency: 'USD', confirmedAt: null, createdAt: '2026-02-14T09:00:00Z' }];\n  res.json({ settlements, total: 2, limit, offset });\n}\n\nThis is a mock handler — returns hardcoded data. The existing getSettlement function uses Prisma, but this new one is mock for now. Under 12 new lines added. Keep ALL existing imports and code.",
+      "deliverables": {
+        "code": [
+          "backend/src/api/settlements.ts"
+        ],
+        "tests": []
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "backend/src/api/settlements.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 85,
+          "summary": "Task completed correctly - added getSettlements function as specified with mock data while preserving all existing code",
+          "issues": [
+            {
+              "severity": "medium",
+              "file": "backend/src/api/settlements.ts",
+              "description": "Missing input validation on limit/offset query parameters - should validate they are positive integers and set reasonable max limits"
+            },
+            {
+              "severity": "low",
+              "file": "backend/src/api/settlements.ts",
+              "description": "No JSDoc comment explaining this is a mock implementation (though existing getSettlement has proper JSDoc)"
+            },
+            {
+              "severity": "low",
+              "file": "backend/src/api/settlements.ts",
+              "description": "Hardcoded mock data could be extracted to a constant for better maintainability"
+            }
+          ],
+          "strengths": [
+            "Preserved all existing code exactly as requested",
+            "Added only the required getSettlements function",
+            "Follows same async/Promise<void> pattern as existing function",
+            "Implements pagination parameters (limit/offset) correctly",
+            "Returns proper JSON structure with settlements array and metadata",
+            "Mock data structure matches expected settlement schema",
+            "Function is concise and under the 12-line requirement",
+            "Proper TypeScript typing with Request/Response imports"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-080",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "critical",
+      "dependencies": [],
+      "context": "Create the frontend errors module at frontend/lib/errors.ts. The api-client.ts imports { ApiError } from '@/lib/errors' on line 1, but this file does NOT exist.\n\nExport one class:\n\nexport class ApiError extends Error {\n  status: number;\n  data: unknown;\n  constructor(message: string, status: number, data?: unknown) {\n    super(message);\n    this.name = 'ApiError';\n    this.status = status;\n    this.data = data ?? null;\n  }\n}\n\nThis is a simple error class used by the API client to wrap HTTP errors. Under 12 lines total. No external dependencies.",
+      "deliverables": {
+        "code": [
+          "frontend/lib/errors.ts"
+        ],
+        "tests": []
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "frontend/lib/errors.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 100,
+          "summary": "Perfect implementation of the ApiError class. Matches the exact specification with proper TypeScript typing and error handling patterns.",
+          "issues": [],
+          "strengths": [
+            "Exact match to the task specification - no overengineering",
+            "Proper TypeScript typing with explicit types for all properties",
+            "Follows standard Error class extension pattern",
+            "Correct use of nullish coalescing operator for default data value",
+            "Clean, minimal implementation under 12 lines as required",
+            "No unnecessary dependencies or abstractions added",
+            "Proper error name assignment for debugging"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-081",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "context": "Create a loading spinner component at frontend/components/loading-spinner.tsx. This is a client component ('use client').\n\nExport one component:\n\nexport function LoadingSpinner({ size = 32, color = '#0ea5e9' }: { size?: number; color?: string }) — renders a div with inline styles: display 'flex', justifyContent 'center', alignItems 'center', padding 32. Inside it, render an SVG spinner: <svg width={size} height={size} viewBox='0 0 24 24' style={{ animation: 'spin 1s linear infinite' }}> with a circle element: cx=12, cy=12, r=10, stroke={color}, strokeWidth=3, fill='none', strokeDasharray='31.4 31.4', strokeLinecap='round'. Also add a <style> tag inside the component that defines @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }.\n\nAlso export: export function PageLoader() — renders a div with inline styles: display 'flex', justifyContent 'center', alignItems 'center', minHeight '60vh'. Inside renders <LoadingSpinner size={48} />.\n\nImport React from 'react'. Under 25 lines total. Use ONLY inline styles (except the keyframes which need a style tag).",
+      "deliverables": {
+        "code": [
+          "frontend/components/loading-spinner.tsx"
+        ],
+        "tests": []
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "frontend/components/loading-spinner.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "Excellent implementation that follows the task spec precisely. Clean, minimal code with proper TypeScript types and React best practices.",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/components/loading-spinner.tsx",
+              "description": "Missing JSDoc comments for public API components, though not strictly required for simple UI components"
+            }
+          ],
+          "strengths": [
+            "Perfect adherence to task specification - all requirements met exactly",
+            "Proper 'use client' directive for Next.js client component",
+            "Clean TypeScript with proper prop types and default values",
+            "Efficient inline styles as requested (no external CSS dependencies)",
+            "Keyframes animation properly implemented with style tag",
+            "Component composition - PageLoader reuses LoadingSpinner correctly",
+            "Under 25 lines as specified (19 lines total)",
+            "No unnecessary abstractions or over-engineering",
+            "Proper React import and export structure",
+            "SVG attributes match specification exactly (viewBox, circle props, animation)",
+            "Responsive design with configurable size and color props"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-082",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "context": "Create an empty state component at frontend/components/empty-state.tsx. This is a client component ('use client').\n\nExport one component:\n\nexport function EmptyState({ title, description, actionLabel, onAction }: { title: string; description: string; actionLabel?: string; onAction?: () => void; }) — renders a div with inline styles: textAlign 'center', padding '48px 24px', backgroundColor '#f9fafb', borderRadius 12, border '1px dashed #d1d5db'. Inside: an h3 with inline styles (fontSize 18, fontWeight 600, color '#111827', marginBottom 8) showing title, a p with inline styles (fontSize 14, color '#6b7280', marginBottom 20) showing description, and conditionally (if actionLabel && onAction) a button with inline styles (padding '8px 20px', backgroundColor '#0ea5e9', color 'white', border 'none', borderRadius 6, fontSize 14, cursor 'pointer', fontWeight 500) with onClick={onAction} showing actionLabel.\n\nImport React from 'react'. Under 20 lines total. Use ONLY inline styles. No external component imports.",
+      "deliverables": {
+        "code": [
+          "frontend/components/empty-state.tsx"
+        ],
+        "tests": []
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "frontend/components/empty-state.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "Clean, minimal implementation that exactly matches the task specification. All requirements met with proper TypeScript typing and inline styles.",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/components/empty-state.tsx",
+              "description": "Missing JSDoc documentation for the component, though not explicitly required for this simple utility component"
+            }
+          ],
+          "strengths": [
+            "Exact adherence to task specification - all inline styles match precisely",
+            "Proper TypeScript interface definition with optional parameters",
+            "Correct 'use client' directive placement",
+            "Clean conditional rendering logic for optional button",
+            "Under 20 lines as required (12 lines total)",
+            "No external dependencies beyond React as specified",
+            "Proper semantic HTML structure (h3, p, button)",
+            "All style properties correctly applied as inline styles"
+          ]
+        }
+      }
+    }
+  ]
+}

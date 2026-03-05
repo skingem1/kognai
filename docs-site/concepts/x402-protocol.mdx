@@ -1,0 +1,120 @@
+---
+title: x402 Protocol
+description: "Understanding the x402 payment protocol and how Invoica extends it with financial compliance."
+---
+
+# x402 Protocol
+
+The x402 protocol enables machine-to-machine payments on the web using HTTP status code 402. Invoica extends x402 with financial compliance — invoicing, tax calculation, budget enforcement, and settlement detection.
+
+## How x402 Works
+
+The x402 protocol uses HTTP to negotiate and execute payments between AI agents and resource servers:
+
+```
+1. Agent requests a resource from a server
+2. Server responds with 402 status + PAYMENT-REQUIRED header (containing price, token, recipient address)
+3. Agent signs and sends payment, attaching PAYMENT-SIGNATURE header to the retry request
+4. Server verifies the payment signature and grants access
+```
+
+## x402 Headers
+
+The protocol uses two key headers:
+
+### PAYMENT-REQUIRED (Server → Client)
+
+When a server requires payment for a resource, it responds with HTTP 402 and includes the `PAYMENT-REQUIRED` header. This header contains the payment details the agent needs:
+
+```http
+HTTP/1.1 402 Payment Required
+PAYMENT-REQUIRED: {"price": "0.001", "token": "USDC", "recipient": "0x742d...f2bD18", "network": "base"}
+```
+
+The header value is a JSON object specifying:
+- **price** — Amount to pay
+- **token** — Token to use (e.g., USDC)
+- **recipient** — Wallet address to send payment to
+- **network** — Blockchain network (e.g., base, ethereum, solana)
+
+### PAYMENT-SIGNATURE (Client → Server)
+
+After the agent completes the payment, it retries the original request with the `PAYMENT-SIGNATURE` header containing the signed payment proof:
+
+```http
+GET /resource HTTP/1.1
+PAYMENT-SIGNATURE: {"txHash": "0xabc123...", "signature": "0xdef456...", "payer": "0x987...654"}
+```
+
+The server verifies the payment and returns the resource.
+
+## Standard x402 Flow
+
+```
+AI Agent                    Resource Server
+   |                              |
+   |-- GET /resource ----------->|
+   |<- 402 Payment Required -----|
+   |   PAYMENT-REQUIRED: {...}   |
+   |                              |
+   |-- GET /resource ----------->|
+   |   PAYMENT-SIGNATURE: {...}  |
+   |<- 200 OK + resource --------|
+```
+
+## With Invoica Middleware
+
+Invoica sits as a transparent proxy between the agent and the resource server. When it intercepts a 402 response, it generates an invoice, calculates applicable taxes, and tracks the settlement:
+
+```
+AI Agent        Invoica Middleware        Resource Server
+   |                   |                        |
+   |-- GET /resource ->|                        |
+   |                   |-- GET /resource ------>|
+   |                   |<- 402 + PAYMENT-REQ ---|
+   |<- 402 + invoice --|                        |
+   |                   |                        |
+   |-- PAYMENT-SIG --->|                        |
+   |                   |  * Generate Invoice    |
+   |                   |  * Calculate Tax       |
+   |                   |  * Check Budget        |
+   |                   |  * Forward Payment     |
+   |                   |-- PAYMENT-SIG -------->|
+   |                   |<- 200 OK --------------|
+   |<- 200 OK + PDF ---|                        |
+```
+
+## Invoice Metadata Headers
+
+In addition to the standard x402 headers, Invoica uses custom headers to capture invoice metadata from AI agents:
+
+```http
+X-Invoice-Company-Name: Acme AI Corp
+X-Invoice-Company-VAT: DE123456789
+X-Invoice-Company-Address: Alexanderplatz 1, Berlin, Germany
+X-Invoice-Contact-Email: billing@acme-ai.com
+X-Invoice-PO-Number: PO-2026-001
+```
+
+These headers are optional — when present, the middleware uses them to populate the buyer details on the generated invoice.
+
+## What Invoica Adds
+
+| Capability | Standard x402 | With Invoica |
+|------------|--------------|--------------|
+| Payment | Yes | Yes |
+| Invoice Generation | No | Automatic |
+| Tax Calculation | No | Multi-jurisdiction |
+| Budget Enforcement | No | Per-agent limits |
+| Settlement Detection | Basic | Dual (poll + event) |
+| Audit Trail | No | Full ledger |
+| PDF Delivery | No | Automatic |
+
+## Supported Networks
+
+Invoica supports settlement detection on:
+
+- **Ethereum Mainnet** — ERC-20 token transfers (tested on Sepolia)
+- **Base Mainnet** — Low-cost L2 transactions with EIP-3009 support
+- **Solana Mainnet** — SPL USDC token transfers
+- **Arbitrum** — Optimistic rollup settlements

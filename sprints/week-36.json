@@ -1,0 +1,494 @@
+{
+  "tasks": [
+    {
+      "id": "BE-300",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "critical",
+      "description": "Unit tests for health API handler — getHealth pure function and getHealthHandler with mock req/res",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create unit tests for backend/src/api/health.ts. The file exports:\n\n1. `interface HealthStatus { status: 'healthy' | 'degraded' | 'unhealthy'; version: string; uptime: number; timestamp: string; services: { database: 'up' | 'down'; cache: 'up' | 'down' } }`\n2. `function getHealth(): HealthStatus` — Pure function. Uses `process.uptime()` and `process.env.APP_VERSION || '1.0.0'`. Returns status='healthy' when both services are 'up'. Returns timestamp as ISO string.\n3. `function getHealthHandler(req: Request, res: Response): void` — Express handler. Calls getHealth(), returns 200 for healthy/degraded, 503 for unhealthy. On error returns 503 with unhealthy status.\n\nTest getHealth():\n- Returns object with all required HealthStatus fields\n- status is 'healthy' (both services up by default)\n- version defaults to '1.0.0' (or uses APP_VERSION env var)\n- uptime is a non-negative number\n- timestamp is a valid ISO string\n- services.database and services.cache are both 'up'\n\nTest getHealthHandler():\n- Use mock: `const res = { json: jest.fn(), status: jest.fn().mockReturnThis() }; const req = {} as any;`\n- Calls res.status(200).json() with HealthStatus for healthy\n- Response json contains all HealthStatus fields\n\nFile: `backend/src/api/__tests__/health.test.ts`\nImport from '../health'.\nUse `import { getHealth, getHealthHandler, HealthStatus } from '../health';`\nKeep under 120 lines. Use describe/it blocks.",
+      "deliverables": {
+        "code": [
+          "backend/src/api/__tests__/health.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "backend/src/api/__tests__/health.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 88,
+          "summary": "Dual-approved: Claude (85/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "medium",
+              "file": "backend/src/api/__tests__/health.test.ts",
+              "description": "Missing test for degraded/unhealthy status scenarios - only tests the happy path where both services are 'up'"
+            },
+            {
+              "severity": "medium",
+              "file": "backend/src/api/__tests__/health.test.ts",
+              "description": "Missing test for 503 status code when health status is unhealthy"
+            },
+            {
+              "severity": "low",
+              "file": "backend/src/api/__tests__/health.test.ts",
+              "description": "Could benefit from testing error handling in getHealthHandler as mentioned in task spec"
+            },
+            {
+              "severity": "low",
+              "file": "backend/src/api/__tests__/health.test.ts",
+              "description": "No tests covering degraded or unhealthy scenarios or error paths in getHealthHandler. Consider adding tests for those edge cases."
+            }
+          ],
+          "strengths": [
+            "Clean TypeScript with proper imports and type usage",
+            "Follows Jest best practices with describe/it blocks",
+            "Proper mocking of Express Response object",
+            "Tests all required HealthStatus fields",
+            "Handles environment variable testing correctly with cleanup",
+            "Validates ISO timestamp format properly",
+            "Under 120 lines as required (47 lines)",
+            "No code fences or syntax issues",
+            "Tests both default and custom APP_VERSION scenarios",
+            "All required fields of HealthStatus are asserted.",
+            "Default and overridden APP_VERSION behavior is tested.",
+            "Uptime and ISO timestamp validations are included.",
+            "Express handler is properly mocked and status/json calls asserted.",
+            "Test file stays well under the 120-line limit and uses proper Jest patterns."
+          ]
+        }
+      }
+    },
+    {
+      "id": "BE-301",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "critical",
+      "description": "Unit tests for error-handler API — errorHandler middleware and notFoundHandler with mock req/res",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create unit tests for backend/src/api/error-handler.ts. The file exports:\n\n1. `interface ApiErrorResponse { error: string; code?: string; statusCode: number }`\n2. `function errorHandler(err: Error & { statusCode?: number; code?: string }, _req: Request, res: Response, _next: NextFunction): void` — Sets statusCode from err.statusCode or defaults to 500. Sets code from err.code or 'INTERNAL_ERROR'. If statusCode is 500, message becomes 'Internal server error' (hides original). Otherwise uses err.message. Calls `res.status(statusCode).json({ error: message, code, statusCode })`.\n3. `function notFoundHandler(_req: Request, res: Response): void` — Always returns `res.status(404).json({ error: 'Not found', code: 'NOT_FOUND', statusCode: 404 })`.\n\nMock pattern:\n```typescript\nconst mockRes = { json: jest.fn(), status: jest.fn().mockReturnThis() };\nconst mockReq = {} as any;\nconst mockNext = jest.fn();\n```\n\nTest errorHandler:\n- With err that has statusCode=400, code='BAD_REQUEST', message='Bad input' → res gets {error:'Bad input', code:'BAD_REQUEST', statusCode:400}\n- With err that has statusCode=404, code='NOT_FOUND', message='Not found' → res gets message preserved\n- With plain Error (no statusCode, no code) → defaults to 500 and 'INTERNAL_ERROR', message becomes 'Internal server error'\n- With err that has statusCode=500 → message is hidden, becomes 'Internal server error'\n- With err that has statusCode=422 but no code → code defaults to 'INTERNAL_ERROR'\n\nTest notFoundHandler:\n- Returns 404 with exact {error:'Not found', code:'NOT_FOUND', statusCode:404}\n\nFile: `backend/src/api/__tests__/error-handler.test.ts`\nImport from '../error-handler'.\nKeep under 110 lines.",
+      "deliverables": {
+        "code": [
+          "backend/src/api/__tests__/error-handler.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "backend/src/api/__tests__/error-handler.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 92,
+          "summary": "Dual-approved: Claude (92/100) + Codex (92/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "backend/src/api/__tests__/error-handler.test.ts",
+              "description": "Uses `as any` type casting which bypasses TypeScript safety, though it's acceptable in test mocks"
+            },
+            {
+              "severity": "low",
+              "file": "backend/src/api/__tests__/error-handler.test.ts",
+              "description": "Could benefit from extracting mock setup into a helper function to reduce duplication"
+            },
+            {
+              "severity": "low",
+              "file": "backend/src/api/__tests__/error-handler.test.ts",
+              "description": "Test file uses broad `any` and `unknown` casts for Request/Response mocks. Consider using more precise Partial<Response> typings to improve type safety."
+            }
+          ],
+          "strengths": [
+            "Covers all 5 required test cases for errorHandler exactly as specified",
+            "Proper Jest mocking pattern with mockReturnThis() for chained calls",
+            "Clear test descriptions that match the expected behavior",
+            "Correct assertions for both status codes and response bodies",
+            "Tests the critical security feature of hiding 500 error messages",
+            "Includes proper beforeEach cleanup",
+            "File is concise at ~40 lines, well under the 110 line limit",
+            "Follows the exact import pattern and mock structure from the spec",
+            "All errorHandler edge cases are covered, including custom status codes, missing codes, and default 500 behavior with hidden messages.",
+            "notFoundHandler test verifies the exact error structure and HTTP status code.",
+            "Mocks are reset before each test, avoiding state leakage between cases.",
+            "Test file is concise and under the 110-line limit."
+          ]
+        }
+      }
+    },
+    {
+      "id": "BE-302",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "description": "Unit tests for dashboard-stats and dashboard-activity mock API handlers",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create unit tests for TWO files in a single test file:\n\n**File 1: backend/src/api/dashboard-stats.ts**\nExports: `async function getDashboardStats(_req: Request, res: Response): Promise<void>` — calls `res.json({ totalInvoices: 156, pending: 23, settled: 128, revenue: 45250.00, failedSettlements: 5 })`.\n\n**File 2: backend/src/api/dashboard-activity.ts**\nExports: `async function getDashboardActivity(req: Request, res: Response): Promise<void>` — calls `res.json(activities)` where activities is an array of 4 ActivityItem objects. Each has: id (string), title (string), description (string), status ('success'|'pending'|'failed'), timestamp (ISO string).\n\nMock pattern:\n```typescript\nconst mockRes = { json: jest.fn(), status: jest.fn().mockReturnThis() };\nconst mockReq = {} as any;\n```\n\nTest getDashboardStats:\n- Calls res.json exactly once\n- Returns object with totalInvoices=156, pending=23, settled=128, revenue=45250.00, failedSettlements=5\n- All values are numbers\n\nTest getDashboardActivity:\n- Calls res.json exactly once\n- Returns array of 4 items\n- Each item has id, title, description, status, timestamp fields\n- Status values are one of 'success', 'pending', 'failed'\n- Timestamps are valid ISO strings\n- First item has status 'success', last item has status 'failed'\n\nFile: `backend/src/api/__tests__/dashboard-handlers.test.ts`\nImport: `import { getDashboardStats } from '../dashboard-stats';` and `import { getDashboardActivity } from '../dashboard-activity';`\nKeep under 120 lines.",
+      "deliverables": {
+        "code": [
+          "backend/src/api/__tests__/dashboard-handlers.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "backend/src/api/__tests__/dashboard-handlers.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "backend/src/api/__tests__/dashboard-handlers.test.ts",
+              "description": "Could add explicit type checking for all numeric fields in stats object for completeness"
+            }
+          ],
+          "strengths": [
+            "Proper Jest mocking pattern with beforeEach setup",
+            "Comprehensive test coverage for both functions as specified",
+            "Correct validation of array length (4 items) and structure",
+            "Proper status value validation using array inclusion check",
+            "ISO timestamp validation using Date constructor round-trip",
+            "Explicit checks for first/last item status requirements",
+            "Clean TypeScript with proper type assertions",
+            "Under 120 lines as required (approximately 40 lines)",
+            "Correct imports and file structure",
+            "No code fences or syntax issues",
+            "Accurately mocks Express Request/Response objects.",
+            "Verifies res.json is called exactly once for each handler.",
+            "Asserts all required numeric values and structure for stats.",
+            "Checks array length, item properties, status enums, and ISO timestamp validity.",
+            "Concise and under 120 lines."
+          ]
+        }
+      }
+    },
+    {
+      "id": "BE-303",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "description": "Unit tests for api-keys-mock handlers — listApiKeys and createApiKey with mock req/res",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create unit tests for backend/src/api/api-keys-mock.ts. The file exports:\n\n1. `async function listApiKeys(req: Request, res: Response): Promise<void>` — calls `res.json({ apiKeys: mockApiKeys })` where mockApiKeys is an array of 2 objects. First: { id:'key_001', name:'Production Key', prefix:'sk_prod_', createdAt:'2026-02-01T00:00:00Z', expiresAt:'2027-02-01T00:00:00Z', lastUsedAt:'2026-02-15T10:30:00Z' }. Second: { id:'key_002', name:'Test Key', prefix:'sk_test_', createdAt:'2026-02-10T00:00:00Z' }.\n\n2. `async function createApiKey(req: Request, res: Response): Promise<void>` — creates newApiKey with id='key_003', name from req.body?.name or 'New Key', prefix='sk_new_', createdAt=new Date().toISOString(). Calls `res.status(201).json({ apiKey: newApiKey, secret: 'sk_live_abc123def456' })`.\n\nMock pattern:\n```typescript\nconst mockRes = { json: jest.fn(), status: jest.fn().mockReturnThis() };\n```\n\nTest listApiKeys:\n- Calls res.json once with { apiKeys } containing array of 2 items\n- First key has id='key_001', name='Production Key'\n- Second key has id='key_002', name='Test Key'\n- Both have createdAt as valid date strings\n\nTest createApiKey:\n- With req.body.name='My Key' → apiKey.name is 'My Key'\n- With req.body undefined → apiKey.name defaults to 'New Key'\n- Always returns status 201\n- Response includes secret='sk_live_abc123def456'\n- apiKey has id='key_003' and prefix='sk_new_'\n- apiKey.createdAt is a valid ISO timestamp\n\nFile: `backend/src/api/__tests__/api-keys-mock.test.ts`\nImport from '../api-keys-mock'.\nKeep under 110 lines.",
+      "deliverables": {
+        "code": [
+          "backend/src/api/__tests__/api-keys-mock.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "backend/src/api/__tests__/api-keys-mock.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "backend/src/api/__tests__/api-keys-mock.test.ts",
+              "description": "Could add edge case test for req.body.name being null/empty string to ensure robustness"
+            },
+            {
+              "severity": "low",
+              "file": "backend/src/api/__tests__/api-keys-mock.test.ts",
+              "description": "Missing test to verify that createApiKey doesn't call res.status multiple times (defensive testing)"
+            }
+          ],
+          "strengths": [
+            "Follows exact task specifications with all required test cases",
+            "Proper Jest mock patterns using mockReturnThis() for Express response chaining",
+            "Validates ISO timestamp format correctly using Date constructor round-trip",
+            "Clean test structure with descriptive test names and proper describe blocks",
+            "Covers both happy path and edge case (undefined req.body)",
+            "Stays well under 110 line limit (32 lines)",
+            "Proper TypeScript typing with Request/Response imports",
+            "Tests all specified properties and return values",
+            "Validates both status code and response payload structure",
+            "Comprehensive coverage for both list and create endpoints",
+            "Proper use of jest.fn() and mockReturnThis() for response mocking",
+            "Validation of ISO timestamp formats for createdAt fields",
+            "Checks for both provided and default name scenarios",
+            "Ensures correct status code and secret value in createApiKey response"
+          ]
+        }
+      }
+    },
+    {
+      "id": "BE-304",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "description": "Unit tests for webhooks-mock handlers — listWebhooks and registerWebhook with mock req/res",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create unit tests for backend/src/api/webhooks-mock.ts. The file exports:\n\n1. `async function listWebhooks(req: Request, res: Response): Promise<void>` — calls `res.json({ webhooks: mockWebhooks, total: mockWebhooks.length })` where mockWebhooks has 1 item: { id:'wh_001', url:'https://example.com/webhook', events:['invoice.paid','settlement.confirmed'], status:'active', createdAt:'2026-02-05T00:00:00Z' }.\n\n2. `async function registerWebhook(req: Request, res: Response): Promise<void>` — creates mockWebhook with id='wh_002', url from req.body.url or 'https://example.com/new', events from req.body.events or ['invoice.created'], status='active', secret='whsec_abc123', createdAt=new Date().toISOString(). Calls `res.status(201).json(mockWebhook)`.\n\nMock pattern:\n```typescript\nconst mockRes = { json: jest.fn(), status: jest.fn().mockReturnThis() };\n```\n\nTest listWebhooks:\n- Calls res.json once\n- Returns { webhooks, total } where total is 1\n- Single webhook has id='wh_001', status='active'\n- Events array contains 'invoice.paid' and 'settlement.confirmed'\n\nTest registerWebhook:\n- With req.body.url='https://my.site/hook' → webhook.url is 'https://my.site/hook'\n- With req.body.events=['invoice.paid'] → webhook.events is ['invoice.paid']\n- With empty req.body → defaults to url='https://example.com/new', events=['invoice.created']\n- Always returns status 201\n- Response includes secret='whsec_abc123'\n- webhook.id is 'wh_002' and status is 'active'\n\nFile: `backend/src/api/__tests__/webhooks-mock.test.ts`\nImport from '../webhooks-mock'.\nKeep under 110 lines.",
+      "deliverables": {
+        "code": [
+          "backend/src/api/__tests__/webhooks-mock.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "backend/src/api/__tests__/webhooks-mock.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "backend/src/api/__tests__/webhooks-mock.test.ts",
+              "description": "Could benefit from testing edge cases like malformed request bodies or null values"
+            },
+            {
+              "severity": "low",
+              "file": "backend/src/api/__tests__/webhooks-mock.test.ts",
+              "description": "No validation that createdAt field is properly set in registerWebhook tests"
+            }
+          ],
+          "strengths": [
+            "Follows exact Jest mock pattern specified in task requirements",
+            "Comprehensive test coverage for all specified scenarios",
+            "Clear test descriptions that match functional requirements",
+            "Proper use of TypeScript types with Express Request/Response",
+            "Tests verify both status codes and response data structure",
+            "Covers default value scenarios as specified",
+            "Clean, readable test structure with good separation of concerns",
+            "File stays well under 110 line limit (42 lines)",
+            "No code fences or syntax issues",
+            "Covers listing and registration endpoints per spec",
+            "Uses proper jest mocks for Response, including status chaining",
+            "Validates both default and custom request body cases",
+            "No markdown fences or invalid syntax in source file"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-070",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "critical",
+      "description": "Unit tests for SDK response-parser-v2 — isApiError type guard and parseResponse with mock Response",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create unit tests for sdk/typescript/src/response-parser-v2.ts. The file exports:\n\n1. `interface ApiResponse<T> { success: boolean; data?: T; error?: { message: string; code: string; details?: unknown }; meta?: { total?: number; limit?: number; offset?: number; hasMore?: boolean } }`\n2. `function isApiError(error: unknown): error is InvoicaError` — returns `error instanceof InvoicaError`\n3. `async function parseResponse<T>(response: Response): Promise<T>` — Parses response.json(). If !response.ok: throws ValidationError for 400, AuthenticationError for 401, NotFoundError for 404, RateLimitError for 429, InvoicaError for other errors. If response.ok but !success or data===undefined: throws InvoicaError('Response missing data'). If ok and success: returns data.\n\nDependencies:\n- `InvoicaError` from './errors': `class InvoicaError extends Error { statusCode: number; code: string; constructor(message, statusCode, code) }`\n- `ValidationError` from './errors': extends InvoicaError, constructor(message) sets statusCode=400, code='VALIDATION_ERROR'\n- `AuthenticationError` from './errors': extends InvoicaError, constructor(message) sets statusCode=401, code='AUTH_ERROR'\n- `NotFoundError` from './errors': extends InvoicaError, constructor(message) sets statusCode=404, code='NOT_FOUND'\n- `RateLimitError` from './error-compat': extends InvoicaError, constructor(message, retryAfter?) sets statusCode=429, code='RATE_LIMIT'\n\nMock Response pattern:\n```typescript\nfunction mockResponse(status: number, body: object, ok?: boolean): Response {\n  return { ok: ok ?? (status >= 200 && status < 300), status, statusText: 'Error', json: async () => body } as any;\n}\n```\n\nTest isApiError:\n- Returns true for new InvoicaError('test', 500, 'ERR')\n- Returns true for new ValidationError('bad')\n- Returns true for new NotFoundError('nope')\n- Returns true for new RateLimitError('slow')\n- Returns false for new Error('plain')\n- Returns false for null, undefined, string, number\n\nTest parseResponse:\n- Success: response ok=true, body={success:true, data:{id:1}} → returns {id:1}\n- 400 error: response status=400, ok=false, body={success:false, error:{message:'Bad',code:'BAD'}} → throws, check instanceof ValidationError\n- 401 error → throws AuthenticationError\n- 404 error → throws NotFoundError\n- 429 error → throws RateLimitError\n- 500 error → throws InvoicaError (not a subclass)\n- Missing data: ok=true, body={success:true} (no data) → throws InvoicaError with 'Response missing data'\n- Parse failure: response.json() throws → throws InvoicaError with 'Failed to parse response'\n\nFile: `sdk/typescript/tests/response-parser-v2.test.ts`\nImport: `import { isApiError, parseResponse } from '../src/response-parser-v2';` and errors from `'../src/errors'` and `'../src/error-compat'`.\nKeep under 150 lines.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/tests/response-parser-v2.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/tests/response-parser-v2.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/tests/response-parser-v2.test.ts",
+              "description": "Could add more specific error message assertions to verify exact error messages are thrown"
+            },
+            {
+              "severity": "low",
+              "file": "sdk/typescript/tests/response-parser-v2.test.ts",
+              "description": "Missing test for successful response with meta field (though not required by spec)"
+            }
+          ],
+          "strengths": [
+            "All specified test cases implemented correctly",
+            "Proper use of Jest async/await testing patterns",
+            "Clean mockResponse helper function matches the required pattern",
+            "Comprehensive isApiError tests covering all error types and primitives",
+            "parseResponse tests cover all HTTP status codes and edge cases",
+            "Proper TypeScript generics usage in parseResponse test",
+            "File stays well under 150-line limit (47 lines)",
+            "No code fences or invalid syntax",
+            "Proper imports from specified paths",
+            "Tests verify instanceof checks for specific error types",
+            "Covers JSON parse failure scenario with proper error handling",
+            "Comprehensive coverage of success and all error status codes (400, 401, 404, 429, 500)",
+            "Proper testing of isApiError for all InvoicaError subclasses and primitives",
+            "Handles JSON parse failures and missing data scenarios",
+            "No markdown fences, under the 150‐line limit, and follows mock pattern"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-071",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "description": "Unit tests for SDK response-parser v1 — isApiError type guard and parseResponse with mock Response",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create unit tests for sdk/typescript/src/response-parser.ts. The file exports:\n\n1. `interface ApiResponse<T> { success: boolean; data?: T; error?: { message: string; code: string; details?: unknown }; meta?: {...} }`\n2. `function isApiError(error: unknown): error is CountableError` — returns `error instanceof CountableError` (CountableError is alias for InvoicaError from './errors' re-exported via './error-compat')\n3. `async function parseResponse<T>(response: Response): Promise<T>` — Parses response.json(). If !response.ok: maps status codes to error classes via errorMap {400:ValidationError, 401:AuthenticationError, 404:NotFoundError, 429:RateLimitError}. Falls back to CountableError. Throws with message from json.error or statusText. If ok but !success or data===undefined: throws CountableError('Response missing data'). On parse failure: throws CountableError('Failed to parse response').\n\nNote: This v1 parser uses `CountableError` (alias for InvoicaError) and the error classes from './errors' which have different constructor signatures: `CountableError(message, code, options?)` where options has `status` and `details`.\n\nActual error imports from the file:\n```typescript\nimport { CountableError, AuthenticationError, NotFoundError, RateLimitError, ValidationError } from './errors';\n```\nWait — looking more carefully, CountableError comes from './error-compat' not './errors'. The v1 parser imports from './errors' directly: `{ CountableError, AuthenticationError, NotFoundError, RateLimitError, ValidationError }`.\n\nMock Response pattern:\n```typescript\nfunction mockResponse(status: number, body: object, ok?: boolean): Response {\n  return { ok: ok ?? (status >= 200 && status < 300), status, statusText: 'Error', json: async () => body } as any;\n}\n```\n\nTest isApiError:\n- Returns true for InvoicaError instances\n- Returns false for plain Error\n- Returns false for null, undefined, primitives\n\nTest parseResponse:\n- Success: ok=true, body={success:true, data:{name:'test'}} → returns {name:'test'}\n- 400 → throws ValidationError\n- 401 → throws AuthenticationError\n- 404 → throws NotFoundError\n- 429 → throws RateLimitError\n- 500 → throws CountableError (base class)\n- Missing data → throws CountableError with 'Response missing data'\n- JSON parse failure → throws CountableError with 'Failed to parse response'\n\nFile: `sdk/typescript/tests/response-parser.test.ts`\nImport: `import { isApiError, parseResponse } from '../src/response-parser';`\nImport errors: `import { InvoicaError, ValidationError, AuthenticationError, NotFoundError } from '../src/errors';` and `import { CountableError, RateLimitError } from '../src/error-compat';`\nKeep under 140 lines.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/tests/response-parser.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/tests/response-parser.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/tests/response-parser.test.ts",
+              "description": "Missing test case for data===undefined scenario (only tests success=false)"
+            },
+            {
+              "severity": "low",
+              "file": "sdk/typescript/tests/response-parser.test.ts",
+              "description": "Could test error message extraction from json.error vs statusText fallback"
+            }
+          ],
+          "strengths": [
+            "Correct imports matching the task specification exactly",
+            "Proper mockResponse implementation following the provided pattern",
+            "Complete coverage of all error status codes (400, 401, 404, 429, 500)",
+            "Tests both InvoicaError instances and edge cases for isApiError",
+            "Concise one-liner test format improves readability",
+            "Under 140 lines as required (39 lines)",
+            "Proper async/await testing with rejects.toThrow",
+            "Tests JSON parse failure scenario correctly",
+            "Covers all major status code mappings to appropriate error classes",
+            "Tests both class-based and message-based error throws",
+            "Includes JSON parse failure scenario",
+            "Follows import patterns as defined in the task spec"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-230",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "medium",
+      "description": "Dashboard notifications page — list of system notifications with status indicators",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create a Next.js dashboard page at frontend/app/dashboard/notifications/page.tsx.\n\nThis is a React Server Component (no 'use client' needed for static content). Display a list of mock system notifications.\n\nRequirements:\n- Export default function NotificationsPage()\n- Page title: 'Notifications' in an h1 tag\n- Description paragraph: 'System alerts and notifications'\n- Hardcoded array of 5 notification objects: { id: string, title: string, message: string, type: 'info' | 'warning' | 'error' | 'success', time: string, read: boolean }\n- Notifications:\n  1. { id:'1', title:'Invoice Paid', message:'Invoice INV-0042 payment confirmed', type:'success', time:'5 minutes ago', read:false }\n  2. { id:'2', title:'Webhook Delivery Failed', message:'Failed to deliver to https://api.example.com/hook', type:'error', time:'1 hour ago', read:false }\n  3. { id:'3', title:'API Key Expiring', message:'Production API key expires in 7 days', type:'warning', time:'3 hours ago', read:true }\n  4. { id:'4', title:'Settlement Confirmed', message:'Batch #SB-2024-0156 settled on Base', type:'success', time:'Yesterday', read:true }\n  5. { id:'5', title:'System Update', message:'Platform updated to v2.1.0', type:'info', time:'2 days ago', read:true }\n- Map over notifications, render each as a div with:\n  - Border-left color based on type: success=green, error=red, warning=yellow, info=blue (use inline styles or Tailwind)\n  - Title in bold, time in gray small text on the right\n  - Message below title\n  - Unread items have slightly different background (bg-blue-50 or similar)\n- Use Tailwind CSS classes for styling\n- Keep under 55 lines total\n- NO 'use client' directive, NO useState/useEffect, NO external imports besides React",
+      "deliverables": {
+        "code": [
+          "frontend/app/dashboard/notifications/page.tsx"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/app/dashboard/notifications/page.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 92,
+          "summary": "Dual-approved: Claude (92/100) + Codex (92/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/app/dashboard/notifications/page.tsx",
+              "description": "Minor styling conflict: unread notifications have both 'bg-white' and 'bg-blue-50' classes applied, though Tailwind will use the last one (bg-blue-50)"
+            }
+          ],
+          "strengths": [
+            "Proper TypeScript interfaces and type definitions",
+            "Correct React Server Component implementation (no 'use client')",
+            "All 5 notifications match the exact specification",
+            "Clean Tailwind CSS implementation with proper color mapping",
+            "Responsive design with max-width container",
+            "Proper semantic HTML structure",
+            "Under 55 lines as required (39 lines)",
+            "Good separation of concerns with typeStyles mapping",
+            "Correct conditional styling for read/unread states",
+            "Follows the spec precisely with the required notifications array",
+            "No invalid code fences or extraneous imports",
+            "Clean, readable Tailwind styling and proper TypeScript types",
+            "Keeps under the line limit and uses a React Server Component"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-231",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "medium",
+      "description": "Dashboard team members page — list of team members with roles and status",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create a Next.js dashboard page at frontend/app/dashboard/team/page.tsx.\n\nThis is a React Server Component. Display a list of mock team members.\n\nRequirements:\n- Export default function TeamPage()\n- Page title: 'Team Members' in an h1 tag\n- Description: 'Manage your organization members and roles'\n- Hardcoded array of 4 team member objects: { id: string, name: string, email: string, role: 'Owner' | 'Admin' | 'Developer' | 'Viewer', status: 'active' | 'invited', joinedAt: string }\n- Members:\n  1. { id:'1', name:'Alex Chen', email:'alex@invoica.dev', role:'Owner', status:'active', joinedAt:'Jan 2026' }\n  2. { id:'2', name:'Sarah Kim', email:'sarah@invoica.dev', role:'Admin', status:'active', joinedAt:'Jan 2026' }\n  3. { id:'3', name:'Marcus Lee', email:'marcus@invoica.dev', role:'Developer', status:'active', joinedAt:'Feb 2026' }\n  4. { id:'4', name:'Jordan Taylor', email:'jordan@example.com', role:'Viewer', status:'invited', joinedAt:'Pending' }\n- Render each member as a row/card with:\n  - Name in bold, email in gray below\n  - Role badge with background color: Owner=purple, Admin=blue, Developer=green, Viewer=gray\n  - Status dot: active=green, invited=yellow\n  - joinedAt text\n- Use Tailwind CSS for all styling\n- Keep under 55 lines total\n- NO 'use client', NO useState/useEffect, NO external imports",
+      "deliverables": {
+        "code": [
+          "frontend/app/dashboard/team/page.tsx"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/app/dashboard/team/page.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 93,
+          "summary": "Dual-approved: Claude (95/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/app/dashboard/team/page.tsx",
+              "description": "Could use more semantic HTML structure (e.g., <main>, <section>) for better accessibility"
+            }
+          ],
+          "strengths": [
+            "Perfect adherence to all task requirements - correct function name, page title, description, and exact team member data",
+            "Excellent TypeScript usage with proper const assertions for literal types",
+            "Clean, readable code structure with good separation of data and styling logic",
+            "Proper Tailwind CSS implementation with correct color mappings (Owner=purple, Admin=blue, Developer=green, Viewer=gray)",
+            "Correct status indicators (active=green dot, invited=yellow dot)",
+            "Well-structured layout with proper spacing and responsive design considerations",
+            "No forbidden patterns - no 'use client', no hooks, no external imports",
+            "Stays well under the 55-line limit (only 22 lines)",
+            "No code fence syntax issues - clean TypeScript file",
+            "Adheres strictly to spec with correct member data and layout.",
+            "No \"use client\" directive or unnecessary hooks—pure server component.",
+            "Uses Tailwind CSS for styling role badges and status dots.",
+            "Code is concise, well-structured, and under the 55-line limit."
+          ]
+        }
+      }
+    }
+  ]
+}

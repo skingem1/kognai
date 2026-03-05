@@ -1,0 +1,76 @@
+---
+title: Settlements
+description: "Monitor and verify on-chain payment settlements for your invoices."
+---
+
+# Settlements API
+
+Settlements represent on-chain payment confirmations. Invoica uses dual settlement detection (poll-based and event-driven) to ensure reliable payment verification.
+
+## Settlement Lifecycle
+
+```
+PENDING → CONFIRMING → CONFIRMED → SETTLED
+                          ↓
+                       FAILED
+```
+
+| Status | Description |
+|--------|-------------|
+| `pending` | Payment submitted, awaiting blockchain confirmation |
+| `confirming` | Transaction found, waiting for required block confirmations |
+| `confirmed` | Required confirmations reached |
+| `settled` | Settlement finalized, invoice updated |
+| `failed` | Transaction reverted or timed out |
+
+## How Settlement Detection Works
+
+### Poll-Based
+
+A background worker checks the blockchain every 15 seconds:
+
+```
+For each pending settlement:
+  → Query RPC for transaction receipt
+  → Check confirmation count
+  → Update status when threshold met
+```
+
+### Event-Driven
+
+WebSocket listeners monitor Transfer events in real-time:
+
+```
+On Transfer event:
+  → Match to pending invoice
+  → Verify amount and recipient
+  → Update settlement status
+```
+
+## Settlement Events
+
+When a settlement status changes, webhook events are fired:
+
+| Event | Trigger |
+|-------|---------|
+| `settlement.confirmed` | On-chain confirmation received |
+| `settlement.failed` | Settlement verification failed |
+
+## Configuration
+
+Settlement detection is automatic for all invoices. Configure timing via environment:
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `SETTLEMENT_POLL_INTERVAL` | 15000ms | How often to check blockchain |
+| `SETTLEMENT_TIMEOUT` | 3600000ms | Max wait time (1 hour) |
+| `SETTLEMENT_CONFIRMATIONS` | 12 | Required block confirmations |
+
+## Supported Networks
+
+| Network | Chain ID | Token |
+|---------|----------|-------|
+| Ethereum Mainnet | 1 | USDC, USDT, DAI |
+| Base | 8453 | USDC |
+| Arbitrum | 42161 | USDC |
+| Solana | — | USDC (SPL) |

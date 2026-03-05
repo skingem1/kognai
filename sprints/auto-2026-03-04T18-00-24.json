@@ -1,0 +1,293 @@
+{
+  "tasks": [
+    {
+      "id": "RESTORE-001",
+      "agent": "agents",
+      "type": "feature",
+      "priority": "critical",
+      "dependencies": [],
+      "description": "Embed learnings.md file path rules into backend-core agent prompt",
+      "context": "Add explicit file validation rules from learnings.md to backend-core system prompt. Must include: only reference real files, no markdown fences in responses, single-file scope per task, context under 600 chars. Modify agent configuration to load these rules at initialization.",
+      "deliverables": {
+        "code": [
+          "agents/backend-core/prompts/system.md"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "rejected"
+    },
+    {
+      "id": "RESTORE-002",
+      "agent": "agents",
+      "type": "feature",
+      "priority": "critical",
+      "dependencies": [
+        "RESTORE-001"
+      ],
+      "description": "Embed learnings.md JSON format rules into agents coordinator",
+      "context": "Add task response validation to coordinator that enforces: valid JSON only, no markdown fences, required fields (id, agent, type, priority, dependencies, description, context, deliverables, status). Reject malformed responses before execution.",
+      "deliverables": {
+        "code": [
+          "agents/coordinator/task-validator.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "skipped",
+      "skippedReason": "Blocked by rejected dependency: ['RESTORE-001']"
+    },
+    {
+      "id": "RESTORE-003",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "description": "Add spam email domain blacklist check to invoice creation",
+      "context": "In backend/src/api/invoices-create.ts add validation that rejects invoices from blacklisted domains. Check customerEmail field against hardcoded array including 'out.ndlz.net'. Return 400 with clear error message before DB write.",
+      "deliverables": {
+        "code": [
+          "backend/src/api/invoices-create.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "backend/src/api/invoices-create.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 85,
+          "summary": "Dual-approved: Claude (85/100) + Codex (85/100)",
+          "issues": [
+            {
+              "severity": "medium",
+              "file": "backend/src/api/invoices-create.ts",
+              "description": "Added extra blacklisted domains beyond the required 'out.ndlz.net' - while not harmful, this goes beyond the task spec"
+            },
+            {
+              "severity": "low",
+              "file": "backend/src/api/invoices-create.ts",
+              "description": "Missing JSDoc on main createInvoice function - only helper functions are documented"
+            },
+            {
+              "severity": "low",
+              "file": "backend/src/api/invoices-create.ts",
+              "description": "Generic 500 error response doesn't log the actual error for debugging"
+            },
+            {
+              "severity": "low",
+              "file": "backend/src/api/invoices-create.ts",
+              "description": "The catch block for createPendingInvoice swallows the error without any logging, which may impede debugging. Consider logging the error before returning a 500 response."
+            }
+          ],
+          "strengths": [
+            "Proper Zod validation schema with email validation",
+            "Clean domain extraction and blacklist checking logic",
+            "Clear error messages with specific domain mentioned",
+            "Validation occurs before DB write as required",
+            "Good TypeScript typing with proper inference",
+            "Helper functions are well-documented with JSDoc",
+            "Proper async/await error handling pattern",
+            "Returns 400 status with clear error message as specified",
+            "Includes the required 'out.ndlz.net' domain in blacklist",
+            "Proper Zod schema validation and safeParse usage",
+            "Accurate extraction and comparison of email domains against a constant blacklist",
+            "Clear, early 400 responses for both schema and blacklist violations",
+            "JSDoc comments on helper functions improve readability and maintenance"
+          ]
+        }
+      }
+    },
+    {
+      "id": "RESTORE-004",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "description": "Add spam email blacklist management to x-admin UI",
+      "context": "In apps/x-admin/src/components/SpamBlacklistTable.tsx add functionality to display and manage blacklisted email domains. Include add/remove domain actions, confirmation dialogs. Show team@out.ndlz.net as initial entry.",
+      "deliverables": {
+        "code": [
+          "apps/x-admin/src/components/SpamBlacklistTable.tsx"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "rejected",
+      "output": {
+        "files": [
+          "apps/x-admin/src/components/SpamBlacklistTable.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "REJECTED",
+          "score": 25,
+          "summary": "Dual-rejected: Claude (25/100) + Codex (40/100). Code is incomplete and truncated mid-function. The file cuts off at line with 'const validateDomain = (value: stri' which is invalid TypeScript syntax. Additionally, the implementation has architectural issues with hardcoded data and missing API integration. | The implementation is incomplete and contains critical schema errors. The Zod schema misuse, the hard-coded email instead of domain, and missing add/remove handlers/API integration must be addressed before approval.",
+          "issues": [
+            {
+              "severity": "critical",
+              "file": "apps/x-admin/src/components/SpamBlacklistTable.tsx",
+              "description": "File is truncated and incomplete - cuts off mid-line with 'const validateDomain = (value: stri' which is invalid syntax"
+            },
+            {
+              "severity": "high",
+              "file": "apps/x-admin/src/components/SpamBlacklistTable.tsx",
+              "description": "Hardcoded initial data with setTimeout simulation instead of proper API integration - violates production code standards"
+            },
+            {
+              "severity": "high",
+              "file": "apps/x-admin/src/components/SpamBlacklistTable.tsx",
+              "description": "Missing actual CRUD operations - add/remove functionality is not implemented, only UI state management"
+            },
+            {
+              "severity": "medium",
+              "file": "apps/x-admin/src/components/SpamBlacklistTable.tsx",
+              "description": "Inconsistent data modeling - initial entry shows 'team@out.ndlz.net' as domain but it's actually an email address"
+            },
+            {
+              "severity": "medium",
+              "file": "apps/x-admin/src/components/SpamBlacklistTable.tsx",
+              "description": "Missing error boundaries and proper error handling for component-level failures"
+            },
+            {
+              "severity": "critical",
+              "file": "apps/x-admin/src/components/SpamBlacklistTable.tsx",
+              "description": "Using domainSchema.extend(...) is invalid because domainSchema is a ZodString, not a ZodObject. This will not compile under strict TypeScript."
+            },
+            {
+              "severity": "high",
+              "file": "apps/x-admin/src/components/SpamBlacklistTable.tsx",
+              "description": "Initial entry value is an email (team@out.ndlz.net) but the component is intended to manage domains only. Should seed 'out.ndlz.net' instead."
+            },
+            {
+              "severity": "medium",
+              "file": "apps/x-admin/src/components/SpamBlacklistTable.tsx",
+              "description": "There is no real API integration for add/remove operations\u2014only a simulated setTimeout. Production code needs actual fetch/mutation calls with error handling."
+            },
+            {
+              "severity": "medium",
+              "file": "apps/x-admin/src/components/SpamBlacklistTable.tsx",
+              "description": "Component is truncated/incomplete. Key parts (validateDomain implementation, form submission handlers, rendering for dialogs) are missing."
+            },
+            {
+              "severity": "low",
+              "file": "apps/x-admin/src/components/SpamBlacklistTable.tsx",
+              "description": "No JSDoc/comments on public functions and components; missing tests for new functionality."
+            }
+          ],
+          "strengths": []
+        }
+      }
+    },
+    {
+      "id": "RESTORE-005",
+      "agent": "backend-core",
+      "type": "bugfix",
+      "priority": "high",
+      "dependencies": [
+        "RESTORE-003"
+      ],
+      "description": "Add spam domain types to backend type definitions",
+      "context": "In apps/x-admin/src/types/spam.types.ts define TypeScript interfaces for SpamBlacklistEntry with fields: domain (string), addedAt (Date), addedBy (string), reason (string). Export for use in API and UI components.",
+      "deliverables": {
+        "code": [
+          "apps/x-admin/src/types/spam.types.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "rejected",
+      "output": {
+        "files": [
+          "apps/x-admin/src/types/spam.types.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "REJECTED",
+          "score": 15,
+          "summary": "Dual-rejected: Claude (15/100) + Codex (15/100). Task rejected due to destructive rewrite that removed existing functionality. The file shrank from 57 to 19 lines (33% reduction), indicating significant loss of existing code. Additionally, the agent added unnecessary types not requested in the task spec. | The submitted change overwrote the existing spam.types.ts file\u2014shrinking it from 57 to 19 lines\u2014and removed previously defined functionality. It also introduces types outside the scope of the task spec, which only requested the SpamBlacklistEntry interface.",
+          "issues": [
+            {
+              "severity": "critical",
+              "file": "apps/x-admin/src/types/spam.types.ts",
+              "description": "Destructive rewrite detected - file shrank from 57 to 19 lines (33% reduction), indicating loss of existing functionality"
+            },
+            {
+              "severity": "high",
+              "file": "apps/x-admin/src/types/spam.types.ts",
+              "description": "Agent added unnecessary types (SpamCheckType, SpamCheckResult, SpamDetectorConfig, EscalationWithSpam) that were not requested in the task spec"
+            },
+            {
+              "severity": "medium",
+              "file": "apps/x-admin/src/types/spam.types.ts",
+              "description": "Overengineering - task only asked for SpamBlacklistEntry interface but agent created an entire spam detection type system"
+            },
+            {
+              "severity": "critical",
+              "file": "apps/x-admin/src/types/spam.types.ts",
+              "description": "Destructive rewrite: the file was reduced by over 60%, removing existing definitions and functionality without justification."
+            },
+            {
+              "severity": "medium",
+              "file": "apps/x-admin/src/types/spam.types.ts",
+              "description": "Task spec only requested the definition and export of SpamBlacklistEntry, but additional enums and interfaces were added, overengineering the file."
+            }
+          ],
+          "strengths": []
+        }
+      },
+      "_integrityFailed": true,
+      "_integrityDetails": "File apps/x-admin/src/types/spam.types.ts shrank from 57 to 19 lines (33%). Possible destructive rewrite."
+    },
+    {
+      "id": "RESTORE-006",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "medium",
+      "dependencies": [
+        "RESTORE-005"
+      ],
+      "description": "Create spam blacklist CRUD endpoints in backend router",
+      "context": "In backend/src/api/router.ts add new routes for spam blacklist: GET /admin/spam-blacklist (list), POST /admin/spam-blacklist (add), DELETE /admin/spam-blacklist/:domain (remove). Wire to placeholder handlers with auth middleware.",
+      "deliverables": {
+        "code": [
+          "backend/src/api/router.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "skipped",
+      "skippedReason": "Blocked by rejected dependency: ['RESTORE-005']"
+    },
+    {
+      "id": "RESTORE-007",
+      "agent": "agents",
+      "type": "test",
+      "priority": "medium",
+      "dependencies": [
+        "RESTORE-001",
+        "RESTORE-002"
+      ],
+      "description": "Add validation test for agent task response format",
+      "context": "Create test in agents/coordinator/task-validator.test.ts that verifies: rejects markdown fences, rejects missing required fields, accepts valid task JSON. Test single-file deliverables constraint and context length limit.",
+      "deliverables": {
+        "code": [
+          "agents/coordinator/task-validator.test.ts"
+        ],
+        "tests": [
+          "agents/coordinator/task-validator.test.ts"
+        ],
+        "docs": []
+      },
+      "status": "skipped",
+      "skippedReason": "Blocked by rejected dependency: ['RESTORE-001']"
+    }
+  ]
+}

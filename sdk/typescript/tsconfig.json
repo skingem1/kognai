@@ -1,0 +1,42 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "commonjs",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "moduleResolution": "node"
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "tests",
+    "src/**/*.test.ts",
+    "src/__tests__",
+    "src/barrel.ts",
+    "src/barrel-v2.ts",
+    "src/client.ts",
+    "src/complete-client.ts",
+    "src/enhanced-client.ts",
+    "src/enhanced-client-extras.ts",
+    "src/http-transport.ts",
+    "src/response-parser.ts",
+    "src/index-v2.ts",
+    "src/deep-merge.ts",
+    "src/event-emitter.ts",
+    "src/object-utils.ts",
+    "src/promise-utils.ts",
+    "src/serializer.ts",
+    "src/string-template.ts",
+    "src/throttle.ts"
+  ]
+}

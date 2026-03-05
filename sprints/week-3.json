@@ -1,0 +1,161 @@
+{
+  "tasks": [
+    {
+      "id": "BC-010",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "context": "Create a simple currency formatter utility. File: src/utils/currency.ts. Export these functions: (1) formatCurrency(amount: number, currency: string): string — formats a number to 2 decimal places with the currency symbol (support USD=$, EUR=€, GBP=£, default prefix with currency code). (2) parseCurrency(formatted: string): number — strips non-numeric chars except decimal, returns number. (3) SUPPORTED_CURRENCIES: a readonly array of supported currency codes. Use TypeScript strict mode. No external dependencies. Include JSDoc comments.",
+      "deliverables": {
+        "code": [
+          "backend/src/utils/currency.ts"
+        ],
+        "tests": [
+          "backend/tests/utils/currency.test.ts"
+        ]
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "backend/src/utils/currency.ts",
+          "backend/tests/utils/currency.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 92,
+          "summary": "Well-implemented currency utility with comprehensive tests. Code follows TypeScript strict mode, includes proper JSDoc documentation, and handles edge cases appropriately. Minor issue with negative number formatting placement.",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "backend/src/utils/currency.ts",
+              "description": "Negative currency formatting places minus sign after symbol ($-50.00) instead of before symbol (-$50.00), which is unconventional"
+            },
+            {
+              "severity": "low",
+              "file": "backend/tests/utils/currency.test.ts",
+              "description": "Test for readonly array constraint uses runtime error check instead of compile-time TypeScript verification"
+            }
+          ],
+          "strengths": [
+            "TypeScript strict mode compliance with proper typing and const assertions",
+            "Comprehensive JSDoc documentation on all exported functions",
+            "Excellent test coverage including edge cases, integration tests, and error scenarios",
+            "Proper handling of case-insensitive currency codes",
+            "Clean separation of concerns with currency symbol mapping",
+            "Robust error handling in parseCurrency with fallback to 0",
+            "Good integration tests ensuring format/parse roundtrip consistency",
+            "No external dependencies as required",
+            "Follows project file structure conventions"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SEC-010",
+      "agent": "security",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "context": "Create a request audit logger middleware for Express. File: src/middleware/audit-logger.ts. Export a function auditLogger() that returns Express middleware. It should log each request as a JSON line to stdout with: timestamp (ISO string), method, path, statusCode, responseTimeMs (Date.now difference), ip (req.ip). Use res.on('finish') to capture status code after response. Also export a redactHeaders(headers: Record<string,string>): Record<string,string> function that replaces values of Authorization and X-Api-Key headers with '[REDACTED]'. TypeScript strict mode. No external dependencies beyond Express types.",
+      "deliverables": {
+        "code": [
+          "backend/src/middleware/audit-logger.ts"
+        ],
+        "tests": [
+          "backend/tests/middleware/audit-logger.test.ts"
+        ]
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "backend/src/middleware/audit-logger.ts",
+          "backend/tests/middleware/audit-logger.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 92,
+          "summary": "High-quality implementation that meets all task requirements. Clean TypeScript code with comprehensive tests, proper error handling, and good security practices.",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "backend/src/middleware/audit-logger.ts",
+              "description": "Could add JSDoc comments for public functions to improve documentation"
+            },
+            {
+              "severity": "low",
+              "file": "backend/tests/middleware/audit-logger.test.ts",
+              "description": "Test could verify timestamp format is valid ISO string and responseTimeMs is a positive number"
+            }
+          ],
+          "strengths": [
+            "Strict TypeScript with proper types and interfaces",
+            "No external dependencies as required",
+            "Comprehensive test coverage including edge cases",
+            "Proper security handling with header redaction",
+            "Clean separation of concerns with exported utility function",
+            "Correct Express middleware pattern with res.on('finish')",
+            "Case-insensitive header matching for security",
+            "Proper error handling with fallback for missing req.ip",
+            "JSON line logging format as specified",
+            "All required fields captured in audit log"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-010",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "medium",
+      "dependencies": [],
+      "context": "Create a StatusBadge React component. File: components/ui/status-badge.tsx. Export a StatusBadge component that accepts props: status ('completed' | 'pending' | 'failed' | 'processing') and optional className. Render a span with rounded-full padding, text-sm font. Colors: completed=green bg + dark green text, pending=yellow bg + dark yellow text, failed=red bg + dark red text, processing=blue bg + dark blue text. Use TailwindCSS classes only. Capitalize the status text. TypeScript with proper prop types. No external dependencies.",
+      "deliverables": {
+        "code": [
+          "frontend/components/ui/status-badge.tsx"
+        ]
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "frontend/components/ui/status-badge.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "task_id": "FE-010",
+          "verdict": "APPROVED",
+          "score": 92,
+          "summary": "Well-implemented StatusBadge component that meets all requirements with proper TypeScript types, TailwindCSS styling, and clean architecture.",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/components/ui/status-badge.tsx",
+              "description": "Both named and default exports provided - should pick one pattern for consistency"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/components/ui/status-badge.tsx",
+              "description": "Could add JSDoc comment for better documentation of the public API"
+            }
+          ],
+          "strengths": [
+            "Proper TypeScript with strict typing - Status union type and StatusBadgeProps interface",
+            "Clean separation of concerns with statusStyles lookup object",
+            "Correct TailwindCSS color mapping as specified (green/yellow/red/blue with appropriate contrast)",
+            "Proper text capitalization using charAt(0).toUpperCase() + slice(1)",
+            "Follows React best practices with functional component and proper prop destructuring",
+            "No external dependencies as required",
+            "Responsive design with inline-flex and proper padding/spacing",
+            "className prop properly merged for extensibility"
+          ],
+          "action": "approve"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,479 @@
+{
+  "tasks": [
+    {
+      "id": "FE-340",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "high",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create a new date utility module for the frontend. These are pure utility functions for date formatting and manipulation used across the app.\n\nCreate file frontend/lib/date-utils.ts with these exact exports:\n\n```typescript\n/**\n * Check if a date string is today.\n * isToday('2026-02-18T10:00:00Z') => true (if today is Feb 18, 2026)\n */\nexport function isToday(dateStr: string): boolean\n\n/**\n * Check if a date string is in the past.\n * isPast('2020-01-01') => true\n */\nexport function isPast(dateStr: string): boolean\n\n/**\n * Get the number of days between two dates (absolute value).\n * daysBetween('2026-01-01', '2026-01-10') => 9\n * daysBetween('2026-01-10', '2026-01-01') => 9\n */\nexport function daysBetween(dateStr1: string, dateStr2: string): number\n\n/**\n * Format a date as ISO date only (no time).\n * toISODate('2026-02-18T10:30:00Z') => '2026-02-18'\n */\nexport function toISODate(dateStr: string): string\n\n/**\n * Get a human-readable time string.\n * formatTime('2026-02-18T14:30:00Z') => '2:30 PM' (using en-US locale)\n */\nexport function formatTime(dateStr: string): string\n\n/**\n * Check if a date string is valid.\n * isValidDate('2026-02-18') => true\n * isValidDate('not-a-date') => false\n * isValidDate('') => false\n */\nexport function isValidDate(dateStr: string): boolean\n```\n\nImplementation rules:\n1. isToday: compare new Date(dateStr).toDateString() with new Date().toDateString()\n2. isPast: return new Date(dateStr).getTime() < Date.now()\n3. daysBetween: Math.abs of difference in ms, divided by 86400000, Math.floor\n4. toISODate: new Date(dateStr).toISOString().split('T')[0]\n5. formatTime: new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }).format(new Date(dateStr))\n6. isValidDate: check if string is non-empty and new Date(dateStr).toString() !== 'Invalid Date'\n7. No external dependencies — pure functions only\n8. Export all six functions",
+      "deliverables": {
+        "code": [
+          "frontend/lib/date-utils.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/lib/date-utils.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/lib/date-utils.ts",
+              "description": "daysBetween returns NaN for invalid dates instead of throwing or returning 0, which might be unexpected behavior"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/lib/date-utils.ts",
+              "description": "toISODate and formatTime return empty strings for invalid dates - consider if this is the desired behavior vs throwing errors"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/lib/date-utils.ts",
+              "description": "daysBetween returns NaN for invalid inputs. Consider documenting this behavior or returning a default value (e.g. 0) for better consumer ergonomics."
+            },
+            {
+              "severity": "low",
+              "file": "frontend/lib/date-utils.ts",
+              "description": "toISODate and formatTime return empty strings on invalid inputs. You may want to document this fallback behavior in JSDoc comments for clarity."
+            }
+          ],
+          "strengths": [
+            "All six required functions are correctly implemented",
+            "Follows the exact implementation rules specified in the task",
+            "Excellent defensive programming - validates input in every function",
+            "Proper JSDoc comments matching the required format",
+            "No external dependencies as required",
+            "Clean, readable TypeScript code with proper typing",
+            "Handles edge cases gracefully (empty strings, invalid dates)",
+            "Uses the exact algorithms specified (86400000ms constant, Math.abs, etc.)",
+            "Proper use of Intl.DateTimeFormat for locale-aware time formatting",
+            "Implements all six functions exactly as per spec.",
+            "Includes graceful handling of invalid date strings via isValidDate.",
+            "No markdown code fences or invalid syntax present.",
+            "No external dependencies; pure, side‐effect free utilities.",
+            "Clear inline documentation and consistent code style."
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-341",
+      "agent": "frontend",
+      "type": "test",
+      "priority": "high",
+      "status": "done",
+      "dependencies": [
+        "FE-340"
+      ],
+      "context": "Write unit tests for frontend/lib/date-utils.ts. This module exports 6 pure functions: isToday, isPast, daysBetween, toISODate, formatTime, isValidDate.\n\nRequirements:\n1. Import { isToday, isPast, daysBetween, toISODate, formatTime, isValidDate } from '../date-utils'\n2. Use jest.useFakeTimers() and jest.setSystemTime(new Date('2026-02-18T12:00:00Z')) in beforeEach for deterministic tests. Call jest.useRealTimers() in afterEach.\n\nTest cases for isToday:\n- isToday('2026-02-18T10:00:00Z') => true (same day as mocked time)\n- isToday('2026-02-17T10:00:00Z') => false (yesterday)\n- isToday('2026-02-19T10:00:00Z') => false (tomorrow)\n\nTest cases for isPast:\n- isPast('2020-01-01') => true\n- isPast('2030-01-01') => false\n- isPast('2026-02-18T11:00:00Z') => true (1 hour before mocked time)\n\nTest cases for daysBetween:\n- daysBetween('2026-01-01', '2026-01-10') => 9\n- daysBetween('2026-01-10', '2026-01-01') => 9 (absolute value)\n- daysBetween('2026-01-01', '2026-01-01') => 0\n\nTest cases for toISODate:\n- toISODate('2026-02-18T14:30:00Z') => '2026-02-18'\n- toISODate('2024-12-25T00:00:00Z') => '2024-12-25'\n\nTest cases for formatTime:\n- formatTime with a known time should produce a string containing 'AM' or 'PM'\n- formatTime('2026-02-18T14:30:00Z') should contain '2:30' and 'PM' (or format varies by TZ — use toContain for flexibility)\n\nTest cases for isValidDate:\n- isValidDate('2026-02-18') => true\n- isValidDate('2026-02-18T14:30:00Z') => true\n- isValidDate('not-a-date') => false\n- isValidDate('') => false\n\nGroup tests in describe blocks per function. No mocking needed except jest fake timers.",
+      "deliverables": {
+        "code": [
+          "frontend/lib/__tests__/date-utils.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/lib/__tests__/date-utils.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 93,
+          "summary": "Dual-approved: Claude (95/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/lib/__tests__/date-utils.test.ts",
+              "description": "Could add edge case tests for invalid date inputs to daysBetween and toISODate functions for more robust coverage"
+            }
+          ],
+          "strengths": [
+            "Perfect adherence to task specification - all 6 functions tested with exact test cases requested",
+            "Proper Jest fake timer setup with deterministic date (2026-02-18T12:00:00Z) in beforeEach/afterEach",
+            "Clean test structure with describe blocks per function as required",
+            "Correct import statement matches specification exactly",
+            "Smart use of toContain() for formatTime tests to handle timezone variations",
+            "Concise one-liner test assertions that are readable and maintainable",
+            "No unnecessary mocking beyond the required fake timers",
+            "All test cases from specification implemented correctly",
+            "No code fences or invalid syntax - clean TypeScript",
+            "Covers all required functions with the specified edge cases",
+            "Uses jest.useFakeTimers() and jest.setSystemTime() in beforeEach and jest.useRealTimers() in afterEach",
+            "Organized describe blocks per function for clarity",
+            "Flexible assertions for formatTime to handle timezone formatting variations"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-342",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "medium",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create a new validation utility module for the frontend. These are pure validation functions for form inputs.\n\nCreate file frontend/lib/validation-utils.ts with these exact exports:\n\n```typescript\n/**\n * Validate an email address format.\n * isValidEmail('user@example.com') => true\n * isValidEmail('invalid') => false\n * isValidEmail('') => false\n */\nexport function isValidEmail(email: string): boolean\n\n/**\n * Validate a URL format.\n * isValidUrl('https://example.com') => true\n * isValidUrl('http://localhost:3000') => true\n * isValidUrl('not-a-url') => false\n * isValidUrl('') => false\n */\nexport function isValidUrl(url: string): boolean\n\n/**\n * Check if a string meets minimum length requirement.\n * hasMinLength('hello', 3) => true\n * hasMinLength('hi', 3) => false\n * hasMinLength('', 1) => false\n */\nexport function hasMinLength(value: string, min: number): boolean\n\n/**\n * Check if a string meets maximum length requirement.\n * hasMaxLength('hello', 10) => true\n * hasMaxLength('hello world this is long', 10) => false\n */\nexport function hasMaxLength(value: string, max: number): boolean\n\n/**\n * Validate that a value is a positive number.\n * isPositiveNumber(5) => true\n * isPositiveNumber(0) => false\n * isPositiveNumber(-1) => false\n * isPositiveNumber(NaN) => false\n */\nexport function isPositiveNumber(value: number): boolean\n\n/**\n * Validate an API key format (starts with 'sk-' and at least 20 chars).\n * isValidApiKey('sk-test-abc123xyz789aa') => true (24 chars, starts with sk-)\n * isValidApiKey('pk-test-abc123') => false (wrong prefix)\n * isValidApiKey('sk-short') => false (too short)\n */\nexport function isValidApiKey(key: string): boolean\n```\n\nImplementation rules:\n1. isValidEmail: use regex /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email) and check non-empty\n2. isValidUrl: try { new URL(url); return url.startsWith('http://') || url.startsWith('https://'); } catch { return false; }\n3. hasMinLength: return value.length >= min\n4. hasMaxLength: return value.length <= max\n5. isPositiveNumber: return !isNaN(value) && isFinite(value) && value > 0\n6. isValidApiKey: return key.startsWith('sk-') && key.length >= 20\n7. No external dependencies — pure functions only\n8. Export all six functions",
+      "deliverables": {
+        "code": [
+          "frontend/lib/validation-utils.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/lib/validation-utils.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 93,
+          "summary": "Dual-approved: Claude (95/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/lib/validation-utils.ts",
+              "description": "isValidEmail and isValidUrl have redundant empty string checks since the regex and URL constructor will handle empty strings appropriately"
+            }
+          ],
+          "strengths": [
+            "All six required functions are exported with correct signatures",
+            "Implementation follows the exact rules specified in the task",
+            "Proper JSDoc documentation with examples for each function",
+            "No external dependencies - pure functions only",
+            "TypeScript strict typing with no 'any' types",
+            "Clean, readable code structure",
+            "Correct regex pattern for email validation",
+            "Proper URL validation using native URL constructor",
+            "API key validation follows the sk- prefix and length requirements",
+            "All six functions implemented exactly as specified",
+            "No external dependencies; pure functions only",
+            "Proper handling of empty strings for email and URL checks",
+            "Readable, concise code with appropriate comments"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-343",
+      "agent": "frontend",
+      "type": "test",
+      "priority": "medium",
+      "status": "done",
+      "dependencies": [
+        "FE-342"
+      ],
+      "context": "Write unit tests for frontend/lib/validation-utils.ts. This module exports 6 pure functions: isValidEmail, isValidUrl, hasMinLength, hasMaxLength, isPositiveNumber, isValidApiKey.\n\nRequirements:\n1. Import { isValidEmail, isValidUrl, hasMinLength, hasMaxLength, isPositiveNumber, isValidApiKey } from '../validation-utils'\n\nTest cases for isValidEmail:\n- isValidEmail('user@example.com') => true\n- isValidEmail('name@domain.co.uk') => true\n- isValidEmail('invalid') => false\n- isValidEmail('') => false\n- isValidEmail('@example.com') => false\n- isValidEmail('user@') => false\n\nTest cases for isValidUrl:\n- isValidUrl('https://example.com') => true\n- isValidUrl('http://localhost:3000') => true\n- isValidUrl('https://api.invoica.com/v1') => true\n- isValidUrl('not-a-url') => false\n- isValidUrl('') => false\n- isValidUrl('ftp://files.example.com') => false (only http/https)\n\nTest cases for hasMinLength:\n- hasMinLength('hello', 3) => true\n- hasMinLength('hi', 3) => false\n- hasMinLength('abc', 3) => true (exact)\n- hasMinLength('', 1) => false\n- hasMinLength('', 0) => true\n\nTest cases for hasMaxLength:\n- hasMaxLength('hello', 10) => true\n- hasMaxLength('hello world this is long', 10) => false\n- hasMaxLength('hello', 5) => true (exact)\n- hasMaxLength('', 0) => true\n\nTest cases for isPositiveNumber:\n- isPositiveNumber(5) => true\n- isPositiveNumber(0.5) => true\n- isPositiveNumber(0) => false\n- isPositiveNumber(-1) => false\n- isPositiveNumber(NaN) => false\n- isPositiveNumber(Infinity) => false\n\nTest cases for isValidApiKey:\n- isValidApiKey('sk-test-abc123xyz789aa') => true (24 chars)\n- isValidApiKey('sk-12345678901234567') => true (exactly 20 chars)\n- isValidApiKey('pk-test-abc123xyz789') => false (wrong prefix)\n- isValidApiKey('sk-short') => false (too short, only 8 chars)\n- isValidApiKey('') => false\n\nGroup tests in describe blocks per function. No mocking needed — these are pure functions.",
+      "deliverables": {
+        "code": [
+          "frontend/lib/__tests__/validation-utils.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/lib/__tests__/validation-utils.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 94,
+          "summary": "Dual-approved: Claude (92/100) + Codex (95/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/lib/__tests__/validation-utils.test.ts",
+              "description": "hasMinLength test case 'hasMinLength(\"\", 0) => true' is mixed in with false cases - could be better organized in the 'returns true' block"
+            }
+          ],
+          "strengths": [
+            "All 6 required functions are tested with proper imports",
+            "All specified test cases are implemented correctly",
+            "Tests are properly organized in describe blocks per function",
+            "Good separation of positive and negative test cases",
+            "No unnecessary mocking (appropriate for pure functions)",
+            "Clean, readable test structure with descriptive test names",
+            "Covers edge cases like empty strings, NaN, and Infinity",
+            "Follows Jest best practices with expect().toBe() assertions",
+            "Comprehensive coverage of all required test cases for each function",
+            "Logical grouping of tests using describe blocks per function",
+            "No invalid syntax or markdown code fences in source files",
+            "Pure functions tested directly without unnecessary mocking"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-180",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create a new serialization utility module for the SDK. These are pure functions for safely serializing and deserializing data in API requests/responses.\n\nCreate file sdk/typescript/src/serializer.ts with these exact exports:\n\n```typescript\n/**\n * Safely parse a JSON string, returning a default value on failure.\n * safeJsonParse('{\"a\":1}') => { a: 1 }\n * safeJsonParse('invalid') => null\n * safeJsonParse('invalid', {}) => {}\n */\nexport function safeJsonParse<T>(json: string, fallback?: T): T | null\n\n/**\n * Convert an object to a sorted-key JSON string (deterministic).\n * stableStringify({ b: 2, a: 1 }) => '{\"a\":1,\"b\":2}'\n * stableStringify(null) => 'null'\n */\nexport function stableStringify(value: unknown): string\n\n/**\n * Deep clone an object using JSON serialization.\n * deepClone({ a: { b: 1 } }) => { a: { b: 1 } } (new reference)\n */\nexport function deepClone<T>(value: T): T\n\n/**\n * Convert a flat object to URL-encoded form data string.\n * toFormData({ name: 'test', count: '5' }) => 'name=test&count=5'\n * toFormData({}) => ''\n */\nexport function toFormData(params: Record<string, string>): string\n\n/**\n * Mask sensitive fields in an object for logging.\n * maskSensitiveFields({ apiKey: 'sk-secret', name: 'test' }, ['apiKey'])\n * => { apiKey: '***REDACTED***', name: 'test' }\n */\nexport function maskSensitiveFields<T extends Record<string, unknown>>(\n  obj: T,\n  sensitiveKeys: string[]\n): T\n```\n\nImplementation rules:\n1. safeJsonParse: try { return JSON.parse(json) as T } catch { return (fallback !== undefined ? fallback : null) as T | null }\n2. stableStringify: get keys with Object.keys, sort them, build new object with sorted keys, JSON.stringify. Handle non-object values by just calling JSON.stringify directly. Handle null by returning 'null'.\n3. deepClone: return JSON.parse(JSON.stringify(value)) as T\n4. toFormData: Object.entries(params).map(([k,v]) => encodeURIComponent(k) + '=' + encodeURIComponent(v)).join('&')\n5. maskSensitiveFields: spread the object, replace each key in sensitiveKeys with '***REDACTED***', return new object\n6. No external dependencies — pure functions only\n7. Export all five functions",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/serializer.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/src/serializer.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 92,
+          "summary": "Dual-approved: Claude (92/100) + Codex (92/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/serializer.ts",
+              "description": "deepClone function will fail silently on objects with circular references or functions - could add basic validation or documentation about limitations"
+            },
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/serializer.ts",
+              "description": "stableStringify doesn't handle nested objects recursively for stable sorting - only sorts top-level keys"
+            }
+          ],
+          "strengths": [
+            "Perfect adherence to task specification - all 5 functions implemented exactly as requested",
+            "Excellent TypeScript typing with proper generics and type constraints",
+            "Comprehensive JSDoc documentation with examples for all functions",
+            "Implementation follows the exact rules specified in the task",
+            "No external dependencies - pure functions only as required",
+            "Proper error handling in safeJsonParse with fallback logic",
+            "Clean, readable code structure with consistent formatting",
+            "All function signatures match the specification exactly",
+            "No markdown code fences or syntax errors",
+            "Appropriate use of type assertions and generic constraints",
+            "Fulfills all required exports and behaviors per the spec",
+            "Clean TypeScript with no use of `any`, leveraging generics and `unknown`",
+            "Comprehensive JSDoc comments on each public function",
+            "No external dependencies and no hardcoded secrets",
+            "Proper handling of null, objects, arrays, and fallback cases"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-181",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "status": "done",
+      "dependencies": [
+        "SDK-180"
+      ],
+      "context": "Write unit tests for sdk/typescript/src/serializer.ts. This module exports 5 pure functions: safeJsonParse, stableStringify, deepClone, toFormData, maskSensitiveFields.\n\nRequirements:\n1. Import { safeJsonParse, stableStringify, deepClone, toFormData, maskSensitiveFields } from '../serializer'\n\nTest cases for safeJsonParse:\n- safeJsonParse('{\"a\":1}') => { a: 1 }\n- safeJsonParse('[1,2,3]') => [1, 2, 3]\n- safeJsonParse('\"hello\"') => 'hello'\n- safeJsonParse('invalid') => null\n- safeJsonParse('invalid', {}) => {} (fallback)\n- safeJsonParse('invalid', []) => [] (fallback)\n- safeJsonParse('') => null\n\nTest cases for stableStringify:\n- stableStringify({ b: 2, a: 1 }) => '{\"a\":1,\"b\":2}' (sorted keys)\n- stableStringify({ a: 1 }) => '{\"a\":1}'\n- stableStringify({}) => '{}'\n- stableStringify(null) => 'null'\n- stableStringify('hello') => '\"hello\"'\n- stableStringify(42) => '42'\n\nTest cases for deepClone:\n- deepClone({ a: { b: 1 } }) should return equal object\n- deepClone({ a: { b: 1 } }) should return different reference (not toBe original)\n- Modifying clone should not affect original\n- deepClone([1, 2, 3]) should return equal array with different reference\n\nTest cases for toFormData:\n- toFormData({ name: 'test', count: '5' }) => 'name=test&count=5'\n- toFormData({}) => ''\n- toFormData({ key: 'hello world' }) => 'key=hello%20world' (URL encoded)\n- toFormData({ a: '1' }) => 'a=1'\n\nTest cases for maskSensitiveFields:\n- maskSensitiveFields({ apiKey: 'sk-secret', name: 'test' }, ['apiKey']) => { apiKey: '***REDACTED***', name: 'test' }\n- maskSensitiveFields({ a: '1', b: '2' }, []) => { a: '1', b: '2' } (no masking)\n- maskSensitiveFields({ password: 'abc', token: 'xyz', name: 'ok' }, ['password', 'token']) => { password: '***REDACTED***', token: '***REDACTED***', name: 'ok' }\n- maskSensitiveFields({}, ['key']) => {} (empty object)\n\nGroup tests in describe blocks per function. No mocking needed — these are pure functions.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/__tests__/serializer.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/src/__tests__/serializer.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 93,
+          "summary": "Dual-approved: Claude (95/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/__tests__/serializer.test.ts",
+              "description": "Tests use inline arrow functions which reduces readability, though this is acceptable for simple assertions"
+            }
+          ],
+          "strengths": [
+            "Perfect adherence to task requirements - imports all 5 functions as specified",
+            "Comprehensive test coverage including all specified test cases",
+            "Proper test organization with describe blocks per function",
+            "Correct use of Jest matchers (toEqual vs toBe for reference checks)",
+            "Tests edge cases like empty objects, null values, and invalid inputs",
+            "Clean, readable test structure with descriptive test names",
+            "No unnecessary mocking (appropriate for pure functions)",
+            "Validates deep cloning behavior correctly with reference checks",
+            "Tests URL encoding in toFormData function",
+            "Proper masking validation for sensitive fields",
+            "Covers all required test cases per function spec",
+            "Grouped logically in describe blocks",
+            "Uses appropriate Jest matchers (.toEqual, .toBe, .toBeNull)",
+            "No markdown fences in source file"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-182",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "medium",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create a new number utility module for the SDK. These are pure functions for working with currency amounts, percentages, and numeric formatting in financial applications.\n\nCreate file sdk/typescript/src/number-utils.ts with these exact exports:\n\n```typescript\n/**\n * Round a number to a specific number of decimal places.\n * roundTo(3.14159, 2) => 3.14\n * roundTo(3.145, 2) => 3.15\n * roundTo(100, 0) => 100\n */\nexport function roundTo(value: number, decimals: number): number\n\n/**\n * Convert cents to dollars (or minor to major currency unit).\n * centsToMajor(1550) => 15.50\n * centsToMajor(100) => 1.00\n * centsToMajor(0) => 0.00\n * centsToMajor(99) => 0.99\n */\nexport function centsToMajor(cents: number): number\n\n/**\n * Convert dollars to cents (or major to minor currency unit).\n * majorToCents(15.50) => 1550\n * majorToCents(1.00) => 100\n * majorToCents(0.99) => 99\n */\nexport function majorToCents(major: number): number\n\n/**\n * Calculate percentage.\n * percentage(25, 100) => 25\n * percentage(1, 3) => 33.33 (2 decimal places)\n * percentage(0, 100) => 0\n */\nexport function percentage(part: number, total: number, decimals?: number): number\n\n/**\n * Clamp a number between min and max bounds.\n * clamp(5, 0, 10) => 5\n * clamp(-5, 0, 10) => 0\n * clamp(15, 0, 10) => 10\n */\nexport function clamp(value: number, min: number, max: number): number\n\n/**\n * Check if two floating point numbers are approximately equal.\n * isApproxEqual(0.1 + 0.2, 0.3) => true\n * isApproxEqual(1.0, 1.0001, 0.001) => true\n * isApproxEqual(1.0, 2.0) => false\n */\nexport function isApproxEqual(a: number, b: number, epsilon?: number): boolean\n```\n\nImplementation rules:\n1. roundTo: return Number(Math.round(Number(value + 'e' + decimals)) + 'e-' + decimals). Alternative: Math.round(value * 10**decimals) / 10**decimals\n2. centsToMajor: return roundTo(cents / 100, 2)\n3. majorToCents: return Math.round(major * 100)\n4. percentage: if total === 0 return 0; const dec = decimals ?? 2; return roundTo((part / total) * 100, dec)\n5. clamp: return Math.min(Math.max(value, min), max)\n6. isApproxEqual: const eps = epsilon ?? Number.EPSILON; return Math.abs(a - b) < eps\n7. No external dependencies — pure functions only\n8. Export all six functions",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/number-utils.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/src/number-utils.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "REJECTED",
+          "score": 15,
+          "summary": "Dual-rejected: Claude (15/100) + Codex (35/100). File is incomplete - cuts off mid-function and missing required exports. Over-engineered with unnecessary validation not requested in spec. | The implementation is mostly correct and includes robust input validation, but the file is incomplete and missing the `isApproxEqual` function implementation. Without that export, the module does not meet the task requirements.",
+          "issues": [
+            {
+              "severity": "critical",
+              "file": "sdk/typescript/src/number-utils.ts",
+              "description": "File is incomplete - cuts off in the middle of isApproxEqual function JSDoc comment"
+            },
+            {
+              "severity": "critical",
+              "file": "sdk/typescript/src/number-utils.ts",
+              "description": "Missing isApproxEqual function implementation entirely"
+            },
+            {
+              "severity": "high",
+              "file": "sdk/typescript/src/number-utils.ts",
+              "description": "Added unnecessary validateFiniteNumber helper function not requested in spec"
+            },
+            {
+              "severity": "high",
+              "file": "sdk/typescript/src/number-utils.ts",
+              "description": "Added excessive input validation and error throwing not specified in task requirements"
+            },
+            {
+              "severity": "medium",
+              "file": "sdk/typescript/src/number-utils.ts",
+              "description": "Over-engineered JSDoc comments beyond what was requested - spec only asked for function signatures with examples"
+            },
+            {
+              "severity": "critical",
+              "file": "sdk/typescript/src/number-utils.ts",
+              "description": "The `isApproxEqual` function declaration is cut off and not implemented. The module fails to export one of the six required functions."
+            }
+          ],
+          "strengths": []
+        }
+      }
+    },
+    {
+      "id": "SDK-183",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "medium",
+      "status": "done",
+      "dependencies": [
+        "SDK-182"
+      ],
+      "context": "Write unit tests for sdk/typescript/src/number-utils.ts. This module exports 6 pure functions: roundTo, centsToMajor, majorToCents, percentage, clamp, isApproxEqual.\n\nRequirements:\n1. Import { roundTo, centsToMajor, majorToCents, percentage, clamp, isApproxEqual } from '../number-utils'\n\nTest cases for roundTo:\n- roundTo(3.14159, 2) => 3.14\n- roundTo(3.145, 2) => 3.15\n- roundTo(3.145, 1) => 3.1\n- roundTo(100, 0) => 100\n- roundTo(0.5, 0) => 1\n\nTest cases for centsToMajor:\n- centsToMajor(1550) => 15.50\n- centsToMajor(100) => 1.00 (use toBe(1))\n- centsToMajor(0) => 0\n- centsToMajor(99) => 0.99\n- centsToMajor(1) => 0.01\n\nTest cases for majorToCents:\n- majorToCents(15.50) => 1550\n- majorToCents(1.00) => 100\n- majorToCents(0.99) => 99\n- majorToCents(0) => 0\n- majorToCents(19.99) => 1999\n\nTest cases for percentage:\n- percentage(25, 100) => 25\n- percentage(1, 3) => 33.33\n- percentage(0, 100) => 0\n- percentage(50, 0) => 0 (division by zero protection)\n- percentage(1, 3, 0) => 33\n\nTest cases for clamp:\n- clamp(5, 0, 10) => 5\n- clamp(-5, 0, 10) => 0\n- clamp(15, 0, 10) => 10\n- clamp(0, 0, 10) => 0 (at min)\n- clamp(10, 0, 10) => 10 (at max)\n\nTest cases for isApproxEqual:\n- isApproxEqual(0.1 + 0.2, 0.3) => true (classic floating point issue)\n- isApproxEqual(1.0, 1.0) => true\n- isApproxEqual(1.0, 2.0) => false\n- isApproxEqual(1.0, 1.0001, 0.001) => true (custom epsilon)\n- isApproxEqual(1.0, 1.01, 0.001) => false\n\nGroup tests in describe blocks per function. No mocking needed — these are pure functions.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/__tests__/number-utils.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/src/__tests__/number-utils.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 93,
+          "summary": "Dual-approved: Claude (95/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/__tests__/number-utils.test.ts",
+              "description": "Tests use inline arrow functions which could be extracted for better readability, though this is acceptable for simple pure function tests"
+            }
+          ],
+          "strengths": [
+            "All 6 functions properly tested with exact test cases from specification",
+            "Proper imports from '../number-utils' as required",
+            "Clean describe blocks grouping tests by function",
+            "Descriptive test names that clearly indicate what's being tested",
+            "Covers edge cases like division by zero, floating point precision, boundary conditions",
+            "No unnecessary abstractions or over-engineering",
+            "Follows Jest conventions with expect().toBe() assertions",
+            "Tests are focused on pure function behavior without mocking (appropriate for utility functions)",
+            "Handles the classic floating point precision issue (0.1 + 0.2 !== 0.3)",
+            "Tests both default and custom parameters (epsilon in isApproxEqual, decimal places in percentage)",
+            "All six pure functions are tested with the exact cases from the spec.",
+            "Tests are organized into describe blocks per function as required.",
+            "Edge cases (division by zero, floating‐point precision, clamp bounds) are properly covered.",
+            "Import paths are correct and there are no markdown code fences in the source."
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-344",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "medium",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create a new React hook for clipboard operations. This hook wraps the navigator.clipboard API with a copied state and error handling.\n\nCreate file frontend/hooks/use-clipboard.ts with this exact export:\n\n```typescript\nimport { useState, useCallback } from 'react';\n\nexport interface UseClipboardReturn {\n  copy: (text: string) => Promise<void>;\n  copied: boolean;\n  error: Error | null;\n}\n\n/**\n * Hook for clipboard copy operations with a 'copied' status indicator.\n *\n * Usage:\n * const { copy, copied, error } = useClipboard(2000);\n * <button onClick={() => copy('hello')}>\n *   {copied ? 'Copied!' : 'Copy'}\n * </button>\n *\n * @param resetDelay - ms before 'copied' resets to false (default 2000)\n */\nexport function useClipboard(resetDelay: number = 2000): UseClipboardReturn\n```\n\nImplementation rules:\n1. Use useState for 'copied' (boolean, default false) and 'error' (Error | null, default null)\n2. Use useCallback for the 'copy' function\n3. copy function: try { await navigator.clipboard.writeText(text); setCopied(true); setError(null); setTimeout(() => setCopied(false), resetDelay); } catch (err) { setError(err instanceof Error ? err : new Error('Copy failed')); setCopied(false); }\n4. Return { copy, copied, error }\n5. Import useState and useCallback from 'react'\n6. No external dependencies\n7. Export the UseClipboardReturn interface and the useClipboard function",
+      "deliverables": {
+        "code": [
+          "frontend/hooks/use-clipboard.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/hooks/use-clipboard.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "Dual-approved: Claude (95/100) + Codex (95/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/hooks/use-clipboard.ts",
+              "description": "Missing cleanup for setTimeout to prevent potential memory leaks if component unmounts before timeout completes"
+            }
+          ],
+          "strengths": [
+            "Perfect adherence to the exact interface and function signature specified",
+            "Proper TypeScript typing with explicit types for state variables",
+            "Correct use of useCallback with proper dependency array [resetDelay]",
+            "Robust error handling that converts unknown errors to Error instances",
+            "Clear JSDoc documentation with usage example",
+            "No external dependencies as required",
+            "Follows React hooks best practices",
+            "Clean, readable code structure",
+            "Proper async/await usage for clipboard API",
+            "Adheres exactly to the spec with proper useState and useCallback usage",
+            "TypeScript types are explicit and strict, with no use of `any`",
+            "Clear error handling for clipboard failures",
+            "No extraneous dependencies or overengineering"
+          ]
+        }
+      }
+    }
+  ]
+}

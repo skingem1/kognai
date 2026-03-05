@@ -1,0 +1,458 @@
+{
+  "tasks": [
+    {
+      "id": "FE-330",
+      "agent": "frontend",
+      "type": "test",
+      "priority": "high",
+      "status": "done",
+      "dependencies": [],
+      "context": "Write unit tests for frontend/lib/format-utils.ts. The source file exports 5 pure utility functions. Import them and test edge cases.\n\nSource file at frontend/lib/format-utils.ts:\n```typescript\nexport function formatCurrency(amount: number, currency: string = 'USD'): string {\n  return new Intl.NumberFormat('en-US', { style: 'currency', currency }).format(amount);\n}\n\nexport function formatDate(dateStr: string): string {\n  const date = new Date(dateStr);\n  return new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(date);\n}\n\nexport function formatRelativeTime(dateStr: string): string {\n  const diff = Date.now() - new Date(dateStr).getTime();\n  const minutes = Math.floor(diff / 60000);\n  const hours = Math.floor(diff / 3600000);\n  const days = Math.floor(diff / 86400000);\n  if (minutes < 1) return 'just now';\n  if (minutes < 60) return `${minutes} minute${minutes === 1 ? '' : 's'} ago`;\n  if (hours < 24) return `${hours} hour${hours === 1 ? '' : 's'} ago`;\n  if (days < 30) return `${days} day${days === 1 ? '' : 's'} ago`;\n  return formatDate(dateStr);\n}\n\nexport function truncateText(text: string, maxLength: number = 50): string {\n  if (text.length > maxLength) return text.slice(0, maxLength) + '...';\n  return text;\n}\n\nexport function formatNumber(num: number): string {\n  return new Intl.NumberFormat('en-US').format(num);\n}\n```\n\nRequirements:\n1. Import { formatCurrency, formatDate, formatRelativeTime, truncateText, formatNumber } from '../format-utils'\n2. Test formatCurrency: default USD, explicit EUR, zero amount, negative amount, large number\n3. Test formatDate: valid ISO date string, another date\n4. Test formatRelativeTime: use jest.useFakeTimers() and jest.setSystemTime() to control Date.now(). Test 'just now' (0 seconds), '1 minute ago', '5 minutes ago', '1 hour ago', '3 hours ago', '1 day ago', '15 days ago', '31 days ago' (falls back to formatDate). Call jest.useRealTimers() in afterEach.\n5. Test truncateText: short text (no truncation), exact length, long text (truncated with ...), custom maxLength\n6. Test formatNumber: small number, large number with commas (1000 -> '1,000'), zero\n\nDo NOT mock Intl. Use real Intl.NumberFormat and Intl.DateTimeFormat.",
+      "deliverables": {
+        "code": [
+          "frontend/lib/__tests__/format-utils.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/lib/__tests__/format-utils.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 94,
+          "summary": "Dual-approved: Claude (92/100) + Codex (95/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/lib/__tests__/format-utils.test.ts",
+              "description": "Could add test for invalid date string to ensure graceful handling of edge cases"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/lib/__tests__/format-utils.test.ts",
+              "description": "Missing test for formatNumber with negative numbers and decimals"
+            }
+          ],
+          "strengths": [
+            "Perfect implementation of Jest fake timers with proper setup/teardown",
+            "Comprehensive test coverage for all 5 exported functions",
+            "Tests all specified edge cases including zero, negative, and boundary values",
+            "Clean test structure with descriptive test names",
+            "Proper use of real Intl formatters as required",
+            "Correct relative import path",
+            "Good test organization with nested describe blocks",
+            "Tests the 31+ days fallback to formatDate correctly",
+            "Covers default and custom currency formats, including zero, negative, and large values.",
+            "Validates date formatting for multiple ISO inputs.",
+            "Exhaustive relative-time tests with jest.useFakeTimers(), including boundary and fallback behavior.",
+            "TruncateText tests for short, exact, long, and custom max lengths.",
+            "FormatNumber tests for small, large (comma), and zero values.",
+            "No mocking of Intl APIs; real Intl.NumberFormat and Intl.DateTimeFormat used as required.",
+            "Proper setup and teardown of fake timers."
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-331",
+      "agent": "frontend",
+      "type": "test",
+      "priority": "medium",
+      "status": "done",
+      "dependencies": [],
+      "context": "Write unit tests for frontend/lib/errors.ts. The source file exports a single class ApiError.\n\nSource file at frontend/lib/errors.ts:\n```typescript\nexport class ApiError extends Error {\n  status: number;\n  data: unknown;\n\n  constructor(message: string, status: number, data?: unknown) {\n    super(message);\n    this.name = 'ApiError';\n    this.status = status;\n    this.data = data ?? null;\n  }\n}\n```\n\nRequirements:\n1. Import { ApiError } from '../errors'\n2. Test constructor sets message correctly\n3. Test constructor sets name to 'ApiError'\n4. Test constructor sets status property\n5. Test constructor sets data when provided\n6. Test constructor sets data to null when not provided\n7. Test that ApiError is an instance of Error\n8. Test with various status codes: 400, 401, 404, 500\n9. Test with data as an object { code: 'NOT_FOUND' }\n10. Test with data as a string\n11. Test with data as undefined (should default to null)",
+      "deliverables": {
+        "code": [
+          "frontend/lib/__tests__/errors.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/lib/__tests__/errors.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 98,
+          "summary": "Dual-approved: Claude (95/100) + Codex (100/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/lib/__tests__/errors.test.ts",
+              "description": "Test 'sets message, name, and status' combines multiple assertions - could be split for better isolation and clearer failure messages"
+            }
+          ],
+          "strengths": [
+            "All 11 requirements from task spec are covered",
+            "Clean test structure with descriptive test names",
+            "Proper use of Jest matchers (toBeInstanceOf, toBe, toEqual, toBeNull)",
+            "Tests various data types (object, string, undefined) as specified",
+            "Efficient testing of multiple status codes using forEach",
+            "No code fences or invalid syntax",
+            "Follows TypeScript best practices with proper imports",
+            "Good test organization and readability",
+            "Covers all required test cases (message, name, status, default and provided data).",
+            "Validates multiple status codes in a concise loop.",
+            "Ensures ApiError instances are recognized as Error.",
+            "No extraneous code or formatting issues; tests are clear and focused."
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-332",
+      "agent": "frontend",
+      "type": "test",
+      "priority": "high",
+      "status": "done",
+      "dependencies": [],
+      "context": "Write unit tests for frontend/hooks/use-debounce.ts. This is a React hook that debounces a value.\n\nSource file at frontend/hooks/use-debounce.ts:\n```typescript\nimport { useState, useEffect } from 'react';\n\nexport function useDebounce<T>(value: T, delayMs: number = 300): T {\n  const [debouncedValue, setDebouncedValue] = useState<T>(value);\n  useEffect(() => {\n    const timer = setTimeout(() => { setDebouncedValue(value); }, delayMs);\n    return () => { clearTimeout(timer); };\n  }, [value, delayMs]);\n  return debouncedValue;\n}\n```\n\nRequirements:\n1. Import { renderHook, act } from '@testing-library/react'\n2. Import { useDebounce } from '../use-debounce'\n3. Use jest.useFakeTimers() in beforeEach and jest.useRealTimers() in afterEach\n4. Test initial render returns the initial value immediately\n5. Test that after changing value and advancing time by less than delay, the old value is still returned\n6. Test that after advancing time by the full delay, the new value is returned. Use act(() => { jest.advanceTimersByTime(300); })\n7. Test custom delay: useDebounce(value, 500) — advance 300ms (still old), advance 200ms more (now new)\n8. Test that rapid value changes only use the latest value after the delay\n9. Do NOT use waitFor — use jest.advanceTimersByTime inside act()\n10. Each test should follow this pattern:\n    const { result, rerender } = renderHook(({ value, delay }) => useDebounce(value, delay), { initialProps: { value: 'initial', delay: 300 } });\n    expect(result.current).toBe('initial');\n    rerender({ value: 'updated', delay: 300 });\n    expect(result.current).toBe('initial');\n    act(() => { jest.advanceTimersByTime(300); });\n    expect(result.current).toBe('updated');",
+      "deliverables": {
+        "code": [
+          "frontend/hooks/__tests__/use-debounce.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/hooks/__tests__/use-debounce.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 94,
+          "summary": "Dual-approved: Claude (92/100) + Codex (95/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/hooks/__tests__/use-debounce.test.ts",
+              "description": "Could add edge case tests for delayMs=0 and negative values to improve robustness"
+            }
+          ],
+          "strengths": [
+            "Correctly imports renderHook and act from @testing-library/react",
+            "Proper jest timer setup with useFakeTimers/useRealTimers in beforeEach/afterEach",
+            "All 5 required test scenarios implemented correctly",
+            "Follows the exact pattern specified in requirements with renderHook initialProps",
+            "Uses act() wrapper around jest.advanceTimersByTime() as required",
+            "Tests cover initial render, partial delay, full delay, custom delay, and rapid changes",
+            "Clean test descriptions that clearly indicate what behavior is being tested",
+            "Proper TypeScript usage with no any types",
+            "No code fences or syntax issues",
+            "Covers initial render, delay boundary, full delay, custom delay, and rapid value changes as required",
+            "Proper use of jest.useFakeTimers, jest.useRealTimers, and act with jest.advanceTimersByTime",
+            "No markdown fences in source files and follows the import/spec patterns exactly"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-333",
+      "agent": "frontend",
+      "type": "test",
+      "priority": "high",
+      "status": "done",
+      "dependencies": [],
+      "context": "Write unit tests for frontend/hooks/use-local-storage.ts. This is a React hook that persists state to localStorage.\n\nSource file at frontend/hooks/use-local-storage.ts:\n```typescript\nimport { useState, useEffect } from 'react';\n\nexport function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T | ((prev: T) => T)) => void] {\n  const [storedValue, setStoredValue] = useState<T>(() => {\n    try {\n      const item = localStorage.getItem(key);\n      return item ? JSON.parse(item) : initialValue;\n    } catch (error) {\n      return initialValue;\n    }\n  });\n\n  useEffect(() => {\n    try {\n      localStorage.setItem(key, JSON.stringify(storedValue));\n    } catch (error) { }\n  }, [key, storedValue]);\n\n  const setValue = (value: T | ((prev: T) => T)) => {\n    try {\n      const valueToStore = value instanceof Function ? value(storedValue) : value;\n      setStoredValue(valueToStore);\n      localStorage.setItem(key, JSON.stringify(valueToStore));\n    } catch (error) { }\n  };\n\n  return [storedValue, setValue];\n}\n```\n\nRequirements:\n1. Import { renderHook, act } from '@testing-library/react'\n2. Import { useLocalStorage } from '../use-local-storage'\n3. Mock localStorage in beforeEach: create a store object as Record<string, string>, then Object.defineProperty(window, 'localStorage', { value: { getItem: jest.fn((key: string) => store[key] || null), setItem: jest.fn((key: string, value: string) => { store[key] = value; }), removeItem: jest.fn((key: string) => { delete store[key]; }), clear: jest.fn(() => { store = {}; }) }, writable: true })\n4. Reset store = {} in beforeEach\n5. Test initial value is returned when localStorage is empty\n6. Test reads existing value from localStorage: set store['test-key'] = JSON.stringify('existing') before renderHook\n7. Test setValue updates state: const { result } = renderHook(() => useLocalStorage('key', 'init')); act(() => { result.current[1]('new-value'); }); expect(result.current[0]).toBe('new-value')\n8. Test setValue writes to localStorage\n9. Test function updater: act(() => { result.current[1]((prev: string) => prev + '-updated'); })\n10. Test with object values: useLocalStorage('obj', { name: 'test', count: 0 })\n11. Test handles JSON parse error gracefully (set store['key'] = 'invalid-json{' before render)\n12. Do NOT use waitFor. Use act() for state updates.",
+      "deliverables": {
+        "code": [
+          "frontend/hooks/__tests__/use-local-storage.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/hooks/__tests__/use-local-storage.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/hooks/__tests__/use-local-storage.test.ts",
+              "description": "Could add test for localStorage.setItem throwing an error to verify error handling in setValue method"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/hooks/__tests__/use-local-storage.test.ts",
+              "description": "Missing test for when localStorage.getItem throws an error during initial load"
+            }
+          ],
+          "strengths": [
+            "Follows all 12 specified requirements exactly",
+            "Proper localStorage mocking with complete API surface",
+            "Correct use of renderHook and act from @testing-library/react",
+            "Tests cover both primitive and object values",
+            "Proper error handling test for JSON parse failures",
+            "Function updater pattern tested correctly",
+            "Clean test structure with proper beforeEach setup",
+            "No code fences or syntax issues",
+            "Tests are focused and don't use waitFor as instructed",
+            "Mocks localStorage in beforeEach with full CRUD methods",
+            "Covers all required scenarios: empty storage, existing values, updates, function updaters, object values, and JSON parse errors",
+            "Uses renderHook and act correctly without waitFor",
+            "No invalid code fences or syntax errors"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-170",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "status": "done",
+      "dependencies": [],
+      "context": "Write unit tests for sdk/typescript/src/client.ts. This is the original InvoicaClient that uses axios.\n\nSource file at sdk/typescript/src/client.ts:\n```typescript\nimport axios, { AxiosInstance, AxiosRequestConfig } from 'axios';\nimport { Invoice, InvoiceCreateInput, Settlement, SettlementListResponse, InvoiceListResponse, ApiKey, ApiKeyCreateResponse, WebhookRegistrationConfig, WebhookRegistration, WebhookListResponse } from './types';\n\nexport class InvoicaClient {\n  private readonly client: AxiosInstance;\n  constructor(private readonly config: { baseUrl: string; apiKey: string }) {\n    this.client = axios.create({ baseURL: config.baseUrl, headers: { 'Authorization': `Bearer ${config.apiKey}`, 'Content-Type': 'application/json' } });\n  }\n  private async request<T>(method: string, url: string, data?: unknown): Promise<T> {\n    const config: AxiosRequestConfig = { method, url, ...(data && { data }) };\n    try {\n      const response = await this.client.request<T>(config);\n      return response.data;\n    } catch (error) {\n      if (axios.isAxiosError(error)) {\n        const message = error.response?.data?.message || error.message;\n        throw new Error(`Invoica API Error: ${message}`);\n      }\n      throw error;\n    }\n  }\n  async getInvoice(id: string): Promise<Invoice> { return this.request<Invoice>('GET', `/invoices/${id}`); }\n  async createInvoice(input: InvoiceCreateInput): Promise<Invoice> { return this.request<Invoice>('POST', '/invoices', input); }\n  async getSettlement(id: string): Promise<Settlement> { return this.request<Settlement>('GET', `/settlements/${id}`); }\n  async listSettlements(params?: { limit?: number; offset?: number }): Promise<SettlementListResponse> { /* builds query */ }\n  async listInvoices(params?: { limit?: number; offset?: number; status?: string }): Promise<InvoiceListResponse> { /* builds query */ }\n  async createApiKey(name: string): Promise<ApiKeyCreateResponse> { return this.request('POST', '/api-keys', { name }); }\n  async revokeApiKey(id: string): Promise<void> { return this.request('DELETE', `/api-keys/${id}`); }\n  async listApiKeys(): Promise<ApiKey[]> { return this.request('GET', '/api-keys'); }\n  async registerWebhook(cfg: WebhookRegistrationConfig): Promise<WebhookRegistration> { return this.request('POST', '/webhooks', cfg); }\n  async listWebhooks(): Promise<WebhookListResponse> { return this.request('GET', '/webhooks'); }\n  async deleteWebhook(id: string): Promise<void> { return this.request('DELETE', `/webhooks/${id}`); }\n}\n```\n\nRequirements:\n1. Mock axios at the top of the file BEFORE any imports:\n```\nconst mockRequest = jest.fn();\njest.mock('axios', () => ({\n  __esModule: true,\n  default: {\n    create: jest.fn(() => ({ request: mockRequest })),\n    isAxiosError: jest.fn(),\n  },\n}));\n```\n2. Then import: import axios from 'axios'; import { InvoicaClient } from '../client';\n3. Create client in beforeEach: client = new InvoicaClient({ baseUrl: 'https://api.test.com', apiKey: 'test-key-123' })\n4. Call jest.clearAllMocks() in beforeEach\n5. Test getInvoice: mockRequest.mockResolvedValueOnce({ data: { id: 'inv_1', number: 'INV-001' } }); const result = await client.getInvoice('inv_1'); expect(result).toEqual({ id: 'inv_1', number: 'INV-001' }); expect(mockRequest).toHaveBeenCalledWith(expect.objectContaining({ method: 'GET', url: '/invoices/inv_1' }))\n6. Test createInvoice with body data, verify method POST and url /invoices and data present\n7. Test listApiKeys: verify GET /api-keys\n8. Test deleteWebhook: verify DELETE /webhooks/wh_1\n9. Test axios error handling: const axiosError = { response: { data: { message: 'Not found' } }, message: 'Request failed', isAxiosError: true }; mockRequest.mockRejectedValueOnce(axiosError); (axios as any).isAxiosError.mockReturnValue(true); await expect(client.getInvoice('x')).rejects.toThrow('Invoica API Error: Not found')\n10. Test non-axios error rethrown: (axios as any).isAxiosError.mockReturnValue(false); mockRequest.mockRejectedValueOnce(new Error('network')); await expect(client.getInvoice('x')).rejects.toThrow('network')",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/__tests__/client.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/src/__tests__/client.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/__tests__/client.test.ts",
+              "description": "Could add more edge cases like testing with empty responses or testing the constructor's axios.create call with correct headers"
+            },
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/__tests__/client.test.ts",
+              "description": "Missing tests for other methods like getSettlement, listSettlements, listInvoices, createApiKey, revokeApiKey, registerWebhook - though the core patterns are covered"
+            }
+          ],
+          "strengths": [
+            "Follows exact mocking pattern specified in requirements with jest.mock at top",
+            "Proper beforeEach setup with client instantiation and jest.clearAllMocks()",
+            "Tests cover both success and error scenarios as required",
+            "Axios error handling test correctly mocks isAxiosError and verifies error message transformation",
+            "Non-axios error test correctly verifies error passthrough",
+            "All test assertions match the expected patterns (method, url, data verification)",
+            "Clean, readable test structure with descriptive test names",
+            "Covers the core CRUD operations (GET, POST, DELETE) as specified",
+            "Mocks axios before imports as required",
+            "Covers both axios error and non-axios error flows",
+            "Validates request parameters for method, URL, and data",
+            "Follows the specified test setup with beforeEach and jest.clearAllMocks"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-171",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "medium",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create a new URL builder utility module for the SDK. This will be used by SDK clients to construct API endpoint URLs with query parameters.\n\nCreate file sdk/typescript/src/url-builder.ts with these exact exports:\n\n```typescript\n/**\n * Joins path segments, handling leading/trailing slashes correctly.\n * joinPath('/api', '/invoices', '/inv_1') => '/api/invoices/inv_1'\n * joinPath('api/', '/invoices/') => 'api/invoices'\n */\nexport function joinPath(...segments: string[]): string\n\n/**\n * Appends query parameters to a base URL.\n * Skips undefined/null values. Encodes values.\n * appendQueryParams('/invoices', { limit: '10', status: 'paid', offset: undefined })\n * => '/invoices?limit=10&status=paid'\n * appendQueryParams('/invoices', {}) => '/invoices'\n * appendQueryParams('/invoices') => '/invoices'\n */\nexport function appendQueryParams(baseUrl: string, params?: Record<string, string | number | boolean | undefined | null>): string\n\n/**\n * Builds a complete API URL from base, path segments, and optional query params.\n * buildUrl('https://api.invoica.com', ['invoices', 'inv_1'], { expand: 'true' })\n * => 'https://api.invoica.com/invoices/inv_1?expand=true'\n */\nexport function buildUrl(baseUrl: string, pathSegments: string[], params?: Record<string, string | number | boolean | undefined | null>): string\n```\n\nImplementation rules:\n1. joinPath: filter empty segments, strip leading/trailing slashes from middle segments, preserve leading slash on first segment if present, join with '/'\n2. appendQueryParams: use manual construction (no URL class). Convert numbers and booleans to strings with String(). Skip null/undefined values. Return baseUrl unchanged if no valid params.\n3. buildUrl: call joinPath(baseUrl, ...pathSegments) then appendQueryParams(result, params)\n4. No external dependencies — pure functions only\n5. Export all three functions",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/url-builder.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/src/url-builder.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 92,
+          "summary": "CEO resolved conflict (Claude approved, Codex rejected): **REJECT — Missing tests is a valid blocker**\n\nThe code implementation is solid and meets the spec perfectly, but Codex is right about the missing tests. Our company rule #2 is \"Test everything — No code merges without tests.\" \n\nURL building logic has many edge cases (empty segments, special charact",
+          "issues": [
+            {
+              "severity": "high",
+              "file": "sdk/typescript/src/url-builder.ts",
+              "description": "Missing test file(s) for url-builder.ts. Every new module must include Jest unit tests to meet the >80% coverage requirement."
+            }
+          ],
+          "strengths": [
+            "Exact compliance with task specification - all three functions exported with correct signatures",
+            "Proper TypeScript typing with no 'any' types used",
+            "Comprehensive JSDoc documentation with examples matching the spec",
+            "Correct implementation of joinPath logic - preserves leading slash, strips middle slashes, handles empty segments",
+            "Proper appendQueryParams implementation - manual construction, encodes values, skips null/undefined",
+            "Correct buildUrl composition using the other two functions as specified",
+            "No external dependencies - pure functions only as required",
+            "Good error handling and edge case coverage (empty params, empty segments)",
+            "Clean, readable code structure with appropriate comments",
+            "Proper encoding of query parameters using encodeURIComponent"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-172",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "medium",
+      "status": "done",
+      "dependencies": [
+        "SDK-171"
+      ],
+      "context": "Write unit tests for sdk/typescript/src/url-builder.ts. This module exports 3 pure functions: joinPath, appendQueryParams, buildUrl.\n\nExpected behavior:\n- joinPath('/api', '/invoices', '/inv_1') => '/api/invoices/inv_1'\n- joinPath('api/', '/invoices/') => 'api/invoices'\n- joinPath('/api') => '/api'\n- joinPath('', 'invoices') => 'invoices'\n- joinPath() => ''\n- appendQueryParams('/invoices', { limit: '10', status: 'paid' }) => '/invoices?limit=10&status=paid'\n- appendQueryParams('/invoices', { limit: 10, active: true }) => '/invoices?limit=10&active=true'\n- appendQueryParams('/invoices', { offset: undefined, limit: '5' }) => '/invoices?limit=5'\n- appendQueryParams('/invoices', {}) => '/invoices'\n- appendQueryParams('/invoices') => '/invoices'\n- buildUrl('https://api.com', ['invoices', 'inv_1']) => 'https://api.com/invoices/inv_1'\n- buildUrl('https://api.com', ['invoices'], { status: 'paid' }) => 'https://api.com/invoices?status=paid'\n- buildUrl('https://api.com/', ['/invoices/'], { limit: '10' }) => 'https://api.com/invoices?limit=10'\n\nRequirements:\n1. Import { joinPath, appendQueryParams, buildUrl } from '../url-builder'\n2. describe('joinPath') with at least 6 test cases covering: multiple segments, trailing slashes, leading slashes, single segment, empty segments, no arguments\n3. describe('appendQueryParams') with at least 5 test cases covering: multiple params, numeric/boolean values, undefined/null skipping, empty params object, no params argument\n4. describe('buildUrl') with at least 4 test cases covering: base + segments, base + segments + params, trailing slashes cleanup, no params\n5. No mocking needed — these are pure functions",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/__tests__/url-builder.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/src/__tests__/url-builder.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 94,
+          "summary": "Dual-approved: Claude (92/100) + Codex (95/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/__tests__/url-builder.test.ts",
+              "description": "Missing test case for null values in appendQueryParams - spec mentions undefined/null skipping but test only covers undefined"
+            },
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/__tests__/url-builder.test.ts",
+              "description": "Could benefit from edge case testing like special characters in URLs or very long parameter lists"
+            }
+          ],
+          "strengths": [
+            "Correct import statement matches task requirements",
+            "All three describe blocks present with proper naming",
+            "Test cases match the exact expected behavior from task spec",
+            "Good coverage of edge cases: empty strings, undefined values, trailing slashes",
+            "Clean, readable test descriptions that clearly state what is being tested",
+            "No unnecessary mocking - correctly treats these as pure functions",
+            "Meets minimum test case requirements: 6 for joinPath, 5 for appendQueryParams, 4 for buildUrl",
+            "Proper Jest syntax and structure throughout",
+            "Comprehensive coverage of all required scenarios per function",
+            "Accurate handling of edge cases (empty segments, undefined/null params)",
+            "No invalid syntax or markdown fences in test file",
+            "Clear, concise test descriptions and structure"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-334",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "medium",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create a new string utilities module for the frontend. These are pure utility functions used across the app.\n\nCreate file frontend/lib/string-utils.ts with these exact exports:\n\n```typescript\n/**\n * Convert a string to a URL-safe slug.\n * slugify('Hello World!') => 'hello-world'\n * slugify('  My API Key  ') => 'my-api-key'\n */\nexport function slugify(text: string): string\n\n/**\n * Capitalize the first letter of a string.\n * capitalize('hello') => 'Hello'\n * capitalize('') => ''\n * capitalize('HELLO') => 'HELLO'\n */\nexport function capitalize(text: string): string\n\n/**\n * Simple English pluralization.\n * pluralize('invoice', 0) => 'invoices'\n * pluralize('invoice', 1) => 'invoice'\n * pluralize('invoice', 5) => 'invoices'\n * pluralize('key', 2, 'keys') => 'keys'\n */\nexport function pluralize(word: string, count: number, plural?: string): string\n\n/**\n * Mask an email address for display.\n * maskEmail('john@example.com') => 'j***@example.com'\n * maskEmail('ab@test.com') => 'a***@test.com'\n * maskEmail('') => ''\n * maskEmail('invalid') => 'invalid'\n */\nexport function maskEmail(email: string): string\n\n/**\n * Get initials from a name (max 2 characters).\n * initials('John Doe') => 'JD'\n * initials('Alice') => 'A'\n * initials('John Middle Doe') => 'JD' (first and last)\n * initials('') => ''\n */\nexport function initials(name: string): string\n```\n\nImplementation rules:\n1. slugify: trim, lowercase, replace spaces and special chars with hyphens using .replace(/[^a-z0-9]+/g, '-'), strip leading/trailing hyphens with .replace(/^-+|-+$/g, '')\n2. capitalize: return empty string if empty, otherwise first char toUpperCase() + rest of string with slice(1)\n3. pluralize: if count === 1 return word, else return plural if provided, otherwise word + 's'\n4. maskEmail: if no '@' return as-is, if empty return '', split on '@', take first char of local part + '***' + '@' + domain\n5. initials: trim, split by whitespace, take first char of first word and first char of last word, join, toUpperCase(). Return empty string for empty input.\n6. No external dependencies — pure functions only\n7. Export all five functions",
+      "deliverables": {
+        "code": [
+          "frontend/lib/string-utils.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/lib/string-utils.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "Dual-approved: Claude (95/100) + Codex (95/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/lib/string-utils.ts",
+              "description": "Using charAt(0) instead of [0] - while more defensive, the spec examples suggest direct access would work fine"
+            }
+          ],
+          "strengths": [
+            "Perfect adherence to all 5 function specifications and implementation rules",
+            "Comprehensive JSDoc comments matching the exact format requested",
+            "Proper TypeScript typing with no 'any' types",
+            "Clean, readable implementation with appropriate edge case handling",
+            "No external dependencies - pure functions as required",
+            "Correct file location and exports",
+            "Defensive programming in initials() function with optional chaining",
+            "Proper handling of all specified edge cases (empty strings, invalid emails, etc.)",
+            "All five functions (slugify, capitalize, pluralize, maskEmail, initials) match the spec exactly",
+            "Clean and concise implementation using built-in string and RegExp methods",
+            "No external dependencies or use of any ‘any’ types",
+            "Comprehensive JSDoc comments for each function"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-335",
+      "agent": "frontend",
+      "type": "test",
+      "priority": "medium",
+      "status": "done",
+      "dependencies": [
+        "FE-334"
+      ],
+      "context": "Write unit tests for frontend/lib/string-utils.ts. This module exports 5 pure functions: slugify, capitalize, pluralize, maskEmail, initials.\n\nExpected behavior:\n- slugify('Hello World!') => 'hello-world'\n- slugify('  My API Key  ') => 'my-api-key'\n- slugify('hello--world') should collapse to 'hello-world'\n- slugify('') => ''\n- capitalize('hello') => 'Hello'\n- capitalize('') => ''\n- capitalize('HELLO') => 'HELLO'\n- capitalize('a') => 'A'\n- pluralize('invoice', 0) => 'invoices'\n- pluralize('invoice', 1) => 'invoice'\n- pluralize('invoice', 5) => 'invoices'\n- pluralize('key', 2, 'keys') => 'keys'\n- pluralize('child', 3, 'children') => 'children'\n- maskEmail('john@example.com') => 'j***@example.com'\n- maskEmail('ab@test.com') => 'a***@test.com'\n- maskEmail('') => ''\n- maskEmail('invalid') => 'invalid'\n- initials('John Doe') => 'JD'\n- initials('Alice') => 'A'\n- initials('John Middle Doe') => 'JD'\n- initials('') => ''\n\nRequirements:\n1. Import { slugify, capitalize, pluralize, maskEmail, initials } from '../string-utils'\n2. describe('slugify') with at least 5 test cases\n3. describe('capitalize') with at least 4 test cases\n4. describe('pluralize') with at least 4 test cases covering count=0, 1, >1, custom plural\n5. describe('maskEmail') with at least 4 test cases including empty, no @, normal emails\n6. describe('initials') with at least 4 test cases including empty, single name, two names, three names\n7. No mocking needed — these are pure functions",
+      "deliverables": {
+        "code": [
+          "frontend/lib/__tests__/string-utils.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/lib/__tests__/string-utils.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 94,
+          "summary": "Dual-approved: Claude (92/100) + Codex (95/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/lib/__tests__/string-utils.test.ts",
+              "description": "Test description 'masks email with single char before @' is misleading - 'ab@test.com' has 2 characters before @, not 1"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/lib/__tests__/string-utils.test.ts",
+              "description": "Could add edge case tests for pluralize with count 0 and custom plural, or negative counts"
+            }
+          ],
+          "strengths": [
+            "All 5 functions have comprehensive test coverage as required",
+            "Tests match the exact expected behavior from the task spec",
+            "Clean, readable test structure using inline expects",
+            "Proper imports from relative path '../string-utils'",
+            "Good edge case coverage including empty strings and invalid inputs",
+            "No unnecessary mocking - appropriate for pure functions",
+            "Follows Jest describe/it pattern consistently",
+            "Tests are focused and atomic - one assertion per test",
+            "All five pure functions are tested with the minimum required cases.",
+            "Descriptive test names make it clear what each scenario covers.",
+            "Additional edge case in slugify for special characters improves robustness.",
+            "No invalid syntax (e.g., markdown fences) or missing test files."
+          ]
+        }
+      }
+    }
+  ]
+}

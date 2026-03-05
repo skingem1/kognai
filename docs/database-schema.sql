@@ -1,0 +1,7 @@
+-- Countable Database Schema Reference
+-- Key tables: invoices, purchase_orders, ledger_entries,
+-- agent_budgets, tax_rates, tax_evidence, api_keys
+-- Primary relationships:
+-- invoice.id -> ledger_entry.invoice_id
+-- purchase_order.id -> invoice.po_id
+-- invoice.id -> tax_evidence.invoice_id

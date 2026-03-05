@@ -1,0 +1,427 @@
+{
+  "tasks": [
+    {
+      "id": "SDK-130",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "critical",
+      "dependencies": [],
+      "status": "done",
+      "context": "CRITICAL BUG FIX: The current http-transport.ts has a request() method that takes POSITIONAL arguments: request<T>(method, path, body?). But enhanced-client.ts and enhanced-client-extras.ts call it with an OBJECT: transport.request<T>({ method, path, body, query }). This means every API call fails at runtime because the first positional param receives the entire object.\n\nCreate a NEW fixed transport file: sdk/typescript/src/http-transport-v2.ts\n\nThis replaces http-transport.ts with the CORRECT object-based signature that callers already use:\n\n```typescript\nimport { withTimeout } from './timeout';\nimport { retryWithBackoff } from './retry';\nimport { buildUrl, buildHeaders } from './request-builder';\nimport { parseResponse } from './response-parser';\n\nexport interface TransportRequestConfig {\n  method: 'GET' | 'POST' | 'PATCH' | 'DELETE';\n  path: string;\n  body?: unknown;\n  query?: Record<string, string | number | boolean | undefined>;\n}\n\nexport class HttpTransport {\n  constructor(\n    private config: { baseUrl: string; apiKey: string; timeout: number; maxRetries: number }\n  ) {}\n\n  async request<T>(reqConfig: TransportRequestConfig): Promise<T> {\n    const { method, path, body, query } = reqConfig;\n    const url = buildUrl(this.config.baseUrl, path, query);\n    const headers = buildHeaders(this.config.apiKey);\n    const hasBody = body != null && method !== 'GET' && method !== 'DELETE';\n\n    const doFetch = async (): Promise<T> => {\n      const fetchFn = async (): Promise<T> => {\n        const response = await fetch(url, {\n          method,\n          headers: { ...headers, ...(hasBody ? { 'Content-Type': 'application/json' } : {}) },\n          ...(hasBody ? { body: JSON.stringify(body) } : {}),\n        });\n        return parseResponse<T>(response);\n      };\n      return withTimeout(fetchFn(), this.config.timeout);\n    };\n\n    return retryWithBackoff(doFetch, { maxRetries: this.config.maxRetries });\n  }\n}\n```\n\nRules: Maximum 40 lines. Export TransportRequestConfig interface AND HttpTransport class. The request() method MUST accept an object parameter (NOT positional args). Include query support via buildUrl's third param. No try-catch wrapping (errors propagate). No logging.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/http-transport-v2.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/src/http-transport-v2.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "Dual-approved: Claude (95/100) + Codex (95/100)",
+          "issues": [],
+          "strengths": [
+            "Correctly fixes the critical runtime bug by changing from positional to object-based parameters",
+            "Maintains exact same functionality as specified in task requirements",
+            "Clean TypeScript with proper interface definition and generic typing",
+            "Follows the 40-line limit constraint (34 lines)",
+            "Proper destructuring of request config object",
+            "Maintains all required functionality: timeout, retry, URL building, header building, response parsing",
+            "Correct conditional body handling for GET/DELETE vs POST/PATCH methods",
+            "No unnecessary abstractions or extra files added",
+            "Exports both required interface and class as specified",
+            "Follows task spec exactly",
+            "Under 40 lines and no markdown fences",
+            "Proper use of withTimeout, retryWithBackoff, buildUrl, buildHeaders, parseResponse",
+            "No unnecessary abstractions or logging"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-131",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "critical",
+      "dependencies": [],
+      "status": "done",
+      "context": "BUG FIX: The enhanced-client.ts calls this.rateLimitTracker.wait() but RateLimitTracker only has waitIfNeeded(). Also enhanced-client imports HttpTransport from './http-transport' which has the WRONG positional signature.\n\nCreate a FIXED enhanced client: sdk/typescript/src/enhanced-client-v2.ts\n\nThis fixes both bugs:\n\n```typescript\nimport { Invoice, InvoiceCreateInput, InvoiceListResponse, Settlement, SettlementListResponse } from './types';\nimport { HttpTransport } from './http-transport-v2';\nimport { resolveConfig, InvoicaClientConfig } from './client-config';\nimport { RateLimitTracker } from './rate-limit';\n\nexport class CountableClient {\n  protected transport: HttpTransport;\n  private rateLimitTracker: RateLimitTracker;\n\n  constructor(config: InvoicaClientConfig) {\n    const resolved = resolveConfig(config);\n    this.transport = new HttpTransport(resolved);\n    this.rateLimitTracker = new RateLimitTracker();\n  }\n\n  async getInvoice(id: string): Promise<Invoice> {\n    await this.rateLimitTracker.waitIfNeeded();\n    return this.transport.request<Invoice>({ method: 'GET', path: `/invoices/${id}` });\n  }\n\n  async createInvoice(input: InvoiceCreateInput): Promise<Invoice> {\n    await this.rateLimitTracker.waitIfNeeded();\n    return this.transport.request<Invoice>({ method: 'POST', path: '/invoices', body: input });\n  }\n\n  async listInvoices(params?: { limit?: number; offset?: number; status?: string }): Promise<InvoiceListResponse> {\n    await this.rateLimitTracker.waitIfNeeded();\n    return this.transport.request<InvoiceListResponse>({ method: 'GET', path: '/invoices', query: params });\n  }\n\n  async getSettlement(id: string): Promise<Settlement> {\n    await this.rateLimitTracker.waitIfNeeded();\n    return this.transport.request<Settlement>({ method: 'GET', path: `/settlements/${id}` });\n  }\n\n  async listSettlements(params?: { limit?: number; offset?: number }): Promise<SettlementListResponse> {\n    await this.rateLimitTracker.waitIfNeeded();\n    return this.transport.request<SettlementListResponse>({ method: 'GET', path: '/settlements', query: params });\n  }\n}\n```\n\nKey changes from original: (1) imports HttpTransport from './http-transport-v2', (2) uses waitIfNeeded() not wait(), (3) transport field is 'protected' not 'private' so InvoicaFullClient can access it. Maximum 40 lines. No try-catch. No validation.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/enhanced-client-v2.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/src/enhanced-client-v2.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 93,
+          "summary": "Dual-approved: Claude (95/100) + Codex (90/100)",
+          "issues": [],
+          "strengths": [
+            "Correctly imports HttpTransport from './http-transport-v2' (fixes import bug)",
+            "Uses waitIfNeeded() instead of wait() (fixes method call bug)",
+            "Transport field is properly 'protected' for inheritance",
+            "Exactly matches the provided specification code",
+            "Clean, minimal implementation with no unnecessary additions",
+            "Proper TypeScript typing throughout",
+            "Follows the 40-line constraint (35 lines actual)",
+            "No code fences or invalid syntax",
+            "No try-catch or validation as requested",
+            "Correctly imports HttpTransport from the v2 module",
+            "Uses waitIfNeeded() instead of the non-existent wait() method",
+            "Sets transport to protected for downstream access",
+            "Maintains concise implementation under 40 lines",
+            "No syntactic or security issues detected"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-132",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "critical",
+      "dependencies": [],
+      "status": "done",
+      "context": "Create the updated complete client that uses the v2 fixed modules. File: sdk/typescript/src/complete-client-v2.ts\n\nThis replaces complete-client.ts by importing from the fixed v2 modules:\n\n```typescript\nimport { CountableClient } from './enhanced-client-v2';\nimport { createApiKeyMethods, createWebhookMethods } from './enhanced-client-extras';\nimport { HttpTransport } from './http-transport-v2';\nimport { resolveConfig, InvoicaClientConfig } from './client-config';\n\nexport class InvoicaFullClient extends CountableClient {\n  public readonly apiKeys: ReturnType<typeof createApiKeyMethods>;\n  public readonly webhooks: ReturnType<typeof createWebhookMethods>;\n\n  constructor(config: InvoicaClientConfig) {\n    super(config);\n    this.apiKeys = createApiKeyMethods(this.transport);\n    this.webhooks = createWebhookMethods(this.transport);\n  }\n}\n```\n\nKey changes from original: (1) imports from v2 modules, (2) reuses this.transport from parent class (transport is now 'protected' in enhanced-client-v2) instead of creating a second HttpTransport instance. Maximum 20 lines. No error handling. No try-catch. No validation.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/complete-client-v2.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/src/complete-client-v2.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 93,
+          "summary": "Dual-approved: Claude (95/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/complete-client-v2.ts",
+              "description": "Missing import for HttpTransport and resolveConfig that were shown in the spec example, but these may not be needed if not used"
+            }
+          ],
+          "strengths": [
+            "No markdown code fences - valid TypeScript syntax",
+            "Correctly imports from v2 modules as specified",
+            "Properly extends CountableClient and reuses this.transport from parent",
+            "Stays well under 20-line limit (14 lines)",
+            "No unnecessary error handling or validation as requested",
+            "Clean, focused implementation that matches the exact pattern shown in spec",
+            "Proper TypeScript typing with ReturnType utility type",
+            "Concise and to the point—under 20 lines",
+            "Imports exclusively from the v2 modules as required",
+            "Reuses the protected `transport` from `CountableClient` without duplicating an HttpTransport instance",
+            "No unintended error handling or validation added"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-133",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "critical",
+      "dependencies": [],
+      "status": "done",
+      "context": "Create the updated barrel export file that replaces both the old index.ts AND the Week 24 barrel.ts. File: sdk/typescript/src/barrel-v2.ts\n\nThis is the definitive barrel that exports from v2 fixed modules and includes ALL SDK features:\n\n```typescript\n// Client classes\nexport { CountableClient } from './enhanced-client-v2';\nexport { InvoicaFullClient } from './complete-client-v2';\nexport type { InvoicaClientConfig as CountableClientConfig } from './client-config';\n\n// Transport\nexport { HttpTransport } from './http-transport-v2';\nexport type { TransportRequestConfig } from './http-transport-v2';\n\n// Errors\nexport { InvoicaError, ValidationError, NotFoundError, AuthenticationError } from './errors';\nexport { CountableError, RateLimitError } from './error-compat';\n\n// Utilities\nexport { createDebugLogger, isDebugEnabled } from './debug';\nexport type { DebugLogger } from './debug';\nexport { createApiKeyMethods, createWebhookMethods } from './enhanced-client-extras';\nexport { createInterceptorManager } from './interceptors';\nexport type { RequestInterceptor, ResponseInterceptor, InterceptorManager } from './interceptors';\nexport { detectEnvironment, getDefaultBaseUrl, getUserAgent, supportsStreaming } from './environment';\nexport type { SdkEnvironment } from './environment';\nexport { version } from './version';\n\n// Core types\nexport type {\n  Invoice, InvoiceCreateInput, InvoiceListResponse,\n  Settlement, SettlementListResponse, SettlementStatus,\n  ApiKey, ApiKeyCreateResponse, ApiKeyListResponse,\n  WebhookRegistration, WebhookRegistrationConfig, WebhookListResponse, WebhookEventType,\n  ApiResponse, CreateInvoiceParams, CreateApiKeyParams, GetSettlementParams,\n} from './types';\n\n// Extended types\nexport type {\n  InvoiceUpdateInput, DeleteResponse, PaginationParams,\n  ListResponse, ErrorResponse, WebhookEvent,\n} from './missing-types';\n```\n\nRules: Pure re-exports ONLY. No logic. Maximum 40 lines. Export from ALL v2 modules + interceptors + environment + missing-types.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/barrel-v2.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/src/barrel-v2.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "Dual-approved: Claude (95/100) + Codex (95/100)",
+          "issues": [],
+          "strengths": [
+            "Exactly matches the provided task specification",
+            "Pure re-exports only with no logic as required",
+            "Well under the 40-line limit (32 lines including comments)",
+            "Proper TypeScript syntax with correct export statements",
+            "Comprehensive coverage of all v2 modules: enhanced-client-v2, complete-client-v2, http-transport-v2, errors, interceptors, environment, missing-types",
+            "Clean organization with logical grouping (Client classes, Transport, Errors, Utilities, Core types, Extended types)",
+            "Proper type-only exports where appropriate",
+            "No markdown code fences or invalid syntax",
+            "Maintains all functionality from the specification without additions or omissions",
+            "Pure re-exports only, no logic included",
+            "Under the 40-line limit",
+            "Covers all specified modules and types",
+            "Follows naming and aliasing conventions"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-134",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "status": "done",
+      "context": "Create tests for the environment detection utility. File: sdk/typescript/tests/environment.test.ts\n\nTest the 4 exported functions from sdk/typescript/src/environment.ts:\n\n```typescript\nimport { detectEnvironment, getDefaultBaseUrl, getUserAgent, supportsStreaming } from '../src/environment';\n\ndescribe('detectEnvironment', () => {\n  it('returns node in Node.js environment', () => {\n    expect(detectEnvironment()).toBe('node');\n  });\n});\n\ndescribe('getDefaultBaseUrl', () => {\n  it('returns the production API URL', () => {\n    expect(getDefaultBaseUrl()).toBe('https://api.invoica.ai/v1');\n  });\n});\n\ndescribe('getUserAgent', () => {\n  it('includes sdk name and environment', () => {\n    const ua = getUserAgent();\n    expect(ua).toContain('invoica-sdk');\n    expect(ua).toContain('node');\n  });\n});\n\ndescribe('supportsStreaming', () => {\n  it('returns a boolean', () => {\n    expect(typeof supportsStreaming()).toBe('boolean');\n  });\n});\n```\n\nRules: Maximum 30 lines. 4 test cases only. No mocking. Import from '../src/environment'. Use describe/it/expect pattern.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/tests/environment.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/tests/environment.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 93,
+          "summary": "Dual-approved: Claude (95/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/tests/environment.test.ts",
+              "description": "Tests are quite basic and don't cover edge cases, but this aligns with the task's simple requirements"
+            }
+          ],
+          "strengths": [
+            "Exact match to provided task specification - no overengineering",
+            "Proper Jest describe/it/expect pattern usage",
+            "Correct import path '../src/environment'",
+            "Meets 30-line maximum constraint (24 lines)",
+            "All 4 required test cases implemented",
+            "No unnecessary mocking as specified",
+            "Clean, readable test structure",
+            "No markdown code fences or syntax errors",
+            "Follows MiniMax best practice of doing exactly what was asked",
+            "Follows the spec with exactly four test cases",
+            "No markdown code fences present in the source file",
+            "Keeps file under the 30-line limit",
+            "Covers all exported functions from environment.ts"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-135",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "status": "done",
+      "context": "Create tests for the interceptor manager. File: sdk/typescript/tests/interceptors.test.ts\n\nTest the createInterceptorManager factory from sdk/typescript/src/interceptors.ts:\n\n```typescript\nimport { createInterceptorManager } from '../src/interceptors';\n\ndescribe('createInterceptorManager', () => {\n  it('creates manager with empty arrays', () => {\n    const manager = createInterceptorManager();\n    expect(manager.request).toEqual([]);\n    expect(manager.response).toEqual([]);\n  });\n\n  it('adds request interceptor and returns index', () => {\n    const manager = createInterceptorManager();\n    const fn = (config: any) => config;\n    const index = manager.addRequest(fn);\n    expect(index).toBe(0);\n    expect(manager.request.length).toBe(1);\n  });\n\n  it('adds response interceptor and returns index', () => {\n    const manager = createInterceptorManager();\n    const fn = (res: any) => res;\n    const index = manager.addResponse(fn);\n    expect(index).toBe(0);\n    expect(manager.response.length).toBe(1);\n  });\n\n  it('removes interceptor by index', () => {\n    const manager = createInterceptorManager();\n    manager.addRequest((config: any) => config);\n    manager.removeRequest(0);\n    expect(manager.request.length).toBe(0);\n  });\n});\n```\n\nRules: Maximum 35 lines. 4 test cases. Import from '../src/interceptors'. Use describe/it/expect. Use 'any' type for interceptor params to keep tests short.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/tests/interceptors.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/tests/interceptors.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 94,
+          "summary": "Dual-approved: Claude (95/100) + Codex (92/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/tests/interceptors.test.ts",
+              "description": "Uses 'any' type for interceptor parameters, but this is explicitly allowed per task rules to keep tests concise"
+            }
+          ],
+          "strengths": [
+            "Exactly matches the provided task specification code",
+            "Proper test structure with describe/it/expect pattern",
+            "Covers all core functionality: creation, adding interceptors, removing interceptors",
+            "Stays within 35-line limit (24 lines actual)",
+            "Correct import path from '../src/interceptors'",
+            "Tests both request and response interceptor flows",
+            "Validates return values and state changes appropriately",
+            "No code fences or syntax issues",
+            "Clean, readable test cases with clear assertions",
+            "Follows the task spec exactly with four focused test cases.",
+            "Stays within the 35-line limit and uses proper Jest syntax.",
+            "No markdown fences or syntax errors present.",
+            "Good use of concise arrow functions and 'any' types for brevity."
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-136",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "status": "done",
+      "context": "Create tests for the missing-types module. File: sdk/typescript/tests/missing-types.test.ts\n\nTest that all interfaces from sdk/typescript/src/missing-types.ts are well-formed by creating test objects:\n\n```typescript\nimport type { InvoiceUpdateInput, DeleteResponse, PaginationParams, ListResponse, ErrorResponse, WebhookEvent } from '../src/missing-types';\n\ndescribe('missing-types', () => {\n  it('InvoiceUpdateInput accepts partial fields', () => {\n    const input: InvoiceUpdateInput = { description: 'test' };\n    expect(input.description).toBe('test');\n    expect(input.status).toBeUndefined();\n  });\n\n  it('DeleteResponse has required fields', () => {\n    const res: DeleteResponse = { success: true, id: '123', deletedAt: '2026-01-01' };\n    expect(res.success).toBe(true);\n    expect(res.id).toBe('123');\n  });\n\n  it('ListResponse is generic', () => {\n    const list: ListResponse<string> = { data: ['a'], total: 1, limit: 10, offset: 0, hasMore: false };\n    expect(list.data).toEqual(['a']);\n    expect(list.hasMore).toBe(false);\n  });\n\n  it('ErrorResponse has success false', () => {\n    const err: ErrorResponse = { success: false, error: { code: 'ERR', message: 'fail' } };\n    expect(err.success).toBe(false);\n  });\n});\n```\n\nRules: Maximum 30 lines. 4 test cases. Use 'import type' for interfaces. Use describe/it/expect. Tests validate that TypeScript interfaces compile correctly with valid data.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/tests/missing-types.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/tests/missing-types.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 88,
+          "summary": "Dual-approved: Claude (85/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/tests/missing-types.test.ts",
+              "description": "Third test case combines PaginationParams and ListResponse instead of testing ListResponse generics as specified in task spec"
+            },
+            {
+              "severity": "low",
+              "file": "sdk/typescript/tests/missing-types.test.ts",
+              "description": "Fourth test case combines ErrorResponse and WebhookEvent instead of separate tests as shown in spec"
+            }
+          ],
+          "strengths": [
+            "Correct use of 'import type' for interfaces as required",
+            "All 6 interfaces from missing-types.ts are tested",
+            "Proper TypeScript compilation validation approach",
+            "Uses describe/it/expect structure as specified",
+            "Within 30-line limit (25 lines)",
+            "No code fences or syntax issues",
+            "Tests validate interface structure and type safety effectively",
+            "Good test data choices that exercise interface properties",
+            "Uses 'import type' to only bring in type definitions",
+            "Four concise test cases covering InvoiceUpdateInput, DeleteResponse, ListResponse (with PaginationParams), and ErrorResponse/WebhookEvent",
+            "No code fences present; valid TypeScript test syntax",
+            "Well under the 30-line limit and adheres to describe/it/expect style"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-150",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "status": "done",
+      "context": "Create a rate limiting documentation page. File: frontend/app/docs/rate-limiting/page.tsx\n\nThis is a Next.js server component (NO 'use client'). Documents how the SDK handles rate limiting.\n\nStructure:\n- h1: 'Rate Limiting'\n- p: Brief intro about API rate limits and how the SDK handles them automatically\n- h2: 'How It Works' — p explaining the SDK reads x-ratelimit-limit, x-ratelimit-remaining, x-ratelimit-reset headers from every response\n- h2: 'Automatic Retry' — p explaining the SDK automatically waits and retries when rate limited (429 status). Code block: const invoices = await client.listInvoices(); // SDK waits if rate limited\n- h2: 'Manual Rate Limit Checking' — code block showing: import { RateLimitTracker } from '@invoica/sdk'; const tracker = new RateLimitTracker(); tracker.update(responseHeaders); if (tracker.shouldWait()) { await tracker.waitIfNeeded(); }\n- h2: 'Default Limits' — ul with 3 items: 100 requests per minute per API key, 1000 requests per hour per API key, Rate limit headers included in every response\n\nUse ONLY inline styles. No Tailwind. No external imports. No 'use client'. Style: maxWidth 768px, margin '0 auto', padding 32px, fontFamily system-ui. h1 fontSize 32px, h2 fontSize 24px marginTop 32px. Code blocks: backgroundColor '#f5f5f5', padding 16px, borderRadius 8px, overflowX 'auto', fontFamily monospace.\n\nMaximum 55 lines. Export default function RateLimitingPage().",
+      "deliverables": {
+        "code": [
+          "frontend/app/docs/rate-limiting/page.tsx"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/app/docs/rate-limiting/page.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 94,
+          "summary": "Dual-approved: Claude (92/100) + Codex (95/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/app/docs/rate-limiting/page.tsx",
+              "description": "Unnecessary React import - Next.js 13+ doesn't require explicit React import for JSX"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/app/docs/rate-limiting/page.tsx",
+              "description": "Could add fallback fonts to system-ui for better cross-browser compatibility"
+            }
+          ],
+          "strengths": [
+            "Perfect adherence to task specification - all required sections present",
+            "Correct Next.js server component (no 'use client')",
+            "Proper inline styling with exact specifications (maxWidth 768px, margin 0 auto, etc.)",
+            "Code blocks properly styled with backgroundColor #f5f5f5 and monospace font",
+            "Clean, readable structure with appropriate spacing and typography",
+            "Stays within 55-line limit (actual: 35 lines)",
+            "Semantic HTML structure with proper heading hierarchy",
+            "No external dependencies or Tailwind usage as required",
+            "Accurate technical content about rate limiting implementation",
+            "Follows the specified structure and content exactly",
+            "Uses only inline styles with correct style values",
+            "No 'use client' directive—valid server component",
+            "Includes all required code examples and headings",
+            "Line count is within the 55-line maximum"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-151",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "medium",
+      "dependencies": [],
+      "status": "done",
+      "context": "Create a retry configuration documentation page. File: frontend/app/docs/retry/page.tsx\n\nThis is a Next.js server component (NO 'use client'). Documents the SDK retry behavior.\n\nStructure:\n- h1: 'Retry Configuration'\n- p: Brief intro about automatic retry with exponential backoff for transient errors\n- h2: 'Retryable Status Codes' — ul listing: 408 Request Timeout, 429 Too Many Requests, 500 Internal Server Error, 502 Bad Gateway, 503 Service Unavailable, 504 Gateway Timeout\n- h2: 'Configuration' — code block: const client = new CountableClient({ apiKey: 'inv_live_...', maxRetries: 5, timeout: 30000 });\n- h2: 'Backoff Strategy' — p explaining exponential backoff with jitter. Formula: delay = min(baseDelay * 2^attempt + random_jitter, maxDelay)\n- h2: 'Disabling Retries' — code block: const client = new CountableClient({ apiKey: 'inv_live_...', maxRetries: 0 });\n\nUse ONLY inline styles. No Tailwind. No external imports. No 'use client'. Style: maxWidth 768px, margin '0 auto', padding 32px, fontFamily system-ui. h1 fontSize 32px, h2 fontSize 24px marginTop 32px. Code blocks: backgroundColor '#f5f5f5', padding 16px, borderRadius 8px, overflowX 'auto', fontFamily monospace.\n\nMaximum 55 lines. Export default function RetryPage().",
+      "deliverables": {
+        "code": [
+          "frontend/app/docs/retry/page.tsx"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/app/docs/retry/page.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 98,
+          "summary": "Dual-approved: Claude (95/100) + Codex (100/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/app/docs/retry/page.tsx",
+              "description": "Could benefit from slightly more spacing between list items for better readability"
+            }
+          ],
+          "strengths": [
+            "Follows Next.js server component pattern correctly (no 'use client')",
+            "All required content sections present and accurate",
+            "Inline styles implemented exactly as specified",
+            "Code blocks properly formatted with pre/code elements",
+            "Clean, readable structure under 55 lines",
+            "No external imports or dependencies",
+            "Proper TypeScript syntax with default export",
+            "Content is technically accurate for SDK retry behavior",
+            "Styling matches specifications (maxWidth 768px, system-ui font, correct font sizes)",
+            "Strictly adheres to inline styling requirements",
+            "Includes all required sections and correct content",
+            "No extraneous imports or 'use client' directive",
+            "Clean, concise, and well under the 55-line limit"
+          ]
+        }
+      }
+    }
+  ]
+}

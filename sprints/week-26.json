@@ -1,0 +1,429 @@
+{
+  "tasks": [
+    {
+      "id": "SDK-140",
+      "agent": "backend-core",
+      "type": "bugfix",
+      "priority": "critical",
+      "dependencies": [],
+      "status": "done",
+      "context": "CRITICAL BUG FIX: response-parser.ts imports CountableError, AuthenticationError, NotFoundError, RateLimitError, ValidationError from './errors', but errors.ts only exports InvoicaError, ValidationError, NotFoundError, AuthenticationError. CountableError and RateLimitError are in './error-compat', not './errors'.\n\nCreate a FIXED response parser: sdk/typescript/src/response-parser-v2.ts\n\nThis is an exact copy of the current response-parser.ts but with the CORRECT import path:\n\n```typescript\nimport { InvoicaError, AuthenticationError, NotFoundError, ValidationError } from './errors';\nimport { RateLimitError } from './error-compat';\n\nexport interface ApiResponse<T> {\n  success: boolean;\n  data?: T;\n  error?: { message: string; code: string; details?: unknown };\n  meta?: { total?: number; limit?: number; offset?: number; hasMore?: boolean };\n}\n\nexport function isApiError(error: unknown): error is InvoicaError {\n  return error instanceof InvoicaError;\n}\n\nexport async function parseResponse<T>(response: Response): Promise<T> {\n  let json: ApiResponse<T>;\n  try {\n    json = (await response.json()) as ApiResponse<T>;\n  } catch {\n    throw new InvoicaError('Failed to parse response', 500, 'PARSE_ERROR');\n  }\n\n  if (!response.ok) {\n    const errorMap: Record<number, new (message: string, statusCode: number, code: string) => InvoicaError> = {\n      400: ValidationError as any,\n      401: AuthenticationError as any,\n      404: NotFoundError as any,\n    };\n    const err = json.error ?? { message: response.statusText, code: 'UNKNOWN_ERROR' };\n\n    if (response.status === 429) {\n      throw new RateLimitError(err.message);\n    }\n\n    const ErrorClass = errorMap[response.status];\n    if (ErrorClass) {\n      throw new ErrorClass(err.message, response.status, err.code);\n    }\n    throw new InvoicaError(err.message, response.status, err.code);\n  }\n\n  if (!json.success || json.data === undefined) {\n    throw new InvoicaError('Response missing data', response.status, 'INVALID_RESPONSE');\n  }\n\n  return json.data;\n}\n```\n\nKey changes: (1) imports InvoicaError from './errors' instead of CountableError, (2) imports RateLimitError from './error-compat', (3) uses InvoicaError constructor signature (message, statusCode, code) which matches errors.ts, (4) handles 429 separately since RateLimitError has different constructor. Maximum 50 lines. Export ApiResponse, isApiError, parseResponse.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/response-parser-v2.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/src/response-parser-v2.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 94,
+          "summary": "Dual-approved: Claude (95/100) + Codex (92/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/response-parser-v2.ts",
+              "description": "Uses 'as any' type assertions on lines 25-27, which bypasses TypeScript's type checking. While functionally correct here, it's not ideal practice."
+            }
+          ],
+          "strengths": [
+            "Correctly imports InvoicaError from './errors' instead of non-existent CountableError",
+            "Properly imports RateLimitError from './error-compat' as specified",
+            "Maintains exact functionality from original response-parser.ts",
+            "Handles 429 status code separately due to RateLimitError's different constructor signature",
+            "Uses proper InvoicaError constructor signature (message, statusCode, code)",
+            "Exports all required functions and interfaces (ApiResponse, isApiError, parseResponse)",
+            "File is exactly 44 lines, well under the 50-line limit",
+            "No markdown code fences or syntax errors",
+            "Proper error handling with try-catch blocks",
+            "Clean TypeScript with proper generics usage",
+            "Correctly imports InvoicaError from './errors' and RateLimitError from './error-compat'.",
+            "Maintains existing functionality and error mapping without losing any branches.",
+            "Clean and concise implementation under 50 lines.",
+            "No markdown code fences or invalid syntax present."
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-141",
+      "agent": "backend-core",
+      "type": "bugfix",
+      "priority": "critical",
+      "dependencies": [],
+      "status": "done",
+      "context": "BUG FIX: enhanced-client-extras.ts imports HttpTransport from './http-transport' (the OLD file with positional args). The methods inside call transport.request<T>({ method, path, body }) with an OBJECT, which only works with http-transport-v2.\n\nCreate a FIXED extras file: sdk/typescript/src/enhanced-client-extras-v2.ts\n\nThis is an exact copy of enhanced-client-extras.ts but with the corrected import:\n\n```typescript\nimport { HttpTransport } from './http-transport-v2';\nimport {\n  ApiKey,\n  ApiKeyCreateResponse,\n  WebhookRegistrationConfig,\n  WebhookRegistration,\n  WebhookListResponse,\n} from './types';\n\nexport function createApiKeyMethods(transport: HttpTransport) {\n  return {\n    async createApiKey(name: string): Promise<ApiKeyCreateResponse> {\n      return transport.request<ApiKeyCreateResponse>({\n        method: 'POST',\n        path: '/api-keys',\n        body: { name },\n      });\n    },\n    async revokeApiKey(id: string): Promise<void> {\n      return transport.request<void>({\n        method: 'DELETE',\n        path: `/api-keys/${id}`,\n      });\n    },\n    async listApiKeys(): Promise<ApiKey[]> {\n      return transport.request<ApiKey[]>({\n        method: 'GET',\n        path: '/api-keys',\n      });\n    },\n  };\n}\n\nexport function createWebhookMethods(transport: HttpTransport) {\n  return {\n    async registerWebhook(config: WebhookRegistrationConfig): Promise<WebhookRegistration> {\n      return transport.request<WebhookRegistration>({\n        method: 'POST',\n        path: '/webhooks',\n        body: config,\n      });\n    },\n    async listWebhooks(): Promise<WebhookListResponse> {\n      return transport.request<WebhookListResponse>({\n        method: 'GET',\n        path: '/webhooks',\n      });\n    },\n    async deleteWebhook(id: string): Promise<void> {\n      return transport.request<void>({\n        method: 'DELETE',\n        path: `/webhooks/${id}`,\n      });\n    },\n  };\n}\n```\n\nOnly change from original: line 1 imports from './http-transport-v2' instead of './http-transport'. Maximum 55 lines.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/enhanced-client-extras-v2.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/src/enhanced-client-extras-v2.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "Dual-approved: Claude (95/100) + Codex (95/100)",
+          "issues": [],
+          "strengths": [
+            "Exact fix as specified - only changed the import statement on line 1",
+            "All existing functionality preserved - no methods lost or modified",
+            "Proper TypeScript typing with generics maintained",
+            "Clean code structure with proper async/await patterns",
+            "File length within specification (55 lines max)",
+            "No code fences or invalid syntax",
+            "Addresses the core issue: methods calling transport.request() with object syntax now use the correct v2 transport",
+            "Accurately mirrors the original file with only the import path changed.",
+            "No markdown code fences present in the source file.",
+            "File length is within the specified maximum of 55 lines."
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-142",
+      "agent": "backend-core",
+      "type": "bugfix",
+      "priority": "critical",
+      "dependencies": [],
+      "status": "done",
+      "context": "FINAL BARREL: Now that response-parser-v2 and enhanced-client-extras-v2 exist, create the DEFINITIVE index file that replaces the broken index.ts.\n\nCreate: sdk/typescript/src/index-v2.ts\n\nThis is the real package entry point that exports ALL v2 modules with correct imports:\n\n```typescript\n// Client classes\nexport { CountableClient } from './enhanced-client-v2';\nexport { InvoicaFullClient } from './complete-client-v2';\nexport type { InvoicaClientConfig as CountableClientConfig } from './client-config';\n\n// Transport\nexport { HttpTransport } from './http-transport-v2';\nexport type { TransportRequestConfig } from './http-transport-v2';\n\n// Errors\nexport { InvoicaError, ValidationError, NotFoundError, AuthenticationError } from './errors';\nexport { CountableError, RateLimitError } from './error-compat';\n\n// Response parsing\nexport { parseResponse, isApiError } from './response-parser-v2';\nexport type { ApiResponse } from './response-parser-v2';\n\n// Utilities\nexport { createDebugLogger, isDebugEnabled } from './debug';\nexport type { DebugLogger } from './debug';\nexport { createApiKeyMethods, createWebhookMethods } from './enhanced-client-extras-v2';\nexport { createInterceptorManager } from './interceptors';\nexport type { RequestInterceptor, ResponseInterceptor, InterceptorManager } from './interceptors';\nexport { detectEnvironment, getDefaultBaseUrl, getUserAgent, supportsStreaming } from './environment';\nexport type { SdkEnvironment } from './environment';\nexport { version } from './version';\n\n// Core types\nexport type {\n  Invoice, InvoiceCreateInput, InvoiceListResponse,\n  Settlement, SettlementListResponse, SettlementStatus,\n  ApiKey, ApiKeyCreateResponse, ApiKeyListResponse,\n  WebhookRegistration, WebhookRegistrationConfig, WebhookListResponse, WebhookEventType,\n  CreateInvoiceParams, CreateApiKeyParams, GetSettlementParams,\n} from './types';\n\n// Extended types\nexport type {\n  InvoiceUpdateInput, DeleteResponse, PaginationParams,\n  ListResponse, ErrorResponse, WebhookEvent,\n} from './missing-types';\n```\n\nKey differences from barrel-v2.ts: (1) exports from response-parser-v2 and enhanced-client-extras-v2, (2) exports parseResponse and isApiError utilities, (3) exports ApiResponse type. Maximum 45 lines. Pure re-exports ONLY.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/index-v2.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/src/index-v2.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "Dual-approved: Claude (95/100) + Codex (95/100)",
+          "issues": [],
+          "strengths": [
+            "Exactly matches the provided task specification template",
+            "Pure re-exports only - no implementation code",
+            "Proper TypeScript export syntax throughout",
+            "Clean organization with logical groupings (Client classes, Transport, Errors, etc.)",
+            "Correct line count (39 lines, well under the 45 line limit)",
+            "No markdown code fences or invalid syntax",
+            "Includes all required exports from response-parser-v2 and enhanced-client-extras-v2",
+            "Proper type-only exports where appropriate",
+            "Clear comments for each section",
+            "Exact match of all required exports",
+            "No extraneous code or comments beyond a harmless file header",
+            "Under the 45-line limit",
+            "Pure re-exports only, no functionality lost"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-143",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "status": "done",
+      "context": "Create tests for the rate limit tracker. File: sdk/typescript/tests/rate-limit.test.ts\n\nTest the RateLimitTracker class from sdk/typescript/src/rate-limit.ts. The class has methods: update(headers), getInfo(), shouldWait(), getWaitMs(), waitIfNeeded().\n\n```typescript\nimport { RateLimitTracker } from '../src/rate-limit';\n\ndescribe('RateLimitTracker', () => {\n  it('starts with no rate limit info', () => {\n    const tracker = new RateLimitTracker();\n    expect(tracker.getInfo()).toBeNull();\n    expect(tracker.shouldWait()).toBe(false);\n  });\n\n  it('updates from response headers', () => {\n    const tracker = new RateLimitTracker();\n    tracker.update({\n      'x-ratelimit-limit': '100',\n      'x-ratelimit-remaining': '50',\n      'x-ratelimit-reset': String(Math.floor(Date.now() / 1000) + 60),\n    });\n    const info = tracker.getInfo();\n    expect(info).not.toBeNull();\n    expect(info!.limit).toBe(100);\n    expect(info!.remaining).toBe(50);\n  });\n\n  it('shouldWait returns false when remaining > 0', () => {\n    const tracker = new RateLimitTracker();\n    tracker.update({\n      'x-ratelimit-limit': '100',\n      'x-ratelimit-remaining': '50',\n      'x-ratelimit-reset': String(Math.floor(Date.now() / 1000) + 60),\n    });\n    expect(tracker.shouldWait()).toBe(false);\n  });\n\n  it('shouldWait returns true when remaining is 0', () => {\n    const tracker = new RateLimitTracker();\n    tracker.update({\n      'x-ratelimit-limit': '100',\n      'x-ratelimit-remaining': '0',\n      'x-ratelimit-reset': String(Math.floor(Date.now() / 1000) + 60),\n    });\n    expect(tracker.shouldWait()).toBe(true);\n  });\n});\n```\n\nRules: Maximum 40 lines. 4 test cases. Import from '../src/rate-limit'. Use describe/it/expect. No mocking of Date.now (use real timestamps with future reset).",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/tests/rate-limit.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/tests/rate-limit.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 85,
+          "summary": "Dual-approved: Claude (85/100) + Codex (85/100)",
+          "issues": [
+            {
+              "severity": "medium",
+              "file": "sdk/typescript/tests/rate-limit.test.ts",
+              "description": "Missing test for waitIfNeeded() method which was mentioned in the task spec"
+            },
+            {
+              "severity": "low",
+              "file": "sdk/typescript/tests/rate-limit.test.ts",
+              "description": "Could benefit from edge case testing (invalid headers, expired reset times)"
+            }
+          ],
+          "strengths": [
+            "Follows exact import path specified in task",
+            "Uses describe/it/expect pattern as required",
+            "Stays within 40-line limit (39 lines)",
+            "Tests core functionality: getInfo(), shouldWait(), update()",
+            "Uses real timestamps with future reset as specified",
+            "No markdown code fences - clean TypeScript syntax",
+            "Good test coverage of happy path scenarios",
+            "Proper null checking and type assertions",
+            "Tests both positive and negative cases for shouldWait()",
+            "Includes getWaitMs() testing in relevant scenarios",
+            "No markdown fences present",
+            "Meets the 4 test cases rule",
+            "Uses real timestamps without mocking Date.now",
+            "Covers getInfo, shouldWait, and getWaitMs behaviors"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-144",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "status": "done",
+      "context": "Create tests for the error compatibility layer. File: sdk/typescript/tests/error-compat.test.ts\n\nTest that error-compat.ts correctly aliases InvoicaError as CountableError and provides RateLimitError.\n\n```typescript\nimport { CountableError, RateLimitError, InvoicaError } from '../src/error-compat';\n\ndescribe('error-compat', () => {\n  it('CountableError is InvoicaError', () => {\n    expect(CountableError).toBe(InvoicaError);\n  });\n\n  it('RateLimitError extends InvoicaError', () => {\n    const err = new RateLimitError('Too many requests', 30);\n    expect(err).toBeInstanceOf(InvoicaError);\n    expect(err.statusCode).toBe(429);\n    expect(err.code).toBe('RATE_LIMIT');\n    expect(err.retryAfter).toBe(30);\n  });\n\n  it('RateLimitError defaults retryAfter to 0', () => {\n    const err = new RateLimitError('Rate limited');\n    expect(err.retryAfter).toBe(0);\n    expect(err.message).toBe('Rate limited');\n  });\n\n  it('CountableError instances are also InvoicaError instances', () => {\n    const err = new CountableError('test', 500, 'TEST');\n    expect(err).toBeInstanceOf(InvoicaError);\n    expect(err.statusCode).toBe(500);\n  });\n});\n```\n\nRules: Maximum 30 lines. 4 test cases. Import from '../src/error-compat'. Use describe/it/expect. No mocking.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/tests/error-compat.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/tests/error-compat.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 93,
+          "summary": "Dual-approved: Claude (95/100) + Codex (90/100)",
+          "issues": [],
+          "strengths": [
+            "Exact match to provided task specification - no deviations",
+            "All 4 required test cases implemented correctly",
+            "Proper import structure from '../src/error-compat'",
+            "Clean Jest syntax with describe/it/expect pattern",
+            "Tests cover all key functionality: alias verification, inheritance, default values, and instance checks",
+            "Under 30 line limit (24 lines)",
+            "No mocking as required",
+            "Comprehensive assertions for RateLimitError properties (statusCode, code, retryAfter)",
+            "Tests both constructor overloads for RateLimitError",
+            "No code fences or invalid syntax",
+            "Covers all required behaviors of CountableError and RateLimitError",
+            "Adheres to the 4-test and 30-line limit",
+            "No markdown code fences in source file",
+            "Straightforward and readable test implementations"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-145",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "status": "done",
+      "context": "Create tests for the request builder utility. File: sdk/typescript/tests/request-builder.test.ts\n\nTest buildUrl and buildHeaders from sdk/typescript/src/request-builder.ts.\n\n```typescript\nimport { buildUrl, buildHeaders } from '../src/request-builder';\n\ndescribe('buildUrl', () => {\n  it('joins baseUrl and path', () => {\n    const url = buildUrl('https://api.invoica.ai/v1', '/invoices');\n    expect(url).toBe('https://api.invoica.ai/v1/invoices');\n  });\n\n  it('appends query params', () => {\n    const url = buildUrl('https://api.invoica.ai/v1', '/invoices', { limit: 10, offset: 0 });\n    expect(url).toContain('limit=10');\n    expect(url).toContain('offset=0');\n  });\n\n  it('skips undefined query params', () => {\n    const url = buildUrl('https://api.invoica.ai/v1', '/invoices', { limit: 10, status: undefined });\n    expect(url).toContain('limit=10');\n    expect(url).not.toContain('status');\n  });\n});\n\ndescribe('buildHeaders', () => {\n  it('includes Authorization and Content-Type', () => {\n    const headers = buildHeaders('test-key');\n    expect(headers['Authorization']).toBe('Bearer test-key');\n    expect(headers['Content-Type']).toBe('application/json');\n  });\n});\n```\n\nRules: Maximum 30 lines. 4 test cases. Import from '../src/request-builder'. Use describe/it/expect. No mocking.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/tests/request-builder.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/tests/request-builder.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 90,
+          "summary": "Dual-approved: Claude (95/100) + Codex (85/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/tests/request-builder.test.ts",
+              "description": "Could benefit from edge case testing (empty strings, null values, special characters in URLs)"
+            }
+          ],
+          "strengths": [
+            "Exactly matches the provided task specification - no deviation",
+            "Proper Jest test structure with describe/it blocks",
+            "Correct import path usage",
+            "All 4 required test cases implemented",
+            "Under 30 line limit (24 lines)",
+            "No unnecessary mocking as specified",
+            "Good test coverage of core functionality",
+            "Clear, descriptive test names",
+            "Appropriate assertions for each test case",
+            "Covers all four required test cases (URL joining, query param appending, skipping undefined params, header composition).",
+            "Test file is concise (<30 lines) and uses describe/it/expect correctly.",
+            "No markdown code fences or extraneous code introduced.",
+            "Follows project conventions for test structure and imports."
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-146",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "medium",
+      "dependencies": [],
+      "status": "done",
+      "context": "Create an SDK quickstart example file. File: sdk/typescript/examples/quickstart.ts\n\nThis is a runnable example showing how to use the SDK for the 3 most common operations: creating an invoice, listing invoices, and setting up webhooks.\n\n```typescript\nimport { CountableClient, InvoicaFullClient } from '../src/index-v2';\n\n// Basic client — invoices & settlements only\nconst client = new CountableClient({\n  apiKey: process.env.INVOICA_API_KEY || 'inv_test_your_key_here',\n});\n\n// Full client — adds API key management + webhooks\nconst fullClient = new InvoicaFullClient({\n  apiKey: process.env.INVOICA_API_KEY || 'inv_test_your_key_here',\n});\n\nasync function main() {\n  // 1. Create an invoice\n  const invoice = await client.createInvoice({\n    amount: 1000,\n    currency: 'USD',\n    recipientAddress: '0x1234567890abcdef1234567890abcdef12345678',\n    description: 'Service payment — January 2026',\n  });\n  console.log('Created invoice:', invoice.id);\n\n  // 2. List recent invoices\n  const invoices = await client.listInvoices({ limit: 5 });\n  console.log(`Found ${invoices.invoices.length} invoices`);\n\n  // 3. Register a webhook (requires full client)\n  const webhook = await fullClient.webhooks.registerWebhook({\n    url: 'https://example.com/webhooks/invoica',\n    events: ['invoice.created', 'invoice.paid', 'settlement.completed'],\n    secret: 'whsec_your_secret_here',\n  });\n  console.log('Registered webhook:', webhook.id);\n}\n\nmain().catch(console.error);\n```\n\nRules: Maximum 40 lines. Show CountableClient AND InvoicaFullClient usage. Use import from '../src/index-v2'. Include env var fallback for API key. 3 operations: create invoice, list invoices, register webhook. End with main().catch(). No try-catch inside main.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/examples/quickstart.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/examples/quickstart.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "Dual-approved: Claude (95/100) + Codex (95/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/examples/quickstart.ts",
+              "description": "Missing JSDoc comments for the main function, though this is acceptable for an example file"
+            }
+          ],
+          "strengths": [
+            "Exactly matches the provided task specification code",
+            "Proper imports from '../src/index-v2' as required",
+            "Demonstrates both CountableClient and InvoicaFullClient usage",
+            "All three required operations implemented: create invoice, list invoices, register webhook",
+            "Correct environment variable fallback pattern",
+            "Proper async/await usage without unnecessary try-catch",
+            "Ends with main().catch(console.error) as specified",
+            "Well within the 40-line limit (25 lines)",
+            "Clean, readable code structure",
+            "Realistic example data (Ethereum address format, reasonable amounts)",
+            "No code fences or invalid syntax",
+            "Follows the spec exactly: imports, clients, operations, and error handling pattern.",
+            "Concise and under the 40-line limit.",
+            "Uses environment variable fallback for API key.",
+            "Demonstrates the three required operations clearly."
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-160",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "status": "done",
+      "context": "Create a webhook documentation page. File: frontend/app/docs/webhooks/events/page.tsx\n\nThis is a Next.js server component (NO 'use client'). Documents the webhook event types and payloads.\n\nStructure:\n- h1: 'Webhook Events'\n- p: Brief intro about real-time notifications via webhooks\n- h2: 'Available Events' — ul listing: invoice.created, invoice.paid, invoice.expired, settlement.completed, settlement.failed, api_key.created, api_key.revoked\n- h2: 'Event Payload' — code block showing: { id: 'evt_abc123', type: 'invoice.paid', createdAt: '2026-01-15T10:30:00Z', data: { invoiceId: 'inv_xyz', amount: 1000, currency: 'USD' } }\n- h2: 'Verifying Signatures' — code block: import { verifyWebhookSignature } from '@invoica/sdk'; const isValid = verifyWebhookSignature(payload, signature, secret);\n- h2: 'Retry Policy' — p explaining: failed deliveries are retried 3 times with exponential backoff (1min, 5min, 30min). After 3 failures the webhook is disabled.\n\nUse ONLY inline styles. No Tailwind. No external imports. No 'use client'. Style: maxWidth 768px, margin '0 auto', padding 32px, fontFamily system-ui. h1 fontSize 32px, h2 fontSize 24px marginTop 32px. Code blocks: backgroundColor '#f5f5f5', padding 16px, borderRadius 8px, overflowX 'auto', fontFamily monospace.\n\nMaximum 55 lines. Export default function WebhookEventsPage().",
+      "deliverables": {
+        "code": [
+          "frontend/app/docs/webhooks/events/page.tsx"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/app/docs/webhooks/events/page.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 98,
+          "summary": "Dual-approved: Claude (95/100) + Codex (100/100)",
+          "issues": [],
+          "strengths": [
+            "Perfect adherence to task specification - all required sections present and correctly structured",
+            "Proper Next.js server component (no 'use client' directive)",
+            "Clean inline styling matching exact requirements (maxWidth 768px, system-ui font, correct heading sizes)",
+            "Well-formatted code blocks with proper JSON and TypeScript examples",
+            "Concise and informative content within the 55-line limit (actual: ~40 lines)",
+            "No external imports or dependencies as required",
+            "Proper export default function structure",
+            "Good use of template literals for multi-line code examples",
+            "Professional documentation tone and clear explanations",
+            "Accurately implements the required structure and content",
+            "Uses only inline styles per spec",
+            "No invalid syntax or code fences",
+            "File size and line count are within limits"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-161",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "medium",
+      "dependencies": [],
+      "status": "done",
+      "context": "Create an SDK quickstart documentation page. File: frontend/app/docs/quickstart/page.tsx\n\nThis is a Next.js server component (NO 'use client'). Shows developers how to get started with the SDK in under 5 minutes.\n\nStructure:\n- h1: 'Quickstart'\n- p: 'Get up and running with the Invoica SDK in under 5 minutes.'\n- h2: 'Installation' — code block: npm install @invoica/sdk\n- h2: 'Initialize the Client' — code block: import { CountableClient } from '@invoica/sdk'; const client = new CountableClient({ apiKey: 'inv_test_...' });\n- h2: 'Create Your First Invoice' — code block: const invoice = await client.createInvoice({ amount: 1000, currency: 'USD', recipientAddress: '0x1234...', description: 'Payment' }); console.log(invoice.id);\n- h2: 'List Invoices' — code block: const { invoices } = await client.listInvoices({ limit: 10 });\n- h2: 'Next Steps' — ul with 3 items: Set up webhooks for real-time notifications, Configure rate limiting for production, Explore the full API reference\n\nUse ONLY inline styles. No Tailwind. No external imports. No 'use client'. Style: maxWidth 768px, margin '0 auto', padding 32px, fontFamily system-ui. h1 fontSize 32px, h2 fontSize 24px marginTop 32px. Code blocks: backgroundColor '#f5f5f5', padding 16px, borderRadius 8px, overflowX 'auto', fontFamily monospace.\n\nMaximum 55 lines. Export default function QuickstartPage().",
+      "deliverables": {
+        "code": [
+          "frontend/app/docs/quickstart/page.tsx"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/app/docs/quickstart/page.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 93,
+          "summary": "Dual-approved: Claude (95/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/app/docs/quickstart/page.tsx",
+              "description": "Could add line-height to improve readability of paragraph text"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/app/docs/quickstart/page.tsx",
+              "description": "The paragraph and code blocks include additional inline style properties (e.g., fontSize on <p> and <pre>) that were not specified in the task. This does not break functionality but deviates slightly from the given style instructions."
+            },
+            {
+              "severity": "low",
+              "file": "frontend/app/docs/quickstart/page.tsx",
+              "description": "The root fontFamily includes extra fallbacks ('-apple-system, sans-serif') beyond the single 'system-ui' requested in the spec."
+            }
+          ],
+          "strengths": [
+            "Perfect adherence to task specification - all required sections present",
+            "Correct Next.js server component (no 'use client')",
+            "Inline styles exactly as requested with proper measurements",
+            "Clean code structure with proper template literals for multi-line code blocks",
+            "Appropriate font sizes and spacing matching requirements",
+            "Under 55 lines as specified (actual: ~35 lines)",
+            "Proper semantic HTML structure",
+            "Code examples are realistic and follow expected SDK patterns",
+            "No external dependencies or imports as required",
+            "No 'use client' directive, correctly implemented as a server component.",
+            "All styling is inline; no external imports or Tailwind usage.",
+            "Correct structure: headings, paragraphs, code blocks, and list items match the spec content.",
+            "No markdown fences in source code."
+          ]
+        }
+      }
+    }
+  ]
+}

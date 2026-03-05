@@ -1,0 +1,476 @@
+{
+  "tasks": [
+    {
+      "id": "BE-340",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "critical",
+      "description": "Unit tests for api-version middleware — version validation, default version, response header",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create unit tests for backend/src/middleware/api-version.ts. The file exports:\n\n1. `function apiVersionMiddleware(supportedVersions: string[]): RequestHandler` — Returns middleware that: reads X-API-Version header (defaults to last element of supportedVersions if missing), rejects unsupported versions with 400 JSON { error: { code: 'UNSUPPORTED_VERSION', message: contains version and supported list } }, sets req.apiVersion and res X-API-Version header, calls next().\n\n2. `function getApiVersion(req: Request): string` — Returns (req as ApiVersionRequest).apiVersion or 'v1' as fallback.\n\nMock approach:\nconst mockNext = jest.fn();\nconst mockJson = jest.fn();\nconst mockStatus = jest.fn().mockReturnValue({ json: mockJson });\nconst mockSetHeader = jest.fn();\nconst mockRes = { status: mockStatus, setHeader: mockSetHeader } as any;\n\nTests for apiVersionMiddleware:\n- Supported version header: req.get returns 'v1', supportedVersions=['v1','v2']. Calls next(), sets req.apiVersion='v1', sets response header.\n- Default to last supported version when no header: req.get returns undefined, supportedVersions=['v1','v2']. req.apiVersion should be 'v2'.\n- Rejects unsupported version: req.get returns 'v3', supportedVersions=['v1','v2']. Calls res.status(400).json with error containing 'UNSUPPORTED_VERSION'. Does NOT call next().\n- Error message includes requested version and supported list.\n- Sets X-API-Version response header with the resolved version.\n\nTests for getApiVersion:\n- Returns apiVersion from request if set: req.apiVersion='v2' returns 'v2'\n- Returns 'v1' as default fallback if apiVersion not set\n\nUse req.get = jest.fn().mockReturnValue(...) to mock header access.\n\nFile: `backend/src/middleware/__tests__/api-version.test.ts`\nImport: `import { apiVersionMiddleware, getApiVersion } from '../api-version';`\nKeep under 70 lines.",
+      "deliverables": {
+        "code": [
+          "backend/src/middleware/__tests__/api-version.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "backend/src/middleware/__tests__/api-version.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "backend/src/middleware/__tests__/api-version.test.ts",
+              "description": "In the rejection test, setting X-API-Version header to the invalid version 'v3' may not be the intended behavior - typically you'd want to omit the header or set it to a valid default"
+            },
+            {
+              "severity": "low",
+              "file": "backend/src/middleware/__tests__/api-version.test.ts",
+              "description": "The imported Request type from 'express' is not used in the tests and can be removed to avoid unused imports."
+            }
+          ],
+          "strengths": [
+            "Comprehensive test coverage for both exported functions",
+            "Proper Jest mocking setup with beforeEach cleanup",
+            "Clear test descriptions that match the task requirements",
+            "Correct assertion patterns for middleware behavior",
+            "Validates error response structure and content",
+            "Tests both positive and negative paths",
+            "Stays within the 70-line limit (44 lines)",
+            "Proper TypeScript imports and typing",
+            "Tests verify that next() is NOT called on rejection",
+            "Error message validation includes both requested version and supported versions",
+            "Covers valid header, default version, and unsupported version scenarios with clear assertions.",
+            "Tests include validation of HTTP status, error payload structure, and response header.",
+            "getApiVersion tests cover both set and fallback behaviors.",
+            "Mocks are reset before each test to ensure test isolation."
+          ]
+        }
+      }
+    },
+    {
+      "id": "BE-341",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "description": "Unit tests for CORS middleware — headers, OPTIONS preflight, origin handling",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create unit tests for backend/src/middleware/cors.ts. The file exports:\n\n`function corsMiddleware(req: Request, res: Response, next: NextFunction): void`\n\nBehavior:\n- Reads req.headers.origin. If present, uses it as Access-Control-Allow-Origin. If absent, uses '*'.\n- Sets 4 response headers: Access-Control-Allow-Origin, Access-Control-Allow-Methods ('GET,POST,PUT,DELETE,OPTIONS'), Access-Control-Allow-Headers ('Content-Type,Authorization,X-API-Key'), Access-Control-Allow-Credentials ('true').\n- If req.method is 'OPTIONS', responds with 204 and calls res.end(). Does NOT call next().\n- Otherwise calls next().\n\nMock approach:\nconst mockEnd = jest.fn();\nconst mockStatus = jest.fn().mockReturnValue({ end: mockEnd });\nconst mockSetHeader = jest.fn();\nconst mockRes = { status: mockStatus, setHeader: mockSetHeader } as any;\nconst mockNext = jest.fn();\n\nTests:\n- Sets origin from request header: req = { headers: { origin: 'https://example.com' }, method: 'GET' }. Access-Control-Allow-Origin should be 'https://example.com'.\n- Defaults to * when no origin header: req = { headers: {}, method: 'GET' }. Access-Control-Allow-Origin should be '*'.\n- Sets all 4 CORS headers correctly.\n- OPTIONS request returns 204 and calls res.end(): req.method='OPTIONS'. status(204) called, end() called, next NOT called.\n- Non-OPTIONS request calls next(): req.method='GET'. next() called, end() NOT called.\n\nFile: `backend/src/middleware/__tests__/cors.test.ts`\nImport: `import { corsMiddleware } from '../cors';`\nKeep under 55 lines.",
+      "deliverables": {
+        "code": [
+          "backend/src/middleware/__tests__/cors.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "backend/src/middleware/__tests__/cors.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 89,
+          "summary": "Dual-approved: Claude (92/100) + Codex (85/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "backend/src/middleware/__tests__/cors.test.ts",
+              "description": "Could add edge case test for undefined headers object, though current implementation handles empty headers correctly"
+            }
+          ],
+          "strengths": [
+            "All 5 required test cases implemented correctly",
+            "Proper Jest mocking setup with beforeEach cleanup",
+            "Clear test descriptions that match exact requirements",
+            "Correct assertion patterns - verifies both positive and negative cases",
+            "Under 55 lines as specified (42 lines)",
+            "Proper TypeScript typing with 'unknown as Request/Response' pattern",
+            "Tests verify exact header values and call counts as specified",
+            "OPTIONS vs non-OPTIONS behavior correctly differentiated",
+            "Covers all key behavior branches including OPTIONS preflight vs non-OPTIONS.",
+            "Mocking strategy for res.status().end() and setHeader is clear and reusable.",
+            "Uses jest.clearAllMocks in beforeEach to isolate test cases.",
+            "Test file stays within the 55-line limit and follows project folder conventions."
+          ]
+        }
+      }
+    },
+    {
+      "id": "BE-342",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "description": "Unit tests for idempotency middleware — cache hit, cache miss, key extraction, TTL cleanup",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create unit tests for backend/src/middleware/idempotency.ts. The file exports:\n\n1. `function getIdempotencyKey(req: Request): string | undefined` — Reads req.headers['idempotency-key']. If string, returns it. If array with length>0, returns first element. Otherwise returns undefined.\n\n2. `function idempotencyMiddleware(): RequestHandler` — Returns middleware that: skips if no idempotency key (calls next()), cleans expired entries (>24h TTL), returns cached response on cache hit (res.status(cached.statusCode).json(cached.body)), wraps res.json to capture and cache response on cache miss, calls next().\n\nThe middleware uses an internal Map<string, CachedResponse> for caching.\n\nTests for getIdempotencyKey:\n- String header: req.headers['idempotency-key'] = 'abc-123' returns 'abc-123'\n- Array header: req.headers['idempotency-key'] = ['first', 'second'] returns 'first'\n- Missing header: returns undefined\n- Empty array: returns undefined\n\nTests for idempotencyMiddleware:\n- No idempotency key: calls next() immediately, does NOT modify res.json\n- Cache miss then cache hit: First call with key 'key-1', mock res captures the response. Second call with same key 'key-1' should return cached response via res.status().json() without calling next().\n- Different keys are independent: key 'a' and key 'b' don't share cache.\n\nMock approach for middleware test:\nconst mockJson = jest.fn().mockReturnThis();\nconst mockStatus = jest.fn().mockReturnValue({ json: mockJson });\nconst mockRes = { json: jest.fn().mockReturnThis(), status: mockStatus, statusCode: 200 } as any;\nFor cache miss: call middleware, then manually invoke res.json({data:'test'}) to populate cache.\nFor cache hit: call middleware again with same key, check res.status(200).json({data:'test'}) called.\n\nFile: `backend/src/middleware/__tests__/idempotency.test.ts`\nImport: `import { idempotencyMiddleware, getIdempotencyKey } from '../idempotency';`\nKeep under 80 lines.",
+      "deliverables": {
+        "code": [
+          "backend/src/middleware/__tests__/idempotency.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "backend/src/middleware/__tests__/idempotency.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "backend/src/middleware/__tests__/idempotency.test.ts",
+              "description": "Missing test cleanup - jest.restoreAllMocks() should be in afterEach or afterAll to prevent test pollution"
+            },
+            {
+              "severity": "low",
+              "file": "backend/src/middleware/__tests__/idempotency.test.ts",
+              "description": "Could add test for non-200 status codes to ensure statusCode is properly cached and returned"
+            },
+            {
+              "severity": "low",
+              "file": "backend/src/middleware/__tests__/idempotency.test.ts",
+              "description": "The ‘different keys are independent’ test only asserts that next() is called for each key, but does not explicitly verify that cached responses are not shared between keys. Consider adding an assertion that a second call with key-a still returns the cached value and that key-b does not return key-a’s cache."
+            }
+          ],
+          "strengths": [
+            "All specified test cases implemented correctly",
+            "Proper mocking strategy using jest.fn() and mock chaining",
+            "Tests TTL cleanup functionality with Date.now() mocking",
+            "Good test isolation - each test creates fresh mock objects",
+            "Covers edge cases like empty arrays and missing headers",
+            "Tests cache independence between different keys",
+            "Follows the exact mock approach specified in requirements",
+            "Clean, readable test structure with descriptive test names",
+            "Stays under 80 lines as required (79 lines)",
+            "Proper TypeScript typing with 'as unknown as' casting",
+            "Covers all getIdempotencyKey edge cases (string, array, missing, empty array).",
+            "Verifies cache miss then hit behavior and correct use of res.status().json().",
+            "Includes TTL cleanup test by mocking Date.now().",
+            "Keeps test file under 80 lines and uses simple, clear Jest mocks.",
+            "No invalid code fences or syntax errors introduced."
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-100",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "critical",
+      "description": "Unit tests for SDK retry — retryWithBackoff with exponential backoff, retryable statuses, defaults",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create unit tests for sdk/typescript/src/retry.ts. The file exports:\n\n`async function retryWithBackoff<T>(fn: () => Promise<T>, options?: RetryOptions): Promise<T>`\n\nDefaults: maxRetries=3, initialDelayMs=200, maxDelayMs=5000, retryableStatuses=[408,429,500,502,503,504]\n\nBehavior:\n- Calls fn(). If it succeeds, returns result immediately.\n- If fn() throws an error with a .status property that is in retryableStatuses, retries up to maxRetries times.\n- If error.status is NOT in retryableStatuses, throws immediately without retry.\n- If error has no .status, throws immediately.\n- Uses exponential backoff: delay = min(initialDelayMs * 2^attempt, maxDelayMs) + random jitter(0-50ms).\n- After exhausting retries, throws the last error.\n\nUse jest.useFakeTimers() and mock setTimeout. IMPORTANT: Since the function uses `await new Promise(resolve => setTimeout(resolve, delay))`, we need to handle fake timers carefully. Use jest.spyOn(global, 'setTimeout') to track calls, and use real timers with short delays for simpler tests.\n\nSimpler approach: Use real timers and mock fn() behavior directly.\n\nTests:\n- Succeeds on first attempt: fn resolves, called exactly once\n- Retries on retryable status (500): fn rejects with {status:500} twice then resolves. fn called 3 times total.\n- Throws immediately on non-retryable status (403): fn rejects with {status:403}. fn called exactly once.\n- Throws immediately when error has no status: fn rejects with plain Error. fn called once.\n- Exhausts retries then throws: fn always rejects with {status:500}, maxRetries=1. fn called 2 times (initial + 1 retry), rejects with the error.\n- Respects custom retryableStatuses: options={retryableStatuses:[418], maxRetries:1}. Error with status 418 triggers retry. Error with status 500 does not.\n- Default maxRetries is 3: fn rejects with {status:500} 4 times. fn called exactly 4 times (initial + 3 retries).\n\nFor retryable tests, use options={maxRetries:N, initialDelayMs:1, maxDelayMs:1} to minimize test time.\n\nCreate error helper: function makeError(status: number) { const e = new Error('fail') as any; e.status = status; return e; }\n\nFile: `sdk/typescript/tests/retry.test.ts`\nImport: `import { retryWithBackoff } from '../src/retry';`\nKeep under 80 lines.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/tests/retry.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/tests/retry.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 92,
+          "summary": "Dual-approved: Claude (92/100) + Codex (92/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/tests/retry.test.ts",
+              "description": "Test assertions use toEqual() for error objects which may not work reliably across Jest versions. Consider using toThrow() or more specific error property checks."
+            }
+          ],
+          "strengths": [
+            "All 7 required test cases implemented correctly",
+            "Clean helper function makeError() as specified",
+            "Proper use of Jest mocking with mockRejectedValueOnce/mockResolvedValue patterns",
+            "Correct import statement and file structure",
+            "Efficient test timing with minimal delays (initialDelayMs: 1, maxDelayMs: 1)",
+            "Under 80 lines as required (47 lines)",
+            "No code fences or invalid syntax",
+            "Tests verify both function call counts and return values/errors",
+            "Covers edge cases like custom retryableStatuses and default behavior verification",
+            "Covers all required success, retry, and failure scenarios",
+            "Uses minimal delays to keep tests fast",
+            "Test file is concise (<80 lines) and imports correctly",
+            "Avoids unnecessary complexity by using real timers"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-101",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "description": "Unit tests for SDK version utils — version constant, sdkUserAgent, isCompatibleApiVersion",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create unit tests for sdk/typescript/src/version.ts. The file exports:\n\n1. `const version: string = '1.0.0'`\n2. `const sdkUserAgent: string = 'countable-sdk-typescript/1.0.0'`\n3. `function isCompatibleApiVersion(serverVersion: string): boolean` — Parses major version from serverVersion.split('.')[0] as int. Returns true if majorVersion === 1.\n\nTests:\n- version equals '1.0.0'\n- sdkUserAgent equals 'countable-sdk-typescript/1.0.0'\n- isCompatibleApiVersion('1.0.0') returns true\n- isCompatibleApiVersion('1.2.3') returns true (same major)\n- isCompatibleApiVersion('1.99.0') returns true\n- isCompatibleApiVersion('2.0.0') returns false\n- isCompatibleApiVersion('0.9.0') returns false\n- isCompatibleApiVersion('3.1.0') returns false\n\nFile: `sdk/typescript/tests/version.test.ts`\nImport: `import { version, sdkUserAgent, isCompatibleApiVersion } from '../src/version';`\nKeep under 30 lines.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/tests/version.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/tests/version.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "Dual-approved: Claude (95/100) + Codex (95/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/tests/version.test.ts",
+              "description": "Could add edge case tests for invalid version strings (empty, malformed) to make isCompatibleApiVersion more robust"
+            }
+          ],
+          "strengths": [
+            "All required test cases implemented correctly",
+            "Clean Jest structure with proper describe blocks",
+            "Correct import statement as specified",
+            "Under 30 lines as requested (26 lines)",
+            "No code fences or invalid syntax",
+            "Descriptive test names that clearly indicate expected behavior",
+            "Proper use of toBe() assertions for primitive values",
+            "Good test organization separating version constants from function tests",
+            "Comprehensive coverage of all specified version scenarios",
+            "File is concise (<30 lines) and syntactically valid",
+            "No markdown code fences present",
+            "Correct import path for the module under test"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-102",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "description": "Unit tests for SDK webhook utils — verifyWebhookSignature, parseWebhookEvent",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create unit tests for sdk/typescript/src/webhook.ts. The file exports:\n\n1. `function verifyWebhookSignature(payload: string, signature: string, secret: string): boolean` — Creates HMAC-SHA256 of payload using secret. Compares hex digest with signature using timingSafeEqual on equal-length buffers. Returns false if lengths differ.\n\n2. `function parseWebhookEvent(payload: string): { id: string; type: string; data: unknown; createdAt: string }` — JSON.parse(payload) and extracts { id, type, data, createdAt }.\n\nTo test verifyWebhookSignature, compute the expected signature manually:\n```typescript\nimport { createHmac } from 'crypto';\nconst payload = '{\"id\":\"evt_1\",\"type\":\"invoice.created\"}';\nconst secret = 'webhook-secret-key';\nconst validSig = createHmac('sha256', secret).update(payload, 'utf8').digest('hex');\n```\n\nTests for verifyWebhookSignature:\n- Valid signature returns true: compute correct HMAC, verify returns true\n- Invalid signature returns false: pass wrong signature string\n- Wrong secret returns false: compute with different secret\n- Empty payload with valid sig: works correctly\n\nTests for parseWebhookEvent:\n- Parses valid JSON: payload = '{\"id\":\"evt_1\",\"type\":\"invoice.created\",\"data\":{\"amount\":100},\"createdAt\":\"2026-01-01T00:00:00Z\"}'. Returns correct object.\n- Throws on invalid JSON: payload = 'not json'. Expect to throw SyntaxError.\n- Extracts only id, type, data, createdAt: extra fields in JSON are ignored.\n\nFile: `sdk/typescript/tests/webhook.test.ts`\nImport: `import { verifyWebhookSignature, parseWebhookEvent } from '../src/webhook';`\nAlso import: `import { createHmac } from 'crypto';` for computing expected signatures.\nKeep under 50 lines.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/tests/webhook.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/tests/webhook.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 92,
+          "summary": "Dual-approved: Claude (92/100) + Codex (92/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/tests/webhook.test.ts",
+              "description": "Could benefit from testing edge cases like null/undefined inputs or malformed signature formats"
+            },
+            {
+              "severity": "low",
+              "file": "sdk/typescript/tests/webhook.test.ts",
+              "description": "Missing test for parseWebhookEvent with missing required fields (id, type, data, createdAt)"
+            }
+          ],
+          "strengths": [
+            "All required test cases from spec are implemented correctly",
+            "Proper use of createHmac to generate expected signatures for testing",
+            "Clean test structure with descriptive test names",
+            "Correctly tests both positive and negative cases for verifyWebhookSignature",
+            "Tests JSON parsing error handling with SyntaxError expectation",
+            "Demonstrates that extra fields are ignored in parseWebhookEvent",
+            "File stays well under the 50-line limit (39 lines)",
+            "Proper imports as specified in the task",
+            "No markdown code fences or syntax issues",
+            "Covers valid, invalid, secret-mismatch, and empty payload cases for signature verification",
+            "Tests JSON parsing and error throwing for invalid payloads",
+            "Ensures extra fields are ignored during event parsing",
+            "Keeps test file concise and under 50 lines",
+            "No forbidden code fences or syntax errors"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-103",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "description": "Unit tests for SDK environment utils — detectEnvironment, getDefaultBaseUrl, getUserAgent, supportsStreaming",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create unit tests for sdk/typescript/src/environment.ts. The file exports:\n\n1. `function detectEnvironment(): SdkEnvironment` — Returns 'node' if globalThis.process.versions.node exists. Returns 'edge' if globalThis.EdgeRuntime is a string. Returns 'browser' if globalThis.window and globalThis.document exist. Otherwise 'unknown'.\n\n2. `function getDefaultBaseUrl(): string` — Returns 'https://api.invoica.ai/v1'.\n\n3. `function getUserAgent(): string` — Returns 'invoica-sdk/1.0.0 ({environment})' where environment is from detectEnvironment().\n\n4. `function supportsStreaming(): boolean` — Returns typeof ReadableStream !== 'undefined'.\n\nTests:\n- detectEnvironment returns 'node' in Node.js test environment (process.versions.node exists)\n- getDefaultBaseUrl returns 'https://api.invoica.ai/v1'\n- getUserAgent returns string matching /^invoica-sdk\\/1\\.0\\.0 \\(node\\)$/ in Node.js environment\n- getUserAgent contains the environment name in parentheses\n- supportsStreaming returns a boolean (true or false depending on Node version, just check type)\n- detectEnvironment returns 'node' (since tests run in Node.js)\n\nFile: `sdk/typescript/tests/environment.test.ts`\nImport: `import { detectEnvironment, getDefaultBaseUrl, getUserAgent, supportsStreaming } from '../src/environment';`\nKeep under 35 lines.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/tests/environment.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/tests/environment.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/tests/environment.test.ts",
+              "description": "Could add edge cases like mocking different environments, but not required for this basic test suite"
+            }
+          ],
+          "strengths": [
+            "All required functions are tested with appropriate assertions",
+            "Test descriptions are clear and descriptive",
+            "Uses proper Jest matchers (toBe, toMatch) for different assertion types",
+            "Regex pattern matches exactly what was specified in task",
+            "Tests the actual behavior in Node.js environment as expected",
+            "File is concise at 17 lines, well under the 35-line limit",
+            "Import statement matches the required format exactly",
+            "No code fences or invalid syntax",
+            "Covers both specific value checks and pattern matching as requested",
+            "Covers detectEnvironment, getDefaultBaseUrl, getUserAgent, and supportsStreaming as specified",
+            "Respects the 35‐line limit",
+            "No markdown code fences or invalid syntax in the test file",
+            "Tests validate both exact formats and general patterns for user agent"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-104",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "description": "Unit tests for SDK event emitter — on, off, emit, removeAllListeners with typed events",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create unit tests for sdk/typescript/src/events.ts. The file exports:\n\n`class SdkEventEmitter` with typed event map:\n- 'request:start': { method: string; url: string }\n- 'request:end': { method: string; url: string; status: number; durationMs: number }\n- 'request:error': { method: string; url: string; error: Error }\n- 'rate-limit:hit': { retryAfter: number }\n\nMethods:\n- on(event, listener): Adds listener to event. Creates Set if first listener for that event.\n- off(event, listener): Removes listener from event.\n- emit(event, data): Calls all listeners for that event with data.\n- removeAllListeners(): Clears all listeners for all events.\n\nTests:\n- on + emit: register listener for 'request:start', emit event, listener called with correct data { method: 'GET', url: '/test' }\n- Multiple listeners: register 2 listeners for same event, emit, both called\n- off removes listener: register, then off, emit does NOT call removed listener\n- emit with no listeners does not throw: emit 'request:end' with no listeners registered, no error\n- removeAllListeners clears everything: register listeners for multiple events, call removeAllListeners, emit events, no listeners called\n- Different events are independent: listener on 'request:start' is NOT called when 'request:end' is emitted\n- Listener receives correct data shape: emit 'request:end' with { method: 'POST', url: '/x', status: 200, durationMs: 50 }, verify all fields\n\nFile: `sdk/typescript/tests/events.test.ts`\nImport: `import { SdkEventEmitter } from '../src/events';`\nKeep under 60 lines.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/tests/events.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/tests/events.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/tests/events.test.ts",
+              "description": "Could add edge case tests for invalid event types or null/undefined data, but not required by spec"
+            }
+          ],
+          "strengths": [
+            "All 7 required test cases implemented exactly as specified",
+            "Proper Jest syntax with describe/test blocks and jest.fn() mocks",
+            "Correct import statement matches task requirements",
+            "Tests verify both positive and negative cases (listeners called vs not called)",
+            "Data shape validation test ensures type safety",
+            "Clean, readable test descriptions that match functionality",
+            "File stays well under 60-line limit (48 lines)",
+            "No code fences or invalid syntax",
+            "Tests are independent and don't rely on shared state",
+            "Covers all specified behaviors for 'request:start' and 'request:end'.",
+            "Uses Jest mocks to verify listener invocation.",
+            "Clean, well-structured, and under the 60-line limit.",
+            "No syntax issues or stray code fences."
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-105",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "critical",
+      "description": "Unit tests for SDK http-transport-v2 — request method with config object, query params, body handling",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create unit tests for sdk/typescript/src/http-transport-v2.ts. The file exports:\n\n`class HttpTransport` with constructor(config: { baseUrl, apiKey, timeout, maxRetries }) and method:\n`async request<T>(reqConfig: TransportRequestConfig): Promise<T>` where TransportRequestConfig = { method, path, body?, query? }\n\nBehavior: Builds URL with buildUrl(baseUrl, path, query), builds headers with buildHeaders(apiKey), determines hasBody (body != null AND method not GET/DELETE), calls fetch with method/headers/body, passes response to parseResponse, wraps in withTimeout, wraps in retryWithBackoff.\n\nMock all dependencies:\n```typescript\njest.mock('../src/timeout', () => ({ withTimeout: jest.fn((promise) => promise) }));\njest.mock('../src/retry', () => ({ retryWithBackoff: jest.fn((fn) => fn()) }));\njest.mock('../src/request-builder', () => ({ buildUrl: jest.fn((base, path) => base + path), buildHeaders: jest.fn((key) => ({ Authorization: 'Bearer ' + key })) }));\njest.mock('../src/response-parser', () => ({ parseResponse: jest.fn().mockResolvedValue({ data: 'ok' }) }));\nglobal.fetch = jest.fn().mockResolvedValue({}) as any;\n```\n\nTests:\n- GET request: request({ method: 'GET', path: '/invoices' }). fetch called with correct URL, method='GET', no body, no Content-Type.\n- POST request with body: request({ method: 'POST', path: '/invoices', body: { amount: 100 } }). fetch called with method='POST', body=JSON.stringify({amount:100}), Content-Type header present.\n- DELETE request ignores body: request({ method: 'DELETE', path: '/invoices/1', body: { force: true } }). fetch called without body.\n- Query params passed to buildUrl: request({ method: 'GET', path: '/invoices', query: { limit: 10 } }). buildUrl called with query object.\n- parseResponse called with fetch result.\n- withTimeout called with config.timeout.\n- retryWithBackoff called with config.maxRetries.\n\nFile: `sdk/typescript/tests/http-transport-v2.test.ts`\nImport: `import { HttpTransport } from '../src/http-transport-v2';`\nKeep under 80 lines.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/tests/http-transport-v2.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/tests/http-transport-v2.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/tests/http-transport-v2.test.ts",
+              "description": "Mock setup differs from task spec - uses different mock implementation pattern than specified"
+            },
+            {
+              "severity": "low",
+              "file": "sdk/typescript/tests/http-transport-v2.test.ts",
+              "description": "Could consolidate multiple fetch expectations in first test into a single assertion for better readability"
+            },
+            {
+              "severity": "medium",
+              "file": "sdk/typescript/tests/http-transport-v2.test.ts",
+              "description": "Missing explicit test for Content-Type header absence in GET/DELETE requests - only tests presence in POST"
+            }
+          ],
+          "strengths": [
+            "All required test cases implemented correctly",
+            "Proper mocking of all dependencies (buildUrl, buildHeaders, parseResponse, withTimeout, retryWithBackoff)",
+            "Correct assertions for HTTP method, body handling, and query parameter passing",
+            "Good test isolation with beforeEach cleanup",
+            "Stays under 80 lines requirement (78 lines)",
+            "Proper TypeScript imports and type safety",
+            "Tests cover the key behavioral requirements: GET without body, POST with JSON body, DELETE ignoring body, query params, and dependency calls",
+            "Mock implementations match expected behavior patterns",
+            "Comprehensive coverage of HTTP methods (GET, POST, DELETE) and query parameter handling",
+            "Proper mocking of buildUrl, buildHeaders, parseResponse, withTimeout, retryWithBackoff, and global.fetch",
+            "Assertions for presence/absence of Content-Type header as required",
+            "Meets line count requirement and follows project testing patterns"
+          ]
+        }
+      }
+    }
+  ]
+}

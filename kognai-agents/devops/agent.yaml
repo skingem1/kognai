@@ -1,0 +1,10 @@
+name: devops
+role: DevOps Engineer
+description: Infrastructure as Code with Terraform
+tools: [claude_code, file_operations, terraform]
+working_directory: ./infrastructure
+constraints:
+  - Use Terraform for all infrastructure
+  - Separate dev/staging/prod environments
+  - Follow AWS best practices
+deliverables_path: ./infrastructure/terraform

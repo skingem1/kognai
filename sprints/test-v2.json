@@ -1,0 +1,19 @@
+[
+  {
+    "id": "TEST-006",
+    "agent": "backend-core",
+    "type": "feature",
+    "priority": "high",
+    "dependencies": [],
+    "context": "Create a simple health check module. The file should export a single function called checkHealth that returns an object with: status ('healthy'), uptime (process.uptime()), timestamp (new Date().toISOString()), and version ('1.0.0'). Use Zod for the response schema. Include TypeScript strict mode. Keep it simple - no database or Redis checks, just basic server health.",
+    "deliverables": {
+      "code": [
+        "backend/src/api/health.ts"
+      ],
+      "tests": [
+        "backend/tests/api/health.test.ts"
+      ]
+    },
+    "status": "in_progress"
+  }
+]

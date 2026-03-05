@@ -1,0 +1,273 @@
+{
+  "tasks": [
+    {
+      "id": "QUAL-001",
+      "agent": "agents",
+      "type": "bugfix",
+      "priority": "critical",
+      "dependencies": [],
+      "description": "Fix quality gate score thresholds in auto-approval prompt",
+      "context": "Update SYSTEM_PROMPT in src/agents/minimax/system-prompt.ts to enforce correct thresholds: complexity \u22647, maintainability \u226565, test_coverage \u226580. Currently allows approval with failing scores. Add explicit rejection logic for infrastructure changes without ADR.",
+      "deliverables": {
+        "code": [
+          "src/agents/minimax/system-prompt.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "skipped",
+      "skipReason": "Skipped: target file src/agents/minimax/system-prompt.ts does not exist in repo (wrong path). Queue for next sprint with correct file location."
+    },
+    {
+      "id": "BACK-001",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "description": "Add Polygon mainnet support to x402 payment protocol",
+      "context": "Extend src/lib/x402.ts to support chainId 137 (Polygon). Add USDC contract address 0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359. Maintain existing Ethereum support. Update type definitions for multi-chain.",
+      "deliverables": {
+        "code": [
+          "src/lib/x402.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "src/lib/x402.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 89,
+          "summary": "Dual-approved: Claude (88/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "medium",
+              "file": "src/lib/x402.ts",
+              "description": "Environment variables (ETHEREUM_RPC_URL, POLYGON_RPC_URL) default to empty strings which could cause runtime issues if not set"
+            },
+            {
+              "severity": "low",
+              "file": "src/lib/x402.ts",
+              "description": "Missing JSDoc examples for complex functions like parsePaymentHeaders"
+            },
+            {
+              "severity": "low",
+              "file": "src/lib/x402.ts",
+              "description": "Could benefit from explicit validation that RPC URLs are set before use"
+            }
+          ],
+          "strengths": [
+            "Proper TypeScript strict typing with no 'any' types used",
+            "Comprehensive Zod validation schemas for all payment headers",
+            "Clean separation of concerns with dedicated interfaces and utility functions",
+            "Maintains backward compatibility while extending functionality",
+            "Good error handling with descriptive error messages",
+            "Proper use of const assertions and type guards",
+            "Well-documented with JSDoc comments on all public APIs",
+            "Follows project architecture patterns with proper exports",
+            "Correct Polygon USDC contract address as specified",
+            "Type-safe chain ID validation and supported chain checking",
+            "No invalid syntax or markdown fences in source code",
+            "Zod validation schema correctly added for chainId 137 and other headers",
+            "Type definitions (TokenConfig, ChainConfig, SupportedChainId) are clear and type-safe",
+            "Helper functions (getChainConfig, getUsdcConfig, isSupportedChain) follow project patterns",
+            "Maintains compatibility with Ethereum mainnet and cleanly introduces Polygon support",
+            "No hardcoded secrets or insecure patterns"
+          ]
+        }
+      }
+    },
+    {
+      "id": "BACK-002",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [
+        "BACK-001"
+      ],
+      "description": "Register Polygon network in chain configuration",
+      "context": "Add Polygon mainnet to src/config/chains.ts with chainId 137, RPC endpoints, block explorer. Include USDC token config. Ensure backward compatibility with existing Ethereum config.",
+      "deliverables": {
+        "code": [
+          "src/config/chains.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "src/config/chains.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "REJECTED",
+          "score": 25,
+          "summary": "Dual-rejected: Claude (25/100) + Codex (25/100). File is incomplete - cuts off mid-implementation without the critical chainMap export and utility functions. Missing test file entirely. Several type safety and architectural issues. | The new Polygon config was added, but the file is incomplete and contains type mismatches that will break compilation/runtime validation.",
+          "issues": [
+            {
+              "severity": "critical",
+              "file": "src/config/chains.ts",
+              "description": "File is incomplete - cuts off at line 'Map of chain ID to chain configuration' without implementing the chainMap export or utility functions"
+            },
+            {
+              "severity": "critical",
+              "file": "src/config/chains.ts",
+              "description": "No test file provided - missing __tests__/chains.test.ts entirely"
+            },
+            {
+              "severity": "high",
+              "file": "src/config/chains.ts",
+              "description": "Type safety issue: blockExplorer uses 'new URL()' constructor but schema expects string - runtime type mismatch"
+            },
+            {
+              "severity": "high",
+              "file": "src/config/chains.ts",
+              "description": "RPC array filtering with 'filter(Boolean) as string[]' is unsafe - could include non-string values if env vars are not strings"
+            },
+            {
+              "severity": "medium",
+              "file": "src/config/chains.ts",
+              "description": "Missing JSDoc documentation for exported types and main configuration objects"
+            },
+            {
+              "severity": "medium",
+              "file": "src/config/chains.ts",
+              "description": "No error handling for invalid environment variables or malformed URLs"
+            },
+            {
+              "severity": "low",
+              "file": "src/config/chains.ts",
+              "description": "Hardcoded oracle heartbeat values without configuration flexibility"
+            },
+            {
+              "severity": "critical",
+              "file": "src/config/chains.ts",
+              "description": "The file is truncated. The \u2018Map of chain ID to chain configuration\u2019 section is started but not implemented or exported, leading to a syntax error."
+            },
+            {
+              "severity": "high",
+              "file": "src/config/chains.ts",
+              "description": "blockExplorer is declared in the Zod schema as z.string().url(), but the code assigns a URL object (new URL(...)) instead of a string."
+            },
+            {
+              "severity": "medium",
+              "file": "src/config/chains.ts",
+              "description": "The comment for the Polygon Chainlink feed references USDC/USD but then labels it MATIC/USD. Clarify or correct the comment and ensure the correct feed address is used."
+            },
+            {
+              "severity": "low",
+              "file": "src/config/chains.ts",
+              "description": "Although Zod schemas are defined, the code never runs zod.parse() or validation on the exported configs, reducing the effectiveness of the schema definitions."
+            }
+          ],
+          "strengths": []
+        }
+      }
+    },
+    {
+      "id": "FRONT-001",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "medium",
+      "dependencies": [],
+      "description": "Implement new brand colors in global CSS variables",
+      "context": "Update src/styles/globals.css with new brand palette: primary #2D5BFF, secondary #00C9A7, neutral grays. Replace all --color-* CSS variables. Maintain dark mode variants. Follow brand guidelines for contrast ratios.",
+      "deliverables": {
+        "code": [
+          "src/styles/globals.css"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "skipped",
+      "output": {
+        "files": [
+          "src/styles/globals.css"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "REJECTED",
+          "score": 25,
+          "summary": "Dual-rejected: Claude (25/100) + Codex (40/100). File is incomplete and truncated, missing critical CSS content. Contains syntax error at end. | The globals.css file has been updated with the new brand palette and dark mode variants correctly, but the file is truncated (cut off at \u2018font-fea\u2019) and missing closing braces, resulting in invalid CSS. Please provide the complete file.",
+          "issues": [
+            {
+              "severity": "critical",
+              "file": "src/styles/globals.css",
+              "description": "File is truncated - ends abruptly with 'font-fea' which is invalid CSS syntax"
+            },
+            {
+              "severity": "critical",
+              "file": "src/styles/globals.css",
+              "description": "Missing complete body styling and potentially other CSS rules that were cut off"
+            },
+            {
+              "severity": "high",
+              "file": "src/styles/globals.css",
+              "description": "No contrast ratio validation provided - task specifically required following brand guidelines for contrast ratios"
+            },
+            {
+              "severity": "medium",
+              "file": "src/styles/globals.css",
+              "description": "Dark mode primary colors appear incorrect - lighter values assigned to higher numbered variants (600-900) which is backwards"
+            },
+            {
+              "severity": "critical",
+              "file": "src/styles/globals.css",
+              "description": "File appears truncated at \u201cfont-fea\u201d, missing closing braces and remaining layer/base definitions. This will break CSS parsing."
+            }
+          ],
+          "strengths": []
+        }
+      },
+      "skipReason": "Skipped: target file src/styles/globals.css does not exist (hallucinated Next.js path). Frontend structure differs. MiniMax also truncated output. Queue for CMO-driven brand sprint with correct paths."
+    },
+    {
+      "id": "FRONT-002",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "medium",
+      "dependencies": [
+        "FRONT-001"
+      ],
+      "description": "Update typography system with new brand fonts",
+      "context": "Modify src/components/ui/typography.tsx to use Inter for body, Space Grotesk for headings per brand guidelines. Update font-family declarations, weights (400, 500, 600, 700), and line-heights. Import fonts in layout.",
+      "deliverables": {
+        "code": [
+          "src/components/ui/typography.tsx"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "skipped",
+      "skipReason": "Skipped: blocked by FRONT-001 (rejected). Dependency never completed. Target src/components/ui/typography.tsx may not exist at this path."
+    },
+    {
+      "id": "FRONT-003",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "medium",
+      "dependencies": [
+        "FRONT-001"
+      ],
+      "description": "Redesign button components with new brand style",
+      "context": "Update src/components/ui/button.tsx with new brand styling: rounded corners (8px), updated hover states, new color variants using CSS variables from FRONT-001. Maintain accessibility (WCAG AA). Keep existing variants structure.",
+      "deliverables": {
+        "code": [
+          "src/components/ui/button.tsx"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "skipped",
+      "skipReason": "Skipped: blocked by FRONT-001 (rejected). Dependency never completed. Target src/components/ui/button.tsx may not exist at this path."
+    }
+  ]
+}

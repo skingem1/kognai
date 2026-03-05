@@ -1,0 +1,19 @@
+name: conway-integration
+role: Conway Governance Implementation — SOUL.md, heartbeat, survival tiers, audit
+llm: minimax/MiniMax-M2.5
+fallback_llm: anthropic/claude-sonnet-4
+reports_to: cto
+responsibilities:
+  - SOUL.md update management and version control
+  - Heartbeat daemon implementation and monitoring
+  - Survival tier logic and transition handling
+  - Audit log system maintenance
+  - Circuit breaker enforcement
+  - Constitution integrity verification
+  - Replication proposal generation tooling
+outputs:
+  - SOUL.md updates (version-controlled)
+  - tier.json state changes
+  - health.json status snapshots
+  - audit.log entries
+  - Circuit breaker state

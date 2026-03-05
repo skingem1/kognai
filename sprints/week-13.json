@@ -1,0 +1,259 @@
+{
+  "tasks": [
+    {
+      "id": "SDK-060a",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "critical",
+      "dependencies": [],
+      "context": "Add API Key types to the existing SDK types file at sdk/typescript/src/types.ts. The file ALREADY has these types exported: GetSettlementParams, SettlementStatus, WebhookEventType, Invoice, ApiResponse, CreateInvoiceParams. You must KEEP all existing types and ADD these new ones at the end of the file:\n\n(1) export interface ApiKey { id: string; name: string; key: string; createdAt: string; lastUsedAt: string | null; revoked: boolean; }\n(2) export interface CreateApiKeyParams { name: string; }\n(3) export interface ApiKeyListResponse { apiKeys: ApiKey[]; total: number; }\n(4) export interface WebhookRegistrationConfig { url: string; events: WebhookEventType[]; secret: string; }\n(5) export interface WebhookRegistration { id: string; url: string; events: WebhookEventType[]; active: boolean; createdAt: string; }\n(6) export interface WebhookListResponse { webhooks: WebhookRegistration[]; total: number; }\n\nIMPORTANT: Keep the file under 60 lines total. Preserve ALL existing types exactly as they are. Just append the new interfaces after the existing CreateInvoiceParams interface. No tests needed — these are pure type definitions.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/types.ts"
+        ],
+        "tests": []
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "sdk/typescript/src/types.ts"
+        ],
+        "commit": "0e1b47b",
+        "model": "MiniMax-M2.5"
+      }
+    },
+    {
+      "id": "SDK-060b",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "critical",
+      "dependencies": [
+        "SDK-060a"
+      ],
+      "context": "Add API Key management methods to the existing SDK client at sdk/typescript/src/client.ts. The InvoicaClient class ALREADY exists with these methods: getInvoice, createInvoice, getSettlement, listSettlements, listInvoices, and a private request<T> method. You must ADD three new methods to the class:\n\n(1) async createApiKey(params: CreateApiKeyParams): Promise<ApiKey> — POST /api-keys with body params\n(2) async revokeApiKey(id: string): Promise<void> — DELETE /api-keys/${id}\n(3) async listApiKeys(): Promise<ApiKeyListResponse> — GET /api-keys\n\nAdd these imports at top: import { ApiKey, CreateApiKeyParams, ApiKeyListResponse } from './types';\nKeep ALL existing code unchanged. Just add the 3 methods at the end of the class before the closing brace. Each method is 1-2 lines using this.request<T>(). Total addition: ~15 lines. No tests needed for this sub-task.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/client.ts"
+        ],
+        "tests": []
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "sdk/typescript/src/client.ts"
+        ],
+        "commit": "81bd329",
+        "model": "MiniMax-M2.5"
+      }
+    },
+    {
+      "id": "SDK-060c",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "critical",
+      "dependencies": [
+        "SDK-060a"
+      ],
+      "context": "Add Webhook CRUD methods to the existing SDK client at sdk/typescript/src/client.ts. The InvoicaClient class ALREADY exists with methods including getInvoice, createInvoice, getSettlement, listSettlements, listInvoices, createApiKey, revokeApiKey, listApiKeys, and a private request<T> method. You must ADD three new webhook management methods to the class:\n\n(1) async registerWebhook(config: WebhookRegistrationConfig): Promise<WebhookRegistration> — POST /webhooks with body config\n(2) async listWebhooks(): Promise<WebhookListResponse> — GET /webhooks\n(3) async deleteWebhook(id: string): Promise<void> — DELETE /webhooks/${id}\n\nAdd these imports at top: import { WebhookRegistrationConfig, WebhookRegistration, WebhookListResponse } from './types';\nKeep ALL existing code unchanged. Just add the 3 methods at the end of the class before the closing brace. Each method is 1-2 lines using this.request<T>(). Total addition: ~15 lines. No tests needed for this sub-task.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/client.ts"
+        ],
+        "tests": []
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "sdk/typescript/src/client.ts"
+        ],
+        "commit": "0fcfe8f",
+        "model": "MiniMax-M2.5"
+      }
+    },
+    {
+      "id": "SDK-060d",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [
+        "SDK-060b",
+        "SDK-060c"
+      ],
+      "context": "Create a test file for the SDK client API Key and Webhook methods at sdk/typescript/tests/client-methods.test.ts. This tests the NEW methods added in SDK-060b and SDK-060c. Mock global fetch with jest.fn(). Create an InvoicaClient instance with config {apiKey: 'test-key', baseUrl: 'https://api.test.com'}.\n\nTest exactly these 6 cases:\n(1) createApiKey calls POST /api-keys with name in body\n(2) revokeApiKey calls DELETE /api-keys/{id}\n(3) listApiKeys calls GET /api-keys\n(4) registerWebhook calls POST /webhooks with config body\n(5) listWebhooks calls GET /webhooks\n(6) deleteWebhook calls DELETE /webhooks/{id}\n\nEach test: mock fetch to return Response with ok:true and json() returning a minimal valid object. Assert fetch was called with correct URL and method. Maximum 60 lines total. Import InvoicaClient from '../src/client'. Use beforeEach to reset mocks.",
+      "deliverables": {
+        "code": [],
+        "tests": [
+          "sdk/typescript/tests/client-methods.test.ts"
+        ]
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "sdk/typescript/tests/client-methods.test.ts",
+          "sdk/typescript/tests/client-methods.test.ts"
+        ],
+        "commit": "e1c1670",
+        "model": "MiniMax-M2.5"
+      }
+    },
+    {
+      "id": "SDK-060e",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [
+        "SDK-060a"
+      ],
+      "context": "Update the SDK barrel export file at sdk/typescript/src/index.ts to include the new types. The file ALREADY exports: InvoicaClient, InvoicaConfig, RequestOptions, Invoice, CreateInvoiceParams, SettlementStatus, GetSettlementParams, WebhookEventType, ApiResponse, InvoicaError, ValidationError, NotFoundError, AuthenticationError, validateParams, verifyWebhookSignature, parseWebhookEvent.\n\nADD these new type exports from './types': ApiKey, CreateApiKeyParams, ApiKeyListResponse, WebhookRegistrationConfig, WebhookRegistration, WebhookListResponse.\n\nKeep ALL existing exports. Just add the new ones to the existing types export line. The entire file should be ~8 lines total. No tests needed.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/index.ts"
+        ],
+        "tests": []
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "sdk/typescript/src/index.ts"
+        ],
+        "commit": "532d5a5",
+        "model": "MiniMax-M2.5"
+      }
+    },
+    {
+      "id": "SDK-061",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "context": "Create the Invoica SDK authentication module at sdk/typescript/src/auth.ts. This is a NEW file. It handles API key validation and request signing. Export these 3 functions and 1 class:\n\n(1) export function createAuthHeaders(apiKey: string): Record<string, string> — returns { Authorization: `Bearer ${apiKey}`, 'X-Request-Id': randomUUID(), 'X-Timestamp': new Date().toISOString() }. Import randomUUID from 'crypto'.\n(2) export function validateApiKey(key: string): boolean — returns true if key matches regex /^inv_[0-9a-f]{32}$/.\n(3) export function signRequest(apiKey: string, method: string, path: string, body?: string): string — creates HMAC-SHA256 of `${method}:${path}:${body || ''}` using apiKey as secret. Returns hex digest. Import createHmac from 'crypto'.\n(4) export class ApiKeyError extends Error { constructor(message: string) { super(message); this.name = 'ApiKeyError'; } }\n\nFile should be under 35 lines. No external dependencies. Import only from Node.js 'crypto'.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/auth.ts"
+        ],
+        "tests": [
+          "sdk/typescript/tests/auth.test.ts"
+        ]
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "sdk/typescript/src/auth.ts",
+          "sdk/typescript/tests/auth.test.ts",
+          "sdk/typescript/src/auth.ts",
+          "sdk/typescript/tests/auth.test.ts"
+        ],
+        "commit": "60a4262",
+        "model": "MiniMax-M2.5"
+      }
+    },
+    {
+      "id": "SDK-062",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "context": "Create the Invoica SDK webhook verification helper at sdk/typescript/src/webhook-verify.ts. This is a NEW file separate from the existing webhook.ts. It provides a higher-level verification + parsing convenience method.\n\nExport these items:\n\n(1) export class WebhookVerificationError extends Error { constructor(message: string) { super(message); this.name = 'WebhookVerificationError'; } }\n(2) export interface WebhookEvent { id: string; type: 'invoice.created' | 'invoice.paid' | 'settlement.completed' | 'settlement.failed' | 'apikey.revoked'; data: Record<string, unknown>; timestamp: string; signature: string; }\n(3) export function constructEvent(payload: string, signature: string, secret: string): WebhookEvent — First verify the signature using HMAC-SHA256: compute createHmac('sha256', secret).update(payload).digest('hex'), compare with signature using timingSafeEqual on Buffers. If mismatch, throw new WebhookVerificationError('Invalid webhook signature'). If valid, parse payload as JSON and return as WebhookEvent.\n\nImport createHmac and timingSafeEqual from 'crypto'. File should be under 30 lines total.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/webhook-verify.ts"
+        ],
+        "tests": [
+          "sdk/typescript/tests/webhook-verify.test.ts"
+        ]
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "sdk/typescript/src/webhook-verify.ts",
+          "sdk/typescript/tests/webhook-verify.test.ts"
+        ],
+        "commit": "ba8b8a4",
+        "model": "MiniMax-M2.5"
+      }
+    },
+    {
+      "id": "FE-050",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "context": "Create a developer Getting Started page at frontend/app/docs/getting-started/page.tsx.",
+      "deliverables": {
+        "code": [
+          "frontend/app/docs/getting-started/page.tsx"
+        ],
+        "tests": []
+      },
+      "status": "done"
+    },
+    {
+      "id": "FE-051",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "medium",
+      "dependencies": [],
+      "context": "Create an interactive API Explorer component at frontend/components/api-explorer.tsx.",
+      "deliverables": {
+        "code": [
+          "frontend/components/api-explorer.tsx"
+        ],
+        "tests": []
+      },
+      "status": "done"
+    },
+    {
+      "id": "BE-110",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "medium",
+      "dependencies": [],
+      "context": "Create a test file for the health check endpoint at backend/src/routes/__tests__/health.test.ts. The health route ALREADY exists at backend/src/routes/health.ts and exports a default Express router with GET /v1/health. It imports prisma from '../lib/prisma' and redis from '../lib/redis'.\n\nWrite exactly 5 test cases:\n(1) returns 200 with status ok when database is healthy — mock prisma.$queryRaw to resolve\n(2) returns 503 when database is down — mock prisma.$queryRaw to reject\n(3) returns redis not_configured when REDIS_URL is not set — delete process.env.REDIS_URL\n(4) returns redis ok when REDIS_URL is set and redis.ping resolves — set process.env.REDIS_URL='redis://localhost'\n(5) includes version, uptime, and timestamp in response body\n\nUse jest.mock('../lib/prisma') and jest.mock('../lib/redis'). Use supertest to test the router. Maximum 70 lines. Import the router with: import router from '../health';",
+      "deliverables": {
+        "code": [],
+        "tests": [
+          "backend/src/routes/__tests__/health.test.ts"
+        ]
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "backend/src/routes/__tests__/health.test.ts",
+          "backend/src/routes/__tests__/health.test.ts"
+        ],
+        "commit": "a95271d",
+        "model": "MiniMax-M2.5"
+      }
+    },
+    {
+      "id": "BE-111",
+      "agent": "security",
+      "type": "feature",
+      "priority": "medium",
+      "dependencies": [],
+      "context": "Create a rate limiting middleware at backend/src/middleware/rate-limiter.ts.",
+      "deliverables": {
+        "code": [
+          "backend/src/middleware/rate-limiter.ts"
+        ],
+        "tests": [
+          "backend/src/middleware/__tests__/rate-limiter.test.ts"
+        ]
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "backend/src/middleware/rate-limiter.ts",
+          "backend/src/middleware/__tests__/rate-limiter.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 88,
+          "summary": "Well-implemented rate limiter with proper TypeScript types, comprehensive error handling, and good test coverage."
+        }
+      }
+    }
+  ]
+}

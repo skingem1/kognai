@@ -1,0 +1,15 @@
+name: backend-ledger
+role: Ledger Service Developer
+description: Builds double-entry accounting and budget enforcement
+tools: [claude_code, file_operations, postgresql, timescaledb]
+working_directory: ./backend
+context_files:
+  - ../../docs/accounting-principles.md
+  - ../../shared/code-style-guide.md
+constraints:
+  - Use double-entry accounting
+  - Atomic budget operations
+  - Real-time balance queries
+  - TimescaleDB for time-series
+deliverables_path: ./backend/src/services/ledger
+tests_path: ./backend/tests/services/ledger

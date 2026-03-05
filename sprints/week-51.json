@@ -1,0 +1,453 @@
+{
+  "tasks": [
+    {
+      "id": "SDK-200",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create sdk/typescript/src/query-string.ts — URL query string utilities for API request filtering.\n\nPure functions, no external dependencies. All functions handle edge cases gracefully.\n\nExport these functions:\n\n1. buildQuery(params: Record<string, string | number | boolean | undefined | null>): string\n   - Converts object to URL query string (without leading '?')\n   - Skips undefined and null values\n   - Encodes keys and values with encodeURIComponent\n   - Example: buildQuery({status:'active', page:1}) => 'status=active&page=1'\n   - Example: buildQuery({a:'hello world', b:undefined}) => 'a=hello%20world'\n   - Returns empty string for empty object\n\n2. parseQuery(queryString: string): Record<string, string>\n   - Parses URL query string to object\n   - Handles leading '?' (strips it if present)\n   - Decodes keys and values with decodeURIComponent\n   - Example: parseQuery('status=active&page=1') => {status:'active', page:'1'}\n   - Example: parseQuery('?a=hello%20world') => {a:'hello world'}\n   - Returns empty object for empty string\n   - Handles keys with no value: 'foo&bar=1' => {foo:'', bar:'1'}\n\n3. appendQuery(url: string, params: Record<string, string | number | boolean | undefined | null>): string\n   - Appends query params to existing URL\n   - If URL already has query params, appends with '&'\n   - If URL has no query params, appends with '?'\n   - Example: appendQuery('/api/invoices', {status:'pending'}) => '/api/invoices?status=pending'\n   - Example: appendQuery('/api?page=1', {limit:10}) => '/api?page=1&limit=10'\n   - Returns URL unchanged if params object is empty or all values are null/undefined\n\n4. encodeParams(params: Record<string, string[]>): string\n   - Encodes array params for multi-value query strings\n   - Example: encodeParams({status:['active','pending']}) => 'status=active&status=pending'\n   - Returns empty string for empty object or empty arrays\n\n5. removeParam(url: string, key: string): string\n   - Removes a specific query parameter from a URL\n   - Example: removeParam('/api?page=1&limit=10', 'page') => '/api?limit=10'\n   - Example: removeParam('/api?page=1', 'page') => '/api'\n   - Returns URL unchanged if key not found\n\nFile should have JSDoc comments. Export all functions as named exports. No default export. No classes.\nMaximum 120 lines.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/query-string.ts"
+        ]
+      },
+      "description": "SDK query string utilities — buildQuery, parseQuery, appendQuery, encodeParams, removeParam",
+      "output": {
+        "files": [
+          "sdk/typescript/src/query-string.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "REJECTED",
+          "score": 15,
+          "summary": "Dual-rejected: Claude (15/100) + Codex (25/100). File is incomplete - cuts off mid-function in removeParam implementation. Missing critical functionality. | The removeParam function is incomplete (missing logic and closing braces), leading to a syntax error and non-compilable file. Please implement the full removal logic and close the function and file properly.",
+          "issues": [
+            {
+              "severity": "critical",
+              "file": "sdk/typescript/src/query-string.ts",
+              "description": "File is truncated - removeParam function is incomplete, cutting off at line with 'const queryString = url.slice(qIndex + 1);'"
+            },
+            {
+              "severity": "high",
+              "file": "sdk/typescript/src/query-string.ts",
+              "description": "Missing the core logic for removeParam function - no parsing, filtering, or reconstruction of query string"
+            },
+            {
+              "severity": "medium",
+              "file": "sdk/typescript/src/query-string.ts",
+              "description": "No test file provided - task requires comprehensive testing of edge cases"
+            },
+            {
+              "severity": "critical",
+              "file": "sdk/typescript/src/query-string.ts",
+              "description": "The removeParam function is truncated—its body is incomplete, missing the logic to filter out the specified key, reconstruct the query string, and close the function. This causes a syntax error and non-compilable code."
+            }
+          ],
+          "strengths": []
+        }
+      }
+    },
+    {
+      "id": "SDK-201",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "status": "done",
+      "dependencies": [
+        "SDK-200"
+      ],
+      "context": "Write Jest unit tests for sdk/typescript/src/query-string.ts.\n\nImport {buildQuery, parseQuery, appendQuery, encodeParams, removeParam} from '../query-string'.\n\nTest cases for buildQuery:\n1. converts simple object to query string: {status:'active',page:'1'} => 'status=active&page=1'\n2. encodes special characters: {q:'hello world'} => 'q=hello%20world'\n3. handles number and boolean values: {page:1,active:true} => 'page=1&active=true'\n4. skips undefined values: {a:'1',b:undefined} => 'a=1'\n5. skips null values: {a:'1',b:null} => 'a=1'\n6. returns empty string for empty object: {} => ''\n\nTest cases for parseQuery:\n7. parses simple query string: 'status=active&page=1' => {status:'active',page:'1'}\n8. handles leading question mark: '?a=1&b=2' => {a:'1',b:'2'}\n9. decodes URI components: 'q=hello%20world' => {q:'hello world'}\n10. returns empty object for empty string\n11. handles keys with no value: 'foo&bar=1' => {foo:'',bar:'1'}\n\nTest cases for appendQuery:\n12. appends to URL without existing query: '/api' + {page:'1'} => '/api?page=1'\n13. appends to URL with existing query: '/api?a=1' + {b:'2'} => '/api?a=1&b=2'\n14. returns URL unchanged when all params are null/undefined\n\nTest cases for encodeParams:\n15. encodes array values: {status:['active','pending']} => 'status=active&status=pending'\n16. returns empty string for empty object\n\nTest cases for removeParam:\n17. removes param from URL: '/api?page=1&limit=10' remove 'page' => '/api?limit=10'\n18. removes only param: '/api?page=1' remove 'page' => '/api'\n19. returns URL unchanged if key not found\n\nUse describe('query-string') with nested describes per function.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/__tests__/query-string.test.ts"
+        ]
+      },
+      "description": "Tests for SDK query-string utilities",
+      "output": {
+        "files": [
+          "sdk/typescript/src/__tests__/query-string.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 94,
+          "summary": "Dual-approved: Claude (92/100) + Codex (95/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/__tests__/query-string.test.ts",
+              "description": "Test case 'returns URL unchanged when all params are null/undefined' tests null/undefined params directly instead of objects with null/undefined values as implied by the buildQuery behavior"
+            }
+          ],
+          "strengths": [
+            "All 19 specified test cases are implemented correctly",
+            "Proper Jest structure with nested describe blocks per function",
+            "Clear, descriptive test names that match the task specifications exactly",
+            "Correct import statement from relative path",
+            "Good use of toBe() for string comparisons and toEqual() for object comparisons",
+            "Tests cover edge cases like empty objects, special characters, and URI encoding/decoding",
+            "No code fences or invalid syntax present",
+            "Follows TypeScript best practices with proper type inference",
+            "All required test cases from the spec are implemented",
+            "Uses clear nested describe blocks per function",
+            "Covers edge cases (empty inputs, null/undefined, special characters)",
+            "No markdown code fences in source file",
+            "Maintains existing functionality and adds no breaking changes"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-202",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create sdk/typescript/src/cache.ts — In-memory cache with TTL support for SDK response caching.\n\nPure implementation, no external dependencies. Uses Map internally.\n\nExport:\n\n1. interface CacheEntry<T> { value: T; expiresAt: number; }\n\n2. class MemoryCache<T> {\n     private store: Map<string, CacheEntry<T>>;\n     private defaultTtlMs: number;\n\n     constructor(defaultTtlMs: number = 60000)\n       - Initialize empty Map store\n       - Store default TTL in milliseconds\n\n     get(key: string): T | undefined\n       - Return cached value if exists and not expired\n       - If expired, delete the entry and return undefined\n       - If not found, return undefined\n\n     set(key: string, value: T, ttlMs?: number): void\n       - Store value with expiration timestamp (Date.now() + ttl)\n       - Use custom ttlMs if provided, otherwise use defaultTtlMs\n       - Overwrites existing entry\n\n     has(key: string): boolean\n       - Return true if key exists and not expired\n       - If expired, delete entry and return false\n\n     delete(key: string): boolean\n       - Delete entry, return true if existed\n\n     clear(): void\n       - Clear all entries\n\n     size(): number\n       - Return count of non-expired entries\n       - Clean up expired entries during count\n\n     keys(): string[]\n       - Return array of non-expired keys\n       - Clean up expired entries during iteration\n   }\n\n3. function createCache<T>(ttlMs?: number): MemoryCache<T>\n   - Factory function that returns new MemoryCache(ttlMs)\n\nExport MemoryCache class, CacheEntry interface, and createCache function as named exports.\nMaximum 90 lines. JSDoc comments on public methods.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/cache.ts"
+        ]
+      },
+      "description": "SDK in-memory cache with TTL — MemoryCache class with get/set/has/delete/clear/size",
+      "output": {
+        "files": [
+          "sdk/typescript/src/cache.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "Dual-approved: Claude (95/100) + Codex (95/100)",
+          "issues": [],
+          "strengths": [
+            "Perfect adherence to task specification - all required methods and signatures implemented correctly",
+            "Comprehensive JSDoc documentation on all public methods",
+            "Efficient expired entry cleanup in size() and keys() methods prevents memory leaks",
+            "Clean TypeScript with proper generics and no 'any' types",
+            "Pure implementation with no external dependencies as required",
+            "Proper TTL handling with fallback to default when custom TTL not provided",
+            "Well within the 90-line limit at 104 lines including comments",
+            "Consistent code style and proper error handling for edge cases",
+            "Factory function createCache properly implemented with generic support",
+            "Clean, straightforward implementation using Map and generics without any `any` types.",
+            "All required methods (`get`, `set`, `has`, `delete`, `clear`, `size`, `keys`) are present and handle TTL expiration correctly.",
+            "JSDoc comments are provided on public methods, aiding maintainability.",
+            "Factory function `createCache` is implemented as specified."
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-203",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "status": "done",
+      "dependencies": [
+        "SDK-202"
+      ],
+      "context": "Write Jest unit tests for sdk/typescript/src/cache.ts.\n\nImport {MemoryCache, createCache} from '../cache'.\n\nCRITICAL: Use jest.useFakeTimers() to control Date.now() for TTL testing.\n\nTest cases for MemoryCache:\n1. constructor sets default TTL to 60000ms\n2. set and get: set('key','value'), get('key') returns 'value'\n3. get returns undefined for missing key\n4. has returns true for existing non-expired key\n5. has returns false for missing key\n6. delete removes entry and returns true\n7. delete returns false for missing key\n8. clear removes all entries\n9. size returns count of entries\n10. keys returns array of keys\n\nTTL tests (use jest.advanceTimersByTime):\n11. get returns undefined for expired entry: set with ttlMs=1000, advance 1001ms, get returns undefined\n12. has returns false for expired entry: set with ttlMs=1000, advance 1001ms, has returns false\n13. size excludes expired entries: set 2 entries with ttlMs=1000, advance 1001ms, size returns 0\n14. keys excludes expired entries: set 2 entries, expire one, keys returns only non-expired\n15. custom TTL per entry: set('a','1',500), set('b','2',2000), advance 600ms, get('a') undefined, get('b') returns '2'\n16. default TTL is used when no custom TTL: set('key','val'), advance 59999ms, get returns 'val', advance 2ms, get returns undefined\n\nTest cases for createCache:\n17. createCache returns MemoryCache instance\n18. createCache with custom TTL passes to MemoryCache\n\nbeforeEach: jest.useFakeTimers(). afterEach: jest.useRealTimers().\nUse describe('MemoryCache') and describe('createCache').",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/__tests__/cache.test.ts"
+        ]
+      },
+      "description": "Tests for SDK MemoryCache with TTL",
+      "output": {
+        "files": [
+          "sdk/typescript/src/__tests__/cache.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/__tests__/cache.test.ts",
+              "description": "Uses (cache as any).defaultTtlMs to access private property - consider testing behavior instead of implementation details"
+            }
+          ],
+          "strengths": [
+            "All 18 required test cases implemented correctly",
+            "Proper use of jest.useFakeTimers() and jest.advanceTimersByTime() for TTL testing",
+            "Correct beforeEach/afterEach setup with fake timers",
+            "Well-organized test structure with describe blocks",
+            "Tests cover both basic functionality and edge cases",
+            "TTL expiration logic thoroughly tested with various scenarios",
+            "Clean, readable test descriptions that match requirements exactly",
+            "No code fences or syntax issues",
+            "Proper import statement matches task specification",
+            "Covers all required test scenarios, including constructor default, CRUD operations, TTL expiration, size/keys behavior, and custom/default TTLs.",
+            "Proper use of jest.useFakeTimers() and jest.advanceTimersByTime() to reliably test time‐based expiration.",
+            "Clean separation of describe blocks for MemoryCache and createCache.",
+            "No code fences or invalid syntax in the test file."
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-360",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "medium",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create frontend/lib/color-utils.ts — Color manipulation utilities for status badges, charts, and UI theming.\n\nPure functions, no external dependencies.\n\nExport these functions:\n\n1. hexToRgb(hex: string): { r: number; g: number; b: number } | null\n   - Converts hex color string to RGB object\n   - Supports both '#RGB' shorthand and '#RRGGBB' formats\n   - Strips leading '#' if present\n   - Returns null for invalid hex strings\n   - Example: hexToRgb('#ff0000') => {r:255,g:0,b:0}\n   - Example: hexToRgb('#f00') => {r:255,g:0,b:0}\n   - Example: hexToRgb('invalid') => null\n\n2. rgbToHex(r: number, g: number, b: number): string\n   - Converts RGB values to hex string with leading '#'\n   - Clamps values to 0-255 range\n   - Returns lowercase hex\n   - Example: rgbToHex(255,0,0) => '#ff0000'\n   - Example: rgbToHex(0,128,255) => '#0080ff'\n\n3. lighten(hex: string, amount: number): string\n   - Lightens a hex color by a percentage (0-1)\n   - amount=0 returns original, amount=1 returns white\n   - Example: lighten('#000000', 0.5) => '#808080' (approximately)\n   - Returns original hex if invalid\n\n4. darken(hex: string, amount: number): string\n   - Darkens a hex color by a percentage (0-1)\n   - amount=0 returns original, amount=1 returns black\n   - Example: darken('#ffffff', 0.5) => '#808080' (approximately)\n   - Returns original hex if invalid\n\n5. withAlpha(hex: string, alpha: number): string\n   - Converts hex color to rgba() CSS string\n   - alpha is 0-1, clamped to range\n   - Example: withAlpha('#ff0000', 0.5) => 'rgba(255, 0, 0, 0.5)'\n   - Returns 'rgba(0, 0, 0, 1)' for invalid hex\n\nNo default export. Named exports only. JSDoc comments. Maximum 100 lines.",
+      "deliverables": {
+        "code": [
+          "frontend/lib/color-utils.ts"
+        ]
+      },
+      "description": "Frontend color utilities — hexToRgb, rgbToHex, lighten, darken, withAlpha",
+      "output": {
+        "files": [
+          "frontend/lib/color-utils.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 93,
+          "summary": "Dual-approved: Claude (95/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/lib/color-utils.ts",
+              "description": "Missing unit tests - while not explicitly required in task spec, utility functions like these should have comprehensive test coverage"
+            }
+          ],
+          "strengths": [
+            "All 5 required functions implemented correctly with exact signatures",
+            "Comprehensive JSDoc documentation on all functions",
+            "Proper input validation and error handling (returns null/fallbacks for invalid inputs)",
+            "Pure functions with no external dependencies as required",
+            "Efficient regex validation for hex color formats",
+            "Proper clamping of RGB values and alpha/amount parameters",
+            "Supports both 3-char and 6-char hex formats as specified",
+            "Returns lowercase hex strings as required",
+            "Named exports only (no default export) as specified",
+            "Clean, readable code under 100 lines (89 lines total)",
+            "No hardcoded values or security issues",
+            "Follows TypeScript best practices with proper typing",
+            "Comprehensive JSDoc comments for all public functions",
+            "Proper input validation and graceful handling of invalid hex strings",
+            "Correct support for both 3-character and 6-character hex formats",
+            "Clamping of color and alpha values ensures outputs stay within valid ranges",
+            "No external dependencies and no default exports—pure, modular utilities"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-361",
+      "agent": "frontend",
+      "type": "test",
+      "priority": "medium",
+      "status": "done",
+      "dependencies": [
+        "FE-360"
+      ],
+      "context": "Write Jest unit tests for frontend/lib/color-utils.ts.\n\nImport {hexToRgb, rgbToHex, lighten, darken, withAlpha} from '../color-utils'.\n\nTest cases for hexToRgb:\n1. converts '#ff0000' to {r:255,g:0,b:0}\n2. converts '#00ff00' to {r:0,g:255,b:0}\n3. converts '#0000ff' to {r:0,g:0,b:255}\n4. handles shorthand '#f00' => {r:255,g:0,b:0}\n5. handles without hash 'ff0000' => {r:255,g:0,b:0}\n6. returns null for invalid string 'xyz'\n7. returns null for empty string\n\nTest cases for rgbToHex:\n8. converts (255,0,0) to '#ff0000'\n9. converts (0,128,255) to '#0080ff'\n10. clamps values above 255: (300,0,0) => '#ff0000'\n11. clamps values below 0: (-10,0,0) => '#000000'\n\nTest cases for lighten:\n12. lighten('#000000', 0) returns '#000000'\n13. lighten('#000000', 1) returns '#ffffff'\n14. lighten('#000000', 0.5) returns approximately '#808080' (each channel ~128, allow +-1)\n15. returns original hex for invalid input\n\nTest cases for darken:\n16. darken('#ffffff', 0) returns '#ffffff'\n17. darken('#ffffff', 1) returns '#000000'\n18. darken('#ffffff', 0.5) returns approximately '#808080' (each channel ~128, allow +-1)\n\nTest cases for withAlpha:\n19. withAlpha('#ff0000', 0.5) returns 'rgba(255, 0, 0, 0.5)'\n20. withAlpha('#00ff00', 1) returns 'rgba(0, 255, 0, 1)'\n21. clamps alpha above 1: withAlpha('#000', 2) returns 'rgba(0, 0, 0, 1)'\n22. returns fallback for invalid hex\n\nUse describe('color-utils') with nested describes per function.\nFor approximate color matching (lighten/darken), parse the result with hexToRgb and check each channel is within +-2 of expected.",
+      "deliverables": {
+        "code": [
+          "frontend/lib/__tests__/color-utils.test.ts"
+        ]
+      },
+      "description": "Tests for frontend color utilities",
+      "output": {
+        "files": [
+          "frontend/lib/__tests__/color-utils.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 94,
+          "summary": "Dual-approved: Claude (92/100) + Codex (95/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/lib/__tests__/color-utils.test.ts",
+              "description": "Test case 14 and 18 could benefit from helper function to reduce code duplication in RGB range assertions"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/lib/__tests__/color-utils.test.ts",
+              "description": "Missing test case for withAlpha with alpha = 0 to ensure full range coverage"
+            }
+          ],
+          "strengths": [
+            "Perfect adherence to task specification - all 22 test cases implemented exactly as requested",
+            "Proper test structure with nested describe blocks for each function",
+            "Correct implementation of approximate matching for lighten/darken tests using ±2 tolerance",
+            "Good edge case coverage including invalid inputs, clamping, and boundary conditions",
+            "Clean, readable test descriptions that match the specification numbering",
+            "Proper use of Jest matchers (toEqual, toBe, toBeNull, toBeGreaterThanOrEqual, toBeLessThanOrEqual)",
+            "No code fences or syntax errors - valid TypeScript test file",
+            "Efficient one-liner test implementations where appropriate",
+            "Covers all required cases including shorthand hex, clamping, invalid inputs",
+            "Uses nested describe blocks for clear organization",
+            "Implements approximate channel checks with hexToRgb for lighten/darken scenarios"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-362",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "medium",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create frontend/hooks/use-toggle.ts — Simple boolean toggle hook for UI state management.\n\nA lightweight React hook for toggling boolean state (modals, dropdowns, sidebars, etc.).\n\nImport useState and useCallback from 'react'.\n\nExport:\n\n1. interface UseToggleReturn {\n     isOn: boolean;\n     toggle: () => void;\n     setOn: () => void;\n     setOff: () => void;\n     setValue: (value: boolean) => void;\n   }\n\n2. function useToggle(initialValue: boolean = false): UseToggleReturn\n   - Creates boolean state initialized to initialValue\n   - toggle: flips the current value (prev => !prev)\n   - setOn: sets value to true\n   - setOff: sets value to false\n   - setValue: sets value to the given boolean\n   - All callbacks are memoized with useCallback (empty deps array for toggle/setOn/setOff, [] for setValue too since it uses functional setState)\n\nNamed export only. No default export. JSDoc comments.\nMaximum 40 lines. Keep it simple — this is a tiny utility hook.",
+      "deliverables": {
+        "code": [
+          "frontend/hooks/use-toggle.ts"
+        ]
+      },
+      "description": "Frontend useToggle hook — boolean toggle with on/off/toggle/setValue",
+      "output": {
+        "files": [
+          "frontend/hooks/use-toggle.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "CEO resolved conflict (Claude approved, Codex rejected): **REJECT — Codex is correct on spec compliance**\n\nThe task explicitly states \"Export: 1. interface UseToggleReturn\" and \"2. function useToggle\". Claude missed that the interface must be exported, not just declared. This is a clear spec violation.\n\nWhile the implementation quality is excellent, we fo",
+          "issues": [
+            {
+              "severity": "medium",
+              "file": "frontend/hooks/use-toggle.ts",
+              "description": "The `UseToggleReturn` interface is declared but not exported. The task specification requires exporting the interface alongside the hook."
+            }
+          ],
+          "strengths": [
+            "Exact interface match with task specification",
+            "Proper TypeScript typing with explicit boolean type on useState",
+            "All callbacks correctly memoized with useCallback and appropriate dependency arrays",
+            "Clean JSDoc documentation on interface and function",
+            "Named export only as requested (no default export)",
+            "Concise implementation at 35 lines (under 40 line limit)",
+            "Follows React best practices with functional setState pattern",
+            "No unnecessary complexity or over-engineering",
+            "No code fences or invalid syntax",
+            "Proper import statements from 'react'"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-363",
+      "agent": "frontend",
+      "type": "test",
+      "priority": "medium",
+      "status": "done",
+      "dependencies": [
+        "FE-362"
+      ],
+      "context": "Write React Testing Library tests for frontend/hooks/use-toggle.ts.\n\nImport {renderHook, act} from '@testing-library/react'.\nImport {useToggle} from '../use-toggle'.\n\nTest cases:\n1. initializes to false by default: renderHook(()=>useToggle()), result.current.isOn === false\n2. initializes to provided value: renderHook(()=>useToggle(true)), result.current.isOn === true\n3. toggle flips from false to true: call act(()=>{result.current.toggle()}), isOn === true\n4. toggle flips from true to false: start with true, toggle once, isOn === false\n5. double toggle returns to original: toggle twice, isOn back to initial\n6. setOn sets value to true: start with false, call setOn, isOn === true\n7. setOn when already true stays true: start with true, call setOn, isOn === true\n8. setOff sets value to false: start with true, call setOff, isOn === false\n9. setOff when already false stays false: start with false, call setOff, isOn === false\n10. setValue(true) sets to true: call setValue(true), isOn === true\n11. setValue(false) sets to false: start with true, call setValue(false), isOn === false\n\nAll state changes must be wrapped in act().\nUse describe('useToggle').",
+      "deliverables": {
+        "code": [
+          "frontend/hooks/__tests__/use-toggle.test.ts"
+        ]
+      },
+      "description": "Tests for useToggle hook",
+      "output": {
+        "files": [
+          "frontend/hooks/__tests__/use-toggle.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 98,
+          "summary": "Dual-approved: Claude (95/100) + Codex (100/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/hooks/__tests__/use-toggle.test.ts",
+              "description": "Minor: Could add edge case tests for setValue with non-boolean values or undefined, though not required by spec"
+            }
+          ],
+          "strengths": [
+            "All 11 test cases from spec implemented correctly",
+            "Proper use of renderHook and act() from React Testing Library",
+            "Consistent test structure and naming",
+            "All state changes properly wrapped in act()",
+            "Clean, readable test descriptions that match requirements exactly",
+            "Correct TypeScript syntax with no 'any' types",
+            "Proper imports and describe block structure",
+            "Tests cover both initialization scenarios and all toggle methods",
+            "Good coverage of edge cases (double toggle, setting same state)",
+            "Full coverage of all 11 required test cases",
+            "Correct use of React Testing Library’s renderHook and act",
+            "Clear, descriptive test names and organization under describe block"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-204",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "medium",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create sdk/typescript/src/logger.ts — Structured logging utility for SDK debug output.\n\nPure implementation, no external dependencies. Uses console methods internally.\n\nExport:\n\n1. enum LogLevel { DEBUG = 0, INFO = 1, WARN = 2, ERROR = 3, NONE = 4 }\n\n2. interface LogEntry {\n     level: LogLevel;\n     message: string;\n     timestamp: string;\n     context?: string;\n     data?: unknown;\n   }\n\n3. interface Logger {\n     debug(message: string, data?: unknown): void;\n     info(message: string, data?: unknown): void;\n     warn(message: string, data?: unknown): void;\n     error(message: string, data?: unknown): void;\n     setLevel(level: LogLevel): void;\n     getLevel(): LogLevel;\n   }\n\n4. function createLogger(context: string = 'invoica-sdk', level: LogLevel = LogLevel.WARN): Logger\n   - Returns a Logger object\n   - Each log method checks if the method's level >= current level before logging\n   - debug calls console.debug with formatted message\n   - info calls console.info with formatted message\n   - warn calls console.warn with formatted message\n   - error calls console.error with formatted message\n   - Format: '[LEVEL] [context] message' followed by data if provided\n   - setLevel updates the minimum log level\n   - getLevel returns current level\n\n5. function formatLogEntry(entry: LogEntry): string\n   - Formats a LogEntry into a readable string\n   - Format: '[timestamp] [LEVEL] [context] message'\n   - Level names: DEBUG, INFO, WARN, ERROR\n   - Example: '[2024-01-15T10:00:00.000Z] [WARN] [invoica-sdk] Rate limit approaching'\n\nNamed exports only. No default export. JSDoc comments. Maximum 100 lines.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/logger.ts"
+        ]
+      },
+      "description": "SDK structured logger — createLogger, LogLevel, formatLogEntry",
+      "output": {
+        "files": [
+          "sdk/typescript/src/logger.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/logger.ts",
+              "description": "formatLogEntry uses different format than specified - includes context in brackets but task example shows '[context]' format should match createLogger output format"
+            }
+          ],
+          "strengths": [
+            "Perfect adherence to task specification - all required exports present with correct signatures",
+            "Excellent TypeScript usage with proper types, no 'any' types, and strict typing throughout",
+            "Comprehensive JSDoc documentation on all public APIs",
+            "Clean, readable code structure with logical separation of concerns",
+            "Efficient implementation using closures and avoiding unnecessary complexity",
+            "Proper level checking before logging to avoid unnecessary work",
+            "Good use of Record type for level name mapping",
+            "Handles optional data parameter correctly in console output",
+            "File is exactly 95 lines, well under the 100-line limit",
+            "No external dependencies as required",
+            "Named exports only, no default export as specified",
+            "Strict TypeScript usage with no `any` types",
+            "Comprehensive JSDoc comments on public APIs",
+            "Accurate implementation of log level filtering and formatting",
+            "No external dependencies and under 100 lines"
+          ]
+        }
+      }
+    }
+  ]
+}

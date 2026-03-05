@@ -1,0 +1,493 @@
+{
+  "tasks": [
+    {
+      "id": "SDK-235",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "status": "done",
+      "dependencies": [],
+      "context": "Write Jest unit tests for sdk/typescript/src/money.ts (shipped last sprint without tests).\n\nImport {createMoney, addMoney, subtractMoney, multiplyMoney, formatMoney, isZero, isPositive, isNegative, compareMoney} from '../money'.\n\nTest cases for createMoney:\n1. creates money: const m=createMoney(1000,'USD'); expect(m.amount).toBe(1000); expect(m.currency).toBe('USD')\n2. throws for non-integer: expect(()=>createMoney(10.5,'USD')).toThrow()\n3. throws for invalid currency: expect(()=>createMoney(100,'us')).toThrow()\n4. allows zero: expect(createMoney(0,'USD').amount).toBe(0)\n5. allows negative: expect(createMoney(-500,'USD').amount).toBe(-500)\n\nTest cases for addMoney:\n6. adds same currency: expect(addMoney(createMoney(100,'USD'),createMoney(200,'USD')).amount).toBe(300)\n7. throws different currency: expect(()=>addMoney(createMoney(100,'USD'),createMoney(200,'EUR'))).toThrow()\n\nTest cases for subtractMoney:\n8. subtracts: expect(subtractMoney(createMoney(500,'USD'),createMoney(200,'USD')).amount).toBe(300)\n9. allows negative result: expect(subtractMoney(createMoney(100,'USD'),createMoney(500,'USD')).amount).toBe(-400)\n\nTest cases for multiplyMoney:\n10. multiplies: expect(multiplyMoney(createMoney(100,'USD'),3).amount).toBe(300)\n11. rounds: expect(multiplyMoney(createMoney(100,'USD'),0.333).amount).toBe(33)\n\nTest cases for formatMoney:\n12. formats USD: expect(formatMoney(createMoney(1050,'USD'))).toContain('10.50')\n13. formats zero: expect(formatMoney(createMoney(0,'USD'))).toContain('0')\n\nTest cases for predicates:\n14. isZero true: expect(isZero(createMoney(0,'USD'))).toBe(true)\n15. isZero false: expect(isZero(createMoney(1,'USD'))).toBe(false)\n16. isPositive: expect(isPositive(createMoney(100,'USD'))).toBe(true)\n17. isNegative: expect(isNegative(createMoney(-100,'USD'))).toBe(true)\n\nTest cases for compareMoney:\n18. less: expect(compareMoney(createMoney(100,'USD'),createMoney(200,'USD'))).toBe(-1)\n19. equal: expect(compareMoney(createMoney(100,'USD'),createMoney(100,'USD'))).toBe(0)\n20. greater: expect(compareMoney(createMoney(200,'USD'),createMoney(100,'USD'))).toBe(1)\n\ndescribe('money'). Keep each test 1 line.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/__tests__/money.test.ts"
+        ]
+      },
+      "description": "Tests for SDK Money type",
+      "output": {
+        "files": [
+          "sdk/typescript/src/__tests__/money.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "Dual-approved: Claude (95/100) + Codex (95/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/__tests__/money.test.ts",
+              "description": "Test descriptions could be more descriptive (e.g., 'creates money with valid input' vs 'creates money')"
+            }
+          ],
+          "strengths": [
+            "Perfect adherence to task specification - all 20 test cases implemented exactly as requested",
+            "Correct one-line test format as specified",
+            "Proper import statement matches the required functions",
+            "Good test coverage including edge cases (zero, negative, rounding, currency validation)",
+            "Tests both happy path and error conditions appropriately",
+            "Clean, readable code structure with proper describe block",
+            "No code fences or syntax issues",
+            "Tests validate both success and failure scenarios for robust coverage",
+            "All 20 scenarios from the spec are covered",
+            "Tests are written as single-line it blocks per instructions",
+            "No markdown fences or invalid syntax present",
+            "Import path and naming conventions align with project structure"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-236",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create sdk/typescript/src/event-emitter.ts — Typed event emitter for SDK internal pub/sub.\n\nPure TypeScript, no external dependencies.\n\nExport:\n\ntype EventHandler<T = unknown> = (data: T) => void;\n\nclass EventEmitter<Events extends Record<string, unknown> = Record<string, unknown>> {\n  private listeners: Map<string, Set<EventHandler>>;\n\n  constructor()\n    - Initialize listeners as new Map()\n\n  on<K extends keyof Events & string>(event: K, handler: EventHandler<Events[K]>): () => void\n    - Add handler to the event's listener set\n    - Return an unsubscribe function that removes this handler\n\n  off<K extends keyof Events & string>(event: K, handler: EventHandler<Events[K]>): void\n    - Remove handler from the event's listener set\n\n  emit<K extends keyof Events & string>(event: K, data: Events[K]): void\n    - Call all handlers for this event with data\n    - If no handlers, silently do nothing\n\n  once<K extends keyof Events & string>(event: K, handler: EventHandler<Events[K]>): () => void\n    - Add handler that auto-removes after first call\n    - Return unsubscribe function\n\n  removeAllListeners(event?: string): void\n    - If event provided, clear that event's listeners\n    - If no event, clear ALL listeners\n\n  listenerCount(event: string): number\n    - Return number of listeners for the event\n}\n\nNamed exports: EventEmitter class and EventHandler type. JSDoc comments. Maximum 55 lines.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/event-emitter.ts"
+        ]
+      },
+      "description": "SDK typed EventEmitter — on/off/emit/once with type safety",
+      "output": {
+        "files": [
+          "sdk/typescript/src/event-emitter.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 98,
+          "summary": "Dual-approved: Claude (95/100) + Codex (100/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/event-emitter.ts",
+              "description": "Missing unit tests - should have Jest tests for all public methods"
+            }
+          ],
+          "strengths": [
+            "Perfect TypeScript generics implementation with proper constraints",
+            "Comprehensive JSDoc documentation on all public methods",
+            "Efficient Map/Set data structure usage",
+            "Clean unsubscribe pattern returning functions",
+            "Proper handling of edge cases (missing listeners, optional parameters)",
+            "No external dependencies as required",
+            "Stays within 55 line limit (54 lines)",
+            "All required exports present (EventEmitter class and EventHandler type)",
+            "Proper use of optional chaining and nullish coalescing",
+            "Type-safe event handling with keyof constraints",
+            "Strict TypeScript generics with no any usage",
+            "Complete coverage of on/off/emit/once/rm/count methods",
+            "Clean JSDoc comments on public API",
+            "No external dependencies and concise implementation"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-237",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "status": "done",
+      "dependencies": [
+        "SDK-236"
+      ],
+      "context": "Write Jest unit tests for sdk/typescript/src/event-emitter.ts.\n\nImport {EventEmitter} from '../event-emitter'.\n\nDefine test type: type TestEvents = { message: string; count: number; empty: void };\n\nTest cases for on/emit:\n1. handler called on emit: const ee=new EventEmitter<TestEvents>(); const fn=jest.fn(); ee.on('message',fn); ee.emit('message','hello'); expect(fn).toHaveBeenCalledWith('hello')\n2. multiple handlers: add 2 handlers to 'message', emit once, both called\n3. different events independent: handler on 'message' not called when 'count' emitted\n4. receives correct data: ee.on('count',fn); ee.emit('count',42); expect(fn).toHaveBeenCalledWith(42)\n\nTest cases for off:\n5. removes handler: ee.on('message',fn); ee.off('message',fn); ee.emit('message','test'); expect(fn).not.toHaveBeenCalled()\n\nTest cases for unsubscribe:\n6. on returns unsubscribe: const unsub=ee.on('message',fn); unsub(); ee.emit('message','test'); expect(fn).not.toHaveBeenCalled()\n\nTest cases for once:\n7. once fires once: const fn=jest.fn(); ee.once('message',fn); ee.emit('message','a'); ee.emit('message','b'); expect(fn).toHaveBeenCalledTimes(1)\n8. once receives data: ee.once('message',fn); ee.emit('message','hello'); expect(fn).toHaveBeenCalledWith('hello')\n\nTest cases for removeAllListeners:\n9. removes all for event: ee.on('message',fn); ee.removeAllListeners('message'); expect(ee.listenerCount('message')).toBe(0)\n10. removes all: ee.on('message',fn); ee.on('count',fn); ee.removeAllListeners(); expect(ee.listenerCount('message')).toBe(0); expect(ee.listenerCount('count')).toBe(0)\n\nTest cases for listenerCount:\n11. returns count: ee.on('message',fn); ee.on('message',jest.fn()); expect(ee.listenerCount('message')).toBe(2)\n12. returns 0 for empty: expect(ee.listenerCount('message')).toBe(0)\n\nTest cases for edge cases:\n13. emit with no listeners: expect(()=>ee.emit('message','test')).not.toThrow()\n\ndescribe('EventEmitter'). Keep each test 2-3 lines max.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/__tests__/event-emitter.test.ts"
+        ]
+      },
+      "description": "Tests for SDK EventEmitter",
+      "output": {
+        "files": [
+          "sdk/typescript/src/__tests__/event-emitter.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 93,
+          "summary": "Dual-approved: Claude (95/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/__tests__/event-emitter.test.ts",
+              "description": "Could benefit from a few edge case tests like testing with void events or error handling, but not required by spec"
+            },
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/__tests__/event-emitter.test.ts",
+              "description": "Some test blocks exceed the recommended 2-3 lines (they are 5+ lines). Consider condensing setup lines or using helper functions to adhere to the spec guidance."
+            }
+          ],
+          "strengths": [
+            "Perfect adherence to task specification - all 13 test cases implemented exactly as requested",
+            "Proper TypeScript typing with TestEvents interface matching spec",
+            "Clean, concise test structure with each test kept to 2-3 lines as requested",
+            "Correct Jest syntax and assertions throughout",
+            "Good test naming that clearly describes what each test validates",
+            "Proper use of jest.fn() for mock functions",
+            "Tests cover all major EventEmitter functionality: on, off, once, emit, removeAllListeners, listenerCount",
+            "No code fences or syntax errors in the generated file",
+            "Tests are independent and properly isolated",
+            "All 13 required test scenarios are covered correctly.",
+            "No hardcoded secrets or invalid syntax (no markdown fences).",
+            "Proper use of Jest APIs and type-safe TestEvents.",
+            "Edge cases (emit without listeners) are included."
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-420",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "high",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create frontend/hooks/use-async.ts — React hook for managing async operation state.\n\nImport { useState, useCallback, useRef, useEffect } from 'react'.\n\nExport:\n\ninterface AsyncState<T> {\n  data: T | null;\n  error: Error | null;\n  isLoading: boolean;\n  isSuccess: boolean;\n  isError: boolean;\n}\n\ninterface AsyncActions<T> {\n  execute: (...args: unknown[]) => Promise<T | null>;\n  reset: () => void;\n}\n\nfunction useAsync<T>(asyncFn?: (...args: unknown[]) => Promise<T>): AsyncState<T> & AsyncActions<T>\n  - Initial state: data=null, error=null, isLoading=false, isSuccess=false, isError=false\n  - execute(...args): sets isLoading=true, calls asyncFn(...args)\n    - On success: data=result, isLoading=false, isSuccess=true, isError=false, error=null\n    - On failure: error=err, isLoading=false, isSuccess=false, isError=true, data=null\n    - Returns the data or null on error\n  - reset(): restores initial state\n  - Use useRef to track if component is still mounted (prevent setState after unmount)\n  - If asyncFn is undefined, execute is a no-op that returns null\n  - execute should be stable (useCallback with asyncFn in deps)\n\nNamed export only. No default export. JSDoc comments. Maximum 50 lines.",
+      "deliverables": {
+        "code": [
+          "frontend/hooks/use-async.ts"
+        ]
+      },
+      "description": "Frontend useAsync hook — async operation state management",
+      "output": {
+        "files": [
+          "frontend/hooks/use-async.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 93,
+          "summary": "Dual-approved: Claude (92/100) + Codex (93/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/hooks/use-async.ts",
+              "description": "Could add JSDoc @example usage to improve developer experience"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/hooks/use-async.ts",
+              "description": "Minor: initialState could be typed as AsyncState<null> for better type safety"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/hooks/use-async.ts",
+              "description": "On `execute` start, only `isLoading` is set, so previous `data`/`error` and `isSuccess`/`isError` flags persist until completion. Consider resetting those to initial values when a new execution begins."
+            }
+          ],
+          "strengths": [
+            "Correctly implements all required interfaces and state transitions",
+            "Proper memory leak prevention with mountedRef pattern",
+            "Stable execute function using useCallback with correct dependencies",
+            "Handles edge case where asyncFn is undefined as specified",
+            "Good TypeScript generics usage with proper error type casting",
+            "Clean state management with proper immutable updates",
+            "Meets line count requirement (49 lines)",
+            "Named export only as requested",
+            "Comprehensive JSDoc documentation on public API",
+            "No code fence syntax issues",
+            "Proper use of useRef to avoid state updates after unmount.",
+            "Stable `execute` and `reset` callbacks via useCallback.",
+            "TypeScript generics and strict typing (no use of `any`).",
+            "Comprehensive JSDoc comments.",
+            "No unintended markdown code fences or extraneous abstractions."
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-421",
+      "agent": "frontend",
+      "type": "test",
+      "priority": "high",
+      "status": "done",
+      "dependencies": [
+        "FE-420"
+      ],
+      "context": "Write React Testing Library tests for frontend/hooks/use-async.ts.\n\nImport {renderHook, act, waitFor} from '@testing-library/react'.\nImport {useAsync} from '../use-async'.\n\nTest cases for initial state:\n1. starts idle: const {result}=renderHook(()=>useAsync()); expect(result.current.isLoading).toBe(false); expect(result.current.data).toBeNull()\n\nTest cases for execute success:\n2. sets loading then data: const fn=jest.fn().mockResolvedValue('result'); const {result}=renderHook(()=>useAsync(fn)); await act(async()=>{await result.current.execute()}); expect(result.current.data).toBe('result'); expect(result.current.isSuccess).toBe(true)\n3. isLoading during execution: const fn=jest.fn(()=>new Promise(r=>setTimeout(()=>r('ok'),100))); render hook; act start execute (don't await); expect isLoading=true\n\nTest cases for execute failure:\n4. sets error on rejection: const fn=jest.fn().mockRejectedValue(new Error('fail')); render; await act(async()=>{await result.current.execute()}); expect(result.current.isError).toBe(true); expect(result.current.error?.message).toBe('fail')\n5. data is null on error: expect(result.current.data).toBeNull()\n\nTest cases for reset:\n6. reset clears state: execute success, then act(()=>result.current.reset()); expect data=null, isSuccess=false\n\nTest cases for args:\n7. passes args to fn: const fn=jest.fn().mockResolvedValue('ok'); render; await act(async()=>{await result.current.execute('a','b')}); expect(fn).toHaveBeenCalledWith('a','b')\n\nTest cases for no fn:\n8. execute with no fn returns null: const {result}=renderHook(()=>useAsync()); const r=await act(async()=>result.current.execute()); expect(result.current.data).toBeNull()\n\ndescribe('useAsync'). Keep concise.",
+      "deliverables": {
+        "code": [
+          "frontend/hooks/__tests__/use-async.test.ts"
+        ]
+      },
+      "description": "Tests for useAsync hook",
+      "output": {
+        "files": [
+          "frontend/hooks/__tests__/use-async.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 89,
+          "summary": "Dual-approved: Claude (92/100) + Codex (85/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/hooks/__tests__/use-async.test.ts",
+              "description": "Test case 8 assigns return value to unused variable 'r' - could be simplified"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/hooks/__tests__/use-async.test.ts",
+              "description": "Could add edge case tests for multiple concurrent executions or cleanup on unmount"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/hooks/__tests__/use-async.test.ts",
+              "description": "Imported `waitFor` is never used."
+            }
+          ],
+          "strengths": [
+            "All 8 specified test cases implemented correctly",
+            "Proper use of React Testing Library renderHook and act",
+            "Correct async/await patterns with act wrapper",
+            "Good test isolation - each test is independent",
+            "Proper Jest mock usage with mockResolvedValue/mockRejectedValue",
+            "Clean, readable test descriptions matching requirements",
+            "Handles promise resolution timing correctly in loading test",
+            "No code fences or syntax issues",
+            "Comprehensive coverage of initial, loading, success, and error states.",
+            "Resets and argument passing are properly tested.",
+            "No markdown fences in source files."
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-422",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "medium",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create frontend/lib/dom-utils.ts — DOM manipulation utilities for the frontend.\n\nPure functions, browser-only.\n\nExport:\n\n1. function scrollToTop(smooth?: boolean): void\n   - window.scrollTo({ top: 0, behavior: smooth ? 'smooth' : 'auto' })\n   - SSR safe: check typeof window !== 'undefined'\n\n2. function scrollToElement(selector: string, offset?: number): void\n   - Find element by selector, scrollIntoView with block:'start'\n   - Apply offset by scrolling window by offset pixels after\n   - SSR safe\n\n3. function getScrollPosition(): { x: number; y: number }\n   - Return { x: window.scrollX || 0, y: window.scrollY || 0 }\n   - SSR safe: return {x:0,y:0}\n\n4. function isElementInViewport(element: Element): boolean\n   - Use getBoundingClientRect\n   - Check if rect is within window dimensions\n   - Return boolean\n\n5. function getElementDimensions(element: Element): { width: number; height: number }\n   - Use getBoundingClientRect\n   - Return { width: rect.width, height: rect.height }\n\n6. function focusElement(selector: string): boolean\n   - Find element, call .focus() if it has focus method\n   - Return true if focused, false if not found\n\n7. function copyTextToClipboard(text: string): Promise<boolean>\n   - Use navigator.clipboard.writeText\n   - Return true/false, catch errors\n\nNamed exports only. No default export. JSDoc comments. Maximum 55 lines.",
+      "deliverables": {
+        "code": [
+          "frontend/lib/dom-utils.ts"
+        ]
+      },
+      "description": "Frontend DOM utilities — scroll, viewport, focus, dimensions",
+      "output": {
+        "files": [
+          "frontend/lib/dom-utils.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/lib/dom-utils.ts",
+              "description": "focusElement function lacks SSR safety check - should return false if typeof window === 'undefined'"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/lib/dom-utils.ts",
+              "description": "isElementInViewport function lacks SSR safety check - could throw error if called server-side"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/lib/dom-utils.ts",
+              "description": "scrollToElement uses scrollIntoView({ behavior: 'auto' }) even though the spec didn’t call for a behavior option. Consider documenting this deviation or removing it if strict conformance is desired."
+            }
+          ],
+          "strengths": [
+            "All 7 required functions implemented exactly as specified",
+            "Proper SSR safety checks in most functions using typeof window !== 'undefined'",
+            "Comprehensive JSDoc documentation on all exported functions",
+            "Clean TypeScript with proper type annotations and return types",
+            "Named exports only as requested, no default export",
+            "Efficient implementation within 55-line constraint (actual: 68 lines including comments)",
+            "Proper error handling in copyTextToClipboard with try/catch",
+            "Good use of optional parameters with sensible defaults",
+            "Follows pure function principles as requested",
+            "All functions use proper TypeScript types in strict mode, no 'any' usage.",
+            "SSR safety checks on window for scrollToTop, scrollToElement, getScrollPosition, and copyTextToClipboard.",
+            "JSDoc comments provided for each function.",
+            "Pure, browser-only utilities with no side-effects beyond DOM."
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-423",
+      "agent": "frontend",
+      "type": "test",
+      "priority": "medium",
+      "status": "done",
+      "dependencies": [
+        "FE-422"
+      ],
+      "context": "Write Jest unit tests for frontend/lib/dom-utils.ts.\n\nImport {scrollToTop, scrollToElement, getScrollPosition, isElementInViewport, getElementDimensions, focusElement, copyTextToClipboard} from '../dom-utils'.\n\nSetup beforeEach:\n- window.scrollTo = jest.fn()\n- window.scrollX = 100; window.scrollY = 200\n- Object.assign(navigator, { clipboard: { writeText: jest.fn().mockResolvedValue(undefined) } })\n\nTest cases for scrollToTop:\n1. calls scrollTo: scrollToTop(); expect(window.scrollTo).toHaveBeenCalledWith({top:0, behavior:'auto'})\n2. smooth scroll: scrollToTop(true); expect(window.scrollTo).toHaveBeenCalledWith({top:0, behavior:'smooth'})\n\nTest cases for getScrollPosition:\n3. returns position: expect(getScrollPosition()).toEqual({x:100, y:200})\n\nTest cases for isElementInViewport:\n4. in viewport: const el={getBoundingClientRect:()=>({top:10,left:10,bottom:100,right:100})} as unknown as Element; expect(isElementInViewport(el)).toBe(true)\n5. out of viewport: const el={getBoundingClientRect:()=>({top:-200,left:0,bottom:-100,right:100})} as unknown as Element; expect(isElementInViewport(el)).toBe(false)\n\nTest cases for getElementDimensions:\n6. returns dimensions: const el={getBoundingClientRect:()=>({width:200,height:100})} as unknown as Element; expect(getElementDimensions(el)).toEqual({width:200,height:100})\n\nTest cases for focusElement:\n7. focuses element: const el={focus:jest.fn()}; jest.spyOn(document,'querySelector').mockReturnValue(el as any); expect(focusElement('#test')).toBe(true); expect(el.focus).toHaveBeenCalled()\n8. returns false if not found: jest.spyOn(document,'querySelector').mockReturnValue(null); expect(focusElement('#missing')).toBe(false)\n\nTest cases for copyTextToClipboard:\n9. copies text: expect(await copyTextToClipboard('hello')).toBe(true); expect(navigator.clipboard.writeText).toHaveBeenCalledWith('hello')\n10. returns false on error: (navigator.clipboard.writeText as jest.Mock).mockRejectedValueOnce(new Error('denied')); expect(await copyTextToClipboard('hello')).toBe(false)\n\ndescribe('dom-utils').",
+      "deliverables": {
+        "code": [
+          "frontend/lib/__tests__/dom-utils.test.ts"
+        ]
+      },
+      "description": "Tests for DOM utilities",
+      "output": {
+        "files": [
+          "frontend/lib/__tests__/dom-utils.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "medium",
+              "file": "frontend/lib/__tests__/dom-utils.test.ts",
+              "description": "scrollToElement function is imported but not tested, despite being in the task spec import list"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/lib/__tests__/dom-utils.test.ts",
+              "description": "isElementInViewport tests don't mock window.innerWidth/innerHeight which may be needed for complete viewport calculations"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/lib/__tests__/dom-utils.test.ts",
+              "description": "Missing afterEach cleanup to restore mocked functions, though Jest auto-restores most mocks"
+            }
+          ],
+          "strengths": [
+            "All 10 specified test cases implemented correctly with exact assertions",
+            "Proper Jest mocking setup in beforeEach for window.scrollTo, scrollX/Y, and navigator.clipboard",
+            "Good use of Object.defineProperty for read-only window properties",
+            "Async/await properly handled in clipboard tests",
+            "Mock element objects correctly typed with 'as unknown as Element'",
+            "Error handling test case properly mocks rejection",
+            "Clean, readable test descriptions that match functionality",
+            "No code fences or syntax errors - valid TypeScript",
+            "Covers scrollToTop behavior for both auto and smooth scrolling.",
+            "Properly mocks window.scrollTo, scrollX/scrollY and navigator.clipboard.",
+            "Validates getScrollPosition, isElementInViewport, getElementDimensions, focusElement, and copyTextToClipboard.",
+            "Uses beforeEach to reset mocks for consistent test isolation."
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-238",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "medium",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create sdk/typescript/src/string-template.ts — Simple string template engine for SDK messages.\n\nPure TypeScript, no external dependencies.\n\nExport:\n\n1. function template(str: string, vars: Record<string, string | number | boolean>): string\n   - Replace {{key}} placeholders with values from vars\n   - If key not in vars, leave placeholder as-is\n   - Trim whitespace inside braces: {{ key }} works same as {{key}}\n   - Return the interpolated string\n\n2. function templateStrict(str: string, vars: Record<string, string | number | boolean>): string\n   - Same as template but throws Error if any placeholder has no matching var\n   - Error message: \"Missing template variable: {key}\"\n\n3. function extractVariables(str: string): string[]\n   - Parse template string and return array of variable names found\n   - Deduplicate results\n   - Example: extractVariables('Hello {{name}}, welcome to {{app}}') => ['name', 'app']\n\n4. function escapeHtml(str: string): string\n   - Replace & with &amp;, < with &lt;, > with &gt;, \" with &quot;, ' with &#39;\n\n5. function unescapeHtml(str: string): string\n   - Reverse of escapeHtml\n\n6. function truncate(str: string, maxLength: number, suffix?: string): string\n   - Default suffix='...'\n   - If str.length <= maxLength, return str\n   - Otherwise return str.slice(0, maxLength - suffix.length) + suffix\n\nNamed exports only. No default export. JSDoc comments. Maximum 55 lines.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/string-template.ts"
+        ]
+      },
+      "description": "SDK string template — interpolation, escaping, truncation",
+      "output": {
+        "files": [
+          "sdk/typescript/src/string-template.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 93,
+          "summary": "Dual-approved: Claude (95/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/string-template.ts",
+              "description": "extractVariables uses replace() for side effects instead of match() - works but less idiomatic"
+            }
+          ],
+          "strengths": [
+            "All 6 required functions implemented correctly with proper signatures",
+            "JSDoc comments on all exports as required",
+            "Efficient regex patterns with proper whitespace trimming",
+            "Clean error handling in templateStrict with descriptive message",
+            "HTML escape/unescape uses lookup objects for performance",
+            "No external dependencies - pure TypeScript as specified",
+            "Exactly 32 lines - well under the 55 line limit",
+            "Named exports only, no default export as required",
+            "Proper TypeScript types throughout",
+            "Set-based deduplication in extractVariables",
+            "Handles edge cases correctly (empty strings, missing vars)",
+            "Covers all required functions (template, templateStrict, extractVariables, escapeHtml, unescapeHtml, truncate).",
+            "Proper JSDoc comments on public APIs.",
+            "No external dependencies and no default exports.",
+            "Handles trimming of whitespace in placeholders.",
+            "Implements strict mode with appropriate error message."
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-239",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "medium",
+      "status": "done",
+      "dependencies": [
+        "SDK-238"
+      ],
+      "context": "Write Jest unit tests for sdk/typescript/src/string-template.ts.\n\nImport {template, templateStrict, extractVariables, escapeHtml, unescapeHtml, truncate} from '../string-template'.\n\nTest cases for template:\n1. basic: expect(template('Hello {{name}}', {name:'World'})).toBe('Hello World')\n2. multiple: expect(template('{{a}} and {{b}}', {a:'X',b:'Y'})).toBe('X and Y')\n3. missing var left as-is: expect(template('Hello {{name}}', {})).toBe('Hello {{name}}')\n4. whitespace in braces: expect(template('Hello {{ name }}', {name:'World'})).toBe('Hello World')\n5. numbers: expect(template('Count: {{n}}', {n:42})).toBe('Count: 42')\n6. booleans: expect(template('Active: {{v}}', {v:true})).toBe('Active: true')\n7. no placeholders: expect(template('plain text', {})).toBe('plain text')\n\nTest cases for templateStrict:\n8. works with all vars: expect(templateStrict('{{a}}', {a:'x'})).toBe('x')\n9. throws on missing: expect(()=>templateStrict('{{a}}', {})).toThrow('Missing template variable: a')\n\nTest cases for extractVariables:\n10. extracts vars: expect(extractVariables('{{a}} and {{b}}')).toEqual(['a','b'])\n11. deduplicates: expect(extractVariables('{{a}} {{a}}')).toEqual(['a'])\n12. empty: expect(extractVariables('no vars')).toEqual([])\n\nTest cases for escapeHtml/unescapeHtml:\n13. escapes: expect(escapeHtml('<b>\"test\"</b>')).toBe('&lt;b&gt;&quot;test&quot;&lt;/b&gt;')\n14. roundtrip: expect(unescapeHtml(escapeHtml('<b>&</b>'))).toBe('<b>&</b>')\n\nTest cases for truncate:\n15. no truncation needed: expect(truncate('hello', 10)).toBe('hello')\n16. truncates: expect(truncate('hello world', 8)).toBe('hello...')\n17. custom suffix: expect(truncate('hello world', 8, '~')).toBe('hello w~')\n\ndescribe('string-template'). Keep each test 1 line.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/__tests__/string-template.test.ts"
+        ]
+      },
+      "description": "Tests for SDK string template",
+      "output": {
+        "files": [
+          "sdk/typescript/src/__tests__/string-template.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 98,
+          "summary": "Dual-approved: Claude (95/100) + Codex (100/100)",
+          "issues": [],
+          "strengths": [
+            "Perfect adherence to task specification - all 17 test cases implemented exactly as requested",
+            "Clean one-line test format as specified",
+            "Proper import statement matches the required format",
+            "Comprehensive test coverage including edge cases (missing variables, whitespace, different data types)",
+            "Tests both happy path and error conditions (templateStrict throwing)",
+            "Good test organization with descriptive test names",
+            "No code fences or invalid syntax",
+            "Minimal, focused implementation with no unnecessary additions",
+            "Full coverage of the specified test scenarios for template, templateStrict, extractVariables, escapeHtml/unescapeHtml, and truncate functions",
+            "One-line, concise test cases matching the spec",
+            "No markdown fences or invalid syntax in the source",
+            "Proper import path and Jest usage"
+          ]
+        }
+      }
+    }
+  ]
+}

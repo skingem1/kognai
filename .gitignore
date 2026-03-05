@@ -1,0 +1,44 @@
+node_modules/
+.env
+*.log
+!audit.log
+dist/
+.next/
+coverage/
+.turbo/
+.env.local
+
+# Conway governance temp files
+.circuit-breaker.json
+x402-evm/node_modules/
+x402-evm/.env
+x402-evm/*-keypair.json
+x402-test/node_modules/
+x402-test/.env
+x402-test/*-keypair.json
+reports/invoica-x-admin/daily-state.json
+
+# Runtime report files — written by agent cron jobs; never commit/pull-overwrite these
+# latest-*.md are pointer files updated every cron run; tracking them causes git pull
+# to overwrite fresh agent output with stale committed content.
+reports/cmo/latest-*.md
+reports/cmo/*-202*.md
+reports/bizdev/latest-*.md
+reports/bizdev/*-202*.md
+reports/cto/latest-*.md
+reports/cto/*-202*.md
+reports/cto/ceo-feedback/202*.json
+reports/cto/ceo-feedback/202*.txt
+reports/cto-briefings/*-202*.md
+reports/ceo/latest-*.md
+reports/ceo/*-202*.md
+reports/ceo/review-state.json
+reports/cfo/latest-*.md
+reports/cfo/*-202*.md
+reports/daily/202*.md
+reports/invoica-x-admin/logs/202*.md
+reports/invoica-x-admin/drafts/
+
+# Runtime state files — written by heartbeat-daemon, overwritten by git-pull if tracked
+health.json
+tier.json

@@ -1,0 +1,9 @@
+name: conflict-analyzer
+role: "Analyzes supervisor rejections vs CEO overrides to identify calibration issues"
+llm: minimax/MiniMax-M2.5
+reports_to: ceo
+trigger: daily
+created_by: cto_proposal
+created_at: "2026-02-17T22:57:52.315Z"
+context_files:
+  - docs/learnings.md

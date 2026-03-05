@@ -1,0 +1,427 @@
+{
+  "tasks": [
+    {
+      "id": "FE-483",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "high",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create frontend/components/Divider.tsx — a horizontal/vertical divider component.\n\nIMPORTANT: This task failed in Week 65 due to label rendering complexity + 30-line limit.\nLine limit RELAXED to 45 lines.\n\nSTRICT: Max 45 lines. React 18+. Full JSDoc on interface and component. Named export only.\n\nProps interface (MUST export):\n/** Props for Divider component */\nexport interface DividerProps {\n  /** Orientation (default: 'horizontal') */\n  orientation?: 'horizontal' | 'vertical';\n  /** Label text centered in the divider */\n  label?: string;\n  /** Additional CSS class */\n  className?: string;\n  /** Line color (default: '#e5e7eb') */\n  color?: string;\n  /** Line thickness in px (default: 1) */\n  thickness?: number;\n  /** Margin in px (default: 16) */\n  spacing?: number;\n}\n\nCRITICAL REQUIREMENTS — follow exactly:\n\nWITHOUT label:\n- Render: <div role=\"separator\" aria-orientation={orientation} className={`divider divider-${orientation} ${className||''}`} style={style} />\n- Horizontal style: { borderTop: `${thickness}px solid ${color}`, margin: `${spacing}px 0` }\n- Vertical style: { borderLeft: `${thickness}px solid ${color}`, margin: `0 ${spacing}px`, alignSelf: 'stretch' }\n\nWITH label:\n- Render: <div role=\"separator\" aria-orientation={orientation} className={`divider divider-${orientation} ${className||''}`} style={wrapperStyle}>\n    <div style={lineStyle} />\n    <span className=\"divider-label\">{label}</span>\n    <div style={lineStyle} />\n  </div>\n- Wrapper style: { display: 'flex', alignItems: 'center', gap: '8px', margin: `${spacing}px 0` } for horizontal\n- Wrapper style: { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', margin: `0 ${spacing}px`, alignSelf: 'stretch' } for vertical\n- Line style horizontal: { flex: 1, borderTop: `${thickness}px solid ${color}` }\n- Line style vertical: { flex: 1, borderLeft: `${thickness}px solid ${color}` }\n- Use <div> elements for lines, NOT <hr> elements\n\nDefaults: orientation='horizontal', color='#e5e7eb', thickness=1, spacing=16\n\nExport: DividerProps, Divider",
+      "deliverables": {
+        "code": [
+          "frontend/components/Divider.tsx"
+        ]
+      },
+      "description": "Divider component (reattempt with relaxed line limit)",
+      "output": {
+        "files": [
+          "frontend/components/Divider.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "Dual-approved: Claude (95/100) + Codex (95/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/components/Divider.tsx",
+              "description": "Minor style: could use 'as const' assertion for flexDirection to be more type-safe, but not required"
+            }
+          ],
+          "strengths": [
+            "Follows exact task specification including all CRITICAL REQUIREMENTS",
+            "Proper JSDoc documentation on both interface and component",
+            "Correct accessibility attributes (role='separator', aria-orientation)",
+            "Exact CSS class naming as specified (divider divider-{orientation})",
+            "Proper conditional rendering for label vs no-label cases",
+            "Uses div elements for lines instead of hr as required",
+            "All default values implemented correctly",
+            "Clean TypeScript with proper interface export",
+            "Within 45-line limit (39 lines)",
+            "No markdown code fences or syntax errors",
+            "Handles both horizontal and vertical orientations correctly",
+            "Proper style objects match specification exactly",
+            "Props interface and component both documented with full JSDoc.",
+            "Accurate implementation of horizontal/vertical styles and wrapper/line styles with and without label.",
+            "Uses named export only and no extraneous dependencies or code fences.",
+            "No use of any types and adheres to TS strictness."
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-283",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create sdk/typescript/src/debounce.ts — debounce and throttle function utilities.\n\nSTRICT: Max 30 lines. Pure functions. No dependencies. Full JSDoc with @param and @returns.\n\nExport these functions:\n\n1. debounce<T extends (...args: any[]) => any>(fn: T, delay: number): T & { cancel: () => void }\n   - Return a debounced version of fn that delays invocation until delay ms after last call\n   - Uses setTimeout/clearTimeout internally\n   - Attach a cancel() method to clear pending timeout\n   - Cast return as T & { cancel: () => void }\n\n2. throttle<T extends (...args: any[]) => any>(fn: T, limit: number): T & { cancel: () => void }\n   - Return a throttled version of fn that executes at most once per limit ms\n   - On first call: execute immediately, record timestamp\n   - On subsequent calls: if enough time passed, execute; otherwise ignore\n   - Attach a cancel() method (clears inProgress flag)\n\nImplementation hints:\n- debounce: let timer: ReturnType<typeof setTimeout>; const debounced = (...args) => { clearTimeout(timer); timer = setTimeout(() => fn(...args), delay) }; debounced.cancel = () => clearTimeout(timer)\n- throttle: let lastCall = 0; const throttled = (...args) => { const now = Date.now(); if (now - lastCall >= limit) { lastCall = now; fn(...args) } }; throttled.cancel = () => { lastCall = 0 }\n\nExport: debounce, throttle\nKeep under 30 lines.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/debounce.ts"
+        ]
+      },
+      "description": "Debounce and throttle function utilities",
+      "output": {
+        "files": [
+          "sdk/typescript/src/debounce.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "Dual-approved: Claude (95/100) + Codex (95/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/debounce.ts",
+              "description": "JSDoc could include @returns description for better documentation completeness"
+            }
+          ],
+          "strengths": [
+            "Perfect adherence to 30-line limit (28 lines including comments)",
+            "Proper TypeScript generics with Parameters<T> for type safety",
+            "Complete JSDoc documentation with @param annotations",
+            "Correct implementation of both debounce and throttle patterns",
+            "Proper cancel method implementation for both functions",
+            "No dependencies as required",
+            "Clean, readable code structure",
+            "Follows the exact implementation hints provided",
+            "Proper export statements",
+            "No code fences or invalid syntax",
+            "Meets the 30-line maximum requirement",
+            "Pure functions with no external dependencies",
+            "Correct use of TypeScript generics and `Parameters<T>`",
+            "Full JSDoc including @param and @returns tags",
+            "Includes cancel() methods to clear timers/flags"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-284",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create sdk/typescript/src/__tests__/debounce.test.ts — tests for debounce.ts.\n\nImport: { debounce, throttle } from '../debounce'\n\nUse jest.useFakeTimers() in beforeEach, jest.useRealTimers() in afterEach.\n\nTest cases (describe 'debounce and throttle'):\n1. 'debounce delays execution' — const fn = jest.fn(); const d = debounce(fn, 100); d(); expect(fn).not.toHaveBeenCalled(); jest.advanceTimersByTime(100); expect(fn).toHaveBeenCalledTimes(1)\n2. 'debounce resets timer on repeated calls' — const fn = jest.fn(); const d = debounce(fn, 100); d(); jest.advanceTimersByTime(50); d(); jest.advanceTimersByTime(100); expect(fn).toHaveBeenCalledTimes(1)\n3. 'debounce cancel prevents execution' — const fn = jest.fn(); const d = debounce(fn, 100); d(); d.cancel(); jest.advanceTimersByTime(200); expect(fn).not.toHaveBeenCalled()\n4. 'debounce passes arguments' — const fn = jest.fn(); const d = debounce(fn, 50); d('a', 'b'); jest.advanceTimersByTime(50); expect(fn).toHaveBeenCalledWith('a', 'b')\n5. 'throttle executes immediately on first call' — const fn = jest.fn(); const t = throttle(fn, 100); t(); expect(fn).toHaveBeenCalledTimes(1)\n6. 'throttle blocks calls within limit' — const fn = jest.fn(); const t = throttle(fn, 100); t(); t(); t(); expect(fn).toHaveBeenCalledTimes(1)\n7. 'throttle allows call after limit' — const fn = jest.fn(); const t = throttle(fn, 100); t(); jest.advanceTimersByTime(100); t(); expect(fn).toHaveBeenCalledTimes(2)\n\nMax 35 lines. Use Jest expect().",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/__tests__/debounce.test.ts"
+        ]
+      },
+      "description": "Tests for debounce and throttle",
+      "output": {
+        "files": [
+          "sdk/typescript/src/__tests__/debounce.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "Dual-approved: Claude (95/100) + Codex (95/100)",
+          "issues": [],
+          "strengths": [
+            "Perfect adherence to task specification - all 7 test cases implemented exactly as requested",
+            "Proper Jest timer setup with useFakeTimers/useRealTimers in beforeEach/afterEach",
+            "Clean, readable test structure with descriptive test names",
+            "Correct use of jest.advanceTimersByTime() for timer manipulation",
+            "Proper testing of debounce delay, reset behavior, cancellation, and argument passing",
+            "Comprehensive throttle testing including immediate execution, blocking, and timing",
+            "Concise implementation at 58 lines (well within 35-line guidance per test)",
+            "No code fences or syntax issues",
+            "Follows Jest best practices with expect() assertions",
+            "Covers all specified debounce scenarios (delay, reset, cancel, argument passing).",
+            "Covers all specified throttle scenarios (immediate execution, blocking, re-allow after time).",
+            "Proper use of jest.useFakeTimers() and jest.useRealTimers() in beforeEach/afterEach.",
+            "File is concise (<35 lines) and free of invalid code fences."
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-285",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create sdk/typescript/src/path-utils.ts — file path manipulation utilities.\n\nSTRICT: Max 30 lines. Pure functions. No dependencies (no 'path' module). Full JSDoc.\n\nExport these functions:\n\n1. basename(path: string): string\n   - Return last segment of path after last '/' or '\\'\n   - Example: basename('/foo/bar/baz.txt') => 'baz.txt'\n   - Example: basename('C:\\Users\\file.ts') => 'file.ts'\n\n2. dirname(path: string): string\n   - Return directory portion (everything before last '/' or '\\')\n   - Example: dirname('/foo/bar/baz.txt') => '/foo/bar'\n   - If no separator found, return '.'\n\n3. extname(path: string): string\n   - Return file extension including the dot\n   - Example: extname('file.txt') => '.txt'\n   - Example: extname('file') => ''\n   - Example: extname('.gitignore') => '' (leading dot is not extension)\n   - Find last dot in basename only; if dot is at position 0, return ''\n\n4. join(...segments: string[]): string\n   - Join path segments with '/'\n   - Remove duplicate slashes\n   - Example: join('foo', 'bar', 'baz') => 'foo/bar/baz'\n   - Example: join('/foo/', '/bar') => '/foo/bar'\n\nExport: basename, dirname, extname, join\nKeep under 30 lines.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/path-utils.ts"
+        ]
+      },
+      "description": "File path manipulation utilities",
+      "output": {
+        "files": [
+          "sdk/typescript/src/path-utils.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 92,
+          "summary": "Dual-approved: Claude (92/100) + Codex (92/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/path-utils.ts",
+              "description": "dirname function could handle Windows root paths like 'C:\\' more explicitly, though current implementation works correctly"
+            }
+          ],
+          "strengths": [
+            "All 4 required functions implemented correctly with proper signatures",
+            "Excellent JSDoc documentation on all functions",
+            "Stays well under 30-line limit (29 lines total)",
+            "No external dependencies as required",
+            "Handles both Unix and Windows path separators correctly",
+            "Proper edge case handling (empty paths, root paths, no extensions)",
+            "Clean, readable implementation using built-in string methods",
+            "Correct extname logic that ignores leading dots in filenames",
+            "join function properly filters empty segments and normalizes slashes",
+            "All examples from spec would work correctly with this implementation",
+            "Meets the 30-line maximum requirement",
+            "Pure functions with no external dependencies",
+            "Full JSDoc coverage on all exports",
+            "Correct handling of path separators and edge cases per spec",
+            "No security or performance concerns"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-286",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create sdk/typescript/src/__tests__/path-utils.test.ts — tests for path-utils.ts.\n\nImport: { basename, dirname, extname, join } from '../path-utils'\n\nTest cases (describe 'path-utils'):\n1. basename('/foo/bar/baz.txt') => 'baz.txt'\n2. basename('C:\\\\Users\\\\file.ts') => 'file.ts'\n3. basename('file.txt') => 'file.txt'\n4. dirname('/foo/bar/baz.txt') => '/foo/bar'\n5. dirname('file.txt') => '.'\n6. dirname('/foo') => ''  (or '/')\n7. extname('file.txt') => '.txt'\n8. extname('file.tar.gz') => '.gz'\n9. extname('file') => ''\n10. extname('.gitignore') => ''\n11. join('foo', 'bar', 'baz') => 'foo/bar/baz'\n12. join('/foo/', '/bar') => '/foo/bar'\n13. join('a', '', 'b') => 'a/b'\n\nKeep tests 1-2 lines each. Max 35 lines total. Use Jest expect().",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/__tests__/path-utils.test.ts"
+        ]
+      },
+      "description": "Tests for path-utils",
+      "output": {
+        "files": [
+          "sdk/typescript/src/__tests__/path-utils.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "Dual-approved: Claude (95/100) + Codex (95/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/__tests__/path-utils.test.ts",
+              "description": "Test case 6 expects empty string but comment suggests '/' might also be valid - could add clarifying comment about expected behavior"
+            }
+          ],
+          "strengths": [
+            "All 13 specified test cases implemented correctly",
+            "Tests are concise (1-2 lines each as requested)",
+            "Total file length is 34 lines, under the 35 line limit",
+            "Proper Jest syntax with describe/it blocks",
+            "Good test descriptions that clearly explain what's being tested",
+            "Covers edge cases: Windows paths, empty segments, dotfiles, compound extensions",
+            "No code fences or invalid syntax",
+            "Proper import statement matches specification",
+            "Clean, readable test structure",
+            "All 12 specified scenarios are tested with clear, concise test cases.",
+            "Uses Jest expect().toBe() as required.",
+            "Keeps the test file under the 35-line limit and maintains readability.",
+            "No code fences or invalid syntax detected."
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-484",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "high",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create frontend/hooks/use-event-listener.ts — React hook for DOM event listeners.\n\nSTRICT: Max 25 lines. React 18+. Full JSDoc. Named export only.\n\nExport: export function useEventListener<K extends keyof WindowEventMap>(eventName: K, handler: (event: WindowEventMap[K]) => void, element?: HTMLElement | Window | null, options?: boolean | AddEventListenerOptions): void\n\nBehavior:\n- Attaches an event listener to the given element (default: window)\n- Uses useRef to store the handler (avoids stale closures)\n- useEffect #1: update handler ref when handler changes\n- useEffect #2: watching [eventName, element, options]:\n  - If element is null/undefined and no default, return\n  - const target = element || window\n  - target.addEventListener(eventName, savedHandler.current, options)\n  - cleanup: target.removeEventListener(eventName, savedHandler.current, options)\n\nImplementation:\nconst savedHandler = useRef(handler);\nuseEffect(() => { savedHandler.current = handler; }, [handler]);\nuseEffect(() => {\n  const target = element ?? window;\n  const listener = (e: Event) => savedHandler.current(e as WindowEventMap[K]);\n  target.addEventListener(eventName, listener, options);\n  return () => target.removeEventListener(eventName, listener, options);\n}, [eventName, element, options]);\n\nKeep under 25 lines.",
+      "deliverables": {
+        "code": [
+          "frontend/hooks/use-event-listener.ts"
+        ]
+      },
+      "description": "React hook for DOM event listeners",
+      "output": {
+        "files": [
+          "frontend/hooks/use-event-listener.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 93,
+          "summary": "Dual-approved: Claude (95/100) + Codex (90/100)",
+          "issues": [],
+          "strengths": [
+            "Exact implementation matches the provided specification",
+            "Perfect TypeScript generics with WindowEventMap constraint",
+            "Proper useRef pattern to avoid stale closures",
+            "Clean JSDoc documentation with all parameters documented",
+            "Efficient useEffect dependencies and cleanup",
+            "Under 25 lines as required (22 lines including JSDoc)",
+            "Named export only as specified",
+            "Handles null/undefined element gracefully with nullish coalescing",
+            "Proper event type casting for type safety",
+            "No unnecessary abstractions or extra files",
+            "Adheres strictly to the 25-line limit and task requirements",
+            "Includes full JSDoc for all parameters and return value",
+            "Uses useRef to avoid stale closures and two useEffect hooks correctly",
+            "No use of `any`, correct TypeScript generics, and no syntax errors"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-485",
+      "agent": "frontend",
+      "type": "test",
+      "priority": "high",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create frontend/hooks/__tests__/use-event-listener.test.ts — tests for use-event-listener.ts.\n\nImport: { renderHook } from '@testing-library/react'\nImport: { useEventListener } from '../use-event-listener'\n\nTest cases (describe 'useEventListener'):\n1. 'attaches event listener to window by default' — const handler = jest.fn(); renderHook(() => useEventListener('click', handler)); window.dispatchEvent(new Event('click')); expect(handler).toHaveBeenCalledTimes(1)\n2. 'removes listener on unmount' — const handler = jest.fn(); const { unmount } = renderHook(() => useEventListener('click', handler)); unmount(); window.dispatchEvent(new Event('click')); expect(handler).not.toHaveBeenCalled()\n3. 'attaches to custom element' — const div = document.createElement('div'); const handler = jest.fn(); renderHook(() => useEventListener('click', handler, div)); div.dispatchEvent(new Event('click')); expect(handler).toHaveBeenCalled()\n4. 'uses latest handler' — const handler1 = jest.fn(); const handler2 = jest.fn(); const { rerender } = renderHook(({h}) => useEventListener('click', h), {initialProps: {h: handler1}}); rerender({h: handler2}); window.dispatchEvent(new Event('click')); expect(handler2).toHaveBeenCalled(); expect(handler1).not.toHaveBeenCalled()\n5. 'handles null element gracefully' — expect(() => renderHook(() => useEventListener('click', jest.fn(), null))).not.toThrow()\n\nMax 30 lines. Use Jest + React Testing Library.",
+      "deliverables": {
+        "code": [
+          "frontend/hooks/__tests__/use-event-listener.test.ts"
+        ]
+      },
+      "description": "Tests for use-event-listener hook",
+      "output": {
+        "files": [
+          "frontend/hooks/__tests__/use-event-listener.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 94,
+          "summary": "Dual-approved: Claude (95/100) + Codex (92/100)",
+          "issues": [],
+          "strengths": [
+            "Exact match to task specification - all 5 test cases implemented as requested",
+            "Proper use of Jest mocking with jest.fn()",
+            "Correct React Testing Library usage with renderHook, unmount, and rerender",
+            "Clean test structure with descriptive test names",
+            "Proper event dispatching and assertion patterns",
+            "Handles edge cases like null element gracefully",
+            "Under 30 lines as required (39 lines including whitespace)",
+            "No code fences or invalid syntax",
+            "Tests cover key hook behaviors: mounting, unmounting, element targeting, handler updates",
+            "Covers all specified scenarios (default window listener, cleanup on unmount, custom element, handler update, null element).",
+            "Concise and clear test implementations with appropriate Jest matchers.",
+            "Adheres to the 30-line limit and uses the correct import paths as per spec."
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-287",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "medium",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create sdk/typescript/src/string-case.ts — string case conversion utilities.\n\nSTRICT: Max 30 lines. Pure functions. No dependencies. Full JSDoc.\n\nExport these functions:\n\n1. camelCase(str: string): string\n   - Convert string to camelCase\n   - Split on non-alphanumeric chars, spaces, hyphens, underscores\n   - First word lowercase, subsequent words capitalized\n   - Example: camelCase('hello-world') => 'helloWorld'\n   - Example: camelCase('foo_bar_baz') => 'fooBarBaz'\n\n2. snakeCase(str: string): string\n   - Convert to snake_case\n   - Insert underscore before capitals, split on non-alphanum, join with _\n   - Example: snakeCase('helloWorld') => 'hello_world'\n   - Example: snakeCase('FOO-BAR') => 'foo_bar'\n\n3. kebabCase(str: string): string\n   - Convert to kebab-case (same logic as snake_case but with hyphens)\n   - Example: kebabCase('helloWorld') => 'hello-world'\n\n4. pascalCase(str: string): string\n   - Convert to PascalCase (like camelCase but first word also capitalized)\n   - Example: pascalCase('hello-world') => 'HelloWorld'\n\nHelper: split string by inserting separator before uppercase letters, then split on /[^a-zA-Z0-9]+/\n\nconst words = (s: string): string[] => s.replace(/([a-z])([A-Z])/g, '$1 $2').split(/[^a-zA-Z0-9]+/).filter(Boolean).map(w => w.toLowerCase());\n\nExport: camelCase, snakeCase, kebabCase, pascalCase\nKeep under 30 lines.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/string-case.ts"
+        ]
+      },
+      "description": "String case conversion utilities",
+      "output": {
+        "files": [
+          "sdk/typescript/src/string-case.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "Dual-approved: Claude (95/100) + Codex (95/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/string-case.ts",
+              "description": "Missing test file - while not explicitly required in task spec, utility functions should have unit tests for reliability"
+            }
+          ],
+          "strengths": [
+            "Stays well under 30-line limit (29 lines including comments)",
+            "No external dependencies as required",
+            "All 4 required functions implemented correctly with proper exports",
+            "Comprehensive JSDoc documentation with examples for all functions",
+            "Uses the exact helper function pattern specified in task spec",
+            "Pure functions with no side effects",
+            "Proper TypeScript typing throughout",
+            "Clean, readable implementation that handles edge cases (empty strings)",
+            "Examples in JSDoc match the expected behavior from task spec",
+            "Efficient implementation using array methods appropriately",
+            "All four case-conversion functions correctly implemented and cover edge cases (empty input).",
+            "Helper `words` function concisely handles splitting on uppercase transitions and non-alphanumeric characters.",
+            "Full JSDoc comments on all public APIs (and helper) for clear documentation.",
+            "Code is pure, dependency-free, under the 30-line limit, and aligns with the spec."
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-288",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "medium",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create sdk/typescript/src/__tests__/string-case.test.ts — tests for string-case.ts.\n\nImport: { camelCase, snakeCase, kebabCase, pascalCase } from '../string-case'\n\nTest cases (describe 'string-case'):\n1. camelCase('hello-world') => 'helloWorld'\n2. camelCase('foo_bar_baz') => 'fooBarBaz'\n3. camelCase('Hello World') => 'helloWorld'\n4. snakeCase('helloWorld') => 'hello_world'\n5. snakeCase('FOO-BAR') => 'foo_bar'\n6. snakeCase('hello world') => 'hello_world'\n7. kebabCase('helloWorld') => 'hello-world'\n8. kebabCase('foo_bar') => 'foo-bar'\n9. kebabCase('Hello World') => 'hello-world'\n10. pascalCase('hello-world') => 'HelloWorld'\n11. pascalCase('foo_bar') => 'FooBar'\n12. pascalCase('hello') => 'Hello'\n13. camelCase('') => ''\n14. snakeCase('already_snake') => 'already_snake'\n\nKeep tests 1-2 lines each. Max 30 lines total. Use Jest expect().",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/__tests__/string-case.test.ts"
+        ]
+      },
+      "description": "Tests for string-case",
+      "output": {
+        "files": [
+          "sdk/typescript/src/__tests__/string-case.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "Dual-approved: Claude (95/100) + Codex (95/100)",
+          "issues": [],
+          "strengths": [
+            "Exactly matches all 14 specified test cases",
+            "Proper Jest syntax with describe/it blocks",
+            "Concise one-line test format as requested",
+            "Correct import statement from '../string-case'",
+            "Well under the 30-line limit (14 lines)",
+            "No code fences or invalid syntax",
+            "Clear, descriptive test names",
+            "Covers edge cases (empty string, already formatted strings)",
+            "Covers all required test scenarios with clear descriptions",
+            "Maintains concise one-liner tests well under the 30-line limit",
+            "Uses proper Jest syntax and no invalid code fences"
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+name: test-failure-predictor
+role: "Analyzes task requirements and predicts likelihood of test failures based on complexity patterns"
+llm: minimax/MiniMax-M2.5
+reports_to: ceo
+trigger: every_sprint
+created_by: cto_proposal
+created_at: "2026-02-18T09:42:44.731Z"
+context_files:
+  - docs/learnings.md

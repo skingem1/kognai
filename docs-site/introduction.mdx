@@ -1,0 +1,73 @@
+---
+title: Introduction
+description: "Invoica is the Financial OS for AI Agents — automated invoicing, tax compliance, and settlement detection built on the x402 protocol."
+---
+
+# Welcome to Invoica
+
+Invoica is the financial operating system for the agentic economy. We provide invoice middleware that sits between AI agents and payment networks, enabling autonomous invoicing, tax compliance, budget enforcement, and settlement detection.
+
+## What is Invoica?
+
+When AI agents make purchases using the [x402 protocol](https://www.x402.org), they need financial infrastructure to:
+
+- **Generate invoices** automatically for every transaction
+- **Calculate taxes** across multiple jurisdictions
+- **Enforce budgets** so agents don't overspend
+- **Detect settlements** on-chain with dual confirmation
+- **Maintain ledgers** for full financial auditability
+
+Invoica handles all of this as middleware — your agents send standard x402 payment requests, and Invoica intercepts them to add financial compliance automatically.
+
+## Key Features
+
+<CardGroup cols={2}>
+  <Card title="Automated Invoicing" icon="file-invoice">
+    Generate professional invoices with line items, tax breakdowns, and PDF delivery for every agent transaction.
+  </Card>
+  <Card title="Tax Compliance" icon="calculator">
+    Multi-jurisdiction VAT and sales tax calculation with automatic rate lookup and reporting.
+  </Card>
+  <Card title="Budget Enforcement" icon="shield-check">
+    Set spending limits per agent, per category, or per time period. Transactions exceeding budgets are blocked automatically.
+  </Card>
+  <Card title="Settlement Detection" icon="link">
+    Dual settlement detection — poll-based and event-driven — ensures no payment confirmation is missed.
+  </Card>
+  <Card title="TypeScript SDK" icon="code">
+    100 modules including utilities, hooks, and components. Fully typed, tree-shakeable, and developer-friendly.
+  </Card>
+  <Card title="Developer Dashboard" icon="gauge">
+    Manage API keys, view invoices, monitor settlements, and configure webhooks from a single interface.
+  </Card>
+</CardGroup>
+
+## Architecture Overview
+
+Invoica operates as a transparent proxy between your AI agents and the x402 payment network:
+
+```
+AI Agent → Invoica Middleware → x402 Payment Network
+                ↓
+        Invoice Generated
+        Tax Calculated
+        Budget Checked
+        Settlement Monitored
+```
+
+## Who is Invoica for?
+
+- **AI Agent Developers** building autonomous systems that make payments
+- **Platform Operators** running multi-agent environments with financial compliance needs
+- **Enterprise Teams** requiring audit trails and tax compliance for agent transactions
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    Create your first invoice in under 5 minutes.
+  </Card>
+  <Card title="API Reference" icon="book" href="/api-reference/overview">
+    Explore the complete API documentation.
+  </Card>
+</CardGroup>

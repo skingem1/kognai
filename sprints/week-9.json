@@ -1,0 +1,182 @@
+{
+  "tasks": [
+    {
+      "id": "SDK-050",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "critical",
+      "dependencies": [],
+      "context": "Create the SDK package.json at sdk/typescript/package.json.",
+      "deliverables": {
+        "code": ["sdk/typescript/package.json"],
+        "tests": ["sdk/typescript/tests/package.test.ts"]
+      },
+      "status": "done",
+      "output": {
+        "files": ["sdk/typescript/package.json", "sdk/typescript/tests/package.test.ts"],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "Clean package.json with correct @invoica/sdk config. Passed on attempt 5 after supervisor initially rejected test file pattern.",
+          "issues": [],
+          "strengths": ["Valid npm package config", "Correct entry points", "No runtime dependencies"]
+        }
+      }
+    },
+    {
+      "id": "SDK-051",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "critical",
+      "dependencies": [],
+      "context": "Create the SDK TypeScript config at sdk/typescript/tsconfig.json.",
+      "deliverables": {
+        "code": ["sdk/typescript/tsconfig.json"],
+        "tests": ["sdk/typescript/tests/tsconfig.test.ts"]
+      },
+      "status": "done",
+      "output": {
+        "files": ["sdk/typescript/tsconfig.json"],
+        "commit": "",
+        "model": "manual-fix",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 100,
+          "summary": "Manual fix after 10 failed attempts. The tsconfig.json was correct every attempt but the supervisor hallucinated that test files were 'unnecessary' despite being in task deliverables. Same pattern as BUG-001 — supervisor-MiniMax conflict on test file expectations for config/JSON files.",
+          "issues": [],
+          "strengths": ["Correct ES2022 target", "CommonJS for compatibility", "Proper declaration output"]
+        },
+        "notes": "Supervisor hallucination: rejected test file as 'overengineering' 10 times even though deliverables.tests listed it. Root cause: supervisor prompt treats tests for config files (JSON) as unnecessary. Fix needed: supervisor should check deliverables list before rejecting tests."
+      }
+    },
+    {
+      "id": "SDK-052",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "context": "Add listInvoices method to SDK client at sdk/typescript/src/client.ts.",
+      "deliverables": {
+        "code": ["sdk/typescript/src/client.ts"],
+        "tests": ["sdk/typescript/tests/client.test.ts"]
+      },
+      "status": "done",
+      "output": {
+        "files": ["sdk/typescript/src/client.ts", "sdk/typescript/tests/client.test.ts"],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 92,
+          "summary": "Clean client implementation with all 6 methods including new listInvoices. Passed attempt 4 after fixing undefined→string conversion bug in query params.",
+          "issues": [
+            {"severity": "low", "file": "sdk/typescript/tests/client.test.ts", "description": "Test mocks don't cover all Invoice fields"}
+          ],
+          "strengths": ["All 6 methods implemented", "Proper query param handling", "Under 50 lines"]
+        }
+      }
+    },
+    {
+      "id": "FE-010",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "context": "Create frontend API client at frontend/lib/api-client.ts.",
+      "deliverables": {
+        "code": ["frontend/lib/api-client.ts"],
+        "tests": ["frontend/tests/lib/api-client.test.ts"]
+      },
+      "status": "done",
+      "output": {
+        "files": ["frontend/lib/api-client.ts", "frontend/tests/lib/api-client.test.ts"],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 92,
+          "summary": "Clean API client wrapper with apiGet, apiPost, fetchInvoices, fetchInvoiceById. Passed attempt 3 after fixing export visibility and removing overengineered interfaces.",
+          "issues": [],
+          "strengths": ["Clean fetch wrapper", "Proper error handling", "Generic typed functions"]
+        }
+      }
+    },
+    {
+      "id": "FE-011",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "context": "Create invoice table component at frontend/components/invoices/invoice-table.tsx.",
+      "deliverables": {
+        "code": ["frontend/components/invoices/invoice-table.tsx"],
+        "tests": ["frontend/tests/components/invoice-table.test.tsx"]
+      },
+      "status": "done",
+      "output": {
+        "files": ["frontend/components/invoices/invoice-table.tsx", "frontend/tests/components/invoice-table.test.tsx"],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 92,
+          "summary": "First-attempt approval. Clean React table component with status coloring, loading state, and Tailwind styling.",
+          "issues": [],
+          "strengths": ["First-attempt pass", "Clean React patterns", "Status color mapping", "Loading state"]
+        }
+      }
+    },
+    {
+      "id": "FE-012",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "medium",
+      "dependencies": [],
+      "context": "Create invoice detail card component at frontend/components/invoices/invoice-detail.tsx.",
+      "deliverables": {
+        "code": ["frontend/components/invoices/invoice-detail.tsx"],
+        "tests": ["frontend/tests/components/invoice-detail.test.tsx"]
+      },
+      "status": "done",
+      "output": {
+        "files": ["frontend/components/invoices/invoice-detail.tsx", "frontend/tests/components/invoice-detail.test.tsx"],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 92,
+          "summary": "First-attempt approval. Full invoice detail card with metadata display, null states, and responsive grid layout.",
+          "issues": [],
+          "strengths": ["First-attempt pass", "Null/loading state handling", "Metadata conditional render", "Grid layout"]
+        }
+      }
+    },
+    {
+      "id": "BE-070",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "medium",
+      "dependencies": [],
+      "context": "Create API error handling middleware at backend/src/api/error-handler.ts.",
+      "deliverables": {
+        "code": ["backend/src/api/error-handler.ts"],
+        "tests": ["backend/tests/api/error-handler.test.ts"]
+      },
+      "status": "done",
+      "output": {
+        "files": ["backend/src/api/error-handler.ts", "backend/tests/api/error-handler.test.ts"],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 92,
+          "summary": "First-attempt approval. Clean error middleware with consistent JSON responses, 404 handler, and environment-aware logging.",
+          "issues": [],
+          "strengths": ["First-attempt pass", "Consistent error format", "notFoundHandler included", "Environment-aware"]
+        }
+      }
+    }
+  ]
+}

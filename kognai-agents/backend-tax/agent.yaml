@@ -1,0 +1,15 @@
+name: backend-tax
+role: Tax Calculation Service Developer
+description: Builds multi-jurisdiction tax calculation engine
+tools: [claude_code, file_operations, http_client]
+working_directory: ./backend
+context_files:
+  - ../../docs/tax-requirements.md
+  - ../../shared/code-style-guide.md
+constraints:
+  - Follow GDPR for data storage
+  - Cache expensive API calls (VIES)
+  - Store evidence for 7 years
+  - Handle EU + US jurisdictions
+deliverables_path: ./backend/src/services/tax
+tests_path: ./backend/tests/services/tax

@@ -1,0 +1,461 @@
+{
+  "tasks": [
+    {
+      "id": "SDK-210",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "status": "rejected",
+      "dependencies": [],
+      "context": "Write Jest unit tests for sdk/typescript/src/logger.ts.\n\nThe logger module exports: enum LogLevel { DEBUG=0, INFO=1, WARN=2, ERROR=3, NONE=4 }, interface LogEntry { level, message, timestamp, context?, data? }, interface Logger { debug, info, warn, error, setLevel, getLevel }, function createLogger(context?, level?): Logger, function formatLogEntry(entry: LogEntry): string.\n\nImport {createLogger, formatLogEntry, LogLevel} from '../logger'.\n\nCRITICAL: Spy on console methods: jest.spyOn(console, 'debug').mockImplementation(() => {}), same for info, warn, error. Restore in afterEach.\n\nTest cases for createLogger:\n1. creates logger with default context 'invoica-sdk' and level WARN\n2. getLevel returns the configured level\n3. setLevel changes the minimum log level\n4. warn calls console.warn when level is WARN\n5. error calls console.error when level is WARN\n6. debug does NOT call console.debug when level is WARN (DEBUG < WARN)\n7. info does NOT call console.info when level is WARN (INFO < WARN)\n8. debug calls console.debug when level is DEBUG\n9. all methods are silent when level is NONE\n10. log message includes context string\n11. log message includes data when provided\n12. custom context appears in log output\n\nTest cases for formatLogEntry:\n13. formats entry with all fields: '[timestamp] [WARN] [ctx] message'\n14. includes context when provided\n15. works without optional context field\n16. maps LogLevel.DEBUG to 'DEBUG', LogLevel.INFO to 'INFO', etc.\n\nUse describe('logger') with nested describe('createLogger') and describe('formatLogEntry').\nbeforeEach: spy on all console methods. afterEach: jest.restoreAllMocks().",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/__tests__/logger.test.ts"
+        ]
+      },
+      "description": "Tests for SDK logger — createLogger, formatLogEntry, LogLevel",
+      "output": {
+        "files": [
+          "sdk/typescript/src/__tests__/logger.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "REJECTED",
+          "score": 45,
+          "summary": "Dual-rejected: Claude (45/100) + Codex (65/100). Test file is incomplete and missing critical test cases from the specification. While the structure is correct, it fails to cover many required scenarios. | The test suite correctly sets up spies and covers core behaviors of createLogger and formatLogEntry, but is missing several required test cases: default context assertion, setLevel functionality, NONE-level silencing, and data payload inclusion.",
+          "issues": [
+            {
+              "severity": "high",
+              "file": "sdk/typescript/src/__tests__/logger.test.ts",
+              "description": "Missing test case: 'getLevel returns the configured level' - no explicit test for getLevel functionality"
+            },
+            {
+              "severity": "high",
+              "file": "sdk/typescript/src/__tests__/logger.test.ts",
+              "description": "Missing test case: 'setLevel changes the minimum log level' - no test for setLevel method"
+            },
+            {
+              "severity": "high",
+              "file": "sdk/typescript/src/__tests__/logger.test.ts",
+              "description": "Missing individual test cases for warn/error calling console methods when level is WARN"
+            },
+            {
+              "severity": "high",
+              "file": "sdk/typescript/src/__tests__/logger.test.ts",
+              "description": "Missing test case: 'debug calls console.debug when level is DEBUG'"
+            },
+            {
+              "severity": "high",
+              "file": "sdk/typescript/src/__tests__/logger.test.ts",
+              "description": "Missing test case: 'all methods are silent when level is NONE'"
+            },
+            {
+              "severity": "medium",
+              "file": "sdk/typescript/src/__tests__/logger.test.ts",
+              "description": "Missing test case: 'log message includes data when provided' - no explicit test for data parameter"
+            },
+            {
+              "severity": "medium",
+              "file": "sdk/typescript/src/__tests__/logger.test.ts",
+              "description": "Test case consolidation reduces coverage - spec requires 16 individual test cases but only 6 are implemented"
+            },
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/__tests__/logger.test.ts",
+              "description": "Default context test missing - spec requires testing default context 'invoica-sdk'"
+            },
+            {
+              "severity": "medium",
+              "file": "sdk/typescript/src/__tests__/logger.test.ts",
+              "description": "No test asserts that createLogger() uses the default context 'invoica-sdk'. The spec requires verifying the default context."
+            },
+            {
+              "severity": "medium",
+              "file": "sdk/typescript/src/__tests__/logger.test.ts",
+              "description": "Missing test for setLevel(): the suite never calls logger.setLevel() and asserts that subsequent log calls respect the new minimum log level."
+            },
+            {
+              "severity": "medium",
+              "file": "sdk/typescript/src/__tests__/logger.test.ts",
+              "description": "No test case for level NONE: all logger methods should be silent when configured at LogLevel.NONE."
+            },
+            {
+              "severity": "medium",
+              "file": "sdk/typescript/src/__tests__/logger.test.ts",
+              "description": "Missing assertion that when passing a data object to logger methods, the serialized data appears in the console output."
+            }
+          ],
+          "strengths": []
+        }
+      }
+    },
+    {
+      "id": "FE-370",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "high",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create frontend/hooks/use-media-query.ts — React hook for responsive design media query matching.\n\nImport { useState, useEffect } from 'react'.\n\nExport:\n\n1. function useMediaQuery(query: string): boolean\n   - Takes a CSS media query string like '(min-width: 768px)'\n   - Returns true if the query currently matches, false otherwise\n   - Uses window.matchMedia() to evaluate the query\n   - Listens for changes via addEventListener('change', handler)\n   - Cleans up listener on unmount or query change\n   - Initial state set from matchMedia(query).matches\n   - If window is undefined (SSR), return false\n\nImplementation:\n```\nexport function useMediaQuery(query: string): boolean {\n  const [matches, setMatches] = useState<boolean>(() => {\n    if (typeof window === 'undefined') return false;\n    return window.matchMedia(query).matches;\n  });\n\n  useEffect(() => {\n    if (typeof window === 'undefined') return;\n    const mediaQuery = window.matchMedia(query);\n    const handler = (event: MediaQueryListEvent) => setMatches(event.matches);\n    // Set initial value in case it changed between render and effect\n    setMatches(mediaQuery.matches);\n    mediaQuery.addEventListener('change', handler);\n    return () => mediaQuery.removeEventListener('change', handler);\n  }, [query]);\n\n  return matches;\n}\n```\n\nNamed export only. No default export. JSDoc comments. Maximum 35 lines.",
+      "deliverables": {
+        "code": [
+          "frontend/hooks/use-media-query.ts"
+        ]
+      },
+      "description": "Frontend useMediaQuery hook — responsive design media query matching",
+      "output": {
+        "files": [
+          "frontend/hooks/use-media-query.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "Dual-approved: Claude (95/100) + Codex (95/100)",
+          "issues": [],
+          "strengths": [
+            "Perfect implementation matching the exact specification provided",
+            "Proper TypeScript strict typing with no 'any' types",
+            "Excellent JSDoc documentation explaining parameters and return value",
+            "Correct SSR handling by checking for window undefined",
+            "Proper event listener cleanup in useEffect return function",
+            "Efficient lazy initial state to avoid unnecessary re-renders",
+            "Clean dependency array with only the query parameter",
+            "Named export only as specified, no default export",
+            "Concise implementation at 19 lines, well under the 35 line limit",
+            "Follows React hooks best practices with proper useState and useEffect usage",
+            "Strict TypeScript usage with no any types",
+            "SSR-safe check for window object",
+            "Proper setup and cleanup of media query listener",
+            "Clear JSDoc comments on public API",
+            "Concise implementation within required line limit"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-371",
+      "agent": "frontend",
+      "type": "test",
+      "priority": "high",
+      "status": "done",
+      "dependencies": [
+        "FE-370"
+      ],
+      "context": "Write React Testing Library tests for frontend/hooks/use-media-query.ts.\n\nImport {renderHook, act} from '@testing-library/react'.\nImport {useMediaQuery} from '../use-media-query'.\n\nCRITICAL: Mock window.matchMedia before tests. Create a mock factory:\n\nfunction createMatchMedia(matches: boolean) {\n  const listeners: Array<(e: any) => void> = [];\n  return {\n    matches,\n    addEventListener: jest.fn((event: string, handler: any) => { listeners.push(handler); }),\n    removeEventListener: jest.fn((event: string, handler: any) => {\n      const idx = listeners.indexOf(handler);\n      if (idx >= 0) listeners.splice(idx, 1);\n    }),\n    _trigger(newMatches: boolean) {\n      listeners.forEach(fn => fn({ matches: newMatches }));\n    }\n  };\n}\n\nbeforeEach: set window.matchMedia = jest.fn().mockImplementation(query => createMatchMedia(false)).\n\nTest cases:\n1. returns false when media query does not match\n2. returns true when media query matches: mock matchMedia to return matches:true\n3. updates when media query change fires: render with matches:false, then act(()=> mock._trigger(true)), expect result.current to be true\n4. cleans up listener on unmount: render, unmount, check removeEventListener was called\n5. updates when query prop changes: render with '(min-width: 768px)', rerender with '(min-width: 1024px)', check matchMedia was called with new query\n6. handles SSR (window undefined): This is tricky to test — skip or just verify default false behavior\n\nUse describe('useMediaQuery'). Keep tests focused and simple.",
+      "deliverables": {
+        "code": [
+          "frontend/hooks/__tests__/use-media-query.test.ts"
+        ]
+      },
+      "description": "Tests for useMediaQuery hook",
+      "output": {
+        "files": [
+          "frontend/hooks/__tests__/use-media-query.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/hooks/__tests__/use-media-query.test.ts",
+              "description": "SSR test case doesn't actually test SSR scenario (window undefined) - it just tests default behavior"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/hooks/__tests__/use-media-query.test.ts",
+              "description": "Could benefit from more specific assertions in cleanup test - checking exact event type and handler"
+            }
+          ],
+          "strengths": [
+            "Implements exact mock factory as specified in task requirements",
+            "All 6 test cases from specification are present and correctly implemented",
+            "Proper use of React Testing Library's renderHook and act utilities",
+            "Good test isolation with beforeEach setup",
+            "Correct handling of media query change events with _trigger method",
+            "Tests both initial state and dynamic updates",
+            "Proper cleanup verification on unmount",
+            "Tests query prop changes with rerender functionality",
+            "Clean, readable test structure with descriptive test names",
+            "Comprehensive coverage of all specified test cases.",
+            "Proper mock factory for window.matchMedia with listener registration and cleanup.",
+            "Uses renderHook, act, and rerender correctly to drive hook behavior.",
+            "No invalid code fences or syntax issues."
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-211",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create sdk/typescript/src/circuit-breaker.ts — Circuit breaker pattern for API resilience.\n\nPure implementation, no external dependencies. Uses Date.now() for timing.\n\nExport:\n\n1. enum CircuitState { CLOSED = 'CLOSED', OPEN = 'OPEN', HALF_OPEN = 'HALF_OPEN' }\n\n2. interface CircuitBreakerOptions {\n     failureThreshold: number;    // failures before opening (default 5)\n     resetTimeoutMs: number;      // ms before trying half-open (default 30000)\n     successThreshold: number;    // successes in half-open to close (default 2)\n   }\n\n3. class CircuitBreaker {\n     private state: CircuitState;\n     private failureCount: number;\n     private successCount: number;\n     private lastFailureTime: number;\n     private readonly options: Required<CircuitBreakerOptions>;\n\n     constructor(options?: Partial<CircuitBreakerOptions>)\n       - Merge with defaults: failureThreshold=5, resetTimeoutMs=30000, successThreshold=2\n       - Initialize state to CLOSED, counts to 0\n\n     getState(): CircuitState\n\n     canExecute(): boolean\n       - CLOSED: return true\n       - OPEN: if resetTimeoutMs has elapsed since lastFailureTime, transition to HALF_OPEN and return true; otherwise return false\n       - HALF_OPEN: return true\n\n     recordSuccess(): void\n       - HALF_OPEN: increment successCount, if >= successThreshold, transition to CLOSED and reset counts\n       - CLOSED: reset failureCount to 0\n\n     recordFailure(): void\n       - CLOSED: increment failureCount, if >= failureThreshold, transition to OPEN and set lastFailureTime\n       - HALF_OPEN: transition to OPEN immediately, set lastFailureTime, reset successCount\n\n     reset(): void\n       - Reset to CLOSED state, all counts to 0\n   }\n\nNamed exports only. No default export. JSDoc comments. Maximum 95 lines.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/circuit-breaker.ts"
+        ]
+      },
+      "description": "SDK circuit breaker — CircuitBreaker class with CLOSED/OPEN/HALF_OPEN states",
+      "output": {
+        "files": [
+          "sdk/typescript/src/circuit-breaker.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/circuit-breaker.ts",
+              "description": "Missing unit tests - should include Jest tests for state transitions, timing behavior, and edge cases"
+            },
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/circuit-breaker.ts",
+              "description": "recordFailure() sets lastFailureTime unconditionally on any failure, whereas the spec implies it should only be set when transitioning to OPEN. This does not break functionality in CLOSED state but is a minor deviation."
+            }
+          ],
+          "strengths": [
+            "Perfect adherence to spec - all required exports, methods, and behavior implemented correctly",
+            "Clean TypeScript with proper typing - no 'any' types, good use of Required<T> utility type",
+            "Comprehensive JSDoc documentation on all public members",
+            "Pure implementation with no external dependencies as required",
+            "Proper state machine implementation with correct transitions",
+            "Good use of nullish coalescing for default options merging",
+            "Efficient timing logic using Date.now() as specified",
+            "Code is concise at ~80 lines, well under the 95 line limit",
+            "Named exports only as required, no default export",
+            "Proper encapsulation with private fields and readonly options",
+            "Follows spec for exports and behavior of CLOSED, OPEN, HALF_OPEN states",
+            "Uses strict typing with no any, leverages Required<T> and Partial<T>",
+            "Includes JSDoc on all public APIs",
+            "No external dependencies and under the 95-line requirement"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-212",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "status": "done",
+      "dependencies": [
+        "SDK-211"
+      ],
+      "context": "Write Jest unit tests for sdk/typescript/src/circuit-breaker.ts.\n\nImport {CircuitBreaker, CircuitState} from '../circuit-breaker'.\n\nCRITICAL: Use jest.useFakeTimers() to control Date.now() for timeout testing.\n\nTest cases for CircuitBreaker:\n1. initializes in CLOSED state\n2. canExecute returns true when CLOSED\n3. recordSuccess in CLOSED resets failureCount (no state change)\n4. recordFailure increments failure count\n5. transitions to OPEN after failureThreshold failures: call recordFailure 5 times, getState() === OPEN\n6. canExecute returns false when OPEN and timeout not elapsed\n7. transitions to HALF_OPEN after resetTimeoutMs: open circuit, advance time by 30001ms, canExecute returns true, getState() === HALF_OPEN\n8. transitions from HALF_OPEN to CLOSED after successThreshold successes: recordSuccess twice, getState() === CLOSED\n9. transitions from HALF_OPEN to OPEN on failure: recordFailure in HALF_OPEN, getState() === OPEN\n10. reset returns to CLOSED state with zero counts\n11. custom options: new CircuitBreaker({failureThreshold:3}), fails after 3\n\nDefault options tests:\n12. default failureThreshold is 5\n13. default resetTimeoutMs is 30000\n14. default successThreshold is 2\n\nbeforeEach: jest.useFakeTimers(). afterEach: jest.useRealTimers().\nUse describe('CircuitBreaker').",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/__tests__/circuit-breaker.test.ts"
+        ]
+      },
+      "description": "Tests for SDK circuit breaker",
+      "output": {
+        "files": [
+          "sdk/typescript/src/__tests__/circuit-breaker.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "CEO resolved conflict (Codex approved, Claude rejected): **REJECT — Syntax error is a hard blocker**\n\nClaude identified a critical syntax error (missing closing brace, incomplete test case) that would break the build. This isn't a nitpick — it's a fundamental code quality issue that makes the file non-functional.\n\nWhile Codex scored it highly on test cove",
+          "issues": [
+            {
+              "severity": "critical",
+              "file": "sdk/typescript/src/__tests__/circuit-breaker.test.ts",
+              "description": "File is syntactically invalid - missing closing brace and incomplete last test case"
+            },
+            {
+              "severity": "high",
+              "file": "sdk/typescript/src/__tests__/circuit-breaker.test.ts",
+              "description": "Missing test case for 'default successThreshold is 2' as specified in requirement #14"
+            },
+            {
+              "severity": "medium",
+              "file": "sdk/typescript/src/__tests__/circuit-breaker.test.ts",
+              "description": "Test case 'recordSuccess resets failure count in CLOSED' doesn't verify the failure count was actually reset - only checks state remains CLOSED"
+            },
+            {
+              "severity": "medium",
+              "file": "sdk/typescript/src/__tests__/circuit-breaker.test.ts",
+              "description": "Test case 'recordFailure increments failure count' mixes testing failure count increment with threshold behavior - should be separate concerns"
+            }
+          ],
+          "strengths": [
+            "Covers initialization, state checks, and all transition scenarios (CLOSED → OPEN → HALF_OPEN → CLOSED/OPEN).",
+            "Proper use of jest.useFakeTimers() and jest.advanceTimersByTime() to simulate resetTimeoutMs.",
+            "Custom option tests and default option validations are included.",
+            "No syntax or formatting issues (no markdown fences in source)."
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-372",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "medium",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create frontend/lib/math-utils.ts — Math utility functions for financial dashboards.\n\nPure functions, no external dependencies. All handle edge cases gracefully.\n\nExport these functions:\n\n1. clamp(value: number, min: number, max: number): number\n   - Clamps value to [min, max] range\n   - Returns min if value < min, max if value > max, otherwise value\n   - If min > max, swap them\n\n2. lerp(start: number, end: number, t: number): number\n   - Linear interpolation between start and end\n   - t=0 returns start, t=1 returns end, t=0.5 returns midpoint\n   - t is NOT clamped (allows extrapolation)\n   - Formula: start + (end - start) * t\n\n3. roundTo(value: number, decimals: number = 2): number\n   - Rounds value to specified decimal places\n   - Uses Math.round(value * 10^decimals) / 10^decimals\n   - Handles negative decimals by treating as 0\n   - Example: roundTo(3.14159, 2) => 3.14\n\n4. percentage(value: number, total: number): number\n   - Calculates percentage: (value / total) * 100\n   - Returns 0 if total is 0 (avoid division by zero)\n   - Result is NOT rounded\n\n5. average(values: number[]): number\n   - Calculates arithmetic mean\n   - Returns 0 for empty array\n   - Example: average([10, 20, 30]) => 20\n\n6. median(values: number[]): number\n   - Calculates median value\n   - Returns 0 for empty array\n   - Sorts a copy (does not mutate input)\n   - For even length: average of two middle values\n   - For odd length: middle value\n\n7. sum(values: number[]): number\n   - Returns sum of all values\n   - Returns 0 for empty array\n\nNamed exports only. No default export. JSDoc comments. Maximum 80 lines.",
+      "deliverables": {
+        "code": [
+          "frontend/lib/math-utils.ts"
+        ]
+      },
+      "description": "Frontend math utilities — clamp, lerp, roundTo, percentage, average, median, sum",
+      "output": {
+        "files": [
+          "frontend/lib/math-utils.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "Dual-approved: Claude (95/100) + Codex (95/100)",
+          "issues": [],
+          "strengths": [
+            "All 7 required functions implemented exactly as specified",
+            "Proper edge case handling (empty arrays return 0, division by zero handled, min/max swap)",
+            "Excellent JSDoc documentation for all functions",
+            "Clean TypeScript with proper types and no 'any' usage",
+            "Pure functions with no external dependencies as required",
+            "Efficient implementations (median sorts copy, doesn't mutate input)",
+            "Named exports only as specified",
+            "Code is concise at 78 lines, under the 80-line limit",
+            "Proper mathematical formulas used (lerp, percentage, median calculation)",
+            "Good use of Math utilities and array methods",
+            "Correct implementation of all seven functions with proper edge-case handling",
+            "Uses pure functions with no external dependencies",
+            "Comprehensive JSDoc comments on each export",
+            "No default exports, matching the spec",
+            "Code is concise (<80 lines) and free of invalid syntax (no code fences)"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-373",
+      "agent": "frontend",
+      "type": "test",
+      "priority": "medium",
+      "status": "done",
+      "dependencies": [
+        "FE-372"
+      ],
+      "context": "Write Jest unit tests for frontend/lib/math-utils.ts.\n\nImport {clamp, lerp, roundTo, percentage, average, median, sum} from '../math-utils'.\n\nTest cases for clamp:\n1. returns value when in range: clamp(5, 0, 10) => 5\n2. returns min when value below: clamp(-5, 0, 10) => 0\n3. returns max when value above: clamp(15, 0, 10) => 10\n4. handles min > max by swapping: clamp(5, 10, 0) => 5\n\nTest cases for lerp:\n5. t=0 returns start: lerp(0, 100, 0) => 0\n6. t=1 returns end: lerp(0, 100, 1) => 100\n7. t=0.5 returns midpoint: lerp(0, 100, 0.5) => 50\n8. allows extrapolation: lerp(0, 100, 1.5) => 150\n\nTest cases for roundTo:\n9. rounds to 2 decimals: roundTo(3.14159, 2) => 3.14\n10. rounds to 0 decimals: roundTo(3.7, 0) => 4\n11. handles negative decimals as 0: roundTo(3.7, -1) => 4\n12. default is 2 decimals: roundTo(3.14159) => 3.14\n\nTest cases for percentage:\n13. basic percentage: percentage(25, 100) => 25\n14. returns 0 when total is 0: percentage(10, 0) => 0\n15. handles fractions: percentage(1, 3) => approximately 33.333\n\nTest cases for average:\n16. calculates mean: average([10, 20, 30]) => 20\n17. returns 0 for empty array: average([]) => 0\n\nTest cases for median:\n18. odd length: median([1, 3, 5]) => 3\n19. even length: median([1, 2, 3, 4]) => 2.5\n20. returns 0 for empty array: median([]) => 0\n21. does not mutate input: const arr = [3,1,2]; median(arr); expect arr to still be [3,1,2]\n\nTest cases for sum:\n22. sums values: sum([1, 2, 3, 4]) => 10\n23. returns 0 for empty array: sum([]) => 0\n\nUse describe('math-utils') with nested describes per function.",
+      "deliverables": {
+        "code": [
+          "frontend/lib/__tests__/math-utils.test.ts"
+        ]
+      },
+      "description": "Tests for frontend math utilities",
+      "output": {
+        "files": [
+          "frontend/lib/__tests__/math-utils.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/lib/__tests__/math-utils.test.ts",
+              "description": "Combined two test cases into one for lerp function (t=0 and t=1), though both are still tested"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/lib/__tests__/math-utils.test.ts",
+              "description": "Could benefit from edge case testing (e.g., NaN, Infinity inputs) but not required by spec"
+            }
+          ],
+          "strengths": [
+            "Covers all 23 specified test cases accurately",
+            "Proper Jest syntax with describe/it structure",
+            "Correct use of toBeCloseTo() for floating point comparisons",
+            "Tests immutability requirement for median function",
+            "Clean, readable test descriptions",
+            "Proper import statement matches spec",
+            "Good organization with nested describe blocks per function",
+            "Handles edge cases like empty arrays and division by zero",
+            "No code fences or syntax errors",
+            "All functions (clamp, lerp, roundTo, percentage, average, median, sum) are tested against the defined spec cases.",
+            "Tests are well organized with nested describe blocks for clarity.",
+            "Edge cases such as empty arrays, negative decimals, zero division, and non-mutating inputs are properly covered.",
+            "No markdown code fences in source files; syntax is valid and import paths are correct."
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-213",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "medium",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create sdk/typescript/src/id-generator.ts — Unique ID generation utilities for invoices, API keys, and idempotency keys.\n\nPure functions, no external dependencies. Uses Math.random() and Date.now().\n\nExport these functions:\n\n1. generateId(prefix: string = ''): string\n   - Generates a unique ID: prefix + timestamp hex + random hex\n   - Format: '{prefix}{timestamp_hex}_{random_hex}'\n   - timestamp_hex: Date.now().toString(16) (variable length)\n   - random_hex: Math.random().toString(16).slice(2, 10) (8 chars)\n   - Example: generateId('inv_') => 'inv_18d4a2f3b_1a2b3c4d'\n   - Example: generateId() => '18d4a2f3b_1a2b3c4d'\n\n2. generateApiKey(): string\n   - Generates a 40-char hex API key\n   - Concatenates 5 calls to Math.random().toString(16).slice(2, 10)\n   - Example: 'a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0'\n\n3. generateIdempotencyKey(): string\n   - Generates a UUID v4-like string using Math.random()\n   - Format: 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'\n   - x = random hex digit\n   - y = one of 8, 9, a, b (variant bits)\n   - The '4' is the version indicator\n\n4. isValidId(id: string, prefix?: string): boolean\n   - Validates that an ID matches the generateId format\n   - If prefix provided, checks ID starts with prefix\n   - Checks format: has underscore separator, hex characters only in timestamp and random parts\n   - Returns false for empty string\n\n5. extractTimestamp(id: string, prefix: string = ''): number | null\n   - Extracts the timestamp from a generated ID\n   - Strips prefix, parses hex before the underscore\n   - Returns the timestamp as a number (ms since epoch)\n   - Returns null if ID format is invalid\n\nNamed exports only. No default export. JSDoc comments. Maximum 85 lines.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/id-generator.ts"
+        ]
+      },
+      "description": "SDK ID generator — generateId, generateApiKey, generateIdempotencyKey, isValidId",
+      "output": {
+        "files": [
+          "sdk/typescript/src/id-generator.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 46,
+          "summary": "Dual-approved: Claude (92/100) + Codex (0/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/id-generator.ts",
+              "description": "generateIdempotencyKey() creates helper functions inside the main function on every call, which is slightly inefficient. Could be optimized by moving helpers outside."
+            },
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/id-generator.ts",
+              "description": "UUID generation uses 6 segments instead of the standard 5 (8-4-4-4-12 pattern), though this doesn't affect functionality for idempotency keys."
+            }
+          ],
+          "strengths": [
+            "All 5 required functions implemented correctly with exact specifications",
+            "Proper TypeScript types with no 'any' usage",
+            "Comprehensive JSDoc documentation on all public functions",
+            "Pure functions with no external dependencies as required",
+            "Proper input validation in isValidId and extractTimestamp functions",
+            "Correct hex format validation using regex",
+            "Named exports only as specified",
+            "File length well under 85 line limit (78 lines)",
+            "Handles edge cases like empty strings and invalid formats",
+            "generateApiKey correctly concatenates 5 random hex segments for 40 chars",
+            "generateId format matches specification exactly",
+            "extractTimestamp properly handles prefix stripping and hex parsing"
+          ]
+        }
+      }
+    }
+  ]
+}

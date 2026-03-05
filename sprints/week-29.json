@@ -1,0 +1,414 @@
+{
+  "tasks": [
+    {
+      "id": "BE-230",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "critical",
+      "dependencies": [],
+      "status": "done",
+      "context": "Create the server entry point that starts the Express app. File: backend/src/server.ts\n\nThis file imports the app from ./app and starts listening on a port.\n\n```typescript\nimport { app } from './app';\n\nconst PORT = parseInt(process.env.PORT || '3001', 10);\n\nconst server = app.listen(PORT, () => {\n  console.log(`Invoica API server running on port ${PORT}`);\n  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);\n  console.log(`Health check: http://localhost:${PORT}/v1/health`);\n});\n\nserver.on('error', (err: NodeJS.ErrnoException) => {\n  if (err.code === 'EADDRINUSE') {\n    console.error(`Port ${PORT} is already in use`);\n    process.exit(1);\n  }\n  throw err;\n});\n\nexport { server };\n```\n\nRules: Maximum 25 lines. Import app from ./app. Parse PORT from env with fallback to 3001. Call app.listen(). Log port, environment, and health check URL on startup. Handle EADDRINUSE error. Export named server.",
+      "deliverables": {
+        "code": [
+          "backend/src/server.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "backend/src/server.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "Dual-approved: Claude (95/100) + Codex (95/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "backend/src/server.ts",
+              "description": "Typo in log message: 'Invoica' should be 'Invoica' (assuming this is intentional branding) or 'Invoice'"
+            }
+          ],
+          "strengths": [
+            "Follows all task requirements exactly",
+            "Proper TypeScript typing with NodeJS.ErrnoException",
+            "Clean error handling for EADDRINUSE with graceful exit",
+            "Appropriate logging with environment and health check URL",
+            "Named export as specified",
+            "Under 25 line limit (18 lines)",
+            "No code fences or invalid syntax",
+            "Proper parseInt with radix parameter",
+            "Good separation of concerns - just server startup logic",
+            "Adheres to the 25-line limit and required structure",
+            "Proper port parsing with fallback",
+            "Clear startup logs including health check URL",
+            "Handles EADDRINUSE error gracefully",
+            "Exports the server instance for testing or later teardown"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-170",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "critical",
+      "dependencies": [],
+      "status": "done",
+      "context": "Replace the SDK package entry point with the v2 barrel exports. File: sdk/typescript/src/index.ts\n\nThis file is the main entry point for the @invoica/sdk package. It re-exports everything from the v2 modules.\n\n```typescript\n// @invoica/sdk — Package entry point\n// All exports from v2 modules (fixed import chain)\n\n// Client classes\nexport { CountableClient } from './enhanced-client-v2';\nexport { InvoicaFullClient } from './complete-client-v2';\nexport type { InvoicaClientConfig as CountableClientConfig } from './client-config';\n\n// Transport\nexport { HttpTransport } from './http-transport-v2';\nexport type { TransportRequestConfig } from './http-transport-v2';\n\n// Errors\nexport { InvoicaError, ValidationError, NotFoundError, AuthenticationError } from './errors';\nexport { CountableError, RateLimitError } from './error-compat';\n\n// Response parsing\nexport { parseResponse, isApiError } from './response-parser-v2';\nexport type { ApiResponse } from './response-parser-v2';\n\n// Utilities\nexport { createDebugLogger, isDebugEnabled } from './debug';\nexport type { DebugLogger } from './debug';\nexport { createApiKeyMethods, createWebhookMethods } from './enhanced-client-extras-v2';\nexport { createInterceptorManager } from './interceptors';\nexport type { RequestInterceptor, ResponseInterceptor, InterceptorManager } from './interceptors';\nexport { detectEnvironment, getDefaultBaseUrl, getUserAgent, supportsStreaming } from './environment';\nexport type { SdkEnvironment } from './environment';\nexport { version } from './version';\n\n// Core types\nexport type {\n  Invoice, InvoiceCreateInput, InvoiceListResponse,\n  Settlement, SettlementListResponse, SettlementStatus,\n  ApiKey, ApiKeyCreateResponse, ApiKeyListResponse,\n  WebhookRegistration, WebhookRegistrationConfig, WebhookListResponse, WebhookEventType,\n  CreateInvoiceParams, CreateApiKeyParams, GetSettlementParams,\n} from './types';\n\n// Extended types\nexport type {\n  InvoiceUpdateInput, DeleteResponse, PaginationParams,\n  ListResponse, ErrorResponse, WebhookEvent,\n} from './missing-types';\n```\n\nRules: Maximum 45 lines. This replaces the old broken index.ts. Re-export everything from v2 modules. Use export type for type-only exports. Group exports by category with comments. No function bodies — pure re-exports only.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/index.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/src/index.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 98,
+          "summary": "Dual-approved: Claude (95/100) + Codex (100/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/index.ts",
+              "description": "File is exactly 45 lines which meets the maximum but leaves no room for future additions without refactoring"
+            }
+          ],
+          "strengths": [
+            "Perfect adherence to task spec - exactly what was requested",
+            "Proper use of 'export type' for type-only exports",
+            "Clean categorization with descriptive comments",
+            "No code fences or invalid syntax",
+            "Pure re-exports only - no function bodies",
+            "Maintains alias 'CountableClientConfig' as specified",
+            "Well-structured grouping: Client classes, Transport, Errors, Response parsing, Utilities, Core types, Extended types",
+            "Follows TypeScript best practices for barrel exports",
+            "Pure re-export barrel with no extra logic or function bodies",
+            "Grouped exports by category with clear comments",
+            "Uses `export type` for type-only exports",
+            "Line count stays under the 45-line limit",
+            "No markdown fences or invalid syntax"
+          ]
+        }
+      }
+    },
+    {
+      "id": "BE-231",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "dependencies": [],
+      "status": "done",
+      "context": "Create unit tests for the webhook routes. File: backend/src/routes/__tests__/webhooks.test.ts\n\nTest the webhook routes by inspecting router structure. Import IRouter type from express for type safety.\n\n```typescript\nimport type { IRouter } from 'express';\n\ninterface RouteLayer {\n  route?: { path: string; methods: Record<string, boolean> };\n}\n\ndescribe('Webhook Routes', () => {\n  let router: IRouter & { stack: RouteLayer[] };\n\n  beforeAll(() => {\n    const mod = require('../webhooks');\n    router = mod.default;\n  });\n\n  const getRoutes = () =>\n    router.stack\n      .filter((l): l is RouteLayer & { route: NonNullable<RouteLayer['route']> } => !!l.route)\n      .map((l) => ({ path: l.route.path, methods: Object.keys(l.route.methods) }));\n\n  it('exports an Express Router', () => {\n    expect(router).toBeDefined();\n    expect(router.stack).toBeDefined();\n  });\n\n  it('has POST /v1/webhooks route', () => {\n    expect(getRoutes().find((r) => r.path === '/v1/webhooks' && r.methods.includes('post'))).toBeDefined();\n  });\n\n  it('has GET /v1/webhooks route', () => {\n    expect(getRoutes().find((r) => r.path === '/v1/webhooks' && r.methods.includes('get'))).toBeDefined();\n  });\n\n  it('has DELETE /v1/webhooks/:id route', () => {\n    expect(getRoutes().find((r) => r.path === '/v1/webhooks/:id' && r.methods.includes('delete'))).toBeDefined();\n  });\n});\n```\n\nRules: Maximum 35 lines. 4 tests: verify export, verify POST /v1/webhooks, verify GET /v1/webhooks, verify DELETE /v1/webhooks/:id. Use typed RouteLayer interface (no any types). Use beforeAll with require(). Use getRoutes() helper to avoid duplication.",
+      "deliverables": {
+        "code": [
+          "backend/src/routes/__tests__/webhooks.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "backend/src/routes/__tests__/webhooks.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 93,
+          "summary": "Dual-approved: Claude (95/100) + Codex (90/100)",
+          "issues": [],
+          "strengths": [
+            "Exact match to provided specification - no deviations or additions",
+            "Proper TypeScript types with IRouter import and RouteLayer interface",
+            "No 'any' types used - strict type safety maintained",
+            "Efficient route inspection approach using router.stack",
+            "Clean helper function (getRoutes) to avoid code duplication",
+            "All 4 required tests implemented correctly",
+            "Proper use of beforeAll with require() as specified",
+            "Within 35-line limit (29 lines actual)",
+            "Good use of type guards and type narrowing",
+            "Tests cover the exact routes specified: POST/GET /v1/webhooks and DELETE /v1/webhooks/:id",
+            "Typed RouteLayer interface ensures type safety",
+            "Covers all four required assertions",
+            "No use of any or hardcoded secrets",
+            "Concise helper (getRoutes) reduces duplication"
+          ]
+        }
+      }
+    },
+    {
+      "id": "BE-232",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "dependencies": [],
+      "status": "done",
+      "context": "Create unit tests for the settlement routes. File: backend/src/routes/__tests__/settlements.test.ts\n\nTest the settlement routes by inspecting router structure. Import IRouter type from express for type safety.\n\n```typescript\nimport type { IRouter } from 'express';\n\ninterface RouteLayer {\n  route?: { path: string; methods: Record<string, boolean> };\n}\n\ndescribe('Settlement Routes', () => {\n  let router: IRouter & { stack: RouteLayer[] };\n\n  beforeAll(() => {\n    const mod = require('../settlements');\n    router = mod.default;\n  });\n\n  const getRoutes = () =>\n    router.stack\n      .filter((l): l is RouteLayer & { route: NonNullable<RouteLayer['route']> } => !!l.route)\n      .map((l) => ({ path: l.route.path, methods: Object.keys(l.route.methods) }));\n\n  it('exports an Express Router', () => {\n    expect(router).toBeDefined();\n    expect(router.stack).toBeDefined();\n  });\n\n  it('has GET /v1/settlements/:id route', () => {\n    expect(getRoutes().find((r) => r.path === '/v1/settlements/:id' && r.methods.includes('get'))).toBeDefined();\n  });\n\n  it('has GET /v1/settlements route', () => {\n    expect(getRoutes().find((r) => r.path === '/v1/settlements' && r.methods.includes('get'))).toBeDefined();\n  });\n});\n```\n\nRules: Maximum 30 lines. 3 tests: verify export, verify GET /v1/settlements/:id, verify GET /v1/settlements. Use typed RouteLayer interface (no any types). Use beforeAll with require(). Use getRoutes() helper.",
+      "deliverables": {
+        "code": [
+          "backend/src/routes/__tests__/settlements.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "backend/src/routes/__tests__/settlements.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 94,
+          "summary": "Dual-approved: Claude (95/100) + Codex (92/100)",
+          "issues": [],
+          "strengths": [
+            "Perfect adherence to task specification - exactly 24 lines (well under 30 line limit)",
+            "Proper TypeScript typing with IRouter import and RouteLayer interface",
+            "No 'any' types used - strict type safety with proper type guards",
+            "Implements all 3 required tests exactly as specified",
+            "Clean getRoutes() helper function with proper filtering and mapping",
+            "Uses beforeAll with require() as requested",
+            "Proper type narrowing with type predicate in filter",
+            "Tests the exact routes specified: GET /v1/settlements and GET /v1/settlements/:id",
+            "No code fences or invalid syntax",
+            "Follows Jest testing patterns correctly",
+            "Conforms exactly to the task spec: verifies router export and both GET routes",
+            "Uses a typed RouteLayer interface—no use of `any`",
+            "Helper function `getRoutes` provides clear route inspection",
+            "File length is under the 30-line limit and contains no syntax errors"
+          ]
+        }
+      }
+    },
+    {
+      "id": "BE-233",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "dependencies": [],
+      "status": "done",
+      "context": "Create unit tests for the error handler middleware. File: backend/src/middleware/__tests__/error-handler-v2.test.ts\n\nTest the errorHandler function and ApiError class from ../error-handler-v2.\n\n```typescript\nimport { ApiError, errorHandler } from '../error-handler-v2';\nimport { Request, Response, NextFunction } from 'express';\nimport { ZodError, ZodIssue } from 'zod';\n\nfunction mockRes(): Response {\n  const res = { status: jest.fn().mockReturnThis(), json: jest.fn() } as unknown as Response;\n  return res;\n}\n\ndescribe('errorHandler', () => {\n  const req = {} as Request;\n  const next = jest.fn() as NextFunction;\n\n  it('handles ApiError with custom status and code', () => {\n    const res = mockRes();\n    errorHandler(new ApiError(403, 'Forbidden', 'AUTH_FAILED'), req, res, next);\n    expect(res.status).toHaveBeenCalledWith(403);\n    expect(res.json).toHaveBeenCalledWith({ success: false, error: { message: 'Forbidden', code: 'AUTH_FAILED' } });\n  });\n\n  it('handles ZodError with 400 and details', () => {\n    const res = mockRes();\n    const issue: ZodIssue = { code: 'invalid_type', expected: 'string', received: 'number', path: ['name'], message: 'Expected string' };\n    const zodErr = new ZodError([issue]);\n    errorHandler(zodErr, req, res, next);\n    expect(res.status).toHaveBeenCalledWith(400);\n    expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ success: false }));\n  });\n\n  it('handles unknown errors with 500', () => {\n    const res = mockRes();\n    errorHandler(new Error('boom'), req, res, next);\n    expect(res.status).toHaveBeenCalledWith(500);\n    expect(res.json).toHaveBeenCalledWith({ success: false, error: { message: 'Internal server error', code: 'INTERNAL_ERROR' } });\n  });\n});\n\ndescribe('ApiError', () => {\n  it('creates error with statusCode, message, and code', () => {\n    const err = new ApiError(404, 'Not found', 'NOT_FOUND');\n    expect(err.statusCode).toBe(404);\n    expect(err.message).toBe('Not found');\n    expect(err.code).toBe('NOT_FOUND');\n    expect(err.name).toBe('ApiError');\n    expect(err instanceof Error).toBe(true);\n  });\n});\n```\n\nRules: Maximum 45 lines. 4 tests total: ApiError handling with custom status, ZodError handling with 400, unknown error with 500, ApiError constructor test. Create mockRes helper returning res with jest.fn status and json. Import ZodIssue type for proper typing. No any types.",
+      "deliverables": {
+        "code": [
+          "backend/src/middleware/__tests__/error-handler-v2.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "backend/src/middleware/__tests__/error-handler-v2.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 93,
+          "summary": "Dual-approved: Claude (92/100) + Codex (93/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "backend/src/middleware/__tests__/error-handler-v2.test.ts",
+              "description": "ZodError test uses expect.objectContaining() which is less specific than testing the exact response structure"
+            }
+          ],
+          "strengths": [
+            "Meets all task requirements: 4 tests, under 45 lines, proper imports",
+            "Clean mockRes helper implementation with proper TypeScript typing",
+            "No 'any' types used - proper ZodIssue typing",
+            "Comprehensive test coverage for all error scenarios",
+            "Follows Jest best practices with proper mocking",
+            "Tests both the errorHandler middleware and ApiError class constructor",
+            "Proper error response structure validation",
+            "Clean, readable test descriptions and assertions",
+            "Covers all four required tests: ApiError handling, ZodError handling, unknown errors, and ApiError constructor.",
+            "Follows the 45-line limit and places tests in the correct directory.",
+            "Includes a reusable mockRes helper and imports ZodIssue for proper typing.",
+            "No usage of invalid syntax (no code fences), hardcoded secrets, or any forbidden patterns."
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-171",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "medium",
+      "dependencies": [],
+      "status": "done",
+      "context": "Create unit tests for the version module. File: sdk/typescript/tests/version.test.ts\n\nTest the version exports from ../src/version.\n\n```typescript\nimport { version, sdkUserAgent, isCompatibleApiVersion } from '../src/version';\n\ndescribe('version', () => {\n  it('exports a semver version string', () => {\n    expect(version).toMatch(/^\\d+\\.\\d+\\.\\d+$/);\n  });\n\n  it('exports sdkUserAgent containing version', () => {\n    expect(sdkUserAgent).toContain(version);\n    expect(sdkUserAgent).toContain('countable-sdk-typescript');\n  });\n\n  it('isCompatibleApiVersion returns true for v1', () => {\n    expect(isCompatibleApiVersion('1.0.0')).toBe(true);\n    expect(isCompatibleApiVersion('1.5.2')).toBe(true);\n  });\n\n  it('isCompatibleApiVersion returns false for v2+', () => {\n    expect(isCompatibleApiVersion('2.0.0')).toBe(false);\n    expect(isCompatibleApiVersion('3.1.0')).toBe(false);\n  });\n});\n```\n\nRules: Maximum 25 lines. 4 tests: version is semver, sdkUserAgent contains version, compatible for v1, incompatible for v2+. Import version, sdkUserAgent, isCompatibleApiVersion from ../src/version.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/tests/version.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/tests/version.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "Dual-approved: Claude (95/100) + Codex (95/100)",
+          "issues": [],
+          "strengths": [
+            "Exact match to provided task specification",
+            "All 4 required tests implemented correctly",
+            "Proper imports from ../src/version",
+            "Clean test structure with descriptive test names",
+            "Appropriate semver regex validation",
+            "Good test coverage for both positive and negative cases",
+            "Stays within 25-line limit (20 lines total)",
+            "No unnecessary abstractions or extra files",
+            "Follows Jest testing conventions",
+            "Matches the spec exactly with four test cases.",
+            "No markdown code fences in the source file.",
+            "Covers semver format, user agent contents, and version compatibility logic.",
+            "Well under the 25-line limit."
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-172",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "medium",
+      "dependencies": [],
+      "status": "done",
+      "context": "Create a comprehensive test for the SDK barrel exports. File: sdk/typescript/tests/barrel-exports.test.ts\n\nVerify that the main index.ts exports all expected symbols.\n\n```typescript\nimport * as SDK from '../src/index';\n\ndescribe('SDK barrel exports', () => {\n  it('exports CountableClient class', () => {\n    expect(SDK.CountableClient).toBeDefined();\n    expect(typeof SDK.CountableClient).toBe('function');\n  });\n\n  it('exports InvoicaFullClient class', () => {\n    expect(SDK.InvoicaFullClient).toBeDefined();\n    expect(typeof SDK.InvoicaFullClient).toBe('function');\n  });\n\n  it('exports error classes', () => {\n    expect(SDK.InvoicaError).toBeDefined();\n    expect(SDK.ValidationError).toBeDefined();\n    expect(SDK.NotFoundError).toBeDefined();\n    expect(SDK.AuthenticationError).toBeDefined();\n    expect(SDK.CountableError).toBeDefined();\n    expect(SDK.RateLimitError).toBeDefined();\n  });\n\n  it('exports utility functions', () => {\n    expect(SDK.createDebugLogger).toBeDefined();\n    expect(SDK.isDebugEnabled).toBeDefined();\n    expect(SDK.detectEnvironment).toBeDefined();\n    expect(SDK.version).toBeDefined();\n  });\n\n  it('exports HttpTransport class', () => {\n    expect(SDK.HttpTransport).toBeDefined();\n    expect(typeof SDK.HttpTransport).toBe('function');\n  });\n});\n```\n\nRules: Maximum 35 lines. 5 tests: CountableClient, InvoicaFullClient, error classes (6 exports), utility functions (4 exports), HttpTransport. Use import * as SDK from ../src/index. Verify each export is defined and classes are functions.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/tests/barrel-exports.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/tests/barrel-exports.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 93,
+          "summary": "Dual-approved: Claude (95/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/tests/barrel-exports.test.ts",
+              "description": "Could add type assertions for error classes to verify they are constructors, not just functions"
+            }
+          ],
+          "strengths": [
+            "Exactly matches the provided task specification code",
+            "Proper Jest test structure with clear describe/it blocks",
+            "Correct import pattern using namespace import",
+            "Tests all required exports: CountableClient, InvoicaFullClient, 6 error classes, 4 utility functions, HttpTransport",
+            "Appropriate assertions using toBeDefined() and typeof checks",
+            "Clean, readable code with good test organization",
+            "Meets the 35-line maximum requirement (29 lines)",
+            "No code fences or invalid syntax",
+            "Follows TypeScript best practices for test files",
+            "Covers all required export symbols in concise tests",
+            "Stays within the 35-line limit",
+            "Uses import * as SDK and proper Jest assertions"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-190",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "medium",
+      "dependencies": [],
+      "status": "done",
+      "context": "Create the API reference documentation page. File: frontend/app/docs/api-reference/page.tsx\n\nA React component listing all API endpoints.\n\n```tsx\ninterface Endpoint {\n  method: string;\n  path: string;\n  description: string;\n}\n\nconst endpoints: Endpoint[] = [\n  { method: 'POST', path: '/v1/invoices', description: 'Create a new invoice' },\n  { method: 'GET', path: '/v1/invoices/:id', description: 'Get invoice by ID' },\n  { method: 'GET', path: '/v1/invoices/number/:number', description: 'Get invoice by number' },\n  { method: 'POST', path: '/v1/api-keys', description: 'Create a new API key' },\n  { method: 'GET', path: '/v1/api-keys', description: 'List API keys for customer' },\n  { method: 'POST', path: '/v1/api-keys/:id/revoke', description: 'Revoke an API key' },\n  { method: 'POST', path: '/v1/api-keys/:id/rotate', description: 'Rotate an API key' },\n  { method: 'POST', path: '/v1/webhooks', description: 'Register a webhook endpoint' },\n  { method: 'GET', path: '/v1/webhooks', description: 'List registered webhooks' },\n  { method: 'DELETE', path: '/v1/webhooks/:id', description: 'Remove a webhook' },\n  { method: 'GET', path: '/v1/settlements/:id', description: 'Get settlement by ID' },\n  { method: 'GET', path: '/v1/settlements', description: 'List settlements' },\n  { method: 'GET', path: '/v1/health', description: 'Health check' },\n];\n\nconst methodColors: Record<string, string> = {\n  GET: 'bg-green-100 text-green-800',\n  POST: 'bg-blue-100 text-blue-800',\n  DELETE: 'bg-red-100 text-red-800',\n};\n\nexport default function ApiReferencePage() {\n  return (\n    <div className=\"max-w-4xl mx-auto py-8 px-4\">\n      <h1 className=\"text-3xl font-bold mb-6\">API Reference</h1>\n      <p className=\"text-gray-600 mb-8\">Complete list of Invoica REST API endpoints.</p>\n      <div className=\"space-y-2\">\n        {endpoints.map((ep) => (\n          <div key={`${ep.method}-${ep.path}`} className=\"flex items-center gap-4 p-3 border rounded-lg hover:bg-gray-50\">\n            <span className={`px-2 py-1 rounded text-xs font-mono font-bold ${methodColors[ep.method] || 'bg-gray-100'}`}>{ep.method}</span>\n            <code className=\"text-sm font-mono text-gray-800 min-w-[260px]\">{ep.path}</code>\n            <span className=\"text-sm text-gray-500\">{ep.description}</span>\n          </div>\n        ))}\n      </div>\n    </div>\n  );\n}\n```\n\nRules: Maximum 50 lines. Define Endpoint interface. List all 13 API endpoints. Color-code methods (green for GET, blue for POST, red for DELETE). Single default export. Tailwind classes. No hooks or state.",
+      "deliverables": {
+        "code": [
+          "frontend/app/docs/api-reference/page.tsx"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/app/docs/api-reference/page.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 93,
+          "summary": "Dual-approved: Claude (95/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/app/docs/api-reference/page.tsx",
+              "description": "Unnecessary React import - Next.js 13+ with app directory doesn't require explicit React imports"
+            }
+          ],
+          "strengths": [
+            "Exactly matches the provided task specification code",
+            "Proper TypeScript interface definition for Endpoint",
+            "All 13 API endpoints correctly listed",
+            "Color-coding implemented correctly (green for GET, blue for POST, red for DELETE)",
+            "Single default export as required",
+            "Proper Tailwind CSS classes used throughout",
+            "No hooks or state as specified",
+            "Under 50 lines requirement met (49 lines)",
+            "Clean, readable code structure",
+            "Proper key prop for mapped elements",
+            "Fallback color handling for unknown methods",
+            "Good accessibility with semantic HTML and proper contrast",
+            "Adheres to the 50-line limit and task requirements",
+            "Defines a clear Endpoint interface with proper typing",
+            "Lists all 13 specified endpoints",
+            "Applies correct Tailwind classes for styling and color-coding of HTTP methods",
+            "Uses a single default export and no unnecessary hooks or state"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-191",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "low",
+      "dependencies": [],
+      "status": "done",
+      "context": "Create the testing guide documentation page. File: frontend/app/docs/testing/page.tsx\n\nA React component that explains how to test with the Invoica SDK.\n\n```tsx\nexport default function TestingPage() {\n  return (\n    <div className=\"max-w-4xl mx-auto py-8 px-4\">\n      <h1 className=\"text-3xl font-bold mb-6\">Testing Guide</h1>\n      <p className=\"text-gray-600 mb-8\">Best practices for testing your Invoica integration.</p>\n\n      <section className=\"mb-8\">\n        <h2 className=\"text-2xl font-semibold mb-4\">Sandbox Environment</h2>\n        <p className=\"text-gray-600 mb-3\">Use the sandbox base URL for testing without affecting production data.</p>\n        <pre className=\"bg-gray-900 text-green-400 p-4 rounded-lg text-sm overflow-x-auto\">{`const client = new CountableClient({\n  apiKey: 'test_sk_...',\n  baseUrl: 'https://sandbox.invoica.ai/v1'\n});`}</pre>\n      </section>\n\n      <section className=\"mb-8\">\n        <h2 className=\"text-2xl font-semibold mb-4\">Mocking the Client</h2>\n        <p className=\"text-gray-600 mb-3\">Use Jest to mock SDK methods in your unit tests.</p>\n        <pre className=\"bg-gray-900 text-green-400 p-4 rounded-lg text-sm overflow-x-auto\">{`jest.mock('@invoica/sdk');\nconst mockCreate = jest.fn().mockResolvedValue({ id: 'inv_123' });\n(CountableClient as jest.Mock).mockImplementation(() => ({\n  invoices: { create: mockCreate }\n}));`}</pre>\n      </section>\n\n      <section className=\"mb-8\">\n        <h2 className=\"text-2xl font-semibold mb-4\">Webhook Testing</h2>\n        <p className=\"text-gray-600 mb-3\">Verify webhook signatures in your test suite.</p>\n        <pre className=\"bg-gray-900 text-green-400 p-4 rounded-lg text-sm overflow-x-auto\">{`import { constructEvent } from '@invoica/sdk/webhook-verify';\nconst event = constructEvent(payload, signature, secret);\nexpect(event.type).toBe('invoice.paid');`}</pre>\n      </section>\n\n      <section>\n        <h2 className=\"text-2xl font-semibold mb-4\">Test Checklist</h2>\n        <ul className=\"space-y-2 text-gray-600\">\n          {['API key authentication', 'Invoice creation and retrieval', 'Error handling for 4xx/5xx', 'Webhook signature verification', 'Rate limit retry behavior'].map((item) => (\n            <li key={item} className=\"flex items-center gap-2\">\n              <span className=\"w-5 h-5 rounded border border-gray-300 flex-shrink-0\" />\n              <span>{item}</span>\n            </li>\n          ))}\n        </ul>\n      </section>\n    </div>\n  );\n}\n```\n\nRules: Maximum 55 lines. 4 sections: Sandbox Environment, Mocking the Client, Webhook Testing, Test Checklist (5 items). Each section has heading, description, and code block or list. Use Tailwind. No hooks or state. Single default export.",
+      "deliverables": {
+        "code": [
+          "frontend/app/docs/testing/page.tsx"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/app/docs/testing/page.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 48,
+          "summary": "Dual-approved: Claude (95/100) + Codex (0/100)",
+          "issues": [],
+          "strengths": [
+            "Exactly matches the provided task specification - identical structure and content",
+            "Proper React component with single default export as required",
+            "Clean Tailwind CSS implementation with consistent spacing and typography",
+            "No unnecessary hooks, state, or complexity - follows the 'no hooks or state' requirement",
+            "Well-organized 4 sections as specified: Sandbox Environment, Mocking, Webhooks, Test Checklist",
+            "Code examples are practical and relevant for SDK testing",
+            "Proper semantic HTML structure with sections and headings",
+            "Meets the 55-line maximum requirement (actual: ~35 lines)",
+            "No markdown code fences or invalid syntax",
+            "Appropriate use of map() for the checklist items with proper keys"
+          ]
+        }
+      }
+    }
+  ]
+}

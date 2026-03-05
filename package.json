@@ -1,0 +1,49 @@
+{
+  "name": "agentic-finance-platform",
+  "version": "0.1.0",
+  "description": "Countable - Financial OS for AI Agents (x402 invoice middleware)",
+  "private": true,
+  "scripts": {
+    "sprint": "ts-node scripts/orchestrate-agents-v2.ts sprints/week-2.json",
+    "sprint:v1": "ts-node scripts/orchestrate-agents-minimax.ts sprints/week-2.json",
+    "sprint:one": "ts-node scripts/orchestrate-agents-v2.ts sprints/week-2.json --one",
+    "sprint:test": "ts-node scripts/orchestrate-agents-v2.ts sprints/migration-test.json --one",
+    "test": "echo \"No tests configured yet\" && exit 0"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.22.0",
+    "@supabase/supabase-js": "^2.98.0",
+    "@types/bcrypt": "^6.0.0",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/uuid": "^10.0.0",
+    "axios": "^1.13.5",
+    "bcrypt": "^6.0.0",
+    "bull": "^4.16.5",
+    "cors": "^2.8.6",
+    "dotenv": "^16.4.7",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.2.1",
+    "helmet": "^8.1.0",
+    "http-proxy-middleware": "^3.0.5",
+    "imapflow": "^1.2.10",
+    "ioredis": "^5.9.3",
+    "iso-country-currency": "^0.7.2",
+    "nodemailer": "^8.0.1",
+    "pg": "^8.19.0",
+    "prisma": "^5.22.0",
+    "redis": "^5.11.0",
+    "supertest": "^7.2.2",
+    "uuid": "^13.0.0",
+    "viem": "^2.46.3",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@types/node": "^22.19.13",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.0"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

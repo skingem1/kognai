@@ -1,0 +1,131 @@
+---
+title: Invoices
+description: "Create, retrieve, and list invoices through the Invoica API."
+---
+
+# Invoices API
+
+Manage invoices programmatically — create new invoices, retrieve existing ones, and list with filters.
+
+## Create Invoice
+
+<ParamField body="amount" type="integer" required>
+  Amount in the smallest currency unit (e.g., cents for USD). Must be positive.
+</ParamField>
+
+<ParamField body="currency" type="string" required>
+  ISO 4217 currency code (e.g., "USD", "EUR", "GBP").
+</ParamField>
+
+<ParamField body="description" type="string">
+  Human-readable description of the invoice.
+</ParamField>
+
+<ParamField body="buyer" type="object" required>
+  Buyer information including companyName, email, address, and optional vat.
+</ParamField>
+
+<ParamField body="seller" type="object" required>
+  Seller information including name, address, wallet address, and optional vat.
+</ParamField>
+
+```bash
+POST /api/invoices
+```
+
+### Request
+
+```json
+{
+  "amount": 5000,
+  "currency": "USD",
+  "description": "AI Agent API Usage - February 2026",
+  "buyer": {
+    "companyName": "Acme AI Corp",
+    "email": "billing@acme-ai.com",
+    "address": "123 Agent Street, San Francisco, CA 94105",
+    "vat": "US-987654321"
+  },
+  "seller": {
+    "name": "My AI Platform",
+    "address": "456 Tech Blvd, Austin, TX 78701",
+    "vat": "US-123456789",
+    "wallet": "0x742d35Cc6634C0532925a3b844Bc9e7595f2bD18"
+  }
+}
+```
+
+### Response
+
+```json
+{
+  "id": "inv_8a7b6c5d4e3f2a1b",
+  "invoiceNumber": "INV-2026-0001",
+  "status": "draft",
+  "amount": 5000,
+  "currency": "USD",
+  "tax": 412,
+  "total": 5412,
+  "description": "AI Agent API Usage - February 2026",
+  "buyer": {
+    "companyName": "Acme AI Corp",
+    "email": "billing@acme-ai.com"
+  },
+  "seller": {
+    "name": "My AI Platform",
+    "wallet": "0x742d35Cc6634C0532925a3b844Bc9e7595f2bD18"
+  },
+  "createdAt": "2026-02-18T10:30:00Z",
+  "updatedAt": "2026-02-18T10:30:00Z"
+}
+```
+
+## Get Invoice
+
+```bash
+GET /api/invoices/:id
+```
+
+Returns a single invoice by its ID.
+
+### Response
+
+Same structure as the create response, with current status.
+
+## List Invoices
+
+```bash
+GET /api/invoices
+```
+
+### Query Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `status` | string | Filter by status: draft, sent, paid, settled, completed, failed |
+| `startDate` | string | Filter invoices created after this date (ISO 8601) |
+| `endDate` | string | Filter invoices created before this date |
+| `agentId` | string | Filter by agent ID |
+| `limit` | integer | Items per page (default: 10, max: 100) |
+| `page` | integer | Page number (default: 1) |
+
+### Response
+
+```json
+{
+  "data": [
+    {
+      "id": "inv_8a7b6c5d4e3f2a1b",
+      "invoiceNumber": "INV-2026-0001",
+      "status": "settled",
+      "amount": 5000,
+      "total": 5412,
+      "createdAt": "2026-02-18T10:30:00Z"
+    }
+  ],
+  "total": 42,
+  "page": 1,
+  "limit": 10,
+  "hasMore": true
+}
+```

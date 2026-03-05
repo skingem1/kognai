@@ -1,0 +1,2 @@
+M2.x-lightning/highspeed is currently not part of Coding Plan.
+Please use M2.5 — we’ll auto-upgrade Coding Plan sessions to match a highspeed version-like experience in most cases. Rarely, during peak load, responsiveness may vary.

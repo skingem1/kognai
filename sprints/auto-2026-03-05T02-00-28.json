@@ -1,0 +1,102 @@
+{
+  "tasks": [
+    {
+      "id": "AGENTS-001",
+      "agent": "agents",
+      "type": "bugfix",
+      "priority": "critical",
+      "dependencies": [],
+      "description": "Fix orchestrator queue recovery after task rejection",
+      "context": "Orchestrator halts entire queue when any task is rejected. Update backend/src/services/orchestrator.ts to mark rejected tasks as 'failed', continue processing remaining queued tasks, emit proper rejection events, and restore queue execution flow after failures.",
+      "deliverables": {
+        "code": [
+          "backend/src/services/orchestrator.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "rejected"
+    },
+    {
+      "id": "AGENTS-002",
+      "agent": "agents",
+      "type": "feature",
+      "priority": "critical",
+      "dependencies": [
+        "AGENTS-001"
+      ],
+      "description": "Implement approved complexity validator enforcement",
+      "context": "Multi-concern tasks bypass validation rules. Add strict enforcement in backend/src/utils/task-complexity-validator.ts: reject tasks with multiple file patterns, enforce single-responsibility principle, validate agent scope boundaries, require explicit file paths from tree.",
+      "deliverables": {
+        "code": [
+          "backend/src/utils/task-complexity-validator.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "skipped",
+      "skippedReason": "Blocked by rejected dependency: ['AGENTS-001']"
+    },
+    {
+      "id": "AGENTS-003",
+      "agent": "agents",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [
+        "AGENTS-002"
+      ],
+      "description": "Add pre-execution validation gate in orchestrator",
+      "context": "Tasks reach execution without complexity checks. Insert validation gate in backend/src/services/orchestrator.ts before task execution: call task-complexity-validator, auto-reject invalid tasks with detailed feedback, log validation failures, prevent multi-file tasks from reaching agents.",
+      "deliverables": {
+        "code": [
+          "backend/src/services/orchestrator.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "skipped",
+      "skippedReason": "Blocked by: ['AGENTS-002']"
+    },
+    {
+      "id": "AGENTS-004",
+      "agent": "agents",
+      "type": "bugfix",
+      "priority": "high",
+      "dependencies": [
+        "AGENTS-001"
+      ],
+      "description": "Add rejection state persistence and recovery logging",
+      "context": "Orchestrator loses rejection context on restart. Update backend/src/services/orchestrator.ts to persist rejection reason/timestamp to database, add recovery logging on startup, implement rejection metrics tracking, expose rejection history via status endpoint.",
+      "deliverables": {
+        "code": [
+          "backend/src/services/orchestrator.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "skipped",
+      "skippedReason": "Blocked by rejected dependency: ['AGENTS-001']"
+    },
+    {
+      "id": "AGENTS-005",
+      "agent": "agents",
+      "type": "test",
+      "priority": "medium",
+      "dependencies": [
+        "AGENTS-002",
+        "AGENTS-003"
+      ],
+      "description": "Add complexity validator integration tests",
+      "context": "No tests exist for validator enforcement. Create backend/tests/utils/task-complexity-validator.test.ts with cases: single-file pass, multi-file reject, invalid agent scope reject, missing file path reject, boundary condition handling.",
+      "deliverables": {
+        "code": [],
+        "tests": [
+          "backend/tests/utils/task-complexity-validator.test.ts"
+        ],
+        "docs": []
+      },
+      "status": "skipped",
+      "skippedReason": "Blocked by: ['AGENTS-002']"
+    }
+  ]
+}

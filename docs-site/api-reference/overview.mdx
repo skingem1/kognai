@@ -1,0 +1,127 @@
+---
+title: API Overview
+description: "Base URL, versioning, error codes, and conventions for the Invoica API."
+---
+
+# API Overview
+
+The Invoica API is a RESTful JSON API for managing invoices, settlements, tax calculations, and budgets.
+
+## Base URL
+
+```
+https://api.invoica.ai
+```
+
+All API endpoints are relative to this base URL.
+
+## Authentication
+
+Include your API key in every request:
+
+```bash
+curl -H "Authorization: Bearer inv_your_key_here" \
+  https://api.invoica.ai/api/invoices
+```
+
+See the [Authentication](/authentication) guide for details.
+
+## Request Format
+
+- All request bodies must be JSON with `Content-Type: application/json`
+- Amounts are in the smallest currency unit (cents for USD, centimes for EUR)
+- Dates use ISO 8601 format: `2026-02-18T10:30:00Z`
+
+## Response Format
+
+All responses follow a consistent structure:
+
+### Success
+
+```json
+{
+  "id": "inv_8a7b6c5d4e3f2a1b",
+  "invoiceNumber": "INV-2026-0001",
+  "status": "draft",
+  "amount": 5000,
+  "createdAt": "2026-02-18T10:30:00Z"
+}
+```
+
+### List Response
+
+```json
+{
+  "data": [...],
+  "total": 142,
+  "page": 1,
+  "limit": 10,
+  "hasMore": true
+}
+```
+
+### Error
+
+```json
+{
+  "error": {
+    "code": "INVALID_AMOUNT",
+    "message": "Amount must be a positive integer",
+    "status": 400
+  }
+}
+```
+
+## Error Codes
+
+| Status | Code | Description |
+|--------|------|-------------|
+| 400 | `INVALID_REQUEST` | Malformed request body or missing required fields |
+| 401 | `UNAUTHORIZED` | Invalid or missing API key |
+| 403 | `FORBIDDEN` | Key lacks required permissions |
+| 404 | `NOT_FOUND` | Resource does not exist |
+| 402 | `BUDGET_EXCEEDED` | Agent budget limit reached |
+| 429 | `RATE_LIMITED` | Too many requests |
+| 500 | `INTERNAL_ERROR` | Server error — contact support |
+
+## Rate Limiting
+
+API requests are rate limited per API key:
+
+| Plan | Requests/minute | Requests/day |
+|------|----------------|--------------|
+| Free | 60 | 1,000 |
+| Pro | 600 | 50,000 |
+| Enterprise | Custom | Custom |
+
+Rate limit headers are included in every response:
+
+```
+X-RateLimit-Limit: 60
+X-RateLimit-Remaining: 45
+X-RateLimit-Reset: 1708254600
+```
+
+## Pagination
+
+List endpoints support cursor-based pagination:
+
+```bash
+GET /api/invoices?limit=10&page=2
+```
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `limit` | integer | Items per page (default: 10, max: 100) |
+| `page` | integer | Page number (default: 1) |
+
+## Endpoints
+
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | `/api/invoices` | Create invoice |
+| GET | `/api/invoices` | List invoices |
+| GET | `/api/invoices/:id` | Get invoice |
+| POST | `/api/tax/calculate` | Calculate tax |
+| POST | `/api/budget/check` | Check budget |
+| GET | `/api/budget/:agentId` | Get agent budget |

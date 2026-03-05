@@ -1,0 +1,103 @@
+---
+title: SDK Overview
+description: "The Invoica TypeScript SDK — 100 modules for building financial agent applications."
+---
+
+# SDK Overview
+
+The Invoica SDK (`@invoica/sdk`) is a comprehensive TypeScript toolkit for integrating with the Invoica platform. It includes API client wrappers, React hooks, UI components, and utility functions.
+
+## What's Included
+
+<CardGroup cols={3}>
+  <Card title="100 Modules" icon="cube">
+    Utility functions for formatting, validation, data manipulation, and more.
+  </Card>
+  <Card title="26 Hooks" icon="hook">
+    React hooks for state management, DOM interaction, and API integration.
+  </Card>
+  <Card title="19 Components" icon="window">
+    Pre-built UI components following the Invoica design system.
+  </Card>
+</CardGroup>
+
+## SDK Architecture
+
+```
+@invoica/sdk
+├── client/           # API client (InvoicaClient)
+│   ├── invoices      # Invoice CRUD operations
+│   ├── settlements   # Settlement monitoring
+│   ├── tax           # Tax calculation
+│   ├── budget        # Budget enforcement
+│   └── webhooks      # Webhook management
+├── utils/            # 100 utility modules
+│   ├── format-*      # Number, currency, date formatting
+│   ├── validate-*    # Input validation helpers
+│   ├── crypto-*      # Hashing, signing utilities
+│   └── ...
+├── hooks/            # 26 React hooks
+│   ├── use-invoice   # Invoice state management
+│   ├── use-debounce  # Input debouncing
+│   └── ...
+└── components/       # 19 React components
+    ├── Button        # Styled button variants
+    ├── Badge         # Status badges
+    ├── Spinner       # Loading indicators
+    └── ...
+```
+
+## Quick Example
+
+```typescript
+import { InvoicaClient } from '@invoica/sdk';
+import { formatCurrency } from '@invoica/sdk/utils';
+
+const client = new InvoicaClient({
+  apiKey: process.env.INVOICA_API_KEY,
+});
+
+// Create an invoice
+const invoice = await client.invoices.create({
+  amount: 5000,
+  currency: 'USD',
+  description: 'Agent compute usage',
+  buyer: { companyName: 'Acme AI' },
+  seller: { name: 'My Platform', wallet: '0x...' },
+});
+
+console.log(`Created: ${formatCurrency(invoice.total, 'USD')}`);
+// Output: Created: $54.12
+```
+
+## TypeScript First
+
+The SDK is written entirely in TypeScript with full type definitions:
+
+```typescript
+import type { Invoice, InvoiceCreateParams } from '@invoica/sdk';
+
+const params: InvoiceCreateParams = {
+  amount: 5000,
+  currency: 'USD',
+  // TypeScript will enforce all required fields
+};
+```
+
+## Tree-Shakeable
+
+Import only what you need — unused modules are removed during build:
+
+```typescript
+// Only imports the formatCurrency function
+import { formatCurrency } from '@invoica/sdk/utils/format-currency';
+
+// Only imports the useDebounce hook
+import { useDebounce } from '@invoica/sdk/hooks/use-debounce';
+```
+
+## Next Steps
+
+<Card title="Installation" icon="download" href="/sdk/installation">
+  Install the SDK and configure your development environment.
+</Card>

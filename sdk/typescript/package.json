@@ -1,0 +1,26 @@
+{
+  "name": "@invoica/sdk",
+  "version": "0.1.0",
+  "description": "Official TypeScript SDK for the Invoica API — invoice middleware for AI agents",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm run clean && npm run build"
+  },
+  "keywords": ["invoica", "invoice", "x402", "sdk", "ai-agents", "payments"],
+  "author": "Invoica <hello@invoica.ai>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/skingem1/Invoica"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.0"
+  }
+}

@@ -1,0 +1,295 @@
+{
+  "tasks": [
+    {
+      "id": "DECOMP-001",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "critical",
+      "dependencies": [],
+      "description": "Add spam domain blacklist enforcement to invoice creation",
+      "context": "Add SPAM_DOMAINS constant array in backend/src/api/invoices-create.ts. Check merchant.email domain against blacklist before invoice creation. Return 403 with clear error if matched. Log blocked attempts.",
+      "deliverables": {
+        "code": [
+          "backend/src/api/invoices-create.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "backend/src/api/invoices-create.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 88,
+          "summary": "Dual-approved: Claude (85/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "medium",
+              "file": "backend/src/api/invoices-create.ts",
+              "description": "Using console.log for logging instead of a proper logging framework - should use structured logger for production"
+            },
+            {
+              "severity": "low",
+              "file": "backend/src/api/invoices-create.ts",
+              "description": "SPAM_DOMAINS array could be externalized to config for easier maintenance without code changes"
+            },
+            {
+              "severity": "low",
+              "file": "backend/src/api/invoices-create.ts",
+              "description": "Missing JSDoc on main createInvoice function"
+            },
+            {
+              "severity": "low",
+              "file": "backend/src/api/invoices-create.ts",
+              "description": "Uses console.log for structured event logging rather than the project's centralized logger abstraction (e.g. pino or Winston)."
+            }
+          ],
+          "strengths": [
+            "Proper TypeScript with strict typing and no 'any' usage",
+            "Comprehensive Zod validation schema already in place",
+            "Clean separation of concerns with helper functions",
+            "Appropriate HTTP status codes (403 for forbidden, 400 for validation)",
+            "Clear error messages for end users",
+            "Structured logging with relevant context",
+            "Good domain extraction logic with null safety",
+            "Maintains existing functionality while adding new feature",
+            "Follows existing code patterns and architecture",
+            "Proper async/await usage with error handling",
+            "Zod schema ensures full input validation in strict mode",
+            "Clear extraction and blacklist check of email domains",
+            "Proper HTTP status codes and error messages for invalid input and blocked domains",
+            "JSDoc comments on helper functions improve maintainability"
+          ]
+        }
+      }
+    },
+    {
+      "id": "DECOMP-002",
+      "agent": "agents",
+      "type": "feature",
+      "priority": "critical",
+      "dependencies": [],
+      "description": "Implement task auto-decomposition validator in agent orchestrator",
+      "context": "Add validateTaskComplexity() function in backend/src/services/ledger/enforcement.ts. Check task context length, file count in deliverables. If context >600 chars OR files >1, reject with TASK_TOO_COMPLEX error. Return decomposition hints.",
+      "deliverables": {
+        "code": [
+          "backend/src/services/ledger/enforcement.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "rejected"
+    },
+    {
+      "id": "DECOMP-003",
+      "agent": "backend-core",
+      "type": "bugfix",
+      "priority": "high",
+      "dependencies": [
+        "DECOMP-002"
+      ],
+      "description": "Wire complexity validator into invoice creation flow",
+      "context": "Import validateTaskComplexity in backend/src/api/invoices-create.ts. Call validator before processing invoice creation. If validation fails, return 400 with decomposition instructions. Preserve existing invoice logic.",
+      "deliverables": {
+        "code": [
+          "backend/src/api/invoices-create.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "skipped",
+      "skippedReason": "Blocked by rejected dependency: ['DECOMP-002']"
+    },
+    {
+      "id": "DECOMP-004",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "description": "Extract QUALITY-002 webhook retry logic to isolated function",
+      "context": "In backend/src/services/webhook/dispatch.ts, create retryWebhookWithBackoff() function handling exponential backoff, max retries 3, delays [1s,5s,15s]. Move existing retry logic into this function. Add retry count logging.",
+      "deliverables": {
+        "code": [
+          "backend/src/services/webhook/dispatch.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "rejected",
+      "output": {
+        "files": [
+          "backend/src/services/webhook/dispatch.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "REJECTED",
+          "score": 20,
+          "summary": "Dual-rejected: Claude (25/100) + Codex (20/100). File is incomplete with syntax error and missing critical functionality | The generated file is incomplete/truncated and does not implement the required retryWebhookWithBackoff() function as specified. Core functionality is missing and the code cannot compile.",
+          "issues": [
+            {
+              "severity": "critical",
+              "file": "backend/src/services/webhook/dispatch.ts",
+              "description": "File is truncated - ends with incomplete 'logg' statement causing syntax error"
+            },
+            {
+              "severity": "critical",
+              "file": "backend/src/services/webhook/dispatch.ts",
+              "description": "Missing the required retryWebhookWithBackoff() function - task spec requires moving existing retry logic into this named function"
+            },
+            {
+              "severity": "high",
+              "file": "backend/src/services/webhook/dispatch.ts",
+              "description": "File appears to have lost existing functionality - only contains deliverWithRetry() but no main dispatch logic or webhook registration handling"
+            },
+            {
+              "severity": "medium",
+              "file": "backend/src/services/webhook/dispatch.ts",
+              "description": "Custom logger implementation instead of using established project logging - should use existing logger from project"
+            },
+            {
+              "severity": "medium",
+              "file": "backend/src/services/webhook/dispatch.ts",
+              "description": "Missing error handling for the final failure case after all retries exhausted"
+            },
+            {
+              "severity": "critical",
+              "file": "backend/src/services/webhook/dispatch.ts",
+              "description": "The file is abruptly truncated (\u2018logg\u2026\u2019) and missing its closing braces and return path\u2014code will not compile."
+            },
+            {
+              "severity": "high",
+              "file": "backend/src/services/webhook/dispatch.ts",
+              "description": "The spec mandates a new retryWebhookWithBackoff() function encapsulating the exponential backoff logic. That function is not present."
+            }
+          ],
+          "strengths": []
+        }
+      }
+    },
+    {
+      "id": "DECOMP-005",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "description": "Extract QUALITY-003 chain validation to reusable validator",
+      "context": "In backend/src/lib/chain-validator.ts, create validateChainCompatibility() function accepting chainId and address. Check chain exists in registry, validate address format. Return {valid: boolean, error?: string}. Extract from inline checks.",
+      "deliverables": {
+        "code": [
+          "backend/src/lib/chain-validator.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "backend/src/lib/chain-validator.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 90,
+          "summary": "CEO resolved conflict (Codex approved, Claude rejected): REJECT \u2014 Claude identified critical blockers that would cause runtime failures. The code imports from `./chain-registry` which doesn't exist, making this completely non-functional. Missing tests also violates our \"test everything\" company rule. While Codex praised the structure, shipping code with m",
+          "issues": [
+            {
+              "severity": "critical",
+              "file": "backend/src/lib/chain-validator.ts",
+              "description": "Imports getSupportedChains and getChain from './chain-registry' but this module doesn't exist in the codebase - will cause runtime errors"
+            },
+            {
+              "severity": "critical",
+              "file": "backend/src/lib/chain-validator.ts",
+              "description": "No test file provided - violates requirement for Jest unit tests with >80% coverage intent"
+            },
+            {
+              "severity": "high",
+              "file": "backend/src/lib/chain-validator.ts",
+              "description": "Re-exports getSupportedChains and getChain from non-existent module, creating additional import failures"
+            },
+            {
+              "severity": "medium",
+              "file": "backend/src/lib/chain-validator.ts",
+              "description": "Error handling throws generic Error instead of using custom error types as per project standards"
+            },
+            {
+              "severity": "low",
+              "file": "backend/src/lib/chain-validator.ts",
+              "description": "Missing input sanitization beyond basic trim() - should validate against injection patterns"
+            }
+          ],
+          "strengths": [
+            "Comprehensive input validation (presence, type, trimming)",
+            "Clear error messages with context",
+            "Safe error rethrow for unexpected failures",
+            "JSDoc comments for public API",
+            "No use of any or insecure patterns"
+          ]
+        }
+      }
+    },
+    {
+      "id": "DECOMP-006",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "medium",
+      "dependencies": [],
+      "description": "Extract QUALITY-004 rate limit config to centralized constants",
+      "context": "In backend/src/middleware/rate-limiter.ts, create RATE_LIMIT_TIERS constant object with {free: {requests: 100, window: '1h'}, paid: {requests: 1000, window: '1h'}}. Replace hardcoded values with tier lookups.",
+      "deliverables": {
+        "code": [
+          "backend/src/middleware/rate-limiter.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "rejected",
+      "output": {
+        "files": [
+          "backend/src/middleware/rate-limiter.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "REJECTED",
+          "score": 25,
+          "summary": "Dual-rejected: Claude (25/100) + Codex (30/100). Code is incomplete - file cuts off mid-function and lacks the actual rate limiting implementation. While the structure and types are well-designed, this is not functional code. | The submitted rate-limiter file is incomplete and contains syntax errors; the createRateLimiter implementation is truncated and will not compile or function.",
+          "issues": [
+            {
+              "severity": "critical",
+              "file": "backend/src/middleware/rate-limiter.ts",
+              "description": "File is incomplete - cuts off in the middle of createRateLimiter function at line with incomplete template literal"
+            },
+            {
+              "severity": "critical",
+              "file": "backend/src/middleware/rate-limiter.ts",
+              "description": "Missing the actual rate limiting logic - no implementation of request counting, window tracking, or HTTP 429 responses"
+            },
+            {
+              "severity": "high",
+              "file": "backend/src/middleware/rate-limiter.ts",
+              "description": "In-memory store (Map) will not work in production with multiple instances - needs Redis or shared storage"
+            },
+            {
+              "severity": "medium",
+              "file": "backend/src/middleware/rate-limiter.ts",
+              "description": "Over-engineered for the simple task spec - added unnecessary interfaces, validation, and complexity beyond what was requested"
+            },
+            {
+              "severity": "critical",
+              "file": "backend/src/middleware/rate-limiter.ts",
+              "description": "The createRateLimiter function is cut off mid-statement, missing closing parentheses/braces and the rest of the implementation, leading to invalid TypeScript syntax."
+            }
+          ],
+          "strengths": []
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,397 @@
+{
+  "tasks": [
+    {
+      "id": "BE-330",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "critical",
+      "description": "Unit tests for backend currency utils — formatCurrency, parseCurrency, SUPPORTED_CURRENCIES",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create unit tests for backend/src/utils/currency.ts. The file exports:\n\n1. `const SUPPORTED_CURRENCIES = ['USD', 'EUR', 'GBP'] as const;`\n\n2. `function formatCurrency(amount: number, currency: string): string` — Looks up currency in CURRENCY_SYMBOLS map: USD->'$', EUR->'€', GBP->'£'. If found, returns `${symbol}${amount.toFixed(2)}`. If not found, returns `${currency.toUpperCase()} ${amount.toFixed(2)}`.\n\n3. `function parseCurrency(formatted: string): number` — Strips non-numeric chars (except '.') via regex /[^0-9.]/g, then parseFloat. Returns 0 if NaN.\n\nTests:\n- SUPPORTED_CURRENCIES contains exactly ['USD', 'EUR', 'GBP']\n- formatCurrency(1000, 'USD') returns '$1000.00'\n- formatCurrency(1000, 'EUR') returns '€1000.00'\n- formatCurrency(1000, 'GBP') returns '£1000.00'\n- formatCurrency(0, 'USD') returns '$0.00'\n- formatCurrency(99.9, 'USD') returns '$99.90'\n- formatCurrency(1000, 'JPY') returns 'JPY 1000.00' (unknown currency fallback)\n- formatCurrency(1000, 'usd') returns '$1000.00' (case insensitive via toUpperCase)\n- parseCurrency('$1000.00') returns 1000\n- parseCurrency('€500.50') returns 500.5\n- parseCurrency('£99.99') returns 99.99\n- parseCurrency('JPY 1000.00') returns 1000\n- parseCurrency('abc') returns 0 (NaN case)\n- parseCurrency('') returns 0\n\nFile: `backend/src/utils/__tests__/currency.test.ts`\nImport: `import { formatCurrency, parseCurrency, SUPPORTED_CURRENCIES } from '../currency';`\nKeep under 70 lines.",
+      "deliverables": {
+        "code": [
+          "backend/src/utils/__tests__/currency.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "backend/src/utils/__tests__/currency.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 48,
+          "summary": "Dual-approved: Claude (0/100) + Codex (95/100)",
+          "issues": [],
+          "strengths": [
+            "Covers all specified test cases including supported currencies, formatting, fallback, case insensitivity, and parsing edge cases.",
+            "Test file is under the 70-line limit and uses clear, descriptive test names.",
+            "No invalid syntax (no code fences) and imports are correct.",
+            "Matches the spec exactly without overengineering."
+          ]
+        }
+      }
+    },
+    {
+      "id": "BE-331",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "critical",
+      "description": "Unit tests for backend error classes — ApiError, ValidationError, NotFoundError, AuthenticationError, RateLimitError",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create unit tests for backend/src/errors/index.ts. The file exports:\n\n1. `class ApiError extends Error` — constructor(message, statusCode, code, details?). Sets this.name = this.constructor.name. Properties: statusCode (number), code (string), details (Record<string,unknown> | undefined).\n2. `class ValidationError extends ApiError` — constructor(message, details?). Calls super(message, 400, 'VALIDATION_ERROR', details).\n3. `class NotFoundError extends ApiError` — constructor(message, details?). Calls super(message, 404, 'NOT_FOUND', details).\n4. `class AuthenticationError extends ApiError` — constructor(message, details?). Calls super(message, 401, 'UNAUTHORIZED', details).\n5. `class RateLimitError extends ApiError` — constructor(message, details?). Calls super(message, 429, 'RATE_LIMIT_EXCEEDED', details).\n\nTests:\n- ApiError: message, statusCode, code, name='ApiError', instanceof Error, details optional\n- ApiError with details: { field: 'email' }\n- ApiError without details: details is undefined\n- ValidationError: statusCode=400, code='VALIDATION_ERROR', name='ValidationError', instanceof ApiError, instanceof Error\n- NotFoundError: statusCode=404, code='NOT_FOUND', name='NotFoundError'\n- AuthenticationError: statusCode=401, code='UNAUTHORIZED', name='AuthenticationError'\n- RateLimitError: statusCode=429, code='RATE_LIMIT_EXCEEDED', name='RateLimitError'\n- Each subclass passes details through to parent\n\nFile: `backend/src/errors/__tests__/errors.test.ts`\nImport: `import { ApiError, ValidationError, NotFoundError, AuthenticationError, RateLimitError } from '../index';`\nKeep under 80 lines.",
+      "deliverables": {
+        "code": [
+          "backend/src/errors/__tests__/errors.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "backend/src/errors/__tests__/errors.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 45,
+          "summary": "Dual-approved: Claude (0/100) + Codex (90/100)",
+          "issues": [],
+          "strengths": [
+            "Tests cover all required error classes and key properties",
+            "File size is under 80 lines",
+            "No syntax or structural issues detected"
+          ]
+        }
+      }
+    },
+    {
+      "id": "BE-332",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "description": "Unit tests for invoice Zod validation schemas",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create unit tests for backend/src/validators/invoice-schemas.ts. The file exports 3 Zod schemas:\n\n1. `createInvoiceSchema` = z.object({ amount: z.number().positive(), currency: z.string().min(3).max(3), description: z.string().max(500).optional(), customerId: z.string().uuid().optional(), metadata: z.record(z.string()).optional() })\n\n2. `updateInvoiceSchema` = z.object({ status: z.enum(['pending','processing','completed','failed']).optional(), description: z.string().max(500).optional(), metadata: z.record(z.string()).optional() }).refine(data => Object.keys(data).length > 0, { message: 'At least one field must be provided for update' })\n\n3. `invoiceQuerySchema` = z.object({ limit: z.coerce.number().int().min(1).max(100).default(10), offset: z.coerce.number().int().min(0).default(0), status: z.enum(['pending','processing','completed','failed']).optional() })\n\nUse schema.safeParse(data) which returns { success: boolean, data?, error? }.\n\nTests for createInvoiceSchema:\n- Valid: { amount: 100, currency: 'USD' } succeeds\n- Valid with all fields: { amount: 50, currency: 'EUR', description: 'test', customerId: '550e8400-e29b-41d4-a716-446655440000', metadata: { key: 'val' } } succeeds\n- Invalid: amount 0 fails (not positive)\n- Invalid: amount -1 fails\n- Invalid: currency 'US' fails (min 3)\n- Invalid: currency 'USDD' fails (max 3)\n\nTests for updateInvoiceSchema:\n- Valid: { status: 'completed' } succeeds\n- Valid: { description: 'updated' } succeeds\n- Invalid: {} (empty object) fails (refine: at least one field)\n- Invalid: { status: 'invalid_status' } fails\n\nTests for invoiceQuerySchema:\n- Valid: {} succeeds, data has limit=10, offset=0 (defaults)\n- Valid: { limit: '50', offset: '5' } succeeds (coerced to numbers)\n- Invalid: { limit: 0 } fails (min 1)\n- Invalid: { limit: 101 } fails (max 100)\n\nFile: `backend/src/validators/__tests__/invoice-schemas.test.ts`\nImport: `import { createInvoiceSchema, updateInvoiceSchema, invoiceQuerySchema } from '../invoice-schemas';`\nKeep under 90 lines.",
+      "deliverables": {
+        "code": [
+          "backend/src/validators/__tests__/invoice-schemas.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "backend/src/validators/__tests__/invoice-schemas.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 48,
+          "summary": "Dual-approved: Claude (0/100) + Codex (95/100)",
+          "issues": [],
+          "strengths": [
+            "Covers all required valid and invalid scenarios for createInvoiceSchema, updateInvoiceSchema, and invoiceQuerySchema.",
+            "Uses safeParse correctly and asserts both success flags and coerced default values.",
+            "Stays under the 90-line limit and follows project testing conventions.",
+            "No hardcoded secrets or insecure patterns."
+          ]
+        }
+      }
+    },
+    {
+      "id": "BE-333",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "description": "Unit tests for webhook Zod validation schemas",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create unit tests for backend/src/validators/webhook-schemas.ts. The file exports 3 Zod schemas:\n\nValid WEBHOOK_EVENTS: 'invoice.created', 'invoice.updated', 'invoice.paid', 'settlement.created', 'settlement.confirmed'\n\n1. `registerWebhookSchema` = z.object({ url: z.string().url(), events: z.array(z.enum(WEBHOOK_EVENTS)).min(1), secret: z.string().min(16).max(64).optional(), description: z.string().max(200).optional() })\n\n2. `webhookQuerySchema` = z.object({ limit: z.coerce.number().int().min(1).max(100).default(10), offset: z.coerce.number().int().min(0).default(0), status: z.enum(['active','inactive']).optional() })\n\n3. `webhookEventSchema` = z.object({ id: z.string(), type: z.enum(WEBHOOK_EVENTS), data: z.record(z.unknown()), timestamp: z.string().datetime() })\n\nTests for registerWebhookSchema:\n- Valid: { url: 'https://example.com/webhook', events: ['invoice.created'] } succeeds\n- Valid with all fields: add secret (16+ chars), description succeeds\n- Invalid: missing url fails\n- Invalid: url 'not-a-url' fails\n- Invalid: events empty array [] fails (min 1)\n- Invalid: events ['invalid.event'] fails\n- Invalid: secret too short (5 chars) fails\n\nTests for webhookQuerySchema:\n- Valid: {} succeeds, defaults limit=10 offset=0\n- Valid: { status: 'active' } succeeds\n- Invalid: { status: 'unknown' } fails\n\nTests for webhookEventSchema:\n- Valid: { id: 'evt_1', type: 'invoice.created', data: { amount: 100 }, timestamp: '2026-01-01T00:00:00Z' } succeeds\n- Invalid: missing type fails\n- Invalid: type 'bad.event' fails\n- Invalid: timestamp 'not-a-date' fails\n\nFile: `backend/src/validators/__tests__/webhook-schemas.test.ts`\nImport: `import { registerWebhookSchema, webhookQuerySchema, webhookEventSchema } from '../webhook-schemas';`\nKeep under 90 lines.",
+      "deliverables": {
+        "code": [
+          "backend/src/validators/__tests__/webhook-schemas.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "backend/src/validators/__tests__/webhook-schemas.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 45,
+          "summary": "Dual-approved: Claude (0/100) + Codex (90/100)",
+          "issues": [],
+          "strengths": [
+            "Covers all specified valid and invalid test cases for registerWebhookSchema.",
+            "Includes default-value assertions for webhookQuerySchema.",
+            "Tests required failure modes for webhookEventSchema.",
+            "No Markdown code fences or syntax errors in the source file.",
+            "Maintains concise structure under the 90-line limit."
+          ]
+        }
+      }
+    },
+    {
+      "id": "BE-334",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "description": "Unit tests for request-id middleware",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create unit tests for backend/src/middleware/request-id.ts. The file default-exports requestIdMiddleware (Express RequestHandler). Also exports interface RequestWithId extends Request { requestId: string }.\n\nBehavior:\n1. Checks for existing x-request-id header on incoming request\n2. If header exists, uses that value as requestId\n3. If no header, generates new ID with format req-{timestamp}-{random6chars}\n4. Attaches requestId to (req as RequestWithId).requestId\n5. Sets x-request-id response header via res.setHeader\n6. Calls next()\n\nMock req/res approach:\nconst mockNext = jest.fn();\nconst mockReq = { headers: {} } as any;\nconst mockRes = { setHeader: jest.fn() } as any;\n\nTests:\n- Generates requestId when no x-request-id header: calls next(), req.requestId matches /^req-\\d+-[a-z0-9]{6}$/, res.setHeader called with 'x-request-id'\n- Uses existing x-request-id header: set req.headers['x-request-id'] = 'existing-id-123', req.requestId should be 'existing-id-123'\n- Sets x-request-id response header: res.setHeader called with ('x-request-id', requestId)\n- Calls next(): mockNext is called exactly once\n- Generated IDs are unique: call middleware twice with different req objects, IDs should differ\n\nFile: `backend/src/middleware/__tests__/request-id.test.ts`\nImport: `import requestIdMiddleware from '../request-id';`\nKeep under 60 lines.",
+      "deliverables": {
+        "code": [
+          "backend/src/middleware/__tests__/request-id.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "backend/src/middleware/__tests__/request-id.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 85,
+          "summary": "Dual-approved: Claude (85/100) + Codex (85/100)",
+          "issues": [
+            {
+              "severity": "medium",
+              "file": "backend/src/middleware/__tests__/request-id.test.ts",
+              "description": "Missing test for response header setting in the 'uses existing x-request-id header' case - should verify res.setHeader is called with existing ID"
+            },
+            {
+              "severity": "low",
+              "file": "backend/src/middleware/__tests__/request-id.test.ts",
+              "description": "Could add edge case tests for empty string header or malformed headers"
+            },
+            {
+              "severity": "low",
+              "file": "backend/src/middleware/__tests__/request-id.test.ts",
+              "description": "The 'uses existing x-request-id header' test does not assert that next() is called or that the response header is set when using an existing ID."
+            }
+          ],
+          "strengths": [
+            "Proper TypeScript typing with RequestWithId interface import",
+            "Clean Jest setup with beforeEach for mock initialization",
+            "Correct regex pattern validation for generated ID format",
+            "Tests unique ID generation as specified",
+            "Proper Express mock objects (req/res/next)",
+            "Concise implementation under 60 lines as required",
+            "All core behaviors from task spec are tested",
+            "Good use of type assertions for RequestWithId",
+            "Comprehensive coverage of middleware behaviors: ID generation, header reuse, and ID uniqueness.",
+            "Proper use of Jest mocks and assertions without external dependencies or unsafe casts.",
+            "Test file remains concise (<60 lines) and avoids any code fences or invalid syntax."
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-090",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "critical",
+      "description": "Unit tests for SDK request-builder — buildUrl with query params, buildHeaders with auth",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create unit tests for sdk/typescript/src/request-builder.ts. The file exports:\n\n1. `function buildUrl(baseUrl: string, path: string, query?: Record<string, string | number | boolean | undefined>): string` — Creates URL from baseUrl + path using new URL(). Appends query params via url.searchParams.set(), skipping undefined values. Returns url.toString().\n\n2. `function buildHeaders(apiKey: string, extra?: Record<string, string>): Record<string, string>` — Returns { Authorization: 'Bearer ' + apiKey, 'Content-Type': 'application/json', 'User-Agent': 'countable-sdk/1.0.0', ...extra }\n\nTests for buildUrl:\n- Base + path: buildUrl('https://api.test.com', '/invoices') includes 'https://api.test.com/invoices'\n- With query params: buildUrl('https://api.test.com', '/invoices', { limit: 10, status: 'active' }) URL contains limit=10 and status=active\n- Skips undefined query values: buildUrl('https://api.test.com', '/x', { a: 'yes', b: undefined }) only has a=yes, no b\n- Boolean query param: { active: true } produces 'active=true'\n- Number query param: { page: 5 } produces 'page=5'\n- No query object: buildUrl('https://api.test.com', '/x') has no ? in URL\n\nTests for buildHeaders:\n- Returns Authorization with Bearer prefix: buildHeaders('test-key').Authorization === 'Bearer test-key'\n- Has Content-Type application/json\n- Has User-Agent countable-sdk/1.0.0\n- Merges extra headers: buildHeaders('key', { 'X-Custom': 'value' }) includes X-Custom\n- No extra headers: buildHeaders('key') has exactly 3 keys\n\nFile: `sdk/typescript/tests/request-builder.test.ts`\nImport: `import { buildUrl, buildHeaders } from '../src/request-builder';`\nKeep under 70 lines.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/tests/request-builder.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/tests/request-builder.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 94,
+          "summary": "Dual-approved: Claude (95/100) + Codex (92/100)",
+          "issues": [],
+          "strengths": [
+            "All required test cases from spec are implemented correctly",
+            "Proper Jest imports and describe/it structure",
+            "Clear, descriptive test names that explain what's being tested",
+            "Correct import path from '../src/request-builder'",
+            "Tests cover edge cases like undefined values and empty query objects",
+            "Appropriate assertions using toContain, toBe, and toHaveLength",
+            "File is concise at 44 lines, well under the 70-line limit",
+            "No code fences or invalid syntax",
+            "Tests verify both positive and negative cases (contains vs not contains)",
+            "Covers all required cases for URL building including skipping undefined and handling different types",
+            "Validates header defaults and merging of extra headers",
+            "Concise, under the 70-line limit, and free of syntax issues",
+            "No markdown fences in the source file"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-091",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "critical",
+      "description": "Unit tests for SDK client-config — resolveConfig defaults, validation, apiKey trimming",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create unit tests for sdk/typescript/src/client-config.ts. The file exports:\n\n1. `const DEFAULT_BASE_URL = 'https://api.invoica.ai/v1'`\n2. `const DEFAULT_TIMEOUT = 30000`\n3. `const DEFAULT_MAX_RETRIES = 3`\n4. `function resolveConfig(config: InvoicaClientConfig): ResolvedConfig`\n\nresolveConfig behavior:\n- Throws Error if apiKey is empty string or only whitespace: message contains 'apiKey is required and cannot be empty'\n- Trims apiKey via config.apiKey.trim()\n- Applies defaults: baseUrl defaults to DEFAULT_BASE_URL, timeout defaults to DEFAULT_TIMEOUT, maxRetries defaults to DEFAULT_MAX_RETRIES\n- Uses provided values when given\n\nTests:\n- resolveConfig with only apiKey: returns { apiKey: 'test-key', baseUrl: 'https://api.invoica.ai/v1', timeout: 30000, maxRetries: 3 }\n- resolveConfig with all fields: returns exact provided values\n- resolveConfig with custom baseUrl: uses provided baseUrl, defaults for rest\n- resolveConfig with custom timeout: uses provided timeout\n- resolveConfig trims apiKey: resolveConfig({ apiKey: '  spaced-key  ' }).apiKey === 'spaced-key'\n- resolveConfig throws on empty apiKey: expect(() => resolveConfig({ apiKey: '' })).toThrow('apiKey is required')\n- resolveConfig throws on whitespace apiKey: expect(() => resolveConfig({ apiKey: '   ' })).toThrow()\n- DEFAULT_BASE_URL equals 'https://api.invoica.ai/v1'\n- DEFAULT_TIMEOUT equals 30000\n- DEFAULT_MAX_RETRIES equals 3\n\nFile: `sdk/typescript/tests/client-config.test.ts`\nImport: `import { resolveConfig, DEFAULT_BASE_URL, DEFAULT_TIMEOUT, DEFAULT_MAX_RETRIES } from '../src/client-config';`\nKeep under 60 lines.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/tests/client-config.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/tests/client-config.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 94,
+          "summary": "Dual-approved: Claude (92/100) + Codex (95/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/tests/client-config.test.ts",
+              "description": "Missing type imports - should import InvoicaClientConfig type for better type safety in test setup"
+            },
+            {
+              "severity": "low",
+              "file": "sdk/typescript/tests/client-config.test.ts",
+              "description": "Could add edge case test for maxRetries: 0 to ensure zero retries are handled correctly"
+            }
+          ],
+          "strengths": [
+            "All required test cases from spec are implemented correctly",
+            "Clean test structure with descriptive test names",
+            "Proper use of Jest matchers (toEqual, toBe, toThrow)",
+            "Tests cover both happy path and error conditions",
+            "Correct import statement matches spec requirements",
+            "File stays well under 60 line limit (28 lines)",
+            "Tests validate exact behavior specified (trimming, defaults, error messages)",
+            "No code fences or invalid syntax",
+            "Follows consistent naming conventions",
+            "Covers all required scenarios: defaults, custom values, trimming, and error conditions",
+            "Validates DEFAULT constants in one concise test",
+            "Uses clear, descriptive test names",
+            "Stays well under the 60-line limit",
+            "No code fences or invalid syntax detected"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-092",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "description": "Unit tests for SDK auth utils — createAuthHeaders, validateApiKey, signRequest, ApiKeyError",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create unit tests for sdk/typescript/src/auth.ts. The file exports:\n\n1. `function createAuthHeaders(apiKey: string): Record<string, string>` — Returns { Authorization: `Bearer ${apiKey}`, 'X-Request-Id': randomUUID(), 'X-Timestamp': new Date().toISOString() }\n\n2. `function validateApiKey(key: string): boolean` — Tests regex /^inv_[0-9a-f]{32}$/ against key\n\n3. `function signRequest(apiKey: string, method: string, path: string, body?: string): string` — Creates HMAC-SHA256 of '{method}:{path}:{body|empty}' using apiKey as secret, returns hex digest\n\n4. `class ApiKeyError extends Error` — constructor(message). Sets this.name = 'ApiKeyError'\n\nTests for createAuthHeaders:\n- Returns Authorization with 'Bearer ' prefix + apiKey\n- Returns X-Request-Id that is a valid UUID format (matches /^[0-9a-f]{8}-[0-9a-f]{4}-/)\n- Returns X-Timestamp that is a valid ISO date string\n- Has exactly 3 keys\n\nTests for validateApiKey:\n- 'inv_' + 32 hex chars is true: validateApiKey('inv_0123456789abcdef0123456789abcdef') returns true\n- Missing prefix is false: validateApiKey('0123456789abcdef0123456789abcdef') returns false\n- Wrong prefix is false: validateApiKey('key_0123456789abcdef0123456789abcdef') returns false\n- Too short is false: validateApiKey('inv_0123') returns false\n- Uppercase hex is false: validateApiKey('inv_0123456789ABCDEF0123456789abcdef') returns false\n- Empty string is false\n\nTests for signRequest:\n- Returns a 64-char hex string (SHA-256 digest length)\n- Same inputs produce same output (deterministic)\n- Different inputs produce different output\n- Without body: signRequest('key', 'GET', '/path') uses empty string for body part\n- With body: signRequest('key', 'POST', '/path', '{\"a\":1}') differs from without body\n\nTests for ApiKeyError:\n- name is 'ApiKeyError'\n- instanceof Error is true\n- message matches constructor arg\n\nFile: `sdk/typescript/tests/auth.test.ts`\nImport: `import { createAuthHeaders, validateApiKey, signRequest, ApiKeyError } from '../src/auth';`\nKeep under 80 lines.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/tests/auth.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/tests/auth.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/tests/auth.test.ts",
+              "description": "Multiple negative test cases for validateApiKey could be split into individual test cases for better failure isolation and clearer test reporting"
+            }
+          ],
+          "strengths": [
+            "All required test cases are implemented and match the task specification exactly",
+            "Proper TypeScript imports and Jest syntax",
+            "Good use of regex matchers for UUID and ISO timestamp validation",
+            "Deterministic testing approach for signRequest function",
+            "Comprehensive coverage of edge cases (empty string, wrong prefix, case sensitivity)",
+            "Clean, readable test structure with descriptive test names",
+            "File stays well under the 80-line limit (32 lines)",
+            "No code fences or invalid syntax",
+            "Tests both positive and negative cases appropriately",
+            "Comprehensive coverage of createAuthHeaders, validateApiKey, signRequest, and ApiKeyError",
+            "Uses appropriate regex checks for header formats and hex string length",
+            "Tests are concise and remain under 80 lines",
+            "No invalid code fences or syntax errors"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-093",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "description": "Unit tests for SDK timeout utils — TimeoutError class, withTimeout, createAbortSignal",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create unit tests for sdk/typescript/src/timeout.ts. The file exports:\n\n1. `class TimeoutError extends Error` — constructor(timeoutMs: number). Sets message='Request timed out after {timeoutMs}ms', name='TimeoutError', timeoutMs property.\n\n2. `function withTimeout<T>(promise: Promise<T>, timeoutMs: number): Promise<T>` — Races promise against setTimeout. If timeout wins, rejects with TimeoutError. If promise resolves first, clears timer and returns result. If promise rejects first, clears timer and re-throws.\n\n3. `function createAbortSignal(timeoutMs: number): AbortSignal` — Returns AbortSignal.timeout(timeoutMs).\n\nUse jest fake timers for withTimeout tests.\n\nTests for TimeoutError:\n- message includes timeout value: new TimeoutError(5000).message is 'Request timed out after 5000ms'\n- name is 'TimeoutError'\n- timeoutMs property matches constructor arg\n- instanceof Error is true\n\nTests for withTimeout:\n- Resolves when promise resolves before timeout: use jest.useRealTimers() inside the test, withTimeout(Promise.resolve('ok'), 1000) resolves to 'ok'\n- Rejects with TimeoutError when promise is slow: use jest.useFakeTimers(). Create a never-resolving promise: new Promise(() => {}). Call withTimeout(neverResolve, 500). Use jest.advanceTimersByTime(500). Expect rejection with TimeoutError with timeoutMs=500.\n- Rejects with original error when promise rejects before timeout: use jest.useRealTimers(), withTimeout(Promise.reject(new Error('fail')), 1000) rejects with message 'fail'\n\nSetup: beforeEach(() => jest.useFakeTimers()), afterEach(() => jest.useRealTimers())\n\nFor createAbortSignal:\n- Returns an AbortSignal: result instanceof AbortSignal is true\n- Signal is not aborted initially: signal.aborted is false\n\nFile: `sdk/typescript/tests/timeout.test.ts`\nImport: `import { TimeoutError, withTimeout, createAbortSignal } from '../src/timeout';`\nKeep under 70 lines.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/tests/timeout.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/tests/timeout.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "medium",
+              "file": "sdk/typescript/tests/timeout.test.ts",
+              "description": "TimeoutError rejection test should explicitly check that the rejected error is a TimeoutError instance, not just the message"
+            },
+            {
+              "severity": "low",
+              "file": "sdk/typescript/tests/timeout.test.ts",
+              "description": "Could add edge case tests (e.g., zero timeout, negative timeout) for more comprehensive coverage"
+            }
+          ],
+          "strengths": [
+            "Follows exact task specifications with correct imports and structure",
+            "Proper Jest fake timers setup with beforeEach/afterEach hooks",
+            "Correctly switches between fake and real timers as specified",
+            "Tests all required functionality: TimeoutError properties, withTimeout behavior, createAbortSignal",
+            "Clean, readable test descriptions that match the requirements",
+            "Stays well under the 70-line limit (35 lines)",
+            "Uses proper Jest matchers and async/await patterns",
+            "No code fences or syntax issues",
+            "Comprehensive coverage of success, timeout, and rejection scenarios for withTimeout.",
+            "Proper use of Jest fake and real timers to simulate timeout behavior.",
+            "Clear and concise tests for TimeoutError properties.",
+            "Correct validation of AbortSignal instantiation and initial state."
+          ]
+        }
+      }
+    }
+  ]
+}

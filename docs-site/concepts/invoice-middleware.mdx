@@ -1,0 +1,101 @@
+---
+title: Invoice Middleware
+description: "How Invoica's middleware architecture intercepts x402 payments to add financial compliance."
+---
+
+# Invoice Middleware
+
+Invoica operates as transparent middleware in the x402 payment flow. It intercepts payment requests to automatically generate invoices, calculate taxes, enforce budgets, and monitor settlements.
+
+## Architecture
+
+The middleware consists of three core components:
+
+### 1. Proxy Layer
+
+The proxy intercepts HTTP requests between AI agents and resource servers:
+
+- Detects 402 Payment Required responses
+- Injects invoice generation into the payment flow
+- Passes through non-payment requests transparently
+- Adds invoice metadata to successful responses
+
+### 2. Invoice Engine
+
+When a payment is detected, the invoice engine:
+
+- Generates a unique invoice number
+- Calculates line items from the payment amount
+- Applies tax rules based on buyer/seller jurisdictions
+- Creates a PDF invoice document
+- Stores the invoice in the database
+
+### 3. Settlement Monitor
+
+After payment is sent, the settlement monitor:
+
+- **Poll-based detection** — Periodically checks the blockchain for transaction confirmation
+- **Event-driven detection** — Listens for on-chain events via WebSocket
+- Updates invoice status when settlement is confirmed
+- Triggers webhook notifications
+
+## Invoice Lifecycle
+
+```
+DRAFT → SENT → PAID → SETTLED → COMPLETED
+                 ↓
+              FAILED
+```
+
+| Status | Description |
+|--------|-------------|
+| `draft` | Invoice created, not yet sent |
+| `sent` | Invoice delivered to buyer |
+| `paid` | Payment transaction submitted |
+| `settled` | On-chain confirmation received |
+| `completed` | Settlement finalized, invoice closed |
+| `failed` | Payment failed or timed out |
+
+## Dual Settlement Detection
+
+Invoica uses two independent detection methods for reliability:
+
+### Poll-Based Detection
+
+A background worker periodically queries the blockchain:
+
+```
+Every 15 seconds:
+  For each pending invoice:
+    Query blockchain for transaction hash
+    If confirmed: update status → settled
+    If failed: increment retry counter
+```
+
+### Event-Driven Detection
+
+WebSocket listeners monitor on-chain events in real-time:
+
+```
+Subscribe to Transfer events on payment contract
+On event received:
+  Match to pending invoice
+  Verify amount and recipient
+  Update status → settled
+  Trigger webhook
+```
+
+The dual approach ensures that if one method fails (e.g., WebSocket disconnects), the other catches the settlement.
+
+## Configuration
+
+Configure the middleware via environment variables:
+
+```bash
+INVOICA_API_KEY=inv_your_key_here
+INVOICA_BASE_URL=https://api.invoica.ai
+INVOICA_SETTLEMENT_POLL_INTERVAL=15000
+INVOICA_SETTLEMENT_TIMEOUT=3600000
+INVOICA_TAX_ENABLED=true
+INVOICA_BUDGET_ENFORCEMENT=true
+```

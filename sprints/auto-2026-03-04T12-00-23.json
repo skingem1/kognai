@@ -1,0 +1,171 @@
+{
+  "tasks": [
+    {
+      "id": "AGENTS-001",
+      "agent": "agents",
+      "type": "feature",
+      "priority": "critical",
+      "dependencies": [],
+      "description": "Implement frontend task routing guard in MiniMax orchestrator",
+      "context": "Add frontend task detection in orchestrator.ts before MiniMax assignment. Check agent field and file extensions (.css,.scss,.vue,.tsx component files). If frontend detected, return error with message directing to frontend agent. Prevents CSS task assignment to MiniMax.",
+      "deliverables": {
+        "code": [
+          "packages/agents/src/orchestrator.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "rejected"
+    },
+    {
+      "id": "AGENTS-002",
+      "agent": "agents",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [
+        "AGENTS-001"
+      ],
+      "description": "Add task classification validator with frontend detection",
+      "context": "Create validateTaskClassification function in utils/task-validator.ts. Parse description and file paths for frontend indicators (styling, CSS, components, UI). Return classification with isFrontend boolean. Used by orchestrator guard.",
+      "deliverables": {
+        "code": [
+          "packages/agents/src/utils/task-validator.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "skipped",
+      "skippedReason": "Blocked by rejected dependency: ['AGENTS-001']"
+    },
+    {
+      "id": "AGENTS-003",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "description": "Implement spam filtering for x-admin escalations",
+      "context": "Add spam detection to escalation handler in x-admin service. Check for: duplicate content in 5min window, excessive caps/punctuation, blacklist keywords. Mark as spam instead of creating escalation. Clears backlog of 21 spam escalations.",
+      "deliverables": {
+        "code": [
+          "apps/x-admin/src/services/escalation-handler.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "rejected",
+      "output": {
+        "files": [
+          "apps/x-admin/src/services/escalation-handler.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "REJECTED",
+          "score": 25,
+          "summary": "Dual-rejected: Claude (25/100) + Codex (30/100). File is incomplete/truncated and contains several critical issues including missing imports, incomplete code blocks, and potential type errors. | The submitted escalation\u2010handler is incomplete and missing core logic, tests, and functionality required by the spec. Key sections (duplicate detection, caps/punctuation analysis, blacklist check, backlog clearing, and Prisma integration) are truncated or entirely absent, and no unit tests accompany the implementation.",
+          "issues": [
+            {
+              "severity": "critical",
+              "file": "apps/x-admin/src/services/escalation-handler.ts",
+              "description": "File is truncated - ends mid-line with 'metadat' instead of complete code"
+            },
+            {
+              "severity": "critical",
+              "file": "apps/x-admin/src/services/escalation-handler.ts",
+              "description": "EscalationStatus 'SPAM' may not exist in Prisma schema - needs verification"
+            },
+            {
+              "severity": "high",
+              "file": "apps/x-admin/src/services/escalation-handler.ts",
+              "description": "Missing actual spam detection implementation - only configuration and error classes provided"
+            },
+            {
+              "severity": "high",
+              "file": "apps/x-admin/src/services/escalation-handler.ts",
+              "description": "No main EscalationHandler class or service implementation visible"
+            },
+            {
+              "severity": "high",
+              "file": "apps/x-admin/src/services/escalation-handler.ts",
+              "description": "Missing test file entirely - no evidence of testing approach"
+            },
+            {
+              "severity": "medium",
+              "file": "apps/x-admin/src/services/escalation-handler.ts",
+              "description": "Hardcoded blacklist keywords in source code instead of database/config management"
+            },
+            {
+              "severity": "medium",
+              "file": "apps/x-admin/src/services/escalation-handler.ts",
+              "description": "No logging implementation for spam detection events"
+            },
+            {
+              "severity": "critical",
+              "file": "apps/x-admin/src/services/escalation-handler.ts",
+              "description": "File is truncated and missing implementation of spam detection, duplicate lookup, backlog clearing, and database persistence logic. Core requirements from AGENTS-003 are not met."
+            },
+            {
+              "severity": "high",
+              "file": "apps/x-admin/src/services/escalation-handler.ts",
+              "description": "No Jest unit tests provided for any of the new functionality. Coverage intent is missing."
+            },
+            {
+              "severity": "medium",
+              "file": "apps/x-admin/src/services/escalation-handler.ts",
+              "description": "No input sanitization beyond basic Zod validation for spam\u2010specific fields (e.g. content normalization for caps/punctuation checks)."
+            },
+            {
+              "severity": "low",
+              "file": "apps/x-admin/src/services/escalation-handler.ts",
+              "description": "Environment variable parsing does not validate ranges (e.g. maxCapsRatio between 0 and 1)."
+            }
+          ],
+          "strengths": []
+        }
+      }
+    },
+    {
+      "id": "AGENTS-004",
+      "agent": "agents",
+      "type": "test",
+      "priority": "high",
+      "dependencies": [
+        "AGENTS-001",
+        "AGENTS-002"
+      ],
+      "description": "Add integration tests for frontend routing guard",
+      "context": "Create test suite in orchestrator.test.ts. Test cases: CSS task blocked, Vue component blocked, TypeScript backend allowed, explicit frontend agent allowed. Verify error messages guide to correct agent.",
+      "deliverables": {
+        "code": [
+          "packages/agents/tests/orchestrator.test.ts"
+        ],
+        "tests": [
+          "packages/agents/tests/orchestrator.test.ts"
+        ],
+        "docs": []
+      },
+      "status": "skipped",
+      "skippedReason": "Blocked by rejected dependency: ['AGENTS-001']"
+    },
+    {
+      "id": "AGENTS-005",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "medium",
+      "dependencies": [
+        "AGENTS-003"
+      ],
+      "description": "Add spam metrics to x-admin dashboard endpoint",
+      "context": "Extend dashboard API in x-admin to expose spam stats: total blocked, block rate, top spam patterns. Add to existing /api/admin/metrics endpoint. Helps monitor filter effectiveness without new UI.",
+      "deliverables": {
+        "code": [
+          "apps/x-admin/src/api/metrics.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "skipped",
+      "skippedReason": "Blocked by rejected dependency: ['AGENTS-003']"
+    }
+  ]
+}

@@ -1,0 +1,91 @@
+---
+title: Webhook Endpoints
+description: "API endpoints for managing webhook configurations."
+---
+
+# Webhook Endpoints
+
+Manage webhook subscriptions programmatically — create, list, update, and delete webhook configurations.
+
+## Create Webhook
+
+```bash
+POST /api/webhooks
+```
+
+### Request
+
+```json
+{
+  "url": "https://your-server.com/webhooks/invoica",
+  "events": ["invoice.paid", "invoice.settled", "invoice.failed"],
+  "secret": "whsec_your_secret_key"
+}
+```
+
+### Response
+
+```json
+{
+  "id": "wh_a1b2c3d4e5",
+  "url": "https://your-server.com/webhooks/invoica",
+  "events": ["invoice.paid", "invoice.settled", "invoice.failed"],
+  "active": true,
+  "createdAt": "2026-02-18T10:30:00Z"
+}
+```
+
+## List Webhooks
+
+```bash
+GET /api/webhooks
+```
+
+Returns all configured webhook endpoints for your account.
+
+## Update Webhook
+
+```bash
+PATCH /api/webhooks/:id
+```
+
+Update the URL, events, or active status of a webhook.
+
+### Request
+
+```json
+{
+  "events": ["invoice.paid", "invoice.settled", "settlement.confirmed"],
+  "active": true
+}
+```
+
+## Delete Webhook
+
+```bash
+DELETE /api/webhooks/:id
+```
+
+Remove a webhook configuration. Pending deliveries will be cancelled.
+
+## Webhook Events Reference
+
+| Event | Payload |
+|-------|---------|
+| `invoice.created` | Full invoice object |
+| `invoice.sent` | Invoice ID, status, sentAt |
+| `invoice.paid` | Invoice ID, status, payment details |
+| `invoice.settled` | Invoice ID, status, settlement tx hash |
+| `invoice.completed` | Invoice ID, status, completedAt |
+| `invoice.failed` | Invoice ID, status, failure reason |
+| `settlement.confirmed` | Settlement ID, tx hash, confirmations |
+| `settlement.failed` | Settlement ID, failure reason |
+
+## Testing Webhooks
+
+Use the Dashboard to send test webhook events to your endpoint:
+
+1. Go to **Settings > Webhooks** in the Dashboard
+2. Click **Send Test Event** on your webhook configuration
+3. Select the event type to test
+4. Verify your endpoint receives and processes the event correctly

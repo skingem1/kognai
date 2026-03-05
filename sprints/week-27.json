@@ -1,0 +1,450 @@
+{
+  "tasks": [
+    {
+      "id": "BE-210",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "critical",
+      "dependencies": [],
+      "status": "done",
+      "context": "Create the invoice API routes. File: backend/src/routes/invoices.ts\n\nThis is an Express Router that exposes the invoice service as REST endpoints. Import from the invoice service.\n\n```typescript\nimport { Router, Request, Response, NextFunction } from 'express';\nimport { createPendingInvoice, getInvoiceById, getInvoiceByNumber, CreateInvoiceInputSchema } from '../services/invoice';\n\nconst router = Router();\n\n// POST /v1/invoices — create a new invoice\nrouter.post('/v1/invoices', async (req: Request, res: Response, next: NextFunction) => {\n  try {\n    const parsed = CreateInvoiceInputSchema.parse(req.body);\n    const invoice = await createPendingInvoice(parsed);\n    res.status(201).json({ success: true, data: invoice });\n  } catch (err) { next(err); }\n});\n\n// GET /v1/invoices/:id — get invoice by ID\nrouter.get('/v1/invoices/:id', async (req: Request, res: Response, next: NextFunction) => {\n  try {\n    const invoice = await getInvoiceById(req.params.id);\n    if (!invoice) { res.status(404).json({ success: false, error: { message: 'Invoice not found', code: 'NOT_FOUND' } }); return; }\n    res.json({ success: true, data: invoice });\n  } catch (err) { next(err); }\n});\n\n// GET /v1/invoices/number/:number — get invoice by number\nrouter.get('/v1/invoices/number/:number', async (req: Request, res: Response, next: NextFunction) => {\n  try {\n    const invoice = await getInvoiceByNumber(req.params.number);\n    if (!invoice) { res.status(404).json({ success: false, error: { message: 'Invoice not found', code: 'NOT_FOUND' } }); return; }\n    res.json({ success: true, data: invoice });\n  } catch (err) { next(err); }\n});\n\nexport default router;\n```\n\nRules: Maximum 40 lines. 3 routes: POST create, GET by id, GET by number. Each route wraps service call in try-catch and passes errors to next(). Return { success: true, data } on success. Return { success: false, error: { message, code } } for 404s. Use Zod schema for body validation on POST. Import Router from express. Export default router.",
+      "deliverables": {
+        "code": [
+          "backend/src/routes/invoices.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "backend/src/routes/invoices.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 94,
+          "summary": "Dual-approved: Claude (95/100) + Codex (92/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "backend/src/routes/invoices.ts",
+              "description": "Missing JSDoc comments on public API endpoints for better documentation"
+            }
+          ],
+          "strengths": [
+            "Exact match to task specification - 3 routes as requested",
+            "Proper Zod validation on POST endpoint with CreateInvoiceInputSchema",
+            "Consistent error handling with try-catch blocks passing to next()",
+            "Correct response format: { success: true, data } for success cases",
+            "Proper 404 handling with { success: false, error: { message, code } } format",
+            "Clean TypeScript with proper imports and types",
+            "Under 40 lines as required (25 lines total)",
+            "Follows REST conventions with appropriate HTTP status codes",
+            "No hardcoded values or security issues",
+            "Proper async/await usage",
+            "Adheres exactly to the spec: three routes with correct paths and methods.",
+            "Uses Zod schema for POST body validation.",
+            "Proper HTTP status codes (201 for creation, 404 for not found).",
+            "Cleans error handling by forwarding unexpected errors to next().",
+            "Code size is under the maximum 40 lines and no markdown fences are present."
+          ]
+        }
+      }
+    },
+    {
+      "id": "BE-211",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "critical",
+      "dependencies": [],
+      "status": "done",
+      "context": "Create the API key management routes. File: backend/src/routes/api-keys.ts\n\nExpress Router for API key CRUD operations. Import from the api-keys service.\n\n```typescript\nimport { Router, Request, Response, NextFunction } from 'express';\nimport { createApiKey, getCustomerApiKeys, invalidateApiKey, rotateApiKey, validateApiKeyInput } from '../services/api-keys';\n\nconst router = Router();\n\n// POST /v1/api-keys — create a new API key\nrouter.post('/v1/api-keys', async (req: Request, res: Response, next: NextFunction) => {\n  try {\n    const input = validateApiKeyInput(req.body);\n    const apiKey = await createApiKey(input);\n    res.status(201).json({ success: true, data: apiKey });\n  } catch (err) { next(err); }\n});\n\n// GET /v1/api-keys — list API keys for a customer\nrouter.get('/v1/api-keys', async (req: Request, res: Response, next: NextFunction) => {\n  try {\n    const customerId = req.headers['x-customer-id'] as string;\n    if (!customerId) { res.status(400).json({ success: false, error: { message: 'Missing x-customer-id header', code: 'MISSING_HEADER' } }); return; }\n    const keys = await getCustomerApiKeys(customerId);\n    res.json({ success: true, data: keys });\n  } catch (err) { next(err); }\n});\n\n// POST /v1/api-keys/:id/revoke — revoke an API key\nrouter.post('/v1/api-keys/:id/revoke', async (req: Request, res: Response, next: NextFunction) => {\n  try {\n    const key = await invalidateApiKey(req.params.id);\n    res.json({ success: true, data: key });\n  } catch (err) { next(err); }\n});\n\n// POST /v1/api-keys/:id/rotate — rotate an API key\nrouter.post('/v1/api-keys/:id/rotate', async (req: Request, res: Response, next: NextFunction) => {\n  try {\n    const newKey = await rotateApiKey(req.params.id);\n    res.json({ success: true, data: newKey });\n  } catch (err) { next(err); }\n});\n\nexport default router;\n```\n\nRules: Maximum 45 lines. 4 routes: POST create, GET list, POST revoke, POST rotate. Use validateApiKeyInput for body validation. Get customerId from x-customer-id header on list. Export default router.",
+      "deliverables": {
+        "code": [
+          "backend/src/routes/api-keys.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "backend/src/routes/api-keys.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "medium",
+              "file": "backend/src/routes/api-keys.ts",
+              "description": "Missing input validation on route parameters (API key IDs) - should validate UUID format before passing to service layer"
+            },
+            {
+              "severity": "low",
+              "file": "backend/src/routes/api-keys.ts",
+              "description": "Could benefit from JSDoc comments on route handlers for API documentation"
+            }
+          ],
+          "strengths": [
+            "Exactly matches task specification - 4 routes with correct HTTP methods and paths",
+            "Proper error handling with try-catch blocks and next(err) pattern",
+            "Uses validateApiKeyInput for body validation as required",
+            "Correctly extracts customerId from x-customer-id header with validation",
+            "Consistent response format with success/data structure",
+            "Clean separation of concerns - routes only handle HTTP layer, business logic in services",
+            "Under 45 line limit (35 lines) as specified",
+            "Proper TypeScript typing with Express types",
+            "No code fences or invalid syntax",
+            "Follows RESTful conventions",
+            "Conforms exactly to the requested CRUD endpoints and URL patterns",
+            "Uses validateApiKeyInput for request body validation",
+            "Properly checks for x-customer-id header and returns 400 if missing",
+            "Clean async/await error handling with next(err)"
+          ]
+        }
+      }
+    },
+    {
+      "id": "BE-212",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "critical",
+      "dependencies": [],
+      "status": "rejected",
+      "context": "Create the webhook management routes. File: backend/src/routes/webhooks.ts\n\nExpress Router for webhook registration and management.\n\n```typescript\nimport { Router, Request, Response, NextFunction } from 'express';\nimport { dispatch } from '../services/webhook/dispatch';\nimport { verifySignature } from '../services/webhook/signature';\n\nconst router = Router();\n\n// POST /v1/webhooks — register a new webhook endpoint\nrouter.post('/v1/webhooks', async (req: Request, res: Response, next: NextFunction) => {\n  try {\n    const { url, events, secret } = req.body;\n    if (!url || !events || !Array.isArray(events)) {\n      res.status(400).json({ success: false, error: { message: 'url and events[] are required', code: 'VALIDATION_ERROR' } });\n      return;\n    }\n    const id = `wh_${Date.now().toString(36)}`;\n    const webhook = { id, url, events, secret: secret || null, active: true, createdAt: new Date().toISOString() };\n    res.status(201).json({ success: true, data: webhook });\n  } catch (err) { next(err); }\n});\n\n// GET /v1/webhooks — list registered webhooks\nrouter.get('/v1/webhooks', async (_req: Request, res: Response, next: NextFunction) => {\n  try {\n    res.json({ success: true, data: [], meta: { total: 0 } });\n  } catch (err) { next(err); }\n});\n\n// DELETE /v1/webhooks/:id — remove a webhook\nrouter.delete('/v1/webhooks/:id', async (req: Request, res: Response, next: NextFunction) => {\n  try {\n    res.json({ success: true, data: { id: req.params.id, deleted: true } });\n  } catch (err) { next(err); }\n});\n\nexport default router;\n```\n\nRules: Maximum 40 lines. 3 routes: POST register, GET list, DELETE remove. Basic validation on POST (url + events required). Generate webhook ID with wh_ prefix. Export default router. No database calls yet (placeholder responses for list/delete).",
+      "deliverables": {
+        "code": [
+          "backend/src/routes/webhooks.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "backend/src/routes/webhooks.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "REJECTED",
+          "score": 25,
+          "summary": "Dual-rejected: Claude (25/100) + Codex (60/100). Code violates the 40-line maximum constraint (82 lines vs 40 max) and adds unnecessary complexity with interfaces, extensive validation, and JSDoc comments that weren't requested in the task spec. | The implementation is well-typed, uses Zod for validation, and includes proper error handling, but it exceeds the 40-line limit mandated by the task spec and introduces extra boilerplate not requested (interfaces and comments).",
+          "issues": [
+            {
+              "severity": "critical",
+              "file": "backend/src/routes/webhooks.ts",
+              "description": "File is 82 lines long, exceeds the explicit 40-line maximum constraint by 105%"
+            },
+            {
+              "severity": "high",
+              "file": "backend/src/routes/webhooks.ts",
+              "description": "Added unnecessary TypeScript interfaces (Webhook, CreateWebhookBody) that weren't requested"
+            },
+            {
+              "severity": "high",
+              "file": "backend/src/routes/webhooks.ts",
+              "description": "Added excessive Zod validation schemas beyond basic validation requirement"
+            },
+            {
+              "severity": "medium",
+              "file": "backend/src/routes/webhooks.ts",
+              "description": "Added JSDoc comments throughout when task only required basic functionality"
+            },
+            {
+              "severity": "medium",
+              "file": "backend/src/routes/webhooks.ts",
+              "description": "Parameter validation on DELETE route wasn't requested in spec"
+            },
+            {
+              "severity": "high",
+              "file": "backend/src/routes/webhooks.ts",
+              "description": "The file is approximately 66 lines long, exceeding the maximum of 40 lines specified in the task. Please reduce boilerplate and streamline the implementation to fit within the line limit."
+            },
+            {
+              "severity": "low",
+              "file": "backend/src/routes/webhooks.ts",
+              "description": "Introduces interfaces and JSDoc comments that were not requested by the task spec. Remove or consolidate these to meet the 40-line requirement."
+            }
+          ],
+          "strengths": []
+        }
+      }
+    },
+    {
+      "id": "BE-213",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "status": "done",
+      "context": "Create the settlement routes. File: backend/src/routes/settlements.ts\n\nExpress Router for settlement endpoints. Settlements track the payment resolution of invoices.\n\n```typescript\nimport { Router, Request, Response, NextFunction } from 'express';\n\ninterface SettlementQuery {\n  limit?: string;\n  offset?: string;\n  status?: string;\n}\n\nconst router = Router();\n\n// GET /v1/settlements/:id — get a settlement by ID\nrouter.get('/v1/settlements/:id', async (req: Request, res: Response, next: NextFunction) => {\n  try {\n    const { id } = req.params;\n    res.json({ success: true, data: { id, status: 'pending', amount: 0, currency: 'USD', invoiceId: null, createdAt: new Date().toISOString() } });\n  } catch (err) { next(err); }\n});\n\n// GET /v1/settlements — list settlements with pagination\nrouter.get('/v1/settlements', async (req: Request, res: Response, next: NextFunction) => {\n  try {\n    const { limit = '20', offset = '0', status } = req.query as SettlementQuery;\n    const parsedLimit = Math.min(parseInt(limit, 10) || 20, 100);\n    const parsedOffset = parseInt(offset, 10) || 0;\n    res.json({\n      success: true,\n      data: [],\n      meta: { total: 0, limit: parsedLimit, offset: parsedOffset, hasMore: false },\n    });\n  } catch (err) { next(err); }\n});\n\nexport default router;\n```\n\nRules: Maximum 35 lines. 2 routes: GET by id, GET list with pagination. Placeholder responses (no DB yet). Parse limit/offset from query with defaults. Cap limit at 100. Export default router.",
+      "deliverables": {
+        "code": [
+          "backend/src/routes/settlements.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "backend/src/routes/settlements.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 88,
+          "summary": "Dual-approved: Claude (85/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "medium",
+              "file": "backend/src/routes/settlements.ts",
+              "description": "Missing input validation on the 'id' parameter - should validate it's a valid format (UUID, number, etc.)"
+            },
+            {
+              "severity": "low",
+              "file": "backend/src/routes/settlements.ts",
+              "description": "Status query parameter is defined in interface but not used in the list endpoint"
+            },
+            {
+              "severity": "low",
+              "file": "backend/src/routes/settlements.ts",
+              "description": "No JSDoc comments on public endpoints for API documentation"
+            },
+            {
+              "severity": "medium",
+              "file": "backend/src/routes/settlements.ts",
+              "description": "Missing schema validation (e.g. Zod) on request parameters and query inputs. Consider adding input validation to enforce parameter types."
+            },
+            {
+              "severity": "low",
+              "file": "backend/src/routes/settlements.ts",
+              "description": "No JSDoc comments on public route handlers. Adding documentation would improve maintainability."
+            }
+          ],
+          "strengths": [
+            "Meets all task requirements: 2 routes, pagination, placeholder responses, under 35 lines",
+            "Proper TypeScript typing with interface for query parameters",
+            "Correct error handling with try/catch and next(err) pattern",
+            "Proper limit capping at 100 and default values implementation",
+            "Clean, readable code structure",
+            "No code fences or syntax issues",
+            "Follows Express.js best practices for async route handlers",
+            "Consistent response format with success/data structure",
+            "Routes match the spec exactly",
+            "Proper parsing and capping of limit and offset",
+            "Error handling via next(err)"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-150",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "status": "done",
+      "context": "Create tests for the pagination async generator. File: sdk/typescript/tests/pagination.test.ts\n\nTest the paginate() and collectAll() functions from sdk/typescript/src/pagination.ts.\n\n```typescript\nimport { paginate, collectAll, PaginatedResponse } from '../src/pagination';\n\nfunction mockFetchPage(pages: number[][]): (page: number, pageSize: number) => Promise<PaginatedResponse<number>> {\n  return async (page: number) => ({\n    data: pages[page - 1] || [],\n    total: pages.flat().length,\n    page,\n    pageSize: 10,\n    hasMore: page < pages.length,\n  });\n}\n\ndescribe('paginate', () => {\n  it('yields pages from paginated API', async () => {\n    const fetcher = mockFetchPage([[1, 2], [3, 4], [5]]);\n    const results: number[][] = [];\n    for await (const page of paginate(fetcher)) {\n      results.push(page);\n    }\n    expect(results).toEqual([[1, 2], [3, 4], [5]]);\n  });\n\n  it('stops on empty page', async () => {\n    const fetcher = mockFetchPage([]);\n    const results: number[][] = [];\n    for await (const page of paginate(fetcher)) {\n      results.push(page);\n    }\n    expect(results).toEqual([]);\n  });\n});\n\ndescribe('collectAll', () => {\n  it('flattens all pages into a single array', async () => {\n    const fetcher = mockFetchPage([[1, 2], [3, 4]]);\n    const all = await collectAll(paginate(fetcher));\n    expect(all).toEqual([1, 2, 3, 4]);\n  });\n});\n```\n\nRules: Maximum 40 lines. 3 test cases. Use a mockFetchPage helper (no external mocking library). Import from '../src/pagination'. Test paginate yields correct pages, stops on empty, and collectAll flattens.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/tests/pagination.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/tests/pagination.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 94,
+          "summary": "Dual-approved: Claude (95/100) + Codex (92/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/tests/pagination.test.ts",
+              "description": "Could benefit from testing error scenarios (e.g., fetcher throwing an error) for more comprehensive coverage"
+            }
+          ],
+          "strengths": [
+            "Exactly matches the task specification - 3 test cases, under 40 lines, uses mockFetchPage helper",
+            "Clean TypeScript implementation with proper generic types",
+            "Tests cover the core scenarios: normal pagination, empty results, and collectAll functionality",
+            "No code fences or invalid syntax",
+            "Proper async/await usage with for-await-of loops",
+            "Good separation of concerns with reusable mockFetchPage helper",
+            "Clear, descriptive test names and expectations",
+            "Implements exactly three test cases as specified.",
+            "Uses a simple mockFetchPage helper without external mocking libraries.",
+            "Stays well under the 40-line limit and imports correctly from src.",
+            "Covers both normal pagination flow and edge case of empty pages."
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-151",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "status": "done",
+      "context": "Create tests for the SDK event emitter. File: sdk/typescript/tests/events.test.ts\n\nTest the SdkEventEmitter class from sdk/typescript/src/events.ts. The class has methods: on(), off(), emit(), removeAllListeners().\n\n```typescript\nimport { SdkEventEmitter } from '../src/events';\n\ndescribe('SdkEventEmitter', () => {\n  it('calls listener on emit', () => {\n    const emitter = new SdkEventEmitter();\n    const calls: any[] = [];\n    emitter.on('request:start', (data) => calls.push(data));\n    emitter.emit('request:start', { method: 'GET', url: '/test' });\n    expect(calls).toEqual([{ method: 'GET', url: '/test' }]);\n  });\n\n  it('removes listener with off', () => {\n    const emitter = new SdkEventEmitter();\n    const calls: any[] = [];\n    const listener = (data: any) => calls.push(data);\n    emitter.on('request:start', listener);\n    emitter.off('request:start', listener);\n    emitter.emit('request:start', { method: 'GET', url: '/test' });\n    expect(calls).toEqual([]);\n  });\n\n  it('removeAllListeners clears everything', () => {\n    const emitter = new SdkEventEmitter();\n    const calls: any[] = [];\n    emitter.on('request:start', (data) => calls.push(data));\n    emitter.on('request:end', (data) => calls.push(data));\n    emitter.removeAllListeners();\n    emitter.emit('request:start', { method: 'GET', url: '/test' });\n    expect(calls).toEqual([]);\n  });\n});\n```\n\nRules: Maximum 35 lines. 3 test cases. Import from '../src/events'. Test on+emit, off removes listener, removeAllListeners clears all. No external mocking.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/tests/events.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/tests/events.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 50,
+          "summary": "Dual-approved: Claude (0/100) + Codex (100/100)",
+          "issues": [],
+          "strengths": [
+            "Covers all required methods: on+emit, off, removeAllListeners",
+            "Meets line limit and uses only 3 test cases",
+            "Correct import from '../src/events'",
+            "No code fences or syntax issues"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-152",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "status": "done",
+      "context": "Create tests for the timeout utility. File: sdk/typescript/tests/timeout.test.ts\n\nTest withTimeout() and TimeoutError from sdk/typescript/src/timeout.ts.\n\n```typescript\nimport { withTimeout, TimeoutError } from '../src/timeout';\n\ndescribe('withTimeout', () => {\n  it('resolves if promise finishes before timeout', async () => {\n    const result = await withTimeout(Promise.resolve('ok'), 1000);\n    expect(result).toBe('ok');\n  });\n\n  it('throws TimeoutError if promise exceeds timeout', async () => {\n    const slow = new Promise((resolve) => setTimeout(resolve, 5000));\n    await expect(withTimeout(slow, 50)).rejects.toThrow(TimeoutError);\n  });\n\n  it('TimeoutError includes timeout duration', () => {\n    const err = new TimeoutError(3000);\n    expect(err.timeoutMs).toBe(3000);\n    expect(err.message).toContain('3000');\n  });\n});\n```\n\nRules: Maximum 20 lines. 3 test cases. Import from '../src/timeout'. Test fast resolve, slow timeout, and TimeoutError properties. Use short timeout (50ms) for timeout test to avoid slow tests.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/tests/timeout.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/tests/timeout.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "Dual-approved: Claude (95/100) + Codex (95/100)",
+          "issues": [],
+          "strengths": [
+            "Exactly matches the provided task specification code",
+            "All 3 required test cases implemented correctly",
+            "Uses short 50ms timeout for fast test execution",
+            "Proper import statement from '../src/timeout'",
+            "Tests both success and failure paths",
+            "Validates TimeoutError properties (timeoutMs and message)",
+            "Clean Jest syntax with proper async/await handling",
+            "Under 20 lines as required",
+            "No code fences or syntax issues",
+            "Comprehensive coverage of the timeout utility functionality",
+            "Covers fast resolution, timeout rejection, and error property validation",
+            "Keeps tests under the 20-line limit with only three cases",
+            "Imports correctly from '../src/timeout' without any markdown fences",
+            "Uses a short timeout to keep tests fast"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-170",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "status": "done",
+      "context": "Create an error handling documentation page. File: frontend/app/docs/error-handling/page.tsx\n\nThis is a Next.js server component (NO 'use client'). Documents SDK error types and handling patterns.\n\nStructure:\n- h1: 'Error Handling'\n- p: Brief intro about structured error responses\n- h2: 'Error Types' — ul listing 5 errors: InvoicaError (base), ValidationError (400), AuthenticationError (401), NotFoundError (404), RateLimitError (429)\n- h2: 'Catching Errors' — code block: try { const invoice = await client.createInvoice({...}); } catch (err) { if (err instanceof ValidationError) { console.log(err.code, err.message); } else if (err instanceof RateLimitError) { console.log('Retry after', err.retryAfter, 'seconds'); } }\n- h2: 'Error Response Format' — code block: { success: false, error: { message: 'Invoice not found', code: 'NOT_FOUND', details: null } }\n- h2: 'Best Practices' — ul with 3 items: Always catch InvoicaError as the base class, Check specific error types for targeted handling, Use retryAfter from RateLimitError for backoff\n\nUse ONLY inline styles. No Tailwind. No external imports. No 'use client'. Style: maxWidth 768px, margin '0 auto', padding 32px, fontFamily system-ui. h1 fontSize 32px, h2 fontSize 24px marginTop 32px. Code blocks: backgroundColor '#f5f5f5', padding 16px, borderRadius 8px, overflowX 'auto', fontFamily monospace.\n\nMaximum 55 lines. Export default function ErrorHandlingPage().",
+      "deliverables": {
+        "code": [
+          "frontend/app/docs/error-handling/page.tsx"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/app/docs/error-handling/page.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 93,
+          "summary": "Dual-approved: Claude (95/100) + Codex (90/100)",
+          "issues": [],
+          "strengths": [
+            "Perfect adherence to task requirements - all sections present and correctly structured",
+            "Clean Next.js server component with no 'use client' directive",
+            "Inline styles exactly match specifications (maxWidth 768px, system-ui font, correct spacing)",
+            "Code blocks properly formatted with specified styling (gray background, monospace font, proper padding)",
+            "Content is accurate and helpful for SDK users",
+            "Under 55 line limit (42 lines total)",
+            "No unnecessary imports or dependencies",
+            "Proper semantic HTML structure with h1, h2, ul, pre elements",
+            "Code examples are realistic and demonstrate proper error handling patterns",
+            "Typography hierarchy is clear and consistent",
+            "Adheres to inline styling requirements (no Tailwind or external imports)",
+            "Correct structure and content as per spec (headings, lists, code examples)",
+            "No ‘use client’ directive present, making it a server component",
+            "Well within the 55-line limit",
+            "Consistent and readable formatting"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-171",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "medium",
+      "dependencies": [],
+      "status": "done",
+      "context": "Create an environment configuration documentation page. File: frontend/app/docs/environments/page.tsx\n\nThis is a Next.js server component (NO 'use client'). Documents how the SDK detects and configures different runtime environments.\n\nStructure:\n- h1: 'Environments'\n- p: 'The SDK automatically detects your runtime environment and configures defaults accordingly.'\n- h2: 'Supported Environments' — ul listing: Node.js (server-side), Browser (client-side), Edge Runtime (Vercel/Cloudflare Workers), Deno\n- h2: 'Auto-Detection' — code block: import { detectEnvironment, getDefaultBaseUrl } from '@invoica/sdk'; const env = detectEnvironment(); console.log(env); // 'node' | 'browser' | 'edge' | 'deno'\n- h2: 'Custom Configuration' — code block: const client = new CountableClient({ apiKey: 'inv_...', baseUrl: 'https://api.staging.invoica.ai/v1', timeout: 30000 });\n- h2: 'Environment Variables' — ul with 3 items: INVOICA_API_KEY — API key (auto-detected in Node.js), INVOICA_BASE_URL — Override base URL, INVOICA_DEBUG — Enable debug logging\n\nUse ONLY inline styles. No Tailwind. No external imports. No 'use client'. Style: maxWidth 768px, margin '0 auto', padding 32px, fontFamily system-ui. h1 fontSize 32px, h2 fontSize 24px marginTop 32px. Code blocks: backgroundColor '#f5f5f5', padding 16px, borderRadius 8px, overflowX 'auto', fontFamily monospace.\n\nMaximum 55 lines. Export default function EnvironmentsPage().",
+      "deliverables": {
+        "code": [
+          "frontend/app/docs/environments/page.tsx"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/app/docs/environments/page.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 94,
+          "summary": "Dual-approved: Claude (95/100) + Codex (92/100)",
+          "issues": [],
+          "strengths": [
+            "Perfect adherence to task specification - all required sections and content present",
+            "Correct Next.js server component implementation (no 'use client')",
+            "Proper inline styling matching exact requirements (maxWidth 768px, system-ui font, correct spacing)",
+            "Well-formatted code blocks with proper syntax highlighting structure",
+            "Clean, readable JSX structure with semantic HTML",
+            "Appropriate use of pre/code elements for code examples",
+            "Correct font sizes and margins as specified (h1: 32px, h2: 24px, marginTop: 32px)",
+            "All environment variables properly documented with descriptions",
+            "Code examples are realistic and properly formatted",
+            "File is well under the 55-line limit (approximately 35 lines)",
+            "No unnecessary imports or dependencies",
+            "Proper TypeScript syntax with default export",
+            "Adheres to the specification for headings, content, and styling.",
+            "Uses only inline styles (no Tailwind or external CSS).",
+            "No 'use client' directive, making it a valid server component.",
+            "Includes all required sections and code examples accurately.",
+            "Keeps the component under the 55-line limit and uses proper JSX syntax."
+          ]
+        }
+      }
+    }
+  ]
+}

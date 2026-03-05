@@ -1,0 +1,463 @@
+{
+  "tasks": [
+    {
+      "id": "SDK-120",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "status": "done",
+      "dependencies": [],
+      "description": "Unit tests for SDK error classes",
+      "context": "Write comprehensive Jest tests for sdk/typescript/src/errors.ts. The file exports: InvoicaError extends Error with constructor(message:string, statusCode:number, code:string) setting this.name=this.constructor.name, ValidationError extends InvoicaError with constructor(message) calling super(message,400,'VALIDATION_ERROR'), NotFoundError extends InvoicaError with constructor(message) calling super(message,404,'NOT_FOUND'), AuthenticationError extends InvoicaError with constructor(message) calling super(message,401,'AUTH_ERROR'). Test: InvoicaError sets message/statusCode/code/name correctly, instanceof Error is true, ValidationError has statusCode 400 and code VALIDATION_ERROR and name ValidationError, NotFoundError has statusCode 404 and code NOT_FOUND and name NotFoundError, AuthenticationError has statusCode 401 and code AUTH_ERROR and name AuthenticationError, all errors are instanceof InvoicaError, all errors are instanceof Error.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/__tests__/errors.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/src/__tests__/errors.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 93,
+          "summary": "Dual-approved: Claude (95/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/__tests__/errors.test.ts",
+              "description": "Could add edge case tests like empty messages or special characters, but not required by spec"
+            }
+          ],
+          "strengths": [
+            "All test requirements from spec are covered",
+            "Proper test structure with nested describe blocks for each error class",
+            "Tests all inheritance relationships (instanceof checks)",
+            "Validates all required properties (statusCode, code, name, message)",
+            "Clean, readable test code with descriptive test names",
+            "No code fences or syntax issues",
+            "Follows Jest best practices with clear assertions",
+            "Tests correctly validate statusCode, code, and name for each error class",
+            "Checks instanceof InvoicaError and Error as required",
+            "Clean, focused, and easy-to-read test structure"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-121",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "status": "done",
+      "dependencies": [],
+      "description": "Unit tests for SDK error compatibility layer",
+      "context": "Write comprehensive Jest tests for sdk/typescript/src/error-compat.ts. The file imports InvoicaError from ./errors, creates CountableError as an alias for InvoicaError, and exports RateLimitError class extending InvoicaError with constructor(message:string, retryAfter?:number) calling super(message,429,'RATE_LIMIT') and setting this.name='RateLimitError' and this.retryAfter=retryAfter||0. Exports: CountableError, RateLimitError, InvoicaError (re-export). Test: CountableError is same reference as InvoicaError, new CountableError works like InvoicaError, RateLimitError has statusCode 429 and code RATE_LIMIT and name RateLimitError, RateLimitError with retryAfter sets retryAfter correctly, RateLimitError without retryAfter defaults to 0, RateLimitError is instanceof InvoicaError and instanceof Error, InvoicaError re-export works.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/__tests__/error-compat.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/src/__tests__/error-compat.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 93,
+          "summary": "Dual-approved: Claude (95/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/__tests__/error-compat.test.ts",
+              "description": "Could add edge case tests for invalid retryAfter values (negative numbers, non-numbers) to make the test suite more robust"
+            }
+          ],
+          "strengths": [
+            "All task requirements covered: CountableError alias verification, RateLimitError functionality, inheritance checks, default values, and re-exports",
+            "Clean test structure with descriptive test names that match the task spec exactly",
+            "Proper use of Jest matchers (toBe, toBeInstanceOf, etc.) for different assertion types",
+            "Tests verify both positive cases and default behavior (retryAfter defaulting to 0)",
+            "Inheritance chain properly tested (instanceof InvoicaError and Error)",
+            "No code fences or invalid syntax - clean TypeScript test file",
+            "Validates that CountableError and InvoicaError are the same reference",
+            "Covers re-exported InvoicaError properties (message, statusCode, code)",
+            "Tests RateLimitError statusCode, code, name, retryAfter behaviors",
+            "Ensures correct instanceof behavior for both Error and InvoicaError",
+            "No extraneous code or invalid syntax (no markdown fences)"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-122",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "status": "done",
+      "dependencies": [],
+      "description": "Unit tests for SDK debug logger",
+      "context": "Write comprehensive Jest tests for sdk/typescript/src/debug.ts. The file exports: isDebugEnabled() returns Boolean(process.env.INVOICA_DEBUG), createDebugLogger(namespace:string) returns DebugLogger with log/warn/error methods. When INVOICA_DEBUG is not set, all methods are no-ops (empty functions). When INVOICA_DEBUG is truthy, methods call console.log/warn/error with formatted message '[invoica:${namespace}] ${timestamp} ${message}' and optional data. Test: isDebugEnabled returns false when INVOICA_DEBUG not set, isDebugEnabled returns true when INVOICA_DEBUG is set to any truthy value. For createDebugLogger when debug disabled: log/warn/error do nothing (spy on console, verify not called). For createDebugLogger when debug enabled (set process.env.INVOICA_DEBUG='1' in beforeEach, delete in afterEach): log calls console.log with formatted message containing namespace, warn calls console.warn, error calls console.error, message format includes '[invoica:namespace]' prefix, data parameter is passed through. Use jest.spyOn(console,'log') etc.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/__tests__/debug.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/src/__tests__/debug.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/__tests__/debug.test.ts",
+              "description": "Missing cleanup of console spies in afterEach - could cause test pollution"
+            },
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/__tests__/debug.test.ts",
+              "description": "Could add edge case tests for falsy values like '0', 'false', empty string"
+            }
+          ],
+          "strengths": [
+            "Proper environment variable cleanup with originalEnv preservation",
+            "Comprehensive coverage of both enabled/disabled debug states",
+            "Correct use of jest.spyOn for console methods",
+            "Tests all three log levels (log, warn, error) as specified",
+            "Validates message formatting with namespace prefix",
+            "Tests data parameter pass-through functionality",
+            "Clean test structure with appropriate describe blocks",
+            "No code fences or syntax issues",
+            "Follows Jest best practices for setup/teardown",
+            "Covers isDebugEnabled behavior for both unset and truthy values of INVOICA_DEBUG.",
+            "Verifies createDebugLogger no-ops when debug is disabled.",
+            "Tests log, warn, and error methods call the correct console function with the expected namespace prefix and timestamp placeholder.",
+            "Ensures optional data parameter is passed through to console methods.",
+            "Restores original process.env.INVOICA_DEBUG after each test to avoid side effects."
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-123",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "status": "done",
+      "dependencies": [],
+      "description": "Unit tests for SDK interceptor manager",
+      "context": "Write comprehensive Jest tests for sdk/typescript/src/interceptors.ts. The file exports createInterceptorManager() which returns an InterceptorManager object with: request (array of RequestInterceptor functions), response (array of ResponseInterceptor functions), addRequest(interceptor) pushes to request array and returns index, addResponse(interceptor) pushes to response array and returns index, removeRequest(index) splices from request array, removeResponse(index) splices from response array. RequestInterceptor takes {method,url,headers,body?} and returns same shape. ResponseInterceptor takes {status,headers,data} and returns same shape. Test: createInterceptorManager returns object with empty request and response arrays, addRequest adds interceptor and returns 0-based index, addResponse adds interceptor and returns 0-based index, multiple adds return incrementing indices, removeRequest removes interceptor at index, removeResponse removes interceptor at index, interceptors in arrays are callable functions, request array contains the actual interceptor functions added.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/__tests__/interceptors.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/src/__tests__/interceptors.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/__tests__/interceptors.test.ts",
+              "description": "Could add edge case tests for invalid indices in remove methods (negative numbers, out of bounds)"
+            },
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/__tests__/interceptors.test.ts",
+              "description": "Missing test for RequestInterceptor with optional body parameter to fully validate the interface"
+            }
+          ],
+          "strengths": [
+            "All task requirements explicitly tested and covered",
+            "Proper Jest mock functions used for interceptors",
+            "Good test isolation - each test creates fresh manager instance",
+            "Meaningful assertions that verify both behavior and state",
+            "Tests actual interceptor functionality with realistic request/response transformations",
+            "Clear test descriptions that match the specification exactly",
+            "Proper TypeScript usage without any types",
+            "No code fences or invalid syntax",
+            "Covers initialization of empty request/response arrays.",
+            "Verifies addRequest/addResponse return correct zero-based indices.",
+            "Checks removal at arbitrary indices for both request and response arrays.",
+            "Ensures that interceptors remain callable and perform expected transformations.",
+            "Uses jest.fn to create and track interceptor behavior."
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-124",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "status": "done",
+      "dependencies": [],
+      "description": "Unit tests for SDK webhook event verification",
+      "context": "Write comprehensive Jest tests for sdk/typescript/src/webhook-verify.ts. The file exports: WebhookVerificationError class extending Error with constructor(message) setting this.name='WebhookVerificationError', and constructEvent(payload:string, signature:string, secret:string) which computes HMAC-SHA256 of payload with secret, compares hex digest to signature using timingSafeEqual on Buffers, throws WebhookVerificationError('Invalid webhook signature') if mismatch, returns JSON.parse(payload) as WebhookEvent if valid. WebhookEvent interface has id, type (union of event strings), data, timestamp, signature. Test: WebhookVerificationError sets name and message correctly, WebhookVerificationError is instanceof Error, constructEvent with valid signature returns parsed event object, constructEvent with invalid signature throws WebhookVerificationError, constructEvent with wrong secret throws WebhookVerificationError, constructEvent with tampered payload throws WebhookVerificationError. To create valid test data: use crypto.createHmac('sha256',secret).update(payload).digest('hex') to compute expected signature, then call constructEvent(payload, expectedSig, secret).",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/__tests__/webhook-verify.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/src/__tests__/webhook-verify.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/__tests__/webhook-verify.test.ts",
+              "description": "Could add more descriptive test names and additional edge cases like empty payload or malformed JSON"
+            }
+          ],
+          "strengths": [
+            "All required test cases implemented as specified",
+            "Proper use of crypto.createHmac for generating valid signatures",
+            "Clean test structure with appropriate describe blocks",
+            "Tests both positive and negative scenarios",
+            "Correct imports and TypeScript usage",
+            "Tests verify both error type and inheritance",
+            "Uses realistic test data with proper JSON structure",
+            "Covers all edge cases: invalid signature, wrong secret, tampered payload",
+            "Covers all required positive and negative test cases",
+            "Valid signature generation uses crypto.createHmac as specified",
+            "Properly asserts error type with toThrow(WebhookVerificationError)",
+            "Clean, concise, and readable test code"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-270",
+      "agent": "frontend",
+      "type": "test",
+      "priority": "high",
+      "status": "done",
+      "dependencies": [],
+      "description": "Unit tests for sidebar navigation items data",
+      "context": "Write comprehensive Jest tests for frontend/components/sidebar-nav-items.ts. The file exports NavItem interface with href:string, label:string, iconPath:string, iconPaths?:string[], and navItems:NavItem[] array containing 8 navigation items: Dashboard(/), Settlements(/settlements), API Keys(/api-keys), Invoices(/invoices), Settings(/settings), Agents(/agents), Webhooks(/webhooks), Docs(/docs/getting-started). Test: navItems is an array, navItems has exactly 8 items, each item has required href/label/iconPath properties, href values are unique, href values start with /, label values are unique, iconPath values are non-empty strings, Settings item has iconPaths array, first item is Dashboard with href /, last item is Docs with href /docs/getting-started, all labels match expected set ['Dashboard','Settlements','API Keys','Invoices','Settings','Agents','Webhooks','Docs'].",
+      "deliverables": {
+        "code": [
+          "frontend/components/__tests__/sidebar-nav-items.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/components/__tests__/sidebar-nav-items.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/components/__tests__/sidebar-nav-items.test.ts",
+              "description": "Could add test for specific href values to ensure they match expected routes exactly"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/components/__tests__/sidebar-nav-items.test.ts",
+              "description": "Missing test to verify iconPaths array content/structure for Settings item"
+            }
+          ],
+          "strengths": [
+            "All specified test requirements are covered comprehensively",
+            "Clean TypeScript with proper type checking and no 'any' types",
+            "Good use of forEach for iterating over array items with proper assertions",
+            "Proper use of Set for uniqueness validation",
+            "Clear test descriptions that match the specification exactly",
+            "Good separation of concerns with individual test cases",
+            "Proper use of expect.arrayContaining for flexible array matching",
+            "Non-null assertion operator used appropriately after existence check",
+            "Constants defined at top level for maintainability",
+            "Covers array structure, length and type checks",
+            "Verifies unique and correctly formatted hrefs and labels",
+            "Checks special cases for Settings iconPaths and first/last items",
+            "No invalid code fences or syntax issues"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-271",
+      "agent": "frontend",
+      "type": "test",
+      "priority": "high",
+      "status": "done",
+      "dependencies": [],
+      "description": "Unit tests for useApi hook",
+      "context": "Write comprehensive Jest tests for frontend/hooks/use-api.ts using @testing-library/react renderHook. The file exports useApi<T>(fetcher:()=>Promise<T>, deps?:unknown[]) which returns {data:T|null, error:Error|null, isLoading:boolean, refetch:()=>void}. It uses useState for data/error/isLoading, useCallback wrapping fetcher, useEffect to auto-execute on mount. On success: sets data, clears error, sets isLoading false. On failure: sets error, clears data, sets isLoading false. refetch re-triggers execution. Test with renderHook and act/waitFor from @testing-library/react: initial state has isLoading true and data null and error null, successful fetch sets data and isLoading false, failed fetch sets error and isLoading false, refetch triggers new fetch, data is cleared on error. Mock fetcher with jest.fn().mockResolvedValue() or .mockRejectedValue(). Import renderHook from '@testing-library/react' and use await waitFor(() => expect(...)).",
+      "deliverables": {
+        "code": [
+          "frontend/hooks/__tests__/use-api.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/hooks/__tests__/use-api.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 90,
+          "summary": "Dual-approved: Claude (88/100) + Codex (92/100)",
+          "issues": [
+            {
+              "severity": "medium",
+              "file": "frontend/hooks/__tests__/use-api.test.ts",
+              "description": "Test 'clears data when error follows success' uses rerender() but doesn't actually change dependencies - this test may not be testing the intended scenario properly"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/hooks/__tests__/use-api.test.ts",
+              "description": "Could benefit from testing refetch behavior during loading state and testing multiple rapid refetch calls"
+            }
+          ],
+          "strengths": [
+            "Proper use of renderHook and waitFor from @testing-library/react",
+            "Tests cover all specified behaviors: initial state, success, failure, refetch, dependency changes",
+            "Good use of TypeScript generics in test cases",
+            "Proper async testing with waitFor patterns",
+            "Tests data clearing on error as specified",
+            "Mock functions properly configured with jest.fn()",
+            "Clean test structure with descriptive test names",
+            "Tests dependency array functionality correctly",
+            "Covers all required scenarios: initial loading state, successful fetch, error fetch, sequential success→error, dependency changes, and manual refetch.",
+            "Uses jest.fn() for controlled mock implementations.",
+            "Leverages @testing-library/react renderHook and waitFor effectively.",
+            "Clear, readable tests with proper async handling."
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-272",
+      "agent": "frontend",
+      "type": "test",
+      "priority": "medium",
+      "status": "done",
+      "dependencies": [],
+      "description": "Unit tests for Toast component",
+      "context": "Write comprehensive Jest tests for frontend/components/toast.tsx using @testing-library/react. The file exports Toast component with props {message:string, type:ToastType, onClose:()=>void} where ToastType='success'|'error'|'info'. It renders a fixed-position div with background color based on type (success=#16a34a, error=#dc2626, info=#2563eb), message text, and a close button (×) that calls onClose. Also exports useToast hook. Test Toast component: renders message text, renders close button, clicking close button calls onClose, renders with different types. Use render from @testing-library/react and screen.getByText/getByRole. Import { render, screen, fireEvent } from '@testing-library/react'. Test: render(<Toast message='Test' type='success' onClose={mockFn} />), expect screen.getByText('Test') to be in document, fireEvent.click on close button calls mockFn.",
+      "deliverables": {
+        "code": [
+          "frontend/components/__tests__/toast.test.tsx"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/components/__tests__/toast.test.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/components/__tests__/toast.test.tsx",
+              "description": "Missing tests for useToast hook as mentioned in task spec"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/components/__tests__/toast.test.tsx",
+              "description": "Could add edge case tests (empty message, null onClose) for more robust coverage"
+            }
+          ],
+          "strengths": [
+            "Follows exact task specifications with proper imports and test structure",
+            "Uses @testing-library/react best practices with screen queries and fireEvent",
+            "Proper Jest setup with beforeEach cleanup of mock functions",
+            "Tests all three toast types with correct background color validation",
+            "Good test naming and organization with clear describe/it blocks",
+            "Correctly tests user interactions (close button click)",
+            "Uses semantic queries (getByRole, getByText) as recommended",
+            "No code fences or syntax issues - clean TypeScript test file",
+            "Comprehensive tests for all toast types (success, error, info)",
+            "Verifies message rendering and close button functionality",
+            "Proper use of Jest mocks and cleanup between tests",
+            "Uses @testing-library/react best practices (render, screen, fireEvent)"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-273",
+      "agent": "frontend",
+      "type": "test",
+      "priority": "medium",
+      "status": "done",
+      "dependencies": [],
+      "description": "Unit tests for EmptyState component",
+      "context": "Write comprehensive Jest tests for frontend/components/empty-state.tsx using @testing-library/react. The file exports EmptyState component with props {title:string, description:string, actionLabel?:string, onAction?:()=>void}. It renders a centered div with title as h3, description as p, and optionally a button with actionLabel text that calls onAction on click. The button only renders when BOTH actionLabel AND onAction are provided. Test: renders title text, renders description text, renders action button when actionLabel and onAction provided, clicking action button calls onAction, does NOT render button when actionLabel is missing, does NOT render button when onAction is missing, does NOT render button when both are missing. Use render/screen/fireEvent from '@testing-library/react'. Example: render(<EmptyState title='No data' description='Nothing here' />), expect(screen.getByText('No data')).toBeInTheDocument(), expect(screen.queryByRole('button')).toBeNull().",
+      "deliverables": {
+        "code": [
+          "frontend/components/__tests__/empty-state.test.tsx"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/components/__tests__/empty-state.test.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 93,
+          "summary": "Dual-approved: Claude (95/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/components/__tests__/empty-state.test.tsx",
+              "description": "Could add test for semantic HTML structure (h3 for title, p for description) to ensure proper accessibility"
+            }
+          ],
+          "strengths": [
+            "All 7 specified test cases implemented correctly",
+            "Proper use of @testing-library/react with render, screen, fireEvent",
+            "Clean test structure with descriptive test names",
+            "Correct use of jest.fn() for mocking onAction callback",
+            "Proper assertions using toBeInTheDocument() and toBeNull()",
+            "Tests both positive and negative cases for button rendering logic",
+            "Follows testing best practices with isolated test cases",
+            "No code fences or invalid syntax",
+            "Matches exact task specification requirements",
+            "Covers all required scenarios: presence and absence of action button based on props.",
+            "Uses @testing-library/react best practices (getByText, getByRole, queryByRole).",
+            "Clear and concise test descriptions.",
+            "Ensures onAction callback is invoked exactly once."
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,368 @@
+{
+  "tasks": [
+    {
+      "id": "SDK-020",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "critical",
+      "dependencies": [],
+      "context": "Rename the SDK client class from CountableClient to InvoicaClient in sdk/typescript/src/client.ts. The company rebranded from Countable to Invoica. Change: class name to InvoicaClient, error class to InvoicaError, default baseUrl to 'https://api.invoica.ai'. Also update the header prefix from X-Countable to X-Invoica if present. Keep all existing methods (createInvoice, getInvoice, listInvoices) exactly as they are. Export both InvoicaClient and InvoicaError. Keep under 50 lines.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/client.ts"
+        ],
+        "tests": [
+          "sdk/typescript/tests/client.test.ts"
+        ]
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "sdk/typescript/src/client.ts",
+          "sdk/typescript/tests/client.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 92,
+          "summary": "Clean implementation of the rebranding task. All required changes made correctly with proper error handling and comprehensive tests. Minor issues with test mocking setup but functionality is solid.",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/tests/client.test.ts",
+              "description": "Test mocking could be more robust - the axios mock setup doesn't properly simulate the interceptor behavior and instance creation"
+            },
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/client.ts",
+              "description": "Error handling could extract more specific error information from AxiosError (e.g., response.data.message if available)"
+            }
+          ],
+          "strengths": [
+            "All required rebranding changes implemented correctly (CountableClient → InvoicaClient, CountableError → InvoicaError, baseUrl updated)",
+            "Header prefix correctly updated from X-Countable to X-Invoica",
+            "All existing methods preserved exactly as specified",
+            "Proper TypeScript typing with no 'any' types used",
+            "Good error handling with custom InvoicaError class",
+            "Comprehensive test coverage including edge cases",
+            "Code stays well under the 50-line limit (44 lines in main file)",
+            "Clean, readable code structure",
+            "Proper exports of both InvoicaClient and InvoicaError"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-021",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "context": "Add settlement types to sdk/typescript/src/types.ts. Add these interfaces: GetSettlementParams { invoiceId: string }, SettlementStatus { invoiceId: string; status: 'pending' | 'confirmed' | 'failed'; txHash: string | null; chain: string; confirmedAt: string | null; amount: number; currency: string }. Also add type WebhookEventType = 'invoice.created' | 'invoice.paid' | 'invoice.settled' | 'invoice.failed' | 'settlement.confirmed' | 'settlement.failed'. Keep the file under 60 lines total by keeping existing types and adding the new ones.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/types.ts"
+        ],
+        "tests": [
+          "sdk/typescript/tests/types.test.ts"
+        ]
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "sdk/typescript/src/types.ts",
+          "sdk/typescript/tests/types.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 92,
+          "summary": "Clean implementation of settlement types with proper TypeScript definitions and comprehensive tests. Code meets all requirements and follows project standards.",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/types.ts",
+              "description": "Missing JSDoc comments on new public interfaces (GetSettlementParams, SettlementStatus, WebhookEventType)"
+            },
+            {
+              "severity": "low",
+              "file": "sdk/typescript/tests/types.test.ts",
+              "description": "Test for ApiResponse uses empty createdAt/updatedAt strings instead of proper ISO dates"
+            }
+          ],
+          "strengths": [
+            "Exact adherence to task specification - all required types implemented correctly",
+            "File stays under 60 lines as requested (39 lines total)",
+            "Proper TypeScript union types for status and webhook events",
+            "Comprehensive test coverage for all new types with edge cases",
+            "Maintains existing types while adding new ones as specified",
+            "Good use of nullable types (txHash, confirmedAt) for different settlement states",
+            "Tests validate all enum values and null handling scenarios",
+            "Clean, readable code structure with proper exports"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-022",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [
+        "SDK-020"
+      ],
+      "context": "Add 2 settlement methods to the InvoicaClient class in sdk/typescript/src/client.ts. Import SettlementStatus and GetSettlementParams from ./types. Add: getSettlement(params: GetSettlementParams): Promise<SettlementStatus> — GET /settlements/{params.invoiceId}. listSettlements(invoiceId?: string): Promise<SettlementStatus[]> — GET /settlements with optional ?invoiceId= query param. Each method is 3-5 lines calling this.request(). Keep file under 70 lines total.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/client.ts"
+        ],
+        "tests": [
+          "sdk/typescript/tests/client.test.ts"
+        ]
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "sdk/typescript/src/client.ts",
+          "sdk/typescript/tests/client.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 92,
+          "summary": "Clean implementation that meets all task requirements. Both settlement methods are correctly implemented with proper TypeScript types, error handling, and comprehensive tests. Code stays well under the 70-line limit.",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/client.ts",
+              "description": "Missing input validation on GetSettlementParams - should validate invoiceId is not empty string"
+            },
+            {
+              "severity": "low",
+              "file": "sdk/typescript/tests/client.test.ts",
+              "description": "Test setup could use beforeEach to reset fetch mock instead of redefining in each test"
+            }
+          ],
+          "strengths": [
+            "Exact implementation as specified - both methods are 3-4 lines calling this.request()",
+            "Proper TypeScript imports for SettlementStatus and GetSettlementParams",
+            "Correct API endpoints: GET /settlements/{invoiceId} and GET /settlements with query param",
+            "File stays at 35 lines, well under 70-line requirement",
+            "Comprehensive test coverage for both happy path and error scenarios",
+            "Proper error handling with meaningful error messages",
+            "Clean query parameter handling for optional invoiceId filter",
+            "Consistent code style with existing client methods",
+            "No unnecessary abstractions or overengineering"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-023",
+      "agent": "security",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "context": "Create a standalone webhook verification helper for SDK consumers at sdk/typescript/src/webhook.ts. Import only Node.js crypto. Export function verifyWebhookSignature(payload: string, signature: string, secret: string): boolean — compute HMAC-SHA256 of payload with secret, compare hex digest to signature using crypto.timingSafeEqual with Buffer.from. Export function parseWebhookEvent(payload: string): { id: string; type: string; data: unknown; createdAt: string } — JSON.parse the payload and return typed object. Keep under 30 lines total. No external dependencies.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/webhook.ts"
+        ],
+        "tests": [
+          "sdk/typescript/tests/webhook.test.ts"
+        ]
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "sdk/typescript/src/webhook.ts",
+          "sdk/typescript/tests/webhook.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 92,
+          "summary": "Clean, minimal webhook utility that meets all requirements. Proper crypto usage, good test coverage, and stays within the 30-line constraint.",
+          "issues": [
+            {
+              "severity": "medium",
+              "file": "sdk/typescript/src/webhook.ts",
+              "description": "parseWebhookEvent lacks input validation - should check if parsed object has required properties (id, type, data, createdAt) before accessing them"
+            },
+            {
+              "severity": "low",
+              "file": "sdk/typescript/tests/webhook.test.ts",
+              "description": "Missing test case for parseWebhookEvent with missing required fields to verify error handling"
+            }
+          ],
+          "strengths": [
+            "Correctly implements HMAC-SHA256 verification with timing-safe comparison",
+            "Uses only Node.js crypto as required, no external dependencies",
+            "Stays well under 30-line limit (12 lines total)",
+            "Proper TypeScript typing with explicit return types",
+            "Good test coverage including edge cases (invalid signature, length mismatch)",
+            "Clean, readable code with appropriate buffer handling",
+            "Tests verify both success and failure paths"
+          ]
+        }
+      }
+    },
+    {
+      "id": "BC-040",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "context": "Create concrete webhook event type constants and factory functions at backend/src/services/webhook/events.ts. Export const WEBHOOK_EVENTS = { INVOICE_CREATED: 'invoice.created', INVOICE_PAID: 'invoice.paid', INVOICE_SETTLED: 'invoice.settled', INVOICE_FAILED: 'invoice.failed', SETTLEMENT_CONFIRMED: 'settlement.confirmed', SETTLEMENT_FAILED: 'settlement.failed' } as const. Export function createWebhookEvent(type: string, data: unknown): WebhookEvent that returns { id: crypto.randomUUID(), type, data, createdAt: new Date().toISOString() }. Import WebhookEvent from ./types. Keep under 25 lines.",
+      "deliverables": {
+        "code": [
+          "backend/src/services/webhook/events.ts"
+        ],
+        "tests": [
+          "backend/tests/services/webhook-events.test.ts"
+        ]
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "backend/src/services/webhook/events.ts",
+          "backend/tests/services/webhook-events.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "Clean, minimal implementation that exactly matches task requirements. Well-tested with comprehensive coverage.",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "backend/src/services/webhook/events.ts",
+              "description": "Function parameter 'type' accepts any string instead of being constrained to valid webhook event types"
+            }
+          ],
+          "strengths": [
+            "Exactly matches task specification - no overengineering",
+            "Proper TypeScript with const assertion for type safety",
+            "Clean, readable code under 25 lines as required",
+            "Comprehensive test coverage with edge cases",
+            "Tests validate all exported constants and function behavior",
+            "Proper use of crypto.randomUUID() for unique IDs",
+            "ISO string format for timestamps",
+            "No unnecessary abstractions or extra files"
+          ]
+        }
+      }
+    },
+    {
+      "id": "BC-041",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "medium",
+      "dependencies": [],
+      "context": "Create a settlement status endpoint handler at backend/src/api/settlements.ts. Export async function getSettlement(req: Request, res: Response): Promise<void>. Extract invoiceId from req.params.invoiceId. Return a JSON response with shape { invoiceId: string, status: 'pending' | 'confirmed' | 'failed', txHash: string | null, chain: string, confirmedAt: string | null, amount: number, currency: string }. For now, use a mock implementation that returns status 'pending' with txHash null (the real implementation will connect to the settlement poller later). Validate that invoiceId is a non-empty string, return 400 if missing. Keep under 35 lines.",
+      "deliverables": {
+        "code": [
+          "backend/src/api/settlements.ts"
+        ],
+        "tests": [
+          "backend/tests/api/settlements.test.ts"
+        ]
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "backend/src/api/settlements.ts",
+          "backend/tests/api/settlements.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 92,
+          "summary": "Clean, well-structured implementation that meets all task requirements. Proper TypeScript types, Zod validation, comprehensive tests, and stays within the 35-line limit.",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "backend/src/api/settlements.ts",
+              "description": "Hardcoded mock values (chain: 'ethereum', amount: 0, currency: 'USD') could be made more explicit as constants or documented as temporary mock data"
+            },
+            {
+              "severity": "low",
+              "file": "backend/tests/api/settlements.test.ts",
+              "description": "Test setup could be extracted to a helper function to reduce boilerplate, but acceptable for this scope"
+            }
+          ],
+          "strengths": [
+            "Proper Zod validation with clear error messages",
+            "TypeScript interface defines exact response shape as specified",
+            "Comprehensive test coverage including edge cases (missing, empty invoiceId)",
+            "Clean error handling with appropriate HTTP status codes",
+            "Stays within 35-line requirement (28 lines in main file)",
+            "Follows project patterns with proper imports and async/await",
+            "Mock implementation clearly returns expected 'pending' status with null txHash",
+            "Good separation of concerns with validation logic"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-040",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "medium",
+      "dependencies": [],
+      "context": "Create a WebhookEventCard React component at frontend/components/dashboard/webhook-event-card.tsx. Props: { eventType: string; eventId: string; timestamp: string; status: 'delivered' | 'failed' | 'pending' }. Render a card with: event type as bold title, event ID in monospace gray text, timestamp formatted as relative time (use simple 'X minutes ago' logic), and a colored status dot (green for delivered, red for failed, yellow for pending). Use Tailwind CSS classes. Export as default. Keep under 45 lines. No external date libraries.",
+      "deliverables": {
+        "code": [
+          "frontend/components/dashboard/webhook-event-card.tsx"
+        ],
+        "tests": [
+          "frontend/tests/components/webhook-event-card.test.tsx"
+        ]
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "frontend/components/dashboard/webhook-event-card.tsx",
+          "frontend/tests/components/webhook-event-card.test.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 92,
+          "summary": "Well-implemented React component that meets all task requirements with good TypeScript practices, comprehensive testing, and clean code structure.",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/components/dashboard/webhook-event-card.tsx",
+              "description": "Missing JSDoc documentation on the main component function"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/components/dashboard/webhook-event-card.tsx",
+              "description": "Could add prop validation or default props for better robustness"
+            }
+          ],
+          "strengths": [
+            "Meets all task requirements exactly - correct props, layout, styling, and functionality",
+            "Stays well under 45-line limit (42 lines including whitespace)",
+            "Proper TypeScript with strict interface definition and no 'any' types",
+            "Clean relative time formatting logic without external dependencies",
+            "Good use of Tailwind CSS classes for responsive design and hover effects",
+            "Comprehensive test coverage with 6 test cases covering all scenarios",
+            "Proper accessibility with aria-label on status dot",
+            "Clean code structure with separated concerns (utility function, constants)",
+            "Follows React best practices with proper export and component structure",
+            "Tests use realistic data and cover edge cases (just now, days ago)"
+          ]
+        }
+      }
+    }
+  ]
+}

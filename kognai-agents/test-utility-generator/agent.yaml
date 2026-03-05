@@ -1,0 +1,9 @@
+name: test-utility-generator
+role: "Generates reusable test utilities for stateful patterns (circuit breakers, caches, rate limiters)"
+llm: minimax/MiniMax-M2.5
+reports_to: ceo
+trigger: on_demand
+created_by: cto_proposal
+created_at: "2026-02-18T09:51:52.720Z"
+context_files:
+  - docs/learnings.md

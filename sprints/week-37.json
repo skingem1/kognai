@@ -1,0 +1,214 @@
+{
+  "sprint": "week-37",
+  "theme": "API Mock Handler Tests + Zod Schema Tests + Dashboard Pages",
+  "goals": [
+    "Add test coverage for remaining mock API handlers (invoices, merchants, payments, settlements)",
+    "Add test coverage for Zod validation in invoices-get and invoices-create schema",
+    "Add new frontend dashboard pages (integrations, logs)"
+  ],
+  "tasks": [
+    {
+      "id": "BE-310",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "critical",
+      "description": "Unit tests for invoices API barrel and updateInvoice handler",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create unit tests for backend/src/api/invoices.ts. The file exports:\n\n1. Re-exports from other files: `export { listInvoices, createInvoice } from './invoices-list'` and `export { getInvoiceById as getInvoice } from './invoices-get'`\n2. `async function updateInvoice(req: Request, res: Response): Promise<void>` — Gets id from req.params, updates from req.body. Calls `res.json({ id, ...updates, updatedAt: new Date().toISOString() })`.\n\nMock pattern:\n```typescript\nconst mockRes = { json: jest.fn(), status: jest.fn().mockReturnThis() };\n```\n\nTest updateInvoice:\n- With req.params.id='inv_001' and req.body={amount:500, status:'paid'} → response has id='inv_001', amount=500, status='paid', and updatedAt is valid ISO string\n- With req.params.id='inv_002' and empty req.body → response has id='inv_002' and updatedAt\n- updatedAt is always a valid ISO timestamp\n\nTest re-exports:\n- Verify listInvoices is exported and is a function\n- Verify createInvoice is exported and is a function\n- Verify getInvoice is exported and is a function (renamed from getInvoiceById)\n\nFile: `backend/src/api/__tests__/invoices.test.ts`\nImport: `import { updateInvoice, listInvoices, createInvoice, getInvoice } from '../invoices';`\nKeep under 80 lines.",
+      "deliverables": {
+        "code": [
+          "backend/src/api/__tests__/invoices.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "backend/src/api/__tests__/invoices.test.ts",
+          "backend/src/api/__tests__/invoices.test.ts"
+        ],
+        "commit": "98a4420",
+        "model": "MiniMax-M2.5"
+      }
+    },
+    {
+      "id": "BE-311",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "critical",
+      "description": "Unit tests for invoices-get handler — getInvoiceById with Zod ID validation and mock data",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create unit tests for backend/src/api/invoices-get.ts. The file exports:\n\n`async function getInvoiceById(req: Request, res: Response): Promise<void>` — Validates req.params.id with `z.string().min(1)`. If validation fails returns `res.status(400).json({ error: 'Invalid invoice ID' })`. If valid, calls mockGetInvoiceById(id) which returns `{ id, number:'INV-001', amount:0, currency:'USD', status:'pending', createdAt: new Date().toISOString(), paidAt: null, metadata: {} }`. Returns `res.status(200).json(invoice)`.\n\nMock pattern:\n```typescript\nconst mockRes = { json: jest.fn(), status: jest.fn().mockReturnThis() };\n```\n\nTest getInvoiceById:\n- With valid req.params.id='inv_001' → returns status 200 with invoice object containing id='inv_001', number='INV-001', amount=0, currency='USD', status='pending'\n- Invoice has createdAt (valid ISO), paidAt=null, metadata={}\n- With req.params.id='' (empty string) → returns status 400 with {error:'Invalid invoice ID'}\n- With req.params.id=undefined → returns status 400 with {error:'Invalid invoice ID'}\n\nFile: `backend/src/api/__tests__/invoices-get.test.ts`\nImport: `import { getInvoiceById } from '../invoices-get';`\nKeep under 80 lines.",
+      "deliverables": {
+        "code": [
+          "backend/src/api/__tests__/invoices-get.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "backend/src/api/__tests__/invoices-get.test.ts",
+          "backend/src/api/__tests__/invoices-get.test.ts"
+        ],
+        "commit": "cdf0bd2",
+        "model": "MiniMax-M2.5"
+      }
+    },
+    {
+      "id": "BE-312",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "critical",
+      "description": "Unit tests for invoices-settlements mock handler — getInvoicesWithSettlements",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create unit tests for backend/src/api/invoices-settlements.ts. The file exports:\n\n`async function getInvoicesWithSettlements(req: Request, res: Response): Promise<void>` — Returns `res.json({ invoices })` where invoices is a hardcoded array of 3 objects. Each has: id, number, amount, currency, status, and settlement (object or null).\n\nThe 3 invoices:\n1. { id:'inv_001', number:'INV-0001', amount:1000, currency:'USD', status:'paid', settlement:{ id:'stl_001', status:'confirmed', txHash:'0xabc123', chain:'base' } }\n2. { id:'inv_002', number:'INV-0002', amount:2500, currency:'USD', status:'pending', settlement:null }\n3. { id:'inv_003', number:'INV-0003', amount:750, currency:'EUR', status:'paid', settlement:{ id:'stl_003', status:'confirmed', txHash:'0xdef456', chain:'ethereum' } }\n\nMock pattern:\n```typescript\nconst mockRes = { json: jest.fn(), status: jest.fn().mockReturnThis() };\nconst mockReq = {} as any;\n```\n\nTests:\n- Calls res.json once with { invoices } array of 3 items\n- First invoice: id='inv_001', status='paid', settlement not null, settlement.chain='base'\n- Second invoice: id='inv_002', status='pending', settlement is null\n- Third invoice: currency='EUR', settlement.chain='ethereum'\n- All invoices have id, number, amount, currency, status fields\n- Paid invoices have settlement objects with id, status, txHash, chain\n\nFile: `backend/src/api/__tests__/invoices-settlements.test.ts`\nImport: `import { getInvoicesWithSettlements } from '../invoices-settlements';`\nKeep under 90 lines.",
+      "deliverables": {
+        "code": [
+          "backend/src/api/__tests__/invoices-settlements.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "backend/src/api/__tests__/invoices-settlements.test.ts"
+        ],
+        "commit": "1193777",
+        "model": "MiniMax-M2.5"
+      }
+    },
+    {
+      "id": "BE-313",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "description": "Unit tests for merchants mock API — listMerchants, createMerchant, getMerchant",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create unit tests for backend/src/api/merchants.ts. The file exports 3 functions:\n\n1. `async function listMerchants(req: Request, res: Response): Promise<void>` — Returns `res.json({ merchants: [...], total:2, limit: Number(req.query.limit)||10, offset: Number(req.query.offset)||0 })`. merchants has 2 items: { id:'merch_001', name:'Acme Corp', email:'billing@acme.com', status:'active', createdAt:'2026-01-15T10:00:00Z' } and { id:'merch_002', name:'Globex Inc', email:'pay@globex.io', status:'active', createdAt:'2026-02-01T08:30:00Z' }.\n\n2. `async function createMerchant(req: Request, res: Response): Promise<void>` — Returns `res.status(201).json({ id: 'merch_'+Date.now().toString(36), name: req.body.name||'New Merchant', email: req.body.email||'', status:'active', createdAt: new Date().toISOString() })`.\n\n3. `async function getMerchant(req: Request, res: Response): Promise<void>` — Returns `res.json({ id: req.params.id, name:'Acme Corp', email:'billing@acme.com', status:'active', createdAt:'2026-01-15T10:00:00Z' })`.\n\nMock pattern:\n```typescript\nconst mockRes = { json: jest.fn(), status: jest.fn().mockReturnThis() };\n```\n\nTest listMerchants:\n- Returns { merchants, total, limit, offset }\n- merchants has 2 items, total=2\n- Default limit=10, offset=0 when no query params\n- With req.query.limit='5' → limit=5\n\nTest createMerchant:\n- Returns status 201\n- With req.body.name='Test' → name='Test'\n- Without body → name defaults to 'New Merchant'\n- id starts with 'merch_'\n- createdAt is valid ISO\n\nTest getMerchant:\n- With req.params.id='merch_001' → response.id='merch_001'\n- Returns name='Acme Corp'\n\nFile: `backend/src/api/__tests__/merchants.test.ts`\nImport: `import { listMerchants, createMerchant, getMerchant } from '../merchants';`\nKeep under 110 lines.",
+      "deliverables": {
+        "code": [
+          "backend/src/api/__tests__/merchants.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "backend/src/api/__tests__/merchants.test.ts",
+          "backend/src/api/__tests__/merchants.test.ts"
+        ],
+        "commit": "46c1b12",
+        "model": "MiniMax-M2.5"
+      }
+    },
+    {
+      "id": "BE-314",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "description": "Unit tests for payments mock API — createPayment and getPayment",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create unit tests for backend/src/api/payments.ts. The file exports 2 functions:\n\n1. `async function createPayment(req: Request, res: Response): Promise<void>` — Returns `res.status(201).json({ id: 'pay_'+Date.now().toString(36), invoiceId: req.body.invoiceId||'', amount: req.body.amount||0, currency: req.body.currency||'USD', method: req.body.method||'crypto', status:'pending', createdAt: new Date().toISOString() })`.\n\n2. `async function getPayment(req: Request, res: Response): Promise<void>` — Returns `res.json({ id: req.params.id, invoiceId:'inv_sample', amount:1000, currency:'USD', method:'crypto', status:'confirmed', createdAt:'2026-02-10T12:00:00Z', confirmedAt:'2026-02-10T12:05:00Z' })`.\n\nMock pattern:\n```typescript\nconst mockRes = { json: jest.fn(), status: jest.fn().mockReturnThis() };\n```\n\nTest createPayment:\n- Returns status 201\n- With req.body={invoiceId:'inv_001', amount:500, currency:'EUR', method:'wire'} → response has those values\n- Without body → defaults: invoiceId='', amount=0, currency='USD', method='crypto'\n- id starts with 'pay_'\n- status is always 'pending'\n- createdAt is valid ISO\n\nTest getPayment:\n- With req.params.id='pay_001' → response.id='pay_001'\n- Returns amount=1000, currency='USD', method='crypto', status='confirmed'\n- Has confirmedAt field\n\nFile: `backend/src/api/__tests__/payments.test.ts`\nImport: `import { createPayment, getPayment } from '../payments';`\nKeep under 90 lines.",
+      "deliverables": {
+        "code": [
+          "backend/src/api/__tests__/payments.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "backend/src/api/__tests__/payments.test.ts"
+        ],
+        "commit": "60eae74",
+        "model": "MiniMax-M2.5"
+      }
+    },
+    {
+      "id": "BE-315",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "description": "Unit tests for invoices-create Zod schema — createInvoiceSchema validation",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create unit tests for the Zod schema exported from backend/src/api/invoices-create.ts. The file exports:\n\n```typescript\nexport const createInvoiceSchema = z.object({\n  amount: z.number().positive(),\n  currency: z.string().length(3),\n  customerEmail: z.string().email(),\n  customerName: z.string().min(1),\n});\n```\n\nIMPORTANT: Only test the exported Zod schema, NOT the createInvoice handler (which depends on services/invoice).\n\nTest createInvoiceSchema:\n- Valid input: { amount:100, currency:'USD', customerEmail:'test@test.com', customerName:'John' } → passes\n- amount must be positive: { amount:0, ... } → fails\n- amount must be positive: { amount:-1, ... } → fails\n- amount must be a number: { amount:'100', ... } → fails\n- currency must be exactly 3 chars: { currency:'US', ... } → fails\n- currency must be exactly 3 chars: { currency:'USDD', ... } → fails\n- customerEmail must be valid: { customerEmail:'notanemail', ... } → fails\n- customerName must be non-empty: { customerName:'', ... } → fails\n- Missing required fields → fails\n- All valid fields pass safeParse with success=true\n\nFile: `backend/src/api/__tests__/invoices-create-schema.test.ts`\nImport: `import { createInvoiceSchema } from '../invoices-create';`\nKeep under 80 lines.",
+      "deliverables": {
+        "code": [
+          "backend/src/api/__tests__/invoices-create-schema.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "backend/src/api/__tests__/invoices-create-schema.test.ts"
+        ],
+        "commit": "c68350a",
+        "model": "MiniMax-M2.5"
+      }
+    },
+    {
+      "id": "BE-316",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "description": "Unit tests for settlements mock handler — getSettlements (mock version only)",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create unit tests for the mock getSettlements function from backend/src/api/settlements.ts. NOTE: Only test getSettlements (the mock handler), NOT getSettlement (which uses prisma).\n\nThe file exports `getSettlements` which is a mock handler:\n```typescript\nexport async function getSettlements(req: Request, res: Response): Promise<void> {\n  const limit = Number(req.query.limit) || 10;\n  const offset = Number(req.query.offset) || 0;\n  const settlements = [hardcoded 2 items];\n  res.json({ settlements, total: 2, limit, offset });\n}\n```\n\nThe 2 settlements:\n1. { id:'stl_001', invoiceId:'inv_001', status:'confirmed', txHash:'0xabc123', chain:'base', amount:1000, currency:'USD', confirmedAt:'2026-02-10T12:05:00Z', createdAt:'2026-02-10T12:00:00Z' }\n2. { id:'stl_002', invoiceId:'inv_002', status:'pending', txHash:null, chain:'ethereum', amount:2500, currency:'USD', confirmedAt:null, createdAt:'2026-02-14T09:00:00Z' }\n\nMock pattern:\n```typescript\nconst mockRes = { json: jest.fn(), status: jest.fn().mockReturnThis() };\n```\n\nTests:\n- Returns { settlements, total, limit, offset }\n- settlements has 2 items, total=2\n- Default limit=10, offset=0\n- With req.query.limit='5', req.query.offset='1' → limit=5, offset=1\n- First settlement: status='confirmed', txHash not null, chain='base'\n- Second settlement: status='pending', txHash=null, confirmedAt=null\n- All settlements have id, invoiceId, amount, currency, chain, createdAt\n\nFile: `backend/src/api/__tests__/settlements.test.ts`\nImport: `import { getSettlements } from '../settlements';`\nKeep under 80 lines.",
+      "deliverables": {
+        "code": [
+          "backend/src/api/__tests__/settlements.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "backend/src/api/__tests__/settlements.test.ts",
+          "backend/src/api/__tests__/settlements.test.ts"
+        ],
+        "commit": "54bf0c8",
+        "model": "MiniMax-M2.5"
+      }
+    },
+    {
+      "id": "FE-240",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "medium",
+      "description": "Dashboard integrations page — list of connected services and available integrations",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create a Next.js dashboard page at frontend/app/dashboard/integrations/page.tsx.\n\nThis is a React Server Component. Display a list of mock integrations.\n\nRequirements:\n- Export default function IntegrationsPage()\n- Page title: 'Integrations' in an h1 tag\n- Description: 'Connect external services and platforms'\n- Hardcoded array of 5 integration objects: { id: string, name: string, description: string, status: 'connected' | 'available' | 'coming_soon', icon: string }\n- Integrations:\n  1. { id:'1', name:'Stripe', description:'Accept fiat payments alongside crypto', status:'connected', icon:'💳' }\n  2. { id:'2', name:'QuickBooks', description:'Sync invoices with accounting software', status:'available', icon:'📊' }\n  3. { id:'3', name:'Slack', description:'Get real-time notifications in your workspace', status:'connected', icon:'💬' }\n  4. { id:'4', name:'Zapier', description:'Automate workflows with 5000+ apps', status:'available', icon:'⚡' }\n  5. { id:'5', name:'Xero', description:'Alternative accounting integration', status:'coming_soon', icon:'📒' }\n- Render each as a card with:\n  - Icon and name in bold on first line\n  - Description below\n  - Status badge: connected=green 'Connected', available=blue 'Connect', coming_soon=gray 'Coming Soon'\n- Use Tailwind CSS, grid layout (2 or 3 columns)\n- Keep under 55 lines\n- NO 'use client', NO hooks, NO external imports",
+      "deliverables": {
+        "code": [
+          "frontend/app/dashboard/integrations/page.tsx"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/app/dashboard/integrations/page.tsx",
+          "frontend/app/dashboard/integrations/page.tsx"
+        ],
+        "commit": "107175b",
+        "model": "MiniMax-M2.5"
+      }
+    },
+    {
+      "id": "FE-241",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "medium",
+      "description": "Dashboard logs page — list of recent API request logs with method, path, status",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create a Next.js dashboard page at frontend/app/dashboard/logs/page.tsx.\n\nThis is a React Server Component. Display a list of mock API request logs.\n\nRequirements:\n- Export default function LogsPage()\n- Page title: 'API Logs' in an h1 tag\n- Description: 'Recent API requests and responses'\n- Hardcoded array of 6 log objects: { id: string, method: 'GET' | 'POST' | 'DELETE', path: string, status: number, duration: string, timestamp: string }\n- Logs:\n  1. { id:'1', method:'POST', path:'/v1/invoices', status:201, duration:'145ms', timestamp:'2 min ago' }\n  2. { id:'2', method:'GET', path:'/v1/invoices/inv_042', status:200, duration:'32ms', timestamp:'5 min ago' }\n  3. { id:'3', method:'POST', path:'/v1/webhooks', status:201, duration:'89ms', timestamp:'12 min ago' }\n  4. { id:'4', method:'GET', path:'/v1/settlements', status:200, duration:'67ms', timestamp:'20 min ago' }\n  5. { id:'5', method:'DELETE', path:'/v1/api-keys/key_old', status:200, duration:'23ms', timestamp:'1 hr ago' }\n  6. { id:'6', method:'POST', path:'/v1/invoices', status:400, duration:'12ms', timestamp:'2 hr ago' }\n- Render as a table or list with:\n  - Method badge with color: GET=green, POST=blue, DELETE=red\n  - Path in monospace font\n  - Status code with color: 2xx=green, 4xx=yellow, 5xx=red\n  - Duration and timestamp in gray\n- Use Tailwind CSS\n- Keep under 55 lines\n- NO 'use client', NO hooks, NO external imports",
+      "deliverables": {
+        "code": [
+          "frontend/app/dashboard/logs/page.tsx"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/app/dashboard/logs/page.tsx"
+        ],
+        "commit": "9edd9ac",
+        "model": "MiniMax-M2.5"
+      }
+    }
+  ]
+}

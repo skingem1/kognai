@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// Invoice status enum representing the lifecycle states
+enum InvoiceStatus {
+  PENDING
+  SETTLED
+  PROCESSING
+  COMPLETED
+}
+
+/// Invoice model representing a payment invoice in the system
+model Invoice {
+  /// Unique identifier
+  id              String        @id @default(uuid())
+  /// Sequential invoice number generated via PostgreSQL sequence
+  invoiceNumber   Int           @unique
+  /// Current status of the invoice
+  status          InvoiceStatus @default(PENDING)
+  /// Invoice amount
+  amount          Decimal       @db.Decimal(19, 4)
+  /// Currency code (e.g., USD, EUR)
+  currency        String        @default("USD")
+  /// Customer email address
+  customerEmail   String
+  /// Customer name
+  customerName    String
+  /// Company/organization identifier for multi-tenant scoping
+  companyId       String?
+  /// Payment details stored as JSON (e.g., payment method, transaction ID)
+  paymentDetails  Json?
+  /// Timestamp when invoice was settled
+  settledAt       DateTime?
+  /// Timestamp when invoice processing was completed
+  completedAt     DateTime?
+  /// Timestamp when invoice was created
+  createdAt       DateTime      @default(now())
+  /// Timestamp when invoice was last updated
+  updatedAt       DateTime      @updatedAt
+
+  @@index([status])
+  @@index([companyId])
+  @@index([customerEmail])
+  @@index([invoiceNumber])
+}
+
+/// Webhook registration for event notifications
+model WebhookRegistration {
+  /// Unique identifier
+  id        String   @id @default(uuid())
+  /// Target URL to deliver events to
+  url       String
+  /// List of event types to subscribe to
+  events    String[]
+  /// Secret used for HMAC signature verification
+  secret    String
+  /// Whether this registration is active
+  isActive  Boolean  @default(true)
+  /// Timestamp when registered
+  createdAt DateTime @default(now())
+  /// Timestamp when last updated
+  updatedAt DateTime @updatedAt
+
+  @@index([isActive])
+}

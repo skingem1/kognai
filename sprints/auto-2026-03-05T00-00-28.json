@@ -1,0 +1,289 @@
+{
+  "tasks": [
+    {
+      "id": "AUTONOMY-001",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "critical",
+      "dependencies": [],
+      "description": "Implement complexity validator from CTO-20260305-001",
+      "context": "Create backend/src/utils/task-complexity-validator.ts implementing the approved 6-point validation: single-file enforcement, context limit 600 chars, valid agent values, type constraints, priority enforcement, empty dependencies structure. Export validateTaskComplexity function returning {valid: boolean, errors: string[]}.",
+      "deliverables": {
+        "code": [
+          "backend/src/utils/task-complexity-validator.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "backend/src/utils/task-complexity-validator.ts"
+        ],
+        "commit": "",
+        "model": "claude-sonnet-4-20250514",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "backend/src/utils/task-complexity-validator.ts",
+              "description": "Missing unit tests - should include Jest tests for all validation scenarios"
+            },
+            {
+              "severity": "low",
+              "file": "backend/src/utils/task-complexity-validator.ts",
+              "description": "Could benefit from more specific error messages for single-file enforcement validation"
+            },
+            {
+              "severity": "low",
+              "file": "backend/src/utils/task-complexity-validator.ts",
+              "description": "The `filePath` field is only validated as a string, but the spec\u2019s \u201csingle\u2010file enforcement\u201d could be strengthened (e.g. disallowing commas or multiple paths in one string)."
+            }
+          ],
+          "strengths": [
+            "Proper Zod schema validation with custom error messages",
+            "Clean TypeScript interfaces with no 'any' types",
+            "Comprehensive JSDoc documentation explaining all 6 validation points",
+            "Good error handling with structured ValidationResult interface",
+            "Follows project naming conventions and file structure",
+            "Implements all required validation criteria: single-file, 600 char context limit, valid agent/type/priority enums, empty dependencies",
+            "Uses safeParse for graceful error handling",
+            "Clear separation of concerns with dedicated interfaces",
+            "Uses Zod schemas with clear, custom error messages.",
+            "Correctly enforces context max length and empty dependencies array.",
+            "Strict enums for agent, type, and priority ensure only allowed values pass.",
+            "No invalid markdown fences, code syntax is valid TypeScript."
+          ]
+        }
+      }
+    },
+    {
+      "id": "AUTONOMY-002",
+      "agent": "agents",
+      "type": "feature",
+      "priority": "critical",
+      "dependencies": [
+        "AUTONOMY-001"
+      ],
+      "description": "Integrate complexity validator into AgentOrchestrator task execution",
+      "context": "Modify agents/src/core/orchestrator.ts to import and call validateTaskComplexity before executing any task. Reject tasks with validation.valid=false, log validation.errors, transition task to 'blocked' state with validation failures in notes. Prevents multi-concern task bypass.",
+      "deliverables": {
+        "code": [
+          "agents/src/core/orchestrator.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "rejected"
+    },
+    {
+      "id": "AUTONOMY-003",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [
+        "AUTONOMY-001"
+      ],
+      "description": "Add complexity pre-validation to sprint generation endpoint",
+      "context": "Update backend/src/routes/ai-inference.ts sprint generation handler to validate each generated task using validateTaskComplexity before returning sprint JSON. Return 400 with detailed errors if any task fails validation. Prevents invalid sprints from entering system.",
+      "deliverables": {
+        "code": [
+          "backend/src/routes/ai-inference.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "rejected",
+      "output": {
+        "files": [
+          "backend/src/routes/ai-inference.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "REJECTED",
+          "score": 15,
+          "summary": "Dual-rejected: Claude (15/100) + Codex (25/100). File is incomplete/truncated and contains critical issues that prevent compilation and execution | The generated handler did not implement the required task-complexity validation before returning the sprint JSON. Imports like `validateTaskComplexity` and `zod` are unused, and the sprint generation endpoint is missing or unchanged. The change is incomplete and does not meet the spec.",
+          "issues": [
+            {
+              "severity": "critical",
+              "file": "backend/src/routes/ai-inference.ts",
+              "description": "File is truncated - ends abruptly with 'async' keyword, making it invalid TypeScript"
+            },
+            {
+              "severity": "critical",
+              "file": "backend/src/routes/ai-inference.ts",
+              "description": "Task requirement not implemented - no validation of generated tasks using validateTaskComplexity in sprint generation handler"
+            },
+            {
+              "severity": "critical",
+              "file": "backend/src/routes/ai-inference.ts",
+              "description": "No sprint generation endpoint/handler visible in the provided code"
+            },
+            {
+              "severity": "high",
+              "file": "backend/src/routes/ai-inference.ts",
+              "description": "File appears to have lost significant functionality - only shows imports and settlement queue logic, missing core inference endpoints"
+            },
+            {
+              "severity": "medium",
+              "file": "backend/src/routes/ai-inference.ts",
+              "description": "Hardcoded API keys in environment variables without proper validation"
+            },
+            {
+              "severity": "critical",
+              "file": "backend/src/routes/ai-inference.ts",
+              "description": "The sprint generation handler is unchanged and does not call `validateTaskComplexity` on each generated task, nor does it return a 400 on validation errors, as required by the task spec."
+            },
+            {
+              "severity": "medium",
+              "file": "backend/src/routes/ai-inference.ts",
+              "description": "Imports of `validateTaskComplexity`, `TaskComplexityResult`, and `z` are unused. This indicates that the validation logic was not wired up."
+            },
+            {
+              "severity": "medium",
+              "file": "backend/src/routes/ai-inference.ts",
+              "description": "The file ends abruptly (mid-function) and appears incomplete\u2014no sprint JSON response or error-handling for the inference endpoint is present."
+            },
+            {
+              "severity": "low",
+              "file": "backend/src/routes/ai-inference.ts",
+              "description": "Falling back to empty strings for critical API keys (`ANTHROPIC_API_KEY` and `MINIMAX_API_KEY`) can mask missing configuration."
+            }
+          ],
+          "strengths": []
+        }
+      }
+    },
+    {
+      "id": "AUTONOMY-004",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "description": "Create spam domain blacklist service for CEO escalations",
+      "context": "Create backend/src/services/spam-blacklist.ts with functions: isSpamDomain(email: string), addDomain(domain: string), removeDomain(domain: string). Use backend/src/types/spam-blacklist.ts types. Store in Redis with key 'spam:domains'. Return boolean for check, void for mutations. CEO escalation filter.",
+      "deliverables": {
+        "code": [
+          "backend/src/services/spam-blacklist.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "rejected",
+      "output": {
+        "files": [
+          "backend/src/services/spam-blacklist.ts"
+        ],
+        "commit": "",
+        "model": "claude-sonnet-4-20250514",
+        "review": {
+          "verdict": "REJECTED",
+          "score": 25,
+          "summary": "Dual-rejected: Claude (25/100) + Codex (40/100). File is incomplete (truncated mid-line), implements class-based approach instead of requested functions, and has several architectural issues | The implementation includes solid input validation and logging, but the submitted file is truncated/incomplete, does not reference the specified SpamBlacklistDomain type, and has no accompanying tests or type\u2010strict guarantees. It cannot be merged in its current state.",
+          "issues": [
+            {
+              "severity": "critical",
+              "file": "backend/src/services/spam-blacklist.ts",
+              "description": "File is incomplete - truncated at line 'throw new SpamBlack' indicating generation was cut off"
+            },
+            {
+              "severity": "high",
+              "file": "backend/src/services/spam-blacklist.ts",
+              "description": "Task requested standalone functions (isSpamDomain, addDomain, removeDomain) but implementation uses class-based approach (SpamBlacklistService)"
+            },
+            {
+              "severity": "high",
+              "file": "backend/src/services/spam-blacklist.ts",
+              "description": "Missing extractDomain helper method that is called but not implemented"
+            },
+            {
+              "severity": "medium",
+              "file": "backend/src/services/spam-blacklist.ts",
+              "description": "Unused import: SpamBlacklistDomain from types file is imported but never used"
+            },
+            {
+              "severity": "medium",
+              "file": "backend/src/services/spam-blacklist.ts",
+              "description": "Over-engineered validation - complex domain regex when simpler validation would suffice for spam filtering"
+            },
+            {
+              "severity": "low",
+              "file": "backend/src/services/spam-blacklist.ts",
+              "description": "Excessive logging for simple operations may impact performance"
+            },
+            {
+              "severity": "critical",
+              "file": "backend/src/services/spam-blacklist.ts",
+              "description": "The file is truncated\u2014there is an unterminated catch block and the class/method closures are missing, leading to invalid syntax."
+            },
+            {
+              "severity": "high",
+              "file": "backend/src/services/spam-blacklist.ts",
+              "description": "Imported type `SpamBlacklistDomain` is never used. The service functions should align with the types defined in `backend/src/types/spam-blacklist.ts`."
+            },
+            {
+              "severity": "medium",
+              "file": "backend/src/services/spam-blacklist.ts",
+              "description": "No Jest unit tests or test stubs provided. Every new service requires at least 80% coverage intent tests."
+            },
+            {
+              "severity": "medium",
+              "file": "backend/src/services/spam-blacklist.ts",
+              "description": "Missing usage or implementation of the \u2018CEO escalation filter\u2019 as called out in task spec."
+            },
+            {
+              "severity": "low",
+              "file": "backend/src/services/spam-blacklist.ts",
+              "description": "No explicit return type annotations on public methods; ensure strict TypeScript mode compliance."
+            }
+          ],
+          "strengths": []
+        }
+      }
+    },
+    {
+      "id": "AUTONOMY-005",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [
+        "AUTONOMY-004"
+      ],
+      "description": "Integrate spam filter into SpamBlacklistTable component",
+      "context": "Update apps/x-admin/src/components/SpamBlacklistTable.tsx to call backend spam blacklist service. Add domain to blacklist on 'Block' action, verify with isSpamDomain before CEO escalation. Display confirmation toast on success. Use existing SpamBlacklistTable.types.ts for type safety.",
+      "deliverables": {
+        "code": [
+          "apps/x-admin/src/components/SpamBlacklistTable.tsx"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "skipped",
+      "skippedReason": "Blocked by rejected dependency: ['AUTONOMY-004']"
+    },
+    {
+      "id": "AUTONOMY-006",
+      "agent": "backend-core",
+      "type": "bugfix",
+      "priority": "medium",
+      "dependencies": [
+        "AUTONOMY-004"
+      ],
+      "description": "Apply spam filter to Telegram CEO bot escalations",
+      "context": "Modify backend/src/telegram/ceoBot.ts to check sender email domain using isSpamDomain before creating escalation message. Silently drop spam escalations, log blocked attempts to audit trail. Prevents spam noise in CEO channel while maintaining legitimate escalations.",
+      "deliverables": {
+        "code": [
+          "backend/src/telegram/ceoBot.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "skipped",
+      "skippedReason": "Blocked by rejected dependency: ['AUTONOMY-004']"
+    }
+  ]
+}

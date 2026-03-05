@@ -1,0 +1,325 @@
+{
+  "tasks": [
+    {
+      "id": "SDK-010",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "context": "Create the TypeScript SDK client class for the Countable x402 payment API. This is the core class developers will use to integrate x402 payments. Export class CountableClient with constructor(apiKey: string, baseUrl?: string). Methods: createInvoice(params: CreateInvoiceParams): Promise<Invoice>, getInvoice(id: string): Promise<Invoice>, listInvoices(filter?: InvoiceFilter): Promise<Invoice[]>. Use fetch for HTTP. Include typed request/response interfaces. No external dependencies.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/client.ts"
+        ],
+        "tests": [
+          "sdk/typescript/tests/client.test.ts"
+        ]
+      },
+      "status": "rejected",
+      "output": {
+        "files": [
+          "sdk/typescript/src/client.ts",
+          "sdk/typescript/tests/client.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "REJECTED",
+          "score": 25,
+          "summary": "Critical implementation missing - only partial client.ts file provided with incomplete class definition. Missing types file import, no actual method implementations, and incomplete test coverage.",
+          "issues": [
+            {
+              "severity": "critical",
+              "file": "sdk/typescript/src/client.ts",
+              "description": "File is incomplete - cuts off mid-comment with no actual CountableClient class implementation"
+            },
+            {
+              "severity": "critical",
+              "file": "sdk/typescript/src/client.ts",
+              "description": "Missing import for types file - imports from './types' but no types.ts file provided"
+            },
+            {
+              "severity": "critical",
+              "file": "sdk/typescript/src/client.ts",
+              "description": "No constructor implementation with required apiKey parameter and optional baseUrl"
+            },
+            {
+              "severity": "critical",
+              "file": "sdk/typescript/src/client.ts",
+              "description": "Missing all required methods: createInvoice, getInvoice, listInvoices"
+            },
+            {
+              "severity": "high",
+              "file": "sdk/typescript/tests/client.test.ts",
+              "description": "Tests import '../client' but should import '../src/client' based on file structure"
+            },
+            {
+              "severity": "high",
+              "file": "sdk/typescript/tests/client.test.ts",
+              "description": "Tests reference CountableClient class that doesn't exist in provided implementation"
+            },
+            {
+              "severity": "medium",
+              "file": "sdk/typescript/tests/client.test.ts",
+              "description": "Mock fetch setup is correct but tests will fail due to missing implementation"
+            },
+            {
+              "severity": "medium",
+              "file": "sdk/typescript/src/client.ts",
+              "description": "Good type definitions for ApiResponse/ApiError but no usage in actual implementation"
+            }
+          ],
+          "strengths": [
+            "Proper JSDoc documentation structure started",
+            "Good TypeScript interface design for API responses",
+            "Test structure follows Jest best practices with proper mocking",
+            "Tests cover main success and error scenarios",
+            "No external dependencies as required"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-011",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "context": "Create the SDK types file for Countable TypeScript SDK. Export all interfaces: Invoice (id, amount, currency, status, createdAt, paidAt, metadata), CreateInvoiceParams (amount: number, currency: string, description?: string, metadata?: Record<string,string>), InvoiceFilter (status?: string, limit?: number, offset?: number), Settlement (id, invoiceId, txHash, chain, amount, confirmedAt), ApiError (code: string, message: string, statusCode: number), WebhookEvent (id, type, data, createdAt). Keep types simple and clean. No imports needed.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/types.ts"
+        ],
+        "tests": [
+          "sdk/typescript/tests/types.test.ts"
+        ]
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "sdk/typescript/src/types.ts",
+          "sdk/typescript/tests/types.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 92,
+          "summary": "Clean, well-structured TypeScript SDK types that exactly match the task specification. All required interfaces are properly defined with correct properties and types. Test coverage is comprehensive and validates type structure effectively.",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/types.ts",
+              "description": "Consider using more specific string literal types for status and type fields (e.g., 'pending' | 'paid' | 'failed') instead of generic string"
+            },
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/types.ts",
+              "description": "Date fields use string type - consider adding JSDoc comments to clarify ISO 8601 format expectation"
+            }
+          ],
+          "strengths": [
+            "Perfect adherence to task specification - all required interfaces present with exact properties",
+            "Clean TypeScript with no 'any' types used",
+            "Proper use of optional properties and nullable types (paidAt, confirmedAt)",
+            "Good use of Record<string, string> for metadata typing",
+            "Comprehensive test suite covering all interfaces and edge cases",
+            "Tests validate both required and optional properties correctly",
+            "No unnecessary imports or dependencies as requested",
+            "Proper null handling in tests (confirmedAt: null)",
+            "Good test structure with descriptive test names"
+          ]
+        }
+      }
+    },
+    {
+      "id": "BC-030",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "context": "Create a webhook dispatcher service. Export class WebhookDispatcher with methods: register(url: string, events: string[], secret: string): WebhookRegistration, dispatch(event: WebhookEvent): Promise<DispatchResult>, verifySignature(payload: string, signature: string, secret: string): boolean. The dispatch method should: create HMAC-SHA256 signature of payload with secret, POST to registered URL with headers (X-Countable-Signature, X-Countable-Event, X-Countable-Timestamp), return {success: boolean, statusCode: number, retryable: boolean}. Store registrations in-memory Map. No external deps except crypto.",
+      "deliverables": {
+        "code": [
+          "backend/src/services/webhook-dispatcher.ts"
+        ],
+        "tests": [
+          "backend/tests/services/webhook-dispatcher.test.ts"
+        ]
+      },
+      "status": "rejected",
+      "output": {
+        "files": [
+          "backend/src/services/webhook-dispatcher.ts",
+          "backend/tests/services/webhook-dispatcher.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "REJECTED",
+          "score": 35,
+          "summary": "Code has critical syntax errors, incomplete implementation, and significant test issues. The main service file is truncated mid-line and missing the core dispatch method implementation.",
+          "issues": [
+            {
+              "severity": "critical",
+              "file": "backend/src/services/webhook-dispatcher.ts",
+              "description": "File is truncated at line 134 with incomplete code 'r' - missing complete dispatch method implementation"
+            },
+            {
+              "severity": "critical",
+              "file": "backend/src/services/webhook-dispatcher.ts",
+              "description": "Import error: 'https' imported from 'http' module instead of 'https' module"
+            },
+            {
+              "severity": "critical",
+              "file": "backend/src/services/webhook-dispatcher.ts",
+              "description": "Missing dispatch method implementation - the core requirement of the task"
+            },
+            {
+              "severity": "high",
+              "file": "backend/tests/services/webhook-dispatcher.test.ts",
+              "description": "Test imports crypto module but it's not imported at the top of the file"
+            },
+            {
+              "severity": "high",
+              "file": "backend/tests/services/webhook-dispatcher.test.ts",
+              "description": "Test calls WebhookDispatcher.verifySignature as static method but it's an instance method"
+            },
+            {
+              "severity": "high",
+              "file": "backend/tests/services/webhook-dispatcher.test.ts",
+              "description": "HTTP mocking is incomplete - doesn't properly simulate response data events and end events"
+            },
+            {
+              "severity": "medium",
+              "file": "backend/src/services/webhook-dispatcher.ts",
+              "description": "Added extra methods (getRegistrations, getRegistration, unregister, generateSignature) not specified in task requirements"
+            },
+            {
+              "severity": "medium",
+              "file": "backend/tests/services/webhook-dispatcher.test.ts",
+              "description": "Missing test coverage for signature verification edge cases and error scenarios"
+            },
+            {
+              "severity": "low",
+              "file": "backend/src/services/webhook-dispatcher.ts",
+              "description": "Custom error class not strictly necessary for this simple service"
+            }
+          ],
+          "strengths": [
+            "Good TypeScript typing with proper interfaces",
+            "Input validation in register method",
+            "Timing-safe signature comparison to prevent timing attacks",
+            "Proper URL validation using URL constructor",
+            "JSDoc documentation on public methods",
+            "Basic test structure is reasonable"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-030",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "medium",
+      "dependencies": [],
+      "context": "Create a React ApiKeyDisplay component. Props: apiKey: string, label?: string, onRevoke?: () => void. Behavior: show the API key masked by default (sk-****...last4), click 'Show' button to reveal full key, click 'Copy' button to copy to clipboard (use navigator.clipboard.writeText), optional 'Revoke' button if onRevoke provided. Use Tailwind CSS classes for styling. Export as default. Keep component under 60 lines. Use React.useState for show/hide toggle.",
+      "deliverables": {
+        "code": [
+          "frontend/components/dashboard/api-key-display.tsx"
+        ]
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "frontend/components/dashboard/api-key-display.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 92,
+          "summary": "Clean, functional React component that meets all requirements. Well-structured with proper TypeScript types, good UX patterns, and appropriate Tailwind styling.",
+          "issues": [
+            {
+              "severity": "medium",
+              "file": "frontend/components/dashboard/api-key-display.tsx",
+              "description": "Missing error handling for navigator.clipboard.writeText() - should handle cases where clipboard API fails or is unavailable"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/components/dashboard/api-key-display.tsx",
+              "description": "No visual feedback when copy operation succeeds - users won't know if the copy worked"
+            }
+          ],
+          "strengths": [
+            "Meets all task requirements exactly - masked display, show/hide toggle, copy functionality, optional revoke",
+            "Clean TypeScript interface with proper prop types",
+            "Efficient useState usage for show/hide toggle",
+            "Good UX with appropriate button labels that change (Show/Hide)",
+            "Proper Tailwind CSS styling with hover states",
+            "Component stays well under 60 line limit (32 lines)",
+            "Semantic HTML structure with proper labeling",
+            "Conditional rendering for optional revoke button",
+            "Consistent styling patterns across buttons"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SEC-020",
+      "agent": "security",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "context": "Create a webhook signature verification middleware for Express. Export function verifyWebhookSignature(secret: string) that returns Express middleware. The middleware should: read raw body from req.body (assume express.raw() is used), compute HMAC-SHA256 of body using secret, compare with X-Countable-Signature header using timingSafeEqual, reject with 401 if invalid, call next() if valid. Also export function signPayload(payload: string, secret: string): string that creates the HMAC signature. Use only Node.js built-in crypto module.",
+      "deliverables": {
+        "code": [
+          "backend/src/middleware/webhook-verify.ts"
+        ],
+        "tests": [
+          "backend/tests/middleware/webhook-verify.test.ts"
+        ]
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "backend/src/middleware/webhook-verify.ts",
+          "backend/tests/middleware/webhook-verify.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 92,
+          "summary": "High-quality webhook signature verification middleware with proper security practices, comprehensive error handling, and good test coverage. Minor improvements possible but meets all requirements.",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "backend/src/middleware/webhook-verify.ts",
+              "description": "The middleware handles JSON.stringify fallback for non-Buffer/string bodies, but this wasn't explicitly required and could introduce unexpected behavior if express.raw() isn't used as specified"
+            },
+            {
+              "severity": "low",
+              "file": "backend/tests/middleware/webhook-verify.test.ts",
+              "description": "Test uses vitest instead of Jest as specified in project standards, though functionality is equivalent"
+            }
+          ],
+          "strengths": [
+            "Proper use of timingSafeEqual to prevent timing attacks",
+            "Correct HMAC-SHA256 implementation using Node.js built-in crypto",
+            "Comprehensive input validation (missing header, missing body, array header check)",
+            "Buffer length comparison before timingSafeEqual to prevent crashes",
+            "Good TypeScript typing with proper Express types",
+            "Comprehensive test coverage including edge cases",
+            "Clear JSDoc documentation on public functions",
+            "Proper error responses with 401 status codes",
+            "Handles both Buffer and string body formats gracefully",
+            "No hardcoded secrets or security vulnerabilities",
+            "Clean, readable code structure"
+          ]
+        }
+      }
+    }
+  ]
+}

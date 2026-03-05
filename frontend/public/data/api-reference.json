@@ -1,0 +1,209 @@
+[
+  {
+    "method": "GET",
+    "path": "/v1/ai/inference",
+    "description": "Get x402 payment requirements for AI inference",
+    "auth": "None",
+    "tags": [
+      "ai inference"
+    ]
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ai/inference",
+    "description": "Call AI model (MiniMax or Claude) via x402 USDC payment",
+    "auth": "x402 Payment (X-Payment header, USDC on Base)",
+    "tags": [
+      "ai inference"
+    ]
+  },
+  {
+    "method": "POST",
+    "path": "/v1/api-keys",
+    "description": "Create a new API key",
+    "auth": "None",
+    "tags": [
+      "api keys"
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/v1/api-keys",
+    "description": "List all API keys for the authenticated user",
+    "auth": "None",
+    "tags": [
+      "api keys"
+    ]
+  },
+  {
+    "method": "POST",
+    "path": "/v1/api-keys/:id/rotate",
+    "description": "Rotate (regenerate) an API key",
+    "auth": "None",
+    "tags": [
+      "api keys"
+    ]
+  },
+  {
+    "method": "POST",
+    "path": "/v1/api-keys/:id/revoke",
+    "description": "Revoke an API key",
+    "auth": "None",
+    "tags": [
+      "api keys"
+    ]
+  },
+  {
+    "method": "DELETE",
+    "path": "/v1/api-keys/:id",
+    "description": "DELETE /v1/api-keys/:id",
+    "auth": "None",
+    "tags": [
+      "api keys"
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/v1/health",
+    "description": "Health check — returns API status and uptime",
+    "auth": "None",
+    "tags": [
+      "health"
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/v1/invoices/number/:number",
+    "description": "Get invoice by invoice number",
+    "auth": "None",
+    "tags": [
+      "invoices"
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/v1/invoices/:id",
+    "description": "Get invoice by UUID",
+    "auth": "None",
+    "tags": [
+      "invoices"
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/v1/invoices",
+    "description": "GET /v1/invoices",
+    "auth": "None",
+    "tags": [
+      "invoices"
+    ]
+  },
+  {
+    "method": "POST",
+    "path": "/v1/invoices",
+    "description": "Create a new invoice",
+    "auth": "None",
+    "tags": [
+      "invoices"
+    ]
+  },
+  {
+    "method": "PATCH",
+    "path": "/v1/invoices/:id/status",
+    "description": "PATCH /v1/invoices/:id/status",
+    "auth": "None",
+    "tags": [
+      "invoices"
+    ]
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ledger/send-verification",
+    "description": "Send email verification for ledger access",
+    "auth": "None",
+    "tags": [
+      "ledger"
+    ]
+  },
+  {
+    "method": "POST",
+    "path": "/v1/ledger/confirm-verification",
+    "description": "Confirm email verification code",
+    "auth": "None",
+    "tags": [
+      "ledger"
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ledger",
+    "description": "Get ledger transactions (requires API key)",
+    "auth": "API Key (X-API-Key header)",
+    "tags": [
+      "ledger"
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ledger/summary",
+    "description": "Get ledger summary statistics (requires API key)",
+    "auth": "API Key (X-API-Key header)",
+    "tags": [
+      "ledger"
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/v1/ledger/export.csv",
+    "description": "Export ledger as CSV (requires API key)",
+    "auth": "API Key (X-API-Key header)",
+    "tags": [
+      "ledger"
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/v1/settlements/:id",
+    "description": "Get settlement details by ID",
+    "auth": "None",
+    "tags": [
+      "settlements"
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/v1/settlements",
+    "description": "List all settlements (paid/completed invoices)",
+    "auth": "None",
+    "tags": [
+      "settlements"
+    ]
+  },
+  {
+    "method": "POST",
+    "path": "/v1/webhooks",
+    "description": "Register a new webhook endpoint",
+    "auth": "None",
+    "tags": [
+      "webhooks"
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/v1/webhooks",
+    "description": "List all registered webhooks",
+    "auth": "None",
+    "tags": [
+      "webhooks"
+    ]
+  },
+  {
+    "method": "DELETE",
+    "path": "/v1/webhooks/:id",
+    "description": "Delete a webhook",
+    "auth": "None",
+    "tags": [
+      "webhooks"
+    ]
+  }
+]

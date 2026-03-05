@@ -1,0 +1,65 @@
+name: CI — TypeScript + Ecosystem Check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  typecheck:
+    name: TypeScript Compile Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install --ignore-scripts
+
+      - name: TypeScript check — scripts/ (PM2 cron processes)
+        run: |
+          echo "Checking TypeScript in scripts/ only..."
+          TS_ERRORS=$(npx tsc --noEmit --project tsconfig.scripts.json 2>&1 | grep "error TS" | grep -v "node_modules/" || true)
+          if [ -z "$TS_ERRORS" ]; then
+            echo "✅ TypeScript OK"
+          else
+            echo "❌ TypeScript errors in scripts/:"
+            echo "$TS_ERRORS"
+            exit 1
+          fi
+
+  ecosystem-verify:
+    name: Ecosystem Script Existence Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify all ecosystem.config.js scripts exist in repo
+        run: |
+          echo "Checking all scripts referenced in ecosystem.config.js exist..."
+          node -e "
+            const fs = require('fs');
+            const path = require('path');
+            const config = require('./ecosystem.config.js');
+            const missing = [];
+            for (const app of config.apps) {
+              if (!app.script.startsWith('/')) {
+                // Relative path — check it exists
+                const full = path.resolve('.', app.script);
+                if (!fs.existsSync(full)) {
+                  missing.push({ name: app.name, script: app.script });
+                }
+              }
+            }
+            if (missing.length > 0) {
+              console.error('❌ Missing scripts:');
+              missing.forEach(m => console.error('  ' + m.name + ': ' + m.script));
+              process.exit(1);
+            }
+            console.log('✅ All ' + config.apps.length + ' ecosystem scripts found');
+          "

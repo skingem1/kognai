@@ -1,0 +1,113 @@
+---
+title: Webhooks
+description: "Receive real-time notifications when invoice events occur in your Invoica account."
+---
+
+# Webhooks
+
+Webhooks deliver real-time event notifications to your server when important actions occur — invoice creation, payment receipt, settlement confirmation, and more.
+
+## Supported Events
+
+| Event | Description |
+|-------|-------------|
+| `invoice.created` | A new invoice has been generated |
+| `invoice.sent` | Invoice delivered to buyer |
+| `invoice.paid` | Payment transaction submitted |
+| `invoice.settled` | On-chain settlement confirmed |
+| `invoice.completed` | Invoice lifecycle complete |
+| `invoice.failed` | Payment failed or timed out |
+| `settlement.confirmed` | Blockchain confirmation received |
+| `settlement.failed` | Settlement could not be verified |
+
+## Setting Up Webhooks
+
+### 1. Register Your Endpoint
+
+```typescript
+const webhook = await client.webhooks.create({
+  url: 'https://your-server.com/webhooks/invoica',
+  events: ['invoice.paid', 'invoice.settled', 'invoice.failed'],
+  secret: 'whsec_your_webhook_secret',
+});
+```
+
+### 2. Handle Webhook Events
+
+```typescript
+import express from 'express';
+import crypto from 'crypto';
+
+const app = express();
+
+app.post('/webhooks/invoica', express.raw({ type: 'application/json' }), (req, res) => {
+  const signature = req.headers['x-invoica-signature'];
+  const timestamp = req.headers['x-invoica-timestamp'];
+  const body = req.body.toString();
+
+  // Verify signature
+  const expected = crypto
+    .createHmac('sha256', process.env.WEBHOOK_SECRET)
+    .update(`${timestamp}.${body}`)
+    .digest('hex');
+
+  if (signature !== expected) {
+    return res.status(401).send('Invalid signature');
+  }
+
+  const event = JSON.parse(body);
+
+  switch (event.type) {
+    case 'invoice.paid':
+      console.log(`Invoice ${event.data.invoiceNumber} paid!`);
+      break;
+    case 'invoice.settled':
+      console.log(`Invoice ${event.data.invoiceNumber} settled on-chain`);
+      break;
+    case 'invoice.failed':
+      console.log(`Invoice ${event.data.invoiceNumber} failed: ${event.data.reason}`);
+      break;
+  }
+
+  res.status(200).send('OK');
+});
+```
+
+## Webhook Payload
+
+```json
+{
+  "id": "evt_a1b2c3d4e5",
+  "type": "invoice.settled",
+  "timestamp": "2026-02-18T10:35:00Z",
+  "data": {
+    "id": "inv_8a7b6c5d4e3f2a1b",
+    "invoiceNumber": "INV-2026-0001",
+    "status": "settled",
+    "amount": 5000,
+    "currency": "USD",
+    "total": 5412,
+    "settlementTxHash": "0xabc123..."
+  }
+}
+```
+
+## Signature Verification
+
+All webhook payloads include an HMAC-SHA256 signature in the `X-Invoica-Signature` header. Always verify this signature to ensure the request originated from Invoica.
+
+<Warning>
+  Never process webhook events without verifying the signature. Unverified webhooks could be spoofed by malicious actors.
+</Warning>
+
+## Retry Policy
+
+If your endpoint returns a non-2xx status code, Invoica retries with exponential backoff:
+
+| Attempt | Delay |
+|---------|-------|
+| 1st retry | 1 minute |
+| 2nd retry | 5 minutes |
+| 3rd retry | 30 minutes |
+
+After 3 failed attempts, the webhook delivery is marked as failed and can be retried manually from the Dashboard.

@@ -1,0 +1,489 @@
+{
+  "tasks": [
+    {
+      "id": "SDK-107",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "critical",
+      "dependencies": [],
+      "status": "done",
+      "context": "Create sdk/typescript/src/http-transport.ts. This module replaces raw axios calls with a composable transport that uses the existing withTimeout (from ./timeout) and retryWithBackoff (from ./retry) utilities.\n\nExport a single class HttpTransport with constructor(config: { baseUrl: string; apiKey: string; timeout: number; maxRetries: number }) and one method: async request<T>(method: 'GET'|'POST'|'PATCH'|'DELETE', path: string, body?: unknown): Promise<T>.\n\nInternally: (1) use buildUrl from ./request-builder to construct URL, (2) use buildHeaders from ./request-builder for auth headers, (3) wrap the native fetch() call with withTimeout() from ./timeout, (4) wrap the fetch+timeout in retryWithBackoff() from ./retry passing { maxRetries: this.config.maxRetries }, (5) use parseResponse<T>() from ./response-parser to handle the response.\n\nImport types only — do NOT reimplement any utility logic. Max 80 lines.\n\nExports: HttpTransport class\nImports: withTimeout from ./timeout, retryWithBackoff from ./retry, buildUrl and buildHeaders from ./request-builder, parseResponse from ./response-parser",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/http-transport.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/src/http-transport.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 88,
+          "summary": "Dual-approved: Claude (85/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/http-transport.ts",
+              "description": "Unnecessary try-catch wrapper in fetchWithRetry - the catch block just re-throws without adding value"
+            },
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/http-transport.ts",
+              "description": "Could benefit from JSDoc comments on the public class and method for better developer experience"
+            },
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/http-transport.ts",
+              "description": "The try/catch inside fetchWithRetry simply rethrows the caught error, which is redundant and could be removed for brevity."
+            }
+          ],
+          "strengths": [
+            "Correctly imports and composes all required utilities without reimplementing logic",
+            "Proper TypeScript generics usage for type-safe responses",
+            "Clean separation of concerns - URL building, headers, timeout, retry, and parsing all delegated",
+            "Handles request body logic correctly (only for POST/PATCH, with proper Content-Type)",
+            "Stays well under the 80-line limit at ~35 lines",
+            "No hardcoded values or security issues",
+            "Follows the exact interface specified in the task",
+            "Imports only required utilities without reimplementing logic",
+            "Proper use of generics and no use of `any`",
+            "Correct composition of timeout and retry wrappers",
+            "Adheres to max line count and naming conventions"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-108",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "critical",
+      "dependencies": [
+        "SDK-107"
+      ],
+      "status": "done",
+      "context": "Create sdk/typescript/src/enhanced-client.ts. This is a new client class that composes HttpTransport (from ./http-transport) with resolveConfig (from ./client-config) and RateLimitTracker (from ./rate-limit).\n\nExport class CountableClient with constructor(config: InvoicaClientConfig) that: (1) calls resolveConfig(config) to get resolved config, (2) creates new HttpTransport(resolved), (3) creates new RateLimitTracker().\n\nThen provide these methods, each calling this.transport.request():\n- getInvoice(id: string): Promise<Invoice>\n- createInvoice(input: InvoiceCreateInput): Promise<Invoice>\n- listInvoices(params?: {limit?: number; offset?: number; status?: string}): Promise<InvoiceListResponse>\n- getSettlement(id: string): Promise<Settlement>\n- listSettlements(params?: {limit?: number; offset?: number}): Promise<SettlementListResponse>\n\nImport types from ./types. Import HttpTransport from ./http-transport. Import resolveConfig, InvoicaClientConfig from ./client-config. Import RateLimitTracker from ./rate-limit.\n\nImport Invoice, InvoiceCreateInput, InvoiceListResponse, Settlement, SettlementListResponse from ./types.\n\nThis class IS the CountableClient that index.ts already exports. Max 90 lines.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/enhanced-client.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/src/enhanced-client.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/enhanced-client.ts",
+              "description": "RateLimitTracker is created but never configured - may need initialization parameters or default limits"
+            },
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/enhanced-client.ts",
+              "description": "No input validation on method parameters (e.g., empty string IDs, negative limits/offsets)"
+            }
+          ],
+          "strengths": [
+            "Correctly implements all required methods as specified",
+            "Proper composition of HttpTransport, resolveConfig, and RateLimitTracker",
+            "Clean TypeScript generics usage with proper return types",
+            "Consistent rate limiting applied to all API methods",
+            "Good JSDoc documentation on the class",
+            "Follows single responsibility principle - pure composition layer",
+            "Stays well under the 90-line limit (29 lines)",
+            "Proper async/await usage throughout",
+            "Correct import statements matching the task spec exactly",
+            "Accurately follows the task spec and naming conventions",
+            "No use of `any`; types are strictly defined",
+            "Includes rate‐limit waits before each request",
+            "Clean, concise implementation under 90 lines",
+            "No markdown fences or syntax errors"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-109",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [
+        "SDK-107"
+      ],
+      "status": "done",
+      "context": "Create sdk/typescript/src/enhanced-client-extras.ts. This module adds API key and webhook management methods as standalone function factories.\n\nExport two functions:\n\n1. createApiKeyMethods(transport: HttpTransport) — returns an object with:\n   - createApiKey(name: string): Promise<ApiKeyCreateResponse> — POST /api-keys {name}\n   - revokeApiKey(id: string): Promise<void> — DELETE /api-keys/{id}\n   - listApiKeys(): Promise<ApiKey[]> — GET /api-keys\n\n2. createWebhookMethods(transport: HttpTransport) — returns an object with:\n   - registerWebhook(config: WebhookRegistrationConfig): Promise<WebhookRegistration> — POST /webhooks\n   - listWebhooks(): Promise<WebhookListResponse> — GET /webhooks\n   - deleteWebhook(id: string): Promise<void> — DELETE /webhooks/{id}\n\nImport HttpTransport from ./http-transport. Import ApiKey, ApiKeyCreateResponse, WebhookRegistrationConfig, WebhookRegistration, WebhookListResponse from ./types.\n\nEach factory returns an object of methods that call transport.request(). Max 70 lines.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/enhanced-client-extras.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/src/enhanced-client-extras.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "Dual-approved: Claude (95/100) + Codex (95/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/enhanced-client-extras.ts",
+              "description": "No input validation on parameters (name, id, config) - relies entirely on transport layer validation"
+            }
+          ],
+          "strengths": [
+            "Exact adherence to task specification - both factory functions implemented correctly",
+            "Proper TypeScript generics usage with transport.request<T>()",
+            "Clean separation of concerns - delegates HTTP handling to transport layer",
+            "Correct HTTP method and path mappings for all endpoints",
+            "Well-structured imports from specified modules",
+            "Concise implementation at 50 lines (well under 70 line limit)",
+            "No unnecessary abstractions or overengineering",
+            "Proper async/await usage throughout",
+            "Clear function signatures matching the API contract",
+            "Concise implementation under 70 lines",
+            "Correct usage of typed HttpTransport.request calls",
+            "No use of `any` types or hardcoded secrets",
+            "Imports and exports follow project conventions"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-110",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "status": "done",
+      "context": "Create sdk/typescript/src/debug.ts. A debug logger utility for the Invoica SDK.\n\nExport:\n1. interface DebugLogger { log(message: string, data?: unknown): void; warn(message: string, data?: unknown): void; error(message: string, data?: unknown): void; }\n\n2. function createDebugLogger(namespace: string): DebugLogger\n   - If process.env.INVOICA_DEBUG is truthy, log to console with '[invoica:namespace]' prefix and ISO timestamp\n   - If INVOICA_DEBUG is falsy, all methods are no-ops (empty functions that do nothing)\n   - log() uses console.log, warn() uses console.warn, error() uses console.error\n\n3. function isDebugEnabled(): boolean — returns true when process.env.INVOICA_DEBUG is set and truthy\n\nMax 50 lines. No external dependencies.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/debug.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/src/debug.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/debug.ts",
+              "description": "Using nullish coalescing (??) with empty string for data parameter - could be cleaner to handle undefined data separately or use conditional logging"
+            }
+          ],
+          "strengths": [
+            "Exact interface match to specification",
+            "Proper TypeScript typing with no 'any' usage",
+            "Clean separation of concerns with helper function",
+            "Efficient no-op implementation when debug disabled",
+            "Correct console method mapping (log/warn/error)",
+            "ISO timestamp formatting as requested",
+            "Well under 50 line limit (32 lines)",
+            "No external dependencies as required",
+            "Proper namespace prefix formatting",
+            "Boolean coercion for environment variable check",
+            "Adheres exactly to the spec with no extraneous code or dependencies",
+            "Implements no-op functions when debug is disabled",
+            "Prepends ISO timestamps and namespace in logs",
+            "Keeps implementation concise and under 50 lines"
+          ]
+        }
+      }
+    },
+    {
+      "id": "BE-196",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "status": "done",
+      "context": "Create backend/src/middleware/idempotency.ts. An Express middleware for idempotent POST requests.\n\nExport:\n1. function idempotencyMiddleware(): RequestHandler\n   - Reads 'Idempotency-Key' header from req.headers (lowercase: 'idempotency-key')\n   - If header not present, call next() and skip\n   - If present, check an in-memory Map<string, { statusCode: number; body: unknown; createdAt: number }>\n   - Cache hit: return res.status(cached.statusCode).json(cached.body) immediately\n   - Cache miss: wrap res.json() to capture the response, store in cache with the idempotency key, then send response\n   - On each request, clean expired entries (older than 86400000 ms = 24 hours)\n\n2. function getIdempotencyKey(req: Request): string | undefined — returns req.headers['idempotency-key'] as string\n\nImport { Request, Response, NextFunction, RequestHandler } from 'express'. Max 65 lines.",
+      "deliverables": {
+        "code": [
+          "backend/src/middleware/idempotency.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "backend/src/middleware/idempotency.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 88,
+          "summary": "Dual-approved: Claude (85/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "medium",
+              "file": "backend/src/middleware/idempotency.ts",
+              "description": "Missing unit tests - idempotency logic is critical and should have comprehensive test coverage"
+            },
+            {
+              "severity": "low",
+              "file": "backend/src/middleware/idempotency.ts",
+              "description": "Cache cleanup runs on every request - could be optimized with periodic cleanup for high-traffic scenarios"
+            },
+            {
+              "severity": "low",
+              "file": "backend/src/middleware/idempotency.ts",
+              "description": "The middleware does not check HTTP method; it will cache responses for any method. Consider restricting it to POST requests as implied by the spec."
+            }
+          ],
+          "strengths": [
+            "Correctly handles header as both string and array (Express header edge case)",
+            "Proper TypeScript types with no 'any' usage",
+            "Clean separation of concerns with getIdempotencyKey utility function",
+            "Efficient cache expiration cleanup on each request",
+            "Proper response wrapping that preserves original Express behavior",
+            "Good JSDoc documentation",
+            "Meets exact line count requirement (58 lines vs 65 max)",
+            "Follows Express middleware patterns correctly",
+            "Proper extraction of single or array form of the Idempotency-Key header",
+            "In-memory cache with TTL and cleanup logic runs on each request",
+            "TypeScript-strict–compliant, no use of `any`",
+            "JSDoc comments present and clear",
+            "No hardcoded secrets or security issues"
+          ]
+        }
+      }
+    },
+    {
+      "id": "BE-197",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "medium",
+      "dependencies": [],
+      "status": "done",
+      "context": "Create backend/src/middleware/api-version.ts. An Express middleware for API version negotiation.\n\nExport:\n1. interface ApiVersionRequest extends Request { apiVersion: string }\n\n2. function apiVersionMiddleware(supportedVersions: string[]): RequestHandler\n   - Reads 'X-API-Version' header, defaults to last element of supportedVersions array (latest)\n   - If requested version NOT in supportedVersions, return res.status(400).json({ error: { code: 'UNSUPPORTED_VERSION', message: `API version ${requested} is not supported. Supported versions: ${supportedVersions.join(', ')}` } })\n   - Sets (req as ApiVersionRequest).apiVersion = requestedVersion\n   - Sets res.setHeader('X-API-Version', requestedVersion)\n   - Calls next()\n\n3. function getApiVersion(req: Request): string — returns (req as ApiVersionRequest).apiVersion || 'v1'\n\nImport { Request, Response, NextFunction, RequestHandler } from 'express'. Max 55 lines.",
+      "deliverables": {
+        "code": [
+          "backend/src/middleware/api-version.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "backend/src/middleware/api-version.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 93,
+          "summary": "Dual-approved: Claude (95/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "backend/src/middleware/api-version.ts",
+              "description": "Missing JSDoc comments on public functions for better documentation"
+            }
+          ],
+          "strengths": [
+            "Exact implementation matches task specification",
+            "Proper TypeScript interface extension of Express Request",
+            "Correct error response format with structured error object",
+            "Appropriate use of type assertions and header handling",
+            "Clean, readable code under the 55-line limit (24 lines)",
+            "Proper Express middleware pattern with RequestHandler return type",
+            "Good default fallback logic for API version",
+            "No hardcoded values or security issues",
+            "Strictly follows the spec: reads X-API-Version header, validates against supported versions, and returns the correct 400 error payload.",
+            "Defines ApiVersionRequest interface and properly casts Request to include apiVersion.",
+            "Sets the X-API-Version response header and invokes next() in success path.",
+            "getApiVersion utility matches the spec and provides a sensible default.",
+            "No use of any or insecure patterns."
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-137",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "status": "done",
+      "context": "Create frontend/app/docs/errors/page.tsx. A Next.js App Router page documenting SDK error handling.\n\nExport default function ErrorsDocPage() that returns JSX with:\n1. h1 'Error Handling'\n2. Intro paragraph: 'The Invoica SDK throws typed errors that extend the base InvoicaError class. Each error includes a statusCode and error code for programmatic handling.'\n3. A table with columns: Name, Status Code, Code, Description. Rows:\n   - ValidationError, 400, VALIDATION_ERROR, 'Invalid request parameters'\n   - AuthenticationError, 401, AUTH_ERROR, 'Missing or invalid API key'\n   - NotFoundError, 404, NOT_FOUND, 'Resource does not exist'\n   - RateLimitError, 429, RATE_LIMIT, 'Too many requests'\n   - InvoicaError, varies, varies, 'Base error class for all API errors'\n4. Code example in <pre><code> showing try/catch with instanceof checks for ValidationError, AuthenticationError, RateLimitError, and generic InvoicaError\n5. Section 'Retry Behavior' explaining 429/500/502/503/504 are auto-retried with exponential backoff up to 3 attempts\n\nUse 'use client' directive. Tailwind: max-w-4xl mx-auto py-12 px-6 layout, bg-gray-900 text-gray-100 p-4 rounded-lg for code. Max 120 lines.",
+      "deliverables": {
+        "code": [
+          "frontend/app/docs/errors/page.tsx"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/app/docs/errors/page.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 94,
+          "summary": "Dual-approved: Claude (92/100) + Codex (95/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/app/docs/errors/page.tsx",
+              "description": "Missing TypeScript imports for error classes referenced in code example (ValidationError, AuthenticationError, etc.) - though this is acceptable for documentation purposes"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/app/docs/errors/page.tsx",
+              "description": "Code example references 'retryAfter' property on RateLimitError without defining it in the table"
+            }
+          ],
+          "strengths": [
+            "Follows Next.js App Router conventions correctly with 'use client' directive",
+            "Implements all required content elements: h1, intro paragraph, complete error table, code example, retry behavior section",
+            "Uses proper Tailwind classes as specified (max-w-4xl mx-auto py-12 px-6, bg-gray-900 text-gray-100 p-4 rounded-lg)",
+            "Clean table structure with proper styling and all required error types",
+            "Code example demonstrates proper error handling patterns with instanceof checks",
+            "Well-structured JSX with semantic HTML elements",
+            "Stays within 120 line limit (approximately 80 lines)",
+            "No hardcoded secrets or security issues",
+            "Responsive design with overflow-x-auto for table",
+            "Follows the task spec exactly with correct content and structure",
+            "Uses the 'use client' directive appropriately",
+            "Table and code block are styled correctly with Tailwind classes",
+            "No markdown code fences or invalid syntax present",
+            "Concise and clear documentation layout"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-138",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "status": "done",
+      "context": "Create frontend/app/docs/webhooks/verification/page.tsx. A Next.js App Router page documenting webhook signature verification.\n\nExport default function WebhookVerificationPage() that returns JSX with:\n1. h1 'Webhook Verification'\n2. Intro: 'Invoica signs webhook payloads using HMAC-SHA256. Verify signatures to ensure webhook authenticity.'\n3. Section 'How It Works' with an ordered list (<ol>):\n   - 'Invoica sends the payload with an x-invoica-signature header'\n   - 'Your server computes HMAC-SHA256 of the raw body using your webhook secret'\n   - 'Compare computed signature with the header using timing-safe comparison'\n4. Code example in <pre><code> showing Express route:\n   - app.post('/webhooks', express.raw({type: 'application/json'}), (req, res) => {...})\n   - Get signature from req.headers['x-invoica-signature']\n   - Call verifySignature(req.body.toString(), WEBHOOK_SECRET, signature)\n   - Return 200 if valid, 401 if invalid\n5. Section 'Security Best Practices' as <ul> with 4 items:\n   - Always use timing-safe comparison (built into verifySignature)\n   - Store webhook secrets in environment variables\n   - Use HTTPS endpoints only\n   - Log failed verification attempts for monitoring\n\n'use client' directive. Tailwind: max-w-4xl mx-auto py-12 px-6, bg-gray-900 text-gray-100 p-4 rounded-lg. Max 110 lines.",
+      "deliverables": {
+        "code": [
+          "frontend/app/docs/webhooks/verification/page.tsx"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/app/docs/webhooks/verification/page.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/app/docs/webhooks/verification/page.tsx",
+              "description": "Missing JSDoc comment on the exported component for documentation consistency"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/app/docs/webhooks/verification/page.tsx",
+              "description": "Could add meta tags or SEO optimization for better discoverability"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/app/docs/webhooks/verification/page.tsx",
+              "description": "The outer container div uses ‘max-w-4xl mx-auto py-12 px-6’ but is missing the ‘bg-gray-900 text-gray-100 p-4 rounded-lg’ styling mentioned in the spec. Consider applying these classes to the page container for consistent theming."
+            }
+          ],
+          "strengths": [
+            "Correctly implements 'use client' directive for Next.js App Router",
+            "All required content sections present and properly structured",
+            "Proper TypeScript with explicit function signature verification example",
+            "Tailwind classes applied correctly (max-w-4xl mx-auto py-12 px-6, bg-gray-900 text-gray-100 p-4 rounded-lg)",
+            "Code example is comprehensive and includes proper Express setup with raw body parsing",
+            "Security best practices section covers all 4 required items",
+            "Clean, readable JSX structure with semantic HTML elements",
+            "File stays well under 110 line limit (approximately 60 lines)",
+            "No hardcoded secrets or security vulnerabilities",
+            "Proper React component export pattern",
+            "Correctly implements all specified text content and structure (h1, intro, How It Works, Code Example, Security Best Practices).",
+            "Demonstrates a working Express code snippet with HMAC verification and timing-safe comparison.",
+            "Uses Tailwind utility classes effectively and keeps the file under the line limit.",
+            "No invalid markdown code fences in the source file."
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-139",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "medium",
+      "dependencies": [],
+      "status": "done",
+      "context": "Create frontend/app/docs/configuration/page.tsx. A Next.js App Router page documenting SDK configuration.\n\nExport default function ConfigurationPage() that returns JSX with:\n1. h1 'Configuration'\n2. Intro: 'The Invoica SDK accepts an InvoicaClientConfig object with sensible defaults for all optional properties.'\n3. Table with columns Property, Type, Default, Description:\n   - apiKey, string, (required), 'Your Invoica API key'\n   - baseUrl, string, 'https://api.invoica.ai/v1', 'API base URL'\n   - timeout, number, 30000, 'Request timeout in milliseconds'\n   - maxRetries, number, 3, 'Maximum retry attempts for failed requests'\n4. Code example 'Basic Configuration' showing: const client = new CountableClient({ apiKey: 'inv_live_xxx' });\n5. Code example 'Custom Configuration' showing all 4 properties\n6. Section 'Environment Detection' explaining test keys (inv_test_ prefix) vs live keys (inv_live_ prefix) with code example: if (apiKey.startsWith('inv_test_')) { console.log('Using sandbox environment'); }\n\n'use client' directive. Tailwind: max-w-4xl mx-auto py-12 px-6, bg-gray-900 text-gray-100 p-4 rounded-lg. Max 120 lines.",
+      "deliverables": {
+        "code": [
+          "frontend/app/docs/configuration/page.tsx"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/app/docs/configuration/page.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 92,
+          "summary": "Dual-approved: Claude (92/100) + Codex (92/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/app/docs/configuration/page.tsx",
+              "description": "Interface ConfigProperty could be moved to a types file for reusability, though acceptable for a single-use case"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/app/docs/configuration/page.tsx",
+              "description": "Missing JSDoc comments on the component and interface, though not critical for documentation pages"
+            }
+          ],
+          "strengths": [
+            "Correctly implements 'use client' directive as required",
+            "All specified content elements present: h1, intro text, table with exact columns, both code examples, environment detection section",
+            "Proper TypeScript with interface definition and typed array",
+            "Clean table implementation using map() with proper key prop",
+            "Responsive design with overflow-x-auto for mobile compatibility",
+            "Consistent Tailwind styling matching the specified classes (max-w-4xl mx-auto py-12 px-6, bg-gray-900 text-gray-100 p-4 rounded-lg)",
+            "Code examples properly formatted in pre/code blocks with syntax highlighting colors",
+            "Semantic HTML structure with proper heading hierarchy (h1, h2)",
+            "Stays within 120 line limit (approximately 85 lines)",
+            "No hardcoded secrets or security issues",
+            "Follows Next.js App Router conventions with default export",
+            "Fulfills all elements from the task spec including headings, table columns, and code examples.",
+            "Clean, readable JSX with consistent Tailwind styling and responsive container sizing.",
+            "No invalid syntax, markdown fences, or extraneous code—under 120 lines and correctly marked with ‘use client’.",
+            "Uses TypeScript without fallback to any, interface for table data ensures type safety."
+          ]
+        }
+      }
+    }
+  ]
+}

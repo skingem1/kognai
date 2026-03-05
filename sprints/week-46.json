@@ -1,0 +1,513 @@
+{
+  "tasks": [
+    {
+      "id": "SDK-160",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "description": "Unit tests for sdk/typescript/src/response-parser.ts (v1) — pure response parsing with CountableError hierarchy",
+      "status": "done",
+      "dependencies": [],
+      "context": "Write Jest unit tests for sdk/typescript/src/response-parser.ts. This file exports: (1) isApiError(error: unknown): boolean — returns true if error instanceof CountableError, (2) parseResponse<T>(response: Response): Promise<T> — parses fetch Response, throws CountableError('Failed to parse response','PARSE_ERROR') on JSON parse failure, throws ValidationError for 400, AuthenticationError for 401, NotFoundError for 404, RateLimitError for 429, CountableError for other error statuses, throws CountableError('Response missing data','INVALID_RESPONSE') if !json.success or json.data===undefined. Import errors from '../errors' (CountableError, AuthenticationError, NotFoundError, RateLimitError, ValidationError). Create mock Response objects: new Response(JSON.stringify(body), {status, statusText, headers:{'Content-Type':'application/json'}}). Test cases: (1) isApiError returns true for CountableError instance, (2) isApiError returns false for plain Error, (3) isApiError returns false for non-error values (null, string, number), (4) parseResponse returns data on success {success:true, data:{id:'123'}}, (5) parseResponse throws CountableError PARSE_ERROR for invalid JSON response, (6) parseResponse throws ValidationError for 400 status, (7) parseResponse throws AuthenticationError for 401 status, (8) parseResponse throws NotFoundError for 404 status, (9) parseResponse throws RateLimitError for 429 status, (10) parseResponse throws CountableError for 500 status, (11) parseResponse throws CountableError INVALID_RESPONSE when success is false, (12) parseResponse throws CountableError INVALID_RESPONSE when data is undefined.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/__tests__/response-parser.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/src/__tests__/response-parser.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 92,
+          "summary": "Dual-approved: Claude (92/100) + Codex (92/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/__tests__/response-parser.test.ts",
+              "description": "Test for non-error values could be more comprehensive - only tests null and string, missing number test case"
+            },
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/__tests__/response-parser.test.ts",
+              "description": "Error message assertions could be more specific - currently only checks error type, not exact message content"
+            }
+          ],
+          "strengths": [
+            "All 12 test cases from spec are implemented correctly",
+            "Proper imports from '../response-parser' and '../errors'",
+            "Good use of helper function mockResponse for DRY code",
+            "Correct mock Response construction with JSON.stringify and proper headers",
+            "Tests cover both positive and negative cases comprehensively",
+            "Proper async/await usage for Promise-based parseResponse function",
+            "Good test organization with describe blocks",
+            "Concise but readable test descriptions",
+            "No code fences or invalid syntax",
+            "Tests specific error types (ValidationError, AuthenticationError, etc.) not just base CountableError",
+            "Covers all required status-code error branches",
+            "Validates both success and invalid-response scenarios",
+            "Tests isApiError against error instances and non-errors"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-161",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "description": "Unit tests for sdk/typescript/src/http-transport.ts — HttpTransport class with mocked dependencies",
+      "status": "done",
+      "dependencies": [],
+      "context": "Write Jest unit tests for sdk/typescript/src/http-transport.ts. This file exports class HttpTransport with constructor(config: {baseUrl:string, apiKey:string, timeout:number, maxRetries:number}) and method request<T>(method:'GET'|'POST'|'PATCH'|'DELETE', path:string, body?:unknown): Promise<T>. It imports: withTimeout from '../timeout', retryWithBackoff from '../retry', buildUrl/buildHeaders from '../request-builder', parseResponse from '../response-parser'. Mock ALL dependencies with jest.mock: jest.mock('../timeout', ()=>({withTimeout:jest.fn((p)=>p)})); jest.mock('../retry', ()=>({retryWithBackoff:jest.fn((fn)=>fn())})); jest.mock('../request-builder', ()=>({buildUrl:jest.fn((base,path)=>`${base}${path}`), buildHeaders:jest.fn((key)=>({Authorization:'Bearer '+key}))})); jest.mock('../response-parser', ()=>({parseResponse:jest.fn()})); Also mock global fetch: globalThis.fetch = jest.fn(). Test cases: (1) GET request calls fetch with correct URL, method, headers and no body, (2) POST request includes JSON.stringify(body) and Content-Type header, (3) DELETE request does not include body even if body param provided, (4) PATCH request includes body when provided, (5) withTimeout is called with the fetch promise and config.timeout, (6) retryWithBackoff is called with config.maxRetries, (7) parseResponse is called with the fetch Response. In beforeEach create transport = new HttpTransport({baseUrl:'https://api.test.com', apiKey:'test-key', timeout:5000, maxRetries:2}). Mock fetch to return a Response object. Clean up in afterEach: jest.restoreAllMocks().",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/__tests__/http-transport.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/src/__tests__/http-transport.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/__tests__/http-transport.test.ts",
+              "description": "Could add edge case tests for error scenarios (network failures, timeout errors, retry exhaustion)"
+            },
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/__tests__/http-transport.test.ts",
+              "description": "Missing test for PATCH request without body to ensure it handles undefined body correctly"
+            },
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/__tests__/http-transport.test.ts",
+              "description": "Global fetch is mocked in beforeEach but not restored afterwards, which may affect other tests in the suite."
+            }
+          ],
+          "strengths": [
+            "All dependencies properly mocked with exact specifications from task",
+            "Comprehensive test coverage of all HTTP methods (GET, POST, DELETE, PATCH)",
+            "Correct verification of withTimeout and retryWithBackoff integration",
+            "Proper setup/teardown with beforeEach/afterEach",
+            "Clear test descriptions that match requirements exactly",
+            "Correct mock assertions for fetch calls with expected parameters",
+            "Proper handling of body serialization for different HTTP methods",
+            "Good use of jest.Mock typing for better type safety",
+            "All specified HTTP methods (GET, POST, DELETE, PATCH) are tested with correct header and body handling",
+            "Dependencies (withTimeout, retryWithBackoff, buildUrl, buildHeaders, parseResponse) are properly mocked",
+            "Tests assert calls to timeout, retry, and response parser as required"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-162",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "description": "Unit tests for sdk/typescript/src/http-transport-v2.ts — v2 HttpTransport with TransportRequestConfig",
+      "status": "rejected",
+      "dependencies": [],
+      "context": "Write Jest unit tests for sdk/typescript/src/http-transport-v2.ts. This file exports interface TransportRequestConfig {method, path, body?, query?} and class HttpTransport with constructor(config: {baseUrl:string, apiKey:string, timeout:number, maxRetries:number}) and method request<T>(reqConfig: TransportRequestConfig): Promise<T>. Note: v2 takes a config object instead of positional args and supports query params. Mock ALL dependencies: jest.mock('../timeout', ()=>({withTimeout:jest.fn((p)=>p)})); jest.mock('../retry', ()=>({retryWithBackoff:jest.fn((fn)=>fn())})); jest.mock('../request-builder', ()=>({buildUrl:jest.fn((base,path,q)=>`${base}${path}`), buildHeaders:jest.fn((key)=>({Authorization:'Bearer '+key}))})); jest.mock('../response-parser', ()=>({parseResponse:jest.fn()})); Also mock global fetch: globalThis.fetch = jest.fn(). Test cases: (1) GET request with path only, (2) POST request with body includes Content-Type and JSON body, (3) GET request does not include body, (4) DELETE request does not include body, (5) PATCH request includes body, (6) query params are passed to buildUrl, (7) withTimeout called with config.timeout, (8) retryWithBackoff called with config.maxRetries, (9) parseResponse called with fetch Response. In beforeEach: transport = new HttpTransport({baseUrl:'https://api.test.com', apiKey:'test-key', timeout:5000, maxRetries:2}). Mock fetch to resolve with a Response. Clean up in afterEach.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/__tests__/http-transport-v2.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/src/__tests__/http-transport-v2.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "REJECTED",
+          "score": 45,
+          "summary": "Dual-rejected: Claude (45/100) + Codex (75/100). Test file has good structure and covers most requirements but has critical issues: missing global fetch mock setup, incomplete test coverage (missing 2 required test cases), and incorrect mock implementation for buildHeaders that adds Content-Type unconditionally. | The test suite covers most of the required scenarios and correctly mocks dependencies. However, the invocation of parseResponse is asserted only for being called, not that it’s called with the actual fetch Response. Additionally, the tests do not assert that the transport.request method returns the parsed payload.",
+          "issues": [
+            {
+              "severity": "critical",
+              "file": "sdk/typescript/src/__tests__/http-transport-v2.test.ts",
+              "description": "Missing global fetch mock setup. The task spec requires 'globalThis.fetch = jest.fn()' but the test only references it in afterEach cleanup without proper setup."
+            },
+            {
+              "severity": "high",
+              "file": "sdk/typescript/src/__tests__/http-transport-v2.test.ts",
+              "description": "Missing required test case: 'withTimeout called with config.timeout' - no dedicated test verifying timeout parameter is passed correctly."
+            },
+            {
+              "severity": "high",
+              "file": "sdk/typescript/src/__tests__/http-transport-v2.test.ts",
+              "description": "Missing required test case: 'retryWithBackoff called with config.maxRetries' - no dedicated test verifying maxRetries parameter is passed correctly."
+            },
+            {
+              "severity": "medium",
+              "file": "sdk/typescript/src/__tests__/http-transport-v2.test.ts",
+              "description": "buildHeaders mock incorrectly adds Content-Type unconditionally. Task spec shows it should only return Authorization header, but mock adds Content-Type which would break GET/DELETE tests."
+            },
+            {
+              "severity": "medium",
+              "file": "sdk/typescript/src/__tests__/http-transport-v2.test.ts",
+              "description": "Missing explicit test for 'parseResponse called with fetch Response' - while parseResponse is called, there's no test verifying it receives the Response object."
+            },
+            {
+              "severity": "medium",
+              "file": "sdk/typescript/src/__tests__/http-transport-v2.test.ts",
+              "description": "The test for parseResponse only checks that it was called, but does not verify it was passed the actual Response object returned by fetch."
+            },
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/__tests__/http-transport-v2.test.ts",
+              "description": "None of the tests assert that transport.request<T> actually returns the parsed result. You should test that the Promise resolves to the expected data."
+            }
+          ],
+          "strengths": []
+        }
+      }
+    },
+    {
+      "id": "SDK-163",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "medium",
+      "description": "Unit tests for sdk/typescript/src/index.ts — main package entry point barrel exports",
+      "status": "done",
+      "dependencies": [],
+      "context": "Write Jest unit tests for sdk/typescript/src/index.ts. This is the main package entry point that re-exports from v2 modules. Test that all expected exports are available and are the correct type (function, class, string, etc). Import everything from '../index' (tests are in __tests__/). Test cases: (1) CountableClient is exported and is a function (class constructor), (2) InvoicaFullClient is exported and is a function, (3) HttpTransport is exported and is a function, (4) InvoicaError is exported and is a function, (5) ValidationError is exported and is a function, (6) NotFoundError is exported and is a function, (7) AuthenticationError is exported and is a function, (8) CountableError is exported and is a function, (9) RateLimitError is exported and is a function, (10) parseResponse is exported and is a function, (11) isApiError is exported and is a function, (12) createDebugLogger is exported and is a function, (13) isDebugEnabled is exported and is a function, (14) createApiKeyMethods is exported and is a function, (15) createWebhookMethods is exported and is a function, (16) createInterceptorManager is exported and is a function, (17) detectEnvironment is exported and is a function, (18) version is exported and is a string. Use: expect(typeof ExportName).toBe('function') or .toBe('string'). Group tests in describe('index.ts barrel exports').",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/__tests__/index.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/src/__tests__/index.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 93,
+          "summary": "Dual-approved: Claude (95/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/__tests__/index.test.ts",
+              "description": "Could benefit from additional tests verifying exports are actually defined (not undefined) before type checking"
+            },
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/__tests__/index.test.ts",
+              "description": "The test imports everything under the identifier `exports`, which shadows the CommonJS `exports` object. Consider renaming this import (e.g. `barrelExports`) to avoid confusion."
+            }
+          ],
+          "strengths": [
+            "Exactly follows the task specification - tests all 18 required exports",
+            "Correct use of typeof assertions for functions and string",
+            "Proper test structure with describe block as requested",
+            "Clean, readable test descriptions that match the spec exactly",
+            "No unnecessary code or over-engineering",
+            "Correct import pattern using '../index' as specified",
+            "No code fences or invalid syntax",
+            "Focused unit tests that verify the barrel export functionality",
+            "All 18 exports are tested exactly as specified, with correct assertions for `function` or `string`.",
+            "Tests are well-organized under a single `describe` block.",
+            "No markdown fences or invalid syntax present in source.",
+            "Follows project conventions for placing tests under `__tests__`."
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-164",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "medium",
+      "description": "Unit tests for sdk/typescript/src/index-v2.ts — v2 package entry point barrel exports",
+      "status": "done",
+      "dependencies": [],
+      "context": "Write Jest unit tests for sdk/typescript/src/index-v2.ts. This is the v2 package entry point that re-exports the same modules as index.ts. Test that all expected exports are available. Import everything from '../index-v2' (tests are in __tests__/). Test cases: (1) CountableClient is exported and typeof is 'function', (2) InvoicaFullClient is exported and typeof is 'function', (3) HttpTransport is exported and typeof is 'function', (4) InvoicaError is exported and typeof is 'function', (5) ValidationError is exported and typeof is 'function', (6) NotFoundError is exported and typeof is 'function', (7) AuthenticationError is exported and typeof is 'function', (8) CountableError is exported and typeof is 'function', (9) RateLimitError is exported and typeof is 'function', (10) parseResponse is exported and typeof is 'function', (11) isApiError is exported and typeof is 'function', (12) createDebugLogger is exported and typeof is 'function', (13) isDebugEnabled is exported and typeof is 'function', (14) createApiKeyMethods is exported and typeof is 'function', (15) createWebhookMethods is exported and typeof is 'function', (16) createInterceptorManager is exported and typeof is 'function', (17) detectEnvironment is exported and typeof is 'function', (18) version is exported and typeof is 'string'. Group tests in describe('index-v2.ts barrel exports').",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/__tests__/index-v2.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/src/__tests__/index-v2.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 90,
+          "summary": "Dual-approved: Claude (85/100) + Codex (95/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/__tests__/index-v2.test.ts",
+              "description": "The final test 'should export all function exports as functions' is redundant since each export is already individually tested"
+            },
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/__tests__/index-v2.test.ts",
+              "description": "Unused variable 'stringExport' declared but never used"
+            }
+          ],
+          "strengths": [
+            "Correctly imports all 18 required exports from '../index-v2'",
+            "Proper test structure with describe block as specified",
+            "All test cases match the exact requirements (1-18)",
+            "Correct type assertions using typeof checks",
+            "Clean, readable test organization",
+            "No code fences or syntax issues",
+            "Follows Jest testing patterns correctly",
+            "Covers all required exports with individual tests",
+            "Includes a collective assertion for all function exports",
+            "Follows the naming and grouping guidelines from the task spec",
+            "No invalid syntax (no markdown code fences) or missing functionality"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-310",
+      "agent": "frontend",
+      "type": "test",
+      "priority": "high",
+      "description": "Unit tests for frontend/components/settlements/settlement-badge.tsx — settlement status badge with color coding",
+      "status": "done",
+      "dependencies": [],
+      "context": "Write React Testing Library tests for frontend/components/settlements/settlement-badge.tsx. This component renders a settlement status badge. Props: status (string), txHash (string|null optional), chain (string optional), confirmedAt (string|null optional). Behaviors: renders status text, applies green colors for 'confirmed', amber for 'pending', gray for unknown status, shows truncated txHash as first 6 chars + '...' + last 4 chars when provided, shows formatted date from confirmedAt when provided, does NOT render txHash span when txHash is null/undefined, does NOT render date span when confirmedAt is null/undefined. Import {render, screen} from '@testing-library/react'. Import {SettlementBadge} from '../settlement-badge' (test file is in settlements/__tests__/). Test cases: (1) renders status text, (2) applies emerald classes for 'confirmed' status (check container has 'bg-emerald-100'), (3) applies amber classes for 'pending' status, (4) applies gray classes for unknown status like 'processing', (5) displays truncated txHash when provided (e.g. txHash='0xabc123def456' shows '0xabc1...f456'), (6) does not render txHash when txHash is null, (7) displays formatted confirmedAt date when provided, (8) does not render date when confirmedAt is null, (9) case-insensitive status check — 'Confirmed' should use emerald colors.",
+      "deliverables": {
+        "code": [
+          "frontend/components/settlements/__tests__/settlement-badge.test.tsx"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/components/settlements/__tests__/settlement-badge.test.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 89,
+          "summary": "Dual-approved: Claude (92/100) + Codex (85/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/components/settlements/__tests__/settlement-badge.test.tsx",
+              "description": "Date format assertion uses regex pattern /Jan 15, 2024/ which assumes specific formatting - could be more flexible or use exact expected format"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/components/settlements/__tests__/settlement-badge.test.tsx",
+              "description": "Test for 'does not render date when confirmedAt is null' uses broad regex /Jan/ which could potentially match other content - more specific assertion would be better"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/components/settlements/__tests__/settlement-badge.test.tsx",
+              "line": 17,
+              "description": "Tests cover txHash = null but do not cover txHash = undefined. Per spec, both null and undefined should not render the txHash span."
+            },
+            {
+              "severity": "low",
+              "file": "frontend/components/settlements/__tests__/settlement-badge.test.tsx",
+              "line": 23,
+              "description": "Tests cover confirmedAt = null but do not cover confirmedAt = undefined. Per spec, both null and undefined should not render the date span."
+            }
+          ],
+          "strengths": [
+            "All 9 specified test cases are implemented correctly",
+            "Proper React Testing Library imports and usage patterns",
+            "Correct component import path as specified",
+            "Good coverage of edge cases (null values, case-insensitive status)",
+            "Appropriate use of screen.queryBy* for negative assertions",
+            "Clear, descriptive test names that match requirements",
+            "Proper testing of CSS classes for different status types",
+            "Validates txHash truncation logic with realistic example",
+            "Tests both presence and absence of conditional elements",
+            "All nine core behaviors from the spec are addressed, including color classes and truncation logic.",
+            "Clear, concise test cases using React Testing Library patterns.",
+            "Case-insensitive status test ensures robust styling behavior."
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-311",
+      "agent": "frontend",
+      "type": "test",
+      "priority": "high",
+      "description": "Unit tests for frontend/components/invoices/invoice-table.tsx — invoice table with loading and status colors",
+      "status": "done",
+      "dependencies": [],
+      "context": "Write React Testing Library tests for frontend/components/invoices/invoice-table.tsx. This component renders an invoice table. Props: invoices (array of {id, number, amount, currency, status, createdAt}), isLoading (boolean optional). Behaviors: shows 'Loading invoices...' text when isLoading is true, renders table headers (Invoice, Amount, Status, Date), renders invoice rows with number, formatted amount (currency + amount.toFixed(2)), status text with color classes, formatted date. Status colors: 'pending' gets 'text-amber-600', 'paid' or 'completed' gets 'text-emerald-600', 'failed' gets 'text-red-600', unknown gets 'text-slate-600'. Import {render, screen} from '@testing-library/react'. Import {InvoiceTable} from '../invoice-table' (test file is in invoices/__tests__/). Test cases: (1) renders loading state when isLoading is true, (2) renders table headers, (3) renders invoice number in row, (4) renders formatted amount 'USD 50.00', (5) renders status text with correct color class for 'pending' (check element has 'text-amber-600'), (6) renders 'paid' status with 'text-emerald-600', (7) renders 'failed' status with 'text-red-600', (8) renders formatted date, (9) renders multiple invoice rows. Provide sample invoice data: {id:'inv-1', number:'INV-001', amount:50, currency:'USD', status:'pending', createdAt:'2024-01-15T10:00:00Z'}.",
+      "deliverables": {
+        "code": [
+          "frontend/components/invoices/__tests__/invoice-table.test.tsx"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/components/invoices/__tests__/invoice-table.test.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/components/invoices/__tests__/invoice-table.test.tsx",
+              "description": "Date formatting assumption - test expects 'Jan 15, 2024' format but component implementation not verified. Could fail if component uses different date formatting."
+            },
+            {
+              "severity": "low",
+              "file": "frontend/components/invoices/__tests__/invoice-table.test.tsx",
+              "description": "Missing edge case tests like empty invoices array, invalid date handling, or very large amounts."
+            }
+          ],
+          "strengths": [
+            "Covers all 9 required test cases from the task specification",
+            "Proper TypeScript usage with const assertions for status types",
+            "Clean test data setup with reusable sample objects",
+            "Correct React Testing Library imports and patterns",
+            "Proper use of screen queries and expect assertions",
+            "Tests both positive cases and different status color mappings",
+            "Good test naming that clearly describes expected behavior",
+            "Efficient test data reuse with spread operator variations",
+            "No code fences or invalid syntax present",
+            "File structure matches specified path requirements",
+            "Covers all specified test cases, including loading state and multiple status colors",
+            "Uses clear sample data and reusable objects for different statuses",
+            "Imports and file paths are correct with Jest/RTL idioms",
+            "No markdown fences or invalid syntax present"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-312",
+      "agent": "frontend",
+      "type": "test",
+      "priority": "medium",
+      "description": "Unit tests for frontend/components/dashboard/webhook-event-card.tsx — webhook event card with relative time",
+      "status": "done",
+      "dependencies": [],
+      "context": "Write React Testing Library tests for frontend/components/dashboard/webhook-event-card.tsx. This is a default export component. Props: eventType (string), eventId (string), timestamp (string), status ('delivered'|'failed'|'pending'). Behaviors: renders eventType as heading (h3 with font-bold), renders eventId in monospace text, renders relative time from formatRelativeTime(timestamp), shows status indicator dot with colors: delivered='bg-green-500', failed='bg-red-500', pending='bg-yellow-500'. The dot has role='presentation' and aria-label='Status: {status}'. The formatRelativeTime function: <1min='Just now', <60min='{n} minute(s) ago', <24hr='{n} hour(s) ago', else '{n} day(s) ago'. Import {render, screen} from '@testing-library/react'. Import WebhookEventCard from '../webhook-event-card' (default export, test file in dashboard/__tests__/). IMPORTANT: To test relative time, mock Date with jest.useFakeTimers() and jest.setSystemTime(new Date('2024-01-15T12:00:00Z')). Test cases: (1) renders event type as heading, (2) renders event ID, (3) renders 'Just now' for timestamp close to current time, (4) renders minutes ago for recent timestamp (e.g. 5 min ago), (5) renders hours ago for older timestamp, (6) renders days ago for timestamp from days before, (7) status dot has correct class 'bg-green-500' for delivered, (8) status dot has correct class 'bg-red-500' for failed, (9) status dot has aria-label 'Status: pending'. Use beforeAll(()=>{jest.useFakeTimers();jest.setSystemTime(new Date('2024-01-15T12:00:00Z'))}); afterAll(()=>{jest.useRealTimers()}).",
+      "deliverables": {
+        "code": [
+          "frontend/components/dashboard/__tests__/webhook-event-card.test.tsx"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/components/dashboard/__tests__/webhook-event-card.test.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 94,
+          "summary": "Dual-approved: Claude (92/100) + Codex (95/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/components/dashboard/__tests__/webhook-event-card.test.tsx",
+              "description": "Missing test for pending status dot color (bg-yellow-500) - only tests delivered and failed colors"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/components/dashboard/__tests__/webhook-event-card.test.tsx",
+              "description": "Could add edge case tests for formatRelativeTime function (e.g., exactly 1 minute, 1 hour boundaries)"
+            }
+          ],
+          "strengths": [
+            "Correctly implements all 9 required test cases as specified",
+            "Proper use of jest.useFakeTimers() and jest.setSystemTime() for consistent time-based testing",
+            "Clean beforeAll/afterAll setup and teardown",
+            "Uses React Testing Library best practices with screen queries",
+            "Tests both visual elements (classes) and accessibility attributes (aria-label, role)",
+            "Good test data variety with different event IDs and timestamps",
+            "Proper import structure matching the specified path",
+            "Clear, descriptive test names that explain expected behavior",
+            "Covers all status dot colors and accessibility requirements",
+            "Uses jest fake timers correctly to control system time for relative time assertions",
+            "Covers all nine required test cases exactly as specified",
+            "Clear and focused test descriptions",
+            "Proper use of React Testing Library queries (getByRole, getByText)"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-313",
+      "agent": "frontend",
+      "type": "test",
+      "priority": "medium",
+      "description": "Unit tests for frontend/components/api-explorer.tsx — interactive API endpoint explorer",
+      "status": "done",
+      "dependencies": [],
+      "context": "Write React Testing Library tests for frontend/components/api-explorer.tsx. This is a default export component with no props. It renders: a heading 'API Explorer', a select dropdown with 4 endpoints (POST /v1/invoices, GET /v1/invoices/:id, POST /v1/settlements, GET /v1/health), displays 'Request Body' section with JSON or dash for no body, displays 'Sample Response' section with JSON, a 'Try It' button that calls alert(). Behaviors: initially shows first endpoint (POST /v1/invoices), changing select shows different endpoint data, GET endpoints show dash for request body, POST endpoints show JSON body, Try It button calls window.alert. Import {render, screen, fireEvent} from '@testing-library/react'. Import ApiExplorer from '../api-explorer' (default export, test file in __tests__/). Mock window.alert: beforeEach(()=>{window.alert=jest.fn()}). Test cases: (1) renders API Explorer heading, (2) renders select with 4 options, (3) initially shows POST /v1/invoices endpoint data, (4) shows request body JSON for POST endpoint (check for 'customer_id'), (5) changing select to GET endpoint shows dash for request body, (6) shows sample response JSON, (7) Try It button is rendered, (8) clicking Try It calls window.alert, (9) changing to health endpoint shows {status:'healthy'} response. Use fireEvent.change(select, {target:{value:'3'}}) to switch endpoints.",
+      "deliverables": {
+        "code": [
+          "frontend/components/__tests__/api-explorer.test.tsx"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/components/__tests__/api-explorer.test.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 43,
+          "summary": "Dual-approved: Claude (85/100) + Codex (0/100)",
+          "issues": [
+            {
+              "severity": "medium",
+              "file": "frontend/components/__tests__/api-explorer.test.tsx",
+              "description": "Test case 5 uses value '1' for GET endpoint but spec suggests '3' should be health endpoint - potential index mismatch"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/components/__tests__/api-explorer.test.tsx",
+              "description": "Some test assertions could be more specific (e.g., checking exact JSON structure rather than just presence of keys)"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/components/__tests__/api-explorer.test.tsx",
+              "description": "Missing explicit test for 'Try It button is rendered' as separate test case - currently only tests the click behavior"
+            }
+          ],
+          "strengths": [
+            "Proper React Testing Library imports and usage patterns",
+            "Correct beforeEach setup for window.alert mocking",
+            "All 9 required test cases are covered",
+            "Good use of semantic queries (getByRole, getByText)",
+            "Proper fireEvent.change usage for select interaction",
+            "Tests both POST and GET endpoint behaviors as specified",
+            "Clean test structure with descriptive test names",
+            "Follows RTL best practices for user-centric testing"
+          ]
+        }
+      }
+    }
+  ]
+}

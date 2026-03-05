@@ -1,0 +1,90 @@
+{
+  "$schema": "https://mintlify.com/schema.json",
+  "name": "Invoica",
+  "logo": {
+    "dark": "/logo/logo-dark.png",
+    "light": "/logo/logo.png"
+  },
+  "favicon": "/logo/logo.png",
+  "colors": {
+    "primary": "#635BFF",
+    "light": "#818CF8",
+    "dark": "#635BFF",
+    "background": {
+      "dark": "#0A2540"
+    }
+  },
+  "font": {
+    "headings": {
+      "family": "Inter",
+      "weight": 600
+    },
+    "body": {
+      "family": "Inter"
+    }
+  },
+  "topbarLinks": [
+    {
+      "name": "Dashboard",
+      "url": "https://app.invoica.ai"
+    }
+  ],
+  "topbarCtaButton": {
+    "name": "Get API Key",
+    "url": "https://app.invoica.ai/api-keys"
+  },
+  "tabs": [
+    {
+      "name": "API Reference",
+      "url": "api-reference"
+    },
+    {
+      "name": "SDK",
+      "url": "sdk"
+    }
+  ],
+  "anchors": [
+    {
+      "name": "Status",
+      "icon": "signal-bars",
+      "url": "https://invoica.ai/status"
+    },
+    {
+      "name": "Support",
+      "icon": "envelope",
+      "url": "mailto:support@invoica.ai"
+    }
+  ],
+  "navigation": [
+    {
+      "group": "Getting Started",
+      "pages": ["introduction", "quickstart", "authentication"]
+    },
+    {
+      "group": "Core Concepts",
+      "pages": ["concepts/x402-protocol", "concepts/invoice-middleware"]
+    },
+    {
+      "group": "Guides",
+      "pages": ["guides/create-invoice", "guides/webhooks", "guides/tax-compliance"]
+    },
+    {
+      "group": "API Reference",
+      "pages": ["api-reference/overview", "api-reference/invoices", "api-reference/settlements", "api-reference/webhooks"]
+    },
+    {
+      "group": "SDK",
+      "pages": ["sdk/overview", "sdk/installation"]
+    }
+  ],
+  "footerSocials": {
+    "twitter": "https://twitter.com/NexusCollectv"
+  },
+  "api": {
+    "baseUrl": "https://api.invoica.ai",
+    "auth": {
+      "method": "key",
+      "name": "Authorization"
+    }
+  }
+}

@@ -1,0 +1,433 @@
+{
+  "tasks": [
+    {
+      "id": "BE-280",
+      "title": "Unit tests for currency utility",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create backend/src/utils/__tests__/currency.test.ts — unit tests for backend/src/utils/currency.ts (48 lines). This file exports: SUPPORTED_CURRENCIES = ['USD', 'EUR', 'GBP'] as const, formatCurrency(amount: number, currency: string): string (returns '$X.XX' for USD, '€X.XX' for EUR, '£X.XX' for GBP, 'CODE X.XX' for unknown), parseCurrency(formatted: string): number (strips non-numeric chars except '.', returns parseFloat or 0). Write exactly 5 tests: (1) formatCurrency returns '$1,234.56' style for USD — actually it uses amount.toFixed(2) so test formatCurrency(10.5, 'USD') === '$10.50', (2) formatCurrency returns '€' prefix for EUR, (3) formatCurrency returns 'JPY 100.00' for unknown currency, (4) parseCurrency('$10.50') returns 10.50, (5) SUPPORTED_CURRENCIES contains exactly ['USD','EUR','GBP']. Use describe/it blocks, import { formatCurrency, parseCurrency, SUPPORTED_CURRENCIES } from '../currency'. Max 30 lines. No mocking needed — pure functions.",
+      "deliverables": {
+        "code": [
+          "backend/src/utils/__tests__/currency.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "backend/src/utils/__tests__/currency.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 94,
+          "summary": "Dual-approved: Claude (95/100) + Codex (92/100)",
+          "issues": [],
+          "strengths": [
+            "All 5 required tests implemented exactly as specified",
+            "Proper Jest imports and describe/it structure",
+            "Correct import statement from '../currency'",
+            "Tests match the exact expected behavior (formatCurrency(10.5, 'USD') === '$10.50')",
+            "Clean, readable test descriptions",
+            "No unnecessary code or over-engineering",
+            "File is 18 lines, well under the 30-line limit",
+            "No markdown code fences or syntax issues",
+            "Tests cover all three exported functions/constants",
+            "Covers all five required test cases exactly as specified.",
+            "No markdown code fences present, valid TypeScript syntax.",
+            "Tests are concise, clear, and use Jest globals properly.",
+            "Imports and assertion styles align with project conventions."
+          ]
+        }
+      }
+    },
+    {
+      "id": "BE-281",
+      "title": "Unit tests for pagination utility",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create backend/src/utils/__tests__/pagination.test.ts — unit tests for backend/src/utils/pagination.ts (86 lines). This file exports: parsePagination(query: {limit?: string|number, offset?: string|number}, defaults?: {limit?: number, maxLimit?: number}): PaginationParams — parses limit/offset from strings or numbers, clamps limit between 1 and maxLimit (default 100), clamps offset to >= 0. Also exports paginate<T>(items: T[], total: number, params: PaginationParams): PaginatedResult<T> — returns { data: items, total, limit, offset, hasMore: offset + limit < total }. Write exactly 5 tests: (1) parsePagination with string values parses correctly: parsePagination({limit:'20',offset:'5'}) returns {limit:20,offset:5}, (2) parsePagination clamps limit to maxLimit: parsePagination({limit:'999'}) returns limit=100, (3) parsePagination with negative offset returns offset=0, (4) paginate returns hasMore=true when offset+limit < total, (5) paginate returns hasMore=false when offset+limit >= total. Use describe/it blocks, import { parsePagination, paginate } from '../pagination'. Max 35 lines. No mocking needed — pure functions.",
+      "deliverables": {
+        "code": [
+          "backend/src/utils/__tests__/pagination.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "backend/src/utils/__tests__/pagination.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 93,
+          "summary": "Dual-approved: Claude (95/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "backend/src/utils/__tests__/pagination.test.ts",
+              "description": "Could add edge case tests for undefined/null inputs and custom maxLimit parameter, but not required by task spec"
+            }
+          ],
+          "strengths": [
+            "All 5 required test cases implemented exactly as specified",
+            "Clean TypeScript with proper imports from relative path",
+            "Proper Jest describe/it structure with descriptive test names",
+            "Concise assertions that directly test the expected behavior",
+            "File is exactly 25 lines, well under the 35-line limit",
+            "No unnecessary mocking or complexity - tests pure functions as required",
+            "Tests cover the core functionality: string parsing, limit clamping, offset clamping, and hasMore logic",
+            "Covers exactly the five specified test cases",
+            "Stays under the 35-line limit",
+            "No invalid syntax (no code fences)",
+            "Clear and concise use of describe/it blocks"
+          ]
+        }
+      }
+    },
+    {
+      "id": "BE-282",
+      "title": "Unit tests for response helpers utility",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create backend/src/utils/__tests__/response-helpers.test.ts — unit tests for backend/src/utils/response-helpers.ts (54 lines). This file exports: successResponse<T>(data: T, meta?): { success: true, data: T, meta? }, errorResponse(message: string, code: string, status: number, details?: unknown): { success: false, error: { message, code, details? } } — note: details key is only present when details !== undefined (uses spread), paginatedResponse<T>(items: T[], total, limit, offset): { success: true, data: T[], meta: { total, limit, offset, hasMore: offset+limit<total } }. Write exactly 5 tests: (1) successResponse wraps data with success:true, (2) successResponse includes meta when provided, (3) errorResponse returns success:false with message and code, (4) errorResponse omits details key when undefined (expect result.error to not have 'details' property), (5) paginatedResponse computes hasMore correctly — paginatedResponse([1,2], 10, 5, 0).meta.hasMore === true. Use describe/it blocks, import { successResponse, errorResponse, paginatedResponse } from '../response-helpers'. Max 35 lines. No mocking needed — pure functions.",
+      "deliverables": {
+        "code": [
+          "backend/src/utils/__tests__/response-helpers.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "backend/src/utils/__tests__/response-helpers.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "Dual-approved: Claude (95/100) + Codex (95/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "backend/src/utils/__tests__/response-helpers.test.ts",
+              "description": "Could add edge case tests for empty arrays or zero values, but not required by spec"
+            }
+          ],
+          "strengths": [
+            "Exactly 5 tests as specified in requirements",
+            "Clean describe/it structure with descriptive test names",
+            "Correct imports from relative path '../response-helpers'",
+            "Tests all required functionality: successResponse with/without meta, errorResponse with/without details, paginatedResponse hasMore logic",
+            "Proper assertion for 'details' property absence using not.toHaveProperty()",
+            "Concise at 24 lines, well under the 35-line limit",
+            "No unnecessary mocking or complexity - tests pure functions directly",
+            "Validates the hasMore calculation correctly (offset + limit < total)",
+            "No code fences or invalid syntax",
+            "Contains exactly five tests as instructed",
+            "Correctly imports and tests each helper function",
+            "Covers successResponse with and without meta",
+            "Verifies errorResponse shape and absence of details when undefined",
+            "Checks paginatedResponse hasMore calculation"
+          ]
+        }
+      }
+    },
+    {
+      "id": "BE-283",
+      "title": "Unit tests for correlation ID utility",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create backend/src/utils/__tests__/correlation-id.test.ts — unit tests for backend/src/utils/correlation-id.ts (60 lines). This file exports: CORRELATION_HEADER = 'x-correlation-id', generateCorrelationId(): string — returns 'cid_<timestamp36>_<random36>', extractCorrelationId(headers): string — returns header value if string, first element if array, generates new if missing, createContext(correlationId, parentId?): CorrelationContext — returns { correlationId, parentId, spanId: generateCorrelationId() }. Write exactly 5 tests: (1) generateCorrelationId returns string starting with 'cid_', (2) extractCorrelationId returns header value when present as string, (3) extractCorrelationId returns first element when header is array, (4) extractCorrelationId generates new ID when header missing (result starts with 'cid_'), (5) createContext returns object with correlationId and spanId starting with 'cid_'. Use describe/it blocks, import { CORRELATION_HEADER, generateCorrelationId, extractCorrelationId, createContext } from '../correlation-id'. Max 35 lines. No mocking needed — pure functions.",
+      "deliverables": {
+        "code": [
+          "backend/src/utils/__tests__/correlation-id.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "backend/src/utils/__tests__/correlation-id.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 94,
+          "summary": "Dual-approved: Claude (95/100) + Codex (92/100)",
+          "issues": [],
+          "strengths": [
+            "Exactly 5 tests as specified in task requirements",
+            "Proper Jest imports and describe/it structure",
+            "Correct import statement matching the task spec",
+            "Appropriate use of regex matching for ID format validation",
+            "Tests cover all specified scenarios: string header, array header, missing header, and context creation",
+            "Clean, readable test code with descriptive test names",
+            "No unnecessary mocking as specified - tests pure functions directly",
+            "File length is well within the 35-line limit (24 lines)",
+            "All assertions are meaningful and test the expected behavior",
+            "Exactly five focused tests covering all required behaviors",
+            "Uses Jest globals correctly without unnecessary mocks",
+            "File length under the 35-line limit",
+            "No invalid syntax or code fences present"
+          ]
+        }
+      }
+    },
+    {
+      "id": "BE-284",
+      "title": "Unit tests for env validator utility",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create backend/src/utils/__tests__/env-validator.test.ts — unit tests for backend/src/utils/env-validator.ts (102 lines). Focus on the pure function maskSecret(value: string): string — returns '****' if value.length < 10, otherwise returns first4 + '***' + last4. Also test validateEnv() with process.env manipulation. Write exactly 5 tests: (1) maskSecret returns '****' for short string like 'abc', (2) maskSecret returns first4+'***'+last4 for long string: maskSecret('abcdefghijklmnop') === 'abcd***mnop', (3) maskSecret returns '****' for exactly 9 chars, (4) maskSecret returns masked for exactly 10 chars: maskSecret('0123456789') === '0123***6789', (5) validateEnv throws with missing vars message when env is empty — save process.env, set process.env to empty object missing NODE_ENV/DATABASE_URL/ANTHROPIC_API_KEY/MINIMAX_API_KEY, call validateEnv(), expect throw matching /Missing required environment variables/, then restore process.env in afterEach. Use describe/it blocks, import { maskSecret, validateEnv } from '../env-validator'. Max 40 lines. IMPORTANT: save and restore process.env in beforeEach/afterEach to avoid test pollution.",
+      "deliverables": {
+        "code": [
+          "backend/src/utils/__tests__/env-validator.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "backend/src/utils/__tests__/env-validator.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "Dual-approved: Claude (95/100) + Codex (95/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "backend/src/utils/__tests__/env-validator.test.ts",
+              "description": "Could add edge case tests for empty string and null/undefined inputs to maskSecret for more comprehensive coverage"
+            }
+          ],
+          "strengths": [
+            "Exactly 5 tests as specified in the task requirements",
+            "Proper process.env save/restore pattern in beforeEach/afterEach prevents test pollution",
+            "All maskSecret test cases match the exact specifications (short string, long string, 9 chars, 10 chars)",
+            "validateEnv test correctly manipulates process.env and expects the right error pattern",
+            "Clean, readable test structure with proper describe/it blocks",
+            "Correct imports from the relative path",
+            "File is well under the 40-line limit (26 lines)",
+            "No code fences or invalid syntax",
+            "TypeScript types are properly handled",
+            "Covers all specified edge cases for maskSecret",
+            "Properly saves and restores process.env to avoid test pollution",
+            "Uses concise describe/it structure and stays within the 40-line limit",
+            "No hardcoded secrets or invalid syntax detected"
+          ]
+        }
+      }
+    },
+    {
+      "id": "BE-285",
+      "title": "Unit tests for invoice validator schemas",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create backend/src/validators/__tests__/invoice-schemas.test.ts — unit tests for backend/src/validators/invoice-schemas.ts (29 lines). This file exports 3 Zod schemas: createInvoiceSchema (amount: positive number, currency: 3-char string, description: max 500 optional, customerId: uuid optional, metadata: record optional), updateInvoiceSchema (status: enum optional, description optional, metadata optional, refine: at least one field required), invoiceQuerySchema (limit: coerce int 1-100 default 10, offset: coerce int min 0 default 0, status: enum optional). Write exactly 5 tests: (1) createInvoiceSchema accepts valid input {amount:100, currency:'USD'}, (2) createInvoiceSchema rejects negative amount — parse({amount:-5, currency:'USD'}) throws ZodError, (3) updateInvoiceSchema rejects empty object (refine requires at least one field), (4) invoiceQuerySchema coerces string limit — parse({limit:'25'}).limit === 25, (5) invoiceQuerySchema applies defaults — parse({}).limit === 10 and parse({}).offset === 0. IMPORTANT: Create the __tests__ directory. Use describe/it blocks, import { createInvoiceSchema, updateInvoiceSchema, invoiceQuerySchema } from '../invoice-schemas'. For rejection tests use expect(() => schema.parse(input)).toThrow(). Max 35 lines.",
+      "deliverables": {
+        "code": [
+          "backend/src/validators/__tests__/invoice-schemas.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "backend/src/validators/__tests__/invoice-schemas.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 93,
+          "summary": "Dual-approved: Claude (95/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "backend/src/validators/__tests__/invoice-schemas.test.ts",
+              "description": "Could use more specific error type checking (ZodError) instead of generic toThrow(), but generic approach is acceptable for this scope"
+            }
+          ],
+          "strengths": [
+            "Exactly matches the 5 test cases specified in the task",
+            "Proper Jest describe/it structure with clear test names",
+            "Correct import statement from relative path '../invoice-schemas'",
+            "Appropriate use of expect().toThrow() for validation failures",
+            "Tests both positive and negative cases as required",
+            "Validates coercion behavior and default values correctly",
+            "Clean, readable code under the 35-line limit (24 lines)",
+            "No code fences or invalid syntax",
+            "Proper TypeScript without any types",
+            "Covers all five specified test scenarios",
+            "Uses proper describe/it Jest structure",
+            "No markdown code fences and file size within limits"
+          ]
+        }
+      }
+    },
+    {
+      "id": "BE-286",
+      "title": "Unit tests for webhook validator schemas",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create backend/src/validators/__tests__/webhook-schemas.test.ts — unit tests for backend/src/validators/webhook-schemas.ts (27 lines). This file exports 3 Zod schemas: registerWebhookSchema (url: valid URL, events: array of enum min 1, secret: string 16-64 optional, description: max 200 optional), webhookQuerySchema (limit: coerce int 1-100 default 10, offset: coerce int min 0 default 0, status: enum active|inactive optional), webhookEventSchema (id: string, type: enum of events, data: record, timestamp: datetime string). Valid event types: 'invoice.created', 'invoice.updated', 'invoice.paid', 'settlement.created', 'settlement.confirmed'. Write exactly 5 tests: (1) registerWebhookSchema accepts valid {url:'https://example.com/hook', events:['invoice.created']}, (2) registerWebhookSchema rejects empty events array — parse({url:'https://a.com', events:[]}) throws, (3) webhookQuerySchema applies defaults — parse({}).limit === 10, (4) webhookEventSchema accepts valid event object with all fields, (5) registerWebhookSchema rejects invalid URL. Use describe/it, import { registerWebhookSchema, webhookQuerySchema, webhookEventSchema } from '../webhook-schemas'. Max 35 lines.",
+      "deliverables": {
+        "code": [
+          "backend/src/validators/__tests__/webhook-schemas.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "backend/src/validators/__tests__/webhook-schemas.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "Dual-approved: Claude (95/100) + Codex (95/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "backend/src/validators/__tests__/webhook-schemas.test.ts",
+              "description": "Could add more specific error message assertions in the rejection tests to verify the exact validation failures"
+            }
+          ],
+          "strengths": [
+            "Exactly 5 tests as specified in the task requirements",
+            "Proper Jest imports and describe/it structure",
+            "Correct import path from '../webhook-schemas'",
+            "All test cases match the exact specifications: valid input acceptance, empty array rejection, default application, valid event object, and invalid URL rejection",
+            "Clean, readable test code with appropriate assertions",
+            "File length is 22 lines, well under the 35-line maximum",
+            "No code fences or invalid syntax",
+            "Proper TypeScript usage with no 'any' types",
+            "Tests cover both positive and negative validation scenarios",
+            "Covers all five required test cases per spec",
+            "Uses describe/it structure and appropriate Jest globals",
+            "Validates both acceptance and rejection paths",
+            "Keeps test file concise and under the line limit",
+            "Imports schemas correctly without extraneous dependencies"
+          ]
+        }
+      }
+    },
+    {
+      "id": "BE-287",
+      "title": "Unit tests for API error classes",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create backend/src/errors/__tests__/index.test.ts — unit tests for backend/src/errors/index.ts (43 lines). This file exports 5 classes: ApiError extends Error (constructor: message, statusCode, code, details?; sets this.name = this.constructor.name), ValidationError extends ApiError (constructor: message, details?; sets statusCode=400, code='VALIDATION_ERROR'), NotFoundError extends ApiError (statusCode=404, code='NOT_FOUND'), AuthenticationError extends ApiError (statusCode=401, code='UNAUTHORIZED'), RateLimitError extends ApiError (statusCode=429, code='RATE_LIMIT_EXCEEDED'). Write exactly 5 tests: (1) ApiError sets message, statusCode, code, and name='ApiError', (2) ValidationError has statusCode=400 and code='VALIDATION_ERROR', (3) NotFoundError has statusCode=404, (4) AuthenticationError has statusCode=401 and code='UNAUTHORIZED', (5) All error classes are instanceof Error (test new RateLimitError('msg') instanceof Error). IMPORTANT: Create the __tests__ directory. Use describe/it blocks, import { ApiError, ValidationError, NotFoundError, AuthenticationError, RateLimitError } from '../index'. Max 35 lines.",
+      "deliverables": {
+        "code": [
+          "backend/src/errors/__tests__/index.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "backend/src/errors/__tests__/index.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "backend/src/errors/__tests__/index.test.ts",
+              "description": "NotFoundError test missing code='NOT_FOUND' assertion as specified in task requirements"
+            }
+          ],
+          "strengths": [
+            "Clean Jest test structure with proper describe/it blocks",
+            "Correct imports from '../index' as specified",
+            "All 5 required test cases implemented",
+            "Proper TypeScript syntax with no 'any' types",
+            "Tests cover the exact functionality described in task spec",
+            "File length (35 lines) meets the max 35 lines requirement",
+            "Good test naming and organization",
+            "Comprehensive instanceof Error test covering all error classes",
+            "Covers all specified scenarios in exactly five tests",
+            "Uses describe/it blocks and imports from '@jest/globals' correctly",
+            "Respects the maximum line count and correct __tests__ directory structure",
+            "No markdown code fences present in the source file",
+            "Tests for instanceof Error on all classes as required"
+          ]
+        }
+      }
+    },
+    {
+      "id": "BE-288",
+      "title": "Unit tests for proxy invoice headers",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create backend/src/proxy/__tests__/headers.test.ts — unit tests for backend/src/proxy/headers.ts (90 lines). This file exports: InvoiceHeadersSchema (Zod schema for companyName, vatNumber, address, email, purchaseOrder — all optional except email must be valid if present), extractInvoiceHeaders(headers): InvoiceHeaders — maps 'x-invoice-company-name' to companyName, 'x-invoice-vat-number' to vatNumber, 'x-invoice-address' to address, 'x-invoice-email' to email, 'x-invoice-purchase-order' to purchaseOrder; returns parsed result via InvoiceHeadersSchema.parse(), hasInvoiceHeaders(headers): boolean — returns true if any x-invoice-* header key exists, getSupportedHeaders(): string[] — returns array of all supported header names. Write exactly 5 tests: (1) extractInvoiceHeaders extracts company name from headers: extractInvoiceHeaders({'x-invoice-company-name':'Acme'}).companyName === 'Acme', (2) extractInvoiceHeaders returns empty object when no headers present, (3) extractInvoiceHeaders throws on invalid email: headers with 'x-invoice-email':'not-an-email' should throw, (4) hasInvoiceHeaders returns true when x-invoice-company-name present, (5) getSupportedHeaders returns array including 'x-invoice-email'. IMPORTANT: Create the __tests__ directory. Use describe/it, import { extractInvoiceHeaders, hasInvoiceHeaders, getSupportedHeaders } from '../headers'. Max 35 lines.",
+      "deliverables": {
+        "code": [
+          "backend/src/proxy/__tests__/headers.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "backend/src/proxy/__tests__/headers.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "backend/src/proxy/__tests__/headers.test.ts",
+              "description": "Could benefit from more descriptive test names (e.g., 'should extract company name from x-invoice-company-name header')"
+            }
+          ],
+          "strengths": [
+            "Exactly 5 tests as specified in task requirements",
+            "Clean imports - only imports what's needed from '../headers'",
+            "Proper Jest describe/it structure",
+            "Tests cover all required scenarios: extraction, empty object, validation error, detection, and supported headers",
+            "Concise implementation at 20 lines (well under 35 line limit)",
+            "No code fences or invalid syntax",
+            "No overengineering - just the tests that were asked for",
+            "Proper error testing with expect().toThrow()",
+            "Tests match exact specifications from task (Acme company name, x-invoice-email validation)",
+            "Covers all five required test cases exactly as specified",
+            "Uses describe/it structure following best practices",
+            "Imports functions from the correct relative path",
+            "File is concise and under the 35-line limit",
+            "Contains no markdown code fences or invalid syntax"
+          ]
+        }
+      }
+    }
+  ]
+}

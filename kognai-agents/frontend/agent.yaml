@@ -1,0 +1,15 @@
+name: frontend
+role: Frontend Developer
+description: Builds Next.js dashboard and React components
+tools: [claude_code, file_operations]
+working_directory: ./frontend
+context_files:
+  - ../../docs/ui-requirements.md
+  - ../../shared/code-style-guide.md
+constraints:
+  - Use Next.js 14 App Router
+  - TailwindCSS for styling
+  - shadcn/ui components
+  - React Query for data fetching
+deliverables_path: ./frontend/app
+tests_path: ./frontend/__tests__

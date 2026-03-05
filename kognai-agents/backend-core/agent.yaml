@@ -1,0 +1,16 @@
+name: backend-core
+role: Backend Core Services Developer
+description: Builds invoice middleware, settlement detection, and core API
+tools: [claude_code, file_operations, git, postgresql, redis]
+working_directory: ./backend
+context_files:
+  - ../../docs/api-contract.md
+  - ../../docs/database-schema.sql
+  - ../../shared/code-style-guide.md
+constraints:
+  - Use TypeScript strict mode
+  - Write tests for all functions (Jest)
+  - Add JSDoc comments for public APIs
+  - Use Zod for validation
+deliverables_path: ./backend/src
+tests_path: ./backend/tests

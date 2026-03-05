@@ -1,0 +1,270 @@
+[
+  {
+    "id": "BC-001",
+    "agent": "backend-core",
+    "type": "feature",
+    "priority": "critical",
+    "dependencies": [],
+    "context": "Build invoice proxy server with Express.js. Create src/proxy/server.ts (main Express server with CORS, error handling), src/proxy/middleware.ts (http-proxy-middleware to forward requests), and src/proxy/headers.ts (extract X-Invoice-* headers). Requirements: intercept HTTP requests, extract headers (company name, VAT, address, email, PO), forward to merchant, detect 402 and 200 OK responses, emit events to Redis queue using Bull.",
+    "deliverables": {
+      "code": [
+        "backend/src/proxy/server.ts",
+        "backend/src/proxy/middleware.ts",
+        "backend/src/proxy/headers.ts"
+      ],
+      "tests": [
+        "backend/tests/proxy/server.test.ts",
+        "backend/tests/proxy/headers.test.ts"
+      ]
+    },
+    "status": "done",
+    "output": {
+      "files": [
+        "backend/src/proxy/headers.ts",
+        "backend/src/proxy/middleware.ts",
+        "backend/src/proxy/server.ts",
+        "backend/tests/proxy/headers.test.ts",
+        "backend/tests/proxy/server.test.ts"
+      ],
+      "commit": "b89ab23",
+      "model": "MiniMax-M2.5"
+    }
+  },
+  {
+    "id": "BC-002",
+    "agent": "backend-core",
+    "type": "feature",
+    "priority": "critical",
+    "dependencies": [
+      "BC-001"
+    ],
+    "context": "Build invoice service using Prisma ORM. Create src/services/invoice.ts with functions: createPendingInvoice, updatePaymentDetails, markAsSettled. Generate sequential invoice numbers atomically using PostgreSQL sequence. Include proper error handling for InvoiceNotFoundError. Create src/db/client.ts for Prisma client singleton. Status transitions: pending > settled > processing > completed.",
+    "deliverables": {
+      "code": [
+        "backend/src/services/invoice.ts",
+        "backend/src/db/client.ts",
+        "backend/prisma/schema.prisma"
+      ],
+      "tests": [
+        "backend/tests/services/invoice.test.ts"
+      ]
+    },
+    "status": "done",
+    "output": {
+      "files": [
+        "backend/prisma/schema.prisma",
+        "backend/src/db/client.ts",
+        "backend/src/services/invoice.ts",
+        "backend/tests/services/invoice.test.ts"
+      ],
+      "commit": "ffd6408",
+      "model": "MiniMax-M2.5"
+    }
+  },
+  {
+    "id": "BC-003",
+    "agent": "backend-core",
+    "type": "feature",
+    "priority": "high",
+    "dependencies": [
+      "BC-002"
+    ],
+    "context": "Build settlement poller service. Poll PayAI facilitator /list endpoint every 30 seconds using setInterval. Match returned settlements to pending invoices in database by transaction_id. When match found, publish to Bull queue for PDF generation (idempotent - check if already processed). Include proper error handling and logging. Create src/services/settlement-poller.ts.",
+    "deliverables": {
+      "code": [
+        "backend/src/services/settlement-poller.ts"
+      ],
+      "tests": [
+        "backend/tests/services/settlement-poller.test.ts"
+      ]
+    },
+    "status": "done",
+    "output": {
+      "files": [
+        "backend/src/services/settlement-poller.ts",
+        "backend/src/services/settlement-poller.ts",
+        "backend/tests/services/settlement-poller.test.ts"
+      ],
+      "commit": "42373de",
+      "model": "MiniMax-M2.5"
+    }
+  },
+  {
+    "id": "TAX-001",
+    "agent": "backend-tax",
+    "type": "feature",
+    "priority": "high",
+    "dependencies": [],
+    "context": "Build tax calculation service for EU VAT (focus on B2B reverse charge initially). Create src/services/tax/calculator.ts (main tax logic), src/services/tax/location-resolver.ts (determine buyer location from VAT number via VIES, billing address, or IP as fallback), src/services/tax/vat-validator.ts (call EU VIES API, cache results in Redis for 30 days). Include evidence storage to tax_evidence table. Return tax amount, jurisdiction, reverse charge flag, and invoice notes.",
+    "deliverables": {
+      "code": [
+        "backend/src/services/tax/calculator.ts",
+        "backend/src/services/tax/location-resolver.ts",
+        "backend/src/services/tax/vat-validator.ts",
+        "backend/src/services/tax/types.ts"
+      ],
+      "tests": [
+        "backend/tests/services/tax/calculator.test.ts",
+        "backend/tests/services/tax/vat-validator.test.ts"
+      ]
+    },
+    "status": "done",
+    "output": {
+      "files": [
+        "backend/src/services/tax/types.ts",
+        "backend/src/services/tax/vat-validator.ts",
+        "backend/src/services/tax/location-resolver.ts",
+        "backend/src/services/tax/calculator.ts",
+        "backend/tests/services/tax/calculator.test.ts",
+        "backend/tests/services/tax/vat-validator.test.ts"
+      ],
+      "commit": "f0977a5",
+      "model": "MiniMax-M2.5"
+    }
+  },
+  {
+    "id": "LED-001",
+    "agent": "backend-ledger",
+    "type": "feature",
+    "priority": "high",
+    "dependencies": [],
+    "context": "Build ledger service with double-entry accounting. Create src/services/ledger/recorder.ts (record transactions with balanced debits/credits), src/services/ledger/budget.ts (get agent budget, update spent amounts), src/services/ledger/enforcement.ts (check hierarchical budgets: agent > team > department, optimistic locking for reservations with 60s expiry). Use TimescaleDB for ledger_entries table.",
+    "deliverables": {
+      "code": [
+        "backend/src/services/ledger/recorder.ts",
+        "backend/src/services/ledger/budget.ts",
+        "backend/src/services/ledger/enforcement.ts",
+        "backend/src/services/ledger/query.ts",
+        "backend/src/services/ledger/types.ts"
+      ],
+      "tests": [
+        "backend/tests/services/ledger/recorder.test.ts",
+        "backend/tests/services/ledger/budget.test.ts"
+      ]
+    },
+    "status": "done",
+    "output": {
+      "files": [
+        "backend/src/services/ledger/types.ts",
+        "backend/src/services/ledger/recorder.ts",
+        "backend/src/services/ledger/budget.ts",
+        "backend/src/services/ledger/enforcement.ts",
+        "backend/src/services/ledger/query.ts",
+        "backend/src/services/ledger/config.ts",
+        "backend/tests/services/ledger/recorder.test.ts"
+      ],
+      "commit": "a88bba4",
+      "model": "MiniMax-M2.5"
+    }
+  },
+  {
+    "id": "FE-001",
+    "agent": "frontend",
+    "type": "feature",
+    "priority": "medium",
+    "dependencies": [],
+    "context": "Build admin dashboard foundation with Next.js 14 App Router. Create app/layout.tsx (root layout with Clerk authentication), app/page.tsx (dashboard home with stats cards), app/login/page.tsx (sign in page). Use TailwindCSS for styling and shadcn/ui components (Card, Button, Badge). Set up navigation structure and basic responsive layout.",
+    "deliverables": {
+      "code": [
+        "frontend/app/layout.tsx",
+        "frontend/app/page.tsx",
+        "frontend/app/login/page.tsx",
+        "frontend/components/ui/card.tsx",
+        "frontend/components/ui/button.tsx"
+      ]
+    },
+    "status": "done",
+    "output": {
+      "files": [
+        "frontend/app/layout.tsx",
+        "frontend/app/page.tsx",
+        "frontend/app/login/page.tsx",
+        "frontend/components/ui/card.tsx",
+        "frontend/components/ui/button.tsx",
+        "frontend/app/globals.css",
+        "frontend/package.json",
+        "frontend/tailwind.config.ts",
+        "frontend/tsconfig.json",
+        "frontend/postcss.config.js",
+        "frontend/next.config.js",
+        "frontend/.env.local"
+      ],
+      "commit": "a041f17",
+      "model": "MiniMax-M2.5"
+    }
+  },
+  {
+    "id": "OPS-001",
+    "agent": "devops",
+    "type": "feature",
+    "priority": "critical",
+    "dependencies": [],
+    "context": "Create Terraform infrastructure modules for AWS. Build modules for: VPC (public/private subnets, NAT gateway), RDS Aurora Serverless v2 (PostgreSQL 15, auto-scaling 0.5-16 ACUs), ElastiCache Redis (t4g.small), S3 buckets (with Intelligent-Tiering for invoices), CloudFront (CDN for S3), ECS Fargate (API + workers with Spot instances), Application Load Balancer. Create separate environments: dev, staging, prod.",
+    "deliverables": {
+      "code": [
+        "infrastructure/terraform/modules/vpc/main.tf",
+        "infrastructure/terraform/modules/rds/main.tf",
+        "infrastructure/terraform/modules/redis/main.tf",
+        "infrastructure/terraform/modules/s3/main.tf",
+        "infrastructure/terraform/modules/ecs/main.tf",
+        "infrastructure/terraform/environments/prod/main.tf"
+      ],
+      "docs": [
+        "infrastructure/docs/deployment.md"
+      ]
+    },
+    "status": "done",
+    "output": {
+      "files": [
+        "infrastructure/terraform/modules/vpc/main.tf",
+        "infrastructure/terraform/modules/vpc/variables.tf",
+        "infrastructure/terraform/modules/vpc/outputs.tf",
+        "infrastructure/terraform/modules/rds/main.tf",
+        "infrastructure/terraform/modules/rds/variables.tf",
+        "infrastructure/terraform/modules/rds/outputs.tf",
+        "infrastructure/terraform/modules/redis/main.tf",
+        "infrastructure/terraform/modules/redis/variables.tf",
+        "infrastructure/terraform/modules/redis/outputs.tf",
+        "infrastructure/terraform/modules/s3/main.tf",
+        "infrastructure/terraform/modules/s3/variables.tf",
+        "infrastructure/terraform/modules/s3/outputs.tf",
+        "infrastructure/terraform/modules/ecs/main.tf"
+      ],
+      "commit": "26efd99",
+      "model": "MiniMax-M2.5"
+    }
+  },
+  {
+    "id": "SEC-001",
+    "agent": "security",
+    "type": "feature",
+    "priority": "high",
+    "dependencies": [],
+    "context": "Implement security middleware for Express.js backend. Create src/middleware/security.ts (helmet.js configuration, CORS setup, XSS protection), src/middleware/rate-limit.ts (rate limiting per customer and per IP using express-rate-limit + Redis), src/middleware/auth.ts (API key validation from database), src/services/api-keys.ts (generate API keys with crypto, hash with bcrypt, store in database). Use Zod for input validation.",
+    "deliverables": {
+      "code": [
+        "backend/src/middleware/security.ts",
+        "backend/src/middleware/rate-limit.ts",
+        "backend/src/middleware/auth.ts",
+        "backend/src/services/api-keys.ts"
+      ],
+      "tests": [
+        "backend/tests/security/auth.test.ts",
+        "backend/tests/security/rate-limit.test.ts"
+      ]
+    },
+    "status": "done",
+    "output": {
+      "files": [
+        "backend/src/middleware/security.ts",
+        "backend/src/middleware/rate-limit.ts",
+        "backend/src/middleware/auth.ts",
+        "backend/src/services/api-keys.ts",
+        "backend/tests/security/auth.test.ts",
+        "backend/tests/security/rate-limit.test.ts"
+      ],
+      "commit": "9e60728",
+      "model": "MiniMax-M2.5"
+    }
+  }
+]

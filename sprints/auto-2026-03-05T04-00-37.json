@@ -1,0 +1,84 @@
+{
+  "tasks": [
+    {
+      "id": "AGENTS-001",
+      "agent": "agents",
+      "type": "bugfix",
+      "priority": "critical",
+      "dependencies": [],
+      "description": "Fix orchestrator halt-on-rejection bug",
+      "context": "Orchestrator stops processing queue after first task rejection. Modify task-orchestrator.ts to continue queue processing on rejection, log rejection reason, update task status to 'rejected', and move to next task. Add error handling to prevent queue stall.",
+      "deliverables": {
+        "code": [
+          "agents/src/task-orchestrator.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "rejected"
+    },
+    {
+      "id": "AGENTS-002",
+      "agent": "agents",
+      "type": "feature",
+      "priority": "critical",
+      "dependencies": [
+        "AGENTS-001"
+      ],
+      "description": "Deploy approved complexity validator",
+      "context": "Integrate task-complexity-validator.ts into orchestrator workflow. Import validator in task-orchestrator.ts, call validateTaskComplexity() before task execution, reject tasks exceeding limits with clear message. Pre-approved 5 days ago, needs deployment only.",
+      "deliverables": {
+        "code": [
+          "agents/src/task-orchestrator.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "skipped",
+      "skippedReason": "Blocked by rejected dependency: ['AGENTS-001']"
+    },
+    {
+      "id": "AGENTS-003",
+      "agent": "backend-core",
+      "type": "bugfix",
+      "priority": "high",
+      "dependencies": [
+        "AGENTS-001"
+      ],
+      "description": "Add complexity validation to backend task endpoint",
+      "context": "Backend task-complexity-validator.ts exists but not wired to API. In backend/src/routes/ledger.ts or relevant task creation endpoint, add validateTaskComplexity() call before task acceptance. Reject invalid tasks at API boundary with 400 error.",
+      "deliverables": {
+        "code": [
+          "backend/src/routes/ledger.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "skipped",
+      "skippedReason": "Blocked by rejected dependency: ['AGENTS-001']"
+    },
+    {
+      "id": "AGENTS-004",
+      "agent": "agents",
+      "type": "test",
+      "priority": "high",
+      "dependencies": [
+        "AGENTS-001",
+        "AGENTS-002"
+      ],
+      "description": "Add orchestrator rejection recovery tests",
+      "context": "Create test suite for orchestrator.ts validating: (1) queue continues after rejection, (2) rejected tasks marked correctly, (3) complexity validator integration works. Use existing test patterns from backend/src/middleware/rate-limit-types.test.ts.",
+      "deliverables": {
+        "code": [
+          "agents/tests/orchestrator.test.ts"
+        ],
+        "tests": [
+          "agents/tests/orchestrator.test.ts"
+        ],
+        "docs": []
+      },
+      "status": "skipped",
+      "skippedReason": "Blocked by rejected dependency: ['AGENTS-001']"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+name: sprint-retrospective
+role: "Analyzes sprint results to identify failure patterns and recommend improvements"
+llm: minimax/MiniMax-M2.5
+reports_to: ceo
+trigger: every_sprint
+created_by: cto_proposal
+created_at: "2026-02-15T14:06:26.202Z"
+context_files:
+  - docs/learnings.md

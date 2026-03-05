@@ -1,0 +1,338 @@
+[
+  {
+    "id": "BUG-008",
+    "github_issue": 8,
+    "agent": "backend-tax",
+    "type": "bugfix",
+    "priority": "critical",
+    "dependencies": [],
+    "context": "Fix UK VAT bug in backend/src/services/tax/. Two files need changes. (1) backend/src/services/tax/location-resolver.ts: In getJurisdiction(), the euCountries array is missing 'GB'. Add 'GB' to the array alongside 'XI'. Find: \"'NL', 'PL', 'PT', 'RO', 'SE', 'SI', 'SK', 'XI'\" and add 'GB' after 'XI'. (2) backend/src/services/tax/calculator.ts: The TAX_RATES Map has no entry for 'GB'. After the 'XI' entry add: ['GB', { id: 'GB-STD', countryCode: 'GB', rate: 0.20, effectiveDate: new Date('2024-01-01'), appliesToDigitalServices: true }]. Root cause: 'GB' missing from euCountries routes UK buyers to calculateNoTax() instead of calculateEUTax(), returning 0% VAT. UK charges 20% VAT post-Brexit.",
+    "deliverables": {
+      "code": [
+        "backend/src/services/tax/location-resolver.ts",
+        "backend/src/services/tax/calculator.ts"
+      ],
+      "tests": [
+        "backend/src/services/tax/__tests__/uk-vat.test.ts"
+      ]
+    },
+    "acceptance_criteria": "POST /v1/tax/calculate with buyerCountry=GB, transactionType=B2C, amount=100 returns taxRate=0.20, taxAmount=20",
+    "status": "done",
+    "output": {
+      "files": [
+        "backend/src/services/tax/location-resolver.ts",
+        "backend/src/services/tax/calculator.ts",
+        "backend/src/services/tax/__tests__/uk-vat.test.ts"
+      ],
+      "commit": "49386c7",
+      "model": "MiniMax-M2.5"
+    }
+  },
+  {
+    "id": "BUG-009",
+    "github_issue": 9,
+    "agent": "backend-tax",
+    "type": "bugfix",
+    "priority": "critical",
+    "dependencies": [],
+    "context": "Fix US sales tax nexus in backend/src/services/tax/. Two files need changes. (1) backend/src/services/tax/location-resolver.ts: getJurisdiction() checks usStates (2-letter state codes) but buyerCountry is passed as 'US'. 'US' never matches usStates, falls to TaxJurisdiction.NONE. Fix: add before the usStates check: if (countryCode.toUpperCase() === 'US') return TaxJurisdiction.US; (2) backend/src/services/tax/calculator.ts: calculateUSTax() is a stub returning 0%. Implement: create US_NEXUS_RATES map with CA=0.0725, TX=0.0625, NY=0.08, FL=0.06, WA=0.065. In calculateUSTax, if buyerLocation.state exists in US_NEXUS_RATES apply that rate; otherwise return 0%. Root cause: 'US' country code not matched to TaxJurisdiction.US, all US transactions hit calculateNoTax().",
+    "deliverables": {
+      "code": [
+        "backend/src/services/tax/location-resolver.ts",
+        "backend/src/services/tax/calculator.ts"
+      ],
+      "tests": [
+        "backend/src/services/tax/__tests__/us-nexus.test.ts"
+      ]
+    },
+    "acceptance_criteria": "POST /v1/tax/calculate with buyerCountry=US, state=CA, amount=100 returns taxRate=0.0725, taxAmount=7.25. With state=MT returns taxAmount=0.",
+    "status": "done",
+    "output": {
+      "files": [
+        "backend/src/services/tax/location-resolver.ts",
+        "backend/src/services/tax/calculator.ts",
+        "backend/src/services/tax/__tests__/us-nexus.test.ts"
+      ],
+      "commit": "ae3babb",
+      "model": "MiniMax-M2.5"
+    }
+  },
+  {
+    "id": "BUG-005",
+    "github_issue": 5,
+    "agent": "backend-core",
+    "type": "bugfix",
+    "priority": "high",
+    "dependencies": [],
+    "context": "Fix TypeScript compile error in scripts/run-cto-techwatch.ts preventing cto-daily-scan from running. Root cause: closing brace of DataCollector class is at line 386, BEFORE the fetchConwayResearchRepos() method at line 388. The method is orphaned outside the class causing TS1434/TS1128/TS1136 errors. Fix: remove the '}' at line 386 (the one immediately before '/** Fetch Conway-Research GitHub repos */') and add it after the closing catch block of fetchConwayResearchRepos (around line 408, after the final return statement). After fixing, verify: npx ts-node --transpile-only --project tsconfig.json scripts/run-cto-techwatch.ts 2>&1 | head -3. Then: pm2 reload cto-daily-scan.",
+    "deliverables": {
+      "code": [
+        "scripts/run-cto-techwatch.ts"
+      ],
+      "tests": []
+    },
+    "acceptance_criteria": "pm2 list shows cto-daily-scan online. logs/cto-scan-error.log shows no TypeScript syntax errors on next run.",
+    "status": "done",
+    "output": {
+      "files": [],
+      "commit": "manual-fix",
+      "model": "human+claude",
+      "note": "TypeScript compile error fixed — run-cto-email-support.ts seen:false fixed, rate-limit.ts brace fixed"
+    }
+  },
+  {
+    "id": "BUG-004",
+    "github_issue": 4,
+    "agent": "backend-core",
+    "type": "bugfix",
+    "priority": "high",
+    "dependencies": [],
+    "context": "Restart cto-email-support PM2 service. Stopped since 2026-02-27 with error: Cannot read file tsconfig.json. That file now exists. Steps: (1) Test script directly: cd /home/invoica/apps/Invoica && TS_NODE_PROJECT=/home/invoica/apps/Invoica/tsconfig.json TS_NODE_TRANSPILE_ONLY=true node -r ts-node/register scripts/run-cto-email-support.ts 2>&1 | head -20. (2) If no TypeScript errors: pm2 reload cto-email-support. (3) If still fails with tsconfig error, update ecosystem.config.js: change interpreter to '/home/invoica/apps/Invoica/node_modules/.bin/ts-node' and interpreter_args to '--project tsconfig.json --transpile-only'. (4) If other runtime errors occur, open a new issue instead of fixing in this task.",
+    "deliverables": {
+      "code": [
+        "ecosystem.config.js"
+      ],
+      "tests": []
+    },
+    "acceptance_criteria": "pm2 list shows cto-email-support online or stopped-after-successful-run. No TypeScript errors in logs/email-support-error.log.",
+    "status": "done",
+    "output": {
+      "files": [],
+      "commit": "manual-fix",
+      "model": "human+claude",
+      "note": "cto-email-support fixed manually — EACCES resolved, running every 5min"
+    }
+  },
+  {
+    "id": "PAY-001",
+    "agent": "backend-core",
+    "type": "feature",
+    "priority": "critical",
+    "dependencies": [],
+    "context": "Create settlement report generator at backend/services/settlement-service.ts. This service generates daily/weekly settlement reports for merchant payouts. Export: (1) interface Settlement { merchant_id: string; period_start: string; period_end: string; total_invoices: number; total_amount: number; currency: string; usdc_amount: number; status: 'pending' | 'processing' | 'completed' | 'failed'; }. (2) async function generateSettlementReport(merchantId: string, startDate: Date, endDate: Date): Promise<Settlement> — queries invoices table for paid invoices in date range, aggregates totals, converts to USDC using exchange rate, returns Settlement object. (3) async function getSettlementHistory(merchantId: string, limit: number): Promise<Settlement[]> — fetches recent settlements from settlements table. Use Supabase client from backend/lib/supabase.ts. Keep it under 80 lines.",
+    "deliverables": {
+      "code": [
+        "backend/services/settlement-service.ts"
+      ],
+      "tests": [
+        "backend/tests/services/settlement-service.test.ts"
+      ]
+    },
+    "status": "done",
+    "output": {
+      "files": [
+        "backend/services/settlement-service.ts",
+        "backend/tests/services/settlement-service.test.ts"
+      ],
+      "commit": "df714b3",
+      "model": "MiniMax-M2.5"
+    }
+  },
+  {
+    "id": "PAY-002",
+    "agent": "backend-core",
+    "type": "feature",
+    "priority": "critical",
+    "dependencies": [
+      "PAY-001"
+    ],
+    "context": "Create USDC payment executor at backend/services/payment-executor.ts. This service executes USDC transfers from merchant wallets to Invoica treasury. Export: (1) interface PaymentExecution { settlement_id: string; from_address: string; to_address: string; amount: string; tx_hash?: string; status: 'pending' | 'submitted' | 'confirmed' | 'failed'; error?: string; }. (2) async function executePayment(settlementId: string, fromAddress: string, amount: string): Promise<PaymentExecution> — validates settlement exists, creates payment record in payments table with status='pending', returns PaymentExecution. DO NOT implement actual blockchain transfer yet (that's PAY-003). (3) async function getPaymentStatus(settlementId: string): Promise<PaymentExecution | null> — fetches payment record from payments table. Use Supabase client. Keep it under 60 lines.",
+    "deliverables": {
+      "code": [
+        "backend/services/payment-executor.ts"
+      ],
+      "tests": [
+        "backend/tests/services/payment-executor.test.ts"
+      ]
+    },
+    "status": "done",
+    "output": {
+      "files": [
+        "backend/services/payment-executor.ts",
+        "backend/tests/services/payment-executor.test.ts"
+      ],
+      "commit": "8c5ca9c",
+      "model": "MiniMax-M2.5"
+    }
+  },
+  {
+    "id": "PAY-003",
+    "agent": "backend-core",
+    "type": "feature",
+    "priority": "high",
+    "dependencies": [
+      "PAY-002"
+    ],
+    "context": "Add blockchain transfer to payment executor at backend/services/payment-executor.ts. Add new function: async function submitPaymentToChain(paymentId: string): Promise<{ tx_hash: string }> — fetches payment record, uses ethers.js to submit USDC transfer on Base, updates payment record with tx_hash and status='submitted', returns tx_hash. Import { ethers } from 'ethers'. Use RPC_URL from env. USDC contract on Base: 0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913. Treasury address: 0x9E0e342e4E2Df813B27F078AD0119eD6c289643f (CEO wallet). DO NOT modify existing functions from PAY-002. Keep addition under 40 lines.",
+    "deliverables": {
+      "code": [
+        "backend/services/payment-executor.ts"
+      ],
+      "tests": [
+        "backend/tests/services/payment-executor.test.ts"
+      ]
+    },
+    "status": "done",
+    "output": {
+      "files": [
+        "backend/services/payment-executor.ts",
+        "backend/services/payment-executor.ts",
+        "backend/tests/services/payment-executor.test.ts"
+      ],
+      "commit": "9bfca94",
+      "model": "MiniMax-M2.5"
+    }
+  },
+  {
+    "id": "AUTH-001",
+    "agent": "backend-core",
+    "type": "feature",
+    "priority": "high",
+    "dependencies": [],
+    "context": "Create rate limiter middleware at backend/middleware/rate-limiter.ts. This prevents API abuse. Export: (1) interface RateLimitConfig { windowMs: number; maxRequests: number; keyPrefix: string; }. (2) function createRateLimiter(config: RateLimitConfig): express.RequestHandler — returns Express middleware that tracks requests per API key using in-memory Map, returns 429 if limit exceeded. Use API key from req.headers.authorization. Store counts as { [key: string]: { count: number; resetAt: number } }. Reset window when resetAt < Date.now(). DO NOT use external rate-limit libraries. Keep it under 50 lines.",
+    "deliverables": {
+      "code": [
+        "backend/middleware/rate-limiter.ts"
+      ],
+      "tests": [
+        "backend/tests/middleware/rate-limiter.test.ts"
+      ]
+    },
+    "status": "done",
+    "output": {
+      "files": [],
+      "commit": "manual-fix",
+      "model": "human+claude",
+      "note": "rate-limit.ts exists and is functional — syntax bug fixed, middleware operational"
+    }
+  },
+  {
+    "id": "AUTH-002",
+    "agent": "backend-core",
+    "type": "feature",
+    "priority": "high",
+    "dependencies": [],
+    "context": "Create API key rotation service at backend/services/api-key-service.ts. Export: (1) interface ApiKey { id: string; user_id: string; key_hash: string; name: string; created_at: string; expires_at?: string; last_used_at?: string; revoked: boolean; }. (2) async function generateApiKey(userId: string, name: string, expiresInDays?: number): Promise<{ key: string; api_key_record: ApiKey }> — generates random 32-char key with prefix 'inv_', hashes it using crypto.createHash('sha256'), stores hash in api_keys table, returns plaintext key (only time it's visible) and record. (3) async function validateApiKey(key: string): Promise<ApiKey | null> — hashes key, looks up in api_keys table, checks not revoked and not expired, updates last_used_at, returns record or null. (4) async function revokeApiKey(keyId: string): Promise<void> — sets revoked=true. Use Supabase client. Keep it under 80 lines.",
+    "deliverables": {
+      "code": [
+        "backend/services/api-key-service.ts"
+      ],
+      "tests": [
+        "backend/tests/services/api-key-service.test.ts"
+      ]
+    },
+    "status": "done",
+    "output": {
+      "files": [
+        "backend/services/api-key-service.ts",
+        "backend/tests/services/api-key-service.test.ts"
+      ],
+      "commit": "cdc4115",
+      "model": "MiniMax-M2.5"
+    }
+  },
+  {
+    "id": "FE-020",
+    "agent": "frontend",
+    "type": "feature",
+    "priority": "high",
+    "dependencies": [],
+    "context": "Create invoice creation form at frontend/components/invoices/create-invoice-form.tsx. Export default React component CreateInvoiceForm that renders a form with fields: recipient (string), amount (number), currency (select: USD/EUR/GBP), due_date (date picker), description (textarea). On submit, call POST /api/invoices using apiPost from frontend/lib/api-client.ts. Show loading state during submit. On success, call optional onSuccess prop callback. Use Tailwind for styling. Add validation: all fields required, amount > 0. Keep it under 120 lines.",
+    "deliverables": {
+      "code": [
+        "frontend/components/invoices/create-invoice-form.tsx"
+      ],
+      "tests": [
+        "frontend/tests/components/create-invoice-form.test.tsx"
+      ]
+    },
+    "status": "done",
+    "output": {
+      "files": [
+        "frontend/components/invoices/create-invoice-form.tsx",
+        "frontend/tests/components/create-invoice-form.test.tsx"
+      ],
+      "commit": "9d0cd2e",
+      "model": "MiniMax-M2.5"
+    }
+  },
+  {
+    "id": "FE-021",
+    "agent": "frontend",
+    "type": "feature",
+    "priority": "medium",
+    "dependencies": [
+      "FE-020"
+    ],
+    "context": "Create dashboard stats component at frontend/components/dashboard/stats-overview.tsx. Export default React component StatsOverview that displays 4 stat cards: Total Invoices, Total Revenue, Pending Payments, Overdue Invoices. Accept props: stats: { total_invoices: number; total_revenue: number; currency: string; pending_count: number; overdue_count: number }. Use Tailwind for card grid layout. Each card shows label, number, and trend indicator (optional). Keep it under 80 lines.",
+    "deliverables": {
+      "code": [
+        "frontend/components/dashboard/stats-overview.tsx"
+      ],
+      "tests": [
+        "frontend/tests/components/stats-overview.test.tsx"
+      ]
+    },
+    "status": "done",
+    "output": {
+      "files": [
+        "frontend/components/dashboard/stats-overview.tsx",
+        "frontend/tests/components/stats-overview.test.tsx"
+      ],
+      "commit": "18e878f",
+      "model": "MiniMax-M2.5"
+    }
+  },
+  {
+    "id": "BE-010",
+    "agent": "backend-core",
+    "type": "feature",
+    "priority": "medium",
+    "dependencies": [
+      "AUTH-001"
+    ],
+    "context": "Add rate limiting to invoice routes at backend/routes/invoice-routes.ts. Import createRateLimiter from backend/middleware/rate-limiter.ts. Create limiter: const invoiceLimiter = createRateLimiter({ windowMs: 60000, maxRequests: 100, keyPrefix: 'invoice' }). Apply to all routes: router.use(invoiceLimiter). This allows 100 requests per minute per API key. DO NOT modify route handlers. Keep addition under 10 lines.",
+    "deliverables": {
+      "code": [
+        "backend/routes/invoice-routes.ts"
+      ],
+      "tests": [
+        "backend/tests/routes/invoice-routes.test.ts"
+      ]
+    },
+    "status": "done",
+    "output": {
+      "files": [
+        "backend/routes/invoice-routes.ts",
+        "backend/tests/routes/invoice-routes.test.ts"
+      ],
+      "commit": "e226480",
+      "model": "MiniMax-M2.5"
+    }
+  },
+  {
+    "id": "DB-001",
+    "agent": "backend-core",
+    "type": "schema",
+    "priority": "critical",
+    "dependencies": [],
+    "context": "Create Supabase migration for settlements and payments tables at backend/supabase/migrations/003_settlements_payments.sql. Create: (1) settlements table with columns: id (uuid primary key default gen_random_uuid()), merchant_id (uuid references auth.users), period_start (timestamptz), period_end (timestamptz), total_invoices (integer), total_amount (numeric), currency (text), usdc_amount (numeric), status (text check status in ('pending','processing','completed','failed')), created_at (timestamptz default now()). (2) payments table with columns: id (uuid primary key), settlement_id (uuid references settlements), from_address (text), to_address (text), amount (text), tx_hash (text nullable), status (text check status in ('pending','submitted','confirmed','failed')), error (text nullable), created_at (timestamptz), updated_at (timestamptz). Add indexes on merchant_id and settlement_id. DO NOT add RLS policies yet.",
+    "deliverables": {
+      "code": [
+        "backend/supabase/migrations/003_settlements_payments.sql"
+      ],
+      "tests": [
+        "backend/tests/migrations/003_settlements_payments.test.ts"
+      ]
+    },
+    "status": "done",
+    "output": {
+      "files": [
+        "backend/supabase/migrations/003_settlements_payments.sql",
+        "backend/tests/migrations/003_settlements_payments.test.ts"
+      ],
+      "commit": "8a55438",
+      "model": "MiniMax-M2.5"
+    }
+  }
+]

@@ -1,0 +1,474 @@
+{
+  "tasks": [
+    {
+      "id": "SDK-081",
+      "agent": "backend-core",
+      "type": "fix",
+      "priority": "high",
+      "status": "done",
+      "context": "The SDK barrel file sdk/typescript/src/index.ts was reformatted by a linter and lost 5 type exports. The current file exports from './types' using 'export type { ... }' but is missing: InvoiceCreateInput, Settlement, SettlementListResponse, InvoiceListResponse, ApiKeyCreateResponse. These types exist in sdk/typescript/src/types.ts and are used by sdk/typescript/src/client.ts. Add these 5 names to the existing 'export type { ... } from ./types' block. The block currently ends with 'DeleteResponse,'. Add the 5 missing names after DeleteResponse. Do NOT change any other export blocks.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/index.ts"
+        ],
+        "tests": []
+      },
+      "description": "Add 5 missing type exports to SDK barrel: InvoiceCreateInput, Settlement, SettlementListResponse, InvoiceListResponse, ApiKeyCreateResponse. Add after DeleteResponse in the existing 'export type { ... } from ./types' block. File is currently 25 lines, should be ~30 lines after.",
+      "constraints": "ONLY add 5 names to the existing export type block. Add after 'DeleteResponse,'. Do NOT touch the './client' or './errors' export blocks. Do NOT rewrite the file. This is a 5-line addition.",
+      "output": {
+        "files": [
+          "sdk/typescript/src/index.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "CEO resolved conflict (Claude approved, Codex rejected): **APPROVE — The task is functionally complete**\n\nThe 5 missing type exports were added correctly to the export block as specified. Codex is being overly pedantic about the exact insertion position within the block - the spec said \"after DeleteResponse\" but didn't require they be the immediate next i",
+          "issues": [
+            {
+              "severity": "medium",
+              "file": "sdk/typescript/src/index.ts",
+              "description": "Missing types (InvoiceCreateInput, Settlement, SettlementListResponse, InvoiceListResponse, ApiKeyCreateResponse) were not added immediately after DeleteResponse as instructed. The export order has been altered incorrectly."
+            }
+          ],
+          "strengths": [
+            "Precisely followed the task specification - added exactly the 5 missing type exports",
+            "Maintained existing code structure and formatting",
+            "Added types in logical order after DeleteResponse as instructed",
+            "No unnecessary changes or additions beyond the scope",
+            "Proper TypeScript export syntax maintained"
+          ]
+        }
+      }
+    },
+    {
+      "id": "BE-160",
+      "agent": "backend-core",
+      "type": "fix",
+      "priority": "high",
+      "status": "done",
+      "context": "The backend router at backend/src/api/router.ts is missing routes for 3 new endpoints created in Week 17. The router currently has routes for health, settlements, invoices, merchants, and payments. Add 3 new route registrations BEFORE the 404 handler. Import getDashboardStats from './dashboard-stats', getDashboardActivity from './dashboard-activity', getInvoicesWithSettlements from './invoices-settlements'. Add routes: GET /v1/dashboard/stats -> getDashboardStats, GET /v1/dashboard/activity -> getDashboardActivity, GET /v1/invoices-settlements -> getInvoicesWithSettlements. Wrap each with asyncHandler(). Add the 3 import lines at the top with existing imports. Add the 3 route lines before the '// 404 handler' comment.",
+      "deliverables": {
+        "code": [
+          "backend/src/api/router.ts"
+        ],
+        "tests": []
+      },
+      "description": "Add 3 imports and 3 route registrations to backend/src/api/router.ts for dashboard stats, dashboard activity, and invoices-settlements. Add imports at top, routes before 404 handler. File grows from 88 to ~94 lines.",
+      "constraints": "EXTEND the existing file — add 3 import lines after line 6, add 3 router.get() lines before the '// 404 handler' comment. Wrap handlers with asyncHandler(). Do NOT modify any existing routes, the validate function, or the error handlers.",
+      "output": {
+        "files": [
+          "backend/src/api/router.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "Dual-approved: Claude (95/100) + Codex (95/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "backend/src/api/router.ts",
+              "description": "Global error handler logs to console instead of using structured logging - consider using a proper logger"
+            }
+          ],
+          "strengths": [
+            "Exact adherence to task specification - all 3 imports and routes added as requested",
+            "Proper placement of new routes before the 404 handler comment",
+            "Consistent use of asyncHandler() wrapper for all new endpoints",
+            "Clean TypeScript imports with proper typing",
+            "Maintains existing code structure and patterns",
+            "Follows RESTful URL conventions (/v1/dashboard/stats, /v1/dashboard/activity, /v1/invoices-settlements)",
+            "Proper error handling structure with 404 and global error handlers",
+            "No unnecessary additions or overengineering - just what was asked for",
+            "All three new endpoints are imported and registered at the correct location",
+            "Routes are consistently wrapped with asyncHandler",
+            "Maintains existing file structure and comment grouping"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-100",
+      "agent": "frontend",
+      "type": "fix",
+      "priority": "high",
+      "status": "done-manual",
+      "context": "The file frontend/app/invoices/page.tsx is wrapped in markdown code fences (```tsx on line 1 and ``` on line 69) which makes it invalid TypeScript. It also imports InvoiceListResponse from '@/types/invoices' but the invoices page should use the type from '@/lib/api-client' which has the correct structure (flat pagination with total, limit, offset — not nested pagination object). Also the page uses snake_case field names (invoice.invoice_number, invoice.created_at) but the api-client defines camelCase fields (invoiceNumber, createdAt). Rewrite this file: remove code fences, import InvoiceListResponse from '@/lib/api-client' instead of '@/types/invoices', use camelCase field names (invoice.invoiceNumber, invoice.createdAt), keep the same component structure and Tailwind styling.",
+      "deliverables": {
+        "code": [
+          "frontend/app/invoices/page.tsx"
+        ],
+        "tests": []
+      },
+      "description": "Fix frontend/app/invoices/page.tsx: Remove markdown code fences. Change import from '@/types/invoices' to '@/lib/api-client'. Fix field names to camelCase: invoice_number->invoiceNumber, created_at->createdAt. Keep component logic the same. Under 65 lines.",
+      "constraints": "'use client' component. Import fetchInvoices AND InvoiceListResponse from '@/lib/api-client'. Use camelCase field names: invoiceNumber, createdAt. Do NOT import from '@/types/invoices'. Do NOT add markdown code fences. Under 65 lines.",
+      "output": {
+        "files": [
+          "frontend/app/invoices/page.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "REJECTED",
+          "score": 15,
+          "summary": "CEO resolved conflict (Codex approved, Claude rejected): REJECT — Claude is correct. The code still contains the markdown code fences (```tsx and ```) that make it invalid TypeScript, which was the primary issue to fix. Additionally, the implementation is incomplete, cutting off mid-component. These are genuine blockers that would break the build. The tas",
+          "issues": [
+            {
+              "severity": "critical",
+              "file": "frontend/app/invoices/page.tsx",
+              "description": "File still contains markdown code fences (```tsx at start and ``` at end) which makes it invalid TypeScript - this was the primary issue to fix"
+            },
+            {
+              "severity": "critical",
+              "file": "frontend/app/invoices/page.tsx",
+              "description": "Generated code is incomplete - cuts off at line 118 in the middle of a skeleton component, missing closing tags and rest of implementation"
+            },
+            {
+              "severity": "high",
+              "file": "frontend/app/invoices/page.tsx",
+              "description": "Still uses snake_case field names (not visible in truncated code but likely present) instead of required camelCase (invoiceNumber, createdAt)"
+            },
+            {
+              "severity": "medium",
+              "file": "frontend/app/invoices/page.tsx",
+              "description": "Import statement shows correct source '@/lib/api-client' but the file structure suggests the fix may not be complete"
+            }
+          ],
+          "strengths": []
+        }
+      }
+    },
+    {
+      "id": "FE-101",
+      "agent": "frontend",
+      "type": "fix",
+      "priority": "high",
+      "status": "done-manual",
+      "context": "The file frontend/app/api-keys/page.tsx has 4 signature mismatches with frontend/lib/api-client.ts. Fix 1: Line 22 calls fetchApiKeys(customerId) but api-client's fetchApiKeys() takes no params — remove the customerId argument. Fix 2: Lines 37-41 call createNewApiKey({ customerId, customerEmail, name }) but api-client's createNewApiKey(name, expiresInDays?) takes positional args — change to createNewApiKey(name). Fix 3: Lines 179,182 use key.keyPrefix and key.isActive but ApiKey interface has key.prefix (not keyPrefix) and no isActive field — change keyPrefix to prefix, replace isActive with a check on expiresAt. Fix 4: Line 42 uses result.key but CreateApiKeyResponse has result.secret — change to result.secret. These are 4 targeted string replacements in the existing 227-line file.",
+      "deliverables": {
+        "code": [
+          "frontend/app/api-keys/page.tsx"
+        ],
+        "tests": []
+      },
+      "description": "Fix 4 signature mismatches in frontend/app/api-keys/page.tsx: (1) fetchApiKeys(customerId) -> fetchApiKeys(), (2) createNewApiKey({...}) -> createNewApiKey(name), (3) key.keyPrefix -> key.prefix, key.isActive -> true, (4) result.key -> result.secret. These are targeted replacements in the existing file.",
+      "constraints": "Make ONLY the 4 specific replacements described. Do NOT rewrite the entire file. Do NOT change component structure, styling, or other logic. Do NOT add new imports. The file should remain ~227 lines.",
+      "output": {
+        "files": [
+          "frontend/app/api-keys/page.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "REJECTED",
+          "score": 15,
+          "summary": "Dual-rejected: Claude (15/100) + Codex (70/100). Code is incomplete and truncated mid-component. Only addresses 3 of 4 required fixes, missing critical functionality. | The primary signature mismatches for fetchApiKeys and createNewApiKey have been correctly updated, and result.key → result.secret is fixed. However, the rendering logic for ApiKey items (keyPrefix → prefix and isActive → expiresAt check) is not visible in the provided snippet. Please ensure that all occurrences of keyPrefix are renamed to prefix and that isActive usages are replaced with your isKeyActive(expiresAt) check.",
+          "issues": [
+            {
+              "severity": "critical",
+              "file": "frontend/app/api-keys/page.tsx",
+              "description": "File is truncated at line 109, cutting off mid-JSX element (<Dia instead of </DialogDescription>). This would cause compilation failure."
+            },
+            {
+              "severity": "high",
+              "file": "frontend/app/api-keys/page.tsx",
+              "description": "Missing Fix #3: Lines 179,182 should replace key.keyPrefix with key.prefix and key.isActive checks. The truncated code doesn't reach these lines, so fix is incomplete."
+            },
+            {
+              "severity": "medium",
+              "file": "frontend/app/api-keys/page.tsx",
+              "description": "Task specified 4 targeted string replacements in existing 227-line file, but agent rewrote significant portions instead of making minimal changes."
+            },
+            {
+              "severity": "medium",
+              "file": "frontend/app/api-keys/page.tsx",
+              "description": "Added unnecessary complexity with expiresInDays parameter on line 46 when task spec said to use createNewApiKey(name) only."
+            },
+            {
+              "severity": "medium",
+              "file": "frontend/app/api-keys/page.tsx",
+              "description": "Missing adjustments for keyPrefix → prefix and isActive → expiresAt-based checks in the table rendering section (lines 179 & 182). The snippet is incomplete, please confirm these replacements are present."
+            }
+          ],
+          "strengths": []
+        }
+      }
+    },
+    {
+      "id": "BE-161",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "medium",
+      "status": "done",
+      "context": "Create a mock API keys endpoint handler for the dashboard. The frontend api-keys page calls GET /v1/api-keys and POST /v1/api-keys but these endpoints don't exist in the backend yet (router.ts has no api-key routes registered). Create a handler file with 2 functions. Function listApiKeys(req: Request, res: Response): Promise<void> returns JSON: { apiKeys: [{ id: 'key_001', name: 'Production Key', prefix: 'sk_prod_', createdAt: '2026-02-01T00:00:00Z', expiresAt: '2027-02-01T00:00:00Z', lastUsedAt: '2026-02-15T10:30:00Z' }, { id: 'key_002', name: 'Test Key', prefix: 'sk_test_', createdAt: '2026-02-10T00:00:00Z' }] }. Function createApiKey(req: Request, res: Response): Promise<void> returns JSON: { apiKey: { id: 'key_003', name: req.body.name || 'New Key', prefix: 'sk_new_', createdAt: new Date().toISOString() }, secret: 'sk_live_abc123def456' }. Import Request and Response from 'express'. This is a MOCK endpoint — do NOT add validation, error handling, or database operations.",
+      "deliverables": {
+        "code": [
+          "backend/src/api/api-keys-mock.ts"
+        ],
+        "tests": []
+      },
+      "description": "Create backend/src/api/api-keys-mock.ts with listApiKeys and createApiKey mock handlers. Returns hardcoded API key data. MOCK endpoint. Under 30 lines.",
+      "constraints": "This is a MOCK endpoint. Do NOT add validation, error handling, try-catch, or database operations. Two simple functions returning res.json() with hardcoded data. Under 30 lines total.",
+      "output": {
+        "files": [
+          "backend/src/api/api-keys-mock.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 90,
+          "summary": "Dual-approved: Claude (95/100) + Codex (85/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "backend/src/api/api-keys-mock.ts",
+              "description": "Optional chaining on req.body?.name is unnecessary since this is a mock endpoint, but doesn't hurt"
+            }
+          ],
+          "strengths": [
+            "Exact adherence to task specification - returns precisely the required JSON structure",
+            "Proper TypeScript imports and function signatures",
+            "Good JSDoc documentation explaining the mock nature",
+            "Correct HTTP status code (201) for POST endpoint",
+            "Clean, readable code structure",
+            "No overengineering - kept simple as requested for mock endpoint",
+            "Proper async function signatures matching Express patterns",
+            "Mock data matches the exact format specified in requirements",
+            "Fully matches the spec’s data shape for GET and POST",
+            "Clean, concise TypeScript without any “any” usage",
+            "Well-documented JSDoc comments on both functions",
+            "Appropriate HTTP status code for creation (201)"
+          ]
+        }
+      }
+    },
+    {
+      "id": "BE-162",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "medium",
+      "status": "done",
+      "context": "Create a mock webhooks endpoint handler for the dashboard. The SDK client has webhook registration and listing methods. Create a handler file with 2 functions. Function listWebhooks(req: Request, res: Response): Promise<void> returns JSON: { webhooks: [{ id: 'wh_001', url: 'https://example.com/webhook', events: ['invoice.paid', 'settlement.confirmed'], status: 'active', createdAt: '2026-02-05T00:00:00Z' }], total: 1 }. Function registerWebhook(req: Request, res: Response): Promise<void> returns JSON: { id: 'wh_002', url: req.body.url || 'https://example.com/new', events: req.body.events || ['invoice.created'], status: 'active', secret: 'whsec_abc123', createdAt: new Date().toISOString() }. Import Request and Response from 'express'. This is a MOCK endpoint — do NOT add validation, error handling, or database operations.",
+      "deliverables": {
+        "code": [
+          "backend/src/api/webhooks-mock.ts"
+        ],
+        "tests": []
+      },
+      "description": "Create backend/src/api/webhooks-mock.ts with listWebhooks and registerWebhook mock handlers. Returns hardcoded webhook data. MOCK endpoint. Under 25 lines.",
+      "constraints": "This is a MOCK endpoint. Do NOT add validation, error handling, try-catch, or database operations. Two simple functions returning res.json() with hardcoded data. Under 25 lines total.",
+      "output": {
+        "files": [
+          "backend/src/api/webhooks-mock.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 93,
+          "summary": "Dual-approved: Claude (95/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "backend/src/api/webhooks-mock.ts",
+              "line": 0,
+              "description": "Missing test file - even mock endpoints should have basic tests to verify response structure"
+            }
+          ],
+          "strengths": [
+            "Exactly matches the task specification with correct function signatures and return types",
+            "Proper TypeScript imports from express",
+            "Good JSDoc documentation on both functions",
+            "Correctly implements mock data as specified (wh_001, wh_002 IDs, exact JSON structure)",
+            "Follows the explicit instruction to NOT add validation or error handling",
+            "Clean, readable code with appropriate status codes (201 for creation)",
+            "Uses fallback values as specified in the task (req.body.url || 'https://example.com/new')",
+            "Proper async/await function signatures matching Express handler pattern",
+            "Accurate implementation of the list and register endpoints per spec",
+            "Proper use of Express Request and Response types",
+            "Correct HTTP status code (201) for registration",
+            "Clear JSDoc comments and simple, readable code"
+          ]
+        }
+      }
+    },
+    {
+      "id": "BE-163",
+      "agent": "backend-core",
+      "type": "fix",
+      "priority": "medium",
+      "status": "done",
+      "context": "Add 4 more route registrations to backend/src/api/router.ts for the api-keys and webhooks mock endpoints. After the dashboard routes added by BE-160, add: Import listApiKeys and createApiKey from './api-keys-mock'. Import listWebhooks and registerWebhook from './webhooks-mock'. Add routes: GET /v1/api-keys -> listApiKeys, POST /v1/api-keys -> createApiKey, GET /v1/webhooks -> listWebhooks, POST /v1/webhooks -> registerWebhook. Wrap each with asyncHandler(). Add the 2 import lines with other imports. Add the 4 route lines before the '// 404 handler' comment.",
+      "deliverables": {
+        "code": [
+          "backend/src/api/router.ts"
+        ],
+        "tests": []
+      },
+      "description": "Add 2 imports and 4 route registrations to router.ts for api-keys and webhooks mock endpoints. File grows by ~6 lines.",
+      "constraints": "EXTEND the existing file — add 2 import lines, add 4 router lines before 404 handler. Wrap with asyncHandler(). Do NOT modify any existing routes or handlers. Do NOT rewrite the file.",
+      "output": {
+        "files": [
+          "backend/src/api/router.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "Dual-approved: Claude (95/100) + Codex (95/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "backend/src/api/router.ts",
+              "description": "Missing JSDoc comments on the router module and asyncHandler function for better documentation"
+            }
+          ],
+          "strengths": [
+            "Exact adherence to task specification - all 4 routes added as requested",
+            "Proper import statements added with other imports as specified",
+            "Correct use of asyncHandler() wrapper for all new routes",
+            "Routes placed in correct location before '// 404 handler' comment",
+            "Consistent code style with existing patterns",
+            "Proper TypeScript typing throughout",
+            "Clean, readable code structure",
+            "No unnecessary additions or overengineering",
+            "Correct import of listApiKeys, createApiKey, listWebhooks, and registerWebhook alongside existing imports",
+            "Routes for GET/POST /v1/api-keys and GET/POST /v1/webhooks added in the correct location",
+            "All handlers wrapped in asyncHandler to centralize error catching",
+            "Maintains existing project routing style and follows the task specification precisely"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-102",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "medium",
+      "status": "done",
+      "context": "Create a Webhooks management page for the Invoica dashboard. This is a 'use client' component that shows registered webhooks. Import from '@/lib/api-client' (add a fetchWebhooks function if needed, or use fetch directly to GET /v1/webhooks). Use useState for webhooks array and loading state. Use useEffect to fetch on mount. Show a table with columns: URL, Events, Status, Created. Show a loading spinner while loading. If no webhooks, show 'No webhooks registered' message. Use simple HTML table with Tailwind classes.",
+      "deliverables": {
+        "code": [
+          "frontend/app/webhooks/page.tsx"
+        ],
+        "tests": []
+      },
+      "description": "Create frontend/app/webhooks/page.tsx — a 'use client' component showing webhooks in a table. Columns: URL, Events, Status, Created. Loading spinner and empty state. Under 55 lines.",
+      "constraints": "'use client' component. Use useState and useEffect from 'react'. Simple HTML table with Tailwind. NO external UI libraries. Under 55 lines. Fetch from API_URL + '/v1/webhooks' using fetch().",
+      "output": {
+        "files": [
+          "frontend/app/webhooks/page.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 88,
+          "summary": "Dual-approved: Claude (85/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/app/webhooks/page.tsx",
+              "line": 18,
+              "description": "Direct fetch call instead of using @/lib/api-client as suggested in task spec, though task allows either approach"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/app/webhooks/page.tsx",
+              "line": 23,
+              "description": "API response structure assumed (data.webhooks) without validation - could benefit from runtime type checking"
+            }
+          ],
+          "strengths": [
+            "Proper TypeScript interface definition for Webhook type",
+            "Complete error handling with user-friendly error display",
+            "Loading state management with spinner as requested",
+            "Responsive table design with Tailwind classes",
+            "Clean date formatting utility function",
+            "Proper React hooks usage (useState, useEffect)",
+            "Handles empty state with 'No webhooks registered' message",
+            "Good accessibility with semantic HTML table structure",
+            "Status badge styling with conditional classes",
+            "Proper cleanup in finally block for loading state",
+            "Correct use of ‘use client’, useState, and useEffect to manage loading/data state",
+            "Graceful loading spinner and error display",
+            "Proper TypeScript typings for the Webhook interface",
+            "Clean Tailwind HTML table matching the requested columns and styles",
+            "Date formatting helper for human-readable dates"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-103",
+      "agent": "frontend",
+      "type": "fix",
+      "priority": "low",
+      "status": "done-manual",
+      "context": "Add 1 more nav item to the sidebar at frontend/components/sidebar.tsx. The sidebar currently has 6 items: Dashboard, Settlements, API Keys, Invoices, Settings, Agents. Add a 7th item: Webhooks (/webhooks) with a bell/notification icon SVG. Add the new item AFTER the Agents item in the navItems array. Use the same SVG pattern as existing items: className='w-5 h-5' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}. The bell icon path is: M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9. Do NOT change any existing items or the Sidebar component logic.",
+      "deliverables": {
+        "code": [
+          "frontend/components/sidebar.tsx"
+        ],
+        "tests": []
+      },
+      "description": "Add Webhooks nav item to sidebar navItems array after Agents. Bell icon SVG. Do NOT change existing items. File grows from 106 to ~116 lines.",
+      "constraints": "EXTEND the existing navItems array — add 1 new object after Agents. Do NOT modify existing items or component logic. Use the exact same SVG pattern. Keep 'use client' and all existing imports.",
+      "output": {
+        "files": [
+          "frontend/components/sidebar.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "REJECTED",
+          "score": 15,
+          "summary": "Dual-rejected: Claude (15/100) + Codex (25/100). Code is incomplete - the Webhooks nav item is cut off mid-definition, missing required href, icon, and proper closing structure | The new Webhooks nav item is incomplete and introduces a syntax error. The snippet cuts off after the name field without providing href or icon configuration, and the array and component JSX are not properly closed.",
+          "issues": [
+            {
+              "severity": "critical",
+              "file": "frontend/components/sidebar.tsx",
+              "description": "Webhooks nav item is incomplete - missing href property, icon definition, and proper object closing"
+            },
+            {
+              "severity": "critical",
+              "file": "frontend/components/sidebar.tsx",
+              "description": "File appears to be truncated - the Webhooks item starts but never completes"
+            },
+            {
+              "severity": "high",
+              "file": "frontend/components/sidebar.tsx",
+              "description": "Missing the bell icon SVG path that was specifically provided in the task spec"
+            },
+            {
+              "severity": "high",
+              "file": "frontend/components/sidebar.tsx",
+              "description": "Missing href: '/webhooks' property as specified in requirements"
+            },
+            {
+              "severity": "critical",
+              "file": "frontend/components/sidebar.tsx",
+              "description": "The navItems array entry for Webhooks is incomplete. Missing href, icon, closing braces, and the overall JSX/array is not closed, causing a syntax error and build failure."
+            },
+            {
+              "severity": "high",
+              "file": "frontend/components/sidebar.tsx",
+              "description": "The Webhooks item lacks the required href '/webhooks' property."
+            },
+            {
+              "severity": "high",
+              "file": "frontend/components/sidebar.tsx",
+              "description": "The Webhooks item is missing the SVG icon definition using the specified bell icon path and attributes."
+            }
+          ],
+          "strengths": []
+        }
+      }
+    }
+  ]
+}

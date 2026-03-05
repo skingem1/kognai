@@ -1,0 +1,529 @@
+{
+  "tasks": [
+    {
+      "id": "FE-320",
+      "agent": "frontend",
+      "type": "test",
+      "priority": "high",
+      "description": "Unit tests for frontend/components/error-boundary.tsx — React ErrorBoundary class component",
+      "status": "done",
+      "dependencies": [],
+      "context": "Write React Testing Library tests for frontend/components/error-boundary.tsx. This is a class component that catches rendering errors. Named export: ErrorBoundary. Props: children (React.ReactNode), fallback (React.ReactNode optional). State: hasError (boolean), error (Error|null). Behaviors: (1) renders children when no error, (2) shows error UI when child throws — displays 'Something went wrong' heading, error message in gray text, and 'Try again' button, (3) getDerivedStateFromError sets hasError:true and stores error, (4) componentDidCatch logs to console.error, (5) clicking 'Try again' resets state to hasError:false and re-renders children, (6) if fallback prop is provided it should still show default error UI (fallback is not used in current implementation). Import {render, screen, fireEvent} from '@testing-library/react'. Import {ErrorBoundary} from '../error-boundary'. To test error boundary: create a ThrowingComponent that throws on render: function ThrowingComponent({shouldThrow}:{shouldThrow:boolean}){if(shouldThrow)throw new Error('Test error');return <div>Child content</div>;} IMPORTANT: Suppress console.error during tests to avoid noisy output: beforeEach(()=>{jest.spyOn(console,'error').mockImplementation(()=>{})}); afterEach(()=>{jest.restoreAllMocks()}). Test cases: (1) renders children when no error occurs, (2) displays 'Something went wrong' when child throws, (3) displays error message text 'Test error', (4) displays 'Try again' button when error occurs, (5) calls console.error when error is caught (check console.error was called), (6) clicking 'Try again' resets and shows children again — render with shouldThrow=true, then change to shouldThrow=false and click Try again, (7) renders custom fallback prop if provided — actually test shows default error UI since fallback is unused in implementation.",
+      "deliverables": {
+        "code": [
+          "frontend/components/__tests__/error-boundary.test.tsx"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/components/__tests__/error-boundary.test.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 88,
+          "summary": "Dual-approved: Claude (85/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "medium",
+              "file": "frontend/components/__tests__/error-boundary.test.tsx",
+              "description": "The 'Try again' test uses rerender() which doesn't accurately test the actual button click behavior. The test should verify that clicking the button itself resets the error state, not that rerendering with different props works."
+            },
+            {
+              "severity": "low",
+              "file": "frontend/components/__tests__/error-boundary.test.tsx",
+              "description": "Console.error spy is created twice - once in beforeEach and once in the specific test. The beforeEach setup should be sufficient."
+            }
+          ],
+          "strengths": [
+            "Proper console.error mocking to avoid noisy test output",
+            "All 7 required test cases are implemented",
+            "Good use of ThrowingComponent helper as specified",
+            "Correct imports from React Testing Library",
+            "Tests cover both error and non-error states",
+            "Proper cleanup with jest.restoreAllMocks()",
+            "Clear test descriptions that match the requirements",
+            "Tests the fallback prop behavior correctly (showing it's unused)",
+            "Covers all required scenarios including rendering without errors, error UI display, console.error invocation, and retry logic",
+            "Proper suppression and restoration of console.error to avoid noisy test output",
+            "Tests include custom fallback prop scenario even though it is unused, aligning with spec"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-321",
+      "agent": "frontend",
+      "type": "test",
+      "priority": "high",
+      "description": "Unit tests for frontend/components/sidebar.tsx — navigation sidebar with active route highlighting",
+      "status": "done",
+      "dependencies": [],
+      "context": "Write React Testing Library tests for frontend/components/sidebar.tsx. Named export: Sidebar (no props). This component uses usePathname from 'next/navigation' and Link from 'next/link', and imports navItems from './sidebar-nav-items'. navItems has 8 items: Dashboard (/), Settlements (/settlements), API Keys (/api-keys), Invoices (/invoices), Settings (/settings), Agents (/agents), Webhooks (/webhooks), Docs (/docs/getting-started). CRITICAL MOCKING: jest.mock('next/navigation', ()=>({usePathname:jest.fn()})); jest.mock('next/link', ()=>({__esModule:true, default:({children,href,...props}:{children:React.ReactNode,href:string,[key:string]:any})=>React.createElement('a',{href,...props},children)})); Then import {usePathname} from 'next/navigation' and cast as jest.Mock to control return value. Import {Sidebar} from '../sidebar'. Test cases: (1) renders navigation landmark with aria-label 'Sidebar navigation', (2) renders all 8 navigation items as links, (3) Dashboard link has href='/', (4) when pathname is '/' Dashboard gets active styles 'bg-sky-50' and aria-current='page', (5) when pathname is '/invoices' the Invoices link gets active styles and aria-current='page', (6) non-active links do NOT have aria-current attribute, (7) links starting with pathname are also active — pathname '/docs/getting-started/quickstart' makes Docs link active, (8) renders nav item labels (Dashboard, Settlements, etc). In beforeEach: (usePathname as jest.Mock).mockReturnValue('/').",
+      "deliverables": {
+        "code": [
+          "frontend/components/__tests__/sidebar.test.tsx"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/components/__tests__/sidebar.test.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "medium",
+              "file": "frontend/components/__tests__/sidebar.test.tsx",
+              "description": "Missing test case for Dashboard link href verification as a separate test - currently combined with active styles test"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/components/__tests__/sidebar.test.tsx",
+              "description": "Could benefit from testing edge cases like empty pathname or root path variations"
+            }
+          ],
+          "strengths": [
+            "Proper Next.js mocking setup for usePathname and Link components",
+            "Comprehensive test coverage of all 8 navigation items",
+            "Correct implementation of active state testing with bg-sky-50 class and aria-current attribute",
+            "Tests both exact path matching and prefix matching for active states",
+            "Proper use of beforeEach for mock setup",
+            "Good accessibility testing with aria-label and role assertions",
+            "Clean test structure with descriptive test names",
+            "Follows React Testing Library best practices using screen queries",
+            "No code fences or syntax issues - valid TypeScript",
+            "Proper jest.mock usage for next/navigation and next/link",
+            "Comprehensive tests for rendering nav landmark, link labels, hrefs, active styles, aria-current, and partial‐match activation",
+            "Clear and focused test cases that match the task specification"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-322",
+      "agent": "frontend",
+      "type": "test",
+      "priority": "high",
+      "description": "Unit tests for frontend/components/dashboard/api-key-display.tsx — API key show/hide/copy/revoke",
+      "status": "done",
+      "dependencies": [],
+      "context": "Write React Testing Library tests for frontend/components/dashboard/api-key-display.tsx. Default export: ApiKeyDisplay. Props: apiKey (string), label (string optional, default 'API Key'), onRevoke (()=>void optional). Behaviors: (1) shows masked key by default: 'sk-****...' + last 4 chars of apiKey, (2) clicking 'Show' button reveals full apiKey text, (3) clicking 'Hide' button (after Show) masks it again, (4) clicking 'Copy' calls navigator.clipboard.writeText with the full apiKey, (5) displays label text (default 'API Key'), (6) displays custom label when provided, (7) shows 'Revoke' button only when onRevoke prop is provided, (8) clicking 'Revoke' calls the onRevoke callback, (9) does NOT show Revoke button when onRevoke is not provided. Import {render, screen, fireEvent} from '@testing-library/react'. Import ApiKeyDisplay from '../api-key-display' (default export, test file in dashboard/__tests__/). CRITICAL: Mock navigator.clipboard: beforeEach(()=>{Object.assign(navigator,{clipboard:{writeText:jest.fn().mockResolvedValue(undefined)}})}). Test with apiKey='sk-test-abc123xyz789'. Masked should show 'sk-****...9789' (last 4 chars of 'sk-test-abc123xyz789' are '9789'). Wait — last 4 of 'sk-test-abc123xyz789' is 'z789'. So masked = 'sk-****...z789'.",
+      "deliverables": {
+        "code": [
+          "frontend/components/dashboard/__tests__/api-key-display.test.tsx"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/components/dashboard/__tests__/api-key-display.test.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 98,
+          "summary": "Dual-approved: Claude (95/100) + Codex (100/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/components/dashboard/__tests__/api-key-display.test.tsx",
+              "description": "Could add edge case tests for empty apiKey or very short keys, but not required by spec"
+            }
+          ],
+          "strengths": [
+            "Correctly implements all 9 specified behaviors from the task spec",
+            "Proper navigator.clipboard mocking in beforeEach as required",
+            "Uses correct test key 'sk-test-abc123xyz789' and validates masked format 'sk-****...z789'",
+            "Follows React Testing Library best practices with render, screen, fireEvent",
+            "Clean test structure with descriptive test names",
+            "Proper import path '../api-key-display' as specified",
+            "Tests both presence and absence of conditional Revoke button",
+            "Validates both default and custom label behavior",
+            "Proper jest.fn() usage for callback testing",
+            "Comprehensive coverage of all required behaviors",
+            "Proper mocking of navigator.clipboard",
+            "Clear and concise test cases without extraneous code"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-323",
+      "agent": "frontend",
+      "type": "test",
+      "priority": "high",
+      "description": "Unit tests for frontend/components/invoices/invoice-detail.tsx — invoice detail view with status colors and metadata",
+      "status": "done",
+      "dependencies": [],
+      "context": "Write React Testing Library tests for frontend/components/invoices/invoice-detail.tsx. Named export: InvoiceDetail. Props: invoice ({id, number, amount, currency, status, createdAt, paidAt (string|null), metadata (Record<string,string>)} | null), isLoading (boolean optional). Behaviors: (1) shows 'Loading invoice details...' when isLoading is true, (2) shows 'Invoice not found' when invoice is null, (3) renders invoice number as heading, (4) renders formatted currency amount using Intl.NumberFormat('en-US',{style:'currency',currency}), (5) renders status badge with color classes — pending='bg-yellow-100 text-yellow-800', completed='bg-green-100 text-green-800', failed='bg-red-100 text-red-800', (6) renders created date formatted as 'en-US' short month, (7) renders 'Not yet' for null paidAt, (8) renders metadata as JSON when metadata has keys, (9) does NOT render metadata section when metadata is empty {}. Import {render, screen} from '@testing-library/react'. Import {InvoiceDetail} from '../invoice-detail' (test file in invoices/__tests__/). Sample invoice: {id:'inv-1', number:'INV-001', amount:150.50, currency:'USD', status:'pending', createdAt:'2024-01-15T10:00:00Z', paidAt:null, metadata:{customer:'acme'}}. For amount formatting expect '$150.50'. Test cases: (1) loading state, (2) null invoice, (3) invoice number heading, (4) formatted amount, (5) status color classes, (6) created date, (7) paidAt null shows 'Not yet', (8) metadata JSON rendered, (9) empty metadata hides section.",
+      "deliverables": {
+        "code": [
+          "frontend/components/invoices/__tests__/invoice-detail.test.tsx"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/components/invoices/__tests__/invoice-detail.test.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 94,
+          "summary": "Dual-approved: Claude (92/100) + Codex (95/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/components/invoices/__tests__/invoice-detail.test.tsx",
+              "description": "Could benefit from more specific test descriptions and potentially separate test cases for better isolation, but current approach is acceptable"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/components/invoices/__tests__/invoice-detail.test.tsx",
+              "description": "The metadata JSON test uses a regex pattern in textContent check which could be more robust, but functionally correct"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/components/invoices/__tests__/invoice-detail.test.tsx",
+              "description": "The empty-metadata scenario checks for absence of the literal 'Metadata' text, but if the component does not render a 'Metadata' heading, this assertion may be misleading. Consider querying for the metadata container or <pre> element instead."
+            }
+          ],
+          "strengths": [
+            "Covers all 9 specified test cases comprehensively",
+            "Proper use of React Testing Library with screen queries and semantic assertions",
+            "Correct import paths and component structure",
+            "Good use of sample data matching the task specification exactly",
+            "Proper testing of conditional rendering (loading, null invoice, empty metadata)",
+            "Tests all three status badge color combinations with proper class assertions",
+            "Uses rerender pattern efficiently for testing different status states",
+            "Validates currency formatting expectation ($150.50) precisely",
+            "Tests both presence and absence of metadata section correctly",
+            "Clean, readable test structure with descriptive test names",
+            "Covers all required scenarios per task spec.",
+            "Uses RTL queries appropriately (getByRole, getByText, queryByText).",
+            "Tests dynamic status badge classes via rerender.",
+            "Validates formatted currency and date strings exactly."
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-324",
+      "agent": "frontend",
+      "type": "test",
+      "priority": "medium",
+      "description": "Unit tests for frontend/components/ui/data-table.tsx — generic data table with loading, empty, and row click",
+      "status": "done",
+      "dependencies": [],
+      "context": "Write React Testing Library tests for frontend/components/ui/data-table.tsx. Named export: DataTable (generic component). Props: columns (array of {key, label, render?}), data (T[]), loading (boolean optional), emptyMessage (string optional, default 'No data available'), onRowClick ((row:T)=>void optional). Behaviors: (1) shows LoadingSpinner when loading=true — look for role='status' element, (2) shows EmptyState with emptyMessage when data is empty array, (3) shows custom emptyMessage text, (4) renders table headers from columns labels, (5) renders data rows with String(value) for each column, (6) uses custom render function when column has render prop, (7) rows are clickable when onRowClick is provided — calls callback with row data, (8) rows have cursor-pointer class when onRowClick is provided, (9) renders null/undefined values as empty string. CRITICAL MOCKING: jest.mock('../../loading-spinner', ()=>({LoadingSpinner:()=>React.createElement('div',{role:'status'},'Loading...')})); jest.mock('../../empty-state', ()=>({EmptyState:({message}:{message:string})=>React.createElement('div',null,message)})); Import {render, screen, fireEvent} from '@testing-library/react'. Import {DataTable} from '../data-table' (test file in ui/__tests__/). Sample: columns=[{key:'name',label:'Name'},{key:'age',label:'Age'}], data=[{name:'Alice',age:30},{name:'Bob',age:25}].",
+      "deliverables": {
+        "code": [
+          "frontend/components/ui/__tests__/data-table.test.tsx"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/components/ui/__tests__/data-table.test.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "medium",
+              "file": "frontend/components/ui/__tests__/data-table.test.tsx",
+              "description": "Uses `any` type in custom render function test - should use proper generic typing"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/components/ui/__tests__/data-table.test.tsx",
+              "description": "Could benefit from more descriptive test names for better documentation"
+            }
+          ],
+          "strengths": [
+            "Correctly implements all required mocking with exact syntax specified",
+            "Tests all 9 specified behaviors comprehensively",
+            "Proper use of React Testing Library patterns with screen queries",
+            "Good edge case coverage including null/undefined value handling",
+            "Correct DOM querying for cursor-pointer class verification",
+            "Proper fireEvent usage for click testing",
+            "Clean test structure with reusable test data",
+            "Follows naming conventions and file placement requirements",
+            "Covers all specified behaviors via React Testing Library",
+            "Properly mocks LoadingSpinner and EmptyState components",
+            "Verifies custom render logic and click handling with correct data",
+            "Checks null/undefined values render as empty strings",
+            "No markdown code fences in source file"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-325",
+      "agent": "frontend",
+      "type": "test",
+      "priority": "medium",
+      "description": "Unit tests for frontend/components/sidebar-nav-items.ts — navigation configuration data",
+      "status": "done",
+      "dependencies": [],
+      "context": "Write Jest unit tests for frontend/components/sidebar-nav-items.ts. This file exports: (1) interface NavItem {href:string, label:string, iconPath:string, iconPaths?:string[]}, (2) const navItems: NavItem[] — array of 8 navigation items. Test that the configuration data is correct and complete. Import {navItems, NavItem} from '../sidebar-nav-items' (test file in __tests__/). Test cases: (1) navItems exports an array, (2) navItems has exactly 8 items, (3) each item has required fields: href (string), label (string), iconPath (string), (4) Dashboard item has href '/' and label 'Dashboard', (5) Settlements item has href '/settlements', (6) API Keys item has href '/api-keys', (7) Invoices item has href '/invoices', (8) Settings item has href '/settings' and has iconPaths array (multi-path SVG), (9) Agents item has href '/agents', (10) Webhooks item has href '/webhooks', (11) Docs item has href '/docs/getting-started', (12) all hrefs start with '/', (13) all iconPath values are non-empty strings, (14) Settings is the only item with iconPaths property. Group in describe('sidebar-nav-items').",
+      "deliverables": {
+        "code": [
+          "frontend/components/__tests__/sidebar-nav-items.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/components/__tests__/sidebar-nav-items.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/components/__tests__/sidebar-nav-items.test.ts",
+              "description": "Could use more descriptive test names - 'all specific navigation items have correct hrefs' could be split into individual test cases for better failure isolation"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/components/__tests__/sidebar-nav-items.test.ts",
+              "description": "The itemsByLabel approach in the last test creates an object that could be optimized with individual find() calls for better readability"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/components/__tests__/sidebar-nav-items.test.ts",
+              "description": "Missing explicit assertion that the Dashboard item's label is exactly 'Dashboard' (currently it’s inferred by the finder)."
+            }
+          ],
+          "strengths": [
+            "Covers all 14 specified test cases comprehensively",
+            "Proper TypeScript typing with NavItem interface usage",
+            "Good test organization with logical grouping of assertions",
+            "Efficient use of forEach loops for array validation",
+            "Proper use of Jest matchers (toHaveLength, toHaveProperty, toBe)",
+            "Correct import statement matches the specified path",
+            "Good edge case testing (Settings being only item with iconPaths)",
+            "Clean, readable test structure with appropriate describe block",
+            "Comprehensive coverage of all eight nav items",
+            "Ensures required fields and types",
+            "Verifies href prefixes and specific route values",
+            "Checks that only Settings has iconPaths",
+            "Well‐organized describe/it structure"
+          ]
+        }
+      }
+    },
+    {
+      "id": "BE-250",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "description": "Unit tests for backend/src/services/webhook/dispatch.ts — webhook event dispatch with mocked fetch",
+      "status": "rejected",
+      "dependencies": [],
+      "context": "Write Jest unit tests for backend/src/services/webhook/dispatch.ts. This file exports two functions: (1) dispatch(event: WebhookEvent, repo: WebhookRepository): Promise<DispatchResult[]> — dispatches webhook event to all matching active registrations via fetch POST with signature headers, (2) dispatchFromMap(event: WebhookEvent, registrationMap: Map<string,WebhookRegistration>): Promise<DispatchResult[]> — legacy version using a Map. Both functions: JSON.stringify the event, call signPayload for signature, POST to registration.url with headers (X-Invoica-Signature, X-Invoica-Event, X-Invoica-Timestamp, Content-Type), filter registrations by event.type matching registration.events array, return {success: response.ok, statusCode: response.status, retryable: status>=500} for each, and return {success:false, statusCode:0, retryable:true} on fetch error. Mock dependencies: jest.mock('./signature', ()=>({signPayload:jest.fn().mockReturnValue('mock-sig')})); Mock globalThis.fetch = jest.fn(). For dispatch(), mock repo as {findActive:jest.fn()}. Test cases for dispatch(): (1) calls repo.findActive to get registrations, (2) sends POST to matching registration URL, (3) includes correct headers (X-Invoica-Signature, X-Invoica-Event, Content-Type), (4) returns success:true for 200 response, (5) returns retryable:true for 500 response, (6) returns success:false, statusCode:0, retryable:true on fetch error (mock fetch to throw), (7) skips registrations that don't match event.type, (8) dispatches to multiple matching registrations. Test cases for dispatchFromMap(): (9) dispatches to matching entries in Map, (10) skips non-matching event types in Map. Sample event: {id:'evt-1', type:'invoice.created', data:{}, createdAt:'2024-01-01'}. Sample registration: {id:'reg-1', url:'https://example.com/hook', events:['invoice.created'], secret:'test-secret-key-1234', isActive:true}.",
+      "deliverables": {
+        "code": [
+          "backend/src/services/webhook/__tests__/dispatch.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "backend/src/services/webhook/__tests__/dispatch.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "REJECTED",
+          "score": 25,
+          "summary": "Dual-rejected: Claude (25/100) + Codex (40/100). Test file is incomplete - cuts off mid-test case and missing several required test scenarios. Also has structural issues with test organization and missing error handling tests. | The test file is incomplete and fails to cover several required scenarios. The last `dispatchFromMap` test is truncated (syntax error), and key cases—such as fetch‐error handling in `dispatch`, header assertions for X-Invoica-Timestamp, and proper statusCode checks—are missing.",
+          "issues": [
+            {
+              "severity": "critical",
+              "file": "backend/src/services/webhook/__tests__/dispatch.test.ts",
+              "description": "File is incomplete - cuts off in the middle of the last test case 'skips non-matching event types in Map'"
+            },
+            {
+              "severity": "high",
+              "file": "backend/src/services/webhook/__tests__/dispatch.test.ts",
+              "description": "Missing required test case: 'returns success:false, statusCode:0, retryable:true on fetch error' - no test that mocks fetch to throw an error"
+            },
+            {
+              "severity": "high",
+              "file": "backend/src/services/webhook/__tests__/dispatch.test.ts",
+              "description": "Missing X-Invoica-Timestamp header validation in header test case"
+            },
+            {
+              "severity": "medium",
+              "file": "backend/src/services/webhook/__tests__/dispatch.test.ts",
+              "description": "Test case 'returns retryable:true for 500' doesn't verify statusCode:500 is returned in result"
+            },
+            {
+              "severity": "medium",
+              "file": "backend/src/services/webhook/__tests__/dispatch.test.ts",
+              "description": "Missing separate test case for 'returns success:true for 200 response' - this is combined with other logic"
+            },
+            {
+              "severity": "low",
+              "file": "backend/src/services/webhook/__tests__/dispatch.test.ts",
+              "description": "Test descriptions could be more specific about what exactly is being tested"
+            },
+            {
+              "severity": "critical",
+              "file": "backend/src/services/webhook/__tests__/dispatch.test.ts",
+              "description": "The second test in the `dispatchFromMap` suite is truncated and missing closing braces and assertions, causing a syntax error and test compilation failure."
+            },
+            {
+              "severity": "high",
+              "file": "backend/src/services/webhook/__tests__/dispatch.test.ts",
+              "description": "No test for the fetch‐error path in `dispatch` (i.e. when globalThis.fetch throws), which should assert `{success:false, statusCode:0, retryable:true}`."
+            },
+            {
+              "severity": "medium",
+              "file": "backend/src/services/webhook/__tests__/dispatch.test.ts",
+              "description": "Missing assertion for the `X-Invoica-Timestamp` header in the request, as specified in the task."
+            },
+            {
+              "severity": "medium",
+              "file": "backend/src/services/webhook/__tests__/dispatch.test.ts",
+              "description": "Result objects’ `statusCode` fields are never asserted (e.g. `200` on success, `500` on retryable failures)."
+            }
+          ],
+          "strengths": []
+        }
+      }
+    },
+    {
+      "id": "BE-251",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "medium",
+      "description": "Unit tests for backend/src/api/webhooks-get.ts — webhook GET handler",
+      "status": "rejected",
+      "dependencies": [],
+      "context": "Write Jest unit tests for backend/src/api/webhooks-get.ts. This file exports a handler function. Read the source to understand the exact function signature and behavior. The handler should handle GET /webhooks requests. Use mock request/response objects: const mockReq = {} as any; const mockRes = {status:jest.fn().mockReturnThis(), json:jest.fn().mockReturnThis()} as any. If the handler imports dependencies (like a repository or DB client), mock them with jest.mock. Import the handler from '../webhooks-get' (test file in api/__tests__/). Test cases: (1) returns 200 status, (2) returns JSON response with webhooks data, (3) handles empty webhooks list, (4) calls appropriate repository/data method. Adapt tests based on actual file contents — the key is to test the HTTP handler behavior with mocked dependencies.",
+      "deliverables": {
+        "code": [
+          "backend/src/api/__tests__/webhooks-get.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "backend/src/api/__tests__/webhooks-get.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "REJECTED",
+          "score": 15,
+          "summary": "Dual-rejected: Claude (15/100) + Codex (20/100). Generated test file contains invalid syntax - markdown tool call instead of actual test code | The generated test file is incomplete and contains only a placeholder `<minimax:tool_call>` element. No actual Jest tests were implemented, so it fails to meet the task requirements.",
+          "issues": [
+            {
+              "severity": "critical",
+              "file": "backend/src/api/__tests__/webhooks-get.test.ts",
+              "description": "File contains a markdown tool call '<minimax:tool_call>' instead of actual TypeScript test code. This is completely invalid syntax and indicates the agent failed to generate the requested Jest unit tests."
+            },
+            {
+              "severity": "critical",
+              "file": "backend/src/api/__tests__/webhooks-get.test.ts",
+              "description": "No actual test implementation provided - the file should contain Jest test cases for the webhooks-get handler but instead contains only a tool invocation."
+            },
+            {
+              "severity": "high",
+              "file": "backend/src/api/__tests__/webhooks-get.test.ts",
+              "description": "Task requirements completely unmet - no test cases for (1) 200 status, (2) JSON response, (3) empty webhooks list, (4) repository method calls."
+            },
+            {
+              "severity": "critical",
+              "file": "backend/src/api/__tests__/webhooks-get.test.ts",
+              "description": "Test file contains only a `<minimax:tool_call>` placeholder and no real test code."
+            },
+            {
+              "severity": "critical",
+              "file": "backend/src/api/__tests__/webhooks-get.test.ts",
+              "description": "No Jest test cases are defined; missing tests for status code, JSON response, empty list handling, and repository method calls."
+            },
+            {
+              "severity": "high",
+              "file": "backend/src/api/__tests__/webhooks-get.test.ts",
+              "description": "Dependencies (e.g. repository or DB client) are not mocked or imported."
+            }
+          ],
+          "strengths": []
+        }
+      }
+    },
+    {
+      "id": "BE-252",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "medium",
+      "description": "Unit tests for backend/src/api/webhooks-register.ts — webhook registration handler",
+      "status": "done",
+      "dependencies": [],
+      "context": "Write Jest unit tests for backend/src/api/webhooks-register.ts. This file exports a handler function for POST /webhooks registration. Use mock request/response objects: const mockReq = {body:{url:'https://example.com/hook', events:['invoice.created'], secret:'test-secret-1234567890'}} as any; const mockRes = {status:jest.fn().mockReturnThis(), json:jest.fn().mockReturnThis()} as any. If the handler imports dependencies (like WebhookRepository or DB client), mock them with jest.mock. Import the handler from '../webhooks-register' (test file in api/__tests__/). Test cases: (1) returns 201 status for valid registration, (2) returns JSON response with created webhook data, (3) returns 400 for invalid URL, (4) returns 400 for missing events array, (5) returns 400 for secret shorter than 16 chars, (6) calls repository register method with correct params. Adapt tests based on actual file contents.",
+      "deliverables": {
+        "code": [
+          "backend/src/api/__tests__/webhooks-register.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "backend/src/api/__tests__/webhooks-register.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 88,
+          "summary": "Dual-approved: Claude (85/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "backend/src/api/__tests__/webhooks-register.test.ts",
+              "description": "Missing afterEach cleanup to reset mocks between tests for better isolation"
+            },
+            {
+              "severity": "low",
+              "file": "backend/src/api/__tests__/webhooks-register.test.ts",
+              "description": "Could add more specific error message assertions for validation failures"
+            },
+            {
+              "severity": "medium",
+              "file": "backend/src/api/__tests__/webhooks-register.test.ts",
+              "description": "Missing test for empty events array (different from missing events)"
+            }
+          ],
+          "strengths": [
+            "Covers all 6 required test cases from the task spec",
+            "Proper Jest mocking of WebhookRepository dependency",
+            "Uses correct mock request/response pattern as specified",
+            "Good test structure with beforeEach setup",
+            "Proper async/await handling in tests",
+            "Meaningful test descriptions and assertions",
+            "Follows TypeScript typing with Partial<Request/Response>",
+            "Tests both success and error scenarios comprehensively",
+            "Covers all required test cases (valid, invalid URL, missing events, short secret).",
+            "Mocks external dependencies (WebhookRepository) correctly with jest.mock.",
+            "Verifies both response status codes and JSON payloads where appropriate.",
+            "Checks that the repository.register method is called with correct parameters.",
+            "No code fences in source files; syntax is valid TypeScript."
+          ]
+        }
+      }
+    }
+  ]
+}

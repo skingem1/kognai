@@ -1,0 +1,389 @@
+{
+  "tasks": [
+    {
+      "id": "BE-100",
+      "agent": "backend-core",
+      "type": "fix",
+      "priority": "critical",
+      "dependencies": [],
+      "context": "Add missing settlement-by-invoice route to router. The frontend calls GET /v1/settlements/:invoiceId but the router only has GET /v1/settlements (list). The file backend/src/api/settlements.ts already exports a getSettlement function that takes req.params.invoiceId. In backend/src/api/router.ts: import { getSettlement } from './settlements' and add: router.get('/v1/settlements/:invoiceId', getSettlement). Make sure the :invoiceId route comes BEFORE the /v1/settlements list route to avoid conflicts. The existing settlements import is used for the list endpoint.",
+      "deliverables": {
+        "code": [
+          "backend/src/api/router.ts"
+        ],
+        "tests": [
+          "backend/tests/api/router.test.ts"
+        ]
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "backend/src/api/router.ts",
+          "backend/tests/api/router.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "Clean implementation that correctly adds the missing settlement-by-invoice route. Proper route ordering, good test coverage, and follows existing patterns.",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "backend/src/api/router.ts",
+              "description": "The validate() and asyncHandler() utility functions are defined but not used in this router - could be cleaned up or utilized"
+            }
+          ],
+          "strengths": [
+            "Correctly imports getSettlement function as specified",
+            "Proper route ordering - :invoiceId route comes before /v1/settlements list route to avoid conflicts",
+            "Uses asyncHandler wrapper for proper error handling",
+            "Includes comprehensive test coverage for both routes",
+            "Test mocks are well-structured and test the actual functionality",
+            "Follows existing code patterns and TypeScript conventions",
+            "No unnecessary files or overengineering - exactly what was requested"
+          ]
+        }
+      }
+    },
+    {
+      "id": "BE-101",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "context": "Create API key CRUD endpoints at backend/src/api/api-keys.ts. Import createApiKey, getCustomerApiKeys, invalidateApiKey, rotateApiKey, createApiKeySchema from '../services/api-keys'. Create 4 Express handlers: (1) createApiKeyHandler — POST, validate req.body with createApiKeySchema.safeParse, call createApiKey, return 201 with result. (2) listApiKeysHandler — GET, read customerId from req.query.customerId, call getCustomerApiKeys, return 200. (3) revokeApiKeyHandler — DELETE, read id from req.params.id, call invalidateApiKey, return 200. (4) rotateApiKeyHandler — POST, read id from req.params.id, call rotateApiKey, return 200 with new key. All handlers: try/catch with 500 fallback, typed Request/Response from express. Export all 4 handlers. Do NOT modify router.ts — that will be done separately.",
+      "deliverables": {
+        "code": [
+          "backend/src/api/api-keys.ts"
+        ],
+        "tests": [
+          "backend/tests/api/api-keys.test.ts"
+        ]
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "backend/src/api/api-keys.ts",
+          "backend/tests/api/api-keys.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 88,
+          "summary": "Well-implemented API handlers with proper validation, error handling, and comprehensive tests. Code follows TypeScript best practices and project patterns.",
+          "issues": [
+            {
+              "severity": "medium",
+              "file": "backend/src/api/api-keys.ts",
+              "description": "Missing JSDoc documentation on exported functions - only route comments present"
+            },
+            {
+              "severity": "low",
+              "file": "backend/tests/api/api-keys.test.ts",
+              "description": "Test coverage could include error scenarios (service throws, validation edge cases)"
+            },
+            {
+              "severity": "low",
+              "file": "backend/src/api/api-keys.ts",
+              "description": "Could add input sanitization for customerId query param (trim, length validation)"
+            }
+          ],
+          "strengths": [
+            "Proper Zod validation with safeParse and detailed error responses",
+            "Comprehensive error handling with try/catch and 500 fallbacks",
+            "TypeScript strict typing with Request/Response interfaces",
+            "Good logging with contextual information (keyId in error logs)",
+            "Clean separation of concerns - handlers only orchestrate, business logic in services",
+            "Jest tests cover happy path and basic error scenarios",
+            "Follows Express handler patterns consistently",
+            "Proper HTTP status codes (201 for creation, 400 for validation errors)",
+            "No hardcoded secrets or security vulnerabilities",
+            "Imports match the task specification exactly"
+          ]
+        }
+      }
+    },
+    {
+      "id": "BE-102",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "context": "Migrate webhook storage from in-memory Map to Prisma in backend/src/services/webhook/types.ts. Currently this file uses a Map<string, WebhookConfig> for storage. Replace with Prisma calls: import { prisma } from '../../db/client'. Change registerWebhook to use prisma.webhook.create({ data: { url, secret, events } }). Change getWebhooks to use prisma.webhook.findMany(). Add findWebhooksByEvent(event: string) using prisma.webhook.findMany({ where: { events: { has: event } } }). Keep the WebhookConfig interface and function signatures exactly the same so dispatch.ts imports don't break. If Prisma model doesn't exist, use a raw SQL approach with prisma.$queryRaw as fallback. Export all functions.",
+      "deliverables": {
+        "code": [
+          "backend/src/services/webhook/types.ts"
+        ],
+        "tests": [
+          "backend/tests/services/webhook-types.test.ts"
+        ]
+      },
+      "status": "rejected",
+      "output": {
+        "files": [
+          "backend/src/services/webhook/types.ts",
+          "backend/tests/services/webhook-types.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "REJECTED",
+          "score": 45,
+          "summary": "Code implements the basic migration requirements but has critical security vulnerabilities in SQL injection handling and insufficient error handling patterns. The fallback SQL approach is flawed and the test coverage is incomplete.",
+          "issues": [
+            {
+              "severity": "critical",
+              "file": "backend/src/services/webhook/types.ts",
+              "description": "SQL injection vulnerability in raw SQL fallback - events array is JSON.stringify'd but not properly parameterized, and event parameter in findWebhooksByEvent is directly interpolated"
+            },
+            {
+              "severity": "high",
+              "file": "backend/src/services/webhook/types.ts",
+              "description": "Error handling logic is flawed - catching specific Prisma error codes but the fallback assumes table exists, which may not be true if model doesn't exist"
+            },
+            {
+              "severity": "high",
+              "file": "backend/src/services/webhook/types.ts",
+              "description": "Raw SQL queries assume PostgreSQL-specific functions (gen_random_uuid(), NOW()) without database compatibility checks"
+            },
+            {
+              "severity": "medium",
+              "file": "backend/src/services/webhook/types.ts",
+              "description": "Missing input validation - no checks for empty/invalid URLs, secrets, or event arrays before database operations"
+            },
+            {
+              "severity": "medium",
+              "file": "backend/tests/services/webhook-types.test.ts",
+              "description": "Incomplete test coverage - missing tests for error cases, edge cases (empty arrays, invalid inputs), and raw SQL fallback scenarios"
+            },
+            {
+              "severity": "medium",
+              "file": "backend/src/services/webhook/types.ts",
+              "description": "WebhookConfig interface includes id, createdAt, updatedAt fields but original task spec didn't mention these - potential breaking change for dispatch.ts imports"
+            },
+            {
+              "severity": "low",
+              "file": "backend/tests/services/webhook-types.test.ts",
+              "description": "Test file uses generic describe name 'webhook types' instead of more specific 'WebhookService' or similar"
+            }
+          ],
+          "strengths": [
+            "Proper TypeScript typing with no 'any' types used",
+            "Good JSDoc documentation on all public functions",
+            "Maintains function signatures as required by task spec",
+            "Implements all three required functions (registerWebhook, getWebhooks, findWebhooksByEvent)",
+            "Includes basic Jest test structure",
+            "Uses proper async/await patterns"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-040",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "context": "Extend frontend/lib/api-client.ts with API key management functions. Add after the existing fetchSettlement function: (1) ApiKey interface: id string, name string, keyPrefix string, tier string, plan string, permissions string[], isActive boolean, createdAt string, lastUsedAt string | null. (2) CreateApiKeyResponse interface extending ApiKey with optional key?: string. (3) async function fetchApiKeys(customerId: string): Promise<ApiKey[]> using apiGet('/v1/api-keys?customerId=' + customerId). (4) async function createNewApiKey(data: {customerId: string, customerEmail: string, name: string}): Promise<CreateApiKeyResponse> using apiPost('/v1/api-keys', data). (5) async function revokeApiKey(id: string): Promise<void> using a new apiDelete helper. (6) async function rotateApiKey(id: string): Promise<CreateApiKeyResponse> using apiPost('/v1/api-keys/' + id + '/rotate', {}). Also add the apiDelete helper: async function apiDelete(endpoint: string): Promise<void> with fetch DELETE method. Export all new types and functions.",
+      "deliverables": {
+        "code": [
+          "frontend/lib/api-client.ts"
+        ],
+        "tests": [
+          "frontend/tests/lib/api-client.test.ts"
+        ]
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "frontend/lib/api-client.ts",
+          "frontend/tests/lib/api-client.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 92,
+          "summary": "Well-implemented API key management extension with proper TypeScript types, comprehensive error handling, and good test coverage. Minor improvements possible in URL construction consistency and test organization.",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/lib/api-client.ts",
+              "description": "Inconsistent URL construction - fetchApiKeys uses apiGet with params while other functions use template literals. Should use buildUrl consistently."
+            },
+            {
+              "severity": "low",
+              "file": "frontend/tests/lib/api-client.test.ts",
+              "description": "Test file could benefit from grouping API key management tests under a describe block for better organization."
+            },
+            {
+              "severity": "low",
+              "file": "frontend/tests/lib/api-client.test.ts",
+              "description": "Missing edge case tests for empty responses and network failures, though basic error handling is tested."
+            }
+          ],
+          "strengths": [
+            "Exact adherence to task specification - all required interfaces, functions, and exports implemented correctly",
+            "Proper TypeScript typing with strict interfaces and no 'any' types used",
+            "Consistent error handling using existing ApiError class",
+            "Good separation of concerns with clear API sections",
+            "Comprehensive test coverage for all new functions with realistic mock data",
+            "Proper async/await usage throughout",
+            "Follows existing code patterns and architecture",
+            "Clean, readable code with appropriate comments and organization",
+            "Correct HTTP methods and endpoint construction",
+            "Proper credential handling with 'include' for authentication"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-041",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "context": "Create API Keys management page at frontend/app/api-keys/page.tsx. 'use client' component with useState and useEffect. State: keys (ApiKey[]), loading (boolean), error (string|null), showCreate (boolean), newKeyName (string), createdKey (string|null). On mount: call fetchApiKeys('default') from '@/lib/api-client'. Render: (1) Header with title 'API Keys' and 'Create Key' button. (2) If createdKey is set, show a green alert with the full key, a copy-to-clipboard button, and warning text 'Save this key — it won\\'t be shown again'. (3) Table with columns: Name, Key Prefix (show sk_XXXXXXXX format), Status (green 'Active' or red 'Revoked' badge), Created (formatted date), Last Used (formatted date or 'Never'). (4) Each row has Revoke and Rotate buttons. Revoke calls revokeApiKey then refreshes. Rotate calls rotateApiKey then shows new key. Include loading spinner and error states.",
+      "deliverables": {
+        "code": [
+          "frontend/app/api-keys/page.tsx"
+        ],
+        "tests": [
+          "frontend/tests/app/api-keys-page.test.tsx"
+        ]
+      },
+      "status": "rejected",
+      "output": {
+        "files": [
+          "frontend/app/api-keys/page.tsx",
+          "frontend/tests/app/api-keys-page.test.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "REJECTED",
+          "score": 45,
+          "summary": "Implementation has critical issues: incomplete main component file (truncated), missing key UI components, inadequate test coverage, and several architectural concerns that prevent approval.",
+          "issues": [
+            {
+              "severity": "critical",
+              "file": "frontend/app/api-keys/page.tsx",
+              "description": "File is truncated/incomplete - the createdKey alert section is cut off mid-implementation, missing the copy button, warning text, and table rendering"
+            },
+            {
+              "severity": "high",
+              "file": "frontend/app/api-keys/page.tsx",
+              "description": "Missing create key form UI - showCreate state is managed but no form is rendered when true"
+            },
+            {
+              "severity": "high",
+              "file": "frontend/tests/app/api-keys-page.test.tsx",
+              "description": "Test references non-existent UI elements (placeholders, save button) that aren't in the actual component"
+            },
+            {
+              "severity": "medium",
+              "file": "frontend/app/api-keys/page.tsx",
+              "description": "copyToClipboard function lacks error handling and user feedback - should show toast/notification on success/failure"
+            },
+            {
+              "severity": "medium",
+              "file": "frontend/app/api-keys/page.tsx",
+              "description": "getKeyPrefix logic incorrect - should format as 'sk_XXXXXXXX' but current logic doesn't ensure proper prefix format"
+            },
+            {
+              "severity": "medium",
+              "file": "frontend/tests/app/api-keys-page.test.tsx",
+              "description": "Insufficient test coverage - missing tests for rotate functionality, copy to clipboard, key prefix formatting, and error states"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/app/api-keys/page.tsx",
+              "description": "Loading state check 'loading && keys.length === 0' may not work correctly on subsequent loads"
+            }
+          ],
+          "strengths": [
+            "Proper TypeScript interfaces with correct ApiKey type definition",
+            "Good error handling pattern with try/catch blocks",
+            "Appropriate use of React hooks (useState, useEffect)",
+            "Proper async/await usage throughout",
+            "Clean component structure and separation of concerns",
+            "Basic test setup with proper mocking of API client functions"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-042",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "medium",
+      "dependencies": [],
+      "context": "Add navigation sidebar to frontend/app/layout.tsx. Currently layout.tsx has no navigation between pages. Add a dark sidebar (bg-gray-900 text-white) on the left side, 64px wide (w-16 on mobile, w-56 on desktop). At top: Invoica logo/text. Navigation links using Next.js Link component to: Dashboard (/), Invoices (/invoices), Settlements (/settlements), API Keys (/api-keys). Use usePathname() from 'next/navigation' to highlight active page (bg-gray-700 rounded). Icons from lucide-react: LayoutDashboard, FileText, ArrowLeftRight, Key. The main content area should be to the right of the sidebar with proper padding. Keep the existing <html>, <body> tags and metadata. Make 'use client' since usePathname requires it.",
+      "deliverables": {
+        "code": [
+          "frontend/app/layout.tsx"
+        ],
+        "tests": [
+          "frontend/tests/app/layout.test.tsx"
+        ]
+      },
+      "status": "rejected",
+      "output": {
+        "files": [
+          "frontend/app/layout.tsx",
+          "frontend/tests/app/layout.test.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "REJECTED",
+          "score": 65,
+          "summary": "Code implements the navigation sidebar correctly but has critical issues: missing metadata/head elements, incomplete responsive design, and accessibility concerns. The layout structure breaks Next.js conventions.",
+          "issues": [
+            {
+              "severity": "critical",
+              "file": "frontend/app/layout.tsx",
+              "description": "Missing metadata, viewport, and other essential head elements that were likely in the original layout.tsx. Next.js app router requires these in the root layout."
+            },
+            {
+              "severity": "high",
+              "file": "frontend/app/layout.tsx",
+              "description": "Logo text 'Invoica' is visible on mobile (w-16) but there's no room - should be hidden on mobile and show icon only, or use a collapsed logo."
+            },
+            {
+              "severity": "high",
+              "file": "frontend/app/layout.tsx",
+              "description": "Fixed sidebar with ml-16/ml-56 on main content can cause layout issues on smaller screens. Should use responsive padding or consider a mobile-first approach."
+            },
+            {
+              "severity": "medium",
+              "file": "frontend/app/layout.tsx",
+              "description": "Missing proper TypeScript imports for React types - should import React or use proper JSX namespace."
+            },
+            {
+              "severity": "medium",
+              "file": "frontend/tests/app/layout.test.tsx",
+              "description": "Test file uses @/app/layout import path but should match the actual file structure. Also missing test for responsive behavior."
+            },
+            {
+              "severity": "low",
+              "file": "frontend/app/layout.tsx",
+              "description": "Accessibility could be improved with proper ARIA labels for the sidebar navigation and skip links."
+            }
+          ],
+          "strengths": [
+            "Correctly implements usePathname for active state highlighting",
+            "Proper use of Next.js Link component",
+            "Good responsive design concept with w-16 mobile and w-56 desktop",
+            "Clean component structure with separated navItems array",
+            "Includes proper test coverage for main functionality",
+            "Uses semantic HTML with proper nav and aside elements",
+            "Implements hover states and transitions"
+          ]
+        }
+      }
+    }
+  ]
+}

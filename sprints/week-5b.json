@@ -1,0 +1,261 @@
+{
+  "tasks": [
+    {
+      "id": "SDK-010a",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "context": "Create a minimal CountableClient class (NO interfaces — import from ./types). Constructor takes apiKey: string and optional baseUrl (default 'https://api.countable.dev'). Store both as private fields. Add one private method: async request<T>(method: string, path: string, body?: unknown): Promise<T> that calls fetch with JSON headers and Authorization Bearer token, throws CountableError on non-2xx. Export the class and CountableError. Keep under 60 lines total. NO validation, NO extra error classes, NO JSDoc comments.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/client.ts"
+        ],
+        "tests": [
+          "sdk/typescript/tests/client.test.ts"
+        ]
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "sdk/typescript/src/client.ts",
+          "sdk/typescript/tests/client.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 92,
+          "summary": "Clean, minimal implementation that exactly matches task requirements. Good test coverage with proper mocking. Minor deduction for accessing private fields in tests.",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/tests/client.test.ts",
+              "description": "Tests access private fields using (client as any) - while functional, this bypasses TypeScript's type safety"
+            }
+          ],
+          "strengths": [
+            "Exactly follows task spec - no extra interfaces, under 60 lines, minimal implementation",
+            "Proper error handling with CountableError on non-2xx responses",
+            "Correct fetch implementation with JSON headers and Bearer auth",
+            "Good test coverage including edge cases (custom baseUrl, error responses, POST with body)",
+            "Clean TypeScript with proper generics and no 'any' types in implementation",
+            "Proper export structure - exports both class and error type",
+            "No overengineering - resisted adding validation, extra methods, or JSDoc"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-010b",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [
+        "SDK-010a"
+      ],
+      "context": "Add 3 public methods to the existing CountableClient class in sdk/typescript/src/client.ts. Import types from ./types. Add: createInvoice(params: CreateInvoiceParams): Promise<Invoice> — POST /invoices with params as body. getInvoice(id: string): Promise<Invoice> — GET /invoices/{id}. listInvoices(filter?: InvoiceFilter): Promise<Invoice[]> — GET /invoices with filter as query params. Each method is 3-5 lines calling this.request(). Keep the file under 80 lines total. No validation needed.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/client.ts"
+        ],
+        "tests": [
+          "sdk/typescript/tests/client.test.ts"
+        ]
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "sdk/typescript/src/client.ts",
+          "sdk/typescript/tests/client.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 92,
+          "summary": "Clean, focused implementation that meets all task requirements. Three methods added as specified, proper TypeScript typing, comprehensive tests, and stays within line limits.",
+          "issues": [
+            {
+              "severity": "medium",
+              "file": "sdk/typescript/src/client.ts",
+              "description": "URLSearchParams casting assumes all filter values are strings, which may not handle numbers/booleans correctly"
+            },
+            {
+              "severity": "low",
+              "file": "sdk/typescript/tests/client.test.ts",
+              "description": "Test uses hardcoded mock data structure that may not match actual Invoice type definition"
+            }
+          ],
+          "strengths": [
+            "Exactly follows task spec - 3 methods, 3-5 lines each, imports from ./types",
+            "File stays well under 80 line limit (35 lines total)",
+            "Proper TypeScript generics and return types",
+            "Comprehensive test coverage with all edge cases",
+            "Clean error handling in request method",
+            "Proper async/await usage throughout",
+            "Good separation of concerns - tests mock fetch appropriately",
+            "No unnecessary abstractions or overengineering"
+          ]
+        }
+      }
+    },
+    {
+      "id": "BC-030a",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "context": "Create webhook types and a register function. Export interface WebhookRegistration { id: string; url: string; events: string[]; secret: string; createdAt: string; }. Export interface WebhookEvent { id: string; type: string; data: unknown; createdAt: string; }. Export interface DispatchResult { success: boolean; statusCode: number; retryable: boolean; }. Export const registrations = new Map<string, WebhookRegistration>(). Export function register(url: string, events: string[], secret: string): WebhookRegistration that validates inputs and stores in Map. Keep under 40 lines.",
+      "deliverables": {
+        "code": [
+          "backend/src/services/webhook/types.ts"
+        ],
+        "tests": [
+          "backend/tests/services/webhook-types.test.ts"
+        ]
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "backend/src/services/webhook/types.ts",
+          "backend/tests/services/webhook-types.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 92,
+          "summary": "Clean, well-structured webhook types implementation that meets all requirements. Proper Zod validation, comprehensive tests, and follows TypeScript best practices.",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "backend/src/services/webhook/types.ts",
+              "description": "Using crypto.randomUUID() without explicit import - works in Node 16+ but could be more explicit"
+            },
+            {
+              "severity": "low",
+              "file": "backend/tests/services/webhook-types.test.ts",
+              "description": "Could add test for secret max length validation (256 chars) to ensure upper bound works"
+            }
+          ],
+          "strengths": [
+            "All required interfaces exported exactly as specified",
+            "Proper Zod validation with sensible constraints (URL format, min 1 event, secret 16-256 chars)",
+            "Clean function implementation under 40 lines as requested",
+            "Comprehensive test coverage including edge cases",
+            "Proper TypeScript types with no 'any' usage",
+            "Good error handling through Zod validation",
+            "Follows project patterns with proper file structure",
+            "Tests include setup/teardown with registrations.clear()",
+            "UUID generation for unique IDs",
+            "ISO string timestamps"
+          ]
+        }
+      }
+    },
+    {
+      "id": "BC-030b",
+      "agent": "security",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "context": "Create a webhook signature module with two functions. Export function signPayload(payload: string, secret: string): string — create HMAC-SHA256 hex digest using Node.js crypto.createHmac('sha256', secret).update(payload).digest('hex'). Export function verifySignature(payload: string, signature: string, secret: string): boolean — compute expected signature, compare using crypto.timingSafeEqual with Buffer.from on both. Use only Node.js built-in crypto. Keep under 25 lines.",
+      "deliverables": {
+        "code": [
+          "backend/src/services/webhook/signature.ts"
+        ],
+        "tests": [
+          "backend/tests/services/webhook-signature.test.ts"
+        ]
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "backend/src/services/webhook/signature.ts",
+          "backend/tests/services/webhook-signature.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "Excellent implementation that meets all requirements. Clean, secure webhook signature module with proper timing-safe comparison and comprehensive test coverage.",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "backend/src/services/webhook/signature.ts",
+              "description": "Missing JSDoc comments on public functions, though the function names are self-explanatory"
+            }
+          ],
+          "strengths": [
+            "Perfect adherence to task spec - exactly what was requested, nothing extra",
+            "Proper use of crypto.timingSafeEqual for timing attack prevention",
+            "Correct HMAC-SHA256 implementation using Node.js built-in crypto",
+            "Smart length check before timingSafeEqual to prevent timing attacks on different-length inputs",
+            "Excellent test coverage with edge cases (invalid signature, tampered payload, length mismatch)",
+            "Clean, readable code under 25 lines as required",
+            "No unnecessary dependencies or abstractions",
+            "Proper TypeScript typing throughout"
+          ]
+        }
+      }
+    },
+    {
+      "id": "BC-030c",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [
+        "BC-030a",
+        "BC-030b"
+      ],
+      "context": "Create the webhook dispatch function. Import types from ./types and signPayload from ./signature. Export async function dispatch(event: WebhookEvent, registrationMap: Map<string, WebhookRegistration>): Promise<DispatchResult[]>. For each registration matching the event type: create signature with signPayload(JSON.stringify(event), registration.secret), POST to registration.url with fetch, headers: X-Countable-Signature, X-Countable-Event (event.type), X-Countable-Timestamp (Date.now()), Content-Type application/json. Return array of DispatchResult. Keep under 50 lines.",
+      "deliverables": {
+        "code": [
+          "backend/src/services/webhook/dispatch.ts"
+        ],
+        "tests": [
+          "backend/tests/services/webhook-dispatch.test.ts"
+        ]
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "backend/src/services/webhook/dispatch.ts",
+          "backend/tests/services/webhook-dispatch.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 92,
+          "summary": "Clean, focused implementation that meets all task requirements. Good error handling, proper TypeScript usage, and comprehensive test coverage.",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "backend/src/services/webhook/dispatch.ts",
+              "description": "Could add timeout configuration for fetch requests to prevent hanging on slow endpoints"
+            },
+            {
+              "severity": "low",
+              "file": "backend/tests/services/webhook-dispatch.test.ts",
+              "description": "Could verify exact headers sent in fetch call for more thorough testing"
+            }
+          ],
+          "strengths": [
+            "Meets all task requirements exactly - imports from correct modules, exports correct function signature",
+            "Proper error handling with try-catch and meaningful error messages",
+            "Clean TypeScript with proper typing, no 'any' usage",
+            "Efficient implementation using Map iteration and early continue",
+            "Well-structured test suite covering success, failure, and filtering scenarios",
+            "Proper mocking of dependencies (signPayload, fetch)",
+            "Code is concise at 37 lines, well under the 50-line requirement",
+            "Follows webhook security best practices with signature, timestamp, and event type headers",
+            "Good separation of concerns - focused only on dispatch logic"
+          ]
+        }
+      }
+    }
+  ]
+}

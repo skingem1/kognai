@@ -1,0 +1,360 @@
+{
+  "tasks": [
+    {
+      "id": "SDK-080",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "status": "done",
+      "context": "The SDK barrel file sdk/typescript/src/index.ts is missing 5 type exports that exist in types.ts. The current index.ts exports from './client', './errors', and './types' but the types block only includes: ApiKey, CreateApiKeyParams, ApiKeyListResponse, WebhookRegistrationConfig, WebhookRegistration, WebhookListResponse. Add the 5 missing exports to the existing './types' export block. Do NOT modify any other export blocks. Do NOT remove or change any existing exports. This is a 5-line addition to the existing file.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/index.ts"
+        ],
+        "tests": []
+      },
+      "description": "Add 5 missing type exports to SDK barrel: InvoiceCreateInput, Settlement, SettlementListResponse, InvoiceListResponse, ApiKeyCreateResponse. Extend the existing export block from './types' by adding these 5 names. File is currently 30 lines, should be ~35 lines after. Keep ALL existing exports unchanged.",
+      "constraints": "EXTEND the existing 'export { ... } from ./types' block by adding 5 new names. Do NOT touch the './client' or './errors' export blocks. Do NOT rewrite the file — only add the missing names to the types export block. Final file should be ~35 lines."
+    },
+    {
+      "id": "FE-090",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "high",
+      "status": "done",
+      "context": "Create a Settings page for the Invoica dashboard. This is a placeholder page that shows the app settings UI skeleton. The page should be a server component (no 'use client', no hooks). Show a page title 'Settings', three sections with h2 headings: 'General', 'Notifications', 'Billing'. Each section has a brief placeholder paragraph. Use simple HTML elements: h1, h2, p, div. Use Tailwind CSS classes for styling. No form inputs, no state, no interactivity.",
+      "deliverables": {
+        "code": [
+          "frontend/app/settings/page.tsx"
+        ],
+        "tests": []
+      },
+      "description": "Create frontend/app/settings/page.tsx — a static server component with title 'Settings' and 3 section placeholders (General, Notifications, Billing). Use h1, h2, p, div with Tailwind classes. No 'use client', no hooks, no imports except React. Under 40 lines.",
+      "constraints": "Server component — NO 'use client' directive, NO hooks (useState, useEffect, usePathname, etc). NO external component imports. Use ONLY h1, h2, p, div HTML elements with Tailwind classes. Under 40 lines total."
+    },
+    {
+      "id": "FE-091",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "high",
+      "status": "done",
+      "context": "Create an Agents page for the Invoica dashboard. This is a placeholder page showing the AI agents monitoring UI skeleton. The page should be a server component (no 'use client', no hooks). Show a page title 'AI Agents', a brief description paragraph, then a simple grid of 3 agent cards. Each card is a div with: agent name (h3), role description (p), and a status badge ('Active' in green). Use simple HTML: h1, h3, p, div, span. Tailwind for styling.",
+      "deliverables": {
+        "code": [
+          "frontend/app/agents/page.tsx"
+        ],
+        "tests": []
+      },
+      "description": "Create frontend/app/agents/page.tsx — a static server component with title 'AI Agents', description, and 3 hardcoded agent cards in a grid. Cards: CEO (Strategic oversight), CTO (Tech monitoring), Supervisor (Code review). Each card shows name, role, 'Active' badge. Under 50 lines.",
+      "constraints": "Server component — NO 'use client' directive, NO hooks. NO external component imports. Use ONLY h1, h3, p, div, span HTML elements with Tailwind classes. Under 50 lines total. Agents are hardcoded, not fetched."
+    },
+    {
+      "id": "FE-092",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "medium",
+      "status": "done",
+      "context": "Create an Invoices list page for the Invoica dashboard. This is a 'use client' component that fetches invoices from the API. Import fetchInvoices and InvoiceListResponse from '@/lib/api-client'. Use useState for invoices array and loading state. Use useEffect to call fetchInvoices() on mount. Show a table with columns: Invoice Number, Amount, Currency, Status, Created. Show a loading spinner div while loading. If no invoices, show 'No invoices found' message.",
+      "deliverables": {
+        "code": [
+          "frontend/app/invoices/page.tsx"
+        ],
+        "tests": []
+      },
+      "description": "Create frontend/app/invoices/page.tsx — a 'use client' component that fetches invoices using fetchInvoices() from '@/lib/api-client'. Shows a table with 5 columns: Invoice Number, Amount, Currency, Status, Created. Loading state with spinner div. Under 65 lines.",
+      "constraints": "'use client' component. Import ONLY from '@/lib/api-client': fetchInvoices, InvoiceListResponse. Use useState and useEffect from 'react'. Simple HTML table with Tailwind classes. NO external UI library imports. Under 65 lines. Access response as data.invoices (array).",
+      "output": {
+        "files": [
+          "frontend/app/invoices/page.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "REJECTED",
+          "score": 25,
+          "summary": "CEO resolved conflict (Codex approved, Claude rejected): **REJECT — Code is incomplete and non-functional**\n\nClaude is correct on the critical issue: the table element is truncated mid-tag, making the component completely broken. This is a shipping blocker.\n\nWhile Codex correctly identifies good practices (TypeScript usage, error handling), it missed the ",
+          "issues": [
+            {
+              "severity": "critical",
+              "file": "frontend/app/invoices/page.tsx",
+              "description": "Code is incomplete - table element is truncated mid-tag, making it non-functional"
+            },
+            {
+              "severity": "high",
+              "file": "frontend/app/invoices/page.tsx",
+              "description": "Added error state handling not specified in task - task only asked for loading state and invoices array"
+            },
+            {
+              "severity": "high",
+              "file": "frontend/app/invoices/page.tsx",
+              "description": "Added formatDate and formatCurrency utility functions not requested in spec - overengineering"
+            },
+            {
+              "severity": "medium",
+              "file": "frontend/app/invoices/page.tsx",
+              "description": "Added extensive Tailwind CSS styling and responsive design not specified in task"
+            },
+            {
+              "severity": "medium",
+              "file": "frontend/app/invoices/page.tsx",
+              "description": "Added error UI with retry button not requested in spec"
+            },
+            {
+              "severity": "medium",
+              "file": "frontend/app/invoices/page.tsx",
+              "description": "Added page title and container styling not specified in requirements"
+            }
+          ],
+          "strengths": [
+            "Strict TypeScript usage with proper types from InvoiceListResponse",
+            "Clear separation of loading, error, empty, and data UI states",
+            "Reusable formatting functions for dates and currency",
+            "Clean JSX markup with accessible, semantic table structure",
+            "Well-documented component and functions with JSDoc comments"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-093",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "medium",
+      "status": "done-manual",
+      "context": "The sidebar component at frontend/components/sidebar.tsx currently has 3 nav items: Dashboard (/), Settlements (/settlements), API Keys (/api-keys). Add 3 more nav items to the existing navItems array: Invoices (/invoices) with a document icon, Settings (/settings) with a gear icon, Agents (/agents) with a robot/cpu icon. Each icon uses the same SVG pattern as existing items: className='w-5 h-5' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}. Add the new items AFTER the existing 3 items. Do NOT change any existing items or the Sidebar component logic.",
+      "deliverables": {
+        "code": [
+          "frontend/components/sidebar.tsx"
+        ],
+        "tests": []
+      },
+      "description": "Extend frontend/components/sidebar.tsx navItems array by adding 3 new items after existing ones: Invoices (/invoices), Settings (/settings), Agents (/agents). Each with an SVG icon matching the existing pattern. Do NOT change existing items or component logic. File grows from 77 to ~115 lines.",
+      "constraints": "EXTEND the existing navItems array — add 3 new objects after the existing 3. Do NOT modify the Sidebar function, isActive function, or JSX template. Do NOT remove or change existing nav items. Use the same SVG icon pattern as existing items. Keep 'use client' and all existing imports.",
+      "output": {
+        "files": [
+          "frontend/components/sidebar.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "REJECTED",
+          "score": 15,
+          "summary": "CEO resolved conflict (Codex approved, Claude rejected): **REJECT — File truncation is a critical blocker**\n\nClaude is correct. A truncated file that cuts off mid-line will cause a syntax error and break the build. This isn't a nitpick — it's a fundamental code integrity issue that would prevent the application from running.\n\nWhile Codex correctly identif",
+          "issues": [
+            {
+              "severity": "critical",
+              "file": "frontend/components/sidebar.tsx",
+              "description": "File is incomplete - cuts off at line with 'text-gray-' in the middle of a className attribute. This would cause a syntax error and break the build."
+            }
+          ],
+          "strengths": [
+            "Adheres exactly to the task spec by inserting three new items after the existing three.",
+            "SVG icons follow the same className, fill, viewBox, stroke, and strokeWidth conventions.",
+            "No unintended changes were made to existing code or logic."
+          ]
+        }
+      }
+    },
+    {
+      "id": "BE-150",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "status": "done",
+      "context": "Create a mock dashboard stats endpoint handler. This is a simple Express handler function that returns hardcoded dashboard statistics. The function is getDashboardStats(req: Request, res: Response): Promise<void>. It returns JSON: { totalInvoices: 156, pending: 23, settled: 128, revenue: 45250.00, failedSettlements: 5 }. Import Request and Response from 'express'. This is a MOCK endpoint for frontend development. Do NOT add validation, error handling, or database operations. This is intentionally simple — just res.json() with hardcoded data.",
+      "deliverables": {
+        "code": [
+          "backend/src/api/dashboard-stats.ts"
+        ],
+        "tests": []
+      },
+      "description": "Create backend/src/api/dashboard-stats.ts with one function getDashboardStats that returns hardcoded stats JSON. This is a MOCK endpoint. Import from 'express'. Under 15 lines.",
+      "constraints": "This is a MOCK endpoint for frontend development. Do NOT add validation, error handling, try-catch, or database operations. Just import Request/Response from 'express', export async function getDashboardStats, and return res.json() with hardcoded stats object. Under 15 lines total.",
+      "output": {
+        "files": [
+          "backend/src/api/dashboard-stats.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 93,
+          "summary": "Dual-approved: Claude (95/100) + Codex (90/100)",
+          "issues": [],
+          "strengths": [
+            "Follows task spec exactly - simple mock endpoint with hardcoded data",
+            "Proper TypeScript types imported from express",
+            "Clean JSDoc documentation",
+            "Uses underscore prefix for unused req parameter (good practice)",
+            "Async function signature matches specification",
+            "Returns exact JSON structure requested",
+            "No overengineering - agent resisted adding validation/error handling as instructed",
+            "Fulfills the mock endpoint requirements exactly without overengineering or unnecessary abstractions.",
+            "Uses async function signature and appropriate Express types (Request, Response).",
+            "Includes JSDoc comment for clarity."
+          ]
+        }
+      }
+    },
+    {
+      "id": "BE-151",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "status": "done",
+      "context": "Create a mock dashboard activity endpoint handler. This is a simple Express handler function that returns hardcoded recent activity items. The function is getDashboardActivity(req: Request, res: Response): Promise<void>. It returns JSON array of 4 activity items, each with: { id: string, title: string, description: string, status: 'success'|'pending'|'failed', timestamp: string }. Example items: 'Invoice INV-0042 paid', 'Settlement confirmed on Base', 'API key rotated', 'Webhook delivery failed'. Import Request and Response from 'express'. This is a MOCK endpoint for frontend development. Do NOT add validation, error handling, or database operations.",
+      "deliverables": {
+        "code": [
+          "backend/src/api/dashboard-activity.ts"
+        ],
+        "tests": []
+      },
+      "description": "Create backend/src/api/dashboard-activity.ts with one function getDashboardActivity that returns a hardcoded array of 4 recent activity items. This is a MOCK endpoint. Import from 'express'. Under 30 lines.",
+      "constraints": "This is a MOCK endpoint for frontend development. Do NOT add validation, error handling, try-catch, or database operations. Just import Request/Response from 'express', export async function getDashboardActivity, and return res.json() with hardcoded activity array. Under 30 lines total.",
+      "output": {
+        "files": [
+          "backend/src/api/dashboard-activity.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 93,
+          "summary": "Dual-approved: Claude (95/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "backend/src/api/dashboard-activity.ts",
+              "description": "Could use more varied status values (only uses 'success' and 'failed', missing 'pending')"
+            }
+          ],
+          "strengths": [
+            "Exactly matches the task specification - no overengineering",
+            "Proper TypeScript types with strict interface definition",
+            "Correct Express imports and function signature",
+            "Good JSDoc documentation explaining the mock purpose",
+            "Realistic mock data with proper timestamps using relative time",
+            "Clean, readable code structure",
+            "Follows the explicit instruction to NOT add validation, error handling, or database operations",
+            "Uses proper ISO timestamp format",
+            "Includes all required fields (id, title, description, status, timestamp)",
+            "Strict TypeScript with no any usage",
+            "Follows the task spec exactly (four items, correct fields/statuses)",
+            "Simple, clear implementation with JSDoc comment",
+            "No unnecessary dependencies or overengineering"
+          ]
+        }
+      }
+    },
+    {
+      "id": "BE-152",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "medium",
+      "status": "done",
+      "context": "Create a middleware that adds CORS headers for the frontend development server. The frontend runs on http://localhost:3001 and the backend on http://localhost:3000. This is a simple Express middleware function. Export function corsMiddleware(req: Request, res: Response, next: NextFunction): void. Set headers: Access-Control-Allow-Origin to req.headers.origin or '*', Access-Control-Allow-Methods to 'GET,POST,PUT,DELETE,OPTIONS', Access-Control-Allow-Headers to 'Content-Type,Authorization,X-API-Key', Access-Control-Allow-Credentials to 'true'. If req.method is 'OPTIONS', respond with status 204. Otherwise call next(). Import Request, Response, NextFunction from 'express'.",
+      "deliverables": {
+        "code": [
+          "backend/src/middleware/cors.ts"
+        ],
+        "tests": []
+      },
+      "description": "Create backend/src/middleware/cors.ts with corsMiddleware function. Sets CORS headers and handles OPTIONS preflight. Import from 'express'. Under 20 lines.",
+      "constraints": "Simple middleware — set 4 CORS headers, handle OPTIONS preflight with 204, call next() for other methods. Do NOT use the cors npm package. Do NOT add configuration options or environment variables. Hardcode the allowed methods and headers. Under 20 lines total.",
+      "output": {
+        "files": [
+          "backend/src/middleware/cors.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 93,
+          "summary": "Dual-approved: Claude (95/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "backend/src/middleware/cors.ts",
+              "line": 8,
+              "description": "Using req.headers.origin || '*' could be a security concern in production - wildcard fallback allows any origin"
+            }
+          ],
+          "strengths": [
+            "Exact implementation of task requirements with no extra features",
+            "Proper TypeScript types imported from express",
+            "Clean JSDoc documentation",
+            "Correct handling of OPTIONS preflight requests",
+            "Simple, readable code structure",
+            "No unnecessary dependencies or abstractions",
+            "Follows the 'do exactly what was asked' principle from learnings.md",
+            "Adheres exactly to the spec for headers and OPTIONS handling",
+            "Uses strong TypeScript typing (no any usage)",
+            "Includes JSDoc documentation",
+            "Simple, readable, and side-effect free implementation"
+          ]
+        }
+      }
+    },
+    {
+      "id": "BE-153",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "medium",
+      "status": "done",
+      "context": "Create a simple Express handler that returns a list of invoices with their settlement status. This is a mock join endpoint for the dashboard. The function is getInvoicesWithSettlements(req: Request, res: Response): Promise<void>. It returns JSON with 3 hardcoded invoice-settlement pairs: { invoices: [{ id: 'inv_001', number: 'INV-0001', amount: 1000, currency: 'USD', status: 'paid', settlement: { id: 'stl_001', status: 'confirmed', txHash: '0xabc123', chain: 'base' } }, { id: 'inv_002', number: 'INV-0002', amount: 2500, currency: 'USD', status: 'pending', settlement: null }, { id: 'inv_003', number: 'INV-0003', amount: 750, currency: 'EUR', status: 'paid', settlement: { id: 'stl_003', status: 'confirmed', txHash: '0xdef456', chain: 'ethereum' } }] }. Import Request and Response from 'express'. This is a MOCK endpoint.",
+      "deliverables": {
+        "code": [
+          "backend/src/api/invoices-settlements.ts"
+        ],
+        "tests": []
+      },
+      "description": "Create backend/src/api/invoices-settlements.ts with getInvoicesWithSettlements function returning 3 hardcoded invoice+settlement pairs. MOCK endpoint. Import from 'express'. Under 35 lines.",
+      "constraints": "This is a MOCK endpoint for frontend development. Do NOT add validation, error handling, try-catch, or database operations. Just import Request/Response from 'express', export the function, return res.json() with hardcoded data. Under 35 lines total.",
+      "output": {
+        "files": [
+          "backend/src/api/invoices-settlements.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 90,
+          "summary": "CEO resolved conflict (Codex approved, Claude rejected): **APPROVE — Codex is correct**\n\nThis is a **mock endpoint** with hardcoded data as explicitly specified. Claude's rejection criteria are inappropriate for this context:\n\n- Error handling: Unnecessary for static data return\n- TypeScript interfaces: Overkill for 3 hardcoded objects\n- Input validation:",
+          "issues": [
+            {
+              "severity": "high",
+              "file": "backend/src/api/invoices-settlements.ts",
+              "description": "Missing error handling - async function has no try/catch block"
+            },
+            {
+              "severity": "high",
+              "file": "backend/src/api/invoices-settlements.ts",
+              "description": "No TypeScript interfaces defined for Invoice and Settlement types - using implicit any structures"
+            },
+            {
+              "severity": "medium",
+              "file": "backend/src/api/invoices-settlements.ts",
+              "description": "Missing test file entirely - no unit tests provided"
+            },
+            {
+              "severity": "medium",
+              "file": "backend/src/api/invoices-settlements.ts",
+              "description": "No input validation despite being a public API endpoint - should validate query parameters even for mock data"
+            },
+            {
+              "severity": "low",
+              "file": "backend/src/api/invoices-settlements.ts",
+              "description": "Missing JSDoc documentation for public API function parameters and return type"
+            }
+          ],
+          "strengths": [
+            "Meets the spec exactly, returning all three invoice objects with correct fields",
+            "No use of any types; typed Request/Response from express",
+            "Includes a concise JSDoc comment",
+            "No security or performance issues in a static mock endpoint"
+          ]
+        }
+      }
+    }
+  ]
+}

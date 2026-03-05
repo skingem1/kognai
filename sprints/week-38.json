@@ -1,0 +1,489 @@
+{
+  "tasks": [
+    {
+      "id": "FE-250",
+      "agent": "frontend",
+      "type": "test",
+      "priority": "critical",
+      "description": "Unit tests for frontend format-utils — formatCurrency, formatDate, formatRelativeTime, truncateText, formatNumber",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create unit tests for frontend/lib/format-utils.ts. The file exports 5 pure functions:\n\n1. `function formatCurrency(amount: number, currency: string = 'USD'): string` — Uses Intl.NumberFormat('en-US', {style:'currency', currency}). Examples: formatCurrency(1000) → '$1,000.00', formatCurrency(1000, 'EUR') → '€1,000.00'.\n\n2. `function formatDate(dateStr: string): string` — Uses Intl.DateTimeFormat('en-US', {month:'short', day:'numeric', year:'numeric'}). Example: formatDate('2026-02-15T00:00:00Z') → 'Feb 15, 2026'.\n\n3. `function formatRelativeTime(dateStr: string): string` — Calculates diff from Date.now(). Returns 'just now' if <1min, '{n} minute(s) ago' if <60min, '{n} hour(s) ago' if <24h, '{n} day(s) ago' if <30d, else calls formatDate(). Uses singular for 1 unit.\n\n4. `function truncateText(text: string, maxLength: number = 50): string` — Returns text unchanged if <=maxLength. Slices to maxLength and appends '...' if longer. Default maxLength=50.\n\n5. `function formatNumber(num: number): string` — Uses Intl.NumberFormat('en-US'). Example: formatNumber(1234567) → '1,234,567'.\n\nTests:\n- formatCurrency: default USD, explicit EUR, zero amount, negative amount, large number\n- formatDate: valid date string, different months\n- formatRelativeTime: mock Date.now() with jest.spyOn(Date, 'now') to control time. Test 'just now' (0 sec diff), '1 minute ago' (60000ms), '5 minutes ago', '1 hour ago', '2 hours ago', '1 day ago', '31 days ago' falls back to formatDate\n- truncateText: short text unchanged, exactly maxLength unchanged, over maxLength gets '...', custom maxLength, empty string\n- formatNumber: integer, large number with commas, zero\n\nFile: `frontend/tests/lib/format-utils.test.ts`\nImport: `import { formatCurrency, formatDate, formatRelativeTime, truncateText, formatNumber } from '../../lib/format-utils';`\nKeep under 120 lines.",
+      "deliverables": {
+        "code": [
+          "frontend/tests/lib/format-utils.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/tests/lib/format-utils.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/tests/lib/format-utils.test.ts",
+              "description": "Could separate formatCurrency tests into individual test cases for better isolation and clearer failure reporting"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/tests/lib/format-utils.test.ts",
+              "description": "truncateText tests could be split into separate cases for better readability"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/tests/lib/format-utils.test.ts",
+              "description": "Consider adding a test for plural days (e.g. 2 days ago) to mirror the plural cases covered for minutes and hours."
+            }
+          ],
+          "strengths": [
+            "Correctly imports all 5 functions from the specified path",
+            "Comprehensive test coverage for all required scenarios including edge cases",
+            "Proper mocking of Date.now() with jest.spyOn for deterministic time-based tests",
+            "Tests all specified formatCurrency scenarios: default USD, EUR, zero, negative, large numbers",
+            "Tests formatDate with different date strings and months as required",
+            "Tests all formatRelativeTime scenarios: just now, minutes, hours, days, and >30 days fallback",
+            "Tests truncateText edge cases: short text, exact length, over length, custom maxLength, empty string",
+            "Tests formatNumber with integer, large number with commas, and zero",
+            "Proper cleanup with jest.restoreAllMocks() in afterEach",
+            "File is under 120 lines as required (47 lines)",
+            "No code fences or invalid syntax",
+            "Clean, readable test structure with descriptive test names",
+            "Covers default, edge and error scenarios for each function",
+            "Uses jest.spyOn and restoreAllMocks appropriately for mocking Date.now",
+            "Test file stays under the 120-line limit and follows the spec requirements"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-251",
+      "agent": "frontend",
+      "type": "test",
+      "priority": "critical",
+      "description": "Unit tests for frontend ApiError class — constructor, properties, instanceof",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create unit tests for frontend/lib/errors.ts. The file exports:\n\n```typescript\nexport class ApiError extends Error {\n  status: number;\n  data: unknown;\n  constructor(message: string, status: number, data?: unknown) {\n    super(message);\n    this.name = 'ApiError';\n    this.status = status;\n    this.data = data ?? null;\n  }\n}\n```\n\nTests:\n- Constructor with message, status, data: new ApiError('Not found', 404, {detail:'missing'}) → message='Not found', status=404, data={detail:'missing'}\n- Constructor without data: new ApiError('Error', 500) → data is null (defaults to null)\n- name property is 'ApiError'\n- instanceof Error is true\n- instanceof ApiError is true\n- message property matches constructor arg\n- status property is a number\n- data with null explicitly: new ApiError('Err', 400, null) → data is null\n- data with undefined: new ApiError('Err', 400, undefined) → data is null\n\nFile: `frontend/tests/lib/errors.test.ts`\nImport: `import { ApiError } from '../../lib/errors';`\nKeep under 60 lines.",
+      "deliverables": {
+        "code": [
+          "frontend/tests/lib/errors.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/tests/lib/errors.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "Dual-approved: Claude (95/100) + Codex (95/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/tests/lib/errors.test.ts",
+              "description": "Could add a test to verify status property is specifically a number type, though current tests implicitly cover this"
+            }
+          ],
+          "strengths": [
+            "All 8 required test cases are implemented exactly as specified",
+            "Clean, readable test structure with descriptive test names",
+            "Proper use of Jest matchers (toBe, toEqual, toBeNull)",
+            "Correct import path as specified",
+            "File is well under the 60-line limit (24 lines)",
+            "No code fences or invalid syntax",
+            "Tests cover constructor behavior, property assignments, and inheritance",
+            "Proper handling of null/undefined data parameter edge cases",
+            "Covers all required scenarios: message, status, data variations (provided, omitted, null, undefined).",
+            "Verifies name property and instanceof relationships.",
+            "Test file is under 60 lines and uses correct import paths.",
+            "No markdown fences or invalid syntax present."
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-252",
+      "agent": "frontend",
+      "type": "test",
+      "priority": "high",
+      "description": "Unit tests for useDebounce hook — delayed value updates with timer mocking",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create unit tests for frontend/hooks/use-debounce.ts. The file exports:\n\n```typescript\nexport function useDebounce<T>(value: T, delayMs: number = 300): T {\n  const [debouncedValue, setDebouncedValue] = useState<T>(value);\n  useEffect(() => {\n    const timer = setTimeout(() => setDebouncedValue(value), delayMs);\n    return () => clearTimeout(timer);\n  }, [value, delayMs]);\n  return debouncedValue;\n}\n```\n\nUse @testing-library/react renderHook and jest fake timers.\n\nSetup:\n```typescript\nimport { renderHook, act } from '@testing-library/react';\nimport { useDebounce } from '../../hooks/use-debounce';\n```\n\nTests:\n- Returns initial value immediately\n- Does NOT update before delay: render with value='hello' and delay=500. Change value to 'world'. Before 500ms, debouncedValue is still 'hello'.\n- Updates AFTER delay: After advancing timers by 500ms, debouncedValue becomes 'world'.\n- Default delay is 300ms: render with value='a'. Change to 'b'. Advance 299ms → still 'a'. Advance 1ms more → becomes 'b'.\n- Resets timer on rapid changes: change value to 'a', then 'b', then 'c' quickly. After delay only 'c' appears.\n\nUse beforeEach(() => jest.useFakeTimers()) and afterEach(() => jest.useRealTimers()).\nUse act(() => jest.advanceTimersByTime(ms)) to control time.\nUse rerender to change the value prop.\n\nFile: `frontend/tests/hooks/use-debounce.test.ts`\nImport from '../../hooks/use-debounce'.\nKeep under 80 lines.",
+      "deliverables": {
+        "code": [
+          "frontend/tests/hooks/use-debounce.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/tests/hooks/use-debounce.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "Dual-approved: Claude (95/100) + Codex (95/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/tests/hooks/use-debounce.test.ts",
+              "description": "Could add a test case for type safety with different value types (string, number, object) to ensure generic T works correctly"
+            }
+          ],
+          "strengths": [
+            "All 5 required test cases implemented correctly",
+            "Proper Jest fake timers setup with beforeEach/afterEach",
+            "Correct usage of renderHook with initialProps pattern for value changes",
+            "Proper use of act() wrapper for timer advancement",
+            "Clean, readable test descriptions that match requirements exactly",
+            "Efficient test structure under 80 lines (45 lines total)",
+            "Correct import path as specified",
+            "Tests verify both timing behavior and debounce reset logic",
+            "No code fences or syntax issues",
+            "Covers all specified test cases, including default delay and rapid changes.",
+            "Correct use of jest fake timers with cleanup in afterEach.",
+            "Uses renderHook and rerender appropriately to simulate value changes.",
+            "Tests are concise, readable, and under 80 lines."
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-253",
+      "agent": "frontend",
+      "type": "test",
+      "priority": "high",
+      "description": "Unit tests for useLocalStorage hook — read, write, persist, error handling",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create unit tests for frontend/hooks/use-local-storage.ts. The file exports:\n\n```typescript\nexport function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T | ((prev: T) => T)) => void]\n```\n\nBehavior:\n- On init: reads localStorage.getItem(key), JSON.parse it. If not found or error, returns initialValue.\n- On set: calls localStorage.setItem(key, JSON.stringify(value)). Supports updater function: value instanceof Function ? value(storedValue) : value.\n- useEffect syncs storedValue to localStorage on change.\n- Silently catches localStorage errors.\n\nUse @testing-library/react renderHook.\n\nSetup:\n```typescript\nimport { renderHook, act } from '@testing-library/react';\nimport { useLocalStorage } from '../../hooks/use-local-storage';\n```\n\nMock localStorage:\n```typescript\nconst mockStorage: Record<string, string> = {};\nbeforeEach(() => {\n  Object.keys(mockStorage).forEach(k => delete mockStorage[k]);\n  jest.spyOn(Storage.prototype, 'getItem').mockImplementation(k => mockStorage[k] || null);\n  jest.spyOn(Storage.prototype, 'setItem').mockImplementation((k, v) => { mockStorage[k] = v; });\n});\nafterEach(() => jest.restoreAllMocks());\n```\n\nTests:\n- Returns initialValue when key not in localStorage\n- Returns stored value when key exists in localStorage: set mockStorage['key']='\"hello\"' before render → value is 'hello'\n- setValue updates the value: render, call setValue('new'), check result is 'new'\n- setValue with updater function: setValue(prev => prev + 1) on number\n- Writes to localStorage on set: after setValue, check mockStorage has new value\n- Handles localStorage.getItem error gracefully: mock getItem to throw → returns initialValue\n\nFile: `frontend/tests/hooks/use-local-storage.test.ts`\nImport from '../../hooks/use-local-storage'.\nKeep under 80 lines.",
+      "deliverables": {
+        "code": [
+          "frontend/tests/hooks/use-local-storage.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/tests/hooks/use-local-storage.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 94,
+          "summary": "Dual-approved: Claude (92/100) + Codex (95/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/tests/hooks/use-local-storage.test.ts",
+              "description": "Could add test for localStorage.setItem error handling to be more comprehensive"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/tests/hooks/use-local-storage.test.ts",
+              "description": "Could test with more complex data types (objects, arrays) to verify JSON serialization"
+            }
+          ],
+          "strengths": [
+            "Follows exact task specifications with correct import path and setup",
+            "Proper localStorage mocking implementation matches required pattern",
+            "All 6 required test cases implemented correctly",
+            "Uses @testing-library/react renderHook and act as specified",
+            "Proper cleanup with beforeEach/afterEach hooks",
+            "Tests cover edge cases like error handling gracefully",
+            "Clean, readable test descriptions that match behavior requirements",
+            "File length under 80 lines as requested (39 lines)",
+            "No code fences or invalid syntax",
+            "Proper TypeScript typing in updater function test",
+            "Mocks localStorage correctly and resets between tests.",
+            "Covers initial default, stored value retrieval, setter invocations, and updater functions.",
+            "Verifies synchronization with localStorage on set.",
+            "Includes a test for getItem throwing an error to ensure graceful fallback.",
+            "Test file remains under the 80-line limit and follows the spec."
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-080",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "critical",
+      "description": "Unit tests for SDK http-transport v1 — HttpTransport class with mocked fetch",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create unit tests for sdk/typescript/src/http-transport.ts. The file exports:\n\n```typescript\nimport { withTimeout } from './timeout';\nimport { retryWithBackoff } from './retry';\nimport { buildUrl, buildHeaders } from './request-builder';\nimport { parseResponse } from './response-parser';\n\nexport class HttpTransport {\n  constructor(private config: { baseUrl: string; apiKey: string; timeout: number; maxRetries: number }) {}\n\n  async request<T>(method: 'GET'|'POST'|'PATCH'|'DELETE', path: string, body?: unknown): Promise<T> {\n    const url = buildUrl(this.config.baseUrl, path);\n    const headers = buildHeaders(this.config.apiKey);\n    const hasBody = body != null && method !== 'GET' && method !== 'DELETE';\n    const fetchWithRetry = async (): Promise<T> => {\n      const fetchFn = async (): Promise<T> => {\n        const response = await fetch(url, {\n          method,\n          headers: { ...headers, ...(hasBody ? { 'Content-Type': 'application/json' } : {}) },\n          ...(hasBody ? { body: JSON.stringify(body) } : {})\n        });\n        return parseResponse<T>(response);\n      };\n      return await withTimeout(fetchFn(), this.config.timeout);\n    };\n    return retryWithBackoff(fetchWithRetry, { maxRetries: this.config.maxRetries });\n  }\n}\n```\n\nNote: The class depends on buildUrl, buildHeaders, parseResponse, withTimeout, retryWithBackoff — all from other SDK modules. We need to mock these dependencies.\n\nStrategy: Mock all imported modules with jest.mock().\n\n```typescript\njest.mock('../src/timeout', () => ({ withTimeout: jest.fn((promise) => promise) }));\njest.mock('../src/retry', () => ({ retryWithBackoff: jest.fn((fn) => fn()) }));\njest.mock('../src/request-builder', () => ({\n  buildUrl: jest.fn((base, path) => base + path),\n  buildHeaders: jest.fn((key) => ({ Authorization: 'Bearer ' + key })),\n}));\njest.mock('../src/response-parser', () => ({ parseResponse: jest.fn() }));\n```\n\nAlso mock global fetch:\n```typescript\nglobal.fetch = jest.fn();\n```\n\nTests:\n- Constructor stores config\n- GET request: calls fetch with correct url, method='GET', headers include Authorization\n- GET request: does NOT include body or Content-Type header\n- POST request: calls fetch with method='POST', includes Content-Type and JSON body\n- POST request: body is JSON.stringify'd\n- DELETE request: does NOT include body even if body param provided\n- parseResponse is called with fetch response\n- withTimeout is called with the fetch promise and config.timeout\n- retryWithBackoff is called with config.maxRetries\n\nFile: `sdk/typescript/tests/http-transport.test.ts`\nImport: `import { HttpTransport } from '../src/http-transport';`\nKeep under 120 lines.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/tests/http-transport.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/tests/http-transport.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 87,
+          "summary": "Dual-approved: Claude (88/100) + Codex (85/100)",
+          "issues": [
+            {
+              "severity": "medium",
+              "file": "sdk/typescript/tests/http-transport.test.ts",
+              "description": "Constructor test only verifies instance creation, doesn't validate config storage or access"
+            },
+            {
+              "severity": "low",
+              "file": "sdk/typescript/tests/http-transport.test.ts",
+              "description": "Could benefit from edge case testing (null body, empty strings, network errors)"
+            },
+            {
+              "severity": "low",
+              "file": "sdk/typescript/tests/http-transport.test.ts",
+              "description": "Mock return values are inconsistent - some return promises, others return direct values"
+            }
+          ],
+          "strengths": [
+            "Proper mocking strategy for all dependencies using jest.mock()",
+            "Comprehensive test coverage of all HTTP methods (GET, POST, DELETE)",
+            "Correctly validates body inclusion/exclusion logic for different HTTP methods",
+            "Tests integration with timeout, retry, and response parsing utilities",
+            "Clean test structure with beforeEach cleanup",
+            "Stays under 120 line requirement (68 lines)",
+            "No code fences or syntax errors",
+            "Proper TypeScript imports and type safety",
+            "Tests verify both positive behavior and exclusions (no body for GET/DELETE)",
+            "Comprehensive mocking of external dependencies (timeout, retry, request-builder, response-parser).",
+            "Clear and focused tests for GET, POST, and DELETE behaviors.",
+            "Verifies integration points: withTimeout, parseResponse, retryWithBackoff.",
+            "Resets mocks between tests for isolation."
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-081",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "description": "Unit tests for SDK complete-client v1 — InvoicaFullClient class instantiation and method exposure",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create unit tests for sdk/typescript/src/complete-client.ts. The file exports:\n\n```typescript\nimport { CountableClient } from './enhanced-client';\nimport { createApiKeyMethods, createWebhookMethods } from './enhanced-client-extras';\nimport { HttpTransport } from './http-transport';\nimport { resolveConfig, InvoicaClientConfig } from './client-config';\n\nexport class InvoicaFullClient extends CountableClient {\n  public readonly apiKeys: ReturnType<typeof createApiKeyMethods>;\n  public readonly webhooks: ReturnType<typeof createWebhookMethods>;\n\n  constructor(config: InvoicaClientConfig) {\n    super(config);\n    const resolved = resolveConfig(config);\n    const transport = new HttpTransport(resolved);\n    this.apiKeys = createApiKeyMethods(transport);\n    this.webhooks = createWebhookMethods(transport);\n  }\n}\n```\n\nStrategy: Mock all dependencies so constructor doesn't make real HTTP calls.\n\n```typescript\njest.mock('../src/enhanced-client', () => ({\n  CountableClient: jest.fn().mockImplementation(() => ({})),\n}));\njest.mock('../src/enhanced-client-extras', () => ({\n  createApiKeyMethods: jest.fn(() => ({ createApiKey: jest.fn(), revokeApiKey: jest.fn(), listApiKeys: jest.fn() })),\n  createWebhookMethods: jest.fn(() => ({ registerWebhook: jest.fn(), listWebhooks: jest.fn(), deleteWebhook: jest.fn() })),\n}));\njest.mock('../src/http-transport', () => ({\n  HttpTransport: jest.fn().mockImplementation(() => ({})),\n}));\njest.mock('../src/client-config', () => ({\n  resolveConfig: jest.fn((c) => ({ baseUrl: 'https://api.test.com', apiKey: c.apiKey, timeout: 5000, maxRetries: 3 })),\n}));\n```\n\nTests:\n- Constructor creates instance with apiKeys and webhooks properties\n- apiKeys has createApiKey, revokeApiKey, listApiKeys methods\n- webhooks has registerWebhook, listWebhooks, deleteWebhook methods\n- resolveConfig is called with the config\n- HttpTransport is instantiated with resolved config\n- createApiKeyMethods is called with the transport instance\n- createWebhookMethods is called with the transport instance\n- InvoicaFullClient is instanceof CountableClient (or extends it)\n\nFile: `sdk/typescript/tests/complete-client.test.ts`\nImport: `import { InvoicaFullClient } from '../src/complete-client';`\nKeep under 80 lines.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/tests/complete-client.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "sdk/typescript/tests/complete-client.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 92,
+          "summary": "Dual-approved: Claude (88/100) + Codex (95/100)",
+          "issues": [
+            {
+              "severity": "medium",
+              "file": "sdk/typescript/tests/complete-client.test.ts",
+              "description": "The inheritance test uses require() instead of import and only checks that CountableClient constructor was called, not that the instance is actually an instanceof CountableClient"
+            },
+            {
+              "severity": "low",
+              "file": "sdk/typescript/tests/complete-client.test.ts",
+              "description": "Could benefit from testing error scenarios (e.g., invalid config) to improve coverage"
+            }
+          ],
+          "strengths": [
+            "Follows the exact mocking strategy specified in the task",
+            "Covers all required test cases from the specification",
+            "Uses proper Jest patterns with beforeEach cleanup",
+            "Clear, descriptive test names that match requirements",
+            "Stays under the 80-line limit (67 lines)",
+            "Proper TypeScript imports and no 'any' types",
+            "Good separation of concerns in test cases",
+            "Mocks are comprehensive and prevent real HTTP calls",
+            "Mocks all external modules to prevent real HTTP calls.",
+            "Verifies instantiation of HttpTransport with resolved config.",
+            "Checks that apiKeys and webhooks methods are present and correctly wired.",
+            "Ensures resolveConfig, createApiKeyMethods, createWebhookMethods, and CountableClient are invoked as expected.",
+            "Keeps tests concise and under 80 lines."
+          ]
+        }
+      }
+    },
+    {
+      "id": "BE-320",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "description": "Unit tests for recent-activity Express router — hardcoded activities data",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create unit tests for backend/src/api/recent-activity.ts. The file exports a default Express Router:\n\n```typescript\nimport { Router, Request, Response } from 'express';\nconst router = Router();\nconst activities = [\n  { id:'act_1', title:'Invoice #INV-0042 Created', description:'Amount: $1,000 USD', status:'success', timestamp:'2 minutes ago' },\n  { id:'act_2', title:'Settlement Processing', description:'Invoice #INV-0041 — waiting for on-chain confirmation', status:'pending', timestamp:'15 minutes ago' },\n  { id:'act_3', title:'API Key Generated', description:'Key inv_a1b2...c5d6 created for Production', status:'success', timestamp:'1 hour ago' },\n  { id:'act_4', title:'Webhook Delivery Failed', description:'Endpoint https://app.example.com/webhook returned 500', status:'failed', timestamp:'3 hours ago' },\n  { id:'act_5', title:'Invoice #INV-0040 Settled', description:'Amount: $2,500 USD — confirmed on Base', status:'success', timestamp:'5 hours ago' }\n];\nrouter.get('/', (_req, res) => { res.json(activities); });\nexport default router;\n```\n\nTo test an Express Router, use supertest or test the route handler directly. Since we want pure unit tests without supertest, we can test the router by importing it and using a mock approach.\n\nSimplest approach — test the activities data structure by importing the module and testing the router handler:\n\n```typescript\nimport request from 'supertest';\nimport express from 'express';\nimport recentActivityRouter from '../recent-activity';\n```\n\nActually, to keep it simple and avoid needing supertest installed, test with mock req/res by accessing the router's stack:\n\nAlternative pure approach — just verify the module exports a Router and the activities data is correct. Use a minimal express app:\n\n```typescript\nimport express from 'express';\nimport router from '../recent-activity';\nconst app = express();\napp.use('/activity', router);\n```\n\nThen use supertest or manually invoke. But since supertest may not be installed, use the mock approach:\n\nTest the handler directly by extracting it from router.stack:\n```typescript\nconst handler = (router as any).stack[0].route.stack[0].handle;\nconst mockRes = { json: jest.fn() };\nhandler({} as any, mockRes as any);\n```\n\nTests:\n- Handler calls res.json with array of 5 items\n- Each item has id, title, description, status, timestamp\n- First item id='act_1', status='success'\n- Item with status 'pending' exists (act_2)\n- Item with status 'failed' exists (act_4)\n- Last item id='act_5'\n- router is an Express Router (has stack property)\n\nFile: `backend/src/api/__tests__/recent-activity.test.ts`\nImport: `import router from '../recent-activity';`\nKeep under 70 lines.",
+      "deliverables": {
+        "code": [
+          "backend/src/api/__tests__/recent-activity.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "backend/src/api/__tests__/recent-activity.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 88,
+          "summary": "Dual-approved: Claude (85/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "backend/src/api/__tests__/recent-activity.test.ts",
+              "description": "Mock response object is reused across tests without clearing between tests, which could cause test pollution"
+            },
+            {
+              "severity": "low",
+              "file": "backend/src/api/__tests__/recent-activity.test.ts",
+              "description": "Handler extraction logic assumes specific router structure - could be brittle if router implementation changes"
+            },
+            {
+              "severity": "low",
+              "file": "backend/src/api/__tests__/recent-activity.test.ts",
+              "description": "Mocks (`mockRes.json`) are not reset between tests. Consider adding a `beforeEach` to clear mocks to avoid state leakage across test cases."
+            }
+          ],
+          "strengths": [
+            "Follows task requirements precisely - tests all 7 specified scenarios",
+            "Clean mock approach avoids supertest dependency as requested",
+            "Good test organization with descriptive test names",
+            "Proper TypeScript usage with appropriate type assertions",
+            "Efficient handler extraction with reusable getHandler() function",
+            "Tests cover both data structure validation and router functionality",
+            "File is concise at 52 lines, well under the 70-line limit",
+            "No code fences or syntax issues - valid TypeScript throughout",
+            "Tests verify the correct number of items and their properties.",
+            "Pure unit-test approach without external dependencies like supertest.",
+            "Test file is placed under __tests__ with a clear naming convention."
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-260",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "medium",
+      "description": "Dashboard documentation landing page — links to API docs sections",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create a Next.js dashboard page at frontend/app/dashboard/documentation/page.tsx.\n\nThis is a React Server Component. Display a grid of documentation section links.\n\nRequirements:\n- Export default function DocumentationPage()\n- Page title: 'Documentation' in an h1 tag\n- Description: 'API reference and developer guides'\n- Hardcoded array of 6 doc section objects: { id: string, title: string, description: string, icon: string, href: string }\n- Sections:\n  1. { id:'1', title:'Getting Started', description:'Quick start guide and setup instructions', icon:'🚀', href:'/docs/getting-started' }\n  2. { id:'2', title:'Authentication', description:'API key management and security', icon:'🔐', href:'/docs/authentication' }\n  3. { id:'3', title:'Invoices API', description:'Create, list, and manage invoices', icon:'📄', href:'/docs/api-reference/invoices' }\n  4. { id:'4', title:'Settlements', description:'On-chain settlement tracking', icon:'⛓️', href:'/docs/api-reference/settlements' }\n  5. { id:'5', title:'Webhooks', description:'Event notifications and delivery', icon:'🔔', href:'/docs/webhooks' }\n  6. { id:'6', title:'SDKs', description:'TypeScript and Python client libraries', icon:'📦', href:'/docs/sdks' }\n- Render as a responsive grid (2-3 columns) of cards\n- Each card has icon, title in bold, description, and is wrapped in an anchor tag with href\n- Use Tailwind CSS for styling\n- Keep under 55 lines\n- NO 'use client', NO hooks, NO external imports",
+      "deliverables": {
+        "code": [
+          "frontend/app/dashboard/documentation/page.tsx"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/app/dashboard/documentation/page.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 94,
+          "summary": "Dual-approved: Claude (95/100) + Codex (92/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/app/dashboard/documentation/page.tsx",
+              "description": "Uses `text-muted-foreground` class which may not be defined in base Tailwind - should use standard color classes like `text-gray-600`"
+            }
+          ],
+          "strengths": [
+            "Exact adherence to task specification - all 6 sections match exactly",
+            "Proper React Server Component (no 'use client', no hooks, no external imports)",
+            "Responsive grid layout with proper Tailwind breakpoints (md:grid-cols-2 lg:grid-cols-3)",
+            "Clean semantic HTML structure with proper accessibility",
+            "Under 55 lines requirement met (24 lines total)",
+            "Good hover effects and visual hierarchy",
+            "No code fences or syntax errors",
+            "No overengineering - just what was requested",
+            "Accurately implements the required DocumentationPage component signature and content.",
+            "Responsive grid layout using Tailwind classes (1–3 columns) fits design requirements.",
+            "Concise code (≈27 lines) with no unnecessary abstractions or imports.",
+            "Follows guidelines: no 'use client', no hooks, no code fences, and under the line limit."
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-261",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "medium",
+      "description": "Dashboard support page — contact info, status, and FAQ links",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create a Next.js dashboard page at frontend/app/dashboard/support/page.tsx.\n\nThis is a React Server Component. Display support contact info and resources.\n\nRequirements:\n- Export default function SupportPage()\n- Page title: 'Support' in an h1 tag\n- Description: 'Get help with your account and API'\n- Three sections:\n\n1. Contact section with 3 contact items: { label: string, value: string, icon: string }\n  - { label:'Email', value:'support@invoica.dev', icon:'📧' }\n  - { label:'Discord', value:'discord.gg/invoica', icon:'💬' }\n  - { label:'Status', value:'status.invoica.dev', icon:'🟢' }\n\n2. FAQ section with 4 items: { question: string, answer: string }\n  - { question:'How do I get an API key?', answer:'Go to Dashboard > API Keys and click Create New Key' }\n  - { question:'What chains are supported?', answer:'Base, Ethereum, and Polygon for settlements' }\n  - { question:'How do webhooks work?', answer:'Register a URL and we will POST events to it in real-time' }\n  - { question:'Is there a rate limit?', answer:'100 requests per minute per API key on the free plan' }\n\n3. System status: simple green badge 'All Systems Operational'\n\n- Use Tailwind CSS for styling\n- Keep under 55 lines\n- NO 'use client', NO hooks, NO external imports",
+      "deliverables": {
+        "code": [
+          "frontend/app/dashboard/support/page.tsx"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/app/dashboard/support/page.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/app/dashboard/support/page.tsx",
+              "description": "System status section could be more semantically structured as a proper section with heading for better accessibility"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/app/dashboard/support/page.tsx",
+              "description": "Contact values could be wrapped in links for better UX (email mailto:, Discord https://, status page link)"
+            }
+          ],
+          "strengths": [
+            "Meets all specified requirements exactly - correct export, title, description, and three sections",
+            "Clean TypeScript with proper typing and no 'any' usage",
+            "Efficient React Server Component - no 'use client', hooks, or external imports as required",
+            "Well-structured data arrays matching exact specifications",
+            "Good Tailwind CSS usage with responsive grid and consistent spacing",
+            "Under 55 lines requirement met (42 lines)",
+            "Proper semantic HTML with h1, h2, and section elements",
+            "Clean, readable code structure with logical organization",
+            "Fulfills all specified content requirements (title, description, contacts, FAQs, system status).",
+            "Uses Tailwind CSS classes for styling without external dependencies.",
+            "Keeps implementation concise and under 55 lines.",
+            "No 'use client' directive or hooks, suitable as a server component."
+          ]
+        }
+      }
+    }
+  ]
+}

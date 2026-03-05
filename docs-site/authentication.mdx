@@ -1,0 +1,89 @@
+---
+title: Authentication
+description: "Learn how to authenticate with the Invoica API using API keys."
+---
+
+# Authentication
+
+All Invoica API requests require authentication via an API key passed in the Authorization header.
+
+## API Key Format
+
+Invoica API keys follow the format:
+
+```
+inv_a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6
+```
+
+Keys are prefixed with `inv_` followed by 32 hexadecimal characters.
+
+## Using Your API Key
+
+### HTTP Header
+
+Include your API key in every request:
+
+```bash
+curl -H "Authorization: Bearer inv_your_key_here" \
+  https://api.invoica.ai/v1/invoices
+```
+
+### SDK Authentication
+
+```typescript
+import { InvoicaClient } from '@invoica/sdk';
+
+const client = new InvoicaClient({
+  apiKey: 'inv_your_key_here',
+  baseUrl: 'https://api.invoica.ai',
+});
+```
+
+## Key Management
+
+### Creating Keys
+
+Generate API keys from your [Dashboard](https://app.invoica.ai/api-keys). Each key can be scoped to specific permissions:
+
+- **Full Access** — Create, read, update invoices and settlements
+- **Read Only** — View invoices and settlements
+- **Webhook Only** — Manage webhook configurations
+
+### Rotating Keys
+
+When rotating keys:
+1. Create a new key in the Dashboard
+2. Update your application to use the new key
+3. Verify the new key works in production
+4. Revoke the old key
+
+<Warning>
+  Never expose your API key in client-side code, public repositories, or browser requests. API keys should only be used in server-side applications.
+</Warning>
+
+## Request Signing (Optional)
+
+For additional security, requests can be signed with HMAC-SHA256:
+
+```typescript
+import crypto from 'crypto';
+
+const timestamp = Date.now().toString();
+const body = JSON.stringify(payload);
+const signature = crypto
+  .createHmac('sha256', apiSecret)
+  .update(`${timestamp}.${body}`)
+  .digest('hex');
+
+// Include in headers
+headers['X-Invoica-Timestamp'] = timestamp;
+headers['X-Invoica-Signature'] = signature;
+```
+
+## Error Responses
+
+| Status Code | Meaning |
+|-------------|---------|
+| 401 | Invalid or missing API key |
+| 403 | Key does not have required permissions |
+| 429 | Rate limit exceeded |

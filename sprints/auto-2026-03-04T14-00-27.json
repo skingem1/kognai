@@ -1,0 +1,253 @@
+{
+  "tasks": [
+    {
+      "id": "SPRINT-002-001",
+      "agent": "agents",
+      "type": "feature",
+      "priority": "critical",
+      "dependencies": [],
+      "description": "Implement task decomposition preprocessor (CTO-20250312-001)",
+      "context": "In agents/task-agent.ts: Add preprocessor that detects multi-file/multi-concern tasks in processTask() before validation. Split into subtasks if >1 file or >2 logical changes. Each subtask targets exactly 1 file with <600 char context. Emit subtask queue to planner.",
+      "deliverables": {
+        "code": [
+          "agents/task-agent.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "rejected"
+    },
+    {
+      "id": "SPRINT-002-002",
+      "agent": "agents",
+      "type": "feature",
+      "priority": "critical",
+      "dependencies": [
+        "SPRINT-002-001"
+      ],
+      "description": "Add complexity gate to planner (CTO-20250312-002)",
+      "context": "In agents/planner-agent.ts: Before task assignment, calculate complexity score (file count * 10 + char count / 50). If >100, trigger decomposition via SPRINT-002-001's preprocessor. Reject tasks >150 complexity. Log gate decisions to telemetry.",
+      "deliverables": {
+        "code": [
+          "agents/planner-agent.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "skipped",
+      "skipReason": "skipped: dependency SPRINT-002-001 rejected (MiniMax truncation). agents/task-agent.ts does not exist."
+    },
+    {
+      "id": "SPRINT-002-003",
+      "agent": "agents",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [
+        "SPRINT-002-002"
+      ],
+      "description": "Retry SPRINT-001 with 1-file constraint (CTO-20250312-003)",
+      "context": "In agents/sprint-runner.ts: Add retryFailedSprint() that reprocesses SPRINT-001 tasks. Pass each through new decomposition preprocessor. Enforce 1-file rule in validation. Log before/after task structure. Measure auto-approval delta vs original 20% rate.",
+      "deliverables": {
+        "code": [
+          "agents/sprint-runner.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "skipped",
+      "skipReason": "skipped: dependency SPRINT-002-002 skipped. agents/sprint-runner.ts does not exist."
+    },
+    {
+      "id": "SPRINT-002-004",
+      "agent": "agents",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [
+        "SPRINT-002-002"
+      ],
+      "description": "Add telemetry for decomposition effectiveness",
+      "context": "In agents/telemetry.ts: Track metrics: original_task_complexity, subtask_count, auto_approval_rate, decomposition_trigger_count. Emit to CEO dashboard every 10 tasks. Include before/after comparison for SPRINT-001 retry.",
+      "deliverables": {
+        "code": [
+          "agents/telemetry.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "skipped",
+      "skipReason": "skipped: dependency SPRINT-002-002 skipped. agents/telemetry.ts does not exist."
+    },
+    {
+      "id": "SPRINT-002-005",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "medium",
+      "dependencies": [],
+      "description": "Add spam blacklist table to x-admin",
+      "context": "In apps/x-admin/src/components/SpamBlacklistTable.tsx: Create table displaying blocked emails/IPs. Columns: value, type, reason, created_at. Add/remove buttons. Use apps/x-admin/src/types/spam.types.ts for typing. No API calls yet\u2014mock data for UI.",
+      "deliverables": {
+        "code": [
+          "apps/x-admin/src/components/SpamBlacklistTable.tsx"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "apps/x-admin/src/components/SpamBlacklistTable.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 92,
+          "summary": "CEO resolved conflict (Codex approved, Claude rejected): REJECT \u2014 Claude is correct. The file is incomplete/truncated, cutting off mid-function without the handleRemove implementation or JSX return statement. This makes the component completely non-functional and unshippable. While Codex noted good validation patterns, you cannot approve a component that ",
+          "issues": [
+            {
+              "severity": "critical",
+              "file": "apps/x-admin/src/components/SpamBlacklistTable.tsx",
+              "description": "File is incomplete - cuts off mid-function in handleAdd method, missing handleRemove function and entire JSX return statement"
+            },
+            {
+              "severity": "critical",
+              "file": "apps/x-admin/src/components/SpamBlacklistTable.tsx",
+              "description": "Component is non-functional - missing complete implementation of core functionality"
+            },
+            {
+              "severity": "high",
+              "file": "apps/x-admin/src/components/SpamBlacklistTable.tsx",
+              "description": "Missing test file entirely - no Jest unit tests provided"
+            },
+            {
+              "severity": "medium",
+              "file": "apps/x-admin/src/components/SpamBlacklistTable.tsx",
+              "description": "Missing JSDoc documentation on public component interface"
+            }
+          ],
+          "strengths": [
+            "No invalid syntax or code fences present",
+            "Strict TypeScript typing with SpamEntry and SpamType",
+            "Comprehensive validation for email and IPv4 inputs",
+            "Duplicate-check logic to prevent redundant entries",
+            "Use of crypto.randomUUID for unique IDs with fallback",
+            "Clean date formatting with error handling",
+            "UI uses existing shared components (Button, Dialog, Table, etc.)"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SPRINT-002-006",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "medium",
+      "dependencies": [],
+      "description": "Add spam blacklist API endpoint",
+      "context": "In backend/src/api/spam-blacklist.ts: Create new file with GET /spam-blacklist (list), POST /spam-blacklist (add entry), DELETE /spam-blacklist/:id. Validate email/IP format. Store in Supabase spam_blacklist table. Auth: admin only. Use error-handler middleware.",
+      "deliverables": {
+        "code": [
+          "backend/src/api/spam-blacklist.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "rejected",
+      "output": {
+        "files": [
+          "backend/src/api/spam-blacklist.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "REJECTED",
+          "score": 20,
+          "summary": "Dual-rejected: Claude (25/100) + Codex (20/100). File is incomplete and cuts off mid-implementation. Missing critical components including route handlers, middleware integration, and proper error handling setup. | The implementation is incomplete: the router and route handlers are not defined, Supabase client initialization and dependency injection are unfinished, and admin\u2010only auth, error\u2010handler middleware integration, and actual CRUD operations are missing.",
+          "issues": [
+            {
+              "severity": "critical",
+              "file": "backend/src/api/spam-blacklist.ts",
+              "description": "File is incomplete - cuts off at line defining SupabaseClientFactory interface, missing actual implementation"
+            },
+            {
+              "severity": "critical",
+              "file": "backend/src/api/spam-blacklist.ts",
+              "description": "No Express router implementation or route handlers defined despite task requiring GET, POST, DELETE endpoints"
+            },
+            {
+              "severity": "critical",
+              "file": "backend/src/api/spam-blacklist.ts",
+              "description": "Missing integration with error-handler middleware as specified in task requirements"
+            },
+            {
+              "severity": "critical",
+              "file": "backend/src/api/spam-blacklist.ts",
+              "description": "No admin authentication middleware implementation despite task requiring 'admin only' access"
+            },
+            {
+              "severity": "high",
+              "file": "backend/src/api/spam-blacklist.ts",
+              "description": "Missing actual Supabase database operations for CRUD functionality"
+            },
+            {
+              "severity": "high",
+              "file": "backend/src/api/spam-blacklist.ts",
+              "description": "Over-engineered with unnecessary interfaces and abstractions not requested in task spec"
+            },
+            {
+              "severity": "medium",
+              "file": "backend/src/api/spam-blacklist.ts",
+              "description": "Hardcoded Supabase client creation instead of using existing project patterns"
+            },
+            {
+              "severity": "critical",
+              "file": "backend/src/api/spam-blacklist.ts",
+              "description": "File ends abruptly after SupabaseClientFactory interface. No router or route handlers (GET/POST/DELETE) are implemented."
+            },
+            {
+              "severity": "high",
+              "file": "backend/src/api/spam-blacklist.ts",
+              "description": "No Supabase client is instantiated or injected; Supabase operations to list, insert, or delete records are missing."
+            },
+            {
+              "severity": "high",
+              "file": "backend/src/api/spam-blacklist.ts",
+              "description": "No authentication or authorization checks enforcing admin-only access on endpoints."
+            },
+            {
+              "severity": "medium",
+              "file": "backend/src/api/spam-blacklist.ts",
+              "description": "Error-handler middleware is not integrated into the router; exceptions won\u2019t be properly handled."
+            },
+            {
+              "severity": "medium",
+              "file": "backend/src/api/spam-blacklist.ts",
+              "description": "Missing input validation enforcement in route handlers (schema definitions exist but are not applied)."
+            }
+          ],
+          "strengths": []
+        }
+      }
+    },
+    {
+      "id": "SPRINT-002-007",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "medium",
+      "dependencies": [
+        "SPRINT-002-006"
+      ],
+      "description": "Wire spam blacklist to invoice creation",
+      "context": "In backend/src/api/invoices-create.ts: Before creating invoice, check customer email/IP against spam_blacklist table. If match found, return 403 with reason. Log spam attempt to audit trail. Minimal change\u2014single validation block after request parsing.",
+      "deliverables": {
+        "code": [
+          "backend/src/api/invoices-create.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "skipped",
+      "skipReason": "skipped: dependency SPRINT-002-006 rejected (MiniMax truncation). backend/src/api/invoices-create.ts does not exist."
+    }
+  ]
+}

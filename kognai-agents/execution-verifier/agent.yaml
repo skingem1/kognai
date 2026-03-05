@@ -1,0 +1,9 @@
+name: execution-verifier
+role: "Cross-references sprint results with actual task execution logs to detect silent failures in the orchestrator pipeline"
+llm: anthropic/claude-sonnet-4-20250514
+reports_to: ceo
+trigger: daily
+created_by: cto_proposal
+created_at: "2026-02-15T13:59:33.359Z"
+context_files:
+  - docs/learnings.md

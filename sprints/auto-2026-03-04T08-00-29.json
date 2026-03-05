@@ -1,0 +1,136 @@
+{
+  "tasks": [
+    {
+      "id": "SPRINT-001",
+      "agent": "agents",
+      "type": "feature",
+      "priority": "critical",
+      "dependencies": [],
+      "description": "Implement task decomposition rules (CTO-20250311-001)",
+      "context": "Add complexity validation to sprint generator. Enforce: 1 file per task, <600 char context, explicit agent assignment, no multi-file refactors. Reject proposals exceeding limits before generation. Update src/agents/sprint-generator/agent.ts validation logic.",
+      "deliverables": {
+        "code": [
+          "src/agents/sprint-generator/agent.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "rejected"
+    },
+    {
+      "id": "SPRINT-002",
+      "agent": "agents",
+      "type": "feature",
+      "priority": "critical",
+      "dependencies": [
+        "SPRINT-001"
+      ],
+      "description": "Add pre-sprint complexity checklist (CTO-20250311-002)",
+      "context": "Create checklist template in sprint generator prompt. Validate: dependencies exist, file paths valid, context under 600 chars, single-file scope, clear success criteria. Add to src/agents/sprint-generator/prompts/system.ts before task generation.",
+      "deliverables": {
+        "code": [
+          "src/agents/sprint-generator/prompts/system.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "skipped",
+      "reason": "skipped: dependency SPRINT-001 rejected (MiniMax truncation). Path src/agents/sprint-generator/agent.ts does not exist in repo."
+    },
+    {
+      "id": "SPRINT-003",
+      "agent": "agents",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [
+        "SPRINT-002"
+      ],
+      "description": "Create frontend prompt templates (CTO-20250311-003)",
+      "context": "Add component-scoped templates to frontend agent. Include: single component per task, clear prop changes, no global state refactors, explicit file path. Update src/agents/frontend/prompts/system.ts with template library.",
+      "deliverables": {
+        "code": [
+          "src/agents/frontend/prompts/system.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "skipped",
+      "reason": "skipped: dependency SPRINT-002 skipped. Path src/agents/frontend/prompts/system.ts does not exist in repo."
+    },
+    {
+      "id": "SPRINT-004",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "medium",
+      "dependencies": [],
+      "description": "Blacklist team@out.ndlz.net spam domain",
+      "context": "Add email domain blacklist to contact form validation. Block submissions from team@out.ndlz.net. Update src/lib/email/validator.ts with blacklist array and rejection logic. Return clear error message for blocked domains.",
+      "deliverables": {
+        "code": [
+          "src/lib/email/validator.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "src/lib/email/validator.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 88,
+          "summary": "Dual-approved: Claude (85/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "medium",
+              "file": "src/lib/email/validator.ts",
+              "description": "Missing unit tests - should include Jest tests for both valid and blacklisted domains"
+            },
+            {
+              "severity": "low",
+              "file": "src/lib/email/validator.ts",
+              "description": "Could add more specific error types instead of generic Error class"
+            }
+          ],
+          "strengths": [
+            "Proper Zod validation for email format",
+            "Clear JSDoc documentation on all exported functions",
+            "Good error handling with descriptive messages",
+            "TypeScript const assertion for blacklist array",
+            "Dual API design - throwing function and result object function",
+            "Case-insensitive domain matching",
+            "Explicit comment about exact domain matching (no subdomain blocking)",
+            "Clean separation of concerns between validation and error handling",
+            "Uses Zod for robust email format validation",
+            "Clean, readable logic for exact domain matching",
+            "Provides clear error messages for invalid or blocked emails"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SPRINT-005",
+      "agent": "agents",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [
+        "SPRINT-001",
+        "SPRINT-002"
+      ],
+      "description": "Add auto-approval confidence scoring",
+      "context": "Implement scoring system in quality gate. Award points for: single file, <400 char context, explicit tests, clear deliverables. Auto-approve if score \u226580/100. Update src/agents/quality-gate/scoring.ts with rubric and threshold logic.",
+      "deliverables": {
+        "code": [
+          "src/agents/quality-gate/scoring.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "status": "skipped",
+      "reason": "skipped: dependencies SPRINT-001+SPRINT-002 rejected/skipped. Path src/agents/quality-gate/scoring.ts does not exist in repo."
+    }
+  ]
+}

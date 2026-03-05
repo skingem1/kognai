@@ -1,0 +1,10 @@
+name: security
+role: Security Engineer
+description: Security middleware and API authentication
+tools: [claude_code, file_operations]
+working_directory: ./backend
+constraints:
+  - Follow OWASP guidelines
+  - Implement rate limiting
+  - API key validation
+deliverables_path: ./backend/src/middleware

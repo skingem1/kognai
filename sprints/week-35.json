@@ -1,0 +1,464 @@
+{
+  "tasks": [
+    {
+      "id": "BE-290",
+      "title": "Unit tests for API key generator",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create backend/src/utils/__tests__/api-key-generator.test.ts — unit tests for backend/src/utils/api-key-generator.ts (110 lines). This file exports: API_KEY_PREFIX = 'inv_live_', TEST_KEY_PREFIX = 'inv_test_', generateApiKey(isTest?: boolean): GeneratedApiKey — returns { key: string, hash: string } where key starts with 'inv_live_' (default) or 'inv_test_' (when isTest=true), key contains 64 hex chars after prefix (from randomBytes(32)), hash is SHA256 hex of the full key. Also exports hashApiKey(key: string): string — returns SHA256 hex digest, throws TypeError for empty string. Also exports isTestKey(key: string): boolean — returns true if key starts with 'inv_test_'. Write exactly 5 tests: (1) generateApiKey() returns key starting with 'inv_live_' and hash is a 64-char hex string, (2) generateApiKey(true) returns key starting with 'inv_test_', (3) hashApiKey returns consistent hash — hashApiKey('test') === hashApiKey('test'), (4) hashApiKey throws TypeError for empty string, (5) isTestKey returns true for 'inv_test_xxx' and false for 'inv_live_xxx'. Use describe/it blocks, import { generateApiKey, hashApiKey, isTestKey, API_KEY_PREFIX, TEST_KEY_PREFIX } from '../api-key-generator'. Max 35 lines. No mocking needed — crypto functions work in Node test environment.",
+      "deliverables": {
+        "code": [
+          "backend/src/utils/__tests__/api-key-generator.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "backend/src/utils/__tests__/api-key-generator.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "Dual-approved: Claude (95/100) + Codex (95/100)",
+          "issues": [],
+          "strengths": [
+            "All 5 required tests implemented exactly as specified",
+            "Proper imports of all required functions and constants",
+            "Correct use of describe/it blocks for test structure",
+            "Appropriate assertions for key format validation (prefix, length, hex pattern)",
+            "Tests both live and test key generation paths",
+            "Validates hash consistency and format correctly",
+            "Proper error testing with TypeError expectation",
+            "Tests boolean logic for isTestKey function",
+            "Clean, readable test code under 35 lines as required",
+            "No unnecessary mocking or complexity",
+            "Follows TypeScript best practices with proper typing",
+            "Covers all specified behaviors for generateApiKey, hashApiKey, and isTestKey",
+            "Validates prefixes, key lengths, and hash formats with regex",
+            "Tests error throwing for invalid input",
+            "Imports constants correctly and stays within the line limit"
+          ]
+        }
+      }
+    },
+    {
+      "id": "BE-291",
+      "title": "Unit tests for webhook signature utility",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create backend/src/utils/__tests__/webhook-signature.test.ts — unit tests for backend/src/utils/webhook-signature.ts (46 lines). This file exports: SIGNATURE_HEADER = 'x-invoica-signature', generateSignature(payload: string, secret: string): string — returns 'sha256=' + HMAC-SHA256 hex digest, verifySignature(payload: string, secret: string, signature: string): boolean — returns true if signature matches using timing-safe comparison, returns false for length mismatch, generateWebhookSecret(): string — returns 'whsec_' + 48 hex chars (randomBytes(24)). Write exactly 5 tests: (1) generateSignature returns string starting with 'sha256=', (2) generateSignature is deterministic — same payload+secret produces same signature, (3) verifySignature returns true for valid signature (generate then verify with same payload+secret), (4) verifySignature returns false for wrong secret, (5) generateWebhookSecret returns string starting with 'whsec_' and has length 54 (6 prefix + 48 hex). Use describe/it blocks, import { SIGNATURE_HEADER, generateSignature, verifySignature, generateWebhookSecret } from '../webhook-signature'. Max 35 lines.",
+      "deliverables": {
+        "code": [
+          "backend/src/utils/__tests__/webhook-signature.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "backend/src/utils/__tests__/webhook-signature.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 98,
+          "summary": "Dual-approved: Claude (95/100) + Codex (100/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "backend/src/utils/__tests__/webhook-signature.test.ts",
+              "description": "Could add edge case tests for empty payload/secret, but not required by spec"
+            }
+          ],
+          "strengths": [
+            "Exactly 5 tests as specified in task requirements",
+            "Proper imports matching the expected exports",
+            "Clean describe/it structure with descriptive test names",
+            "Correct regex patterns for signature and secret validation",
+            "Good test data with realistic JSON payload",
+            "Proper deterministic testing approach",
+            "Tests cover all exported functions including SIGNATURE_HEADER constant",
+            "File length (30 lines) well under the 35 line limit",
+            "No code fences or invalid syntax",
+            "Tests validate exact format requirements (sha256= prefix, whsec_ prefix, lengths)",
+            "Covers all specified scenarios with concise, readable tests",
+            "Uses regex-based matching for signature and secret formats",
+            "Ensures deterministic signature generation and proper verification",
+            "Checks both valid and invalid secret cases",
+            "Respects max line count and uses standard Jest structure"
+          ]
+        }
+      }
+    },
+    {
+      "id": "BE-292",
+      "title": "Unit tests for logger utility",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create backend/src/utils/__tests__/logger.test.ts — unit tests for backend/src/utils/logger.ts (113 lines). This file exports: logger object with methods info, warn, error, debug. Each method calls console.log/warn/error/debug respectively with a formatted message. In non-production mode (NODE_ENV !== 'production'), format is '[timestamp] LEVEL: message {meta}'. In production mode, format is JSON string with timestamp, level, message, and meta fields. Write exactly 5 tests: (1) logger.info calls console.log — spy on console.log, call logger.info('test'), expect console.log to have been called, (2) logger.error calls console.error — spy on console.error, call logger.error('err'), expect called, (3) logger.warn calls console.warn — spy on console.warn, call logger.warn('w'), expect called, (4) logger.debug calls console.debug — spy on console.debug, call logger.debug('d'), expect called, (5) logger.info includes message in output — spy on console.log, call logger.info('hello world'), expect console.log to have been called with string containing 'hello world'. Use jest.spyOn and restore in afterEach. import { logger } from '../logger'. Max 35 lines.",
+      "deliverables": {
+        "code": [
+          "backend/src/utils/__tests__/logger.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "backend/src/utils/__tests__/logger.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 93,
+          "summary": "Dual-approved: Claude (95/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "backend/src/utils/__tests__/logger.test.ts",
+              "description": "Could add explicit type annotations for spies, though TypeScript inference handles this correctly"
+            }
+          ],
+          "strengths": [
+            "Exactly 5 tests as specified in task requirements",
+            "Proper use of jest.spyOn with mockImplementation to prevent actual console output",
+            "Correct afterEach cleanup with jest.restoreAllMocks()",
+            "Clean test descriptions that match the task spec exactly",
+            "Appropriate use of expect.stringContaining for message validation",
+            "Concise implementation at 32 lines (under 35 line limit)",
+            "No code fences or invalid syntax",
+            "Follows Jest best practices with describe/it structure",
+            "Proper import statement using relative path",
+            "Covers all four logger methods plus a content assertion",
+            "Uses jest.spyOn and cleanup via jest.restoreAllMocks",
+            "Import path and test structure match project conventions",
+            "Test count and line count align with task requirements"
+          ]
+        }
+      }
+    },
+    {
+      "id": "BE-293",
+      "title": "Unit tests for graceful shutdown utility",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create backend/src/utils/__tests__/graceful-shutdown.test.ts — unit tests for backend/src/utils/graceful-shutdown.ts (58 lines). This file exports: DEFAULT_CONFIG = { timeout: 10000, signals: ['SIGTERM', 'SIGINT'] }, createShutdownHandler(server, config?): () => Promise<void> — takes a server object with close(cb) method, returns an async shutdown function. When shutdown is called: sets isShuttingDown=true (prevents double-shutdown), calls onShutdown if provided, calls server.close(), logs to console. Write exactly 5 tests: (1) DEFAULT_CONFIG has timeout=10000 and signals array with SIGTERM and SIGINT, (2) createShutdownHandler returns a function, (3) calling shutdown function calls server.close — create mock server { close: jest.fn((cb) => cb()) }, create handler, call it, expect server.close to have been called, (4) double shutdown is prevented — create handler, call twice, server.close should only be called once, (5) onShutdown callback is called — create handler with onShutdown: jest.fn(), call shutdown, expect onShutdown to have been called. Use describe/it, import { DEFAULT_CONFIG, createShutdownHandler } from '../graceful-shutdown'. Max 40 lines. Mock console.log in beforeEach to suppress output.",
+      "deliverables": {
+        "code": [
+          "backend/src/utils/__tests__/graceful-shutdown.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "backend/src/utils/__tests__/graceful-shutdown.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 94,
+          "summary": "Dual-approved: Claude (92/100) + Codex (95/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "backend/src/utils/__tests__/graceful-shutdown.test.ts",
+              "description": "Could add explicit check for signals array length to ensure it contains exactly SIGTERM and SIGINT"
+            }
+          ],
+          "strengths": [
+            "All 5 required tests implemented correctly",
+            "Proper console.log mocking in beforeEach/afterEach",
+            "Clean test structure with describe/it blocks",
+            "Correct imports from relative path",
+            "Proper async/await usage in shutdown tests",
+            "Mock server implementation matches specification exactly",
+            "Double shutdown prevention test correctly validates behavior",
+            "onShutdown callback test properly configured with config object",
+            "File length within 40-line requirement (39 lines)",
+            "No code fences or invalid syntax",
+            "Covers all specified behaviors of DEFAULT_CONFIG and createShutdownHandler",
+            "Prevents double invocation of server.close as required",
+            "Mocks console.log in beforeEach/afterEach to keep test output clean",
+            "Uses Jest async/await patterns correctly",
+            "No markdown code fences present in the source file"
+          ]
+        }
+      }
+    },
+    {
+      "id": "BE-294",
+      "title": "Unit tests for API key validator schemas",
+      "agent": "backend-core",
+      "type": "test",
+      "priority": "high",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create backend/src/validators/__tests__/api-key-schemas.test.ts — unit tests for backend/src/validators/api-key-schemas.ts (77 lines). This file exports 3 Zod schemas: createApiKeySchema (name: string min 1 max 100, expiresInDays: positive int max 365 optional, scopes: array of enum ['invoices:read','invoices:write','settlements:read','webhooks:manage','api-keys:manage'] optional default []), apiKeyQuerySchema (limit: coerce int 1-100 default 10, offset: coerce int min 0 default 0, status: enum ['active','revoked','expired'] optional), rotateApiKeySchema (expiresInDays: positive int max 365 optional). Write exactly 5 tests: (1) createApiKeySchema accepts valid {name:'My Key'} and scopes defaults to empty array, (2) createApiKeySchema rejects empty name — parse({name:''}) throws, (3) apiKeyQuerySchema applies defaults — parse({}).limit === 10 and parse({}).offset === 0, (4) apiKeyQuerySchema rejects limit over 100 — parse({limit:101}) throws, (5) rotateApiKeySchema rejects expiresInDays over 365 — parse({expiresInDays:366}) throws. Use describe/it, import { createApiKeySchema, apiKeyQuerySchema, rotateApiKeySchema } from '../api-key-schemas'. Max 35 lines.",
+      "deliverables": {
+        "code": [
+          "backend/src/validators/__tests__/api-key-schemas.test.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "backend/src/validators/__tests__/api-key-schemas.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 98,
+          "summary": "Dual-approved: Claude (95/100) + Codex (100/100)",
+          "issues": [],
+          "strengths": [
+            "All 5 required tests implemented exactly as specified",
+            "Proper test structure with describe/it blocks",
+            "Correct imports from relative path",
+            "Tests cover both positive and negative validation cases",
+            "Concise implementation at 22 lines (well under 35 line limit)",
+            "No unnecessary abstractions or extra functionality",
+            "Proper Jest expectations with specific assertions",
+            "Tests validate default behavior and boundary conditions",
+            "Tests align precisely with the spec requirements",
+            "Concise and within the 35-line limit",
+            "Covers both default-value and error scenarios as requested"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-220",
+      "title": "Dashboard settings page",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "medium",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create frontend/app/dashboard/settings/page.tsx — a dashboard settings page as a React server component. This page should display account configuration options. Structure: export default function DashboardSettingsPage(). Return a div with: (1) h1 'Settings' with text-2xl font-bold mb-6, (2) Two sections each in a bg-white rounded-lg shadow p-6 mb-6: Section 1 'General' — h2 with text-lg font-semibold mb-4, then a form-like div with 3 rows each as flex items-center justify-between py-3 border-b: row 1 label 'Company Name' with span 'Acme Corp' and an Edit button (text-blue-600), row 2 label 'Time Zone' with span 'UTC', row 3 label 'Default Currency' with span 'USD'. Section 2 'Notifications' — h2 with text-lg font-semibold mb-4, then 3 rows: row 1 label 'Email Alerts' with a green 'Enabled' badge (bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs), row 2 label 'Webhook Failures' with green 'Enabled' badge, row 3 label 'Monthly Reports' with gray 'Disabled' badge (bg-gray-100 text-gray-600). Use 'use client' directive. Max 55 lines. Tailwind CSS only.",
+      "deliverables": {
+        "code": [
+          "frontend/app/dashboard/settings/page.tsx"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/app/dashboard/settings/page.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/app/dashboard/settings/page.tsx",
+              "description": "Missing TypeScript return type annotation on component function"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/app/dashboard/settings/page.tsx",
+              "description": "Edit button has no onClick handler (though this may be intentional for this static implementation)"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/app/dashboard/settings/page.tsx",
+              "line": 9,
+              "description": "The className \"form-like\" is added but not defined in Tailwind or project CSS – consider removing or replacing with a Tailwind utility."
+            }
+          ],
+          "strengths": [
+            "Follows exact task specification structure and styling requirements",
+            "Proper use of 'use client' directive as requested",
+            "Clean Tailwind CSS implementation with consistent spacing and colors",
+            "Semantic HTML structure with proper sections and headings",
+            "Well-organized component layout with clear visual hierarchy",
+            "Stays within 55-line limit (39 lines actual)",
+            "No code fences or invalid syntax",
+            "Proper badge styling for notification states",
+            "Responsive design with max-width container",
+            "Correct use of 'use client' directive as required.",
+            "Accurate structure: two sections with proper headings, rows, badges, and Edit button.",
+            "Tailwind CSS used exclusively for styling, with no inline styles.",
+            "Component stays under 55 lines and has clear, readable JSX."
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-221",
+      "title": "Dashboard API keys page",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "medium",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create frontend/app/dashboard/api-keys/page.tsx — a dashboard API keys management page as a React component. Structure: export default function DashboardApiKeysPage(). Return a div with: (1) header div flex justify-between items-center mb-6: h1 'API Keys' text-2xl font-bold, and a button '+ Create Key' with bg-blue-600 text-white px-4 py-2 rounded-lg. (2) A table in bg-white rounded-lg shadow overflow-hidden: thead with bg-gray-50 row containing th cells 'Name', 'Key', 'Created', 'Status', 'Actions' (all px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase). tbody with 3 sample rows: row 1 name 'Production' key 'inv_live_****7f3a' created 'Jan 15, 2026' status green 'Active' badge actions 'Revoke' button (text-red-600 text-sm), row 2 name 'Staging' key 'inv_test_****2b1c' created 'Feb 1, 2026' status green 'Active' actions 'Revoke', row 3 name 'Legacy' key 'inv_live_****9e4d' created 'Dec 1, 2025' status red 'Revoked' badge (bg-red-100 text-red-800) actions '-'. Each td has px-6 py-4 whitespace-nowrap text-sm. Use 'use client' directive. Max 55 lines. Tailwind CSS only.",
+      "deliverables": {
+        "code": [
+          "frontend/app/dashboard/api-keys/page.tsx"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/app/dashboard/api-keys/page.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/app/dashboard/api-keys/page.tsx",
+              "description": "Missing hover states on the Create Key button for better UX"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/app/dashboard/api-keys/page.tsx",
+              "description": "No accessibility attributes (aria-labels) on interactive elements"
+            }
+          ],
+          "strengths": [
+            "Exact adherence to task specification - all required elements present",
+            "Clean TypeScript syntax with proper 'use client' directive",
+            "Correct Tailwind CSS classes matching the specified design",
+            "Well-structured table with proper semantic HTML",
+            "Appropriate use of badges for status indicators",
+            "Code is under the 55-line limit (49 lines)",
+            "No code fences or invalid syntax",
+            "Proper component export structure",
+            "Consistent styling and spacing throughout",
+            "Accurately implements the header and table per spec",
+            "Uses appropriate Tailwind CSS classes for styling",
+            "Includes the 'use client' directive at the top",
+            "Keeps file concise and under the 55-line limit",
+            "No invalid code fences present"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-222",
+      "title": "Dashboard webhooks page",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "medium",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create frontend/app/dashboard/webhooks/page.tsx — a dashboard webhooks management page as a React component. Structure: export default function DashboardWebhooksPage(). Return a div with: (1) header div flex justify-between items-center mb-6: h1 'Webhooks' text-2xl font-bold, button '+ Add Endpoint' bg-blue-600 text-white px-4 py-2 rounded-lg. (2) A list of 3 webhook cards, each in bg-white rounded-lg shadow p-6 mb-4: Card 1: div flex justify-between — left side has h3 'https://api.acme.com/webhooks' text-sm font-mono and p 'invoice.created, invoice.paid' text-xs text-gray-500 mt-1, right side has green 'Active' badge. Card 2: url 'https://staging.acme.com/hooks' events 'invoice.created, settlement.created' status green 'Active'. Card 3: url 'https://old.acme.com/notify' events 'invoice.updated' status yellow 'Failing' badge (bg-yellow-100 text-yellow-800). Below each card a div with text-xs text-gray-400 mt-2 showing 'Last delivery: 2 minutes ago' or 'Last delivery: 3 hours ago' or 'Last delivery: Failed 1 day ago'. Use 'use client' directive. Max 55 lines. Tailwind CSS only.",
+      "deliverables": {
+        "code": [
+          "frontend/app/dashboard/webhooks/page.tsx"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/app/dashboard/webhooks/page.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 94,
+          "summary": "Dual-approved: Claude (92/100) + Codex (95/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/app/dashboard/webhooks/page.tsx",
+              "description": "Could benefit from extracting the webhook card into a separate component for better reusability, but not required for this task"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/app/dashboard/webhooks/page.tsx",
+              "description": "Hard-coded data is fine for this UI task, but in production would need API integration"
+            }
+          ],
+          "strengths": [
+            "Proper 'use client' directive usage for Next.js 14",
+            "Clean TypeScript interface definition for Webhook type",
+            "Exact match to task specifications - all 3 cards with correct URLs, events, and statuses",
+            "Proper Tailwind CSS classes matching the specified design",
+            "Efficient implementation at 35 lines, well under the 55 line limit",
+            "Good semantic HTML structure with proper accessibility considerations",
+            "Conditional styling for status badges implemented correctly",
+            "No code fences or invalid syntax present",
+            "Follows React best practices with proper key props and component structure",
+            "Adheres to the specified layout and styling using Tailwind CSS only",
+            "Includes 'use client' directive and TypeScript interface for webhook data",
+            "Keeps code concise (<55 lines) and readable",
+            "Implements dynamic rendering of status badges and last delivery text correctly"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-223",
+      "title": "Dashboard usage page",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "medium",
+      "status": "done",
+      "dependencies": [],
+      "context": "Create frontend/app/dashboard/usage/page.tsx — a dashboard API usage statistics page as a React component. Structure: export default function DashboardUsagePage(). Return a div with: (1) h1 'API Usage' text-2xl font-bold mb-6. (2) A stats grid div grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 with 3 stat cards each bg-white rounded-lg shadow p-6: Card 1 label 'Total Requests (30d)' value '12,847' change '+15.2%' (text-green-600), Card 2 label 'Success Rate' value '99.7%' change '+0.1%' (text-green-600), Card 3 label 'Avg Response Time' value '142ms' change '-8ms' (text-green-600). Each card has p text-sm text-gray-500 for label, p text-3xl font-bold mt-2 for value, p text-sm mt-1 for change. (3) A section bg-white rounded-lg shadow p-6: h2 'Requests by Endpoint' text-lg font-semibold mb-4, then a list of 4 endpoint rows each as flex justify-between items-center py-3 border-b: 'POST /invoices' with '4,521 requests', 'GET /invoices' with '3,892 requests', 'GET /settlements' with '2,344 requests', 'POST /webhooks' with '2,090 requests'. Left side text-sm font-mono, right side text-sm text-gray-600. Use 'use client' directive. Max 55 lines. Tailwind CSS only.",
+      "deliverables": {
+        "code": [
+          "frontend/app/dashboard/usage/page.tsx"
+        ]
+      },
+      "output": {
+        "files": [
+          "frontend/app/dashboard/usage/page.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 91,
+          "summary": "Dual-approved: Claude (92/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/app/dashboard/usage/page.tsx",
+              "description": "Static data hardcoded - in production this should fetch from API, but acceptable for initial implementation"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/app/dashboard/usage/page.tsx",
+              "description": "Missing TypeScript interface for endpoint data structure, though not strictly required for this simple case"
+            }
+          ],
+          "strengths": [
+            "Exact adherence to task specification - all required elements present with correct styling",
+            "Clean component structure with proper 'use client' directive for Next.js 14",
+            "Efficient use of map() for endpoint rendering with proper key prop",
+            "Good CSS class organization following Tailwind patterns",
+            "Proper semantic HTML structure with appropriate heading hierarchy",
+            "Smart use of last:border-b-0 to remove border from final list item",
+            "Code is concise at 45 lines, well under the 55 line limit",
+            "No unnecessary abstractions or over-engineering",
+            "Responsive design with md:grid-cols-3 breakpoint",
+            "Accurately implements the specified layout and styling with Tailwind CSS",
+            "Uses `use client` directive and concise functional component",
+            "Dynamic rendering of endpoint rows adheres to DRY principles",
+            "Line count is within the 55-line limit and no invalid code fences are present"
+          ]
+        }
+      }
+    }
+  ]
+}

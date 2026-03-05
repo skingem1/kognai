@@ -1,0 +1,112 @@
+---
+title: Quickstart
+description: "Create your first Invoica invoice in under 5 minutes."
+---
+
+# Quickstart
+
+Get up and running with the Invoica SDK in under 5 minutes.
+
+## 1. Install the SDK
+
+<CodeGroup>
+
+```bash npm
+npm install @invoica/sdk
+```
+
+```bash yarn
+yarn add @invoica/sdk
+```
+
+```bash pnpm
+pnpm add @invoica/sdk
+```
+
+</CodeGroup>
+
+## 2. Get Your API Key
+
+Sign up at [app.invoica.ai](https://app.invoica.ai) and generate an API key from the **API Keys** section. Your key will start with `inv_`.
+
+## 3. Initialize the Client
+
+```typescript
+import { InvoicaClient } from '@invoica/sdk';
+
+const client = new InvoicaClient({
+  apiKey: 'inv_your_api_key_here',
+  baseUrl: 'https://api.invoica.ai',
+});
+```
+
+## 4. Create Your First Invoice
+
+```typescript
+const invoice = await client.invoices.create({
+  amount: 1000,        // Amount in cents ($10.00)
+  currency: 'USD',
+  description: 'AI Agent API Usage - February 2026',
+  buyer: {
+    companyName: 'Acme AI Corp',
+    email: 'billing@acme-ai.com',
+    address: '123 Agent Street, San Francisco, CA 94105',
+  },
+  seller: {
+    name: 'My AI Platform',
+    address: '456 Tech Blvd, Austin, TX 78701',
+    wallet: '0x1234...abcd',
+  },
+});
+
+console.log(`Invoice created: ${invoice.id}`);
+console.log(`Status: ${invoice.status}`);
+console.log(`Total: $${(invoice.total / 100).toFixed(2)}`);
+```
+
+## 5. Check Invoice Status
+
+```typescript
+const status = await client.invoices.get(invoice.id);
+console.log(`Invoice ${status.invoiceNumber}: ${status.status}`);
+```
+
+## Using cURL
+
+You can also interact with the API directly:
+
+```bash
+curl -X POST https://api.invoica.ai/api/invoices \
+  -H "Authorization: Bearer inv_your_api_key_here" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "amount": 1000,
+    "currency": "USD",
+    "description": "AI Agent API Usage",
+    "buyer": {
+      "companyName": "Acme AI Corp",
+      "email": "billing@acme-ai.com"
+    },
+    "seller": {
+      "name": "My AI Platform",
+      "wallet": "0x1234...abcd"
+    }
+  }'
+```
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Authentication" icon="key" href="/authentication">
+    Learn about API key management and request signing.
+  </Card>
+  <Card title="Webhooks" icon="bell" href="/guides/webhooks">
+    Get real-time notifications when invoice events occur.
+  </Card>
+  <Card title="Tax Compliance" icon="calculator" href="/guides/tax-compliance">
+    Set up automatic tax calculation for your invoices.
+  </Card>
+  <Card title="API Reference" icon="book" href="/api-reference/overview">
+    Explore all available endpoints.
+  </Card>
+</CardGroup>

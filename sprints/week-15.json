@@ -1,0 +1,404 @@
+{
+  "tasks": [
+    {
+      "id": "FE-070",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "critical",
+      "dependencies": [],
+      "context": "Add missing dashboard API functions to the frontend API client at frontend/lib/api-client.ts. The file ALREADY exists with these exports: apiGet, apiPost, apiDelete, ApiError, Settlement, fetchSettlement, ApiKey, CreateApiKeyResponse, fetchApiKeys, createNewApiKey, revokeApiKey, rotateApiKey. You must KEEP all existing code and ADD these new exports at the end of the file (before the final ApiError re-export line):\n\n(1) export interface DashboardStats { totalInvoices: number; pending: number; settled: number; revenue: number; }\n(2) export interface RecentActivityItem { id: string; title: string; description: string; status: 'success' | 'pending' | 'failed'; timestamp: string; }\n(3) export async function fetchDashboardStats(): Promise<DashboardStats> { return apiGet<DashboardStats>('/v1/dashboard/stats'); }\n(4) export async function fetchRecentActivity(): Promise<RecentActivityItem[]> { return apiGet<RecentActivityItem[]>('/v1/dashboard/activity'); }\n(5) export interface InvoiceListResponse { invoices: Array<{ id: string; invoiceNumber: string; amount: number; currency: string; status: string; createdAt: string; }>; total: number; limit: number; offset: number; }\n(6) export async function fetchInvoices(params?: { limit?: string; offset?: string; status?: string }): Promise<InvoiceListResponse> { return apiGet<InvoiceListResponse>('/v1/invoices', params); }\n\nKeep ALL existing code exactly as-is. Just add the 6 new items before the final re-export line. Under 15 new lines added.",
+      "deliverables": {
+        "code": [
+          "frontend/lib/api-client.ts"
+        ],
+        "tests": []
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "frontend/lib/api-client.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "Excellent implementation that follows the task spec precisely. All existing code preserved, new exports added correctly at the end before ApiError re-export, proper TypeScript interfaces, and consistent API patterns.",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/lib/api-client.ts",
+              "description": "Invoice status field uses generic 'string' type instead of union type like 'pending' | 'completed' | 'failed' for better type safety"
+            }
+          ],
+          "strengths": [
+            "Perfect adherence to task requirements - all existing code preserved exactly",
+            "New exports added in correct location before final ApiError re-export",
+            "Consistent TypeScript interface definitions with proper typing",
+            "Follows established API client patterns (using apiGet helper)",
+            "Clean, readable code structure with proper formatting",
+            "Interfaces match the exact specifications provided",
+            "Optional parameters handled correctly in fetchInvoices function",
+            "Under 15 lines added as requested (exactly 6 new exports)"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-071",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "context": "Create an error boundary component at frontend/components/error-boundary.tsx. This is a client component ('use client') that catches React render errors and shows a fallback UI.\n\nExport a class component: export class ErrorBoundary extends React.Component<Props, State>.\n\nProps interface: { children: React.ReactNode; fallback?: React.ReactNode; }\nState interface: { hasError: boolean; error: Error | null; }\n\nImplement:\n- constructor: set state { hasError: false, error: null }\n- static getDerivedStateFromError(error: Error): return { hasError: true, error }\n- componentDidCatch(error: Error, info: React.ErrorInfo): console.error('ErrorBoundary caught:', error, info)\n- render(): if hasError, show a div with inline styles (padding 32px, textAlign center) containing an h2 'Something went wrong', a p tag showing this.state.error?.message in gray, and a button with inline styles (marginTop 16px, padding '8px 16px', backgroundColor '#2563eb', color white, border none, borderRadius 6px, cursor pointer) that calls this.setState({ hasError: false, error: null }) on click with text 'Try again'. If no error, render this.props.children.\n\nImport React from 'react'. Under 40 lines total. Use ONLY inline styles.",
+      "deliverables": {
+        "code": [
+          "frontend/components/error-boundary.tsx"
+        ],
+        "tests": []
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "frontend/components/error-boundary.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "Excellent implementation that follows the task spec precisely. Clean, minimal error boundary with proper TypeScript types and inline styles as requested.",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/components/error-boundary.tsx",
+              "description": "The fallback prop is defined in Props interface but never used in the implementation"
+            }
+          ],
+          "strengths": [
+            "Perfect adherence to task specifications - all requirements met exactly",
+            "Proper TypeScript interfaces with correct types",
+            "Clean class component implementation with all required lifecycle methods",
+            "Inline styles match the exact specifications (padding, colors, dimensions)",
+            "Under 40 lines as requested (39 lines)",
+            "Proper error handling with console.error logging",
+            "Correct 'use client' directive for Next.js client component",
+            "Clean reset functionality on 'Try again' button click",
+            "No unnecessary dependencies or over-engineering"
+          ]
+        }
+      }
+    },
+    {
+      "id": "FE-072",
+      "agent": "frontend",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "context": "Create a notification toast component at frontend/components/toast.tsx. This is a client component ('use client'). It provides a simple toast notification system.\n\nExport these items:\n\n(1) export type ToastType = 'success' | 'error' | 'info';\n(2) export interface ToastProps { message: string; type: ToastType; onClose: () => void; }\n(3) export function Toast({ message, type, onClose }: ToastProps) — renders a div with inline styles: position 'fixed', bottom 24, right 24, padding '12px 20px', borderRadius 8, color 'white', fontSize 14, display 'flex', alignItems 'center', gap 8, zIndex 9999, boxShadow '0 4px 12px rgba(0,0,0,0.15)'. Background color varies by type: success='#16a34a', error='#dc2626', info='#2563eb'. Content: a span with the message, and a button with text '×' (× character), inline styles (background 'none', border 'none', color 'white', fontSize 18, cursor 'pointer', marginLeft 8), onClick calls onClose.\n(4) export function useToast() — a custom hook that returns { toast, showToast, hideToast }. Uses useState<{ message: string; type: ToastType } | null>(null). showToast(message: string, type: ToastType) sets state and calls setTimeout(hideToast, 3000). hideToast sets state to null. toast is the current state value.\n\nImport React, { useState } from 'react'. Under 35 lines total. Use ONLY inline styles.",
+      "deliverables": {
+        "code": [
+          "frontend/components/toast.tsx"
+        ],
+        "tests": []
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "frontend/components/toast.tsx"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 92,
+          "summary": "Clean, minimal toast component that precisely follows the task specification. All required exports, styling, and functionality are correctly implemented with proper TypeScript types.",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "frontend/components/toast.tsx",
+              "description": "setTimeout in useToast hook doesn't store the timeout ID, so it can't be cleared if component unmounts or showToast is called multiple times rapidly"
+            },
+            {
+              "severity": "low",
+              "file": "frontend/components/toast.tsx",
+              "description": "No accessibility attributes (aria-label, role) on the toast or close button for screen readers"
+            }
+          ],
+          "strengths": [
+            "Exact adherence to task specification - all required exports, props, and styling implemented correctly",
+            "Proper TypeScript typing with no 'any' types used",
+            "Clean, readable code under the 35-line requirement (24 lines total)",
+            "Correct use of 'use client' directive for client component",
+            "Inline styles only as requested, with proper color mapping",
+            "Custom hook follows React patterns with proper state management",
+            "All styling properties match the exact specification including positioning, colors, and dimensions"
+          ]
+        }
+      }
+    },
+    {
+      "id": "SDK-070",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "context": "Add missing types to the SDK types file at sdk/typescript/src/types.ts. The file ALREADY has these types: SettlementStatus, GetSettlementParams, WebhookEventType, Invoice, ApiResponse, CreateInvoiceParams, ApiKey, CreateApiKeyParams, ApiKeyListResponse, WebhookRegistrationConfig, WebhookRegistration, WebhookListResponse. You must KEEP all existing types and ADD these new ones at the end of the file:\n\n(1) export interface InvoiceCreateInput { amount: number; currency: string; description?: string; customerId?: string; metadata?: Record<string, string>; }\n(2) export interface Settlement { id: string; invoiceId: string; status: SettlementStatus; txHash: string | null; chain: string; amount: number; currency: string; confirmedAt: string | null; createdAt: string; }\n(3) export interface SettlementListResponse { settlements: Settlement[]; total: number; limit: number; offset: number; }\n(4) export interface InvoiceListResponse { invoices: Invoice[]; total: number; limit: number; offset: number; }\n(5) export interface ApiKeyCreateResponse { id: string; name: string; key: string; createdAt: string; }\n\nThese types are already imported by client.ts but were never defined in types.ts. Keep ALL existing types exactly as-is. Just append the 5 new interfaces. Under 25 new lines added.",
+      "deliverables": {
+        "code": [
+          "sdk/typescript/src/types.ts"
+        ],
+        "tests": []
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "sdk/typescript/src/types.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "Clean implementation that perfectly follows the task specification. All existing types preserved, 5 new interfaces added correctly with proper TypeScript typing.",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "sdk/typescript/src/types.ts",
+              "description": "InvoiceCreateInput and CreateInvoiceParams are functionally identical - could lead to confusion about which to use"
+            }
+          ],
+          "strengths": [
+            "All existing types preserved exactly as required",
+            "All 5 new interfaces added with correct structure",
+            "Proper TypeScript typing with no 'any' types",
+            "Consistent naming conventions and formatting",
+            "Reuses existing SettlementStatus type appropriately",
+            "Under 25 lines added as specified",
+            "Clean, readable code structure"
+          ]
+        }
+      }
+    },
+    {
+      "id": "BE-130",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "context": "Create a dashboard stats API endpoint at backend/src/api/dashboard-stats.ts. IMPORTANT: This file ALREADY exists but may be incomplete. Create a fresh clean version.\n\nThis is an Express router module. Import { Router, Request, Response } from 'express'. Create const router = Router().\n\nDefine one route:\n\nGET / — handler returns JSON with mock dashboard stats:\n- totalInvoices: 142\n- pending: 23\n- settled: 107\n- revenue: 84500\n- failedCount: 12\n- recentCount: 15\n\nres.json({ totalInvoices: 142, pending: 23, settled: 107, revenue: 84500, failedCount: 12, recentCount: 15 });\n\nexport default router;\n\nThis is a simple mock endpoint for frontend development. Under 15 lines total. No external dependencies beyond express.",
+      "deliverables": {
+        "code": [
+          "backend/src/api/dashboard-stats.ts"
+        ],
+        "tests": []
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "backend/src/api/dashboard-stats.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "Clean, minimal implementation that exactly matches the task specification. Simple mock endpoint with proper TypeScript types and Express patterns.",
+          "issues": [],
+          "strengths": [
+            "Exactly matches the task specification - no overengineering",
+            "Proper TypeScript imports and types",
+            "Clean Express router pattern",
+            "Correct mock data values as specified",
+            "Under 15 lines as required",
+            "No unnecessary dependencies or abstractions",
+            "Proper unused parameter naming with underscore prefix",
+            "Clean JSON response structure"
+          ]
+        }
+      }
+    },
+    {
+      "id": "BE-131",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "context": "Create a recent activity API endpoint at backend/src/api/recent-activity.ts. This is a NEW Express router module.\n\nImport { Router, Request, Response } from 'express'. Create const router = Router().\n\nDefine one route:\n\nGET / — handler returns a JSON array of mock recent activity items. Return this exact array:\n[\n  { id: 'act_1', title: 'Invoice #INV-0042 Created', description: 'Amount: $1,000 USD', status: 'success', timestamp: '2 minutes ago' },\n  { id: 'act_2', title: 'Settlement Processing', description: 'Invoice #INV-0041 — waiting for on-chain confirmation', status: 'pending', timestamp: '15 minutes ago' },\n  { id: 'act_3', title: 'API Key Generated', description: 'Key inv_a1b2...c5d6 created for Production', status: 'success', timestamp: '1 hour ago' },\n  { id: 'act_4', title: 'Webhook Delivery Failed', description: 'Endpoint https://app.example.com/webhook returned 500', status: 'failed', timestamp: '3 hours ago' },\n  { id: 'act_5', title: 'Invoice #INV-0040 Settled', description: 'Amount: $2,500 USD — confirmed on Base', status: 'success', timestamp: '5 hours ago' }\n]\n\nres.json(activities);\n\nexport default router;\n\nSimple mock endpoint for frontend development. Under 20 lines total.",
+      "deliverables": {
+        "code": [
+          "backend/src/api/recent-activity.ts"
+        ],
+        "tests": []
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "backend/src/api/recent-activity.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "Clean, minimal implementation that exactly matches the task specification. Simple mock endpoint with proper TypeScript types and Express patterns.",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "backend/src/api/recent-activity.ts",
+              "description": "Missing JSDoc comment on the route handler for API documentation"
+            }
+          ],
+          "strengths": [
+            "Exact implementation as specified - no overengineering",
+            "Proper TypeScript imports and typing",
+            "Correct Express Router pattern usage",
+            "Returns the exact mock data array as requested",
+            "Under 20 lines as required",
+            "Clean, readable code structure",
+            "Proper parameter naming with underscore prefix for unused req parameter",
+            "Follows project conventions for Express route modules"
+          ]
+        }
+      }
+    },
+    {
+      "id": "BE-132",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "medium",
+      "dependencies": [],
+      "context": "Create a request logger utility at backend/src/utils/request-logger.ts. This utility formats and logs API request/response information for debugging.\n\nExport these items:\n\n(1) export interface RequestLogEntry { method: string; path: string; statusCode: number; durationMs: number; timestamp: string; ip: string; userAgent: string; }\n(2) export function formatLogEntry(entry: RequestLogEntry): string — returns a formatted string like: '[2026-02-15T10:00:00Z] GET /v1/invoices 200 45ms 192.168.1.1'. Format: `[${entry.timestamp}] ${entry.method} ${entry.path} ${entry.statusCode} ${entry.durationMs}ms ${entry.ip}`\n(3) export function createRequestLog(method: string, path: string, statusCode: number, durationMs: number, ip: string, userAgent: string): RequestLogEntry — creates a RequestLogEntry with timestamp set to new Date().toISOString().\n(4) export function shouldLog(path: string): boolean — returns false if path is '/v1/health' or '/favicon.ico' (skip noisy endpoints), true otherwise.\n\nPure functions, no external dependencies. Under 25 lines total.",
+      "deliverables": {
+        "code": [
+          "backend/src/utils/request-logger.ts"
+        ],
+        "tests": [
+          "backend/src/utils/__tests__/request-logger.test.ts"
+        ]
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "backend/src/utils/request-logger.ts",
+          "backend/src/utils/__tests__/request-logger.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "Clean, well-tested utility that meets all requirements. Pure functions with no external dependencies, comprehensive test coverage, and follows TypeScript best practices.",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "backend/src/utils/request-logger.ts",
+              "description": "SKIP_PATHS constant could be made readonly for immutability: `const SKIP_PATHS = ['/v1/health', '/favicon.ico'] as const;`"
+            }
+          ],
+          "strengths": [
+            "All 4 required exports implemented exactly as specified",
+            "Pure functions with no external dependencies as requested",
+            "Under 25 lines total (24 lines in main file)",
+            "Comprehensive test coverage with edge cases",
+            "Proper TypeScript typing with no 'any' types",
+            "formatLogEntry matches exact format specification",
+            "createRequestLog correctly generates ISO timestamp",
+            "shouldLog properly filters noisy endpoints",
+            "Clean, readable code structure",
+            "Test file follows Jest best practices with describe blocks"
+          ]
+        }
+      }
+    },
+    {
+      "id": "BE-133",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "medium",
+      "dependencies": [],
+      "context": "Create a response formatter utility at backend/src/utils/response-formatter.ts. This utility standardizes all API response formats.\n\nExport these items:\n\n(1) export interface ApiSuccessResponse<T> { success: true; data: T; }\n(2) export interface ApiErrorResponse { success: false; error: { code: string; message: string; details?: unknown; }; }\n(3) export type ApiResponse<T> = ApiSuccessResponse<T> | ApiErrorResponse;\n(4) export function success<T>(data: T): ApiSuccessResponse<T> — returns { success: true, data }.\n(5) export function error(code: string, message: string, details?: unknown): ApiErrorResponse — returns { success: false, error: { code, message, ...(details !== undefined && { details }) } }.\n(6) export function paginated<T>(items: T[], total: number, limit: number, offset: number): ApiSuccessResponse<{ items: T[]; total: number; limit: number; offset: number; hasMore: boolean; }> — returns success({ items, total, limit, offset, hasMore: offset + limit < total }).\n\nPure functions, no external dependencies. Under 30 lines total.",
+      "deliverables": {
+        "code": [
+          "backend/src/utils/response-formatter.ts"
+        ],
+        "tests": [
+          "backend/src/utils/__tests__/response-formatter.test.ts"
+        ]
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "backend/src/utils/response-formatter.ts",
+          "backend/src/utils/__tests__/response-formatter.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "Excellent implementation that precisely matches the task specification. Clean, type-safe utility with comprehensive tests.",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "backend/src/utils/response-formatter.ts",
+              "description": "Long type signature on paginated function could be extracted to a type alias for better readability"
+            }
+          ],
+          "strengths": [
+            "Perfect adherence to task specification - all 6 required exports implemented exactly as requested",
+            "Clean TypeScript with proper generics and no 'any' types",
+            "Pure functions with no external dependencies as required",
+            "Under 30 lines total (26 lines) as specified",
+            "Comprehensive test coverage with edge cases (details present/absent, hasMore true/false)",
+            "Proper conditional spread operator usage for optional details field",
+            "Clear, readable code structure",
+            "Tests follow good naming conventions and cover all exported functions",
+            "Type safety maintained throughout with proper generic constraints"
+          ]
+        }
+      }
+    },
+    {
+      "id": "BE-134",
+      "agent": "backend-core",
+      "type": "feature",
+      "priority": "medium",
+      "dependencies": [],
+      "context": "Create a CORS configuration utility at backend/src/utils/cors-config.ts. This utility provides CORS configuration for the Express backend.\n\nExport these items:\n\n(1) export interface CorsOptions { allowedOrigins: string[]; allowedMethods: string[]; allowedHeaders: string[]; maxAge: number; credentials: boolean; }\n(2) export const DEFAULT_CORS_OPTIONS: CorsOptions = { allowedOrigins: ['http://localhost:3000', 'http://localhost:3001', 'https://invoica.dev', 'https://app.invoica.dev'], allowedMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], allowedHeaders: ['Content-Type', 'Authorization', 'X-Request-Id', 'X-Timestamp'], maxAge: 86400, credentials: true };\n(3) export function isOriginAllowed(origin: string, allowedOrigins: string[]): boolean — returns true if origin is in the allowedOrigins array, or if allowedOrigins includes '*'.\n(4) export function getCorsHeaders(origin: string, options?: Partial<CorsOptions>): Record<string, string> — merges options with DEFAULT_CORS_OPTIONS. If isOriginAllowed(origin, merged.allowedOrigins), returns headers object: { 'Access-Control-Allow-Origin': origin, 'Access-Control-Allow-Methods': merged.allowedMethods.join(', '), 'Access-Control-Allow-Headers': merged.allowedHeaders.join(', '), 'Access-Control-Max-Age': String(merged.maxAge), 'Access-Control-Allow-Credentials': String(merged.credentials) }. Otherwise returns empty object {}.\n\nPure functions, no external dependencies. Under 30 lines total.",
+      "deliverables": {
+        "code": [
+          "backend/src/utils/cors-config.ts"
+        ],
+        "tests": [
+          "backend/src/utils/__tests__/cors-config.test.ts"
+        ]
+      },
+      "status": "done",
+      "output": {
+        "files": [
+          "backend/src/utils/cors-config.ts",
+          "backend/src/utils/__tests__/cors-config.test.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "Excellent implementation that precisely matches the task specification. Clean, well-tested utility with proper TypeScript types and comprehensive test coverage.",
+          "issues": [],
+          "strengths": [
+            "Perfect adherence to task specification - all 4 required exports implemented exactly as specified",
+            "Clean, readable TypeScript with proper type definitions",
+            "Comprehensive test suite covering all functions and edge cases including wildcard origins",
+            "Pure functions with no external dependencies as required",
+            "Under 30 lines total as specified (main file is 25 lines)",
+            "Proper error handling - returns empty object for disallowed origins",
+            "Good test coverage including custom options merging",
+            "Follows project naming conventions and file structure"
+          ]
+        }
+      }
+    }
+  ]
+}
