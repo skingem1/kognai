@@ -42,3 +42,8 @@ reports/invoica-x-admin/drafts/
 # Runtime state files — written by heartbeat-daemon, overwritten by git-pull if tracked
 health.json
 tier.json
+
+# Vault secrets
+.env
+.env.local
+.env.*.local

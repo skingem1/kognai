@@ -1,0 +1,91 @@
+{
+  "sprint_id": "sprint-052",
+  "phase": "Phase 1 — TikTok Content Agent",
+  "title": "Internet Archive Scraper — Core Pipeline",
+  "status": "active",
+  "created_at": "2026-03-05",
+  "owner": "messi",
+  "goal": "Build a working Internet Archive scraper that discovers, fetches, and stores trending content metadata for the TikTok Content Agent pipeline. By end of sprint: scraper runs locally on vault, outputs structured JSON to Supabase, passes Guardiola review.",
+  "tasks": [
+    {
+      "id": "IA-001",
+      "agent": "macgyver",
+      "type": "feature",
+      "priority": "critical",
+      "status": "pending",
+      "task_target": "local",
+      "dependencies": [],
+      "description": "Internet Archive search client",
+      "context": "Create /Users/tarekmnif/kognai/workspace/tools/ia-scraper/src/ia-client.ts\n\nBuild a typed client for the Internet Archive search API (archive.org/advancedsearch.php).\n\nExports:\n```typescript\nexport interface IAItem {\n  identifier: string;\n  title: string;\n  description?: string;\n  mediatype: string;         // 'movies' | 'audio' | 'texts' | 'image'\n  subject?: string[];        // tags/keywords\n  creator?: string;\n  date?: string;\n  downloads?: number;\n  views?: number;\n  addeddate?: string;\n  publicdate?: string;\n  source_url: string;        // direct link: archive.org/details/{identifier}\n}\n\nexport interface IASearchParams {\n  query: string;\n  mediatype?: 'movies' | 'audio' | 'texts' | 'image';\n  sort?: 'downloads desc' | 'publicdate desc' | 'views desc';\n  rows?: number;             // default 50, max 200\n  page?: number;             // default 1\n  date_from?: string;        // YYYY-MM-DD\n  date_to?: string;          // YYYY-MM-DD\n}\n\nexport interface IASearchResult {\n  items: IAItem[];\n  total: number;\n  page: number;\n  rows: number;\n}\n\nexport async function searchInternetArchive(params: IASearchParams): Promise<IASearchResult>;\nexport async function getItemMetadata(identifier: string): Promise<IAItem | null>;\n```\n\nImplementation:\n- Use fetch() — no external HTTP libraries\n- API endpoint: https://archive.org/advancedsearch.php?q={query}&fl[]=identifier,title,description,mediatype,subject,creator,date,downloads,views,addeddate,publicdate&sort[]={sort}&rows={rows}&page={page}&output=json\n- Handle rate limiting: 1 request/second max (add sleep helper)\n- Handle errors gracefully: return empty result on 429/5xx, log warning\n- Build source_url as `https://archive.org/details/{identifier}`\n- Max 120 lines. TypeScript strict mode. JSDoc on all exports.",
+      "deliverables": {
+        "code": ["/Users/tarekmnif/kognai/workspace/tools/ia-scraper/src/ia-client.ts"]
+      },
+      "acceptance_criteria": "searchInternetArchive({ query: 'creative commons music', mediatype: 'audio', rows: 10 }) returns >= 5 items with valid identifiers and source_urls"
+    },
+    {
+      "id": "IA-002",
+      "agent": "macgyver",
+      "type": "feature",
+      "priority": "critical",
+      "status": "pending",
+      "task_target": "local",
+      "dependencies": ["IA-001"],
+      "description": "Content scorer — rank IA items by TikTok potential",
+      "context": "Create /Users/tarekmnif/kognai/workspace/tools/ia-scraper/src/content-scorer.ts\n\nScores Internet Archive items by their potential as TikTok content source material.\n\nExports:\n```typescript\nexport interface ScoredItem extends IAItem {\n  score: number;          // 0-100, higher = better TikTok potential\n  score_breakdown: {\n    virality: number;     // based on downloads/views (0-40 pts)\n    recency: number;      // date proximity to today (0-25 pts)\n    richness: number;     // has description + subject tags (0-20 pts)\n    media_bonus: number;  // videos score higher (0-15 pts)\n  };\n  disqualified: boolean;  // true if fails hard rules\n  disqualify_reason?: string;\n}\n\nexport function scoreItem(item: IAItem): ScoredItem;\nexport function rankItems(items: IAItem[]): ScoredItem[];\n```\n\nScoring logic:\n- virality: log10(max(downloads ?? 0, views ?? 0, 1)) / log10(1000000) * 40 — capped at 40\n- recency: if publicdate within 30 days → 25pts, 90 days → 15pts, 1yr → 5pts, older → 0pts\n- richness: +10 if description exists (>50 chars), +10 if subject has >= 3 tags\n- media_bonus: mediatype==='movies' → 15pts, 'audio' → 10pts, others → 0pts\n\nDisqualification rules (disqualified=true):\n- mediatype === 'texts' AND no visual description\n- title contains 'test' or 'sample' or 'placeholder' (case-insensitive)\n- downloads === 0 AND views === 0 AND publicdate older than 1 year\n\nrankItems: filter disqualified=false, sort by score desc, return top 50.\n\nMax 80 lines. No external deps.",
+      "deliverables": {
+        "code": ["/Users/tarekmnif/kognai/workspace/tools/ia-scraper/src/content-scorer.ts"]
+      },
+      "acceptance_criteria": "rankItems on 20 mixed items returns sorted array with score_breakdown populated, disqualified items excluded"
+    },
+    {
+      "id": "IA-003",
+      "agent": "macgyver",
+      "type": "feature",
+      "priority": "high",
+      "status": "pending",
+      "task_target": "local",
+      "dependencies": ["IA-001", "IA-002"],
+      "description": "Supabase storage — persist scraped content",
+      "context": "Create /Users/tarekmnif/kognai/workspace/tools/ia-scraper/src/storage.ts\n\nPersists scored IA items to Supabase. Uses the SUPABASE_URL and SUPABASE_ANON_KEY from ~/kognai/.env.\n\nExports:\n```typescript\nexport interface StoredItem extends ScoredItem {\n  id?: string;            // Supabase UUID (set after insert)\n  scraped_at: string;     // ISO timestamp\n  sprint_id: string;      // e.g. 'sprint-052'\n  used_in_tiktok: boolean; // default false\n}\n\nexport async function upsertItems(items: ScoredItem[], sprintId: string): Promise<{ inserted: number; skipped: number }>;\nexport async function getTopUnused(limit?: number): Promise<StoredItem[]>;\nexport async function markUsed(identifier: string): Promise<void>;\n```\n\nSupabase table schema (create via migration if not exists):\n```sql\nCREATE TABLE IF NOT EXISTS ia_content (\n  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),\n  identifier TEXT UNIQUE NOT NULL,\n  title TEXT NOT NULL,\n  description TEXT,\n  mediatype TEXT NOT NULL,\n  subject JSONB,\n  creator TEXT,\n  source_url TEXT NOT NULL,\n  downloads INT,\n  views INT,\n  score FLOAT NOT NULL,\n  score_breakdown JSONB NOT NULL,\n  scraped_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),\n  sprint_id TEXT NOT NULL,\n  used_in_tiktok BOOLEAN NOT NULL DEFAULT FALSE,\n  publicdate TIMESTAMPTZ\n);\n```\n\nupsertItems: INSERT ... ON CONFLICT (identifier) DO UPDATE SET score=EXCLUDED.score, scraped_at=NOW()\ngetTopUnused: SELECT where used_in_tiktok=false ORDER BY score DESC LIMIT {limit ?? 20}\nmarkUsed: UPDATE SET used_in_tiktok=true WHERE identifier={id}\n\nLoad SUPABASE_URL and SUPABASE_ANON_KEY from process.env (dotenv loaded by runner).\nUse @supabase/supabase-js v2. Max 100 lines.",
+      "deliverables": {
+        "code": ["/Users/tarekmnif/kognai/workspace/tools/ia-scraper/src/storage.ts"]
+      },
+      "acceptance_criteria": "upsertItems with 5 items inserts successfully, second call with same identifiers returns skipped=5"
+    },
+    {
+      "id": "IA-004",
+      "agent": "macgyver",
+      "type": "feature",
+      "priority": "high",
+      "status": "pending",
+      "task_target": "local",
+      "dependencies": ["IA-001", "IA-002", "IA-003"],
+      "description": "Scraper runner — orchestrates full pipeline",
+      "context": "Create /Users/tarekmnif/kognai/workspace/tools/ia-scraper/src/runner.ts\n\nThe main entry point that ties together search → score → store.\n\nExports:\n```typescript\nexport interface RunConfig {\n  queries: string[];           // search queries to run\n  mediatype?: 'movies' | 'audio' | 'texts' | 'image';\n  rows_per_query?: number;     // default 50\n  min_score?: number;          // only store items with score >= this (default 30)\n  sprint_id: string;\n  dry_run?: boolean;           // if true: log but don't write to Supabase\n}\n\nexport interface RunResult {\n  queries_run: number;\n  items_fetched: number;\n  items_scored: number;\n  items_stored: number;\n  top_items: ScoredItem[];     // top 5 by score for logging\n  errors: string[];\n  duration_ms: number;\n}\n\nexport async function runScraper(config: RunConfig): Promise<RunResult>;\n```\n\nPipeline:\n1. For each query: call searchInternetArchive({ query, mediatype, rows: rows_per_query })\n2. Deduplicate by identifier across all query results\n3. Score all unique items with scoreItem()\n4. rankItems() to get top sorted list\n5. Filter: score >= min_score\n6. If !dry_run: upsertItems(filtered, sprint_id)\n7. Return RunResult with stats\n\nError handling: catch per-query errors, add to errors[], continue to next query.\nProgress: console.log each step with item counts.\n\nCreate package.json at /Users/tarekmnif/kognai/workspace/tools/ia-scraper/:\n```json\n{\n  \"name\": \"ia-scraper\",\n  \"version\": \"0.1.0\",\n  \"description\": \"Kognai Internet Archive content scraper\",\n  \"scripts\": {\n    \"run\": \"tsx src/runner.ts\",\n    \"test\": \"tsx src/runner.ts --dry-run\"\n  },\n  \"dependencies\": {\n    \"@supabase/supabase-js\": \"^2.0.0\",\n    \"dotenv\": \"^16.0.0\",\n    \"tsx\": \"^4.0.0\"\n  }\n}\n```\n\nMax 100 lines.",
+      "deliverables": {
+        "code": [
+          "/Users/tarekmnif/kognai/workspace/tools/ia-scraper/src/runner.ts",
+          "/Users/tarekmnif/kognai/workspace/tools/ia-scraper/package.json"
+        ]
+      },
+      "acceptance_criteria": "runScraper({ queries: ['viral music video'], sprint_id: 'sprint-052', dry_run: true }) logs >= 3 items with scores"
+    },
+    {
+      "id": "IA-005",
+      "agent": "guardiola",
+      "type": "review",
+      "priority": "critical",
+      "status": "pending",
+      "task_target": "local",
+      "dependencies": ["IA-001", "IA-002", "IA-003", "IA-004"],
+      "description": "Guardiola review — IA scraper pipeline",
+      "context": "Review all 4 files delivered in IA-001 through IA-004:\n\n- /Users/tarekmnif/kognai/workspace/tools/ia-scraper/src/ia-client.ts\n- /Users/tarekmnif/kognai/workspace/tools/ia-scraper/src/content-scorer.ts\n- /Users/tarekmnif/kognai/workspace/tools/ia-scraper/src/storage.ts\n- /Users/tarekmnif/kognai/workspace/tools/ia-scraper/src/runner.ts\n\nCheck:\n1. Architecture: does the pipeline flow logically? search → score → filter → store?\n2. Security: are env vars loaded correctly? no hardcoded credentials?\n3. Correctness: do the type signatures match across modules? is error handling present?\n4. Integration: does runner.ts correctly import and call all modules?\n5. Scale readiness: will this handle 200 items without memory issues?\n\nEmit task.completed with verdict APPROVED or task.blocked with specific file:line issues.",
+      "deliverables": {
+        "review": "verdict: APPROVED or BLOCKED with file:line issues"
+      },
+      "acceptance_criteria": "All 5 checks pass OR specific blocking issues returned with file+line"
+    }
+  ],
+  "schema_version": "kognai-v1",
+  "notes": "First Kognai sprint. Internet Archive content pipeline feeds Phase 1 TikTok Content Agent. Scraper runs on vault (local), writes to Supabase. Next sprint: TikTok content generation using top-scored IA items."
+}
