@@ -185,16 +185,22 @@ export async function runCompose(config: ComposeRunConfig): Promise<ComposeRunRe
         }
 
       } else {
-        // Stock path (Pexels / Pixabay): direct URL download, no SRT
+        // Stock path (Pexels / Pixabay / Wikimedia): direct URL or local file, no SRT
         if (!brief.video_download_url) {
           console.log(`  ⏭  Skipping ${label} — no video_download_url`);
           continue;
         }
-        const ext      = brief.video_download_url.includes('.mp4') ? 'mp4' : 'mp4';
-        const filename = `${src}_${brief.video_id}.${ext}`;
-        process.stdout.write(`  ↓ ${filename}...`);
-        videoPath = await downloadFromUrl(brief.video_download_url, DEFAULT_DOWNLOADS_DIR, filename);
-        process.stdout.write(' done\n');
+        // Wikimedia (sprint-062): video was pre-downloaded by historical-runner — use local path directly
+        if (brief.video_download_url.startsWith('/') && existsSync(brief.video_download_url)) {
+          videoPath = brief.video_download_url;
+          console.log(`  📁 Local video: ${brief.video_download_url.split('/').pop()}`);
+        } else {
+          const ext      = brief.video_download_url.includes('.mp4') ? 'mp4' : 'mp4';
+          const filename = `${src}_${brief.video_id}.${ext}`;
+          process.stdout.write(`  ↓ ${filename}...`);
+          videoPath = await downloadFromUrl(brief.video_download_url, DEFAULT_DOWNLOADS_DIR, filename);
+          process.stdout.write(' done\n');
+        }
 
         // Extract a real frame so Claude narrates what's actually on screen
         const frameBase64 = await extractFrame(videoPath);

@@ -1,0 +1,19 @@
+{
+  "name": "history-maker",
+  "version": "0.1.0",
+  "description": "Kognai Sprint-062 — Historical paintings/maps → AI-animated TikTok clips via Kling + Wikimedia Commons",
+  "type": "module",
+  "scripts": {
+    "briefs:history": "tsx src/historical-runner.ts",
+    "briefs:history:test": "tsx src/historical-runner.ts --dry-run",
+    "briefs:maps": "tsx src/historical-runner.ts --topic=maps",
+    "briefs:paintings": "tsx src/historical-runner.ts --topic=paintings"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.78.0",
+    "@fal-ai/client": "^1.9.4",
+    "@supabase/supabase-js": "^2.0.0",
+    "dotenv": "^16.0.0",
+    "tsx": "^4.0.0"
+  }
+}
