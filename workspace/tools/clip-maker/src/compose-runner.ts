@@ -11,10 +11,38 @@
 
 import './env.js';
 import { resolve } from 'path';
-import { mkdir, readdir } from 'fs/promises';
+import { mkdir, readdir, readFile, unlink } from 'fs/promises';
 import { existsSync, createWriteStream } from 'fs';
+import { execFile } from 'child_process';
+import { promisify } from 'util';
 import { Readable } from 'stream';
 import { pipeline } from 'stream/promises';
+import ffmpegStatic from 'ffmpeg-static';
+
+const execFileAsync = promisify(execFile);
+
+/**
+ * Extract a JPEG frame at `atSeconds` from the video using ffmpeg.
+ * Returns base64-encoded JPEG string, or undefined on failure.
+ */
+async function extractFrame(videoPath: string, atSeconds = 2): Promise<string | undefined> {
+  const tmpPath = `/tmp/kognai_frame_${Date.now()}.jpg`;
+  try {
+    await execFileAsync(ffmpegStatic!, [
+      '-ss', String(atSeconds),
+      '-i', videoPath,
+      '-frames:v', '1',
+      '-q:v', '3',
+      '-y', tmpPath,
+    ]);
+    const buf = await readFile(tmpPath);
+    return buf.toString('base64');
+  } catch {
+    return undefined;
+  } finally {
+    await unlink(tmpPath).catch(() => {});
+  }
+}
 import { createClient } from '@supabase/supabase-js';
 import { downloadVideo } from './ia-downloader.js';
 import { fetchSRT, windowSegments } from './ia-srt-fetcher.js';
@@ -168,15 +196,24 @@ export async function runCompose(config: ComposeRunConfig): Promise<ComposeRunRe
         videoPath = await downloadFromUrl(brief.video_download_url, DEFAULT_DOWNLOADS_DIR, filename);
         process.stdout.write(' done\n');
 
-        // No ASR → Claude generates narration from brief metadata alone (empty SRT)
+        // Extract a real frame so Claude narrates what's actually on screen
+        const frameBase64 = await extractFrame(videoPath);
+        if (frameBase64) {
+          console.log(`  🖼  Frame extracted for Vision grounding`);
+        } else {
+          console.log(`  ⚠️  Frame extraction failed — narration will use metadata only`);
+        }
+
+        // Vision-grounded narration: Claude sees the actual video frame
         const scene = await selectScene(filename, [], {
           title: brief.source_title,
           hook: brief.hook,
           topic_name: brief.topic_name,
           duration_seconds: brief.duration_seconds,
           viral_trigger: brief.viral_trigger,
+          frameBase64,
         });
-        console.log(`  🎬 Scene (no-SRT): ${scene.summary}`);
+        console.log(`  🎬 Scene (Vision): ${scene.summary}`);
 
         const finalPath = resolve(finalDir, `${brief.id}.mp4`);
         const musicPath = await pickMusicTrack();

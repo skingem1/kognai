@@ -38,14 +38,18 @@ interface BriefContext {
   topic_name: string;
   duration_seconds: number;
   viral_trigger: string;
+  frameBase64?: string;  // base64 JPEG frame extracted from the actual video
 }
 
 function buildPrompt(brief: BriefContext, transcript: SrtSegment[]): string {
   const dur = brief.duration_seconds;
   const hasTranscript = transcript.length > 0;
+  const hasFrame = !!brief.frameBase64;
   const transcriptBlock = hasTranscript
     ? `TRANSCRIPT (with timestamps in seconds):\n${transcriptText(transcript).split('\n').slice(0, 120).join('\n')}`
-    : `TRANSCRIPT: None available (silent film or no audio)`;
+    : hasFrame
+      ? `TRANSCRIPT: None — but you are seeing an actual frame from this video above. Describe ONLY what you literally see in the frame when writing narration.`
+      : `TRANSCRIPT: None available (silent film or no audio)`;
 
   // Distribute narration evenly across clip
   const segCount = 6;
@@ -94,10 +98,26 @@ export async function selectScene(
   const prompt = buildPrompt(brief, transcript);
 
   for (let attempt = 1; attempt <= 2; attempt++) {
+    // When a real video frame is available, send it as a Vision message
+    // so Claude narrates what's actually on screen — not what the brief says.
+    const userContent = brief.frameBase64
+      ? [
+          {
+            type: 'image' as const,
+            source: {
+              type: 'base64' as const,
+              media_type: 'image/jpeg' as const,
+              data: brief.frameBase64,
+            },
+          },
+          { type: 'text' as const, text: prompt },
+        ]
+      : prompt;
+
     const msg = await client.messages.create({
       model: MODEL,
       max_tokens: 800,
-      messages: [{ role: 'user', content: prompt }],
+      messages: [{ role: 'user', content: userContent }],
     });
     const raw = msg.content[0].type === 'text' ? msg.content[0].text.trim() : '';
     try {

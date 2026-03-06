@@ -16,13 +16,13 @@ interface PixabayVideoVariant {
   url: string;
   width: number;
   height: number;
-  size: number;    // bytes
+  size: number;       // bytes
+  thumbnail?: string; // Pixabay CDN thumbnail URL (e.g. https://cdn.pixabay.com/video/...)
 }
 
 interface PixabayHit {
   id: number;
   pageURL: string;
-  picture_id: string;  // Vimeo CDN ID — used to construct thumbnail URL
   duration: number;
   views: number;
   downloads: number;
@@ -52,9 +52,17 @@ function pickBestVariant(hit: PixabayHit): PixabayVideoVariant {
   throw new Error(`No valid video URL for Pixabay hit ${hit.id}`);
 }
 
-/** Construct Vimeo CDN thumbnail URL from Pixabay picture_id. */
+/**
+ * Get thumbnail URL from the best-quality variant that has one.
+ * Falls back through large → medium → small. Returns '' if none available.
+ */
 function thumbnailUrl(hit: PixabayHit): string {
-  return `https://i.vimeocdn.com/video/${hit.picture_id}_640x360.jpg`;
+  return (
+    hit.videos.large.thumbnail  ||
+    hit.videos.medium.thumbnail ||
+    hit.videos.small.thumbnail  ||
+    ''
+  );
 }
 
 /**
