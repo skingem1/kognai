@@ -1,0 +1,77 @@
+{
+  "sprint_id": "sprint-054",
+  "phase": "Phase 1 — TikTok Content Agent",
+  "title": "Video Downloader + Clip Extractor — ffmpeg Pipeline",
+  "status": "active",
+  "created_at": "2026-03-05",
+  "owner": "messi",
+  "goal": "For each approved TikTok brief in tiktok_briefs, download the source video from Internet Archive, extract a vertical (9:16) clip of brief.duration_seconds using ffmpeg, and store the clip path back to the brief row. Output = a folder of ready-to-post MP4 clips at ~/kognai/clips/.",
+  "tasks": [
+    {
+      "id": "VD-001",
+      "agent": "macgyver",
+      "type": "feature",
+      "priority": "critical",
+      "status": "pending",
+      "task_target": "local",
+      "dependencies": [],
+      "description": "ia-downloader.ts — fetch IA metadata, select best video file, download",
+      "context": "Create /Users/tarekmnif/kognai/workspace/tools/clip-maker/src/ia-downloader.ts\n\nFetches video file metadata from the Internet Archive metadata API and downloads the best available video file to a local directory.\n\nExports:\n```typescript\nexport interface IAVideoFile {\n  filename: string;\n  format: string;\n  sizeBytes: number;\n  url: string;\n}\n\n// Returns the best video file for an IA identifier (priority: 512Kb MPEG4 > h.264 > Ogg Video > Cinepack)\nexport async function getBestVideoFile(identifier: string): Promise<IAVideoFile | null>;\n\n// Downloads the video to destDir/{identifier}.mp4, skips if already exists.\n// Returns local file path.\nexport async function downloadVideo(\n  identifier: string,\n  destDir: string,\n  onProgress?: (pct: number) => void\n): Promise<string>;\n```\n\nImplementation:\n1. Fetch `https://archive.org/metadata/{identifier}`\n2. From `data.files[]`, find video files by extension (.mp4, .avi, .ogv, .mpeg, .mkv)\n3. Priority order for format selection:\n   - '512Kb MPEG4' (fast download, good quality)\n   - 'h.264' (best quality if not too large — skip if >200MB)\n   - 'Ogg Video'\n   - 'Cinepack'\n   - any .mp4 as fallback\n4. Download URL: `https://archive.org/download/{identifier}/{filename}`\n5. Stream download with progress: report % every 10%\n6. Output path: `{destDir}/{identifier}.mp4`\n7. If file already exists and size matches, skip download\n\nUse native fetch (Node 18+). No extra deps. Max 80 lines.",
+      "deliverables": {
+        "code": ["/Users/tarekmnif/kognai/workspace/tools/clip-maker/src/ia-downloader.ts"]
+      },
+      "acceptance_criteria": "getBestVideoFile('Experime1940') returns a non-null IAVideoFile with url containing 'archive.org/download'"
+    },
+    {
+      "id": "VD-002",
+      "agent": "macgyver",
+      "type": "feature",
+      "priority": "critical",
+      "status": "pending",
+      "task_target": "local",
+      "dependencies": ["VD-001"],
+      "description": "clip-extractor.ts — ffmpeg: trim + vertical 9:16 crop → MP4",
+      "context": "Create /Users/tarekmnif/kognai/workspace/tools/clip-maker/src/clip-extractor.ts\n\nUses fluent-ffmpeg + ffmpeg-static to extract a TikTok-ready vertical clip from a downloaded video.\n\nExports:\n```typescript\nexport interface ClipOptions {\n  startSeconds?: number;  // default: 10 (skip intros/title cards)\n  durationSeconds: number;  // from brief.duration_seconds\n  width?: number;   // default: 1080\n  height?: number;  // default: 1920\n}\n\nexport async function extractClip(\n  inputPath: string,\n  outputPath: string,\n  opts: ClipOptions\n): Promise<void>;\n```\n\nffmpeg pipeline:\n1. Seek to startSeconds\n2. Extract durationSeconds of video\n3. Crop to 9:16 aspect ratio (center crop landscape → portrait):\n   - `crop=ih*9/16:ih:(iw-ih*9/16)/2:0` — crops width to 9/16 of height, centered horizontally\n4. Scale to 1080x1920\n5. Video: libx264, crf 23, preset fast\n6. Audio: aac, 128k (or no audio if input has none)\n7. Output: MP4\n\nHandle case where source is narrower than 9:16: pad with black instead of cropping\n  - Use `scale=1080:1920:force_original_aspect_ratio=decrease,pad=1080:1920:(ow-iw)/2:(oh-ih)/2`\n\nUse ffmpeg-static for the binary path:\n```typescript\nimport ffmpegPath from 'ffmpeg-static';\nimport ffmpeg from 'fluent-ffmpeg';\nffmpeg.setFfmpegPath(ffmpegPath!);\n```\n\nMax 70 lines.",
+      "deliverables": {
+        "code": ["/Users/tarekmnif/kognai/workspace/tools/clip-maker/src/clip-extractor.ts"]
+      },
+      "acceptance_criteria": "extractClip on a downloaded .mp4 produces a 1080x1920 MP4 of the specified duration"
+    },
+    {
+      "id": "VD-003",
+      "agent": "macgyver",
+      "type": "feature",
+      "priority": "critical",
+      "status": "pending",
+      "task_target": "local",
+      "dependencies": ["VD-001", "VD-002"],
+      "description": "clip-runner.ts + package.json + DB migration (clip_path/clip_status on tiktok_briefs)",
+      "context": "Create:\n- /Users/tarekmnif/kognai/workspace/tools/clip-maker/src/clip-runner.ts\n- /Users/tarekmnif/kognai/workspace/tools/clip-maker/package.json\n\nAlso output SQL migration at top of clip-runner.ts as a comment:\n```sql\n-- Run in Supabase dashboard before first use:\nALTER TABLE tiktok_briefs ADD COLUMN IF NOT EXISTS clip_path TEXT;\nALTER TABLE tiktok_briefs ADD COLUMN IF NOT EXISTS clip_status TEXT NOT NULL DEFAULT 'pending';\n```\n\nExports:\n```typescript\nexport interface ClipRunConfig {\n  limit?: number;         // max briefs to process (default: 5)\n  status_filter?: string; // 'approved' (default) | 'draft' (for testing)\n  start_seconds?: number; // clip start offset in source video (default: 10)\n  clips_dir?: string;     // output directory (default: ~/kognai/clips)\n  dry_run?: boolean;      // download + extract but don't update DB\n}\n\nexport interface ClipRunResult {\n  processed: number;\n  clips_made: number;\n  clips_stored: number;\n  errors: string[];\n  duration_ms: number;\n}\n\nexport async function runClipMaker(config: ClipRunConfig): Promise<ClipRunResult>;\n```\n\nPipeline:\n1. Query tiktok_briefs WHERE status = config.status_filter (default: 'approved') AND clip_status = 'pending' ORDER BY score DESC LIMIT limit\n2. Ensure clips_dir exists (mkdir -p)\n3. For each brief:\n   a. downloadVideo(brief.ia_identifier, downloads_dir) — temp storage at ~/kognai/downloads/\n   b. const outputPath = path.join(clips_dir, `{brief.id}.mp4`)\n   c. extractClip(videoPath, outputPath, { startSeconds, durationSeconds: brief.duration_seconds })\n   d. If !dry_run: UPDATE tiktok_briefs SET clip_path={outputPath}, clip_status='ready' WHERE id={brief.id}\n   e. Log: `[clip-maker] [T03] \"Soviet scientists...\" → clips/abc123.mp4 (28s)`\n4. Return ClipRunResult\n\nEntry point:\n```typescript\nif (import.meta.url === `file://${process.argv[1]}`) {\n  const isDryRun = process.argv.includes('--dry-run');\n  const isDraft = process.argv.includes('--draft');  // use draft briefs for testing\n  runClipMaker({\n    limit: 5,\n    status_filter: isDraft ? 'draft' : 'approved',\n    dry_run: isDryRun,\n  }).then(r => {\n    console.log(`\\n=== DONE: ${r.clips_made} clips made, ${r.clips_stored} stored ===`);\n    if (r.errors.length) console.log('Errors:', r.errors);\n  });\n}\n```\n\npackage.json:\n```json\n{\n  \"name\": \"clip-maker\",\n  \"version\": \"0.1.0\",\n  \"type\": \"module\",\n  \"scripts\": {\n    \"run\": \"tsx src/clip-runner.ts\",\n    \"test\": \"tsx src/clip-runner.ts --draft --dry-run\",\n    \"draft\": \"tsx src/clip-runner.ts --draft\"\n  },\n  \"dependencies\": {\n    \"@supabase/supabase-js\": \"^2.0.0\",\n    \"dotenv\": \"^16.0.0\",\n    \"ffmpeg-static\": \"^5.2.0\",\n    \"fluent-ffmpeg\": \"^2.1.3\",\n    \"tsx\": \"^4.0.0\"\n  },\n  \"devDependencies\": {\n    \"@types/fluent-ffmpeg\": \"^2.1.21\"\n  }\n}\n```\nMax 100 lines.",
+      "deliverables": {
+        "code": [
+          "/Users/tarekmnif/kognai/workspace/tools/clip-maker/src/clip-runner.ts",
+          "/Users/tarekmnif/kognai/workspace/tools/clip-maker/package.json"
+        ],
+        "sql": "ALTER TABLE migration for clip_path and clip_status (in comment block)"
+      },
+      "acceptance_criteria": "runClipMaker({ limit: 1, status_filter: 'draft', dry_run: true }) downloads a video and extracts a clip without DB writes"
+    },
+    {
+      "id": "VD-004",
+      "agent": "guardiola",
+      "type": "review",
+      "priority": "critical",
+      "status": "pending",
+      "task_target": "local",
+      "dependencies": ["VD-001", "VD-002", "VD-003"],
+      "description": "Guardiola review — clip maker pipeline",
+      "context": "Review all 3 files:\n- /Users/tarekmnif/kognai/workspace/tools/clip-maker/src/ia-downloader.ts\n- /Users/tarekmnif/kognai/workspace/tools/clip-maker/src/clip-extractor.ts\n- /Users/tarekmnif/kognai/workspace/tools/clip-maker/src/clip-runner.ts\n\nCheck:\n1. Download reliability: does downloadVideo skip already-downloaded files? Does it stream (not buffer entire file in memory)?\n2. Video selection: is the format priority correct? Does it avoid files >200MB?\n3. Clip quality: does extractClip produce 9:16 output at 1080x1920? Does it handle narrow-source videos with padding?\n4. Error isolation: does a download failure on one brief allow others to continue?\n5. DB integrity: is clip_status updated atomically after clip is confirmed on disk?\n6. Output usability: would the clips be directly uploadable to TikTok/Reels/Shorts?\n\nVerdict: APPROVED or BLOCKED with specific file:line issues.",
+      "deliverables": {
+        "review": "APPROVED or BLOCKED"
+      },
+      "acceptance_criteria": "All 6 checks pass"
+    }
+  ],
+  "schema_version": "kognai-v1",
+  "notes": "Sprint-054 closes the loop from raw IA metadata → ready-to-post vertical video. Output clips at ~/kognai/clips/ are named by brief UUID. Next sprint (055): overlay text hook on clip + export final TikTok-ready video with caption burned in."
+}
