@@ -79,7 +79,7 @@ Return JSON only:
 
 Narration rules:
 - First segment always: start=0, end=${Math.round(segDur)} (the hook moment)
-- Each segment: exactly 3-7 words, ALL CAPS optional for emphasis
+- Each segment: STRICT MAX 6 words — count them, never exceed 6. No exceptions.
 - Style: "In 1940..." / "Scientists discovered..." / "This changed EVERYTHING"
 - Return ONLY valid JSON.`;
 }

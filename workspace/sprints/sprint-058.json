@@ -1,0 +1,43 @@
+{
+  "sprint": "058",
+  "title": "Video Punch — Zoom Effect, Caption Fixes, Color Variety",
+  "goal": "Make stock footage clips visually impactful: zoom-punch intro (1.18x→1x over 2.5s), brightness flash at t=0, 5 random caption color presets, text wrapping to prevent truncation, larger hook text in first 2s.",
+  "tasks": [
+    {
+      "id": "VP8-001",
+      "title": "Caption text wrapping",
+      "file": "tools/clip-maker/src/caption-composer.ts",
+      "description": "Add wrapNarration() helper that wraps at 20 chars/line for normal segments and 18 for the hook. Prevents text from running off-screen."
+    },
+    {
+      "id": "VP8-002",
+      "title": "Caption color presets",
+      "file": "tools/clip-maker/src/caption-composer.ts",
+      "description": "Define 5 CAPTION_PRESETS (white/black, yellow/black, cyan/black, orange/black, neon-green/black). Pick one at random per clip and apply to all narration drawtext filters."
+    },
+    {
+      "id": "VP8-003",
+      "title": "Hook text impact — larger first segment",
+      "file": "tools/clip-maker/src/caption-composer.ts",
+      "description": "First narration segment (i===0) rendered at fontsize=98, vertically centered (y=(h-text_h)/2). Remaining segments at fontsize=68, y=130. All segments get 0.15s alpha fade-in."
+    },
+    {
+      "id": "VP8-004",
+      "title": "Zoom-punch intro effect",
+      "file": "tools/clip-maker/src/caption-composer.ts",
+      "description": "Replace fixed [fg] scale with eval=frame expression: w='1080*(1+0.18*lt(t,2.5)*(1-t/2.5))'. At t=0 fg is 18% wider than frame (cropped center = zoomed in). Smoothly pulls back to 1080px by t=2.5s."
+    },
+    {
+      "id": "VP8-005",
+      "title": "Brightness flash at t=0",
+      "file": "tools/clip-maker/src/caption-composer.ts",
+      "description": "Insert eq=brightness='0.2*exp(-4*t)' stage after subtitle burn. Creates a quick brightness pop that fades by t=0.5s, reinforcing the opening impact."
+    },
+    {
+      "id": "VP8-006",
+      "title": "Enforce shorter narration segments",
+      "file": "tools/clip-maker/src/scene-selector.ts",
+      "description": "Update prompt: 'STRICT MAX 6 words per segment — never exceed 6 words'. Reduces probability of long text that wraps badly or appears truncated."
+    }
+  ]
+}

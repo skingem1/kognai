@@ -2,7 +2,7 @@
  * caption-composer.ts
  * Single-pass ffmpeg: blurred background composite + SRT word captions (bottom)
  * + Claude storytelling narration overlay (top) + optional background music.
- * Replaces clip-extractor + text-overlay.
+ * V3: zoom-punch intro, brightness flash, caption color variety, text wrapping.
  */
 
 import ffmpegStatic from 'ffmpeg-static';
@@ -17,6 +17,17 @@ import type { NarrationSegment } from './scene-selector.js';
 Ffmpeg.setFfmpegPath(ffmpegStatic!);
 
 const FONT = '/System/Library/Fonts/Supplemental/Impact.ttf';
+
+// TikTok-style caption color presets — one picked at random per clip
+const CAPTION_PRESETS = [
+  { fontcolor: 'white',    bordercolor: 'black' },
+  { fontcolor: 'yellow',   bordercolor: 'black' },
+  { fontcolor: 'cyan',     bordercolor: 'black' },
+  { fontcolor: 'orange',   bordercolor: 'black' },
+  { fontcolor: '0x39FF14', bordercolor: 'black' }, // neon green
+] as const;
+
+type CaptionPreset = typeof CAPTION_PRESETS[number];
 
 export interface ComposeOptions {
   startSeconds: number;
@@ -59,22 +70,57 @@ function writeSrtFile(segments: SrtSegment[], hash: string): string {
   return path;
 }
 
+/**
+ * Wrap narration text at maxCharsPerLine for drawtext multi-line rendering.
+ * Uses \n which drawtext reads from textfile as a line break.
+ */
+function wrapNarration(text: string, maxCharsPerLine: number): string {
+  const words = text.trim().split(/\s+/);
+  const lines: string[] = [];
+  let cur = '';
+  for (const w of words) {
+    const attempt = cur ? `${cur} ${w}` : w;
+    if (attempt.length > maxCharsPerLine && cur) {
+      lines.push(cur);
+      cur = w;
+    } else {
+      cur = attempt;
+    }
+  }
+  if (cur) lines.push(cur);
+  return lines.join('\n');
+}
+
 /** Build a chain of drawtext filters for narration segments */
-function narrationFilter(segments: NarrationSegment[], tmpFiles: string[]): string {
+function narrationFilter(
+  segments: NarrationSegment[],
+  tmpFiles: string[],
+  preset: CaptionPreset,
+): string {
   return segments.map((seg, i) => {
+    const isHook = i === 0;
+
+    // Hook: max 18 chars/line at 98px centered; rest: max 20 chars at 68px near top
+    const text = wrapNarration(seg.text.toUpperCase(), isHook ? 18 : 20);
     const txt = resolve('/tmp', `narr_${i}_${Date.now()}.txt`);
-    writeFileSync(txt, seg.text.toUpperCase());
+    writeFileSync(txt, text);
     tmpFiles.push(txt);
+
+    const fontSize = isHook ? 98 : 68;
+    const yPos    = isHook ? '(h-text_h)/2' : '130';
+    const fadeIn  = `if(lt(t-${seg.start},0.15),(t-${seg.start})/0.15,1)`;
+
     return [
       `drawtext=fontfile=${FONT}`,
       `textfile=${txt}`,
-      `fontsize=72`,
-      `fontcolor=white`,
-      `borderw=4`,
-      `bordercolor=black`,
-      `line_spacing=8`,
+      `fontsize=${fontSize}`,
+      `fontcolor=${preset.fontcolor}`,
+      `borderw=5`,
+      `bordercolor=${preset.bordercolor}`,
+      `line_spacing=10`,
       `x=(w-text_w)/2`,
-      `y=160`,
+      `y=${yPos}`,
+      `alpha='${fadeIn}'`,
       `enable='between(t,${seg.start},${seg.end})'`,
     ].join(':');
   }).join(',');
@@ -87,16 +133,19 @@ export async function composeClip(
 ): Promise<void> {
   await mkdir(dirname(outputPath), { recursive: true });
 
-  const hash = createHash('md5').update(inputPath + opts.startSeconds).digest('hex').slice(0, 8);
-  const srtPath = opts.srtSegments.length > 0 ? writeSrtFile(opts.srtSegments, hash) : null;
+  const preset   = CAPTION_PRESETS[Math.floor(Math.random() * CAPTION_PRESETS.length)];
+  const hash     = createHash('md5').update(inputPath + opts.startSeconds).digest('hex').slice(0, 8);
+  const srtPath  = opts.srtSegments.length > 0 ? writeSrtFile(opts.srtSegments, hash) : null;
   const tmpFiles: string[] = srtPath ? [srtPath] : [];
 
   const cleanup = () => tmpFiles.forEach(f => { if (existsSync(f)) unlinkSync(f); });
 
-  // Step 1: blurred bg composite filter
+  // Step 1: blurred bg composite + zoom-punch (fg starts 18% wider, pulls back to 1080 by t=2.5s)
+  // scale=eval=frame re-evaluates w per frame; lt(t,2.5) guards so after 2.5s w stays at 1080.
+  // When fg > bg, overlay clips naturally — the center crop creates the zoom-in feel.
   const bgFilter = [
     `[0:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,boxblur=40:3[bg]`,
-    `[0:v]scale=1080:-2[fg]`,
+    `[0:v]scale=w='1080*(1+0.18*lt(t,2.5)*(1-t/2.5))':h=-2:eval=frame[fg]`,
     `[bg][fg]overlay=(W-w)/2:(H-h)/2[composed]`,
   ].join(';');
 
@@ -109,10 +158,12 @@ export async function composeClip(
     'MarginL=20', 'MarginR=20', 'MarginV=80', 'Alignment=2',
   ].join(',');
   const afterSub = srtPath
-    ? `[composed]subtitles='${srtPath}':force_style='${srtStyle}'[sub]`
-    : `[composed]null[sub]`;
+    ? `[composed]subtitles='${srtPath}':force_style='${srtStyle}'[subraw]`
+    : `[composed]null[subraw]`;
 
-  // Step 3: narration drawtext chain on top
+  // Step 3: Brightness flash at t=0 — quick pop that fades by t=0.5s for opening impact
+  const flashFilter = `[subraw]eq=brightness='0.2*exp(-4*t)'[sub]`;
+
   // Step 4: music — if provided, trim music to clip duration and mix as audio
   const musicInputIdx = opts.musicPath ? 1 : null;
   const audioFilter = musicInputIdx !== null
@@ -120,8 +171,8 @@ export async function composeClip(
     : '';
 
   try {
-    const narrFilter = narrationFilter(opts.narration, tmpFiles);
-    const fullFilter = `${bgFilter};${afterSub};[sub]${narrFilter}[out]${audioFilter}`;
+    const narrFilter = narrationFilter(opts.narration, tmpFiles, preset);
+    const fullFilter = `${bgFilter};${afterSub};${flashFilter};[sub]${narrFilter}[out]${audioFilter}`;
 
     return await new Promise<void>((res, rej) => {
       const cmd = Ffmpeg(inputPath)
