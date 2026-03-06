@@ -1,0 +1,32 @@
+{
+  "sprint": "059",
+  "title": "Claude Vision Viral Pre-Selection Scorer",
+  "goal": "Replace weak metadata proxies (duration/resolution for Pexels, engagement for Pixabay) with Claude Vision scoring on thumbnails before any clip is selected. Based on viral_detection_upgrade_report.md — implements Stage 3 (Content Understanding) using Claude Haiku as the multimodal scorer.",
+  "source": "viral_detection_upgrade_report.md — Method 9 (Multimodal LLM Frame Analysis), adapted to use Claude Vision instead of Gemini/GPT-4o for zero-infrastructure integration.",
+  "tasks": [
+    {
+      "id": "VS9-001",
+      "title": "viral-scorer.ts",
+      "file": "tools/tiktok-briefs/src/viral-scorer.ts",
+      "description": "Claude Haiku Vision scorer. Accepts thumbnail URL + metadata hint. Returns ViralScore: clip_worthy, hook_score (0-10), emotional_trigger, motion_quality, topic_category, reasoning, composite_score (0-100). Composite = hook(40%) + emotion(35%) + motion(25%). Never throws — returns FALLBACK_SCORE on failure. Skips when SKIP_VISION_SCORING=1."
+    },
+    {
+      "id": "VS9-002",
+      "title": "pexels-client.ts update",
+      "file": "tools/tiktok-briefs/src/pexels-client.ts",
+      "description": "Add image field to PexelsVideo interface. After API fetch, score all thumbnails in parallel via Promise.allSettled. Update item.score with composite_score. Filter out clip_worthy=false items. Remove old deriveScore() proxy."
+    },
+    {
+      "id": "VS9-003",
+      "title": "pixabay-client.ts update",
+      "file": "tools/tiktok-briefs/src/pixabay-client.ts",
+      "description": "Add picture_id field to PixabayHit. Construct thumbnail URL as https://i.vimeocdn.com/video/{picture_id}_640x360.jpg. Score all thumbnails in parallel. Update score with composite_score * engagement_boost multiplier (preserves Pixabay's existing engagement signal). Filter out clip_worthy=false items."
+    },
+    {
+      "id": "VS9-004",
+      "title": "source-brief-runner.ts update",
+      "file": "tools/tiktok-briefs/src/source-brief-runner.ts",
+      "description": "Set process.env.SKIP_VISION_SCORING='1' when dryRun=true so dry runs stay fast. Log vision scoring status in the header."
+    }
+  ]
+}

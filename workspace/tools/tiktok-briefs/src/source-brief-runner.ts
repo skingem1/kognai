@@ -20,7 +20,7 @@ import { STOCK_QUERIES, type VideoSourceItem, type VideoSourceName } from './vid
 import { insertBrief, type TikTokBrief } from './briefs-storage.js';
 
 const MODEL  = 'claude-haiku-4-5-20251001';
-const SPRINT = 'sprint-057';
+const SPRINT = 'sprint-059';
 const DELAY  = 700; // ms between Claude calls
 
 let _anthropic: Anthropic | null = null;
@@ -162,7 +162,12 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const pexelOnly  = process.argv.includes('--pexels');
   const pixabayOnly = process.argv.includes('--pixabay');
   const sources: VideoSourceName[] = pexelOnly ? ['pexels'] : pixabayOnly ? ['pixabay'] : ['pexels', 'pixabay'];
-  console.log(`\n=== SOURCE BRIEF RUNNER (${sources.join('+')} | ${dryRun ? 'DRY RUN' : 'LIVE'}) ===`);
+
+  // Dry-run: skip Vision API calls to keep test runs fast and cheap
+  if (dryRun) process.env.SKIP_VISION_SCORING = '1';
+
+  const visionStatus = dryRun ? 'SKIPPED (dry-run)' : 'ACTIVE';
+  console.log(`\n=== SOURCE BRIEF RUNNER (${sources.join('+')} | ${dryRun ? 'DRY RUN' : 'LIVE'} | Vision: ${visionStatus}) ===`);
   runSourceBriefs({ sources, dryRun })
     .catch(err => { console.error('Fatal:', err); process.exit(1); });
 }

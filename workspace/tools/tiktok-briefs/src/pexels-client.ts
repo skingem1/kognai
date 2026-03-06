@@ -1,12 +1,14 @@
 /**
  * pexels-client.ts
  * Search Pexels Videos API and return VideoSourceItem[].
+ * V2: Claude Vision pre-selection scoring replaces the duration/resolution proxy.
  *
  * Requires: PEXELS_API_KEY in environment.
  * Free tier: 200 req/hr, 20 000 req/month — https://www.pexels.com/api/
  */
 
 import type { VideoSourceItem } from './video-source-types.js';
+import { scoreFromThumbnail } from './viral-scorer.js';
 
 const BASE_URL = 'https://api.pexels.com/videos/search';
 
@@ -21,6 +23,7 @@ interface PexelsVideoFile {
 interface PexelsVideo {
   id: number;
   url: string;
+  image: string;     // thumbnail URL — used for Vision scoring
   duration: number;
   width: number;
   height: number;
@@ -40,23 +43,17 @@ interface PexelsResponse {
 function pickBestFile(files: PexelsVideoFile[]): PexelsVideoFile | undefined {
   const eligible = files.filter(f => f.link && f.width > 0 && f.width <= 1920);
   if (!eligible.length) return undefined;
-  // hd first, then highest width among eligible
   return [...eligible].sort((a, b) => {
     const qScore = (q: string) => (q === 'hd' ? 2 : 1);
     return (qScore(b.quality) * 10_000 + b.width) - (qScore(a.quality) * 10_000 + a.width);
   })[0];
 }
 
-/** Derive a 0-100 score from Pexels metadata (Pexels doesn't expose views). */
-function deriveScore(video: PexelsVideo): number {
-  // Proxy: longer duration + higher resolution = more production value
-  const durationScore = Math.min(video.duration / 60, 1) * 40;
-  const resScore = video.width >= 1920 ? 40 : video.width >= 1280 ? 25 : 10;
-  return Math.round(durationScore + resScore + 20); // base 20
-}
-
 /**
  * Search Pexels for videos matching the given query.
+ * All results are scored in parallel via Claude Vision before returning.
+ * Clips with clip_worthy=false are filtered out.
+ *
  * @param query       Pexels search string (e.g. "wildlife predator prey")
  * @param topicId     VIRAL_TOPICS id (e.g. "T01") — stored in the brief
  * @param perPage     Results to fetch (max 80 per Pexels API)
@@ -70,32 +67,52 @@ export async function searchPexels(
   if (!key) throw new Error('PEXELS_API_KEY not set in environment');
 
   const url = `${BASE_URL}?query=${encodeURIComponent(query)}&per_page=${perPage}&size=large`;
-  const res = await fetch(url, {
-    headers: { Authorization: key },
-  });
-
-  if (!res.ok) {
-    throw new Error(`Pexels API error ${res.status}: ${await res.text()}`);
-  }
+  const res = await fetch(url, { headers: { Authorization: key } });
+  if (!res.ok) throw new Error(`Pexels API error ${res.status}: ${await res.text()}`);
 
   const data = (await res.json()) as PexelsResponse;
 
-  return data.videos
-    .map((v): VideoSourceItem | null => {
+  // Build candidate list (file selection only — no score yet)
+  const candidates = data.videos
+    .map((v): { video: PexelsVideo; file: PexelsVideoFile } | null => {
       const best = pickBestFile(v.video_files);
-      if (!best) return null;
-      return {
-        source: 'pexels',
-        video_id: String(v.id),
-        title: `Pexels #${v.id} — ${query}`,
-        download_url: best.link,
-        width: best.width,
-        height: best.height,
-        duration: v.duration,
-        topic_id: topicId,
-        source_url: v.url,
-        score: deriveScore(v),
-      };
+      return best ? { video: v, file: best } : null;
     })
-    .filter((v): v is VideoSourceItem => v !== null);
+    .filter((c): c is { video: PexelsVideo; file: PexelsVideoFile } => c !== null);
+
+  // Score all thumbnails in parallel via Claude Vision
+  const scoreResults = await Promise.allSettled(
+    candidates.map(({ video }) =>
+      scoreFromThumbnail(
+        video.image,
+        `Pexels query="${query}" duration=${video.duration}s res=${video.width}x${video.height}`,
+      ),
+    ),
+  );
+
+  // Zip candidates + scores — filter out non-worthy clips
+  const items: VideoSourceItem[] = [];
+  for (let i = 0; i < candidates.length; i++) {
+    const { video, file } = candidates[i];
+    const result = scoreResults[i];
+    const vs = result.status === 'fulfilled' ? result.value : undefined;
+
+    if (vs && !vs.clip_worthy) continue;   // Vision rejected — skip
+
+    items.push({
+      source: 'pexels',
+      video_id: String(video.id),
+      title: `Pexels #${video.id} — ${query}`,
+      description: vs ? `${vs.emotional_trigger} | ${vs.reasoning}` : undefined,
+      download_url: file.link,
+      width: file.width,
+      height: file.height,
+      duration: video.duration,
+      topic_id: topicId,
+      source_url: video.url,
+      score: vs?.composite_score ?? 50,
+    });
+  }
+
+  return items;
 }
