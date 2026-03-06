@@ -12,7 +12,7 @@
 import { config } from 'dotenv';
 import { resolve } from 'path';
 // Load from vault .env (works from any CWD)
-config({ path: resolve(process.env.HOME ?? '~', 'kognai', '.env') });
+config({ path: resolve(process.env.HOME ?? '~', 'kognai', '.env'), override: true });
 import { VIRAL_TOPICS, TOP_10_TOPICS, type TopicConfig } from './viral-topics.js';
 import { searchByTopic, type IAItem } from './ia-client.js';
 import { scoreItem, type ScoredItem } from './content-scorer.js';

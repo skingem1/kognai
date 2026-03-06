@@ -1,0 +1,77 @@
+{
+  "sprint_id": "sprint-053",
+  "phase": "Phase 1 — TikTok Content Agent",
+  "title": "TikTok Brief Generator — AI-Powered Content Briefs",
+  "status": "active",
+  "created_at": "2026-03-05",
+  "owner": "messi",
+  "goal": "For each top-scored IA item in ia_content, use Claude (Anthropic API) to generate a structured TikTok video brief: hook text, caption, hashtags, music direction, duration. Store briefs in tiktok_briefs table. Output = a ready-to-execute production queue for the @skingem account.",
+  "tasks": [
+    {
+      "id": "TB-001",
+      "agent": "macgyver",
+      "type": "feature",
+      "priority": "critical",
+      "status": "pending",
+      "task_target": "local",
+      "dependencies": [],
+      "description": "tiktok_briefs table + briefs-storage.ts",
+      "context": "Create /Users/tarekmnif/kognai/workspace/tools/tiktok-briefs/src/briefs-storage.ts\n\nAlso output the SQL for the tiktok_briefs table (add as a comment block at top of file — user will run in Supabase dashboard).\n\nTable schema:\n```sql\nCREATE TABLE IF NOT EXISTS tiktok_briefs (\n  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),\n  ia_identifier TEXT NOT NULL REFERENCES ia_content(identifier),\n  topic_id TEXT NOT NULL,\n  topic_name TEXT NOT NULL,\n  source_url TEXT NOT NULL,\n  source_title TEXT NOT NULL,\n  hook TEXT NOT NULL,             -- first 3-second on-screen text\n  caption TEXT NOT NULL,          -- full TikTok caption (under 2200 chars)\n  hashtags TEXT[] NOT NULL,       -- 5-10 hashtags without #\n  music_direction TEXT NOT NULL,  -- genre + mood + example track style\n  duration_seconds INT NOT NULL,  -- recommended clip length (15-34)\n  platform TEXT NOT NULL,         -- 'tiktok' | 'instagram_reels' | 'youtube_shorts'\n  viral_trigger TEXT NOT NULL,    -- primary trigger from topic config\n  score FLOAT NOT NULL,           -- copied from ia_content.score\n  status TEXT NOT NULL DEFAULT 'draft',  -- draft | approved | posted | rejected\n  generated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),\n  sprint_id TEXT NOT NULL,\n  posted_at TIMESTAMPTZ,\n  post_url TEXT\n);\n\nCREATE INDEX IF NOT EXISTS tiktok_briefs_status_idx ON tiktok_briefs (status, score DESC);\nCREATE INDEX IF NOT EXISTS tiktok_briefs_topic_idx ON tiktok_briefs (topic_id);\n```\n\nExports:\n```typescript\nimport { createClient } from '@supabase/supabase-js';\n\nexport interface TikTokBrief {\n  id?: string;\n  ia_identifier: string;\n  topic_id: string;\n  topic_name: string;\n  source_url: string;\n  source_title: string;\n  hook: string;\n  caption: string;\n  hashtags: string[];\n  music_direction: string;\n  duration_seconds: number;\n  platform: 'tiktok' | 'instagram_reels' | 'youtube_shorts';\n  viral_trigger: string;\n  score: number;\n  status: 'draft' | 'approved' | 'posted' | 'rejected';\n  generated_at?: string;\n  sprint_id: string;\n  posted_at?: string;\n  post_url?: string;\n}\n\nexport async function insertBrief(brief: TikTokBrief): Promise<string>;  // returns id\nexport async function getDraftBriefs(limit?: number): Promise<TikTokBrief[]>;\nexport async function approveBrief(id: string): Promise<void>;\nexport async function markPosted(id: string, postUrl: string): Promise<void>;\n```\n\nUse SUPABASE_URL and SUPABASE_ANON_KEY from process.env. Max 90 lines.",
+      "deliverables": {
+        "code": ["/Users/tarekmnif/kognai/workspace/tools/tiktok-briefs/src/briefs-storage.ts"],
+        "sql": "tiktok_briefs table DDL (in comment block at top of file)"
+      },
+      "acceptance_criteria": "insertBrief with a valid TikTokBrief object returns a UUID string"
+    },
+    {
+      "id": "TB-002",
+      "agent": "macgyver",
+      "type": "feature",
+      "priority": "critical",
+      "status": "pending",
+      "task_target": "local",
+      "dependencies": ["TB-001"],
+      "description": "brief-generator.ts — Claude generates hook, caption, hashtags per IA item",
+      "context": "Create /Users/tarekmnif/kognai/workspace/tools/tiktok-briefs/src/brief-generator.ts\n\nUses the Anthropic API (claude-3-5-haiku-20241022 — fast + cheap) to generate structured TikTok briefs from IA item metadata + topic config.\n\nImports:\n```typescript\nimport Anthropic from '@anthropic-ai/sdk';\nimport type { StoredItem } from '../../ia-scraper/src/storage.js';\nimport type { TopicConfig } from '../../ia-scraper/src/viral-topics.js';\nimport { VIRAL_TOPICS } from '../../ia-scraper/src/viral-topics.js';\nimport type { TikTokBrief } from './briefs-storage.js';\n```\n\nExports:\n```typescript\nexport async function generateBrief(\n  item: StoredItem,\n  sprintId: string\n): Promise<TikTokBrief>;\n```\n\nImplementation:\n1. Find the topic config: `const topic = VIRAL_TOPICS.find(t => t.id === item.topic_id)`\n2. Build a prompt for Claude:\n```\nYou are a TikTok content strategist. Generate a viral content brief for this archival video.\n\nSOURCE:\nTitle: {item.title}\nDescription: {item.description ?? 'N/A'}\nURL: {item.source_url}\nTopic: {topic.name}\nViral triggers: {topic.triggers.join(', ')}\nCaption strategy from research: {topic.caption_strategy}\nMusic genre: {topic.music_genre}\nScore: {item.score}/100\n\nGenerate a JSON object with exactly these fields:\n{\n  \"hook\": \"<3-7 word on-screen text for first 3 seconds — punchy, creates immediate curiosity>\",\n  \"caption\": \"<full TikTok caption, 100-200 chars, with line breaks, engaging, matches hook energy>\",\n  \"hashtags\": [\"<5-8 hashtags WITHOUT the # symbol, mix of niche and broad>\"],\n  \"music_direction\": \"<1-2 sentences: specific genre, tempo, mood, and a royalty-free style reference>\",\n  \"duration_seconds\": <integer 15-34 for TikTok>,\n  \"viral_trigger\": \"<single word: the primary trigger from: awe|shock|amusement|inspiration|nostalgia|curiosity|satisfaction|debate>\"\n}\n\nReturn ONLY valid JSON. No explanation.\n```\n3. Parse the JSON response\n4. Build and return TikTokBrief object:\n```typescript\n{\n  ia_identifier: item.identifier,\n  topic_id: item.topic_id ?? '',\n  topic_name: topic?.name ?? '',\n  source_url: item.source_url,\n  source_title: item.title,\n  hook: parsed.hook,\n  caption: parsed.caption,\n  hashtags: parsed.hashtags,\n  music_direction: parsed.music_direction,\n  duration_seconds: parsed.duration_seconds,\n  platform: topic?.platform_priority[0] ?? 'tiktok',\n  viral_trigger: parsed.viral_trigger,\n  score: item.score,\n  status: 'draft',\n  sprint_id: sprintId,\n}\n```\n\nError handling: if Claude returns invalid JSON, retry once. If still invalid, throw with item identifier in message.\n\nUse ANTHROPIC_API_KEY from process.env. Max 100 lines.",
+      "deliverables": {
+        "code": ["/Users/tarekmnif/kognai/workspace/tools/tiktok-briefs/src/brief-generator.ts"]
+      },
+      "acceptance_criteria": "generateBrief() for a real StoredItem returns a TikTokBrief with hook <= 50 chars, hashtags.length >= 5, duration_seconds in [15,34]"
+    },
+    {
+      "id": "TB-003",
+      "agent": "macgyver",
+      "type": "feature",
+      "priority": "critical",
+      "status": "pending",
+      "task_target": "local",
+      "dependencies": ["TB-001", "TB-002"],
+      "description": "brief-runner.ts — pulls top IA items, generates briefs, stores them",
+      "context": "Create /Users/tarekmnif/kognai/workspace/tools/tiktok-briefs/src/brief-runner.ts\n\nAlso create /Users/tarekmnif/kognai/workspace/tools/tiktok-briefs/package.json\n\nThe runner pulls the top unused items from ia_content, generates a brief for each via Claude, stores them in tiktok_briefs, and marks IA items as used.\n\nExports:\n```typescript\nexport interface BriefRunConfig {\n  limit?: number;          // how many items to process (default 20)\n  sprint_id: string;\n  dry_run?: boolean;       // generate but don't store or mark used\n  topic_filter?: string;   // only process items with this topic_id (e.g. 'T01')\n  min_score?: number;      // default 40 (briefs only for high-confidence items)\n}\n\nexport interface BriefRunResult {\n  processed: number;\n  briefs_generated: number;\n  briefs_stored: number;\n  errors: string[];\n  duration_ms: number;\n  briefs: TikTokBrief[];  // all generated briefs (for dry_run inspection)\n}\n\nexport async function runBriefGenerator(config: BriefRunConfig): Promise<BriefRunResult>;\n```\n\nPipeline:\n1. Call getTopUnused(config.limit ?? 20) from ia-scraper storage\n2. Filter by config.min_score (default 40) and optional topic_filter\n3. For each item: call generateBrief(item, sprint_id)\n4. Log: `[brief-runner] [T02] \"Apollo 16 Launch\" → hook: \"The day we touched the moon\" (score: 65)`\n5. If !dry_run: insertBrief(brief) + markUsed(item.identifier)\n6. Return BriefRunResult\n\nRate limiting: 500ms delay between Claude calls to avoid rate limits.\n\nEntry point:\n```typescript\nif (import.meta.url === `file://${process.argv[1]}`) {\n  const isDryRun = process.argv.includes('--dry-run');\n  const topicFilter = process.argv.find(a => a.startsWith('--topic='))?.split('=')[1];\n  const config: BriefRunConfig = {\n    limit: 20,\n    min_score: 40,\n    sprint_id: 'sprint-053',\n    dry_run: isDryRun,\n    topic_filter: topicFilter,\n  };\n  runBriefGenerator(config).then(r => {\n    console.log(`\\n=== BRIEFS COMPLETE ===`);\n    console.log(`Generated: ${r.briefs_generated} | Stored: ${r.briefs_stored} | Errors: ${r.errors.length}`);\n    r.briefs.forEach((b, i) => {\n      console.log(`\\n${i+1}. [${b.topic_id}] ${b.source_title}`);\n      console.log(`   HOOK: ${b.hook}`);\n      console.log(`   CAPTION: ${b.caption.substring(0, 80)}...`);\n      console.log(`   HASHTAGS: #${b.hashtags.slice(0,4).join(' #')}`);\n      console.log(`   MUSIC: ${b.music_direction.substring(0, 60)}...`);\n      console.log(`   DURATION: ${b.duration_seconds}s | PLATFORM: ${b.platform}`);\n    });\n  });\n}\n```\n\npackage.json:\n```json\n{\n  \"name\": \"tiktok-briefs\",\n  \"version\": \"0.1.0\",\n  \"description\": \"Kognai TikTok brief generator — Claude-powered content briefs from IA items\",\n  \"type\": \"module\",\n  \"scripts\": {\n    \"run\": \"tsx src/brief-runner.ts\",\n    \"test\": \"tsx src/brief-runner.ts --dry-run\",\n    \"topic\": \"tsx src/brief-runner.ts --topic=\"\n  },\n  \"dependencies\": {\n    \"@anthropic-ai/sdk\": \"^0.20.0\",\n    \"@supabase/supabase-js\": \"^2.0.0\",\n    \"dotenv\": \"^16.0.0\",\n    \"tsx\": \"^4.0.0\"\n  }\n}\n```\nMax 100 lines.",
+      "deliverables": {
+        "code": [
+          "/Users/tarekmnif/kognai/workspace/tools/tiktok-briefs/src/brief-runner.ts",
+          "/Users/tarekmnif/kognai/workspace/tools/tiktok-briefs/package.json"
+        ]
+      },
+      "acceptance_criteria": "runBriefGenerator({ limit: 3, sprint_id: 'sprint-053', dry_run: true }) generates 3 briefs with valid hook/caption/hashtags, logs them to console"
+    },
+    {
+      "id": "TB-004",
+      "agent": "guardiola",
+      "type": "review",
+      "priority": "critical",
+      "status": "pending",
+      "task_target": "local",
+      "dependencies": ["TB-001", "TB-002", "TB-003"],
+      "description": "Guardiola review — TikTok brief generator pipeline",
+      "context": "Review all 3 files:\n- /Users/tarekmnif/kognai/workspace/tools/tiktok-briefs/src/briefs-storage.ts\n- /Users/tarekmnif/kognai/workspace/tools/tiktok-briefs/src/brief-generator.ts\n- /Users/tarekmnif/kognai/workspace/tools/tiktok-briefs/src/brief-runner.ts\n\nCheck:\n1. Prompt quality: is the Claude prompt specific enough to return consistent valid JSON?\n2. Error handling: does generateBrief retry on JSON parse failure?\n3. Rate limiting: is there a delay between Claude calls in brief-runner?\n4. Data integrity: does insertBrief store all fields? Does markUsed fire after insert?\n5. Type safety: do types flow correctly from StoredItem → TikTokBrief?\n6. Content quality: would the generated briefs be usable by a human video editor?\n\nVerdict: APPROVED or BLOCKED with specific file:line issues.",
+      "deliverables": {
+        "review": "APPROVED or BLOCKED"
+      },
+      "acceptance_criteria": "All 6 checks pass"
+    }
+  ],
+  "schema_version": "kognai-v1",
+  "notes": "Sprint-053 transforms raw IA metadata into actionable TikTok production briefs. Output is a tiktok_briefs table where status='draft' items are ready for human review and approval. Next sprint (054): video download + ffmpeg clip extraction from top approved briefs."
+}
