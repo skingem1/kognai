@@ -1,0 +1,59 @@
+{
+  "sprint_id": "sprint-055",
+  "phase": "Phase 1 — TikTok Content Agent",
+  "title": "Hook Text Overlay — Final TikTok-Ready Video",
+  "status": "active",
+  "created_at": "2026-03-05",
+  "owner": "messi",
+  "goal": "Take the vertical 1080x1920 clips from sprint-054, burn the hook text from brief.hook onto the first 4 seconds of each clip using ffmpeg drawtext (Impact font, white/black border, centered), and output final MP4s to ~/kognai/final/. Store final_path back to tiktok_briefs. Output = upload-ready TikTok videos.",
+  "tasks": [
+    {
+      "id": "OV-001",
+      "agent": "macgyver",
+      "type": "feature",
+      "priority": "critical",
+      "status": "pending",
+      "task_target": "local",
+      "dependencies": [],
+      "description": "text-overlay.ts — ffmpeg drawtext: hook text on clip for first 4 seconds",
+      "context": "Create /Users/tarekmnif/kognai/workspace/tools/clip-maker/src/text-overlay.ts\n\nAdds TikTok-style hook text overlay to a 1080x1920 clip using ffmpeg drawtext filter.\n\nExports:\n```typescript\nexport interface OverlayOptions {\n  hookText: string;          // brief.hook (5-8 words)\n  hookDuration?: number;     // seconds to show hook (default: 4)\n  fontSize?: number;         // default: 82\n  fontColor?: string;        // default: 'white'\n  borderWidth?: number;      // default: 4 (black stroke)\n}\n\nexport async function applyTextOverlay(\n  inputPath: string,\n  outputPath: string,\n  opts: OverlayOptions\n): Promise<void>;\n```\n\nImplementation:\n1. Word-wrap hookText at ~20 chars per line (split at word boundaries)\n2. Write wrapped text to a temp file (e.g. /tmp/hook_{hash}.txt) to avoid ffmpeg escaping issues\n3. Build drawtext filter:\n   ```\n   drawtext=\n     fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:\n     textfile={tmpFile}:\n     fontsize=82:\n     fontcolor=white:\n     borderw=4:\n     bordercolor=black:\n     line_spacing=8:\n     x=(w-text_w)/2:\n     y=(h/2)-180:\n     enable='between(t,0,{hookDuration})'\n   ```\n4. Apply via fluent-ffmpeg using .complexFilter or .videoFilter\n5. Copy audio stream unchanged (-c:a copy)\n6. H.264 video re-encode with crf 20, preset fast\n7. Clean up temp file after render\n\nWord-wrap helper:\n```typescript\nfunction wrapHook(text: string, maxChars = 20): string {\n  const words = text.split(' ');\n  const lines: string[] = [];\n  let cur = '';\n  for (const w of words) {\n    if (cur.length + w.length + 1 > maxChars && cur) {\n      lines.push(cur.trim());\n      cur = w + ' ';\n    } else {\n      cur += w + ' ';\n    }\n  }\n  if (cur.trim()) lines.push(cur.trim());\n  return lines.join('\\n');\n}\n```\n\nMax 65 lines.",
+      "deliverables": {
+        "code": ["/Users/tarekmnif/kognai/workspace/tools/clip-maker/src/text-overlay.ts"]
+      },
+      "acceptance_criteria": "applyTextOverlay on a 1080x1920 clip produces an MP4 with white Impact text visible in first 4s"
+    },
+    {
+      "id": "OV-002",
+      "agent": "macgyver",
+      "type": "feature",
+      "priority": "critical",
+      "status": "pending",
+      "task_target": "local",
+      "dependencies": ["OV-001"],
+      "description": "overlay-runner.ts + DB migration (final_path on tiktok_briefs)",
+      "context": "Add to /Users/tarekmnif/kognai/workspace/tools/clip-maker/src/overlay-runner.ts\n\nAlso add SQL migration comment at top of file:\n```sql\n-- Run in Supabase dashboard before first use:\nALTER TABLE tiktok_briefs ADD COLUMN IF NOT EXISTS final_path TEXT;\n```\n\nExports:\n```typescript\nexport interface OverlayRunConfig {\n  limit?: number;            // default: 5\n  status_filter?: string;    // 'approved' | 'draft' (default: 'draft' for testing)\n  clips_dir?: string;        // default: ~/kognai/clips\n  final_dir?: string;        // default: ~/kognai/final\n  dry_run?: boolean;\n}\n\nexport interface OverlayRunResult {\n  processed: number;\n  overlays_applied: number;\n  stored: number;\n  errors: string[];\n  duration_ms: number;\n}\n\nexport async function runOverlay(config: OverlayRunConfig): Promise<OverlayRunResult>;\n```\n\nPipeline:\n1. Query tiktok_briefs: status = status_filter, clip_status IN ('ready','pending'), final_path IS NULL, ORDER BY score DESC LIMIT limit\n   - Note: use 'pending' too so dry-run clips (never DB-updated) are included in testing\n2. For each brief:\n   a. clipPath = path.join(clips_dir, `{brief.id}.mp4`)\n   b. If clip doesn't exist on disk → skip with warning\n   c. finalPath = path.join(final_dir, `{brief.id}.mp4`)\n   d. applyTextOverlay(clipPath, finalPath, { hookText: brief.hook })\n   e. Log: `[overlay] [T03] \"Soviet scientists...\" → final/abc123.mp4`\n   f. If !dry_run: UPDATE tiktok_briefs SET final_path = finalPath WHERE id = brief.id\n3. Return OverlayRunResult\n\nEntry point (add --draft and --dry-run flags to existing clip-runner package.json scripts):\n```typescript\nif (import.meta.url === `file://${process.argv[1]}`) {\n  const isDryRun = process.argv.includes('--dry-run');\n  const isDraft = process.argv.includes('--draft');\n  runOverlay({\n    limit: 5,\n    status_filter: isDraft ? 'draft' : 'approved',\n    dry_run: isDryRun,\n  }).then(r => {\n    console.log(`\\n=== DONE: ${r.overlays_applied} overlays, ${r.stored} stored ===`);\n    if (r.errors.length) console.log('Errors:', r.errors);\n  }).catch(err => { console.error('Fatal:', err); process.exit(1); });\n}\n```\n\nUpdate package.json scripts to add:\n```json\n\"overlay\": \"tsx src/overlay-runner.ts --draft\",\n\"overlay:test\": \"tsx src/overlay-runner.ts --draft --dry-run\"\n```\n\nMax 80 lines.",
+      "deliverables": {
+        "code": ["/Users/tarekmnif/kognai/workspace/tools/clip-maker/src/overlay-runner.ts"],
+        "sql": "ALTER TABLE tiktok_briefs ADD COLUMN IF NOT EXISTS final_path TEXT"
+      },
+      "acceptance_criteria": "runOverlay({ status_filter: 'draft', dry_run: false }) produces final MP4s at ~/kognai/final/ with hook text burned in"
+    },
+    {
+      "id": "OV-003",
+      "agent": "guardiola",
+      "type": "review",
+      "priority": "critical",
+      "status": "pending",
+      "task_target": "local",
+      "dependencies": ["OV-001", "OV-002"],
+      "description": "Guardiola review — text overlay pipeline",
+      "context": "Review:\n- /Users/tarekmnif/kognai/workspace/tools/clip-maker/src/text-overlay.ts\n- /Users/tarekmnif/kognai/workspace/tools/clip-maker/src/overlay-runner.ts\n\nCheck:\n1. Text rendering: does the hook display for exactly hookDuration seconds? Is the drawtext filter correct syntax?\n2. Word wrap: does wrapHook correctly split long hooks (>20 chars) at word boundaries?\n3. Temp file cleanup: is the temp textfile deleted after ffmpeg finishes (or fails)?\n4. Clip discovery: does the runner skip gracefully if a clip file doesn't exist on disk?\n5. DB write: is final_path stored correctly? Does it only write after the file is confirmed on disk?\n6. Visual quality: at fontsize 82 with borderw 4 on 1080x1920, will the text be readable over any background?\n\nVerdict: APPROVED or BLOCKED.",
+      "deliverables": {
+        "review": "APPROVED or BLOCKED"
+      },
+      "acceptance_criteria": "All 6 checks pass"
+    }
+  ],
+  "schema_version": "kognai-v1",
+  "notes": "Sprint-055 produces the final upload-ready TikTok videos. ~/kognai/final/ contains the complete production queue. Next sprint (056): auto-upload to TikTok via TikTok Content Posting API (OAuth + video upload endpoint)."
+}

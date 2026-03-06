@@ -6,7 +6,10 @@
   "scripts": {
     "run": "tsx src/clip-runner.ts",
     "test": "tsx src/clip-runner.ts --draft --dry-run",
-    "draft": "tsx src/clip-runner.ts --draft"
+    "draft": "tsx src/clip-runner.ts --draft",
+    "overlay": "tsx src/overlay-runner.ts --draft",
+    "overlay:test": "tsx src/overlay-runner.ts --draft --dry-run",
+    "run:overlay": "tsx src/overlay-runner.ts --approved"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.0.0",
