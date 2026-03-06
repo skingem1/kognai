@@ -9,9 +9,13 @@
     "draft": "tsx src/clip-runner.ts --draft",
     "overlay": "tsx src/overlay-runner.ts --draft",
     "overlay:test": "tsx src/overlay-runner.ts --draft --dry-run",
-    "run:overlay": "tsx src/overlay-runner.ts --approved"
+    "run:overlay": "tsx src/overlay-runner.ts --approved",
+    "compose": "tsx src/compose-runner.ts --draft",
+    "compose:test": "tsx src/compose-runner.ts --draft --dry-run",
+    "run:compose": "tsx src/compose-runner.ts --approved"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.78.0",
     "@supabase/supabase-js": "^2.0.0",
     "dotenv": "^16.0.0",
     "ffmpeg-static": "^5.2.0",
