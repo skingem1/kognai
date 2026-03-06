@@ -123,11 +123,11 @@ function narrationFilter(
     // Role-aware rendering:
     //   Hook: 98px, vertically centered — maximum impact
     //   CTA:  72px, lower-third position (safe zone above TikTok UI)
-    //   Body: 68px, near top — out of way of visual content
+    //   Body: 68px, vertically centered — segments never overlap (each gated by enable=)
     const fontSize = isHook ? 98 : isCta ? 72 : 68;
     const yPos     = isHook ? '(h-text_h)/2'
                    : isCta  ? 'h*0.72-text_h/2'
-                   :          '130';
+                   :          '(h-text_h)/2';
 
     // CTA always white (visually distinct from content captions)
     const fontColor  = isCta ? 'white' : preset.fontcolor;
