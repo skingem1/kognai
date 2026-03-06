@@ -1,0 +1,110 @@
+{
+  "sprint_id": "sprint-057",
+  "phase": "Phase 1 — TikTok Content Agent",
+  "title": "Multi-Source Video Pipeline — Pexels + Pixabay HD Content",
+  "status": "active",
+  "created_at": "2026-03-05",
+  "owner": "messi",
+  "goal": "Replace old silent IA films with contemporary HD stock footage from Pexels and Pixabay. Extend tiktok_briefs schema for multi-source support, add Pexels/Pixabay API clients, new source-brief-runner that queries stock APIs per topic, and update compose-runner to download from any source URL (no IA-only dependency).",
+  "tasks": [
+    {
+      "id": "VS7-001",
+      "agent": "macgyver",
+      "type": "migration",
+      "priority": "critical",
+      "status": "pending",
+      "description": "DB migration — make ia_identifier nullable + add video_source / video_id / video_download_url to tiktok_briefs",
+      "deliverables": {
+        "sql": ["tools/tiktok-briefs/src/tiktok-briefs-v2-migration.sql"]
+      }
+    },
+    {
+      "id": "VS7-002",
+      "agent": "macgyver",
+      "type": "feature",
+      "priority": "critical",
+      "status": "pending",
+      "description": "video-source-types.ts — VideoSourceItem interface + topic-to-stock-query mapping",
+      "deliverables": {
+        "code": ["tools/tiktok-briefs/src/video-source-types.ts"]
+      }
+    },
+    {
+      "id": "VS7-003",
+      "agent": "macgyver",
+      "type": "feature",
+      "priority": "critical",
+      "status": "pending",
+      "description": "pexels-client.ts — search Pexels Videos API, return VideoSourceItem[] with best HD download URL",
+      "deliverables": {
+        "code": ["tools/tiktok-briefs/src/pexels-client.ts"]
+      }
+    },
+    {
+      "id": "VS7-004",
+      "agent": "macgyver",
+      "type": "feature",
+      "priority": "critical",
+      "status": "pending",
+      "description": "pixabay-client.ts — search Pixabay Videos API, return VideoSourceItem[] with best HD download URL",
+      "deliverables": {
+        "code": ["tools/tiktok-briefs/src/pixabay-client.ts"]
+      }
+    },
+    {
+      "id": "VS7-005",
+      "agent": "macgyver",
+      "type": "feature",
+      "priority": "critical",
+      "status": "pending",
+      "description": "source-brief-runner.ts — generates TikTok briefs from Pexels/Pixabay results per viral topic, stores with video_source + video_download_url",
+      "deliverables": {
+        "code": ["tools/tiktok-briefs/src/source-brief-runner.ts"]
+      }
+    },
+    {
+      "id": "VS7-006",
+      "agent": "macgyver",
+      "type": "feature",
+      "priority": "critical",
+      "status": "pending",
+      "description": "Update briefs-storage.ts — TikTokBrief interface + insertBrief support for optional ia_identifier and new video_source fields",
+      "deliverables": {
+        "code": ["tools/tiktok-briefs/src/briefs-storage.ts"]
+      }
+    },
+    {
+      "id": "VS7-007",
+      "agent": "macgyver",
+      "type": "feature",
+      "priority": "critical",
+      "status": "pending",
+      "description": "Update compose-runner.ts — generic downloadFromUrl() for non-IA sources, route by video_source field, empty-transcript scene selection for stock footage",
+      "deliverables": {
+        "code": ["tools/clip-maker/src/compose-runner.ts"]
+      }
+    },
+    {
+      "id": "VS7-008",
+      "agent": "macgyver",
+      "type": "feature",
+      "priority": "high",
+      "status": "pending",
+      "description": "Update viral-topics.ts — add stock_queries field to TopicConfig for Pexels/Pixabay topic search",
+      "deliverables": {
+        "code": ["tools/ia-scraper/src/viral-topics.ts"]
+      }
+    },
+    {
+      "id": "VS7-009",
+      "agent": "guardiola",
+      "type": "review",
+      "priority": "critical",
+      "status": "pending",
+      "description": "Guardiola review — multi-source video pipeline",
+      "deliverables": { "review": "APPROVED or BLOCKED" }
+    }
+  ],
+  "schema_version": "kognai-v1",
+  "notes": "API keys needed: PEXELS_API_KEY (pexels.com/api, free), PIXABAY_API_KEY (pixabay.com/api, free). Add to ~/kognai/.env. IA pipeline remains untouched — multi-source is additive. Next sprint (058): NASA Image/Video Library + Pixabay Music for background audio."
+}

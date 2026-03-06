@@ -34,7 +34,19 @@ import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 
 export interface TikTokBrief {
   id?: string;
-  ia_identifier: string;
+  // ── Video source (Sprint-057 multi-source support) ──────────────────────
+  /** 'internet_archive' | 'pexels' | 'pixabay' | future sources */
+  video_source?: string;
+  /** Source-specific video ID (e.g. Pexels id, IA identifier, Pixabay id) */
+  video_id?: string;
+  /** Direct download URL — set for Pexels/Pixabay; undefined for IA (use ia-downloader) */
+  video_download_url?: string;
+  /** Legacy IA identifier — kept for backward compatibility; undefined for non-IA sources */
+  ia_identifier?: string;
+  // ── Clip compose state (Sprint-056) ─────────────────────────────────────
+  clip_status?: 'pending' | 'ready';
+  final_path?: string;
+  // ── Brief metadata ───────────────────────────────────────────────────────
   topic_id: string;
   topic_name: string;
   source_url: string;
@@ -67,9 +79,13 @@ function getClient(): SupabaseClient {
 /** Insert a new brief. Returns the generated UUID. */
 export async function insertBrief(brief: TikTokBrief): Promise<string> {
   const db = getClient();
+  // Strip undefined values so Supabase doesn't send explicit nulls for optional columns
+  const row = Object.fromEntries(
+    Object.entries({ ...brief, id: undefined }).filter(([, v]) => v !== undefined),
+  );
   const { data, error } = await db
     .from('tiktok_briefs')
-    .insert({ ...brief, id: undefined })
+    .insert(row)
     .select('id')
     .single();
   if (error) throw new Error(`insertBrief failed: ${error.message}`);

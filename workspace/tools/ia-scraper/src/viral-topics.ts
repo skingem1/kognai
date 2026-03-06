@@ -14,6 +14,8 @@ export interface TopicConfig {
   name: string;
   triggers: ViralTrigger[];
   ia_queries: string[];
+  /** Search queries optimised for Pexels / Pixabay stock footage (Sprint-057). */
+  stock_queries?: string[];
   mediatype: MediaType;
   ia_collection?: string;
   music_genre: string;
@@ -29,6 +31,7 @@ export const VIRAL_TOPICS: TopicConfig[] = [
     name: 'Wildlife & Animal Predator/Prey Encounters',
     triggers: ['awe', 'shock'],
     ia_queries: ['wildlife predator prey hunt attack', 'cheetah lion tiger nature footage', 'animal attack wildlife documentary', 'shark whale orca predator ocean'],
+    stock_queries: ['wildlife predator prey', 'lion tiger cheetah hunting', 'shark eagle animal attack nature'],
     mediatype: 'movies',
     music_genre: 'Cinematic orchestral, tension-building strings, dramatic percussion',
     caption_strategy: 'Single-line factual hook ("This spider can kill a bird in 3 seconds") + species name overlay',
@@ -40,6 +43,7 @@ export const VIRAL_TOPICS: TopicConfig[] = [
     name: 'Space & Astronomy (NASA Footage)',
     triggers: ['awe'],
     ia_queries: ['NASA space rocket launch footage', 'hubble james webb telescope galaxy', 'ISS earth timelapse astronaut spacewalk', 'mars moon planet exploration'],
+    stock_queries: ['space cosmos universe stars', 'earth from space galaxy milky way', 'planet nebula rocket launch'],
     mediatype: 'movies',
     music_genre: 'Ambient electronic, epic orchestral, lo-fi space beats',
     caption_strategy: 'Mind-blowing scale facts ("This galaxy is 2 million light-years away") + timestamp',

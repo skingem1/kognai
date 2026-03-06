@@ -6,7 +6,11 @@
   "scripts": {
     "run": "tsx src/brief-runner.ts",
     "test": "tsx src/brief-runner.ts --dry-run",
-    "topic": "tsx src/brief-runner.ts --topic="
+    "topic": "tsx src/brief-runner.ts --topic=",
+    "briefs:pexels": "tsx src/source-brief-runner.ts --pexels",
+    "briefs:pixabay": "tsx src/source-brief-runner.ts --pixabay",
+    "briefs:sources": "tsx src/source-brief-runner.ts",
+    "briefs:sources:test": "tsx src/source-brief-runner.ts --dry-run"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.20.0",
