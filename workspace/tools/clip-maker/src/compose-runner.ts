@@ -11,7 +11,7 @@
 
 import './env.js';
 import { resolve } from 'path';
-import { mkdir } from 'fs/promises';
+import { mkdir, readdir } from 'fs/promises';
 import { existsSync } from 'fs';
 import { createClient } from '@supabase/supabase-js';
 import { downloadVideo } from './ia-downloader.js';
@@ -22,6 +22,18 @@ import { composeClip } from './caption-composer.js';
 const HOME = process.env.HOME ?? '/Users/tarekmnif';
 const DEFAULT_FINAL_DIR = resolve(HOME, 'kognai', 'final-v2');
 const DEFAULT_DOWNLOADS_DIR = resolve(HOME, 'kognai', 'downloads');
+const MUSIC_DIR = resolve(HOME, 'kognai', 'music');
+
+/** Pick a random music file from ~/kognai/music/, or undefined if none */
+async function pickMusicTrack(): Promise<string | undefined> {
+  try {
+    const files = await readdir(MUSIC_DIR);
+    const tracks = files.filter(f => /\.(mp3|m4a|aac|wav|ogg)$/i.test(f));
+    if (!tracks.length) return undefined;
+    const pick = tracks[Math.floor(Math.random() * tracks.length)];
+    return resolve(MUSIC_DIR, pick);
+  } catch { return undefined; }
+}
 
 function getDb() {
   const url = process.env.SUPABASE_URL;
@@ -79,8 +91,12 @@ export async function runCompose(config: ComposeRunConfig): Promise<ComposeRunRe
       );
       process.stdout.write('\n');
 
-      // 2. Fetch IA ASR transcript
+      // 2. Fetch IA ASR transcript — skip if none (no content to select from)
       const srt = await fetchSRT(brief.ia_identifier);
+      if (srt.length === 0) {
+        console.log(`  ⏭  Skipping [${brief.topic_id}] "${brief.hook.substring(0, 40)}" — no ASR transcript`);
+        continue;
+      }
       console.log(`  📄 SRT: ${srt.length} segments`);
 
       // 3. Claude picks best scene + generates narration
@@ -96,14 +112,17 @@ export async function runCompose(config: ComposeRunConfig): Promise<ComposeRunRe
       // 4. Window SRT to clip range (0-based)
       const windowedSrt = windowSegments(srt, scene.start_seconds, brief.duration_seconds);
 
-      // 5. Compose: blurred bg + SRT captions + narration overlay
+      // 5. Compose: blurred bg + SRT captions + narration overlay + music
       const finalPath = resolve(finalDir, `${brief.id}.mp4`);
+      const musicPath = await pickMusicTrack();
+      if (musicPath) console.log(`  🎵 Music: ${musicPath.split('/').pop()}`);
       if (!existsSync(finalPath)) {
         await composeClip(videoPath, finalPath, {
           startSeconds: scene.start_seconds,
           durationSeconds: brief.duration_seconds,
           srtSegments: windowedSrt,
           narration: scene.narration,
+          musicPath,
         });
       } else {
         console.log(`  ✓  Already composed: ${finalPath}`);

@@ -1,7 +1,8 @@
 /**
  * caption-composer.ts
  * Single-pass ffmpeg: blurred background composite + SRT word captions (bottom)
- * + Claude storytelling narration overlay (top). Replaces clip-extractor + text-overlay.
+ * + Claude storytelling narration overlay (top) + optional background music.
+ * Replaces clip-extractor + text-overlay.
  */
 
 import ffmpegStatic from 'ffmpeg-static';
@@ -22,6 +23,7 @@ export interface ComposeOptions {
   durationSeconds: number;
   srtSegments: SrtSegment[];      // 0-based, for bottom captions
   narration: NarrationSegment[];  // 0-based, for top overlay
+  musicPath?: string;             // optional royalty-free background track
 }
 
 /** Write SRT segments to a temp file, return path */
@@ -34,8 +36,24 @@ function writeSrtFile(segments: SrtSegment[], hash: string): string {
     const ms = Math.round((s % 1) * 1000).toString().padStart(3, '0');
     return `${h}:${m}:${sec},${ms}`;
   };
+  // Wrap long lines at 38 chars to prevent libass truncation
+  const wrapLine = (t: string) => {
+    const words = t.split(' ');
+    const lines: string[] = [];
+    let current = '';
+    for (const word of words) {
+      if ((current + ' ' + word).trim().length > 38 && current) {
+        lines.push(current.trim());
+        current = word;
+      } else {
+        current = (current + ' ' + word).trim();
+      }
+    }
+    if (current) lines.push(current);
+    return lines.join('\n');
+  };
   const content = segments.map(s =>
-    `${s.index}\n${fmt(s.start)} --> ${fmt(s.end)}\n${s.text}\n`
+    `${s.index}\n${fmt(s.start)} --> ${fmt(s.end)}\n${wrapLine(s.text)}\n`
   ).join('\n');
   writeFileSync(path, content);
   return path;
@@ -82,22 +100,40 @@ export async function composeClip(
     `[bg][fg]overlay=(W-w)/2:(H-h)/2[composed]`,
   ].join(';');
 
-  // Step 2: SRT captions at bottom (if available)
-  const srtStyle = 'FontName=Impact,FontSize=38,PrimaryColour=&H00FFFFFF,OutlineColour=&H00000000,BorderStyle=1,Outline=3,MarginV=80,Alignment=2';
+  // Step 2: SRT captions at bottom — PlayResX/Y fixes libass truncation on 1080x1920
+  const srtStyle = [
+    'PlayResX=1080', 'PlayResY=1920', 'WrapStyle=1',
+    'FontName=Impact', 'FontSize=38',
+    'PrimaryColour=&H00FFFFFF', 'OutlineColour=&H00000000',
+    'BorderStyle=1', 'Outline=3',
+    'MarginL=20', 'MarginR=20', 'MarginV=80', 'Alignment=2',
+  ].join(',');
   const afterSub = srtPath
     ? `[composed]subtitles='${srtPath}':force_style='${srtStyle}'[sub]`
     : `[composed]null[sub]`;
 
   // Step 3: narration drawtext chain on top
+  // Step 4: music — if provided, trim music to clip duration and mix as audio
+  const musicInputIdx = opts.musicPath ? 1 : null;
+  const audioFilter = musicInputIdx !== null
+    ? `;[${musicInputIdx}:a]atrim=0:${opts.durationSeconds},asetpts=PTS-STARTPTS,volume=0.6[aud]`
+    : '';
+
   try {
     const narrFilter = narrationFilter(opts.narration, tmpFiles);
-    const fullFilter = `${bgFilter};${afterSub};[sub]${narrFilter}[out]`;
+    const fullFilter = `${bgFilter};${afterSub};[sub]${narrFilter}[out]${audioFilter}`;
 
-    return await new Promise<void>((resolve, reject) => {
-      Ffmpeg(inputPath)
+    return await new Promise<void>((res, rej) => {
+      const cmd = Ffmpeg(inputPath)
         .setStartTime(opts.startSeconds)
-        .setDuration(opts.durationSeconds)
-        .complexFilter(fullFilter, 'out')
+        .setDuration(opts.durationSeconds);
+
+      if (opts.musicPath) cmd.addInput(opts.musicPath);
+
+      cmd
+        .addOption('-filter_complex', fullFilter)
+        .addOption('-map', '[out]')
+        .addOption('-map', musicInputIdx !== null ? '[aud]' : '0:a?')
         .videoCodec('libx264')
         .addOption('-crf', '22')
         .addOption('-preset', 'fast')
@@ -105,12 +141,12 @@ export async function composeClip(
         .audioBitrate('128k')
         .outputOptions('-movflags', '+faststart')
         .output(outputPath)
-        .on('end', () => { cleanup(); resolve(); })
-        .on('error', (err: Error) => { cleanup(); reject(new Error(`compose error: ${err.message}`)); })
+        .on('end', () => { cleanup(); res(); })
+        .on('error', (err: Error) => { cleanup(); rej(new Error(`compose error: ${err.message}`)); })
         .run();
     });
   } catch (err) {
-    cleanup(); // ensure cleanup if narrationFilter() throws or ffmpeg rejects before callback
+    cleanup();
     throw err;
   }
 }
