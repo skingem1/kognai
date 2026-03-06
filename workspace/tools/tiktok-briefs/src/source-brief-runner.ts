@@ -20,8 +20,18 @@ import { STOCK_QUERIES, type VideoSourceItem, type VideoSourceName } from './vid
 import { insertBrief, type TikTokBrief } from './briefs-storage.js';
 
 const MODEL  = 'claude-haiku-4-5-20251001';
-const SPRINT = 'sprint-059';
+const SPRINT = 'sprint-061';
 const DELAY  = 700; // ms between Claude calls
+
+// The 5 proven hook formulas from viral structure research.
+// One is picked per brief to ensure structural variety.
+const HOOK_FORMULAS = [
+  'Bold Claim — lead with the single most shocking fact about this topic.',
+  'Curiosity Gap — imply there is something critical nobody talks about, without revealing it.',
+  'Micro-Story — drop the viewer mid-action with no intro. Start as if something just happened.',
+  'Visual Shock — write the single most jarring, specific, concrete detail visible or implied.',
+  'Direct Question — ask the viewer a question that makes them doubt what they thought they knew.',
+] as const;
 
 let _anthropic: Anthropic | null = null;
 const getAI = () => {
@@ -33,14 +43,15 @@ const getAI = () => {
 };
 
 function buildPrompt(item: VideoSourceItem, topicName: string, triggers: string[], captionStrategy: string, musicGenre: string): string {
+  // Pick a hook formula at random — enforces structural variety across briefs
+  const hookFormula = HOOK_FORMULAS[Math.floor(Math.random() * HOOK_FORMULAS.length)];
+
   return `You are a TikTok content strategist specialising in viral short-form video.
 
 SOURCE MATERIAL:
 Title: ${item.title}
 Description: ${item.description ?? 'Contemporary HD stock footage'}
-Video URL: ${item.source_url}
-Duration: ${item.duration}s
-Resolution: ${item.width}x${item.height}
+Duration: ${item.duration}s | Resolution: ${item.width}x${item.height}
 Topic niche: ${topicName}
 Viral triggers: ${triggers.join(', ')}
 Caption strategy: ${captionStrategy}
@@ -48,11 +59,11 @@ Music direction: ${musicGenre}
 
 Generate a TikTok content brief as a JSON object with EXACTLY these fields:
 {
-  "hook": "<5-8 words max. On-screen text for first 3 seconds. Shocking fact, question, or statement that stops the scroll immediately>",
+  "hook": "<STRICT MAX 6 words. Hook formula to use: ${hookFormula} — Do NOT use an intro, greeting, or setup. The first word must be a hook word that stops the scroll cold. No punctuation beyond a single ? or !>",
   "caption": "<100-180 characters. Engaging TikTok caption matching the hook energy. No hashtags>",
   "hashtags": ["<5-8 strings WITHOUT #. Mix 2-3 niche + 2-3 broad trending hashtags>"],
   "music_direction": "<2 sentences max. Specific genre, tempo, mood matching the clip's emotional tone>",
-  "duration_seconds": <integer 15-34 — optimal TikTok length>,
+  "duration_seconds": <integer 21-34 — TikTok storytelling sweet spot>,
   "viral_trigger": "<exactly one: awe | shock | amusement | inspiration | nostalgia | curiosity | satisfaction | debate>"
 }
 

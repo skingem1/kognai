@@ -45,47 +45,88 @@ function buildPrompt(brief: BriefContext, transcript: SrtSegment[]): string {
   const dur = brief.duration_seconds;
   const hasTranscript = transcript.length > 0;
   const hasFrame = !!brief.frameBase64;
+
   const transcriptBlock = hasTranscript
-    ? `TRANSCRIPT (with timestamps in seconds):\n${transcriptText(transcript).split('\n').slice(0, 120).join('\n')}`
+    ? `TRANSCRIPT (timestamps in seconds):\n${transcriptText(transcript).split('\n').slice(0, 120).join('\n')}`
     : hasFrame
-      ? `TRANSCRIPT: None — but you are seeing an actual frame from this video above. Describe ONLY what you literally see in the frame when writing narration.`
-      : `TRANSCRIPT: None available (silent film or no audio)`;
+      ? `TRANSCRIPT: None — you are seeing an actual frame from this video above. Base your narration ONLY on what you literally see in the frame.`
+      : `TRANSCRIPT: None available.`;
 
-  // Distribute narration evenly across clip
-  const segCount = 6;
-  const segDur = dur / segCount;
-  const exampleNarration = Array.from({ length: segCount }, (_, i) => ({
-    text: `<line ${i + 1}: 3-7 dramatic words>`,
-    start: Math.round(i * segDur),
-    end: Math.round((i + 1) * segDur),
-  }));
+  // 6 segments with explicit structural roles — evenly timed
+  const segDur = dur / 6;
+  const s = (i: number) => Math.round(i * segDur);
 
-  return `You are a TikTok viral video editor specializing in archival footage.
+  const exampleNarration = [
+    { text: '<HOOK — see role below>',             start: s(0), end: s(1), role: 'hook' },
+    { text: '<OPEN LOOP — see role below>',         start: s(1), end: s(2), role: 'open_loop' },
+    { text: '<VALUE DELIVERY — see role below>',    start: s(2), end: s(3), role: 'value_open' },
+    { text: '<PEAK MOMENT — see role below>',       start: s(3), end: s(4), role: 'value_body' },
+    { text: '<PATTERN INTERRUPT — see role below>', start: s(4), end: s(5), role: 'pattern_interrupt' },
+    { text: '<CTA — see role below>',              start: s(5), end: dur,  role: 'cta' },
+  ];
 
-VIDEO: ${brief.title}
-TOPIC: ${brief.topic_name}
-HOOK: ${brief.hook}
-CLIP LENGTH: ${dur}s
-VIRAL TRIGGER: ${brief.viral_trigger}
+  return `You are a TikTok viral caption writer. Write exactly 6 narration segments for a ${dur}-second video. Each segment has a structural role — follow it precisely.
+
+VIDEO CONTEXT:
+Title: ${brief.title}
+Topic: ${brief.topic_name}
+Viral trigger: ${brief.viral_trigger}
+Hook text from brief: ${brief.hook}
 
 ${transcriptBlock}
 
-TASK:
-1. ${hasTranscript ? `Find the most shocking/awe-inspiring ${dur}-second window in the transcript` : `Suggest a start time (skip first 8s for intros)`}
-2. Write a ${dur}s storytelling narration script — ${segCount} short segments, present tense, dramatic TikTok style
+═══ SEGMENT ROLES (write in this exact order) ═══
 
-Return JSON only:
+[0] HOOK — ${s(0)}s to ${s(1)}s
+The first word must stop the scroll. Use ONE of these formulas:
+  • Bold Claim: the single most shocking fact about ${brief.topic_name}
+  • Curiosity Gap: imply something critical nobody knows — WITHOUT revealing it
+  • Micro-Story: start mid-action, no intro (e.g. "It happened in 3 seconds.")
+  • Visual Shock: the most jarring, concrete, specific detail you can see or infer
+  • Direct Question: make the viewer doubt what they already know
+❌ Never use: intros, greetings, "today", "welcome", "in this video"
+✅ MAX 6 words. Count them. No exceptions.
+
+[1] OPEN LOOP — ${s(1)}s to ${s(2)}s
+Create a question or promise that CANNOT be answered without watching more.
+Do NOT reveal the answer. Use structures like:
+  • "But what happened next was different..."
+  • "The reason stunned even scientists..."
+  • "Nobody predicted what came after..."
+Rephrase using the voice of ${brief.topic_name} — do not copy these words verbatim.
+✅ MAX 6 words.
+
+[2] VALUE DELIVERY — ${s(2)}s to ${s(3)}s
+Deliver the first piece of the hook's promise. Present tense. Reference the peak action.
+This is what justifies watching past the 10-second mark.
+✅ MAX 6 words.
+
+[3] PEAK MOMENT — ${s(3)}s to ${s(4)}s
+The single most emotionally intense moment. This is the climax — the thing viewers came for.
+Must escalate from segment 2. Dramatic, specific, present tense.
+✅ MAX 6 words.
+
+[4] PATTERN INTERRUPT — ${s(4)}s to ${s(5)}s
+A shocking statistic, contrast, or reframe. Start with a number or a contrast word.
+Examples: "97% never witness this." / "This takes 3 seconds. Not centuries."
+Must reframe what the viewer just saw in an unexpected way.
+✅ MAX 6 words.
+
+[5] CALL TO ACTION — ${s(5)}s to ${dur}s
+Pick EXACTLY ONE of these three CTAs and adapt it to ${brief.topic_name}:
+  • "Follow for more [topic] secrets."
+  • "Save this — you will rewatch it."
+  • "Comment if this surprised you."
+Do NOT invent other formulas. Never use "like and subscribe."
+✅ MAX 6 words.
+
+═══ OUTPUT FORMAT ═══
+Return ONLY valid JSON — no markdown, no labels, no explanation:
 {
-  "start_seconds": <integer>,
-  "summary": "<1 sentence: what happens here>",
+  "start_seconds": ${hasTranscript ? '<integer: best viral window start>' : '0'},
+  "summary": "<1 sentence: what the video literally shows>",
   "narration": ${JSON.stringify(exampleNarration, null, 2)}
-}
-
-Narration rules:
-- First segment always: start=0, end=${Math.round(segDur)} (the hook moment)
-- Each segment: STRICT MAX 6 words — count them, never exceed 6. No exceptions.
-- Style: "In 1940..." / "Scientists discovered..." / "This changed EVERYTHING"
-- Return ONLY valid JSON.`;
+}`;
 }
 
 export async function selectScene(
@@ -116,7 +157,7 @@ export async function selectScene(
 
     const msg = await client.messages.create({
       model: MODEL,
-      max_tokens: 800,
+      max_tokens: 1200,
       messages: [{ role: 'user', content: userContent }],
     });
     const raw = msg.content[0].type === 'text' ? msg.content[0].text.trim() : '';

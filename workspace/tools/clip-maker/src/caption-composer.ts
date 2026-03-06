@@ -91,36 +91,69 @@ function wrapNarration(text: string, maxCharsPerLine: number): string {
   return lines.join('\n');
 }
 
+/**
+ * Build a zoom expression that fires at the hook (0–2.5s, 18% punch)
+ * and a mini 5% pulse at every subsequent segment boundary.
+ * Zoom windows never overlap so they can be safely summed.
+ */
+function buildZoomExpr(narration: NarrationSegment[]): string {
+  const hookZoom = `0.18*lt(t,2.5)*(1-t/2.5)`;
+  const miniZooms = narration
+    .slice(1, narration.length - 1) // segments 1–(N-2): skip hook and CTA
+    .map(seg => {
+      const t = seg.start;
+      // 5% zoom pulls back to 0 over 0.4s — quick attention-snapping interrupt
+      return `0.05*gt(t,${t})*lt(t,${t + 0.4})*(1-(t-${t})/0.4)`;
+    });
+  return [hookZoom, ...miniZooms].join('+');
+}
+
 /** Build a chain of drawtext filters for narration segments */
 function narrationFilter(
   segments: NarrationSegment[],
   tmpFiles: string[],
   preset: CaptionPreset,
 ): string {
+  const lastIdx = segments.length - 1;
+
   return segments.map((seg, i) => {
     const isHook = i === 0;
+    const isCta  = i === lastIdx;
 
-    // Hook: max 18 chars/line at 98px centered; rest: max 20 chars at 68px near top
-    const text = wrapNarration(seg.text.toUpperCase(), isHook ? 18 : 20);
+    // Role-aware rendering:
+    //   Hook: 98px, vertically centered — maximum impact
+    //   CTA:  72px, lower-third position (safe zone above TikTok UI)
+    //   Body: 68px, near top — out of way of visual content
+    const fontSize = isHook ? 98 : isCta ? 72 : 68;
+    const yPos     = isHook ? '(h-text_h)/2'
+                   : isCta  ? 'h*0.72-text_h/2'
+                   :          '130';
+
+    // CTA always white (visually distinct from content captions)
+    const fontColor  = isCta ? 'white' : preset.fontcolor;
+    const borderColor = 'black';
+
+    // Pop animation: text snaps in at segment start (0.05s vs old 0.15s fade)
+    // Creates a sharper, more energetic pattern interrupt on each segment change.
+    const popIn = `if(lt(t-${seg.start},0.05),(t-${seg.start})/0.05,1)`;
+
+    const maxChars = isHook ? 18 : 22;
+    const text = wrapNarration(seg.text.toUpperCase(), maxChars);
     const txt = resolve('/tmp', `narr_${i}_${Date.now()}.txt`);
     writeFileSync(txt, text);
     tmpFiles.push(txt);
-
-    const fontSize = isHook ? 98 : 68;
-    const yPos    = isHook ? '(h-text_h)/2' : '130';
-    const fadeIn  = `if(lt(t-${seg.start},0.15),(t-${seg.start})/0.15,1)`;
 
     return [
       `drawtext=fontfile=${FONT}`,
       `textfile=${txt}`,
       `fontsize=${fontSize}`,
-      `fontcolor=${preset.fontcolor}`,
+      `fontcolor=${fontColor}`,
       `borderw=5`,
-      `bordercolor=${preset.bordercolor}`,
+      `bordercolor=${borderColor}`,
       `line_spacing=10`,
       `x=(w-text_w)/2`,
       `y=${yPos}`,
-      `alpha='${fadeIn}'`,
+      `alpha='${popIn}'`,
       `enable='between(t,${seg.start},${seg.end})'`,
     ].join(':');
   }).join(',');
@@ -140,12 +173,13 @@ export async function composeClip(
 
   const cleanup = () => tmpFiles.forEach(f => { if (existsSync(f)) unlinkSync(f); });
 
-  // Step 1: blurred bg composite + zoom-punch (fg starts 18% wider, pulls back to 1080 by t=2.5s)
-  // scale=eval=frame re-evaluates w per frame; lt(t,2.5) guards so after 2.5s w stays at 1080.
-  // When fg > bg, overlay clips naturally — the center crop creates the zoom-in feel.
+  // Step 1: blurred bg composite + dynamic zoom.
+  // Hook zoom: 18% pull-back over 2.5s. Mini 5% pulses at each segment boundary
+  // (except hook and CTA) — pattern interrupt every ~5s, data-backed +40% retention.
+  const zoomExpr = buildZoomExpr(opts.narration);
   const bgFilter = [
     `[0:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,boxblur=40:3[bg]`,
-    `[0:v]scale=w='1080*(1+0.18*lt(t,2.5)*(1-t/2.5))':h=-2:eval=frame[fg]`,
+    `[0:v]scale=w='1080*(1+${zoomExpr})':h=-2:eval=frame[fg]`,
     `[bg][fg]overlay=(W-w)/2:(H-h)/2[composed]`,
   ].join(';');
 
