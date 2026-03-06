@@ -12,7 +12,7 @@
 
 import { execFile } from 'child_process';
 import { promisify } from 'util';
-import { createWriteStream, existsSync, unlinkSync } from 'fs';
+import { createWriteStream, existsSync, unlinkSync, statSync } from 'fs';
 import { Readable } from 'stream';
 import { pipeline } from 'stream/promises';
 import ffmpegStatic from 'ffmpeg-static';
@@ -167,10 +167,14 @@ async function kenBurnsFallback(
 
 /**
  * Download a URL to a local file with retry on 429 (Wikimedia rate limit).
- * Skips if the file already exists (cache).
+ * Skips if the file already exists AND has non-zero size (cache).
+ * Removes zero-byte leftover files from previously-aborted runs.
  */
 async function downloadFile(url: string, dest: string, retries = 4): Promise<void> {
-  if (existsSync(dest)) return;
+  if (existsSync(dest)) {
+    if (statSync(dest).size > 0) return;   // valid cache hit
+    unlinkSync(dest);                       // remove zombie file
+  }
 
   for (let attempt = 1; attempt <= retries; attempt++) {
     const res = await fetch(url, {
