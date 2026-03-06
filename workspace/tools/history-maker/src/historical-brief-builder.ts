@@ -66,33 +66,46 @@ Return ONLY valid JSON (no markdown, no explanation):
 }
 
 /**
- * Download image to memory as base64.
+ * Download image to memory as base64, with retry on 429 (Wikimedia rate limit).
  * Returns null if the download fails or the content is not an image.
  */
-async function fetchImageAsBase64(url: string): Promise<{ data: string; mediaType: string } | null> {
-  try {
-    const ctrl = new AbortController();
-    const timer = setTimeout(() => ctrl.abort(), 12000);
-    const res = await fetch(url, {
-      signal: ctrl.signal,
-      headers: { 'User-Agent': 'Kognai/1.0 (history-maker; kognai-bot)' },
-    });
-    clearTimeout(timer);
-    if (!res.ok) return null;
+async function fetchImageAsBase64(url: string, retries = 3): Promise<{ data: string; mediaType: string } | null> {
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), 15000);
+      const res = await fetch(url, {
+        signal: ctrl.signal,
+        headers: { 'User-Agent': 'Kognai/1.0 (history-maker; kognai-bot)' },
+      });
+      clearTimeout(timer);
 
-    const contentType = res.headers.get('content-type') ?? '';
-    // Accept JPEG and PNG — Wikimedia thumbs are always JPEG regardless of source
-    const isImage = contentType.startsWith('image/jpeg') || contentType.startsWith('image/png') || contentType.startsWith('image/');
-    if (!isImage) return null;
+      if (res.status === 429) {
+        const wait = 2500 * attempt;
+        await new Promise(r => setTimeout(r, wait));
+        continue;
+      }
+      if (!res.ok) return null;
 
-    const buf = Buffer.from(await res.arrayBuffer());
-    // Detect actual format from magic bytes (Wikimedia CDN may mislabel content-type)
-    const isJpeg = buf[0] === 0xff && buf[1] === 0xd8;
-    const mediaType = isJpeg ? 'image/jpeg' : 'image/png';
-    return { data: buf.toString('base64'), mediaType };
-  } catch {
-    return null;
+      const contentType = res.headers.get('content-type') ?? '';
+      // Accept JPEG and PNG — Wikimedia thumbs are always JPEG regardless of source mime
+      const isImage = contentType.startsWith('image/') || contentType.includes('octet-stream');
+      if (!isImage) return null;
+
+      const buf = Buffer.from(await res.arrayBuffer());
+      if (buf.length < 1000) return null; // reject tiny/empty responses
+
+      // Detect format from magic bytes (reliable even when content-type is wrong)
+      const isJpeg = buf[0] === 0xff && buf[1] === 0xd8;
+      const isPng  = buf[0] === 0x89 && buf[1] === 0x50;
+      if (!isJpeg && !isPng) return null; // not a real image
+      const mediaType = isJpeg ? 'image/jpeg' : 'image/png';
+      return { data: buf.toString('base64'), mediaType };
+    } catch {
+      if (attempt === retries) return null;
+    }
   }
+  return null;
 }
 
 /**

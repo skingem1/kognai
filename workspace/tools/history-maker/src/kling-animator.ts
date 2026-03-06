@@ -2,9 +2,9 @@
  * kling-animator.ts
  * Sprint-062: Animate a static painting/map image into a short video.
  *
- * Primary:  Kling v1.6 standard via fal.ai  (~$0.029/sec, 10s = ~$0.29)
- * Fallback: minimax/hailuo-02 via fal.ai    (~$0.06/5s or $0.12/10s)
- * Zero-cost: Ken Burns zoompan via ffmpeg   (requires ffmpeg on PATH)
+ * Primary:   Kling v1.6 standard via fal.ai  (~$0.029/sec, 10s = ~$0.29)
+ * Fallback:  minimax/hailuo-02 via fal.ai    (~$0.012/sec)
+ * Zero-cost: Ken Burns zoompan via ffmpeg-static (no system ffmpeg needed)
  *
  * Set FAL_KEY in ~/kognai/.env to enable AI animation.
  * Without FAL_KEY the runner automatically falls back to Ken Burns.
@@ -12,16 +12,17 @@
 
 import { execFile } from 'child_process';
 import { promisify } from 'util';
-import { createWriteStream, existsSync } from 'fs';
+import { createWriteStream, existsSync, unlinkSync } from 'fs';
 import { Readable } from 'stream';
 import { pipeline } from 'stream/promises';
+import ffmpegStatic from 'ffmpeg-static';
 
 const execFileAsync = promisify(execFile);
 
 export type AnimatorModel = 'kling' | 'hailuo' | 'ken-burns';
 
 export interface AnimateResult {
-  videoPath: string;    // local absolute path to the downloaded .mp4
+  videoPath: string;      // local absolute path to the downloaded .mp4
   model: AnimatorModel;
   durationSeconds: number;
   costUsd: number;
@@ -30,9 +31,9 @@ export interface AnimateResult {
 /**
  * Animate a painting/map image to a vertical (9:16) video.
  *
- * @param imageUrl   Public URL of the source image (JPEG/PNG)
- * @param outputPath Where to save the resulting .mp4
- * @param motionPrompt  Optional short description of desired camera motion
+ * @param imageUrl    Public URL of the source image (JPEG/PNG)
+ * @param outputPath  Where to save the resulting .mp4
+ * @param motionPrompt  Short description of desired camera motion (for AI models)
  */
 export async function animateImage(
   imageUrl: string,
@@ -42,7 +43,7 @@ export async function animateImage(
   const falKey = process.env.FAL_KEY;
 
   if (!falKey) {
-    console.log('  ⚠️  FAL_KEY not set — falling back to Ken Burns (ffmpeg)');
+    console.log('  ⚠️  FAL_KEY not set — falling back to Ken Burns (ffmpeg-static)');
     return kenBurnsFallback(imageUrl, outputPath);
   }
 
@@ -56,7 +57,7 @@ export async function animateImage(
   }
 
   // All AI models failed — Ken Burns fallback
-  console.log('  ⚠️  All AI animators failed — falling back to Ken Burns (ffmpeg)');
+  console.log('  ⚠️  All AI animators failed — falling back to Ken Burns (ffmpeg-static)');
   return kenBurnsFallback(imageUrl, outputPath);
 }
 
@@ -69,7 +70,6 @@ async function falAnimate(
   model: 'kling' | 'hailuo',
   falKey: string,
 ): Promise<AnimateResult> {
-  // Dynamic import to avoid hard dependency when FAL_KEY is absent
   const { fal } = await import('@fal-ai/client');
   fal.config({ credentials: falKey });
 
@@ -79,13 +79,24 @@ async function falAnimate(
 
   const durationSeconds = 10;
 
+  // Upload image to fal.ai storage for a clean CDN URL.
+  // Wikimedia URLs often have special chars or CDN restrictions that cause
+  // ValidationError when passed directly to Kling/Hailuo.
+  console.log(`  ☁️  Uploading image to fal.ai storage…`);
+  const imgRes = await fetch(imageUrl, {
+    headers: { 'User-Agent': 'Kognai/1.0 (history-maker; kognai-bot)' },
+  });
+  if (!imgRes.ok) throw new Error(`Image fetch failed ${imgRes.status}`);
+  const imgBlob = await imgRes.blob();
+  const falImageUrl = await fal.storage.upload(imgBlob);
+
   console.log(`  🤖 Animating with ${model} (${durationSeconds}s)…`);
 
   const result = await fal.subscribe(modelId, {
     input: {
-      image_url:    imageUrl,
+      image_url:    falImageUrl,
       prompt:       motionPrompt,
-      duration:     model === 'kling' ? '10' : 6, // Kling: string enum; Hailuo: number
+      duration:     model === 'kling' ? '10' : 6,
       aspect_ratio: '9:16',
     },
     logs: false,
@@ -96,7 +107,6 @@ async function falAnimate(
         process.stdout.write(`\r  ⚙️  ${model} generating…                        `);
       }
     },
-  // v1.x wraps output in { data: T, requestId: string }
   }) as { data?: { video?: { url?: string } } };
 
   process.stdout.write('\n');
@@ -104,10 +114,8 @@ async function falAnimate(
   const videoUrl = result.data?.video?.url;
   if (!videoUrl) throw new Error(`${model} returned no video URL`);
 
-  // Download video to local path
   await downloadFile(videoUrl, outputPath);
 
-  // Cost estimate: Kling $0.029/s, Hailuo ~$0.012/s (varies by plan)
   const costUsd = model === 'kling'
     ? durationSeconds * 0.029
     : durationSeconds * 0.012;
@@ -115,14 +123,12 @@ async function falAnimate(
   return { videoPath: outputPath, model, durationSeconds, costUsd };
 }
 
-// ── Ken Burns ffmpeg fallback ───────────────────────────────────────────────
+// ── Ken Burns ffmpeg-static fallback ─────────────────────────────────────────
 
 /**
  * Download the image locally and apply a slow zoom-pan (Ken Burns effect).
  * Outputs a 1080×1920 (9:16) vertical video — TikTok-native resolution.
- *
- * Uses ffmpeg from PATH (brew install ffmpeg, or any system install).
- * The zoompan filter gradually zooms in (1.0→1.4) while drifting across the image.
+ * Uses ffmpeg-static (bundled binary — no system ffmpeg required).
  */
 async function kenBurnsFallback(
   imageUrl: string,
@@ -132,47 +138,55 @@ async function kenBurnsFallback(
   const fps = 25;
   const totalFrames = durationSeconds * fps; // 250
 
-  // Download the source image to a temp file
-  const tmpImg = outputPath.replace(/\.mp4$/, '_src.jpg');
+  const tmpImg = `${outputPath}.src.jpg`;
   await downloadFile(imageUrl, tmpImg);
 
-  // zoompan: zoom from 1.0 → 1.4 over `d` frames, panning toward center
-  // s=1080x1920 forces TikTok vertical output
-  const zoompan = [
-    `zoompan`,
-    `z='min(zoom+0.0016,1.4)'`,
-    `x='iw/2-(iw/zoom/2)'`,
-    `y='ih/2-(ih/zoom/2)'`,
-    `d=${totalFrames}`,
-    `s=1080x1920`,
-    `fps=${fps}`,
-  ].join(':');
+  // zoompan: zoom 1.0 → 1.4 over totalFrames, drifting toward center.
+  // No shell-style single-quote escaping — execFileAsync passes args directly to ffmpeg.
+  // Commas in math expressions are fine inside ffmpeg's expression evaluator.
+  const zoompan = `zoompan=z=min(zoom+0.0016\\,1.4):x=iw/2-(iw/zoom/2):y=ih/2-(ih/zoom/2):d=${totalFrames}:s=1080x1920:fps=${fps}`;
 
-  await execFileAsync('ffmpeg', [
+  await execFileAsync(ffmpegStatic!, [
     '-loop', '1',
-    '-i',   tmpImg,
-    '-vf',  zoompan,
-    '-t',   String(durationSeconds),
-    '-c:v', 'libx264',
-    '-crf', '22',
+    '-i',    tmpImg,
+    '-vf',   zoompan,
+    '-t',    String(durationSeconds),
+    '-c:v',  'libx264',
+    '-crf',  '22',
     '-pix_fmt', 'yuv420p',
     '-preset', 'fast',
-    '-y',   outputPath,
+    '-y',    outputPath,
   ]);
 
-  // Clean up temp image
-  try { await execFileAsync('rm', [tmpImg]); } catch { /* ignore */ }
+  try { unlinkSync(tmpImg); } catch { /* ignore */ }
 
   return { videoPath: outputPath, model: 'ken-burns', durationSeconds, costUsd: 0 };
 }
 
-// ── Helpers ─────────────────────────────────────────────────────────────────
+// ── Helpers ──────────────────────────────────────────────────────────────────
 
-async function downloadFile(url: string, dest: string): Promise<void> {
+/**
+ * Download a URL to a local file with retry on 429 (Wikimedia rate limit).
+ * Skips if the file already exists (cache).
+ */
+async function downloadFile(url: string, dest: string, retries = 4): Promise<void> {
   if (existsSync(dest)) return;
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`Download failed ${res.status}: ${url}`);
-  if (!res.body) throw new Error('No response body');
-  const writer = createWriteStream(dest);
-  await pipeline(Readable.fromWeb(res.body as import('stream/web').ReadableStream), writer);
+
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    const res = await fetch(url, {
+      headers: { 'User-Agent': 'Kognai/1.0 (history-maker; kognai-bot)' },
+    });
+    if (res.status === 429) {
+      const wait = 2500 * attempt;
+      console.log(`\n  ⏳ Wikimedia rate limit (429) — waiting ${wait / 1000}s…`);
+      await new Promise(r => setTimeout(r, wait));
+      continue;
+    }
+    if (!res.ok) throw new Error(`Download failed ${res.status}: ${url}`);
+    if (!res.body) throw new Error('No response body');
+    const writer = createWriteStream(dest);
+    await pipeline(Readable.fromWeb(res.body as import('stream/web').ReadableStream), writer);
+    return;
+  }
+  throw new Error(`Download failed after ${retries} retries (rate limited): ${url}`);
 }
