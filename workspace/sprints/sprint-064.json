@@ -1,0 +1,148 @@
+{
+  "tasks": [
+    {
+      "id": "S64-001",
+      "title": "Fix extractCodeBlocks fence bug + user-prompt contradiction in orchestrate-agents-v2.ts",
+      "agent": "coder",
+      "type": "feature",
+      "priority": "critical",
+      "dependencies": [],
+      "task_target": "cloud-exec",
+      "status": "rejected",
+      "context": "Two surgical fixes to scripts/orchestrate-agents-v2.ts to permanently fix the fence extraction bug that caused TR-003-C to fail all 5 attempts in Sprint-063.\n\nRoot cause 1 — simpleRegex misses python/bash/sh language tags:\nFind the extractCodeBlocks function (search for 'simpleRegex' or 'extractCodeBlocks'). The regex uses a language tag alternation like /(typescript|ts|javascript|js|...) — it is missing 'python', 'py', 'sh', 'bash', 'json', 'yaml', 'toml'. Add ALL missing language tags to the alternation so Python files with ```python fences are extracted correctly.\n\nRoot cause 2 — user prompt says 'Output a single fenced code block' which contradicts the coder system prompt that says to use FILE: path format:\nFind the buildUserPrompt function (or wherever the user-turn prompt template is assembled). Remove or replace the instruction 'Output a single fenced code block' with language that matches the FILE: format already expected by the extractor. Something like: 'Output each file using the FILE: <path> format as described in the system prompt. Do NOT wrap output in markdown code fences.' Keep all other user prompt content intact.\n\nDo NOT change any other logic. These are two minimal targeted edits only.",
+      "deliverables": {
+        "code": [
+          "scripts/orchestrate-agents-v2.ts"
+        ]
+      },
+      "_integrityFailed": true,
+      "_integrityDetails": "File scripts/orchestrate-agents-v2.ts shrank from 2257 to 3 lines (0%). Possible destructive rewrite.",
+      "output": {
+        "files": [
+          "scripts/orchestrate-agents-v2.ts"
+        ],
+        "commit": "",
+        "model": "claude-sonnet-4-20250514",
+        "review": {
+          "verdict": "REJECTED",
+          "score": 10,
+          "summary": "The submitted change destroys nearly all existing logic by reducing a 2257-line file to 3 lines, failing to apply the targeted edits.",
+          "issues": [
+            {
+              "severity": "critical",
+              "file": "scripts/orchestrate-agents-v2.ts",
+              "description": "File was drastically rewritten from 2257 lines to 3 lines, losing all original functionality. This is a destructive rewrite and violates spec."
+            }
+          ],
+          "strengths": [
+            "Integrity check correctly flagged the destructive rewrite."
+          ]
+        }
+      }
+    },
+    {
+      "id": "S64-002",
+      "title": "Fix supervisor ANTHROPIC_API_KEY dead path — harden dotenv load in orchestrate-agents-v2.ts",
+      "agent": "coder",
+      "type": "bugfix",
+      "priority": "critical",
+      "dependencies": [],
+      "task_target": "cloud-exec",
+      "status": "rejected",
+      "context": "Root cause: orchestrate-agents-v2.ts uses `import 'dotenv/config'` at the top (line 28), which loads .env relative to process.cwd(). When the orchestrator is spawned by sprint-runner as a child process from the VPS (/home/invoica/apps/Invoica), process.cwd() is the VPS path, and the Mac .env at /Users/tarekmnif/kognai/.env is never loaded. Result: ANTHROPIC_API_KEY appears undefined → supervisor throws 'not set in .env' → supervisor returns score 0 every time.\n\nFix: Replace the `import 'dotenv/config'` at line 28 with an explicit dotenv load that resolves .env relative to the file's own __dirname, not process.cwd():\n\nReplace:\n  import 'dotenv/config';\n\nWith (add BEFORE existing imports, or replace the dotenv import line):\n  import { config as dotenvConfig } from 'dotenv';\n  import { resolve, dirname } from 'path';\n  import { fileURLToPath } from 'url';\n  const __filename = fileURLToPath(import.meta.url);\n  const __filedirname = dirname(__filename);\n  // Load .env from project root (one level up from scripts/)\n  dotenvConfig({ path: resolve(__filedirname, '..', '.env') });\n\nIf the file uses CommonJS (not ESM), use __dirname directly:\n  import { config as dotenvConfig } from 'dotenv';\n  import { resolve } from 'path';\n  dotenvConfig({ path: resolve(__dirname, '..', '.env') });\n\nCheck whether the file uses ESM (import/export) or CJS to pick the right variant. The file already uses `import` statements so it is likely ESM via ts-node. Keep the fix minimal — only change the dotenv load line. Do NOT change any other code.",
+      "deliverables": {
+        "code": [
+          "scripts/orchestrate-agents-v2.ts"
+        ]
+      },
+      "_integrityFailed": true,
+      "_integrityDetails": "File scripts/orchestrate-agents-v2.ts shrank from 2257 to 3 lines (0%). Possible destructive rewrite.",
+      "output": {
+        "files": [
+          "scripts/orchestrate-agents-v2.ts"
+        ],
+        "commit": "",
+        "model": "claude-sonnet-4-20250514",
+        "review": {
+          "verdict": "REJECTED",
+          "score": 0,
+          "summary": "The submitted change has replaced the original 2257-line file with a 3-line comment stub, removing all functionality. This is a destructive rewrite and does not implement the requested dotenv path fix.",
+          "issues": [
+            {
+              "severity": "critical",
+              "file": "scripts/orchestrate-agents-v2.ts",
+              "description": "File was reduced from 2257 lines to 3 lines, removing all existing code and functionality."
+            }
+          ],
+          "strengths": []
+        }
+      }
+    },
+    {
+      "id": "S64-003",
+      "title": "HTTP router integration — wire assessTaskComplexity to call localhost:11435/route when ROUTER_SERVER_URL is set",
+      "agent": "coder",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [
+        "S64-001",
+        "S64-002"
+      ],
+      "task_target": "cloud-exec",
+      "status": "skipped",
+      "context": "The router_server.py (Sprint-063 TR-003-C) is now running on port 11435 but nothing calls it. Wire up assessTaskComplexity in scripts/orchestrate-agents-v2.ts to optionally call the HTTP router first.\n\nChange: Make assessTaskComplexity async and add an HTTP router probe at the very top (before all existing heuristic logic):\n\n  // HTTP router: if ROUTER_SERVER_URL is set, delegate routing to router_server.py\n  const routerUrl = process.env.ROUTER_SERVER_URL || '';\n  if (routerUrl) {\n    try {\n      const ac = new AbortController();\n      const timer = setTimeout(() => ac.abort(), 2000); // 2s timeout — never block\n      const res = await fetch(`${routerUrl}/route`, {\n        method: 'POST',\n        headers: { 'Content-Type': 'application/json' },\n        body: JSON.stringify({ prompt: task.context || task.id, context_tokens: 0 }),\n        signal: ac.signal,\n      });\n      clearTimeout(timer);\n      if (res.ok) {\n        const data = await res.json() as { tier: string; model_name: string; reasoning: string };\n        const provider = (data.tier === 'cloud' || data.tier === 'apex') ? 'anthropic' : 'minimax';\n        const model = (provider === 'anthropic') ? 'claude-sonnet-4-20250514' : 'MiniMax-M2.5';\n        return { provider: provider as any, model, routingReason: `HTTP router: ${data.tier} — ${data.reasoning}` };\n      }\n    } catch { /* HTTP router unavailable — fall through to heuristics */ }\n  }\n\nThis block goes AFTER the task_target switch block (Sprint-063) and BEFORE the heuristic signals. The existing assessTaskComplexity heuristics remain as the fallback.\n\nAlso add `ROUTER_SERVER_URL=http://localhost:11435` as a comment in the .env (do NOT set it live yet — it is opt-in).\n\nIMPORTANT: assessTaskComplexity's return type signature and all callers must be updated if you make it async. Check all call sites of assessTaskComplexity and add await where needed. Make sure this compiles without TS errors.",
+      "deliverables": {
+        "code": [
+          "scripts/orchestrate-agents-v2.ts"
+        ]
+      },
+      "skippedReason": "Blocked by: S64-001"
+    },
+    {
+      "id": "S64-004",
+      "title": "sprint-runner.ts — propagate sprint_id onto each task before spawning orchestrator",
+      "agent": "coder",
+      "type": "feature",
+      "priority": "medium",
+      "dependencies": [],
+      "task_target": "cloud-code",
+      "status": "done",
+      "context": "Currently sprint-runner.ts reads a sprint JSON and spawns orchestrate-agents-v2.ts as a child process. But it doesn't inject sprint_id into each task object, so in orchestrate-agents-v2.ts the line `const sprintId = (task as any).sprint_id ?? 'unknown'` always evaluates to 'unknown'. This means routing logs written to logs/routing/YYYY-MM-DD.jsonl all have sprint_id='unknown', making sprintRoutingSummary() useless.\n\nFix: Before spawning orchestrate-agents-v2.ts, read the sprint JSON, inject sprint_id into each task object, and write the modified sprint to a temp file (or pass as env var).\n\nSpecifically in sprint-runner.ts:\n1. After reading the sprint JSON file, iterate through sprint.tasks and set task.sprint_id = sprint.sprint_id || sprint_file_basename (derive from filename like 'sprint-064').\n2. Write the modified sprint to a temp path: `logs/sprint-runner-active.json` (overwrite each run).\n3. Pass that temp path to the orchestrator instead of the original sprint file path.\n\nAlternatively (simpler): just set task.sprint_id in the JSON before spawning — open the sprint file, parse, inject sprint_id on each task, stringify, pass via a temp file or stdin.\n\nThe sprint filename pattern is always `sprint-NNN.json` — extract `sprint-NNN` as the sprint_id if sprint.sprint_id is not present.\n\nKeep the change minimal. Do NOT modify orchestrate-agents-v2.ts for this task — only modify scripts/sprint-runner.ts.",
+      "deliverables": {
+        "code": [
+          "scripts/sprint-runner.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "scripts/sprint-runner.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 40,
+          "summary": "Dual-approved: Claude (0/100) + Codex (80/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "scripts/sprint-runner.ts",
+              "description": "When writing ACTIVE (`logs/sprint-runner-active.json`) there’s no check that the `logs/` directory exists. Consider ensuring `logs/` is created (e.g. mkdirSync) before writing."
+            },
+            {
+              "severity": "low",
+              "file": "scripts/sprint-runner.ts",
+              "description": "If the sprint JSON file already includes a `sprint_id` field, the new logic still derives an ID from the filename but does not warn if they differ. Consider logging or warning when the explicit and derived IDs conflict."
+            }
+          ],
+          "strengths": [
+            "Injection logic is localized to a small helper and does not touch `orchestrate-agents-v2.ts`.",
+            "Retains existing lock and logging behavior, minimizing regressions.",
+            "Makes use of TypeScript interfaces to enforce the shape of tasks and sprints.",
+            "Filename‐based fallback for sprint_id is robust and follows the prescribed pattern."
+          ]
+        }
+      }
+    }
+  ]
+}

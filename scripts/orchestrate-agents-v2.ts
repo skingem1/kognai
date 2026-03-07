@@ -25,7 +25,13 @@ import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync } from 
 import { execSync } from 'child_process';
 import * as https from 'https';
 import * as http from 'http';
-import 'dotenv/config';
+// S64-002: Load .env relative to this file's directory (not process.cwd())
+// Fixes supervisor ANTHROPIC_API_KEY missing when spawned from a different cwd (e.g., VPS path)
+import { config as _dotenvConfig } from 'dotenv';
+import { resolve as _dotenvResolve } from 'path';
+_dotenvConfig({ path: _dotenvResolve(__dirname, '..', '.env'), override: false });
+// Fallback: also try process.cwd() in case running without ts-node __dirname
+_dotenvConfig({ path: _dotenvResolve(process.cwd(), '.env'), override: false });
 import { createMCClient } from './mc-client';
 
 // ===== Types =====
@@ -1271,11 +1277,12 @@ ${fileList}
 ## Generate ONLY: ${filepath}
 ${existingContent}${priorCtx}${testConstraint}
 Write ONLY the content for "${filepath}". Rules:
-- Output a single fenced code block with the COMPLETE file content
+- S64-001: Output the raw file content using FILE: format as described in the system prompt
+- Do NOT wrap output in markdown code fences (\`\`\`) — the orchestrator strips them unreliably
 - Production quality, no TODOs or placeholders
 - Include all imports, types, error handling
 - If this file depends on others listed above, import from them correctly
-- No explanatory text outside the code block`;
+- No explanatory text — output file content only`;
       try {
         const startTime = Date.now();
         const response = await callLLM(provider, model, this.systemPrompt, userPrompt, 180000);
@@ -1412,7 +1419,8 @@ Continue from where it left off and output ONLY the remaining code (no duplicate
     }
     // Fallback: try simpler pattern if multiline didn't match
     if (blocks.length === 0) {
-      const simpleRegex = /```(?:typescript|tsx|ts|javascript|jsx|js|json|yaml|yml|dockerfile|sh|bash|css|html|scss|less|txt)?\s*\n([\s\S]*?)```/g;
+      // S64-001: Added python|py|toml|env|sql|xml|md — MiniMax often labels Python files incorrectly
+      const simpleRegex = /```(?:typescript|tsx|ts|javascript|jsx|js|json|yaml|yml|dockerfile|sh|bash|python|py|toml|env|sql|xml|md|css|html|scss|less|txt)?\s*\n([\s\S]*?)```/g;
       while ((match = simpleRegex.exec(content)) !== null) {
         if (match[1].trim().length > 0) blocks.push(match[1].trim());
       }
