@@ -91,7 +91,8 @@ function getDb() {
 
 export interface ComposeRunConfig {
   limit?: number;
-  status_filter?: string;  // 'draft' | 'approved'
+  status_filter?: string;   // 'draft' | 'approved'
+  source_filter?: string;   // e.g. 'wikimedia' | 'pixabay' | 'pexels'
   dry_run?: boolean;
   final_dir?: string;
 }
@@ -115,11 +116,13 @@ export async function runCompose(config: ComposeRunConfig): Promise<ComposeRunRe
   await mkdir(DEFAULT_DOWNLOADS_DIR, { recursive: true });
 
   const db = getDb();
-  const { data: briefs, error } = await db
+  let query = db
     .from('tiktok_briefs')
     .select('id, ia_identifier, video_source, video_id, video_download_url, topic_id, topic_name, source_title, hook, caption, hashtags, duration_seconds, score, viral_trigger, platform')
     .eq('status', statusFilter)
-    .eq('clip_status', 'pending')
+    .eq('clip_status', 'pending');
+  if (config.source_filter) query = query.eq('video_source', config.source_filter);
+  const { data: briefs, error } = await query
     .order('score', { ascending: false })
     .limit(config.limit ?? 5);
 
@@ -191,12 +194,14 @@ export async function runCompose(config: ComposeRunConfig): Promise<ComposeRunRe
           continue;
         }
         // Wikimedia (sprint-062): video was pre-downloaded by historical-runner — use local path directly
+        let filename: string;
         if (brief.video_download_url.startsWith('/') && existsSync(brief.video_download_url)) {
           videoPath = brief.video_download_url;
-          console.log(`  📁 Local video: ${brief.video_download_url.split('/').pop()}`);
+          filename  = brief.video_download_url.split('/').pop()!;
+          console.log(`  📁 Local video: ${filename}`);
         } else {
-          const ext      = brief.video_download_url.includes('.mp4') ? 'mp4' : 'mp4';
-          const filename = `${src}_${brief.video_id}.${ext}`;
+          const ext = brief.video_download_url.includes('.mp4') ? 'mp4' : 'mp4';
+          filename  = `${src}_${brief.video_id}.${ext}`;
           process.stdout.write(`  ↓ ${filename}...`);
           videoPath = await downloadFromUrl(brief.video_download_url, DEFAULT_DOWNLOADS_DIR, filename);
           process.stdout.write(' done\n');
@@ -255,14 +260,16 @@ export async function runCompose(config: ComposeRunConfig): Promise<ComposeRunRe
 
 // Entry point
 if (import.meta.url === `file://${process.argv[1]}`) {
-  const isDryRun    = process.argv.includes('--dry-run');
-  const isApproved  = process.argv.includes('--approved');
+  const isDryRun     = process.argv.includes('--dry-run');
+  const isApproved   = process.argv.includes('--approved');
   const statusFilter = isApproved ? 'approved' : 'draft';
+  const sourceArg    = process.argv.find(a => a.startsWith('--source='));
+  const sourceFilter = sourceArg?.split('=')[1];
 
   console.log(`\n=== COMPOSE V2 START ===`);
-  console.log(`Mode: ${isDryRun ? 'DRY RUN' : 'LIVE'} | Briefs: ${statusFilter}`);
+  console.log(`Mode: ${isDryRun ? 'DRY RUN' : 'LIVE'} | Briefs: ${statusFilter}${sourceFilter ? ` | Source: ${sourceFilter}` : ''}`);
 
-  runCompose({ limit: 5, status_filter: statusFilter, dry_run: isDryRun })
+  runCompose({ limit: 5, status_filter: statusFilter, source_filter: sourceFilter, dry_run: isDryRun })
     .then(r => {
       console.log(`\n=== DONE (${(r.duration_ms / 1000).toFixed(1)}s) ===`);
       console.log(`Processed: ${r.processed} | Composed: ${r.composed} | Stored: ${r.stored}`);
