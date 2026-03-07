@@ -1,4 +1,3 @@
-#!/usr/bin/env ts-node
 /**
  * sprint-runner.ts — Auto-executes pending sprint tasks via dual-supervisor orchestrator
  *
@@ -8,10 +7,12 @@
  *   1. Check lock file (prevents parallel sprints)
  *   2. Scan sprints/ for JSON files with pending tasks
  *      Priority: week-N.json descending (newest sprint first)
- *   3. Spawn orchestrate-agents-v2.ts on the chosen sprint file
+ *   3. Read sprint JSON, inject sprint_id into each task
+ *   4. Write modified sprint to logs/sprint-runner-active.json
+ *   5. Spawn orchestrate-agents-v2.ts on the temp ACTIVE file
  *      (Dual supervisor: Claude Sonnet + OpenAI Codex, CEO conflict resolution)
- *   4. Telegram alert on start + finish
- *   5. Release lock when done
+ *   6. Telegram alert on start + finish
+ *   7. Release lock when done
  *
  * GitHub Issues → Sprint Tasks:
  *   CEO creates GitHub issues as directives. To execute them, they must be
@@ -19,8 +20,8 @@
  *   The CEO bot or a human writes the sprint JSON; this runner executes it.
  */
 
-import { existsSync, readFileSync, writeFileSync, readdirSync, unlinkSync } from 'fs';
-import { join } from 'path';
+import { existsSync, readFileSync, writeFileSync, readdirSync, unlinkSync, mkdirSync } from 'fs';
+import { join, basename } from 'path';
 import { spawnSync } from 'child_process';
 import * as https from 'https';
 import 'dotenv/config';
@@ -30,9 +31,11 @@ const ROOT       = process.cwd();
 const SPRINTS    = join(ROOT, 'sprints');
 const LOCK       = join(ROOT, 'logs', 'sprint-runner.lock');
 const LOG        = join(ROOT, 'logs', 'sprint-runner.log');
+const ACTIVE     = join(ROOT, 'logs', 'sprint-runner-active.json');
 const MAX_HOURS  = 6; // kill orchestrator if it runs longer than this
 
-interface Task { id: string; status: string; agent?: string; [k: string]: unknown; }
+interface Task { id: string; status: string; agent?: string; sprint_id?: string; [k: string]: unknown; }
+interface Sprint { sprint_id: string; tasks: Task[]; [k: string]: unknown; }
 
 // ── Logging ─────────────────────────────────────────────────────────────────
 function ts(): string {
@@ -82,37 +85,64 @@ function isLocked(): boolean {
 function acquireLock(): void {
   writeFileSync(LOCK, String(process.pid));
 }
-
 function releaseLock(): void {
   try { unlinkSync(LOCK); } catch { /* ignore */ }
 }
 
-// ── Sprint Discovery ─────────────────────────────────────────────────────────
-interface SprintInfo { file: string; pending: number; done: number; total: number; }
+// ── Sprint ID Injection ────────────────────────────────────────────────────
+function deriveSprintIdFromFilename(filename: string): string {
+  // Extract sprint-NNN from path like sprints/sprint-064.json or sprints/sprint-064
+  const base = basename(filename, '.json');
+  // If it already matches sprint-NNN pattern, use it
+  if (/^sprint-\d+$/.test(base)) {
+    return base;
+  }
+  // Fallback: use the base name as-is
+  return base;
+}
 
-function findPendingSprint(): SprintInfo | null {
+function injectSprintIdIntoTasks(sprint: Sprint, sprintFilePath: string): Sprint {
+  // Determine sprint_id: use explicit field, or derive from filename
+  const sprintId = sprint.sprint_id || deriveSprintIdFromFilename(sprintFilePath);
+  
+  // Inject sprint_id into each task
+  if (sprint.tasks && Array.isArray(sprint.tasks)) {
+    for (const task of sprint.tasks) {
+      task.sprint_id = sprintId;
+    }
+  }
+  
+  return sprint;
+}
+
+function writeActiveSprint(sprint: Sprint): string {
+  // Ensure logs directory exists
+  const logsDir = join(ROOT, 'logs');
+  if (!existsSync(logsDir)) {
+    mkdirSync(logsDir, { recursive: true });
+  }
+  
+  // Write the modified sprint to ACTIVE file
+  writeFileSync(ACTIVE, JSON.stringify(sprint, null, 2), 'utf8');
+  return ACTIVE;
+}
+
+// ── Main ────────────────────────────────────────────────────────────────────
+function findPendingSprint(): string | null {
   if (!existsSync(SPRINTS)) return null;
-
+  
   const files = readdirSync(SPRINTS)
-    .filter(f => f.endsWith('.json') && f !== 'test-v2.json')
-    .sort((a, b) => {
-      // Sort week-N.json descending (newest sprint first)
-      const na = parseInt(a.match(/\d+/)?.[0] || '0', 10);
-      const nb = parseInt(b.match(/\d+/)?.[0] || '0', 10);
-      return nb - na;
-    });
+    .filter(f => f.endsWith('.json'))
+    .sort()
+    .reverse(); // newest first
 
-  for (const fname of files) {
-    const fpath = join(SPRINTS, fname);
+  for (const file of files) {
+    const path = join(SPRINTS, file);
     try {
-      const raw   = readFileSync(fpath, 'utf8');
-      const data  = JSON.parse(raw);
-      const tasks: Task[] = Array.isArray(data) ? data : (data.tasks || []);
-      const pending = tasks.filter(t => t.status === 'pending').length;
-      const done    = tasks.filter(t => t.status === 'done').length;
-      if (pending > 0) {
-        return { file: fpath, pending, done, total: tasks.length };
-      }
+      const content = readFileSync(path, 'utf8');
+      const sprint: Sprint = JSON.parse(content);
+      const hasPending = sprint.tasks?.some((t: Task) => t.status === 'pending');
+      if (hasPending) return path;
     } catch {
       continue;
     }
@@ -120,112 +150,77 @@ function findPendingSprint(): SprintInfo | null {
   return null;
 }
 
-// ── Main ────────────────────────────────────────────────────────────────────
-async function main(): Promise<void> {
-  log('Checking for pending sprint work...');
-
+function main(): void {
   if (isLocked()) {
-    log('Sprint already in progress (lock file active) — exiting');
+    log('Lock present — another runner active. Exiting.');
     return;
   }
-
-  const sprint = findPendingSprint();
-  if (!sprint) {
-    log('No pending tasks found in any sprint file — nothing to do');
-    return;
-  }
-
-  const sprintName = sprint.file.split('/').pop()!;
-  log(`Found pending work: ${sprintName} (${sprint.pending} pending, ${sprint.done} done of ${sprint.total} total)`);
 
   acquireLock();
-  const startMs = Date.now();
+  log('Starting sprint runner...');
 
-  sendTelegram(
-    `🚀 *Sprint started: ${sprintName}*\n` +
-    `Tasks: ${sprint.pending} pending | ${sprint.done} already done | ${sprint.total} total\n` +
-    `Estimated time: ${Math.ceil(sprint.pending * 2.5)} min`
+  const sprintPath = findPendingSprint();
+  if (!sprintPath) {
+    log('No pending sprints found.');
+    releaseLock();
+    return;
+  }
+
+  log(`Found pending sprint: ${sprintPath}`);
+
+  // Read and parse the sprint JSON
+  let sprint: Sprint;
+  try {
+    const content = readFileSync(sprintPath, 'utf8');
+    sprint = JSON.parse(content);
+  } catch (err) {
+    log(`Failed to read sprint JSON: ${err}`);
+    releaseLock();
+    return;
+  }
+
+  // Inject sprint_id into each task
+  const sprintWithIds = injectSprintIdIntoTasks(sprint, sprintPath);
+  log(`Injected sprint_id into ${sprintWithIds.tasks?.length || 0} tasks`);
+
+  // Write modified sprint to ACTIVE file
+  const activePath = writeActiveSprint(sprintWithIds);
+  log(`Written modified sprint to: ${activePath}`);
+
+  // Spawn orchestrate-agents-v2.ts with the ACTIVE file path
+  const orchestratorPath = join(ROOT, 'scripts', 'orchestrate-agents-v2.ts');
+  
+  const start = Date.now();
+  sendTelegram(`🚀 *Sprint Runner* started\\n\\nSprint: \`${basename(sprintPath)}\`\\nTasks: ${sprintWithIds.tasks?.length || 0}`);
+
+  const result = spawnSync(
+    'npx',
+    ['ts-node', orchestratorPath, activePath],
+    {
+      stdio: 'inherit',
+      cwd: ROOT,
+      env: { ...process.env },
+      timeout: MAX_HOURS * 60 * 60 * 1000,
+    }
   );
 
-  log(`Spawning orchestrator on: ${sprint.file}`);
+  const elapsed = Math.round((Date.now() - start) / 60000);
+  const status = result.status === 0 ? '✅ Completed' : `❌ Failed (exit ${result.status})`;
+  
+  log(`Orchestrator finished: ${status} (${elapsed} min)`);
+  sendTelegram(`🏁 *Sprint Runner* finished\\n\\n${status}\\nDuration: ${elapsed} min`);
 
-  let exitCode: number | null = null;
+  // Clean up ACTIVE file after run
   try {
-    const result = spawnSync(
-      'npx',
-      ['ts-node', '--transpile-only', 'scripts/orchestrate-agents-v2.ts', sprint.file],
-      {
-        cwd: ROOT,
-        stdio: 'inherit',
-        timeout: MAX_HOURS * 60 * 60 * 1000,
-        env: { ...process.env },
-      }
-    );
-    exitCode = result.status;
-    if (result.error) throw result.error;
-  } catch (err: unknown) {
-    const msg = err instanceof Error ? err.message : String(err);
-    log(`Orchestrator error: ${msg}`);
-    sendTelegram(`🔴 *Sprint runner error*: ${msg}`);
-    releaseLock();
-    process.exit(1);
+    if (existsSync(ACTIVE)) {
+      unlinkSync(ACTIVE);
+      log('Cleaned up ACTIVE sprint file');
+    }
+  } catch {
+    // non-fatal
   }
 
   releaseLock();
-
-  // Read final state
-  const elapsed = Math.round((Date.now() - startMs) / 1000 / 60);
-  let doneCount  = sprint.done;
-  let pendingCount = sprint.pending;
-  try {
-    const raw   = readFileSync(sprint.file, 'utf8');
-    const data  = JSON.parse(raw);
-    const tasks: Task[] = Array.isArray(data) ? data : (data.tasks || []);
-    doneCount    = tasks.filter(t => t.status === 'done').length;
-    pendingCount = tasks.filter(t => t.status === 'pending').length;
-  } catch { /* use estimates */ }
-
-  const emoji = exitCode === 0 ? '✅' : '⚠️';
-  const summary = `${emoji} *Sprint complete: ${sprintName}*\n` +
-    `Done: ${doneCount}/${sprint.total} | Pending: ${pendingCount}\n` +
-    `Time: ${elapsed} min`;
-
-  log(`Finished. Done: ${doneCount}/${sprint.total}, Pending: ${pendingCount}, Exit: ${exitCode}, Time: ${elapsed}min`);
-  sendTelegram(summary);
-
-  // ── Post-Sprint Pipeline: tests → CTO review → deploy ───────────────────
-  // Only run pipeline if sprint made progress (at least some tasks done)
-  if (exitCode === 0 && doneCount > 0 && pendingCount === 0) {
-    log('All tasks done — launching post-sprint pipeline (test → CTO review → deploy)...');
-    sendTelegram(`🔬 *Post-sprint pipeline started for ${sprintName}*\nRunning tests → CTO review → auto-deploy`);
-
-    try {
-      const pipelineResult = spawnSync(
-        'npx',
-        ['ts-node', '--transpile-only', 'scripts/post-sprint-pipeline.ts', sprint.file],
-        {
-          cwd: ROOT,
-          stdio: 'inherit',
-          timeout: 15 * 60 * 1000, // 15 min max for tests + deploy
-          env: { ...process.env },
-        }
-      );
-      if (pipelineResult.error) throw pipelineResult.error;
-      log(`Post-sprint pipeline exited: ${pipelineResult.status}`);
-    } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : String(err);
-      log(`Post-sprint pipeline error: ${msg}`);
-      sendTelegram(`⚠️ *Post-sprint pipeline error*: ${msg}`);
-    }
-  } else if (pendingCount > 0) {
-    log(`${pendingCount} tasks still pending — skipping post-sprint pipeline (will re-run next cycle)`);
-  }
 }
 
-main().catch((err: unknown) => {
-  const msg = err instanceof Error ? err.message : String(err);
-  log(`Fatal: ${msg}`);
-  sendTelegram(`🔴 *Sprint runner crashed*: ${msg}`);
-  releaseLock();
-  process.exit(1);
-});
+main();
