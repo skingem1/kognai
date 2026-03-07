@@ -18,6 +18,7 @@
 import './env.js';
 import { resolve } from 'path';
 import { mkdir } from 'fs/promises';
+import { existsSync, statSync } from 'fs';
 import { createHash } from 'crypto';
 import { createClient } from '@supabase/supabase-js';
 
@@ -192,8 +193,15 @@ export async function runHistoricalBriefs(config: HistoricalRunConfig = {}): Pro
         }
 
         // Step 2: Animate with Kling (or Ken Burns fallback)
-        const anim = await animateImage(image.imageUrl, videoPath, motionPromptFor(brief.topic_name));
-        console.log(`  🎬 Animated: ${anim.model} | ${anim.durationSeconds}s | cost $${anim.costUsd.toFixed(3)}`);
+        // Skip if a valid (non-zero) video already exists in the cache.
+        let anim: Awaited<ReturnType<typeof animateImage>>;
+        if (existsSync(videoPath) && statSync(videoPath).size > 0) {
+          console.log(`  💿 Cache hit: ${videoFilename} (${(statSync(videoPath).size / 1e6).toFixed(1)} MB) — skipping animation`);
+          anim = { videoPath, model: 'kling', durationSeconds: 10, costUsd: 0 };
+        } else {
+          anim = await animateImage(image.imageUrl, videoPath, motionPromptFor(brief.topic_name));
+          console.log(`  🎬 Animated: ${anim.model} | ${anim.durationSeconds}s | cost $${anim.costUsd.toFixed(3)}`);
+        }
 
         // Step 3: Store brief in tiktok_briefs (reuse existing table + compose pipeline)
         const row = {
