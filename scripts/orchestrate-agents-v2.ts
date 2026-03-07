@@ -49,6 +49,12 @@ interface AgentTask {
     model: string;
     review?: ReviewResult;
   };
+  // Sprint-063: explicit task routing fields
+  task_target?: 'local' | 'cloud-code' | 'cloud-exec' | 'cloud-post';
+  execution_id?: string;
+  queued_at?: string;
+  executed_at?: string;
+  execution_source?: string;
 }
 
 interface ReviewResult {
@@ -1099,6 +1105,23 @@ function assessTaskComplexity(
   task: AgentTask,
   deliverables: string[],
 ): { provider: 'minimax' | 'anthropic'; model: string; routingReason: string } {
+  // Bootstrap fallback: if MiniMax is not configured, route everything to Anthropic
+  if (!process.env.MINIMAX_API_KEY) {
+    return { provider: 'anthropic', model: 'claude-sonnet-4-20250514', routingReason: 'MINIMAX_API_KEY not set → Anthropic fallback' };
+  }
+  // Sprint-063: task_target field overrides automatic complexity routing
+  if (task.task_target) {
+    switch (task.task_target) {
+      case 'cloud-code':
+        return { provider: 'minimax' as const, model: 'MiniMax-M2.5', routingReason: 'task_target=cloud-code (120s budget)' };
+      case 'cloud-exec':
+        return { provider: 'anthropic' as const, model: 'claude-sonnet-4-20250514', routingReason: 'task_target=cloud-exec (90s budget)' };
+      case 'cloud-post':
+        return { provider: 'anthropic' as const, model: 'claude-sonnet-4-20250514', routingReason: 'task_target=cloud-post (external API dispatch, 30s budget)' };
+      case 'local':
+        return { provider: 'anthropic' as const, model: 'claude-sonnet-4-20250514', routingReason: 'task_target=local (vault Qwen3 preferred; cloud-exec fallback)' };
+    }
+  }
   const ctx = (task.context || '').toLowerCase();
 
   // Signal 1: many deliverables → always Claude (coordinating multiple files needs coherence)
@@ -1155,6 +1178,22 @@ class CodingAgent {
     // MiniMax M2.5  → simple tasks (small edits, config, stubs) + truncation retry as safety net
     const { provider, model, routingReason } = assessTaskComplexity(task, deliverables);
     log(c.gray, `  -> Using ${model} [${routingReason}]`);
+    // Sprint-063: Emit JSONL routing log (non-fatal — never block execution)
+    try {
+      const { generateExecutionId, logRoutingDecision } = await import('./task-router.js');
+      const sprintId = (task as any).sprint_id ?? 'unknown';
+      const execId = task.execution_id ?? generateExecutionId(sprintId, task.id);
+      logRoutingDecision({
+        execution_id: execId,
+        sprint_id: sprintId,
+        task_id: task.id,
+        task_target: (task.task_target ?? 'cloud-code') as any,
+        provider,
+        model,
+        queued_at: task.queued_at ?? new Date().toISOString(),
+        execution_source: 'orchestrate-agents-v2',
+      });
+    } catch { /* non-fatal — routing log failure must never block task execution */ }
 
     // Pre-flight: validate all deliverable files exist for non-feature tasks
     // If a file doesn't exist and we're asked to modify it, skip rather than hallucinate

@@ -350,5 +350,46 @@ module.exports = {
       out_file: "/home/invoica/apps/Invoica/logs/docs-generator-out.log",
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
+    {
+      // kognai-router: FastAPI server wrapping KognaiRouter (Sprint-063)
+      // Runs on port 11435 — routes tasks to local/cloud tiers based on prompt analysis
+      // Start: pm2 start ecosystem.config.js --only kognai-router
+      name: "kognai-router",
+      script: "router_server.py",
+      interpreter: "python3",
+      cwd: "/Users/tarekmnif/kognai/runtime",
+      autorestart: true,
+      watch: false,
+      max_memory_restart: "256M",
+      env: {
+        ROUTER_PORT: "11435",
+        PYTHONPATH: "/Users/tarekmnif/kognai/runtime",
+        VAULT_OLLAMA_URL: process.env.VAULT_OLLAMA_URL || "http://vault:11434",
+        VAULT_MODEL: process.env.VAULT_MODEL || "qwen3:14b",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/router-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/router-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
+    {
+      // pending-local-drain: cron every 5 min — drains pending-local queue when vault reachable
+      // Picks up tasks queued while vault (Tailscale) was offline and reruns them
+      name: "pending-local-drain",
+      script: "scripts/drain-local-queue.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: false,
+      watch: false,
+      cron_restart: "*/5 * * * *",
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
+        VAULT_OLLAMA_URL: process.env.VAULT_OLLAMA_URL || "http://vault:11434",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/drain-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/drain-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
   ]
 };

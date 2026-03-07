@@ -1,0 +1,146 @@
+{
+  "tasks": [
+    {
+      "id": "TR-001",
+      "title": "Create scripts/task-router.ts — task target routing module",
+      "agent": "coder",
+      "type": "feature",
+      "priority": "critical",
+      "dependencies": [],
+      "task_target": "cloud-exec",
+      "status": "done",
+      "context": "Create a new TypeScript module at scripts/task-router.ts that handles task routing based on a task_target field in sprint JSON tasks.\n\nThe module must export:\n\n1. type TaskTarget = 'local' | 'cloud-code' | 'cloud-exec' | 'cloud-post'\n\n2. TIMEOUT_BUDGETS: Record<TaskTarget, number> = { local: 600000, 'cloud-code': 120000, 'cloud-exec': 90000, 'cloud-post': 30000 }\n\n3. interface TaskRoute { provider: 'ollama'|'minimax'|'anthropic'|'external'; model: string; endpoint: string; timeoutMs: number; target: TaskTarget }\n\n4. interface RoutingLogEntry { execution_id: string; sprint_id: string; task_id: string; task_target: TaskTarget; provider: string; model: string; queued_at: string; executed_at?: string; execution_source: string; vault_reachable?: boolean; queued_local?: boolean; error?: string }\n\n5. resolveRoute(target: TaskTarget): TaskRoute — maps target to provider/model/endpoint/timeout:\n   - local: provider='ollama', model=process.env.VAULT_MODEL??'qwen3:14b', endpoint=process.env.VAULT_OLLAMA_URL??'http://vault:11434'\n   - cloud-code: provider='minimax', model='MiniMax-M2.5', endpoint='https://api.minimax.io/v1/chat/completions'\n   - cloud-exec: provider='anthropic', model='claude-sonnet-4-20250514', endpoint='https://api.anthropic.com/v1/messages'\n   - cloud-post: provider='external', model='n/a', endpoint=''\n   - default (unknown): log warning, return resolveRoute('cloud-code')\n\n6. generateExecutionId(sprintId: string, taskId: string): string — deterministic sha256 hash of `${sprintId}:${taskId}`, hex slice 0..16. Import { createHash } from 'crypto'.\n\n7. isAlreadyExecuted(executionId: string): boolean — reads logs/routing/executed.jsonl (if exists), returns true if any line has matching execution_id with a non-null executed_at.\n\n8. logRoutingDecision(entry: RoutingLogEntry): void — mkdirSync logs/routing recursive, appendFileSync to logs/routing/YYYY-MM-DD.jsonl (today's date). Also appendFileSync to logs/routing/executed.jsonl if entry.executed_at is set. Non-fatal: wrap in try/catch.\n\n9. isVaultReachable(): Promise<boolean> — fetch GET ${VAULT_OLLAMA_URL}/api/tags with 3000ms AbortController timeout. Return true if resp.ok, false on any error.\n\n10. queueLocalTask(task: Record<string,unknown>, entry: RoutingLogEntry): void — mkdirSync workspace/sprints/pending-local, writeFileSync pending-local/${entry.execution_id}.json with JSON {task, routing:{...entry, queued_local:true}}. Log the queue action.\n\n11. dequeueLocalTask(executionId: string): void — unlinkSync workspace/sprints/pending-local/${executionId}.json if exists.\n\n12. drainLocalQueue(): Promise<string[]> — if pending-local dir doesn't exist return []. Call isVaultReachable(), if false log and return []. Otherwise read all *.json files in pending-local, log count, return file paths array.\n\n13. sprintRoutingSummary(sprintId: string): Record<string,number> — reads today's JSONL log, counts entries by task_target for the given sprintId.\n\nAll paths relative to process.cwd(). Use resolve/join from 'path'. Use fs functions from 'fs'.",
+      "deliverables": {
+        "code": [
+          "scripts/task-router.ts"
+        ]
+      }
+    },
+    {
+      "id": "TR-002",
+      "title": "Extend AgentTask interface + assessTaskComplexity for task_target in orchestrate-agents-v2.ts",
+      "agent": "coder",
+      "type": "feature",
+      "priority": "critical",
+      "dependencies": [
+        "TR-001"
+      ],
+      "task_target": "cloud-exec",
+      "status": "done",
+      "context": "Extend scripts/orchestrate-agents-v2.ts with Sprint-063 task_target routing.\n\nChange 1 — Extend AgentTask interface (around line 32) by adding these optional fields:\n  task_target?: 'local' | 'cloud-code' | 'cloud-exec' | 'cloud-post';\n  execution_id?: string;\n  queued_at?: string;\n  executed_at?: string;\n  execution_source?: string;\n\nChange 2 — At the TOP of the assessTaskComplexity function (around line 1098), BEFORE the existing 'const ctx = ...' line, add this block:\n\n  // Sprint-063: task_target field overrides automatic complexity routing\n  if (task.task_target) {\n    switch (task.task_target) {\n      case 'cloud-code':\n        return { provider: 'minimax' as const, model: 'MiniMax-M2.5', routingReason: 'task_target=cloud-code (120s budget)' };\n      case 'cloud-exec':\n        return { provider: 'anthropic' as const, model: 'claude-sonnet-4-20250514', routingReason: 'task_target=cloud-exec (90s budget)' };\n      case 'cloud-post':\n        return { provider: 'anthropic' as const, model: 'claude-sonnet-4-20250514', routingReason: 'task_target=cloud-post (external API dispatch, 30s budget)' };\n      case 'local':\n        // Vault Qwen3 via Tailscale — host-side Claude fallback if vault unreachable\n        return { provider: 'anthropic' as const, model: 'claude-sonnet-4-20250514', routingReason: 'task_target=local (vault Qwen3 preferred; cloud-exec fallback)' };\n    }\n  }\n\nChange 3 — In CodingAgent.execute(), after the line `const { provider, model, routingReason } = assessTaskComplexity(task, deliverables);` (around line 1156), add this routing log block:\n\n  // Sprint-063: Log routing decision to JSONL\n  try {\n    const { generateExecutionId, logRoutingDecision } = await import('./task-router.js');\n    const sprintId = (task as any).sprint_id ?? 'unknown';\n    const execId   = task.execution_id ?? generateExecutionId(sprintId, task.id);\n    logRoutingDecision({\n      execution_id:     execId,\n      sprint_id:        sprintId,\n      task_id:          task.id,\n      task_target:      (task.task_target ?? 'cloud-code') as any,\n      provider,\n      model,\n      queued_at:        task.queued_at ?? new Date().toISOString(),\n      execution_source: 'orchestrate-agents-v2',\n    });\n  } catch { /* non-fatal — routing log must not block execution */ }\n\nDo NOT change any other part of the file. Keep all existing logic intact.",
+      "deliverables": {
+        "code": [
+          "scripts/orchestrate-agents-v2.ts"
+        ]
+      }
+    },
+    {
+      "id": "TR-003",
+      "title": "Create runtime/router_server.py — FastAPI HTTP wrapper for KognaiRouter",
+      "agent": "coder",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "task_target": "cloud-code",
+      "status": "rejected",
+      "context": "Create runtime/router_server.py — a FastAPI HTTP server that wraps KognaiRouter from router.py.\n\nRequirements:\n- Port: 11435 (configurable via ROUTER_PORT env var)\n- Import KognaiRouter, Tier from router (same directory — add sys.path insert)\n- CORS enabled for localhost (allow_origins wildcard localhost patterns)\n- Single KognaiRouter singleton instance (shared, thread-safe for reads)\n\nPydantic models:\n  class RouteRequest(BaseModel):\n    prompt: str\n    context_tokens: Optional[int] = 0\n    force_local: Optional[bool] = None\n    max_cost_usd: Optional[float] = None\n    sprint_id: Optional[str] = None\n    task_id: Optional[str] = None\n\n  class RouteResponse(BaseModel):\n    task_type: str\n    tier: str\n    model_name: str\n    endpoint: str\n    think_mode: bool\n    reasoning: str\n    estimated_cost_usd: float\n    fallback_tier: Optional[str]\n    timeout_budget_s: int\n\nTier timeout budgets dict: NANO=30, LOCAL=120, POWER=600, CLOUD=90, APEX=120\n\nEndpoints:\n  POST /route → RouteResponse\n    - If req.force_local or req.max_cost_usd given: create per-request KognaiRouter with those overrides\n    - Otherwise use singleton _router\n    - Call r.route(req.prompt, context_tokens=req.context_tokens or 0)\n    - Map decision fields to RouteResponse\n    - timeout_budget_s = TIER_TIMEOUTS.get(tier_name, 90)\n    - Raise HTTPException 500 on any exception\n\n  GET /health → dict\n    - Returns: status='ok', timestamp=UTC ISO string, total_tasks_routed, local_pct, avg_cost_per_task_usd, port\n\n  GET /stats → dict\n    - Returns router.stats() with tier_counts keys converted from Tier enum to .name strings\n\nEntry point (if __name__ == '__main__'):\n  port = int(os.environ.get('ROUTER_PORT', '11435'))\n  uvicorn.run('router_server:app', host='0.0.0.0', port=port, log_level='info', reload=False)\n\nImports needed: fastapi, fastapi.middleware.cors, pydantic, uvicorn, datetime, os, sys, typing\nDependency note in docstring: pip3 install fastapi uvicorn httpx",
+      "deliverables": {
+        "code": [
+          "runtime/router_server.py"
+        ]
+      },
+      "output": {
+        "files": [
+          "runtime/router_server.py"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "REJECTED",
+          "score": 15,
+          "summary": "The generated file begins with a markdown code fence and is truncated, making it invalid Python and missing critical endpoint logic.",
+          "issues": [
+            {
+              "severity": "critical",
+              "file": "runtime/router_server.py",
+              "description": "File starts with a markdown code fence (```typescript), which is invalid syntax for a Python source file."
+            },
+            {
+              "severity": "critical",
+              "file": "runtime/router_server.py",
+              "description": "The health endpoint implementation is truncated (line ends with an incomplete expression), resulting in syntax errors and missing functionality."
+            }
+          ],
+          "strengths": [
+            "Uses FastAPI and pydantic models appropriately",
+            "Includes CORS configuration for localhost patterns",
+            "Implements a singleton router instance for thread-safe reads",
+            "Provides override logic for per-request router parameters"
+          ]
+        }
+      }
+    },
+    {
+      "id": "TR-004",
+      "title": "Add kognai-router PM2 process to ecosystem.config.js",
+      "agent": "coder",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [
+        "TR-003"
+      ],
+      "task_target": "cloud-exec",
+      "status": "skipped",
+      "context": "Add two new PM2 app entries to ecosystem.config.js (inside the apps array, before the closing bracket).\n\nEntry 1 — kognai-router:\n{\n  name: 'kognai-router',\n  script: 'router_server.py',\n  interpreter: 'python3',\n  cwd: '/Users/tarekmnif/kognai/runtime',\n  autorestart: true,\n  watch: false,\n  max_memory_restart: '256M',\n  env: {\n    ROUTER_PORT: '11435',\n    PYTHONPATH: '/Users/tarekmnif/kognai/runtime',\n    VAULT_OLLAMA_URL: process.env.VAULT_OLLAMA_URL || 'http://vault:11434',\n    VAULT_MODEL: process.env.VAULT_MODEL || 'qwen3:14b',\n  },\n  error_file: '/Users/tarekmnif/kognai/logs/router-error.log',\n  out_file: '/Users/tarekmnif/kognai/logs/router-out.log',\n  log_date_format: 'YYYY-MM-DD HH:mm:ss Z'\n}\n\nEntry 2 — pending-local-drain:\n{\n  name: 'pending-local-drain',\n  script: 'scripts/drain-local-queue.ts',\n  interpreter: 'node',\n  interpreter_args: '-r ts-node/register',\n  cwd: '/Users/tarekmnif/kognai',\n  autorestart: false,\n  watch: false,\n  cron_restart: '*/5 * * * *',\n  env: {\n    TS_NODE_TRANSPILE_ONLY: 'true',\n    TS_NODE_PROJECT: '/Users/tarekmnif/kognai/tsconfig.scripts.json',\n    VAULT_OLLAMA_URL: process.env.VAULT_OLLAMA_URL || 'http://vault:11434',\n  },\n  error_file: '/Users/tarekmnif/kognai/logs/drain-error.log',\n  out_file: '/Users/tarekmnif/kognai/logs/drain-out.log',\n  log_date_format: 'YYYY-MM-DD HH:mm:ss Z'\n}\n\nAdd both entries as the LAST items in the apps array, just before the closing ]. Do NOT modify any other entries. The existing structure uses module.exports = { apps: [...] }.",
+      "deliverables": {
+        "code": [
+          "ecosystem.config.js"
+        ]
+      },
+      "skippedReason": "Blocked by: TR-003"
+    },
+    {
+      "id": "TR-005",
+      "title": "Create scripts/drain-local-queue.ts — pending-local queue drain script",
+      "agent": "coder",
+      "type": "feature",
+      "priority": "medium",
+      "dependencies": [
+        "TR-001"
+      ],
+      "task_target": "cloud-code",
+      "status": "done",
+      "context": "Create scripts/drain-local-queue.ts — a short script run by PM2 cron every 5 minutes to drain the pending-local task queue when the vault becomes reachable.\n\nThe script should:\n1. Import { drainLocalQueue, dequeueLocalTask, logRoutingDecision } from './task-router.js'\n2. Call drainLocalQueue() which returns array of file paths (or empty if vault unreachable)\n3. For each file path: read JSON file, log 'Draining: <execution_id>', dequeueLocalTask(execution_id), logRoutingDecision with executed_at = new Date().toISOString() and execution_source = 'pending-local-drain'\n4. Log final count 'Drained N local task(s)'\n5. Use top-level await (this is an ES module via ts-node)\n\nKeep it under 50 lines. Import readFileSync from 'fs'. Export nothing.",
+      "deliverables": {
+        "code": [
+          "scripts/drain-local-queue.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "scripts/drain-local-queue.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 45,
+          "summary": "Dual-approved: Claude (0/100) + Codex (90/100)",
+          "issues": [
+            {
+              "severity": "low",
+              "file": "scripts/drain-local-queue.ts",
+              "description": "No error handling around file reads or queue operations; consider adding try/catch to handle I/O or RPC failures gracefully."
+            }
+          ],
+          "strengths": [
+            "Meets all functional requirements",
+            "Uses concise, clear control flow",
+            "Top-level await is used appropriately in this ES module",
+            "Correct logging and routing decision format"
+          ]
+        }
+      }
+    }
+  ]
+}
