@@ -1,0 +1,72 @@
+{
+  "sprint_id": "065",
+  "title": "Foundation Hardening",
+  "phase": "0",
+  "created_at": "2026-03-08",
+  "tasks": [
+    {
+      "id": "065-1",
+      "title": "Fix extractCodeBlocks fence bug in orchestrate-agents-v2.ts",
+      "description": "SURGICAL edit only - Add missing language tags (python, py, sh, bash, json, yaml, toml) to simpleRegex alternation in extractCodeBlocks function. Do NOT rewrite or restructure the file. This is a retry of S64-001 which destructively rewrote the file.",
+      "file": "scripts/orchestrate-agents-v2.ts",
+      "task_target": "cloud-exec",
+      "depends_on": [],
+      "acceptance": "extractCodeBlocks function correctly identifies code blocks with all specified language tags, diff size <10 lines"
+    },
+    {
+      "id": "065-2",
+      "title": "Fix supervisor dotenv dead path in orchestrate-agents-v2.ts",
+      "description": "SURGICAL edit only - Replace import dotenv/config with explicit path resolution relative to __dirname. Change ONLY the dotenv import line. This is a retry of S64-002 which destructively rewrote the file.",
+      "file": "scripts/orchestrate-agents-v2.ts",
+      "task_target": "cloud-exec",
+      "depends_on": [],
+      "acceptance": "Dotenv import uses explicit path resolution, supervisor starts without path errors, diff size <5 lines"
+    },
+    {
+      "id": "065-3",
+      "title": "HTTP router integration - wire assessTaskComplexity to localhost:11435",
+      "description": "Add HTTP router probe at top of assessTaskComplexity function before existing heuristics. Implement 2-second timeout with graceful fallback to existing heuristics if router unavailable. Preserve all existing complexity assessment logic.",
+      "file": "scripts/orchestrate-agents-v2.ts",
+      "task_target": "cloud-exec",
+      "depends_on": [
+        "065-1",
+        "065-2"
+      ],
+      "acceptance": "assessTaskComplexity attempts HTTP call to localhost:11435, falls back to heuristics on timeout/error, existing behavior preserved"
+    },
+    {
+      "id": "065-4",
+      "title": "OpenClaw v2026.3.7 agent config migration",
+      "description": "Configure gateway.auth.mode token in all 28 agent openclaw.json files. Set compaction config: reserve_tokens_floor=40000, memory_flush=true. Update version to v2026.3.7.",
+      "file": "agents/*/openclaw.json",
+      "task_target": "cloud-code",
+      "depends_on": [],
+      "acceptance": "All 28 agent openclaw.json files have gateway.auth.mode=token, compaction settings applied, version updated to v2026.3.7"
+    },
+    {
+      "id": "065-5",
+      "title": "Install T1 OpenClaw Skills (13 skills)",
+      "description": "Install OpenClaw skills: skill-vetter, sophie-optimizer, context-compressor, context-recovery, lossless-claw, commit-analyzer, project-context-sync, gitclaw, tailscale, system-monitor, hetzner-cloud, vercel, pm2.",
+      "file": null,
+      "task_target": "local",
+      "depends_on": [],
+      "acceptance": "All 13 T1 skills installed and available in OpenClaw skill registry, skill-vetter and sophie-optimizer functional"
+    },
+    {
+      "id": "065-6",
+      "title": "Verify router + Tailscale tunnel connectivity",
+      "description": "Confirm network connectivity for Ollama router on localhost:11434, Tailscale tunnel at 100.81.181.53, and ClawRouter on localhost:11435. Test HTTP endpoints and tunnel stability.",
+      "file": null,
+      "task_target": "local",
+      "depends_on": [],
+      "acceptance": "All three endpoints respond correctly: localhost:11434 (Ollama), 100.81.181.53 (Tailscale), localhost:11435 (ClawRouter)"
+    }
+  ],
+  "human_todos": [
+    "Manually test extractCodeBlocks on mixed-language code after S65-001",
+    "Verify supervisor startup with new dotenv path after S65-002",
+    "Test assessTaskComplexity HTTP router integration with actual complexity queries after S65-003",
+    "Validate OpenClaw agent authentication with token mode after S65-004",
+    "Confirm T1 skills are properly loaded and functional after S65-005"
+  ]
+}
