@@ -1285,8 +1285,9 @@ class CodingAgent {
       const fileList = deliverables.map((f, idx) => `${idx + 1}. ${f}${f === filepath ? ' ← THIS ONE' : ''}`).join('\n');
 
       const isTestFile = filepath.includes('test') || filepath.includes('spec');
+      const existingLines = existsSync(filepath) ? readFileSync(filepath, 'utf-8').split('\n').length : 0;
       const existingContent = existsSync(filepath)
-        ? `\n\n## Current File Content (EDIT this — do not rewrite from scratch)\n\`\`\`typescript\n${readFileSync(filepath, 'utf-8').substring(0, 3000)}\n\`\`\`\n`
+        ? `\n\n## EXISTING FILE — SURGICAL EDIT ONLY\nDo NOT rewrite the entire file. Output the COMPLETE updated file with your changes merged in.\nIf you add a function, append it. If you edit a line, change only that line.\nFile has ${existingLines} lines — preserve ALL existing code.\n\n### Current Content\n\`\`\`typescript\n${readFileSync(filepath, 'utf-8').substring(0, 3000)}\n\`\`\`\n`
         : `\n\n## Note: This is a NEW file — create it from scratch.\n`;
       const testConstraint = isTestFile
         ? `\n\n## CRITICAL: TEST FILE SIZE LIMIT
@@ -2285,6 +2286,14 @@ async function postSprintSmokeTest(): Promise<void> {
 // ===== Main Entry =====
 
 async function main() {
+  // S67-005: Startup env check
+  if (!process.env.ANTHROPIC_API_KEY) {
+    log(c.yellow, '⚠  ANTHROPIC_API_KEY not set — Claude supervisor + CEO will be unavailable.');
+    log(c.yellow, '   Codex will be the sole reviewer. Set ANTHROPIC_API_KEY in .env for full dual-supervisor mode.');
+  }
+  if (!process.env.MINIMAX_API_KEY) {
+    log(c.yellow, '⚠  MINIMAX_API_KEY not set — cloud-code tasks will fail.');
+  }
   try {
     const orchestrator = new Orchestrator();
     await orchestrator.run();
