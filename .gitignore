@@ -1,3 +1,4 @@
+FILE: .gitignore
 node_modules/
 .env
 *.log
@@ -47,3 +48,30 @@ tier.json
 .env
 .env.local
 .env.*.local
+
+# Sprint-066 additions
+
+# Binary media files — never commit
+*.mp4
+*.mov
+*.avi
+*.mkv
+
+# Agent media output directories
+clips/
+downloads/
+final/
+final-v2/
+
+# macOS system files
+.DS_Store
+**/.DS_Store
+
+# Dashboard runtime state
+dashboard/.pid
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
