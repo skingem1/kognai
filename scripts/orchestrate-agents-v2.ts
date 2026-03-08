@@ -1241,6 +1241,8 @@ class CodingAgent {
       'backend/', 'frontend/', 'agents/', 'scripts/', 'shared/',
       'website/', 'docs-site/', 'apps/', 'sdk/', 'x402-base/', 'x402-evm/', 'x402-test/',
       'supabase/', 'infrastructure/',
+      // Kognai runtime paths (S66-002)
+      'runtime/', 'dashboard/', 'kognai-agents/', 'workspace/', 'docs/',
     ];
     // Invalid patterns: paths that look like monorepo sub-dirs that don't exist
     const INVALID_PATH_PATTERNS = [
@@ -1249,7 +1251,9 @@ class CodingAgent {
       /^src\/agents\//, // no src/agents/ dir
     ];
     for (const filepath of deliverables) {
-      const isValidPrefix = VALID_PATH_PREFIXES.some(p => filepath.startsWith(p));
+      // Root-level dotfiles and config files are always valid
+      const isRootFile = !filepath.includes('/') || filepath.startsWith('.');
+      const isValidPrefix = isRootFile || VALID_PATH_PREFIXES.some(p => filepath.startsWith(p));
       const isInvalidPattern = INVALID_PATH_PATTERNS.some(r => r.test(filepath));
       if (!isValidPrefix || isInvalidPattern) {
         log(c.red, `  ✗ Path validation FAILED: "${filepath}" is not in a valid project directory`);
