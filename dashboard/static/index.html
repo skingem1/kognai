@@ -1,3 +1,4 @@
+FILE: dashboard/static/index.html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -69,6 +70,28 @@
       </div>
       <div class="card-body" id="logs-body">
         <div class="empty-state"><div class="icon">⏳</div>Loading...</div>
+      </div>
+    </div>
+
+    <!-- Panel 5: Model Routing -->
+    <div class="card" id="routing-stats-card">
+      <div class="card-header">
+        <span class="card-title">🤖 Model Routing</span>
+      </div>
+      <div class="card-body">
+        <table id="model-table" class="routing-table">
+          <thead>
+            <tr>
+              <th>Model</th>
+              <th>Tasks</th>
+              <th>%</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+        <ul id="recent-list" class="recent-list">
+        </ul>
       </div>
     </div>
 
