@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vault Dashboard</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏛️</text></svg>">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Fira+Code:wght@400;600&display=swap');
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-left">
+      <h1><img src="/static/logo.jpg" alt="K" class="header-logo" width="28" height="28"> <span>VAULT</span> DASHBOARD</h1>
+      <div class="header-badges">
+        <span class="badge badge-kognai" id="badge-sprint">---</span>
+        <span class="badge badge-phase" id="badge-phase">---</span>
+        <span class="badge badge-invoica" id="badge-invoica">---</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <button id="refresh-btn" class="refresh-btn" onclick="refreshAll()" title="Refresh all panels">↻</button>
+      <span id="clock">--:--:--</span>
+      <div class="connection-dot" id="connection-dot" title="SSE connection status"></div>
+    </div>
+  </header>
+
+  <!-- Dashboard Grid -->
+  <main class="grid">
+
+    <!-- Panel 1: Progress (dual project) -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">📊 Progress</span>
+      </div>
+      <div class="card-body" id="progress-body">
+        <div class="empty-state"><div class="icon">⏳</div>Loading...</div>
+      </div>
+    </div>
+
+    <!-- Panel 2: Today's Tasks -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">✅ Today's Tasks</span>
+      </div>
+      <div class="card-body" id="todo-body">
+        <div class="empty-state"><div class="icon">⏳</div>Loading...</div>
+      </div>
+    </div>
+
+    <!-- Panel 3: Costs -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">💰 Costs</span>
+      </div>
+      <div class="card-body" id="costs-body">
+        <div class="empty-state"><div class="icon">⏳</div>Loading...</div>
+      </div>
+    </div>
+
+    <!-- Panel 4: Logs & Agents (dual project) -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">📋 Logs & Agents</span>
+      </div>
+      <div class="card-body" id="logs-body">
+        <div class="empty-state"><div class="icon">⏳</div>Loading...</div>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

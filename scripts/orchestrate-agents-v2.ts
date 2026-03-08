@@ -1107,10 +1107,10 @@ function persistCEODecisions(ctoDecisions: string, ctoReport: CTOReport): void {
 // Claude Sonnet: architectural work, many files, large existing files, complex keywords
 // MiniMax M2.5:  simple edits, stubs, config, small new files (truncation retry handles overflow)
 
-function assessTaskComplexity(
+async function assessTaskComplexity(
   task: AgentTask,
   deliverables: string[],
-): { provider: 'minimax' | 'anthropic'; model: string; routingReason: string } {
+): Promise<{ provider: 'minimax' | 'anthropic'; model: string; routingReason: string }> {
   // Bootstrap fallback: if MiniMax is not configured, route everything to Anthropic
   if (!process.env.MINIMAX_API_KEY) {
     return { provider: 'anthropic', model: 'claude-sonnet-4-20250514', routingReason: 'MINIMAX_API_KEY not set → Anthropic fallback' };
@@ -1127,6 +1127,28 @@ function assessTaskComplexity(
       case 'local':
         return { provider: 'anthropic' as const, model: 'claude-sonnet-4-20250514', routingReason: 'task_target=local (vault Qwen3 preferred; cloud-exec fallback)' };
     }
+  }
+  // S65-003: HTTP router probe — delegates to router_server.py if ROUTER_SERVER_URL is set
+  // 2s hard timeout — never blocks execution; falls through to heuristics on any failure
+  const routerUrl = process.env.ROUTER_SERVER_URL || '';
+  if (routerUrl) {
+    try {
+      const ac = new AbortController();
+      const timer = setTimeout(() => ac.abort(), 2000);
+      const res = await fetch(`${routerUrl}/route`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt: task.context || task.id, context_tokens: 0 }),
+        signal: ac.signal,
+      });
+      clearTimeout(timer);
+      if (res.ok) {
+        const data = await res.json() as { tier: string; model_name: string; reasoning: string };
+        const provider = (data.tier === 'cloud' || data.tier === 'apex') ? 'anthropic' : 'minimax';
+        const model = provider === 'anthropic' ? 'claude-sonnet-4-20250514' : 'MiniMax-M2.5';
+        return { provider: provider as any, model, routingReason: `HTTP router: ${data.tier} — ${data.reasoning}` };
+      }
+    } catch { /* HTTP router unavailable — fall through to heuristics */ }
   }
   const ctx = (task.context || '').toLowerCase();
 
@@ -1182,7 +1204,7 @@ class CodingAgent {
     // Complexity-aware model routing:
     // Claude Sonnet → complex tasks (many files, complex keywords, large existing files)
     // MiniMax M2.5  → simple tasks (small edits, config, stubs) + truncation retry as safety net
-    const { provider, model, routingReason } = assessTaskComplexity(task, deliverables);
+    const { provider, model, routingReason } = await assessTaskComplexity(task, deliverables);
     log(c.gray, `  -> Using ${model} [${routingReason}]`);
     // Sprint-063: Emit JSONL routing log (non-fatal — never block execution)
     try {
