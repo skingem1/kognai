@@ -553,11 +553,34 @@ async function deferTask(block, index) {
   }
 }
 
+// --- Model Routing Stats (S67-003) ---
+async function renderRouting() {
+  const data = await fetchJson('/api/routing/stats');
+  const tbody = document.querySelector('#model-table tbody');
+  const ul = document.getElementById('recent-list');
+  if (!tbody || !ul) return;
+
+  const byModel = data.by_model || {};
+  const total = data.total || 0;
+  const rows = Object.entries(byModel)
+    .sort((a, b) => b[1] - a[1])
+    .map(([model, count]) => {
+      const pct = total > 0 ? ((count / total) * 100).toFixed(1) : '0.0';
+      return `<tr><td>${model}</td><td>${count}</td><td>${pct}%</td></tr>`;
+    }).join('');
+  tbody.innerHTML = rows || '<tr><td colspan="3" style="color:var(--text-muted)">No data yet</td></tr>';
+
+  const recent = (data.recent || []).slice(-5).reverse();
+  ul.innerHTML = recent.map(r =>
+    `<li><span style="color:var(--text-muted)">[${r.sprint_id || '?'}]</span> ${r.task_id} → <strong>${r.model}</strong></li>`
+  ).join('') || '<li style="color:var(--text-muted)">No recent decisions</li>';
+}
+
 // --- Manual Refresh ---
 async function refreshAll() {
   const btn = $('#refresh-btn');
   if (btn) btn.classList.add('spinning');
-  await Promise.all([renderProgress(), renderTodo(), renderCosts(), renderLogs()]);
+  await Promise.all([renderProgress(), renderTodo(), renderCosts(), renderLogs(), renderRouting()]);
   if (btn) setTimeout(() => btn.classList.remove('spinning'), 600);
 }
 
@@ -569,6 +592,7 @@ async function init() {
     renderTodo(),
     renderCosts(),
     renderLogs(),
+    renderRouting(),
   ]);
 
   // Start clock
@@ -584,6 +608,7 @@ async function init() {
     renderTodo();
     renderCosts();
     renderLogs();
+    renderRouting();
   }, 60000);
 }
 

@@ -1,4 +1,3 @@
-FILE: scripts/run-sprint.sh
 #!/bin/bash
 # Run a sprint through the orchestrator swarm.
 # Usage: ./scripts/run-sprint.sh [sprint-NNN.json]
