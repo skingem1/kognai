@@ -115,6 +115,21 @@ function injectSprintIdIntoTasks(sprint: Sprint, sprintFilePath: string): Sprint
   return sprint;
 }
 
+// ── Schema Normalizer (S66-002) ──────────────────────────────────────────────
+// Maps CEO-authored sprint schema → orchestrator schema
+function normalizeTasks(tasks: any[]): any[] {
+  return tasks.map((task: any) => ({
+    ...task,
+    context:      task.context      ?? task.description ?? '',
+    dependencies: task.dependencies ?? task.depends_on  ?? [],
+    deliverables: task.deliverables ?? (task.file ? { code: [task.file] } : { code: [] }),
+    agent:        task.agent        ?? 'coder',
+    type:         task.type         ?? 'feature',
+    priority:     task.priority     ?? 'medium',
+    status:       task.status       ?? 'pending',
+  }));
+}
+
 function writeActiveSprint(sprint: Sprint): string {
   // Ensure logs directory exists
   const logsDir = join(ROOT, 'logs');
@@ -182,6 +197,10 @@ function main(): void {
   // Inject sprint_id into each task
   const sprintWithIds = injectSprintIdIntoTasks(sprint, sprintPath);
   log(`Injected sprint_id into ${sprintWithIds.tasks?.length || 0} tasks`);
+
+  // Normalize CEO schema → orchestrator schema (S66-002)
+  sprintWithIds.tasks = normalizeTasks(sprintWithIds.tasks);
+  log(`Normalized ${sprintWithIds.tasks.length} tasks (CEO schema → orchestrator schema)`);
 
   // Write modified sprint to ACTIVE file
   const activePath = writeActiveSprint(sprintWithIds);
