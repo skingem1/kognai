@@ -128,3 +128,40 @@ def get_cost_summary(routing_dir: Path) -> dict:
         "by_tier": by_tier,
         "local_pct": round(local_tasks / total_tasks * 100, 1) if total_tasks > 0 else 0,
     }
+
+
+def get_model_stats(routing_dir: Path) -> dict:
+    """Aggregate routing decisions by model and sprint_id across all logs."""
+    all_entries = []
+    for f in sorted(routing_dir.glob("*.jsonl")):
+        all_entries.extend(parse_routing_log(f))
+
+    by_model = {}
+    by_sprint = {}
+    recent = []
+
+    for entry in all_entries:
+        model = entry.get("model", "unknown")
+        sprint = entry.get("sprint_id", "unknown")
+        by_model[model] = by_model.get(model, 0) + 1
+        by_sprint[sprint] = by_sprint.get(sprint, 0) + 1
+
+    # Most recent 5 entries (last lines in most recent file)
+    if all_entries:
+        recent = [
+            {
+                "task_id": e.get("task_id", ""),
+                "sprint_id": e.get("sprint_id", ""),
+                "model": e.get("model", ""),
+                "routingReason": e.get("routingReason", ""),
+                "logged_at": e.get("logged_at", ""),
+            }
+            for e in all_entries[-5:]
+        ]
+
+    return {
+        "total": len(all_entries),
+        "by_model": by_model,
+        "by_sprint": by_sprint,
+        "recent": recent,
+    }
