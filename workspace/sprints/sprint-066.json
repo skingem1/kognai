@@ -1,0 +1,223 @@
+{
+  "tasks": [
+    {
+      "id": "S66-001",
+      "title": "Add binary/media/runtime entries to .gitignore",
+      "agent": "coder",
+      "type": "bugfix",
+      "priority": "critical",
+      "dependencies": [],
+      "task_target": "cloud-code",
+      "status": "done",
+      "context": "Sprint-065 accidentally committed ~140 binary files (MP4 videos, .DS_Store, dashboard/.pid) because they were not in .gitignore. The existing .gitignore at /Users/tarekmnif/kognai/.gitignore already has good entries but is missing these categories.\n\nRead the existing .gitignore first. Then append ONLY the missing entries (do not duplicate existing ones):\n\n# Binary media files \u2014 never commit\n*.mp4\n*.mov\n*.avi\n*.mkv\n\n# Agent media output directories\nclips/\ndownloads/\nfinal/\nfinal-v2/\n\n# macOS system files\n.DS_Store\n**/.DS_Store\n\n# Dashboard runtime state\ndashboard/.pid\n\n# Python\n__pycache__/\n*.pyc\n*.pyo\n.venv/\n\nIMPORTANT: Read the existing .gitignore first and only add entries that are NOT already present. Do not remove or reorder any existing lines. Append new entries at the end with a comment header '# Sprint-066 additions'.",
+      "deliverables": {
+        "code": [
+          ".gitignore"
+        ]
+      },
+      "output": {
+        "files": [
+          ".gitignore"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 45,
+          "summary": "Dual-approved: Claude (0/100) + Codex (90/100)",
+          "issues": [],
+          "strengths": [
+            "Existing entries remain unchanged",
+            "Only the specified missing patterns are appended",
+            "Clear header for Sprint-066 additions",
+            "No markdown code fences in the file",
+            "Meets the task specification exactly"
+          ]
+        }
+      },
+      "resolvedBy": "swarm",
+      "completedAt": "2026-03-08T17:30:56Z",
+      "note": "Applied by swarm (MiniMax). Appended binary/media/runtime gitignore entries."
+    },
+    {
+      "id": "S66-002",
+      "title": "Sprint schema normalizer \u2014 sprint-runner.ts handles CEO-authored schema",
+      "agent": "coder",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "task_target": "cloud-code",
+      "status": "done",
+      "context": "scripts/sprint-runner.ts reads a sprint JSON and spawns orchestrate-agents-v2.ts. The orchestrator expects tasks with fields: id, title, agent, type, priority, dependencies[], status, context (string prompt), deliverables.code[], task_target.\n\nBut CEO-authored sprints use a different schema: description (instead of context), depends_on[] (instead of dependencies[]), acceptance (extra field), file (single string instead of deliverables.code[]). This mismatch means CEO-authored sprints produce empty context for every task.\n\nFix: After reading the sprint JSON and before writing logs/sprint-runner-active.json, add a normalizeTasks() function that maps CEO schema \u2192 orchestrator schema. Add ONLY this function and one call site \u2014 do not change any other logic.\n\nAdd this function to sprint-runner.ts:\n\nfunction normalizeTasks(tasks: any[]): any[] {\n  return tasks.map((task: any) => ({\n    ...task,\n    // CEO schema \u2192 orchestrator schema (only fill if orchestrator field is absent)\n    context: task.context ?? task.description ?? '',\n    dependencies: task.dependencies ?? task.depends_on ?? [],\n    deliverables: task.deliverables ?? (task.file ? { code: [task.file] } : { code: [] }),\n    // Defaults for required orchestrator fields that CEO schema omits\n    agent: task.agent ?? 'coder',\n    type: task.type ?? 'feature',\n    priority: task.priority ?? 'medium',\n    status: task.status ?? 'pending',\n  }));\n}\n\nCall it: sprint.tasks = normalizeTasks(sprint.tasks);\nPlace the call AFTER sprint.tasks is loaded and BEFORE writing to logs/sprint-runner-active.json.\n\nRead the file first to find the exact insertion point. Keep the diff minimal \u2014 function + one call only.",
+      "deliverables": {
+        "code": [
+          "scripts/sprint-runner.ts"
+        ]
+      },
+      "output": {
+        "files": [
+          "scripts/sprint-runner.ts"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "REJECTED",
+          "score": 25,
+          "summary": "The patch is incomplete and introduces a syntax error. The normalizeTasks function is cut off mid-line and the required call site is missing.",
+          "issues": [
+            {
+              "severity": "critical",
+              "file": "scripts/sprint-runner.ts",
+              "description": "The normalizeTasks function definition is incomplete (truncated at \"type: t\"). This will cause a syntax error and prevent compilation."
+            },
+            {
+              "severity": "high",
+              "file": "scripts/sprint-runner.ts",
+              "description": "The call to normalizeTasks (i.e. sprint.tasks = normalizeTasks(sprint.tasks)) is not present, so the CEO schema will not be normalized."
+            }
+          ],
+          "strengths": [
+            "The intent to normalize CEO schema\u2192orchestrator schema is clear.",
+            "The proposed fields cover context, dependencies, deliverables, and defaults."
+          ]
+        }
+      },
+      "resolvedBy": "manual",
+      "completedAt": "2026-03-08T17:30:56Z",
+      "note": "Swarm truncated 6 attempts. Applied manually: normalizeTasks() function + call site added to sprint-runner.ts."
+    },
+    {
+      "id": "S66-003",
+      "title": "KognaiRouter persistence \u2014 launchd plist + start-router.sh",
+      "agent": "coder",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "task_target": "cloud-code",
+      "status": "done",
+      "context": "KognaiRouter (runtime/router_server.py) currently runs via nohup and dies on reboot. PM2 is unavailable in Claude Code PATH on macOS. Solution: launchd plist for auto-start on login + a convenience restart script.\n\nCreate TWO new files:\n\n1. runtime/ai.kognai.router.plist \u2014 launchd agent definition (user installs this to ~/Library/LaunchAgents/):\n\n<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">\n<plist version=\"1.0\">\n<dict>\n  <key>Label</key>\n  <string>ai.kognai.router</string>\n  <key>ProgramArguments</key>\n  <array>\n    <string>/usr/bin/python3</string>\n    <string>/Users/tarekmnif/kognai/runtime/router_server.py</string>\n  </array>\n  <key>WorkingDirectory</key>\n  <string>/Users/tarekmnif/kognai/runtime</string>\n  <key>EnvironmentVariables</key>\n  <dict>\n    <key>ROUTER_PORT</key>\n    <string>11435</string>\n    <key>PYTHONPATH</key>\n    <string>/Users/tarekmnif/kognai/runtime</string>\n  </dict>\n  <key>StandardOutPath</key>\n  <string>/Users/tarekmnif/kognai/logs/router-out.log</string>\n  <key>StandardErrorPath</key>\n  <string>/Users/tarekmnif/kognai/logs/router-error.log</string>\n  <key>RunAtLoad</key>\n  <true/>\n  <key>KeepAlive</key>\n  <true/>\n</dict>\n</plist>\n\n2. scripts/start-router.sh \u2014 convenience script to (re)start the router manually:\n\n#!/bin/bash\nset -e\npkill -f router_server.py 2>/dev/null || true\nmkdir -p /Users/tarekmnif/kognai/logs\ncd /Users/tarekmnif/kognai/runtime\nnohup python3 router_server.py > /Users/tarekmnif/kognai/logs/router-out.log 2>/Users/tarekmnif/kognai/logs/router-error.log &\necho \"KognaiRouter started PID=$!\"\nsleep 1\ncurl -s http://localhost:11435/health && echo ' \u2014 healthy' || echo ' \u2014 not responding yet'\n\nWrite both files exactly as shown. The plist goes to runtime/ai.kognai.router.plist (not ~/Library \u2014 user will cp it manually). The start script goes to scripts/start-router.sh.",
+      "deliverables": {
+        "code": [
+          "runtime/ai.kognai.router.plist",
+          "scripts/start-router.sh"
+        ]
+      },
+      "output": {
+        "files": [
+          "runtime/ai.kognai.router.plist",
+          "scripts/start-router.sh"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "REJECTED",
+          "score": 40,
+          "summary": "Both files are wrapped in Markdown code fences, which is invalid syntax for source files.",
+          "issues": [
+            {
+              "severity": "critical",
+              "file": "runtime/ai.kognai.router.plist",
+              "description": "File begins with a Markdown code fence (```typescript), which must be removed."
+            },
+            {
+              "severity": "critical",
+              "file": "scripts/start-router.sh",
+              "description": "File begins with a Markdown code fence (```typescript), which must be removed."
+            }
+          ],
+          "strengths": [
+            "Plist and script content accurately match the task specification.",
+            "Proper environment variables, working directory, and logging paths are set.",
+            "The restart script handles existing processes and logs output appropriately."
+          ]
+        }
+      },
+      "resolvedBy": "manual",
+      "completedAt": "2026-03-08T17:30:56Z",
+      "note": "Swarm blocked by ANTHROPIC_API_KEY missing (Claude/Codex conflict \u2192 CEO unavailable). Applied manually: plist + start-router.sh."
+    },
+    {
+      "id": "S66-004",
+      "title": "Write scripts/install-clawhub-skills.sh",
+      "agent": "coder",
+      "type": "feature",
+      "priority": "medium",
+      "dependencies": [],
+      "task_target": "cloud-code",
+      "status": "done",
+      "context": "Create a shell script that installs 9 T1 OpenClaw skills from clawhub.ai to /Users/tarekmnif/kognai/skills/. User must run 'npx clawhub login' before executing this script.\n\nFile: scripts/install-clawhub-skills.sh\n\nContent:\n\n#!/bin/bash\n# T1 OpenClaw Skills Installer \u2014 Sprint-065/066\n# Prerequisites: npx clawhub login\nset -e\n\nSKILLS_DIR=\"/Users/tarekmnif/kognai/skills\"\nmkdir -p \"$SKILLS_DIR\"\n\necho \"Installing T1 OpenClaw skills to $SKILLS_DIR...\"\necho \"\"\n\n# Skills with strong clawhub matches\ndeclare -a SKILLS=(\n  \"skill-vetter\"\n  \"context-recovery\"\n  \"sovereign-git-commit-analyzer\"\n  \"gitclaw\"\n  \"system-resource-monitor\"\n  \"hetzner-cloud\"\n  \"vercel\"\n  \"pm2\"\n)\n\nfor skill in \"${SKILLS[@]}\"; do\n  printf \"  Installing %-35s\" \"$skill...\"\n  if npx clawhub install \"$skill\" --workdir \"$SKILLS_DIR\" --no-input 2>/dev/null; then\n    echo \"\u2705\"\n  else\n    echo \"\u274c failed\"\n  fi\ndone\n\n# tailscale: flagged suspicious by VirusTotal \u2014 requires --force\nprintf \"  Installing %-35s\" \"tailscale (--force)...\"\nif npx clawhub install tailscale --workdir \"$SKILLS_DIR\" --no-input --force 2>/dev/null; then\n  echo \"\u2705\"\nelse\n  echo \"\u274c failed\"\nfi\n\necho \"\"\necho \"Done. Installed skills:\"\nls \"$SKILLS_DIR\" 2>/dev/null || echo \"  (none \u2014 check npx clawhub login)\"\n\nWrite this file exactly. Then echo a note at the end reminding about the 4 skills not yet on clawhub: sophie-optimizer, context-compressor, lossless-claw, project-context-sync.",
+      "deliverables": {
+        "code": [
+          "scripts/install-clawhub-skills.sh"
+        ]
+      },
+      "output": {
+        "files": [
+          "scripts/install-clawhub-skills.sh"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "REJECTED",
+          "score": 0,
+          "summary": "The submitted file is wrapped in markdown code fences, which is invalid syntax for a shell script.",
+          "issues": [
+            {
+              "severity": "critical",
+              "file": "scripts/install-clawhub-skills.sh",
+              "description": "The script is enclosed in markdown code fences (```typescript ... ```), making it invalid as a standalone shell script."
+            }
+          ],
+          "strengths": []
+        }
+      },
+      "resolvedBy": "manual",
+      "completedAt": "2026-03-08T17:30:56Z",
+      "note": "Applied manually (same ANTHROPIC_API_KEY issue). install-clawhub-skills.sh created with 9 skills."
+    },
+    {
+      "id": "S66-005",
+      "title": "Add sprint_id + model breakdown to routing parser",
+      "agent": "coder",
+      "type": "feature",
+      "priority": "medium",
+      "dependencies": [],
+      "task_target": "cloud-code",
+      "status": "done",
+      "context": "dashboard/parsers/routing.py currently parses routing JSONL logs and exposes get_costs() and get_cost_summary(). But the JSONL entries written by orchestrate-agents-v2.ts contain additional fields that are not used: model (e.g. 'claude-sonnet-4-20250514', 'MiniMax-M2.5'), sprint_id, routingReason.\n\nRead dashboard/parsers/routing.py first to understand the current structure.\n\nAdd ONE new function at the end of the file:\n\ndef get_model_stats(routing_dir: Path) -> dict:\n    \"\"\"Aggregate routing decisions by model and sprint_id across all logs.\"\"\"\n    all_entries = []\n    for f in sorted(routing_dir.glob(\"*.jsonl\")):\n        all_entries.extend(parse_routing_log(f))\n\n    by_model = {}\n    by_sprint = {}\n    recent = []\n\n    for entry in all_entries:\n        model = entry.get(\"model\", \"unknown\")\n        sprint = entry.get(\"sprint_id\", \"unknown\")\n        by_model[model] = by_model.get(model, 0) + 1\n        by_sprint[sprint] = by_sprint.get(sprint, 0) + 1\n\n    # Most recent 5 entries (last lines in most recent file)\n    if all_entries:\n        recent = [\n            {\n                \"task_id\": e.get(\"task_id\", \"\"),\n                \"sprint_id\": e.get(\"sprint_id\", \"\"),\n                \"model\": e.get(\"model\", \"\"),\n                \"routingReason\": e.get(\"routingReason\", \"\"),\n                \"logged_at\": e.get(\"logged_at\", \"\"),\n            }\n            for e in all_entries[-5:]\n        ]\n\n    return {\n        \"total\": len(all_entries),\n        \"by_model\": by_model,\n        \"by_sprint\": by_sprint,\n        \"recent\": recent,\n    }\n\nAppend this function to the end of the file only. Do NOT modify any existing functions.",
+      "deliverables": {
+        "code": [
+          "dashboard/parsers/routing.py"
+        ]
+      },
+      "output": {
+        "files": [
+          "dashboard/parsers/routing.py"
+        ],
+        "commit": "",
+        "model": "MiniMax-M2.5",
+        "review": {
+          "verdict": "REJECTED",
+          "score": 15,
+          "summary": "The submitted file is invalid: it begins with a markdown code fence and contains an incomplete `get_model_stats` function, breaking syntax and functionality.",
+          "issues": [
+            {
+              "severity": "critical",
+              "file": "dashboard/parsers/routing.py",
+              "description": "File starts with a markdown code fence (` ```typescript `), which is invalid syntax for a Python source file."
+            },
+            {
+              "severity": "high",
+              "file": "dashboard/parsers/routing.py",
+              "description": "The `get_model_stats` function is truncated and incomplete, leading to invalid Python code and missing functionality."
+            }
+          ],
+          "strengths": []
+        }
+      },
+      "resolvedBy": "manual",
+      "completedAt": "2026-03-08T17:30:56Z",
+      "note": "Applied manually. get_model_stats() appended to dashboard/parsers/routing.py."
+    }
+  ]
+}
