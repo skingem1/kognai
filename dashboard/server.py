@@ -1,3 +1,4 @@
+FILE: dashboard/server.py
 """
 Kognai + Invoica Vault Dashboard — FastAPI Server
 Dual-project monitoring dashboard for the sovereign AI runtime.
@@ -22,7 +23,7 @@ from pydantic import BaseModel
 
 from parsers.sprints import get_current_sprint, list_sprints, get_sprint_by_id
 from parsers.logs import get_latest_log, get_all_errors
-from parsers.routing import get_costs, get_cost_summary
+from parsers.routing import get_costs, get_cost_summary, get_model_stats
 from parsers.daily_brief import parse_daily_brief, toggle_task, defer_task
 from parsers.gates import parse_gates, parse_phases
 from parsers.agents import list_agents
@@ -90,209 +91,93 @@ async def health():
         "uptime_seconds": round(time.time() - START_TIME),
         "timestamp": date.today().isoformat(),
         "kognai_root": str(KOGNAI_ROOT),
-        "invoica_root": str(INVOICA_ROOT),
-        "projects": ["kognai", "invoica"],
     }
 
 
-# ========================
-# KOGNAI Sprint Endpoints
-# ========================
-
-@app.get("/api/sprint/current")
-async def sprint_current():
-    result = get_current_sprint(SPRINTS_DIR)
-    if result is None:
-        return {"error": "No sprints found", "path": str(SPRINTS_DIR)}
-    result["project"] = "kognai"
-    return result
+# --- Sprints ---
+@app.get("/api/sprints")
+async def sprints():
+    return list_sprints(SPRINTS_DIR)
 
 
-@app.get("/api/sprint/list")
-async def sprint_list():
-    sprints = list_sprints(SPRINTS_DIR)
-    for s in sprints:
-        s["project"] = "kognai"
-    return sprints
+@app.get("/api/sprints/current")
+async def current_sprint():
+    return get_current_sprint(SPRINTS_DIR)
 
 
-@app.get("/api/sprint/{sprint_id}")
+@app.get("/api/sprints/{sprint_id}")
 async def sprint_detail(sprint_id: str):
-    result = get_sprint_by_id(SPRINTS_DIR, sprint_id)
-    if result is None:
-        return {"error": f"Sprint {sprint_id} not found"}
-    result["project"] = "kognai"
-    return result
+    return get_sprint_by_id(SPRINTS_DIR, sprint_id)
 
 
-# ========================
-# INVOICA Sprint Endpoints
-# ========================
-
-@app.get("/api/invoica/sprint/current")
-async def invoica_sprint_current():
-    result = get_current_invoica_sprint()
-    if result is None:
-        return {"error": "No Invoica sprints found", "path": str(INVOICA_SPRINTS)}
-    return result
+# --- Invoica Sprints ---
+@app.get("/api/invoica/sprints")
+async def invoica_sprints():
+    return list_invoica_sprints(INVOICA_ROOT)
 
 
-@app.get("/api/invoica/sprint/list")
-async def invoica_sprint_list():
-    return list_invoica_sprints(limit=20)
+@app.get("/api/invoica/sprints/current")
+async def invoica_current_sprint():
+    return get_current_invoica_sprint(INVOICA_ROOT)
 
 
-@app.get("/api/invoica/sprint/{sprint_id}")
+@app.get("/api/invoica/sprints/{sprint_id}")
 async def invoica_sprint_detail(sprint_id: str):
-    result = get_invoica_sprint_by_id(INVOICA_SPRINTS, sprint_id)
-    if result is None:
-        return {"error": f"Invoica sprint {sprint_id} not found"}
-    return result
-
-
-@app.get("/api/invoica/stats")
-async def invoica_stats():
-    return get_invoica_stats()
+    return get_invoica_sprint_by_id(INVOICA_ROOT, sprint_id)
 
 
 @app.get("/api/invoica/agents")
 async def invoica_agents():
-    return list_invoica_agents()
+    return list_invoica_agents(INVOICA_ROOT)
 
 
-# ========================
-# Combined Overview
-# ========================
-
-@app.get("/api/overview")
-async def overview():
-    """Combined overview of both projects — main dashboard data source."""
-    kognai_sprint = get_current_sprint(SPRINTS_DIR)
-    invoica_sprint = get_current_invoica_sprint()
-    kognai_agents = list_agents(AGENTS_DIR)
-    inv_agents = list_invoica_agents()
-    inv_stats = get_invoica_stats()
-
-    if kognai_sprint:
-        kognai_sprint["project"] = "kognai"
-    if invoica_sprint:
-        invoica_sprint["project"] = "invoica"
-
-    return {
-        "kognai": {
-            "current_sprint": kognai_sprint,
-            "agent_count": len(kognai_agents),
-            "agents": kognai_agents,
-        },
-        "invoica": {
-            "current_sprint": invoica_sprint,
-            "agent_count": len(inv_agents),
-            "agents": inv_agents,
-            "stats": inv_stats,
-        },
-        "shared": {
-            "shared_infra_exists": SHARED_INFRA.exists(),
-            "shared_infra_updated": _file_age_str(SHARED_INFRA),
-        },
-    }
+@app.get("/api/invoica/stats")
+async def invoica_stats():
+    return get_invoica_stats(INVOICA_ROOT)
 
 
-def _file_age_str(path: Path) -> str:
-    """Human-readable file age."""
-    try:
-        if not path.exists():
-            return "missing"
-        age = time.time() - path.stat().st_mtime
-        if age < 3600:
-            return f"{int(age / 60)}m ago"
-        elif age < 86400:
-            return f"{int(age / 3600)}h ago"
-        else:
-            return f"{int(age / 86400)}d ago"
-    except OSError:
-        return "unknown"
+# --- Daily Brief ---
+@app.get("/api/daily-brief")
+async def daily_brief():
+    doc = KOGNAI_ROOT / "docs" / "daily-brief.md"
+    if not doc.exists():
+        return {"error": "No daily brief found", "am": [], "mid": [], "pm": []}
+    return parse_daily_brief(doc.read_text())
 
 
-# ========================
-# Existing Kognai Endpoints
-# ========================
-
-# --- Today's tasks ---
-@app.get("/api/tasks/today")
-async def tasks_today():
-    return parse_daily_brief(DOCS_DIR / "daily-brief.md")
-
-
-# --- Toggle task checkbox ---
-@app.post("/api/tasks/toggle")
-async def tasks_toggle(req: ToggleRequest):
-    brief_path = DOCS_DIR / "daily-brief.md"
-    result = toggle_task(brief_path, req.block.upper(), req.index)
-    if result is None:
-        return {"error": "Could not toggle task", "block": req.block, "index": req.index}
-    return result
+@app.post("/api/daily-brief/toggle")
+async def toggle_brief_task(req: ToggleRequest):
+    doc = KOGNAI_ROOT / "docs" / "daily-brief.md"
+    if not doc.exists():
+        return {"error": "No daily brief found"}
+    content = doc.read_text()
+    new_content = toggle_task(content, req.block, req.index)
+    doc.write_text(new_content)
+    return {"success": True}
 
 
-# --- Defer task to tomorrow ---
-@app.post("/api/tasks/defer")
-async def tasks_defer(req: ToggleRequest):
-    brief_path = DOCS_DIR / "daily-brief.md"
-    result = defer_task(brief_path, req.block.upper(), req.index)
-    if result is None:
-        return {"error": "Could not defer task", "block": req.block, "index": req.index}
-    return result
+@app.post("/api/daily-brief/defer")
+async def defer_brief_task(req: ToggleRequest):
+    doc = KOGNAI_ROOT / "docs" / "daily-brief.md"
+    if not doc.exists():
+        return {"error": "No daily brief found"}
+    content = doc.read_text()
+    new_content = defer_task(content, req.block, req.index)
+    doc.write_text(new_content)
+    return {"success": True}
 
 
-# --- Gates ---
+# --- Gates & Phases ---
 @app.get("/api/gates")
 async def gates():
-    return parse_gates(DOCS_DIR / "gate-tracker.md")
-
-
-# --- Phases ---
-@app.get("/api/phases")
-async def phases():
-    return parse_phases(DOCS_DIR / "strategic-context.md")
-
-
-# --- Costs ---
-@app.get("/api/costs")
-async def costs():
-    if not ROUTING_DIR.exists():
-        return {
-            "date": date.today().isoformat(),
-            "total_usd": 0.0,
-            "task_count": 0,
-            "by_tier": {"NANO": 0, "LOCAL": 0, "POWER": 0, "CLOUD": 0, "APEX": 0},
-            "local_pct": 0,
-            "cloud_pct": 0,
-            "avg_cost_per_task": 0,
-            "daily_budget": 5.00,
-            "budget_remaining": 5.00,
-            "message": "No routing logs yet. Sprint 063 will create these.",
-        }
-    return get_costs(ROUTING_DIR)
-
-
-@app.get("/api/costs/summary")
-async def costs_summary():
-    if not ROUTING_DIR.exists():
-        return {"total_usd": 0, "total_tasks": 0, "message": "No routing data yet"}
-    return get_cost_summary(ROUTING_DIR)
-
-
-# --- Logs ---
-@app.get("/api/logs/latest")
-async def logs_latest():
-    result = get_latest_log(LOGS_DIR)
-    if result is None:
-        return {"lines": [], "errors": [], "summary": {"total_lines": 0}, "message": "No sprint logs found"}
-    return result
-
-
-@app.get("/api/logs/errors")
-async def logs_errors():
-    return get_all_errors(LOGS_DIR)
+    doc = KOGNAI_ROOT / "docs" / "gates.md"
+    if not doc.exists():
+        return {"error": "No gates doc found", "gates": [], "phases": []}
+    content = doc.read_text()
+    return {
+        "gates": parse_gates(content),
+        "phases": parse_phases(content),
+    }
 
 
 # --- Agents ---
@@ -301,70 +186,147 @@ async def agents():
     return list_agents(AGENTS_DIR)
 
 
-# --- SSE Stream for auto-refresh ---
-WATCH_TARGETS = {
-    "sprints": SPRINTS_DIR,
-    "logs": LOGS_DIR,
-    "brief": DOCS_DIR / "daily-brief.md",
-    "gates": DOCS_DIR / "gate-tracker.md",
-    "strategic": DOCS_DIR / "strategic-context.md",
-    "invoica_sprints": INVOICA_SPRINTS,
-    "invoica_agents": INVOICA_AGENTS,
-    "shared_infra": SHARED_INFRA,
-}
+# --- Shared Infra ---
+@app.get("/api/shared-infra")
+async def shared_infra():
+    if not SHARED_INFRA.exists():
+        return {"error": "No shared-infra.md found"}
+    return {"content": SHARED_INFRA.read_text()}
 
 
-def get_mtime(path: Path) -> float:
-    """Get modification time for a file or newest file in a directory."""
+# --- Logs ---
+@app.get("/api/logs/latest")
+async def latest_log():
+    return get_latest_log(LOGS_DIR)
+
+
+@app.get("/api/logs/errors")
+async def errors():
+    return get_all_errors(LOGS_DIR)
+
+
+# --- Routing & Costs ---
+@app.get("/api/routing")
+async def routing():
+    if not ROUTING_DIR.exists():
+        return []
+    entries = []
+    for f in sorted(ROUTING_DIR.glob("*.jsonl"), reverse=True):
+        for line in f.read_text().strip().split("\n"):
+            if line:
+                try:
+                    entries.append(json.loads(line))
+                except json.JSONDecodeError:
+                    pass
+    return entries[:100]
+
+
+@app.get("/api/costs")
+async def costs():
+    if not ROUTING_DIR.exists():
+        return {"error": "Routing dir not found"}
+    return get_costs(ROUTING_DIR)
+
+
+@app.get("/api/costs/summary")
+async def costs_summary():
+    if not ROUTING_DIR.exists():
+        return {"error": "Routing dir not found"}
+    return get_cost_summary(ROUTING_DIR)
+
+
+@app.get("/api/routing/stats")
+async def routing_stats():
+    if not ROUTING_DIR.exists():
+        return {"total": 0, "by_model": {}, "by_sprint": {}, "recent": []}
+    return get_model_stats(ROUTING_DIR)
+
+# --- Logs ---
+
+
+@app.get("/api/logs/{service}")
+async def service_log(service: str):
+    log_file = LOGS_DIR / f"{service}.log"
+    if not log_file.exists():
+        return {"error": f"No log for {service}"}
+
+    async def generate():
+        with open(log_file, "r") as f:
+            for line in f:
+                yield line
+
+    return StreamingResponse(generate(), media_type="text/plain")
+
+
+@app.get("/api/logs")
+async def list_log_files():
+    return [f.name for f in sorted(LOGS_DIR.glob("*.log"))]
+
+
+# --- SSE: live tail ---
+@app.get("/api/logs/tail/{service}")
+async def tail_log(service: str):
+    log_file = LOGS_DIR / f"{service}.log"
+    if not log_file.exists():
+        return StreamingResponse(iter(["No log file"]), media_type="text/event-stream")
+
+    async def event_stream():
+        with open(log_file, "r") as f:
+            f.seek(0, 2)  # EOF
+            while True:
+                line = f.readline()
+                if not line:
+                    await asyncio.sleep(0.5)
+                    continue
+                yield f"data: {line}\n\n"
+
+    return StreamingResponse(event_stream(), media_type="text/event-stream")
+
+
+# --- File Browser (read-only) ---
+@app.get("/api/fs/{path:path}")
+async def read_file(path: str):
+    # Security: only allow files under KOGNAI_ROOT
+    target = (KOGNAI_ROOT / path).resolve()
     try:
-        if path.is_file():
-            return path.stat().st_mtime
-        elif path.is_dir():
-            files = [f for f in path.iterdir() if f.is_file()]
-            if files:
-                return max(f.stat().st_mtime for f in files)
-    except OSError:
-        pass
-    return 0.0
+        target.relative_to(KOGNAI_ROOT.resolve())
+    except ValueError:
+        return {"error": "Access denied"}
+
+    if target.is_dir():
+        return {"type": "dir", "children": [p.name for p in sorted(target.iterdir())]}
+    if target.is_file():
+        return {"type": "file", "content": target.read_text()[:5000]}
+    return {"error": "Not found"}
 
 
-async def event_generator():
-    """Generate SSE events when watched files change."""
-    last_mtimes = {k: get_mtime(v) for k, v in WATCH_TARGETS.items()}
-
-    # Send initial connected event
-    yield f"data: {json.dumps({'type': 'connected', 'timestamp': time.time()})}\n\n"
-
-    while True:
-        changed = []
-        for key, path in WATCH_TARGETS.items():
-            mtime = get_mtime(path)
-            if mtime > last_mtimes[key]:
-                last_mtimes[key] = mtime
-                changed.append(key)
-
-        if changed:
-            yield f"data: {json.dumps({'type': 'update', 'sources': changed, 'timestamp': time.time()})}\n\n"
-
-        # Send heartbeat every 30s to keep connection alive
-        yield f"data: {json.dumps({'type': 'heartbeat', 'timestamp': time.time()})}\n\n"
-
-        await asyncio.sleep(5)
+# --- Constants for frontend ---
+@app.get("/api/constants")
+async def constants():
+    return {
+        "INVOICA_SPRINTS": INVOICA_SPRINTS,
+        "INVOICA_AGENTS": INVOICA_AGENTS,
+    }
 
 
-@app.get("/api/stream")
-async def stream():
-    return StreamingResponse(
-        event_generator(),
-        media_type="text/event-stream",
-        headers={
-            "Cache-Control": "no-cache",
-            "Connection": "keep-alive",
-            "X-Accel-Buffering": "no",
-        },
-    )
+# --- Debug: ping all services ---
+@app.get("/api/debug/ping")
+async def ping_services():
+    import socket
 
+    def port_open(host: str, port: int, timeout: float = 0.5) -> bool:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.settimeout(timeout)
+        try:
+            sock.connect((host, port))
+            sock.close()
+            return True
+        except (socket.error, socket.timeout):
+            return False
 
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="127.0.0.1", port=11436)
+    services = [
+        ("Ollama", "127.0.0.1", 11434),
+        ("Router", "127.0.0.1", 11435),
+        ("Dashboard", "127.0.0.1", 11436),
+    ]
+    return {name: port_open(host, port) for name, host, port in services}
