@@ -28,7 +28,7 @@ import 'dotenv/config';
 
 // ── Config ─────────────────────────────────────────────────────────────────
 const ROOT       = process.cwd();
-const SPRINTS    = join(ROOT, 'sprints');
+const SPRINTS    = existsSync(join(ROOT, 'workspace', 'sprints')) ? join(ROOT, 'workspace', 'sprints') : join(ROOT, 'sprints');
 const LOCK       = join(ROOT, 'logs', 'sprint-runner.lock');
 const LOG        = join(ROOT, 'logs', 'sprint-runner.log');
 const ACTIVE     = join(ROOT, 'logs', 'sprint-runner-active.json');

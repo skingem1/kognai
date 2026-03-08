@@ -321,6 +321,13 @@ async function reconcileSupervisorReviews(
   task: AgentTask,
   ceo: CEOAgent,
 ): Promise<DualReviewResult> {
+  // S67-001: If Claude supervisor was unavailable, skip conflict — use Codex as sole reviewer
+  const claudeUnavailable = review1.summary?.includes('Supervisor unavailable') || review1.summary?.includes('unavailable');
+  if (claudeUnavailable) {
+    log(c.yellow, `  ! Claude supervisor unavailable — using Codex as sole reviewer (score: ${review2.score}/100)`);
+    return { finalReview: review2, review1, review2, consensus: false, escalatedToCEO: false };
+  }
+
   const bothApproved = review1.verdict === 'APPROVED' && review2.verdict === 'APPROVED';
   const bothRejected = review1.verdict !== 'APPROVED' && review2.verdict !== 'APPROVED';
   const consensus = bothApproved || bothRejected;
