@@ -1,0 +1,78 @@
+{
+  "sprint_id": "sprint-067",
+  "title": "Swarm Reliability + Dashboard Routing Stats",
+  "phase": "0",
+  "created_at": "2026-03-08",
+  "tasks": [
+    {
+      "id": "S67-001",
+      "title": "MiniMax surgical-edit prompt — suppress full-file rewrites",
+      "agent": "coder",
+      "type": "bugfix",
+      "priority": "critical",
+      "dependencies": [],
+      "task_target": "cloud-code",
+      "status": "pending",
+      "context": "When MiniMax (cloud-code coder) is given an existing file to edit, it rewrites the ENTIRE file from scratch, causing truncation failures on files >200 lines. The fix: strengthen the 'existing file' instruction block in the coder prompt inside orchestrate-agents-v2.ts.\n\nRead scripts/orchestrate-agents-v2.ts first. Find the section around line 1278 that reads:\n\n```\nconst existingContent = existsSync(filepath)\n  ? `\\n\\n## Current File Content (EDIT this — do not rewrite from scratch)\\n\\`\\`\\`typescript\\n${readFileSync(filepath, 'utf-8').substring(0, 3000)}\\n\\`\\`\\`\\n`\n  : `\\n\\n## Note: This is a NEW file — create it from scratch.\\n`;\n```\n\nReplace ONLY the existingContent string for the 'file exists' case with this stronger instruction:\n\n```\nconst existingContent = existsSync(filepath)\n  ? `\\n\\n## EXISTING FILE — SURGICAL EDIT ONLY\\nDo NOT rewrite the entire file. Output ONLY the complete updated file with your changes merged in.\\nIf you add a function, append it. If you edit a line, change only that line.\\nFile has ${readFileSync(filepath, 'utf-8').split('\\\\n').length} lines — preserve all existing code.\\n\\n### Current Content\\n\\`\\`\\`typescript\\n${readFileSync(filepath, 'utf-8').substring(0, 3000)}\\n\\`\\`\\`\\n`\n  : `\\n\\n## Note: This is a NEW file — create it from scratch.\\n`;\n```\n\nRead the file first to find the exact line. Change ONLY the existingContent template string — do not touch any other code.",
+      "deliverables": {
+        "code": ["scripts/orchestrate-agents-v2.ts"]
+      }
+    },
+    {
+      "id": "S67-002",
+      "title": "Dashboard /api/routing/stats endpoint",
+      "agent": "coder",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "task_target": "cloud-code",
+      "status": "pending",
+      "context": "dashboard/server.py currently exposes /api/costs and /api/costs/summary (lines 259-281) but does not expose the new get_model_stats() function added in S66-005.\n\nRead dashboard/server.py first. Find the import on line 25:\n  from parsers.routing import get_costs, get_cost_summary\n\nChange it to:\n  from parsers.routing import get_costs, get_cost_summary, get_model_stats\n\nThen find the @app.get('/api/costs/summary') block (around line 277) and APPEND the following new endpoint AFTER it (before the '# --- Logs ---' comment):\n\n@app.get(\"/api/routing/stats\")\nasync def routing_stats():\n    if not ROUTING_DIR.exists():\n        return {\"total\": 0, \"by_model\": {}, \"by_sprint\": {}, \"recent\": []}\n    return get_model_stats(ROUTING_DIR)\n\nMake ONLY these two changes: update the import line and append the new endpoint. Do not touch anything else.",
+      "deliverables": {
+        "code": ["dashboard/server.py"]
+      }
+    },
+    {
+      "id": "S67-003",
+      "title": "Dashboard routing stats widget in index.html",
+      "agent": "coder",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": ["S67-002"],
+      "task_target": "cloud-code",
+      "status": "pending",
+      "context": "dashboard/static/index.html is a 79-line Bootstrap dashboard. It currently has no section showing model routing breakdown.\n\nRead dashboard/static/index.html first. Add a new card section that:\n1. Fetches /api/routing/stats on page load\n2. Displays a small table with columns: Model | Tasks | %\n3. Shows the 5 most recent routing decisions below it\n\nAppend a <script> block and a new card div. The card should use the same Bootstrap classes as existing cards. The fetch should be in a loadRoutingStats() function called in window.onload (or DOMContentLoaded). Use vanilla JS only — no additional libraries.\n\nSpecific implementation:\n- Add a card with id='routing-stats-card' after the last existing card\n- Card title: 'Model Routing'\n- Table id='model-table' with rows populated from response.by_model\n- Below table, a <ul id='recent-list'> with last 5 routing decisions formatted as: [sprint_id] task_id → model\n- Call loadRoutingStats() from existing window.onload or add one\n\nRead the file first to see the exact structure and match existing style.",
+      "deliverables": {
+        "code": ["dashboard/static/index.html"]
+      }
+    },
+    {
+      "id": "S67-004",
+      "title": "Write scripts/run-sprint.sh — convenience wrapper for swarm",
+      "agent": "coder",
+      "type": "feature",
+      "priority": "medium",
+      "dependencies": [],
+      "task_target": "cloud-code",
+      "status": "pending",
+      "context": "There is no single script to kick off a sprint run from the kognai root. The user must manually type the npx ts-node command. Create a convenience wrapper.\n\nCreate scripts/run-sprint.sh with this exact content:\n\n#!/bin/bash\n# Run a sprint through the orchestrator swarm.\n# Usage: ./scripts/run-sprint.sh [sprint-NNN.json]\n# If no arg given, finds the newest pending sprint in workspace/sprints/\nset -e\n\nROOT=\"$(cd \"$(dirname \"$0\")/..\" && pwd)\"\ncd \"$ROOT\"\n\nif [ -n \"$1\" ]; then\n  SPRINT=\"$1\"\nelse\n  # Find newest sprint with pending tasks\n  SPRINT=$(python3 -c \"\nimport json, glob, sys\nfiles = sorted(glob.glob('workspace/sprints/sprint-*.json'), reverse=True)\nfor f in files:\n    data = json.load(open(f))\n    if any(t.get('status') == 'pending' for t in data.get('tasks', [])):\n        print(f); break\nelse:\n    print('', end='')\n\")\n  if [ -z \"$SPRINT\" ]; then\n    echo 'No pending sprints found in workspace/sprints/'\n    exit 1\n  fi\nfi\n\necho \"Launching swarm on: $SPRINT\"\nnpx ts-node --transpile-only scripts/orchestrate-agents-v2.ts \"$SPRINT\"\n\nWrite this file exactly as shown. Make it executable.",
+      "deliverables": {
+        "code": ["scripts/run-sprint.sh"]
+      }
+    },
+    {
+      "id": "S67-005",
+      "title": "Add ANTHROPIC_API_KEY startup warning to orchestrator",
+      "agent": "coder",
+      "type": "feature",
+      "priority": "medium",
+      "dependencies": [],
+      "task_target": "cloud-code",
+      "status": "pending",
+      "context": "When ANTHROPIC_API_KEY is not set in .env, the orchestrator silently degrades: Claude supervisor errors on every review, CEO arbitration fails. Engineers don't notice until they see repeated REJECTED tasks.\n\nRead scripts/orchestrate-agents-v2.ts. Find the main() function (around line 2270+). At the very start of main(), before any agent initialization, add a startup warning block:\n\n// Startup env check\nconst missingAnthropicKey = !process.env.ANTHROPIC_API_KEY;\nif (missingAnthropicKey) {\n  log(c.yellow, '⚠  ANTHROPIC_API_KEY not set — Claude supervisor + CEO will be unavailable.');\n  log(c.yellow, '   Codex will be the sole reviewer. Set ANTHROPIC_API_KEY in .env for full dual-supervisor mode.');\n}\nconst missingMiniMax = !process.env.MINIMAX_API_KEY;\nif (missingMiniMax) {\n  log(c.yellow, '⚠  MINIMAX_API_KEY not set — cloud-code tasks will fail.');\n}\n\nRead the file to find the exact location of the main() function entry point. Add ONLY this block at the start of main(). Do not change anything else.",
+      "deliverables": {
+        "code": ["scripts/orchestrate-agents-v2.ts"]
+      }
+    }
+  ]
+}
