@@ -1,0 +1,115 @@
+{
+  "sprint": "068",
+  "title": "Phase 0 Completion \u2014 ACP, Codebook, Harvey, Routing Logs",
+  "phase": "0",
+  "goal": "Close all remaining Phase 0 gates: Harvey orchestrator workspace, ACP ledger v0.1, codebook v0.1, JSONL routing logs, session logging, legacy archive script.",
+  "created": "2026-03-10",
+  "tasks": [
+    {
+      "id": "S68-001",
+      "title": "Harvey orchestrator workspace \u2014 SOUL.md + IDENTITY.md + TOOLS.md",
+      "agent": "coder",
+      "type": "feature",
+      "priority": "critical",
+      "dependencies": [],
+      "status": "done",
+      "task_target": "cloud-code",
+      "context": "Create the Harvey agent workspace in workspace/agents/harvey/. Harvey is the Kognai orchestrator \u2014 Harvey Specter persona (Suits). His role in the v16 9-layer architecture: Layer 1 Runtime \u2014 he reads the sprint, routes tasks to agents, enforces quality gates, and writes retrospectives. He does NOT write code. Messi (coder) and Sherlock (reviewer) are his subordinates. Create three files: SOUL.md (max 60 lines, Harvey Specter persona, orchestrator role, hard rules, event subscriptions), IDENTITY.md (one-page quick-reference card with name/role/model/workspace/key commands), and TOOLS.md (list of approved tools: read sprint JSON, write memory, send Telegram, call router API on port 11435, check agent health). Match the style and structure of existing workspace/agents/messi/SOUL.md and workspace/agents/sherlock/SOUL.md.",
+      "deliverables": {
+        "code": [
+          "workspace/agents/harvey/SOUL.md",
+          "workspace/agents/harvey/IDENTITY.md",
+          "workspace/agents/harvey/TOOLS.md"
+        ]
+      },
+      "resolvedBy": "manual",
+      "completedAt": "2026-03-10T12:00:00Z",
+      "note": "Manual \u2014 MiniMax wraps .md in code fences; wrote directly."
+    },
+    {
+      "id": "S68-002",
+      "title": "ACP ledger v0.1 \u2014 ledger.json + trust-scores.json",
+      "agent": "coder",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "status": "pending",
+      "task_target": "cloud-code",
+      "context": "Initialize the Agent Credit Protocol (ACP) v0.1 directory. ACP is Layer 8 of the Kognai architecture \u2014 it tracks inter-agent trust and interaction history. Create acp/ledger.json: empty interaction log with schema header (fields: timestamp, from_agent, to_agent, task_id, outcome, score, notes). Create acp/trust-scores.json: all 7 seed agents start at baseline score 0.75. Seed agents: harvey (orchestrator), messi (coder), sherlock (reviewer), guardiola (quality), elon (disruptor), satoshi (economist), macgyver (plumber). Schema: { version: '0.1', updated: '<today>', agents: { <name>: { score: 0.75, interactions: 0, last_interaction: null, tier: 'seed' } } }. Both files must be valid JSON.",
+      "deliverables": {
+        "code": [
+          "acp/ledger.json",
+          "acp/trust-scores.json"
+        ]
+      }
+    },
+    {
+      "id": "S68-003",
+      "title": "Symbol codebook v0.1 \u2014 symbols.json + compression-log.md",
+      "agent": "coder",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "status": "pending",
+      "task_target": "cloud-code",
+      "context": "Initialize the Kognai symbolic compression codebook (Layer 5A \u2014 Recursive Symbol Economy). Create codebook/symbols.json: empty symbol registry with schema header. Schema: { version: '0.1', created: '<today>', compression_target: '16:1', symbols: [] }. Each symbol entry (when populated later) will have: { id, symbol, pattern, definition, first_seen, frequency, contexts: [] }. Create codebook/compression-log.md: markdown file with header and empty log table. Include the schema definition at the top so future agents know the format. Both files must be valid (JSON and markdown respectively).",
+      "deliverables": {
+        "code": [
+          "codebook/symbols.json",
+          "codebook/compression-log.md"
+        ]
+      }
+    },
+    {
+      "id": "S68-004",
+      "title": "Router v16 \u2014 add task types (lang/content/data/audit) + JSONL decision logging",
+      "agent": "coder",
+      "type": "feature",
+      "priority": "high",
+      "dependencies": [],
+      "status": "pending",
+      "task_target": "cloud-code",
+      "context": "Modify runtime/router.py (365 lines) with two additions. ADDITION 1 \u2014 New task types: Add LANG (language/translation/Derja tasks \u2192 POWER tier), CONTENT (TikTok/social content creation \u2192 POWER tier), DATA (data processing/analysis/ETL \u2192 POWER tier), AUDIT (quality review/scoring/red-team \u2192 CLOUD tier) to the TaskType enum, TASK_SIGNALS dict, and TASK_TIER_MAP. LANG signals: ['translate', 'arabic', 'french', 'derja', 'language', 'localize']. CONTENT signals: ['tiktok', 'caption', 'post', 'clip', 'video script', 'hook', 'trending']. DATA signals: ['dataframe', 'csv', 'json data', 'parse', 'etl', 'aggregate', 'database query']. AUDIT signals: ['audit', 'score', 'quality check', 'red team', 'adversarial', 'regression']. ADDITION 2 \u2014 JSONL logging: After the route() method logs to console (line ~213), also append a JSON line to logs/routing/{YYYY-MM-DD}.jsonl. Each line: { ts, task_type, tier, model, reasoning, prompt_words, estimated_cost_usd }. Create the logs/routing/ directory if missing. Import json, datetime, pathlib.Path at top if not already imported. This is a surgical edit \u2014 preserve ALL existing code.",
+      "deliverables": {
+        "code": [
+          "runtime/router.py"
+        ]
+      }
+    },
+    {
+      "id": "S68-005",
+      "title": "Session logging template + workspace output directories",
+      "agent": "coder",
+      "type": "feature",
+      "priority": "medium",
+      "dependencies": [],
+      "status": "pending",
+      "task_target": "cloud-code",
+      "context": "Create the session logging infrastructure for v16 memory continuity. Create workspace/memory/TEMPLATE.md: a daily session log template. Each day's log is append-only. Template sections: ## Session {DATE} \u2014 {AGENT_ID}, ### Sprint Context (which sprint, what tasks), ### Decisions Made (bullet list), ### Blockers (bullet list), ### Adaptation Notes (what changed vs last session), ### Next Session Priorities. Create scripts/create-session-log.sh: bash script that takes AGENT_ID as argument and creates workspace/memory/{AGENT_ID}/$(date +%Y-%m-%d).md from the template if it doesn't already exist. Also create workspace/outputs/.gitkeep and workspace/staging/.gitkeep as empty placeholder files so the directories exist in git.",
+      "deliverables": {
+        "code": [
+          "workspace/memory/TEMPLATE.md",
+          "scripts/create-session-log.sh",
+          "workspace/outputs/.gitkeep",
+          "workspace/staging/.gitkeep"
+        ]
+      }
+    },
+    {
+      "id": "S68-006",
+      "title": "Legacy archive script \u2014 safe dry-run archiver for Invoica cruft",
+      "agent": "coder",
+      "type": "chore",
+      "priority": "medium",
+      "dependencies": [],
+      "status": "pending",
+      "task_target": "cloud-code",
+      "context": "Create scripts/archive-legacy.sh: a safe script to move Invoica legacy directories from ~/kognai/ to ~/kognai/_archive/. Directories to archive: backend/, frontend/, website/, docs-site/, sdk/, apps/, infrastructure/, kognai-agents/. The script must: (1) default to --dry-run mode (print what it would do, never move anything), (2) require explicit --execute flag to actually move files, (3) skip directories that don't exist, (4) print size of each directory before moving, (5) create _archive/ if it doesn't exist, (6) print a summary at the end. Add a WARNING banner that this is irreversible and to run --dry-run first. Do NOT run the archive \u2014 only create the script.",
+      "deliverables": {
+        "code": [
+          "scripts/archive-legacy.sh"
+        ]
+      }
+    }
+  ]
+}
