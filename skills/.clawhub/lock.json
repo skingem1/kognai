@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "skills": {
+    "skill-vetter": {
+      "version": "1.0.0",
+      "installedAt": 1773153386872
+    },
+    "context-recovery": {
+      "version": "1.2.2",
+      "installedAt": 1773153388635
+    },
+    "system-resource-monitor": {
+      "version": "1.0.0",
+      "installedAt": 1773153392253
+    },
+    "vercel": {
+      "version": "1.0.1",
+      "installedAt": 1773153394881
+    },
+    "pm2": {
+      "version": "1.0.0",
+      "installedAt": 1773153396458
+    },
+    "sovereign-git-commit-analyzer": {
+      "version": "1.0.0",
+      "installedAt": 1773153405576
+    },
+    "gitclaw": {
+      "version": "1.0.0",
+      "installedAt": 1773153407070
+    },
+    "system-monitor-pro": {
+      "version": "1.0.0",
+      "installedAt": 1773153408500
+    },
+    "hetzner-cloud": {
+      "version": "1.0.0",
+      "installedAt": 1773153410305
+    },
+    "tailscale": {
+      "version": "1.0.0",
+      "installedAt": 1773153412429
+    }
+  }
+}
