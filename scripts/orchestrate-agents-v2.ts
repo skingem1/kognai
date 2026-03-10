@@ -1251,7 +1251,7 @@ class CodingAgent {
       // Kognai v16 directories (S68)
       'acp/', 'codebook/', 'failure-library/', 'skills/',
       // Kognai runtime paths (S66-002)
-      'runtime/', 'dashboard/', 'kognai-agents/', 'workspace/', 'docs/',
+      'runtime/', 'dashboard/', 'kognai-agents/', 'workspace/', 'docs/', 'logs/', 'tests/',
     ];
     // Invalid patterns: paths that look like monorepo sub-dirs that don't exist
     const INVALID_PATH_PATTERNS = [
