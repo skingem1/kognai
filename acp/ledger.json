@@ -1,0 +1,52 @@
+{
+  "version": "0.1.0",
+  "created": "2026-03-10",
+  "description": "ACP Trust Ledger — tracks agent performance scores across sprint cycles",
+  "schema": {
+    "agent_id": "string — unique agent identifier",
+    "score": "number — current trust score (0-100)",
+    "tasks_completed": "number — total tasks completed",
+    "tasks_failed": "number — total tasks failed",
+    "avg_quality_score": "number — average Codex review score",
+    "last_updated": "ISO8601 date string",
+    "notes": "string — optional human notes"
+  },
+  "entries": [
+    {
+      "agent_id": "messi",
+      "score": 72,
+      "tasks_completed": 14,
+      "tasks_failed": 3,
+      "avg_quality_score": 78,
+      "last_updated": "2026-03-10",
+      "notes": "Primary coder. MiniMax fence-wrapping on markdown/JSON degrades score."
+    },
+    {
+      "agent_id": "sherlock",
+      "score": 85,
+      "tasks_completed": 12,
+      "tasks_failed": 1,
+      "avg_quality_score": 88,
+      "last_updated": "2026-03-10",
+      "notes": "Auditor/reviewer. Consistent high-quality Codex scores on Python tasks."
+    },
+    {
+      "agent_id": "guardiola",
+      "score": 68,
+      "tasks_completed": 9,
+      "tasks_failed": 4,
+      "avg_quality_score": 70,
+      "last_updated": "2026-03-10",
+      "notes": "Strategy agent. Limited task history — score provisional."
+    },
+    {
+      "agent_id": "harvey",
+      "score": 90,
+      "tasks_completed": 0,
+      "tasks_failed": 0,
+      "avg_quality_score": 0,
+      "last_updated": "2026-03-10",
+      "notes": "Orchestrator. Does not execute tasks — score reflects routing accuracy."
+    }
+  ]
+}

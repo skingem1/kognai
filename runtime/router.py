@@ -12,9 +12,12 @@ Architecture:
 
 import re
 import time
+import json
 import logging
+from datetime import datetime, timezone
 from enum import Enum
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Optional
 import httpx
 
@@ -104,6 +107,10 @@ class TaskType(Enum):
     REASON     = "reason"
     ORCHESTRATE = "orchestrate"
     ARCHITECT  = "architect"
+    LANG       = "lang"       # translation / Derja / localisation
+    CONTENT    = "content"    # TikTok / social media content
+    DATA       = "data"       # ETL / CSV / dataframe / aggregation
+    AUDIT      = "audit"      # quality review / scoring / red-team
 
 TASK_SIGNALS: dict[TaskType, list[str]] = {
     TaskType.CLASSIFY:    ["classify", "label", "tag", "categorize", "detect", "identify", "is this"],
@@ -115,6 +122,10 @@ TASK_SIGNALS: dict[TaskType, list[str]] = {
     TaskType.REASON:      ["why", "how does", "explain", "reason", "think through", "step by step"],
     TaskType.ORCHESTRATE: ["orchestrate", "coordinate", "agent", "workflow", "pipeline", "swarm"],
     TaskType.ARCHITECT:   ["architecture", "design system", "strategy", "kognai", "infrastructure", "sovereign"],
+    TaskType.LANG:        ["translate", "arabic", "french", "derja", "language", "localize", "localise"],
+    TaskType.CONTENT:     ["tiktok", "caption", "post", "clip", "video script", "hook", "trending", "reel"],
+    TaskType.DATA:        ["dataframe", "csv", "json data", "parse data", "etl", "aggregate", "database query"],
+    TaskType.AUDIT:       ["audit", "quality check", "red team", "adversarial", "regression", "score this"],
 }
 
 TASK_TIER_MAP: dict[TaskType, Tier] = {
@@ -127,6 +138,10 @@ TASK_TIER_MAP: dict[TaskType, Tier] = {
     TaskType.REASON:      Tier.POWER,
     TaskType.ORCHESTRATE: Tier.CLOUD,
     TaskType.ARCHITECT:   Tier.APEX,
+    TaskType.LANG:        Tier.POWER,
+    TaskType.CONTENT:     Tier.POWER,
+    TaskType.DATA:        Tier.POWER,
+    TaskType.AUDIT:       Tier.CLOUD,
 }
 
 @dataclass
@@ -213,7 +228,27 @@ class KognaiRouter:
             f"[ROUTE] {task_type.value} → {decision.tier.name} ({decision.model.name}) "
             f"think={think_mode} cost=${decision.estimated_cost:.5f}"
         )
+        self._log_jsonl(decision, prompt)
         return decision
+
+    def _log_jsonl(self, decision: RoutingDecision, prompt: str) -> None:
+        log_dir = Path("logs/routing")
+        log_dir.mkdir(parents=True, exist_ok=True)
+        today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        entry = {
+            "ts": datetime.now(timezone.utc).isoformat(),
+            "task_type": decision.task_type.value,
+            "tier": decision.tier.name,
+            "model": decision.model.name,
+            "reasoning": decision.reasoning,
+            "prompt_words": len(prompt.split()),
+            "estimated_cost_usd": round(decision.estimated_cost, 6),
+        }
+        try:
+            with open(log_dir / f"{today}.jsonl", "a") as f:
+                f.write(json.dumps(entry) + "\n")
+        except OSError as e:
+            log.warning(f"JSONL log write failed: {e}")
 
     def stats(self) -> dict:
         total = self._stats["total_tasks"] or 1

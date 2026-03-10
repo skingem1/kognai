@@ -1,0 +1,36 @@
+{
+  "version": "0.1.0",
+  "updated": "2026-03-10",
+  "description": "Current ACP trust scores — flat lookup used by Harvey for routing decisions",
+  "scores": {
+    "messi": 72,
+    "sherlock": 85,
+    "guardiola": 68,
+    "harvey": 90
+  },
+  "thresholds": {
+    "minimum_route": 50,
+    "recycle_trigger": 40,
+    "promote_to_primary": 80
+  },
+  "routing_rules": [
+    {
+      "task_type": "cloud-code",
+      "preferred_agent": "messi",
+      "fallback_agent": "sherlock",
+      "min_score": 60
+    },
+    {
+      "task_type": "cloud-exec",
+      "preferred_agent": "sherlock",
+      "fallback_agent": "messi",
+      "min_score": 70
+    },
+    {
+      "task_type": "local",
+      "preferred_agent": "vault",
+      "fallback_agent": null,
+      "min_score": 0
+    }
+  ]
+}
