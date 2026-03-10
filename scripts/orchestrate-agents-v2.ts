@@ -1347,9 +1347,17 @@ Write ONLY the content for "${filepath}". Rules:
         // CTO-005: Final fence sanitization BEFORE adding to createdFiles
         // CEO condition: stripping must happen BEFORE file is written to disk
         fileContent = this.stripResidualFences(fileContent);
-        // Check if any fences remain after stripping (should be impossible, but log it)
-        if (/^\s*```/m.test(fileContent)) {
-          log(c.yellow, `  ! WARNING: Residual code fences detected in ${filepath} after stripping`);
+        // Last-resort nuclear strip: if content still starts with a fence, skip all leading
+        // fence lines and trailing fence. Handles MiniMax ```typescript{ (no newline) pattern.
+        if (/^\s*```/.test(fileContent)) {
+          log(c.yellow, `  ! Residual fence detected after stripResidualFences — applying nuclear strip for ${filepath}`);
+          const lines = fileContent.split('\n');
+          const firstContentLine = lines.findIndex(l => !l.trim().startsWith('```') && l.trim() !== '');
+          if (firstContentLine > 0) {
+            fileContent = lines.slice(firstContentLine).join('\n').replace(/\n\s*```\s*$/, '').trim();
+          } else if (firstContentLine === -1) {
+            fileContent = lines.filter(l => !l.trim().startsWith('```')).join('\n').trim();
+          }
         }
 
         // TRUNCATION PRE-CHECK: Detect if MiniMax cut off output mid-function
@@ -1447,17 +1455,19 @@ Continue from where it left off and output ONLY the remaining code (no duplicate
   // markdown headers before code, and incomplete closing fences
   private extractCodeBlocks(content: string): string[] {
     const blocks: string[] = [];
+    // Normalize: MiniMax sometimes outputs ```typescript{ with no newline — insert one
+    const normalized = content.replace(/```([\w.+-]*)\s*([^\s\n`])/g, '```$1\n$2');
     // Broader regex: optional whitespace before fences, any language tag, flexible spacing
     const regex = /^\s*```[\w.+-]*\s*\n([\s\S]*?)^\s*```\s*$/gm;
     let match;
-    while ((match = regex.exec(content)) !== null) {
+    while ((match = regex.exec(normalized)) !== null) {
       if (match[1].trim().length > 0) blocks.push(match[1].trim());
     }
     // Fallback: try simpler pattern if multiline didn't match
     if (blocks.length === 0) {
       // S64-001: Added python|py|toml|env|sql|xml|md — MiniMax often labels Python files incorrectly
       const simpleRegex = /```(?:typescript|tsx|ts|javascript|jsx|js|json|yaml|yml|dockerfile|sh|bash|python|py|toml|env|sql|xml|md|css|html|scss|less|txt)?\s*\n([\s\S]*?)```/g;
-      while ((match = simpleRegex.exec(content)) !== null) {
+      while ((match = simpleRegex.exec(normalized)) !== null) {
         if (match[1].trim().length > 0) blocks.push(match[1].trim());
       }
     }
@@ -2192,7 +2202,7 @@ ONLY output the JSON array. No markdown, no explanation.`;
     if (mcConnected) {
       try {
         if (this.stats.totalTokens > 0) {
-          await mc.trackTokens(this.stats.totalTokens, 'MiniMax-M2.5');
+          await mc.reportTokens('MiniMax-M2.5', this.stats.totalTokens, 0, 'sprint_run');
         }
         await mc.disconnect();
         log(c.gray, `  [MC] Sprint reported: ${this.stats.approved} approved / ${this.stats.rejected} rejected / ${this.stats.totalTokens} tokens`);
