@@ -1360,6 +1360,9 @@ Write ONLY the content for "${filepath}". Rules:
           }
         }
 
+        // File-type-aware post-processing: final safety net per file extension
+        fileContent = this.postProcessContent(fileContent, filepath);
+
         // TRUNCATION PRE-CHECK: Detect if MiniMax cut off output mid-function
         // If code ends inside an open block (unclosed braces) or with an incomplete statement,
         // retry once with a "continue" prompt before sending to supervisor review.
@@ -1499,6 +1502,42 @@ Continue from where it left off and output ONLY the remaining code (no duplicate
     // Remove trailing fence if present at end
     cleaned = cleaned.replace(/\n\s*```\s*$/, '');
     return cleaned.trim();
+  }
+
+  // File-type-aware post-processing: validates and cleans content per file extension.
+  // This is the FINAL safety net after all fence stripping has run.
+  private postProcessContent(content: string, filepath: string): string {
+    const filename = filepath.split('/').pop() || '';
+    const ext = filename.includes('.') ? filename.split('.').pop()!.toLowerCase() : '';
+
+    // .gitkeep must ALWAYS be completely empty — no exceptions
+    if (filename === '.gitkeep' || filepath.endsWith('.gitkeep')) {
+      return '';
+    }
+
+    // JSON files: ensure the content is valid JSON, strip any fence artifacts
+    if (ext === 'json') {
+      try {
+        JSON.parse(content);
+        return content; // already valid
+      } catch { /* fall through to extraction */ }
+      // Try to extract a JSON object or array
+      const jsonMatch = content.match(/(\{[\s\S]*\}|\[[\s\S]*\])/);
+      if (jsonMatch) {
+        try { JSON.parse(jsonMatch[1]); return jsonMatch[1]; } catch { /* fall through */ }
+      }
+      // Strip all fence lines and retry
+      const stripped = content.replace(/^\s*```[\w.+-]*\s*$/gm, '').trim();
+      try { JSON.parse(stripped); return stripped; } catch { /* fall through */ }
+      return stripped; // return best effort even if not valid JSON
+    }
+
+    // Code/script files: strip any remaining fence markers aggressively
+    if (['sh', 'bash', 'py', 'ts', 'js', 'tsx', 'jsx', 'mts', 'mjs'].includes(ext)) {
+      return content.replace(/^\s*```[\w.+-]*\s*$/gm, '').trim();
+    }
+
+    return content;
   }
 
   // TRUNCATION DETECTION: Check if generated code ends mid-function
