@@ -1545,7 +1545,8 @@ ${fileList}
 ${existingContent}${priorCtx}${testConstraint}
 Write ONLY the content for "${filepath}". Rules:
 - S64-001: Output the raw file content using FILE: format as described in the system prompt
-- Do NOT wrap output in markdown code fences (\`\`\`) — the orchestrator strips them unreliably
+- Do NOT wrap output in markdown code fences (\`\`\`) — for .md files especially, output RAW markdown text, NOT inside a \`\`\`markdown or \`\`\`typescript block
+- For .sh/.bash scripts, start with #!/bin/bash — do NOT wrap in a code fence
 - Production quality, no TODOs or placeholders
 - Include all imports, types, error handling
 - If this file depends on others listed above, import from them correctly
@@ -1707,8 +1708,8 @@ Continue from where it left off and output ONLY the remaining code (no duplicate
     }
     // Fallback: try simpler pattern if multiline didn't match
     if (blocks.length === 0) {
-      // S64-001: Added python|py|toml|env|sql|xml|md — MiniMax often labels Python files incorrectly
-      const simpleRegex = /```(?:typescript|tsx|ts|javascript|jsx|js|json|yaml|yml|dockerfile|sh|bash|python|py|toml|env|sql|xml|md|css|html|scss|less|txt)?\s*\n([\s\S]*?)```/g;
+      // S64-001: Added python|py|toml|env|sql|xml|md|markdown — MiniMax/qwen3 often labels files incorrectly
+      const simpleRegex = /```(?:typescript|tsx|ts|javascript|jsx|js|json|yaml|yml|dockerfile|sh|bash|python|py|toml|env|sql|xml|md|markdown|css|html|scss|less|txt)?\s*\n([\s\S]*?)```/g;
       while ((match = simpleRegex.exec(normalized)) !== null) {
         if (match[1].trim().length > 0) blocks.push(match[1].trim());
       }
@@ -1728,8 +1729,8 @@ Continue from where it left off and output ONLY the remaining code (no duplicate
     let firstCodeLine = 0;
     for (let i = 0; i < Math.min(lines.length, 5); i++) {
       const line = lines[i].trim();
-      if (line.startsWith('#') || line.startsWith('Here') || line.startsWith('Below') ||
-          line.startsWith('The following') || line === '') {
+      if ((line.startsWith('#') && !line.startsWith('#!')) || line.startsWith('Here') || line.startsWith('Below') ||
+          line.startsWith('The following') || line.startsWith('FILE:') || line === '') {
         firstCodeLine = i + 1;
       } else {
         break;
@@ -1787,8 +1788,8 @@ Continue from where it left off and output ONLY the remaining code (no duplicate
       return stripped; // return best effort even if not valid JSON
     }
 
-    // Code/script files: strip any remaining fence markers aggressively
-    if (['sh', 'bash', 'py', 'ts', 'js', 'tsx', 'jsx', 'mts', 'mjs'].includes(ext)) {
+    // Code/script/markdown files: strip any remaining fence markers aggressively
+    if (['sh', 'bash', 'py', 'ts', 'js', 'tsx', 'jsx', 'mts', 'mjs', 'md', 'markdown'].includes(ext)) {
       return content.replace(/^\s*```[\w.+-]*\s*$/gm, '').trim();
     }
 
