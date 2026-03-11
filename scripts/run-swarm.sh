@@ -57,4 +57,11 @@ fi
 
 cd "$KOGNAI_ROOT"
 echo "🚀  Starting swarm: $SPRINT_FILE"
-exec npx ts-node scripts/orchestrate-agents-v2.ts "$SPRINT_FILE" $SOVEREIGN_FLAG
+
+# Capture console output to timestamped log (Step 4 — swarm daily report spec)
+mkdir -p logs/swarm-runs
+TIMESTAMP=$(date +%Y%m%d-%H%M%S)
+LOG_FILE="logs/swarm-runs/${TIMESTAMP}.log"
+echo "📝  Console log: $LOG_FILE"
+
+npx ts-node scripts/orchestrate-agents-v2.ts "$SPRINT_FILE" $SOVEREIGN_FLAG 2>&1 | tee "$LOG_FILE"

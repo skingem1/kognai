@@ -23,8 +23,14 @@
 
 import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync } from 'fs';
 import { execSync } from 'child_process';
+import { randomUUID } from 'crypto';
 import * as https from 'https';
 import * as http from 'http';
+
+// ===== Module-level token accumulator =====
+// Captures ALL LLM tokens across every agent, supervisor, CEO, CTO call this run.
+let _globalTokensThisRun = 0;
+function _accumulateTokens(n: number) { _globalTokensThisRun += n; }
 // S64-002: Load .env relative to this file's directory (not process.cwd())
 // Fixes supervisor ANTHROPIC_API_KEY missing when spawned from a different cwd (e.g., VPS path)
 import { config as _dotenvConfig } from 'dotenv';
@@ -133,40 +139,43 @@ async function callLLM(
   userPrompt: string,
   timeoutMs: number = 300000
 ): Promise<LLMResponse> {
+  let response: LLMResponse;
   if (provider === 'anthropic') {
-    return callAnthropic(model, systemPrompt, userPrompt, timeoutMs);
+    response = await callAnthropic(model, systemPrompt, userPrompt, timeoutMs);
+  } else if (provider === 'openai') {
+    response = await callOpenAI(model, systemPrompt, userPrompt, timeoutMs);
+  } else if (provider === 'ollama') {
+    // V17: Local Ollama inference ($0 cost)
+    response = await callOllamaAdapted(model, systemPrompt, userPrompt, timeoutMs);
+  } else if (provider === 'clawrouter') {
+    // V17: ClawRouter — x402 gateway, auto-pays, OpenAI-compatible
+    response = await callClawRouterAdapted(model, systemPrompt, userPrompt, timeoutMs);
+  } else {
+    // MiniMax (legacy — being retired in B.20; falls back to ClawRouter if MINIMAX_API_KEY unset)
+    const apiKey = process.env.MINIMAX_API_KEY || '';
+    if (!apiKey) {
+      // MiniMax key missing — route to ClawRouter DeepSeek as fallback
+      log(c.yellow, '  MINIMAX_API_KEY not set — routing to ClawRouter/DeepSeek');
+      response = await callClawRouterAdapted('deepseek/deepseek-chat', systemPrompt, userPrompt, timeoutMs);
+    } else {
+      const body = JSON.stringify({
+        model,
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: userPrompt },
+        ],
+        temperature: 0.3,
+        max_tokens: 16000,
+      });
+      response = await httpPost('https://api.minimax.io/v1/chat/completions', {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${apiKey}`,
+      }, body, timeoutMs) as LLMResponse;
+    }
   }
-  if (provider === 'openai') {
-    return callOpenAI(model, systemPrompt, userPrompt, timeoutMs);
-  }
-  // V17: Local Ollama inference ($0 cost)
-  if (provider === 'ollama') {
-    return callOllamaAdapted(model, systemPrompt, userPrompt, timeoutMs);
-  }
-  // V17: ClawRouter — x402 gateway, auto-pays, OpenAI-compatible
-  if (provider === 'clawrouter') {
-    return callClawRouterAdapted(model, systemPrompt, userPrompt, timeoutMs);
-  }
-  // MiniMax (legacy — being retired in B.20; falls back to ClawRouter if MINIMAX_API_KEY unset)
-  const apiKey = process.env.MINIMAX_API_KEY || '';
-  if (!apiKey) {
-    // MiniMax key missing — route to ClawRouter DeepSeek as fallback
-    log(c.yellow, '  MINIMAX_API_KEY not set — routing to ClawRouter/DeepSeek');
-    return callClawRouterAdapted('deepseek/deepseek-chat', systemPrompt, userPrompt, timeoutMs);
-  }
-  const body = JSON.stringify({
-    model,
-    messages: [
-      { role: 'system', content: systemPrompt },
-      { role: 'user', content: userPrompt },
-    ],
-    temperature: 0.3,
-    max_tokens: 16000,
-  });
-  return httpPost('https://api.minimax.io/v1/chat/completions', {
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${apiKey}`,
-  }, body, timeoutMs);
+  // Accumulate tokens across ALL providers for this run
+  _accumulateTokens(response.usage?.total_tokens || 0);
+  return response;
 }
 async function callAnthropic(model: string, systemPrompt: string, userPrompt: string, timeoutMs: number): Promise<LLMResponse> {
   const apiKey = process.env.ANTHROPIC_API_KEY || '';
@@ -1437,6 +1446,7 @@ class CodingAgent {
     }
     // Sprint-063: Emit JSONL routing log (non-fatal — never block execution)
     try {
+      mkdirSync('logs/routing', { recursive: true });
       const { generateExecutionId, logRoutingDecision } = await import('./task-router.js');
       const sprintId = (task as any).sprint_id ?? 'unknown';
       const execId = task.execution_id ?? generateExecutionId(sprintId, task.id);
@@ -1450,7 +1460,9 @@ class CodingAgent {
         queued_at: task.queued_at ?? new Date().toISOString(),
         execution_source: 'orchestrate-agents-v2',
       });
-    } catch { /* non-fatal — routing log failure must never block task execution */ }
+    } catch (err) {
+      log(c.yellow, `  [WARN] Routing log write failed: ${(err as Error).message}`);
+    }
 
     // Pre-flight: validate all deliverable files exist for non-feature tasks
     // If a file doesn't exist and we're asked to modify it, skip rather than hallucinate
@@ -1843,6 +1855,8 @@ class Orchestrator {
   private agents: Map<string, CodingAgent> = new Map();
   private tasks: AgentTask[] = [];
   private stats = { tasksExecuted: 0, approved: 0, rejected: 0, totalTokens: 0, conflicts: 0, escalations: 0 };
+  // Per-task structured run records — written to swarm run report at end of sprint
+  private taskRuns: any[] = [];
 
   constructor() {
     log(c.bold, '\n╔══════════════════════════════════════════════════════════╗');
@@ -2125,8 +2139,34 @@ ONLY output the JSON array. No markdown, no explanation.`;
     if (!agent) {
       log(c.red, `Agent not found: ${task.agent}`);
       task.status = 'rejected';
+      // Record failure in taskRuns
+      this.taskRuns.push({
+        task_id: task.id, title: (task as any).title || task.id, type: task.type,
+        task_target: (task as any).task_target || 'cloud-code',
+        status: 'rejected', attempts: 0, model_used: '', provider: '',
+        tokens_total: 0, duration_seconds: 0, files_written: [],
+        review: null, error: `Agent not found: ${task.agent}`, rejection_reason: 'Agent not found',
+      });
       return;
     }
+
+    const taskRunStart = Date.now();
+    const taskRun: any = {
+      task_id: task.id,
+      title: (task as any).title || task.id,
+      type: task.type,
+      task_target: (task as any).task_target || 'cloud-code',
+      status: 'pending',
+      attempts: 0,
+      model_used: '',
+      provider: '',
+      tokens_total: 0,
+      duration_seconds: 0,
+      files_written: [],
+      review: null,
+      error: null,
+      rejection_reason: null,
+    };
 
     const MAX_RETRIES = 10;
     const TRUNCATION_THRESHOLD = 3;
@@ -2139,13 +2179,21 @@ ONLY output the JSON array. No markdown, no explanation.`;
 
       task.status = 'in_progress';
       this.stats.tasksExecuted++;
+      taskRun.attempts = attempt;
 
       // Execute with rejection feedback if retrying
+      const tokensBefore = _globalTokensThisRun;
       const result = await agent.execute(task, lastReview);
+      taskRun.tokens_total += (_globalTokensThisRun - tokensBefore);
+      taskRun.model_used = result.model || taskRun.model_used;
 
       if (result.files.length === 0) {
         log(c.red, `  No files produced for ${task.id}`);
         task.status = 'rejected';
+        taskRun.status = 'rejected';
+        taskRun.error = 'No files produced';
+        taskRun.duration_seconds = Math.round((Date.now() - taskRunStart) / 1000);
+        this.taskRuns.push(taskRun);
         return;
       }
 
@@ -2158,6 +2206,10 @@ ONLY output the JSON array. No markdown, no explanation.`;
         task.status = 'rejected'; // will be reset on retry
         try { execSync('git reset --hard HEAD~1', { timeout: 10000 }); } catch { /* ok */ }
         if (attempt < MAX_RETRIES) { log(c.yellow, '  QA gate failed — retrying without supervisor...'); continue; }
+        taskRun.status = 'rejected';
+        taskRun.rejection_reason = `QA gate: ${qaResult.reason}`;
+        taskRun.duration_seconds = Math.round((Date.now() - taskRunStart) / 1000);
+        this.taskRuns.push(taskRun);
         return;
       }
       log(c.gray, `  [QA-gate] PASS — ${qaResult.reason}`);
@@ -2180,11 +2232,17 @@ ONLY output the JSON array. No markdown, no explanation.`;
         task.status = 'done';
         this.stats.approved++;
         log(c.green, `\n✓ Task ${task.id} APPROVED on attempt ${attempt} (${review.score}/100)`);
+        taskRun.status = 'done';
+        taskRun.files_written = result.files;
+        taskRun.review = { verdict: review.verdict, score: review.score, strengths: review.strengths };
+        taskRun.duration_seconds = Math.round((Date.now() - taskRunStart) / 1000);
+        this.taskRuns.push(taskRun);
         return;
       }
 
       // Rejected — check for truncation pattern
       this.stats.rejected++;
+      taskRun.review = { verdict: review.verdict, score: review.score, issues: review.issues, summary: review.summary };
       if (this.isTruncationRejection(review)) {
         truncationCount++;
         log(c.yellow, `\n↻ Task ${task.id} REJECTED on attempt ${attempt} (${review.score}/100) [TRUNCATION ${truncationCount}/${TRUNCATION_THRESHOLD}]`);
@@ -2235,10 +2293,16 @@ ONLY output the JSON array. No markdown, no explanation.`;
           if (allPassed) {
             task.status = 'done';
             log(c.green, `\n✓ Task ${task.id} COMPLETED via CTO decomposition (${subtasks.length} sub-tasks)`);
+            taskRun.status = 'done';
+            taskRun.files_written = subtasks.flatMap(st => st.deliverables.code || []);
           } else {
             task.status = 'rejected';
             log(c.red, `\n✗ Task ${task.id} FAILED even after CTO decomposition`);
+            taskRun.status = 'rejected';
+            taskRun.rejection_reason = review.summary;
           }
+          taskRun.duration_seconds = Math.round((Date.now() - taskRunStart) / 1000);
+          this.taskRuns.push(taskRun);
           return;
         }
         // If decomposition returned <=1 task, continue with normal retry loop
@@ -2253,9 +2317,16 @@ ONLY output the JSON array. No markdown, no explanation.`;
 
     task.status = 'rejected';
     log(c.red, `\n✗ Task ${task.id} FAILED after ${MAX_RETRIES} attempts`);
+    taskRun.status = 'rejected';
+    taskRun.rejection_reason = lastReview?.summary || `Failed after ${MAX_RETRIES} attempts`;
+    taskRun.duration_seconds = Math.round((Date.now() - taskRunStart) / 1000);
+    this.taskRuns.push(taskRun);
   }
   async run(): Promise<void> {
     const startTime = Date.now();
+    const sprintStartTime = new Date().toISOString();
+    let gitHeadBefore = 'unknown';
+    try { gitHeadBefore = execSync('git rev-parse --short HEAD', { timeout: 5000 }).toString().trim(); } catch { /* ok */ }
     log(c.bold, '\n🚀 Starting orchestration run...\n');
     if (SOVEREIGN_MODE) log(c.yellow, '  ⚡ SOVEREIGN MODE — all inference local ($0 cost floor)');
     logWalletStatus();
@@ -2526,6 +2597,91 @@ ONLY output the JSON array. No markdown, no explanation.`;
     const sprintFile = process.argv[2] || 'sprints/current.json';
     writeFileSync(sprintFile, JSON.stringify({ tasks: this.tasks }, null, 2));
     log(c.green, `\nSprint state saved to ${sprintFile}`);
+
+    // 8b. Sync global token count into stats
+    this.stats.totalTokens = _globalTokensThisRun;
+
+    // 8c. Generate structured swarm run report
+    try {
+      mkdirSync('reports/swarm-runs', { recursive: true });
+      mkdirSync('logs/swarm-runs', { recursive: true });
+
+      let gitHeadAfter = 'unknown';
+      let gitBranch = 'unknown';
+      try {
+        gitHeadAfter = execSync('git rev-parse --short HEAD', { timeout: 5000 }).toString().trim();
+        gitBranch = execSync('git rev-parse --abbrev-ref HEAD', { timeout: 5000 }).toString().trim();
+      } catch { /* ok */ }
+
+      // Compute model usage aggregate
+      const modelUsage: Record<string, { calls: number; tokens: number }> = {};
+      for (const tr of this.taskRuns) {
+        const m = tr.model_used || 'unknown';
+        if (!modelUsage[m]) modelUsage[m] = { calls: 0, tokens: 0 };
+        modelUsage[m].calls++;
+        modelUsage[m].tokens += tr.tokens_total || 0;
+      }
+
+      // Approximate cost: Haiku ~$0.25/MTok in, Sonnet ~$3/MTok in, DeepSeek ~$0.14/MTok
+      const MODEL_COST_PER_MILLION = new Map([
+        ['claude-haiku-4-5-20251001', 0.25], ['claude-haiku-3-5', 0.25],
+        ['claude-sonnet-4-5', 3.0], ['claude-sonnet-3-5', 3.0],
+        ['deepseek/deepseek-chat', 0.14], ['anthropic/claude-haiku', 0.25],
+      ]);
+      let totalCostUsd = 0;
+      for (const [model, usage] of Object.entries(modelUsage)) {
+        const rate = MODEL_COST_PER_MILLION.get(model) ?? 0.5;
+        totalCostUsd += (usage.tokens / 1_000_000) * rate;
+      }
+
+      const runReport = {
+        run_id: randomUUID(),
+        project: 'kognai',
+        sprint_file: sprintFile,
+        started_at: sprintStartTime,
+        finished_at: new Date().toISOString(),
+        duration_seconds: Math.round((Date.now() - startTime) / 1000),
+        git_branch: gitBranch,
+        git_head_before: gitHeadBefore,
+        git_head_after: gitHeadAfter,
+        sovereign_mode: SOVEREIGN_MODE,
+        summary: {
+          total_tasks: this.tasks.length,
+          done: this.tasks.filter(t => t.status === 'done').length,
+          rejected: this.tasks.filter(t => t.status === 'rejected').length,
+          skipped: this.tasks.filter(t => t.status === 'skipped').length,
+          approval_rate: +(this.stats.approved / Math.max(this.stats.tasksExecuted, 1)).toFixed(2),
+          total_tokens: this.stats.totalTokens,
+          supervisor_conflicts: this.stats.conflicts,
+          ceo_escalations: this.stats.escalations,
+        },
+        models_used: modelUsage,
+        total_cost_usd: +totalCostUsd.toFixed(4),
+        tasks: this.taskRuns,
+      };
+
+      // 1. Timestamped individual report (never overwritten)
+      const ts = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+      const reportPath = `reports/swarm-runs/${ts}.json`;
+      writeFileSync(reportPath, JSON.stringify(runReport, null, 2));
+
+      // 2. Latest pointer (for quick dashboard access)
+      writeFileSync('reports/swarm-runs/latest-run.json', JSON.stringify(runReport, null, 2));
+
+      // 3. Daily aggregate (accumulates ALL runs for the day)
+      const today = new Date().toISOString().slice(0, 10);
+      const dailyPath = `reports/swarm-runs/daily-${today}.json`;
+      let dailyRuns: any[] = [];
+      try { dailyRuns = JSON.parse(readFileSync(dailyPath, 'utf-8')); } catch { /* first run today */ }
+      dailyRuns.push(runReport);
+      writeFileSync(dailyPath, JSON.stringify(dailyRuns, null, 2));
+
+      log(c.green, `\n📊 Swarm run report: ${reportPath}`);
+      log(c.green, `   Daily aggregate: ${dailyPath} (${dailyRuns.length} run(s) today)`);
+      log(c.green, `   Tokens: ${this.stats.totalTokens.toLocaleString()} | Est. cost: $${totalCostUsd.toFixed(4)}`);
+    } catch (err) {
+      log(c.yellow, `  [WARN] Swarm run report failed: ${(err as Error).message}`);
+    }
 
     // 9. Post-sprint: PM2 reload backend + smoke test
     await postSprintSmokeTest();

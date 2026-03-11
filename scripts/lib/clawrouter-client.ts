@@ -135,7 +135,14 @@ export async function clawRouterIsAvailable(): Promise<boolean> {
   return new Promise((resolve) => {
     const req = http.request(
       { hostname: 'localhost', port: 18789, path: '/v1/models', method: 'GET' },
-      (res) => { resolve(res.statusCode === 200); }
+      (res) => {
+        let data = '';
+        res.on('data', (chunk: string) => (data += chunk));
+        res.on('end', () => {
+          if (res.statusCode !== 200) { resolve(false); return; }
+          try { JSON.parse(data); resolve(true); } catch { resolve(false); }
+        });
+      }
     );
     req.on('error', () => resolve(false));
     req.setTimeout(3000, () => { req.destroy(); resolve(false); });
