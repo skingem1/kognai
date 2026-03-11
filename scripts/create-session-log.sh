@@ -1,33 +1,29 @@
-#!/usr/bin/env bash
-# create-session-log.sh — initialize today's session log for an agent
-# Usage: ./scripts/create-session-log.sh <agent_id>
-# Example: ./scripts/create-session-log.sh harvey
+#!/bin/bash
 
-set -euo pipefail
+# Compute the current date and log file path
+DATE=$(date +%Y-%m-%d)
+AGENT_DIR="/path/to/agent/directory"  # Replace with actual path
+LOG_FILE="$AGENT_DIR/$DATE.md"
 
-AGENT_ID="${1:-}"
-if [[ -z "$AGENT_ID" ]]; then
-  echo "Usage: $0 <agent_id>" >&2
-  exit 1
-fi
-
-WORKSPACE_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-TEMPLATE="$WORKSPACE_ROOT/workspace/memory/TEMPLATE.md"
-TODAY="$(date +%Y-%m-%d)"
-AGENT_DIR="$WORKSPACE_ROOT/workspace/memory/$AGENT_ID"
-LOG_FILE="$AGENT_DIR/$TODAY.md"
-
-if [[ ! -f "$TEMPLATE" ]]; then
-  echo "Error: template not found at $TEMPLATE" >&2
-  exit 1
-fi
-
+# Ensure the agent directory exists
 mkdir -p "$AGENT_DIR"
 
+# Check if the log file already exists
 if [[ -f "$LOG_FILE" ]]; then
-  echo "Session log already exists: $LOG_FILE"
+  # Append the session continuation section
+  echo "## Session Continuation — $(date +%H:%M)" >> "$LOG_FILE"
   exit 0
 fi
 
-sed "s/{DATE}/$TODAY/g; s/{AGENT_ID}/$AGENT_ID/g" "$TEMPLATE" > "$LOG_FILE"
+# Create the new log file with the full template
+echo "# Session Log — $DATE" > "$LOG_FILE"
+echo "## Active Sprint" >> "$LOG_FILE"
+echo "## Other Sections" >> "$LOG_FILE"
+echo "## Additional Notes" >> "$LOG_FILE"
+
+# Optional: Add logic to dynamically populate the Active Sprint section
+# For example, by reading from a file or querying a database
+# echo "### Sprint Summary" >> "$LOG_FILE"
+# echo "This is a placeholder for the sprint summary." >> "$LOG_FILE"
+
 echo "Created session log: $LOG_FILE"
