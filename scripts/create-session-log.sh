@@ -21,7 +21,7 @@ echo "# Session Log — $DATE" > "$LOG_FILE"
 # ## Active Sprint section
 SPRINT_FILE=$(find "workspace/sprints/" -name "sprint-*.json" | sort -r | grep -E 'sprint-[0-9]+.json' | head -n1)
 if [[ -f "$SPRINT_FILE" ]]; then
-  PENDING=$(jq -r '.pending_tasks | length' "$SPRINT_FILE")
+  PENDING=$(jq -r '[.tasks[] | select(.status == "pending")] | length' "$SPRINT_FILE" 2>/dev/null || echo 0)
   if [[ "$PENDING" -gt 0 ]]; then
     echo "## Active Sprint" >> "$LOG_FILE"
     echo "Sprint file: $SPRINT_FILE" >> "$LOG_FILE"
@@ -54,22 +54,23 @@ else
 fi
 
 # ## ACP Score Changes
-ACP_ENTRIES=$(jq -r --arg date "$DATE" '.[] | select(.date == $date)' "acp/ledger.json")
-if [[ -n "$ACP_ENTRIES" ]]; then
-  COUNT=$(echo "$ACP_ENTRIES" | jq -r '. | length')
+ACP_COUNT=$(jq -r --arg date "$DATE" '[.[] | select(.timestamp | startswith($date))] | length' "acp/ledger.json" 2>/dev/null || echo 0)
+if [[ "$ACP_COUNT" -gt 0 ]]; then
   echo "## ACP Score Changes" >> "$LOG_FILE"
-  echo "Today's entries: $COUNT" >> "$LOG_FILE"
-  echo "$ACP_ENTRIES" | jq -r '.[] | "  - \(.agent): \(.score_change) (from \(.previous_score) to \(.current_score))"' >> "$LOG_FILE"
+  echo "Today's entries: $ACP_COUNT" >> "$LOG_FILE"
+  jq -r --arg date "$DATE" '.[] | select(.timestamp | startswith($date)) | "  - \(.agent_id) task \(.task_id): \(.outcome)"' "acp/ledger.json" 2>/dev/null >> "$LOG_FILE" || true
 else
   echo "## ACP Score Changes" >> "$LOG_FILE"
   echo "_None today_" >> "$LOG_FILE"
 fi
 
 # ## Budget Status
-TOTAL_COST=$(jq -r --arg date "$DATE" 'select(.date == $date) | .costUsdc' "logs/routing/*.jsonl" | awk '{sum += $1} END {printf "%.2f", sum}' 2>/dev/null || echo 0)
-if [[ "$TOTAL_COST" != 0 ]]; then
+ROUTING_DIR="logs/routing"
+if ls "$ROUTING_DIR"/*.jsonl 2>/dev/null | head -1 | grep -q .; then
+  TOTAL_COST=$(cat "$ROUTING_DIR"/*.jsonl 2>/dev/null | jq -r --arg date "$DATE" 'select(.timestamp // "" | startswith($date)) | .costUsdc // 0' 2>/dev/null | awk '{sum += $1} END {printf "%.4f", sum+0}')
   echo "## Budget Status" >> "$LOG_FILE"
-  echo "Spent: $TOTAL_COST USDC today" >> "$LOG_FILE"
+  printf "Spent: \$%s USDC today
+" "$TOTAL_COST" >> "$LOG_FILE"
 else
   echo "## Budget Status" >> "$LOG_FILE"
   echo "_No routing logs today_" >> "$LOG_FILE"
