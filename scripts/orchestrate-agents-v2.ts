@@ -46,6 +46,7 @@ import { shouldRunLocally, selectLocalModel } from './lib/local-model-router';
 import { selectModel as selectCloudModel, classifyTask } from './lib/model-router';
 import { getWalletState, recordSpend, logWalletStatus } from './lib/wallet-state';
 import { brvQuery, brvCurate } from './lib/byterover-client';
+import { publishTaskStarted, publishTaskCompleted, publishTaskFailed, publishBudgetWarning, publishBudgetFreeze, publishSprintStarted, publishSprintCompleted } from './lib/event-bus-publisher';
 
 // V17: Sovereign mode — force all inference to local Ollama ($0 cost floor)
 const SOVEREIGN_MODE = process.argv.includes('--sovereign') || process.env.SOVEREIGN_MODE === '1';
@@ -2200,6 +2201,10 @@ ONLY output the JSON array. No markdown, no explanation.`;
       log(c.blue, `${'='.repeat(60)}`);
 
       task.status = 'in_progress';
+      if (attempt === 1) {
+        const _sprintId = (process.argv[2] || 'sprints/current.json').replace(/.*\//, '').replace('.json', '');
+        publishTaskStarted(task.agent, _sprintId, task.id, (task as any).title || task.id).catch(() => {});
+      }
       this.stats.tasksExecuted++;
       taskRun.attempts = attempt;
 
@@ -2254,6 +2259,8 @@ ONLY output the JSON array. No markdown, no explanation.`;
         task.status = 'done';
         this.stats.approved++;
         log(c.green, `\n✓ Task ${task.id} APPROVED on attempt ${attempt} (${review.score}/100)`);
+        const _sprintIdApproved = (process.argv[2] || 'sprints/current.json').replace(/.*\//, '').replace('.json', '');
+        publishTaskCompleted(task.agent, _sprintIdApproved, task.id, (task as any).title || task.id, 0).catch(() => {});
         taskRun.status = 'done';
         taskRun.files_written = result.files;
         taskRun.review = { verdict: review.verdict, score: review.score, strengths: review.strengths };
@@ -2339,6 +2346,8 @@ ONLY output the JSON array. No markdown, no explanation.`;
 
     task.status = 'rejected';
     log(c.red, `\n✗ Task ${task.id} FAILED after ${MAX_RETRIES} attempts`);
+    const _sprintIdFailed = (process.argv[2] || 'sprints/current.json').replace(/.*\//, '').replace('.json', '');
+    publishTaskFailed(task.agent, _sprintIdFailed, task.id, (task as any).title || task.id, lastReview?.summary || `Failed after ${MAX_RETRIES} attempts`).catch(() => {});
     taskRun.status = 'rejected';
     taskRun.rejection_reason = lastReview?.summary || `Failed after ${MAX_RETRIES} attempts`;
     taskRun.duration_seconds = Math.round((Date.now() - taskRunStart) / 1000);
@@ -2364,6 +2373,9 @@ ONLY output the JSON array. No markdown, no explanation.`;
 
     // 1. Load tasks
     this.loadTasks();
+    // 069-06: emit sprint started event
+    const _evtSprintId = (process.argv[2] || 'sprints/current.json').replace(/.*\//, '').replace('.json', '');
+    publishSprintStarted(_evtSprintId, this.tasks.filter(t => t.status === 'pending').length).catch(() => {});
     if (this.tasks.length === 0) {
       log(c.yellow, 'No tasks to execute');
       if (mcConnected) await mc.disconnect().catch(() => {});
@@ -2554,6 +2566,12 @@ ONLY output the JSON array. No markdown, no explanation.`;
       log(c.gray, `  Only ${rejectedCount} rejected — skipping CEO reassessment (sprint OK)`);
     }
     logWalletStatus(); // Print wallet burn after sprint execution
+    // 069-06: emit budget events if thresholds crossed
+    try {
+      const _ws = getWalletState();
+      if (_ws.burnPct >= 95) publishBudgetFreeze(_evtSprintId, _ws.burnPct).catch(() => {});
+      else if (_ws.burnPct >= 80) publishBudgetWarning(_evtSprintId, _ws.burnPct, _ws.spentThisMonth, _ws.monthlyBudget).catch(() => {});
+    } catch { /* wallet state unavailable */ }
 
     // 6b. CTO autonomous post-sprint analysis (runs after EVERY sprint)
     log(c.cyan, '\n--- Phase 5b: CTO Post-Sprint Analysis (Autonomous) ---');
@@ -2619,6 +2637,9 @@ ONLY output the JSON array. No markdown, no explanation.`;
     const sprintFile = process.argv[2] || 'sprints/current.json';
     writeFileSync(sprintFile, JSON.stringify({ tasks: this.tasks }, null, 2));
     log(c.green, `\nSprint state saved to ${sprintFile}`);
+    // 069-06: emit sprint completed event
+    const completedCount = this.tasks.filter(t => t.status === 'done').length;
+    publishSprintCompleted(_evtSprintId, this.tasks.length, completedCount).catch(() => {});
 
     // 8b. Sync global token count into stats
     this.stats.totalTokens = _globalTokensThisRun;
