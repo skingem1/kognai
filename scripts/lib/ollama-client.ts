@@ -6,7 +6,7 @@
  * No API key needed — pure local, $0 cost.
  */
 
-import http from 'http';
+import * as http from 'http';
 
 const OLLAMA_BASE = process.env.OLLAMA_HOST || 'http://localhost:11434';
 const OLLAMA_TIMEOUT_MS = 600_000; // 10 min — local models can be slow

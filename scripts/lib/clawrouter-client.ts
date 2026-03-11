@@ -9,8 +9,8 @@
  * Flow:   POST /v1/chat/completions → gateway pays upstream → 200 response
  */
 
-import http from 'http';
-import https from 'https';
+import * as http from 'http';
+import * as https from 'https';
 
 const CLAWROUTER_URL = process.env.CLAWROUTER_GATEWAY_URL || 'http://localhost:18789/v1';
 

@@ -33,6 +33,16 @@ _dotenvConfig({ path: _dotenvResolve(__dirname, '..', '.env'), override: false }
 // Fallback: also try process.cwd() in case running without ts-node __dirname
 _dotenvConfig({ path: _dotenvResolve(process.cwd(), '.env'), override: false });
 import { createMCClient } from './mc-client';
+// V17: Local/cloud routing, wallet state, ByteRover memory
+import { callOllama, ollamaIsAvailable } from './lib/ollama-client';
+import { callClawRouter, clawRouterIsAvailable } from './lib/clawrouter-client';
+import { shouldRunLocally, selectLocalModel } from './lib/local-model-router';
+import { selectModel as selectCloudModel, classifyTask } from './lib/model-router';
+import { getWalletState, recordSpend, logWalletStatus } from './lib/wallet-state';
+import { brvQuery, brvCurate } from './lib/byterover-client';
+
+// V17: Sovereign mode — force all inference to local Ollama ($0 cost floor)
+const SOVEREIGN_MODE = process.argv.includes('--sovereign') || process.env.SOVEREIGN_MODE === '1';
 
 // ===== Types =====
 
@@ -57,6 +67,8 @@ interface AgentTask {
   };
   // Sprint-063: explicit task routing fields
   task_target?: 'local' | 'cloud-code' | 'cloud-exec' | 'cloud-post';
+  // V17: task type for model routing
+  task_type?: string;
   execution_id?: string;
   queued_at?: string;
   executed_at?: string;
@@ -115,7 +127,7 @@ function log(color: string, msg: string) {
 // ===== Generic LLM Client =====
 
 async function callLLM(
-  provider: 'minimax' | 'anthropic' | 'openai',
+  provider: 'minimax' | 'anthropic' | 'openai' | 'ollama' | 'clawrouter',
   model: string,
   systemPrompt: string,
   userPrompt: string,
@@ -127,8 +139,21 @@ async function callLLM(
   if (provider === 'openai') {
     return callOpenAI(model, systemPrompt, userPrompt, timeoutMs);
   }
+  // V17: Local Ollama inference ($0 cost)
+  if (provider === 'ollama') {
+    return callOllamaAdapted(model, systemPrompt, userPrompt, timeoutMs);
+  }
+  // V17: ClawRouter — x402 gateway, auto-pays, OpenAI-compatible
+  if (provider === 'clawrouter') {
+    return callClawRouterAdapted(model, systemPrompt, userPrompt, timeoutMs);
+  }
+  // MiniMax (legacy — being retired in B.20; falls back to ClawRouter if MINIMAX_API_KEY unset)
   const apiKey = process.env.MINIMAX_API_KEY || '';
-  if (!apiKey) throw new Error('MINIMAX_API_KEY not set');
+  if (!apiKey) {
+    // MiniMax key missing — route to ClawRouter DeepSeek as fallback
+    log(c.yellow, '  MINIMAX_API_KEY not set — routing to ClawRouter/DeepSeek');
+    return callClawRouterAdapted('deepseek/deepseek-chat', systemPrompt, userPrompt, timeoutMs);
+  }
   const body = JSON.stringify({
     model,
     messages: [
@@ -184,6 +209,141 @@ async function callOpenAI(model: string, systemPrompt: string, userPrompt: strin
     'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}`,
   }, body, timeoutMs);
 }
+// B.5: Prompt-cached Anthropic call — saves 55-65% on repeated system prompts
+// Adds anthropic-beta: prompt-caching-2024-07-31 + cache_control on system message
+async function callAnthropicCached(model: string, systemPrompt: string, userPrompt: string, timeoutMs: number): Promise<LLMResponse> {
+  const apiKey = process.env.ANTHROPIC_API_KEY || '';
+  if (!apiKey) throw new Error('ANTHROPIC_API_KEY not set in .env');
+  const body = JSON.stringify({
+    model, max_tokens: 16000, temperature: 0.3,
+    system: [{ type: 'text', text: systemPrompt, cache_control: { type: 'ephemeral' } }],
+    messages: [{ role: 'user', content: userPrompt }],
+  });
+  const rawResponse = await httpPost('https://api.anthropic.com/v1/messages', {
+    'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01',
+    'anthropic-beta': 'prompt-caching-2024-07-31',
+  }, body, timeoutMs);
+  const anthropicData = rawResponse as any;
+  if (anthropicData.content && Array.isArray(anthropicData.content)) {
+    const textContent = anthropicData.content.filter((b: any) => b.type === 'text').map((b: any) => b.text).join('');
+    return {
+      choices: [{ message: { content: textContent } }],
+      usage: { total_tokens: (anthropicData.usage?.input_tokens || 0) + (anthropicData.usage?.output_tokens || 0) },
+    };
+  }
+  return rawResponse;
+}
+
+// V17: Adapt ClawRouter result to LLMResponse format (OpenAI-compatible)
+async function callClawRouterAdapted(model: string, systemPrompt: string, userPrompt: string, timeoutMs: number): Promise<LLMResponse> {
+  const result = await callClawRouter({ model, prompt: userPrompt, systemPrompt, maxTokens: 16000 });
+  if (result.costUsdc > 0) recordSpend(result.costUsdc);
+  return {
+    choices: [{ message: { content: result.content } }],
+    usage: { total_tokens: result.inputTokens + result.outputTokens },
+  };
+}
+
+// V17: Adapt Ollama result to LLMResponse format
+async function callOllamaAdapted(model: string, systemPrompt: string, userPrompt: string, _timeoutMs: number): Promise<LLMResponse> {
+  const result = await callOllama({ model, prompt: userPrompt, systemPrompt, maxTokens: 8192, temperature: 0.1 });
+  return {
+    choices: [{ message: { content: result.content } }],
+    usage: { total_tokens: result.evalCount + result.promptEvalCount },
+  };
+}
+
+// B.9: Nano classifier — uses qwen3:0.6b to refine 'util' fallback classification
+async function classifyTaskSmart(prompt: string): Promise<string> {
+  const regexType = classifyTask(prompt);
+  if (regexType !== 'util') return regexType; // regex was confident
+  try {
+    const ollamaAvail = await ollamaIsAvailable();
+    if (!ollamaAvail) return regexType;
+    const classifyPrompt = `Classify this task into exactly one category. Reply with ONLY the category name, nothing else.
+Categories: code, reason, lang, util, audit, content, data, refactor-complex, agent-framework, codebase-scan
+
+Task: ${prompt.substring(0, 300)}`;
+    const result = await callOllama({ model: 'qwen3:0.6b', prompt: classifyPrompt, maxTokens: 20, temperature: 0 });
+    const nano = result.content.trim().toLowerCase().split(/\s/)[0];
+    const valid = ['code','reason','lang','util','audit','content','data','refactor-complex','agent-framework','codebase-scan'];
+    return valid.includes(nano) ? nano : regexType;
+  } catch { return regexType; }
+}
+
+// B.12: Context compression using qwen3:4b — reduces cloud token spend 70-80%
+async function compressContext(context: string): Promise<string> {
+  if (context.length < 1200) return context; // not worth compressing
+  try {
+    const ollamaAvail = await ollamaIsAvailable();
+    if (!ollamaAvail) return context;
+    const result = await callOllama({
+      model: 'qwen3:4b',
+      prompt: `Compress the following task context to under 600 words. Preserve all file paths, function names, technical requirements, and acceptance criteria. Remove prose filler and redundant explanations.\n\n${context.substring(0, 4000)}`,
+      maxTokens: 800, temperature: 0,
+    });
+    const compressed = result.content.trim();
+    if (compressed.length > 100 && compressed.length < context.length * 0.9) {
+      log(c.gray, `  [compress] ${context.length} → ${compressed.length} chars (${Math.round(compressed.length/context.length*100)}%)`);
+      return compressed;
+    }
+  } catch { /* non-fatal */ }
+  return context;
+}
+
+// B.10: Local QA gate using qwen3:4b — quick PASS/FAIL before expensive supervisor review
+async function localQAGate(task: AgentTask, fileContents: Array<{path: string; content: string}>): Promise<{pass: boolean; reason: string}> {
+  try {
+    const ollamaAvail = await ollamaIsAvailable();
+    if (!ollamaAvail) return { pass: true, reason: 'Ollama unavailable — skipping QA gate' };
+    const filesPreview = fileContents.map(f => `### ${f.path}\n${f.content.substring(0, 800)}`).join('\n\n');
+    const result = await callOllama({
+      model: 'qwen3:4b',
+      systemPrompt: 'You are a code QA gate. Reply with PASS or FAIL on the first line, then a one-sentence reason.',
+      prompt: `Task: ${task.context.substring(0, 400)}\n\nGenerated files:\n${filesPreview}\n\nDoes this code look complete and non-trivially implement the task? Reply PASS or FAIL.`,
+      maxTokens: 100, temperature: 0,
+    });
+    const firstLine = result.content.trim().split('\n')[0].toUpperCase();
+    const pass = firstLine.startsWith('PASS');
+    return { pass, reason: result.content.trim().split('\n').slice(1).join(' ').substring(0, 200) || firstLine };
+  } catch (e: any) {
+    return { pass: true, reason: `QA gate error: ${e.message}` };
+  }
+}
+
+// B.11: Tiered debugger — routes debug effort by issue severity
+async function tieredDebug(task: AgentTask, review: ReviewResult, systemPrompt: string): Promise<string | null> {
+  const issueText = (review.issues || []).map(i => `[${i.severity}] ${i.file}: ${i.description}`).join('\n');
+  const hasArchitecture = (review.issues || []).some(i => i.severity === 'critical' || i.description.toLowerCase().includes('architect'));
+  const hasSystemic = (review.issues || []).some(i => i.severity === 'high' || i.description.toLowerCase().includes('logic'));
+
+  try {
+    if (hasArchitecture) {
+      // Tier 3: Claude Sonnet — deep architectural issues
+      const response = await callAnthropicCached('claude-haiku-4-5-20251001', systemPrompt,
+        `Fix this code. Issues:\n${issueText}\n\nTask: ${task.context.substring(0, 800)}`, 90000);
+      return response.choices?.[0]?.message?.content || null;
+    } else if (hasSystemic) {
+      // Tier 2: deepseek-r1:14b — logical/systemic issues
+      const ollamaAvail = await ollamaIsAvailable();
+      if (ollamaAvail) {
+        const result = await callOllama({ model: 'deepseek-r1:14b', prompt: `Fix these code issues:\n${issueText}\n\nTask: ${task.context.substring(0, 600)}`, maxTokens: 2048, temperature: 0.1 });
+        return result.content;
+      }
+    } else {
+      // Tier 1: qwen3:14b — minor issues
+      const ollamaAvail = await ollamaIsAvailable();
+      if (ollamaAvail) {
+        const result = await callOllama({ model: 'qwen3:14b', prompt: `Fix these minor code issues:\n${issueText}\n\nTask: ${task.context.substring(0, 500)}`, maxTokens: 1024, temperature: 0.1 });
+        return result.content;
+      }
+    }
+  } catch (e: any) {
+    log(c.yellow, `  [tiered-debug] ${e.message}`);
+  }
+  return null;
+}
+
 function httpPost(url: string, headers: Record<string, string>, body: string, timeoutMs: number): Promise<any> {
   const parsed = new URL(url);
   const isHttps = parsed.protocol === 'https:';
@@ -231,9 +391,17 @@ class SupervisorAgent {
       : '';
     const userPrompt = `Review the following code generated for task ${task.id}.\n\n## Task Spec\n${task.context}\n\n## Generated Files (${files.length})\n${fileContents}${integrityContext}\n\n## Instructions\nCRITICAL CHECK: Does ANY file start with a markdown code fence (\`\`\`tsx, \`\`\`typescript, etc.)? If YES, auto-REJECT — code fences in source files are invalid syntax.\nAlso check: Did the file lose existing functionality? If a file shrank significantly, REJECT.\n\nRespond with a JSON object:\n{\n  "verdict": "APPROVED" or "REJECTED",\n  "score": 0-100,\n  "summary": "brief review summary",\n  "issues": [{"severity": "critical|high|medium|low", "file": "path", "description": "..."}],\n  "strengths": ["..."]\n}`;
     const startTime = Date.now();
-    log(c.gray, '  -> Sending to Claude (Anthropic API)...');
+    // B.15: DeepSeek via ClawRouter for standard tasks (~$0.02/task vs $0.07 dual-supervisor)
+    // Retain Claude Sonnet only for audit/refactor-complex (high-stakes)
+    const taskType = task.task_type || '';
+    const isHighStakes = taskType === 'audit' || taskType === 'refactor-complex' ||
+      (task.context || '').toLowerCase().includes('security') || (task.context || '').toLowerCase().includes('audit');
+    const crAvail = await clawRouterIsAvailable().catch(() => false);
+    let reviewProvider: 'clawrouter' | 'anthropic' = (crAvail && !isHighStakes) ? 'clawrouter' : 'anthropic';
+    const reviewModel = reviewProvider === 'clawrouter' ? 'deepseek/deepseek-chat' : 'claude-sonnet-4-6';
+    log(c.gray, `  -> Sending to ${reviewProvider === 'clawrouter' ? 'ClawRouter/DeepSeek' : 'Claude Sonnet'} (${isHighStakes ? 'high-stakes' : 'standard'})...`);
     try {
-      const response = await callLLM('anthropic', 'claude-sonnet-4-20250514', this.systemPrompt, userPrompt, 120000);
+      const response = await callLLM(reviewProvider, reviewModel, this.systemPrompt, userPrompt, 120000);
       const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
       log(c.gray, `  -> Review received in ${elapsed}s (${response.usage?.total_tokens || '?'} tokens)`);
       const content = response.choices?.[0]?.message?.content || '';
@@ -263,11 +431,11 @@ class Supervisor2Agent {
   constructor() {
     const promptPath = './agents/supervisor/prompt.md';
     this.systemPrompt = existsSync(promptPath) ? readFileSync(promptPath, 'utf-8') : 'You are a code review supervisor.';
-    log(c.magenta, '+ Loaded supervisor 2 agent (OpenAI Codex)');
+    log(c.magenta, '+ Loaded supervisor 2 agent (Claude Haiku — second pass)');
   }
 
   async reviewTask(task: AgentTask, files: string[]): Promise<ReviewResult> {
-    log(c.magenta, `\n[supervisor-2/codex] Reviewing: ${task.id}`);
+    log(c.magenta, `\n[supervisor-2/haiku] Reviewing: ${task.id}`);
     const fileContents = files.map((filepath) => {
       const content = existsSync(filepath) ? readFileSync(filepath, 'utf-8') : '';
       return `### ${filepath}\n\`\`\`typescript\n${content.substring(0, 4000)}\n\`\`\``;
@@ -278,27 +446,28 @@ class Supervisor2Agent {
       : '';
     const userPrompt = `Review the following code generated for task ${task.id}.\n\n## Task Spec\n${task.context}\n\n## Generated Files (${files.length})\n${fileContents}${integrityContext2}\n\n## Instructions\nCRITICAL CHECK: Does ANY file start with a markdown code fence (\`\`\`tsx, \`\`\`typescript, etc.)? If YES, auto-REJECT — code fences in source files are invalid syntax.\nAlso check: Did the file lose existing functionality? If a file shrank significantly, REJECT.\n\nRespond with a JSON object:\n{\n  "verdict": "APPROVED" or "REJECTED",\n  "score": 0-100,\n  "summary": "brief review summary",\n  "issues": [{"severity": "critical|high|medium|low", "file": "path", "description": "..."}],\n  "strengths": ["..."]\n}`;
     const startTime = Date.now();
-    log(c.gray, '  -> Sending to OpenAI Codex...');
+    // B.15: Use Haiku for second-pass review — 10x cheaper than Sonnet, no OpenAI dependency
+    log(c.gray, '  -> Sending to Claude Haiku (second pass)...');
     try {
-      const response = await callLLM('openai', 'o4-mini', this.systemPrompt, userPrompt, 120000);
+      const response = await callAnthropicCached('claude-haiku-4-5-20251001', this.systemPrompt, userPrompt, 120000);
       const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
-      log(c.gray, `  -> Codex review received in ${elapsed}s (${response.usage?.total_tokens || '?'} tokens)`);
+      log(c.gray, `  -> Haiku review received in ${elapsed}s (${response.usage?.total_tokens || '?'} tokens)`);
       const content = response.choices?.[0]?.message?.content || '';
       const jsonMatch = content.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
         const review = JSON.parse(jsonMatch[0]) as ReviewResult;
-        if (review.verdict === 'APPROVED') { log(c.green, `  ✓ [Codex] APPROVED (score: ${review.score}/100)`); }
+        if (review.verdict === 'APPROVED') { log(c.green, `  ✓ [Haiku] APPROVED (score: ${review.score}/100)`); }
         else {
-          log(c.red, `  ✗ [Codex] REJECTED (score: ${review.score}/100)`);
+          log(c.red, `  ✗ [Haiku] REJECTED (score: ${review.score}/100)`);
           log(c.yellow, `  Summary: ${review.summary}`);
           for (const issue of review.issues || []) { log(c.yellow, `    [${issue.severity}] ${issue.file}: ${issue.description}`); }
         }
         return review;
       }
-      log(c.yellow, '  ! [Codex] Could not parse review JSON, auto-approving');
-      return { verdict: 'APPROVED', score: 70, summary: 'Auto-approved (Codex parse failure)', issues: [], strengths: [] };
+      log(c.yellow, '  ! [Haiku] Could not parse review JSON, auto-approving');
+      return { verdict: 'APPROVED', score: 70, summary: 'Auto-approved (Haiku parse failure)', issues: [], strengths: [] };
     } catch (error: any) {
-      log(c.yellow, `  ! [Codex] Supervisor 2 error: ${error.message}`);
+      log(c.yellow, `  ! [Haiku] Supervisor 2 error: ${error.message}`);
       return { verdict: 'APPROVED', score: 0, summary: `Supervisor 2 unavailable: ${error.message}`, issues: [], strengths: [] };
     }
   }
@@ -342,7 +511,7 @@ async function reconcileSupervisorReviews(
         score: avgScore,
         summary: `Dual-approved: Claude (${review1.score}/100) + Codex (${review2.score}/100)`,
         issues: [...review1.issues, ...review2.issues],
-        strengths: [...new Set([...review1.strengths, ...review2.strengths])],
+        strengths: Array.from(new Set([...review1.strengths, ...review2.strengths])),
       },
       review1, review2, consensus: true, escalatedToCEO: false,
     };
@@ -528,7 +697,8 @@ For EACH proposal, respond with a decision JSON:
 Wrap all decisions in a JSON array. Be concise.`;
 
     try {
-      const response = await callLLM('anthropic', 'claude-sonnet-4-20250514', this.systemPrompt, userPrompt, 60000);
+      // B.6: Haiku for CTO proposal reviews — 10x cheaper, prompt-cached system prompt
+      const response = await callAnthropicCached('claude-haiku-4-5-20251001', this.systemPrompt, userPrompt, 60000);
       const content = response.choices?.[0]?.message?.content || 'No response';
       log(c.magenta, `  CEO CTO review: ${content.substring(0, 500)}`);
       return content;
@@ -1117,24 +1287,49 @@ function persistCEODecisions(ctoDecisions: string, ctoReport: CTOReport): void {
 async function assessTaskComplexity(
   task: AgentTask,
   deliverables: string[],
-): Promise<{ provider: 'minimax' | 'anthropic'; model: string; routingReason: string }> {
-  // Bootstrap fallback: if MiniMax is not configured, route everything to Anthropic
-  if (!process.env.MINIMAX_API_KEY) {
-    return { provider: 'anthropic', model: 'claude-sonnet-4-20250514', routingReason: 'MINIMAX_API_KEY not set → Anthropic fallback' };
+): Promise<{ provider: 'minimax' | 'anthropic' | 'ollama' | 'clawrouter'; model: string; routingReason: string }> {
+  const wallet = getWalletState();
+
+  // B.18: Sovereign mode — force everything to Ollama
+  if (SOVEREIGN_MODE) {
+    const local = selectLocalModel(task.task_type || 'code');
+    return { provider: 'ollama', model: local.model, routingReason: 'sovereign mode — $0 local inference' };
   }
+
+  // B.7: Wallet frozen — auto-engage sovereign mode
+  if (wallet.isFrozen) {
+    const local = selectLocalModel(task.task_type || 'code');
+    return { provider: 'ollama', model: local.model, routingReason: `wallet frozen (${wallet.burnPct.toFixed(0)}%) → local only` };
+  }
+
   // Sprint-063: task_target field overrides automatic complexity routing
   if (task.task_target) {
     switch (task.task_target) {
-      case 'cloud-code':
-        return { provider: 'minimax' as const, model: 'MiniMax-M2.5', routingReason: 'task_target=cloud-code (120s budget)' };
+      case 'local': {
+        // B.7 FIX: actually route to Ollama (was incorrectly routing to Claude Sonnet)
+        const local = selectLocalModel(task.task_type || 'code');
+        return { provider: 'ollama', model: local.model, routingReason: 'task_target=local → Ollama' };
+      }
+      case 'cloud-code': {
+        // B.20: Replace MiniMax with ClawRouter/DeepSeek
+        const crAvail = await clawRouterIsAvailable().catch(() => false);
+        if (crAvail) return { provider: 'clawrouter', model: 'deepseek/deepseek-chat', routingReason: 'task_target=cloud-code → ClawRouter/DeepSeek' };
+        return { provider: 'anthropic', model: 'claude-haiku-4-5-20251001', routingReason: 'task_target=cloud-code, ClawRouter down → Haiku' };
+      }
       case 'cloud-exec':
-        return { provider: 'anthropic' as const, model: 'claude-sonnet-4-20250514', routingReason: 'task_target=cloud-exec (90s budget)' };
+        return { provider: 'anthropic', model: 'claude-sonnet-4-6', routingReason: 'task_target=cloud-exec' };
       case 'cloud-post':
-        return { provider: 'anthropic' as const, model: 'claude-sonnet-4-20250514', routingReason: 'task_target=cloud-post (external API dispatch, 30s budget)' };
-      case 'local':
-        return { provider: 'anthropic' as const, model: 'claude-sonnet-4-20250514', routingReason: 'task_target=local (vault Qwen3 preferred; cloud-exec fallback)' };
+        return { provider: 'anthropic', model: 'claude-haiku-4-5-20251001', routingReason: 'task_target=cloud-post' };
     }
   }
+
+  // B.8: Wallet-aware local routing — wallet degraded pushes non-critical tasks local
+  const taskForRouter = { task_target: task.task_target, task_type: task.task_type || '', priority: task.priority };
+  if (shouldRunLocally(taskForRouter, wallet, SOVEREIGN_MODE)) {
+    const local = selectLocalModel(task.task_type || 'code');
+    return { provider: 'ollama', model: local.model, routingReason: `wallet ${wallet.burnPct.toFixed(0)}% → local` };
+  }
+
   // S65-003: HTTP router probe — delegates to router_server.py if ROUTER_SERVER_URL is set
   // 2s hard timeout — never blocks execution; falls through to heuristics on any failure
   const routerUrl = process.env.ROUTER_SERVER_URL || '';
@@ -1151,20 +1346,30 @@ async function assessTaskComplexity(
       clearTimeout(timer);
       if (res.ok) {
         const data = await res.json() as { tier: string; model_name: string; reasoning: string };
-        const provider = (data.tier === 'cloud' || data.tier === 'apex') ? 'anthropic' : 'minimax';
-        const model = provider === 'anthropic' ? 'claude-sonnet-4-20250514' : 'MiniMax-M2.5';
-        return { provider: provider as any, model, routingReason: `HTTP router: ${data.tier} — ${data.reasoning}` };
+        if (data.tier === 'local' || data.tier === 'nano') {
+          const local = selectLocalModel(task.task_type || 'code');
+          return { provider: 'ollama', model: local.model, routingReason: `HTTP router: ${data.tier}` };
+        }
+        const crAvail = await clawRouterIsAvailable().catch(() => false);
+        if (crAvail) {
+          const cloud = selectCloudModel(task.context || '', task.task_type);
+          return { provider: 'clawrouter', model: cloud.model, routingReason: `HTTP router: ${data.tier} → ClawRouter` };
+        }
+        return { provider: 'anthropic', model: 'claude-sonnet-4-6', routingReason: `HTTP router: ${data.tier}` };
       }
     } catch { /* HTTP router unavailable — fall through to heuristics */ }
   }
+
   const ctx = (task.context || '').toLowerCase();
 
-  // Signal 1: many deliverables → always Claude (coordinating multiple files needs coherence)
+  // Signal 1: many deliverables → Sonnet (coordinating multiple files needs coherence)
   if (deliverables.length > 2) {
-    return { provider: 'anthropic', model: 'claude-sonnet-4-20250514', routingReason: `${deliverables.length} deliverables → complex` };
+    const crAvail = await clawRouterIsAvailable().catch(() => false);
+    if (crAvail) return { provider: 'clawrouter', model: 'anthropic/claude-sonnet-4.6', routingReason: `${deliverables.length} deliverables → ClawRouter/Sonnet` };
+    return { provider: 'anthropic', model: 'claude-sonnet-4-6', routingReason: `${deliverables.length} deliverables → complex` };
   }
 
-  // Signal 2: complex architectural keywords → Claude
+  // Signal 2: complex architectural keywords → Sonnet via ClawRouter
   const complexPatterns = [
     /refactor/, /architect/, /redesign/, /from.scratch/, /new.*service/, /new.*system/,
     /middleware/, /authentication/, /authorization/, /orchestrat/, /pipeline/, /framework/,
@@ -1172,7 +1377,7 @@ async function assessTaskComplexity(
   ];
   const hasComplexKeyword = complexPatterns.some(p => p.test(ctx));
 
-  // Signal 3: simple/formulaic keywords → MiniMax
+  // Signal 3: simple/formulaic keywords → local or DeepSeek
   const simplePatterns = [
     /add field/, /rename/, /update config/, /fix typo/, /stub/, /placeholder/,
     /add.*route/, /add.*endpoint/, /add.*column/, /update.*message/, /change.*label/,
@@ -1181,21 +1386,34 @@ async function assessTaskComplexity(
   const hasSimpleKeyword = simplePatterns.some(p => p.test(ctx));
 
   if (hasComplexKeyword && !hasSimpleKeyword) {
-    return { provider: 'anthropic', model: 'claude-sonnet-4-20250514', routingReason: 'complex task keywords' };
+    const crAvail = await clawRouterIsAvailable().catch(() => false);
+    if (crAvail) return { provider: 'clawrouter', model: 'anthropic/claude-sonnet-4.6', routingReason: 'complex task → ClawRouter/Sonnet' };
+    return { provider: 'anthropic', model: 'claude-sonnet-4-6', routingReason: 'complex task keywords' };
   }
 
-  // Signal 4: large existing file → Claude (MiniMax truncates, degrading large-file edits)
+  // Signal 4: large existing file → Sonnet
   for (const f of deliverables) {
     if (existsSync(f)) {
       const lines = readFileSync(f, 'utf-8').split('\n').length;
       if (lines > 100) {
-        return { provider: 'anthropic', model: 'claude-sonnet-4-20250514', routingReason: `large file (${lines} lines)` };
+        const crAvail = await clawRouterIsAvailable().catch(() => false);
+        if (crAvail) return { provider: 'clawrouter', model: 'deepseek/deepseek-chat', routingReason: `large file (${lines} lines) → ClawRouter/DeepSeek` };
+        return { provider: 'anthropic', model: 'claude-sonnet-4-6', routingReason: `large file (${lines} lines)` };
       }
     }
   }
 
-  // Default: MiniMax for everything else (truncation retry handles any overflow)
-  return { provider: 'minimax', model: 'MiniMax-M2.5', routingReason: hasSimpleKeyword ? 'simple task' : 'small/unclassified task' };
+  // Default: simple tasks → local qwen3:14b (always loaded), or ClawRouter DeepSeek if Ollama down
+  const ollamaAvail = await ollamaIsAvailable().catch(() => false);
+  if (ollamaAvail) {
+    return { provider: 'ollama', model: 'qwen3:14b', routingReason: hasSimpleKeyword ? 'simple task → local qwen3:14b' : 'unclassified → local qwen3:14b' };
+  }
+  const crAvail = await clawRouterIsAvailable().catch(() => false);
+  if (crAvail) {
+    return { provider: 'clawrouter', model: 'deepseek/deepseek-chat', routingReason: 'default → ClawRouter/DeepSeek' };
+  }
+  // Final fallback: Haiku via Anthropic direct
+  return { provider: 'anthropic', model: 'claude-haiku-4-5-20251001', routingReason: 'fallback → Anthropic Haiku' };
 }
 
 // ===== MiniMax Coding Agent (ONE FILE PER API CALL) =====
@@ -1213,6 +1431,10 @@ class CodingAgent {
     // MiniMax M2.5  → simple tasks (small edits, config, stubs) + truncation retry as safety net
     const { provider, model, routingReason } = await assessTaskComplexity(task, deliverables);
     log(c.gray, `  -> Using ${model} [${routingReason}]`);
+    // B.12: Compress context before cloud calls to reduce token spend 70-80%
+    if (provider === 'clawrouter' || provider === 'anthropic') {
+      task = { ...task, context: await compressContext(task.context) };
+    }
     // Sprint-063: Emit JSONL routing log (non-fatal — never block execution)
     try {
       const { generateExecutionId, logRoutingDecision } = await import('./task-router.js');
@@ -1600,8 +1822,8 @@ class Orchestrator {
 
   constructor() {
     log(c.bold, '\n╔══════════════════════════════════════════════════════════╗');
-    log(c.bold, '║   Invoica Agent Orchestrator v2 — Dual Supervisor        ║');
-    log(c.bold, '║   Claude + Codex review → CEO conflict resolution        ║');
+    log(c.bold, '║   Kognai Swarm Orchestrator v2.17 — V17 Architecture     ║');
+    log(c.bold, '║   Local-first · ClawRouter cloud · DeepSeek reviews      ║');
     log(c.bold, '╚══════════════════════════════════════════════════════════╝\n');
 
     // Leadership layer (Claude via Anthropic API + OpenAI Codex)
@@ -1903,7 +2125,20 @@ ONLY output the JSON array. No markdown, no explanation.`;
         return;
       }
 
-      // Dual Supervisor review (Claude + Codex in parallel)
+      // B.10: Local QA gate — fast PASS/FAIL before expensive cloud supervisor
+      const qaFileContents = result.files.map(f => ({ path: f, content: existsSync(f) ? readFileSync(f, 'utf-8') : '' }));
+      const qaResult = await localQAGate(task, qaFileContents);
+      if (!qaResult.pass) {
+        log(c.yellow, `  [QA-gate] FAIL — ${qaResult.reason}`);
+        this.stats.rejected++;
+        task.status = 'rejected'; // will be reset on retry
+        try { execSync('git reset --hard HEAD~1', { timeout: 10000 }); } catch { /* ok */ }
+        if (attempt < MAX_RETRIES) { log(c.yellow, '  QA gate failed — retrying without supervisor...'); continue; }
+        return;
+      }
+      log(c.gray, `  [QA-gate] PASS — ${qaResult.reason}`);
+
+      // Dual Supervisor review (DeepSeek/ClawRouter + Haiku in parallel)
       task.status = 'review';
       const [review1, review2] = await Promise.all([
         this.supervisor.reviewTask(task, result.files),
@@ -1998,6 +2233,8 @@ ONLY output the JSON array. No markdown, no explanation.`;
   async run(): Promise<void> {
     const startTime = Date.now();
     log(c.bold, '\n🚀 Starting orchestration run...\n');
+    if (SOVEREIGN_MODE) log(c.yellow, '  ⚡ SOVEREIGN MODE — all inference local ($0 cost floor)');
+    logWalletStatus();
 
     // Mission Control — connect and register this sprint run
     const mc = createMCClient('sprint-orchestrator', 'worker');
@@ -2016,9 +2253,10 @@ ONLY output the JSON array. No markdown, no explanation.`;
       return;
     }
 
-    // 2. CEO initial assessment
+    // 2. CEO initial assessment (B.14: once per sprint, not once per conflict)
     log(c.magenta, '\n--- Phase 1: CEO Initial Assessment ---');
     await this.ceo.reviewSprintProgress(this.tasks);
+    const _ceoIntentDone = true; // flag for Phase 5: only re-run if ≥2 rejected
 
     // 3. Execute coding tasks with review loop
     log(c.blue, '\n--- Phase 2: Sprint Execution ---');
@@ -2150,9 +2388,16 @@ ONLY output the JSON array. No markdown, no explanation.`;
       ctoDecisions = 'CTO analysis was not performed this run.';
     }
 
-    // 6. CEO final assessment
+    // 6. CEO final assessment — B.14: only runs if ≥2 tasks rejected (skips if sprint went well)
+    const rejectedCount = this.tasks.filter(t => t.status === 'rejected').length;
     log(c.magenta, '\n--- Phase 5: CEO Final Assessment ---');
-    await this.ceo.reviewSprintProgress(this.tasks);
+    if (rejectedCount >= 2) {
+      log(c.magenta, `  ${rejectedCount} tasks rejected — CEO reviewing...`);
+      await this.ceo.reviewSprintProgress(this.tasks);
+    } else {
+      log(c.gray, `  Only ${rejectedCount} rejected — skipping CEO reassessment (sprint OK)`);
+    }
+    logWalletStatus(); // Print wallet burn after sprint execution
 
     // 6b. CTO autonomous post-sprint analysis (runs after EVERY sprint)
     log(c.cyan, '\n--- Phase 5b: CTO Post-Sprint Analysis (Autonomous) ---');
