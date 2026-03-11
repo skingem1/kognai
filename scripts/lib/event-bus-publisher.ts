@@ -1,5 +1,5 @@
 import * as https from 'https';
-import { KognaiEvent, KognaiEventType, TaskEventPayload, BudgetEventPayload, SprintEventPayload } from './event-bus-types';
+import { KognaiEvent } from './event-bus-types';
 
 // Config — reads from process.env; graceful no-op if missing
 const SUPABASE_URL = process.env.SUPABASE_URL || '';
@@ -89,26 +89,26 @@ export function publishBudgetFreeze(sprint: string, burnPct: number): Promise<vo
     agent_id: 'bloomberg',
     sprint,
     timestamp: new Date().toISOString(),
-    payload: { burnPct },
+    payload: { burnPct, spentUsdc: 0, budgetUsdc: 0 },
   });
 }
 
 export function publishSprintStarted(sprint: string, taskCount: number): Promise<void> {
   return publishEvent({
-    event_type: 'sprint.started',
-    agent_id: 'bloomberg',
+    event_type: 'system.sprint.started',
+    agent_id: 'orchestrator',
     sprint,
     timestamp: new Date().toISOString(),
-    payload: { taskCount },
+    payload: { sprint, taskCount, completedCount: 0 },
   });
 }
 
 export function publishSprintCompleted(sprint: string, taskCount: number, completedCount: number): Promise<void> {
   return publishEvent({
-    event_type: 'sprint.completed',
-    agent_id: 'bloomberg',
+    event_type: 'system.sprint.completed',
+    agent_id: 'orchestrator',
     sprint,
     timestamp: new Date().toISOString(),
-    payload: { taskCount, completedCount },
+    payload: { sprint, taskCount, completedCount },
   });
 }

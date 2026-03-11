@@ -8,7 +8,7 @@
       "task_type": "content",
       "task_target": "local",
       "agent": "coder",
-      "status": "pending",
+      "status": "done",
       "dependencies": [],
       "deliverables": {
         "code": [
@@ -74,7 +74,7 @@
       "task_type": "code",
       "task_target": "cloud-code",
       "agent": "coder",
-      "status": "pending",
+      "status": "done",
       "dependencies": [
         "069-03"
       ],

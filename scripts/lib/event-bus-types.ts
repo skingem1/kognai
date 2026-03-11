@@ -34,24 +34,28 @@ export type KognaiEventType =
   | InterruptEventType
   | SystemEventType;
 
-// Payload interfaces
+// Payload interfaces — index signature required for Record<string,unknown> compatibility
 export interface TaskEventPayload {
   task_id: string;
   title: string;
   status: string;
   costUsdc?: number;
+  reason?: string;
+  [key: string]: unknown;
 }
 
 export interface BudgetEventPayload {
   burnPct: number;
   spentUsdc: number;
   budgetUsdc: number;
+  [key: string]: unknown;
 }
 
 export interface SprintEventPayload {
   sprint: string;
   taskCount: number;
   completedCount: number;
+  [key: string]: unknown;
 }
 
 // Base event interface
