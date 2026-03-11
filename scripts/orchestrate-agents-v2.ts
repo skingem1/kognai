@@ -127,7 +127,7 @@ function log(color: string, msg: string) {
 // ===== Generic LLM Client =====
 
 async function callLLM(
-  provider: 'minimax' | 'anthropic' | 'openai' | 'ollama' | 'clawrouter',
+  provider: 'minimax' | 'anthropic' | 'openai' | 'ollama' | 'clawrouter', // 'minimax' retained for fallback path only
   model: string,
   systemPrompt: string,
   userPrompt: string,
@@ -587,8 +587,8 @@ class CEOAgent {
 
 Sprint progress update:\n- Done: ${done}/${total}\n- Pending: ${pending.map(t => t.id).join(', ') || 'none'}\n- Rejected: ${rejected.map(t => t.id).join(', ') || 'none'}\n\nTask details:\n${JSON.stringify(tasks.map(t => ({ id: t.id, status: t.status, agent: t.agent, priority: t.priority })), null, 2)}\n\nAs CEO, briefly assess:\n1. Are we on track?\n2. Any tasks to re-prioritize?\n3. Cost efficiency — are we using the right models?\n4. Any strategic adjustments needed?\n\nKeep response under 200 words.`;
     try {
-      // Sprint progress is formulaic — MiniMax is sufficient, saves Claude budget
-      const response = await callLLM('minimax', 'MiniMax-M2.5', this.systemPrompt, userPrompt, 60000);
+      // B.20: ClawRouter/DeepSeek — formulaic progress check, $0 via x402 wallet
+      const response = await callLLM('clawrouter', 'deepseek/deepseek-chat', this.systemPrompt, userPrompt, 60000);
       const content = response.choices?.[0]?.message?.content || 'No response';
       log(c.magenta, `  CEO assessment: ${content.substring(0, 500)}`);
       return content;
@@ -754,8 +754,8 @@ Generate a concise daily report in markdown format following the template in you
 Keep it under 300 words. Be honest about failures.`;
 
     try {
-      // Daily report is template fill-in — MiniMax is sufficient, saves Claude budget
-      const response = await callLLM('minimax', 'MiniMax-M2.5', this.systemPrompt, userPrompt, 60000);
+      // B.20: ClawRouter/DeepSeek — template fill-in, $0 via x402 wallet
+      const response = await callLLM('clawrouter', 'deepseek/deepseek-chat', this.systemPrompt, userPrompt, 60000);
       const report = response.choices?.[0]?.message?.content || 'Report generation failed';
 
       // Save to reports/daily/
@@ -924,10 +924,10 @@ Rules:
 
     try {
       const startTime = Date.now();
-      const response = await callLLM('minimax', 'MiniMax-M2.5', this.systemPrompt, userPrompt, 120000);
+      const response = await callLLM('clawrouter', 'deepseek/deepseek-chat', this.systemPrompt, userPrompt, 120000);
       const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
       let content = response.choices?.[0]?.message?.content || '';
-      // Strip MiniMax <think>...</think> tags
+      // Strip DeepSeek/MiniMax <think>...</think> reasoning tags
       content = content.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
       log(c.cyan, `  CTO analysis completed in ${elapsed}s`);
       log(c.gray, `  Raw output preview: ${content.substring(0, 300)}`);
@@ -1027,7 +1027,7 @@ Respond with a structured markdown report containing:
 Rules: Be specific — reference task IDs, rejection counts, concrete patterns. No vague recommendations.`;
 
     try {
-      const response = await callLLM('minimax', 'MiniMax-M2.5', this.systemPrompt, userPrompt, 120000);
+      const response = await callLLM('clawrouter', 'deepseek/deepseek-chat', this.systemPrompt, userPrompt, 120000);
       let content = response.choices?.[0]?.message?.content || '';
       content = content.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
       const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
@@ -1287,7 +1287,7 @@ function persistCEODecisions(ctoDecisions: string, ctoReport: CTOReport): void {
 async function assessTaskComplexity(
   task: AgentTask,
   deliverables: string[],
-): Promise<{ provider: 'minimax' | 'anthropic' | 'ollama' | 'clawrouter'; model: string; routingReason: string }> {
+): Promise<{ provider: 'anthropic' | 'ollama' | 'clawrouter'; model: string; routingReason: string }> {
   const wallet = getWalletState();
 
   // B.18: Sovereign mode — force everything to Ollama
@@ -1585,11 +1585,19 @@ Write ONLY the content for "${filepath}". Rules:
         // File-type-aware post-processing: final safety net per file extension
         fileContent = this.postProcessContent(fileContent, filepath);
 
+        // B.13: For JSON files that are still invalid after postProcessContent, try qwen3:0.6b repair
+        if (filepath.endsWith('.json')) {
+          try { JSON.parse(fileContent); } catch {
+            log(c.yellow, `  ! JSON invalid in ${filepath} — attempting qwen3:0.6b repair`);
+            fileContent = await this.fixJsonWithOllama(fileContent, filepath);
+          }
+        }
+
         // TRUNCATION PRE-CHECK: Detect if MiniMax cut off output mid-function
         // If code ends inside an open block (unclosed braces) or with an incomplete statement,
         // retry once with a "continue" prompt before sending to supervisor review.
         const truncationDetected = this.detectTruncation(fileContent);
-        if (truncationDetected && provider === 'minimax') {
+        if (truncationDetected && (provider === 'clawrouter' || provider === 'ollama')) {
           log(c.yellow, `  ! TRUNCATION detected in ${filepath} — retrying with continuation prompt...`);
           const continuationPrompt = `The previous response for "${filepath}" was TRUNCATED — it ended mid-function or with an incomplete block. Here is what was generated so far:
 
@@ -1724,6 +1732,22 @@ Continue from where it left off and output ONLY the remaining code (no duplicate
     // Remove trailing fence if present at end
     cleaned = cleaned.replace(/\n\s*```\s*$/, '');
     return cleaned.trim();
+  }
+
+  // B.13: qwen3:0.6b JSON repair — called when postProcessContent still yields invalid JSON
+  private async fixJsonWithOllama(content: string, filepath: string): Promise<string> {
+    try {
+      const available = await ollamaIsAvailable();
+      if (!available) return content;
+      const result = await callOllama({
+        model: 'qwen3:0.6b',
+        prompt: `Fix this malformed JSON so it is syntactically valid. Return ONLY the corrected JSON, no explanation or markdown fences:\n\n${content.substring(0, 3000)}`,
+        maxTokens: 2048,
+        temperature: 0,
+      });
+      const fixed = result.content.trim();
+      try { JSON.parse(fixed); return fixed; } catch { return content; }
+    } catch { return content; }
   }
 
   // File-type-aware post-processing: validates and cleans content per file extension.
@@ -1940,7 +1964,7 @@ Return a JSON array of sub-task specs:
 ONLY output the JSON array. No markdown, no explanation.`;
 
     try {
-      const response = await callLLM('minimax', 'MiniMax-M2.5', this.cto['systemPrompt'] || '', userPrompt, 120000);
+      const response = await callLLM('clawrouter', 'deepseek/deepseek-chat', this.cto['systemPrompt'] || '', userPrompt, 120000);
       let content = response.choices?.[0]?.message?.content || '';
       content = content.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
 
@@ -2282,21 +2306,54 @@ ONLY output the JSON array. No markdown, no explanation.`;
       }
     }
 
-    const pending = this.tasks.filter(t => t.status === 'pending');
-    for (const task of pending) {
-      // Check dependencies
-      const deps = task.dependencies || [];
-      const unmetDeps = deps.filter(d => {
-        const depTask = this.tasks.find(t => t.id === d);
-        return depTask && depTask.status !== 'done';
-      });
-      if (unmetDeps.length > 0) {
-        log(c.yellow, `  Skipping ${task.id}: unmet deps [${unmetDeps.join(', ')}]`);
-        continue;
-      }
-      await this.executeTask(task);
+    // B.16: Wave-based parallel fan-out
+    // Each wave = all tasks whose dependencies are satisfied and that don't share output files.
+    // Serialized only when deliverable paths overlap (file conflict detection).
+    const remaining = this.tasks.filter(t => t.status === 'pending');
 
-      // After each task, cascade any newly-rejected dependencies
+    while (remaining.length > 0) {
+      // Find tasks whose dependencies are all done/skipped
+      const ready = remaining.filter(task => {
+        const deps = task.dependencies || [];
+        return deps.every(d => {
+          const dep = this.tasks.find(t => t.id === d);
+          return !dep || dep.status === 'done' || dep.status === 'skipped';
+        });
+      });
+
+      if (ready.length === 0) break; // dependency deadlock — bail
+
+      // File conflict detection: build wave without overlapping deliverables
+      const filesInWave = new Set<string>();
+      const wave: AgentTask[] = [];
+      for (const task of ready) {
+        const taskFiles = [
+          ...(task.deliverables?.code || []),
+          ...(task.deliverables?.tests || []),
+          ...(task.deliverables?.docs || []),
+        ];
+        const hasConflict = taskFiles.some(f => filesInWave.has(f));
+        if (!hasConflict) {
+          wave.push(task);
+          taskFiles.forEach(f => filesInWave.add(f));
+        }
+        // conflicting tasks stay in remaining for next wave
+      }
+      if (wave.length === 0) wave.push(ready[0]); // break deadlock: force one task
+
+      if (wave.length > 1) {
+        log(c.blue, `  [B.16] Parallel fan-out: ${wave.length} tasks executing concurrently`);
+      }
+
+      await Promise.all(wave.map(t => this.executeTask(t)));
+
+      // Remove executed tasks from remaining
+      for (const t of wave) {
+        const idx = remaining.indexOf(t);
+        if (idx >= 0) remaining.splice(idx, 1);
+      }
+
+      // Cascade rejections
       cascaded = true;
       while (cascaded) {
         cascaded = false;
@@ -2310,9 +2367,15 @@ ONLY output the JSON array. No markdown, no explanation.`;
           if (tBlocked.length > 0) {
             t.status = 'skipped';
             (t as any).skippedReason = `Blocked by: ${tBlocked.join(', ')}`;
-            log(c.yellow, `  Auto-skipped ${t.id}: blocked by rejected/skipped deps [${tBlocked.join(', ')}]`);
+            log(c.yellow, `  Auto-skipped ${t.id}: blocked by deps [${tBlocked.join(', ')}]`);
             cascaded = true;
           }
+        }
+      }
+      // Remove newly-skipped/rejected from remaining
+      for (let i = remaining.length - 1; i >= 0; i--) {
+        if (remaining[i].status === 'skipped' || remaining[i].status === 'rejected') {
+          remaining.splice(i, 1);
         }
       }
     }
