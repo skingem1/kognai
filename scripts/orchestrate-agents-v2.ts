@@ -300,24 +300,21 @@ async function compressContext(context: string): Promise<string> {
   return context;
 }
 
-// B.10: Local QA gate using qwen3:4b — quick PASS/FAIL before expensive supervisor review
-async function localQAGate(task: AgentTask, fileContents: Array<{path: string; content: string}>): Promise<{pass: boolean; reason: string}> {
-  try {
-    const ollamaAvail = await ollamaIsAvailable();
-    if (!ollamaAvail) return { pass: true, reason: 'Ollama unavailable — skipping QA gate' };
-    const filesPreview = fileContents.map(f => `### ${f.path}\n${f.content.substring(0, 800)}`).join('\n\n');
-    const result = await callOllama({
-      model: 'qwen3:4b',
-      systemPrompt: 'You are a code QA gate. Reply with PASS or FAIL on the first line, then a one-sentence reason.',
-      prompt: `Task: ${task.context.substring(0, 400)}\n\nGenerated files:\n${filesPreview}\n\nDoes this code look complete and non-trivially implement the task? Reply PASS or FAIL.`,
-      maxTokens: 100, temperature: 0,
-    });
-    const firstLine = result.content.trim().split('\n')[0].toUpperCase();
-    const pass = firstLine.startsWith('PASS');
-    return { pass, reason: result.content.trim().split('\n').slice(1).join(' ').substring(0, 200) || firstLine };
-  } catch (e: any) {
-    return { pass: true, reason: `QA gate error: ${e.message}` };
+// B.10: Local QA gate — structural checks only (no LLM — qwen3 think-mode unreliable for PASS/FAIL)
+// LLM-based QA deferred to Claude supervisor review which gives structured feedback.
+async function localQAGate(_task: AgentTask, fileContents: Array<{path: string; content: string}>): Promise<{pass: boolean; reason: string}> {
+  // Fail only on structurally empty files (< 50 chars indicates the model returned nothing useful)
+  const emptyFiles = fileContents.filter(f => (f.content || '').trim().length < 50);
+  if (emptyFiles.length > 0) {
+    return { pass: false, reason: `Files too short/empty: ${emptyFiles.map(f => f.path).join(', ')}` };
   }
+  // Fail if all files are missing from disk (write step silently failed)
+  const { existsSync: _exists } = await import('fs');
+  const missingFiles = fileContents.filter(f => !_exists(f.path));
+  if (missingFiles.length > 0) {
+    return { pass: false, reason: `Files not written to disk: ${missingFiles.map(f => f.path).join(', ')}` };
+  }
+  return { pass: true, reason: `${fileContents.length} file(s) non-empty — proceeding to supervisor review` };
 }
 
 // B.11: Tiered debugger — routes debug effort by issue severity
