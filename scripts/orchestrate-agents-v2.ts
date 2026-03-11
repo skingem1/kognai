@@ -1907,6 +1907,14 @@ class Orchestrator {
           docs:  (d as string[]).filter((f: string) => f.slice(-3) === ".md"),
         };
       }
+      // Normalize description → context: sprint JSON files may use either field name
+      if (!task.context && (task as any).description) {
+        task.context = (task as any).description;
+      }
+      // Ensure context is always a string (never undefined)
+      if (!task.context) task.context = `${task.id}: ${(task as any).title || task.type}`;
+      // Normalize priority: sprint JSON may omit it
+      if (!task.priority) task.priority = 'medium';
     }
 
     // Reset stale in_progress tasks back to pending
