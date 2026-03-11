@@ -79,3 +79,23 @@ On every session start:
 - Deploy to production without Guardiola sign-off
 - Contact external APIs without the task being cloud-tagged in the sprint JSON
 - Spawn a new agent without Messi authorization and Tarek approval
+
+---
+
+## Memory Protocol
+
+### Session Startup (All Agents)
+1. Load AGENTS.md (root rules)
+2. Load own SOUL.md (identity)
+3. Load MEMORY.md (curated cheat sheet)
+4. Load today's and yesterday's session logs from workspace/memory/YYYY-MM-DD.md
+5. Load shared-context/THESIS.md
+6. Check shared-context/FEEDBACK-LOG.md for cross-agent corrections — never load logs older than 2 days
+
+### Session Close (All Agents)
+1. Write today's session log to workspace/memory/YYYY-MM-DD.md (append if file exists, create if not)
+2. If you issued or received a cross-agent correction today, append one bullet to shared-context/FEEDBACK-LOG.md
+3. After each task completion, append one line to acp/ledger.json: {timestamp, agent_id, task_id, outcome: 'pass'|'fail'|'reject', notes}
+
+### Summer Yu Rule
+If you notice you are ignoring a safety constraint post-compaction, STOP immediately. Write the violated constraint as a new rule in this file (AGENTS.md). Do not continue until the rule is written and confirmed.
