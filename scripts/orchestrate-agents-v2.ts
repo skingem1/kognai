@@ -387,15 +387,23 @@ class SupervisorAgent {
 
   async reviewTask(task: AgentTask, files: string[]): Promise<ReviewResult> {
     log(c.magenta, `\n[supervisor] Reviewing: ${task.id}`);
+    // FIX: Use XML-style tags (NOT code fences) so the model can't confuse display format with file content
     const fileContents = files.map((filepath) => {
       const content = existsSync(filepath) ? readFileSync(filepath, 'utf-8') : '';
-      return `### ${filepath}\n\`\`\`typescript\n${content.substring(0, 4000)}\n\`\`\``;
+      return `### ${filepath}\n<file_content>\n${content.substring(0, 4000)}\n</file_content>`;
     }).join('\n\n');
+    // FIX: Pre-compute fence check in TypeScript — inject evidence so model never hallucinates fence presence
+    const fenceCheckLines = files.map((filepath) => {
+      const content = existsSync(filepath) ? readFileSync(filepath, 'utf-8') : '';
+      const firstLine = content.trimStart().split('\n')[0] || '';
+      const hasFence = firstLine.startsWith('```');
+      return `  ${filepath}: ${hasFence ? `FENCE DETECTED (first line: ${JSON.stringify(firstLine)})` : 'OK (no fence at start)'}`;
+    }).join('\n');
     // CTO-005: Add fence detection to supervisor review checklist
     const integrityContext = (task as any)._integrityFailed
       ? `\n\n## ⚠️ INTEGRITY ALERT\n${(task as any)._integrityDetails}\nThis file was flagged for destructive rewrite. The original was preserved. REJECT this task.\n`
       : '';
-    const userPrompt = `Review the following code generated for task ${task.id}.\n\n## Task Spec\n${task.context}\n\n## Generated Files (${files.length})\n${fileContents}${integrityContext}\n\n## Instructions\nCRITICAL CHECK: Does ANY file start with a markdown code fence (\`\`\`tsx, \`\`\`typescript, etc.)? If YES, auto-REJECT — code fences in source files are invalid syntax.\nAlso check: Did the file lose existing functionality? If a file shrank significantly, REJECT.\n\nRespond with a JSON object:\n{\n  "verdict": "APPROVED" or "REJECTED",\n  "score": 0-100,\n  "summary": "brief review summary",\n  "issues": [{"severity": "critical|high|medium|low", "file": "path", "description": "..."}],\n  "strengths": ["..."]\n}`;
+    const userPrompt = `Review the following code generated for task ${task.id}.\n\n## Task Spec\n${task.context}\n\n## Generated Files (${files.length})\n${fileContents}${integrityContext}\n\n## Pre-computed Fence Check (authoritative — do NOT infer from display format)\n${fenceCheckLines}\n\n## Instructions\nCRITICAL CHECK: Use the Pre-computed Fence Check above. If any file shows FENCE DETECTED, REJECT. Do NOT infer fence presence from the <file_content> display tags — those are display-only wrappers.\nAlso check: Did the file lose existing functionality? If a file shrank significantly, REJECT.\n\nRespond with a JSON object:\n{\n  "verdict": "APPROVED" or "REJECTED",\n  "score": 0-100,\n  "summary": "brief review summary",\n  "issues": [{"severity": "critical|high|medium|low", "file": "path", "description": "..."}],\n  "strengths": ["..."]\n}`;
     const startTime = Date.now();
     // B.15: DeepSeek via ClawRouter for standard tasks (~$0.02/task vs $0.07 dual-supervisor)
     // Retain Claude Sonnet only for audit/refactor-complex (high-stakes)
@@ -442,15 +450,23 @@ class Supervisor2Agent {
 
   async reviewTask(task: AgentTask, files: string[]): Promise<ReviewResult> {
     log(c.magenta, `\n[supervisor-2/haiku] Reviewing: ${task.id}`);
+    // FIX: Use XML-style tags (NOT code fences) so the model can't confuse display format with file content
     const fileContents = files.map((filepath) => {
       const content = existsSync(filepath) ? readFileSync(filepath, 'utf-8') : '';
-      return `### ${filepath}\n\`\`\`typescript\n${content.substring(0, 4000)}\n\`\`\``;
+      return `### ${filepath}\n<file_content>\n${content.substring(0, 4000)}\n</file_content>`;
     }).join('\n\n');
+    // FIX: Pre-compute fence check in TypeScript — inject evidence so model never hallucinates fence presence
+    const fenceCheckLines2 = files.map((filepath) => {
+      const content = existsSync(filepath) ? readFileSync(filepath, 'utf-8') : '';
+      const firstLine = content.trimStart().split('\n')[0] || '';
+      const hasFence = firstLine.startsWith('```');
+      return `  ${filepath}: ${hasFence ? `FENCE DETECTED (first line: ${JSON.stringify(firstLine)})` : 'OK (no fence at start)'}`;
+    }).join('\n');
     // CTO-005: Add fence detection to Codex supervisor review checklist
     const integrityContext2 = (task as any)._integrityFailed
       ? `\n\n## ⚠️ INTEGRITY ALERT\n${(task as any)._integrityDetails}\nThis file was flagged for destructive rewrite. The original was preserved. REJECT this task.\n`
       : '';
-    const userPrompt = `Review the following code generated for task ${task.id}.\n\n## Task Spec\n${task.context}\n\n## Generated Files (${files.length})\n${fileContents}${integrityContext2}\n\n## Instructions\nCRITICAL CHECK: Does ANY file start with a markdown code fence (\`\`\`tsx, \`\`\`typescript, etc.)? If YES, auto-REJECT — code fences in source files are invalid syntax.\nAlso check: Did the file lose existing functionality? If a file shrank significantly, REJECT.\n\nRespond with a JSON object:\n{\n  "verdict": "APPROVED" or "REJECTED",\n  "score": 0-100,\n  "summary": "brief review summary",\n  "issues": [{"severity": "critical|high|medium|low", "file": "path", "description": "..."}],\n  "strengths": ["..."]\n}`;
+    const userPrompt = `Review the following code generated for task ${task.id}.\n\n## Task Spec\n${task.context}\n\n## Generated Files (${files.length})\n${fileContents}${integrityContext2}\n\n## Pre-computed Fence Check (authoritative — do NOT infer from display format)\n${fenceCheckLines2}\n\n## Instructions\nCRITICAL CHECK: Use the Pre-computed Fence Check above. If any file shows FENCE DETECTED, REJECT. Do NOT infer fence presence from the <file_content> display tags — those are display-only wrappers.\nAlso check: Did the file lose existing functionality? If a file shrank significantly, REJECT.\n\nRespond with a JSON object:\n{\n  "verdict": "APPROVED" or "REJECTED",\n  "score": 0-100,\n  "summary": "brief review summary",\n  "issues": [{"severity": "critical|high|medium|low", "file": "path", "description": "..."}],\n  "strengths": ["..."]\n}`;
     const startTime = Date.now();
     // B.15: Use Haiku for second-pass review — 10x cheaper than Sonnet, no OpenAI dependency
     log(c.gray, '  -> Sending to Claude Haiku (second pass)...');
