@@ -56,7 +56,7 @@
       "task_type": "code",
       "task_target": "cloud-code",
       "agent": "coder",
-      "status": "pending",
+      "status": "done",
       "dependencies": [
         "069-03"
       ],
@@ -92,7 +92,7 @@
       "task_type": "code",
       "task_target": "cloud-code",
       "agent": "coder",
-      "status": "pending",
+      "status": "done",
       "dependencies": [
         "069-04",
         "069-05"
