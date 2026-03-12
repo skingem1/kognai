@@ -1461,7 +1461,7 @@ class CodingAgent {
     // Sprint-063: Emit JSONL routing log (non-fatal — never block execution)
     try {
       mkdirSync('logs/routing', { recursive: true });
-      const { generateExecutionId, logRoutingDecision } = await import('./task-router.js');
+      const { generateExecutionId, logRoutingDecision } = await import('./task-router');
       const sprintId = (task as any).sprint_id ?? 'unknown';
       const execId = task.execution_id ?? generateExecutionId(sprintId, task.id);
       logRoutingDecision({
