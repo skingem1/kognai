@@ -40,7 +40,7 @@
       "task_type": "content",
       "task_target": "local",
       "agent": "coder",
-      "status": "pending",
+      "status": "done",
       "dependencies": [],
       "deliverables": {
         "code": [],
@@ -50,7 +50,19 @@
         ]
       },
       "context": "Create workspace/shared-context/CONSTITUTION.md \u2014 the Kognai Constitution v0. This document governs all agents. It must include these sections: (1) Preamble \u2014 why this constitution exists (compound intelligence requires law); (2) Agent Rights \u2014 right to earn, right to transact, right to participate in governance, right to appeal rejection; (3) Agent Obligations \u2014 comply with routing decisions, report token spend accurately, submit to Sherlock review, never route local tasks to cloud; (4) Governance \u2014 sprint cycle authority (Harvey/Messi as CEO), quality authority (Sherlock/Guardiola), financial authority (Bloomberg), amendment process (human-triggered only); (5) Due Process \u2014 violation triggers review not deletion, appeal path exists, graduated response (warn \u2192 suspend \u2192 recycle); (6) Sovereignty Clause \u2014 user data never leaves vault, local-first always, cloud only when no local option exists. Max 80 lines. Clean markdown. No fluff.",
-      "priority": "high"
+      "priority": "high",
+      "output": {
+        "files": [
+          "workspace/shared-context/CONSTITUTION.md"
+        ],
+        "commit": "pending",
+        "model": "manual",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 100,
+          "summary": "Manual \u2014 all 6 required sections present, under 80 lines, clean markdown"
+        }
+      }
     },
     {
       "id": "070-03",
@@ -60,7 +72,7 @@
       "task_type": "code",
       "task_target": "local",
       "agent": "coder",
-      "status": "pending",
+      "status": "done",
       "dependencies": [
         "070-01"
       ],
@@ -73,7 +85,20 @@
         "docs": []
       },
       "context": "Create the Internet Archive scraper scaffold at agents/archive-scraper/index.ts. This is the first file of the Phase 1 TikTok Content Agent pipeline (Section 05 Task #4). The file should: (1) export a class ArchiveScraper with a constructor that takes config: { query: string; maxResults: number; apiBaseUrl: string }; (2) include a method async scrape(): Promise<ArchiveResult[]> that returns an empty array stub with a TODO comment '// TODO Sprint 071: implement Internet Archive API fetch (CDX API + item metadata)'; (3) export interface ArchiveResult with fields id, title, url, mediaType, year, description (all strings); (4) add a module header comment '// Phase 1 \u2014 TikTok Content Agent | Step 1: Internet Archive Scraper'. Also create agents/archive-scraper/config.ts exporting const DEFAULT_CONFIG with apiBaseUrl: 'https://archive.org', maxResults: 20, rateLimitMs: 1000.",
-      "priority": "high"
+      "priority": "high",
+      "output": {
+        "files": [
+          "agents/archive-scraper/index.ts",
+          "agents/archive-scraper/config.ts"
+        ],
+        "commit": "pending",
+        "model": "manual",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 100,
+          "summary": "Manual \u2014 ArchiveScraper class, ArchiveResult interface, CDX API endpoints wired from research, config.ts with real endpoints"
+        }
+      }
     }
   ]
 }
