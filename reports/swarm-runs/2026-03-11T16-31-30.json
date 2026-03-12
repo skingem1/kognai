@@ -1,0 +1,180 @@
+{
+  "run_id": "d613af70-f766-4093-918c-585eeaf37d09",
+  "project": "kognai",
+  "sprint_file": "workspace/sprints/sprint-069.json",
+  "started_at": "2026-03-11T14:58:47.565Z",
+  "finished_at": "2026-03-11T16:31:30.700Z",
+  "duration_seconds": 5563,
+  "git_branch": "main",
+  "git_head_before": "f71d8ba",
+  "git_head_after": "77d7022",
+  "sovereign_mode": false,
+  "summary": {
+    "total_tasks": 8,
+    "done": 6,
+    "rejected": 2,
+    "skipped": 0,
+    "approval_rate": 0.05,
+    "total_tokens": 178531,
+    "supervisor_conflicts": 4,
+    "ceo_escalations": 4
+  },
+  "models_used": {
+    "qwen3:14b": {
+      "calls": 2,
+      "tokens": 237124
+    },
+    "claude-haiku-4-5-20251001": {
+      "calls": 1,
+      "tokens": 102831
+    }
+  },
+  "total_cost_usd": 0.1443,
+  "tasks": [
+    {
+      "task_id": "069-08",
+      "title": "Session log: Update create-session-log.sh to v16 template",
+      "type": "chore",
+      "task_target": "local",
+      "status": "done",
+      "attempts": 2,
+      "model_used": "qwen3:14b",
+      "provider": "",
+      "tokens_total": 92483,
+      "duration_seconds": 932,
+      "files_written": [
+        "scripts/create-session-log.sh"
+      ],
+      "review": {
+        "verdict": "APPROVED",
+        "score": 36,
+        "strengths": [
+          "Correct shebang (#!/bin/bash) and set -e present",
+          "DATE and LOG_FILE variables computed exactly as specified",
+          "mkdir -p for workspace/memory handles missing directory gracefully",
+          "Idempotent: correctly detects existing log and appends continuation section with timestamp then exits",
+          "All required sections present: Active Sprint, Tasks Completed Today, Key Decisions, Cross-Agent Corrections, ACP Score Changes, Budget Status, Notes",
+          "Uses relative paths from ~/kognai/ as required",
+          "jq used appropriately for JSON parsing of ledger and sprint files",
+          "Completion message echoed at end"
+        ]
+      },
+      "error": null,
+      "rejection_reason": null
+    },
+    {
+      "task_id": "069-06",
+      "title": "Orchestrator: Wire event bus publish calls into task lifecycle",
+      "type": "chore",
+      "task_target": "cloud-code",
+      "status": "rejected",
+      "attempts": 10,
+      "model_used": "claude-haiku-4-5-20251001",
+      "provider": "",
+      "tokens_total": 102831,
+      "duration_seconds": 1020,
+      "files_written": [],
+      "review": {
+        "verdict": "REJECTED",
+        "score": 5,
+        "issues": [
+          {
+            "severity": "critical",
+            "file": "scripts/orchestrate-agents-v2.ts",
+            "description": "Destructive rewrite: original file was 2865 lines, generated output is 4 lines (0.1% of original). The entire orchestration logic has been discarded and replaced with a comment stub."
+          },
+          {
+            "severity": "critical",
+            "file": "scripts/orchestrate-agents-v2.ts",
+            "description": "None of the required event emissions were added — publishTaskStarted, publishTaskCompleted, publishTaskFailed, publishBudgetWarning, publishBudgetFreeze, publishSprintStarted, publishSprintCompleted are all absent."
+          },
+          {
+            "severity": "critical",
+            "file": "scripts/orchestrate-agents-v2.ts",
+            "description": "The import statement for './lib/event-bus-publisher' was not added."
+          },
+          {
+            "severity": "critical",
+            "file": "scripts/orchestrate-agents-v2.ts",
+            "description": "All original logic — wave-based parallel fan-out, QA gate, ClawRouter routing, Ollama routing, MiniMax retirement — has been destroyed. The task explicitly required these to be preserved."
+          },
+          {
+            "severity": "critical",
+            "file": "scripts/orchestrate-agents-v2.ts",
+            "description": "File shrank from 2865 lines to 572 lines (80% loss). Task spec explicitly requires SURGICAL edits only — no changes to wave-based parallel fan-out, QA gate, ClawRouter routing, Ollama routing, or MiniMax retirement logic. This is a complete rewrite, not event emission additions."
+          },
+          {
+            "severity": "critical",
+            "file": "scripts/orchestrate-agents-v2.ts",
+            "description": "All existing orchestration logic has been removed. The file contains only an integrity check comment, not the actual implementation with event emissions added."
+          },
+          {
+            "severity": "critical",
+            "file": "scripts/orchestrate-agents-v2.ts",
+            "description": "No event emissions present. Task requires 7 specific event publisher calls at defined lifecycle hooks (publishTaskStarted, publishTaskCompleted, publishTaskFailed, publishBudgetWarning, publishBudgetFreeze, publishSprintStarted, publishSprintCompleted). None are in the output."
+          }
+        ],
+        "summary": "Dual-rejected: Claude (5/100) + Codex (15/100). The generated file is a 4-line error stub replacing a 2865-line source file — a catastrophic destructive rewrite that preserves none of the original functionality. | Destructive rewrite — file reduced to 20% of original size with all functionality removed. Task requires surgical edits only."
+      },
+      "error": null,
+      "rejection_reason": "Dual-rejected: Claude (5/100) + Codex (15/100). The generated file is a 4-line error stub replacing a 2865-line source file — a catastrophic destructive rewrite that preserves none of the original functionality. | Destructive rewrite — file reduced to 20% of original size with all functionality removed. Task requires surgical edits only."
+    },
+    {
+      "task_id": "069-02",
+      "title": "AGENTS.md: Append Memory Protocol section",
+      "type": "chore",
+      "task_target": "local",
+      "status": "rejected",
+      "attempts": 10,
+      "model_used": "qwen3:14b",
+      "provider": "",
+      "tokens_total": 144641,
+      "duration_seconds": 5563,
+      "files_written": [],
+      "review": {
+        "verdict": "REJECTED",
+        "score": 5,
+        "issues": [
+          {
+            "severity": "critical",
+            "file": "workspace/AGENTS.md",
+            "description": "File shrank from 102 lines to 3 lines (3% retention) — this is a catastrophic destructive rewrite. The task required appending content AFTER existing content, not replacing it."
+          },
+          {
+            "severity": "critical",
+            "file": "workspace/AGENTS.md",
+            "description": "The required Memory Protocol section (## Memory Protocol, ### Session Startup, ### Session Close, ### Summer Yu Rule) is entirely absent from the output."
+          },
+          {
+            "severity": "critical",
+            "file": "workspace/AGENTS.md",
+            "description": "The file now contains only inline comments describing a failure state — this is not valid Markdown content and does not preserve the original file's structure or content."
+          },
+          {
+            "severity": "high",
+            "file": "workspace/AGENTS.md",
+            "description": "All 102 lines of original AGENTS.md content have been lost in the generated output, violating the explicit instruction 'do NOT modify any existing content'."
+          },
+          {
+            "severity": "critical",
+            "file": "workspace/AGENTS.md",
+            "description": "File lost 99 lines of existing content (102 → 3 lines). Task spec explicitly states 'do NOT modify any existing content' and 'append AFTER the last section'. Instead, the file was replaced with a 3-line integrity check message. This is a destructive rewrite that violates the core requirement."
+          },
+          {
+            "severity": "critical",
+            "file": "workspace/AGENTS.md",
+            "description": "The generated output is not valid source code — it is a comment block describing a failure state, not the actual appended Memory Protocol section. The task deliverable is missing entirely."
+          },
+          {
+            "severity": "high",
+            "file": "workspace/AGENTS.md",
+            "description": "The Memory Protocol section was never written. Required subsections (Session Startup, Session Close, Summer Yu Rule) are absent."
+          }
+        ],
+        "summary": "Dual-rejected: Claude (5/100) + Codex (15/100). Destructive rewrite detected — the agent replaced 102 lines of AGENTS.md with 3 lines of error commentary instead of appending the required Memory Protocol section. | Destructive rewrite — file shrank from 102 lines to 3 lines (97% loss). Original content was not preserved in the output. Task requires appending to existing file, not replacing it."
+      },
+      "error": null,
+      "rejection_reason": "Dual-rejected: Claude (5/100) + Codex (15/100). Destructive rewrite detected — the agent replaced 102 lines of AGENTS.md with 3 lines of error commentary instead of appending the required Memory Protocol section. | Destructive rewrite — file shrank from 102 lines to 3 lines (97% loss). Original content was not preserved in the output. Task requires appending to existing file, not replacing it."
+    }
+  ]
+}
