@@ -6,6 +6,8 @@
 //   Availability: http://archive.org/wayback/available?url=...
 //   Item search:  https://archive.org/advancedsearch.php (JSON)
 
+import { RATE_LIMIT_MS } from './config';
+
 export interface ArchiveResult {
   id: string;
   title: string;
@@ -30,14 +32,59 @@ export class ArchiveScraper {
 
   /**
    * Scrape Internet Archive for items matching config.query.
-   * TODO Sprint 071: implement full CDX API fetch + item metadata enrichment.
+   * Uses CDX API to fetch URLs and availability API to enrich metadata.
    *
    * CDX endpoint:  {apiBaseUrl}/cdx/search/cdx?url={query}&output=json&limit={maxResults}
    * Availability:  {apiBaseUrl}/wayback/available?url={query}
    * Advanced search: https://archive.org/advancedsearch.php?q={query}&output=json
    */
   async scrape(): Promise<ArchiveResult[]> {
-    // TODO Sprint 071: implement Internet Archive API fetch (CDX API + item metadata)
-    return [];
+    const results: ArchiveResult[] = [];
+    const cdxUrl = `${this.config.apiBaseUrl}/cdx/search/cdx?url=${encodeURIComponent(this.config.query)}&output=json&limit=${this.config.maxResults}`;
+    
+    try {
+      const cdxResponse = await fetch(cdxUrl);
+      if (!cdxResponse.ok) {
+        throw new Error(`CDX API request failed with status ${cdxResponse.status}`);
+      }
+      
+      const cdxData = await cdxResponse.json();
+      
+      for (let i = 0; i < cdxData.length; i++) {
+        const [url, timestamp, mimeType] = cdxData[i];
+        const availabilityUrl = `${this.config.apiBaseUrl}/wayback/available?url=${encodeURIComponent(url)}`;
+        
+        try {
+          const availabilityResponse = await fetch(availabilityUrl);
+          if (!availabilityResponse.ok) {
+            throw new Error(`Availability check failed for ${url}`);
+          }
+          
+          const availabilityData = await availabilityResponse.json();
+          const closest = availabilityData.closest || {};
+          
+          results.push({
+            id: url,
+            title: closest.title || '',
+            url,
+            mediaType: mimeType || 'unknown',
+            year: closest.year || timestamp.substring(0, 4) || '',
+            description: closest.description || ''
+          });
+          
+          // Rate limit between requests
+          if (i < cdxData.length - 1) {
+            await new Promise(resolve => setTimeout(resolve, RATE_LIMIT_MS));
+          }
+        } catch (error) {
+          console.error(`Error processing URL ${url}:`, error);
+          continue;
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching from CDX API:', error);
+    }
+    
+    return results;
   }
 }
