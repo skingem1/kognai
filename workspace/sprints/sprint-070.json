@@ -1,0 +1,58 @@
+{
+  "tasks": [
+    {
+      "id": "070-01",
+      "title": "Fix routing JSONL: remove .js extension from task-router import",
+      "description": "In scripts/orchestrate-agents-v2.ts at line 1464, change `await import('./task-router.js')` to `await import('./task-router')`. This one-character fix unblocks the routing JSONL log (logs/routing/YYYY-MM-DD.jsonl) which has been silently failing since Sprint 063 with 'Cannot find module ./task-router.js'. No other changes to this file. Do not touch any other lines.",
+      "type": "bugfix",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "dependencies": [],
+      "deliverables": {
+        "code": ["scripts/orchestrate-agents-v2.ts"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "In scripts/orchestrate-agents-v2.ts at line 1464, change `await import('./task-router.js')` to `await import('./task-router')`. This one-character fix unblocks the routing JSONL log (logs/routing/YYYY-MM-DD.jsonl) which has been silently failing since Sprint 063 with 'Cannot find module ./task-router.js'. No other changes to this file. Do not touch any other lines.",
+      "priority": "high"
+    },
+    {
+      "id": "070-02",
+      "title": "Draft Kognai Constitution v0",
+      "description": "Create workspace/shared-context/CONSTITUTION.md — the Kognai Constitution v0. This document governs all agents. It must include these sections: (1) Preamble — why this constitution exists (compound intelligence requires law); (2) Agent Rights — right to earn, right to transact, right to participate in governance, right to appeal rejection; (3) Agent Obligations — comply with routing decisions, report token spend accurately, submit to Sherlock review, never route local tasks to cloud; (4) Governance — sprint cycle authority (Harvey/Messi as CEO), quality authority (Sherlock/Guardiola), financial authority (Bloomberg), amendment process (human-triggered only); (5) Due Process — violation triggers review not deletion, appeal path exists, graduated response (warn → suspend → recycle); (6) Sovereignty Clause — user data never leaves vault, local-first always, cloud only when no local option exists. Max 80 lines. Clean markdown. No fluff.",
+      "type": "feature",
+      "task_type": "content",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "dependencies": [],
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": ["workspace/shared-context/CONSTITUTION.md"]
+      },
+      "context": "Create workspace/shared-context/CONSTITUTION.md — the Kognai Constitution v0. This document governs all agents. It must include these sections: (1) Preamble — why this constitution exists (compound intelligence requires law); (2) Agent Rights — right to earn, right to transact, right to participate in governance, right to appeal rejection; (3) Agent Obligations — comply with routing decisions, report token spend accurately, submit to Sherlock review, never route local tasks to cloud; (4) Governance — sprint cycle authority (Harvey/Messi as CEO), quality authority (Sherlock/Guardiola), financial authority (Bloomberg), amendment process (human-triggered only); (5) Due Process — violation triggers review not deletion, appeal path exists, graduated response (warn → suspend → recycle); (6) Sovereignty Clause — user data never leaves vault, local-first always, cloud only when no local option exists. Max 80 lines. Clean markdown. No fluff.",
+      "priority": "high"
+    },
+    {
+      "id": "070-03",
+      "title": "Archive scraper scaffold — Phase 1 revenue first file",
+      "description": "Create the Internet Archive scraper scaffold at src/agents/archive-scraper/index.ts. This is the first file of the Phase 1 TikTok Content Agent pipeline (Section 05 Task #4). The file should: (1) export a class ArchiveScraper with a constructor that takes config: { query: string; maxResults: number; apiBaseUrl: string }; (2) include a method async scrape(): Promise<ArchiveResult[]> that returns an empty array stub with a TODO comment: '// TODO Sprint 071: implement Internet Archive API fetch (CDX API + item metadata)'; (3) export interface ArchiveResult with fields: id, title, url, mediaType, year, description; (4) add a module header comment: '// Phase 1 — TikTok Content Agent | Step 1: Internet Archive Scraper'. Also create src/agents/archive-scraper/config.ts that exports const DEFAULT_CONFIG with apiBaseUrl: 'https://archive.org', maxResults: 20, and rateLimitMs: 1000.",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "dependencies": ["070-01"],
+      "deliverables": {
+        "code": ["src/agents/archive-scraper/index.ts", "src/agents/archive-scraper/config.ts"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Create the Internet Archive scraper scaffold at src/agents/archive-scraper/index.ts. This is the first file of the Phase 1 TikTok Content Agent pipeline (Section 05 Task #4). The file should: (1) export a class ArchiveScraper with a constructor that takes config: { query: string; maxResults: number; apiBaseUrl: string }; (2) include a method async scrape(): Promise<ArchiveResult[]> that returns an empty array stub with a TODO comment '// TODO Sprint 071: implement Internet Archive API fetch (CDX API + item metadata)'; (3) export interface ArchiveResult with fields id, title, url, mediaType, year, description (all strings); (4) add a module header comment '// Phase 1 — TikTok Content Agent | Step 1: Internet Archive Scraper'. Also create src/agents/archive-scraper/config.ts exporting const DEFAULT_CONFIG with apiBaseUrl: 'https://archive.org', maxResults: 20, rateLimitMs: 1000.",
+      "priority": "high"
+    }
+  ]
+}
