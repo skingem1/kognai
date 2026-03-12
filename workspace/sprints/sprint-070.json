@@ -55,7 +55,7 @@
     {
       "id": "070-03",
       "title": "Archive scraper scaffold \u2014 Phase 1 revenue first file",
-      "description": "Create the Internet Archive scraper scaffold at src/agents/archive-scraper/index.ts. This is the first file of the Phase 1 TikTok Content Agent pipeline (Section 05 Task #4). The file should: (1) export a class ArchiveScraper with a constructor that takes config: { query: string; maxResults: number; apiBaseUrl: string }; (2) include a method async scrape(): Promise<ArchiveResult[]> that returns an empty array stub with a TODO comment: '// TODO Sprint 071: implement Internet Archive API fetch (CDX API + item metadata)'; (3) export interface ArchiveResult with fields: id, title, url, mediaType, year, description; (4) add a module header comment: '// Phase 1 \u2014 TikTok Content Agent | Step 1: Internet Archive Scraper'. Also create src/agents/archive-scraper/config.ts that exports const DEFAULT_CONFIG with apiBaseUrl: 'https://archive.org', maxResults: 20, and rateLimitMs: 1000.",
+      "description": "Create the Internet Archive scraper scaffold at agents/archive-scraper/index.ts. This is the first file of the Phase 1 TikTok Content Agent pipeline (Section 05 Task #4). The file should: (1) export a class ArchiveScraper with a constructor that takes config: { query: string; maxResults: number; apiBaseUrl: string }; (2) include a method async scrape(): Promise<ArchiveResult[]> that returns an empty array stub with a TODO comment: '// TODO Sprint 071: implement Internet Archive API fetch (CDX API + item metadata)'; (3) export interface ArchiveResult with fields: id, title, url, mediaType, year, description; (4) add a module header comment: '// Phase 1 \u2014 TikTok Content Agent | Step 1: Internet Archive Scraper'. Also create agents/archive-scraper/config.ts that exports const DEFAULT_CONFIG with apiBaseUrl: 'https://archive.org', maxResults: 20, and rateLimitMs: 1000.",
       "type": "feature",
       "task_type": "code",
       "task_target": "local",
@@ -66,13 +66,13 @@
       ],
       "deliverables": {
         "code": [
-          "src/agents/archive-scraper/index.ts",
-          "src/agents/archive-scraper/config.ts"
+          "agents/archive-scraper/index.ts",
+          "agents/archive-scraper/config.ts"
         ],
         "tests": [],
         "docs": []
       },
-      "context": "Create the Internet Archive scraper scaffold at src/agents/archive-scraper/index.ts. This is the first file of the Phase 1 TikTok Content Agent pipeline (Section 05 Task #4). The file should: (1) export a class ArchiveScraper with a constructor that takes config: { query: string; maxResults: number; apiBaseUrl: string }; (2) include a method async scrape(): Promise<ArchiveResult[]> that returns an empty array stub with a TODO comment '// TODO Sprint 071: implement Internet Archive API fetch (CDX API + item metadata)'; (3) export interface ArchiveResult with fields id, title, url, mediaType, year, description (all strings); (4) add a module header comment '// Phase 1 \u2014 TikTok Content Agent | Step 1: Internet Archive Scraper'. Also create src/agents/archive-scraper/config.ts exporting const DEFAULT_CONFIG with apiBaseUrl: 'https://archive.org', maxResults: 20, rateLimitMs: 1000.",
+      "context": "Create the Internet Archive scraper scaffold at agents/archive-scraper/index.ts. This is the first file of the Phase 1 TikTok Content Agent pipeline (Section 05 Task #4). The file should: (1) export a class ArchiveScraper with a constructor that takes config: { query: string; maxResults: number; apiBaseUrl: string }; (2) include a method async scrape(): Promise<ArchiveResult[]> that returns an empty array stub with a TODO comment '// TODO Sprint 071: implement Internet Archive API fetch (CDX API + item metadata)'; (3) export interface ArchiveResult with fields id, title, url, mediaType, year, description (all strings); (4) add a module header comment '// Phase 1 \u2014 TikTok Content Agent | Step 1: Internet Archive Scraper'. Also create agents/archive-scraper/config.ts exporting const DEFAULT_CONFIG with apiBaseUrl: 'https://archive.org', maxResults: 20, rateLimitMs: 1000.",
       "priority": "high"
     }
   ]
