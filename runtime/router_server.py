@@ -133,4 +133,4 @@ async def stats() -> dict:
 
 if __name__ == "__main__":
     port = int(os.environ.get("ROUTER_PORT", "11435"))
-    uvicorn.run("router_server:app", host="0.0.0.0", port=port, log_level="info", reload=False)
+    uvicorn.run("router_server:app", host="127.0.0.1", port=port, log_level="info", reload=False)
