@@ -1,5 +1,4 @@
-import { TaskTarget, TaskRoute } from '../types';
-import { TIMEOUT_BUDGETS } from '../constants';
+import { TaskTarget, TaskRoute, TIMEOUT_BUDGETS } from '../types';
 
 export function resolveRoute(target: TaskTarget): TaskRoute {
   switch (target) {
@@ -9,6 +8,7 @@ export function resolveRoute(target: TaskTarget): TaskRoute {
         model: process.env.VAULT_MODEL ?? 'qwen3:14b',
         endpoint: process.env.VAULT_OLLAMA_URL ?? 'http://vault:11434',
         timeoutMs: TIMEOUT_BUDGETS.local,
+        target: 'local' as TaskTarget,
       };
     }
     case 'cloud-code': {
@@ -17,6 +17,7 @@ export function resolveRoute(target: TaskTarget): TaskRoute {
         model: 'MiniMax-M2.5',
         endpoint: 'https://api.minimax.io/v1/chat/completions',
         timeoutMs: TIMEOUT_BUDGETS['cloud-code'],
+        target: 'cloud-code' as TaskTarget,
       };
     }
     case 'cloud-exec': {
@@ -25,6 +26,7 @@ export function resolveRoute(target: TaskTarget): TaskRoute {
         model: 'claude-sonnet-4-20250514',
         endpoint: 'https://api.anthropic.com/v1/messages',
         timeoutMs: TIMEOUT_BUDGETS['cloud-exec'],
+        target: 'cloud-exec' as TaskTarget,
       };
     }
     case 'cloud-post': {
@@ -33,11 +35,8 @@ export function resolveRoute(target: TaskTarget): TaskRoute {
         model: 'n/a',
         endpoint: '',
         timeoutMs: TIMEOUT_BUDGETS['cloud-post'],
+        target: 'cloud-post' as TaskTarget,
       };
-    }
-    case 'unknown': {
-      console.warn('[resolveRoute] Unknown target, defaulting to cloud-code');
-      return resolveRoute('cloud-code');
     }
     default: {
       const exhaustiveCheck: never = target;

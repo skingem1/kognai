@@ -1,0 +1,71 @@
+{
+  "tasks": [
+    {
+      "id": "071-01",
+      "title": "Fix resolve-route.ts — 3 surgical TS fixes to unblock routing JSONL",
+      "description": "Fix scripts/router/resolve-route.ts: (1) consolidated import from '../types' for TaskTarget, TaskRoute, TIMEOUT_BUDGETS. (2) Added target field to all 4 return objects (local/cloud-code/cloud-exec/cloud-post). (3) Removed case 'unknown' block — not in TaskTarget union. tsc --noEmit passes clean.",
+      "type": "bugfix",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "dependencies": [],
+      "deliverables": {
+        "code": ["scripts/router/resolve-route.ts"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Manual surgical fix — 3 changes to a 48-line file. tsc clean.",
+      "priority": "high",
+      "output": {
+        "files": ["scripts/router/resolve-route.ts"],
+        "commit": "pending",
+        "model": "manual",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 100,
+          "summary": "Manual — consolidated import, added target field to all 4 routes, removed invalid case 'unknown'. tsc --noEmit passes."
+        }
+      }
+    },
+    {
+      "id": "071-02",
+      "title": "Implement ArchiveScraper.scrape() — real Internet Archive Advanced Search fetch",
+      "description": "Replace the return [] stub in agents/archive-scraper/index.ts with a real HTTP fetch. Use Node.js built-in fetch (no new deps). Import ADVANCED_SEARCH_URL and RATE_LIMIT_MS from './config'. Build URL: `${ADVANCED_SEARCH_URL}?q=${encodeURIComponent(this.config.query)}&output=json&rows=${this.config.maxResults}&fl[]=identifier,title,description,mediatype,year`. Await fetch, parse JSON — response shape is { response: { docs: Array<{identifier: string, title: string, description: string, mediatype: string, year: string|number}> } }. Map each doc to ArchiveResult: { id: doc.identifier, title: doc.title ?? '', url: `https://archive.org/details/${doc.identifier}`, mediaType: doc.mediatype ?? '', year: String(doc.year ?? ''), description: doc.description ?? '' }. Add rate limit: await new Promise(r => setTimeout(r, RATE_LIMIT_MS)) before return. Wrap in try/catch: on error log console.error('[ArchiveScraper] fetch failed:', err) and return []. Replace the TODO comment with: // Phase 1 — live Advanced Search fetch. Keep file under 65 lines. Do not modify the interface definitions, class signature, or constructor.",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "dependencies": ["071-01"],
+      "deliverables": {
+        "code": ["agents/archive-scraper/index.ts"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Phase 1 Task #4 — first live data fetch in the TikTok Content Agent pipeline. The scaffold was created in Sprint 070 (agents/archive-scraper/index.ts has ArchiveScraper class, ArchiveResult interface, and stub scrape() returning []). ADVANCED_SEARCH_URL = 'https://archive.org/advancedsearch.php' and RATE_LIMIT_MS = 1000 are already exported from agents/archive-scraper/config.ts.",
+      "priority": "critical"
+    },
+    {
+      "id": "071-03",
+      "title": "Vision scoring agent scaffold — Phase 1 Step 2",
+      "description": "Create agents/vision-scorer/index.ts and agents/vision-scorer/config.ts. FILE 1 — agents/vision-scorer/index.ts: (1) Module header comment: '// Phase 1 — TikTok Content Agent | Step 2: Vision Scoring Agent'. (2) Export interface VisionScore with fields: url (string), score (number 0-100), tags (string[]), reason (string). (3) Export interface ScorerConfig with fields: modelEndpoint (string), threshold (number), timeoutMs (number). (4) Export class VisionScorer with constructor(config: ScorerConfig) that stores config as private field. (5) Method async score(imageUrl: string): Promise<VisionScore> returning stub: { url: imageUrl, score: 0, tags: [], reason: 'not implemented' } with comment above: '// TODO Sprint 072: implement Ollama vision model scoring (llava or qwen2-vl)'. FILE 2 — agents/vision-scorer/config.ts: (1) Header comment: '// Phase 1 — TikTok Content Agent | Vision Scorer Config'. (2) Import type ScorerConfig from './index'. (3) export const DEFAULT_CONFIG: ScorerConfig = { modelEndpoint: 'http://vault:11434/api/generate', threshold: 70, timeoutMs: 30000 }. (4) export const VISION_MODEL = 'qwen2-vl'. (5) export const MAX_IMAGE_SIZE_MB = 5.",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "dependencies": ["071-02"],
+      "deliverables": {
+        "code": [
+          "agents/vision-scorer/index.ts",
+          "agents/vision-scorer/config.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Phase 1 Task #5 — vision scoring agent that evaluates archive media thumbnails for TikTok visual suitability. Same scaffold pattern as archive-scraper (Sprint 070 task 070-03). Stub only — Sprint 072 implements Ollama qwen2-vl scoring. agents/vision-scorer/ path is in VALID_PATH_PREFIXES (agents/ prefix is allowed).",
+      "priority": "high"
+    }
+  ]
+}
