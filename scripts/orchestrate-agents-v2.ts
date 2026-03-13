@@ -1911,6 +1911,7 @@ class Orchestrator {
     }
     const sprint = JSON.parse(readFileSync(sprintFile, 'utf-8'));
     this.tasks = sprint.tasks || [];
+    const _sprintId = sprintFile.replace(/.*\//, '').replace('.json', '');
 
     // Normalize deliverables: CEO planner may emit flat string[] instead of {code,tests,docs}
     for (const task of this.tasks) {
@@ -1930,6 +1931,8 @@ class Orchestrator {
       if (!task.context) task.context = `${task.id}: ${(task as any).title || task.type}`;
       // Normalize priority: sprint JSON may omit it
       if (!task.priority) task.priority = 'medium';
+      // Stamp sprint_id — avoids 'unknown' in logs/routing/YYYY-MM-DD.jsonl
+      if (!(task as any).sprint_id) (task as any).sprint_id = _sprintId;
     }
 
     // Reset stale in_progress tasks back to pending
