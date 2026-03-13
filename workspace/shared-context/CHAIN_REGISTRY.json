@@ -1,0 +1,39 @@
+{
+  "network": "base",
+  "chainId": 8453,
+  "deployedAt": "2026-03-13",
+  "agentRegistry": {
+    "address": "0x2458cBd0FEdC4fAcf6C1313938a19b35fB41bC0b",
+    "name": "Kognai Agent Identity Registry",
+    "symbol": "KOGNAI",
+    "standard": "ERC-8004 / ERC-721",
+    "soulBound": true,
+    "url": "https://basescan.org/address/0x2458cBd0FEdC4fAcf6C1313938a19b35fB41bC0b"
+  },
+  "agents": {
+    "harvey": {
+      "tokenId": 0,
+      "role": "CEO",
+      "soulHash": "223225156e26fdc32e9d749a6a65eae0afae55c22f0d44c75172416ab54c0daf",
+      "constitutionHash": "34e93df22e1343d648dd102b93367286aed5a7a120d99c442a55d2ddc953ca2f",
+      "minted": true,
+      "owner": "0x260e18591371a6e7a3da0ac5f9d47ff06508b61f"
+    },
+    "messi": {
+      "tokenId": 1,
+      "role": "Coder",
+      "soulHash": "41826e1895f998f850aa1bae447e06a75963aca13510734ba5727377516aedc3",
+      "constitutionHash": "34e93df22e1343d648dd102b93367286aed5a7a120d99c442a55d2ddc953ca2f",
+      "minted": true,
+      "owner": "0x260e18591371a6e7a3da0ac5f9d47ff06508b61f"
+    },
+    "sherlock": {
+      "tokenId": 2,
+      "role": "Supervisor",
+      "soulHash": "9221ff14dba4b7d5f4c129d0762f2c3d02d414259273e25c916039ac78487570",
+      "constitutionHash": "34e93df22e1343d648dd102b93367286aed5a7a120d99c442a55d2ddc953ca2f",
+      "minted": true,
+      "owner": "0x260e18591371a6e7a3da0ac5f9d47ff06508b61f"
+    }
+  }
+}
