@@ -8,7 +8,8 @@
       "task_type": "code",
       "task_target": "local",
       "agent": "coder",
-      "status": "pending",
+      "status": "done",
+      "model": "manual",
       "dependencies": [],
       "deliverables": {
         "code": [
@@ -28,7 +29,8 @@
       "task_type": "code",
       "task_target": "local",
       "agent": "coder",
-      "status": "pending",
+      "status": "done",
+      "model": "manual",
       "dependencies": [],
       "deliverables": {
         "code": [
@@ -68,7 +70,8 @@
       "task_type": "code",
       "task_target": "local",
       "agent": "coder",
-      "status": "pending",
+      "status": "done",
+      "model": "manual",
       "dependencies": [
         "072-02"
       ],
