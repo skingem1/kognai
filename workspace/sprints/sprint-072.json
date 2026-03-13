@@ -1,0 +1,86 @@
+{
+  "tasks": [
+    {
+      "id": "072-01",
+      "title": "Fix ArchiveScraper CDX bugs — skip header row (i=1) + fix Wayback availability shape",
+      "description": "SURGICAL EDIT ONLY. File: agents/archive-scraper/index.ts (89 lines). Two bugs from Sprint 071 review, both high-severity. DO NOT modify interfaces, class signature, constructor, or any code outside the scrape() method body.\n\nEDIT 1 — CDX header row skip. The CDX API returns row 0 as field names, not data. Loop must start at i=1.\nold_string:\n      for (let i = 0; i < cdxData.length; i++) {\nnew_string:\n      for (let i = 1; i < cdxData.length; i++) { // Skip CDX header row (index 0 = field names)\nLine count delta: 0 (same line, inline comment added).\n\nEDIT 2 — Wayback availability API response shape. Real API shape: { archived_snapshots: { closest: { url, timestamp, status } } }. The code reads availabilityData.closest which is always undefined. Also fix year derivation to use closest.timestamp instead of closest.year (which doesn't exist in the API).\nold_string (exact, including surrounding blank line and push block):\n          const closest = availabilityData.closest || {};\n          \n          results.push({\n            id: url,\n            title: closest.title || '',\n            url,\n            mediaType: mimeType || 'unknown',\n            year: closest.year || timestamp.substring(0, 4) || '',\n            description: closest.description || ''\n          });\nnew_string:\n          // Wayback availability API shape: { archived_snapshots: { closest: { url, timestamp, status } } }\n          const closest = availabilityData.archived_snapshots?.closest || {};\n          \n          results.push({\n            id: url,\n            title: closest.title || '',\n            url,\n            mediaType: mimeType || 'unknown',\n            year: closest.timestamp?.substring(0, 4) || timestamp.substring(0, 4) || '',\n            description: closest.description || ''\n          });\nLine count delta: +1 (added comment line).\n\nFAIL CONDITIONS: (1) tsc --noEmit reports errors in agents/archive-scraper/index.ts. (2) Loop still starts at i=0. (3) Code still reads availabilityData.closest without optional chaining through archived_snapshots. (4) Any interface or class signature modified. (5) File exceeds 91 lines.",
+      "type": "bugfix",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "dependencies": [],
+      "deliverables": {
+        "code": [
+          "agents/archive-scraper/index.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Phase 1 — TikTok Content Agent | Sprint 072 bug fixes. The ArchiveScraper.scrape() method was implemented in Sprint 071 (task 071-02, approved 85/100) but the review identified two high-severity bugs that will cause incorrect results on real API calls: (1) CDX API returns a header row as index 0 — the loop at i=0 processes field names as data, producing a malformed ArchiveResult. (2) Wayback availability API response shape is { archived_snapshots: { closest: { url, timestamp, status } } }, not { closest: { title, year, description } }. Code reads availabilityData.closest which is always undefined, making title/year/description always empty strings. Both bugs were logged in sprint-071.json output.issues array and are now being fixed surgically.",
+      "priority": "critical"
+    },
+    {
+      "id": "072-02",
+      "title": "Implement VisionScorer — real Ollama scoring replacing Math.random() stub",
+      "description": "SURGICAL EDIT ONLY. File: agents/vision-scorer/index.ts (44 lines). Replace the stub scoreThumbnails() method body with a real implementation that calls Ollama for scoring. DO NOT modify MediaItem interface, ScoredMediaItem interface, class declaration, or config import.\n\nEDIT 1 — Replace entire scoreThumbnails() method (keep method signature, replace body only).\nold_string (exact):\n  async scoreThumbnails(mediaItems: MediaItem[]): Promise<ScoredMediaItem[]> {\n    try {\n      const results = mediaItems.map(item => ({\n        ...item,\n        confidence: config.confidenceThreshold,\n        score: Math.random() * 100,\n        status: 'success'\n      }));\n      return results;\n    } catch (error) {\n      console.error('Scoring failed:', (error as Error).message);\n      throw error;\n    }\n  }\nnew_string:\n  // Phase 1 — live Ollama scoring (qwen2-vl vision if image fetchable, qwen3:14b text fallback)\n  async scoreThumbnails(mediaItems: MediaItem[]): Promise<ScoredMediaItem[]> {\n    const OLLAMA_BASE = process.env.OLLAMA_HOST || 'http://localhost:11434';\n    const results: ScoredMediaItem[] = [];\n    for (const item of mediaItems) {\n      try {\n        let imageBase64: string | null = null;\n        let model = 'qwen3:14b';\n        try {\n          const imgRes = await fetch(item.url);\n          if (imgRes.ok) {\n            const buf = await imgRes.arrayBuffer();\n            imageBase64 = Buffer.from(buf).toString('base64');\n            model = 'qwen2-vl';\n          }\n        } catch { /* image fetch failed — text fallback */ }\n        const prompt = imageBase64\n          ? 'Rate this image for TikTok visual appeal (0-100). Respond ONLY with JSON: {\"score\":<number>,\"tags\":[\"...\"],\"reason\":\"...\"}'\n          : `Rate the TikTok visual appeal of an archive media item at ${item.url} (0-100). Respond ONLY with JSON: {\"score\":<number>,\"tags\":[],\"reason\":\"...\"}`;\n        const reqBody: Record<string, unknown> = { model, prompt, stream: false, options: { num_predict: 128, temperature: 0.1 } };\n        if (imageBase64) reqBody.images = [imageBase64];\n        const res = await fetch(`${OLLAMA_BASE}/api/generate`, {\n          method: 'POST',\n          headers: { 'Content-Type': 'application/json' },\n          body: JSON.stringify(reqBody),\n        });\n        if (!res.ok) throw new Error(`Ollama returned ${res.status}`);\n        const ollamaJson = await res.json() as { response: string };\n        const jsonMatch = ollamaJson.response.match(/\\{[\\s\\S]*\\}/);\n        const parsed = jsonMatch ? JSON.parse(jsonMatch[0]) : {};\n        const score = typeof parsed.score === 'number' ? Math.min(100, Math.max(0, parsed.score)) : 50;\n        results.push({ ...item, confidence: config.confidenceThreshold, score, status: 'success' as const });\n      } catch (error) {\n        console.error(`Scoring failed for ${item.url}:`, (error as Error).message);\n        results.push({ ...item, confidence: 0, score: 0, status: 'error' as const });\n      }\n    }\n    return results;\n  }\nLine count delta: +17 (method body grows from 14 to 31 lines). Total file: ~57 lines.\n\nFAIL CONDITIONS: (1) Math.random() remains anywhere in the file. (2) tsc --noEmit reports type errors. (3) Method signature changed. (4) Interfaces modified. (5) File exceeds 65 lines. (6) Any import added that does not exist in the project.",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "dependencies": [],
+      "deliverables": {
+        "code": [
+          "agents/vision-scorer/index.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Phase 1 — TikTok Content Agent | Vision Scorer Step 2. The VisionScorer scaffold was created in Sprint 071 (task 071-03, approved 87/100) with a stub scoreThumbnails() that returns Math.random() * 100 scores. This task replaces the stub with real Ollama inference. Strategy: (1) Attempt to fetch the image URL and encode as base64 — if successful, call qwen2-vl vision model with the image. (2) If image fetch fails (rate limit, non-image URL, network error), fall back to qwen3:14b text scoring — ask the model to estimate TikTok visual appeal based on the URL and media type. Both paths return a JSON score object. The qwen3:14b model is always loaded (9.3GB, primary workhorse). qwen2-vl is not currently installed — the code must handle its absence gracefully via the text fallback. Node.js built-in fetch is available (Node 18+). No new npm dependencies allowed.",
+      "priority": "critical"
+    },
+    {
+      "id": "072-03",
+      "title": "Fix routing JSONL sprint_id — stamp from sprint file path in loadTasks()",
+      "description": "SURGICAL EDIT ONLY. File: scripts/orchestrate-agents-v2.ts (2864 lines). Two minimal additions to loadTasks(). DO NOT modify any other function, change any logic, or alter any existing line. Line count delta must be exactly +2 total across both edits.\n\nEDIT 1 — Derive sprint ID immediately after loading tasks array. Inject after 'this.tasks = sprint.tasks || [];' and before the blank line + comment '// Normalize deliverables'.\nold_string (exact 3 lines including blank):\n    const sprint = JSON.parse(readFileSync(sprintFile, 'utf-8'));\n    this.tasks = sprint.tasks || [];\n\n    // Normalize deliverables: CEO planner may emit flat string[] instead of {code,tests,docs}\nnew_string:\n    const sprint = JSON.parse(readFileSync(sprintFile, 'utf-8'));\n    this.tasks = sprint.tasks || [];\n    const _sprintId = sprintFile.replace(/.*\\//, '').replace('.json', '');\n\n    // Normalize deliverables: CEO planner may emit flat string[] instead of {code,tests,docs}\nLine count delta for this edit: +1.\n\nEDIT 2 — Stamp sprint_id on each task at the end of the normalization loop body, before the closing brace.\nold_string (exact 3 lines):\n      // Normalize priority: sprint JSON may omit it\n      if (!task.priority) task.priority = 'medium';\n    }\nnew_string:\n      // Normalize priority: sprint JSON may omit it\n      if (!task.priority) task.priority = 'medium';\n      // Stamp sprint_id — avoids 'unknown' in logs/routing/YYYY-MM-DD.jsonl\n      if (!(task as any).sprint_id) (task as any).sprint_id = _sprintId;\n    }\nLine count delta for this edit: +2. Wait — this is +2, and edit 1 is +1 = total +3. That is acceptable (described as 'exactly +2' was imprecise — constraint is: minimal additions only, NO rewrites, delta ≤ +3).\n\nFAIL CONDITIONS: (1) tsc --noEmit reports errors. (2) Any function other than loadTasks() is modified. (3) Any existing line is changed (only additions allowed). (4) _sprintId variable not in scope when assigned to task. (5) sprint_id still logs as 'unknown' when task has no sprint_id field.",
+      "type": "bugfix",
+      "task_type": "code",
+      "task_target": "cloud-code",
+      "agent": "coder",
+      "status": "pending",
+      "dependencies": [],
+      "deliverables": {
+        "code": [
+          "scripts/orchestrate-agents-v2.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Sprint routing JSONL (logs/routing/YYYY-MM-DD.jsonl) began generating entries in Sprint 071 after the resolve-route.ts fix. However, all entries show sprint_id: 'unknown'. Root cause: in CodingAgent (line ~1465), the code reads (task as any).sprint_id ?? 'unknown' — but individual task objects in the sprint JSON have no sprint_id field. The fix is to derive the sprint ID from the sprint file path (process.argv[2]) in loadTasks() and stamp it onto each task during normalization. The same derivation pattern is already used at lines 2205-2206 and 2262-2263 for the event bus: process.argv[2].replace(/.*\\//, '').replace('.json', ''). This is a 3-line addition to the 2864-line orchestrator — no rewrites.",
+      "priority": "high"
+    },
+    {
+      "id": "072-04",
+      "title": "Export VisionScorer class — add export keyword to class declaration",
+      "description": "SURGICAL EDIT ONLY. File: agents/vision-scorer/index.ts. Single character addition. DO NOT modify any interfaces, method signatures, or implementation. This task runs after 072-02 to avoid file conflicts.\n\nEDIT 1 — Add export keyword to class declaration.\nold_string:\nclass VisionScorer {\nnew_string:\nexport class VisionScorer {\nLine count delta: 0 (same line, prepend 'export ').\n\nFAIL CONDITIONS: (1) tsc --noEmit reports errors. (2) Any line other than the class declaration is modified. (3) 'export' keyword missing from VisionScorer class declaration after edit.",
+      "type": "bugfix",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "dependencies": [
+        "072-02"
+      ],
+      "deliverables": {
+        "code": [
+          "agents/vision-scorer/index.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Sprint 071 review (071-03) flagged that VisionScorer class is not exported — if other modules import it, the export is required. Low-priority cleanup. Runs after 072-02 (same file) to avoid merge conflicts. Single surgical addition of 'export' keyword to line 'class VisionScorer {'.",
+      "priority": "low"
+    }
+  ]
+}
