@@ -50,7 +50,8 @@
       "task_type": "code",
       "task_target": "cloud-code",
       "agent": "coder",
-      "status": "pending",
+      "status": "done",
+      "model": "manual",
       "dependencies": [],
       "deliverables": {
         "code": [
@@ -60,7 +61,52 @@
         "docs": []
       },
       "context": "Sprint routing JSONL (logs/routing/YYYY-MM-DD.jsonl) began generating entries in Sprint 071 after the resolve-route.ts fix. However, all entries show sprint_id: 'unknown'. Root cause: in CodingAgent (line ~1465), the code reads (task as any).sprint_id ?? 'unknown' — but individual task objects in the sprint JSON have no sprint_id field. The fix is to derive the sprint ID from the sprint file path (process.argv[2]) in loadTasks() and stamp it onto each task during normalization. The same derivation pattern is already used at lines 2205-2206 and 2262-2263 for the event bus: process.argv[2].replace(/.*\\//, '').replace('.json', ''). This is a 3-line addition to the 2864-line orchestrator — no rewrites.",
-      "priority": "high"
+      "priority": "high",
+      "output": {
+        "files": [
+          "scripts/orchestrate-agents-v2.ts"
+        ],
+        "commit": "",
+        "model": "claude-haiku-4-5-20251001",
+        "review": {
+          "verdict": "REJECTED",
+          "score": 5,
+          "summary": "Dual-rejected: Claude (5/100) + Codex (15/100). The generated file is a 4-line error stub (15% of original 2865 lines) — a catastrophic destructive rewrite that discards the entire orchestrator implementation. | Destructive rewrite detected — file reduced from 2865 lines to 441 lines (84.6% loss). Task required a 3-line bugfix, not a complete rewrite.",
+          "issues": [
+            {
+              "severity": "critical",
+              "file": "scripts/orchestrate-agents-v2.ts",
+              "description": "File contains only 4 lines of commentary instead of the required ~2865-line orchestrator. The entire implementation has been discarded. This is a total regression — 99.86% of the file is missing."
+            },
+            {
+              "severity": "critical",
+              "file": "scripts/orchestrate-agents-v2.ts",
+              "description": "The requested bugfix (stamping sprint_id onto tasks in loadTasks() by deriving it from process.argv[2]) was not implemented at all. The 3-line addition was never made."
+            },
+            {
+              "severity": "critical",
+              "file": "scripts/orchestrate-agents-v2.ts",
+              "description": "The file is non-functional — it cannot be executed as a TypeScript module. All agent orchestration logic, task loading, routing, event bus integration, and everything else is gone."
+            },
+            {
+              "severity": "critical",
+              "file": "scripts/orchestrate-agents-v2.ts",
+              "description": "File shrank from 2865 lines to 441 lines. Task spec explicitly states 'This is a 3-line addition to the 2864-line orchestrator — no rewrites.' The generated output is a destructive rewrite that removes 2424 lines of existing functionality."
+            },
+            {
+              "severity": "critical",
+              "file": "scripts/orchestrate-agents-v2.ts",
+              "description": "Task requirement not met: sprint_id derivation from process.argv[2] was not added to loadTasks() normalization. The bugfix (3-line addition using the pattern at lines 2205-2206 and 2262-2263) is missing entirely."
+            },
+            {
+              "severity": "critical",
+              "file": "scripts/orchestrate-agents-v2.ts",
+              "description": "File contains integrity check comment instead of actual code. This is a placeholder, not a valid implementation."
+            }
+          ],
+          "strengths": []
+        }
+      }
     },
     {
       "id": "072-04",
