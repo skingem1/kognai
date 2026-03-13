@@ -48,9 +48,9 @@ export class ArchiveScraper {
         throw new Error(`CDX API request failed with status ${cdxResponse.status}`);
       }
       
-      const cdxData = await cdxResponse.json();
+      const cdxData = await cdxResponse.json() as any[];
       
-      for (let i = 0; i < cdxData.length; i++) {
+      for (let i = 1; i < cdxData.length; i++) { // Skip CDX header row (index 0 = field names)
         const [url, timestamp, mimeType] = cdxData[i];
         const availabilityUrl = `${this.config.apiBaseUrl}/wayback/available?url=${encodeURIComponent(url)}`;
         
@@ -60,15 +60,16 @@ export class ArchiveScraper {
             throw new Error(`Availability check failed for ${url}`);
           }
           
-          const availabilityData = await availabilityResponse.json();
-          const closest = availabilityData.closest || {};
-          
+          const availabilityData = await availabilityResponse.json() as any;
+          // Real API shape: { archived_snapshots: { closest: { url, timestamp, status } } }
+          const closest = availabilityData.archived_snapshots?.closest || {};
+
           results.push({
             id: url,
             title: closest.title || '',
             url,
             mediaType: mimeType || 'unknown',
-            year: closest.year || timestamp.substring(0, 4) || '',
+            year: closest.timestamp?.substring(0, 4) || timestamp.substring(0, 4) || '',
             description: closest.description || ''
           });
           
