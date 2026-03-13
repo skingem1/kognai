@@ -1,0 +1,23 @@
+{
+  "network": "base",
+  "chainId": 8453,
+  "registeredAt": "2026-03-13",
+  "easContract": "https://base.easscan.org",
+  "schemas": {
+    "sprintCompletion": {
+      "uid": "0xbbcac4da778d4fa26596e195f9fc39e2e6099326586138e418c6a0b6bf653767",
+      "fields": "address agentAddress,string sprintContextId,uint256 tasksCompleted,uint256 tasksFailed,uint256 x402TotalSettled,uint256 timestamp",
+      "url": "https://base.easscan.org/schema/view/0xbbcac4da778d4fa26596e195f9fc39e2e6099326586138e418c6a0b6bf653767"
+    },
+    "taskCompletion": {
+      "uid": "0x79d2573e8f7ef1719213192ab2b2978225a4335d1e3b4bda1197954bca3f8a9c",
+      "fields": "address agentAddress,bytes32 taskHash,string skillId,uint256 outcomeScore,bytes32 aarReceiptHash,uint256 timestamp",
+      "url": "https://base.easscan.org/schema/view/0x79d2573e8f7ef1719213192ab2b2978225a4335d1e3b4bda1197954bca3f8a9c"
+    },
+    "paymentReceipt": {
+      "uid": "0x4d65ec42aaf64357e8ff2bf722a7c304e3738579d4f5ee96c1f62e31422c90f7",
+      "fields": "address payerAddress,address receiverAddress,bytes32 x402ReceiptHash,uint256 amountUsdc,uint256 chainId,uint256 blockNumber",
+      "url": "https://base.easscan.org/schema/view/0x4d65ec42aaf64357e8ff2bf722a7c304e3738579d4f5ee96c1f62e31422c90f7"
+    }
+  }
+}
