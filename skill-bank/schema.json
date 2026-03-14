@@ -1,0 +1,83 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "KognaiSkillRecord",
+  "description": "AMD-02 Skill Bank — canonical skill record schema (v1.0)",
+  "type": "object",
+  "required": ["skill_id", "type", "name", "description", "definition", "optimal_settings", "score_history", "execution_count", "access_tier", "created_at", "updated_at"],
+  "properties": {
+    "skill_id": {
+      "type": "string",
+      "description": "Unique identifier: '{agent_id}-{sprint_id}-{slug}' e.g. 'messi-073-aar-middleware'"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["kognai-owned", "user-uploaded"],
+      "description": "kognai-owned: distilled from swarm execution. user-uploaded: user-provided."
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable skill name, ≤ 60 chars"
+    },
+    "description": {
+      "type": "string",
+      "description": "What this skill does, ≤ 200 chars"
+    },
+    "definition": {
+      "type": "object",
+      "description": "The skill itself — prompt template, implementation approach, key patterns",
+      "properties": {
+        "prompt_template": { "type": "string" },
+        "approach": { "type": "string" },
+        "key_patterns": { "type": "array", "items": { "type": "string" } },
+        "anti_patterns": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "optimal_settings": {
+      "type": "object",
+      "description": "Proven execution settings for this skill",
+      "properties": {
+        "model": { "type": "string", "description": "e.g. 'qwen3:14b', 'claude-haiku-4-5-20251001'" },
+        "task_target": { "type": "string", "enum": ["local", "cloud-code"] },
+        "max_attempts": { "type": "integer" },
+        "context_requirements": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "score_history": {
+      "type": "array",
+      "description": "Supervisor scores per execution",
+      "items": {
+        "type": "object",
+        "properties": {
+          "sprint_id": { "type": "string" },
+          "task_id": { "type": "string" },
+          "score": { "type": "integer", "minimum": 0, "maximum": 100 },
+          "reviewed_at": { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "execution_count": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Total number of times this skill has been executed"
+    },
+    "access_tier": {
+      "type": "string",
+      "enum": ["internal", "free", "rental", "sale"],
+      "description": "internal: kognai-only. free/rental/sale: marketplace tiers (Phase 3)"
+    },
+    "source_sprint": {
+      "type": "string",
+      "description": "Sprint ID where this skill was first crystallised, e.g. 'sprint-073'"
+    },
+    "source_task": {
+      "type": "string",
+      "description": "Task ID where this skill was first crystallised, e.g. '073-02'"
+    },
+    "agent_id": {
+      "type": "string",
+      "description": "Agent that produced this skill, e.g. 'messi'"
+    },
+    "created_at": { "type": "string", "format": "date-time" },
+    "updated_at": { "type": "string", "format": "date-time" }
+  }
+}
