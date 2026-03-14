@@ -2451,11 +2451,24 @@ ONLY output the JSON array. No markdown, no explanation.`;
       }
       if (wave.length === 0) wave.push(ready[0]); // break deadlock: force one task
 
-      if (wave.length > 1) {
-        log(c.blue, `  [B.16] Parallel fan-out: ${wave.length} tasks executing concurrently`);
+      // B.16: Split wave by task_target — local tasks serialized (Ollama can only run one at a time),
+      // cloud tasks run concurrently. Prevents Ollama queue timeout on parallel fan-out.
+      const localWave = wave.filter(t => (t as any).task_target === 'local');
+      const cloudWave = wave.filter(t => (t as any).task_target !== 'local');
+
+      if (cloudWave.length > 1) {
+        log(c.blue, `  [B.16] Parallel fan-out: ${cloudWave.length} cloud tasks executing concurrently`);
+      }
+      if (localWave.length > 1) {
+        log(c.blue, `  [B.16] Sequential execution: ${localWave.length} local tasks (Ollama serialized)`);
+      } else if (localWave.length === 1 && cloudWave.length === 0) {
+        // single task, no label needed
       }
 
-      await Promise.all(wave.map(t => this.executeTask(t)));
+      await Promise.all(cloudWave.map(t => this.executeTask(t)));
+      for (const t of localWave) {
+        await this.executeTask(t);
+      }
 
       // Remove executed tasks from remaining
       for (const t of wave) {
