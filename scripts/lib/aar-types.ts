@@ -1,94 +1,40 @@
-import * as fs from 'fs';
-import * as path from 'path';
-import * as crypto from 'crypto';
-import { promisify } from 'util';
-import { fileURLToPath } from 'url';
+// AMD-01 CHAIN3 — Agent Action Receipt (AAR) type definitions
+// Matches taskCompletion EAS schema on Base: 0x79d2573e8f7ef1719213192ab2b2978225a4335d1e3b4bda1197954bca3f8a9c
 
-// Type definitions
-export interface AarReceipt {
-  taskId: string;
+export interface AARReceipt {
+  receiptId: string;        // '{sprintId}-{taskId}-{epoch}'
+  agentId: string;          // 'harvey' | 'messi' | 'sherlock'
+  agentAddress: string;     // ERC-8004 owner address (from CHAIN_REGISTRY.json)
+  taskId: string;           // e.g. '073-01'
+  sprintId: string;         // e.g. 'sprint-073'
+  skillId: string;          // e.g. 'code-generation'
+  outcomeScore: number;     // 0-100 (supervisor review score)
+  actionSummary: string;    // ≤ 140 chars, describes what the agent did
+  aarReceiptHash: string;   // sha256 hex of receipt JSON without this field
+  timestamp: string;        // ISO 8601
+  status: 'success' | 'failed' | 'rejected';
+}
+
+export interface AARConfig {
+  enabled: boolean;
+  logDir: string;           // 'logs/aar'
+  onChainEnabled: boolean;  // false in Phase 1 — EAS write is Phase 2
+  easEndpoint: string;      // 'https://base.easscan.org'
+  taskCompletionSchemaUid: string; // EAS schema UID from EAS_SCHEMAS.json
+}
+
+export interface AARWriteResult {
+  receipt: AARReceipt;
+  logFile: string;          // path to JSONL file written
+  onChainTxHash?: string;   // Phase 2 only
+}
+
+export interface AARParams {
   agentId: string;
-  agentAddress: string;
-  taskOutput: string;
-  aarReceiptHash: string;
-  schemaUid: string;
-  timestamp: number;
-}
-
-export interface AarLogEntry extends AarReceipt {
-  loggedAt: string;
-  logType: 'aar_receipt';
-}
-
-// Constants
-const CHAIN_REGISTRY_PATH = path.join(
-  path.dirname(fileURLToPath(import.meta.url)),
-  '..',
-  '..',
-  'workspace',
-  'shared-context',
-  'CHAIN_REGISTRY.json'
-);
-
-const LOGS_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..', 'logs', 'aar');
-
-// Implementation
-export async function generateAarReceipt(
-  taskId: string,
-  agentId: string,
-  taskOutput: string
-): Promise<AarLogEntry> {
-  // Read agent address from CHAIN_REGISTRY
-  const chainRegistry = JSON.parse(await fs.promises.readFile(CHAIN_REGISTRY_PATH, 'utf-8'));
-  const agentAddress = chainRegistry[agentId as keyof typeof chainRegistry];
-  
-  if (!agentAddress) {
-    throw new Error(`Agent address not found in CHAIN_REGISTRY for agentId: ${agentId}`);
-  }
-
-  // Create receipt
-  const receipt: AarReceipt = {
-    taskId,
-    agentId,
-    agentAddress,
-    taskOutput,
-    schemaUid: '0x79d2573e8f7ef1719213192ab2b2978225a4335d1e3b4bda1197954bca3f8a9c',
-    timestamp: Math.floor(Date.now() / 1000)
-  };
-
-  // Compute SHA-256 hash
-  const receiptHash = crypto.createHash('sha256')
-    .update(JSON.stringify(receipt))
-    .digest('hex');
-
-  // Create log entry
-  const logEntry: AarLogEntry = {
-    ...receipt,
-    aarReceiptHash: receiptHash,
-    loggedAt: new Date().toISOString(),
-    logType: 'aar_receipt'
-  };
-
-  // Write to JSONL log
-  await writeJsonlLog(logEntry);
-
-  return logEntry;
-}
-
-async function writeJsonlLog(entry: AarLogEntry): Promise<void> {
-  // Create logs directory if not exists
-  await promisify(fs.mkdir)(LOGS_DIR, { recursive: true });
-
-  // Format date for filename
-  const date = new Date();
-  const logFilename = path.join(
-    LOGS_DIR,
-    `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}.jsonl`
-  );
-
-  // Append to log file
-  await fs.promises.appendFile(
-    logFilename,
-    JSON.stringify(entry) + '\n'
-  );
+  taskId: string;
+  sprintId: string;
+  skillId: string;
+  outcomeScore: number;
+  actionSummary: string;
+  status: 'success' | 'failed' | 'rejected';
 }

@@ -1,92 +1,75 @@
-import * as fs from 'fs/promises';
-import * as path from 'path';
+// AMD-01 CHAIN3 — Agent Action Receipt middleware
+// Phase 1: generate receipt + append to logs/aar/YYYY-MM-DD.jsonl
+// Phase 2 (TODO): write EAS on-chain attestation via base.easscan.org
 
-interface Agent {
-  tokenId: number;
-  ownerAddress: string;
-  minted: boolean;
-}
+import { createHash } from 'crypto';
+import { existsSync, mkdirSync, appendFileSync, readFileSync } from 'fs';
+import { join } from 'path';
+import type { AARReceipt, AARConfig, AARWriteResult, AARParams } from './aar-types';
 
-interface EASSchema {
-  easContract: string;
-  schemas: {
-    [key: string]: {
-      uid: string;
-    };
+const ROOT = join(__dirname, '../..');
+const EAS_SCHEMAS_PATH = join(ROOT, 'workspace/shared-context/EAS_SCHEMAS.json');
+const CHAIN_REGISTRY_PATH = join(ROOT, 'workspace/shared-context/CHAIN_REGISTRY.json');
+
+function loadConfig(): AARConfig {
+  const schemas = JSON.parse(readFileSync(EAS_SCHEMAS_PATH, 'utf-8')) as {
+    easContract: string;
+    schemas: { taskCompletion: { uid: string } };
+  };
+  return {
+    enabled: true,
+    logDir: join(ROOT, 'logs/aar'),
+    onChainEnabled: false,
+    easEndpoint: schemas.easContract,
+    taskCompletionSchemaUid: schemas.schemas.taskCompletion.uid,
   };
 }
 
-class AARMiddleware {
-  private static instance: AARMiddleware | null = null;
-  private chainRegistry: { agents: { [key: string]: Agent } } | null = null;
-  private easSchemas: EASSchema | null = null;
-
-  private constructor() {
-    // Constructor remains synchronous
-  }
-
-  public static async initialize(): Promise<AARMiddleware> {
-    if (AARMiddleware.instance) {
-      return AARMiddleware.instance;
-    }
-
-    const middleware = new AARMiddleware();
-    await middleware.loadChainRegistry();
-    await middleware.loadEASSchemas();
-    AARMiddleware.instance = middleware;
-    return middleware;
-  }
-
-  private async loadChainRegistry(): Promise<void> {
-    try {
-      const filePath = path.join(__dirname, '../..', 'workspace', 'shared-context', 'CHAIN_REGISTRY.json');
-      const data = await fs.readFile(filePath, 'utf-8');
-      this.chainRegistry = JSON.parse(data);
-    } catch (error) {
-      console.error('Failed to load chain registry:', error);
-      throw error;
-    }
-  }
-
-  private async loadEASSchemas(): Promise<void> {
-    try {
-      const filePath = path.join(__dirname, '../..', 'workspace', 'shared-context', 'EAS_SCHEMAS.json');
-      const data = await fs.readFile(filePath, 'utf-8');
-      this.easSchemas = JSON.parse(data);
-    } catch (error) {
-      console.error('Failed to load EAS schemas:', error);
-      throw error;
-    }
-  }
-
-  public getAgentById(id: string): Agent | undefined {
-    if (!this.chainRegistry || !this.chainRegistry.agents) {
-      return undefined;
-    }
-    return this.chainRegistry.agents[id];
-  }
-
-  public async logEvent(eventType: string, agentId: string, payload: any): Promise<void> {
-    const agent = this.getAgentById(agentId);
-    if (!agent) {
-      console.error(`Agent ${agentId} not found for event logging`);
-      return;
-    }
-
-    // Placeholder structure for EAS attestation call
-    // This would be replaced with actual contract interaction after sprint completion
-    console.log({
-      event: eventType,
-      agent,
-      payload,
-      easSchema: this.easSchemas?.schemas[eventType],
-      contract: this.easSchemas?.easContract,
-    });
-  }
-
-  public async generateAndLog(eventType: string, agentId: string, payload: any): Promise<void> {
-    await this.logEvent(eventType, agentId, payload);
+function getAgentAddress(agentId: string): string {
+  try {
+    const registry = JSON.parse(readFileSync(CHAIN_REGISTRY_PATH, 'utf-8')) as {
+      agents: Record<string, { ownerAddress: string }>;
+    };
+    return registry.agents[agentId]?.ownerAddress || '0x0000000000000000000000000000000000000000';
+  } catch {
+    return '0x0000000000000000000000000000000000000000';
   }
 }
 
-export { AARMiddleware };
+export class AARMiddleware {
+  static generateReceipt(params: AARParams): AARReceipt {
+    const receiptId = `${params.sprintId}-${params.taskId}-${Date.now()}`;
+    const agentAddress = getAgentAddress(params.agentId);
+    const partial = {
+      receiptId,
+      agentId: params.agentId,
+      agentAddress,
+      taskId: params.taskId,
+      sprintId: params.sprintId,
+      skillId: params.skillId,
+      outcomeScore: params.outcomeScore,
+      actionSummary: params.actionSummary.substring(0, 140),
+      timestamp: new Date().toISOString(),
+      status: params.status,
+    };
+    const aarReceiptHash = createHash('sha256')
+      .update(JSON.stringify(partial))
+      .digest('hex');
+    return { ...partial, aarReceiptHash };
+  }
+
+  static writeLog(receipt: AARReceipt): AARWriteResult {
+    const config = loadConfig();
+    if (!config.enabled) return { receipt, logFile: '' };
+    const today = new Date().toISOString().substring(0, 10);
+    const logFile = join(config.logDir, `${today}.jsonl`);
+    if (!existsSync(config.logDir)) mkdirSync(config.logDir, { recursive: true });
+    appendFileSync(logFile, JSON.stringify(receipt) + '\n', 'utf-8');
+    return { receipt, logFile };
+  }
+
+  static async generateAndLog(params: AARParams): Promise<AARWriteResult> {
+    const receipt = AARMiddleware.generateReceipt(params);
+    return AARMiddleware.writeLog(receipt);
+  }
+}
