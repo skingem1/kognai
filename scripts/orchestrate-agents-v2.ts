@@ -1498,7 +1498,7 @@ class CodingAgent {
       'website/', 'docs-site/', 'apps/', 'sdk/', 'x402-base/', 'x402-evm/', 'x402-test/',
       'supabase/', 'infrastructure/',
       // Kognai v16 directories (S68)
-      'acp/', 'codebook/', 'failure-library/', 'skills/',
+      'acp/', 'codebook/', 'failure-library/', 'skills/', 'skill-bank/',
       // Kognai runtime paths (S66-002)
       'runtime/', 'dashboard/', 'kognai-agents/', 'workspace/', 'docs/', 'logs/', 'tests/',
     ];
