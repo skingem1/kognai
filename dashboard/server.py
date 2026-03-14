@@ -1,4 +1,3 @@
-FILE: dashboard/server.py
 """
 Kognai + Invoica Vault Dashboard — FastAPI Server
 Dual-project monitoring dashboard for the sovereign AI runtime.
@@ -142,7 +141,7 @@ async def daily_brief():
     doc = KOGNAI_ROOT / "docs" / "daily-brief.md"
     if not doc.exists():
         return {"error": "No daily brief found", "am": [], "mid": [], "pm": []}
-    return parse_daily_brief(doc.read_text())
+    return parse_daily_brief(doc)
 
 
 @app.post("/api/daily-brief/toggle")
@@ -150,9 +149,9 @@ async def toggle_brief_task(req: ToggleRequest):
     doc = KOGNAI_ROOT / "docs" / "daily-brief.md"
     if not doc.exists():
         return {"error": "No daily brief found"}
-    content = doc.read_text()
-    new_content = toggle_task(content, req.block, req.index)
-    doc.write_text(new_content)
+    result = toggle_task(doc, req.block, req.index)
+    if result is None:
+        return {"error": "Toggle failed"}
     return {"success": True}
 
 
@@ -161,9 +160,9 @@ async def defer_brief_task(req: ToggleRequest):
     doc = KOGNAI_ROOT / "docs" / "daily-brief.md"
     if not doc.exists():
         return {"error": "No daily brief found"}
-    content = doc.read_text()
-    new_content = defer_task(content, req.block, req.index)
-    doc.write_text(new_content)
+    result = defer_task(doc, req.block, req.index)
+    if result is None:
+        return {"error": "Defer failed"}
     return {"success": True}
 
 

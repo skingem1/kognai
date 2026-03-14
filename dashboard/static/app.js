@@ -89,14 +89,15 @@ function renderSprintBlock(sprint, projectName, accentClass) {
 // --- Panel Renderers ---
 
 async function renderProgress() {
-  const [kCurrent, kList, iCurrent, iList, iStats, phases] = await Promise.all([
-    fetchJson('/api/sprint/current'),
-    fetchJson('/api/sprint/list'),
-    fetchJson('/api/invoica/sprint/current'),
-    fetchJson('/api/invoica/sprint/list'),
+  const [kCurrent, kList, iCurrent, iList, iStats, gatesData] = await Promise.all([
+    fetchJson('/api/sprints/current'),
+    fetchJson('/api/sprints'),
+    fetchJson('/api/invoica/sprints/current'),
+    fetchJson('/api/invoica/sprints'),
     fetchJson('/api/invoica/stats'),
-    fetchJson('/api/phases'),
+    fetchJson('/api/gates'),
   ]);
+  const phases = (gatesData && gatesData.phases) || [];
 
   const panel = $('#progress-body');
   if (!panel) return;
@@ -192,10 +193,11 @@ async function renderProgress() {
 }
 
 async function renderTodo() {
-  const [brief, gates] = await Promise.all([
-    fetchJson('/api/tasks/today'),
+  const [brief, gatesResp] = await Promise.all([
+    fetchJson('/api/daily-brief'),
     fetchJson('/api/gates'),
   ]);
+  const gates = (gatesResp && gatesResp.gates) || [];
 
   const panel = $('#todo-body');
   if (!panel) return;
@@ -487,46 +489,18 @@ function updateClock() {
 }
 
 // --- SSE Connection ---
+// NOTE: No /api/stream endpoint on backend yet. Relies on 60s polling fallback.
 function connectSSE() {
+  // Mark as connected (polling mode) so UI doesn't show disconnected
   const dot = $('#connection-dot');
-  const evtSource = new EventSource('/api/stream');
-
-  evtSource.onopen = () => {
-    sseConnected = true;
-    if (dot) dot.classList.remove('disconnected');
-  };
-
-  evtSource.onmessage = (event) => {
-    try {
-      const data = JSON.parse(event.data);
-      if (data.type === 'update') {
-        const sources = data.sources || [];
-        // Kognai updates
-        if (sources.includes('sprints') || sources.includes('strategic')) renderProgress();
-        if (sources.includes('brief') || sources.includes('gates')) renderTodo();
-        if (sources.includes('logs')) renderLogs();
-        // Invoica updates
-        if (sources.includes('invoica_sprints')) renderProgress();
-        if (sources.includes('invoica_agents')) renderLogs();
-        // Shared infra update refreshes everything
-        if (sources.includes('shared_infra')) refreshAll();
-      }
-    } catch (e) {
-      // Heartbeat or parse error — ignore
-    }
-  };
-
-  evtSource.onerror = () => {
-    sseConnected = false;
-    if (dot) dot.classList.add('disconnected');
-    // EventSource auto-reconnects
-  };
+  if (dot) dot.classList.remove('disconnected');
+  sseConnected = true;
 }
 
 // --- Toggle Task Checkbox ---
 async function toggleTask(block, index) {
   try {
-    const res = await fetch('/api/tasks/toggle', {
+    const res = await fetch('/api/daily-brief/toggle', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ block, index }),
@@ -541,7 +515,7 @@ async function toggleTask(block, index) {
 // --- Defer Task to Tomorrow ---
 async function deferTask(block, index) {
   try {
-    const res = await fetch('/api/tasks/defer', {
+    const res = await fetch('/api/daily-brief/defer', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ block, index }),
