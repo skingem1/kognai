@@ -1,0 +1,37 @@
+{
+  "skill_id": "coder-sprint-073-create-aar-middleware-ts-aar-receipt-gen",
+  "type": "kognai-owned",
+  "name": "Create aar-middleware.ts — AAR receipt generator and JSONL l",
+  "description": "Create aar-middleware.ts — AAR receipt generator and JSONL logger",
+  "definition": {
+    "approach": "Create aar-middleware.ts — AAR receipt generator and JSONL logger",
+    "key_patterns": [
+      "No fence contamination — file starts cleanly with import statements.",
+      "Correct ROOT path derivation: path.join(__dirname, '../..') from scripts/lib/ correctly resolves to repo root.",
+      "Correct file paths for both CHAIN_REGISTRY.json and EAS_SCHEMAS.json under workspace/shared-context/.",
+      "generateAndLog() is exported and callable as specified for the manual 3-line addition to orchestrate-agents-v2.ts.",
+      "Async initialize() pattern cleanly separates construction from I/O, avoiding constructor async anti-pattern."
+    ],
+    "anti_patterns": []
+  },
+  "optimal_settings": {
+    "model": "qwen3:14b+manual",
+    "task_target": "local",
+    "max_attempts": 3
+  },
+  "score_history": [
+    {
+      "sprint_id": "sprint-073",
+      "task_id": "073-02",
+      "score": 85,
+      "reviewed_at": "2026-03-14T11:15:17.675Z"
+    }
+  ],
+  "execution_count": 1,
+  "access_tier": "internal",
+  "source_sprint": "sprint-073",
+  "source_task": "073-02",
+  "agent_id": "coder",
+  "created_at": "2026-03-14T11:15:17.675Z",
+  "updated_at": "2026-03-14T11:15:17.675Z"
+}

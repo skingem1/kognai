@@ -1,0 +1,31 @@
+{
+  "skill_id": "coder-sprint-071-fix-resolve-route-ts-3-surgical-ts-fixes",
+  "type": "kognai-owned",
+  "name": "Fix resolve-route.ts — 3 surgical TS fixes to unblock routin",
+  "description": "Fix resolve-route.ts — 3 surgical TS fixes to unblock routing JSONL",
+  "definition": {
+    "approach": "Fix resolve-route.ts — 3 surgical TS fixes to unblock routing JSONL",
+    "key_patterns": [],
+    "anti_patterns": []
+  },
+  "optimal_settings": {
+    "model": "manual",
+    "task_target": "local",
+    "max_attempts": 3
+  },
+  "score_history": [
+    {
+      "sprint_id": "sprint-071",
+      "task_id": "071-01",
+      "score": 100,
+      "reviewed_at": "2026-03-14T11:15:17.674Z"
+    }
+  ],
+  "execution_count": 1,
+  "access_tier": "internal",
+  "source_sprint": "sprint-071",
+  "source_task": "071-01",
+  "agent_id": "coder",
+  "created_at": "2026-03-14T11:15:17.674Z",
+  "updated_at": "2026-03-14T11:15:17.674Z"
+}

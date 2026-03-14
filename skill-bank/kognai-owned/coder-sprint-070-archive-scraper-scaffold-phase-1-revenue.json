@@ -1,0 +1,31 @@
+{
+  "skill_id": "coder-sprint-070-archive-scraper-scaffold-phase-1-revenue",
+  "type": "kognai-owned",
+  "name": "Archive scraper scaffold — Phase 1 revenue first file",
+  "description": "Archive scraper scaffold — Phase 1 revenue first file",
+  "definition": {
+    "approach": "Archive scraper scaffold — Phase 1 revenue first file",
+    "key_patterns": [],
+    "anti_patterns": []
+  },
+  "optimal_settings": {
+    "model": "manual",
+    "task_target": "local",
+    "max_attempts": 3
+  },
+  "score_history": [
+    {
+      "sprint_id": "sprint-070",
+      "task_id": "070-03",
+      "score": 100,
+      "reviewed_at": "2026-03-14T11:15:17.674Z"
+    }
+  ],
+  "execution_count": 1,
+  "access_tier": "internal",
+  "source_sprint": "sprint-070",
+  "source_task": "070-03",
+  "agent_id": "coder",
+  "created_at": "2026-03-14T11:15:17.674Z",
+  "updated_at": "2026-03-14T11:15:17.674Z"
+}

@@ -1,0 +1,37 @@
+{
+  "skill_id": "coder-sprint-071-vision-scoring-agent-scaffold-phase-1-st",
+  "type": "kognai-owned",
+  "name": "Vision scoring agent scaffold — Phase 1 Step 2",
+  "description": "Vision scoring agent scaffold — Phase 1 Step 2",
+  "definition": {
+    "approach": "Vision scoring agent scaffold — Phase 1 Step 2",
+    "key_patterns": [
+      "No fence contamination in either file",
+      "Config is cleanly separated into its own module with sensible stub values (modelVersion: 'stub-v1.0' clearly signals placeholder intent)",
+      "ScoredMediaItem interface correctly extends MediaItem, providing a clean type contract for Sprint 072 to build on",
+      "Error handling is present and consistent in both the class method and the main entrypoint",
+      "confidenceThreshold is read from config rather than hardcoded inline — good separation of concerns"
+    ],
+    "anti_patterns": []
+  },
+  "optimal_settings": {
+    "model": "qwen3:14b",
+    "task_target": "local",
+    "max_attempts": 3
+  },
+  "score_history": [
+    {
+      "sprint_id": "sprint-071",
+      "task_id": "071-03",
+      "score": 87,
+      "reviewed_at": "2026-03-14T11:15:17.675Z"
+    }
+  ],
+  "execution_count": 1,
+  "access_tier": "internal",
+  "source_sprint": "sprint-071",
+  "source_task": "071-03",
+  "agent_id": "coder",
+  "created_at": "2026-03-14T11:15:17.675Z",
+  "updated_at": "2026-03-14T11:15:17.675Z"
+}

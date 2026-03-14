@@ -1,0 +1,36 @@
+{
+  "skill_id": "coder-sprint-067-write-scripts-run-sprint-sh-convenience-",
+  "type": "kognai-owned",
+  "name": "Write scripts/run-sprint.sh — convenience wrapper for swarm",
+  "description": "Write scripts/run-sprint.sh — convenience wrapper for swarm",
+  "definition": {
+    "approach": "Write scripts/run-sprint.sh — convenience wrapper for swarm",
+    "key_patterns": [
+      "Matches the required content verbatim",
+      "Proper error handling with set -e and exit codes",
+      "Dynamically selects the latest pending sprint",
+      "Includes usage comment and executable shebang"
+    ],
+    "anti_patterns": []
+  },
+  "optimal_settings": {
+    "model": "MiniMax-M2.5",
+    "task_target": "cloud-code",
+    "max_attempts": 3
+  },
+  "score_history": [
+    {
+      "sprint_id": "sprint-067",
+      "task_id": "S67-004",
+      "score": 90,
+      "reviewed_at": "2026-03-14T11:15:17.673Z"
+    }
+  ],
+  "execution_count": 1,
+  "access_tier": "internal",
+  "source_sprint": "sprint-067",
+  "source_task": "S67-004",
+  "agent_id": "coder",
+  "created_at": "2026-03-14T11:15:17.673Z",
+  "updated_at": "2026-03-14T11:15:17.673Z"
+}

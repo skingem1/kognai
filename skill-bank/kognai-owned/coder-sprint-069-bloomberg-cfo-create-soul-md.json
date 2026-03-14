@@ -1,0 +1,37 @@
+{
+  "skill_id": "coder-sprint-069-bloomberg-cfo-create-soul-md",
+  "type": "kognai-owned",
+  "name": "Bloomberg CFO: Create SOUL.md",
+  "description": "Bloomberg CFO: Create SOUL.md",
+  "definition": {
+    "approach": "Bloomberg CFO: Create SOUL.md",
+    "key_patterns": [
+      "All five required sections are present: Who I Am, My Role in the 9-Layer Architecture, What I Do Each Sprint Cycle, Hard Constraints, Communication Style",
+      "Layer 9 CFO responsibilities correctly enumerated: per-task_type spend tracking, weekly cost-per-agent reports, 80%/95% burn alerts",
+      "Sprint cycle steps accurately reflect spec: reads logs/routing/*.jsonl, computes burn % against €200, emits budget.warning and budget.freeze, writes to workspace/outputs/cfo/YYYY-WW.md",
+      "Escalation path correctly specified: Harvey first, Tarek if >€160/week",
+      "Communication style section matches spec: bullet lists, numbers, no adjectives"
+    ],
+    "anti_patterns": []
+  },
+  "optimal_settings": {
+    "model": "qwen3:14b",
+    "task_target": "local",
+    "max_attempts": 3
+  },
+  "score_history": [
+    {
+      "sprint_id": "sprint-069",
+      "task_id": "069-01",
+      "score": 90,
+      "reviewed_at": "2026-03-14T11:15:17.674Z"
+    }
+  ],
+  "execution_count": 1,
+  "access_tier": "internal",
+  "source_sprint": "sprint-069",
+  "source_task": "069-01",
+  "agent_id": "coder",
+  "created_at": "2026-03-14T11:15:17.674Z",
+  "updated_at": "2026-03-14T11:15:17.674Z"
+}

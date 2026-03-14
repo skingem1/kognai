@@ -1,0 +1,37 @@
+{
+  "skill_id": "coder-sprint-069-event-bus-publisher-module",
+  "type": "kognai-owned",
+  "name": "Event Bus: Publisher module",
+  "description": "Event Bus: Publisher module",
+  "definition": {
+    "approach": "Event Bus: Publisher module",
+    "key_patterns": [
+      "Uses 'import * as https from https' exactly as specified — not the default import form",
+      "No fence contamination — file starts cleanly with import statement",
+      "checkConfig() logs exactly one warning to stderr on first publish attempt, then silences — matches spec precisely",
+      "Never throws — all error and timeout paths resolve() silently",
+      "5000ms timeout enforced with req.destroy() on timeout event"
+    ],
+    "anti_patterns": []
+  },
+  "optimal_settings": {
+    "model": "claude-haiku-4-5-20251001",
+    "task_target": "cloud-code",
+    "max_attempts": 3
+  },
+  "score_history": [
+    {
+      "sprint_id": "sprint-069",
+      "task_id": "069-04",
+      "score": 92,
+      "reviewed_at": "2026-03-14T11:15:17.674Z"
+    }
+  ],
+  "execution_count": 1,
+  "access_tier": "internal",
+  "source_sprint": "sprint-069",
+  "source_task": "069-04",
+  "agent_id": "coder",
+  "created_at": "2026-03-14T11:15:17.674Z",
+  "updated_at": "2026-03-14T11:15:17.674Z"
+}
