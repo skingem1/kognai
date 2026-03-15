@@ -49,6 +49,7 @@ import { brvQuery, brvCurate } from './lib/byterover-client';
 import { publishTaskStarted, publishTaskCompleted, publishTaskFailed, publishBudgetWarning, publishBudgetFreeze, publishSprintStarted, publishSprintCompleted } from './lib/event-bus-publisher';
 import { AARMiddleware } from './lib/aar-middleware';
 import { crystalliseSkill } from './lib/skill-crystalliser';
+import { MonotaskSM } from './lib/monotask-state-machine';
 
 // V17: Sovereign mode — force all inference to local Ollama ($0 cost floor)
 const SOVEREIGN_MODE = process.argv.includes('--sovereign') || process.env.SOVEREIGN_MODE === '1';
@@ -2121,10 +2122,19 @@ ONLY output the JSON array. No markdown, no explanation.`;
       log(c.blue, `\n  [sub-task] ${subtask.id} | Attempt: ${attempt}/${maxRetries}`);
 
       this.stats.tasksExecuted++;
+
+      // AMD-08: depth=1 (sub-agent chain)
+      if (!MonotaskSM.claim(subtask.agent, subtask.id, 1)) {
+        log(c.yellow, `  [monotask] ${subtask.agent} unavailable — skipping sub-task attempt ${attempt}`);
+        continue;
+      }
+      MonotaskSM.start(subtask.agent, subtask.id);
+
       const result = await agent.execute(subtask, lastReview);
 
       if (result.files.length === 0) {
         log(c.red, `  No files produced for sub-task ${subtask.id}`);
+        MonotaskSM.release(subtask.agent, subtask.id, 'no files');
         return false;
       }
 
@@ -2141,6 +2151,7 @@ ONLY output the JSON array. No markdown, no explanation.`;
 
       if (review.verdict === 'APPROVED') {
         this.stats.approved++;
+        MonotaskSM.complete(subtask.agent, subtask.id);
         log(c.green, `  ✓ Sub-task ${subtask.id} APPROVED on attempt ${attempt} (${review.score}/100)`);
         return true;
       }
@@ -2154,6 +2165,7 @@ ONLY output the JSON array. No markdown, no explanation.`;
       } catch {
         log(c.gray, '    Reset skipped');
       }
+      MonotaskSM.release(subtask.agent, subtask.id, `rejected attempt ${attempt}`);
     }
 
     log(c.red, `  ✗ Sub-task ${subtask.id} FAILED after ${maxRetries} attempts`);
@@ -2213,6 +2225,13 @@ ONLY output the JSON array. No markdown, no explanation.`;
       this.stats.tasksExecuted++;
       taskRun.attempts = attempt;
 
+      // AMD-08: IDLE → RESERVED → ACTIVE (per attempt)
+      if (!MonotaskSM.claim(task.agent, task.id)) {
+        log(c.yellow, `  [monotask] ${task.agent} unavailable — skipping attempt ${attempt}`);
+        continue;
+      }
+      MonotaskSM.start(task.agent, task.id);
+
       // Execute with rejection feedback if retrying
       const tokensBefore = _globalTokensThisRun;
       const result = await agent.execute(task, lastReview);
@@ -2221,6 +2240,7 @@ ONLY output the JSON array. No markdown, no explanation.`;
 
       if (result.files.length === 0) {
         log(c.red, `  No files produced for ${task.id}`);
+        MonotaskSM.release(task.agent, task.id, 'no files produced');
         task.status = 'rejected';
         taskRun.status = 'rejected';
         taskRun.error = 'No files produced';
@@ -2237,6 +2257,7 @@ ONLY output the JSON array. No markdown, no explanation.`;
         this.stats.rejected++;
         task.status = 'rejected'; // will be reset on retry
         try { execSync('git reset --hard HEAD~1', { timeout: 10000 }); } catch { /* ok */ }
+        MonotaskSM.release(task.agent, task.id, `QA gate: ${qaResult.reason}`);
         if (attempt < MAX_RETRIES) { log(c.yellow, '  QA gate failed — retrying without supervisor...'); continue; }
         taskRun.status = 'rejected';
         taskRun.rejection_reason = `QA gate: ${qaResult.reason}`;
@@ -2268,6 +2289,7 @@ ONLY output the JSON array. No markdown, no explanation.`;
         publishTaskCompleted(task.agent, _sprintIdApproved, task.id, (task as any).title || task.id, 0).catch(() => {});
         AARMiddleware.generateAndLog({ agentId: task.agent, taskId: task.id, sprintId: _sprintIdApproved, skillId: (task as any).skill_id || task.type || 'code-generation', outcomeScore: review.score, actionSummary: ((task as any).title || task.id).substring(0, 140), status: 'success' }).catch(() => {});
         crystalliseSkill({ agentId: task.agent, taskId: task.id, sprintId: _sprintIdApproved, taskTitle: (task as any).title || task.id, taskType: task.type || 'feature', model: (task as any).model || 'qwen3:14b', taskTarget: (task as any).task_target || 'local', score: review.score, approachSummary: ((task as any).title || task.id).substring(0, 200), keyPatterns: review.strengths || [], antiPatterns: [] });
+        MonotaskSM.complete(task.agent, task.id);
         taskRun.status = 'done';
         taskRun.files_written = result.files;
         taskRun.review = { verdict: review.verdict, score: review.score, strengths: review.strengths };
@@ -2292,6 +2314,7 @@ ONLY output the JSON array. No markdown, no explanation.`;
       } catch {
         log(c.gray, '  Reset skipped (nothing to reset)');
       }
+      MonotaskSM.release(task.agent, task.id, `rejected attempt ${attempt}`);
 
       // CTO AUTO-DECOMPOSE: After N consecutive truncation rejections, split the task
       if (truncationCount >= TRUNCATION_THRESHOLD) {

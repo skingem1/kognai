@@ -1,0 +1,8 @@
+{"ts":"2026-03-15T12:03:50.714Z","agentId":"test-agent","taskId":"t1","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-15T12:03:50.716Z","agentId":"test-agent","taskId":"t2","transition":"claim_rejected","from":"RESERVED","to":"RESERVED","depth":0,"reason":"Agent already RESERVED on task t1"}
+{"ts":"2026-03-15T12:03:50.716Z","agentId":"test-agent","taskId":"t1","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-15T12:03:50.716Z","agentId":"test-agent","taskId":"t1","transition":"ACTIVE→IDLE","from":"ACTIVE","to":"IDLE","depth":0}
+{"ts":"2026-03-15T12:03:50.716Z","agentId":"deep-agent","taskId":"td","transition":"depth_exceeded","from":"IDLE","to":"IDLE","depth":4,"reason":"Depth 4 > MAX_DEPTH 3"}
+{"ts":"2026-03-15T12:03:50.716Z","agentId":"r-agent","taskId":"tr","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-15T12:03:50.716Z","agentId":"r-agent","taskId":"tr","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-15T12:03:50.716Z","agentId":"r-agent","taskId":"tr","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"rejection"}
