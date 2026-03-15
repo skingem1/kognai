@@ -50,7 +50,7 @@ export class VisionScorer {
 
   private async scoreWithVision(imageBase64: string): Promise<number> {
     const body = {
-      model: 'qwen2-vl',
+      model: 'qwen2.5vl:7b',
       prompt: 'Rate this image for TikTok visual appeal on a scale 0-100. Reply ONLY with a JSON object: {"score": <number>, "reason": "<short reason>"}',
       images: [imageBase64], // Ollama /api/generate vision format
       stream: false,
@@ -64,6 +64,7 @@ export class VisionScorer {
       model: 'qwen3:14b',
       prompt: `Rate the likely TikTok visual appeal of an archive media item at this URL: ${url}\nReply ONLY with a JSON object: {"score": <number 0-100>, "reason": "<short reason>"}`,
       stream: false,
+      think: false,
       options: { num_predict: 64, temperature: 0.1 },
     };
     return this.callOllamaAndParseScore(body);
@@ -76,9 +77,10 @@ export class VisionScorer {
       body: JSON.stringify(body),
     });
     if (!res.ok) throw new Error(`Ollama returned ${res.status}`);
-    const json = await res.json() as { response: string };
-    // Extract JSON from model response (may include reasoning text)
-    const match = json.response.match(/\{[\s\S]*?\}/);
+    const json = await res.json() as { response: string; thinking?: string };
+    const raw = json.response || json.thinking || '';
+    const cleaned = raw.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
+    const match = cleaned.match(/\{[\s\S]*?\}/);
     if (!match) return 50; // neutral default if no JSON found
     const parsed = JSON.parse(match[0]) as { score?: number };
     const score = typeof parsed.score === 'number' ? parsed.score : 50;
