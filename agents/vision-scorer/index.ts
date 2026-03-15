@@ -12,7 +12,10 @@ interface ScoredMediaItem extends MediaItem {
 }
 
 export class VisionScorer {
-  private readonly ollamaBase = process.env.OLLAMA_HOST || 'http://localhost:11434';
+  private readonly ollamaBase = (() => {
+    const h = process.env.OLLAMA_HOST || 'http://localhost:11434';
+    return h.startsWith('http') ? h : `http://${h}`;
+  })();
 
   async scoreThumbnails(mediaItems: MediaItem[]): Promise<ScoredMediaItem[]> {
     const results: ScoredMediaItem[] = [];
@@ -35,7 +38,7 @@ export class VisionScorer {
       } catch { /* image fetch failed — fall through to text scoring */ }
 
       const score = imageBase64
-        ? await this.scoreWithVision(imageBase64)
+        ? await this.scoreWithVision(imageBase64).catch(() => this.scoreWithText(item.url))
         : await this.scoreWithText(item.url);
 
       return { ...item, confidence: config.confidenceThreshold, score, status: 'success' as const };

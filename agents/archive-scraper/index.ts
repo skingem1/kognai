@@ -40,52 +40,35 @@ export class ArchiveScraper {
    */
   async scrape(): Promise<ArchiveResult[]> {
     const results: ArchiveResult[] = [];
-    const cdxUrl = `${this.config.apiBaseUrl}/cdx/search/cdx?url=${encodeURIComponent(this.config.query)}&output=json&limit=${this.config.maxResults}`;
-    
-    try {
-      const cdxResponse = await fetch(cdxUrl);
-      if (!cdxResponse.ok) {
-        throw new Error(`CDX API request failed with status ${cdxResponse.status}`);
-      }
-      
-      const cdxData = await cdxResponse.json() as any[];
-      
-      for (let i = 1; i < cdxData.length; i++) { // Skip CDX header row (index 0 = field names)
-        const [url, timestamp, mimeType] = cdxData[i];
-        const availabilityUrl = `${this.config.apiBaseUrl}/wayback/available?url=${encodeURIComponent(url)}`;
-        
-        try {
-          const availabilityResponse = await fetch(availabilityUrl);
-          if (!availabilityResponse.ok) {
-            throw new Error(`Availability check failed for ${url}`);
-          }
-          
-          const availabilityData = await availabilityResponse.json() as any;
-          // Real API shape: { archived_snapshots: { closest: { url, timestamp, status } } }
-          const closest = availabilityData.archived_snapshots?.closest || {};
+    // Use Advanced Search API for keyword queries (CDX is for URL pattern matching only)
+    const searchUrl = `https://archive.org/advancedsearch.php?q=${encodeURIComponent(this.config.query)}+mediatype:image&output=json&fl[]=identifier,title,description,mediatype,year&rows=${this.config.maxResults}&page=1`;
 
-          results.push({
-            id: url,
-            title: closest.title || '',
-            url,
-            mediaType: mimeType || 'unknown',
-            year: closest.timestamp?.substring(0, 4) || timestamp.substring(0, 4) || '',
-            description: closest.description || ''
-          });
-          
-          // Rate limit between requests
-          if (i < cdxData.length - 1) {
-            await new Promise(resolve => setTimeout(resolve, RATE_LIMIT_MS));
-          }
-        } catch (error) {
-          console.error(`Error processing URL ${url}:`, error);
-          continue;
+    try {
+      const res = await fetch(searchUrl);
+      if (!res.ok) throw new Error(`Advanced search failed with status ${res.status}`);
+
+      const data = await res.json() as { response?: { docs?: any[] } };
+      const docs = data.response?.docs ?? [];
+
+      for (const doc of docs) {
+        const identifier = doc.identifier as string;
+        if (!identifier) continue;
+        results.push({
+          id: identifier,
+          title: doc.title ?? identifier,
+          url: `https://archive.org/services/img/${identifier}`,
+          mediaType: doc.mediatype ?? 'image',
+          year: String(doc.year ?? ''),
+          description: doc.description ?? '',
+        });
+        if (results.length < docs.length) {
+          await new Promise(resolve => setTimeout(resolve, RATE_LIMIT_MS));
         }
       }
     } catch (error) {
-      console.error('Error fetching from CDX API:', error);
+      console.error('Error fetching from Advanced Search API:', error);
     }
-    
+
     return results;
   }
 }

@@ -53,7 +53,7 @@ async function run() {
   console.log('✍️  Step 3: Generating captions...');
   const t3 = Date.now();
   const captionGen = new CaptionGenerator();
-  const captioned = await captionGen.generateCaptions(eligible, COUNT);
+  const captioned = await captionGen.generateCaptions(eligible, COUNT, MIN_SCORE);
   console.log(`  ✓ ${captioned.length} captions generated (${Date.now() - t3}ms)\n`);
 
   // Step 4: Post

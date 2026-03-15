@@ -20,9 +20,10 @@ export class CaptionGenerator {
   private ollamaBase = CAPTION_CONFIG.ollamaBase;
   private model = CAPTION_CONFIG.model;
 
-  async generateCaptions(items: ScoredMediaItem[], count?: number): Promise<CaptionedItem[]> {
+  async generateCaptions(items: ScoredMediaItem[], count?: number, overrideMinScore?: number): Promise<CaptionedItem[]> {
+    const minScore = overrideMinScore ?? CAPTION_CONFIG.minScore;
     const eligible = items
-      .filter(i => i.status === 'success' && i.score >= CAPTION_CONFIG.minScore)
+      .filter(i => i.status === 'success' && i.score >= minScore)
       .sort((a, b) => b.score - a.score)
       .slice(0, count ?? CAPTION_CONFIG.defaultCount);
 
