@@ -49,6 +49,7 @@ import { brvQuery, brvCurate } from './lib/byterover-client';
 import { publishTaskStarted, publishTaskCompleted, publishTaskFailed, publishBudgetWarning, publishBudgetFreeze, publishSprintStarted, publishSprintCompleted } from './lib/event-bus-publisher';
 import { AARMiddleware } from './lib/aar-middleware';
 import { crystalliseSkill } from './lib/skill-crystalliser';
+import { crystalliseCodeAsset } from './lib/code-asset-crystalliser';
 import { MonotaskSM } from './lib/monotask-state-machine';
 
 // V17: Sovereign mode — force all inference to local Ollama ($0 cost floor)
@@ -2289,6 +2290,7 @@ ONLY output the JSON array. No markdown, no explanation.`;
         publishTaskCompleted(task.agent, _sprintIdApproved, task.id, (task as any).title || task.id, 0).catch(() => {});
         AARMiddleware.generateAndLog({ agentId: task.agent, taskId: task.id, sprintId: _sprintIdApproved, skillId: (task as any).skill_id || task.type || 'code-generation', outcomeScore: review.score, actionSummary: ((task as any).title || task.id).substring(0, 140), status: 'success' }).catch(() => {});
         crystalliseSkill({ agentId: task.agent, taskId: task.id, sprintId: _sprintIdApproved, taskTitle: (task as any).title || task.id, taskType: task.type || 'feature', model: (task as any).model || 'qwen3:14b', taskTarget: (task as any).task_target || 'local', score: review.score, approachSummary: ((task as any).title || task.id).substring(0, 200), keyPatterns: review.strengths || [], antiPatterns: [] });
+        crystalliseCodeAsset({ agentId: task.agent, sprintId: _sprintIdApproved, taskId: task.id, taskTitle: (task as any).title || task.id, files: result.files, supervisorScore: review.score, origin: 'kognai-core' });
         MonotaskSM.complete(task.agent, task.id);
         taskRun.status = 'done';
         taskRun.files_written = result.files;
