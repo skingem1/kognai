@@ -65,6 +65,7 @@ export interface BaseEvent {
   sprint: string;
   timestamp: string;
   payload: Record<string, unknown>;
+  inserted_at?: string; // added by Supabase on insert
 }
 
 // Discriminated union event types
