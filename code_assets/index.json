@@ -2,9 +2,100 @@
   "_meta": {
     "schema": "AMD-07-B v1.0",
     "created_at": "2026-03-15",
-    "total_assets": 0,
-    "tier_counts": { "1": 0, "2": 0, "3": 0, "pending": 0 },
-    "categories": ["QUEUE","DATABASE","API","AUTH","PAYMENT","STORAGE","WORKER","TESTING","INFRASTRUCTURE","INTELLIGENCE","AGENT","UI","OTHER"]
+    "total_assets": 4,
+    "tier_counts": {
+      "1": 0,
+      "2": 0,
+      "3": 4,
+      "pending": 0
+    },
+    "categories": [
+      "QUEUE",
+      "DATABASE",
+      "API",
+      "AUTH",
+      "PAYMENT",
+      "STORAGE",
+      "WORKER",
+      "TESTING",
+      "INFRASTRUCTURE",
+      "INTELLIGENCE",
+      "AGENT",
+      "UI",
+      "OTHER"
+    ]
   },
-  "assets": []
+  "assets": [
+    {
+      "asset_id": "5b2f2430-d1ca-488a-9749-dda7f1c332fd",
+      "title": "Event Bus: Publisher module",
+      "category": "OTHER",
+      "tags": [
+        "scripts",
+        "event",
+        "publisher",
+        "bus:",
+        "module"
+      ],
+      "tier": 3,
+      "quality_score": 92,
+      "language": "TypeScript",
+      "usage_count": 0,
+      "provenance": "sprint-069"
+    },
+    {
+      "asset_id": "4f65f275-ef91-4e57-8ae2-119a4b7f96e8",
+      "title": "Event Bus: Listener module",
+      "category": "OTHER",
+      "tags": [
+        "scripts",
+        "event",
+        "listener",
+        "bus:",
+        "module"
+      ],
+      "tier": 3,
+      "quality_score": 90,
+      "language": "TypeScript",
+      "usage_count": 0,
+      "provenance": "sprint-069"
+    },
+    {
+      "asset_id": "ab2dcee6-0437-43f1-8af9-1552349ac0fd",
+      "title": "Create aar-types.ts — TypeScript interfaces for AAR receipts",
+      "category": "OTHER",
+      "tags": [
+        "scripts",
+        "types",
+        "create",
+        "typescript",
+        "interfaces",
+        "receipts"
+      ],
+      "tier": 3,
+      "quality_score": 87,
+      "language": "TypeScript",
+      "usage_count": 0,
+      "provenance": "sprint-073"
+    },
+    {
+      "asset_id": "9ff7202c-8cf9-46f3-ad54-9169f3796bed",
+      "title": "Create aar-middleware.ts — AAR receipt generator and JSONL logger",
+      "category": "OTHER",
+      "tags": [
+        "scripts",
+        "middleware",
+        "create",
+        "receipt",
+        "generator",
+        "jsonl",
+        "logger"
+      ],
+      "tier": 3,
+      "quality_score": 85,
+      "language": "TypeScript",
+      "usage_count": 0,
+      "provenance": "sprint-073"
+    }
+  ]
 }

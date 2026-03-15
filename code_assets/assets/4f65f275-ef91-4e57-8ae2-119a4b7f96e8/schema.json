@@ -1,0 +1,32 @@
+{
+  "asset_id": "4f65f275-ef91-4e57-8ae2-119a4b7f96e8",
+  "title": "Event Bus: Listener module",
+  "description": "Auto-indexed from sprint sprint-069 task 069-05",
+  "category": "OTHER",
+  "tags": [
+    "scripts",
+    "event",
+    "listener",
+    "bus:",
+    "module"
+  ],
+  "language": "TypeScript",
+  "dependencies": [],
+  "interface": "",
+  "usage_example": "",
+  "test_coverage": "none",
+  "quality_score": 90,
+  "production_validations": 1,
+  "origin": "kognai-core",
+  "provenance": "sprint-069",
+  "ip_status": "eligible",
+  "version": "1.0.0",
+  "last_modified": "2026-03-15",
+  "usage_count": 0,
+  "known_limitations": [],
+  "related_assets": [],
+  "tier": 3,
+  "source_files": [
+    "scripts/lib/event-bus-listener.ts"
+  ]
+}

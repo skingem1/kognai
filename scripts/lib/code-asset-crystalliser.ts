@@ -143,11 +143,13 @@ export function crystalliseCodeAsset(input: CrystalliseCodeAssetInput): string |
     return null;
   }
 
-  // Filter to reusable library files only
+  // Filter to reusable library files only (exclude workspace/ identity docs)
   const eligibleFiles = input.files.filter(f =>
-    /\/(lib|utils|helpers|agents)\//i.test(f) ||
-    f.endsWith('.sql') ||
-    (f.includes('/scripts/') && !f.includes('.test.'))
+    !f.startsWith('workspace/') && (
+      /\/(lib|utils|helpers|agents)\//i.test(f) ||
+      f.endsWith('.sql') ||
+      (f.includes('/scripts/') && !f.includes('.test.'))
+    )
   );
 
   if (eligibleFiles.length === 0) {
@@ -156,8 +158,10 @@ export function crystalliseCodeAsset(input: CrystalliseCodeAssetInput): string |
 
   const idx = loadIndex();
 
-  // Dedup: skip if a file from this sprint is already indexed
-  const alreadyIndexed = idx.assets.some(a => a.provenance === input.sprintId);
+  // Dedup: skip if this exact task (sprint+title) is already indexed
+  const alreadyIndexed = idx.assets.some(
+    a => a.provenance === input.sprintId && a.title === input.taskTitle
+  );
   if (alreadyIndexed) {
     return null;
   }

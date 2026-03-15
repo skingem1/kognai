@@ -1,0 +1,33 @@
+{
+  "asset_id": "ab2dcee6-0437-43f1-8af9-1552349ac0fd",
+  "title": "Create aar-types.ts — TypeScript interfaces for AAR receipts",
+  "description": "Auto-indexed from sprint sprint-073 task 073-01",
+  "category": "OTHER",
+  "tags": [
+    "scripts",
+    "types",
+    "create",
+    "typescript",
+    "interfaces",
+    "receipts"
+  ],
+  "language": "TypeScript",
+  "dependencies": [],
+  "interface": "",
+  "usage_example": "",
+  "test_coverage": "none",
+  "quality_score": 87,
+  "production_validations": 1,
+  "origin": "kognai-core",
+  "provenance": "sprint-073",
+  "ip_status": "eligible",
+  "version": "1.0.0",
+  "last_modified": "2026-03-15",
+  "usage_count": 0,
+  "known_limitations": [],
+  "related_assets": [],
+  "tier": 3,
+  "source_files": [
+    "scripts/lib/aar-types.ts"
+  ]
+}

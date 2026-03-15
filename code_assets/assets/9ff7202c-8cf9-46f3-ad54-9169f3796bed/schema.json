@@ -1,0 +1,34 @@
+{
+  "asset_id": "9ff7202c-8cf9-46f3-ad54-9169f3796bed",
+  "title": "Create aar-middleware.ts — AAR receipt generator and JSONL logger",
+  "description": "Auto-indexed from sprint sprint-073 task 073-02",
+  "category": "OTHER",
+  "tags": [
+    "scripts",
+    "middleware",
+    "create",
+    "receipt",
+    "generator",
+    "jsonl",
+    "logger"
+  ],
+  "language": "TypeScript",
+  "dependencies": [],
+  "interface": "",
+  "usage_example": "",
+  "test_coverage": "none",
+  "quality_score": 85,
+  "production_validations": 1,
+  "origin": "kognai-core",
+  "provenance": "sprint-073",
+  "ip_status": "eligible",
+  "version": "1.0.0",
+  "last_modified": "2026-03-15",
+  "usage_count": 0,
+  "known_limitations": [],
+  "related_assets": [],
+  "tier": 3,
+  "source_files": [
+    "scripts/lib/aar-middleware.ts"
+  ]
+}

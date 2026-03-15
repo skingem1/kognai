@@ -1,0 +1,32 @@
+{
+  "asset_id": "5b2f2430-d1ca-488a-9749-dda7f1c332fd",
+  "title": "Event Bus: Publisher module",
+  "description": "Auto-indexed from sprint sprint-069 task 069-04",
+  "category": "OTHER",
+  "tags": [
+    "scripts",
+    "event",
+    "publisher",
+    "bus:",
+    "module"
+  ],
+  "language": "TypeScript",
+  "dependencies": [],
+  "interface": "",
+  "usage_example": "",
+  "test_coverage": "none",
+  "quality_score": 92,
+  "production_validations": 1,
+  "origin": "kognai-core",
+  "provenance": "sprint-069",
+  "ip_status": "eligible",
+  "version": "1.0.0",
+  "last_modified": "2026-03-15",
+  "usage_count": 0,
+  "known_limitations": [],
+  "related_assets": [],
+  "tier": 3,
+  "source_files": [
+    "scripts/lib/event-bus-publisher.ts"
+  ]
+}
