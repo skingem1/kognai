@@ -1,0 +1,13 @@
+apps:
+  - name: kognai-dashboard
+    script: python3
+    args: -m uvicorn server:app --host 127.0.0.1 --port 11436
+    cwd: /Users/tarekmnif/kognai/dashboard
+    interpreter: none
+    watch: false
+    autorestart: true
+    max_restarts: 10
+    min_uptime: 3000
+    restart_delay: 2000
+    env:
+      PYTHONUNBUFFERED: "1"
