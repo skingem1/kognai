@@ -54,15 +54,17 @@ Rules:
           model: this.model,
           prompt,
           stream: false,
+          think: false,
           options: { num_predict: 200, temperature: 0.7 },
         }),
       });
 
       if (!res.ok) throw new Error(`Ollama ${res.status}`);
-      const json = await res.json() as { response: string };
-      // Strip qwen3 <think>...</think> reasoning block before parsing JSON
-      const cleaned = json.response.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
-      const match = cleaned.match(/\{[\s\S]*?\}/);
+      const json = await res.json() as { response: string; thinking?: string };
+      // qwen3 may put output in response or thinking depending on Ollama version
+      const raw = json.response || json.thinking || '';
+      const cleaned = raw.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
+      const match = cleaned.match(/\{[\s\S]*\}/);
       if (!match) throw new Error('No JSON in response');
       const parsed = JSON.parse(match[0]) as { caption?: string; hashtags?: string[] };
 
