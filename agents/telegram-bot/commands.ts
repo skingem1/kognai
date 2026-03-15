@@ -5,6 +5,7 @@ import { readdirSync, readFileSync, existsSync } from 'fs';
 import { join } from 'path';
 import { sendMessage, sendPhoto } from './bot';
 import { TelegramDB } from './db';
+import { createCheckoutSession, isConfigured as stripeConfigured } from '../stripe/client';
 
 const REPORTS_DIR = join(process.cwd(), 'reports');
 
@@ -183,16 +184,38 @@ export async function handleStats(chatId: number): Promise<void> {
   ].join('\n'));
 }
 
-export async function handleSubscribe(chatId: number): Promise<void> {
-  await sendMessage(chatId, [
-    '💳 *Subscription Plans*',
-    '',
-    '🆓 *Free* — 3 posts/day, standard queue',
-    '🚀 *Growth* — 10 posts/day, priority queue — $19/mo',
-    '⭐ *Premium* — Unlimited posts, custom queries — $49/mo',
-    '',
-    '⏳ Stripe integration coming soon. You\'ll be notified here when it\'s live.',
-  ].join('\n'));
+export async function handleSubscribe(chatId: number, planArg?: string): Promise<void> {
+  const plan = planArg === 'premium' ? 'premium' : 'growth';
+
+  if (!stripeConfigured()) {
+    // Stripe not yet configured — show plan info + coming soon
+    await sendMessage(chatId, [
+      '💳 *Subscription Plans*',
+      '',
+      '🆓 *Free* — 3 posts/day, standard queue',
+      '🚀 *Growth* — 10 posts/day, priority queue — $19/mo  → `/subscribe growth`',
+      '⭐ *Premium* — Unlimited posts, custom queries — $49/mo  → `/subscribe premium`',
+      '',
+      '⏳ Payments launching soon. You\'ll be notified here when live.',
+    ].join('\n'));
+    return;
+  }
+
+  try {
+    await sendMessage(chatId, '⏳ Creating checkout session...');
+    const session = await createCheckoutSession(plan, chatId);
+    const badge   = plan === 'premium' ? '⭐ Premium ($49/mo)' : '🚀 Growth ($19/mo)';
+    await sendMessage(chatId, [
+      `💳 *${badge}*`,
+      '',
+      `[Complete payment →](${session.url})`,
+      '',
+      'You\'ll receive a confirmation here once payment is processed.',
+    ].join('\n'), { disable_web_page_preview: true });
+  } catch (err) {
+    process.stderr.write(`[subscribe] Stripe error: ${(err as Error).message}\n`);
+    await sendMessage(chatId, '⚠️ Could not create checkout session. Please try again later.');
+  }
 }
 
 export async function handleUnknown(chatId: number, text: string): Promise<void> {

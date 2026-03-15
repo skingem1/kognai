@@ -51,17 +51,16 @@ export class TelegramDB {
     const now = new Date().toISOString();
 
     const existing = db.subscribers[key];
-    const record: SubscriberRecord = {
+    const defaults: SubscriberRecord = {
       chatId,
-      firstName:   updates.firstName,
-      tier:        'free',
+      firstName:    updates.firstName,
+      tier:         'free',
       registeredAt: now,
       postsPerDay:  3,
       active:       true,
-      ...existing,
-      ...updates,
-      lastSeen: now,
+      lastSeen:     now,
     };
+    const record: SubscriberRecord = { ...defaults, ...existing, ...updates, lastSeen: now };
 
     db.subscribers[key] = record;
     save(db);

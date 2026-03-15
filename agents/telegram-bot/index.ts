@@ -91,7 +91,7 @@ async function dispatch(update: TelegramUpdate): Promise<void> {
     case '/preview':    await handlePreview(chatId);                      break;
     case '/schedule':   await handleSchedule(chatId, text);               break;
     case '/stats':      await handleStats(chatId);                        break;
-    case '/subscribe':  await handleSubscribe(chatId);                    break;
+    case '/subscribe':  await handleSubscribe(chatId, text.split(/\s+/)[1]); break;
     default:            await handleUnknown(chatId, text);                break;
   }
 }
