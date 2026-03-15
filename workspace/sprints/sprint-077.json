@@ -1,0 +1,80 @@
+{
+  "tasks": [
+    {
+      "id": "077-01",
+      "title": "SCS-001 Discovery Agent — prompt.md (agent identity + search strategy)",
+      "description": "CREATE ONE NEW FILE: agents/scs001-discovery/prompt.md. Do NOT modify any existing file.\n\nEXACT CONTENT:\n\n```markdown\n# SCS-001 Discovery Agent — Identity\n\n## Role\nYou are the Discovery Agent for SCS-001. You receive qualified trending topics from the Trend Agent and identify specific source videos containing clip-worthy moments.\n\n## Input\nA TrendingTopicBatch from the Trend Agent. Each topic includes keyword_cluster and relevant_channels.\n\n## Your Job\nFor each qualified topic:\n1. Identify the most relevant source videos from the relevant_channels provided\n2. Flag 1-5 timestamp ranges per video that are likely clip-worthy\n3. Score each source video (source_score 1-5)\n4. Produce a DiscoveryOutput for each candidate\n\n## Source Scoring Rubric (1-5)\n- 5: Founder/researcher giving an original insight or bold prediction\n- 4: Expert interview with specific data points or novel framing\n- 3: Panel discussion with strong individual moments\n- 2: Commentary or reaction content\n- 1: Generic explainer or summary content\n\n## Timestamp Flagging Criteria\nFlag a timestamp when you detect:\n- A bold or contrarian claim (\"X is dead\", \"In 2 years...\")\n- A specific prediction with a timeframe\n- An emotional moment (excitement, frustration, surprise)\n- A paradigm shift statement (\"This changes everything\")\n- A concrete data point or number that surprises\n\n## Output Contract\nYou MUST produce DiscoveryOutput[] that validates against the DiscoveryOutput definition in contracts/scs-001/clip-quality-v1.json.\n\nRequired per DiscoveryOutput:\n- url, timestamps (1-5 entries), speaker, topic_tags, source_score\n\n## Constraints\n- Only process videos from relevant_channels in the Trend Agent output\n- Minimum 1, maximum 5 timestamps per video\n- source_score must be an integer 1-5\n- When operating on mock data: derive timestamps and speaker from the signal metadata\n```\n\nFAIL CONDITIONS: (1) File not created. (2) Any existing file modified. (3) Role, source scoring rubric, timestamp criteria, or output contract section missing.",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "dependencies": [],
+      "priority": "critical",
+      "sprint_id": "sprint-077",
+      "deliverables": {
+        "code": ["agents/scs001-discovery/prompt.md"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "SCS-001 Block A — Discovery Agent (Agent 2 of 9). Sprint SCS-077 builds the Discovery Agent. In Block A, Discovery operates against mock data — it generates structured DiscoveryOutputs from the trending topic metadata (keyword_cluster, relevant_channels, top_speakers from mock feed). Real YouTube/X API calls come in Block D. Contract: contracts/scs-001/clip-quality-v1.json (DiscoveryOutput definition, LOCKED)."
+    },
+    {
+      "id": "077-02",
+      "title": "SCS-001 Discovery Agent — index.ts (core agent logic)",
+      "description": "CREATE ONE NEW FILE: agents/scs001-discovery/index.ts. Do NOT modify any existing file.\n\nEXACT CONTENT:\n\n```typescript\n// SCS-001 — Discovery Agent (Agent 2)\n// Consumes: TrendingTopicBatch from Trend Agent\n// Produces: DiscoveryOutput[] (per contracts/scs-001/clip-quality-v1.json#DiscoveryOutput)\n// Block A: operates on mock data (no real YouTube/X API calls)\n\nimport { randomUUID } from 'crypto';\nimport type { TrendingTopicBatch, TrendingTopic } from '../scs001-trend/index';\n\nexport interface DiscoveryTimestamp {\n  start_seconds: number;\n  end_seconds: number;\n  reason: string;\n}\n\nexport interface DiscoveryOutput {\n  discovery_id: string;\n  url: string;\n  timestamps: DiscoveryTimestamp[];\n  speaker: string;\n  topic_tags: string[];\n  source_score: number;\n  source_topic_id: string;\n}\n\n// Mock video sources per platform when no real API is available\nconst MOCK_VIDEO_BASE: Record<string, string> = {\n  youtube:    'https://www.youtube.com/watch?v=',\n  x_spaces:   'https://twitter.com/i/spaces/',\n  podcast:    'https://podcasts.example.com/episode/',\n  reddit:     'https://www.reddit.com/r/MachineLearning/comments/',\n  hacker_news:'https://news.ycombinator.com/item?id=',\n};\n\nconst MOCK_CHANNEL_IDS: Record<string, string> = {\n  youtube:    'dQw4w9WgXcQ', // placeholder\n  x_spaces:   '1vOGwrBwAQkxB',\n  podcast:    'ep-001',\n  reddit:     'abc123',\n  hacker_news:'38000001',\n};\n\n// Simulated clip-worthy moment templates based on topic characteristics\nfunction deriveTimestamps(topic: TrendingTopic): DiscoveryTimestamp[] {\n  const base = [\n    { start_seconds: 0,   end_seconds: 15,  reason: 'Opening hook — bold claim or prediction' },\n    { start_seconds: 120, end_seconds: 140, reason: 'Core argument — specific data point or paradigm shift statement' },\n    { start_seconds: 310, end_seconds: 325, reason: 'Emotional peak — speaker conviction or contrarian stance' },\n  ];\n  // Add a timestamp for topics with high confidence (more viral potential)\n  if (topic.confidence_score >= 85) {\n    base.push({ start_seconds: 480, end_seconds: 495, reason: 'High-confidence topic — closing prediction or call to action' });\n  }\n  return base;\n}\n\nfunction deriveSourceScore(topic: TrendingTopic): number {\n  // Score based on topic confidence and provenance\n  if (topic.confidence_score >= 90) return 5;\n  if (topic.confidence_score >= 80) return 4;\n  if (topic.confidence_score >= 70) return 3;\n  return 2;\n}\n\nfunction pickSpeaker(topic: TrendingTopic): string {\n  if (topic.top_speakers && topic.top_speakers.length > 0) {\n    return topic.top_speakers[0].name;\n  }\n  return 'Unknown Speaker';\n}\n\nexport class DiscoveryAgent {\n  run(batch: TrendingTopicBatch): DiscoveryOutput[] {\n    const outputs: DiscoveryOutput[] = [];\n\n    for (const topic of batch.topics) {\n      const channels = topic.relevant_channels ?? [];\n      const targetChannels = channels.length > 0\n        ? channels.slice(0, 2)  // max 2 channels per topic in Block A\n        : [{ platform: 'youtube', channel_id: MOCK_CHANNEL_IDS['youtube'] ?? 'mock001' }];\n\n      for (const channel of targetChannels) {\n        const baseUrl = MOCK_VIDEO_BASE[channel.platform] ?? 'https://video.example.com/';\n        const url = `${baseUrl}${channel.channel_id}`;\n\n        const output: DiscoveryOutput = {\n          discovery_id: `disc-${randomUUID().slice(0, 8)}`,\n          url,\n          timestamps: deriveTimestamps(topic),\n          speaker: pickSpeaker(topic),\n          topic_tags: topic.keyword_cluster.slice(0, 5),\n          source_score: deriveSourceScore(topic),\n          source_topic_id: topic.topic_id,\n        };\n        outputs.push(output);\n      }\n    }\n\n    console.log(`[DiscoveryAgent] ${batch.topics.length} topics → ${outputs.length} discovery candidates`);\n    return outputs;\n  }\n}\n```\n\nFAIL CONDITIONS: (1) tsc --noEmit reports errors. (2) DiscoveryAgent class not exported. (3) DiscoveryOutput interface not exported. (4) timestamps array not between 1-5 entries. (5) source_score not integer 1-5. (6) discovery_id not generated. (7) Any existing file modified.",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "dependencies": ["077-01"],
+      "priority": "critical",
+      "sprint_id": "sprint-077",
+      "deliverables": {
+        "code": ["agents/scs001-discovery/index.ts"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "SCS-001 Block A — Discovery Agent core. Block A operates on mock data: videos are synthesised from the relevant_channels metadata in TrendingTopicBatch. Timestamps are derived heuristically (not from real video analysis — that comes in Block C). Each topic produces 1-2 DiscoveryOutputs (one per relevant_channels entry, max 2). In Block D, this agent will make real YouTube Data API + X Spaces API calls. Contract: contracts/scs-001/clip-quality-v1.json (DiscoveryOutput definition)."
+    },
+    {
+      "id": "077-03",
+      "title": "SCS-001 Discovery Agent — run-discovery-agent.ts (CLI runner)",
+      "description": "CREATE ONE NEW FILE: scripts/scs001/run-discovery-agent.ts. Do NOT modify any existing file.\n\nEXACT CONTENT:\n\n```typescript\n#!/usr/bin/env ts-node\n// SCS-001 Block A — Discovery Agent Runner\n// Chains: Trend Agent → Discovery Agent\n// Usage: npx ts-node scripts/scs001/run-discovery-agent.ts [--trend-output <path>] [--dry-run]\n\nimport { TrendAgent, saveBatch } from '../../agents/scs001-trend/index';\nimport { DiscoveryAgent, DiscoveryOutput } from '../../agents/scs001-discovery/index';\nimport { writeFileSync, mkdirSync, existsSync, readFileSync } from 'fs';\nimport { join } from 'path';\n\nconst args = process.argv.slice(2);\nconst getArg = (flag: string, def: string): string => {\n  const i = args.indexOf(flag);\n  return i !== -1 && args[i + 1] ? args[i + 1] : def;\n};\n\nconst TREND_OUTPUT = getArg('--trend-output', '');\nconst DRY_RUN     = args.includes('--dry-run');\nconst ROOT        = join(__dirname, '..', '..');\nconst OUT_DIR     = join(ROOT, 'workspace', 'scs001', 'discovery-outputs');\n\nasync function main(): Promise<void> {\n  console.log('\\n🔍 SCS-001 Discovery Agent — Starting...\\n');\n\n  // Step 1: Get trend batch (from file or run fresh)\n  let trendBatch;\n  if (TREND_OUTPUT) {\n    console.log(`Loading trend batch from: ${TREND_OUTPUT}`);\n    trendBatch = JSON.parse(readFileSync(TREND_OUTPUT, 'utf8'));\n  } else {\n    console.log('Running Trend Agent first...');\n    const trendAgent = new TrendAgent();\n    trendBatch = trendAgent.run();\n    if (!DRY_RUN) {\n      const trendDir = join(ROOT, 'workspace', 'scs001', 'trend-outputs');\n      saveBatch(trendBatch, trendDir);\n    }\n  }\n\n  console.log(`Trend batch: ${trendBatch.batch_id} (${trendBatch.topics.length} topics)\\n`);\n\n  // Step 2: Run Discovery Agent\n  const discovery = new DiscoveryAgent();\n  const outputs: DiscoveryOutput[] = discovery.run(trendBatch);\n\n  console.log(`\\n📋 Discovery Results (${outputs.length} candidates):`);\n  outputs.forEach(o => {\n    console.log(`  [score:${o.source_score}] ${o.speaker} | ${o.timestamps.length} timestamps | ${o.url.substring(0, 60)}`);\n  });\n\n  if (!DRY_RUN) {\n    if (!existsSync(OUT_DIR)) mkdirSync(OUT_DIR, { recursive: true });\n    const outFile = join(OUT_DIR, `discovery-${trendBatch.batch_id}.json`);\n    writeFileSync(outFile, JSON.stringify({ source_batch: trendBatch.batch_id, generated_at: new Date().toISOString(), candidates: outputs }, null, 2));\n    console.log(`\\n✅ Saved → ${outFile}`);\n  } else {\n    console.log('\\n[DRY RUN] Output not saved.');\n  }\n}\n\nmain().catch(err => { console.error('Discovery Agent failed:', err); process.exit(1); });\n```\n\nFAIL CONDITIONS: (1) tsc --noEmit reports errors. (2) --dry-run not handled. (3) --trend-output arg not handled. (4) Does not chain TrendAgent → DiscoveryAgent. (5) Any existing file modified.",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "dependencies": ["077-02"],
+      "priority": "critical",
+      "sprint_id": "sprint-077",
+      "deliverables": {
+        "code": ["scripts/scs001/run-discovery-agent.ts"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "SCS-001 Block A — Discovery Agent CLI runner. Accepts optional --trend-output path to load an existing Trend batch (avoids re-running Trend Agent). Without it, runs TrendAgent fresh first. Output saved to workspace/scs001/discovery-outputs/. Run: npx ts-node scripts/scs001/run-discovery-agent.ts"
+    },
+    {
+      "id": "077-04",
+      "title": "SCS-001 Discovery Agent — integration test (Trend → Discovery pipeline)",
+      "description": "CREATE ONE NEW FILE: scripts/scs001/validate-discovery-output.ts. Do NOT modify any existing file.\n\nEXACT CONTENT:\n\n```typescript\n#!/usr/bin/env ts-node\n// SCS-001 Block A — Discovery Agent Integration Test\n// Tests: Trend Agent → Discovery Agent → DiscoveryOutput[] validation\n\nimport { TrendAgent } from '../../agents/scs001-trend/index';\nimport { DiscoveryAgent, DiscoveryOutput } from '../../agents/scs001-discovery/index';\n\nfunction assert(condition: boolean, msg: string): void {\n  if (!condition) { console.error(`  ✗ FAIL: ${msg}`); process.exitCode = 1; }\n  else { console.log(`  ✓ PASS: ${msg}`); }\n}\n\nasync function main(): Promise<void> {\n  console.log('\\n🧪 SCS-001 Discovery Agent — Integration Test\\n');\n\n  // Run pipeline\n  const trendAgent = new TrendAgent();\n  const batch = trendAgent.run();\n  const discoveryAgent = new DiscoveryAgent();\n  const outputs: DiscoveryOutput[] = discoveryAgent.run(batch);\n\n  // Output-level checks\n  assert(Array.isArray(outputs), 'outputs is array');\n  assert(outputs.length >= batch.topics.length, `At least one discovery per topic (${outputs.length} >= ${batch.topics.length})`);\n\n  // Per-output checks\n  outputs.forEach((o, idx) => {\n    assert(typeof o.discovery_id === 'string' && o.discovery_id.length > 0, `output[${idx}] discovery_id present`);\n    assert(typeof o.url === 'string' && o.url.startsWith('http'), `output[${idx}] url is valid`);\n    assert(Array.isArray(o.timestamps) && o.timestamps.length >= 1 && o.timestamps.length <= 5, `output[${idx}] timestamps 1-5 entries`);\n    assert(typeof o.speaker === 'string' && o.speaker.length > 0, `output[${idx}] speaker present`);\n    assert(Array.isArray(o.topic_tags) && o.topic_tags.length >= 1, `output[${idx}] topic_tags present`);\n    assert(Number.isInteger(o.source_score) && o.source_score >= 1 && o.source_score <= 5, `output[${idx}] source_score 1-5`);\n    assert(typeof o.source_topic_id === 'string', `output[${idx}] source_topic_id present`);\n\n    // Timestamp sub-checks\n    o.timestamps.forEach((ts, ti) => {\n      assert(typeof ts.start_seconds === 'number' && ts.start_seconds >= 0, `output[${idx}] timestamp[${ti}] start_seconds valid`);\n      assert(typeof ts.end_seconds === 'number' && ts.end_seconds > ts.start_seconds, `output[${idx}] timestamp[${ti}] end > start`);\n    });\n  });\n\n  // Back-link check: every source_topic_id exists in batch\n  const topicIds = new Set(batch.topics.map(t => t.topic_id));\n  outputs.forEach((o, idx) => {\n    assert(topicIds.has(o.source_topic_id), `output[${idx}] source_topic_id links to valid trend topic`);\n  });\n\n  const code = process.exitCode === 1 ? 1 : 0;\n  console.log(`\\n${code === 0 ? '✅ All checks passed' : '❌ Some checks failed'}`);\n  process.exit(code);\n}\n\nmain().catch(err => { console.error('Validation failed:', err); process.exit(1); });\n```\n\nFAIL CONDITIONS: (1) tsc --noEmit reports errors. (2) Does not chain TrendAgent → DiscoveryAgent. (3) Fewer than 10 assertions. (4) back-link check (source_topic_id → topic_id) missing. (5) Any existing file modified.",
+      "type": "test",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "dependencies": ["077-02"],
+      "priority": "critical",
+      "sprint_id": "sprint-077",
+      "deliverables": {
+        "code": ["scripts/scs001/validate-discovery-output.ts"],
+        "tests": ["scripts/scs001/validate-discovery-output.ts"],
+        "docs": []
+      },
+      "context": "SCS-001 Block A — Discovery Agent gate test. Chains TrendAgent → DiscoveryAgent → validates DiscoveryOutput[] against DiscoveryOutput definition in clip-quality-v1.json. Key checks: timestamps 1-5 per output, source_score 1-5, source_topic_id back-links to trend batch. Run: npx ts-node scripts/scs001/validate-discovery-output.ts"
+    }
+  ]
+}
