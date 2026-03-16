@@ -1,0 +1,66 @@
+{
+  "sprint": "114",
+  "name": "Achiri memory subsystem — per-user conversation history with JSONL store",
+  "block": "Phase 2A — Achiri",
+  "goal": "Enable persistent memory for Achiri. Implement a per-user conversation history store (JSONL on local, Supabase on cloud). Wire history loading/saving into AchiriConversationHandler.chat(). Update config.json memory_enabled: true. Gate: each conversation must continue naturally from prior context.",
+  "rationale": "Voice validation passed 10/10 (Sprint 113). config.json memory_sprint='112+' signals this sprint is authorized. Phase 2A gate Apr 11. Memory is the key differentiator for Achiri vs generic chatbots. JSONL store is lowest-complexity option that works now — Supabase migration can follow.",
+  "tasks": [
+    {
+      "id": "114-01",
+      "title": "AchiriMemoryStore — JSONL-based per-user history",
+      "description": "Create agents/achiri/memory-store.ts\n\nEXACT REQUIREMENTS:\n\n1. FILE: agents/achiri/memory-store.ts (~80 lines)\n\n2. CLASS AchiriMemoryStore:\n   - constructor(storePath: string = 'workspace/achiri/memory/') — creates dir if not exists\n   - loadHistory(userId: string): ConversationTurn[] — reads [storePath]/[userId].jsonl, returns array\n   - saveHistory(userId: string, history: ConversationTurn[]): void — writes full history to [userId].jsonl\n   - appendTurn(userId: string, turn: ConversationTurn): void — appends single turn (efficient)\n   - clearHistory(userId: string): void — deletes user history file\n   - getStats(): { users: number; total_turns: number } — for dashboard\n\n3. JSONL format: one JSON object per line, each is a ConversationTurn\n\n4. MAX_HISTORY_TURNS = 50 — trim oldest turns when exceeded (keep most recent 50)\n\n5. Import ConversationTurn from './index' (already exported)\n\n6. Under 90 lines",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "dependencies": [],
+      "priority": "critical",
+      "sprint_id": "sprint-114",
+      "deliverables": {
+        "code": ["agents/achiri/memory-store.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "114-02",
+      "title": "Wire memory into AchiriConversationHandler.chat()",
+      "description": "Update agents/achiri/index.ts to load/save history via AchiriMemoryStore when memory_enabled.\n\nEXACT REQUIREMENTS:\n\n1. Import AchiriMemoryStore from './memory-store'\n\n2. AchiriConversationHandler constructor:\n   - Add optional userId: string param (default: 'anonymous')\n   - Instantiate AchiriMemoryStore if config.memory_enabled === true\n\n3. chat() method:\n   - If memory_enabled: load history from store before building messages\n   - After getting response: append both user turn and assistant turn to store\n   - history param becomes optional override (if provided, use it; else load from store)\n\n4. New method: clearMemory(userId?: string): void — delegates to store.clearHistory()\n\n5. Keep dry_run mode working (skip store I/O in dry_run)\n\n6. Under 175 lines total",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "dependencies": ["114-01"],
+      "priority": "critical",
+      "sprint_id": "sprint-114",
+      "deliverables": {
+        "code": ["agents/achiri/index.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "114-03",
+      "title": "Enable memory in config.json + validate multi-turn conversation",
+      "description": "1. Update kognai-agents/achiri/config.json: set memory_enabled: true\n\n2. Run a 3-turn conversation to validate memory continuity:\n   Turn 1: 'Aslema! Ismi Tarek, ana min Sfax'\n   Turn 2: 'Chnahwlek, 3andek chi nassiha lil startup?'\n   Turn 3: 'Wech t9oul — mrigoul n3amel el startup fi Tunis wella barra?'\n   \n   Expected: Turn 3 response references Tarek and Sfax from Turn 1 context.\n\n3. Log test to workspace/achiri/session-logs/memory-test-1.json\n\n4. Update voice-validation-checklist.md: add memory validation section",
+      "type": "modify",
+      "task_type": "validation",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "dependencies": ["114-02"],
+      "priority": "critical",
+      "sprint_id": "sprint-114",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": [
+          "kognai-agents/achiri/config.json",
+          "workspace/achiri/session-logs/memory-test-1.json"
+        ]
+      }
+    }
+  ]
+}

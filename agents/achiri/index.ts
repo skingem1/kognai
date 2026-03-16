@@ -5,6 +5,7 @@
 
 import { readFileSync } from 'fs';
 import { join } from 'path';
+import { AchiriMemoryStore } from './memory-store';
 
 const ANTHROPIC_API_URL = 'https://api.anthropic.com/v1/messages';
 
@@ -43,12 +44,16 @@ export class AchiriConversationHandler {
   private config: AchiriConfig;
   private systemPromptRaw: string;
   private tier: string;
+  private userId: string;
+  private memory: AchiriMemoryStore | null;
 
-  constructor(tier: 'free' | 'tnd_basic' | 'tnd_premium' = 'free') {
+  constructor(tier: 'free' | 'tnd_basic' | 'tnd_premium' = 'free', userId: string = 'anonymous') {
     this.tier = tier;
+    this.userId = userId;
     this.config = JSON.parse(readFileSync(join(AGENT_DIR, 'config.json'), 'utf8'));
     this.systemPromptRaw = readFileSync(join(AGENT_DIR, 'prompt.md'), 'utf8');
-    console.log('[Achiri] Loaded — model: ' + this.getModelConfig().model + ', tier: ' + tier + ', prompt: ' + this.systemPromptRaw.length + ' chars');
+    this.memory = this.config.memory_enabled ? new AchiriMemoryStore() : null;
+    console.log('[Achiri] Loaded — model: ' + this.getModelConfig().model + ', tier: ' + tier + ', memory: ' + (this.memory ? 'on' : 'off') + ', prompt: ' + this.systemPromptRaw.length + ' chars');
   }
 
   getModelConfig(): ModelConfig {
@@ -89,10 +94,16 @@ export class AchiriConversationHandler {
     ];
   }
 
-  async chat(userMessage: string, history: ConversationTurn[] = []): Promise<string> {
-    const messages = this.buildMessages(userMessage, history);
+  clearMemory(userId?: string): void {
+    this.memory?.clearHistory(userId ?? this.userId);
+  }
+
+  async chat(userMessage: string, history?: ConversationTurn[]): Promise<string> {
+    // Load history from memory store if enabled and no override provided
+    const resolvedHistory: ConversationTurn[] = history ?? (this.memory ? this.memory.loadHistory(this.userId) : []);
+    const messages = this.buildMessages(userMessage, resolvedHistory);
     const model = this.getModelConfig();
-    console.log('[Achiri] chat() model=' + model.model + ' tier=' + model.tier + ' msg_len=' + userMessage.length);
+    console.log('[Achiri] chat() model=' + model.model + ' tier=' + model.tier + ' msg_len=' + userMessage.length + ' history=' + resolvedHistory.length);
 
     // Dry-run mode for CI/tests
     if (process.env.ACHIRI_DRY_RUN === '1') {
@@ -102,6 +113,7 @@ export class AchiriConversationHandler {
     const systemPrompt = messages[0].content;
     const chatMessages = messages.slice(1).map(m => ({ role: m.role as 'user' | 'assistant', content: m.content }));
 
+    let reply: string;
     try {
       if (model.provider === 'local') {
         // Ollama chat API
@@ -113,22 +125,18 @@ export class AchiriConversationHandler {
         });
         if (!res.ok) throw new Error('Ollama error: ' + res.status);
         const data = await res.json() as { message: { content: string } };
-        return data.message.content;
+        reply = data.message.content;
       } else if (model.provider === 'anthropic') {
         const apiKey = process.env.ANTHROPIC_API_KEY;
         if (!apiKey) throw new Error('ANTHROPIC_API_KEY not set');
         const res = await fetch(ANTHROPIC_API_URL, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'x-api-key': apiKey,
-            'anthropic-version': '2023-06-01',
-          },
+          headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01' },
           body: JSON.stringify({ model: model.model, max_tokens: 1024, system: systemPrompt, messages: chatMessages }),
         });
         if (!res.ok) throw new Error('Anthropic API ' + res.status + ': ' + (await res.text()).substring(0, 80));
         const data = await res.json() as { content: Array<{ type: string; text: string }> };
-        return data.content[0].text;
+        reply = data.content[0].text;
       } else {
         throw new Error('Unknown provider: ' + model.provider);
       }
@@ -136,6 +144,14 @@ export class AchiriConversationHandler {
       console.error('[Achiri] chat() error:', err);
       return 'Mrigoul, ma njemtch nchouf — 3awedha marra oukhra.';
     }
+
+    // Persist turns to memory store if enabled
+    if (this.memory && !history) {
+      this.memory.appendTurn(this.userId, { role: 'user', content: userMessage });
+      this.memory.appendTurn(this.userId, { role: 'assistant', content: reply });
+    }
+
+    return reply;
   }
 }
 

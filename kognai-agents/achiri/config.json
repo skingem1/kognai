@@ -5,8 +5,8 @@
   "gate_date": "2026-04-11",
 
   "voice_before_memory": true,
-  "memory_enabled": false,
-  "memory_sprint": "112+",
+  "memory_enabled": true,
+  "memory_sprint": "114",
 
   "languages": {
     "primary": "ar-TN",
