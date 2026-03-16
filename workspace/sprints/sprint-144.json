@@ -1,0 +1,87 @@
+{
+  "sprint": "144",
+  "name": "/update-views Telegram command + daily-digest hint update",
+  "block": "Phase 1.5 gate ops — manual posting workflow polish",
+  "goal": "Two deliverables: (1) /update-views <video_id> <views> Telegram command — rewrites views on an existing manual-posts.jsonl entry (for when operator returns after 24h with real view count). Owner-only. Returns updated gate progress. (2) Update daily-digest.ts tip line to mention /review and /record Telegram commands instead of CLI. Full Telegram UX now surfaced in daily morning push.",
+  "rationale": "Apr 7 gate: ~22 days, 0/30 posts. /record (Sprint 143) records initial views (often 0 at posting time). Operator needs /update-views 24h later with real count. daily-digest hint still points to CLI — operator won't know /review + /record exist from the morning digest.",
+  "swarm": "NOT USED — 2 file edits + 1 validation script. Direct write.",
+  "tasks": [
+    {
+      "id": "144-01",
+      "title": "commands.ts — handleUpdateViews() + update handleHelp()",
+      "description": "Add handleUpdateViews(chatId, ownerChatId, text): owner-only. Parse '/update-views <video_id> <views>'. video_id = args[1], views = parseInt(args[2]). Validate: missing args → show usage. NaN views → show usage. Load all lines from manual-posts.jsonl. Find entry where video_id matches. If not found: '⚠️ video_id not found in manual-posts.jsonl'. If found: update the views field. Rewrite entire file (writeFileSync). Compute gate progress (same as handleRecord). Send: '✅ Updated: <video_id> views → <new_views>' + gate progress block. Add '/update-views <id> <views> — Update view count on recorded post (owner)' to handleHelp() under TikTok Pipeline section.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-144",
+      "deliverables": {
+        "code": ["agents/telegram-bot/commands.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "144-02",
+      "title": "index.ts — route /update-views to handleUpdateViews()",
+      "description": "Import handleUpdateViews from ./commands. Add case '/update-views': await handleUpdateViews(chatId, OWNER_CHAT_ID, text); in dispatch switch after /record case.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-144",
+      "deliverables": {
+        "code": ["agents/telegram-bot/index.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "144-03",
+      "title": "daily-digest.ts — update tip line to mention /review + /record",
+      "description": "Line ~159: change 'Review videos: `npx ts-node scripts/scs001/review-videos.ts`' to '💡 _Telegram: /review to pick video, /record <id> <views> to track_'. Also update the no-pipeline fallback line to include /review tip. Keeps the operator informed of new workflow from morning push.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-144",
+      "deliverables": {
+        "code": ["scripts/daily-digest.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "144-04",
+      "title": "scripts/scs001/validate-sprint-144.ts — validation script",
+      "description": "7 checks: (1) commands.ts exports handleUpdateViews; (2) handleUpdateViews is owner-gated; (3) handleUpdateViews uses writeFileSync (rewrites file); (4) handleHelp lists /update-views; (5) index.ts imports handleUpdateViews; (6) index.ts routes '/update-views'; (7) daily-digest.ts contains '/review' mention. Exit 0 on all pass.",
+      "type": "create",
+      "task_type": "test",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-144",
+      "deliverables": {
+        "code": ["scripts/scs001/validate-sprint-144.ts"],
+        "tests": ["scripts/scs001/validate-sprint-144.ts"],
+        "docs": []
+      }
+    }
+  ],
+  "acceptance_criteria": [
+    "/update-views is owner-gated — non-owner gets '🔒 Owner only.'",
+    "/update-views <id> <views> rewrites views in manual-posts.jsonl and returns gate progress",
+    "Non-existent video_id returns warning message",
+    "handleHelp lists /update-views under TikTok Pipeline section",
+    "index.ts routes /update-views to handleUpdateViews()",
+    "daily-digest.ts tip line mentions /review and /record Telegram commands",
+    "validate-sprint-144.ts exits 0 (all 7 checks pass)"
+  ]
+}

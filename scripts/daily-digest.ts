@@ -156,8 +156,8 @@ function buildDigest(): string {
     `• Apr 25 — Achiri alpha launch (${daysAchiri}d)`,
     '',
     ledger.total > 0
-      ? `💡 _Review videos: \`npx ts-node scripts/scs001/review-videos.ts\`_`
-      : `⚠️ _No pipeline output yet — check PM2: \`pm2 status\`_`,
+      ? `💡 _Telegram: /review to pick video, /record <id> <views> to track_`
+      : `⚠️ _No pipeline output yet — check PM2: \`pm2 status\` | /review when ready_`,
   ];
 
   return lines.join('\n');
