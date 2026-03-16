@@ -1,0 +1,26 @@
+{
+  "gate": "phase0-to-phase1",
+  "date": "2026-03-16",
+  "criteria": [
+    {
+      "id": "task-target-routing",
+      "name": "TASK_TARGET Routing to Ollama",
+      "pass": true,
+      "details": "Routing log: 29 local->ollama, 0 local->non-ollama"
+    },
+    {
+      "id": "idempotent-replay",
+      "name": "Idempotent Replay — DedupLedger",
+      "pass": true,
+      "details": "Dedup correctly filtered 3/5 clips, idempotent on replay, 0/5 after full record"
+    },
+    {
+      "id": "pipeline-dry-run",
+      "name": "Full Pipeline Dry-Run (mock mode)",
+      "pass": true,
+      "details": "Pipeline: 12 stages, 5 topics, 10 clips"
+    }
+  ],
+  "overall_pass": true,
+  "recommendation": "PROCEED to Phase 1 — all gate criteria met. Set SCS_MODE=live in ecosystem.config.js."
+}

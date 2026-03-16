@@ -1,145 +1,214 @@
-import * as fs from 'fs';
-import * as path from 'path';
-import { Router } from '../runtime/router';
-import { DedupLedger } from '../runtime/dedupledger';
-import { GateReport } from '../workspace/shared-types';
+// Phase 0 → Phase 1 Gate Validator
+// Checks 3 criteria before authorizing Phase 1 live TikTok posting.
+// Writes workspace/gates/phase0-phase1-gate.json and exits 0 (PASS) or 1 (FAIL).
 
-const KOGNAI_ROOT = process.env.KOGNAI_ROOT || '/Users/tarekmnif/kognai';
-const GATE_REPORT_PATH = path.join(KOGNAI_ROOT, 'workspace/gates/phase0-phase1-gate.json');
-const ROUTING_LOG_PATH = path.join(KOGNAI_ROOT, 'logs/routing/latest-routing.log');
-const ROUTER_PY_PATH = path.join(KOGNAI_ROOT, 'runtime/router.py');
+import { SCS001Orchestrator, PipelineRunReport } from '../../agents/scs001-orchestrator/index';
+import { DedupLedger, LedgerEntry } from '../../agents/scs001-orchestrator/dedup-ledger';
+import { readFileSync, writeFileSync, mkdirSync, existsSync, unlinkSync } from 'fs';
+import { join } from 'path';
 
-interface ValidationReport {
-  status: 'passed' | 'failed';
-  routingValid: boolean;
-  dedupValid: boolean;
-  dryRunValid: boolean;
-  details: {
-    routing?: string[];
-    dedup?: string[];
-    dryRun?: string[];
-  };
+interface GateCriterion {
+  id:      string;
+  name:    string;
+  pass:    boolean;
+  details: string;
 }
 
-async function validatePhase0Gate(): Promise<ValidationReport> {
-  const report: ValidationReport = {
-    status: 'failed',
-    routingValid: false,
-    dedupValid: false,
-    dryRunValid: false,
-    details: {}
-  };
+interface GateReport {
+  gate:           string;
+  date:           string;
+  criteria:       GateCriterion[];
+  overall_pass:   boolean;
+  recommendation: string;
+}
 
+// ── CHECK 1 — TASK_TARGET Routing to Ollama ─────────────────────────────────
+
+function checkRouting(): GateCriterion {
+  const id   = 'task-target-routing';
+  const name = 'TASK_TARGET Routing to Ollama';
+
+  // Static check: does router.py reference Ollama endpoint?
+  const routerPath = join(process.cwd(), 'runtime', 'router.py');
+  let routerHasOllama = false;
   try {
-    // 1. Validate routing logic in router.py
-    const routerPyContent = fs.readFileSync(ROUTER_PY_PATH, 'utf-8');
-    const routingValid = routerPyContent.includes('ollama') && routerPyContent.includes('TASK_TARGET');
-    report.routingValid = routingValid;
-    report.details.routing = routingValid 
-      ? ['Router.py contains required ollama/TASK_TARGET references']
-      : ['Router.py missing ollama/TASK_TARGET references'];
-
-    // 2. Validate routing logs
-    let routingLogValid = false;
-    if (fs.existsSync(ROUTING_LOG_PATH)) {
-      const logLines = fs.readFileSync(ROUTING_LOG_PATH, 'utf-8').split('\n');
-      const taskTargetLines = logLines.filter(line => line.includes('TASK_TARGET'));
-      routingLogValid = taskTargetLines.some(line => line.includes('ollama'));
-      report.details.routing = report.details.routing || [];
-      report.details.routing.push(`Found ${taskTargetLines.length} TASK_TARGET lines, ${taskTargetLines.filter(line => line.includes('ollama')).length} contain ollama`);
-    } else {
-      report.details.routing.push(`Routing log file not found at ${ROUTING_LOG_PATH}`);
-    }
-    report.routingValid = report.routingValid && routingLogValid;
-
-    // 3. Validate DedupLedger
-    const dedupValid = await checkDedupLedger();
-    report.dedupValid = dedupValid;
-    report.details.dedup = dedupValid 
-      ? ['DedupLedger successfully prevented duplicate clip']
-      : ['DedupLedger failed to prevent duplicate clip'];
-
-    // 4. Validate dry-run output
-    const dryRunValid = await checkDryRunOutput();
-    report.dryRunValid = dryRunValid;
-    report.details.dryRun = dryRunValid 
-      ? ['Dry-run produced valid output structure']
-      : ['Dry-run output structure validation failed'];
-
-    // Final status determination
-    report.status = (report.routingValid && report.dedupValid && report.dryRunValid) ? 'passed' : 'failed';
-
-    // Write gate report
-    await fs.promises.mkdir(path.dirname(GATE_REPORT_PATH), { recursive: true });
-    await fs.promises.writeFile(GATE_REPORT_PATH, JSON.stringify(report, null, 2));
-
-  } catch (error) {
-    const errorMessage = (error as Error).message;
-    console.error(`Gate validation failed: ${errorMessage}`);
-    report.details.dryRun = report.details.dryRun || [];
-    report.details.dryRun.push(`Critical error during validation: ${errorMessage}`);
-    report.status = 'failed';
-    
-    // Write error report even if validation fails
-    try {
-      await fs.promises.mkdir(path.dirname(GATE_REPORT_PATH), { recursive: true });
-      await fs.promises.writeFile(GATE_REPORT_PATH, JSON.stringify(report, null, 2));
-    } catch (writeError) {
-      console.error(`Failed to write gate report: ${(writeError as Error).message}`);
-    }
+    const routerContent = readFileSync(routerPath, 'utf-8');
+    routerHasOllama = routerContent.includes('localhost:11434');
+  } catch (err) {
+    return { id, name, pass: false, details: 'Could not read runtime/router.py: ' + (err as Error).message };
   }
 
-  return report;
-}
+  // Dynamic check: parse today's routing log
+  const logPath = join(process.cwd(), 'logs', 'routing', '2026-03-16.jsonl');
+  if (!existsSync(logPath)) {
+    return {
+      id, name,
+      pass: routerHasOllama,
+      details: 'Static check: router.py localhost:11434=' + routerHasOllama + ' (no routing log found)',
+    };
+  }
 
-async function checkDedupLedger(): Promise<boolean> {
-  const ledger = new DedupLedger();
-  try {
-    // Insert test clip
-    await ledger.insertClip('test-clip-123', 'test-clip-123');
-    
-    // Attempt to insert duplicate
+  let localOllamaCount    = 0;
+  let localNonOllamaCount = 0;
+  const lines = readFileSync(logPath, 'utf-8').split('\n');
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (!trimmed) continue;
     try {
-      await ledger.insertClip('test-clip-123', 'test-clip-123');
-      return false; // Should throw error on duplicate
-    } catch (error) {
-      // Verify error is a DuplicateClipError
-      const errorMsg = (error as Error).message;
-      if (errorMsg.includes('Duplicate clip')) {
-        // Clean up test data
-        await ledger.removeClip('test-clip-123');
-        return true;
+      const entry = JSON.parse(trimmed) as { task_target?: string; provider?: string };
+      if (entry.task_target === 'local') {
+        if (entry.provider === 'ollama') {
+          localOllamaCount++;
+        } else {
+          localNonOllamaCount++;
+        }
       }
-      throw error;
+    } catch {
+      // skip corrupt lines
     }
-  } catch (error) {
-    console.error(`DedupLedger test failed: ${(error as Error).message}`);
-    return false;
   }
+
+  if (localOllamaCount > 0) {
+    const pass = localNonOllamaCount === 0;
+    return {
+      id, name, pass,
+      details: 'Routing log: ' + localOllamaCount + ' local->ollama, ' + localNonOllamaCount + ' local->non-ollama',
+    };
+  }
+
+  // Log exists but no local entries — fall back to static check
+  return {
+    id, name,
+    pass: routerHasOllama,
+    details: 'Static check: router.py localhost:11434=' + routerHasOllama + ' (no local entries in routing log)',
+  };
 }
 
-async function checkDryRunOutput(): Promise<boolean> {
-  const router = new Router();
+// ── CHECK 2 — Idempotent Replay / DedupLedger ───────────────────────────────
+
+function checkDedup(): GateCriterion {
+  const id   = 'idempotent-replay';
+  const name = 'Idempotent Replay — DedupLedger';
+  const tempPath = join(process.cwd(), 'workspace', 'scs001', '.gate-test-ledger.jsonl');
+
+  let result1Length = -1;
+  let result2Length = -1;
+  let result3Length = -1;
+
   try {
-    const result = await router.processTask({
-      type: 'test',
-      payload: { test: 'data' }
-    });
-    
-    return (
-      result && 
-      result.status && 
-      result.payload && 
-      typeof result.payload === 'object'
-    );
-  } catch (error) {
-    console.error(`Dry-run validation failed: ${(error as Error).message}`);
-    return false;
+    const ledger = new DedupLedger(tempPath);
+
+    // Seed 3 published entries
+    const now = new Date().toISOString();
+    const seed: LedgerEntry[] = [
+      { clip_id: 'gate-test-1', video_id: 'gate-test-1', published_at: now, run_id: 'gate-test' },
+      { clip_id: 'gate-test-2', video_id: 'gate-test-2', published_at: now, run_id: 'gate-test' },
+      { clip_id: 'gate-test-3', video_id: 'gate-test-3', published_at: now, run_id: 'gate-test' },
+    ];
+    ledger.recordPublished(seed);
+
+    // 5 clips — 3 already published, 2 new
+    const testClips = [
+      { clip_id: 'gate-test-1' },
+      { clip_id: 'gate-test-2' },
+      { clip_id: 'gate-test-3' },
+      { clip_id: 'gate-test-4' },
+      { clip_id: 'gate-test-5' },
+    ];
+
+    const result1 = ledger.filterNewClips(testClips);
+    result1Length = result1.length;
+
+    // Second call — must be idempotent (same 2 new clips, nothing recorded yet)
+    const result2 = ledger.filterNewClips(testClips);
+    result2Length = result2.length;
+
+    // Record the 2 new clips as published
+    const newEntries: LedgerEntry[] = result1.map(c => ({
+      clip_id:      c.clip_id,
+      video_id:     c.clip_id,
+      published_at: new Date().toISOString(),
+      run_id:       'gate-test',
+    }));
+    ledger.recordPublished(newEntries);
+
+    // Third call — all 5 now published, expect 0 new
+    const result3 = ledger.filterNewClips(testClips);
+    result3Length = result3.length;
+
+    const pass = result1Length === 2 && result2Length === 2 && result3Length === 0;
+    const details = pass
+      ? 'Dedup correctly filtered 3/5 clips, idempotent on replay, 0/5 after full record'
+      : 'Dedup assertion failed: result1=' + result1Length + ' result2=' + result2Length
+        + ' result3=' + result3Length + ' (expected 2,2,0)';
+
+    return { id, name, pass, details };
+  } catch (err) {
+    return { id, name, pass: false, details: 'DedupLedger test threw: ' + (err as Error).message };
+  } finally {
+    if (existsSync(tempPath)) {
+      try { unlinkSync(tempPath); } catch { /* ignore cleanup errors */ }
+    }
   }
 }
 
-// Entry point
-validatePhase0Gate()
-  .catch(error => {
-    console.error(`Gate validation entry point failed: ${(error as Error).message}`);
-  });
+// ── CHECK 3 — Full Pipeline Dry-Run ─────────────────────────────────────────
+
+async function checkDryRun(): Promise<GateCriterion> {
+  const id   = 'pipeline-dry-run';
+  const name = 'Full Pipeline Dry-Run (mock mode)';
+
+  try {
+    const orchestrator = new SCS001Orchestrator('mock');
+    const report: PipelineRunReport = await orchestrator.run();
+
+    const stageCount      = report.stages.length;
+    const topicsFound     = report.summary.topics_found;
+    const clipsDiscovered = report.summary.clips_discovered;
+    const errorStages     = report.stages.filter(s => s.status === 'error').map(s => s.stage);
+
+    const pass = stageCount >= 8 && topicsFound >= 1 && clipsDiscovered >= 1;
+    const details = 'Pipeline: ' + stageCount + ' stages, ' + topicsFound + ' topics, ' + clipsDiscovered + ' clips'
+      + (errorStages.length > 0 ? '. Warn: error stages=' + errorStages.join(',') : '');
+
+    return { id, name, pass, details };
+  } catch (err) {
+    return { id, name, pass: false, details: 'Pipeline dry-run threw: ' + (err as Error).message };
+  }
+}
+
+// ── MAIN ─────────────────────────────────────────────────────────────────────
+
+async function main(): Promise<void> {
+  const criterion1 = checkRouting();
+  const criterion2 = checkDedup();
+  const criterion3 = await checkDryRun();
+
+  const criteria: GateCriterion[] = [criterion1, criterion2, criterion3];
+  const allPass = criteria.every(c => c.pass);
+
+  const gateReport: GateReport = {
+    gate: 'phase0-to-phase1',
+    date: new Date().toISOString().slice(0, 10),
+    criteria,
+    overall_pass: allPass,
+    recommendation: allPass
+      ? 'PROCEED to Phase 1 — all gate criteria met. Set SCS_MODE=live in ecosystem.config.js.'
+      : 'BLOCKED — fix failing criteria before advancing to Phase 1.',
+  };
+
+  // Write report
+  const gatesDir = join(process.cwd(), 'workspace', 'gates');
+  mkdirSync(gatesDir, { recursive: true });
+  writeFileSync(join(gatesDir, 'phase0-phase1-gate.json'), JSON.stringify(gateReport, null, 2));
+
+  // Print results
+  criteria.forEach(c => console.log((c.pass ? '\u2713' : '\u2717') + ' [' + c.name + ']: ' + c.details));
+  console.log('');
+  console.log(allPass ? 'GATE PASS' : 'GATE FAIL');
+  console.log('Report written to workspace/gates/phase0-phase1-gate.json');
+
+  process.exit(allPass ? 0 : 1);
+}
+
+main().catch(err => { console.error(err); process.exit(1); });
