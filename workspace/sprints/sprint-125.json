@@ -1,0 +1,44 @@
+{
+  "sprint": "125",
+  "name": "derja-profiler T3 skill — Darija dialect and formality detection",
+  "block": "Phase 2A — T3 Skills Installation (Apr 14 gate)",
+  "goal": "Implement agents/achiri/derja-profiler.ts — detects Darija dialect variant (tunisian/moroccan/algerian/libyan/egyptian/unknown) and formality level (informal/neutral/formal) from user message. Returns DerjaProfile. Achiri uses this to adapt code-switching and cultural references. Pattern-based, $0.00.",
+  "rationale": "Achiri targets Tunisian users specifically. But Maghrebi diaspora users may write in Moroccan or Algerian Darija. The profiler lets Achiri detect this and respond appropriately (stay Tunisian vs adapt). Required for authentic voice before Apr 25 alpha.",
+  "swarm": "NOT USED — new file, direct write.",
+  "tasks": [
+    {
+      "id": "125-01",
+      "title": "agents/achiri/derja-profiler.ts — dialect and formality profiler",
+      "description": "Export profileMessage(text: string): DerjaProfile. DerjaProfile = { dialect: 'tunisian'|'moroccan'|'algerian'|'libyan'|'egyptian'|'unknown', formality: 'informal'|'neutral'|'formal', confidence: number (0-1), features: string[] }. Tunisian markers: barsha/yasser/walakin/mrigoul/mazel/7raya/bnadem/3lech-tunisian. Moroccan: zwina/bzzaf/daba/kayn/wlad. Algerian: rahi/wach/brabi/sahbi-alg. Formality: Darija numerals = informal, MSA vocabulary = formal. features lists detected markers.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-125",
+      "deliverables": {
+        "code": ["agents/achiri/derja-profiler.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "125-02",
+      "title": "scripts/achiri/validate-derja-profiler.ts — 5-check validation",
+      "description": "Tests: (1) Tunisian Darija detected, (2) Moroccan Darija detected, (3) French/English = unknown dialect, (4) Darija numerals = informal, (5) MSA vocabulary = formal/neutral. Check confidence > 0.5 for positive detections.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-125",
+      "deliverables": {
+        "code": ["scripts/achiri/validate-derja-profiler.ts"],
+        "tests": ["scripts/achiri/validate-derja-profiler.ts"],
+        "docs": []
+      }
+    }
+  ]
+}
