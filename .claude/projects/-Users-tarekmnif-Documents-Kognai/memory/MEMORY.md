@@ -1,5 +1,5 @@
 # KOGNAI SESSION MEMORY
-*Last updated: Sprint 157 — 2026-03-16*
+*Last updated: Sprint 158 — 2026-03-16*
 
 ---
 
@@ -10,9 +10,9 @@
 - Production mode: set `SCS_EDITING_MODE=production` + `TIKTOK_ACCESS_TOKEN` in .env
 
 ## Kognai State
-- Last commit: e858757 (Sprint 157 shipped 2026-03-16)
+- Last commit: 952d143 (Sprint 158 shipped 2026-03-16)
 - Sprint numbering: Invoica legacy 001-062e → Kognai starts 063+
-- Current sprint: 158 (next)
+- Current sprint: 159 (next)
 - Gate reports: workspace/gates/phase0-phase1-gate.json, workspace/gates/phase1-activation-readiness.json, workspace/gates/production-quality-check.json
 - Gate status: 0/30 posts, ~22 days to Apr 7 Phase 1.5 gate (WARNING urgency)
 - Stripe: NOT LIVE (STRIPE_SECRET_KEY not set — human action required)
@@ -104,7 +104,8 @@
 | 155 | ops | Posting time reminders — noon + evening PM2 crons (posting-reminder.ts) | ✅ PASS |
 | 156 | telegram | /caption command — ready-to-paste TikTok caption generator | ✅ PASS |
 | 157 | ops | kognai-brief-regen PM2 cron — daily brief auto-regeneration at 06:45 | ✅ PASS |
-| **158** | **?** | **NEXT** | ⏳ pending |
+| 158 | telegram | /pace command — dynamic posting pace calculator | ✅ PASS |
+| **159** | **?** | **NEXT** | ⏳ pending |
 
 ## SCS-001 Pipeline Architecture
 12 stages, 11 agents:
@@ -113,13 +114,9 @@
 All agents located at: `agents/scs001-*/`
 
 ## Critical Gaps / Blockers
-1. **TIKTOK_ACCESS_TOKEN** not in .env — live posting blocked (human must obtain from TikTok Developer Portal, video.upload scope). Use /post-now for manual posting workflow.
-2. **STRIPE_SECRET_KEY** not in .env — Stripe not live, no subscriber revenue yet (human action: get from Stripe dashboard)
-3. **SUPABASE_URL + SUPABASE_SERVICE_KEY** not in .env — video hosting blocked
-4. **YOUTUBE_API_KEY** not in .env — live trends/real video search blocked (free at console.cloud.google.com)
-5. **SCS_EDITING_MODE** not in .env — production video quality not active (set to 'production')
-6. **Gate urgency: 0/30 posts, ~22 days to Apr 7** — operator must start posting MANUALLY NOW using /post-now
-7. **Run setup when env vars are set**: `bash scripts/setup-phase1.sh`
+1. **TIKTOK_ACCESS_TOKEN** not in .env — live posting blocked (human must obtain from TikTok Developer Portal, video.upload scope). Use /post-now + /caption for manual posting workflow.
+2. **Gate urgency: 0/30 posts, ~22 days to Apr 7** — operator must start posting MANUALLY NOW using /post-now
+3. STRIPE_SECRET_KEY: SET ✅ | SUPABASE_URL: SET ✅ | YOUTUBE_API_KEY: SET ✅ | SCS_EDITING_MODE: SET ✅ — all resolved as of 2026-03-16
 
 ## Key File Locations
 - Pipeline runner: `agents/scs001-orchestrator/run-pipeline.ts`

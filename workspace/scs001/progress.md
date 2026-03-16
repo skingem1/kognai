@@ -879,3 +879,16 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
 - Changes: kognai-brief-regen PM2 cron at 06:45 UTC daily — runs python3 scripts/generate-daily-brief.py. Regenerates workspace/sprint-brief.md before daily digest (07:00). Each future Claude Code session now starts with a fresh, accurate brief. VAULT_OLLAMA_URL + VAULT_LOCAL_MODEL_POWER env passed to script.
 - Gate: ~22 days to Apr 7, 0/30 posts | Achiri alpha: Apr 25 (~40d)
 - Timestamp: 2026-03-16T21:15:00Z
+
+## Sprint 158 — /pace command — dynamic posting pace calculator (Phase 1 — TikTok gate)
+- Status: PASS
+- Commit: 952d143
+- Files created: scripts/scs001/validate-sprint-158.ts, workspace/sprints/sprint-158.json
+- Files modified: agents/telegram-bot/commands.ts, agents/telegram-bot/index.ts
+- Test: scripts/scs001/validate-sprint-158.ts — 5/5 PASS
+- Swarm used: no (direct write)
+- Changes: handlePace(chatId, ownerChatId) — owner-only. Reads manual-posts.jsonl (recorded posts count + timestamps). Computes: postsNeeded=30-recorded, daysLeft to Apr 7, rateNeeded=postsNeeded/daysLeft, todayTarget=ceil(postsNeeded/daysLeft), velocity=recorded/daysSinceFirst. Status: 🚨 Not started / ⚠️ Behind pace / ✅ On track / 🎉 Gate met. Shows compact message with all numbers + /post-now tip. handleHelp updated. index.ts routed.
+- Note: MEMORY.md Critical Gaps cleaned up — SUPABASE, STRIPE, YOUTUBE, SCS_EDITING_MODE all now SET per env status. Only TIKTOK_ACCESS_TOKEN remains blocked.
+- Gate: ~22 days to Apr 7, 0/30 posts | Achiri alpha: Apr 25 (~40d)
+- Timestamp: 2026-03-16T21:30:00Z
+- SESSION NOTE: 5 sprints this session (155-158). Context getting full. Handoff below.
