@@ -7,9 +7,9 @@
 | Gate | Target Date | Status | Result | Notes |
 |---|---|---|---|---|
 | SCS-001 Block A (Signal Pipeline) | Mar 16 | [x] CONDITIONAL PASS | PASS* | Trend+Discovery+ClipDetection e2e validated. *Calibration set deferred (human curation). |
-| OpenClaw v2026.3.7 Setup | Mar 10 | [ ] Pending | | gateway.auth.mode + T1 skills (13) |
+| OpenClaw v2026.3.7 Setup | Mar 10 | [ ] Deferred | | Deferred to Sprint 098+. gateway.auth.mode + T1 skills (13). Was Mar 10. |
 | Phase 0 → Phase 1 | Mar 16 | [x] PASS | PASS | Gate validated Mar 16: TASK_TARGET routing ✓, idempotent replay ✓, pipeline dry-run ✓. Report: workspace/gates/phase0-phase1-gate.json |
-| T2 Skills Installation | Mar 14 | [ ] Pending | | 6 content/monetization skills |
+| T2 Skills Installation | Mar 14 | [ ] Deferred | | Deferred to Sprint 098+. 6 content/monetization skills. Was Mar 14. |
 | Phase 1.5 Decision | Apr 7 | [ ] Pending | | Kill switch: <500 views/30 posts |
 | Phase 1 → Phase 2A | Apr 11 | [ ] Pending | | |
 | T3 Skills Installation | Apr 14 | [ ] Pending | | 6 Achiri-specific skills |

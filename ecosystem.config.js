@@ -453,5 +453,30 @@ module.exports = {
       out_file: "/Users/tarekmnif/kognai/logs/dashboard-out.log",
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
+    {
+      // SCS-001 Live Pipeline — Phase 1 live TikTok posting
+      // Activated after Phase 0→Phase 1 gate PASS (Mar 16, Sprint 096)
+      // Requires: TIKTOK_ACCESS_TOKEN set in .env
+      // To start: pm2 start ecosystem.config.js --only scs001-live
+      name: "scs001-live",
+      script: "agents/scs001-orchestrator/run-pipeline.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: false,
+      watch: false,
+      cron_restart: "0 7,12,18,21 * * *",
+      args: "live",
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
+        OLLAMA_HOST: "http://127.0.0.1:11434",
+        SCS_MODE: "live",
+        TIKTOK_ACCESS_TOKEN: process.env.TIKTOK_ACCESS_TOKEN || "",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/scs001-live-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/scs001-live-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
   ]
 };

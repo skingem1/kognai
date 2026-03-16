@@ -1,0 +1,69 @@
+{
+  "tasks": [
+    {
+      "id": "097-01",
+      "title": "Add scs001-live process to ecosystem.config.js for Phase 1 live posting",
+      "description": "MODIFY ONE EXISTING FILE: ecosystem.config.js. Add ONE new PM2 process entry to the apps array. Do NOT modify any existing process entry. Do NOT modify any other file.\n\nEXACT REQUIREMENTS:\n\n1. In ecosystem.config.js, locate the apps array. After the LAST entry in the array (find the last `}` before the closing `]` of the apps array), append a comma after that last closing brace `}` and then the new entry.\n\n2. The new process entry MUST be:\n    {\n      name: \"scs001-live\",\n      script: \"agents/scs001-orchestrator/run-pipeline.ts\",\n      interpreter: \"node\",\n      interpreter_args: \"-r ts-node/register\",\n      cwd: \"/Users/tarekmnif/kognai\",\n      autorestart: false,\n      watch: false,\n      cron_restart: \"0 7,12,18,21 * * *\",\n      args: \"live\",\n      env: {\n        TS_NODE_TRANSPILE_ONLY: \"true\",\n        TS_NODE_PROJECT: \"/Users/tarekmnif/kognai/tsconfig.scripts.json\",\n        OLLAMA_HOST: \"http://127.0.0.1:11434\",\n        SCS_MODE: \"live\",\n        TIKTOK_ACCESS_TOKEN: process.env.TIKTOK_ACCESS_TOKEN || \"\",\n      },\n      error_file: \"/Users/tarekmnif/kognai/logs/scs001-live-error.log\",\n      out_file: \"/Users/tarekmnif/kognai/logs/scs001-live-out.log\",\n      log_date_format: \"YYYY-MM-DD HH:mm:ss Z\"\n    }\n\n3. The existing scs001-pipeline process (the one with args: process.env.SCS_MODE || \"mock\") MUST NOT be modified.\n\n4. The file must remain valid JavaScript. The module.exports = { apps: [ ... ] } structure must be preserved.\n\nFAIL CONDITIONS:\n(1) The existing scs001-pipeline process is modified in any way\n(2) args field is not the string \"live\"\n(3) SCS_MODE is not set to \"live\" in the env block\n(4) TIKTOK_ACCESS_TOKEN is not passed via process.env.TIKTOK_ACCESS_TOKEN\n(5) cron_restart does not match \"0 7,12,18,21 * * *\"\n(6) Any file other than ecosystem.config.js is modified\n(7) The apps array is malformed (missing comma between entries, unmatched brackets)\n(8) The process name is not exactly \"scs001-live\"",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "dependencies": [],
+      "priority": "critical",
+      "sprint_id": "sprint-097",
+      "deliverables": {
+        "code": [
+          "ecosystem.config.js"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Phase 0→Phase 1 gate PASSED on Mar 16 (Sprint 096). Gate report at workspace/gates/phase0-phase1-gate.json. The existing scs001-pipeline process uses args: process.env.SCS_MODE || 'mock' — always mock because SCS_MODE is not in .env. TIKTOK_ACCESS_TOKEN is also not set in .env. Adding a separate scs001-live entry preserves the mock fallback. The human operator must set TIKTOK_ACCESS_TOKEN in .env before running pm2 start ecosystem.config.js --only scs001-live. Pure JS object addition — swarm handles this reliably."
+    },
+    {
+      "id": "097-02",
+      "title": "Create scripts/scs001/validate-phase1-activation.ts — Phase 1 readiness checker",
+      "description": "CREATE ONE NEW FILE: scripts/scs001/validate-phase1-activation.ts. Do NOT modify any existing file.\n\nThis script validates whether the system is correctly configured for Phase 1 live TikTok posting. It does NOT make any API calls and does NOT post to TikTok. It reads config files and environment state, then writes a readiness report.\n\nEXACT REQUIREMENTS:\n\n1. IMPORTS:\n   import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs';\n   import { join } from 'path';\n   No other imports.\n\n2. DEFINE these interfaces inline:\n   interface ReadinessCheck { id: string; name: string; pass: boolean; details: string; action_required?: string; }\n   interface ReadinessReport { sprint: string; date: string; phase: string; checks: ReadinessCheck[]; ready_to_post: boolean; human_actions_required: string[]; notes: string; }\n\n3. CHECK 1 — ecosystem.config.js has scs001-live process (id: 'ecosystem-live-process', name: 'ecosystem.config.js has scs001-live process'):\n   a. Read join(process.cwd(), 'ecosystem.config.js') as a string.\n   b. pass = content.includes('\"scs001-live\"') || content.includes(\"'scs001-live'\");\n   c. details = pass ? 'scs001-live process found in ecosystem.config.js' : 'scs001-live process NOT found in ecosystem.config.js';\n   d. action_required (only if not pass) = 'Add scs001-live process to ecosystem.config.js';\n\n4. CHECK 2 — TIKTOK_ACCESS_TOKEN env var is set (id: 'tiktok-token', name: 'TIKTOK_ACCESS_TOKEN env var present'):\n   a. const token = process.env.TIKTOK_ACCESS_TOKEN || '';\n   b. pass = token.length > 0;\n   c. details = pass ? 'TIKTOK_ACCESS_TOKEN is set (length: ' + token.length + ' chars)' : 'TIKTOK_ACCESS_TOKEN is NOT set in environment';\n   d. action_required (only if not pass) = 'Set TIKTOK_ACCESS_TOKEN in .env — obtain from TikTok Developer Portal, video.upload scope required';\n\n5. CHECK 3 — TikTok client config file exists (id: 'tiktok-client-config', name: 'TikTok client config exists'):\n   a. const configPath = join(process.cwd(), 'agents', 'tiktok-client', 'config.ts');\n   b. pass = existsSync(configPath);\n   c. details = pass ? 'agents/tiktok-client/config.ts exists' : 'agents/tiktok-client/config.ts NOT found';\n   d. action_required (only if not pass) = 'TikTok client config is missing — check agents/tiktok-client/';\n\n6. CHECK 4 — scs001-pipeline mock process still present (id: 'mock-fallback', name: 'Mock pipeline fallback preserved'):\n   a. Reuse the ecosystem.config.js content from Check 1.\n   b. pass = content.includes('\"scs001-pipeline\"') || content.includes(\"'scs001-pipeline'\");\n   c. details = pass ? 'scs001-pipeline mock process still present — dry-run fallback intact' : 'WARNING: scs001-pipeline mock process was removed';\n   (No action_required for this check — it is informational.)\n\n7. BUILD ReadinessReport:\n   const checks = [check1, check2, check3, check4];\n   const criticalChecks = [check1, check2, check3];\n   const ready_to_post = criticalChecks.every(c => c.pass);\n   const human_actions_required = checks.filter(c => c.action_required).map(c => c.action_required as string);\n   const notes = ready_to_post\n     ? 'System configured for Phase 1 live posting. Run: pm2 start ecosystem.config.js --only scs001-live'\n     : 'System NOT ready for live posting. Complete all human actions above before starting scs001-live.';\n   const report: ReadinessReport = { sprint: '097', date: new Date().toISOString().slice(0, 10), phase: 'phase-1-activation', checks, ready_to_post, human_actions_required, notes };\n\n8. WRITE report:\n   const gatesDir = join(process.cwd(), 'workspace', 'gates');\n   mkdirSync(gatesDir, { recursive: true });\n   writeFileSync(join(gatesDir, 'phase1-activation-readiness.json'), JSON.stringify(report, null, 2));\n\n9. PRINT results:\n   checks.forEach(c => console.log((c.pass ? '\\u2713' : '\\u2717') + ' [' + c.name + ']: ' + c.details));\n   if (human_actions_required.length > 0) { console.log(''); console.log('HUMAN ACTIONS REQUIRED:'); human_actions_required.forEach((a, i) => console.log('  ' + (i + 1) + '. ' + a)); }\n   console.log('');\n   console.log(ready_to_post ? 'PHASE 1 READY' : 'PHASE 1 BLOCKED — complete actions above');\n   console.log('Report written to workspace/gates/phase1-activation-readiness.json');\n\n10. EXIT: process.exit(ready_to_post ? 0 : 1);\n\n11. STRUCTURE: wrap all in async function main(): Promise<void> {} and call main().catch(err => { console.error(err); process.exit(1); });\n\nFAIL CONDITIONS:\n(1) Any import other than 'fs' and 'path'\n(2) File not created\n(3) workspace/gates/phase1-activation-readiness.json not written\n(4) ready_to_post field missing from JSON\n(5) TIKTOK_ACCESS_TOKEN check does not use process.env directly\n(6) process.exit not called\n(7) Any existing file modified",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "dependencies": [
+        "097-01"
+      ],
+      "priority": "critical",
+      "sprint_id": "sprint-097",
+      "deliverables": {
+        "code": [
+          "scripts/scs001/validate-phase1-activation.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "context": "TIKTOK_ACCESS_TOKEN is NOT currently set in .env (confirmed Mar 16). The TikTokClient at agents/tiktok-client/config.ts reads process.env.TIKTOK_ACCESS_TOKEN || '' and falls back to dry-run when empty. This validator gives the operator a machine-readable readiness report before attempting to start the live pipeline. New file, only stdlib imports (fs, path) — no existing class API surface to hallucinate. Depends on 097-01 so that the ecosystem check passes."
+    },
+    {
+      "id": "097-03",
+      "title": "Update docs/gate-tracker.md — mark T2 Skills and OpenClaw rows as Deferred",
+      "description": "MODIFY ONE EXISTING FILE: docs/gate-tracker.md. Do NOT modify any other file.\n\nEXACT REQUIREMENTS:\n\n1. Find the row for OpenClaw. It currently reads:\n   | OpenClaw v2026.3.7 Setup | Mar 10 | [ ] Pending | | gateway.auth.mode + T1 skills (13) |\n   Replace with:\n   | OpenClaw v2026.3.7 Setup | Mar 10 | [ ] Deferred | | Deferred to Sprint 098+. gateway.auth.mode + T1 skills (13). Was Mar 10. |\n\n2. Find the row for T2 Skills Installation. It currently reads:\n   | T2 Skills Installation | Mar 14 | [ ] Pending | | 6 content/monetization skills |\n   Replace with:\n   | T2 Skills Installation | Mar 14 | [ ] Deferred | | Deferred to Sprint 098+. 6 content/monetization skills. Was Mar 14. |\n\n3. Do NOT change any other row. Do NOT change the Kill Switches section.\n\nFAIL CONDITIONS:\n(1) docs/gate-tracker.md not modified\n(2) OpenClaw row still shows '[ ] Pending'\n(3) T2 Skills row still shows '[ ] Pending'\n(4) Any completed gate row changed\n(5) Kill Switches section modified\n(6) Any other file modified",
+      "type": "docs",
+      "task_type": "docs",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "dependencies": [],
+      "priority": "normal",
+      "sprint_id": "sprint-097",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": [
+          "docs/gate-tracker.md"
+        ]
+      },
+      "context": "gate-tracker.md shows OpenClaw v2026.3.7 Setup (target Mar 10) and T2 Skills Installation (target Mar 14) both as Pending — both overdue by 6+ days. Neither blocks Phase 1. Marking them Deferred clears the runway for Phase 1 focus. Sprint 098 will address them."
+    }
+  ]
+}
