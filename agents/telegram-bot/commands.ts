@@ -323,6 +323,46 @@ export async function handleUnknown(chatId: number, text: string): Promise<void>
   await sendMessage(chatId, `❓ Unknown command: \`${text}\`\n\nUse /help for available commands.`);
 }
 
+// ── Phase 1.5 gate review (Sprint 132) ────────────────────────────────────────
+export async function handleGate(chatId: number): Promise<void> {
+  const manual = loadManualPosts();
+  const postsCount  = manual.count;
+  const totalViews  = manual.totalViews;
+  const avgViews    = postsCount > 0 ? Math.round(totalViews / postsCount) : 0;
+  const passesPostCount = postsCount >= 30;
+  const passesViews     = totalViews >= 500;
+  const overallPass     = passesPostCount && passesViews;
+
+  const gateDate  = new Date('2026-04-07T00:00:00Z');
+  const now       = new Date();
+  const daysLeft  = Math.max(0, Math.ceil((gateDate.getTime() - now.getTime()) / 86400000));
+  const daysLabel = daysLeft === 0 ? 'TODAY' : `${daysLeft} days`;
+
+  const icon       = overallPass ? '✅' : '❌';
+  const verdict    = overallPass ? 'PROCEED → Phase 2A' : 'KILL SWITCH TRIGGERED';
+  const postIcon   = passesPostCount ? '✅' : '❌';
+  const viewsIcon  = passesViews ? '✅' : '❌';
+
+  const lines = [
+    `📊 *Phase 1.5 Gate Review* — Apr 7 (${daysLabel})`,
+    '',
+    `${postIcon} Posts:  *${postsCount}/30*`,
+    `${viewsIcon} Views:  *${totalViews}/500* (avg ${avgViews}/post)`,
+    '',
+    `${icon} *${verdict}*`,
+  ];
+
+  if (!overallPass) {
+    const needed = [];
+    if (!passesPostCount) needed.push(`${30 - postsCount} more posts`);
+    if (!passesViews) needed.push(`${500 - totalViews} more views`);
+    lines.push('', `Need: ${needed.join(' + ')}`);
+    lines.push('Record posts: `npx ts-node scripts/scs001/record-manual-post.ts --video-id <id> --views <n>`');
+  }
+
+  await sendMessage(chatId, lines.join('\n'));
+}
+
 // ── Achiri AI companion bridge (Sprint 130/131) ───────────────────────────────
 // Routes to ACHIRI_BASE_URL/chat via HTTP POST.
 // Sprint 131: tier wired from TelegramDB + ACHIRI_ALPHA_WHITELIST access gate.

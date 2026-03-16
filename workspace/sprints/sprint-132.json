@@ -1,0 +1,61 @@
+{
+  "sprint": "132",
+  "name": "Phase 1.5 gate review script — generate-phase1-5-gate.ts + /gate Telegram command",
+  "block": "Phase 1 — TikTok Gate (Apr 7)",
+  "goal": "Build Phase 1.5 gate review infrastructure: (1) scripts/scs001/generate-phase1-5-gate.ts — reads manual-posts.jsonl, computes gate criteria (>=30 posts AND >=500 views), writes workspace/gates/phase1-5-gate.json with pass/fail and PROCEED/KILL recommendation. (2) /gate Telegram command — calls the same gate logic and sends formatted gate status to operator. Mirrors the phase0-phase1-gate.json pattern.",
+  "rationale": "Apr 7 gate decision requires a formal gate artifact (JSON) to document the decision. The operator needs to run /gate on Apr 7 to get an immediate pass/fail recommendation. Without this, the gate is informal and undocumented. Phase 1.5 gate = key kill switch: <500 views/30 posts → kill TikTok, pivot Achiri-only.",
+  "swarm": "NOT USED — standalone script + 1 new command + 1 new dispatch case. Direct write.",
+  "tasks": [
+    {
+      "id": "132-01",
+      "title": "scripts/scs001/generate-phase1-5-gate.ts — formal gate review script",
+      "description": "Reads workspace/scs001/manual-posts.jsonl. Computes: posts_count, total_views, avg_views, passes_posts (>=30), passes_views (>=500), overall_pass. Writes workspace/gates/phase1-5-gate.json. Fields: gate, date, criteria[{id,name,pass,details}], overall_pass, recommendation (PROCEED→Phase 2A | KILL→shut down TikTok, focus Achiri). Prints summary to console. Exit 0 on pass, 1 on fail.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-132",
+      "deliverables": {
+        "code": ["scripts/scs001/generate-phase1-5-gate.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "132-02",
+      "title": "commands.ts + index.ts — /gate Telegram command",
+      "description": "Add handleGate(chatId) to commands.ts: reads manual-posts.jsonl, computes same gate criteria, sends formatted message with gate status, days until Apr 7, and PROCEED/KILL recommendation. Add case '/gate' in index.ts dispatch switch.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-132",
+      "deliverables": {
+        "code": ["agents/telegram-bot/commands.ts", "agents/telegram-bot/index.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "132-03",
+      "title": "scripts/scs001/validate-phase1-5-gate.ts — 5/5 validation",
+      "description": "Tests: (1) generate-phase1-5-gate.ts exists; (2) script runs and writes gate JSON (with 0 posts — should FAIL but still write JSON); (3) gate JSON has expected fields (gate, date, criteria, overall_pass, recommendation); (4) handleGate export exists in commands.ts; (5) /gate case in index.ts. 5/5 PASS.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-132",
+      "deliverables": {
+        "code": ["scripts/scs001/validate-phase1-5-gate.ts"],
+        "tests": ["scripts/scs001/validate-phase1-5-gate.ts"],
+        "docs": []
+      }
+    }
+  ]
+}

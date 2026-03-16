@@ -1,0 +1,26 @@
+{
+  "gate": "phase1-5-tiktok-kill-switch",
+  "date": "2026-03-16",
+  "generated_at": "2026-03-16T17:33:26.541Z",
+  "criteria": [
+    {
+      "id": "post-count",
+      "name": "Manual TikTok Posts (target: 30)",
+      "pass": false,
+      "details": "0 posts recorded in manual-posts.jsonl"
+    },
+    {
+      "id": "total-views",
+      "name": "Total Views Across Posts (target: 500)",
+      "pass": false,
+      "details": "0 total views | avg 0 views/post"
+    }
+  ],
+  "overall_pass": false,
+  "recommendation": "KILL SWITCH — only 0/30 posts. Shut down TikTok agent, focus on Achiri-only roadmap.",
+  "raw": {
+    "posts_count": 0,
+    "total_views": 0,
+    "avg_views": 0
+  }
+}
