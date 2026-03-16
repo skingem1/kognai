@@ -1,5 +1,5 @@
 # KOGNAI SESSION MEMORY
-*Last updated: Sprint 158 — 2026-03-16*
+*Last updated: Sprint 159 — 2026-03-16*
 
 ---
 
@@ -10,9 +10,9 @@
 - Production mode: set `SCS_EDITING_MODE=production` + `TIKTOK_ACCESS_TOKEN` in .env
 
 ## Kognai State
-- Last commit: 952d143 (Sprint 158 shipped 2026-03-16)
+- Last commit: e3199d5 (Sprint 159 shipped 2026-03-16)
 - Sprint numbering: Invoica legacy 001-062e → Kognai starts 063+
-- Current sprint: 159 (next)
+- Current sprint: 160 (next)
 - Gate reports: workspace/gates/phase0-phase1-gate.json, workspace/gates/phase1-activation-readiness.json, workspace/gates/production-quality-check.json
 - Gate status: 0/30 posts, ~22 days to Apr 7 Phase 1.5 gate (WARNING urgency)
 - Stripe: NOT LIVE (STRIPE_SECRET_KEY not set — human action required)
@@ -105,7 +105,8 @@
 | 156 | telegram | /caption command — ready-to-paste TikTok caption generator | ✅ PASS |
 | 157 | ops | kognai-brief-regen PM2 cron — daily brief auto-regeneration at 06:45 | ✅ PASS |
 | 158 | telegram | /pace command — dynamic posting pace calculator | ✅ PASS |
-| **159** | **?** | **NEXT** | ⏳ pending |
+| 159 | telegram | /today command — daily operator morning cockpit | ✅ PASS |
+| **160** | **?** | **NEXT** | ⏳ pending |
 
 ## SCS-001 Pipeline Architecture
 12 stages, 11 agents:

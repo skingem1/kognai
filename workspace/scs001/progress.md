@@ -892,3 +892,14 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
 - Gate: ~22 days to Apr 7, 0/30 posts | Achiri alpha: Apr 25 (~40d)
 - Timestamp: 2026-03-16T21:30:00Z
 - SESSION NOTE: 5 sprints this session (155-158). Context getting full. Handoff below.
+
+## Sprint 159 — /today command — daily operator morning cockpit (Phase 1 — TikTok gate)
+- Status: PASS
+- Commit: e3199d5
+- Files created: scripts/scs001/validate-sprint-159.ts, workspace/sprints/sprint-159.json
+- Files modified: agents/telegram-bot/commands.ts, agents/telegram-bot/index.ts
+- Test: scripts/scs001/validate-sprint-159.ts — 5/5 PASS
+- Swarm used: no (direct write — 2 file edits + validation script)
+- Changes: handleToday(chatId, ownerChatId) — owner-only. Morning cockpit: reads manual-posts.jsonl for recorded count, publish-ledger.jsonl for next unposted video (most recent unposted, sorted desc), viral-topics.json for top 3 topics. Computes: todayTarget=ceil(postsNeeded/daysLeft), rateNeeded. Shows: today's target posts, next video_id with /caption shortcut, top 3 viral topics, links to /queue + /pace. Gate-met shortcut (30/30 → celebration message). handleHelp updated. index.ts routed /today.
+- Gate: ~22 days to Apr 7, 0/30 posts | Achiri alpha: Apr 25 (~40d)
+- Timestamp: 2026-03-16T22:00:00Z
