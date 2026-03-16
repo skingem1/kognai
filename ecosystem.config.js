@@ -391,5 +391,45 @@ module.exports = {
       out_file: "/Users/tarekmnif/kognai/logs/drain-out.log",
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
+    {
+      // SCS-001 Pipeline — runs 4x daily at posting slot times (Charter schedule)
+      // Slots: 07:00, 12:00, 18:00, 21:00 UTC
+      // Runs full 12-stage pipeline: Trend→Discovery→ClipDetection→Insight→Script→
+      // Editing→Caption→QC→Publishing→Analytics→Flywheel→FailureLibrary
+      // Default: mock mode (no cloud costs). Set SCS_MODE=live for real API calls.
+      name: "scs001-pipeline",
+      script: "agents/scs001-orchestrator/run-pipeline.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: false,
+      watch: false,
+      cron_restart: "0 7,12,18,21 * * *",
+      args: process.env.SCS_MODE || "mock",
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
+        OLLAMA_HOST: "http://127.0.0.1:11434",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/scs001-pipeline-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/scs001-pipeline-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
+    {
+      // Vault Dashboard — FastAPI on port 11436 (localhost only)
+      // 13-panel monitoring: sprints, tasks, costs, agents, routing, chain,
+      // security, assets, pipeline runs, amendments, revenue, blockers
+      name: "vault-dashboard",
+      script: "server.py",
+      interpreter: "python3",
+      interpreter_args: "-m uvicorn server:app --host 127.0.0.1 --port 11436",
+      cwd: "/Users/tarekmnif/kognai/dashboard",
+      autorestart: true,
+      watch: false,
+      max_memory_restart: "256M",
+      error_file: "/Users/tarekmnif/kognai/logs/dashboard-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/dashboard-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
   ]
 };
