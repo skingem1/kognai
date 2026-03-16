@@ -1,7 +1,7 @@
 // Command handlers — Phase 1 TikTok Content Agent Telegram Bot
 // Each handler receives chatId + message text, sends response(s) via sendMessage/sendPhoto.
 
-import { readdirSync, readFileSync, existsSync, appendFileSync, mkdirSync, writeFileSync } from 'fs';
+import { readdirSync, readFileSync, existsSync, appendFileSync, mkdirSync, writeFileSync, statSync } from 'fs';
 import { join, dirname } from 'path';
 import { sendMessage, sendPhoto } from './bot';
 import { TelegramDB } from './db';
@@ -108,6 +108,7 @@ export async function handleHelp(chatId: number): Promise<void> {
     '/caption [video_id] — Ready-to-paste TikTok caption for a video (owner)',
     '/pace — Posting pace vs Apr 7 gate target (owner)',
     '/today — Morning cockpit: target + next video + trending topics (owner)',
+    '/viral — Top 10 trending topics from pipeline (owner)',
     '',
     '🤖 *Achiri AI Companion*',
     '/achiri <msg> — Chat with Achiri (free tier, Darija/Arabic/French)',
@@ -1660,6 +1661,66 @@ export async function handleToday(chatId: number, ownerChatId: string): Promise<
 
   lines.push('');
   lines.push(`→ /queue for full list | /pace for pace math`);
+
+  await sendMessage(chatId, lines.join('\n'));
+}
+// ── Sprint 160: /viral — trending topics content inspiration ─────────────────
+
+export async function handleViral(chatId: number, ownerChatId: string): Promise<void> {
+  if (String(chatId) !== String(ownerChatId)) {
+    await sendMessage(chatId, '⛔ Owner-only command.');
+    return;
+  }
+
+  const topicsPath = join(process.cwd(), 'workspace', 'scs001', 'viral-topics.json');
+
+  if (!existsSync(topicsPath)) {
+    await sendMessage(chatId, '⚠️ No viral topics yet — pipeline must run first. Check /queue.');
+    return;
+  }
+
+  let topics: string[] = [];
+  let freshness = 'unknown';
+
+  try {
+    const data = JSON.parse(readFileSync(topicsPath, 'utf-8'));
+    topics = (Array.isArray(data.topics) ? data.topics : []).slice(0, 10);
+  } catch {
+    await sendMessage(chatId, '⚠️ Failed to read viral-topics.json. Check /queue.');
+    return;
+  }
+
+  if (topics.length === 0) {
+    await sendMessage(chatId, '⚠️ No viral topics yet — pipeline must run first. Check /queue.');
+    return;
+  }
+
+  try {
+    const stat = statSync(topicsPath);
+    const ageMs = Date.now() - stat.mtimeMs;
+    const ageH  = Math.floor(ageMs / 3600000);
+    if (ageH === 0) {
+      const ageMin = Math.floor(ageMs / 60000);
+      freshness = `${ageMin}m ago`;
+    } else if (ageH < 24) {
+      freshness = `${ageH}h ago`;
+    } else {
+      const ageD = Math.floor(ageH / 24);
+      freshness = `${ageD}d ago`;
+    }
+  } catch { /* ignore */ }
+
+  const lines: string[] = [
+    `🔥 *Viral Topics* — top ${topics.length} trending`,
+    `_(Updated: ${freshness})_`,
+    '',
+  ];
+
+  topics.forEach((t, i) => lines.push(`${i + 1}. ${t}`));
+
+  lines.push('');
+  lines.push(`💡 Use these as your next video topics.`);
+  lines.push(`→ /today for today's target | /queue for ready videos`);
 
   await sendMessage(chatId, lines.join('\n'));
 }

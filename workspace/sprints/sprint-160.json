@@ -1,0 +1,68 @@
+{
+  "sprint": "160",
+  "name": "/viral command — trending topics content inspiration",
+  "block": "Phase 1 — TikTok gate (0/30 posts, ~22 days to Apr 7)",
+  "goal": "Add /viral Telegram command (owner-only). Shows top 10 trending topics from workspace/scs001/viral-topics.json with file freshness date. Formatted as ready-to-use content ideas with hook suggestions. Helps operator decide what to generate or post next. Complements /today (which shows ONE topic) — /viral shows the full trending list.",
+  "rationale": "Operator needs to know what to generate next. viral-topics.json has fresh trend data but is only accessible via raw file. /viral surfaces it in Telegram, making content ideation a single command. Drives faster content generation decisions which accelerates hitting the 30-post gate.",
+  "swarm": "NOT USED — 2 file edits (commands.ts + index.ts) + 1 validation script. Direct write.",
+  "tasks": [
+    {
+      "id": "160-01",
+      "title": "commands.ts — handleViral()",
+      "description": "handleViral(chatId, ownerChatId): owner-only gate. Reads workspace/scs001/viral-topics.json — takes topics[] array, slices first 10. Gets file mtime via fs.statSync for freshness ('Updated: N hours ago' or 'Updated: today HH:MM'). Message format: '🔥 *Viral Topics* — top 10 trending\\n_(Updated: {freshness})_\\n\\n1. {topic1}\\n2. {topic2}\\n...\\n10. {topic10}\\n\\n💡 Use these as your next video topics.\\n→ /today for today's target | /queue for ready videos'. If viral-topics.json missing or empty: '⚠️ No viral topics yet — pipeline must run first. Check /queue.'. Also add '/viral — Top 10 trending topics from pipeline (owner)' to handleHelp.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-160",
+      "deliverables": {
+        "code": ["agents/telegram-bot/commands.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "160-02",
+      "title": "index.ts — import handleViral + route /viral",
+      "description": "Add handleViral to import from commands. Add case '/viral' in dispatch switch: await handleViral(chatId, OWNER_CHAT_ID);",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-160",
+      "deliverables": {
+        "code": ["agents/telegram-bot/index.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "160-03",
+      "title": "validate-sprint-160.ts — 5-check validation",
+      "description": "1) commands.ts exports handleViral. 2) handleViral reads viral-topics.json. 3) handleViral uses statSync for freshness. 4) handleHelp contains /viral. 5) index.ts routes /viral.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-160",
+      "deliverables": {
+        "code": ["scripts/scs001/validate-sprint-160.ts"],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ],
+  "acceptance_criteria": [
+    "handleViral() exported — reads viral-topics.json, slices top 10, shows file freshness",
+    "Shows numbered topic list + content tip + links to /today and /queue",
+    "handleHelp shows /viral",
+    "index.ts routes /viral",
+    "validate-sprint-160.ts: 5/5 PASS"
+  ]
+}
