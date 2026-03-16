@@ -2,6 +2,11 @@
 // Loads personality from kognai-agents/achiri/prompt.md
 // Loads config from kognai-agents/achiri/config.json
 // Tier-based model selection. Sprint 113: wired to Ollama (free) + Anthropic SDK (paid).
+// Sprint 122: daily message limit enforcement (messages_per_day from config).
+
+// Sentinel prefix returned when user hits their daily limit.
+// Server detects this to return structured { error: 'limit_exceeded' } response.
+export const ACHIRI_LIMIT_EXCEEDED = 'ACHIRI_LIMIT_EXCEEDED:';
 
 import { readFileSync } from 'fs';
 import { join } from 'path';
@@ -99,6 +104,22 @@ export class AchiriConversationHandler {
   }
 
   async chat(userMessage: string, history?: ConversationTurn[]): Promise<string> {
+    // --- Daily message limit check (Sprint 122) ---
+    // Bypass with ACHIRI_NO_LIMIT=1 (tests / admin use)
+    if (process.env.ACHIRI_NO_LIMIT !== '1') {
+      const tierCfg = this.config.tiers[this.tier] ?? this.config.tiers['free'];
+      const dailyLimit: number = tierCfg.messages_per_day ?? 50;
+      if (dailyLimit > 0) {
+        const store = this.memory ?? new AchiriMemoryStore();
+        const todayCount = store.getDailyCount(this.userId);
+        if (todayCount >= dailyLimit) {
+          const msg = 'Waslet el 7ed mtaa el yawm (' + dailyLimit + ' messages). 3awedha ghodwa aw bedel plan!';
+          console.log('[Achiri] limit_exceeded user=' + this.userId + ' tier=' + this.tier + ' count=' + todayCount + '/' + dailyLimit);
+          return ACHIRI_LIMIT_EXCEEDED + ' ' + msg;
+        }
+      }
+    }
+
     // Load history from memory store if enabled and no override provided
     const resolvedHistory: ConversationTurn[] = history ?? (this.memory ? this.memory.loadHistory(this.userId) : []);
     const messages = this.buildMessages(userMessage, resolvedHistory);
@@ -149,6 +170,12 @@ export class AchiriConversationHandler {
     if (this.memory && !history) {
       this.memory.appendTurn(this.userId, { role: 'user', content: userMessage });
       this.memory.appendTurn(this.userId, { role: 'assistant', content: reply });
+    }
+
+    // Increment daily counter after successful reply (Sprint 122)
+    if (process.env.ACHIRI_NO_LIMIT !== '1') {
+      const store = this.memory ?? new AchiriMemoryStore();
+      store.incrementDailyCount(this.userId);
     }
 
     return reply;

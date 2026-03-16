@@ -1,0 +1,78 @@
+{
+  "sprint": "122",
+  "name": "Achiri Daily Message Limit — enforce messages_per_day per tier",
+  "block": "Phase 2A — Achiri alpha prerequisite",
+  "goal": "Enforce the messages_per_day limit defined in kognai-agents/achiri/config.json (free=50, paid=-1). The conversation handler currently ignores this field. Without enforcement, free tier has no ceiling and paid tiers have no value proposition. Required before Apr 25 Achiri Alpha launch.",
+  "rationale": "Tier gating is a hard prerequisite for Achiri monetization. config.json already defines the limits — this sprint wires them into chat() and the HTTP server.",
+  "swarm": "NOT USED — surgical edits to 2 files + 1 file, each <200 lines. Direct write faster and safer.",
+  "tasks": [
+    {
+      "id": "122-01",
+      "title": "agents/achiri/memory-store.ts — add daily counter methods",
+      "description": "Add getDailyCount(userId) and incrementDailyCount(userId) to AchiriMemoryStore. Store counts in workspace/achiri/daily-counts.json. Format: { '2026-03-16': { 'userId': 3 } }. Old dates are ignored (not cleaned up — file stays small). Thread-safe via read-modify-write on each call.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-122",
+      "deliverables": {
+        "code": ["agents/achiri/memory-store.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "122-02",
+      "title": "agents/achiri/index.ts — enforce limit in chat()",
+      "description": "At start of chat(): read this.config.tiers[this.tier].messages_per_day. If >0, call this.memory.getDailyCount(this.userId). If count >= limit, return Darija limit-exceeded message WITHOUT calling the LLM. If under limit, proceed and call incrementDailyCount() after success. Add ACHIRI_NO_LIMIT env var to bypass in tests.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-122",
+      "deliverables": {
+        "code": ["agents/achiri/index.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "122-03",
+      "title": "agents/achiri/server.ts — return structured limit response",
+      "description": "In POST /chat handler: after calling handler.chat(), check if reply starts with ACHIRI_LIMIT_EXCEEDED sentinel. If so, return HTTP 200 with { error: 'limit_exceeded', limit: N, reset_at: 'midnight UTC', reply: <the Darija message> }. This lets API clients detect and display upgrade prompts.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-122",
+      "deliverables": {
+        "code": ["agents/achiri/server.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "122-04",
+      "title": "scripts/achiri/validate-daily-limit.ts — validation test",
+      "description": "Test: create AchiriConversationHandler with free tier (limit=2 for test). Send 3 messages in ACHIRI_DRY_RUN=0, ACHIRI_NO_LIMIT unset mode but with a patched limit of 2. Confirm: msg1 OK, msg2 OK, msg3 returns ACHIRI_LIMIT_EXCEEDED sentinel. Also test: tnd_basic tier (limit=-1) sends 3 msgs, all succeed.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-122",
+      "deliverables": {
+        "code": ["scripts/achiri/validate-daily-limit.ts"],
+        "tests": ["scripts/achiri/validate-daily-limit.ts"],
+        "docs": []
+      }
+    }
+  ]
+}

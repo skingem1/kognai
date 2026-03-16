@@ -8,7 +8,7 @@
 //   GET    /health         → { status: 'ok', version: '115' }
 
 import * as http from 'http';
-import { AchiriConversationHandler } from './index';
+import { AchiriConversationHandler, ACHIRI_LIMIT_EXCEEDED } from './index';
 import { AchiriMemoryStore } from './memory-store';
 
 const PORT = parseInt(process.env.ACHIRI_PORT ?? '3420', 10);
@@ -93,6 +93,23 @@ const server = http.createServer(async (req, res) => {
       const handler = getHandler(tier, userId);
       const modelConfig = handler.getModelConfig();
       const reply = await handler.chat(message.trim());
+
+      // Detect daily limit exceeded sentinel (Sprint 122)
+      if (reply.startsWith(ACHIRI_LIMIT_EXCEEDED)) {
+        const humanMsg = reply.slice(ACHIRI_LIMIT_EXCEEDED.length).trim();
+        // Reset midnight UTC
+        const tomorrow = new Date();
+        tomorrow.setUTCHours(24, 0, 0, 0);
+        const resetAt = tomorrow.toISOString();
+        console.log('[Achiri API] limit_exceeded userId=' + userId + ' tier=' + tier);
+        return send(res, 200, {
+          error: 'limit_exceeded',
+          reply: humanMsg,
+          reset_at: resetAt,
+          upgrade_tiers: ['tnd_basic', 'tnd_premium'],
+        });
+      }
+
       const turns = memStore.loadHistory(userId).length;
       console.log('[Achiri API] /chat userId=' + userId + ' tier=' + tier + ' turns_after=' + turns);
       return send(res, 200, {
