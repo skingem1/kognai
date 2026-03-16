@@ -846,3 +846,14 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
 - Changes: handlePostNow() — owner-only. Parses run_id → epoch to find captioned .mp4 on disk. Shows top-3 unposted videos with: file path (~/ relative), speaker/topic from ledger metadata, hashtags from viral-topics.json (#fyp #viral #learnontiktok added), next optimal posting slot (07/12/18/21), /record shortcut. Bridges gap: 114 videos ready on disk but operator had no Telegram-native way to find file paths or formatted TikTok metadata. handleHelp updated. index.ts routed.
 - Gate: ~22 days to Apr 7, 0/30 posts | Achiri alpha: Apr 25 (~40d)
 - Timestamp: 2026-03-16T20:00:00Z
+
+## Sprint 155 — Posting time reminders — noon + evening PM2 crons (Phase 1 — TikTok gate)
+- Status: PASS
+- Commit: 0e1090e
+- Files created: scripts/posting-reminder.ts, scripts/scs001/validate-sprint-155.ts, workspace/sprints/sprint-155.json
+- Files modified: ecosystem.config.js (kognai-post-noon + kognai-post-evening crons already present)
+- Test: scripts/scs001/validate-sprint-155.ts — 5/5 PASS
+- Swarm used: no (direct write — 1 new script + validation only)
+- Changes: scripts/posting-reminder.ts — sends owner Telegram nudge at 12:00 + 18:00. Reads manual-posts.jsonl (gate count), publish-ledger.jsonl (find first unposted with captioned .mp4), viral-topics.json (hashtags). Silent exit if 30 posts met. Shows: video_id, file path (~/ relative), speaker/topic, hashtags, /record shortcut. ecosystem.config.js: kognai-post-noon (0 12 * * *) + kognai-post-evening (0 18 * * *).
+- Gate: ~22 days to Apr 7, 0/30 posts | Achiri alpha: Apr 25 (~40d)
+- Timestamp: 2026-03-16T20:30:00Z
