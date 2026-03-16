@@ -657,3 +657,14 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
 - Context limit reached — handoff. Latest commit: 7986cfd.
 - PM2 commands to run: pm2 start ecosystem.config.js --only kognai-smoke-test,kognai-daily-digest,telegram-bot
 - Gate: 22 days until Apr 7, need 30 posts + 500 views, currently 0/30.
+
+## Sprint 138 — Cadence tracker + /achiri-health
+- Status: PASS
+- Commit: 3c1dd96
+- Files modified: scripts/scs001/record-manual-post.ts, agents/telegram-bot/commands.ts, agents/telegram-bot/index.ts
+- Files created: scripts/achiri/validate-sprint-138.ts, workspace/sprints/sprint-138.json
+- Test: scripts/achiri/validate-sprint-138.ts — 8/8 PASS
+- Swarm used: no (2 targeted function edits, direct write)
+- Changes: (1) record-manual-post.ts printStatus() now shows "Cadence needed: X posts/day (Y days to Apr 7 gate)"; (2) handleAchiriHealth() added to commands.ts — owner-only, pings /health, reports UP/DOWN + latency; (3) /achiri-health routed in index.ts and added to handleHelp()
+- Gate: 22 days to Apr 7, 0/30 posts
+- Timestamp: 2026-03-16T15:10:00Z
