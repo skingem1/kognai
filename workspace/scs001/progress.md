@@ -255,3 +255,19 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
   - index.html: Panel 15 HTML card added with id=publish-history-body.
 - Issues: None. Clean implementation.
 - Timestamp: 2026-03-16T20:00:00Z
+
+### Sprint 108 — Script Validator + Experiment Tracker (Block: quality)
+- Status: PASS | Commit: 6d83dac | Block: quality
+- Files created: agents/scs001-script-validator/index.ts, agents/scs001-experiment/index.ts, dashboard/parsers/experiments.py, workspace/sprints/sprint-108.json
+- Files modified: agents/scs001-orchestrator/index.ts
+- Tests: scripts/smoke-test-pipeline.ts — PASS (15 stages, 0 errors, 12 videos)
+- Swarm: NOT used — all files written directly (multi-file orchestrator changes)
+- Changes:
+  - ScriptValidator: validates hook length >10, segments 5-6, interrupts >=8, duration 24-28s. Logs failures to workspace/scs001/validation-errors.jsonl.
+  - ExperimentTracker: logExperiment() appends to experiments.jsonl. getFormulaStats() + getTopSpeakers() for data-driven hook formula selection.
+  - Orchestrator: Stage 6-validate (ScriptValidator, after 5.5-score) + Stage 9-experiment (ExperimentTracker, after 8-qc). Now 15 stages.
+  - experiments.py: get_experiment_stats() + get_experiment_history() for dashboard use.
+  - Pipeline grew from 13→15 stages. scripts_validation_skipped added to summary.
+- Bug fixed: gate.clip_id → gate.video_id (QualityControlGate uses video_id field)
+- Note: User also added Panel 16 (Autonomous Sessions LIVE) to dashboard independently
+- Timestamp: 2026-03-16T20:30:00Z
