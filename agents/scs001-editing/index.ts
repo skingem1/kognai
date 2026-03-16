@@ -86,6 +86,71 @@ function buildMockFFmpegCommand(bundle: ScriptBundle, outputPath: string): strin
   ].join(' ');
 }
 
+// Escape text for FFmpeg drawtext filter (escape single quotes, backslashes, colons)
+function escapeDrawtext(text: string): string {
+  return text
+    .replace(/\\/g, '\\\\')
+    .replace(/'/g, "\\'")
+    .replace(/:/g, '\\:')
+    .substring(0, 80); // cap length to avoid command overflow
+}
+
+// Production segment filter: colored background + drawtext overlay
+// Uses macOS system Helvetica font — no external dependency
+function buildProductionSegmentFilter(seg: ScriptSegment, idx: number, bundle: ScriptBundle): string {
+  const duration = seg.end_s - seg.start_s;
+  const color = SEGMENT_COLORS[seg.segment_name];
+  const FONT = '/System/Library/Fonts/Helvetica.ttc';
+
+  const mainText = escapeDrawtext(seg.caption_text || seg.voiceover_text || seg.segment_name);
+  const mainDrawtext = `drawtext=fontfile='${FONT}':text='${mainText}':x=(w-tw)/2:y=(h-th)/2:fontsize=48:fontcolor=white:borderw=3:bordercolor=black`;
+
+  // Constitutional mandate: why_does_this_matter must appear in insight segment
+  const isInsight = seg.segment_name === 'insight';
+  const whyText = isInsight ? escapeDrawtext((bundle as any).why_does_this_matter || '') : '';
+  const whyDrawtext = isInsight && whyText
+    ? `;[seg${idx}a]drawtext=fontfile='${FONT}':text='${whyText}':x=(w-tw)/2:y=(h-th)/2+60:fontsize=32:fontcolor=white:borderw=2:bordercolor=black[seg${idx}]`
+    : '';
+
+  if (isInsight && whyText) {
+    return `color=c=${color}:s=1080x1920:d=${duration}:r=30[seg${idx}base];[seg${idx}base]${mainDrawtext}[seg${idx}a]${whyDrawtext}`;
+  }
+  return `color=c=${color}:s=1080x1920:d=${duration}:r=30[seg${idx}base];[seg${idx}base]${mainDrawtext}[seg${idx}]`;
+}
+
+function buildProductionFFmpegCommand(bundle: ScriptBundle, outputPath: string): string {
+  const segments = bundle.segments;
+  const filterParts: string[] = [];
+  const concatInputs: string[] = [];
+
+  segments.forEach((seg, idx) => {
+    const filter = buildProductionSegmentFilter(seg, idx, bundle);
+    filterParts.push(filter);
+    concatInputs.push(`[seg${idx}]`);
+  });
+
+  const concatFilter = concatInputs.join('') + `concat=n=${segments.length}:v=1:a=0[outv]`;
+  filterParts.push(concatFilter);
+
+  const filterComplex = filterParts.join('; ');
+  const totalDuration = bundle.total_duration_seconds;
+
+  return [
+    FFMPEG,
+    '-y',
+    '-f lavfi -i anullsrc=r=44100:cl=stereo',
+    `-filter_complex "${filterComplex}"`,
+    '-map "[outv]"',
+    '-map 0:a',
+    `-t ${totalDuration}`,
+    '-c:v libx264 -preset ultrafast -crf 23 -pix_fmt yuv420p',
+    '-c:a aac -b:a 128k',
+    '-movflags +faststart',
+    `-metadata title="SCS-001 ${bundle.script_id}"`,
+    `"${outputPath}"`,
+  ].join(' ');
+}
+
 export class EditingAgent {
   private outputDir: string;
 
@@ -97,7 +162,8 @@ export class EditingAgent {
   }
 
   run(bundles: ScriptBundle[]): EditedVideo[] {
-    console.log('[EditingAgent] ' + bundles.length + ' ScriptBundles in');
+    const mode = process.env.SCS_EDITING_MODE ?? 'mock';
+    console.log('[EditingAgent] ' + bundles.length + ' ScriptBundles in (mode: ' + mode + ')');
 
     const videos: EditedVideo[] = [];
     for (const bundle of bundles) {
@@ -118,9 +184,12 @@ export class EditingAgent {
     const videoId = 'video-' + randomUUID().slice(0, 8);
     const outputPath = this.outputDir + '/' + videoId + '.mp4';
 
-    // Build and execute FFmpeg command (mock mode — test patterns)
-    const cmd = buildMockFFmpegCommand(bundle, outputPath);
-    console.log('[EditingAgent] FFmpeg command length: ' + cmd.length + ' chars');
+    // Build and execute FFmpeg command
+    const productionMode = (process.env.SCS_EDITING_MODE ?? 'mock') === 'production';
+    const cmd = productionMode
+      ? buildProductionFFmpegCommand(bundle, outputPath)
+      : buildMockFFmpegCommand(bundle, outputPath);
+    console.log('[EditingAgent] FFmpeg command length: ' + cmd.length + ' chars (mode: ' + (productionMode ? 'production' : 'mock') + ')');
 
     const startMs = Date.now();
     execSync(cmd, { stdio: 'pipe', timeout: 120_000 });
@@ -155,5 +224,5 @@ export class EditingAgent {
   }
 }
 
-// Export the FFmpeg command builder for testing/debugging
-export { buildMockFFmpegCommand };
+// Export FFmpeg command builders for testing/debugging
+export { buildMockFFmpegCommand, buildProductionFFmpegCommand, buildProductionSegmentFilter };

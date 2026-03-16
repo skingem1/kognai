@@ -1,0 +1,94 @@
+{
+  "tasks": [
+    {
+      "id": "098-01",
+      "title": "Add production FFmpeg command builder with drawtext overlays to EditingAgent",
+      "description": "The editing agent at agents/scs001-editing/index.ts currently only has buildMockFFmpegCommand which produces solid-color videos with no text. Add a buildProductionSegmentFilter function that uses FFmpeg drawtext to render each segment's voiceover_text and caption_text as white-on-dark-shadow text overlays on the colored backgrounds. Add a buildProductionFFmpegCommand that uses these filters. Modify assembleVideo to call the production builder when environment variable SCS_EDITING_MODE is set to 'production' (default remains 'mock' for backwards compatibility). The drawtext filter should use fontfile=/System/Library/Fonts/Helvetica.ttc (macOS system font, no brew dependency). Text should be centered, 48px, white with black outline (borderw=3). Each segment must still use its distinct background color. The why_does_this_matter text from the bundle must appear during the insight segment (constitutional mandate from prompt.md). Silent audio track remains (TTS deferred).\n\nThe buildProductionSegmentFilter function signature: buildProductionSegmentFilter(seg: ScriptSegment, idx: number, bundle: ScriptBundle): string\n\nFor the insight segment, append the why_does_this_matter text below the main caption text using a second drawtext filter at y=(h-th)/2+60.\n\nFAIL CONDITIONS:\n(1) SCS_EDITING_MODE=production does not produce videos with visible text overlays\n(2) Default mode behavior changed in any way\n(3) why_does_this_matter not rendered during insight segment\n(4) External font dependency (brew, pip, etc) required\n(5) EditedVideo contract fields missing or changed\n(6) Any file other than agents/scs001-editing/index.ts modified",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "dependencies": [],
+      "priority": "critical",
+      "sprint_id": "sprint-098",
+      "deliverables": {
+        "code": [
+          "agents/scs001-editing/index.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "context": "The editing agent produces real MP4 files via FFmpeg (91-111KB) but they are solid color rectangles with no text — unwatchable on TikTok. The prompt.md specifies drawtext overlays per segment and constitutional mandate that why_does_this_matter must be visible. Mock mode must be preserved because it is the fallback. The Mac Mini M4 has macOS system fonts at /System/Library/Fonts/. Production mode is gated on SCS_EDITING_MODE env var so existing pipeline runs are not disrupted."
+    },
+    {
+      "id": "098-02",
+      "title": "Make PublishingAgent respect orchestrator mode instead of hardcoded dryRun:true",
+      "description": "The publishing agent at agents/scs001-publishing/index.ts has dryRun: true hardcoded. This means even in live mode with a valid TIKTOK_ACCESS_TOKEN, the agent will never actually post to TikTok. Fix this by modifying agents/scs001-publishing/index.ts AND agents/scs001-orchestrator/index.ts.\n\nIn agents/scs001-publishing/index.ts:\n1. Add a mode parameter to PublishingAgent constructor: constructor(mode: 'mock' | 'live' = 'mock')\n2. Store as private mode: 'mock' | 'live'\n3. Change the hardcoded dryRun: true to dryRun: this.mode !== 'live'\n4. When this.mode === 'live' and processing a publish request, log: '[PublishingAgent] LIVE MODE — posting to TikTok API'\n5. Add a comment on the mediaUrl field: '// LIVE: mediaUrl must be a publicly accessible URL for TikTok PULL_FROM_URL. Local file paths will not work. Hosting layer integration required.'\n\nIn agents/scs001-orchestrator/index.ts:\n6. Find where PublishingAgent is instantiated (around line 187). Change it from new PublishingAgent() to new PublishingAgent(this.mode)\n\nFAIL CONDITIONS:\n(1) dryRun: true still hardcoded anywhere in publishing agent\n(2) Mock mode behavior changed (must still dry-run in mock)\n(3) Live mode without token crashes (TikTokClient fallback must still work)\n(4) Orchestrator does not pass this.mode to PublishingAgent\n(5) Any file other than agents/scs001-publishing/index.ts and agents/scs001-orchestrator/index.ts modified",
+      "type": "bugfix",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "dependencies": [],
+      "priority": "critical",
+      "sprint_id": "sprint-098",
+      "deliverables": {
+        "code": [
+          "agents/scs001-publishing/index.ts",
+          "agents/scs001-orchestrator/index.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "context": "The PublishingAgent has dryRun: true hardcoded. The TikTokClient at agents/tiktok-client/index.ts already handles the no-token fallback gracefully (if options.dryRun || !this.accessToken). So even in live mode without a token, the system is safe. The orchestrator at agents/scs001-orchestrator/index.ts creates PublishingAgent without passing mode. The TikTok Content Posting API uses PULL_FROM_URL which requires a public URL — local file paths will fail in live mode. This is a known gap that the hosting layer (Phase 1 infra) must solve."
+    },
+    {
+      "id": "098-03",
+      "title": "Add FFmpeg subtitle burn-in to CaptionAgent in production mode",
+      "description": "The caption agent at agents/scs001-caption/index.ts generates SRT files but only copies the video unchanged (copyFileSync). Add a production path:\n\n1. Read SCS_EDITING_MODE from process.env (const mode = process.env.SCS_EDITING_MODE ?? 'mock')\n2. When mode === 'production', use FFmpeg to burn subtitles into the captioned video:\n   const FFMPEG = process.env.FFMPEG_PATH ?? '/opt/homebrew/bin/ffmpeg';\n   const burnCmd = FFMPEG + ' -y -i \"' + video.file_path + '\" -vf \"subtitles=' + srtPath + ':force_style=\\'FontSize=24,PrimaryColour=&H00FFFFFF,OutlineColour=&H00000000,Outline=2,Alignment=2,MarginV=80\\'\" -c:a copy \"' + captionedPath + '\"';\n   Execute using execSync from the existing child_process import (or add it).\n3. Wrap the FFmpeg subtitle burn-in in try/catch. On failure: log a warning '[CaptionAgent] subtitle burn-in failed, falling back to copy: ' + err.message, then copyFileSync as fallback.\n4. When mode is NOT 'production' (default mock), behavior is identical to current: copyFileSync.\n\nFAIL CONDITIONS:\n(1) Default mode behavior changed in any way\n(2) Pipeline crashes when FFmpeg subtitle burn-in fails\n(3) SRT file generation logic changed\n(4) CaptionedVideo contract fields changed\n(5) Any file other than agents/scs001-caption/index.ts modified",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "dependencies": [
+        "098-01"
+      ],
+      "priority": "high",
+      "sprint_id": "sprint-098",
+      "deliverables": {
+        "code": [
+          "agents/scs001-caption/index.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "context": "The caption agent generates valid SRT files (confirmed: 15 SRT files in latest run) but copies the video unchanged. There is a TODO comment in the file referencing FFmpeg subtitle burn-in. Using the subtitles filter with SRT is simpler than ASS format. The fallback to copy on failure ensures the pipeline never crashes due to subtitle rendering issues. Depends on 098-01 because production-mode videos with drawtext + subtitle burn-in together produce the minimum viable TikTok video quality."
+    },
+    {
+      "id": "098-04",
+      "title": "Create validate-production-quality.ts — production output quality checker",
+      "description": "CREATE ONE NEW FILE: scripts/scs001/validate-production-quality.ts. Do NOT modify any existing file.\n\nThis script validates that production-mode pipeline output meets minimum quality bar for TikTok posting.\n\nEXACT REQUIREMENTS:\n\n1. IMPORTS:\n   import { readdirSync, statSync, readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs';\n   import { join } from 'path';\n   No other imports.\n\n2. FIND latest run directory:\n   - Scan workspace/scs001/ for directories matching /^run-\\d+$/\n   - Pick the one with the highest timestamp number\n   - If none found, print 'No pipeline run directories found' and exit 1\n\n3. CHECK 1 — Video files exist and have substance (id: 'video-files', name: 'MP4 files exist and are >50KB'):\n   a. List *.mp4 files in editing/ subdirectory of latest run (skip *-captioned.mp4)\n   b. pass = at least 1 file exists AND all files are >50KB (51200 bytes)\n   c. details = 'Found ' + count + ' videos, sizes: ' + min + 'KB - ' + max + 'KB'\n   d. action_required (only if not pass) = 'Run pipeline in production mode or check FFmpeg output'\n\n4. CHECK 2 — SRT files are valid (id: 'srt-files', name: 'SRT caption files present and valid'):\n   a. List *.srt files in caption/ subdirectory\n   b. Read each and verify it contains pattern /\\d+\\n\\d{2}:\\d{2}:\\d{2}/ (subtitle entry)\n   c. pass = at least 1 valid SRT file found\n   d. details = 'Found ' + count + ' valid SRT files'\n\n5. CHECK 3 — Subtitle burn-in detected (id: 'subtitle-burnin', name: 'Subtitle burn-in applied to captioned videos'):\n   a. List *-captioned.mp4 files in caption/ subdirectory\n   b. For each, find corresponding source in editing/ (same basename without -captioned)\n   c. Compare sizes: captioned > source means burn-in happened\n   d. pass = at least 1 captioned video is larger than its source (by at least 1 byte)\n   e. If all captioned files equal or smaller than source: pass = false, details = 'Mock mode detected — captioned videos are same size as source (no burn-in). Set SCS_EDITING_MODE=production to enable.'\n   f. action_required (only if not pass) = 'Set SCS_EDITING_MODE=production and re-run pipeline'\n\n6. BUILD report:\n   interface QualityCheck { id: string; name: string; pass: boolean; details: string; action_required?: string; }\n   interface QualityReport { sprint: string; date: string; run_dir: string; checks: QualityCheck[]; all_critical_pass: boolean; notes: string; }\n   const criticalChecks = [check1, check2];\n   const all_critical_pass = criticalChecks.every(c => c.pass);\n   const notes = all_critical_pass\n     ? 'Pipeline output meets minimum quality bar. Production mode: ' + (check3.pass ? 'YES (subtitle burn-in detected)' : 'NO (mock mode)')\n     : 'Pipeline output below minimum quality. Run in production mode.';\n\n7. WRITE report:\n   mkdirSync(join(process.cwd(), 'workspace', 'gates'), { recursive: true });\n   writeFileSync(join(process.cwd(), 'workspace', 'gates', 'production-quality-check.json'), JSON.stringify(report, null, 2));\n\n8. PRINT results then exit:\n   checks.forEach(c => console.log((c.pass ? '\\u2713' : '\\u2717') + ' [' + c.name + ']: ' + c.details));\n   console.log('');\n   console.log(all_critical_pass ? 'QUALITY CHECK PASS' : 'QUALITY CHECK FAIL');\n   process.exit(all_critical_pass ? 0 : 1);\n\nFAIL CONDITIONS:\n(1) Any import other than 'fs' and 'path'\n(2) File not created\n(3) Report JSON missing all_critical_pass field\n(4) Any existing file modified",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "dependencies": [
+        "098-01",
+        "098-03"
+      ],
+      "priority": "normal",
+      "sprint_id": "sprint-098",
+      "deliverables": {
+        "code": [
+          "scripts/scs001/validate-production-quality.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "context": "The latest pipeline run (run-1773666167538) produced 15 videos at 91-111KB each and 15 captioned copies that are identical in size (copy, no burn-in). In production mode after 098-01 and 098-03, captioned files should be larger than source files due to drawtext + subtitle rendering. This validator confirms the quality upgrade worked. Pattern follows existing validators in scripts/scs001/. Uses only fs and path imports (no external deps — confirmed safe for qwen3:14b swarm)."
+    }
+  ]
+}

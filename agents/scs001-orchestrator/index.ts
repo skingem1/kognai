@@ -184,7 +184,7 @@ export class SCS001Orchestrator {
     const passedGates = gates.filter(g => g.overall_pass);
     if (passedGates.length > 0) {
       stages.push(await this.runStage('9-publishing', 'PublishingAgent', async () => {
-        const agent = new PublishingAgent();
+        const agent = new PublishingAgent(this.mode);
         published = await withRetry(
           () => agent.run(gates, captionedVideos, bundles),
           'PublishingAgent',

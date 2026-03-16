@@ -5,6 +5,7 @@
 // Block C mock: generates SRT files, passes through video (no overlay without libass)
 
 import { existsSync, mkdirSync, writeFileSync, copyFileSync } from 'fs';
+import { execSync } from 'child_process';
 import type { ScriptBundle, ScriptSegment } from '../scs001-script/index';
 import type { EditedVideo } from '../scs001-editing/index';
 
@@ -133,13 +134,27 @@ export class CaptionAgent {
     const keywords = extractKeywords(bundle);
 
     // Step 3: Caption overlay
-    // In mock mode (no libass/libfreetype), pass through the video unchanged
-    // Production mode would use: ffmpeg -i input.mp4 -vf "ass=captions.ass" output.mp4
     const captionedPath = this.outputDir + '/' + video.video_id + '-captioned.mp4';
-    if (existsSync(video.file_path)) {
-      copyFileSync(video.file_path, captionedPath);
-    } else {
+    if (!existsSync(video.file_path)) {
       throw new Error('Source video not found: ' + video.file_path);
+    }
+
+    const productionMode = (process.env.SCS_EDITING_MODE ?? 'mock') === 'production';
+    if (productionMode) {
+      // Production mode: burn subtitles into video via FFmpeg subtitles filter
+      const FFMPEG = process.env.FFMPEG_PATH ?? '/opt/homebrew/bin/ffmpeg';
+      const burnCmd = FFMPEG + ' -y -i "' + video.file_path + '" -vf "subtitles=' + srtPath +
+        ':force_style=\'FontSize=24,PrimaryColour=&H00FFFFFF,OutlineColour=&H00000000,Outline=2,Alignment=2,MarginV=80\'" ' +
+        '-c:a copy "' + captionedPath + '"';
+      try {
+        execSync(burnCmd, { stdio: 'pipe', timeout: 60_000 });
+      } catch (err) {
+        console.warn('[CaptionAgent] subtitle burn-in failed, falling back to copy: ' + (err as Error).message);
+        copyFileSync(video.file_path, captionedPath);
+      }
+    } else {
+      // Mock mode: pass through video unchanged
+      copyFileSync(video.file_path, captionedPath);
     }
 
     return {

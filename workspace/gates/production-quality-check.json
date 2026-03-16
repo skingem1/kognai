@@ -1,0 +1,28 @@
+{
+  "sprint": "098",
+  "date": "2026-03-16",
+  "run_dir": "/Users/tarekmnif/kognai/workspace/scs001/run-1773666167538",
+  "checks": [
+    {
+      "id": "video-files",
+      "name": "MP4 files exist and are >50KB",
+      "pass": true,
+      "details": "Found 15 videos, sizes: 91KB - 111KB"
+    },
+    {
+      "id": "srt-files",
+      "name": "SRT caption files present and valid",
+      "pass": true,
+      "details": "Found 15/15 valid SRT files"
+    },
+    {
+      "id": "subtitle-burnin",
+      "name": "Subtitle burn-in applied to captioned videos",
+      "pass": false,
+      "details": "Mock mode detected — captioned videos are same size as source (no burn-in). Set SCS_EDITING_MODE=production to enable.",
+      "action_required": "Set SCS_EDITING_MODE=production and re-run pipeline"
+    }
+  ],
+  "all_critical_pass": true,
+  "notes": "Pipeline output meets minimum quality bar. Production mode: NO (mock mode — set SCS_EDITING_MODE=production)"
+}

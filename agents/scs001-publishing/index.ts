@@ -79,8 +79,10 @@ function buildCaption(bundle: ScriptBundle): string {
 
 export class PublishingAgent {
   private client: TikTokClient;
+  private mode: 'mock' | 'live';
 
-  constructor() {
+  constructor(mode: 'mock' | 'live' = 'mock') {
+    this.mode = mode;
     this.client = new TikTokClient();
   }
 
@@ -133,12 +135,18 @@ export class PublishingAgent {
       const hashtags = generateHashtags(bundle);
       const captionText = buildCaption(bundle);
 
+      if (this.mode === 'live') {
+        console.log('[PublishingAgent] LIVE MODE — posting to TikTok API');
+      }
+
       const postOptions: TikTokPostOptions = {
         caption: captionText,
+        // LIVE: mediaUrl must be a publicly accessible URL for TikTok PULL_FROM_URL.
+        // Local file paths will not work. Hosting layer integration required.
         mediaUrl: cv.file_path,
         mediaType: 'video',
         hashtags,
-        dryRun: true, // Default dry-run until TikTok API approved
+        dryRun: this.mode !== 'live',
       };
 
       const result = await this.client.post(postOptions);
