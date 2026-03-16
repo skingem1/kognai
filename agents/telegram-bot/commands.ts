@@ -99,6 +99,7 @@ export async function handleHelp(chatId: number): Promise<void> {
     '/gate — Phase 1.5 gate review (Apr 7 kill switch)',
     '/post-reminder — Apr 7 gate progress + posting workflow (owner)',
     '/review — Top-3 QC-passed videos for manual posting (owner)',
+    '/record <id> <views> [title] — Record posted video to gate tracker (owner)',
     '',
     '🤖 *Achiri AI Companion*',
     '/achiri <msg> — Chat with Achiri (free tier, Darija/Arabic/French)',
@@ -754,6 +755,78 @@ export async function handleReview(chatId: number, ownerChatId: string): Promise
   }
 
   msgLines.push('After posting, update --views <actual_count>');
+
+  await sendMessage(chatId, msgLines.join('\n'));
+}
+
+// ── Record manual post — Sprint 143 ────────────────────────────────────────────
+// Owner-only: /record <video_id> <views> [title...]
+// Appends entry to manual-posts.jsonl + returns gate progress.
+const MANUAL_POSTS_PATH_RECORD = join(process.cwd(), 'workspace', 'scs001', 'manual-posts.jsonl');
+const POSTS_TARGET_RECORD = 30;
+const VIEWS_TARGET_RECORD = 500;
+
+export async function handleRecord(chatId: number, ownerChatId: string, text: string): Promise<void> {
+  if (String(chatId) !== ownerChatId) {
+    await sendMessage(chatId, '🔒 Owner only.');
+    return;
+  }
+
+  const args = text.trim().split(/\s+/);
+  // args[0] = '/record', args[1] = video_id, args[2] = views, args[3+] = title
+  const videoId = args[1];
+  const views   = parseInt(args[2] ?? '', 10);
+  const title   = args.slice(3).join(' ') || undefined;
+
+  if (!videoId || isNaN(views)) {
+    await sendMessage(chatId, [
+      '⚠️ Usage: `/record <video_id> <views> [title]`',
+      '',
+      'Example:',
+      '`/record abc123def456 142 "This is the title"`',
+    ].join('\n'));
+    return;
+  }
+
+  // Append to manual-posts.jsonl
+  const now = new Date().toISOString();
+  const entry = { video_id: videoId, views, ...(title ? { title } : {}), posted_at: now, recorded_at: now };
+  const dir = require('path').dirname(MANUAL_POSTS_PATH_RECORD);
+  if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
+  appendFileSync(MANUAL_POSTS_PATH_RECORD, JSON.stringify(entry) + '\n', 'utf-8');
+
+  // Load all posts for gate progress
+  let totalPosts = 0;
+  let totalViews = 0;
+  if (existsSync(MANUAL_POSTS_PATH_RECORD)) {
+    const lines = readFileSync(MANUAL_POSTS_PATH_RECORD, 'utf-8').split('\n').filter(l => l.trim());
+    for (const line of lines) {
+      try {
+        const p = JSON.parse(line);
+        totalPosts++;
+        totalViews += p.views ?? 0;
+      } catch { /* skip */ }
+    }
+  }
+
+  const APR_7_RECORD = new Date('2026-04-07T00:00:00Z');
+  const daysToGate = Math.ceil((APR_7_RECORD.getTime() - Date.now()) / 86400000);
+  const postsRemaining = Math.max(0, POSTS_TARGET_RECORD - totalPosts);
+  const cadence = daysToGate > 0 ? (postsRemaining / daysToGate).toFixed(1) : 'NOW';
+
+  const postsBar = `${totalPosts}/${POSTS_TARGET_RECORD}${totalPosts >= POSTS_TARGET_RECORD ? ' ✅' : ''}`;
+  const viewsBar = `${totalViews}/${VIEWS_TARGET_RECORD}${totalViews >= VIEWS_TARGET_RECORD ? ' ✅' : ''}`;
+
+  const msgLines: string[] = [
+    `✅ *Recorded:* \`${videoId}\``,
+    `Views: ${views}${title ? ` — ${title}` : ''}`,
+    '',
+    '📊 *Gate Progress — Apr 7*',
+    `Posts: ${postsBar}`,
+    `Views: ${viewsBar}`,
+    `Cadence: ${cadence} posts/day`,
+    `Days left: ${daysToGate > 0 ? daysToGate : 'PASSED'}`,
+  ];
 
   await sendMessage(chatId, msgLines.join('\n'));
 }

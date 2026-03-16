@@ -1,0 +1,69 @@
+{
+  "sprint": "143",
+  "name": "/record Telegram command — record manual post inline without SSH",
+  "block": "Phase 1.5 gate ops — manual posting workflow",
+  "goal": "Add /record <video_id> <views> [title] command to Telegram bot. Owner-only. Appends entry to workspace/scs001/manual-posts.jsonl (same format as record-manual-post.ts). Returns confirmation + gate progress (posts/views/days to Apr 7). Completes the full Telegram posting loop: /review → post on TikTok → /record → /post-reminder.",
+  "rationale": "Apr 7 gate: 0/30 posts, ~22 days. /review (Sprint 142) shows what to post. But recording a post still requires SSH + CLI. /record eliminates the SSH step. Operator can now complete the full workflow from Telegram. Sprint 143 = last blocker for friction-free daily posting.",
+  "swarm": "NOT USED — 2 file edits + 1 validation script. Direct write.",
+  "tasks": [
+    {
+      "id": "143-01",
+      "title": "commands.ts — handleRecord() + update handleHelp()",
+      "description": "Add handleRecord(chatId, ownerChatId, text): owner-only. Parse text: '/record <video_id> <views> [title...]'. video_id = args[1], views = parseInt(args[2]), title = args.slice(3).join(' ') or undefined. Validate: if no video_id → show usage. If views is NaN → show usage. Append JSON line to workspace/scs001/manual-posts.jsonl: { video_id, views, title?, posted_at: ISO, recorded_at: ISO }. Create dir if not exists. After write: load all posts, compute totalPosts/totalViews/daysToGate/cadence. Send confirmation message: '✅ Recorded: <video_id> — <views> views' + gate progress block (Posts: X/30, Views: Y/500, Cadence: Z/day, Days: N). Add '/record <id> <views> [title] — Record posted video (owner)' to handleHelp() under TikTok Pipeline section.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-143",
+      "deliverables": {
+        "code": ["agents/telegram-bot/commands.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "143-02",
+      "title": "index.ts — route /record to handleRecord()",
+      "description": "Import handleRecord from ./commands. Add case '/record': await handleRecord(chatId, OWNER_CHAT_ID, text); in dispatch switch after /review case.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-143",
+      "deliverables": {
+        "code": ["agents/telegram-bot/index.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "143-03",
+      "title": "scripts/scs001/validate-sprint-143.ts — validation script",
+      "description": "6 checks: (1) commands.ts exports handleRecord; (2) handleRecord is owner-gated; (3) handleRecord writes to manual-posts.jsonl; (4) handleHelp lists /record; (5) index.ts imports handleRecord; (6) index.ts routes '/record'. Exit 0 on all pass.",
+      "type": "create",
+      "task_type": "test",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-143",
+      "deliverables": {
+        "code": ["scripts/scs001/validate-sprint-143.ts"],
+        "tests": ["scripts/scs001/validate-sprint-143.ts"],
+        "docs": []
+      }
+    }
+  ],
+  "acceptance_criteria": [
+    "/record is owner-gated — non-owner gets '🔒 Owner only.'",
+    "/record <id> <views> appends entry to manual-posts.jsonl with correct format",
+    "Confirmation message shows gate progress (posts/views/cadence/days)",
+    "handleHelp lists /record under TikTok Pipeline section",
+    "index.ts routes /record to handleRecord()",
+    "validate-sprint-143.ts exits 0 (all 6 checks pass)"
+  ]
+}
