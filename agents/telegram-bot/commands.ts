@@ -107,6 +107,7 @@ export async function handleHelp(chatId: number): Promise<void> {
     '/post-now — Find videos ready to post with file path + metadata (owner)',
     '/caption [video_id] — Ready-to-paste TikTok caption for a video (owner)',
     '/pace — Posting pace vs Apr 7 gate target (owner)',
+    '/today — Morning cockpit: target + next video + trending topics (owner)',
     '',
     '🤖 *Achiri AI Companion*',
     '/achiri <msg> — Chat with Achiri (free tier, Darija/Arabic/French)',
@@ -1567,6 +1568,98 @@ export async function handlePace(chatId: number, ownerChatId: string): Promise<v
     lines.push('');
     lines.push(`→ Use /post-now or /caption to get started`);
   }
+
+  await sendMessage(chatId, lines.join('\n'));
+}
+
+// ── Sprint 159: /today — daily operator morning cockpit ──────────────────────
+
+export async function handleToday(chatId: number, ownerChatId: string): Promise<void> {
+  if (String(chatId) !== String(ownerChatId)) {
+    await sendMessage(chatId, '⛔ Owner-only command.');
+    return;
+  }
+
+  const POSTS_TARGET = 30;
+  const GATE_DATE    = new Date('2026-04-07T00:00:00Z');
+
+  const manualPath  = join(process.cwd(), 'workspace', 'scs001', 'manual-posts.jsonl');
+  const ledgerPath  = join(process.cwd(), 'workspace', 'scs001', 'publish-ledger.jsonl');
+  const topicsPath  = join(process.cwd(), 'workspace', 'scs001', 'viral-topics.json');
+
+  // 1. Recorded posts
+  let recordedCount = 0;
+  const recordedIds = new Set<string>();
+  if (existsSync(manualPath)) {
+    try {
+      readFileSync(manualPath, 'utf-8')
+        .split('\n').filter(l => l.trim())
+        .forEach(l => { try { const e = JSON.parse(l); if (e.video_id) { recordedIds.add(e.video_id); recordedCount++; } } catch { /* skip */ } });
+    } catch { /* ignore */ }
+  }
+
+  // 2. Pace math
+  const now         = Date.now();
+  const postsNeeded = Math.max(0, POSTS_TARGET - recordedCount);
+  const daysLeft    = Math.max(1, Math.ceil((GATE_DATE.getTime() - now) / 86400000));
+  const todayTarget = recordedCount >= POSTS_TARGET ? 0 : Math.ceil(postsNeeded / daysLeft);
+  const rateNeeded  = postsNeeded / daysLeft;
+
+  // 3. Next unposted video from ledger
+  let nextVideoId: string | null = null;
+  if (existsSync(ledgerPath)) {
+    try {
+      const ledgerEntries = readFileSync(ledgerPath, 'utf-8')
+        .split('\n').filter(l => l.trim())
+        .map(l => { try { return JSON.parse(l); } catch { return null; } })
+        .filter(Boolean) as Array<{ video_id: string; published_at: string }>;
+      const unposted = ledgerEntries
+        .filter(e => !recordedIds.has(e.video_id))
+        .sort((a, b) => b.published_at.localeCompare(a.published_at));
+      if (unposted.length > 0) nextVideoId = unposted[0].video_id;
+    } catch { /* ignore */ }
+  }
+
+  // 4. Viral topics (top 3)
+  let topics: string[] = [];
+  if (existsSync(topicsPath)) {
+    try {
+      const data = JSON.parse(readFileSync(topicsPath, 'utf-8'));
+      topics = (Array.isArray(data.topics) ? data.topics : []).slice(0, 3);
+    } catch { /* ignore */ }
+  }
+
+  // 5. Build message
+  if (recordedCount >= POSTS_TARGET) {
+    await sendMessage(chatId, `🎉 *Gate met!* 30/30 posts recorded. Phase 1 gate criteria achieved.`);
+    return;
+  }
+
+  const lines: string[] = [
+    `🌅 *Good morning* — Today's mission`,
+    '',
+    `🎯 Post *${todayTarget}* video(s) today (${rateNeeded.toFixed(1)}/day needed)`,
+    `📅 ${daysLeft} days left | ${recordedCount}/30 posted`,
+    '',
+  ];
+
+  if (nextVideoId) {
+    lines.push(`📹 *Next video to post:*`);
+    lines.push(`\`${nextVideoId}\``);
+    lines.push(`→ /caption ${nextVideoId}`);
+    lines.push(`→ /post-now for full checklist`);
+  } else {
+    lines.push(`📹 Queue empty — run the pipeline or check /queue`);
+  }
+
+  if (topics.length > 0) {
+    lines.push('');
+    lines.push(`🔥 *Trending topics:*`);
+    topics.forEach(t => lines.push(`• ${t}`));
+  }
+
+  lines.push('');
+  lines.push(`→ /queue for full list | /pace for pace math`);
 
   await sendMessage(chatId, lines.join('\n'));
 }

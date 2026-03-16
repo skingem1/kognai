@@ -1,0 +1,68 @@
+{
+  "sprint": "159",
+  "name": "/today command — daily operator morning cockpit",
+  "block": "Phase 1 — TikTok gate (0/30 posts, ~22 days to Apr 7)",
+  "goal": "Add /today Telegram command (owner-only). Single morning dashboard: shows today's posting target (posts/day needed to hit gate), the #1 next video to post (top unposted from publish-ledger.jsonl), and top 3 viral topics from viral-topics.json. Compact single message. Complements /pace (which drills into pace math) and /queue (full list) — /today is the quick morning start command.",
+  "rationale": "Operator needs one command to start the posting day: 'what do I post today and how many?' Right now they need /pace + /queue + manual lookup of viral-topics.json. /today collapses it into one tap. Drives daily posting habit which is critical to hit 30-post gate by Apr 7.",
+  "swarm": "NOT USED — 2 file edits (commands.ts + index.ts) + 1 validation script. Direct write.",
+  "tasks": [
+    {
+      "id": "159-01",
+      "title": "commands.ts — handleToday()",
+      "description": "handleToday(chatId, ownerChatId): owner-only gate. (1) Reads workspace/scs001/manual-posts.jsonl for recordedCount + timestamps. (2) Computes: postsNeeded=30-recordedCount, daysLeft=max(1,ceil((Apr7-now)/86400000)), todayTarget=ceil(postsNeeded/daysLeft), rateNeeded=postsNeeded/daysLeft. (3) Reads workspace/scs001/publish-ledger.jsonl — finds first unposted entry (not in manual-posts IDs), sorted by published_at desc. (4) Reads workspace/scs001/viral-topics.json — takes first 3 items from topics[]. (5) Message format: '🌅 *Good morning* — Today's mission\\n\\n🎯 Post *{todayTarget}* video(s) today ({rateNeeded.toFixed(1)}/day to hit gate)\\n📅 {daysLeft} days left | {recordedCount}/30 posted\\n\\n📹 *Next video to post:*\\n`{video_id}` → /caption {video_id}\\n(or /post-now for full checklist)\\n\\n🔥 *Trending topics:*\\n• {topic1}\\n• {topic2}\\n• {topic3}\\n\\n→ /queue for full list | /pace for pace math'. If no unposted video: show '✅ Queue empty — run pipeline or check /queue'. If recordedCount >= 30: show gate-met message. Also add '/today — Morning cockpit: target + next video + trending topics (owner)' to handleHelp.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-159",
+      "deliverables": {
+        "code": ["agents/telegram-bot/commands.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "159-02",
+      "title": "index.ts — import handleToday + route /today",
+      "description": "Add handleToday to import from commands. Add case '/today' in dispatch switch: await handleToday(chatId, OWNER_CHAT_ID);",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-159",
+      "deliverables": {
+        "code": ["agents/telegram-bot/index.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "159-03",
+      "title": "validate-sprint-159.ts — 5-check validation",
+      "description": "1) commands.ts exports handleToday. 2) handleToday reads publish-ledger.jsonl. 3) handleToday reads viral-topics.json. 4) handleHelp contains /today. 5) index.ts routes /today.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-159",
+      "deliverables": {
+        "code": ["scripts/scs001/validate-sprint-159.ts"],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ],
+  "acceptance_criteria": [
+    "handleToday() exported — reads publish-ledger.jsonl + manual-posts.jsonl + viral-topics.json",
+    "Shows today's target count + next unposted video_id + top 3 viral topics",
+    "handleHelp shows /today",
+    "index.ts routes /today",
+    "validate-sprint-159.ts: 5/5 PASS"
+  ]
+}
