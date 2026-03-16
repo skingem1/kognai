@@ -559,3 +559,14 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
 - Swarm used: no (single-file surgical edit + new validation script)
 - Next: operator sets ACHIRI_BASE_URL=http://65.108.90.178/achiri in bot .env on Mac Mini. Sprint 131: end-to-end smoke test.
 - Timestamp: 2026-03-16T19:30:00Z
+
+## Sprint 131 — Achiri Alpha Access Gate (Phase 2A — Apr 25 alpha)
+- Status: PASS
+- Commit: e218d4e
+- Files modified: agents/telegram-bot/commands.ts, .env.example
+- Files created: scripts/achiri/validate-alpha-access.ts, workspace/sprints/sprint-131.json
+- Test: scripts/achiri/validate-alpha-access.ts — 6/6 PASS
+- Key results: TelegramDB tier→Achiri tier mapping (free/growth/premium → free/tnd_basic/tnd_premium). ACHIRI_ALPHA_ONLY + ACHIRI_ALPHA_WHITELIST gate in handleAchiri. .env.example updated. No operator code changes needed for alpha.
+- Swarm used: no (surgical edit + new validation script)
+- Operator action required: run deploy-achiri.sh + set ACHIRI_BASE_URL + ACHIRI_ALPHA_ONLY=true + ACHIRI_ALPHA_WHITELIST in Telegram bot .env
+- Timestamp: 2026-03-16T20:00:00Z
