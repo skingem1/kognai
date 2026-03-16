@@ -393,9 +393,10 @@ class SupervisorAgent {
   async reviewTask(task: AgentTask, files: string[]): Promise<ReviewResult> {
     log(c.magenta, `\n[supervisor] Reviewing: ${task.id}`);
     // FIX: Use XML-style tags (NOT code fences) so the model can't confuse display format with file content
+    // NOTE: 12000 char limit — covers EXACT CONTENT files (typically 5K-10K chars); 4000 was too small
     const fileContents = files.map((filepath) => {
       const content = existsSync(filepath) ? readFileSync(filepath, 'utf-8') : '';
-      return `### ${filepath}\n<file_content>\n${content.substring(0, 4000)}\n</file_content>`;
+      return `### ${filepath}\n<file_content>\n${content.substring(0, 12000)}\n</file_content>`;
     }).join('\n\n');
     // FIX: Pre-compute fence check in TypeScript — inject evidence so model never hallucinates fence presence
     const fenceCheckLines = files.map((filepath) => {
@@ -456,9 +457,10 @@ class Supervisor2Agent {
   async reviewTask(task: AgentTask, files: string[]): Promise<ReviewResult> {
     log(c.magenta, `\n[supervisor-2/haiku] Reviewing: ${task.id}`);
     // FIX: Use XML-style tags (NOT code fences) so the model can't confuse display format with file content
+    // NOTE: 12000 char limit — covers EXACT CONTENT files (typically 5K-10K chars); 4000 was too small
     const fileContents = files.map((filepath) => {
       const content = existsSync(filepath) ? readFileSync(filepath, 'utf-8') : '';
-      return `### ${filepath}\n<file_content>\n${content.substring(0, 4000)}\n</file_content>`;
+      return `### ${filepath}\n<file_content>\n${content.substring(0, 12000)}\n</file_content>`;
     }).join('\n\n');
     // FIX: Pre-compute fence check in TypeScript — inject evidence so model never hallucinates fence presence
     const fenceCheckLines2 = files.map((filepath) => {
