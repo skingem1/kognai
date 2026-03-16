@@ -1558,8 +1558,12 @@ This is a test file. You MUST keep it SHORT to avoid truncation:
       // Extract them deterministically and bypass LLM to prevent model hallucination.
       // This is the correct fix for "EXACT CONTENT:" tasks — the model must NOT interpret
       // the spec, it must copy it verbatim. Bypass the LLM entirely for these tasks.
-      const exactBlocks = [...task.context.matchAll(/EXACT CONTENT:\s*\n\n?```[\w.+-]*\n([\s\S]*?)```(?:\n|$)/g)]
-        .map(m => m[1].trimEnd());
+      // NOTE: check task.description first — when sprint JSON has BOTH description AND context fields,
+      // the normalization at loadTasks() only copies description→context when context is absent.
+      // EXACT CONTENT blocks always live in the description field.
+      const rawSpec = (task as any).description ?? task.context;
+      const exactBlocks = [...rawSpec.matchAll(/EXACT CONTENT:\s*\n\n?```[\w.+-]*\n([\s\S]*?)```(?:\n|$)/g)]
+        .map((m: RegExpMatchArray) => m[1].trimEnd());
       if (exactBlocks.length > 0) {
         // Use block[i] for deliverable[i] when multiple blocks present; else use block[0]
         const exactFileContent = exactBlocks.length > i ? exactBlocks[i] : exactBlocks[0];
