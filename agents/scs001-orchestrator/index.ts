@@ -15,6 +15,7 @@ import { PublishingAgent, PublishedVideo } from '../scs001-publishing/index';
 import { AnalyticsAgent, PerformanceSignal } from '../scs001-analytics/index';
 import { ContentFlywheelAgent, FlywheelOutput } from '../scs001-flywheel/index';
 import { FailureLibraryAgent, FailureEntry } from '../scs001-failure-library/index';
+import { scoreAndFilter, ScriptScore } from '../scs001-scorer/index';
 import { withRetry, withFallback } from './retry';
 import { DedupLedger, LedgerEntry } from './dedup-ledger';
 
@@ -40,6 +41,8 @@ export interface PipelineRunReport {
     clips_qualified:  number;
     insights_generated: number;
     scripts_produced: number;
+    scripts_scored:   number;
+    scripts_filtered: number;
     videos_edited:    number;
     videos_captioned: number;
     qc_passed:        number;
@@ -74,6 +77,7 @@ export class SCS001Orchestrator {
     let clips: ClipQualityScore[] = [];
     let briefs: InsightBrief[] = [];
     let bundles: ScriptBundle[] = [];
+    let scorerFiltered: ScriptScore[] = [];
     let editedVideos: EditedVideo[] = [];
     let captionedVideos: CaptionedVideo[] = [];
     let gates: QualityControlGate[] = [];
@@ -149,6 +153,20 @@ export class SCS001Orchestrator {
       stages.push(await this.runStage('5-script', 'ScriptAgent', async () => {
         const agent = new ScriptAgent();
         bundles = agent.run(briefs);
+        return bundles.length;
+      }));
+    }
+
+    // --- Stage 5.5: Content Quality Scorer ---
+    if (bundles.length > 0) {
+      const totalBeforeScore = bundles.length;
+      stages.push(await this.runStage('5.5-score', 'ScriptScorer', async () => {
+        const result = scoreAndFilter(bundles);
+        scorerFiltered = result.filtered;
+        bundles = result.passed;
+        for (const f of result.filtered) {
+          console.log('[ScriptScorer] Filtered ' + f.script_id + ' (score ' + f.score + '/100): ' + f.hints.join('; '));
+        }
         return bundles.length;
       }));
     }
@@ -244,7 +262,9 @@ export class SCS001Orchestrator {
         clips_discovered:   discoveries.length,
         clips_qualified:    qualifiedClips.length,
         insights_generated: briefs.length,
-        scripts_produced:   bundles.length,
+        scripts_produced:   bundles.length + scorerFiltered.length,
+        scripts_scored:     bundles.length + scorerFiltered.length,
+        scripts_filtered:   scorerFiltered.length,
         videos_edited:      editedVideos.length,
         videos_captioned:   captionedVideos.length,
         qc_passed:          passedGates.length,

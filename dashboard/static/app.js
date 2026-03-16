@@ -949,6 +949,14 @@ async function renderPipeline() {
     }
     html += '</div>';
 
+    // Scorer stats (Sprint 104+, backward-compat with older reports)
+    if (s.scripts_scored != null) {
+      const filterRate = s.scripts_scored > 0
+        ? Math.round((s.scripts_filtered / s.scripts_scored) * 100)
+        : 0;
+      html += `<div style="font-size:11px; color:var(--text-muted); margin:6px 0 10px; padding:4px 8px; background:var(--bg-secondary); border-radius:4px;">&#x2713; Quality scorer: ${s.scripts_scored} scored &rarr; ${s.scripts_filtered} filtered (${filterRate}% below threshold)</div>`;
+    }
+
     // Viral status
     html += `
       <div class="stats-row" style="margin-top: 12px;">

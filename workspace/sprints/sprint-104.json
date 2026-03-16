@@ -1,0 +1,80 @@
+{
+  "tasks": [
+    {
+      "id": "104-01",
+      "title": "Create content quality scorer — rate scripts against viral criteria before editing",
+      "description": "CREATE ONE NEW FILE: agents/scs001-scorer/index.ts. Pure deterministic scorer, no LLM, no external deps.",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "dependencies": [],
+      "priority": "critical",
+      "sprint_id": "sprint-104",
+      "deliverables": {
+        "code": ["agents/scs001-scorer/index.ts"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Scores ScriptBundles 0-100 on 4 criteria: hook_strength, curiosity_gap, cta_clarity, topic_virality. Pass threshold: 60."
+    },
+    {
+      "id": "104-02",
+      "title": "Wire scorer into orchestrator as Stage 5.5 — filter low-quality scripts before editing",
+      "description": "MODIFY: agents/scs001-orchestrator/index.ts — add Stage 5.5 between ScriptAgent and EditingAgent.",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "dependencies": ["104-01"],
+      "priority": "critical",
+      "sprint_id": "sprint-104",
+      "deliverables": {
+        "code": ["agents/scs001-orchestrator/index.ts"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Add scripts_scored and scripts_filtered to PipelineRunReport.summary."
+    },
+    {
+      "id": "104-03",
+      "title": "Add scorer metrics to dashboard pipeline panel",
+      "description": "MODIFY: dashboard/static/app.js — add scripts scored/filtered display in pipeline funnel.",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "dependencies": ["104-02"],
+      "priority": "high",
+      "sprint_id": "sprint-104",
+      "deliverables": {
+        "code": ["dashboard/static/app.js"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Must handle backward compat — older reports won't have scripts_scored field."
+    },
+    {
+      "id": "104-04",
+      "title": "Run pipeline smoke test — verify scorer stage runs with 0 errors",
+      "description": "RUN: npx ts-node scripts/smoke-test-pipeline.ts. Verify PASS.",
+      "type": "test",
+      "task_type": "verify",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "dependencies": ["104-02"],
+      "priority": "critical",
+      "sprint_id": "sprint-104",
+      "deliverables": {
+        "code": [],
+        "tests": ["scripts/smoke-test-pipeline.ts"],
+        "docs": []
+      },
+      "context": "Regression test after wiring scorer into pipeline."
+    }
+  ]
+}
