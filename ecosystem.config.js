@@ -523,6 +523,49 @@ module.exports = {
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
     {
+      // Sprint 155: Posting time reminder — noon (12:00)
+      // Sends owner a Telegram nudge with next video to post + file path + /record shortcut.
+      // Silent if gate already met (30 posts). To start: pm2 start ecosystem.config.js --only kognai-post-noon
+      name: "kognai-post-noon",
+      script: "scripts/posting-reminder.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: false,
+      watch: false,
+      cron_restart: "0 12 * * *",
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
+        CEO_TELEGRAM_BOT_TOKEN: process.env.CEO_TELEGRAM_BOT_TOKEN || process.env.TELEGRAM_BOT_TOKEN || "",
+        OWNER_TELEGRAM_CHAT_ID: process.env.OWNER_TELEGRAM_CHAT_ID || process.env.CEO_TELEGRAM_CHAT_ID || "",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/post-noon-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/post-noon-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
+    {
+      // Sprint 155: Posting time reminder — evening (18:00)
+      // Same nudge pattern as noon but fires at 18:00. To start: pm2 start ecosystem.config.js --only kognai-post-evening
+      name: "kognai-post-evening",
+      script: "scripts/posting-reminder.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: false,
+      watch: false,
+      cron_restart: "0 18 * * *",
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
+        CEO_TELEGRAM_BOT_TOKEN: process.env.CEO_TELEGRAM_BOT_TOKEN || process.env.TELEGRAM_BOT_TOKEN || "",
+        OWNER_TELEGRAM_CHAT_ID: process.env.OWNER_TELEGRAM_CHAT_ID || process.env.CEO_TELEGRAM_CHAT_ID || "",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/post-evening-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/post-evening-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
+    {
       // SCS-001 Pipeline — runs 4x daily at posting slot times (Charter schedule)
       // Slots: 07:00, 12:00, 18:00, 21:00 UTC
       // Runs full 12-stage pipeline: Trend→Discovery→ClipDetection→Insight→Script→

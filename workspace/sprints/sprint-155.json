@@ -1,0 +1,67 @@
+{
+  "sprint": "155",
+  "name": "Posting time reminders — noon + evening PM2 crons",
+  "block": "Phase 1 — TikTok gate (0/30 posts, 22 days)",
+  "goal": "Add scripts/posting-reminder.ts (lightweight Telegram nudge at posting times) + two PM2 cron entries in ecosystem.config.js: kognai-post-noon (0 12 * * *) and kognai-post-evening (0 18 * * *). Script: checks gate status (posts done/needed/days left), finds #1 unposted video with captioned mp4 on disk (same run_id→epoch logic as /post-now), sends compact Telegram message to owner with video_id, file path, hashtags, /record command. Skips send if gate already met (30 posts done).",
+  "rationale": "0/30 posts, 22 days to Apr 7. Daily digest warns at 7am but operator has no automated nudge at the two highest-conversion posting slots (12:00, 18:00). PM2 crons that push a 'post this now' Telegram message will significantly increase posting frequency.",
+  "swarm": "NOT USED — 1 new script + 1 ecosystem.config.js edit. Direct write.",
+  "tasks": [
+    {
+      "id": "155-01",
+      "title": "scripts/posting-reminder.ts — Telegram posting nudge",
+      "description": "Reads: workspace/scs001/publish-ledger.jsonl (all entries), workspace/scs001/manual-posts.jsonl (recorded count), workspace/scs001/viral-topics.json (hashtags). Computes: postsNeeded = 30 - recordedCount, daysLeft to Apr 7. If postsNeeded <= 0: exits silently (gate met). Finds first unposted entry where run_id→epoch file exists at workspace/scs001/run-{epoch}/caption/{video_id}-captioned.mp4. runIdToEpoch() helper same as /post-now. Formats message: '⏰ Posting time! Gate: {postsNeeded} posts needed, {daysLeft}d left\\n\\n📹 {video_id}\\n📁 {shortPath}\\n🏷️ {hashtags}\\n\\n→ /record {video_id} 0 after posting'. Sends via Telegram Bot API (https HTTPS request — same pattern as daily-digest.ts). env: CEO_TELEGRAM_BOT_TOKEN (or TELEGRAM_BOT_TOKEN), OWNER_TELEGRAM_CHAT_ID (or CEO_TELEGRAM_CHAT_ID).",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-155",
+      "deliverables": {
+        "code": ["scripts/posting-reminder.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "155-02",
+      "title": "ecosystem.config.js — add kognai-post-noon + kognai-post-evening",
+      "description": "Add two new PM2 entries after kognai-gate-regen block. kognai-post-noon: script=scripts/posting-reminder.ts, cron_restart='0 12 * * *', autorestart=false. kognai-post-evening: same script, cron_restart='0 18 * * *', autorestart=false. Both pass CEO_TELEGRAM_BOT_TOKEN + OWNER_TELEGRAM_CHAT_ID env. Same pattern as kognai-daily-digest entry.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-155",
+      "deliverables": {
+        "code": ["ecosystem.config.js"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "155-03",
+      "title": "validate-sprint-155.ts — 5-check validation",
+      "description": "1) scripts/posting-reminder.ts exists. 2) posting-reminder.ts reads publish-ledger.jsonl. 3) posting-reminder.ts sends Telegram (contains sendMessage or bot API path). 4) ecosystem.config.js contains kognai-post-noon. 5) ecosystem.config.js contains kognai-post-evening.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-155",
+      "deliverables": {
+        "code": ["scripts/scs001/validate-sprint-155.ts"],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ],
+  "acceptance_criteria": [
+    "scripts/posting-reminder.ts sends Telegram nudge with video file path + /record shortcut",
+    "Gate-met check: silent exit when 30 posts done",
+    "ecosystem.config.js: kognai-post-noon (12:00) + kognai-post-evening (18:00)",
+    "validate-sprint-155.ts: 5/5 PASS"
+  ]
+}
