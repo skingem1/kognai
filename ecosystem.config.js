@@ -479,6 +479,26 @@ module.exports = {
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
     {
+      // Gate Regen — regenerates workspace/gates/phase1-5-gate.json daily at 06:55
+      // Runs 5 min before daily digest (07:00) so digest always has fresh gate data.
+      // To start: pm2 start ecosystem.config.js --only kognai-gate-regen
+      name: "kognai-gate-regen",
+      script: "scripts/scs001/generate-phase1-5-gate.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: false,
+      watch: false,
+      cron_restart: "55 6 * * *",
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/gate-regen-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/gate-regen-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
+    {
       // SCS-001 Pipeline — runs 4x daily at posting slot times (Charter schedule)
       // Slots: 07:00, 12:00, 18:00, 21:00 UTC
       // Runs full 12-stage pipeline: Trend→Discovery→ClipDetection→Insight→Script→

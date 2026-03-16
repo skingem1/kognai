@@ -129,7 +129,17 @@ function buildDigest(): string {
 
   const postIcon  = gate.count >= 30 ? '✅' : '❌';
   const viewsIcon = gate.totalViews >= 500 ? '✅' : '❌';
-  const overallIcon = (gate.count >= 30 && gate.totalViews >= 500) ? '✅ PROCEED' : '⏳ IN PROGRESS';
+
+  // Urgency escalation: graded KILL RISK signal as Apr 7 approaches
+  function getUrgencySignal(postsRemaining: number, days: number): string {
+    if (postsRemaining <= 0 && gate.totalViews >= 500) return '✅ GATE: PROCEED';
+    if (days <= 3 && postsRemaining > 0) return '💀 GATE FAILED — kill switch trigger';
+    if (days <= 7 && postsRemaining > days * 3) return `🚨 KILL RISK — ${postsRemaining} posts needed in ${days}d`;
+    if (days <= 14 && postsRemaining > days * 2) return `⚠️ WARNING — behind pace (${postsRemaining} posts in ${days}d)`;
+    return `⏳ IN PROGRESS — on track`;
+  }
+  const urgency = getUrgencySignal(postsLeft, daysPhase);
+  const showKillReminder = urgency.includes('KILL') || urgency.includes('WARNING') || urgency.includes('FAILED');
 
   // Urgency: posts needed per remaining day to hit 30
   const postsPerDay = daysPhase > 0 && postsLeft > 0
@@ -144,7 +154,8 @@ function buildDigest(): string {
     `📊 *Phase 1.5 Gate* — ${daysPhase}d until Apr 7`,
     `${postIcon}  Posts:  *${gate.count}/30* ${postsLeft > 0 ? `(${postsLeft} more) ${postsPerDay}` : ''}`,
     `${viewsIcon}  Views:  *${gate.totalViews}/500* ${viewsLeft > 0 ? `(avg ${gate.avgViews}/post)` : ''}`,
-    `→ ${overallIcon}`,
+    `→ ${urgency}`,
+    ...(showKillReminder ? [`   _Kill switch: <500 views/30 posts by Apr 7_`] : []),
     '',
     `🎬 *Pipeline* (dry-run)`,
     `• Total generated: ${ledger.total} | Today: ${ledger.todayCount}`,

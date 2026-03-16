@@ -1,0 +1,69 @@
+{
+  "sprint": "145",
+  "name": "Gate urgency escalation in daily digest + gate regen cron",
+  "block": "Phase 1.5 gate ops — deadline visibility",
+  "goal": "Two deliverables: (1) Upgrade daily-digest.ts gate section with urgency escalation: Normal ⏳/Warning ⚠️/Critical 🚨/Blocker 💀 based on days-left × posts-remaining matrix. Replace flat '⏳ IN PROGRESS' with a tiered signal so operator has clear KILL RISK awareness at 14d, 7d, 3d. (2) Add kognai-gate-regen PM2 cron to ecosystem.config.js (runs generate-phase1-5-gate.ts at 06:55 daily — 5 min before digest — so workspace/gates/phase1-5-gate.json is always fresh when digest fires).",
+  "rationale": "Apr 7 gate: 22 days, 0/30 posts. Daily digest shows counts but not urgency level. Operator needs a graded signal: normal cadence (1.4/day) vs red-alert (gate mathematically failing). Without escalation, operator might miss that they're behind until it's too late. Gate regen cron ensures phase1-5-gate.json is fresh for any tooling that reads it.",
+  "swarm": "NOT USED — 2 file edits + 1 validation script. Direct write.",
+  "tasks": [
+    {
+      "id": "145-01",
+      "title": "daily-digest.ts — gate urgency escalation",
+      "description": "In buildDigest(): replace flat overallIcon with getUrgencySignal(postsLeft, daysPhase). getUrgencySignal(postsLeft, days): if postsLeft <= 0 → '✅ GATE: PROCEED'; if days <= 3 && postsLeft > 0 → '💀 GATE FAILED — kill switch trigger'; if days <= 7 && postsLeft > (days * 3) → '🚨 KILL RISK — X posts needed in Yd'; if days <= 14 && postsLeft > (days * 2) → '⚠️ WARNING — behind pace'; else → '⏳ IN PROGRESS — on track'. Replace '→ ${overallIcon}' line with '→ ${urgency}'. Add urgency line: if urgency includes KILL or WARNING, append '   _Kill switch: <500 views/30 posts by Apr 7_' as reminder.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-145",
+      "deliverables": {
+        "code": ["scripts/daily-digest.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "145-02",
+      "title": "ecosystem.config.js — kognai-gate-regen PM2 cron at 06:55",
+      "description": "Add new PM2 process entry: name='kognai-gate-regen', script='scripts/scs001/generate-phase1-5-gate.ts', interpreter='node', interpreter_args='-r ts-node/register', cwd='/Users/tarekmnif/kognai', autorestart=false, watch=false, cron_restart='55 6 * * *' (06:55 daily — 5 min before digest at 07:00). Env: TS_NODE_TRANSPILE_ONLY='true', TS_NODE_PROJECT='/Users/tarekmnif/kognai/tsconfig.scripts.json'. Logs: logs/gate-regen-error.log + logs/gate-regen-out.log. Comment: 'Gate Regen — regenerates workspace/gates/phase1-5-gate.json daily at 06:55 (5 min before daily digest)'.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-145",
+      "deliverables": {
+        "code": ["ecosystem.config.js"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "145-03",
+      "title": "scripts/scs001/validate-sprint-145.ts — validation script",
+      "description": "6 checks: (1) daily-digest.ts exports/defines getUrgencySignal or contains KILL RISK logic; (2) daily-digest.ts contains '💀' or 'GATE FAILED' for blocker state; (3) daily-digest.ts contains '🚨' or 'KILL RISK' for critical state; (4) daily-digest.ts contains '⚠️' or 'WARNING' for warning state; (5) ecosystem.config.js contains 'kognai-gate-regen'; (6) ecosystem.config.js contains '55 6 * * *' cron. Exit 0 on all pass.",
+      "type": "create",
+      "task_type": "test",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-145",
+      "deliverables": {
+        "code": ["scripts/scs001/validate-sprint-145.ts"],
+        "tests": ["scripts/scs001/validate-sprint-145.ts"],
+        "docs": []
+      }
+    }
+  ],
+  "acceptance_criteria": [
+    "daily-digest.ts has getUrgencySignal() (or inline) with 4 urgency tiers: PROCEED/FAILED/KILL RISK/WARNING/IN PROGRESS",
+    "With 0 posts, 22 days: digest shows ⏳ IN PROGRESS — on track",
+    "With 0 posts, 3 days: digest shows 💀 GATE FAILED — kill switch trigger",
+    "With 5 posts, 7 days: digest shows 🚨 KILL RISK signal",
+    "ecosystem.config.js has kognai-gate-regen cron at 55 6 * * *",
+    "validate-sprint-145.ts exits 0 (all 6 checks pass)"
+  ]
+}
