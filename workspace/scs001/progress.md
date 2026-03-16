@@ -620,3 +620,20 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
 - Key results: handleStart() welcome message now introduces Achiri with: TikTok section (tier + postsPerDay preserved), Achiri section (culturally adaptive AI, Darija/Arabic/French, 50 msg/day free tier, Apr 25 alpha note, /achiri Darija example). New users hitting /start see both products.
 - Swarm used: no (single function edit)
 - Timestamp: 2026-03-16T22:00:00Z
+
+## Sprint 136 — Achiri Waitlist Command (Phase 2A — alpha prep)
+- Status: PASS
+- Commit: a1136c9
+- Files modified: agents/telegram-bot/commands.ts (handleWaitlist + handleHelp /waitlist), agents/telegram-bot/index.ts (/waitlist dispatch)
+- Files created: scripts/achiri/validate-sprint-136.ts, workspace/sprints/sprint-136.json
+- Test: scripts/achiri/validate-sprint-136.ts — 12/12 PASS
+- Key results: /waitlist (any user): joins alpha waitlist, saves to workspace/achiri/waitlist.jsonl. Duplicate prevention. /waitlist list (owner-only): shows all entries with chatId+name+date. /waitlist added to handleHelp(). Operator can copy chatIds from /waitlist list → ACHIRI_ALPHA_WHITELIST env on Apr 25.
+- Swarm used: no (2 file edits + validation)
+- Timestamp: 2026-03-16T22:30:00Z
+
+## SESSION SUMMARY — Sprints 134-136
+- Sprint 134: Daily pipeline digest PM2 cron (07:00 daily Telegram push, gate progress + formula stats)
+- Sprint 135: Achiri /start onboarding (welcome message introduces Achiri + Darija example)
+- Sprint 136: Achiri /waitlist command (alpha waitlist, duplicate prevention, owner list view)
+- All Achiri alpha code COMPLETE. Operator must deploy Achiri (deploy-achiri.sh) and set env vars.
+- Gate: 22 days until Apr 7, need 30 posts + 500 views. Daily digest pushes morning reminders.
