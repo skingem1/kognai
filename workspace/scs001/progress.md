@@ -1007,3 +1007,14 @@ SESSION HANDOFF (2026-03-16/17, Sprints 162-165):
 - Impact: Reduces operator posting friction from 3 commands/video → 1 batch command for 5 videos.
 - Gate: ~19 days to Apr 7, 0/30 posts | Achiri alpha: Apr 25
 - Timestamp: 2026-03-17T01:00:00Z
+
+## Sprint 168 — Daily digest Achiri alpha stats (Phase 2A — visibility)
+- Status: PASS
+- Commit: 4732175
+- Files created: scripts/scs001/validate-sprint-168.ts, workspace/sprints/sprint-168.json
+- Files modified: scripts/daily-digest.ts
+- Test: scripts/scs001/validate-sprint-168.ts — 4/4 PASS
+- Swarm used: no (direct write — 1 file edit + 1 validation script)
+- Changes: Added getAchiriAlphaStats() — reads workspace/achiri/waitlist.jsonl + alpha-whitelist.jsonl, returns { waitlist, invited }. buildDigest() now includes '🤝 Achiri Alpha:' section showing waitlist count, invited count, days to Apr 25 launch. Operator sees full business picture (TikTok gate + Achiri alpha) in morning digest.
+- Gate: ~19 days to Apr 7, 0/30 posts | Achiri alpha: Apr 25
+- Timestamp: 2026-03-17T01:30:00Z
