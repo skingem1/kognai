@@ -67,6 +67,18 @@ function printStatus(posts: ManualPost[]): void {
   } else {
     console.log(`\n  GATE STATUS: ✗ NOT YET — need ${POSTS_TARGET - totalPosts} posts + ${Math.max(0, VIEWS_TARGET - totalViews)} views`);
   }
+
+  // Cadence needed — Sprint 138
+  const APR_7 = new Date('2026-04-07T00:00:00Z');
+  const now = new Date();
+  const daysToGate = Math.ceil((APR_7.getTime() - now.getTime()) / 86400000);
+  const postsRemaining = Math.max(0, POSTS_TARGET - totalPosts);
+  if (daysToGate <= 0) {
+    console.log('  Cadence needed: GATE DATE PASSED');
+  } else {
+    const neededPerDay = (postsRemaining / daysToGate).toFixed(1);
+    console.log(`  Cadence needed: ${neededPerDay} posts/day (${daysToGate} days to Apr 7 gate)`);
+  }
   console.log('══════════════════════════════════════════\n');
 }
 

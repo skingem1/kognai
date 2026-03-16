@@ -1,0 +1,69 @@
+{
+  "sprint": "138",
+  "name": "Cadence tracker + /achiri-health command",
+  "block": "Phase 1.5 gate ops + Phase 2A alpha ops",
+  "goal": "Two small high-value operator tools: (1) record-manual-post.ts now shows cadence needed (posts/day) after every record and list — directly helps Apr 7 gate; (2) /achiri-health Telegram command (owner-only) pings ACHIRI_BASE_URL/health and reports UP/DOWN + latency — essential for Apr 25 alpha day ops.",
+  "rationale": "Apr 7 gate: 0/30 posts, 22 days remaining. Operator needs to know exact cadence needed after each post. record-manual-post.ts shows gate progress but not cadence. /achiri-health: Apr 25 alpha launch requires knowing Achiri server is up. Operator must ping /health from Telegram without SSH. Both are 1-function edits; direct write, no swarm.",
+  "swarm": "NOT USED — 2 targeted function edits + 1 validation script. Direct write.",
+  "tasks": [
+    {
+      "id": "138-01",
+      "title": "scripts/scs001/record-manual-post.ts — cadence needed in printStatus()",
+      "description": "In printStatus(), after the gate status line, compute and print cadence needed. APR_7 = new Date('2026-04-07'). daysToGate = Math.ceil((APR_7 - now) / 86400000). postsRemaining = max(0, POSTS_TARGET - totalPosts). neededPerDay = daysToGate > 0 ? (postsRemaining / daysToGate).toFixed(1) : 'NOW'. Print: '  Cadence needed: X posts/day (Y days to Apr 7 gate)'. If daysToGate <= 0: '  GATE DATE PASSED'. Also print this after recordPost() by calling printStatus(loadPosts()) at end of recordPost().",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-138",
+      "deliverables": {
+        "code": ["scripts/scs001/record-manual-post.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "138-02",
+      "title": "agents/telegram-bot/commands.ts — /achiri-health command",
+      "description": "Add handleAchiriHealth() function: owner-only (chatId !== ownerChatId → send 'Not authorized.'). Fetch ACHIRI_BASE_URL + '/health' with 5000ms timeout (AbortController). On success: parse JSON, compute latency (Date.now() - start), send 'Achiri API: UP (Xms) — version Y'. On fetch error/timeout: send 'Achiri API: DOWN — <error message>'. Route '/achiri-health' in handleCommand() to handleAchiriHealth(). Add '/achiri-health — Achiri server status (owner)' to /help output in handleHelp().",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-138",
+      "deliverables": {
+        "code": ["agents/telegram-bot/commands.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "138-03",
+      "title": "scripts/achiri/validate-sprint-138.ts — validation script",
+      "description": "Check: (1) record-manual-post.ts contains 'Cadence needed' string; (2) record-manual-post.ts contains 'APR_7' or 'Apr 7' date logic; (3) commands.ts contains handleAchiriHealth function; (4) commands.ts routes '/achiri-health'; (5) handleAchiriHealth fetches /health endpoint; (6) /achiri-health appears in help text. All 6 checks must PASS. Exit 0 on pass, 1 on fail.",
+      "type": "create",
+      "task_type": "test",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-138",
+      "deliverables": {
+        "code": ["scripts/achiri/validate-sprint-138.ts"],
+        "tests": ["scripts/achiri/validate-sprint-138.ts"],
+        "docs": []
+      }
+    }
+  ],
+  "acceptance_criteria": [
+    "record-manual-post.ts printStatus() prints cadence needed (posts/day + days to Apr 7)",
+    "cadence also printed after recordPost()",
+    "handleAchiriHealth() fetches /health, reports UP/DOWN + latency",
+    "'/achiri-health' routed in handleCommand()",
+    "'/achiri-health' appears in handleHelp() output",
+    "validate-sprint-138.ts exits 0 (all 6 checks pass)"
+  ]
+}

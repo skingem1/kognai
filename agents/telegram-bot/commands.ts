@@ -101,6 +101,7 @@ export async function handleHelp(chatId: number): Promise<void> {
     '🤖 *Achiri AI Companion*',
     '/achiri <msg> — Chat with Achiri (free tier, Darija/Arabic/French)',
     '/waitlist — Join Achiri alpha waitlist (launches Apr 25)',
+    '/achiri-health — Achiri server status (owner)',
     '',
     '/help — This message',
   ].join('\n'));
@@ -533,4 +534,32 @@ export async function handleWaitlist(
     'Want a preview? Try: `/achiri مرحبا`',
   ].join('\n'));
 }
+
+// ── Achiri health check — Sprint 138 ──────────────────────────────────────────
+// Owner-only: pings ACHIRI_BASE_URL/health and reports UP/DOWN + latency.
+export async function handleAchiriHealth(chatId: number, ownerChatId: string): Promise<void> {
+  if (String(chatId) !== ownerChatId) {
+    await sendMessage(chatId, '🔒 Owner only.');
+    return;
+  }
+
+  const url = ACHIRI_BASE_URL + '/health';
+  const start = Date.now();
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 5000);
+    const res = await fetch(url, { signal: controller.signal });
+    clearTimeout(timeout);
+    const latency = Date.now() - start;
+    if (res.ok) {
+      const body = await res.json() as { status?: string; version?: string };
+      await sendMessage(chatId, `✅ Achiri API: UP (${latency}ms) — version ${body.version ?? '?'}`);
+    } else {
+      await sendMessage(chatId, `⚠️ Achiri API: HTTP ${res.status} (${latency}ms)`);
+    }
+  } catch (err: unknown) {
+    const latency = Date.now() - start;
+    const msg = err instanceof Error ? err.message : String(err);
+    await sendMessage(chatId, `❌ Achiri API: DOWN (${latency}ms) — ${msg}`);
+  }
 }
