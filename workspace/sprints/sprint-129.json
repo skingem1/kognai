@@ -1,0 +1,78 @@
+{
+  "sprint": "129",
+  "name": "Achiri Hetzner deployment package — public URL before Apr 25 alpha",
+  "block": "Phase 2A — Achiri Deployment (Apr 25 alpha gate)",
+  "goal": "Create all deployment artifacts for running Achiri on Hetzner VPS (65.108.90.178). Target path: /home/invoica/apps/kognai/achiri. PM2 process: achiri-api (port 3420). Nginx proxy: /achiri/* routes. Deploy script: rsync agent files + npm install + PM2 restart. Validate: /health endpoint accessible from internet.",
+  "rationale": "Apr 25 alpha requires a public URL for Achiri. Without deployment, T3 skills have no public surface. Hetzner is already running with SSH access, nginx, and PM2. Achiri can run on Hetzner using Anthropic API for paid tiers (haiku/sonnet) and Tailscale Ollama for free tier.",
+  "swarm": "NOT USED — deployment scripts + config files, direct write.",
+  "tasks": [
+    {
+      "id": "129-01",
+      "title": "infra/nginx-achiri.conf — nginx proxy config snippet",
+      "description": "Nginx location block to proxy /achiri/* to localhost:3420. Includes CORS headers, proxy_pass, upgrade for WebSocket. Also: /achiri/health → direct health check. To be included in main Hetzner nginx config.",
+      "type": "create",
+      "task_type": "config",
+      "task_target": "hetzner",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-129",
+      "deliverables": {
+        "code": ["infra/nginx-achiri.conf"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "129-02",
+      "title": "infra/ecosystem-hetzner-achiri.config.js — PM2 config for Hetzner",
+      "description": "PM2 config for achiri-api on Hetzner. cwd: /home/invoica/apps/kognai/achiri. script: npx, args: ts-node server.ts. env: NODE_ENV=production, ACHIRI_PORT=3420, OLLAMA_URL=http://vault:11434 (Tailscale), TS_NODE_TRANSPILE_ONLY=true. logs: /home/invoica/apps/kognai/logs/.",
+      "type": "create",
+      "task_type": "config",
+      "task_target": "hetzner",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-129",
+      "deliverables": {
+        "code": ["infra/ecosystem-hetzner-achiri.config.js"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "129-03",
+      "title": "scripts/deploy-achiri.sh — Hetzner deploy script",
+      "description": "Bash script. Usage: ./scripts/deploy-achiri.sh [--dry-run]. Steps: (1) rsync agents/achiri/ to hetzner:/home/invoica/apps/kognai/achiri/agents/achiri; (2) rsync kognai-agents/achiri/ for config; (3) rsync package.json + tsconfig.json; (4) ssh npm install on hetzner; (5) ssh pm2 restart achiri-api or pm2 start infra/ecosystem-hetzner-achiri.config.js; (6) ssh curl /health to verify. Dry-run: print commands without executing.",
+      "type": "create",
+      "task_type": "script",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-129",
+      "deliverables": {
+        "code": ["scripts/deploy-achiri.sh"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "129-04",
+      "title": "scripts/achiri/validate-deploy-package.ts — dry-run validation",
+      "description": "Tests: (1) infra/nginx-achiri.conf exists and contains proxy_pass 3420; (2) infra/ecosystem-hetzner-achiri.config.js exists and has achiri-api process name; (3) scripts/deploy-achiri.sh exists and is executable (chmod check); (4) deploy script dry-run produces expected SSH commands (parse stdout); (5) all required agent files exist (server.ts, index.ts, paymee.ts, voice-handler.ts, memory-search.ts). 5/5 PASS.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-129",
+      "deliverables": {
+        "code": ["scripts/achiri/validate-deploy-package.ts"],
+        "tests": ["scripts/achiri/validate-deploy-package.ts"],
+        "docs": []
+      }
+    }
+  ]
+}
