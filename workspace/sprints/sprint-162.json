@@ -1,0 +1,50 @@
+{
+  "sprint": "162",
+  "name": "Brief generator: OLLAMA_HOST fix + raw fallback",
+  "block": "Phase 1 — ops infrastructure",
+  "goal": "Fix generate-sprint-brief.py so it (1) reads OLLAMA_HOST from .env instead of hardcoding localhost:11434, and (2) falls back to raw progress.md + git log when Ollama is unavailable — so every future session starts with a useful sprint brief regardless of vault connectivity.",
+  "rationale": "The sprint brief has been showing [ERROR: Ollama call failed] because OLLAMA_HOST points to the Mac Mini vault via Tailscale, not localhost. Every future autonomous session is degraded because of this. Fix is small: load OLLAMA_HOST from .env, fall back gracefully if unreachable.",
+  "swarm": "NOT USED — 1 file edit (generate-sprint-brief.py). Direct write.",
+  "tasks": [
+    {
+      "id": "162-01",
+      "title": "generate-sprint-brief.py — use OLLAMA_HOST env + fallback",
+      "description": "1) Load OLLAMA_HOST from .env using dotenv or manual parse. OLLAMA_URL = f'{OLLAMA_HOST}/api/generate' (strip trailing slash). 2) Add make_fallback_brief() function: reads last 50 lines of progress.md (last 2-3 sprints), runs git log -5, assembles Current State + Recent Sprint History sections WITHOUT Qwen. 3) In generate_brief(): if any call_qwen() returns [ERROR...], call make_fallback_brief() instead of using the error strings.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-162",
+      "deliverables": {
+        "code": ["scripts/generate-sprint-brief.py"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "162-02",
+      "title": "validate-sprint-162.ts — 4-check validation",
+      "description": "1) generate-sprint-brief.py loads OLLAMA_HOST (not hardcoded localhost). 2) make_fallback_brief() or equivalent fallback function exists. 3) call_qwen error handling doesn't write [ERROR...] strings directly to brief. 4) Script can run dry without errors (python3 --check).",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-162",
+      "deliverables": {
+        "code": ["scripts/scs001/validate-sprint-162.ts"],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ],
+  "acceptance_criteria": [
+    "OLLAMA_HOST loaded from .env (not hardcoded localhost)",
+    "Fallback function exists — uses progress.md + git log when Ollama unavailable",
+    "No [ERROR...] strings written directly to sprint-brief.md sections",
+    "validate-sprint-162.ts: 4/4 PASS"
+  ]
+}

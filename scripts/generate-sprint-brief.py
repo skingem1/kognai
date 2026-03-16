@@ -24,6 +24,7 @@ Time: ~60-90 seconds on M4
 """
 
 import json
+import os
 import subprocess
 import sys
 import time
@@ -31,8 +32,35 @@ from datetime import datetime
 from pathlib import Path
 from typing import Optional
 
+
+def load_env_file(project_root: Path) -> dict:
+    """Load .env file into a dict (values without surrounding quotes)."""
+    env = {}
+    env_path = project_root / ".env"
+    if not env_path.exists():
+        return env
+    try:
+        for line in env_path.read_text().splitlines():
+            line = line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            key, _, val = line.partition("=")
+            val = val.strip().strip('"').strip("'")
+            env[key.strip()] = val
+    except Exception:
+        pass
+    return env
+
+
 # --- Config ---
-OLLAMA_URL = "http://localhost:11434/api/generate"
+# OLLAMA_HOST may be set in .env (vault Tailscale IP) or OS env — load early
+_kognai_env = load_env_file(Path.home() / "kognai")
+_ollama_host = (
+    os.environ.get("OLLAMA_HOST")
+    or _kognai_env.get("OLLAMA_HOST")
+    or "http://localhost:11434"
+).rstrip("/")
+OLLAMA_URL = f"{_ollama_host}/api/generate"
 MODEL = "qwen3:14b"
 KOGNAI_ROOT = Path.home() / "kognai"
 INVOICA_ROOT = Path.home() / "Documents" / "Invoica"
@@ -113,6 +141,49 @@ def get_git_log(project_root: Path, n: int = 25) -> str:
         return "[git log failed]"
 
 
+def make_fallback_sections(config: dict, git_log: str) -> tuple:
+    """Build Current State + Sprint History sections without Ollama.
+
+    Returns (state_summary, sprint_summary) as plain strings.
+    """
+    # --- Current State: read last 50 lines of progress.md ---
+    progress_path = config.get("progress")
+    state_lines = []
+    if progress_path and Path(progress_path).exists():
+        try:
+            all_lines = Path(progress_path).read_text().splitlines()
+            tail = all_lines[-50:] if len(all_lines) > 50 else all_lines
+            state_lines.append("*(Ollama unavailable — raw progress.md tail below)*\n")
+            state_lines.extend(tail)
+        except Exception as e:
+            state_lines.append(f"[could not read progress.md: {e}]")
+    else:
+        state_lines.append("[progress.md not found]")
+    state_summary = "\n".join(state_lines)
+
+    # --- Sprint History: parse last 3 ## Sprint entries from progress.md ---
+    sprint_summary_lines = ["*(Ollama unavailable — extracted from progress.md)*\n"]
+    if progress_path and Path(progress_path).exists():
+        try:
+            text = Path(progress_path).read_text()
+            # Find last 3 sprint sections
+            import re as _re
+            blocks = _re.split(r"\n(?=## Sprint \d+)", text)
+            recent = [b.strip() for b in blocks if b.strip().startswith("## Sprint")][-3:]
+            for block in recent:
+                # First 4 lines of each block
+                first_lines = block.splitlines()[:5]
+                sprint_summary_lines.extend(first_lines)
+                sprint_summary_lines.append("")
+        except Exception as e:
+            sprint_summary_lines.append(f"[parse error: {e}]")
+
+    sprint_summary_lines.append(f"\nGit log:\n{git_log}")
+    sprint_summary = "\n".join(sprint_summary_lines)
+
+    return state_summary, sprint_summary
+
+
 def get_latest_sprint_file(sprints_dir: Path) -> Optional[str]:
     """Read the most recent sprint JSON file."""
     if not sprints_dir.exists():
@@ -187,8 +258,9 @@ def generate_brief(project_name: str):
     else:
         agent_list = "agents directory not found"
 
-    # --- Phase 2: Extract with Qwen ---
+    # --- Phase 2: Extract with Qwen (falls back to raw text if Ollama unavailable) ---
     print("\n--- Qwen Extraction Phase ---")
+    ollama_ok = True
 
     # Extract 1: Current state from MEMORY.md
     print("[Qwen 1/3] Analyzing MEMORY.md...")
@@ -207,17 +279,22 @@ MEMORY.md:
     else:
         state_summary = "[MEMORY.md not found]"
 
+    if state_summary.startswith("[ERROR"):
+        ollama_ok = False
+
     # Extract 2: Sprint progress
     print("[Qwen 2/3] Analyzing progress + git log...")
-    progress_input = ""
-    if progress_raw:
-        # Only send last 100 lines of progress (most recent)
-        progress_lines = progress_raw.split("\n")
-        progress_tail = "\n".join(progress_lines[-100:]) if len(progress_lines) > 100 else progress_raw
-        progress_input += f"PROGRESS LOG (recent):\n{progress_tail}\n\n"
-    progress_input += f"GIT LOG (last 25 commits):\n{git_log}"
+    sprint_summary = ""
+    if ollama_ok:
+        progress_input = ""
+        if progress_raw:
+            # Only send last 100 lines of progress (most recent)
+            progress_lines = progress_raw.split("\n")
+            progress_tail = "\n".join(progress_lines[-100:]) if len(progress_lines) > 100 else progress_raw
+            progress_input += f"PROGRESS LOG (recent):\n{progress_tail}\n\n"
+        progress_input += f"GIT LOG (last 25 commits):\n{git_log}"
 
-    sprint_summary = call_qwen(f"""You are a sprint tracker. From this progress log and git history, extract:
+        sprint_summary = call_qwen(f"""You are a sprint tracker. From this progress log and git history, extract:
 1. The LAST sprint number completed (e.g., "Sprint 154")
 2. What the last 5 sprints built (one line each)
 3. The NEXT sprint number needed
@@ -226,10 +303,18 @@ MEMORY.md:
 Be concise — bullet points only. No preamble.
 
 {progress_input}""", max_tokens=1000)
+        if sprint_summary.startswith("[ERROR"):
+            ollama_ok = False
 
-    # Extract 3: Next sprint recommendation
+    # Fallback: Ollama unavailable — build sections from raw files
+    if not ollama_ok:
+        print("[FALLBACK] Ollama unavailable — building brief from raw files...")
+        state_summary, sprint_summary = make_fallback_sections(config, git_log)
+
+    # Extract 3: Next sprint recommendation (skip if Ollama unavailable)
     print("[Qwen 3/3] Recommending next sprint...")
-    next_sprint = call_qwen(f"""You are a sprint planner for the {project_name.upper()} project. Based on:
+    if ollama_ok:
+        next_sprint = call_qwen(f"""You are a sprint planner for the {project_name.upper()} project. Based on:
 
 CURRENT STATE:
 {state_summary}
@@ -250,6 +335,10 @@ Recommend the NEXT sprint. Provide:
 5. Any dependencies or blockers to watch
 
 Be specific and actionable. Reference exact file paths where possible.""", max_tokens=1500)
+        if next_sprint.startswith("[ERROR"):
+            next_sprint = "*(Ollama unavailable — see Recent Sprint History above and increment sprint number)*"
+    else:
+        next_sprint = "*(Ollama unavailable — see Recent Sprint History above and increment sprint number)*"
 
     # --- Phase 3: Assemble brief ---
     print("\n--- Assembling Brief ---")
