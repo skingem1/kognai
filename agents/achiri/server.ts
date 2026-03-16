@@ -1,15 +1,17 @@
-// Achiri HTTP API Server — Sprint 115
+// Achiri HTTP API Server — Sprint 115 + Sprint 126 (paymee upgrade endpoint)
 // Exposes AchiriConversationHandler as a REST endpoint.
 // Port: 3420 (ACHIRI_PORT env override)
 // Routes:
-//   POST   /chat           { userId, tier?, message } → { reply, turns_in_memory, model, provider, tier }
-//   DELETE /memory/:userId → { ok: true }
-//   GET    /stats          → { users, total_turns, uptime_s }
-//   GET    /health         → { status: 'ok', version: '115' }
+//   POST   /chat                { userId, tier?, message } → { reply, turns_in_memory, model, provider, tier }
+//   GET    /upgrade             ?tier=tnd_basic&userId=xxx → { checkout_url, order_id, amount_tnd, tier, mock }
+//   DELETE /memory/:userId      → { ok: true }
+//   GET    /stats               → { users, total_turns, uptime_s }
+//   GET    /health              → { status: 'ok', version: '126' }
 
 import * as http from 'http';
 import { AchiriConversationHandler, ACHIRI_LIMIT_EXCEEDED } from './index';
 import { AchiriMemoryStore } from './memory-store';
+import { createCheckoutUrl } from './paymee';
 
 const PORT = parseInt(process.env.ACHIRI_PORT ?? '3420', 10);
 const START_TIME = Date.now();
@@ -53,7 +55,25 @@ const server = http.createServer(async (req, res) => {
 
   // GET /health
   if (method === 'GET' && url === '/health') {
-    return send(res, 200, { status: 'ok', version: '115', uptime_s: Math.floor((Date.now() - START_TIME) / 1000) });
+    return send(res, 200, { status: 'ok', version: '126', uptime_s: Math.floor((Date.now() - START_TIME) / 1000) });
+  }
+
+  // GET /upgrade?tier=tnd_basic&userId=xxx
+  if (method === 'GET' && url.startsWith('/upgrade')) {
+    const params = new URL(url, 'http://localhost').searchParams;
+    const tier = params.get('tier') as 'tnd_basic' | 'tnd_premium' | null;
+    const userId = params.get('userId') ?? 'anonymous';
+    if (!tier || !['tnd_basic', 'tnd_premium'].includes(tier)) {
+      return send(res, 400, { error: 'tier must be tnd_basic or tnd_premium' });
+    }
+    try {
+      const result = await createCheckoutUrl({ userId, tier });
+      console.log('[Achiri API] /upgrade userId=' + userId + ' tier=' + tier + ' mock=' + result.mock);
+      return send(res, 200, result);
+    } catch (err) {
+      console.error('[Achiri API] /upgrade error:', err);
+      return send(res, 500, { error: 'payment gateway error' });
+    }
   }
 
   // GET /stats
@@ -102,11 +122,18 @@ const server = http.createServer(async (req, res) => {
         tomorrow.setUTCHours(24, 0, 0, 0);
         const resetAt = tomorrow.toISOString();
         console.log('[Achiri API] limit_exceeded userId=' + userId + ' tier=' + tier);
+        // Generate upgrade link for tnd_basic (cheapest paid tier) — Sprint 126
+        let upgradeUrl: string | undefined;
+        try {
+          const checkout = await createCheckoutUrl({ userId, tier: 'tnd_basic' });
+          upgradeUrl = checkout.checkout_url;
+        } catch { /* non-fatal: payment gateway down */ }
         return send(res, 200, {
           error: 'limit_exceeded',
           reply: humanMsg,
           reset_at: resetAt,
           upgrade_tiers: ['tnd_basic', 'tnd_premium'],
+          upgrade_url: upgradeUrl,
         });
       }
 
@@ -130,7 +157,7 @@ const server = http.createServer(async (req, res) => {
 
 server.listen(PORT, () => {
   console.log('[Achiri API] listening on port ' + PORT);
-  console.log('[Achiri API] routes: POST /chat, DELETE /memory/:userId, GET /stats, GET /health');
+  console.log('[Achiri API] routes: POST /chat, GET /upgrade, DELETE /memory/:userId, GET /stats, GET /health');
 });
 
 export { server };

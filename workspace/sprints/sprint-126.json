@@ -1,0 +1,61 @@
+{
+  "sprint": "126",
+  "name": "paymee T3 skill — Achiri TND payment gateway for tier upgrades",
+  "block": "Phase 2A — T3 Skills Installation (Apr 14 gate)",
+  "goal": "Implement agents/achiri/paymee.ts — creates Paymee (paymee.tn) checkout URLs for Achiri free→paid tier upgrades. tnd_basic=9 TND/mo, tnd_premium=25 TND/mo. Mock mode when PAYMEE_API_KEY not set. Wire GET /upgrade endpoint into server.ts. This is the payment link backbone for Apr 25 alpha monetization.",
+  "rationale": "Apr 25 Achiri alpha needs a payment path. Without a checkout URL generator, free users who hit their 50-message/day limit cannot upgrade. Paymee is the only Tunisian payment gateway that accepts TND without international card requirement. This unblocks the paid tier value proposition.",
+  "swarm": "NOT USED — multi-file integration, direct write.",
+  "tasks": [
+    {
+      "id": "126-01",
+      "title": "agents/achiri/paymee.ts — checkout URL generator",
+      "description": "Export createCheckoutUrl(params: PaymeeParams): Promise<PaymeeResult>. PaymeeParams = { userId: string, tier: 'tnd_basic'|'tnd_premium', firstName?: string, lastName?: string, email?: string, phone?: string }. PaymeeResult = { checkout_url: string, order_id: string, amount_tnd: number, tier: string, mock: boolean }. Amount from config: tnd_basic=9, tnd_premium=25. Mock mode: PAYMEE_API_KEY not set → return mock URL. Real mode: POST to Paymee API v2. Also export getUpgradeMessage(tier, checkoutUrl, lang): string — localized upgrade prompt in ar/fr/en.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-126",
+      "deliverables": {
+        "code": ["agents/achiri/paymee.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "126-02",
+      "title": "server.ts — wire GET /upgrade endpoint",
+      "description": "Add GET /upgrade?tier=tnd_basic&userId=xxx route. Returns { checkout_url, order_id, amount_tnd, tier, mock }. Also: when limit_exceeded is returned from chat(), include upgrade_url in response body (call createCheckoutUrl internally). Small surgical edit to existing server.ts.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-126",
+      "deliverables": {
+        "code": ["agents/achiri/server.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "126-03",
+      "title": "scripts/achiri/validate-paymee.ts — 5-check validation",
+      "description": "Tests: (1) tnd_basic checkout URL generated (mock mode), amount=9; (2) tnd_premium checkout URL generated, amount=25; (3) order_id is unique per call (UUID); (4) getUpgradeMessage returns Arabic string for 'ar' lang; (5) GET /upgrade endpoint returns checkout_url (start server, hit endpoint, kill server). All 5 must PASS.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-126",
+      "deliverables": {
+        "code": ["scripts/achiri/validate-paymee.ts"],
+        "tests": ["scripts/achiri/validate-paymee.ts"],
+        "docs": []
+      }
+    }
+  ]
+}
