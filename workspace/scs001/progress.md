@@ -426,3 +426,15 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
   - Updated pipelineInfo to use smoke test fields (passed, stage_count, error_count, summary.clips_qualified/videos_published)
 - Operator can now check /status for full gate visibility without opening dashboard
 - Timestamp: 2026-03-17T00:45:00Z
+
+### Sprint 121 — Video Review Script (Block: Phase 1 manual posting workflow)
+- Status: PASS | Commit: 0649ce2 | Block: Phase 1 manual posting
+- Files created: scripts/scs001/review-videos.ts, workspace/sprints/sprint-121.json
+- Tests: npx ts-node scripts/scs001/review-videos.ts — 10 videos listed, 10/10 QC-passed, real hook_formula+speaker
+- Swarm: NOT used — new script
+- Changes:
+  - review-videos.ts: finds latest workspace/scs001/run-*/ dir, reads experiments.jsonl for metadata, lists captioned MP4s with ID/hook_formula/speaker/qc_passed/file_path. QC-passed sorted first. --run-id flag for specific run.
+  - Displays next step: npx ts-node scripts/scs001/record-manual-post.ts --video-id <ID> --views <N>
+- Manual posting workflow now complete: pipeline runs → review-videos.ts → manual TikTok post → record-manual-post.ts → /status shows gate progress
+- Session ended: 6 sprints shipped (116-121). Context limit reached.
+- Timestamp: 2026-03-17T01:00:00Z
