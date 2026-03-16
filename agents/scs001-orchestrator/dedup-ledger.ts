@@ -6,10 +6,13 @@ import { readFileSync, writeFileSync, appendFileSync, existsSync, mkdirSync } fr
 import { dirname, join } from 'path';
 
 export interface LedgerEntry {
-  clip_id:      string;
-  video_id:     string;
-  published_at: string;
-  run_id:       string;
+  clip_id:       string;
+  video_id:      string;
+  published_at:  string;
+  run_id:        string;
+  hook_formula?: string;
+  speaker?:      string;
+  topic?:        string;
 }
 
 const DEFAULT_PATH = join(process.cwd(), 'workspace', 'scs001', 'publish-ledger.jsonl');

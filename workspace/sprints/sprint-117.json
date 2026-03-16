@@ -1,0 +1,61 @@
+{
+  "sprint": "117",
+  "name": "Experiment Metadata Fix — hook_formula + speaker + topic in experiments & publish-ledger",
+  "block": "Phase 1 — SCS-001 data quality",
+  "goal": "Fix the Stage 9-experiment bundle lookup so hook_formula and speaker are never 'unknown'. Enrich publish-ledger entries with hook_formula, speaker, topic. Dashboard Panel 17 will then show real formula pass-rates.",
+  "rationale": "All experiments.jsonl entries have hook_formula='unknown' and speaker='unknown'. Root cause: orchestrator Stage 9-experiment uses `bundles.find(b => b.clip_id === gate.video_id)` but gate.video_id is the editing-stage generated ID, not clip_id. Fix: look up via editedVideos[gate.video_id].insight_id → bundles[insight_id]. Also enrich publish-ledger with hook_formula, speaker, topic for Apr 7 gate analysis.",
+  "swarm": "NOT USED — surgical edit to orchestrator (complex file). Writing directly.",
+  "tasks": [
+    {
+      "id": "117-01",
+      "title": "agents/scs001-orchestrator/index.ts — fix Stage 9-experiment bundle lookup",
+      "description": "In Stage 9-experiment: build editedMap (video_id → EditedVideo) from editedVideos. Then for each gate: `const edited = editedMap.get(gate.video_id); const bundle = bundles.find(b => b.insight_id === edited?.insight_id);` This replaces the broken `bundles.find(b => b.clip_id === gate.video_id)` lookup.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-117",
+      "deliverables": {
+        "code": ["agents/scs001-orchestrator/index.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "117-02",
+      "title": "agents/scs001-orchestrator/index.ts — enrich publish-ledger entries",
+      "description": "In Stage 9-publishing (after published videos are collected): when building publish-ledger entries, look up bundle via same editedMap+insight_id pattern and add hook_formula, speaker, topic fields to the ledger entry.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-117",
+      "deliverables": {
+        "code": ["agents/scs001-orchestrator/index.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "117-03",
+      "title": "Smoke test — verify hook_formula and speaker are non-unknown in output",
+      "description": "Run smoke test (npx ts-node scripts/orchestrate-agents-v2.ts --mode=mock). Check experiments.jsonl last N entries: hook_formula != 'unknown', speaker != 'unknown'. PASS = at least 5 entries with real values.",
+      "type": "validate",
+      "task_type": "validation",
+      "task_target": "local",
+      "agent": "haiku",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-117",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ]
+}

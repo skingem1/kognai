@@ -234,9 +234,13 @@ export class SCS001Orchestrator {
     // --- Stage 9-experiment: Log QC results to experiment tracker ---
     if (gates.length > 0) {
       stages.push(await this.runStage('9-experiment', 'ExperimentTracker', async () => {
+        // Build lookup: video_id (editing stage) → insight_id → bundle
+        const editedByVideoId = new Map(editedVideos.map(ev => [ev.video_id, ev]));
+        const bundleByInsightId = new Map(bundles.map(b => [b.insight_id, b]));
         let logged = 0;
         for (const gate of gates) {
-          const bundle = bundles.find(b => b.clip_id === gate.video_id);
+          const edited = editedByVideoId.get(gate.video_id);
+          const bundle = edited ? bundleByInsightId.get(edited.insight_id) : undefined;
           const entry: ExperimentEntry = {
             clip_id:      gate.video_id,
             hook_formula: bundle?.hook_formula_used ?? 'unknown',
@@ -262,11 +266,22 @@ export class SCS001Orchestrator {
           'PublishingAgent',
           { maxRetries: 2, baseDelayMs: 2000 },
         );
-        // Record published clips to dedup ledger
-        const ledgerEntries: LedgerEntry[] = published.map(p => ({
-          clip_id: p.video_id, video_id: p.video_id,
-          published_at: p.posted_at, run_id: runId,
-        }));
+        // Record published clips to dedup ledger (with metadata for analysis)
+        const editedByVideoId2 = new Map(editedVideos.map(ev => [ev.video_id, ev]));
+        const bundleByInsightId2 = new Map(bundles.map(b => [b.insight_id, b]));
+        const ledgerEntries: LedgerEntry[] = published.map(p => {
+          const edited = editedByVideoId2.get(p.video_id);
+          const bundle = edited ? bundleByInsightId2.get(edited.insight_id) : undefined;
+          return {
+            clip_id:      p.video_id,
+            video_id:     p.video_id,
+            published_at: p.posted_at,
+            run_id:       runId,
+            hook_formula: bundle?.hook_formula_used,
+            speaker:      bundle?.speaker_name,
+            topic:        bundle?.why_does_this_matter?.slice(0, 60),
+          };
+        });
         this.ledger.recordPublished(ledgerEntries);
         return published.length;
       }));
