@@ -504,3 +504,14 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
 - T3 Skills progress: 4/6 complete (achiri-safety, eval-harness, derja-profiler, paymee). Remaining: achiri-voice, achiri-memory.
 - Swarm used: no (multi-file integration — direct write)
 - Timestamp: 2026-03-16T17:45:00Z
+
+## Sprint 127 — achiri-voice T3 skill (Phase 2A — voice message processing)
+- Status: PASS
+- Commit: 9a068c2
+- Files created: agents/achiri/voice-handler.ts, scripts/achiri/validate-voice-handler.ts, workspace/sprints/sprint-127.json
+- Files modified: agents/achiri/server.ts (POST /voice endpoint, version 127)
+- Test: scripts/achiri/validate-voice-handler.ts — 13/13 PASS
+- Key results: formatForVoice strips all markdown + breaks 20+ word sentences. processVoiceMessage tier-gates to tnd_premium (VoiceTierError for free). Whisper stub ready (WHISPER_PATH env). POST /voice returns 403 tier_error for non-premium.
+- T3 Skills progress: 5/6 complete. Remaining: achiri-memory.
+- Swarm used: no (direct write)
+- Timestamp: 2026-03-16T18:00:00Z
