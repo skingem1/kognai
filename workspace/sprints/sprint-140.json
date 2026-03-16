@@ -1,0 +1,70 @@
+{
+  "sprint": "140",
+  "name": "/post-reminder Telegram command",
+  "block": "Phase 1.5 gate ops — manual posting workflow",
+  "goal": "Telegram /post-reminder command (owner-only) that shows the operator their Apr 7 gate status, how many videos are queued in the publish ledger, and the exact commands to run for the manual posting workflow. Closes the gap between 'pipeline generated videos' and 'operator posts them'. 0/30 posts with 22 days to gate — this command makes the workflow friction-free.",
+  "rationale": "Apr 7 gate: 0/30 posts, 141 videos in publish ledger. The operator isn't posting because they don't have a zero-friction reminder. /post-reminder shows: posts/views progress, cadence needed, queue size, exact npx commands to review+record. Single Telegram message = complete posting briefing. Direct write, no swarm.",
+  "swarm": "NOT USED — 1 function + 2 wiring edits (commands.ts, index.ts). Direct write.",
+  "tasks": [
+    {
+      "id": "140-01",
+      "title": "agents/telegram-bot/commands.ts — handlePostReminder() function",
+      "description": "Add handlePostReminder(chatId: number, ownerChatId: string): owner-only (return if chatId !== ownerChatId). Load manual-posts.jsonl (workspace/scs001/manual-posts.jsonl) — count recorded posts, sum views. Load publish-ledger.jsonl (workspace/scs001/publish-ledger.jsonl) — count total entries (queue size). Compute: APR_7 = new Date('2026-04-07'), daysToGate = ceil((APR_7 - now) / 86400000), postsRemaining = max(0, 30 - recordedPosts), cadenceNeeded = (postsRemaining / daysToGate).toFixed(1). Send message with sections: (1) Gate Progress: posts X/30, views Y/500, days left; (2) Cadence: Z posts/day needed; (3) Queue: N videos ready in ledger; (4) Workflow commands in code block: 'npx ts-node scripts/scs001/review-videos.ts\\nnpx ts-node scripts/scs001/record-manual-post.ts --video-id <id> --views <n> --title \"<title>\"'. Add /post-reminder to handleHelp() under TikTok Pipeline section.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-140",
+      "deliverables": {
+        "code": ["agents/telegram-bot/commands.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "140-02",
+      "title": "agents/telegram-bot/index.ts — route /post-reminder",
+      "description": "Import handlePostReminder from ./commands. Add case '/post-reminder': await handlePostReminder(chatId, OWNER_CHAT_ID); break. in the switch statement.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-140",
+      "deliverables": {
+        "code": ["agents/telegram-bot/index.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "140-03",
+      "title": "scripts/achiri/validate-sprint-140.ts — validation script",
+      "description": "Check: (1) commands.ts exports handlePostReminder; (2) handlePostReminder reads manual-posts.jsonl; (3) handlePostReminder reads publish-ledger.jsonl; (4) handlePostReminder computes cadence (APR_7 date); (5) /post-reminder appears in handleHelp(); (6) index.ts imports handlePostReminder; (7) index.ts routes '/post-reminder'. 7 checks, exit 0 on all pass.",
+      "type": "create",
+      "task_type": "test",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-140",
+      "deliverables": {
+        "code": ["scripts/achiri/validate-sprint-140.ts"],
+        "tests": ["scripts/achiri/validate-sprint-140.ts"],
+        "docs": []
+      }
+    }
+  ],
+  "acceptance_criteria": [
+    "handlePostReminder() shows gate progress (posts/views/days)",
+    "handlePostReminder() shows cadence needed (posts/day)",
+    "handlePostReminder() shows queue size from publish-ledger.jsonl",
+    "handlePostReminder() includes review-videos.ts + record-manual-post.ts commands",
+    "'/post-reminder' routed in index.ts",
+    "'/post-reminder' appears in handleHelp()",
+    "validate-sprint-140.ts exits 0 (all 7 checks pass)"
+  ]
+}

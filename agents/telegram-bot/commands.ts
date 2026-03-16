@@ -97,6 +97,7 @@ export async function handleHelp(chatId: number): Promise<void> {
     '/stats — Pipeline statistics',
     '/subscribe — Upgrade your plan (coming soon)',
     '/gate — Phase 1.5 gate review (Apr 7 kill switch)',
+    '/post-reminder — Apr 7 gate progress + posting workflow (owner)',
     '',
     '🤖 *Achiri AI Companion*',
     '/achiri <msg> — Chat with Achiri (free tier, Darija/Arabic/French)',
@@ -562,4 +563,76 @@ export async function handleAchiriHealth(chatId: number, ownerChatId: string): P
     const msg = err instanceof Error ? err.message : String(err);
     await sendMessage(chatId, `❌ Achiri API: DOWN (${latency}ms) — ${msg}`);
   }
+}
+
+// ── Post reminder — Sprint 140 ─────────────────────────────────────────────────
+// Owner-only: gate progress + queue size + exact posting workflow commands.
+const MANUAL_POSTS_PATH_BOT = join(process.cwd(), 'workspace', 'scs001', 'manual-posts.jsonl');
+const LEDGER_PATH_BOT        = join(process.cwd(), 'workspace', 'scs001', 'publish-ledger.jsonl');
+const POSTS_TARGET_BOT = 30;
+const VIEWS_TARGET_BOT = 500;
+
+export async function handlePostReminder(chatId: number, ownerChatId: string): Promise<void> {
+  if (String(chatId) !== ownerChatId) {
+    await sendMessage(chatId, '🔒 Owner only.');
+    return;
+  }
+
+  // Load manual posts
+  let recordedPosts = 0;
+  let totalViews = 0;
+  if (existsSync(MANUAL_POSTS_PATH_BOT)) {
+    const lines = readFileSync(MANUAL_POSTS_PATH_BOT, 'utf-8').split('\n').filter(l => l.trim());
+    for (const line of lines) {
+      try {
+        const p = JSON.parse(line);
+        recordedPosts++;
+        totalViews += p.views ?? 0;
+      } catch { /* skip */ }
+    }
+  }
+
+  // Load publish ledger (queue size)
+  let queueSize = 0;
+  if (existsSync(LEDGER_PATH_BOT)) {
+    const lines = readFileSync(LEDGER_PATH_BOT, 'utf-8').split('\n').filter(l => l.trim());
+    queueSize = lines.length;
+  }
+
+  // Cadence calc
+  const APR_7 = new Date('2026-04-07T00:00:00Z');
+  const daysToGate = Math.ceil((APR_7.getTime() - Date.now()) / 86400000);
+  const postsRemaining = Math.max(0, POSTS_TARGET_BOT - recordedPosts);
+  const cadence = daysToGate > 0 ? (postsRemaining / daysToGate).toFixed(1) : 'NOW';
+
+  const postsBar = `${recordedPosts}/${POSTS_TARGET_BOT}`;
+  const viewsBar = `${totalViews}/${VIEWS_TARGET_BOT}`;
+
+  const lines: string[] = [
+    '📋 *Post Reminder — Apr 7 Gate*',
+    '',
+    `📊 *Gate Progress*`,
+    `Posts: ${postsBar} ${recordedPosts >= POSTS_TARGET_BOT ? '✅' : ''}`,
+    `Views: ${viewsBar} ${totalViews >= VIEWS_TARGET_BOT ? '✅' : ''}`,
+    `Days left: ${daysToGate > 0 ? daysToGate : 'PASSED'}`,
+    '',
+    `⏱ *Cadence needed:* ${cadence} posts/day`,
+    '',
+    `🎬 *Queue:* ${queueSize} videos ready in ledger`,
+    '',
+    '🔧 *Workflow:*',
+    '```',
+    '# 1. Review available videos',
+    'npx ts-node scripts/scs001/review-videos.ts',
+    '',
+    '# 2. Post on TikTok manually, then record',
+    'npx ts-node scripts/scs001/record-manual-post.ts \\',
+    '  --video-id <id> --views <n> --title "<title>"',
+    '',
+    '# 3. Check gate status',
+    'npx ts-node scripts/scs001/record-manual-post.ts --list',
+    '```',
+  ];
+
+  await sendMessage(chatId, lines.join('\n'));
 }
