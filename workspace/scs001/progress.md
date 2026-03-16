@@ -287,3 +287,17 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
 - Validation errors: 0 so far (all bundles passing structural checks in mock mode)
 - Dashboard now has 17 panels
 - Timestamp: 2026-03-16T21:00:00Z
+
+### Sprint 110 — Analytics Feedback Loop + Phase 1.5 Projection (Block: feedback+ops)
+- Status: PASS | Commit: 8f57b95 | Block: feedback+ops
+- Files created: workspace/sprints/sprint-110.json
+- Files modified: agents/scs001-trend/index.ts, agents/scs001-orchestrator/index.ts, dashboard/parsers/readiness.py, dashboard/static/app.js
+- Tests: smoke-test PASS (15 stages, 0 errors, 10 videos); viral-topics.json created; readiness projection PASS
+- Swarm: NOT used — all direct writes (complex files)
+- Changes:
+  - TrendAgent.run(): accepts optional priority_topics[] param. Matching topics get +15 confidence boost (capped at 99). Logs boost count.
+  - Orchestrator: reads workspace/scs001/viral-topics.json before Stage 1 (passes to TrendAgent). After Stage 10 analytics, writes viral signal video IDs to viral-topics.json for next run.
+  - readiness.py: _get_phase_1_5_projection() reads publish-ledger, counts posts, computes avg/day, projects days to 30-post target vs Apr 7 gate. Added phase_1_5_projection to get_readiness() response.
+  - app.js: Phase 1.5 Projection row added to Panel 14 — posts X/30, avg/day, projected date, color-coded (green=on track, amber=tight, red=late vs Apr 7).
+- Note: viral-topics.json contains video IDs in mock mode (no real topic names in mock PerformanceSignal). In live mode, will contain real TikTok topic names from analytics.
+- Timestamp: 2026-03-16T22:00:00Z
