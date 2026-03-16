@@ -724,3 +724,14 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
 - Changes: handleRecord() parses /record <video_id> <views> [title], appends to manual-posts.jsonl, returns gate progress. handleHelp updated. Full posting loop in Telegram now: /review → post → /record → /post-reminder.
 - Gate: ~22 days to Apr 7, 0/30 posts
 - Timestamp: 2026-03-16T16:15:00Z
+
+## Sprint 144 — /update-views + daily-digest hint
+- Status: PASS
+- Commit: 95c1a15
+- Files created: scripts/scs001/validate-sprint-144.ts, workspace/sprints/sprint-144.json
+- Files modified: agents/telegram-bot/commands.ts, agents/telegram-bot/index.ts, scripts/daily-digest.ts
+- Test: scripts/scs001/validate-sprint-144.ts — 7/7 PASS
+- Swarm used: no (direct write)
+- Changes: handleUpdateViews() rewrites views on existing manual-posts.jsonl entry. handleHelp updated. daily-digest tip changed from CLI to /review + /record Telegram commands. Full posting loop now complete in Telegram.
+- Gate: ~22 days to Apr 7, 0/30 posts
+- Timestamp: 2026-03-16T16:30:00Z
