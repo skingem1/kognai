@@ -1,0 +1,50 @@
+{
+  "sprint": "165",
+  "name": "Fix daily-digest queue count — show captioned mp4s on disk vs ledger entries",
+  "block": "Phase 1 — daily digest accuracy",
+  "goal": "Fix getQueueStats() in daily-digest.ts to show videos with actual captioned mp4s on disk, not just ledger entries. Currently shows '141 unposted' but only 15 have real files. Add findCaptionedMp4Local() helper to daily-digest.ts. getQueueStats() returns readyCount = unposted entries with mp4 on disk.",
+  "rationale": "Operator wakes up to '📋 Queue: 141 unposted videos ready to post' but /post-now only shows 3 videos. Confusing. Correct count is 15 (files actually on disk). Accurate count → accurate urgency → better posting decisions.",
+  "swarm": "NOT USED — 1 file edit (daily-digest.ts) + 1 validation script. Direct write.",
+  "tasks": [
+    {
+      "id": "165-01",
+      "title": "daily-digest.ts — add findCaptionedMp4Local() + fix getQueueStats()",
+      "description": "Add function findCaptionedMp4Local(videoId: string): boolean — readdirSync ROOT/workspace/scs001, filter dirs startsWith('run-'), check each for caption/{videoId}-captioned.mp4, return true if found. Update getQueueStats(): add readyCount = unpostedEntries.filter(e => findCaptionedMp4Local(e.video_id)).length. Return readyCount in object. Update queue line in buildDigest() to: '📋 Queue: *${queue.readyCount}* ready (${queue.unposted} in ledger)'.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-165",
+      "deliverables": {
+        "code": ["scripts/daily-digest.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "165-02",
+      "title": "validate-sprint-165.ts — 4-check validation",
+      "description": "1) findCaptionedMp4Local function in daily-digest.ts. 2) getQueueStats returns readyCount. 3) buildDigest includes 'ready' text (not just count). 4) readyCount value is correct (should be 15 given current disk state).",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-165",
+      "deliverables": {
+        "code": ["scripts/scs001/validate-sprint-165.ts"],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ],
+  "acceptance_criteria": [
+    "findCaptionedMp4Local() helper in daily-digest.ts scans run-* dirs",
+    "getQueueStats() returns readyCount",
+    "buildDigest() shows readyCount prominently",
+    "validate-sprint-165.ts: 4/4 PASS"
+  ]
+}

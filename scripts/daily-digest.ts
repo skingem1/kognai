@@ -106,15 +106,29 @@ function getViralTopics(): string[] {
 
 // ── Queue stats (Sprint 151): unposted videos ─────────────────────────────────
 
-function getQueueStats(): { ledgerCount: number; recordedCount: number; unposted: number; top3: string[] } {
+// Sprint 165: scan run-* dirs to count videos with actual captioned mp4 on disk
+function findCaptionedMp4Local(videoId: string): boolean {
+  try {
+    const scsDir = path.join(ROOT, 'workspace', 'scs001');
+    const runDirs = fs.readdirSync(scsDir).filter(d => d.startsWith('run-'));
+    for (const dir of runDirs) {
+      const p = path.join(scsDir, dir, 'caption', `${videoId}-captioned.mp4`);
+      if (fs.existsSync(p)) return true;
+    }
+  } catch { /* ignore */ }
+  return false;
+}
+
+function getQueueStats(): { ledgerCount: number; recordedCount: number; unposted: number; readyCount: number; top3: string[] } {
   const ledger   = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
   const recorded = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
   const recordedIds = new Set(recorded.map((e: any) => e.video_id).filter(Boolean));
   const unpostedEntries = (ledger as any[])
     .filter((e: any) => !recordedIds.has(e.video_id) && e.video_id)
     .sort((a: any, b: any) => (b.published_at ?? '').localeCompare(a.published_at ?? ''));
+  const readyCount = unpostedEntries.filter((e: any) => findCaptionedMp4Local(e.video_id)).length;
   const top3 = unpostedEntries.slice(0, 3).map((e: any) => e.video_id as string);
-  return { ledgerCount: ledger.length, recordedCount: recorded.length, unposted: unpostedEntries.length, top3 };
+  return { ledgerCount: ledger.length, recordedCount: recorded.length, unposted: unpostedEntries.length, readyCount, top3 };
 }
 
 // ── Smoke test (reports/smoke-test-latest.json) ───────────────────────────────
@@ -192,7 +206,7 @@ function buildDigest(): string {
     '',
     `🎬 *Pipeline* (dry-run)`,
     `• Total generated: ${ledger.total} | Today: ${ledger.todayCount}`,
-    `📋 Queue: *${queue.unposted}* unposted videos ready to post`,
+    `📋 Queue: *${queue.readyCount}* ready to post (${queue.unposted} in ledger)`,
     `• Top formula: ${formula}`,
     `• Smoke test: ${smoke}`,
     '',
