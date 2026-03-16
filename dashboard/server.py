@@ -35,6 +35,7 @@ from parsers.chain import get_chain_data
 from parsers.project_overview import get_project_overview
 from parsers.assets import get_all_assets
 from parsers.daily_plans import get_today_plans
+from parsers.pipeline import get_latest_pipeline_run, list_pipeline_runs
 
 
 class ToggleRequest(BaseModel):
@@ -332,6 +333,20 @@ async def assets():
 @app.get("/api/daily-plans")
 async def daily_plans():
     return get_today_plans()
+
+
+# --- Pipeline Runs ---
+@app.get("/api/pipeline/latest")
+async def pipeline_latest():
+    run = get_latest_pipeline_run()
+    if not run:
+        return {"error": "No pipeline runs yet"}
+    return run
+
+
+@app.get("/api/pipeline/runs")
+async def pipeline_runs():
+    return list_pipeline_runs()
 
 
 # --- Debug: ping all services ---

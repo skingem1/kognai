@@ -821,7 +821,113 @@ async function renderLogs() {
   panel.innerHTML = html;
 }
 
-// --- Panel 12: Revenue & Blockers ---
+// --- Panel 12: Pipeline Runs ---
+async function renderPipeline() {
+  const [latest, runs] = await Promise.all([
+    fetchJson('/api/pipeline/latest'),
+    fetchJson('/api/pipeline/runs'),
+  ]);
+  const panel = $('#pipeline-body');
+  if (!panel) return;
+
+  let html = '';
+
+  if (latest && !latest.error) {
+    const s = latest.summary || {};
+    const elapsed = ((latest.total_elapsed_ms || 0) / 1000).toFixed(1);
+    const modeBadge = latest.mode === 'live'
+      ? '<span class="mini-badge green">LIVE</span>'
+      : '<span class="mini-badge blue">MOCK</span>';
+
+    html += `
+      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+        <span style="font-weight: 700; font-size: 13px;">Latest Run</span>
+        ${modeBadge}
+        <span class="mono" style="color: var(--text-muted); margin-left: auto;">${elapsed}s</span>
+      </div>
+    `;
+
+    // Pipeline funnel
+    const funnel = [
+      { label: 'Topics', count: s.topics_found || 0 },
+      { label: 'Clips', count: s.clips_discovered || 0 },
+      { label: 'Qualified', count: s.clips_qualified || 0 },
+      { label: 'Insights', count: s.insights_generated || 0 },
+      { label: 'Scripts', count: s.scripts_produced || 0 },
+      { label: 'Videos', count: s.videos_edited || 0 },
+      { label: 'QC Pass', count: s.qc_passed || 0 },
+      { label: 'Published', count: s.published || 0 },
+    ];
+
+    html += '<div class="pipeline-funnel">';
+    for (const step of funnel) {
+      html += `<div class="funnel-step"><span class="funnel-count">${step.count}</span><span class="funnel-label">${step.label}</span></div>`;
+      if (step !== funnel[funnel.length - 1]) {
+        html += '<span class="funnel-arrow">&rarr;</span>';
+      }
+    }
+    html += '</div>';
+
+    // Viral status
+    html += `
+      <div class="stats-row" style="margin-top: 12px;">
+        <div class="stat-box" style="border-left: 3px solid var(--accent-green);">
+          <div class="stat-value" style="color: var(--accent-green);">${s.viral || 0}</div>
+          <div class="stat-label">Viral</div>
+        </div>
+        <div class="stat-box" style="border-left: 3px solid var(--accent-blue);">
+          <div class="stat-value" style="color: var(--accent-blue);">${s.performing || 0}</div>
+          <div class="stat-label">Performing</div>
+        </div>
+        <div class="stat-box" style="border-left: 3px solid var(--accent-red);">
+          <div class="stat-value" style="color: var(--accent-red);">${s.failure_library || 0}</div>
+          <div class="stat-label">Failure</div>
+        </div>
+      </div>
+    `;
+
+    // Stage timings
+    if (latest.stages && latest.stages.length > 0) {
+      html += '<div class="section-divider">Stage Timings</div>';
+      for (const st of latest.stages) {
+        const statusCls = st.status === 'ok' ? 'green' : st.status === 'error' ? 'red' : 'amber';
+        html += `
+          <div class="pipeline-stage-row">
+            <span class="mini-badge ${statusCls}">${st.status}</span>
+            <span class="pipeline-stage-name">${escHtml(st.agent)}</span>
+            <span class="mono pipeline-stage-count">${st.count}</span>
+            <span class="mono pipeline-stage-time">${st.elapsed_ms}ms</span>
+          </div>
+        `;
+      }
+    }
+  } else {
+    html = '<div class="empty-state"><div class="icon">&#128640;</div>No pipeline runs yet<br><span style="font-size: 11px; color: var(--text-muted);">Run: npx ts-node agents/scs001-orchestrator/run-pipeline.ts</span></div>';
+  }
+
+  // Run history
+  if (runs && runs.length > 0) {
+    html += '<div class="section-divider">Run History</div>';
+    for (const r of runs.slice(0, 5)) {
+      const elapsed = ((r.total_elapsed_ms || 0) / 1000).toFixed(1);
+      const pub = r.summary?.published || 0;
+      const viral = r.summary?.viral || 0;
+      html += `
+        <div class="pipeline-history-row">
+          <span class="mono" style="font-size: 10px;">${escHtml(r.started_at || '').substring(0, 16)}</span>
+          <span class="mini-badge ${r.mode === 'live' ? 'green' : 'blue'}">${r.mode}</span>
+          <span>${pub} pub</span>
+          <span style="color: var(--accent-green);">${viral} viral</span>
+          <span class="mono" style="color: var(--text-muted);">${elapsed}s</span>
+        </div>
+      `;
+    }
+  }
+
+  panel.innerHTML = html;
+}
+
+// --- Panel 13: Revenue & Blockers ---
 async function renderRevenue() {
   const data = await fetchJson('/api/overview');
   const panel = $('#revenue-body');
@@ -942,7 +1048,7 @@ async function deferTask(block, index) {
 const ALL_RENDERERS = [
   renderProgress, renderTodo, renderOverview, renderSCS001,
   renderCosts, renderRouting, renderAmendments, renderChain,
-  renderSecurity, renderAssets, renderLogs, renderRevenue,
+  renderSecurity, renderAssets, renderLogs, renderPipeline, renderRevenue,
 ];
 
 // --- Manual Refresh ---
