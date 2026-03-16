@@ -1,0 +1,70 @@
+{
+  "sprint": "156",
+  "name": "/caption command — ready-to-paste TikTok caption generator",
+  "block": "Phase 1 — TikTok gate (0/30 posts, ~22 days)",
+  "goal": "Add /caption <video_id> Telegram command. Owner sends /caption scs001-abc123, bot replies with a ready-to-copy TikTok caption: hook headline (from run script JSON if exists, fallback to topic from ledger) + newline + viral hashtags from viral-topics.json. Also add /caption (no args) shortcut to show caption for the top unposted video (same file-path logic as /post-now). Eliminates the last manual step in posting UX — operator no longer needs to write captions.",
+  "rationale": "0/30 posts, ~22 days to Apr 7. Manual posting toolkit is complete (nudges + /post-now + /record). Last friction point: operator must write a TikTok caption manually. /caption gives them a copy-paste ready string in under 1 second.",
+  "swarm": "NOT USED — 2 file edits (commands.ts + index.ts) + 1 validation script. Direct write.",
+  "tasks": [
+    {
+      "id": "156-01",
+      "title": "commands.ts — handleCaption()",
+      "description": "handleCaption(chatId, ownerChatId, videoId?: string): owner-only gate. If videoId not provided: find first unposted entry in publish-ledger.jsonl that has captioned mp4 on disk (same runIdToEpoch logic as handlePostNow — already in commands.ts). If videoId provided: find that entry in ledger. Then: 1) load topic + speaker from ledger entry. 2) try to read run script JSON at workspace/scs001/run-{epoch}/script/{video_id}-script.json — look for .hook or .title field for hook text. 3) If script not found: use topic as hook text. 4) Load hashtags from viral-topics.json (top 4 topics prefixed with #) + #fyp #viral #learnontiktok. 5) Format caption: '{hook}\\n\\n{hashtags}'. 6) Send two Telegram messages: first a labeled header ('📋 TikTok caption for {video_id}:'), then the raw caption text in a code block (triple backtick) so operator can tap-to-copy on mobile. Also add '/caption — Generate ready-to-paste TikTok caption (owner)' to handleHelp.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-156",
+      "deliverables": {
+        "code": ["agents/telegram-bot/commands.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "156-02",
+      "title": "index.ts — import handleCaption + route /caption",
+      "description": "Add handleCaption to import from commands. Add case '/caption' in dispatch switch — extract optional video_id from message parts[1] (undefined if not provided).",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-156",
+      "deliverables": {
+        "code": ["agents/telegram-bot/index.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "156-03",
+      "title": "validate-sprint-156.ts — 5-check validation",
+      "description": "1) commands.ts exports handleCaption. 2) handleCaption reads viral-topics.json for hashtags. 3) handleCaption reads publish-ledger.jsonl. 4) handleHelp contains /caption. 5) index.ts routes /caption.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-156",
+      "deliverables": {
+        "code": ["scripts/scs001/validate-sprint-156.ts"],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ],
+  "acceptance_criteria": [
+    "handleCaption() exported — loads hook from script JSON (fallback: topic from ledger)",
+    "/caption (no args) shows caption for top unposted video",
+    "/caption <video_id> shows caption for specific video",
+    "Caption output: hook text + viral hashtags in copyable code block",
+    "handleHelp shows /caption",
+    "index.ts routes /caption",
+    "validate-sprint-156.ts: 5/5 PASS"
+  ]
+}

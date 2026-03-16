@@ -105,6 +105,7 @@ export async function handleHelp(chatId: number): Promise<void> {
     '/update-views <id> <views> — Update view count on recorded post (owner)',
     '/queue — Posting queue: unposted videos + daily pace (owner)',
     '/post-now — Find videos ready to post with file path + metadata (owner)',
+    '/caption [video_id] — Ready-to-paste TikTok caption for a video (owner)',
     '',
     '🤖 *Achiri AI Companion*',
     '/achiri <msg> — Chat with Achiri (free tier, Darija/Arabic/French)',
@@ -1393,4 +1394,93 @@ export async function handlePostNow(chatId: number, ownerChatId: string): Promis
   });
 
   await sendMessage(chatId, lines.join('\n'));
+}
+
+// ── Sprint 156: /caption [video_id] — Ready-to-paste TikTok caption ───────────
+
+export async function handleCaption(chatId: number, ownerChatId: string, videoId?: string): Promise<void> {
+  if (String(chatId) !== String(ownerChatId)) {
+    await sendMessage(chatId, '⛔ Owner-only command.');
+    return;
+  }
+
+  const cwd = process.cwd();
+  const ledgerPath = join(cwd, 'workspace', 'scs001', 'publish-ledger.jsonl');
+  const manualPath = join(cwd, 'workspace', 'scs001', 'manual-posts.jsonl');
+  const topicsPath = join(cwd, 'workspace', 'scs001', 'viral-topics.json');
+
+  // Load recorded ids (to skip when searching for top unposted)
+  const recordedIds = new Set<string>();
+  if (existsSync(manualPath)) {
+    try {
+      readFileSync(manualPath, 'utf-8').split('\n').filter(l => l.trim())
+        .forEach(l => { try { const e = JSON.parse(l); if (e.video_id) recordedIds.add(e.video_id); } catch { /* skip */ } });
+    } catch { /* ignore */ }
+  }
+
+  // Load hashtags from viral-topics.json
+  let viralHashtags: string[] = [];
+  if (existsSync(topicsPath)) {
+    try {
+      const vt = JSON.parse(readFileSync(topicsPath, 'utf-8'));
+      viralHashtags = (vt.topics ?? []).slice(0, 4).map((t: string) => `#${t}`);
+    } catch { /* ignore */ }
+  }
+  if (viralHashtags.length === 0) viralHashtags = ['#ai', '#tech'];
+  const hashtags = [...viralHashtags, '#fyp', '#viral', '#learnontiktok'].join(' ');
+
+  // Find target ledger entry
+  interface LedgerEntry { video_id: string; run_id: string; speaker?: string; topic?: string; }
+  let entry: LedgerEntry | null = null;
+
+  if (existsSync(ledgerPath)) {
+    const entries: LedgerEntry[] = readFileSync(ledgerPath, 'utf-8')
+      .split('\n').filter(l => l.trim())
+      .map(l => { try { return JSON.parse(l); } catch { return null; } })
+      .filter(Boolean) as LedgerEntry[];
+
+    if (videoId) {
+      entry = entries.find(e => e.video_id === videoId) ?? null;
+    } else {
+      // Find first unposted entry with a captioned mp4 on disk
+      for (const e of entries) {
+        if (recordedIds.has(e.video_id)) continue;
+        const epoch = runIdToEpoch(e.run_id);
+        if (!epoch) continue;
+        const mp4 = join(cwd, 'workspace', 'scs001', `run-${epoch}`, 'caption', `${e.video_id}-captioned.mp4`);
+        if (existsSync(mp4)) { entry = e; break; }
+      }
+    }
+  }
+
+  if (!entry) {
+    const msg = videoId
+      ? `❓ Video \`${videoId}\` not found in ledger.`
+      : '⚠️ No ready unposted videos found. Run pipeline or use `/caption <video_id>`.';
+    await sendMessage(chatId, msg);
+    return;
+  }
+
+  // Try to load hook from script JSON
+  let hookText: string = entry.topic ?? entry.video_id;
+  const epoch = runIdToEpoch(entry.run_id);
+  if (epoch) {
+    const scriptPath = join(cwd, 'workspace', 'scs001', `run-${epoch}`, 'script', `${entry.video_id}-script.json`);
+    if (existsSync(scriptPath)) {
+      try {
+        const script = JSON.parse(readFileSync(scriptPath, 'utf-8'));
+        hookText = script.hook ?? script.title ?? script.headline ?? hookText;
+      } catch { /* fallback to topic */ }
+    }
+  }
+
+  const caption = `${hookText}\n\n${hashtags}`;
+
+  await sendMessage(chatId, [
+    `📋 *TikTok caption for* \`${entry.video_id}\`:`,
+    entry.speaker ? `🎙️ ${entry.speaker}` : '',
+  ].filter(Boolean).join('\n'));
+
+  // Send caption as code block — tap to copy on mobile
+  await sendMessage(chatId, '```\n' + caption + '\n```');
 }
