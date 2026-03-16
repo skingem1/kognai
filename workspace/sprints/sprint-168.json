@@ -1,0 +1,44 @@
+{
+  "sprint": "168",
+  "name": "Daily digest — add Achiri waitlist + alpha invited counts",
+  "block": "Phase 2A — Achiri alpha visibility",
+  "goal": "Add getAchiriAlphaStats() to scripts/daily-digest.ts — reads workspace/achiri/waitlist.jsonl + workspace/achiri/alpha-whitelist.jsonl, returns { waitlist: N, invited: N }. Update buildDigest() to include Achiri section in the daily push: '🤝 Achiri: N waitlist | N invited | Apr 25 alpha (Xd)'. Operator sees full business picture every morning.",
+  "rationale": "Daily digest shows TikTok gate progress but Achiri alpha momentum (waitlist signups, invited users) is invisible. Adding it gives operator complete AM visibility without manual /waitlist check.",
+  "swarm": "NOT USED — 1 file edit (daily-digest.ts) + 1 new validation script. Direct write.",
+  "tasks": [
+    {
+      "id": "168-01",
+      "title": "daily-digest.ts — add getAchiriAlphaStats() + Achiri section in buildDigest()",
+      "description": "Add function getAchiriAlphaStats(): { waitlist: number; invited: number }. Reads workspace/achiri/waitlist.jsonl (each line = JSON entry with userId/chatId), counts non-empty lines. Reads workspace/achiri/alpha-whitelist.jsonl (each line = JSON with chatId), counts entries. Returns { waitlist, invited }. In buildDigest(): call getAchiriAlphaStats(), add to digest lines after the gates section: '' (blank), '🤝 *Achiri Alpha:*', `  • Waitlist: ${stats.waitlist} signups`, `  • Invited: ${stats.invited} users`, `  • Launch: Apr 25 (${daysAchiri}d away)`.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-168",
+      "deliverables": {
+        "code": ["scripts/daily-digest.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "168-02",
+      "title": "validate-sprint-168.ts — 4-check validation",
+      "description": "1) getAchiriAlphaStats function in daily-digest.ts. 2) daily-digest.ts reads waitlist.jsonl. 3) daily-digest.ts reads alpha-whitelist.jsonl. 4) daily-digest.ts contains 'Achiri Alpha' text for the new section. All 4 must pass.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-168",
+      "deliverables": {
+        "code": ["scripts/scs001/validate-sprint-168.ts"],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ]
+}

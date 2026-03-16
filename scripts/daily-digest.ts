@@ -142,6 +142,16 @@ function getSmokeTest(): string {
   return `${ok} ${stages} stages — ${ts}`;
 }
 
+// ── Achiri alpha stats (Sprint 168) ──────────────────────────────────────────
+
+function getAchiriAlphaStats(): { waitlist: number; invited: number } {
+  const waitlistPath   = path.join(ROOT, 'workspace', 'achiri', 'waitlist.jsonl');
+  const whitelistPath  = path.join(ROOT, 'workspace', 'achiri', 'alpha-whitelist.jsonl');
+  const waitlist  = readLines(waitlistPath).length;
+  const invited   = readLines(whitelistPath).length;
+  return { waitlist, invited };
+}
+
 // ── Gate countdown ────────────────────────────────────────────────────────────
 
 function getDaysUntil(isoDate: string): number {
@@ -159,6 +169,7 @@ function buildDigest(): string {
   const formula  = getTopFormula();
   const smoke    = getSmokeTest();
   const viral    = getViralTopics();
+  const achiri   = getAchiriAlphaStats();
   const stripeStatus = process.env.STRIPE_SECRET_KEY
     ? '💳 Stripe: 🟢 LIVE'
     : '💳 Stripe: 🔴 NOT LIVE (set STRIPE_SECRET_KEY in .env)';
@@ -215,6 +226,11 @@ function buildDigest(): string {
     `📅 *Upcoming gates*`,
     `• Apr 7  — Phase 1.5 decision (${daysPhase}d)`,
     `• Apr 25 — Achiri alpha launch (${daysAchiri}d)`,
+    '',
+    `🤝 *Achiri Alpha:*`,
+    `  • Waitlist: ${achiri.waitlist} signups`,
+    `  • Invited:  ${achiri.invited} users`,
+    `  • Launch:   Apr 25 (${daysAchiri}d away)`,
     '',
     ...(viral.length > 0 ? [
       `🔥 *Trending topics (post one of these today):*`,
