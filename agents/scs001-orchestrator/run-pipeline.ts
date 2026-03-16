@@ -5,6 +5,7 @@
 import { writeFileSync, mkdirSync, existsSync } from 'fs';
 import { SCS001Orchestrator } from './index';
 import { notifyPipelineComplete, notifyPipelineError } from './notifier';
+import { logPipelineMetric } from './metrics-logger';
 
 async function main(): Promise<void> {
   const mode = (process.argv[2] === 'live' ? 'live' : 'mock') as 'mock' | 'live';
@@ -22,6 +23,13 @@ async function main(): Promise<void> {
   // Also save as latest
   writeFileSync(reportsDir + '/latest.json', JSON.stringify(report, null, 2));
   console.log('[Runner] Latest report updated');
+
+  // Log metrics for dashboard trends (non-fatal)
+  try {
+    logPipelineMetric(report);
+  } catch (err) {
+    console.error('[Runner] Metrics logging failed (non-fatal):', (err as Error).message);
+  }
 
   // Notify subscribers via Telegram (non-fatal)
   try {

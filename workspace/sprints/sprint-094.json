@@ -1,0 +1,93 @@
+{
+  "tasks": [
+    {
+      "id": "094-01",
+      "title": "Pipeline deduplication ledger — prevent duplicate clip publishing across runs",
+      "description": "CREATE ONE NEW FILE: agents/scs001-orchestrator/dedup-ledger.ts. Do NOT modify any existing file.\n\nThis module manages a JSONL ledger that tracks every clip_id that has been published (or passed to PublishingAgent). Before each pipeline run publishes, it checks the ledger and filters out already-published clips.\n\nEXACT REQUIREMENTS:\n\n1. Export interface LedgerEntry { clip_id: string; video_id: string; published_at: string; run_id: string; }\n\n2. Export class DedupLedger with constructor(ledgerPath?: string) defaulting to 'workspace/scs001/publish-ledger.jsonl'.\n\n3. Method loadPublished(): Set<string> — reads the JSONL file line by line, returns a Set of all clip_id values. If file does not exist, return empty Set. Handle corrupt lines gracefully (skip with console.warn).\n\n4. Method recordPublished(entries: LedgerEntry[]): void — appends entries as JSONL lines to the ledger file. Create parent dirs if needed.\n\n5. Method filterNewClips<T extends { clip_id: string }>(clips: T[]): T[] — returns only clips whose clip_id is NOT in loadPublished(). Logs how many were filtered: '[DedupLedger] N clips in, M new, K already published (skipped)'.\n\n6. The ledger file is append-only JSONL (one JSON object per line). Never rewrite the whole file.\n\n7. Use only 'fs' and 'path' from Node stdlib. No external deps.\n\nFAIL CONDITIONS: (1) File not created. (2) DedupLedger class not exported. (3) LedgerEntry interface not exported. (4) loadPublished does not handle missing file. (5) filterNewClips does not log counts. (6) Any existing file modified.",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "dependencies": [],
+      "priority": "critical",
+      "sprint_id": "sprint-094",
+      "deliverables": {
+        "code": [
+          "agents/scs001-orchestrator/dedup-ledger.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Pipeline runs 4x/day via PM2. Without deduplication, the same 15 qualified clips get re-published every run. The TrendAgent returns the same Oracle-6 feed topics within a 24h window, so clips overlap heavily between runs. This ledger is the minimal fix: append-only JSONL, checked before Stage 9 (Publishing). The orchestrator will integrate this in 094-02."
+    },
+    {
+      "id": "094-02",
+      "title": "Integrate dedup ledger into orchestrator pipeline",
+      "description": "MODIFY ONE EXISTING FILE: agents/scs001-orchestrator/index.ts.\n\nIntegrate the DedupLedger from dedup-ledger.ts into the orchestrator pipeline. Changes required:\n\n1. Add import at top: import { DedupLedger, LedgerEntry } from './dedup-ledger';\n\n2. In the constructor, create a ledger instance: this.ledger = new DedupLedger(); Add the private field: private ledger: DedupLedger;\n\n3. Between Stage 3 (Clip Detection) and Stage 4 (Insight), add deduplication:\n   - After line `const qualifiedClips = clips.filter(c => c.qualified);` (currently line 113)\n   - Add: const newQualifiedClips = this.ledger.filterNewClips(qualifiedClips);\n   - Replace all subsequent uses of `qualifiedClips` with `newQualifiedClips` in the stage 4 conditions\n   - Update summary.clips_qualified to use newQualifiedClips.length\n   - Add a new summary field: clips_deduplicated: qualifiedClips.length - newQualifiedClips.length\n\n4. After Stage 9 (Publishing), record published clips to ledger:\n   - After `published = await withRetry(...)` resolves, add:\n     const ledgerEntries: LedgerEntry[] = published.map(p => ({ clip_id: p.video_id, video_id: p.video_id, published_at: p.posted_at, run_id: report_run_id }));\n     this.ledger.recordPublished(ledgerEntries);\n   - Note: The run_id isn't available at that point in the code. Generate it early: move `const runId = 'scs001-' + startedAt.toISOString().replace(/[:.]/g, '-');` to just after startedAt is created, and use it both for the ledger and for report.run_id.\n\n5. Add clips_deduplicated to the PipelineRunReport summary interface and its assignment.\n\nDo NOT modify any other file.\n\nFAIL CONDITIONS: (1) DedupLedger not imported. (2) filterNewClips not called before Stage 4. (3) recordPublished not called after Stage 9. (4) clips_deduplicated not added to summary. (5) Any file other than index.ts modified.",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "dependencies": [
+        "094-01"
+      ],
+      "priority": "critical",
+      "sprint_id": "sprint-094",
+      "deliverables": {
+        "code": [
+          "agents/scs001-orchestrator/index.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "context": "This wires the dedup ledger into the live pipeline. The key integration point is between clip detection (Stage 3) and insight generation (Stage 4) — we filter out already-published clip_ids before they consume Claude API budget in the Insight Agent. Recording happens after Stage 9 so only actually-published clips enter the ledger. The run_id needs to be hoisted to the top of run() so it's available for both ledger recording and the final report."
+    },
+    {
+      "id": "094-03",
+      "title": "Pipeline metrics logger — per-run stats to JSONL for dashboard trends",
+      "description": "CREATE ONE NEW FILE: agents/scs001-orchestrator/metrics-logger.ts. Do NOT modify any existing file.\n\nThis module appends a one-line JSON summary after each pipeline run to a JSONL file for dashboard consumption.\n\nEXACT REQUIREMENTS:\n\n1. Export interface PipelineMetric { run_id: string; timestamp: string; mode: 'mock' | 'live'; total_elapsed_ms: number; topics: number; clips_discovered: number; clips_qualified: number; clips_deduplicated: number; insights: number; scripts: number; videos_edited: number; qc_passed: number; qc_failed: number; published: number; viral: number; flywheel_derivatives: number; failure_entries: number; stages_ok: number; stages_error: number; }\n\n2. Export function logPipelineMetric(report: PipelineRunReport): void — takes a PipelineRunReport (import the type from ./index), extracts the fields into a PipelineMetric object, and appends it as a single JSON line to 'logs/pipeline-metrics/metrics.jsonl'. Create parent dirs if needed.\n\n3. The stages_ok and stages_error counts come from report.stages filtering by status === 'ok' and status === 'error'.\n\n4. Export function readMetrics(path?: string): PipelineMetric[] — reads the JSONL file and returns parsed array. Handle missing file (return []) and corrupt lines (skip with warning).\n\n5. Use only 'fs' and 'path' from Node stdlib.\n\nFAIL CONDITIONS: (1) File not created. (2) logPipelineMetric not exported. (3) readMetrics not exported. (4) PipelineMetric interface not exported. (5) Does not create parent dirs. (6) Any existing file modified.",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "dependencies": [],
+      "priority": "high",
+      "sprint_id": "sprint-094",
+      "deliverables": {
+        "code": [
+          "agents/scs001-orchestrator/metrics-logger.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Dashboard v3.0 has 13 panels but no trend data — it reads single-run reports. This JSONL log enables a 'pipeline health over time' panel by accumulating one-line summaries per run. The format is intentionally flat (no nested objects) so the dashboard parser can read it with minimal processing. The clips_deduplicated field anticipates 094-01/094-02 integration."
+    },
+    {
+      "id": "094-04",
+      "title": "Wire metrics logger into pipeline runner",
+      "description": "MODIFY ONE EXISTING FILE: agents/scs001-orchestrator/run-pipeline.ts.\n\nAdd metrics logging after the report is saved. Changes required:\n\n1. Add import at top: import { logPipelineMetric } from './metrics-logger';\n\n2. After the line `writeFileSync(reportsDir + '/latest.json', JSON.stringify(report, null, 2));` (line 23), add:\n   // Log metrics for dashboard trends\n   try {\n     logPipelineMetric(report);\n     console.log('[Runner] Pipeline metrics logged');\n   } catch (err) {\n     console.error('[Runner] Metrics logging failed (non-fatal):', (err as Error).message);\n   }\n\nThe metrics logging is non-fatal (try/catch) like the Telegram notification — pipeline must never fail because of logging.\n\nDo NOT modify any other file.\n\nFAIL CONDITIONS: (1) logPipelineMetric not called. (2) Not wrapped in try/catch. (3) Any file other than run-pipeline.ts modified.",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "dependencies": [
+        "094-02",
+        "094-03"
+      ],
+      "priority": "high",
+      "sprint_id": "sprint-094",
+      "deliverables": {
+        "code": [
+          "agents/scs001-orchestrator/run-pipeline.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Final wiring task. After this, every PM2-scheduled pipeline run (4x/day) will append its metrics to logs/pipeline-metrics/metrics.jsonl. The try/catch ensures a logging failure never crashes the pipeline — same pattern as the Telegram notifier. Dependencies: needs both the metrics-logger module (094-03) and the updated orchestrator (094-02) which adds clips_deduplicated to the report."
+    }
+  ]
+}

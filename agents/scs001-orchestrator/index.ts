@@ -16,6 +16,7 @@ import { AnalyticsAgent, PerformanceSignal } from '../scs001-analytics/index';
 import { ContentFlywheelAgent, FlywheelOutput } from '../scs001-flywheel/index';
 import { FailureLibraryAgent, FailureEntry } from '../scs001-failure-library/index';
 import { withRetry, withFallback } from './retry';
+import { DedupLedger, LedgerEntry } from './dedup-ledger';
 
 export interface StageResult {
   stage:    string;
@@ -49,20 +50,24 @@ export interface PipelineRunReport {
     failure_library:    number;
     flywheel_derivatives: number;
     failure_entries:    number;
+    clips_deduplicated: number;
   };
 }
 
 export class SCS001Orchestrator {
   private mode: 'mock' | 'live';
   private workDir: string;
+  private ledger: DedupLedger;
 
   constructor(mode: 'mock' | 'live' = 'mock', workDir?: string) {
     this.mode = mode;
     this.workDir = workDir ?? 'workspace/scs001/run-' + Date.now();
+    this.ledger = new DedupLedger();
   }
 
   async run(): Promise<PipelineRunReport> {
     const startedAt = new Date();
+    const runId = 'scs001-' + startedAt.toISOString().replace(/[:.]/g, '-');
     const stages: StageResult[] = [];
     let trendBatch: TrendingTopicBatch | null = null;
     let discoveries: DiscoveryOutput[] = [];
@@ -109,8 +114,12 @@ export class SCS001Orchestrator {
       }));
     }
 
+    // --- Stage 3.5: Deduplication ---
+    const qualifiedClipsRaw = clips.filter(c => c.qualified);
+    const qualifiedClips = this.ledger.filterNewClips(qualifiedClipsRaw);
+    const clipsDeduplicated = qualifiedClipsRaw.length - qualifiedClips.length;
+
     // --- Stage 4: Insight Agent ---
-    const qualifiedClips = clips.filter(c => c.qualified);
     if (qualifiedClips.length > 0 && this.mode === 'live') {
       stages.push(await this.runStage('4-insight', 'InsightAgent (live)', async () => {
         const agent = new InsightAgent();
@@ -181,6 +190,12 @@ export class SCS001Orchestrator {
           'PublishingAgent',
           { maxRetries: 2, baseDelayMs: 2000 },
         );
+        // Record published clips to dedup ledger
+        const ledgerEntries: LedgerEntry[] = published.map(p => ({
+          clip_id: p.video_id, video_id: p.video_id,
+          published_at: p.posted_at, run_id: runId,
+        }));
+        this.ledger.recordPublished(ledgerEntries);
         return published.length;
       }));
     }
@@ -218,7 +233,7 @@ export class SCS001Orchestrator {
     const totalMs = completedAt.getTime() - startedAt.getTime();
 
     const report: PipelineRunReport = {
-      run_id:       'scs001-' + startedAt.toISOString().replace(/[:.]/g, '-'),
+      run_id:       runId,
       mode:         this.mode,
       started_at:   startedAt.toISOString(),
       completed_at: completedAt.toISOString(),
@@ -240,6 +255,7 @@ export class SCS001Orchestrator {
         failure_library:      signals.filter(s => s.failure_library_entry).length,
         flywheel_derivatives: flywheelOutputs.length * 4,
         failure_entries:      failureEntries.length,
+        clips_deduplicated:   clipsDeduplicated,
       },
     };
 
