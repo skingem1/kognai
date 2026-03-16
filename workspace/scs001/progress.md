@@ -823,3 +823,15 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
 - Changes: getUrgencySignal: gate.count===0 check added — 0 posts now shows '⚠️ WARNING — 0 posts recorded. Start posting now.' (was false 'on track'). getQueueStats: returns top3 (array of 3 unposted video_ids). Digest: when showKillReminder && queue.top3.length > 0, shows '📌 Post these now: /record <id> 0' for each. DRY_RUN confirmed WARNING + /record shortcuts in output.
 - Gate: ~22 days to Apr 7, 0/30 posts | Achiri alpha: Apr 25 (40d)
 - Timestamp: 2026-03-16T18:45:00Z
+
+## Sprint 153 — /tiktok-status TikTok live mode readiness
+- Status: PASS
+- Commit: c9d94d8
+- Files created: scripts/scs001/validate-sprint-153.ts, workspace/sprints/sprint-153.json
+- Files modified: agents/telegram-bot/commands.ts, agents/telegram-bot/index.ts
+- Test: scripts/scs001/validate-sprint-153.ts — 5/5 PASS
+- Swarm used: no (direct write)
+- Changes: handleTiktokStatus() — TIKTOK_ACCESS_TOKEN check, SCS_MODE display, gate progress (posts/views from manual-posts.jsonl), pipeline queue size (ledger.total - manual.count), steps to go live (set token, set SCS_MODE=live, pm2 start scs001-live). handleHelp updated. index.ts routed.
+- Gate: ~22 days to Apr 7, 0/30 posts | Achiri alpha: Apr 25 (40d)
+- Timestamp: 2026-03-16T19:00:00Z
+- SESSION NOTE: 6 sprints this session (149-153). Handoff clean.
