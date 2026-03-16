@@ -610,3 +610,13 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
 - Swarm used: no (stdlib-only script, direct write)
 - Gate context: 22 days until Apr 7 gate. Need 30 posts + 500 views. Currently 0/30 posts, 0/500 views.
 - Timestamp: 2026-03-16T21:30:00Z
+
+## Sprint 135 — Achiri /start Onboarding (Phase 2A — alpha prep)
+- Status: PASS
+- Commit: 23e2783
+- Files modified: agents/telegram-bot/commands.ts (handleStart)
+- Files created: scripts/achiri/validate-sprint-135.ts, workspace/sprints/sprint-135.json
+- Test: scripts/achiri/validate-sprint-135.ts — 8/8 PASS
+- Key results: handleStart() welcome message now introduces Achiri with: TikTok section (tier + postsPerDay preserved), Achiri section (culturally adaptive AI, Darija/Arabic/French, 50 msg/day free tier, Apr 25 alpha note, /achiri Darija example). New users hitting /start see both products.
+- Swarm used: no (single function edit)
+- Timestamp: 2026-03-16T22:00:00Z
