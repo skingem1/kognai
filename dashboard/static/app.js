@@ -1398,12 +1398,271 @@ async function renderPublishHistory() {
   }
 }
 
+// --- Panel 16: Autonomous Sessions — LIVE ---
+const sessionLiveLines = { kognai: [], invoica: [] };
+const MAX_SESSION_LINES = 15;
+
+async function renderSessions() {
+  const panel = $('#sessions-body');
+  const dots = $('#sessions-status-dots');
+  if (!panel) return;
+
+  const data = await fetchJson('/api/sessions/live');
+  if (!data) {
+    panel.innerHTML = '<div class="empty-state"><div class="icon">&#128274;</div>Session data unavailable</div>';
+    return;
+  }
+
+  const k = data.kognai || {};
+  const inv = data.invoica || {};
+
+  // Status dots
+  if (dots) {
+    dots.innerHTML = `
+      <span class="session-dot ${k.active ? 'active' : 'inactive'}"></span><span class="session-dot-label">Kognai Loop</span>
+      <span class="session-dot ${inv.active ? 'active' : 'inactive'}"></span><span class="session-dot-label">Invoica Loop</span>
+    `;
+  }
+
+  let html = '';
+
+  // Summary stats row
+  html += `<div class="stats-row" style="margin-bottom:10px;">
+    <div class="stat-box">
+      <div class="stat-value" style="color:${k.active ? 'var(--accent-green)' : 'var(--text-muted)'}">${k.active ? 'ACTIVE' : 'IDLE'}</div>
+      <div class="stat-label">Kognai</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-value" style="color:${inv.active ? 'var(--accent-green)' : 'var(--text-muted)'}">${inv.active ? 'ACTIVE' : 'IDLE'}</div>
+      <div class="stat-label">Invoica</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-value">${k.runs_today || 0}</div>
+      <div class="stat-label">K Runs Today</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-value">${inv.runs_today || 0}</div>
+      <div class="stat-label">I Runs Today</div>
+    </div>
+  </div>`;
+
+  // Two-column git commit history
+  html += `<div class="sessions-columns">`;
+
+  // Kognai column
+  html += `<div class="session-column">
+    <div class="session-column-header">
+      <span class="project-dot-inline kognai"></span> Kognai Commits
+    </div>`;
+  if (k.commits && k.commits.length > 0) {
+    for (const c of k.commits.slice(0, 10)) {
+      const isSprint = c.message.startsWith('Sprint');
+      const isState = c.message.startsWith('state:');
+      const msgClass = isSprint ? 'commit-sprint' : isState ? 'commit-state' : '';
+      html += `<div class="commit-row ${msgClass}">
+        <span class="commit-hash">${escHtml(c.short_hash)}</span>
+        <span class="commit-msg">${escHtml(c.message.substring(0, 60))}</span>
+        <span class="commit-time">${escHtml(c.time_ago)}</span>
+      </div>`;
+    }
+  } else {
+    html += `<div style="font-size:11px; color:var(--text-muted); padding:8px;">No recent commits</div>`;
+  }
+  html += `</div>`;
+
+  // Invoica column
+  html += `<div class="session-column">
+    <div class="session-column-header">
+      <span class="project-dot-inline invoica"></span> Invoica Commits
+    </div>`;
+  if (inv.commits && inv.commits.length > 0) {
+    for (const c of inv.commits.slice(0, 10)) {
+      const isSprint = c.message.startsWith('Sprint');
+      const isState = c.message.startsWith('state:');
+      const msgClass = isSprint ? 'commit-sprint' : isState ? 'commit-state' : '';
+      html += `<div class="commit-row ${msgClass}">
+        <span class="commit-hash">${escHtml(c.short_hash)}</span>
+        <span class="commit-msg">${escHtml(c.message.substring(0, 60))}</span>
+        <span class="commit-time">${escHtml(c.time_ago)}</span>
+      </div>`;
+    }
+  } else {
+    html += `<div style="font-size:11px; color:var(--text-muted); padding:8px;">No recent commits</div>`;
+  }
+  html += `</div>`;
+
+  html += `</div>`; // close sessions-columns
+
+  // Session info footer
+  html += `<div class="sessions-footer">`;
+  if (k.latest) {
+    html += `<div class="session-info">
+      <span class="mono" style="font-size:10px;">${escHtml(k.latest.file)}</span>
+      <span style="font-size:10px; color:var(--text-muted);">${k.latest.size > 0 ? (k.latest.size / 1024).toFixed(1) + 'KB' : '0B'} · ${escHtml(k.latest.mtime_ago)}</span>
+      ${k.latest.last_sprint ? `<span class="mini-badge blue" style="font-size:9px;">${escHtml(k.latest.last_sprint)}</span>` : ''}
+    </div>`;
+  }
+  if (inv.latest) {
+    html += `<div class="session-info">
+      <span class="mono" style="font-size:10px;">${escHtml(inv.latest.file)}</span>
+      <span style="font-size:10px; color:var(--text-muted);">${inv.latest.size > 0 ? (inv.latest.size / 1024).toFixed(1) + 'KB' : '0B'} · ${escHtml(inv.latest.mtime_ago)}</span>
+      ${inv.latest.last_sprint ? `<span class="mini-badge blue" style="font-size:9px;">${escHtml(inv.latest.last_sprint)}</span>` : ''}
+    </div>`;
+  }
+  html += `<div style="font-size:10px; color:var(--text-muted); margin-top:4px;">Total sessions: K=${k.total_sessions || 0} · I=${inv.total_sessions || 0}</div>`;
+  html += `</div>`;
+
+  // Live session output (populated by SSE)
+  html += `<div id="session-live-output" class="session-live-output"></div>`;
+
+  panel.innerHTML = html;
+}
+
+// --- Session SSE: live terminal output ---
+function connectSessionSSE() {
+  let retryDelay = 3000;
+
+  function connect() {
+    const es = new EventSource('/api/sessions/stream');
+
+    es.addEventListener('session', (e) => {
+      try {
+        const data = JSON.parse(e.data);
+        const project = data.project || 'unknown';
+        const line = data.line || '';
+        if (!line || line.length < 2) return;
+
+        // Skip ANSI control sequences and empty lines
+        const clean = line.replace(/\x1b\[[0-9;]*[mKGHJ]/g, '').trim();
+        if (!clean || clean.startsWith('[?') || clean.startsWith(']')) return;
+
+        if (!sessionLiveLines[project]) sessionLiveLines[project] = [];
+        sessionLiveLines[project].unshift(clean);
+        if (sessionLiveLines[project].length > MAX_SESSION_LINES) sessionLiveLines[project].pop();
+
+        renderSessionLiveOutput();
+      } catch (err) { /* ignore */ }
+    });
+
+    es.onopen = () => { retryDelay = 3000; };
+    es.onerror = () => {
+      es.close();
+      setTimeout(connect, retryDelay);
+      retryDelay = Math.min(retryDelay * 1.5, 30000);
+    };
+  }
+
+  connect();
+}
+
+function renderSessionLiveOutput() {
+  const panel = $('#session-live-output');
+  if (!panel) return;
+
+  const kLines = sessionLiveLines.kognai || [];
+  const iLines = sessionLiveLines.invoica || [];
+
+  if (kLines.length === 0 && iLines.length === 0) return;
+
+  let html = '<div class="session-column-header" style="margin-top:8px;">Live Output</div>';
+  html += '<div class="session-live-lines">';
+
+  // Interleave last few lines from both
+  const all = [];
+  for (const l of kLines.slice(0, 5)) all.push({ project: 'kognai', line: l });
+  for (const l of iLines.slice(0, 5)) all.push({ project: 'invoica', line: l });
+
+  for (const item of all) {
+    html += `<div class="session-live-line">
+      <span class="project-dot-inline ${item.project}"></span>
+      <span class="session-line-text">${escHtml(item.line.substring(0, 120))}</span>
+    </div>`;
+  }
+  html += '</div>';
+  panel.innerHTML = html;
+}
+
+// --- Panel 17: Experiments & Validation ---
+async function renderExperiments() {
+  const panel = $('#experiments-body');
+  if (!panel) return;
+  try {
+    const [stats, valSum] = await Promise.all([
+      fetch('/api/experiments/stats').then(r => r.json()),
+      fetch('/api/validation/summary').then(r => r.json()),
+    ]);
+
+    let html = '';
+
+    // Header stats
+    html += `<div class="stats-row" style="margin-bottom:12px;">
+      <div class="stat-box"><div class="stat-value">${stats.total_logged ?? 0}</div><div class="stat-label">Experiments</div></div>
+      <div class="stat-box"><div class="stat-value">${stats.unique_formulas ?? 0}</div><div class="stat-label">Formulas</div></div>
+      <div class="stat-box"><div class="stat-value">${valSum.total_errors ?? 0}</div><div class="stat-label">Validation Errors</div></div>
+    </div>`;
+
+    // Formula pass-rate bars
+    const formulas = stats.top_formulas ?? [];
+    if (formulas.length > 0) {
+      html += `<div style="font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin-bottom:6px;">Hook Formula Pass Rates</div>`;
+      for (const f of formulas) {
+        const pct = Math.round((f.pass_rate ?? 0) * 100);
+        const filled = Math.round(pct / 5);
+        const bar = '█'.repeat(filled) + '░'.repeat(20 - filled);
+        const color = pct >= 80 ? 'var(--accent-green)' : pct >= 50 ? 'var(--accent-amber, #e0a03a)' : 'var(--text-muted)';
+        html += `<div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+          <span class="mono" style="font-size:11px; width:110px; color:var(--text); flex-shrink:0;">${escHtml(f.formula)}</span>
+          <span class="mono" style="font-size:10px; color:${color}; letter-spacing:-1px;">${bar}</span>
+          <span style="font-size:11px; color:${color}; font-weight:700;">${pct}%</span>
+          <span style="font-size:10px; color:var(--text-muted);">(${f.passed}/${f.count})</span>
+        </div>`;
+      }
+    } else {
+      html += `<div class="empty-state" style="color:var(--text-muted); font-size:11px;">No experiment data yet — run the pipeline to accumulate formula stats.</div>`;
+    }
+
+    // Top speakers
+    const speakers = stats.top_speakers ?? [];
+    if (speakers.length > 0) {
+      html += `<div style="font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin:10px 0 6px;">Top Speakers by QC Pass Rate</div>`;
+      html += `<div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:10px;">`;
+      for (const s of speakers.slice(0, 5)) {
+        const pct = Math.round((s.pass_rate ?? 0) * 100);
+        const col = pct >= 80 ? 'var(--accent-green)' : pct >= 50 ? 'var(--accent-amber, #e0a03a)' : 'var(--text-muted)';
+        html += `<div style="padding:3px 8px; border:1px solid var(--border); border-radius:3px; font-size:11px;">
+          <span style="color:var(--text);">${escHtml(s.speaker)}</span>
+          <span style="color:${col}; margin-left:4px; font-weight:700;">${pct}%</span>
+          <span style="color:var(--text-muted); font-size:10px;"> (${s.count})</span>
+        </div>`;
+      }
+      html += `</div>`;
+    }
+
+    // Validation error reasons
+    const reasons = valSum.top_reasons ?? [];
+    if (reasons.length > 0) {
+      html += `<div style="font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin:6px 0 6px;">Top Validation Failure Reasons</div>`;
+      for (const r of reasons) {
+        html += `<div style="display:flex; justify-content:space-between; padding:3px 0; border-bottom:1px solid var(--border); font-size:12px;">
+          <span style="color:var(--text);">${escHtml(r.reason)}</span>
+          <span class="mini-badge amber" style="font-size:10px;">${r.count}</span>
+        </div>`;
+      }
+    }
+
+    panel.innerHTML = html;
+  } catch (e) {
+    const p = $('#experiments-body');
+    if (p) p.innerHTML = `<div class="empty-state" style="color:var(--text-muted);">Experiments unavailable: ${escHtml(e.message)}</div>`;
+  }
+}
+
 // --- All render functions ---
 const ALL_RENDERERS = [
   renderProgress, renderTodo, renderOverview, renderSCS001,
   renderCosts, renderRouting, renderAmendments, renderChain,
   renderSecurity, renderAssets, renderLogs, renderPipeline, renderRevenue,
-  renderReadiness, renderPublishHistory,
+  renderReadiness, renderPublishHistory, renderSessions, renderExperiments,
 ];
 
 // --- Manual Refresh ---
@@ -1422,6 +1681,7 @@ async function init() {
   setInterval(updateClock, 1000);
 
   connectSSE();
+  connectSessionSSE();
 
   // Full refresh every 60s
   setInterval(() => {

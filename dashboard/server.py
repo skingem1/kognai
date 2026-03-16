@@ -39,11 +39,14 @@ from parsers.pipeline import get_latest_pipeline_run, list_pipeline_runs
 from parsers.readiness import get_readiness
 from parsers.pipeline_status import get_pipeline_status
 from parsers.publish_ledger import get_publish_history, get_publish_stats
+from parsers.experiments import get_experiment_stats, get_experiment_history
+from parsers.validation_errors import get_validation_errors, get_validation_summary
 from parsers.invoica_knowledge import (
     get_invoica_skills, get_invoica_failures, get_cto_insights,
     get_post_sprint_learnings, get_invoica_latest_log, get_invoica_log_errors,
     get_invoica_knowledge_summary,
 )
+from parsers.sessions import get_sessions_live
 
 
 class ToggleRequest(BaseModel):
@@ -518,6 +521,114 @@ async def publish_history():
 @app.get("/api/publish/stats")
 async def publish_stats():
     return get_publish_stats()
+
+
+# --- Experiments ---
+@app.get("/api/experiments/stats")
+async def experiments_stats():
+    return get_experiment_stats()
+
+
+@app.get("/api/experiments/history")
+async def experiments_history():
+    return get_experiment_history()
+
+
+# --- Validation Errors ---
+@app.get("/api/validation/errors")
+async def validation_errors():
+    return get_validation_errors()
+
+
+@app.get("/api/validation/summary")
+async def validation_summary():
+    return get_validation_summary()
+
+
+# --- Autonomous Sessions ---
+KOGNAI_SESSIONS_DIR = KOGNAI_ROOT / "logs" / "autonomous"
+INVOICA_SESSIONS_DIR = INVOICA_ROOT / "logs" / "autonomous"
+
+
+@app.get("/api/sessions/live")
+async def sessions_live():
+    """Get live autonomous session status for both projects."""
+    return get_sessions_live()
+
+
+@app.get("/api/sessions/stream")
+async def sessions_stream():
+    """SSE: tail active autonomous session logs for real-time output."""
+
+    async def find_active_logs():
+        """Find the most recent active (or latest) log file per project."""
+        import subprocess
+        result = subprocess.run(["ps", "aux"], capture_output=True, text=True, timeout=5)
+        active = {}
+        for line in result.stdout.splitlines():
+            if "script" in line and "autonomous" in line and "grep" not in line:
+                if "kognai" in line and "kognai" not in active:
+                    import re
+                    m = re.search(r"(/\S+logs/autonomous/session-[^\s]+\.log)", line)
+                    if m:
+                        active["kognai"] = Path(m.group(1))
+                if "Invoica" in line and "invoica" not in active:
+                    import re
+                    m = re.search(r"(/\S+logs/autonomous/session-[^\s]+\.log)", line)
+                    if m:
+                        active["invoica"] = Path(m.group(1))
+        return active
+
+    async def event_stream():
+        active_logs = await find_active_logs()
+        handles = {}
+        for project, path in active_logs.items():
+            if path.exists():
+                fh = open(path, "r", errors="replace")
+                # Read last 2KB for initial context, then tail
+                fh.seek(max(0, path.stat().st_size - 2048))
+                initial = fh.read()
+                if initial.strip():
+                    # Send last few lines as initial context
+                    for line in initial.strip().splitlines()[-5:]:
+                        payload = json.dumps({"project": project, "line": line.strip()[:200]})
+                        yield f"event: session\ndata: {payload}\n\n"
+                handles[project] = fh
+
+        check_count = 0
+        try:
+            while True:
+                found = False
+                for project, fh in list(handles.items()):
+                    line = fh.readline()
+                    if line:
+                        line = line.strip()
+                        if line and len(line) > 1:
+                            payload = json.dumps({"project": project, "line": line[:300]})
+                            yield f"event: session\ndata: {payload}\n\n"
+                            found = True
+
+                if not found:
+                    await asyncio.sleep(1)
+
+                # Re-check for new active sessions every 30s
+                check_count += 1
+                if check_count >= 30:
+                    check_count = 0
+                    new_active = await find_active_logs()
+                    for project, path in new_active.items():
+                        if project not in handles and path.exists():
+                            fh = open(path, "r", errors="replace")
+                            fh.seek(0, 2)
+                            handles[project] = fh
+
+                yield ": keepalive\n\n"
+        finally:
+            for fh in handles.values():
+                fh.close()
+
+    return StreamingResponse(event_stream(), media_type="text/event-stream",
+                             headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"})
 
 
 # --- Debug: ping all services ---

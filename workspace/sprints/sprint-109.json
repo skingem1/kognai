@@ -1,0 +1,35 @@
+{
+  "sprint": "109",
+  "name": "Experiments dashboard — formula stats + validation visibility",
+  "goal": "Wire experiment tracking and validation error data to the dashboard so operators can see which hook formulas perform best and which scripts fail validation before Phase 1.5 go-live",
+  "tasks": [
+    {
+      "id": "109-01",
+      "title": "Experiments API endpoints in server.py",
+      "description": "Import get_experiment_stats, get_experiment_history from parsers.experiments. Add GET /api/experiments/stats and GET /api/experiments/history endpoints.",
+      "task_target": "dashboard/server.py",
+      "acceptance_criteria": "/api/experiments/stats returns JSON. /api/experiments/history returns JSON array. Server starts without errors."
+    },
+    {
+      "id": "109-02",
+      "title": "Validation errors parser",
+      "description": "CREATE dashboard/parsers/validation_errors.py. get_validation_errors(limit=50) reads workspace/scs001/validation-errors.jsonl. get_validation_summary() returns total_errors, top_reasons, latest_timestamp.",
+      "task_target": "dashboard/parsers/validation_errors.py",
+      "acceptance_criteria": "Correct aggregation. Missing file returns safe defaults. Import OK."
+    },
+    {
+      "id": "109-03",
+      "title": "Validation errors API endpoints in server.py",
+      "description": "Import get_validation_errors, get_validation_summary from parsers.validation_errors. Add GET /api/validation/errors and GET /api/validation/summary.",
+      "task_target": "dashboard/server.py",
+      "acceptance_criteria": "Both endpoints return JSON. No regressions."
+    },
+    {
+      "id": "109-04",
+      "title": "Dashboard Panel 17 — Experiments & Validation",
+      "description": "Add renderExperiments() to app.js. Formula pass-rate bars (text-based), top speakers, last validation errors. Register in ALL_RENDERERS. Add panel div to index.html.",
+      "task_target": "dashboard/static/app.js",
+      "acceptance_criteria": "Panel 17 renders. Formula bars visible. No JS errors. Existing panels unaffected."
+    }
+  ]
+}
