@@ -1,0 +1,44 @@
+{
+  "sprint": "124",
+  "name": "eval-harness T3 skill — automated Achiri conversation quality scorer",
+  "block": "Phase 2A — T3 Skills Installation (Apr 14 gate)",
+  "goal": "Implement agents/achiri/eval-harness.ts — pattern-based quality evaluator for Achiri conversations. Scores responses on warmth, cultural accuracy, code-switching, length appropriateness. No LLM needed. Used to benchmark personality before alpha and track kill switch threshold (retention >20%).",
+  "rationale": "Achiri kill switch: retention <20% after 2 fixes → stop. Without automated quality scoring, quality regression is invisible. eval-harness enables CI-level personality testing before alpha launch (Apr 25).",
+  "swarm": "NOT USED — new file only, direct write.",
+  "tasks": [
+    {
+      "id": "124-01",
+      "title": "agents/achiri/eval-harness.ts — conversation quality evaluator",
+      "description": "Export evalResponse(userMessage: string, achiriReply: string, context?: EvalContext): EvalResult. EvalResult = { score: number (0-100), breakdown: { warmth, cultural, code_switch, length, safety }, flags: string[], passed: boolean (score>=70) }. Scoring: warmth (greetings/Darija markers 0-25), cultural_accuracy (tunisian keywords 0-25), code_switch (Darija+French mix 0-20), length (50-300 chars optimal 0-20), safety (no harmful content pass/fail 0-10). Export also batchEval(pairs: Array<{user, reply}>) returning aggregate stats.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-124",
+      "deliverables": {
+        "code": ["agents/achiri/eval-harness.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "124-02",
+      "title": "scripts/achiri/validate-eval-harness.ts — 5-check validation",
+      "description": "Tests: (1) ideal Darija response scores >=70 (passed=true), (2) empty/short response scores <70, (3) English-only response scores lower than Darija response, (4) batchEval aggregates correctly, (5) response with tunisian cultural markers scores higher than generic response.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-124",
+      "deliverables": {
+        "code": ["scripts/achiri/validate-eval-harness.ts"],
+        "tests": ["scripts/achiri/validate-eval-harness.ts"],
+        "docs": []
+      }
+    }
+  ]
+}
