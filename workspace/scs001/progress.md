@@ -1018,3 +1018,14 @@ SESSION HANDOFF (2026-03-16/17, Sprints 162-165):
 - Changes: Added getAchiriAlphaStats() — reads workspace/achiri/waitlist.jsonl + alpha-whitelist.jsonl, returns { waitlist, invited }. buildDigest() now includes '🤝 Achiri Alpha:' section showing waitlist count, invited count, days to Apr 25 launch. Operator sees full business picture (TikTok gate + Achiri alpha) in morning digest.
 - Gate: ~19 days to Apr 7, 0/30 posts | Achiri alpha: Apr 25
 - Timestamp: 2026-03-17T01:30:00Z
+
+## Sprint 169 — Gate tracker auto-update (Phase 1 — session context accuracy)
+- Status: PASS
+- Commit: b99a820
+- Files created: scripts/update-gate-tracker.ts, scripts/scs001/validate-sprint-169.ts, workspace/sprints/sprint-169.json
+- Files modified: ecosystem.config.js, docs/gate-tracker.md
+- Test: scripts/scs001/validate-sprint-169.ts — 5/5 PASS
+- Swarm used: no (direct write)
+- Changes: update-gate-tracker.ts reads phase1-5-gate.json + manual-posts.jsonl + publish-ledger.jsonl + waitlist.jsonl, rewrites gate-tracker.md with current status. Phase 0→1 = PASS (141 videos). Phase 1.5 = live X/30 posts · Y/500 views. PM2 cron kognai-gate-tracker-update at 07:08 daily.
+- Gate: ~19 days to Apr 7, 0/30 posts | Achiri alpha: Apr 25
+- Timestamp: 2026-03-17T02:00:00Z
