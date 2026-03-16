@@ -1,0 +1,125 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Clip Quality Score — Agent 2 → Agent 3 → Agent 4 Contracts",
+  "description": "Defines: (1) Discovery Agent output (video candidates), (2) Clip Detection Agent output (scored clips). Derived from SCS-001 Charter Article III Agents 2-3.",
+  "version": "1.0.0",
+  "status": "LOCKED",
+  "locked_date": "2026-03-15",
+
+  "definitions": {
+    "DiscoveryOutput": {
+      "description": "Agent 2 (Discovery) → Agent 3 (Clip Detection). One per source video.",
+      "type": "object",
+      "required": ["url", "timestamps", "speaker", "topic_tags", "source_score"],
+      "properties": {
+        "discovery_id": {
+          "type": "string",
+          "description": "Unique ID for this discovery candidate"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "Source video URL (YouTube, X Spaces recording, conference talk)"
+        },
+        "timestamps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["start_seconds", "end_seconds"],
+            "properties": {
+              "start_seconds": { "type": "number", "minimum": 0 },
+              "end_seconds": { "type": "number", "minimum": 0 },
+              "reason": { "type": "string", "description": "Why this timestamp was flagged (tone change, bold claim, etc.)" }
+            }
+          },
+          "minItems": 1,
+          "maxItems": 5,
+          "description": "3-5 candidate timestamp ranges per video"
+        },
+        "speaker": {
+          "type": "string",
+          "description": "Primary speaker identity"
+        },
+        "topic_tags": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1
+        },
+        "source_score": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5,
+          "description": "Source quality score. 5 = founder interview/researcher talk. 1 = generic explainer."
+        },
+        "source_topic_id": {
+          "type": "string",
+          "description": "Links back to Trend Agent topic_id"
+        }
+      }
+    },
+
+    "ClipQualityScore": {
+      "description": "Agent 3 (Clip Detection) → Agent 4 (Insight). Scored and qualified clip.",
+      "type": "object",
+      "required": ["clip_id", "discovery_id", "url", "start_seconds", "end_seconds", "duration_seconds", "quality_score", "score_breakdown", "speaker", "qualified"],
+      "properties": {
+        "clip_id": {
+          "type": "string",
+          "description": "Unique clip identifier"
+        },
+        "discovery_id": {
+          "type": "string",
+          "description": "Links back to DiscoveryOutput.discovery_id"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "start_seconds": { "type": "number", "minimum": 0 },
+        "end_seconds": { "type": "number", "minimum": 0 },
+        "duration_seconds": {
+          "type": "number",
+          "minimum": 5,
+          "maximum": 20,
+          "description": "Clip duration. Target: 5-20 seconds. Outside this range = not scored."
+        },
+        "quality_score": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 25,
+          "description": "Total quality score. 5 factors x max 5 each = 25. Gate threshold: >= 20."
+        },
+        "score_breakdown": {
+          "type": "object",
+          "required": ["curiosity", "emotion", "clarity", "insight", "controversy"],
+          "properties": {
+            "curiosity":   { "type": "integer", "minimum": 0, "maximum": 5 },
+            "emotion":     { "type": "integer", "minimum": 0, "maximum": 5 },
+            "clarity":     { "type": "integer", "minimum": 0, "maximum": 5 },
+            "insight":     { "type": "integer", "minimum": 0, "maximum": 5 },
+            "controversy": { "type": "integer", "minimum": 0, "maximum": 5 }
+          },
+          "description": "Five-factor scoring rubric per SCS-001 Charter"
+        },
+        "phrase_triggers_matched": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Which phrase triggers from the library were detected in this clip"
+        },
+        "speaker": { "type": "string" },
+        "topic_tags": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "qualified": {
+          "type": "boolean",
+          "description": "True if quality_score >= 20. Only qualified clips pass to Agent 4."
+        },
+        "rejection_reason": {
+          "type": "string",
+          "description": "If not qualified: why. Archived for Failure Library."
+        }
+      }
+    }
+  }
+}

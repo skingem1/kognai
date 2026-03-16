@@ -1,0 +1,108 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Publishing + Analytics — Agent 8 + Agent 9 Contracts",
+  "description": "Defines: (1) Publishing Agent output (published video record), (2) Analytics Agent output (Performance Signal). Derived from SCS-001 Charter Article III Agents 8-9.",
+  "version": "1.0.0",
+  "status": "LOCKED",
+  "locked_date": "2026-03-15",
+
+  "definitions": {
+    "PublishedVideo": {
+      "description": "Agent 8 (Publishing) record. One per platform per video.",
+      "type": "object",
+      "required": ["publish_id", "video_id", "platform", "post_url", "posted_at", "posting_slot"],
+      "properties": {
+        "publish_id": { "type": "string" },
+        "video_id": { "type": "string" },
+        "platform": { "type": "string", "enum": ["tiktok", "instagram_reels", "youtube_shorts"] },
+        "post_url": { "type": "string", "format": "uri" },
+        "posted_at": { "type": "string", "format": "date-time" },
+        "posting_slot": {
+          "type": "string",
+          "enum": ["morning_0700_0900", "midday_1200_1300", "evening_1800_2000", "late_night_2100_2300"],
+          "description": "Time slot per Charter. Optimised weekly by Analytics Agent."
+        },
+        "caption_text": { "type": "string", "description": "Platform-specific caption" },
+        "hashtags": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 3,
+          "maxItems": 5,
+          "description": "3-5 domain-specific hashtags per Charter"
+        }
+      }
+    },
+
+    "PerformanceSignal": {
+      "description": "Agent 9 (Analytics) → Agent 1 (Trend) + Agent 2 (Discovery). Weekly feedback loop.",
+      "type": "object",
+      "required": ["signal_id", "video_id", "platform", "kpis", "viral_status", "measured_at"],
+      "properties": {
+        "signal_id": { "type": "string" },
+        "video_id": { "type": "string" },
+        "platform": { "type": "string", "enum": ["tiktok", "instagram_reels", "youtube_shorts"] },
+        "kpis": {
+          "type": "object",
+          "required": ["completion_rate", "avg_watch_time_seconds", "rewatch_rate", "comments", "shares", "views"],
+          "properties": {
+            "completion_rate": { "type": "number", "minimum": 0, "maximum": 100, "description": "Primary KPI. >= 70% = viral. < 40% = Failure Library entry." },
+            "avg_watch_time_seconds": { "type": "number", "minimum": 0 },
+            "rewatch_rate": { "type": "number", "minimum": 0, "maximum": 100, "description": "Target >= 20%" },
+            "comments": { "type": "integer", "minimum": 0 },
+            "shares": { "type": "integer", "minimum": 0 },
+            "views": { "type": "integer", "minimum": 0 },
+            "likes": { "type": "integer", "minimum": 0 },
+            "followers_gained": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "viral_status": {
+          "type": "string",
+          "enum": ["viral", "performing", "underperforming", "failure"],
+          "description": "viral: >= 70% completion. performing: 40-70%. underperforming: 20-40%. failure: < 20%."
+        },
+        "flywheel_triggered": {
+          "type": "boolean",
+          "description": "True if completion_rate >= 70%. Triggers Content Flywheel: 4 derivative videos."
+        },
+        "failure_library_entry": {
+          "type": "boolean",
+          "description": "True if completion_rate < 40%. Full breakdown filed to Failure Library."
+        },
+        "topic_performance": {
+          "type": "object",
+          "properties": {
+            "topic_tags": { "type": "array", "items": { "type": "string" } },
+            "topic_avg_completion": { "type": "number" }
+          },
+          "description": "Fed back to Trend Agent for topic performance tracking"
+        },
+        "speaker_performance": {
+          "type": "object",
+          "properties": {
+            "speaker_name": { "type": "string" },
+            "speaker_avg_completion": { "type": "number" }
+          },
+          "description": "High-performing speakers promoted to priority discovery list"
+        },
+        "posting_slot_performance": {
+          "type": "object",
+          "properties": {
+            "slot": { "type": "string" },
+            "slot_avg_completion": { "type": "number" }
+          },
+          "description": "Fed back to Publishing Agent for weekly slot optimisation"
+        },
+        "hook_formula_performance": {
+          "type": "object",
+          "properties": {
+            "formula": { "type": "string" },
+            "formula_avg_completion": { "type": "number" },
+            "uses_count": { "type": "integer" }
+          },
+          "description": "Tracked for Skill Bank. Verified hook formulas (avg >= 70% over 10 uses) promoted to skills/bank/tiktok-hooks/"
+        },
+        "measured_at": { "type": "string", "format": "date-time" }
+      }
+    }
+  }
+}

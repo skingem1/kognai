@@ -1,0 +1,132 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ORACLE-6 Trend Intelligence Signal — SCS-001 Mock Contract",
+  "description": "Contract between Voxight ORACLE-6 feed and SCS-001 Trend Agent. Defines the Intelligence Signal object schema that the Trend Agent consumes. Build against this mock until Phase 2B gate (live ORACLE-6 switch). Derived from AMD-05 + SCS-001 Charter Article III Agent 1.",
+  "version": "1.0.0",
+  "status": "LOCKED",
+  "locked_date": "2026-03-15",
+  "producer": "voxight-oracle-6",
+  "consumer": "scs-001-trend-agent",
+
+  "type": "object",
+  "required": ["signal_id", "query_type", "topic", "confidence", "keyword_cluster", "top_speakers", "relevant_channels", "timestamp", "provenance"],
+  "properties": {
+    "signal_id": {
+      "type": "string",
+      "description": "Unique signal identifier. Format: 'oracle6-{uuid}'",
+      "pattern": "^oracle6-[a-f0-9-]{36}$"
+    },
+    "query_type": {
+      "type": "string",
+      "enum": ["TRENDS", "SPACES", "NARRATIVE", "THOUGHT_LEADER"],
+      "description": "Voxight query type that produced this signal"
+    },
+    "topic": {
+      "type": "string",
+      "description": "Detected trending topic name. Max 120 chars.",
+      "maxLength": 120
+    },
+    "summary": {
+      "type": "string",
+      "description": "One-paragraph summary of the signal. Max 500 chars.",
+      "maxLength": 500
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "Signal confidence score 0-100. Trend Agent gate: only topics with confidence >= 60 enter the Discovery Agent queue."
+    },
+    "keyword_cluster": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "maxItems": 20,
+      "description": "Related keywords/phrases for this topic. Used by Discovery Agent for video search."
+    },
+    "top_speakers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "handle"],
+        "properties": {
+          "name": { "type": "string", "description": "Speaker's display name" },
+          "handle": { "type": "string", "description": "X/Twitter handle or YouTube channel" },
+          "authority_score": { "type": "number", "minimum": 0, "maximum": 100, "description": "Speaker's domain authority score" }
+        }
+      },
+      "maxItems": 10,
+      "description": "Key voices driving this topic. Used by Discovery Agent for source prioritisation."
+    },
+    "relevant_channels": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["platform", "channel_id"],
+        "properties": {
+          "platform": { "type": "string", "enum": ["youtube", "x_spaces", "reddit", "hacker_news", "podcast"] },
+          "channel_id": { "type": "string", "description": "Platform-specific channel/space/subreddit ID" },
+          "channel_name": { "type": "string" },
+          "recent_activity": { "type": "string", "description": "Last active timestamp ISO-8601" }
+        }
+      },
+      "maxItems": 15,
+      "description": "Channels where this topic is being discussed. Discovery Agent uses these as search targets."
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When this signal was generated"
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["source", "detection_method"],
+      "properties": {
+        "source": {
+          "type": "string",
+          "enum": ["voxight_module_2", "youtube_api", "reddit_api", "hacker_news_api", "manual_seed"],
+          "description": "Where the signal originated. 'voxight_module_2' is the primary source when live. Others are fallback."
+        },
+        "detection_method": {
+          "type": "string",
+          "enum": ["hashtag_velocity", "narrative_shift", "spaces_transcription", "keyword_surge", "manual"],
+          "description": "How the topic was detected"
+        },
+        "first_seen": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Earliest detection of this topic in the signal stream"
+        },
+        "mainstream_eta_days": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 60,
+          "description": "Estimated days until this topic reaches mainstream TikTok visibility. Voxight edge target: 14-28 days."
+        }
+      },
+      "description": "Signal provenance — tracks where and how the signal was detected. Critical for the Kognai edge (2-4 week lead)."
+    },
+    "domain_tags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "ai_agents",
+          "autonomous_systems",
+          "startup_founders",
+          "builder_predictions",
+          "tech_predictions",
+          "macro_ai_trends",
+          "automation_future_of_work",
+          "web3_crypto_ai"
+        ]
+      },
+      "minItems": 1,
+      "description": "SCS-001 domain scope tags (Charter Article II). Signals outside these domains are dropped."
+    },
+    "scs_relevant": {
+      "type": "boolean",
+      "description": "Whether this signal is relevant to SCS-001's domain scope. Pre-filtered by Voxight. Trend Agent may override."
+    }
+  }
+}

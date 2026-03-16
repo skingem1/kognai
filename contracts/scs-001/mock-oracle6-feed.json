@@ -1,0 +1,132 @@
+{
+  "description": "Mock ORACLE-6 feed — 5 synthetic Intelligence Signals for SCS-001 Trend Agent development. Matches oracle6-trend-v1.json schema exactly. Replace with live Voxight Module 2 at Phase 2B.",
+  "generated_at": "2026-03-15T00:00:00Z",
+  "feed_status": "mock",
+  "signals": [
+    {
+      "signal_id": "oracle6-00000000-0000-0000-0000-000000000001",
+      "query_type": "TRENDS",
+      "topic": "MCP Protocol adoption surge — Claude, Cursor, Windsurf integrating Model Context Protocol",
+      "summary": "Model Context Protocol (MCP) adoption has accelerated across major AI coding tools. Anthropic's open standard for connecting AI to external tools is being integrated by Cursor, Windsurf, and multiple IDE vendors. Developer discussion volume up 340% on X in the past 7 days.",
+      "confidence": 92,
+      "keyword_cluster": ["MCP", "Model Context Protocol", "Anthropic", "tool use", "AI IDE", "Cursor", "Windsurf", "agent tools", "function calling"],
+      "top_speakers": [
+        { "name": "Alex Albert", "handle": "@alexalbert__", "authority_score": 88 },
+        { "name": "Sahil Lavingia", "handle": "@shl", "authority_score": 82 }
+      ],
+      "relevant_channels": [
+        { "platform": "youtube", "channel_id": "UCa1sFzPrJr4d6HcKqN0n_8Q", "channel_name": "AI Explained", "recent_activity": "2026-03-14T18:00:00Z" },
+        { "platform": "x_spaces", "channel_id": "space-mcp-builders-weekly", "channel_name": "MCP Builders Weekly", "recent_activity": "2026-03-14T20:00:00Z" }
+      ],
+      "timestamp": "2026-03-15T06:00:00Z",
+      "provenance": {
+        "source": "manual_seed",
+        "detection_method": "hashtag_velocity",
+        "first_seen": "2026-03-08T12:00:00Z",
+        "mainstream_eta_days": 21
+      },
+      "domain_tags": ["ai_agents", "autonomous_systems"],
+      "scs_relevant": true
+    },
+    {
+      "signal_id": "oracle6-00000000-0000-0000-0000-000000000002",
+      "query_type": "SPACES",
+      "topic": "Agent-to-Agent payments — x402 protocol and the PayAI moment",
+      "summary": "Multiple X Spaces this week discussed the emerging agent payment infrastructure. The x402 protocol (HTTP 402 for machine payments) and Coinbase's PayAI are positioning as competing standards. Founders debating whether agents need their own wallets.",
+      "confidence": 85,
+      "keyword_cluster": ["x402", "PayAI", "agent payments", "HTTP 402", "machine payments", "agent wallet", "Coinbase", "autonomous transactions"],
+      "top_speakers": [
+        { "name": "Jesse Pollak", "handle": "@jessepollak", "authority_score": 90 },
+        { "name": "Erik Voorhees", "handle": "@ErikVoorhees", "authority_score": 78 }
+      ],
+      "relevant_channels": [
+        { "platform": "x_spaces", "channel_id": "space-agent-payments-debate", "channel_name": "Agent Payments Debate", "recent_activity": "2026-03-13T21:00:00Z" },
+        { "platform": "youtube", "channel_id": "UCBcRF18a7Qf58cCRy5xuWwQ", "channel_name": "Bankless", "recent_activity": "2026-03-12T16:00:00Z" }
+      ],
+      "timestamp": "2026-03-15T06:15:00Z",
+      "provenance": {
+        "source": "manual_seed",
+        "detection_method": "spaces_transcription",
+        "first_seen": "2026-03-10T09:00:00Z",
+        "mainstream_eta_days": 28
+      },
+      "domain_tags": ["web3_crypto_ai", "ai_agents"],
+      "scs_relevant": true
+    },
+    {
+      "signal_id": "oracle6-00000000-0000-0000-0000-000000000003",
+      "query_type": "NARRATIVE",
+      "topic": "Vibe coding backlash — 'AI-generated code is a ticking time bomb'",
+      "summary": "Counter-narrative emerging against vibe coding. Senior engineers warning that AI-generated code without review is creating technical debt. The phrase 'vibe coding' itself becoming polarising. High controversy = high engagement potential.",
+      "confidence": 78,
+      "keyword_cluster": ["vibe coding", "AI code quality", "technical debt", "code review", "AI coding tools", "Copilot", "agentic coding", "software quality"],
+      "top_speakers": [
+        { "name": "ThePrimeagen", "handle": "@ThePrimeagen", "authority_score": 85 },
+        { "name": "Kelsey Hightower", "handle": "@kelseyhightower", "authority_score": 82 }
+      ],
+      "relevant_channels": [
+        { "platform": "youtube", "channel_id": "UC2Xd-TjJByJyK2w1zNwY0zQ", "channel_name": "ThePrimeTime", "recent_activity": "2026-03-14T22:00:00Z" },
+        { "platform": "reddit", "channel_id": "r/programming", "channel_name": "r/programming", "recent_activity": "2026-03-15T03:00:00Z" }
+      ],
+      "timestamp": "2026-03-15T06:30:00Z",
+      "provenance": {
+        "source": "manual_seed",
+        "detection_method": "narrative_shift",
+        "first_seen": "2026-03-11T14:00:00Z",
+        "mainstream_eta_days": 14
+      },
+      "domain_tags": ["tech_predictions", "ai_agents"],
+      "scs_relevant": true
+    },
+    {
+      "signal_id": "oracle6-00000000-0000-0000-0000-000000000004",
+      "query_type": "THOUGHT_LEADER",
+      "topic": "Sam Altman predicts 'one-person billion-dollar company' within 2 years",
+      "summary": "Sam Altman's prediction about AI enabling single-person billion-dollar companies is generating massive debate. Founders both agreeing and pushing back. High emotional resonance — touches on founder identity, future of work, and AI capability trajectory.",
+      "confidence": 88,
+      "keyword_cluster": ["Sam Altman", "one person company", "billion dollar", "AI company", "solopreneur", "founder", "future of work", "AI capability"],
+      "top_speakers": [
+        { "name": "Sam Altman", "handle": "@sama", "authority_score": 95 },
+        { "name": "Garry Tan", "handle": "@garrytan", "authority_score": 80 }
+      ],
+      "relevant_channels": [
+        { "platform": "youtube", "channel_id": "UCnUYZLuoy1rq1aVMwx4piYg", "channel_name": "Y Combinator", "recent_activity": "2026-03-13T19:00:00Z" },
+        { "platform": "podcast", "channel_id": "all-in-podcast", "channel_name": "All-In Podcast", "recent_activity": "2026-03-14T17:00:00Z" }
+      ],
+      "timestamp": "2026-03-15T06:45:00Z",
+      "provenance": {
+        "source": "manual_seed",
+        "detection_method": "keyword_surge",
+        "first_seen": "2026-03-09T11:00:00Z",
+        "mainstream_eta_days": 7
+      },
+      "domain_tags": ["startup_founders", "builder_predictions", "automation_future_of_work"],
+      "scs_relevant": true
+    },
+    {
+      "signal_id": "oracle6-00000000-0000-0000-0000-000000000005",
+      "query_type": "TRENDS",
+      "topic": "EU AI Act enforcement begins — agent registration requirements",
+      "summary": "The EU AI Act's first enforcement provisions are taking effect. Agent developers may need to register autonomous systems. This is the first real regulatory pressure on the agent economy. Implications for every agent builder.",
+      "confidence": 72,
+      "keyword_cluster": ["EU AI Act", "AI regulation", "agent registration", "autonomous systems regulation", "compliance", "AI governance", "European Commission"],
+      "top_speakers": [
+        { "name": "Margrethe Vestager", "handle": "@vestaboransen", "authority_score": 70 },
+        { "name": "Yann LeCun", "handle": "@ylecun", "authority_score": 88 }
+      ],
+      "relevant_channels": [
+        { "platform": "youtube", "channel_id": "UC0RhatS1pyxInC00YKjjBqQ", "channel_name": "TechCrunch", "recent_activity": "2026-03-14T15:00:00Z" },
+        { "platform": "hacker_news", "channel_id": "hn-front-page", "channel_name": "Hacker News", "recent_activity": "2026-03-15T02:00:00Z" }
+      ],
+      "timestamp": "2026-03-15T07:00:00Z",
+      "provenance": {
+        "source": "manual_seed",
+        "detection_method": "keyword_surge",
+        "first_seen": "2026-03-12T08:00:00Z",
+        "mainstream_eta_days": 3
+      },
+      "domain_tags": ["macro_ai_trends", "ai_agents"],
+      "scs_relevant": true
+    }
+  ]
+}

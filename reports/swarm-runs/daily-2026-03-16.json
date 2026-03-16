@@ -1,0 +1,142 @@
+[
+  {
+    "run_id": "9396409e-2593-469c-9e9c-5d15227d97ad",
+    "project": "kognai",
+    "sprint_file": "workspace/sprints/sprint-079.json",
+    "started_at": "2026-03-16T10:10:40.687Z",
+    "finished_at": "2026-03-16T10:13:29.966Z",
+    "duration_seconds": 169,
+    "git_branch": "main",
+    "git_head_before": "5f58a87",
+    "git_head_after": "8738f35",
+    "sovereign_mode": false,
+    "summary": {
+      "total_tasks": 4,
+      "done": 1,
+      "rejected": 1,
+      "skipped": 2,
+      "approval_rate": 0.09,
+      "total_tokens": 35975,
+      "supervisor_conflicts": 0,
+      "ceo_escalations": 0
+    },
+    "models_used": {
+      "qwen3:14b": {
+        "calls": 2,
+        "tokens": 0
+      }
+    },
+    "total_cost_usd": 0,
+    "tasks": [
+      {
+        "task_id": "079-01",
+        "title": "SCS-001 Insight Agent — prompt.md (identity + constitutional mandate)",
+        "type": "feature",
+        "task_target": "local",
+        "status": "done",
+        "attempts": 1,
+        "model_used": "qwen3:14b",
+        "provider": "",
+        "tokens_total": 0,
+        "duration_seconds": 19,
+        "files_written": [
+          "agents/scs001-insight/prompt.md"
+        ],
+        "review": {
+          "verdict": "APPROVED",
+          "score": 90,
+          "strengths": [
+            "Constitutional mandate is prominently placed and operationalised with a concrete rubric threshold (≥90% gate) and explicit failure examples — this directly satisfies the 'why does this matter' requirement from the spec.",
+            "Accuracy obligation explicitly prohibits quote fabrication and grounds the agent to metadata-only sources, which is critical for Block B mode where no real video is available.",
+            "Hook Formula Library is well-designed: each formula is tied to a measurable score factor, making selection deterministic rather than arbitrary.",
+            "Character limits on all commentary and hook fields are clearly stated and match the locked contract constraints.",
+            "Budget constraint is restated in the prompt, giving the agent awareness of the $2/day ceiling even though enforcement is external.",
+            "Block B mode caveat is explicit and correctly scoped — prevents the agent from hallucinating video content it cannot access.",
+            "Constitutional mandate is explicit and testable ('≥90% of outputs must pass rubric')",
+            "Accuracy obligation clearly prohibits fabrication — protects against hallucination",
+            "Hook Formula Library provides concrete patterns with examples, reducing ambiguity",
+            "Output contract is fully specified with field limits and enum constraints",
+            "Budget constraint is stated ($2/day) and traceable to ClawRouter cost model",
+            "Block B mode clarifies that metadata-only derivation is the constraint, not a limitation",
+            "Pre-clip and post-clip commentary fields enable editorial control without agent overreach",
+            "why_does_this_matter field is properly bounded (20-500 chars) to prevent both truncation and verbosity"
+          ]
+        },
+        "error": null,
+        "rejection_reason": null
+      },
+      {
+        "task_id": "079-02",
+        "title": "SCS-001 Insight Agent — index.ts (core agent logic + Claude Sonnet integration)",
+        "type": "feature",
+        "task_target": "local",
+        "status": "rejected",
+        "attempts": 10,
+        "model_used": "qwen3:14b",
+        "provider": "",
+        "tokens_total": 0,
+        "duration_seconds": 150,
+        "files_written": [],
+        "review": {
+          "verdict": "REJECTED",
+          "score": 15,
+          "issues": [
+            {
+              "severity": "critical",
+              "file": "agents/scs001-insight/index.ts",
+              "description": "File is truncated mid-string literal inside buildPrompt(). The string 'pre_clip_commentary' is cut off with no closing quote, no closing bracket for the array, no return statement, and no closing brace for the function. The file is syntactically invalid TypeScript and will not compile."
+            },
+            {
+              "severity": "critical",
+              "file": "agents/scs001-insight/index.ts",
+              "description": "All core agent logic is missing: the Claude Sonnet API call via ClawRouter, the JSON extraction using indexOf/lastIndexOf (as specified), the InsightBrief assembly function, the main runInsightAgent() or equivalent entry point, and any export of the primary agent function. The file delivers only type definitions and mock data — zero runnable agent logic."
+            },
+            {
+              "severity": "critical",
+              "file": "agents/scs001-insight/index.ts",
+              "description": "Spec requires JSON extraction using indexOf/lastIndexOf (no regex). This is entirely absent — the implementation was never reached before truncation."
+            },
+            {
+              "severity": "high",
+              "file": "agents/scs001-insight/index.ts",
+              "description": "CLAWROUTER_URL is referenced but the HTTP fetch/call to ClawRouter is never implemented. The constant is declared but dead code in the current state."
+            },
+            {
+              "severity": "high",
+              "file": "agents/scs001-insight/index.ts",
+              "description": "No validation that input clips have qualified === true before processing, which is a stated contract requirement ('qualified === true only')."
+            },
+            {
+              "severity": "medium",
+              "file": "agents/scs001-insight/index.ts",
+              "description": "cloud_cost_usd field is declared in the InsightBrief interface but there is no logic to compute or populate it — no token counting or cost estimation is present."
+            },
+            {
+              "severity": "critical",
+              "file": "agents/scs001-insight/index.ts",
+              "description": "File ends mid-function at line ~45. The buildPrompt() return statement is incomplete (cuts off at 'pre_clip_commentary'). Missing: rest of prompt template, generateInsight() function, ClawRouter HTTP call, JSON extraction logic (indexOf/lastIndexOf), error handling, and exports."
+            },
+            {
+              "severity": "critical",
+              "file": "agents/scs001-insight/index.ts",
+              "description": "No insight generation logic present. Task requires: call ClawRouter at CLAWROUTER_URL, extract JSON response using indexOf/lastIndexOf, map to InsightBrief contract. None of this is implemented."
+            },
+            {
+              "severity": "high",
+              "file": "agents/scs001-insight/index.ts",
+              "description": "buildPrompt() does not complete. The prompt template is cut off mid-key. The function must return a complete, valid prompt string ready for Claude Sonnet."
+            },
+            {
+              "severity": "high",
+              "file": "agents/scs001-insight/index.ts",
+              "description": "No contract validation. InsightBrief interface is defined but no code validates output against contracts/scs-001/insight-brief-v1.json or ensures all required fields are populated."
+            }
+          ],
+          "summary": "Dual-rejected: Claude (18/100) + Codex (15/100). File is critically truncated mid-string — the buildPrompt() function is cut off before completion, and all downstream logic (JSON extraction, main agent loop, exports) is entirely absent. | File is truncated mid-function. The buildPrompt() function ends abruptly mid-string, and the entire insight generation logic, ClawRouter integration, and JSON extraction are missing. This is an incomplete deliverable."
+        },
+        "error": null,
+        "rejection_reason": "Dual-rejected: Claude (18/100) + Codex (15/100). File is critically truncated mid-string — the buildPrompt() function is cut off before completion, and all downstream logic (JSON extraction, main agent loop, exports) is entirely absent. | File is truncated mid-function. The buildPrompt() function ends abruptly mid-string, and the entire insight generation logic, ClawRouter integration, and JSON extraction are missing. This is an incomplete deliverable."
+      }
+    ]
+  }
+]

@@ -1,0 +1,37 @@
+{
+  "skill_id": "coder-sprint-079-scs-001-insight-agent-index-ts-core-agen",
+  "type": "kognai-owned",
+  "name": "SCS-001 Insight Agent — index.ts (core agent logic + Claude ",
+  "description": "SCS-001 Insight Agent — index.ts (core agent logic + Claude Sonnet integration)",
+  "definition": {
+    "approach": "SCS-001 Insight Agent — index.ts (core agent logic + Claude Sonnet integration)",
+    "key_patterns": [
+      "No fence contamination — file is clean TypeScript.",
+      "buildPrompt() correctly uses array.join for multi-line prompt construction as specified.",
+      "JSON extraction uses indexOf/lastIndexOf exactly as specified — no regex.",
+      "getMockQualifiedClips() returns exactly 2 pre-qualified clips with quality_score 22 and 21, matching the Block B testing contract.",
+      "CLAWROUTER_URL defaults to localhost:11435 as specified."
+    ],
+    "anti_patterns": []
+  },
+  "optimal_settings": {
+    "model": "qwen3:14b",
+    "task_target": "local",
+    "max_attempts": 3
+  },
+  "score_history": [
+    {
+      "sprint_id": "sprint-079",
+      "task_id": "079-02",
+      "score": 93,
+      "reviewed_at": "2026-03-16T10:15:20.250Z"
+    }
+  ],
+  "execution_count": 1,
+  "access_tier": "internal",
+  "source_sprint": "sprint-079",
+  "source_task": "079-02",
+  "agent_id": "coder",
+  "created_at": "2026-03-16T10:15:20.250Z",
+  "updated_at": "2026-03-16T10:15:20.250Z"
+}

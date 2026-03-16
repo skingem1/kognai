@@ -1,0 +1,64 @@
+{
+  "run_id": "e863ccef-046c-4bac-befc-e39c77221ad7",
+  "project": "kognai",
+  "sprint_file": "workspace/sprints/sprint-test-report.json",
+  "started_at": "2026-03-12T10:55:54.424Z",
+  "finished_at": "2026-03-12T10:56:56.098Z",
+  "duration_seconds": 62,
+  "git_branch": "main",
+  "git_head_before": "f766641",
+  "git_head_after": "1ef09b1",
+  "sovereign_mode": true,
+  "summary": {
+    "total_tasks": 1,
+    "done": 1,
+    "rejected": 0,
+    "skipped": 0,
+    "approval_rate": 1,
+    "total_tokens": 2531,
+    "supervisor_conflicts": 0,
+    "ceo_escalations": 0
+  },
+  "models_used": {
+    "qwen3:14b": {
+      "calls": 1,
+      "tokens": 1339
+    }
+  },
+  "total_cost_usd": 0.0007,
+  "tasks": [
+    {
+      "task_id": "TEST-001",
+      "title": "Create swarm validation script",
+      "type": "feature",
+      "task_target": "local",
+      "status": "done",
+      "attempts": 1,
+      "model_used": "qwen3:14b",
+      "provider": "",
+      "tokens_total": 1339,
+      "duration_seconds": 62,
+      "files_written": [
+        "tests/swarm_check.py"
+      ],
+      "review": {
+        "verdict": "APPROVED",
+        "score": 96,
+        "strengths": [
+          "No fence contamination detected",
+          "Prints the exact required string: 'Swarm validation OK: qwen3:14b routing confirmed'",
+          "Explicitly calls sys.exit(0) to guarantee exit code 0",
+          "Minimal and clean implementation with no unnecessary dependencies",
+          "Correct use of sys module for portable exit code handling",
+          "Exact spec compliance: prints the required string verbatim",
+          "Correct exit code (0)",
+          "Clean, minimal implementation",
+          "No fence contamination",
+          "Proper use of sys.exit()"
+        ]
+      },
+      "error": null,
+      "rejection_reason": null
+    }
+  ]
+}

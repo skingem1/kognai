@@ -1,0 +1,102 @@
+{
+  "query": "vintage 1970s",
+  "runAt": "2026-03-15T10:26:56.003Z",
+  "dryRun": true,
+  "results": [
+    {
+      "id": "christmaslights-8300",
+      "url": "https://archive.org/services/img/christmaslights-8300",
+      "confidence": 0.7,
+      "score": 50,
+      "status": "success",
+      "caption": "Remember when Christmas lights were magical? 🎄✨",
+      "hashtags": [
+        "fyp",
+        "viral",
+        "archive",
+        "nostalgia",
+        "christmaslights"
+      ],
+      "publishResult": {
+        "publishId": "dry-run-1773570416003",
+        "status": "success"
+      }
+    },
+    {
+      "id": "NIX-EC00-0212-2",
+      "url": "https://archive.org/services/img/NIX-EC00-0212-2",
+      "confidence": 0.7,
+      "score": 50,
+      "status": "success",
+      "caption": "What secrets hide in this forgotten government file? 🕵️‍♂️",
+      "hashtags": [
+        "fyp",
+        "viral",
+        "archive",
+        "governmentsecrets",
+        "nostalgia"
+      ],
+      "publishResult": {
+        "publishId": "dry-run-1773570416003",
+        "status": "success"
+      }
+    },
+    {
+      "id": "july1978fishing",
+      "url": "https://archive.org/services/img/july1978fishing",
+      "confidence": 0.7,
+      "score": 50,
+      "status": "success",
+      "caption": "What did people fish for in 1978? 🎣 Nostalgia hits hard.",
+      "hashtags": [
+        "fyp",
+        "viral",
+        "archive",
+        "july1978fishing",
+        "nostalgia"
+      ],
+      "publishResult": {
+        "publishId": "dry-run-1773570416003",
+        "status": "success"
+      }
+    },
+    {
+      "id": "imag-0034-sunset-1970s",
+      "url": "https://archive.org/services/img/imag-0034-sunset-1970s",
+      "confidence": 0.7,
+      "score": 50,
+      "status": "success",
+      "caption": "What year is this? Step back in time with this vintage sunset from the 70s 🌇",
+      "hashtags": [
+        "viral",
+        "fyp",
+        "archive",
+        "nostalgia",
+        "vintage"
+      ],
+      "publishResult": {
+        "publishId": "dry-run-1773570416003",
+        "status": "success"
+      }
+    },
+    {
+      "id": "imag-0051-somewhere-in-california-1970s",
+      "url": "https://archive.org/services/img/imag-0051-somewhere-in-california-1970s",
+      "confidence": 0.7,
+      "score": 50,
+      "status": "success",
+      "caption": "What’s hiding in these 1970s California photos? 📸",
+      "hashtags": [
+        "fyp",
+        "viral",
+        "archivefootage",
+        "nostalgia",
+        "california70s"
+      ],
+      "publishResult": {
+        "publishId": "dry-run-1773570416003",
+        "status": "success"
+      }
+    }
+  ]
+}

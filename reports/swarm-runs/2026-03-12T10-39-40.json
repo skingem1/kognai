@@ -1,0 +1,25 @@
+{
+  "run_id": "4f52d73a-b10b-4a58-9f12-1a67c60db07e",
+  "project": "kognai",
+  "sprint_file": "workspace/sprints/sprint-test-report.json",
+  "started_at": "2026-03-12T10:39:40.094Z",
+  "finished_at": "2026-03-12T10:39:40.140Z",
+  "duration_seconds": 0,
+  "git_branch": "main",
+  "git_head_before": "f766641",
+  "git_head_after": "f766641",
+  "sovereign_mode": true,
+  "summary": {
+    "total_tasks": 2,
+    "done": 0,
+    "rejected": 0,
+    "skipped": 0,
+    "approval_rate": 0,
+    "total_tokens": 0,
+    "supervisor_conflicts": 0,
+    "ceo_escalations": 0
+  },
+  "models_used": {},
+  "total_cost_usd": 0,
+  "tasks": []
+}

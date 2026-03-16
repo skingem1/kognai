@@ -1,0 +1,110 @@
+{
+  "scs_id": "SCS-001",
+  "scs_name": "TikTok Content Agent",
+  "status": "ACTIVE — Formation Complete",
+  "charter_date": "2026-03-15",
+  "purpose_type": "Ecosystem Gap — Agent Economy Intelligence Distribution",
+  "founding_protocol": "AMD-04 — Self Committed Swarms",
+  "kognai_module": "Kognai Core (pre-federation)",
+  "voxight_integration": "ORACLE-6 — X Intelligence Feed",
+
+  "documents": {
+    "charter": {
+      "file": "~/Documents/Kognai/Master Documents/scs_001_tiktok_charter.docx",
+      "sha256": "22586b5ad6eee1d25e2727de2b0ad0c4f367c5427c1568d3665bd880ef46a0bf",
+      "version": "1.0",
+      "sections": 9,
+      "articles": 9
+    },
+    "build_track": {
+      "file": "~/Documents/Kognai/Master Documents/scs_001_build_track.docx",
+      "sha256": "2fd0cb63f06261dbf55ee6a5d8d164497484c557bde5833bd6a2748cf441b5e5",
+      "version": "1.0",
+      "blocks": 7
+    }
+  },
+
+  "agent_composition": {
+    "total_agents": 9,
+    "local_tier": ["scs001-trend", "scs001-discovery", "scs001-caption", "scs001-qc", "scs001-publishing", "scs001-analytics"],
+    "power_tier": ["scs001-clip-detection", "scs001-editing"],
+    "cloud_tier": ["scs001-insight"]
+  },
+
+  "founding_council": {
+    "agents": [
+      { "id": "scs001-trend", "role": "Lead — Signal Detection", "solidarity_attestation": "PENDING" },
+      { "id": "scs001-analytics", "role": "Performance Intelligence", "solidarity_attestation": "PENDING" },
+      { "id": "scs001-insight", "role": "Value Generation", "solidarity_attestation": "PENDING" }
+    ],
+    "minimum_required": 3,
+    "met": true
+  },
+
+  "contracts": {
+    "locked": [
+      "contracts/scs-001/oracle6-trend-v1.json",
+      "contracts/scs-001/trending-topic-v1.json",
+      "contracts/scs-001/clip-quality-v1.json",
+      "contracts/scs-001/insight-brief-v1.json",
+      "contracts/scs-001/video-production-v1.json",
+      "contracts/scs-001/publishing-analytics-v1.json"
+    ],
+    "mock_data": "contracts/scs-001/mock-oracle6-feed.json"
+  },
+
+  "skill_bank_directories": [
+    "skill-bank/kognai-owned/tiktok-hooks/",
+    "skill-bank/kognai-owned/tiktok-editing/",
+    "skill-bank/kognai-owned/trend-detection/",
+    "skill-bank/kognai-owned/clip-detection/",
+    "skill-bank/kognai-owned/content-flywheel/"
+  ],
+
+  "treasury_seed": {
+    "amount": "€300 equivalent USDC",
+    "monthly_target": "<€80/month at steady-state",
+    "cloud_budget": "<€2/day (Agent 4 Claude Sonnet only)"
+  },
+
+  "exit_conditions": {
+    "purpose_fulfilled": "≥10,000 engaged TikTok followers + avg completion rate ≥70% sustained 90 consecutive days",
+    "purpose_unfulfillable": "avg completion rate <40% for 60 consecutive days AND follower growth <2% MoM for 3 consecutive months (after 6 months)",
+    "constitutional_failure": "Health Score Critical (<45) for 14 consecutive days OR Purpose Alignment <50 for 30 days OR confirmed violation"
+  },
+
+  "constitutional_oath": {
+    "status": "Sworn — pending on-chain EAS attestation",
+    "eas_attestation_tx": null,
+    "genesis_ceremony_target": "Month 10",
+    "oath_text_includes_scs_specific": true,
+    "scs_specific_lines": [
+      "I am an insight curator, not a clip reposter.",
+      "Every video I produce answers the question: why does this matter?"
+    ]
+  },
+
+  "build_track_status": {
+    "block_a": { "status": "NOT_STARTED", "description": "Signal Pipeline — Trend + Discovery + Clip Detection" },
+    "block_b": { "status": "NOT_STARTED", "description": "Intelligence Layer — Insight + Caption" },
+    "block_c": { "status": "NOT_STARTED", "description": "Production Layer — Editing + QC" },
+    "block_d": { "status": "BLOCKED", "description": "Live ORACLE-6 — Phase 2B dependency", "blocker": "Voxight Module 2 not built" },
+    "block_e": { "status": "BLOCKED", "description": "Distribution — Publishing + Analytics", "blocker": "TikTok API approval pending" },
+    "block_f": { "status": "NOT_STARTED", "description": "30-day autonomous ops" },
+    "block_g": { "status": "NOT_STARTED", "description": "Ongoing stabilisation" }
+  },
+
+  "phase_0_gate_checklist": {
+    "tiktok_api_applied": { "status": "DONE", "date": "2026-03-15", "note": "Waiting 1-7 days for approval" },
+    "oracle6_mock_contract_locked": { "status": "DONE", "date": "2026-03-15", "file": "contracts/scs-001/oracle6-trend-v1.json" },
+    "clip_quality_calibration_set": { "status": "TODO", "note": "Tarek action: curate 50 clips (25 viral, 25 non-viral)" },
+    "voxight_module_2_sprint_plan": { "status": "TODO", "note": "CTO agent: lock Module 2 sprint plan with target date" },
+    "charter_filed_with_constitution_agent": { "status": "DONE", "date": "2026-03-15", "file": "workspace/shared-context/SCS_001_CHARTER_RECORD.json" },
+    "tiktok_account_created": { "status": "DONE", "note": "GitHub Pages verification deployed" },
+    "scs_001_skill_bank_dirs": { "status": "DONE", "date": "2026-03-15" },
+    "sprint_schema_extended": { "status": "DONE", "date": "2026-03-15", "file": "workspace/shared-context/SPRINT_SCHEMA.md" }
+  },
+
+  "filed_at": "2026-03-15T00:00:00Z",
+  "filed_by": "constitution-agent (manual — pre-automation)"
+}

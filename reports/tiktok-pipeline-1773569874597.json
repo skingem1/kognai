@@ -1,0 +1,102 @@
+{
+  "query": "vintage 1970s",
+  "runAt": "2026-03-15T10:17:54.597Z",
+  "dryRun": true,
+  "results": [
+    {
+      "id": "christmaslights-8300",
+      "url": "https://archive.org/services/img/christmaslights-8300",
+      "confidence": 0.7,
+      "score": 50,
+      "status": "success",
+      "caption": "Archive gem discovered 🎞️",
+      "hashtags": [
+        "fyp",
+        "viral",
+        "archive",
+        "throwback",
+        "nostalgia"
+      ],
+      "publishResult": {
+        "publishId": "dry-run-1773569874596",
+        "status": "success"
+      }
+    },
+    {
+      "id": "NIX-EC00-0212-2",
+      "url": "https://archive.org/services/img/NIX-EC00-0212-2",
+      "confidence": 0.7,
+      "score": 50,
+      "status": "success",
+      "caption": "Archive gem discovered 🎞️",
+      "hashtags": [
+        "fyp",
+        "viral",
+        "archive",
+        "throwback",
+        "nostalgia"
+      ],
+      "publishResult": {
+        "publishId": "dry-run-1773569874596",
+        "status": "success"
+      }
+    },
+    {
+      "id": "july1978fishing",
+      "url": "https://archive.org/services/img/july1978fishing",
+      "confidence": 0.7,
+      "score": 50,
+      "status": "success",
+      "caption": "Archive gem discovered 🎞️",
+      "hashtags": [
+        "fyp",
+        "viral",
+        "archive",
+        "throwback",
+        "nostalgia"
+      ],
+      "publishResult": {
+        "publishId": "dry-run-1773569874597",
+        "status": "success"
+      }
+    },
+    {
+      "id": "imag-0034-sunset-1970s",
+      "url": "https://archive.org/services/img/imag-0034-sunset-1970s",
+      "confidence": 0.7,
+      "score": 50,
+      "status": "success",
+      "caption": "Archive gem discovered 🎞️",
+      "hashtags": [
+        "fyp",
+        "viral",
+        "archive",
+        "throwback",
+        "nostalgia"
+      ],
+      "publishResult": {
+        "publishId": "dry-run-1773569874597",
+        "status": "success"
+      }
+    },
+    {
+      "id": "imag-0051-somewhere-in-california-1970s",
+      "url": "https://archive.org/services/img/imag-0051-somewhere-in-california-1970s",
+      "confidence": 0.7,
+      "score": 50,
+      "status": "success",
+      "caption": "Archive gem discovered 🎞️",
+      "hashtags": [
+        "fyp",
+        "viral",
+        "archive",
+        "throwback",
+        "nostalgia"
+      ],
+      "publishResult": {
+        "publishId": "dry-run-1773569874597",
+        "status": "success"
+      }
+    }
+  ]
+}

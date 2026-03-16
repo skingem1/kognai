@@ -1,0 +1,109 @@
+[
+  {
+    "run_id": "cc7a277f-af87-4d5f-afcd-b8776a2b8b72",
+    "project": "kognai",
+    "sprint_file": "workspace/sprints/sprint-073.json",
+    "started_at": "2026-03-14T10:08:38.508Z",
+    "finished_at": "2026-03-14T10:20:51.922Z",
+    "duration_seconds": 733,
+    "git_branch": "main",
+    "git_head_before": "1f3ae3f",
+    "git_head_after": "dfa403b",
+    "sovereign_mode": false,
+    "summary": {
+      "total_tasks": 2,
+      "done": 2,
+      "rejected": 0,
+      "skipped": 0,
+      "approval_rate": 0.5,
+      "total_tokens": 23223,
+      "supervisor_conflicts": 1,
+      "ceo_escalations": 1
+    },
+    "models_used": {
+      "qwen3:14b": {
+        "calls": 2,
+        "tokens": 11223
+      }
+    },
+    "total_cost_usd": 0.0056,
+    "tasks": [
+      {
+        "task_id": "073-01",
+        "title": "Create aar-types.ts — TypeScript interfaces for AAR receipts",
+        "type": "feature",
+        "task_target": "local",
+        "status": "done",
+        "attempts": 2,
+        "model_used": "qwen3:14b",
+        "provider": "",
+        "tokens_total": 4914,
+        "duration_seconds": 312,
+        "files_written": [
+          "scripts/lib/aar-types.ts"
+        ],
+        "review": {
+          "verdict": "APPROVED",
+          "score": 87,
+          "strengths": [
+            "Correct SHA-256 hashing of receipt content using Node crypto module",
+            "Proper JSONL format with newline-delimited JSON entries",
+            "Date-based log filename (YYYY-MM-DD.jsonl) matches spec exactly",
+            "Schema UID hardcoded correctly matches the spec value (0x79d2573e...)",
+            "Directory creation with recursive:true prevents race conditions on first run",
+            "Clean separation of types (AarReceipt, AarLogEntry) and implementation",
+            "Async/await throughout with proper use of fs.promises",
+            "logType field aids log parsing and filtering downstream",
+            "Implements full Phase 1 scope: receipt struct generation, SHA-256 hashing, JSONL logging with YYYY-MM-DD filename format",
+            "Correctly reads agentAddress from CHAIN_REGISTRY.json with proper error handling",
+            "Includes required schemaUid field (0x79d2573e8f7ef1719213192ab2b2978225a4335d1e3b4bda1197954bca3f8a9c)",
+            "Proper TypeScript interfaces (AarReceipt, AarLogEntry) with logType discriminator",
+            "Timestamp in Unix seconds format (appropriate for on-chain attestation)",
+            "Creates logs/aar directory recursively if missing",
+            "Hash computed over complete receipt object before adding aarReceiptHash field (correct order)",
+            "No fence contamination, no syntax errors, complete implementation"
+          ]
+        },
+        "error": null,
+        "rejection_reason": null
+      },
+      {
+        "task_id": "073-02",
+        "title": "Create aar-middleware.ts — AAR receipt generator and JSONL logger",
+        "type": "feature",
+        "task_target": "local",
+        "status": "done",
+        "attempts": 2,
+        "model_used": "qwen3:14b",
+        "provider": "",
+        "tokens_total": 6309,
+        "duration_seconds": 421,
+        "files_written": [
+          "scripts/lib/aar-middleware.ts"
+        ],
+        "review": {
+          "verdict": "APPROVED",
+          "score": 85,
+          "strengths": [
+            "No fence contamination — file starts cleanly with import statements.",
+            "Correct ROOT path derivation: path.join(__dirname, '../..') from scripts/lib/ correctly resolves to repo root.",
+            "Correct file paths for both CHAIN_REGISTRY.json and EAS_SCHEMAS.json under workspace/shared-context/.",
+            "generateAndLog() is exported and callable as specified for the manual 3-line addition to orchestrate-agents-v2.ts.",
+            "Async initialize() pattern cleanly separates construction from I/O, avoiding constructor async anti-pattern.",
+            "Error handling present on both JSON load operations with informative console.error messages.",
+            "Interface definitions for Agent and EASSchema match the JSON structures described in the spec.",
+            "Correct path construction: path.join(__dirname, '../..', 'workspace', 'shared-context', ...) matches spec requirement",
+            "Proper singleton pattern with async initialization prevents race conditions",
+            "Type interfaces match CHAIN_REGISTRY.json and EAS_SCHEMAS.json structures exactly",
+            "Error handling present for file load failures",
+            "generateAndLog() method signature ready for orchestrate-agents-v2.ts integration",
+            "No fence contamination, no syntax errors, no undefined references",
+            "Async/await pattern consistent with fs/promises import"
+          ]
+        },
+        "error": null,
+        "rejection_reason": null
+      }
+    ]
+  }
+]

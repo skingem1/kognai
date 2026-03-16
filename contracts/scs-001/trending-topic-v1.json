@@ -1,0 +1,100 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Trending Topic List — Agent 1 → Agent 2 Contract",
+  "description": "Output contract for SCS-001 Trend Agent. Consumed by Discovery Agent. Each item is a trending topic qualified for content creation. Derived from SCS-001 Charter Article III Agent 1.",
+  "version": "1.0.0",
+  "status": "LOCKED",
+  "locked_date": "2026-03-15",
+  "producer": "scs-001-trend-agent",
+  "consumer": "scs-001-discovery-agent",
+
+  "type": "object",
+  "required": ["batch_id", "generated_at", "topics"],
+  "properties": {
+    "batch_id": {
+      "type": "string",
+      "description": "Unique batch ID. Format: 'trend-batch-{ISO-date}-{seq}'"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "oracle6_feed_status": {
+      "type": "string",
+      "enum": ["mock", "live", "degraded"],
+      "description": "Whether Trend Agent is running on mock or live ORACLE-6 data"
+    },
+    "topics": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["topic_id", "topic_name", "confidence_score", "keyword_cluster", "domain_tags"],
+        "properties": {
+          "topic_id": {
+            "type": "string",
+            "description": "Unique topic identifier"
+          },
+          "topic_name": {
+            "type": "string",
+            "maxLength": 120
+          },
+          "confidence_score": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100,
+            "description": "Trend Agent confidence. Gate: >= 60 to enter Discovery queue."
+          },
+          "keyword_cluster": {
+            "type": "array",
+            "items": { "type": "string" },
+            "minItems": 3,
+            "description": "Search keywords for Discovery Agent video search"
+          },
+          "top_speakers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["name"],
+              "properties": {
+                "name": { "type": "string" },
+                "handle": { "type": "string" },
+                "authority_score": { "type": "number", "minimum": 0, "maximum": 100 }
+              }
+            },
+            "description": "Priority speakers for Discovery Agent to target"
+          },
+          "relevant_channels": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["platform", "channel_id"],
+              "properties": {
+                "platform": { "type": "string", "enum": ["youtube", "x_spaces", "reddit", "hacker_news", "podcast"] },
+                "channel_id": { "type": "string" },
+                "channel_name": { "type": "string" }
+              }
+            }
+          },
+          "domain_tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["ai_agents", "autonomous_systems", "startup_founders", "builder_predictions", "tech_predictions", "macro_ai_trends", "automation_future_of_work", "web3_crypto_ai"]
+            },
+            "minItems": 1
+          },
+          "provenance_source": {
+            "type": "string",
+            "enum": ["voxight_module_2", "youtube_api", "reddit_api", "hacker_news_api", "manual_seed"]
+          },
+          "mainstream_eta_days": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 60
+          }
+        }
+      },
+      "description": "Qualified trending topics ordered by confidence score descending"
+    }
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Insight Brief — Agent 4 → Agent 5/6 Contract",
+  "description": "Output contract for SCS-001 Insight Agent (Claude Sonnet). Consumed by Editing Agent + Caption Agent. Constitutional constraint: every output MUST answer 'why does this matter?'. Derived from SCS-001 Charter Article III Agent 4.",
+  "version": "1.0.0",
+  "status": "LOCKED",
+  "locked_date": "2026-03-15",
+  "producer": "scs-001-insight-agent",
+  "consumers": ["scs-001-editing-agent", "scs-001-caption-agent"],
+
+  "type": "object",
+  "required": ["insight_id", "clip_id", "hook", "pre_clip_commentary", "post_clip_commentary", "insight_statement", "why_does_this_matter", "hook_formula_used"],
+  "properties": {
+    "insight_id": {
+      "type": "string",
+      "description": "Unique insight identifier"
+    },
+    "clip_id": {
+      "type": "string",
+      "description": "Links back to ClipQualityScore.clip_id"
+    },
+    "hook": {
+      "type": "object",
+      "required": ["text", "formula"],
+      "properties": {
+        "text": {
+          "type": "string",
+          "maxLength": 80,
+          "description": "Hook text. Curiosity trigger. Must establish within first 2 seconds of video."
+        },
+        "formula": {
+          "type": "string",
+          "enum": ["curiosity_gap", "contrarian", "authority", "secret"],
+          "description": "Hook formula category per Charter Article III Agent 4"
+        }
+      }
+    },
+    "pre_clip_commentary": {
+      "type": "string",
+      "maxLength": 200,
+      "description": "Max 2 sentences before the clip plays. Sets context."
+    },
+    "post_clip_commentary": {
+      "type": "string",
+      "maxLength": 200,
+      "description": "Max 2 sentences after the clip plays. Adds analysis."
+    },
+    "insight_statement": {
+      "type": "string",
+      "maxLength": 200,
+      "description": "The 'so what' — the core takeaway."
+    },
+    "why_does_this_matter": {
+      "type": "string",
+      "minLength": 20,
+      "maxLength": 500,
+      "description": "CONSTITUTIONAL CONSTRAINT. Every insight must answer this question substantively. No generic 'this is interesting' answers. Tested at Block B gate: >= 90% of outputs must pass rubric."
+    },
+    "hook_formula_used": {
+      "type": "string",
+      "description": "Specific hook formula applied. Tracked for Skill Bank contribution after 10 confirmed viral clips."
+    },
+    "speaker_name": {
+      "type": "string",
+      "description": "Speaker identity. No fabricated quotes allowed — constitutional accuracy obligation."
+    },
+    "cloud_cost_usd": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Claude Sonnet inference cost for this insight. Budget guard: Agent 4 total < $2/day."
+    }
+  }
+}

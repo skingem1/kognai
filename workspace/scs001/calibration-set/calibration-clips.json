@@ -1,0 +1,48 @@
+{
+  "version": "1.0",
+  "updated_at": "2026-03-15T16:17:47.662Z",
+  "clips": [
+    {
+      "clip_id": "cal-001",
+      "source_url": "https://www.tiktok.com/@stephengpope/video/7501359036789574955?q=ai_agents&t=1773590833209",
+      "platform": "tiktok",
+      "domain_tag": "ai_agents",
+      "speaker_name": "stephengpope",
+      "completion_rate_observed": 70,
+      "viral_label": "viral",
+      "duration_seconds": 300,
+      "topic_summary": "Automation using AI Agents",
+      "why_viral_or_not": "10",
+      "five_factor_human_score": {
+        "curiosity": 5,
+        "emotion": 3,
+        "clarity": 5,
+        "insight": 5,
+        "controversy": 4,
+        "total": 22
+      },
+      "added_at": "2026-03-15T16:13:53.658Z"
+    },
+    {
+      "clip_id": "cal-002",
+      "source_url": "https://www.youtube.com/shorts/zt01raccLUM",
+      "platform": "youtube_shorts",
+      "domain_tag": "ai_agents",
+      "speaker_name": "AGlobalTechPodcast",
+      "completion_rate_observed": 50,
+      "viral_label": "non_viral",
+      "duration_seconds": 30,
+      "topic_summary": "AI Agents threats SAAS",
+      "why_viral_or_not": "boring format, jus a guy speaking",
+      "five_factor_human_score": {
+        "curiosity": 1,
+        "emotion": 0,
+        "clarity": 3,
+        "insight": 2,
+        "controversy": 3,
+        "total": 9
+      },
+      "added_at": "2026-03-15T16:17:47.661Z"
+    }
+  ]
+}

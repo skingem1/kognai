@@ -1,0 +1,37 @@
+{
+  "skill_id": "coder-sprint-076-scs-001-trend-agent-prompt-md-agent-iden",
+  "type": "kognai-owned",
+  "name": "SCS-001 Trend Agent — prompt.md (agent identity + scoring ru",
+  "description": "SCS-001 Trend Agent — prompt.md (agent identity + scoring rubric)",
+  "definition": {
+    "approach": "SCS-001 Trend Agent — prompt.md (agent identity + scoring rubric)",
+    "key_patterns": [
+      "No fence contamination — file is clean plain markdown.",
+      "Agent identity (SCS-001-TRD) is clearly declared and matches the task's naming convention.",
+      "All three required metadata fields (data_stream, domain_filter, granularity) are documented with correct types and marked required.",
+      "Contract lock reference (contracts/scs-001/trending-topic-v1.json) is explicit and consistent throughout the document.",
+      "Rejection conditions are enumerated in two places (Role Definition and Orchestrator Routing Context), providing redundancy that reduces misrouting risk."
+    ],
+    "anti_patterns": []
+  },
+  "optimal_settings": {
+    "model": "qwen3:14b",
+    "task_target": "local",
+    "max_attempts": 3
+  },
+  "score_history": [
+    {
+      "sprint_id": "sprint-076",
+      "task_id": "076-01",
+      "score": 90,
+      "reviewed_at": "2026-03-15T16:04:02.765Z"
+    }
+  ],
+  "execution_count": 1,
+  "access_tier": "internal",
+  "source_sprint": "sprint-076",
+  "source_task": "076-01",
+  "agent_id": "coder",
+  "created_at": "2026-03-15T16:04:02.765Z",
+  "updated_at": "2026-03-15T16:04:02.765Z"
+}

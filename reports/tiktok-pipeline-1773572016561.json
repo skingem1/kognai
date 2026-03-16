@@ -1,0 +1,102 @@
+{
+  "query": "vintage 1970s",
+  "runAt": "2026-03-15T10:53:36.561Z",
+  "dryRun": true,
+  "results": [
+    {
+      "id": "12_20211005",
+      "url": "https://archive.org/services/img/12_20211005",
+      "confidence": 0.7,
+      "score": 85,
+      "status": "success",
+      "caption": "Remember when the internet was simpler? Take a trip back with this 2000s nostalgia gem!",
+      "hashtags": [
+        "fyp",
+        "viral",
+        "nostalgia",
+        "archive",
+        "2000s"
+      ],
+      "publishResult": {
+        "publishId": "dry-run-1773572016561",
+        "status": "success"
+      }
+    },
+    {
+      "id": "2_20220404_20220404_0314",
+      "url": "https://archive.org/services/img/2_20220404_20220404_0314",
+      "confidence": 0.7,
+      "score": 75,
+      "status": "success",
+      "caption": "Remember when the internet was simpler? Scroll back in time...",
+      "hashtags": [
+        "fyp",
+        "viral",
+        "archive",
+        "nostalgia",
+        "retrointernet"
+      ],
+      "publishResult": {
+        "publishId": "dry-run-1773572016561",
+        "status": "success"
+      }
+    },
+    {
+      "id": "1971-advertisement-for-scotts-disinfectants",
+      "url": "https://archive.org/services/img/1971-advertisement-for-scotts-disinfectants",
+      "confidence": 0.7,
+      "score": 70,
+      "status": "success",
+      "caption": "Remember when disinfectants had cool ads? 🕳️ 1971 commercial vibes!",
+      "hashtags": [
+        "viral",
+        "fyp",
+        "archivevibes",
+        "retroads",
+        "70smedia"
+      ],
+      "publishResult": {
+        "publishId": "dry-run-1773572016561",
+        "status": "success"
+      }
+    },
+    {
+      "id": "1978-advertisement-for-airbus-a-300",
+      "url": "https://archive.org/services/img/1978-advertisement-for-airbus-a-300",
+      "confidence": 0.7,
+      "score": 70,
+      "status": "success",
+      "caption": "Ever seen a 1978 ad for the Airbus A300? This is aviation history!",
+      "hashtags": [
+        "fyp",
+        "viral",
+        "airbus",
+        "aviationhistory",
+        "archive"
+      ],
+      "publishResult": {
+        "publishId": "dry-run-1773572016561",
+        "status": "success"
+      }
+    },
+    {
+      "id": "1_20220405_20220405_0239",
+      "url": "https://archive.org/services/img/1_20220405_20220405_0239",
+      "confidence": 0.7,
+      "score": 60,
+      "status": "success",
+      "caption": "Ever seen this rare footage from the 90s? It's wild how far we've come!",
+      "hashtags": [
+        "fyp",
+        "viral",
+        "archivefootage",
+        "nostalgia",
+        "90s"
+      ],
+      "publishResult": {
+        "publishId": "dry-run-1773572016561",
+        "status": "success"
+      }
+    }
+  ]
+}

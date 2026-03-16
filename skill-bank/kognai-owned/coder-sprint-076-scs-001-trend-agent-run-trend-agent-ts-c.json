@@ -1,0 +1,37 @@
+{
+  "skill_id": "coder-sprint-076-scs-001-trend-agent-run-trend-agent-ts-c",
+  "type": "kognai-owned",
+  "name": "SCS-001 Trend Agent — run-trend-agent.ts (CLI runner)",
+  "description": "SCS-001 Trend Agent — run-trend-agent.ts (CLI runner)",
+  "definition": {
+    "approach": "SCS-001 Trend Agent — run-trend-agent.ts (CLI runner)",
+    "key_patterns": [
+      "No fence contamination — file is clean TypeScript.",
+      "Output directory correctly resolves to workspace/scs001/trend-outputs/ relative to __dirname.",
+      "Unknown argument detection with usage hint and exit(1) is a good defensive pattern.",
+      "--help short-circuits cleanly without running the agent.",
+      "dryRun flag is correctly extracted and forwarded to TrendAgent.run()."
+    ],
+    "anti_patterns": []
+  },
+  "optimal_settings": {
+    "model": "qwen3:14b",
+    "task_target": "local",
+    "max_attempts": 3
+  },
+  "score_history": [
+    {
+      "sprint_id": "sprint-076",
+      "task_id": "076-03",
+      "score": 89,
+      "reviewed_at": "2026-03-15T16:29:36.326Z"
+    }
+  ],
+  "execution_count": 1,
+  "access_tier": "internal",
+  "source_sprint": "sprint-076",
+  "source_task": "076-03",
+  "agent_id": "coder",
+  "created_at": "2026-03-15T16:29:36.326Z",
+  "updated_at": "2026-03-15T16:29:36.326Z"
+}

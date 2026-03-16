@@ -1,0 +1,102 @@
+{
+  "query": "vintage 1970s",
+  "runAt": "2026-03-15T10:22:59.179Z",
+  "dryRun": true,
+  "results": [
+    {
+      "id": "christmaslights-8300",
+      "url": "https://archive.org/services/img/christmaslights-8300",
+      "confidence": 0.7,
+      "score": 50,
+      "status": "success",
+      "caption": "Remember when Christmas lights were just a dream? 🎄",
+      "hashtags": [
+        "fyp",
+        "viral",
+        "archivefootage",
+        "nostalgia",
+        "christmaslights"
+      ],
+      "publishResult": {
+        "publishId": "dry-run-1773570179179",
+        "status": "success"
+      }
+    },
+    {
+      "id": "NIX-EC00-0212-2",
+      "url": "https://archive.org/services/img/NIX-EC00-0212-2",
+      "confidence": 0.7,
+      "score": 50,
+      "status": "success",
+      "caption": "What was life like in the 80s? Take a look at this rare footage!",
+      "hashtags": [
+        "fyp",
+        "viral",
+        "archivefootage",
+        "nostalgia",
+        "80s"
+      ],
+      "publishResult": {
+        "publishId": "dry-run-1773570179179",
+        "status": "success"
+      }
+    },
+    {
+      "id": "july1978fishing",
+      "url": "https://archive.org/services/img/july1978fishing",
+      "confidence": 0.7,
+      "score": 50,
+      "status": "success",
+      "caption": "What did people fish for in 1978? 🎣 Nostalgia hits hard!",
+      "hashtags": [
+        "fyp",
+        "viral",
+        "archivefootage",
+        "70sarchive",
+        "fishingmemories"
+      ],
+      "publishResult": {
+        "publishId": "dry-run-1773570179179",
+        "status": "success"
+      }
+    },
+    {
+      "id": "imag-0034-sunset-1970s",
+      "url": "https://archive.org/services/img/imag-0034-sunset-1970s",
+      "confidence": 0.7,
+      "score": 50,
+      "status": "success",
+      "caption": "What memories come to mind when you see this sunset from the 70s?",
+      "hashtags": [
+        "fyp",
+        "viral",
+        "nostalgia",
+        "archivefootage",
+        "sunsetmemories"
+      ],
+      "publishResult": {
+        "publishId": "dry-run-1773570179179",
+        "status": "success"
+      }
+    },
+    {
+      "id": "imag-0051-somewhere-in-california-1970s",
+      "url": "https://archive.org/services/img/imag-0051-somewhere-in-california-1970s",
+      "confidence": 0.7,
+      "score": 50,
+      "status": "success",
+      "caption": "What secrets hide in these 1970s California streets? 🕵️♂️",
+      "hashtags": [
+        "viral",
+        "fyp",
+        "archivefootage",
+        "nostalgia",
+        "california70s"
+      ],
+      "publishResult": {
+        "publishId": "dry-run-1773570179179",
+        "status": "success"
+      }
+    }
+  ]
+}

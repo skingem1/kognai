@@ -1,0 +1,103 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Video Production — Agent 5 → Agent 6 → Agent 7 Contracts",
+  "description": "Defines: (1) Editing Agent output (produced video), (2) Caption Agent output (captioned video), (3) Quality Control Agent gate checklist. Derived from SCS-001 Charter Article III Agents 5-7.",
+  "version": "1.0.0",
+  "status": "LOCKED",
+  "locked_date": "2026-03-15",
+
+  "definitions": {
+    "EditedVideo": {
+      "description": "Agent 5 (Editing) → Agent 6 (Caption). TikTok-ready video sans captions.",
+      "type": "object",
+      "required": ["video_id", "clip_id", "insight_id", "file_path", "duration_seconds", "aspect_ratio", "editing_structure"],
+      "properties": {
+        "video_id": { "type": "string" },
+        "clip_id": { "type": "string" },
+        "insight_id": { "type": "string" },
+        "file_path": { "type": "string", "description": "Local path to produced video file" },
+        "duration_seconds": { "type": "number", "minimum": 24, "maximum": 30, "description": "Target: 24-30 seconds total" },
+        "aspect_ratio": { "type": "string", "const": "9:16", "description": "Vertical format required" },
+        "editing_structure": {
+          "type": "object",
+          "required": ["hook_end_s", "context_end_s", "clip_end_s", "commentary_end_s", "insight_end_s"],
+          "properties": {
+            "hook_end_s": { "type": "number", "maximum": 2, "description": "Hook ends at 0-2s" },
+            "context_end_s": { "type": "number", "maximum": 5, "description": "Context ends at 2-5s" },
+            "clip_end_s": { "type": "number", "maximum": 12, "description": "Clip ends at 5-12s" },
+            "commentary_end_s": { "type": "number", "maximum": 18, "description": "Commentary ends at 12-18s" },
+            "insight_end_s": { "type": "number", "maximum": 24, "description": "Insight ends at 18-24s" },
+            "loop_ending": { "type": "boolean", "description": "Whether loop ending technique applied (24-30s reconnects to hook)" }
+          },
+          "description": "6-segment editing structure per Charter"
+        },
+        "pattern_interrupt_count": {
+          "type": "integer",
+          "minimum": 8,
+          "description": "Visual changes throughout video. Min 8 for a 24s video (every 2-3s). No 3-second static holds."
+        },
+        "ffmpeg_processing_seconds": {
+          "type": "number",
+          "description": "FFmpeg render time on Mac Mini M4. Target: <= 120s per video."
+        }
+      }
+    },
+
+    "CaptionedVideo": {
+      "description": "Agent 6 (Caption) → Agent 7 (QC). Video with baked-in captions.",
+      "type": "object",
+      "required": ["video_id", "file_path", "caption_style", "keyword_highlights"],
+      "properties": {
+        "video_id": { "type": "string" },
+        "file_path": { "type": "string", "description": "Local path to captioned video file" },
+        "caption_timing_file": { "type": "string", "description": "Path to caption timing SRT/VTT for platform upload metadata" },
+        "caption_style": {
+          "type": "string",
+          "enum": ["word_by_word", "phrase_sync"],
+          "description": "Word-by-word sync preferred per Charter"
+        },
+        "keyword_highlights": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Words highlighted in captions (size increase, colour change, bold)"
+        },
+        "font_size_px": {
+          "type": "integer",
+          "minimum": 48,
+          "description": "Caption font size. Min 48px equivalent per QC gate."
+        },
+        "contrast_ratio": {
+          "type": "number",
+          "minimum": 4.5,
+          "description": "Caption contrast ratio. Min 4.5:1 per QC gate."
+        }
+      }
+    },
+
+    "QualityControlGate": {
+      "description": "Agent 7 (QC) gate checklist. ALL items must PASS for publishing.",
+      "type": "object",
+      "required": ["video_id", "gate_items", "overall_pass", "reviewed_at"],
+      "properties": {
+        "video_id": { "type": "string" },
+        "gate_items": {
+          "type": "object",
+          "required": ["why_does_this_matter", "hook_timing", "visual_change_cadence", "caption_readability", "audio_balance", "constitutional_filter", "clip_understandable"],
+          "properties": {
+            "why_does_this_matter": { "type": "boolean", "description": "Agent 4's answer is present and substantive" },
+            "hook_timing": { "type": "boolean", "description": "Hook established within first 2 seconds" },
+            "visual_change_cadence": { "type": "boolean", "description": "No static hold > 3 seconds" },
+            "caption_readability": { "type": "boolean", "description": "Font >= 48px, contrast >= 4.5:1" },
+            "audio_balance": { "type": "boolean", "description": "Normalised audio, no sudden spikes/drops" },
+            "constitutional_filter": { "type": "boolean", "description": "No fabricated quotes, no misleading claims, no Ethical Shutdown triggers" },
+            "clip_understandable": { "type": "boolean", "description": "Core insight understandable without watching source video" }
+          }
+        },
+        "overall_pass": { "type": "boolean", "description": "All 7 items must be true" },
+        "failure_reason": { "type": "string", "description": "If failed: specific gate item + reason. Returned to upstream agent." },
+        "return_to_agent": { "type": "integer", "minimum": 1, "maximum": 6, "description": "Which agent to return to for fix. Null if passed." },
+        "reviewed_at": { "type": "string", "format": "date-time" }
+      }
+    }
+  }
+}
