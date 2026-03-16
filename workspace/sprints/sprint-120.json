@@ -1,0 +1,44 @@
+{
+  "sprint": "120",
+  "name": "Telegram /status V2 — manual posts gate progress + smoke test report",
+  "block": "Phase 1 — operator visibility",
+  "goal": "Upgrade Telegram /status to show manual post progress toward Apr 7 gate (X/30 posts, Y/500 views from manual-posts.jsonl). Fix pipeline report path (was reading from non-existent pipeline-runs/latest.json; switch to smoke-test-latest.json). Operator gets full gate visibility from Telegram.",
+  "rationale": "Sprint 119 built the manual post tracker. Sprint 120 wires it into the daily operator touchpoint (/status). The current /status shows 'readiness 0%' (no env vars) and tries to read a non-existent pipeline report. After this sprint, /status will show real gate progress.",
+  "swarm": "NOT USED — commands.ts is a complex file (302+ lines). Writing directly.",
+  "tasks": [
+    {
+      "id": "120-01",
+      "title": "agents/telegram-bot/commands.ts — add loadManualPosts() + update handleStatus()",
+      "description": "Add loadManualPosts() function reading workspace/scs001/manual-posts.jsonl (same pattern as loadPublishLedger). Returns {count, totalViews}. Update handleStatus() to show a gate line: '🎯 Real posts: X/30 | Views: Y/500 | Gate: Apr 7'. Also fix latestPath to use reports/smoke-test-latest.json instead of reports/pipeline-runs/latest.json. Update smoke test parse to use passed/stage_count/error_count fields.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-120",
+      "deliverables": {
+        "code": ["agents/telegram-bot/commands.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "120-03",
+      "title": "Validate — ACHIRI_DRY_RUN=1 handleStatus() renders without crash",
+      "description": "Run: ACHIRI_DRY_RUN=1 npx ts-node -e \"require('./agents/telegram-bot/commands').handleStatus(0)\" — should not throw. Check output contains gate line. PASS = no exception.",
+      "type": "validate",
+      "task_type": "validation",
+      "task_target": "local",
+      "agent": "direct-check",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-120",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ]
+}

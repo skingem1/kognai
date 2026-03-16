@@ -220,6 +220,18 @@ export async function handleSubscribe(chatId: number, planArg?: string): Promise
   }
 }
 
+// ── Sprint 120: Manual post tracker reader ────────────────────────────────────
+function loadManualPosts(): { count: number; totalViews: number } {
+  const p = join(process.cwd(), 'workspace', 'scs001', 'manual-posts.jsonl');
+  if (!existsSync(p)) return { count: 0, totalViews: 0 };
+  try {
+    const lines = readFileSync(p, 'utf-8').split('\n').filter(l => l.trim());
+    const entries = lines.map(l => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean) as any[];
+    const totalViews = entries.reduce((s: number, e: any) => s + (e.views ?? 0), 0);
+    return { count: entries.length, totalViews };
+  } catch { return { count: 0, totalViews: 0 }; }
+}
+
 function loadPublishLedger(): { total: number; today: number; latestAt: string | null } {
   const ledgerPath = join(process.cwd(), 'workspace', 'scs001', 'publish-ledger.jsonl');
   if (!existsSync(ledgerPath)) return { total: 0, today: 0, latestAt: null };
@@ -263,23 +275,30 @@ export async function handleStatus(chatId: number): Promise<void> {
   const ledger = loadPublishLedger();
   const topFormula = loadTopFormula();
   const readinessPct = computeReadinessPct();
+  const manual = loadManualPosts();
 
-  // Also try latest SCS-001 pipeline run report (secondary)
-  const latestPath = join(process.cwd(), 'reports', 'pipeline-runs', 'latest.json');
+  // Gate progress (Apr 7 Phase 1.5 kill switch)
+  const postsOk  = manual.count >= 30;
+  const viewsOk  = manual.totalViews >= 500;
+  const gateIcon = (postsOk && viewsOk) ? '✅' : (postsOk || viewsOk) ? '⚠️' : '❌';
+  const gateLine = `${gateIcon} Real posts: *${manual.count}/30* | Views: *${manual.totalViews}/500* | Gate: Apr 7`;
+
+  // Latest smoke test (reports/smoke-test-latest.json)
+  const smokePath = join(process.cwd(), 'reports', 'smoke-test-latest.json');
   let pipelineInfo = '';
-  if (existsSync(latestPath)) {
+  if (existsSync(smokePath)) {
     try {
-      const report = JSON.parse(readFileSync(latestPath, 'utf-8'));
+      const report = JSON.parse(readFileSync(smokePath, 'utf-8'));
+      const ok = report.passed ? '✅' : '❌';
+      const stages = report.stage_count ?? 0;
+      const errors = report.error_count ?? 0;
+      const ts = report.timestamp ? new Date(report.timestamp).toLocaleString() : 'unknown';
       const s = report.summary || {};
-      const elapsed = ((report.total_elapsed_ms || 0) / 1000).toFixed(1);
-      const mode = report.mode === 'live' ? '🟢 LIVE' : '🔵 MOCK';
-      const errors = (report.stages || []).filter((st: any) => st.status === 'error').length;
-      const started = report.started_at ? new Date(report.started_at).toLocaleString() : 'unknown';
       pipelineInfo = [
         '',
-        `📡 *Last Run:* ${mode} | ${elapsed}s${errors > 0 ? ` | ⚠️ ${errors} errors` : ''}`,
-        `📊 ${s.topics_found || 0} topics → ${s.published || 0} published${s.viral > 0 ? ` | 🔥 ${s.viral} viral` : ''}`,
-        `⏱ _${started}_`,
+        `🔬 *Smoke Test:* ${ok} ${stages} stages${errors > 0 ? ` | ⚠️ ${errors} errors` : ''}`,
+        `📊 ${s.topics_found || 0} topics → ${s.clips_qualified || 0} clips → ${s.videos_published || 0} published`,
+        `⏱ _${ts}_`,
       ].join('\n');
     } catch { /* ignore */ }
   }
@@ -290,10 +309,11 @@ export async function handleStatus(chatId: number): Promise<void> {
   await sendMessage(chatId, [
     '📡 *Kognai Pipeline Status*',
     '',
-    `📬 Published today: *${ledger.today}* | Total: *${ledger.total}*`,
+    `📬 Pipeline today: *${ledger.today}* | Total: *${ledger.total}* (dry-run)`,
+    gateLine,
     `🏆 Top formula: *${topFormula}*`,
     `${readinessIcon} Readiness: *${readinessPct}%* (${readinessPct < 100 ? 'env vars missing' : 'ready'})`,
-    `🕐 Last post: _${latestAt}_`,
+    `🕐 Last pipeline post: _${latestAt}_`,
     pipelineInfo,
   ].filter(l => l !== undefined).join('\n'));
 }
