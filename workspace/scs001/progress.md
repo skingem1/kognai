@@ -599,3 +599,14 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
 - Sprint 133: Gate-tracker T3 PASS + /help update
 - ALL Achiri alpha code work COMPLETE. Operator must: deploy Achiri (deploy-achiri.sh), set env vars.
 - Context limit reached — handoff. Latest commit: b69e9c7.
+
+## Sprint 134 — Daily Pipeline Digest (Phase 1 — gate monitoring)
+- Status: PASS
+- Commit: 6ed8a99
+- Files created: scripts/daily-digest.ts, scripts/scs001/validate-sprint-134.ts, workspace/sprints/sprint-134.json
+- Files modified: ecosystem.config.js (kognai-daily-digest PM2 cron entry)
+- Test: scripts/scs001/validate-sprint-134.ts — 12/12 PASS
+- Key results: daily-digest.ts reads manual-posts.jsonl + publish-ledger.jsonl + experiments.jsonl + smoke-test-latest.json. Sends morning gate-progress digest to OWNER_TELEGRAM_CHAT_ID via Telegram. Shows: posts/30 + views/500 gate progress, cadence needed (2/day), days until Apr 7 + Apr 25 gates, top hook formula, smoke test status. PM2 cron fires at 07:00 daily. DIGEST_DRY_RUN=1 for testing.
+- Swarm used: no (stdlib-only script, direct write)
+- Gate context: 22 days until Apr 7 gate. Need 30 posts + 500 views. Currently 0/30 posts, 0/500 views.
+- Timestamp: 2026-03-16T21:30:00Z
