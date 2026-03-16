@@ -214,3 +214,17 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
   - Dashboard: scorer stats row added (backward-compat with older reports)
 - Scorer behavior in mock: VIRAL_SPEAKERS list includes samaltman, elonmusk, etc. 'Sam Altman' + AI topics = 70+ score (pass). 'Margrethe Vestager' + regulation = 55 (filter).
 - Timestamp: 2026-03-16T18:30:00Z
+
+### Sprint 105 — PublishingAgent: Topic-Aware Hashtags + Slot Distribution (Block: publishing)
+- Status: PASS | Commit: b4b24f9 | Block: publishing
+- Files created: workspace/sprints/sprint-105.json
+- Files modified: agents/scs001-publishing/index.ts
+- Tests: scripts/smoke-test-pipeline.ts — PASS (13 stages, 0 errors, 12 videos)
+- Swarm: NOT used — PublishingAgent is complex (190+ lines). Wrote directly.
+- Changes:
+  - generateHashtags(): 50-tag bank across 5 clusters (ai/tech/business/science/viral). Keyword-matched from all segment text. Speaker tag always included. 3-5 unique tags per video.
+  - buildCaption(): hook text as first 80 chars (TikTok shows before '...more'), hashtags at end of caption.
+  - assignPostingSlot(index): round-robin across 4 prime-time slots (07:00, 12:00, 18:00, 21:00). Returns slot + scheduled_post_time ISO.
+  - PublishedVideo interface: added scheduled_post_time field.
+- Slot distribution for 12-video batch: 3 videos per slot (07:00=3, 12:00=3, 18:00=3, 21:00=3).
+- Timestamp: 2026-03-16T19:00:00Z

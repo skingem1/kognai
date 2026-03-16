@@ -1,5 +1,5 @@
 # KOGNAI SESSION MEMORY
-*Last updated: Sprint 104 — 2026-03-16*
+*Last updated: Sprint 105 — 2026-03-16*
 
 ---
 
@@ -10,9 +10,9 @@
 - Production mode: set `SCS_EDITING_MODE=production` + `TIKTOK_ACCESS_TOKEN` in .env
 
 ## Kognai State
-- Last commit: 5cce753 (Sprint 104 shipped 2026-03-16)
+- Last commit: b4b24f9 (Sprint 105 shipped 2026-03-16)
 - Sprint numbering: Invoica legacy 001-062e → Kognai starts 063+
-- Current sprint: 105 (next)
+- Current sprint: 106 (next)
 - Gate reports: workspace/gates/phase0-phase1-gate.json, workspace/gates/phase1-activation-readiness.json, workspace/gates/production-quality-check.json
 
 ## Build Priority Sequence
@@ -48,7 +48,8 @@
 | 102 | hardening | Doc-gen bugfix (strategic-context.md) + end-to-end smoke test | ✅ PASS |
 | 103 | dashboard | Go-Live Readiness panel (env checklist, kill switches, pipeline status) | ✅ PASS |
 | 104 | quality | Content quality scorer Stage 5.5 (14 scored → 4 filtered → 10 to editing) | ✅ PASS |
-| **105** | **?** | **NEXT** | ⏳ pending |
+| 105 | publishing | Topic-aware hashtags (50-tag bank) + round-robin slot distribution (07/12/18/21) | ✅ PASS |
+| **106** | **?** | **NEXT** | ⏳ pending |
 
 ## SCS-001 Pipeline Architecture
 12 stages, 11 agents:
