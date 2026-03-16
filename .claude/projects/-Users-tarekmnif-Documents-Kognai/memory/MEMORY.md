@@ -132,6 +132,30 @@ All agents located at: `agents/scs001-*/`
 - 3 rejections = write directly. Large complex files = skip swarm, write directly.
 - Swarm works well for: new single-file scripts <150 lines, stdlib-only, no class API surface to hallucinate
 
+## Architecture Amendments (AMD-01 through AMD-12)
+| AMD | Title | Status |
+|-----|-------|--------|
+| 01 | A2A / AP2 / x402 / ERC-8004 Protocol Integration | Active |
+| 02 | Skill Bank & Knowledge Asset Layer | Active |
+| 03 | Constitutional Framework | Active |
+| 04 | Self Committed Swarms (SCS) | Active |
+| 05 | IRL Intelligence Layer (Voxight X Oracle) | Active |
+| 06 | Federated Modular Architecture | Active |
+| 07 | Code Asset Library | Active |
+| 08 | Monotask Mandate and Agent State Machine | Active |
+| 09 | Agent Fusion Protocol | Active |
+| 10 | Capability Atlas (COMMANDS.md) | Active |
+| 11 | Builder Verification Service | Active |
+| **12** | **Qwen Context Gateway (QCG)** | **Active (Mar 2026)** |
+
+## Qwen Context Gateway (QCG) — AMD-12
+- **Level 1 (Pre-Flight Brief)**: ✅ OPERATIONAL — `scripts/generate-sprint-brief.py` runs before each autonomous session. Output: `workspace/sprint-brief.md` (~2,500 tokens vs ~100K+ raw). 97% token reduction.
+- **Level 2 (Query Gateway)**: PLANNED — HTTP service for agent queries against skill bank, AAR, failures
+- **Level 3 (Orchestrator Integration)**: PLANNED — Wire into callLLM() for automatic context compression
+- **Files**: `run-autonomous.sh` (pre-flight step), `autonomous-prompt.txt` (brief-first directive), `scripts/generate-sprint-brief.py` (generator)
+- **Cost impact**: ~$14.25/day savings at 50 sessions/day. Target <5K input tokens per sprint cycle.
+- **Doc**: `~/Documents/Kognai/Master Documents/kognai_architecture_amendment_12.docx`
+
 ## Infrastructure
 - Mac Mini M4: local models qwen3:0.6b/4b/14b, deepseek-r1:14b (Ollama at 127.0.0.1:11434)
 - Shared with Invoica: Hetzner VPS, Supabase, PM2, x402 protocol
