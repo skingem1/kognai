@@ -414,6 +414,29 @@ module.exports = {
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
     {
+      // Daily Digest — pushes morning gate-progress summary to operator via Telegram
+      // Fires 07:00 daily (before AM block). Shows: posts/views gate, pipeline stats,
+      // days until Phase 1.5 gate (Apr 7) + Achiri alpha (Apr 25).
+      // Requires: CEO_TELEGRAM_BOT_TOKEN + OWNER_TELEGRAM_CHAT_ID in .env
+      name: "kognai-daily-digest",
+      script: "scripts/daily-digest.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: false,
+      watch: false,
+      cron_restart: "0 7 * * *",
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
+        CEO_TELEGRAM_BOT_TOKEN: process.env.CEO_TELEGRAM_BOT_TOKEN || process.env.TELEGRAM_BOT_TOKEN || "",
+        OWNER_TELEGRAM_CHAT_ID: process.env.OWNER_TELEGRAM_CHAT_ID || process.env.CEO_TELEGRAM_CHAT_ID || "",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/daily-digest-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/daily-digest-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
+    {
       // SCS-001 Pipeline — runs 4x daily at posting slot times (Charter schedule)
       // Slots: 07:00, 12:00, 18:00, 21:00 UTC
       // Runs full 12-stage pipeline: Trend→Discovery→ClipDetection→Insight→Script→

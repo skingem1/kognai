@@ -1,0 +1,68 @@
+{
+  "sprint": "134",
+  "name": "Daily pipeline digest — morning Telegram push notification",
+  "block": "Phase 1 — TikTok gate monitoring",
+  "goal": "Reduce operator oversight friction for the Apr 7 gate. A PM2 cron script fires daily at 07:00, reads real data (manual-posts.jsonl, publish-ledger.jsonl, experiments.jsonl, smoke-test-latest.json), and pushes a gate-progress digest to the owner via Telegram. Operator wakes up with current gate status without needing to /status or /gate manually.",
+  "rationale": "Apr 7 Phase 1.5 gate requires 30 manual posts + 500 views. The operator must post daily to hit this target. Pull commands (/status, /gate) require remembering to ask. A daily push digest ensures the operator never misses the gate progress and knows exactly how many posts to make today.",
+  "swarm": "NOT USED — single stdlib-only script + ecosystem.config.js edit. Direct write.",
+  "tasks": [
+    {
+      "id": "134-01",
+      "title": "scripts/daily-digest.ts — morning digest push",
+      "description": "Standalone ts-node script. Reads: workspace/scs001/manual-posts.jsonl (gate progress), workspace/scs001/publish-ledger.jsonl (pipeline output count), workspace/scs001/experiments.jsonl (top hook formula), reports/smoke-test-latest.json (last smoke test). Formats a digest message with gate progress, posts needed today, days until gate. Sends to OWNER_TELEGRAM_CHAT_ID via Telegram sendMessage API. Uses only stdlib (fs, https, path). No external npm deps.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-134",
+      "deliverables": {
+        "code": ["scripts/daily-digest.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "134-02",
+      "title": "ecosystem.config.js — add kognai-daily-digest PM2 cron",
+      "description": "Add a new PM2 app entry named 'kognai-daily-digest': script=./scripts/daily-digest.ts, cron_restart='0 7 * * *' (07:00 daily), autorestart=false, interpreter=node, interpreter_args='-r ts-node/register', env includes TS_NODE_TRANSPILE_ONLY=true. This runs the digest every morning.",
+      "type": "modify",
+      "task_type": "config",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-134",
+      "deliverables": {
+        "code": ["ecosystem.config.js"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "134-03",
+      "title": "scripts/scs001/validate-sprint-134.ts — validation",
+      "description": "Validation script: (1) check scripts/daily-digest.ts exists and is non-empty, (2) check ecosystem.config.js contains 'kognai-daily-digest' entry with cron_restart '0 7 * * *', (3) dry-run the digest script with DIGEST_DRY_RUN=1 env var (prints message to stdout instead of sending to Telegram), (4) verify message contains gate section (posts/views/days).",
+      "type": "create",
+      "task_type": "test",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-134",
+      "deliverables": {
+        "code": ["scripts/scs001/validate-sprint-134.ts"],
+        "tests": ["scripts/scs001/validate-sprint-134.ts"],
+        "docs": []
+      }
+    }
+  ],
+  "acceptance_criteria": [
+    "scripts/daily-digest.ts exists and uses only stdlib (no require of external npm packages)",
+    "ecosystem.config.js has kognai-daily-digest entry with cron_restart='0 7 * * *'",
+    "DIGEST_DRY_RUN=1 npx ts-node scripts/daily-digest.ts prints a message to stdout",
+    "Dry-run output contains posts count, views count, days until Apr 7",
+    "validate-sprint-134.ts exits 0 (all checks pass)"
+  ]
+}
