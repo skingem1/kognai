@@ -746,3 +746,14 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
 - Changes: getUrgencySignal() in daily-digest.ts with 4 tiers: ⏳ on track / ⚠️ WARNING (≤14d behind pace) / 🚨 KILL RISK (≤7d behind) / 💀 GATE FAILED (≤3d). Kill switch reminder appended when urgency is WARNING or worse. kognai-gate-regen PM2 cron added (55 6 * * * — regenerates phase1-5-gate.json 5 min before daily digest).
 - Gate: ~22 days to Apr 7, 0/30 posts
 - Timestamp: 2026-03-16T16:45:00Z
+
+## Sprint 146 — /invite-achiri + file-based runtime alpha whitelist
+- Status: PASS
+- Commit: 4e597b3
+- Files created: scripts/scs001/validate-sprint-146.ts, workspace/sprints/sprint-146.json
+- Files modified: agents/telegram-bot/commands.ts, agents/telegram-bot/index.ts
+- Test: scripts/scs001/validate-sprint-146.ts — 7/7 PASS
+- Swarm used: no (direct write)
+- Changes: checkAlphaAccess() reads BOTH env ACHIRI_ALPHA_WHITELIST AND workspace/achiri/alpha-whitelist.jsonl at runtime. handleAchiri() now calls checkAlphaAccess(). handleInviteAchiri() appends to file-based whitelist — operator can invite users via Telegram without SSH or bot restart. index.ts routes /invite-achiri. handleHelp updated.
+- Gate: ~22 days to Apr 7, 0/30 posts | Achiri alpha: Apr 25 (40d)
+- Timestamp: 2026-03-16T17:00:00Z
