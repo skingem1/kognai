@@ -102,6 +102,7 @@ export async function handleHelp(chatId: number): Promise<void> {
     '/review — Top-3 QC-passed videos for manual posting (owner)',
     '/record <id> <views> [title] — Record posted video to gate tracker (owner)',
     '/update-views <id> <views> — Update view count on recorded post (owner)',
+    '/queue — Posting queue: unposted videos + daily pace (owner)',
     '',
     '🤖 *Achiri AI Companion*',
     '/achiri <msg> — Chat with Achiri (free tier, Darija/Arabic/French)',
@@ -1093,6 +1094,72 @@ export async function handleDeployStatus(chatId: number, ownerChatId: string): P
 
   const daysToAlpha = Math.ceil((new Date('2026-04-25T00:00:00Z').getTime() - Date.now()) / 86400000);
   lines.push('', `📅 Achiri alpha: Apr 25 (${daysToAlpha}d)`);
+
+  await sendMessage(chatId, lines.join('\n'));
+}
+
+// ── Sprint 150: /queue — Posting queue: unposted videos + daily pace ─────────
+
+export async function handleQueue(chatId: number, ownerChatId: string): Promise<void> {
+  if (String(chatId) !== String(ownerChatId)) {
+    await sendMessage(chatId, '⛔ Owner-only command.');
+    return;
+  }
+
+  // Load ledger entries
+  const ledgerPath = join(process.cwd(), 'workspace', 'scs001', 'publish-ledger.jsonl');
+  const manualPath = join(process.cwd(), 'workspace', 'scs001', 'manual-posts.jsonl');
+
+  let ledgerEntries: Array<{ video_id: string; published_at: string }> = [];
+  if (existsSync(ledgerPath)) {
+    try {
+      ledgerEntries = readFileSync(ledgerPath, 'utf-8')
+        .split('\n').filter(l => l.trim())
+        .map(l => { try { return JSON.parse(l); } catch { return null; } })
+        .filter(Boolean) as Array<{ video_id: string; published_at: string }>;
+    } catch { /* ignore */ }
+  }
+
+  const recordedIds = new Set<string>();
+  if (existsSync(manualPath)) {
+    try {
+      readFileSync(manualPath, 'utf-8')
+        .split('\n').filter(l => l.trim())
+        .forEach(l => { try { const e = JSON.parse(l); if (e.video_id) recordedIds.add(e.video_id); } catch { /* skip */ } });
+    } catch { /* ignore */ }
+  }
+
+  const ledgerCount  = ledgerEntries.length;
+  const recordedCount = recordedIds.size;
+  const unposted = ledgerEntries
+    .filter(e => !recordedIds.has(e.video_id))
+    .sort((a, b) => b.published_at.localeCompare(a.published_at))
+    .slice(0, 5);
+  const unpostedTotal = ledgerEntries.filter(e => !recordedIds.has(e.video_id)).length;
+
+  const gateDate   = new Date('2026-04-07T00:00:00Z');
+  const daysLeft   = Math.max(1, Math.ceil((gateDate.getTime() - Date.now()) / 86400000));
+  const postsNeeded = Math.max(0, 30 - recordedCount);
+  const pacePerDay  = postsNeeded > 0 ? Math.ceil(postsNeeded / daysLeft) : 0;
+
+  const lines: string[] = [
+    `📋 *Posting Queue* — Apr 7 gate (${daysLeft}d)`,
+    '',
+    `📼 Pipeline: *${ledgerCount}* generated | *${recordedCount}* posted | *${unpostedTotal}* unposted`,
+    `⚡ Pace needed: *${pacePerDay}/day* to hit 30 posts`,
+    '',
+    unposted.length > 0 ? `*Top ${unposted.length} to post now:*` : '✅ Queue empty or all videos recorded.',
+  ];
+
+  unposted.forEach((e, i) => {
+    lines.push(``, `${i + 1}. \`${e.video_id}\``);
+    lines.push(`   → \`/record ${e.video_id} 0\``);
+    lines.push(`   _(update views later: /update-views ${e.video_id} <views>)_`);
+  });
+
+  if (postsNeeded === 0) {
+    lines.push('', '🎉 *30 posts reached — gate criteria met!*');
+  }
 
   await sendMessage(chatId, lines.join('\n'));
 }

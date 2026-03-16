@@ -1,0 +1,69 @@
+{
+  "sprint": "150",
+  "name": "Posting queue command — /queue shows unposted videos + daily pace",
+  "block": "Phase 1 — gate urgency (22 days to Apr 7, 0/30 posts)",
+  "goal": "Add /queue Telegram command (owner-only). Shows: (1) total videos in publish-ledger.jsonl vs total recorded in manual-posts.jsonl. (2) Top-5 unposted video IDs from ledger (most recent, excluding already-recorded IDs). (3) Daily pace needed to hit Apr 7 gate: (30 - posted)/daysLeft. (4) Inline /record commands for each unposted video ID (pre-filled, operator copies and pastes after viewing). Also add /queue to handleHelp() and index.ts routing.",
+  "rationale": "/review shows top-3 from latest run only. There are 141 videos in publish-ledger.jsonl that have never been posted. Operator has no 'what to post today' view or awareness of the full queue. /queue closes this gap: shows exactly what videos are ready, how many to post per day, and pre-fills the /record commands to minimize friction.",
+  "swarm": "NOT USED — 2 file edits + 1 validation script. Direct write.",
+  "tasks": [
+    {
+      "id": "150-01",
+      "title": "commands.ts — add handleQueue() owner-only command + update handleHelp()",
+      "description": "handleQueue(chatId, ownerChatId): owner gate. Load publish-ledger.jsonl → array of {video_id, published_at}. Load manual-posts.jsonl → Set of recorded video_ids. Compute: ledgerCount=ledger.length, recordedCount=recordedIds.size, unposted=ledger entries where video_id not in recordedIds. Sort unposted by published_at descending, take top-5. daysLeft=Math.max(1,Math.ceil((Apr7-now)/86400000)), postsNeeded=Math.max(0,30-recordedCount), pacePerDay=Math.ceil(postsNeeded/daysLeft). Output: header with ledger/posted/unposted counts, pace line, top-5 list (video_id + /record <video_id> 0 pre-filled), note that views are 0 until operator updates with /update-views. handleHelp(): add '/queue — Posting queue: unposted videos + daily pace (owner)' after /update-views line.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-150",
+      "deliverables": {
+        "code": ["agents/telegram-bot/commands.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "150-02",
+      "title": "index.ts — import handleQueue + route /queue",
+      "description": "Add handleQueue to import from './commands'. Add case '/queue': await handleQueue(chatId, OWNER_CHAT_ID); break; in dispatch switch.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-150",
+      "deliverables": {
+        "code": ["agents/telegram-bot/index.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "150-03",
+      "title": "validate-sprint-150.ts — 5-check validation script",
+      "description": "1) commands.ts exports handleQueue. 2) commands.ts reads publish-ledger.jsonl. 3) commands.ts computes pace (pacePerDay or postsNeeded). 4) index.ts routes /queue. 5) handleHelp contains '/queue'.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-150",
+      "deliverables": {
+        "code": ["scripts/scs001/validate-sprint-150.ts"],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ],
+  "acceptance_criteria": [
+    "handleQueue() exported from commands.ts, owner-only gate",
+    "handleQueue reads publish-ledger.jsonl and manual-posts.jsonl, shows unposted count",
+    "Shows top-5 unposted video IDs with pre-filled /record commands",
+    "Shows daily pace needed to hit Apr 7 gate",
+    "/queue routed in index.ts",
+    "validate-sprint-150.ts: 5/5 PASS"
+  ]
+}
