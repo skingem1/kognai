@@ -690,3 +690,15 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
 - Changes: handlePostReminder() shows gate progress (posts/views/days/cadence), queue size from publish-ledger.jsonl, review-videos.ts + record-manual-post.ts workflow commands; /post-reminder routed in index.ts; in handleHelp()
 - Gate: 22 days to Apr 7, 0/30 posts, 141 videos queued in ledger
 - Timestamp: 2026-03-16T15:30:00Z
+
+## Sprint 141 — Pipeline health watchdog + dashboard parser fixes
+- Status: PASS
+- Commit: 80aab3e
+- Files created: scripts/pipeline-watchdog.ts, scripts/achiri/validate-sprint-141.ts, workspace/sprints/sprint-141.json
+- Files modified: ecosystem.config.js, dashboard/parsers/assets.py, dashboard/parsers/logs.py, autonomous-prompt.txt, reports/smoke-test-latest.json
+- Test: scripts/achiri/validate-sprint-141.ts — 7/7 PASS
+- Swarm used: no (direct write)
+- Changes: pipeline-watchdog.ts checks ledger freshness every 30min via PM2 cron, alerts on stale; assets.py adds crystallised skills reader; logs.py supports autonomous session logs
+- Gate: ~22 days to Apr 7, 0/30 posts
+- Session: 4 sprints this session (138-141). Context limit reached — handoff.
+- Timestamp: 2026-03-16T15:45:00Z
