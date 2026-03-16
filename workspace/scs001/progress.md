@@ -950,3 +950,16 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
 - Changes: handlePm2Status(chatId, ownerChatId) owner-only. execSync('pm2 jlist') → parse JSON → per-process line with statusEmoji() (🟢/⭕/🔴/🟡/⚪) + name + formatUptime() (Xm/Xh/Xd) + restart count. Error handling: sends ⚠️ on execSync failure. Added execSync import from child_process. /pm2-status case in index.ts switch. Listed in handleHelp().
 - Gate: ~22 days to Apr 7, 0/30 posts | Achiri alpha: Apr 25 (~40d)
 - Timestamp: 2026-03-16T23:30:00Z
+
+## Sprint 164 — Fix runIdToEpoch off-by-1ms bug (Phase 1 — CRITICAL posting workflow bug fix)
+- Status: PASS
+- Commit: db1814d
+- Files created: scripts/scs001/validate-sprint-164.ts, workspace/sprints/sprint-164.json
+- Files modified: agents/telegram-bot/commands.ts
+- Test: scripts/scs001/validate-sprint-164.ts — 4/4 PASS
+- Pipeline: N/A (bug fix sprint)
+- Swarm used: no (direct write — surgical edit)
+- Changes: Added findCaptionedMp4(cwd, videoId): string|null — scans workspace/scs001/run-*/ dirs, returns first matching caption/{videoId}-captioned.mp4. Added findScriptJson(cwd, videoId): string|null — same scan for script/{videoId}-script.json. Replaced 3 epoch-based existsSync calls in handlePostNow() and handleCaption() with new helpers. Root cause: runIdToEpoch() returned epoch 1773666167539 but actual dir was run-1773666167538 (1ms off). /post-now was returning 'No ready videos' despite 30 captioned mp4s on disk.
+- Impact: CRITICAL — unblocks all 30 captioned videos for manual posting. Gate progress unblocked.
+- Gate: ~22 days to Apr 7, 0/30 posts | 30 videos ready to post | Achiri alpha: Apr 25 (~40d)
+- Timestamp: 2026-03-16T23:45:00Z
