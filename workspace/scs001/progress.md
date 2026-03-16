@@ -381,3 +381,20 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
 - Root cause fixed: gate.video_id is editing-stage generated ID, NOT clip_id. Must go via insight_id bridge.
 - Impact: experiments.jsonl will now have real hook_formula + speaker values. Dashboard Panel 17 formula pass-rates will work correctly.
 - Timestamp: 2026-03-16T23:45:00Z
+
+### Sprint 118 — Readiness Parser Fix (Block: Phase 1 dashboard accuracy)
+- Status: PASS | Commit: 02c6122 | Block: Phase 1 dashboard accuracy
+- Files modified: dashboard/parsers/readiness.py
+- Files created: workspace/sprints/sprint-118.json
+- Tests: direct module test — pipeline_runs_exist: True, current_posts: 141, current_qc_pass: 100%, latest_run_ok: True, readiness_pct: 40
+- Swarm: NOT used — targeted Python edits
+- Changes:
+  - REPORTS_DIR replaced with RUNS_DIR (workspace/scs001/) + SMOKE_TEST_PATH + EXPERIMENTS_PATH
+  - pipeline_runs_exist: now checks for run-*/ dirs in workspace/scs001/ (found 10+)
+  - latest_run_ok: now reads reports/smoke-test-latest.json (passed=true, error_count=0)
+  - current_posts: reads publish-ledger.jsonl line count (141 entries)
+  - current_qc_pass: calculates % of experiments.jsonl entries with qc_passed=true (100%)
+  - Added _count_ledger_entries() and _calc_qc_pass_rate() helper functions
+- Note: readiness_pct=40 because 0/5 env vars are set (TIKTOK_ACCESS_TOKEN, SUPABASE_URL, etc). +20 for runs exist, +20 for latest run ok = 40.
+- Key blocker: TIKTOK_ACCESS_TOKEN not set — live posting blocked. Apr 7 gate requires real posts.
+- Timestamp: 2026-03-17T00:15:00Z
