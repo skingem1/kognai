@@ -15,6 +15,7 @@ import { PublishingAgent, PublishedVideo } from '../scs001-publishing/index';
 import { AnalyticsAgent, PerformanceSignal } from '../scs001-analytics/index';
 import { ContentFlywheelAgent, FlywheelOutput } from '../scs001-flywheel/index';
 import { FailureLibraryAgent, FailureEntry } from '../scs001-failure-library/index';
+import { withRetry, withFallback } from './retry';
 
 export interface StageResult {
   stage:    string;
@@ -95,11 +96,15 @@ export class SCS001Orchestrator {
       }));
     }
 
-    // --- Stage 3: Clip Detection Agent ---
+    // --- Stage 3: Clip Detection Agent (Ollama-dependent, retryable) ---
     if (discoveries.length > 0) {
       stages.push(await this.runStage('3-clip-detection', 'ClipDetectionAgent', async () => {
         const agent = new ClipDetectionAgent();
-        clips = await agent.run(discoveries);
+        clips = await withRetry(
+          () => agent.run(discoveries),
+          'ClipDetection',
+          { maxRetries: 2, baseDelayMs: 2000 },
+        );
         return clips.length;
       }));
     }
@@ -109,7 +114,11 @@ export class SCS001Orchestrator {
     if (qualifiedClips.length > 0 && this.mode === 'live') {
       stages.push(await this.runStage('4-insight', 'InsightAgent (live)', async () => {
         const agent = new InsightAgent();
-        briefs = await agent.run(clips);
+        briefs = await withRetry(
+          () => agent.run(clips),
+          'InsightAgent-live',
+          { maxRetries: 2, baseDelayMs: 3000 },
+        );
         return briefs.length;
       }));
     } else if (qualifiedClips.length > 0) {
@@ -162,12 +171,16 @@ export class SCS001Orchestrator {
       }));
     }
 
-    // --- Stage 9: Publishing Agent ---
+    // --- Stage 9: Publishing Agent (TikTok API-dependent, retryable) ---
     const passedGates = gates.filter(g => g.overall_pass);
     if (passedGates.length > 0) {
       stages.push(await this.runStage('9-publishing', 'PublishingAgent', async () => {
         const agent = new PublishingAgent();
-        published = await agent.run(gates, captionedVideos, bundles);
+        published = await withRetry(
+          () => agent.run(gates, captionedVideos, bundles),
+          'PublishingAgent',
+          { maxRetries: 2, baseDelayMs: 2000 },
+        );
         return published.length;
       }));
     }
