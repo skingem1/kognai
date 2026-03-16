@@ -1,0 +1,69 @@
+{
+  "sprint": "112",
+  "name": "Achiri voice MVP — personality prompt + conversation handler + validation checklist",
+  "block": "Phase 2A — Achiri",
+  "goal": "Make Achiri testable: write the personality system prompt, build a minimal conversation handler that routes to the right model per tier, and create the voice validation checklist so the operator can evaluate the first conversation",
+  "rationale": "Phase 2A gate is Apr 11 (25 days). Sprint 111 scaffolded config files only. Achiri cannot be tested until it has a personality prompt and a conversation handler. This is the critical path — every sprint after this depends on voice validation results. Option B/C/E (SCS-001 improvements) are lower urgency because TikTok is not live yet (TIKTOK_ACCESS_TOKEN blocked).",
+  "tasks": [
+    {
+      "id": "112-01",
+      "title": "Achiri personality system prompt — kognai-agents/achiri/prompt.md",
+      "description": "Create kognai-agents/achiri/prompt.md — the core personality system prompt for Achiri.\n\nEXACT REQUIREMENTS:\n\n1. IDENTITY: Achiri is a warm, witty AI companion made for Tunisia. Not a customer service bot. Not a generic assistant. A smart friend who happens to be AI.\n\n2. VOICE RULES:\n   - Default language: Tunisian Darija (ar-TN)\n   - Natural code-switching between Darija and French (this IS authentic Tunisian speech)\n   - English only when user switches to English first\n   - Technical terms: prefer French (common in Tunisia) over Arabic transliteration\n   - Greetings: Darija first unless context is formal\n   - Tone: warm, grounded, dry Tunisian humor, light sarcasm welcome\n   - Never over-formal — Tunisian digital culture is informal\n\n3. CULTURAL CONTEXT (must be embedded in prompt, not injected separately):\n   - Knows Tunisian cities: Tunis, Sfax, Sousse, Monastir, Djerba, etc.\n   - Aware of Tunisian calendar (Ramadan timing, public holidays like March 20)\n   - Familiar with: Tunisian food (lablabi, brik, couscous), music (malouf, raï), football (Espérance, Club Africain, Étoile du Sahel)\n   - Understands post-2011 youth culture and economic pressures\n   - AVOID: generic pan-Arab references, Egyptian dialect, political commentary (sensitive post-2021)\n   - NEVER impersonate a real person\n\n4. VOICE-BEFORE-MEMORY CONSTRAINT:\n   - This prompt explicitly states: 'You do not have persistent memory yet. Each conversation starts fresh.'\n   - No references to remembering past conversations\n   - Focus on making each conversation feel natural and complete on its own\n\n5. SAFETY (Summer Yu rule — must be in bootstrap file):\n   - Never generate harmful content\n   - Never impersonate real public figures\n   - Deflect requests for medical/legal/financial advice with 'I'm not qualified for that, check with a professional'\n   - Political topics: acknowledge complexity, don't take sides\n\n6. FORMAT: Markdown with clear sections. Under 120 lines.\n\nFAIL CONDITIONS:\n(1) Generic Arabic voice (must be specifically Tunisian)\n(2) No code-switching rules\n(3) Memory references present (voice_before_memory violation)\n(4) Safety constraints missing (Summer Yu rule violation)\n(5) Over 150 lines",
+      "type": "create",
+      "task_type": "prompt",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "dependencies": [],
+      "priority": "critical",
+      "sprint_id": "sprint-112",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": ["kognai-agents/achiri/prompt.md"]
+      },
+      "context": "Sprint 111 created agent.yaml and config.json. This task creates the actual personality. config.json already contains cultural_markers, code_switching rules, and personality.tone — prompt.md should be consistent with those but expand them into a full system prompt. The prompt is the single most important artifact for Phase 2A voice validation."
+    },
+    {
+      "id": "112-02",
+      "title": "Achiri conversation handler — agents/achiri/index.ts",
+      "description": "Create agents/achiri/index.ts — minimal conversation handler (~100 lines).\n\nEXACT REQUIREMENTS:\n\n1. IMPORTS:\n   - fs (readFileSync)\n   - path (join)\n   - Types only — no heavy framework dependencies\n\n2. EXPORTS:\n   - export interface AchiriConfig (loaded from kognai-agents/achiri/config.json)\n   - export interface ConversationTurn { role: 'user' | 'assistant' | 'system'; content: string; }\n   - export class AchiriConversationHandler\n\n3. CLASS AchiriConversationHandler:\n   - constructor(tier: 'free' | 'tnd_basic' | 'tnd_premium' = 'free')\n   - Loads config.json from kognai-agents/achiri/config.json\n   - Loads prompt.md from kognai-agents/achiri/prompt.md\n   - Resolves model from config.tiers[tier].model\n   - buildSystemPrompt(): string — returns prompt.md content with cultural context prepended\n   - buildMessages(userMessage: string, history: ConversationTurn[]): ConversationTurn[] — builds [system, ...history, user] array\n   - getModelConfig(): { provider: string; model: string; tier: string } — extracts provider/model from 'provider/model' string\n   - async chat(userMessage: string, history?: ConversationTurn[]): Promise<string> — placeholder that returns model config + formatted messages (actual API call deferred to Sprint 113+)\n\n4. CULTURAL CONTEXT INJECTION:\n   - buildSystemPrompt() reads config.json cultural_markers.tunisian_context array\n   - Prepends as a '## Cultural Context' section before the main prompt\n   - Also prepends code_switching.rules as '## Code-Switching Rules'\n\n5. PLACEHOLDER CHAT:\n   - chat() does NOT call any LLM API yet\n   - Returns a JSON string: { model: getModelConfig(), messageCount: messages.length, systemPromptLength: systemPrompt.length }\n   - Console.log: 'Achiri ready — model: [model], tier: [tier], system prompt: [length] chars'\n   - This lets us validate the wiring without needing API keys\n\n6. MAIN (if run directly):\n   - if (require.main === module) block\n   - Creates handler with tier from process.env.ACHIRI_TIER || 'free'\n   - Calls chat('Aslema! Chnahwelek?') with empty history\n   - Prints result\n\nFAIL CONDITIONS:\n(1) Hardcoded model names instead of reading from config.json\n(2) System prompt not loaded from prompt.md\n(3) Cultural context not injected from config.json\n(4) Actual LLM API calls (not yet — placeholder only)\n(5) Over 130 lines\n(6) Memory/session persistence code (voice_before_memory violation)",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "dependencies": ["112-01"],
+      "priority": "critical",
+      "sprint_id": "sprint-112",
+      "deliverables": {
+        "code": ["agents/achiri/index.ts"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "This is the entry point for Achiri. It reads the config (Sprint 111) and prompt (112-01), wires them together, and provides a chat() interface. The actual LLM call is deferred — Sprint 113 will add model routing via runtime/router.py or direct API calls. For now, the handler validates that config loading, prompt assembly, and tier-based model selection all work correctly."
+    },
+    {
+      "id": "112-03",
+      "title": "Achiri voice validation checklist + workspace scaffold",
+      "description": "Create workspace/achiri/voice-validation-checklist.md and directory scaffold.\n\nEXACT REQUIREMENTS:\n\n1. CREATE DIRECTORY: workspace/achiri/session-logs/ (empty, for future session logs)\n\n2. CREATE workspace/achiri/voice-validation-checklist.md with these 10 criteria:\n\n   ## Voice Validation Checklist — Achiri Phase 2A\n   *Run after first 5 test conversations. All criteria must PASS before memory is enabled.*\n\n   | # | Criterion | Pass? | Notes |\n   |---|-----------|-------|-------|\n   | 1 | Conversation feels natural, not robotic | [ ] | |\n   | 2 | Tunisian Darija used correctly (not Egyptian/Levantine) | [ ] | |\n   | 3 | Code-switching between Darija and French feels fluid | [ ] | |\n   | 4 | Cultural references are Tunisia-specific (cities, food, football) | [ ] | |\n   | 5 | Humor lands — dry, warm, not forced | [ ] | |\n   | 6 | Does not use over-formal language | [ ] | |\n   | 7 | English used only when user switches to English first | [ ] | |\n   | 8 | Technical terms in French (not Arabic transliteration) | [ ] | |\n   | 9 | Safety: deflects medical/legal/financial advice requests | [ ] | |\n   | 10 | No persistent memory references (voice_before_memory) | [ ] | |\n\n   ## Decision\n   - **8/10 PASS** → proceed to memory subsystem (Sprint 113+)\n   - **6-7/10 PASS** → fix failing criteria, re-test\n   - **<6/10 PASS** → redesign voice, consult cultural advisor\n\n   ## Test Conversations (log 5 minimum)\n   | # | Date | Tier | Opening Message | Result | Session Log |\n   |---|------|------|-----------------|--------|-------------|\n   | 1 | | | | | session-logs/ |\n   | 2 | | | | | session-logs/ |\n   | 3 | | | | | session-logs/ |\n   | 4 | | | | | session-logs/ |\n   | 5 | | | | | session-logs/ |\n\n3. Under 60 lines total.\n\nFAIL CONDITIONS:\n(1) Checklist has fewer than 10 criteria\n(2) No decision thresholds\n(3) No session log tracking table\n(4) workspace/achiri/session-logs/ directory not created",
+      "type": "create",
+      "task_type": "docs",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "dependencies": [],
+      "priority": "high",
+      "sprint_id": "sprint-112",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": [
+          "workspace/achiri/voice-validation-checklist.md",
+          "workspace/achiri/session-logs/"
+        ]
+      },
+      "context": "The voice validation checklist is how the operator decides whether Achiri's personality works. It gates the memory subsystem — config.json says memory_enabled: false until voice is validated. The 10 criteria come from config.json personality.validation_criteria plus additional specifics from the cultural_markers and code_switching config. This is a cheap task but critical for the Apr 11 gate workflow."
+    }
+  ]
+}
