@@ -104,6 +104,21 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
   - Pipeline dry-run: 12 stages, 5 topics, 10 clips (mock mode, exit 0)
 - Timestamp: 2026-03-16T14:30:00Z
 
+### Sprint 098 — Production Video Quality + Live Publishing Gate (Block: production-quality)
+- Status: PASS | Commit: 133525e | Block: production-quality
+- Files modified: agents/scs001-editing/index.ts, agents/scs001-publishing/index.ts, agents/scs001-caption/index.ts, agents/scs001-orchestrator/index.ts
+- Files created: scripts/scs001/validate-production-quality.ts, workspace/sprints/sprint-098.json, workspace/gates/production-quality-check.json
+- Test: scripts/scs001/validate-production-quality.ts — PASS (15 videos OK, 15 SRTs valid, mock mode confirmed)
+- Pipeline: All 12 stages complete + production mode ready (SCS_EDITING_MODE=production to activate)
+- Swarm: attempted, timed out (qwen3:14b took >250s on editing agent). All 4 tasks written directly as fallback.
+- Changes:
+  - EditingAgent: buildProductionFFmpegCommand + drawtext overlays (macOS Helvetica font) + why_does_this_matter in insight segment
+  - PublishingAgent: dryRun:true hardcode removed — now respects mode parameter (constructor takes 'mock'|'live')
+  - Orchestrator: passes this.mode to PublishingAgent constructor
+  - CaptionAgent: FFmpeg subtitle burn-in in production mode, falls back to copy on failure
+- Activation: set SCS_EDITING_MODE=production + TIKTOK_ACCESS_TOKEN in .env to go live
+- Timestamp: 2026-03-16T15:30:00Z
+
 ### Sprint 097 — Phase 1 Activation: SCS_MODE=live config + readiness validator (Block: activation)
 - Status: PASS | Commit: b58ae19
 - Files modified: ecosystem.config.js, docs/gate-tracker.md
