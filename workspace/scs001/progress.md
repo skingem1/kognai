@@ -515,3 +515,21 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
 - T3 Skills progress: 5/6 complete. Remaining: achiri-memory.
 - Swarm used: no (direct write)
 - Timestamp: 2026-03-16T18:00:00Z
+
+## Sprint 128 — achiri-memory T3 skill (Phase 2A — semantic memory search)
+- Status: PASS
+- Commit: 16a93f7
+- Files created: agents/achiri/memory-search.ts, scripts/achiri/validate-memory-search.ts, workspace/sprints/sprint-128.json
+- Files modified: agents/achiri/index.ts (memory context injection in chat())
+- Test: scripts/achiri/validate-memory-search.ts — 11/11 PASS
+- Key results: searchMemory() keyword scoring finds relevant turns, getMemorySummary() topic extraction, injectMemoryContext() returns context block (null for empty history). Chat() now injects relevant past context into system prompt automatically.
+- T3 Skills: 6/6 COMPLETE. Gate Apr 14: READY.
+- Swarm used: no (direct write)
+- Timestamp: 2026-03-16T18:30:00Z
+
+## SESSION STATE — Sprints 126-128 (this session)
+- Sprint 126: paymee T3 #4/6 (Paymee checkout URL + /upgrade endpoint) — PASS
+- Sprint 127: achiri-voice T3 #5/6 (voice-friendly formatter + /voice endpoint) — PASS  
+- Sprint 128: achiri-memory T3 #6/6 (semantic memory search + context injection) — PASS
+- T3 GATE APR 14: ALL 6 SKILLS COMPLETE
+- Next sprint (129): Achiri Hetzner deployment — public URL before Apr 25 alpha
