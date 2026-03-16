@@ -1,0 +1,61 @@
+{
+  "sprint": "169",
+  "name": "Gate tracker auto-update script + PM2 cron",
+  "block": "Phase 1 — session context accuracy",
+  "goal": "Write scripts/update-gate-tracker.ts that reads current gate data (phase1-5-gate.json + manual-posts.jsonl + Achiri state) and rewrites docs/gate-tracker.md with accurate status. Phase 0→1 gate (Mar 13) = PASSED. Phase 1.5 (Apr 7) = current progress. Register as PM2 cron (07:08 UTC daily, after kognai-gate-regen). Keeps gate-tracker.md current so Claude sessions start with accurate gate state.",
+  "rationale": "docs/gate-tracker.md shows all gates as Pending including Phase 0→1 (Mar 13, already passed). Claude reads this file every session. Stale gate data causes misaligned planning. Auto-update ensures accurate context.",
+  "swarm": "NOT USED — 1 new script + 1 ecosystem.config.js edit + 1 validation script. Direct write.",
+  "tasks": [
+    {
+      "id": "169-01",
+      "title": "scripts/update-gate-tracker.ts — rewrite gate-tracker.md with current status",
+      "description": "New script. Reads: (1) workspace/gates/phase1-5-gate.json for Phase 1.5 posts/views. (2) workspace/scs001/manual-posts.jsonl for post count. Writes docs/gate-tracker.md with updated table: Phase 0→1 (Mar 13) = [x] PASS (pipeline operational, 141 videos generated). Phase 1.5 Decision (Apr 7) = [ ] Pending — X/30 posts, Y/500 views. Phase 1→2A (Apr 11) = [ ] Pending. Achiri Lite Alpha (Apr 25) = [ ] Pending. All later gates = [ ] Pending. Preserves table format. Adds 'Updated: YYYY-MM-DD HH:MM' header. Exit 0 on success.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-169",
+      "deliverables": {
+        "code": ["scripts/update-gate-tracker.ts"],
+        "tests": [],
+        "docs": ["docs/gate-tracker.md"]
+      }
+    },
+    {
+      "id": "169-02",
+      "title": "ecosystem.config.js — add kognai-gate-tracker-update PM2 cron",
+      "description": "Add new PM2 app entry: name 'kognai-gate-tracker-update', script 'scripts/update-gate-tracker.ts', interpreter ts-node, cron_restart '8 7 * * *' (07:08 daily after gate-regen at 06:55), autorestart false, watch false. Logs to logs/gate-tracker-update-out.log + error.log.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-169",
+      "deliverables": {
+        "code": ["ecosystem.config.js"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "169-03",
+      "title": "validate-sprint-169.ts — 5-check validation",
+      "description": "1) update-gate-tracker.ts exists. 2) update-gate-tracker.ts reads phase1-5-gate.json. 3) update-gate-tracker.ts writes gate-tracker.md. 4) ecosystem.config.js contains 'kognai-gate-tracker-update'. 5) Run script and verify gate-tracker.md contains 'PASS' (Phase 0→1). All 5 must pass.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-169",
+      "deliverables": {
+        "code": ["scripts/scs001/validate-sprint-169.ts"],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ]
+}

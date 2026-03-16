@@ -523,6 +523,26 @@ module.exports = {
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
     {
+      // Sprint 169: Gate tracker auto-update — runs 07:08 UTC daily (after gate-regen at 06:55)
+      // Rewrites docs/gate-tracker.md with accurate Phase 0→1 PASS + Phase 1.5 progress.
+      // Keeps gate-tracker current so Claude Code sessions start with correct context.
+      name: "kognai-gate-tracker-update",
+      script: "scripts/update-gate-tracker.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: false,
+      watch: false,
+      cron_restart: "8 7 * * *",
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/gate-tracker-update-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/gate-tracker-update-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
+    {
       // Sprint 157: Brief regeneration — runs 06:45 UTC daily (before digest at 07:00)
       // Regenerates workspace/sprint-brief.md so every Claude Code session starts with
       // a fresh, accurate brief — no need to read raw MEMORY.md or progress.md.

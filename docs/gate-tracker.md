@@ -1,28 +1,18 @@
-*Updated: 2026-03-16*
-*Integrated with Master Architecture v14 + Achiri Master Plan v7*
+# GATE TRACKER
+*Updated: 2026-03-16 20:19 (auto by scripts/update-gate-tracker.ts)*
 
 # GATE TRACKER
 # ═══════════════════════════════════════════════
 
 | Gate | Target Date | Status | Result | Notes |
 |---|---|---|---|---|
-| SCS-001 Block A (Signal Pipeline) | Mar 16 | [x] CONDITIONAL PASS | PASS* | Trend+Discovery+ClipDetection e2e validated. *Calibration set deferred (human curation). |
-| OpenClaw v2026.3.7 Setup | Mar 10 | [ ] Deferred | | Deferred to Sprint 098+. gateway.auth.mode + T1 skills (13). Was Mar 10. |
-| Phase 0 → Phase 1 | Mar 16 | [x] PASS | PASS | Gate validated Mar 16: TASK_TARGET routing ✓, idempotent replay ✓, pipeline dry-run ✓. Report: workspace/gates/phase0-phase1-gate.json |
-| T2 Skills Installation | Mar 14 | [ ] Deferred | | Deferred to Sprint 098+. 6 content/monetization skills. Was Mar 14. |
-| Phase 1.5 Decision | Apr 7 | [ ] Pending | | Kill switch: <500 views/30 posts. Gate script: scripts/scs001/generate-phase1-5-gate.ts |
-| Phase 1 → Phase 2A | Apr 11 | [ ] Pending | | |
-| T3 Skills Installation | Apr 14 | [x] PASS | PASS | 6/6 complete Sprints 123-128: safety/eval-harness/derja-profiler/paymee/voice/memory |
-| Achiri Lite Alpha Launch | Apr 25 | [ ] Pending | | Deploy: scripts/deploy-achiri.sh. Set ACHIRI_ALPHA_ONLY=true + ACHIRI_ALPHA_WHITELIST |
-| Lite Alpha Gate (voice works?) | May 1 | [ ] Pending | | Kill switch: retention <20% after 2 fixes |
-| Full Alpha Gate (memory works?) | May 14 | [ ] Pending | | + kill switch checks |
+| Phase 0 → Phase 1 | Mar 13 | [x] PASS | PROCEED | Pipeline operational · 141 videos generated |
+| Phase 1.5 Decision | Apr 7 | [ ] Pending |  | 0/30 posts · 0/500 views · 22d remaining |
+| Phase 1 → Phase 2A | Apr 11 | [ ] Pending | | 26d remaining |
+| Achiri Lite Alpha Launch | Apr 25 | [ ] Pending | | Waitlist: 0 · 40d remaining |
+| Lite Alpha Gate (voice works?) | May 1 | [ ] Pending | | |
+| Full Alpha Gate (memory works?) | May 14 | [ ] Pending | | |
 | Phase 2A → Phase 2B | May 30 | [ ] Pending | | |
 | Phase 2B Gate | Jun 27 | [ ] Pending | | |
-| Phase 3 Gate | Sep 26 | [ ] Pending | | ClawRouter + CEO Wallet live |
+| Phase 3 Gate | Sep 26 | [ ] Pending | | |
 | Year-End Review | Dec 19 | [ ] Pending | | |
-
-## KILL SWITCHES (check at every gate)
-- [ ] Swarm approval rate >80%?
-- [ ] Mac Mini memory <22GB?
-- [ ] Daily oversight <6h?
-- [ ] No agent ignoring constraints post-compaction?
