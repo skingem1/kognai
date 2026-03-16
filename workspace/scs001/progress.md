@@ -570,3 +570,14 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
 - Swarm used: no (surgical edit + new validation script)
 - Operator action required: run deploy-achiri.sh + set ACHIRI_BASE_URL + ACHIRI_ALPHA_ONLY=true + ACHIRI_ALPHA_WHITELIST in Telegram bot .env
 - Timestamp: 2026-03-16T20:00:00Z
+
+## Sprint 132 — Phase 1.5 Gate Review (Phase 1 — Apr 7 kill switch)
+- Status: PASS
+- Commit: 0e14131
+- Files created: scripts/scs001/generate-phase1-5-gate.ts, scripts/scs001/validate-phase1-5-gate.ts, workspace/gates/phase1-5-gate.json, workspace/sprints/sprint-132.json
+- Files modified: agents/telegram-bot/commands.ts (handleGate), agents/telegram-bot/index.ts (/gate dispatch)
+- Test: scripts/scs001/validate-phase1-5-gate.ts — 5/5 PASS
+- Key results: generate-phase1-5-gate.ts reads manual-posts.jsonl, writes gate JSON with PROCEED/KILL. /gate Telegram command shows real-time gate status with countdown. Gate JSON written: workspace/gates/phase1-5-gate.json (currently FAIL — 0 posts).
+- Swarm used: no (direct write)
+- Operator: must run npx ts-node scripts/scs001/record-manual-post.ts --video-id <id> --views <n> after each manual TikTok post
+- Timestamp: 2026-03-16T20:30:00Z
