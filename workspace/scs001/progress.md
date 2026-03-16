@@ -812,3 +812,14 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
 - Changes: getQueueStats(): reads publish-ledger.jsonl + manual-posts.jsonl, computes unposted=141. Digest: added queue line (📋 Queue: 141 unposted videos ready to post), Stripe status line (💳 Stripe: 🔴 NOT LIVE if STRIPE_SECRET_KEY missing). Tip updated to mention /queue. DRY_RUN output confirmed.
 - Gate: ~22 days to Apr 7, 0/30 posts | Achiri alpha: Apr 25 (40d)
 - Timestamp: 2026-03-16T18:30:00Z
+
+## Sprint 152 — Digest urgency fix + inline top-3 queue on WARNING
+- Status: PASS
+- Commit: 873dab5
+- Files created: scripts/scs001/validate-sprint-152.ts, workspace/sprints/sprint-152.json
+- Files modified: scripts/daily-digest.ts
+- Test: scripts/scs001/validate-sprint-152.ts — 5/5 PASS
+- Swarm used: no (direct write)
+- Changes: getUrgencySignal: gate.count===0 check added — 0 posts now shows '⚠️ WARNING — 0 posts recorded. Start posting now.' (was false 'on track'). getQueueStats: returns top3 (array of 3 unposted video_ids). Digest: when showKillReminder && queue.top3.length > 0, shows '📌 Post these now: /record <id> 0' for each. DRY_RUN confirmed WARNING + /record shortcuts in output.
+- Gate: ~22 days to Apr 7, 0/30 posts | Achiri alpha: Apr 25 (40d)
+- Timestamp: 2026-03-16T18:45:00Z
