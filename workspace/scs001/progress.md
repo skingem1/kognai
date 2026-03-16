@@ -702,3 +702,14 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
 - Gate: ~22 days to Apr 7, 0/30 posts
 - Session: 4 sprints this session (138-141). Context limit reached — handoff.
 - Timestamp: 2026-03-16T15:45:00Z
+
+## Sprint 142 — /review Telegram command
+- Status: PASS
+- Commit: 69522a6
+- Files created: scripts/scs001/validate-sprint-142.ts, workspace/sprints/sprint-142.json
+- Files modified: agents/telegram-bot/commands.ts, agents/telegram-bot/index.ts
+- Test: scripts/scs001/validate-sprint-142.ts — 6/6 PASS
+- Swarm used: no (direct write — 2 file edits + 1 new script)
+- Changes: handleReview() added to commands.ts (owner-only, reads experiments.jsonl + latest run dir, top-3 QC-passed videos with video_id/hook_formula/speaker/path/record command). handleHelp updated. index.ts imports+routes /review.
+- Gate: ~22 days to Apr 7, 0/30 posts
+- Timestamp: 2026-03-16T16:00:00Z
