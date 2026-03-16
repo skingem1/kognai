@@ -1,0 +1,80 @@
+{
+  "tasks": [
+    {
+      "id": "100-01",
+      "title": "Update .env.example — complete Phase 1 env var documentation",
+      "description": "MODIFY ONE EXISTING FILE: .env.example. Add all Phase 1 required env vars with comments and source instructions. Group into labeled sections. Mark Phase 1 critical vars clearly.",
+      "type": "docs",
+      "task_type": "docs",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "dependencies": [],
+      "priority": "critical",
+      "sprint_id": "sprint-100",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": [".env.example"]
+      },
+      "context": "Current .env.example is stale (missing Supabase, SCS vars, media APIs). Operator needs to know which vars to set for Phase 1 live TikTok posting."
+    },
+    {
+      "id": "100-02",
+      "title": "Create scripts/setup-phase1.sh — one-shot env validation + bucket + dry-run",
+      "description": "CREATE ONE NEW FILE: scripts/setup-phase1.sh. Bash script that validates env vars, creates Supabase bucket, runs preflight, and does mock dry-run.",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "dependencies": ["100-01"],
+      "priority": "critical",
+      "sprint_id": "sprint-100",
+      "deliverables": {
+        "code": ["scripts/setup-phase1.sh"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Operator needs a one-command setup script for Phase 1."
+    },
+    {
+      "id": "100-03",
+      "title": "Create run-live.sh — preflight-gated PM2 launcher for scs001-live",
+      "description": "CREATE ONE NEW FILE: run-live.sh (project root). Bash. Runs preflight then starts scs001-live via PM2.",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "dependencies": [],
+      "priority": "high",
+      "sprint_id": "sprint-100",
+      "deliverables": {
+        "code": ["run-live.sh"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Operator entry point for going live: preflight-gated PM2 start."
+    },
+    {
+      "id": "100-04",
+      "title": "Update strategic-context.md — Phase 1 ACTIVE from Mar 17",
+      "description": "MODIFY ONE EXISTING FILE: docs/strategic-context.md. Mark Phase 1 as ACTIVE. Update current sprint number to 100.",
+      "type": "docs",
+      "task_type": "docs",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "dependencies": [],
+      "priority": "high",
+      "sprint_id": "sprint-100",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": ["docs/strategic-context.md"]
+      },
+      "context": "strategic-context.md says Current Sprint 064 — stale. Every new session reads this file."
+    }
+  ]
+}
