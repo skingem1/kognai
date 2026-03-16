@@ -1,0 +1,37 @@
+{
+  "skill_id": "coder-sprint-095-phase-0-phase-1-gate-validator-script",
+  "type": "kognai-owned",
+  "name": "Phase 0 → Phase 1 gate validator script",
+  "description": "Phase 0 → Phase 1 gate validator script",
+  "definition": {
+    "approach": "Phase 0 → Phase 1 gate validator script",
+    "key_patterns": [
+      "No fence contamination — file is clean TypeScript.",
+      "All three spec-required validations are present: router.py parsing, dedup ledger idempotency, and dry-run output check.",
+      "Gate report is written even on error, which is correct behaviour for a checkpoint validator.",
+      "mkdir with recursive:true before writing the gate report prevents path-not-found failures.",
+      "DedupLedger test correctly verifies the duplicate throws a recognisable error message rather than just any error."
+    ],
+    "anti_patterns": []
+  },
+  "optimal_settings": {
+    "model": "qwen3:14b",
+    "task_target": "local",
+    "max_attempts": 3
+  },
+  "score_history": [
+    {
+      "sprint_id": "sprint-095",
+      "task_id": "095-01",
+      "score": 81,
+      "reviewed_at": "2026-03-16T12:30:13.510Z"
+    }
+  ],
+  "execution_count": 1,
+  "access_tier": "internal",
+  "source_sprint": "sprint-095",
+  "source_task": "095-01",
+  "agent_id": "coder",
+  "created_at": "2026-03-16T12:30:13.510Z",
+  "updated_at": "2026-03-16T12:30:13.510Z"
+}

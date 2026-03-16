@@ -1,0 +1,37 @@
+{
+  "skill_id": "coder-sprint-095-update-gate-tracker-md-with-phase-0-phas",
+  "type": "kognai-owned",
+  "name": "Update gate-tracker.md with Phase 0 → Phase 1 gate result",
+  "description": "Update gate-tracker.md with Phase 0 → Phase 1 gate result",
+  "definition": {
+    "approach": "Update gate-tracker.md with Phase 0 → Phase 1 gate result",
+    "key_patterns": [
+      "No fence contamination — file opens cleanly as valid Markdown.",
+      "Gate table is comprehensive, covering all phases from current through Year-End Review.",
+      "Kill switch checklist is present and actionable at every gate review.",
+      "Integration note (Master Architecture v14 + Achiri Master Plan v7) provides useful provenance context.",
+      "Conditional pass notation with asterisk and deferred calibration note is clear and honest about what was and was not validated."
+    ],
+    "anti_patterns": []
+  },
+  "optimal_settings": {
+    "model": "qwen3:14b",
+    "task_target": "local",
+    "max_attempts": 3
+  },
+  "score_history": [
+    {
+      "sprint_id": "sprint-095",
+      "task_id": "095-02",
+      "score": 87,
+      "reviewed_at": "2026-03-16T12:32:17.377Z"
+    }
+  ],
+  "execution_count": 1,
+  "access_tier": "internal",
+  "source_sprint": "sprint-095",
+  "source_task": "095-02",
+  "agent_id": "coder",
+  "created_at": "2026-03-16T12:32:17.377Z",
+  "updated_at": "2026-03-16T12:32:17.377Z"
+}

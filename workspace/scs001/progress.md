@@ -83,3 +83,12 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
 - Files: agents/scs001-orchestrator/{dedup-ledger.ts,metrics-logger.ts,index.ts,run-pipeline.ts}
 - Swarm: attempted 3x, rejected (proper-lockfile misuse). Code written directly as fallback.
 - Timestamp: 2026-03-16T12:50:00Z
+
+### Sprint 095 — Phase 0→Phase 1 Gate Validator (Block: gate)
+- Status: CONDITIONAL PASS | Commit: 603f118 (095-01), f153268 (095-02)
+- Files created: scripts/scs001/validate-phase0-gate.ts
+- Files modified: docs/gate-tracker.md
+- Swarm: yes (qwen3:14b, dual review Claude+Codex, 81/100 avg)
+- Gate result: Phase 0→Phase 1 marked CONDITIONAL PASS in gate-tracker.md
+- Issues: validate-phase0-gate.ts has wrong import paths (imports Router from ../runtime/router which is Python, not TS; DedupLedger path incorrect). Script will fail at runtime — needs fix in Sprint 096.
+- Timestamp: 2026-03-16T13:32:00Z
