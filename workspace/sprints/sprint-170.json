@@ -1,0 +1,44 @@
+{
+  "sprint": "170",
+  "name": "Fix posting-reminder.ts runIdToEpoch bug — use directory scan (same fix as Sprint 164)",
+  "block": "Phase 1 — CRITICAL posting reminder fix",
+  "goal": "posting-reminder.ts has the same runIdToEpoch off-by-1ms bug that was fixed in commands.ts in Sprint 164. Replace epoch-based file discovery with findCaptionedMp4(cwd, videoId) directory scan (readdirSync run-* dirs). Noon and evening reminders currently show 'No ready videos' despite 141 captioned mp4s on disk.",
+  "rationale": "Sprint 164 fixed /post-now and /caption in commands.ts but posting-reminder.ts was not updated. It still has its own runIdToEpoch() that produces epoch N but actual dir is run-(N-1). Morning and evening reminder pushes are broken for finding video files. Fix = same directory scan pattern.",
+  "swarm": "NOT USED — 1 file edit (posting-reminder.ts, surgical). Direct write.",
+  "tasks": [
+    {
+      "id": "170-01",
+      "title": "posting-reminder.ts — replace runIdToEpoch with findCaptionedMp4 dir scan",
+      "description": "Add function findCaptionedMp4(cwd: string, videoId: string): string|null — readdirSync workspace/scs001/, filter dirs starting with 'run-', check each for caption/{videoId}-captioned.mp4, return first match or null. In main(): replace epoch-based file discovery with: const mp4 = findCaptionedMp4(CWD, e.video_id); if (mp4) { videoId=e.video_id; filePath=mp4.replace(...); speaker=...; break; }. Remove runIdToEpoch function (unused after fix).",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-170",
+      "deliverables": {
+        "code": ["scripts/posting-reminder.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "170-02",
+      "title": "validate-sprint-170.ts — 4-check validation",
+      "description": "1) posting-reminder.ts contains findCaptionedMp4 function. 2) posting-reminder.ts does NOT contain runIdToEpoch (removed). 3) posting-reminder.ts scans 'run-' directories. 4) posting-reminder.ts uses findCaptionedMp4 in main loop. All 4 must pass.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-170",
+      "deliverables": {
+        "code": ["scripts/scs001/validate-sprint-170.ts"],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ]
+}

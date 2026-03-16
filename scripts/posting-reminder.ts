@@ -26,15 +26,17 @@ const TOPICS_PATH  = path.join(CWD, 'workspace', 'scs001', 'viral-topics.json');
 const POSTS_TARGET = 30;
 const GATE_DATE    = new Date('2026-04-07T00:00:00Z');
 
-function runIdToEpoch(runId: string): number | null {
+// Sprint 170: directory-scan approach (epoch-to-path had 1ms off-by-one — Sprint 164 fix)
+function findCaptionedMp4(cwd: string, videoId: string): string | null {
+  const scs001Dir = path.join(cwd, 'workspace', 'scs001');
   try {
-    const ts = runId.replace('scs001-', '');
-    const [datePart, timePart] = ts.split('T');
-    const tp = timePart.replace('Z', '').split('-');
-    const iso = `${datePart}T${tp[0]}:${tp[1]}:${tp[2]}.${tp[3]}Z`;
-    const ms = new Date(iso).getTime();
-    return isNaN(ms) ? null : ms;
-  } catch { return null; }
+    const runs = fs.readdirSync(scs001Dir).filter(d => d.startsWith('run-'));
+    for (const run of runs) {
+      const mp4 = path.join(scs001Dir, run, 'caption', `${videoId}-captioned.mp4`);
+      if (fs.existsSync(mp4)) return mp4;
+    }
+  } catch { /* ignore */ }
+  return null;
 }
 
 function sendTelegram(chatId: string, text: string): Promise<void> {
@@ -102,10 +104,8 @@ async function main(): Promise<void> {
 
     for (const e of entries) {
       if (recordedIds.has(e.video_id)) continue;
-      const epoch = runIdToEpoch(e.run_id);
-      if (!epoch) continue;
-      const mp4 = path.join(CWD, 'workspace', 'scs001', `run-${epoch}`, 'caption', `${e.video_id}-captioned.mp4`);
-      if (fs.existsSync(mp4)) {
+      const mp4 = findCaptionedMp4(CWD, e.video_id);
+      if (mp4) {
         videoId  = e.video_id;
         filePath = mp4.replace(process.env.HOME ?? '/Users/tarekmnif', '~');
         speaker  = e.speaker ?? null;
