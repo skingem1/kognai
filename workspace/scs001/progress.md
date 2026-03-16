@@ -637,3 +637,23 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
 - Sprint 136: Achiri /waitlist command (alpha waitlist, duplicate prevention, owner list view)
 - All Achiri alpha code COMPLETE. Operator must deploy Achiri (deploy-achiri.sh) and set env vars.
 - Gate: 22 days until Apr 7, need 30 posts + 500 views. Daily digest pushes morning reminders.
+
+## Sprint 137 — /waitlist export + smoke test cron (Phase 2A + Phase 1)
+- Status: PASS
+- Commit: 7986cfd
+- Files modified: agents/telegram-bot/commands.ts (handleWaitlist export subcommand + list footer hint), ecosystem.config.js (kognai-smoke-test PM2 cron)
+- Files created: scripts/achiri/validate-sprint-137.ts, workspace/sprints/sprint-137.json
+- Test: scripts/achiri/validate-sprint-137.ts — 10/10 PASS
+- Key results: /waitlist export (owner-only) outputs ACHIRI_ALPHA_WHITELIST=<comma-ids> ready to paste into .env. /waitlist list footer now hints /waitlist export. kognai-smoke-test PM2 cron fires 06:00 daily (1h before digest), writes fresh smoke-test-latest.json.
+- Operator: pm2 start ecosystem.config.js --only kognai-smoke-test kognai-daily-digest kognai-daily-digest
+- Swarm used: no (direct edits)
+- Timestamp: 2026-03-16T23:00:00Z
+
+## SESSION SUMMARY — Sprints 134-137
+- Sprint 134: Daily pipeline digest PM2 cron (07:00 daily push)
+- Sprint 135: Achiri /start onboarding (Darija example + Apr 25 note)
+- Sprint 136: Achiri /waitlist (alpha waitlist with duplicate prevention)
+- Sprint 137: /waitlist export (ACHIRI_ALPHA_WHITELIST string) + smoke test cron (06:00)
+- Context limit reached — handoff. Latest commit: 7986cfd.
+- PM2 commands to run: pm2 start ecosystem.config.js --only kognai-smoke-test,kognai-daily-digest,telegram-bot
+- Gate: 22 days until Apr 7, need 30 posts + 500 views, currently 0/30.
