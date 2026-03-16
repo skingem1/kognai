@@ -1,0 +1,61 @@
+{
+  "sprint": "133",
+  "name": "Gate-tracker T3 PASS + /help command update (Achiri + /gate)",
+  "block": "Phase 2A — Achiri housekeeping",
+  "goal": "Two quick but important updates: (1) docs/gate-tracker.md — mark T3 Skills Installation as [x] PASS (all 6/6 done Sprints 123-128, Apr 14 gate ready). (2) handleHelp() — add /achiri and /gate to the help command so operators know these exist.",
+  "rationale": "Gate-tracker is stale — shows T3 as Pending even though all 6/6 skills are complete. This misleads the daily brief. /help is missing /achiri and /gate added in Sprints 116/132.",
+  "swarm": "NOT USED — simple file edits. Direct write.",
+  "tasks": [
+    {
+      "id": "133-01",
+      "title": "docs/gate-tracker.md — mark T3 Skills Installation as [x] PASS",
+      "description": "Change: '| T3 Skills Installation | Apr 14 | [ ] Pending | | 6 Achiri-specific skills |' → '| T3 Skills Installation | Apr 14 | [x] PASS | PASS | 6/6 complete Sprints 123-128 (safety/eval/derja/paymee/voice/memory) |'. Also update Phase 1→2A gate notes if needed.",
+      "type": "modify",
+      "task_type": "doc",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-133",
+      "deliverables": {
+        "code": ["docs/gate-tracker.md"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "133-02",
+      "title": "commands.ts handleHelp() — add /achiri and /gate",
+      "description": "Add '/achiri <msg> — Chat with Achiri AI (free tier)' and '/gate — Phase 1.5 gate review (Apr 7 kill switch)' to the help message.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-133",
+      "deliverables": {
+        "code": ["agents/telegram-bot/commands.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "133-03",
+      "title": "scripts/achiri/validate-sprint-133.ts — 4/4 validation",
+      "description": "Tests: (1) gate-tracker.md has [x] PASS for T3 Skills; (2) gate-tracker.md mentions 6/6 or Sprints 123-128; (3) /achiri in handleHelp source; (4) /gate in handleHelp source. 4/4 PASS.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-133",
+      "deliverables": {
+        "code": ["scripts/achiri/validate-sprint-133.ts"],
+        "tests": ["scripts/achiri/validate-sprint-133.ts"],
+        "docs": []
+      }
+    }
+  ]
+}

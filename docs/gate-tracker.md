@@ -10,10 +10,10 @@
 | OpenClaw v2026.3.7 Setup | Mar 10 | [ ] Deferred | | Deferred to Sprint 098+. gateway.auth.mode + T1 skills (13). Was Mar 10. |
 | Phase 0 → Phase 1 | Mar 16 | [x] PASS | PASS | Gate validated Mar 16: TASK_TARGET routing ✓, idempotent replay ✓, pipeline dry-run ✓. Report: workspace/gates/phase0-phase1-gate.json |
 | T2 Skills Installation | Mar 14 | [ ] Deferred | | Deferred to Sprint 098+. 6 content/monetization skills. Was Mar 14. |
-| Phase 1.5 Decision | Apr 7 | [ ] Pending | | Kill switch: <500 views/30 posts |
+| Phase 1.5 Decision | Apr 7 | [ ] Pending | | Kill switch: <500 views/30 posts. Gate script: scripts/scs001/generate-phase1-5-gate.ts |
 | Phase 1 → Phase 2A | Apr 11 | [ ] Pending | | |
-| T3 Skills Installation | Apr 14 | [ ] Pending | | 6 Achiri-specific skills |
-| Achiri Lite Alpha Launch | Apr 25 | [ ] Pending | | |
+| T3 Skills Installation | Apr 14 | [x] PASS | PASS | 6/6 complete Sprints 123-128: safety/eval-harness/derja-profiler/paymee/voice/memory |
+| Achiri Lite Alpha Launch | Apr 25 | [ ] Pending | | Deploy: scripts/deploy-achiri.sh. Set ACHIRI_ALPHA_ONLY=true + ACHIRI_ALPHA_WHITELIST |
 | Lite Alpha Gate (voice works?) | May 1 | [ ] Pending | | Kill switch: retention <20% after 2 fixes |
 | Full Alpha Gate (memory works?) | May 14 | [ ] Pending | | + kill switch checks |
 | Phase 2A → Phase 2B | May 30 | [ ] Pending | | |

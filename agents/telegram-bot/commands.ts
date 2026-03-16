@@ -85,12 +85,18 @@ export async function handleHelp(chatId: number): Promise<void> {
   await sendMessage(chatId, [
     '📖 *Available Commands*',
     '',
+    '🎬 *TikTok Pipeline*',
     '/start — Register & see your account',
     '/preview — Show the next post candidate',
     '/schedule — Configure daily posting frequency',
     '/status — Latest SCS-001 pipeline run',
     '/stats — Pipeline statistics',
     '/subscribe — Upgrade your plan (coming soon)',
+    '/gate — Phase 1.5 gate review (Apr 7 kill switch)',
+    '',
+    '🤖 *Achiri AI Companion*',
+    '/achiri <msg> — Chat with Achiri (free tier, Darija/Arabic/French)',
+    '',
     '/help — This message',
   ].join('\n'));
 }
