@@ -493,3 +493,14 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
 - T3 Skills progress: 3/6 complete (achiri-safety, eval-harness, derja-profiler). Remaining: achiri-voice, achiri-memory, paymee.
 - Session: 4 sprints (122-125) in this session. Context full — handoff written.
 - Timestamp: 2026-03-16T17:30:00Z
+
+## Sprint 126 — paymee T3 skill (Phase 2A — Achiri monetization)
+- Status: PASS
+- Commit: 1bdf2a5
+- Files created: agents/achiri/paymee.ts, scripts/achiri/validate-paymee.ts, workspace/sprints/sprint-126.json
+- Files modified: agents/achiri/server.ts (GET /upgrade endpoint, upgrade_url in limit_exceeded)
+- Test: scripts/achiri/validate-paymee.ts — 14/14 PASS
+- Key results: createCheckoutUrl mock mode works, unique order_id per call, Arabic upgrade message, GET /upgrade endpoint returns checkout_url+amount_tnd. limit_exceeded response now includes upgrade_url.
+- T3 Skills progress: 4/6 complete (achiri-safety, eval-harness, derja-profiler, paymee). Remaining: achiri-voice, achiri-memory.
+- Swarm used: no (multi-file integration — direct write)
+- Timestamp: 2026-03-16T17:45:00Z
