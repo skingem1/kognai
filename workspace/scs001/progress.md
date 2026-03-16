@@ -713,3 +713,14 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
 - Changes: handleReview() added to commands.ts (owner-only, reads experiments.jsonl + latest run dir, top-3 QC-passed videos with video_id/hook_formula/speaker/path/record command). handleHelp updated. index.ts imports+routes /review.
 - Gate: ~22 days to Apr 7, 0/30 posts
 - Timestamp: 2026-03-16T16:00:00Z
+
+## Sprint 143 — /record Telegram command
+- Status: PASS
+- Commit: 4dcdad7
+- Files created: scripts/scs001/validate-sprint-143.ts, workspace/sprints/sprint-143.json
+- Files modified: agents/telegram-bot/commands.ts, agents/telegram-bot/index.ts
+- Test: scripts/scs001/validate-sprint-143.ts — 6/6 PASS
+- Swarm used: no (direct write)
+- Changes: handleRecord() parses /record <video_id> <views> [title], appends to manual-posts.jsonl, returns gate progress. handleHelp updated. Full posting loop in Telegram now: /review → post → /record → /post-reminder.
+- Gate: ~22 days to Apr 7, 0/30 posts
+- Timestamp: 2026-03-16T16:15:00Z
