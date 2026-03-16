@@ -1,5 +1,5 @@
 # KOGNAI SESSION MEMORY
-*Last updated: Sprint 115 — 2026-03-16*
+*Last updated: Sprint 154 — 2026-03-16*
 
 ---
 
@@ -10,11 +10,13 @@
 - Production mode: set `SCS_EDITING_MODE=production` + `TIKTOK_ACCESS_TOKEN` in .env
 
 ## Kognai State
-- Last commit: a1f5271 (Sprint 115 shipped 2026-03-16)
+- Last commit: b2eb02b (Sprint 154 shipped 2026-03-16)
 - Sprint numbering: Invoica legacy 001-062e → Kognai starts 063+
-- Current sprint: 116 (next)
-- Note: d06f06e consolidation commit by Opus session included many dashboard/infra additions (sessions parser, 35 skills, CSS updates)
+- Current sprint: 155 (next)
 - Gate reports: workspace/gates/phase0-phase1-gate.json, workspace/gates/phase1-activation-readiness.json, workspace/gates/production-quality-check.json
+- Gate status: 0/30 posts, ~22 days to Apr 7 Phase 1.5 gate (WARNING urgency)
+- Stripe: NOT LIVE (STRIPE_SECRET_KEY not set — human action required)
+- Achiri alpha: Apr 25 (~40d) — deploy script ready (scripts/deploy-achiri.sh), alpha whitelist file-based
 
 ## Build Priority Sequence
 
@@ -60,7 +62,46 @@
 | 113 | achiri-llm | Achiri LLM wiring — Ollama (free/qwen3:4b) + Anthropic (paid/claude-haiku) + voice validation 10/10 | ✅ PASS |
 | 114 | achiri-memory | Achiri memory subsystem — per-user JSONL history (memory-store.ts), 50-turn cap, 3-turn validation PASS | ✅ PASS |
 | 115 | achiri-api | Achiri HTTP API — POST /chat Express server, PM2 achiri-api, 5/5 endpoint validation PASS | ✅ PASS |
-| **116** | **?** | **NEXT** | ⏳ pending |
+| 116 | achiri-telegram | Achiri Telegram Bridge — /achiri command wired to conversation handler | ✅ PASS |
+| 117 | experiment-meta | Experiment metadata fix — hook_formula + speaker via insight_id lookup, enrich publish-ledger | ✅ PASS |
+| 118 | readiness-fix | Readiness parser fix — pipeline_runs_exist + current_posts(141) + current_qc_pass(100%) | ✅ PASS |
+| 119 | ops | Gitignore + Manual Post Tracker — exclude pipeline artifacts, add manual post CLI | ✅ PASS |
+| 120 | telegram | Telegram /status V2 — manual posts gate progress + smoke-test-latest.json report | ✅ PASS |
+| 121 | ops | Video Review Script — list generated videos with hook_formula+speaker+QC for manual posting | ✅ PASS |
+| 122 | achiri | Achiri Daily Message Limit — enforce messages_per_day per tier | ✅ PASS |
+| 123 | T3-skill | achiri-safety skill — pre-flight content safety filter (T3 Skills #1/6) | ✅ PASS |
+| 124 | T3-skill | eval-harness T3 skill — automated Achiri conversation quality scorer (#2/6) | ✅ PASS |
+| 125 | T3-skill | derja-profiler T3 skill — Darija dialect and formality detection (#3/6) | ✅ PASS |
+| 126 | T3-skill | paymee T3 skill — Achiri monetization (#4/6) | ✅ PASS |
+| 127 | T3-skill | achiri-voice T3 skill — voice message processing (#5/6) | ✅ PASS |
+| 128 | T3-skill | achiri-memory T3 skill — semantic memory search (#6/6) | ✅ PASS |
+| 129 | achiri | Achiri Hetzner Deployment Package — public URL deploy script | ✅ PASS |
+| 130 | achiri | Achiri HTTP Bridge — Telegram production wiring | ✅ PASS |
+| 131 | achiri | Achiri Alpha Access Gate — Apr 25 alpha gating | ✅ PASS |
+| 132 | gate | Phase 1.5 Gate Review — Apr 7 kill switch | ✅ PASS |
+| 133 | housekeeping | Gate-tracker T3 PASS + /help update | ✅ PASS |
+| 134 | ops | Daily Pipeline Digest — gate monitoring | ✅ PASS |
+| 135 | achiri | Achiri /start Onboarding — alpha prep | ✅ PASS |
+| 136 | achiri | Achiri Waitlist Command — alpha prep | ✅ PASS |
+| 137 | ops | /waitlist export + smoke test cron | ✅ PASS |
+| 138 | ops | Cadence tracker + /achiri-health | ✅ PASS |
+| 139 | dashboard | Dashboard Achiri stats panel | ✅ PASS |
+| 140 | telegram | /post-reminder Telegram command | ✅ PASS |
+| 141 | ops | Pipeline health watchdog + dashboard parser fixes | ✅ PASS |
+| 142 | telegram | /review Telegram command — top-3 QC-passed videos | ✅ PASS |
+| 143 | telegram | /record Telegram command — record posted video to gate tracker | ✅ PASS |
+| 144 | telegram | /update-views + daily-digest hint | ✅ PASS |
+| 145 | gate | Gate urgency escalation in daily digest + gate regen cron | ✅ PASS |
+| 146 | achiri | /invite-achiri + file-based runtime alpha whitelist | ✅ PASS |
+| 147 | achiri | /deploy-status Achiri alpha deploy checklist | ✅ PASS |
+| 148 | dashboard | Dashboard Achiri alpha panel + invite DM notification | ✅ PASS |
+| 149 | stripe | Stripe go-live: webhook PM2 + /stripe-status | ✅ PASS |
+| 150 | telegram | /queue posting queue: unposted videos + daily pace | ✅ PASS |
+| 151 | ops | Daily digest: queue count + Stripe status | ✅ PASS |
+| 152 | ops | Digest urgency fix: WARNING on 0 posts + inline top-3 queue | ✅ PASS |
+| 153 | telegram | /tiktok-status TikTok live mode readiness checklist | ✅ PASS |
+| 154 | telegram | /post-now manual posting assistant — file path + hashtags + /record shortcut | ✅ PASS |
+| **155** | **?** | **NEXT** | ⏳ pending |
 
 ## SCS-001 Pipeline Architecture
 12 stages, 11 agents:
@@ -69,13 +110,13 @@
 All agents located at: `agents/scs001-*/`
 
 ## Critical Gaps / Blockers
-1. **TIKTOK_ACCESS_TOKEN** not in .env — live posting blocked (human must obtain from TikTok Developer Portal, video.upload scope)
-2. **SUPABASE_URL + SUPABASE_SERVICE_KEY** not in .env — video hosting blocked
-3. **YOUTUBE_API_KEY** not in .env — live trends/real video search blocked (free at console.cloud.google.com)
-4. **SCS_EDITING_MODE** not in .env — production video quality not active (set to 'production')
-5. **OpenClaw v2026.3.7** + T2 Skills — deferred to Sprint 105+ (gate-tracker.md shows both Deferred)
-6. **Run setup when env vars are set**: `bash scripts/setup-phase1.sh`
-7. **Smoke test**: `bash scripts/smoke-test-pipeline.sh` — validates full 12-stage pipeline (PASS as of Sprint 102)
+1. **TIKTOK_ACCESS_TOKEN** not in .env — live posting blocked (human must obtain from TikTok Developer Portal, video.upload scope). Use /post-now for manual posting workflow.
+2. **STRIPE_SECRET_KEY** not in .env — Stripe not live, no subscriber revenue yet (human action: get from Stripe dashboard)
+3. **SUPABASE_URL + SUPABASE_SERVICE_KEY** not in .env — video hosting blocked
+4. **YOUTUBE_API_KEY** not in .env — live trends/real video search blocked (free at console.cloud.google.com)
+5. **SCS_EDITING_MODE** not in .env — production video quality not active (set to 'production')
+6. **Gate urgency: 0/30 posts, ~22 days to Apr 7** — operator must start posting MANUALLY NOW using /post-now
+7. **Run setup when env vars are set**: `bash scripts/setup-phase1.sh`
 
 ## Key File Locations
 - Pipeline runner: `agents/scs001-orchestrator/run-pipeline.ts`

@@ -835,3 +835,14 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
 - Gate: ~22 days to Apr 7, 0/30 posts | Achiri alpha: Apr 25 (40d)
 - Timestamp: 2026-03-16T19:00:00Z
 - SESSION NOTE: 6 sprints this session (149-153). Handoff clean.
+
+## Sprint 154 — /post-now manual posting assistant (Phase 1 — TikTok manual posting UX)
+- Status: PASS
+- Commit: b2eb02b
+- Files created: scripts/scs001/validate-sprint-154.ts, workspace/sprints/sprint-154.json
+- Files modified: agents/telegram-bot/commands.ts, agents/telegram-bot/index.ts
+- Test: scripts/scs001/validate-sprint-154.ts — 5/5 PASS
+- Swarm used: no (direct write)
+- Changes: handlePostNow() — owner-only. Parses run_id → epoch to find captioned .mp4 on disk. Shows top-3 unposted videos with: file path (~/ relative), speaker/topic from ledger metadata, hashtags from viral-topics.json (#fyp #viral #learnontiktok added), next optimal posting slot (07/12/18/21), /record shortcut. Bridges gap: 114 videos ready on disk but operator had no Telegram-native way to find file paths or formatted TikTok metadata. handleHelp updated. index.ts routed.
+- Gate: ~22 days to Apr 7, 0/30 posts | Achiri alpha: Apr 25 (~40d)
+- Timestamp: 2026-03-16T20:00:00Z
