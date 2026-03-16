@@ -1,0 +1,102 @@
+{
+  "sprint": "139",
+  "name": "Dashboard Achiri stats panel",
+  "block": "Phase 2A — Achiri alpha observability",
+  "goal": "Add an Achiri stats panel to the operator dashboard. Shows today's message count, unique user count, and total waitlist size. Data read from workspace/achiri/daily-counts.json and workspace/achiri/waitlist.jsonl. Gives operator visibility into Achiri usage before and after the Apr 25 alpha launch.",
+  "rationale": "Apr 25 Achiri alpha: operator needs to see usage at a glance (is anyone using it? how many messages today? waitlist growing?). Without a dashboard panel, operator must parse JSONL manually. Panel 16/17 on the dashboard roadmap.",
+  "swarm": "NOT USED — 1 new parser file + 3 small edits (server.py, index.html, app.js). Direct write.",
+  "tasks": [
+    {
+      "id": "139-01",
+      "title": "dashboard/parsers/achiri.py — Achiri stats parser",
+      "description": "New file. parse_achiri_stats(base_dir: Path) -> dict. Reads workspace/achiri/daily-counts.json (structure: {date: {userId: count}}). Gets today's date (YYYY-MM-DD). today_messages = sum of all values for today's key. today_users = count of unique keys for today. Reads workspace/achiri/waitlist.jsonl (one JSON object per line, each has chatId). total_waitlist = count of entries. Returns { today_messages, today_users, total_waitlist, today_date }. Returns zeros if files don't exist.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-139",
+      "deliverables": {
+        "code": ["dashboard/parsers/achiri.py"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "139-02",
+      "title": "dashboard/server.py — /api/achiri/stats route",
+      "description": "Add import of parse_achiri_stats from dashboard.parsers.achiri. Add route: @app.get('/api/achiri/stats') async def achiri_stats(): stats = parse_achiri_stats(BASE_DIR); return JSONResponse(stats). BASE_DIR is the project root (Path(__file__).parent.parent or however it's currently defined). Add after the experiments routes.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-139",
+      "deliverables": {
+        "code": ["dashboard/server.py"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "139-03",
+      "title": "dashboard/static/index.html — Achiri panel card",
+      "description": "Add a new card div before the sessions-card. Structure: <div class='card'><div class='card-header'><span>Achiri Stats</span></div><div class='card-body' id='achiri-body'><div class='empty-state'><div class='icon'>&#8987;</div>Loading...</div></div></div>",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-139",
+      "deliverables": {
+        "code": ["dashboard/static/index.html"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "139-04",
+      "title": "dashboard/static/app.js — renderAchiriPanel() function + refreshAll() hook",
+      "description": "Add async function renderAchiriPanel(). Fetches /api/achiri/stats. Renders: today_messages (Today Messages), today_users (Today Users), total_waitlist (Waitlist), today_date. Use same stats-row/stat-block pattern as existing panels. Displays 'Alpha launch Apr 25' note. Add renderAchiriPanel() call in the refreshAll() function alongside other panel renders.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-139",
+      "deliverables": {
+        "code": ["dashboard/static/app.js"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "139-05",
+      "title": "scripts/achiri/validate-sprint-139.ts — validation script",
+      "description": "Check: (1) dashboard/parsers/achiri.py exists; (2) achiri.py contains parse_achiri_stats; (3) achiri.py reads daily-counts.json; (4) server.py imports parse_achiri_stats; (5) server.py has /api/achiri/stats route; (6) index.html has achiri-body element; (7) app.js has renderAchiriPanel function; (8) app.js calls renderAchiriPanel in refreshAll. 8 checks, exit 0 on all pass.",
+      "type": "create",
+      "task_type": "test",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-139",
+      "deliverables": {
+        "code": ["scripts/achiri/validate-sprint-139.ts"],
+        "tests": ["scripts/achiri/validate-sprint-139.ts"],
+        "docs": []
+      }
+    }
+  ],
+  "acceptance_criteria": [
+    "dashboard/parsers/achiri.py parses daily-counts.json and waitlist.jsonl",
+    "GET /api/achiri/stats returns { today_messages, today_users, total_waitlist, today_date }",
+    "index.html has id='achiri-body' panel card",
+    "app.js has renderAchiriPanel() called from refreshAll()",
+    "validate-sprint-139.ts exits 0 (all 8 checks pass)"
+  ]
+}

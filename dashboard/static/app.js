@@ -663,15 +663,16 @@ async function renderAssets() {
   }
 
   const kSkills = data.skills || {};
+  const kCrystallised = data.kognai_crystallised_skills || {};
   const iSkills = data.invoica_skills || {};
   const iFailures = data.invoica_failures || {};
   const iSummary = data.invoica_summary || {};
   const iCrystallised = data.invoica_crystallised_skills || {};
 
-  // Combined stats
+  // Combined stats — crystallised = Kognai real skills + Invoica real skills
   const totalKognaiSkills = kSkills.total_skills || 0;
   const totalInvoicaSkills = iSummary.total_skills || 0;
-  const totalCrystallised = iCrystallised.total || 0;
+  const totalCrystallised = (kCrystallised.total || 0) + (iCrystallised.total || 0);
   const totalFailures = iSummary.total_failures || 0;
 
   html += `
@@ -730,10 +731,32 @@ async function renderAssets() {
     }
   }
 
+  // --- Kognai Crystallised Skills (AMD-02 quality-gated) ---
+  if (kCrystallised.skills && kCrystallised.skills.length > 0) {
+    html += `<div class="section-divider" style="color: var(--accent-purple);">
+      <span class="project-dot-inline kognai"></span> Kognai Crystallised (${kCrystallised.total})
+      ${kCrystallised.avg_score ? `<span style="font-size: 10px; color: var(--text-muted); margin-left: 6px;">avg: ${kCrystallised.avg_score}/100</span>` : ''}
+    </div>`;
+    for (const s of kCrystallised.skills.slice(0, 8)) {
+      const scoreColor = s.avg_score >= 90 ? 'var(--accent-green)' : s.avg_score >= 75 ? 'var(--accent-amber)' : 'var(--accent-red)';
+      html += `
+        <div class="asset-row" style="border-left: 2px solid var(--accent-purple); padding-left: 6px;">
+          <span class="asset-name" title="${escHtml(s.description || s.skill_id)}">${escHtml(s.name).substring(0, 40)}</span>
+          <span style="font-size: 10px; color: ${scoreColor}; font-weight: bold;">${s.avg_score || ''}</span>
+          <span class="asset-agent mono">${escHtml(s.agent || '')}</span>
+          ${s.subdir ? `<span style="font-size: 9px; color: var(--accent-purple);">${escHtml(s.subdir)}</span>` : ''}
+        </div>
+      `;
+    }
+    if (kCrystallised.skills.length > 8) {
+      html += `<div style="font-size: 10px; color: var(--text-muted); padding: 2px 0;">+${kCrystallised.skills.length - 8} more crystallised</div>`;
+    }
+  }
+
   // --- Invoica Crystallised Skills (AMD-02 quality-gated) ---
   if (iCrystallised.skills && iCrystallised.skills.length > 0) {
     html += `<div class="section-divider" style="color: var(--accent-purple);">
-      <span class="project-dot-inline invoica"></span> Crystallised Skills
+      <span class="project-dot-inline invoica"></span> Invoica Crystallised (${iCrystallised.total})
       ${iCrystallised.avg_score ? `<span style="font-size: 10px; color: var(--text-muted); margin-left: 6px;">avg: ${iCrystallised.avg_score}/100</span>` : ''}
     </div>`;
     for (const s of iCrystallised.skills.slice(0, 6)) {
@@ -1679,12 +1702,34 @@ async function renderExperiments() {
   }
 }
 
+// --- Panel 16: Achiri Stats — Sprint 139 ---
+async function renderAchiriPanel() {
+  const panel = $('#achiri-body');
+  if (!panel) return;
+  try {
+    const data = await fetchJson('/api/achiri/stats');
+    if (!data) {
+      panel.innerHTML = '<div class="empty-state" style="color:var(--text-muted);">Achiri stats unavailable</div>';
+      return;
+    }
+    let html = `<div class="stats-row" style="margin-bottom:12px;">
+      <div class="stat-box"><div class="stat-value">${data.today_messages ?? 0}</div><div class="stat-label">Today Messages</div></div>
+      <div class="stat-box"><div class="stat-value">${data.today_users ?? 0}</div><div class="stat-label">Today Users</div></div>
+      <div class="stat-box"><div class="stat-value">${data.total_waitlist ?? 0}</div><div class="stat-label">Waitlist</div></div>
+    </div>`;
+    html += `<div style="font-size:11px; color:var(--text-muted);">Date: ${escHtml(data.today_date ?? '—')} &nbsp;·&nbsp; Alpha launch: <strong>Apr 25</strong></div>`;
+    panel.innerHTML = html;
+  } catch (e) {
+    panel.innerHTML = `<div class="empty-state" style="color:var(--text-muted);">Achiri stats error: ${escHtml(e.message)}</div>`;
+  }
+}
+
 // --- All render functions ---
 const ALL_RENDERERS = [
   renderProgress, renderTodo, renderOverview, renderSCS001,
   renderCosts, renderRouting, renderAmendments, renderChain,
   renderSecurity, renderAssets, renderLogs, renderPipeline, renderRevenue,
-  renderReadiness, renderPublishHistory, renderSessions, renderExperiments,
+  renderReadiness, renderPublishHistory, renderAchiriPanel, renderSessions, renderExperiments,
 ];
 
 // --- Manual Refresh ---

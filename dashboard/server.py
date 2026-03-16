@@ -47,6 +47,7 @@ from parsers.invoica_knowledge import (
     get_invoica_knowledge_summary,
 )
 from parsers.sessions import get_sessions_live
+from parsers.achiri import parse_achiri_stats
 
 
 class ToggleRequest(BaseModel):
@@ -532,6 +533,12 @@ async def experiments_stats():
 @app.get("/api/experiments/history")
 async def experiments_history():
     return get_experiment_history()
+
+
+# --- Achiri Stats ---
+@app.get("/api/achiri/stats")
+async def achiri_stats():
+    return parse_achiri_stats(KOGNAI_ROOT)
 
 
 # --- Validation Errors ---
