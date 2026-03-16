@@ -67,7 +67,22 @@ def get_code_assets() -> dict:
 
 
 def get_all_assets() -> dict:
+    from parsers.invoica_knowledge import (
+        get_invoica_skills, get_invoica_failures,
+        get_invoica_knowledge_summary, get_invoica_crystallised_skills,
+    )
+
+    kognai_skills = get_skill_bank()
+    invoica_skills = get_invoica_skills(limit=50)
+    invoica_failures = get_invoica_failures(limit=30)
+    invoica_summary = get_invoica_knowledge_summary()
+    invoica_crystallised = get_invoica_crystallised_skills()
+
     return {
-        "skills": get_skill_bank(),
+        "skills": kognai_skills,
         "code_assets": get_code_assets(),
+        "invoica_skills": invoica_skills,
+        "invoica_failures": invoica_failures,
+        "invoica_summary": invoica_summary,
+        "invoica_crystallised_skills": invoica_crystallised,
     }

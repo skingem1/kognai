@@ -1,0 +1,27 @@
+{
+  "entry_id": "fail-f618c458",
+  "video_id": "video-86e5f527",
+  "signal_id": "sig-38331534",
+  "topic_tags": [
+    "samaltman",
+    "authority",
+    "knowledge"
+  ],
+  "hook_formula": "authority",
+  "speaker": "samaltman",
+  "posting_slot": "evening_1800_2000",
+  "kpis": {
+    "completion_rate": 32,
+    "avg_watch_time_seconds": 16,
+    "rewatch_rate": 5,
+    "comments": 12,
+    "shares": 3,
+    "views": 4500,
+    "likes": 400,
+    "followers_gained": 10
+  },
+  "weakest_kpi": "rewatch_rate",
+  "failure_category": "unknown",
+  "filed_at": "2026-03-16T13:05:39.552Z",
+  "avoidance_rule": "Content with topic \"samaltman\" and formula \"authority\" underperformed at 32% completion. Review all factors."
+}

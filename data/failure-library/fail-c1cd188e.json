@@ -1,0 +1,27 @@
+{
+  "entry_id": "fail-c1cd188e",
+  "video_id": "video-dca0ad3b",
+  "signal_id": "sig-0ee7e2d1",
+  "topic_tags": [
+    "jessepollak",
+    "curiositygap",
+    "knowledge"
+  ],
+  "hook_formula": "curiositygap",
+  "speaker": "jessepollak",
+  "posting_slot": "evening_1800_2000",
+  "kpis": {
+    "completion_rate": 32,
+    "avg_watch_time_seconds": 16,
+    "rewatch_rate": 5,
+    "comments": 12,
+    "shares": 3,
+    "views": 4500,
+    "likes": 400,
+    "followers_gained": 10
+  },
+  "weakest_kpi": "rewatch_rate",
+  "failure_category": "unknown",
+  "filed_at": "2026-03-16T13:05:39.552Z",
+  "avoidance_rule": "Content with topic \"jessepollak\" and formula \"curiositygap\" underperformed at 32% completion. Review all factors."
+}

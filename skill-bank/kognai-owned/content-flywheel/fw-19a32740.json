@@ -1,0 +1,52 @@
+{
+  "flywheel_id": "fw-19a32740",
+  "source_signal_id": "sig-44052274",
+  "source_video_id": "video-ae0b02a0",
+  "derivatives": [
+    {
+      "derivative_id": "deriv-b25a656a",
+      "source_signal_id": "sig-44052274",
+      "source_video_id": "video-ae0b02a0",
+      "variation_type": "different_hook",
+      "suggested_topic": "samaltman",
+      "suggested_hook_formula": "curiosity_gap",
+      "suggested_speaker": "samaltman",
+      "suggested_slot": "evening_1800_2000",
+      "rationale": "Same winning topic (samaltman) with rotated hook formula for A/B testing"
+    },
+    {
+      "derivative_id": "deriv-7b11a83e",
+      "source_signal_id": "sig-44052274",
+      "source_video_id": "video-ae0b02a0",
+      "variation_type": "different_topic",
+      "suggested_topic": "AI regulation impact",
+      "suggested_hook_formula": "secret",
+      "suggested_speaker": "samaltman",
+      "suggested_slot": "evening_1800_2000",
+      "rationale": "Same winning speaker+formula applied to related topic for audience expansion"
+    },
+    {
+      "derivative_id": "deriv-728fb1d0",
+      "source_signal_id": "sig-44052274",
+      "source_video_id": "video-ae0b02a0",
+      "variation_type": "different_speaker",
+      "suggested_topic": "samaltman",
+      "suggested_hook_formula": "secret",
+      "suggested_speaker": "Andrej Karpathy",
+      "suggested_slot": "evening_1800_2000",
+      "rationale": "Same winning topic+formula but different authority voice for content diversity"
+    },
+    {
+      "derivative_id": "deriv-2da2b28a",
+      "source_signal_id": "sig-44052274",
+      "source_video_id": "video-ae0b02a0",
+      "variation_type": "deeper_dive",
+      "suggested_topic": "samaltman — deeper analysis",
+      "suggested_hook_formula": "authority",
+      "suggested_speaker": "samaltman",
+      "suggested_slot": "evening_1800_2000",
+      "rationale": "Deep-dive on proven topic with authority framing for audience retention"
+    }
+  ],
+  "created_at": "2026-03-16T13:05:39.552Z"
+}

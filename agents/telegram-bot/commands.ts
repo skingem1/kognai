@@ -219,37 +219,82 @@ export async function handleSubscribe(chatId: number, planArg?: string): Promise
   }
 }
 
-export async function handleStatus(chatId: number): Promise<void> {
-  // Read latest SCS-001 pipeline run report
-  const latestPath = join(process.cwd(), 'reports', 'pipeline-runs', 'latest.json');
-  if (!existsSync(latestPath)) {
-    await sendMessage(chatId, '⚠️ No SCS-001 pipeline runs yet.\n\nRun: `npx ts-node agents/scs001-orchestrator/run-pipeline.ts`');
-    return;
-  }
-
+function loadPublishLedger(): { total: number; today: number; latestAt: string | null } {
+  const ledgerPath = join(process.cwd(), 'workspace', 'scs001', 'publish-ledger.jsonl');
+  if (!existsSync(ledgerPath)) return { total: 0, today: 0, latestAt: null };
   try {
-    const report = JSON.parse(readFileSync(latestPath, 'utf-8'));
-    const s = report.summary || {};
-    const elapsed = ((report.total_elapsed_ms || 0) / 1000).toFixed(1);
-    const mode = report.mode === 'live' ? '🟢 LIVE' : '🔵 MOCK';
-    const stages = (report.stages || []).length;
-    const errors = (report.stages || []).filter((st: any) => st.status === 'error').length;
-    const started = report.started_at ? new Date(report.started_at).toLocaleString() : 'unknown';
+    const lines = readFileSync(ledgerPath, 'utf-8').split('\n').filter(l => l.trim());
+    const entries = lines.map(l => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
+    const todayPrefix = new Date().toISOString().slice(0, 10);
+    const today = entries.filter((e: any) => (e.published_at ?? '').startsWith(todayPrefix)).length;
+    const latest = entries.map((e: any) => e.published_at ?? '').sort().reverse()[0] ?? null;
+    return { total: entries.length, today, latestAt: latest };
+  } catch { return { total: 0, today: 0, latestAt: null }; }
+}
 
-    await sendMessage(chatId, [
-      '📡 *Latest Pipeline Run*',
-      `${mode} | ${elapsed}s | ${stages} stages${errors > 0 ? ` | ⚠️ ${errors} errors` : ''}`,
-      '',
-      `📊 ${s.topics_found || 0} topics → ${s.clips_qualified || 0} qualified → ${s.published || 0} published`,
-      s.viral > 0 ? `🔥 ${s.viral} viral → ${s.flywheel_derivatives || 0} derivatives` : '',
-      s.performing > 0 ? `✅ ${s.performing} performing` : '',
-      s.failure_library > 0 ? `📕 ${s.failure_library} failures filed` : '',
-      '',
-      `⏱ _${started}_`,
-    ].filter(Boolean).join('\n'));
-  } catch {
-    await sendMessage(chatId, '⚠️ Could not parse latest pipeline report.');
+function loadTopFormula(): string {
+  const expPath = join(process.cwd(), 'workspace', 'scs001', 'experiments.jsonl');
+  if (!existsSync(expPath)) return 'no data yet';
+  try {
+    const lines = readFileSync(expPath, 'utf-8').split('\n').filter(l => l.trim());
+    const entries = lines.map(l => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
+    const map: Record<string, { count: number; passed: number }> = {};
+    for (const e of entries as any[]) {
+      const f = e.hook_formula ?? 'unknown';
+      if (!map[f]) map[f] = { count: 0, passed: 0 };
+      map[f].count++;
+      if (e.qc_passed) map[f].passed++;
+    }
+    const best = Object.entries(map).sort((a, b) => (b[1].passed / b[1].count) - (a[1].passed / a[1].count))[0];
+    if (!best) return 'no data yet';
+    const pct = Math.round(best[1].passed / best[1].count * 100);
+    return `${best[0]} (${pct}%)`;
+  } catch { return 'error'; }
+}
+
+function computeReadinessPct(): number {
+  const required = ['TIKTOK_ACCESS_TOKEN', 'SUPABASE_URL', 'SUPABASE_SERVICE_KEY', 'YOUTUBE_API_KEY', 'SCS_EDITING_MODE'];
+  const ready = required.filter(v => !!process.env[v]).length;
+  return Math.round(ready / required.length * 100);
+}
+
+export async function handleStatus(chatId: number): Promise<void> {
+  const ledger = loadPublishLedger();
+  const topFormula = loadTopFormula();
+  const readinessPct = computeReadinessPct();
+
+  // Also try latest SCS-001 pipeline run report (secondary)
+  const latestPath = join(process.cwd(), 'reports', 'pipeline-runs', 'latest.json');
+  let pipelineInfo = '';
+  if (existsSync(latestPath)) {
+    try {
+      const report = JSON.parse(readFileSync(latestPath, 'utf-8'));
+      const s = report.summary || {};
+      const elapsed = ((report.total_elapsed_ms || 0) / 1000).toFixed(1);
+      const mode = report.mode === 'live' ? '🟢 LIVE' : '🔵 MOCK';
+      const errors = (report.stages || []).filter((st: any) => st.status === 'error').length;
+      const started = report.started_at ? new Date(report.started_at).toLocaleString() : 'unknown';
+      pipelineInfo = [
+        '',
+        `📡 *Last Run:* ${mode} | ${elapsed}s${errors > 0 ? ` | ⚠️ ${errors} errors` : ''}`,
+        `📊 ${s.topics_found || 0} topics → ${s.published || 0} published${s.viral > 0 ? ` | 🔥 ${s.viral} viral` : ''}`,
+        `⏱ _${started}_`,
+      ].join('\n');
+    } catch { /* ignore */ }
   }
+
+  const readinessIcon = readinessPct >= 80 ? '🟢' : readinessPct >= 40 ? '🟡' : '🔴';
+  const latestAt = ledger.latestAt ? new Date(ledger.latestAt).toLocaleString() : 'never';
+
+  await sendMessage(chatId, [
+    '📡 *Kognai Pipeline Status*',
+    '',
+    `📬 Published today: *${ledger.today}* | Total: *${ledger.total}*`,
+    `🏆 Top formula: *${topFormula}*`,
+    `${readinessIcon} Readiness: *${readinessPct}%* (${readinessPct < 100 ? 'env vars missing' : 'ready'})`,
+    `🕐 Last post: _${latestAt}_`,
+    pipelineInfo,
+  ].filter(l => l !== undefined).join('\n'));
 }
 
 export async function handleUnknown(chatId: number, text: string): Promise<void> {

@@ -1315,3 +1315,176 @@ body {
 }
 
 .pipeline-history-row:last-child { border-bottom: none; }
+
+/* --- Live Swarm Activity --- */
+.live-event-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 4px;
+  font-size: 11px;
+  border-bottom: 1px solid rgba(42, 45, 58, 0.2);
+  animation: fadeInEvent 0.3s ease-in;
+}
+
+.live-event-row:last-child { border-bottom: none; }
+
+@keyframes fadeInEvent {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.3; }
+}
+
+/* --- Panel 16: Autonomous Sessions --- */
+.card-wide {
+  grid-column: span 2;
+}
+
+.sessions-dots {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.session-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.session-dot.active {
+  background: var(--accent-green);
+  box-shadow: 0 0 6px rgba(52, 211, 153, 0.6);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.session-dot.inactive {
+  background: var(--text-muted);
+  opacity: 0.4;
+}
+
+.session-dot-label {
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-right: 10px;
+}
+
+.sessions-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.session-column {
+  min-width: 0;
+}
+
+.session-column-header {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--border);
+}
+
+.commit-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 0;
+  border-bottom: 1px solid rgba(42, 45, 58, 0.2);
+  font-size: 11px;
+  animation: fadeInEvent 0.3s ease-in;
+}
+
+.commit-row:last-child { border-bottom: none; }
+
+.commit-row.commit-sprint {
+  background: rgba(79, 143, 255, 0.06);
+}
+
+.commit-row.commit-state {
+  opacity: 0.6;
+}
+
+.commit-hash {
+  font-family: 'Fira Code', monospace;
+  font-size: 10px;
+  color: var(--accent-cyan);
+  min-width: 56px;
+  flex-shrink: 0;
+}
+
+.commit-msg {
+  flex: 1;
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.commit-time {
+  font-size: 10px;
+  color: var(--text-muted);
+  min-width: 65px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.sessions-footer {
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+}
+
+.session-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 0;
+}
+
+.session-live-output {
+  margin-top: 8px;
+}
+
+.session-live-lines {
+  max-height: 120px;
+  overflow-y: auto;
+}
+
+.session-live-line {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 2px 0;
+  font-size: 10px;
+  border-bottom: 1px solid rgba(42, 45, 58, 0.15);
+  animation: fadeInEvent 0.2s ease-in;
+}
+
+.session-line-text {
+  font-family: 'Fira Code', monospace;
+  font-size: 10px;
+  color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+}
+
+@media (max-width: 900px) {
+  .card-wide { grid-column: span 1; }
+  .sessions-columns { grid-template-columns: 1fr; }
+}

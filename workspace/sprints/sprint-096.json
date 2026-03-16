@@ -1,0 +1,48 @@
+{
+  "tasks": [
+    {
+      "id": "096-01",
+      "title": "Rewrite validate-phase0-gate.ts — fix broken imports and logic",
+      "description": "MODIFY ONE EXISTING FILE: scripts/scs001/validate-phase0-gate.ts. Replace the entire file contents. Do NOT modify any other file.\n\nThe current file is broken at import-time: it imports from three non-existent paths and calls methods that do not exist on DedupLedger. This rewrite fixes all issues per the original spec in sprint-095.json task 095-01.\n\nEXACT REQUIREMENTS:\n\n1. IMPORTS — use EXACTLY these import paths:\n   import { SCS001Orchestrator, PipelineRunReport } from '../../agents/scs001-orchestrator/index';\n   import { DedupLedger, LedgerEntry } from '../../agents/scs001-orchestrator/dedup-ledger';\n   import { readFileSync, writeFileSync, mkdirSync, existsSync, unlinkSync } from 'fs';\n   import { join } from 'path';\n   No other imports. No Router import. No shared-types import.\n\n2. DEFINE these two interfaces inline (do NOT import them):\n   interface GateCriterion { id: string; name: string; pass: boolean; details: string; }\n   interface GateReport { gate: string; date: string; criteria: GateCriterion[]; overall_pass: boolean; recommendation: string; }\n\n3. CHECK 1 — TASK_TARGET Routing (id: 'task-target-routing', name: 'TASK_TARGET Routing to Ollama'):\n   a. Read runtime/router.py from join(process.cwd(), 'runtime', 'router.py'). Check if content includes 'localhost:11434'. Store as routerHasOllama: boolean.\n   b. Attempt to read routing log at join(process.cwd(), 'logs', 'routing', '2026-03-16.jsonl'). If it exists, split by newline, JSON.parse each non-empty line (skip lines that throw on parse). For each parsed entry, check entry.task_target === 'local' and entry.provider === 'ollama' to increment localOllamaCount; check entry.task_target === 'local' and entry.provider !== 'ollama' to increment localNonOllamaCount.\n   c. If localOllamaCount > 0: pass = (localNonOllamaCount === 0). details = 'Routing log: ' + localOllamaCount + ' local->ollama, ' + localNonOllamaCount + ' local->non-ollama'.\n   d. If routing log absent OR localOllamaCount === 0: pass = routerHasOllama. details = 'Static check: router.py localhost:11434=' + routerHasOllama + ' (no routing log data)'.\n   e. Criterion 1: { id: 'task-target-routing', name: 'TASK_TARGET Routing to Ollama', pass, details }.\n\n4. CHECK 2 — Idempotent Replay / Dedup (id: 'idempotent-replay', name: 'Idempotent Replay — DedupLedger'):\n   a. tempLedgerPath = join(process.cwd(), 'workspace', 'scs001', '.gate-test-ledger.jsonl')\n   b. const ledger = new DedupLedger(tempLedgerPath)\n   c. Create 3 LedgerEntry objects with clip_ids 'gate-test-1','gate-test-2','gate-test-3', video_id=clip_id, published_at=new Date().toISOString(), run_id='gate-test'\n   d. ledger.recordPublished(entries3) — writes 3 entries\n   e. Create testClips5 = [{clip_id:'gate-test-1'},{clip_id:'gate-test-2'},{clip_id:'gate-test-3'},{clip_id:'gate-test-4'},{clip_id:'gate-test-5'}]\n   f. result1 = ledger.filterNewClips(testClips5) — expect length 2\n   g. result2 = ledger.filterNewClips(testClips5) — expect length 2 (idempotent)\n   h. Record result1 as published: ledger.recordPublished(result1.map(c => ({ clip_id: c.clip_id, video_id: c.clip_id, published_at: new Date().toISOString(), run_id: 'gate-test' })))\n   i. result3 = ledger.filterNewClips(testClips5) — expect length 0\n   j. Cleanup: in finally block, if (existsSync(tempLedgerPath)) unlinkSync(tempLedgerPath)\n   k. pass = (result1.length === 2 && result2.length === 2 && result3.length === 0)\n   l. Wrap in try/catch/finally. On catch: pass=false, details='DedupLedger test threw: '+(err as Error).message\n\n5. CHECK 3 — Full Pipeline Dry-Run (id: 'pipeline-dry-run', name: 'Full Pipeline Dry-Run (mock mode)'):\n   a. const orchestrator = new SCS001Orchestrator('mock')\n   b. const report: PipelineRunReport = await orchestrator.run()\n   c. pass = (report.stages.length >= 8 && report.summary.topics_found >= 1 && report.summary.clips_discovered >= 1)\n   d. const errorStages = report.stages.filter(s => s.status === 'error').map(s => s.stage)\n   e. details = 'Pipeline: ' + report.stages.length + ' stages, ' + report.summary.topics_found + ' topics, ' + report.summary.clips_discovered + ' clips' + (errorStages.length > 0 ? '. Warn: error stages=' + errorStages.join(',') : '')\n   f. Wrap in try/catch. On catch: pass=false, details='Pipeline dry-run threw: '+(err as Error).message\n\n6. BUILD GateReport:\n   const criteria: GateCriterion[] = [criterion1, criterion2, criterion3];\n   const allPass = criteria.every(c => c.pass);\n   const gateReport: GateReport = {\n     gate: 'phase0-to-phase1',\n     date: new Date().toISOString().slice(0, 10),\n     criteria,\n     overall_pass: allPass,\n     recommendation: allPass ? 'PROCEED to Phase 1 — all gate criteria met. Set SCS_MODE=live in ecosystem.config.js.' : 'BLOCKED — fix failing criteria before advancing to Phase 1.'\n   };\n\n7. WRITE gate report:\n   const gatesDir = join(process.cwd(), 'workspace', 'gates');\n   mkdirSync(gatesDir, { recursive: true });\n   writeFileSync(join(gatesDir, 'phase0-phase1-gate.json'), JSON.stringify(gateReport, null, 2));\n\n8. PRINT results:\n   criteria.forEach(c => console.log((c.pass ? '\\u2713' : '\\u2717') + ' [' + c.name + ']: ' + c.details));\n   console.log('');\n   console.log(allPass ? 'GATE PASS' : 'GATE FAIL');\n   console.log('Report written to workspace/gates/phase0-phase1-gate.json');\n\n9. EXIT: process.exit(allPass ? 0 : 1);\n\n10. STRUCTURE: wrap all the above in async function main(): Promise<void> and call main().catch(err => { console.error(err); process.exit(1); });\n\nFAIL CONDITIONS:\n(1) Any of the three broken import paths remain (../runtime/router, ../runtime/dedupledger, ../workspace/shared-types)\n(2) Any call to ledger.insertClip, ledger.removeClip, or router.processTask — these methods do not exist\n(3) GateReport or GateCriterion imported instead of defined inline\n(4) process.exit() not called\n(5) workspace/gates/phase0-phase1-gate.json not written\n(6) Any file other than scripts/scs001/validate-phase0-gate.ts modified\n(7) overall_pass field missing from written JSON\n(8) Routing log parsed with string-contains ('TASK_TARGET') instead of JSON field access (entry.task_target)",
+      "type": "fix",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "dependencies": [],
+      "priority": "critical",
+      "sprint_id": "sprint-096",
+      "deliverables": {
+        "code": [
+          "scripts/scs001/validate-phase0-gate.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Sprint 095 produced a gate validator approved at 81/100 but with three fatal import errors: (1) imports Router from ../runtime/router — this is Python, no TypeScript export, (2) imports DedupLedger from ../runtime/dedupledger — wrong path, real path is ../../agents/scs001-orchestrator/dedup-ledger, (3) imports GateReport from ../workspace/shared-types — file does not exist. Logic errors: DedupLedger has no insertClip or removeClip methods — real API is recordPublished(entries: LedgerEntry[]) and filterNewClips<T>(clips: T[]): T[]. Router.processTask does not exist — dry-run must use SCS001Orchestrator('mock').run(). Routing log at logs/routing/2026-03-16.jsonl has JSON fields task_target and provider — must be read as JSON, not string-contains. The workspace/gates directory does not exist and must be created with mkdirSync recursive. This task is the sole blocker before Phase 1 live TikTok posting."
+    },
+    {
+      "id": "096-02",
+      "title": "Update gate-tracker.md — Phase 0->Phase 1 CONDITIONAL PASS -> PASS",
+      "description": "MODIFY ONE EXISTING FILE: docs/gate-tracker.md. Do NOT modify any other file.\n\nDependency: 096-01 must have run and produced workspace/gates/phase0-phase1-gate.json with overall_pass: true.\n\nEXACT REQUIREMENTS:\n\n1. In docs/gate-tracker.md, find the row for Phase 0 -> Phase 1. It currently reads (approximately):\n| Phase 0 -> Phase 1 | Mar 16 | [x] CONDITIONAL PASS | | + OpenClaw + memory check |\n\n2. Replace the ENTIRE row with:\n| Phase 0 -> Phase 1 | Mar 16 | [x] PASS | PASS | Gate validated Mar 16: TASK_TARGET routing ✓, idempotent replay ✓, pipeline dry-run ✓. Report: workspace/gates/phase0-phase1-gate.json |\n\n3. Do NOT change any other row. Do NOT change the Kill Switches section. Do NOT modify any other file.\n\nFAIL CONDITIONS:\n(1) docs/gate-tracker.md not modified\n(2) Phase 0->Phase 1 row still contains CONDITIONAL PASS\n(3) Status column not updated to '[x] PASS'\n(4) Any file other than docs/gate-tracker.md modified",
+      "type": "docs",
+      "task_type": "docs",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "dependencies": [
+        "096-01"
+      ],
+      "priority": "critical",
+      "sprint_id": "sprint-096",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": [
+          "docs/gate-tracker.md"
+        ]
+      },
+      "context": "Sprint 095 task 095-02 recorded CONDITIONAL PASS because the gate validator had broken imports and could not actually run. Once 096-01 produces a working validator with overall_pass=true, this task upgrades the gate tracker to definitive PASS. gate-tracker.md is the source of truth loaded by every Claude Code session via CLAUDE.md. A CONDITIONAL PASS is not sufficient to authorize Phase 1 live work (SCS_MODE=live). This PASS is the final unlock."
+    }
+  ]
+}

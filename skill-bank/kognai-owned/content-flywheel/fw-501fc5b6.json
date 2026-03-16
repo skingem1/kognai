@@ -1,0 +1,52 @@
+{
+  "flywheel_id": "fw-501fc5b6",
+  "source_signal_id": "sig-59e7968c",
+  "source_video_id": "video-4d9c7ded",
+  "derivatives": [
+    {
+      "derivative_id": "deriv-ab323d5b",
+      "source_signal_id": "sig-59e7968c",
+      "source_video_id": "video-4d9c7ded",
+      "variation_type": "different_hook",
+      "suggested_topic": "theprimeagen",
+      "suggested_hook_formula": "curiosity_gap",
+      "suggested_speaker": "theprimeagen",
+      "suggested_slot": "midday_1200_1300",
+      "rationale": "Same winning topic (theprimeagen) with rotated hook formula for A/B testing"
+    },
+    {
+      "derivative_id": "deriv-43b31c7f",
+      "source_signal_id": "sig-59e7968c",
+      "source_video_id": "video-4d9c7ded",
+      "variation_type": "different_topic",
+      "suggested_topic": "AI regulation impact",
+      "suggested_hook_formula": "tech",
+      "suggested_speaker": "theprimeagen",
+      "suggested_slot": "midday_1200_1300",
+      "rationale": "Same winning speaker+formula applied to related topic for audience expansion"
+    },
+    {
+      "derivative_id": "deriv-a5d3c67f",
+      "source_signal_id": "sig-59e7968c",
+      "source_video_id": "video-4d9c7ded",
+      "variation_type": "different_speaker",
+      "suggested_topic": "theprimeagen",
+      "suggested_hook_formula": "tech",
+      "suggested_speaker": "Andrej Karpathy",
+      "suggested_slot": "midday_1200_1300",
+      "rationale": "Same winning topic+formula but different authority voice for content diversity"
+    },
+    {
+      "derivative_id": "deriv-9a28d079",
+      "source_signal_id": "sig-59e7968c",
+      "source_video_id": "video-4d9c7ded",
+      "variation_type": "deeper_dive",
+      "suggested_topic": "theprimeagen — deeper analysis",
+      "suggested_hook_formula": "authority",
+      "suggested_speaker": "theprimeagen",
+      "suggested_slot": "midday_1200_1300",
+      "rationale": "Deep-dive on proven topic with authority framing for audience retention"
+    }
+  ],
+  "created_at": "2026-03-16T15:39:20.966Z"
+}

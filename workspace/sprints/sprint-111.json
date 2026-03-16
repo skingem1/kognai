@@ -1,0 +1,28 @@
+{
+  "sprint": "111",
+  "name": "Operator /status upgrade + topic mapping fix + Achiri scaffold",
+  "goal": "Give the operator a rich /status command with real pipeline data, fix experiment tracking to show real topic names, and scaffold Achiri config before the Apr 11 Phase 2A gate",
+  "tasks": [
+    {
+      "id": "111-01",
+      "title": "Upgrade Telegram /status — read publish-ledger, experiments, readiness",
+      "description": "Rewrite handleStatus() in commands.ts. Reads publish-ledger.jsonl (published today/total), experiments.jsonl (top formula pass rate), env vars (readiness %). Falls back gracefully when files missing.",
+      "task_target": "agents/telegram-bot/commands.ts",
+      "acceptance_criteria": "/status returns published today/total, readiness %, top formula. Works when files missing."
+    },
+    {
+      "id": "111-02",
+      "title": "Fix topic-to-experiment mapping — use topic_performance.topic_tags",
+      "description": "In orchestrator, fix viral-topics fallback from s.video_id to s.topic_performance.topic_tags so viral-topics.json contains real topic strings not video IDs.",
+      "task_target": "agents/scs001-orchestrator/index.ts",
+      "acceptance_criteria": "After mock run, viral-topics.json contains real topic strings from PerformanceSignal.topic_performance.topic_tags."
+    },
+    {
+      "id": "111-03",
+      "title": "Achiri Phase 2A scaffold — agent config + cultural spec",
+      "description": "Create kognai-agents/achiri/agent.yaml and config.json with personality, language/cultural config, tier pricing, kill switch thresholds. voice_before_memory: true.",
+      "task_target": "kognai-agents/achiri/",
+      "acceptance_criteria": "agent.yaml and config.json exist. voice_before_memory=true. Cultural markers documented."
+    }
+  ]
+}

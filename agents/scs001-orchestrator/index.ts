@@ -286,7 +286,9 @@ export class SCS001Orchestrator {
     if (viralSignals.length > 0) {
       try {
         const viralTopics = [...new Set(
-          viralSignals.flatMap(s => (s as any).topic_tags ?? [s.video_id])
+          viralSignals.flatMap(s => s.topic_performance?.topic_tags?.length
+            ? s.topic_performance.topic_tags
+            : [s.video_id])
         )].slice(0, 10);
         writeFileSync(VIRAL_TOPICS_PATH, JSON.stringify({
           topics: viralTopics,

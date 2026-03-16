@@ -1,0 +1,102 @@
+{
+  "run_id": "5fc8c203-d861-459d-943c-3a674e7d1bd3",
+  "project": "kognai",
+  "sprint_file": "workspace/sprints/sprint-095.json",
+  "started_at": "2026-03-16T12:22:26.885Z",
+  "finished_at": "2026-03-16T12:32:17.438Z",
+  "duration_seconds": 591,
+  "git_branch": "main",
+  "git_head_before": "61721e4",
+  "git_head_after": "f153268",
+  "sovereign_mode": false,
+  "summary": {
+    "total_tasks": 2,
+    "done": 2,
+    "rejected": 0,
+    "skipped": 0,
+    "approval_rate": 0.67,
+    "total_tokens": 19602,
+    "supervisor_conflicts": 0,
+    "ceo_escalations": 0
+  },
+  "models_used": {
+    "qwen3:14b": {
+      "calls": 2,
+      "tokens": 9858
+    }
+  },
+  "total_cost_usd": 0.0049,
+  "tasks": [
+    {
+      "task_id": "095-01",
+      "title": "Phase 0 → Phase 1 gate validator script",
+      "type": "feature",
+      "task_target": "local",
+      "status": "done",
+      "attempts": 2,
+      "model_used": "qwen3:14b",
+      "provider": "",
+      "tokens_total": 7277,
+      "duration_seconds": 467,
+      "files_written": [
+        "scripts/scs001/validate-phase0-gate.ts"
+      ],
+      "review": {
+        "verdict": "APPROVED",
+        "score": 81,
+        "strengths": [
+          "No fence contamination — file is clean TypeScript.",
+          "All three spec-required validations are present: router.py parsing, dedup ledger idempotency, and dry-run output check.",
+          "Gate report is written even on error, which is correct behaviour for a checkpoint validator.",
+          "mkdir with recursive:true before writing the gate report prevents path-not-found failures.",
+          "DedupLedger test correctly verifies the duplicate throws a recognisable error message rather than just any error.",
+          "Error handling is layered — outer catch writes a partial report, inner catches log specific failures without aborting the whole run.",
+          "Follows the assert/run pattern referenced in validate-orchestrator.ts.",
+          "Implements all three required validations: routing logic, dedup idempotency, dry-run output",
+          "Correctly writes gate report to workspace/gates/phase0-phase1-gate.json as specified",
+          "Proper error handling with fallback report writing even on critical failures",
+          "DedupLedger test correctly verifies duplicate prevention by attempting insertion twice",
+          "Follows validate-orchestrator.ts pattern (assert/run structure) as reference",
+          "No fence contamination; valid TypeScript syntax",
+          "Graceful degradation: routing log validation handles missing file case"
+        ]
+      },
+      "error": null,
+      "rejection_reason": null
+    },
+    {
+      "task_id": "095-02",
+      "title": "Update gate-tracker.md with Phase 0 → Phase 1 gate result",
+      "type": "feature",
+      "task_target": "local",
+      "status": "done",
+      "attempts": 1,
+      "model_used": "qwen3:14b",
+      "provider": "",
+      "tokens_total": 2581,
+      "duration_seconds": 124,
+      "files_written": [
+        "docs/gate-tracker.md"
+      ],
+      "review": {
+        "verdict": "APPROVED",
+        "score": 87,
+        "strengths": [
+          "No fence contamination — file opens cleanly as valid Markdown.",
+          "Gate table is comprehensive, covering all phases from current through Year-End Review.",
+          "Kill switch checklist is present and actionable at every gate review.",
+          "Integration note (Master Architecture v14 + Achiri Master Plan v7) provides useful provenance context.",
+          "Conditional pass notation with asterisk and deferred calibration note is clear and honest about what was and was not validated.",
+          "Fence check passed — no markdown code fence at file start",
+          "Spec compliance: Phase 0→Phase 1 gate recorded as CONDITIONAL PASS with justification",
+          "Source-of-truth structure preserved: table format, kill switches section, integration notes intact",
+          "No regression: file expanded appropriately with new gate entries and metadata",
+          "Actionable notes: calibration deferral, skill counts, kill switch thresholds all documented",
+          "Binding to Five Principles: Seek Knowledge (gate decision traceable), Protect Dignity (kill switches prevent harm from unchecked deployment)"
+        ]
+      },
+      "error": null,
+      "rejection_reason": null
+    }
+  ]
+}

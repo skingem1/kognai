@@ -1,0 +1,52 @@
+{
+  "flywheel_id": "fw-f7b7e772",
+  "source_signal_id": "sig-23cadf6d",
+  "source_video_id": "video-d27fef43",
+  "derivatives": [
+    {
+      "derivative_id": "deriv-bfb97f63",
+      "source_signal_id": "sig-23cadf6d",
+      "source_video_id": "video-d27fef43",
+      "variation_type": "different_hook",
+      "suggested_topic": "samaltman",
+      "suggested_hook_formula": "curiosity_gap",
+      "suggested_speaker": "samaltman",
+      "suggested_slot": "morning_0700_0900",
+      "rationale": "Same winning topic (samaltman) with rotated hook formula for A/B testing"
+    },
+    {
+      "derivative_id": "deriv-96f37a08",
+      "source_signal_id": "sig-23cadf6d",
+      "source_video_id": "video-d27fef43",
+      "variation_type": "different_topic",
+      "suggested_topic": "AI regulation impact",
+      "suggested_hook_formula": "tech",
+      "suggested_speaker": "samaltman",
+      "suggested_slot": "morning_0700_0900",
+      "rationale": "Same winning speaker+formula applied to related topic for audience expansion"
+    },
+    {
+      "derivative_id": "deriv-0150e533",
+      "source_signal_id": "sig-23cadf6d",
+      "source_video_id": "video-d27fef43",
+      "variation_type": "different_speaker",
+      "suggested_topic": "samaltman",
+      "suggested_hook_formula": "tech",
+      "suggested_speaker": "Andrej Karpathy",
+      "suggested_slot": "morning_0700_0900",
+      "rationale": "Same winning topic+formula but different authority voice for content diversity"
+    },
+    {
+      "derivative_id": "deriv-a6b21626",
+      "source_signal_id": "sig-23cadf6d",
+      "source_video_id": "video-d27fef43",
+      "variation_type": "deeper_dive",
+      "suggested_topic": "samaltman — deeper analysis",
+      "suggested_hook_formula": "authority",
+      "suggested_speaker": "samaltman",
+      "suggested_slot": "morning_0700_0900",
+      "rationale": "Deep-dive on proven topic with authority framing for audience retention"
+    }
+  ],
+  "created_at": "2026-03-16T15:41:14.404Z"
+}

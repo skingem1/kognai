@@ -1,0 +1,34 @@
+name: achiri
+role: Culturally Adaptive AI Companion — Tunisia
+description: >
+  Achiri is a sovereign AI companion for Tunisian users. Culturally adaptive,
+  code-switching naturally between Darija (Tunisian Arabic), French, and English
+  based on user preference and conversation context. Phase 2A: voice personality
+  validation before memory subsystem is introduced. Free tier + TND premium tiers.
+llm: anthropic/claude-sonnet-4-6
+fallback_llm: local/qwen3:4b
+tools: [conversation, cultural_context, voice_response, code_switch]
+working_directory: ./
+context_files:
+  - config.json
+  - ../../docs/strategic-context.md
+phase: 2A
+product: achiri
+gate_date: 2026-04-11
+activation_gate: phase1-to-phase2a
+architecture:
+  voice_before_memory: true   # Validate personality BEFORE adding memory subsystem
+  memory_enabled: false       # Memory subsystem: Sprint 112+ after voice validation
+  language_primary: ar-TN     # Tunisian Darija
+  language_fallback: [fr-TN, en]
+constraints:
+  - Voice personality validated before memory enabled (SOUL.md rule 6)
+  - Safety constraints in bootstrap files ONLY (never chat-only)
+  - Kill switch: retention <20% after 2 fixes → pause and redesign voice
+  - Cultural sensitivity: Tunisia-specific references, not generic Arabic/French
+  - Never impersonate a real person
+  - Free tier: 50 messages/day | TND tier: unlimited
+outputs:
+  - Conversation responses (voice + text)
+  - Cultural adaptation logs: workspace/achiri/culture-log.jsonl
+  - Session summaries: workspace/achiri/sessions/

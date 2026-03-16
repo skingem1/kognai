@@ -1,0 +1,52 @@
+{
+  "flywheel_id": "fw-9c66cc3d",
+  "source_signal_id": "sig-aeb09060",
+  "source_video_id": "video-f303d66d",
+  "derivatives": [
+    {
+      "derivative_id": "deriv-22fef2fa",
+      "source_signal_id": "sig-aeb09060",
+      "source_video_id": "video-f303d66d",
+      "variation_type": "different_hook",
+      "suggested_topic": "samaltman",
+      "suggested_hook_formula": "curiosity_gap",
+      "suggested_speaker": "samaltman",
+      "suggested_slot": "late_night_2100_2300",
+      "rationale": "Same winning topic (samaltman) with rotated hook formula for A/B testing"
+    },
+    {
+      "derivative_id": "deriv-059fac20",
+      "source_signal_id": "sig-aeb09060",
+      "source_video_id": "video-f303d66d",
+      "variation_type": "different_topic",
+      "suggested_topic": "AI regulation impact",
+      "suggested_hook_formula": "tech",
+      "suggested_speaker": "samaltman",
+      "suggested_slot": "late_night_2100_2300",
+      "rationale": "Same winning speaker+formula applied to related topic for audience expansion"
+    },
+    {
+      "derivative_id": "deriv-b97e89aa",
+      "source_signal_id": "sig-aeb09060",
+      "source_video_id": "video-f303d66d",
+      "variation_type": "different_speaker",
+      "suggested_topic": "samaltman",
+      "suggested_hook_formula": "tech",
+      "suggested_speaker": "Andrej Karpathy",
+      "suggested_slot": "late_night_2100_2300",
+      "rationale": "Same winning topic+formula but different authority voice for content diversity"
+    },
+    {
+      "derivative_id": "deriv-30a01560",
+      "source_signal_id": "sig-aeb09060",
+      "source_video_id": "video-f303d66d",
+      "variation_type": "deeper_dive",
+      "suggested_topic": "samaltman — deeper analysis",
+      "suggested_hook_formula": "authority",
+      "suggested_speaker": "samaltman",
+      "suggested_slot": "late_night_2100_2300",
+      "rationale": "Deep-dive on proven topic with authority framing for audience retention"
+    }
+  ],
+  "created_at": "2026-03-16T15:41:14.404Z"
+}

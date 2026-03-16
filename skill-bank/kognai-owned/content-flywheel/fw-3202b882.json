@@ -1,0 +1,52 @@
+{
+  "flywheel_id": "fw-3202b882",
+  "source_signal_id": "sig-651c3bc4",
+  "source_video_id": "video-28a77329",
+  "derivatives": [
+    {
+      "derivative_id": "deriv-a367d4da",
+      "source_signal_id": "sig-651c3bc4",
+      "source_video_id": "video-28a77329",
+      "variation_type": "different_hook",
+      "suggested_topic": "alexalbert",
+      "suggested_hook_formula": "curiosity_gap",
+      "suggested_speaker": "alexalbert",
+      "suggested_slot": "morning_0700_0900",
+      "rationale": "Same winning topic (alexalbert) with rotated hook formula for A/B testing"
+    },
+    {
+      "derivative_id": "deriv-26189b15",
+      "source_signal_id": "sig-651c3bc4",
+      "source_video_id": "video-28a77329",
+      "variation_type": "different_topic",
+      "suggested_topic": "AI regulation impact",
+      "suggested_hook_formula": "tech",
+      "suggested_speaker": "alexalbert",
+      "suggested_slot": "morning_0700_0900",
+      "rationale": "Same winning speaker+formula applied to related topic for audience expansion"
+    },
+    {
+      "derivative_id": "deriv-5fa2307e",
+      "source_signal_id": "sig-651c3bc4",
+      "source_video_id": "video-28a77329",
+      "variation_type": "different_speaker",
+      "suggested_topic": "alexalbert",
+      "suggested_hook_formula": "tech",
+      "suggested_speaker": "Andrej Karpathy",
+      "suggested_slot": "morning_0700_0900",
+      "rationale": "Same winning topic+formula but different authority voice for content diversity"
+    },
+    {
+      "derivative_id": "deriv-9f0eb610",
+      "source_signal_id": "sig-651c3bc4",
+      "source_video_id": "video-28a77329",
+      "variation_type": "deeper_dive",
+      "suggested_topic": "alexalbert — deeper analysis",
+      "suggested_hook_formula": "authority",
+      "suggested_speaker": "alexalbert",
+      "suggested_slot": "morning_0700_0900",
+      "rationale": "Deep-dive on proven topic with authority framing for audience retention"
+    }
+  ],
+  "created_at": "2026-03-16T15:16:50.617Z"
+}

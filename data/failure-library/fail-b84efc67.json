@@ -1,0 +1,27 @@
+{
+  "entry_id": "fail-b84efc67",
+  "video_id": "video-0e8a3b40",
+  "signal_id": "sig-7af24f43",
+  "topic_tags": [
+    "samaltman",
+    "contrarian",
+    "knowledge"
+  ],
+  "hook_formula": "contrarian",
+  "speaker": "samaltman",
+  "posting_slot": "evening_1800_2000",
+  "kpis": {
+    "completion_rate": 32,
+    "avg_watch_time_seconds": 16,
+    "rewatch_rate": 5,
+    "comments": 12,
+    "shares": 3,
+    "views": 4500,
+    "likes": 400,
+    "followers_gained": 10
+  },
+  "weakest_kpi": "rewatch_rate",
+  "failure_category": "unknown",
+  "filed_at": "2026-03-16T14:38:50.949Z",
+  "avoidance_rule": "Content with topic \"samaltman\" and formula \"contrarian\" underperformed at 32% completion. Review all factors."
+}

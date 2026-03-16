@@ -1,0 +1,52 @@
+{
+  "flywheel_id": "fw-3b40d111",
+  "source_signal_id": "sig-9ce00b3f",
+  "source_video_id": "video-eafa59d4",
+  "derivatives": [
+    {
+      "derivative_id": "deriv-d8864164",
+      "source_signal_id": "sig-9ce00b3f",
+      "source_video_id": "video-eafa59d4",
+      "variation_type": "different_hook",
+      "suggested_topic": "theprimeagen",
+      "suggested_hook_formula": "curiosity_gap",
+      "suggested_speaker": "theprimeagen",
+      "suggested_slot": "evening_1800_2000",
+      "rationale": "Same winning topic (theprimeagen) with rotated hook formula for A/B testing"
+    },
+    {
+      "derivative_id": "deriv-a1b405ac",
+      "source_signal_id": "sig-9ce00b3f",
+      "source_video_id": "video-eafa59d4",
+      "variation_type": "different_topic",
+      "suggested_topic": "AI regulation impact",
+      "suggested_hook_formula": "curiositygap",
+      "suggested_speaker": "theprimeagen",
+      "suggested_slot": "evening_1800_2000",
+      "rationale": "Same winning speaker+formula applied to related topic for audience expansion"
+    },
+    {
+      "derivative_id": "deriv-e37076a7",
+      "source_signal_id": "sig-9ce00b3f",
+      "source_video_id": "video-eafa59d4",
+      "variation_type": "different_speaker",
+      "suggested_topic": "theprimeagen",
+      "suggested_hook_formula": "curiositygap",
+      "suggested_speaker": "Andrej Karpathy",
+      "suggested_slot": "evening_1800_2000",
+      "rationale": "Same winning topic+formula but different authority voice for content diversity"
+    },
+    {
+      "derivative_id": "deriv-d2a521d4",
+      "source_signal_id": "sig-9ce00b3f",
+      "source_video_id": "video-eafa59d4",
+      "variation_type": "deeper_dive",
+      "suggested_topic": "theprimeagen — deeper analysis",
+      "suggested_hook_formula": "authority",
+      "suggested_speaker": "theprimeagen",
+      "suggested_slot": "evening_1800_2000",
+      "rationale": "Deep-dive on proven topic with authority framing for audience retention"
+    }
+  ],
+  "created_at": "2026-03-16T14:38:50.949Z"
+}
