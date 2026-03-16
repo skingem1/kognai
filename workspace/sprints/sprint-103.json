@@ -1,0 +1,80 @@
+{
+  "tasks": [
+    {
+      "id": "103-01",
+      "title": "Build go-live readiness checker — env vars, kill switches, pipeline health",
+      "description": "CREATE ONE NEW FILE: dashboard/parsers/readiness.py. Returns dict with env_status, readiness_pct, blockers, kill_switch_proximity.",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "dependencies": [],
+      "priority": "critical",
+      "sprint_id": "sprint-103",
+      "deliverables": {
+        "code": ["dashboard/parsers/readiness.py"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "New parser module for go-live readiness dashboard panel."
+    },
+    {
+      "id": "103-02",
+      "title": "Build pipeline status summary — run history from workspace/scs001/ directories",
+      "description": "CREATE ONE NEW FILE: dashboard/parsers/pipeline_status.py. Scans workspace/scs001/run-* dirs, returns run history.",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "dependencies": [],
+      "priority": "critical",
+      "sprint_id": "sprint-103",
+      "deliverables": {
+        "code": ["dashboard/parsers/pipeline_status.py"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "New parser for pipeline run history from actual workspace dirs."
+    },
+    {
+      "id": "103-03",
+      "title": "Wire readiness + pipeline-status endpoints into dashboard server",
+      "description": "MODIFY: dashboard/server.py — add 2 imports + 2 route handlers.",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "dependencies": ["103-01", "103-02"],
+      "priority": "high",
+      "sprint_id": "sprint-103",
+      "deliverables": {
+        "code": ["dashboard/server.py"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Add /api/readiness and /api/pipeline/status endpoints."
+    },
+    {
+      "id": "103-04",
+      "title": "Add Go-Live Readiness panel to dashboard frontend",
+      "description": "MODIFY: dashboard/static/index.html (add panel 14 card) and dashboard/static/app.js (add renderReadiness function).",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "dependencies": ["103-03"],
+      "priority": "high",
+      "sprint_id": "sprint-103",
+      "deliverables": {
+        "code": ["dashboard/static/index.html", "dashboard/static/app.js"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Panel 14: readiness score, env var checklist, kill switch proximity, pipeline status."
+    }
+  ]
+}

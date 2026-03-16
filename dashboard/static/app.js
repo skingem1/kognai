@@ -662,56 +662,101 @@ async function renderAssets() {
     return;
   }
 
-  // Skills summary
-  const skills = data.skills || {};
+  const kSkills = data.skills || {};
+  const iSkills = data.invoica_skills || {};
+  const iFailures = data.invoica_failures || {};
+  const iSummary = data.invoica_summary || {};
+
+  // Combined stats
+  const totalKognaiSkills = kSkills.total_skills || 0;
+  const totalInvoicaSkills = iSummary.total_skills || 0;
+  const totalFailures = iSummary.total_failures || 0;
+
   html += `
     <div class="stats-row">
-      <div class="stat-box">
-        <div class="stat-value">${skills.total_skills || 0}</div>
-        <div class="stat-label">Total Skills</div>
+      <div class="stat-box" style="border-left: 3px solid var(--accent-blue);">
+        <div class="stat-value" style="color: var(--accent-blue);">${totalKognaiSkills}</div>
+        <div class="stat-label">Kognai Skills</div>
       </div>
-      <div class="stat-box">
-        <div class="stat-value">${(data.code_assets && data.code_assets.total_assets) || 0}</div>
-        <div class="stat-label">Code Assets</div>
+      <div class="stat-box" style="border-left: 3px solid var(--accent-green);">
+        <div class="stat-value" style="color: var(--accent-green);">${totalInvoicaSkills}</div>
+        <div class="stat-label">Invoica Skills</div>
+      </div>
+      <div class="stat-box" style="border-left: 3px solid var(--accent-red);">
+        <div class="stat-value" style="color: var(--accent-red);">${totalFailures}</div>
+        <div class="stat-label">Failures</div>
       </div>
     </div>
   `;
 
-  // Skill directories
-  if (skills.skill_dirs && skills.skill_dirs.length > 0) {
-    html += '<div class="section-divider">Skill Categories</div>';
-    for (const d of skills.skill_dirs) {
+  // --- Kognai Skills ---
+  if (kSkills.skill_files && kSkills.skill_files.length > 0) {
+    html += '<div class="section-divider"><span class="project-dot-inline kognai"></span> Kognai Skills</div>';
+    for (const s of kSkills.skill_files.slice(0, 6)) {
       html += `
         <div class="asset-row">
-          <span class="asset-name">${escHtml(d.name)}</span>
-          <span class="asset-count">${d.count} files</span>
-        </div>
-      `;
-    }
-  }
-
-  // Skill files (top 8)
-  if (skills.skill_files && skills.skill_files.length > 0) {
-    html += '<div class="section-divider">Recent Skills</div>';
-    for (const s of skills.skill_files.slice(0, 8)) {
-      html += `
-        <div class="asset-row">
-          <span class="asset-name" title="${escHtml(s.file)}">${escHtml(s.title || s.file).substring(0, 40)}</span>
+          <span class="asset-name" title="${escHtml(s.file)}">${escHtml(s.title || s.file).substring(0, 45)}</span>
           ${s.score ? `<span class="asset-score">${s.score}</span>` : ''}
           ${s.agent ? `<span class="asset-agent mono">${escHtml(s.agent)}</span>` : ''}
         </div>
       `;
     }
-    if (skills.skill_files.length > 8) {
-      html += `<div style="font-size: 11px; color: var(--text-muted); padding: 4px 0;">+${skills.skill_files.length - 8} more</div>`;
+    if (kSkills.skill_files.length > 6) {
+      html += `<div style="font-size: 10px; color: var(--text-muted); padding: 2px 0;">+${kSkills.skill_files.length - 6} more</div>`;
     }
   }
 
-  // Code assets
+  // --- Invoica Skills (virtual — from approved sprint tasks) ---
+  if (iSkills.skills && iSkills.skills.length > 0) {
+    html += '<div class="section-divider"><span class="project-dot-inline invoica"></span> Invoica Skills</div>';
+    for (const s of iSkills.skills.slice(0, 6)) {
+      const typeIcon = s.type === 'bugfix' ? '🔧' : s.type === 'feature' ? '✨' : s.type === 'refactor' ? '♻️' : '📋';
+      html += `
+        <div class="asset-row">
+          <span style="font-size: 10px;" title="${escHtml(s.type)}">${typeIcon}</span>
+          <span class="asset-name" title="${escHtml(s.title)}">${escHtml(s.title).substring(0, 45)}</span>
+          <span class="asset-agent mono">${escHtml(s.agent || '')}</span>
+        </div>
+      `;
+    }
+    if (iSkills.skills.length > 6) {
+      html += `<div style="font-size: 10px; color: var(--text-muted); padding: 2px 0;">+${iSkills.skills.length - 6} more from ${iSkills.sprints_scanned || '?'} sprints</div>`;
+    }
+  }
+
+  // --- Invoica Failures ---
+  if (iFailures.failures && iFailures.failures.length > 0) {
+    const types = iFailures.failure_types || {};
+    html += '<div class="section-divider" style="color: var(--accent-red);">⚠ Failure Library</div>';
+
+    // Type breakdown (compact)
+    const typeEntries = Object.entries(types).sort((a,b) => b[1] - a[1]);
+    if (typeEntries.length > 0) {
+      html += '<div style="display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 6px;">';
+      for (const [type, count] of typeEntries) {
+        html += `<span class="mini-badge" style="background: rgba(255,99,99,0.1); color: var(--accent-red); font-size: 9px;">${type}: ${count}</span>`;
+      }
+      html += '</div>';
+    }
+
+    for (const f of iFailures.failures.slice(0, 5)) {
+      html += `
+        <div class="asset-row" style="border-left: 2px solid var(--accent-red); padding-left: 6px;">
+          <span class="asset-name" style="color: var(--accent-red);" title="${escHtml(f.reason)}">${escHtml(f.task_id)}</span>
+          <span style="font-size: 10px; color: var(--text-muted);">${escHtml(f.reason).substring(0, 40)}</span>
+        </div>
+      `;
+    }
+    if (iFailures.failures.length > 5) {
+      html += `<div style="font-size: 10px; color: var(--text-muted); padding: 2px 0;">+${iFailures.failures.length - 5} more failures</div>`;
+    }
+  }
+
+  // Code assets (Kognai)
   const codeAssets = data.code_assets || {};
   if (codeAssets.assets && codeAssets.assets.length > 0) {
     html += '<div class="section-divider">Code Assets</div>';
-    for (const a of codeAssets.assets.slice(0, 6)) {
+    for (const a of codeAssets.assets.slice(0, 4)) {
       html += `
         <div class="asset-row">
           <span class="mini-badge purple">T${a.tier}</span>
@@ -727,8 +772,9 @@ async function renderAssets() {
 
 // --- Panel 11: Logs & Agents ---
 async function renderLogs() {
-  const [logs, kAgents, iAgents] = await Promise.all([
+  const [kLogs, iLogs, kAgents, iAgents] = await Promise.all([
     fetchJson('/api/logs/latest'),
+    fetchJson('/api/invoica/logs/latest'),
     fetchJson('/api/agents'),
     fetchJson('/api/invoica/agents'),
   ]);
@@ -738,8 +784,10 @@ async function renderLogs() {
 
   let html = '';
 
-  if (logs && logs.summary) {
-    const s = logs.summary;
+  // --- Kognai Log Summary ---
+  if (kLogs && kLogs.summary) {
+    const s = kLogs.summary;
+    html += '<div class="project-section-header kognai" style="margin-bottom: 4px;"><span class="project-dot-inline kognai"></span> KOGNAI LOG</div>';
     html += `
       <div class="log-summary">
         <div class="log-summary-item">
@@ -759,10 +807,10 @@ async function renderLogs() {
     `;
   }
 
-  if (logs && logs.lines && logs.lines.length > 0) {
-    html += `<div class="section-divider">Sprint Log${logs.sprint ? ` (${logs.sprint})` : ''}</div>`;
-    html += '<div class="log-viewer">';
-    const lines = logs.lines.slice(-60);
+  if (kLogs && kLogs.lines && kLogs.lines.length > 0) {
+    html += `<div class="section-divider">Sprint Log${kLogs.sprint ? ` (${kLogs.sprint})` : ''}</div>`;
+    html += '<div class="log-viewer" style="max-height: 200px;">';
+    const lines = kLogs.lines.slice(-40);
     for (const line of lines) {
       let cls = 'log-line';
       const lower = line.toLowerCase();
@@ -772,17 +820,50 @@ async function renderLogs() {
       html += `<div class="${cls}">${escHtml(line)}</div>`;
     }
     html += '</div>';
-  } else {
-    html += '<div class="empty-state"><div class="icon">&#128203;</div>No sprint logs yet</div>';
   }
 
-  if (logs && logs.errors && logs.errors.length > 0) {
-    html += `<div class="section-divider">Errors (${logs.errors.length})</div>`;
-    for (const err of logs.errors.slice(0, 10)) {
-      html += `<div class="log-viewer" style="max-height: 40px; margin-bottom: 4px; color: var(--accent-red); font-size: 11px;">${escHtml(err.line)}</div>`;
+  // --- Invoica Log Summary ---
+  if (iLogs && !iLogs.error) {
+    html += '<div class="project-section-header invoica" style="margin-top: 10px; margin-bottom: 4px;"><span class="project-dot-inline invoica"></span> INVOICA LOG</div>';
+    html += `<div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">${escHtml(iLogs.file || '')} &middot; ${iLogs.source || ''} &middot; ${iLogs.total_lines || 0} lines</div>`;
+
+    if (iLogs.lines && iLogs.lines.length > 0) {
+      html += '<div class="log-viewer" style="max-height: 150px;">';
+      const iLines = iLogs.lines.slice(-30);
+      for (const line of iLines) {
+        let cls = 'log-line';
+        const lower = line.toLowerCase();
+        if (lower.includes('error') || lower.includes('rejected') || lower.includes('failed')) cls += ' error';
+        else if (lower.includes('approved') || lower.includes('success') || lower.includes('done')) cls += ' approved';
+        html += `<div class="${cls}">${escHtml(line)}</div>`;
+      }
+      html += '</div>';
+    } else {
+      html += '<div style="font-size: 10px; color: var(--text-muted);">Session active — no output yet</div>';
+    }
+
+    if (iLogs.errors && iLogs.errors.length > 0) {
+      html += `<div style="font-size: 10px; color: var(--accent-red); margin-top: 4px;">${iLogs.errors.length} error(s) in log</div>`;
     }
   }
 
+  // --- Combined Errors ---
+  const allErrors = [];
+  if (kLogs && kLogs.errors) {
+    for (const e of kLogs.errors.slice(0, 5)) allErrors.push({...e, project: 'kognai'});
+  }
+  if (iLogs && iLogs.errors) {
+    for (const e of iLogs.errors.slice(0, 5)) allErrors.push({...e, project: 'invoica'});
+  }
+  if (allErrors.length > 0) {
+    html += `<div class="section-divider" style="color: var(--accent-red);">Errors (${allErrors.length})</div>`;
+    for (const err of allErrors.slice(0, 8)) {
+      const dot = err.project === 'kognai' ? 'kognai' : 'invoica';
+      html += `<div class="log-viewer" style="max-height: 35px; margin-bottom: 3px; color: var(--accent-red); font-size: 10px;"><span class="project-dot-inline ${dot}"></span> ${escHtml(err.line || '')}</div>`;
+    }
+  }
+
+  // --- Agents ---
   const kCount = (kAgents && kAgents.length) || 0;
   const iCount = (iAgents && iAgents.length) || 0;
 
@@ -1044,11 +1125,84 @@ async function deferTask(block, index) {
   }
 }
 
+// --- Panel 14: Go-Live Readiness ---
+async function renderReadiness() {
+  const panel = $('#readiness-body');
+  if (!panel) return;
+  try {
+    const [r, ps] = await Promise.all([
+      fetchJson('/api/readiness'),
+      fetchJson('/api/pipeline/status'),
+    ]);
+
+    const pct = r.readiness_pct ?? 0;
+    const pctColor = pct >= 80 ? 'var(--accent-green)' : pct >= 40 ? 'var(--accent-blue)' : 'var(--accent-amber)';
+
+    let html = `
+      <div style="display:flex; align-items:center; gap:16px; margin-bottom:12px;">
+        <div style="font-size:42px; font-weight:800; color:${pctColor}; line-height:1;">${pct}%</div>
+        <div>
+          <div style="font-weight:700; font-size:13px;">Readiness Score</div>
+          <div style="color:var(--text-muted); font-size:12px;">${r.blockers?.length ?? 0} blocker${r.blockers?.length !== 1 ? 's' : ''} remaining</div>
+        </div>
+      </div>
+    `;
+
+    // Env vars checklist
+    html += `<div style="font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin-bottom:6px;">Environment Variables</div>`;
+    for (const [key, ok] of Object.entries(r.env_status ?? {})) {
+      const icon = ok ? '&#10003;' : '&#10007;';
+      const color = ok ? 'var(--accent-green)' : 'var(--accent-red, #e05a5a)';
+      html += `<div style="display:flex; align-items:center; gap:8px; padding:3px 0; border-bottom:1px solid var(--border);">
+        <span style="color:${color}; font-weight:700;">${icon}</span>
+        <span class="mono" style="font-size:12px; color:${ok ? 'var(--text)' : 'var(--text-muted)'};">${escHtml(key)}</span>
+      </div>`;
+    }
+
+    // Kill switch proximity
+    const ks = r.kill_switch_proximity ?? {};
+    html += `<div style="font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin:12px 0 6px;">Kill Switch Targets (Phase 1.5 Gate)</div>`;
+    html += `<div class="stats-row">
+      <div class="stat-box"><div class="stat-value">${ks.current_views ?? 0}/${ks.views_target ?? 500}</div><div class="stat-label">Views</div></div>
+      <div class="stat-box"><div class="stat-value">${ks.current_posts ?? 0}/${ks.posts_target ?? 30}</div><div class="stat-label">Posts</div></div>
+      <div class="stat-box"><div class="stat-value">${ks.current_retention ?? 0}%/${ks.retention_target ?? 20}%</div><div class="stat-label">Retention</div></div>
+      <div class="stat-box"><div class="stat-value">${ks.current_qc_pass ?? 0}%/${ks.qc_pass_target ?? 80}%</div><div class="stat-label">QC Pass</div></div>
+    </div>`;
+
+    // Pipeline status
+    const activeBadge = ps?.pipeline_active
+      ? '<span class="mini-badge green">ACTIVE</span>'
+      : '<span class="mini-badge amber">IDLE</span>';
+    const lastRun = ps?.last_run_timestamp
+      ? new Date(ps.last_run_timestamp).toLocaleString()
+      : 'Never';
+    html += `<div style="font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin:12px 0 6px;">Pipeline Status</div>`;
+    html += `<div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+      ${activeBadge}
+      <span style="font-size:12px; color:var(--text-muted);">Last run: ${escHtml(lastRun)}</span>
+    </div>`;
+    html += `<div style="font-size:12px; color:var(--text-muted);">Runs today: ${ps?.runs_today ?? 0} | Total runs: ${ps?.runs_found ?? 0}</div>`;
+
+    // Blockers
+    if (r.blockers?.length > 0) {
+      html += `<div style="font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin:12px 0 6px;">Blockers</div>`;
+      for (const b of r.blockers) {
+        html += `<div style="padding:5px 8px; margin-bottom:4px; border-left:3px solid var(--accent-red, #e05a5a); background:rgba(224,90,90,0.07); font-size:12px; border-radius:2px;">${escHtml(b)}</div>`;
+      }
+    }
+
+    panel.innerHTML = html;
+  } catch (e) {
+    panel.innerHTML = `<div class="empty-state" style="color:var(--text-muted);">Readiness unavailable: ${escHtml(e.message)}</div>`;
+  }
+}
+
 // --- All render functions ---
 const ALL_RENDERERS = [
   renderProgress, renderTodo, renderOverview, renderSCS001,
   renderCosts, renderRouting, renderAmendments, renderChain,
   renderSecurity, renderAssets, renderLogs, renderPipeline, renderRevenue,
+  renderReadiness,
 ];
 
 // --- Manual Refresh ---

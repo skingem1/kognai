@@ -36,6 +36,13 @@ from parsers.project_overview import get_project_overview
 from parsers.assets import get_all_assets
 from parsers.daily_plans import get_today_plans
 from parsers.pipeline import get_latest_pipeline_run, list_pipeline_runs
+from parsers.readiness import get_readiness
+from parsers.pipeline_status import get_pipeline_status
+from parsers.invoica_knowledge import (
+    get_invoica_skills, get_invoica_failures, get_cto_insights,
+    get_post_sprint_learnings, get_invoica_latest_log, get_invoica_log_errors,
+    get_invoica_knowledge_summary,
+)
 
 
 class ToggleRequest(BaseModel):
@@ -329,6 +336,37 @@ async def assets():
     return get_all_assets()
 
 
+# --- Invoica Knowledge ---
+@app.get("/api/invoica/knowledge")
+async def invoica_knowledge():
+    """Full Invoica knowledge dump: skills, failures, CTO insights, learnings."""
+    return {
+        "skills": get_invoica_skills(limit=50),
+        "failures": get_invoica_failures(limit=30),
+        "cto_insights": get_cto_insights(),
+        "learnings": get_post_sprint_learnings(limit=10),
+        "summary": get_invoica_knowledge_summary(),
+    }
+
+
+@app.get("/api/invoica/failures")
+async def invoica_failures():
+    return get_invoica_failures(limit=50)
+
+
+@app.get("/api/invoica/logs/latest")
+async def invoica_latest_log():
+    log = get_invoica_latest_log()
+    if not log:
+        return {"error": "No Invoica logs found"}
+    return log
+
+
+@app.get("/api/invoica/logs/errors")
+async def invoica_log_errors():
+    return get_invoica_log_errors()
+
+
 # --- Daily Plans (both projects) ---
 @app.get("/api/daily-plans")
 async def daily_plans():
@@ -347,6 +385,16 @@ async def pipeline_latest():
 @app.get("/api/pipeline/runs")
 async def pipeline_runs():
     return list_pipeline_runs()
+
+
+@app.get("/api/readiness")
+async def readiness():
+    return get_readiness()
+
+
+@app.get("/api/pipeline/status")
+async def pipeline_status():
+    return get_pipeline_status()
 
 
 # --- Debug: ping all services ---
