@@ -354,3 +354,16 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
   - ecosystem.config.js: achiri-api process (ts-node server.ts, port 3420, autorestart=true)
 - Pipeline: Achiri Phase 2A complete — voice ✅ LLM ✅ memory ✅ HTTP API ✅
 - Timestamp: 2026-03-16T23:00:00Z
+
+### Sprint 116 — Achiri Telegram Bridge (Block: achiri-telegram)
+- Status: PASS | Commit: 6231c71 | Block: Phase 2A achiri-telegram
+- Files created: scripts/achiri/validate-telegram-bridge.ts, workspace/sprints/sprint-116.json
+- Files modified: agents/telegram-bot/commands.ts (handleAchiri + handler cache), agents/telegram-bot/index.ts (/achiri routing)
+- Tests: scripts/achiri/validate-telegram-bridge.ts — 5/5 PASS (handler init, chat reply, dry-run status, model field, second call)
+- Swarm: NOT used — commands.ts was already 302 lines (known swarm failure zone)
+- Changes:
+  - commands.ts: import AchiriConversationHandler, achiriHandlers Map<chatId, handler>, handleAchiri(chatId, message) wired to handler.chat()
+  - index.ts: case '/achiri' dispatches to handleAchiri(chatId, text after command)
+  - validate-telegram-bridge.ts: 5 checks in ACHIRI_DRY_RUN=1 mode
+- Pipeline: Achiri Phase 2A complete — voice ✅ LLM ✅ memory ✅ HTTP API ✅ Telegram ✅
+- Timestamp: 2026-03-16T23:30:00Z
