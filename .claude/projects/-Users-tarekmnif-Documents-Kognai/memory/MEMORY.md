@@ -1,5 +1,5 @@
 # KOGNAI SESSION MEMORY
-*Last updated: Sprint 111 — 2026-03-16*
+*Last updated: Sprint 115 — 2026-03-16*
 
 ---
 
@@ -10,9 +10,9 @@
 - Production mode: set `SCS_EDITING_MODE=production` + `TIKTOK_ACCESS_TOKEN` in .env
 
 ## Kognai State
-- Last commit: 46c8f41 (Sprint 111 shipped 2026-03-16)
+- Last commit: a1f5271 (Sprint 115 shipped 2026-03-16)
 - Sprint numbering: Invoica legacy 001-062e → Kognai starts 063+
-- Current sprint: 112 (next)
+- Current sprint: 116 (next)
 - Note: d06f06e consolidation commit by Opus session included many dashboard/infra additions (sessions parser, 35 skills, CSS updates)
 - Gate reports: workspace/gates/phase0-phase1-gate.json, workspace/gates/phase1-activation-readiness.json, workspace/gates/production-quality-check.json
 
@@ -56,7 +56,11 @@
 | 109 | dashboard | Experiments Panel 17 (formula pass-rate bars + top speakers) + validation error visibility | ✅ PASS |
 | 110 | feedback+ops | Viral-topic feedback loop (TrendAgent +15 boost) + Phase 1.5 30-post projection in Panel 14 | ✅ PASS |
 | 111 | operator+achiri | Telegram /status upgrade (ledger+experiments+readiness) + viral topic name fix + Achiri Phase 2A scaffold | ✅ PASS |
-| **112** | **?** | **NEXT** | ⏳ pending |
+| 112 | achiri-voice | Achiri voice MVP — personality prompt (prompt.md) + conversation handler (index.ts) + checklist | ✅ PASS |
+| 113 | achiri-llm | Achiri LLM wiring — Ollama (free/qwen3:4b) + Anthropic (paid/claude-haiku) + voice validation 10/10 | ✅ PASS |
+| 114 | achiri-memory | Achiri memory subsystem — per-user JSONL history (memory-store.ts), 50-turn cap, 3-turn validation PASS | ✅ PASS |
+| 115 | achiri-api | Achiri HTTP API — POST /chat Express server, PM2 achiri-api, 5/5 endpoint validation PASS | ✅ PASS |
+| **116** | **?** | **NEXT** | ⏳ pending |
 
 ## SCS-001 Pipeline Architecture
 12 stages, 11 agents:

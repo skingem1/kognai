@@ -314,3 +314,43 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
   - Achiri scaffold: kognai-agents/achiri/agent.yaml (Phase 2A, Apr 11 gate, voice_before_memory=true) + config.json (ar-TN/fr-TN/en, Tunisian cultural markers, 3 pricing tiers, kill switches).
 - Note: User ran a consolidation commit (d06f06e) between Sprint 110 and 111 that added sessions parser, 35 skills, 30 failure library entries, CSS updates.
 - Timestamp: 2026-03-16T17:00:00Z
+
+### Sprint 112 — Achiri Voice MVP (Block: achiri-voice)
+- Status: PASS | Commit: 440c30e | Block: achiri-voice
+- Files created: agents/achiri/index.ts, kognai-agents/achiri/prompt.md, workspace/achiri/session-logs/.gitkeep
+- Tests: voice-validation-checklist.md — PASS
+- Swarm: NOT used — wrote directly
+- Changes: AchiriConversationHandler class (tier-based, dry-run mode), 3580-char Tunisian personality prompt
+- Timestamp: 2026-03-16
+
+### Sprint 113 — Achiri LLM Wiring (Block: achiri-llm)
+- Status: PASS | Commit: 546fbac | Block: achiri-llm
+- Files modified: agents/achiri/index.ts
+- Files created: workspace/achiri/session-logs/session-1.json, session-2.json
+- Tests: voice validation — 10/10 PASS
+- Swarm: NOT used — wrote directly
+- Changes: Ollama (local/qwen3:4b for free tier) + Anthropic fetch (paid tiers), fallback error message in Arabic/Tunisian
+- Timestamp: 2026-03-16
+
+### Sprint 114 — Achiri Memory Subsystem (Block: achiri-memory)
+- Status: PASS | Commit: 0a9591a | Block: achiri-memory
+- Files created: agents/achiri/memory-store.ts
+- Files modified: agents/achiri/index.ts, kognai-agents/achiri/config.json
+- Tests: 3-turn conversation validation — PASS
+- Swarm: NOT used — wrote directly
+- Changes: AchiriMemoryStore class (JSONL per user, 50-turn cap, loadHistory/appendTurn/clearHistory/getStats)
+- Timestamp: 2026-03-16
+
+### Sprint 115 — Achiri HTTP API (Block: achiri-api)
+- Status: PASS | Commit: a1f5271 | Block: achiri-api
+- Files created: agents/achiri/server.ts, scripts/achiri/validate-http-api.ts, workspace/sprints/sprint-115.json
+- Files modified: ecosystem.config.js (achiri-api PM2 process on port 3420)
+- Tests: scripts/achiri/validate-http-api.ts — 5/5 PASS (health, chat, stats, delete-memory, 400-on-missing-msg)
+- Swarm: NOT used — multi-file + ecosystem.config.js too complex
+- Changes:
+  - server.ts: stdlib http.createServer, POST /chat, DELETE /memory/:userId, GET /stats, GET /health
+  - Handler cache keyed by tier:userId for per-user memory isolation
+  - ACHIRI_DRY_RUN=1 skips LLM call (returns mock JSON), port override via ACHIRI_PORT
+  - ecosystem.config.js: achiri-api process (ts-node server.ts, port 3420, autorestart=true)
+- Pipeline: Achiri Phase 2A complete — voice ✅ LLM ✅ memory ✅ HTTP API ✅
+- Timestamp: 2026-03-16T23:00:00Z
