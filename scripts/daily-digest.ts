@@ -97,12 +97,15 @@ function getTopFormula(): string {
 
 // ── Queue stats (Sprint 151): unposted videos ─────────────────────────────────
 
-function getQueueStats(): { ledgerCount: number; recordedCount: number; unposted: number } {
+function getQueueStats(): { ledgerCount: number; recordedCount: number; unposted: number; top3: string[] } {
   const ledger   = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
   const recorded = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
   const recordedIds = new Set(recorded.map((e: any) => e.video_id).filter(Boolean));
-  const unposted = ledger.filter((e: any) => !recordedIds.has(e.video_id)).length;
-  return { ledgerCount: ledger.length, recordedCount: recorded.length, unposted };
+  const unpostedEntries = (ledger as any[])
+    .filter((e: any) => !recordedIds.has(e.video_id) && e.video_id)
+    .sort((a: any, b: any) => (b.published_at ?? '').localeCompare(a.published_at ?? ''));
+  const top3 = unpostedEntries.slice(0, 3).map((e: any) => e.video_id as string);
+  return { ledgerCount: ledger.length, recordedCount: recorded.length, unposted: unpostedEntries.length, top3 };
 }
 
 // ── Smoke test (reports/smoke-test-latest.json) ───────────────────────────────
@@ -147,6 +150,7 @@ function buildDigest(): string {
   // Urgency escalation: graded KILL RISK signal as Apr 7 approaches
   function getUrgencySignal(postsRemaining: number, days: number): string {
     if (postsRemaining <= 0 && gate.totalViews >= 500) return '✅ GATE: PROCEED';
+    if (postsRemaining > 0 && gate.count === 0) return '⚠️ WARNING — 0 posts recorded. Start posting now.';
     if (days <= 3 && postsRemaining > 0) return '💀 GATE FAILED — kill switch trigger';
     if (days <= 7 && postsRemaining > days * 3) return `🚨 KILL RISK — ${postsRemaining} posts needed in ${days}d`;
     if (days <= 14 && postsRemaining > days * 2) return `⚠️ WARNING — behind pace (${postsRemaining} posts in ${days}d)`;
@@ -170,6 +174,11 @@ function buildDigest(): string {
     `${viewsIcon}  Views:  *${gate.totalViews}/500* ${viewsLeft > 0 ? `(avg ${gate.avgViews}/post)` : ''}`,
     `→ ${urgency}`,
     ...(showKillReminder ? [`   _Kill switch: <500 views/30 posts by Apr 7_`] : []),
+    ...(showKillReminder && queue.top3.length > 0 ? [
+      '',
+      '📌 *Post these now:*',
+      ...queue.top3.map((id, i) => `${i + 1}. \`/record ${id} 0\``),
+    ] : []),
     '',
     `🎬 *Pipeline* (dry-run)`,
     `• Total generated: ${ledger.total} | Today: ${ledger.todayCount}`,

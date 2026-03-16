@@ -1,0 +1,51 @@
+{
+  "sprint": "152",
+  "name": "Digest gate-pressure: urgency fix + inline top-3 queue on WARNING",
+  "block": "Phase 1 — gate urgency (22 days to Apr 7, 0/30 posts)",
+  "goal": "Two changes to scripts/daily-digest.ts: (1) Fix getUrgencySignal(): current logic shows 'on track' when 0 posts recorded and 22 days left — this is false reassurance. Add special case: if postsRemaining > 0 AND gate.count === 0, return '⚠️ WARNING — 0 posts recorded. Start posting now.' regardless of days remaining. (2) When showKillReminder (urgency contains WARNING/KILL/FAILED): read top-3 unposted video IDs from ledger (exclude already-recorded), append them inline to digest as 'Post now → /record <id> 0' shortcuts. Operator gets actionable video IDs directly in morning digest without needing to run /queue.",
+  "rationale": "22 days with 0/30 posts shows 'IN PROGRESS — on track' which is dangerously misleading. The operator has never posted a single video. Fixing urgency + showing inline video IDs converts the morning digest from a passive report into a direct action prompt.",
+  "swarm": "NOT USED — 1 file edit + 1 validation script. Direct write.",
+  "tasks": [
+    {
+      "id": "152-01",
+      "title": "daily-digest.ts — fix urgency + inline top-3 queue on WARNING",
+      "description": "Fix getUrgencySignal(): add as FIRST check (before days-based checks): if (postsRemaining > 0 && gate.count === 0) return '⚠️ WARNING — 0 posts recorded. Start posting now.'. Also update getQueueStats() to return top3: array of up to 3 unposted video_ids (most recent from ledger, excluding recorded). In buildDigest(): when showKillReminder && queue.top3.length > 0, append to lines: '', '📌 Post these now:', ...queue.top3.map((id,i) => `${i+1}. /record ${id} 0`). Update getQueueStats return type to include top3: string[].",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-152",
+      "deliverables": {
+        "code": ["scripts/daily-digest.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "152-02",
+      "title": "validate-sprint-152.ts — 5-check validation script",
+      "description": "1) daily-digest.ts urgency checks gate.count === 0. 2) daily-digest.ts getQueueStats returns top3. 3) daily-digest.ts has 'Post these now' line. 4) DRY_RUN output contains 'WARNING'. 5) DRY_RUN output contains '/record' (inline shortcuts shown since 0 posts).",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-152",
+      "deliverables": {
+        "code": ["scripts/scs001/validate-sprint-152.ts"],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ],
+  "acceptance_criteria": [
+    "getUrgencySignal shows WARNING when 0 posts recorded",
+    "getQueueStats returns top3 unposted video IDs",
+    "Digest shows inline /record shortcuts when urgency is WARNING",
+    "DRY_RUN output shows WARNING and /record shortcuts",
+    "validate-sprint-152.ts: 5/5 PASS"
+  ]
+}
