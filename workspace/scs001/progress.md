@@ -453,3 +453,15 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
 - Darija limit message: "Waslet el 7ed mtaa el yawm (N messages). 3awedha ghodwa aw bedel plan!"
 - Impact: Tier enforcement live. Required for Apr 25 Achiri Alpha. Free users get 50 msg/day, paid users unlimited.
 - Timestamp: 2026-03-16T16:00:00Z
+
+### Sprint 123 — achiri-safety skill (Block: Phase 2A — T3 Skills #1/6)
+- Status: PASS | Commit: 6257bcb | Block: T3 Skills — achiri-safety
+- Files created: agents/achiri/safety-filter.ts, scripts/achiri/validate-safety-filter.ts, workspace/sprints/sprint-123.json
+- Files modified: agents/achiri/index.ts
+- Tests: scripts/achiri/validate-safety-filter.ts — 7/7 PASS (normal pass, self_harm, violence, explicit_sexual, spam_abuse, bypass, chat() integration)
+- Swarm: NOT used — direct write (new file + surgical edit)
+- Changes:
+  - safety-filter.ts: safetyCheck(message) returns SafetyResult {safe, category?, reply?}. 4 categories: self_harm/violence/explicit_sexual/spam_abuse. Darija refusals. ACHIRI_SKIP_SAFETY=1 bypass. Summer Yu rule compliant.
+  - index.ts: import safetyCheck, wire in chat() BEFORE daily limit check. Blocked messages: log + return reply without incrementing counter (zero cost).
+- T3 Skills progress: 1/6 complete (achiri-safety). Remaining: achiri-voice, achiri-memory, eval-harness, derja-profiler, paymee.
+- Timestamp: 2026-03-16T16:30:00Z
