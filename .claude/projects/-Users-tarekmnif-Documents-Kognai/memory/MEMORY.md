@@ -1,5 +1,5 @@
 # KOGNAI SESSION MEMORY
-*Last updated: Sprint 098 — 2026-03-16*
+*Last updated: Sprint 102 — 2026-03-16*
 
 ---
 
@@ -10,9 +10,9 @@
 - Production mode: set `SCS_EDITING_MODE=production` + `TIKTOK_ACCESS_TOKEN` in .env
 
 ## Kognai State
-- Last commit: 3216424 (Sprint 101 shipped 2026-03-16)
+- Last commit: 9e6fbe7 (Sprint 102 shipped 2026-03-16)
 - Sprint numbering: Invoica legacy 001-062e → Kognai starts 063+
-- Current sprint: 102 (next)
+- Current sprint: 103 (next)
 - Gate reports: workspace/gates/phase0-phase1-gate.json, workspace/gates/phase1-activation-readiness.json, workspace/gates/production-quality-check.json
 
 ## Build Priority Sequence
@@ -45,7 +45,8 @@
 | 099 | hosting | Video hosting layer (Supabase Storage + preflight) | ✅ PASS |
 | 100 | ops | Phase 1 operator launch kit (.env.example, setup-phase1.sh, run-live.sh) | ✅ PASS |
 | 101 | data-pipeline | Live trend pipeline (Google Trends RSS + YouTube API + real video search) | ✅ PASS |
-| **102** | **?** | **NEXT** | ⏳ pending |
+| 102 | hardening | Doc-gen bugfix (strategic-context.md) + end-to-end smoke test | ✅ PASS |
+| **103** | **?** | **NEXT** | ⏳ pending |
 
 ## SCS-001 Pipeline Architecture
 12 stages, 11 agents:
@@ -58,9 +59,9 @@ All agents located at: `agents/scs001-*/`
 2. **SUPABASE_URL + SUPABASE_SERVICE_KEY** not in .env — video hosting blocked
 3. **YOUTUBE_API_KEY** not in .env — live trends/real video search blocked (free at console.cloud.google.com)
 4. **SCS_EDITING_MODE** not in .env — production video quality not active (set to 'production')
-5. **OpenClaw v2026.3.7** + T2 Skills — deferred to Sprint 102+ (gate-tracker.md shows both Deferred)
-6. **generate-daily-brief.py** overwrites strategic-context.md — needs fixing before next run
-7. **Run setup when env vars are set**: `bash scripts/setup-phase1.sh`
+5. **OpenClaw v2026.3.7** + T2 Skills — deferred to Sprint 103+ (gate-tracker.md shows both Deferred)
+6. **Run setup when env vars are set**: `bash scripts/setup-phase1.sh`
+7. **Smoke test**: `bash scripts/smoke-test-pipeline.sh` — validates full 12-stage pipeline (PASS as of Sprint 102)
 
 ## Key File Locations
 - Pipeline runner: `agents/scs001-orchestrator/run-pipeline.ts`

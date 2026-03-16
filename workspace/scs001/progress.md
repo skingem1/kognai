@@ -172,3 +172,16 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
 - ecosystem.config.js: scs001-live process added (SCS_MODE=live, cron 0 7,12,18,21 * * *, TIKTOK_ACCESS_TOKEN wired from env).
 - gate-tracker.md: OpenClaw + T2 Skills marked Deferred to Sprint 098+.
 - Timestamp: 2026-03-16T15:00:00Z
+
+### Sprint 102 — Pipeline Hardening: Doc-gen bugfix + End-to-end smoke test (Block: hardening)
+- Status: PASS | Commit: 9e6fbe7 | Block: hardening
+- Files modified: scripts/generate-daily-brief.py
+- Files created: scripts/smoke-test-pipeline.ts, scripts/smoke-test-pipeline.sh, workspace/sprints/sprint-102.json, reports/smoke-test-latest.json
+- Tests: scripts/smoke-test-pipeline.ts — PASS (12 stages, 0 errors, 13 videos, exit 0)
+- Swarm: attempted task 102-01, killed after attempt 1 (362-line file = known destructive rewrite failure). All 3 tasks written directly.
+- Changes:
+  - generate-daily-brief.py: skip strategic-context.md write if file exists (--force-strategic to override). Prevents daily cron from overwriting curated content.
+  - smoke-test-pipeline.ts: full 12-stage mock run, validates stages>=8 + no errors + non-zero counters. Writes reports/smoke-test-latest.json.
+  - smoke-test-pipeline.sh: bash wrapper, propagates exit code.
+- Issues: Swarm attempted 102-01 (362-line Python file), produced destructive rewrite (120-line placeholder) on attempt 1. Killed immediately, wrote directly.
+- Timestamp: 2026-03-16T17:30:00Z
