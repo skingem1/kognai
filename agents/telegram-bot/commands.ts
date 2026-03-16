@@ -106,6 +106,7 @@ export async function handleHelp(chatId: number): Promise<void> {
     '/achiri <msg> — Chat with Achiri (free tier, Darija/Arabic/French)',
     '/waitlist — Join Achiri alpha waitlist (launches Apr 25)',
     '/invite-achiri <id> — Invite user to Achiri alpha whitelist (owner)',
+    '/deploy-status — Achiri alpha deploy checklist (owner)',
     '/achiri-health — Achiri server status (owner)',
     '',
     '/help — This message',
@@ -977,4 +978,103 @@ export async function handleUpdateViews(chatId: number, ownerChatId: string, tex
     `Cadence: ${cadence} posts/day`,
     `Days left: ${daysToGate > 0 ? daysToGate : 'PASSED'}`,
   ].join('\n'));
+}
+
+// ── Achiri deploy status — Sprint 147 ─────────────────────────────────────────
+// Owner-only: shows full Achiri alpha deploy checklist.
+// Prerequisites: ACHIRI_BASE_URL (non-localhost), ACHIRI_ALPHA_ONLY, API health,
+// alpha-whitelist.jsonl count, waitlist count, deploy-achiri.sh present.
+export async function handleDeployStatus(chatId: number, ownerChatId: string): Promise<void> {
+  if (String(chatId) !== ownerChatId) {
+    await sendMessage(chatId, '🔒 Owner only.');
+    return;
+  }
+
+  const lines: string[] = ['🚀 *Achiri Alpha Deploy Status*', ''];
+
+  // (1) ACHIRI_BASE_URL
+  const baseUrl = process.env.ACHIRI_BASE_URL ?? '';
+  const urlIsRemote = baseUrl && !baseUrl.includes('localhost') && !baseUrl.includes('127.0.0.1');
+  lines.push(urlIsRemote
+    ? `✅ ACHIRI_BASE_URL: \`${baseUrl}\``
+    : `⚠️ ACHIRI_BASE_URL: ${baseUrl ? `\`${baseUrl}\` (localhost — update to Hetzner URL)` : 'not set'}`
+  );
+  if (!urlIsRemote) lines.push(`   _Set: ACHIRI_BASE_URL=http://65.108.90.178/achiri_`);
+
+  // (2) ACHIRI_ALPHA_ONLY
+  const alphaOnly = process.env.ACHIRI_ALPHA_ONLY === 'true';
+  lines.push(alphaOnly
+    ? `✅ ACHIRI_ALPHA_ONLY: true (alpha gate active)`
+    : `⏳ ACHIRI_ALPHA_ONLY: not set (open access — set true when alpha-ready)`
+  );
+
+  // (3) Achiri API health (3s timeout)
+  const healthUrl = (baseUrl || 'http://localhost:3420') + '/health';
+  const start = Date.now();
+  let healthLine = '';
+  try {
+    const controller = new AbortController();
+    const t = setTimeout(() => controller.abort(), 3000);
+    const res = await fetch(healthUrl, { signal: controller.signal });
+    clearTimeout(t);
+    const latency = Date.now() - start;
+    healthLine = res.ok
+      ? `✅ Achiri API: UP (${latency}ms) — ${healthUrl}`
+      : `❌ Achiri API: HTTP ${res.status} (${latency}ms)`;
+  } catch {
+    const latency = Date.now() - start;
+    healthLine = `❌ Achiri API: DOWN (${latency}ms) — ${healthUrl}`;
+  }
+  lines.push(healthLine);
+  if (healthLine.startsWith('❌') && !urlIsRemote) {
+    lines.push(`   _Run: ./scripts/deploy-achiri.sh_`);
+  }
+
+  // (4) deploy-achiri.sh present
+  const deployScriptPath = join(process.cwd(), 'scripts', 'deploy-achiri.sh');
+  lines.push(existsSync(deployScriptPath)
+    ? `✅ deploy-achiri.sh: present`
+    : `❌ deploy-achiri.sh: missing (Sprint 129 required)`
+  );
+
+  lines.push('');
+
+  // (5) Alpha whitelist (file-based, Sprint 146)
+  let invitedCount = 0;
+  if (existsSync(ALPHA_WHITELIST_PATH)) {
+    try {
+      invitedCount = readFileSync(ALPHA_WHITELIST_PATH, 'utf-8')
+        .split('\n').filter(l => l.trim()).length;
+    } catch { /* ignore */ }
+  }
+  lines.push(`📋 Alpha whitelist: ${invitedCount} invited`);
+
+  // (6) Waitlist count
+  const wl = join(process.cwd(), 'workspace', 'achiri', 'waitlist.jsonl');
+  let waitlistCount = 0;
+  if (existsSync(wl)) {
+    try {
+      waitlistCount = readFileSync(wl, 'utf-8').split('\n').filter(l => l.trim()).length;
+    } catch { /* ignore */ }
+  }
+  lines.push(`🙋 Waitlist: ${waitlistCount} users`);
+
+  // Remaining steps
+  const remaining: string[] = [];
+  if (!urlIsRemote) remaining.push('Set ACHIRI_BASE_URL=http://65.108.90.178/achiri in .env');
+  if (healthLine.startsWith('❌')) remaining.push('Run ./scripts/deploy-achiri.sh (or pm2 start --only achiri-api on Hetzner)');
+  if (!alphaOnly) remaining.push('When ready: set ACHIRI_ALPHA_ONLY=true in .env, pm2 restart telegram-bot');
+  if (invitedCount === 0) remaining.push('Invite alpha users: /invite-achiri <chat_id>');
+
+  if (remaining.length > 0) {
+    lines.push('', '📌 *Remaining steps:*');
+    remaining.forEach((s, i) => lines.push(`${i + 1}. ${s}`));
+  } else {
+    lines.push('', '✅ *All prerequisites met — Achiri alpha ready to launch!*');
+  }
+
+  const daysToAlpha = Math.ceil((new Date('2026-04-25T00:00:00Z').getTime() - Date.now()) / 86400000);
+  lines.push('', `📅 Achiri alpha: Apr 25 (${daysToAlpha}d)`);
+
+  await sendMessage(chatId, lines.join('\n'));
 }

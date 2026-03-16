@@ -1,0 +1,70 @@
+{
+  "sprint": "147",
+  "name": "/deploy-status Telegram command — Achiri alpha deploy checklist",
+  "block": "Phase 2A — Achiri alpha launch prep",
+  "goal": "handleDeployStatus() — owner-only Telegram command that shows a complete Achiri deploy checklist: which env vars are set vs missing, whether Achiri API is reachable (pings /health), alpha gate config status, invite count. Output: a checklist with ✅/❌/⏳ for each prerequisite + a 'what remains' action list. Helps operator deploy Achiri to Hetzner for Apr 25 alpha without guessing what's left.",
+  "rationale": "Apr 25 Achiri alpha (40d away). All code is done (Sprints 129-131). Operator needs to: (1) set ANTHROPIC_API_KEY on Hetzner, (2) run deploy-achiri.sh, (3) set ACHIRI_BASE_URL in bot .env, (4) set ACHIRI_ALPHA_ONLY=true. There's no single command to see which of these are done. /deploy-status closes that gap — operator runs it from Telegram and sees exactly what's remaining.",
+  "swarm": "NOT USED — 2 file edits + 1 validation script. Direct write.",
+  "tasks": [
+    {
+      "id": "147-01",
+      "title": "commands.ts — handleDeployStatus() + handleHelp update",
+      "description": "Add handleDeployStatus(chatId, ownerChatId): owner-only. Checks: (1) ACHIRI_BASE_URL: set to non-localhost? ✅ else ⚠️ 'Set ACHIRI_BASE_URL=http://65.108.90.178/achiri in .env'. (2) ACHIRI_ALPHA_ONLY: set to 'true'? ✅ else ⏳ 'Set ACHIRI_ALPHA_ONLY=true when ready to gate alpha'. (3) Achiri API health: ping ACHIRI_BASE_URL/health (3s timeout) → ✅ UP (latency) or ❌ DOWN. (4) File whitelist: count from alpha-whitelist.jsonl. (5) Waitlist: count from waitlist.jsonl. (6) deploy-achiri.sh: existsSync('scripts/deploy-achiri.sh') → ✅/❌. Build checklist message and show remaining steps. Add '/deploy-status — Achiri alpha deploy checklist (owner)' to handleHelp() under Achiri section.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-147",
+      "deliverables": {
+        "code": ["agents/telegram-bot/commands.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "147-02",
+      "title": "index.ts — import handleDeployStatus + route /deploy-status",
+      "description": "Add handleDeployStatus to import from ./commands. Add case '/deploy-status': await handleDeployStatus(chatId, OWNER_CHAT_ID); in dispatch switch after /invite-achiri case.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-147",
+      "deliverables": {
+        "code": ["agents/telegram-bot/index.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "147-03",
+      "title": "scripts/scs001/validate-sprint-147.ts — validation script",
+      "description": "6 checks: (1) commands.ts exports handleDeployStatus; (2) commands.ts checks ACHIRI_BASE_URL vs localhost; (3) commands.ts checks ACHIRI_ALPHA_ONLY; (4) commands.ts pings /health in handleDeployStatus; (5) handleHelp lists /deploy-status; (6) index.ts routes '/deploy-status'. Exit 0 on all pass.",
+      "type": "create",
+      "task_type": "test",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-147",
+      "deliverables": {
+        "code": ["scripts/scs001/validate-sprint-147.ts"],
+        "tests": ["scripts/scs001/validate-sprint-147.ts"],
+        "docs": []
+      }
+    }
+  ],
+  "acceptance_criteria": [
+    "/deploy-status is owner-gated",
+    "Shows ACHIRI_BASE_URL check: ✅ if non-localhost, ⚠️ with instruction if localhost/unset",
+    "Shows ACHIRI_ALPHA_ONLY check: ✅ if true, ⏳ with instruction if not set",
+    "Pings Achiri /health with 3s timeout and shows UP/DOWN",
+    "Shows invited count from alpha-whitelist.jsonl and waitlist count",
+    "handleHelp lists /deploy-status under Achiri section",
+    "validate-sprint-147.ts exits 0 (all 6 checks pass)"
+  ]
+}
