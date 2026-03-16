@@ -140,6 +140,8 @@ export class PublishingAgent {
 
     const results: PublishedVideo[] = [];
     let slotIndex = 0;
+    // Track caption hook texts to prevent TikTok duplicate-content demotion
+    const seenHooks = new Map<string, number>(); // normalized hook → occurrence count
 
     for (const videoId of passedIds) {
       const cv = captionMap.get(videoId);
@@ -154,8 +156,18 @@ export class PublishingAgent {
       }
 
       const hashtags = generateHashtags(bundle);
-      const captionText = buildCaption(bundle);
+      let captionText = buildCaption(bundle);
       const { slot, scheduled_post_time } = assignPostingSlot(slotIndex++);
+
+      // Dedup: append Part N suffix if hook was already used in this batch
+      const hookKey = captionText.split('\n')[0].toLowerCase().trim();
+      const prior = seenHooks.get(hookKey) ?? 0;
+      seenHooks.set(hookKey, prior + 1);
+      if (prior > 0) {
+        const hookLine = captionText.split('\n')[0];
+        const rest = captionText.slice(hookLine.length);
+        captionText = (hookLine + ` [Part ${prior + 1}]` + rest).substring(0, 300);
+      }
 
       if (this.mode === 'live') {
         console.log('[PublishingAgent] LIVE MODE — posting to TikTok API');

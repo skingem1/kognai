@@ -1,0 +1,61 @@
+{
+  "tasks": [
+    {
+      "id": "106-01",
+      "title": "Caption dedup — variant suffix prevents identical TikTok captions in batch",
+      "description": "MODIFY: agents/scs001-publishing/index.ts — track seen captions in PublishingAgent.run(), append Part N suffix on duplicate.",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "dependencies": [],
+      "priority": "critical",
+      "sprint_id": "sprint-106",
+      "deliverables": {
+        "code": ["agents/scs001-publishing/index.ts"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "TikTok demotes duplicate captions. Same-speaker batches produce identical hook text. Fatal for Phase 1.5 gate (500+ views/30 posts)."
+    },
+    {
+      "id": "106-02",
+      "title": "Speaker diversity cap — max 3 clips per speaker per batch in InsightAgent",
+      "description": "MODIFY: agents/scs001-insight/index.ts — count clips per speaker in run(), skip beyond MAX_PER_SPEAKER=3.",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "dependencies": [],
+      "priority": "high",
+      "sprint_id": "sprint-106",
+      "deliverables": {
+        "code": ["agents/scs001-insight/index.ts"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "5+ clips from same speaker produce near-identical content. Cap enforces topic diversity upstream."
+    },
+    {
+      "id": "106-03",
+      "title": "Smoke test — verify dedup + speaker cap produce 0 errors",
+      "description": "RUN: npx ts-node scripts/smoke-test-pipeline.ts. Verify PASS, 13 stages, 0 errors.",
+      "type": "test",
+      "task_type": "verify",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "dependencies": ["106-01", "106-02"],
+      "priority": "critical",
+      "sprint_id": "sprint-106",
+      "deliverables": {
+        "code": [],
+        "tests": ["scripts/smoke-test-pipeline.ts"],
+        "docs": []
+      },
+      "context": "Regression test after modifying PublishingAgent and InsightAgent."
+    }
+  ]
+}

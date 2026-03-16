@@ -121,13 +121,22 @@ function buildPrompt(clip: ClipQualityScore): string {
   ].join('\n');
 }
 
+const MAX_PER_SPEAKER = 3;
+
 export class InsightAgent {
   async run(clips: ClipQualityScore[]): Promise<InsightBrief[]> {
     const qualified = clips.filter(c => c.qualified);
     console.log('[InsightAgent] ' + clips.length + ' clips in → ' + qualified.length + ' qualified');
 
+    const speakerCount = new Map<string, number>();
     const briefs: InsightBrief[] = [];
     for (const clip of qualified) {
+      const count = speakerCount.get(clip.speaker) ?? 0;
+      if (count >= MAX_PER_SPEAKER) {
+        console.warn('[InsightAgent] Speaker cap: skipping ' + clip.clip_id + ' (' + clip.speaker + ' already has ' + count + ')');
+        continue;
+      }
+      speakerCount.set(clip.speaker, count + 1);
       try {
         const brief = await this.generateBrief(clip);
         briefs.push(brief);
