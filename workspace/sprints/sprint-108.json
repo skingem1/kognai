@@ -1,0 +1,35 @@
+{
+  "sprint": "108",
+  "name": "Script validator + topic experiment tracker",
+  "goal": "Add pre-editing script validation gate (Stage 6-validate) and topic experiment tracking (Stage 9-experiment) to maximize QC pass rate and identify winning content categories before Phase 1.5 kill switch evaluation",
+  "tasks": [
+    {
+      "id": "108-01",
+      "title": "Script quality validator — pre-editing gate",
+      "description": "CREATE agents/scs001-script-validator/index.ts. ScriptValidator class with validate(bundle: ScriptBundle): ValidationResult. Checks: hook voiceover_text length > 10, segments.length 5-6, pattern_interrupts.length >= 8, total_duration_seconds 24-28. Logs failures to workspace/scs001/validation-errors.jsonl.",
+      "task_target": "agents/scs001-script-validator/index.ts",
+      "acceptance_criteria": "validate() returns correct valid/invalid. Errors logged to JSONL. No external deps."
+    },
+    {
+      "id": "108-02",
+      "title": "Wire validator + experiment tracker into orchestrator",
+      "description": "MODIFY agents/scs001-orchestrator/index.ts. Add Stage 6-validate (after 5.5-score, before 6-editing) using ScriptValidator. Add Stage 9-experiment (after 8-qc) using ExperimentTracker to log hook_formula, speaker, qc_passed per gate.",
+      "task_target": "agents/scs001-orchestrator/index.ts",
+      "acceptance_criteria": "Two new stages in pipeline report. Invalid bundles filtered. Experiments logged. Smoke test PASS."
+    },
+    {
+      "id": "108-03",
+      "title": "Topic experiment tracker",
+      "description": "CREATE agents/scs001-experiment/index.ts. ExperimentTracker class. logExperiment(entry): appends to experiments.jsonl. getTopPerformers(n=5): top topics by pass_rate. getFormulaStats(): per-formula stats.",
+      "task_target": "agents/scs001-experiment/index.ts",
+      "acceptance_criteria": "logExperiment appends JSONL. getTopPerformers sorted. Missing file returns empty. No external deps."
+    },
+    {
+      "id": "108-04",
+      "title": "Experiments dashboard parser",
+      "description": "CREATE dashboard/parsers/experiments.py. get_experiment_stats() reads experiments.jsonl, returns total_logged, top_formulas by pass_rate. get_experiment_history(limit=50) returns last N entries. Handle missing file.",
+      "task_target": "dashboard/parsers/experiments.py",
+      "acceptance_criteria": "Correct aggregations. Missing file returns safe defaults. Import OK."
+    }
+  ]
+}

@@ -16,6 +16,8 @@ import { AnalyticsAgent, PerformanceSignal } from '../scs001-analytics/index';
 import { ContentFlywheelAgent, FlywheelOutput } from '../scs001-flywheel/index';
 import { FailureLibraryAgent, FailureEntry } from '../scs001-failure-library/index';
 import { scoreAndFilter, ScriptScore } from '../scs001-scorer/index';
+import { ScriptValidator } from '../scs001-script-validator/index';
+import { ExperimentTracker, ExperimentEntry } from '../scs001-experiment/index';
 import { withRetry, withFallback } from './retry';
 import { DedupLedger, LedgerEntry } from './dedup-ledger';
 
@@ -41,8 +43,9 @@ export interface PipelineRunReport {
     clips_qualified:  number;
     insights_generated: number;
     scripts_produced: number;
-    scripts_scored:   number;
-    scripts_filtered: number;
+    scripts_scored:             number;
+    scripts_filtered:           number;
+    scripts_validation_skipped: number;
     videos_edited:    number;
     videos_captioned: number;
     qc_passed:        number;
@@ -61,11 +64,15 @@ export class SCS001Orchestrator {
   private mode: 'mock' | 'live';
   private workDir: string;
   private ledger: DedupLedger;
+  private validator: ScriptValidator;
+  private experiments: ExperimentTracker;
 
   constructor(mode: 'mock' | 'live' = 'mock', workDir?: string) {
     this.mode = mode;
     this.workDir = workDir ?? 'workspace/scs001/run-' + Date.now();
     this.ledger = new DedupLedger();
+    this.validator = new ScriptValidator();
+    this.experiments = new ExperimentTracker();
   }
 
   async run(): Promise<PipelineRunReport> {
@@ -171,6 +178,17 @@ export class SCS001Orchestrator {
       }));
     }
 
+    // --- Stage 6-validate: Script Validator ---
+    let validationSkipped = 0;
+    if (bundles.length > 0) {
+      stages.push(await this.runStage('6-validate', 'ScriptValidator', async () => {
+        const { valid, invalid } = this.validator.validateAll(bundles);
+        validationSkipped = invalid.length;
+        bundles = valid;
+        return bundles.length;
+      }));
+    }
+
     // --- Stage 6: Editing Agent ---
     if (bundles.length > 0) {
       stages.push(await this.runStage('6-editing', 'EditingAgent', async () => {
@@ -195,6 +213,27 @@ export class SCS001Orchestrator {
         const agent = new QCAgent();
         gates = agent.run(captionedVideos, bundles, editedVideos);
         return gates.length;
+      }));
+    }
+
+    // --- Stage 9-experiment: Log QC results to experiment tracker ---
+    if (gates.length > 0) {
+      stages.push(await this.runStage('9-experiment', 'ExperimentTracker', async () => {
+        let logged = 0;
+        for (const gate of gates) {
+          const bundle = bundles.find(b => b.clip_id === gate.video_id);
+          const entry: ExperimentEntry = {
+            clip_id:      gate.video_id,
+            hook_formula: bundle?.hook_formula_used ?? 'unknown',
+            speaker:      bundle?.speaker_name ?? 'unknown',
+            qc_passed:    gate.overall_pass,
+            run_id:       runId,
+            timestamp:    new Date().toISOString(),
+          };
+          this.experiments.logExperiment(entry);
+          logged++;
+        }
+        return logged;
       }));
     }
 
@@ -263,8 +302,9 @@ export class SCS001Orchestrator {
         clips_qualified:    qualifiedClips.length,
         insights_generated: briefs.length,
         scripts_produced:   bundles.length + scorerFiltered.length,
-        scripts_scored:     bundles.length + scorerFiltered.length,
-        scripts_filtered:   scorerFiltered.length,
+        scripts_scored:             bundles.length + scorerFiltered.length + validationSkipped,
+        scripts_filtered:           scorerFiltered.length,
+        scripts_validation_skipped: validationSkipped,
         videos_edited:      editedVideos.length,
         videos_captioned:   captionedVideos.length,
         qc_passed:          passedGates.length,
