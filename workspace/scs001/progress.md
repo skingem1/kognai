@@ -398,3 +398,17 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
 - Note: readiness_pct=40 because 0/5 env vars are set (TIKTOK_ACCESS_TOKEN, SUPABASE_URL, etc). +20 for runs exist, +20 for latest run ok = 40.
 - Key blocker: TIKTOK_ACCESS_TOKEN not set — live posting blocked. Apr 7 gate requires real posts.
 - Timestamp: 2026-03-17T00:15:00Z
+
+### Sprint 119 — Gitignore + Manual Post Tracker (Block: Phase 1 ops + gate prep)
+- Status: PASS | Commit: 8e49e16 | Block: Phase 1 ops + gate prep
+- Files modified: .gitignore
+- Files created: scripts/scs001/record-manual-post.ts, workspace/sprints/sprint-119.json
+- Files removed from git tracking: workspace/scs001/experiments.jsonl, publish-ledger.jsonl, viral-topics.json (now gitignored)
+- Tests: record-manual-post.ts --video-id test-sprint-119 --views 150 — recorded OK. --list — displayed OK.
+- Swarm: NOT used — .gitignore edit + new script
+- Changes:
+  - .gitignore: added workspace/scs001/run-*/, *.srt, data/failure-library/*.json, skill-bank/kognai-owned/content-flywheel/*.json, workspace/scs001/experiments.jsonl, workspace/scs001/publish-ledger.jsonl, workspace/scs001/viral-topics.json, workspace/scs001/manual-posts.jsonl
+  - record-manual-post.ts: CLI with --video-id, --views, --title flags + --list mode. Shows posts/views vs targets, gate status color.
+  - Removed JSONL files from git tracking (git rm --cached)
+- Impact: repo no longer polluted by pipeline artifacts on every run. Operator can track real TikTok posts toward Apr 7 gate.
+- Timestamp: 2026-03-17T00:30:00Z
