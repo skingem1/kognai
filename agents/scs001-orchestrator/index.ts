@@ -87,8 +87,8 @@ export class SCS001Orchestrator {
 
     // --- Stage 1: Trend Agent ---
     stages.push(await this.runStage('1-trend', 'TrendAgent', async () => {
-      const agent = new TrendAgent();
-      trendBatch = agent.run();
+      const agent = new TrendAgent(undefined, this.mode);
+      trendBatch = await agent.run();
       return trendBatch.topics.length;
     }));
 
@@ -96,7 +96,7 @@ export class SCS001Orchestrator {
     if (trendBatch && trendBatch.topics.length > 0) {
       stages.push(await this.runStage('2-discovery', 'DiscoveryAgent', async () => {
         const agent = new DiscoveryAgent();
-        discoveries = agent.run(trendBatch!);
+        discoveries = await agent.run(trendBatch!);
         return discoveries.length;
       }));
     }

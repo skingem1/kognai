@@ -1,9 +1,11 @@
 // SCS-001 — Trend Agent (Agent 1)
 // Consumes: ORACLE-6 intelligence signals (mock or live)
 // Produces: TrendingTopicBatch (per contracts/scs-001/trending-topic-v1.json)
+// Sprint 101: added live mode via LiveFeedProvider (Google Trends + YouTube Trending)
 
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs';
 import { join } from 'path';
+import { LiveFeedProvider } from './live-feed';
 
 interface Oracle6Signal {
   signal_id: string;
@@ -50,13 +52,15 @@ const MOCK_FEED_PATH = join(ROOT, 'contracts', 'scs-001', 'mock-oracle6-feed.jso
 
 export class TrendAgent {
   private feedPath: string;
+  private mode: 'mock' | 'live';
 
-  constructor(feedPath?: string) {
+  constructor(feedPath?: string, mode?: 'mock' | 'live') {
     this.feedPath = feedPath ?? MOCK_FEED_PATH;
+    this.mode = mode ?? (process.env.SCS_MODE === 'live' ? 'live' : 'mock');
   }
 
-  run(seq = 1): TrendingTopicBatch {
-    const feed = this.loadFeed();
+  async run(seq = 1): Promise<TrendingTopicBatch> {
+    const feed = await this.loadFeed();
     const qualified = feed.signals
       .filter(s => s.scs_relevant === true && s.confidence >= CONFIDENCE_GATE)
       .sort((a, b) => b.confidence - a.confidence);
@@ -84,7 +88,13 @@ export class TrendAgent {
     return batch;
   }
 
-  private loadFeed(): Oracle6Feed {
+  private async loadFeed(): Promise<Oracle6Feed> {
+    if (this.mode === 'live') {
+      console.log('[TrendAgent] Mode: live — fetching real trending data');
+      const provider = new LiveFeedProvider();
+      return provider.fetch();
+    }
+    console.log('[TrendAgent] Mode: mock — reading static feed');
     const raw = readFileSync(this.feedPath, 'utf8');
     return JSON.parse(raw) as Oracle6Feed;
   }
@@ -106,10 +116,12 @@ export function saveBatch(batch: TrendingTopicBatch, outDir: string): string {
 }
 
 if (require.main === module) {
-  const agent = new TrendAgent();
-  const batch = agent.run();
-  const outDir = join(ROOT, 'workspace', 'scs001', 'trend-outputs');
-  const outPath = saveBatch(batch, outDir);
-  console.log(`[TrendAgent] Batch saved → ${outPath}`);
-  console.log(JSON.stringify(batch, null, 2));
+  (async () => {
+    const agent = new TrendAgent();
+    const batch = await agent.run();
+    const outDir = join(ROOT, 'workspace', 'scs001', 'trend-outputs');
+    const outPath = saveBatch(batch, outDir);
+    console.log(`[TrendAgent] Batch saved → ${outPath}`);
+    console.log(JSON.stringify(batch, null, 2));
+  })().catch(err => { console.error(err); process.exit(1); });
 }

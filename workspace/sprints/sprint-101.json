@@ -1,0 +1,68 @@
+{
+  "tasks": [
+    {
+      "id": "101-01",
+      "title": "Build TrendAgent live feed — Google Trends RSS + YouTube Trending API",
+      "description": "CREATE agents/scs001-trend/live-feed.ts (LiveFeedProvider). MODIFY agents/scs001-trend/index.ts (async run + mode param). MODIFY agents/scs001-orchestrator/index.ts (await agent.run()).",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "dependencies": [],
+      "priority": "critical",
+      "sprint_id": "sprint-101",
+      "deliverables": {
+        "code": [
+          "agents/scs001-trend/live-feed.ts",
+          "agents/scs001-trend/index.ts",
+          "agents/scs001-orchestrator/index.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "context": "TrendAgent used static mock JSON. Phase 1 runs 4x daily — identical mock topics guarantee failure at Phase 1.5 kill switch. LiveFeedProvider fetches Google Trends RSS (no key) + YouTube Trending API (YOUTUBE_API_KEY). Falls back to mock on failure."
+    },
+    {
+      "id": "101-02",
+      "title": "Build DiscoveryAgent YouTube search — real video URLs for trending topics",
+      "description": "CREATE agents/scs001-discovery/youtube-search.ts (YouTubeSearchProvider). MODIFY agents/scs001-discovery/index.ts (async run + YouTube search fallback to mock).",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "dependencies": ["101-01"],
+      "priority": "critical",
+      "sprint_id": "sprint-101",
+      "deliverables": {
+        "code": [
+          "agents/scs001-discovery/youtube-search.ts",
+          "agents/scs001-discovery/index.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "context": "DiscoveryAgent produced fake YouTube URLs. Now searches real YouTube videos per trending topic when YOUTUBE_API_KEY is set. Falls back to mock URLs when not configured."
+    },
+    {
+      "id": "101-03",
+      "title": "Update env config + regenerate daily brief for Phase 1 live operation",
+      "description": "MODIFY .env.example (add YOUTUBE_API_KEY). REGENERATE docs/daily-brief.md. RESTORE docs/strategic-context.md Phase 1 ACTIVE status.",
+      "type": "config",
+      "task_type": "docs",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "dependencies": [],
+      "priority": "high",
+      "sprint_id": "sprint-101",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": [".env.example", "docs/daily-brief.md", "docs/strategic-context.md"]
+      },
+      "context": "YOUTUBE_API_KEY added to .env.example. Daily brief regenerated to 2026-03-16. strategic-context.md restored with Phase 1 ACTIVE status (generate-daily-brief.py overwrote it)."
+    }
+  ]
+}

@@ -1,10 +1,11 @@
 // SCS-001 — Discovery Agent (Agent 2)
 // Consumes: TrendingTopicBatch from Trend Agent
 // Produces: DiscoveryOutput[] (per contracts/scs-001/clip-quality-v1.json#DiscoveryOutput)
-// Block A: operates on mock data (no real YouTube/X API calls)
+// Sprint 101: real YouTube search when YOUTUBE_API_KEY is set; falls back to mock URLs
 
 import { randomUUID } from 'crypto';
 import type { TrendingTopicBatch, TrendingTopic } from '../scs001-trend/index';
+import { YouTubeSearchProvider } from './youtube-search';
 
 export interface DiscoveryTimestamp {
   start_seconds: number;
@@ -98,29 +99,62 @@ function pickSpeaker(topic: TrendingTopic): string {
 }
 
 export class DiscoveryAgent {
-  run(batch: TrendingTopicBatch): DiscoveryOutput[] {
+  async run(batch: TrendingTopicBatch): Promise<DiscoveryOutput[]> {
     const outputs: DiscoveryOutput[] = [];
+    const useYouTube = YouTubeSearchProvider.isConfigured();
+
+    if (useYouTube) {
+      console.log('[DiscoveryAgent] YOUTUBE_API_KEY set — using real YouTube search');
+    } else {
+      console.log('[DiscoveryAgent] YOUTUBE_API_KEY not set — using mock URLs');
+    }
+
+    const searcher = useYouTube ? new YouTubeSearchProvider() : null;
 
     for (const topic of batch.topics) {
-      const channels = topic.relevant_channels ?? [];
-      const targetChannels = channels.length > 0
-        ? channels.slice(0, 2)  // max 2 channels per topic in Block A
-        : [{ platform: 'youtube', channel_id: MOCK_CHANNEL_IDS['youtube'] ?? 'mock001' }];
+      let discovered = false;
 
-      for (const channel of targetChannels) {
-        const baseUrl = MOCK_VIDEO_BASE[channel.platform] ?? 'https://video.example.com/';
-        const url = `${baseUrl}${channel.channel_id}`;
+      // Live mode: search YouTube for real video URLs
+      if (searcher) {
+        try {
+          const results = await searcher.searchForTopic(topic, 2);
+          for (const result of results) {
+            outputs.push({
+              discovery_id: `disc-${randomUUID().slice(0, 8)}`,
+              url: result.url,
+              timestamps: deriveTimestamps(topic),
+              speaker: result.channelName,
+              topic_tags: topic.keyword_cluster.slice(0, 5),
+              source_score: deriveSourceScore(topic),
+              source_topic_id: topic.topic_id,
+            });
+          }
+          if (results.length > 0) discovered = true;
+        } catch (err) {
+          console.warn('[DiscoveryAgent] YouTube search failed for "' + topic.topic_name + '": ' + (err as Error).message);
+        }
+      }
 
-        const output: DiscoveryOutput = {
-          discovery_id: `disc-${randomUUID().slice(0, 8)}`,
-          url,
-          timestamps: deriveTimestamps(topic),
-          speaker: pickSpeaker(topic),
-          topic_tags: topic.keyword_cluster.slice(0, 5),
-          source_score: deriveSourceScore(topic),
-          source_topic_id: topic.topic_id,
-        };
-        outputs.push(output);
+      // Mock fallback: use template URLs when YouTube not configured or search returned nothing
+      if (!discovered) {
+        const channels = topic.relevant_channels ?? [];
+        const targetChannels = channels.length > 0
+          ? channels.slice(0, 2)
+          : [{ platform: 'youtube', channel_id: MOCK_CHANNEL_IDS['youtube'] ?? 'mock001' }];
+
+        for (const channel of targetChannels) {
+          const baseUrl = MOCK_VIDEO_BASE[channel.platform] ?? 'https://video.example.com/';
+          const url = `${baseUrl}${channel.channel_id}`;
+          outputs.push({
+            discovery_id: `disc-${randomUUID().slice(0, 8)}`,
+            url,
+            timestamps: deriveTimestamps(topic),
+            speaker: pickSpeaker(topic),
+            topic_tags: topic.keyword_cluster.slice(0, 5),
+            source_score: deriveSourceScore(topic),
+            source_topic_id: topic.topic_id,
+          });
+        }
       }
     }
 

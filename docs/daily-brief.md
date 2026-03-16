@@ -1,10 +1,10 @@
-# KOGNAI DAILY BRIEF — 2026-03-12
-## Thursday, March 12, 2026
+# KOGNAI DAILY BRIEF — 2026-03-16
+## Monday, March 16, 2026
 
-**Generated:** 2026-03-07 15:42
-**Active Sprint:** Sprint 064
-**Hours Today:** 4h
-**Midday Block:** NO (Tuesday/Thursday)
+**Generated:** 2026-03-16 15:03
+**Active Sprint:** Unknown
+**Hours Today:** 6h
+**Midday Block:** YES (12:00-14:00)
 
 ---
 
@@ -13,49 +13,27 @@
 | Block | Time | Available |
 |-------|------|-----------|
 | AM | 07:00–09:30 | YES |
-| MID | 12:00–14:00 | NO |
+| MID | 12:00–14:00 | YES |
 | PM | 18:00–19:30 | YES |
 
 ---
 
 ## TODAY'S TASKS
 
-### Wednesday, March 12, 2026
-**Sprint 064 — Supabase Event Bus**
-
-**AM 07:00–09:30**
-- [ ] Read sprint-064 early output
-- [ ] Review Supabase migration file: `002_event_bus.sql`
-- [ ] Check Supabase dashboard: is `kognai_events` table created?
-- [ ] Review `src/events/publisher.ts` — does `emit()` insert + broadcast?
-- [ ] Review `src/events/listener.ts` — does `subscribe()` work with Realtime?
-
-**MID 12:00–14:00**
-- [ ] Test event flow manually: insert event via Supabase SQL editor → verify Realtime subscriber receives it
-- [ ] Review event type registry in `src/events/types.ts` — all categories present?
-- [ ] Test event replay: disconnect subscriber, add events, reconnect → verify catch-up
-- [ ] Review TTL cleanup logic in `src/events/cleanup.ts`
-
-**PM 18:00–19:30**
-- [ ] Run integration test: orchestrator fires `task.completed` → subscriber receives event
-- [ ] Verify sequential orchestrator still works unchanged (backward compatibility)
-- [ ] Write session log
-- [ ] If any 064 tasks rejected: write fix tasks for overnight
-
-**Swarm overnight:** Completing sprint-064 + fixes
+*No specific daily tasks found for 2026-03-16. Check weekly schedule below.*
 
 ---
 
 ## TOMORROW PREVIEW
 
-### Thursday, March 13, 2026
-**Sprint 064 Completion + Phase 0 Gate Check**
-
+### Monday, March 17
 **AM 07:00–09:30**
-- [ ] Read final sprint-064 output
-- [ ] Full Phase 0 gate check:
-  - [ ] TASK_TARGET routes local tasks to vault Qwen models ✓/✗
-  - [ ] Idempotent replay tested — no duplicate execution ✓/✗
+- [ ] Read weekend swarm output for sprint-065
+- [ ] Review Instagram Reels integration: `scripts/content/instagram-poster.ts`
+- [ ] Review engagement tracker schema: `supabase/migrations/003_content_posts.sql`
+- [ ] Test: can the queue manager rank videos by viral score?
+
+**MID 12:00–14:00**
 
 ---
 

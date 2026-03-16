@@ -29,7 +29,7 @@
 - Gate passed: workspace/gates/phase0-phase1-gate.json (Sprint 096, 2026-03-16)
 - Launch kit: scripts/setup-phase1.sh + run-live.sh
 - Phase 1.5 decision gate: Apr 7 — kill switch: <500 views/30 posts
-- Current sprint: 100+
+- Current sprint: 101+
 
 ## PHASE SEQUENCE
 | Phase | Dates | Focus | Status |
@@ -45,8 +45,8 @@
 ## OPENCLAW SKILLS TIMELINE
 | Tier | Phase | Skills Count |
 |------|-------|-------------|
-| T1 (Day 1) | P0 | 13 skills (infra + dev tooling) |
-| T2 (Phase 1) | P1 | 6 skills (content + monetization) |
+| T1 (Day 1) | P0 | 13 skills (infra + dev tooling) — deferred to Sprint 102+ |
+| T2 (Phase 1) | P1 | 6 skills (content + monetization) — deferred to Sprint 102+ |
 | T3 (Phase 2A) | P2A | 6 skills (Achiri-specific) |
 | T4 (Ongoing) | P3+ | 6 skills (advanced features) |
 
@@ -79,7 +79,7 @@
 ## SPRINT NUMBERING
 - Invoica legacy: 001-062e (completed)
 - Kognai starts: 063+
-- Current: Sprint 100+ (as of 2026-03-16)
+- Current: Sprint 101+ (as of 2026-03-16)
 
 ## FOUNDER SCHEDULE
 - AM (07:00-09:30): Review + kick off
