@@ -982,3 +982,15 @@ SESSION HANDOFF (2026-03-16/17, Sprints 162-165):
 - Sprint 164: CRITICAL runIdToEpoch off-by-1ms fix — /post-now unblocked (commit: db1814d)
 - Sprint 165: Daily-digest queue readyCount fix (commit: 0acb1dd)
 - Next sprint: 166 — Achiri deploy verification OR Stripe live smoke test
+
+## Sprint 166 — Achiri pre-deployment smoke test (Phase 2A — Achiri alpha prep)
+- Status: PASS
+- Commit: d1d47b8
+- Files created: scripts/achiri/smoke-test.ts, scripts/scs001/validate-sprint-166.ts, workspace/sprints/sprint-166.json
+- Files modified: (none)
+- Test: scripts/scs001/validate-sprint-166.ts — 4/4 PASS
+- Pipeline: N/A (Achiri pre-deploy prep)
+- Swarm used: no (direct write — 2 new files)
+- Changes: smoke-test.ts — 6 checks: (1) kognai-agents/achiri/config.json valid with memory_enabled+tiers, (2) ecosystem.config.js has achiri-api entry on port 3420, (3) GET /health 200, (4) GET /stats 200, (5) POST /chat returns reply or limit_exceeded, (6) workspace/achiri/memory/ exists or created. Exits 0 if all pass, 1 if any fail. Usage: npx ts-node scripts/achiri/smoke-test.ts
+- Gate: ~20 days to Apr 7, 0/30 posts | Achiri alpha: Apr 25 — Sprint 167 = Hetzner deploy
+- Timestamp: 2026-03-17T00:30:00Z
