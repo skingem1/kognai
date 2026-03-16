@@ -581,3 +581,21 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
 - Swarm used: no (direct write)
 - Operator: must run npx ts-node scripts/scs001/record-manual-post.ts --video-id <id> --views <n> after each manual TikTok post
 - Timestamp: 2026-03-16T20:30:00Z
+
+## Sprint 133 — Gate-tracker T3 PASS + /help update (Phase 2A housekeeping)
+- Status: PASS
+- Commit: b69e9c7
+- Files modified: docs/gate-tracker.md, agents/telegram-bot/commands.ts
+- Files created: scripts/achiri/validate-sprint-133.ts, workspace/sprints/sprint-133.json
+- Test: scripts/achiri/validate-sprint-133.ts — 4/4 PASS
+- Key results: gate-tracker.md T3 Skills [x] PASS (6/6, Sprints 123-128). /help command now shows /achiri and /gate with Achiri section header.
+- Swarm used: no (doc edit + small code edit)
+- Timestamp: 2026-03-16T21:00:00Z
+
+## SESSION SUMMARY — Sprints 130-133
+- Sprint 130: Telegram bot HTTP bridge to ACHIRI_BASE_URL (decoupled from in-process module)
+- Sprint 131: Alpha access gate + TelegramDB tier wiring (ACHIRI_ALPHA_WHITELIST, tier mapping)
+- Sprint 132: Phase 1.5 gate review script + /gate Telegram command
+- Sprint 133: Gate-tracker T3 PASS + /help update
+- ALL Achiri alpha code work COMPLETE. Operator must: deploy Achiri (deploy-achiri.sh), set env vars.
+- Context limit reached — handoff. Latest commit: b69e9c7.
