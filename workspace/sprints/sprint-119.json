@@ -1,0 +1,61 @@
+{
+  "sprint": "119",
+  "name": "Gitignore + Manual Post Tracker — prevent MP4 bloat + enable Apr 7 gate measurement",
+  "block": "Phase 1 — ops + gate prep",
+  "goal": "Fix .gitignore to exclude generated pipeline artifacts (run dirs with MP4s, failure-library JSONs, skill-bank flywheel JSONs, ledger/experiments auto-updates). Build manual-post-tracker CLI so operator can record manually posted TikTok videos + view counts, enabling Apr 7 Phase 1.5 gate measurement without the TikTok API.",
+  "rationale": "workspace/scs001/run-*/ directories contain generated MP4 files that must never be committed. Currently untracked. Also: TIKTOK_ACCESS_TOKEN not set means posts must be manual — need a tracker to count real posts/views for Apr 7 kill switch decision.",
+  "swarm": "NOT USED — .gitignore edit + new small script, writing directly.",
+  "tasks": [
+    {
+      "id": "119-01",
+      "title": ".gitignore — add generated pipeline artifact patterns",
+      "description": "Add to .gitignore: workspace/scs001/run-*/, data/failure-library/*.json, skill-bank/kognai-owned/content-flywheel/*.json, workspace/scs001/experiments.jsonl, workspace/scs001/publish-ledger.jsonl, workspace/scs001/viral-topics.json. These are runtime-generated files that should not be committed.",
+      "type": "modify",
+      "task_type": "ops",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-119",
+      "deliverables": {
+        "code": [".gitignore"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "119-02",
+      "title": "scripts/scs001/record-manual-post.ts — manual post tracker CLI",
+      "description": "CLI script: npx ts-node scripts/scs001/record-manual-post.ts --video-id <id> --views <n> [--title <str>]. Appends to workspace/scs001/manual-posts.jsonl. Shows running total: X/30 posts, total views, avg views/post. If views >= 500 total: print GATE STATUS: ON TRACK. Also support --list flag to display all recorded posts.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-119",
+      "deliverables": {
+        "code": ["scripts/scs001/record-manual-post.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "119-03",
+      "title": "Validate — gitignore works + manual post tracker records correctly",
+      "description": "git status should show fewer untracked files (run dirs ignored). Run record-manual-post.ts --video-id test-001 --views 150 and verify manual-posts.jsonl has the entry. Run --list. PASS = both work.",
+      "type": "validate",
+      "task_type": "validation",
+      "task_target": "local",
+      "agent": "direct-check",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-119",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ]
+}

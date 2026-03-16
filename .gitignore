@@ -75,3 +75,16 @@ __pycache__/
 *.pyc
 *.pyo
 .venv/
+
+# SCS-001 pipeline runtime artifacts — generated per run, never commit
+workspace/scs001/run-*/
+*.srt
+data/failure-library/*.json
+skill-bank/kognai-owned/content-flywheel/*.json
+
+# SCS-001 JSONL runtime state — appended by pipeline every run
+workspace/scs001/experiments.jsonl
+workspace/scs001/publish-ledger.jsonl
+workspace/scs001/viral-topics.json
+# Manual post tracker — runtime data
+workspace/scs001/manual-posts.jsonl
