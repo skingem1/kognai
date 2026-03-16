@@ -1,0 +1,61 @@
+{
+  "sprint": "131",
+  "name": "Achiri alpha access gate — ACHIRI_ALPHA_WHITELIST + TelegramDB tier wiring",
+  "block": "Phase 2A — Achiri Alpha (Apr 25 gate)",
+  "goal": "Two blocking issues for Apr 25 alpha: (1) handleAchiri hardcodes tier='free' — resolve actual tier from TelegramDB (free→free, growth→tnd_basic, premium→tnd_premium). (2) BETA_MODE=true blocks all non-owner users from /achiri — add ACHIRI_ALPHA_WHITELIST env (comma-separated chatIds) so operator can whitelist alpha invitees without code changes.",
+  "rationale": "Apr 25 alpha requires non-owner users to access Achiri. Without whitelist, only OWNER_CHAT_ID can use /achiri. Without tier wiring, paid TelegramDB subscribers always get free Achiri (wrong model, daily limit). Both fixes are 1-2 line changes per file.",
+  "swarm": "NOT USED — surgical edits, 2 files. Direct write.",
+  "tasks": [
+    {
+      "id": "131-01",
+      "title": "commands.ts — tier lookup from TelegramDB + ACHIRI_ALPHA_WHITELIST access gate",
+      "description": "In handleAchiri(): (1) Load TelegramDB.get(chatId) to get user's subscription tier. Map: free→free, growth→tnd_basic, premium→tnd_premium. Pass mapped tier in POST /chat body. (2) Read ACHIRI_ALPHA_WHITELIST env (comma-separated chatIds). If message comes in and user is NOT owner AND NOT in whitelist AND ACHIRI_ALPHA_ONLY=true, send waitlist message. Default: allow all (ACHIRI_ALPHA_ONLY not set = open beta mode).",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-131",
+      "deliverables": {
+        "code": ["agents/telegram-bot/commands.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "131-02",
+      "title": ".env.example — add ACHIRI_ALPHA_WHITELIST and ACHIRI_ALPHA_ONLY",
+      "description": "Add ACHIRI_ALPHA_WHITELIST=chatId1,chatId2 and ACHIRI_ALPHA_ONLY=false to .env.example under Achiri HTTP Bridge section.",
+      "type": "modify",
+      "task_type": "config",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-131",
+      "deliverables": {
+        "code": [".env.example"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "131-03",
+      "title": "scripts/achiri/validate-alpha-access.ts — 6/6 validation",
+      "description": "Tests: (1) ACHIRI_ALPHA_WHITELIST env var referenced in commands.ts; (2) ACHIRI_ALPHA_ONLY env var referenced; (3) TelegramDB.get(chatId) called in handleAchiri (grep for TelegramDB.get); (4) tier mapping present (grep: growth→tnd_basic or tierMap); (5) env.example has ACHIRI_ALPHA_WHITELIST; (6) sprint-131.json exists. 6/6 PASS.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-131",
+      "deliverables": {
+        "code": ["scripts/achiri/validate-alpha-access.ts"],
+        "tests": ["scripts/achiri/validate-alpha-access.ts"],
+        "docs": []
+      }
+    }
+  ]
+}

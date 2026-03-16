@@ -323,21 +323,46 @@ export async function handleUnknown(chatId: number, text: string): Promise<void>
   await sendMessage(chatId, `❓ Unknown command: \`${text}\`\n\nUse /help for available commands.`);
 }
 
-// ── Achiri AI companion bridge (Sprint 130 — HTTP bridge) ────────────────────
-// Routes to ACHIRI_BASE_URL/chat via HTTP POST instead of in-process import.
+// ── Achiri AI companion bridge (Sprint 130/131) ───────────────────────────────
+// Routes to ACHIRI_BASE_URL/chat via HTTP POST.
+// Sprint 131: tier wired from TelegramDB + ACHIRI_ALPHA_WHITELIST access gate.
 // Set ACHIRI_BASE_URL=http://65.108.90.178/achiri for Hetzner production.
-// Default: http://localhost:3420 (dev / local Achiri server).
+
+// TelegramDB tier → Achiri tier mapping
+const ACHIRI_TIER_MAP: Record<string, string> = {
+  free:    'free',
+  growth:  'tnd_basic',
+  premium: 'tnd_premium',
+};
+
+// Alpha access: ACHIRI_ALPHA_ONLY=true enforces whitelist. Default=false (open).
+const ACHIRI_ALPHA_ONLY      = process.env.ACHIRI_ALPHA_ONLY === 'true';
+const ACHIRI_ALPHA_WHITELIST = new Set(
+  (process.env.ACHIRI_ALPHA_WHITELIST ?? '').split(',').map(s => s.trim()).filter(Boolean)
+);
+const ACHIRI_OWNER_ID = process.env.OWNER_TELEGRAM_CHAT_ID ?? '';
 
 export async function handleAchiri(chatId: number, message: string): Promise<void> {
+  // Alpha gate — owner always allowed; whitelist gates non-owners when ACHIRI_ALPHA_ONLY=true
+  if (ACHIRI_ALPHA_ONLY && String(chatId) !== ACHIRI_OWNER_ID && !ACHIRI_ALPHA_WHITELIST.has(String(chatId))) {
+    await sendMessage(chatId, 'Achiri Lite Alpha — invitation only. DM @kognai_bot to join the waitlist! 🙏');
+    return;
+  }
+
   if (!message || !message.trim()) {
     await sendMessage(chatId, 'Qouli chay 😊  /achiri <your message>');
     return;
   }
+
+  // Resolve Achiri tier from TelegramDB subscription tier
+  const record = TelegramDB.get(chatId);
+  const achiriTier = ACHIRI_TIER_MAP[record?.tier ?? 'free'] ?? 'free';
+
   try {
     const res = await fetch(ACHIRI_BASE_URL + '/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ userId: String(chatId), tier: 'free', message: message.trim() }),
+      body: JSON.stringify({ userId: String(chatId), tier: achiriTier, message: message.trim() }),
     });
     const data = await res.json() as {
       reply?: string;
