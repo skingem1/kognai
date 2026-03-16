@@ -412,3 +412,17 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
   - Removed JSONL files from git tracking (git rm --cached)
 - Impact: repo no longer polluted by pipeline artifacts on every run. Operator can track real TikTok posts toward Apr 7 gate.
 - Timestamp: 2026-03-17T00:30:00Z
+
+### Sprint 120 — Telegram /status V2 (Block: Phase 1 operator visibility)
+- Status: PASS | Commit: 6172ba4 | Block: Phase 1 operator visibility
+- Files modified: agents/telegram-bot/commands.ts
+- Files created: workspace/sprints/sprint-120.json
+- Tests: inline Node logic test — loadManualPosts({count:2, totalViews:550}) → gate line ⚠️ Real posts: 2/30 | Views: 550/500
+- Swarm: NOT used — commands.ts complex file
+- Changes:
+  - Added loadManualPosts() — reads workspace/scs001/manual-posts.jsonl, returns {count, totalViews}
+  - handleStatus(): added gateLine (postsOk+viewsOk → ✅/⚠️/❌ icon, X/30 posts, Y/500 views, Gate: Apr 7)
+  - Fixed latestPath from wrong reports/pipeline-runs/latest.json to reports/smoke-test-latest.json
+  - Updated pipelineInfo to use smoke test fields (passed, stage_count, error_count, summary.clips_qualified/videos_published)
+- Operator can now check /status for full gate visibility without opening dashboard
+- Timestamp: 2026-03-17T00:45:00Z
