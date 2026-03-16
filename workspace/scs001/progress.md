@@ -914,3 +914,14 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
 - Changes: handleViral(chatId, ownerChatId) — owner-only. Reads viral-topics.json, slices top 10 topics. Uses statSync for file freshness (Xm/Xh/Xd ago). Shows numbered topic list + content tip + links to /today and /queue. Handles missing/empty file gracefully. Also added statSync to fs import. handleHelp updated. index.ts routed /viral.
 - Gate: ~22 days to Apr 7, 0/30 posts | Achiri alpha: Apr 25 (~40d)
 - Timestamp: 2026-03-16T22:15:00Z
+
+## Sprint 161 — Enrich daily digest with viral topics (Phase 1 — TikTok gate)
+- Status: PASS
+- Commit: 3d15d9e
+- Files created: scripts/scs001/validate-sprint-161.ts, workspace/sprints/sprint-161.json
+- Files modified: scripts/daily-digest.ts
+- Test: scripts/scs001/validate-sprint-161.ts — 4/4 PASS
+- Swarm used: no (direct write — 1 file edit + validation script)
+- Changes: Added getViralTopics() to daily-digest.ts — reads viral-topics.json, returns top 3. buildDigest() now calls getViralTopics() and conditionally injects '🔥 Trending topics (post one of these today):' section before the Telegram tip. Operator now gets content inspiration automatically in 07:00 morning push.
+- Gate: ~22 days to Apr 7, 0/30 posts | Achiri alpha: Apr 25 (~40d)
+- Timestamp: 2026-03-16T22:30:00Z
