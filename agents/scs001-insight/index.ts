@@ -24,6 +24,37 @@ const ANTHROPIC_API_URL = 'https://api.anthropic.com/v1/messages';
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY ?? '';
 const CLAUDE_MODEL      = 'claude-sonnet-4-5-20251001';
 
+// Mock InsightBriefs for Block B testing when ANTHROPIC_API_KEY is not set
+export function getMockInsightBriefs(): InsightBrief[] {
+  const clips = getMockQualifiedClips();
+  return [
+    {
+      insight_id:           'insight-mock-001',
+      clip_id:              clips[0].clip_id,
+      hook:                 { text: 'OpenAI just mass-fired its safety team — here is why that matters', formula: 'curiosity_gap' },
+      pre_clip_commentary:  'Sam Altman made a statement that sent shockwaves through the AI safety community.',
+      post_clip_commentary: 'This confirms what insiders have been warning about for months — speed over safety.',
+      insight_statement:    'When the company building AGI deprioritizes safety, every AI user bears the risk.',
+      why_does_this_matter: 'If OpenAI ships unsafe models at scale, the regulatory backlash could freeze AI development industry-wide, costing startups and developers billions in delayed deployments and compliance overhead.',
+      hook_formula_used:    'curiosity_gap',
+      speaker_name:         clips[0].speaker,
+      cloud_cost_usd:       0.004,
+    },
+    {
+      insight_id:           'insight-mock-002',
+      clip_id:              clips[1].clip_id,
+      hook:                 { text: 'NVIDIA is quietly building something nobody is talking about', formula: 'secret' },
+      pre_clip_commentary:  'Jensen Huang dropped a bombshell at GTC that the media completely missed.',
+      post_clip_commentary: 'This GPU scarcity problem is not temporary — it is structural and accelerating.',
+      insight_statement:    'The compute bottleneck will determine which AI companies survive the next 18 months.',
+      why_does_this_matter: 'Companies without guaranteed GPU access face 6-12 month inference delays, making their AI products uncompetitive. Cloud providers are already rationing capacity, forcing startups to choose between quality and cost.',
+      hook_formula_used:    'secret',
+      speaker_name:         clips[1].speaker,
+      cloud_cost_usd:       0.004,
+    },
+  ];
+}
+
 // Mock qualified clips for Block B testing (quality_score >= 20, qualified === true)
 export function getMockQualifiedClips(): ClipQualityScore[] {
   return [

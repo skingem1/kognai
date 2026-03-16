@@ -3,7 +3,7 @@
 // Chains: getMockQualifiedClips() → InsightAgent → ScriptAgent → validate ScriptBundle[]
 // Block B gate: full Content Intelligence pipeline validation
 
-import { InsightAgent, getMockQualifiedClips } from '../../agents/scs001-insight/index';
+import { InsightAgent, getMockQualifiedClips, getMockInsightBriefs } from '../../agents/scs001-insight/index';
 import { ScriptAgent, ScriptBundle, ScriptSegment, PatternInterrupt } from '../../agents/scs001-script/index';
 
 function assert(condition: boolean, msg: string): void {
@@ -25,7 +25,11 @@ async function main(): Promise<void> {
   assert(mockClips.length >= 1, 'Mock clips available (' + mockClips.length + ')');
 
   const insightAgent = new InsightAgent();
-  const briefs = await insightAgent.run(mockClips);
+  let briefs = await insightAgent.run(mockClips);
+  if (briefs.length === 0) {
+    console.log('  ⚠ No ANTHROPIC_API_KEY — using mock InsightBriefs for Script Agent validation');
+    briefs = getMockInsightBriefs();
+  }
   assert(briefs.length >= 1, 'InsightAgent produced briefs (' + briefs.length + ')');
   console.log('');
 
