@@ -668,3 +668,14 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
 - Changes: (1) record-manual-post.ts printStatus() now shows "Cadence needed: X posts/day (Y days to Apr 7 gate)"; (2) handleAchiriHealth() added to commands.ts — owner-only, pings /health, reports UP/DOWN + latency; (3) /achiri-health routed in index.ts and added to handleHelp()
 - Gate: 22 days to Apr 7, 0/30 posts
 - Timestamp: 2026-03-16T15:10:00Z
+
+## Sprint 139 — Dashboard Achiri stats panel
+- Status: PASS
+- Commit: 35ae5a3
+- Files created: dashboard/parsers/achiri.py, scripts/achiri/validate-sprint-139.ts, workspace/sprints/sprint-139.json
+- Files modified: dashboard/server.py, dashboard/static/index.html, dashboard/static/app.js
+- Test: scripts/achiri/validate-sprint-139.ts — 8/8 PASS
+- Swarm used: no (1 new parser + 3 small edits, direct write)
+- Changes: parse_achiri_stats() reads daily-counts.json + waitlist.jsonl; /api/achiri/stats endpoint; Achiri Stats panel (today messages/users/waitlist) in dashboard
+- Gate: 22 days to Apr 7, 0/30 posts
+- Timestamp: 2026-03-16T15:20:00Z
