@@ -868,3 +868,14 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
 - Changes: handleCaption(chatId, ownerChatId, videoId?) — owner-only. With video_id: looks up that entry in publish-ledger.jsonl. Without: finds first unposted with captioned mp4 on disk. Loads hook from script JSON (run-{epoch}/script/{id}-script.json — .hook/.title/.headline fields). Fallback to topic from ledger. Formats: hook text + viral hashtags from viral-topics.json + #fyp #viral #learnontiktok. Sends header message + caption in ```code block``` for tap-to-copy on mobile. handleHelp updated. index.ts routed with optional video_id arg.
 - Gate: ~22 days to Apr 7, 0/30 posts | Achiri alpha: Apr 25 (~40d)
 - Timestamp: 2026-03-16T21:00:00Z
+
+## Sprint 157 — Brief regen cron — kognai-brief-regen PM2 entry (Phase 1 — ops infrastructure)
+- Status: PASS
+- Commit: e858757
+- Files created: scripts/scs001/validate-sprint-157.ts, workspace/sprints/sprint-157.json
+- Files modified: ecosystem.config.js (kognai-brief-regen added before kognai-post-noon)
+- Test: scripts/scs001/validate-sprint-157.ts — 3/3 PASS
+- Swarm used: no (direct write)
+- Changes: kognai-brief-regen PM2 cron at 06:45 UTC daily — runs python3 scripts/generate-daily-brief.py. Regenerates workspace/sprint-brief.md before daily digest (07:00). Each future Claude Code session now starts with a fresh, accurate brief. VAULT_OLLAMA_URL + VAULT_LOCAL_MODEL_POWER env passed to script.
+- Gate: ~22 days to Apr 7, 0/30 posts | Achiri alpha: Apr 25 (~40d)
+- Timestamp: 2026-03-16T21:15:00Z
