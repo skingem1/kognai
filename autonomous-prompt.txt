@@ -27,34 +27,28 @@ SPRINT JSON FORMAT (check existing files for exact schema):
   ls ~/kognai/workspace/sprints/ | tail -5
 Read one of the recent sprint files to learn the exact JSON schema, then follow it.
 
-MODEL STRATEGY (cost optimization):
-- Use the Task tool with model: "opus" for PLANNING ONLY — reading architecture
-  docs, analyzing pipeline state, designing sprint scope and tasks. Opus returns
-  a plan with: sprint number, tasks array, files to create/modify, acceptance criteria.
-- YOU (Sonnet, main session) write the sprint JSON file and trigger the swarm.
-  You also handle git commits, pushes, state updates, and surgical fixes if the
-  swarm output has small issues.
-- Use the Task tool with model: "haiku" for TESTING — spawn haiku to run
-  validation tests and report pass/fail.
+MODEL STRATEGY (cost optimization — NO OPUS):
+- Do ALL work yourself (Sonnet). Do NOT spawn opus sub-agents.
+- For planning: read the files directly yourself. Do NOT use Task tool with model: "opus".
+- For testing: use the Task tool with model: "haiku" ONLY for running test commands.
+- NEVER use model: "opus" in any Task tool call. This is a hard cost constraint.
 
 ===================================================================
 WORKFLOW PER SPRINT — FOLLOW THIS EXACTLY, EVERY TIME, NO EXCEPTIONS
 ===================================================================
 
-STEP 1 — PLAN (opus):
-  Spawn opus → "Read:
+STEP 1 — PLAN (you, Sonnet — do NOT spawn opus):
+  Read these files yourself (no sub-agents):
   - ~/kognai/.claude/projects/-Users-tarekmnif-Documents-Kognai/memory/MEMORY.md
   - ~/kognai/workspace/scs001/progress.md (if exists)
   - ls ~/kognai/agents/scs001-*/index.ts (what agents exist)
   - ls ~/kognai/contracts/scs-001/ (what contracts are locked)
   - git log --oneline -10 (what was last shipped)
-  Determine: What is the next Sprint that needs building? Which Block?
-  Which agent? What files need to be created or modified?
-  Return: Sprint number, sprint name, task list (each task with: description,
-  task_target file path, acceptance criteria), and the full sprint JSON."
+  Determine: What is the next Sprint that needs building?
+  Design: Sprint number, sprint name, task list, acceptance criteria.
 
 STEP 2 — WRITE SPRINT FILE (you, Sonnet):
-  Take the opus plan and write it to:
+  Take your plan from Step 1 and write it to:
     ~/kognai/workspace/sprints/sprint-0XX.json
   Use the exact format from existing sprint files.
 
@@ -136,10 +130,10 @@ Do not write a summary and stop.
 Do not ask permission.
 The ONLY acceptable output after Step 7D is:
   "Sprint 0XX shipped. Starting Sprint 0YY planning now."
-Followed by IMMEDIATELY spawning opus for Step 1.
+Followed by IMMEDIATELY executing Step 1 (read files yourself, no sub-agents).
 
 If you catch yourself about to write a wrap-up message → STOP → delete it →
-write "Starting next Sprint" → spawn opus.
+write "Starting next Sprint" → start Step 1 immediately.
 
 CONTEXT WINDOW MANAGEMENT:
 If you sense context is getting full (you've done 4+ sprints in one session):
@@ -153,11 +147,10 @@ If you sense context is getting full (you've done 4+ sprints in one session):
 - Then EXIT cleanly (the wrapper script will restart you)
 
 WHEN SCS-001 IS FULLY COMPLETE (all Blocks A-G shipped):
-Do not stop. Spawn opus → "SCS-001 pipeline is complete. Read MEMORY.md and the
-master architecture. What is the next highest-priority work? Consider: Stripe
-go-live blockers, Telegram bot testing, dashboard v3, end-to-end pipeline testing
-with real TikTok API, Phase 2 preparation. Return a Sprint plan."
-Execute that plan. Keep looping.
+Do not stop. Read MEMORY.md and the master architecture yourself. What is the
+next highest-priority work? Consider: Stripe go-live blockers, Telegram bot
+testing, dashboard v3, end-to-end pipeline testing with real TikTok API,
+Phase 2 preparation. Design a Sprint plan and execute it. Keep looping.
 
 SWARM KNOWN LIMITS:
 - qwen3:14b can't use external npm packages (proper-lockfile, etc) — keep tasks stdlib-only

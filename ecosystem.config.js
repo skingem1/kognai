@@ -434,6 +434,28 @@ module.exports = {
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
     {
+      // Pipeline Watchdog — Sprint 141. Checks publish-ledger.jsonl freshness every 30 min.
+      // Sends Telegram alert if ledger hasn't been updated in >4h (pipeline stuck/failed).
+      // Silent when pipeline is healthy. Set WATCHDOG_DRY_RUN=1 to test without sending.
+      name: "kognai-pipeline-watchdog",
+      script: "scripts/pipeline-watchdog.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: false,
+      watch: false,
+      cron_restart: "*/30 * * * *",
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
+        CEO_TELEGRAM_BOT_TOKEN: process.env.CEO_TELEGRAM_BOT_TOKEN || process.env.TELEGRAM_BOT_TOKEN || "",
+        OWNER_TELEGRAM_CHAT_ID: process.env.OWNER_TELEGRAM_CHAT_ID || process.env.CEO_TELEGRAM_CHAT_ID || "",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/pipeline-watchdog-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/pipeline-watchdog-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
+    {
       // Daily Digest — pushes morning gate-progress summary to operator via Telegram
       // Fires 07:00 daily (before AM block). Shows: posts/views gate, pipeline stats,
       // days until Phase 1.5 gate (Apr 7) + Achiri alpha (Apr 25).

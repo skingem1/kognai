@@ -63,18 +63,41 @@ def parse_sprint_log(path: Path, max_lines: int = 150) -> dict:
 
 
 def get_latest_log(logs_dir: Path) -> Optional[dict]:
-    """Get the most recent sprint run log."""
-    log_files = sorted(logs_dir.glob("sprint-*-run.log"))
-    if not log_files:
-        # Try any log file
-        log_files = sorted(logs_dir.glob("sprint-*.log"))
-    if not log_files:
+    """Get the most recent log — prioritises autonomous session logs over old sprint logs."""
+    candidates = []
+
+    # 1. Autonomous session logs (current primary source)
+    auto_dir = logs_dir / "autonomous"
+    if auto_dir.exists():
+        for f in auto_dir.glob("*.log"):
+            if f.stat().st_size > 0:
+                candidates.append(("autonomous", f))
+
+    # 2. Sprint run logs (legacy swarm runs)
+    for f in logs_dir.glob("sprint-*-run.log"):
+        candidates.append(("sprint", f))
+    if not candidates:
+        for f in logs_dir.glob("sprint-*.log"):
+            candidates.append(("sprint", f))
+
+    if not candidates:
         return None
 
-    latest = log_files[-1]
+    # Pick the most recently modified file
+    candidates.sort(key=lambda x: x[1].stat().st_mtime, reverse=True)
+    source, latest = candidates[0]
+
     result = parse_sprint_log(latest)
     result["file"] = latest.name
-    result["sprint"] = latest.stem.replace("-run", "").replace("sprint-", "")
+    result["source"] = source
+
+    if source == "autonomous":
+        # Extract session info from filename (e.g. session-1-2026-03-16_12-00-00.log)
+        stem = latest.stem
+        result["sprint"] = stem  # Show session name as identifier
+    else:
+        result["sprint"] = latest.stem.replace("-run", "").replace("sprint-", "")
+
     return result
 
 

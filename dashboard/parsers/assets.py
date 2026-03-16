@@ -40,6 +40,59 @@ def get_skill_bank() -> dict:
     }
 
 
+def get_kognai_crystallised_skills() -> dict:
+    """Read ALL crystallised skills from Kognai's skill bank (top-level + subdirs).
+
+    This is the REAL crystallised count — skills that passed the AMD-02 quality gate
+    (score >= 75) and were written to skill-bank/kognai-owned/.
+    """
+    skills = []
+    if not SKILL_DIR.exists():
+        return {"total": 0, "skills": [], "avg_score": 0}
+
+    # Collect all JSON files: top-level + all subdirectories
+    all_json = list(SKILL_DIR.glob("*.json")) + list(SKILL_DIR.rglob("*/*.json"))
+    for f in sorted(all_json, key=lambda p: p.stat().st_mtime, reverse=True):
+        if f.name == "schema.json":
+            continue
+        try:
+            data = json.load(open(f))
+            avg_score = 0
+            history = data.get("score_history", [])
+            if history:
+                avg_score = round(sum(e.get("score", 0) for e in history) / len(history), 1)
+            # Fall back to quality_score or score if no history
+            if not avg_score:
+                avg_score = data.get("quality_score", data.get("score", 0))
+
+            skills.append({
+                "skill_id": data.get("skill_id", f.stem),
+                "name": data.get("name", data.get("title", f.stem)),
+                "description": data.get("description", ""),
+                "agent": data.get("agent_id", data.get("agent", "unknown")),
+                "type": "kognai-owned",
+                "subdir": f.parent.name if f.parent != SKILL_DIR else "",
+                "avg_score": avg_score,
+                "execution_count": data.get("execution_count", 1),
+                "access_tier": data.get("access_tier", "internal"),
+                "source_sprint": data.get("source_sprint", data.get("sprint_id", data.get("provenance", ""))),
+                "created_at": data.get("created_at", ""),
+            })
+        except (json.JSONDecodeError, OSError):
+            skills.append({"skill_id": f.stem, "name": f.stem, "error": True})
+
+    avg_all = 0
+    scored = [s for s in skills if s.get("avg_score", 0) > 0]
+    if scored:
+        avg_all = round(sum(s["avg_score"] for s in scored) / len(scored), 1)
+
+    return {
+        "total": len(skills),
+        "skills": skills,
+        "avg_score": avg_all,
+    }
+
+
 def get_code_assets() -> dict:
     if not CODE_INDEX.exists():
         return {"total_assets": 0, "assets": [], "tier_counts": {}}
@@ -73,6 +126,7 @@ def get_all_assets() -> dict:
     )
 
     kognai_skills = get_skill_bank()
+    kognai_crystallised = get_kognai_crystallised_skills()
     invoica_skills = get_invoica_skills(limit=50)
     invoica_failures = get_invoica_failures(limit=30)
     invoica_summary = get_invoica_knowledge_summary()
@@ -81,6 +135,7 @@ def get_all_assets() -> dict:
     return {
         "skills": kognai_skills,
         "code_assets": get_code_assets(),
+        "kognai_crystallised_skills": kognai_crystallised,
         "invoica_skills": invoica_skills,
         "invoica_failures": invoica_failures,
         "invoica_summary": invoica_summary,

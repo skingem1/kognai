@@ -1,0 +1,67 @@
+{
+  "sprint": "141",
+  "name": "Pipeline health watchdog + dashboard parser fixes",
+  "block": "Phase 1.5 gate ops — pipeline reliability",
+  "goal": "Two deliverables: (1) pipeline-watchdog.ts: standalone script that checks if scs001-pipeline wrote to publish-ledger.jsonl in the last 4h. If stale, sends Telegram alert to OWNER. Runs via PM2 cron every 30 minutes. Eliminates silent pipeline failures before the Apr 7 gate. (2) Commit pre-existing improvements to dashboard/parsers/assets.py and dashboard/parsers/logs.py (autonomous session log support + kognai crystallised skills reader).",
+  "rationale": "Apr 7 gate: 0/30 posts, ~22 days. scs001-pipeline cron runs 4x/day — if it silently fails (memory OOM, qwen3 timeout, etc), operator won't know for hours. Watchdog fires 30min after a scheduled slot if ledger hasn't been updated. assets.py + logs.py improvements were already coded but uncommitted — clean them up.",
+  "swarm": "NOT USED — 1 new script + 1 config edit + commit unstaged files. Direct write.",
+  "tasks": [
+    {
+      "id": "141-01",
+      "title": "scripts/pipeline-watchdog.ts — pipeline staleness detector",
+      "description": "Standalone script following daily-digest.ts pattern. Reads workspace/scs001/publish-ledger.jsonl — finds most recent published_at timestamp. If no file or empty: ledger is stale. staleHours = (now - lastPublished) / 3600000. STALE_THRESHOLD_HOURS = 4. WATCHDOG_DRY_RUN env = skip send. If staleHours >= STALE_THRESHOLD_HOURS: send Telegram alert '⚠️ SCS-001 Pipeline Stale\\nLast ledger entry: Xh ago\\nCheck PM2: pm2 logs scs001-pipeline\\nGate: Y/30 posts, Z days to Apr 7'. Read manual-posts.jsonl for post count. If not stale: exit 0 silently (no message). Send via HTTPS to Telegram API (same pattern as daily-digest.ts).",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-141",
+      "deliverables": {
+        "code": ["scripts/pipeline-watchdog.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "141-02",
+      "title": "ecosystem.config.js — kognai-pipeline-watchdog PM2 cron entry",
+      "description": "Add PM2 entry after kognai-smoke-test: name='kognai-pipeline-watchdog', script='scripts/pipeline-watchdog.ts', interpreter='node', interpreter_args='-r ts-node/register', cron_restart='*/30 * * * *', autorestart=false, cwd='/Users/tarekmnif/kognai'. Runs every 30 minutes to check pipeline health.",
+      "type": "modify",
+      "task_type": "config",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-141",
+      "deliverables": {
+        "code": ["ecosystem.config.js"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "141-03",
+      "title": "scripts/achiri/validate-sprint-141.ts — validation script",
+      "description": "Check: (1) scripts/pipeline-watchdog.ts exists; (2) contains STALE_THRESHOLD_HOURS; (3) reads publish-ledger.jsonl; (4) sends Telegram alert when stale; (5) ecosystem.config.js has kognai-pipeline-watchdog; (6) kognai-pipeline-watchdog has cron_restart '*/30 * * * *'. 6 checks, exit 0 on all pass.",
+      "type": "create",
+      "task_type": "test",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-141",
+      "deliverables": {
+        "code": ["scripts/achiri/validate-sprint-141.ts"],
+        "tests": ["scripts/achiri/validate-sprint-141.ts"],
+        "docs": []
+      }
+    }
+  ],
+  "acceptance_criteria": [
+    "scripts/pipeline-watchdog.ts detects stale ledger (>4h) and sends Telegram alert",
+    "ecosystem.config.js has kognai-pipeline-watchdog with cron_restart '*/30 * * * *'",
+    "WATCHDOG_DRY_RUN=1 skips Telegram send",
+    "validate-sprint-141.ts exits 0 (all 6 checks pass)"
+  ]
+}
