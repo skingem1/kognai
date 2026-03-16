@@ -768,3 +768,14 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
 - Changes: handleDeployStatus() shows: ACHIRI_BASE_URL check (remote vs localhost), ACHIRI_ALPHA_ONLY check, Achiri API /health ping (3s timeout), deploy-achiri.sh present, alpha whitelist count, waitlist count, remaining steps list. Operator can run /deploy-status from Telegram to see exactly what's left for Apr 25 alpha.
 - Gate: ~22 days to Apr 7, 0/30 posts | Achiri alpha: Apr 25 (40d)
 - Timestamp: 2026-03-16T17:15:00Z
+
+## Sprint 148 — Dashboard Achiri alpha panel + invite DM notification
+- Status: PASS
+- Commit: 05efe63
+- Files created: scripts/scs001/validate-sprint-148.ts, workspace/sprints/sprint-148.json
+- Files modified: dashboard/parsers/achiri.py, dashboard/static/app.js, agents/telegram-bot/commands.ts
+- Test: scripts/scs001/validate-sprint-148.ts — 5/5 PASS
+- Swarm used: no (direct write)
+- Changes: achiri.py reads alpha-whitelist.jsonl, adds total_invited to /api/achiri/stats. Dashboard Achiri panel now shows Invited stat box alongside Waitlist. handleInviteAchiri() sends onboarding DM to invited user (try-catch wrapped — graceful if user hasn't started bot).
+- Gate: ~22 days to Apr 7, 0/30 posts | Achiri alpha: Apr 25 (40d)
+- Timestamp: 2026-03-16T17:30:00Z
