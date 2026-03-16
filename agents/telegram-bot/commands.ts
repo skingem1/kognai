@@ -1304,6 +1304,31 @@ function runIdToEpoch(runId: string): number | null {
   } catch { return null; }
 }
 
+// Sprint 164: directory-scan helpers — robust to epoch off-by-1ms issues
+function findCaptionedMp4(cwd: string, videoId: string): string | null {
+  try {
+    const scsDir = join(cwd, 'workspace', 'scs001');
+    const runDirs = readdirSync(scsDir).filter(d => d.startsWith('run-'));
+    for (const dir of runDirs) {
+      const p = join(scsDir, dir, 'caption', `${videoId}-captioned.mp4`);
+      if (existsSync(p)) return p;
+    }
+  } catch { /* ignore */ }
+  return null;
+}
+
+function findScriptJson(cwd: string, videoId: string): string | null {
+  try {
+    const scsDir = join(cwd, 'workspace', 'scs001');
+    const runDirs = readdirSync(scsDir).filter(d => d.startsWith('run-'));
+    for (const dir of runDirs) {
+      const p = join(scsDir, dir, 'script', `${videoId}-script.json`);
+      if (existsSync(p)) return p;
+    }
+  } catch { /* ignore */ }
+  return null;
+}
+
 function nextPostingSlot(): string {
   const now = new Date();
   const h = now.getHours();
@@ -1356,10 +1381,8 @@ export async function handlePostNow(chatId: number, ownerChatId: string): Promis
 
     for (const e of entries) {
       if (recordedIds.has(e.video_id)) continue;
-      const epoch = runIdToEpoch(e.run_id);
-      if (!epoch) continue;
-      const mp4 = join(cwd, 'workspace', 'scs001', `run-${epoch}`, 'caption', `${e.video_id}-captioned.mp4`);
-      if (existsSync(mp4)) {
+      const mp4 = findCaptionedMp4(cwd, e.video_id);
+      if (mp4) {
         ready.push({ ...e, filePath: mp4 });
         if (ready.length >= 3) break;
       }
@@ -1450,10 +1473,7 @@ export async function handleCaption(chatId: number, ownerChatId: string, videoId
       // Find first unposted entry with a captioned mp4 on disk
       for (const e of entries) {
         if (recordedIds.has(e.video_id)) continue;
-        const epoch = runIdToEpoch(e.run_id);
-        if (!epoch) continue;
-        const mp4 = join(cwd, 'workspace', 'scs001', `run-${epoch}`, 'caption', `${e.video_id}-captioned.mp4`);
-        if (existsSync(mp4)) { entry = e; break; }
+        if (findCaptionedMp4(cwd, e.video_id)) { entry = e; break; }
       }
     }
   }
@@ -1468,15 +1488,12 @@ export async function handleCaption(chatId: number, ownerChatId: string, videoId
 
   // Try to load hook from script JSON
   let hookText: string = entry.topic ?? entry.video_id;
-  const epoch = runIdToEpoch(entry.run_id);
-  if (epoch) {
-    const scriptPath = join(cwd, 'workspace', 'scs001', `run-${epoch}`, 'script', `${entry.video_id}-script.json`);
-    if (existsSync(scriptPath)) {
-      try {
-        const script = JSON.parse(readFileSync(scriptPath, 'utf-8'));
-        hookText = script.hook ?? script.title ?? script.headline ?? hookText;
-      } catch { /* fallback to topic */ }
-    }
+  const scriptPath = findScriptJson(cwd, entry.video_id);
+  if (scriptPath) {
+    try {
+      const script = JSON.parse(readFileSync(scriptPath, 'utf-8'));
+      hookText = script.hook ?? script.title ?? script.headline ?? hookText;
+    } catch { /* fallback to topic */ }
   }
 
   const caption = `${hookText}\n\n${hashtags}`;

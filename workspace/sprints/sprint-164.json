@@ -1,0 +1,50 @@
+{
+  "sprint": "164",
+  "name": "Fix runIdToEpoch off-by-1ms bug — /post-now returns no videos",
+  "block": "Phase 1 — posting workflow bug fix",
+  "goal": "Fix critical bug: runIdToEpoch('scs001-2026-03-16T13-02-47-539Z') returns epoch 1773666167539 but actual run dir is run-1773666167538 (1ms off). /post-now, /caption, /queue all return 'no ready videos' even though 30 captioned mp4s exist. Fix: replace epoch-based existsSync with a directory scan helper findCaptionedMp4().",
+  "rationale": "Operator has 30 captioned videos ready to post. /post-now, the primary posting workflow command, returns 'No ready videos found on disk' due to the 1ms epoch mismatch. This directly blocks gate progress. Fix unblocks all 30 videos immediately.",
+  "swarm": "NOT USED — surgical edit to commands.ts. Direct write.",
+  "tasks": [
+    {
+      "id": "164-01",
+      "title": "commands.ts — add findCaptionedMp4() + findScriptJson() helpers, fix 3 epoch usages",
+      "description": "Add findCaptionedMp4(cwd, videoId): string|null — readdirSync workspace/scs001/, filter dirs starting with 'run-', check each for caption/{videoId}-captioned.mp4, return first match. Add findScriptJson(cwd, videoId): string|null — same scan but checks script/{videoId}-script.json. Replace all 3 epoch-based mp4 lookups with findCaptionedMp4(). Replace epoch-based script lookup with findScriptJson(). Keep runIdToEpoch() for reference but remove its usage in file path construction.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-164",
+      "deliverables": {
+        "code": ["agents/telegram-bot/commands.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "164-02",
+      "title": "validate-sprint-164.ts — 4-check validation",
+      "description": "1) findCaptionedMp4 function exists in commands.ts. 2) findCaptionedMp4 scans run-* dirs (readdirSync + startsWith run-). 3) No remaining epoch-based mp4 path constructions (run-${epoch}/caption). 4) Spot-check: call findCaptionedMp4 with known video_id from ledger — should return non-null path.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-164",
+      "deliverables": {
+        "code": ["scripts/scs001/validate-sprint-164.ts"],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ],
+  "acceptance_criteria": [
+    "findCaptionedMp4() helper exists, scans run-* dirs",
+    "No run-${epoch}/caption path constructions remaining",
+    "Spot-check: findCaptionedMp4 finds video-88863065 (known to be on disk)",
+    "validate-sprint-164.ts: 4/4 PASS"
+  ]
+}
