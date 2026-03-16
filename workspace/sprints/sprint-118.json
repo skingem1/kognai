@@ -1,0 +1,61 @@
+{
+  "sprint": "118",
+  "name": "Readiness Parser Fix — pipeline_runs_exist + current_posts + current_qc_pass",
+  "block": "Phase 1 — dashboard accuracy",
+  "goal": "Fix dashboard/parsers/readiness.py so that pipeline_runs_exist is accurate (checks workspace/scs001/run-*/ not the non-existent reports/pipeline-runs/), current_posts reads from publish-ledger.jsonl, and current_qc_pass reads from experiments.jsonl. This makes the Phase 1.5 gate readiness panel accurate.",
+  "rationale": "The readiness endpoint shows pipeline_runs_exist=false and current_posts=0 despite 119+ ledger entries and 10+ run directories. Root cause: wrong run directory path and hardcoded 0 for actuals. The Apr 7 gate decision depends on accurate post counts.",
+  "swarm": "NOT USED — targeted Python edits, simple fix.",
+  "tasks": [
+    {
+      "id": "118-01",
+      "title": "dashboard/parsers/readiness.py — fix pipeline_runs_exist",
+      "description": "Change pipeline_runs_exist to check workspace/scs001/run-*/ directories exist (glob or Path.iterdir). Also fix latest_run_ok to check reports/smoke-test-latest.json (which does exist).",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-118",
+      "deliverables": {
+        "code": ["dashboard/parsers/readiness.py"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "118-02",
+      "title": "dashboard/parsers/readiness.py — populate current_posts and current_qc_pass from ledger + experiments",
+      "description": "current_posts = len(publish-ledger.jsonl entries). current_qc_pass = percentage of experiments.jsonl entries with qc_passed=true. Remove TODO comment. This makes kill_switch_proximity accurate.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-118",
+      "deliverables": {
+        "code": ["dashboard/parsers/readiness.py"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "118-03",
+      "title": "Validate — /api/readiness returns accurate values",
+      "description": "curl localhost:11436/api/readiness. Verify: pipeline_runs_exist=true, current_posts>0, current_qc_pass>0. PASS = all three non-zero/non-false.",
+      "type": "validate",
+      "task_type": "validation",
+      "task_target": "local",
+      "agent": "direct-check",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-118",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ]
+}

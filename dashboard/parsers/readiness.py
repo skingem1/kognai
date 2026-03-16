@@ -4,7 +4,9 @@ from pathlib import Path
 from datetime import datetime, timezone
 
 KOGNAI_ROOT = Path.home() / "kognai"
-REPORTS_DIR = KOGNAI_ROOT / "reports" / "pipeline-runs"
+RUNS_DIR = KOGNAI_ROOT / "workspace" / "scs001"
+SMOKE_TEST_PATH = KOGNAI_ROOT / "reports" / "smoke-test-latest.json"
+EXPERIMENTS_PATH = KOGNAI_ROOT / "workspace" / "scs001" / "experiments.jsonl"
 
 LEDGER_PATH = KOGNAI_ROOT / "workspace" / "scs001" / "publish-ledger.jsonl"
 PHASE_1_5_GATE_DATE = "2026-04-07"
@@ -33,36 +35,33 @@ def get_readiness() -> dict:
     env_ready_count = sum(env_status.values())
     env_total = len(REQUIRED_ENV_VARS)
 
-    # Check pipeline runs
-    pipeline_runs_exist = (
-        REPORTS_DIR.exists()
-        and len(glob.glob(str(REPORTS_DIR / "scs001-*.json"))) > 0
-    )
+    # Check pipeline runs (workspace/scs001/run-*/ directories)
+    run_dirs = [d for d in RUNS_DIR.iterdir() if d.is_dir() and d.name.startswith("run-")] if RUNS_DIR.exists() else []
+    pipeline_runs_exist = len(run_dirs) > 0
 
-    # Check latest run health
+    # Check latest run health via smoke-test-latest.json
     latest_run_ok = False
-    if pipeline_runs_exist:
-        latest = REPORTS_DIR / "latest.json"
-        if latest.exists():
-            try:
-                with open(latest) as f:
-                    data = json.load(f)
-                errors = [s for s in data.get("stages", []) if s.get("status") == "error"]
-                latest_run_ok = len(errors) == 0
-            except Exception:
-                pass
+    if SMOKE_TEST_PATH.exists():
+        try:
+            with open(SMOKE_TEST_PATH) as f:
+                data = json.load(f)
+            latest_run_ok = data.get("passed", False) and data.get("error_count", 1) == 0
+        except Exception:
+            pass
 
-    # Kill switch targets (actuals require TikTok Analytics API when available)
+    # Current actuals from publish-ledger + experiments
+    current_posts = _count_ledger_entries()
+    current_qc_pass = _calc_qc_pass_rate()
+
     kill_switch_proximity = {
         "views_target": 500,
         "posts_target": 30,
         "retention_target": 20,
         "qc_pass_target": 80,
-        # TODO: read current actuals from TikTok Analytics API when available
-        "current_views": 0,
-        "current_posts": 0,
-        "current_retention": 0,
-        "current_qc_pass": 0,
+        "current_views": 0,  # requires TikTok Analytics API (live mode only)
+        "current_posts": current_posts,
+        "current_retention": 0,  # requires TikTok Analytics API (live mode only)
+        "current_qc_pass": current_qc_pass,
     }
 
     # Build blocker list
@@ -95,6 +94,44 @@ def get_readiness() -> dict:
         "readiness_pct": readiness_pct,
         "phase_1_5_projection": phase_1_5_projection,
     }
+
+
+def _count_ledger_entries() -> int:
+    """Count total entries in publish-ledger.jsonl."""
+    if not LEDGER_PATH.exists():
+        return 0
+    count = 0
+    try:
+        with open(LEDGER_PATH) as f:
+            for line in f:
+                if line.strip():
+                    count += 1
+    except Exception:
+        pass
+    return count
+
+
+def _calc_qc_pass_rate() -> int:
+    """Calculate QC pass rate (%) from experiments.jsonl."""
+    if not EXPERIMENTS_PATH.exists():
+        return 0
+    total, passed = 0, 0
+    try:
+        with open(EXPERIMENTS_PATH) as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    entry = json.loads(line)
+                    total += 1
+                    if entry.get("qc_passed"):
+                        passed += 1
+                except Exception:
+                    pass
+    except Exception:
+        pass
+    return round(passed / total * 100) if total > 0 else 0
 
 
 def _get_phase_1_5_projection() -> dict:
