@@ -1,0 +1,51 @@
+{
+  "sprint": "151",
+  "name": "Daily digest enhancements — queue count + Stripe status + /queue tip",
+  "block": "Phase 1 — operator situational awareness",
+  "goal": "Enhance scripts/daily-digest.ts: (1) Add getQueueStats(): reads publish-ledger.jsonl count, manual-posts.jsonl count, compute unposted=ledger-recorded. (2) Add queue line to digest: '📋 Queue: N unposted videos ready to post'. (3) Add Stripe status line: '💳 Stripe: 🟢 LIVE' if STRIPE_SECRET_KEY set, '💳 Stripe: 🔴 NOT LIVE (set STRIPE_SECRET_KEY)' if not. (4) Update tip line: include /queue reference. Operator now sees every morning: gate urgency, queue size, Stripe status — all critical operational signals.",
+  "rationale": "The morning digest shows gate progress and pipeline stats but not: how many videos are ready to post, or whether Stripe is live. Operator has to run /queue and /stripe-status separately. Adding these to the digest makes the morning briefing complete — one message tells the operator everything they need to know to take action.",
+  "swarm": "NOT USED — 1 file edit + 1 validation script. Direct write.",
+  "tasks": [
+    {
+      "id": "151-01",
+      "title": "daily-digest.ts — getQueueStats() + digest queue line + Stripe line + tip update",
+      "description": "Add getQueueStats(): reads publish-ledger.jsonl → count entries. Reads manual-posts.jsonl → count entries. Returns {ledgerCount, recordedCount, unposted=ledgerCount-recordedCount}. In buildDigest(): call getQueueStats(). Add queue line after Pipeline section: '📋 Queue: <unposted> unposted videos (post /queue to pick)'. Add Stripe line after gate section: process.env.STRIPE_SECRET_KEY ? '💳 Stripe: 🟢 LIVE' : '💳 Stripe: 🔴 NOT LIVE (set STRIPE_SECRET_KEY in .env)'. Update tip: change '/review to pick video, /record <id> <views>' to '/queue to see unposted, /review for latest, /record <id> <views> to track'.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-151",
+      "deliverables": {
+        "code": ["scripts/daily-digest.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "151-02",
+      "title": "validate-sprint-151.ts — 5-check validation script",
+      "description": "1) daily-digest.ts contains getQueueStats. 2) daily-digest.ts contains 'unposted' (queue line). 3) daily-digest.ts contains STRIPE_SECRET_KEY check. 4) daily-digest.ts contains '/queue' in tip. 5) DRY_RUN=1 run produces output containing 'Queue:' and 'Stripe:'.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-151",
+      "deliverables": {
+        "code": ["scripts/scs001/validate-sprint-151.ts"],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ],
+  "acceptance_criteria": [
+    "getQueueStats() reads ledger + manual-posts and returns unposted count",
+    "Digest shows queue count line and Stripe status line",
+    "Tip updated to mention /queue",
+    "DRY_RUN=1 output contains 'Queue:' and 'Stripe:'",
+    "validate-sprint-151.ts: 5/5 PASS"
+  ]
+}

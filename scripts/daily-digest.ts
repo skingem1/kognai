@@ -95,6 +95,16 @@ function getTopFormula(): string {
   return `${formula} (${pct}% QC pass)`;
 }
 
+// ── Queue stats (Sprint 151): unposted videos ─────────────────────────────────
+
+function getQueueStats(): { ledgerCount: number; recordedCount: number; unposted: number } {
+  const ledger   = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
+  const recorded = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  const recordedIds = new Set(recorded.map((e: any) => e.video_id).filter(Boolean));
+  const unposted = ledger.filter((e: any) => !recordedIds.has(e.video_id)).length;
+  return { ledgerCount: ledger.length, recordedCount: recorded.length, unposted };
+}
+
 // ── Smoke test (reports/smoke-test-latest.json) ───────────────────────────────
 
 function getSmokeTest(): string {
@@ -119,8 +129,12 @@ function getDaysUntil(isoDate: string): number {
 function buildDigest(): string {
   const gate     = getGateProgress();
   const ledger   = getLedgerStats();
+  const queue    = getQueueStats();
   const formula  = getTopFormula();
   const smoke    = getSmokeTest();
+  const stripeStatus = process.env.STRIPE_SECRET_KEY
+    ? '💳 Stripe: 🟢 LIVE'
+    : '💳 Stripe: 🔴 NOT LIVE (set STRIPE_SECRET_KEY in .env)';
 
   const postsLeft  = Math.max(0, 30 - gate.count);
   const viewsLeft  = Math.max(0, 500 - gate.totalViews);
@@ -159,16 +173,19 @@ function buildDigest(): string {
     '',
     `🎬 *Pipeline* (dry-run)`,
     `• Total generated: ${ledger.total} | Today: ${ledger.todayCount}`,
+    `📋 Queue: *${queue.unposted}* unposted videos ready to post`,
     `• Top formula: ${formula}`,
     `• Smoke test: ${smoke}`,
+    '',
+    stripeStatus,
     '',
     `📅 *Upcoming gates*`,
     `• Apr 7  — Phase 1.5 decision (${daysPhase}d)`,
     `• Apr 25 — Achiri alpha launch (${daysAchiri}d)`,
     '',
     ledger.total > 0
-      ? `💡 _Telegram: /review to pick video, /record <id> <views> to track_`
-      : `⚠️ _No pipeline output yet — check PM2: \`pm2 status\` | /review when ready_`,
+      ? `💡 _Telegram: /queue to see unposted, /review for latest, /record <id> <views> to track_`
+      : `⚠️ _No pipeline output yet — check PM2: \`pm2 status\` | /queue when ready_`,
   ];
 
   return lines.join('\n');
