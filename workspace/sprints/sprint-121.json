@@ -1,0 +1,27 @@
+{
+  "sprint": "121",
+  "name": "Video Review Script — list generated videos with metadata for manual posting",
+  "block": "Phase 1 — manual posting workflow",
+  "goal": "Build scripts/scs001/review-videos.ts — lists videos from the latest pipeline run with hook_formula, speaker, topic, QC status, and file path. Enables operator to review and select which video to post manually. Completes the manual posting loop: pipeline → review → record-manual-post.ts.",
+  "rationale": "Pipeline generates videos but operator has no easy way to see what was produced. This script bridges the gap between pipeline output and manual TikTok posting decision.",
+  "swarm": "NOT USED — new small script, writing directly.",
+  "tasks": [
+    {
+      "id": "121-01",
+      "title": "scripts/scs001/review-videos.ts — video review CLI",
+      "description": "Read latest run dir (newest workspace/scs001/run-*/ by mtime). Read experiments.jsonl to get hook_formula+speaker+qc_passed per video_id. List captioned MP4s with their metadata, sorted by qc_passed=true first. Show: video_id, hook_formula, speaker, qc_passed, file_path. Include --run-id flag to specify a specific run.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-121",
+      "deliverables": {
+        "code": ["scripts/scs001/review-videos.ts"],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ]
+}
