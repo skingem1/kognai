@@ -1,0 +1,61 @@
+{
+  "tasks": [
+    {
+      "id": "105-01",
+      "title": "Topic-aware hashtag bank + hook-first caption in PublishingAgent",
+      "description": "MODIFY: agents/scs001-publishing/index.ts — replace fixed hashtag set with 50-tag bank, update buildCaption() for hook-first format.",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "dependencies": [],
+      "priority": "critical",
+      "sprint_id": "sprint-105",
+      "deliverables": {
+        "code": ["agents/scs001-publishing/index.ts"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Current hashtags are fixed (knowledge, learnontiktok, deepdive). Topic-specific tags critical for TikTok algorithmic reach."
+    },
+    {
+      "id": "105-02",
+      "title": "Posting slot distributor — round-robin across 4 daily prime-time windows",
+      "description": "MODIFY: agents/scs001-publishing/index.ts — replace assignPostingSlot() with round-robin distributor, add scheduled_post_time to PublishedVideo.",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "dependencies": [],
+      "priority": "high",
+      "sprint_id": "sprint-105",
+      "deliverables": {
+        "code": ["agents/scs001-publishing/index.ts"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "All videos currently get same slot. TikTok throttles rapid-fire posting from same account."
+    },
+    {
+      "id": "105-03",
+      "title": "Smoke test — verify PublishingAgent changes produce 0 errors",
+      "description": "RUN: npx ts-node scripts/smoke-test-pipeline.ts. Verify PASS, 13 stages, 0 errors.",
+      "type": "test",
+      "task_type": "verify",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "dependencies": ["105-01", "105-02"],
+      "priority": "critical",
+      "sprint_id": "sprint-105",
+      "deliverables": {
+        "code": [],
+        "tests": ["scripts/smoke-test-pipeline.ts"],
+        "docs": []
+      },
+      "context": "Regression test after modifying PublishingAgent."
+    }
+  ]
+}

@@ -12,70 +12,85 @@ import { TikTokClient, TikTokPostOptions } from '../tiktok-client/index';
 import { VideoHostingService } from '../scs001-hosting/index';
 
 export interface PublishedVideo {
-  publish_id:    string;
-  video_id:      string;
-  platform:      'tiktok' | 'instagram_reels' | 'youtube_shorts';
-  post_url:      string;
-  posted_at:     string;
-  posting_slot:  'morning_0700_0900' | 'midday_1200_1300' | 'evening_1800_2000' | 'late_night_2100_2300';
-  caption_text:  string;
-  hashtags:      string[];
+  publish_id:           string;
+  video_id:             string;
+  platform:             'tiktok' | 'instagram_reels' | 'youtube_shorts';
+  post_url:             string;
+  posted_at:            string;
+  posting_slot:         'morning_0700_0900' | 'midday_1200_1300' | 'evening_1800_2000' | 'late_night_2100_2300';
+  scheduled_post_time:  string;  // ISO datetime for this slot
+  caption_text:         string;
+  hashtags:             string[];
 }
 
-// Time-slot assignment based on current hour
-function assignPostingSlot(): PublishedVideo['posting_slot'] {
-  const hour = new Date().getHours();
-  if (hour >= 7 && hour < 9)   return 'morning_0700_0900';
-  if (hour >= 12 && hour < 13) return 'midday_1200_1300';
-  if (hour >= 18 && hour < 20) return 'evening_1800_2000';
-  if (hour >= 21 && hour < 23) return 'late_night_2100_2300';
-  // Default to evening slot (highest engagement per Charter)
-  return 'evening_1800_2000';
+// Prime-time slots in order — round-robin assignment per video index
+const POSTING_SLOTS: Array<{ slot: PublishedVideo['posting_slot']; hour: number; minute: number }> = [
+  { slot: 'morning_0700_0900',   hour: 7,  minute: 0 },
+  { slot: 'midday_1200_1300',    hour: 12, minute: 0 },
+  { slot: 'evening_1800_2000',   hour: 18, minute: 0 },
+  { slot: 'late_night_2100_2300', hour: 21, minute: 0 },
+];
+
+function assignPostingSlot(index: number): { slot: PublishedVideo['posting_slot']; scheduled_post_time: string } {
+  const entry = POSTING_SLOTS[index % POSTING_SLOTS.length];
+  const today = new Date();
+  const scheduled = new Date(today.getFullYear(), today.getMonth(), today.getDate(), entry.hour, entry.minute, 0);
+  return { slot: entry.slot, scheduled_post_time: scheduled.toISOString() };
 }
 
-// Extract 3-5 hashtags from the script bundle
+// Topic-aware hashtag bank — 50 tags across 5 clusters
+const HASHTAG_BANK: Record<string, string[]> = {
+  ai:       ['ai', 'aitools', 'artificialintelligence', 'chatgpt', 'machinelearning', 'llm', 'openai', 'claude', 'deeplearning', 'aitech'],
+  tech:     ['tech', 'technology', 'coding', 'software', 'startup', 'programming', 'developer', 'innovation', 'futuretech', 'techtrends'],
+  business: ['business', 'entrepreneur', 'startup', 'founder', 'investing', 'venturecapital', 'productlaunch', 'growth', 'saas', 'funding'],
+  science:  ['science', 'quantum', 'robotics', 'biotech', 'research', 'physics', 'spacetech', 'climatetech', 'neuroscience', 'genomics'],
+  viral:    ['learnontiktok', 'didyouknow', 'mindblown', 'fyp', 'foryou', 'viral', 'trending', 'knowledge', 'explainer', 'deepdive'],
+};
+
+// Keyword → cluster mapping for topic detection
+const TOPIC_KEYWORDS: Record<string, keyof typeof HASHTAG_BANK> = {
+  'ai': 'ai', 'gpt': 'ai', 'llm': 'ai', 'model': 'ai', 'neural': 'ai', 'openai': 'ai',
+  'claude': 'ai', 'chatgpt': 'ai', 'deepseek': 'ai', 'gemini': 'ai', 'anthropic': 'ai',
+  'code': 'tech', 'software': 'tech', 'app': 'tech', 'developer': 'tech', 'programming': 'tech',
+  'startup': 'business', 'fund': 'business', 'invest': 'business', 'revenue': 'business', 'saas': 'business',
+  'quantum': 'science', 'robot': 'science', 'biotech': 'science', 'space': 'science', 'gene': 'science',
+  'x402': 'tech', 'crypto': 'tech', 'blockchain': 'tech', 'protocol': 'tech',
+  'regulation': 'business', 'policy': 'business', 'law': 'business',
+};
+
 function generateHashtags(bundle: ScriptBundle): string[] {
-  const tags: string[] = [];
+  const allText = bundle.segments.map(s => s.voiceover_text).join(' ').toLowerCase();
+  const speakerTag = bundle.speaker_name.replace(/\s+/g, '').toLowerCase();
 
-  // Speaker-derived tag (if notable)
-  const speaker = bundle.speaker_name ?? '';
-  if (speaker && speaker.length > 2) {
-    tags.push(speaker.replace(/\s+/g, '').toLowerCase());
+  // Detect topic clusters from content
+  const clustersFound = new Set<keyof typeof HASHTAG_BANK>();
+  for (const [keyword, cluster] of Object.entries(TOPIC_KEYWORDS)) {
+    if (allText.includes(keyword)) clustersFound.add(cluster);
+  }
+  if (clustersFound.size === 0) clustersFound.add('viral');
+
+  // Pick 1-2 tags per detected cluster, prioritize highest-signal
+  const topicTags: string[] = [];
+  for (const cluster of clustersFound) {
+    const pool = HASHTAG_BANK[cluster];
+    topicTags.push(pool[0]);
+    if (topicTags.length < 3 && pool[1]) topicTags.push(pool[1]);
   }
 
-  // Hook formula tag
-  const formula = bundle.hook_formula_used ?? '';
-  if (formula) {
-    tags.push(formula.replace(/_/g, ''));
-  }
-
-  // Fixed brand/niche tags
-  tags.push('knowledge', 'learnontiktok', 'deepdive');
-
-  // Deduplicate and limit to 5
-  const unique = [...new Set(tags)].slice(0, 5);
-
-  // Ensure minimum 3
-  while (unique.length < 3) {
-    unique.push('viral');
-  }
-
+  // Always include speaker + 1-2 viral anchor tags
+  const final = [speakerTag, ...topicTags, 'learnontiktok', 'knowledge'];
+  const unique = [...new Set(final)].slice(0, 5);
+  while (unique.length < 3) unique.push('fyp');
   return unique;
 }
 
-// Build platform caption from script bundle
+// Build platform caption: hook text first (max 80 chars), hashtags inline at end
 function buildCaption(bundle: ScriptBundle): string {
   const hook = bundle.segments.find(s => s.segment_name === 'hook');
-  const insight = bundle.segments.find(s => s.segment_name === 'insight');
-  const hookText = hook?.voiceover_text ?? '';
-  const insightText = insight?.voiceover_text ?? '';
-
-  // TikTok caption: hook line + insight teaser (max 150 chars for visibility)
-  let caption = hookText;
-  if (insightText && caption.length + insightText.length < 140) {
-    caption += ' ' + insightText;
-  }
-  return caption.substring(0, 150);
+  const hookText = (hook?.voiceover_text ?? '').substring(0, 80);
+  const hashtags = generateHashtags(bundle).map(t => '#' + t).join(' ');
+  // TikTok shows first ~80 chars before "...more" — hook goes first
+  return (hookText + '\n\n' + hashtags).substring(0, 300);
 }
 
 export class PublishingAgent {
@@ -124,7 +139,7 @@ export class PublishingAgent {
     }
 
     const results: PublishedVideo[] = [];
-    const slot = assignPostingSlot();
+    let slotIndex = 0;
 
     for (const videoId of passedIds) {
       const cv = captionMap.get(videoId);
@@ -140,6 +155,7 @@ export class PublishingAgent {
 
       const hashtags = generateHashtags(bundle);
       const captionText = buildCaption(bundle);
+      const { slot, scheduled_post_time } = assignPostingSlot(slotIndex++);
 
       if (this.mode === 'live') {
         console.log('[PublishingAgent] LIVE MODE — posting to TikTok API');
@@ -172,13 +188,14 @@ export class PublishingAgent {
       const result = await this.client.post(postOptions);
 
       const published: PublishedVideo = {
-        publish_id:   result.publishId || 'pub-' + randomUUID().substring(0, 8),
-        video_id:     videoId,
-        platform:     'tiktok',
-        post_url:     'https://www.tiktok.com/@kognai/video/' + (result.publishId || 'dry-run'),
-        posted_at:    new Date().toISOString(),
-        posting_slot: slot,
-        caption_text: captionText,
+        publish_id:          result.publishId || 'pub-' + randomUUID().substring(0, 8),
+        video_id:            videoId,
+        platform:            'tiktok',
+        post_url:            'https://www.tiktok.com/@kognai/video/' + (result.publishId || 'dry-run'),
+        posted_at:           new Date().toISOString(),
+        posting_slot:        slot,
+        scheduled_post_time: scheduled_post_time,
+        caption_text:        captionText,
         hashtags,
       };
 
