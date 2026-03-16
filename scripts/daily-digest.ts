@@ -95,6 +95,15 @@ function getTopFormula(): string {
   return `${formula} (${pct}% QC pass)`;
 }
 
+// ── Viral topics (Sprint 161) ─────────────────────────────────────────────────
+
+function getViralTopics(): string[] {
+  try {
+    const data = JSON.parse(fs.readFileSync(path.join(ROOT, 'workspace', 'scs001', 'viral-topics.json'), 'utf-8'));
+    return (Array.isArray(data.topics) ? data.topics : []).slice(0, 3);
+  } catch { return []; }
+}
+
 // ── Queue stats (Sprint 151): unposted videos ─────────────────────────────────
 
 function getQueueStats(): { ledgerCount: number; recordedCount: number; unposted: number; top3: string[] } {
@@ -135,6 +144,7 @@ function buildDigest(): string {
   const queue    = getQueueStats();
   const formula  = getTopFormula();
   const smoke    = getSmokeTest();
+  const viral    = getViralTopics();
   const stripeStatus = process.env.STRIPE_SECRET_KEY
     ? '💳 Stripe: 🟢 LIVE'
     : '💳 Stripe: 🔴 NOT LIVE (set STRIPE_SECRET_KEY in .env)';
@@ -192,6 +202,11 @@ function buildDigest(): string {
     `• Apr 7  — Phase 1.5 decision (${daysPhase}d)`,
     `• Apr 25 — Achiri alpha launch (${daysAchiri}d)`,
     '',
+    ...(viral.length > 0 ? [
+      `🔥 *Trending topics (post one of these today):*`,
+      ...viral.map(t => `• ${t}`),
+      '',
+    ] : []),
     ledger.total > 0
       ? `💡 _Telegram: /queue to see unposted, /review for latest, /record <id> <views> to track_`
       : `⚠️ _No pipeline output yet — check PM2: \`pm2 status\` | /queue when ready_`,

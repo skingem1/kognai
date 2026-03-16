@@ -1,0 +1,49 @@
+{
+  "sprint": "161",
+  "name": "Enrich daily digest with viral topics",
+  "block": "Phase 1 — TikTok gate (0/30 posts, ~22 days to Apr 7)",
+  "goal": "Add top 3 viral topics from workspace/scs001/viral-topics.json to the 07:00 daily digest. Operator gets content inspiration automatically every morning without needing to type /viral. Sprint adds getViralTopics() helper to daily-digest.ts and injects a '🔥 Today's trending topics' section into buildDigest().",
+  "rationale": "Operator needs to decide what to post each morning. The daily digest already nudges them on gate progress and queue depth. Adding viral topics to that same 07:00 message means zero extra effort — they wake up to a complete morning brief. Accelerates content creation decisions → faster posting → closer to 30-post gate.",
+  "swarm": "NOT USED — 1 file edit (daily-digest.ts) + 1 validation script. Direct write.",
+  "tasks": [
+    {
+      "id": "161-01",
+      "title": "daily-digest.ts — add getViralTopics() + inject into buildDigest()",
+      "description": "Add function getViralTopics(): string[] — reads workspace/scs001/viral-topics.json, returns topics[].slice(0, 3), returns [] on any error. In buildDigest(): call getViralTopics(). If topics.length > 0, add section after '📅 Upcoming gates' block: '' then '🔥 *Trending topics (post one of these today):*' then '• {t1}', '• {t2}', '• {t3}'. Insert before the final Telegram tip line at end of lines array. No other changes.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-161",
+      "deliverables": {
+        "code": ["scripts/daily-digest.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "161-02",
+      "title": "validate-sprint-161.ts — 4-check validation",
+      "description": "1) daily-digest.ts contains getViralTopics function. 2) getViralTopics reads viral-topics.json. 3) buildDigest() calls getViralTopics. 4) digest contains 'Trending topics' label text.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-161",
+      "deliverables": {
+        "code": ["scripts/scs001/validate-sprint-161.ts"],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ],
+  "acceptance_criteria": [
+    "getViralTopics() function exists in daily-digest.ts, reads viral-topics.json",
+    "buildDigest() calls getViralTopics() and conditionally injects trending section",
+    "validate-sprint-161.ts: 4/4 PASS"
+  ]
+}
