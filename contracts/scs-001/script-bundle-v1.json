@@ -1,0 +1,86 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Script Bundle — Script Agent → Editing Agent Contract",
+  "description": "Output contract for SCS-001 Script Agent. Maps InsightBrief editorial content to precise 6-segment video editing directives. Consumed by Editing Agent (FFmpeg assembly). Derived from SCS-001 Charter Article III video structure.",
+  "version": "1.0.0",
+  "status": "LOCKED",
+  "locked_date": "2026-03-16",
+  "producer": "scs-001-script-agent",
+  "consumers": ["scs-001-editing-agent"],
+
+  "definitions": {
+    "ScriptSegment": {
+      "type": "object",
+      "required": ["segment_name", "start_s", "end_s", "voiceover_text", "visual_directive", "caption_text"],
+      "properties": {
+        "segment_name": {
+          "type": "string",
+          "enum": ["hook", "context", "clip", "commentary", "insight", "loop"],
+          "description": "6-segment structure per Charter"
+        },
+        "start_s": { "type": "number", "minimum": 0 },
+        "end_s": { "type": "number", "minimum": 0 },
+        "voiceover_text": {
+          "type": "string",
+          "description": "TTS text for this segment. Empty string for clip segment (original audio plays)."
+        },
+        "visual_directive": {
+          "type": "string",
+          "description": "What visual to show: 'title_card', 'source_clip', 'text_overlay', 'split_screen', 'b_roll_placeholder'"
+        },
+        "caption_text": {
+          "type": "string",
+          "description": "Caption overlay text for this segment"
+        }
+      }
+    },
+    "PatternInterrupt": {
+      "type": "object",
+      "required": ["time_s", "type"],
+      "properties": {
+        "time_s": { "type": "number", "minimum": 0 },
+        "type": {
+          "type": "string",
+          "enum": ["cut", "zoom", "text_pop", "color_shift", "motion", "overlay"],
+          "description": "Visual change type. Min 8 per video, no 3s static holds."
+        }
+      }
+    }
+  },
+
+  "type": "object",
+  "required": ["script_id", "insight_id", "clip_id", "segments", "pattern_interrupts", "total_duration_seconds", "loop_ending", "why_does_this_matter", "speaker_name", "hook_formula_used"],
+  "properties": {
+    "script_id": { "type": "string", "description": "Unique script identifier" },
+    "insight_id": { "type": "string", "description": "Links back to InsightBrief.insight_id" },
+    "clip_id": { "type": "string", "description": "Links back to ClipQualityScore.clip_id" },
+    "segments": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/ScriptSegment" },
+      "minItems": 5,
+      "maxItems": 6,
+      "description": "5-6 segments (loop is optional). Must cover full duration."
+    },
+    "pattern_interrupts": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/PatternInterrupt" },
+      "minItems": 8,
+      "description": "Visual changes. Min 8 per video. Every 2-3 seconds."
+    },
+    "total_duration_seconds": {
+      "type": "number",
+      "minimum": 24,
+      "maximum": 30,
+      "description": "Target: 24-30 seconds total"
+    },
+    "loop_ending": { "type": "boolean", "description": "Whether last segment reconnects to hook for watch-again" },
+    "why_does_this_matter": {
+      "type": "string",
+      "minLength": 20,
+      "maxLength": 500,
+      "description": "Passthrough from InsightBrief. Constitutional constraint preserved."
+    },
+    "speaker_name": { "type": "string" },
+    "hook_formula_used": { "type": "string" }
+  }
+}
