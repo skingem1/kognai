@@ -757,3 +757,14 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
 - Changes: checkAlphaAccess() reads BOTH env ACHIRI_ALPHA_WHITELIST AND workspace/achiri/alpha-whitelist.jsonl at runtime. handleAchiri() now calls checkAlphaAccess(). handleInviteAchiri() appends to file-based whitelist — operator can invite users via Telegram without SSH or bot restart. index.ts routes /invite-achiri. handleHelp updated.
 - Gate: ~22 days to Apr 7, 0/30 posts | Achiri alpha: Apr 25 (40d)
 - Timestamp: 2026-03-16T17:00:00Z
+
+## Sprint 147 — /deploy-status Achiri alpha deploy checklist
+- Status: PASS
+- Commit: fe2f547
+- Files created: scripts/scs001/validate-sprint-147.ts, workspace/sprints/sprint-147.json
+- Files modified: agents/telegram-bot/commands.ts, agents/telegram-bot/index.ts
+- Test: scripts/scs001/validate-sprint-147.ts — 6/6 PASS
+- Swarm used: no (direct write)
+- Changes: handleDeployStatus() shows: ACHIRI_BASE_URL check (remote vs localhost), ACHIRI_ALPHA_ONLY check, Achiri API /health ping (3s timeout), deploy-achiri.sh present, alpha whitelist count, waitlist count, remaining steps list. Operator can run /deploy-status from Telegram to see exactly what's left for Apr 25 alpha.
+- Gate: ~22 days to Apr 7, 0/30 posts | Achiri alpha: Apr 25 (40d)
+- Timestamp: 2026-03-16T17:15:00Z
