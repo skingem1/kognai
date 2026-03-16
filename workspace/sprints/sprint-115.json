@@ -1,0 +1,61 @@
+{
+  "sprint": "115",
+  "name": "Achiri HTTP API — expose conversation handler as REST endpoint",
+  "block": "Phase 2A — Achiri",
+  "goal": "Expose AchiriConversationHandler as a standalone Express HTTP server. POST /chat accepts { userId, tier, message }, returns { reply, turns_in_memory }. Enables Telegram bot, mobile app, and web client integration. Runs as PM2 process achiri-api on port 3420.",
+  "rationale": "Sprint 114 shipped memory. Gate date Apr 11. Achiri needs an HTTP API so real users (via Telegram or web) can connect. This is the bridge between the core engine and any front-end.",
+  "swarm": "NOT USED — multi-file changes including large ecosystem.config.js. All tasks written directly.",
+  "tasks": [
+    {
+      "id": "115-01",
+      "title": "agents/achiri/server.ts — Express HTTP API",
+      "description": "Create agents/achiri/server.ts exposing:\n  POST /chat — { userId, tier?, message } → { reply, turns_in_memory, model, provider, tier }\n  DELETE /memory/:userId — clear memory for user → { ok: true }\n  GET /stats — memory stats + uptime → { users, total_turns, uptime_s }\n  GET /health — { status: 'ok', version: '115' }\n\nPort: 3420 (ACHIRI_PORT env var override).\nAll routes validate required fields, return 400 on missing.\nDRY_RUN mode: ACHIRI_DRY_RUN=1 skips LLM call, returns mock response.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "done",
+      "priority": "critical",
+      "sprint_id": "sprint-115",
+      "deliverables": {
+        "code": ["agents/achiri/server.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "115-02",
+      "title": "scripts/achiri/validate-http-api.ts — endpoint validation",
+      "description": "Spawn the server in a child process with ACHIRI_DRY_RUN=1. Wait for it to be ready. Test:\n  1. GET /health → status=ok\n  2. POST /chat { userId: 'test-user', message: 'Aslema' } → has reply field\n  3. GET /stats → has users and total_turns fields\n  4. DELETE /memory/test-user → { ok: true }\n  5. POST /chat missing message → 400\nAll 5 pass = PASS. Kill server after.",
+      "type": "create",
+      "task_type": "validation",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "done",
+      "priority": "critical",
+      "sprint_id": "sprint-115",
+      "deliverables": {
+        "code": ["scripts/achiri/validate-http-api.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "115-03",
+      "title": "ecosystem.config.js — add achiri-api PM2 process",
+      "description": "Surgical edit: add achiri-api entry to ecosystem.config.js apps array.\nscript: 'npx', args: 'ts-node agents/achiri/server.ts'\nenv: { NODE_ENV: 'production', ACHIRI_PORT: 3420 }",
+      "type": "modify",
+      "task_type": "ops",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-115",
+      "deliverables": {
+        "code": ["ecosystem.config.js"],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ]
+}

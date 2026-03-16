@@ -478,5 +478,28 @@ module.exports = {
       out_file: "/Users/tarekmnif/kognai/logs/scs001-live-out.log",
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
+    {
+      // Achiri HTTP API — Phase 2A REST interface for conversation handler
+      // Activated: Sprint 115 (2026-03-16)
+      // Routes: POST /chat, DELETE /memory/:userId, GET /stats, GET /health
+      // Dry-run: set ACHIRI_DRY_RUN=1 (skips LLM call)
+      // To start: pm2 start ecosystem.config.js --only achiri-api
+      name: "achiri-api",
+      script: "npx",
+      args: "ts-node agents/achiri/server.ts",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: true,
+      watch: false,
+      env: {
+        NODE_ENV: "production",
+        ACHIRI_PORT: "3420",
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
+        OLLAMA_URL: "http://127.0.0.1:11434",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/achiri-api-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/achiri-api-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
   ]
 };
