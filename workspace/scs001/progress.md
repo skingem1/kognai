@@ -479,3 +479,17 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
 - Enables: kill switch monitoring (retention <20%), CI personality testing before alpha
 - T3 Skills progress: 2/6 complete (achiri-safety, eval-harness). Remaining: achiri-voice, achiri-memory, derja-profiler, paymee.
 - Timestamp: 2026-03-16T17:00:00Z
+
+### Sprint 125 — derja-profiler T3 skill (Block: Phase 2A — T3 Skills #3/6)
+- Status: PASS | Commit: 17d519e | Block: T3 Skills — derja-profiler
+- Files created: agents/achiri/derja-profiler.ts, scripts/achiri/validate-derja-profiler.ts, workspace/sprints/sprint-125.json
+- Tests: scripts/achiri/validate-derja-profiler.ts — 5/5 PASS
+- Swarm: NOT used — direct write
+- Changes:
+  - derja-profiler.ts: profileMessage(text) → DerjaProfile {dialect, formality, confidence, features}. Dialect markers per variant (TN/MA/DZ/LY/EG). Formality via Darija numerals (informal) and MSA vocabulary (formal). Fixed Arabic Unicode \b word boundary issue.
+  - Tunisian: barsha/walakin/kifeh/yasser/mrigoul etc. Moroccan: zwina/bzzaf/sahbi/daba etc.
+  - Confidence: 1 match=0.6, 2=0.75, 3+=0.9. Penalized 30% if two dialects tie.
+- Key results: TN=0.9, MA=0.9, English=unknown, Darija numerals=informal, MSA=formal
+- T3 Skills progress: 3/6 complete (achiri-safety, eval-harness, derja-profiler). Remaining: achiri-voice, achiri-memory, paymee.
+- Session: 4 sprints (122-125) in this session. Context full — handoff written.
+- Timestamp: 2026-03-16T17:30:00Z
