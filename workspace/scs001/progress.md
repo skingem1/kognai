@@ -103,3 +103,13 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
   - Idempotent replay: DedupLedger correctly filtered 3/5, idempotent, 0/5 full record
   - Pipeline dry-run: 12 stages, 5 topics, 10 clips (mock mode, exit 0)
 - Timestamp: 2026-03-16T14:30:00Z
+
+### Sprint 097 — Phase 1 Activation: SCS_MODE=live config + readiness validator (Block: activation)
+- Status: PASS | Commit: b58ae19
+- Files modified: ecosystem.config.js, docs/gate-tracker.md
+- Files created: scripts/scs001/validate-phase1-activation.ts, workspace/gates/phase1-activation-readiness.json
+- Swarm: attempted, failed on 097-01 (ecosystem.config.js destructive rewrite — 458-line file too large). All 3 tasks written directly.
+- Activation status: 3/4 checks pass. BLOCKED on TIKTOK_ACCESS_TOKEN (not set in .env — human action required).
+- ecosystem.config.js: scs001-live process added (SCS_MODE=live, cron 0 7,12,18,21 * * *, TIKTOK_ACCESS_TOKEN wired from env).
+- gate-tracker.md: OpenClaw + T2 Skills marked Deferred to Sprint 098+.
+- Timestamp: 2026-03-16T15:00:00Z

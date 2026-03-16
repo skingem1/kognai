@@ -77,24 +77,32 @@ Avoid: Looping on conflicting reviews without escalating.
 
 ## Kognai State — 2026-03-16
 
-**Last git commit:** 95e7f5c (Sprint 096: Phase 0→Phase 1 gate PASS)
-**Last sprint:** 096 — Phase 0→Phase 1 Gate PASS
-**Pipeline status:** SCS-001 Blocks A–G complete + hardening (Sprints 076–094). Phase 0 COMPLETE.
+**Last git commit:** b58ae19 (Sprint 097: Phase 1 activation config + readiness validator)
+**Last sprint:** 097 — Phase 1 Activation: SCS_MODE=live config + readiness validator
+**Pipeline status:** SCS-001 Blocks A–G complete + hardening (Sprints 076–094). Phase 0 COMPLETE. Phase 1 CONFIGURED (pending TIKTOK_ACCESS_TOKEN).
 
 **Phase Gates:**
-- Phase 0→Phase 1: PASS (Mar 16) — gate report at workspace/gates/phase0-phase1-gate.json. All 3 criteria passed.
+- Phase 0→Phase 1: PASS (Mar 16) — gate report at workspace/gates/phase0-phase1-gate.json.
 - SCS-001 Block A: CONDITIONAL PASS
+- Phase 1 Activation Readiness: workspace/gates/phase1-activation-readiness.json (3/4 pass — blocked on TIKTOK_ACCESS_TOKEN)
 
-**Phase 1 is now UNLOCKED.** Next actions:
-1. Set SCS_MODE=live in ecosystem.config.js (TikTok live posting)
-2. T2 Skills Installation (was target Mar 14 — overdue)
-3. OpenClaw v2026.3.7 gateway.auth.mode setup (T1 skills, 13 skills)
+**Phase 1 Live Posting — Requires Human Action:**
+1. Set TIKTOK_ACCESS_TOKEN in .env (obtain from TikTok Developer Portal — video.upload scope)
+2. Run: pm2 start ecosystem.config.js --only scs001-live
+
+**ecosystem.config.js — SCS-001 Processes:**
+- scs001-pipeline: mock mode (dry-run, always safe, 4x daily cron)
+- scs001-live: live mode (Phase 1), requires TIKTOK_ACCESS_TOKEN in .env
+
+**Deferred (Sprint 098+):**
+- T2 Skills Installation (6 content/monetization skills) — was Mar 14
+- OpenClaw v2026.3.7 gateway.auth.mode setup (T1 skills, 13 skills) — was Mar 10
 
 **Critical Gaps:**
-- None blocking Phase 1 start
+- TIKTOK_ACCESS_TOKEN not yet set in .env — live posting blocked until set (human action)
 
-**Swarm pattern note (FP-007):** qwen3:14b cannot reliably rewrite files using real API interfaces it hasn't seen. When task requires calling specific class methods (DedupLedger.recordPublished, filterNewClips), the swarm consistently hallucinates non-existent methods (insertClip, removeClip). For interface-heavy rewrites, skip the swarm and write directly.
+**Swarm pattern note (FP-007):** qwen3:14b cannot reliably rewrite files using real API interfaces it hasn't seen, and fails destructively on files >200 lines. Skip swarm and write directly for: (a) interface-heavy TS rewrites, (b) files >200 lines like ecosystem.config.js.
 
-**Next Sprint:** 097 — Phase 1 activation: SCS_MODE=live + ecosystem.config.js update
+**Next Sprint:** 098 — T2 Skills Installation + OpenClaw v2026.3.7 setup (OR: set TIKTOK_ACCESS_TOKEN + verify first live post if token is available)
 
 *This file is updated by Sherlock on the weekly compression cycle. Raw daily logs are in memory/YYYY-MM-DD.md. This file contains only what has proven durable.*
