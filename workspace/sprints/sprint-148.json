@@ -1,0 +1,84 @@
+{
+  "sprint": "148",
+  "name": "Dashboard Achiri alpha panel — invited count + invited DM notification",
+  "block": "Phase 2A — Achiri alpha launch prep",
+  "goal": "Two deliverables: (1) dashboard/parsers/achiri.py: add total_invited by reading workspace/achiri/alpha-whitelist.jsonl. /api/achiri/stats now returns {today_messages, today_users, total_waitlist, total_invited, today_date}. dashboard/static/app.js: add 'Invited' stat box to Achiri panel. (2) commands.ts handleInviteAchiri(): after appending to whitelist, also send a Telegram DM to the invited user with an onboarding message ('You have been invited to Achiri Lite Alpha...').",
+  "rationale": "Dashboard Achiri panel shows waitlist but not invited count — operator can't see how many alpha users are confirmed from the dashboard. Invited DM is missing: operator runs /invite-achiri but the user never gets notified unless they happen to try /achiri. For Apr 25 alpha, a warm invite DM is essential for engagement.",
+  "swarm": "NOT USED — 3 small file edits + 1 validation script. Direct write.",
+  "tasks": [
+    {
+      "id": "148-01",
+      "title": "achiri.py — add total_invited from alpha-whitelist.jsonl",
+      "description": "In parse_achiri_stats(): add alpha_whitelist_path = base_dir / 'workspace' / 'achiri' / 'alpha-whitelist.jsonl'. total_invited = 0. If exists: count non-empty lines. Return dict includes 'total_invited': total_invited.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-148",
+      "deliverables": {
+        "code": ["dashboard/parsers/achiri.py"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "148-02",
+      "title": "app.js — add Invited stat box to Achiri panel",
+      "description": "In renderAchiriPanel(): add <div class='stat-box'><div class='stat-value'>${data.total_invited ?? 0}</div><div class='stat-label'>Invited</div></div> to stats-row, after Waitlist box.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-148",
+      "deliverables": {
+        "code": ["dashboard/static/app.js"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "148-03",
+      "title": "commands.ts — handleInviteAchiri() sends DM to invited user",
+      "description": "After appendFileSync in handleInviteAchiri(): call sendMessage(parseInt(targetId), invite DM). DM text: '🎉 You have been invited to *Achiri Lite Alpha*!\\n\\nAchiri is a culturally adaptive AI companion that speaks Darija, Arabic & French.\\n\\n📅 Alpha launches *Apr 25* — your access is now active.\\nTry it now: /achiri مرحبا\\n\\n_Questions? DM @kognai_bot_'. Wrap in try-catch (user may not have started bot — log error, don't fail the invite).",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-148",
+      "deliverables": {
+        "code": ["agents/telegram-bot/commands.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "148-04",
+      "title": "scripts/scs001/validate-sprint-148.ts — validation script",
+      "description": "5 checks: (1) achiri.py reads alpha-whitelist.jsonl; (2) achiri.py returns total_invited; (3) app.js has 'total_invited' in Achiri panel; (4) commands.ts handleInviteAchiri sends DM to invited user (sendMessage(parseInt(targetId)) or similar); (5) DM try-catch wrapping. Exit 0 on all pass.",
+      "type": "create",
+      "task_type": "test",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-148",
+      "deliverables": {
+        "code": ["scripts/scs001/validate-sprint-148.ts"],
+        "tests": ["scripts/scs001/validate-sprint-148.ts"],
+        "docs": []
+      }
+    }
+  ],
+  "acceptance_criteria": [
+    "/api/achiri/stats returns total_invited field",
+    "Dashboard Achiri panel shows Invited stat box",
+    "handleInviteAchiri() sends onboarding DM to invited user (try-catch wrapped)",
+    "validate-sprint-148.ts exits 0 (all 5 checks pass)"
+  ]
+}

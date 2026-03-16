@@ -1716,6 +1716,7 @@ async function renderAchiriPanel() {
       <div class="stat-box"><div class="stat-value">${data.today_messages ?? 0}</div><div class="stat-label">Today Messages</div></div>
       <div class="stat-box"><div class="stat-value">${data.today_users ?? 0}</div><div class="stat-label">Today Users</div></div>
       <div class="stat-box"><div class="stat-value">${data.total_waitlist ?? 0}</div><div class="stat-label">Waitlist</div></div>
+      <div class="stat-box"><div class="stat-value">${data.total_invited ?? 0}</div><div class="stat-label">Invited</div></div>
     </div>`;
     html += `<div style="font-size:11px; color:var(--text-muted);">Date: ${escHtml(data.today_date ?? '—')} &nbsp;·&nbsp; Alpha launch: <strong>Apr 25</strong></div>`;
     panel.innerHTML = html;

@@ -35,9 +35,21 @@ def parse_achiri_stats(base_dir: Path) -> dict[str, Any]:
         except OSError:
             pass
 
+    # ── alpha-whitelist.jsonl (Sprint 146) ─────────────────────────────────────
+    alpha_whitelist_path = base_dir / 'workspace' / 'achiri' / 'alpha-whitelist.jsonl'
+    total_invited = 0
+
+    if alpha_whitelist_path.exists():
+        try:
+            lines = [l.strip() for l in alpha_whitelist_path.read_text().splitlines() if l.strip()]
+            total_invited = len(lines)
+        except OSError:
+            pass
+
     return {
         'today_messages': today_messages,
         'today_users': today_users,
         'total_waitlist': total_waitlist,
+        'total_invited': total_invited,
         'today_date': today,
     }

@@ -631,6 +631,23 @@ export async function handleInviteAchiri(chatId: number, ownerChatId: string, te
     `📋 File whitelist: ${totalInvited} user(s).`,
     `_No bot restart needed — access is live immediately._`,
   ].join('\n'));
+
+  // Send onboarding DM to invited user (Sprint 148)
+  // Wrapped in try-catch — user may not have started the bot yet
+  try {
+    await sendMessage(parseInt(targetId), [
+      '🎉 You have been invited to *Achiri Lite Alpha*!',
+      '',
+      'Achiri is a culturally adaptive AI companion that speaks Darija, Arabic & French.',
+      '',
+      '📅 Alpha launches *Apr 25* — your access is now active.',
+      'Try it now: `/achiri مرحبا`',
+      '',
+      '_Questions? DM @kognai_bot_',
+    ].join('\n'));
+  } catch (dmErr) {
+    console.error('[telegram-bot] handleInviteAchiri: DM to', targetId, 'failed (user may not have started bot):', (dmErr as Error).message);
+  }
 }
 
 // ── Post reminder — Sprint 140 ─────────────────────────────────────────────────
