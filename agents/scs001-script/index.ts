@@ -39,15 +39,65 @@ const INTERRUPT_TYPES: PatternInterrupt['type'][] = [
   'cut', 'zoom', 'text_pop', 'color_shift', 'motion', 'overlay',
 ];
 
+// Proven TikTok hook templates by formula type.
+// {topic} is replaced with the first ~60 chars of the raw insight text.
+const HOOK_TEMPLATES: Record<string, string[]> = {
+  curiosity_gap: [
+    'Nobody is talking about {topic}',
+    'The truth about {topic} will change everything',
+    'What they don\'t want you to know about {topic}',
+    'This is why {topic} matters more than you think',
+    'Did you know {topic}? Most people have no idea.',
+  ],
+  secret: [
+    'The secret behind {topic} finally revealed',
+    'Insiders know this about {topic} — now you do too',
+    'Here\'s what actually happens with {topic}',
+    'The real story of {topic} nobody tells you',
+  ],
+  contrarian: [
+    'Everyone is wrong about {topic}',
+    'Stop believing what you hear about {topic}',
+    'Unpopular opinion: {topic} is not what you think',
+    'The mainstream narrative on {topic} is backwards',
+  ],
+  statistic: [
+    '{topic} — the numbers are more surprising than you expect',
+    'The data on {topic} will shock you',
+    'Here\'s the stat about {topic} that changes the conversation',
+    'One number explains everything about {topic}',
+  ],
+  challenge: [
+    'Can you handle the truth about {topic}?',
+    'Most people fail to understand {topic} — can you?',
+    'This is your sign to pay attention to {topic}',
+    'What would happen if everyone knew about {topic}?',
+  ],
+  authority: [
+    'The expert take on {topic} you need to hear',
+    'Here\'s what the research says about {topic}',
+    'Top minds are rethinking {topic} right now',
+  ],
+};
+
+function applyHookTemplate(formula: string, originalText: string): string {
+  const templates = HOOK_TEMPLATES[formula];
+  if (!templates || templates.length === 0) return originalText;
+  const topic = originalText.substring(0, 60).replace(/[.!?]+$/, '');
+  const tpl = templates[Math.floor(Math.random() * templates.length)];
+  return tpl.replace('{topic}', topic);
+}
+
 function buildSegments(brief: InsightBrief, useLoop: boolean): ScriptSegment[] {
+  const hookText = applyHookTemplate(brief.hook.formula, brief.hook.text);
   const segments: ScriptSegment[] = [
     {
       segment_name:     'hook',
       start_s:          0,
       end_s:            2,
-      voiceover_text:   brief.hook.text,
+      voiceover_text:   hookText,
       visual_directive: 'title_card',
-      caption_text:     brief.hook.text,
+      caption_text:     hookText,
     },
     {
       segment_name:     'context',
@@ -88,9 +138,9 @@ function buildSegments(brief: InsightBrief, useLoop: boolean): ScriptSegment[] {
       segment_name:     'loop',
       start_s:          24,
       end_s:            28,
-      voiceover_text:   brief.hook.text,
+      voiceover_text:   hookText,
       visual_directive: 'title_card',
-      caption_text:     'Watch again? ' + brief.hook.text.substring(0, 40),
+      caption_text:     'Watch again? ' + hookText.substring(0, 40),
     });
   }
 

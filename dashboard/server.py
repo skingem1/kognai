@@ -38,6 +38,7 @@ from parsers.daily_plans import get_today_plans
 from parsers.pipeline import get_latest_pipeline_run, list_pipeline_runs
 from parsers.readiness import get_readiness
 from parsers.pipeline_status import get_pipeline_status
+from parsers.publish_ledger import get_publish_history, get_publish_stats
 from parsers.invoica_knowledge import (
     get_invoica_skills, get_invoica_failures, get_cto_insights,
     get_post_sprint_learnings, get_invoica_latest_log, get_invoica_log_errors,
@@ -292,6 +293,117 @@ async def tail_log(service: str):
     return StreamingResponse(event_stream(), media_type="text/event-stream")
 
 
+# --- SSE: live swarm activity (AAR + routing JSONL) ---
+AAR_DIR = LOGS_DIR / "aar"
+INVOICA_SWARM_DIR = INVOICA_ROOT / "logs" / "swarm-runs"
+
+@app.get("/api/swarm/stream")
+async def swarm_stream():
+    """Stream live swarm activity from AAR receipts and routing logs (both projects)."""
+    today = date.today().isoformat()
+
+    # Collect all JSONL sources to tail
+    sources = []
+    aar_kognai = AAR_DIR / f"{today}.jsonl"
+    aar_invoica = INVOICA_ROOT / "logs" / "aar" / f"{today}.jsonl"
+    routing_kognai = ROUTING_DIR / f"{today}.jsonl"
+    routing_invoica = INVOICA_ROOT / "logs" / "routing" / f"{today}.jsonl"
+
+    for path, event_type, project in [
+        (aar_kognai, "aar", "kognai"),
+        (aar_invoica, "aar", "invoica"),
+        (routing_kognai, "routing", "kognai"),
+        (routing_invoica, "routing", "invoica"),
+    ]:
+        if path.exists():
+            sources.append((path, event_type, project))
+
+    async def event_stream():
+        # Open all files, seek to end
+        handles = []
+        for path, event_type, project in sources:
+            fh = open(path, "r")
+            fh.seek(0, 2)  # EOF
+            handles.append((fh, event_type, project))
+
+        # Also check for new files appearing (e.g. Invoica starts running)
+        check_interval = 0
+        try:
+            while True:
+                found_data = False
+                for fh, event_type, project in handles:
+                    line = fh.readline()
+                    if line:
+                        line = line.strip()
+                        if line:
+                            # Inject project and event type into the SSE event
+                            try:
+                                payload = json.loads(line)
+                                payload["_project"] = project
+                                payload["_event_type"] = event_type
+                                yield f"event: {event_type}\ndata: {json.dumps(payload)}\n\n"
+                            except json.JSONDecodeError:
+                                yield f"event: {event_type}\ndata: {json.dumps({'raw': line, '_project': project, '_event_type': event_type})}\n\n"
+                            found_data = True
+
+                if not found_data:
+                    await asyncio.sleep(1)
+
+                # Every 30 seconds, check for new files that may have appeared
+                check_interval += 1
+                if check_interval >= 30:
+                    check_interval = 0
+                    for path, event_type, project in [
+                        (aar_kognai, "aar", "kognai"),
+                        (aar_invoica, "aar", "invoica"),
+                        (routing_kognai, "routing", "kognai"),
+                        (routing_invoica, "routing", "invoica"),
+                    ]:
+                        already = any(h[0].name == str(path) for h in handles)
+                        if not already and path.exists():
+                            fh = open(path, "r")
+                            fh.seek(0, 2)
+                            handles.append((fh, event_type, project))
+
+                # Send keepalive every cycle to detect disconnects
+                yield ": keepalive\n\n"
+        finally:
+            for fh, _, _ in handles:
+                fh.close()
+
+    return StreamingResponse(event_stream(), media_type="text/event-stream",
+                             headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"})
+
+
+# --- SSE: recent swarm events (non-streaming fallback) ---
+@app.get("/api/swarm/recent")
+async def swarm_recent(limit: int = 50):
+    """Return the most recent AAR events (for initial load / SSE fallback)."""
+    today = date.today().isoformat()
+    events = []
+
+    for aar_path, project in [
+        (AAR_DIR / f"{today}.jsonl", "kognai"),
+        (INVOICA_ROOT / "logs" / "aar" / f"{today}.jsonl", "invoica"),
+    ]:
+        if aar_path.exists():
+            try:
+                lines = aar_path.read_text().strip().splitlines()
+                for line in lines[-limit:]:
+                    try:
+                        data = json.loads(line)
+                        data["_project"] = project
+                        events.append(data)
+                    except json.JSONDecodeError:
+                        pass
+            except OSError:
+                pass
+
+    # Sort by timestamp, most recent first
+    events.sort(key=lambda e: e.get("timestamp", ""), reverse=True)
+    return events[:limit]
+
+
 # --- File Browser (read-only) ---
 @app.get("/api/fs/{path:path}")
 async def read_file(path: str):
@@ -395,6 +507,17 @@ async def readiness():
 @app.get("/api/pipeline/status")
 async def pipeline_status():
     return get_pipeline_status()
+
+
+# --- Publish Ledger ---
+@app.get("/api/publish/history")
+async def publish_history():
+    return get_publish_history()
+
+
+@app.get("/api/publish/stats")
+async def publish_stats():
+    return get_publish_stats()
 
 
 # --- Debug: ping all services ---

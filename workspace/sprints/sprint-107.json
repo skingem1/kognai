@@ -1,0 +1,39 @@
+{
+  "sprint": "107",
+  "name": "Hook templates + publish dashboard",
+  "goal": "Improve hook quality with proven viral templates and give operators a publish history dashboard panel",
+  "tasks": [
+    {
+      "id": "107-01",
+      "title": "Hook template library for ScriptAgent",
+      "description": "Add HOOK_TEMPLATES constant to agents/scs001-script/index.ts — 20+ proven TikTok hook templates across 5 formula types. ScriptAgent.buildBundle() selects a template matching the hook formula and wraps the insight text in it. Falls back to raw hook text if formula has no template.",
+      "task_target": "agents/scs001-script/index.ts",
+      "acceptance_criteria": "HOOK_TEMPLATES has >= 20 entries across >= 4 formula types. buildBundle uses template when formula matches. Original text used as fallback. Smoke test passes.",
+      "context": "ScriptAgent is 157 lines. Hook formula comes from InsightBrief.hook.formula. Existing formulas: curiosity_gap, secret, contrarian, statistic, challenge, authority. hook.text contains raw insight text."
+    },
+    {
+      "id": "107-02",
+      "title": "Publish ledger dashboard parser",
+      "description": "Create dashboard/parsers/publish_ledger.py. Functions: get_publish_history(limit=50) reads workspace/scs001/publish-ledger.jsonl, returns last N entries sorted desc. get_publish_stats() returns total_published, runs_count, latest_run_id, latest_published_at. Handle missing file gracefully.",
+      "task_target": "dashboard/parsers/publish_ledger.py",
+      "acceptance_criteria": "get_publish_history returns list of dicts. get_publish_stats returns correct totals. Handles missing file gracefully.",
+      "context": "Ledger has 63 entries with fields: clip_id, video_id, published_at, run_id. 5 unique run_ids. Follow pattern in dashboard/parsers/pipeline.py."
+    },
+    {
+      "id": "107-03",
+      "title": "Publish ledger API endpoints",
+      "description": "Add to dashboard/server.py: import get_publish_history + get_publish_stats from parsers.publish_ledger. Add GET /api/publish/history and GET /api/publish/stats endpoints.",
+      "task_target": "dashboard/server.py",
+      "acceptance_criteria": "/api/publish/history returns JSON array. /api/publish/stats returns JSON object with total_published, runs_count. Server starts without errors.",
+      "context": "server.py is 530 lines. Follow pattern of existing pipeline endpoints."
+    },
+    {
+      "id": "107-04",
+      "title": "Dashboard Panel 15 — Publish History",
+      "description": "Add Panel 15 to dashboard/static/app.js after Panel 14 (renderReadiness). Shows stats header from /api/publish/stats and scrollable table of last 50 videos from /api/publish/history. Register renderPublishHistory in ALL_RENDERERS.",
+      "task_target": "dashboard/static/app.js",
+      "acceptance_criteria": "Panel 15 renders with title 'Publish History'. Shows stats and table. No JS errors. Existing panels unaffected.",
+      "context": "app.js is 1377 lines with 14 panels. ALL_RENDERERS array at the bottom. Panel 14 is renderReadiness. Write directly — file too large for swarm."
+    }
+  ]
+}

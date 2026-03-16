@@ -666,10 +666,12 @@ async function renderAssets() {
   const iSkills = data.invoica_skills || {};
   const iFailures = data.invoica_failures || {};
   const iSummary = data.invoica_summary || {};
+  const iCrystallised = data.invoica_crystallised_skills || {};
 
   // Combined stats
   const totalKognaiSkills = kSkills.total_skills || 0;
   const totalInvoicaSkills = iSummary.total_skills || 0;
+  const totalCrystallised = iCrystallised.total || 0;
   const totalFailures = iSummary.total_failures || 0;
 
   html += `
@@ -680,7 +682,11 @@ async function renderAssets() {
       </div>
       <div class="stat-box" style="border-left: 3px solid var(--accent-green);">
         <div class="stat-value" style="color: var(--accent-green);">${totalInvoicaSkills}</div>
-        <div class="stat-label">Invoica Skills</div>
+        <div class="stat-label">Invoica Virtual</div>
+      </div>
+      <div class="stat-box" style="border-left: 3px solid var(--accent-purple);">
+        <div class="stat-value" style="color: var(--accent-purple);">${totalCrystallised}</div>
+        <div class="stat-label">Crystallised</div>
       </div>
       <div class="stat-box" style="border-left: 3px solid var(--accent-red);">
         <div class="stat-value" style="color: var(--accent-red);">${totalFailures}</div>
@@ -721,6 +727,28 @@ async function renderAssets() {
     }
     if (iSkills.skills.length > 6) {
       html += `<div style="font-size: 10px; color: var(--text-muted); padding: 2px 0;">+${iSkills.skills.length - 6} more from ${iSkills.sprints_scanned || '?'} sprints</div>`;
+    }
+  }
+
+  // --- Invoica Crystallised Skills (AMD-02 quality-gated) ---
+  if (iCrystallised.skills && iCrystallised.skills.length > 0) {
+    html += `<div class="section-divider" style="color: var(--accent-purple);">
+      <span class="project-dot-inline invoica"></span> Crystallised Skills
+      ${iCrystallised.avg_score ? `<span style="font-size: 10px; color: var(--text-muted); margin-left: 6px;">avg: ${iCrystallised.avg_score}/100</span>` : ''}
+    </div>`;
+    for (const s of iCrystallised.skills.slice(0, 6)) {
+      const scoreColor = s.avg_score >= 90 ? 'var(--accent-green)' : s.avg_score >= 75 ? 'var(--accent-amber)' : 'var(--accent-red)';
+      html += `
+        <div class="asset-row" style="border-left: 2px solid var(--accent-purple); padding-left: 6px;">
+          <span class="asset-name" title="${escHtml(s.description || s.skill_id)}">${escHtml(s.name).substring(0, 40)}</span>
+          <span style="font-size: 10px; color: ${scoreColor}; font-weight: bold;">${s.avg_score}</span>
+          <span class="asset-agent mono">${escHtml(s.agent || '')}</span>
+          <span style="font-size: 9px; color: var(--text-muted);">x${s.execution_count || 1}</span>
+        </div>
+      `;
+    }
+    if (iCrystallised.skills.length > 6) {
+      html += `<div style="font-size: 10px; color: var(--text-muted); padding: 2px 0;">+${iCrystallised.skills.length - 6} more crystallised</div>`;
     }
   }
 
@@ -911,7 +939,17 @@ async function renderPipeline() {
   const panel = $('#pipeline-body');
   if (!panel) return;
 
-  let html = '';
+  // Live Activity section (populated by SSE)
+  let html = `
+    <div class="section-divider" style="display:flex; align-items:center; gap:6px;">
+      <span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:${sseConnected ? 'var(--accent-green)' : 'var(--accent-red)'}; animation:${sseConnected ? 'pulse 2s infinite' : 'none'};"></span>
+      Live Swarm Activity
+      <span id="live-routing-indicator" class="mono" style="font-size:10px; color:var(--text-muted); margin-left:auto;"></span>
+    </div>
+    <div id="live-activity" style="max-height:200px; overflow-y:auto; margin-bottom:12px;">
+      <div style="font-size:11px; color:var(--text-muted); padding:6px;">Connecting...</div>
+    </div>
+  `;
 
   if (latest && !latest.error) {
     const s = latest.summary || {};
@@ -1096,11 +1134,111 @@ function updateClock() {
   }
 }
 
-// --- SSE Connection ---
+// --- SSE Connection: Live Swarm Activity ---
+const liveEvents = [];  // Rolling buffer of recent events
+const MAX_LIVE_EVENTS = 30;
+
 function connectSSE() {
   const dot = $('#connection-dot');
-  if (dot) dot.classList.remove('disconnected');
-  sseConnected = true;
+  let retryDelay = 2000;
+
+  function connect() {
+    const es = new EventSource('/api/swarm/stream');
+
+    es.addEventListener('aar', (e) => {
+      try {
+        const data = JSON.parse(e.data);
+        liveEvents.unshift(data);
+        if (liveEvents.length > MAX_LIVE_EVENTS) liveEvents.pop();
+        renderLiveActivity();
+      } catch (err) { /* ignore parse errors */ }
+    });
+
+    es.addEventListener('routing', (e) => {
+      try {
+        const data = JSON.parse(e.data);
+        // Update routing indicator if visible
+        const routingEl = $('#live-routing-indicator');
+        if (routingEl) {
+          routingEl.textContent = `${data.model || 'unknown'} (${data._project || ''})`;
+        }
+      } catch (err) { /* ignore */ }
+    });
+
+    es.onopen = () => {
+      sseConnected = true;
+      retryDelay = 2000;
+      if (dot) {
+        dot.classList.remove('disconnected');
+        dot.title = 'SSE: connected';
+      }
+    };
+
+    es.onerror = () => {
+      sseConnected = false;
+      if (dot) {
+        dot.classList.add('disconnected');
+        dot.title = 'SSE: disconnected — retrying...';
+      }
+      es.close();
+      setTimeout(connect, retryDelay);
+      retryDelay = Math.min(retryDelay * 1.5, 30000);
+    };
+  }
+
+  // Also load recent events for initial display
+  fetchJson('/api/swarm/recent?limit=20').then(events => {
+    if (events && Array.isArray(events)) {
+      for (const e of events) liveEvents.push(e);
+      renderLiveActivity();
+    }
+  });
+
+  connect();
+}
+
+// --- Render Live Activity (in Pipeline panel) ---
+function renderLiveActivity() {
+  const panel = $('#live-activity');
+  if (!panel) return;
+
+  if (liveEvents.length === 0) {
+    panel.innerHTML = '<div style="font-size:11px; color:var(--text-muted); padding:6px;">Waiting for swarm activity...</div>';
+    return;
+  }
+
+  let html = '';
+  for (const ev of liveEvents.slice(0, 10)) {
+    const score = ev.outcomeScore || 0;
+    const scoreColor = score >= 75 ? 'var(--accent-green)' : score >= 50 ? 'var(--accent-amber)' : 'var(--accent-red)';
+    const projectDot = ev._project === 'invoica' ? 'invoica' : 'kognai';
+    const time = ev.timestamp ? new Date(ev.timestamp).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) : '';
+    const agent = ev.agentId || ev.agent_id || '?';
+    const summary = (ev.actionSummary || ev.action_summary || ev.taskId || '').substring(0, 50);
+    const status = ev.status || '';
+    const statusBadge = status === 'APPROVED'
+      ? '<span class="mini-badge green">OK</span>'
+      : status === 'REJECTED'
+        ? '<span class="mini-badge red">REJ</span>'
+        : '<span class="mini-badge blue">RUN</span>';
+
+    html += `
+      <div class="live-event-row">
+        <span class="project-dot-inline ${projectDot}"></span>
+        <span class="mono" style="font-size:10px; color:var(--text-muted); min-width:52px;">${time}</span>
+        ${statusBadge}
+        <span style="font-size:11px; font-weight:600; color:var(--text-primary); min-width:60px;">${escHtml(agent)}</span>
+        <span style="font-size:10px; color:var(--text-secondary); flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${escHtml(summary)}</span>
+        <span style="font-size:11px; font-weight:700; color:${scoreColor};">${score > 0 ? score : ''}</span>
+      </div>
+    `;
+  }
+
+  if (liveEvents.length > 10) {
+    html += `<div style="font-size:10px; color:var(--text-muted); padding:2px 0;">+${liveEvents.length - 10} more events</div>`;
+  }
+
+  panel.innerHTML = html;
 }
 
 // --- Toggle Task Checkbox ---
@@ -1205,12 +1343,67 @@ async function renderReadiness() {
   }
 }
 
+// --- Panel 15: Publish History ---
+async function renderPublishHistory() {
+  const panel = $('#publish-history-body');
+  if (!panel) return;
+  try {
+    const [stats, history] = await Promise.all([
+      fetch('/api/publish/stats').then(r => r.json()),
+      fetch('/api/publish/history').then(r => r.json()),
+    ]);
+
+    let html = '';
+
+    // Stats header
+    const latestAt = stats.latest_published_at
+      ? new Date(stats.latest_published_at).toLocaleString()
+      : '—';
+    html += `<div class="stats-row" style="margin-bottom:12px;">
+      <div class="stat-box"><div class="stat-value">${stats.total_published ?? 0}</div><div class="stat-label">Videos Published</div></div>
+      <div class="stat-box"><div class="stat-value">${stats.runs_count ?? 0}</div><div class="stat-label">Pipeline Runs</div></div>
+    </div>`;
+    html += `<div style="font-size:11px; color:var(--text-muted); margin-bottom:10px;">Latest run: ${escHtml(latestAt)}</div>`;
+
+    // Table
+    if (!Array.isArray(history) || history.length === 0) {
+      html += `<div class="empty-state" style="color:var(--text-muted);">No published videos yet.</div>`;
+    } else {
+      html += `<div style="max-height:380px; overflow-y:auto;">
+        <table style="width:100%; border-collapse:collapse; font-size:12px;">
+          <thead>
+            <tr style="border-bottom:1px solid var(--border); color:var(--text-muted); text-transform:uppercase; font-size:10px;">
+              <th style="text-align:left; padding:4px 6px;">Video ID</th>
+              <th style="text-align:left; padding:4px 6px;">Published At</th>
+              <th style="text-align:left; padding:4px 6px;">Run ID</th>
+            </tr>
+          </thead>
+          <tbody>`;
+      for (const v of history) {
+        const publishedAt = v.published_at ? new Date(v.published_at).toLocaleString() : '—';
+        const runShort = v.run_id ? escHtml(v.run_id.replace('scs001-', '')) : '—';
+        html += `<tr style="border-bottom:1px solid var(--border);">
+          <td class="mono" style="padding:4px 6px; color:var(--text);">${escHtml(v.video_id ?? v.clip_id ?? '—')}</td>
+          <td style="padding:4px 6px; color:var(--text-muted);">${escHtml(publishedAt)}</td>
+          <td class="mono" style="padding:4px 6px; color:var(--text-muted); font-size:10px;">${runShort}</td>
+        </tr>`;
+      }
+      html += `</tbody></table></div>`;
+    }
+
+    panel.innerHTML = html;
+  } catch (e) {
+    const p = $('#publish-history-body');
+    if (p) p.innerHTML = `<div class="empty-state" style="color:var(--text-muted);">Publish history unavailable: ${escHtml(e.message)}</div>`;
+  }
+}
+
 // --- All render functions ---
 const ALL_RENDERERS = [
   renderProgress, renderTodo, renderOverview, renderSCS001,
   renderCosts, renderRouting, renderAmendments, renderChain,
   renderSecurity, renderAssets, renderLogs, renderPipeline, renderRevenue,
-  renderReadiness,
+  renderReadiness, renderPublishHistory,
 ];
 
 // --- Manual Refresh ---
