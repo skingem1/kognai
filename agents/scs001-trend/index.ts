@@ -59,8 +59,26 @@ export class TrendAgent {
     this.mode = mode ?? (process.env.SCS_MODE === 'live' ? 'live' : 'mock');
   }
 
-  async run(seq = 1): Promise<TrendingTopicBatch> {
+  async run(seq = 1, priority_topics: string[] = []): Promise<TrendingTopicBatch> {
     const feed = await this.loadFeed();
+
+    // Apply viral-topic confidence boost (+15, capped at 99) before gating
+    const BOOST = 15;
+    let boostedCount = 0;
+    if (priority_topics.length > 0) {
+      const priorityLower = priority_topics.map(t => t.toLowerCase());
+      for (const s of feed.signals) {
+        const topicLower = s.topic.toLowerCase();
+        if (priorityLower.some(p => topicLower.includes(p) || p.includes(topicLower))) {
+          s.confidence = Math.min(99, s.confidence + BOOST);
+          boostedCount++;
+        }
+      }
+      if (boostedCount > 0) {
+        console.log(`[TrendAgent] Boosted ${boostedCount} viral topic(s) by +${BOOST} confidence`);
+      }
+    }
+
     const qualified = feed.signals
       .filter(s => s.scs_relevant === true && s.confidence >= CONFIDENCE_GATE)
       .sort((a, b) => b.confidence - a.confidence);

@@ -20,6 +20,8 @@ import { ScriptValidator } from '../scs001-script-validator/index';
 import { ExperimentTracker, ExperimentEntry } from '../scs001-experiment/index';
 import { withRetry, withFallback } from './retry';
 import { DedupLedger, LedgerEntry } from './dedup-ledger';
+import { existsSync, readFileSync, writeFileSync } from 'fs';
+import { resolve } from 'path';
 
 export interface StageResult {
   stage:    string;
@@ -96,10 +98,23 @@ export class SCS001Orchestrator {
     console.log('[Orchestrator] Starting SCS-001 pipeline (' + this.mode + ' mode)');
     console.log('');
 
+    // Load viral topics from previous run for TrendAgent boost
+    const VIRAL_TOPICS_PATH = resolve('workspace/scs001/viral-topics.json');
+    let priorityTopics: string[] = [];
+    if (existsSync(VIRAL_TOPICS_PATH)) {
+      try {
+        const vt = JSON.parse(readFileSync(VIRAL_TOPICS_PATH, 'utf8'));
+        priorityTopics = Array.isArray(vt.topics) ? vt.topics : [];
+        if (priorityTopics.length > 0) {
+          console.log('[Orchestrator] Loaded ' + priorityTopics.length + ' viral priority topics from previous run');
+        }
+      } catch { /* non-fatal */ }
+    }
+
     // --- Stage 1: Trend Agent ---
     stages.push(await this.runStage('1-trend', 'TrendAgent', async () => {
       const agent = new TrendAgent(undefined, this.mode);
-      trendBatch = await agent.run();
+      trendBatch = await agent.run(1, priorityTopics);
       return trendBatch.topics.length;
     }));
 
@@ -266,9 +281,25 @@ export class SCS001Orchestrator {
       }));
     }
 
-    // --- Stage 11: Content Flywheel (viral signals only) ---
-    const viralSignals = signals.filter(s => s.flywheel_triggered);
+    // --- Write viral topics for next run's TrendAgent boost ---
+    const viralSignals = signals.filter(s => s.viral_status === 'viral');
     if (viralSignals.length > 0) {
+      try {
+        const viralTopics = [...new Set(
+          viralSignals.flatMap(s => (s as any).topic_tags ?? [s.video_id])
+        )].slice(0, 10);
+        writeFileSync(VIRAL_TOPICS_PATH, JSON.stringify({
+          topics: viralTopics,
+          updated_at: new Date().toISOString(),
+          run_id: runId,
+        }, null, 2));
+        console.log('[Orchestrator] Saved ' + viralTopics.length + ' viral topics → viral-topics.json');
+      } catch { /* non-fatal */ }
+    }
+
+    // --- Stage 11: Content Flywheel (flywheel-triggered signals only) ---
+    const flywheelSignals = signals.filter(s => s.flywheel_triggered);
+    if (flywheelSignals.length > 0) {
       stages.push(await this.runStage('11-flywheel', 'ContentFlywheelAgent', async () => {
         const agent = new ContentFlywheelAgent();
         flywheelOutputs = agent.run(signals);

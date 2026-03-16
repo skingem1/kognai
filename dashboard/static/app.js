@@ -1315,6 +1315,28 @@ async function renderReadiness() {
       <div class="stat-box"><div class="stat-value">${ks.current_qc_pass ?? 0}%/${ks.qc_pass_target ?? 80}%</div><div class="stat-label">QC Pass</div></div>
     </div>`;
 
+    // Phase 1.5 projection
+    const proj = r.phase_1_5_projection ?? {};
+    if (proj.posts_so_far !== undefined) {
+      const gateDate = new Date('2026-04-07');
+      const projDate = proj.projected_date ? new Date(proj.projected_date) : null;
+      const onTrack = projDate && projDate <= gateDate;
+      const tight = projDate && (projDate - gateDate) <= 3 * 86400000;
+      const projColor = proj.days_to_target === 0 ? 'var(--accent-green)'
+        : onTrack ? 'var(--accent-green)'
+        : tight ? 'var(--accent-amber, #e0a03a)'
+        : 'var(--accent-red, #e05a5a)';
+      html += `<div style="font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin:12px 0 6px;">Phase 1.5 Projection (30-post gate: Apr 7)</div>`;
+      html += `<div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+        <span style="font-size:13px; font-weight:700; color:${projColor};">${proj.posts_so_far ?? 0}/${proj.posts_target ?? 30} posts</span>
+        <span style="font-size:12px; color:var(--text-muted);">avg ${proj.avg_posts_per_day ?? 0}/day</span>
+        ${proj.days_to_target !== null && proj.days_to_target !== undefined
+          ? `<span style="font-size:12px; color:${projColor};">${proj.days_to_target === 0 ? '✓ Target reached' : proj.days_to_target + ' days to target'}</span>`
+          : '<span style="font-size:12px; color:var(--text-muted);">No live data yet</span>'}
+        ${proj.projected_date ? `<span class="mini-badge" style="background:${projColor}20; color:${projColor}; border:1px solid ${projColor}40;">~${escHtml(proj.projected_date)}</span>` : ''}
+      </div>`;
+    }
+
     // Pipeline status
     const activeBadge = ps?.pipeline_active
       ? '<span class="mini-badge green">ACTIVE</span>'

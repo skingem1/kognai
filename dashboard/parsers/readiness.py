@@ -1,9 +1,14 @@
 """Go-live readiness checker — env vars, pipeline health, kill switch proximity."""
 import json, os, glob
 from pathlib import Path
+from datetime import datetime, timezone
 
 KOGNAI_ROOT = Path.home() / "kognai"
 REPORTS_DIR = KOGNAI_ROOT / "reports" / "pipeline-runs"
+
+LEDGER_PATH = KOGNAI_ROOT / "workspace" / "scs001" / "publish-ledger.jsonl"
+PHASE_1_5_GATE_DATE = "2026-04-07"
+POSTS_TARGET = 30
 
 REQUIRED_ENV_VARS = [
     "TIKTOK_ACCESS_TOKEN",
@@ -76,6 +81,9 @@ def get_readiness() -> dict:
         + (20 if latest_run_ok else 0)
     ))
 
+    # Phase 1.5 projection (based on publish ledger)
+    phase_1_5_projection = _get_phase_1_5_projection()
+
     return {
         "env_status": env_status,
         "env_ready_count": env_ready_count,
@@ -85,4 +93,76 @@ def get_readiness() -> dict:
         "kill_switch_proximity": kill_switch_proximity,
         "blockers": blockers,
         "readiness_pct": readiness_pct,
+        "phase_1_5_projection": phase_1_5_projection,
+    }
+
+
+def _get_phase_1_5_projection() -> dict:
+    """Calculate days-to-30-posts projection for Phase 1.5 kill switch."""
+    if not LEDGER_PATH.exists():
+        return {
+            "posts_so_far": 0,
+            "posts_target": POSTS_TARGET,
+            "avg_posts_per_day": 0,
+            "days_to_target": None,
+            "projected_date": None,
+            "gate_date": PHASE_1_5_GATE_DATE,
+        }
+    entries = []
+    with open(LEDGER_PATH) as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                entries.append(json.loads(line))
+            except Exception:
+                pass
+
+    posts_so_far = len(entries)
+    if posts_so_far == 0:
+        return {
+            "posts_so_far": 0,
+            "posts_target": POSTS_TARGET,
+            "avg_posts_per_day": 0,
+            "days_to_target": None,
+            "projected_date": None,
+            "gate_date": PHASE_1_5_GATE_DATE,
+        }
+
+    # Calculate avg posts per day from ledger date range
+    timestamps = sorted(e.get("published_at", "") for e in entries if e.get("published_at"))
+    avg_posts_per_day = 0.0
+    days_to_target = None
+    projected_date = None
+    if len(timestamps) >= 2:
+        try:
+            first = datetime.fromisoformat(timestamps[0].replace("Z", "+00:00"))
+            last = datetime.fromisoformat(timestamps[-1].replace("Z", "+00:00"))
+            span_days = max((last - first).total_seconds() / 86400, 0.001)
+            avg_posts_per_day = round(posts_so_far / span_days, 1)
+        except Exception:
+            avg_posts_per_day = posts_so_far  # assume 1 day if can't parse
+
+    remaining = max(0, POSTS_TARGET - posts_so_far)
+    if avg_posts_per_day > 0 and remaining > 0:
+        days_to_target = round(remaining / avg_posts_per_day, 1)
+        try:
+            now = datetime.now(timezone.utc)
+            from datetime import timedelta
+            projected_dt = now + timedelta(days=days_to_target)
+            projected_date = projected_dt.strftime("%Y-%m-%d")
+        except Exception:
+            pass
+    elif remaining == 0:
+        days_to_target = 0
+        projected_date = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+
+    return {
+        "posts_so_far": posts_so_far,
+        "posts_target": POSTS_TARGET,
+        "avg_posts_per_day": avg_posts_per_day,
+        "days_to_target": days_to_target,
+        "projected_date": projected_date,
+        "gate_date": PHASE_1_5_GATE_DATE,
     }

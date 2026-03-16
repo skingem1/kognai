@@ -1,0 +1,35 @@
+{
+  "sprint": "110",
+  "name": "Analytics feedback loop + Phase 1.5 projection",
+  "goal": "Close the viral-topic feedback loop so the pipeline auto-prioritizes winning topics, and add Phase 1.5 kill-switch projection to the readiness panel",
+  "tasks": [
+    {
+      "id": "110-01",
+      "title": "TrendAgent accepts priority_topics boost parameter",
+      "description": "Add optional priority_topics param to TrendAgent.run(). Boost matching topics by +15 confidence (capped at 99). Log boost count.",
+      "task_target": "agents/scs001-trend/index.ts",
+      "acceptance_criteria": "Matching topics boosted. No regression. Console logs boost count."
+    },
+    {
+      "id": "110-02",
+      "title": "Orchestrator wires viral topics feedback loop",
+      "description": "After Stage 10 analytics, write viral topic_tags to workspace/scs001/viral-topics.json. Before Stage 1 trend, read that file if it exists and pass as priority_topics to TrendAgent.run().",
+      "task_target": "agents/scs001-orchestrator/index.ts",
+      "acceptance_criteria": "viral-topics.json written after run with viral signals. Next run reads and passes to TrendAgent. Smoke test passes."
+    },
+    {
+      "id": "110-03",
+      "title": "Phase 1.5 projection in readiness.py",
+      "description": "Read publish-ledger.jsonl, count posts, calculate avg/day, project days to 30-post target. Add phase_1_5_projection to get_readiness() response.",
+      "task_target": "dashboard/parsers/readiness.py",
+      "acceptance_criteria": "phase_1_5_projection object in /api/readiness response. Safe defaults when no ledger."
+    },
+    {
+      "id": "110-04",
+      "title": "Dashboard Panel 14 — Phase 1.5 projection display",
+      "description": "In renderReadiness() in app.js, add Phase 1.5 Projection row: posts X/30, avg/day, projected date. Color-code green/amber/red vs Apr 7 gate.",
+      "task_target": "dashboard/static/app.js",
+      "acceptance_criteria": "Projection row visible in Panel 14. Colors correct. No JS errors."
+    }
+  ]
+}
