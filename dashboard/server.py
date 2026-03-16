@@ -31,6 +31,10 @@ from parsers.invoica import (
     get_invoica_sprint_by_id, list_invoica_agents,
     get_invoica_stats, INVOICA_SPRINTS, INVOICA_AGENTS,
 )
+from parsers.chain import get_chain_data
+from parsers.project_overview import get_project_overview
+from parsers.assets import get_all_assets
+from parsers.daily_plans import get_today_plans
 
 
 class ToggleRequest(BaseModel):
@@ -49,7 +53,7 @@ SHARED_INFRA = DOCS_DIR / "shared-infra.md"
 STATIC_DIR = Path(__file__).parent / "static"
 
 START_TIME = time.time()
-VERSION = "2.0.0"
+VERSION = "3.0.0"
 
 # --- App ---
 app = FastAPI(title="Vault Dashboard", version=VERSION)
@@ -169,13 +173,11 @@ async def defer_brief_task(req: ToggleRequest):
 # --- Gates & Phases ---
 @app.get("/api/gates")
 async def gates():
-    doc = KOGNAI_ROOT / "docs" / "gates.md"
-    if not doc.exists():
-        return {"error": "No gates doc found", "gates": [], "phases": []}
-    content = doc.read_text()
+    gate_doc = KOGNAI_ROOT / "docs" / "gate-tracker.md"
+    phase_doc = KOGNAI_ROOT / "docs" / "strategic-context.md"
     return {
-        "gates": parse_gates(content),
-        "phases": parse_phases(content),
+        "gates": parse_gates(gate_doc),
+        "phases": parse_phases(phase_doc),
     }
 
 
@@ -306,6 +308,30 @@ async def constants():
         "INVOICA_SPRINTS": INVOICA_SPRINTS,
         "INVOICA_AGENTS": INVOICA_AGENTS,
     }
+
+
+# --- On-Chain Data ---
+@app.get("/api/chain")
+async def chain():
+    return get_chain_data()
+
+
+# --- Project Overview ---
+@app.get("/api/overview")
+async def overview():
+    return get_project_overview()
+
+
+# --- Assets (Skills + Code) ---
+@app.get("/api/assets")
+async def assets():
+    return get_all_assets()
+
+
+# --- Daily Plans (both projects) ---
+@app.get("/api/daily-plans")
+async def daily_plans():
+    return get_today_plans()
 
 
 # --- Debug: ping all services ---

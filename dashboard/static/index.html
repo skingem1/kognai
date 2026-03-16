@@ -23,7 +23,7 @@
       </div>
     </div>
     <div class="header-right">
-      <button id="refresh-btn" class="refresh-btn" onclick="refreshAll()" title="Refresh all panels">↻</button>
+      <button id="refresh-btn" class="refresh-btn" onclick="refreshAll()" title="Refresh all panels">&#8635;</button>
       <span id="clock">--:--:--</span>
       <div class="connection-dot" id="connection-dot" title="SSE connection status"></div>
     </div>
@@ -35,47 +35,57 @@
     <!-- Panel 1: Progress (dual project) -->
     <div class="card">
       <div class="card-header">
-        <span class="card-title">📊 Progress</span>
+        <span class="card-title">Progress</span>
       </div>
       <div class="card-body" id="progress-body">
-        <div class="empty-state"><div class="icon">⏳</div>Loading...</div>
+        <div class="empty-state"><div class="icon">&#8987;</div>Loading...</div>
       </div>
     </div>
 
     <!-- Panel 2: Today's Tasks -->
     <div class="card">
       <div class="card-header">
-        <span class="card-title">✅ Today's Tasks</span>
+        <span class="card-title">Today's Tasks</span>
       </div>
       <div class="card-body" id="todo-body">
-        <div class="empty-state"><div class="icon">⏳</div>Loading...</div>
+        <div class="empty-state"><div class="icon">&#8987;</div>Loading...</div>
       </div>
     </div>
 
-    <!-- Panel 3: Costs -->
+    <!-- Panel 3: Project Overview -->
     <div class="card">
       <div class="card-header">
-        <span class="card-title">💰 Costs</span>
+        <span class="card-title">Project Overview</span>
+      </div>
+      <div class="card-body" id="overview-body">
+        <div class="empty-state"><div class="icon">&#8987;</div>Loading...</div>
+      </div>
+    </div>
+
+    <!-- Panel 4: SCS-001 Build Track -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">SCS-001 Build Track</span>
+      </div>
+      <div class="card-body" id="scs001-body">
+        <div class="empty-state"><div class="icon">&#8987;</div>Loading...</div>
+      </div>
+    </div>
+
+    <!-- Panel 5: Costs -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Costs</span>
       </div>
       <div class="card-body" id="costs-body">
-        <div class="empty-state"><div class="icon">⏳</div>Loading...</div>
+        <div class="empty-state"><div class="icon">&#8987;</div>Loading...</div>
       </div>
     </div>
 
-    <!-- Panel 4: Logs & Agents (dual project) -->
-    <div class="card">
-      <div class="card-header">
-        <span class="card-title">📋 Logs & Agents</span>
-      </div>
-      <div class="card-body" id="logs-body">
-        <div class="empty-state"><div class="icon">⏳</div>Loading...</div>
-      </div>
-    </div>
-
-    <!-- Panel 5: Model Routing -->
+    <!-- Panel 6: Model Routing -->
     <div class="card" id="routing-stats-card">
       <div class="card-header">
-        <span class="card-title">🤖 Model Routing</span>
+        <span class="card-title">Model Routing</span>
       </div>
       <div class="card-body">
         <table id="model-table" class="routing-table">
@@ -91,6 +101,66 @@
         </table>
         <ul id="recent-list" class="recent-list">
         </ul>
+      </div>
+    </div>
+
+    <!-- Panel 7: Amendments -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Amendments (AMD)</span>
+      </div>
+      <div class="card-body" id="amendments-body">
+        <div class="empty-state"><div class="icon">&#8987;</div>Loading...</div>
+      </div>
+    </div>
+
+    <!-- Panel 8: On-Chain -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">On-Chain Governance</span>
+      </div>
+      <div class="card-body" id="chain-body">
+        <div class="empty-state"><div class="icon">&#8987;</div>Loading...</div>
+      </div>
+    </div>
+
+    <!-- Panel 9: Security -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Security Layers</span>
+      </div>
+      <div class="card-body" id="security-body">
+        <div class="empty-state"><div class="icon">&#8987;</div>Loading...</div>
+      </div>
+    </div>
+
+    <!-- Panel 10: Assets -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Skill Bank & Assets</span>
+      </div>
+      <div class="card-body" id="assets-body">
+        <div class="empty-state"><div class="icon">&#8987;</div>Loading...</div>
+      </div>
+    </div>
+
+    <!-- Panel 11: Logs & Agents (dual project) -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Logs & Agents</span>
+      </div>
+      <div class="card-body" id="logs-body">
+        <div class="empty-state"><div class="icon">&#8987;</div>Loading...</div>
+      </div>
+    </div>
+
+    <!-- Panel 12: Revenue & Blockers -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Revenue & Blockers</span>
+      </div>
+      <div class="card-body" id="revenue-body">
+        <div class="empty-state"><div class="icon">&#8987;</div>Loading...</div>
       </div>
     </div>
 

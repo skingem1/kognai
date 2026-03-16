@@ -11,3 +11,4 @@
 {"ts":"2026-03-16T10:18:05.022Z","agentId":"coder","taskId":"079-04","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
 {"ts":"2026-03-16T10:18:24.435Z","agentId":"coder","taskId":"079-04","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
 {"ts":"2026-03-16T10:18:24.435Z","agentId":"coder","taskId":"079-04","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-16T10:18:37.798Z","agentId":"coder","taskId":"079-04","transition":"ACTIVE→IDLE","from":"ACTIVE","to":"IDLE","depth":0}

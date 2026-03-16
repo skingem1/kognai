@@ -20,8 +20,9 @@ export interface InsightBrief {
   cloud_cost_usd:       number;
 }
 
-const CLAWROUTER_URL = process.env.CLAWROUTER_URL ?? 'http://localhost:11435';
-const CLAUDE_MODEL   = 'claude-sonnet-4-5-20251001';
+const ANTHROPIC_API_URL = 'https://api.anthropic.com/v1/messages';
+const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY ?? '';
+const CLAUDE_MODEL      = 'claude-sonnet-4-5-20251001';
 
 // Mock qualified clips for Block B testing (quality_score >= 20, qualified === true)
 export function getMockQualifiedClips(): ClipQualityScore[] {
@@ -111,28 +112,33 @@ export class InsightAgent {
   private async generateBrief(clip: ClipQualityScore): Promise<InsightBrief> {
     const prompt = buildPrompt(clip);
 
-    const res = await fetch(CLAWROUTER_URL + '/v1/chat/completions', {
+    if (!ANTHROPIC_API_KEY) throw new Error('ANTHROPIC_API_KEY not set');
+
+    const res = await fetch(ANTHROPIC_API_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type':     'application/json',
+        'x-api-key':        ANTHROPIC_API_KEY,
+        'anthropic-version':'2023-06-01',
+      },
       body: JSON.stringify({
-        model:       CLAUDE_MODEL,
-        messages:    [{ role: 'user', content: prompt }],
-        max_tokens:  512,
-        temperature: 0.7,
+        model:      CLAUDE_MODEL,
+        messages:   [{ role: 'user', content: prompt }],
+        max_tokens: 512,
       }),
     });
 
     if (!res.ok) {
-      throw new Error('ClawRouter ' + res.status + ': ' + (await res.text()).substring(0, 80));
+      throw new Error('Anthropic API ' + res.status + ': ' + (await res.text()).substring(0, 80));
     }
 
     const json = await res.json() as {
-      choices: Array<{ message: { content: string } }>;
-      usage?:  { total_tokens?: number };
+      content: Array<{ type: string; text: string }>;
+      usage?:  { input_tokens?: number; output_tokens?: number };
     };
 
-    const content = json.choices?.[0]?.message?.content ?? '';
-    const tokens  = json.usage?.total_tokens ?? 0;
+    const content = json.content?.find(b => b.type === 'text')?.text ?? '';
+    const tokens  = (json.usage?.input_tokens ?? 0) + (json.usage?.output_tokens ?? 0);
     // Claude Sonnet blended cost estimate (~$9 per 1M tokens)
     const costUsd = (tokens / 1_000_000) * 9;
 

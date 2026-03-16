@@ -138,5 +138,78 @@
         "rejection_reason": "Dual-rejected: Claude (18/100) + Codex (15/100). File is critically truncated mid-string — the buildPrompt() function is cut off before completion, and all downstream logic (JSON extraction, main agent loop, exports) is entirely absent. | File is truncated mid-function. The buildPrompt() function ends abruptly mid-string, and the entire insight generation logic, ClawRouter integration, and JSON extraction are missing. This is an incomplete deliverable."
       }
     ]
+  },
+  {
+    "run_id": "283fedb5-efd7-4c11-81e8-d629ad4cdd6a",
+    "project": "kognai",
+    "sprint_file": "workspace/sprints/sprint-079.json",
+    "started_at": "2026-03-16T10:18:24.409Z",
+    "finished_at": "2026-03-16T10:18:37.849Z",
+    "duration_seconds": 13,
+    "git_branch": "main",
+    "git_head_before": "1eda7c5",
+    "git_head_after": "1eda7c5",
+    "sovereign_mode": false,
+    "summary": {
+      "total_tasks": 4,
+      "done": 4,
+      "rejected": 0,
+      "skipped": 0,
+      "approval_rate": 1,
+      "total_tokens": 3710,
+      "supervisor_conflicts": 0,
+      "ceo_escalations": 0
+    },
+    "models_used": {
+      "qwen3:14b": {
+        "calls": 1,
+        "tokens": 0
+      }
+    },
+    "total_cost_usd": 0,
+    "tasks": [
+      {
+        "task_id": "079-04",
+        "title": "SCS-001 Insight Agent — validate-insight-output.ts (Block B integration test)",
+        "type": "feature",
+        "task_target": "local",
+        "status": "done",
+        "attempts": 1,
+        "model_used": "qwen3:14b",
+        "provider": "",
+        "tokens_total": 0,
+        "duration_seconds": 13,
+        "files_written": [
+          "scripts/scs001/validate-insight-output.ts"
+        ],
+        "review": {
+          "verdict": "APPROVED",
+          "score": 92,
+          "strengths": [
+            "No fence contamination — file is clean TypeScript.",
+            "Correctly implements the full validation pipeline: getMockQualifiedClips() → InsightAgent.run() → InsightBrief[] checks.",
+            "All spec-required field validations are present: hook.text ≤80 chars, hook.formula enum check, pre/post_clip_commentary ≤200 chars, why_does_this_matter substantive check, clip_id back-link.",
+            "Block B gate (≥90% why_does_this_matter pass rate) is correctly computed and asserted.",
+            "Process exit code handling is correct — uses process.exitCode accumulation pattern rather than early exit, so all checks run and all failures are reported.",
+            "Cloud cost aggregation and reporting is a useful operational addition.",
+            "Shebang line and async main() pattern are appropriate for ts-node execution.",
+            "Error boundary on main() with process.exit(1) prevents silent failures.",
+            "No fence contamination — file is valid executable TypeScript",
+            "Spec compliance: all required checks present (hook.text ≤80, hook.formula enum, pre/post_clip_commentary ≤200, why_does_this_matter substantive, clip_id back-links)",
+            "Block B gate correctly implemented: tracks whyPassCount and enforces ≥90% threshold",
+            "Proper async/await for agent.run()",
+            "Clear assertion function with pass/fail logging",
+            "Validates input mock clips (qualified === true, quality_score >= 20)",
+            "Tracks clipIds set for back-link validation",
+            "Comprehensive field validation (insight_id prefix, speaker_name, cloud_cost_usd, hook_formula_used)",
+            "Outputs total cloud cost and clear pass/fail summary",
+            "Proper exit codes (0 = pass, 1 = fail)",
+            "No hardcoded values that should be configurable — VALID_FORMULAS and GENERIC_PHRASES are constants at top"
+          ]
+        },
+        "error": null,
+        "rejection_reason": null
+      }
+    ]
   }
 ]

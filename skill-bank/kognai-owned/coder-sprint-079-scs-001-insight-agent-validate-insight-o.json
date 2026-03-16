@@ -1,0 +1,37 @@
+{
+  "skill_id": "coder-sprint-079-scs-001-insight-agent-validate-insight-o",
+  "type": "kognai-owned",
+  "name": "SCS-001 Insight Agent — validate-insight-output.ts (Block B ",
+  "description": "SCS-001 Insight Agent — validate-insight-output.ts (Block B integration test)",
+  "definition": {
+    "approach": "SCS-001 Insight Agent — validate-insight-output.ts (Block B integration test)",
+    "key_patterns": [
+      "No fence contamination — file is clean TypeScript.",
+      "Correctly implements the full validation pipeline: getMockQualifiedClips() → InsightAgent.run() → InsightBrief[] checks.",
+      "All spec-required field validations are present: hook.text ≤80 chars, hook.formula enum check, pre/post_clip_commentary ≤200 chars, why_does_this_matter substantive check, clip_id back-link.",
+      "Block B gate (≥90% why_does_this_matter pass rate) is correctly computed and asserted.",
+      "Process exit code handling is correct — uses process.exitCode accumulation pattern rather than early exit, so all checks run and all failures are reported."
+    ],
+    "anti_patterns": []
+  },
+  "optimal_settings": {
+    "model": "qwen3:14b",
+    "task_target": "local",
+    "max_attempts": 3
+  },
+  "score_history": [
+    {
+      "sprint_id": "sprint-079",
+      "task_id": "079-04",
+      "score": 92,
+      "reviewed_at": "2026-03-16T10:18:37.797Z"
+    }
+  ],
+  "execution_count": 1,
+  "access_tier": "internal",
+  "source_sprint": "sprint-079",
+  "source_task": "079-04",
+  "agent_id": "coder",
+  "created_at": "2026-03-16T10:18:37.797Z",
+  "updated_at": "2026-03-16T10:18:37.797Z"
+}
