@@ -533,3 +533,18 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
 - Sprint 128: achiri-memory T3 #6/6 (semantic memory search + context injection) — PASS
 - T3 GATE APR 14: ALL 6 SKILLS COMPLETE
 - Next sprint (129): Achiri Hetzner deployment — public URL before Apr 25 alpha
+
+## Sprint 129 — Achiri Hetzner Deployment Package (Phase 2A — public URL)
+- Status: PASS
+- Commit: 4c85bba
+- Files created: infra/nginx-achiri.conf, infra/ecosystem-hetzner-achiri.config.js, scripts/deploy-achiri.sh, scripts/achiri/validate-deploy-package.ts, workspace/sprints/sprint-129.json
+- Test: scripts/achiri/validate-deploy-package.ts — 12/12 PASS
+- Key results: nginx proxy /achiri/* → localhost:3420, PM2 config with Tailscale OLLAMA_URL, rsync deploy script --dry-run validated. Operator runs ./scripts/deploy-achiri.sh to activate.
+- Next: operator must run deploy script + add ANTHROPIC_API_KEY on Hetzner server.
+- Swarm used: no (direct write)
+- Timestamp: 2026-03-16T19:00:00Z
+
+## SESSION SUMMARY — Sprints 126-129
+- T3 Skills COMPLETE: paymee(126), voice(127), memory(128) — 6/6 done
+- Hetzner deploy package: sprint 129 — artifacts ready, awaiting operator deploy
+- Context approaching limit — handoff written below
