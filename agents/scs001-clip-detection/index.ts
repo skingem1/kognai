@@ -76,13 +76,16 @@ Respond ONLY with a JSON object, no explanation:
         model: MODEL,
         prompt,
         stream: false,
-        options: { num_predict: 80, temperature: 0.2, think: false },
+        think: false,                              // top-level for qwen3 extended thinking control
+        options: { num_predict: 80, temperature: 0.2 },
       }),
     });
     if (!res.ok) throw new Error(`Ollama ${res.status}`);
     const json = await res.json() as { response: string };
-    const match = json.response.match(/\{[^{}]*\}/);
-    if (!match) throw new Error('No JSON in response');
+    // Strip <think>...</think> blocks — qwen3 may still emit them despite think:false
+    const rawResponse = json.response.replace(/<think>[\s\S]*?<\/think>/gi, '').trim();
+    const match = rawResponse.match(/\{[^{}]*\}/);
+    if (!match) throw new Error(`No JSON in response (got: ${rawResponse.substring(0, 120)})`);
     const parsed = JSON.parse(match[0]) as Partial<ScoreBreakdown>;
     return {
       curiosity:   Math.min(5, Math.max(0, parsed.curiosity   ?? 2)),
