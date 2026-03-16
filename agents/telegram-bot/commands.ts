@@ -105,6 +105,7 @@ export async function handleHelp(chatId: number): Promise<void> {
     '🤖 *Achiri AI Companion*',
     '/achiri <msg> — Chat with Achiri (free tier, Darija/Arabic/French)',
     '/waitlist — Join Achiri alpha waitlist (launches Apr 25)',
+    '/invite-achiri <id> — Invite user to Achiri alpha whitelist (owner)',
     '/achiri-health — Achiri server status (owner)',
     '',
     '/help — This message',
@@ -393,14 +394,31 @@ const ACHIRI_TIER_MAP: Record<string, string> = {
 
 // Alpha access: ACHIRI_ALPHA_ONLY=true enforces whitelist. Default=false (open).
 const ACHIRI_ALPHA_ONLY      = process.env.ACHIRI_ALPHA_ONLY === 'true';
-const ACHIRI_ALPHA_WHITELIST = new Set(
+// Env-var whitelist (static, read at startup)
+const ACHIRI_ALPHA_WHITELIST_ENV = new Set(
   (process.env.ACHIRI_ALPHA_WHITELIST ?? '').split(',').map(s => s.trim()).filter(Boolean)
 );
 const ACHIRI_OWNER_ID = process.env.OWNER_TELEGRAM_CHAT_ID ?? '';
 
+// File-based whitelist — checked at runtime so bot restart not required when inviting
+const ALPHA_WHITELIST_PATH = join(process.cwd(), 'workspace', 'achiri', 'alpha-whitelist.jsonl');
+
+function checkAlphaAccess(chatId: number): boolean {
+  // Env-var whitelist (loaded at startup)
+  if (ACHIRI_ALPHA_WHITELIST_ENV.has(String(chatId))) return true;
+  // File-based whitelist (read at runtime — survives bot restart)
+  if (!existsSync(ALPHA_WHITELIST_PATH)) return false;
+  try {
+    const lines = readFileSync(ALPHA_WHITELIST_PATH, 'utf-8').split('\n').filter(l => l.trim());
+    return lines.some(line => {
+      try { return JSON.parse(line).chatId === String(chatId); } catch { return false; }
+    });
+  } catch { return false; }
+}
+
 export async function handleAchiri(chatId: number, message: string): Promise<void> {
   // Alpha gate — owner always allowed; whitelist gates non-owners when ACHIRI_ALPHA_ONLY=true
-  if (ACHIRI_ALPHA_ONLY && String(chatId) !== ACHIRI_OWNER_ID && !ACHIRI_ALPHA_WHITELIST.has(String(chatId))) {
+  if (ACHIRI_ALPHA_ONLY && String(chatId) !== ACHIRI_OWNER_ID && !checkAlphaAccess(chatId)) {
     await sendMessage(chatId, 'Achiri Lite Alpha — invitation only. DM @kognai_bot to join the waitlist! 🙏');
     return;
   }
@@ -566,6 +584,52 @@ export async function handleAchiriHealth(chatId: number, ownerChatId: string): P
     const msg = err instanceof Error ? err.message : String(err);
     await sendMessage(chatId, `❌ Achiri API: DOWN (${latency}ms) — ${msg}`);
   }
+}
+
+// ── Achiri alpha invite — Sprint 146 ──────────────────────────────────────────
+// Owner-only: /invite-achiri <chat_id> — adds user to file-based alpha whitelist.
+// File: workspace/achiri/alpha-whitelist.jsonl (read at runtime by checkAlphaAccess).
+export async function handleInviteAchiri(chatId: number, ownerChatId: string, text: string): Promise<void> {
+  if (String(chatId) !== ownerChatId) {
+    await sendMessage(chatId, '🔒 Owner only.');
+    return;
+  }
+
+  const args = text.trim().split(/\s+/);
+  const targetId = args[1];
+
+  if (!targetId || !/^\d+$/.test(targetId)) {
+    await sendMessage(chatId, '⚠️ Usage: /invite-achiri <chat_id>\nExample: /invite-achiri 123456789');
+    return;
+  }
+
+  // Check already invited
+  let existing: string[] = [];
+  if (existsSync(ALPHA_WHITELIST_PATH)) {
+    try {
+      existing = readFileSync(ALPHA_WHITELIST_PATH, 'utf-8')
+        .split('\n').filter(l => l.trim())
+        .map(l => { try { return JSON.parse(l).chatId; } catch { return null; } })
+        .filter(Boolean) as string[];
+    } catch { /* ignore */ }
+  }
+
+  if (existing.includes(targetId) || ACHIRI_ALPHA_WHITELIST_ENV.has(targetId)) {
+    await sendMessage(chatId, `ℹ️ \`${targetId}\` is already in the Achiri alpha whitelist.`);
+    return;
+  }
+
+  const entry = { chatId: targetId, invitedAt: new Date().toISOString(), invitedBy: String(ownerChatId) };
+  const dir = dirname(ALPHA_WHITELIST_PATH);
+  if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
+  appendFileSync(ALPHA_WHITELIST_PATH, JSON.stringify(entry) + '\n', 'utf-8');
+
+  const totalInvited = existing.length + 1;
+  await sendMessage(chatId, [
+    `✅ Invited \`${targetId}\` to Achiri alpha.`,
+    `📋 File whitelist: ${totalInvited} user(s).`,
+    `_No bot restart needed — access is live immediately._`,
+  ].join('\n'));
 }
 
 // ── Post reminder — Sprint 140 ─────────────────────────────────────────────────

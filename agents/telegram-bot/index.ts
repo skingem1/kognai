@@ -21,7 +21,7 @@ import {
   handleStart, handleHelp, handlePreview,
   handleSchedule, handleStats, handleStatus, handleSubscribe, handleUnknown,
   handleAchiri, handleGate, handleWaitlist, handleAchiriHealth, handlePostReminder,
-  handleReview, handleRecord, handleUpdateViews,
+  handleReview, handleRecord, handleUpdateViews, handleInviteAchiri,
 } from './commands';
 
 // ── Config ────────────────────────────────────────────────────────────────────
@@ -102,8 +102,9 @@ async function dispatch(update: TelegramUpdate): Promise<void> {
     case '/post-reminder':   await handlePostReminder(chatId, OWNER_CHAT_ID);  break;
     case '/review':          await handleReview(chatId, OWNER_CHAT_ID);        break;
     case '/record':          await handleRecord(chatId, OWNER_CHAT_ID, text);        break;
-    case '/update-views':    await handleUpdateViews(chatId, OWNER_CHAT_ID, text);   break;
-    default:                 await handleUnknown(chatId, text);                      break;
+    case '/update-views':    await handleUpdateViews(chatId, OWNER_CHAT_ID, text);        break;
+    case '/invite-achiri':   await handleInviteAchiri(chatId, OWNER_CHAT_ID, text);     break;
+    default:                 await handleUnknown(chatId, text);                          break;
   }
 }
 

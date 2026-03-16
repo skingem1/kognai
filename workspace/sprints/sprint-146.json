@@ -1,0 +1,71 @@
+{
+  "sprint": "146",
+  "name": "/invite-achiri command + file-based runtime alpha whitelist",
+  "block": "Phase 2A — Achiri alpha launch prep",
+  "goal": "Three deliverables: (1) Replace static ACHIRI_ALPHA_WHITELIST env-var Set with checkAlphaAccess(chatId) that reads BOTH env var AND workspace/achiri/alpha-whitelist.jsonl at runtime — no bot restart needed when inviting users. (2) handleInviteAchiri() — owner-only /invite-achiri <chat_id> command: appends to alpha-whitelist.jsonl, returns confirmation. (3) Route /invite-achiri in index.ts + update handleHelp().",
+  "rationale": "Apr 25 Achiri alpha launch (40d away). Current ACHIRI_ALPHA_WHITELIST is an env var read at startup — adding users requires SSH + pm2 restart. File-based whitelist lets operator invite via Telegram without server access. Critical for smooth Apr 25 alpha onboarding where operator will be inviting waitlist users one-by-one.",
+  "swarm": "NOT USED — 2 file edits + 1 validation script. Direct write.",
+  "tasks": [
+    {
+      "id": "146-01",
+      "title": "commands.ts — checkAlphaAccess() + handleInviteAchiri()",
+      "description": "Add ALPHA_WHITELIST_PATH = join(process.cwd(), 'workspace', 'achiri', 'alpha-whitelist.jsonl'). Add checkAlphaAccess(chatId: number): boolean — reads ALPHA_WHITELIST_PATH lines at runtime, returns true if chatId is in file OR in ACHIRI_ALPHA_WHITELIST env set. Replace inline alpha check in handleAchiri() (line 403: ACHIRI_ALPHA_WHITELIST.has(String(chatId))) with checkAlphaAccess(chatId). Add handleInviteAchiri(chatId, ownerChatId, text): owner-only; parse '/invite-achiri <target_id>'; validate target_id is numeric; check already invited; append JSON line {chatId, invitedAt, invitedBy} to alpha-whitelist.jsonl; reply '✅ Invited <id> to Achiri alpha. Whitelist now has N users. Run /waitlist list to see waitlist.' Update handleHelp(): add '/invite-achiri <id> — Invite user to Achiri alpha whitelist (owner)' under Achiri section.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-146",
+      "deliverables": {
+        "code": ["agents/telegram-bot/commands.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "146-02",
+      "title": "index.ts — import handleInviteAchiri + route /invite-achiri",
+      "description": "Add handleInviteAchiri to import from ./commands. Add case '/invite-achiri': await handleInviteAchiri(chatId, OWNER_CHAT_ID, text); in dispatch switch after /update-views case.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-146",
+      "deliverables": {
+        "code": ["agents/telegram-bot/index.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "146-03",
+      "title": "scripts/scs001/validate-sprint-146.ts — validation script",
+      "description": "7 checks: (1) commands.ts defines/exports handleInviteAchiri; (2) commands.ts has ALPHA_WHITELIST_PATH or alpha-whitelist.jsonl path; (3) commands.ts has checkAlphaAccess function; (4) commands.ts calls checkAlphaAccess in handleAchiri (not static ACHIRI_ALPHA_WHITELIST.has); (5) handleHelp lists /invite-achiri; (6) index.ts imports handleInviteAchiri; (7) index.ts routes '/invite-achiri'. Exit 0 on all pass.",
+      "type": "create",
+      "task_type": "test",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-146",
+      "deliverables": {
+        "code": ["scripts/scs001/validate-sprint-146.ts"],
+        "tests": ["scripts/scs001/validate-sprint-146.ts"],
+        "docs": []
+      }
+    }
+  ],
+  "acceptance_criteria": [
+    "checkAlphaAccess(chatId) reads alpha-whitelist.jsonl at runtime (no restart needed)",
+    "handleAchiri() uses checkAlphaAccess() not static ACHIRI_ALPHA_WHITELIST.has()",
+    "/invite-achiri is owner-gated — non-owner gets '🔒 Owner only.'",
+    "/invite-achiri <id> appends to workspace/achiri/alpha-whitelist.jsonl",
+    "Non-numeric target_id returns usage error",
+    "handleHelp lists /invite-achiri under Achiri section",
+    "index.ts routes /invite-achiri to handleInviteAchiri()",
+    "validate-sprint-146.ts exits 0 (all 7 checks pass)"
+  ]
+}
