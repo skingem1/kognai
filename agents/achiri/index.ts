@@ -3,6 +3,7 @@
 // Loads config from kognai-agents/achiri/config.json
 // Tier-based model selection. Sprint 113: wired to Ollama (free) + Anthropic SDK (paid).
 // Sprint 122: daily message limit enforcement (messages_per_day from config).
+// Sprint 123: pre-flight safety filter (T3 skill: achiri-safety).
 
 // Sentinel prefix returned when user hits their daily limit.
 // Server detects this to return structured { error: 'limit_exceeded' } response.
@@ -11,6 +12,7 @@ export const ACHIRI_LIMIT_EXCEEDED = 'ACHIRI_LIMIT_EXCEEDED:';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { AchiriMemoryStore } from './memory-store';
+import { safetyCheck } from './safety-filter';
 
 const ANTHROPIC_API_URL = 'https://api.anthropic.com/v1/messages';
 
@@ -118,6 +120,14 @@ export class AchiriConversationHandler {
           return ACHIRI_LIMIT_EXCEEDED + ' ' + msg;
         }
       }
+    }
+
+    // --- Pre-flight safety check (Sprint 123 — T3 skill: achiri-safety) ---
+    const safety = safetyCheck(userMessage);
+    if (!safety.safe) {
+      console.log('[Achiri] safety_block category=' + safety.category + ' user=' + this.userId);
+      // Blocked messages don't count toward daily limit (zero LLM cost)
+      return safety.reply ?? 'Ma njemch n3awnek fi hatha el mawdou3.';
     }
 
     // Load history from memory store if enabled and no override provided

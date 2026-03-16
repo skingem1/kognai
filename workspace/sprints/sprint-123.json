@@ -1,0 +1,61 @@
+{
+  "sprint": "123",
+  "name": "achiri-safety skill — pre-flight content safety filter (T3 Skills)",
+  "block": "Phase 2A — T3 Skills Installation (Apr 14 gate)",
+  "goal": "Implement agents/achiri/safety-filter.ts — a pattern-based pre-flight safety check that rejects harmful messages before the LLM call. Wire into AchiriConversationHandler.chat(). This is the first of 6 T3 skills (achiri-safety). Required before public alpha launch per Summer Yu rule: safety must be in code, not chat-only.",
+  "rationale": "Achiri is a public-facing product. Before any alpha user can reach it (Apr 25), a safety layer must exist. Pattern-based filter is cost-free ($0.00 — no LLM call for rejected messages) and deterministic. Handles: self-harm, explicit violence, explicit sexual content, spam/abuse patterns.",
+  "swarm": "NOT USED — new file + surgical edit. Direct write is faster and safer for safety-critical code.",
+  "tasks": [
+    {
+      "id": "123-01",
+      "title": "agents/achiri/safety-filter.ts — pattern safety filter",
+      "description": "Export safetyCheck(message: string): SafetyResult. SafetyResult = { safe: boolean; category?: string; reply?: string }. Categories: self_harm, violence, explicit_sexual, spam_abuse. Patterns are regex arrays per category. If matched, return safe=false with a Darija-first refusal message. If safe, return { safe: true }. Add ACHIRI_SKIP_SAFETY=1 env var for tests. Register in T3 skills manifest.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-123",
+      "deliverables": {
+        "code": ["agents/achiri/safety-filter.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "123-02",
+      "title": "agents/achiri/index.ts — wire safety check before LLM call",
+      "description": "In chat(), after daily limit check and before LLM call: call safetyCheck(userMessage). If !safe, return reply (the Darija refusal). Log [Achiri] safety_block category=X userId=Y. Do NOT increment daily counter for blocked messages (they cost nothing). Bypass with ACHIRI_SKIP_SAFETY=1.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-123",
+      "deliverables": {
+        "code": ["agents/achiri/index.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "123-03",
+      "title": "scripts/achiri/validate-safety-filter.ts — 6-check validation",
+      "description": "Tests: (1) normal message passes, (2) self_harm pattern blocked, (3) violence pattern blocked, (4) explicit_sexual blocked, (5) spam_abuse blocked, (6) ACHIRI_SKIP_SAFETY=1 bypasses all blocks. Check that blocked messages return the Darija refusal and do NOT call LLM.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-123",
+      "deliverables": {
+        "code": ["scripts/achiri/validate-safety-filter.ts"],
+        "tests": ["scripts/achiri/validate-safety-filter.ts"],
+        "docs": []
+      }
+    }
+  ]
+}
