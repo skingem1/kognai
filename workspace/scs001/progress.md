@@ -925,3 +925,16 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
 - Changes: Added getViralTopics() to daily-digest.ts — reads viral-topics.json, returns top 3. buildDigest() now calls getViralTopics() and conditionally injects '🔥 Trending topics (post one of these today):' section before the Telegram tip. Operator now gets content inspiration automatically in 07:00 morning push.
 - Gate: ~22 days to Apr 7, 0/30 posts | Achiri alpha: Apr 25 (~40d)
 - Timestamp: 2026-03-16T22:30:00Z
+
+## Sprint 162 — Brief generator: OLLAMA_HOST fix + fallback (Phase 1 — ops infrastructure)
+- Status: PASS
+- Commit: 0428f03
+- Files created: scripts/scs001/validate-sprint-162.ts, workspace/sprints/sprint-162.json
+- Files modified: scripts/generate-sprint-brief.py
+- Test: scripts/scs001/validate-sprint-162.ts — 4/4 PASS
+- Pipeline: N/A (infra sprint)
+- Swarm used: no (direct write — 1 file edit + new validation script)
+- Changes: generate-sprint-brief.py now loads OLLAMA_HOST from .env using load_env_file() helper (not hardcoded localhost:11434). OLLAMA_URL built from env var. make_fallback_sections() added — reads last 50 lines of progress.md + last 3 sprint blocks + git log. When any call_qwen() returns [ERROR...], ollama_ok flag set False and fallback invoked for Current State + Sprint History sections. Next Sprint Recommendation section shows placeholder instructing Claude to increment sprint number.
+- Root cause fixed: OLLAMA_HOST env was SET pointing to Mac Mini vault via Tailscale, but script always called localhost. Every future session now gets a useful sprint brief.
+- Gate: ~22 days to Apr 7, 0/30 posts | Achiri alpha: Apr 25 (~40d)
+- Timestamp: 2026-03-16T23:00:00Z
