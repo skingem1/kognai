@@ -10,9 +10,9 @@
 - Production mode: set `SCS_EDITING_MODE=production` + `TIKTOK_ACCESS_TOKEN` in .env
 
 ## Kognai State
-- Last commit: 01b70df (Sprint 099 shipped 2026-03-16)
+- Last commit: c00120e (Sprint 100 shipped 2026-03-16)
 - Sprint numbering: Invoica legacy 001-062e → Kognai starts 063+
-- Current sprint: 100 (next)
+- Current sprint: 101 (next)
 - Gate reports: workspace/gates/phase0-phase1-gate.json, workspace/gates/phase1-activation-readiness.json, workspace/gates/production-quality-check.json
 
 ## Build Priority Sequence
@@ -43,7 +43,8 @@
 | 097 | activation | Phase 1 activation (PM2 scs001-live) | ✅ PASS |
 | 098 | production-quality | Production video quality + live publishing | ✅ PASS |
 | 099 | hosting | Video hosting layer (Supabase Storage + preflight) | ✅ PASS |
-| **100** | **?** | **NEXT** | ⏳ pending |
+| 100 | ops | Phase 1 operator launch kit (.env.example, setup-phase1.sh, run-live.sh) | ✅ PASS |
+| **101** | **?** | **NEXT** | ⏳ pending |
 
 ## SCS-001 Pipeline Architecture
 12 stages, 11 agents:
