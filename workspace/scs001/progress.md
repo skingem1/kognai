@@ -857,3 +857,14 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
 - Changes: scripts/posting-reminder.ts — sends owner Telegram nudge at 12:00 + 18:00. Reads manual-posts.jsonl (gate count), publish-ledger.jsonl (find first unposted with captioned .mp4), viral-topics.json (hashtags). Silent exit if 30 posts met. Shows: video_id, file path (~/ relative), speaker/topic, hashtags, /record shortcut. ecosystem.config.js: kognai-post-noon (0 12 * * *) + kognai-post-evening (0 18 * * *).
 - Gate: ~22 days to Apr 7, 0/30 posts | Achiri alpha: Apr 25 (~40d)
 - Timestamp: 2026-03-16T20:30:00Z
+
+## Sprint 156 — /caption command — ready-to-paste TikTok caption generator (Phase 1 — TikTok gate)
+- Status: PASS
+- Commit: 9b565a4
+- Files created: scripts/scs001/validate-sprint-156.ts, workspace/sprints/sprint-156.json
+- Files modified: agents/telegram-bot/commands.ts, agents/telegram-bot/index.ts
+- Test: scripts/scs001/validate-sprint-156.ts — 5/5 PASS
+- Swarm used: no (direct write)
+- Changes: handleCaption(chatId, ownerChatId, videoId?) — owner-only. With video_id: looks up that entry in publish-ledger.jsonl. Without: finds first unposted with captioned mp4 on disk. Loads hook from script JSON (run-{epoch}/script/{id}-script.json — .hook/.title/.headline fields). Fallback to topic from ledger. Formats: hook text + viral hashtags from viral-topics.json + #fyp #viral #learnontiktok. Sends header message + caption in ```code block``` for tap-to-copy on mobile. handleHelp updated. index.ts routed with optional video_id arg.
+- Gate: ~22 days to Apr 7, 0/30 posts | Achiri alpha: Apr 25 (~40d)
+- Timestamp: 2026-03-16T21:00:00Z
