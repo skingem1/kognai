@@ -414,6 +414,30 @@ module.exports = {
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
     {
+      // Stripe Webhook Server — Sprint 149. Listens on STRIPE_WEBHOOK_PORT (default 3001).
+      // Handles subscription lifecycle events: subscription.created, subscription.deleted, payment_failed.
+      // Requires: STRIPE_SECRET_KEY + STRIPE_WEBHOOK_SECRET in .env
+      // Forward events in dev: stripe listen --forward-to localhost:3001/webhook
+      name: "kognai-stripe-webhook",
+      script: "agents/stripe/server.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: true,
+      watch: false,
+      max_memory_restart: "64M",
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
+        STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY || "",
+        STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET || "",
+        STRIPE_WEBHOOK_PORT: process.env.STRIPE_WEBHOOK_PORT || "3001",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/stripe-webhook-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/stripe-webhook-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
+    {
       // Smoke Test Cron — runs full 15-stage mock pipeline daily at 06:00 UTC
       // Writes reports/smoke-test-latest.json (read by daily digest at 07:00).
       // Ensures digest always has fresh pipeline health data.

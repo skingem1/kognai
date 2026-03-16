@@ -22,6 +22,7 @@ import {
   handleSchedule, handleStats, handleStatus, handleSubscribe, handleUnknown,
   handleAchiri, handleGate, handleWaitlist, handleAchiriHealth, handlePostReminder,
   handleReview, handleRecord, handleUpdateViews, handleInviteAchiri, handleDeployStatus,
+  handleStripeStatus,
 } from './commands';
 
 // ── Config ────────────────────────────────────────────────────────────────────
@@ -105,6 +106,7 @@ async function dispatch(update: TelegramUpdate): Promise<void> {
     case '/update-views':    await handleUpdateViews(chatId, OWNER_CHAT_ID, text);        break;
     case '/invite-achiri':   await handleInviteAchiri(chatId, OWNER_CHAT_ID, text);       break;
     case '/deploy-status':   await handleDeployStatus(chatId, OWNER_CHAT_ID);            break;
+    case '/stripe-status':   await handleStripeStatus(chatId, OWNER_CHAT_ID);           break;
     default:                 await handleUnknown(chatId, text);                          break;
   }
 }

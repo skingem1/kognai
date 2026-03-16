@@ -1,0 +1,85 @@
+{
+  "sprint": "149",
+  "name": "Stripe go-live — webhook PM2 + /stripe-status",
+  "block": "Phase 1 — TikTok monetization go-live",
+  "goal": "Three deliverables: (1) ecosystem.config.js: add kognai-stripe-webhook PM2 process (agents/stripe/server.ts, autorestart=true, STRIPE_* env passthrough). (2) commands.ts: add handleStripeStatus() owner-only command — shows env var check (STRIPE_SECRET_KEY/PRICE_GROWTH/PRICE_PREMIUM/WEBHOOK_SECRET set vs missing), active subscriber count, webhook port, ping agents/stripe/server.ts /health endpoint, list next steps. (3) commands.ts: update /subscribe line in handleHelp() from '(coming soon)' to 'Subscribe to TikTok Agent ($19/$49/mo)'. (4) index.ts: import + route /stripe-status.",
+  "rationale": "Stripe code (client.ts, webhooks.ts, server.ts) is built but the webhook server has no PM2 entry — it never runs. /subscribe shows 'coming soon' blocking subscriber acquisition. /stripe-status gives operator a Telegram-native checklist to verify Stripe is live before accepting subscribers.",
+  "swarm": "NOT USED — 3 small file edits + 1 validation script. Direct write.",
+  "tasks": [
+    {
+      "id": "149-01",
+      "title": "ecosystem.config.js — add kognai-stripe-webhook PM2 process",
+      "description": "After the telegram-bot entry, add kognai-stripe-webhook: script=agents/stripe/server.ts, interpreter=node, interpreter_args='-r ts-node/register', cwd=/Users/tarekmnif/kognai, autorestart=true, watch=false, max_memory_restart=64M, env: TS_NODE_TRANSPILE_ONLY=true, TS_NODE_PROJECT=tsconfig.scripts.json, STRIPE_SECRET_KEY=process.env.STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET=process.env.STRIPE_WEBHOOK_SECRET, STRIPE_WEBHOOK_PORT=process.env.STRIPE_WEBHOOK_PORT||'3001'. Logs: logs/stripe-webhook-error.log, logs/stripe-webhook-out.log.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-149",
+      "deliverables": {
+        "code": ["ecosystem.config.js"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "149-02",
+      "title": "commands.ts — add handleStripeStatus() + update handleHelp() /subscribe line",
+      "description": "handleStripeStatus(chatId, ownerChatId): owner-only gate. Checks env vars: STRIPE_SECRET_KEY (✅ set / ❌ missing), STRIPE_PRICE_GROWTH (✅/❌), STRIPE_PRICE_PREMIUM (✅/❌), STRIPE_WEBHOOK_SECRET (✅/❌). Shows STRIPE_WEBHOOK_PORT (default 3001). Pings http://127.0.0.1:{port}/health with 2s timeout — UP/DOWN. Shows TelegramDB.activeCount() subscribers. Calculates readiness: all 4 env vars set + webhook UP = '🟢 LIVE'. Missing any = '🔴 NOT LIVE — see above'. Shows next steps if not live. Update handleHelp(): change '/subscribe — Upgrade your plan (coming soon)' to '/subscribe — Subscribe to TikTok Agent ($19/$49/mo)'.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-149",
+      "deliverables": {
+        "code": ["agents/telegram-bot/commands.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "149-03",
+      "title": "index.ts — import handleStripeStatus + route /stripe-status",
+      "description": "Add handleStripeStatus to import from './commands'. Add case '/stripe-status': await handleStripeStatus(chatId, OWNER_CHAT_ID); break; in dispatch switch.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-149",
+      "deliverables": {
+        "code": ["agents/telegram-bot/index.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "149-04",
+      "title": "validate-sprint-149.ts — 6-check validation script",
+      "description": "1) ecosystem.config.js contains 'kognai-stripe-webhook'. 2) ecosystem.config.js contains 'agents/stripe/server.ts'. 3) commands.ts exports handleStripeStatus. 4) commands.ts contains STRIPE_SECRET_KEY check. 5) index.ts routes /stripe-status. 6) handleHelp does NOT contain '(coming soon)' for subscribe line.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-149",
+      "deliverables": {
+        "code": ["scripts/scs001/validate-sprint-149.ts"],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ],
+  "acceptance_criteria": [
+    "ecosystem.config.js has kognai-stripe-webhook PM2 entry pointing to agents/stripe/server.ts",
+    "handleStripeStatus() checks all 4 Stripe env vars and webhook /health ping",
+    "/stripe-status routed in index.ts (owner-only via handleStripeStatus)",
+    "/help no longer says (coming soon) for /subscribe",
+    "validate-sprint-149.ts: 6/6 PASS"
+  ]
+}

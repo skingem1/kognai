@@ -95,7 +95,8 @@ export async function handleHelp(chatId: number): Promise<void> {
     '/schedule — Configure daily posting frequency',
     '/status — Latest SCS-001 pipeline run',
     '/stats — Pipeline statistics',
-    '/subscribe — Upgrade your plan (coming soon)',
+    '/subscribe — Subscribe to TikTok Agent ($19/$49/mo)',
+    '/stripe-status — Stripe go-live checklist (owner)',
     '/gate — Phase 1.5 gate review (Apr 7 kill switch)',
     '/post-reminder — Apr 7 gate progress + posting workflow (owner)',
     '/review — Top-3 QC-passed videos for manual posting (owner)',
@@ -1092,6 +1093,72 @@ export async function handleDeployStatus(chatId: number, ownerChatId: string): P
 
   const daysToAlpha = Math.ceil((new Date('2026-04-25T00:00:00Z').getTime() - Date.now()) / 86400000);
   lines.push('', `📅 Achiri alpha: Apr 25 (${daysToAlpha}d)`);
+
+  await sendMessage(chatId, lines.join('\n'));
+}
+
+// ── Sprint 149: /stripe-status — Stripe go-live checklist ────────────────────
+
+export async function handleStripeStatus(chatId: number, ownerChatId: string): Promise<void> {
+  if (String(chatId) !== String(ownerChatId)) {
+    await sendMessage(chatId, '⛔ Owner-only command.');
+    return;
+  }
+
+  const envCheck = (key: string): string =>
+    process.env[key] ? `✅ ${key}` : `❌ ${key} (missing)`;
+
+  const keySet      = Boolean(process.env.STRIPE_SECRET_KEY);
+  const growthSet   = Boolean(process.env.STRIPE_PRICE_GROWTH);
+  const premiumSet  = Boolean(process.env.STRIPE_PRICE_PREMIUM);
+  const webhookSet  = Boolean(process.env.STRIPE_WEBHOOK_SECRET);
+  const webhookPort = process.env.STRIPE_WEBHOOK_PORT || '3001';
+
+  // Ping stripe webhook /health
+  let webhookHealth = '⏳ checking...';
+  try {
+    await new Promise<void>((resolve, reject) => {
+      const req = require('http').get(
+        { hostname: '127.0.0.1', port: parseInt(webhookPort, 10), path: '/health', timeout: 2000 },
+        (res: any) => { webhookHealth = res.statusCode === 200 ? '✅ UP' : `⚠️ HTTP ${res.statusCode}`; resolve(); }
+      );
+      req.on('error', () => { webhookHealth = '❌ DOWN (not running)'; resolve(); });
+      req.on('timeout', () => { req.destroy(); webhookHealth = '❌ TIMEOUT'; resolve(); });
+    });
+  } catch { webhookHealth = '❌ DOWN'; }
+
+  const subscribers = TelegramDB.activeCount();
+  const allSet      = keySet && growthSet && premiumSet && webhookSet;
+  const webhookUp   = webhookHealth.startsWith('✅');
+  const live        = allSet && webhookUp;
+
+  const lines: string[] = [
+    `💳 *Stripe Status* — ${live ? '🟢 LIVE' : '🔴 NOT LIVE'}`,
+    '',
+    '*Env vars:*',
+    envCheck('STRIPE_SECRET_KEY'),
+    envCheck('STRIPE_PRICE_GROWTH'),
+    envCheck('STRIPE_PRICE_PREMIUM'),
+    envCheck('STRIPE_WEBHOOK_SECRET'),
+    `ℹ️  STRIPE_WEBHOOK_PORT: ${webhookPort}`,
+    '',
+    `*Webhook server (port ${webhookPort}):* ${webhookHealth}`,
+    `*Active subscribers:* ${subscribers}`,
+  ];
+
+  const steps: string[] = [];
+  if (!keySet)     steps.push('Set STRIPE_SECRET_KEY=sk_live_... in .env');
+  if (!growthSet)  steps.push('Set STRIPE_PRICE_GROWTH=price_... in .env');
+  if (!premiumSet) steps.push('Set STRIPE_PRICE_PREMIUM=price_... in .env');
+  if (!webhookSet) steps.push('Set STRIPE_WEBHOOK_SECRET=whsec_... in .env');
+  if (!webhookUp)  steps.push('pm2 start ecosystem.config.js --only kognai-stripe-webhook');
+  if (steps.length > 0) {
+    lines.push('', '📌 *Next steps:*');
+    steps.forEach((s, i) => lines.push(`${i + 1}. ${s}`));
+  } else {
+    lines.push('', '✅ *All prerequisites met — Stripe is live!*');
+    lines.push('Forward prod events: stripe listen --forward-to localhost:' + webhookPort + '/webhook');
+  }
 
   await sendMessage(chatId, lines.join('\n'));
 }
