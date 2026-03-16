@@ -790,3 +790,14 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
 - Changes: ecosystem.config.js: kognai-stripe-webhook PM2 process (agents/stripe/server.ts, autorestart=true, port 3001, STRIPE_* env passthrough). commands.ts: handleStripeStatus() owner-only — checks STRIPE_SECRET_KEY/PRICE_GROWTH/PRICE_PREMIUM/WEBHOOK_SECRET env vars, pings http://127.0.0.1:{port}/health (2s timeout), shows active subscriber count, LIVE/NOT LIVE status with next steps. /subscribe help line updated to "$19/$49/mo" (was "coming soon"). index.ts: imports + routes /stripe-status.
 - Gate: ~22 days to Apr 7, 0/30 posts | Achiri alpha: Apr 25 (40d)
 - Timestamp: 2026-03-16T18:00:00Z
+
+## Sprint 150 — /queue posting queue command
+- Status: PASS
+- Commit: ec251e5
+- Files created: scripts/scs001/validate-sprint-150.ts, workspace/sprints/sprint-150.json
+- Files modified: agents/telegram-bot/commands.ts, agents/telegram-bot/index.ts
+- Test: scripts/scs001/validate-sprint-150.ts — 5/5 PASS
+- Swarm used: no (direct write)
+- Changes: handleQueue() owner-only: loads publish-ledger.jsonl (141 entries) + manual-posts.jsonl (0 entries), computes unposted=141, pace=ceil(30/22)=2/day, shows top-5 unposted video_ids with pre-filled /record commands. handleHelp updated. index.ts routes /queue. Addresses gap: operator had no view of full pipeline queue beyond /review top-3.
+- Gate: ~22 days to Apr 7, 0/30 posts | Achiri alpha: Apr 25 (40d)
+- Timestamp: 2026-03-16T18:15:00Z
