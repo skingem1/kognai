@@ -679,3 +679,14 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
 - Changes: parse_achiri_stats() reads daily-counts.json + waitlist.jsonl; /api/achiri/stats endpoint; Achiri Stats panel (today messages/users/waitlist) in dashboard
 - Gate: 22 days to Apr 7, 0/30 posts
 - Timestamp: 2026-03-16T15:20:00Z
+
+## Sprint 140 — /post-reminder Telegram command
+- Status: PASS
+- Commit: 3051ee0
+- Files created: scripts/achiri/validate-sprint-140.ts, workspace/sprints/sprint-140.json
+- Files modified: agents/telegram-bot/commands.ts, agents/telegram-bot/index.ts
+- Test: scripts/achiri/validate-sprint-140.ts — 7/7 PASS
+- Swarm used: no (2 function edits, direct write)
+- Changes: handlePostReminder() shows gate progress (posts/views/days/cadence), queue size from publish-ledger.jsonl, review-videos.ts + record-manual-post.ts workflow commands; /post-reminder routed in index.ts; in handleHelp()
+- Gate: 22 days to Apr 7, 0/30 posts, 141 videos queued in ledger
+- Timestamp: 2026-03-16T15:30:00Z
