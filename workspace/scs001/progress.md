@@ -465,3 +465,17 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
   - index.ts: import safetyCheck, wire in chat() BEFORE daily limit check. Blocked messages: log + return reply without incrementing counter (zero cost).
 - T3 Skills progress: 1/6 complete (achiri-safety). Remaining: achiri-voice, achiri-memory, eval-harness, derja-profiler, paymee.
 - Timestamp: 2026-03-16T16:30:00Z
+
+### Sprint 124 — eval-harness T3 skill (Block: Phase 2A — T3 Skills #2/6)
+- Status: PASS | Commit: 3406bfc | Block: T3 Skills — eval-harness
+- Files created: agents/achiri/eval-harness.ts, scripts/achiri/validate-eval-harness.ts, workspace/sprints/sprint-124.json
+- Tests: scripts/achiri/validate-eval-harness.ts — 5/5 PASS (ideal=83 passes, empty fails, darija>english, batch 50% pass rate, cultural markers +25 boost)
+- Swarm: NOT used — direct write (new file only)
+- Changes:
+  - eval-harness.ts: evalResponse(user, reply, ctx?) → EvalResult {score, breakdown, flags, passed}. 5 dimensions: warmth(0-25), cultural(0-25), code_switch(0-20), length(0-20), safety(0-10). passed = score >= 70.
+  - batchEval(pairs[]) → aggregate stats {total, passed, pass_rate_pct, avg_score, min_score, max_score, flag_frequency}.
+  - Scoring: Darija markers/greetings for warmth; Tunisian refs for cultural; 3/7/9 numeral substitutions for code-switch; 50-300 chars optimal for length; safetyCheck() for safety.
+- Key results: Ideal Darija response: 83. English-only: 30. Cultural boost: +25.
+- Enables: kill switch monitoring (retention <20%), CI personality testing before alpha
+- T3 Skills progress: 2/6 complete (achiri-safety, eval-harness). Remaining: achiri-voice, achiri-memory, derja-profiler, paymee.
+- Timestamp: 2026-03-16T17:00:00Z
