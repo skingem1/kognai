@@ -106,6 +106,7 @@ export async function handleHelp(chatId: number): Promise<void> {
     '/update-views <id> <views> — Update view count on recorded post (owner)',
     '/queue — Posting queue: unposted videos + daily pace (owner)',
     '/post-now — Find videos ready to post with file path + metadata (owner)',
+    '/post-batch [N] — Batch post N videos with file paths + captions (default 5, owner)',
     '/caption [video_id] — Ready-to-paste TikTok caption for a video (owner)',
     '/pace — Posting pace vs Apr 7 gate target (owner)',
     '/today — Morning cockpit: target + next video + trending topics (owner)',
@@ -1814,4 +1815,106 @@ export async function handlePm2Status(chatId: number, ownerChatId: string): Prom
   lines.push('🟢=online ⭕=stopped 🔴=errored | R=restarts');
 
   await sendMessage(chatId, lines.join('\n'));
+}
+
+// ── Sprint 167: /post-batch [N] — Batch post N videos with captions ──────────
+// Shows next N unposted captioned videos (file path + caption + /record command).
+// Reduces operator friction: one command replaces N×(/post-now + /caption + note).
+
+export async function handlePostBatch(chatId: number, ownerChatId: string, text: string): Promise<void> {
+  if (String(chatId) !== String(ownerChatId)) {
+    await sendMessage(chatId, '⛔ Owner-only command.');
+    return;
+  }
+
+  const cwd = process.cwd();
+
+  // Parse N from text (e.g. "/post-batch 3" → 3)
+  const args = text.trim().split(/\s+/);
+  const rawN = parseInt(args[1] ?? '5', 10);
+  const N = isNaN(rawN) ? 5 : Math.min(Math.max(rawN, 1), 10);
+
+  const ledgerPath = join(cwd, 'workspace', 'scs001', 'publish-ledger.jsonl');
+  const manualPath = join(cwd, 'workspace', 'scs001', 'manual-posts.jsonl');
+  const topicsPath = join(cwd, 'workspace', 'scs001', 'viral-topics.json');
+
+  // Load recorded ids
+  const recordedIds = new Set<string>();
+  if (existsSync(manualPath)) {
+    try {
+      readFileSync(manualPath, 'utf-8').split('\n').filter(l => l.trim())
+        .forEach(l => { try { const e = JSON.parse(l); if (e.video_id) recordedIds.add(e.video_id); } catch { /* skip */ } });
+    } catch { /* ignore */ }
+  }
+
+  // Load hashtags
+  let viralHashtags: string[] = [];
+  if (existsSync(topicsPath)) {
+    try {
+      const vt = JSON.parse(readFileSync(topicsPath, 'utf-8'));
+      viralHashtags = (vt.topics ?? []).slice(0, 4).map((t: string) => `#${t}`);
+    } catch { /* ignore */ }
+  }
+  if (viralHashtags.length === 0) viralHashtags = ['#ai', '#tech'];
+  const hashtags = [...viralHashtags, '#fyp', '#viral', '#learnontiktok'].join(' ');
+
+  if (!existsSync(ledgerPath)) {
+    await sendMessage(chatId, '⚠️ publish-ledger.jsonl not found. Run pipeline first.');
+    return;
+  }
+
+  interface LedgerEntry { video_id: string; run_id: string; speaker?: string; topic?: string; }
+  const allEntries: LedgerEntry[] = readFileSync(ledgerPath, 'utf-8')
+    .split('\n').filter(l => l.trim())
+    .map(l => { try { return JSON.parse(l); } catch { return null; } })
+    .filter(Boolean) as LedgerEntry[];
+
+  // Find up to N unposted entries with valid captioned mp4 on disk
+  const batch: Array<{ entry: LedgerEntry; mp4: string }> = [];
+  for (const e of allEntries) {
+    if (batch.length >= N) break;
+    if (recordedIds.has(e.video_id)) continue;
+    const mp4 = findCaptionedMp4(cwd, e.video_id);
+    if (mp4) batch.push({ entry: e, mp4 });
+  }
+
+  if (batch.length === 0) {
+    await sendMessage(chatId, '⚠️ No ready unposted videos found. Run pipeline or check /queue.');
+    return;
+  }
+
+  // Header
+  await sendMessage(chatId,
+    `📦 *Post Batch (${batch.length}/${N} videos)*\n\nPost each video to TikTok, then run the \`/record\` command shown.`
+  );
+
+  // One message per video
+  for (let i = 0; i < batch.length; i++) {
+    const { entry, mp4 } = batch[i];
+
+    // Try to load hook from script JSON
+    let hookText: string = entry.topic ?? entry.video_id;
+    const scriptPath = findScriptJson(cwd, entry.video_id);
+    if (scriptPath) {
+      try {
+        const script = JSON.parse(readFileSync(scriptPath, 'utf-8'));
+        hookText = script.hook ?? script.title ?? script.headline ?? hookText;
+      } catch { /* fallback */ }
+    }
+
+    const caption = `${hookText}\n\n${hashtags}`;
+    const speakerLine = entry.speaker ? `🎙️ ${entry.speaker}` : '';
+
+    const header = [
+      `🎬 *Video ${i + 1}/${batch.length}:* \`${entry.video_id}\``,
+      speakerLine,
+      `📁 \`${mp4}\``,
+    ].filter(Boolean).join('\n');
+
+    await sendMessage(chatId, header);
+    await sendMessage(chatId, '```\n' + caption + '\n```');
+    await sendMessage(chatId, `✅ After posting: \`/record ${entry.video_id} 0\``);
+  }
+
+  await sendMessage(chatId, `─\n📊 Done. Record views with \`/record <id> <views>\` then check gate: \`/gate\``);
 }

@@ -1,0 +1,61 @@
+{
+  "sprint": "167",
+  "name": "/post-batch N — show N videos with file paths + captions inline (gate pressure)",
+  "block": "Phase 1 — TikTok gate (Apr 7, 0/30 posts)",
+  "goal": "Add /post-batch [N] Telegram command (default N=5, max 10). Shows next N unposted captioned videos — each with file path, speaker, caption (hook+hashtags) as tap-to-copy code block, and /record command. Operator posts multiple videos in one session from their phone without switching commands.",
+  "rationale": "Gate: 20 days, 0/30 posts. Operator must post ~1.5/day. Current workflow: /post-now → manual note → /caption → copy → post → /record. Post-batch collapses this to: /post-batch 5 → post 5 → /record each. Reduces friction, increases posting velocity.",
+  "swarm": "NOT USED — 2 file edits (commands.ts + index.ts) + 1 new validation script. Direct write.",
+  "tasks": [
+    {
+      "id": "167-01",
+      "title": "commands.ts — add handlePostBatch() function",
+      "description": "Add export async function handlePostBatch(chatId, ownerChatId, text). Parse N from text args (default 5, clamp 1-10). Load ledger, recordedIds, viralHashtags (same pattern as handleCaption). Find up to N unposted entries with captioned mp4 on disk. For each: build a message block showing: '🎬 Video N/N: `{videoId}`', '📁 File: {mp4Path}', speaker if available, then caption as code block (hook+hashtags), then '✅ After posting: `/record {videoId} 0`'. Send one sendMessage per video. Send summary header first: '📦 *Post Batch ({found}/{N} videos)*\\n\\nPost each, then record views.'",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-167",
+      "deliverables": {
+        "code": ["agents/telegram-bot/commands.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "167-02",
+      "title": "index.ts — route /post-batch + import handlePostBatch + add to handleHelp",
+      "description": "1) Import handlePostBatch from commands.ts (add to existing import on line 25/26). 2) Add case '/post-batch': await handlePostBatch(chatId, OWNER_CHAT_ID, text); break; after /pm2-status case. 3) Add '/post-batch [N] — Batch post N videos with file paths + captions (owner)' to handleHelp() in commands.ts.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-167",
+      "deliverables": {
+        "code": ["agents/telegram-bot/index.ts", "agents/telegram-bot/commands.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "167-03",
+      "title": "validate-sprint-167.ts — 5-check validation",
+      "description": "1) handlePostBatch exported from commands.ts. 2) commands.ts contains 'post-batch'. 3) index.ts imports handlePostBatch. 4) index.ts routes /post-batch. 5) commands.ts contains 'Post Batch' text (header message). All 5 must pass.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-167",
+      "deliverables": {
+        "code": ["scripts/scs001/validate-sprint-167.ts"],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ]
+}
