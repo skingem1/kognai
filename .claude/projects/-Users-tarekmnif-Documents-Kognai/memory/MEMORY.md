@@ -1,5 +1,5 @@
 # KOGNAI SESSION MEMORY
-*Last updated: Sprint 108 — 2026-03-16*
+*Last updated: Sprint 109 — 2026-03-16*
 
 ---
 
@@ -10,9 +10,9 @@
 - Production mode: set `SCS_EDITING_MODE=production` + `TIKTOK_ACCESS_TOKEN` in .env
 
 ## Kognai State
-- Last commit: 6d83dac (Sprint 108 shipped 2026-03-16)
+- Last commit: 6dbabe3 (Sprint 109 shipped 2026-03-16)
 - Sprint numbering: Invoica legacy 001-062e → Kognai starts 063+
-- Current sprint: 109 (next)
+- Current sprint: 110 (next)
 - Gate reports: workspace/gates/phase0-phase1-gate.json, workspace/gates/phase1-activation-readiness.json, workspace/gates/production-quality-check.json
 
 ## Build Priority Sequence
@@ -52,7 +52,8 @@
 | 106 | quality | Caption dedup (Part N suffix) + InsightAgent speaker cap (MAX_PER_SPEAKER=3) | ✅ PASS |
 | 107 | content+ops | Viral hook templates (24 templates, 6 formulas) + Publish History dashboard (Panel 15) | ✅ PASS |
 | 108 | quality | Script validator Stage 6-validate (pre-editing gate) + ExperimentTracker Stage 9-experiment | ✅ PASS |
-| **109** | **?** | **NEXT** | ⏳ pending |
+| 109 | dashboard | Experiments Panel 17 (formula pass-rate bars + top speakers) + validation error visibility | ✅ PASS |
+| **110** | **?** | **NEXT** | ⏳ pending |
 
 ## SCS-001 Pipeline Architecture
 12 stages, 11 agents:

@@ -271,3 +271,19 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
 - Bug fixed: gate.clip_id → gate.video_id (QualityControlGate uses video_id field)
 - Note: User also added Panel 16 (Autonomous Sessions LIVE) to dashboard independently
 - Timestamp: 2026-03-16T20:30:00Z
+
+### Sprint 109 — Experiments Dashboard + Validation Visibility (Block: dashboard)
+- Status: PASS | Commit: 6dbabe3 | Block: dashboard
+- Files created: dashboard/parsers/validation_errors.py, workspace/sprints/sprint-109.json
+- Files modified: dashboard/server.py, dashboard/static/app.js, dashboard/static/index.html
+- Tests: smoke-test PASS (15 stages, 0 errors); Python parsers PASS; 4 endpoints registered; Panel 17 HTML PASS
+- Swarm: NOT used — all direct writes
+- Changes:
+  - validation_errors.py: get_validation_errors(limit) + get_validation_summary() with top_reasons grouping
+  - server.py: /api/experiments/stats, /api/experiments/history, /api/validation/errors, /api/validation/summary
+  - app.js: renderExperiments() Panel 17 — formula pass-rate bars (text ████░░), top 5 speakers, top validation failure reasons
+  - index.html: Panel 17 card added (id=experiments-body)
+- Experiment data: 12 entries from today's runs, 1 unique formula (curiosity_gap, 100% pass rate so far)
+- Validation errors: 0 so far (all bundles passing structural checks in mock mode)
+- Dashboard now has 17 panels
+- Timestamp: 2026-03-16T21:00:00Z
