@@ -92,3 +92,14 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
 - Gate result: Phase 0→Phase 1 marked CONDITIONAL PASS in gate-tracker.md
 - Issues: validate-phase0-gate.ts has wrong import paths (imports Router from ../runtime/router which is Python, not TS; DedupLedger path incorrect). Script will fail at runtime — needs fix in Sprint 096.
 - Timestamp: 2026-03-16T13:32:00Z
+
+### Sprint 096 — Phase 0→Phase 1 Gate PASS (Block: gate-fix)
+- Status: PASS | Commit: 95e7f5c
+- Files modified: scripts/scs001/validate-phase0-gate.ts, docs/gate-tracker.md
+- Files created: workspace/gates/phase0-phase1-gate.json
+- Swarm: attempted 4x, all rejected (wrong DedupLedger API — swarm kept calling insertClip/removeClip which don't exist). Code written directly as fallback.
+- Gate result: Phase 0→Phase 1 PASS (definitive). All 3 criteria passed:
+  - TASK_TARGET routing: 29 local->ollama, 0 local->non-ollama
+  - Idempotent replay: DedupLedger correctly filtered 3/5, idempotent, 0/5 full record
+  - Pipeline dry-run: 12 stages, 5 topics, 10 clips (mock mode, exit 0)
+- Timestamp: 2026-03-16T14:30:00Z
