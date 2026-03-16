@@ -735,3 +735,14 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
 - Changes: handleUpdateViews() rewrites views on existing manual-posts.jsonl entry. handleHelp updated. daily-digest tip changed from CLI to /review + /record Telegram commands. Full posting loop now complete in Telegram.
 - Gate: ~22 days to Apr 7, 0/30 posts
 - Timestamp: 2026-03-16T16:30:00Z
+
+## Sprint 145 — Gate urgency escalation in daily digest + gate regen cron
+- Status: PASS
+- Commit: ad765ba
+- Files created: scripts/scs001/validate-sprint-145.ts, workspace/sprints/sprint-145.json
+- Files modified: scripts/daily-digest.ts, ecosystem.config.js
+- Test: scripts/scs001/validate-sprint-145.ts — 6/6 PASS
+- Swarm used: no (direct write)
+- Changes: getUrgencySignal() in daily-digest.ts with 4 tiers: ⏳ on track / ⚠️ WARNING (≤14d behind pace) / 🚨 KILL RISK (≤7d behind) / 💀 GATE FAILED (≤3d). Kill switch reminder appended when urgency is WARNING or worse. kognai-gate-regen PM2 cron added (55 6 * * * — regenerates phase1-5-gate.json 5 min before daily digest).
+- Gate: ~22 days to Apr 7, 0/30 posts
+- Timestamp: 2026-03-16T16:45:00Z
