@@ -69,15 +69,19 @@ function tierBadge(tier: string): string {
 export async function handleStart(chatId: number, firstName: string, username?: string): Promise<void> {
   const record = TelegramDB.upsert(chatId, { firstName, username });
   await sendMessage(chatId, [
-    `👋 Welcome to the *Kognai TikTok Content Agent*, ${record.firstName}!`,
+    `👋 Welcome to *Kognai*, ${record.firstName}!`,
     '',
-    'I find the best public-domain archive footage, generate viral TikTok captions, and post for you — autonomously.',
-    '',
-    `📋 *Your account*`,
+    '🎬 *TikTok Content Agent*',
+    'I find public-domain archive footage, generate viral captions, and post for you — autonomously.',
     `• Tier: ${tierBadge(record.tier)}`,
     `• Daily posts: ${record.postsPerDay}`,
     '',
-    'Type /help to see what I can do.',
+    '🤖 *Achiri — AI Companion* _(Alpha Apr 25)_',
+    'Culturally adaptive AI that speaks Darija, Arabic & French.',
+    'Free tier: 50 messages/day. Try it now:',
+    '→ `/achiri مرحبا، كيفاش تنجم تعاوني؟`',
+    '',
+    'Type /help for all commands.',
   ].join('\n'));
 }
 

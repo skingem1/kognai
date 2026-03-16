@@ -1,0 +1,50 @@
+{
+  "sprint": "135",
+  "name": "Achiri /start onboarding — welcome message highlights Achiri companion",
+  "block": "Phase 2A — Achiri alpha prep",
+  "goal": "Update handleStart() in agents/telegram-bot/commands.ts to introduce Achiri in the welcome message. Currently /start only mentions TikTok Content Agent with no Achiri context. Alpha users (Apr 25) will hit /start first — they need to know about Achiri and how to use it. Add a clear Achiri section to the welcome message and a quick-start nudge.",
+  "rationale": "Achiri alpha is Apr 25 (40 days). Invited users will /start the bot first. Current welcome says nothing about Achiri or /achiri command. Adding it to onboarding = zero extra support overhead at launch. Single function edit, no deps, 1 file.",
+  "swarm": "NOT USED — single function edit in commands.ts. Direct write.",
+  "tasks": [
+    {
+      "id": "135-01",
+      "title": "agents/telegram-bot/commands.ts — handleStart() Achiri section",
+      "description": "Update handleStart() welcome message to add: (1) a brief Achiri intro after the TikTok section, e.g. '🤖 *Achiri AI Companion* — culturally adaptive AI in Darija, Arabic & French. Try: /achiri مرحبا'; (2) note that Achiri free tier = 50 messages/day; (3) mention /help for full command list. Keep the existing TikTok account section. Message should be welcoming, not overwhelming.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-135",
+      "deliverables": {
+        "code": ["agents/telegram-bot/commands.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "135-02",
+      "title": "scripts/achiri/validate-sprint-135.ts — validation",
+      "description": "Check: (1) handleStart() function contains 'achiri' (case-insensitive); (2) contains '/achiri' command reference; (3) contains Darija/Arabic sample or mention of Darija; (4) message still contains tier info (tierBadge call still present); (5) dry-run handleStart by calling the string builder directly and verifying output.",
+      "type": "create",
+      "task_type": "test",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-135",
+      "deliverables": {
+        "code": ["scripts/achiri/validate-sprint-135.ts"],
+        "tests": ["scripts/achiri/validate-sprint-135.ts"],
+        "docs": []
+      }
+    }
+  ],
+  "acceptance_criteria": [
+    "handleStart() welcome message contains Achiri introduction",
+    "handleStart() contains /achiri command usage example",
+    "Existing tier badge and account section unchanged",
+    "validate-sprint-135.ts exits 0 (all checks pass)"
+  ]
+}
