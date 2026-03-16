@@ -801,3 +801,14 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
 - Changes: handleQueue() owner-only: loads publish-ledger.jsonl (141 entries) + manual-posts.jsonl (0 entries), computes unposted=141, pace=ceil(30/22)=2/day, shows top-5 unposted video_ids with pre-filled /record commands. handleHelp updated. index.ts routes /queue. Addresses gap: operator had no view of full pipeline queue beyond /review top-3.
 - Gate: ~22 days to Apr 7, 0/30 posts | Achiri alpha: Apr 25 (40d)
 - Timestamp: 2026-03-16T18:15:00Z
+
+## Sprint 151 — Daily-digest.ts enhancements
+- Status: PASS
+- Commit: 9faca9a
+- Files created: scripts/scs001/validate-sprint-151.ts, workspace/sprints/sprint-151.json
+- Files modified: scripts/daily-digest.ts
+- Test: scripts/scs001/validate-sprint-151.ts — 6/6 PASS
+- Swarm used: no (direct write)
+- Changes: getQueueStats(): reads publish-ledger.jsonl + manual-posts.jsonl, computes unposted=141. Digest: added queue line (📋 Queue: 141 unposted videos ready to post), Stripe status line (💳 Stripe: 🔴 NOT LIVE if STRIPE_SECRET_KEY missing). Tip updated to mention /queue. DRY_RUN output confirmed.
+- Gate: ~22 days to Apr 7, 0/30 posts | Achiri alpha: Apr 25 (40d)
+- Timestamp: 2026-03-16T18:30:00Z
