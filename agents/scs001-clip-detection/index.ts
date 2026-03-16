@@ -33,6 +33,7 @@ export interface ClipQualityScore {
 const QUALITY_GATE    = 20;
 const MIN_DURATION    = 5;
 const MAX_DURATION    = 20;
+const CONCURRENCY     = parseInt(process.env.CLIP_DETECTION_CONCURRENCY ?? '4', 10);
 const OLLAMA_BASE     = process.env.OLLAMA_HOST ?? 'http://localhost:11434';
 const MODEL           = process.env.CLIP_DETECTION_MODEL ?? 'qwen3:14b';
 
@@ -100,15 +101,32 @@ Respond ONLY with a JSON object, no explanation:
   }
 }
 
+// Concurrency-limited batch runner
+async function runBatch<T, R>(items: T[], concurrency: number, fn: (item: T) => Promise<R>): Promise<R[]> {
+  const results: R[] = [];
+  for (let i = 0; i < items.length; i += concurrency) {
+    const batch = items.slice(i, i + concurrency);
+    const batchResults = await Promise.all(batch.map(fn));
+    results.push(...batchResults);
+  }
+  return results;
+}
+
+interface ScoringTask {
+  disc: DiscoveryOutput;
+  ts:   { start_seconds: number; end_seconds: number; reason: string };
+}
+
 export class ClipDetectionAgent {
   async run(discoveries: DiscoveryOutput[]): Promise<ClipQualityScore[]> {
     const results: ClipQualityScore[] = [];
+    const scoringTasks: ScoringTask[] = [];
 
+    // First pass: duration gate + collect LLM scoring tasks
     for (const disc of discoveries) {
       for (const ts of disc.timestamps) {
         const duration = ts.end_seconds - ts.start_seconds;
 
-        // Duration gate
         if (duration < MIN_DURATION || duration > MAX_DURATION) {
           results.push({
             clip_id:                 `clip-${randomUUID().slice(0, 8)}`,
@@ -125,38 +143,45 @@ export class ClipDetectionAgent {
             qualified:               false,
             rejection_reason:        'duration_out_of_range',
           });
-          continue;
+        } else {
+          scoringTasks.push({ disc, ts });
         }
-
-        // Score with LLM
-        const topicText = disc.topic_tags.join(', ');
-        const breakdown = await scoreWithLLM(topicText, disc.speaker, ts.reason ?? '');
-        const baseLlmScore = breakdown.curiosity + breakdown.emotion + breakdown.clarity + breakdown.insight + breakdown.controversy;
-        const triggers = matchPhraseTriggers(`${topicText} ${ts.reason ?? ''}`);
-        const triggerBonus = Math.min(3, triggers.length); // +1 per trigger, cap at 3
-        const total = Math.min(25, baseLlmScore + triggerBonus);
-
-        const qualified = total >= QUALITY_GATE;
-        results.push({
-          clip_id:                 `clip-${randomUUID().slice(0, 8)}`,
-          discovery_id:            disc.discovery_id,
-          url:                     disc.url,
-          start_seconds:           ts.start_seconds,
-          end_seconds:             ts.end_seconds,
-          duration_seconds:        duration,
-          quality_score:           total,
-          score_breakdown:         breakdown,
-          phrase_triggers_matched: triggers,
-          speaker:                 disc.speaker,
-          topic_tags:              disc.topic_tags,
-          qualified,
-          rejection_reason:        qualified ? undefined : `score_${total}_below_gate_${QUALITY_GATE}`,
-        });
-
-        console.log(`[ClipDetection] ${qualified ? '✓' : '✗'} score=${total}/25 | ${disc.speaker} | ${ts.start_seconds}s-${ts.end_seconds}s`);
       }
     }
 
+    // Parallel LLM scoring with concurrency limit
+    console.log(`[ClipDetection] ${scoringTasks.length} clips to score (concurrency: ${CONCURRENCY})`);
+    const scored = await runBatch(scoringTasks, CONCURRENCY, async (task) => {
+      const { disc, ts } = task;
+      const duration = ts.end_seconds - ts.start_seconds;
+      const topicText = disc.topic_tags.join(', ');
+      const breakdown = await scoreWithLLM(topicText, disc.speaker, ts.reason ?? '');
+      const baseLlmScore = breakdown.curiosity + breakdown.emotion + breakdown.clarity + breakdown.insight + breakdown.controversy;
+      const triggers = matchPhraseTriggers(`${topicText} ${ts.reason ?? ''}`);
+      const triggerBonus = Math.min(3, triggers.length);
+      const total = Math.min(25, baseLlmScore + triggerBonus);
+      const qualified = total >= QUALITY_GATE;
+
+      console.log(`[ClipDetection] ${qualified ? '✓' : '✗'} score=${total}/25 | ${disc.speaker} | ${ts.start_seconds}s-${ts.end_seconds}s`);
+
+      return {
+        clip_id:                 `clip-${randomUUID().slice(0, 8)}`,
+        discovery_id:            disc.discovery_id,
+        url:                     disc.url,
+        start_seconds:           ts.start_seconds,
+        end_seconds:             ts.end_seconds,
+        duration_seconds:        duration,
+        quality_score:           total,
+        score_breakdown:         breakdown,
+        phrase_triggers_matched: triggers,
+        speaker:                 disc.speaker,
+        topic_tags:              disc.topic_tags,
+        qualified,
+        rejection_reason:        qualified ? undefined : `score_${total}_below_gate_${QUALITY_GATE}`,
+      } as ClipQualityScore;
+    });
+
+    results.push(...scored);
     const qualifiedCount = results.filter(r => r.qualified).length;
     console.log(`[ClipDetection] ${results.length} clips scored → ${qualifiedCount} qualified (gate: ${QUALITY_GATE}/25)`);
     return results;
