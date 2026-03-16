@@ -10,9 +10,9 @@
 - Production mode: set `SCS_EDITING_MODE=production` + `TIKTOK_ACCESS_TOKEN` in .env
 
 ## Kognai State
-- Last commit: 133525e (Sprint 098 shipped 2026-03-16)
+- Last commit: 01b70df (Sprint 099 shipped 2026-03-16)
 - Sprint numbering: Invoica legacy 001-062e → Kognai starts 063+
-- Current sprint: 099 (next)
+- Current sprint: 100 (next)
 - Gate reports: workspace/gates/phase0-phase1-gate.json, workspace/gates/phase1-activation-readiness.json, workspace/gates/production-quality-check.json
 
 ## Build Priority Sequence
@@ -42,7 +42,8 @@
 | 096 | gate-fix | Phase 0→Phase 1 gate PASS | ✅ PASS |
 | 097 | activation | Phase 1 activation (PM2 scs001-live) | ✅ PASS |
 | 098 | production-quality | Production video quality + live publishing | ✅ PASS |
-| **099** | **?** | **NEXT** | ⏳ pending |
+| 099 | hosting | Video hosting layer (Supabase Storage + preflight) | ✅ PASS |
+| **100** | **?** | **NEXT** | ⏳ pending |
 
 ## SCS-001 Pipeline Architecture
 12 stages, 11 agents:
@@ -52,9 +53,10 @@ All agents located at: `agents/scs001-*/`
 
 ## Critical Gaps / Blockers
 1. **TIKTOK_ACCESS_TOKEN** not in .env — live posting blocked (human must obtain from TikTok Developer Portal, video.upload scope)
-2. **OpenClaw v2026.3.7** + T2 Skills — deferred to Sprint 099+ (gate-tracker.md shows both Deferred)
-3. **MediaUrl for live TikTok posting** — PULL_FROM_URL requires public URL, local file paths won't work (needs hosting layer)
-4. **SCS_EDITING_MODE** not in .env — production video quality not yet active (set to 'production' to enable drawtext overlays)
+2. **SUPABASE_URL + SUPABASE_SERVICE_KEY** not in .env — video hosting blocked (Supabase Storage upload needed for TikTok PULL_FROM_URL)
+3. **SCS_EDITING_MODE** not in .env — production video quality not yet active (set to 'production' to enable drawtext overlays)
+4. **OpenClaw v2026.3.7** + T2 Skills — deferred to Sprint 100+ (gate-tracker.md shows both Deferred)
+5. **Run preflight when env vars are set**: `npx ts-node scripts/scs001/validate-production-preflight.ts`
 
 ## Key File Locations
 - Pipeline runner: `agents/scs001-orchestrator/run-pipeline.ts`

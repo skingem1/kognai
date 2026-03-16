@@ -104,6 +104,20 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
   - Pipeline dry-run: 12 stages, 5 topics, 10 clips (mock mode, exit 0)
 - Timestamp: 2026-03-16T14:30:00Z
 
+### Sprint 099 — Video Hosting Layer + Production Preflight (Block: hosting)
+- Status: PASS | Commit: 01b70df | Block: hosting
+- Files created: agents/scs001-hosting/index.ts, scripts/scs001/validate-production-preflight.ts, workspace/sprints/sprint-099.json
+- Files modified: agents/scs001-publishing/index.ts
+- Tests: validate-production-preflight.ts — BLOCKED (expected, missing env vars), validate-production-quality.ts — PASS
+- Pipeline: All 12 stages + hosting layer (Supabase Storage upload before TikTok post)
+- Swarm: attempted, timed out (qwen3:14b too slow for Supabase SDK file). All 3 tasks written directly.
+- Changes:
+  - VideoHostingService: uploads local MP4 to Supabase Storage, returns public_url for TikTok PULL_FROM_URL
+  - PublishingAgent: in live mode, uploads to Supabase first, uses public URL as mediaUrl
+  - validate-production-preflight.ts: 7-check preflight with fix hints per failed check
+- Remaining human actions: set TIKTOK_ACCESS_TOKEN + SUPABASE_URL + SUPABASE_SERVICE_KEY in .env, then pm2 start --only scs001-live
+- Timestamp: 2026-03-16T16:00:00Z
+
 ### Sprint 098 — Production Video Quality + Live Publishing Gate (Block: production-quality)
 - Status: PASS | Commit: 133525e | Block: production-quality
 - Files modified: agents/scs001-editing/index.ts, agents/scs001-publishing/index.ts, agents/scs001-caption/index.ts, agents/scs001-orchestrator/index.ts
