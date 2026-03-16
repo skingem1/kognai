@@ -548,3 +548,14 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
 - T3 Skills COMPLETE: paymee(126), voice(127), memory(128) — 6/6 done
 - Hetzner deploy package: sprint 129 — artifacts ready, awaiting operator deploy
 - Context approaching limit — handoff written below
+
+## Sprint 130 — Achiri HTTP Bridge (Phase 2A — Telegram production wiring)
+- Status: PASS
+- Commit: 99c5c38
+- Files modified: agents/telegram-bot/commands.ts, .env.example
+- Files created: scripts/achiri/validate-telegram-http-bridge.ts, workspace/sprints/sprint-130.json
+- Test: scripts/achiri/validate-telegram-http-bridge.ts — 7/7 PASS
+- Key results: Removed AchiriConversationHandler direct import from commands.ts. handleAchiri() now POSTs to ACHIRI_BASE_URL/chat (default: localhost:3420). limit_exceeded → sends upgrade_url inline. ACHIRI_BASE_URL documented in .env.example.
+- Swarm used: no (single-file surgical edit + new validation script)
+- Next: operator sets ACHIRI_BASE_URL=http://65.108.90.178/achiri in bot .env on Mac Mini. Sprint 131: end-to-end smoke test.
+- Timestamp: 2026-03-16T19:30:00Z
