@@ -301,3 +301,16 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
   - app.js: Phase 1.5 Projection row added to Panel 14 — posts X/30, avg/day, projected date, color-coded (green=on track, amber=tight, red=late vs Apr 7).
 - Note: viral-topics.json contains video IDs in mock mode (no real topic names in mock PerformanceSignal). In live mode, will contain real TikTok topic names from analytics.
 - Timestamp: 2026-03-16T22:00:00Z
+
+### Sprint 111 — Operator /status + Topic Mapping Fix + Achiri Scaffold (Block: operator+achiri)
+- Status: PASS | Commit: 46c8f41 | Block: operator+achiri
+- Files created: kognai-agents/achiri/agent.yaml, kognai-agents/achiri/config.json, workspace/sprints/sprint-111.json
+- Files modified: agents/telegram-bot/commands.ts, agents/scs001-orchestrator/index.ts, workspace/scs001/viral-topics.json
+- Tests: smoke test PASS (15 stages, 0 errors, 11 videos); viral-topics.json now contains real topic names (alexalbert, samaltman, tech, etc.)
+- Swarm: NOT used (d06f06e consolidation commit by Opus session already included most changes)
+- Changes:
+  - commands.ts: loadPublishLedger() + loadTopFormula() + computeReadinessPct() added. handleStatus() upgraded to show: published today/total, top formula pass rate, readiness%, last post time.
+  - orchestrator: viral topic fix: s.topic_performance?.topic_tags ?? [s.video_id] — now saves real topic strings not video IDs.
+  - Achiri scaffold: kognai-agents/achiri/agent.yaml (Phase 2A, Apr 11 gate, voice_before_memory=true) + config.json (ar-TN/fr-TN/en, Tunisian cultural markers, 3 pricing tiers, kill switches).
+- Note: User ran a consolidation commit (d06f06e) between Sprint 110 and 111 that added sessions parser, 35 skills, 30 failure library entries, CSS updates.
+- Timestamp: 2026-03-16T17:00:00Z
