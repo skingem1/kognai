@@ -779,3 +779,14 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
 - Changes: achiri.py reads alpha-whitelist.jsonl, adds total_invited to /api/achiri/stats. Dashboard Achiri panel now shows Invited stat box alongside Waitlist. handleInviteAchiri() sends onboarding DM to invited user (try-catch wrapped — graceful if user hasn't started bot).
 - Gate: ~22 days to Apr 7, 0/30 posts | Achiri alpha: Apr 25 (40d)
 - Timestamp: 2026-03-16T17:30:00Z
+
+## Sprint 149 — Stripe go-live: webhook PM2 + /stripe-status
+- Status: PASS
+- Commit: bdcdf1f
+- Files created: scripts/scs001/validate-sprint-149.ts, workspace/sprints/sprint-149.json
+- Files modified: ecosystem.config.js, agents/telegram-bot/commands.ts, agents/telegram-bot/index.ts
+- Test: scripts/scs001/validate-sprint-149.ts — 6/6 PASS
+- Swarm used: no (direct write — 3 small file edits)
+- Changes: ecosystem.config.js: kognai-stripe-webhook PM2 process (agents/stripe/server.ts, autorestart=true, port 3001, STRIPE_* env passthrough). commands.ts: handleStripeStatus() owner-only — checks STRIPE_SECRET_KEY/PRICE_GROWTH/PRICE_PREMIUM/WEBHOOK_SECRET env vars, pings http://127.0.0.1:{port}/health (2s timeout), shows active subscriber count, LIVE/NOT LIVE status with next steps. /subscribe help line updated to "$19/$49/mo" (was "coming soon"). index.ts: imports + routes /stripe-status.
+- Gate: ~22 days to Apr 7, 0/30 posts | Achiri alpha: Apr 25 (40d)
+- Timestamp: 2026-03-16T18:00:00Z
