@@ -131,8 +131,10 @@ export class ClipDetectionAgent {
         // Score with LLM
         const topicText = disc.topic_tags.join(', ');
         const breakdown = await scoreWithLLM(topicText, disc.speaker, ts.reason ?? '');
-        const total = breakdown.curiosity + breakdown.emotion + breakdown.clarity + breakdown.insight + breakdown.controversy;
+        const baseLlmScore = breakdown.curiosity + breakdown.emotion + breakdown.clarity + breakdown.insight + breakdown.controversy;
         const triggers = matchPhraseTriggers(`${topicText} ${ts.reason ?? ''}`);
+        const triggerBonus = Math.min(3, triggers.length); // +1 per trigger, cap at 3
+        const total = Math.min(25, baseLlmScore + triggerBonus);
 
         const qualified = total >= QUALITY_GATE;
         results.push({

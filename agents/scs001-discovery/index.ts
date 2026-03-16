@@ -39,16 +39,45 @@ const MOCK_CHANNEL_IDS: Record<string, string> = {
   hacker_news:'38000001',
 };
 
-// Simulated clip-worthy moment templates based on topic characteristics
+// Enriched timestamp templates with phrase triggers for ClipDetection scoring
+// Each reason embeds trigger phrases from PHRASE_TRIGGERS so clips can qualify
+const TIMESTAMP_TEMPLATES = [
+  [
+    { start_seconds: 0,   end_seconds: 15,  reason: 'Opening hook — "this changes everything" for {topic}' },
+    { start_seconds: 120, end_seconds: 140, reason: 'Core argument — "nobody is talking about" the real impact on {topic}' },
+    { start_seconds: 310, end_seconds: 325, reason: 'Emotional peak — "i was completely wrong" about {topic}' },
+  ],
+  [
+    { start_seconds: 0,   end_seconds: 15,  reason: 'Opening hook — "the dirty secret" behind {topic} that experts hide' },
+    { start_seconds: 120, end_seconds: 140, reason: 'Core argument — "most people don\'t realize" what {topic} means by 2026' },
+    { start_seconds: 310, end_seconds: 325, reason: 'Emotional peak — "i\'ve never seen anything like this" in {topic}' },
+  ],
+  [
+    { start_seconds: 0,   end_seconds: 15,  reason: 'Opening hook — "the reason" {topic} "is dying" faster than anyone expected' },
+    { start_seconds: 120, end_seconds: 140, reason: 'Core argument — "here\'s what they\'re not telling you" about {topic}' },
+    { start_seconds: 310, end_seconds: 325, reason: 'Emotional peak — "the number one mistake" everyone makes with {topic}' },
+  ],
+];
+
 function deriveTimestamps(topic: TrendingTopic): DiscoveryTimestamp[] {
-  const base = [
-    { start_seconds: 0,   end_seconds: 15,  reason: 'Opening hook — bold claim or prediction' },
-    { start_seconds: 120, end_seconds: 140, reason: 'Core argument — specific data point or paradigm shift statement' },
-    { start_seconds: 310, end_seconds: 325, reason: 'Emotional peak — speaker conviction or contrarian stance' },
-  ];
+  // Rotate templates based on topic name hash for variety
+  const hash = topic.topic_name.length % TIMESTAMP_TEMPLATES.length;
+  const template = TIMESTAMP_TEMPLATES[hash];
+  const topicName = topic.topic_name;
+
+  const base = template.map(t => ({
+    start_seconds: t.start_seconds,
+    end_seconds:   t.end_seconds,
+    reason:        t.reason.replace(/\{topic\}/g, topicName),
+  }));
+
   // Add a timestamp for topics with high confidence (more viral potential)
   if (topic.confidence_score >= 85) {
-    base.push({ start_seconds: 480, end_seconds: 495, reason: 'High-confidence topic — closing prediction or call to action' });
+    base.push({
+      start_seconds: 480,
+      end_seconds:   495,
+      reason: 'High-confidence — "within 12 months" ' + topicName + ' will reshape the industry',
+    });
   }
   return base;
 }

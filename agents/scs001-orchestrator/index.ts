@@ -106,16 +106,22 @@ export class SCS001Orchestrator {
 
     // --- Stage 4: Insight Agent ---
     const qualifiedClips = clips.filter(c => c.qualified);
-    if (this.mode === 'mock') {
-      // Use mock briefs to avoid cloud API costs
-      stages.push(await this.runStage('4-insight', 'InsightAgent (mock)', async () => {
-        briefs = getMockInsightBriefs();
-        return briefs.length;
-      }));
-    } else if (qualifiedClips.length > 0) {
+    if (qualifiedClips.length > 0 && this.mode === 'live') {
       stages.push(await this.runStage('4-insight', 'InsightAgent (live)', async () => {
         const agent = new InsightAgent();
         briefs = await agent.run(clips);
+        return briefs.length;
+      }));
+    } else if (qualifiedClips.length > 0) {
+      // Mock mode: generate InsightBriefs from real qualified clips without API calls
+      stages.push(await this.runStage('4-insight', 'InsightAgent (mock-from-clips)', async () => {
+        briefs = this.generateMockBriefs(qualifiedClips);
+        return briefs.length;
+      }));
+    } else if (this.mode === 'mock') {
+      // Fallback: if no clips qualified (e.g. Ollama down), use static mock briefs
+      stages.push(await this.runStage('4-insight', 'InsightAgent (static-fallback)', async () => {
+        briefs = getMockInsightBriefs();
         return briefs.length;
       }));
     }
@@ -241,6 +247,26 @@ export class SCS001Orchestrator {
       s.viral + ' viral');
 
     return report;
+  }
+
+  private generateMockBriefs(qualifiedClips: ClipQualityScore[]): InsightBrief[] {
+    const HOOK_FORMULAS: Array<InsightBrief['hook']['formula']> = ['curiosity_gap', 'contrarian', 'authority', 'secret'];
+    return qualifiedClips.map((clip, idx) => {
+      const formula = HOOK_FORMULAS[idx % HOOK_FORMULAS.length];
+      const topic = clip.topic_tags[0] ?? 'emerging technology';
+      return {
+        insight_id:           'insight-auto-' + clip.clip_id,
+        clip_id:              clip.clip_id,
+        hook:                 { text: 'What ' + clip.speaker + ' just revealed about ' + topic + ' changes everything', formula },
+        pre_clip_commentary:  clip.speaker + ' made a statement that challenges the conventional wisdom on ' + topic + '.',
+        post_clip_commentary: 'This confirms a trend that insiders have been tracking for months — ' + topic + ' is accelerating faster than projected.',
+        insight_statement:    'The implications of ' + topic + ' will reshape how we approach this entire field within 12 months.',
+        why_does_this_matter: 'If ' + topic + ' continues at this pace, companies without a strategy face 6-12 month competitive gaps. ' + clip.speaker + ' is signaling a structural shift that affects budgets, hiring, and product roadmaps across the industry.',
+        hook_formula_used:    formula,
+        speaker_name:         clip.speaker,
+        cloud_cost_usd:       0,
+      };
+    });
   }
 
   private async runStage(
