@@ -240,3 +240,18 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
   - InsightAgent: MAX_PER_SPEAKER=3 constant. speakerCount Map enforced before generateBrief(). Skipped clips logged as '[InsightAgent] Speaker cap: skipping...'. 
 - Test results: 4 Margrethe Vestager clips naturally hit cap (only 0 qualified clips from her in mock). Speaker cap logging not triggered in this run (no speaker exceeded 3). Caption dedup: 13 unique captions confirmed.
 - Timestamp: 2026-03-16T19:30:00Z
+
+### Sprint 107 — Hook Templates + Publish Dashboard (Block: content+ops)
+- Status: PASS | Commit: 60dc876 | Block: content+ops
+- Files created: dashboard/parsers/publish_ledger.py, workspace/sprints/sprint-107.json
+- Files modified: agents/scs001-script/index.ts, dashboard/server.py, dashboard/static/app.js, dashboard/static/index.html
+- Tests: scripts/smoke-test-pipeline.ts — PASS (13 stages, 0 errors); publish_ledger parser PASS (63 entries, 5 runs); server import PASS; HTML panel PASS
+- Swarm: NOT used — all files too large/complex. All 4 tasks written directly.
+- Changes:
+  - ScriptAgent: HOOK_TEMPLATES constant with 24 templates across 6 formulas (curiosity_gap, secret, contrarian, statistic, challenge, authority). applyHookTemplate() wraps insight text in proven viral format. Fallback to raw text if no matching formula.
+  - publish_ledger.py: get_publish_history(limit=50) + get_publish_stats() reading workspace/scs001/publish-ledger.jsonl. Returns 63 entries across 5 runs.
+  - server.py: /api/publish/history + /api/publish/stats endpoints added.
+  - app.js: renderPublishHistory() Panel 15 — stats header (total_published, runs_count) + scrollable table (video_id, published_at, run_id).
+  - index.html: Panel 15 HTML card added with id=publish-history-body.
+- Issues: None. Clean implementation.
+- Timestamp: 2026-03-16T20:00:00Z
