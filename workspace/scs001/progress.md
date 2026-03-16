@@ -994,3 +994,16 @@ SESSION HANDOFF (2026-03-16/17, Sprints 162-165):
 - Changes: smoke-test.ts — 6 checks: (1) kognai-agents/achiri/config.json valid with memory_enabled+tiers, (2) ecosystem.config.js has achiri-api entry on port 3420, (3) GET /health 200, (4) GET /stats 200, (5) POST /chat returns reply or limit_exceeded, (6) workspace/achiri/memory/ exists or created. Exits 0 if all pass, 1 if any fail. Usage: npx ts-node scripts/achiri/smoke-test.ts
 - Gate: ~20 days to Apr 7, 0/30 posts | Achiri alpha: Apr 25 — Sprint 167 = Hetzner deploy
 - Timestamp: 2026-03-17T00:30:00Z
+
+## Sprint 167 — /post-batch N command (Phase 1 — TikTok gate velocity)
+- Status: PASS
+- Commit: a3e5ece
+- Files created: scripts/scs001/validate-sprint-167.ts, workspace/sprints/sprint-167.json
+- Files modified: agents/telegram-bot/commands.ts, agents/telegram-bot/index.ts
+- Test: scripts/scs001/validate-sprint-167.ts — 5/5 PASS
+- Pipeline: N/A (operator tooling sprint)
+- Swarm used: no (direct write — 2 file edits + 1 new validation script)
+- Changes: handlePostBatch(chatId, ownerChatId, text) — owner-only, parses N (default 5, clamp 1-10), finds up to N unposted entries with captioned mp4 on disk (same pattern as handleCaption), sends: header message, then per-video: file path + caption code block (hook+hashtags) + /record command. Footer: /gate. Imported + routed in index.ts. /help updated.
+- Impact: Reduces operator posting friction from 3 commands/video → 1 batch command for 5 videos.
+- Gate: ~19 days to Apr 7, 0/30 posts | Achiri alpha: Apr 25
+- Timestamp: 2026-03-17T01:00:00Z
