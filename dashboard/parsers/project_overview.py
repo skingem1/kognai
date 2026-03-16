@@ -89,8 +89,8 @@ def get_scs001_blocks():
 def get_security_status():
     """Security layers status."""
     return [
-        {"layer": 0, "name": "Physical Vault", "status": "partial", "detail": "Ollama 0.0.0.0 EXPOSED (SEC1). YubiKey pending (SEC4)."},
-        {"layer": 1, "name": "Network ACLs", "status": "partial", "detail": "Tailscale ACTIVE. ACLs locked autogroup:member."},
+        {"layer": 0, "name": "Physical Vault", "status": "partial", "detail": "Ollama 127.0.0.1 (SEC1 DONE). Router 127.0.0.1 (SEC3 DONE). YubiKey pending (SEC4)."},
+        {"layer": 1, "name": "Network ACLs", "status": "done", "detail": "Tailscale ACTIVE. ACLs locked autogroup:member. Ollama+Router localhost-only."},
         {"layer": 2, "name": "Memory Isolation", "status": "future", "detail": "Phase 2 — two-section split"},
         {"layer": 3, "name": "On-Chain Governance", "status": "done", "detail": "EAS + ERC-8004 + AAR all live"},
         {"layer": 4, "name": "Self-Policing", "status": "future", "detail": "Phase 2-3 — Plumber + Police agents"},
@@ -104,7 +104,7 @@ def get_blockers():
         {"name": "TikTok App Review", "status": "waiting", "detail": "Submitted 2026-03-15. Day 2 of 1-7 window.", "owner": "external"},
         {"name": "Stripe Account Setup", "status": "blocked", "detail": "Code complete. Needs account + env vars.", "owner": "human"},
         {"name": "Calibration Set", "status": "blocked", "detail": "50-clip curation needed for Block A full pass.", "owner": "human"},
-        {"name": "SEC1 Ollama Binding", "status": "open", "detail": "Bind to 127.0.0.1 before external traffic.", "owner": "human"},
+        {"name": "SEC1+SEC3 Binding", "status": "done", "detail": "Ollama + Router both bound to 127.0.0.1.", "owner": "resolved"},
     ]
 
 
