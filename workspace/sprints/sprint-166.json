@@ -1,0 +1,44 @@
+{
+  "sprint": "166",
+  "name": "Achiri pre-deployment smoke test — validate all endpoints before Hetzner deploy",
+  "block": "Phase 2A — Achiri alpha prep",
+  "goal": "Write scripts/achiri/smoke-test.ts that validates all Achiri server endpoints locally (config.json, ecosystem entry, GET /health, GET /stats, POST /chat) so the operator can confirm the system is fully functional before deploying to Hetzner. Gate: Achiri alpha Apr 25.",
+  "rationale": "T3 Skills gate (Apr 14) is READY. Next step is Hetzner deploy for Apr 25 alpha. Before shipping to production, need a single command that confirms all local services work. Sprint 167 will be the Hetzner deploy.",
+  "swarm": "NOT USED — 2 new files (<100 lines each). Direct write.",
+  "tasks": [
+    {
+      "id": "166-01",
+      "title": "scripts/achiri/smoke-test.ts — 6-check pre-deployment validator",
+      "description": "New script. 6 checks: (1) kognai-agents/achiri/config.json exists + valid JSON with memory_enabled/tiers fields. (2) ecosystem.config.js has achiri-api entry with port 3420. (3) GET http://localhost:3420/health returns 200. (4) GET http://localhost:3420/stats returns 200 with uptime field. (5) POST http://localhost:3420/chat with { userId: 'smoke-test', tier: 'free', message: 'مرحبا' } returns 200 with reply field. (6) workspace/achiri/memory/ directory exists or is creatable. Print ✅/❌ per check, exit 0 if all pass, exit 1 if any fail.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-166",
+      "deliverables": {
+        "code": ["scripts/achiri/smoke-test.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "166-02",
+      "title": "scripts/scs001/validate-sprint-166.ts — 4-check validation",
+      "description": "1) smoke-test.ts exists at scripts/achiri/smoke-test.ts. 2) smoke-test.ts contains 'localhost:3420'. 3) smoke-test.ts contains 'POST /chat' or '/chat'. 4) smoke-test.ts contains exit code logic (process.exit). All 4 must pass.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-166",
+      "deliverables": {
+        "code": ["scripts/scs001/validate-sprint-166.ts"],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ]
+}
