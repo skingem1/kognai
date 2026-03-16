@@ -438,3 +438,18 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
 - Manual posting workflow now complete: pipeline runs → review-videos.ts → manual TikTok post → record-manual-post.ts → /status shows gate progress
 - Session ended: 6 sprints shipped (116-121). Context limit reached.
 - Timestamp: 2026-03-17T01:00:00Z
+
+### Sprint 122 — Achiri Daily Message Limit (Block: Phase 2A — alpha prerequisite)
+- Status: PASS | Commit: 0ef645f | Block: Phase 2A — Achiri Alpha monetization
+- Files modified: agents/achiri/memory-store.ts, agents/achiri/index.ts, agents/achiri/server.ts
+- Files created: scripts/achiri/validate-daily-limit.ts, workspace/sprints/sprint-122.json
+- Tests: scripts/achiri/validate-daily-limit.ts — 5/5 PASS (counter init, increment, free limit enforced at 50, tnd_basic unlimited, ACHIRI_NO_LIMIT=1 bypass)
+- Swarm: NOT used — surgical edits to 3 files, direct write for test script
+- Changes:
+  - memory-store.ts: added getDailyCount(userId) + incrementDailyCount(userId). Counts stored in workspace/achiri/daily-counts.json keyed by date then userId.
+  - index.ts: added ACHIRI_LIMIT_EXCEEDED sentinel export. chat(): checks count >= limit before LLM call. Increments counter after successful reply. ACHIRI_NO_LIMIT=1 bypasses all checks.
+  - server.ts: import ACHIRI_LIMIT_EXCEEDED. POST /chat detects sentinel prefix, returns { error: 'limit_exceeded', reply: <Darija msg>, reset_at: <midnight UTC>, upgrade_tiers: [...] }
+- Config: free=50 msg/day, tnd_basic=-1 (unlimited), tnd_premium=-1 (unlimited)
+- Darija limit message: "Waslet el 7ed mtaa el yawm (N messages). 3awedha ghodwa aw bedel plan!"
+- Impact: Tier enforcement live. Required for Apr 25 Achiri Alpha. Free users get 50 msg/day, paid users unlimited.
+- Timestamp: 2026-03-16T16:00:00Z
