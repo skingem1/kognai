@@ -1,0 +1,61 @@
+{
+  "tasks": [
+    {
+      "id": "102-01",
+      "title": "Fix generate-daily-brief.py — stop overwriting curated strategic-context.md",
+      "description": "MODIFY ONE FILE: scripts/generate-daily-brief.py. Find the block that writes docs/strategic-context.md (search for 'strategic-context' or 'strategic_output'). Wrap the entire write block in a conditional: only write IF the file does not exist OR a --force-strategic CLI flag is passed. Steps: (1) At top of file after imports, add: FORCE_STRATEGIC = '--force-strategic' in sys.argv. (2) Find the function that generates strategic-context.md content (look for 'strategic_output' or 'STRATEGIC_OUTPUT' variable). (3) Find the open()/write() call that writes to docs/strategic-context.md. (4) Wrap that write call: if FORCE_STRATEGIC or not os.path.exists(strategic_output_path): [write the file] else: print('strategic-context.md exists — skipping (use --force-strategic to overwrite)'). (5) Do NOT change any other behavior — daily-brief.md and gate-tracker.md must still generate normally. FAIL IF: strategic-context.md is still overwritten when it already exists and --force-strategic is not passed. PASS IF: existing strategic-context.md is preserved on normal run, overwritten only with --force-strategic.",
+      "type": "bugfix",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "dependencies": [],
+      "priority": "critical",
+      "sprint_id": "sprint-102",
+      "deliverables": {
+        "code": ["scripts/generate-daily-brief.py"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "generate-daily-brief.py overwrites docs/strategic-context.md on every run (daily cron at 06:55). Sprint 101 task 101-03 had to manually restore it. The curated version has 96 lines (9-layer architecture, kill switches, Phase 1 status). The template version has 42 generic lines. Fix: skip write if file exists unless --force-strategic flag is passed."
+    },
+    {
+      "id": "102-02",
+      "title": "Create end-to-end pipeline smoke test — validate all 12 stages in mock mode",
+      "description": "CREATE ONE NEW FILE: scripts/smoke-test-pipeline.ts. DO NOT modify any existing file. EXACT IMPLEMENTATION: (1) imports at top: import { SCS001Orchestrator, PipelineRunReport } from '../agents/scs001-orchestrator/index'; import { writeFileSync, mkdirSync, existsSync } from 'fs'; import { join } from 'path'; (2) async main() function: const orch = new SCS001Orchestrator('mock'); const report: PipelineRunReport = await orch.run(); (3) Validate: const errorStages = report.stages.filter(s => s.status === 'error'); const stageCount = report.stages.length; const s = report.summary; const criticalCounters = [s.topics_found, s.clips_discovered, s.insights_generated, s.scripts_produced, s.videos_edited, s.videos_captioned, s.qc_passed + s.qc_failed]; const zeroCounters = criticalCounters.filter(c => c === 0); (4) Build result: const passed = errorStages.length === 0 && stageCount >= 8 && zeroCounters.length === 0; (5) Write report: const reportsDir = join(process.cwd(), 'reports'); if (!existsSync(reportsDir)) mkdirSync(reportsDir, { recursive: true }); writeFileSync(join(reportsDir, 'smoke-test-latest.json'), JSON.stringify({ passed, timestamp: new Date().toISOString(), stage_count: stageCount, error_count: errorStages.length, zero_counters: zeroCounters.length, summary: report.summary, errors: errorStages.map(e => e.stage + ': ' + (e.error ?? 'unknown')) }, null, 2)); (6) Print and exit: console.log(''); console.log(passed ? 'SMOKE TEST PASS' : 'SMOKE TEST FAIL'); if (errorStages.length > 0) errorStages.forEach(e => console.log('  ERROR: ' + e.stage + ' — ' + (e.error ?? ''))); if (zeroCounters.length > 0) console.log('  WARNING: ' + zeroCounters.length + ' critical counters are zero'); console.log('  Stages: ' + stageCount + ' | Errors: ' + errorStages.length + ' | Report: reports/smoke-test-latest.json'); process.exit(passed ? 0 : 1); (7) Bottom: main().catch(e => { console.error('SMOKE TEST ERROR:', e.message); process.exit(1); }); FAIL IF: file not created, does not exit 1 on failure, does not write reports/smoke-test-latest.json, imports anything other than orchestrator/fs/path.",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "dependencies": [],
+      "priority": "critical",
+      "sprint_id": "sprint-102",
+      "deliverables": {
+        "code": ["scripts/smoke-test-pipeline.ts"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "No end-to-end test exists for the 12-stage SCS-001 pipeline. Only smoke-test-event-bus.ts exists (tests Supabase event bus only). Pipeline runs 4x daily via PM2. Regressions go undetected. SCS001Orchestrator supports mock mode (no API calls). PipelineRunReport has: stages[] with status: 'ok'|'partial'|'empty'|'error', and summary with topics_found, clips_discovered, insights_generated, scripts_produced, videos_edited, videos_captioned, qc_passed, qc_failed."
+    },
+    {
+      "id": "102-03",
+      "title": "Create smoke-test-pipeline.sh — bash wrapper for operator pipeline validation",
+      "description": "CREATE ONE NEW FILE: scripts/smoke-test-pipeline.sh. DO NOT modify any existing file. EXACT CONTENT (write exactly this): #!/usr/bin/env bash\nset -euo pipefail\n\nSCRIPT_DIR=$(cd \"$(dirname \"$0\")\" && pwd)\nPROJECT_ROOT=$(dirname \"$SCRIPT_DIR\")\ncd \"$PROJECT_ROOT\"\n\necho 'SCS-001 Pipeline Smoke Test'\necho '==========================='\necho ''\n\nnpx ts-node scripts/smoke-test-pipeline.ts\nEXIT_CODE=$?\n\necho ''\nif [ $EXIT_CODE -eq 0 ]; then\n  echo 'Pipeline smoke test PASSED'\nelse\n  echo 'Pipeline smoke test FAILED (exit '$EXIT_CODE')'\nfi\n\nexit $EXIT_CODE\n\nAfter creating the file, make it executable with chmod +x scripts/smoke-test-pipeline.sh. FAIL IF: file not created, not executable, does not propagate ts-node exit code, modifies any existing file.",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "dependencies": ["102-02"],
+      "priority": "high",
+      "sprint_id": "sprint-102",
+      "deliverables": {
+        "code": ["scripts/smoke-test-pipeline.sh"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Operator needs a single command to validate pipeline before go-live. Follows pattern of run-live.sh (bash wrapper). The TS file does validation; bash handles project root navigation and human-readable output."
+    }
+  ]
+}

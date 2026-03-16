@@ -190,7 +190,7 @@ def extract_strategic_summary(dev_plan_content: str) -> str:
     return "\n".join(summary_lines[:100])
 
 
-def generate_brief(target_date: datetime, week_mode: bool = False):
+def generate_brief(target_date: datetime, week_mode: bool = False, force_strategic: bool = False):
     """Generate the daily brief file."""
     content = load_timeline()
 
@@ -297,7 +297,8 @@ Swarm is idle. Rest.
     print(f"Gate tracker written to {GATE_TRACKER_OUTPUT}")
 
     # Write strategic context (from dev plan, if available)
-    if DEV_PLAN_PATH.exists():
+    # Skip if file already exists and --force-strategic not passed (prevents overwriting curated content)
+    if DEV_PLAN_PATH.exists() and (force_strategic or not STRATEGIC_OUTPUT.exists()):
         dev_plan = DEV_PLAN_PATH.read_text()
         strategic = f"""# KOGNAI STRATEGIC CONTEXT
 *Extracted from KOGNAI_FULL_DEVELOPMENT_PLAN.md on {date_str}*
@@ -343,19 +344,24 @@ Swarm is idle. Rest.
 """
         STRATEGIC_OUTPUT.write_text(strategic)
         print(f"Strategic context written to {STRATEGIC_OUTPUT}")
+    elif STRATEGIC_OUTPUT.exists() and not force_strategic:
+        print(f"Strategic context already exists — skipping (use --force-strategic to overwrite)")
 
 
 if __name__ == "__main__":
-    if len(sys.argv) > 1:
-        if sys.argv[1] == "--week":
+    force_strategic = "--force-strategic" in sys.argv
+    args = [a for a in sys.argv[1:] if a != "--force-strategic"]
+
+    if args:
+        if args[0] == "--week":
             target = datetime.now()
-            generate_brief(target, week_mode=True)
+            generate_brief(target, week_mode=True, force_strategic=force_strategic)
         else:
             try:
-                target = datetime.strptime(sys.argv[1], "%Y-%m-%d")
+                target = datetime.strptime(args[0], "%Y-%m-%d")
             except ValueError:
                 print(f"Invalid date format. Use YYYY-MM-DD")
                 sys.exit(1)
-            generate_brief(target)
+            generate_brief(target, force_strategic=force_strategic)
     else:
-        generate_brief(datetime.now())
+        generate_brief(datetime.now(), force_strategic=force_strategic)

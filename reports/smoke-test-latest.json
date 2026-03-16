@@ -1,0 +1,26 @@
+{
+  "passed": true,
+  "timestamp": "2026-03-16T14:22:50.607Z",
+  "stage_count": 12,
+  "error_count": 0,
+  "zero_counters": 0,
+  "summary": {
+    "topics_found": 5,
+    "clips_discovered": 10,
+    "clips_qualified": 13,
+    "insights_generated": 13,
+    "scripts_produced": 13,
+    "videos_edited": 13,
+    "videos_captioned": 13,
+    "qc_passed": 13,
+    "qc_failed": 0,
+    "published": 13,
+    "viral": 5,
+    "performing": 4,
+    "failure_library": 4,
+    "flywheel_derivatives": 20,
+    "failure_entries": 4,
+    "clips_deduplicated": 0
+  },
+  "errors": []
+}
