@@ -1,0 +1,69 @@
+{
+  "tasks": [
+    {
+      "id": "099-01",
+      "title": "Create VideoHostingService — Supabase Storage upload utility for TikTok PULL_FROM_URL",
+      "description": "CREATE ONE NEW FILE: agents/scs001-hosting/index.ts. Do NOT modify any existing file.\n\nThis module provides a VideoHostingService class that uploads a local video file to Supabase Storage and returns a publicly accessible URL for TikTok's PULL_FROM_URL API.\n\nEXACT REQUIREMENTS:\n\n1. IMPORTS:\n   import { readFileSync } from 'fs';\n   import { basename } from 'path';\n   import { createClient, SupabaseClient } from '@supabase/supabase-js';\n   No other imports.\n\n2. INTERFACE:\n   export interface HostedVideo {\n     local_path: string;\n     public_url: string;\n     bucket: string;\n     storage_path: string;\n     uploaded_at: string;\n     size_bytes: number;\n   }\n\n3. CLASS VideoHostingService:\n   export class VideoHostingService {\n     private supabase: SupabaseClient;\n     private bucket: string;\n\n     constructor(opts?: { supabaseUrl?: string; supabaseKey?: string; bucket?: string }) {\n       const url = opts?.supabaseUrl ?? process.env.SUPABASE_URL ?? '';\n       const key = opts?.supabaseKey ?? process.env.SUPABASE_SERVICE_KEY ?? '';\n       this.bucket = opts?.bucket ?? 'scs001-videos';\n       this.supabase = createClient(url, key);\n     }\n\n     async upload(localPath: string, runId: string): Promise<HostedVideo> {\n       const fileBuffer = readFileSync(localPath);\n       const storagePath = runId + '/' + basename(localPath);\n       const { error } = await this.supabase.storage\n         .from(this.bucket)\n         .upload(storagePath, fileBuffer, { contentType: 'video/mp4', upsert: true });\n       if (error) throw new Error('[VideoHostingService] Upload failed: ' + error.message);\n       const { data } = this.supabase.storage.from(this.bucket).getPublicUrl(storagePath);\n       return {\n         local_path: localPath,\n         public_url: data.publicUrl,\n         bucket: this.bucket,\n         storage_path: storagePath,\n         uploaded_at: new Date().toISOString(),\n         size_bytes: fileBuffer.length,\n       };\n     }\n\n     async ensureBucket(): Promise<void> {\n       const { data: buckets } = await this.supabase.storage.listBuckets();\n       const exists = (buckets ?? []).some(b => b.name === this.bucket);\n       if (!exists) {\n         const { error } = await this.supabase.storage.createBucket(this.bucket, { public: true });\n         if (error) throw new Error('[VideoHostingService] Bucket creation failed: ' + error.message);\n         console.log('[VideoHostingService] Created bucket: ' + this.bucket);\n       } else {\n         console.log('[VideoHostingService] Bucket ' + this.bucket + ' ready');\n       }\n     }\n\n     static isConfigured(): boolean {\n       return !!(process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_KEY);\n     }\n   }\n\nFAIL CONDITIONS:\n(1) Any file other than agents/scs001-hosting/index.ts created or modified\n(2) Import of any package other than @supabase/supabase-js, fs, path\n(3) No error handling on upload failure\n(4) Missing isConfigured() static method\n(5) readFileSync not used to read the local video file\n(6) contentType not set to video/mp4",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "dependencies": [],
+      "priority": "critical",
+      "sprint_id": "sprint-099",
+      "deliverables": {
+        "code": [
+          "agents/scs001-hosting/index.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "context": "The TikTok Content Posting API uses PULL_FROM_URL which requires a publicly accessible URL. The pipeline currently passes cv.file_path (local path like /Users/tarekmnif/kognai/workspace/scs001/run-XXX/caption/video-captioned.mp4) as mediaUrl — TikTok cannot fetch from localhost. Supabase Storage is already shared infrastructure (package.json has @supabase/supabase-js ^2.98.0). Videos are ~100KB (mock) to ~2MB (production), well within free tier. The scs001-videos bucket will be created automatically by ensureBucket() if missing."
+    },
+    {
+      "id": "099-02",
+      "title": "Wire VideoHostingService into PublishingAgent for live mode video upload before TikTok post",
+      "description": "MODIFY ONE EXISTING FILE: agents/scs001-publishing/index.ts. Do NOT modify any other file.\n\nEXACT REQUIREMENTS:\n\n1. ADD IMPORT at top of file (after existing imports):\n   import { VideoHostingService } from '../scs001-hosting/index';\n\n2. ADD private field declaration in class body (with other private fields):\n   private hostingService: VideoHostingService | null;\n\n3. In constructor, AFTER the line this.client = new TikTokClient(), ADD:\n   this.hostingService = VideoHostingService.isConfigured() ? new VideoHostingService() : null;\n   if (this.mode === 'live' && !this.hostingService) {\n     console.warn('[PublishingAgent] WARNING: Supabase not configured — video hosting unavailable. Live posting will use local paths (TikTok PULL_FROM_URL will fail).');\n   }\n\n4. In the run() method, inside the for loop, BEFORE the const postOptions line, ADD:\n   let resolvedMediaUrl = cv.file_path;\n   if (this.mode === 'live' && this.hostingService) {\n     try {\n       const hosted = await this.hostingService.upload(cv.file_path, 'pub-' + new Date().toISOString().slice(0, 10));\n       resolvedMediaUrl = hosted.public_url;\n       console.log('[PublishingAgent] Uploaded to ' + hosted.public_url + ' (' + hosted.size_bytes + ' bytes)');\n     } catch (err) {\n       console.error('[PublishingAgent] Upload failed, using local path: ' + (err as Error).message);\n     }\n   } else if (this.mode === 'live' && !this.hostingService) {\n     console.warn('[PublishingAgent] WARNING: No hosting service — mediaUrl is local path');\n   }\n\n5. CHANGE in postOptions:\n   FROM: mediaUrl: cv.file_path,\n   TO:   mediaUrl: resolvedMediaUrl,\n   (The comment above mediaUrl stays unchanged)\n\n6. ALL other logic must remain IDENTICAL. Mock mode behavior MUST NOT change.\n\nFAIL CONDITIONS:\n(1) Mock mode behavior changed in any way\n(2) mediaUrl still cv.file_path in live mode when hosting succeeds\n(3) Pipeline crashes when Supabase is not configured\n(4) Pipeline crashes when upload fails (must catch and continue with local path)\n(5) Any file other than agents/scs001-publishing/index.ts modified\n(6) VideoHostingService import missing",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "dependencies": [
+        "099-01"
+      ],
+      "priority": "critical",
+      "sprint_id": "sprint-099",
+      "deliverables": {
+        "code": [
+          "agents/scs001-publishing/index.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "context": "agents/scs001-publishing/index.ts was updated in Sprint 098 to respect this.mode (no longer hardcoded dryRun:true). The file now has: constructor(mode: 'mock'|'live'='mock'), dryRun: this.mode !== 'live', and mediaUrl: cv.file_path with comment 'LIVE: mediaUrl must be a publicly accessible URL for TikTok PULL_FROM_URL. Local file paths will not work. Hosting layer integration required.' This task fulfills that TODO: when mode is live and Supabase is configured, upload first, use public_url as mediaUrl. The try/catch around upload ensures graceful degradation — if Supabase upload fails, pipeline continues (TikTok posting may fail but no crash). Depends on 099-01 (VideoHostingService module)."
+    },
+    {
+      "id": "099-03",
+      "title": "Create validate-production-preflight.ts — env var checklist for live TikTok posting",
+      "description": "CREATE ONE NEW FILE: scripts/scs001/validate-production-preflight.ts. Do NOT modify any existing file.\n\nThis script checks all prerequisites for live TikTok posting and outputs a human-readable checklist with fix hints.\n\nEXACT REQUIREMENTS:\n\n1. IMPORTS:\n   import { existsSync, readFileSync } from 'fs';\n   import { join } from 'path';\n   No other imports.\n\n2. INTERFACE:\n   interface PreflightCheck { id: string; name: string; pass: boolean; details: string; required: boolean; fix_hint: string; }\n\n3. DEFINE 7 CHECKS:\n   (a) tiktok-token: pass = !!(process.env.TIKTOK_ACCESS_TOKEN), required=true, fix_hint='Set TIKTOK_ACCESS_TOKEN in .env — obtain from TikTok Developer Portal > Manage Apps > Access Token'\n   (b) supabase-url: pass = !!(process.env.SUPABASE_URL), required=true, fix_hint='Set SUPABASE_URL in .env — from Supabase Dashboard > Settings > API > Project URL'\n   (c) supabase-key: pass = !!(process.env.SUPABASE_SERVICE_KEY), required=true, fix_hint='Set SUPABASE_SERVICE_KEY in .env — from Supabase Dashboard > Settings > API > service_role key (NOT anon key)'\n   (d) editing-mode: pass = process.env.SCS_EDITING_MODE === 'production', required=false, fix_hint='Set SCS_EDITING_MODE=production in .env for drawtext + subtitle burn-in video quality'\n   (e) scs-mode: pass = process.env.SCS_MODE === 'live', required=true, fix_hint='Set SCS_MODE=live in .env or start with: pm2 start ecosystem.config.js --only scs001-live'\n   (f) ecosystem-live: required=true. Read ecosystem.config.js (join(process.cwd(), 'ecosystem.config.js')). If file does not exist, pass=false, details='ecosystem.config.js not found'. If file exists, check contents.includes('scs001-live'), set pass accordingly. fix_hint='Run Sprint 097 tasks to add scs001-live process to ecosystem.config.js'\n   (g) hosting-service: pass = !!(process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_KEY), required=true, fix_hint='Set both SUPABASE_URL and SUPABASE_SERVICE_KEY for Supabase Storage video hosting (needed for TikTok PULL_FROM_URL)'\n\n   For secret values (tokens, keys), show only first 8 chars: token.substring(0, 8) + '...'\n   For details field of each check: if pass, show what is set (truncated); if fail, show 'NOT SET' or 'NOT FOUND'\n\n4. PRINT RESULTS:\n   console.log('\\n=== SCS-001 PRODUCTION PREFLIGHT ===\\n');\n   checks.forEach(c => {\n     console.log((c.pass ? '\\u2713' : '\\u2717') + ' [' + (c.required ? 'REQUIRED' : 'OPTIONAL') + '] ' + c.name + ': ' + c.details);\n     if (!c.pass) console.log('  FIX: ' + c.fix_hint);\n   });\n\n5. SUMMARY AND EXIT:\n   const requiredFails = checks.filter(c => c.required && !c.pass);\n   const optionalFails = checks.filter(c => !c.required && !c.pass);\n   console.log('');\n   if (requiredFails.length > 0) {\n     console.log('PREFLIGHT BLOCKED — ' + requiredFails.length + ' required check(s) failed.');\n     console.log('Fix the REQUIRED items above, then re-run: npx ts-node scripts/scs001/validate-production-preflight.ts');\n     process.exit(1);\n   } else {\n     console.log('PREFLIGHT PASS — all required checks met.');\n     if (optionalFails.length > 0) console.log('(' + optionalFails.length + ' optional enhancement(s) available — see OPTIONAL items above)');\n     console.log('Ready: pm2 start ecosystem.config.js --only scs001-live');\n     process.exit(0);\n   }\n\n6. WRAP in: async function main(): Promise<void> {} called with main().catch(err => { console.error(err); process.exit(1); });\n\nFAIL CONDITIONS:\n(1) Any import other than 'fs' and 'path'\n(2) Missing TIKTOK_ACCESS_TOKEN check\n(3) Missing Supabase URL and key checks\n(4) No fix hints printed for failures\n(5) Any existing file modified\n(6) Script does not exit with code 1 when required checks fail\n(7) Secrets/tokens printed in full (must truncate)",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "dependencies": [],
+      "priority": "high",
+      "sprint_id": "sprint-099",
+      "deliverables": {
+        "code": [
+          "scripts/scs001/validate-production-preflight.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "context": "The operator needs a single command to check all prerequisites before attempting live TikTok posting. Currently there is no way to verify TIKTOK_ACCESS_TOKEN, SUPABASE_URL, SUPABASE_SERVICE_KEY, SCS_EDITING_MODE, SCS_MODE, and ecosystem.config.js in one shot. Pattern follows existing validators (validate-phase0-gate.ts, validate-phase1-activation.ts, validate-production-quality.ts). Independent of 099-01/099-02 — uses only fs/path imports, no Supabase SDK. The fix_hint for each check gives exact operator instructions. Secrets are truncated at 8 chars to prevent token leakage in logs."
+    }
+  ]
+}

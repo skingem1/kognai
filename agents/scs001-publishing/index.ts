@@ -9,6 +9,7 @@ import type { QualityControlGate } from '../scs001-qc/index';
 import type { CaptionedVideo } from '../scs001-caption/index';
 import type { ScriptBundle } from '../scs001-script/index';
 import { TikTokClient, TikTokPostOptions } from '../tiktok-client/index';
+import { VideoHostingService } from '../scs001-hosting/index';
 
 export interface PublishedVideo {
   publish_id:    string;
@@ -80,10 +81,15 @@ function buildCaption(bundle: ScriptBundle): string {
 export class PublishingAgent {
   private client: TikTokClient;
   private mode: 'mock' | 'live';
+  private hostingService: VideoHostingService | null;
 
   constructor(mode: 'mock' | 'live' = 'mock') {
     this.mode = mode;
     this.client = new TikTokClient();
+    this.hostingService = VideoHostingService.isConfigured() ? new VideoHostingService() : null;
+    if (this.mode === 'live' && !this.hostingService) {
+      console.warn('[PublishingAgent] WARNING: Supabase not configured — video hosting unavailable. Live posting will use local paths (TikTok PULL_FROM_URL will fail).');
+    }
   }
 
   async run(
@@ -139,11 +145,25 @@ export class PublishingAgent {
         console.log('[PublishingAgent] LIVE MODE — posting to TikTok API');
       }
 
+      // Resolve media URL: upload to Supabase Storage in live mode for TikTok PULL_FROM_URL
+      let resolvedMediaUrl = cv.file_path;
+      if (this.mode === 'live' && this.hostingService) {
+        try {
+          const hosted = await this.hostingService.upload(cv.file_path, 'pub-' + new Date().toISOString().slice(0, 10));
+          resolvedMediaUrl = hosted.public_url;
+          console.log('[PublishingAgent] Uploaded to ' + hosted.public_url + ' (' + hosted.size_bytes + ' bytes)');
+        } catch (err) {
+          console.error('[PublishingAgent] Upload failed, using local path: ' + (err as Error).message);
+        }
+      } else if (this.mode === 'live' && !this.hostingService) {
+        console.warn('[PublishingAgent] WARNING: No hosting service — mediaUrl is local path');
+      }
+
       const postOptions: TikTokPostOptions = {
         caption: captionText,
-        // LIVE: mediaUrl must be a publicly accessible URL for TikTok PULL_FROM_URL.
-        // Local file paths will not work. Hosting layer integration required.
-        mediaUrl: cv.file_path,
+        // LIVE: resolvedMediaUrl is public Supabase Storage URL (uploaded above).
+        // Falls back to local path if hosting not configured (TikTok will reject).
+        mediaUrl: resolvedMediaUrl,
         mediaType: 'video',
         hashtags,
         dryRun: this.mode !== 'live',
