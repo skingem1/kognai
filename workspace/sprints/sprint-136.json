@@ -1,0 +1,85 @@
+{
+  "sprint": "136",
+  "name": "Achiri waitlist command — /waitlist saves chatId for alpha invite management",
+  "block": "Phase 2A — Achiri alpha prep",
+  "goal": "Add /waitlist command to Telegram bot. Any user can /waitlist to join the Achiri alpha waitlist (chatId + name saved to workspace/achiri/waitlist.jsonl). /waitlist list (owner-only) shows all waitlist entries + count. This gives the operator a managed list of users to invite when setting ACHIRI_ALPHA_WHITELIST on Apr 25.",
+  "rationale": "Alpha launch is Apr 25 (40 days). Without a waitlist, operator has no way to know who wants access and must manually collect chatIds. /waitlist = zero-friction alpha pipeline. Operator can copy chatIds from /waitlist list directly into ACHIRI_ALPHA_WHITELIST env var.",
+  "swarm": "NOT USED — 2 file edits (commands.ts + index.ts) + 1 new file (waitlist.jsonl data dir). Direct write.",
+  "tasks": [
+    {
+      "id": "136-01",
+      "title": "agents/telegram-bot/commands.ts — handleWaitlist()",
+      "description": "Add handleWaitlist(chatId, subCmd, ownerChatId). Logic: if subCmd === 'list' and chatId === ownerChatId: load waitlist.jsonl, format list with chatId + name + joinedAt, send to owner. Otherwise (any user): check if chatId already on waitlist (no duplicates), append entry {chatId, firstName, username, joinedAt} to workspace/achiri/waitlist.jsonl, confirm with 'You're on the Achiri alpha waitlist! We'll notify you when it launches (Apr 25).' If already on list: 'You're already on the waitlist — we'll let you know when it's ready!'",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-136",
+      "deliverables": {
+        "code": ["agents/telegram-bot/commands.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "136-02",
+      "title": "agents/telegram-bot/index.ts — /waitlist dispatch",
+      "description": "Add handleWaitlist to imports from ./commands. Add case '/waitlist' to the dispatch switch: await handleWaitlist(chatId, text.split(/\\s+/)[1], OWNER_CHAT_ID). OWNER_CHAT_ID is already in scope as a const. /waitlist is NOT behind beta gate — any user can join the waitlist even during beta.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-136",
+      "deliverables": {
+        "code": ["agents/telegram-bot/index.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "136-03",
+      "title": "agents/telegram-bot/commands.ts — handleHelp() add /waitlist",
+      "description": "Add '/waitlist — Join Achiri alpha waitlist (launches Apr 25)' to the Achiri section of handleHelp().",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-136",
+      "deliverables": {
+        "code": ["agents/telegram-bot/commands.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "136-04",
+      "title": "scripts/achiri/validate-sprint-136.ts — validation",
+      "description": "Check: (1) handleWaitlist exported from commands.ts, (2) /waitlist case in index.ts dispatch switch, (3) handleHelp contains /waitlist, (4) dry-run handleWaitlist by calling the function with a test chatId against a temp file, (5) duplicate prevention (calling twice doesn't add second entry).",
+      "type": "create",
+      "task_type": "test",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-136",
+      "deliverables": {
+        "code": ["scripts/achiri/validate-sprint-136.ts"],
+        "tests": ["scripts/achiri/validate-sprint-136.ts"],
+        "docs": []
+      }
+    }
+  ],
+  "acceptance_criteria": [
+    "handleWaitlist() exported from commands.ts",
+    "/waitlist dispatch case in index.ts",
+    "handleHelp() contains /waitlist mention",
+    "Joining twice doesn't create duplicate entries",
+    "validate-sprint-136.ts exits 0 (all checks pass)"
+  ]
+}

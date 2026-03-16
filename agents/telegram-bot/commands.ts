@@ -1,8 +1,8 @@
 // Command handlers — Phase 1 TikTok Content Agent Telegram Bot
 // Each handler receives chatId + message text, sends response(s) via sendMessage/sendPhoto.
 
-import { readdirSync, readFileSync, existsSync } from 'fs';
-import { join } from 'path';
+import { readdirSync, readFileSync, existsSync, appendFileSync, mkdirSync } from 'fs';
+import { join, dirname } from 'path';
 import { sendMessage, sendPhoto } from './bot';
 import { TelegramDB } from './db';
 import { createCheckoutSession, isConfigured as stripeConfigured } from '../stripe/client';
@@ -100,6 +100,7 @@ export async function handleHelp(chatId: number): Promise<void> {
     '',
     '🤖 *Achiri AI Companion*',
     '/achiri <msg> — Chat with Achiri (free tier, Darija/Arabic/French)',
+    '/waitlist — Join Achiri alpha waitlist (launches Apr 25)',
     '',
     '/help — This message',
   ].join('\n'));
@@ -438,4 +439,84 @@ export async function handleAchiri(chatId: number, message: string): Promise<voi
     console.error('[telegram-bot] Achiri HTTP error:', err);
     await sendMessage(chatId, 'Mrigoul, ma njemtch nchouf — 3awedha marra oukhra 🙏');
   }
+}
+
+// ── Achiri alpha waitlist (Sprint 136) ────────────────────────────────────────
+// /waitlist           — any user joins the waitlist
+// /waitlist list      — owner-only: show all entries + count
+
+const WAITLIST_PATH = join(process.cwd(), 'workspace', 'achiri', 'waitlist.jsonl');
+
+interface WaitlistEntry {
+  chatId:    string;
+  firstName: string;
+  username?: string;
+  joinedAt:  string;
+}
+
+function loadWaitlist(): WaitlistEntry[] {
+  if (!existsSync(WAITLIST_PATH)) return [];
+  try {
+    return readFileSync(WAITLIST_PATH, 'utf-8')
+      .split('\n').filter(l => l.trim())
+      .map(l => { try { return JSON.parse(l) as WaitlistEntry; } catch { return null; } })
+      .filter(Boolean) as WaitlistEntry[];
+  } catch { return []; }
+}
+
+export async function handleWaitlist(
+  chatId: number,
+  firstName: string,
+  username: string | undefined,
+  subCmd: string | undefined,
+  ownerChatId: string
+): Promise<void> {
+  // Owner-only /waitlist list
+  if (subCmd === 'list') {
+    if (String(chatId) !== ownerChatId) {
+      await sendMessage(chatId, '🔒 Owner only.');
+      return;
+    }
+    const entries = loadWaitlist();
+    if (entries.length === 0) {
+      await sendMessage(chatId, '📋 Achiri waitlist: empty');
+      return;
+    }
+    const lines = entries.map((e, i) =>
+      `${i + 1}. \`${e.chatId}\` — ${e.firstName}${e.username ? ' (@' + e.username + ')' : ''} — ${e.joinedAt.slice(0, 10)}`
+    );
+    await sendMessage(chatId, `📋 *Achiri Waitlist* (${entries.length} entries)\n\n${lines.join('\n')}`);
+    return;
+  }
+
+  // Any user — join waitlist
+  const existing = loadWaitlist();
+  const alreadyOn = existing.some(e => e.chatId === String(chatId));
+
+  if (alreadyOn) {
+    await sendMessage(chatId, '✅ You\'re already on the Achiri waitlist — we\'ll notify you when it launches (Apr 25)! 🚀');
+    return;
+  }
+
+  const entry: WaitlistEntry = {
+    chatId:    String(chatId),
+    firstName,
+    username,
+    joinedAt:  new Date().toISOString(),
+  };
+
+  const dir = dirname(WAITLIST_PATH);
+  if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
+  appendFileSync(WAITLIST_PATH, JSON.stringify(entry) + '\n', 'utf-8');
+
+  await sendMessage(chatId, [
+    '🎉 You\'re on the *Achiri alpha waitlist*!',
+    '',
+    'Achiri is a culturally adaptive AI companion that speaks Darija, Arabic & French.',
+    '',
+    '📅 Alpha launches *Apr 25* — you\'ll get an invite here.',
+    '',
+    'Want a preview? Try: `/achiri مرحبا`',
+  ].join('\n'));
+}
 }
