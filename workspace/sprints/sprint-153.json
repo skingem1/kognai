@@ -1,0 +1,67 @@
+{
+  "sprint": "153",
+  "name": "TikTok live mode readiness — /tiktok-status command",
+  "block": "Phase 1 — TikTok go-live readiness",
+  "goal": "Add /tiktok-status Telegram command (owner-only). Shows: TIKTOK_ACCESS_TOKEN (set/missing), current SCS_MODE (mock/live), gate progress (posts/views), scs001-live PM2 entry present (check ecosystem.config.js string), steps to go live. Mirrors /stripe-status and /deploy-status pattern. Add to handleHelp() and index.ts routing.",
+  "rationale": "Manual posting is the current default because TIKTOK_ACCESS_TOKEN is blocked. /tiktok-status gives operator a Telegram-native checklist showing exactly what's needed to switch from manual to automated posting — essential information before the Apr 7 gate.",
+  "swarm": "NOT USED — 2 file edits + 1 validation script. Direct write.",
+  "tasks": [
+    {
+      "id": "153-01",
+      "title": "commands.ts — handleTiktokStatus() + handleHelp() update",
+      "description": "handleTiktokStatus(chatId, ownerChatId): owner gate. Checks: TIKTOK_ACCESS_TOKEN (✅ set / ❌ missing). SCS_MODE (process.env.SCS_MODE ?? 'mock' — shows current mode). Gate progress: reads loadManualPosts() and loadPublishLedger(). Shows: live = TIKTOK_ACCESS_TOKEN set → 🟢 LIVE MODE READY / 🔴 MANUAL MODE (no token). Shows post gate progress (count/30, views/500). Steps if not live: set TIKTOK_ACCESS_TOKEN in .env, pm2 start --only scs001-live. handleHelp: add '/tiktok-status — TikTok live mode readiness (owner)' after /stripe-status line.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-153",
+      "deliverables": {
+        "code": ["agents/telegram-bot/commands.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "153-02",
+      "title": "index.ts — import handleTiktokStatus + route /tiktok-status",
+      "description": "Add handleTiktokStatus to import. Add case '/tiktok-status' in dispatch switch.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-153",
+      "deliverables": {
+        "code": ["agents/telegram-bot/index.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "153-03",
+      "title": "validate-sprint-153.ts — 5-check validation",
+      "description": "1) commands.ts exports handleTiktokStatus. 2) commands.ts checks TIKTOK_ACCESS_TOKEN. 3) handleHelp contains /tiktok-status. 4) index.ts routes /tiktok-status. 5) commands.ts shows gate progress in handleTiktokStatus.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-153",
+      "deliverables": {
+        "code": ["scripts/scs001/validate-sprint-153.ts"],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ],
+  "acceptance_criteria": [
+    "handleTiktokStatus() exported, checks TIKTOK_ACCESS_TOKEN + SCS_MODE + gate progress",
+    "/tiktok-status routed in index.ts",
+    "handleHelp shows /tiktok-status",
+    "validate-sprint-153.ts: 5/5 PASS"
+  ]
+}

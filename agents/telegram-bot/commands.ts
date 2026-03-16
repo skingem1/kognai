@@ -97,6 +97,7 @@ export async function handleHelp(chatId: number): Promise<void> {
     '/stats — Pipeline statistics',
     '/subscribe — Subscribe to TikTok Agent ($19/$49/mo)',
     '/stripe-status — Stripe go-live checklist (owner)',
+    '/tiktok-status — TikTok live mode readiness (owner)',
     '/gate — Phase 1.5 gate review (Apr 7 kill switch)',
     '/post-reminder — Apr 7 gate progress + posting workflow (owner)',
     '/review — Top-3 QC-passed videos for manual posting (owner)',
@@ -1094,6 +1095,58 @@ export async function handleDeployStatus(chatId: number, ownerChatId: string): P
 
   const daysToAlpha = Math.ceil((new Date('2026-04-25T00:00:00Z').getTime() - Date.now()) / 86400000);
   lines.push('', `📅 Achiri alpha: Apr 25 (${daysToAlpha}d)`);
+
+  await sendMessage(chatId, lines.join('\n'));
+}
+
+// ── Sprint 153: /tiktok-status — TikTok live mode readiness ──────────────────
+
+export async function handleTiktokStatus(chatId: number, ownerChatId: string): Promise<void> {
+  if (String(chatId) !== String(ownerChatId)) {
+    await sendMessage(chatId, '⛔ Owner-only command.');
+    return;
+  }
+
+  const tokenSet  = Boolean(process.env.TIKTOK_ACCESS_TOKEN);
+  const scsMode   = process.env.SCS_MODE ?? 'mock';
+  const live      = tokenSet && scsMode === 'live';
+
+  const manual  = loadManualPosts();
+  const ledger  = loadPublishLedger();
+
+  const postIcon  = manual.count >= 30 ? '✅' : '❌';
+  const viewsIcon = manual.totalViews >= 500 ? '✅' : '❌';
+
+  const gateDate = new Date('2026-04-07T00:00:00Z');
+  const daysLeft = Math.max(0, Math.ceil((gateDate.getTime() - Date.now()) / 86400000));
+
+  const lines: string[] = [
+    `🎬 *TikTok Status* — ${live ? '🟢 LIVE MODE' : '🔴 MANUAL MODE'}`,
+    '',
+    tokenSet ? '✅ TIKTOK_ACCESS_TOKEN' : '❌ TIKTOK_ACCESS_TOKEN (missing)',
+    `ℹ️  SCS_MODE: ${scsMode}`,
+    '',
+    `*Gate progress (Apr 7 — ${daysLeft}d):*`,
+    `${postIcon} Posts:  *${manual.count}/30*`,
+    `${viewsIcon} Views:  *${manual.totalViews}/500*`,
+    '',
+    `*Pipeline queue:*`,
+    `• Generated: ${ledger.total} | Posted: ${manual.count} | Unposted: ${ledger.total - manual.count}`,
+  ];
+
+  if (!live) {
+    const steps: string[] = [];
+    if (!tokenSet) steps.push('Set TIKTOK_ACCESS_TOKEN in .env (requires TikTok App Review)');
+    if (scsMode !== 'live') steps.push('Set SCS_MODE=live in .env');
+    if (steps.length > 0) {
+      lines.push('', '📌 *To enable live posting:*');
+      steps.forEach((s, i) => lines.push(`${i + 1}. ${s}`));
+      lines.push(`${steps.length + 1}. pm2 start ecosystem.config.js --only scs001-live`);
+    }
+    lines.push('', '_Until then: use manual posting workflow — /queue → /record_');
+  } else {
+    lines.push('', '✅ *Live mode active — pipeline posting to TikTok automatically.*');
+  }
 
   await sendMessage(chatId, lines.join('\n'));
 }

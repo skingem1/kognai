@@ -22,7 +22,7 @@ import {
   handleSchedule, handleStats, handleStatus, handleSubscribe, handleUnknown,
   handleAchiri, handleGate, handleWaitlist, handleAchiriHealth, handlePostReminder,
   handleReview, handleRecord, handleUpdateViews, handleInviteAchiri, handleDeployStatus,
-  handleStripeStatus, handleQueue,
+  handleStripeStatus, handleQueue, handleTiktokStatus,
 } from './commands';
 
 // ── Config ────────────────────────────────────────────────────────────────────
@@ -108,6 +108,7 @@ async function dispatch(update: TelegramUpdate): Promise<void> {
     case '/deploy-status':   await handleDeployStatus(chatId, OWNER_CHAT_ID);            break;
     case '/stripe-status':   await handleStripeStatus(chatId, OWNER_CHAT_ID);           break;
     case '/queue':           await handleQueue(chatId, OWNER_CHAT_ID);                  break;
+    case '/tiktok-status':   await handleTiktokStatus(chatId, OWNER_CHAT_ID);           break;
     default:                 await handleUnknown(chatId, text);                          break;
   }
 }
