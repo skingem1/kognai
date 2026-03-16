@@ -1,17 +1,19 @@
-// Achiri HTTP API Server — Sprint 115 + Sprint 126 (paymee upgrade endpoint)
+// Achiri HTTP API Server — Sprint 115 + Sprint 126 (paymee) + Sprint 127 (voice)
 // Exposes AchiriConversationHandler as a REST endpoint.
 // Port: 3420 (ACHIRI_PORT env override)
 // Routes:
 //   POST   /chat                { userId, tier?, message } → { reply, turns_in_memory, model, provider, tier }
+//   POST   /voice               { userId, tier, audioText, audioFilePath? } → { transcript, reply, voice_reply, model, provider, tier, whisper_used }
 //   GET    /upgrade             ?tier=tnd_basic&userId=xxx → { checkout_url, order_id, amount_tnd, tier, mock }
 //   DELETE /memory/:userId      → { ok: true }
 //   GET    /stats               → { users, total_turns, uptime_s }
-//   GET    /health              → { status: 'ok', version: '126' }
+//   GET    /health              → { status: 'ok', version: '127' }
 
 import * as http from 'http';
 import { AchiriConversationHandler, ACHIRI_LIMIT_EXCEEDED } from './index';
 import { AchiriMemoryStore } from './memory-store';
 import { createCheckoutUrl } from './paymee';
+import { processVoiceMessage, VoiceTierError } from './voice-handler';
 
 const PORT = parseInt(process.env.ACHIRI_PORT ?? '3420', 10);
 const START_TIME = Date.now();
@@ -55,7 +57,7 @@ const server = http.createServer(async (req, res) => {
 
   // GET /health
   if (method === 'GET' && url === '/health') {
-    return send(res, 200, { status: 'ok', version: '126', uptime_s: Math.floor((Date.now() - START_TIME) / 1000) });
+    return send(res, 200, { status: 'ok', version: '127', uptime_s: Math.floor((Date.now() - START_TIME) / 1000) });
   }
 
   // GET /upgrade?tier=tnd_basic&userId=xxx
@@ -93,6 +95,31 @@ const server = http.createServer(async (req, res) => {
     }
     console.log('[Achiri API] memory cleared for user:', userId);
     return send(res, 200, { ok: true });
+  }
+
+  // POST /voice — tnd_premium only (Sprint 127)
+  if (method === 'POST' && url === '/voice') {
+    let body: { userId?: string; tier?: string; audioText?: string; audioFilePath?: string };
+    try {
+      body = JSON.parse(await readBody(req));
+    } catch {
+      return send(res, 400, { error: 'invalid JSON' });
+    }
+    const { userId = 'anonymous', tier = 'free', audioText = '', audioFilePath } = body;
+    if (!audioText && !audioFilePath) {
+      return send(res, 400, { error: 'audioText or audioFilePath is required' });
+    }
+    try {
+      const result = await processVoiceMessage({ userId, tier, audioText, audioFilePath });
+      console.log('[Achiri API] /voice userId=' + userId + ' tier=' + tier + ' whisper=' + result.whisper_used);
+      return send(res, 200, result);
+    } catch (err) {
+      if (err instanceof VoiceTierError) {
+        return send(res, 403, { error: 'tier_error', message: (err as Error).message, required_tier: 'tnd_premium' });
+      }
+      console.error('[Achiri API] /voice error:', err);
+      return send(res, 500, { error: 'internal error' });
+    }
   }
 
   // POST /chat
@@ -157,7 +184,7 @@ const server = http.createServer(async (req, res) => {
 
 server.listen(PORT, () => {
   console.log('[Achiri API] listening on port ' + PORT);
-  console.log('[Achiri API] routes: POST /chat, GET /upgrade, DELETE /memory/:userId, GET /stats, GET /health');
+  console.log('[Achiri API] routes: POST /chat, POST /voice, GET /upgrade, DELETE /memory/:userId, GET /stats, GET /health');
 });
 
 export { server };

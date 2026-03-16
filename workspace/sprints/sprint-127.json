@@ -1,0 +1,61 @@
+{
+  "sprint": "127",
+  "name": "achiri-voice T3 skill — voice message processing and voice-friendly responses",
+  "block": "Phase 2A — T3 Skills Installation (Apr 14 gate)",
+  "goal": "Implement agents/achiri/voice-handler.ts — processes voice messages for Achiri tnd_premium tier. formatForVoice(text) strips markdown and produces short sentences. processVoiceMessage(input, userId, tier) → VoiceResult. Wire POST /voice endpoint in server.ts. Whisper stub for future local ASR.",
+  "rationale": "tnd_premium config lists 'voice' as a feature. Without a voice handler, premium tier has no voice value. This skill defines the voice contract so the Telegram bridge can accept voice messages in Sprint 128. Whisper transcription wired as stub (no CLI found) — voice-friendly formatting ships now, transcription can be enabled when Whisper installed.",
+  "swarm": "NOT USED — new file + server edit, direct write.",
+  "tasks": [
+    {
+      "id": "127-01",
+      "title": "agents/achiri/voice-handler.ts — voice processing skill",
+      "description": "Export: formatForVoice(text: string): string — strips markdown (# * _ ` [] etc), splits into <=20 word sentences, removes bullet lists. Export: processVoiceMessage(params: VoiceParams): Promise<VoiceResult>. VoiceParams = { userId, tier, audioText: string (pre-transcribed or raw text), audioFilePath?: string }. VoiceResult = { transcript: string, reply: string, voice_reply: string (formatted), model: string, provider: string, tier: string, whisper_used: boolean }. Tier check: only tnd_premium supports voice (others get tier_error). Whisper stub: if audioFilePath set and WHISPER_PATH env set, spawn whisper CLI, else use audioText as transcript.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-127",
+      "deliverables": {
+        "code": ["agents/achiri/voice-handler.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "127-02",
+      "title": "server.ts — wire POST /voice endpoint",
+      "description": "Add POST /voice { userId, tier, audioText, audioFilePath? } → { transcript, reply, voice_reply, model, provider, tier, whisper_used }. Returns 403 if tier != tnd_premium. Small surgical edit.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-127",
+      "deliverables": {
+        "code": ["agents/achiri/server.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "127-03",
+      "title": "scripts/achiri/validate-voice-handler.ts — 5-check validation",
+      "description": "Tests: (1) formatForVoice strips markdown headers/bold/code; (2) formatForVoice breaks long sentence into <=20-word chunks; (3) processVoiceMessage with free tier returns tier_error; (4) processVoiceMessage with tnd_premium + audioText returns VoiceResult with voice_reply set; (5) POST /voice endpoint returns voice_reply (start server port 3422, hit, kill). All 5 PASS.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-127",
+      "deliverables": {
+        "code": ["scripts/achiri/validate-voice-handler.ts"],
+        "tests": ["scripts/achiri/validate-voice-handler.ts"],
+        "docs": []
+      }
+    }
+  ]
+}
