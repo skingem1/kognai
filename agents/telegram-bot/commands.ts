@@ -6,7 +6,8 @@ import { join } from 'path';
 import { sendMessage, sendPhoto } from './bot';
 import { TelegramDB } from './db';
 import { createCheckoutSession, isConfigured as stripeConfigured } from '../stripe/client';
-import { AchiriConversationHandler } from '../achiri/index';
+// Achiri HTTP bridge (Sprint 130) — routes to ACHIRI_BASE_URL instead of in-process import
+const ACHIRI_BASE_URL = (process.env.ACHIRI_BASE_URL ?? 'http://localhost:3420').replace(/\/$/, '');
 
 const REPORTS_DIR = join(process.cwd(), 'reports');
 
@@ -322,17 +323,10 @@ export async function handleUnknown(chatId: number, text: string): Promise<void>
   await sendMessage(chatId, `❓ Unknown command: \`${text}\`\n\nUse /help for available commands.`);
 }
 
-// ── Achiri AI companion bridge (Sprint 116) ───────────────────────────────────
-
-// One handler per chatId — persists memory across messages in the same process session
-const achiriHandlers = new Map<number, AchiriConversationHandler>();
-
-function getAchiriHandler(chatId: number): AchiriConversationHandler {
-  if (!achiriHandlers.has(chatId)) {
-    achiriHandlers.set(chatId, new AchiriConversationHandler('free', String(chatId)));
-  }
-  return achiriHandlers.get(chatId)!;
-}
+// ── Achiri AI companion bridge (Sprint 130 — HTTP bridge) ────────────────────
+// Routes to ACHIRI_BASE_URL/chat via HTTP POST instead of in-process import.
+// Set ACHIRI_BASE_URL=http://65.108.90.178/achiri for Hetzner production.
+// Default: http://localhost:3420 (dev / local Achiri server).
 
 export async function handleAchiri(chatId: number, message: string): Promise<void> {
   if (!message || !message.trim()) {
@@ -340,11 +334,33 @@ export async function handleAchiri(chatId: number, message: string): Promise<voi
     return;
   }
   try {
-    const handler = getAchiriHandler(chatId);
-    const reply = await handler.chat(message.trim());
-    await sendMessage(chatId, reply);
+    const res = await fetch(ACHIRI_BASE_URL + '/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId: String(chatId), tier: 'free', message: message.trim() }),
+    });
+    const data = await res.json() as {
+      reply?: string;
+      error?: string;
+      upgrade_url?: string;
+      reset_at?: string;
+    };
+
+    if (data.error === 'limit_exceeded') {
+      const parts = [data.reply ?? 'Wselti l7edd el-yawmi.'];
+      if (data.upgrade_url) {
+        parts.push('\n🔗 Upgrade: ' + data.upgrade_url);
+      } else if (data.reset_at) {
+        const reset = new Date(data.reset_at).toLocaleTimeString('fr-TN', { hour: '2-digit', minute: '2-digit' });
+        parts.push('\n⏰ Tarja3 men ba3d ' + reset + ' (UTC).');
+      }
+      await sendMessage(chatId, parts.join(''));
+      return;
+    }
+
+    await sendMessage(chatId, data.reply ?? 'Ma fjemt — 3awedha marra oukhra 🙏');
   } catch (err) {
-    console.error('[telegram-bot] Achiri error:', err);
+    console.error('[telegram-bot] Achiri HTTP error:', err);
     await sendMessage(chatId, 'Mrigoul, ma njemtch nchouf — 3awedha marra oukhra 🙏');
   }
 }

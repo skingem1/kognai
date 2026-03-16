@@ -1,0 +1,61 @@
+{
+  "sprint": "130",
+  "name": "Achiri HTTP bridge — Telegram bot routes to ACHIRI_BASE_URL (production wiring)",
+  "block": "Phase 2A — Achiri Deployment (Apr 25 alpha gate)",
+  "goal": "Decouple Telegram bot from Achiri in-process module. Replace direct AchiriConversationHandler import in commands.ts with HTTP fetch to ACHIRI_BASE_URL env var (default: http://localhost:3420). Telegram bot works in dev (localhost) or production (Hetzner public URL) by setting env. Handle limit_exceeded response with upgrade_url inline message.",
+  "rationale": "Sprint 129 created the deploy package. Sprint 130 wires the Telegram bot to the deployed Achiri API. Without this, the bot still imports Achiri in-process — which works locally but won't work when Telegram bot runs on Mac Mini and Achiri runs on Hetzner. ACHIRI_BASE_URL env makes routing configurable without code changes.",
+  "swarm": "NOT USED — single-file surgical edit to commands.ts + new validation script. Direct write.",
+  "tasks": [
+    {
+      "id": "130-01",
+      "title": "commands.ts — replace AchiriConversationHandler import with HTTP fetch",
+      "description": "Remove: import { AchiriConversationHandler } from '../achiri/index'. Remove: achiriHandlers Map and getAchiriHandler(). Replace handleAchiri() body: fetch(ACHIRI_BASE_URL + '/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ userId: String(chatId), tier: 'free', message }) }). Parse JSON response. If error==='limit_exceeded' → send upgrade message with upgrade_url if present. If normal reply → sendMessage(chatId, reply). ACHIRI_BASE_URL defaults to http://localhost:3420.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-130",
+      "deliverables": {
+        "code": ["agents/telegram-bot/commands.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "130-02",
+      "title": ".env.example — add ACHIRI_BASE_URL entry",
+      "description": "Add ACHIRI_BASE_URL=http://localhost:3420 under the Achiri section. Comment: 'For Hetzner prod: set to http://65.108.90.178/achiri'.",
+      "type": "modify",
+      "task_type": "config",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-130",
+      "deliverables": {
+        "code": [".env.example"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "130-03",
+      "title": "scripts/achiri/validate-telegram-http-bridge.ts — 5/5 validation",
+      "description": "Tests: (1) handleAchiri import exists (no AchiriConversationHandler import in commands.ts); (2) ACHIRI_BASE_URL env var is read (grep commands.ts for ACHIRI_BASE_URL); (3) HTTP POST /chat mock test — mock fetch, call handleAchiri, verify POST sent with correct body; (4) limit_exceeded response → message contains upgrade text; (5) empty message → no fetch call made. 5/5 PASS.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-130",
+      "deliverables": {
+        "code": ["scripts/achiri/validate-telegram-http-bridge.ts"],
+        "tests": ["scripts/achiri/validate-telegram-http-bridge.ts"],
+        "docs": []
+      }
+    }
+  ]
+}
