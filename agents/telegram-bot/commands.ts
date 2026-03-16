@@ -3,6 +3,7 @@
 
 import { readdirSync, readFileSync, existsSync, appendFileSync, mkdirSync, writeFileSync, statSync } from 'fs';
 import { join, dirname } from 'path';
+import { execSync } from 'child_process';
 import { sendMessage, sendPhoto } from './bot';
 import { TelegramDB } from './db';
 import { createCheckoutSession, isConfigured as stripeConfigured } from '../stripe/client';
@@ -116,6 +117,7 @@ export async function handleHelp(chatId: number): Promise<void> {
     '/invite-achiri <id> — Invite user to Achiri alpha whitelist (owner)',
     '/deploy-status — Achiri alpha deploy checklist (owner)',
     '/achiri-health — Achiri server status (owner)',
+    '/pm2-status — All PM2 processes: status, uptime, restarts (owner)',
     '',
     '/help — This message',
   ].join('\n'));
@@ -1721,6 +1723,78 @@ export async function handleViral(chatId: number, ownerChatId: string): Promise<
   lines.push('');
   lines.push(`💡 Use these as your next video topics.`);
   lines.push(`→ /today for today's target | /queue for ready videos`);
+
+  await sendMessage(chatId, lines.join('\n'));
+}
+
+// ── Sprint 163: /pm2-status — PM2 process watchboard ─────────────────────────
+
+interface Pm2Process {
+  name: string;
+  pm2_env: {
+    status: string;
+    pm_uptime: number;
+    restart_time: number;
+    pm_id: number;
+  };
+}
+
+function formatUptime(uptimeMs: number): string {
+  if (!uptimeMs || uptimeMs <= 0) return 'stopped';
+  const totalMin = Math.floor(uptimeMs / 60000);
+  if (totalMin < 60) return `${totalMin}m`;
+  const h = Math.floor(totalMin / 60);
+  if (h < 24) return `${h}h`;
+  const d = Math.floor(h / 24);
+  return `${d}d`;
+}
+
+function statusEmoji(status: string): string {
+  switch (status) {
+    case 'online':   return '🟢';
+    case 'stopped':  return '⭕';
+    case 'errored':  return '🔴';
+    case 'launching':return '🟡';
+    default:         return '⚪';
+  }
+}
+
+export async function handlePm2Status(chatId: number, ownerChatId: string): Promise<void> {
+  if (String(chatId) !== String(ownerChatId)) {
+    await sendMessage(chatId, '⛔ Owner-only command.');
+    return;
+  }
+
+  let processes: Pm2Process[] = [];
+  try {
+    const raw = execSync('pm2 jlist', { timeout: 10000, encoding: 'utf-8' });
+    processes = JSON.parse(raw);
+  } catch (e: any) {
+    await sendMessage(chatId, `⚠️ pm2 jlist failed: ${(e as Error).message?.slice(0, 200) ?? 'unknown error'}`);
+    return;
+  }
+
+  if (!Array.isArray(processes) || processes.length === 0) {
+    await sendMessage(chatId, '⚠️ No PM2 processes found. Is PM2 running?');
+    return;
+  }
+
+  const online = processes.filter(p => p.pm2_env?.status === 'online').length;
+  const lines: string[] = [
+    `⚙️ *PM2 Processes* (${online}/${processes.length} online)`,
+    '',
+  ];
+
+  for (const p of processes) {
+    const env    = p.pm2_env ?? {};
+    const emoji  = statusEmoji(env.status ?? 'unknown');
+    const uptime = env.status === 'online' ? formatUptime(Date.now() - (env.pm_uptime ?? 0)) : env.status;
+    const restarts = env.restart_time ?? 0;
+    lines.push(`${emoji} \`${p.name}\` — ${uptime}, R:${restarts}`);
+  }
+
+  lines.push('');
+  lines.push('🟢=online ⭕=stopped 🔴=errored | R=restarts');
 
   await sendMessage(chatId, lines.join('\n'));
 }

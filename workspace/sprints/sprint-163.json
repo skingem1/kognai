@@ -1,0 +1,68 @@
+{
+  "sprint": "163",
+  "name": "/pm2-status — PM2 process watchboard",
+  "block": "Phase 1 — operator tooling",
+  "goal": "Add /pm2-status Telegram command (owner-only). Runs pm2 jlist, formats a compact process table showing name, status emoji, uptime, restarts for all PM2 processes. Operator can confirm all crons and daemons are running from Telegram without SSH.",
+  "rationale": "Operator has no visibility into whether kognai-daily-digest, kognai-post-noon/evening, kognai-brief-regen, telegram-bot, achiri-api, etc. are actually running. Single /pm2-status call surfaces any crashed or stopped processes immediately.",
+  "swarm": "NOT USED — 2 file edits (commands.ts + index.ts) + 1 validation script. Direct write.",
+  "tasks": [
+    {
+      "id": "163-01",
+      "title": "commands.ts — add handlePm2Status()",
+      "description": "Add handlePm2Status(chatId, ownerChatId): owner-only. execSync('pm2 jlist') → parse JSON array. For each process: name, pm2_env.status (online/stopped/errored), pm_uptime (format as Xh or Xd), restart_time. Build compact message: header '⚙️ PM2 Processes', then per-process line '🟢/🔴/🟡 name — status (uptime, R:N)'. Footer: total count + online count. Catch any execSync error (pm2 not found, etc.) and send error message.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-163",
+      "deliverables": {
+        "code": ["agents/telegram-bot/commands.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "163-02",
+      "title": "index.ts — route /pm2-status + update imports",
+      "description": "Add handlePm2Status to import list in index.ts. Add case '/pm2-status': await handlePm2Status(chatId, OWNER_CHAT_ID); break; in switch block after /viral.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-163",
+      "deliverables": {
+        "code": ["agents/telegram-bot/index.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "163-03",
+      "title": "validate-sprint-163.ts — 5-check validation",
+      "description": "1) handlePm2Status exported from commands.ts. 2) pm2 jlist used. 3) Error handling present (try/catch around execSync). 4) handlePm2Status imported and routed in index.ts. 5) /pm2-status in handleHelp().",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-163",
+      "deliverables": {
+        "code": ["scripts/scs001/validate-sprint-163.ts"],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ],
+  "acceptance_criteria": [
+    "handlePm2Status() exported from commands.ts, uses pm2 jlist",
+    "Owner-only gate, error handling for pm2 failures",
+    "Routed in index.ts as /pm2-status",
+    "Listed in /help",
+    "validate-sprint-163.ts: 5/5 PASS"
+  ]
+}
