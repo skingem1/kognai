@@ -367,3 +367,17 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
   - validate-telegram-bridge.ts: 5 checks in ACHIRI_DRY_RUN=1 mode
 - Pipeline: Achiri Phase 2A complete — voice ✅ LLM ✅ memory ✅ HTTP API ✅ Telegram ✅
 - Timestamp: 2026-03-16T23:30:00Z
+
+### Sprint 117 — Experiment Metadata Fix (Block: SCS-001 data quality)
+- Status: PASS | Commit: 6f35cbf | Block: Phase 1 data quality
+- Files modified: agents/scs001-orchestrator/index.ts, agents/scs001-orchestrator/dedup-ledger.ts
+- Files created: workspace/sprints/sprint-117.json
+- Tests: inline Node.js logic test — OLD returns 'unknown', NEW returns real values (curiosity_gap/Sam Altman etc)
+- Swarm: NOT used — surgical edit to complex file (413 lines)
+- Changes:
+  - dedup-ledger.ts: LedgerEntry interface extended with optional hook_formula?, speaker?, topic?
+  - orchestrator Stage 9-experiment: replaced broken `bundles.find(b => b.clip_id === gate.video_id)` with Map-based lookup via `editedVideos[video_id].insight_id → bundles[insight_id]`
+  - orchestrator Stage 9-publishing: enrich LedgerEntry with hook_formula, speaker, topic from bundle
+- Root cause fixed: gate.video_id is editing-stage generated ID, NOT clip_id. Must go via insight_id bridge.
+- Impact: experiments.jsonl will now have real hook_formula + speaker values. Dashboard Panel 17 formula pass-rates will work correctly.
+- Timestamp: 2026-03-16T23:45:00Z
