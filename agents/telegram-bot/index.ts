@@ -21,6 +21,7 @@ import {
   handleStart, handleHelp, handlePreview,
   handleSchedule, handleStats, handleStatus, handleSubscribe, handleUnknown,
   handleAchiri, handleGate, handleWaitlist, handleAchiriHealth, handlePostReminder,
+  handleReview,
 } from './commands';
 
 // ── Config ────────────────────────────────────────────────────────────────────
@@ -99,6 +100,7 @@ async function dispatch(update: TelegramUpdate): Promise<void> {
     case '/waitlist':       await handleWaitlist(chatId, firstName, username, text.split(/\s+/)[1], OWNER_CHAT_ID); break;
     case '/achiri-health':   await handleAchiriHealth(chatId, OWNER_CHAT_ID);  break;
     case '/post-reminder':   await handlePostReminder(chatId, OWNER_CHAT_ID);  break;
+    case '/review':          await handleReview(chatId, OWNER_CHAT_ID);        break;
     default:                 await handleUnknown(chatId, text);                break;
   }
 }

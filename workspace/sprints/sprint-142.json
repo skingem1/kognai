@@ -1,0 +1,69 @@
+{
+  "sprint": "142",
+  "name": "/review Telegram command — top-3 QC-passed videos from latest run",
+  "block": "Phase 1.5 gate ops — manual posting workflow",
+  "goal": "Add /review command to the Telegram bot. Owner-only. Shows top-3 QC-passed videos from the latest pipeline run with video_id, hook_formula, speaker, and file path. Each entry includes the exact record-manual-post.ts command. Closes the operator loop: pipeline → /review → post → /post-reminder to track.",
+  "rationale": "Apr 7 gate: 0/30 posts, ~22 days. The pipeline has 141 videos in ledger but the operator has no quick way to see what to post without SSHing in and running review-videos.ts. /review brings the queue to Telegram where the operator already works. Completes the manual posting UX: /review (pick) → post on TikTok → record-manual-post.ts → /post-reminder (verify).",
+  "swarm": "NOT USED — 2 small file edits + 1 validation script. Direct write.",
+  "tasks": [
+    {
+      "id": "142-01",
+      "title": "commands.ts — handleReview() + update handleHelp()",
+      "description": "Add handleReview(chatId, ownerChatId): owner-only. Reads workspace/scs001/experiments.jsonl (same path pattern as existing code). Finds latest run- dir in workspace/scs001/ by mtime (same logic as review-videos.ts). Lists caption/ subdir for *-captioned.mp4 files. Matches each video_id against experiments map for hook_formula + speaker + qc_passed. Sorts QC-passed first, takes top 3. Sends Telegram message: run name, total/QC-passed counts, then numbered list of top 3 with video_id (first 16 chars), hook_formula, speaker, QC tick, file path, and record-manual-post.ts command inline. If no run dir: 'No pipeline runs found'. If no QC-passed: shows all available. Also update handleHelp() to add '/review — Top-3 QC-passed videos for manual posting (owner)' under TikTok Pipeline section.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-142",
+      "deliverables": {
+        "code": ["agents/telegram-bot/commands.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "142-02",
+      "title": "index.ts — route /review to handleReview()",
+      "description": "Import handleReview from ./commands. Add case '/review': await handleReview(chatId, OWNER_CHAT_ID); in the dispatch switch after the /post-reminder case.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-142",
+      "deliverables": {
+        "code": ["agents/telegram-bot/index.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "142-03",
+      "title": "scripts/scs001/validate-sprint-142.ts — validation script",
+      "description": "6 checks: (1) commands.ts exports handleReview; (2) commands.ts contains 'handleReview'; (3) commands.ts contains '/review' in handleHelp section; (4) index.ts imports handleReview; (5) index.ts routes '/review' command; (6) handleReview function is owner-gated (contains ownerChatId check). All checks exit 0 on pass.",
+      "type": "create",
+      "task_type": "test",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-142",
+      "deliverables": {
+        "code": ["scripts/scs001/validate-sprint-142.ts"],
+        "tests": ["scripts/scs001/validate-sprint-142.ts"],
+        "docs": []
+      }
+    }
+  ],
+  "acceptance_criteria": [
+    "/review command is owner-gated — non-owner gets '🔒 Owner only.'",
+    "handleReview reads experiments.jsonl + latest run dir and shows top-3 QC-passed videos",
+    "Each video entry shows: id (short), hook_formula, speaker, QC status, file path, record-manual-post.ts command",
+    "handleHelp lists /review under TikTok Pipeline section",
+    "index.ts routes /review to handleReview()",
+    "validate-sprint-142.ts exits 0 (all 6 checks pass)"
+  ]
+}

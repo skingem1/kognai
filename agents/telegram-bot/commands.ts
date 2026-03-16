@@ -98,6 +98,7 @@ export async function handleHelp(chatId: number): Promise<void> {
     '/subscribe — Upgrade your plan (coming soon)',
     '/gate — Phase 1.5 gate review (Apr 7 kill switch)',
     '/post-reminder — Apr 7 gate progress + posting workflow (owner)',
+    '/review — Top-3 QC-passed videos for manual posting (owner)',
     '',
     '🤖 *Achiri AI Companion*',
     '/achiri <msg> — Chat with Achiri (free tier, Darija/Arabic/French)',
@@ -635,4 +636,124 @@ export async function handlePostReminder(chatId: number, ownerChatId: string): P
   ];
 
   await sendMessage(chatId, lines.join('\n'));
+}
+
+// ── Review videos — Sprint 142 ─────────────────────────────────────────────────
+// Owner-only: shows top-3 QC-passed videos from latest pipeline run.
+const EXPERIMENTS_PATH_BOT = join(process.cwd(), 'workspace', 'scs001', 'experiments.jsonl');
+const WORKSPACE_SCS001      = join(process.cwd(), 'workspace', 'scs001');
+
+interface ReviewVideoMeta {
+  video_id:     string;
+  hook_formula: string;
+  speaker:      string;
+  qc_passed:    boolean;
+  mp4_path:     string;
+}
+
+function loadExperimentsForReview(): Map<string, ReviewVideoMeta> {
+  const map = new Map<string, ReviewVideoMeta>();
+  if (!existsSync(EXPERIMENTS_PATH_BOT)) return map;
+  try {
+    const lines = readFileSync(EXPERIMENTS_PATH_BOT, 'utf-8').split('\n');
+    for (const line of lines) {
+      const trimmed = line.trim();
+      if (!trimmed) continue;
+      try {
+        const e = JSON.parse(trimmed);
+        const id = e.clip_id ?? e.video_id ?? '';
+        if (id) {
+          map.set(id, {
+            video_id:     id,
+            hook_formula: e.hook_formula ?? 'unknown',
+            speaker:      e.speaker ?? 'unknown',
+            qc_passed:    !!e.qc_passed,
+            mp4_path:     '',
+          });
+        }
+      } catch { /* skip */ }
+    }
+  } catch { /* skip */ }
+  return map;
+}
+
+function getLatestRunDirForReview(): string | null {
+  if (!existsSync(WORKSPACE_SCS001)) return null;
+  try {
+    const { statSync } = require('fs') as typeof import('fs');
+    const dirs = readdirSync(WORKSPACE_SCS001)
+      .filter(d => d.startsWith('run-'))
+      .map(d => ({ name: d, mtime: statSync(join(WORKSPACE_SCS001, d)).mtimeMs }))
+      .sort((a, b) => b.mtime - a.mtime);
+    return dirs.length > 0 ? join(WORKSPACE_SCS001, dirs[0].name) : null;
+  } catch { return null; }
+}
+
+export async function handleReview(chatId: number, ownerChatId: string): Promise<void> {
+  if (String(chatId) !== ownerChatId) {
+    await sendMessage(chatId, '🔒 Owner only.');
+    return;
+  }
+
+  const runDir = getLatestRunDirForReview();
+  if (!runDir) {
+    await sendMessage(chatId, '⚠️ No pipeline runs found. Run the pipeline first.');
+    return;
+  }
+
+  const captionDir = join(runDir, 'caption');
+  if (!existsSync(captionDir)) {
+    await sendMessage(chatId, `⚠️ No caption dir in latest run: ${runDir}`);
+    return;
+  }
+
+  const experiments = loadExperimentsForReview();
+  const { basename: pathBasename } = require('path') as typeof import('path');
+
+  const mp4s = readdirSync(captionDir).filter(f => f.endsWith('-captioned.mp4'));
+  const videos: ReviewVideoMeta[] = mp4s.map(mp4 => {
+    const videoId = mp4.replace('-captioned.mp4', '');
+    const meta = experiments.get(videoId);
+    return {
+      video_id:     videoId,
+      hook_formula: meta?.hook_formula ?? 'unknown',
+      speaker:      meta?.speaker ?? 'unknown',
+      qc_passed:    meta?.qc_passed ?? false,
+      mp4_path:     join(captionDir, mp4),
+    };
+  });
+
+  // QC-passed first, then take top 3
+  const sorted = [...videos].sort((a, b) => (b.qc_passed ? 1 : 0) - (a.qc_passed ? 1 : 0));
+  const top3 = sorted.slice(0, 3);
+
+  if (top3.length === 0) {
+    await sendMessage(chatId, '⚠️ No videos found in latest run caption dir.');
+    return;
+  }
+
+  const runName = pathBasename(runDir);
+  const passedCount = videos.filter(v => v.qc_passed).length;
+
+  const msgLines: string[] = [
+    `🎬 *Video Review — ${runName}*`,
+    `${videos.length} total | ${passedCount} QC-passed | showing top ${top3.length}`,
+    '',
+  ];
+
+  for (let i = 0; i < top3.length; i++) {
+    const v = top3[i];
+    const idShort = v.video_id.slice(0, 20);
+    const qcIcon = v.qc_passed ? '✅' : '❌';
+    msgLines.push(`*${i + 1}. ${qcIcon} ${idShort}*`);
+    msgLines.push(`   Formula: ${v.hook_formula}`);
+    msgLines.push(`   Speaker: ${v.speaker}`);
+    msgLines.push(`   Path: \`${v.mp4_path}\``);
+    msgLines.push(`   Record: \`npx ts-node scripts/scs001/record-manual-post.ts --video-id ${v.video_id} --views 0\``);
+    msgLines.push('');
+  }
+
+  msgLines.push('After posting, update --views <actual_count>');
+
+  await sendMessage(chatId, msgLines.join('\n'));
 }
