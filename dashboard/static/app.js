@@ -1,5 +1,5 @@
 /**
- * Vault Dashboard — Dual-Project Frontend
+ * Vault Dashboard v3.0 — 12-Panel Dual-Project Frontend
  * Monitors both Kognai (sovereign AI runtime) and Invoica (financial OS).
  * Vanilla JS. No frameworks. No build step.
  */
@@ -86,8 +86,11 @@ function renderSprintBlock(sprint, projectName, accentClass) {
   return html;
 }
 
-// --- Panel Renderers ---
+// ==============================================
+// Panel Renderers (12 panels)
+// ==============================================
 
+// --- Panel 1: Progress ---
 async function renderProgress() {
   const [kCurrent, kList, iCurrent, iList, iStats, gatesData] = await Promise.all([
     fetchJson('/api/sprints/current'),
@@ -122,7 +125,7 @@ async function renderProgress() {
   html += '<div class="project-section">';
   html += '<div class="project-section-header invoica"><span class="project-dot-inline invoica"></span> INVOICA';
   if (iStats) {
-    html += `<span class="project-stats">${iStats.total_completed || 0} tasks · ${iStats.approval_rate || 0}% rate · ${iStats.total_sprints || 0} sprints</span>`;
+    html += `<span class="project-stats">${iStats.total_completed || 0} tasks &middot; ${iStats.approval_rate || 0}% rate &middot; ${iStats.total_sprints || 0} sprints</span>`;
   }
   html += '</div>';
 
@@ -154,7 +157,6 @@ async function renderProgress() {
   // --- Sprint history (both projects, interleaved) ---
   html += '<div class="section-divider">Recent Sprints</div>';
 
-  // Kognai sprints
   if (kList && kList.length > 0) {
     html += '<div style="font-size: 10px; color: var(--accent-blue); margin-bottom: 4px; font-weight: 600;">KOGNAI</div>';
     const recent = kList.slice(-4).reverse();
@@ -171,12 +173,11 @@ async function renderProgress() {
     }
   }
 
-  // Invoica sprints
   if (iList && iList.length > 0) {
     html += '<div style="font-size: 10px; color: var(--accent-green); margin-bottom: 4px; margin-top: 8px; font-weight: 600;">INVOICA</div>';
     const recent = iList.slice(0, 4);
     for (const s of recent) {
-      const rateStr = s.approval_rate ? ` · ${s.approval_rate}%` : '';
+      const rateStr = s.approval_rate ? ` &middot; ${s.approval_rate}%` : '';
       html += `
         <div class="sprint-mini">
           <span class="sprint-mini-id" title="${escHtml(s.title)}">${escHtml(s.title.substring(0, 12))}</span>
@@ -192,6 +193,7 @@ async function renderProgress() {
   panel.innerHTML = html;
 }
 
+// --- Panel 2: Today's Tasks ---
 async function renderTodo() {
   const [brief, gatesResp] = await Promise.all([
     fetchJson('/api/daily-brief'),
@@ -205,14 +207,12 @@ async function renderTodo() {
   let html = '';
 
   if (brief && !brief.error) {
-    // Date header
     if (brief.date) {
       const d = new Date(brief.date + 'T00:00:00');
       const dateStr = d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
       html += `<div class="todo-date">${dateStr}</div>`;
     }
 
-    // Stats row
     html += `
       <div class="stats-row">
         <div class="stat-box">
@@ -226,7 +226,6 @@ async function renderTodo() {
       </div>
     `;
 
-    // Time blocks
     const blockNames = { AM: 'AM 07:00-09:30', MID: 'MID 12:00-14:00', PM: 'PM 18:00-19:30' };
     for (const [block, label] of Object.entries(blockNames)) {
       const tasks = (brief.blocks && brief.blocks[block]) || [];
@@ -238,10 +237,10 @@ async function renderTodo() {
         const doneClass = t.done ? 'done' : '';
         const disabledClass = t.disabled ? 'disabled' : '';
         const deferredClass = t.deferred ? 'deferred' : '';
-        const icon = t.disabled ? '—' : t.deferred ? '⏭️' : (t.done ? '✅' : '⬜');
+        const icon = t.disabled ? '&mdash;' : t.deferred ? '&#9197;' : (t.done ? '&#9989;' : '&#11036;');
         const clickable = (t.disabled || t.deferred) ? '' : `onclick="toggleTask('${block}', ${idx})"`;
         const deferBtn = (!t.disabled && !t.done && !t.deferred)
-          ? `<button class="defer-btn" onclick="event.stopPropagation(); deferTask('${block}', ${idx})" title="Defer to tomorrow">→</button>`
+          ? `<button class="defer-btn" onclick="event.stopPropagation(); deferTask('${block}', ${idx})" title="Defer to tomorrow">&rarr;</button>`
           : '';
         html += `
           <div class="todo-item ${doneClass} ${disabledClass} ${deferredClass}" ${clickable}>
@@ -254,10 +253,9 @@ async function renderTodo() {
     }
   } else {
     const msg = (brief && brief.error) || 'No daily brief found';
-    html += `<div class="empty-state"><div class="icon">📝</div>${escHtml(msg)}</div>`;
+    html += `<div class="empty-state"><div class="icon">&#128221;</div>${escHtml(msg)}</div>`;
   }
 
-  // Gates
   if (gates && gates.length > 0) {
     html += '<div class="section-divider">Upcoming Gates</div>';
     const pending = gates.filter(g => g.status === 'pending').slice(0, 4);
@@ -292,6 +290,116 @@ async function renderTodo() {
   panel.innerHTML = html;
 }
 
+// --- Panel 3: Project Overview ---
+async function renderOverview() {
+  const data = await fetchJson('/api/overview');
+  const panel = $('#overview-body');
+  if (!panel) return;
+
+  let html = '';
+
+  if (!data) {
+    html = '<div class="empty-state"><div class="icon">&#128203;</div>Overview unavailable</div>';
+    panel.innerHTML = html;
+    return;
+  }
+
+  // Git status for both repos
+  if (data.git) {
+    for (const [repo, g] of Object.entries(data.git)) {
+      const isKognai = repo === 'kognai';
+      const dotClass = isKognai ? 'kognai' : 'invoica';
+      const cleanBadge = g.clean
+        ? '<span class="mini-badge green">CLEAN</span>'
+        : `<span class="mini-badge amber">${g.modified}M ${g.untracked}U</span>`;
+      const syncBadge = g.ahead === 0
+        ? '<span class="mini-badge green">SYNCED</span>'
+        : `<span class="mini-badge red">${g.ahead} ahead</span>`;
+
+      html += `
+        <div class="overview-row">
+          <span class="project-dot-inline ${dotClass}"></span>
+          <span class="overview-repo">${repo.toUpperCase()}</span>
+          <span class="overview-commit mono">${escHtml(g.last_commit || '').substring(0, 40)}</span>
+          ${cleanBadge} ${syncBadge}
+        </div>
+      `;
+    }
+  }
+
+  // Build progress
+  if (data.build_progress) {
+    html += '<div class="section-divider">Build Sequence</div>';
+    for (const b of data.build_progress) {
+      const icon = b.status === 'done' ? '&#9745;' : b.status === 'seeded' ? '&#9744;' : '&#8212;';
+      const cls = b.status === 'done' ? 'done' : b.status === 'seeded' ? 'active' : 'future';
+      html += `<div class="build-step ${cls}"><span class="build-icon">${icon}</span><span class="build-num">${b.num}.</span> ${escHtml(b.task)}</div>`;
+    }
+  }
+
+  // Blockers
+  if (data.blockers && data.blockers.length > 0) {
+    html += '<div class="section-divider">Blockers</div>';
+    for (const b of data.blockers) {
+      const ownerCls = b.owner === 'external' ? 'amber' : 'red';
+      html += `
+        <div class="blocker-row">
+          <span class="mini-badge ${ownerCls}">${escHtml(b.owner)}</span>
+          <span class="blocker-name">${escHtml(b.name)}</span>
+          <span class="blocker-detail">${escHtml(b.detail)}</span>
+        </div>
+      `;
+    }
+  }
+
+  panel.innerHTML = html;
+}
+
+// --- Panel 4: SCS-001 Build Track ---
+async function renderSCS001() {
+  const data = await fetchJson('/api/overview');
+  const panel = $('#scs001-body');
+  if (!panel) return;
+
+  let html = '';
+
+  if (!data || !data.scs001_blocks) {
+    html = '<div class="empty-state"><div class="icon">&#128736;</div>SCS-001 data unavailable</div>';
+    panel.innerHTML = html;
+    return;
+  }
+
+  const statusColors = {
+    conditional_pass: 'green',
+    done: 'green',
+    in_progress: 'blue',
+    not_started: 'amber',
+    blocked: 'red',
+    future: 'muted',
+  };
+
+  for (const block of data.scs001_blocks) {
+    const color = statusColors[block.status] || 'muted';
+    const statusLabel = block.status.replace(/_/g, ' ').toUpperCase();
+    html += `
+      <div class="scs-block">
+        <div class="scs-block-header">
+          <span class="scs-block-letter">Block ${escHtml(block.block)}</span>
+          <span class="scs-block-name">${escHtml(block.name)}</span>
+          <span class="mini-badge ${color}">${statusLabel}</span>
+        </div>
+        <div class="scs-block-detail">
+          <span class="scs-agents">${escHtml(block.agents)}</span>
+          <span class="scs-sprints mono">${escHtml(block.sprints)}</span>
+        </div>
+      </div>
+    `;
+  }
+
+  panel.innerHTML = html;
+}
+
+// --- Panel 5: Costs ---
 async function renderCosts() {
   const costs = await fetchJson('/api/costs');
   const panel = $('#costs-body');
@@ -308,7 +416,6 @@ async function renderCosts() {
       <div class="cost-label">Total spend today</div>
     `;
 
-    // Tier distribution bar
     const byTier = costs.by_tier || {};
     const totalTasks = Object.values(byTier).reduce((a, b) => a + b, 0);
 
@@ -323,7 +430,6 @@ async function renderCosts() {
       }
       html += '</div>';
 
-      // Local vs cloud percentage
       html += `
         <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 12px;">
           <span style="color: var(--accent-green);">${costs.local_pct || 0}% local</span>
@@ -331,7 +437,6 @@ async function renderCosts() {
         </div>
       `;
 
-      // Tier breakdown
       html += '<div class="section-divider">Tier Breakdown</div>';
       const tierCosts = { NANO: 0, LOCAL: 0, POWER: 0, CLOUD: 0.003, APEX: 0.015 };
       for (const tier of tiers) {
@@ -354,11 +459,10 @@ async function renderCosts() {
         </div>
       `;
       if (costs.message) {
-        html += `<div class="empty-state"><div class="icon">📊</div>${escHtml(costs.message)}</div>`;
+        html += `<div class="empty-state"><div class="icon">&#128200;</div>${escHtml(costs.message)}</div>`;
       }
     }
 
-    // Budget bar
     const budgetPct = Math.min((total / 5.0) * 100, 100);
     const budgetClass = budgetPct > 80 ? 'danger' : budgetPct > 50 ? 'warning' : 'safe';
     html += `
@@ -372,12 +476,256 @@ async function renderCosts() {
       </div>
     `;
   } else {
-    html += '<div class="empty-state"><div class="icon">💰</div>Cost data unavailable</div>';
+    html += '<div class="empty-state"><div class="icon">&#128176;</div>Cost data unavailable</div>';
   }
 
   panel.innerHTML = html;
 }
 
+// --- Panel 6: Model Routing ---
+async function renderRouting() {
+  const data = await fetchJson('/api/routing/stats');
+  const tbody = document.querySelector('#model-table tbody');
+  const ul = document.getElementById('recent-list');
+  if (!tbody || !ul) return;
+
+  const byModel = data.by_model || {};
+  const total = data.total || 0;
+  const rows = Object.entries(byModel)
+    .sort((a, b) => b[1] - a[1])
+    .map(([model, count]) => {
+      const pct = total > 0 ? ((count / total) * 100).toFixed(1) : '0.0';
+      return `<tr><td>${model}</td><td>${count}</td><td>${pct}%</td></tr>`;
+    }).join('');
+  tbody.innerHTML = rows || '<tr><td colspan="3" style="color:var(--text-muted)">No data yet</td></tr>';
+
+  const recent = (data.recent || []).slice(-5).reverse();
+  ul.innerHTML = recent.map(r =>
+    `<li><span style="color:var(--text-muted)">[${r.sprint_id || '?'}]</span> ${r.task_id} &rarr; <strong>${r.model}</strong></li>`
+  ).join('') || '<li style="color:var(--text-muted)">No recent decisions</li>';
+}
+
+// --- Panel 7: Amendments ---
+async function renderAmendments() {
+  const data = await fetchJson('/api/overview');
+  const panel = $('#amendments-body');
+  if (!panel) return;
+
+  let html = '';
+
+  if (!data || !data.amendments) {
+    html = '<div class="empty-state"><div class="icon">&#128220;</div>Amendment data unavailable</div>';
+    panel.innerHTML = html;
+    return;
+  }
+
+  const doneCount = data.amendments.filter(a => a.status === '&#9989;' || a.phase === 'COMPLETE' || a.p0.includes('DONE')).length;
+  html += `
+    <div class="stats-row">
+      <div class="stat-box">
+        <div class="stat-value">${doneCount}/${data.amendments.length}</div>
+        <div class="stat-label">AMDs Complete</div>
+      </div>
+    </div>
+  `;
+
+  for (const a of data.amendments) {
+    const isDone = a.p0.includes('DONE');
+    const cls = isDone ? 'done' : 'pending';
+    html += `
+      <div class="amd-row ${cls}">
+        <span class="amd-id mono">${escHtml(a.id)}</span>
+        <span class="amd-title">${escHtml(a.title)}</span>
+        <span class="amd-status">${isDone ? '&#9745;' : '&#9744;'}</span>
+        <span class="amd-detail">${escHtml(a.detail)}</span>
+      </div>
+    `;
+  }
+
+  panel.innerHTML = html;
+}
+
+// --- Panel 8: On-Chain ---
+async function renderChain() {
+  const data = await fetchJson('/api/chain');
+  const panel = $('#chain-body');
+  if (!panel) return;
+
+  let html = '';
+
+  if (!data) {
+    html = '<div class="empty-state"><div class="icon">&#9939;</div>Chain data unavailable</div>';
+    panel.innerHTML = html;
+    return;
+  }
+
+  // EAS Schemas
+  if (data.eas_schemas && data.eas_schemas.length > 0) {
+    html += '<div class="chain-section-label">EAS Schemas</div>';
+    if (data.eas_network) {
+      html += `<div class="chain-meta">Network: ${escHtml(data.eas_network)}</div>`;
+    }
+    for (const s of data.eas_schemas) {
+      html += `
+        <div class="chain-item">
+          <span class="chain-name">${escHtml(s.name)}</span>
+          <span class="chain-uid mono" title="${escHtml(s.uid_full)}">${escHtml(s.uid)}</span>
+        </div>
+      `;
+    }
+  }
+
+  // Agent Registry
+  if (data.agent_registry && data.agent_registry.agents && data.agent_registry.agents.length > 0) {
+    html += '<div class="section-divider">Agent NFTs (ERC-8004)</div>';
+    if (data.agent_registry.address) {
+      html += `<div class="chain-meta">Registry: ${escHtml(data.agent_registry.address.substring(0, 20))}...</div>`;
+    }
+    for (const a of data.agent_registry.agents) {
+      const mintedBadge = a.minted ? '<span class="mini-badge green">MINTED</span>' : '<span class="mini-badge amber">PENDING</span>';
+      html += `
+        <div class="chain-item">
+          <span class="chain-name">${escHtml(a.name)}</span>
+          ${a.role ? `<span class="chain-role">${escHtml(a.role)}</span>` : ''}
+          ${mintedBadge}
+        </div>
+      `;
+    }
+  }
+
+  // AAR Receipts
+  html += `<div class="section-divider">AAR Receipts (${data.aar_total_receipts || 0} total)</div>`;
+  if (data.aar_recent && data.aar_recent.length > 0) {
+    for (const r of data.aar_recent.slice(0, 6)) {
+      const ts = r.timestamp ? r.timestamp.substring(11, 19) : '';
+      html += `
+        <div class="chain-receipt">
+          <span class="mono" style="color: var(--text-muted);">${ts}</span>
+          <span>${escHtml(r.agent || r.type || '')}</span>
+          <span class="chain-action">${escHtml(r.action || r.event || '')}</span>
+        </div>
+      `;
+    }
+  } else {
+    html += '<div style="font-size: 12px; color: var(--text-muted);">No recent receipts</div>';
+  }
+
+  panel.innerHTML = html;
+}
+
+// --- Panel 9: Security ---
+async function renderSecurity() {
+  const data = await fetchJson('/api/overview');
+  const panel = $('#security-body');
+  if (!panel) return;
+
+  let html = '';
+
+  if (!data || !data.security) {
+    html = '<div class="empty-state"><div class="icon">&#128274;</div>Security data unavailable</div>';
+    panel.innerHTML = html;
+    return;
+  }
+
+  const statusIcons = { done: '&#9745;', partial: '&#9744;', future: '&#8212;' };
+  const statusColors = { done: 'green', partial: 'amber', future: 'muted' };
+
+  for (const layer of data.security) {
+    const color = statusColors[layer.status] || 'muted';
+    const icon = statusIcons[layer.status] || '&#8212;';
+    html += `
+      <div class="security-layer">
+        <div class="security-layer-header">
+          <span class="security-layer-num">L${layer.layer}</span>
+          <span class="security-layer-name">${escHtml(layer.name)}</span>
+          <span class="mini-badge ${color}">${layer.status.toUpperCase()}</span>
+        </div>
+        <div class="security-layer-detail">${escHtml(layer.detail)}</div>
+      </div>
+    `;
+  }
+
+  panel.innerHTML = html;
+}
+
+// --- Panel 10: Assets ---
+async function renderAssets() {
+  const data = await fetchJson('/api/assets');
+  const panel = $('#assets-body');
+  if (!panel) return;
+
+  let html = '';
+
+  if (!data) {
+    html = '<div class="empty-state"><div class="icon">&#128218;</div>Asset data unavailable</div>';
+    panel.innerHTML = html;
+    return;
+  }
+
+  // Skills summary
+  const skills = data.skills || {};
+  html += `
+    <div class="stats-row">
+      <div class="stat-box">
+        <div class="stat-value">${skills.total_skills || 0}</div>
+        <div class="stat-label">Total Skills</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-value">${(data.code_assets && data.code_assets.total_assets) || 0}</div>
+        <div class="stat-label">Code Assets</div>
+      </div>
+    </div>
+  `;
+
+  // Skill directories
+  if (skills.skill_dirs && skills.skill_dirs.length > 0) {
+    html += '<div class="section-divider">Skill Categories</div>';
+    for (const d of skills.skill_dirs) {
+      html += `
+        <div class="asset-row">
+          <span class="asset-name">${escHtml(d.name)}</span>
+          <span class="asset-count">${d.count} files</span>
+        </div>
+      `;
+    }
+  }
+
+  // Skill files (top 8)
+  if (skills.skill_files && skills.skill_files.length > 0) {
+    html += '<div class="section-divider">Recent Skills</div>';
+    for (const s of skills.skill_files.slice(0, 8)) {
+      html += `
+        <div class="asset-row">
+          <span class="asset-name" title="${escHtml(s.file)}">${escHtml(s.title || s.file).substring(0, 40)}</span>
+          ${s.score ? `<span class="asset-score">${s.score}</span>` : ''}
+          ${s.agent ? `<span class="asset-agent mono">${escHtml(s.agent)}</span>` : ''}
+        </div>
+      `;
+    }
+    if (skills.skill_files.length > 8) {
+      html += `<div style="font-size: 11px; color: var(--text-muted); padding: 4px 0;">+${skills.skill_files.length - 8} more</div>`;
+    }
+  }
+
+  // Code assets
+  const codeAssets = data.code_assets || {};
+  if (codeAssets.assets && codeAssets.assets.length > 0) {
+    html += '<div class="section-divider">Code Assets</div>';
+    for (const a of codeAssets.assets.slice(0, 6)) {
+      html += `
+        <div class="asset-row">
+          <span class="mini-badge purple">T${a.tier}</span>
+          <span class="asset-name">${escHtml(a.title)}</span>
+          <span class="asset-lang mono">${escHtml(a.language)}</span>
+        </div>
+      `;
+    }
+  }
+
+  panel.innerHTML = html;
+}
+
+// --- Panel 11: Logs & Agents ---
 async function renderLogs() {
   const [logs, kAgents, iAgents] = await Promise.all([
     fetchJson('/api/logs/latest'),
@@ -390,7 +738,6 @@ async function renderLogs() {
 
   let html = '';
 
-  // Log summary
   if (logs && logs.summary) {
     const s = logs.summary;
     html += `
@@ -412,7 +759,6 @@ async function renderLogs() {
     `;
   }
 
-  // Log viewer
   if (logs && logs.lines && logs.lines.length > 0) {
     html += `<div class="section-divider">Sprint Log${logs.sprint ? ` (${logs.sprint})` : ''}</div>`;
     html += '<div class="log-viewer">';
@@ -427,10 +773,9 @@ async function renderLogs() {
     }
     html += '</div>';
   } else {
-    html += '<div class="empty-state"><div class="icon">📋</div>No sprint logs yet</div>';
+    html += '<div class="empty-state"><div class="icon">&#128203;</div>No sprint logs yet</div>';
   }
 
-  // Errors
   if (logs && logs.errors && logs.errors.length > 0) {
     html += `<div class="section-divider">Errors (${logs.errors.length})</div>`;
     for (const err of logs.errors.slice(0, 10)) {
@@ -438,13 +783,11 @@ async function renderLogs() {
     }
   }
 
-  // --- Agents: Both projects ---
   const kCount = (kAgents && kAgents.length) || 0;
   const iCount = (iAgents && iAgents.length) || 0;
 
   html += `<div class="section-divider">Agents (${kCount + iCount})</div>`;
 
-  // Kognai agents
   if (kAgents && kAgents.length > 0) {
     html += '<div class="agent-section-label kognai">KOGNAI <span class="agent-count">' + kCount + '</span></div>';
     html += '<div class="agent-grid">';
@@ -460,7 +803,6 @@ async function renderLogs() {
     html += '</div>';
   }
 
-  // Invoica agents
   if (iAgents && iAgents.length > 0) {
     html += '<div class="agent-section-label invoica">INVOICA <span class="agent-count">' + iCount + '</span></div>';
     html += '<div class="agent-grid">';
@@ -479,6 +821,77 @@ async function renderLogs() {
   panel.innerHTML = html;
 }
 
+// --- Panel 12: Revenue & Blockers ---
+async function renderRevenue() {
+  const data = await fetchJson('/api/overview');
+  const panel = $('#revenue-body');
+  if (!panel) return;
+
+  let html = '';
+
+  if (!data || !data.revenue) {
+    html = '<div class="empty-state"><div class="icon">&#128181;</div>Revenue data unavailable</div>';
+    panel.innerHTML = html;
+    return;
+  }
+
+  const rev = data.revenue;
+
+  html += `
+    <div class="stats-row">
+      <div class="stat-box">
+        <div class="stat-value" style="color: ${rev.current_mrr > 0 ? 'var(--accent-green)' : 'var(--text-muted)'};">$${rev.current_mrr}</div>
+        <div class="stat-label">Current MRR</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-value" style="font-size: 14px;">${escHtml(rev.phase)}</div>
+        <div class="stat-label">Phase</div>
+      </div>
+    </div>
+  `;
+
+  if (rev.first_revenue_gate) {
+    html += `<div style="font-size: 12px; color: var(--accent-amber); margin-bottom: 12px;">Gate: ${escHtml(rev.first_revenue_gate)}</div>`;
+  }
+
+  // Revenue targets
+  if (rev.targets && rev.targets.length > 0) {
+    html += '<div class="section-divider">MRR Targets</div>';
+    for (const t of rev.targets) {
+      const barPct = Math.min((rev.current_mrr / t.mrr) * 100, 100);
+      html += `
+        <div class="revenue-target">
+          <div class="revenue-target-header">
+            <span class="mono">${escHtml(t.month)}</span>
+            <span>$${t.mrr}/mo</span>
+            <span style="color: var(--text-muted); font-size: 11px;">${escHtml(t.source)}</span>
+          </div>
+          <div class="progress-bar" style="height: 4px;">
+            <div class="progress-fill ${barPct >= 100 ? 'green' : 'blue'}" style="width: ${barPct}%"></div>
+          </div>
+        </div>
+      `;
+    }
+  }
+
+  // Backlog evaluations
+  if (data.backlog_evals && data.backlog_evals.length > 0) {
+    html += '<div class="section-divider">Backlog Evaluations</div>';
+    for (const e of data.backlog_evals) {
+      html += `
+        <div class="eval-row">
+          <span class="mono eval-id">${escHtml(e.id)}</span>
+          <span class="eval-product">${escHtml(e.product)}</span>
+          <span class="mini-badge amber">${escHtml(e.status.replace(/_/g, ' '))}</span>
+          <span class="eval-gate">Gate: ${escHtml(e.gate)}</span>
+        </div>
+      `;
+    }
+  }
+
+  panel.innerHTML = html;
+}
+
 // --- Clock ---
 function updateClock() {
   const el = $('#clock');
@@ -489,9 +902,7 @@ function updateClock() {
 }
 
 // --- SSE Connection ---
-// NOTE: No /api/stream endpoint on backend yet. Relies on 60s polling fallback.
 function connectSSE() {
-  // Mark as connected (polling mode) so UI doesn't show disconnected
   const dot = $('#connection-dot');
   if (dot) dot.classList.remove('disconnected');
   sseConnected = true;
@@ -527,64 +938,34 @@ async function deferTask(block, index) {
   }
 }
 
-// --- Model Routing Stats (S67-003) ---
-async function renderRouting() {
-  const data = await fetchJson('/api/routing/stats');
-  const tbody = document.querySelector('#model-table tbody');
-  const ul = document.getElementById('recent-list');
-  if (!tbody || !ul) return;
-
-  const byModel = data.by_model || {};
-  const total = data.total || 0;
-  const rows = Object.entries(byModel)
-    .sort((a, b) => b[1] - a[1])
-    .map(([model, count]) => {
-      const pct = total > 0 ? ((count / total) * 100).toFixed(1) : '0.0';
-      return `<tr><td>${model}</td><td>${count}</td><td>${pct}%</td></tr>`;
-    }).join('');
-  tbody.innerHTML = rows || '<tr><td colspan="3" style="color:var(--text-muted)">No data yet</td></tr>';
-
-  const recent = (data.recent || []).slice(-5).reverse();
-  ul.innerHTML = recent.map(r =>
-    `<li><span style="color:var(--text-muted)">[${r.sprint_id || '?'}]</span> ${r.task_id} → <strong>${r.model}</strong></li>`
-  ).join('') || '<li style="color:var(--text-muted)">No recent decisions</li>';
-}
+// --- All render functions ---
+const ALL_RENDERERS = [
+  renderProgress, renderTodo, renderOverview, renderSCS001,
+  renderCosts, renderRouting, renderAmendments, renderChain,
+  renderSecurity, renderAssets, renderLogs, renderRevenue,
+];
 
 // --- Manual Refresh ---
 async function refreshAll() {
   const btn = $('#refresh-btn');
   if (btn) btn.classList.add('spinning');
-  await Promise.all([renderProgress(), renderTodo(), renderCosts(), renderLogs(), renderRouting()]);
+  await Promise.all(ALL_RENDERERS.map(fn => fn()));
   if (btn) setTimeout(() => btn.classList.remove('spinning'), 600);
 }
 
 // --- Init ---
 async function init() {
-  // Render all panels
-  await Promise.all([
-    renderProgress(),
-    renderTodo(),
-    renderCosts(),
-    renderLogs(),
-    renderRouting(),
-  ]);
+  await Promise.all(ALL_RENDERERS.map(fn => fn()));
 
-  // Start clock
   updateClock();
   setInterval(updateClock, 1000);
 
-  // Connect SSE for auto-refresh
   connectSSE();
 
-  // Fallback: full refresh every 60s
+  // Full refresh every 60s
   setInterval(() => {
-    renderProgress();
-    renderTodo();
-    renderCosts();
-    renderLogs();
-    renderRouting();
+    ALL_RENDERERS.forEach(fn => fn());
   }, 60000);
 }
 
-// Go
 document.addEventListener('DOMContentLoaded', init);

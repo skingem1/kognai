@@ -7,7 +7,7 @@ KOGNAI_PLANS = Path.home() / "Documents" / "Kognai" / "plans" / "daily"
 INVOICA_PLANS = Path.home() / "Documents" / "Invoica" / "plans" / "daily"
 
 
-def parse_daily_plan(file_path: str) -> dict | None:
+def parse_daily_plan(file_path: str):
     if not os.path.exists(file_path):
         return None
     with open(file_path, "r") as f:

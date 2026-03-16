@@ -7,7 +7,7 @@ INVOICA_ROOT = Path.home() / "Documents" / "Invoica"
 FULL_PLAN = Path.home() / "Documents" / "Kognai" / "plans" / "FULL_WORK_PLAN.md"
 
 
-def _run_git(cwd: str, cmd: list[str]) -> str:
+def _run_git(cwd, cmd):
     try:
         r = subprocess.run(
             ["git"] + cmd, cwd=cwd, capture_output=True, text=True, timeout=10
@@ -40,7 +40,7 @@ def get_git_status() -> dict:
     return repos
 
 
-def get_amendments() -> list[dict]:
+def get_amendments():
     """Return AMD status. Hardcoded from MEMORY.md (most reliable source)."""
     return [
         {"id": "AMD-01", "title": "A2A / AP2 / x402 / ERC-8004", "p0": "3/3 DONE", "status": "✅", "phase": "COMPLETE", "detail": "CHAIN1+2+3 all live"},
@@ -58,7 +58,7 @@ def get_amendments() -> list[dict]:
     ]
 
 
-def get_build_progress() -> list[dict]:
+def get_build_progress():
     """Build Priority Sequence from Section 05."""
     return [
         {"num": 1, "task": "OpenClaw + 3-agent swarm", "status": "done"},
@@ -73,7 +73,7 @@ def get_build_progress() -> list[dict]:
     ]
 
 
-def get_scs001_blocks() -> list[dict]:
+def get_scs001_blocks():
     """SCS-001 Build Track block status."""
     return [
         {"block": "A", "name": "Signal Pipeline", "agents": "Trend + Discovery + Clip Detection", "status": "conditional_pass", "sprints": "076/077/078 DONE"},
@@ -86,7 +86,7 @@ def get_scs001_blocks() -> list[dict]:
     ]
 
 
-def get_security_status() -> list[dict]:
+def get_security_status():
     """Security layers status."""
     return [
         {"layer": 0, "name": "Physical Vault", "status": "partial", "detail": "Ollama 0.0.0.0 EXPOSED (SEC1). YubiKey pending (SEC4)."},
@@ -98,7 +98,7 @@ def get_security_status() -> list[dict]:
     ]
 
 
-def get_blockers() -> list[dict]:
+def get_blockers():
     """Critical blockers preventing Phase 2."""
     return [
         {"name": "TikTok App Review", "status": "waiting", "detail": "Submitted 2026-03-15. Day 2 of 1-7 window.", "owner": "external"},
@@ -123,7 +123,7 @@ def get_revenue_metrics() -> dict:
     }
 
 
-def get_backlog_evals() -> list[dict]:
+def get_backlog_evals():
     """Backlog evaluation status."""
     return [
         {"id": "EVAL-001", "product": "OpenViking", "purpose": "Skill Bank (ByteDance context DB)", "status": "not_started", "gate": "Phase 2A", "owner": "CTO agent"},

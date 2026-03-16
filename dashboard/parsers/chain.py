@@ -8,7 +8,7 @@ AAR_DIR = KOGNAI_ROOT / "logs" / "aar"
 MONO_LOG = KOGNAI_ROOT / "logs" / "monotask" / "audit.jsonl"
 
 
-def _load_json(path: Path) -> dict | None:
+def _load_json(path: Path):
     if path.exists():
         with open(path) as f:
             return json.load(f)

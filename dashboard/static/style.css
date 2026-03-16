@@ -157,14 +157,13 @@ body {
   50% { opacity: 0.5; }
 }
 
-/* Grid */
+/* Grid — 12-panel layout */
 .grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto auto;
+  grid-template-columns: repeat(3, 1fr);
   gap: 16px;
   padding: 20px 24px;
-  max-width: 1600px;
+  max-width: 1800px;
   margin: 0 auto;
 }
 
@@ -808,6 +807,12 @@ body {
 }
 
 /* Responsive */
+@media (max-width: 1400px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
 @media (max-width: 1024px) {
   .grid {
     grid-template-columns: 1fr;
@@ -863,3 +868,377 @@ body {
 .budget-fill.safe { background: var(--accent-green); }
 .budget-fill.warning { background: var(--accent-amber); }
 .budget-fill.danger { background: var(--accent-red); }
+
+/* ===========================
+   V3: New Panel Styles
+   =========================== */
+
+/* Monospace helper */
+.mono {
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 11px;
+}
+
+/* Mini badge (inline status) */
+.mini-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+
+.mini-badge.green { background: rgba(52, 211, 153, 0.15); color: var(--accent-green); }
+.mini-badge.amber { background: rgba(251, 191, 36, 0.15); color: var(--accent-amber); }
+.mini-badge.red { background: rgba(248, 113, 113, 0.15); color: var(--accent-red); }
+.mini-badge.blue { background: rgba(79, 143, 255, 0.15); color: var(--accent-blue); }
+.mini-badge.purple { background: rgba(167, 139, 250, 0.15); color: var(--accent-purple); }
+.mini-badge.muted { background: rgba(139, 143, 163, 0.1); color: var(--text-muted); }
+
+/* --- Panel 3: Project Overview --- */
+.overview-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  font-size: 12px;
+  border-bottom: 1px solid rgba(42, 45, 58, 0.5);
+}
+
+.overview-row:last-child { border-bottom: none; }
+
+.overview-repo {
+  font-weight: 700;
+  font-size: 11px;
+  min-width: 60px;
+}
+
+.overview-commit {
+  flex: 1;
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Build steps */
+.build-step {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 0;
+  font-size: 12px;
+}
+
+.build-step.done { color: var(--text-muted); }
+.build-step.active { color: var(--accent-blue); }
+.build-step.future { color: var(--text-muted); opacity: 0.5; }
+
+.build-icon { font-size: 14px; flex-shrink: 0; }
+.build-num { color: var(--text-muted); min-width: 16px; }
+
+/* Blockers */
+.blocker-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 6px 0;
+  font-size: 12px;
+  border-bottom: 1px solid rgba(42, 45, 58, 0.3);
+}
+
+.blocker-row:last-child { border-bottom: none; }
+
+.blocker-name {
+  font-weight: 600;
+  min-width: 100px;
+}
+
+.blocker-detail {
+  color: var(--text-secondary);
+  flex: 1;
+  font-size: 11px;
+}
+
+/* --- Panel 4: SCS-001 Build Track --- */
+.scs-block {
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(42, 45, 58, 0.5);
+}
+
+.scs-block:last-child { border-bottom: none; }
+
+.scs-block-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.scs-block-letter {
+  font-weight: 700;
+  font-size: 12px;
+  color: var(--accent-blue);
+  min-width: 55px;
+}
+
+.scs-block-name {
+  font-weight: 600;
+  font-size: 13px;
+  flex: 1;
+}
+
+.scs-block-detail {
+  display: flex;
+  justify-content: space-between;
+  padding-left: 63px;
+  font-size: 11px;
+}
+
+.scs-agents {
+  color: var(--text-secondary);
+}
+
+.scs-sprints {
+  color: var(--text-muted);
+}
+
+/* --- Panel 7: Amendments --- */
+.amd-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 0;
+  font-size: 12px;
+  border-bottom: 1px solid rgba(42, 45, 58, 0.3);
+}
+
+.amd-row:last-child { border-bottom: none; }
+.amd-row.done { color: var(--text-muted); }
+
+.amd-id {
+  min-width: 55px;
+  color: var(--accent-purple);
+  font-weight: 600;
+}
+
+.amd-title {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.amd-status {
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.amd-detail {
+  color: var(--text-muted);
+  font-size: 11px;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* --- Panel 8: On-Chain --- */
+.chain-section-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent-cyan);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
+.chain-meta {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.chain-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+  font-size: 12px;
+}
+
+.chain-name {
+  font-weight: 600;
+  flex: 1;
+}
+
+.chain-uid {
+  color: var(--text-muted);
+}
+
+.chain-role {
+  color: var(--text-secondary);
+  font-size: 11px;
+}
+
+.chain-receipt {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 0;
+  font-size: 11px;
+}
+
+.chain-action {
+  color: var(--text-secondary);
+  margin-left: auto;
+}
+
+/* --- Panel 9: Security --- */
+.security-layer {
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(42, 45, 58, 0.4);
+}
+
+.security-layer:last-child { border-bottom: none; }
+
+.security-layer-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 3px;
+}
+
+.security-layer-num {
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 11px;
+  color: var(--accent-cyan);
+  font-weight: 700;
+  min-width: 24px;
+}
+
+.security-layer-name {
+  font-weight: 600;
+  font-size: 13px;
+  flex: 1;
+}
+
+.security-layer-detail {
+  font-size: 11px;
+  color: var(--text-secondary);
+  padding-left: 32px;
+}
+
+/* --- Panel 10: Assets --- */
+.asset-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+  font-size: 12px;
+  border-bottom: 1px solid rgba(42, 45, 58, 0.2);
+}
+
+.asset-row:last-child { border-bottom: none; }
+
+.asset-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.asset-count {
+  color: var(--text-muted);
+  font-size: 11px;
+}
+
+.asset-score {
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 11px;
+  color: var(--accent-amber);
+}
+
+.asset-agent {
+  color: var(--text-muted);
+  font-size: 10px;
+}
+
+.asset-lang {
+  color: var(--accent-purple);
+  font-size: 10px;
+}
+
+/* --- Panel 12: Revenue --- */
+.revenue-target {
+  margin-bottom: 8px;
+}
+
+.revenue-target-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+
+.eval-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 0;
+  font-size: 12px;
+}
+
+.eval-id {
+  color: var(--accent-amber);
+  font-weight: 600;
+  min-width: 60px;
+}
+
+.eval-product {
+  font-weight: 600;
+  flex: 1;
+}
+
+.eval-gate {
+  color: var(--text-muted);
+  font-size: 11px;
+}
+
+/* Routing table */
+.routing-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  margin-bottom: 12px;
+}
+
+.routing-table th {
+  text-align: left;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  padding: 4px 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.routing-table td {
+  padding: 4px 8px;
+  border-bottom: 1px solid rgba(42, 45, 58, 0.3);
+}
+
+.recent-list {
+  list-style: none;
+  font-size: 12px;
+}
+
+.recent-list li {
+  padding: 3px 0;
+}
