@@ -20,6 +20,7 @@ import { getUpdates, getMe, TelegramUpdate } from './bot';
 import {
   handleStart, handleHelp, handlePreview,
   handleSchedule, handleStats, handleStatus, handleSubscribe, handleUnknown,
+  handleAchiri,
 } from './commands';
 
 // ── Config ────────────────────────────────────────────────────────────────────
@@ -93,6 +94,7 @@ async function dispatch(update: TelegramUpdate): Promise<void> {
     case '/status':     await handleStatus(chatId);                       break;
     case '/stats':      await handleStats(chatId);                        break;
     case '/subscribe':  await handleSubscribe(chatId, text.split(/\s+/)[1]); break;
+    case '/achiri':     await handleAchiri(chatId, text.slice('/achiri'.length).trim()); break;
     default:            await handleUnknown(chatId, text);                break;
   }
 }

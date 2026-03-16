@@ -1,0 +1,61 @@
+{
+  "sprint": "116",
+  "name": "Achiri Telegram Bridge — /achiri command wired to conversation handler",
+  "block": "Phase 2A — Achiri",
+  "goal": "Add /achiri <message> command to the Telegram bot. Any /achiri message is routed to AchiriConversationHandler with the Telegram chatId as userId (tier=free default). Bot replies with Achiri's response. This connects real users to Achiri via Telegram.",
+  "rationale": "Sprint 115 shipped the HTTP API. Now we need a front-end user path. Telegram bot is already live (beta mode). Adding /achiri is the fastest route to real user conversations before the Apr 11 gate.",
+  "swarm": "NOT USED — commands.ts is 302 lines (known swarm failure zone). All tasks written directly.",
+  "tasks": [
+    {
+      "id": "116-01",
+      "title": "agents/telegram-bot/commands.ts — add handleAchiri()",
+      "description": "Import AchiriConversationHandler. Add handleAchiri(chatId, message) that calls handler.chat(message) with tier=free. Cache one handler per chatId (module-level Map). Reply with Achiri's response. On error, reply with fallback message.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "done",
+      "priority": "critical",
+      "sprint_id": "sprint-116",
+      "deliverables": {
+        "code": ["agents/telegram-bot/commands.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "116-02",
+      "title": "agents/telegram-bot/index.ts — route /achiri command",
+      "description": "Add /achiri case to the switch in dispatch(). Call handleAchiri(chatId, text after /achiri). Also handle raw text (non-command) in Achiri mode if user has set /achiri_mode on.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "done",
+      "priority": "critical",
+      "sprint_id": "sprint-116",
+      "deliverables": {
+        "code": ["agents/telegram-bot/index.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "116-03",
+      "title": "scripts/achiri/validate-telegram-bridge.ts — smoke test",
+      "description": "In ACHIRI_DRY_RUN=1 mode: call handleAchiri with a mock chatId and message. Verify reply is non-empty string. PASS = reply present and non-empty.",
+      "type": "create",
+      "task_type": "validation",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-116",
+      "deliverables": {
+        "code": ["scripts/achiri/validate-telegram-bridge.ts"],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ]
+}

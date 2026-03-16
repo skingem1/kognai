@@ -6,6 +6,7 @@ import { join } from 'path';
 import { sendMessage, sendPhoto } from './bot';
 import { TelegramDB } from './db';
 import { createCheckoutSession, isConfigured as stripeConfigured } from '../stripe/client';
+import { AchiriConversationHandler } from '../achiri/index';
 
 const REPORTS_DIR = join(process.cwd(), 'reports');
 
@@ -299,4 +300,31 @@ export async function handleStatus(chatId: number): Promise<void> {
 
 export async function handleUnknown(chatId: number, text: string): Promise<void> {
   await sendMessage(chatId, `❓ Unknown command: \`${text}\`\n\nUse /help for available commands.`);
+}
+
+// ── Achiri AI companion bridge (Sprint 116) ───────────────────────────────────
+
+// One handler per chatId — persists memory across messages in the same process session
+const achiriHandlers = new Map<number, AchiriConversationHandler>();
+
+function getAchiriHandler(chatId: number): AchiriConversationHandler {
+  if (!achiriHandlers.has(chatId)) {
+    achiriHandlers.set(chatId, new AchiriConversationHandler('free', String(chatId)));
+  }
+  return achiriHandlers.get(chatId)!;
+}
+
+export async function handleAchiri(chatId: number, message: string): Promise<void> {
+  if (!message || !message.trim()) {
+    await sendMessage(chatId, 'Qouli chay 😊  /achiri <your message>');
+    return;
+  }
+  try {
+    const handler = getAchiriHandler(chatId);
+    const reply = await handler.chat(message.trim());
+    await sendMessage(chatId, reply);
+  } catch (err) {
+    console.error('[telegram-bot] Achiri error:', err);
+    await sendMessage(chatId, 'Mrigoul, ma njemtch nchouf — 3awedha marra oukhra 🙏');
+  }
 }
