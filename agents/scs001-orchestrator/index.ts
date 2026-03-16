@@ -1,5 +1,5 @@
 // SCS-001 — Orchestrator (Block F — Autonomous Pipeline)
-// Wires all 9 agents into a single automated pipeline run.
+// Wires all 11 agents into a single automated pipeline run.
 // Mode: 'mock' (no API calls) or 'live' (ORACLE-6 + Claude API)
 // Output: PipelineRunReport with counts, timings, status per stage
 
@@ -13,6 +13,8 @@ import { CaptionAgent, CaptionedVideo } from '../scs001-caption/index';
 import { QCAgent, QualityControlGate } from '../scs001-qc/index';
 import { PublishingAgent, PublishedVideo } from '../scs001-publishing/index';
 import { AnalyticsAgent, PerformanceSignal } from '../scs001-analytics/index';
+import { ContentFlywheelAgent, FlywheelOutput } from '../scs001-flywheel/index';
+import { FailureLibraryAgent, FailureEntry } from '../scs001-failure-library/index';
 
 export interface StageResult {
   stage:    string;
@@ -42,8 +44,10 @@ export interface PipelineRunReport {
     qc_failed:        number;
     published:        number;
     viral:            number;
-    performing:       number;
-    failure_library:  number;
+    performing:         number;
+    failure_library:    number;
+    flywheel_derivatives: number;
+    failure_entries:    number;
   };
 }
 
@@ -69,6 +73,8 @@ export class SCS001Orchestrator {
     let gates: QualityControlGate[] = [];
     let published: PublishedVideo[] = [];
     let signals: PerformanceSignal[] = [];
+    let flywheelOutputs: FlywheelOutput[] = [];
+    let failureEntries: FailureEntry[] = [];
 
     console.log('[Orchestrator] Starting SCS-001 pipeline (' + this.mode + ' mode)');
     console.log('');
@@ -169,6 +175,26 @@ export class SCS001Orchestrator {
       }));
     }
 
+    // --- Stage 11: Content Flywheel (viral signals only) ---
+    const viralSignals = signals.filter(s => s.flywheel_triggered);
+    if (viralSignals.length > 0) {
+      stages.push(await this.runStage('11-flywheel', 'ContentFlywheelAgent', async () => {
+        const agent = new ContentFlywheelAgent();
+        flywheelOutputs = agent.run(signals);
+        return flywheelOutputs.length * 4; // 4 derivatives per output
+      }));
+    }
+
+    // --- Stage 12: Failure Library (failure signals only) ---
+    const failureSignals = signals.filter(s => s.failure_library_entry);
+    if (failureSignals.length > 0) {
+      stages.push(await this.runStage('12-failure-library', 'FailureLibraryAgent', async () => {
+        const agent = new FailureLibraryAgent();
+        failureEntries = agent.run(signals);
+        return failureEntries.length;
+      }));
+    }
+
     const completedAt = new Date();
     const totalMs = completedAt.getTime() - startedAt.getTime();
 
@@ -192,7 +218,9 @@ export class SCS001Orchestrator {
         published:          published.length,
         viral:              signals.filter(s => s.viral_status === 'viral').length,
         performing:         signals.filter(s => s.viral_status === 'performing').length,
-        failure_library:    signals.filter(s => s.failure_library_entry).length,
+        failure_library:      signals.filter(s => s.failure_library_entry).length,
+        flywheel_derivatives: flywheelOutputs.length * 4,
+        failure_entries:      failureEntries.length,
       },
     };
 

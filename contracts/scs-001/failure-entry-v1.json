@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Failure Library — Agent 11 Contract",
+  "description": "When Analytics detects failure (completion < 40%), files structured breakdown for Trend Agent avoidance.",
+  "version": "1.0.0",
+  "status": "LOCKED",
+  "locked_date": "2026-03-16",
+
+  "definitions": {
+    "FailureEntry": {
+      "type": "object",
+      "required": ["entry_id", "video_id", "signal_id", "topic_tags", "hook_formula", "speaker", "posting_slot", "kpis", "weakest_kpi", "failure_category", "avoidance_rule", "filed_at"],
+      "properties": {
+        "entry_id": { "type": "string" },
+        "video_id": { "type": "string" },
+        "signal_id": { "type": "string" },
+        "topic_tags": { "type": "array", "items": { "type": "string" } },
+        "hook_formula": { "type": "string" },
+        "speaker": { "type": "string" },
+        "posting_slot": { "type": "string" },
+        "kpis": { "type": "object" },
+        "weakest_kpi": { "type": "string" },
+        "failure_category": {
+          "type": "string",
+          "enum": ["weak_hook", "wrong_audience", "bad_timing", "low_production", "unknown"]
+        },
+        "avoidance_rule": { "type": "string" },
+        "filed_at": { "type": "string", "format": "date-time" }
+      }
+    }
+  }
+}
