@@ -1,57 +1,115 @@
-import * as fs from 'fs/promises';
-import * as path from 'path';
+// SCS-001 — Trend Agent (Agent 1)
+// Consumes: ORACLE-6 intelligence signals (mock or live)
+// Produces: TrendingTopicBatch (per contracts/scs-001/trending-topic-v1.json)
 
-interface OracleSignal {
+import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs';
+import { join } from 'path';
+
+interface Oracle6Signal {
   signal_id: string;
+  topic: string;
   confidence: number;
   scs_relevant: boolean;
-  topic: string;
+  domain_tag: string;
+  keyword_cluster?: string[];
+  top_speakers?: Array<{ name: string; handle?: string; authority_score?: number }>;
+  relevant_channels?: Array<{ platform: string; channel_id: string; channel_name?: string }>;
+  mainstream_eta_days?: number;
+  provenance_source?: string;
 }
 
-interface TrendOutput {
-  processed_signals: OracleSignal[];
-  keyword_clusters: string[][];
+interface Oracle6Feed {
+  feed_id: string;
+  generated_at: string;
+  feed_status: 'mock' | 'live' | 'degraded';
+  signals: Oracle6Signal[];
 }
 
-async function main() {
-  try {
-    // Read mock oracle feed
-    const mockFeedPath = path.join('contracts', 'scs-001', 'mock-oracle6-feed.json');
-    const data = await fs.readFile(mockFeedPath, 'utf-8');
-    const signals: OracleSignal[] = JSON.parse(data).signals;
+export interface TrendingTopic {
+  topic_id: string;
+  topic_name: string;
+  confidence_score: number;
+  keyword_cluster: string[];
+  top_speakers?: Array<{ name: string; handle?: string; authority_score?: number }>;
+  relevant_channels?: Array<{ platform: string; channel_id: string; channel_name?: string }>;
+  domain_tags: string[];
+  provenance_source?: string;
+  mainstream_eta_days?: number;
+}
 
-    // Filter signals (all should pass in mock data)
-    const processedSignals = signals.filter(signal => 
-      signal.confidence >= 72 && signal.scs_relevant
-    );
+export interface TrendingTopicBatch {
+  batch_id: string;
+  generated_at: string;
+  oracle6_feed_status: 'mock' | 'live' | 'degraded';
+  topics: TrendingTopic[];
+}
 
-    // Derive keyword clusters from topics
-    const keywordClusters = processedSignals.map(signal => {
-      return signal.topic.split(/[\s\-]+/).map(term => term.toLowerCase());
-    });
+const CONFIDENCE_GATE = 60;
+const ROOT = join(__dirname, '..', '..');
+const MOCK_FEED_PATH = join(ROOT, 'contracts', 'scs-001', 'mock-oracle6-feed.json');
 
-    // Prepare output
-    const output: TrendOutput = {
-      processed_signals: processedSignals,
-      keyword_clusters: keywordClusters
+export class TrendAgent {
+  private feedPath: string;
+
+  constructor(feedPath?: string) {
+    this.feedPath = feedPath ?? MOCK_FEED_PATH;
+  }
+
+  run(seq = 1): TrendingTopicBatch {
+    const feed = this.loadFeed();
+    const qualified = feed.signals
+      .filter(s => s.scs_relevant === true && s.confidence >= CONFIDENCE_GATE)
+      .sort((a, b) => b.confidence - a.confidence);
+
+    const topics: TrendingTopic[] = qualified.map(s => ({
+      topic_id: s.signal_id,
+      topic_name: s.topic,
+      confidence_score: s.confidence,
+      keyword_cluster: s.keyword_cluster ?? this.deriveKeywords(s.topic),
+      top_speakers: s.top_speakers,
+      relevant_channels: s.relevant_channels,
+      domain_tags: [s.domain_tag],
+      provenance_source: (s.provenance_source as TrendingTopic['provenance_source']) ?? 'manual_seed',
+      mainstream_eta_days: s.mainstream_eta_days,
+    }));
+
+    const batch: TrendingTopicBatch = {
+      batch_id: `trend-batch-${new Date().toISOString().slice(0, 10)}-${String(seq).padStart(3, '0')}`,
+      generated_at: new Date().toISOString(),
+      oracle6_feed_status: feed.feed_status ?? 'mock',
+      topics,
     };
 
-    // Write to output directory
-    const outputDir = path.join('workspace', 'scs001', 'trend-outputs');
-    await fs.mkdir(outputDir, { recursive: true });
-    await fs.writeFile(
-      path.join(outputDir, 'trend-output.json'),
-      JSON.stringify(output, null, 2)
-    );
+    console.log(`[TrendAgent] Processed ${feed.signals.length} signals → ${topics.length} qualified (gate: ${CONFIDENCE_GATE})`);
+    return batch;
+  }
 
-    console.log('Trend processing completed successfully');
-  } catch (error) {
-    console.error('Error in trend processing:', error);
-    throw error;
+  private loadFeed(): Oracle6Feed {
+    const raw = readFileSync(this.feedPath, 'utf8');
+    return JSON.parse(raw) as Oracle6Feed;
+  }
+
+  private deriveKeywords(topic: string): string[] {
+    return topic
+      .toLowerCase()
+      .split(/[\s,\-–—]+/)
+      .filter(w => w.length > 3)
+      .slice(0, 5);
   }
 }
 
-main().catch(err => {
-  console.error('Uncaught error in trend agent:', err);
-  process.exit(1);
-});
+export function saveBatch(batch: TrendingTopicBatch, outDir: string): string {
+  if (!existsSync(outDir)) mkdirSync(outDir, { recursive: true });
+  const outPath = join(outDir, `${batch.batch_id}.json`);
+  writeFileSync(outPath, JSON.stringify(batch, null, 2));
+  return outPath;
+}
+
+if (require.main === module) {
+  const agent = new TrendAgent();
+  const batch = agent.run();
+  const outDir = join(ROOT, 'workspace', 'scs001', 'trend-outputs');
+  const outPath = saveBatch(batch, outDir);
+  console.log(`[TrendAgent] Batch saved → ${outPath}`);
+  console.log(JSON.stringify(batch, null, 2));
+}
