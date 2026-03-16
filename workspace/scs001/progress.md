@@ -199,3 +199,18 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
   - Panel 14 (Go-Live Readiness): readiness score dial, env var checklist (all 5 red = 0% ready), kill switch targets, pipeline status, blockers list.
 - Current readiness: 0% (all 5 env vars missing). Operator must set TIKTOK_ACCESS_TOKEN + SUPABASE_URL + SUPABASE_SERVICE_KEY + YOUTUBE_API_KEY + SCS_EDITING_MODE.
 - Timestamp: 2026-03-16T18:00:00Z
+
+### Sprint 104 — Content Quality Scorer Stage 5.5 (Block: quality)
+- Status: PASS | Commit: 5cce753 | Block: quality
+- Files created: agents/scs001-scorer/index.ts, workspace/sprints/sprint-104.json
+- Files modified: agents/scs001-orchestrator/index.ts (Stage 5.5 + scripts_scored/filtered summary), dashboard/static/app.js (scorer stats display)
+- Tests: scripts/smoke-test-pipeline.ts — PASS (13 stages, 0 errors, 14 scripts → 4 filtered → 10 edited)
+- Swarm: NOT used — orchestrator too complex (180+ lines, class with state). Wrote all 4 tasks directly.
+- Changes:
+  - scs001-scorer/index.ts: ScriptScorer class scores bundles 0-100 (hook_strength + curiosity_gap + cta_clarity + topic_virality). Pass threshold: 60.
+  - scoreAndFilter(): returns { passed: ScriptBundle[], filtered: ScriptScore[] }
+  - Orchestrator Stage 5.5: inserts between ScriptAgent and EditingAgent. 4 scripts filtered (Margrethe Vestager, Jesse Pollak topics scored below 60). 10 pass to editing.
+  - PipelineRunReport.summary: scripts_scored + scripts_filtered fields added
+  - Dashboard: scorer stats row added (backward-compat with older reports)
+- Scorer behavior in mock: VIRAL_SPEAKERS list includes samaltman, elonmusk, etc. 'Sam Altman' + AI topics = 70+ score (pass). 'Margrethe Vestager' + regulation = 55 (filter).
+- Timestamp: 2026-03-16T18:30:00Z

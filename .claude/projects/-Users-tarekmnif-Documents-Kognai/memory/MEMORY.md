@@ -1,5 +1,5 @@
 # KOGNAI SESSION MEMORY
-*Last updated: Sprint 103 — 2026-03-16*
+*Last updated: Sprint 104 — 2026-03-16*
 
 ---
 
@@ -10,9 +10,9 @@
 - Production mode: set `SCS_EDITING_MODE=production` + `TIKTOK_ACCESS_TOKEN` in .env
 
 ## Kognai State
-- Last commit: c518bf9 (Sprint 103 shipped 2026-03-16)
+- Last commit: 5cce753 (Sprint 104 shipped 2026-03-16)
 - Sprint numbering: Invoica legacy 001-062e → Kognai starts 063+
-- Current sprint: 104 (next)
+- Current sprint: 105 (next)
 - Gate reports: workspace/gates/phase0-phase1-gate.json, workspace/gates/phase1-activation-readiness.json, workspace/gates/production-quality-check.json
 
 ## Build Priority Sequence
@@ -47,7 +47,8 @@
 | 101 | data-pipeline | Live trend pipeline (Google Trends RSS + YouTube API + real video search) | ✅ PASS |
 | 102 | hardening | Doc-gen bugfix (strategic-context.md) + end-to-end smoke test | ✅ PASS |
 | 103 | dashboard | Go-Live Readiness panel (env checklist, kill switches, pipeline status) | ✅ PASS |
-| **104** | **?** | **NEXT** | ⏳ pending |
+| 104 | quality | Content quality scorer Stage 5.5 (14 scored → 4 filtered → 10 to editing) | ✅ PASS |
+| **105** | **?** | **NEXT** | ⏳ pending |
 
 ## SCS-001 Pipeline Architecture
 12 stages, 11 agents:
@@ -60,7 +61,7 @@ All agents located at: `agents/scs001-*/`
 2. **SUPABASE_URL + SUPABASE_SERVICE_KEY** not in .env — video hosting blocked
 3. **YOUTUBE_API_KEY** not in .env — live trends/real video search blocked (free at console.cloud.google.com)
 4. **SCS_EDITING_MODE** not in .env — production video quality not active (set to 'production')
-5. **OpenClaw v2026.3.7** + T2 Skills — deferred to Sprint 104+ (gate-tracker.md shows both Deferred)
+5. **OpenClaw v2026.3.7** + T2 Skills — deferred to Sprint 105+ (gate-tracker.md shows both Deferred)
 6. **Run setup when env vars are set**: `bash scripts/setup-phase1.sh`
 7. **Smoke test**: `bash scripts/smoke-test-pipeline.sh` — validates full 12-stage pipeline (PASS as of Sprint 102)
 
