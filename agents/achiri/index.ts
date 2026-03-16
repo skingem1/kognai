@@ -4,6 +4,7 @@
 // Tier-based model selection. Sprint 113: wired to Ollama (free) + Anthropic SDK (paid).
 // Sprint 122: daily message limit enforcement (messages_per_day from config).
 // Sprint 123: pre-flight safety filter (T3 skill: achiri-safety).
+// Sprint 128: memory context injection (T3 skill: achiri-memory).
 
 // Sentinel prefix returned when user hits their daily limit.
 // Server detects this to return structured { error: 'limit_exceeded' } response.
@@ -13,6 +14,7 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 import { AchiriMemoryStore } from './memory-store';
 import { safetyCheck } from './safety-filter';
+import { injectMemoryContext } from './memory-search';
 
 const ANTHROPIC_API_URL = 'https://api.anthropic.com/v1/messages';
 
@@ -132,7 +134,19 @@ export class AchiriConversationHandler {
 
     // Load history from memory store if enabled and no override provided
     const resolvedHistory: ConversationTurn[] = history ?? (this.memory ? this.memory.loadHistory(this.userId) : []);
-    const messages = this.buildMessages(userMessage, resolvedHistory);
+
+    // --- Memory context injection (Sprint 128 — T3 skill: achiri-memory) ---
+    // Injects relevant past conversation context into the system prompt.
+    let effectiveHistory = resolvedHistory;
+    if (this.memory && resolvedHistory.length > 2) {
+      const memCtx = injectMemoryContext(this.userId, userMessage);
+      if (memCtx) {
+        // Prepend memory context as a system turn before the conversation history
+        effectiveHistory = [{ role: 'system', content: memCtx }, ...resolvedHistory];
+      }
+    }
+
+    const messages = this.buildMessages(userMessage, effectiveHistory);
     const model = this.getModelConfig();
     console.log('[Achiri] chat() model=' + model.model + ' tier=' + model.tier + ' msg_len=' + userMessage.length + ' history=' + resolvedHistory.length);
 

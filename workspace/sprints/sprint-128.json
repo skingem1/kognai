@@ -1,0 +1,61 @@
+{
+  "sprint": "128",
+  "name": "achiri-memory T3 skill — semantic memory search and context injection",
+  "block": "Phase 2A — T3 Skills Installation (Apr 14 gate) — FINAL T3 SKILL (6/6)",
+  "goal": "Implement agents/achiri/memory-search.ts — adds semantic search layer on top of existing AchiriMemoryStore. searchMemory(userId, query, topK) scores past turns by keyword overlap. getMemorySummary(userId) extracts key user facts. injectMemoryContext(userId, query) returns relevant context string. Wires into AchiriConversationHandler.chat() to inject memory context into system prompt. No external deps ($0.00).",
+  "rationale": "T3 Skills gate is Apr 14. This is skill #6/6 — final. Memory search lets Achiri say 'last week you mentioned X' — essential for the companion feel that differentiates from ChatGPT. Builds on existing Sprint 114 JSONL store with zero new infrastructure.",
+  "swarm": "NOT USED — new file + index.ts edit, direct write.",
+  "tasks": [
+    {
+      "id": "128-01",
+      "title": "agents/achiri/memory-search.ts — semantic memory search layer",
+      "description": "Export: MemorySearchResult = { turn: ConversationTurn, score: number, turn_index: number }. searchMemory(userId, query, topK=3): MemorySearchResult[] — loads JSONL history, scores each turn by tokenized keyword overlap (TF-IDF-like). Higher score = more relevant. Returns top K user turns only (skip assistant turns for injection). getMemorySummary(userId): string — extracts top 5 most-frequent topics from user messages. injectMemoryContext(userId, currentMessage, topK=3): string | null — returns formatted context block if relevant turns found, else null. Context format: 'Based on our previous conversations: [turn excerpts]'. No external deps.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-128",
+      "deliverables": {
+        "code": ["agents/achiri/memory-search.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "128-02",
+      "title": "agents/achiri/index.ts — wire memory context injection into chat()",
+      "description": "In AchiriConversationHandler.chat(): after safety check, before calling the LLM, call injectMemoryContext(userId, message). If result is non-null, prepend it as a system-style message (role=system) to the conversation history passed to the LLM. Small surgical edit only.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-128",
+      "deliverables": {
+        "code": ["agents/achiri/index.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "128-03",
+      "title": "scripts/achiri/validate-memory-search.ts — 5-check validation",
+      "description": "Tests: (1) searchMemory finds relevant turn by keyword overlap (seed history, search for keyword); (2) searchMemory returns topK results sorted by score desc; (3) getMemorySummary returns string with top topics; (4) injectMemoryContext returns null for empty history; (5) injectMemoryContext returns context block when relevant history exists. All 5 PASS.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-128",
+      "deliverables": {
+        "code": ["scripts/achiri/validate-memory-search.ts"],
+        "tests": ["scripts/achiri/validate-memory-search.ts"],
+        "docs": []
+      }
+    }
+  ]
+}
