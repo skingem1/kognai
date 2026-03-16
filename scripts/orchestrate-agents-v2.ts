@@ -1554,6 +1554,21 @@ This is a test file. You MUST keep it SHORT to avoid truncation:
 - If you write more than 80 lines, the file WILL be truncated and REJECTED\n`
         : '';
 
+      // EXACT CONTENT mode: task description contains code block(s) with the exact file content.
+      // Extract them deterministically and bypass LLM to prevent model hallucination.
+      // This is the correct fix for "EXACT CONTENT:" tasks — the model must NOT interpret
+      // the spec, it must copy it verbatim. Bypass the LLM entirely for these tasks.
+      const exactBlocks = [...task.context.matchAll(/EXACT CONTENT:\s*\n\n?```[\w.+-]*\n([\s\S]*?)```(?:\n|$)/g)]
+        .map(m => m[1].trimEnd());
+      if (exactBlocks.length > 0) {
+        // Use block[i] for deliverable[i] when multiple blocks present; else use block[0]
+        const exactFileContent = exactBlocks.length > i ? exactBlocks[i] : exactBlocks[0];
+        const blockLabel = `block ${Math.min(i, exactBlocks.length - 1) + 1}/${exactBlocks.length}`;
+        log(c.cyan, `  -> EXACT CONTENT mode: ${filepath} (${blockLabel}) — deterministic, no LLM`);
+        createdFiles.push({ path: filepath, content: exactFileContent });
+        continue;
+      }
+
       const userPrompt = `You are ${this.name}, a coding agent at Countable.
 ${rejectionContext}
 ## Task
