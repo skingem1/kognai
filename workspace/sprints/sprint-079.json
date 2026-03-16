@@ -206,9 +206,7 @@
         "code": [
           "scripts/scs001/validate-insight-output.ts"
         ],
-        "tests": [
-          "scripts/scs001/validate-insight-output.ts"
-        ],
+        "tests": [],
         "docs": []
       },
       "context": "SCS-001 Block B gate test. Uses getMockQualifiedClips() \u2192 InsightAgent.run() \u2192 validates all InsightBrief fields. Key checks: hook.text \u226480 chars, hook.formula valid enum, pre/post_clip_commentary \u2264200 chars, why_does_this_matter substantive (not generic), clip_id back-links to input. Block B gate: \u226590% why_does_this_matter must pass rubric. Run: npx ts-node scripts/scs001/validate-insight-output.ts",
