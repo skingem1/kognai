@@ -471,8 +471,8 @@ export async function handleWaitlist(
   subCmd: string | undefined,
   ownerChatId: string
 ): Promise<void> {
-  // Owner-only /waitlist list
-  if (subCmd === 'list') {
+  // Owner-only subcommands: list + export
+  if (subCmd === 'list' || subCmd === 'export') {
     if (String(chatId) !== ownerChatId) {
       await sendMessage(chatId, '🔒 Owner only.');
       return;
@@ -482,10 +482,24 @@ export async function handleWaitlist(
       await sendMessage(chatId, '📋 Achiri waitlist: empty');
       return;
     }
+
+    if (subCmd === 'export') {
+      // Ready-to-paste env var string for ACHIRI_ALPHA_WHITELIST
+      const ids = entries.map(e => e.chatId).join(',');
+      await sendMessage(chatId, [
+        `📤 *Waitlist Export* — ${entries.length} users`,
+        '',
+        '`ACHIRI_ALPHA_WHITELIST=' + ids + '`',
+        '',
+        '_Paste into .env, then pm2 restart telegram-bot_',
+      ].join('\n'));
+      return;
+    }
+
     const lines = entries.map((e, i) =>
       `${i + 1}. \`${e.chatId}\` — ${e.firstName}${e.username ? ' (@' + e.username + ')' : ''} — ${e.joinedAt.slice(0, 10)}`
     );
-    await sendMessage(chatId, `📋 *Achiri Waitlist* (${entries.length} entries)\n\n${lines.join('\n')}`);
+    await sendMessage(chatId, `📋 *Achiri Waitlist* (${entries.length} entries)\n\n${lines.join('\n')}\n\n_/waitlist export — get env var string_`);
     return;
   }
 

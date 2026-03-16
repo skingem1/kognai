@@ -1,0 +1,66 @@
+{
+  "sprint": "137",
+  "name": "/waitlist export + smoke test daily cron scheduler",
+  "block": "Phase 2A — Achiri alpha prep + Phase 1 pipeline health",
+  "goal": "Two small but high-value additions: (1) /waitlist export: owner-only subcommand that outputs all waitlist chatIds as a comma-separated string ready to paste into ACHIRI_ALPHA_WHITELIST env var. Eliminates manual JSONL parsing on Apr 25 launch day. (2) Smoke test cron: PM2 entry (kognai-smoke-test) runs scripts/smoke-test-pipeline.ts daily at 06:00 UTC, 1hr before the daily digest, so the digest always has fresh smoke test data.",
+  "rationale": "/waitlist export: Apr 25 operator workflow is: /waitlist export → copy string → paste as ACHIRI_ALPHA_WHITELIST in .env → restart PM2. Without export, must parse JSONL manually. Smoke test cron: daily digest reads smoke-test-latest.json. If no cron, the report goes stale and the digest shows outdated data. 06:00 cron fires 1hr before 07:00 digest.",
+  "swarm": "NOT USED — 1 function edit (commands.ts) + 1 config edit (ecosystem.config.js). Direct write.",
+  "tasks": [
+    {
+      "id": "137-01",
+      "title": "agents/telegram-bot/commands.ts — /waitlist export subcommand",
+      "description": "In handleWaitlist(), add 'export' case: if subCmd === 'export' and chatId === ownerChatId: load waitlist.jsonl, format chatIds as comma-separated string (e.g. '12345,67890,11111'), send as code block with count. Message: 'ACHIRI_ALPHA_WHITELIST=<comma-ids>\\nTotal: N users'. If empty: 'Waitlist is empty.'. Not authorized for non-owners.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-137",
+      "deliverables": {
+        "code": ["agents/telegram-bot/commands.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "137-02",
+      "title": "ecosystem.config.js — kognai-smoke-test PM2 cron (06:00 daily)",
+      "description": "Add PM2 entry named 'kognai-smoke-test': script='scripts/smoke-test-pipeline.ts', cron_restart='0 6 * * *', autorestart=false. Fires at 06:00 UTC daily (1hr before digest). Uses same ts-node/register pattern as other Kognai entries. cwd=/Users/tarekmnif/kognai.",
+      "type": "modify",
+      "task_type": "config",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-137",
+      "deliverables": {
+        "code": ["ecosystem.config.js"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "137-03",
+      "title": "scripts/achiri/validate-sprint-137.ts — validation",
+      "description": "Check: (1) handleWaitlist handles subCmd='export' for owner; (2) non-owner gets 403 on export; (3) export output contains ACHIRI_ALPHA_WHITELIST string; (4) ecosystem.config.js has kognai-smoke-test entry with cron_restart '0 6 * * *'; (5) smoke-test-pipeline.ts still exists.",
+      "type": "create",
+      "task_type": "test",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-137",
+      "deliverables": {
+        "code": ["scripts/achiri/validate-sprint-137.ts"],
+        "tests": ["scripts/achiri/validate-sprint-137.ts"],
+        "docs": []
+      }
+    }
+  ],
+  "acceptance_criteria": [
+    "handleWaitlist() export subcommand returns comma-separated chatIds",
+    "ecosystem.config.js has kognai-smoke-test with cron_restart '0 6 * * *'",
+    "validate-sprint-137.ts exits 0 (all checks pass)"
+  ]
+}

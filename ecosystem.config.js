@@ -414,6 +414,26 @@ module.exports = {
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
     {
+      // Smoke Test Cron — runs full 15-stage mock pipeline daily at 06:00 UTC
+      // Writes reports/smoke-test-latest.json (read by daily digest at 07:00).
+      // Ensures digest always has fresh pipeline health data.
+      name: "kognai-smoke-test",
+      script: "scripts/smoke-test-pipeline.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: false,
+      watch: false,
+      cron_restart: "0 6 * * *",
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/smoke-test-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/smoke-test-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
+    {
       // Daily Digest — pushes morning gate-progress summary to operator via Telegram
       // Fires 07:00 daily (before AM block). Shows: posts/views gate, pipeline stats,
       // days until Phase 1.5 gate (Apr 7) + Achiri alpha (Apr 25).
