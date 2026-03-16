@@ -1029,3 +1029,23 @@ SESSION HANDOFF (2026-03-16/17, Sprints 162-165):
 - Changes: update-gate-tracker.ts reads phase1-5-gate.json + manual-posts.jsonl + publish-ledger.jsonl + waitlist.jsonl, rewrites gate-tracker.md with current status. Phase 0→1 = PASS (141 videos). Phase 1.5 = live X/30 posts · Y/500 views. PM2 cron kognai-gate-tracker-update at 07:08 daily.
 - Gate: ~19 days to Apr 7, 0/30 posts | Achiri alpha: Apr 25
 - Timestamp: 2026-03-17T02:00:00Z
+
+## Sprint 170 — Fix posting-reminder.ts epoch bug (Phase 1 — CRITICAL posting reminder fix)
+- Status: PASS
+- Commit: f736d49
+- Files created: scripts/scs001/validate-sprint-170.ts, workspace/sprints/sprint-170.json
+- Files modified: scripts/posting-reminder.ts
+- Test: scripts/scs001/validate-sprint-170.ts — 4/4 PASS
+- Swarm used: no (direct write — surgical edit)
+- Changes: Replaced runIdToEpoch() in posting-reminder.ts with findCaptionedMp4(cwd, videoId) directory scan (same fix as Sprint 164 for commands.ts). Root cause: run_id 'scs001-2026-03-16T13-02-47-539Z' → epoch 1773666167539 but actual dir is run-1773666167538 (1ms off). Noon + evening reminder PMs were showing 'No ready videos' despite 141 captioned mp4s on disk. Now fixed.
+- Impact: CRITICAL — noon/evening posting nudges now include correct video file path, unblocking Apr 7 gate progress.
+- Gate: ~18 days to Apr 7, 0/30 posts | Achiri alpha: Apr 25
+- Timestamp: 2026-03-17T02:30:00Z
+
+SESSION HANDOFF (2026-03-17, Sprints 166-170):
+- Sprint 166: Achiri pre-deploy smoke test (scripts/achiri/smoke-test.ts, 6 checks)
+- Sprint 167: /post-batch N command (batch post 5+ videos in one session)
+- Sprint 168: Daily digest Achiri Alpha section (waitlist + invited + days-to-launch)
+- Sprint 169: Gate tracker auto-update (scripts/update-gate-tracker.ts, PM2 cron 07:08)
+- Sprint 170: CRITICAL posting-reminder.ts epoch bug fix (same as Sprint 164)
+- Next: 171 — Achiri Hetzner deploy verification OR new pipeline run if 141 videos getting stale
