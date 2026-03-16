@@ -1,0 +1,68 @@
+{
+  "sprint": "158",
+  "name": "/pace command — dynamic posting pace calculator",
+  "block": "Phase 1 — TikTok gate (0/30 posts, ~22 days)",
+  "goal": "Add /pace Telegram command (owner-only). Shows: posts recorded, posts remaining, days left to Apr 7, posts/day needed from today, today's target (ceil(remaining/daysLeft)), whether on track or behind. Also shows 'velocity' — posts per day average since first post (if any). Compact single message. Complements /queue (which shows which videos) — /pace shows the math of whether operator is on track.",
+  "rationale": "0/30 posts, 22 days. Operator needs a quick pulse check: 'am I on pace?' instead of doing mental math. /pace gives a one-line answer with today's target number. Drives urgency awareness without being verbose.",
+  "swarm": "NOT USED — 2 file edits (commands.ts + index.ts) + 1 validation script. Direct write.",
+  "tasks": [
+    {
+      "id": "158-01",
+      "title": "commands.ts — handlePace()",
+      "description": "handlePace(chatId, ownerChatId): owner-only gate. Reads workspace/scs001/manual-posts.jsonl to count recorded posts and extract timestamps. Computes: recordedCount, daysLeft = max(1, ceil((Apr7 - now) / 86400000)), postsNeeded = 30 - recordedCount. todayTarget = ceil(postsNeeded / daysLeft). rateNeeded = postsNeeded / daysLeft (to 1 decimal). If recordedCount > 0: compute velocity = recordedCount / daysSinceFirst. Status: if rateNeeded <= velocity: '✅ On track' else if velocity === 0: '🚨 Not started' else '⚠️ Behind pace'. Message format: '📊 Posting Pace — Apr 7 gate\\n\\n✅/⚠️/🚨 Status: [status]\\n📹 Posted: {count}/30\\n📅 Days left: {daysLeft}\\n🎯 Need: {rateNeeded}/day\\n📌 Today: post {todayTarget} video(s)\\n\\n(velocity: {velocity}/day avg since first post)'. Also add '/pace — Posting pace vs Apr 7 gate target (owner)' to handleHelp.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-158",
+      "deliverables": {
+        "code": ["agents/telegram-bot/commands.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "158-02",
+      "title": "index.ts — import handlePace + route /pace",
+      "description": "Add handlePace to import from commands. Add case '/pace' in dispatch switch.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-158",
+      "deliverables": {
+        "code": ["agents/telegram-bot/index.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "158-03",
+      "title": "validate-sprint-158.ts — 5-check validation",
+      "description": "1) commands.ts exports handlePace. 2) handlePace reads manual-posts.jsonl. 3) handlePace computes daysLeft. 4) handleHelp contains /pace. 5) index.ts routes /pace.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-158",
+      "deliverables": {
+        "code": ["scripts/scs001/validate-sprint-158.ts"],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ],
+  "acceptance_criteria": [
+    "handlePace() exported — reads manual-posts.jsonl, computes posts/day needed + today's target",
+    "Status: on track / behind / not started with emoji indicator",
+    "handleHelp shows /pace",
+    "index.ts routes /pace",
+    "validate-sprint-158.ts: 5/5 PASS"
+  ]
+}

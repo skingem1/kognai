@@ -106,6 +106,7 @@ export async function handleHelp(chatId: number): Promise<void> {
     '/queue — Posting queue: unposted videos + daily pace (owner)',
     '/post-now — Find videos ready to post with file path + metadata (owner)',
     '/caption [video_id] — Ready-to-paste TikTok caption for a video (owner)',
+    '/pace — Posting pace vs Apr 7 gate target (owner)',
     '',
     '🤖 *Achiri AI Companion*',
     '/achiri <msg> — Chat with Achiri (free tier, Darija/Arabic/French)',
@@ -1483,4 +1484,89 @@ export async function handleCaption(chatId: number, ownerChatId: string, videoId
 
   // Send caption as code block — tap to copy on mobile
   await sendMessage(chatId, '```\n' + caption + '\n```');
+}
+
+// ── Sprint 158: /pace — Dynamic posting pace calculator ───────────────────────
+
+export async function handlePace(chatId: number, ownerChatId: string): Promise<void> {
+  if (String(chatId) !== String(ownerChatId)) {
+    await sendMessage(chatId, '⛔ Owner-only command.');
+    return;
+  }
+
+  const cwd = process.cwd();
+  const manualPath = join(cwd, 'workspace', 'scs001', 'manual-posts.jsonl');
+
+  const POSTS_TARGET = 30;
+  const GATE_DATE    = new Date('2026-04-07T00:00:00Z');
+
+  // Load recorded posts
+  const entries: Array<{ video_id: string; recorded_at?: string }> = [];
+  if (existsSync(manualPath)) {
+    try {
+      readFileSync(manualPath, 'utf-8').split('\n').filter(l => l.trim())
+        .forEach(l => {
+          try { const e = JSON.parse(l); if (e.video_id) entries.push(e); } catch { /* skip */ }
+        });
+    } catch { /* ignore */ }
+  }
+
+  const recordedCount = entries.length;
+  const postsNeeded   = Math.max(0, POSTS_TARGET - recordedCount);
+  const now           = Date.now();
+  const daysLeft      = Math.max(1, Math.ceil((GATE_DATE.getTime() - now) / 86400000));
+  const rateNeeded    = postsNeeded / daysLeft;
+  const todayTarget   = Math.ceil(postsNeeded / daysLeft);
+
+  // Compute velocity (avg posts/day since first recorded post)
+  let velocity = 0;
+  if (recordedCount > 0) {
+    const timestamps = entries
+      .map(e => e.recorded_at ? new Date(e.recorded_at).getTime() : 0)
+      .filter(t => t > 0)
+      .sort();
+    if (timestamps.length >= 1) {
+      const firstTs = timestamps[0];
+      const daysSinceFirst = Math.max(1, Math.ceil((now - firstTs) / 86400000));
+      velocity = recordedCount / daysSinceFirst;
+    }
+  }
+
+  // Status
+  let statusEmoji: string;
+  let statusText: string;
+  if (recordedCount >= POSTS_TARGET) {
+    statusEmoji = '🎉';
+    statusText  = 'Gate met!';
+  } else if (recordedCount === 0) {
+    statusEmoji = '🚨';
+    statusText  = 'Not started';
+  } else if (velocity >= rateNeeded) {
+    statusEmoji = '✅';
+    statusText  = 'On track';
+  } else {
+    statusEmoji = '⚠️';
+    statusText  = 'Behind pace';
+  }
+
+  const lines: string[] = [
+    `📊 *Posting Pace* — Apr 7 gate`,
+    '',
+    `${statusEmoji} Status: *${statusText}*`,
+    `📹 Posted: ${recordedCount}/${POSTS_TARGET}`,
+    `📅 Days left: ${daysLeft}`,
+    `🎯 Need: ${rateNeeded.toFixed(1)}/day`,
+    `📌 Today: post *${todayTarget}* video(s)`,
+  ];
+
+  if (recordedCount > 0) {
+    lines.push(`📈 Velocity: ${velocity.toFixed(1)}/day avg`);
+  }
+
+  if (recordedCount < POSTS_TARGET) {
+    lines.push('');
+    lines.push(`→ Use /post-now or /caption to get started`);
+  }
+
+  await sendMessage(chatId, lines.join('\n'));
 }
