@@ -104,6 +104,7 @@ export async function handleHelp(chatId: number): Promise<void> {
     '/record <id> <views> [title] — Record posted video to gate tracker (owner)',
     '/update-views <id> <views> — Update view count on recorded post (owner)',
     '/queue — Posting queue: unposted videos + daily pace (owner)',
+    '/post-now — Find videos ready to post with file path + metadata (owner)',
     '',
     '🤖 *Achiri AI Companion*',
     '/achiri <msg> — Chat with Achiri (free tier, Darija/Arabic/French)',
@@ -1279,6 +1280,117 @@ export async function handleStripeStatus(chatId: number, ownerChatId: string): P
     lines.push('', '✅ *All prerequisites met — Stripe is live!*');
     lines.push('Forward prod events: stripe listen --forward-to localhost:' + webhookPort + '/webhook');
   }
+
+  await sendMessage(chatId, lines.join('\n'));
+}
+
+// ── Sprint 154: /post-now — Manual posting assistant ─────────────────────────
+
+function runIdToEpoch(runId: string): number | null {
+  try {
+    // runId: scs001-2026-03-16T16-39-58-797Z
+    const ts = runId.replace('scs001-', '');
+    const [datePart, timePart] = ts.split('T');
+    const tp = timePart.replace('Z', '').split('-');
+    const iso = `${datePart}T${tp[0]}:${tp[1]}:${tp[2]}.${tp[3]}Z`;
+    const ms = new Date(iso).getTime();
+    return isNaN(ms) ? null : ms;
+  } catch { return null; }
+}
+
+function nextPostingSlot(): string {
+  const now = new Date();
+  const h = now.getHours();
+  const slots = [7, 12, 18, 21];
+  const next = slots.find(s => s > h);
+  if (next !== undefined) return `Today at ${String(next).padStart(2, '0')}:00`;
+  return 'Tomorrow at 07:00';
+}
+
+export async function handlePostNow(chatId: number, ownerChatId: string): Promise<void> {
+  if (String(chatId) !== String(ownerChatId)) {
+    await sendMessage(chatId, '⛔ Owner-only command.');
+    return;
+  }
+
+  const cwd = process.cwd();
+  const ledgerPath = join(cwd, 'workspace', 'scs001', 'publish-ledger.jsonl');
+  const manualPath = join(cwd, 'workspace', 'scs001', 'manual-posts.jsonl');
+  const topicsPath = join(cwd, 'workspace', 'scs001', 'viral-topics.json');
+
+  // Load recorded ids
+  const recordedIds = new Set<string>();
+  if (existsSync(manualPath)) {
+    try {
+      readFileSync(manualPath, 'utf-8').split('\n').filter(l => l.trim())
+        .forEach(l => { try { const e = JSON.parse(l); if (e.video_id) recordedIds.add(e.video_id); } catch { /* skip */ } });
+    } catch { /* ignore */ }
+  }
+
+  // Load hashtags from viral-topics.json
+  let viralHashtags: string[] = [];
+  if (existsSync(topicsPath)) {
+    try {
+      const vt = JSON.parse(readFileSync(topicsPath, 'utf-8'));
+      viralHashtags = (vt.topics ?? []).slice(0, 4).map((t: string) => `#${t}`);
+    } catch { /* ignore */ }
+  }
+  if (viralHashtags.length === 0) viralHashtags = ['#ai', '#tech'];
+  const hashtags = [...viralHashtags, '#fyp', '#viral', '#learnontiktok'].join(' ');
+
+  // Load ledger and find unposted entries with valid mp4 files
+  interface LedgerEntry { video_id: string; run_id: string; speaker?: string; topic?: string; }
+  const ready: Array<LedgerEntry & { filePath: string }> = [];
+
+  if (existsSync(ledgerPath)) {
+    const entries: LedgerEntry[] = readFileSync(ledgerPath, 'utf-8')
+      .split('\n').filter(l => l.trim())
+      .map(l => { try { return JSON.parse(l); } catch { return null; } })
+      .filter(Boolean) as LedgerEntry[];
+
+    for (const e of entries) {
+      if (recordedIds.has(e.video_id)) continue;
+      const epoch = runIdToEpoch(e.run_id);
+      if (!epoch) continue;
+      const mp4 = join(cwd, 'workspace', 'scs001', `run-${epoch}`, 'caption', `${e.video_id}-captioned.mp4`);
+      if (existsSync(mp4)) {
+        ready.push({ ...e, filePath: mp4 });
+        if (ready.length >= 3) break;
+      }
+    }
+  }
+
+  const gateDate = new Date('2026-04-07T00:00:00Z');
+  const daysLeft = Math.max(1, Math.ceil((gateDate.getTime() - Date.now()) / 86400000));
+  const postsNeeded = Math.max(0, 30 - recordedIds.size);
+  const slot = nextPostingSlot();
+
+  if (ready.length === 0) {
+    await sendMessage(chatId, [
+      `🎬 *Post Now* — Apr 7 gate (${daysLeft}d, ${postsNeeded} posts needed)`,
+      '',
+      '⚠️ No ready videos found on disk.',
+      'Run the pipeline first: `pm2 start ecosystem.config.js --only scs001-pipeline`',
+    ].join('\n'));
+    return;
+  }
+
+  const lines: string[] = [
+    `🎬 *Post Now* — Apr 7 gate (${daysLeft}d, ${postsNeeded} posts needed)`,
+    `⏰ Post at: *${slot}*`,
+    '',
+  ];
+
+  ready.forEach((v, i) => {
+    const homePath = v.filePath.replace(process.env.HOME ?? '/Users/tarekmnif', '~');
+    lines.push(`*${i + 1}. \`${v.video_id}\`*`);
+    if (v.speaker) lines.push(`   🎙️ Speaker: ${v.speaker}`);
+    if (v.topic)   lines.push(`   📝 Topic: ${v.topic.slice(0, 70)}`);
+    lines.push(`   📁 \`${homePath}\``);
+    lines.push(`   🏷️ ${hashtags}`);
+    lines.push(`   → After posting: \`/record ${v.video_id} 0\``);
+    if (i < ready.length - 1) lines.push('');
+  });
 
   await sendMessage(chatId, lines.join('\n'));
 }

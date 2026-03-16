@@ -1,0 +1,68 @@
+{
+  "sprint": "154",
+  "name": "Manual posting assistant — /post-now command",
+  "block": "Phase 1 — TikTok manual posting UX",
+  "goal": "Add /post-now Telegram command (owner-only). Shows top 3 unposted videos that have a captioned .mp4 file on disk. For each: full file path, speaker/topic (if stored in ledger), hashtags (from viral-topics.json or defaults), next optimal posting slot (07/12/18/21), /record shortcut. Bridges gap: operator has 114 videos ready on disk but no Telegram-native way to find file paths or get formatted TikTok metadata.",
+  "rationale": "0/30 posts, 22 days to Apr 7 gate. The operator needs to start posting manually TODAY. /queue shows video_ids but not file paths or copy-paste metadata. /post-now gives everything needed: file path on disk + title suggestion + hashtags + time slot + /record command in one Telegram message.",
+  "swarm": "NOT USED — 2 file edits + 1 validation script. Direct write.",
+  "tasks": [
+    {
+      "id": "154-01",
+      "title": "commands.ts — handlePostNow() + handleHelp() update",
+      "description": "handlePostNow(chatId, ownerChatId): owner gate. Loads ledger + manual-posts (reuse existing pattern). Parses run_id to epoch (scs001-2026-03-16T16-39-58-797Z → 1773679198797) to build run dir path. For each unposted entry, checks existsSync for workspace/scs001/run-{epoch}/caption/{video_id}-captioned.mp4. Takes top 3 with valid files. For each shows: video_id, file path (~/ relative), speaker (if in ledger), topic (trimmed to 60 chars, if in ledger), hashtags (load viral-topics.json topics array → prefix with #, add #fyp #viral #learnontiktok), next slot (compute from current hour: 07/12/18/21, if past 21:00 → tomorrow 07:00), /record shortcut. handleHelp: add '/post-now — Find videos ready to post with file path + metadata (owner)' line.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-154",
+      "deliverables": {
+        "code": ["agents/telegram-bot/commands.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "154-02",
+      "title": "index.ts — import handlePostNow + route /post-now",
+      "description": "Add handlePostNow to import from commands. Add case '/post-now' in dispatch switch.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-154",
+      "deliverables": {
+        "code": ["agents/telegram-bot/index.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "154-03",
+      "title": "validate-sprint-154.ts — 5-check validation",
+      "description": "1) commands.ts exports handlePostNow. 2) handlePostNow checks existsSync for captioned mp4. 3) handleHelp contains /post-now. 4) index.ts routes /post-now. 5) handlePostNow loads viral-topics.json for hashtags.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-154",
+      "deliverables": {
+        "code": ["scripts/scs001/validate-sprint-154.ts"],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ],
+  "acceptance_criteria": [
+    "handlePostNow() exported, finds captioned .mp4 files by parsing run_id → epoch",
+    "Shows file path, hashtags from viral-topics.json, next posting slot, /record command",
+    "/post-now routed in index.ts",
+    "handleHelp shows /post-now",
+    "validate-sprint-154.ts: 5/5 PASS"
+  ]
+}
