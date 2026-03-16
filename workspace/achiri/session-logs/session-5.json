@@ -1,0 +1,10 @@
+{
+  "session": 5,
+  "date": "2026-03-16",
+  "tier": "free",
+  "model": "qwen3:4b",
+  "opening_message": "Kifeh na3ref n3ayesh barra?",
+  "response": "Aslema! Chnahwelek? Ah ouais, kif n3ayesh barra? T'asliha, ana machi naaref — mrigoul! 😄\n*(Hello! How are you? Oh yeah, how are you but? I'm fine, I know — I don't know!)*\n\n*P.S. If you meant \"kif n3ayesh\" (how's it going) instead of \"barra\" (but), t'chouf bchira! We're all here for the *real* question — mrigoul.* 🥘",
+  "score": null,
+  "notes": "qwen3:4b confused 'barra' (abroad) with an interjection. Diaspora question not answered. Recovered warmly but missed the cultural depth. Model limitation at 4b scale."
+}

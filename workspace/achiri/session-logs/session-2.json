@@ -1,0 +1,10 @@
+{
+  "session": 2,
+  "date": "2026-03-16",
+  "tier": "free",
+  "model": "qwen3:4b",
+  "opening_message": "Salut, ça va?",
+  "response": "Aslema! Chnahwelek? M'khalouf belli, t'as l'heure de manger brik? Hekou, mrigoul! 😄",
+  "score": null,
+  "notes": "User opened in French; Achiri responded in Darija (matches default-language rule). Tunisian reference (brik). Warm and informal. Minor: could have led with French to match opener."
+}

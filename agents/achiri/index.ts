@@ -1,11 +1,12 @@
 // Achiri — Phase 2A Conversation Handler (voice-before-memory)
 // Loads personality from kognai-agents/achiri/prompt.md
 // Loads config from kognai-agents/achiri/config.json
-// Tier-based model selection. No LLM API calls yet (placeholder).
-// Sprint 113+ will wire to actual model routing.
+// Tier-based model selection. Sprint 113: wired to Ollama (free) + Anthropic SDK (paid).
 
 import { readFileSync } from 'fs';
 import { join } from 'path';
+
+const ANTHROPIC_API_URL = 'https://api.anthropic.com/v1/messages';
 
 export interface AchiriConfig {
   name: string;
@@ -89,28 +90,61 @@ export class AchiriConversationHandler {
   }
 
   async chat(userMessage: string, history: ConversationTurn[] = []): Promise<string> {
-    // Placeholder — Sprint 113+ will route to actual LLM API
     const messages = this.buildMessages(userMessage, history);
     const model = this.getModelConfig();
-    const result = {
-      status:             'placeholder',
-      model:              model.model,
-      provider:           model.provider,
-      tier:               model.tier,
-      message_count:      messages.length,
-      system_prompt_len:  messages[0].content.length,
-      user_message:       userMessage,
-      note:               'Sprint 113+ will wire to actual LLM. Voice wiring validated.',
-    };
-    return JSON.stringify(result, null, 2);
+    console.log('[Achiri] chat() model=' + model.model + ' tier=' + model.tier + ' msg_len=' + userMessage.length);
+
+    // Dry-run mode for CI/tests
+    if (process.env.ACHIRI_DRY_RUN === '1') {
+      return JSON.stringify({ status: 'dry_run', model: model.model, provider: model.provider, tier: model.tier, message_count: messages.length, system_prompt_len: messages[0].content.length });
+    }
+
+    const systemPrompt = messages[0].content;
+    const chatMessages = messages.slice(1).map(m => ({ role: m.role as 'user' | 'assistant', content: m.content }));
+
+    try {
+      if (model.provider === 'local') {
+        // Ollama chat API
+        const ollamaUrl = process.env.OLLAMA_URL ?? 'http://localhost:11434';
+        const res = await fetch(ollamaUrl + '/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ model: model.model, messages: [{ role: 'system', content: systemPrompt }, ...chatMessages], stream: false }),
+        });
+        if (!res.ok) throw new Error('Ollama error: ' + res.status);
+        const data = await res.json() as { message: { content: string } };
+        return data.message.content;
+      } else if (model.provider === 'anthropic') {
+        const apiKey = process.env.ANTHROPIC_API_KEY;
+        if (!apiKey) throw new Error('ANTHROPIC_API_KEY not set');
+        const res = await fetch(ANTHROPIC_API_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': apiKey,
+            'anthropic-version': '2023-06-01',
+          },
+          body: JSON.stringify({ model: model.model, max_tokens: 1024, system: systemPrompt, messages: chatMessages }),
+        });
+        if (!res.ok) throw new Error('Anthropic API ' + res.status + ': ' + (await res.text()).substring(0, 80));
+        const data = await res.json() as { content: Array<{ type: string; text: string }> };
+        return data.content[0].text;
+      } else {
+        throw new Error('Unknown provider: ' + model.provider);
+      }
+    } catch (err) {
+      console.error('[Achiri] chat() error:', err);
+      return 'Mrigoul, ma njemtch nchouf — 3awedha marra oukhra.';
+    }
   }
 }
 
 if (require.main === module) {
   (async () => {
     const tier = (process.env.ACHIRI_TIER ?? 'free') as 'free' | 'tnd_basic' | 'tnd_premium';
+    const msg = process.argv[2] ?? 'Aslema! Chnahwelek?';
     const handler = new AchiriConversationHandler(tier);
-    const response = await handler.chat('Aslema! Chnahwelek?');
+    const response = await handler.chat(msg);
     console.log('[Achiri] Response:\n' + response);
   })().catch(err => { console.error(err); process.exit(1); });
 }

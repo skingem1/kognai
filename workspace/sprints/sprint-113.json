@@ -1,0 +1,52 @@
+{
+  "sprint": "113",
+  "name": "Achiri LLM wiring — route chat() to Ollama (free) + Anthropic (paid) + run 5 voice validation conversations",
+  "block": "Phase 2A — Achiri",
+  "goal": "Wire AchiriConversationHandler.chat() to real LLM APIs. Free tier → Ollama qwen3:4b. Paid tiers → Anthropic SDK (haiku/sonnet). Run 5 test conversations and score them against the voice-validation-checklist. Gate: 8/10 PASS required to proceed to Sprint 114 (memory subsystem).",
+  "rationale": "Sprint 112 validated wiring, config loading, and system prompt assembly. The placeholder chat() returns JSON stubs. Phase 2A gate is Apr 11 — voice must be validated with real conversations before memory can be enabled. This sprint is the last prerequisite before memory work.",
+  "tasks": [
+    {
+      "id": "113-01",
+      "title": "Wire chat() to Ollama (free tier) and Anthropic SDK (paid tiers)",
+      "description": "Update agents/achiri/index.ts to make real LLM calls.\n\nEXACT REQUIREMENTS:\n\n1. FREE TIER (local/qwen3:4b):\n   - Call Ollama chat API: POST http://localhost:11434/api/chat\n   - Body: { model: 'qwen3:4b', messages: [...], stream: false }\n   - Parse response.message.content\n   - Use fetch() (Node 18+) — no new dependencies\n\n2. PAID TIERS (anthropic/claude-haiku-4-5, anthropic/claude-sonnet-4-6):\n   - Use @anthropic-ai/sdk (already in package.json from other agents)\n   - Read ANTHROPIC_API_KEY from process.env\n   - Call anthropic.messages.create({ model, max_tokens: 1024, system, messages })\n   - Parse response.content[0].text\n\n3. chat() implementation:\n   - Detect provider from getModelConfig().provider ('local' vs 'anthropic')\n   - Route accordingly\n   - On any error: return graceful Darija error: 'Mrigoul, ma njemtch nchouf — 3awedha marra oukhra'\n   - Log: '[Achiri] chat() model=[model] tier=[tier] msg_len=[len]'\n   - No change to buildMessages() or buildSystemPrompt()\n\n4. KEEP placeholder path: if ACHIRI_DRY_RUN=1 env var set, return old JSON stub (for CI/tests)\n\n5. Under 150 lines total (file was 117 lines — add ~25 lines for LLM routing)",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "dependencies": [],
+      "priority": "critical",
+      "sprint_id": "sprint-113",
+      "deliverables": {
+        "code": ["agents/achiri/index.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "113-02",
+      "title": "Run 5 test conversations and score voice-validation-checklist",
+      "description": "Run 5 test conversations against free tier (Ollama qwen3:4b) using ACHIRI_TIER=free.\n\nEXACT REQUIREMENTS:\n\n1. Run 5 conversations with varied opening messages:\n   - Session 1: 'Aslema! Chnahwelek?' (standard Darija greeting)\n   - Session 2: 'Salut, ça va?' (French opening — should respond in French/Darija mix)\n   - Session 3: 'Hey, how are you?' (English — should respond in English but note Tunisian identity)\n   - Session 4: 'Barra bzef! 3andek chi conseil?' (casual advice-seeking)\n   - Session 5: 'Kifeh na3ref n3ayesh barra?' (diaspora/emigration question — culturally loaded)\n\n2. Log each conversation output to workspace/achiri/session-logs/session-[N].json:\n   { date, tier, opening_message, response, score: null }\n\n3. Fill workspace/achiri/voice-validation-checklist.md:\n   - Score each of the 10 criteria based on the 5 sessions\n   - Mark [x] PASS or [x] FAIL\n   - Add notes column entries\n   - Log each session in the test conversation table\n   - Calculate final score and write DECISION\n\n4. Gate decision:\n   - 8+/10: update sprint-113.json status=complete, note='proceed to Sprint 114 (memory)'\n   - <8/10: identify failing criteria, propose fixes",
+      "type": "execute",
+      "task_type": "validation",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "dependencies": ["113-01"],
+      "priority": "critical",
+      "sprint_id": "sprint-113",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": [
+          "workspace/achiri/voice-validation-checklist.md",
+          "workspace/achiri/session-logs/session-1.json",
+          "workspace/achiri/session-logs/session-2.json",
+          "workspace/achiri/session-logs/session-3.json",
+          "workspace/achiri/session-logs/session-4.json",
+          "workspace/achiri/session-logs/session-5.json"
+        ]
+      }
+    }
+  ]
+}

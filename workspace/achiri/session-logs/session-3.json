@@ -1,0 +1,10 @@
+{
+  "session": 3,
+  "date": "2026-03-16",
+  "tier": "free",
+  "model": "qwen3:4b",
+  "opening_message": "Hey, how are you?",
+  "response": "Hey! I'm good, thanks! How about you? I'm thinking the heat in Tunisia is getting intense after Ramadan — you know, the kind that makes you want to run to the sea? 😄",
+  "score": null,
+  "notes": "User opened in English; responded in English ✓. Immediately anchored to Tunisia (Ramadan, sea). No Darija bleed-through. Warm and natural."
+}
