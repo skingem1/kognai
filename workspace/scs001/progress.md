@@ -938,3 +938,15 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
 - Root cause fixed: OLLAMA_HOST env was SET pointing to Mac Mini vault via Tailscale, but script always called localhost. Every future session now gets a useful sprint brief.
 - Gate: ~22 days to Apr 7, 0/30 posts | Achiri alpha: Apr 25 (~40d)
 - Timestamp: 2026-03-16T23:00:00Z
+
+## Sprint 163 — /pm2-status — PM2 process watchboard (Phase 1 — operator tooling)
+- Status: PASS
+- Commit: fa29470
+- Files created: scripts/scs001/validate-sprint-163.ts, workspace/sprints/sprint-163.json
+- Files modified: agents/telegram-bot/commands.ts, agents/telegram-bot/index.ts
+- Test: scripts/scs001/validate-sprint-163.ts — 5/5 PASS
+- Pipeline: N/A (operator tooling sprint)
+- Swarm used: no (direct write)
+- Changes: handlePm2Status(chatId, ownerChatId) owner-only. execSync('pm2 jlist') → parse JSON → per-process line with statusEmoji() (🟢/⭕/🔴/🟡/⚪) + name + formatUptime() (Xm/Xh/Xd) + restart count. Error handling: sends ⚠️ on execSync failure. Added execSync import from child_process. /pm2-status case in index.ts switch. Listed in handleHelp().
+- Gate: ~22 days to Apr 7, 0/30 posts | Achiri alpha: Apr 25 (~40d)
+- Timestamp: 2026-03-16T23:30:00Z
