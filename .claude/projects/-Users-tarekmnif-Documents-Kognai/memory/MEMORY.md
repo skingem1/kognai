@@ -10,9 +10,9 @@
 - Production mode: set `SCS_EDITING_MODE=production` + `TIKTOK_ACCESS_TOKEN` in .env
 
 ## Kognai State
-- Last commit: c00120e (Sprint 100 shipped 2026-03-16)
+- Last commit: 3216424 (Sprint 101 shipped 2026-03-16)
 - Sprint numbering: Invoica legacy 001-062e → Kognai starts 063+
-- Current sprint: 101 (next)
+- Current sprint: 102 (next)
 - Gate reports: workspace/gates/phase0-phase1-gate.json, workspace/gates/phase1-activation-readiness.json, workspace/gates/production-quality-check.json
 
 ## Build Priority Sequence
@@ -44,7 +44,8 @@
 | 098 | production-quality | Production video quality + live publishing | ✅ PASS |
 | 099 | hosting | Video hosting layer (Supabase Storage + preflight) | ✅ PASS |
 | 100 | ops | Phase 1 operator launch kit (.env.example, setup-phase1.sh, run-live.sh) | ✅ PASS |
-| **101** | **?** | **NEXT** | ⏳ pending |
+| 101 | data-pipeline | Live trend pipeline (Google Trends RSS + YouTube API + real video search) | ✅ PASS |
+| **102** | **?** | **NEXT** | ⏳ pending |
 
 ## SCS-001 Pipeline Architecture
 12 stages, 11 agents:
@@ -54,10 +55,12 @@ All agents located at: `agents/scs001-*/`
 
 ## Critical Gaps / Blockers
 1. **TIKTOK_ACCESS_TOKEN** not in .env — live posting blocked (human must obtain from TikTok Developer Portal, video.upload scope)
-2. **SUPABASE_URL + SUPABASE_SERVICE_KEY** not in .env — video hosting blocked (Supabase Storage upload needed for TikTok PULL_FROM_URL)
-3. **SCS_EDITING_MODE** not in .env — production video quality not yet active (set to 'production' to enable drawtext overlays)
-4. **OpenClaw v2026.3.7** + T2 Skills — deferred to Sprint 100+ (gate-tracker.md shows both Deferred)
-5. **Run preflight when env vars are set**: `npx ts-node scripts/scs001/validate-production-preflight.ts`
+2. **SUPABASE_URL + SUPABASE_SERVICE_KEY** not in .env — video hosting blocked
+3. **YOUTUBE_API_KEY** not in .env — live trends/real video search blocked (free at console.cloud.google.com)
+4. **SCS_EDITING_MODE** not in .env — production video quality not active (set to 'production')
+5. **OpenClaw v2026.3.7** + T2 Skills — deferred to Sprint 102+ (gate-tracker.md shows both Deferred)
+6. **generate-daily-brief.py** overwrites strategic-context.md — needs fixing before next run
+7. **Run setup when env vars are set**: `bash scripts/setup-phase1.sh`
 
 ## Key File Locations
 - Pipeline runner: `agents/scs001-orchestrator/run-pipeline.ts`
