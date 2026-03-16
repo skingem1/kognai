@@ -1,9 +1,10 @@
 #!/usr/bin/env ts-node
-// SCS-001 Pipeline Runner — Executes orchestrator and saves report to JSON
+// SCS-001 Pipeline Runner — Executes orchestrator, saves report, notifies via Telegram
 // Usage: npx ts-node agents/scs001-orchestrator/run-pipeline.ts [mock|live]
 
 import { writeFileSync, mkdirSync, existsSync } from 'fs';
 import { SCS001Orchestrator } from './index';
+import { notifyPipelineComplete, notifyPipelineError } from './notifier';
 
 async function main(): Promise<void> {
   const mode = (process.argv[2] === 'live' ? 'live' : 'mock') as 'mock' | 'live';
@@ -21,6 +22,17 @@ async function main(): Promise<void> {
   // Also save as latest
   writeFileSync(reportsDir + '/latest.json', JSON.stringify(report, null, 2));
   console.log('[Runner] Latest report updated');
+
+  // Notify subscribers via Telegram (non-fatal)
+  try {
+    await notifyPipelineComplete(report);
+  } catch (err) {
+    console.error('[Runner] Notification failed (non-fatal):', (err as Error).message);
+  }
 }
 
-main().catch(err => { console.error('Pipeline run failed:', err); process.exit(1); });
+main().catch(async err => {
+  console.error('Pipeline run failed:', err);
+  try { await notifyPipelineError(err.message ?? String(err)); } catch {}
+  process.exit(1);
+});

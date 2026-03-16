@@ -19,7 +19,7 @@ dotenv.config({ path: path.join(process.cwd(), '.env') });
 import { getUpdates, getMe, TelegramUpdate } from './bot';
 import {
   handleStart, handleHelp, handlePreview,
-  handleSchedule, handleStats, handleSubscribe, handleUnknown,
+  handleSchedule, handleStats, handleStatus, handleSubscribe, handleUnknown,
 } from './commands';
 
 // ── Config ────────────────────────────────────────────────────────────────────
@@ -90,6 +90,7 @@ async function dispatch(update: TelegramUpdate): Promise<void> {
     case '/help':       await handleHelp(chatId);                         break;
     case '/preview':    await handlePreview(chatId);                      break;
     case '/schedule':   await handleSchedule(chatId, text);               break;
+    case '/status':     await handleStatus(chatId);                       break;
     case '/stats':      await handleStats(chatId);                        break;
     case '/subscribe':  await handleSubscribe(chatId, text.split(/\s+/)[1]); break;
     default:            await handleUnknown(chatId, text);                break;

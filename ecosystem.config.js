@@ -392,6 +392,28 @@ module.exports = {
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
     {
+      // Telegram Bot — long-polling daemon for subscriber interaction
+      // Commands: /start, /help, /preview, /schedule, /status, /stats, /subscribe
+      // Requires: TELEGRAM_BOT_TOKEN + OWNER_TELEGRAM_CHAT_ID in .env
+      name: "telegram-bot",
+      script: "agents/telegram-bot/index.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: true,
+      watch: false,
+      max_memory_restart: "128M",
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
+        TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN || "",
+        OWNER_TELEGRAM_CHAT_ID: process.env.OWNER_TELEGRAM_CHAT_ID || "",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/telegram-bot-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/telegram-bot-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
+    {
       // SCS-001 Pipeline — runs 4x daily at posting slot times (Charter schedule)
       // Slots: 07:00, 12:00, 18:00, 21:00 UTC
       // Runs full 12-stage pipeline: Trend→Discovery→ClipDetection→Insight→Script→

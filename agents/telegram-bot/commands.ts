@@ -86,6 +86,7 @@ export async function handleHelp(chatId: number): Promise<void> {
     '/start — Register & see your account',
     '/preview — Show the next post candidate',
     '/schedule — Configure daily posting frequency',
+    '/status — Latest SCS-001 pipeline run',
     '/stats — Pipeline statistics',
     '/subscribe — Upgrade your plan (coming soon)',
     '/help — This message',
@@ -215,6 +216,39 @@ export async function handleSubscribe(chatId: number, planArg?: string): Promise
   } catch (err) {
     process.stderr.write(`[subscribe] Stripe error: ${(err as Error).message}\n`);
     await sendMessage(chatId, '⚠️ Could not create checkout session. Please try again later.');
+  }
+}
+
+export async function handleStatus(chatId: number): Promise<void> {
+  // Read latest SCS-001 pipeline run report
+  const latestPath = join(process.cwd(), 'reports', 'pipeline-runs', 'latest.json');
+  if (!existsSync(latestPath)) {
+    await sendMessage(chatId, '⚠️ No SCS-001 pipeline runs yet.\n\nRun: `npx ts-node agents/scs001-orchestrator/run-pipeline.ts`');
+    return;
+  }
+
+  try {
+    const report = JSON.parse(readFileSync(latestPath, 'utf-8'));
+    const s = report.summary || {};
+    const elapsed = ((report.total_elapsed_ms || 0) / 1000).toFixed(1);
+    const mode = report.mode === 'live' ? '🟢 LIVE' : '🔵 MOCK';
+    const stages = (report.stages || []).length;
+    const errors = (report.stages || []).filter((st: any) => st.status === 'error').length;
+    const started = report.started_at ? new Date(report.started_at).toLocaleString() : 'unknown';
+
+    await sendMessage(chatId, [
+      '📡 *Latest Pipeline Run*',
+      `${mode} | ${elapsed}s | ${stages} stages${errors > 0 ? ` | ⚠️ ${errors} errors` : ''}`,
+      '',
+      `📊 ${s.topics_found || 0} topics → ${s.clips_qualified || 0} qualified → ${s.published || 0} published`,
+      s.viral > 0 ? `🔥 ${s.viral} viral → ${s.flywheel_derivatives || 0} derivatives` : '',
+      s.performing > 0 ? `✅ ${s.performing} performing` : '',
+      s.failure_library > 0 ? `📕 ${s.failure_library} failures filed` : '',
+      '',
+      `⏱ _${started}_`,
+    ].filter(Boolean).join('\n'));
+  } catch {
+    await sendMessage(chatId, '⚠️ Could not parse latest pipeline report.');
   }
 }
 
