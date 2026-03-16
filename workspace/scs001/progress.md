@@ -963,3 +963,22 @@ Trend→Discovery→ClipDetection→[Dedup]→Insight→Script→Editing→Capti
 - Impact: CRITICAL — unblocks all 30 captioned videos for manual posting. Gate progress unblocked.
 - Gate: ~22 days to Apr 7, 0/30 posts | 30 videos ready to post | Achiri alpha: Apr 25 (~40d)
 - Timestamp: 2026-03-16T23:45:00Z
+
+## Sprint 165 — Fix daily-digest queue count (Phase 1 — digest accuracy)
+- Status: PASS
+- Commit: 0acb1dd
+- Files created: scripts/scs001/validate-sprint-165.ts, workspace/sprints/sprint-165.json
+- Files modified: scripts/daily-digest.ts
+- Test: scripts/scs001/validate-sprint-165.ts — 4/4 PASS
+- Swarm used: no (direct write)
+- Changes: Added findCaptionedMp4Local(videoId): boolean in daily-digest.ts — scans workspace/scs001/run-*/caption/ for actual mp4 files. getQueueStats() now returns readyCount = count of unposted entries with captioned mp4 on disk. buildDigest() queue line updated to '📋 Queue: N ready to post (M in ledger)'. Operator now sees accurate count in morning digest.
+- Note: Validation found 141 captioned mp4s on disk (more than previously estimated from manual ls). Posting workflow fully operational.
+- Gate: ~21 days to Apr 7, 0/30 posts | Achiri alpha: Apr 25
+- Timestamp: 2026-03-17T00:00:00Z
+
+SESSION HANDOFF (2026-03-16/17, Sprints 162-165):
+- Sprint 162: generate-sprint-brief.py now uses OLLAMA_HOST from .env (commit: 0428f03)
+- Sprint 163: /pm2-status Telegram command added (commit: fa29470)
+- Sprint 164: CRITICAL runIdToEpoch off-by-1ms fix — /post-now unblocked (commit: db1814d)
+- Sprint 165: Daily-digest queue readyCount fix (commit: 0acb1dd)
+- Next sprint: 166 — Achiri deploy verification OR Stripe live smoke test
