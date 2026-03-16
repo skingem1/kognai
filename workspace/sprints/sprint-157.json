@@ -1,0 +1,48 @@
+{
+  "sprint": "157",
+  "name": "Brief regen cron — kognai-brief-regen PM2 entry",
+  "block": "Phase 1 — ops infrastructure",
+  "goal": "Add kognai-brief-regen PM2 cron to ecosystem.config.js. Fires at 06:45 UTC daily, runs: python3 scripts/generate-daily-brief.py. This ensures workspace/sprint-brief.md is always regenerated before the daily digest (07:00), so every new Claude Code session starts with a fresh, accurate brief — no need to read raw MEMORY.md or progress.md. Saves ~3K tokens per session. Script already exists. This is a 1-entry ecosystem.config.js edit.",
+  "rationale": "sprint-brief.md is the primary context for every session. Currently it only regenerates when manually triggered. Adding a 06:45 cron means every morning session starts with an accurate brief reflecting the latest sprint history, env status, and blockers — reducing session startup overhead and avoiding stale-brief mistakes.",
+  "swarm": "NOT USED — 1 ecosystem.config.js edit + 1 validation script. Direct write.",
+  "tasks": [
+    {
+      "id": "157-01",
+      "title": "ecosystem.config.js — add kognai-brief-regen cron",
+      "description": "Add PM2 entry after kognai-gate-regen block (runs at 06:55): name='kognai-brief-regen', script='scripts/generate-daily-brief.py', interpreter='python3', cwd='/Users/tarekmnif/kognai', autorestart=false, watch=false, cron_restart='45 6 * * *'. Env: VAULT_OLLAMA_URL from process.env (or default http://vault:11434), VAULT_MODEL from process.env (or default qwen3:14b). error_file + out_file in /Users/tarekmnif/kognai/logs/. Note: generate-daily-brief.py takes ~5 min to run (Ollama). 06:45 gives it 15 min before digest at 07:00.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-157",
+      "deliverables": {
+        "code": ["ecosystem.config.js"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "157-02",
+      "title": "validate-sprint-157.ts — 3-check validation",
+      "description": "1) ecosystem.config.js contains kognai-brief-regen. 2) kognai-brief-regen cron entry uses cron_restart '45 6 * * *'. 3) scripts/generate-daily-brief.py exists.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "direct-write",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-157",
+      "deliverables": {
+        "code": ["scripts/scs001/validate-sprint-157.ts"],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ],
+  "acceptance_criteria": [
+    "ecosystem.config.js: kognai-brief-regen cron at 06:45 UTC runs generate-daily-brief.py",
+    "validate-sprint-157.ts: 3/3 PASS"
+  ]
+}

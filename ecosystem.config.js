@@ -523,6 +523,27 @@ module.exports = {
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
     {
+      // Sprint 157: Brief regeneration — runs 06:45 UTC daily (before digest at 07:00)
+      // Regenerates workspace/sprint-brief.md so every Claude Code session starts with
+      // a fresh, accurate brief — no need to read raw MEMORY.md or progress.md.
+      // Note: generate-daily-brief.py takes ~5 min (uses local Ollama). 06:45 gives
+      // 15 min buffer before daily-digest fires at 07:00.
+      name: "kognai-brief-regen",
+      script: "scripts/generate-daily-brief.py",
+      interpreter: "python3",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: false,
+      watch: false,
+      cron_restart: "45 6 * * *",
+      env: {
+        VAULT_OLLAMA_URL: process.env.VAULT_OLLAMA_URL || "http://vault:11434",
+        VAULT_MODEL: process.env.VAULT_LOCAL_MODEL_POWER || "qwen3:14b",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/brief-regen-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/brief-regen-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
+    {
       // Sprint 155: Posting time reminder — noon (12:00)
       // Sends owner a Telegram nudge with next video to post + file path + /record shortcut.
       // Silent if gate already met (30 posts). To start: pm2 start ecosystem.config.js --only kognai-post-noon
