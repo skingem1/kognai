@@ -40,9 +40,14 @@ _dotenvConfig({ path: _dotenvResolve(__dirname, '..', '.env'), override: false }
 _dotenvConfig({ path: _dotenvResolve(process.cwd(), '.env'), override: false });
 import { createMCClient } from './mc-client';
 // V17: Local/cloud routing, wallet state, ByteRover memory
-import { callOllama, ollamaIsAvailable } from './lib/ollama-client';
-import { callClawRouter, clawRouterIsAvailable } from './lib/clawrouter-client';
+import { ollamaIsAvailable } from './lib/ollama-client'; // availability check only — calls go through ClawRouter v2.0
+// ClawRouter v2.0 — MANDATORY SINGLE GATEWAY (Exec Protocol §17)
+import { routeCall, callLLM as crCallLLM, clawRouterHealthCheck, type ClawRouterV2Request } from './lib/clawrouter-v2';
+// Legacy import kept for clawRouterIsAvailable() checks during transition
+import { clawRouterIsAvailable } from './lib/clawrouter-client';
 import { shouldRunLocally, selectLocalModel } from './lib/local-model-router';
+// CTO Approval Gate — every autonomous sprint reviewed before execution (Exec Protocol)
+import { requestCTOApproval, type SprintProposal, type CTOApprovalResult } from './lib/cto-approval-gate';
 import { selectModel as selectCloudModel, classifyTask } from './lib/model-router';
 import { getWalletState, recordSpend, logWalletStatus } from './lib/wallet-state';
 import { brvQuery, brvCurate } from './lib/byterover-client';
@@ -135,166 +140,157 @@ function log(color: string, msg: string) {
   console.log(`${color}${msg}${c.reset}`);
 }
 
-// ===== Generic LLM Client =====
+// ===== ClawRouter v2.0 — MANDATORY SINGLE GATEWAY (Exec Protocol §17) =====
+// ALL LLM calls route through routeCall() from clawrouter-v2.ts.
+// Direct API calls to Anthropic, OpenAI, MiniMax, or Ollama are Sev-1 violations.
+// The old provider-based callLLM() is replaced with a unified gateway that maps
+// legacy provider+model pairs to ClawRouter v2.0 tier_class+complexity.
 
+// Track direct_api_violations for sprint JSON (§17.6)
+let _directApiViolations = 0;
+let _llmCallsRouted = 0;
+let _apexCalls = 0;
+let _apexJudgePatternCompliant = true;
+
+/**
+ * Unified LLM gateway — routes ALL calls through ClawRouter v2.0.
+ * Legacy provider parameter is mapped to ClawRouter tier/complexity:
+ *   - 'ollama' / 'local'   → T0-T2 (local Ollama, $0)
+ *   - 'clawrouter'          → T2.5 EXEC (cloud gateway)
+ *   - 'anthropic' (Sonnet)  → T3 APEX (constitutional decisions only)
+ *   - 'anthropic' (Haiku)   → T2.5 EXEC
+ *   - 'openai'              → T2.5 EXEC
+ *   - 'minimax'             → T2.5 EXEC (via ClawRouter)
+ *
+ * NOTE: The provider parameter is retained for backward compatibility but
+ * ALL routing decisions are made by ClawRouter v2.0. No direct API calls.
+ */
 async function callLLM(
-  provider: 'minimax' | 'anthropic' | 'openai' | 'ollama' | 'clawrouter', // 'minimax' retained for fallback path only
+  provider: 'minimax' | 'anthropic' | 'openai' | 'ollama' | 'clawrouter',
   model: string,
   systemPrompt: string,
   userPrompt: string,
   timeoutMs: number = 300000
 ): Promise<LLMResponse> {
-  let response: LLMResponse;
-  if (provider === 'anthropic') {
-    response = await callAnthropic(model, systemPrompt, userPrompt, timeoutMs);
-  } else if (provider === 'openai') {
-    response = await callOpenAI(model, systemPrompt, userPrompt, timeoutMs);
-  } else if (provider === 'ollama') {
-    // V17: Local Ollama inference ($0 cost)
-    response = await callOllamaAdapted(model, systemPrompt, userPrompt, timeoutMs);
-  } else if (provider === 'clawrouter') {
-    // V17: ClawRouter — x402 gateway, auto-pays, OpenAI-compatible
-    response = await callClawRouterAdapted(model, systemPrompt, userPrompt, timeoutMs);
-  } else {
-    // MiniMax (legacy — being retired in B.20; falls back to ClawRouter if MINIMAX_API_KEY unset)
-    const apiKey = process.env.MINIMAX_API_KEY || '';
-    if (!apiKey) {
-      // MiniMax key missing — route to ClawRouter DeepSeek as fallback
-      log(c.yellow, '  MINIMAX_API_KEY not set — routing to ClawRouter/DeepSeek');
-      response = await callClawRouterAdapted('deepseek/deepseek-chat', systemPrompt, userPrompt, timeoutMs);
-    } else {
-      const body = JSON.stringify({
-        model,
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: userPrompt },
-        ],
-        temperature: 0.3,
-        max_tokens: 16000,
-      });
-      response = await httpPost('https://api.minimax.io/v1/chat/completions', {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${apiKey}`,
-      }, body, timeoutMs) as LLMResponse;
-    }
-  }
-  // Accumulate tokens across ALL providers for this run
-  _accumulateTokens(response.usage?.total_tokens || 0);
-  return response;
-}
-async function callAnthropic(model: string, systemPrompt: string, userPrompt: string, timeoutMs: number): Promise<LLMResponse> {
-  const apiKey = process.env.ANTHROPIC_API_KEY || '';
-  if (!apiKey) throw new Error('ANTHROPIC_API_KEY not set in .env');
-  const body = JSON.stringify({
-    model, max_tokens: 16000, system: systemPrompt,
-    messages: [{ role: 'user', content: userPrompt }], temperature: 0.3,
-  });
-  const rawResponse = await httpPost('https://api.anthropic.com/v1/messages', {
-    'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01',
-  }, body, timeoutMs);
-  const anthropicData = rawResponse as any;
-  if (anthropicData.content && Array.isArray(anthropicData.content)) {
-    const textContent = anthropicData.content.filter((b: any) => b.type === 'text').map((b: any) => b.text).join('');
-    return {
-      choices: [{ message: { content: textContent } }],
-      usage: { total_tokens: (anthropicData.usage?.input_tokens || 0) + (anthropicData.usage?.output_tokens || 0) },
-    };
-  }
-  return rawResponse;
-}
-async function callOpenAI(model: string, systemPrompt: string, userPrompt: string, timeoutMs: number): Promise<LLMResponse> {
-  const apiKey = process.env.OPENAI_API_KEY || '';
-  if (!apiKey) throw new Error('OPENAI_API_KEY not set in .env');
-  // o4-mini and reasoning models use max_completion_tokens and developer role
-  const isReasoningModel = model.startsWith('o');
-  const tokenParam = isReasoningModel ? 'max_completion_tokens' : 'max_tokens';
-  const sysRole = isReasoningModel ? 'developer' : 'system';
-  const bodyObj: Record<string, unknown> = {
-    model,
-    [tokenParam]: 16000,
-    messages: [
-      { role: sysRole, content: systemPrompt },
-      { role: 'user', content: userPrompt },
-    ],
+  _llmCallsRouted++;
+
+  // Map legacy provider+model to ClawRouter v2.0 request
+  const req: ClawRouterV2Request = {
+    task_type: 'orchestrator_call',
+    tier_class: 'text',
+    complexity: mapLegacyToComplexity(provider, model),
+    context_tokens: Math.ceil((systemPrompt.length + userPrompt.length) / 4),
+    constitutional_flag: isConstitutionalCall(provider, model),
+    agent_id: 'orchestrator-v2',
+    payload: {
+      system: systemPrompt,
+      prompt: userPrompt,
+      max_tokens: 16000,
+    },
   };
-  if (!isReasoningModel) bodyObj.temperature = 0.3;
-  const body = JSON.stringify(bodyObj);
-  return httpPost('https://api.openai.com/v1/chat/completions', {
-    'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}`,
-  }, body, timeoutMs);
+
+  // Track APEX calls for §17.6
+  if (req.constitutional_flag || req.complexity === 'apex') {
+    _apexCalls++;
+  }
+
+  try {
+    const result = await routeCall(req);
+    // Record spend for wallet tracking
+    if (result.cost_usd > 0) recordSpend(result.cost_usd * 100); // convert to cents
+
+    const response: LLMResponse = {
+      choices: [{ message: { content: result.content } }],
+      usage: { total_tokens: result.input_tokens + result.output_tokens },
+    };
+    _accumulateTokens(response.usage?.total_tokens || 0);
+    return response;
+  } catch (err: any) {
+    log(c.red, `  [ClawRouter] Call failed: ${err.message}`);
+    throw err;
+  }
 }
-// B.5: Prompt-cached Anthropic call — saves 55-65% on repeated system prompts
-// Adds anthropic-beta: prompt-caching-2024-07-31 + cache_control on system message
+
+/**
+ * Map legacy provider+model pairs to ClawRouter v2.0 complexity levels.
+ * This preserves the existing routing intelligence while funneling through the gateway.
+ */
+function mapLegacyToComplexity(provider: string, model: string): 'nano' | 'local' | 'power' | 'exec' | 'apex' {
+  // Local models → stay local
+  if (provider === 'ollama') {
+    if (model.includes('0.6b')) return 'nano';
+    if (model.includes('4b')) return 'local';
+    return 'power'; // qwen3:14b, deepseek-r1:14b
+  }
+  // Anthropic Sonnet → APEX (constitutional)
+  if (provider === 'anthropic' && model.includes('sonnet')) return 'apex';
+  // Anthropic Haiku → EXEC (cloud, not constitutional)
+  if (provider === 'anthropic' && model.includes('haiku')) return 'exec';
+  // ClawRouter DeepSeek → EXEC
+  if (provider === 'clawrouter') return 'exec';
+  // MiniMax → EXEC (cloud)
+  if (provider === 'minimax') return 'exec';
+  // OpenAI → EXEC
+  if (provider === 'openai') return 'exec';
+  // Default → POWER (local)
+  return 'power';
+}
+
+/** Detect if a call is constitutional (requires T3 APEX / Claude Sonnet) */
+function isConstitutionalCall(provider: string, model: string): boolean {
+  return provider === 'anthropic' && model.includes('sonnet');
+}
+
+// Legacy aliases — these are now thin wrappers that route through callLLM()
+// They exist so that call sites like callAnthropicCached() don't need immediate rewriting.
+// All direct API calls are eliminated — every call goes through ClawRouter v2.0.
+
 async function callAnthropicCached(model: string, systemPrompt: string, userPrompt: string, timeoutMs: number): Promise<LLMResponse> {
-  const apiKey = process.env.ANTHROPIC_API_KEY || '';
-  if (!apiKey) throw new Error('ANTHROPIC_API_KEY not set in .env');
-  const body = JSON.stringify({
-    model, max_tokens: 16000, temperature: 0.3,
-    system: [{ type: 'text', text: systemPrompt, cache_control: { type: 'ephemeral' } }],
-    messages: [{ role: 'user', content: userPrompt }],
-  });
-  const rawResponse = await httpPost('https://api.anthropic.com/v1/messages', {
-    'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01',
-    'anthropic-beta': 'prompt-caching-2024-07-31',
-  }, body, timeoutMs);
-  const anthropicData = rawResponse as any;
-  if (anthropicData.content && Array.isArray(anthropicData.content)) {
-    const textContent = anthropicData.content.filter((b: any) => b.type === 'text').map((b: any) => b.text).join('');
-    return {
-      choices: [{ message: { content: textContent } }],
-      usage: { total_tokens: (anthropicData.usage?.input_tokens || 0) + (anthropicData.usage?.output_tokens || 0) },
-    };
-  }
-  return rawResponse;
+  // Prompt caching is now handled by ClawRouter v2.0 (QCG layer)
+  return callLLM('anthropic', model, systemPrompt, userPrompt, timeoutMs);
 }
 
-// V17: Adapt ClawRouter result to LLMResponse format (OpenAI-compatible)
-async function callClawRouterAdapted(model: string, systemPrompt: string, userPrompt: string, timeoutMs: number): Promise<LLMResponse> {
-  const result = await callClawRouter({ model, prompt: userPrompt, systemPrompt, maxTokens: 16000 });
-  if (result.costUsdc > 0) recordSpend(result.costUsdc);
+/** Get sprint-level ClawRouter metrics for §17.6 sprint JSON fields */
+function getClawRouterSprintMetrics() {
   return {
-    choices: [{ message: { content: result.content } }],
-    usage: { total_tokens: result.inputTokens + result.outputTokens },
+    llm_calls_routed: _llmCallsRouted,
+    direct_api_violations: _directApiViolations,
+    apex_calls: _apexCalls,
+    apex_judge_pattern_compliant: _apexJudgePatternCompliant,
   };
 }
 
-// V17: Adapt Ollama result to LLMResponse format
-async function callOllamaAdapted(model: string, systemPrompt: string, userPrompt: string, _timeoutMs: number): Promise<LLMResponse> {
-  const result = await callOllama({ model, prompt: userPrompt, systemPrompt, maxTokens: 8192, temperature: 0.1 });
-  return {
-    choices: [{ message: { content: result.content } }],
-    usage: { total_tokens: result.evalCount + result.promptEvalCount },
-  };
-}
-
-// B.9: Nano classifier — uses qwen3:0.6b to refine 'util' fallback classification
+// B.9: Nano classifier — uses T0 NANO (qwen3:0.6b) via ClawRouter v2.0
 async function classifyTaskSmart(prompt: string): Promise<string> {
   const regexType = classifyTask(prompt);
   if (regexType !== 'util') return regexType; // regex was confident
   try {
-    const ollamaAvail = await ollamaIsAvailable();
-    if (!ollamaAvail) return regexType;
     const classifyPrompt = `Classify this task into exactly one category. Reply with ONLY the category name, nothing else.
 Categories: code, reason, lang, util, audit, content, data, refactor-complex, agent-framework, codebase-scan
 
 Task: ${prompt.substring(0, 300)}`;
-    const result = await callOllama({ model: 'qwen3:0.6b', prompt: classifyPrompt, maxTokens: 20, temperature: 0 });
+    const result = await routeCall({
+      task_type: 'nano_classify', tier_class: 'text', complexity: 'nano',
+      context_tokens: Math.ceil(classifyPrompt.length / 4), constitutional_flag: false,
+      agent_id: 'nano-classifier',
+      payload: { prompt: classifyPrompt, max_tokens: 20 },
+    });
     const nano = result.content.trim().toLowerCase().split(/\s/)[0];
     const valid = ['code','reason','lang','util','audit','content','data','refactor-complex','agent-framework','codebase-scan'];
     return valid.includes(nano) ? nano : regexType;
   } catch { return regexType; }
 }
 
-// B.12: Context compression using qwen3:4b — reduces cloud token spend 70-80%
+// B.12: Context compression using T1 LOCAL (qwen3:4b) via ClawRouter v2.0 — reduces cloud token spend 70-80%
 async function compressContext(context: string): Promise<string> {
   if (context.length < 1200) return context; // not worth compressing
   try {
-    const ollamaAvail = await ollamaIsAvailable();
-    if (!ollamaAvail) return context;
-    const result = await callOllama({
-      model: 'qwen3:4b',
-      prompt: `Compress the following task context to under 600 words. Preserve all file paths, function names, technical requirements, and acceptance criteria. Remove prose filler and redundant explanations.\n\n${context.substring(0, 4000)}`,
-      maxTokens: 800, temperature: 0,
+    const compressPrompt = `Compress the following task context to under 600 words. Preserve all file paths, function names, technical requirements, and acceptance criteria. Remove prose filler and redundant explanations.\n\n${context.substring(0, 4000)}`;
+    const result = await routeCall({
+      task_type: 'qcg_compress', tier_class: 'text', complexity: 'local',
+      context_tokens: Math.ceil(compressPrompt.length / 4), constitutional_flag: false,
+      agent_id: 'context-compressor',
+      payload: { prompt: compressPrompt, max_tokens: 800 },
     });
     const compressed = result.content.trim();
     if (compressed.length > 100 && compressed.length < context.length * 0.9) {
@@ -322,32 +318,40 @@ async function localQAGate(_task: AgentTask, fileContents: Array<{path: string; 
   return { pass: true, reason: `${fileContents.length} file(s) non-empty — proceeding to supervisor review` };
 }
 
-// B.11: Tiered debugger — routes debug effort by issue severity
-async function tieredDebug(task: AgentTask, review: ReviewResult, systemPrompt: string): Promise<string | null> {
+// B.11: Tiered debugger — routes debug effort by issue severity via ClawRouter v2.0
+async function tieredDebug(task: AgentTask, review: ReviewResult, _systemPrompt: string): Promise<string | null> {
   const issueText = (review.issues || []).map(i => `[${i.severity}] ${i.file}: ${i.description}`).join('\n');
   const hasArchitecture = (review.issues || []).some(i => i.severity === 'critical' || i.description.toLowerCase().includes('architect'));
   const hasSystemic = (review.issues || []).some(i => i.severity === 'high' || i.description.toLowerCase().includes('logic'));
 
   try {
     if (hasArchitecture) {
-      // Tier 3: Claude Sonnet — deep architectural issues
-      const response = await callAnthropicCached('claude-haiku-4-5-20251001', systemPrompt,
-        `Fix this code. Issues:\n${issueText}\n\nTask: ${task.context.substring(0, 800)}`, 90000);
-      return response.choices?.[0]?.message?.content || null;
+      // Tier 3: T2.5 EXEC — deep architectural issues (via ClawRouter)
+      const result = await routeCall({
+        task_type: 'debug_architectural', tier_class: 'text', complexity: 'exec',
+        context_tokens: Math.ceil((issueText.length + 800) / 4), constitutional_flag: false,
+        agent_id: 'tiered-debugger',
+        payload: { prompt: `Fix this code. Issues:\n${issueText}\n\nTask: ${task.context.substring(0, 800)}`, max_tokens: 4096 },
+      });
+      return result.content || null;
     } else if (hasSystemic) {
-      // Tier 2: deepseek-r1:14b — logical/systemic issues
-      const ollamaAvail = await ollamaIsAvailable();
-      if (ollamaAvail) {
-        const result = await callOllama({ model: 'deepseek-r1:14b', prompt: `Fix these code issues:\n${issueText}\n\nTask: ${task.context.substring(0, 600)}`, maxTokens: 2048, temperature: 0.1 });
-        return result.content;
-      }
+      // Tier 2: T2 POWER (deepseek-r1:14b equivalent) — logical/systemic issues
+      const result = await routeCall({
+        task_type: 'debug_systemic', tier_class: 'text', complexity: 'power',
+        context_tokens: Math.ceil((issueText.length + 600) / 4), constitutional_flag: false,
+        agent_id: 'tiered-debugger',
+        payload: { prompt: `Fix these code issues:\n${issueText}\n\nTask: ${task.context.substring(0, 600)}`, max_tokens: 2048 },
+      });
+      return result.content;
     } else {
-      // Tier 1: qwen3:14b — minor issues
-      const ollamaAvail = await ollamaIsAvailable();
-      if (ollamaAvail) {
-        const result = await callOllama({ model: 'qwen3:14b', prompt: `Fix these minor code issues:\n${issueText}\n\nTask: ${task.context.substring(0, 500)}`, maxTokens: 1024, temperature: 0.1 });
-        return result.content;
-      }
+      // Tier 1: T2 POWER (qwen3:14b) — minor issues
+      const result = await routeCall({
+        task_type: 'debug_minor', tier_class: 'text', complexity: 'power',
+        context_tokens: Math.ceil((issueText.length + 500) / 4), constitutional_flag: false,
+        agent_id: 'tiered-debugger',
+        payload: { prompt: `Fix these minor code issues:\n${issueText}\n\nTask: ${task.context.substring(0, 500)}`, max_tokens: 1024 },
+      });
+      return result.content;
     }
   } catch (e: any) {
     log(c.yellow, `  [tiered-debug] ${e.message}`);
@@ -1786,16 +1790,15 @@ Continue from where it left off and output ONLY the remaining code (no duplicate
     return cleaned.trim();
   }
 
-  // B.13: qwen3:0.6b JSON repair — called when postProcessContent still yields invalid JSON
-  private async fixJsonWithOllama(content: string, filepath: string): Promise<string> {
+  // B.13: T0 NANO JSON repair via ClawRouter v2.0 — called when postProcessContent still yields invalid JSON
+  private async fixJsonWithOllama(content: string, _filepath: string): Promise<string> {
     try {
-      const available = await ollamaIsAvailable();
-      if (!available) return content;
-      const result = await callOllama({
-        model: 'qwen3:0.6b',
-        prompt: `Fix this malformed JSON so it is syntactically valid. Return ONLY the corrected JSON, no explanation or markdown fences:\n\n${content.substring(0, 3000)}`,
-        maxTokens: 2048,
-        temperature: 0,
+      const repairPrompt = `Fix this malformed JSON so it is syntactically valid. Return ONLY the corrected JSON, no explanation or markdown fences:\n\n${content.substring(0, 3000)}`;
+      const result = await routeCall({
+        task_type: 'json_repair', tier_class: 'text', complexity: 'nano',
+        context_tokens: Math.ceil(repairPrompt.length / 4), constitutional_flag: false,
+        agent_id: 'json-repair',
+        payload: { prompt: repairPrompt, max_tokens: 2048 },
       });
       const fixed = result.content.trim();
       try { JSON.parse(fixed); return fixed; } catch { return content; }
@@ -2434,6 +2437,62 @@ ONLY output the JSON array. No markdown, no explanation.`;
       if (mcConnected) await mc.disconnect().catch(() => {});
       return;
     }
+
+    // ── CTO APPROVAL GATE — Exec Protocol §17 ──────────────────────────────
+    // Every autonomous sprint must be approved by the CTO agent before execution.
+    // Human-submitted sprints (source: 'human') are auto-approved.
+    // Prevents the swarm from inventing its own work outside the execution plan.
+    {
+      const sprintFile = process.argv[2] || 'sprints/current.json';
+      const sprintRaw = JSON.parse(readFileSync(sprintFile, 'utf-8'));
+      const sprintSource: 'autonomous_loop' | 'human' | 'cto_backlog' =
+        sprintRaw.source || (sprintRaw.swarm === 'NOT USED' ? 'human' : 'autonomous_loop');
+
+      const proposal: SprintProposal = {
+        sprint_id: _evtSprintId,
+        title: sprintRaw.name || sprintRaw.title || _evtSprintId,
+        description: sprintRaw.goal || sprintRaw.description || '',
+        tasks: this.tasks.map(t => `${t.id}: ${(t as any).title || t.context || t.type}`),
+        estimated_complexity: sprintRaw.estimated_complexity || 'medium',
+        source: sprintSource,
+      };
+
+      log(c.magenta, `\n--- CTO Approval Gate ---`);
+      log(c.gray, `  Sprint: ${proposal.sprint_id} — "${proposal.title}"`);
+      log(c.gray, `  Source: ${proposal.source} (${proposal.tasks.length} tasks)`);
+
+      const ctoResult: CTOApprovalResult = await requestCTOApproval(
+        proposal,
+        process.cwd(),
+        'kognai'
+      );
+
+      if (!ctoResult.approved) {
+        log(c.red, `  ✘ CTO REJECTED: ${ctoResult.reason}`);
+        log(c.red, `    Plan reference: ${ctoResult.plan_reference}`);
+        log(c.red, `    Confidence: ${ctoResult.cto_confidence}%`);
+        log(c.yellow, `  Sprint ${_evtSprintId} will NOT execute. Saving rejection to sprint file.`);
+
+        // Write rejection to sprint file so the loop doesn't retry
+        try {
+          sprintRaw.cto_gate = {
+            approved: false,
+            reason: ctoResult.reason,
+            plan_reference: ctoResult.plan_reference,
+            confidence: ctoResult.cto_confidence,
+            timestamp: ctoResult.timestamp,
+          };
+          writeFileSync(sprintFile, JSON.stringify(sprintRaw, null, 2));
+        } catch { /* non-critical */ }
+
+        if (mcConnected) await mc.disconnect().catch(() => {});
+        return;
+      }
+
+      log(c.green, `  ✓ CTO APPROVED: ${ctoResult.reason}`);
+      log(c.gray, `    Plan reference: ${ctoResult.plan_reference} (confidence: ${ctoResult.cto_confidence}%)`);
+    }
+    // ── End CTO Gate ────────────────────────────────────────────────────────
 
     // 2. CEO initial assessment (B.14: once per sprint, not once per conflict)
     log(c.magenta, '\n--- Phase 1: CEO Initial Assessment ---');
