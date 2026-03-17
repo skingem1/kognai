@@ -26,6 +26,7 @@ import * as http from 'http';
 import * as https from 'https';
 import * as fs from 'fs';
 import * as path from 'path';
+import * as crypto from 'crypto';
 import { getWalletState, recordSpend } from './wallet-state';
 
 // ── Config ────────────────────────────────────────────────────────────────────
@@ -34,6 +35,17 @@ const CLAWROUTER_GATEWAY = process.env.CLAWROUTER_GATEWAY_URL || 'http://localho
 const OLLAMA_TIMEOUT_MS = 600_000;  // 10 min for local models
 const CLOUD_TIMEOUT_MS = 300_000;   // 5 min for cloud API calls
 const QCG_TOKEN_THRESHOLD = 5000;   // QCG pre-compression trigger
+
+// ── x402 Payment Config (USDC on Base mainnet) ──────────────────────────────
+const X402_WALLET_KEY = process.env.X402_WALLET_KEY || '';
+const USDC_ADDRESS = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913';
+const BASE_CHAIN_ID = 8453;
+const USDC_DOMAIN = {
+  name: 'USD Coin',
+  version: '2',
+  chainId: BASE_CHAIN_ID,
+  verifyingContract: USDC_ADDRESS as `0x${string}`,
+} as const;
 
 // ── Tier Models ───────────────────────────────────────────────────────────────
 const TIER_MODELS = {
@@ -229,20 +241,142 @@ async function callOllamaLocal(model: string, prompt: string, systemPrompt?: str
   };
 }
 
-// ── OpenClaw Gateway Call (Cloud Tiers) ───────────────────────────────────────
+// ── x402 Payment Signing (EIP-3009 TransferWithAuthorization) ─────────────────
 
+/**
+ * Sign an x402 payment for a cloud LLM call.
+ * Uses viem to sign EIP-3009 TransferWithAuthorization on USDC (Base mainnet).
+ * Returns base64-encoded X-PAYMENT header value.
+ */
+async function signX402Payment(payTo: string, amountAtomic: number): Promise<{ xPayment: string; costUsd: number }> {
+  if (!X402_WALLET_KEY) {
+    throw new Error('x402: gateway requires payment but X402_WALLET_KEY not set in .env');
+  }
+
+  // Dynamic imports — viem is already a project dependency
+  const { privateKeyToAccount } = require('viem/accounts');
+  const { createWalletClient, http: viemHttp } = require('viem');
+  const { base } = require('viem/chains');
+
+  const account = privateKeyToAccount(X402_WALLET_KEY as `0x${string}`);
+  const walletClient = createWalletClient({
+    account,
+    chain: base,
+    transport: viemHttp('https://mainnet.base.org'),
+  });
+
+  const now = BigInt(Math.floor(Date.now() / 1000));
+  const validBefore = now + BigInt(3600); // 1 hour validity
+  const nonce = `0x${crypto.randomBytes(32).toString('hex')}` as `0x${string}`;
+
+  const signature = await walletClient.signTypedData({
+    domain: USDC_DOMAIN,
+    types: {
+      TransferWithAuthorization: [
+        { name: 'from', type: 'address' },
+        { name: 'to', type: 'address' },
+        { name: 'value', type: 'uint256' },
+        { name: 'validAfter', type: 'uint256' },
+        { name: 'validBefore', type: 'uint256' },
+        { name: 'nonce', type: 'bytes32' },
+      ],
+    },
+    primaryType: 'TransferWithAuthorization',
+    message: {
+      from: account.address,
+      to: payTo as `0x${string}`,
+      value: BigInt(amountAtomic),
+      validAfter: now,
+      validBefore,
+      nonce,
+    },
+  });
+
+  const paymentPayload = {
+    x402Version: 1,
+    scheme: 'exact',
+    network: 'base',
+    payload: {
+      signature,
+      authorization: {
+        from: account.address,
+        to: payTo,
+        value: String(amountAtomic),
+        validAfter: String(now),
+        validBefore: String(validBefore),
+        nonce,
+      },
+    },
+  };
+
+  const xPayment = Buffer.from(JSON.stringify(paymentPayload)).toString('base64');
+  const costUsd = amountAtomic / 1_000_000; // atomic USDC (6 decimals) → USD
+
+  return { xPayment, costUsd };
+}
+
+// ── OpenClaw Gateway Call (Cloud Tiers — x402 payment flow) ──────────────────
+
+/**
+ * Call cloud LLM via OpenClaw gateway with x402 payment signing.
+ *
+ * Flow:
+ *   1. POST /chat/completions → may return 200 (free) or 402 (payment required)
+ *   2. If 402: parse payment requirements (amount, payTo)
+ *   3. Sign EIP-3009 TransferWithAuthorization with CEO wallet
+ *   4. Retry POST with X-PAYMENT header (base64-encoded signed proof)
+ *   5. Return response + actual cost in USD
+ */
 async function callCloudGateway(model: string, messages: Array<{ role: string; content: string }>, maxTokens: number = 4096): Promise<{
   content: string; input_tokens: number; output_tokens: number; cost_usd: number;
 }> {
   const chatUrl = `${CLAWROUTER_GATEWAY}/chat/completions`;
   const body = JSON.stringify({ model, messages, max_tokens: maxTokens });
 
-  const res = await httpRequest(chatUrl, body);
-  if (res.status !== 200) throw new Error(`ClawRouter gateway returned ${res.status}: ${res.data.slice(0, 300)}`);
+  // Step 1: Initial request (may return 402 requiring x402 payment)
+  let res = await httpRequest(chatUrl, body);
+  let paidAmountUsd = 0;
+
+  // Step 2: If 402, sign x402 payment and retry
+  if (res.status === 402) {
+    if (!X402_WALLET_KEY) {
+      throw new Error(
+        `ClawRouter gateway returned 402 (payment required) but X402_WALLET_KEY not set. ` +
+        `Fund the CEO wallet and add the private key to .env.`
+      );
+    }
+
+    try {
+      const paymentReq = JSON.parse(res.data);
+      // OpenClaw 402 format: { accepts: { amount, payTo, ... } } or flat { amount, payTo }
+      const accepts = paymentReq.accepts || paymentReq;
+      const amountAtomic = parseInt(accepts.maxAmountRequired || accepts.amount || '10000', 10);
+      const payTo = accepts.payTo || '';
+
+      if (!payTo) throw new Error('x402: gateway returned 402 but no payTo address in response');
+
+      const { xPayment, costUsd } = await signX402Payment(payTo, amountAtomic);
+      paidAmountUsd = costUsd;
+
+      // Step 3: Retry with signed payment
+      res = await httpRequest(chatUrl, body, 'POST', { 'X-PAYMENT': xPayment });
+    } catch (e: any) {
+      if (e.message?.includes('x402')) throw e;
+      throw new Error(`x402 payment signing failed: ${e.message}`);
+    }
+  }
+
+  if (res.status !== 200) {
+    throw new Error(`ClawRouter gateway returned ${res.status}: ${res.data.slice(0, 300)}`);
+  }
 
   const json = JSON.parse(res.data);
+
+  // Cost: prefer actual payment amount, fall back to response header
   const costHeader = res.headers['x-payment-amount'] as string | undefined;
-  const cost_usd = costHeader ? Number(costHeader) / 1_000_000 : 0;
+  const cost_usd = paidAmountUsd > 0
+    ? paidAmountUsd
+    : (costHeader ? Number(costHeader) / 1_000_000 : 0);
 
   return {
     content: json.choices?.[0]?.message?.content || '',
