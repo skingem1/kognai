@@ -26,6 +26,7 @@ import * as http from 'http';
 import * as https from 'https';
 import * as fs from 'fs';
 import * as path from 'path';
+import { getWalletState, recordSpend } from './wallet-state';
 
 // ── Config ────────────────────────────────────────────────────────────────────
 const OLLAMA_BASE = process.env.OLLAMA_HOST || 'http://localhost:11434';
@@ -285,6 +286,18 @@ export async function routeCall(req: ClawRouterV2Request): Promise<ClawRouterV2R
     ? resolveCreativeTier(req)
     : resolveTextTier(req);
 
+  // 1b. CEO Wallet freeze guard — block cloud calls when budget exhausted (§17.5)
+  if (!route.local) {
+    const wallet = getWalletState();
+    if (wallet.isFrozen) {
+      throw new Error(
+        `ClawRouter FROZEN: CEO wallet at ${wallet.burnPct.toFixed(1)}% ` +
+        `($${wallet.spentThisMonth.toFixed(2)}/$${wallet.monthlyBudget}). ` +
+        `Cloud tier ${route.tier} blocked. Fund wallet or use local tiers.`
+      );
+    }
+  }
+
   // 2. QCG pre-compression for cloud tiers
   let qcgResult = { compressed: false, tokensSaved: 0, payload: req.payload };
   if (!route.local && req.context_tokens > QCG_TOKEN_THRESHOLD) {
@@ -322,6 +335,11 @@ export async function routeCall(req: ClawRouterV2Request): Promise<ClawRouterV2R
     input_tokens = result.input_tokens;
     output_tokens = result.output_tokens;
     cost_usd = result.cost_usd;
+  }
+
+  // 4b. CEO Wallet billing — record every cloud spend (§17.5)
+  if (cost_usd > 0) {
+    recordSpend(cost_usd);
   }
 
   // 5. Log

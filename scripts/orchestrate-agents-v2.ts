@@ -42,14 +42,14 @@ import { createMCClient } from './mc-client';
 // V17: Local/cloud routing, wallet state, ByteRover memory
 import { ollamaIsAvailable } from './lib/ollama-client'; // availability check only — calls go through ClawRouter v2.0
 // ClawRouter v2.0 — MANDATORY SINGLE GATEWAY (Exec Protocol §17)
-import { routeCall, callLLM as crCallLLM, clawRouterHealthCheck, type ClawRouterV2Request } from './lib/clawrouter-v2';
+import { routeCall, callLLM as crCallLLM, clawRouterHealthCheck, getDailyCostDigest, type ClawRouterV2Request } from './lib/clawrouter-v2';
 // Legacy import kept for clawRouterIsAvailable() checks during transition
 import { clawRouterIsAvailable } from './lib/clawrouter-client';
 import { shouldRunLocally, selectLocalModel } from './lib/local-model-router';
 // CTO Approval Gate — every autonomous sprint reviewed before execution (Exec Protocol)
 import { requestCTOApproval, type SprintProposal, type CTOApprovalResult } from './lib/cto-approval-gate';
 import { selectModel as selectCloudModel, classifyTask } from './lib/model-router';
-import { getWalletState, recordSpend, logWalletStatus } from './lib/wallet-state';
+import { getWalletState, logWalletStatus } from './lib/wallet-state';
 import { brvQuery, brvCurate } from './lib/byterover-client';
 import { publishTaskStarted, publishTaskCompleted, publishTaskFailed, publishBudgetWarning, publishBudgetFreeze, publishSprintStarted, publishSprintCompleted } from './lib/event-bus-publisher';
 import { AARMiddleware } from './lib/aar-middleware';
@@ -196,8 +196,7 @@ async function callLLM(
 
   try {
     const result = await routeCall(req);
-    // Record spend for wallet tracking
-    if (result.cost_usd > 0) recordSpend(result.cost_usd * 100); // convert to cents
+    // Wallet billing now handled inside ClawRouter v2.0 routeCall() (§17.5)
 
     const response: LLMResponse = {
       choices: [{ message: { content: result.content } }],
@@ -2847,6 +2846,14 @@ ONLY output the JSON array. No markdown, no explanation.`;
       log(c.green, `\n📊 Swarm run report: ${reportPath}`);
       log(c.green, `   Daily aggregate: ${dailyPath} (${dailyRuns.length} run(s) today)`);
       log(c.green, `   Tokens: ${this.stats.totalTokens.toLocaleString()} | Est. cost: $${totalCostUsd.toFixed(4)}`);
+
+      // 8d. Daily cost digest — persist ClawRouter spend summary (§17.5)
+      try {
+        const digest = getDailyCostDigest();
+        const digestPath = `logs/clawrouter/digest-${today}.json`;
+        writeFileSync(digestPath, JSON.stringify(digest, null, 2));
+        log(c.cyan, `   💰 Cost digest: $${digest.total_usd.toFixed(4)} across ${digest.call_count} calls (saved ${digest.tokens_saved_by_qcg} tokens via QCG)`);
+      } catch { /* non-critical */ }
     } catch (err) {
       log(c.yellow, `  [WARN] Swarm run report failed: ${(err as Error).message}`);
     }
