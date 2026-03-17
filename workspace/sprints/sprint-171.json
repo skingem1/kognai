@@ -1,0 +1,42 @@
+{
+  "tasks": [
+    {
+      "id": "171-01",
+      "title": "InsightAgent index.ts — route generateBrief() through ClawRouter v2.0 (§17 fix)",
+      "description": "SURGICAL EDIT ONLY. agents/scs001-insight/index.ts currently makes a direct fetch() call to ANTHROPIC_API_URL — a §17 ClawRouter Mandatory Gateway violation (score 15). Fix:\n1. Remove lines 23-25: delete ANTHROPIC_API_URL, ANTHROPIC_API_KEY, CLAUDE_MODEL constants.\n2. Add import at top (after existing imports): import { routeCall } from '../../scripts/lib/clawrouter-v2';\n3. In generateBrief(): replace the entire fetch() block (lines 155-169 approx) with:\n   const result = await routeCall({ task_type: 'insight_generation', tier_class: 'text', complexity: 'apex', context_tokens: 800, constitutional_flag: true, agent_id: 'scs001-insight', payload: { prompt: prompt } });\n   const content = result.content;\n   const costUsd = result.cost_usd;\n4. Remove the `if (!ANTHROPIC_API_KEY) throw new Error(...)` guard (line ~155) — ClawRouter handles auth.\n5. The JSON parsing block (lines 185-199) stays IDENTICAL — parse result.content the same way.\n6. The InsightBrief construction block (lines 201-215) stays IDENTICAL.\nDo NOT rewrite the whole file. Only the 3 changes above: remove 3 consts, add 1 import, replace fetch() block.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-171",
+      "deliverables": {
+        "code": ["agents/scs001-insight/index.ts"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "The file is 216 lines. Only 3 surgical changes needed. DO NOT rewrite. The existing getMockInsightBriefs(), getMockQualifiedClips(), buildPrompt(), InsightBrief interface, and InsightAgent.run() method are all correct — leave them untouched. Only fix: (1) remove direct API constants, (2) add routeCall import, (3) replace fetch() call with routeCall()."
+    },
+    {
+      "id": "171-02",
+      "title": "validate-sprint-171.ts — 4-check ClawRouter compliance validator",
+      "description": "Create scripts/scs001/validate-sprint-171.ts. Reads agents/scs001-insight/index.ts and checks:\n1. File does NOT contain 'ANTHROPIC_API_URL' (direct URL removed)\n2. File does NOT contain 'ANTHROPIC_API_KEY' (direct key removed)\n3. File contains \"import { routeCall }\" (ClawRouter import present)\n4. File contains 'constitutional_flag: true' (constitutional tier enforced)\nAll 4 must pass. Exit 0 on pass, exit 1 on any failure. Print ✅/❌ per check.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-171",
+      "deliverables": {
+        "code": ["scripts/scs001/validate-sprint-171.ts"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Pattern: mirror validate-sprint-170.ts structure. Read agents/scs001-insight/index.ts, run 4 string checks, print pass/fail, exit with correct code."
+    }
+  ],
+  "source": "human",
+  "_plan_reference": "Daily plan 2026-03-17 PRIORITY 2 — Sprint 171. InsightAgent §17 violation fix. Score was 15 due to direct API calls bypassing ClawRouter mandatory gateway."
+}
