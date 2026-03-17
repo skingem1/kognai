@@ -8,7 +8,7 @@
       "task_type": "code",
       "task_target": "local",
       "agent": "coder",
-      "status": "pending",
+      "status": "done",
       "priority": "critical",
       "sprint_id": "sprint-171",
       "deliverables": {
@@ -16,7 +16,21 @@
         "tests": [],
         "docs": []
       },
-      "context": "The file is 216 lines. Only 3 surgical changes needed. DO NOT rewrite. The existing getMockInsightBriefs(), getMockQualifiedClips(), buildPrompt(), InsightBrief interface, and InsightAgent.run() method are all correct — leave them untouched. Only fix: (1) remove direct API constants, (2) add routeCall import, (3) replace fetch() call with routeCall()."
+      "context": "The file is 216 lines. Only 3 surgical changes needed. DO NOT rewrite. The existing getMockInsightBriefs(), getMockQualifiedClips(), buildPrompt(), InsightBrief interface, and InsightAgent.run() method are all correct — leave them untouched. Only fix: (1) remove direct API constants, (2) add routeCall import, (3) replace fetch() call with routeCall().",
+      "_humanResolved": true,
+      "_humanNote": "Surgical edit applied manually. Integrity check fired on orchestrator attempt (destructive rewrite). 3 changes: removed ANTHROPIC_API_URL/KEY/CLAUDE_MODEL constants, added routeCall import, replaced fetch() block with routeCall({constitutional_flag:true,complexity:'apex'}). Validation: 4/4 checks passed.",
+      "output": {
+        "files": ["agents/scs001-insight/index.ts"],
+        "commit": "",
+        "model": "human",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "§17 violation resolved. Direct Anthropic API calls eliminated. ClawRouter v2.0 constitutional tier (apex) wired. 4/4 validation checks passed.",
+          "issues": [],
+          "strengths": ["Direct API constants removed", "routeCall with constitutional_flag:true", "JSON parsing and InsightBrief construction untouched"]
+        }
+      }
     },
     {
       "id": "171-02",
@@ -26,7 +40,7 @@
       "task_type": "code",
       "task_target": "local",
       "agent": "coder",
-      "status": "pending",
+      "status": "done",
       "priority": "critical",
       "sprint_id": "sprint-171",
       "deliverables": {
@@ -34,7 +48,21 @@
         "tests": [],
         "docs": []
       },
-      "context": "Pattern: mirror validate-sprint-170.ts structure. Read agents/scs001-insight/index.ts, run 4 string checks, print pass/fail, exit with correct code."
+      "context": "Pattern: mirror validate-sprint-170.ts structure. Read agents/scs001-insight/index.ts, run 4 string checks, print pass/fail, exit with correct code.",
+      "_humanResolved": true,
+      "_humanNote": "Created manually. 4/4 checks passed on validation run.",
+      "output": {
+        "files": ["scripts/scs001/validate-sprint-171.ts"],
+        "commit": "",
+        "model": "human",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "Validator created. 4/4 checks passed: no ANTHROPIC_API_URL, no ANTHROPIC_API_KEY, routeCall import present, constitutional_flag:true present.",
+          "issues": [],
+          "strengths": ["Mirrors sprint-170 validator pattern", "All 4 compliance checks pass"]
+        }
+      }
     }
   ],
   "source": "human",
