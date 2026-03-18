@@ -58,6 +58,8 @@ import { crystalliseCodeAsset } from './lib/code-asset-crystalliser';
 import { MonotaskSM } from './lib/monotask-state-machine';
 // OMEL AMD-13: Phantom Workspace — isolated tmpdir per task, prevents cross-task file bleed
 import { phantomWorkspace } from './lib/omel/phantom-workspace';
+// OMEL AMD-13: Credential Vault — controlled secret access, never logs values
+import { credentialVault } from './lib/omel/credential-vault';
 
 // V17: Sovereign mode — force all inference to local Ollama ($0 cost floor)
 const SOVEREIGN_MODE = process.argv.includes('--sovereign') || process.env.SOVEREIGN_MODE === '1';
@@ -2914,8 +2916,9 @@ async function httpGet(url: string, timeoutMs = 8000): Promise<{ status: number;
 }
 
 async function sendTelegramAlert(message: string): Promise<void> {
-  const botToken = process.env.TELEGRAM_BOT_TOKEN;
-  const chatId   = process.env.TELEGRAM_CHAT_ID;
+  // OMEL AMD-13: Route through CredentialVault — values never logged
+  const botToken = credentialVault.getSecret('TELEGRAM_BOT_TOKEN', 'orchestrator');
+  const chatId   = credentialVault.getSecret('TELEGRAM_CHAT_ID', 'orchestrator');
   if (!botToken || !chatId) return;
   try {
     await httpPost('https://api.telegram.org/bot' + botToken + '/sendMessage', {
@@ -2985,12 +2988,12 @@ async function postSprintSmokeTest(): Promise<void> {
 // ===== Main Entry =====
 
 async function main() {
-  // S67-005: Startup env check
-  if (!process.env.ANTHROPIC_API_KEY) {
+  // S67-005: Startup env check (OMEL AMD-13: via CredentialVault — hasSecret never logs value)
+  if (!credentialVault.hasSecret('ANTHROPIC_API_KEY', 'orchestrator')) {
     log(c.yellow, '⚠  ANTHROPIC_API_KEY not set — Claude supervisor + CEO will be unavailable.');
     log(c.yellow, '   Codex will be the sole reviewer. Set ANTHROPIC_API_KEY in .env for full dual-supervisor mode.');
   }
-  if (!process.env.MINIMAX_API_KEY) {
+  if (!credentialVault.hasSecret('MINIMAX_API_KEY', 'orchestrator')) {
     log(c.yellow, '⚠  MINIMAX_API_KEY not set — cloud-code tasks will fail.');
   }
   try {

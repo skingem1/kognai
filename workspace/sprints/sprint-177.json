@@ -1,0 +1,81 @@
+{
+  "tasks": [
+    {
+      "id": "177-01",
+      "title": "OMEL Credential Vault module — scripts/lib/omel/credential-vault.ts",
+      "description": "Create scripts/lib/omel/credential-vault.ts. CredentialVault class: getSecret(key, agentId) reads process.env never logs value. listSecrets() returns key names only. hasSecret(key). maskForLog(value) returns sk-****...****. scanForLeaks(line) passive scanner warns to stderr. Audit log to logs/omel/vault-access-YYYY-MM-DD.jsonl. Export singleton credentialVault.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "priority": "critical",
+      "sprint_id": "sprint-177",
+      "deliverables": {
+        "code": ["scripts/lib/omel/credential-vault.ts"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "AMD-13 OMEL. Credential Vault ensures secret values (API keys, tokens) never appear in logs or Telegram. Only key NAMES tracked in audit log. scanForLeaks() is a passive scanner used before writing any log line.",
+      "_humanResolved": true,
+      "_humanNote": "Manual implementation. 115-line module. CredentialVault class: getSecret (reads env, audits), listSecrets (key names only, collectSecretKeys via regex patterns), hasSecret, maskForLog (prefix+suffix pattern), scanForLeaks (passive stderr warn). Audit JSONL. Singleton exported. Runtime verified: all 5 methods functional.",
+      "output": {
+        "files": ["scripts/lib/omel/credential-vault.ts"],
+        "commit": "",
+        "model": "human",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 100,
+          "summary": "115-line Credential Vault. getSecret never logs value. listSecrets returns key names via 10-pattern regex filter. maskForLog: prefix/suffix pattern. scanForLeaks: passive stderr warn (never to log file). Audit JSONL. TypeScript: 0 errors.",
+          "issues": [],
+          "strengths": [
+            "Value never appears in audit log — only key name + agent_id + action",
+            "scanForLeaks warns to stderr (not log file) to prevent compound leak",
+            "10 regex patterns cover all common secret naming conventions",
+            "maskForLog safe for short values (<=8 chars returns ****)",
+            "If log write fails in auditLog, caller never crashes"
+          ]
+        }
+      }
+    },
+    {
+      "id": "177-02",
+      "title": "Wire credentialVault into orchestrator — scripts/orchestrate-agents-v2.ts",
+      "description": "Replace 4 direct process.env secret accesses in orchestrate-agents-v2.ts with credentialVault calls. sendTelegramAlert: TELEGRAM_BOT_TOKEN + TELEGRAM_CHAT_ID. main() startup checks: ANTHROPIC_API_KEY + MINIMAX_API_KEY (hasSecret not getSecret since only checking presence).",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "priority": "critical",
+      "sprint_id": "sprint-177",
+      "deliverables": {
+        "code": ["scripts/orchestrate-agents-v2.ts"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "FP-007: orchestrate-agents-v2.ts is ~2985 lines. 5 surgical edits: (1) add credentialVault import, (2-3) sendTelegramAlert TELEGRAM_BOT_TOKEN/TELEGRAM_CHAT_ID → credentialVault.getSecret(), (4-5) main() ANTHROPIC_API_KEY/MINIMAX_API_KEY → credentialVault.hasSecret().",
+      "_humanResolved": true,
+      "_humanNote": "5 surgical edits applied. Import added after phantomWorkspace import. sendTelegramAlert: 2 replacements (getSecret). main() startup check: 2 replacements (hasSecret). FP-007 applied. Import compile check: OK. Runtime: hasSecret returns correct boolean.",
+      "output": {
+        "files": ["scripts/orchestrate-agents-v2.ts"],
+        "commit": "",
+        "model": "human",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 100,
+          "summary": "5 surgical edits. credentialVault import added. TELEGRAM_BOT_TOKEN + TELEGRAM_CHAT_ID via getSecret() (audit trail). ANTHROPIC_API_KEY + MINIMAX_API_KEY via hasSecret() (never reads value unnecessarily). FP-007 applied.",
+          "issues": [],
+          "strengths": [
+            "hasSecret() used for presence checks — never reads value unnecessarily",
+            "getSecret() used only where value is actually needed (Telegram auth)",
+            "All 4 accesses now leave audit trail in vault-access-YYYY-MM-DD.jsonl",
+            "FP-007: no destructive rewrite, 5 targeted edits only"
+          ]
+        }
+      }
+    }
+  ],
+  "source": "human",
+  "_plan_reference": "Sprint plan 172-191 (2026-03-18). Sprint 177: OMEL Credential Vault. Controlled secret access, audit log, maskForLog, scanForLeaks. Wired into orchestrator (sendTelegramAlert + main startup checks). AMD-13 implementation step 2."
+}
