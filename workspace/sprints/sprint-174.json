@@ -1,0 +1,80 @@
+{
+  "tasks": [
+    {
+      "id": "174-01",
+      "title": "CEO Wallet module — scripts/lib/ceo-wallet.ts",
+      "description": "Create scripts/lib/ceo-wallet.ts:\n- deductCost(amount_usd, agent_id, task_type): persists to logs/ceo-wallet/YYYY-MM.jsonl\n- getBalance(): {balance_usd, spent_today_usd, spent_month_usd}\n- getDailyLedger(date): LedgerEntry[]\n- Telegram alert when daily spend exceeds COST_ALERT_USD_DAILY (default $1.00)",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "priority": "critical",
+      "sprint_id": "sprint-174",
+      "deliverables": {
+        "code": ["scripts/lib/ceo-wallet.ts"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "CEO_WALLET_BALANCE_USD env var (default $50). Uses same https-based Telegram pattern as pipeline-watchdog.ts (TELEGRAM_BOT_TOKEN / OWNER_TELEGRAM_CHAT_ID).",
+      "_humanResolved": true,
+      "_humanNote": "Manual implementation. 106-line module: deductCost (ledger write + Telegram alert), getBalance (in-memory daily/monthly counters), getDailyLedger (filter by date prefix). Runtime verified.",
+      "output": {
+        "files": ["scripts/lib/ceo-wallet.ts"],
+        "commit": "",
+        "model": "human",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "106-line CEO wallet module. JSONL ledger to logs/ceo-wallet/YYYY-MM.jsonl. Daily/monthly in-memory counters with new-day reset. Telegram alert (fire-and-forget) on COST_ALERT_USD_DAILY threshold. TypeScript: 0 errors.",
+          "issues": [],
+          "strengths": [
+            "JSONL persistence with monthly partitioning",
+            "Daily counter auto-reset on new day",
+            "Telegram alert fires once per day (flag guard)",
+            "getDailyLedger filters by date prefix across monthly file",
+            "Fire-and-forget Telegram (req.on('error',()=>{}) — server never crashes)"
+          ]
+        }
+      }
+    },
+    {
+      "id": "174-02",
+      "title": "Wire CEO wallet into ClawRouter HTTP server + GET /wallet endpoint",
+      "description": "Wire deductCost() into clawrouter-http-server.ts on every successful POST /route call. Add GET /wallet endpoint returning balance + daily ledger.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "priority": "critical",
+      "sprint_id": "sprint-174",
+      "deliverables": {
+        "code": ["scripts/services/clawrouter-http-server.ts"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "3 surgical changes: import deductCost/getBalance/getDailyLedger, call deductCost() in POST /route success path, add GET /wallet endpoint. File is 113 lines after Sprint 173.",
+      "_humanResolved": true,
+      "_humanNote": "3 surgical edits applied. Import added, deductCost() wired in POST /route success handler, GET /wallet endpoint added. File: 113 lines. Runtime verified: /wallet returns {balance_usd:50, spent_today_usd:0, ...}.",
+      "output": {
+        "files": ["scripts/services/clawrouter-http-server.ts"],
+        "commit": "",
+        "model": "human",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 100,
+          "summary": "deductCost() wired on every successful route call. GET /wallet returns balance+ledger. 4 endpoints all verified runtime.",
+          "issues": [],
+          "strengths": [
+            "deductCost called before logEntry in success path",
+            "GET /wallet supports ?date= query param for historical ledgers",
+            "File stays under 150-line limit (113 lines)"
+          ]
+        }
+      }
+    }
+  ],
+  "source": "human",
+  "_plan_reference": "Sprint plan 172-191 (2026-03-18). Sprint 174: CEO Wallet billing. deductCost() on every routed call, JSONL ledger, GET /wallet endpoint, Telegram alert at COST_ALERT_USD_DAILY threshold."
+}

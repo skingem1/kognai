@@ -12,7 +12,8 @@
 import express from 'express';
 import * as fs   from 'fs';
 import * as path from 'path';
-import { routeCall } from '../lib/clawrouter-v2';
+import { routeCall }                       from '../lib/clawrouter-v2';
+import { deductCost, getBalance, getDailyLedger } from '../lib/ceo-wallet';
 
 const app = express();
 app.use(express.json());
@@ -61,6 +62,7 @@ app.post('/route', async (req, res) => {
     const result = await routeCall(params);
     const latencyMs = Date.now() - t0;
     updateStats(result.tier ?? 'unknown', result.cost_usd ?? 0, latencyMs);
+    deductCost(result.cost_usd ?? 0, params.agent_id ?? 'unknown', params.task_type ?? 'unknown');
     logEntry({ ts: new Date().toISOString(), agent_id: params.agent_id, task_type: params.task_type,
       tier: result.tier, model: result.model, local: result.local,
       cost_usd: result.cost_usd, latency_ms: latencyMs, ok: true });
@@ -95,6 +97,13 @@ app.get('/metrics', (_req, res) => {
     };
   }
   res.json({ calls_today: stats.callsToday, cost_today_usd: stats.costTodayUsd, per_tier: perTier });
+});
+
+// ─── GET /wallet ──────────────────────────────────────────────────────────────
+app.get('/wallet', (req, res) => {
+  const date   = (req.query.date as string) || new Date().toISOString().slice(0, 10);
+  const ledger = getDailyLedger(date);
+  res.json({ ...getBalance(), date, ledger_entries: ledger.length, ledger });
 });
 
 // ─── Start ────────────────────────────────────────────────────────────────────
