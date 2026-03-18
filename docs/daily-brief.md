@@ -1,10 +1,10 @@
-# KOGNAI DAILY BRIEF — 2026-03-17
-## Tuesday, March 17, 2026
+# KOGNAI DAILY BRIEF — 2026-03-18
+## Wednesday, March 18, 2026
 
-**Generated:** 2026-03-17 20:21
-**Active Sprint:** sprint-065
-**Hours Today:** 4h
-**Midday Block:** NO (Tuesday/Thursday)
+**Generated:** 2026-03-18 06:45
+**Active Sprint:** Sprint-065
+**Hours Today:** 6h
+**Midday Block:** YES (12:00-14:00)
 
 ---
 
@@ -13,35 +13,12 @@
 | Block | Time | Available |
 |-------|------|-----------|
 | AM | 07:00–09:30 | YES |
-| MID | 12:00–14:00 | NO |
+| MID | 12:00–14:00 | YES |
 | PM | 18:00–19:30 | YES |
 
 ---
 
 ## TODAY'S TASKS
-
-### Monday, March 17
-**AM 07:00–09:30**
-- [ ] Read weekend swarm output for sprint-065
-- [ ] Review Instagram Reels integration: `scripts/content/instagram-poster.ts`
-- [ ] Review engagement tracker schema: `supabase/migrations/003_content_posts.sql`
-- [ ] Test: can the queue manager rank videos by viral score?
-
-**MID 12:00–14:00**
-- [ ] [YOU] Manually post 3 more clips (mix TikTok + Instagram Reels)
-- [ ] [YOU] Track initial engagement (save screenshots of view counts)
-- [ ] Test Playwright browser automation poster — does it actually work?
-- [ ] Document which posting method is most reliable
-
-**PM 18:00–19:30**
-- [ ] Review all sprint-065 tasks — approve/reject
-- [ ] If posting pipeline works: celebrate small win
-- [ ] Write session log
-- [ ] Prepare fix tasks if needed
-
----
-
-## TOMORROW PREVIEW
 
 ### Tuesday, March 18
 **AM 07:00–09:30**
@@ -51,6 +28,25 @@
 - [ ] Check Supabase `content_posts` table — data flowing?
 
 **NO MIDDAY BLOCK**
+
+**PM 18:00–19:30**
+- [ ] Sprint-065 final review — all tasks approved?
+- [ ] If sprint-065 done: write sprint-066 JSON (autonomous content loop)
+- [ ] Write session log
+- [ ] [SWARM] Kick off sprint-066
+
+---
+
+## TOMORROW PREVIEW
+
+### Wednesday, March 19
+**Sprint 066 — Autonomous Content Loop**
+
+**AM 07:00–09:30**
+- [ ] Read sprint-066 early output
+- [ ] Review `scripts/content/daily-pipeline.ts` — full automation chain
+- [ ] Review A/B testing framework: `scripts/content/ab-test.ts`
+- [ ] Check: does daily pipeline fetch → extract → score → compose → queue?
 
 ---
 
