@@ -1,0 +1,63 @@
+{
+  "run_id": "5b144f5e-c861-4604-a4ac-b6a414ccb4dc",
+  "project": "kognai",
+  "sprint_file": "workspace/sprints/sprint-170.json",
+  "started_at": "2026-03-17T19:29:17.640Z",
+  "finished_at": "2026-03-17T19:29:25.117Z",
+  "duration_seconds": 7,
+  "git_branch": "main",
+  "git_head_before": "c588775",
+  "git_head_after": "c588775",
+  "sovereign_mode": false,
+  "summary": {
+    "total_tasks": 2,
+    "done": 0,
+    "rejected": 2,
+    "skipped": 0,
+    "approval_rate": 0,
+    "total_tokens": 0,
+    "supervisor_conflicts": 0,
+    "ceo_escalations": 0
+  },
+  "models_used": {
+    "unknown": {
+      "calls": 2,
+      "tokens": 0
+    }
+  },
+  "total_cost_usd": 0,
+  "tasks": [
+    {
+      "task_id": "170-01",
+      "title": "posting-reminder.ts — replace runIdToEpoch with findCaptionedMp4 dir scan",
+      "type": "modify",
+      "task_target": "local",
+      "status": "rejected",
+      "attempts": 0,
+      "model_used": "",
+      "provider": "",
+      "tokens_total": 0,
+      "duration_seconds": 0,
+      "files_written": [],
+      "review": null,
+      "error": "Agent not found: direct-write",
+      "rejection_reason": "Agent not found"
+    },
+    {
+      "task_id": "170-02",
+      "title": "validate-sprint-170.ts — 4-check validation",
+      "type": "create",
+      "task_target": "local",
+      "status": "rejected",
+      "attempts": 0,
+      "model_used": "",
+      "provider": "",
+      "tokens_total": 0,
+      "duration_seconds": 0,
+      "files_written": [],
+      "review": null,
+      "error": "Agent not found: direct-write",
+      "rejection_reason": "Agent not found"
+    }
+  ]
+}

@@ -30,7 +30,8 @@ import * as crypto from 'crypto';
 import { getWalletState, recordSpend } from './wallet-state';
 
 // ── Config ────────────────────────────────────────────────────────────────────
-const OLLAMA_BASE = process.env.OLLAMA_HOST || 'http://localhost:11434';
+const _rawOllamaHost = process.env.OLLAMA_HOST || 'http://localhost:11434';
+const OLLAMA_BASE = _rawOllamaHost.startsWith('http') ? _rawOllamaHost : `http://${_rawOllamaHost}`;
 const CLAWROUTER_GATEWAY = process.env.CLAWROUTER_GATEWAY_URL || 'http://localhost:18789/v1';
 const OLLAMA_TIMEOUT_MS = 600_000;  // 10 min for local models
 const CLOUD_TIMEOUT_MS = 300_000;   // 5 min for cloud API calls
@@ -227,6 +228,7 @@ async function callOllamaLocal(model: string, prompt: string, systemPrompt?: str
     prompt,
     system: systemPrompt,
     stream: false,
+    think: false,  // Disable qwen3 thinking mode — outputs to separate key, breaks JSON parsing
     options: { num_predict: maxTokens, temperature: 0.1 },
   });
 
@@ -234,8 +236,11 @@ async function callOllamaLocal(model: string, prompt: string, systemPrompt?: str
   if (res.status !== 200) throw new Error(`Ollama ${model} returned ${res.status}: ${res.data.slice(0, 300)}`);
 
   const json = JSON.parse(res.data);
+  // Strip any residual <think>...</think> tags from qwen3 response
+  let content = json.response || '';
+  content = content.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
   return {
-    content: json.response || '',
+    content,
     input_tokens: json.prompt_eval_count || 0,
     output_tokens: json.eval_count || 0,
   };

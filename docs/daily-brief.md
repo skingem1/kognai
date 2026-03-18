@@ -1,10 +1,10 @@
-# KOGNAI DAILY BRIEF — 2026-03-16
-## Monday, March 16, 2026
+# KOGNAI DAILY BRIEF — 2026-03-17
+## Tuesday, March 17, 2026
 
-**Generated:** 2026-03-16 15:03
-**Active Sprint:** Unknown
-**Hours Today:** 6h
-**Midday Block:** YES (12:00-14:00)
+**Generated:** 2026-03-17 20:21
+**Active Sprint:** sprint-065
+**Hours Today:** 4h
+**Midday Block:** NO (Tuesday/Thursday)
 
 ---
 
@@ -13,18 +13,12 @@
 | Block | Time | Available |
 |-------|------|-----------|
 | AM | 07:00–09:30 | YES |
-| MID | 12:00–14:00 | YES |
+| MID | 12:00–14:00 | NO |
 | PM | 18:00–19:30 | YES |
 
 ---
 
 ## TODAY'S TASKS
-
-*No specific daily tasks found for 2026-03-16. Check weekly schedule below.*
-
----
-
-## TOMORROW PREVIEW
 
 ### Monday, March 17
 **AM 07:00–09:30**
@@ -34,6 +28,29 @@
 - [ ] Test: can the queue manager rank videos by viral score?
 
 **MID 12:00–14:00**
+- [ ] [YOU] Manually post 3 more clips (mix TikTok + Instagram Reels)
+- [ ] [YOU] Track initial engagement (save screenshots of view counts)
+- [ ] Test Playwright browser automation poster — does it actually work?
+- [ ] Document which posting method is most reliable
+
+**PM 18:00–19:30**
+- [ ] Review all sprint-065 tasks — approve/reject
+- [ ] If posting pipeline works: celebrate small win
+- [ ] Write session log
+- [ ] Prepare fix tasks if needed
+
+---
+
+## TOMORROW PREVIEW
+
+### Tuesday, March 18
+**AM 07:00–09:30**
+- [ ] Review any fix tasks from yesterday
+- [ ] Test multi-channel: one video queued for TikTok AND Instagram simultaneously
+- [ ] Verify engagement tracker polling at 1h/6h/24h intervals
+- [ ] Check Supabase `content_posts` table — data flowing?
+
+**NO MIDDAY BLOCK**
 
 ---
 

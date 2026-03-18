@@ -1,7 +1,7 @@
 {
   "gate": "phase1-5-tiktok-kill-switch",
-  "date": "2026-03-16",
-  "generated_at": "2026-03-16T17:33:26.541Z",
+  "date": "2026-03-17",
+  "generated_at": "2026-03-17T05:55:00.273Z",
   "criteria": [
     {
       "id": "post-count",

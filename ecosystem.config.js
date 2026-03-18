@@ -635,9 +635,9 @@ module.exports = {
       // 13-panel monitoring: sprints, tasks, costs, agents, routing, chain,
       // security, assets, pipeline runs, amendments, revenue, blockers
       name: "vault-dashboard",
-      script: "server.py",
-      interpreter: "python3",
-      interpreter_args: "-m uvicorn server:app --host 127.0.0.1 --port 11436",
+      script: "python3",
+      args: "-m uvicorn server:app --host 127.0.0.1 --port 11436",
+      interpreter: "none",
       cwd: "/Users/tarekmnif/kognai/dashboard",
       autorestart: true,
       watch: false,
