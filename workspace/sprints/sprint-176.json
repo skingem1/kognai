@@ -1,0 +1,81 @@
+{
+  "tasks": [
+    {
+      "id": "176-01",
+      "title": "OMEL Phantom Workspace module — scripts/lib/omel/phantom-workspace.ts",
+      "description": "Create scripts/lib/omel/phantom-workspace.ts. PhantomWorkspace class: create(taskId) → isolated tmpdir, resolve(ctx, path) → sandboxed path, cleanup(ctx) → wipe tmpdir. Lifecycle events logged to logs/omel/phantom-YYYY-MM-DD.jsonl. Export singleton phantomWorkspace.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "priority": "critical",
+      "sprint_id": "sprint-176",
+      "deliverables": {
+        "code": ["scripts/lib/omel/phantom-workspace.ts"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "AMD-13 OMEL. Phantom Workspace prevents cross-task file bleed by giving each task its own isolated tmpdir in OS temp. Paths resolved through resolve() which strips parent traversal and enforces sandbox boundary.",
+      "_humanResolved": true,
+      "_humanNote": "Manual implementation. 105-line module. PhantomWorkspace class: create() uses fs.mkdtempSync, resolve() enforces sandbox boundary (throws on escape), cleanup() uses fs.rmSync recursive. Singleton exported. Lifecycle JSONL to logs/omel/phantom-YYYY-MM-DD.jsonl. Runtime verified: create/resolve/cleanup/getStats all functional.",
+      "output": {
+        "files": ["scripts/lib/omel/phantom-workspace.ts"],
+        "commit": "",
+        "model": "human",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 100,
+          "summary": "105-line PhantomWorkspace module. Isolated tmpdir per task via mkdtempSync. resolve() enforces sandbox boundary with path escape detection. cleanup() wipes via rmSync recursive+force. Lifecycle JSONL. Daily counter auto-reset. TypeScript: 0 errors. Runtime: create/resolve/cleanup all verified.",
+          "issues": [],
+          "strengths": [
+            "mkdtempSync guarantees unique per-task isolation",
+            "resolve() throws on path escape attempts (security boundary)",
+            "cleanup() logs duration_ms and auto-deregisters from active map",
+            "Daily counter resets for getStats()",
+            "Singleton pattern — consistent state across orchestrator calls"
+          ]
+        }
+      }
+    },
+    {
+      "id": "176-02",
+      "title": "Wire phantom-workspace into orchestrator — scripts/orchestrate-agents-v2.ts",
+      "description": "Wire phantomWorkspace.create/cleanup around every task execution in executeTask(). Create phantomCtx before retry loop, cleanup in finally block ensuring cleanup fires on success, rejection, and error paths.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "priority": "critical",
+      "sprint_id": "sprint-176",
+      "deliverables": {
+        "code": ["scripts/orchestrate-agents-v2.ts"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "FP-007: orchestrate-agents-v2.ts is ~2980 lines. 3 surgical edits only: (1) add import, (2) phantomCtx = phantomWorkspace.create(task.id) before retry loop, (3) try/finally wrapping loop + post-loop rejection code with phantomWorkspace.cleanup(phantomCtx) in finally.",
+      "_humanResolved": true,
+      "_humanNote": "3 surgical edits applied. Import added at line 59. phantomCtx created at line 2242 with try{ opened. finally block added at line 2415-2418 before executeTask closing brace. FP-007 applied — no swarm. TypeScript import verified: phantom-workspace import OK (function). Runtime smoke-test: create/resolve/cleanup all pass.",
+      "output": {
+        "files": ["scripts/orchestrate-agents-v2.ts"],
+        "commit": "",
+        "model": "human",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 100,
+          "summary": "3 surgical edits. Import at line 59. phantomCtx.create() before retry loop. try/finally wraps entire retry+post-loop block ensuring cleanup fires on all exit paths (APPROVED return, rejected return, exhausted loop). TypeScript resolves correctly.",
+          "issues": [],
+          "strengths": [
+            "finally block fires on ALL exit paths (return inside loop, final rejection, thrown error)",
+            "FP-007 applied — no destructive rewrite on 2980-line file",
+            "Import uses OMEL AMD-13 comment for traceability",
+            "phantomCtx scoped to single task execution, not global"
+          ]
+        }
+      }
+    }
+  ],
+  "source": "human",
+  "_plan_reference": "Sprint plan 172-191 (2026-03-18). Sprint 176: OMEL Phantom Workspace. Isolated tmpdir per task. Wire into orchestrator executeTask() with try/finally. AMD-13 implementation step 1."
+}

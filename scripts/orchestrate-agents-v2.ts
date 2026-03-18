@@ -56,6 +56,8 @@ import { AARMiddleware } from './lib/aar-middleware';
 import { crystalliseSkill } from './lib/skill-crystalliser';
 import { crystalliseCodeAsset } from './lib/code-asset-crystalliser';
 import { MonotaskSM } from './lib/monotask-state-machine';
+// OMEL AMD-13: Phantom Workspace — isolated tmpdir per task, prevents cross-task file bleed
+import { phantomWorkspace } from './lib/omel/phantom-workspace';
 
 // V17: Sovereign mode — force all inference to local Ollama ($0 cost floor)
 const SOVEREIGN_MODE = process.argv.includes('--sovereign') || process.env.SOVEREIGN_MODE === '1';
@@ -2236,6 +2238,9 @@ ONLY output the JSON array. No markdown, no explanation.`;
     const TRUNCATION_THRESHOLD = 3;
     let truncationCount = 0;
     let lastReview: ReviewResult | undefined;
+    // OMEL AMD-13: Create isolated tmpdir for this task (cleaned up in finally)
+    const phantomCtx = phantomWorkspace.create(task.id);
+    try {
     for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
       log(c.blue, `\n${'='.repeat(60)}`);
       log(c.blue, `Task: ${task.id} | Agent: ${task.agent} | Attempt: ${attempt}/${MAX_RETRIES}`);
@@ -2407,6 +2412,10 @@ ONLY output the JSON array. No markdown, no explanation.`;
     taskRun.rejection_reason = lastReview?.summary || `Failed after ${MAX_RETRIES} attempts`;
     taskRun.duration_seconds = Math.round((Date.now() - taskRunStart) / 1000);
     this.taskRuns.push(taskRun);
+    } finally {
+      // OMEL AMD-13: Always wipe the phantom tmpdir on task exit (success or failure)
+      phantomWorkspace.cleanup(phantomCtx);
+    }
   }
   async run(): Promise<void> {
     const startTime = Date.now();
