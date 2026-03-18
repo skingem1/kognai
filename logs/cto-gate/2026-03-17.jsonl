@@ -1,0 +1,2 @@
+{"product":"kognai","approved":true,"sprint_id":"sprint-170","reason":"The sprint directly addresses a bug that was previously fixed in Sprint 164, aligning with the need to ensure consistent functionality across related components.","plan_reference":"NOT_IN_PLAN","cto_confidence":85,"timestamp":"2026-03-17T19:29:17.662Z"}
+{"product":"kognai","approved":false,"sprint_id":"sprint-170","reason":"The sprint is not in any plan and is not a critical fix.","plan_reference":"NOT_IN_PLAN","cto_confidence":85,"timestamp":"2026-03-17T19:30:24.059Z"}

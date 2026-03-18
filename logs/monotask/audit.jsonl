@@ -15,3 +15,14 @@
 {"ts":"2026-03-16T14:16:38.596Z","agentId":"coder","taskId":"102-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"rejected attempt 1"}
 {"ts":"2026-03-16T14:16:38.597Z","agentId":"coder","taskId":"102-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
 {"ts":"2026-03-16T14:16:38.597Z","agentId":"coder","taskId":"102-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-17T19:35:14.539Z","agentId":"coder","taskId":"170-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-17T19:35:14.539Z","agentId":"coder","taskId":"170-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-17T19:40:18.849Z","agentId":"coder","taskId":"170-01","transition":"ACTIVE→IDLE","from":"ACTIVE","to":"IDLE","depth":0}
+{"ts":"2026-03-17T19:40:18.850Z","agentId":"coder","taskId":"170-02","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-17T19:40:18.850Z","agentId":"coder","taskId":"170-02","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-17T19:49:29.118Z","agentId":"coder","taskId":"170-02","transition":"ACTIVE→IDLE","from":"ACTIVE","to":"IDLE","depth":0}
+{"ts":"2026-03-17T20:01:14.031Z","agentId":"coder","taskId":"171-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-17T20:01:14.032Z","agentId":"coder","taskId":"171-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-17T20:10:12.873Z","agentId":"coder","taskId":"171-01","transition":"ACTIVE→IDLE","from":"ACTIVE","to":"IDLE","depth":0}
+{"ts":"2026-03-17T20:10:12.874Z","agentId":"coder","taskId":"171-02","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-17T20:10:12.874Z","agentId":"coder","taskId":"171-02","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}

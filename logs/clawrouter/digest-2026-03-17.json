@@ -1,0 +1,11 @@
+{
+  "total_usd": 0,
+  "by_tier": {
+    "T1": 0
+  },
+  "by_agent": {
+    "orchestrator-v2": 0
+  },
+  "tokens_saved_by_qcg": 0,
+  "call_count": 2
+}

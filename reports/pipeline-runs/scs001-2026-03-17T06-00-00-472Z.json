@@ -1,0 +1,58 @@
+{
+  "run_id": "scs001-2026-03-17T06-00-00-472Z",
+  "mode": "live",
+  "started_at": "2026-03-17T06:00:00.472Z",
+  "completed_at": "2026-03-17T06:07:38.880Z",
+  "total_elapsed_ms": 458408,
+  "stages": [
+    {
+      "stage": "1-trend",
+      "agent": "TrendAgent",
+      "count": 12,
+      "elapsed_ms": 403,
+      "status": "ok"
+    },
+    {
+      "stage": "2-discovery",
+      "agent": "DiscoveryAgent",
+      "count": 18,
+      "elapsed_ms": 4351,
+      "status": "ok"
+    },
+    {
+      "stage": "3-clip-detection",
+      "agent": "ClipDetectionAgent",
+      "count": 64,
+      "elapsed_ms": 452842,
+      "status": "ok"
+    },
+    {
+      "stage": "4-insight",
+      "agent": "InsightAgent (live)",
+      "count": 0,
+      "elapsed_ms": 809,
+      "status": "empty"
+    }
+  ],
+  "summary": {
+    "topics_found": 12,
+    "clips_discovered": 18,
+    "clips_qualified": 5,
+    "insights_generated": 0,
+    "scripts_produced": 0,
+    "scripts_scored": 0,
+    "scripts_filtered": 0,
+    "scripts_validation_skipped": 0,
+    "videos_edited": 0,
+    "videos_captioned": 0,
+    "qc_passed": 0,
+    "qc_failed": 0,
+    "published": 0,
+    "viral": 0,
+    "performing": 0,
+    "failure_library": 0,
+    "flywheel_derivatives": 0,
+    "failure_entries": 0,
+    "clips_deduplicated": 0
+  }
+}
