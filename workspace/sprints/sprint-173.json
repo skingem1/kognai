@@ -1,0 +1,71 @@
+{
+  "tasks": [
+    {
+      "id": "173-01",
+      "title": "ClawRouter HTTP Gateway — Express server (scripts/services/clawrouter-http-server.ts)",
+      "description": "Complete scripts/services/clawrouter-http-server.ts — an Express HTTP service that wraps clawrouter-v2.ts for architecture-level §17 compliance.\n\nFull implementation required:\n\n1. Import express, fs, path, routeCall (from '../lib/clawrouter-v2')\n2. In-memory stats: { callsToday: number, costTodayUsd: number, startTime: Date, perTier: Record<string, {calls:number, cost:number, latencyMs:number[]}> }\n3. JSONL log helper: logRequest(entry) — appends to logs/clawrouter/YYYY-MM-DD.jsonl (create dir if needed)\n4. POST /route:\n   - Parse body as RouteCallParams\n   - Record start time\n   - Call await routeCall(params)\n   - Compute latency_ms\n   - Log entry: {ts, agent_id, task_type, tier, model, local, cost_usd, latency_ms, ok:true}\n   - Update in-memory stats\n   - Return {content, cost_usd, model, tier, local, latency_ms}\n   - On error: log {ok:false, error}, return 500 {error: message}\n5. GET /health:\n   - Returns {status:'ok', uptime_s: Math.floor((Date.now()-startTime)/1000), calls_today: stats.callsToday, cost_today_usd: stats.costTodayUsd}\n6. GET /metrics:\n   - Returns {calls_today, cost_today_usd, per_tier: {[tier]: {calls, cost_usd, p50_ms, p95_ms}}}\n   - Compute p50/p95 from latencyMs arrays\n7. Start server: const port = parseInt(process.env.CLAWROUTER_PORT ?? '3101'); app.listen(port, () => console.log('[ClawRouter HTTP] listening on :'+port))\n8. Keep file UNDER 150 lines.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "priority": "critical",
+      "sprint_id": "sprint-173",
+      "deliverables": {
+        "code": ["scripts/services/clawrouter-http-server.ts"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Stub already exists at scripts/services/clawrouter-http-server.ts (pre-flight workaround). Replace entire file content with the full implementation. clawrouter-v2.ts exports: routeCall(params: RouteCallParams): Promise<{content:string, cost_usd:number, model:string, tier:string, local:boolean}>. Express and its @types should already be in package.json (check before adding). logs/clawrouter/ dir must be created by the server at startup if missing.",
+      "_humanResolved": true,
+      "_humanNote": "qwen3:14b token-exhausted on 173-01 (239.4s, 8192 tokens, zero real code). Swarm killed. Manual implementation written: 100-line Express server with POST /route, GET /health, GET /metrics, JSONL logging, in-memory stats, percentile p50/p95. Compile+runtime verified: npx ts-node --transpile-only → GET /health returns {status:'ok',...} correctly.",
+      "output": {
+        "files": ["scripts/services/clawrouter-http-server.ts"],
+        "commit": "",
+        "model": "human",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "100-line Express HTTP gateway wrapping clawrouter-v2.ts. POST /route proxies routeCall(), GET /health returns uptime+stats, GET /metrics returns per-tier p50/p95. JSONL logging to logs/clawrouter/YYYY-MM-DD.jsonl. Runtime verified.",
+          "issues": [],
+          "strengths": ["All 3 endpoints implemented", "JSONL log per call", "In-memory stats with p50/p95", "Under 150-line limit (104 lines)", "Compile + health check verified"]
+        }
+      }
+    },
+    {
+      "id": "173-02",
+      "title": "Add clawrouter-gateway PM2 process to ecosystem.config.js",
+      "description": "Add the clawrouter-gateway entry to ecosystem.config.js apps array. Entry:\n{\n  name: 'clawrouter-gateway',\n  script: 'scripts/services/clawrouter-http-server.ts',\n  interpreter: 'node',\n  interpreter_args: '-r ts-node/register',\n  cwd: '/Users/tarekmnif/kognai',\n  autorestart: true,\n  watch: false,\n  max_memory_restart: '256M',\n  env: {\n    TS_NODE_TRANSPILE_ONLY: 'true',\n    TS_NODE_PROJECT: '/Users/tarekmnif/kognai/tsconfig.scripts.json',\n    CLAWROUTER_PORT: '3101',\n  },\n  error_file: '/Users/tarekmnif/kognai/logs/clawrouter-gateway-error.log',\n  out_file: '/Users/tarekmnif/kognai/logs/clawrouter-gateway-out.log',\n  log_date_format: 'YYYY-MM-DD HH:mm:ss Z'\n}",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "priority": "critical",
+      "sprint_id": "sprint-173",
+      "deliverables": {
+        "code": ["ecosystem.config.js"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "FP-007: ecosystem.config.js is 698 lines — human will apply this edit manually after swarm completes 173-01. DO NOT modify ecosystem.config.js via swarm.",
+      "_humanWillResolve": true,
+      "_humanResolved": true,
+      "_humanNote": "Surgical manual edit applied. clawrouter-gateway entry appended inside apps array. FP-007 respected — swarm never touched this file.",
+      "output": {
+        "files": ["ecosystem.config.js"],
+        "commit": "",
+        "model": "human",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 100,
+          "summary": "clawrouter-gateway PM2 entry added to ecosystem.config.js apps array. Port 3101, ts-node transpile-only, 256M memory cap, autorestart enabled.",
+          "issues": [],
+          "strengths": ["FP-007 respected (manual edit only)", "All required fields present", "Correct tsconfig.scripts.json reference"]
+        }
+      }
+    }
+  ],
+  "source": "human",
+  "_plan_reference": "Sprint plan 172-191 (2026-03-18). Sprint 173: ClawRouter HTTP Gateway Foundation. Creates Express service wrapping clawrouter-v2.ts for architecture-level §17 compliance. ecosystem.config.js PM2 entry added manually (FP-007: 698 lines)."
+}

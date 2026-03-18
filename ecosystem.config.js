@@ -694,5 +694,24 @@ module.exports = {
       out_file: "/Users/tarekmnif/kognai/logs/achiri-api-out.log",
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
+    // ─── ClawRouter HTTP Gateway (Sprint 173) ─────────────────────────────────
+    {
+      name: "clawrouter-gateway",
+      script: "scripts/services/clawrouter-http-server.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: true,
+      watch: false,
+      max_memory_restart: "256M",
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
+        CLAWROUTER_PORT: "3101",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/clawrouter-gateway-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/clawrouter-gateway-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
   ]
 };
