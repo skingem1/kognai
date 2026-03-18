@@ -1,0 +1,86 @@
+{
+  "run_id": "scs001-2026-03-18T17-00-00-434Z",
+  "mode": "mock",
+  "started_at": "2026-03-18T17:00:00.434Z",
+  "completed_at": "2026-03-18T17:06:15.763Z",
+  "total_elapsed_ms": 375329,
+  "stages": [
+    {
+      "stage": "1-trend",
+      "agent": "TrendAgent",
+      "count": 5,
+      "elapsed_ms": 1,
+      "status": "ok"
+    },
+    {
+      "stage": "2-discovery",
+      "agent": "DiscoveryAgent",
+      "count": 12,
+      "elapsed_ms": 1895,
+      "status": "ok"
+    },
+    {
+      "stage": "3-clip-detection",
+      "agent": "ClipDetectionAgent",
+      "count": 42,
+      "elapsed_ms": 373210,
+      "status": "ok"
+    },
+    {
+      "stage": "4-insight",
+      "agent": "InsightAgent (mock-from-clips)",
+      "count": 12,
+      "elapsed_ms": 0,
+      "status": "ok"
+    },
+    {
+      "stage": "5-script",
+      "agent": "ScriptAgent",
+      "count": 12,
+      "elapsed_ms": 2,
+      "status": "ok"
+    },
+    {
+      "stage": "5.5-score",
+      "agent": "ScriptScorer",
+      "count": 10,
+      "elapsed_ms": 1,
+      "status": "ok"
+    },
+    {
+      "stage": "6-validate",
+      "agent": "ScriptValidator",
+      "count": 10,
+      "elapsed_ms": 0,
+      "status": "ok"
+    },
+    {
+      "stage": "6-editing",
+      "agent": "EditingAgent",
+      "count": 0,
+      "elapsed_ms": 216,
+      "status": "empty"
+    }
+  ],
+  "summary": {
+    "topics_found": 5,
+    "clips_discovered": 12,
+    "clips_qualified": 12,
+    "insights_generated": 12,
+    "scripts_produced": 12,
+    "scripts_scored": 12,
+    "scripts_filtered": 2,
+    "scripts_validation_skipped": 0,
+    "videos_edited": 0,
+    "videos_captioned": 0,
+    "qc_passed": 0,
+    "qc_failed": 0,
+    "published": 0,
+    "viral": 0,
+    "performing": 0,
+    "failure_library": 0,
+    "flywheel_derivatives": 0,
+    "failure_entries": 0,
+    "clips_deduplicated": 0
+  }
+}

@@ -15,8 +15,7 @@ import { join } from 'path';
 import { AchiriMemoryStore } from './memory-store';
 import { safetyCheck } from './safety-filter';
 import { injectMemoryContext } from './memory-search';
-
-const ANTHROPIC_API_URL = 'https://api.anthropic.com/v1/messages';
+import { routeCall } from '../../scripts/lib/clawrouter-v2';
 
 export interface AchiriConfig {
   name: string;
@@ -172,16 +171,17 @@ export class AchiriConversationHandler {
         const data = await res.json() as { message: { content: string } };
         reply = data.message.content;
       } else if (model.provider === 'anthropic') {
-        const apiKey = process.env.ANTHROPIC_API_KEY;
-        if (!apiKey) throw new Error('ANTHROPIC_API_KEY not set');
-        const res = await fetch(ANTHROPIC_API_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01' },
-          body: JSON.stringify({ model: model.model, max_tokens: 1024, system: systemPrompt, messages: chatMessages }),
+        const conversationText = chatMessages.map(m => (m.role === 'user' ? 'User' : 'Assistant') + ': ' + m.content).join('\n');
+        const result = await routeCall({
+          task_type:           'conversation',
+          tier_class:          'text',
+          complexity:          'apex',
+          context_tokens:      1024,
+          constitutional_flag: true,
+          agent_id:            'achiri',
+          payload:             { prompt: systemPrompt + '\n\n' + conversationText },
         });
-        if (!res.ok) throw new Error('Anthropic API ' + res.status + ': ' + (await res.text()).substring(0, 80));
-        const data = await res.json() as { content: Array<{ type: string; text: string }> };
-        reply = data.content[0].text;
+        reply = result.content;
       } else {
         throw new Error('Unknown provider: ' + model.provider);
       }

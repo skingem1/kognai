@@ -1,0 +1,56 @@
+{
+  "tasks": [
+    {
+      "id": "172-01",
+      "title": "AchiriAgent §17 fix — route through ClawRouter v2.0",
+      "description": "SURGICAL EDIT ONLY. agents/achiri/index.ts had direct fetch() to ANTHROPIC_API_URL — a §17 ClawRouter violation.\n1. Removed ANTHROPIC_API_URL constant (line 19).\n2. Added import { routeCall } from '../../scripts/lib/clawrouter-v2' after existing imports.\n3. Replaced direct fetch() block (provider === 'anthropic' branch) with routeCall({ task_type: 'conversation', tier_class: 'text', complexity: 'apex', context_tokens: 1024, constitutional_flag: true, agent_id: 'achiri', payload: { prompt: systemPrompt + conversationText } }).\n4. Removed ANTHROPIC_API_KEY guard — ClawRouter handles auth.\nNote: ScriptAgent (originally targeted) had NO LLM calls (Model: NONE, deterministic) — no fix needed there.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "priority": "critical",
+      "sprint_id": "sprint-172",
+      "deliverables": {
+        "code": ["agents/achiri/index.ts"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "File is 217 lines. FP-007 applies — manual edit only. ScriptAgent was the original target but it makes zero LLM calls (pure deterministic mapping). AchiriAgent was the actual violator found during §17 scan.",
+      "_humanResolved": true,
+      "_humanNote": "Manual surgical edit applied. 3 changes: removed ANTHROPIC_API_URL constant, added routeCall import, replaced fetch() block with routeCall({constitutional_flag:true,complexity:'apex'}). Scan also confirmed ScriptAgent has no violations (no LLM calls).",
+      "output": {
+        "files": ["agents/achiri/index.ts"],
+        "commit": "",
+        "model": "human",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 95,
+          "summary": "§17 violation in AchiriAgent resolved. Direct Anthropic API calls eliminated. ClawRouter v2.0 constitutional tier (apex) wired. ScriptAgent confirmed clean (no LLM calls).",
+          "issues": [],
+          "strengths": ["Direct API constants removed", "routeCall with constitutional_flag:true", "Conversation history correctly formatted for routeCall payload"]
+        }
+      }
+    },
+    {
+      "id": "172-02",
+      "title": "validate-sprint-172.ts — §17 compliance checks for AchiriAgent + ScriptAgent",
+      "description": "Create scripts/scs001/validate-sprint-172.ts. Checks:\n1. agents/achiri/index.ts does NOT contain 'ANTHROPIC_API_URL'\n2. agents/achiri/index.ts does NOT contain 'ANTHROPIC_API_KEY'\n3. agents/achiri/index.ts contains 'import { routeCall }'\n4. agents/achiri/index.ts contains 'constitutional_flag: true'\nAll 4 must pass. Exit 0 on pass, exit 1 on failure. Print ✅/❌ per check.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-172",
+      "deliverables": {
+        "code": ["scripts/scs001/validate-sprint-172.ts"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Pattern: mirror validate-sprint-171.ts structure exactly. Read agents/achiri/index.ts, run 4 string checks, print pass/fail, exit with correct code."
+    }
+  ],
+  "source": "human",
+  "_plan_reference": "Sprint plan 172-191 (2026-03-18). Sprint 172: §17 compliance scan. Achiri was the violator; ScriptAgent was already clean (no LLM calls). AchiriAgent fix applied manually (FP-007: file >200 lines)."
+}
