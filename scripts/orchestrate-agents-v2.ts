@@ -21,7 +21,7 @@
  *       → CEO resolves conflicts → CTO analyzes → CMO reports → CEO daily report
  */
 
-import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync } from 'fs';
+import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync, statSync } from 'fs';
 import { execSync } from 'child_process';
 import { randomUUID } from 'crypto';
 import * as https from 'https';
@@ -60,6 +60,8 @@ import { MonotaskSM } from './lib/monotask-state-machine';
 import { phantomWorkspace } from './lib/omel/phantom-workspace';
 // OMEL AMD-13: Credential Vault — controlled secret access, never logs values
 import { credentialVault } from './lib/omel/credential-vault';
+// OMEL AMD-13: Wipe Witness — detects destructive agent writes (shrink > 50%)
+import { wipeWitness, WitnessToken } from './lib/omel/wipe-witness';
 
 // V17: Sovereign mode — force all inference to local Ollama ($0 cost floor)
 const SOVEREIGN_MODE = process.argv.includes('--sovereign') || process.env.SOVEREIGN_MODE === '1';
@@ -1491,9 +1493,10 @@ class CodingAgent {
       log(c.yellow, `  [WARN] Routing log write failed: ${(err as Error).message}`);
     }
 
-    // Pre-flight: validate all deliverable files exist for non-feature tasks
+    // Pre-flight: validate all deliverable files exist for modify tasks
     // If a file doesn't exist and we're asked to modify it, skip rather than hallucinate
-    if (task.type !== 'feature' && (task as any).type !== 'docs') {
+    // 'create' tasks are exempt — the file is expected to not exist yet
+    if (task.type !== 'feature' && (task as any).type !== 'docs' && (task as any).type !== 'create') {
       const missing = deliverables.filter(f => !existsSync(f));
       if (missing.length > 0) {
         log(c.red, `  ✗ Pre-flight FAILED: File(s) not found: ${missing.join(', ')}`);
@@ -2263,9 +2266,21 @@ ONLY output the JSON array. No markdown, no explanation.`;
       }
       MonotaskSM.start(task.agent, task.id);
 
+      // OMEL AMD-13: WipeWitness — capture file state before agent writes
+      const preTokens = new Map<string, WitnessToken>();
+      for (const f of (task.deliverables?.code || [])) {
+        if (existsSync(f)) preTokens.set(f, wipeWitness.beforeWrite(f, task.agent));
+      }
+
       // Execute with rejection feedback if retrying
       const tokensBefore = _globalTokensThisRun;
       const result = await agent.execute(task, lastReview);
+
+      // OMEL AMD-13: WipeWitness — compare after write, emit shrink alert if > 50% loss
+      for (const f of result.files) {
+        const tok = preTokens.get(f);
+        if (tok) wipeWitness.afterWrite(tok, existsSync(f) ? statSync(f).size : 0);
+      }
       taskRun.tokens_total += (_globalTokensThisRun - tokensBefore);
       taskRun.model_used = result.model || taskRun.model_used;
 
