@@ -40,7 +40,7 @@
       "task_type": "code",
       "task_target": "local",
       "agent": "coder",
-      "status": "pending",
+      "status": "done",
       "priority": "critical",
       "sprint_id": "sprint-172",
       "deliverables": {
@@ -48,7 +48,21 @@
         "tests": [],
         "docs": []
       },
-      "context": "Pattern: mirror validate-sprint-171.ts structure exactly. Read agents/achiri/index.ts, run 4 string checks, print pass/fail, exit with correct code."
+      "context": "Pattern: mirror validate-sprint-171.ts structure exactly. Read agents/achiri/index.ts, run 4 string checks, print pass/fail, exit with correct code.",
+      "_humanResolved": true,
+      "_humanNote": "Validator created manually (FP-007: pre-flight workaround). Ran npx ts-node scripts/scs001/validate-sprint-172.ts → 4/4 checks passed. AchiriAgent §17 compliance confirmed.",
+      "output": {
+        "files": ["scripts/scs001/validate-sprint-172.ts"],
+        "commit": "",
+        "model": "human",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 100,
+          "summary": "4/4 §17 compliance checks passed. ANTHROPIC_API_URL removed, ANTHROPIC_API_KEY removed, routeCall import present, constitutional_flag:true enforced.",
+          "issues": [],
+          "strengths": ["All 4 checks pass", "Mirrors validate-sprint-171.ts pattern exactly", "Exit 0 confirmed"]
+        }
+      }
     }
   ],
   "source": "human",
