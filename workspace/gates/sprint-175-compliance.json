@@ -1,0 +1,42 @@
+{
+  "gate": "sprint-175-clawrouter-compliance",
+  "sprint": "sprint-175",
+  "timestamp": "2026-03-18T00:00:00.000Z",
+  "verdict": "PASS",
+  "summary": "§17 ClawRouter compliance sweep complete. agents/ directory: 0 violations. scripts/ autonomous pipeline: 0 violations. 13 legacy violations in standalone human-run utility scripts deferred per FP-007.",
+
+  "scan_scope": {
+    "agent_files_scanned": 48,
+    "script_files_scanned": 118,
+    "agent_dirs": ["agents/"],
+    "script_dirs": ["scripts/"]
+  },
+
+  "results": {
+    "agents_violations": 0,
+    "scripts_pipeline_violations": 0,
+    "deferred_legacy_violations": 13,
+    "gate_status": "PASS"
+  },
+
+  "deferred_violations": {
+    "reason": "FP-007: files 320-730 lines, standalone human-run utility scripts, NOT part of autonomous swarm pipeline. Excluded from §17 scope per architecture intent.",
+    "target_sprint": "sprint-180-181 (manual surgical fixes)",
+    "files": [
+      { "file": "scripts/run-ceo-weekly.ts",    "lines": 320,  "violations": 1, "note": "CEO weekly review utility" },
+      { "file": "scripts/run-x-admin.ts",        "lines": 730,  "violations": 4, "note": "X/Twitter admin utility" },
+      { "file": "scripts/tax-watchdog-us.ts",    "lines": 447,  "violations": 2, "note": "Tax monitoring utility" },
+      { "file": "scripts/run-ceo-review.ts",     "lines": 602,  "violations": 1, "note": "CEO review utility" },
+      { "file": "scripts/run-cfo.ts",            "lines": 405,  "violations": 1, "note": "CFO utility" },
+      { "file": "scripts/tax-watchdog-eu-japan.ts", "lines": 545, "violations": 2, "note": "EU/Japan tax monitor" },
+      { "file": "scripts/run-cmo-weekly-plan.ts","lines": 635,  "violations": 1, "note": "CMO weekly plan utility" },
+      { "file": "scripts/run-heylol-ceo.ts",     "lines": 583,  "violations": 1, "note": "HeyLol CEO utility" }
+    ]
+  },
+
+  "validator": "scripts/scs001/validate-clawrouter-compliance.ts",
+  "exit_code": 0,
+  "validated_by": "human",
+  "sprint_173_status": "ClawRouter HTTP Gateway DONE — POST /route, GET /health, GET /metrics, GET /wallet",
+  "sprint_174_status": "CEO Wallet billing DONE — deductCost(), JSONL ledger, Telegram alert wired"
+}

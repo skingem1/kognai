@@ -1,0 +1,70 @@
+{
+  "tasks": [
+    {
+      "id": "175-01",
+      "title": "§17 compliance validator — scripts/scs001/validate-clawrouter-compliance.ts",
+      "description": "Create scripts/scs001/validate-clawrouter-compliance.ts. Scans agents/ and scripts/ for §17 violations. Exits 0 if agents/ clean.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "priority": "critical",
+      "sprint_id": "sprint-175",
+      "deliverables": {
+        "code": ["scripts/scs001/validate-clawrouter-compliance.ts"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Violation patterns: ANTHROPIC_API_URL, x-api-key Anthropic header, direct fetch/axios to api.anthropic.com. Self-excludes. Legacy exempt list for FP-007 files.",
+      "_humanResolved": true,
+      "_humanNote": "Manual implementation. 130-line validator. Scans 48 agent files + 118 script files. Self-exclusion added after first run detected false positive in own source. Final run: Exit 0.",
+      "output": {
+        "files": ["scripts/scs001/validate-clawrouter-compliance.ts"],
+        "commit": "",
+        "model": "human",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 100,
+          "summary": "agents/: 0 violations. scripts/ pipeline: 0 violations. 13 legacy violations deferred (FP-007). Exit 0 confirmed.",
+          "issues": [],
+          "strengths": ["Self-exclusion for validator file", "Legacy exempt list with FP-007 rationale", "Separates pipeline violations from deferred", "Exit 0 only when agents/ + scripts/ pipeline both clean"]
+        }
+      }
+    },
+    {
+      "id": "175-02",
+      "title": "§17 gate report — workspace/gates/sprint-175-compliance.json",
+      "description": "Write gate report to workspace/gates/sprint-175-compliance.json documenting scan results.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "priority": "critical",
+      "sprint_id": "sprint-175",
+      "deliverables": {
+        "code": ["workspace/gates/sprint-175-compliance.json"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Gate: PASS. agents/ 0 violations. 13 legacy script violations deferred to sprint-180-181.",
+      "_humanResolved": true,
+      "_humanNote": "Gate report written manually. PASS verdict. 8 deferred files documented with line counts and FP-007 rationale.",
+      "output": {
+        "files": ["workspace/gates/sprint-175-compliance.json"],
+        "commit": "",
+        "model": "human",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 100,
+          "summary": "Gate: PASS. 0 active violations. 13 legacy deferred with FP-007 target sprint noted.",
+          "issues": [],
+          "strengths": ["Complete deferred file inventory", "Line counts for FP-007 triage", "Clear target sprint for manual fixes"]
+        }
+      }
+    }
+  ],
+  "source": "human",
+  "_plan_reference": "Sprint plan 172-191 (2026-03-18). Sprint 175: §17 compliance sweep. Validator created, gate PASS. Legacy violations deferred per FP-007."
+}
