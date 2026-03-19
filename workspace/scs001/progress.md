@@ -1282,3 +1282,16 @@ SESSION HANDOFF (2026-03-17, Sprints 166-170):
 - Swarm used: no (small surgical fixes + new script)
 - Issues: daily-digest.ts was missing dotenv.config() — all .env vars invisible in standalone runs
 - Timestamp: 2026-03-19T17:30:00Z
+
+## Sprint 208 — Preflight Fix (Direct Write)
+- Status: PASS
+- Commit: f97936f
+- Files modified: scripts/production-preflight.ts
+- Files created: workspace/sprints/sprint-208.json
+- Tasks completed:
+  - 208-01: Fixed publish ledger path — was data/publish-ledger.jsonl, now workspace/scs001/publish-ledger.jsonl
+  - 208-02: Fixed captioned MP4 search — looks in run-*/caption/ subdir, searches all runs (not just last 5)
+- Preflight: 17/23 passed (was 15/23). Remaining 6 are operator actions.
+- Swarm used: no (2-line surgical fixes)
+- Issues: None
+- Timestamp: 2026-03-19T17:45:00Z
