@@ -242,6 +242,43 @@ def get_env_status(project_root: Path) -> str:
         return f"[ERROR reading .env: {e}]"
 
 
+def get_existing_commands(project_root: Path) -> str:
+    """Scan Telegram bot commands.ts for already-implemented commands."""
+    commands_file = project_root / "agents" / "telegram-bot" / "commands.ts"
+    if not commands_file.exists():
+        return "commands.ts not found"
+    try:
+        content = commands_file.read_text()
+        import re as _re
+        handlers = _re.findall(r'export async function (handle\w+)', content)
+        if handlers:
+            # Convert handlePostNow → /post-now, handleGate → /gate, etc.
+            cmds = []
+            for h in handlers:
+                name = h.replace("handle", "", 1)
+                # CamelCase → kebab-case
+                kebab = _re.sub(r'([A-Z])', r'-\1', name).lstrip('-').lower()
+                cmds.append(f"/{kebab}")
+            return "Already implemented Telegram commands: " + ", ".join(cmds)
+        return "No commands found"
+    except Exception as e:
+        return f"[scan error: {e}]"
+
+
+def get_existing_scripts(project_root: Path) -> str:
+    """List key scripts that already exist."""
+    scripts_dir = project_root / "scripts" / "scs001"
+    if not scripts_dir.exists():
+        return "scripts/scs001/ not found"
+    try:
+        files = sorted(f.name for f in scripts_dir.iterdir() if f.suffix == '.ts')
+        if files:
+            return "Existing scripts in scripts/scs001/: " + ", ".join(files[:30])
+        return "No scripts found"
+    except Exception:
+        return "scan error"
+
+
 def generate_brief(project_name: str):
     """Generate the sprint brief for a project."""
     config = PROJECTS.get(project_name)
@@ -340,6 +377,11 @@ Be concise — bullet points only. No preamble.
         print("[FALLBACK] Ollama unavailable — building brief from raw files...")
         state_summary, sprint_summary = make_fallback_sections(config, git_log)
 
+    # Scan existing code to avoid recommending already-built features
+    print("[6b/6] Scanning existing commands and scripts...")
+    existing_commands = get_existing_commands(config["root"])
+    existing_scripts = get_existing_scripts(config["root"])
+
     # Extract 3: Next sprint recommendation (skip if Ollama unavailable)
     print("[Qwen 3/3] Recommending next sprint...")
     if ollama_ok:
@@ -356,6 +398,10 @@ ENV STATUS:
 
 AGENTS: {agent_list}
 
+ALREADY BUILT (DO NOT recommend re-building these):
+{existing_commands}
+{existing_scripts}
+
 Recommend the NEXT sprint. Provide:
 1. Sprint number (increment from last)
 2. Sprint name (short, descriptive)
@@ -363,6 +409,7 @@ Recommend the NEXT sprint. Provide:
 4. Acceptance criteria (how to know it's done)
 5. Any dependencies or blockers to watch
 
+IMPORTANT: Do NOT recommend building features that already exist (see ALREADY BUILT section above).
 Be specific and actionable. Reference exact file paths where possible.""", max_tokens=1500)
         if next_sprint.startswith("[ERROR"):
             next_sprint = "*(Ollama unavailable — see Recent Sprint History above and increment sprint number)*"

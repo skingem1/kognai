@@ -1,0 +1,44 @@
+{
+  "sprint_id": "sprint-206",
+  "title": "Autonomous Pipeline Reliability — Sprint Brief Accuracy + Gate Tracker Fix",
+  "description": "Sprint brief generator recommends building commands that already exist (post-now, record, update-views). Fix: add existing-commands scan to the Qwen prompt context so recommendations are accurate. Also update gate-tracker.md to mark Phase 0→Phase 1 as PASSED (Sprint 096, Mar 16). Regenerate brief after fix.",
+  "source": "autonomous",
+  "tasks": [
+    {
+      "id": "206-01",
+      "title": "Fix sprint brief generator — add existing Telegram commands to Qwen context",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "todo",
+      "priority": "high",
+      "sprint_id": "sprint-206",
+      "deliverables": { "code": ["scripts/generate-sprint-brief.py"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "206-02",
+      "title": "Update gate-tracker.md — mark Phase 0→Phase 1 as PASSED",
+      "type": "modify",
+      "task_type": "docs",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "todo",
+      "priority": "medium",
+      "sprint_id": "sprint-206",
+      "deliverables": { "code": [], "tests": [], "docs": ["docs/gate-tracker.md"] }
+    },
+    {
+      "id": "206-03",
+      "title": "Regenerate sprint brief with fixed generator",
+      "type": "modify",
+      "task_type": "ops",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "todo",
+      "priority": "medium",
+      "sprint_id": "sprint-206",
+      "deliverables": { "code": [], "tests": [], "docs": ["workspace/sprint-brief.md"] }
+    }
+  ]
+}

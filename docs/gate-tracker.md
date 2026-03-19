@@ -6,7 +6,7 @@
 
 | Gate | Target Date | Status | Result | Notes |
 |---|---|---|---|---|
-| Phase 0 → Phase 1 | Mar 13 | [ ] Pending | | |
+| Phase 0 → Phase 1 | Mar 13 | [x] PASSED | Sprint 096, Mar 16 | phase0-phase1-gate.json |
 | Phase 1.5 Decision | Apr 7 | [ ] Pending | | |
 | Phase 1 → Phase 2A | Apr 11 | [ ] Pending | | |
 | Achiri Lite Alpha Launch | Apr 25 | [ ] Pending | | |
