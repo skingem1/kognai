@@ -1489,14 +1489,16 @@ export async function handlePostNow(chatId: number, ownerChatId: string): Promis
 
   await sendMessage(chatId, lines.join('\n'));
 
-  // Sprint 226: Send actual video files via Telegram for easy save-to-phone posting
+  // Sprint 226+277: Send actual video files via Telegram with enriched captions
   for (const v of ready) {
-    const viralScore = experiments.get(v.video_id)?.partial_viral_score;
+    const exp = experiments.get(v.video_id);
     const captionParts: string[] = [];
+    if (exp?.partial_viral_score != null) captionParts.push(`Viral: ${exp.partial_viral_score}`);
+    if (exp?.speaker && exp.speaker !== 'unknown') captionParts.push(exp.speaker);
+    if (exp?.hook_formula && exp.hook_formula !== 'unknown') captionParts.push(`Hook: ${exp.hook_formula}`);
     if (v.topic) captionParts.push(v.topic.slice(0, 80));
     captionParts.push(hashtags);
     captionParts.push(`\n/record ${v.video_id} 0`);
-    if (viralScore != null) captionParts.unshift(`Viral: ${viralScore}`);
     try {
       await sendVideo(chatId, v.filePath, captionParts.join('\n'));
     } catch (err) {
@@ -2010,15 +2012,19 @@ export async function handlePostBatch(chatId: number, ownerChatId: string, text:
     }
 
     const caption = `${hookText}\n\n${hashtags}`;
-    const speakerLine = entry.speaker ? `🎙️ ${entry.speaker}` : '';
+    const batchExp = batchExperiments.get(entry.video_id);
+    const speakerName = batchExp?.speaker && batchExp.speaker !== 'unknown' ? batchExp.speaker : entry.speaker;
+    const speakerLine = speakerName ? `🎙️ ${speakerName}` : '';
+    const hookLine = batchExp?.hook_formula && batchExp.hook_formula !== 'unknown' ? `🎣 ${batchExp.hook_formula}` : '';
 
-    const viralScore = batchExperiments.get(entry.video_id)?.partial_viral_score;
+    const viralScore = batchExp?.partial_viral_score;
     const viralLine = viralScore != null ? `🧬 Viral: ${viralScore}` : '';
 
     const header = [
       `🎬 *Video ${i + 1}/${batch.length}:* \`${entry.video_id}\``,
       viralLine,
       speakerLine,
+      hookLine,
       `📁 \`${mp4}\``,
     ].filter(Boolean).join('\n');
 
@@ -2027,7 +2033,9 @@ export async function handlePostBatch(chatId: number, ownerChatId: string, text:
 
     // Sprint 226: Send actual video file via Telegram for easy save-to-phone
     try {
-      await sendVideo(chatId, mp4, `${hookText}\n${hashtags}\n\n/record ${entry.video_id} 0`);
+      const vidMeta = [hookText];
+      if (speakerName) vidMeta.push(speakerName);
+      await sendVideo(chatId, mp4, `${vidMeta.join(' — ')}\n${hashtags}\n\n/record ${entry.video_id} 0`);
     } catch (err) {
       await sendMessage(chatId, `⚠️ Could not send video: ${(err as Error).message?.slice(0, 100)}`);
     }

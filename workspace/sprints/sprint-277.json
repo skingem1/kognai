@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-277",
+  "title": "Complete enrichment — /postnow and /postbatch video captions show speaker + hook",
+  "description": "Final enrichment sprint: /postnow and /postbatch video delivery captions now include speaker name and hook formula from experiments. All operator touchpoints now show enriched content metadata.",
+  "source": "auto — completing enrichment across all operator touchpoints (273-277 series)",
+  "tasks": [
+    {
+      "id": "277-01",
+      "title": "Enrich /postnow video captions",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "complete",
+      "priority": "medium",
+      "sprint_id": "sprint-277",
+      "deliverables": { "code": ["agents/telegram-bot/commands.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "277-02",
+      "title": "Enrich /postbatch video headers + captions",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "complete",
+      "priority": "medium",
+      "sprint_id": "sprint-277",
+      "deliverables": { "code": ["agents/telegram-bot/commands.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
