@@ -2119,3 +2119,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (new file + ecosystem edit)
 - Issues: None.
 - Timestamp: 2026-03-20T00:40:00Z
+
+## Sprint 284 — Telegram /analytics — Content Performance Insights (Direct Write)
+- Status: PASS
+- Commit: d7dd1c8
+- Files created: workspace/sprints/sprint-284.json
+- Files modified: scripts/telegram-bot.ts (+123 lines)
+- Tasks completed:
+  - 284-01: /analytics command — pipeline stats (experiments/QC/avg score), top speakers by avg viral score, top hook formulas by avg viral score, posting status
+- Validation: TypeScript clean compile.
+- Swarm used: no (single file edit)
+- Issues: None.
+- Timestamp: 2026-03-20T00:50:00Z
