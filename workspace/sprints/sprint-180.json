@@ -8,7 +8,7 @@
       "task_type": "code",
       "task_target": "local",
       "agent": "coder",
-      "status": "pending",
+      "status": "done",
       "priority": "critical",
       "sprint_id": "sprint-180",
       "deliverables": {
@@ -18,7 +18,8 @@
         "tests": [],
         "docs": []
       },
-      "context": "AMD-13 OMEL Sprint 180. ContaminationGuard is the task context isolation layer. Pattern: Map<agentId, ContaminationContext> tracking which task each agent is currently running. Cross-context read = another agent trying to access a different agent's active context. JSONL logging pattern reuse from scripts/lib/omel/wipe-witness.ts (appendLog function). Singleton export pattern: export const contaminationGuard = new ContaminationGuard(). File must be <300 lines. No destructive writes to existing files. DO NOT modify orchestrate-agents-v2.ts."
+      "context": "AMD-13 OMEL Sprint 180. ContaminationGuard is the task context isolation layer. Pattern: Map<agentId, ContaminationContext> tracking which task each agent is currently running. Cross-context read = another agent trying to access a different agent's active context. JSONL logging pattern reuse from scripts/lib/omel/wipe-witness.ts (appendLog function). Singleton export pattern: export const contaminationGuard = new ContaminationGuard(). File must be <300 lines. No destructive writes to existing files. DO NOT modify orchestrate-agents-v2.ts.",
+      "_completion_note": "Done manually (FP-007: qwen3:14b failed 4 attempts — missing appendLog, wrong singleton, no cross-context detection). 105 lines. 0 TS errors. Commit 55aeb6c."
     },
     {
       "id": "180-02",
@@ -28,7 +29,7 @@
       "task_type": "code",
       "task_target": "local",
       "agent": "coder",
-      "status": "pending",
+      "status": "done",
       "priority": "high",
       "sprint_id": "sprint-180",
       "deliverables": {
@@ -38,7 +39,8 @@
         "tests": [],
         "docs": []
       },
-      "context": "AMD-13 OMEL Sprint 180. Simple barrel re-export file. All 5 OMEL singletons: phantomWorkspace, credentialVault, wipeWitness, humanBrake, contaminationGuard. Also re-export key types: WitnessToken, HighRiskOp, ApprovalResult, ContaminationContext. This is a new file creation only — do not modify any existing files."
+      "context": "AMD-13 OMEL Sprint 180. Simple barrel re-export file. All 5 OMEL singletons: phantomWorkspace, credentialVault, wipeWitness, humanBrake, contaminationGuard. Also re-export key types: WitnessToken, HighRiskOp, ApprovalResult, ContaminationContext. This is a new file creation only — do not modify any existing files.",
+      "_completion_note": "Done manually. 10 lines. 0 TS errors. Commit 55aeb6c."
     },
     {
       "id": "180-03",
@@ -48,7 +50,7 @@
       "task_type": "code",
       "task_target": "local",
       "agent": "coder",
-      "status": "pending",
+      "status": "done",
       "priority": "high",
       "sprint_id": "sprint-180",
       "deliverables": {
@@ -58,7 +60,8 @@
         "tests": [],
         "docs": []
       },
-      "context": "AMD-13 OMEL Sprint 180. Gate validator for OMEL Phase 1 completion. Checks: (1) contaminationGuard non-null, (2) humanBrake non-null, (3) wipeWitness non-null, (4) credentialVault non-null, (5) phantomWorkspace non-null, (6) logs/omel/ directory exists. Output workspace/gates/omel-phase1-gate.json. Pattern from scripts/validate-sprint-171.ts if it exists. Keep file <150 lines."
+      "context": "AMD-13 OMEL Sprint 180. Gate validator for OMEL Phase 1 completion. Checks: (1) contaminationGuard non-null, (2) humanBrake non-null, (3) wipeWitness non-null, (4) credentialVault non-null, (5) phantomWorkspace non-null, (6) logs/omel/ directory exists. Output workspace/gates/omel-phase1-gate.json. Pattern from scripts/validate-sprint-171.ts if it exists. Keep file <150 lines.",
+      "_completion_note": "Done manually. 7/7 checks PASS. workspace/gates/omel-phase1-gate.json written. Exit 0. 90 lines. Commit 55aeb6c."
     }
   ],
   "source": "human",
