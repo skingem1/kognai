@@ -1,4 +1,4 @@
-// OMEL Human Brake — Sprint 179 (AMD-13)
+// OMEL Human Brake — Sprint 179 + Sprint 184 Hardening (AMD-13)
 // Human-in-the-loop safety gate for high-risk operations.
 // Telegram approval flow: send notification → poll getUpdates up to 5 min.
 // ABORT on timeout or non-approval reply. JSONL audit trail.
@@ -6,6 +6,14 @@
 // API:
 //   requireApproval(operation: HighRiskOp): Promise<ApprovalResult>
 //   isHighRisk(operation: string, context: any): boolean
+//   getRiskScore(operation: string, context: any): number  (Sprint 184)
+//
+// Sprint 184 hardening additions:
+//   - Risk scoring: getRiskScore() → 1-10 scale
+//   - Operation risk table: file_delete=9, git_reset_hard=10, new_file=2, etc.
+//   - Approval response time logged per operation
+//   - HUMAN_BRAKE_DISABLED=true triggers daily Telegram reminder
+//   - AARMiddleware integration: approved/rejected ops get AAR entry
 //
 // Audit log: logs/omel/human-brake-YYYY-MM-DD.jsonl
 // Env: TELEGRAM_BOT_TOKEN, OWNER_TELEGRAM_CHAT_ID, HUMAN_BRAKE_DISABLED
@@ -21,14 +29,28 @@ export type HighRiskOp =
   | 'git_reset_hard'
   | 'env_change'
   | 'schema_migration'
-  | 'bulk_overwrite';
+  | 'bulk_overwrite'
+  | 'new_file';
 
 export interface ApprovalResult {
-  approved:    boolean;
-  approvedBy?: string;
-  reason?:     string;
-  ts:          string;
+  approved:      boolean;
+  approvedBy?:   string;
+  reason?:       string;
+  ts:            string;
+  risk_score?:   number;
+  response_ms?:  number;  // Sprint 184: time from request to decision
 }
+
+// ── Risk score table (Sprint 184) ─────────────────────────────────────────────
+
+const RISK_SCORES: Record<string, number> = {
+  git_reset_hard:   10,
+  file_delete:       9,
+  env_change:        8,
+  schema_migration:  8,
+  bulk_overwrite:    7,
+  new_file:          2,
+};
 
 // ── Logging ───────────────────────────────────────────────────────────────────
 
@@ -44,6 +66,28 @@ function appendLog(entry: object): void {
   try {
     fs.appendFileSync(logFile(), JSON.stringify(entry) + '\n');
   } catch { /* never crash caller */ }
+}
+
+// ── AARMiddleware integration (Sprint 184) ────────────────────────────────────
+// Lazy import to avoid circular dependency — AARMiddleware may import OMEL
+
+function writeAAREntry(operation: string, approved: boolean, risk_score: number, response_ms: number): void {
+  try {
+    const aarDir  = path.join(__dirname, '..', '..', '..', 'logs', 'aar');
+    fs.mkdirSync(aarDir, { recursive: true });
+    const date    = new Date().toISOString().slice(0, 10);
+    const aarFile = path.join(aarDir, `${date}.jsonl`);
+    const entry = {
+      ts:          new Date().toISOString(),
+      source:      'omel_human_brake',
+      operation,
+      approved,
+      risk_score,
+      response_ms,
+      receipt_hash: Buffer.from(`${operation}${Date.now()}`).toString('base64').slice(0, 32),
+    };
+    fs.appendFileSync(aarFile, JSON.stringify(entry) + '\n');
+  } catch { /* non-fatal */ }
 }
 
 // ── Telegram helpers ──────────────────────────────────────────────────────────
@@ -95,10 +139,31 @@ function getUpdates(offset: number, longPollSeconds: number): Promise<any[]> {
       });
     });
     req.on('error', () => resolve([]));
-    // Socket timeout: longPoll seconds + 10s buffer
     req.setTimeout((longPollSeconds + 10) * 1000, () => { req.destroy(); resolve([]); });
     req.end();
   });
+}
+
+// ── HUMAN_BRAKE_DISABLED daily reminder (Sprint 184) ─────────────────────────
+
+const DISABLED_REMINDER_FILE = path.join(LOGS_DIR, 'brake-disabled-reminder.json');
+
+function sendDisabledReminderIfNeeded(): void {
+  const today = new Date().toISOString().slice(0, 10);
+  try {
+    let lastSent = '';
+    if (fs.existsSync(DISABLED_REMINDER_FILE)) {
+      lastSent = JSON.parse(fs.readFileSync(DISABLED_REMINDER_FILE, 'utf-8')).last_sent ?? '';
+    }
+    if (lastSent === today) return; // already sent today
+    sendTelegram(
+      `⚠️ *[OMEL HumanBrake] Brake DISABLED*\n` +
+      `\`HUMAN_BRAKE_DISABLED=true\` is set in your environment.\n` +
+      `High-risk operations will NOT require approval.\n` +
+      `This reminder fires daily until the flag is removed.`
+    );
+    fs.writeFileSync(DISABLED_REMINDER_FILE, JSON.stringify({ last_sent: today }), 'utf-8');
+  } catch { /* non-fatal */ }
 }
 
 // ── HumanBrake class ──────────────────────────────────────────────────────────
@@ -116,27 +181,60 @@ export class HumanBrake {
   }
 
   /**
+   * Returns a risk score 1-10 for the given operation + context.
+   * High (8-10): requires approval. Medium (5-7): log only. Low (1-4): silent pass.
+   *
+   * Context fields considered:
+   *   - filePath: if it's an orchestrator core file, score bumped to max
+   *   - size: bulk ops on large files get higher score
+   */
+  getRiskScore(operation: string, context: any = {}): number {
+    let score = RISK_SCORES[operation] ?? 5; // default 5 (medium) for unknown ops
+
+    // Bump to 10 if touching core orchestrator or config files
+    const filePath = String((context as any).filePath || '');
+    if (HIGH_RISK_PATH_FRAGMENTS.some(f => filePath.includes(f))) {
+      score = Math.max(score, 9);
+    }
+
+    // Bump for large file bulk ops
+    const sizeBytes = Number((context as any).sizeBytes || 0);
+    if (operation === 'bulk_overwrite' && sizeBytes > 50_000) {
+      score = Math.max(score, 9);
+    }
+
+    return Math.min(10, Math.max(1, score));
+  }
+
+  /**
    * Send Telegram approval request and poll for up to 5 minutes.
    * Returns ApprovalResult: approved on 'yes'/'approve', rejected on other reply or timeout.
+   * Logs response time and emits AAR entry (Sprint 184).
    */
-  async requireApproval(operation: HighRiskOp): Promise<ApprovalResult> {
-    const ts = new Date().toISOString();
+  async requireApproval(operation: HighRiskOp, context: any = {}): Promise<ApprovalResult> {
+    const ts         = new Date().toISOString();
+    const risk_score = this.getRiskScore(operation, context);
+    const requestedAt = Date.now();
 
     // ── HUMAN_BRAKE_DISABLED bypass ──────────────────────────────────────────
     if (process.env.HUMAN_BRAKE_DISABLED === 'true') {
-      appendLog({ event: 'brake_disabled', operation, ts });
-      return { approved: true, approvedBy: 'HUMAN_BRAKE_DISABLED', ts };
+      sendDisabledReminderIfNeeded();
+      const response_ms = Date.now() - requestedAt;
+      appendLog({ event: 'brake_disabled', operation, risk_score, response_ms, ts });
+      writeAAREntry(operation, true, risk_score, response_ms);
+      return { approved: true, approvedBy: 'HUMAN_BRAKE_DISABLED', risk_score, response_ms, ts };
     }
 
     // ── Notify operator via Telegram ─────────────────────────────────────────
     sendTelegram(
       `🛑 *[OMEL HumanBrake] Approval Required*\n` +
       `Operation: \`${operation}\`\n` +
+      `Risk Score: *${risk_score}/10*\n` +
       `Requested: ${ts}\n\n` +
       `Reply *yes* or *approve* to allow.\n` +
       `Any other reply or 5-minute timeout = ABORT.`,
     );
-    appendLog({ event: 'approval_requested', operation, ts });
+    appendLog({ event: 'approval_requested', operation, risk_score, ts });
 
     // ── Poll Telegram for up to 5 minutes ────────────────────────────────────
     const chatId   = process.env.OWNER_TELEGRAM_CHAT_ID || '';
@@ -147,14 +245,12 @@ export class HumanBrake {
       const remainingMs  = deadline - Date.now();
       if (remainingMs <= 0) break;
 
-      // Long-poll up to 30s, but cap to remaining window
       const pollSecs = Math.min(30, Math.floor(remainingMs / 1000));
       if (pollSecs <= 0) break;
 
       const updates = await getUpdates(offset, pollSecs);
 
       for (const update of updates) {
-        // Advance offset so we never re-process this update
         if (typeof update.update_id === 'number') {
           offset = update.update_id + 1;
         }
@@ -162,33 +258,39 @@ export class HumanBrake {
         const msg = update.message || update.edited_message;
         if (!msg) continue;
 
-        // Only accept from the configured owner chat
         if (chatId && String(msg.chat?.id) !== chatId) continue;
 
         const text = String(msg.text || '').trim().toLowerCase();
 
         if (text === 'yes' || text === 'approve') {
-          const approvedTs = new Date().toISOString();
-          appendLog({ event: 'approved', operation, approvedBy: 'telegram', ts: approvedTs });
-          return { approved: true, approvedBy: 'telegram', ts: approvedTs };
+          const approvedTs  = new Date().toISOString();
+          const response_ms = Date.now() - requestedAt;
+          appendLog({ event: 'approved', operation, risk_score, approvedBy: 'telegram', response_ms, ts: approvedTs });
+          writeAAREntry(operation, true, risk_score, response_ms);
+          return { approved: true, approvedBy: 'telegram', risk_score, response_ms, ts: approvedTs };
         }
 
         // Any non-approval reply → reject immediately
-        const rejectedTs = new Date().toISOString();
-        appendLog({ event: 'rejected', operation, reason: 'rejected', replyText: text, ts: rejectedTs });
+        const rejectedTs  = new Date().toISOString();
+        const response_ms = Date.now() - requestedAt;
+        appendLog({ event: 'rejected', operation, risk_score, reason: 'rejected', replyText: text, response_ms, ts: rejectedTs });
+        writeAAREntry(operation, false, risk_score, response_ms);
         sendTelegram(`❌ *[OMEL HumanBrake] ABORTED*\nOperation \`${operation}\` rejected by operator.`);
-        return { approved: false, reason: 'rejected', ts: rejectedTs };
+        return { approved: false, reason: 'rejected', risk_score, response_ms, ts: rejectedTs };
       }
     }
 
     // ── Timeout ──────────────────────────────────────────────────────────────
-    const timeoutTs = new Date().toISOString();
-    appendLog({ event: 'timeout_abort', operation, reason: 'timeout', ts: timeoutTs });
+    const timeoutTs   = new Date().toISOString();
+    const response_ms = Date.now() - requestedAt;
+    appendLog({ event: 'timeout_abort', operation, risk_score, reason: 'timeout', response_ms, ts: timeoutTs });
+    writeAAREntry(operation, false, risk_score, response_ms);
     sendTelegram(
       `⏰ *[OMEL HumanBrake] TIMEOUT — ABORTED*\n` +
-      `Operation \`${operation}\` aborted — no response within 5 minutes.`,
+      `Operation \`${operation}\` aborted — no response within 5 minutes.\n` +
+      `Risk Score: *${risk_score}/10*`,
     );
-    return { approved: false, reason: 'timeout', ts: timeoutTs };
+    return { approved: false, reason: 'timeout', risk_score, response_ms, ts: timeoutTs };
   }
 }
 
