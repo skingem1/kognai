@@ -1,0 +1,44 @@
+{
+  "sprint_id": "sprint-249",
+  "title": "LLM Script Rewriting — replace deterministic templates with Claude rewrite",
+  "description": "Add LLM-powered script rewriting to Script Agent. Takes deterministic template output + transcript text, sends to Claude Sonnet for creative rewrite. Makes each video UNIQUE instead of formulaic. Fallback: deterministic output if LLM unavailable.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "249-01",
+      "title": "Create LLM script rewriter module — Claude Sonnet rewrite engine",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-249",
+      "deliverables": { "code": ["scripts/scs001/llm-script-rewriter.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "249-02",
+      "title": "Wire LLM rewriter into ScriptAgent — async rewrite mode with fallback",
+      "type": "enhancement",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-249",
+      "deliverables": { "code": ["agents/scs001-script/index.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "249-03",
+      "title": "Validate LLM rewriter loads and dry-run works",
+      "type": "test",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-249",
+      "deliverables": { "code": ["scripts/scs001/validate-llm-rewriter.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

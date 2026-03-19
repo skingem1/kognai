@@ -1,12 +1,13 @@
 // SCS-001 — Script Agent (Bridge: Insight → Editing)
 // Consumes: InsightBrief[] from Insight Agent
 // Produces: ScriptBundle[] (per contracts/scs-001/script-bundle-v1.json)
-// Model: NONE — pure deterministic mapping, no LLM calls
+// Model: Deterministic base + optional LLM rewrite (qwen3:14b local / Claude Sonnet cloud)
 // Maps editorial content to 6-segment video timeline + pattern interrupts
-// §17 Compliance: EXEMPT — zero LLM calls. No routeCall() needed. Verified Sprint 172 (2026-03-19).
+// Sprint 249: Added LLM rewrite mode — set LLM_REWRITE=1 to enable creative rewriting
 
 import { randomUUID } from 'crypto';
 import type { InsightBrief } from '../scs001-insight/index';
+import { rewriteScript, type RewriteResult } from '../../scripts/scs001/llm-script-rewriter';
 
 export interface ScriptSegment {
   segment_name: 'hook' | 'context' | 'clip' | 'commentary' | 'insight' | 'loop';
@@ -165,9 +166,16 @@ function buildPatternInterrupts(totalDuration: number): PatternInterrupt[] {
   return interrupts;
 }
 
+const LLM_REWRITE = process.env.LLM_REWRITE === '1' || process.env.LLM_REWRITE === 'true';
+const LLM_CLOUD   = process.env.LLM_REWRITE_CLOUD === '1' || process.env.LLM_REWRITE_CLOUD === 'true';
+
 export class ScriptAgent {
+  /**
+   * Synchronous deterministic mode — no LLM calls.
+   * Use runAsync() for LLM-enhanced rewriting.
+   */
   run(briefs: InsightBrief[]): ScriptBundle[] {
-    console.log('[ScriptAgent] ' + briefs.length + ' InsightBriefs in');
+    console.log('[ScriptAgent] ' + briefs.length + ' InsightBriefs in (deterministic mode)');
 
     const bundles: ScriptBundle[] = [];
     for (const brief of briefs) {
@@ -181,6 +189,54 @@ export class ScriptAgent {
     }
 
     console.log('[ScriptAgent] ' + bundles.length + '/' + briefs.length + ' ScriptBundles generated');
+    return bundles;
+  }
+
+  /**
+   * Async mode with LLM rewriting.
+   * 1. Build deterministic base script
+   * 2. Send to LLM for creative rewriting (if LLM_REWRITE=1)
+   * 3. Fallback to deterministic if LLM fails
+   */
+  async runAsync(
+    briefs: InsightBrief[],
+    transcripts: Map<string, string> = new Map(),
+    options: { useCloud?: boolean; dryRun?: boolean } = {}
+  ): Promise<ScriptBundle[]> {
+    const useCloud = options.useCloud ?? LLM_CLOUD;
+    const dryRun = options.dryRun ?? false;
+    const enableRewrite = LLM_REWRITE || options.useCloud !== undefined;
+
+    console.log(`[ScriptAgent] ${briefs.length} InsightBriefs in (${enableRewrite ? 'LLM rewrite' : 'deterministic'} mode)`);
+
+    const bundles: ScriptBundle[] = [];
+    let rewriteCount = 0;
+
+    for (const brief of briefs) {
+      try {
+        // Step 1: deterministic base
+        const base = this.buildBundle(brief);
+
+        if (enableRewrite && !dryRun) {
+          // Step 2: LLM rewrite
+          const transcript = transcripts.get(brief.clip_id);
+          const result: RewriteResult = await rewriteScript(
+            { bundle: base, transcript },
+            useCloud
+          );
+          bundles.push(result.bundle);
+          if (result.rewritten) rewriteCount++;
+          console.log(`[ScriptAgent] ${result.rewritten ? '✓ LLM' : '○ base'} ${brief.insight_id} → ${result.model_used} (${result.latency_ms}ms, $${result.cost_usd})`);
+        } else {
+          bundles.push(base);
+          console.log('[ScriptAgent] \u2713 ' + brief.insight_id + ' → ' + base.segments.length + ' segments');
+        }
+      } catch (err) {
+        console.warn('[ScriptAgent] \u2717 ' + brief.insight_id + ' failed: ' + (err as Error).message);
+      }
+    }
+
+    console.log(`[ScriptAgent] ${bundles.length}/${briefs.length} ScriptBundles (${rewriteCount} LLM-rewritten)`);
     return bundles;
   }
 
