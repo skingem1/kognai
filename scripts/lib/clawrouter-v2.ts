@@ -246,6 +246,56 @@ async function callOllamaLocal(model: string, prompt: string, systemPrompt?: str
   };
 }
 
+// ── Anthropic Direct API Fallback (when OpenClaw gateway is unavailable) ────────
+
+/**
+ * Call Anthropic API directly — fallback when OpenClaw gateway returns non-200/non-402.
+ * Uses ANTHROPIC_API_KEY from .env. Only called for anthropic/* models.
+ * Anthropic Messages API: https://docs.anthropic.com/en/api/messages
+ */
+async function callAnthropicDirect(
+  model: string,
+  messages: Array<{ role: string; content: string }>,
+  maxTokens: number = 4096
+): Promise<{ content: string; input_tokens: number; output_tokens: number; cost_usd: number }> {
+  const apiKey = process.env.ANTHROPIC_API_KEY || '';
+  if (!apiKey) throw new Error('ANTHROPIC_API_KEY not set — cannot call Anthropic API directly');
+
+  // Anthropic Messages API: system message is top-level, not in messages array
+  const systemMsg = messages.find(m => m.role === 'system')?.content;
+  const userMsgs  = messages.filter(m => m.role !== 'system');
+
+  const bodyObj: Record<string, any> = {
+    model,
+    max_tokens: maxTokens,
+    messages: userMsgs,
+  };
+  if (systemMsg) bodyObj.system = systemMsg;
+
+  const body = JSON.stringify(bodyObj);
+  const res = await httpRequest(
+    'https://api.anthropic.com/v1/messages',
+    body, 'POST',
+    {
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01',
+    },
+    CLOUD_TIMEOUT_MS
+  );
+
+  if (res.status !== 200) {
+    throw new Error(`Anthropic direct API returned ${res.status}: ${res.data.slice(0, 300)}`);
+  }
+
+  const json = JSON.parse(res.data);
+  return {
+    content:       json.content?.[0]?.text || '',
+    input_tokens:  json.usage?.input_tokens  || 0,
+    output_tokens: json.usage?.output_tokens || 0,
+    cost_usd:      0,   // billing handled outside (no gateway metering on direct path)
+  };
+}
+
 // ── x402 Payment Signing (EIP-3009 TransferWithAuthorization) ─────────────────
 
 /**
@@ -372,6 +422,13 @@ async function callCloudGateway(model: string, messages: Array<{ role: string; c
   }
 
   if (res.status !== 200) {
+    // Fallback: if ANTHROPIC_API_KEY is set and this is an Anthropic model, bypass gateway
+    const anthropicKey = process.env.ANTHROPIC_API_KEY || '';
+    if (anthropicKey && model.startsWith('anthropic/')) {
+      const directModel = model.replace('anthropic/', '');
+      console.warn(`[ClawRouter] Gateway ${res.status} — falling back to direct Anthropic API (${directModel})`);
+      return callAnthropicDirect(directModel, messages, maxTokens);
+    }
     throw new Error(`ClawRouter gateway returned ${res.status}: ${res.data.slice(0, 300)}`);
   }
 

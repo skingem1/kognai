@@ -1,0 +1,46 @@
+{
+  "tasks": [
+    {
+      "id": "179-01",
+      "title": "OMEL Human Brake module — scripts/lib/omel/human-brake.ts",
+      "description": "Create scripts/lib/omel/human-brake.ts. HumanBrake class with: (1) requireApproval(operation: HighRiskOp): Promise<ApprovalResult> — sends Telegram message to OWNER_TELEGRAM_CHAT_ID describing the operation, polls the Telegram Bot API (getUpdates) for up to 5 minutes waiting for a reply containing 'yes' or 'approve' (case-insensitive), on approval returns {approved: true, approvedBy: 'telegram', ts}; on timeout or any other reply returns {approved: false, reason: 'timeout'|'rejected', ts} and logs an ABORT event. (2) isHighRisk(operation: string, context: any): boolean — returns true if operation is one of the HighRiskOp types or if context.filePath includes 'orchestrate-agents' or 'clawrouter' or '.env'. (3) HUMAN_BRAKE_DISABLED=true env var bypass — if set, requireApproval() returns {approved: true, approvedBy: 'HUMAN_BRAKE_DISABLED', ts} and logs a disable event. Audit log to logs/omel/human-brake-YYYY-MM-DD.jsonl. Export singleton humanBrake. Interfaces: HighRiskOp = 'file_delete'|'git_reset_hard'|'env_change'|'schema_migration'|'bulk_overwrite'. ApprovalResult = {approved: boolean; approvedBy?: string; reason?: string; ts: string}. File must be <300 lines.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-179",
+      "deliverables": {
+        "code": [
+          "scripts/lib/omel/human-brake.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "context": "AMD-13 OMEL Sprint 179. HumanBrake is the human-in-the-loop safety gate. Pattern for Telegram polling: use https.request to GET api.telegram.org/bot${TOKEN}/getUpdates?offset=${offset}&timeout=30 (long-poll), check for messages containing 'yes'/'approve' in the last 5 minutes. TELEGRAM_BOT_TOKEN and OWNER_TELEGRAM_CHAT_ID from process.env. Telegram send pattern (fire-and-forget) reuse from scripts/lib/ceo-wallet.ts. JSONL logging pattern reuse from scripts/lib/omel/wipe-witness.ts. Singleton export pattern: export const humanBrake = new HumanBrake(). File must be <300 lines. No destructive writes to existing files."
+    },
+    {
+      "id": "179-02",
+      "title": "Wire humanBrake into orchestrator — scripts/orchestrate-agents-v2.ts",
+      "description": "FP-007: orchestrate-agents-v2.ts is ~3000 lines — SURGICAL ONLY, no full rewrite. 3 targeted edits: (1) Add humanBrake import after wipeWitness import (line ~65). (2) Add humanBrake.isHighRisk() + requireApproval() check before agent.execute() for bulk_overwrite operations (when task.type === 'modify' and deliverables.code has 1+ files). (3) If humanBrake.requireApproval() returns {approved: false}, log and skip task execution.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-179",
+      "deliverables": {
+        "code": [
+          "scripts/orchestrate-agents-v2.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "context": "FP-007: orchestrate-agents-v2.ts is ~3000 lines. SURGICAL ONLY — 3 targeted edits near executeTask() (line ~2203). Do NOT rewrite the file. Import already has wipeWitness at line ~64 — add humanBrake import immediately after on line ~66. humanBrake import: import { humanBrake } from './lib/omel/human-brake'. Before execute(): check if task.type === 'modify' && humanBrake.isHighRisk('bulk_overwrite', {filePath: task.deliverables?.code?.[0] || ''}), if true await humanBrake.requireApproval('bulk_overwrite'), if !result.approved skip execute and mark task SKIPPED."
+    }
+  ],
+  "source": "human",
+  "_plan_reference": "Sprint plan 172-191 (2026-03-18). Sprint 179: OMEL Human Brake. Telegram approval flow for high-risk operations. 5-minute timeout. ABORT on non-approval. JSONL audit trail. Wire into orchestrator executeTask()."
+}
