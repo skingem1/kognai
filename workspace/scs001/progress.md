@@ -2252,3 +2252,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (1-line data quality fix)
 - Issues: None.
 - Timestamp: 2026-03-20T03:22:00Z
+
+## Sprint 295 — Fix Smoke Test Viral Score Check (Direct Write)
+- Status: PASS
+- Commit: ccf32cd
+- Files created: workspace/sprints/sprint-295.json
+- Files modified: scripts/smoke-test-pipeline.ts, reports/smoke-test-latest.json
+- Tasks completed:
+  - 295-01: Fixed false "0 clips have viral scores" WARNING — smoke test was checking 3-clip-detection stage (no scores there) instead of using summary.viral count (set in 9-experiment stage). Now correctly shows "Viral: 51 clips scored".
+- Validation: Full pipeline smoke test — 15 stages, 0 errors, 17 videos, 51 viral scored. No false warnings.
+- Swarm used: no (1-line fix)
+- Issues: None.
+- Timestamp: 2026-03-20T03:35:00Z
