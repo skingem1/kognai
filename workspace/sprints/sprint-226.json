@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-226",
+  "title": "Video Delivery — /postnow sends actual videos via Telegram",
+  "description": "/postnow now sends the top 3 ready-to-post videos as actual video files in Telegram chat, with captions and hashtags. Operator saves to phone and uploads to TikTok directly — no file hunting. Critical for 30-post Phase 1.5 gate.",
+  "source": "autonomous",
+  "tasks": [
+    {
+      "id": "226-01",
+      "title": "Update handlePostNow to send video files via Telegram sendVideo",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-226",
+      "deliverables": { "code": ["agents/telegram-bot/commands.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

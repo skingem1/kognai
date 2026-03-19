@@ -97,31 +97,31 @@ export async function handleHelp(chatId: number): Promise<void> {
     '/status — Latest SCS-001 pipeline run',
     '/stats — Pipeline statistics',
     '/subscribe — Subscribe to TikTok Agent ($19/$49/mo)',
-    '/stripe-status — Stripe go-live checklist (owner)',
-    '/tiktok-status — TikTok live mode readiness (owner)',
+    '/stripestatus — Stripe go-live checklist (owner)',
+    '/tiktokstatus — TikTok live mode readiness (owner)',
     '/gate — Phase 1.5 gate review (Apr 7 kill switch)',
-    '/post-reminder — Apr 7 gate progress + posting workflow (owner)',
+    '/postreminder — Apr 7 gate progress + posting workflow (owner)',
     '/review — Top-3 QC-passed videos for manual posting (owner)',
     '/record <id> <views> [title] — Record posted video to gate tracker (owner)',
-    '/update-views <id> <views> — Update view count on recorded post (owner)',
+    '/updateviews <id> <views> — Update view count on recorded post (owner)',
     '/queue — Posting queue: unposted videos + daily pace (owner)',
-    '/post-now — Find videos ready to post with file path + metadata (owner)',
-    '/post-batch [N] — Batch post N videos with file paths + captions (default 5, owner)',
+    '/postnow — Find videos ready to post with file path + metadata (owner)',
+    '/postbatch [N] — Batch post N videos with file paths + captions (default 5, owner)',
     '/caption [video_id] — Ready-to-paste TikTok caption for a video (owner)',
     '/pace — Posting pace vs Apr 7 gate target (owner)',
     '/today — Morning cockpit: target + next video + trending topics (owner)',
     '/viral — Top 10 trending topics from pipeline (owner)',
-    '/viral-stats — Viral score summary: avg/max/top-3 (owner)',
-    '/send-video <id> — Send captioned video file to Telegram for manual posting (owner)',
+    '/viralstats — Viral score summary: avg/max/top-3 (owner)',
+    '/sendvideo <id> — Send captioned video file to Telegram for manual posting (owner)',
     '/calendar — Today\'s posting schedule from content calendar (owner)',
     '',
     '🤖 *Achiri AI Companion*',
     '/achiri <msg> — Chat with Achiri (free tier, Darija/Arabic/French)',
     '/waitlist — Join Achiri alpha waitlist (launches Apr 25)',
-    '/invite-achiri <id> — Invite user to Achiri alpha whitelist (owner)',
-    '/deploy-status — Achiri alpha deploy checklist (owner)',
-    '/achiri-health — Achiri server status (owner)',
-    '/pm2-status — All PM2 processes: status, uptime, restarts (owner)',
+    '/inviteachiri <id> — Invite user to Achiri alpha whitelist (owner)',
+    '/deploystatus — Achiri alpha deploy checklist (owner)',
+    '/achirihealth — Achiri server status (owner)',
+    '/pm2status — All PM2 processes: status, uptime, restarts (owner)',
     '/health — Full system health check: env, gate, PM2, Achiri, pipeline (owner)',
     '/preflight — Production go-live checklist with operator action items (owner)',
     '',
@@ -419,7 +419,7 @@ export async function handleGate(chatId: number): Promise<void> {
     if (!passesViews) needed.push(`${500 - totalViews} more views`);
     lines.push('', `Need: ${needed.join(' + ')}`);
     if (queueCount > 0) {
-      lines.push('Use /post-batch to see videos ready to post');
+      lines.push('Use /postbatch to see videos ready to post');
     }
     lines.push('Use /record <id> <views> to log a posted video');
   }
@@ -634,7 +634,7 @@ export async function handleAchiriHealth(chatId: number, ownerChatId: string): P
 }
 
 // ── Achiri alpha invite — Sprint 146 ──────────────────────────────────────────
-// Owner-only: /invite-achiri <chat_id> — adds user to file-based alpha whitelist.
+// Owner-only: /inviteachiri <chat_id> — adds user to file-based alpha whitelist.
 // File: workspace/achiri/alpha-whitelist.jsonl (read at runtime by checkAlphaAccess).
 export async function handleInviteAchiri(chatId: number, ownerChatId: string, text: string): Promise<void> {
   if (String(chatId) !== ownerChatId) {
@@ -646,7 +646,7 @@ export async function handleInviteAchiri(chatId: number, ownerChatId: string, te
   const targetId = args[1];
 
   if (!targetId || !/^\d+$/.test(targetId)) {
-    await sendMessage(chatId, '⚠️ Usage: /invite-achiri <chat_id>\nExample: /invite-achiri 123456789');
+    await sendMessage(chatId, '⚠️ Usage: /inviteachiri <chat_id>\nExample: /inviteachiri 123456789');
     return;
   }
 
@@ -967,7 +967,7 @@ export async function handleRecord(chatId: number, ownerChatId: string, text: st
 }
 
 // ── Update views — Sprint 144 ──────────────────────────────────────────────────
-// Owner-only: /update-views <video_id> <views>
+// Owner-only: /updateviews <video_id> <views>
 // Updates views on an existing manual-posts.jsonl entry (e.g. real count after 24h).
 export async function handleUpdateViews(chatId: number, ownerChatId: string, text: string): Promise<void> {
   if (String(chatId) !== ownerChatId) {
@@ -981,9 +981,9 @@ export async function handleUpdateViews(chatId: number, ownerChatId: string, tex
 
   if (!videoId || isNaN(views)) {
     await sendMessage(chatId, [
-      '⚠️ Usage: `/update-views <video_id> <views>`',
+      '⚠️ Usage: `/updateviews <video_id> <views>`',
       '',
-      'Example: `/update-views abc123def456 387`',
+      'Example: `/updateviews abc123def456 387`',
     ].join('\n'));
     return;
   }
@@ -1011,7 +1011,7 @@ export async function handleUpdateViews(chatId: number, ownerChatId: string, tex
   });
 
   if (!found) {
-    await sendMessage(chatId, `⚠️ \`${videoId}\` not found in manual-posts.jsonl. Check /post-reminder for recorded IDs.`);
+    await sendMessage(chatId, `⚠️ \`${videoId}\` not found in manual-posts.jsonl. Check /postreminder for recorded IDs.`);
     return;
   }
 
@@ -1133,7 +1133,7 @@ export async function handleDeployStatus(chatId: number, ownerChatId: string): P
   if (!urlIsRemote) remaining.push('Set ACHIRI_BASE_URL=http://65.108.90.178/achiri in .env');
   if (healthLine.startsWith('❌')) remaining.push('Run ./scripts/deploy-achiri.sh (or pm2 start --only achiri-api on Hetzner)');
   if (!alphaOnly) remaining.push('When ready: set ACHIRI_ALPHA_ONLY=true in .env, pm2 restart telegram-bot');
-  if (invitedCount === 0) remaining.push('Invite alpha users: /invite-achiri <chat_id>');
+  if (invitedCount === 0) remaining.push('Invite alpha users: /inviteachiri <chat_id>');
 
   if (remaining.length > 0) {
     lines.push('', '📌 *Remaining steps:*');
@@ -1148,7 +1148,7 @@ export async function handleDeployStatus(chatId: number, ownerChatId: string): P
   await sendMessage(chatId, lines.join('\n'));
 }
 
-// ── Sprint 153: /tiktok-status — TikTok live mode readiness ──────────────────
+// ── Sprint 153: /tiktokstatus — TikTok live mode readiness ──────────────────
 
 export async function handleTiktokStatus(chatId: number, ownerChatId: string): Promise<void> {
   if (String(chatId) !== String(ownerChatId)) {
@@ -1262,7 +1262,7 @@ export async function handleQueue(chatId: number, ownerChatId: string): Promise<
     const vsTag = vs != null ? ` 🧬 ${vs}` : '';
     lines.push(``, `${i + 1}. \`${e.video_id}\`${vsTag}`);
     lines.push(`   → \`/record ${e.video_id} 0\``);
-    lines.push(`   _(update views later: /update-views ${e.video_id} <views>)_`);
+    lines.push(`   _(update views later: /updateviews ${e.video_id} <views>)_`);
   });
 
   if (postsNeeded === 0) {
@@ -1272,7 +1272,7 @@ export async function handleQueue(chatId: number, ownerChatId: string): Promise<
   await sendMessage(chatId, lines.join('\n'));
 }
 
-// ── Sprint 149: /stripe-status — Stripe go-live checklist ────────────────────
+// ── Sprint 149: /stripestatus — Stripe go-live checklist ────────────────────
 
 export async function handleStripeStatus(chatId: number, ownerChatId: string): Promise<void> {
   if (String(chatId) !== String(ownerChatId)) {
@@ -1338,7 +1338,7 @@ export async function handleStripeStatus(chatId: number, ownerChatId: string): P
   await sendMessage(chatId, lines.join('\n'));
 }
 
-// ── Sprint 154: /post-now — Manual posting assistant ─────────────────────────
+// ── Sprint 154: /postnow — Manual posting assistant ─────────────────────────
 
 function runIdToEpoch(runId: string): number | null {
   try {
@@ -1480,6 +1480,21 @@ export async function handlePostNow(chatId: number, ownerChatId: string): Promis
   });
 
   await sendMessage(chatId, lines.join('\n'));
+
+  // Sprint 226: Send actual video files via Telegram for easy save-to-phone posting
+  for (const v of ready) {
+    const viralScore = experiments.get(v.video_id)?.partial_viral_score;
+    const captionParts: string[] = [];
+    if (v.topic) captionParts.push(v.topic.slice(0, 80));
+    captionParts.push(hashtags);
+    captionParts.push(`\n/record ${v.video_id} 0`);
+    if (viralScore != null) captionParts.unshift(`Viral: ${viralScore}`);
+    try {
+      await sendVideo(chatId, v.filePath, captionParts.join('\n'));
+    } catch (err) {
+      await sendMessage(chatId, `⚠️ Could not send \`${v.video_id}\`: ${(err as Error).message?.slice(0, 100)}`);
+    }
+  }
 }
 
 // ── Sprint 156: /caption [video_id] — Ready-to-paste TikTok caption ───────────
@@ -1644,7 +1659,7 @@ export async function handlePace(chatId: number, ownerChatId: string): Promise<v
 
   if (recordedCount < POSTS_TARGET) {
     lines.push('');
-    lines.push(`→ Use /post-now or /caption to get started`);
+    lines.push(`→ Use /postnow or /caption to get started`);
   }
 
   await sendMessage(chatId, lines.join('\n'));
@@ -1725,7 +1740,7 @@ export async function handleToday(chatId: number, ownerChatId: string): Promise<
     lines.push(`📹 *Next video to post:*`);
     lines.push(`\`${nextVideoId}\``);
     lines.push(`→ /caption ${nextVideoId}`);
-    lines.push(`→ /post-now for full checklist`);
+    lines.push(`→ /postnow for full checklist`);
   } else {
     lines.push(`📹 Queue empty — run the pipeline or check /queue`);
   }
@@ -1802,7 +1817,7 @@ export async function handleViral(chatId: number, ownerChatId: string): Promise<
   await sendMessage(chatId, lines.join('\n'));
 }
 
-// ── Sprint 163: /pm2-status — PM2 process watchboard ─────────────────────────
+// ── Sprint 163: /pm2status — PM2 process watchboard ─────────────────────────
 
 interface Pm2Process {
   name: string;
@@ -1874,9 +1889,9 @@ export async function handlePm2Status(chatId: number, ownerChatId: string): Prom
   await sendMessage(chatId, lines.join('\n'));
 }
 
-// ── Sprint 167: /post-batch [N] — Batch post N videos with captions ──────────
+// ── Sprint 167: /postbatch [N] — Batch post N videos with captions ──────────
 // Shows next N unposted captioned videos (file path + caption + /record command).
-// Reduces operator friction: one command replaces N×(/post-now + /caption + note).
+// Reduces operator friction: one command replaces N×(/postnow + /caption + note).
 
 export async function handlePostBatch(chatId: number, ownerChatId: string, text: string): Promise<void> {
   if (String(chatId) !== String(ownerChatId)) {
@@ -1886,7 +1901,7 @@ export async function handlePostBatch(chatId: number, ownerChatId: string, text:
 
   const cwd = process.cwd();
 
-  // Parse N from text (e.g. "/post-batch 3" → 3)
+  // Parse N from text (e.g. "/postbatch 3" → 3)
   const args = text.trim().split(/\s+/);
   const rawN = parseInt(args[1] ?? '5', 10);
   const N = isNaN(rawN) ? 5 : Math.min(Math.max(rawN, 1), 10);
@@ -1980,14 +1995,22 @@ export async function handlePostBatch(chatId: number, ownerChatId: string, text:
 
     await sendMessage(chatId, header);
     await sendMessage(chatId, '```\n' + caption + '\n```');
+
+    // Sprint 226: Send actual video file via Telegram for easy save-to-phone
+    try {
+      await sendVideo(chatId, mp4, `${hookText}\n${hashtags}\n\n/record ${entry.video_id} 0`);
+    } catch (err) {
+      await sendMessage(chatId, `⚠️ Could not send video: ${(err as Error).message?.slice(0, 100)}`);
+    }
+
     await sendMessage(chatId, `✅ After posting: \`/record ${entry.video_id} 0\``);
   }
 
   await sendMessage(chatId, `─\n📊 Done. Record views with \`/record <id> <views>\` then check gate: \`/gate\``);
 }
 
-// ── SPRINT-171-PUB: /send-video — Deliver captioned video via Telegram ────────
-// Usage: /send-video [video_id]
+// ── SPRINT-171-PUB: /sendvideo — Deliver captioned video via Telegram ────────
+// Usage: /sendvideo [video_id]
 // Owner-only. Omit video_id to auto-pick the next unsent ready video.
 // Logs sent videos to workspace/scs001/telegram-sent.jsonl.
 
@@ -2098,7 +2121,7 @@ export async function handleSendVideo(chatId: number, ownerChatId: string, text:
   );
 }
 
-// ── Sprint 192: /viral-stats — Viral score summary ───────────────────────────
+// ── Sprint 192: /viralstats — Viral score summary ───────────────────────────
 
 export async function handleViralStats(chatId: number, ownerChatId: string): Promise<void> {
   if (String(chatId) !== String(ownerChatId)) {
@@ -2139,7 +2162,7 @@ export async function handleViralStats(chatId: number, ownerChatId: string): Pro
     lines.push(`${i + 1}. \`${e.video_id}\` — 🧬 ${e.partial_viral_score} | ${e.hook_formula} | ${e.speaker}`);
   });
 
-  lines.push('', '💡 Use /post-now to post the highest-scoring video');
+  lines.push('', '💡 Use /postnow to post the highest-scoring video');
 
   await sendMessage(chatId, lines.join('\n'));
 }
@@ -2198,7 +2221,7 @@ export async function handleCalendar(chatId: number, ownerChatId: string): Promi
     lines.push('', `📆 Tomorrow (${tomorrowStr}): ${tomorrowItems.length} videos scheduled`);
   }
 
-  lines.push('', '💡 /post-now for files + captions | /post-batch for bulk');
+  lines.push('', '💡 /postnow for files + captions | /postbatch for bulk');
 
   await sendMessage(chatId, lines.join('\n'));
 }
