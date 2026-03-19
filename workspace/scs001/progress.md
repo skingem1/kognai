@@ -2167,3 +2167,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (single file edit)
 - Issues: None.
 - Timestamp: 2026-03-20T01:25:00Z
+
+## Sprint 288 — Pipeline Fix: InsightAgent Local-First Mode (Direct Write)
+- Status: PASS
+- Commit: 9f4650d
+- Files created: workspace/sprints/sprint-288.json
+- Files modified: agents/scs001-insight/index.ts (routing change: apex→power, constitutional→false)
+- Tasks completed:
+  - 288-01: Changed InsightAgent routing from T3 APEX (cloud) to T2 POWER (local qwen3:14b). Unblocks pipeline.
+- Validation: TypeScript clean compile.
+- Swarm used: no (surgical edit)
+- Issues: Previous pipeline runs showed 0 insights after 26min timeout due to cloud dependency.
+- Timestamp: 2026-03-20T01:35:00Z
