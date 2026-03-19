@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-257",
+  "title": "AMD-14 — Dynamic Model Selection at CTO Gate",
+  "description": "CTO Gate evaluates sprint complexity and selects model tier. Simple sprints use T1 (qwen3:4b, $0), complex ones use T2 POWER (qwen3:14b, $0) or T3 CLOUD (Sonnet). Reduces unnecessary token usage.",
+  "source": "queue-prescribed (sprint-243 from queue, numbered 257 by git sequence)",
+  "tasks": [
+    {
+      "id": "257-01",
+      "title": "Create CTO Gate module — sprint complexity analysis + model tier selection",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-257",
+      "deliverables": { "code": ["scripts/lib/cto-gate.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "257-02",
+      "title": "Create validation script for CTO Gate",
+      "type": "test",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-257",
+      "deliverables": { "code": ["scripts/lib/validate-cto-gate.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
