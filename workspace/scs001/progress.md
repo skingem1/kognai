@@ -1706,3 +1706,16 @@ Full auto-posting pipeline built:
 - Swarm used: no (multi-file, audio pipeline)
 - Issues: ELEVENLABS_API_KEY needed for live TTS. FFmpeg installed and working.
 - Timestamp: 2026-03-20T04:30:00Z
+
+## Sprint 251 — Captions.ai Avatar Integration (Direct Write)
+- Status: PASS
+- Commit: 5fb69fd
+- Files created: scripts/scs001/avatar-presenter.ts, scripts/scs001/validate-avatar-presenter.ts, workspace/sprints/sprint-251.json
+- Files modified: agents/scs001-editing/index.ts
+- Tasks completed:
+  - 251-01: Created avatar-presenter.ts — Captions.ai API client, per-segment avatar generation, lip-sync with external voiceover audio, job polling, dry-run, manifest output
+  - 251-02: Added avatar_segments + has_voiceover fields to EditedVideo interface
+  - 251-03: Validation: 12/12 tests pass (module load, exports, availability check, dry-run 4 avatar segments, clip excluded, editing interface)
+- Swarm used: no (multi-file, API integration)
+- Issues: CAPTIONS_API_KEY + AVATAR_ENABLED needed for live avatar generation. Premium feature.
+- Timestamp: 2026-03-20T04:45:00Z

@@ -127,7 +127,7 @@
       "sprint": 251,
       "title": "Captions.ai Avatar Integration \u2014 AI presenter for hook/commentary segments",
       "block": "VIDEO-QUALITY",
-      "status": "queued",
+      "status": "done",
       "priority": "high",
       "rationale": "n8n flow step 5 (avatar component). Replace color-background segments (hook, context, commentary, insight) with AI avatar presenter via Captions.ai API ($57/mo Max plan). Avatar speaks the voiceover_text with lip-sync. Clip segment stays as real source video. This transforms videos from 'text on colored backgrounds' to 'AI presenter discussing viral clips'. Premium tier option."
     },
