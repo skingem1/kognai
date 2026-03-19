@@ -1552,3 +1552,17 @@ Operator quickstart: (1) bash scripts/pre-deploy-check.sh (2) ./scripts/pm2-boot
 - Swarm used: no (single-file edit)
 - Issues: None
 - Timestamp: 2026-03-20T00:30:00Z
+
+## Sprint 232 — TikTok OAuth Flow (Direct Write)
+- Status: PASS
+- Commit: c1cae17
+- Files created: scripts/tiktok-oauth.ts, scripts/tiktok-refresh-token.ts, workspace/sprints/sprint-232.json
+- Files modified: agents/telegram-bot/commands.ts, agents/telegram-bot/index.ts
+- Tasks completed:
+  - 232-01: TikTok OAuth 2.0 server — generates auth URL, receives callback, exchanges code for access_token, saves to .env with metadata
+  - 232-02: /tiktokauth telegram command — shows token status + auth instructions + URL. Added to /help.
+  - 232-03: Token refresh utility — scripts/tiktok-refresh-token.ts for auto-renewal before expiry
+- Swarm used: no (commands.ts 2424 lines — swarm limit exceeded)
+- Swarm bypassed: yes (FP-007). Manual crystallise: skipped (no crystalliser available).
+- Issues: None. Directly unblocks Phase 1.5 gate (TIKTOK_ACCESS_TOKEN was the only code blocker).
+- Timestamp: 2026-03-20T01:00:00Z
