@@ -1442,3 +1442,14 @@ SESSION HANDOFF (2026-03-17, Sprints 166-170):
 ## Session Summary — Sprints 211-221 (2026-03-19)
 Pipeline: FIXED and VALIDATED (15 videos/run). Pre-deploy: PASS. TS errors: ZERO (agents+scripts). Gate tracker: ACCURATE. PM2 boot script: READY.
 Operator quickstart: (1) bash scripts/pre-deploy-check.sh (2) ./scripts/pm2-boot.sh (3) start posting via /gate, /post-batch, /send-video
+
+## Sprint 222 — Achiri Smoke Test Fix (Direct Write)
+- Status: PASS
+- Commit: 85b48cb
+- Files modified: scripts/achiri/smoke-test.ts
+- Files created: workspace/sprints/sprint-222.json
+- Tasks completed:
+  - 222-01: Fixed /stats field name check — smoke test expected 'uptime' but API returns 'uptime_s'. Added uptime_s to accepted field list. Achiri smoke test now 6/6 PASS. Chat works (POST /chat → Darija reply), memory dir has 6 files, config valid.
+- Swarm used: no (1-line fix)
+- Issues: None. Achiri is ready for Hetzner deploy (operator runs ./scripts/deploy-achiri.sh).
+- Timestamp: 2026-03-19T22:15:00Z
