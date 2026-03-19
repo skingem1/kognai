@@ -1,0 +1,44 @@
+{
+  "sprint_id": "sprint-268",
+  "title": "Pipeline metrics aggregator — historical performance + /metrics command",
+  "description": "Aggregate all pipeline run reports into a metrics summary: avg stage times, total videos produced, QC pass rate trend, pipeline throughput per day. Expose via /metrics Telegram command.",
+  "source": "auto — 28 pipeline run reports exist but no aggregation or trend analysis",
+  "tasks": [
+    {
+      "id": "268-01",
+      "title": "Pipeline metrics aggregator script",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-268",
+      "deliverables": { "code": ["scripts/scs001/aggregate-pipeline-metrics.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "268-02",
+      "title": "/metrics Telegram command",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-268",
+      "deliverables": { "code": ["agents/telegram-bot/commands.ts", "agents/telegram-bot/index.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "268-03",
+      "title": "Validation test",
+      "type": "test",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-268",
+      "deliverables": { "code": ["scripts/scs001/validate-pipeline-metrics.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

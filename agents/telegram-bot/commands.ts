@@ -127,6 +127,7 @@ export async function handleHelp(chatId: number): Promise<void> {
     '/achirihealth — Achiri server status (owner)',
     '/achiristats — Achiri usage analytics: users, messages, memory (owner)',
     '/lastrun — Latest pipeline run: stage-by-stage results + timing (owner)',
+    '/metrics — Pipeline performance metrics: throughput, QC rate, trends (owner)',
     '/pm2status — All PM2 processes: status, uptime, restarts (owner)',
     '/health — Full system health check: env, gate, PM2, Achiri, pipeline (owner)',
     '/preflight — Production go-live checklist with operator action items (owner)',
@@ -3045,6 +3046,81 @@ export async function handleLastRun(chatId: number, ownerChatId: string): Promis
   }
   if (run.viral_warning) {
     lines.push('⚠️ No viral scores computed this run');
+  }
+
+  await sendMessage(chatId, lines.join('\n'));
+}
+
+// ── /metrics — Pipeline performance metrics — Sprint 268 ─────────────────────
+
+export async function handleMetrics(chatId: number, ownerChatId: string): Promise<void> {
+  if (String(chatId) !== ownerChatId) {
+    await sendMessage(chatId, '🔒 Owner only.');
+    return;
+  }
+
+  const metricsPath = join(process.cwd(), 'reports', 'pipeline-metrics.json');
+
+  // Auto-regenerate if missing
+  if (!existsSync(metricsPath)) {
+    try {
+      const { execSync } = require('child_process');
+      execSync('npx ts-node scripts/scs001/aggregate-pipeline-metrics.ts', {
+        cwd: process.cwd(), timeout: 30000, stdio: 'pipe'
+      });
+    } catch { /* will still try to read whatever exists */ }
+  }
+
+  if (!existsSync(metricsPath)) {
+    await sendMessage(chatId, '⚠️ No pipeline metrics available. Run: `npx ts-node scripts/scs001/aggregate-pipeline-metrics.ts`');
+    return;
+  }
+
+  let m: any;
+  try {
+    m = JSON.parse(readFileSync(metricsPath, 'utf-8'));
+  } catch {
+    await sendMessage(chatId, '⚠️ Could not parse pipeline-metrics.json');
+    return;
+  }
+
+  const lines: string[] = [];
+  lines.push('📊 *Pipeline Performance Metrics*');
+  lines.push(`Period: ${m.period?.first ?? '?'} → ${m.period?.last ?? '?'}`);
+  lines.push('');
+
+  // Overview
+  const avgMin = m.avg_duration_ms ? (m.avg_duration_ms / 60000).toFixed(1) : '?';
+  lines.push('*Overview:*');
+  lines.push(`• Runs: ${m.total_runs ?? 0} (${m.runs_per_day ?? 0}/day)`);
+  lines.push(`• Avg duration: ${avgMin} min`);
+  lines.push(`• Error rate: ${m.error_runs ?? 0}/${m.total_runs ?? 0}`);
+  lines.push('');
+
+  // Cumulative
+  const c = m.cumulative ?? {};
+  lines.push('*Cumulative Output:*');
+  lines.push(`• Topics: ${c.topics_found ?? 0}`);
+  lines.push(`• Clips: ${c.clips_discovered ?? 0}`);
+  lines.push(`• Edited: ${c.videos_edited ?? 0}`);
+  lines.push(`• Captioned: ${c.videos_captioned ?? 0}`);
+  lines.push(`• QC passed: ${c.qc_passed ?? 0} (${c.qc_pass_rate_pct ?? 0}%)`);
+  lines.push(`• Published: ${c.published ?? 0}`);
+  lines.push('');
+
+  // Top 3 slowest stages
+  const stageAvgs = m.stage_averages ?? {};
+  const sorted = Object.entries(stageAvgs)
+    .map(([stage, data]: [string, any]) => ({ stage, avgMs: data.avg_ms }))
+    .sort((a, b) => b.avgMs - a.avgMs)
+    .slice(0, 3);
+
+  if (sorted.length > 0) {
+    lines.push('*Slowest Stages:*');
+    for (const s of sorted) {
+      const sec = (s.avgMs / 1000).toFixed(1);
+      lines.push(`• ${s.stage}: ${sec}s avg`);
+    }
   }
 
   await sendMessage(chatId, lines.join('\n'));

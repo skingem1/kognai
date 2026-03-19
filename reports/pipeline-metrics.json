@@ -1,0 +1,88 @@
+{
+  "generated_at": "2026-03-19T21:40:15.891Z",
+  "period": {
+    "first": "2026-03-16",
+    "last": "2026-03-19"
+  },
+  "total_runs": 28,
+  "runs_per_day": 7,
+  "avg_duration_ms": 561254,
+  "error_runs": 0,
+  "stage_averages": {
+    "1-trend": {
+      "avg_ms": 286,
+      "avg_items": 8
+    },
+    "2-discovery": {
+      "avg_ms": 3034,
+      "avg_items": 17
+    },
+    "3-clip-detection": {
+      "avg_ms": 465400,
+      "avg_items": 59
+    },
+    "4-insight": {
+      "avg_ms": 91265,
+      "avg_items": 8
+    },
+    "5-script": {
+      "avg_ms": 2,
+      "avg_items": 15
+    },
+    "5.5-score": {
+      "avg_ms": 2,
+      "avg_items": 10
+    },
+    "6-validate": {
+      "avg_ms": 0,
+      "avg_items": 10
+    },
+    "6-editing": {
+      "avg_ms": 2455,
+      "avg_items": 3
+    },
+    "7-caption": {
+      "avg_ms": 331,
+      "avg_items": 14
+    },
+    "8-qc": {
+      "avg_ms": 1,
+      "avg_items": 14
+    },
+    "9-experiment": {
+      "avg_ms": 3,
+      "avg_items": 14
+    },
+    "9-publishing": {
+      "avg_ms": 3,
+      "avg_items": 14
+    },
+    "10-analytics": {
+      "avg_ms": 0,
+      "avg_items": 14
+    },
+    "11-flywheel": {
+      "avg_ms": 1,
+      "avg_items": 20
+    },
+    "12-failure-library": {
+      "avg_ms": 1,
+      "avg_items": 5
+    }
+  },
+  "cumulative": {
+    "topics_found": 223,
+    "clips_discovered": 476,
+    "videos_edited": 43,
+    "videos_captioned": 43,
+    "qc_passed": 43,
+    "qc_pass_rate_pct": 100,
+    "published": 43
+  },
+  "daily_runs": {
+    "2026-03-16": 3,
+    "2026-03-17": 9,
+    "2026-03-18": 8,
+    "2026-03-19": 8
+  }
+}
