@@ -1991,3 +1991,15 @@ Full auto-posting pipeline built:
 - Swarm used: no (surgical fix)
 - Issues: None. Calendar now shows real content metadata (speakers, hooks, scores).
 - Timestamp: 2026-03-19T22:45:00Z
+
+## Sprint 274 — Enriched Operator Commands (Direct Write)
+- Status: PASS
+- Commit: 3b75b51
+- Files created: workspace/sprints/sprint-274.json
+- Files modified: agents/telegram-bot/commands.ts
+- Tasks completed:
+  - 274-01: /today now reads from enriched content calendar — shows speaker, hook_formula, topic for scheduled videos
+  - 274-02: /calendar shows hook_formula + topic per video. Video delivery captions include speaker + hook.
+- Swarm used: no (surgical edit)
+- Issues: None. Type-check clean.
+- Timestamp: 2026-03-19T23:00:00Z
