@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-274",
+  "title": "Enriched operator commands — /today and /calendar show speaker, hook, topic from calendar",
+  "description": "Enhance /today to read from enriched content calendar (speaker, hook_formula, topic) instead of raw ledger. Enhance /calendar to show hook_formula and topic. Video delivery captions now include speaker and hook.",
+  "source": "auto — Sprint 273 enriched calendar but Telegram commands weren't using the new fields",
+  "tasks": [
+    {
+      "id": "274-01",
+      "title": "Enhance /today with calendar schedule + metadata",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "complete",
+      "priority": "high",
+      "sprint_id": "sprint-274",
+      "deliverables": { "code": ["agents/telegram-bot/commands.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "274-02",
+      "title": "Enhance /calendar with hook_formula + topic",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "complete",
+      "priority": "medium",
+      "sprint_id": "sprint-274",
+      "deliverables": { "code": ["agents/telegram-bot/commands.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

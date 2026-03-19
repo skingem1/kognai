@@ -1706,9 +1706,20 @@ export async function handleToday(chatId: number, ownerChatId: string): Promise<
   const todayTarget = recordedCount >= POSTS_TARGET ? 0 : Math.ceil(postsNeeded / daysLeft);
   const rateNeeded  = postsNeeded / daysLeft;
 
-  // 3. Next unposted video from ledger
+  // 3. Today's scheduled video from content calendar (enriched with speaker/hook/topic)
+  const calPath = join(process.cwd(), 'workspace', 'scs001', 'content-calendar.json');
+  let todaySchedule: Array<{ video_id: string; slot: string; speaker?: string; hook_formula?: string; topic?: string; viral_score?: number }> = [];
   let nextVideoId: string | null = null;
-  if (existsSync(ledgerPath)) {
+  if (existsSync(calPath)) {
+    try {
+      const cal = JSON.parse(readFileSync(calPath, 'utf-8'));
+      const todayKey = new Date().toISOString().split('T')[0];
+      todaySchedule = (cal.schedule?.[todayKey] ?? []).filter((s: any) => !recordedIds.has(s.video_id));
+      if (todaySchedule.length > 0) nextVideoId = todaySchedule[0].video_id;
+    } catch { /* ignore */ }
+  }
+  // Fallback to ledger if calendar empty
+  if (!nextVideoId && existsSync(ledgerPath)) {
     try {
       const ledgerEntries = readFileSync(ledgerPath, 'utf-8')
         .split('\n').filter(l => l.trim())
@@ -1744,7 +1755,17 @@ export async function handleToday(chatId: number, ownerChatId: string): Promise<
     '',
   ];
 
-  if (nextVideoId) {
+  if (todaySchedule.length > 0) {
+    lines.push(`📹 *Today's scheduled videos:*`);
+    for (const item of todaySchedule) {
+      lines.push(`⏰ *${item.slot}* — \`${item.video_id}\``);
+      if (item.speaker && item.speaker !== 'unknown') lines.push(`   🎙️ ${item.speaker}`);
+      if (item.hook_formula) lines.push(`   🎣 ${item.hook_formula}`);
+      if (item.topic) lines.push(`   📝 ${(item.topic as string).slice(0, 50)}`);
+      lines.push(`   → /caption ${item.video_id}`);
+    }
+    lines.push(`→ /postnow for full posting checklist`);
+  } else if (nextVideoId) {
     lines.push(`📹 *Next video to post:*`);
     lines.push(`\`${nextVideoId}\``);
     lines.push(`→ /caption ${nextVideoId}`);
@@ -2216,6 +2237,8 @@ export async function handleCalendar(chatId: number, ownerChatId: string): Promi
       lines.push(``, `${i + 1}. ⏰ *${item.slot}* — \`${item.video_id}\``);
       if (vs) lines.push(`   ${vs}`);
       if (item.speaker && item.speaker !== 'unknown') lines.push(`   🎙️ ${item.speaker}`);
+      if (item.hook_formula) lines.push(`   🎣 Hook: ${item.hook_formula}`);
+      if (item.topic) lines.push(`   📝 ${item.topic.slice(0, 60)}`);
       lines.push(`   → \`/record ${item.video_id} 0\``);
     });
   }
@@ -2247,7 +2270,10 @@ export async function handleCalendar(chatId: number, ownerChatId: string): Promi
     const mp4 = findCaptionedMp4(cwd, item.video_id);
     if (mp4) {
       try {
-        await sendVideo(chatId, mp4, `${item.slot} — ${item.video_id}\n${calHashtags}\n\n/record ${item.video_id} 0`);
+        const meta = [item.slot, item.video_id];
+        if (item.speaker && item.speaker !== 'unknown') meta.push(item.speaker);
+        if (item.hook_formula) meta.push(`Hook: ${item.hook_formula}`);
+        await sendVideo(chatId, mp4, `${meta.join(' — ')}\n${calHashtags}\n\n/record ${item.video_id} 0`);
       } catch (err) {
         await sendMessage(chatId, `⚠️ Could not send \`${item.video_id}\`: ${(err as Error).message?.slice(0, 100)}`);
       }
