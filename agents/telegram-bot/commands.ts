@@ -2224,6 +2224,27 @@ export async function handleCalendar(chatId: number, ownerChatId: string): Promi
   lines.push('', '💡 /postnow for files + captions | /postbatch for bulk');
 
   await sendMessage(chatId, lines.join('\n'));
+
+  // Sprint 231: Send today's scheduled video files via Telegram
+  const cwd = process.cwd();
+  const topicsPath = join(cwd, 'workspace', 'scs001', 'viral-topics.json');
+  let calHashtags = '#ai #tech #fyp #viral #learnontiktok';
+  try {
+    const vt = JSON.parse(readFileSync(topicsPath, 'utf-8'));
+    const tags = (vt.topics ?? []).slice(0, 4).map((t: string) => `#${t}`);
+    if (tags.length > 0) calHashtags = [...tags, '#fyp', '#viral', '#learnontiktok'].join(' ');
+  } catch { /* fallback */ }
+
+  for (const item of todayItems) {
+    const mp4 = findCaptionedMp4(cwd, item.video_id);
+    if (mp4) {
+      try {
+        await sendVideo(chatId, mp4, `${item.slot} — ${item.video_id}\n${calHashtags}\n\n/record ${item.video_id} 0`);
+      } catch (err) {
+        await sendMessage(chatId, `⚠️ Could not send \`${item.video_id}\`: ${(err as Error).message?.slice(0, 100)}`);
+      }
+    }
+  }
 }
 
 // ── /health — System Health Check (Sprint 198) ──────────────────────────────

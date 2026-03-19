@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-231",
+  "title": "Calendar Video Delivery — /calendar sends today's scheduled videos",
+  "description": "/calendar now sends the actual video files scheduled for today via Telegram sendVideo. Operator runs /calendar → gets schedule text + video files ready to save and post.",
+  "source": "autonomous",
+  "tasks": [
+    {
+      "id": "231-01",
+      "title": "Update handleCalendar to send scheduled video files via Telegram",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-231",
+      "deliverables": { "code": ["agents/telegram-bot/commands.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
