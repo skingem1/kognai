@@ -564,6 +564,26 @@ module.exports = {
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
     {
+      // Sprint 194: Content calendar regen — daily at 06:50 (before brief regen at 06:45... actually after gate-regen at 06:55)
+      // Regenerates workspace/scs001/content-calendar.json with viral-score-sorted videos.
+      // To start: pm2 start ecosystem.config.js --only kognai-calendar-regen
+      name: "kognai-calendar-regen",
+      script: "scripts/scs001/generate-content-calendar.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: false,
+      watch: false,
+      cron_restart: "50 6 * * *",
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/calendar-regen-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/calendar-regen-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
+    {
       // Sprint 155: Posting time reminder — noon (12:00)
       // Sends owner a Telegram nudge with next video to post + file path + /record shortcut.
       // Silent if gate already met (30 posts). To start: pm2 start ecosystem.config.js --only kognai-post-noon

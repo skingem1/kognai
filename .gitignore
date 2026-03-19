@@ -99,3 +99,5 @@ workspace/scs001/publish-ledger.jsonl
 workspace/scs001/viral-topics.json
 # Manual post tracker — runtime data
 workspace/scs001/manual-posts.jsonl
+# Content calendar — regenerated daily by PM2 cron
+workspace/scs001/content-calendar.json
