@@ -119,13 +119,27 @@ function findCaptionedMp4Local(videoId: string): boolean {
   return false;
 }
 
+function loadViralScoresForDigest(): Map<string, number> {
+  const map = new Map<string, number>();
+  const expPath = path.join(ROOT, 'workspace', 'scs001', 'experiments.jsonl');
+  if (!fs.existsSync(expPath)) return map;
+  try {
+    for (const line of fs.readFileSync(expPath, 'utf-8').split('\n')) {
+      if (!line.trim()) continue;
+      try { const e = JSON.parse(line); const id = e.clip_id ?? e.video_id; if (id && e.partial_viral_score != null) map.set(id, e.partial_viral_score); } catch { /* skip */ }
+    }
+  } catch { /* skip */ }
+  return map;
+}
+
 function getQueueStats(): { ledgerCount: number; recordedCount: number; unposted: number; readyCount: number; top3: string[] } {
   const ledger   = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
   const recorded = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
   const recordedIds = new Set(recorded.map((e: any) => e.video_id).filter(Boolean));
+  const viralScores = loadViralScoresForDigest();
   const unpostedEntries = (ledger as any[])
     .filter((e: any) => !recordedIds.has(e.video_id) && e.video_id)
-    .sort((a: any, b: any) => (b.published_at ?? '').localeCompare(a.published_at ?? ''));
+    .sort((a: any, b: any) => (viralScores.get(b.video_id) ?? -1) - (viralScores.get(a.video_id) ?? -1));
   const readyCount = unpostedEntries.filter((e: any) => findCaptionedMp4Local(e.video_id)).length;
   const top3 = unpostedEntries.slice(0, 3).map((e: any) => e.video_id as string);
   return { ledgerCount: ledger.length, recordedCount: recorded.length, unposted: unpostedEntries.length, readyCount, top3 };

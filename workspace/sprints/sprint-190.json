@@ -1,0 +1,60 @@
+{
+  "tasks": [
+    {
+      "id": "190-01",
+      "title": "Sort posting-reminder.ts by viral score — scripts/posting-reminder.ts",
+      "description": "Load experiments.jsonl, collect all unposted ready videos, sort by partial_viral_score desc, pick top-1. Show viral score in reminder. Surgical edit.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "todo",
+      "priority": "critical",
+      "sprint_id": "sprint-190",
+      "deliverables": {
+        "code": ["scripts/posting-reminder.ts"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Sprint 190. Noon/evening reminders should suggest highest-viral-score video."
+    },
+    {
+      "id": "190-02",
+      "title": "Sort daily-digest top-3 queue by viral score — scripts/daily-digest.ts",
+      "description": "In getQueueStats(), load experiments.jsonl, sort unposted by partial_viral_score desc. top3 now returns highest-scored videos. Surgical edit.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "todo",
+      "priority": "high",
+      "sprint_id": "sprint-190",
+      "deliverables": {
+        "code": ["scripts/daily-digest.ts"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Sprint 190. Morning digest top-3 should prioritize highest viral score."
+    },
+    {
+      "id": "190-03",
+      "title": "Commit ClawRouter e2e test — scripts/test-clawrouter-e2e.ts",
+      "description": "The file already exists (untracked). Review it for correctness and commit. No code changes needed unless issues found.",
+      "type": "commit",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "todo",
+      "priority": "medium",
+      "sprint_id": "sprint-190",
+      "deliverables": {
+        "code": ["scripts/test-clawrouter-e2e.ts"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Sprint 190. ClawRouter e2e test was written in Sprint 173 but never committed."
+    }
+  ],
+  "source": "human",
+  "_plan_reference": "Sprint 190: Viral Score Everywhere + ClawRouter E2E. Complete viral score integration in all posting surfaces + commit ClawRouter test."
+}

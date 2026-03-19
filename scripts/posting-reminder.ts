@@ -23,8 +23,25 @@ const CWD          = process.cwd();
 const LEDGER_PATH  = path.join(CWD, 'workspace', 'scs001', 'publish-ledger.jsonl');
 const MANUAL_PATH  = path.join(CWD, 'workspace', 'scs001', 'manual-posts.jsonl');
 const TOPICS_PATH  = path.join(CWD, 'workspace', 'scs001', 'viral-topics.json');
+const EXP_PATH     = path.join(CWD, 'workspace', 'scs001', 'experiments.jsonl');
 const POSTS_TARGET = 30;
 const GATE_DATE    = new Date('2026-04-07T00:00:00Z');
+
+function loadViralScores(): Map<string, number> {
+  const map = new Map<string, number>();
+  if (!fs.existsSync(EXP_PATH)) return map;
+  try {
+    for (const line of fs.readFileSync(EXP_PATH, 'utf-8').split('\n')) {
+      if (!line.trim()) continue;
+      try {
+        const e = JSON.parse(line);
+        const id = e.clip_id ?? e.video_id ?? '';
+        if (id && e.partial_viral_score != null) map.set(id, e.partial_viral_score);
+      } catch { /* skip */ }
+    }
+  } catch { /* skip */ }
+  return map;
+}
 
 // Sprint 170: directory-scan approach (epoch-to-path had 1ms off-by-one — Sprint 164 fix)
 function findCaptionedMp4(cwd: string, videoId: string): string | null {
@@ -91,27 +108,30 @@ async function main(): Promise<void> {
   if (viralHashtags.length === 0) viralHashtags = ['#ai', '#tech'];
   const hashtags = [...viralHashtags, '#fyp', '#viral', '#learnontiktok'].join(' ');
 
-  // Find first unposted video with captioned mp4 on disk
+  // Find best unposted video (sorted by viral score desc)
   let videoId: string | null = null;
   let filePath: string | null = null;
   let speaker: string | null = null;
   let topic: string | null = null;
+  let viralScore: number | null = null;
 
   if (fs.existsSync(LEDGER_PATH)) {
     const entries: Array<{ video_id: string; run_id: string; speaker?: string; topic?: string }> =
       fs.readFileSync(LEDGER_PATH, 'utf-8').split('\n').filter(l => l.trim())
         .map(l => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
 
-    for (const e of entries) {
-      if (recordedIds.has(e.video_id)) continue;
-      const mp4 = findCaptionedMp4(CWD, e.video_id);
-      if (mp4) {
-        videoId  = e.video_id;
-        filePath = mp4.replace(process.env.HOME ?? '/Users/tarekmnif', '~');
-        speaker  = e.speaker ?? null;
-        topic    = e.topic   ?? null;
-        break;
-      }
+    const viralScores = loadViralScores();
+    const ready = entries
+      .filter(e => !recordedIds.has(e.video_id) && findCaptionedMp4(CWD, e.video_id))
+      .sort((a, b) => (viralScores.get(b.video_id) ?? -1) - (viralScores.get(a.video_id) ?? -1));
+
+    if (ready.length > 0) {
+      const best = ready[0];
+      videoId    = best.video_id;
+      filePath   = findCaptionedMp4(CWD, best.video_id)!.replace(process.env.HOME ?? '/Users/tarekmnif', '~');
+      speaker    = best.speaker ?? null;
+      topic      = best.topic   ?? null;
+      viralScore = viralScores.get(best.video_id) ?? null;
     }
   }
 
@@ -124,6 +144,7 @@ async function main(): Promise<void> {
     lines.push('⚠️ No ready videos on disk. Run pipeline: `pm2 start ecosystem.config.js --only scs001-pipeline`');
   } else {
     lines.push(`📹 \`${videoId}\``);
+    if (viralScore != null) lines.push(`🧬 Viral: ${viralScore}`);
     if (speaker) lines.push(`🎙️ ${speaker}`);
     if (topic)   lines.push(`📝 ${topic.slice(0, 70)}`);
     lines.push(`📁 \`${filePath}\``);
