@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-227",
+  "title": "Posting Reminder Video Delivery — noon/evening nudges send actual video files",
+  "description": "posting-reminder.ts now sends the actual video file via Telegram sendVideo after the text nudge. Operator gets video in Telegram at noon + 18:00, saves to phone, uploads to TikTok. Combined with Sprint 226, all posting touchpoints now deliver videos directly.",
+  "source": "autonomous",
+  "tasks": [
+    {
+      "id": "227-01",
+      "title": "Add sendVideo to posting-reminder.ts after text nudge",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-227",
+      "deliverables": { "code": ["scripts/posting-reminder.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

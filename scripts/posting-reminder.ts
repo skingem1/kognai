@@ -56,6 +56,60 @@ function findCaptionedMp4(cwd: string, videoId: string): string | null {
   return null;
 }
 
+// Sprint 227: Send video file via Telegram sendVideo API
+function sendVideoTelegram(chatId: string, videoPath: string, caption?: string): Promise<void> {
+  const boundary = '----TgBotBoundary' + Date.now().toString(16);
+  const filename = path.basename(videoPath);
+  const fileData = fs.readFileSync(videoPath);
+
+  const parts: Buffer[] = [];
+  parts.push(Buffer.from(
+    `--${boundary}\r\nContent-Disposition: form-data; name="chat_id"\r\n\r\n${chatId}\r\n`
+  ));
+  if (caption) {
+    parts.push(Buffer.from(
+      `--${boundary}\r\nContent-Disposition: form-data; name="caption"\r\n\r\n${caption}\r\n`
+    ));
+    parts.push(Buffer.from(
+      `--${boundary}\r\nContent-Disposition: form-data; name="parse_mode"\r\n\r\nMarkdown\r\n`
+    ));
+  }
+  parts.push(Buffer.from(
+    `--${boundary}\r\nContent-Disposition: form-data; name="video"; filename="${filename}"\r\nContent-Type: video/mp4\r\n\r\n`
+  ));
+  parts.push(fileData);
+  parts.push(Buffer.from(`\r\n--${boundary}--\r\n`));
+
+  const body = Buffer.concat(parts);
+
+  return new Promise((resolve, reject) => {
+    const req = https.request({
+      hostname: 'api.telegram.org',
+      path: `/bot${BOT_TOKEN}/sendVideo`,
+      method: 'POST',
+      headers: {
+        'Content-Type': `multipart/form-data; boundary=${boundary}`,
+        'Content-Length': body.length,
+      },
+      timeout: 180_000,
+    }, (res) => {
+      let data = '';
+      res.on('data', (c: Buffer) => (data += c.toString()));
+      res.on('end', () => {
+        try {
+          const parsed = JSON.parse(data) as { ok: boolean; description?: string };
+          if (!parsed.ok) reject(new Error(`sendVideo failed: ${parsed.description ?? data.slice(0, 200)}`));
+          else resolve();
+        } catch { reject(new Error(`sendVideo parse error: ${data.slice(0, 200)}`)); }
+      });
+    });
+    req.on('error', reject);
+    req.on('timeout', () => { req.destroy(); reject(new Error('sendVideo timeout (180s)')); });
+    req.write(body);
+    req.end();
+  });
+}
+
 function sendTelegram(chatId: string, text: string): Promise<void> {
   const payload = JSON.stringify({ chat_id: chatId, text, parse_mode: 'Markdown' });
   return new Promise((resolve, reject) => {
@@ -154,6 +208,21 @@ async function main(): Promise<void> {
   }
 
   await sendTelegram(OWNER_ID, lines.join('\n'));
+
+  // Sprint 227: Send the actual video file so operator can save to phone and post
+  if (videoId) {
+    const absPath = findCaptionedMp4(CWD, videoId);
+    if (absPath) {
+      try {
+        const vidCaption = [topic?.slice(0, 80), hashtags, `\n/record ${videoId} 0`].filter(Boolean).join('\n');
+        await sendVideoTelegram(OWNER_ID, absPath, vidCaption);
+        process.stdout.write(`[posting-reminder] Video sent: ${videoId}\n`);
+      } catch (err) {
+        process.stderr.write(`[posting-reminder] Video send failed: ${(err as Error).message}\n`);
+      }
+    }
+  }
+
   process.stdout.write(`[posting-reminder] Sent reminder to owner (${postsNeeded} posts needed, ${daysLeft}d)\n`);
 }
 
