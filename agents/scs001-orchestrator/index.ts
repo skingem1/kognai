@@ -255,6 +255,13 @@ export class SCS001Orchestrator {
           // Cross-reference viral scores from ClipDetectionAgent via clip_id
           const clipId = edited?.clip_id;
           const clip = clipId ? clips.find(c => c.clip_id === clipId) : undefined;
+          // Sprint 278: Use hook_quality_score for a real viral score when Python fallback is 0.5
+          const hookScore = (clip as any)?.hook_quality_score as number | undefined;
+          const rawViralScore = clip?.partial_viral_score ?? 0.5;
+          // If Python scorer returned fallback (0.5), use hookScore to differentiate
+          const compositeViralScore = (rawViralScore === 0.5 && hookScore != null)
+            ? Math.round((hookScore * 0.7 + rawViralScore * 0.3) * 100) / 100
+            : rawViralScore;
           const entry: ExperimentEntry = {
             clip_id:               gate.video_id,
             hook_formula:          bundle?.hook_formula_used ?? 'unknown',
@@ -265,7 +272,7 @@ export class SCS001Orchestrator {
             scene_density_score:   clip?.scene_density_score,
             audio_excitement:      clip?.audio_excitement,
             clip_topic_alignment:  clip?.clip_topic_alignment,
-            partial_viral_score:   clip?.partial_viral_score,
+            partial_viral_score:   compositeViralScore,
           };
           this.experiments.logExperiment(entry);
           logged++;

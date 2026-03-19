@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-278",
+  "title": "Fix viral scorer — composite score from hookQualityScore when Python fallback active",
+  "description": "The Python viral scorer always returns 0.5 fallback (PySceneDetect not installed). Fix: compute composite partial_viral_score using hookQualityScore (0.7 weight) + Python fallback (0.3 weight) when fallback detected. Gives real, differentiated viral scores without external dependencies.",
+  "source": "auto — smoke test warning: 0 clips have viral scores. All experiments show 0.5 (Python fallback)",
+  "tasks": [
+    {
+      "id": "278-01",
+      "title": "Composite viral score in orchestrator experiment logging",
+      "type": "bugfix",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "complete",
+      "priority": "high",
+      "sprint_id": "sprint-278",
+      "deliverables": { "code": ["agents/scs001-orchestrator/index.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
