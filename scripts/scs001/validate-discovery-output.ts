@@ -15,9 +15,9 @@ async function main(): Promise<void> {
 
   // Run pipeline
   const trendAgent = new TrendAgent();
-  const batch = trendAgent.run();
+  const batch = await trendAgent.run();
   const discoveryAgent = new DiscoveryAgent();
-  const outputs: DiscoveryOutput[] = discoveryAgent.run(batch);
+  const outputs: DiscoveryOutput[] = await discoveryAgent.run(batch);
 
   // Output-level checks
   assert(Array.isArray(outputs), 'outputs is array');

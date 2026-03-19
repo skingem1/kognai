@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-217",
+  "title": "TypeScript Fix Part 2 — missing await in test/validation scripts",
+  "description": "test-block-a-e2e.ts, validate-block-a.ts, validate-discovery-output.ts all call async agent.run() without await. Fix: add missing await calls. Completes TS cleanup from Sprint 216.",
+  "source": "autonomous",
+  "tasks": [
+    {
+      "id": "217-01",
+      "title": "Add missing await in test and validation scripts",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "todo",
+      "priority": "medium",
+      "sprint_id": "sprint-217",
+      "deliverables": { "code": ["scripts/scs001/test-block-a-e2e.ts", "scripts/scs001/validate-block-a.ts", "scripts/scs001/validate-discovery-output.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

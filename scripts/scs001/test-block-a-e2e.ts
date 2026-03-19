@@ -21,14 +21,14 @@ async function main(): Promise<void> {
   // --- Stage 1: Trend Agent ---
   console.log('Stage 1: Trend Agent');
   const trendAgent = new TrendAgent();
-  const batch = trendAgent.run();
+  const batch = await trendAgent.run();
   assert(batch.topics.length >= 3, 'TrendAgent: >= 3 topics (' + batch.topics.length + ')');
   console.log('');
 
   // --- Stage 2: Discovery Agent ---
   console.log('Stage 2: Discovery Agent');
   const discoveryAgent = new DiscoveryAgent();
-  const discoveries: DiscoveryOutput[] = discoveryAgent.run(batch);
+  const discoveries: DiscoveryOutput[] = await discoveryAgent.run(batch);
   assert(discoveries.length >= 3, 'DiscoveryAgent: >= 3 discoveries (' + discoveries.length + ')');
 
   // Verify enriched timestamps contain phrase triggers

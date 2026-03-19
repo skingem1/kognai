@@ -17,12 +17,12 @@ async function main(): Promise<void> {
   // Run full pipeline
   console.log('Step 1: Trend Agent...');
   const trendAgent = new TrendAgent();
-  const batch = trendAgent.run();
+  const batch = await trendAgent.run();
   assert(batch.topics.length >= 3, `Trend: >= 3 topics (got ${batch.topics.length})`);
 
   console.log('\nStep 2: Discovery Agent...');
   const discoveryAgent = new DiscoveryAgent();
-  const discoveries = discoveryAgent.run(batch);
+  const discoveries = await discoveryAgent.run(batch);
   assert(discoveries.length >= batch.topics.length, `Discovery: >= 1 candidate per topic (got ${discoveries.length})`);
 
   console.log('\nStep 3: Clip Detection Agent...');
