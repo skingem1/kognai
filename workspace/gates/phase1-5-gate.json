@@ -1,7 +1,12 @@
 {
   "gate": "phase1-5-tiktok-kill-switch",
-  "date": "2026-03-18",
-  "generated_at": "2026-03-18T05:55:00.537Z",
+  "date": "2026-03-19",
+  "generated_at": "2026-03-19T23:17:10.702Z",
+  "deadline": "2026-04-07",
+  "days_remaining": 19,
+  "urgency": "NOT_STARTED",
+  "urgency_signal": "0 posts recorded. Start posting now.",
+  "pace_needed": 1.6,
   "criteria": [
     {
       "id": "post-count",
@@ -21,6 +26,8 @@
   "raw": {
     "posts_count": 0,
     "total_views": 0,
-    "avg_views": 0
+    "avg_views": 0,
+    "posts_remaining": 30,
+    "views_remaining": 500
   }
 }

@@ -37,6 +37,15 @@ function loadPosts(): ManualPost[] {
   return posts;
 }
 
+function getUrgencyLevel(postsLeft: number, daysLeft: number, totalViews: number): { level: string; signal: string } {
+  if (postsLeft <= 0 && totalViews >= VIEWS_TARGET) return { level: 'PASSED', signal: 'Gate criteria met — PROCEED' };
+  if (postsLeft > 0 && postsLeft === POSTS_TARGET)  return { level: 'NOT_STARTED', signal: '0 posts recorded. Start posting now.' };
+  if (daysLeft <= 3 && postsLeft > 0)               return { level: 'FAILED', signal: 'Kill switch trigger — deadline imminent' };
+  if (daysLeft <= 7 && postsLeft > daysLeft * 3)     return { level: 'CRITICAL', signal: `${postsLeft} posts needed in ${daysLeft}d — kill risk` };
+  if (daysLeft <= 14 && postsLeft > daysLeft * 2)    return { level: 'WARNING', signal: `Behind pace — ${postsLeft} posts in ${daysLeft}d` };
+  return { level: 'ON_TRACK', signal: 'Posting pace is sufficient' };
+}
+
 function main(): void {
   const posts       = loadPosts();
   const postsCount  = posts.length;
@@ -46,6 +55,14 @@ function main(): void {
   const passesViews     = totalViews >= VIEWS_TARGET;
   const overallPass     = passesPostCount && passesViews;
 
+  // Sprint 293: Urgency + pacing
+  const gateDate = new Date('2026-04-07T00:00:00Z');
+  const now = new Date();
+  const daysLeft = Math.max(0, Math.ceil((gateDate.getTime() - now.getTime()) / 86_400_000));
+  const postsLeft = Math.max(0, POSTS_TARGET - postsCount);
+  const paceNeeded = daysLeft > 0 && postsLeft > 0 ? Math.round(postsLeft / daysLeft * 10) / 10 : 0;
+  const urgency = getUrgencyLevel(postsLeft, daysLeft, totalViews);
+
   const recommendation = overallPass
     ? 'PROCEED to Phase 2A — TikTok stable. Launch Achiri alpha Apr 25.'
     : `KILL SWITCH — ${!passesPostCount ? `only ${postsCount}/${POSTS_TARGET} posts` : `only ${totalViews}/${VIEWS_TARGET} views`}. Shut down TikTok agent, focus on Achiri-only roadmap.`;
@@ -54,6 +71,11 @@ function main(): void {
     gate:    'phase1-5-tiktok-kill-switch',
     date:    new Date().toISOString().slice(0, 10),
     generated_at: new Date().toISOString(),
+    deadline: '2026-04-07',
+    days_remaining: daysLeft,
+    urgency: urgency.level,
+    urgency_signal: urgency.signal,
+    pace_needed: paceNeeded,
     criteria: [
       {
         id:      'post-count',
@@ -74,6 +96,8 @@ function main(): void {
       posts_count: postsCount,
       total_views: totalViews,
       avg_views:   avgViews,
+      posts_remaining: postsLeft,
+      views_remaining: Math.max(0, VIEWS_TARGET - totalViews),
     },
   };
 
@@ -84,10 +108,12 @@ function main(): void {
   console.log('\n══════════════════════════════════════════════════════');
   console.log('  PHASE 1.5 GATE REVIEW — TikTok Kill Switch (Apr 7)');
   console.log('══════════════════════════════════════════════════════');
-  console.log(`  Posts:       ${postsCount} / ${POSTS_TARGET}  ${passesPostCount ? '✅' : '❌'}`);
+  console.log(`  Days left:   ${daysLeft}d | Urgency: ${urgency.level}`);
+  console.log(`  Posts:       ${postsCount} / ${POSTS_TARGET}  ${passesPostCount ? '✅' : '❌'}  ${postsLeft > 0 ? `(${postsLeft} more, ${paceNeeded}/day)` : ''}`);
   console.log(`  Total views: ${totalViews} / ${VIEWS_TARGET}  ${passesViews ? '✅' : '❌'}`);
   console.log(`  Avg views:   ${avgViews} / post`);
   console.log('──────────────────────────────────────────────────────');
+  console.log(`  → ${urgency.signal}`);
   console.log(`  Overall: ${icon}`);
   console.log(`  ${recommendation}`);
   console.log('──────────────────────────────────────────────────────');

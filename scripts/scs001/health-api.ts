@@ -48,22 +48,29 @@ function latestRunId(): string | null {
   return runs[0] || null;
 }
 
-function getGateProgress(): { posted: number; target: number; daysRemaining: number; paceNeeded: number; status: string } {
+function getGateProgress(): { posted: number; target: number; totalViews: number; viewsTarget: number; avgViews: number; daysRemaining: number; paceNeeded: number; status: string } {
   const gateDate = new Date('2026-04-07');
   const now = new Date();
   const daysRemaining = Math.max(0, Math.ceil((gateDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)));
 
-  const published = loadJsonl(path.join(WORKSPACE, 'publish-ledger.jsonl'));
-  const posted = published.length;
+  // Sprint 293: Use manual-posts.jsonl (actual TikTok posts) not publish-ledger (pipeline output)
+  const manualPosts = loadJsonl(path.join(WORKSPACE, 'manual-posts.jsonl')) as Array<{ views?: number }>;
+  const posted = manualPosts.length;
   const target = 30;
-  const paceNeeded = daysRemaining > 0 ? Math.round((target - posted) / daysRemaining * 10) / 10 : 0;
+  const totalViews = manualPosts.reduce((s, p) => s + (p.views ?? 0), 0);
+  const viewsTarget = 500;
+  const avgViews = posted > 0 ? Math.round(totalViews / posted) : 0;
+  const postsLeft = Math.max(0, target - posted);
+  const paceNeeded = daysRemaining > 0 && postsLeft > 0 ? Math.round(postsLeft / daysRemaining * 10) / 10 : 0;
 
   let status = 'ON_TRACK';
-  if (posted >= target) status = 'PASSED';
-  else if (daysRemaining <= 7 && posted < target * 0.5) status = 'CRITICAL';
-  else if (daysRemaining <= 14 && posted < target * 0.3) status = 'WARNING';
+  if (posted >= target && totalViews >= viewsTarget) status = 'PASSED';
+  else if (posted === 0) status = 'NOT_STARTED';
+  else if (daysRemaining <= 3 && postsLeft > 0) status = 'FAILED';
+  else if (daysRemaining <= 7 && postsLeft > daysRemaining * 3) status = 'CRITICAL';
+  else if (daysRemaining <= 14 && postsLeft > daysRemaining * 2) status = 'WARNING';
 
-  return { posted, target, daysRemaining, paceNeeded, status };
+  return { posted, target, totalViews, viewsTarget, avgViews, daysRemaining, paceNeeded, status };
 }
 
 function getEnvCheck(): Record<string, boolean> {

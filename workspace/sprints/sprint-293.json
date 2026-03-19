@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-293",
+  "title": "Gate accuracy — fix health API data source + enhance gate generator",
+  "description": "Health API /health/gate uses publish-ledger.jsonl (pipeline output) instead of manual-posts.jsonl (actual TikTok posts). This makes gate status inaccurate. Also enhance generate-phase1-5-gate.ts with urgency levels, pacing info, and days remaining.",
+  "source": "auto — gate accuracy audit before Apr 7 deadline",
+  "tasks": [
+    {
+      "id": "293-01",
+      "title": "Fix health API gate to use manual-posts.jsonl + add views tracking",
+      "type": "bugfix",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-293",
+      "deliverables": { "code": ["scripts/scs001/health-api.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "293-02",
+      "title": "Enhance gate generator with urgency levels, pacing, and days remaining",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-293",
+      "deliverables": { "code": ["scripts/scs001/generate-phase1-5-gate.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
