@@ -68,6 +68,49 @@ async function sendMessage(chatId: string, text: string): Promise<void> {
   await telegramRequest('sendMessage', { chat_id: chatId, text, parse_mode: 'Markdown' });
 }
 
+// Sprint 280: Send video file via Telegram sendVideo API
+function sendVideoFile(chatId: string, videoPath: string, caption?: string): Promise<void> {
+  const boundary = '----TgBotBoundary' + Date.now().toString(16);
+  const filename = path.basename(videoPath);
+  const fileData = fs.readFileSync(videoPath);
+
+  const parts: Buffer[] = [];
+  parts.push(Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="chat_id"\r\n\r\n${chatId}\r\n`));
+  if (caption) {
+    parts.push(Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="caption"\r\n\r\n${caption}\r\n`));
+    parts.push(Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="parse_mode"\r\n\r\nMarkdown\r\n`));
+  }
+  parts.push(Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="video"; filename="${filename}"\r\nContent-Type: video/mp4\r\n\r\n`));
+  parts.push(fileData);
+  parts.push(Buffer.from(`\r\n--${boundary}--\r\n`));
+
+  const body = Buffer.concat(parts);
+
+  return new Promise((resolve, reject) => {
+    const req = https.request({
+      hostname: 'api.telegram.org',
+      path: `/bot${BOT_TOKEN}/sendVideo`,
+      method: 'POST',
+      headers: { 'Content-Type': `multipart/form-data; boundary=${boundary}`, 'Content-Length': body.length },
+      timeout: 180_000,
+    }, (res) => {
+      let data = '';
+      res.on('data', (c: Buffer) => (data += c.toString()));
+      res.on('end', () => {
+        try {
+          const parsed = JSON.parse(data) as { ok: boolean; description?: string };
+          if (!parsed.ok) reject(new Error(`sendVideo: ${parsed.description ?? data.slice(0, 200)}`));
+          else resolve();
+        } catch { reject(new Error(`sendVideo parse: ${data.slice(0, 200)}`)); }
+      });
+    });
+    req.on('error', reject);
+    req.on('timeout', () => { req.destroy(); reject(new Error('sendVideo timeout')); });
+    req.write(body);
+    req.end();
+  });
+}
+
 // ─── Offset persistence ───────────────────────────────────────────────
 
 function loadOffset(): number {
@@ -522,19 +565,178 @@ function cmdReview(): string {
   );
 }
 
+// Sprint 280: Find captioned mp4 path for a video ID
+function findCaptionedMp4(videoId: string): string | null {
+  try {
+    const scsDir = path.join(ROOT, 'workspace', 'scs001');
+    const runDirs = fs.readdirSync(scsDir).filter(d => d.startsWith('run-'));
+    for (const dir of runDirs) {
+      const p = path.join(scsDir, dir, 'caption', `${videoId}-captioned.mp4`);
+      if (fs.existsSync(p)) return p;
+    }
+  } catch { /* ignore */ }
+  return null;
+}
+
+// Sprint 280: Get experiment data for a video ID
+function getExperimentData(videoId: string): { speaker: string; hook_formula: string; viral_score: number | null; topic: string | null } {
+  const expPath = path.join(ROOT, 'workspace', 'scs001', 'experiments.jsonl');
+  const result = { speaker: 'unknown', hook_formula: 'unknown', viral_score: null as number | null, topic: null as string | null };
+  if (!fs.existsSync(expPath)) return result;
+  try {
+    for (const line of fs.readFileSync(expPath, 'utf-8').split('\n')) {
+      if (!line.trim()) continue;
+      try {
+        const e = JSON.parse(line);
+        const id = e.clip_id ?? e.video_id;
+        if (id === videoId) {
+          if (e.speaker) result.speaker = e.speaker;
+          if (e.hook_formula) result.hook_formula = e.hook_formula;
+          if (e.partial_viral_score != null) result.viral_score = e.partial_viral_score;
+          if (e.topic) result.topic = e.topic;
+        }
+      } catch { /* skip */ }
+    }
+  } catch { /* skip */ }
+  return result;
+}
+
+// Sprint 280: Build TikTok-ready caption with hashtags
+function buildTikTokCaption(videoId: string): string {
+  const exp = getExperimentData(videoId);
+
+  // Load viral topics for hashtags
+  let topicTags: string[] = [];
+  try {
+    const vt = JSON.parse(fs.readFileSync(path.join(ROOT, 'workspace', 'scs001', 'viral-topics.json'), 'utf-8'));
+    topicTags = (vt.topics ?? []).slice(0, 5).map((t: string) => `#${t.replace(/\s+/g, '')}`);
+  } catch { /* fallback */ }
+
+  const baseTags = ['#fyp', '#viral', '#learnontiktok', '#ai', '#tech'];
+  const tagSet: Record<string, boolean> = {};
+  for (const t of [...topicTags, ...baseTags]) tagSet[t] = true;
+  const allTags = Object.keys(tagSet).slice(0, 8);
+
+  const lines: string[] = [];
+  if (exp.speaker && exp.speaker !== 'unknown') {
+    lines.push(`🎙️ ${exp.speaker}`);
+  }
+  if (exp.hook_formula && exp.hook_formula !== 'unknown') {
+    lines.push(`Hook: ${exp.hook_formula}`);
+  }
+  lines.push('');
+  lines.push(allTags.join(' '));
+
+  return lines.join('\n');
+}
+
+// Sprint 280: /caption <video_id> — generate TikTok-ready caption
+function cmdCaption(args: string): string {
+  const videoId = args.trim();
+  if (!videoId) {
+    return `❌ Usage: \`/caption <video_id>\`\n\nExample: \`/caption video-28a77329\``;
+  }
+
+  const exp = getExperimentData(videoId);
+  const caption = buildTikTokCaption(videoId);
+  const mp4Path = findCaptionedMp4(videoId);
+
+  return (
+    `📝 *TikTok Caption for* \`${videoId}\`\n\n` +
+    `\`\`\`\n${caption}\n\`\`\`\n\n` +
+    `🎙️ Speaker: ${exp.speaker}\n` +
+    `🎣 Hook: ${exp.hook_formula}\n` +
+    `🧬 Viral score: ${exp.viral_score ?? 'n/a'}\n` +
+    `🎬 MP4: ${mp4Path ? '✅ ready' : '❌ not found'}\n\n` +
+    `_Copy the caption above and paste into TikTok._\n` +
+    `_After posting: \`/record ${videoId} 0\`_`
+  );
+}
+
+// Sprint 280: /deliver [N] — batch-send top videos with captions
+async function cmdDeliver(chatId: string, args: string): Promise<string> {
+  const count = Math.min(Math.max(parseInt(args) || 3, 1), 10);
+
+  const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
+  const recorded = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  const recordedIds = new Set(recorded.map((e: any) => e.video_id).filter(Boolean));
+
+  // Load viral scores for ranking
+  const viralScores = new Map<string, number>();
+  const expPath = path.join(ROOT, 'workspace', 'scs001', 'experiments.jsonl');
+  if (fs.existsSync(expPath)) {
+    try {
+      for (const line of fs.readFileSync(expPath, 'utf-8').split('\n')) {
+        if (!line.trim()) continue;
+        try {
+          const e = JSON.parse(line);
+          const id = e.clip_id ?? e.video_id;
+          if (id && e.partial_viral_score != null) viralScores.set(id, e.partial_viral_score);
+        } catch { /* skip */ }
+      }
+    } catch { /* skip */ }
+  }
+
+  const unposted = (ledger as any[])
+    .filter((e: any) => !recordedIds.has(e.video_id) && e.video_id)
+    .sort((a: any, b: any) => (viralScores.get(b.video_id) ?? -1) - (viralScores.get(a.video_id) ?? -1));
+
+  // Filter to only those with captioned mp4 ready
+  const ready = unposted.filter((e: any) => findCaptionedMp4(e.video_id) !== null);
+
+  if (ready.length === 0) {
+    return `📦 *Deliver* — No ready-to-post videos found.\n\nRun the pipeline first, then try again.`;
+  }
+
+  const batch = ready.slice(0, count);
+  let sent = 0;
+
+  await sendMessage(chatId, `📦 *Delivering ${batch.length} videos for posting...*`);
+
+  for (const entry of batch) {
+    const videoId = entry.video_id;
+    const mp4Path = findCaptionedMp4(videoId);
+    if (!mp4Path) continue;
+
+    const caption = buildTikTokCaption(videoId);
+    const vs = viralScores.get(videoId);
+    const vsStr = vs != null ? `🧬 ${vs}` : '';
+    const tgCaption = `📦 *Post this to TikTok* ${vsStr}\n\n${caption}\n\n\`/record ${videoId} 0\``;
+
+    try {
+      await sendVideoFile(chatId, mp4Path, tgCaption);
+      sent++;
+    } catch (err: any) {
+      await sendMessage(chatId, `⚠️ Failed to send \`${videoId}\`: ${err.message}`);
+    }
+  }
+
+  const gate = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl')).length;
+  const remaining = Math.max(0, 30 - gate);
+
+  return (
+    `✅ *Delivered ${sent}/${batch.length} videos*\n\n` +
+    `📊 Gate progress: ${gate}/30 posts (${remaining} more needed)\n` +
+    `_After posting each video, run:_\n` +
+    `\`/record <video_id> <views>\``
+  );
+}
+
 function cmdHelp(): string {
   return (
     `*Kognai Bot Commands*\n\n` +
-    `/report — Full system status (real data, no AI)\n` +
-    `/pm2    — Live PM2 process table\n` +
-    `/health — Health check summary\n` +
-    `/tier   — Current tier + MRR\n` +
-    `/sprint — Latest sprint progress\n` +
-    `/gate   — Phase 1.5 gate countdown\n` +
-    `/queue  — Unposted videos ranked by viral score\n` +
-    `/review — Latest generated video details\n` +
-    `/record — Record a manual TikTok post\n` +
-    `/help   — This message`
+    `/report  — Full system status (real data, no AI)\n` +
+    `/pm2     — Live PM2 process table\n` +
+    `/health  — Health check summary\n` +
+    `/tier    — Current tier + MRR\n` +
+    `/sprint  — Latest sprint progress\n` +
+    `/gate    — Phase 1.5 gate countdown\n` +
+    `/queue   — Unposted videos ranked by viral score\n` +
+    `/review  — Latest generated video details\n` +
+    `/record  — Record a manual TikTok post\n` +
+    `/deliver — Batch-send ready videos with captions\n` +
+    `/caption — Generate TikTok-ready caption for a video\n` +
+    `/help    — This message`
   );
 }
 
@@ -555,18 +757,32 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
   const cmdName = spaceIdx === -1 ? cmd : text.slice(0, spaceIdx).split('@')[0].toLowerCase().trim();
   const cmdArgs = spaceIdx === -1 ? '' : text.slice(spaceIdx + 1).trim();
 
+  // Sprint 280: /deliver is async (sends videos), handle separately
+  if (cmdName === '/deliver') {
+    try {
+      const response = await cmdDeliver(chatId, cmdArgs);
+      await sendMessage(chatId, response);
+    } catch (e: any) {
+      await sendMessage(chatId, `❌ Deliver error: ${e.message}`);
+    }
+    const timestamp = new Date().toISOString();
+    fs.appendFileSync(AUDIT_LOG, `[${timestamp}] [TELEGRAM_BOT] Command: ${cmd} from ${chatId}\n`);
+    return;
+  }
+
   let response: string;
   switch (cmdName) {
-    case '/report': response = cmdReport(); break;
-    case '/pm2':    response = cmdPm2();    break;
-    case '/health': response = cmdHealth(); break;
-    case '/tier':   response = cmdTier();   break;
-    case '/sprint': response = cmdSprint(); break;
-    case '/gate':   response = cmdGate();   break;
-    case '/record': response = cmdRecord(cmdArgs); break;
-    case '/queue':  response = cmdQueue();  break;
-    case '/review': response = cmdReview(); break;
-    case '/help':   response = cmdHelp();   break;
+    case '/report':  response = cmdReport(); break;
+    case '/pm2':     response = cmdPm2();    break;
+    case '/health':  response = cmdHealth(); break;
+    case '/tier':    response = cmdTier();   break;
+    case '/sprint':  response = cmdSprint(); break;
+    case '/gate':    response = cmdGate();   break;
+    case '/record':  response = cmdRecord(cmdArgs); break;
+    case '/queue':   response = cmdQueue();  break;
+    case '/review':  response = cmdReview(); break;
+    case '/caption': response = cmdCaption(cmdArgs); break;
+    case '/help':    response = cmdHelp();   break;
     default:
       response = `Unknown command: \`${cmdName}\`\n\n${cmdHelp()}`;
   }

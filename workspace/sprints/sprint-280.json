@@ -1,0 +1,44 @@
+{
+  "sprint_id": "sprint-280",
+  "title": "Telegram /deliver & /caption — manual posting accelerator",
+  "description": "Add /deliver [N] command to batch-send top-scored ready videos via Telegram with TikTok-ready captions. Add /caption <id> to get posting-ready text. Directly accelerates manual posting velocity toward 30-post gate.",
+  "source": "auto — 0/30 posts with 19d to Apr 7 gate, need faster manual posting workflow",
+  "tasks": [
+    {
+      "id": "280-01",
+      "title": "Add sendVideo helper to telegram-bot.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-280",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "280-02",
+      "title": "Add /deliver [N] command — batch video delivery with captions",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-280",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "280-03",
+      "title": "Add /caption <video_id> command — posting-ready TikTok caption",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-280",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
