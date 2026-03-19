@@ -1126,3 +1126,17 @@ SESSION HANDOFF (2026-03-17, Sprints 166-170):
   - app.js: renderExperiments() adds second stats row when viral data present: Avg Viral, Scored, ≥0.7 (High), Max Viral. Gracefully hidden when no viral data.
 - Impact: Dashboard now shows viral metrics alongside experiment stats. Will populate after batch-viral-score.ts runs.
 - Timestamp: 2026-03-19T16:30:00Z
+
+## Sprint 192 — Repo Hygiene + /viral-stats + Smoke Test Viral Validation (Phase 1 — ops + tooling)
+- Status: PASS
+- Commit: ea11952
+- Files created: workspace/sprints/sprint-192.json
+- Files modified: .gitignore, agents/telegram-bot/commands.ts, agents/telegram-bot/index.ts, scripts/smoke-test-pipeline.ts
+- Test: TypeScript compile PASS (only pre-existing errors)
+- Swarm used: no (direct write — 5 file edits)
+- Changes:
+  - .gitignore: Added logs/**/*.jsonl, logs/**/*.json, logs/omel/wipe-witness-snapshots/, logs/cto-gate/, reports/pipeline-runs/scs001-*.json, reports/swarm-runs/daily-*.json, reports/swarm-runs/20*.json. Prevents 20+ untracked runtime files from polluting git status.
+  - commands.ts: handleViralStats() — owner-only, reads experiments via loadExperimentsForReview(), computes scored_count/avg/max/min/above_07, shows top-3 highest-scored videos. Added to handleHelp(). Routed in index.ts.
+  - smoke-test-pipeline.ts: After pipeline run, checks clip scores for partial_viral_score/hook_quality_score fields. Reports viral_scored_count and viral_warning in smoke-test-latest.json. Warns if 0 clips have viral scores.
+- Impact: Cleaner git status, operator viral visibility via Telegram, regression protection for viral scoring.
+- Timestamp: 2026-03-19T17:00:00Z
