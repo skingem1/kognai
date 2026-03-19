@@ -1,0 +1,44 @@
+{
+  "sprint_id": "sprint-258",
+  "title": "Kognai CMO Agent — TikTok launch strategy + brand narrative",
+  "description": "Create executable launch strategy for TikTok content push. 15-post manifesto thread plan, content calendar template, brand narrative generator. CMO agent prompt already exists — this sprint adds the strategy artifacts.",
+  "source": "queue-prescribed (sprint-244 from queue, numbered 258 by git sequence)",
+  "tasks": [
+    {
+      "id": "258-01",
+      "title": "Create TikTok launch strategy module — 15-post manifesto + content calendar",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-258",
+      "deliverables": { "code": ["scripts/launch/tiktok-launch-strategy.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "258-02",
+      "title": "Create brand narrative generator — Kognai civilizational positioning",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-258",
+      "deliverables": { "code": ["scripts/launch/brand-narrative.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "258-03",
+      "title": "Validate launch strategy output",
+      "type": "test",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-258",
+      "deliverables": { "code": ["scripts/launch/validate-launch-strategy.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
