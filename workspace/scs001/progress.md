@@ -2155,3 +2155,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (single file edit)
 - Issues: None.
 - Timestamp: 2026-03-20T01:15:00Z
+
+## Sprint 287 — Telegram /today — Daily Posting Brief with Recommendations (Direct Write)
+- Status: PASS
+- Commit: b073066
+- Files created: workspace/sprints/sprint-287.json
+- Files modified: scripts/telegram-bot.ts (+80 lines)
+- Tasks completed:
+  - 287-01: /today command — daily target vs actual, top 3 videos by viral score, optimal posting times
+- Validation: TypeScript clean compile.
+- Swarm used: no (single file edit)
+- Issues: None.
+- Timestamp: 2026-03-20T01:25:00Z
