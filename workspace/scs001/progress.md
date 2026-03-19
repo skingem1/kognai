@@ -1383,3 +1383,14 @@ SESSION HANDOFF (2026-03-17, Sprints 166-170):
 - Swarm used: no (surgical edits to 4 files)
 - Issues: agents/scs001-trend/live-feed.ts has TS2802 (RegExpStringIterator iteration) — pre-existing, not from this sprint.
 - Timestamp: 2026-03-19T20:30:00Z
+
+## Sprint 217 — TypeScript Fix Part 2 (Direct Write)
+- Status: PASS
+- Commit: a6c532c
+- Files modified: scripts/scs001/test-block-a-e2e.ts, scripts/scs001/validate-block-a.ts, scripts/scs001/validate-discovery-output.ts
+- Files created: workspace/sprints/sprint-217.json
+- Tasks completed:
+  - 217-01: Added missing `await` on async agent.run() calls in 3 test/validation scripts. All SCS-001 scripts now compile clean under tsconfig.json (target ES2022). TS2802 Set errors are false positives when compiling individual files (ES2022 supports Set iteration natively).
+- Swarm used: no (surgical edits)
+- Issues: None. All SCS-001 TS errors resolved (Sprint 216 + 217).
+- Timestamp: 2026-03-19T21:00:00Z
