@@ -1,0 +1,44 @@
+{
+  "sprint_id": "sprint-251",
+  "title": "Captions.ai Avatar Integration — AI presenter for hook/commentary segments",
+  "description": "Add AI avatar presenter via Captions.ai API for hook, context, commentary, and insight segments. Avatar speaks voiceover_text with lip-sync. Clip segment stays as real source video. Premium tier option.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "251-01",
+      "title": "Create Captions.ai API client — avatar video generation",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-251",
+      "deliverables": { "code": ["scripts/scs001/avatar-presenter.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "251-02",
+      "title": "Wire avatar into editing pipeline — segment-level avatar replacement",
+      "type": "enhancement",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-251",
+      "deliverables": { "code": ["agents/scs001-editing/index.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "251-03",
+      "title": "Validate avatar module loads and dry-run works",
+      "type": "test",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-251",
+      "deliverables": { "code": ["scripts/scs001/validate-avatar-presenter.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

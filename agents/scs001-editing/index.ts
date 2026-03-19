@@ -28,6 +28,8 @@ export interface EditedVideo {
   };
   pattern_interrupt_count:   number;
   ffmpeg_processing_seconds: number;
+  avatar_segments?:          string[];  // segment names that used avatar (Sprint 251)
+  has_voiceover?:            boolean;   // true if TTS voiceover was mixed in (Sprint 250)
 }
 
 const FFMPEG = process.env.FFMPEG_PATH ?? '/opt/homebrew/bin/ffmpeg';
