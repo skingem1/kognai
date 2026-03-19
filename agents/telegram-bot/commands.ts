@@ -129,6 +129,7 @@ export async function handleHelp(chatId: number): Promise<void> {
     '/lastrun — Latest pipeline run: stage-by-stage results + timing (owner)',
     '/metrics — Pipeline performance metrics: throughput, QC rate, trends (owner)',
     '/revenue — Revenue dashboard: subscribers, MRR, financial gates (owner)',
+    '/pipeline — Content pipeline inventory + health dashboard (owner)',
     '/pm2status — All PM2 processes: status, uptime, restarts (owner)',
     '/health — Full system health check: env, gate, PM2, Achiri, pipeline (owner)',
     '/preflight — Production go-live checklist with operator action items (owner)',
@@ -3314,4 +3315,106 @@ export async function handleDedup(chatId: number, ownerChatId: string, text: str
   } catch (err) {
     await sendMessage(chatId, `❌ Dedup failed: ${(err as Error).message?.slice(0, 100)}`);
   }
+}
+
+// ── /pipeline — Content pipeline inventory & health — Sprint 289 ─────────────
+
+export async function handlePipeline(chatId: number, ownerChatId: string): Promise<void> {
+  if (String(chatId) !== ownerChatId) {
+    await sendMessage(chatId, '🔒 Owner only.');
+    return;
+  }
+
+  const lines: string[] = ['📊 *Content Pipeline Status*', ''];
+
+  // 1. Last pipeline run
+  const latestRunPath = join(process.cwd(), 'reports', 'pipeline-runs', 'latest.json');
+  let lastRun: any = null;
+  if (existsSync(latestRunPath)) {
+    try { lastRun = JSON.parse(readFileSync(latestRunPath, 'utf-8')); } catch {}
+  }
+
+  if (lastRun) {
+    const completedAt = lastRun.completed_at ? new Date(lastRun.completed_at) : null;
+    const ageMs = completedAt ? Date.now() - completedAt.getTime() : Infinity;
+    const ageHrs = Math.round(ageMs / 3_600_000);
+    const health = ageHrs < 6 ? '🟢 FRESH' : ageHrs < 24 ? '🟡 STALE' : '🔴 OLD';
+    const elapsed = lastRun.total_elapsed_ms ? `${Math.round(lastRun.total_elapsed_ms / 1000)}s` : '?';
+    lines.push(`*Last Run:* \`${lastRun.run_id ?? 'unknown'}\``);
+    lines.push(`⏱ ${elapsed} · ${health} (${ageHrs}h ago)`);
+    lines.push('');
+
+    // Stage summary from latest run
+    const s = lastRun.summary ?? {};
+    lines.push('*Latest Run Output:*');
+    lines.push(`  🔍 Topics: ${s.topics_found ?? 0}`);
+    lines.push(`  📹 Clips discovered: ${s.clips_discovered ?? 0}`);
+    lines.push(`  ✂️ Clips qualified: ${s.clips_qualified ?? 0}`);
+    lines.push(`  📝 Scripts: ${s.scripts_produced ?? 0}`);
+    lines.push(`  🎬 Videos edited: ${s.videos_edited ?? 0}`);
+    lines.push(`  💬 Videos captioned: ${s.videos_captioned ?? 0}`);
+    lines.push(`  ✅ QC passed: ${s.qc_passed ?? 0}`);
+    lines.push(`  📦 Published: ${s.published ?? 0}`);
+    lines.push('');
+  } else {
+    lines.push('⚠️ No pipeline run report found.', '');
+  }
+
+  // 2. Total inventory
+  const ledgerPath = join(process.cwd(), 'workspace', 'scs001', 'publish-ledger.jsonl');
+  const postsPath = join(process.cwd(), 'workspace', 'scs001', 'manual-posts.jsonl');
+  const expPath = join(process.cwd(), 'workspace', 'scs001', 'experiments.jsonl');
+  const scsDir = join(process.cwd(), 'workspace', 'scs001');
+
+  let ledgerCount = 0;
+  let postedCount = 0;
+  let scoredCount = 0;
+  let runCount = 0;
+
+  if (existsSync(ledgerPath)) {
+    try { ledgerCount = readFileSync(ledgerPath, 'utf-8').split('\n').filter(l => l.trim()).length; } catch {}
+  }
+  if (existsSync(postsPath)) {
+    try { postedCount = readFileSync(postsPath, 'utf-8').split('\n').filter(l => l.trim()).length; } catch {}
+  }
+  if (existsSync(expPath)) {
+    try { scoredCount = readFileSync(expPath, 'utf-8').split('\n').filter(l => l.trim()).length; } catch {}
+  }
+  try { runCount = readdirSync(scsDir).filter(d => d.startsWith('run-')).length; } catch {}
+
+  // Count captioned mp4s
+  let captionedCount = 0;
+  try {
+    const runDirs = readdirSync(scsDir).filter(d => d.startsWith('run-'));
+    for (const dir of runDirs) {
+      const capDir = join(scsDir, dir, 'caption');
+      if (existsSync(capDir)) {
+        captionedCount += readdirSync(capDir).filter(f => f.endsWith('-captioned.mp4')).length;
+      }
+    }
+  } catch {}
+
+  const unpostedCount = Math.max(0, ledgerCount - postedCount);
+
+  lines.push('*Total Inventory:*');
+  lines.push(`  📂 Pipeline runs: ${runCount}`);
+  lines.push(`  📋 Ledger entries: ${ledgerCount}`);
+  lines.push(`  🧬 Scored experiments: ${scoredCount}`);
+  lines.push(`  🎬 Captioned MP4s: ${captionedCount}`);
+  lines.push(`  ✅ Posted: ${postedCount}`);
+  lines.push(`  📦 Unposted: ${unpostedCount}`);
+  lines.push('');
+
+  // 3. Action line
+  if (captionedCount > 0 && postedCount < 30) {
+    const needed = 30 - postedCount;
+    lines.push(`💡 *${captionedCount} videos ready!* Send \`/sendvideo\` to get your next batch.`);
+    lines.push(`📊 ${needed} more posts needed for Phase 1.5 gate.`);
+  } else if (captionedCount === 0) {
+    lines.push('⚠️ No captioned videos ready. Pipeline needs to run.');
+  } else {
+    lines.push('🎉 Phase 1.5 post target reached!');
+  }
+
+  await sendMessage(chatId, lines.join('\n'));
 }

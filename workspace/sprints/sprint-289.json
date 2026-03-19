@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-289",
+  "title": "Port /pipeline command to production Telegram bot",
+  "description": "Sprint 286 added /pipeline to scripts/telegram-bot.ts but PM2 runs agents/telegram-bot/index.ts. Port /pipeline command to agents/telegram-bot/commands.ts and wire it into index.ts dispatch.",
+  "source": "auto — discovered production bot is agents/telegram-bot/, not scripts/telegram-bot.ts",
+  "tasks": [
+    {
+      "id": "289-01",
+      "title": "Add handlePipeline to agents/telegram-bot/commands.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-289",
+      "deliverables": { "code": ["agents/telegram-bot/commands.ts", "agents/telegram-bot/index.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
