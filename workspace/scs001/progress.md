@@ -1372,3 +1372,14 @@ SESSION HANDOFF (2026-03-17, Sprints 166-170):
 - Swarm used: no (new script creation)
 - Issues: Found most PM2 crons stopped (pipeline, digest, gate-regen, posting reminders). Operator needs to run ./scripts/pm2-boot.sh to restart everything.
 - Timestamp: 2026-03-19T20:15:00Z
+
+## Sprint 216 — TypeScript Fix (Direct Write)
+- Status: PASS
+- Commit: 836690f
+- Files modified: scripts/scs001/run-discovery-agent.ts, scripts/scs001/run-clip-detection.ts, scripts/scs001/run-insight-agent.ts, scripts/scs001/run-trend-agent.ts
+- Files created: workspace/sprints/sprint-216.json
+- Tasks completed:
+  - 216-01: Added missing `await` on async agent.run() calls in 3 runner scripts. Rewrote run-trend-agent.ts (had stale import from non-existent ../agents/trend-agent, wrong field names). All 4 runner scripts now compile clean (0 errors in these files).
+- Swarm used: no (surgical edits to 4 files)
+- Issues: agents/scs001-trend/live-feed.ts has TS2802 (RegExpStringIterator iteration) — pre-existing, not from this sprint.
+- Timestamp: 2026-03-19T20:30:00Z
