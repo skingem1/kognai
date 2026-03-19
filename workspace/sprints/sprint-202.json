@@ -1,0 +1,63 @@
+{
+  "sprint_id": "sprint-202",
+  "title": "Retrospective Backfill — Skill Bank + FP-007 Failure Seed",
+  "description": "Two run-once backfill scripts to recover quality-loop data lost across Sprints 096-195. (1) backfill-skill-bank.ts: reads all 131 sprint JSON files, calls crystalliseSkill() for every task with sufficient metadata — produces ~250-300 skill records that were never crystallised due to FP-007 manual-write bypass. (2) seed-fp007-failures.ts: writes synthetic failure records for the known FP-007 destructive-rewrite incidents directly to data/failure-library/code/ — no dependency on Sprint 196 (writes JSON directly, same schema as code-failure-logger). Both are new files, <100 lines each, stdlib + existing lib imports only. Run-once: scripts are idempotent (skip already-existing records). DEPENDENCY: 202-01 requires scripts/lib/skill-crystalliser.ts (exists). 202-02 is standalone (no Sprint 196 dependency — writes JSON directly). All 4 tasks are FP-007 safe (new files only).",
+  "source": "human",
+  "_plan_reference": "Quality Loop Repair — retrospective backfill audit 2026-03-19",
+  "tasks": [
+    {
+      "id": "202-01",
+      "title": "Skill bank backfill script — scripts/backfill-skill-bank.ts",
+      "description": "Create scripts/backfill-skill-bank.ts. New file, <100 lines. Reads all workspace/sprints/sprint-*.json files. For each task that has title + task_type + sprint_id fields: (1) build approachSummary from task.description truncated to 200 chars (fallback: task.title); (2) call crystalliseSkill({ agentId: task.agent||'coder', taskId: task.id, sprintId: task.sprint_id, taskTitle: task.title, taskType: task.task_type, model: 'manual-backfill', taskTarget: (task.task_target||'local') as 'local'|'cloud-code', score: 80, approachSummary, keyPatterns: [task.task_type, 'manual-write', 'fp-007-bypass'], antiPatterns: ['fp-007-large-file-rewrite', 'swarm-bypassed'] }); (3) skip if crystalliseSkill returns null (score <75 guard — always passes at 80) or if a skill file already exists for that sprint+task combo (read skill-bank/kognai-owned/ filenames to build a dedup set before starting). Print final summary: 'Crystallised: X | Skipped (exists): Y | Skipped (sparse): Z'. Imports: crystalliseSkill from './lib/skill-crystalliser', fs, path. Run with: npx ts-node scripts/backfill-skill-bank.ts from repo root.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "todo",
+      "priority": "high",
+      "sprint_id": "sprint-202",
+      "deliverables": {
+        "code": ["scripts/backfill-skill-bank.ts"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Sprint 202. Skill bank has 26 records — all from Sprints 052-095. Sprints 096-195 (100 sprints, ~300 tasks) were manual writes due to FP-007. crystalliseSkill() was never called. This script recovers ~250-300 skill records in a single run. skill-crystalliser.ts exists at scripts/lib/skill-crystalliser.ts. Score 80 is a conservative but valid default for manually-written code that shipped (it cleared human review). Idempotent: safe to re-run."
+    },
+    {
+      "id": "202-02",
+      "title": "FP-007 failure seed script — scripts/seed-fp007-failures.ts",
+      "description": "Create scripts/seed-fp007-failures.ts. New file, <100 lines. NO dependency on Sprint 196 — writes JSON directly, same schema as code-failure-logger will use. Creates data/failure-library/code/ directory if missing. Defines a hardcoded array of known FP-007 incidents (see below) and writes one fail-{uuid}.json per incident. JSON schema per file: { entry_id: string, task_id: string, sprint_id: string, agent_id: string, attempt_num: number, score: number, model: string, fail_type: 'destructive_rewrite'|'truncation', rejection_reason: string, issues: [{severity:'high'|'medium', file:string, description:string}], filed_at: string }. Idempotent: before writing, scan existing files in data/failure-library/code/ and skip any incident whose sprint_id+task_id is already present. Use crypto.randomUUID() for entry_id. Known incidents to seed (hardcode these): (1) sprint_id:'sprint-171', task_id:'171-01', agent_id:'coder', attempt_num:2, score:0, model:'qwen3:14b', fail_type:'destructive_rewrite', rejection_reason:'InsightAgent 216-line file rewritten destructively — FP-007', issues:[{severity:'high',file:'scripts/lib/insight-agent.ts',description:'Full file replaced instead of surgical edit'}]; (2) sprint_id:'sprint-171', task_id:'171-02', agent_id:'coder', attempt_num:1, score:0, model:'qwen3:14b', fail_type:'destructive_rewrite', rejection_reason:'orchestrate-agents-v2.ts 2980-line file attempted rewrite — FP-007', issues:[{severity:'high',file:'scripts/orchestrate-agents-v2.ts',description:'2980-line orchestrator — swarm attempted full rewrite'}]; (3) sprint_id:'sprint-180', task_id:'180-01', agent_id:'coder', attempt_num:1, score:0, model:'qwen3:14b', fail_type:'destructive_rewrite', rejection_reason:'contamination-guard.ts destructive stub generation — FP-007', issues:[{severity:'high',file:'scripts/lib/omel/contamination-guard.ts',description:'Qwen3:14b generated empty stubs only — manual write required'}]; (4) sprint_id:'sprint-188', task_id:'188-03', agent_id:'coder', attempt_num:1, score:0, model:'qwen3:14b', fail_type:'destructive_rewrite', rejection_reason:'clip-detection/index.ts near FP-007 limit (189 lines) — swarm truncated', issues:[{severity:'medium',file:'scripts/scs001/clip-detection/index.ts',description:'File near 200-line FP-007 limit — surgical edit truncated to stub'}]; (5) sprint_id:'sprint-172', task_id:'172-01', agent_id:'coder', attempt_num:1, score:0, model:'qwen3:14b', fail_type:'destructive_rewrite', rejection_reason:'AchiriAgent large file rewrite attempt — FP-007', issues:[{severity:'high',file:'scripts/lib/achiri-agent.ts',description:'Large agent file destructively rewritten by swarm'}]. Print: 'Seeded: X | Skipped (exists): Y'.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "todo",
+      "priority": "high",
+      "sprint_id": "sprint-202",
+      "deliverables": {
+        "code": ["scripts/seed-fp007-failures.ts"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Sprint 202. data/failure-library/code/ does not exist — zero code failure records ever written. This script seeds the 5 known FP-007 incidents as synthetic records so the failure library has a valid starting corpus for future pattern matching. Schema matches what Sprint 196-01 code-failure-logger.ts will produce. Standalone — no Sprint 196 dependency. Idempotent."
+    },
+    {
+      "id": "202-03",
+      "title": "Run both backfill scripts and commit results — validate-sprint-202.ts",
+      "description": "Create scripts/validate-sprint-202.ts. New file, <60 lines. Runs both backfill scripts via child_process.execSync and validates output: (1) execSync('npx ts-node scripts/backfill-skill-bank.ts', {cwd: ROOT, stdio:'inherit'}); (2) execSync('npx ts-node scripts/seed-fp007-failures.ts', {cwd: ROOT, stdio:'inherit'}); (3) count files in skill-bank/kognai-owned/ — assert count > 26 (more than the 26 pre-existing records); (4) assert data/failure-library/code/ exists and has at least 5 files; (5) print PASS/FAIL per check with counts. Exit 0 on all pass, exit 1 on any fail. Imports: fs, path, child_process. Run with: npx ts-node scripts/validate-sprint-202.ts",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "todo",
+      "priority": "high",
+      "sprint_id": "sprint-202",
+      "deliverables": {
+        "code": ["scripts/validate-sprint-202.ts"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Sprint 202. Standard validation pattern — creates gate script that runs both backfill scripts and confirms the data was actually written. Counts are the gate: skill-bank must grow beyond 26, code failure library must have >=5 entries."
+    }
+  ]
+}
