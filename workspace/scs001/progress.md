@@ -1865,3 +1865,14 @@ Full auto-posting pipeline built:
 - Swarm used: no (test suite)
 - Issues: None. Stripe revenue path validated end-to-end (signature + dispatch).
 - Timestamp: 2026-03-20T07:45:00Z
+
+## Sprint 264 — Pipeline Health API (Direct Write)
+- Status: PASS
+- Commit: d0c7fab
+- Files created: scripts/scs001/health-api.ts, scripts/scs001/validate-health-api.ts, workspace/sprints/sprint-264.json
+- Tasks completed:
+  - 264-01: Health API — /health, /health/gate, /health/env endpoints with CORS
+  - 264-02: Validation: 27/27 tests pass
+- Swarm used: no (API server)
+- Issues: None. Add to PM2 for persistent monitoring.
+- Timestamp: 2026-03-20T08:00:00Z
