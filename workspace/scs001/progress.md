@@ -2191,3 +2191,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (direct write)
 - Issues: Discovered Sprint 286-287 added commands to legacy scripts/telegram-bot.ts; PM2 runs agents/telegram-bot/.
 - Timestamp: 2026-03-20T01:50:00Z
+
+## Sprint 290 — Telegram /runpipeline — Trigger Pipeline on Demand (Direct Write)
+- Status: PASS
+- Commit: 26f1eb1
+- Files created: workspace/sprints/sprint-290.json
+- Files modified: agents/telegram-bot/commands.ts (+85 lines), agents/telegram-bot/index.ts (+2 lines)
+- Tasks completed:
+  - 290-01: handleRunPipeline — spawns orchestrator as child process, supports mock/live modes, 40min timeout, completion notification with summary
+- Validation: TypeScript clean compile.
+- Swarm used: no (direct write)
+- Issues: None.
+- Timestamp: 2026-03-20T02:00:00Z
