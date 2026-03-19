@@ -1783,3 +1783,14 @@ Full auto-posting pipeline built:
 - Swarm used: no (evaluation)
 - Issues: None
 - Timestamp: 2026-03-20T06:10:00Z
+
+## Sprint 257 — AMD-14 CTO Gate (Direct Write)
+- Status: PASS
+- Commit: 98df4b8
+- Files created: scripts/lib/cto-gate.ts, scripts/lib/validate-cto-gate.ts, workspace/sprints/sprint-257.json
+- Tasks completed:
+  - 257-01: CTO Gate — complexity analysis (1-10), tier selection (T0-T4), force override, cost tracking
+  - 257-02: Validation: 22/22 tests pass. Simple→T1, Medium→T2, Complex→T3, Override→works
+- Swarm used: no (single module)
+- Issues: None
+- Timestamp: 2026-03-20T06:20:00Z

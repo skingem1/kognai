@@ -183,7 +183,7 @@
       "sprint": 243,
       "title": "AMD-14 \u2014 Dynamic Model Selection at CTO Gate",
       "block": "INFRA",
-      "status": "queued",
+      "status": "done",
       "priority": "medium",
       "rationale": "CTO Gate currently hardcoded to T2 POWER (qwen3:14b). AMD-14: CTO selects model tier per sprint complexity. Reduces cost for simple sprints (T1), unlocks T3 for complex ones."
     },
