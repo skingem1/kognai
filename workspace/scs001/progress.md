@@ -1085,3 +1085,17 @@ SESSION HANDOFF (2026-03-17, Sprints 166-170):
   - clip-detection: import hookQualityScore, add hook_quality_score to ClipQualityScore interface, hookBonus = Math.round(hookQuality * 3) added to total score (0-3 on 25-point scale). Log line includes hook= value.
 - Impact: Clip quality scoring now has 3 components: LLM (0-25) + phrase triggers (0-3) + hook quality text (0-3) = max 31 (capped 25). 141 existing videos can be batch-scored. Lightweight text-only signal works without Python deps.
 - Timestamp: 2026-03-19T15:00:00Z
+
+## Sprint 189 — Viral Score Posting Priority (Phase 1 — TikTok gate velocity optimization)
+- Status: PASS
+- Commit: 0184832
+- Files created: workspace/sprints/sprint-189.json
+- Files modified: agents/telegram-bot/commands.ts
+- Test: TypeScript compile PASS (only pre-existing PM2 type errors, 0 new errors)
+- Swarm used: no (commands.ts is 1900+ lines, wrote directly)
+- Changes:
+  - handlePostNow(): loads experiments via loadExperimentsForReview(), sorts ready[] by partial_viral_score desc (nulls last), shows 🧬 Viral: X per video. Collects all ready videos then sorts+slices (was break-at-3).
+  - handlePostBatch(): same pattern — collects all unposted with mp4, sorts by viral score desc, slices to N. Shows 🧬 Viral: X per video in header.
+  - handleQueue(): sorts allUnposted by viral score desc, shows 🧬 score inline after video_id in top-5 list.
+- Impact: Operator now sees highest-viral-score videos first in all posting commands. Helps prioritize best content for Apr 7 gate.
+- Timestamp: 2026-03-19T15:30:00Z
