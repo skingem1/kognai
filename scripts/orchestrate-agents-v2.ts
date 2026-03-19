@@ -2275,7 +2275,7 @@ ONLY output the JSON array. No markdown, no explanation.`;
       }
 
       // OMEL AMD-13: HumanBrake — require approval for bulk_overwrite on high-risk files
-      if (task.type === 'modify' && (task.deliverables?.code || []).length > 0) {
+      if ((task as any).type === 'modify' && (task.deliverables?.code || []).length > 0) {
         const firstFile = ((task.deliverables?.code || []) as string[])[0] || '';
         if (humanBrake.isHighRisk('bulk_overwrite', { filePath: firstFile })) {
           const approval = await humanBrake.requireApproval('bulk_overwrite');
