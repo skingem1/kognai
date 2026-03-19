@@ -1224,3 +1224,12 @@ SESSION HANDOFF (2026-03-17, Sprints 166-170):
 - Swarm used: no (direct write)
 - Issues: Preflight revealed PM2 processes stopped, no publish-ledger on this machine, 0/30 posts
 - Timestamp: 2026-03-19T16:15:00Z
+
+## Sprint 201 — TypeScript Fix Sprint (Direct Write)
+- Status: PASS
+- Commit: 5748fc4
+- Files modified: agents/telegram-bot/commands.ts
+- Test: tsc --noEmit — 0 errors (was 6)
+- Swarm used: no (surgical fixes)
+- Issues: None
+- Timestamp: 2026-03-19T16:30:00Z
