@@ -1,0 +1,60 @@
+{
+  "tasks": [
+    {
+      "id": "188-01",
+      "title": "Batch viral scorer — scripts/scs001/batch-viral-score.ts",
+      "description": "Create scripts/scs001/batch-viral-score.ts. Scans workspace/scs001/run-*/caption/*-captioned.mp4. For each: spawns viral-scorer.py, reads result, updates experiments.jsonl entry with viral scores. Skips already-scored entries. Prints progress + summary. --dry-run flag. Uses ViralScorer from viral-scorer.ts.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "todo",
+      "priority": "critical",
+      "sprint_id": "sprint-188",
+      "deliverables": {
+        "code": ["scripts/scs001/batch-viral-score.ts"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Sprint 188. 141 existing videos have no viral scores. This batch runner backfills them so /review can prioritize by viral score."
+    },
+    {
+      "id": "188-02",
+      "title": "Hook quality text scorer — scripts/scs001/hook-quality.ts",
+      "description": "Create scripts/scs001/hook-quality.ts. Export hookQualityScore(hookText: string, whyDoesThisMatter: string): number (0-1). Scores based on: (1) hook length 5-15 words = optimal, (2) contains question/number/superlative = +0.1 each, (3) matches viral trigger words (awe/shock/surprise/nostalgia/amusement keywords) = +0.15 each, (4) why_does_this_matter specificity (number + proper noun) = +0.1 each. Capped at 1.0. Pure TypeScript, no deps.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "todo",
+      "priority": "high",
+      "sprint_id": "sprint-188",
+      "deliverables": {
+        "code": ["scripts/scs001/hook-quality.ts"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Sprint 188. Lightweight text-only viral signal. No Python deps. Works even when scenedetect/librosa not installed."
+    },
+    {
+      "id": "188-03",
+      "title": "Wire hook quality into ClipDetectionAgent scoring",
+      "description": "In agents/scs001-clip-detection/index.ts, import hookQualityScore. In the scoring callback, call hookQualityScore(ts.reason || topicText, disc.speaker). Add hook_quality_score to ClipQualityScore interface. Add triggerBonus weight: total = baseLlmScore + triggerBonus + Math.round(hookQuality * 3). Surgical edit only.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "todo",
+      "priority": "high",
+      "sprint_id": "sprint-188",
+      "deliverables": {
+        "code": ["agents/scs001-clip-detection/index.ts"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Sprint 188. Hook quality score boosts clip quality score by 0-3 points (on 25-point scale). Lightweight text analysis."
+    }
+  ],
+  "source": "human",
+  "_plan_reference": "Sprint 188: Viral Detection Week 2. Batch runner for existing videos + hook text quality scorer."
+}

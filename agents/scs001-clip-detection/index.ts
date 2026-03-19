@@ -6,6 +6,7 @@
 import { randomUUID } from 'crypto';
 import type { DiscoveryOutput } from '../scs001-discovery/index';
 import { viralScorer } from '../../scripts/scs001/viral-scorer';
+import { hookQualityScore } from '../../scripts/scs001/hook-quality';
 
 export interface ScoreBreakdown {
   curiosity:   number;
@@ -33,6 +34,7 @@ export interface ClipQualityScore {
   audio_excitement?:      number;
   clip_topic_alignment?:  number;
   partial_viral_score?:   number;
+  hook_quality_score?:    number;
 }
 
 const QUALITY_GATE    = 20;
@@ -164,13 +166,15 @@ export class ClipDetectionAgent {
       const baseLlmScore = breakdown.curiosity + breakdown.emotion + breakdown.clarity + breakdown.insight + breakdown.controversy;
       const triggers = matchPhraseTriggers(`${topicText} ${ts.reason ?? ''}`);
       const triggerBonus = Math.min(3, triggers.length);
-      const total = Math.min(25, baseLlmScore + triggerBonus);
+      const hookQuality = hookQualityScore(ts.reason || topicText, disc.speaker);
+      const hookBonus = Math.round(hookQuality * 3);
+      const total = Math.min(25, baseLlmScore + triggerBonus + hookBonus);
       const qualified = total >= QUALITY_GATE;
 
       // Viral scorer — async Python subprocess (graceful degradation to 0.5 on failure)
       const viralScores = await viralScorer.score(disc.url || '', disc.topic_tags || []);
 
-      console.log(`[ClipDetection] ${qualified ? '✓' : '✗'} score=${total}/25 viral=${viralScores.partial_viral_score} | ${disc.speaker} | ${ts.start_seconds}s-${ts.end_seconds}s`);
+      console.log(`[ClipDetection] ${qualified ? '✓' : '✗'} score=${total}/25 hook=${hookQuality} viral=${viralScores.partial_viral_score} | ${disc.speaker} | ${ts.start_seconds}s-${ts.end_seconds}s`);
 
       return {
         clip_id:                 `clip-${randomUUID().slice(0, 8)}`,
@@ -190,6 +194,7 @@ export class ClipDetectionAgent {
         audio_excitement:        viralScores.audio_excitement,
         clip_topic_alignment:    viralScores.clip_topic_alignment,
         partial_viral_score:     viralScores.partial_viral_score,
+        hook_quality_score:      hookQuality,
       } as ClipQualityScore;
     });
 
