@@ -1242,3 +1242,17 @@ SESSION HANDOFF (2026-03-17, Sprints 166-170):
 - Swarm used: no (surgical fixes)
 - Issues: PM2 names in preflight didn't match ecosystem.config.js (telegram-bot vs kognai-telegram-bot)
 - Timestamp: 2026-03-19T16:45:00Z
+
+## Sprint 205 — Swarm Reliability Fix (Executed — Direct Write)
+- Status: PASS (3/3 checks)
+- Commit: f7a8500
+- Files modified: autonomous-prompt.txt, scripts/orchestrate-agents-v2.ts
+- Files created: scripts/validate-sprint-205.ts
+- Test: scripts/validate-sprint-205.ts — 3/3 PASS
+- Tasks completed:
+  - 205-01: Added sprint re-run guard to autonomous-prompt.txt STEP 1
+  - 205-02: Nulled out postSprintSmokeTest() — removed Invoica-specific endpoints
+  - 205-03: Created validation script
+- Swarm used: no (sprint JSON was committed earlier without execution, tasks executed directly)
+- Issues: Sprint 205 JSON was committed in prior session but tasks were never executed
+- Timestamp: 2026-03-19T17:00:00Z
