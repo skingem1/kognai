@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-218",
+  "title": "TypeScript Cleanup Final — live-feed.ts RegExp iterator fix",
+  "description": "Last remaining agent/script TS error: live-feed.ts TS2802 (RegExpStringIterator). Fix: wrap matchAll with Array.from(). All agents and SCS-001 scripts now have zero TypeScript errors.",
+  "source": "autonomous",
+  "tasks": [
+    {
+      "id": "218-01",
+      "title": "Fix RegExp iterator in live-feed.ts",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "todo",
+      "priority": "low",
+      "sprint_id": "sprint-218",
+      "deliverables": { "code": ["agents/scs001-trend/live-feed.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

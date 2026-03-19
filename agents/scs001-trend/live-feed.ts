@@ -72,7 +72,7 @@ async function fetchGoogleTrends(): Promise<Oracle6Signal[]> {
   const signals: Oracle6Signal[] = [];
   let rank = 0;
 
-  for (const match of itemMatches) {
+  for (const match of Array.from(itemMatches)) {
     const item = match[1];
     const titleMatch = item.match(/<title><!\[CDATA\[(.*?)\]\]><\/title>/) ||
                        item.match(/<title>(.*?)<\/title>/);
