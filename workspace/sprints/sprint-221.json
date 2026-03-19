@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-221",
+  "title": "Pipeline Validation Run — 15 videos generated with drawtext fallback",
+  "description": "Triggered fresh pipeline run to validate Sprint 213 drawtext fix. Result: 15 videos edited, 15 captioned, 15 QC passed, 5 viral. Pipeline report + metrics updated. Telegram notification sent.",
+  "source": "autonomous",
+  "tasks": [
+    {
+      "id": "221-01",
+      "title": "Run pipeline and validate output with drawtext fallback",
+      "type": "validate",
+      "task_type": "ops",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-221",
+      "deliverables": { "code": [], "tests": [], "docs": [] }
+    }
+  ]
+}
