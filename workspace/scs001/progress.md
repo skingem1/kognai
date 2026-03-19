@@ -1955,3 +1955,16 @@ Full auto-posting pipeline built:
 - Swarm bypassed: yes (FP-007). Manual crystallise: skipped (crystalliser not critical path).
 - Issues: None. Found 384 ledger duplicates and 0 posts — both surfaced as alerts.
 - Timestamp: 2026-03-19T22:00:00Z
+
+## Sprint 271 — Ledger Dedup (Direct Write)
+- Status: PASS
+- Commit: ca90fdd
+- Files created: scripts/scs001/dedup-ledger.ts, scripts/scs001/validate-dedup-ledger.ts, workspace/sprints/sprint-271.json
+- Files modified: agents/telegram-bot/commands.ts, agents/telegram-bot/index.ts
+- Tasks completed:
+  - 271-01: Dedup utility — reads ledger, keeps latest per video_id, writes backup + deduped file
+  - 271-02: /dedup Telegram command — shows stats, /dedup confirm to execute
+  - 271-03: Validation: 12/12 tests pass
+- Swarm used: no (multi-file feature, FP-007)
+- Issues: publish-ledger.jsonl is gitignored — dedup runs locally only. 651 → 267 entries.
+- Timestamp: 2026-03-19T22:10:00Z
