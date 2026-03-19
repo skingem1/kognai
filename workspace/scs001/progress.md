@@ -1140,3 +1140,18 @@ SESSION HANDOFF (2026-03-17, Sprints 166-170):
   - smoke-test-pipeline.ts: After pipeline run, checks clip scores for partial_viral_score/hook_quality_score fields. Reports viral_scored_count and viral_warning in smoke-test-latest.json. Warns if 0 clips have viral scores.
 - Impact: Cleaner git status, operator viral visibility via Telegram, regression protection for viral scoring.
 - Timestamp: 2026-03-19T17:00:00Z
+
+## Sprint 193 — Content Calendar (Phase 1 — posting schedule)
+- Status: PASS
+- Commit: ded6f84
+- Files created: scripts/scs001/generate-content-calendar.ts, workspace/sprints/sprint-193.json
+- Files modified: agents/telegram-bot/commands.ts, agents/telegram-bot/index.ts, scripts/daily-digest.ts
+- Test: TypeScript compile PASS, dry-run test PASS (141 unposted, 40 assigned across 20 days at 2/day)
+- Swarm used: no (direct write — 1 new script + 3 file edits)
+- Changes:
+  - generate-content-calendar.ts: Reads ledger+experiments+manual-posts. Sorts unposted by viral score desc. Assigns 2/day (12:00+18:00) from today to Apr 7. Writes content-calendar.json. --dry-run flag.
+  - commands.ts: handleCalendar() — owner-only, reads content-calendar.json, shows today's videos (slot + video_id + viral_score + speaker + /record), tomorrow preview. Added to /help.
+  - index.ts: /calendar routed to handleCalendar.
+  - daily-digest.ts: getCalendarToday() reads content-calendar.json for today. buildDigest() injects "Today's Posting Schedule" section before viral topics.
+- Impact: Operator now has a daily posting plan. Run generator once, then /calendar or morning digest shows exactly which 2 videos to post today.
+- Timestamp: 2026-03-19T17:30:00Z
