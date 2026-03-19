@@ -241,13 +241,20 @@ export class SCS001Orchestrator {
         for (const gate of gates) {
           const edited = editedByVideoId.get(gate.video_id);
           const bundle = edited ? bundleByInsightId.get(edited.insight_id) : undefined;
+          // Cross-reference viral scores from ClipDetectionAgent via clip_id
+          const clipId = edited?.clip_id;
+          const clip = clipId ? clips.find(c => c.clip_id === clipId) : undefined;
           const entry: ExperimentEntry = {
-            clip_id:      gate.video_id,
-            hook_formula: bundle?.hook_formula_used ?? 'unknown',
-            speaker:      bundle?.speaker_name ?? 'unknown',
-            qc_passed:    gate.overall_pass,
-            run_id:       runId,
-            timestamp:    new Date().toISOString(),
+            clip_id:               gate.video_id,
+            hook_formula:          bundle?.hook_formula_used ?? 'unknown',
+            speaker:               bundle?.speaker_name ?? 'unknown',
+            qc_passed:             gate.overall_pass,
+            run_id:                runId,
+            timestamp:             new Date().toISOString(),
+            scene_density_score:   clip?.scene_density_score,
+            audio_excitement:      clip?.audio_excitement,
+            clip_topic_alignment:  clip?.clip_topic_alignment,
+            partial_viral_score:   clip?.partial_viral_score,
           };
           this.experiments.logExperiment(entry);
           logged++;

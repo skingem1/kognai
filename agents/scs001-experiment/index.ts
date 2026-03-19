@@ -7,12 +7,16 @@ import { appendFileSync, existsSync, readFileSync, mkdirSync } from 'fs';
 import { dirname, resolve } from 'path';
 
 export interface ExperimentEntry {
-  clip_id:      string;
-  hook_formula: string;
-  speaker:      string;
-  qc_passed:    boolean;
-  run_id:       string;
-  timestamp:    string;
+  clip_id:                string;
+  hook_formula:           string;
+  speaker:                string;
+  qc_passed:              boolean;
+  run_id:                 string;
+  timestamp:              string;
+  scene_density_score?:   number;
+  audio_excitement?:      number;
+  clip_topic_alignment?:  number;
+  partial_viral_score?:   number;
 }
 
 export interface FormulaStats {
@@ -97,5 +101,14 @@ export class ExperimentTracker {
 
   getTotalLogged(): number {
     return this.readAll().length;
+  }
+
+  getViralStats(): { avg_viral_score: number; scored_count: number; total_count: number } {
+    const entries = this.readAll();
+    const scored = entries.filter(e => e.partial_viral_score != null);
+    const avg = scored.length > 0
+      ? scored.reduce((sum, e) => sum + (e.partial_viral_score ?? 0), 0) / scored.length
+      : 0;
+    return { avg_viral_score: Math.round(avg * 1000) / 1000, scored_count: scored.length, total_count: entries.length };
   }
 }

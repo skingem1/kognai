@@ -1,0 +1,60 @@
+{
+  "tasks": [
+    {
+      "id": "187-01",
+      "title": "Add viral score fields to ExperimentEntry — agents/scs001-experiment/index.ts",
+      "description": "Add 4 optional fields to ExperimentEntry interface: scene_density_score?: number, audio_excitement?: number, clip_topic_alignment?: number, partial_viral_score?: number. Add getViralStats() method to ExperimentTracker: returns avg partial_viral_score across all experiments. Surgical edit only.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "todo",
+      "priority": "critical",
+      "sprint_id": "sprint-187",
+      "deliverables": {
+        "code": ["agents/scs001-experiment/index.ts"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Sprint 187. Viral scores from Sprint 186 need to persist in experiments.jsonl. Add fields to interface + stats method."
+    },
+    {
+      "id": "187-02",
+      "title": "Add viral_score to QualityControlGate — agents/scs001-qc/index.ts",
+      "description": "Add partial_viral_score?: number to QualityControlGate interface. Pass through from ClipQualityScore if available. Log in review output. NOT a blocking gate item — informational only.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "todo",
+      "priority": "high",
+      "sprint_id": "sprint-187",
+      "deliverables": {
+        "code": ["agents/scs001-qc/index.ts"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Sprint 187. QC gate logs viral score for operator visibility. Not a blocking gate item."
+    },
+    {
+      "id": "187-03",
+      "title": "Show viral score in /review command — agents/telegram-bot/commands.ts",
+      "description": "In handleReview(), show partial_viral_score from experiments.jsonl alongside hook_formula/speaker. Format: 🧬 Viral: 0.72. Also update review-videos.ts if it reads experiments.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "todo",
+      "priority": "high",
+      "sprint_id": "sprint-187",
+      "deliverables": {
+        "code": ["agents/telegram-bot/commands.ts", "scripts/scs001/review-videos.ts"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Sprint 187. Operator sees viral score in /review output. Helps prioritize which videos to post first."
+    }
+  ],
+  "source": "human",
+  "_plan_reference": "Sprint 187: Viral Score Pipeline Integration. Follow-up to Sprint 186 (scorer + ClipDetection wiring). Persists scores, surfaces in QC + Telegram."
+}

@@ -739,11 +739,12 @@ const EXPERIMENTS_PATH_BOT = join(process.cwd(), 'workspace', 'scs001', 'experim
 const WORKSPACE_SCS001      = join(process.cwd(), 'workspace', 'scs001');
 
 interface ReviewVideoMeta {
-  video_id:     string;
-  hook_formula: string;
-  speaker:      string;
-  qc_passed:    boolean;
-  mp4_path:     string;
+  video_id:            string;
+  hook_formula:        string;
+  speaker:             string;
+  qc_passed:           boolean;
+  mp4_path:            string;
+  partial_viral_score?: number;
 }
 
 function loadExperimentsForReview(): Map<string, ReviewVideoMeta> {
@@ -759,10 +760,11 @@ function loadExperimentsForReview(): Map<string, ReviewVideoMeta> {
         const id = e.clip_id ?? e.video_id ?? '';
         if (id) {
           map.set(id, {
-            video_id:     id,
-            hook_formula: e.hook_formula ?? 'unknown',
-            speaker:      e.speaker ?? 'unknown',
-            qc_passed:    !!e.qc_passed,
+            video_id:            id,
+            hook_formula:        e.hook_formula ?? 'unknown',
+            speaker:             e.speaker ?? 'unknown',
+            qc_passed:           !!e.qc_passed,
+            partial_viral_score: e.partial_viral_score,
             mp4_path:     '',
           });
         }
@@ -810,16 +812,19 @@ export async function handleReview(chatId: number, ownerChatId: string): Promise
     const videoId = mp4.replace('-captioned.mp4', '');
     const meta = experiments.get(videoId);
     return {
-      video_id:     videoId,
-      hook_formula: meta?.hook_formula ?? 'unknown',
-      speaker:      meta?.speaker ?? 'unknown',
-      qc_passed:    meta?.qc_passed ?? false,
-      mp4_path:     join(captionDir, mp4),
+      video_id:            videoId,
+      hook_formula:        meta?.hook_formula ?? 'unknown',
+      speaker:             meta?.speaker ?? 'unknown',
+      qc_passed:           meta?.qc_passed ?? false,
+      mp4_path:            join(captionDir, mp4),
+      partial_viral_score: meta?.partial_viral_score,
     };
   });
 
-  // QC-passed first, then take top 3
-  const sorted = [...videos].sort((a, b) => (b.qc_passed ? 1 : 0) - (a.qc_passed ? 1 : 0));
+  // QC-passed first, then by viral score descending, then take top 3
+  const sorted = [...videos].sort((a, b) =>
+    (b.qc_passed ? 1 : 0) - (a.qc_passed ? 1 : 0) || (b.partial_viral_score ?? 0) - (a.partial_viral_score ?? 0)
+  );
   const top3 = sorted.slice(0, 3);
 
   if (top3.length === 0) {
@@ -843,6 +848,7 @@ export async function handleReview(chatId: number, ownerChatId: string): Promise
     msgLines.push(`*${i + 1}. ${qcIcon} ${idShort}*`);
     msgLines.push(`   Formula: ${v.hook_formula}`);
     msgLines.push(`   Speaker: ${v.speaker}`);
+    if (v.partial_viral_score != null) msgLines.push(`   Viral: ${v.partial_viral_score.toFixed(2)}`);
     msgLines.push(`   Path: \`${v.mp4_path}\``);
     msgLines.push(`   Record: \`npx ts-node scripts/scs001/record-manual-post.ts --video-id ${v.video_id} --views 0\``);
     msgLines.push('');

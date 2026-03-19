@@ -19,10 +19,11 @@ export interface QualityControlGate {
     constitutional_filter:   boolean;
     clip_understandable:     boolean;
   };
-  overall_pass:    boolean;
-  failure_reason:  string | null;
-  return_to_agent: number | null;
-  reviewed_at:     string;
+  overall_pass:          boolean;
+  failure_reason:        string | null;
+  return_to_agent:       number | null;
+  reviewed_at:           string;
+  partial_viral_score?:  number;
 }
 
 // Generic phrases that indicate non-substantive why_does_this_matter
