@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-223",
+  "title": "Sprint Brief Regeneration — fresh context for next session",
+  "description": "Regenerated workspace/sprint-brief.md via Qwen3:14b (local, $0). Brief now shows Sprint 222 as latest, accurate pipeline state (15 videos/run), gate countdown (19d), and operator quickstart.",
+  "source": "autonomous",
+  "tasks": [
+    {
+      "id": "223-01",
+      "title": "Regenerate sprint brief with current state",
+      "type": "ops",
+      "task_type": "ops",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-223",
+      "deliverables": { "code": [], "tests": [], "docs": ["workspace/sprint-brief.md"] }
+    }
+  ]
+}
