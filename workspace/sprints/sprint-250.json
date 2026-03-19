@@ -1,0 +1,44 @@
+{
+  "sprint_id": "sprint-250",
+  "title": "TTS Voiceover — ElevenLabs API + background music mixing",
+  "description": "Add TTS voiceover generation to SCS-001 pipeline. Uses ElevenLabs API for per-segment voice generation. FFmpeg mixes voiceover + background music + original clip audio. Replaces silent anullsrc with real audio track.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "250-01",
+      "title": "Create TTS voiceover module — ElevenLabs per-segment voice generation",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-250",
+      "deliverables": { "code": ["scripts/scs001/tts-voiceover.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "250-02",
+      "title": "Create audio mixer module — FFmpeg voice + music + clip audio mixing",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-250",
+      "deliverables": { "code": ["scripts/scs001/audio-mixer.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "250-03",
+      "title": "Validate TTS module loads and dry-run works",
+      "type": "test",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-250",
+      "deliverables": { "code": ["scripts/scs001/validate-tts-voiceover.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
