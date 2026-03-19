@@ -159,7 +159,7 @@
       "sprint": 240,
       "title": "BrainX Memory Type Extensions \u2014 RENTAL_EXPIRED tier + AMD-02A",
       "block": "BRAINX",
-      "status": "queued",
+      "status": "done",
       "priority": "medium",
       "rationale": "Originally Sprint 190 \u2014 skipped by swarm. AMD-02 Addendum: skill_rental_gotcha + skill_rental_learning memory types. RENTAL_EXPIRED tier. Rental Memory Governance Rule. nomic-embed-text local embeddings."
     },
@@ -167,7 +167,7 @@
       "sprint": 241,
       "title": "EVAL-001 \u2014 OpenViking evaluation for Skill Bank",
       "block": "BRAINX",
-      "status": "queued",
+      "status": "done",
       "priority": "medium",
       "rationale": "Phase 2A gate dependency. CTO agent (deepseek-r1:14b) evaluates volcengine/OpenViking (1K stars, Apache 2.0). 5 criteria: Python SDK + ARM64, Skill Bank mount, Memory compat, distillation hook, production readiness. 3 outcomes: ADOPT/PARTIAL/REJECT."
     },

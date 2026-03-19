@@ -1759,3 +1759,15 @@ Full auto-posting pipeline built:
 - Swarm used: no (multi-file, complex integration test)
 - Issues: transcribe-audio.ts naming mismatch (fixed). Clip detection stage takes ~180s (Ollama mock).
 - Timestamp: 2026-03-20T05:50:00Z
+
+## Sprint 255 — EVAL-001 OpenViking (Direct Write)
+- Status: PASS
+- Commit: 5ed4808
+- Files created: scripts/evaluations/cto-eval-framework.ts, scripts/evaluations/eval-001-openviking.ts, scripts/evaluations/validate-eval-001.ts, workspace/sprints/sprint-255.json
+- Tasks completed:
+  - 255-01: CTO eval framework — 5-criteria weighted scoring, ADOPT/PARTIAL/REJECT thresholds, report printer, validator
+  - 255-02: EVAL-001 OpenViking — scored 3.10/5.00 → PARTIAL. Good for skill orchestration, gaps in distillation + memory compat
+  - 255-03: Validation: 36/36 tests pass
+- Swarm used: no (evaluation framework + research)
+- Issues: None
+- Timestamp: 2026-03-20T06:00:00Z
