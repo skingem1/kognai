@@ -1185,3 +1185,13 @@ SESSION HANDOFF (2026-03-17, Sprints 166-170):
 - **Operator action needed:** Start posting! /calendar or /post-now shows what to post today.
 - **Known gaps:** Viral scores = 0 in experiments.jsonl (run batch-viral-score.ts to backfill), Achiri not yet deployed to Hetzner
 - **State files:** MEMORY.md + workspace/scs001/progress.md are current
+
+## Sprint 197 — Quality Loop Repair v2 (Direct Write)
+- Status: PASS
+- Commit: cb755f7
+- Files created: scripts/lib/code-failure-logger.ts, workspace/sprints/sprint-197.json
+- Files modified: scripts/orchestrate-agents-v2.ts, autonomous-prompt.txt, scripts/generate-sprint-brief.py
+- Test: TypeScript compile check — PASS, Python syntax check — PASS
+- Swarm used: no (swarm 0% success rate — Sprint 196 committed JSON only, 0 tasks executed)
+- Issues: Sprint 196 was committed with "4 tasks" message but only the JSON file was added. Swarm latest-run.json shows 0/3 tasks done for sprint-186. All code written directly.
+- Timestamp: 2026-03-19T15:30:00Z
