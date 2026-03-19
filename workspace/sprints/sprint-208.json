@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-208",
+  "title": "Preflight Fix — wrong ledger path + captioned MP4 search path",
+  "description": "production-preflight.ts has 2 bugs: (1) Ledger path is data/publish-ledger.jsonl but actual is workspace/scs001/publish-ledger.jsonl. (2) MP4 search looks in run-*/ root but captioned files are in run-*/caption/. Fixes both false negatives so preflight accurately reflects pipeline state.",
+  "source": "autonomous",
+  "tasks": [
+    {
+      "id": "208-01",
+      "title": "Fix publish ledger path in production-preflight.ts",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "todo",
+      "priority": "high",
+      "sprint_id": "sprint-208",
+      "deliverables": { "code": ["scripts/production-preflight.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "208-02",
+      "title": "Fix captioned MP4 search path — look in run-*/caption/ subdirectory",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "todo",
+      "priority": "high",
+      "sprint_id": "sprint-208",
+      "deliverables": { "code": ["scripts/production-preflight.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

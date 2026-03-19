@@ -93,7 +93,7 @@ function checkGates() {
 // ── 3. Pipeline Status ──────────────────────────────────────────────────────
 
 function checkPipeline() {
-  const ledgerPath = join(ROOT, 'data', 'publish-ledger.jsonl');
+  const ledgerPath = join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl');
   if (existsSync(ledgerPath)) {
     const count = readFileSync(ledgerPath, 'utf-8').trim().split('\n').filter(Boolean).length;
     check('Pipeline', `Publish ledger: ${count} videos`, count > 0, count > 0 ? `${count} videos ready` : 'Empty',
@@ -108,9 +108,9 @@ function checkPipeline() {
       ? execSync(`ls -d ${join(ROOT, 'workspace', 'scs001', 'run-*')} 2>/dev/null || true`, { timeout: 5000 }).toString().trim().split('\n').filter(Boolean)
       : [];
     let mp4Count = 0;
-    for (const dir of runDirs.slice(-5)) {
+    for (const dir of runDirs) {
       try {
-        const files = execSync(`ls ${dir}/*captioned*.mp4 2>/dev/null || true`, { timeout: 3000 }).toString().trim().split('\n').filter(Boolean);
+        const files = execSync(`ls ${dir}/caption/*captioned*.mp4 2>/dev/null || true`, { timeout: 3000 }).toString().trim().split('\n').filter(Boolean);
         mp4Count += files.length;
       } catch { /* skip */ }
     }
