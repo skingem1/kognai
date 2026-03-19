@@ -1530,3 +1530,14 @@ Operator quickstart: (1) bash scripts/pre-deploy-check.sh (2) ./scripts/pm2-boot
 - Swarm used: no (path fix)
 - Issues: None
 - Timestamp: 2026-03-20T00:00:00Z
+
+## Sprint 230 — Daily Digest Video Delivery (Direct Write)
+- Status: PASS
+- Commit: d20135e
+- Files modified: scripts/daily-digest.ts
+- Files created: workspace/sprints/sprint-230.json
+- Tasks completed:
+  - 230-01: daily-digest.ts sends top video file via sendVideoTelegram after text digest. findCaptionedMp4Path() added (returns path vs boolean). Non-fatal on video failure. All automated touchpoints now deliver videos: digest (07:00), reminders (12:00/18:00), /postnow, /postbatch.
+- Swarm used: no (single-file edit)
+- Issues: None
+- Timestamp: 2026-03-20T00:15:00Z
