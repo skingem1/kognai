@@ -110,15 +110,20 @@ function getViralTopics(): string[] {
 
 // Sprint 165: scan run-* dirs to count videos with actual captioned mp4 on disk
 function findCaptionedMp4Local(videoId: string): boolean {
+  return findCaptionedMp4Path(videoId) !== null;
+}
+
+// Sprint 230: return actual path for video delivery
+function findCaptionedMp4Path(videoId: string): string | null {
   try {
     const scsDir = path.join(ROOT, 'workspace', 'scs001');
     const runDirs = fs.readdirSync(scsDir).filter(d => d.startsWith('run-'));
     for (const dir of runDirs) {
       const p = path.join(scsDir, dir, 'caption', `${videoId}-captioned.mp4`);
-      if (fs.existsSync(p)) return true;
+      if (fs.existsSync(p)) return p;
     }
   } catch { /* ignore */ }
-  return false;
+  return null;
 }
 
 function loadViralScoresForDigest(): Map<string, number> {
@@ -318,6 +323,49 @@ function sendTelegram(chatId: string, text: string): Promise<void> {
   });
 }
 
+// Sprint 230: Send video file via Telegram sendVideo API
+function sendVideoTelegram(chatId: string, videoPath: string, caption?: string): Promise<void> {
+  const boundary = '----TgBotBoundary' + Date.now().toString(16);
+  const filename = path.basename(videoPath);
+  const fileData = fs.readFileSync(videoPath);
+
+  const parts: Buffer[] = [];
+  parts.push(Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="chat_id"\r\n\r\n${chatId}\r\n`));
+  if (caption) {
+    parts.push(Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="caption"\r\n\r\n${caption}\r\n`));
+    parts.push(Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="parse_mode"\r\n\r\nMarkdown\r\n`));
+  }
+  parts.push(Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="video"; filename="${filename}"\r\nContent-Type: video/mp4\r\n\r\n`));
+  parts.push(fileData);
+  parts.push(Buffer.from(`\r\n--${boundary}--\r\n`));
+
+  const body = Buffer.concat(parts);
+
+  return new Promise((resolve, reject) => {
+    const req = https.request({
+      hostname: 'api.telegram.org',
+      path: `/bot${BOT_TOKEN}/sendVideo`,
+      method: 'POST',
+      headers: { 'Content-Type': `multipart/form-data; boundary=${boundary}`, 'Content-Length': body.length },
+      timeout: 180_000,
+    }, (res) => {
+      let data = '';
+      res.on('data', (c: Buffer) => (data += c.toString()));
+      res.on('end', () => {
+        try {
+          const parsed = JSON.parse(data) as { ok: boolean; description?: string };
+          if (!parsed.ok) reject(new Error(`sendVideo: ${parsed.description ?? data.slice(0, 200)}`));
+          else resolve();
+        } catch { reject(new Error(`sendVideo parse: ${data.slice(0, 200)}`)); }
+      });
+    });
+    req.on('error', reject);
+    req.on('timeout', () => { req.destroy(); reject(new Error('sendVideo timeout')); });
+    req.write(body);
+    req.end();
+  });
+}
+
 // ── Entry ─────────────────────────────────────────────────────────────────────
 
 async function main(): Promise<void> {
@@ -345,6 +393,28 @@ async function main(): Promise<void> {
   } catch (err: any) {
     process.stderr.write(`[daily-digest] Send failed: ${err.message}\n`);
     process.exit(1);
+  }
+
+  // Sprint 230: Send top ready-to-post video with the morning digest
+  try {
+    const queue = getQueueStats();
+    if (queue.top3.length > 0) {
+      const topId = queue.top3[0];
+      const mp4Path = findCaptionedMp4Path(topId);
+      if (mp4Path) {
+        const topicsPath = path.join(ROOT, 'workspace', 'scs001', 'viral-topics.json');
+        let hashtags = '#ai #tech #fyp #viral #learnontiktok';
+        try {
+          const vt = JSON.parse(fs.readFileSync(topicsPath, 'utf-8'));
+          const tags = (vt.topics ?? []).slice(0, 4).map((t: string) => `#${t}`);
+          if (tags.length > 0) hashtags = [...tags, '#fyp', '#viral', '#learnontiktok'].join(' ');
+        } catch { /* fallback */ }
+        await sendVideoTelegram(OWNER_ID, mp4Path, `Post this now!\n${hashtags}\n\n/record ${topId} 0`);
+        process.stdout.write(`[daily-digest] Top video sent: ${topId}\n`);
+      }
+    }
+  } catch (err: any) {
+    process.stderr.write(`[daily-digest] Video send failed (non-fatal): ${err.message}\n`);
   }
 }
 

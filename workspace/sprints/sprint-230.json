@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-230",
+  "title": "Daily Digest Video Delivery — morning digest sends top video file",
+  "description": "daily-digest.ts now sends the highest-scoring ready-to-post video file after the text digest. Every morning at 07:00, operator gets digest + video in Telegram. Save to phone, upload to TikTok. All automated touchpoints now deliver videos.",
+  "source": "autonomous",
+  "tasks": [
+    {
+      "id": "230-01",
+      "title": "Add sendVideoTelegram to daily-digest.ts and send top video after digest",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-230",
+      "deliverables": { "code": ["scripts/daily-digest.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
