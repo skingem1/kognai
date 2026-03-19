@@ -771,6 +771,28 @@ module.exports = {
       out_file: "/Users/tarekmnif/kognai/logs/verify-posts-out.log",
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
+    // ─── TikTok View Count Tracker (Sprint 266) ─────────────────────────────────
+    // Daily at 10:00: fetches oEmbed data for recorded posts, verifies they're live,
+    // updates titles, and sends gate milestone alerts when targets are hit.
+    {
+      name: "kognai-view-tracker",
+      script: "scripts/scs001/fetch-tiktok-views.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: false,
+      watch: false,
+      cron_restart: "0 10 * * *",
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
+        TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN || "",
+        OWNER_TELEGRAM_CHAT_ID: process.env.OWNER_TELEGRAM_CHAT_ID || "",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/view-tracker-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/view-tracker-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
     // ─── ClawRouter HTTP Gateway (Sprint 173) ─────────────────────────────────
     {
       name: "clawrouter-gateway",

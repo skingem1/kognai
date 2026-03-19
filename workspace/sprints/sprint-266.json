@@ -1,0 +1,44 @@
+{
+  "sprint_id": "sprint-266",
+  "title": "TikTok view count tracker — oEmbed auto-scrape for gate metrics",
+  "description": "Auto-fetch view counts for recorded TikTok posts using the public oEmbed API (no auth token needed). Runs daily via PM2 cron, updates manual-posts.jsonl with latest view counts, and sends Telegram alert when gate targets are hit.",
+  "source": "auto — gate requires 500+ total views but no automated view tracking exists. Operator must manually /updateviews each post.",
+  "tasks": [
+    {
+      "id": "266-01",
+      "title": "TikTok view count fetcher via oEmbed API",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-266",
+      "deliverables": { "code": ["scripts/scs001/fetch-tiktok-views.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "266-02",
+      "title": "PM2 cron config for daily view count refresh",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-266",
+      "deliverables": { "code": ["ecosystem.config.js"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "266-03",
+      "title": "Validation test for view count fetcher",
+      "type": "test",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-266",
+      "deliverables": { "code": ["scripts/scs001/validate-view-tracker.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
