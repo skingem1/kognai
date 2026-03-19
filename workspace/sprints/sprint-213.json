@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-213",
+  "title": "FFmpeg Drawtext Fallback — auto-detect missing filter, fallback to mock rendering",
+  "description": "Production editing mode fails because Homebrew FFmpeg lacks drawtext filter (no libfreetype). EditingAgent silently produces 0 videos. Fix: detect drawtext availability at startup, auto-fallback to mock rendering with metadata-only text.",
+  "source": "autonomous",
+  "tasks": [
+    {
+      "id": "213-01",
+      "title": "Add drawtext detection + auto-fallback in EditingAgent",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "todo",
+      "priority": "high",
+      "sprint_id": "sprint-213",
+      "deliverables": { "code": ["agents/scs001-editing/index.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

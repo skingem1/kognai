@@ -31,6 +31,20 @@ export interface EditedVideo {
 
 const FFMPEG = process.env.FFMPEG_PATH ?? '/opt/homebrew/bin/ffmpeg';
 
+// Detect drawtext filter availability (requires libfreetype)
+let HAS_DRAWTEXT: boolean | null = null;
+function hasDrawtext(): boolean {
+  if (HAS_DRAWTEXT !== null) return HAS_DRAWTEXT;
+  try {
+    execSync(`${FFMPEG} -filters 2>&1 | grep drawtext`, { stdio: 'pipe', timeout: 5000 });
+    HAS_DRAWTEXT = true;
+  } catch {
+    HAS_DRAWTEXT = false;
+    console.warn('[EditingAgent] drawtext filter not available — falling back to color-block mode');
+  }
+  return HAS_DRAWTEXT;
+}
+
 // Segment → background colour mapping for mock mode
 // Each segment gets a distinct color so the video structure is visible
 const SEGMENT_COLORS: Record<ScriptSegment['segment_name'], string> = {
@@ -185,11 +199,14 @@ export class EditingAgent {
     const outputPath = this.outputDir + '/' + videoId + '.mp4';
 
     // Build and execute FFmpeg command
-    const productionMode = (process.env.SCS_EDITING_MODE ?? 'mock') === 'production';
-    const cmd = productionMode
+    // Production mode requires drawtext filter (libfreetype). Auto-fallback to mock if unavailable.
+    const wantsProduction = (process.env.SCS_EDITING_MODE ?? 'mock') === 'production';
+    const useProduction = wantsProduction && hasDrawtext();
+    const cmd = useProduction
       ? buildProductionFFmpegCommand(bundle, outputPath)
       : buildMockFFmpegCommand(bundle, outputPath);
-    console.log('[EditingAgent] FFmpeg command length: ' + cmd.length + ' chars (mode: ' + (productionMode ? 'production' : 'mock') + ')');
+    const modeLabel = useProduction ? 'production' : (wantsProduction ? 'mock-fallback' : 'mock');
+    console.log('[EditingAgent] FFmpeg command length: ' + cmd.length + ' chars (mode: ' + modeLabel + ')');
 
     const startMs = Date.now();
     execSync(cmd, { stdio: 'pipe', timeout: 120_000 });
