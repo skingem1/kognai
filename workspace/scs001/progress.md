@@ -1464,3 +1464,14 @@ Operator quickstart: (1) bash scripts/pre-deploy-check.sh (2) ./scripts/pm2-boot
 - Swarm used: no
 - Issues: None
 - Timestamp: 2026-03-19T22:30:00Z
+
+## Sprint 224 — Dashboard Readiness Fix (Direct Write)
+- Status: PASS
+- Commit: b0b513a
+- Files modified: dashboard/parsers/readiness.py
+- Files created: workspace/sprints/sprint-224.json
+- Tasks completed:
+  - 224-01: Readiness dashboard now correctly distinguishes: current_posts=0 (manual TikTok posts, gate metric) vs current_generated=191 (pipeline-generated videos, queue). Added current_views from manual-posts.jsonl. Phase 1.5 projection now uses manual posts not ledger entries.
+- Swarm used: no (single-file edit)
+- Issues: None
+- Timestamp: 2026-03-19T22:45:00Z
