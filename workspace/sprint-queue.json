@@ -199,7 +199,7 @@
       "sprint": 245,
       "title": "Landing page \u2014 kognai.ai MVP",
       "block": "LAUNCH",
-      "status": "queued",
+      "status": "done",
       "priority": "medium",
       "rationale": "Launch Strategy v1.0 requires kognai.ai landing page. Minimal: hero + mission + waitlist. Static HTML or Astro. Deploy to Vercel/Cloudflare."
     },
