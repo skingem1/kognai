@@ -2289,3 +2289,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (1-line fix, same class as Sprint 294)
 - Issues: None.
 - Timestamp: 2026-03-20T03:55:00Z
+
+## Sprint 298 — Achiri Timeout Handling: 30s Ollama Timeout (Direct Write)
+- Status: PASS
+- Commit: 966f99a
+- Files created: workspace/sprints/sprint-298.json
+- Files modified: agents/achiri/index.ts
+- Tasks completed:
+  - 298-01: Added 30s AbortController timeout to Ollama fetch in Achiri chat(). Previously waited for Node's default 300s undici timeout, causing 5-minute user-facing delays when Ollama is down. Now times out in 30s and returns Darija fallback message immediately.
+- Validation: Achiri E2E test — 33/33 pass, 0 fail. TypeScript clean compile.
+- Swarm used: no (surgical fetch timeout edit)
+- Issues: None.
+- Timestamp: 2026-03-20T04:05:00Z
