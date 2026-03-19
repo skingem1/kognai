@@ -1,11 +1,11 @@
 {
-  "_note": "AUTHORITATIVE sprint execution order. The brief generator reads this and injects the first item as a MANDATORY directive, bypassing Qwen's recommendation. Pop items by setting status=done after each sprint ships. Human-maintained — edit to re-prioritise.",
+  "_note": "AUTHORITATIVE sprint execution order. The brief generator reads this and injects the first item as a MANDATORY directive, bypassing Qwen's recommendation. Pop items by setting status=done after each sprint ships. Human-maintained \u2014 edit to re-prioritise.",
   "updated": "2026-03-19T22:00",
   "owner": "Tarek (human)",
   "queue": [
     {
       "sprint": 181,
-      "title": "OMEL Phase 2 — Phantom Workspace v2",
+      "title": "OMEL Phase 2 \u2014 Phantom Workspace v2",
       "block": "OMEL-P2",
       "status": "done",
       "priority": "high",
@@ -13,7 +13,7 @@
     },
     {
       "sprint": 182,
-      "title": "OMEL Phase 2 — Credential Vault hardening",
+      "title": "OMEL Phase 2 \u2014 Credential Vault hardening",
       "block": "OMEL-P2",
       "status": "done",
       "priority": "high",
@@ -21,7 +21,7 @@
     },
     {
       "sprint": 183,
-      "title": "OMEL Phase 2 — Wipe Witness v2 + audit trail",
+      "title": "OMEL Phase 2 \u2014 Wipe Witness v2 + audit trail",
       "block": "OMEL-P2",
       "status": "done",
       "priority": "high",
@@ -29,7 +29,7 @@
     },
     {
       "sprint": 184,
-      "title": "OMEL Phase 2 — Human Brake cross-agent enforcement",
+      "title": "OMEL Phase 2 \u2014 Human Brake cross-agent enforcement",
       "block": "OMEL-P2",
       "status": "done",
       "priority": "high",
@@ -37,7 +37,7 @@
     },
     {
       "sprint": 185,
-      "title": "OMEL Phase 2 — ContaminationGuard v2 + gate validator",
+      "title": "OMEL Phase 2 \u2014 ContaminationGuard v2 + gate validator",
       "block": "OMEL-P2",
       "status": "done",
       "priority": "high",
@@ -45,7 +45,7 @@
     },
     {
       "sprint": 186,
-      "title": "Viral Detection Week 1 — PySceneDetect + librosa + OpenCLIP",
+      "title": "Viral Detection Week 1 \u2014 PySceneDetect + librosa + OpenCLIP",
       "block": "VIRAL",
       "status": "done",
       "priority": "medium",
@@ -53,7 +53,7 @@
     },
     {
       "sprint": 187,
-      "title": "Viral Detection Week 2 — VideoMAE + composite score wiring",
+      "title": "Viral Detection Week 2 \u2014 VideoMAE + composite score wiring",
       "block": "VIRAL",
       "status": "done",
       "priority": "medium",
@@ -61,7 +61,7 @@
     },
     {
       "sprint": 188,
-      "title": "Viral Score Posting Priority (diverged from plan — was Constitution wiring)",
+      "title": "Viral Score Posting Priority (diverged from plan \u2014 was Constitution wiring)",
       "block": "VIRAL",
       "status": "done",
       "priority": "medium",
@@ -69,7 +69,7 @@
     },
     {
       "sprint": 189,
-      "title": "Viral Score Everywhere (diverged from plan — was ACP v1.0)",
+      "title": "Viral Score Everywhere (diverged from plan \u2014 was ACP v1.0)",
       "block": "VIRAL",
       "status": "done",
       "priority": "medium",
@@ -77,7 +77,7 @@
     },
     {
       "sprint": 190,
-      "title": "Dashboard Viral Score Panel (diverged from plan — was BrainX EVAL-001)",
+      "title": "Dashboard Viral Score Panel (diverged from plan \u2014 was BrainX EVAL-001)",
       "block": "VIRAL",
       "status": "done",
       "priority": "medium",
@@ -85,31 +85,31 @@
     },
     {
       "sprint": 238,
-      "title": "Constitution wiring — CONSTITUTION.md injected into all agent prompts",
+      "title": "Constitution wiring \u2014 CONSTITUTION.md injected into all agent prompts",
       "block": "CONSTITUTION",
-      "status": "next",
+      "status": "done",
       "priority": "high",
-      "rationale": "Originally Sprint 188 — skipped by swarm divergence. Constitution.md exists (61 lines, v0, 6 sections) but NOT wired into any agent prompt. All 16 agent prompts in kognai-agents/ + 13 SCS-001 agents need Constitutional Mandate header. Per AMD-03 + Execution Protocol v1.0."
+      "rationale": "Originally Sprint 188 \u2014 skipped by swarm divergence. Constitution.md exists (61 lines, v0, 6 sections) but NOT wired into any agent prompt. All 16 agent prompts in kognai-agents/ + 13 SCS-001 agents need Constitutional Mandate header. Per AMD-03 + Execution Protocol v1.0."
     },
     {
       "sprint": 239,
-      "title": "ACP v1.0 — multi-dimensional trust scores + routing enforcement",
+      "title": "ACP v1.0 \u2014 multi-dimensional trust scores + routing enforcement",
       "block": "CONSTITUTION",
       "status": "queued",
       "priority": "high",
-      "rationale": "Originally Sprint 189 — skipped by swarm. ACP (Agent Constitutional Protocol) v1.0: content scoring across 5 dimensions (safety, accuracy, brand-alignment, cultural-sensitivity, legal-compliance). Flat scores exist — need enforcement layer at ClawRouter gate."
+      "rationale": "Originally Sprint 189 \u2014 skipped by swarm. ACP (Agent Constitutional Protocol) v1.0: content scoring across 5 dimensions (safety, accuracy, brand-alignment, cultural-sensitivity, legal-compliance). Flat scores exist \u2014 need enforcement layer at ClawRouter gate."
     },
     {
       "sprint": 248,
-      "title": "Audio Transcription — Whisper on source clips + transcript storage",
+      "title": "Audio Transcription \u2014 Whisper on source clips + transcript storage",
       "block": "VIDEO-QUALITY",
       "status": "queued",
       "priority": "high",
-      "rationale": "n8n flow step 2. Add Whisper (local whisper.cpp or OpenAI API) to clip-detection/editing pipeline. Extract original audio text from viral clips. Save transcripts to Google Sheets or workspace/transcripts/. This feeds the LLM script rewriter with the ACTUAL words that went viral. Currently SCS-001 only uses metadata — never listens to the clip."
+      "rationale": "n8n flow step 2. Add Whisper (local whisper.cpp or OpenAI API) to clip-detection/editing pipeline. Extract original audio text from viral clips. Save transcripts to Google Sheets or workspace/transcripts/. This feeds the LLM script rewriter with the ACTUAL words that went viral. Currently SCS-001 only uses metadata \u2014 never listens to the clip."
     },
     {
       "sprint": 249,
-      "title": "LLM Script Rewriting — replace deterministic templates with Claude/GPT rewrite",
+      "title": "LLM Script Rewriting \u2014 replace deterministic templates with Claude/GPT rewrite",
       "block": "VIDEO-QUALITY",
       "status": "queued",
       "priority": "high",
@@ -117,15 +117,15 @@
     },
     {
       "sprint": 250,
-      "title": "TTS Voiceover — ElevenLabs API + background music mixing",
+      "title": "TTS Voiceover \u2014 ElevenLabs API + background music mixing",
       "block": "VIDEO-QUALITY",
       "status": "queued",
       "priority": "high",
-      "rationale": "n8n flow step 5 (voice component). CRITICAL gap: all SCS-001 videos are SILENT (~2kbps). voiceover_text exists in every script segment but nothing converts it to audio. Add: (1) ElevenLabs API ($5/mo starter, 10K chars) or local Piper TTS, (2) per-segment audio generation, (3) FFmpeg audio mixing — voice + royalty-free background music library + original clip audio during clip segment. Replace anullsrc with real audio track."
+      "rationale": "n8n flow step 5 (voice component). CRITICAL gap: all SCS-001 videos are SILENT (~2kbps). voiceover_text exists in every script segment but nothing converts it to audio. Add: (1) ElevenLabs API ($5/mo starter, 10K chars) or local Piper TTS, (2) per-segment audio generation, (3) FFmpeg audio mixing \u2014 voice + royalty-free background music library + original clip audio during clip segment. Replace anullsrc with real audio track."
     },
     {
       "sprint": 251,
-      "title": "Captions.ai Avatar Integration — AI presenter for hook/commentary segments",
+      "title": "Captions.ai Avatar Integration \u2014 AI presenter for hook/commentary segments",
       "block": "VIDEO-QUALITY",
       "status": "queued",
       "priority": "high",
@@ -133,7 +133,7 @@
     },
     {
       "sprint": 252,
-      "title": "JSON2Video Caption Overlay — animated subtitles + keyword highlighting",
+      "title": "JSON2Video Caption Overlay \u2014 animated subtitles + keyword highlighting",
       "block": "VIDEO-QUALITY",
       "status": "queued",
       "priority": "medium",
@@ -141,7 +141,7 @@
     },
     {
       "sprint": 253,
-      "title": "Blotato Multi-Platform Publishing — 9 platforms via API",
+      "title": "Blotato Multi-Platform Publishing \u2014 9 platforms via API",
       "block": "VIDEO-QUALITY",
       "status": "queued",
       "priority": "medium",
@@ -149,23 +149,23 @@
     },
     {
       "sprint": 254,
-      "title": "Video Quality Gate v2 — end-to-end pipeline test + A/B metrics",
+      "title": "Video Quality Gate v2 \u2014 end-to-end pipeline test + A/B metrics",
       "block": "VIDEO-QUALITY",
       "status": "queued",
       "priority": "medium",
-      "rationale": "Gate sprint for VIDEO-QUALITY block. Full pipeline test: trend→discovery→clip→transcribe→insight→LLM-rewrite→TTS→avatar→JSON2Video-captions→QC→Blotato-publish. Compare output quality vs current pipeline. Metrics: watch-through rate, engagement, follower conversion. Gate: produce 5 videos that pass human QC review before block sign-off."
+      "rationale": "Gate sprint for VIDEO-QUALITY block. Full pipeline test: trend\u2192discovery\u2192clip\u2192transcribe\u2192insight\u2192LLM-rewrite\u2192TTS\u2192avatar\u2192JSON2Video-captions\u2192QC\u2192Blotato-publish. Compare output quality vs current pipeline. Metrics: watch-through rate, engagement, follower conversion. Gate: produce 5 videos that pass human QC review before block sign-off."
     },
     {
       "sprint": 240,
-      "title": "BrainX Memory Type Extensions — RENTAL_EXPIRED tier + AMD-02A",
+      "title": "BrainX Memory Type Extensions \u2014 RENTAL_EXPIRED tier + AMD-02A",
       "block": "BRAINX",
       "status": "queued",
       "priority": "medium",
-      "rationale": "Originally Sprint 190 — skipped by swarm. AMD-02 Addendum: skill_rental_gotcha + skill_rental_learning memory types. RENTAL_EXPIRED tier. Rental Memory Governance Rule. nomic-embed-text local embeddings."
+      "rationale": "Originally Sprint 190 \u2014 skipped by swarm. AMD-02 Addendum: skill_rental_gotcha + skill_rental_learning memory types. RENTAL_EXPIRED tier. Rental Memory Governance Rule. nomic-embed-text local embeddings."
     },
     {
       "sprint": 241,
-      "title": "EVAL-001 — OpenViking evaluation for Skill Bank",
+      "title": "EVAL-001 \u2014 OpenViking evaluation for Skill Bank",
       "block": "BRAINX",
       "status": "queued",
       "priority": "medium",
@@ -173,7 +173,7 @@
     },
     {
       "sprint": 242,
-      "title": "EVAL-002 — Cognee evaluation for knowledge graph memory",
+      "title": "EVAL-002 \u2014 Cognee evaluation for knowledge graph memory",
       "block": "BRAINX",
       "status": "queued",
       "priority": "medium",
@@ -181,7 +181,7 @@
     },
     {
       "sprint": 243,
-      "title": "AMD-14 — Dynamic Model Selection at CTO Gate",
+      "title": "AMD-14 \u2014 Dynamic Model Selection at CTO Gate",
       "block": "INFRA",
       "status": "queued",
       "priority": "medium",
@@ -189,7 +189,7 @@
     },
     {
       "sprint": 244,
-      "title": "Kognai CMO Agent — TikTok launch strategy + brand narrative",
+      "title": "Kognai CMO Agent \u2014 TikTok launch strategy + brand narrative",
       "block": "LAUNCH",
       "status": "queued",
       "priority": "medium",
@@ -197,7 +197,7 @@
     },
     {
       "sprint": 245,
-      "title": "Landing page — kognai.ai MVP",
+      "title": "Landing page \u2014 kognai.ai MVP",
       "block": "LAUNCH",
       "status": "queued",
       "priority": "medium",
@@ -205,7 +205,7 @@
     },
     {
       "sprint": 246,
-      "title": "Docs site — architecture + API + agent catalog",
+      "title": "Docs site \u2014 architecture + API + agent catalog",
       "block": "LAUNCH",
       "status": "queued",
       "priority": "low",
@@ -213,7 +213,7 @@
     },
     {
       "sprint": 247,
-      "title": "Founding Charter draft — 9 Articles on Base",
+      "title": "Founding Charter draft \u2014 9 Articles on Base",
       "block": "LAUNCH",
       "status": "queued",
       "priority": "low",

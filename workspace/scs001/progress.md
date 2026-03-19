@@ -1637,3 +1637,18 @@ Full auto-posting pipeline built:
 - Swarm used: no
 - Issues: None.
 - Timestamp: 2026-03-20T02:15:00Z
+
+## Sprint 238 — Constitution Wiring (Direct Write)
+- Status: PASS
+- Commit: eafa8e1
+- Files modified: 26 kognai-agents/*/prompt.md, 13 agents/scs001-*/prompt.md, 8 workspace/agents/*/SOUL.md
+- Files created: workspace/sprints/sprint-238.json
+- Tasks completed:
+  - 238-01: Injected Constitutional Mandate blockquote header into all 26 kognai-agents prompt.md files
+  - 238-02: Injected into all 13 SCS-001 agent prompt.md files (5 already had a different "Constitutional Mandate" section — Kognai Constitution header added above it)
+  - 238-03: Injected into all 8 named swarm agent SOUL.md files (bloomberg, elon, guardiola, harvey, macgyver, messi, satoshi, sherlock)
+  - 238-04: Validated all 47 files contain "bound by the Kognai Constitution" — PASS
+- Swarm used: no (47 files across 3 directories — multi-file batch edit)
+- Swarm bypassed: yes (FP-007 multi-file). Manual crystallise: skipped (no crystalliseSkill for batch ops).
+- Issues: None. All agents now constitutionally bound.
+- Timestamp: 2026-03-20T03:30:00Z
