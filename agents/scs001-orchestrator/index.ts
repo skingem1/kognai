@@ -159,6 +159,15 @@ export class SCS001Orchestrator {
         );
         return briefs.length;
       }));
+      // Sprint 292: If live InsightAgent produced 0 briefs (model down/timeout),
+      // fall back to mock briefs so downstream pipeline (script→editing→caption) still runs.
+      if (briefs.length === 0 && qualifiedClips.length > 0) {
+        console.warn('[Orchestrator] Live InsightAgent returned 0 briefs — falling back to mock briefs');
+        stages.push(await this.runStage('4-insight', 'InsightAgent (fallback-mock)', async () => {
+          briefs = this.generateMockBriefs(qualifiedClips);
+          return briefs.length;
+        }));
+      }
     } else if (qualifiedClips.length > 0) {
       // Mock mode: generate InsightBriefs from real qualified clips without API calls
       stages.push(await this.runStage('4-insight', 'InsightAgent (mock-from-clips)', async () => {

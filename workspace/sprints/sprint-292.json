@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-292",
+  "title": "Pipeline resilience — mock fallback when live InsightAgent fails",
+  "description": "If InsightAgent fails in live mode (e.g. Ollama down), fall back to mock insights from qualified clips so the rest of the pipeline (script, editing, caption) can still run. Currently a live failure leaves briefs empty and skips everything downstream.",
+  "source": "auto — pipeline resilience after Sprint 288 investigation",
+  "tasks": [
+    {
+      "id": "292-01",
+      "title": "Add try/catch with mock fallback around live InsightAgent in orchestrator",
+      "type": "bugfix",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-292",
+      "deliverables": { "code": ["agents/scs001-orchestrator/index.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
