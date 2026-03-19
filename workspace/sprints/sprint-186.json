@@ -1,4 +1,5 @@
 {
+  "_note": "Sprint 186 DEFERRED — Viral Detection deferred to post-April-7 gate. Repo at Sprint 232. All tasks skipped 2026-03-19 to prevent swarm zombie loop. Resume after 30 TikTok posts + 500 views gate is cleared.",
   "tasks": [
     {
       "id": "186-01",
@@ -8,11 +9,14 @@
       "task_type": "code",
       "task_target": "local",
       "agent": "coder",
-      "status": "todo",
+      "status": "skipped",
+      "skip_reason": "Deferred 2026-03-19 — April 7 gate (30 TikTok posts + 500 views) takes priority. Resume post-gate per sprint-plan-172-191.md block 186-187.",
       "priority": "critical",
       "sprint_id": "sprint-186",
       "deliverables": {
-        "code": ["scripts/scs001/viral-scorer.py"],
+        "code": [
+          "scripts/scs001/viral-scorer.py"
+        ],
         "tests": [],
         "docs": []
       },
@@ -26,11 +30,14 @@
       "task_type": "code",
       "task_target": "local",
       "agent": "coder",
-      "status": "todo",
+      "status": "skipped",
+      "skip_reason": "Deferred 2026-03-19 — April 7 gate (30 TikTok posts + 500 views) takes priority. Resume post-gate per sprint-plan-172-191.md block 186-187.",
       "priority": "critical",
       "sprint_id": "sprint-186",
       "deliverables": {
-        "code": ["scripts/scs001/viral-scorer.ts"],
+        "code": [
+          "scripts/scs001/viral-scorer.ts"
+        ],
         "tests": [],
         "docs": []
       },
@@ -44,17 +51,18 @@
       "task_type": "code",
       "task_target": "local",
       "agent": "coder",
-      "status": "todo",
+      "status": "skipped",
+      "skip_reason": "Deferred 2026-03-19 — April 7 gate (30 TikTok posts + 500 views) takes priority. Resume post-gate per sprint-plan-172-191.md block 186-187.",
       "priority": "high",
       "sprint_id": "sprint-186",
       "deliverables": {
-        "code": ["agents/scs001-clip-detection/index.ts"],
+        "code": [
+          "agents/scs001-clip-detection/index.ts"
+        ],
         "tests": [],
         "docs": []
       },
       "context": "Sprint 186, Viral Detection Week 1. The ClipDetectionAgent currently scores clips by metadata proxy (view count, engagement). This task wires in the new viral scorer. SURGICAL EDIT ONLY — the file is 189 lines and FP-007 applies (swarm destructively rewrites files >200 lines). Read the file first. Find the clip metadata type and the scoring stage. Add only what's needed. If the file would exceed 250 lines, use a helper file instead. DO NOT remove or replace any existing code."
     }
-  ],
-  "source": "human",
-  "_plan_reference": "Sprint plan 172-191 (2026-03-18). Sprint 186: Viral Detection Week 1. Block 4 of the plan. Implements PySceneDetect + librosa + OpenCLIP via Python subprocess. Three tasks: Python script, TypeScript wrapper, ClipDetectionAgent wiring. Prerequisites: pip3 install scenedetect librosa open-clip-torch pillow (run before swarm)."
+  ]
 }

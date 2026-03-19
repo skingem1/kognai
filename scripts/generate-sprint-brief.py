@@ -207,12 +207,38 @@ def make_fallback_sections(config: dict, git_log: str) -> tuple:
 
 
 def get_latest_sprint_file(sprints_dir: Path) -> Optional[str]:
-    """Read the most recent sprint JSON file."""
+    """Read the sprint JSON file with the HIGHEST sprint number (authoritative order).
+
+    Sorts by numeric ID extracted from filename (sprint-NNN.json), NOT by mtime.
+    This prevents a recently-touched stale sprint (e.g. sprint-186 failed run)
+    from appearing as 'latest' when the repo is actually at sprint-232+.
+    Skips sprint files where ALL tasks have status 'skipped'.
+    """
     if not sprints_dir.exists():
         return None
-    files = sorted(sprints_dir.glob("sprint-*.json"), key=lambda f: f.stat().st_mtime, reverse=True)
+
+    def sprint_num(f: Path) -> int:
+        m = re.search(r'sprint-(\d+)', f.stem)
+        return int(m.group(1)) if m else 0
+
+    files = sorted(sprints_dir.glob("sprint-*.json"), key=sprint_num, reverse=True)
     if not files:
         return None
+
+    # Find the highest-numbered sprint that has at least one non-skipped task
+    for f in files:
+        try:
+            data = json.loads(f.read_text())
+            tasks = data.get("tasks", [])
+            if tasks and all(t.get("status") == "skipped" for t in tasks):
+                # All tasks skipped — this sprint was deferred, skip to next
+                continue
+            content = f.read_text()
+            return f"File: {f.name}\n{content[:3000]}"
+        except Exception:
+            continue
+
+    # Fallback: return highest-numbered file even if all skipped
     try:
         content = files[0].read_text()
         return f"File: {files[0].name}\n{content[:3000]}"
@@ -451,8 +477,9 @@ Be specific and actionable. Reference exact file paths where possible.""", max_t
 
 ---
 
-## Sprint JSON Schema
-*Use this format for the sprint file:*
+## Sprint JSON Schema (FORMAT REFERENCE ONLY)
+*⚠️ This is the MOST RECENTLY MODIFIED sprint file — shown for JSON FORMAT ONLY.*
+*DO NOT work on these tasks. Use the "NEXT sprint number" from Recent Sprint History above.*
 """
 
     if latest_sprint:
@@ -475,6 +502,7 @@ Be specific and actionable. Reference exact file paths where possible.""", max_t
 6. After shipping: update MEMORY.md and progress.md, commit, then START NEXT SPRINT
 7. NO OPUS — all work done by Sonnet. Use Haiku only for test validation.
 8. Target: <5K input tokens per sprint cycle (this brief is your primary context)
+9. **AUTHORITATIVE sprint number**: Use the "LAST sprint completed" and "NEXT sprint" values from Recent Sprint History above (sourced from git log). DO NOT infer sprint number from the JSON schema example below — that file may show stale task statuses.
 
 *Generated in {time.time() - start_time:.1f}s by {MODEL}*
 """
