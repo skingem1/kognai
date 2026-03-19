@@ -2106,3 +2106,16 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (multi-file edits)
 - Issues: None.
 - Timestamp: 2026-03-20T00:30:00Z
+
+## Sprint 283 — Weekly Posting Report — Sunday Recap (Direct Write)
+- Status: PASS
+- Commit: 5b74bff
+- Files created: scripts/weekly-report.ts, workspace/sprints/sprint-283.json
+- Files modified: ecosystem.config.js (+17 lines — kognai-weekly-report PM2 cron)
+- Tasks completed:
+  - 283-01: weekly-report.ts — weekly recap: posts/views/active days/pipeline output/best video/gate progress bar/streak/pace
+  - 283-02: PM2 cron kognai-weekly-report (0 20 * * 0 — Sunday 20:00)
+- Validation: Dry-run shows correct output. TypeScript clean compile.
+- Swarm used: no (new file + ecosystem edit)
+- Issues: None.
+- Timestamp: 2026-03-20T00:40:00Z
