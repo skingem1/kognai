@@ -2264,3 +2264,16 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (1-line fix)
 - Issues: None.
 - Timestamp: 2026-03-20T03:35:00Z
+
+## Sprint 296 — Achiri Alpha Hardening: LRU Cache + Version Fix (Direct Write)
+- Status: PASS
+- Commit: e3ca852
+- Files created: workspace/sprints/sprint-296.json
+- Files modified: agents/achiri/server.ts
+- Tasks completed:
+  - 296-01: Replaced unbounded object cache with Map-based LRU (max 100 handlers). Evicts oldest on overflow. Prevents memory leak as user count grows for Apr 25 alpha.
+  - 296-02: Fixed health endpoint version from hardcoded "127" to "296". Added cached_handlers count to health response for monitoring.
+- Validation: Achiri E2E test — 33/33 pass, 0 fail. TypeScript clean compile.
+- Swarm used: no (surgical server edit)
+- Issues: None.
+- Timestamp: 2026-03-20T03:45:00Z
