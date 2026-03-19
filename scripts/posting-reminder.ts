@@ -27,8 +27,15 @@ const EXP_PATH     = path.join(CWD, 'workspace', 'scs001', 'experiments.jsonl');
 const POSTS_TARGET = 30;
 const GATE_DATE    = new Date('2026-04-07T00:00:00Z');
 
-function loadViralScores(): Map<string, number> {
-  const map = new Map<string, number>();
+interface ExperimentData {
+  partial_viral_score?: number;
+  speaker?: string;
+  topic?: string;
+  hook_formula?: string;
+}
+
+function loadExperiments(): Map<string, ExperimentData> {
+  const map = new Map<string, ExperimentData>();
   if (!fs.existsSync(EXP_PATH)) return map;
   try {
     for (const line of fs.readFileSync(EXP_PATH, 'utf-8').split('\n')) {
@@ -36,7 +43,7 @@ function loadViralScores(): Map<string, number> {
       try {
         const e = JSON.parse(line);
         const id = e.clip_id ?? e.video_id ?? '';
-        if (id && e.partial_viral_score != null) map.set(id, e.partial_viral_score);
+        if (id) map.set(id, { partial_viral_score: e.partial_viral_score, speaker: e.speaker, topic: e.topic, hook_formula: e.hook_formula });
       } catch { /* skip */ }
     }
   } catch { /* skip */ }
@@ -174,18 +181,19 @@ async function main(): Promise<void> {
       fs.readFileSync(LEDGER_PATH, 'utf-8').split('\n').filter(l => l.trim())
         .map(l => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
 
-    const viralScores = loadViralScores();
+    const experiments = loadExperiments();
     const ready = entries
       .filter(e => !recordedIds.has(e.video_id) && findCaptionedMp4(CWD, e.video_id))
-      .sort((a, b) => (viralScores.get(b.video_id) ?? -1) - (viralScores.get(a.video_id) ?? -1));
+      .sort((a, b) => (experiments.get(b.video_id)?.partial_viral_score ?? -1) - (experiments.get(a.video_id)?.partial_viral_score ?? -1));
 
     if (ready.length > 0) {
       const best = ready[0];
+      const exp = experiments.get(best.video_id);
       videoId    = best.video_id;
       filePath   = findCaptionedMp4(CWD, best.video_id)!.replace(process.env.HOME ?? '/Users/tarekmnif', '~');
-      speaker    = best.speaker ?? null;
-      topic      = best.topic   ?? null;
-      viralScore = viralScores.get(best.video_id) ?? null;
+      speaker    = exp?.speaker ?? best.speaker ?? null;
+      topic      = exp?.topic ?? best.topic ?? null;
+      viralScore = exp?.partial_viral_score ?? null;
     }
   }
 
@@ -200,6 +208,8 @@ async function main(): Promise<void> {
     lines.push(`📹 \`${videoId}\``);
     if (viralScore != null) lines.push(`🧬 Viral: ${viralScore}`);
     if (speaker) lines.push(`🎙️ ${speaker}`);
+    const expData = loadExperiments().get(videoId);
+    if (expData?.hook_formula) lines.push(`🎣 Hook: ${expData.hook_formula}`);
     if (topic)   lines.push(`📝 ${topic.slice(0, 70)}`);
     lines.push(`📁 \`${filePath}\``);
     lines.push(`🏷️ ${hashtags}`);

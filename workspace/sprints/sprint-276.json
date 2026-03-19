@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-276",
+  "title": "Posting reminder enrichment — show speaker + hook from experiments in noon/evening nudges",
+  "description": "Enhance posting-reminder.ts to pull speaker, topic, and hook_formula from experiments.jsonl instead of relying on empty ledger data. Noon and evening posting nudges now show real content metadata.",
+  "source": "auto — ledger has no speaker/topic data, experiments.jsonl has it. Reminders were showing nothing.",
+  "tasks": [
+    {
+      "id": "276-01",
+      "title": "Enhance posting reminder with experiment data",
+      "type": "bugfix",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "complete",
+      "priority": "high",
+      "sprint_id": "sprint-276",
+      "deliverables": { "code": ["scripts/posting-reminder.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
