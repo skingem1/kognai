@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-295",
+  "title": "Fix smoke test viral score check — use summary.viral not clip stage",
+  "description": "Smoke test checks 3-clip-detection stage result for partial_viral_score but scores are computed in 9-experiment stage. Results in false WARNING on every run. Fix: use summary.viral count instead.",
+  "source": "auto — found during Sprint 294 pipeline audit",
+  "tasks": [
+    {
+      "id": "295-01",
+      "title": "Fix viral score detection in smoke-test-pipeline.ts",
+      "type": "bugfix",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-295",
+      "deliverables": { "code": ["scripts/smoke-test-pipeline.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

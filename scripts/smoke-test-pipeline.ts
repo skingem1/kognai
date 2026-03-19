@@ -27,12 +27,8 @@ async function main() {
   ];
   const zeroCounters = criticalCounters.filter(c => c === 0);
 
-  // Sprint 192: Check viral score fields in clip scores
-  const clipStage = report.stages.find(st => st.stage === '3-clip-detection');
-  const clipScores = (clipStage as any)?.result ?? [];
-  const viralScoredCount = Array.isArray(clipScores)
-    ? clipScores.filter((c: any) => c.partial_viral_score != null || c.hook_quality_score != null).length
-    : 0;
+  // Sprint 295: Check viral count from summary (scores are set in 9-experiment, not 3-clip-detection)
+  const viralScoredCount = s.viral ?? 0;
   const viralWarning = viralScoredCount === 0 && s.clips_discovered > 0;
 
   const passed = errorStages.length === 0 && stageCount >= 8 && zeroCounters.length === 0;
