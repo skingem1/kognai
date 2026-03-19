@@ -1,0 +1,66 @@
+{
+  "tasks": [
+    {
+      "id": "180-01",
+      "title": "OMEL Contamination Guard — scripts/lib/omel/contamination-guard.ts",
+      "description": "Create scripts/lib/omel/contamination-guard.ts. ContaminationGuard class with: (1) claimContext(agentId: string, taskId: string): ContaminationContext — registers agent as active on taskId. (2) releaseContext(agentId: string, taskId: string): void — releases agent's active context. (3) checkAccess(requestingAgentId: string, targetAgentId: string, targetTaskId: string): boolean — returns true if access is allowed (same agent+task or no active context), logs CONTAMINATION_ATTEMPT and returns false if different agent. (4) getActiveContext(agentId: string): ContaminationContext | null. JSONL audit log to logs/omel/contamination-guard-YYYY-MM-DD.jsonl. Export singleton contaminationGuard. Interface: ContaminationContext = {agentId: string; taskId: string; startedAt: string}. File must be <300 lines.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-180",
+      "deliverables": {
+        "code": [
+          "scripts/lib/omel/contamination-guard.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "context": "AMD-13 OMEL Sprint 180. ContaminationGuard is the task context isolation layer. Pattern: Map<agentId, ContaminationContext> tracking which task each agent is currently running. Cross-context read = another agent trying to access a different agent's active context. JSONL logging pattern reuse from scripts/lib/omel/wipe-witness.ts (appendLog function). Singleton export pattern: export const contaminationGuard = new ContaminationGuard(). File must be <300 lines. No destructive writes to existing files. DO NOT modify orchestrate-agents-v2.ts."
+    },
+    {
+      "id": "180-02",
+      "title": "OMEL barrel export — scripts/lib/omel/index.ts",
+      "description": "Create scripts/lib/omel/index.ts. Barrel export for all 5 OMEL Phase 1 components: export { phantomWorkspace } from './phantom-workspace'; export { credentialVault } from './credential-vault'; export { wipeWitness, WitnessToken } from './wipe-witness'; export { humanBrake, HighRiskOp, ApprovalResult } from './human-brake'; export { contaminationGuard, ContaminationContext } from './contamination-guard'. Keep file minimal, <20 lines.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-180",
+      "deliverables": {
+        "code": [
+          "scripts/lib/omel/index.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "context": "AMD-13 OMEL Sprint 180. Simple barrel re-export file. All 5 OMEL singletons: phantomWorkspace, credentialVault, wipeWitness, humanBrake, contaminationGuard. Also re-export key types: WitnessToken, HighRiskOp, ApprovalResult, ContaminationContext. This is a new file creation only — do not modify any existing files."
+    },
+    {
+      "id": "180-03",
+      "title": "OMEL Phase 1 Gate validator — scripts/validate-sprint-180.ts",
+      "description": "Create scripts/validate-sprint-180.ts. Gate validator that: (1) imports all 5 OMEL singletons from scripts/lib/omel/index.ts and verifies they are non-null objects. (2) Verifies OMEL log directory exists (logs/omel/). (3) Writes gate report to workspace/gates/omel-phase1-gate.json with fields: {status: 'PASS'|'FAIL', sprint: 'sprint-180', ts: ISO timestamp, checks: Array<{name: string, passed: boolean, detail?: string}>}. (4) Exits with code 0 on PASS, code 1 on FAIL. Print results to console.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-180",
+      "deliverables": {
+        "code": [
+          "scripts/validate-sprint-180.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "context": "AMD-13 OMEL Sprint 180. Gate validator for OMEL Phase 1 completion. Checks: (1) contaminationGuard non-null, (2) humanBrake non-null, (3) wipeWitness non-null, (4) credentialVault non-null, (5) phantomWorkspace non-null, (6) logs/omel/ directory exists. Output workspace/gates/omel-phase1-gate.json. Pattern from scripts/validate-sprint-171.ts if it exists. Keep file <150 lines."
+    }
+  ],
+  "source": "human",
+  "_plan_reference": "Sprint plan 172-191 (2026-03-18). Sprint 180: OMEL Contamination Guard + Phase 1 Gate. Final sprint of OMEL Phase 1 block (176-180). Creates ContaminationGuard, barrel index, and gate validator."
+}
