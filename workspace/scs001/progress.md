@@ -1317,3 +1317,15 @@ SESSION HANDOFF (2026-03-17, Sprints 166-170):
 - Swarm used: no (surgical edit)
 - Issues: kognai-router had 30 restarts due to port 11435 conflict. Now exits gracefully.
 - Timestamp: 2026-03-19T18:15:00Z
+
+## Sprint 211 — Gate Countdown (Direct Write)
+- Status: PASS
+- Commit: 1782841
+- Files modified: scripts/telegram-bot.ts
+- Files created: workspace/sprints/sprint-211.json
+- Tasks completed:
+  - 211-01: Added /gate command showing Phase 1.5 countdown (posts/30, views/500, days left, pace needed). Added gate summary to /report. Updated /help with /gate. Renamed bot from "Invoica" to "Kognai".
+- Swarm used: no (single-file surgical edit)
+- Swarm bypassed: yes. Manual crystallise: skipped (skill-crystalliser module missing).
+- Issues: None
+- Timestamp: 2026-03-19T19:00:00Z
