@@ -160,16 +160,23 @@ export class AchiriConversationHandler {
     let reply: string;
     try {
       if (model.provider === 'local') {
-        // Ollama chat API
+        // Ollama chat API — Sprint 298: 30s timeout to avoid 5-min waits when Ollama is down
         const ollamaUrl = process.env.OLLAMA_URL ?? 'http://localhost:11434';
-        const res = await fetch(ollamaUrl + '/api/chat', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ model: model.model, messages: [{ role: 'system', content: systemPrompt }, ...chatMessages], stream: false }),
-        });
-        if (!res.ok) throw new Error('Ollama error: ' + res.status);
-        const data = await res.json() as { message: { content: string } };
-        reply = data.message.content;
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 30_000);
+        try {
+          const res = await fetch(ollamaUrl + '/api/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ model: model.model, messages: [{ role: 'system', content: systemPrompt }, ...chatMessages], stream: false }),
+            signal: controller.signal,
+          });
+          if (!res.ok) throw new Error('Ollama error: ' + res.status);
+          const data = await res.json() as { message: { content: string } };
+          reply = data.message.content;
+        } finally {
+          clearTimeout(timeout);
+        }
       } else if (model.provider === 'anthropic') {
         const conversationText = chatMessages.map(m => (m.role === 'user' ? 'User' : 'Assistant') + ': ' + m.content).join('\n');
         const result = await routeCall({

@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-298",
+  "title": "Achiri timeout handling — 30s Ollama timeout + faster error response",
+  "description": "Achiri Ollama fetch has no explicit timeout, causing 5-minute waits when Ollama is down/slow. Add 30s AbortController timeout so users get error response quickly instead of waiting for Node's default 300s timeout.",
+  "source": "auto — found in achiri-api-error.log (HeadersTimeoutError)",
+  "tasks": [
+    {
+      "id": "298-01",
+      "title": "Add 30s AbortController timeout to Ollama fetch in Achiri chat",
+      "type": "bugfix",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-298",
+      "deliverables": { "code": ["agents/achiri/index.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
