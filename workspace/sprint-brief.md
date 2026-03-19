@@ -1,88 +1,111 @@
 # Kognai Sprint Brief
-*Updated: 2026-03-19 — Sprint 180 done, OMEL Phase 1 COMPLETE*
+*Updated: 2026-03-19 — Sprint 185 done, OMEL Phase 2 COMPLETE*
 
 ---
 
 ## Current Status
-- **Last completed sprint**: Sprint 179 (commit `8afb6ca`)
-- **Next sprint**: Sprint 180
-- **Phase**: Phase 1 — OMEL (AMD-13)
-- **Block**: OMEL Phase 1 (Sprints 176–180) — FINAL sprint in this block
-
-## Completed OMEL Phase 1 Sprints
-| Sprint | Module | File | Status |
-|--------|--------|------|--------|
-| 176 | PhantomWorkspace | `scripts/lib/omel/phantom-workspace.ts` | ✅ DONE |
-| 177 | CredentialVault | `scripts/lib/omel/credential-vault.ts` | ✅ DONE |
-| 178 | WipeWitness | `scripts/lib/omel/wipe-witness.ts` | ✅ DONE |
-| 179 | HumanBrake + orchestrator wiring | `scripts/lib/omel/human-brake.ts` | ✅ DONE |
-| **180** | **ContaminationGuard + index + Gate** | TBD | **← NEXT** |
+- **Last completed sprint**: Sprint 185 (commit `c6000d8`)
+- **Next sprint**: Sprint 186
+- **Phase**: Phase 1 — Viral Detection Upgrade (Sprints 186–187)
+- **Block**: BLOCK 4: Viral Detection (after OMEL Phase 2 ✅ COMPLETE)
 
 ---
 
-## Sprint 180 — OMEL: Contamination Guard + Phase 1 Gate
+## OMEL Phase 2 — COMPLETE ✅
+Gate: `workspace/gates/omel-phase2-gate.json` → **PASS (45/45 tests)**
 
-**Type**: create | **Agents**: coder (local) | **Sprint file**: `workspace/sprints/sprint-180.json`
+| Sprint | Module | Status |
+|--------|--------|--------|
+| 181 | PhantomWorkspace hardening | ✅ DONE |
+| 182 | CredentialVault hardening | ✅ DONE |
+| 183 | WipeWitness hardening + rollback | ✅ DONE |
+| 184 | HumanBrake risk scoring + AAR | ✅ DONE |
+| 185 | Integration test + AMD-13 gate | ✅ DONE |
+
+**AMD-13 status**: IMPLEMENTED. All 5 OMEL components hardened and gate-passed.
+
+---
+
+## Sprint 186 — Viral Detection: Week 1 Quick Wins
+
+**Type**: create + modify | **Agents**: coder (local)
+**Sprint file**: `workspace/sprints/sprint-186.json`
+
+### Context
+Current ClipDetectionAgent scores clips via metadata proxies (view count, engagement).
+The Viral Detection Upgrade Report adds a 9-method cascade. Week 1 = 3 highest-signal methods:
+- **PySceneDetect** → `scene_density_score` (scene change rate)
+- **librosa** → `audio_excitement` (audio energy/tempo)
+- **OpenCLIP** → `clip_topic_alignment` (topic vs trending vector)
+
+Composite: `partial_viral_score = clip_topic_alignment×0.35 + audio_excitement×0.35 + scene_density_score×0.30`
 
 ### Tasks
 
-**180-01**: Create `scripts/lib/omel/contamination-guard.ts`
-- Task context isolation: each task gets a `ContaminationContext` (agentId + taskId)
-- Tracks which agent is currently active on which task
-- Cross-context reads (Agent A reading Agent B's state) → log `CONTAMINATION_ATTEMPT`
-- JSONL audit log: `logs/omel/contamination-guard-YYYY-MM-DD.jsonl`
-- Singleton export: `export const contaminationGuard = new ContaminationGuard()`
-- File must be <300 lines
+**186-01**: Create `scripts/scs001/viral-scorer.py`
+- Python script (new file, <120 lines)
+- 3 functions: `scene_density(video_path)`, `audio_excitement(video_path)`, `clip_topic_alignment(video_path, topics)`
+- Uses: scenedetect, librosa, open_clip, numpy
+- Main: reads JSON from stdin (`{video_path, topics}`), writes JSON to stdout (`{scene_density_score, audio_excitement, clip_topic_alignment, partial_viral_score, error?}`)
+- Graceful: if dep missing, return score=0.5 (neutral) + log warning to stderr
 
-**180-02**: Create `scripts/lib/omel/index.ts` — barrel export for all 5 OMEL components
-```typescript
-export { phantomWorkspace }    from './phantom-workspace';
-export { credentialVault }     from './credential-vault';
-export { wipeWitness, WitnessToken } from './wipe-witness';
-export { humanBrake, HighRiskOp, ApprovalResult } from './human-brake';
-export { contaminationGuard }  from './contamination-guard';
-```
+**186-02**: Create `scripts/scs001/viral-scorer.ts`
+- TypeScript wrapper (new file, <100 lines)
+- Spawns `python3 scripts/scs001/viral-scorer.py` via child_process
+- `score(videoPath: string, topics: string[]): Promise<ViralScoreResult>`
+- Interface: `ViralScoreResult { scene_density_score, audio_excitement, clip_topic_alignment, partial_viral_score, error? }`
+- Timeout: 30s. On error/timeout: returns neutral scores (0.5) + logs warning.
 
-**180-03**: OMEL Phase 1 Gate validator script
-- Script: `scripts/validate-sprint-180.ts`
-- Verify all 5 modules importable and their singletons non-null
-- Write gate report to `workspace/gates/omel-phase1-gate.json`
-- Gate status: PASS if all 5 components OK
+**186-03**: Extend clip schema + wire into ClipDetectionAgent
+- File: `agents/scs001-clip-detection/index.ts` (currently 189 lines — SURGICAL ADD ONLY)
+- Add to clip metadata type: `scene_density_score?: number`, `audio_excitement?: number`, `clip_topic_alignment?: number`, `partial_viral_score?: number`
+- In scoring stage: after existing score, call `viralScorer.score(clip.localPath, trendingTopics)`
+- Merge results into clip object
+- Import `viralScorer` from `../../scripts/scs001/viral-scorer`
+- **IMPORTANT**: File must stay <250 lines. If it grows beyond that, move viral scoring call into a helper.
 
 ### Success Criteria
-- `workspace/gates/omel-phase1-gate.json` has `"status": "PASS"`
-- All 5 OMEL components importable via `scripts/lib/omel/index.ts`
-- No modifications to existing OMEL files
+- `scripts/scs001/viral-scorer.py` runs: `echo '{"video_path":"test.mp4","topics":["dance"]}' | python3 scripts/scs001/viral-scorer.py`
+- `scripts/scs001/viral-scorer.ts` compiles: `npx tsc --noEmit`
+- 3 new score fields present in clip metadata schema
+- No TS errors in modified files
 
 ---
 
-## Critical Context
+## Sprint 187 — Viral Detection: Full Cascade (AFTER 186)
 
-**DO NOT run swarm on these files** (FP-007 protection):
-- `scripts/orchestrate-agents-v2.ts` (~3000 lines) — swarm WILL destroy it
-- Any existing OMEL file (already done in Sprints 176-179)
-
-**ClawRouter gateway status**: Port 18789 returns 404 on `/v1/chat/completions`.
-- Run swarm with `--sovereign` flag for all-local inference via Ollama (free, $0)
-- Supervisor review falls back to direct Anthropic API automatically (ANTHROPIC_API_KEY in .env)
-
-**OMEL module dir**: `scripts/lib/omel/` — contains:
-`phantom-workspace.ts`, `credential-vault.ts`, `wipe-witness.ts`, `human-brake.ts`
-
-**Logging pattern** (reuse from wipe-witness.ts):
-```typescript
-const LOGS_DIR = path.join(__dirname, '..', '..', '..', 'logs', 'omel');
-fs.mkdirSync(LOGS_DIR, { recursive: true });
-```
+**Type**: modify | After Sprint 186 ships
+**Files**: `scripts/scs001/viral-scorer.py` (extend), `agents/scs001-clip-detection/index.ts` (extend)
+**New methods**: DeepFace, NIMA, Whisper+LLM, OpenCV Optical Flow
+**Full composite formula**: from Viral Detection Upgrade Report
 
 ---
 
-## Run Command
-```bash
-cd ~/kognai && ./scripts/run-swarm.sh --sovereign workspace/sprints/sprint-180.json
-```
+## Environment
+- Ollama models: qwen3:0.6b, qwen3:4b, qwen3:14b, qwen3:32b, deepseek-r1:14b
+- ClawRouter v2.0: ALL LLM calls through routeCall() — §17 compliant
+- OMEL Phase 2: HARDENED — all 5 components with rollback + audit
+- TikTok: BLOCKED on API approval (submitted 2026-03-15)
+- Plan B: /send-video Telegram command LIVE (commit f6b29e9)
+- Python deps for Sprint 186: pip3 install scenedetect librosa open-clip-torch pillow
+  → Run this BEFORE swarm executes Sprint 186
+
+## Known Limits (FP-007)
+- qwen3:14b destructively rewrites files >200 lines
+- Keep ALL swarm tasks to new files or surgical adds to <200-line files
+- 3 swarm rejections = write directly
+- No external npm packages in swarm tasks (stdlib + existing deps only)
+
+## Sprint History (last 5)
+| Sprint | What | Status |
+|--------|------|--------|
+| 181 | OMEL PhantomWorkspace hardening | DONE |
+| 182 | OMEL CredentialVault hardening | DONE |
+| 183 | OMEL WipeWitness + rollback | DONE |
+| 184 | OMEL HumanBrake risk scoring | DONE |
+| 185 | OMEL Phase 2 gate (45/45 PASS) | DONE |
 
 ## Git State
-- Branch: main
-- Latest commit: `8afb6ca` — Sprint 179 DONE OMEL Human Brake
-- Up to date with origin/main
+- Latest: c6000d8 Sprint 181-185 DONE — OMEL Phase 2 hardening complete
+- Branch: main, up to date
+- Staged: nothing

@@ -1,0 +1,60 @@
+{
+  "tasks": [
+    {
+      "id": "186-01",
+      "title": "Viral scorer Python script — scripts/scs001/viral-scorer.py",
+      "description": "Create scripts/scs001/viral-scorer.py. New Python file, <120 lines. Implement 3 functions: (1) scene_density(video_path: str) -> float — uses scenedetect to count scene changes, returns 0-1 normalised density score. (2) audio_excitement(video_path: str) -> float — uses librosa to analyse audio energy + tempo, returns 0-1. (3) clip_topic_alignment(video_path: str, topics: list[str]) -> float — extracts 1 frame per second, encodes with open_clip (ViT-B-32, openai), computes cosine similarity vs topic text embeddings, returns 0-1. Main block: reads JSON from stdin {video_path: str, topics: list[str]}, computes all 3 scores, computes partial_viral_score = clip_topic_alignment*0.35 + audio_excitement*0.35 + scene_density*0.30, writes JSON to stdout {scene_density_score, audio_excitement, clip_topic_alignment, partial_viral_score}. Graceful degradation: if any dep is missing (ImportError), set that score to 0.5 and log a warning to stderr — never crash. If video_path doesn't exist, return all 0.5 scores. Requires: pip3 install scenedetect librosa open-clip-torch pillow",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "todo",
+      "priority": "critical",
+      "sprint_id": "sprint-186",
+      "deliverables": {
+        "code": ["scripts/scs001/viral-scorer.py"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Sprint 186, Viral Detection Week 1. Viral Detection Upgrade Report specifies 9-method cascade. Week 1 = 3 quick wins. This is a NEW file — do not modify any existing files. Python subprocess approach: TypeScript orchestrator spawns this script with JSON on stdin and reads JSON from stdout. All 3 methods must be present even if they gracefully degrade to 0.5 on missing deps. File must be <120 lines. DO NOT use any web APIs or external HTTP calls."
+    },
+    {
+      "id": "186-02",
+      "title": "Viral scorer TypeScript wrapper — scripts/scs001/viral-scorer.ts",
+      "description": "Create scripts/scs001/viral-scorer.ts. New TypeScript file, <100 lines. Export interface ViralScoreResult { scene_density_score: number; audio_excitement: number; clip_topic_alignment: number; partial_viral_score: number; error?: string; }. Export class ViralScorer with method: async score(videoPath: string, topics: string[]): Promise<ViralScoreResult>. Implementation: use child_process.spawn to run python3 scripts/scs001/viral-scorer.py. Send JSON {video_path: videoPath, topics} to stdin. Read stdout. Parse JSON. Return ViralScoreResult. Timeout: 30000ms. On timeout/error/parse-fail: return {scene_density_score: 0.5, audio_excitement: 0.5, clip_topic_alignment: 0.5, partial_viral_score: 0.5, error: err.message}. Log all errors to console.warn — never throw. Export singleton: export const viralScorer = new ViralScorer(). Use only Node.js stdlib (child_process, path — NO npm packages).",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "todo",
+      "priority": "critical",
+      "sprint_id": "sprint-186",
+      "deliverables": {
+        "code": ["scripts/scs001/viral-scorer.ts"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Sprint 186, Viral Detection Week 1. TypeScript wrapper that spawns the Python viral-scorer.py. Must use ONLY Node.js stdlib (child_process.spawn, path). NO npm packages. Singleton pattern: export const viralScorer = new ViralScorer(). This is a NEW file — do not modify any existing files. File must be <100 lines. Uses __dirname to resolve path to viral-scorer.py."
+    },
+    {
+      "id": "186-03",
+      "title": "Wire viral scorer into ClipDetectionAgent — agents/scs001-clip-detection/index.ts",
+      "description": "Modify agents/scs001-clip-detection/index.ts (currently 189 lines). SURGICAL ADDITIONS ONLY — do not rewrite the file. Changes needed: (1) Add to the clip metadata type/interface at the top: scene_density_score?: number; audio_excitement?: number; clip_topic_alignment?: number; partial_viral_score?: number; (2) Add import near the top: import { viralScorer } from '../../scripts/scs001/viral-scorer'; (3) In the scoring stage (after existing score is computed), add: const viralScores = await viralScorer.score(clip.localPath || clip.videoPath || '', trendingTopics || []); Object.assign(clip, viralScores); — find the right variable names by reading the existing code first. (4) CONSTRAINT: file must stay <250 lines. If adding these lines would push it over 250, instead create a new file agents/scs001-clip-detection/viral-score-helper.ts with the wiring logic and import that instead. DO NOT rewrite existing functions. Only add the import + 2-3 new lines.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "todo",
+      "priority": "high",
+      "sprint_id": "sprint-186",
+      "deliverables": {
+        "code": ["agents/scs001-clip-detection/index.ts"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Sprint 186, Viral Detection Week 1. The ClipDetectionAgent currently scores clips by metadata proxy (view count, engagement). This task wires in the new viral scorer. SURGICAL EDIT ONLY — the file is 189 lines and FP-007 applies (swarm destructively rewrites files >200 lines). Read the file first. Find the clip metadata type and the scoring stage. Add only what's needed. If the file would exceed 250 lines, use a helper file instead. DO NOT remove or replace any existing code."
+    }
+  ],
+  "source": "human",
+  "_plan_reference": "Sprint plan 172-191 (2026-03-18). Sprint 186: Viral Detection Week 1. Block 4 of the plan. Implements PySceneDetect + librosa + OpenCLIP via Python subprocess. Three tasks: Python script, TypeScript wrapper, ClipDetectionAgent wiring. Prerequisites: pip3 install scenedetect librosa open-clip-torch pillow (run before swarm)."
+}
