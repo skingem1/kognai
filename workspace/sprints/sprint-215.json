@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-215",
+  "title": "PM2 Boot Script — start all Kognai cron processes with one command",
+  "description": "Most PM2 crons are stopped (pipeline, digest, gate-regen, posting reminders, watchdog). Create scripts/pm2-boot.sh that starts all Kognai processes. Also add /boot Telegram command for remote restart.",
+  "source": "autonomous",
+  "tasks": [
+    {
+      "id": "215-01",
+      "title": "Create scripts/pm2-boot.sh to start all Kognai PM2 processes",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "todo",
+      "priority": "high",
+      "sprint_id": "sprint-215",
+      "deliverables": { "code": ["scripts/pm2-boot.sh"], "tests": [], "docs": [] }
+    }
+  ]
+}
