@@ -812,5 +812,28 @@ module.exports = {
       out_file: "/Users/tarekmnif/kognai/logs/clawrouter-gateway-out.log",
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
+    // ─── Production Watchdog (Sprint 270) ─────────────────────────────────────
+    // Runs every 6h, checks pipeline health, gate deadline risk, disk usage.
+    // Sends proactive Telegram alerts on critical/warning issues.
+    // Manual: pm2 start ecosystem.config.js --only kognai-watchdog
+    {
+      name: "kognai-watchdog",
+      script: "scripts/scs001/watchdog.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: false,
+      watch: false,
+      cron_restart: "0 */6 * * *",
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
+        TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN || "",
+        OWNER_TELEGRAM_CHAT_ID: process.env.OWNER_TELEGRAM_CHAT_ID || "",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/watchdog-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/watchdog-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
   ]
 };

@@ -1,0 +1,44 @@
+{
+  "sprint_id": "sprint-270",
+  "title": "Production watchdog — pipeline health monitor + proactive Telegram alerts",
+  "description": "Add a watchdog daemon that runs every 6h via PM2, checks pipeline health (stale runs, ledger integrity, disk usage, gate deadline risk), and sends proactive Telegram alerts when issues are detected.",
+  "source": "auto — no production monitoring beyond smoke test; need proactive alerts for stale pipeline, gate risk, and disk issues",
+  "tasks": [
+    {
+      "id": "270-01",
+      "title": "Watchdog daemon script",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-270",
+      "deliverables": { "code": ["scripts/scs001/watchdog.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "270-02",
+      "title": "PM2 config for watchdog cron",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-270",
+      "deliverables": { "code": ["ecosystem.config.js"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "270-03",
+      "title": "Validation test",
+      "type": "test",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-270",
+      "deliverables": { "code": ["scripts/scs001/validate-watchdog.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
