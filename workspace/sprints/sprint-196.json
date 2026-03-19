@@ -1,0 +1,81 @@
+{
+  "sprint_id": "sprint-196",
+  "title": "Quality Loop Repair — Code Failure Logger + Crystallisation + Brief Fix",
+  "description": "Closes three quality/process gaps: (1) swarm code rejections never written to failure-library — data lost on every rejection, (2) manually-written code (FP-007 bypass) skips crystalliseSkill() — skill bank frozen at Sprint 095, (3) generate-sprint-brief.py reads stale progress.md for sprint number — autonomous Claude gets wrong next-sprint context. All 4 tasks are FP-007 safe.",
+  "source": "human",
+  "_plan_reference": "Quality Loop Repair — audit result 2026-03-19",
+  "tasks": [
+    {
+      "id": "196-01",
+      "title": "Code failure logger module — scripts/lib/code-failure-logger.ts",
+      "description": "Create scripts/lib/code-failure-logger.ts. New file, <80 lines. Export one function: logCodeFailure({ taskId, sprintId, agentId, attemptNum, score, model, rejectionReason, issues, failType }). failType enum: 'destructive_rewrite' | 'truncation' | 'qa_gate' | 'supervisor_rejected' | 'no_files'. Writes JSON to data/failure-library/code/fail-{8-char-uuid}.json. Creates directory if missing. Silently catches all errors (never throws — must not break the swarm). JSON shape: { entry_id, task_id, sprint_id, agent_id, attempt_num, score, model, fail_type, rejection_reason, issues: [{severity,file,description}], filed_at }. Use only stdlib: crypto (randomUUID), fs, path.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "todo",
+      "priority": "critical",
+      "sprint_id": "sprint-196",
+      "deliverables": {
+        "code": ["scripts/lib/code-failure-logger.ts"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Sprint 196. Gap: orchestrate-agents-v2.ts rejection path has zero failure logging. Every swarm rejection (truncation, destructive rewrite, supervisor REJECT) is silently discarded. This module will be wired in by task 196-02. Stdlib only — no npm deps."
+    },
+    {
+      "id": "196-02",
+      "title": "Wire code failure logger into orchestrate-agents-v2.ts — SURGICAL 3 LINES ONLY",
+      "description": "Modify scripts/orchestrate-agents-v2.ts. ADD ONLY — do NOT rewrite, do NOT touch any existing logic. File is ~2980 lines. FP-007 risk: any rewrite corrupts it. Make exactly 3 surgical additions: (1) At imports section after existing imports around line 56-57: add: import { logCodeFailure } from './lib/code-failure-logger'; (2) At the supervisor rejection path, search for the string 'MonotaskSM.release(task.agent, task.id, `rejected attempt' — add ONE LINE BEFORE it: logCodeFailure({ taskId: task.id, sprintId: (process.argv[2]||'').replace(/.*\\//, '').replace('.json',''), agentId: task.agent, attemptNum: attempt, score: lastReview?.score||0, model: (task as any).model||'unknown', rejectionReason: lastReview?.summary||'supervisor rejected', issues: lastReview?.issues||[], failType: 'supervisor_rejected' }); (3) At the QA gate rejection path, search for 'MonotaskSM.release(task.agent, task.id, `QA gate' — add ONE LINE BEFORE it: logCodeFailure({ taskId: task.id, sprintId: (process.argv[2]||'').replace(/.*\\//, '').replace('.json',''), agentId: task.agent, attemptNum: attempt, score: 0, model: (task as any).model||'unknown', rejectionReason: qaResult.reason, issues: [], failType: 'qa_gate' }); STOP and do not proceed if you cannot make surgical additions — this file must not be rewritten.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "todo",
+      "priority": "critical",
+      "sprint_id": "sprint-196",
+      "deliverables": {
+        "code": ["scripts/orchestrate-agents-v2.ts"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Sprint 196. FP-007 APPLIES — file is ~2980 lines. SURGICAL ONLY: add exactly 3 lines (1 import + 2 call sites). If the swarm attempts to rewrite this file beyond 3 added lines, STOP — the dual supervisor will catch a destructive rewrite and reject. Do not retry — skip this task and note it in progress.md for manual edit_block fix."
+    },
+    {
+      "id": "196-03",
+      "title": "Add manual-write crystallisation step to autonomous-prompt.txt",
+      "description": "Modify autonomous-prompt.txt. Find the block starting with 'STEP 5 — FIX IF NEEDED'. After that entire block and before 'STEP 6 — SHIP', insert the following new block verbatim:\n\nSTEP 5B — CRYSTALLISE IF YOU WROTE CODE DIRECTLY (mandatory when swarm was bypassed):\n  If in Step 3 or Step 5 you wrote code directly (swarm failed/killed/FP-007):\n  Run this to crystallise the skill:\n    node -e \"const {crystalliseSkill}=require('./scripts/lib/skill-crystalliser'); crystalliseSkill({agentId:'coder',taskId:'TASK_ID',sprintId:'sprint-NNN',taskTitle:'TITLE',taskType:'feature',model:'manual-sonnet',taskTarget:'manual',score:80,approachSummary:'Written directly — swarm bypassed (FP-007)',keyPatterns:['manual write'],antiPatterns:['FP-007 file too large for swarm']});\"\n  Replace TASK_ID, sprint-NNN, TITLE with actual values from this sprint.\n  Also append to workspace/scs001/progress.md under this sprint entry:\n    - Swarm bypassed: yes (FP-007). Manual crystallise: done.\n  If crystalliseSkill call fails, skip and note in progress.md — do not block shipping.\n\nThis is a text file edit. Add the block as plain text between STEP 5 and STEP 6. Do not modify any other part of the file.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "todo",
+      "priority": "high",
+      "sprint_id": "sprint-196",
+      "deliverables": {
+        "code": ["autonomous-prompt.txt"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Sprint 196. Gap: skill bank frozen at Sprint 095. All sprints 096-195 written manually (FP-007 bypass) skipped crystalliseSkill(). This step adds an explicit crystallisation instruction for the manual-write path so future autonomous sessions populate the skill bank."
+    },
+    {
+      "id": "196-04",
+      "title": "Fix generate-sprint-brief.py — derive last sprint number from git log",
+      "description": "Modify scripts/generate-sprint-brief.py. Add a function get_last_sprint_from_git(project_root: Path) -> Optional[int] that runs: result = subprocess.run(['git', 'log', '--oneline', '-30'], capture_output=True, text=True, cwd=str(project_root)) then parses each line with re.search(r'Sprint (\\d+):', line) and returns the highest sprint number found. In generate_brief(), call this after config is loaded. If it returns a value, use it as the authoritative last sprint number and set next_sprint = last + 1. Insert these two values into the brief output under 'Recent Sprint History' as: '- LAST sprint number completed: Sprint {last_git}' and '- NEXT sprint number needed: Sprint {next_sprint}'. If git call fails or returns None, fall back to existing progress.md parsing. Keep the change under 40 lines. Import subprocess and re at the top if not already imported.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "todo",
+      "priority": "high",
+      "sprint_id": "sprint-196",
+      "deliverables": {
+        "code": ["scripts/generate-sprint-brief.py"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Sprint 196. Root cause: progress.md last updated at Sprint 103. Every autonomous session since has started with wrong sprint context — brief said 'next sprint: 104' when Sprint 191 was done. Git log is authoritative: every sprint commit message starts with 'Sprint NNN:'. This is a <40 line change to a Python file, safe for swarm."
+    }
+  ]
+}
