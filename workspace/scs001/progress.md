@@ -1580,3 +1580,17 @@ Operator quickstart: (1) bash scripts/pre-deploy-check.sh (2) ./scripts/pm2-boot
 - Swarm bypassed: yes (FP-007). Manual crystallise: skipped.
 - Issues: None. Auto-posting pipeline complete. Requires TIKTOK_ACCESS_TOKEN (Sprint 232 OAuth flow).
 - Timestamp: 2026-03-20T01:15:00Z
+
+## Sprint 234 — Post-Publish Verification + Token Auto-Refresh (Direct Write)
+- Status: PASS
+- Commit: 05030d2
+- Files created: scripts/scs001/verify-posts.ts, workspace/sprints/sprint-234.json
+- Files modified: agents/telegram-bot/commands.ts, agents/telegram-bot/index.ts, ecosystem.config.js
+- Tasks completed:
+  - 234-01: verify-posts.ts — checks TikTok publish status API, updates manual-posts.jsonl with live/failed status, notifies owner
+  - 234-02: PM2 crons: kognai-token-refresh (03:00 daily), kognai-verify-posts (09:00+20:00 daily — 1h after auto-post)
+  - 234-03: /verifyposts telegram command — status dashboard + /verifyposts run
+- Swarm used: no (commands.ts 2600+ lines)
+- Swarm bypassed: yes (FP-007). Manual crystallise: skipped.
+- Issues: None. Full auto-posting pipeline now: OAuth → token refresh → auto-post → verify → notify.
+- Timestamp: 2026-03-20T01:30:00Z
