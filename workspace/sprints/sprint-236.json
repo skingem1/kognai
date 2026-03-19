@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-236",
+  "title": "Achiri Usage Analytics — /achiristats dashboard for alpha monitoring",
+  "description": "/achiristats command shows: total users, daily active users, message counts, memory turns, daily-counts history, conversation quality. Reads from workspace/achiri/ data files + Achiri API /stats endpoint. Essential for Apr 25 alpha launch monitoring.",
+  "source": "autonomous",
+  "tasks": [
+    {
+      "id": "236-01",
+      "title": "Add /achiristats command with usage analytics dashboard",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-236",
+      "deliverables": { "code": ["agents/telegram-bot/commands.ts", "agents/telegram-bot/index.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

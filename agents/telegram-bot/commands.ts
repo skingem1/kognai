@@ -125,6 +125,7 @@ export async function handleHelp(chatId: number): Promise<void> {
     '/inviteachiri <id> — Invite user to Achiri alpha whitelist (owner)',
     '/deploystatus — Achiri alpha deploy checklist (owner)',
     '/achirihealth — Achiri server status (owner)',
+    '/achiristats — Achiri usage analytics: users, messages, memory (owner)',
     '/pm2status — All PM2 processes: status, uptime, restarts (owner)',
     '/health — Full system health check: env, gate, PM2, Achiri, pipeline (owner)',
     '/preflight — Production go-live checklist with operator action items (owner)',
@@ -2848,6 +2849,127 @@ export async function handleActivate(chatId: number, ownerChatId: string): Promi
     lines.push('# 4. Done! Check /gate for progress');
     lines.push('```');
   }
+
+  await sendMessage(chatId, lines.join('\n'));
+}
+
+// ── /achiristats — Achiri Usage Analytics — Sprint 236 ───────────────────────
+// Owner-only: shows Achiri conversation metrics, daily active users, memory stats.
+export async function handleAchiriStats(chatId: number, ownerChatId: string): Promise<void> {
+  if (String(chatId) !== ownerChatId) {
+    await sendMessage(chatId, '🔒 Owner only.');
+    return;
+  }
+
+  const lines: string[] = ['📊 *Achiri Usage Analytics*', ''];
+
+  // 1. API stats (live from Achiri server)
+  const achiriUrl = (process.env.ACHIRI_BASE_URL ?? 'http://localhost:3420').replace(/\/$/, '');
+  try {
+    const controller = new AbortController();
+    const t = setTimeout(() => controller.abort(), 5000);
+    const res = await fetch(achiriUrl + '/stats', { signal: controller.signal });
+    clearTimeout(t);
+    if (res.ok) {
+      const stats = await res.json() as { users: number; total_turns: number; uptime_s: number };
+      const uptimeH = Math.round(stats.uptime_s / 3600);
+      lines.push('*Server Stats (live)*');
+      lines.push(`👥 Total users: *${stats.users}*`);
+      lines.push(`💬 Total turns: *${stats.total_turns}*`);
+      lines.push(`⏱️ Uptime: *${uptimeH}h*`);
+    } else {
+      lines.push('⚠️ Achiri API returned ' + res.status);
+    }
+  } catch {
+    lines.push('❌ Achiri API unreachable');
+  }
+
+  // 2. Daily counts from workspace/achiri/daily-counts.json
+  const countsPath = join(process.cwd(), 'workspace', 'achiri', 'daily-counts.json');
+  if (existsSync(countsPath)) {
+    try {
+      const counts = JSON.parse(readFileSync(countsPath, 'utf-8')) as Record<string, Record<string, number>>;
+      const days = Object.keys(counts).sort().reverse();
+      const today = new Date().toISOString().slice(0, 10);
+
+      lines.push('');
+      lines.push('*Daily Activity (last 7 days)*');
+
+      const recent = days.slice(0, 7);
+      for (const day of recent) {
+        const users = Object.keys(counts[day]);
+        const msgs = Object.values(counts[day]).reduce((a, b) => a + b, 0);
+        const isToday = day === today;
+        lines.push(`${isToday ? '📅' : '  '} ${day}: *${msgs}* msgs from *${users.length}* user(s)`);
+      }
+
+      // Aggregate stats
+      const allDays = Object.keys(counts);
+      const totalMsgs = allDays.reduce((sum, d) =>
+        sum + Object.values(counts[d]).reduce((a, b) => a + b, 0), 0);
+      const uniqueUsers = new Set<string>();
+      allDays.forEach(d => Object.keys(counts[d]).forEach(u => uniqueUsers.add(u)));
+      const avgMsgsPerDay = allDays.length > 0 ? Math.round(totalMsgs / allDays.length) : 0;
+
+      lines.push('');
+      lines.push('*All-Time*');
+      lines.push(`📊 Total messages: *${totalMsgs}*`);
+      lines.push(`👥 Unique users: *${uniqueUsers.size}*`);
+      lines.push(`📈 Avg msgs/day: *${avgMsgsPerDay}*`);
+      lines.push(`📅 Active days: *${allDays.length}*`);
+    } catch {
+      lines.push('⚠️ Could not parse daily-counts.json');
+    }
+  } else {
+    lines.push('');
+    lines.push('📊 No daily counts data yet');
+  }
+
+  // 3. Memory files
+  const memDir = join(process.cwd(), 'workspace', 'achiri', 'memory');
+  if (existsSync(memDir)) {
+    try {
+      const memFiles = readdirSync(memDir).filter(f => f.endsWith('.jsonl'));
+      let totalTurns = 0;
+      let maxTurns = 0;
+      let maxTurnsUser = '';
+      for (const f of memFiles) {
+        const turnCount = readFileSync(join(memDir, f), 'utf-8').split('\n').filter(l => l.trim()).length;
+        totalTurns += turnCount;
+        if (turnCount > maxTurns) {
+          maxTurns = turnCount;
+          maxTurnsUser = f.replace('.jsonl', '');
+        }
+      }
+      lines.push('');
+      lines.push('*Memory*');
+      lines.push(`🧠 Users with memory: *${memFiles.length}*`);
+      lines.push(`💬 Total stored turns: *${totalTurns}*`);
+      if (maxTurnsUser) {
+        lines.push(`🏆 Most active: \`${maxTurnsUser}\` (${maxTurns} turns)`);
+      }
+    } catch {}
+  }
+
+  // 4. Waitlist
+  const wlPath = join(process.cwd(), 'workspace', 'achiri', 'waitlist.jsonl');
+  const whitelistPath = join(process.cwd(), 'workspace', 'achiri', 'alpha-whitelist.jsonl');
+  let waitlistCount = 0, whitelistCount = 0;
+  if (existsSync(wlPath)) {
+    try { waitlistCount = readFileSync(wlPath, 'utf-8').split('\n').filter(l => l.trim()).length; } catch {}
+  }
+  if (existsSync(whitelistPath)) {
+    try { whitelistCount = readFileSync(whitelistPath, 'utf-8').split('\n').filter(l => l.trim()).length; } catch {}
+  }
+
+  lines.push('');
+  lines.push('*Alpha Status*');
+  lines.push(`🙋 Waitlist: *${waitlistCount}*`);
+  lines.push(`✅ Invited: *${whitelistCount}*`);
+
+  const achiriGate = new Date('2026-04-25T00:00:00Z');
+  const daysToAlpha = Math.max(0, Math.ceil((achiriGate.getTime() - Date.now()) / 86400000));
+  lines.push(`📅 Alpha launch: *Apr 25* (${daysToAlpha} days)`);
 
   await sendMessage(chatId, lines.join('\n'));
 }
