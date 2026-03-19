@@ -2057,3 +2057,14 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (surgical fix)
 - Issues: Pre-existing TS errors (Set iteration) unrelated to change. Runtime uses TS_NODE_TRANSPILE_ONLY=true.
 - Timestamp: 2026-03-19T23:45:00Z
+
+## Sprint 279 — Retroactive Viral Score Enrichment (Direct Write)
+- Status: PASS
+- Commit: d7bf21e
+- Files created: scripts/scs001/enrich-experiments.ts, workspace/sprints/sprint-279.json
+- Files modified: none (experiments.jsonl is gitignored)
+- Tasks completed:
+  - 279-01: Enrichment script — 204 entries updated. Score range 0.39-0.71 (avg 0.59). Calendar regenerated with new prioritization (top: Alex Albert, TED, ThePrimeagen, Jesse Pollak @ 0.71).
+- Swarm used: no (single script)
+- Issues: No script JSONs on disk — used formula+speaker+QC-based scoring. Good enough for v1 prioritization.
+- Timestamp: 2026-03-19T23:55:00Z
