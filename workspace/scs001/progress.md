@@ -2227,3 +2227,16 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (surgical edit)
 - Issues: None.
 - Timestamp: 2026-03-20T02:20:00Z
+
+## Sprint 293 — Gate Accuracy: Fix Health API Data Source + Enhance Gate Generator (Direct Write)
+- Status: PASS
+- Commit: 8737cf6
+- Files created: workspace/sprints/sprint-293.json
+- Files modified: scripts/scs001/health-api.ts, scripts/scs001/generate-phase1-5-gate.ts
+- Tasks completed:
+  - 293-01: Fixed health API /health/gate to use manual-posts.jsonl (actual TikTok posts) instead of publish-ledger.jsonl (pipeline output). Added views tracking, avgViews, urgency levels matching digest.
+  - 293-02: Enhanced gate generator with urgency levels (PASSED/NOT_STARTED/FAILED/CRITICAL/WARNING/ON_TRACK), pacing info, days remaining, deadline field in gate JSON report.
+- Validation: TypeScript clean compile. Gate generator runs and produces correct JSON report.
+- Swarm used: no (surgical edits to 2 files)
+- Issues: None.
+- Timestamp: 2026-03-20T03:17:00Z
