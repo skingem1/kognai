@@ -1,0 +1,6 @@
+{
+  "name": "KognaiFoundingCharter",
+  "description": "Immutable Founding Charter for the Kognai sovereign AI runtime",
+  "schema": "string version, bytes32 charterDigest, uint8 articleCount, uint8 lawCount, string updatedDate",
+  "revocable": false
+}

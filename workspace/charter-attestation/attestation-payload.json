@@ -1,0 +1,14 @@
+{
+  "schema": "string version, bytes32 charterDigest, uint8 articleCount, uint8 lawCount, string updatedDate",
+  "data": {
+    "version": "1.0",
+    "charterDigest": "0xb6e8f7b9f751ae285f44da214e1add22d91d016e60822ae2b69f1e52421a8f93",
+    "articleCount": 9,
+    "lawCount": 5,
+    "updatedDate": "2026-03-20"
+  },
+  "recipient": "0x0000000000000000000000000000000000000000",
+  "expirationTime": 0,
+  "revocable": false,
+  "refUID": "0x0000000000000000000000000000000000000000000000000000000000000000"
+}

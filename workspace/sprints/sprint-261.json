@@ -1,0 +1,44 @@
+{
+  "sprint_id": "sprint-261",
+  "title": "Founding Charter draft — 9 Articles on Base",
+  "description": "Expand the Founding Charter from v0.1 (2 articles) to v1.0 (9 articles + 5 immutable laws). Format for EAS attestation on Base. Articles III-IX cover agent rights, constitutional hierarchy, health governance, reset protocol, ethical shutdown, external agents, and durability.",
+  "source": "queue-prescribed (sprint-247 from queue, numbered 261 by git sequence)",
+  "tasks": [
+    {
+      "id": "261-01",
+      "title": "Expand Founding Charter to 9 Articles — full v1.0 draft",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-261",
+      "deliverables": { "code": ["workspace/shared-context/FOUNDING_CHARTER.md"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "261-02",
+      "title": "EAS attestation schema + preparation script",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-261",
+      "deliverables": { "code": ["scripts/charter/prepare-eas-attestation.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "261-03",
+      "title": "Validation script for charter completeness",
+      "type": "test",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-261",
+      "deliverables": { "code": ["scripts/charter/validate-charter.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
