@@ -175,7 +175,7 @@
       "sprint": 242,
       "title": "EVAL-002 \u2014 Cognee evaluation for knowledge graph memory",
       "block": "BRAINX",
-      "status": "queued",
+      "status": "done",
       "priority": "medium",
       "rationale": "Phase 2A gate dependency. Knowledge graph memory library evaluation. Same CTO evaluation pattern as EVAL-001."
     },

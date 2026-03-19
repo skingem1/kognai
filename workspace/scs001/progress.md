@@ -1771,3 +1771,15 @@ Full auto-posting pipeline built:
 - Swarm used: no (evaluation framework + research)
 - Issues: None
 - Timestamp: 2026-03-20T06:00:00Z
+
+## Sprint 256 — EVAL-002 Cognee (Direct Write)
+- Status: PASS
+- Commit: 87467f5
+- Files created: scripts/evaluations/eval-002-cognee.ts, scripts/evaluations/validate-eval-002.ts, workspace/sprints/sprint-256.json
+- Tasks completed:
+  - 256-01: EVAL-002 Cognee — scored 3.85/5.00 → ADOPT. Native pgvector, good entity extraction, Apache 2.0, 4K stars
+  - 256-02: Validation: 25/25 tests pass. Cross-comparison: Cognee (3.85) > OpenViking (3.10)
+- Recommendation: Use Cognee for knowledge graph (semantic memory), OpenViking for skill orchestration
+- Swarm used: no (evaluation)
+- Issues: None
+- Timestamp: 2026-03-20T06:10:00Z
