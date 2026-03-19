@@ -1,0 +1,56 @@
+{
+  "sprint_id": "sprint-253",
+  "title": "Blotato Multi-Platform Publishing — 9 platforms via API",
+  "description": "Replace TikTok-only publishing with Blotato API ($29/mo). Single API call publishes to Instagram, YouTube, TikTok, Facebook, LinkedIn, Threads, X, Pinterest, Bluesky. Dry-run default until BLOTATO_API_KEY is set.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "253-01",
+      "title": "Create Blotato API client module — multi-platform publish via REST",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-253",
+      "deliverables": { "code": ["scripts/scs001/blotato-client.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "253-02",
+      "title": "Refactor PublishingAgent to use Blotato for multi-platform + keep TikTok fallback",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-253",
+      "deliverables": { "code": ["agents/scs001-publishing/index.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "253-03",
+      "title": "Update PublishedVideo type for multi-platform results",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-253",
+      "deliverables": { "code": ["agents/scs001-publishing/index.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "253-04",
+      "title": "Create validation script for Blotato multi-platform output",
+      "type": "test",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-253",
+      "deliverables": { "code": ["scripts/scs001/validate-blotato-output.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

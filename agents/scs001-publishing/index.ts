@@ -1,8 +1,8 @@
 // SCS-001 — Publishing Agent (Agent 8 — Distribution Layer)
 // Consumes: QualityControlGate[] (passed only) + CaptionedVideo[] + ScriptBundle[]
 // Produces: PublishedVideo[] (per contracts/scs-001/publishing-analytics-v1.json)
-// Engine: Deterministic — caption assembly + TikTokClient dispatch (dry-run default)
-// Block E: TikTok primary. Multi-platform in Block G.
+// Engine: Blotato API (9 platforms) with TikTok-only fallback
+// Sprint 253: Multi-platform via Blotato ($29/mo). Dry-run default.
 
 import { randomUUID } from 'crypto';
 import type { QualityControlGate } from '../scs001-qc/index';
@@ -10,17 +10,21 @@ import type { CaptionedVideo } from '../scs001-caption/index';
 import type { ScriptBundle } from '../scs001-script/index';
 import { TikTokClient, TikTokPostOptions } from '../tiktok-client/index';
 import { VideoHostingService } from '../scs001-hosting/index';
+import { BlotatoClient, BlotatoPostRequest, BlotatoPlatformResult, ALL_PLATFORMS } from '../../scripts/scs001/blotato-client';
+import type { BlotatoPlatform } from '../../scripts/scs001/blotato-client';
 
 export interface PublishedVideo {
   publish_id:           string;
   video_id:             string;
-  platform:             'tiktok' | 'instagram_reels' | 'youtube_shorts';
+  platform:             string;  // Now supports all 9 Blotato platforms
   post_url:             string;
   posted_at:            string;
   posting_slot:         'morning_0700_0900' | 'midday_1200_1300' | 'evening_1800_2000' | 'late_night_2100_2300';
-  scheduled_post_time:  string;  // ISO datetime for this slot
+  scheduled_post_time:  string;
   caption_text:         string;
   hashtags:             string[];
+  publish_method:       'blotato' | 'tiktok-direct';  // Which path was used
+  platform_results?:    BlotatoPlatformResult[];       // Per-platform status from Blotato
 }
 
 // Prime-time slots in order — round-robin assignment per video index
@@ -62,14 +66,12 @@ function generateHashtags(bundle: ScriptBundle): string[] {
   const allText = bundle.segments.map(s => s.voiceover_text).join(' ').toLowerCase();
   const speakerTag = bundle.speaker_name.replace(/\s+/g, '').toLowerCase();
 
-  // Detect topic clusters from content
   const clustersFound = new Set<keyof typeof HASHTAG_BANK>();
   for (const [keyword, cluster] of Object.entries(TOPIC_KEYWORDS)) {
     if (allText.includes(keyword)) clustersFound.add(cluster);
   }
   if (clustersFound.size === 0) clustersFound.add('viral');
 
-  // Pick 1-2 tags per detected cluster, prioritize highest-signal
   const topicTags: string[] = [];
   for (const cluster of clustersFound) {
     const pool = HASHTAG_BANK[cluster];
@@ -77,7 +79,6 @@ function generateHashtags(bundle: ScriptBundle): string[] {
     if (topicTags.length < 3 && pool[1]) topicTags.push(pool[1]);
   }
 
-  // Always include speaker + 1-2 viral anchor tags
   const final = [speakerTag, ...topicTags, 'learnontiktok', 'knowledge'];
   const unique = [...new Set(final)].slice(0, 5);
   while (unique.length < 3) unique.push('fyp');
@@ -89,21 +90,27 @@ function buildCaption(bundle: ScriptBundle): string {
   const hook = bundle.segments.find(s => s.segment_name === 'hook');
   const hookText = (hook?.voiceover_text ?? '').substring(0, 80);
   const hashtags = generateHashtags(bundle).map(t => '#' + t).join(' ');
-  // TikTok shows first ~80 chars before "...more" — hook goes first
   return (hookText + '\n\n' + hashtags).substring(0, 300);
 }
 
 export class PublishingAgent {
-  private client: TikTokClient;
+  private tiktokClient: TikTokClient;
+  private blotatoClient: BlotatoClient;
   private mode: 'mock' | 'live';
   private hostingService: VideoHostingService | null;
+  private usesBlotato: boolean;
 
   constructor(mode: 'mock' | 'live' = 'mock') {
     this.mode = mode;
-    this.client = new TikTokClient();
+    this.tiktokClient = new TikTokClient();
+    this.blotatoClient = new BlotatoClient();
+    this.usesBlotato = BlotatoClient.isConfigured() || mode === 'mock'; // Always use Blotato path (dry-run in mock)
     this.hostingService = VideoHostingService.isConfigured() ? new VideoHostingService() : null;
-    if (this.mode === 'live' && !this.hostingService) {
-      console.warn('[PublishingAgent] WARNING: Supabase not configured — video hosting unavailable. Live posting will use local paths (TikTok PULL_FROM_URL will fail).');
+
+    if (this.usesBlotato) {
+      console.log('[PublishingAgent] Blotato multi-platform mode — 9 platforms');
+    } else {
+      console.log('[PublishingAgent] TikTok-only fallback (no BLOTATO_API_KEY)');
     }
   }
 
@@ -112,7 +119,6 @@ export class PublishingAgent {
     captionedVideos: CaptionedVideo[],
     bundles: ScriptBundle[],
   ): Promise<PublishedVideo[]> {
-    // Filter to QC-passed only
     const passedGates = gates.filter(g => g.overall_pass);
     const passedIds = new Set(passedGates.map(g => g.video_id));
 
@@ -123,16 +129,10 @@ export class PublishingAgent {
       return [];
     }
 
-    // Build lookup maps
     const captionMap = new Map<string, CaptionedVideo>();
     for (const cv of captionedVideos) captionMap.set(cv.video_id, cv);
 
-    // Bundle map: need to match via editing's insight_id
-    // For pipeline: video_id → CaptionedVideo → file_path, bundles matched by index
     const bundleByIndex = new Map<string, ScriptBundle>();
-    // We need a way to link video_id → bundle. The chain is:
-    // bundle.insight_id → EditedVideo.insight_id → EditedVideo.video_id
-    // Since we don't have EditedVideo here, use gate order matching bundle order
     const passedVideoIds = [...passedIds];
     for (let i = 0; i < Math.min(passedVideoIds.length, bundles.length); i++) {
       bundleByIndex.set(passedVideoIds[i], bundles[i]);
@@ -140,8 +140,7 @@ export class PublishingAgent {
 
     const results: PublishedVideo[] = [];
     let slotIndex = 0;
-    // Track caption hook texts to prevent TikTok duplicate-content demotion
-    const seenHooks = new Map<string, number>(); // normalized hook → occurrence count
+    const seenHooks = new Map<string, number>();
 
     for (const videoId of passedIds) {
       const cv = captionMap.get(videoId);
@@ -169,53 +168,105 @@ export class PublishingAgent {
         captionText = (hookLine + ` [Part ${prior + 1}]` + rest).substring(0, 300);
       }
 
-      if (this.mode === 'live') {
-        console.log('[PublishingAgent] LIVE MODE — posting to TikTok API');
-      }
-
-      // Resolve media URL: upload to Supabase Storage in live mode for TikTok PULL_FROM_URL
+      // Resolve media URL for live mode
       let resolvedMediaUrl = cv.file_path;
       if (this.mode === 'live' && this.hostingService) {
         try {
           const hosted = await this.hostingService.upload(cv.file_path, 'pub-' + new Date().toISOString().slice(0, 10));
           resolvedMediaUrl = hosted.public_url;
-          console.log('[PublishingAgent] Uploaded to ' + hosted.public_url + ' (' + hosted.size_bytes + ' bytes)');
+          console.log('[PublishingAgent] Uploaded to ' + hosted.public_url);
         } catch (err) {
           console.error('[PublishingAgent] Upload failed, using local path: ' + (err as Error).message);
         }
-      } else if (this.mode === 'live' && !this.hostingService) {
-        console.warn('[PublishingAgent] WARNING: No hosting service — mediaUrl is local path');
       }
 
-      const postOptions: TikTokPostOptions = {
-        caption: captionText,
-        // LIVE: resolvedMediaUrl is public Supabase Storage URL (uploaded above).
-        // Falls back to local path if hosting not configured (TikTok will reject).
-        mediaUrl: resolvedMediaUrl,
-        mediaType: 'video',
-        hashtags,
-        dryRun: this.mode !== 'live',
-      };
-
-      const result = await this.client.post(postOptions);
-
-      const published: PublishedVideo = {
-        publish_id:          result.publishId || 'pub-' + randomUUID().substring(0, 8),
-        video_id:            videoId,
-        platform:            'tiktok',
-        post_url:            'https://www.tiktok.com/@kognai/video/' + (result.publishId || 'dry-run'),
-        posted_at:           new Date().toISOString(),
-        posting_slot:        slot,
-        scheduled_post_time: scheduled_post_time,
-        caption_text:        captionText,
-        hashtags,
-      };
-
-      results.push(published);
-      console.log('[PublishingAgent] Published ' + videoId + ' → ' + published.post_url + ' (slot: ' + slot + ')');
+      if (this.usesBlotato) {
+        // Blotato multi-platform path
+        const blotatoResults = await this.publishViaBlotato(videoId, captionText, resolvedMediaUrl, hashtags, bundle, slot, scheduled_post_time);
+        results.push(...blotatoResults);
+      } else {
+        // TikTok-only fallback
+        const tiktokResult = await this.publishViaTikTok(videoId, captionText, resolvedMediaUrl, hashtags, slot, scheduled_post_time);
+        results.push(tiktokResult);
+      }
     }
 
-    console.log('[PublishingAgent] ' + results.length + ' videos published to TikTok');
+    const platforms = this.usesBlotato ? '9 platforms via Blotato' : 'TikTok only';
+    console.log('[PublishingAgent] ' + results.length + ' publish results (' + platforms + ')');
     return results;
+  }
+
+  private async publishViaBlotato(
+    videoId: string,
+    captionText: string,
+    mediaUrl: string,
+    hashtags: string[],
+    bundle: ScriptBundle,
+    slot: PublishedVideo['posting_slot'],
+    scheduledPostTime: string,
+  ): Promise<PublishedVideo[]> {
+    const hookSegment = bundle.segments.find(s => s.segment_name === 'hook');
+    const title = (hookSegment?.voiceover_text ?? 'AI Insights').substring(0, 100);
+
+    const request: BlotatoPostRequest = {
+      caption: captionText,
+      mediaUrl,
+      mediaType: 'video',
+      platforms: [...ALL_PLATFORMS],
+      hashtags,
+      title,
+      description: captionText,
+    };
+
+    const response = await this.blotatoClient.post(request);
+
+    // Create one PublishedVideo per successful platform
+    return response.platforms
+      .filter(p => p.success)
+      .map(p => ({
+        publish_id:          p.postId || 'pub-' + randomUUID().substring(0, 8),
+        video_id:            videoId,
+        platform:            p.platform,
+        post_url:            p.postUrl || '',
+        posted_at:           response.createdAt,
+        posting_slot:        slot,
+        scheduled_post_time: scheduledPostTime,
+        caption_text:        captionText,
+        hashtags,
+        publish_method:      'blotato' as const,
+        platform_results:    response.platforms,
+      }));
+  }
+
+  private async publishViaTikTok(
+    videoId: string,
+    captionText: string,
+    mediaUrl: string,
+    hashtags: string[],
+    slot: PublishedVideo['posting_slot'],
+    scheduledPostTime: string,
+  ): Promise<PublishedVideo> {
+    const postOptions: TikTokPostOptions = {
+      caption: captionText,
+      mediaUrl,
+      mediaType: 'video',
+      hashtags,
+      dryRun: this.mode !== 'live',
+    };
+
+    const result = await this.tiktokClient.post(postOptions);
+
+    return {
+      publish_id:          result.publishId || 'pub-' + randomUUID().substring(0, 8),
+      video_id:            videoId,
+      platform:            'tiktok',
+      post_url:            'https://www.tiktok.com/@kognai/video/' + (result.publishId || 'dry-run'),
+      posted_at:           new Date().toISOString(),
+      posting_slot:        slot,
+      scheduled_post_time: scheduledPostTime,
+      caption_text:        captionText,
+      hashtags,
+      publish_method:      'tiktok-direct',
+    };
   }
 }
