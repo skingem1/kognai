@@ -1306,3 +1306,14 @@ SESSION HANDOFF (2026-03-17, Sprints 166-170):
 - Swarm used: no (1-line edit)
 - Issues: None
 - Timestamp: 2026-03-19T18:00:00Z
+
+## Sprint 210 — Router Port Fix (Direct Write)
+- Status: PASS
+- Commit: 4dc456f
+- Files modified: runtime/router_server.py
+- Files created: workspace/sprints/sprint-210.json
+- Tasks completed:
+  - 210-01: Added port availability check — exits cleanly (code 0) if port occupied, prevents PM2 restart storm
+- Swarm used: no (surgical edit)
+- Issues: kognai-router had 30 restarts due to port 11435 conflict. Now exits gracefully.
+- Timestamp: 2026-03-19T18:15:00Z
