@@ -1362,3 +1362,13 @@ SESSION HANDOFF (2026-03-17, Sprints 166-170):
 - Swarm used: no (single-function edit)
 - Issues: None
 - Timestamp: 2026-03-19T20:00:00Z
+
+## Sprint 215 — PM2 Boot Script (Direct Write)
+- Status: PASS
+- Commit: 37e54e5
+- Files created: scripts/pm2-boot.sh, workspace/sprints/sprint-215.json
+- Tasks completed:
+  - 215-01: Created pm2-boot.sh — deletes old processes, reloads ecosystem.config.js, verifies core services (telegram-bot, achiri-api, stripe-webhook, vault-dashboard), lists cron status (pipeline, digest, gate-regen, posting reminders, etc). Idempotent, safe to run multiple times.
+- Swarm used: no (new script creation)
+- Issues: Found most PM2 crons stopped (pipeline, digest, gate-regen, posting reminders). Operator needs to run ./scripts/pm2-boot.sh to restart everything.
+- Timestamp: 2026-03-19T20:15:00Z
