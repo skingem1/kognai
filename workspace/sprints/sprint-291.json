@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-291",
+  "title": "Fix orchestrator — pass qualifiedClips to InsightAgent",
+  "description": "Bug: orchestrator line 156 passes `clips` (all) to InsightAgent instead of `qualifiedClips`. InsightAgent filters internally but wastes time processing unqualified clips through speaker cap logic. Fix: pass qualifiedClips.",
+  "source": "auto — code review during Sprint 288 investigation",
+  "tasks": [
+    {
+      "id": "291-01",
+      "title": "Fix agent.run(clips) to agent.run(qualifiedClips) in orchestrator",
+      "type": "bugfix",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-291",
+      "deliverables": { "code": ["agents/scs001-orchestrator/index.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

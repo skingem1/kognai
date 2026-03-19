@@ -153,7 +153,7 @@ export class SCS001Orchestrator {
       stages.push(await this.runStage('4-insight', 'InsightAgent (live)', async () => {
         const agent = new InsightAgent();
         briefs = await withRetry(
-          () => agent.run(clips),
+          () => agent.run(qualifiedClips),
           'InsightAgent-live',
           { maxRetries: 2, baseDelayMs: 3000 },
         );
