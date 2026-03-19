@@ -1,0 +1,56 @@
+{
+  "sprint_id": "sprint-265",
+  "title": "Telegram operator commands — /record, /queue, /review for gate workflow",
+  "description": "Add /record, /queue, and /review commands to the Telegram bot so the operator can track manual posts, see the posting queue, and review latest videos — all from Telegram. Critical for hitting the 30-post Apr 7 gate target.",
+  "source": "auto — daily digest references /queue, /review, /record but they are not implemented in telegram-bot.ts",
+  "tasks": [
+    {
+      "id": "265-01",
+      "title": "Add /record command to Telegram bot — record manual TikTok post",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-265",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "265-02",
+      "title": "Add /queue command to Telegram bot — show unposted videos ranked by viral score",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-265",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "265-03",
+      "title": "Add /review command to Telegram bot — show latest generated video details",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-265",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "265-04",
+      "title": "Validation — dry-run test of new bot commands",
+      "type": "test",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-265",
+      "deliverables": { "code": ["scripts/scs001/validate-bot-commands.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

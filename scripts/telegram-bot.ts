@@ -330,6 +330,198 @@ function cmdGate(): string {
   );
 }
 
+// ─── Sprint 265: /record, /queue, /review commands ────────────────────
+
+function readLines(filePath: string): any[] {
+  if (!fs.existsSync(filePath)) return [];
+  try {
+    return fs.readFileSync(filePath, 'utf-8')
+      .split('\n')
+      .filter(l => l.trim())
+      .map(l => { try { return JSON.parse(l); } catch { return null; } })
+      .filter(Boolean);
+  } catch { return []; }
+}
+
+function cmdRecord(args: string): string {
+  // Usage: /record <video_id> <views> [title...]
+  const parts = args.trim().split(/\s+/);
+  if (parts.length < 2) {
+    return (
+      `*Usage:* \`/record <video_id> <views> [title]\`\n\n` +
+      `Example: \`/record clip_abc123 0 My first TikTok\`\n\n` +
+      `Records a manually-posted TikTok video for gate tracking.`
+    );
+  }
+
+  const videoId = parts[0];
+  const views = parseInt(parts[1], 10);
+  if (isNaN(views) || views < 0) {
+    return `❌ Invalid views count: \`${parts[1]}\` — must be a non-negative number.`;
+  }
+  const title = parts.slice(2).join(' ') || undefined;
+
+  const manualPostsPath = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
+  const dir = path.dirname(manualPostsPath);
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+
+  // Check for duplicate
+  const existing = readLines(manualPostsPath);
+  if (existing.some((e: any) => e.video_id === videoId)) {
+    return `⚠️ Video \`${videoId}\` already recorded. Use /queue to see unposted videos.`;
+  }
+
+  const entry = {
+    video_id: videoId,
+    views,
+    title,
+    posted_at: new Date().toISOString(),
+    recorded_at: new Date().toISOString(),
+  };
+  fs.appendFileSync(manualPostsPath, JSON.stringify(entry) + '\n', 'utf-8');
+
+  // Compute updated gate stats
+  const updated = readLines(manualPostsPath);
+  const postCount = updated.length;
+  const totalViews = updated.reduce((s: number, p: any) => s + (p.views ?? 0), 0);
+  const postsLeft = Math.max(0, 30 - postCount);
+  const gateDate = new Date('2026-04-07T00:00:00Z');
+  const daysLeft = Math.max(0, Math.ceil((gateDate.getTime() - Date.now()) / 86_400_000));
+
+  return (
+    `✅ *Post recorded!*\n\n` +
+    `Video: \`${videoId}\`\n` +
+    `Views: ${views}${title ? `\nTitle: ${title}` : ''}\n\n` +
+    `📊 *Gate progress:* ${postCount}/30 posts · ${totalViews}/500 views\n` +
+    `${postsLeft > 0 ? `⏳ ${postsLeft} more posts needed · ${daysLeft}d to Apr 7` : '✅ Post target met!'}`
+  );
+}
+
+function cmdQueue(): string {
+  const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
+  const recorded = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  const recordedIds = new Set(recorded.map((e: any) => e.video_id).filter(Boolean));
+
+  // Load viral scores for ranking
+  const viralScores = new Map<string, number>();
+  const expPath = path.join(ROOT, 'workspace', 'scs001', 'experiments.jsonl');
+  if (fs.existsSync(expPath)) {
+    try {
+      for (const line of fs.readFileSync(expPath, 'utf-8').split('\n')) {
+        if (!line.trim()) continue;
+        try {
+          const e = JSON.parse(line);
+          const id = e.clip_id ?? e.video_id;
+          if (id && e.partial_viral_score != null) viralScores.set(id, e.partial_viral_score);
+        } catch { /* skip */ }
+      }
+    } catch { /* skip */ }
+  }
+
+  // Check for captioned mp4 on disk
+  function hasCaptionedMp4(videoId: string): boolean {
+    try {
+      const scsDir = path.join(ROOT, 'workspace', 'scs001');
+      const runDirs = fs.readdirSync(scsDir).filter(d => d.startsWith('run-'));
+      for (const dir of runDirs) {
+        const p = path.join(scsDir, dir, 'caption', `${videoId}-captioned.mp4`);
+        if (fs.existsSync(p)) return true;
+      }
+    } catch { /* ignore */ }
+    return false;
+  }
+
+  const unposted = (ledger as any[])
+    .filter((e: any) => !recordedIds.has(e.video_id) && e.video_id)
+    .sort((a: any, b: any) => (viralScores.get(b.video_id) ?? -1) - (viralScores.get(a.video_id) ?? -1));
+
+  if (unposted.length === 0) {
+    return (
+      `📋 *Posting Queue — Empty*\n\n` +
+      `No unposted videos in the ledger.\n` +
+      `Pipeline total: ${ledger.length} | Posted: ${recorded.length}`
+    );
+  }
+
+  const top5 = unposted.slice(0, 5);
+  const readyCount = unposted.filter((e: any) => hasCaptionedMp4(e.video_id)).length;
+
+  const lines = top5.map((e: any, i: number) => {
+    const vs = viralScores.get(e.video_id);
+    const vsStr = vs != null ? ` 🧬${vs}` : '';
+    const ready = hasCaptionedMp4(e.video_id) ? ' ✅' : ' ⏳';
+    return `${i + 1}. \`${e.video_id}\`${vsStr}${ready}`;
+  });
+
+  return (
+    `📋 *Posting Queue* — ${unposted.length} unposted (${readyCount} ready)\n\n` +
+    lines.join('\n') +
+    `\n\n_To record: \`/record <video_id> <views>\`_` +
+    `\n_✅ = captioned mp4 ready · 🧬 = viral score_`
+  );
+}
+
+function cmdReview(): string {
+  const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
+  if (ledger.length === 0) {
+    return `📹 *Review* — No videos in pipeline yet.`;
+  }
+
+  // Get latest entry
+  const latest = ledger[ledger.length - 1];
+  const videoId = latest.video_id ?? 'unknown';
+
+  // Check for captioned mp4
+  let mp4Status = '❌ not found';
+  try {
+    const scsDir = path.join(ROOT, 'workspace', 'scs001');
+    const runDirs = fs.readdirSync(scsDir).filter(d => d.startsWith('run-'));
+    for (const dir of runDirs) {
+      const p = path.join(scsDir, dir, 'caption', `${videoId}-captioned.mp4`);
+      if (fs.existsSync(p)) {
+        const stat = fs.statSync(p);
+        mp4Status = `✅ ready (${Math.round(stat.size / 1024)}KB)`;
+        break;
+      }
+    }
+  } catch { /* ignore */ }
+
+  // Check experiments for QC/viral data
+  let qcStatus = 'no data';
+  let viralScore: string = 'n/a';
+  const expPath = path.join(ROOT, 'workspace', 'scs001', 'experiments.jsonl');
+  if (fs.existsSync(expPath)) {
+    try {
+      for (const line of fs.readFileSync(expPath, 'utf-8').split('\n')) {
+        if (!line.trim()) continue;
+        try {
+          const e = JSON.parse(line);
+          const id = e.clip_id ?? e.video_id;
+          if (id === videoId) {
+            if (e.qc_passed != null) qcStatus = e.qc_passed ? '✅ passed' : '❌ failed';
+            if (e.partial_viral_score != null) viralScore = String(e.partial_viral_score);
+          }
+        } catch { /* skip */ }
+      }
+    } catch { /* skip */ }
+  }
+
+  // Check if already posted
+  const recorded = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  const isPosted = recorded.some((e: any) => e.video_id === videoId);
+
+  return (
+    `📹 *Latest Video Review*\n\n` +
+    `ID: \`${videoId}\`\n` +
+    `Published: ${latest.published_at ?? 'unknown'}\n` +
+    `MP4: ${mp4Status}\n` +
+    `QC: ${qcStatus}\n` +
+    `Viral score: ${viralScore}\n` +
+    `Posted: ${isPosted ? '✅ yes' : '❌ not yet'}\n\n` +
+    (isPosted ? '' : `_To post: \`/record ${videoId} 0\`_`)
+  );
+}
+
 function cmdHelp(): string {
   return (
     `*Kognai Bot Commands*\n\n` +
@@ -339,6 +531,9 @@ function cmdHelp(): string {
     `/tier   — Current tier + MRR\n` +
     `/sprint — Latest sprint progress\n` +
     `/gate   — Phase 1.5 gate countdown\n` +
+    `/queue  — Unposted videos ranked by viral score\n` +
+    `/review — Latest generated video details\n` +
+    `/record — Record a manual TikTok post\n` +
     `/help   — This message`
   );
 }
@@ -355,17 +550,25 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     return;
   }
 
+  // Sprint 265: extract command name and arguments
+  const spaceIdx = text.indexOf(' ');
+  const cmdName = spaceIdx === -1 ? cmd : text.slice(0, spaceIdx).split('@')[0].toLowerCase().trim();
+  const cmdArgs = spaceIdx === -1 ? '' : text.slice(spaceIdx + 1).trim();
+
   let response: string;
-  switch (cmd) {
+  switch (cmdName) {
     case '/report': response = cmdReport(); break;
     case '/pm2':    response = cmdPm2();    break;
     case '/health': response = cmdHealth(); break;
     case '/tier':   response = cmdTier();   break;
     case '/sprint': response = cmdSprint(); break;
     case '/gate':   response = cmdGate();   break;
+    case '/record': response = cmdRecord(cmdArgs); break;
+    case '/queue':  response = cmdQueue();  break;
+    case '/review': response = cmdReview(); break;
     case '/help':   response = cmdHelp();   break;
     default:
-      response = `Unknown command: \`${cmd}\`\n\n${cmdHelp()}`;
+      response = `Unknown command: \`${cmdName}\`\n\n${cmdHelp()}`;
   }
 
   try {
