@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-209",
+  "title": "Help Command Update — add missing /send-video to help text",
+  "description": "The /help command is missing /send-video which is a key command for the manual posting workflow (sends captioned video file to owner via Telegram for download + manual TikTok post). Add it to the help text.",
+  "source": "autonomous",
+  "tasks": [
+    {
+      "id": "209-01",
+      "title": "Add /send-video to /help text in commands.ts",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "todo",
+      "priority": "medium",
+      "sprint_id": "sprint-209",
+      "deliverables": { "code": ["agents/telegram-bot/commands.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

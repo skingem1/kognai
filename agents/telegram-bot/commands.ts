@@ -112,6 +112,7 @@ export async function handleHelp(chatId: number): Promise<void> {
     '/today — Morning cockpit: target + next video + trending topics (owner)',
     '/viral — Top 10 trending topics from pipeline (owner)',
     '/viral-stats — Viral score summary: avg/max/top-3 (owner)',
+    '/send-video <id> — Send captioned video file to Telegram for manual posting (owner)',
     '/calendar — Today\'s posting schedule from content calendar (owner)',
     '',
     '🤖 *Achiri AI Companion*',
