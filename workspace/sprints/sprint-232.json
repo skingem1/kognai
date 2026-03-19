@@ -1,0 +1,44 @@
+{
+  "sprint_id": "sprint-232",
+  "title": "TikTok OAuth Flow — unblock live posting for Phase 1.5 gate",
+  "description": "Build TikTok OAuth 2.0 flow to obtain TIKTOK_ACCESS_TOKEN. Creates standalone OAuth server + /tiktokauth telegram command. Directly unblocks the 0/30 posting gate (Apr 7).",
+  "source": "autonomous",
+  "tasks": [
+    {
+      "id": "232-01",
+      "title": "Create TikTok OAuth server script",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-232",
+      "deliverables": { "code": ["scripts/tiktok-oauth.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "232-02",
+      "title": "Add /tiktokauth command to telegram bot",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-232",
+      "deliverables": { "code": ["agents/telegram-bot/commands.ts", "agents/telegram-bot/index.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "232-03",
+      "title": "Add token refresh utility for auto-renewal",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-232",
+      "deliverables": { "code": ["scripts/tiktok-refresh-token.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

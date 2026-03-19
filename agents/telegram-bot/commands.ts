@@ -99,6 +99,7 @@ export async function handleHelp(chatId: number): Promise<void> {
     '/subscribe — Subscribe to TikTok Agent ($19/$49/mo)',
     '/stripestatus — Stripe go-live checklist (owner)',
     '/tiktokstatus — TikTok live mode readiness (owner)',
+    '/tiktokauth — TikTok OAuth flow: get/refresh access token (owner)',
     '/gate — Phase 1.5 gate review (Apr 7 kill switch)',
     '/postreminder — Apr 7 gate progress + posting workflow (owner)',
     '/review — Top-3 QC-passed videos for manual posting (owner)',
@@ -2421,4 +2422,77 @@ export async function handlePreflight(chatId: number, ownerChatId: string): Prom
       await sendMessage(chatId, '❌ Preflight check failed to run. Try CLI: `npx ts-node scripts/production-preflight.ts`');
     }
   }
+}
+
+// ── TikTok OAuth — Sprint 232 ────────────────────────────────────────────────
+// Owner-only: generates TikTok OAuth URL and checks token status.
+export async function handleTiktokAuth(chatId: number, ownerChatId: string): Promise<void> {
+  if (String(chatId) !== ownerChatId) {
+    await sendMessage(chatId, '🔒 Owner only.');
+    return;
+  }
+
+  const clientKey    = process.env.TIKTOK_CLIENT_KEY    || '';
+  const accessToken  = process.env.TIKTOK_ACCESS_TOKEN  || '';
+  const port         = process.env.TIKTOK_OAUTH_PORT    || '3456';
+  const redirectUri  = process.env.TIKTOK_REDIRECT_URI  || `http://localhost:${port}/callback`;
+
+  // Check existing token status
+  const metaPath = join(process.cwd(), 'data', 'tiktok-token-meta.json');
+  let tokenStatus = '❌ No token';
+  if (accessToken) {
+    try {
+      const meta = JSON.parse(readFileSync(metaPath, 'utf-8'));
+      const expiresAt = new Date(meta.expires_at);
+      const now = new Date();
+      if (expiresAt > now) {
+        const hoursLeft = Math.round((expiresAt.getTime() - now.getTime()) / 3600000);
+        tokenStatus = `✅ Active (expires in ${hoursLeft}h)`;
+      } else {
+        tokenStatus = '⚠️ Expired — needs refresh';
+      }
+    } catch {
+      tokenStatus = '✅ Set (no metadata — check manually)';
+    }
+  }
+
+  if (!clientKey) {
+    await sendMessage(chatId, '❌ TIKTOK\\_CLIENT\\_KEY not set in .env. Cannot start OAuth.');
+    return;
+  }
+
+  const scopes = 'user.info.basic,video.publish';
+  const params = new URLSearchParams({
+    client_key: clientKey,
+    scope: scopes,
+    response_type: 'code',
+    redirect_uri: redirectUri,
+    state: 'kognai-' + Date.now(),
+  });
+  const authUrl = `https://www.tiktok.com/v2/auth/authorize/?${params.toString()}`;
+
+  const lines = [
+    '🔑 *TikTok OAuth 2.0*',
+    '',
+    `*Token status:* ${tokenStatus}`,
+    '',
+    '*To get/refresh token:*',
+    '1️⃣ On Mac Mini, run:',
+    '`npx ts-node scripts/tiktok-oauth.ts`',
+    '',
+    '2️⃣ Open the auth URL in browser',
+    '3️⃣ Authorize the app',
+    '4️⃣ Token auto-saved to .env',
+    '',
+    `*Auth URL (if server running):*`,
+    authUrl,
+    '',
+    '*Refresh existing token:*',
+    '`npx ts-node scripts/tiktok-refresh-token.ts`',
+    '',
+    `Scopes: \`${scopes}\``,
+    `Redirect: \`${redirectUri}\``,
+  ];
+
+  await sendMessage(chatId, lines.join('\n'));
 }

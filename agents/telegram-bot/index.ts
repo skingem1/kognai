@@ -25,6 +25,7 @@ import {
   handleStripeStatus, handleQueue, handleTiktokStatus, handlePostNow, handleCaption, handlePace,
   handleToday, handleViral, handlePm2Status, handlePostBatch, handleSendVideo,
   handleViralStats, handleCalendar, handleHealth, handlePreflight,
+  handleTiktokAuth,
 } from './commands';
 
 // ── Config ────────────────────────────────────────────────────────────────────
@@ -101,28 +102,29 @@ async function dispatch(update: TelegramUpdate): Promise<void> {
     case '/achiri':     await handleAchiri(chatId, text.slice('/achiri'.length).trim()); break;
     case '/gate':       await handleGate(chatId);                         break;
     case '/waitlist':       await handleWaitlist(chatId, firstName, username, text.split(/\s+/)[1], OWNER_CHAT_ID); break;
-    case '/achiri-health':   await handleAchiriHealth(chatId, OWNER_CHAT_ID);  break;
-    case '/post-reminder':   await handlePostReminder(chatId, OWNER_CHAT_ID);  break;
+    case '/achirihealth':   await handleAchiriHealth(chatId, OWNER_CHAT_ID);  break;
+    case '/postreminder':   await handlePostReminder(chatId, OWNER_CHAT_ID);  break;
     case '/review':          await handleReview(chatId, OWNER_CHAT_ID);        break;
     case '/record':          await handleRecord(chatId, OWNER_CHAT_ID, text);        break;
-    case '/update-views':    await handleUpdateViews(chatId, OWNER_CHAT_ID, text);        break;
-    case '/invite-achiri':   await handleInviteAchiri(chatId, OWNER_CHAT_ID, text);       break;
-    case '/deploy-status':   await handleDeployStatus(chatId, OWNER_CHAT_ID);            break;
-    case '/stripe-status':   await handleStripeStatus(chatId, OWNER_CHAT_ID);           break;
+    case '/updateviews':    await handleUpdateViews(chatId, OWNER_CHAT_ID, text);        break;
+    case '/inviteachiri':   await handleInviteAchiri(chatId, OWNER_CHAT_ID, text);       break;
+    case '/deploystatus':   await handleDeployStatus(chatId, OWNER_CHAT_ID);            break;
+    case '/stripestatus':   await handleStripeStatus(chatId, OWNER_CHAT_ID);           break;
     case '/queue':           await handleQueue(chatId, OWNER_CHAT_ID);                  break;
-    case '/tiktok-status':   await handleTiktokStatus(chatId, OWNER_CHAT_ID);           break;
-    case '/post-now':        await handlePostNow(chatId, OWNER_CHAT_ID);                break;
+    case '/tiktokstatus':   await handleTiktokStatus(chatId, OWNER_CHAT_ID);           break;
+    case '/postnow':        await handlePostNow(chatId, OWNER_CHAT_ID);                break;
     case '/caption':         await handleCaption(chatId, OWNER_CHAT_ID, text.split(/\s+/)[1]); break;
     case '/pace':            await handlePace(chatId, OWNER_CHAT_ID);                    break;
     case '/today':           await handleToday(chatId, OWNER_CHAT_ID);                  break;
     case '/viral':           await handleViral(chatId, OWNER_CHAT_ID);                  break;
-    case '/pm2-status':      await handlePm2Status(chatId, OWNER_CHAT_ID);              break;
-    case '/post-batch':      await handlePostBatch(chatId, OWNER_CHAT_ID, text);        break;
-    case '/send-video':      await handleSendVideo(chatId, OWNER_CHAT_ID, text);        break;
-    case '/viral-stats':     await handleViralStats(chatId, OWNER_CHAT_ID);             break;
+    case '/pm2status':      await handlePm2Status(chatId, OWNER_CHAT_ID);              break;
+    case '/postbatch':      await handlePostBatch(chatId, OWNER_CHAT_ID, text);        break;
+    case '/sendvideo':      await handleSendVideo(chatId, OWNER_CHAT_ID, text);        break;
+    case '/viralstats':     await handleViralStats(chatId, OWNER_CHAT_ID);             break;
     case '/calendar':        await handleCalendar(chatId, OWNER_CHAT_ID);              break;
     case '/health':          await handleHealth(chatId, OWNER_CHAT_ID);                break;
     case '/preflight':       await handlePreflight(chatId, OWNER_CHAT_ID);             break;
+    case '/tiktokauth':     await handleTiktokAuth(chatId, OWNER_CHAT_ID);            break;
     default:                 await handleUnknown(chatId, text);                          break;
   }
 }
