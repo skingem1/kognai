@@ -1416,3 +1416,14 @@ SESSION HANDOFF (2026-03-17, Sprints 166-170):
 - Swarm used: no (multi-file surgical edit)
 - Issues: None. `bash scripts/pre-deploy-check.sh` now passes clean.
 - Timestamp: 2026-03-19T21:30:00Z
+
+## Sprint 220 — Gate Tracker Refresh (Direct Write)
+- Status: PASS
+- Commit: 4c233f8
+- Files modified: docs/gate-tracker.md
+- Files created: workspace/sprints/sprint-220.json
+- Tasks completed:
+  - 220-01: Ran scripts/update-gate-tracker.ts to refresh gate-tracker.md. Restored: Phase 0→1 [x] PASS (176 videos), Phase 1.5 0/30 posts · 0/500 views · 19d remaining, Achiri waitlist=1 · 37d to Apr 25. Dashboard /api/gates now shows correct status.
+- Swarm used: no (script execution + commit)
+- Issues: Gate-tracker.md was manually overwritten at some point, losing auto-generated data. The PM2 cron (kognai-gate-tracker-update) was stopped so it wasn't being refreshed.
+- Timestamp: 2026-03-19T21:45:00Z
