@@ -1,0 +1,8 @@
+{"ts":"2026-03-18T19:28:22.297Z","event":"create","taskId":"test-176","tmpDir":"/var/folders/dz/zl306cbx2rn8mmr6s32fpv040000gn/T/kognai-phantom-test-176-syac92","active_count":1}
+{"ts":"2026-03-18T19:28:22.298Z","event":"cleanup","taskId":"test-176","tmpDir":"/var/folders/dz/zl306cbx2rn8mmr6s32fpv040000gn/T/kognai-phantom-test-176-syac92","duration_ms":1,"active_count":0}
+{"ts":"2026-03-18T19:36:52.570Z","event":"create","taskId":"178-01","tmpDir":"/tmp/kognai-phantom-178-01-FpwWlV","active_count":1}
+{"ts":"2026-03-18T19:36:52.582Z","event":"cleanup","taskId":"178-01","tmpDir":"/tmp/kognai-phantom-178-01-FpwWlV","duration_ms":11,"active_count":0}
+{"ts":"2026-03-18T19:38:43.837Z","event":"create","taskId":"178-01","tmpDir":"/tmp/kognai-phantom-178-01-TYnnuM","active_count":1}
+{"ts":"2026-03-18T19:39:51.659Z","event":"create","taskId":"178-01","tmpDir":"/tmp/kognai-phantom-178-01-tXfp6p","active_count":1}
+{"ts":"2026-03-18T19:45:37.255Z","event":"cleanup","taskId":"178-01","tmpDir":"/tmp/kognai-phantom-178-01-tXfp6p","duration_ms":345596,"active_count":0}
+{"ts":"2026-03-18T19:45:37.255Z","event":"create","taskId":"178-02","tmpDir":"/tmp/kognai-phantom-178-02-YE9T4Q","active_count":1}

@@ -1,0 +1,6 @@
+{"event":"before_write","filePath":"scripts/lib/omel/credential-vault.ts","agentId":"test-agent","oldHash":"68eb4361fc731c7003d5e7837e26477e08affbad8bbce680c668d8a6168171d5","oldSizeBytes":4804,"createdAt":"2026-03-18T19:50:04.500Z"}
+{"event":"before_write","filePath":"scripts/lib/omel/does-not-exist.ts","agentId":"test-agent","oldHash":"","oldSizeBytes":0,"createdAt":"2026-03-18T19:50:04.501Z"}
+{"event":"after_write","filePath":"scripts/lib/omel/does-not-exist.ts","agentId":"test-agent","oldSizeBytes":0,"newSizeBytes":500,"ts":"2026-03-18T19:50:04.502Z"}
+{"event":"after_write","filePath":"test.ts","agentId":"qwen3:14b","oldSizeBytes":800,"newSizeBytes":200,"ts":"2026-03-18T19:50:04.502Z"}
+{"event":"shrink_alert","filePath":"test.ts","agentId":"qwen3:14b","oldSizeBytes":800,"newSizeBytes":200,"ratio":0.25,"ts":"2026-03-18T19:50:04.502Z"}
+{"event":"before_delete","filePath":"scripts/lib/omel/credential-vault.ts","agentId":"test-agent","sizeBytes":4804,"hash":"68eb4361fc731c7003d5e7837e26477e08affbad8bbce680c668d8a6168171d5","ts":"2026-03-18T19:50:04.502Z"}
