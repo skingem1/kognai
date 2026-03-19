@@ -60,11 +60,24 @@ def get_experiment_stats() -> dict:
         key=lambda x: x["pass_rate"], reverse=True
     )[:5]
 
+    # Viral score stats (Sprint 191)
+    viral_scores = [e.get("partial_viral_score") for e in entries if e.get("partial_viral_score") is not None]
+    viral_stats = {}
+    if viral_scores:
+        viral_stats = {
+            "scored_count": len(viral_scores),
+            "avg_viral": round(sum(viral_scores) / len(viral_scores), 3),
+            "max_viral": round(max(viral_scores), 3),
+            "min_viral": round(min(viral_scores), 3),
+            "above_07": sum(1 for v in viral_scores if v >= 0.7),
+        }
+
     return {
         "total_logged": len(entries),
         "unique_formulas": len(formulas),
         "top_formulas": top_formulas,
         "top_speakers": top_speakers,
+        "viral_stats": viral_stats,
     }
 
 

@@ -1,0 +1,24 @@
+{
+  "tasks": [
+    {
+      "id": "191-01",
+      "title": "Dashboard viral score stats — experiments.py + app.js",
+      "description": "Add viral_stats to get_experiment_stats() return (scored_count, avg_viral, max_viral, min_viral, above_07). Render in experiments panel as second stats row. Surgical edit.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "priority": "critical",
+      "sprint_id": "sprint-191",
+      "deliverables": {
+        "code": ["dashboard/parsers/experiments.py", "dashboard/static/app.js"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Sprint 191. Dashboard should show viral score metrics alongside existing experiment stats."
+    }
+  ],
+  "source": "human",
+  "_plan_reference": "Sprint 191: Dashboard Viral Score Panel. Add viral stats to existing experiments panel."
+}

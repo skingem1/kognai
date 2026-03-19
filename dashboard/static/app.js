@@ -1640,11 +1640,22 @@ async function renderExperiments() {
     let html = '';
 
     // Header stats
+    const vs = stats.viral_stats ?? {};
     html += `<div class="stats-row" style="margin-bottom:12px;">
       <div class="stat-box"><div class="stat-value">${stats.total_logged ?? 0}</div><div class="stat-label">Experiments</div></div>
       <div class="stat-box"><div class="stat-value">${stats.unique_formulas ?? 0}</div><div class="stat-label">Formulas</div></div>
       <div class="stat-box"><div class="stat-value">${valSum.total_errors ?? 0}</div><div class="stat-label">Validation Errors</div></div>
     </div>`;
+
+    // Viral score stats (Sprint 191)
+    if (vs.scored_count) {
+      html += `<div class="stats-row" style="margin-bottom:12px;">
+        <div class="stat-box"><div class="stat-value" style="color:var(--accent-green);">${vs.avg_viral ?? '—'}</div><div class="stat-label">Avg Viral</div></div>
+        <div class="stat-box"><div class="stat-value">${vs.scored_count ?? 0}</div><div class="stat-label">Scored</div></div>
+        <div class="stat-box"><div class="stat-value">${vs.above_07 ?? 0}</div><div class="stat-label">≥0.7 (High)</div></div>
+        <div class="stat-box"><div class="stat-value">${vs.max_viral ?? '—'}</div><div class="stat-label">Max Viral</div></div>
+      </div>`;
+    }
 
     // Formula pass-rate bars
     const formulas = stats.top_formulas ?? [];
