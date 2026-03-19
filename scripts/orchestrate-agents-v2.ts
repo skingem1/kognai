@@ -56,6 +56,7 @@ import { AARMiddleware } from './lib/aar-middleware';
 import { crystalliseSkill } from './lib/skill-crystalliser';
 import { crystalliseCodeAsset } from './lib/code-asset-crystalliser';
 import { MonotaskSM } from './lib/monotask-state-machine';
+import { logCodeFailure } from './lib/code-failure-logger';
 // OMEL AMD-13: Phantom Workspace — isolated tmpdir per task, prevents cross-task file bleed
 import { phantomWorkspace } from './lib/omel/phantom-workspace';
 // OMEL AMD-13: Credential Vault — controlled secret access, never logs values
@@ -2319,6 +2320,7 @@ ONLY output the JSON array. No markdown, no explanation.`;
         this.stats.rejected++;
         task.status = 'rejected'; // will be reset on retry
         try { execSync('git reset --hard HEAD~1', { timeout: 10000 }); } catch { /* ok */ }
+        logCodeFailure({ taskId: task.id, sprintId: (process.argv[2] || '').replace(/.*\//, '').replace('.json', ''), agentId: task.agent, attemptNum: attempt, score: 0, model: (task as any).model || 'unknown', rejectionReason: qaResult.reason, issues: [], failType: 'qa_gate' });
         MonotaskSM.release(task.agent, task.id, `QA gate: ${qaResult.reason}`);
         if (attempt < MAX_RETRIES) { log(c.yellow, '  QA gate failed — retrying without supervisor...'); continue; }
         taskRun.status = 'rejected';
@@ -2377,6 +2379,7 @@ ONLY output the JSON array. No markdown, no explanation.`;
       } catch {
         log(c.gray, '  Reset skipped (nothing to reset)');
       }
+      logCodeFailure({ taskId: task.id, sprintId: (process.argv[2] || '').replace(/.*\//, '').replace('.json', ''), agentId: task.agent, attemptNum: attempt, score: review?.score || 0, model: (task as any).model || 'unknown', rejectionReason: review?.summary || 'supervisor rejected', issues: review?.issues || [], failType: 'supervisor_rejected' });
       MonotaskSM.release(task.agent, task.id, `rejected attempt ${attempt}`);
 
       // CTO AUTO-DECOMPOSE: After N consecutive truncation rejections, split the task

@@ -1,0 +1,57 @@
+{
+  "sprint_id": "sprint-197",
+  "title": "Quality Loop Repair v2 — Execute Sprint 196 Tasks (Swarm Bypass)",
+  "description": "Sprint 196 committed only the JSON file — swarm never executed. This sprint writes all 4 tasks directly: (1) code-failure-logger.ts module, (2) wire into orchestrator, (3) crystallisation step in autonomous-prompt, (4) fix generate-sprint-brief.py git log detection.",
+  "source": "autonomous",
+  "_plan_reference": "Sprint 196 tasks unexecuted — direct write fallback",
+  "tasks": [
+    {
+      "id": "197-01",
+      "title": "Code failure logger module — scripts/lib/code-failure-logger.ts",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "priority": "critical",
+      "sprint_id": "sprint-197",
+      "deliverables": { "code": ["scripts/lib/code-failure-logger.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "197-02",
+      "title": "Wire code failure logger into orchestrate-agents-v2.ts — 3 surgical lines",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "priority": "critical",
+      "sprint_id": "sprint-197",
+      "deliverables": { "code": ["scripts/orchestrate-agents-v2.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "197-03",
+      "title": "Add crystallisation step to autonomous-prompt.txt",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-197",
+      "deliverables": { "code": ["autonomous-prompt.txt"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "197-04",
+      "title": "Fix generate-sprint-brief.py — derive sprint number from git log",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-197",
+      "deliverables": { "code": ["scripts/generate-sprint-brief.py"], "tests": [], "docs": [] }
+    }
+  ]
+}

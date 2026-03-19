@@ -25,6 +25,7 @@ Time: ~60-90 seconds on M4
 
 import json
 import os
+import re
 import subprocess
 import sys
 import time
@@ -127,6 +128,27 @@ def read_file_safe(path: Path, max_lines: int = 300) -> Optional[str]:
         return "\n".join(lines)
     except Exception as e:
         return f"[ERROR reading {path}: {e}]"
+
+
+def get_last_sprint_from_git(project_root: Path) -> Optional[int]:
+    """Parse git log to find the highest sprint number committed."""
+    try:
+        result = subprocess.run(
+            ["git", "log", "--oneline", "-30"],
+            capture_output=True, text=True, cwd=str(project_root), timeout=10
+        )
+        if result.returncode != 0:
+            return None
+        highest = 0
+        for line in result.stdout.strip().splitlines():
+            m = re.search(r'Sprint (\d+):', line)
+            if m:
+                num = int(m.group(1))
+                if num > highest:
+                    highest = num
+        return highest if highest > 0 else None
+    except Exception:
+        return None
 
 
 def get_git_log(project_root: Path, n: int = 25) -> str:
@@ -305,6 +327,13 @@ Be concise — bullet points only. No preamble.
 {progress_input}""", max_tokens=1000)
         if sprint_summary.startswith("[ERROR"):
             ollama_ok = False
+
+    # Override sprint numbers from git log (authoritative source)
+    last_git = get_last_sprint_from_git(config["root"])
+    if last_git:
+        next_sprint_num = last_git + 1
+        git_override = f"\n- **LAST sprint number completed**: Sprint {last_git}\n- **NEXT sprint number needed**: Sprint {next_sprint_num}\n"
+        sprint_summary = git_override + sprint_summary
 
     # Fallback: Ollama unavailable — build sections from raw files
     if not ollama_ok:

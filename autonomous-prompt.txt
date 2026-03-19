@@ -78,6 +78,15 @@ STEP 5 — FIX IF NEEDED (you, Sonnet):
   - Repeat until PASS
   If the swarm completely botched a file or didn't run, write the code directly.
 
+STEP 5B — CRYSTALLISE IF YOU WROTE CODE DIRECTLY (mandatory when swarm was bypassed):
+  If in Step 3 or Step 5 you wrote code directly (swarm failed/killed/FP-007):
+  Run this to crystallise the skill:
+    node -e "const {crystalliseSkill}=require('./scripts/lib/skill-crystalliser'); crystalliseSkill({agentId:'coder',taskId:'TASK_ID',sprintId:'sprint-NNN',taskTitle:'TITLE',taskType:'feature',model:'manual-sonnet',taskTarget:'manual',score:80,approachSummary:'Written directly — swarm bypassed (FP-007)',keyPatterns:['manual write'],antiPatterns:['FP-007 file too large for swarm']});"
+  Replace TASK_ID, sprint-NNN, TITLE with actual values from this sprint.
+  Also append to workspace/scs001/progress.md under this sprint entry:
+    - Swarm bypassed: yes (FP-007). Manual crystallise: done.
+  If crystalliseSkill call fails, skip and note in progress.md — do not block shipping.
+
 STEP 6 — SHIP:
   git add the new/modified files (be specific, not git add -A)
   git commit with message: "Sprint 0XX: [Agent Name] — [Block] [description]"
