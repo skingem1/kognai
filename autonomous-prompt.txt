@@ -49,9 +49,20 @@ WORKFLOW PER SPRINT — FOLLOW THIS EXACTLY, EVERY TIME, NO EXCEPTIONS
 
 STEP 1 — PLAN (you, Sonnet — do NOT spawn opus):
   Read: ~/kognai/workspace/sprint-brief.md (primary context — ~2500 tokens)
-  Also check: git log --oneline -5 (verify brief is current)
+  Also check: git log --oneline -10 (verify brief is current)
   DO NOT read MEMORY.md or progress.md unless the brief is stale/wrong.
-  Determine: What is the next Sprint that needs building?
+
+  Find next unshipped sprint (MANDATORY — run these 2 commands before designing):
+    1. LAST_SHIPPED=$(git log --oneline | grep -oE 'Sprint [0-9]+:' | head -1 | grep -oE '[0-9]+')
+       → gives the last sprint number that was committed to git
+    2. ls ~/kognai/workspace/sprints/ | sort
+       → lists all sprint JSON files on disk
+    The NEXT sprint to run = the LOWEST sprint number that:
+      - has a JSON file in workspace/sprints/
+      - does NOT appear in git log as 'Sprint NNN:' (i.e. not yet shipped)
+    If no pre-written file exists: create sprint-NNN.json where NNN = LAST_SHIPPED + 1
+    NEVER re-run a sprint that already appears in git log.
+
   Design: Sprint number, sprint name, task list, acceptance criteria.
 
 STEP 2 — WRITE SPRINT FILE (you, Sonnet):

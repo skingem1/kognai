@@ -2962,61 +2962,8 @@ async function sendTelegramAlert(message: string): Promise<void> {
 }
 
 async function postSprintSmokeTest(): Promise<void> {
-  log(c.magenta, '\n--- Phase 9: Post-Sprint PM2 Reload + Smoke Test ---');
-
-  // 9a. Reload backend via PM2
-  try {
-    log(c.cyan, '  Reloading PM2 backend...');
-    execSync('pm2 reload backend --update-env', { timeout: 30000, stdio: 'pipe' });
-    log(c.green, '  ✅ PM2 backend reloaded');
-  } catch (e: any) {
-    log(c.yellow, `  ⚠️  PM2 reload failed (may not be running in PM2): ${e.message}`);
-  }
-
-  // 9b. Poll health endpoint until backend is ready (up to 30s)
-  const backendBase = process.env.BACKEND_URL || 'http://localhost:3001';
-  const healthUrl = `${backendBase}/v1/health`;
-  let ready = false;
-  for (let attempt = 1; attempt <= 15; attempt++) {
-    await new Promise(r => setTimeout(r, 2000));
-    const probe = await httpGet(healthUrl);
-    if (probe.ok) { log(c.green, `  ✅ Backend ready after ${attempt * 2}s`); ready = true; break; }
-    log(c.gray, `  ⏳ Waiting for backend... (${attempt * 2}s, HTTP ${probe.status || 'timeout'})`);
-  }
-  if (!ready) { log(c.yellow, '  ⚠️  Backend did not come up in 30s — smoke tests may fail'); }
-
-  // 9c. Smoke test key endpoints
-  const endpoints = [
-    { name: 'health',      url: `${backendBase}/v1/health` },
-    { name: 'invoices',    url: `${backendBase}/v1/invoices?limit=1` },
-    { name: 'settlements', url: `${backendBase}/v1/settlements?limit=1` },
-  ];
-
-  const results: Array<{ name: string; status: number; ok: boolean }> = [];
-  for (const ep of endpoints) {
-    const result = await httpGet(ep.url);
-    results.push({ name: ep.name, ...result });
-    const icon = result.ok ? '✅' : '🔴';
-    log(result.ok ? c.green : c.red, `  ${icon} ${ep.name}: HTTP ${result.status || 'timeout'}`);
-  }
-
-  const failed = results.filter(r => !r.ok);
-  if (failed.length > 0) {
-    const failList = failed.map(r => `• ${r.name}: HTTP ${r.status || 'timeout'}`).join('\n');
-    log(c.red, `\n  🔴 ${failed.length}/${endpoints.length} smoke tests FAILED`);
-    await sendTelegramAlert(
-      `🔴 *Post-Sprint Smoke Test FAILED*\n\n` +
-      `${failed.length}/${endpoints.length} endpoints down after sprint:\n${failList}\n\n` +
-      `Run \`pm2 logs backend\` to investigate.`
-    );
-  } else {
-    log(c.green, `\n  ✅ All ${endpoints.length} smoke tests passed`);
-    await sendTelegramAlert(
-      `✅ *Post-Sprint Smoke Test Passed*\n\n` +
-      `All ${endpoints.length} endpoints healthy after sprint.\n` +
-      results.map(r => `• ${r.name}: HTTP ${r.status}`).join('\n')
-    );
-  }
+  // Disabled — Invoica-specific endpoints (health/invoices/settlements) not applicable to Kognai
+  // Removed Sprint 205: was always returning HTTP 404 + flooding Telegram with false alerts
 }
 
 // ===== Main Entry =====
