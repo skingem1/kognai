@@ -21,7 +21,7 @@ export interface PerformanceKPIs {
 export interface PerformanceSignal {
   signal_id:                string;
   video_id:                 string;
-  platform:                 'tiktok' | 'instagram_reels' | 'youtube_shorts';
+  platform:                 string;
   kpis:                     PerformanceKPIs;
   viral_status:             'viral' | 'performing' | 'underperforming' | 'failure';
   flywheel_triggered:       boolean;

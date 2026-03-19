@@ -20,8 +20,8 @@ import { ScriptValidator } from '../scs001-script-validator/index';
 import { ExperimentTracker, ExperimentEntry } from '../scs001-experiment/index';
 import { withRetry, withFallback } from './retry';
 import { DedupLedger, LedgerEntry } from './dedup-ledger';
-import { existsSync, readFileSync, writeFileSync } from 'fs';
-import { resolve } from 'path';
+import { existsSync, readFileSync, writeFileSync, readdirSync } from 'fs';
+import { resolve, join, basename } from 'path';
 
 export interface StageResult {
   stage:    string;
@@ -59,6 +59,9 @@ export interface PipelineRunReport {
     flywheel_derivatives: number;
     failure_entries:    number;
     clips_deduplicated: number;
+    // Sprint 248-253 module metrics
+    platforms_targeted:   number;  // Blotato: 9 platforms per video
+    publish_method:       'blotato' | 'tiktok-direct' | 'none';
   };
 }
 
@@ -170,11 +173,19 @@ export class SCS001Orchestrator {
       }));
     }
 
+    const transcriptStore = this.loadTranscripts();
+    const llmRewriteEnabled = this.shouldUseLLMRewrite(transcriptStore.size);
+
     // --- Stage 5: Script Agent ---
     if (briefs.length > 0) {
       stages.push(await this.runStage('5-script', 'ScriptAgent', async () => {
         const agent = new ScriptAgent();
-        bundles = agent.run(briefs);
+        if (llmRewriteEnabled) {
+          console.log('[Orchestrator] LLM rewrite enabled (' + transcriptStore.size + ' transcripts)');
+          bundles = await agent.runAsync(briefs, transcriptStore);
+        } else {
+          bundles = agent.run(briefs);
+        }
         return bundles.length;
       }));
     }
@@ -371,6 +382,8 @@ export class SCS001Orchestrator {
         flywheel_derivatives: flywheelOutputs.length * 4,
         failure_entries:      failureEntries.length,
         clips_deduplicated:   clipsDeduplicated,
+        platforms_targeted:   published.length > 0 ? 9 : 0,
+        publish_method:       published.length > 0 ? (published[0] as any).publish_method ?? 'tiktok-direct' : 'none',
       },
     };
 
@@ -411,6 +424,40 @@ export class SCS001Orchestrator {
         cloud_cost_usd:       0,
       };
     });
+  }
+
+  private loadTranscripts(): Map<string, string> {
+    const transcriptsDir = resolve('workspace/scs001/transcripts');
+    const transcripts = new Map<string, string>();
+    if (!existsSync(transcriptsDir)) return transcripts;
+
+    for (const file of readdirSync(transcriptsDir)) {
+      if (!file.endsWith('.json')) continue;
+      const filePath = join(transcriptsDir, file);
+      try {
+        const data = JSON.parse(readFileSync(filePath, 'utf8')) as any;
+        const clipId = typeof data.clip_id === 'string' ? data.clip_id : basename(file, '.json');
+        if (!clipId) continue;
+        const textFromSegments = Array.isArray(data.segments)
+          ? data.segments.map((seg: any) => (typeof seg?.text === 'string' ? seg.text : '').trim()).filter(Boolean).join(' ')
+          : '';
+        const rawText = typeof data.text === 'string' ? data.text.trim() : '';
+        const normalized = (rawText || textFromSegments).trim();
+        if (!normalized) continue;
+        transcripts.set(clipId, normalized);
+      } catch (err) {
+        console.warn('[Orchestrator] Failed to load transcript ' + filePath + ': ' + (err as Error).message);
+      }
+    }
+
+    return transcripts;
+  }
+
+  private shouldUseLLMRewrite(transcriptCount: number): boolean {
+    const envRaw = (process.env.LLM_REWRITE ?? '').toLowerCase();
+    if (envRaw === '1' || envRaw === 'true') return true;
+    if (envRaw === '0' || envRaw === 'false') return false;
+    return transcriptCount > 0;
   }
 
   private async runStage(

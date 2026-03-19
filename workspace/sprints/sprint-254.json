@@ -1,0 +1,44 @@
+{
+  "sprint_id": "sprint-254",
+  "title": "Video Quality Gate v2 — end-to-end pipeline test + A/B metrics",
+  "description": "Gate sprint for VIDEO-QUALITY block. Full pipeline E2E test covering all 12 stages including new Sprint 248-253 modules (transcription, LLM rewrite, TTS, avatar, captions, Blotato). Quality metrics comparison. Produces 5 mock videos through complete pipeline.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "254-01",
+      "title": "Create E2E pipeline quality gate test — all 12 stages with metrics",
+      "type": "test",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-254",
+      "deliverables": { "code": ["scripts/scs001/validate-video-quality-gate.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "254-02",
+      "title": "Create quality metrics collector — stage timings, output counts, quality scores",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-254",
+      "deliverables": { "code": ["scripts/scs001/quality-metrics.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "254-03",
+      "title": "Add PipelineRunReport summary fields for new stages (TTS, avatar, captions, Blotato)",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-254",
+      "deliverables": { "code": ["agents/scs001-orchestrator/index.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
