@@ -186,7 +186,8 @@ function getCalendarToday(): Array<{ video_id: string; slot: string; viral_score
   if (!fs.existsSync(calPath)) return [];
   try {
     const cal = JSON.parse(fs.readFileSync(calPath, 'utf-8'));
-    const today = new Date().toISOString().split('T')[0];
+    // Sprint 297: Use local date (same as digest header) not UTC
+    const today = getLocalDatePrefix();
     return cal.schedule?.[today] ?? [];
   } catch { return []; }
 }

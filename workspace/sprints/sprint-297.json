@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-297",
+  "title": "Fix calendar timezone bug — getCalendarToday uses UTC instead of local date",
+  "description": "getCalendarToday() uses toISOString().split('T')[0] giving UTC date, but calendar dates are local. Same class of bug as Sprint 294 (digest todayCount). Shows wrong day's scheduled videos in digest.",
+  "source": "auto — found while auditing Sprint 294 fix for other UTC usages",
+  "tasks": [
+    {
+      "id": "297-01",
+      "title": "Fix getCalendarToday to use local date helper from Sprint 294",
+      "type": "bugfix",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-297",
+      "deliverables": { "code": ["scripts/daily-digest.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
