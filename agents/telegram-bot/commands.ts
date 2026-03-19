@@ -3205,3 +3205,79 @@ export async function handleRevenue(chatId: number, ownerChatId: string): Promis
 
   await sendMessage(chatId, lines.join('\n'));
 }
+
+// ── Sprint 271: /dedup — Deduplicate publish-ledger.jsonl ─────────────────────
+
+export async function handleDedup(chatId: number, ownerChatId: string, text: string): Promise<void> {
+  if (String(chatId) !== ownerChatId) {
+    await sendMessage(chatId, '🔒 Owner only.');
+    return;
+  }
+
+  const arg = text.split(/\s+/)[1]?.toLowerCase();
+  const cwd = process.cwd();
+  const ledgerPath = join(cwd, 'workspace', 'scs001', 'publish-ledger.jsonl');
+
+  if (!existsSync(ledgerPath)) {
+    await sendMessage(chatId, '❌ No publish-ledger.jsonl found.');
+    return;
+  }
+
+  // Read and count
+  const rawLines = readFileSync(ledgerPath, 'utf-8').split('\n').filter(l => l.trim());
+  const entries: Array<{ video_id?: string; published_at?: string; [k: string]: unknown }> = [];
+  for (const line of rawLines) {
+    try { entries.push(JSON.parse(line)); } catch { /* skip */ }
+  }
+
+  const uniqueMap = new Map<string, typeof entries[0]>();
+  for (const entry of entries) {
+    const id = entry.video_id || '';
+    if (!id) continue;
+    const existing = uniqueMap.get(id);
+    if (!existing || (entry.published_at || '') >= (existing.published_at || '')) {
+      uniqueMap.set(id, entry);
+    }
+  }
+
+  const uniqueCount = uniqueMap.size;
+  const dupeCount = entries.length - uniqueCount;
+
+  if (dupeCount === 0) {
+    await sendMessage(chatId, `✅ Ledger clean — ${entries.length} entries, 0 duplicates.`);
+    return;
+  }
+
+  if (arg !== 'confirm') {
+    await sendMessage(chatId, [
+      '🔍 *Ledger Dedup*',
+      '',
+      `📊 Total entries: ${entries.length}`,
+      `✅ Unique: ${uniqueCount}`,
+      `🗑️ Duplicates: ${dupeCount}`,
+      '',
+      'To clean: `/dedup confirm`',
+    ].join('\n'));
+    return;
+  }
+
+  // Perform dedup
+  const backupPath = ledgerPath + '.bak';
+  try {
+    const { copyFileSync, writeFileSync } = require('fs');
+    copyFileSync(ledgerPath, backupPath);
+    const deduped = Array.from(uniqueMap.values());
+    writeFileSync(ledgerPath, deduped.map(e => JSON.stringify(e)).join('\n') + '\n');
+
+    await sendMessage(chatId, [
+      '✅ *Dedup Complete*',
+      '',
+      `Before: ${entries.length} entries`,
+      `After: ${deduped.length} entries`,
+      `Removed: ${dupeCount} duplicates`,
+      `Backup: publish-ledger.jsonl.bak`,
+    ].join('\n'));
+  } catch (err) {
+    await sendMessage(chatId, `❌ Dedup failed: ${(err as Error).message?.slice(0, 100)}`);
+  }
+}

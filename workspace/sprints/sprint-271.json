@@ -1,0 +1,44 @@
+{
+  "sprint_id": "sprint-271",
+  "title": "Ledger cleanup — deduplicate publish-ledger.jsonl + /dedup Telegram command",
+  "description": "Deduplicate the publish ledger (651 entries → 267 unique), add a dedup utility script, and wire a /dedup Telegram command for on-demand cleanup. Prevents inflated queue counts and duplicate video suggestions.",
+  "source": "auto — watchdog Sprint 270 flagged 384 duplicate entries in publish-ledger.jsonl",
+  "tasks": [
+    {
+      "id": "271-01",
+      "title": "Ledger dedup utility script",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-271",
+      "deliverables": { "code": ["scripts/scs001/dedup-ledger.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "271-02",
+      "title": "/dedup Telegram command",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-271",
+      "deliverables": { "code": ["agents/telegram-bot/commands.ts", "agents/telegram-bot/index.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "271-03",
+      "title": "Validation test",
+      "type": "test",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-271",
+      "deliverables": { "code": ["scripts/scs001/validate-dedup-ledger.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
