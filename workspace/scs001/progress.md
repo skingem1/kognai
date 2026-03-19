@@ -2215,3 +2215,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (surgical 1-line fix)
 - Issues: None.
 - Timestamp: 2026-03-20T02:10:00Z
+
+## Sprint 292 — Pipeline Resilience: Mock Fallback When InsightAgent Fails (Direct Write)
+- Status: PASS
+- Commit: 92d9dab
+- Files created: workspace/sprints/sprint-292.json
+- Files modified: agents/scs001-orchestrator/index.ts (+8 lines)
+- Tasks completed:
+  - 292-01: Added automatic mock fallback when live InsightAgent returns 0 briefs. Pipeline no longer stalls on model failure.
+- Validation: TypeScript clean compile (pre-existing TS2802 Set warnings only).
+- Swarm used: no (surgical edit)
+- Issues: None.
+- Timestamp: 2026-03-20T02:20:00Z
