@@ -1667,3 +1667,17 @@ Full auto-posting pipeline built:
 - Swarm bypassed: yes (FP-007). Manual crystallise: skipped.
 - Issues: None.
 - Timestamp: 2026-03-20T03:45:00Z
+
+## Sprint 248 — Audio Transcription (Direct Write)
+- Status: PASS
+- Commit: afea891
+- Files created: scripts/scs001/transcribe-audio.ts, scripts/scs001/validate-transcription.ts, workspace/scs001/transcripts/.gitkeep, workspace/sprints/sprint-248.json
+- Files modified: agents/scs001-clip-detection/index.ts
+- Tasks completed:
+  - 248-01: Created transcribe-audio.ts — OpenAI Whisper API integration with FFmpeg audio extraction, single-file + batch modes, dry-run support, structured JSON output (text + timestamped segments)
+  - 248-02: Added transcript + transcript_path fields to ClipQualityScore interface in clip-detection agent
+  - 248-03: Created workspace/scs001/transcripts/ directory for transcript storage
+  - 248-04: Validation: 12/12 tests pass (module load, exports, dry-run, directory, type fields, batch)
+- Swarm used: no (multi-file, cross-module integration)
+- Issues: None. OPENAI_API_KEY not set but dry-run works. Live transcription ready when API key is configured.
+- Timestamp: 2026-03-20T04:00:00Z

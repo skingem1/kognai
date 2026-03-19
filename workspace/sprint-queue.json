@@ -103,7 +103,7 @@
       "sprint": 248,
       "title": "Audio Transcription \u2014 Whisper on source clips + transcript storage",
       "block": "VIDEO-QUALITY",
-      "status": "queued",
+      "status": "done",
       "priority": "high",
       "rationale": "n8n flow step 2. Add Whisper (local whisper.cpp or OpenAI API) to clip-detection/editing pipeline. Extract original audio text from viral clips. Save transcripts to Google Sheets or workspace/transcripts/. This feeds the LLM script rewriter with the ACTUAL words that went viral. Currently SCS-001 only uses metadata \u2014 never listens to the clip."
     },
