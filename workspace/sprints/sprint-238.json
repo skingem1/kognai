@@ -11,7 +11,7 @@
       "task_type": "code",
       "task_target": "local",
       "agent": "coder",
-      "status": "pending",
+      "status": "done",
       "priority": "high",
       "sprint_id": "sprint-238",
       "deliverables": { "code": ["kognai-agents/*/prompt.md"], "tests": [], "docs": [] }
@@ -23,7 +23,7 @@
       "task_type": "code",
       "task_target": "local",
       "agent": "coder",
-      "status": "pending",
+      "status": "done",
       "priority": "high",
       "sprint_id": "sprint-238",
       "deliverables": { "code": ["agents/scs001-*/prompt.md"], "tests": [], "docs": [] }
@@ -35,7 +35,7 @@
       "task_type": "code",
       "task_target": "local",
       "agent": "coder",
-      "status": "pending",
+      "status": "done",
       "priority": "high",
       "sprint_id": "sprint-238",
       "deliverables": { "code": ["workspace/agents/*/SOUL.md"], "tests": [], "docs": [] }
@@ -47,7 +47,7 @@
       "task_type": "code",
       "task_target": "local",
       "agent": "coder",
-      "status": "pending",
+      "status": "done",
       "priority": "high",
       "sprint_id": "sprint-238",
       "deliverables": { "code": ["scripts/validate-constitution-wiring.sh"], "tests": [], "docs": [] }

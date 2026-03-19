@@ -1,36 +1,123 @@
 {
-  "version": "0.1.0",
-  "updated": "2026-03-10",
-  "description": "Current ACP trust scores — flat lookup used by Harvey for routing decisions",
+  "version": "1.0.0",
+  "updated": "2026-03-20",
+  "description": "ACP v1.0 — multi-dimensional trust scores. 5 dimensions: safety, accuracy, brand_alignment, cultural_sensitivity, legal_compliance. Composite score = weighted average. Enforcement: agents below dimension threshold are blocked from routing.",
+  "dimensions": {
+    "safety": { "weight": 0.30, "description": "Content safety — no harmful, violent, or inappropriate output" },
+    "accuracy": { "weight": 0.25, "description": "Factual correctness and code quality" },
+    "brand_alignment": { "weight": 0.20, "description": "Output matches Kognai brand voice and product positioning" },
+    "cultural_sensitivity": { "weight": 0.15, "description": "Culturally appropriate for target markets (Tunisia, MENA, global)" },
+    "legal_compliance": { "weight": 0.10, "description": "No copyright, trademark, or regulatory violations" }
+  },
   "scores": {
-    "messi": 72,
-    "sherlock": 85,
-    "guardiola": 68,
-    "harvey": 90
+    "messi": {
+      "safety": 80,
+      "accuracy": 70,
+      "brand_alignment": 68,
+      "cultural_sensitivity": 72,
+      "legal_compliance": 75,
+      "composite": 73,
+      "last_updated": "2026-03-20"
+    },
+    "sherlock": {
+      "safety": 90,
+      "accuracy": 88,
+      "brand_alignment": 82,
+      "cultural_sensitivity": 80,
+      "legal_compliance": 85,
+      "composite": 86,
+      "last_updated": "2026-03-20"
+    },
+    "guardiola": {
+      "safety": 75,
+      "accuracy": 65,
+      "brand_alignment": 70,
+      "cultural_sensitivity": 68,
+      "legal_compliance": 70,
+      "composite": 70,
+      "last_updated": "2026-03-20"
+    },
+    "harvey": {
+      "safety": 92,
+      "accuracy": 88,
+      "brand_alignment": 90,
+      "cultural_sensitivity": 85,
+      "legal_compliance": 90,
+      "composite": 90,
+      "last_updated": "2026-03-20"
+    },
+    "bloomberg": {
+      "safety": 85,
+      "accuracy": 82,
+      "brand_alignment": 78,
+      "cultural_sensitivity": 75,
+      "legal_compliance": 88,
+      "composite": 82,
+      "last_updated": "2026-03-20"
+    },
+    "macgyver": {
+      "safety": 78,
+      "accuracy": 72,
+      "brand_alignment": 65,
+      "cultural_sensitivity": 70,
+      "legal_compliance": 72,
+      "composite": 72,
+      "last_updated": "2026-03-20"
+    },
+    "satoshi": {
+      "safety": 82,
+      "accuracy": 80,
+      "brand_alignment": 75,
+      "cultural_sensitivity": 72,
+      "legal_compliance": 85,
+      "composite": 79,
+      "last_updated": "2026-03-20"
+    },
+    "elon": {
+      "safety": 70,
+      "accuracy": 75,
+      "brand_alignment": 72,
+      "cultural_sensitivity": 68,
+      "legal_compliance": 70,
+      "composite": 71,
+      "last_updated": "2026-03-20"
+    }
   },
   "thresholds": {
     "minimum_route": 50,
     "recycle_trigger": 40,
-    "promote_to_primary": 80
+    "promote_to_primary": 80,
+    "dimension_minimum": 60,
+    "safety_hard_floor": 70
   },
   "routing_rules": [
     {
       "task_type": "cloud-code",
       "preferred_agent": "messi",
       "fallback_agent": "sherlock",
-      "min_score": 60
+      "min_composite": 60,
+      "required_dimensions": ["accuracy", "safety"]
     },
     {
       "task_type": "cloud-exec",
       "preferred_agent": "sherlock",
       "fallback_agent": "messi",
-      "min_score": 70
+      "min_composite": 70,
+      "required_dimensions": ["safety", "accuracy"]
+    },
+    {
+      "task_type": "content-generation",
+      "preferred_agent": "messi",
+      "fallback_agent": "sherlock",
+      "min_composite": 65,
+      "required_dimensions": ["safety", "brand_alignment", "cultural_sensitivity"]
     },
     {
       "task_type": "local",
       "preferred_agent": "vault",
       "fallback_agent": null,
-      "min_score": 0
+      "min_composite": 0,
+      "required_dimensions": []
     }
   ]
 }

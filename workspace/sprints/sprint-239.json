@@ -1,0 +1,56 @@
+{
+  "sprint_id": "sprint-239",
+  "title": "ACP v1.0 — multi-dimensional trust scores + routing enforcement",
+  "description": "Upgrade ACP from flat trust scores to 5-dimension scoring (safety, accuracy, brand-alignment, cultural-sensitivity, legal-compliance). Add enforcement gate to model router that blocks agents below threshold.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "239-01",
+      "title": "Upgrade trust-scores.json to multi-dimensional schema",
+      "type": "enhancement",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-239",
+      "deliverables": { "code": ["acp/trust-scores.json"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "239-02",
+      "title": "Create ACP scoring engine (TypeScript) — score computation + enforcement API",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-239",
+      "deliverables": { "code": ["acp/acp-engine.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "239-03",
+      "title": "Wire ACP enforcement into model router — pre-route trust check",
+      "type": "enhancement",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-239",
+      "deliverables": { "code": ["runtime/router.py"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "239-04",
+      "title": "Validate ACP engine loads and scores correctly",
+      "type": "test",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-239",
+      "deliverables": { "code": ["acp/test-acp.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

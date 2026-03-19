@@ -153,6 +153,73 @@ class RoutingDecision:
     reasoning: str
     estimated_cost: float = 0.0
     fallback_tier: Optional[Tier] = None
+    acp_blocked: bool = False
+
+# ─────────────────────────────────────────────
+# ACP Enforcement Gate (v1.0)
+# ─────────────────────────────────────────────
+
+class ACPGate:
+    """
+    Agent Constitutional Protocol enforcement.
+    Reads acp/trust-scores.json and gates routing by multi-dimensional trust scores.
+    """
+    def __init__(self, scores_path: Optional[str] = None):
+        path = Path(scores_path) if scores_path else Path(__file__).parent.parent / "acp" / "trust-scores.json"
+        try:
+            with open(path) as f:
+                self._data = json.load(f)
+            self._enabled = True
+            log.info(f"[ACP] Loaded trust scores v{self._data.get('version', '?')} ({len(self._data.get('scores', {}))} agents)")
+        except (FileNotFoundError, json.JSONDecodeError) as e:
+            log.warning(f"[ACP] Could not load trust scores: {e} — enforcement disabled")
+            self._data = {}
+            self._enabled = False
+
+    @property
+    def enabled(self) -> bool:
+        return self._enabled
+
+    def check(self, agent_id: str, task_type: str = "") -> tuple[bool, str]:
+        """Returns (allowed, reason). If ACP is disabled, always allows."""
+        if not self._enabled:
+            return True, "ACP disabled"
+
+        scores = self._data.get("scores", {}).get(agent_id)
+        if not scores:
+            return True, f"Agent '{agent_id}' not in ACP — passthrough"
+
+        thresholds = self._data.get("thresholds", {})
+        dims = self._data.get("dimensions", {})
+
+        # Compute composite from dimensions
+        weighted = sum(scores.get(dim, 0) * cfg.get("weight", 0) for dim, cfg in dims.items())
+        total_weight = sum(cfg.get("weight", 0) for cfg in dims.values())
+        composite = round(weighted / total_weight) if total_weight > 0 else 0
+
+        # Safety hard floor
+        safety_floor = thresholds.get("safety_hard_floor", 70)
+        if scores.get("safety", 100) < safety_floor:
+            return False, f"Safety {scores['safety']} < floor {safety_floor}"
+
+        # Composite minimum
+        min_route = thresholds.get("minimum_route", 50)
+        if composite < min_route:
+            return False, f"Composite {composite} < minimum {min_route}"
+
+        # Task-type specific rules
+        for rule in self._data.get("routing_rules", []):
+            if rule.get("task_type") == task_type:
+                if composite < rule.get("min_composite", 0):
+                    return False, f"Composite {composite} < task minimum {rule['min_composite']}"
+                dim_min = thresholds.get("dimension_minimum", 60)
+                for dim in rule.get("required_dimensions", []):
+                    if scores.get(dim, 100) < dim_min:
+                        return False, f"Dimension '{dim}' {scores.get(dim)} < minimum {dim_min}"
+                break
+
+        return True, f"PASS (composite={composite})"
+
 
 # ─────────────────────────────────────────────
 # Router Core
@@ -165,12 +232,14 @@ class KognaiRouter:
         cost_budget_usd: float = 0.10,
         min_tier: Tier = Tier.NANO,
         max_tier: Tier = Tier.APEX,
+        acp_enabled: bool = True,
     ):
         self.force_local = force_local
         self.cost_budget = cost_budget_usd
         self.min_tier = min_tier
         self.max_tier = max_tier
-        self._stats = {"total_tasks": 0, "total_cost": 0.0, "tier_counts": {t: 0 for t in Tier}}
+        self.acp = ACPGate() if acp_enabled else None
+        self._stats = {"total_tasks": 0, "total_cost": 0.0, "tier_counts": {t: 0 for t in Tier}, "acp_blocks": 0}
 
     def classify_task(self, prompt: str) -> TaskType:
         prompt_lower = prompt.lower()
@@ -200,9 +269,16 @@ class KognaiRouter:
         final_tier = Tier(max(self.min_tier.value, min(self.max_tier.value, base_tier.value)))
         return final_tier, reason
 
-    def route(self, prompt: str, context_tokens: int = 0) -> RoutingDecision:
+    def route(self, prompt: str, context_tokens: int = 0, agent_id: str = "") -> RoutingDecision:
         task_type = self.classify_task(prompt)
         tier, reasoning = self.select_tier(task_type, prompt)
+        # ACP enforcement gate — check agent trust before routing
+        if agent_id and self.acp and self.acp.enabled:
+            allowed, acp_reason = self.acp.check(agent_id, task_type.value)
+            if not allowed:
+                log.warning(f"[ACP] Agent '{agent_id}' BLOCKED: {acp_reason}")
+                self._stats["acp_blocks"] += 1
+                reasoning += f" → ACP BLOCKED ({acp_reason})"
         model = MODELS[tier]
         think_mode = self.should_think(task_type, prompt) and model.think_capable
         estimated_tokens = (context_tokens + len(prompt.split()) * 1.3 + 500) / 1000
