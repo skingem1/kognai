@@ -1915,3 +1915,16 @@ Full auto-posting pipeline built:
 - Swarm used: no (active bot multi-file edit)
 - Issues: None
 - Timestamp: 2026-03-19T23:00:00Z
+
+## Sprint 268 — Pipeline Metrics Aggregator (Direct Write)
+- Status: PASS
+- Commit: 6f5dbd0
+- Files created: scripts/scs001/aggregate-pipeline-metrics.ts, scripts/scs001/validate-pipeline-metrics.ts, reports/pipeline-metrics.json, workspace/sprints/sprint-268.json
+- Files modified: agents/telegram-bot/commands.ts, agents/telegram-bot/index.ts
+- Tasks completed:
+  - 268-01: Aggregator — reads 28 pipeline runs, computes stage avgs, QC rate (100%), throughput (7/day)
+  - 268-02: /metrics Telegram command with auto-regeneration
+  - 268-03: Validation: 17/17 tests pass
+- Swarm used: no (multi-file feature)
+- Issues: None
+- Timestamp: 2026-03-19T23:15:00Z
