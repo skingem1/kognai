@@ -1071,3 +1071,17 @@ SESSION HANDOFF (2026-03-17, Sprints 166-170):
 - Changes: ExperimentEntry gets 4 viral score fields + getViralStats(). QualityControlGate gets partial_viral_score (informational). Orchestrator cross-references ClipQualityScore → experiment entry for viral score persistence. /review command shows viral score and sorts by it.
 - Impact: Viral scores now persist end-to-end: ClipDetection → experiments.jsonl → /review. Operator can prioritize high-viral-score videos for posting.
 - Timestamp: 2026-03-19T14:15:00Z
+
+## Sprint 188 — Viral Detection Week 2 (Phase 1 — batch scorer + hook quality + clip-detection wiring)
+- Status: PASS
+- Commit: 5cae273
+- Files created: scripts/scs001/batch-viral-score.ts, scripts/scs001/hook-quality.ts, workspace/sprints/sprint-188.json
+- Files modified: agents/scs001-clip-detection/index.ts
+- Test: TypeScript compile PASS, hookQualityScore() sanity test PASS (good=0.75, weak=0, medium=0.5)
+- Swarm used: no (task 188-01 pre-existed, wrote 02+03 directly)
+- Changes:
+  - batch-viral-score.ts: Scans workspace/scs001/run-*/caption/*-captioned.mp4, backfills viral scores in experiments.jsonl. --dry-run flag. Skips already-scored.
+  - hook-quality.ts: hookQualityScore(hookText, whyDoesThisMatter) → 0-1. Scores: hook length (5-15 words optimal), question/number/superlative (+0.1 each), viral trigger words (+0.15 each), whyDoesThisMatter specificity (number/proper noun +0.1 each). Pure TypeScript, no deps.
+  - clip-detection: import hookQualityScore, add hook_quality_score to ClipQualityScore interface, hookBonus = Math.round(hookQuality * 3) added to total score (0-3 on 25-point scale). Log line includes hook= value.
+- Impact: Clip quality scoring now has 3 components: LLM (0-25) + phrase triggers (0-3) + hook quality text (0-3) = max 31 (capped 25). 141 existing videos can be batch-scored. Lightweight text-only signal works without Python deps.
+- Timestamp: 2026-03-19T15:00:00Z
