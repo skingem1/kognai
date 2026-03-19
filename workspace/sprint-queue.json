@@ -143,7 +143,7 @@
       "sprint": 253,
       "title": "Blotato Multi-Platform Publishing \u2014 9 platforms via API",
       "block": "VIDEO-QUALITY",
-      "status": "queued",
+      "status": "done",
       "priority": "medium",
       "rationale": "n8n flow step 9. Replace dead TikTok-only publishing path (API REJECTED) with Blotato API ($29/mo). Publish to: Instagram, YouTube, TikTok, Facebook, LinkedIn, Threads, X, Pinterest, Bluesky. Single API call posts to all platforms. Replaces SPRINT-171-PUB Telegram+YouTube workaround. Native n8n node available but we wire directly via REST API in publishing-agent."
     },

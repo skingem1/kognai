@@ -1731,3 +1731,17 @@ Full auto-posting pipeline built:
 - Swarm used: no (multi-file, complex FFmpeg filters)
 - Issues: JSON2VIDEO_API_KEY needed for API mode. FFmpeg fallback works without.
 - Timestamp: 2026-03-20T05:00:00Z
+
+## Sprint 253 — Blotato Multi-Platform Publishing (Direct Write)
+- Status: PASS
+- Commit: 630541d
+- Files created: scripts/scs001/blotato-client.ts, scripts/scs001/validate-blotato-output.ts, workspace/sprints/sprint-253.json
+- Files modified: agents/scs001-publishing/index.ts
+- Tasks completed:
+  - 253-01: Created blotato-client.ts — Blotato REST API client, 9 platforms, dry-run mode, mock URLs per platform
+  - 253-02: Refactored PublishingAgent — Blotato multi-platform primary path, TikTok-direct fallback preserved
+  - 253-03: Updated PublishedVideo type — added publish_method, platform_results fields, expanded platform union
+  - 253-04: Validation: 53/53 tests pass (BlotatoClient dry-run, isConfigured, ALL_PLATFORMS, full pipeline integration)
+- Swarm used: no (multi-file refactor + API integration)
+- Issues: BLOTATO_API_KEY needed for live publishing. $29/mo. Dry-run works without.
+- Timestamp: 2026-03-20T05:30:00Z
