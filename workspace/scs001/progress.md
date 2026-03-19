@@ -1719,3 +1719,15 @@ Full auto-posting pipeline built:
 - Swarm used: no (multi-file, API integration)
 - Issues: CAPTIONS_API_KEY + AVATAR_ENABLED needed for live avatar generation. Premium feature.
 - Timestamp: 2026-03-20T04:45:00Z
+
+## Sprint 252 — Caption Overlay + Pattern Interrupts (Direct Write)
+- Status: PASS
+- Commit: 031081f
+- Files created: scripts/scs001/caption-overlay.ts, scripts/scs001/pattern-interrupts.ts, scripts/scs001/validate-caption-overlay.ts, workspace/sprints/sprint-252.json
+- Tasks completed:
+  - 252-01: Created caption-overlay.ts — word-by-word animated captions, keyword highlighting (25 high-value words), JSON2Video API + FFmpeg fallback, TikTok caption styling
+  - 252-02: Created pattern-interrupts.ts — 6 interrupt types mapped to FFmpeg filters (cut→brightness, zoom→zoompan, color_shift→hue, motion→crop shake, overlay→vignette). text_pop delegated to caption module.
+  - 252-03: Validation: 24/24 tests pass
+- Swarm used: no (multi-file, complex FFmpeg filters)
+- Issues: JSON2VIDEO_API_KEY needed for API mode. FFmpeg fallback works without.
+- Timestamp: 2026-03-20T05:00:00Z

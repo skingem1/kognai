@@ -135,7 +135,7 @@
       "sprint": 252,
       "title": "JSON2Video Caption Overlay \u2014 animated subtitles + keyword highlighting",
       "block": "VIDEO-QUALITY",
-      "status": "queued",
+      "status": "done",
       "priority": "medium",
       "rationale": "n8n flow step 6. Replace basic SRT burn-in (static drawtext, often fails without libass) with JSON2Video API ($20/mo). Animated word-by-word captions, keyword highlighting (color/size variation), emoji overlays, professional text styling. Pattern interrupts (cut, zoom, text_pop) finally rendered instead of metadata-only."
     },
