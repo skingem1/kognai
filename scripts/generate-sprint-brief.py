@@ -414,9 +414,21 @@ Be concise — bullet points only. No preamble.
             ollama_ok = False
 
     # Override sprint numbers from git log (authoritative source)
+    # CRITICAL: Replace Qwen's stale sprint numbers entirely — do NOT prepend.
+    # Qwen reads progress.md which may say "Sprint 103" while git log says "Sprint 237".
+    # Prepending creates TWO conflicting "LAST sprint" lines → Claude gets confused.
     last_git = get_last_sprint_from_git(config["root"])
     if last_git:
         next_sprint_num = last_git + 1
+        # Strip any "LAST sprint number" or "NEXT sprint number" lines Qwen produced
+        cleaned_lines = []
+        for line in sprint_summary.split("\n"):
+            lower = line.lower().strip("- *")
+            if "last sprint number" in lower or "next sprint number" in lower:
+                continue  # Drop Qwen's stale sprint number lines
+            cleaned_lines.append(line)
+        sprint_summary = "\n".join(cleaned_lines)
+        # Now prepend the authoritative git-derived numbers
         git_override = f"\n- **LAST sprint number completed**: Sprint {last_git}\n- **NEXT sprint number needed**: Sprint {next_sprint_num}\n"
         sprint_summary = git_override + sprint_summary
 
