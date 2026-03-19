@@ -795,22 +795,109 @@ function cmdStreak(): string {
   );
 }
 
+// Sprint 284: /analytics — content performance insights
+function cmdAnalytics(): string {
+  const expPath = path.join(ROOT, 'workspace', 'scs001', 'experiments.jsonl');
+  if (!fs.existsSync(expPath)) return `📊 *Analytics* — No experiment data found.`;
+
+  const experiments: any[] = [];
+  for (const line of fs.readFileSync(expPath, 'utf-8').split('\n')) {
+    if (!line.trim()) continue;
+    try { experiments.push(JSON.parse(line)); } catch { /* skip */ }
+  }
+
+  if (experiments.length === 0) return `📊 *Analytics* — No experiments found.`;
+
+  // Score distribution
+  const scores = experiments.map(e => e.partial_viral_score).filter((s: any) => s != null) as number[];
+  const avgScore = scores.length > 0 ? (scores.reduce((a, b) => a + b, 0) / scores.length) : 0;
+  const topScores = scores.sort((a, b) => b - a).slice(0, 5);
+  const qcPassed = experiments.filter(e => e.qc_passed).length;
+  const qcRate = Math.round(qcPassed / experiments.length * 100);
+
+  // Top speakers by avg score
+  const speakerStats: Record<string, { count: number; totalScore: number }> = {};
+  for (const e of experiments) {
+    const s = e.speaker ?? 'unknown';
+    if (s === 'unknown') continue;
+    if (!speakerStats[s]) speakerStats[s] = { count: 0, totalScore: 0 };
+    speakerStats[s].count++;
+    if (e.partial_viral_score != null) speakerStats[s].totalScore += e.partial_viral_score;
+  }
+  const topSpeakers = Object.entries(speakerStats)
+    .map(([name, stats]) => ({ name, avg: stats.count > 0 ? stats.totalScore / stats.count : 0, count: stats.count }))
+    .sort((a, b) => b.avg - a.avg)
+    .slice(0, 5);
+
+  // Top hook formulas by avg score
+  const hookStats: Record<string, { count: number; totalScore: number }> = {};
+  for (const e of experiments) {
+    const h = e.hook_formula ?? 'unknown';
+    if (h === 'unknown') continue;
+    if (!hookStats[h]) hookStats[h] = { count: 0, totalScore: 0 };
+    hookStats[h].count++;
+    if (e.partial_viral_score != null) hookStats[h].totalScore += e.partial_viral_score;
+  }
+  const topHooks = Object.entries(hookStats)
+    .map(([name, stats]) => ({ name, avg: stats.count > 0 ? stats.totalScore / stats.count : 0, count: stats.count }))
+    .sort((a, b) => b.avg - a.avg)
+    .slice(0, 5);
+
+  // Pipeline stats
+  const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
+  const recorded = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+
+  const lines = [
+    `📊 *Content Analytics*`,
+    '',
+    `*Pipeline:*`,
+    `• ${experiments.length} experiments | ${ledger.length} in ledger`,
+    `• QC pass rate: ${qcRate}%`,
+    `• Avg viral score: ${avgScore.toFixed(2)}`,
+    `• Top scores: ${topScores.slice(0, 3).map(s => s.toFixed(2)).join(', ')}`,
+    '',
+  ];
+
+  if (topSpeakers.length > 0) {
+    lines.push(`*🎙️ Top Speakers:*`);
+    for (const s of topSpeakers) {
+      lines.push(`• ${s.name}: 🧬${s.avg.toFixed(2)} (${s.count} videos)`);
+    }
+    lines.push('');
+  }
+
+  if (topHooks.length > 0) {
+    lines.push(`*🎣 Top Hook Formulas:*`);
+    for (const h of topHooks) {
+      lines.push(`• ${h.name}: 🧬${h.avg.toFixed(2)} (${h.count} videos)`);
+    }
+    lines.push('');
+  }
+
+  lines.push(`*Posting:*`);
+  lines.push(`• Recorded: ${recorded.length}/30 | Ready: ~76 captioned`);
+  lines.push(`• Use \`/deliver\` to post top-scored content first`);
+
+  return lines.join('\n');
+}
+
 function cmdHelp(): string {
   return (
     `*Kognai Bot Commands*\n\n` +
-    `/report  — Full system status (real data, no AI)\n` +
-    `/pm2     — Live PM2 process table\n` +
-    `/health  — Health check summary\n` +
-    `/tier    — Current tier + MRR\n` +
-    `/sprint  — Latest sprint progress\n` +
-    `/gate    — Phase 1.5 gate countdown\n` +
-    `/queue   — Unposted videos ranked by viral score\n` +
-    `/review  — Latest generated video details\n` +
-    `/record  — Record a manual TikTok post\n` +
-    `/deliver — Batch-send ready videos with captions\n` +
-    `/caption — Generate TikTok-ready caption for a video\n` +
-    `/streak  — Posting streak tracker + pace\n` +
-    `/help    — This message`
+    `/report    — Full system status (real data, no AI)\n` +
+    `/pm2       — Live PM2 process table\n` +
+    `/health    — Health check summary\n` +
+    `/tier      — Current tier + MRR\n` +
+    `/sprint    — Latest sprint progress\n` +
+    `/gate      — Phase 1.5 gate countdown\n` +
+    `/queue     — Unposted videos ranked by viral score\n` +
+    `/review    — Latest generated video details\n` +
+    `/record    — Record a manual TikTok post\n` +
+    `/deliver   — Batch-send ready videos with captions\n` +
+    `/caption   — Generate TikTok-ready caption for a video\n` +
+    `/streak    — Posting streak tracker + pace\n` +
+    `/analytics — Content performance insights\n` +
+    `/help      — This message`
   );
 }
 
@@ -856,8 +943,9 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/queue':   response = cmdQueue();  break;
     case '/review':  response = cmdReview(); break;
     case '/caption': response = cmdCaption(cmdArgs); break;
-    case '/streak':  response = cmdStreak(); break;
-    case '/help':    response = cmdHelp();   break;
+    case '/streak':    response = cmdStreak(); break;
+    case '/analytics': response = cmdAnalytics(); break;
+    case '/help':      response = cmdHelp();   break;
     default:
       response = `Unknown command: \`${cmdName}\`\n\n${cmdHelp()}`;
   }

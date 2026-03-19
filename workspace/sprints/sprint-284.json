@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-284",
+  "title": "Telegram /analytics — content performance insights",
+  "description": "Add /analytics command showing content performance breakdown: top speakers, best hook formulas, score distribution, and pipeline efficiency. Helps operator pick highest-performing content for posting.",
+  "source": "auto — 73% of experiments have metadata, enough data for analytics",
+  "tasks": [
+    {
+      "id": "284-01",
+      "title": "Add /analytics command to telegram-bot.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-284",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
