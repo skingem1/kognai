@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-199",
+  "title": "Stripe Smoke Test — Full API Validation",
+  "description": "Stripe smoke test script: env vars, API connectivity, price validation, subscription count. Result: 10/10 PASS — Stripe is ready for production (test mode). Balance: 35.32 EUR, Growth $19/mo active, Premium $49/mo active, 1+ active subscriptions.",
+  "source": "autonomous",
+  "tasks": [
+    {
+      "id": "199-01",
+      "title": "scripts/stripe/smoke-test.ts — Stripe smoke test",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-199",
+      "deliverables": { "code": ["scripts/stripe/smoke-test.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
