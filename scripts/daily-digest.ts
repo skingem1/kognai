@@ -175,7 +175,7 @@ function getAchiriAlphaStats(): { waitlist: number; invited: number } {
 
 // ── Content calendar (Sprint 193) ─────────────────────────────────────────────
 
-function getCalendarToday(): Array<{ video_id: string; slot: string; viral_score: number | null; speaker: string }> {
+function getCalendarToday(): Array<{ video_id: string; slot: string; viral_score: number | null; speaker: string; hook_formula?: string; topic?: string }> {
   const calPath = path.join(ROOT, 'workspace', 'scs001', 'content-calendar.json');
   if (!fs.existsSync(calPath)) return [];
   try {
@@ -268,9 +268,14 @@ function buildDigest(): string {
     '',
     ...(calendarItems.length > 0 ? [
       `📅 *Today's Posting Schedule:*`,
-      ...calendarItems.map((item, i) => {
+      ...calendarItems.flatMap((item, i) => {
         const vs = item.viral_score != null ? ` 🧬 ${item.viral_score}` : '';
-        return `${i + 1}. ⏰ ${item.slot} — \`${item.video_id}\`${vs}`;
+        const lines = [`${i + 1}. ⏰ ${item.slot} — \`${item.video_id}\`${vs}`];
+        const meta: string[] = [];
+        if (item.speaker && item.speaker !== 'unknown') meta.push(`🎙️ ${item.speaker}`);
+        if (item.hook_formula) meta.push(`🎣 ${item.hook_formula}`);
+        if (meta.length > 0) lines.push(`   ${meta.join(' | ')}`);
+        return lines;
       }),
       '',
     ] : []),

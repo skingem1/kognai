@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-275",
+  "title": "Daily digest enrichment — show speaker + hook formula in posting schedule",
+  "description": "Enhance daily-digest.ts to display enriched content metadata (speaker, hook_formula) from the content calendar in the morning posting schedule section.",
+  "source": "auto — Sprint 273/274 enriched calendar but daily digest wasn't using the new fields",
+  "tasks": [
+    {
+      "id": "275-01",
+      "title": "Enhance daily digest posting schedule with metadata",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "complete",
+      "priority": "medium",
+      "sprint_id": "sprint-275",
+      "deliverables": { "code": ["scripts/daily-digest.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
