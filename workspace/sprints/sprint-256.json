@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-256",
+  "title": "EVAL-002 — Cognee evaluation for knowledge graph memory",
+  "description": "CTO evaluation of Cognee library for knowledge graph memory integration with BrainX. Same 5-criteria pattern as EVAL-001. Phase 2A gate dependency.",
+  "source": "queue-prescribed (sprint-242 from queue, numbered 256 by git sequence)",
+  "tasks": [
+    {
+      "id": "256-01",
+      "title": "Run EVAL-002 — Cognee evaluation against 5 criteria",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-256",
+      "deliverables": { "code": ["scripts/evaluations/eval-002-cognee.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "256-02",
+      "title": "Create validation script for EVAL-002",
+      "type": "test",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-256",
+      "deliverables": { "code": ["scripts/evaluations/validate-eval-002.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
