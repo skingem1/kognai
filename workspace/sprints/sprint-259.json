@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-259",
+  "title": "Landing page — kognai.ai MVP",
+  "description": "Static HTML landing page for kognai.ai. Hero + mission + waitlist form. Minimal, fast, deploy-ready. No framework needed — single HTML file with inline CSS.",
+  "source": "queue-prescribed (sprint-245 from queue, numbered 259 by git sequence)",
+  "tasks": [
+    {
+      "id": "259-01",
+      "title": "Create kognai.ai landing page — hero + mission + waitlist",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-259",
+      "deliverables": { "code": ["landing/index.html"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "259-02",
+      "title": "Create validation script for landing page structure",
+      "type": "test",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-259",
+      "deliverables": { "code": ["scripts/launch/validate-landing-page.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
