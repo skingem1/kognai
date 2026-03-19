@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-225",
+  "title": "Dashboard UI — gate panel shows manual posts + video queue",
+  "description": "Dashboard readiness panel now shows: Posts (manual) 0/30, Views 0/500, Queue (ready) 191, QC Pass. Replaced misleading 191 'posts' with actual manual post count and added queue size.",
+  "source": "autonomous",
+  "tasks": [
+    {
+      "id": "225-01",
+      "title": "Update dashboard app.js kill switch panel with new fields",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-225",
+      "deliverables": { "code": ["dashboard/static/app.js"], "tests": [], "docs": [] }
+    }
+  ]
+}

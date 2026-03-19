@@ -1332,9 +1332,9 @@ async function renderReadiness() {
     const ks = r.kill_switch_proximity ?? {};
     html += `<div style="font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin:12px 0 6px;">Kill Switch Targets (Phase 1.5 Gate)</div>`;
     html += `<div class="stats-row">
+      <div class="stat-box"><div class="stat-value">${ks.current_posts ?? 0}/${ks.posts_target ?? 30}</div><div class="stat-label">Posts (manual)</div></div>
       <div class="stat-box"><div class="stat-value">${ks.current_views ?? 0}/${ks.views_target ?? 500}</div><div class="stat-label">Views</div></div>
-      <div class="stat-box"><div class="stat-value">${ks.current_posts ?? 0}/${ks.posts_target ?? 30}</div><div class="stat-label">Posts</div></div>
-      <div class="stat-box"><div class="stat-value">${ks.current_retention ?? 0}%/${ks.retention_target ?? 20}%</div><div class="stat-label">Retention</div></div>
+      <div class="stat-box"><div class="stat-value">${ks.current_generated ?? 0}</div><div class="stat-label">Queue (ready)</div></div>
       <div class="stat-box"><div class="stat-value">${ks.current_qc_pass ?? 0}%/${ks.qc_pass_target ?? 80}%</div><div class="stat-label">QC Pass</div></div>
     </div>`;
 
