@@ -1541,3 +1541,14 @@ Operator quickstart: (1) bash scripts/pre-deploy-check.sh (2) ./scripts/pm2-boot
 - Swarm used: no (single-file edit)
 - Issues: None
 - Timestamp: 2026-03-20T00:15:00Z
+
+## Sprint 231 — Calendar Video Delivery (Direct Write)
+- Status: PASS
+- Commit: 903654a
+- Files modified: agents/telegram-bot/commands.ts
+- Files created: workspace/sprints/sprint-231.json
+- Tasks completed:
+  - 231-01: /calendar now sends video files for today's scheduled slots. Complete video delivery across ALL touchpoints: digest (07:00), auto-send (07:30/17:30), reminders (12:00/18:00), /postnow, /postbatch, /sendvideo, /calendar.
+- Swarm used: no (single-file edit)
+- Issues: None
+- Timestamp: 2026-03-20T00:30:00Z
