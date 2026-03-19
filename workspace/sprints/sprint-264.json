@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-264",
+  "title": "Pipeline health API — JSON status endpoint for monitoring",
+  "description": "HTTP endpoint returning SCS-001 pipeline health: agent status, latest run, QC stats, gate progress, environment checks. Consumable by dashboard, Telegram, and external monitoring.",
+  "source": "auto — monitoring gap, no programmatic health check exists",
+  "tasks": [
+    {
+      "id": "264-01",
+      "title": "Pipeline health API server",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-264",
+      "deliverables": { "code": ["scripts/scs001/health-api.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "264-02",
+      "title": "Health API validation",
+      "type": "test",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-264",
+      "deliverables": { "code": ["scripts/scs001/validate-health-api.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
