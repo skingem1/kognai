@@ -1615,3 +1615,14 @@ Full auto-posting pipeline built:
 5. Sprint 234: PM2 crons for refresh (03:00), auto-post (08:00+19:00), verify (09:00+20:00)
 6. Sprint 235: /activate command — one-stop go-live checklist
 **Blocker: Human must run OAuth flow once. Then auto-posting is fully autonomous.**
+
+## Sprint 236 — Achiri Usage Analytics (Direct Write)
+- Status: PASS
+- Commit: fa1d831
+- Files modified: agents/telegram-bot/commands.ts, agents/telegram-bot/index.ts
+- Files created: workspace/sprints/sprint-236.json
+- Tasks completed:
+  - 236-01: /achiristats command — server stats (live API), daily activity (7-day history), all-time aggregates, memory usage per user, waitlist/whitelist counts, alpha countdown (Apr 25). Added to /help.
+- Swarm used: no (commands.ts 2960+ lines)
+- Issues: None. Achiri analytics ready for alpha launch monitoring.
+- Timestamp: 2026-03-20T02:00:00Z
