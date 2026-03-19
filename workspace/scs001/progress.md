@@ -1475,3 +1475,14 @@ Operator quickstart: (1) bash scripts/pre-deploy-check.sh (2) ./scripts/pm2-boot
 - Swarm used: no (single-file edit)
 - Issues: None
 - Timestamp: 2026-03-19T22:45:00Z
+
+## Sprint 225 — Dashboard UI Gate Panel (Direct Write)
+- Status: PASS
+- Commit: 722de93
+- Files modified: dashboard/static/app.js
+- Files created: workspace/sprints/sprint-225.json
+- Tasks completed:
+  - 225-01: Updated dashboard kill switch panel: Posts (manual) 0/30 (was showing 191 from ledger), Views 0/500, Queue (ready) 191 (new field from Sprint 224), QC Pass rate. Removed retention (requires TikTok API). Operator now sees accurate gate status at a glance.
+- Swarm used: no (single-line edit)
+- Issues: None
+- Timestamp: 2026-03-19T23:00:00Z
