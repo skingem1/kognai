@@ -305,6 +305,28 @@ def get_existing_scripts(project_root: Path) -> str:
         return "scan error"
 
 
+def get_sprint_queue(project_root: Path) -> Optional[dict]:
+    """Read workspace/sprint-queue.json — authoritative ordered sprint plan.
+
+    Returns the first queued item (status != 'done') if any exist, else None.
+    This bypasses Qwen's sprint recommendation when the human has prescribed
+    a specific next sprint.
+    """
+    queue_file = project_root / "workspace" / "sprint-queue.json"
+    if not queue_file.exists():
+        return None
+    try:
+        data = json.loads(queue_file.read_text())
+        items = data.get("queue", [])
+        for item in items:
+            if item.get("status") not in ("done", "skipped"):
+                return item
+        return None  # All items done or skipped
+    except Exception as e:
+        print(f"[WARNING] Could not read sprint-queue.json: {e}")
+        return None
+
+
 def generate_brief(project_name: str):
     """Generate the sprint brief for a project."""
     config = PROJECTS.get(project_name)
@@ -408,9 +430,39 @@ Be concise — bullet points only. No preamble.
     existing_commands = get_existing_commands(config["root"])
     existing_scripts = get_existing_scripts(config["root"])
 
-    # Extract 3: Next sprint recommendation (skip if Ollama unavailable)
-    print("[Qwen 3/3] Recommending next sprint...")
-    if ollama_ok:
+    # --- Check authoritative sprint queue FIRST ---
+    # If workspace/sprint-queue.json has a queued item, skip Qwen recommendation entirely.
+    # The human controls the plan via that file. Qwen only recommends when no queue exists.
+    queue_item = get_sprint_queue(config["root"])
+
+    # Extract 3: Next sprint recommendation (skip if queue exists OR Ollama unavailable)
+    if queue_item:
+        sprint_num_q = queue_item.get("sprint", "?")
+        sprint_title_q = queue_item.get("title", "")
+        sprint_block_q = queue_item.get("block", "")
+        sprint_rationale_q = queue_item.get("rationale", "")
+        print(f"[QUEUE] Sprint queue active — next: Sprint {sprint_num_q} ({sprint_title_q})")
+        print("[Qwen 3/3] SKIPPED — sprint queue takes precedence over Qwen recommendation")
+        next_sprint = f"""## ⚠️ MANDATORY — QUEUE-PRESCRIBED SPRINT
+
+**DO NOT deviate from this. The human has prescribed this sprint via workspace/sprint-queue.json.**
+
+- **Sprint number**: {sprint_num_q}
+- **Title**: {sprint_title_q}
+- **Block**: {sprint_block_q}
+- **Rationale**: {sprint_rationale_q}
+
+### What to do
+1. Create `workspace/sprints/sprint-{sprint_num_q}.json` with 3-5 tasks
+2. Execute each task
+3. Validate and commit
+4. **After committing**: update `workspace/sprint-queue.json` — set `"status": "done"` for Sprint {sprint_num_q}
+5. The NEXT session will automatically pick up the next queue item
+
+### Compliance rule
+You MUST execute Sprint {sprint_num_q} as described. Do NOT substitute a different sprint number or topic. If you believe there is a blocker, document it in the sprint JSON and still attempt the tasks — the human will review."""
+    elif ollama_ok:
+        print("[Qwen 3/3] No queue found — Qwen recommending next sprint...")
         next_sprint = call_qwen(f"""You are a sprint planner for the {project_name.upper()} project. Based on:
 
 CURRENT STATE:
@@ -440,6 +492,7 @@ Be specific and actionable. Reference exact file paths where possible.""", max_t
         if next_sprint.startswith("[ERROR"):
             next_sprint = "*(Ollama unavailable — see Recent Sprint History above and increment sprint number)*"
     else:
+        print("[Qwen 3/3] SKIPPED — Ollama unavailable")
         next_sprint = "*(Ollama unavailable — see Recent Sprint History above and increment sprint number)*"
 
     # --- Phase 3: Assemble brief ---

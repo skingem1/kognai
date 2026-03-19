@@ -1,0 +1,87 @@
+{
+  "_note": "AUTHORITATIVE sprint execution order. The brief generator reads this and injects the first item as a MANDATORY directive, bypassing Qwen's recommendation. Pop items by setting status=done after each sprint ships. Human-maintained — edit to re-prioritise.",
+  "updated": "2026-03-19",
+  "owner": "Tarek (human)",
+  "queue": [
+    {
+      "sprint": 181,
+      "title": "OMEL Phase 2 — Phantom Workspace v2",
+      "block": "OMEL-P2",
+      "status": "next",
+      "priority": "high",
+      "rationale": "OMEL P1 done (176-180). P2 deferred by swarm pivot. AMD-13 mandates full OMEL before Phase 2 unlocks."
+    },
+    {
+      "sprint": 182,
+      "title": "OMEL Phase 2 — Credential Vault hardening",
+      "block": "OMEL-P2",
+      "status": "queued",
+      "priority": "high",
+      "rationale": "OMEL P2 block, sprint 2 of 5."
+    },
+    {
+      "sprint": 183,
+      "title": "OMEL Phase 2 — Wipe Witness v2 + audit trail",
+      "block": "OMEL-P2",
+      "status": "queued",
+      "priority": "high",
+      "rationale": "OMEL P2 block, sprint 3 of 5."
+    },
+    {
+      "sprint": 184,
+      "title": "OMEL Phase 2 — Human Brake cross-agent enforcement",
+      "block": "OMEL-P2",
+      "status": "queued",
+      "priority": "high",
+      "rationale": "OMEL P2 block, sprint 4 of 5."
+    },
+    {
+      "sprint": 185,
+      "title": "OMEL Phase 2 — ContaminationGuard v2 + gate validator",
+      "block": "OMEL-P2",
+      "status": "queued",
+      "priority": "high",
+      "rationale": "OMEL P2 block, sprint 5 of 5. Gate: omel-phase2-gate.json PASS."
+    },
+    {
+      "sprint": 186,
+      "title": "Viral Detection Week 1 — PySceneDetect + librosa + OpenCLIP",
+      "block": "VIRAL",
+      "status": "queued",
+      "priority": "medium",
+      "rationale": "Was skipped 2026-03-19. Resume post-April-7 gate per sprint-plan-172-191.md."
+    },
+    {
+      "sprint": 187,
+      "title": "Viral Detection Week 2 — VideoMAE + composite score wiring",
+      "block": "VIRAL",
+      "status": "queued",
+      "priority": "medium",
+      "rationale": "Viral Detection block sprint 2."
+    },
+    {
+      "sprint": 188,
+      "title": "Constitution wiring — CONSTITUTION.md injected into all agent prompts",
+      "block": "CONSTITUTION",
+      "status": "queued",
+      "priority": "medium",
+      "rationale": "Constitution.md exists but not wired. ACP v1.0 framework."
+    },
+    {
+      "sprint": 189,
+      "title": "ACP v1.0 — multi-dimensional trust scores + routing enforcement",
+      "block": "CONSTITUTION",
+      "status": "queued",
+      "priority": "medium",
+      "rationale": "ACP v1.0 enforcement layer. Flat scores exist — need enforcement."
+    },
+    {
+      "sprint": 190,
+      "title": "BrainX EVAL-001 — OpenViking evaluation",
+      "block": "BRAINX",
+      "status": "queued",
+      "priority": "low",
+      "rationale": "Phase 2A gate dependency. CTO agent (deepseek-r1:14b) runs evaluation."
+    }
+  ]
+}
