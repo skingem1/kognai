@@ -1351,3 +1351,14 @@ SESSION HANDOFF (2026-03-17, Sprints 166-170):
 - Swarm used: no (surgical edit to single file)
 - Issues: Root cause of 0 videos in production runs identified and fixed. Homebrew FFmpeg 8.0.1 does not include drawtext filter by default.
 - Timestamp: 2026-03-19T19:45:00Z
+
+## Sprint 214 — Gate Pace Metrics (Direct Write)
+- Status: PASS
+- Commit: d7e811e
+- Files modified: agents/telegram-bot/commands.ts
+- Files created: workspace/sprints/sprint-214.json
+- Tasks completed:
+  - 214-01: Enhanced /gate command with: pace needed (posts/day), urgency level (🟢/🟡/🔴), video queue count (unposted videos from ledger), actionable next-step commands (/post-batch, /record). Operator now sees a complete gate dashboard in one command.
+- Swarm used: no (single-function edit)
+- Issues: None
+- Timestamp: 2026-03-19T20:00:00Z
