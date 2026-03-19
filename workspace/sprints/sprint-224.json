@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-224",
+  "title": "Dashboard Readiness Fix — distinguish manual posts from generated videos",
+  "description": "Readiness dashboard showed current_posts=191 from publish-ledger (generated videos). Gate counts manual TikTok posts (0/30). Fix: read manual-posts.jsonl for gate metrics, add current_generated field for queue size, add current_views from manual posts.",
+  "source": "autonomous",
+  "tasks": [
+    {
+      "id": "224-01",
+      "title": "Fix readiness parser to use manual-posts.jsonl for gate metrics",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-224",
+      "deliverables": { "code": ["dashboard/parsers/readiness.py"], "tests": [], "docs": [] }
+    }
+  ]
+}

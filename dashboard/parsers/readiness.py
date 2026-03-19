@@ -9,6 +9,7 @@ SMOKE_TEST_PATH = KOGNAI_ROOT / "reports" / "smoke-test-latest.json"
 EXPERIMENTS_PATH = KOGNAI_ROOT / "workspace" / "scs001" / "experiments.jsonl"
 
 LEDGER_PATH = KOGNAI_ROOT / "workspace" / "scs001" / "publish-ledger.jsonl"
+MANUAL_POSTS_PATH = KOGNAI_ROOT / "workspace" / "scs001" / "manual-posts.jsonl"
 PHASE_1_5_GATE_DATE = "2026-04-07"
 POSTS_TARGET = 30
 
@@ -49,8 +50,10 @@ def get_readiness() -> dict:
         except Exception:
             pass
 
-    # Current actuals from publish-ledger + experiments
-    current_posts = _count_ledger_entries()
+    # Current actuals from publish-ledger + manual-posts + experiments
+    current_generated = _count_ledger_entries()
+    current_manual_posts = _count_manual_posts()
+    current_manual_views = _count_manual_views()
     current_qc_pass = _calc_qc_pass_rate()
 
     kill_switch_proximity = {
@@ -58,8 +61,9 @@ def get_readiness() -> dict:
         "posts_target": 30,
         "retention_target": 20,
         "qc_pass_target": 80,
-        "current_views": 0,  # requires TikTok Analytics API (live mode only)
-        "current_posts": current_posts,
+        "current_views": current_manual_views,
+        "current_posts": current_manual_posts,  # actual TikTok posts, not pipeline-generated
+        "current_generated": current_generated,  # pipeline-generated videos (posting queue)
         "current_retention": 0,  # requires TikTok Analytics API (live mode only)
         "current_qc_pass": current_qc_pass,
     }
@@ -97,7 +101,7 @@ def get_readiness() -> dict:
 
 
 def _count_ledger_entries() -> int:
-    """Count total entries in publish-ledger.jsonl."""
+    """Count total entries in publish-ledger.jsonl (pipeline-generated videos)."""
     if not LEDGER_PATH.exists():
         return 0
     count = 0
@@ -109,6 +113,41 @@ def _count_ledger_entries() -> int:
     except Exception:
         pass
     return count
+
+
+def _count_manual_posts() -> int:
+    """Count manually posted TikTok videos (the gate metric)."""
+    if not MANUAL_POSTS_PATH.exists():
+        return 0
+    count = 0
+    try:
+        with open(MANUAL_POSTS_PATH) as f:
+            for line in f:
+                if line.strip():
+                    count += 1
+    except Exception:
+        pass
+    return count
+
+
+def _count_manual_views() -> int:
+    """Sum views across manually posted TikTok videos."""
+    if not MANUAL_POSTS_PATH.exists():
+        return 0
+    total = 0
+    try:
+        with open(MANUAL_POSTS_PATH) as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    total += json.loads(line).get("views", 0)
+                except Exception:
+                    pass
+    except Exception:
+        pass
+    return total
 
 
 def _calc_qc_pass_rate() -> int:
@@ -135,8 +174,10 @@ def _calc_qc_pass_rate() -> int:
 
 
 def _get_phase_1_5_projection() -> dict:
-    """Calculate days-to-30-posts projection for Phase 1.5 kill switch."""
-    if not LEDGER_PATH.exists():
+    """Calculate days-to-30-posts projection for Phase 1.5 kill switch.
+    Uses manual-posts.jsonl (actual TikTok posts), not publish-ledger (generated videos)."""
+    source_path = MANUAL_POSTS_PATH if MANUAL_POSTS_PATH.exists() else LEDGER_PATH
+    if not source_path.exists():
         return {
             "posts_so_far": 0,
             "posts_target": POSTS_TARGET,
@@ -146,7 +187,7 @@ def _get_phase_1_5_projection() -> dict:
             "gate_date": PHASE_1_5_GATE_DATE,
         }
     entries = []
-    with open(LEDGER_PATH) as f:
+    with open(source_path) as f:
         for line in f:
             line = line.strip()
             if not line:
