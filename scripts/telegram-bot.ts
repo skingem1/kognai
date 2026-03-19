@@ -795,6 +795,42 @@ function cmdStreak(): string {
   );
 }
 
+// Sprint 285: /onboard — first-time posting walkthrough
+function cmdOnboard(): string {
+  const posts = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
+  const daysLeft = Math.max(1, Math.ceil((new Date('2026-04-07').getTime() - Date.now()) / 86400000));
+  const postsLeft = Math.max(0, 30 - posts.length);
+
+  if (posts.length >= 30) {
+    return `✅ *You've already hit 30 posts!* Gate progress is on track.\n\nUse \`/gate\` to check full status.`;
+  }
+
+  return (
+    `📖 *First-Time Posting Guide*\n\n` +
+    `You have *${postsLeft} posts* to make in *${daysLeft} days*.\n` +
+    `Here's how to post your first video:\n\n` +
+    `*Step 1 — Get a video*\n` +
+    `Send \`/deliver 1\` and I'll send you the best-scoring video with a ready-to-use caption.\n\n` +
+    `*Step 2 — Save to phone*\n` +
+    `Tap the video in Telegram → Save to gallery/camera roll.\n\n` +
+    `*Step 3 — Post on TikTok*\n` +
+    `Open TikTok → + → Upload → Select the video → Paste the caption from the message → Post.\n\n` +
+    `*Step 4 — Record it*\n` +
+    `Come back here and send:\n` +
+    `\`/record <video_id> 0\`\n` +
+    `(The video ID is in the caption I sent you)\n\n` +
+    `*Step 5 — Update views later*\n` +
+    `After 24h, check your TikTok views and update:\n` +
+    `\`/record <video_id> <views>\`\n\n` +
+    `*Daily workflow:*\n` +
+    `\`/deliver 3\` → save → post → \`/record\` × 3\n` +
+    `Do this morning + evening = 6 posts/day = gate in 5 days 🚀\n\n` +
+    `_Pipeline has ${ledger.length} videos (76 captioned, ready to post)._\n` +
+    `_Ready? Send \`/deliver 1\` now!_`
+  );
+}
+
 // Sprint 284: /analytics — content performance insights
 function cmdAnalytics(): string {
   const expPath = path.join(ROOT, 'workspace', 'scs001', 'experiments.jsonl');
@@ -897,6 +933,7 @@ function cmdHelp(): string {
     `/caption   — Generate TikTok-ready caption for a video\n` +
     `/streak    — Posting streak tracker + pace\n` +
     `/analytics — Content performance insights\n` +
+    `/onboard   — First-time posting walkthrough\n` +
     `/help      — This message`
   );
 }
@@ -945,6 +982,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/caption': response = cmdCaption(cmdArgs); break;
     case '/streak':    response = cmdStreak(); break;
     case '/analytics': response = cmdAnalytics(); break;
+    case '/onboard':   response = cmdOnboard(); break;
     case '/help':      response = cmdHelp();   break;
     default:
       response = `Unknown command: \`${cmdName}\`\n\n${cmdHelp()}`;

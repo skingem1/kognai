@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-285",
+  "title": "Telegram /onboard — first-time posting walkthrough",
+  "description": "Add /onboard command with step-by-step guide for operator's first TikTok post: check queue, receive video via /deliver, download to phone, post on TikTok, record with /record. Reduces friction for first post.",
+  "source": "auto — 0/30 posts, need to reduce friction barrier for operator to start",
+  "tasks": [
+    {
+      "id": "285-01",
+      "title": "Add /onboard command to telegram-bot.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-285",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
