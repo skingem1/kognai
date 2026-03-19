@@ -2093,3 +2093,16 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (surgical edit to existing file)
 - Issues: None. Clean compile.
 - Timestamp: 2026-03-20T00:20:00Z
+
+## Sprint 282 — Posting Streak Tracker + Digest Gamification (Direct Write)
+- Status: PASS
+- Commit: aefc1fe
+- Files created: workspace/sprints/sprint-282.json
+- Files modified: scripts/telegram-bot.ts (+70 lines), scripts/daily-digest.ts (+35 lines)
+- Tasks completed:
+  - 282-01: /streak Telegram command — shows current streak, best streak, today's posts, pace to gate, emoji tier (❄️→🔥🔥🔥)
+  - 282-02: Daily digest streak line — getPostingStreak() + streak emoji + "best" + yesterday count
+- Validation: Dry-run digest shows streak correctly. TypeScript clean compile.
+- Swarm used: no (multi-file edits)
+- Issues: None.
+- Timestamp: 2026-03-20T00:30:00Z
