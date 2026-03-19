@@ -26,3 +26,6 @@
 {"ts":"2026-03-17T20:10:12.873Z","agentId":"coder","taskId":"171-01","transition":"ACTIVE→IDLE","from":"ACTIVE","to":"IDLE","depth":0}
 {"ts":"2026-03-17T20:10:12.874Z","agentId":"coder","taskId":"171-02","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
 {"ts":"2026-03-17T20:10:12.874Z","agentId":"coder","taskId":"171-02","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-19T08:47:25.742Z","agentId":"coder","taskId":"180-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"rejected attempt 4"}
+{"ts":"2026-03-19T08:47:25.742Z","agentId":"coder","taskId":"180-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-19T08:47:25.742Z","agentId":"coder","taskId":"180-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}

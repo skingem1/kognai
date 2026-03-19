@@ -7,81 +7,161 @@
       "sprint": 181,
       "title": "OMEL Phase 2 — Phantom Workspace v2",
       "block": "OMEL-P2",
-      "status": "next",
+      "status": "done",
       "priority": "high",
-      "rationale": "OMEL P1 done (176-180). P2 deferred by swarm pivot. AMD-13 mandates full OMEL before Phase 2 unlocks."
+      "rationale": "OMEL P2 block, sprint 1 of 5. Shipped c6000d8."
     },
     {
       "sprint": 182,
       "title": "OMEL Phase 2 — Credential Vault hardening",
       "block": "OMEL-P2",
-      "status": "queued",
+      "status": "done",
       "priority": "high",
-      "rationale": "OMEL P2 block, sprint 2 of 5."
+      "rationale": "OMEL P2 block, sprint 2 of 5. Shipped c6000d8."
     },
     {
       "sprint": 183,
       "title": "OMEL Phase 2 — Wipe Witness v2 + audit trail",
       "block": "OMEL-P2",
-      "status": "queued",
+      "status": "done",
       "priority": "high",
-      "rationale": "OMEL P2 block, sprint 3 of 5."
+      "rationale": "OMEL P2 block, sprint 3 of 5. Shipped c6000d8."
     },
     {
       "sprint": 184,
       "title": "OMEL Phase 2 — Human Brake cross-agent enforcement",
       "block": "OMEL-P2",
-      "status": "queued",
+      "status": "done",
       "priority": "high",
-      "rationale": "OMEL P2 block, sprint 4 of 5."
+      "rationale": "OMEL P2 block, sprint 4 of 5. Shipped c6000d8."
     },
     {
       "sprint": 185,
       "title": "OMEL Phase 2 — ContaminationGuard v2 + gate validator",
       "block": "OMEL-P2",
-      "status": "queued",
+      "status": "done",
       "priority": "high",
-      "rationale": "OMEL P2 block, sprint 5 of 5. Gate: omel-phase2-gate.json PASS."
+      "rationale": "OMEL P2 block, sprint 5 of 5. Shipped c6000d8. Gate: PASS."
     },
     {
       "sprint": 186,
       "title": "Viral Detection Week 1 — PySceneDetect + librosa + OpenCLIP",
       "block": "VIRAL",
-      "status": "queued",
+      "status": "done",
       "priority": "medium",
-      "rationale": "Was skipped 2026-03-19. Resume post-April-7 gate per sprint-plan-172-191.md."
+      "rationale": "Shipped 8d5db09. Scorer + ClipDetection wiring."
     },
     {
       "sprint": 187,
       "title": "Viral Detection Week 2 — VideoMAE + composite score wiring",
       "block": "VIRAL",
-      "status": "queued",
+      "status": "done",
       "priority": "medium",
-      "rationale": "Viral Detection block sprint 2."
+      "rationale": "Shipped 9550cd2. Experiment persistence + QC + /review."
     },
     {
       "sprint": 188,
-      "title": "Constitution wiring — CONSTITUTION.md injected into all agent prompts",
-      "block": "CONSTITUTION",
-      "status": "queued",
+      "title": "Viral Score Posting Priority (diverged from plan — was Constitution wiring)",
+      "block": "VIRAL",
+      "status": "done",
       "priority": "medium",
-      "rationale": "Constitution.md exists but not wired. ACP v1.0 framework."
+      "rationale": "Swarm diverged. Built 5cae273 instead of Constitution wiring. Constitution wiring re-queued as 238."
     },
     {
       "sprint": 189,
-      "title": "ACP v1.0 — multi-dimensional trust scores + routing enforcement",
-      "block": "CONSTITUTION",
-      "status": "queued",
+      "title": "Viral Score Everywhere (diverged from plan — was ACP v1.0)",
+      "block": "VIRAL",
+      "status": "done",
       "priority": "medium",
-      "rationale": "ACP v1.0 enforcement layer. Flat scores exist — need enforcement."
+      "rationale": "Swarm diverged. Built 252aa94 instead of ACP v1.0. ACP re-queued as 239."
     },
     {
       "sprint": 190,
-      "title": "BrainX EVAL-001 — OpenViking evaluation",
+      "title": "Dashboard Viral Score Panel (diverged from plan — was BrainX EVAL-001)",
+      "block": "VIRAL",
+      "status": "done",
+      "priority": "medium",
+      "rationale": "Swarm diverged. Built de673d8 instead of BrainX EVAL. BrainX re-queued as 240."
+    },
+    {
+      "sprint": 238,
+      "title": "Constitution wiring — CONSTITUTION.md injected into all agent prompts",
+      "block": "CONSTITUTION",
+      "status": "next",
+      "priority": "high",
+      "rationale": "Originally Sprint 188 — skipped by swarm divergence. Constitution.md exists (61 lines, v0, 6 sections) but NOT wired into any agent prompt. All 16 agent prompts in kognai-agents/ + 13 SCS-001 agents need Constitutional Mandate header. Per AMD-03 + Execution Protocol v1.0."
+    },
+    {
+      "sprint": 239,
+      "title": "ACP v1.0 — multi-dimensional trust scores + routing enforcement",
+      "block": "CONSTITUTION",
+      "status": "queued",
+      "priority": "high",
+      "rationale": "Originally Sprint 189 — skipped by swarm. ACP (Agent Constitutional Protocol) v1.0: content scoring across 5 dimensions (safety, accuracy, brand-alignment, cultural-sensitivity, legal-compliance). Flat scores exist — need enforcement layer at ClawRouter gate."
+    },
+    {
+      "sprint": 240,
+      "title": "BrainX Memory Type Extensions — RENTAL_EXPIRED tier + AMD-02A",
       "block": "BRAINX",
       "status": "queued",
+      "priority": "medium",
+      "rationale": "Originally Sprint 190 — skipped by swarm. AMD-02 Addendum: skill_rental_gotcha + skill_rental_learning memory types. RENTAL_EXPIRED tier. Rental Memory Governance Rule. nomic-embed-text local embeddings."
+    },
+    {
+      "sprint": 241,
+      "title": "EVAL-001 — OpenViking evaluation for Skill Bank",
+      "block": "BRAINX",
+      "status": "queued",
+      "priority": "medium",
+      "rationale": "Phase 2A gate dependency. CTO agent (deepseek-r1:14b) evaluates volcengine/OpenViking (1K stars, Apache 2.0). 5 criteria: Python SDK + ARM64, Skill Bank mount, Memory compat, distillation hook, production readiness. 3 outcomes: ADOPT/PARTIAL/REJECT."
+    },
+    {
+      "sprint": 242,
+      "title": "EVAL-002 — Cognee evaluation for knowledge graph memory",
+      "block": "BRAINX",
+      "status": "queued",
+      "priority": "medium",
+      "rationale": "Phase 2A gate dependency. Knowledge graph memory library evaluation. Same CTO evaluation pattern as EVAL-001."
+    },
+    {
+      "sprint": 243,
+      "title": "AMD-14 — Dynamic Model Selection at CTO Gate",
+      "block": "INFRA",
+      "status": "queued",
+      "priority": "medium",
+      "rationale": "CTO Gate currently hardcoded to T2 POWER (qwen3:14b). AMD-14: CTO selects model tier per sprint complexity. Reduces cost for simple sprints (T1), unlocks T3 for complex ones."
+    },
+    {
+      "sprint": 244,
+      "title": "Kognai CMO Agent — TikTok launch strategy + brand narrative",
+      "block": "LAUNCH",
+      "status": "queued",
+      "priority": "medium",
+      "rationale": "kognai-agents/cmo/prompt.md is 100% Invoica-focused. Need Kognai CMO: TikTok content strategy, manifesto thread (15 posts per Launch Strategy v1.0), X Space, civilizational brand narrative."
+    },
+    {
+      "sprint": 245,
+      "title": "Landing page — kognai.ai MVP",
+      "block": "LAUNCH",
+      "status": "queued",
+      "priority": "medium",
+      "rationale": "Launch Strategy v1.0 requires kognai.ai landing page. Minimal: hero + mission + waitlist. Static HTML or Astro. Deploy to Vercel/Cloudflare."
+    },
+    {
+      "sprint": 246,
+      "title": "Docs site — architecture + API + agent catalog",
+      "block": "LAUNCH",
+      "status": "queued",
       "priority": "low",
-      "rationale": "Phase 2A gate dependency. CTO agent (deepseek-r1:14b) runs evaluation."
+      "rationale": "Launch Strategy v1.0 element 5. Public docs: architecture overview, agent catalog, ClawRouter API, SCS-001 pipeline docs. Docusaurus or VitePress."
+    },
+    {
+      "sprint": 247,
+      "title": "Founding Charter draft — 9 Articles on Base",
+      "block": "LAUNCH",
+      "status": "queued",
+      "priority": "low",
+      "rationale": "Founding Charter v1.0 exists as docx. Must be formatted for Base attestation (EAS). 9 Articles, 5 Immutable Laws. Genesis Ceremony at Month 10."
     }
   ]
 }

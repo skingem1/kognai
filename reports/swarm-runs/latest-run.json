@@ -1,75 +1,25 @@
 {
-  "run_id": "fd95e837-a19d-4c88-9cc6-888d568844cd",
+  "run_id": "bffc5c0e-1cb0-4bef-830d-cd056aa29e41",
   "project": "kognai",
-  "sprint_file": "workspace/sprints/sprint-170.json",
-  "started_at": "2026-03-17T19:35:14.512Z",
-  "finished_at": "2026-03-17T19:49:29.148Z",
-  "duration_seconds": 855,
+  "sprint_file": "workspace/sprints/sprint-186.json",
+  "started_at": "2026-03-19T12:56:39.118Z",
+  "finished_at": "2026-03-19T13:00:20.342Z",
+  "duration_seconds": 221,
   "git_branch": "main",
-  "git_head_before": "c588775",
-  "git_head_after": "c4b3f2e",
+  "git_head_before": "4cf3d98",
+  "git_head_after": "4cf3d98",
   "sovereign_mode": false,
   "summary": {
-    "total_tasks": 2,
-    "done": 2,
+    "total_tasks": 3,
+    "done": 0,
     "rejected": 0,
     "skipped": 0,
-    "approval_rate": 1,
-    "total_tokens": 27906,
-    "supervisor_conflicts": 2,
+    "approval_rate": 0,
+    "total_tokens": 0,
+    "supervisor_conflicts": 0,
     "ceo_escalations": 0
   },
-  "models_used": {
-    "qwen3:14b": {
-      "calls": 2,
-      "tokens": 27906
-    }
-  },
-  "total_cost_usd": 0.014,
-  "tasks": [
-    {
-      "task_id": "170-01",
-      "title": "posting-reminder.ts — replace runIdToEpoch with findCaptionedMp4 dir scan",
-      "type": "modify",
-      "task_target": "local",
-      "status": "done",
-      "attempts": 1,
-      "model_used": "qwen3:14b",
-      "provider": "",
-      "tokens_total": 10489,
-      "duration_seconds": 304,
-      "files_written": [
-        "scripts/posting-reminder.ts"
-      ],
-      "review": {
-        "verdict": "APPROVED",
-        "score": 0,
-        "strengths": []
-      },
-      "error": null,
-      "rejection_reason": null
-    },
-    {
-      "task_id": "170-02",
-      "title": "validate-sprint-170.ts — 4-check validation",
-      "type": "create",
-      "task_target": "local",
-      "status": "done",
-      "attempts": 1,
-      "model_used": "qwen3:14b",
-      "provider": "",
-      "tokens_total": 17417,
-      "duration_seconds": 550,
-      "files_written": [
-        "scripts/scs001/validate-sprint-170.ts"
-      ],
-      "review": {
-        "verdict": "APPROVED",
-        "score": 0,
-        "strengths": []
-      },
-      "error": null,
-      "rejection_reason": null
-    }
-  ]
+  "models_used": {},
+  "total_cost_usd": 0,
+  "tasks": []
 }

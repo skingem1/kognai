@@ -2,11 +2,11 @@
 
 _Learn about the person you're helping. Update this as you go._
 
-- **Name:**
-- **What to call them:**
-- **Pronouns:** _(optional)_
-- **Timezone:**
-- **Notes:**
+- **Name:** (please let me know!)
+- **What to call them:** (happy to use your preferred nickname)
+- **Pronouns:** (optional)
+- **Timezone:** (let me know when/where you are)
+- **Notes:** Waiting for more context on ongoing work so I can pick up where we left off.
 
 ## Context
 

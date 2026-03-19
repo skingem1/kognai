@@ -1,3 +1,8 @@
 {"ts":"2026-03-19T08:02:39.196Z","event":"create","taskId":"179-01","tmpDir":"/var/folders/dz/zl306cbx2rn8mmr6s32fpv040000gn/T/kognai-phantom-179-01-W9dIFF","active_count":1}
 {"ts":"2026-03-19T08:22:25.258Z","event":"create","taskId":"179-01","tmpDir":"/var/folders/dz/zl306cbx2rn8mmr6s32fpv040000gn/T/kognai-phantom-179-01-YR7wA4","active_count":1}
 {"ts":"2026-03-19T08:34:00.942Z","event":"create","taskId":"180-01","tmpDir":"/var/folders/dz/zl306cbx2rn8mmr6s32fpv040000gn/T/kognai-phantom-180-01-1eGblo","active_count":1}
+{"ts":"2026-03-19T12:31:11.825Z","event":"stale_recovery","path":"/var/folders/dz/zl306cbx2rn8mmr6s32fpv040000gn/T/kognai-phantom-179-01-W9dIFF","age_ms":16112624.910888672}
+{"ts":"2026-03-19T12:31:11.825Z","event":"stale_recovery","path":"/var/folders/dz/zl306cbx2rn8mmr6s32fpv040000gn/T/kognai-phantom-179-01-YR7wA4","age_ms":14926566.971191406}
+{"ts":"2026-03-19T12:31:11.826Z","event":"stale_recovery","path":"/var/folders/dz/zl306cbx2rn8mmr6s32fpv040000gn/T/kognai-phantom-180-01-1eGblo","age_ms":14230883.450439453}
+{"ts":"2026-03-19T12:31:11.864Z","event":"create","taskId":"omel-integration-s1","tmpDir":"/var/folders/dz/zl306cbx2rn8mmr6s32fpv040000gn/T/kognai-phantom-omel-integration-s1-5dxiSX","active_count":1,"create_ms":0,"quota_bytes":524288000}
+{"ts":"2026-03-19T12:31:11.866Z","event":"cleanup","taskId":"omel-integration-s1","tmpDir":"/var/folders/dz/zl306cbx2rn8mmr6s32fpv040000gn/T/kognai-phantom-omel-integration-s1-5dxiSX","duration_ms":2,"active_count":0}

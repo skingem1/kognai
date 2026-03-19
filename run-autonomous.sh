@@ -34,7 +34,7 @@ while true; do
   fi
 
   # --- RUN CLAUDE SESSION ---
-  cd "$PROJECT_DIR" && script -q "$LOG_FILE" claude --dangerously-skip-permissions -p "$(cat "$PROMPT_FILE")"
+  cd "$PROJECT_DIR" && stdbuf -oL claude --dangerously-skip-permissions -p "$(cat "$PROMPT_FILE")" 2>&1 | tee -a "$LOG_FILE"
 
   EXIT_CODE=$?
   echo "$(date '+%Y-%m-%d %H:%M:%S') — Session #${SESSION} ended (exit code: $EXIT_CODE)" | tee -a "$LOG_FILE"

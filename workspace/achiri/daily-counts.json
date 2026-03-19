@@ -7,5 +7,10 @@
     "validate-sprint-122-1773680553493-paid": 200,
     "validate-sprint-122-1773680553493-bypass": 100,
     "user-premium": 1
+  },
+  "2026-03-19": {
+    "6001921477": 5,
+    "tarek-test": 1,
+    "smoke-test": 2
   }
 }

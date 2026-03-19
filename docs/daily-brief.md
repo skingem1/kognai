@@ -1,10 +1,10 @@
-# KOGNAI DAILY BRIEF — 2026-03-18
-## Wednesday, March 18, 2026
+# KOGNAI DAILY BRIEF — 2026-03-19
+## Thursday, March 19, 2026
 
-**Generated:** 2026-03-18 06:45
-**Active Sprint:** Sprint-065
-**Hours Today:** 6h
-**Midday Block:** YES (12:00-14:00)
+**Generated:** 2026-03-19 16:02
+**Active Sprint:** Sprint 066
+**Hours Today:** 4h
+**Midday Block:** NO (Tuesday/Thursday)
 
 ---
 
@@ -13,31 +13,12 @@
 | Block | Time | Available |
 |-------|------|-----------|
 | AM | 07:00–09:30 | YES |
-| MID | 12:00–14:00 | YES |
+| MID | 12:00–14:00 | NO |
 | PM | 18:00–19:30 | YES |
 
 ---
 
 ## TODAY'S TASKS
-
-### Tuesday, March 18
-**AM 07:00–09:30**
-- [ ] Review any fix tasks from yesterday
-- [ ] Test multi-channel: one video queued for TikTok AND Instagram simultaneously
-- [ ] Verify engagement tracker polling at 1h/6h/24h intervals
-- [ ] Check Supabase `content_posts` table — data flowing?
-
-**NO MIDDAY BLOCK**
-
-**PM 18:00–19:30**
-- [ ] Sprint-065 final review — all tasks approved?
-- [ ] If sprint-065 done: write sprint-066 JSON (autonomous content loop)
-- [ ] Write session log
-- [ ] [SWARM] Kick off sprint-066
-
----
-
-## TOMORROW PREVIEW
 
 ### Wednesday, March 19
 **Sprint 066 — Autonomous Content Loop**
@@ -47,6 +28,31 @@
 - [ ] Review `scripts/content/daily-pipeline.ts` — full automation chain
 - [ ] Review A/B testing framework: `scripts/content/ab-test.ts`
 - [ ] Check: does daily pipeline fetch → extract → score → compose → queue?
+
+**MID 12:00–14:00**
+- [ ] [YOU] Run daily pipeline manually, review output quality
+- [ ] [YOU] Calibrate vision scoring weights — are the "funny" clips actually funny?
+- [ ] Test in-bot feedback buttons (🔥 / 😐 / 👎) — do they store correctly?
+- [ ] Review feedback loop logic — does high engagement feed back into generation?
+
+**PM 18:00–19:30**
+- [ ] Review sprint-066 progress
+- [ ] Test: run pipeline twice — does A/B framework generate 2 caption variants?
+- [ ] Check cost per daily run — is it within $0.10-0.30 budget?
+- [ ] Write session log
+
+---
+
+## TOMORROW PREVIEW
+
+### Thursday, March 20
+**AM 07:00–09:30**
+- [ ] Read sprint-066 completion output
+- [ ] Verify PM2 cron: is `daily-pipeline` scheduled at 02:00 UTC?
+- [ ] Check overnight auto-generation: did 3 posts queue automatically?
+- [ ] Review content quality of auto-generated batch
+
+**NO MIDDAY BLOCK**
 
 ---
 
