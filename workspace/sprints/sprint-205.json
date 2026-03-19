@@ -1,0 +1,63 @@
+{
+  "sprint_id": "sprint-205",
+  "title": "Swarm Reliability Fix — Sprint Selection + Invoica Smoke Test Removal",
+  "description": "Two P0 fixes identified in 2026-03-19 protocol audit. (1) Autonomous Claude picks wrong sprint to run — picks already-shipped sprint files (e.g. sprint-186 re-run, 0 tasks executed) because STEP 1 has no explicit 'find next unshipped sprint' instruction. Fix: add mandatory 2-command sequence to autonomous-prompt.txt STEP 1. (2) orchestrate-agents-v2.ts has Invoica-specific smoke test hardcoded (checks /v1/health, /v1/invoices, /v1/settlements on localhost:3001) — always fails in Kognai context, wastes 30s per run, floods Telegram with false FAILED alerts. Fix: null out postSprintSmokeTest() to a no-op (3-line body replacement). FP-007 risk on task 205-02: file is 3042 lines — SURGICAL ONLY, replace function body only. Both tasks are safe for swarm if instructions are followed precisely.",
+  "source": "human",
+  "_plan_reference": "Protocol audit 2026-03-19 — swarm P0 gaps",
+  "tasks": [
+    {
+      "id": "205-01",
+      "title": "Fix autonomous-prompt.txt STEP 1 — add explicit next-unshipped-sprint selection",
+      "description": "Modify autonomous-prompt.txt. Find the block that starts with 'STEP 1 — PLAN (you, Sonnet — do NOT spawn opus):'. It currently reads:\n\nSTEP 1 — PLAN (you, Sonnet — do NOT spawn opus):\n  Read: ~/kognai/workspace/sprint-brief.md (primary context — ~2500 tokens)\n  Also check: git log --oneline -5 (verify brief is current)\n  DO NOT read MEMORY.md or progress.md unless the brief is stale/wrong.\n  Determine: What is the next Sprint that needs building?\n  Design: Sprint number, sprint name, task list, acceptance criteria.\n\nReplace that entire block with this exact text:\n\nSTEP 1 — PLAN (you, Sonnet — do NOT spawn opus):\n  Read: ~/kognai/workspace/sprint-brief.md (primary context — ~2500 tokens)\n  Also check: git log --oneline -10 (verify brief is current)\n  DO NOT read MEMORY.md or progress.md unless the brief is stale/wrong.\n\n  Find next unshipped sprint (MANDATORY — run these 2 commands before designing):\n    1. LAST_SHIPPED=$(git log --oneline | grep -oE 'Sprint [0-9]+:' | head -1 | grep -oE '[0-9]+')\n       → gives the last sprint number that was committed to git\n    2. ls ~/kognai/workspace/sprints/ | sort\n       → lists all sprint JSON files on disk\n    The NEXT sprint to run = the LOWEST sprint number that:\n      - has a JSON file in workspace/sprints/\n      - does NOT appear in git log as 'Sprint NNN:' (i.e. not yet shipped)\n    If no pre-written file exists: create sprint-NNN.json where NNN = LAST_SHIPPED + 1\n    NEVER re-run a sprint that already appears in git log.\n\n  Design: Sprint number, sprint name, task list, acceptance criteria.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "todo",
+      "priority": "critical",
+      "sprint_id": "sprint-205",
+      "deliverables": {
+        "code": ["autonomous-prompt.txt"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Sprint 205. Root cause of swarm re-running sprint-186 (already shipped): STEP 1 says 'Determine: What is the next Sprint that needs building?' with no deterministic method. Claude read a stale brief and picked sprint-186 JSON off disk. The fix adds a mandatory 2-command cross-reference between git log (shipped) and ls sprints/ (on disk) to find the actual gap. File is plain text — safe for swarm, no FP-007 risk."
+    },
+    {
+      "id": "205-02",
+      "title": "Null out postSprintSmokeTest() in orchestrate-agents-v2.ts — SURGICAL BODY REPLACEMENT ONLY",
+      "description": "Modify scripts/orchestrate-agents-v2.ts. FP-007 APPLIES — file is 3042 lines. Make EXACTLY ONE surgical edit: find the function body of postSprintSmokeTest() and replace its entire contents with a 2-line no-op. DO NOT touch the function signature, DO NOT touch any other code. Search for the exact string:\n\nasync function postSprintSmokeTest(): Promise<void> {\n  log(c.magenta, '\\n--- Phase 9: Post-Sprint PM2 Reload + Smoke Test ---');\n\nReplace ONLY the function body (everything between the opening { and the closing }) with:\n\n  // Disabled — Invoica-specific endpoints (health/invoices/settlements) not applicable to Kognai\n  // Removed Sprint 205: was always returning HTTP 404 + flooding Telegram with false alerts\n\nThe result should be:\nasync function postSprintSmokeTest(): Promise<void> {\n  // Disabled — Invoica-specific endpoints (health/invoices/settlements) not applicable to Kognai\n  // Removed Sprint 205: was always returning HTTP 404 + flooding Telegram with false alerts\n}\n\nThe call site at line ~2907 (await postSprintSmokeTest();) stays in place — the no-op function handles it. STOP and do not proceed if you cannot make this surgical replacement — do NOT rewrite the file. If the swarm cannot do this surgically, skip the task and note it in progress.md for manual edit_block fix.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "todo",
+      "priority": "critical",
+      "sprint_id": "sprint-205",
+      "deliverables": {
+        "code": ["scripts/orchestrate-agents-v2.ts"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Sprint 205. The postSprintSmokeTest() function (lines ~2966-3023) checks localhost:3001/v1/health, /v1/invoices, /v1/settlements — Invoica-specific endpoints that do not exist in Kognai. Every swarm run wastes 30s waiting + fires false Telegram alerts. Fix is a body-only replacement, preserving the function signature so the call site at line 2907 remains valid. FP-007: if swarm attempts full-file rewrite, dual supervisor will catch destructive rewrite and REJECT. Do not retry — skip and note for manual fix."
+    },
+    {
+      "id": "205-03",
+      "title": "Validate sprint-205 — compile check + confirm smoke test disabled",
+      "description": "Create scripts/validate-sprint-205.ts. New file, <50 lines. Two checks: (1) TypeScript compile: execSync('npx tsc --noEmit scripts/orchestrate-agents-v2.ts', {stdio:'pipe'}) — assert exit code 0 (or same error count as before, since there are pre-existing errors); (2) Read autonomous-prompt.txt and assert it contains the string 'NEVER re-run a sprint that already appears in git log'; (3) Read scripts/orchestrate-agents-v2.ts and assert it does NOT contain the string 'v1/invoices' (confirms smoke test body was removed). Print PASS/FAIL per check. Exit 0 on all pass.",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "todo",
+      "priority": "high",
+      "sprint_id": "sprint-205",
+      "deliverables": {
+        "code": ["scripts/validate-sprint-205.ts"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Sprint 205. Standard gate validator. The string checks are deterministic — no need for a real swarm run to validate. Quick compile check ensures the surgical orchestrator edit didn't break TypeScript."
+    }
+  ]
+}
