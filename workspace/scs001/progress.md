@@ -1817,3 +1817,17 @@ Full auto-posting pipeline built:
 - Swarm used: no (HTML/CSS)
 - Issues: None. Deploy to Vercel/Cloudflare when domain is configured.
 - Timestamp: 2026-03-20T06:40:00Z
+
+## Sprint 260 — Docs Site (Direct Write)
+- Status: PASS
+- Commit: 6a4ddb5
+- Files created: docs-site/.vitepress/config.ts, docs-site/index.md, docs-site/architecture.md, docs-site/agents.md, docs-site/api/clawrouter.md, docs-site/package.json, scripts/launch/validate-docs-site.ts, workspace/sprints/sprint-260.json
+- Tasks completed:
+  - 260-01: VitePress config + landing page with feature highlights
+  - 260-02: Architecture overview — 9-layer stack, 5-tier router, 5 products, ACP
+  - 260-03: Agent catalog — 27 agents in 4 categories (executive, SCS-001, infra, specialized)
+  - 260-04: ClawRouter API reference — routing, task classification, ACP, inference adapters
+  - 260-05: Validation: 6/6 tests pass
+- Swarm used: no (multi-file VitePress setup)
+- Issues: None. Run `cd docs-site && npm i && npm run dev` to preview.
+- Timestamp: 2026-03-20T07:00:00Z

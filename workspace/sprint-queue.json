@@ -207,9 +207,9 @@
       "sprint": 246,
       "title": "Docs site \u2014 architecture + API + agent catalog",
       "block": "LAUNCH",
-      "status": "queued",
+      "status": "done",
       "priority": "low",
-      "rationale": "Launch Strategy v1.0 element 5. Public docs: architecture overview, agent catalog, ClawRouter API, SCS-001 pipeline docs. Docusaurus or VitePress."
+      "rationale": "Shipped 6a4ddb5 as Sprint 260. VitePress docs: architecture, agent catalog, ClawRouter API."
     },
     {
       "sprint": 247,
