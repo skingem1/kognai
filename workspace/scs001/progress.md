@@ -1980,3 +1980,14 @@ Full auto-posting pipeline built:
 - Swarm used: no (multi-file feature)
 - Issues: Local LLM (qwen3:4b) timeouts on chat calls — SKIP'd with graceful fallback. All API integration checks pass.
 - Timestamp: 2026-03-19T22:30:00Z
+
+## Sprint 273 — Content Calendar Enrichment (Direct Write)
+- Status: PASS
+- Commit: 1d25bba
+- Files created: workspace/sprints/sprint-273.json
+- Files modified: scripts/scs001/generate-content-calendar.ts
+- Tasks completed:
+  - 273-01: Fix calendar generator — pull speaker/topic/hook_formula from experiments.jsonl instead of raw ledger. 40/40 known speakers, 0 unknowns.
+- Swarm used: no (surgical fix)
+- Issues: None. Calendar now shows real content metadata (speakers, hooks, scores).
+- Timestamp: 2026-03-19T22:45:00Z
