@@ -126,6 +126,7 @@ export async function handleHelp(chatId: number): Promise<void> {
     '/deploystatus — Achiri alpha deploy checklist (owner)',
     '/achirihealth — Achiri server status (owner)',
     '/achiristats — Achiri usage analytics: users, messages, memory (owner)',
+    '/lastrun — Latest pipeline run: stage-by-stage results + timing (owner)',
     '/pm2status — All PM2 processes: status, uptime, restarts (owner)',
     '/health — Full system health check: env, gate, PM2, Achiri, pipeline (owner)',
     '/preflight — Production go-live checklist with operator action items (owner)',
@@ -2970,6 +2971,81 @@ export async function handleAchiriStats(chatId: number, ownerChatId: string): Pr
   const achiriGate = new Date('2026-04-25T00:00:00Z');
   const daysToAlpha = Math.max(0, Math.ceil((achiriGate.getTime() - Date.now()) / 86400000));
   lines.push(`📅 Alpha launch: *Apr 25* (${daysToAlpha} days)`);
+
+  await sendMessage(chatId, lines.join('\n'));
+}
+
+// ── /lastrun — Latest pipeline run summary — Sprint 267 ──────────────────────
+
+export async function handleLastRun(chatId: number, ownerChatId: string): Promise<void> {
+  if (String(chatId) !== ownerChatId) {
+    await sendMessage(chatId, '🔒 Owner only.');
+    return;
+  }
+
+  const latestPath = join(process.cwd(), 'reports', 'pipeline-runs', 'latest.json');
+  if (!existsSync(latestPath)) {
+    await sendMessage(chatId, '⚠️ No pipeline run data found at reports/pipeline-runs/latest.json');
+    return;
+  }
+
+  let run: any;
+  try {
+    run = JSON.parse(readFileSync(latestPath, 'utf-8'));
+  } catch {
+    await sendMessage(chatId, '⚠️ Could not parse latest.json');
+    return;
+  }
+
+  const lines: string[] = [];
+
+  // Header
+  const startedAt = run.started_at ? new Date(run.started_at).toLocaleString('en-GB', { timeZone: 'UTC' }) : 'unknown';
+  const totalMs = run.total_elapsed_ms ?? 0;
+  const totalMin = (totalMs / 60000).toFixed(1);
+  const mode = run.mode ?? 'unknown';
+
+  lines.push(`🔄 *Latest Pipeline Run*`);
+  lines.push(`ID: \`${run.run_id ?? 'unknown'}\``);
+  lines.push(`Mode: ${mode} | Started: ${startedAt} UTC`);
+  lines.push(`Total time: ${totalMin} min`);
+  lines.push('');
+
+  // Stage-by-stage
+  const stages: any[] = run.stages ?? [];
+  if (stages.length > 0) {
+    lines.push('*Stages:*');
+    for (const s of stages) {
+      const icon = s.status === 'ok' ? '✅' : s.status === 'skipped' ? '⏭️' : '❌';
+      const elapsed = s.elapsed_ms ? `${(s.elapsed_ms / 1000).toFixed(1)}s` : '';
+      const count = s.count != null ? ` (${s.count})` : '';
+      lines.push(`${icon} ${s.stage}${count} ${elapsed}`);
+    }
+  } else {
+    lines.push('No stage data available.');
+  }
+
+  // Summary stats if available
+  if (run.summary) {
+    const sm = run.summary;
+    lines.push('');
+    lines.push('*Summary:*');
+    if (sm.topics_found != null) lines.push(`📊 Topics: ${sm.topics_found}`);
+    if (sm.clips_discovered != null) lines.push(`🎬 Clips: ${sm.clips_discovered} discovered`);
+    if (sm.videos_edited != null) lines.push(`✂️ Videos edited: ${sm.videos_edited}`);
+    if (sm.videos_captioned != null) lines.push(`📝 Captioned: ${sm.videos_captioned}`);
+    if (sm.qc_passed != null) lines.push(`✅ QC passed: ${sm.qc_passed}`);
+    if (sm.published != null) lines.push(`📤 Published: ${sm.published}`);
+  }
+
+  // Errors
+  if (run.error_count && run.error_count > 0) {
+    lines.push('');
+    lines.push(`⚠️ *${run.error_count} errors detected*`);
+  }
+  if (run.viral_warning) {
+    lines.push('⚠️ No viral scores computed this run');
+  }
 
   await sendMessage(chatId, lines.join('\n'));
 }

@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-267",
+  "title": "Telegram /lastrun command — pipeline execution summary from latest.json",
+  "description": "Add /lastrun to the active Telegram bot showing latest pipeline run stats: stage-by-stage results, elapsed time, video counts, and any errors. Reads reports/pipeline-runs/latest.json.",
+  "source": "auto — operator has no way to see pipeline run results from Telegram. Must SSH or check files.",
+  "tasks": [
+    {
+      "id": "267-01",
+      "title": "handleLastRun command in agents/telegram-bot/commands.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-267",
+      "deliverables": { "code": ["agents/telegram-bot/commands.ts", "agents/telegram-bot/index.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "267-02",
+      "title": "Validation test",
+      "type": "test",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-267",
+      "deliverables": { "code": ["scripts/scs001/validate-lastrun-cmd.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

@@ -27,6 +27,7 @@ import {
   handleViralStats, handleCalendar, handleHealth, handlePreflight,
   handleTiktokAuth, handleAutoPost, handleVerifyPosts, handleActivate,
   handleAchiriStats,
+  handleLastRun,
 } from './commands';
 
 // ── Config ────────────────────────────────────────────────────────────────────
@@ -130,6 +131,7 @@ async function dispatch(update: TelegramUpdate): Promise<void> {
     case '/verifyposts':    await handleVerifyPosts(chatId, OWNER_CHAT_ID, text);     break;
     case '/activate':       await handleActivate(chatId, OWNER_CHAT_ID);              break;
     case '/achiristats':    await handleAchiriStats(chatId, OWNER_CHAT_ID);           break;
+    case '/lastrun':        await handleLastRun(chatId, OWNER_CHAT_ID);              break;
     default:                 await handleUnknown(chatId, text);                          break;
   }
 }
