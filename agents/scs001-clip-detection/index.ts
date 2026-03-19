@@ -5,6 +5,7 @@
 
 import { randomUUID } from 'crypto';
 import type { DiscoveryOutput } from '../scs001-discovery/index';
+import { viralScorer } from '../../scripts/scs001/viral-scorer';
 
 export interface ScoreBreakdown {
   curiosity:   number;
@@ -28,6 +29,10 @@ export interface ClipQualityScore {
   topic_tags:             string[];
   qualified:              boolean;
   rejection_reason?:      string;
+  scene_density_score?:   number;
+  audio_excitement?:      number;
+  clip_topic_alignment?:  number;
+  partial_viral_score?:   number;
 }
 
 const QUALITY_GATE    = 20;
@@ -162,7 +167,10 @@ export class ClipDetectionAgent {
       const total = Math.min(25, baseLlmScore + triggerBonus);
       const qualified = total >= QUALITY_GATE;
 
-      console.log(`[ClipDetection] ${qualified ? '✓' : '✗'} score=${total}/25 | ${disc.speaker} | ${ts.start_seconds}s-${ts.end_seconds}s`);
+      // Viral scorer — async Python subprocess (graceful degradation to 0.5 on failure)
+      const viralScores = await viralScorer.score(disc.url || '', disc.topic_tags || []);
+
+      console.log(`[ClipDetection] ${qualified ? '✓' : '✗'} score=${total}/25 viral=${viralScores.partial_viral_score} | ${disc.speaker} | ${ts.start_seconds}s-${ts.end_seconds}s`);
 
       return {
         clip_id:                 `clip-${randomUUID().slice(0, 8)}`,
@@ -178,6 +186,10 @@ export class ClipDetectionAgent {
         topic_tags:              disc.topic_tags,
         qualified,
         rejection_reason:        qualified ? undefined : `score_${total}_below_gate_${QUALITY_GATE}`,
+        scene_density_score:     viralScores.scene_density_score,
+        audio_excitement:        viralScores.audio_excitement,
+        clip_topic_alignment:    viralScores.clip_topic_alignment,
+        partial_viral_score:     viralScores.partial_viral_score,
       } as ClipQualityScore;
     });
 
