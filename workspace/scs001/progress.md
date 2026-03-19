@@ -1233,3 +1233,12 @@ SESSION HANDOFF (2026-03-17, Sprints 166-170):
 - Swarm used: no (surgical fixes)
 - Issues: None
 - Timestamp: 2026-03-19T16:30:00Z
+
+## Sprint 203 — PM2 Name Fix in Preflight + /health (Direct Write)
+- Status: PASS
+- Commit: 6bf8d1d
+- Files modified: scripts/production-preflight.ts, agents/telegram-bot/commands.ts
+- Test: tsc --noEmit — 0 errors
+- Swarm used: no (surgical fixes)
+- Issues: PM2 names in preflight didn't match ecosystem.config.js (telegram-bot vs kognai-telegram-bot)
+- Timestamp: 2026-03-19T16:45:00Z
