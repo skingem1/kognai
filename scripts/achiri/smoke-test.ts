@@ -81,7 +81,7 @@ async function checkStats(): Promise<boolean> {
     const { status, data } = await httpRequest('GET', '/stats');
     if (status !== 200) { fail(`GET /stats returned ${status}`); return false; }
     const parsed = JSON.parse(data);
-    if (typeof parsed.uptime === 'undefined' && typeof parsed.ok === 'undefined') {
+    if (typeof parsed.uptime_s === 'undefined' && typeof parsed.uptime === 'undefined' && typeof parsed.ok === 'undefined') {
       fail(`GET /stats response missing expected fields: ${data.slice(0, 80)}`);
       return false;
     }

@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-222",
+  "title": "Achiri Smoke Test Fix — /stats field name mismatch + 6/6 PASS",
+  "description": "Achiri smoke test failed on GET /stats check — expected 'uptime' field but API returns 'uptime_s'. Fixed field name check. All 6/6 checks now PASS. Achiri ready for Hetzner deploy.",
+  "source": "autonomous",
+  "tasks": [
+    {
+      "id": "222-01",
+      "title": "Fix /stats field name check in achiri smoke-test.ts",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-222",
+      "deliverables": { "code": ["scripts/achiri/smoke-test.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
