@@ -2025,3 +2025,24 @@ Full auto-posting pipeline built:
 - Swarm used: no (surgical edit)
 - Issues: None. Type-check clean.
 - Timestamp: 2026-03-19T23:20:00Z
+
+## Sprint 277 — Complete Enrichment (Direct Write)
+- Status: PASS
+- Commit: 03109b6
+- Files created: workspace/sprints/sprint-277.json
+- Files modified: agents/telegram-bot/commands.ts
+- Tasks completed:
+  - 277-01: /postnow video captions now include speaker + hook from experiments
+  - 277-02: /postbatch video headers + captions show speaker + hook_formula from experiments
+- Swarm used: no (surgical edit)
+- Issues: None. Type-check clean. ALL operator touchpoints now enriched.
+- Timestamp: 2026-03-19T23:30:00Z
+
+### Content Enrichment Series Complete (Sprints 273-277)
+All operator touchpoints now show enriched content metadata:
+- /today — speaker, hook, topic from calendar
+- /calendar — speaker, hook, topic from calendar
+- /postnow — speaker, hook, viral score from experiments
+- /postbatch — speaker, hook, viral score from experiments
+- Daily digest (07:00) — speaker, hook from calendar
+- Posting reminders (12:00/18:00) — speaker, hook, topic from experiments
