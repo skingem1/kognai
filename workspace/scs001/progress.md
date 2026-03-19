@@ -2203,3 +2203,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (direct write)
 - Issues: None.
 - Timestamp: 2026-03-20T02:00:00Z
+
+## Sprint 291 — Fix Orchestrator: Pass qualifiedClips to InsightAgent (Direct Write)
+- Status: PASS
+- Commit: c2a5018
+- Files created: workspace/sprints/sprint-291.json
+- Files modified: agents/scs001-orchestrator/index.ts (1 line: clips → qualifiedClips)
+- Tasks completed:
+  - 291-01: Fixed agent.run(clips) → agent.run(qualifiedClips) — prevents processing unqualified clips through InsightAgent
+- Validation: TypeScript compile has pre-existing Set iteration warnings (unrelated); runs fine with TS_NODE_TRANSPILE_ONLY.
+- Swarm used: no (surgical 1-line fix)
+- Issues: None.
+- Timestamp: 2026-03-20T02:10:00Z
