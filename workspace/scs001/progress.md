@@ -1486,3 +1486,14 @@ Operator quickstart: (1) bash scripts/pre-deploy-check.sh (2) ./scripts/pm2-boot
 - Swarm used: no (single-line edit)
 - Issues: None
 - Timestamp: 2026-03-19T23:00:00Z
+
+## Sprint 226 — Video Delivery (Direct Write)
+- Status: PASS
+- Commit: f66d480
+- Files modified: agents/telegram-bot/commands.ts
+- Files created: workspace/sprints/sprint-226.json
+- Tasks completed:
+  - 226-01: /postnow now sends top 3 ready-to-post videos as actual video files via Telegram sendVideo. /postbatch also sends each video inline. Operator saves to phone and uploads to TikTok directly. Includes caption with hashtags and /record command in video caption.
+- Swarm used: no (surgical edit to existing handlers)
+- Issues: None. Pre-existing command name normalization (post-now→postnow etc) was included in the diff.
+- Timestamp: 2026-03-19T23:15:00Z
