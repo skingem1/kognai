@@ -1626,3 +1626,14 @@ Full auto-posting pipeline built:
 - Swarm used: no (commands.ts 2960+ lines)
 - Issues: None. Achiri analytics ready for alpha launch monitoring.
 - Timestamp: 2026-03-20T02:00:00Z
+
+## Sprint 237 — Preflight Update (Direct Write)
+- Status: PASS
+- Commit: a98bc1f
+- Files modified: scripts/production-preflight.ts
+- Files created: workspace/sprints/sprint-237.json
+- Tasks completed:
+  - 237-01: production-preflight.ts now checks auto-post pipeline (token status, post/error counts, verification results, all 4 scripts exist). PM2 expected list expanded with kognai-auto-post, kognai-token-refresh, kognai-verify-posts.
+- Swarm used: no
+- Issues: None.
+- Timestamp: 2026-03-20T02:15:00Z
