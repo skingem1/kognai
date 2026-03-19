@@ -151,7 +151,7 @@
       "sprint": 254,
       "title": "Video Quality Gate v2 \u2014 end-to-end pipeline test + A/B metrics",
       "block": "VIDEO-QUALITY",
-      "status": "queued",
+      "status": "done",
       "priority": "medium",
       "rationale": "Gate sprint for VIDEO-QUALITY block. Full pipeline test: trend\u2192discovery\u2192clip\u2192transcribe\u2192insight\u2192LLM-rewrite\u2192TTS\u2192avatar\u2192JSON2Video-captions\u2192QC\u2192Blotato-publish. Compare output quality vs current pipeline. Metrics: watch-through rate, engagement, follower conversion. Gate: produce 5 videos that pass human QC review before block sign-off."
     },

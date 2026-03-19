@@ -1745,3 +1745,17 @@ Full auto-posting pipeline built:
 - Swarm used: no (multi-file refactor + API integration)
 - Issues: BLOTATO_API_KEY needed for live publishing. $29/mo. Dry-run works without.
 - Timestamp: 2026-03-20T05:30:00Z
+
+## Sprint 254 — Video Quality Gate v2 (Direct Write)
+- Status: PASS
+- Commit: d72dc5e
+- Files created: scripts/scs001/quality-metrics.ts, scripts/scs001/validate-video-quality-gate.ts, workspace/sprints/sprint-254.json
+- Files modified: agents/scs001-orchestrator/index.ts, agents/scs001-analytics/index.ts
+- Tasks completed:
+  - 254-01: E2E pipeline quality gate test — 15 stages, 26 assertions, all pass
+  - 254-02: Quality metrics collector — funnel ratios, stage timings, module availability, gate verdict
+  - 254-03: PipelineRunReport extended — platforms_targeted, publish_method fields. AnalyticsAgent platform type widened for Blotato.
+- Gate: VIDEO-QUALITY block PASS
+- Swarm used: no (multi-file, complex integration test)
+- Issues: transcribe-audio.ts naming mismatch (fixed). Clip detection stage takes ~180s (Ollama mock).
+- Timestamp: 2026-03-20T05:50:00Z
