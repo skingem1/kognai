@@ -215,9 +215,9 @@
       "sprint": 247,
       "title": "Founding Charter draft \u2014 9 Articles on Base",
       "block": "LAUNCH",
-      "status": "queued",
+      "status": "done",
       "priority": "low",
-      "rationale": "Founding Charter v1.0 exists as docx. Must be formatted for Base attestation (EAS). 9 Articles, 5 Immutable Laws. Genesis Ceremony at Month 10."
+      "rationale": "Shipped 74f6c02 as Sprint 261. Charter v1.0: 9 articles, 5 laws, EAS attestation prep."
     }
   ]
 }

@@ -1831,3 +1831,16 @@ Full auto-posting pipeline built:
 - Swarm used: no (multi-file VitePress setup)
 - Issues: None. Run `cd docs-site && npm i && npm run dev` to preview.
 - Timestamp: 2026-03-20T07:00:00Z
+
+## Sprint 261 — Founding Charter v1.0 (Direct Write)
+- Status: PASS
+- Commit: 74f6c02
+- Files created: scripts/charter/prepare-eas-attestation.ts, scripts/charter/validate-charter.ts, workspace/charter-attestation/{charter-digest,eas-schema,attestation-payload}.json, workspace/sprints/sprint-261.json
+- Files modified: workspace/shared-context/FOUNDING_CHARTER.md (v0.1 → v1.0)
+- Tasks completed:
+  - 261-01: Expanded charter from 2 to 9 articles (rights, duties, hierarchy, health, reset, shutdown, external agents, durability)
+  - 261-02: EAS attestation prep — SHA-256 digest, schema, payload for Base mainnet
+  - 261-03: Validation: 36/36 tests pass
+- Swarm used: no (legal/governance text)
+- Issues: None. Submit attestation-payload.json at Genesis Ceremony (Month 10).
+- Timestamp: 2026-03-20T07:15:00Z
