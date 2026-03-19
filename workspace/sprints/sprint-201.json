@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-201",
+  "title": "TypeScript Fix Sprint — Zero Errors in Telegram Bot",
+  "description": "Fixed all 6 TypeScript errors in Telegram bot: 5 in handlePm2Status (pm2_env fallback typing), 1 in handlePreflight (Map iteration). Bot now compiles cleanly with zero errors.",
+  "source": "autonomous",
+  "tasks": [
+    {
+      "id": "201-01",
+      "title": "Fix Map iteration in handlePreflight — use forEach instead of for-of",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-201",
+      "deliverables": { "code": ["agents/telegram-bot/commands.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "201-02",
+      "title": "Fix pm2_env fallback typing — provide typed default object",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-201",
+      "deliverables": { "code": ["agents/telegram-bot/commands.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

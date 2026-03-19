@@ -1830,7 +1830,7 @@ export async function handlePm2Status(chatId: number, ownerChatId: string): Prom
   ];
 
   for (const p of processes) {
-    const env    = p.pm2_env ?? {};
+    const env    = p.pm2_env ?? { status: 'unknown', pm_uptime: 0, restart_time: 0, pm_id: 0 };
     const emoji  = statusEmoji(env.status ?? 'unknown');
     const uptime = env.status === 'online' ? formatUptime(Date.now() - (env.pm_uptime ?? 0)) : env.status;
     const restarts = env.restart_time ?? 0;
@@ -2302,13 +2302,13 @@ export async function handlePreflight(chatId: number, ownerChatId: string): Prom
       categories.get(c.category)!.push(c);
     }
 
-    for (const [cat, items] of categories) {
+    categories.forEach((items, cat) => {
       lines.push(`*${cat}*`);
       for (const item of items) {
         lines.push(`${item.pass ? '✅' : '❌'} ${item.name}`);
       }
       lines.push('');
-    }
+    });
 
     if (summary.actions.length > 0) {
       lines.push(`🔧 *Action items (${summary.actions.length}):*`);
