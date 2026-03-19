@@ -76,6 +76,17 @@ __pycache__/
 *.pyo
 .venv/
 
+# Runtime logs — written by agents, crons, and pipeline; never commit
+logs/**/*.jsonl
+logs/**/*.json
+logs/omel/wipe-witness-snapshots/
+logs/cto-gate/
+
+# Pipeline/swarm run reports — generated per run, never commit
+reports/pipeline-runs/scs001-*.json
+reports/swarm-runs/daily-*.json
+reports/swarm-runs/20*.json
+
 # SCS-001 pipeline runtime artifacts — generated per run, never commit
 workspace/scs001/run-*/
 *.srt

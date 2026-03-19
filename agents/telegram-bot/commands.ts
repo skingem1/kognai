@@ -111,6 +111,7 @@ export async function handleHelp(chatId: number): Promise<void> {
     '/pace — Posting pace vs Apr 7 gate target (owner)',
     '/today — Morning cockpit: target + next video + trending topics (owner)',
     '/viral — Top 10 trending topics from pipeline (owner)',
+    '/viral-stats — Viral score summary: avg/max/top-3 (owner)',
     '',
     '🤖 *Achiri AI Companion*',
     '/achiri <msg> — Chat with Achiri (free tier, Darija/Arabic/French)',
@@ -2061,4 +2062,50 @@ export async function handleSendVideo(chatId: number, ownerChatId: string, text:
     `📋 *Caption (copy & paste to TikTok):*\n\`\`\`\n${caption}\n\`\`\`\n\n` +
     `✅ After posting: \`/record ${target.entry.video_id} 0\``
   );
+}
+
+// ── Sprint 192: /viral-stats — Viral score summary ───────────────────────────
+
+export async function handleViralStats(chatId: number, ownerChatId: string): Promise<void> {
+  if (String(chatId) !== String(ownerChatId)) {
+    await sendMessage(chatId, '⛔ Owner-only command.');
+    return;
+  }
+
+  const experiments = loadExperimentsForReview();
+  const entries = Array.from(experiments.values());
+  const scored = entries.filter(e => e.partial_viral_score != null);
+
+  if (scored.length === 0) {
+    await sendMessage(chatId, '🧬 *Viral Stats*\n\nNo viral scores yet. Run batch scorer:\n`npx ts-node scripts/scs001/batch-viral-score.ts`');
+    return;
+  }
+
+  const scores = scored.map(e => e.partial_viral_score!);
+  const avg = (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(3);
+  const max = Math.max(...scores).toFixed(3);
+  const min = Math.min(...scores).toFixed(3);
+  const above07 = scores.filter(s => s >= 0.7).length;
+
+  // Top 3 highest-scored
+  scored.sort((a, b) => (b.partial_viral_score ?? 0) - (a.partial_viral_score ?? 0));
+  const top3 = scored.slice(0, 3);
+
+  const lines: string[] = [
+    '🧬 *Viral Score Summary*',
+    '',
+    `📊 Scored: *${scored.length}* / ${entries.length} experiments`,
+    `📈 Average: *${avg}* | Max: *${max}* | Min: *${min}*`,
+    `🔥 High (≥0.7): *${above07}*`,
+    '',
+    '*Top 3 by Viral Score:*',
+  ];
+
+  top3.forEach((e, i) => {
+    lines.push(`${i + 1}. \`${e.video_id}\` — 🧬 ${e.partial_viral_score} | ${e.hook_formula} | ${e.speaker}`);
+  });
+
+  lines.push('', '💡 Use /post-now to post the highest-scoring video');
+
+  await sendMessage(chatId, lines.join('\n'));
 }

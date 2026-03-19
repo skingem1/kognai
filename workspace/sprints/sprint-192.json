@@ -1,0 +1,60 @@
+{
+  "tasks": [
+    {
+      "id": "192-01",
+      "title": "Gitignore runtime logs and reports — .gitignore",
+      "description": "Add logs/**/*.jsonl, logs/**/*.json, reports/pipeline-runs/scs001-*.json, reports/swarm-runs/daily-*.json, reports/swarm-runs/20*.json to .gitignore. Prevents repo bloat from runtime artifacts.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "todo",
+      "priority": "high",
+      "sprint_id": "sprint-192",
+      "deliverables": {
+        "code": [".gitignore"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Sprint 192. 20+ untracked log/report files polluting git status."
+    },
+    {
+      "id": "192-02",
+      "title": "/viral-stats Telegram command — agents/telegram-bot/commands.ts",
+      "description": "handleViralStats() owner-only: reads experiments.jsonl, computes scored_count, avg_viral, max_viral, above_07, top-3 highest-scored video_ids. Compact Telegram message. Surgical edit.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "todo",
+      "priority": "high",
+      "sprint_id": "sprint-192",
+      "deliverables": {
+        "code": ["agents/telegram-bot/commands.ts", "agents/telegram-bot/index.ts"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Sprint 192. Operator needs quick viral score summary from Telegram."
+    },
+    {
+      "id": "192-03",
+      "title": "Smoke test viral score validation — scripts/smoke-test-pipeline.ts",
+      "description": "After pipeline run, check that PipelineRunReport has viral score fields. Add viral_scored_count to smoke-test-latest.json. Warn if 0 viral scores.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "todo",
+      "priority": "medium",
+      "sprint_id": "sprint-192",
+      "deliverables": {
+        "code": ["scripts/smoke-test-pipeline.ts"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Sprint 192. Ensure viral scoring doesn't silently break in future pipeline runs."
+    }
+  ],
+  "source": "human",
+  "_plan_reference": "Sprint 192: Repo Hygiene + Viral Stats Command + Smoke Test Enhancement"
+}
