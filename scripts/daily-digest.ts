@@ -20,8 +20,10 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as https from 'https';
+import * as dotenv from 'dotenv';
 
 const ROOT = path.resolve(__dirname, '..');
+dotenv.config({ path: path.join(ROOT, '.env') });
 
 // ── Env ───────────────────────────────────────────────────────────────────────
 

@@ -1,0 +1,44 @@
+{
+  "sprint_id": "sprint-207",
+  "title": "Phase 1 Operations — dotenv fix + PM2 startup script",
+  "description": "Fix daily-digest.ts missing dotenv loading (STRIPE_SECRET_KEY shows NOT LIVE despite being set in .env). Create scripts/start-phase1.sh to start all Phase 1 PM2 cron processes in one command. Validates with digest dry-run.",
+  "source": "autonomous",
+  "tasks": [
+    {
+      "id": "207-01",
+      "title": "Fix daily-digest.ts — add dotenv loading",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "todo",
+      "priority": "high",
+      "sprint_id": "sprint-207",
+      "deliverables": { "code": ["scripts/daily-digest.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "207-02",
+      "title": "Create Phase 1 PM2 startup script",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "todo",
+      "priority": "high",
+      "sprint_id": "sprint-207",
+      "deliverables": { "code": ["scripts/start-phase1.sh"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "207-03",
+      "title": "Validate — digest dry-run shows Stripe as LIVE",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "todo",
+      "priority": "medium",
+      "sprint_id": "sprint-207",
+      "deliverables": { "code": [], "tests": [], "docs": [] }
+    }
+  ]
+}
