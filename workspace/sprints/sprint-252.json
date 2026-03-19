@@ -1,0 +1,44 @@
+{
+  "sprint_id": "sprint-252",
+  "title": "JSON2Video Caption Overlay — animated subtitles + keyword highlighting",
+  "description": "Add JSON2Video API integration for animated word-by-word captions with keyword highlighting. Replaces basic SRT burn-in. Pattern interrupts rendered as visual effects. Professional caption styling for TikTok.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "252-01",
+      "title": "Create JSON2Video caption overlay module — animated subtitles API",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-252",
+      "deliverables": { "code": ["scripts/scs001/caption-overlay.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "252-02",
+      "title": "Create pattern interrupt renderer — visual effects from metadata",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-252",
+      "deliverables": { "code": ["scripts/scs001/pattern-interrupts.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "252-03",
+      "title": "Validate caption overlay module",
+      "type": "test",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-252",
+      "deliverables": { "code": ["scripts/scs001/validate-caption-overlay.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
