@@ -2068,3 +2068,17 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (single script)
 - Issues: No script JSONs on disk — used formula+speaker+QC-based scoring. Good enough for v1 prioritization.
 - Timestamp: 2026-03-19T23:55:00Z
+
+## Sprint 280 — Telegram /deliver & /caption — Manual Posting Accelerator (Direct Write)
+- Status: PASS
+- Commit: c9d47a7
+- Files created: workspace/sprints/sprint-280.json
+- Files modified: scripts/telegram-bot.ts (+236 lines)
+- Tasks completed:
+  - 280-01: sendVideoFile helper — multipart form upload for Telegram sendVideo API
+  - 280-02: /deliver [N] — batch-sends top N ready videos via Telegram with TikTok captions, hashtags, and /record instructions
+  - 280-03: /caption <id> — generates TikTok-ready caption with speaker, hook formula, trending hashtags
+  - Helper functions: findCaptionedMp4, getExperimentData, buildTikTokCaption
+- Swarm used: no (multi-file edits to 636-line bot file)
+- Issues: Fixed Set spread TS error (downlevelIteration). Clean compile.
+- Timestamp: 2026-03-20T00:10:00Z
