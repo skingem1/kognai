@@ -1594,3 +1594,24 @@ Operator quickstart: (1) bash scripts/pre-deploy-check.sh (2) ./scripts/pm2-boot
 - Swarm bypassed: yes (FP-007). Manual crystallise: skipped.
 - Issues: None. Full auto-posting pipeline now: OAuth → token refresh → auto-post → verify → notify.
 - Timestamp: 2026-03-20T01:30:00Z
+
+## Sprint 235 — Operator Activation Checklist (Direct Write)
+- Status: PASS
+- Commit: 717a8f4
+- Files modified: agents/telegram-bot/commands.ts, agents/telegram-bot/index.ts
+- Files created: workspace/sprints/sprint-235.json
+- Tasks completed:
+  - 235-01: /activate command — checks TikTok token, video queue, Supabase, PM2 crons (auto-post, token-refresh, verify-posts). Provides numbered step-by-step guide + quick-start snippet. Added to /help.
+- Swarm used: no (commands.ts 2800+ lines)
+- Issues: None.
+- Timestamp: 2026-03-20T01:45:00Z
+
+### Phase 1.5 TikTok Pipeline — COMPLETE (Sprints 232-235)
+Full auto-posting pipeline built:
+1. Sprint 232: OAuth flow (scripts/tiktok-oauth.ts) → get TIKTOK_ACCESS_TOKEN
+2. Sprint 232: Token refresh (scripts/tiktok-refresh-token.ts) → keep tokens fresh
+3. Sprint 233: Auto-post daemon (scripts/scs001/auto-post.ts) → 2x/day posting from queue
+4. Sprint 234: Post verification (scripts/scs001/verify-posts.ts) → confirm posts went live
+5. Sprint 234: PM2 crons for refresh (03:00), auto-post (08:00+19:00), verify (09:00+20:00)
+6. Sprint 235: /activate command — one-stop go-live checklist
+**Blocker: Human must run OAuth flow once. Then auto-posting is fully autonomous.**
