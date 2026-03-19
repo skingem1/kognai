@@ -1060,3 +1060,14 @@ SESSION HANDOFF (2026-03-17, Sprints 166-170):
 - Changes: Created 3-method Python viral scorer (scene_density via PySceneDetect, audio_excitement via librosa, clip_topic_alignment via OpenCLIP ViT-B-32). TypeScript wrapper spawns Python subprocess with 30s timeout. ClipDetectionAgent wired with 4 new viral score fields. All graceful degradation to 0.5 on missing deps.
 - Impact: Clip scoring now includes viral potential metrics. Python deps (scenedetect, librosa, open-clip-torch) needed for full scoring; fallback 0.5 when unavailable.
 - Timestamp: 2026-03-19T14:00:00Z
+
+## Sprint 187 — Viral Score Pipeline Integration (Phase 1 — experiment persistence + QC + /review)
+- Status: PASS
+- Commit: 9550cd2
+- Files created: workspace/sprints/sprint-187.json
+- Files modified: agents/scs001-experiment/index.ts, agents/scs001-qc/index.ts, agents/scs001-orchestrator/index.ts, agents/telegram-bot/commands.ts
+- Test: TypeScript compile PASS (experiment, qc, orchestrator all clean)
+- Swarm used: no (wrote directly — modify tasks)
+- Changes: ExperimentEntry gets 4 viral score fields + getViralStats(). QualityControlGate gets partial_viral_score (informational). Orchestrator cross-references ClipQualityScore → experiment entry for viral score persistence. /review command shows viral score and sorts by it.
+- Impact: Viral scores now persist end-to-end: ClipDetection → experiments.jsonl → /review. Operator can prioritize high-viral-score videos for posting.
+- Timestamp: 2026-03-19T14:15:00Z
