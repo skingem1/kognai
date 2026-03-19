@@ -2003,3 +2003,14 @@ Full auto-posting pipeline built:
 - Swarm used: no (surgical edit)
 - Issues: None. Type-check clean.
 - Timestamp: 2026-03-19T23:00:00Z
+
+## Sprint 275 — Daily Digest Enrichment (Direct Write)
+- Status: PASS
+- Commit: 2f31718
+- Files created: workspace/sprints/sprint-275.json
+- Files modified: scripts/daily-digest.ts
+- Tasks completed:
+  - 275-01: Daily digest now shows speaker + hook_formula in posting schedule (e.g. "TED | curiosity_gap")
+- Swarm used: no (surgical edit)
+- Issues: None.
+- Timestamp: 2026-03-19T23:10:00Z
