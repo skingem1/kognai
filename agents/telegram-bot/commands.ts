@@ -121,6 +121,7 @@ export async function handleHelp(chatId: number): Promise<void> {
     '/deploy-status — Achiri alpha deploy checklist (owner)',
     '/achiri-health — Achiri server status (owner)',
     '/pm2-status — All PM2 processes: status, uptime, restarts (owner)',
+    '/health — Full system health check: env, gate, PM2, Achiri, pipeline (owner)',
     '',
     '/help — This message',
   ].join('\n'));
@@ -2166,6 +2167,108 @@ export async function handleCalendar(chatId: number, ownerChatId: string): Promi
   }
 
   lines.push('', '💡 /post-now for files + captions | /post-batch for bulk');
+
+  await sendMessage(chatId, lines.join('\n'));
+}
+
+// ── /health — System Health Check (Sprint 198) ──────────────────────────────
+
+export async function handleHealth(chatId: number, ownerChatId: string): Promise<void> {
+  if (String(chatId) !== ownerChatId) { await sendMessage(chatId, '🔒 Owner only.'); return; }
+
+  const lines: string[] = ['🏥 *System Health Check*', ''];
+  const ROOT = join(process.cwd());
+
+  // 1. Environment variables
+  const envChecks: Array<[string, string]> = [
+    ['TIKTOK_ACCESS_TOKEN', '🎬 TikTok Live Posting'],
+    ['STRIPE_SECRET_KEY', '💳 Stripe Payments'],
+    ['ANTHROPIC_API_KEY', '🧠 Claude API'],
+    ['SUPABASE_URL', '🗄️ Supabase'],
+    ['TELEGRAM_BOT_TOKEN', '📱 Telegram Bot'],
+    ['ACHIRI_BASE_URL', '🤖 Achiri Remote'],
+  ];
+  lines.push('*Environment*');
+  for (const [key, label] of envChecks) {
+    const val = process.env[key];
+    const ok = val && val.length > 5;
+    lines.push(`${ok ? '✅' : '❌'} ${label} (\`${key}\`)`);
+  }
+
+  // 2. Gate progress
+  lines.push('', '*Phase 1.5 Gate (Apr 7)*');
+  try {
+    const postsPath = join(ROOT, 'data', 'manual-posts.jsonl');
+    let postCount = 0;
+    let totalViews = 0;
+    if (existsSync(postsPath)) {
+      const postLines = readFileSync(postsPath, 'utf-8').trim().split('\n').filter(Boolean);
+      postCount = postLines.length;
+      for (const l of postLines) {
+        try { totalViews += JSON.parse(l).views || 0; } catch { /* skip */ }
+      }
+    }
+    const daysLeft = Math.ceil((new Date('2026-04-07').getTime() - Date.now()) / 86400000);
+    const postsNeeded = 30 - postCount;
+    const pace = daysLeft > 0 ? Math.ceil(postsNeeded / daysLeft) : 0;
+    lines.push(`📊 Posts: ${postCount}/30 | Views: ${totalViews}/500`);
+    lines.push(`📅 ${daysLeft} days left | Need ${pace}/day`);
+    if (postCount === 0) lines.push('⚠️ *No posts recorded — start posting NOW*');
+  } catch { lines.push('❌ Could not read gate data'); }
+
+  // 3. PM2 processes
+  lines.push('', '*PM2 Processes*');
+  try {
+    const pm2Out = execSync('pm2 jlist 2>/dev/null', { timeout: 5000 }).toString();
+    const procs = JSON.parse(pm2Out);
+    const kognaiProcs = procs.filter((p: any) => p.name.startsWith('kognai'));
+    if (kognaiProcs.length === 0) {
+      lines.push('⚠️ No kognai PM2 processes running');
+    } else {
+      for (const p of kognaiProcs.slice(0, 8)) {
+        const status = p.pm2_env?.status;
+        const emoji = status === 'online' ? '🟢' : status === 'stopped' ? '🟡' : '🔴';
+        lines.push(`${emoji} ${p.name} (${status})`);
+      }
+      if (kognaiProcs.length > 8) lines.push(`... +${kognaiProcs.length - 8} more`);
+    }
+  } catch { lines.push('⚠️ PM2 not available or no processes'); }
+
+  // 4. Achiri health
+  lines.push('', '*Achiri*');
+  try {
+    const achiriUrl = process.env.ACHIRI_BASE_URL || 'http://localhost:3420';
+    const resp = execSync(`curl -s --max-time 3 ${achiriUrl}/health`, { timeout: 5000 }).toString();
+    lines.push(`✅ Achiri UP at ${achiriUrl}`);
+  } catch { lines.push('❌ Achiri DOWN or unreachable'); }
+
+  // 5. Pipeline queue
+  lines.push('', '*Pipeline*');
+  try {
+    const ledgerPath = join(ROOT, 'data', 'publish-ledger.jsonl');
+    const postsPath = join(ROOT, 'data', 'manual-posts.jsonl');
+    let ledgerCount = 0;
+    let postedIds = new Set<string>();
+    if (existsSync(ledgerPath)) {
+      ledgerCount = readFileSync(ledgerPath, 'utf-8').trim().split('\n').filter(Boolean).length;
+    }
+    if (existsSync(postsPath)) {
+      const pLines = readFileSync(postsPath, 'utf-8').trim().split('\n').filter(Boolean);
+      for (const l of pLines) { try { postedIds.add(JSON.parse(l).video_id); } catch { /* */ } }
+    }
+    lines.push(`📦 ${ledgerCount} videos in ledger | ${postedIds.size} posted | ${ledgerCount - postedIds.size} unposted`);
+  } catch { lines.push('❌ Could not read pipeline data'); }
+
+  // 6. Last sprint from git
+  lines.push('', '*Development*');
+  try {
+    const gitLog = execSync('git log --oneline -1', { timeout: 5000 }).toString().trim();
+    lines.push(`🔨 Last commit: \`${gitLog}\``);
+  } catch { lines.push('❌ Could not read git log'); }
+
+  // Summary
+  const envOk = envChecks.filter(([k]) => { const v = process.env[k]; return v && v.length > 5; }).length;
+  lines.push('', `*Summary: ${envOk}/${envChecks.length} env vars set*`);
 
   await sendMessage(chatId, lines.join('\n'));
 }

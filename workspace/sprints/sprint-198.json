@@ -1,0 +1,44 @@
+{
+  "sprint_id": "sprint-198",
+  "title": "System Health Check — /health command + brief regeneration",
+  "description": "Adds /health Telegram command: comprehensive system health check (env vars, gate progress, PM2, Achiri, pipeline queue, git state). Commits regenerated sprint-brief.md with git-log-based sprint numbering.",
+  "source": "autonomous",
+  "tasks": [
+    {
+      "id": "198-01",
+      "title": "handleHealth() in commands.ts — system health check handler",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-198",
+      "deliverables": { "code": ["agents/telegram-bot/commands.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "198-02",
+      "title": "Wire /health into index.ts + handleHelp",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-198",
+      "deliverables": { "code": ["agents/telegram-bot/index.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "198-03",
+      "title": "Commit regenerated sprint-brief.md (git-log sprint number fix)",
+      "type": "modify",
+      "task_type": "docs",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-198",
+      "deliverables": { "code": ["workspace/sprint-brief.md"], "tests": [], "docs": [] }
+    }
+  ]
+}
