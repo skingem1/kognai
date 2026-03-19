@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-211",
+  "title": "Gate Countdown — /gate command for Telegram bot",
+  "description": "Add /gate command to Telegram bot showing Phase 1.5 countdown: posts/30, views/500, days remaining, posts/day pace needed. Also add gate summary to /report output. Operator needs daily visibility with 19 days to Apr 7 kill switch.",
+  "source": "autonomous",
+  "tasks": [
+    {
+      "id": "211-01",
+      "title": "Add /gate command + gate summary in /report to telegram-bot.ts",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "todo",
+      "priority": "high",
+      "sprint_id": "sprint-211",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

@@ -269,25 +269,76 @@ function cmdReport(): string {
   if (downInfra.length) alerts.push(`⚠️ Infra issues: ${downInfra.join(', ')}`);
   const alertBlock = alerts.length ? `\n${alerts.join('\n')}\n` : '';
 
+  // 8. Gate countdown
+  const manualPostsPath = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
+  let gatePostCount = 0;
+  let gateTotalViews = 0;
+  if (fs.existsSync(manualPostsPath)) {
+    const lines = fs.readFileSync(manualPostsPath, 'utf-8').split('\n').filter(l => l.trim());
+    gatePostCount = lines.length;
+    for (const line of lines) {
+      try { gateTotalViews += JSON.parse(line).views ?? 0; } catch {}
+    }
+  }
+  const gateDaysLeft = Math.max(0, Math.ceil((new Date('2026-04-07').getTime() - Date.now()) / 86_400_000));
+  const gateIcon = gatePostCount >= 30 && gateTotalViews >= 500 ? '✅' : '⏳';
+  const gateLine = `${gateIcon} Phase 1.5 gate: ${gatePostCount}/30 posts · ${gateTotalViews}/500 views · ${gateDaysLeft}d left`;
+
   return (
-    `${statusIcon} *Invoica System Report*\n${now}\n${alertBlock}\n` +
+    `${statusIcon} *Kognai System Report*\n${now}\n${alertBlock}\n` +
     `*PM2* (${online}/${procs.length} live):\n${pm2Lines || '  (no data)'}\n\n` +
     `*Status:* \`${healthStatus}\` | Phase: ${phase} | Day ${day}\n` +
     `Last heartbeat: ${lastBeat} UTC\n\n` +
     `*Beta:* agents_onboarded=${beta.agents_onboarded ?? 0}, companies=${beta.companies_onboarded ?? 0}, txns=${beta.transactions_monitored ?? 0}\n` +
     `*Financials:* MRR $${mrr} | Tier: ${tier} | Billing activation: ${billingDate}\n\n` +
+    `*Gate:* ${gateLine}\n` +
     `*Sprint:* ${sprintLine}`
+  );
+}
+
+function cmdGate(): string {
+  const manualPostsPath = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
+  let postCount = 0;
+  let totalViews = 0;
+
+  if (fs.existsSync(manualPostsPath)) {
+    const lines = fs.readFileSync(manualPostsPath, 'utf-8').split('\n').filter(l => l.trim());
+    postCount = lines.length;
+    for (const line of lines) {
+      try { totalViews += JSON.parse(line).views ?? 0; } catch {}
+    }
+  }
+
+  const gateDate = new Date('2026-04-07T00:00:00Z');
+  const now = new Date();
+  const daysLeft = Math.max(0, Math.ceil((gateDate.getTime() - now.getTime()) / 86_400_000));
+  const postsNeeded = Math.max(0, 30 - postCount);
+  const postsPerDay = daysLeft > 0 ? (postsNeeded / daysLeft).toFixed(1) : '∞';
+  const viewsNeeded = Math.max(0, 500 - totalViews);
+
+  const postIcon = postCount >= 30 ? '✅' : '⏳';
+  const viewIcon = totalViews >= 500 ? '✅' : '⏳';
+  const urgency = daysLeft <= 7 ? '🔴 URGENT' : daysLeft <= 14 ? '🟡 WARNING' : '🟢 ON TRACK';
+
+  return (
+    `*Phase 1.5 Gate — TikTok Kill Switch*\n` +
+    `📅 Apr 7 · ${daysLeft} days remaining · ${urgency}\n\n` +
+    `${postIcon} Posts: ${postCount}/30 (need ${postsNeeded} more)\n` +
+    `${viewIcon} Views: ${totalViews}/500 (need ${viewsNeeded} more)\n` +
+    `📊 Pace needed: ${postsPerDay} posts/day\n\n` +
+    `_Record a post: npx ts-node scripts/scs001/record-manual-post.ts --video-id <id> --views <n>_`
   );
 }
 
 function cmdHelp(): string {
   return (
-    `*Invoica Bot Commands*\n\n` +
+    `*Kognai Bot Commands*\n\n` +
     `/report — Full system status (real data, no AI)\n` +
     `/pm2    — Live PM2 process table\n` +
     `/health — Health check summary\n` +
     `/tier   — Current tier + MRR\n` +
     `/sprint — Latest sprint progress\n` +
+    `/gate   — Phase 1.5 gate countdown\n` +
     `/help   — This message`
   );
 }
@@ -311,6 +362,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/health': response = cmdHealth(); break;
     case '/tier':   response = cmdTier();   break;
     case '/sprint': response = cmdSprint(); break;
+    case '/gate':   response = cmdGate();   break;
     case '/help':   response = cmdHelp();   break;
     default:
       response = `Unknown command: \`${cmd}\`\n\n${cmdHelp()}`;
