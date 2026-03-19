@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-294",
+  "title": "Fix digest timezone bug — Today count uses UTC vs local date",
+  "description": "Daily digest header shows local date (e.g. 'Fri 20 Mar') but getLedgerStats todayCount uses UTC date via toISOString(). When UTC is behind local (e.g. UTC=Mar 19, local=Mar 20), Today count shows stale data. Fix by using local date prefix consistently.",
+  "source": "auto — found during Sprint 293 digest dry-run audit",
+  "tasks": [
+    {
+      "id": "294-01",
+      "title": "Fix getLedgerStats todayCount to use local date instead of UTC",
+      "type": "bugfix",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-294",
+      "deliverables": { "code": ["scripts/daily-digest.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

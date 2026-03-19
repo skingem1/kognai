@@ -66,9 +66,15 @@ function getGateProgress(): { count: number; totalViews: number; avgViews: numbe
 
 // ── Pipeline ledger (publish-ledger.jsonl) ───────────────────────────────────
 
+function getLocalDatePrefix(): string {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+
 function getLedgerStats(): { total: number; todayCount: number; latestAt: string | null } {
   const entries = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
-  const todayPrefix = new Date().toISOString().slice(0, 10);
+  // Sprint 294: Use local date to match digest header (was UTC via toISOString)
+  const todayPrefix = getLocalDatePrefix();
   const todayCount = entries.filter((e: any) => (e.published_at ?? '').startsWith(todayPrefix)).length;
   const latestAt = entries.map((e: any) => e.published_at ?? '').sort().reverse()[0] ?? null;
   return { total: entries.length, todayCount, latestAt };
