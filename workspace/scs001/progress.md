@@ -1890,3 +1890,16 @@ Full auto-posting pipeline built:
 - Swarm used: no (single-file multi-function edit)
 - Issues: None
 - Timestamp: 2026-03-19T22:30:00Z
+
+## Sprint 266 — TikTok View Count Tracker (Direct Write)
+- Status: PASS
+- Commit: feaa0a5
+- Files created: scripts/scs001/fetch-tiktok-views.ts, scripts/scs001/validate-view-tracker.ts, workspace/sprints/sprint-266.json
+- Files modified: ecosystem.config.js
+- Tasks completed:
+  - 266-01: oEmbed-based view tracker — verifies posts are live, updates titles, gate milestone alerts
+  - 266-02: PM2 cron config — kognai-view-tracker runs daily at 10:00
+  - 266-03: Validation: 20/20 tests pass including dry-run execution
+- Swarm used: no (multi-file feature)
+- Issues: oEmbed API doesn't expose view counts directly; operator still needs /updateviews for exact counts. Title sync and liveness checks work.
+- Timestamp: 2026-03-19T22:45:00Z
