@@ -102,6 +102,7 @@ export async function handleHelp(chatId: number): Promise<void> {
     '/tiktokauth — TikTok OAuth flow: get/refresh access token (owner)',
     '/autopost — Auto-post daemon: status, run, dry-run (owner)',
     '/verifyposts — Post-publish verification: check if posts went live (owner)',
+    '/activate — Go-live checklist: all steps to activate auto-posting (owner)',
     '/gate — Phase 1.5 gate review (Apr 7 kill switch)',
     '/postreminder — Apr 7 gate progress + posting workflow (owner)',
     '/review — Top-3 QC-passed videos for manual posting (owner)',
@@ -2675,6 +2676,178 @@ export async function handleVerifyPosts(chatId: number, ownerChatId: string, tex
     '/verifyposts run — Check now',
     '/verifyposts — This status',
   ];
+
+  await sendMessage(chatId, lines.join('\n'));
+}
+
+// ── /activate — Operator Activation Checklist — Sprint 235 ───────────────────
+// Checks all prerequisites for Phase 1.5 go-live and provides step-by-step guide.
+export async function handleActivate(chatId: number, ownerChatId: string): Promise<void> {
+  if (String(chatId) !== ownerChatId) {
+    await sendMessage(chatId, '🔒 Owner only.');
+    return;
+  }
+
+  const lines: string[] = ['🚀 *Phase 1.5 Activation Checklist*', ''];
+
+  // Gate countdown
+  const gateDate = new Date('2026-04-07T00:00:00Z');
+  const daysLeft = Math.max(0, Math.ceil((gateDate.getTime() - Date.now()) / 86400000));
+  const manual = loadManualPosts();
+  const postsNeeded = Math.max(0, 30 - manual.count);
+  const pacePerDay = daysLeft > 0 ? (postsNeeded / daysLeft).toFixed(1) : '∞';
+  lines.push(`📅 *Apr 7 Gate:* ${daysLeft} days | ${manual.count}/30 posts | Need ${pacePerDay}/day`);
+  lines.push('');
+
+  // Check items
+  interface CheckItem {
+    name: string;
+    pass: boolean;
+    action?: string;
+  }
+
+  const checks: CheckItem[] = [];
+
+  // 1. TikTok Access Token
+  const tokenSet = Boolean(process.env.TIKTOK_ACCESS_TOKEN);
+  const tokenMeta = join(process.cwd(), 'data', 'tiktok-token-meta.json');
+  let tokenExpired = false;
+  if (tokenSet && existsSync(tokenMeta)) {
+    try {
+      const meta = JSON.parse(readFileSync(tokenMeta, 'utf-8'));
+      tokenExpired = new Date(meta.expires_at) < new Date();
+    } catch {}
+  }
+  checks.push({
+    name: 'TikTok Access Token',
+    pass: tokenSet && !tokenExpired,
+    action: tokenSet && tokenExpired
+      ? 'Token expired. Run: `npx ts-node scripts/tiktok-refresh-token.ts`'
+      : !tokenSet
+      ? 'Run OAuth flow:\n`npx ts-node scripts/tiktok-oauth.ts`\nThen authorize in browser.'
+      : undefined,
+  });
+
+  // 2. Video queue
+  const ledgerPath = join(process.cwd(), 'workspace', 'scs001', 'publish-ledger.jsonl');
+  const recordedIds = new Set<string>();
+  if (existsSync(join(process.cwd(), 'workspace', 'scs001', 'manual-posts.jsonl'))) {
+    try {
+      readFileSync(join(process.cwd(), 'workspace', 'scs001', 'manual-posts.jsonl'), 'utf-8')
+        .split('\n').filter(l => l.trim())
+        .forEach(l => { try { recordedIds.add(JSON.parse(l).video_id); } catch {} });
+    } catch {}
+  }
+  let queueCount = 0;
+  if (existsSync(ledgerPath)) {
+    try {
+      readFileSync(ledgerPath, 'utf-8').split('\n').filter(l => l.trim())
+        .forEach(l => { try { if (!recordedIds.has(JSON.parse(l).video_id)) queueCount++; } catch {} });
+    } catch {}
+  }
+  checks.push({
+    name: `Video Queue (${queueCount} ready)`,
+    pass: queueCount >= postsNeeded,
+    action: queueCount < postsNeeded
+      ? `Need ${postsNeeded - queueCount} more videos. Run pipeline: \`pm2 start ecosystem.config.js --only scs001-pipeline\``
+      : undefined,
+  });
+
+  // 3. Supabase (for video hosting)
+  const supabaseOk = Boolean(process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_KEY);
+  checks.push({
+    name: 'Supabase (video hosting)',
+    pass: supabaseOk,
+    action: !supabaseOk ? 'Set SUPABASE_URL and SUPABASE_SERVICE_KEY in .env' : undefined,
+  });
+
+  // 4. PM2 auto-post cron
+  let autoPostRunning = false;
+  try {
+    const pm2Out = execSync('pm2 jlist 2>/dev/null', { timeout: 5000 }).toString();
+    const procs = JSON.parse(pm2Out);
+    autoPostRunning = procs.some((p: any) => p.name === 'kognai-auto-post');
+  } catch {}
+  checks.push({
+    name: 'Auto-Post PM2 Cron',
+    pass: autoPostRunning,
+    action: !autoPostRunning
+      ? 'Start: `pm2 start ecosystem.config.js --only kognai-auto-post`'
+      : undefined,
+  });
+
+  // 5. Token refresh cron
+  let refreshRunning = false;
+  try {
+    const pm2Out = execSync('pm2 jlist 2>/dev/null', { timeout: 5000 }).toString();
+    const procs = JSON.parse(pm2Out);
+    refreshRunning = procs.some((p: any) => p.name === 'kognai-token-refresh');
+  } catch {}
+  checks.push({
+    name: 'Token Refresh PM2 Cron',
+    pass: refreshRunning,
+    action: !refreshRunning
+      ? 'Start: `pm2 start ecosystem.config.js --only kognai-token-refresh`'
+      : undefined,
+  });
+
+  // 6. Verify posts cron
+  let verifyRunning = false;
+  try {
+    const pm2Out = execSync('pm2 jlist 2>/dev/null', { timeout: 5000 }).toString();
+    const procs = JSON.parse(pm2Out);
+    verifyRunning = procs.some((p: any) => p.name === 'kognai-verify-posts');
+  } catch {}
+  checks.push({
+    name: 'Post Verification PM2 Cron',
+    pass: verifyRunning,
+    action: !verifyRunning
+      ? 'Start: `pm2 start ecosystem.config.js --only kognai-verify-posts`'
+      : undefined,
+  });
+
+  // Render checks
+  const passCount = checks.filter(c => c.pass).length;
+  const allPass = passCount === checks.length;
+
+  lines.push(`*Checklist: ${passCount}/${checks.length}*`);
+  lines.push('');
+
+  let stepNum = 1;
+  for (const check of checks) {
+    const icon = check.pass ? '✅' : '❌';
+    lines.push(`${icon} ${check.name}`);
+    if (!check.pass && check.action) {
+      lines.push(`   *Step ${stepNum}:* ${check.action}`);
+      stepNum++;
+    }
+  }
+
+  lines.push('');
+  if (allPass) {
+    lines.push('🎉 *ALL CHECKS PASS — Auto-posting is LIVE!*');
+    lines.push(`📊 Posting ${queueCount} videos at 2/day (08:00 + 19:00)`);
+    lines.push(`📅 Gate target: 30 posts by Apr 7`);
+  } else {
+    lines.push(`⚠️ *${checks.length - passCount} step(s) needed before go-live*`);
+    lines.push('Complete the steps above, then run `/activate` again.');
+  }
+
+  // Quick start for complete beginners
+  if (!tokenSet) {
+    lines.push('');
+    lines.push('*Quick Start (2 min):*');
+    lines.push('```');
+    lines.push('# 1. Get TikTok token');
+    lines.push('npx ts-node scripts/tiktok-oauth.ts');
+    lines.push('# 2. Open URL in browser, authorize');
+    lines.push('# 3. Start auto-posting');
+    lines.push('pm2 start ecosystem.config.js --only kognai-auto-post');
+    lines.push('pm2 start ecosystem.config.js --only kognai-token-refresh');
+    lines.push('pm2 start ecosystem.config.js --only kognai-verify-posts');
+    lines.push('# 4. Done! Check /gate for progress');
+    lines.push('```');
+  }
 
   await sendMessage(chatId, lines.join('\n'));
 }

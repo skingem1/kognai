@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-235",
+  "title": "Operator Activation Checklist — /activate walks through go-live steps",
+  "description": "/activate command checks all prerequisites (TikTok token, Stripe, PM2 crons, video queue) and provides numbered step-by-step instructions. One-stop command for the operator to activate Phase 1.5 posting.",
+  "source": "autonomous",
+  "tasks": [
+    {
+      "id": "235-01",
+      "title": "Add /activate command to telegram bot",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-235",
+      "deliverables": { "code": ["agents/telegram-bot/commands.ts", "agents/telegram-bot/index.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
