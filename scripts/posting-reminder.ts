@@ -169,12 +169,17 @@ async function main(): Promise<void> {
   if (viralHashtags.length === 0) viralHashtags = ['#ai', '#tech'];
   const hashtags = [...viralHashtags, '#fyp', '#viral', '#learnontiktok'].join(' ');
 
-  // Find best unposted video (sorted by viral score desc)
-  let videoId: string | null = null;
-  let filePath: string | null = null;
-  let speaker: string | null = null;
-  let topic: string | null = null;
-  let viralScore: number | null = null;
+  // Sprint 281: Find top 3 unposted videos (sorted by viral score desc)
+  const BATCH_SIZE = 3;
+  interface ReadyVideo {
+    video_id: string;
+    absPath: string;
+    speaker: string | null;
+    topic: string | null;
+    hook_formula: string | null;
+    viralScore: number | null;
+  }
+  const readyVideos: ReadyVideo[] = [];
 
   if (fs.existsSync(LEDGER_PATH)) {
     const entries: Array<{ video_id: string; run_id: string; speaker?: string; topic?: string }> =
@@ -186,14 +191,16 @@ async function main(): Promise<void> {
       .filter(e => !recordedIds.has(e.video_id) && findCaptionedMp4(CWD, e.video_id))
       .sort((a, b) => (experiments.get(b.video_id)?.partial_viral_score ?? -1) - (experiments.get(a.video_id)?.partial_viral_score ?? -1));
 
-    if (ready.length > 0) {
-      const best = ready[0];
-      const exp = experiments.get(best.video_id);
-      videoId    = best.video_id;
-      filePath   = findCaptionedMp4(CWD, best.video_id)!.replace(process.env.HOME ?? '/Users/tarekmnif', '~');
-      speaker    = exp?.speaker ?? best.speaker ?? null;
-      topic      = exp?.topic ?? best.topic ?? null;
-      viralScore = exp?.partial_viral_score ?? null;
+    for (const entry of ready.slice(0, BATCH_SIZE)) {
+      const exp = experiments.get(entry.video_id);
+      readyVideos.push({
+        video_id: entry.video_id,
+        absPath: findCaptionedMp4(CWD, entry.video_id)!,
+        speaker: exp?.speaker ?? entry.speaker ?? null,
+        topic: exp?.topic ?? entry.topic ?? null,
+        hook_formula: exp?.hook_formula ?? null,
+        viralScore: exp?.partial_viral_score ?? null,
+      });
     }
   }
 
@@ -202,38 +209,42 @@ async function main(): Promise<void> {
     '',
   ];
 
-  if (!videoId || !filePath) {
+  if (readyVideos.length === 0) {
     lines.push('⚠️ No ready videos on disk. Run pipeline: `pm2 start ecosystem.config.js --only scs001-pipeline`');
   } else {
-    lines.push(`📹 \`${videoId}\``);
-    if (viralScore != null) lines.push(`🧬 Viral: ${viralScore}`);
-    if (speaker) lines.push(`🎙️ ${speaker}`);
-    const expData = loadExperiments().get(videoId);
-    if (expData?.hook_formula) lines.push(`🎣 Hook: ${expData.hook_formula}`);
-    if (topic)   lines.push(`📝 ${topic.slice(0, 70)}`);
-    lines.push(`📁 \`${filePath}\``);
+    lines.push(`📦 *${readyVideos.length} videos ready to post:*`);
+    lines.push('');
+    for (let i = 0; i < readyVideos.length; i++) {
+      const v = readyVideos[i];
+      const vsStr = v.viralScore != null ? ` 🧬${v.viralScore}` : '';
+      const spkStr = v.speaker && v.speaker !== 'unknown' ? ` 🎙️${v.speaker}` : '';
+      const hookStr = v.hook_formula && v.hook_formula !== 'unknown' ? ` 🎣${v.hook_formula}` : '';
+      lines.push(`${i + 1}. \`${v.video_id}\`${vsStr}${spkStr}${hookStr}`);
+    }
+    lines.push('');
     lines.push(`🏷️ ${hashtags}`);
     lines.push('');
-    lines.push(`→ After posting: \`/record ${videoId} 0\``);
+    lines.push(`_After posting each: \`/record <id> 0\`_`);
   }
 
   await sendTelegram(OWNER_ID, lines.join('\n'));
 
-  // Sprint 227: Send the actual video file so operator can save to phone and post
-  if (videoId) {
-    const absPath = findCaptionedMp4(CWD, videoId);
-    if (absPath) {
-      try {
-        const vidCaption = [topic?.slice(0, 80), hashtags, `\n/record ${videoId} 0`].filter(Boolean).join('\n');
-        await sendVideoTelegram(OWNER_ID, absPath, vidCaption);
-        process.stdout.write(`[posting-reminder] Video sent: ${videoId}\n`);
-      } catch (err) {
-        process.stderr.write(`[posting-reminder] Video send failed: ${(err as Error).message}\n`);
-      }
+  // Sprint 281: Send all batch videos as files
+  for (const v of readyVideos) {
+    try {
+      const vidCaption = [
+        v.topic?.slice(0, 80),
+        hashtags,
+        `\n/record ${v.video_id} 0`,
+      ].filter(Boolean).join('\n');
+      await sendVideoTelegram(OWNER_ID, v.absPath, vidCaption);
+      process.stdout.write(`[posting-reminder] Video sent: ${v.video_id}\n`);
+    } catch (err) {
+      process.stderr.write(`[posting-reminder] Video send failed (${v.video_id}): ${(err as Error).message}\n`);
     }
   }
 
-  process.stdout.write(`[posting-reminder] Sent reminder to owner (${postsNeeded} posts needed, ${daysLeft}d)\n`);
+  process.stdout.write(`[posting-reminder] Sent ${readyVideos.length} videos to owner (${postsNeeded} posts needed, ${daysLeft}d)\n`);
 }
 
 main().catch(e => { process.stderr.write(`[posting-reminder] Error: ${e.message}\n`); process.exit(1); });

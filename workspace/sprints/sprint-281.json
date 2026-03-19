@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-281",
+  "title": "Batch posting reminders — 3 videos per nudge at noon + evening",
+  "description": "Upgrade posting-reminder.ts to send top 3 ready videos (not just 1) per reminder. 6 videos/day exposure across 2 reminders = operator can hit 30 posts in 5 days of consistent posting.",
+  "source": "auto — Sprint 280 added /deliver, now make scheduled reminders deliver batches too",
+  "tasks": [
+    {
+      "id": "281-01",
+      "title": "Upgrade posting-reminder.ts to batch-send top 3 videos with captions",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-281",
+      "deliverables": { "code": ["scripts/posting-reminder.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
