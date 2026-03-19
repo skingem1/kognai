@@ -166,6 +166,18 @@ function getAchiriAlphaStats(): { waitlist: number; invited: number } {
   return { waitlist, invited };
 }
 
+// ── Content calendar (Sprint 193) ─────────────────────────────────────────────
+
+function getCalendarToday(): Array<{ video_id: string; slot: string; viral_score: number | null; speaker: string }> {
+  const calPath = path.join(ROOT, 'workspace', 'scs001', 'content-calendar.json');
+  if (!fs.existsSync(calPath)) return [];
+  try {
+    const cal = JSON.parse(fs.readFileSync(calPath, 'utf-8'));
+    const today = new Date().toISOString().split('T')[0];
+    return cal.schedule?.[today] ?? [];
+  } catch { return []; }
+}
+
 // ── Gate countdown ────────────────────────────────────────────────────────────
 
 function getDaysUntil(isoDate: string): number {
@@ -184,6 +196,7 @@ function buildDigest(): string {
   const smoke    = getSmokeTest();
   const viral    = getViralTopics();
   const achiri   = getAchiriAlphaStats();
+  const calendarItems = getCalendarToday();
   const stripeStatus = process.env.STRIPE_SECRET_KEY
     ? '💳 Stripe: 🟢 LIVE'
     : '💳 Stripe: 🔴 NOT LIVE (set STRIPE_SECRET_KEY in .env)';
@@ -246,6 +259,14 @@ function buildDigest(): string {
     `  • Invited:  ${achiri.invited} users`,
     `  • Launch:   Apr 25 (${daysAchiri}d away)`,
     '',
+    ...(calendarItems.length > 0 ? [
+      `📅 *Today's Posting Schedule:*`,
+      ...calendarItems.map((item, i) => {
+        const vs = item.viral_score != null ? ` 🧬 ${item.viral_score}` : '';
+        return `${i + 1}. ⏰ ${item.slot} — \`${item.video_id}\`${vs}`;
+      }),
+      '',
+    ] : []),
     ...(viral.length > 0 ? [
       `🔥 *Trending topics (post one of these today):*`,
       ...viral.map(t => `• ${t}`),

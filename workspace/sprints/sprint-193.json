@@ -1,81 +1,42 @@
 {
-  "sprint_id": "sprint-193",
-  "title": "Quality Loop Repair — Code Failure Logger + Crystallisation + Brief Fix",
-  "description": "Closes three quality/process gaps found in audit: (1) swarm code rejections are never written to failure-library — structured failure data is lost, (2) manually-written code (FP-007 bypass) never goes through crystalliseSkill() — skill bank frozen at Sprint 095, (3) generate-sprint-brief.py reads stale progress.md for sprint number — autonomous Claude gets wrong 'next sprint' context (saw Sprint 104 when actual was 192). All 4 tasks are FP-007 safe.",
-  "source": "human",
-  "_plan_reference": "Quality Loop Repair — audit result 2026-03-19",
   "tasks": [
     {
       "id": "193-01",
-      "title": "Code failure logger module — scripts/lib/code-failure-logger.ts",
-      "description": "Create scripts/lib/code-failure-logger.ts. New file, <80 lines. Export one function: logCodeFailure({ taskId, sprintId, agentId, attemptNum, score, model, rejectionReason, issues, failType }). failType enum: 'destructive_rewrite' | 'truncation' | 'qa_gate' | 'supervisor_rejected' | 'no_files'. Writes JSON to data/failure-library/code/fail-{8-char-uuid}.json. Creates directory if missing. Silently catches all errors (never throws — must not break the swarm). JSON shape: { entry_id, task_id, sprint_id, agent_id, attempt_num, score, model, fail_type, rejection_reason, issues: [{severity,file,description}], filed_at }. Use only stdlib: crypto (randomUUID), fs, path.",
+      "title": "Content calendar generator — scripts/scs001/generate-content-calendar.ts",
+      "description": "Reads publish-ledger.jsonl + experiments.jsonl + manual-posts.jsonl. Sorts unposted by viral score. Assigns to 2 slots/day from today to Apr 7. Writes workspace/scs001/content-calendar.json.",
       "type": "create",
       "task_type": "code",
       "task_target": "local",
       "agent": "coder",
       "status": "todo",
       "priority": "critical",
-      "sprint_id": "sprint-193",
-      "deliverables": {
-        "code": ["scripts/lib/code-failure-logger.ts"],
-        "tests": [],
-        "docs": []
-      },
-      "context": "Sprint 193. Gap: orchestrate-agents-v2.ts rejection path has zero failure logging. Every swarm rejection (truncation, destructive rewrite, supervisor REJECT) is silently discarded. This module will be wired in by task 193-02. Stdlib only — no npm deps."
+      "sprint_id": "sprint-193"
     },
     {
       "id": "193-02",
-      "title": "Wire code failure logger into orchestrate-agents-v2.ts — SURGICAL 3 LINES ONLY",
-      "description": "Modify scripts/orchestrate-agents-v2.ts. ADD ONLY — do NOT rewrite, do NOT touch any existing logic. File is ~2980 lines. FP-007 risk: any rewrite corrupts it. Make exactly 3 surgical additions:\n1. At imports section (top of file, after existing imports around line 56-57): add: import { logCodeFailure } from './lib/code-failure-logger';\n2. At the FINAL supervisor rejection path (line ~2375-2380, after 'git reset --hard HEAD~1' and before 'MonotaskSM.release(task.agent, task.id, `rejected attempt ${attempt}`)'): add: logCodeFailure({ taskId: task.id, sprintId: (process.argv[2]||'').replace(/.*\\//, '').replace('.json',''), agentId: task.agent, attemptNum: attempt, score: lastReview?.score||0, model: (task as any).model||'unknown', rejectionReason: lastReview?.summary||'supervisor rejected', issues: lastReview?.issues||[], failType: isTruncation ? 'truncation' : 'supervisor_rejected' });\n3. At the QA gate rejection path (line ~2321, after 'git reset --hard HEAD~1' and before 'MonotaskSM.release(task.agent, task.id, `QA gate: ${qaResult.reason}`)'): add: logCodeFailure({ taskId: task.id, sprintId: (process.argv[2]||'').replace(/.*\\//, '').replace('.json',''), agentId: task.agent, attemptNum: attempt, score: 0, model: (task as any).model||'unknown', rejectionReason: qaResult.reason, issues: [], failType: 'qa_gate' });\nIMPORTANT: If you cannot find the exact line numbers, search for the string 'MonotaskSM.release(task.agent, task.id, `rejected attempt' and 'MonotaskSM.release(task.agent, task.id, `QA gate' to locate the insertion points. Add the logCodeFailure call ONE LINE BEFORE each MonotaskSM.release call. Do not change anything else.",
+      "title": "/calendar Telegram command",
+      "description": "handleCalendar() owner-only: reads content-calendar.json, shows today's scheduled videos.",
       "type": "modify",
       "task_type": "code",
       "task_target": "local",
       "agent": "coder",
       "status": "todo",
-      "priority": "critical",
-      "sprint_id": "sprint-193",
-      "deliverables": {
-        "code": ["scripts/orchestrate-agents-v2.ts"],
-        "tests": [],
-        "docs": []
-      },
-      "context": "Sprint 193. FP-007 APPLIES — file is ~2980 lines. SURGICAL ONLY: add exactly 3 lines (1 import + 2 call sites). If the swarm attempts to rewrite this file, STOP and do it manually with edit_block. The insertion points are: (a) after existing crystalliseSkill imports ~line 57, (b) before MonotaskSM.release after supervisor rejection ~line 2380, (c) before MonotaskSM.release after QA gate rejection ~line 2322."
+      "priority": "high",
+      "sprint_id": "sprint-193"
     },
     {
       "id": "193-03",
-      "title": "Add manual-write crystallisation step to autonomous-prompt.txt",
-      "description": "Modify autonomous-prompt.txt. Find the section 'STEP 5 — FIX IF NEEDED'. After that section and before 'STEP 6 — SHIP', insert a new block:\n\nSTEP 5B — CRYSTALLISE IF YOU WROTE CODE DIRECTLY (mandatory when swarm was bypassed):\n  If in Step 3 or Step 5 you wrote code directly (swarm failed/killed/FP-007):\n  Run this inline Node.js to crystallise the skill (replaces the swarm's auto-crystallise):\n    node -e \"const {crystalliseSkill}=require('./scripts/lib/skill-crystalliser'); crystalliseSkill({agentId:'coder', taskId:'TASK_ID', sprintId:'sprint-NNN', taskTitle:'TITLE', taskType:'feature', model:'manual-sonnet', taskTarget:'manual', score:80, approachSummary:'Written directly — swarm bypassed (FP-007)', keyPatterns:['manual write'], antiPatterns:['FP-007 file too large for swarm']});\"\n  Replace TASK_ID, sprint-NNN, TITLE with actual values.\n  Also add to progress.md under the sprint entry: '- Swarm bypassed: yes (FP-007). Manual crystallise: done.'\n  If crystalliseSkill call fails (module resolution error), skip and note in progress.md — do not block shipping.\n\nThis section should be ~20 lines, inserted as plain text between STEP 5 and STEP 6.",
+      "title": "Daily digest calendar section",
+      "description": "In buildDigest(), read content-calendar.json for today's entries.",
       "type": "modify",
       "task_type": "code",
       "task_target": "local",
       "agent": "coder",
       "status": "todo",
       "priority": "high",
-      "sprint_id": "sprint-193",
-      "deliverables": {
-        "code": ["autonomous-prompt.txt"],
-        "tests": [],
-        "docs": []
-      },
-      "context": "Sprint 193. Gap: skill bank frozen at Sprint 095 because swarm bypasses (FP-007) skip crystalliseSkill(). The autonomous loop writes code directly for 15+ sprints without ever calling crystalliseSkill(). This step adds an explicit crystallisation instruction for the manual-write path. File is a text file, safe for swarm."
-    },
-    {
-      "id": "193-04",
-      "title": "Fix generate-sprint-brief.py — derive last sprint number from git log, not progress.md",
-      "description": "Modify scripts/generate-sprint-brief.py. The brief currently reads progress.md for sprint history. progress.md was last updated at Sprint 103 — so every generated brief says 'next sprint: 104' even when Sprint 191 is done. Fix: add a get_last_sprint_from_git() function that runs: subprocess.run(['git', 'log', '--oneline', '-20'], capture_output=True, text=True, cwd=str(project_root)) and parses output lines matching r'Sprint (\\d+):' to find the highest sprint number. Use this number as 'LAST sprint number completed' in the brief, overriding whatever progress.md says. Insert this function near the top of generate_brief() before the Ollama call. Also update the 'NEXT sprint number needed' line: next = last_git_sprint + 1. If git call fails, fall back to progress.md (existing behavior). Keep changes to <40 lines added.",
-      "type": "modify",
-      "task_type": "code",
-      "task_target": "local",
-      "agent": "coder",
-      "status": "todo",
-      "priority": "high",
-      "sprint_id": "sprint-193",
-      "deliverables": {
-        "code": ["scripts/generate-sprint-brief.py"],
-        "tests": [],
-        "docs": []
-      },
-      "context": "Sprint 193. Root cause of stale brief: progress.md hasn't been updated since Sprint 103. Every autonomous session starts with wrong sprint context (thinks next sprint is 104, actual is 192+). Git log is authoritative — every sprint commit message starts with 'Sprint NNN:'. This is a <40 line change to a Python file, safe for the swarm."
+      "sprint_id": "sprint-193"
     }
-  ]
+  ],
+  "source": "human",
+  "_plan_reference": "Sprint 193: Content Calendar — automated posting schedule sorted by viral score."
 }

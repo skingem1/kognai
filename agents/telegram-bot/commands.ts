@@ -112,6 +112,7 @@ export async function handleHelp(chatId: number): Promise<void> {
     '/today — Morning cockpit: target + next video + trending topics (owner)',
     '/viral — Top 10 trending topics from pipeline (owner)',
     '/viral-stats — Viral score summary: avg/max/top-3 (owner)',
+    '/calendar — Today\'s posting schedule from content calendar (owner)',
     '',
     '🤖 *Achiri AI Companion*',
     '/achiri <msg> — Chat with Achiri (free tier, Darija/Arabic/French)',
@@ -2106,6 +2107,65 @@ export async function handleViralStats(chatId: number, ownerChatId: string): Pro
   });
 
   lines.push('', '💡 Use /post-now to post the highest-scoring video');
+
+  await sendMessage(chatId, lines.join('\n'));
+}
+
+// ── Sprint 193: /calendar — Content calendar for today ───────────────────────
+
+export async function handleCalendar(chatId: number, ownerChatId: string): Promise<void> {
+  if (String(chatId) !== String(ownerChatId)) {
+    await sendMessage(chatId, '⛔ Owner-only command.');
+    return;
+  }
+
+  const calPath = join(process.cwd(), 'workspace', 'scs001', 'content-calendar.json');
+  if (!existsSync(calPath)) {
+    await sendMessage(chatId, '📅 *Content Calendar*\n\nNo calendar found. Generate one:\n`npx ts-node scripts/scs001/generate-content-calendar.ts`');
+    return;
+  }
+
+  let calendar: any;
+  try { calendar = JSON.parse(readFileSync(calPath, 'utf-8')); } catch {
+    await sendMessage(chatId, '⚠️ Failed to parse content-calendar.json');
+    return;
+  }
+
+  const today = new Date().toISOString().split('T')[0];
+  const todayItems: any[] = calendar.schedule?.[today] ?? [];
+
+  const gateDate = new Date('2026-04-07T00:00:00Z');
+  const daysLeft = Math.max(0, Math.ceil((gateDate.getTime() - Date.now()) / 86400000));
+
+  const lines: string[] = [
+    `📅 *Content Calendar* — ${today}`,
+    `⏰ Gate: ${daysLeft}d | Total assigned: ${calendar.total_videos_assigned ?? 0}`,
+    '',
+  ];
+
+  if (todayItems.length === 0) {
+    lines.push('✅ No videos scheduled for today (rest day or calendar exhausted).');
+  } else {
+    lines.push(`*Today's ${todayItems.length} videos:*`);
+    todayItems.forEach((item: any, i: number) => {
+      const vs = item.viral_score != null ? `🧬 ${item.viral_score}` : '';
+      lines.push(``, `${i + 1}. ⏰ *${item.slot}* — \`${item.video_id}\``);
+      if (vs) lines.push(`   ${vs}`);
+      if (item.speaker && item.speaker !== 'unknown') lines.push(`   🎙️ ${item.speaker}`);
+      lines.push(`   → \`/record ${item.video_id} 0\``);
+    });
+  }
+
+  // Show tomorrow preview
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const tomorrowStr = tomorrow.toISOString().split('T')[0];
+  const tomorrowItems: any[] = calendar.schedule?.[tomorrowStr] ?? [];
+  if (tomorrowItems.length > 0) {
+    lines.push('', `📆 Tomorrow (${tomorrowStr}): ${tomorrowItems.length} videos scheduled`);
+  }
+
+  lines.push('', '💡 /post-now for files + captions | /post-batch for bulk');
 
   await sendMessage(chatId, lines.join('\n'));
 }

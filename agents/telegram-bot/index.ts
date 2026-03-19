@@ -24,7 +24,7 @@ import {
   handleReview, handleRecord, handleUpdateViews, handleInviteAchiri, handleDeployStatus,
   handleStripeStatus, handleQueue, handleTiktokStatus, handlePostNow, handleCaption, handlePace,
   handleToday, handleViral, handlePm2Status, handlePostBatch, handleSendVideo,
-  handleViralStats,
+  handleViralStats, handleCalendar,
 } from './commands';
 
 // ── Config ────────────────────────────────────────────────────────────────────
@@ -120,6 +120,7 @@ async function dispatch(update: TelegramUpdate): Promise<void> {
     case '/post-batch':      await handlePostBatch(chatId, OWNER_CHAT_ID, text);        break;
     case '/send-video':      await handleSendVideo(chatId, OWNER_CHAT_ID, text);        break;
     case '/viral-stats':     await handleViralStats(chatId, OWNER_CHAT_ID);             break;
+    case '/calendar':        await handleCalendar(chatId, OWNER_CHAT_ID);              break;
     default:                 await handleUnknown(chatId, text);                          break;
   }
 }
