@@ -131,6 +131,22 @@ async def stats() -> dict:
 # Entry point
 # ─────────────────────────────────────────────
 
+def _port_available(host: str, port: int) -> bool:
+    """Check if a port is available before binding."""
+    import socket
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        try:
+            s.bind((host, port))
+            return True
+        except OSError:
+            return False
+
+
 if __name__ == "__main__":
     port = int(os.environ.get("ROUTER_PORT", "11435"))
-    uvicorn.run("router_server:app", host="127.0.0.1", port=port, log_level="info", reload=False)
+    host = "127.0.0.1"
+    if not _port_available(host, port):
+        print(f"⚠️  Port {port} already in use — router already running or zombie process. Exiting cleanly.")
+        print(f"   To fix: lsof -ti:{port} | xargs kill -9")
+        sys.exit(0)  # Exit 0 so PM2 doesn't count it as a crash
+    uvicorn.run("router_server:app", host=host, port=port, log_level="info", reload=False)

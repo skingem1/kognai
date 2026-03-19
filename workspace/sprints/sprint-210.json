@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-210",
+  "title": "Router Port Fix — graceful port check before binding",
+  "description": "kognai-router errors with 30 restarts because port 11435 is already in use (zombie from prior run). Fix: check port availability before starting uvicorn, exit cleanly if occupied (prevents PM2 restart storm).",
+  "source": "autonomous",
+  "tasks": [
+    {
+      "id": "210-01",
+      "title": "Add port availability check to router_server.py",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "todo",
+      "priority": "high",
+      "sprint_id": "sprint-210",
+      "deliverables": { "code": ["runtime/router_server.py"], "tests": [], "docs": [] }
+    }
+  ]
+}
