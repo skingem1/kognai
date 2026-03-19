@@ -372,26 +372,56 @@ export async function handleGate(chatId: number): Promise<void> {
   const daysLeft  = Math.max(0, Math.ceil((gateDate.getTime() - now.getTime()) / 86400000));
   const daysLabel = daysLeft === 0 ? 'TODAY' : `${daysLeft} days`;
 
+  // Pace calculation
+  const postsNeeded = Math.max(0, 30 - postsCount);
+  const pacePerDay  = daysLeft > 0 ? (postsNeeded / daysLeft).toFixed(1) : '∞';
+
+  // Urgency level
+  const urgency = daysLeft <= 7
+    ? '🔴 URGENT' : daysLeft <= 14
+    ? '🟡 WARNING' : '🟢 ON TRACK';
+
+  // Queue count — how many videos available to post
+  const ledgerPath = join(process.cwd(), 'workspace', 'scs001', 'publish-ledger.jsonl');
+  let queueCount = 0;
+  if (existsSync(ledgerPath)) {
+    try {
+      const recordedIds = new Set<string>();
+      if (manual.count > 0) {
+        const manualPath = join(process.cwd(), 'workspace', 'scs001', 'manual-posts.jsonl');
+        readFileSync(manualPath, 'utf-8').split('\n').filter(l => l.trim())
+          .forEach(l => { try { recordedIds.add(JSON.parse(l).video_id); } catch {} });
+      }
+      queueCount = readFileSync(ledgerPath, 'utf-8').split('\n').filter(l => l.trim())
+        .filter(l => { try { return !recordedIds.has(JSON.parse(l).video_id); } catch { return false; } }).length;
+    } catch {}
+  }
+
   const icon       = overallPass ? '✅' : '❌';
   const verdict    = overallPass ? 'PROCEED → Phase 2A' : 'KILL SWITCH TRIGGERED';
   const postIcon   = passesPostCount ? '✅' : '❌';
   const viewsIcon  = passesViews ? '✅' : '❌';
 
   const lines = [
-    `📊 *Phase 1.5 Gate Review* — Apr 7 (${daysLabel})`,
+    `📊 *Phase 1.5 Gate Review* — Apr 7 (${daysLabel}) ${urgency}`,
     '',
     `${postIcon} Posts:  *${postsCount}/30*`,
     `${viewsIcon} Views:  *${totalViews}/500* (avg ${avgViews}/post)`,
+    `📊 Pace:  *${pacePerDay} posts/day* needed`,
+    `📼 Queue: *${queueCount}* videos ready to post`,
     '',
     `${icon} *${verdict}*`,
   ];
 
   if (!overallPass) {
     const needed = [];
-    if (!passesPostCount) needed.push(`${30 - postsCount} more posts`);
+    if (!passesPostCount) needed.push(`${postsNeeded} more posts`);
     if (!passesViews) needed.push(`${500 - totalViews} more views`);
     lines.push('', `Need: ${needed.join(' + ')}`);
-    lines.push('Record posts: `npx ts-node scripts/scs001/record-manual-post.ts --video-id <id> --views <n>`');
+    if (queueCount > 0) {
+      lines.push('Use /post-batch to see videos ready to post');
+    }
+    lines.push('Use /record <id> <views> to log a posted video');
   }
 
   await sendMessage(chatId, lines.join('\n'));

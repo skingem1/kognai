@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-214",
+  "title": "Gate Pace Metrics — posting pace + urgency + video queue in /gate",
+  "description": "Enhance /gate command with: posts/day pace needed, urgency level (on track/warning/urgent), video queue count (ready to post). Gives operator actionable daily posting target.",
+  "source": "autonomous",
+  "tasks": [
+    {
+      "id": "214-01",
+      "title": "Add pace, urgency, and queue to handleGate in commands.ts",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "todo",
+      "priority": "high",
+      "sprint_id": "sprint-214",
+      "deliverables": { "code": ["agents/telegram-bot/commands.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
