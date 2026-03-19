@@ -1427,3 +1427,18 @@ SESSION HANDOFF (2026-03-17, Sprints 166-170):
 - Swarm used: no (script execution + commit)
 - Issues: Gate-tracker.md was manually overwritten at some point, losing auto-generated data. The PM2 cron (kognai-gate-tracker-update) was stopped so it wasn't being refreshed.
 - Timestamp: 2026-03-19T21:45:00Z
+
+## Sprint 221 — Pipeline Validation Run (Ops)
+- Status: PASS
+- Commit: 40f8329
+- Files modified: reports/pipeline-runs/latest.json, logs/pipeline-metrics/metrics.jsonl
+- Files created: workspace/sprints/sprint-221.json
+- Tasks completed:
+  - 221-01: Triggered fresh pipeline run to validate Sprint 213 drawtext fix. Result: 5 topics → 10 clips → 19 qualified → 19 insights → 19 scripts → 15 videos → 15 QC passed → 15 published → 5 viral. Pipeline took 176.9s. Telegram notification sent. Dashboard pipeline/latest now shows 15 videos (was 0).
+- Swarm used: no (manual pipeline trigger)
+- Issues: None. Drawtext fallback confirmed working in production mode.
+- Timestamp: 2026-03-19T22:00:00Z
+
+## Session Summary — Sprints 211-221 (2026-03-19)
+Pipeline: FIXED and VALIDATED (15 videos/run). Pre-deploy: PASS. TS errors: ZERO (agents+scripts). Gate tracker: ACCURATE. PM2 boot script: READY.
+Operator quickstart: (1) bash scripts/pre-deploy-check.sh (2) ./scripts/pm2-boot.sh (3) start posting via /gate, /post-batch, /send-video
