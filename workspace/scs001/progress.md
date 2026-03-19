@@ -1099,3 +1099,17 @@ SESSION HANDOFF (2026-03-17, Sprints 166-170):
   - handleQueue(): sorts allUnposted by viral score desc, shows 🧬 score inline after video_id in top-5 list.
 - Impact: Operator now sees highest-viral-score videos first in all posting commands. Helps prioritize best content for Apr 7 gate.
 - Timestamp: 2026-03-19T15:30:00Z
+
+## Sprint 190 — Viral Score Everywhere + ClawRouter E2E (Phase 1 — viral integration + infra)
+- Status: PASS
+- Commit: 252aa94
+- Files created: scripts/test-clawrouter-e2e.ts, workspace/sprints/sprint-190.json
+- Files modified: scripts/posting-reminder.ts, scripts/daily-digest.ts
+- Test: TypeScript compile PASS (both files clean)
+- Swarm used: no (direct write — surgical edits)
+- Changes:
+  - posting-reminder.ts: loadViralScores() reads experiments.jsonl. Collects all unposted ready videos, sorts by partial_viral_score desc, picks best. Shows 🧬 Viral: X in noon/evening reminder.
+  - daily-digest.ts: loadViralScoresForDigest() added. getQueueStats() now sorts unposted by viral score desc instead of published_at. Top-3 queue in morning digest = highest viral score.
+  - test-clawrouter-e2e.ts: Committed existing untracked ClawRouter gateway e2e test. 4-step validation: health check, T3 APEX gateway-only, T2.5 EXEC, verdict.
+- Impact: Viral scores now integrated in ALL posting surfaces: /post-now, /post-batch, /queue, /review, posting-reminder (noon+evening), daily-digest (morning). Operator always sees best content first.
+- Timestamp: 2026-03-19T16:00:00Z
