@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-262",
+  "title": "Batch Content Export — HTML posting kit for manual TikTok flow",
+  "description": "Generate an HTML report from QC-passed pipeline outputs: video file paths, ready-to-paste captions with hashtags, posting schedule, and stats. Makes manual posting (the only current option) as frictionless as possible for the operator.",
+  "source": "auto — queue empty, addressing critical gap: 0/30 posts, 18 days to Phase 1.5 gate",
+  "tasks": [
+    {
+      "id": "262-01",
+      "title": "Batch content export script — HTML posting kit",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-262",
+      "deliverables": { "code": ["scripts/scs001/export-posting-kit.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "262-02",
+      "title": "Validation script for export output",
+      "type": "test",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-262",
+      "deliverables": { "code": ["scripts/scs001/validate-posting-kit.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
