@@ -1652,3 +1652,18 @@ Full auto-posting pipeline built:
 - Swarm bypassed: yes (FP-007 multi-file). Manual crystallise: skipped (no crystalliseSkill for batch ops).
 - Issues: None. All agents now constitutionally bound.
 - Timestamp: 2026-03-20T03:30:00Z
+
+## Sprint 239 — ACP v1.0 (Direct Write)
+- Status: PASS
+- Commit: ee6e5dd
+- Files created: acp/acp-engine.ts, acp/test-acp.ts, workspace/sprints/sprint-239.json
+- Files modified: acp/trust-scores.json, runtime/router.py
+- Tasks completed:
+  - 239-01: Upgraded trust-scores.json — 5-dimension schema (safety, accuracy, brand_alignment, cultural_sensitivity, legal_compliance) with weighted composite for 8 agents
+  - 239-02: Created acp-engine.ts — ACPEngine class with enforce(), resolveAgent(), auditAll(), computeComposite()
+  - 239-03: Added ACPGate class to runtime/router.py — pre-route trust check with safety hard floor, composite minimum, per-task-type dimension requirements
+  - 239-04: Validation: 13/13 tests pass (dimensions, weights, composite computation, enforcement, resolution, audit)
+- Swarm used: no (multi-file, cross-language — TS + Python integration)
+- Swarm bypassed: yes (FP-007). Manual crystallise: skipped.
+- Issues: None.
+- Timestamp: 2026-03-20T03:45:00Z

@@ -95,7 +95,7 @@
       "sprint": 239,
       "title": "ACP v1.0 \u2014 multi-dimensional trust scores + routing enforcement",
       "block": "CONSTITUTION",
-      "status": "queued",
+      "status": "done",
       "priority": "high",
       "rationale": "Originally Sprint 189 \u2014 skipped by swarm. ACP (Agent Constitutional Protocol) v1.0: content scoring across 5 dimensions (safety, accuracy, brand-alignment, cultural-sensitivity, legal-compliance). Flat scores exist \u2014 need enforcement layer at ClawRouter gate."
     },
