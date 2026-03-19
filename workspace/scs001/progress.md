@@ -2014,3 +2014,14 @@ Full auto-posting pipeline built:
 - Swarm used: no (surgical edit)
 - Issues: None.
 - Timestamp: 2026-03-19T23:10:00Z
+
+## Sprint 276 — Posting Reminder Enrichment (Direct Write)
+- Status: PASS
+- Commit: 612d3d9
+- Files created: workspace/sprints/sprint-276.json
+- Files modified: scripts/posting-reminder.ts
+- Tasks completed:
+  - 276-01: Posting reminder now pulls speaker/topic/hook_formula from experiments.jsonl. Noon/evening nudges show real content metadata.
+- Swarm used: no (surgical edit)
+- Issues: None. Type-check clean.
+- Timestamp: 2026-03-19T23:20:00Z
