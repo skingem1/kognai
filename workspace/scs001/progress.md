@@ -2082,3 +2082,14 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (multi-file edits to 636-line bot file)
 - Issues: Fixed Set spread TS error (downlevelIteration). Clean compile.
 - Timestamp: 2026-03-20T00:10:00Z
+
+## Sprint 281 — Batch Posting Reminders — 3 Videos per Nudge (Direct Write)
+- Status: PASS
+- Commit: 28e8ec2
+- Files created: workspace/sprints/sprint-281.json
+- Files modified: scripts/posting-reminder.ts (+66/-35 lines)
+- Tasks completed:
+  - 281-01: Upgraded posting-reminder.ts to batch-send top 3 videos per reminder (was 1). Each video sent via sendVideoTelegram with caption + hashtags + /record command. Summary message shows all 3 with viral score + speaker + hook.
+- Swarm used: no (surgical edit to existing file)
+- Issues: None. Clean compile.
+- Timestamp: 2026-03-20T00:20:00Z
