@@ -2222,7 +2222,8 @@ export async function handleHealth(chatId: number, ownerChatId: string): Promise
   try {
     const pm2Out = execSync('pm2 jlist 2>/dev/null', { timeout: 5000 }).toString();
     const procs = JSON.parse(pm2Out);
-    const kognaiProcs = procs.filter((p: any) => p.name.startsWith('kognai'));
+    const kognaiNames = ['kognai', 'telegram-bot', 'achiri-api', 'scs001', 'clawrouter', 'vault-dashboard'];
+    const kognaiProcs = procs.filter((p: any) => kognaiNames.some(prefix => p.name.startsWith(prefix)));
     if (kognaiProcs.length === 0) {
       lines.push('⚠️ No kognai PM2 processes running');
     } else {

@@ -125,7 +125,7 @@ function checkPM2() {
   try {
     const pm2Out = execSync('pm2 jlist 2>/dev/null', { timeout: 5000 }).toString();
     const procs = JSON.parse(pm2Out);
-    const expected = ['kognai-telegram-bot', 'kognai-daily-digest', 'kognai-smoke-test', 'kognai-pipeline-watchdog'];
+    const expected = ['telegram-bot', 'kognai-daily-digest', 'kognai-smoke-test', 'kognai-pipeline-watchdog', 'kognai-stripe-webhook', 'achiri-api'];
 
     for (const name of expected) {
       const proc = procs.find((p: any) => p.name === name);
