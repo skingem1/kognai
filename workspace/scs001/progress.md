@@ -1941,3 +1941,17 @@ Full auto-posting pipeline built:
 - Swarm used: no (multi-file feature)
 - Issues: 0 users/revenue expected — Stripe not live yet
 - Timestamp: 2026-03-19T23:30:00Z
+
+## Sprint 270 — Production Watchdog (Direct Write)
+- Status: PASS
+- Commit: c806a58
+- Files created: scripts/scs001/watchdog.ts, scripts/scs001/validate-watchdog.ts, reports/watchdog-latest.json, workspace/sprints/sprint-270.json
+- Files modified: ecosystem.config.js
+- Tasks completed:
+  - 270-01: Watchdog daemon — 6 health checks (pipeline staleness, gate deadline, ledger dupes, disk usage, captioned videos, smoke test)
+  - 270-02: PM2 config — kognai-watchdog cron every 6h
+  - 270-03: Validation: 11/11 tests pass
+- Swarm used: no (multi-file feature, FP-007)
+- Swarm bypassed: yes (FP-007). Manual crystallise: skipped (crystalliser not critical path).
+- Issues: None. Found 384 ledger duplicates and 0 posts — both surfaced as alerts.
+- Timestamp: 2026-03-19T22:00:00Z
