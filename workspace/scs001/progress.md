@@ -1295,3 +1295,14 @@ SESSION HANDOFF (2026-03-17, Sprints 166-170):
 - Swarm used: no (2-line surgical fixes)
 - Issues: None
 - Timestamp: 2026-03-19T17:45:00Z
+
+## Sprint 209 — Help Command Update (Direct Write)
+- Status: PASS
+- Commit: 9b3ddb5
+- Files modified: agents/telegram-bot/commands.ts
+- Files created: workspace/sprints/sprint-209.json
+- Tasks completed:
+  - 209-01: Added /send-video to /help text — key command for manual posting workflow
+- Swarm used: no (1-line edit)
+- Issues: None
+- Timestamp: 2026-03-19T18:00:00Z
