@@ -1903,3 +1903,15 @@ Full auto-posting pipeline built:
 - Swarm used: no (multi-file feature)
 - Issues: oEmbed API doesn't expose view counts directly; operator still needs /updateviews for exact counts. Title sync and liveness checks work.
 - Timestamp: 2026-03-19T22:45:00Z
+
+## Sprint 267 — Telegram /lastrun Command (Direct Write)
+- Status: PASS
+- Commit: e989363
+- Files created: scripts/scs001/validate-lastrun-cmd.ts, workspace/sprints/sprint-267.json
+- Files modified: agents/telegram-bot/commands.ts, agents/telegram-bot/index.ts
+- Tasks completed:
+  - 267-01: handleLastRun — stage-by-stage pipeline results, timing, summary, errors
+  - 267-02: Validation: 17/17 tests pass including TypeScript compile
+- Swarm used: no (active bot multi-file edit)
+- Issues: None
+- Timestamp: 2026-03-19T23:00:00Z
