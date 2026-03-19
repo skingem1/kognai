@@ -1519,3 +1519,14 @@ Operator quickstart: (1) bash scripts/pre-deploy-check.sh (2) ./scripts/pm2-boot
 - Swarm used: no (path fix)
 - Issues: None
 - Timestamp: 2026-03-19T23:45:00Z
+
+## Sprint 229 — Preflight Fix (Direct Write)
+- Status: PASS
+- Commit: 9886fa7
+- Files modified: scripts/production-preflight.ts
+- Files created: workspace/sprints/sprint-229.json
+- Tasks completed:
+  - 229-01: Fixed production-preflight.ts reading manual-posts.jsonl from data/ instead of workspace/scs001/. Gate progress was always 0 in preflight. Updated /send-video to /postnow.
+- Swarm used: no (path fix)
+- Issues: None
+- Timestamp: 2026-03-20T00:00:00Z
