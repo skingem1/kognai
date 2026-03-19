@@ -2131,3 +2131,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (single file edit)
 - Issues: None.
 - Timestamp: 2026-03-20T00:50:00Z
+
+## Sprint 285 — Telegram /onboard — First-Time Posting Walkthrough (Direct Write)
+- Status: PASS
+- Commit: 68ab8c4
+- Files created: workspace/sprints/sprint-285.json
+- Files modified: scripts/telegram-bot.ts (+58 lines)
+- Tasks completed:
+  - 285-01: /onboard command — 5-step guide for first TikTok post, daily workflow suggestion, links to /deliver and /record
+- Validation: TypeScript clean compile.
+- Swarm used: no (single file edit)
+- Issues: None.
+- Timestamp: 2026-03-20T01:00:00Z
