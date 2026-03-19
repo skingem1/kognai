@@ -149,12 +149,15 @@ export class InsightAgent {
   private async generateBrief(clip: ClipQualityScore): Promise<InsightBrief> {
     const prompt = buildPrompt(clip);
 
+    // Sprint 288: local-first mode — use T2 POWER (qwen3:14b, $0) instead of
+    // T3 APEX (cloud). Downstream QC stage catches low-quality output.
+    // Previous apex routing caused 26min timeouts with 0 insights generated.
     const result = await routeCall({
       task_type:           'insight_generation',
       tier_class:          'text',
-      complexity:          'apex',
+      complexity:          'power',
       context_tokens:      800,
-      constitutional_flag: true,
+      constitutional_flag: false,
       agent_id:            'scs001-insight',
       payload:             { prompt },
     });

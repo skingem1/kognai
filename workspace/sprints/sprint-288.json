@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-288",
+  "title": "Pipeline fix — InsightAgent local-first mode to unblock content generation",
+  "description": "InsightAgent forces constitutional_flag=true (T3 APEX cloud), causing 26min timeout and 0 insights in latest run. Fix by adding local_first mode: use T2 POWER (qwen3:14b, $0) for insight generation, with downstream QC as quality gate. Unblocks pipeline end-to-end.",
+  "source": "auto — pipeline latest.json shows 0 insights generated, blocking all downstream stages",
+  "tasks": [
+    {
+      "id": "288-01",
+      "title": "Update InsightAgent to use local-first routing (power tier instead of apex)",
+      "type": "bugfix",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-288",
+      "deliverables": { "code": ["agents/scs001-insight/index.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
