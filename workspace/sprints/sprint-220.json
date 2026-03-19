@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-220",
+  "title": "Gate Tracker Refresh — restore auto-generated data + dashboard accuracy",
+  "description": "Gate-tracker.md was stale (manual overwrite lost auto-generated data, Phase 0→1 showed Pending instead of PASS). Ran update-gate-tracker.ts to restore: Phase 0→1 PASS (176 videos), Phase 1.5 0/30 posts 19d left, Achiri waitlist=1 37d to Apr 25.",
+  "source": "autonomous",
+  "tasks": [
+    {
+      "id": "220-01",
+      "title": "Refresh gate-tracker.md with accurate auto-generated data",
+      "type": "modify",
+      "task_type": "ops",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "todo",
+      "priority": "high",
+      "sprint_id": "sprint-220",
+      "deliverables": { "code": [], "tests": [], "docs": ["docs/gate-tracker.md"] }
+    }
+  ]
+}
