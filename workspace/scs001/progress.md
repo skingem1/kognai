@@ -2143,3 +2143,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (single file edit)
 - Issues: None.
 - Timestamp: 2026-03-20T01:00:00Z
+
+## Sprint 286 — Telegram /pipeline — Content Inventory & Health Dashboard (Direct Write)
+- Status: PASS
+- Commit: fe2f608
+- Files created: workspace/sprints/sprint-286.json
+- Files modified: scripts/telegram-bot.ts (+90 lines)
+- Tasks completed:
+  - 286-01: /pipeline command — last run details, stage output counts, total inventory (ledger/scored/captioned/posted), actionable next step
+- Validation: TypeScript clean compile.
+- Swarm used: no (single file edit)
+- Issues: None.
+- Timestamp: 2026-03-20T01:15:00Z
