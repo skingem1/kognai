@@ -1876,3 +1876,17 @@ Full auto-posting pipeline built:
 - Swarm used: no (API server)
 - Issues: None. Add to PM2 for persistent monitoring.
 - Timestamp: 2026-03-20T08:00:00Z
+
+## Sprint 265 — Telegram Operator Commands (Direct Write)
+- Status: PASS
+- Commit: d799c60
+- Files created: scripts/scs001/validate-bot-commands.ts, workspace/sprints/sprint-265.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 265-01: /record command — record manual TikTok post with duplicate detection + gate stats
+  - 265-02: /queue command — top 5 unposted videos ranked by viral score, ready status
+  - 265-03: /review command — latest video details (QC, viral score, mp4, post status)
+  - 265-04: Validation: 18/18 tests pass + TypeScript clean compile
+- Swarm used: no (single-file multi-function edit)
+- Issues: None
+- Timestamp: 2026-03-19T22:30:00Z

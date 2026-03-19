@@ -1,5 +1,5 @@
 # KOGNAI SESSION MEMORY
-*Last updated: Sprint 161 — 2026-03-16*
+*Last updated: Sprint 265 — 2026-03-19*
 
 ---
 
@@ -10,11 +10,11 @@
 - Production mode: set `SCS_EDITING_MODE=production` + `TIKTOK_ACCESS_TOKEN` in .env
 
 ## Kognai State
-- Last commit: 3d15d9e (Sprint 161 shipped 2026-03-16)
+- Last commit: d799c60 (Sprint 265 shipped 2026-03-19)
 - Sprint numbering: Invoica legacy 001-062e → Kognai starts 063+
-- Current sprint: 162 (next)
+- Current sprint: 266 (next)
 - Gate reports: workspace/gates/phase0-phase1-gate.json, workspace/gates/phase1-activation-readiness.json, workspace/gates/production-quality-check.json
-- Gate status: 0/30 posts, ~22 days to Apr 7 Phase 1.5 gate (WARNING urgency)
+- Gate status: 0/30 posts, ~19 days to Apr 7 Phase 1.5 gate (WARNING urgency)
 - Stripe: NOT LIVE (STRIPE_SECRET_KEY not set — human action required)
 - Achiri alpha: Apr 25 (~40d) — deploy script ready (scripts/deploy-achiri.sh), alpha whitelist file-based
 
@@ -108,7 +108,9 @@
 | 159 | telegram | /today command — daily operator morning cockpit | ✅ PASS |
 | 160 | telegram | /viral command — trending topics content inspiration | ✅ PASS |
 | 161 | ops | Enrich daily digest with viral topics | ✅ PASS |
-| **162** | **?** | **NEXT** | ⏳ pending |
+| 162-264 | various | Sprints 162-264 (see git log) | ✅ PASS |
+| 265 | telegram | Telegram operator commands — /record, /queue, /review | ✅ PASS |
+| **266** | **?** | **NEXT** | ⏳ pending |
 
 ## SCS-001 Pipeline Architecture
 12 stages, 11 agents:
