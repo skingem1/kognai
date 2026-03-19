@@ -7,7 +7,8 @@
 
 import { randomUUID } from 'crypto';
 import { execSync } from 'child_process';
-import { existsSync, mkdirSync } from 'fs';
+import { existsSync, mkdirSync, readdirSync } from 'fs';
+import { join } from 'path';
 import type { ScriptBundle, ScriptSegment } from '../scs001-script/index';
 
 export interface EditedVideo {
@@ -109,6 +110,31 @@ function escapeDrawtext(text: string): string {
     .substring(0, 80); // cap length to avoid command overflow
 }
 
+// Find a real clip file for the given clip_id.
+// Lookup order:
+//   1. {clipsDir}/{clipId}.mp4           — exact match (clip downloaded with clip_id as filename)
+//   2. {clipsDir}/{clipId}*.mp4          — partial prefix match
+//   3. First available .mp4 in clipsDir  — round-robin fallback when pipeline hasn't matched IDs
+// Returns null if the directory is empty or doesn't exist.
+function findClipFile(clipsDir: string, clipId: string): string | null {
+  try {
+    if (!existsSync(clipsDir)) return null;
+    const files = readdirSync(clipsDir).filter(f => f.endsWith('.mp4'));
+    if (files.length === 0) return null;
+    // 1. Exact match
+    const exact = join(clipsDir, clipId + '.mp4');
+    if (existsSync(exact)) return exact;
+    // 2. Prefix match (e.g. clipId="clip-abc123" → "clip-abc123-..." file)
+    const prefix = files.find(f => f.startsWith(clipId));
+    if (prefix) return join(clipsDir, prefix);
+    // 3. Stable deterministic fallback: pick by hash of clipId to spread load across clips
+    const pick = files[Math.abs(clipId.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0)) % files.length];
+    return join(clipsDir, pick);
+  } catch {
+    return null;
+  }
+}
+
 // Production segment filter: colored background + drawtext overlay
 // Uses macOS system Helvetica font — no external dependency
 function buildProductionSegmentFilter(seg: ScriptSegment, idx: number, bundle: ScriptBundle): string {
@@ -165,6 +191,68 @@ function buildProductionFFmpegCommand(bundle: ScriptBundle, outputPath: string):
   ].join(' ');
 }
 
+// Real-clip FFmpeg command.
+// Input 0 : anullsrc (silent audio for full duration)
+// Input 1 : actual clip MP4 (real content — used for the 'clip' segment only)
+//
+// Structure:
+//   hook       → colored title card (dark navy)
+//   context    → colored title card (midnight blue)
+//   clip       → trimmed real clip, scaled to 1080×1920, 30 fps
+//   commentary → colored title card (purple)
+//   insight    → colored title card (red)
+//   loop       → colored title card (slate) — callback to hook tone
+//
+// Audio: silent throughout (TTS/voiceover layer added later).
+// Works without libfreetype — no drawtext dependency.
+function buildRealFFmpegCommand(bundle: ScriptBundle, outputPath: string, clipFile: string): string {
+  const segments = bundle.segments;
+  const filterParts: string[] = [];
+  const concatInputs: string[] = [];
+
+  segments.forEach((seg, idx) => {
+    const duration = seg.end_s - seg.start_s;
+    if (seg.segment_name === 'clip') {
+      // Use real video: trim to segment duration, force 1080×1920, 30 fps.
+      // The clips on disk are already 1080×1920 so scale is a no-op but keeps
+      // the filter chain robust if clip dimensions ever differ.
+      // setsar=1 normalises pixel aspect ratio (clips often have SAR ≠ 1:1)
+      // so concat can mix them with the 1:1 color sources without a mismatch error.
+      filterParts.push(
+        `[1:v]trim=start=0:duration=${duration},setpts=PTS-STARTPTS,` +
+        `scale=1080:1920:force_original_aspect_ratio=decrease,` +
+        `pad=1080:1920:(ow-iw)/2:(oh-ih)/2,fps=30,setsar=1[seg${idx}]`
+      );
+    } else {
+      const color = SEGMENT_COLORS[seg.segment_name];
+      filterParts.push(`color=c=${color}:s=1080x1920:d=${duration}:r=30[seg${idx}]`);
+    }
+    concatInputs.push(`[seg${idx}]`);
+  });
+
+  const concatFilter = concatInputs.join('') + `concat=n=${segments.length}:v=1:a=0[outv]`;
+  filterParts.push(concatFilter);
+
+  const filterComplex = filterParts.join('; ');
+  const totalDuration = bundle.total_duration_seconds;
+
+  return [
+    FFMPEG,
+    '-y',
+    '-f lavfi -i anullsrc=r=44100:cl=stereo',
+    `-i "${clipFile}"`,
+    `-filter_complex "${filterComplex}"`,
+    '-map "[outv]"',
+    '-map 0:a',
+    `-t ${totalDuration}`,
+    '-c:v libx264 -preset ultrafast -crf 23 -pix_fmt yuv420p',
+    '-c:a aac -b:a 128k',
+    '-movflags +faststart',
+    `-metadata title="SCS-001 ${bundle.script_id}"`,
+    `"${outputPath}"`,
+  ].join(' ');
+}
+
 export class EditingAgent {
   private outputDir: string;
 
@@ -198,14 +286,27 @@ export class EditingAgent {
     const videoId = 'video-' + randomUUID().slice(0, 8);
     const outputPath = this.outputDir + '/' + videoId + '.mp4';
 
-    // Build and execute FFmpeg command
-    // Production mode requires drawtext filter (libfreetype). Auto-fallback to mock if unavailable.
-    const wantsProduction = (process.env.SCS_EDITING_MODE ?? 'mock') === 'production';
-    const useProduction = wantsProduction && hasDrawtext();
-    const cmd = useProduction
-      ? buildProductionFFmpegCommand(bundle, outputPath)
-      : buildMockFFmpegCommand(bundle, outputPath);
-    const modeLabel = useProduction ? 'production' : (wantsProduction ? 'mock-fallback' : 'mock');
+    // Build and execute FFmpeg command.
+    // Priority:
+    //   1. real  — a clip file exists → use actual video for the 'clip' segment
+    //   2. production — drawtext (libfreetype) available → colored title cards + text overlays
+    //   3. mock  — pure colored blocks, no dependencies
+    const clipsDir = process.env.SCS_CLIPS_DIR ?? join(process.cwd(), 'clips');
+    const clipFile = findClipFile(clipsDir, bundle.clip_id);
+
+    let cmd: string;
+    let modeLabel: string;
+    if (clipFile) {
+      cmd = buildRealFFmpegCommand(bundle, outputPath, clipFile);
+      modeLabel = 'real (' + clipFile.split('/').pop() + ')';
+    } else {
+      const wantsProduction = (process.env.SCS_EDITING_MODE ?? 'mock') === 'production';
+      const useProduction = wantsProduction && hasDrawtext();
+      cmd = useProduction
+        ? buildProductionFFmpegCommand(bundle, outputPath)
+        : buildMockFFmpegCommand(bundle, outputPath);
+      modeLabel = useProduction ? 'production' : (wantsProduction ? 'mock-fallback' : 'mock');
+    }
     console.log('[EditingAgent] FFmpeg command length: ' + cmd.length + ' chars (mode: ' + modeLabel + ')');
 
     const startMs = Date.now();
@@ -242,4 +343,4 @@ export class EditingAgent {
 }
 
 // Export FFmpeg command builders for testing/debugging
-export { buildMockFFmpegCommand, buildProductionFFmpegCommand, buildProductionSegmentFilter };
+export { buildMockFFmpegCommand, buildProductionFFmpegCommand, buildProductionSegmentFilter, buildRealFFmpegCommand, findClipFile };
