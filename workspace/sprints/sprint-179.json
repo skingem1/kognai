@@ -8,7 +8,7 @@
       "task_type": "code",
       "task_target": "local",
       "agent": "coder",
-      "status": "pending",
+      "status": "done",
       "priority": "critical",
       "sprint_id": "sprint-179",
       "deliverables": {
@@ -28,7 +28,7 @@
       "task_type": "code",
       "task_target": "local",
       "agent": "coder",
-      "status": "pending",
+      "status": "done",
       "priority": "critical",
       "sprint_id": "sprint-179",
       "deliverables": {
@@ -38,7 +38,8 @@
         "tests": [],
         "docs": []
       },
-      "context": "FP-007: orchestrate-agents-v2.ts is ~3000 lines. SURGICAL ONLY — 3 targeted edits near executeTask() (line ~2203). Do NOT rewrite the file. Import already has wipeWitness at line ~64 — add humanBrake import immediately after on line ~66. humanBrake import: import { humanBrake } from './lib/omel/human-brake'. Before execute(): check if task.type === 'modify' && humanBrake.isHighRisk('bulk_overwrite', {filePath: task.deliverables?.code?.[0] || ''}), if true await humanBrake.requireApproval('bulk_overwrite'), if !result.approved skip execute and mark task SKIPPED."
+      "context": "FP-007: orchestrate-agents-v2.ts is ~3000 lines. SURGICAL ONLY — 3 targeted edits near executeTask() (line ~2203). Do NOT rewrite the file. Import already has wipeWitness at line ~64 — add humanBrake import immediately after on line ~66. humanBrake import: import { humanBrake } from './lib/omel/human-brake'. Before execute(): check if task.type === 'modify' && humanBrake.isHighRisk('bulk_overwrite', {filePath: task.deliverables?.code?.[0] || ''}), if true await humanBrake.requireApproval('bulk_overwrite'), if !result.approved skip execute and mark task SKIPPED.",
+      "_completion_note": "Done manually (FP-007 surgical edit). 3 edits applied: (1) import on line 66, (2) HumanBrake check block at line ~2277, (3) task.status='skipped' + MonotaskSM.release on rejection."
     }
   ],
   "source": "human",

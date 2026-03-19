@@ -62,6 +62,8 @@ import { phantomWorkspace } from './lib/omel/phantom-workspace';
 import { credentialVault } from './lib/omel/credential-vault';
 // OMEL AMD-13: Wipe Witness — detects destructive agent writes (shrink > 50%)
 import { wipeWitness, WitnessToken } from './lib/omel/wipe-witness';
+// OMEL AMD-13: Human Brake — human-in-the-loop approval gate for high-risk ops
+import { humanBrake } from './lib/omel/human-brake';
 
 // V17: Sovereign mode — force all inference to local Ollama ($0 cost floor)
 const SOVEREIGN_MODE = process.argv.includes('--sovereign') || process.env.SOVEREIGN_MODE === '1';
@@ -2270,6 +2272,20 @@ ONLY output the JSON array. No markdown, no explanation.`;
       const preTokens = new Map<string, WitnessToken>();
       for (const f of (task.deliverables?.code || [])) {
         if (existsSync(f)) preTokens.set(f, wipeWitness.beforeWrite(f, task.agent));
+      }
+
+      // OMEL AMD-13: HumanBrake — require approval for bulk_overwrite on high-risk files
+      if (task.type === 'modify' && (task.deliverables?.code || []).length > 0) {
+        const firstFile = ((task.deliverables?.code || []) as string[])[0] || '';
+        if (humanBrake.isHighRisk('bulk_overwrite', { filePath: firstFile })) {
+          const approval = await humanBrake.requireApproval('bulk_overwrite');
+          if (!approval.approved) {
+            log(c.yellow, `  [HumanBrake] SKIPPED: ${task.id} — ${approval.reason || 'not approved'}`);
+            task.status = 'skipped';
+            MonotaskSM.release(task.agent, task.id, `human brake: ${approval.reason || 'not approved'}`);
+            break; // exit attempt loop — task will not execute
+          }
+        }
       }
 
       // Execute with rejection feedback if retrying
