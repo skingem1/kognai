@@ -66,7 +66,8 @@ function checkEnv() {
 // ── 2. Gate Progress ────────────────────────────────────────────────────────
 
 function checkGates() {
-  const postsPath = join(ROOT, 'data', 'manual-posts.jsonl');
+  // Sprint 229: Fix path — manual-posts.jsonl is in workspace/scs001/, not data/
+  const postsPath = join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
   let postCount = 0;
   let totalViews = 0;
 
@@ -83,7 +84,7 @@ function checkGates() {
   const viewsNeeded = Math.max(0, 500 - totalViews);
 
   check('Phase 1.5 Gate (Apr 7)', `Posts: ${postCount}/30`, postCount >= 30, `${postsNeeded} more needed in ${daysToGate} days`,
-    `Post ${Math.ceil(postsNeeded / Math.max(daysToGate, 1))}/day: /send-video → download → post to TikTok → /record`);
+    `Post ${Math.ceil(postsNeeded / Math.max(daysToGate, 1))}/day: /postnow → save to phone → post to TikTok → /record`);
   check('Phase 1.5 Gate (Apr 7)', `Views: ${totalViews}/500`, totalViews >= 500, `${viewsNeeded} more needed`,
     'Views come from posting. Focus on getting 30 posts up first.');
   check('Phase 1.5 Gate (Apr 7)', `Days remaining: ${daysToGate}`, daysToGate > 7, `${daysToGate} days left`,

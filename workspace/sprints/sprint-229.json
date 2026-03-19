@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-229",
+  "title": "Preflight Fix — correct manual-posts path + command name update",
+  "description": "production-preflight.ts was reading manual-posts.jsonl from data/ (wrong) instead of workspace/scs001/ (correct). Gate progress was always 0 in preflight check. Also updated /send-video reference to /postnow.",
+  "source": "autonomous",
+  "tasks": [
+    {
+      "id": "229-01",
+      "title": "Fix preflight manual-posts.jsonl path and command name",
+      "type": "bugfix",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-229",
+      "deliverables": { "code": ["scripts/production-preflight.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
