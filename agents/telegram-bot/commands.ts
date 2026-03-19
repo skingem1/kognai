@@ -1198,11 +1198,15 @@ export async function handleQueue(chatId: number, ownerChatId: string): Promise<
 
   const ledgerCount  = ledgerEntries.length;
   const recordedCount = recordedIds.size;
-  const unposted = ledgerEntries
-    .filter(e => !recordedIds.has(e.video_id))
-    .sort((a, b) => b.published_at.localeCompare(a.published_at))
-    .slice(0, 5);
-  const unpostedTotal = ledgerEntries.filter(e => !recordedIds.has(e.video_id)).length;
+  const queueExperiments = loadExperimentsForReview();
+  const allUnposted = ledgerEntries.filter(e => !recordedIds.has(e.video_id));
+  allUnposted.sort((a, b) => {
+    const va = queueExperiments.get(a.video_id)?.partial_viral_score ?? -1;
+    const vb = queueExperiments.get(b.video_id)?.partial_viral_score ?? -1;
+    return vb - va;
+  });
+  const unposted = allUnposted.slice(0, 5);
+  const unpostedTotal = allUnposted.length;
 
   const gateDate   = new Date('2026-04-07T00:00:00Z');
   const daysLeft   = Math.max(1, Math.ceil((gateDate.getTime() - Date.now()) / 86400000));
@@ -1219,7 +1223,9 @@ export async function handleQueue(chatId: number, ownerChatId: string): Promise<
   ];
 
   unposted.forEach((e, i) => {
-    lines.push(``, `${i + 1}. \`${e.video_id}\``);
+    const vs = queueExperiments.get(e.video_id)?.partial_viral_score;
+    const vsTag = vs != null ? ` 🧬 ${vs}` : '';
+    lines.push(``, `${i + 1}. \`${e.video_id}\`${vsTag}`);
     lines.push(`   → \`/record ${e.video_id} 0\``);
     lines.push(`   _(update views later: /update-views ${e.video_id} <views>)_`);
   });
@@ -1391,10 +1397,18 @@ export async function handlePostNow(chatId: number, ownerChatId: string): Promis
       const mp4 = findCaptionedMp4(cwd, e.video_id);
       if (mp4) {
         ready.push({ ...e, filePath: mp4 });
-        if (ready.length >= 3) break;
       }
     }
   }
+
+  // Sort by viral score (highest first), then take top 3
+  const experiments = loadExperimentsForReview();
+  ready.sort((a, b) => {
+    const va = experiments.get(a.video_id)?.partial_viral_score ?? -1;
+    const vb = experiments.get(b.video_id)?.partial_viral_score ?? -1;
+    return vb - va;
+  });
+  ready.splice(3);
 
   const gateDate = new Date('2026-04-07T00:00:00Z');
   const daysLeft = Math.max(1, Math.ceil((gateDate.getTime() - Date.now()) / 86400000));
@@ -1419,7 +1433,9 @@ export async function handlePostNow(chatId: number, ownerChatId: string): Promis
 
   ready.forEach((v, i) => {
     const homePath = v.filePath.replace(process.env.HOME ?? '/Users/tarekmnif', '~');
+    const viralScore = experiments.get(v.video_id)?.partial_viral_score;
     lines.push(`*${i + 1}. \`${v.video_id}\`*`);
+    if (viralScore != null) lines.push(`   🧬 Viral: ${viralScore}`);
     if (v.speaker) lines.push(`   🎙️ Speaker: ${v.speaker}`);
     if (v.topic)   lines.push(`   📝 Topic: ${v.topic.slice(0, 70)}`);
     lines.push(`   📁 \`${homePath}\``);
@@ -1875,14 +1891,20 @@ export async function handlePostBatch(chatId: number, ownerChatId: string, text:
     .map(l => { try { return JSON.parse(l); } catch { return null; } })
     .filter(Boolean) as LedgerEntry[];
 
-  // Find up to N unposted entries with valid captioned mp4 on disk
-  const batch: Array<{ entry: LedgerEntry; mp4: string }> = [];
+  // Find all unposted entries with valid captioned mp4 on disk, then sort by viral score
+  const allReady: Array<{ entry: LedgerEntry; mp4: string }> = [];
   for (const e of allEntries) {
-    if (batch.length >= N) break;
     if (recordedIds.has(e.video_id)) continue;
     const mp4 = findCaptionedMp4(cwd, e.video_id);
-    if (mp4) batch.push({ entry: e, mp4 });
+    if (mp4) allReady.push({ entry: e, mp4 });
   }
+  const batchExperiments = loadExperimentsForReview();
+  allReady.sort((a, b) => {
+    const va = batchExperiments.get(a.entry.video_id)?.partial_viral_score ?? -1;
+    const vb = batchExperiments.get(b.entry.video_id)?.partial_viral_score ?? -1;
+    return vb - va;
+  });
+  const batch = allReady.slice(0, N);
 
   if (batch.length === 0) {
     await sendMessage(chatId, '⚠️ No ready unposted videos found. Run pipeline or check /queue.');
@@ -1911,8 +1933,12 @@ export async function handlePostBatch(chatId: number, ownerChatId: string, text:
     const caption = `${hookText}\n\n${hashtags}`;
     const speakerLine = entry.speaker ? `🎙️ ${entry.speaker}` : '';
 
+    const viralScore = batchExperiments.get(entry.video_id)?.partial_viral_score;
+    const viralLine = viralScore != null ? `🧬 Viral: ${viralScore}` : '';
+
     const header = [
       `🎬 *Video ${i + 1}/${batch.length}:* \`${entry.video_id}\``,
+      viralLine,
       speakerLine,
       `📁 \`${mp4}\``,
     ].filter(Boolean).join('\n');

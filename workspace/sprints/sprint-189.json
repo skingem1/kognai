@@ -1,0 +1,60 @@
+{
+  "tasks": [
+    {
+      "id": "189-01",
+      "title": "Sort /post-now by viral score — agents/telegram-bot/commands.ts",
+      "description": "In handlePostNow(), after collecting ready[] videos, cross-reference with loadExperimentsForReview() to get partial_viral_score. Sort ready[] by viral score desc (nulls last). Show viral score emoji line per video: 🧬 Viral: 0.72. Surgical edit only.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "todo",
+      "priority": "critical",
+      "sprint_id": "sprint-189",
+      "deliverables": {
+        "code": ["agents/telegram-bot/commands.ts"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Sprint 189. Operator needs to post highest-viral-score videos first for Apr 7 gate."
+    },
+    {
+      "id": "189-02",
+      "title": "Sort /post-batch by viral score — agents/telegram-bot/commands.ts",
+      "description": "In handlePostBatch(), after collecting batch[] entries, cross-reference with loadExperimentsForReview() to get partial_viral_score. Sort batch[] by viral score desc (nulls last). Show viral score line per video. Surgical edit only.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "todo",
+      "priority": "high",
+      "sprint_id": "sprint-189",
+      "deliverables": {
+        "code": ["agents/telegram-bot/commands.ts"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Sprint 189. Same viral score prioritization for batch posting command."
+    },
+    {
+      "id": "189-03",
+      "title": "Show viral score in /queue top-5 — agents/telegram-bot/commands.ts",
+      "description": "In handleQueue(), cross-reference top-5 unposted entries with loadExperimentsForReview() to show partial_viral_score inline. Sort by viral score desc. Show 🧬 after video_id. Surgical edit only.",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "todo",
+      "priority": "high",
+      "sprint_id": "sprint-189",
+      "deliverables": {
+        "code": ["agents/telegram-bot/commands.ts"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Sprint 189. Queue overview should also show viral scores."
+    }
+  ],
+  "source": "human",
+  "_plan_reference": "Sprint 189: Viral Score Posting Priority. Surface viral scores in /post-now, /post-batch, /queue so operator posts highest-scoring videos first."
+}
