@@ -1,0 +1,68 @@
+{
+  "sprint_id": "sprint-260",
+  "title": "Docs site — architecture + API + agent catalog",
+  "description": "Public documentation site for kognai.ai using VitePress. Architecture overview, 5-tier model router API, agent catalog, SCS-001 pipeline docs.",
+  "source": "queue-prescribed (sprint-246 from queue, numbered 260 by git sequence)",
+  "tasks": [
+    {
+      "id": "260-01",
+      "title": "VitePress project scaffolding + config + index page",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-260",
+      "deliverables": { "code": ["docs-site/.vitepress/config.ts", "docs-site/index.md"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "260-02",
+      "title": "Architecture overview page — 9-layer + 5 products + model tiers",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-260",
+      "deliverables": { "code": ["docs-site/architecture.md"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "260-03",
+      "title": "Agent catalog page — all 27 agents with descriptions",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-260",
+      "deliverables": { "code": ["docs-site/agents.md"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "260-04",
+      "title": "ClawRouter API reference — 5-tier routing, endpoints, config",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-260",
+      "deliverables": { "code": ["docs-site/api/clawrouter.md"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "260-05",
+      "title": "Validation script for docs site structure",
+      "type": "test",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-260",
+      "deliverables": { "code": ["scripts/launch/validate-docs-site.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
