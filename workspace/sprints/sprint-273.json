@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-273",
+  "title": "Content calendar enrichment — merge experiment data into calendar slots",
+  "description": "Fix content calendar generator to pull speaker, topic, and hook_formula from experiments.jsonl instead of using raw ledger data (which had 'unknown' speakers and empty topics). Calendar now shows real content metadata.",
+  "source": "auto — calendar showed 'unknown' speakers and null scores despite experiments having real data",
+  "tasks": [
+    {
+      "id": "273-01",
+      "title": "Fix calendar generator experiment data merge",
+      "type": "bugfix",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "complete",
+      "priority": "high",
+      "sprint_id": "sprint-273",
+      "deliverables": { "code": ["scripts/scs001/generate-content-calendar.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

@@ -36,6 +36,7 @@ interface CalendarEntry {
   viral_score: number | null;
   speaker: string;
   topic: string;
+  hook_formula?: string;
 }
 
 interface Calendar {
@@ -88,10 +89,16 @@ function main() {
   // Find unposted videos with mp4 on disk, sorted by viral score
   const unposted = ledger
     .filter(e => !recordedIds.has(e.video_id) && findCaptionedMp4(e.video_id))
-    .map(e => ({
-      ...e,
-      viral_score: experiments.get(e.video_id)?.partial_viral_score ?? null,
-    }))
+    .map(e => {
+      const exp = experiments.get(e.video_id) as any;
+      return {
+        ...e,
+        viral_score: exp?.partial_viral_score ?? null,
+        speaker: exp?.speaker ?? e.speaker ?? 'unknown',
+        topic: exp?.topic ?? e.topic ?? '',
+        hook_formula: exp?.hook_formula ?? '',
+      };
+    })
     .sort((a, b) => (b.viral_score ?? -1) - (a.viral_score ?? -1));
 
   console.log(`📊 ${unposted.length} unposted videos with mp4 on disk`);
@@ -123,6 +130,7 @@ function main() {
         viral_score: v.viral_score,
         speaker: v.speaker ?? 'unknown',
         topic: (v.topic ?? '').slice(0, 80),
+        hook_formula: v.hook_formula || undefined,
       });
     }
   }
