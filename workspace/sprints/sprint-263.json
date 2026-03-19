@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-263",
+  "title": "Stripe webhook integration test — signature + event dispatch",
+  "description": "Integration test for Stripe webhook: signature verification (valid, invalid, expired), event dispatch (subscription created, canceled, payment failed), and server health endpoint. No external API calls.",
+  "source": "auto — queue empty, Stripe revenue path needs validation before go-live",
+  "tasks": [
+    {
+      "id": "263-01",
+      "title": "Stripe webhook integration test suite",
+      "type": "test",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-263",
+      "deliverables": { "code": ["scripts/stripe/test-webhook-integration.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
