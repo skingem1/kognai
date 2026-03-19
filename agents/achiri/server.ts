@@ -35,20 +35,31 @@ function send(res: http.ServerResponse, status: number, payload: unknown): void 
 
 const memStore = new AchiriMemoryStore();
 
-// Cache handlers per tier (constructor reads files from disk once)
-const handlerCache: Partial<Record<string, AchiriConversationHandler>> = {};
+// Sprint 296: LRU handler cache — evicts oldest when exceeding MAX_CACHED_HANDLERS
+const MAX_CACHED_HANDLERS = 100;
+const handlerCache = new Map<string, AchiriConversationHandler>();
 
 function getHandler(tier: string, userId: string): AchiriConversationHandler {
   const validTier = ['free', 'tnd_basic', 'tnd_premium'].includes(tier) ? tier : 'free';
-  // userId-keyed so memory is per-user
   const cacheKey = validTier + ':' + userId;
-  if (!handlerCache[cacheKey]) {
-    handlerCache[cacheKey] = new AchiriConversationHandler(
-      validTier as 'free' | 'tnd_basic' | 'tnd_premium',
-      userId,
-    );
+  const existing = handlerCache.get(cacheKey);
+  if (existing) {
+    // Move to end (most recently used)
+    handlerCache.delete(cacheKey);
+    handlerCache.set(cacheKey, existing);
+    return existing;
   }
-  return handlerCache[cacheKey]!;
+  // Evict oldest if at capacity
+  if (handlerCache.size >= MAX_CACHED_HANDLERS) {
+    const oldest = handlerCache.keys().next().value!;
+    handlerCache.delete(oldest);
+  }
+  const handler = new AchiriConversationHandler(
+    validTier as 'free' | 'tnd_basic' | 'tnd_premium',
+    userId,
+  );
+  handlerCache.set(cacheKey, handler);
+  return handler;
 }
 
 const server = http.createServer(async (req, res) => {
@@ -57,7 +68,7 @@ const server = http.createServer(async (req, res) => {
 
   // GET /health
   if (method === 'GET' && url === '/health') {
-    return send(res, 200, { status: 'ok', version: '127', uptime_s: Math.floor((Date.now() - START_TIME) / 1000) });
+    return send(res, 200, { status: 'ok', version: '296', uptime_s: Math.floor((Date.now() - START_TIME) / 1000), cached_handlers: handlerCache.size });
   }
 
   // GET /upgrade?tier=tnd_basic&userId=xxx
@@ -89,10 +100,11 @@ const server = http.createServer(async (req, res) => {
     const userId = decodeURIComponent(url.slice('/memory/'.length));
     if (!userId) return send(res, 400, { error: 'userId required' });
     memStore.clearHistory(userId);
-    // Also evict from handler cache
-    for (const key of Object.keys(handlerCache)) {
-      if (key.endsWith(':' + userId)) delete handlerCache[key];
-    }
+    // Also evict from handler cache (Sprint 296: Map-based)
+    const suffix = ':' + userId;
+    Array.from(handlerCache.keys()).forEach(key => {
+      if (key.endsWith(suffix)) handlerCache.delete(key);
+    });
     console.log('[Achiri API] memory cleared for user:', userId);
     return send(res, 200, { ok: true });
   }

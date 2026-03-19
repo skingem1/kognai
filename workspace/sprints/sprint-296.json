@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-296",
+  "title": "Achiri alpha hardening — handler cache eviction + version fix",
+  "description": "Achiri server caches a handler per user:tier forever, leaking memory as user count grows. Add LRU eviction (max 100 cached handlers). Also fix hardcoded version '127' to use pkg version.",
+  "source": "auto — Achiri server code audit before Apr 25 alpha",
+  "tasks": [
+    {
+      "id": "296-01",
+      "title": "Add LRU cache eviction for Achiri handler instances",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-296",
+      "deliverables": { "code": ["agents/achiri/server.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "296-02",
+      "title": "Fix health endpoint version to auto-derive from package or sprint",
+      "type": "bugfix",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "low",
+      "sprint_id": "sprint-296",
+      "deliverables": { "code": ["agents/achiri/server.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
