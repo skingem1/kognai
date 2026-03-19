@@ -1497,3 +1497,14 @@ Operator quickstart: (1) bash scripts/pre-deploy-check.sh (2) ./scripts/pm2-boot
 - Swarm used: no (surgical edit to existing handlers)
 - Issues: None. Pre-existing command name normalization (post-now→postnow etc) was included in the diff.
 - Timestamp: 2026-03-19T23:15:00Z
+
+## Sprint 227 — Posting Reminder Video Delivery (Direct Write)
+- Status: PASS
+- Commit: b40b521
+- Files modified: scripts/posting-reminder.ts
+- Files created: workspace/sprints/sprint-227.json
+- Tasks completed:
+  - 227-01: posting-reminder.ts now sends best-scoring video file via sendVideo after text nudge. sendVideoTelegram() added (multipart/form-data upload). Noon + evening reminders deliver video to Telegram for save-to-phone. All posting touchpoints now deliver videos: /postnow (226), /postbatch (226), reminders (227).
+- Swarm used: no (single-file edit)
+- Issues: None
+- Timestamp: 2026-03-19T23:30:00Z
