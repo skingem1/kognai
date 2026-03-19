@@ -122,6 +122,7 @@ export async function handleHelp(chatId: number): Promise<void> {
     '/achiri-health — Achiri server status (owner)',
     '/pm2-status — All PM2 processes: status, uptime, restarts (owner)',
     '/health — Full system health check: env, gate, PM2, Achiri, pipeline (owner)',
+    '/preflight — Production go-live checklist with operator action items (owner)',
     '',
     '/help — This message',
   ].join('\n'));
@@ -2271,4 +2272,75 @@ export async function handleHealth(chatId: number, ownerChatId: string): Promise
   lines.push('', `*Summary: ${envOk}/${envChecks.length} env vars set*`);
 
   await sendMessage(chatId, lines.join('\n'));
+}
+
+// ── /preflight — Production Preflight Checklist (Sprint 200) ─────────────
+
+export async function handlePreflight(chatId: number, ownerChatId: string): Promise<void> {
+  if (String(chatId) !== ownerChatId) { await sendMessage(chatId, '🔒 Owner only.'); return; }
+
+  await sendMessage(chatId, '🚀 Running production preflight...');
+
+  try {
+    const output = execSync('npx ts-node scripts/production-preflight.ts --json 2>/dev/null', {
+      timeout: 30000,
+      cwd: process.cwd(),
+    }).toString();
+
+    const result = JSON.parse(output);
+    const { checks: chks, summary } = result;
+
+    const lines: string[] = [
+      `🚀 *Production Preflight* — ${summary.passed}/${summary.total} passed`,
+      '',
+    ];
+
+    // Group by category
+    const categories = new Map<string, typeof chks>();
+    for (const c of chks) {
+      if (!categories.has(c.category)) categories.set(c.category, []);
+      categories.get(c.category)!.push(c);
+    }
+
+    for (const [cat, items] of categories) {
+      lines.push(`*${cat}*`);
+      for (const item of items) {
+        lines.push(`${item.pass ? '✅' : '❌'} ${item.name}`);
+      }
+      lines.push('');
+    }
+
+    if (summary.actions.length > 0) {
+      lines.push(`🔧 *Action items (${summary.actions.length}):*`);
+      for (const a of summary.actions.slice(0, 8)) {
+        lines.push(`• ${a.name}: ${a.action}`);
+      }
+      if (summary.actions.length > 8) lines.push(`... +${summary.actions.length - 8} more`);
+    }
+
+    await sendMessage(chatId, lines.join('\n'));
+  } catch (e: any) {
+    // Preflight script exits 1 on failures — parse its JSON output from stderr
+    try {
+      const output = execSync('npx ts-node scripts/production-preflight.ts --json 2>&1 || true', {
+        timeout: 30000,
+        cwd: process.cwd(),
+      }).toString();
+      const result = JSON.parse(output);
+      const { summary } = result;
+
+      const failed = result.checks.filter((c: any) => !c.pass);
+      const lines = [
+        `🚀 *Preflight* — ${summary.passed}/${summary.total} passed`,
+        '',
+        '*Failed checks:*',
+        ...failed.map((c: any) => `❌ ${c.name}: ${c.detail}`),
+        '',
+        `🔧 *${summary.actions.length} action items* — run full check: \`npx ts-node scripts/production-preflight.ts\``,
+      ];
+      await sendMessage(chatId, lines.join('\n'));
+    } catch {
+      await sendMessage(chatId, '❌ Preflight check failed to run. Try CLI: `npx ts-node scripts/production-preflight.ts`');
+    }
+  }
 }

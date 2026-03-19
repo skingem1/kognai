@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-200",
+  "title": "Production Preflight — Go-Live Checklist + /preflight Command",
+  "description": "Comprehensive production preflight: 21 checks across 5 categories (env, gates, pipeline, PM2, Achiri). CLI + JSON + Telegram. Result: 11/21 passed, 10 actionable items for operator.",
+  "source": "autonomous",
+  "tasks": [
+    {
+      "id": "200-01",
+      "title": "scripts/production-preflight.ts — comprehensive go-live checklist",
+      "type": "create",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-200",
+      "deliverables": { "code": ["scripts/production-preflight.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "200-02",
+      "title": "/preflight Telegram command — operator go-live checklist",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-200",
+      "deliverables": { "code": ["agents/telegram-bot/commands.ts", "agents/telegram-bot/index.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
