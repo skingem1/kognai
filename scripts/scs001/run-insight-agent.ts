@@ -43,8 +43,8 @@ async function main(): Promise<void> {
     console.log('Loaded: ' + allClips.length + ' clips → ' + qualifiedClips.length + ' qualified');
   } else {
     console.log('Mode: FULL PIPELINE — running Block A first...');
-    const trendBatch  = new TrendAgent().run();
-    const discoveries = new DiscoveryAgent().run(trendBatch);
+    const trendBatch  = await new TrendAgent().run();
+    const discoveries = await new DiscoveryAgent().run(trendBatch);
     const allClips    = await new ClipDetectionAgent().run(discoveries);
     qualifiedClips    = allClips.filter(c => c.qualified);
     console.log('Block A: ' + allClips.length + ' clips → ' + qualifiedClips.length + ' qualified');

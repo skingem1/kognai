@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-216",
+  "title": "TypeScript Fix — missing await in SCS-001 runner scripts",
+  "description": "Runner scripts (run-discovery-agent.ts, run-clip-detection.ts, run-insight-agent.ts, run-trend-agent.ts) call async agent.run() without await, causing TS2339/TS2345 errors and broken runtime behavior. Fix: add missing await calls.",
+  "source": "autonomous",
+  "tasks": [
+    {
+      "id": "216-01",
+      "title": "Add missing await calls in SCS-001 runner scripts",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "todo",
+      "priority": "medium",
+      "sprint_id": "sprint-216",
+      "deliverables": { "code": ["scripts/scs001/run-discovery-agent.ts", "scripts/scs001/run-clip-detection.ts", "scripts/scs001/run-insight-agent.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

@@ -34,12 +34,12 @@ async function main(): Promise<void> {
   } else {
     console.log('Running full Block A pipeline (Trend → Discovery → ClipDetection)...');
     const trendAgent = new TrendAgent();
-    const batch = trendAgent.run();
+    const batch = await trendAgent.run();
     batchId = batch.batch_id;
     if (!DRY_RUN) saveBatch(batch, join(ROOT, 'workspace', 'scs001', 'trend-outputs'));
 
     const discoveryAgent = new DiscoveryAgent();
-    discoveries = discoveryAgent.run(batch);
+    discoveries = await discoveryAgent.run(batch);
     if (!DRY_RUN) {
       const discDir = join(ROOT, 'workspace', 'scs001', 'discovery-outputs');
       if (!existsSync(discDir)) mkdirSync(discDir, { recursive: true });

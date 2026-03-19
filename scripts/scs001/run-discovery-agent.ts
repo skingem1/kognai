@@ -30,7 +30,7 @@ async function main(): Promise<void> {
   } else {
     console.log('Running Trend Agent first...');
     const trendAgent = new TrendAgent();
-    trendBatch = trendAgent.run();
+    trendBatch = await trendAgent.run();
     if (!DRY_RUN) {
       const trendDir = join(ROOT, 'workspace', 'scs001', 'trend-outputs');
       saveBatch(trendBatch, trendDir);
@@ -41,7 +41,7 @@ async function main(): Promise<void> {
 
   // Step 2: Run Discovery Agent
   const discovery = new DiscoveryAgent();
-  const outputs: DiscoveryOutput[] = discovery.run(trendBatch);
+  const outputs: DiscoveryOutput[] = await discovery.run(trendBatch);
 
   console.log(`\n📋 Discovery Results (${outputs.length} candidates):`);
   outputs.forEach(o => {

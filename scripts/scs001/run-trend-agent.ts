@@ -1,41 +1,32 @@
-import path from 'path';
-import { mkdir } from 'fs/promises';
-import { TrendAgent } from '../agents/trend-agent';
+#!/usr/bin/env ts-node
+// SCS-001 Block A — Trend Agent Runner
+// Usage: npx ts-node scripts/scs001/run-trend-agent.ts [--dry-run]
 
-const main = async () => {
-  const args = process.argv.slice(2);
-  const validArgs = new Set(['--dry-run', '--help']);
-  const unknownArgs = args.filter(arg => !validArgs.has(arg));
+import { TrendAgent, saveBatch } from '../../agents/scs001-trend/index';
+import { join } from 'path';
 
-  if (unknownArgs.length > 0) {
-    console.log(`Unknown arguments: ${unknownArgs.join(', ')}`);
-    console.log('Usage: npx ts-node scripts/scs001/run-trend-agent.ts [--dry-run] [--help]');
-    process.exit(1);
+const args = process.argv.slice(2);
+const DRY_RUN = args.includes('--dry-run');
+const ROOT = join(__dirname, '..', '..');
+const OUT_DIR = join(ROOT, 'workspace', 'scs001', 'trend-outputs');
+
+async function main(): Promise<void> {
+  console.log('\n📡 SCS-001 Trend Agent — Starting...\n');
+
+  const agent = new TrendAgent();
+  const batch = await agent.run();
+
+  console.log(`Batch: ${batch.batch_id} (${batch.topics.length} topics)`);
+  batch.topics.forEach(t => {
+    console.log(`  [${t.confidence_score}] ${t.topic_name}`);
+  });
+
+  if (!DRY_RUN) {
+    saveBatch(batch, OUT_DIR);
+    console.log(`\n✅ Saved → ${OUT_DIR}`);
+  } else {
+    console.log('\n[DRY RUN] Output not saved.');
   }
+}
 
-  const dryRun = args.includes('--dry-run');
-  const help = args.includes('--help');
-
-  if (help) {
-    console.log('Usage: npx ts-node scripts/scs001/run-trend-agent.ts [--dry-run] [--help]');
-    return;
-  }
-
-  const outputDir = path.join(__dirname, '..', '..', 'workspace', 'scs001', 'trend-outputs');
-
-  try {
-    await mkdir(outputDir, { recursive: true });
-  } catch (err) {
-    console.error(`Failed to create output directory ${outputDir}:`, err);
-    process.exit(1);
-  }
-
-  try {
-    await TrendAgent.run({ outputDir, dryRun });
-  } catch (err) {
-    console.error('Error running TrendAgent:', err);
-    process.exit(1);
-  }
-};
-
-main();
+main().catch(err => { console.error('Trend Agent failed:', err); process.exit(1); });
