@@ -1113,3 +1113,16 @@ SESSION HANDOFF (2026-03-17, Sprints 166-170):
   - test-clawrouter-e2e.ts: Committed existing untracked ClawRouter gateway e2e test. 4-step validation: health check, T3 APEX gateway-only, T2.5 EXEC, verdict.
 - Impact: Viral scores now integrated in ALL posting surfaces: /post-now, /post-batch, /queue, /review, posting-reminder (noon+evening), daily-digest (morning). Operator always sees best content first.
 - Timestamp: 2026-03-19T16:00:00Z
+
+## Sprint 191 — Dashboard Viral Score Panel (Phase 1 — dashboard)
+- Status: PASS
+- Commit: de673d8
+- Files created: workspace/sprints/sprint-191.json
+- Files modified: dashboard/parsers/experiments.py, dashboard/static/app.js
+- Test: Python parser test PASS (78 experiments loaded, viral_stats={} as expected — no batch-scored videos yet)
+- Swarm used: no (direct write — 2 surgical edits)
+- Changes:
+  - experiments.py: get_experiment_stats() now returns viral_stats dict: scored_count, avg_viral, max_viral, min_viral, above_07 (videos ≥0.7 viral score).
+  - app.js: renderExperiments() adds second stats row when viral data present: Avg Viral, Scored, ≥0.7 (High), Max Viral. Gracefully hidden when no viral data.
+- Impact: Dashboard now shows viral metrics alongside experiment stats. Will populate after batch-viral-score.ts runs.
+- Timestamp: 2026-03-19T16:30:00Z
