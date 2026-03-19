@@ -2179,3 +2179,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (surgical edit)
 - Issues: Previous pipeline runs showed 0 insights after 26min timeout due to cloud dependency.
 - Timestamp: 2026-03-20T01:35:00Z
+
+## Sprint 289 — Port /pipeline to Production Telegram Bot (Direct Write)
+- Status: PASS
+- Commit: f867b5c
+- Files created: workspace/sprints/sprint-289.json
+- Files modified: agents/telegram-bot/commands.ts (+105 lines), agents/telegram-bot/index.ts (+2 lines)
+- Tasks completed:
+  - 289-01: handlePipeline added to production bot — last run health, stage output, total inventory, actionable next step
+- Validation: TypeScript clean compile.
+- Swarm used: no (direct write)
+- Issues: Discovered Sprint 286-287 added commands to legacy scripts/telegram-bot.ts; PM2 runs agents/telegram-bot/.
+- Timestamp: 2026-03-20T01:50:00Z
