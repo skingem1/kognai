@@ -130,6 +130,7 @@ export async function handleHelp(chatId: number): Promise<void> {
     '/metrics — Pipeline performance metrics: throughput, QC rate, trends (owner)',
     '/revenue — Revenue dashboard: subscribers, MRR, financial gates (owner)',
     '/pipeline — Content pipeline inventory + health dashboard (owner)',
+    '/runpipeline — Trigger pipeline run on demand (owner)',
     '/pm2status — All PM2 processes: status, uptime, restarts (owner)',
     '/health — Full system health check: env, gate, PM2, Achiri, pipeline (owner)',
     '/preflight — Production go-live checklist with operator action items (owner)',
@@ -3315,6 +3316,90 @@ export async function handleDedup(chatId: number, ownerChatId: string, text: str
   } catch (err) {
     await sendMessage(chatId, `❌ Dedup failed: ${(err as Error).message?.slice(0, 100)}`);
   }
+}
+
+// ── /runpipeline — Trigger pipeline run on demand — Sprint 290 ───────────────
+
+let pipelineRunning = false;
+
+export async function handleRunPipeline(chatId: number, ownerChatId: string, text: string): Promise<void> {
+  if (String(chatId) !== ownerChatId) {
+    await sendMessage(chatId, '🔒 Owner only.');
+    return;
+  }
+
+  if (pipelineRunning) {
+    await sendMessage(chatId, '⏳ Pipeline already running. Wait for it to finish or check `/lastrun`.');
+    return;
+  }
+
+  const mode = text.includes('mock') ? 'mock' : 'live';
+  await sendMessage(chatId, `🚀 *Starting pipeline run (${mode} mode)...*\n\nThis may take 5-30 minutes. I'll notify you when done.`);
+
+  pipelineRunning = true;
+  const { spawn } = require('child_process');
+  const startTime = Date.now();
+
+  const child = spawn('node', [
+    '-r', 'ts-node/register',
+    'agents/scs001-orchestrator/run-pipeline.ts',
+    mode,
+  ], {
+    cwd: process.cwd(),
+    env: {
+      ...process.env,
+      TS_NODE_TRANSPILE_ONLY: 'true',
+      TS_NODE_PROJECT: join(process.cwd(), 'tsconfig.scripts.json'),
+    },
+    stdio: ['ignore', 'pipe', 'pipe'],
+    detached: false,
+  });
+
+  let stdout = '';
+  let stderr = '';
+  child.stdout.on('data', (d: Buffer) => { stdout += d.toString(); });
+  child.stderr.on('data', (d: Buffer) => { stderr += d.toString(); });
+
+  child.on('close', async (code: number | null) => {
+    pipelineRunning = false;
+    const elapsed = Math.round((Date.now() - startTime) / 1000);
+
+    if (code === 0) {
+      // Read latest.json for summary
+      const latestPath = join(process.cwd(), 'reports', 'pipeline-runs', 'latest.json');
+      let summary = '';
+      try {
+        const run = JSON.parse(readFileSync(latestPath, 'utf-8'));
+        const s = run.summary ?? {};
+        summary = [
+          `Topics: ${s.topics_found ?? 0}`,
+          `Clips: ${s.clips_discovered ?? 0}`,
+          `Scripts: ${s.scripts_produced ?? 0}`,
+          `Videos: ${s.videos_edited ?? 0}`,
+          `Captioned: ${s.videos_captioned ?? 0}`,
+          `Published: ${s.published ?? 0}`,
+        ].join(' · ');
+      } catch {}
+
+      await sendMessage(chatId,
+        `✅ *Pipeline complete!* (${elapsed}s, ${mode})\n\n${summary}\n\nUse \`/lastrun\` for details or \`/pipeline\` for inventory.`
+      );
+    } else {
+      const errSnippet = stderr.slice(-300) || stdout.slice(-300) || 'No output captured';
+      await sendMessage(chatId,
+        `❌ *Pipeline failed* (exit ${code}, ${elapsed}s)\n\n\`\`\`\n${errSnippet.slice(0, 200)}\n\`\`\``
+      );
+    }
+  });
+
+  // Safety timeout: 40 minutes
+  setTimeout(() => {
+    if (pipelineRunning) {
+      try { child.kill('SIGTERM'); } catch {}
+      pipelineRunning = false;
+      sendMessage(chatId, '⚠️ Pipeline timed out after 40 minutes. Killed.').catch(() => {});
+    }
+  }, 40 * 60 * 1000);
 }
 
 // ── /pipeline — Content pipeline inventory & health — Sprint 289 ─────────────

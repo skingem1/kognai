@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-290",
+  "title": "Telegram /runpipeline — trigger pipeline on demand",
+  "description": "Add /runpipeline command to trigger a live pipeline run from Telegram. Spawns the orchestrator as a background child process, notifies operator when complete. Currently pipeline only runs on 4x daily PM2 cron.",
+  "source": "auto — operator needs on-demand content generation to hit 30-post gate",
+  "tasks": [
+    {
+      "id": "290-01",
+      "title": "Add handleRunPipeline to production Telegram bot",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-290",
+      "deliverables": { "code": ["agents/telegram-bot/commands.ts", "agents/telegram-bot/index.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
