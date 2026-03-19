@@ -100,6 +100,7 @@ export async function handleHelp(chatId: number): Promise<void> {
     '/stripestatus — Stripe go-live checklist (owner)',
     '/tiktokstatus — TikTok live mode readiness (owner)',
     '/tiktokauth — TikTok OAuth flow: get/refresh access token (owner)',
+    '/autopost — Auto-post daemon: status, run, dry-run (owner)',
     '/gate — Phase 1.5 gate review (Apr 7 kill switch)',
     '/postreminder — Apr 7 gate progress + posting workflow (owner)',
     '/review — Top-3 QC-passed videos for manual posting (owner)',
@@ -2495,4 +2496,103 @@ export async function handleTiktokAuth(chatId: number, ownerChatId: string): Pro
   ];
 
   await sendMessage(chatId, lines.join('\n'));
+}
+
+// ── Auto-Post status — Sprint 233 ────────────────────────────────────────────
+// Owner-only: shows auto-post daemon status and allows triggering manual run.
+export async function handleAutoPost(chatId: number, ownerChatId: string, text: string): Promise<void> {
+  if (String(chatId) !== ownerChatId) {
+    await sendMessage(chatId, '🔒 Owner only.');
+    return;
+  }
+
+  const arg = text.split(/\s+/)[1]?.toLowerCase();
+
+  // /autopost run — trigger immediate run
+  if (arg === 'run') {
+    await sendMessage(chatId, '🚀 Triggering auto-post run...');
+    try {
+      const output = execSync('npx ts-node scripts/scs001/auto-post.ts 2>&1', {
+        timeout: 60000,
+        cwd: process.cwd(),
+        env: { ...process.env, TS_NODE_TRANSPILE_ONLY: 'true' },
+      }).toString();
+      const lastLines = output.split('\n').filter(l => l.trim()).slice(-5).join('\n');
+      await sendMessage(chatId, `✅ *Auto-post complete*\n\`\`\`\n${lastLines}\n\`\`\``);
+    } catch (err: any) {
+      const out = err.stdout?.toString() || err.message;
+      await sendMessage(chatId, `❌ Auto-post failed:\n\`\`\`\n${out.slice(-300)}\n\`\`\``);
+    }
+    return;
+  }
+
+  // /autopost dry — trigger dry run
+  if (arg === 'dry') {
+    await sendMessage(chatId, '🧪 Triggering auto-post dry run...');
+    try {
+      const output = execSync('AUTO_POST_DRY_RUN=1 npx ts-node scripts/scs001/auto-post.ts 2>&1', {
+        timeout: 60000,
+        cwd: process.cwd(),
+        env: { ...process.env, TS_NODE_TRANSPILE_ONLY: 'true', AUTO_POST_DRY_RUN: '1' },
+      }).toString();
+      const lastLines = output.split('\n').filter(l => l.trim()).slice(-5).join('\n');
+      await sendMessage(chatId, `🧪 *Dry run complete*\n\`\`\`\n${lastLines}\n\`\`\``);
+    } catch (err: any) {
+      const out = err.stdout?.toString() || err.message;
+      await sendMessage(chatId, `❌ Dry run failed:\n\`\`\`\n${out.slice(-300)}\n\`\`\``);
+    }
+    return;
+  }
+
+  // Default: show status
+  const tokenSet = Boolean(process.env.TIKTOK_ACCESS_TOKEN);
+  const logPath = join(process.cwd(), 'logs', 'auto-post.jsonl');
+  let lastPost = 'Never';
+  let totalAutoPosted = 0;
+  if (existsSync(logPath)) {
+    try {
+      const lines = readFileSync(logPath, 'utf-8').split('\n').filter(l => l.trim());
+      const events = lines.map(l => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
+      const posts = events.filter((e: any) => e.event === 'posted' || e.event === 'dry_run');
+      totalAutoPosted = posts.length;
+      if (posts.length > 0) {
+        lastPost = posts[posts.length - 1].timestamp;
+      }
+    } catch {}
+  }
+
+  // Count queue
+  const manualPath = join(process.cwd(), 'workspace', 'scs001', 'manual-posts.jsonl');
+  const ledgerPath = join(process.cwd(), 'workspace', 'scs001', 'publish-ledger.jsonl');
+  let queueCount = 0;
+  const recordedIds = new Set<string>();
+  if (existsSync(manualPath)) {
+    try {
+      readFileSync(manualPath, 'utf-8').split('\n').filter(l => l.trim())
+        .forEach(l => { try { recordedIds.add(JSON.parse(l).video_id); } catch {} });
+    } catch {}
+  }
+  if (existsSync(ledgerPath)) {
+    try {
+      readFileSync(ledgerPath, 'utf-8').split('\n').filter(l => l.trim())
+        .forEach(l => { try { if (!recordedIds.has(JSON.parse(l).video_id)) queueCount++; } catch {} });
+    } catch {}
+  }
+
+  const msg = [
+    '🤖 *Auto-Post Daemon* (Sprint 233)',
+    '',
+    `🔑 Token: ${tokenSet ? '✅ Set' : '❌ Missing — run /tiktokauth'}`,
+    `📊 Auto-posted: *${totalAutoPosted}*`,
+    `📼 Queue: *${queueCount}* videos`,
+    `🕐 Last post: ${lastPost}`,
+    `⏰ Schedule: 08:00 + 19:00 daily (PM2)`,
+    '',
+    '*Commands:*',
+    '/autopost run — Post now (live)',
+    '/autopost dry — Test run (no actual post)',
+    '/autopost — This status',
+  ];
+
+  await sendMessage(chatId, msg.join('\n'));
 }

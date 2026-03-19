@@ -1,0 +1,44 @@
+{
+  "sprint_id": "sprint-233",
+  "title": "Auto-Post Daemon — scheduled TikTok posting from video queue",
+  "description": "PM2 cron daemon that auto-posts 2 videos/day from the publish-ledger via TikTokClient when TIKTOK_ACCESS_TOKEN is set. Uploads to Supabase for public URL, posts via API, records to manual-posts.jsonl, notifies owner via Telegram. Targets 30 posts by Apr 7.",
+  "source": "autonomous",
+  "tasks": [
+    {
+      "id": "233-01",
+      "title": "Create auto-post daemon script",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-233",
+      "deliverables": { "code": ["scripts/scs001/auto-post.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "233-02",
+      "title": "Add PM2 cron entry for auto-post daemon",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-233",
+      "deliverables": { "code": ["ecosystem.config.js"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "233-03",
+      "title": "Add /autopost command to telegram bot",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-233",
+      "deliverables": { "code": ["agents/telegram-bot/commands.ts", "agents/telegram-bot/index.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

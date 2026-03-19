@@ -350,27 +350,10 @@ module.exports = {
       out_file: "/home/invoica/apps/Invoica/logs/docs-generator-out.log",
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
-    {
-      // kognai-router: FastAPI server wrapping KognaiRouter (Sprint-063)
-      // Runs on port 11435 — routes tasks to local/cloud tiers based on prompt analysis
-      // Start: pm2 start ecosystem.config.js --only kognai-router
-      name: "kognai-router",
-      script: "router_server.py",
-      interpreter: "python3",
-      cwd: "/Users/tarekmnif/kognai/runtime",
-      autorestart: true,
-      watch: false,
-      max_memory_restart: "256M",
-      env: {
-        ROUTER_PORT: "11435",
-        PYTHONPATH: "/Users/tarekmnif/kognai/runtime",
-        VAULT_OLLAMA_URL: process.env.VAULT_OLLAMA_URL || "http://vault:11434",
-        VAULT_MODEL: process.env.VAULT_MODEL || "qwen3:14b",
-      },
-      error_file: "/Users/tarekmnif/kognai/logs/router-error.log",
-      out_file: "/Users/tarekmnif/kognai/logs/router-out.log",
-      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
-    },
+    // kognai-router: REMOVED FROM PM2 — managed by launchd (ai.kognai.router.plist)
+    // ~/Library/LaunchAgents/ai.kognai.router.plist — KeepAlive=true, port 11435
+    // DO NOT add back to PM2 — it will conflict with the launchd service
+    // To restart: launchctl kickstart -k gui/$(id -u)/ai.kognai.router
     {
       // pending-local-drain: cron every 5 min — drains pending-local queue when vault reachable
       // Picks up tasks queued while vault (Tailscale) was offline and reruns them
@@ -732,6 +715,24 @@ module.exports = {
       },
       error_file: "/Users/tarekmnif/kognai/logs/auto-send-video-error.log",
       out_file: "/Users/tarekmnif/kognai/logs/auto-send-video-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
+    // ─── Sprint 233: Auto-Post Daemon — posts top video to TikTok 2x/day ──────
+    {
+      name: "kognai-auto-post",
+      script: "scripts/scs001/auto-post.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: "/Users/tarekmnif/kognai",
+      cron_restart: "0 8,19 * * *",
+      autorestart: false,
+      watch: false,
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/auto-post-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/auto-post-out.log",
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
     // ─── ClawRouter HTTP Gateway (Sprint 173) ─────────────────────────────────
