@@ -1,0 +1,56 @@
+{
+  "sprint_id": "sprint-238",
+  "title": "Constitution wiring — CONSTITUTION.md injected into all agent prompts",
+  "description": "Wire CONSTITUTION.md into all agent prompts. All 26 kognai-agents + 13 SCS-001 agents + 4 named swarm agents get a Constitutional Mandate header referencing workspace/shared-context/CONSTITUTION.md.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "238-01",
+      "title": "Inject Constitutional Mandate header into all 26 kognai-agents prompt.md files",
+      "type": "enhancement",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-238",
+      "deliverables": { "code": ["kognai-agents/*/prompt.md"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "238-02",
+      "title": "Inject Constitutional Mandate header into all 13 SCS-001 agent prompt.md files",
+      "type": "enhancement",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-238",
+      "deliverables": { "code": ["agents/scs001-*/prompt.md"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "238-03",
+      "title": "Inject Constitutional Mandate into named swarm agent SOUL.md files",
+      "type": "enhancement",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-238",
+      "deliverables": { "code": ["workspace/agents/*/SOUL.md"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "238-04",
+      "title": "Validate all agent files contain Constitutional Mandate header",
+      "type": "test",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-238",
+      "deliverables": { "code": ["scripts/validate-constitution-wiring.sh"], "tests": [], "docs": [] }
+    }
+  ]
+}
