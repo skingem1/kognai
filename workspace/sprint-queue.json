@@ -119,7 +119,7 @@
       "sprint": 250,
       "title": "TTS Voiceover \u2014 ElevenLabs API + background music mixing",
       "block": "VIDEO-QUALITY",
-      "status": "queued",
+      "status": "done",
       "priority": "high",
       "rationale": "n8n flow step 5 (voice component). CRITICAL gap: all SCS-001 videos are SILENT (~2kbps). voiceover_text exists in every script segment but nothing converts it to audio. Add: (1) ElevenLabs API ($5/mo starter, 10K chars) or local Piper TTS, (2) per-segment audio generation, (3) FFmpeg audio mixing \u2014 voice + royalty-free background music library + original clip audio during clip segment. Replace anullsrc with real audio track."
     },

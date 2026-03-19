@@ -1694,3 +1694,15 @@ Full auto-posting pipeline built:
 - Swarm used: no (multi-file, cross-module)
 - Issues: None. LLM rewriting ready — enable with LLM_REWRITE=1 env var.
 - Timestamp: 2026-03-20T04:15:00Z
+
+## Sprint 250 — TTS Voiceover (Direct Write)
+- Status: PASS
+- Commit: 33d6fa4
+- Files created: scripts/scs001/tts-voiceover.ts, scripts/scs001/audio-mixer.ts, scripts/scs001/validate-tts-voiceover.ts, workspace/sprints/sprint-250.json
+- Tasks completed:
+  - 250-01: Created tts-voiceover.ts — ElevenLabs API per-segment voice generation (Sarah voice, eleven_flash_v2_5), batch mode, dry-run, manifest output
+  - 250-02: Created audio-mixer.ts — FFmpeg multi-layer mixing (voiceover + background music at -15dB + original clip audio), concat voiceover timeline, fallback on failure
+  - 250-03: Validation: 12/12 tests pass (module loads, exports, dry-run TTS with 4 segments, skip clip, mixer dry-run)
+- Swarm used: no (multi-file, audio pipeline)
+- Issues: ELEVENLABS_API_KEY needed for live TTS. FFmpeg installed and working.
+- Timestamp: 2026-03-20T04:30:00Z
