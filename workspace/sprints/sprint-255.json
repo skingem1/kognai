@@ -1,0 +1,44 @@
+{
+  "sprint_id": "sprint-255",
+  "title": "EVAL-001 — OpenViking evaluation for Skill Bank",
+  "description": "CTO agent evaluation framework. Evaluate volcengine/OpenViking against 5 criteria for Skill Bank integration. Verdict: ADOPT/PARTIAL/REJECT. Creates reusable evaluation template for EVAL-002+.",
+  "source": "queue-prescribed (sprint-241 from queue, numbered 255 by git sequence)",
+  "tasks": [
+    {
+      "id": "255-01",
+      "title": "Create CTO evaluation framework — reusable template for library evaluations",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-255",
+      "deliverables": { "code": ["scripts/evaluations/cto-eval-framework.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "255-02",
+      "title": "Run EVAL-001 — OpenViking evaluation against 5 criteria",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-255",
+      "deliverables": { "code": ["scripts/evaluations/eval-001-openviking.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "255-03",
+      "title": "Create validation script for EVAL-001",
+      "type": "test",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-255",
+      "deliverables": { "code": ["scripts/evaluations/validate-eval-001.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
