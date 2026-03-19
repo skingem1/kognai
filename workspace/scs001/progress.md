@@ -2240,3 +2240,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (surgical edits to 2 files)
 - Issues: None.
 - Timestamp: 2026-03-20T03:17:00Z
+
+## Sprint 294 — Fix Digest Timezone Bug (Direct Write)
+- Status: PASS
+- Commit: 425ef89
+- Files created: workspace/sprints/sprint-294.json
+- Files modified: scripts/daily-digest.ts
+- Tasks completed:
+  - 294-01: Fixed getLedgerStats() todayCount — was using UTC date (toISOString) but digest header shows local date. Added getLocalDatePrefix() helper using local getFullYear/getMonth/getDate. "Today: 126" → "Today: 0" (correct for local date).
+- Validation: Digest dry-run shows correct Today count.
+- Swarm used: no (1-line data quality fix)
+- Issues: None.
+- Timestamp: 2026-03-20T03:22:00Z
