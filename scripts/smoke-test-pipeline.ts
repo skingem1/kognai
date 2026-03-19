@@ -3,6 +3,11 @@ import { writeFileSync, mkdirSync, existsSync } from 'fs';
 import { join } from 'path';
 
 async function main() {
+  // Force mock editing mode — smoke test validates pipeline connectivity, not FFmpeg rendering.
+  // Without this, SCS_EDITING_MODE=production in .env causes drawtext failures that
+  // EditingAgent swallows, resulting in 0 videos_edited.
+  process.env.SCS_EDITING_MODE = 'mock';
+
   console.log('Running SCS-001 pipeline in mock mode...');
   const orch = new SCS001Orchestrator('mock');
   const report: PipelineRunReport = await orch.run();
