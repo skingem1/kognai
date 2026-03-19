@@ -1855,3 +1855,13 @@ Full auto-posting pipeline built:
 - Swarm used: no (HTML generation)
 - Issues: None. Run `npx ts-node scripts/scs001/export-posting-kit.ts` to regenerate.
 - Timestamp: 2026-03-20T07:30:00Z
+
+## Sprint 263 — Stripe Webhook Integration Test (Direct Write)
+- Status: PASS
+- Commit: 2b7af07
+- Files created: scripts/stripe/test-webhook-integration.ts, workspace/sprints/sprint-263.json
+- Tasks completed:
+  - 263-01: Integration test — 7 signature tests + 7 event dispatch tests = 14/14 PASS
+- Swarm used: no (test suite)
+- Issues: None. Stripe revenue path validated end-to-end (signature + dispatch).
+- Timestamp: 2026-03-20T07:45:00Z
