@@ -1,0 +1,56 @@
+{
+  "sprint_id": "sprint-248",
+  "title": "Audio Transcription — Whisper on source clips + transcript storage",
+  "description": "Add Whisper-based audio transcription to SCS-001 pipeline. Uses OpenAI Whisper API (OPENAI_API_KEY). Extracts original audio text from viral clips. Saves transcripts to workspace/scs001/transcripts/. Feeds the LLM script rewriter with the ACTUAL words that went viral.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "248-01",
+      "title": "Create audio transcription module — OpenAI Whisper API integration",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-248",
+      "deliverables": { "code": ["scripts/scs001/transcribe-audio.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "248-02",
+      "title": "Wire transcription into clip detection pipeline — post-qualify hook",
+      "type": "enhancement",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-248",
+      "deliverables": { "code": ["agents/scs001-clip-detection/index.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "248-03",
+      "title": "Create transcript storage directory + schema for transcript JSONs",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-248",
+      "deliverables": { "code": ["workspace/scs001/transcripts/.gitkeep"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "248-04",
+      "title": "Validate transcription module loads and runs dry-run correctly",
+      "type": "test",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-248",
+      "deliverables": { "code": ["scripts/scs001/validate-transcription.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

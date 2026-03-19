@@ -35,6 +35,8 @@ export interface ClipQualityScore {
   clip_topic_alignment?:  number;
   partial_viral_score?:   number;
   hook_quality_score?:    number;
+  transcript?:            string;
+  transcript_path?:       string;
 }
 
 const QUALITY_GATE    = 20;
