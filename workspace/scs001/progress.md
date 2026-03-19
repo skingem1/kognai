@@ -1269,3 +1269,16 @@ SESSION HANDOFF (2026-03-17, Sprints 166-170):
 - Swarm used: no (multi-file work, written directly)
 - Issues: Brief was recommending /post-now, /record, /update-views which all already existed
 - Timestamp: 2026-03-19T17:15:00Z
+
+## Sprint 207 — Phase 1 Operations (Direct Write)
+- Status: PASS
+- Commit: d2d6646
+- Files modified: scripts/daily-digest.ts
+- Files created: scripts/start-phase1.sh, workspace/sprints/sprint-207.json
+- Tasks completed:
+  - 207-01: Added dotenv loading to daily-digest.ts — Stripe now shows 🟢 LIVE in digest
+  - 207-02: Created scripts/start-phase1.sh — one-command PM2 Phase 1 startup
+  - 207-03: Validated digest dry-run — PASS (Stripe detection fixed)
+- Swarm used: no (small surgical fixes + new script)
+- Issues: daily-digest.ts was missing dotenv.config() — all .env vars invisible in standalone runs
+- Timestamp: 2026-03-19T17:30:00Z
