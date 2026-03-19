@@ -1,6 +1,6 @@
 {
   "_note": "AUTHORITATIVE sprint execution order. The brief generator reads this and injects the first item as a MANDATORY directive, bypassing Qwen's recommendation. Pop items by setting status=done after each sprint ships. Human-maintained — edit to re-prioritise.",
-  "updated": "2026-03-19",
+  "updated": "2026-03-19T22:00",
   "owner": "Tarek (human)",
   "queue": [
     {
@@ -98,6 +98,62 @@
       "status": "queued",
       "priority": "high",
       "rationale": "Originally Sprint 189 — skipped by swarm. ACP (Agent Constitutional Protocol) v1.0: content scoring across 5 dimensions (safety, accuracy, brand-alignment, cultural-sensitivity, legal-compliance). Flat scores exist — need enforcement layer at ClawRouter gate."
+    },
+    {
+      "sprint": 248,
+      "title": "Audio Transcription — Whisper on source clips + transcript storage",
+      "block": "VIDEO-QUALITY",
+      "status": "queued",
+      "priority": "high",
+      "rationale": "n8n flow step 2. Add Whisper (local whisper.cpp or OpenAI API) to clip-detection/editing pipeline. Extract original audio text from viral clips. Save transcripts to Google Sheets or workspace/transcripts/. This feeds the LLM script rewriter with the ACTUAL words that went viral. Currently SCS-001 only uses metadata — never listens to the clip."
+    },
+    {
+      "sprint": 249,
+      "title": "LLM Script Rewriting — replace deterministic templates with Claude/GPT rewrite",
+      "block": "VIDEO-QUALITY",
+      "status": "queued",
+      "priority": "high",
+      "rationale": "n8n flow steps 3-4. Script Agent is currently 100% deterministic (template hooks, no LLM). Replace with: (1) Perplexity-style research via ClawRouter T3 APEX to suggest new content angle in same niche, (2) LLM rewrites script/caption/overlay using transcribed audio + insight brief. GPT-4o or Claude Sonnet via ClawRouter. This is what makes each video UNIQUE instead of formulaic."
+    },
+    {
+      "sprint": 250,
+      "title": "TTS Voiceover — ElevenLabs API + background music mixing",
+      "block": "VIDEO-QUALITY",
+      "status": "queued",
+      "priority": "high",
+      "rationale": "n8n flow step 5 (voice component). CRITICAL gap: all SCS-001 videos are SILENT (~2kbps). voiceover_text exists in every script segment but nothing converts it to audio. Add: (1) ElevenLabs API ($5/mo starter, 10K chars) or local Piper TTS, (2) per-segment audio generation, (3) FFmpeg audio mixing — voice + royalty-free background music library + original clip audio during clip segment. Replace anullsrc with real audio track."
+    },
+    {
+      "sprint": 251,
+      "title": "Captions.ai Avatar Integration — AI presenter for hook/commentary segments",
+      "block": "VIDEO-QUALITY",
+      "status": "queued",
+      "priority": "high",
+      "rationale": "n8n flow step 5 (avatar component). Replace color-background segments (hook, context, commentary, insight) with AI avatar presenter via Captions.ai API ($57/mo Max plan). Avatar speaks the voiceover_text with lip-sync. Clip segment stays as real source video. This transforms videos from 'text on colored backgrounds' to 'AI presenter discussing viral clips'. Premium tier option."
+    },
+    {
+      "sprint": 252,
+      "title": "JSON2Video Caption Overlay — animated subtitles + keyword highlighting",
+      "block": "VIDEO-QUALITY",
+      "status": "queued",
+      "priority": "medium",
+      "rationale": "n8n flow step 6. Replace basic SRT burn-in (static drawtext, often fails without libass) with JSON2Video API ($20/mo). Animated word-by-word captions, keyword highlighting (color/size variation), emoji overlays, professional text styling. Pattern interrupts (cut, zoom, text_pop) finally rendered instead of metadata-only."
+    },
+    {
+      "sprint": 253,
+      "title": "Blotato Multi-Platform Publishing — 9 platforms via API",
+      "block": "VIDEO-QUALITY",
+      "status": "queued",
+      "priority": "medium",
+      "rationale": "n8n flow step 9. Replace dead TikTok-only publishing path (API REJECTED) with Blotato API ($29/mo). Publish to: Instagram, YouTube, TikTok, Facebook, LinkedIn, Threads, X, Pinterest, Bluesky. Single API call posts to all platforms. Replaces SPRINT-171-PUB Telegram+YouTube workaround. Native n8n node available but we wire directly via REST API in publishing-agent."
+    },
+    {
+      "sprint": 254,
+      "title": "Video Quality Gate v2 — end-to-end pipeline test + A/B metrics",
+      "block": "VIDEO-QUALITY",
+      "status": "queued",
+      "priority": "medium",
+      "rationale": "Gate sprint for VIDEO-QUALITY block. Full pipeline test: trend→discovery→clip→transcribe→insight→LLM-rewrite→TTS→avatar→JSON2Video-captions→QC→Blotato-publish. Compare output quality vs current pipeline. Metrics: watch-through rate, engagement, follower conversion. Gate: produce 5 videos that pass human QC review before block sign-off."
     },
     {
       "sprint": 240,
