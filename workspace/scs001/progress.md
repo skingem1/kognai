@@ -1453,3 +1453,14 @@ Operator quickstart: (1) bash scripts/pre-deploy-check.sh (2) ./scripts/pm2-boot
 - Swarm used: no (1-line fix)
 - Issues: None. Achiri is ready for Hetzner deploy (operator runs ./scripts/deploy-achiri.sh).
 - Timestamp: 2026-03-19T22:15:00Z
+
+## Sprint 223 — Sprint Brief Regeneration (Ops)
+- Status: PASS
+- Commit: c3978f8
+- Files modified: workspace/sprint-brief.md
+- Files created: workspace/sprints/sprint-223.json
+- Tasks completed:
+  - 223-01: Regenerated sprint brief via Qwen3:14b (local, $0). 209.9s, ~2091 tokens. Shows Sprint 222 as latest, accurate pipeline/gate state. Ready for next session.
+- Swarm used: no
+- Issues: None
+- Timestamp: 2026-03-19T22:30:00Z
