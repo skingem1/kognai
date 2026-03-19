@@ -1155,3 +1155,33 @@ SESSION HANDOFF (2026-03-17, Sprints 166-170):
   - daily-digest.ts: getCalendarToday() reads content-calendar.json for today. buildDigest() injects "Today's Posting Schedule" section before viral topics.
 - Impact: Operator now has a daily posting plan. Run generator once, then /calendar or morning digest shows exactly which 2 videos to post today.
 - Timestamp: 2026-03-19T17:30:00Z
+
+## Sprint 194 — Calendar Cron + Gitignore (Phase 1 — automation)
+- Status: PASS
+- Commit: 9ded608
+- Files modified: ecosystem.config.js, .gitignore
+- Test: N/A (config-only sprint)
+- Swarm used: no (direct write — 2 file edits)
+- Changes:
+  - ecosystem.config.js: kognai-calendar-regen PM2 cron at 06:50 daily. Regenerates workspace/scs001/content-calendar.json before morning digest (07:00). Auto-maintained posting schedule.
+  - .gitignore: Added workspace/scs001/content-calendar.json (runtime-generated, never commit).
+- Impact: Content calendar is now fully automated. Daily cron chain: 06:50 calendar → 06:55 gate → 07:00 digest (with calendar section).
+- Timestamp: 2026-03-19T18:00:00Z
+
+## SESSION HANDOFF (2026-03-19, Sprints 188-194)
+- 7 sprints shipped in this session:
+  - 188: Viral Detection Week 2 (batch scorer + hook quality + clip-detection wiring)
+  - 189: Viral Score Posting Priority (/post-now + /post-batch + /queue sort by viral)
+  - 190: Viral Score Everywhere (posting-reminder + daily-digest + ClawRouter e2e test)
+  - 191: Dashboard Viral Score Panel (experiments.py + app.js viral stats row)
+  - 192: Repo Hygiene + /viral-stats + Smoke Test Viral Validation
+  - 193: Content Calendar (generator + /calendar command + daily digest integration)
+  - 194: Calendar Cron + Gitignore (PM2 daily regen at 06:50)
+
+- **Latest commit:** 9ded608 (Sprint 194)
+- **Next sprint needed:** 195
+- **Pipeline state:** 141 videos ready, 0 posted, 40 assigned to content calendar
+- **Cron chain:** 06:50 calendar → 06:55 gate → 06:45 brief → 07:00 digest → 12:00 noon reminder → 18:00 evening reminder
+- **Operator action needed:** Start posting! /calendar or /post-now shows what to post today.
+- **Known gaps:** Viral scores = 0 in experiments.jsonl (run batch-viral-score.ts to backfill), Achiri not yet deployed to Hetzner
+- **State files:** MEMORY.md + workspace/scs001/progress.md are current
