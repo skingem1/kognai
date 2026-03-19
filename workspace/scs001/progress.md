@@ -2277,3 +2277,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (surgical server edit)
 - Issues: None.
 - Timestamp: 2026-03-20T03:45:00Z
+
+## Sprint 297 — Fix Calendar Timezone Bug in Digest (Direct Write)
+- Status: PASS
+- Commit: 6ff8c4b
+- Files created: workspace/sprints/sprint-297.json
+- Files modified: scripts/daily-digest.ts
+- Tasks completed:
+  - 297-01: Fixed getCalendarToday() using UTC date (toISOString) instead of local date. Was showing previous day's calendar entries. Now uses getLocalDatePrefix() from Sprint 294. Digest correctly shows today's ThePrimeagen + Jesse Pollak entries.
+- Validation: Digest dry-run shows correct calendar entries matching content-calendar.json.
+- Swarm used: no (1-line fix, same class as Sprint 294)
+- Issues: None.
+- Timestamp: 2026-03-20T03:55:00Z
