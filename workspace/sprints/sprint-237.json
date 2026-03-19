@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-237",
+  "title": "Preflight Update — auto-post pipeline checks + Achiri deploy readiness",
+  "description": "Update production-preflight.ts to include Sprint 232-234 auto-posting pipeline (kognai-auto-post, kognai-token-refresh, kognai-verify-posts PM2 crons) and Achiri deploy readiness checks. Ensures /preflight catches all new infrastructure.",
+  "source": "autonomous",
+  "tasks": [
+    {
+      "id": "237-01",
+      "title": "Update production-preflight.ts with auto-post pipeline checks",
+      "type": "enhancement",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-237",
+      "deliverables": { "code": ["scripts/production-preflight.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

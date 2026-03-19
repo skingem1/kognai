@@ -126,7 +126,7 @@ function checkPM2() {
   try {
     const pm2Out = execSync('pm2 jlist 2>/dev/null', { timeout: 5000 }).toString();
     const procs = JSON.parse(pm2Out);
-    const expected = ['telegram-bot', 'kognai-daily-digest', 'kognai-smoke-test', 'kognai-pipeline-watchdog', 'kognai-stripe-webhook', 'achiri-api'];
+    const expected = ['telegram-bot', 'kognai-daily-digest', 'kognai-smoke-test', 'kognai-pipeline-watchdog', 'kognai-stripe-webhook', 'achiri-api', 'kognai-auto-post', 'kognai-token-refresh', 'kognai-verify-posts'];
 
     for (const name of expected) {
       const proc = procs.find((p: any) => p.name === name);
@@ -169,6 +169,73 @@ function checkAchiri() {
   }
 }
 
+// ── 6. Auto-Post Pipeline (Sprint 237) ──────────────────────────────────────
+
+function checkAutoPost() {
+  // Token status
+  const tokenSet = Boolean(process.env.TIKTOK_ACCESS_TOKEN);
+  const tokenMeta = join(ROOT, 'data', 'tiktok-token-meta.json');
+  let tokenExpired = false;
+  if (tokenSet && existsSync(tokenMeta)) {
+    try {
+      const meta = JSON.parse(readFileSync(tokenMeta, 'utf-8'));
+      tokenExpired = new Date(meta.expires_at) < new Date();
+    } catch {}
+  }
+  check('Auto-Post Pipeline', 'TikTok Access Token',
+    tokenSet && !tokenExpired,
+    tokenSet ? (tokenExpired ? 'EXPIRED' : 'SET') : 'MISSING',
+    tokenSet && tokenExpired
+      ? 'npx ts-node scripts/tiktok-refresh-token.ts'
+      : !tokenSet
+      ? 'npx ts-node scripts/tiktok-oauth.ts (authorize in browser)'
+      : undefined);
+
+  // Auto-post log
+  const autoPostLog = join(ROOT, 'logs', 'auto-post.jsonl');
+  if (existsSync(autoPostLog)) {
+    try {
+      const lines = readFileSync(autoPostLog, 'utf-8').split('\n').filter(l => l.trim());
+      const events = lines.map(l => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
+      const posted = events.filter((e: any) => e.event === 'posted').length;
+      const errors = events.filter((e: any) => e.event === 'error').length;
+      check('Auto-Post Pipeline', `Posted: ${posted}, Errors: ${errors}`,
+        errors === 0 || posted > errors,
+        `${posted} posted, ${errors} errors`,
+        errors > 0 ? 'Check logs/auto-post.jsonl for error details' : undefined);
+    } catch {}
+  } else {
+    check('Auto-Post Pipeline', 'Post history', true, 'No posts yet (new pipeline)', undefined);
+  }
+
+  // Verify log
+  const verifyLog = join(ROOT, 'logs', 'verify-posts.jsonl');
+  if (existsSync(verifyLog)) {
+    try {
+      const lines = readFileSync(verifyLog, 'utf-8').split('\n').filter(l => l.trim());
+      const events = lines.map(l => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
+      const published = events.filter((e: any) => e.status === 'published').length;
+      const failed = events.filter((e: any) => e.status === 'failed').length;
+      check('Auto-Post Pipeline', `Verified: ${published} live, ${failed} failed`,
+        failed === 0,
+        `${published} confirmed, ${failed} failed`,
+        failed > 0 ? 'Check /verifyposts for failure details' : undefined);
+    } catch {}
+  }
+
+  // Scripts exist
+  const scripts = [
+    ['scripts/tiktok-oauth.ts', 'OAuth flow'],
+    ['scripts/tiktok-refresh-token.ts', 'Token refresh'],
+    ['scripts/scs001/auto-post.ts', 'Auto-post daemon'],
+    ['scripts/scs001/verify-posts.ts', 'Post verification'],
+  ];
+  for (const [scriptPath, name] of scripts) {
+    check('Auto-Post Pipeline', name, existsSync(join(ROOT, scriptPath)), existsSync(join(ROOT, scriptPath)) ? 'present' : 'MISSING',
+      !existsSync(join(ROOT, scriptPath)) ? `File missing: ${scriptPath}` : undefined);
+  }
+}
+
 // ── Run all checks ──────────────────────────────────────────────────────────
 
 checkEnv();
@@ -176,6 +243,7 @@ checkGates();
 checkPipeline();
 checkPM2();
 checkAchiri();
+checkAutoPost();
 
 // ── Output ──────────────────────────────────────────────────────────────────
 
