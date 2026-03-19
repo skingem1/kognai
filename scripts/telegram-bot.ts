@@ -917,6 +917,94 @@ function cmdAnalytics(): string {
   return lines.join('\n');
 }
 
+// Sprint 286: /pipeline — content pipeline inventory & health dashboard
+function cmdPipeline(): string {
+  const lines: string[] = ['*📊 Content Pipeline Status*\n'];
+
+  // 1. Last pipeline run
+  const latestRunPath = path.join(ROOT, 'reports', 'pipeline-runs', 'latest.json');
+  let lastRun: any = null;
+  if (fs.existsSync(latestRunPath)) {
+    try { lastRun = JSON.parse(fs.readFileSync(latestRunPath, 'utf-8')); } catch {}
+  }
+
+  if (lastRun) {
+    const completedAt = lastRun.completed_at ? new Date(lastRun.completed_at) : null;
+    const ageMs = completedAt ? Date.now() - completedAt.getTime() : Infinity;
+    const ageHrs = Math.round(ageMs / 3_600_000);
+    const health = ageHrs < 6 ? '🟢 FRESH' : ageHrs < 24 ? '🟡 STALE' : '🔴 OLD';
+    const elapsed = lastRun.total_elapsed_ms ? `${Math.round(lastRun.total_elapsed_ms / 1000)}s` : '?';
+    lines.push(`*Last Run:* ${lastRun.run_id ?? 'unknown'}`);
+    lines.push(`⏱ ${elapsed} · ${health} (${ageHrs}h ago)\n`);
+
+    // Stage summary from latest run
+    const s = lastRun.summary ?? {};
+    lines.push('*Latest Run Output:*');
+    lines.push(`  🔍 Topics: ${s.topics_found ?? 0}`);
+    lines.push(`  📹 Clips discovered: ${s.clips_discovered ?? 0}`);
+    lines.push(`  ✂️ Clips qualified: ${s.clips_qualified ?? 0}`);
+    lines.push(`  📝 Scripts: ${s.scripts_produced ?? 0}`);
+    lines.push(`  🎬 Videos edited: ${s.videos_edited ?? 0}`);
+    lines.push(`  💬 Videos captioned: ${s.videos_captioned ?? 0}`);
+    lines.push(`  ✅ QC passed: ${s.qc_passed ?? 0}`);
+    lines.push(`  📦 Published to queue: ${s.published ?? 0}`);
+    lines.push('');
+  } else {
+    lines.push('⚠️ No pipeline run report found.\n');
+  }
+
+  // 2. Total inventory
+  const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
+  const recorded = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  const recordedIds = new Set(recorded.map((e: any) => e.video_id).filter(Boolean));
+  const unposted = (ledger as any[]).filter((e: any) => !recordedIds.has(e.video_id) && e.video_id);
+
+  // Count captioned mp4s available
+  let captionedCount = 0;
+  for (const entry of unposted) {
+    if (findCaptionedMp4(entry.video_id) !== null) captionedCount++;
+  }
+
+  // Count experiment scores
+  const expPath = path.join(ROOT, 'workspace', 'scs001', 'experiments.jsonl');
+  let scoredCount = 0;
+  if (fs.existsSync(expPath)) {
+    try {
+      const expLines = fs.readFileSync(expPath, 'utf-8').split('\n').filter(l => l.trim());
+      scoredCount = expLines.length;
+    } catch {}
+  }
+
+  // Count run directories
+  const scsDir = path.join(ROOT, 'workspace', 'scs001');
+  let runCount = 0;
+  try {
+    runCount = fs.readdirSync(scsDir).filter(d => d.startsWith('run-')).length;
+  } catch {}
+
+  lines.push('*Total Inventory:*');
+  lines.push(`  📂 Pipeline runs: ${runCount}`);
+  lines.push(`  📋 Ledger entries: ${ledger.length}`);
+  lines.push(`  🧬 Scored experiments: ${scoredCount}`);
+  lines.push(`  🎬 Ready-to-post (captioned MP4): ${captionedCount}`);
+  lines.push(`  ✅ Posted: ${recorded.length}`);
+  lines.push(`  📦 Unposted in queue: ${unposted.length}`);
+  lines.push('');
+
+  // 3. Action line
+  if (captionedCount > 0 && recorded.length < 30) {
+    const needed = 30 - recorded.length;
+    lines.push(`💡 *${captionedCount} videos ready!* Send \`/deliver 3\` to get your next batch.`);
+    lines.push(`📊 ${needed} more posts needed for Phase 1.5 gate.`);
+  } else if (captionedCount === 0) {
+    lines.push('⚠️ No captioned videos ready. Run the pipeline first.');
+  } else {
+    lines.push('🎉 Phase 1.5 post target reached!');
+  }
+
+  return lines.join('\n');
+}
+
 function cmdHelp(): string {
   return (
     `*Kognai Bot Commands*\n\n` +
@@ -934,6 +1022,7 @@ function cmdHelp(): string {
     `/streak    — Posting streak tracker + pace\n` +
     `/analytics — Content performance insights\n` +
     `/onboard   — First-time posting walkthrough\n` +
+    `/pipeline  — Content pipeline inventory & health\n` +
     `/help      — This message`
   );
 }
@@ -983,6 +1072,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/streak':    response = cmdStreak(); break;
     case '/analytics': response = cmdAnalytics(); break;
     case '/onboard':   response = cmdOnboard(); break;
+    case '/pipeline':  response = cmdPipeline(); break;
     case '/help':      response = cmdHelp();   break;
     default:
       response = `Unknown command: \`${cmdName}\`\n\n${cmdHelp()}`;
