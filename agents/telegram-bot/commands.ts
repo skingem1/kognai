@@ -4,7 +4,7 @@
 import { readdirSync, readFileSync, existsSync, appendFileSync, mkdirSync, writeFileSync, statSync } from 'fs';
 import { join, dirname } from 'path';
 import { execSync } from 'child_process';
-import { sendMessage, sendPhoto } from './bot';
+import { sendMessage, sendPhoto, sendVideo } from './bot';
 import { TelegramDB } from './db';
 import { createCheckoutSession, isConfigured as stripeConfigured } from '../stripe/client';
 // Achiri HTTP bridge (Sprint 130) — routes to ACHIRI_BASE_URL instead of in-process import
@@ -1917,4 +1917,116 @@ export async function handlePostBatch(chatId: number, ownerChatId: string, text:
   }
 
   await sendMessage(chatId, `─\n📊 Done. Record views with \`/record <id> <views>\` then check gate: \`/gate\``);
+}
+
+// ── SPRINT-171-PUB: /send-video — Deliver captioned video via Telegram ────────
+// Usage: /send-video [video_id]
+// Owner-only. Omit video_id to auto-pick the next unsent ready video.
+// Logs sent videos to workspace/scs001/telegram-sent.jsonl.
+
+export async function handleSendVideo(chatId: number, ownerChatId: string, text: string): Promise<void> {
+  if (String(chatId) !== String(ownerChatId)) {
+    await sendMessage(chatId, '⛔ Owner-only command.');
+    return;
+  }
+
+  const cwd        = process.cwd();
+  const ledgerPath = join(cwd, 'workspace', 'scs001', 'publish-ledger.jsonl');
+  const sentPath   = join(cwd, 'workspace', 'scs001', 'telegram-sent.jsonl');
+  const topicsPath = join(cwd, 'workspace', 'scs001', 'viral-topics.json');
+
+  if (!existsSync(ledgerPath)) {
+    await sendMessage(chatId, '⚠️ publish-ledger.jsonl not found. Run pipeline first.');
+    return;
+  }
+
+  // Load already-sent IDs
+  const sentIds = new Set<string>();
+  if (existsSync(sentPath)) {
+    try {
+      readFileSync(sentPath, 'utf-8').split('\n').filter(l => l.trim())
+        .forEach(l => { try { const e = JSON.parse(l); if (e.video_id) sentIds.add(e.video_id); } catch { /* skip */ } });
+    } catch { /* ignore */ }
+  }
+
+  // Load ledger
+  interface SendVideoLedgerEntry { video_id: string; run_id: string; speaker?: string; topic?: string; }
+  const allEntries: SendVideoLedgerEntry[] = readFileSync(ledgerPath, 'utf-8')
+    .split('\n').filter(l => l.trim())
+    .map(l => { try { return JSON.parse(l); } catch { return null; } })
+    .filter(Boolean) as SendVideoLedgerEntry[];
+
+  // Determine target video_id
+  const requestedId = text.split(/\s+/)[1]?.trim();
+  let target: { entry: SendVideoLedgerEntry; mp4: string } | null = null;
+
+  if (requestedId) {
+    const entry = allEntries.find(e => e.video_id === requestedId);
+    if (!entry) {
+      await sendMessage(chatId, `⚠️ video_id \`${requestedId}\` not found in ledger.`);
+      return;
+    }
+    const mp4 = findCaptionedMp4(cwd, requestedId);
+    if (!mp4) {
+      await sendMessage(chatId, `⚠️ No captioned MP4 found on disk for \`${requestedId}\`.`);
+      return;
+    }
+    target = { entry, mp4 };
+  } else {
+    // Auto-pick: first unsent with a valid captioned mp4
+    for (const entry of allEntries) {
+      if (sentIds.has(entry.video_id)) continue;
+      const mp4 = findCaptionedMp4(cwd, entry.video_id);
+      if (mp4) { target = { entry, mp4 }; break; }
+    }
+    if (!target) {
+      await sendMessage(chatId, '✅ All ready videos already sent via Telegram. Nothing new to deliver.\n\nRun pipeline or check `/queue`.');
+      return;
+    }
+  }
+
+  // Build caption
+  let hookText: string = target.entry.topic ?? target.entry.video_id;
+  const scriptPath = findScriptJson(cwd, target.entry.video_id);
+  if (scriptPath) {
+    try {
+      const script = JSON.parse(readFileSync(scriptPath, 'utf-8'));
+      hookText = script.hook ?? script.title ?? script.headline ?? hookText;
+    } catch { /* fallback */ }
+  }
+
+  let viralHashtags: string[] = [];
+  if (existsSync(topicsPath)) {
+    try {
+      const vt = JSON.parse(readFileSync(topicsPath, 'utf-8'));
+      viralHashtags = (vt.topics ?? []).slice(0, 4).map((t: string) => `#${t}`);
+    } catch { /* ignore */ }
+  }
+  if (viralHashtags.length === 0) viralHashtags = ['#ai', '#tech'];
+  const hashtags = [...viralHashtags, '#fyp', '#viral', '#learnontiktok'].join(' ');
+  const caption  = `${hookText}\n\n${hashtags}`;
+
+  await sendMessage(chatId, `📤 Sending \`${target.entry.video_id}\`…`);
+
+  try {
+    await sendVideo(chatId, target.mp4, caption);
+  } catch (err) {
+    await sendMessage(chatId, `❌ sendVideo failed: ${(err as Error).message}`);
+    return;
+  }
+
+  // Log to telegram-sent.jsonl
+  mkdirSync(join(cwd, 'workspace', 'scs001'), { recursive: true });
+  appendFileSync(sentPath, JSON.stringify({
+    video_id: target.entry.video_id,
+    sent_at:  new Date().toISOString(),
+    mp4:      target.mp4,
+  }) + '\n', 'utf-8');
+
+  await sendMessage(chatId,
+    `✅ *Video delivered!*\n\n` +
+    `🎬 \`${target.entry.video_id}\`\n\n` +
+    `📋 *Caption (copy & paste to TikTok):*\n\`\`\`\n${caption}\n\`\`\`\n\n` +
+    `✅ After posting: \`/record ${target.entry.video_id} 0\``
+  );
 }

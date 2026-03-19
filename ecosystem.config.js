@@ -694,6 +694,24 @@ module.exports = {
       out_file: "/Users/tarekmnif/kognai/logs/achiri-api-out.log",
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
+    // ─── SPRINT-171-PUB: Auto-send video to owner via Telegram (07:30 + 17:30 UTC) ──
+    {
+      name: "kognai-auto-send-video",
+      script: "scripts/auto-send-video.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: "/Users/tarekmnif/kognai",
+      cron_restart: "30 7,17 * * *",
+      autorestart: false,
+      watch: false,
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/auto-send-video-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/auto-send-video-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
     // ─── ClawRouter HTTP Gateway (Sprint 173) ─────────────────────────────────
     {
       name: "clawrouter-gateway",
