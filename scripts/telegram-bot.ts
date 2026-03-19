@@ -917,6 +917,80 @@ function cmdAnalytics(): string {
   return lines.join('\n');
 }
 
+// Sprint 287: /today — daily posting brief with recommendations
+function cmdToday(): string {
+  const posts = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
+  const recordedIds = new Set(posts.map((e: any) => e.video_id).filter(Boolean));
+  const today = new Date().toISOString().slice(0, 10);
+  const todayPosts = posts.filter((p: any) => (p.posted_at ?? p.recorded_at ?? '').startsWith(today)).length;
+
+  // Gate math
+  const gateDate = new Date('2026-04-07T00:00:00Z');
+  const daysLeft = Math.max(1, Math.ceil((gateDate.getTime() - Date.now()) / 86_400_000));
+  const postsLeft = Math.max(0, 30 - posts.length);
+  const dailyTarget = Math.ceil(postsLeft / daysLeft);
+
+  // Load viral scores
+  const viralScores = new Map<string, number>();
+  const expPath = path.join(ROOT, 'workspace', 'scs001', 'experiments.jsonl');
+  if (fs.existsSync(expPath)) {
+    try {
+      for (const line of fs.readFileSync(expPath, 'utf-8').split('\n')) {
+        if (!line.trim()) continue;
+        try {
+          const e = JSON.parse(line);
+          const id = e.clip_id ?? e.video_id;
+          if (id && e.partial_viral_score != null) viralScores.set(id, e.partial_viral_score);
+        } catch {}
+      }
+    } catch {}
+  }
+
+  // Get top unposted videos with captioned mp4
+  const unposted = (ledger as any[])
+    .filter((e: any) => !recordedIds.has(e.video_id) && e.video_id)
+    .sort((a: any, b: any) => (viralScores.get(b.video_id) ?? -1) - (viralScores.get(a.video_id) ?? -1));
+  const ready = unposted.filter((e: any) => findCaptionedMp4(e.video_id) !== null);
+
+  const lines: string[] = [];
+  const goalMet = todayPosts >= dailyTarget;
+  const icon = goalMet ? '✅' : '🎯';
+
+  lines.push(`${icon} *Today's Posting Brief* — ${today}\n`);
+
+  if (posts.length >= 30) {
+    lines.push('🎉 *Phase 1.5 post target reached!* Keep posting to build momentum.\n');
+  } else {
+    lines.push(`📊 *Gate:* ${posts.length}/30 posts · ${daysLeft}d left · ${dailyTarget}/day needed`);
+    lines.push(`📅 *Today:* ${todayPosts}/${dailyTarget} posted ${goalMet ? '✅ ON TRACK' : '⏳ NEEDS POSTS'}\n`);
+  }
+
+  // Recommended videos
+  const topN = Math.min(3, ready.length);
+  if (topN > 0) {
+    lines.push(`*🏆 Top ${topN} Videos to Post Today:*`);
+    for (let i = 0; i < topN; i++) {
+      const v = ready[i];
+      const vs = viralScores.get(v.video_id);
+      const vsStr = vs != null ? ` · 🧬${vs.toFixed(1)}` : '';
+      lines.push(`${i + 1}. \`${v.video_id}\`${vsStr}`);
+    }
+    lines.push('');
+    lines.push(`💡 Send \`/deliver ${topN}\` to get ${topN === 1 ? 'this video' : 'these videos'} now.`);
+  } else {
+    lines.push('⚠️ No captioned videos ready to post. Run the pipeline first.');
+  }
+
+  // Optimal posting times
+  lines.push('\n*⏰ Best Posting Times:*');
+  lines.push('• 7:00 AM — morning commute');
+  lines.push('• 12:00 PM — lunch break');
+  lines.push('• 7:00 PM — evening scroll');
+
+  return lines.join('\n');
+}
+
 // Sprint 286: /pipeline — content pipeline inventory & health dashboard
 function cmdPipeline(): string {
   const lines: string[] = ['*📊 Content Pipeline Status*\n'];
@@ -1023,6 +1097,7 @@ function cmdHelp(): string {
     `/analytics — Content performance insights\n` +
     `/onboard   — First-time posting walkthrough\n` +
     `/pipeline  — Content pipeline inventory & health\n` +
+    `/today     — Daily posting brief + recommendations\n` +
     `/help      — This message`
   );
 }
@@ -1073,6 +1148,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/analytics': response = cmdAnalytics(); break;
     case '/onboard':   response = cmdOnboard(); break;
     case '/pipeline':  response = cmdPipeline(); break;
+    case '/today':     response = cmdToday();  break;
     case '/help':      response = cmdHelp();   break;
     default:
       response = `Unknown command: \`${cmdName}\`\n\n${cmdHelp()}`;

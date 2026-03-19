@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-287",
+  "title": "Telegram /today — daily posting brief with recommendations",
+  "description": "Add /today command showing today's posting target (based on gate pace), top 3 recommended videos by viral score, and whether today's goal is met. Action-oriented daily brief for the operator.",
+  "source": "auto — 0/30 posts with 19 days left, operator needs clear daily action plan",
+  "tasks": [
+    {
+      "id": "287-01",
+      "title": "Add /today command to telegram-bot.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-287",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
