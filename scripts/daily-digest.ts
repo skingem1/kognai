@@ -193,6 +193,44 @@ function getDaysUntil(isoDate: string): number {
   return Math.max(0, Math.ceil((target - now) / 86400000));
 }
 
+// ── Sprint 282: Posting streak ────────────────────────────────────────────────
+
+function getPostingStreak(): { current: number; best: number; todayPosts: number } {
+  const posts = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  if (posts.length === 0) return { current: 0, best: 0, todayPosts: 0 };
+
+  const daySet: Record<string, number> = {};
+  for (const p of posts as any[]) {
+    const date = (p.posted_at ?? p.recorded_at ?? '').slice(0, 10);
+    if (date) daySet[date] = (daySet[date] || 0) + 1;
+  }
+  const days = Object.keys(daySet).sort();
+  const today = new Date().toISOString().slice(0, 10);
+  const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+
+  let currentStreak = 0;
+  const checkDate = days.includes(today) ? today : (days.includes(yesterday) ? yesterday : null);
+  if (checkDate) {
+    let d = new Date(checkDate);
+    while (daySet[d.toISOString().slice(0, 10)]) {
+      currentStreak++;
+      d = new Date(d.getTime() - 86400000);
+    }
+  }
+
+  let bestStreak = 0;
+  let streak = 1;
+  for (let i = 1; i < days.length; i++) {
+    const prev = new Date(days[i - 1]).getTime();
+    const curr = new Date(days[i]).getTime();
+    if (curr - prev === 86400000) streak++;
+    else { bestStreak = Math.max(bestStreak, streak); streak = 1; }
+  }
+  bestStreak = Math.max(bestStreak, streak);
+
+  return { current: currentStreak, best: bestStreak, todayPosts: daySet[today] || 0 };
+}
+
 // ── Format digest message ─────────────────────────────────────────────────────
 
 function buildDigest(): string {
@@ -233,10 +271,15 @@ function buildDigest(): string {
     ? `_(need ${Math.ceil(postsLeft / daysPhase)}/day to hit target)_`
     : '';
 
+  const streak = getPostingStreak();
+  const streakEmoji = streak.current >= 7 ? '🔥🔥🔥' : streak.current >= 3 ? '🔥🔥' : streak.current >= 1 ? '🔥' : '❄️';
+
   const now = new Date().toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
 
   const lines = [
     `🌅 *Kognai Morning Digest — ${now}*`,
+    '',
+    `${streakEmoji} Streak: *${streak.current}d* (best: ${streak.best}d) | Yesterday: ${streak.todayPosts > 0 ? `${streak.todayPosts} posted` : 'none'}`,
     '',
     `📊 *Phase 1.5 Gate* — ${daysPhase}d until Apr 7`,
     `${postIcon}  Posts:  *${gate.count}/30* ${postsLeft > 0 ? `(${postsLeft} more) ${postsPerDay}` : ''}`,

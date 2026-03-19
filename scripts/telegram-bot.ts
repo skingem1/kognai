@@ -722,6 +722,79 @@ async function cmdDeliver(chatId: string, args: string): Promise<string> {
   );
 }
 
+// Sprint 282: /streak — posting streak tracker
+function cmdStreak(): string {
+  const posts = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  if (posts.length === 0) {
+    return (
+      `🔥 *Posting Streak*\n\n` +
+      `No posts recorded yet.\n` +
+      `Start posting to build your streak!\n\n` +
+      `_Use \`/deliver\` to get videos, then \`/record <id> <views>\` after posting._`
+    );
+  }
+
+  // Get unique posting days (sorted)
+  const daySet: Record<string, number> = {};
+  for (const p of posts as any[]) {
+    const date = (p.posted_at ?? p.recorded_at ?? '').slice(0, 10);
+    if (date) {
+      daySet[date] = (daySet[date] || 0) + 1;
+    }
+  }
+  const days = Object.keys(daySet).sort();
+
+  // Calculate current streak (consecutive days ending at today or yesterday)
+  const today = new Date().toISOString().slice(0, 10);
+  const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+  let currentStreak = 0;
+  let checkDate = days.includes(today) ? today : (days.includes(yesterday) ? yesterday : null);
+
+  if (checkDate) {
+    let d = new Date(checkDate);
+    while (daySet[d.toISOString().slice(0, 10)]) {
+      currentStreak++;
+      d = new Date(d.getTime() - 86400000);
+    }
+  }
+
+  // Calculate best streak
+  let bestStreak = 0;
+  let streak = 1;
+  for (let i = 1; i < days.length; i++) {
+    const prev = new Date(days[i - 1]).getTime();
+    const curr = new Date(days[i]).getTime();
+    if (curr - prev === 86400000) {
+      streak++;
+    } else {
+      bestStreak = Math.max(bestStreak, streak);
+      streak = 1;
+    }
+  }
+  bestStreak = Math.max(bestStreak, streak);
+
+  // Today's posts
+  const todayPosts = daySet[today] || 0;
+
+  // Pace
+  const daysLeft = Math.max(1, Math.ceil((new Date('2026-04-07').getTime() - Date.now()) / 86400000));
+  const postsLeft = Math.max(0, 30 - posts.length);
+  const pace = postsLeft > 0 ? Math.ceil(postsLeft / daysLeft) : 0;
+
+  const streakEmoji = currentStreak >= 7 ? '🔥🔥🔥' : currentStreak >= 3 ? '🔥🔥' : currentStreak >= 1 ? '🔥' : '❄️';
+
+  return (
+    `${streakEmoji} *Posting Streak*\n\n` +
+    `Current streak: *${currentStreak} day${currentStreak !== 1 ? 's' : ''}*\n` +
+    `Best streak: *${bestStreak} day${bestStreak !== 1 ? 's' : ''}*\n` +
+    `Today: *${todayPosts} post${todayPosts !== 1 ? 's' : ''}*\n` +
+    `Total: *${posts.length}/30*\n\n` +
+    `📊 Gate: ${postsLeft} posts in ${daysLeft}d (${pace}/day needed)\n` +
+    `📅 Active days: ${days.length}\n\n` +
+    (currentStreak === 0 ? `_Post today to start a new streak!_` : `_Keep it going! Post today to extend your streak._`)
+  );
+}
+
 function cmdHelp(): string {
   return (
     `*Kognai Bot Commands*\n\n` +
@@ -736,6 +809,7 @@ function cmdHelp(): string {
     `/record  — Record a manual TikTok post\n` +
     `/deliver — Batch-send ready videos with captions\n` +
     `/caption — Generate TikTok-ready caption for a video\n` +
+    `/streak  — Posting streak tracker + pace\n` +
     `/help    — This message`
   );
 }
@@ -782,6 +856,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/queue':   response = cmdQueue();  break;
     case '/review':  response = cmdReview(); break;
     case '/caption': response = cmdCaption(cmdArgs); break;
+    case '/streak':  response = cmdStreak(); break;
     case '/help':    response = cmdHelp();   break;
     default:
       response = `Unknown command: \`${cmdName}\`\n\n${cmdHelp()}`;
