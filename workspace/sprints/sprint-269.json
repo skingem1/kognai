@@ -1,0 +1,44 @@
+{
+  "sprint_id": "sprint-269",
+  "title": "Revenue tracking — /revenue command + subscriber ledger",
+  "description": "Add /revenue Telegram command showing subscriber count, MRR, revenue trend, and Phase 2+ financial gates. Reads from subscriber ledger (workspace/revenue/subscribers.jsonl) and Stripe webhook events.",
+  "source": "auto — no revenue visibility in operator dashboard despite Stripe being wired",
+  "tasks": [
+    {
+      "id": "269-01",
+      "title": "Subscriber ledger + revenue calculator",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-269",
+      "deliverables": { "code": ["scripts/scs001/revenue-tracker.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "269-02",
+      "title": "/revenue Telegram command",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-269",
+      "deliverables": { "code": ["agents/telegram-bot/commands.ts", "agents/telegram-bot/index.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "269-03",
+      "title": "Validation test",
+      "type": "test",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-269",
+      "deliverables": { "code": ["scripts/scs001/validate-revenue-tracker.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

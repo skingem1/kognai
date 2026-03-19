@@ -128,6 +128,7 @@ export async function handleHelp(chatId: number): Promise<void> {
     '/achiristats — Achiri usage analytics: users, messages, memory (owner)',
     '/lastrun — Latest pipeline run: stage-by-stage results + timing (owner)',
     '/metrics — Pipeline performance metrics: throughput, QC rate, trends (owner)',
+    '/revenue — Revenue dashboard: subscribers, MRR, financial gates (owner)',
     '/pm2status — All PM2 processes: status, uptime, restarts (owner)',
     '/health — Full system health check: env, gate, PM2, Achiri, pipeline (owner)',
     '/preflight — Production go-live checklist with operator action items (owner)',
@@ -3122,6 +3123,85 @@ export async function handleMetrics(chatId: number, ownerChatId: string): Promis
       lines.push(`• ${s.stage}: ${sec}s avg`);
     }
   }
+
+  await sendMessage(chatId, lines.join('\n'));
+}
+
+// ── /revenue — Revenue dashboard — Sprint 269 ───────────────────────────────
+
+export async function handleRevenue(chatId: number, ownerChatId: string): Promise<void> {
+  if (String(chatId) !== ownerChatId) {
+    await sendMessage(chatId, '🔒 Owner only.');
+    return;
+  }
+
+  // Read TelegramDB for subscriber counts
+  const dbPath = join(process.cwd(), 'data', 'telegram-db.json');
+  let totalUsers = 0;
+  let paidUsers = 0;
+  let mrr = 0;
+  const planCounts: Record<string, number> = { growth: 0, premium: 0, free: 0 };
+  const PRICES: Record<string, number> = { growth: 19, premium: 49 };
+
+  if (existsSync(dbPath)) {
+    try {
+      const db = JSON.parse(readFileSync(dbPath, 'utf-8'));
+      for (const [_, entry] of Object.entries(db) as [string, any][]) {
+        totalUsers++;
+        const tier = entry.tier ?? 'free';
+        planCounts[tier] = (planCounts[tier] ?? 0) + 1;
+        if (tier !== 'free' && entry.active !== false) {
+          paidUsers++;
+          mrr += PRICES[tier] ?? 0;
+        }
+      }
+    } catch { /* skip */ }
+  }
+
+  // Also check revenue-summary.json if it exists
+  const summaryPath = join(process.cwd(), 'reports', 'revenue-summary.json');
+  let summaryData: any = null;
+  if (existsSync(summaryPath)) {
+    try { summaryData = JSON.parse(readFileSync(summaryPath, 'utf-8')); } catch {}
+  }
+
+  const arr = mrr * 12;
+  const freeUsers = totalUsers - paidUsers;
+
+  const lines: string[] = [];
+  lines.push('💰 *Revenue Dashboard*');
+  lines.push('');
+  lines.push('*Subscribers:*');
+  lines.push(`• Total users: ${totalUsers}`);
+  lines.push(`• Free: ${freeUsers} | Growth: ${planCounts.growth} | Premium: ${planCounts.premium}`);
+  lines.push(`• Active paid: ${paidUsers}`);
+  lines.push('');
+  lines.push('*Revenue:*');
+  lines.push(`• MRR: *$${mrr}*`);
+  lines.push(`• ARR: $${arr}`);
+  lines.push('');
+
+  // Financial gates
+  const gates = [
+    { name: 'Phase 1.5 — TikTok live', target: 0, label: 'posts+views' },
+    { name: 'Phase 2A — Achiri alpha', target: 0, label: 'waitlist' },
+    { name: 'Phase 2B — 10 subs', target: 190, label: '$190 MRR' },
+    { name: 'Phase 3 — Autonomy', target: 500, label: '$500 MRR' },
+    { name: 'Phase 4 — x402', target: 1000, label: '$1000 MRR' },
+  ];
+
+  lines.push('*Financial Gates:*');
+  for (const g of gates) {
+    const met = mrr >= g.target;
+    const icon = met ? '✅' : '⏳';
+    const pct = g.target > 0 ? Math.round((mrr / g.target) * 100) : 100;
+    lines.push(`${icon} ${g.name} — ${g.label} (${Math.min(pct, 100)}%)`);
+  }
+
+  // Stripe status
+  lines.push('');
+  const stripeKey = process.env.STRIPE_SECRET_KEY;
+  lines.push(stripeKey ? '💳 Stripe: 🟢 CONFIGURED' : '💳 Stripe: 🔴 NOT CONFIGURED');
 
   await sendMessage(chatId, lines.join('\n'));
 }

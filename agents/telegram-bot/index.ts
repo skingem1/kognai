@@ -29,6 +29,7 @@ import {
   handleAchiriStats,
   handleLastRun,
   handleMetrics,
+  handleRevenue,
 } from './commands';
 
 // ── Config ────────────────────────────────────────────────────────────────────
@@ -134,6 +135,7 @@ async function dispatch(update: TelegramUpdate): Promise<void> {
     case '/achiristats':    await handleAchiriStats(chatId, OWNER_CHAT_ID);           break;
     case '/lastrun':        await handleLastRun(chatId, OWNER_CHAT_ID);              break;
     case '/metrics':        await handleMetrics(chatId, OWNER_CHAT_ID);              break;
+    case '/revenue':        await handleRevenue(chatId, OWNER_CHAT_ID);              break;
     default:                 await handleUnknown(chatId, text);                          break;
   }
 }
