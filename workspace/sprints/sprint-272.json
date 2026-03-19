@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-272",
+  "title": "Achiri E2E integration test — full chat flow with memory, safety, limits, eval",
+  "description": "Comprehensive integration test for Achiri: starts local server, tests chat endpoint with safety filtering, memory context injection, daily message limits, eval harness scoring, and health endpoint. Verifies alpha readiness.",
+  "source": "auto — Achiri alpha Apr 25, all components built but no E2E integration test covering full flow",
+  "tasks": [
+    {
+      "id": "272-01",
+      "title": "E2E integration test script",
+      "type": "test",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-272",
+      "deliverables": { "code": ["scripts/achiri/e2e-integration-test.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "272-02",
+      "title": "Validation wrapper",
+      "type": "test",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-272",
+      "deliverables": { "code": ["scripts/achiri/validate-e2e-integration.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
