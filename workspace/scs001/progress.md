@@ -1508,3 +1508,14 @@ Operator quickstart: (1) bash scripts/pre-deploy-check.sh (2) ./scripts/pm2-boot
 - Swarm used: no (single-file edit)
 - Issues: None
 - Timestamp: 2026-03-19T23:30:00Z
+
+## Sprint 228 — Health Command Fix (Direct Write)
+- Status: PASS
+- Commit: ceff05f
+- Files modified: agents/telegram-bot/commands.ts
+- Files created: workspace/sprints/sprint-228.json
+- Tasks completed:
+  - 228-01: Fixed /health reading from data/ (wrong) instead of workspace/scs001/ (correct). Gate progress and pipeline queue stats were always 0. Now shows real data.
+- Swarm used: no (path fix)
+- Issues: None
+- Timestamp: 2026-03-19T23:45:00Z
