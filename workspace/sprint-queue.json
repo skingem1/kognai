@@ -111,7 +111,7 @@
       "sprint": 249,
       "title": "LLM Script Rewriting \u2014 replace deterministic templates with Claude/GPT rewrite",
       "block": "VIDEO-QUALITY",
-      "status": "queued",
+      "status": "done",
       "priority": "high",
       "rationale": "n8n flow steps 3-4. Script Agent is currently 100% deterministic (template hooks, no LLM). Replace with: (1) Perplexity-style research via ClawRouter T3 APEX to suggest new content angle in same niche, (2) LLM rewrites script/caption/overlay using transcribed audio + insight brief. GPT-4o or Claude Sonnet via ClawRouter. This is what makes each video UNIQUE instead of formulaic."
     },

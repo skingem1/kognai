@@ -1681,3 +1681,16 @@ Full auto-posting pipeline built:
 - Swarm used: no (multi-file, cross-module integration)
 - Issues: None. OPENAI_API_KEY not set but dry-run works. Live transcription ready when API key is configured.
 - Timestamp: 2026-03-20T04:00:00Z
+
+## Sprint 249 — LLM Script Rewriting (Direct Write)
+- Status: PASS
+- Commit: 1eb5487
+- Files created: scripts/scs001/llm-script-rewriter.ts, scripts/scs001/validate-llm-rewriter.ts, workspace/sprints/sprint-249.json
+- Files modified: agents/scs001-script/index.ts
+- Tasks completed:
+  - 249-01: Created llm-script-rewriter.ts — dual-backend (qwen3:14b local $0 / Claude Sonnet cloud), prompt builder, JSON segment parser, batch mode, graceful fallback
+  - 249-02: Wired into ScriptAgent — new runAsync() method, LLM_REWRITE=1 env toggle, LLM_REWRITE_CLOUD=1 for Claude. Deterministic run() preserved as sync fallback.
+  - 249-03: Validation: 11/11 tests pass (module load, exports, dry-run, ScriptAgent integration, source checks)
+- Swarm used: no (multi-file, cross-module)
+- Issues: None. LLM rewriting ready — enable with LLM_REWRITE=1 env var.
+- Timestamp: 2026-03-20T04:15:00Z
