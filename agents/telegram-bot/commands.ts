@@ -2253,7 +2253,8 @@ export async function handleHealth(chatId: number, ownerChatId: string): Promise
   // 2. Gate progress
   lines.push('', '*Phase 1.5 Gate (Apr 7)*');
   try {
-    const postsPath = join(ROOT, 'data', 'manual-posts.jsonl');
+    // Sprint 228: Fix path — manual-posts.jsonl is in workspace/scs001/, not data/
+    const postsPath = join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
     let postCount = 0;
     let totalViews = 0;
     if (existsSync(postsPath)) {
@@ -2301,15 +2302,16 @@ export async function handleHealth(chatId: number, ownerChatId: string): Promise
   // 5. Pipeline queue
   lines.push('', '*Pipeline*');
   try {
-    const ledgerPath = join(ROOT, 'data', 'publish-ledger.jsonl');
-    const postsPath = join(ROOT, 'data', 'manual-posts.jsonl');
+    // Sprint 228: Fix path — files are in workspace/scs001/, not data/
+    const ledgerPath = join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl');
+    const postsPathPipeline = join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
     let ledgerCount = 0;
     let postedIds = new Set<string>();
     if (existsSync(ledgerPath)) {
       ledgerCount = readFileSync(ledgerPath, 'utf-8').trim().split('\n').filter(Boolean).length;
     }
-    if (existsSync(postsPath)) {
-      const pLines = readFileSync(postsPath, 'utf-8').trim().split('\n').filter(Boolean);
+    if (existsSync(postsPathPipeline)) {
+      const pLines = readFileSync(postsPathPipeline, 'utf-8').trim().split('\n').filter(Boolean);
       for (const l of pLines) { try { postedIds.add(JSON.parse(l).video_id); } catch { /* */ } }
     }
     lines.push(`📦 ${ledgerCount} videos in ledger | ${postedIds.size} posted | ${ledgerCount - postedIds.size} unposted`);

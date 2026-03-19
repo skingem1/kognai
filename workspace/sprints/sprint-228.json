@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-228",
+  "title": "Health Command Fix — correct file paths for gate and pipeline data",
+  "description": "/health was reading from data/ (wrong) instead of workspace/scs001/ (correct). Gate progress and pipeline stats were always showing 0. Now reads from correct paths.",
+  "source": "autonomous",
+  "tasks": [
+    {
+      "id": "228-01",
+      "title": "Fix /health handleHealth file paths from data/ to workspace/scs001/",
+      "type": "bugfix",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-228",
+      "deliverables": { "code": ["agents/telegram-bot/commands.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
