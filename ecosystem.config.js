@@ -486,6 +486,27 @@ module.exports = {
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
     {
+      // Sprint 283: Weekly Report — Sunday 20:00, gate progress + streak + pipeline recap
+      // To start: pm2 start ecosystem.config.js --only kognai-weekly-report
+      name: "kognai-weekly-report",
+      script: "scripts/weekly-report.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: false,
+      watch: false,
+      cron_restart: "0 20 * * 0",
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
+        CEO_TELEGRAM_BOT_TOKEN: process.env.CEO_TELEGRAM_BOT_TOKEN || process.env.TELEGRAM_BOT_TOKEN || "",
+        OWNER_TELEGRAM_CHAT_ID: process.env.OWNER_TELEGRAM_CHAT_ID || process.env.CEO_TELEGRAM_CHAT_ID || "",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/weekly-report-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/weekly-report-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
+    {
       // Gate Regen — regenerates workspace/gates/phase1-5-gate.json daily at 06:55
       // Runs 5 min before daily digest (07:00) so digest always has fresh gate data.
       // To start: pm2 start ecosystem.config.js --only kognai-gate-regen

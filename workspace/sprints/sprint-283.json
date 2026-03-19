@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-283",
+  "title": "Weekly posting report — Sunday recap via Telegram",
+  "description": "PM2 cron sends weekly recap every Sunday: posts this week, total gate progress, posting streak, top-performing video, pipeline output. Keeps operator accountable on weekly cadence.",
+  "source": "auto — daily tools complete, need weekly cadence accountability layer",
+  "tasks": [
+    {
+      "id": "283-01",
+      "title": "Create scripts/weekly-report.ts — Sunday posting recap via Telegram",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-283",
+      "deliverables": { "code": ["scripts/weekly-report.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "283-02",
+      "title": "Add kognai-weekly-report PM2 cron to ecosystem.config.js",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-283",
+      "deliverables": { "code": ["ecosystem.config.js"], "tests": [], "docs": [] }
+    }
+  ]
+}
