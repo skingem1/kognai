@@ -101,6 +101,7 @@ export async function handleHelp(chatId: number): Promise<void> {
     '/tiktokstatus — TikTok live mode readiness (owner)',
     '/tiktokauth — TikTok OAuth flow: get/refresh access token (owner)',
     '/autopost — Auto-post daemon: status, run, dry-run (owner)',
+    '/verifyposts — Post-publish verification: check if posts went live (owner)',
     '/gate — Phase 1.5 gate review (Apr 7 kill switch)',
     '/postreminder — Apr 7 gate progress + posting workflow (owner)',
     '/review — Top-3 QC-passed videos for manual posting (owner)',
@@ -2595,4 +2596,85 @@ export async function handleAutoPost(chatId: number, ownerChatId: string, text: 
   ];
 
   await sendMessage(chatId, msg.join('\n'));
+}
+
+// ── /verifyposts — Post-publish verification status — Sprint 234 ─────────────
+export async function handleVerifyPosts(chatId: number, ownerChatId: string, text: string): Promise<void> {
+  if (String(chatId) !== ownerChatId) {
+    await sendMessage(chatId, '🔒 Owner only.');
+    return;
+  }
+
+  const arg = text.split(/\s+/)[1]?.toLowerCase();
+
+  // /verifyposts run — trigger verification now
+  if (arg === 'run') {
+    await sendMessage(chatId, '🔍 Running post verification...');
+    try {
+      const output = execSync('npx ts-node scripts/scs001/verify-posts.ts 2>&1', {
+        timeout: 60000,
+        cwd: process.cwd(),
+        env: { ...process.env, TS_NODE_TRANSPILE_ONLY: 'true' },
+      }).toString();
+      const lastLines = output.split('\n').filter(l => l.trim()).slice(-5).join('\n');
+      await sendMessage(chatId, `✅ *Verification complete*\n\`\`\`\n${lastLines}\n\`\`\``);
+    } catch (err: any) {
+      const out = err.stdout?.toString() || err.message;
+      await sendMessage(chatId, `❌ Verification failed:\n\`\`\`\n${out.slice(-300)}\n\`\`\``);
+    }
+    return;
+  }
+
+  // Default: show verification status
+  const verifyLogPath = join(process.cwd(), 'logs', 'verify-posts.jsonl');
+  const autoPostLogPath = join(process.cwd(), 'logs', 'auto-post.jsonl');
+
+  let totalPosted = 0, published = 0, failed = 0, processing = 0, unverified = 0;
+
+  // Count auto-posted
+  if (existsSync(autoPostLogPath)) {
+    try {
+      readFileSync(autoPostLogPath, 'utf-8').split('\n').filter(l => l.trim()).forEach(l => {
+        try { if (JSON.parse(l).event === 'posted') totalPosted++; } catch {}
+      });
+    } catch {}
+  }
+
+  // Count verification results
+  const verifyMap = new Map<string, string>();
+  if (existsSync(verifyLogPath)) {
+    try {
+      readFileSync(verifyLogPath, 'utf-8').split('\n').filter(l => l.trim()).forEach(l => {
+        try {
+          const e = JSON.parse(l);
+          if (e.event === 'verified') verifyMap.set(e.publish_id, e.status);
+        } catch {}
+      });
+    } catch {}
+  }
+
+  verifyMap.forEach((status) => {
+    if (status === 'published') published++;
+    else if (status === 'failed') failed++;
+    else processing++;
+  });
+  unverified = totalPosted - verifyMap.size;
+
+  const lines = [
+    '🔍 *Post Verification Status*',
+    '',
+    `📊 Total auto-posted: *${totalPosted}*`,
+    `✅ Verified live: *${published}*`,
+    `❌ Failed: *${failed}*`,
+    `⏳ Processing: *${processing}*`,
+    `❓ Unverified: *${unverified}*`,
+    '',
+    `⏰ Auto-check: 09:00 + 20:00 daily (PM2)`,
+    '',
+    '*Commands:*',
+    '/verifyposts run — Check now',
+    '/verifyposts — This status',
+  ];
+
+  await sendMessage(chatId, lines.join('\n'));
 }

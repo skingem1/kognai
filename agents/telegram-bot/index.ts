@@ -25,7 +25,7 @@ import {
   handleStripeStatus, handleQueue, handleTiktokStatus, handlePostNow, handleCaption, handlePace,
   handleToday, handleViral, handlePm2Status, handlePostBatch, handleSendVideo,
   handleViralStats, handleCalendar, handleHealth, handlePreflight,
-  handleTiktokAuth, handleAutoPost,
+  handleTiktokAuth, handleAutoPost, handleVerifyPosts,
 } from './commands';
 
 // ── Config ────────────────────────────────────────────────────────────────────
@@ -126,6 +126,7 @@ async function dispatch(update: TelegramUpdate): Promise<void> {
     case '/preflight':       await handlePreflight(chatId, OWNER_CHAT_ID);             break;
     case '/tiktokauth':     await handleTiktokAuth(chatId, OWNER_CHAT_ID);            break;
     case '/autopost':       await handleAutoPost(chatId, OWNER_CHAT_ID, text);        break;
+    case '/verifyposts':    await handleVerifyPosts(chatId, OWNER_CHAT_ID, text);     break;
     default:                 await handleUnknown(chatId, text);                          break;
   }
 }

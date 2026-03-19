@@ -735,6 +735,42 @@ module.exports = {
       out_file: "/Users/tarekmnif/kognai/logs/auto-post-out.log",
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
+    // ─── Sprint 234: Token auto-refresh — daily at 03:00 ──────────────────────
+    {
+      name: "kognai-token-refresh",
+      script: "scripts/tiktok-refresh-token.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: "/Users/tarekmnif/kognai",
+      cron_restart: "0 3 * * *",
+      autorestart: false,
+      watch: false,
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/token-refresh-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/token-refresh-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
+    // ─── Sprint 234: Post verification — 1h after each auto-post ────────────
+    {
+      name: "kognai-verify-posts",
+      script: "scripts/scs001/verify-posts.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: "/Users/tarekmnif/kognai",
+      cron_restart: "0 9,20 * * *",
+      autorestart: false,
+      watch: false,
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/verify-posts-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/verify-posts-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
     // ─── ClawRouter HTTP Gateway (Sprint 173) ─────────────────────────────────
     {
       name: "clawrouter-gateway",

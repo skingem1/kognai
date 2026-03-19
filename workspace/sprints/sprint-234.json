@@ -1,0 +1,44 @@
+{
+  "sprint_id": "sprint-234",
+  "title": "Post-Publish Verification + Token Auto-Refresh",
+  "description": "Verify TikTok posts went live via publish status API. Auto-refresh tokens daily via PM2 cron. /verifyposts command shows publish status. Closes the publish→verify feedback loop.",
+  "source": "autonomous",
+  "tasks": [
+    {
+      "id": "234-01",
+      "title": "Create post-publish verification script",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-234",
+      "deliverables": { "code": ["scripts/scs001/verify-posts.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "234-02",
+      "title": "Add PM2 cron for token auto-refresh",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-234",
+      "deliverables": { "code": ["ecosystem.config.js"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "234-03",
+      "title": "Add /verifyposts telegram command",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-234",
+      "deliverables": { "code": ["agents/telegram-bot/commands.ts", "agents/telegram-bot/index.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
