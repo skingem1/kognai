@@ -1566,3 +1566,17 @@ Operator quickstart: (1) bash scripts/pre-deploy-check.sh (2) ./scripts/pm2-boot
 - Swarm bypassed: yes (FP-007). Manual crystallise: skipped (no crystalliser available).
 - Issues: None. Directly unblocks Phase 1.5 gate (TIKTOK_ACCESS_TOKEN was the only code blocker).
 - Timestamp: 2026-03-20T01:00:00Z
+
+## Sprint 233 — Auto-Post Daemon (Direct Write)
+- Status: PASS
+- Commit: bfae0e4
+- Files created: scripts/scs001/auto-post.ts, workspace/sprints/sprint-233.json
+- Files modified: agents/telegram-bot/commands.ts, agents/telegram-bot/index.ts, ecosystem.config.js
+- Tasks completed:
+  - 233-01: Auto-post daemon — picks top unposted video by viral score, uploads to Supabase, posts via TikTok API, records to manual-posts.jsonl, notifies owner
+  - 233-02: PM2 cron entry (kognai-auto-post) at 08:00 + 19:00 daily
+  - 233-03: /autopost telegram command — status, /autopost run (live), /autopost dry (test)
+- Swarm used: no (commands.ts 2500+ lines — swarm limit exceeded)
+- Swarm bypassed: yes (FP-007). Manual crystallise: skipped.
+- Issues: None. Auto-posting pipeline complete. Requires TIKTOK_ACCESS_TOKEN (Sprint 232 OAuth flow).
+- Timestamp: 2026-03-20T01:15:00Z
