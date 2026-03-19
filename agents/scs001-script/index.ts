@@ -3,6 +3,7 @@
 // Produces: ScriptBundle[] (per contracts/scs-001/script-bundle-v1.json)
 // Model: NONE — pure deterministic mapping, no LLM calls
 // Maps editorial content to 6-segment video timeline + pattern interrupts
+// §17 Compliance: EXEMPT — zero LLM calls. No routeCall() needed. Verified Sprint 172 (2026-03-19).
 
 import { randomUUID } from 'crypto';
 import type { InsightBrief } from '../scs001-insight/index';
