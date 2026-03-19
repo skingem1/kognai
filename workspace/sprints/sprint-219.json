@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-219",
+  "title": "Pre-Deploy Fix — false negatives in pre-deploy-check.sh",
+  "description": "Pre-deploy check blocked PM2 reload with false negatives: system commands (python3, npx) flagged as missing scripts, Invoica legacy processes flagged as errors, wrong env var name (CEO_ vs TELEGRAM_), wrong cwd resolution. Fix: skip system commands, use app cwd, Invoica processes as warnings, correct env var names.",
+  "source": "autonomous",
+  "tasks": [
+    {
+      "id": "219-01",
+      "title": "Fix pre-deploy-check.sh false negatives",
+      "type": "modify",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "todo",
+      "priority": "high",
+      "sprint_id": "sprint-219",
+      "deliverables": { "code": ["scripts/pre-deploy-check.sh", "tsconfig.scripts.json"], "tests": [], "docs": [] }
+    }
+  ]
+}

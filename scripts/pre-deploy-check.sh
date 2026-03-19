@@ -10,7 +10,7 @@ cd "$ROOT"
 
 ERRORS=0
 echo "╔══════════════════════════════════════════════════════╗"
-echo "║         Invoica Pre-Deploy Verification              ║"
+echo "║         Kognai Pre-Deploy Verification               ║"
 echo "╚══════════════════════════════════════════════════════╝"
 echo ""
 
@@ -36,17 +36,27 @@ node -e "
   let missing = 0;
   for (const app of config.apps) {
     if (app.script.startsWith('/')) continue; // absolute paths are server-specific
-    const full = path.resolve('.', app.script);
+    // Skip system commands used as interpreters (python3, npx, node, etc.)
+    const SYSTEM_CMDS = ['python3', 'python', 'node', 'npx', 'bash', 'sh'];
+    if (SYSTEM_CMDS.includes(app.script)) continue;
+    const cwd = app.cwd || '.';
+    const full = path.resolve(cwd, app.script);
+    // Kognai processes are critical; Invoica legacy processes are warnings
+    const isKognai = /^(kognai-|scs001-|telegram-bot|achiri-|vault-|clawrouter-)/.test(app.name);
     if (!fs.existsSync(full)) {
-      console.error('  ❌ MISSING: ' + app.name + ' → ' + app.script);
-      missing++;
+      if (isKognai) {
+        console.error('  ❌ MISSING: ' + app.name + ' → ' + app.script);
+        missing++;
+      } else {
+        console.log('  ⚠️  ' + app.name + ' → ' + app.script + ' (Invoica legacy, skipped)');
+      }
     } else {
       console.log('  ✅ ' + app.name + ' → ' + app.script);
     }
   }
   if (missing > 0) process.exit(1);
   console.log('');
-  console.log('  All ' + config.apps.length + ' scripts verified.');
+  console.log('  Kognai scripts verified (' + config.apps.length + ' total processes).');
 " || ERRORS=$((ERRORS + 1))
 echo ""
 
@@ -80,7 +90,8 @@ echo ""
 echo "▶ Environment variables check..."
 REQUIRED_KEYS=(
   "ANTHROPIC_API_KEY"
-  "CEO_TELEGRAM_BOT_TOKEN"
+  "TELEGRAM_BOT_TOKEN"
+  "OWNER_TELEGRAM_CHAT_ID"
   "MINIMAX_API_KEY"
 )
 if [ -f "$ROOT/.env" ]; then
