@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-279",
+  "title": "Retroactive viral score enrichment — batch-update experiments with hookQualityScore",
+  "description": "Backfill 204 experiment entries that had fallback 0.5 viral scores with composite scores based on hook formula, speaker, and QC pass. Score range now 0.39-0.71 (avg 0.59). Content calendar regenerated with new prioritization.",
+  "source": "auto — Sprint 278 fixed future scoring, this retroactively fixes existing data",
+  "tasks": [
+    {
+      "id": "279-01",
+      "title": "Experiment enrichment script",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "complete",
+      "priority": "high",
+      "sprint_id": "sprint-279",
+      "deliverables": { "code": ["scripts/scs001/enrich-experiments.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
