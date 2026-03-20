@@ -1,0 +1,99 @@
+{
+  "_note": "Top TikTok accounts per niche. Operator adds accounts via /competitor add. Metrics updated via /competitor log.",
+  "updated_at": "2026-03-20T10:19:27.334Z",
+  "accounts": [
+    {
+      "handle": "@techbros",
+      "niche": "tech",
+      "followers": 250000,
+      "avg_views": 50000,
+      "posting_frequency": "2/day",
+      "hook_formulas": [
+        "curiosity-gap",
+        "controversy"
+      ],
+      "top_topics": [
+        "AI tools",
+        "productivity hacks",
+        "tech reviews"
+      ],
+      "last_updated": "2026-03-20"
+    },
+    {
+      "handle": "@aisecrets",
+      "niche": "ai",
+      "followers": 180000,
+      "avg_views": 35000,
+      "posting_frequency": "1/day",
+      "hook_formulas": [
+        "shock-stat",
+        "tutorial"
+      ],
+      "top_topics": [
+        "ChatGPT tips",
+        "AI automation",
+        "prompt engineering"
+      ],
+      "last_updated": "2026-03-20"
+    },
+    {
+      "handle": "@startupgrind",
+      "niche": "business",
+      "followers": 320000,
+      "avg_views": 65000,
+      "posting_frequency": "3/day",
+      "hook_formulas": [
+        "story-hook",
+        "listicle",
+        "before-after"
+      ],
+      "top_topics": [
+        "founder stories",
+        "revenue milestones",
+        "growth hacks"
+      ],
+      "last_updated": "2026-03-20"
+    }
+  ],
+  "niches": [
+    "tech",
+    "ai",
+    "business",
+    "finance",
+    "health",
+    "science"
+  ],
+  "insights": {
+    "best_posting_times": [
+      "10:00",
+      "14:00",
+      "19:00"
+    ],
+    "avg_hooks_per_niche": {
+      "tech": [
+        "curiosity-gap",
+        "controversy"
+      ],
+      "ai": [
+        "shock-stat",
+        "tutorial"
+      ],
+      "business": [
+        "story-hook",
+        "listicle",
+        "before-after"
+      ]
+    },
+    "trending_topics_from_competitors": [
+      "AI tools",
+      "productivity hacks",
+      "tech reviews",
+      "ChatGPT tips",
+      "AI automation",
+      "prompt engineering",
+      "founder stories",
+      "revenue milestones",
+      "growth hacks"
+    ]
+  }
+}

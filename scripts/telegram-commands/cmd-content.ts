@@ -657,3 +657,74 @@ export function cmdThumbnail(args: string): string {
     return `❌ Thumbnail error: ${err.message}`;
   }
 }
+
+// Sprint 479: Competitor analysis feed
+export function cmdCompetitor(args: string): string {
+  const COMP_PATH = path.join(ROOT, 'workspace', 'scs001', 'competitors.json');
+
+  const parts = args.trim().split(/\s+/);
+  const sub = parts[0]?.toLowerCase();
+
+  if (!sub || sub === 'list') {
+    // Show competitor summary
+    try {
+      const { competitorSummary } = require('../../agents/scs001-trend/competitor-feed');
+      return competitorSummary();
+    } catch (e: any) {
+      return `❌ Error loading competitors: ${e.message}`;
+    }
+  }
+
+  if (sub === 'add') {
+    // /competitor add @handle niche followers avg_views freq hook1,hook2 topic1|topic2
+    if (parts.length < 4) {
+      return '📋 Usage: /competitor add @handle niche followers [avg_views] [freq] [hooks] [topics]\n\nExample: /competitor add @techguru ai 150000 30000 2/day curiosity-gap,tutorial AI tools|ChatGPT';
+    }
+    const handle = parts[1];
+    const niche = parts[2];
+    const followers = parseInt(parts[3]) || 0;
+    const avg_views = parseInt(parts[4]) || 0;
+    const freq = parts[5] || '1/day';
+    const hooks = parts[6]?.split(',') ?? [];
+    const topics = parts[7]?.split('|') ?? [];
+
+    try {
+      const { addCompetitor } = require('../../agents/scs001-trend/competitor-feed');
+      addCompetitor({
+        handle, niche, followers, avg_views,
+        posting_frequency: freq,
+        hook_formulas: hooks,
+        top_topics: topics,
+        last_updated: new Date().toISOString().slice(0, 10),
+      });
+      return `✅ Competitor ${handle} added to ${niche} niche.\n\n👥 ${followers.toLocaleString()} followers | 👁 ${avg_views.toLocaleString()} avg views\n🎣 Hooks: ${hooks.join(', ') || 'none'}\n📌 Topics: ${topics.join(', ') || 'none'}`;
+    } catch (e: any) {
+      return `❌ Error adding competitor: ${e.message}`;
+    }
+  }
+
+  if (sub === 'remove') {
+    const handle = parts[1];
+    if (!handle) return 'Usage: /competitor remove @handle';
+    try {
+      const { removeCompetitor } = require('../../agents/scs001-trend/competitor-feed');
+      const removed = removeCompetitor(handle);
+      return removed ? `✅ Removed ${handle} from competitor feed.` : `❌ ${handle} not found.`;
+    } catch (e: any) {
+      return `❌ Error: ${e.message}`;
+    }
+  }
+
+  if (sub === 'topics') {
+    try {
+      const { getCompetitorTopics } = require('../../agents/scs001-trend/competitor-feed');
+      const topics: string[] = getCompetitorTopics();
+      if (topics.length === 0) return 'No competitor topics yet.';
+      return `🔥 Competitor-sourced topics (${topics.length}):\n\n${topics.map((t, i) => `${i + 1}. ${t}`).join('\n')}`;
+    } catch (e: any) {
+      return `❌ Error: ${e.message}`;
+    }
+  }
+
+  return '📊 /competitor commands:\n• /competitor list — show all tracked competitors\n• /competitor add @handle niche followers [avg_views] [freq] [hooks] [topics]\n• /competitor remove @handle\n• /competitor topics — show competitor-sourced topics';
+}

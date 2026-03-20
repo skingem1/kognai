@@ -6,6 +6,7 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs';
 import { join } from 'path';
 import { LiveFeedProvider } from './live-feed';
+import { getCompetitorTopics } from './competitor-feed';
 
 interface Oracle6Signal {
   signal_id: string;
@@ -62,11 +63,18 @@ export class TrendAgent {
   async run(seq = 1, priority_topics: string[] = []): Promise<TrendingTopicBatch> {
     const feed = await this.loadFeed();
 
+    // Sprint 479: Merge competitor-sourced topics into priority list
+    const competitorTopics = getCompetitorTopics();
+    const allPriority = [...priority_topics, ...competitorTopics];
+    if (competitorTopics.length > 0) {
+      console.log(`[TrendAgent] Competitor feed injected ${competitorTopics.length} topic(s)`);
+    }
+
     // Apply viral-topic confidence boost (+15, capped at 99) before gating
     const BOOST = 15;
     let boostedCount = 0;
-    if (priority_topics.length > 0) {
-      const priorityLower = priority_topics.map(t => t.toLowerCase());
+    if (allPriority.length > 0) {
+      const priorityLower = allPriority.map(t => t.toLowerCase());
       for (const s of feed.signals) {
         const topicLower = s.topic.toLowerCase();
         if (priorityLower.some(p => topicLower.includes(p) || p.includes(topicLower))) {

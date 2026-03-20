@@ -1,0 +1,44 @@
+{
+  "sprint_id": "sprint-479",
+  "title": "PIPELINE — Competitor analysis feed (top 10 TikTok accounts in niche)",
+  "description": "Add competitor monitoring: config for top TikTok accounts per niche, manual metric input via Telegram, posting pattern analysis, hook formula extraction. Feed insights into topic selection.",
+  "source": "queue — Sprint 479 PIPELINE-V2",
+  "tasks": [
+    {
+      "id": "479-01",
+      "title": "Create competitor config + data model",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-479",
+      "deliverables": { "code": ["workspace/scs001/competitors.json", "agents/scs001-trend/competitor-feed.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "479-02",
+      "title": "Build /competitor Telegram command for manual input + analysis",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-479",
+      "deliverables": { "code": ["scripts/telegram-commands/competitor.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "479-03",
+      "title": "Wire competitor insights into TrendAgent topic weighting",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-479",
+      "deliverables": { "code": ["agents/scs001-trend/index.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
