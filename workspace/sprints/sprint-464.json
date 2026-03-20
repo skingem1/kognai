@@ -1,0 +1,56 @@
+{
+  "sprint_id": "sprint-464",
+  "title": "GEO — kognai.ai GEO foundation (launch day activation)",
+  "description": "Generate llms.txt defining Kognai entities, Organization + Article JSON-LD, citable doc blocks, and brand mention baseline for GEO readiness.",
+  "source": "queue — Sprint 464 GEO",
+  "tasks": [
+    {
+      "id": "464-01",
+      "title": "Generate llms.txt defining Kognai entities (SCS, ACP, Five Laws, etc)",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-464",
+      "deliverables": { "code": ["workspace/geo/llms.txt"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "464-02",
+      "title": "Generate Organization + SoftwareApplication JSON-LD schema",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-464",
+      "deliverables": { "code": ["workspace/geo/jsonld-organization.json", "workspace/geo/jsonld-software.json"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "464-03",
+      "title": "Structure key docs as citable blocks (134-167 words per block)",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-464",
+      "deliverables": { "code": ["workspace/geo/citable-blocks.json"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "464-04",
+      "title": "Brand mention baseline tracker + initial scan",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-464",
+      "deliverables": { "code": ["workspace/geo/brand-baseline.json", "scripts/geo/brand-mention-scan.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

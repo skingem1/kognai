@@ -1,0 +1,21 @@
+{
+  "_note": "GEO brand mention baseline — initial scan date 2026-03-20. Re-run scripts/geo/brand-mention-scan.ts weekly to track delta.",
+  "scan_date": "2026-03-20T00:00:00Z",
+  "status": "initial_baseline",
+  "entities_tracked": [
+    { "entity": "Kognai", "type": "brand", "baseline_mentions": 0, "notes": "Pre-launch — no public mentions expected" },
+    { "entity": "SCS-001", "type": "product_code", "baseline_mentions": 0, "notes": "Internal codename, not yet public" },
+    { "entity": "Achiri", "type": "product", "baseline_mentions": 0, "notes": "Pre-launch Tunisian AI companion" },
+    { "entity": "ClawRouter", "type": "technology", "baseline_mentions": 0, "notes": "Internal model router" },
+    { "entity": "OpenClaw", "type": "framework", "baseline_mentions": 0, "notes": "Skills framework, not yet public" },
+    { "entity": "x402", "type": "protocol", "baseline_mentions": 0, "notes": "Payment protocol — check for collisions with HTTP 402" },
+    { "entity": "Five Laws of Kognai", "type": "concept", "baseline_mentions": 0, "notes": "Constitutional principles" }
+  ],
+  "ai_engines_checked": [
+    { "engine": "ChatGPT", "query": "What is Kognai AI?", "result": "no_mention", "date": "2026-03-20" },
+    { "engine": "Claude", "query": "What is Kognai AI?", "result": "no_mention", "date": "2026-03-20" },
+    { "engine": "Perplexity", "query": "What is Kognai AI?", "result": "no_mention", "date": "2026-03-20" },
+    { "engine": "Google SGE", "query": "What is Kognai AI?", "result": "no_mention", "date": "2026-03-20" }
+  ],
+  "next_scan_due": "2026-03-27T00:00:00Z"
+}

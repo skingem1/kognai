@@ -1,0 +1,68 @@
+# Kognai
+
+> Kognai is a sovereign AI runtime that powers multiple products via a shared agent swarm. It operates a 9-layer architecture from Runtime to Financial Autonomy, with 5 deployment products spanning content automation, AI companionship, founder intelligence, dynamic research, and agent-to-agent payments.
+
+## Core Entities
+
+### SCS-001 (Short Content System)
+SCS-001 is Kognai's TikTok content automation pipeline. It discovers trending topics, generates scripts, produces short-form videos with voiceover and captions, and manages multi-platform publishing. SCS-001 uses a 5-tier model router (Nano → Local → Power → Cloud → Apex) to optimize cost and quality. It is the Phase 1 cashflow engine powering Kognai's go-to-market strategy.
+
+### ACP (Adaptive Companion Protocol)
+ACP is the protocol behind Achiri, Kognai's culturally adaptive AI companion for Tunisia. ACP handles Derja/French code-switching, cultural sensitivity filtering, and personality-first interaction design. The protocol prioritizes voice validation before memory subsystem integration, ensuring authentic conversational experience.
+
+### Five Laws of Kognai
+The Five Laws are Kognai's constitutional principles that govern all agent behavior across the swarm. They are embedded in bootstrap files (AGENTS.md, SOUL.md, policy/*.txt) to survive context compaction. The Summer Yu Rule ensures safety constraints are never chat-only — they must persist in durable configuration.
+
+### ClawRouter
+ClawRouter is Kognai's intelligent model routing gateway. It implements a 5-tier routing strategy: Tier 0 (Nano/local, $0), Tier 1 (Local/qwen3, $0), Tier 2 (Power/deepseek, $0), Tier 3 (Cloud/claude-sonnet, pay-per-call), Tier 4 (Apex/claude-opus, emergency only). ClawRouter integrates with the CEO Wallet for x402 pay-per-call billing in Phase 3+.
+
+### OpenClaw
+OpenClaw is Kognai's skills framework (v2026.3.7) with 31 registered skills across 4 tiers (T1 Foundation, T2 Content, T3 Intelligence, T4 Ecosystem). Skills are reusable capabilities that agents invoke through the ClawRouter gateway. The Skills Registry enables agent specialization and composability.
+
+### x402 Payment Rail
+x402 is Kognai's agent-to-agent payment protocol using USDC on Base. It enables micropayments for model API calls, skill invocations, and inter-agent transactions. The CEO Wallet manages budget allocation. x402 is the foundation for Kognai's Phase 4 financial autonomy layer.
+
+### Agent Swarm
+Kognai operates a swarm of 29 specialized agents orchestrated by a dual-supervisor system. Key named agents include Harvey (CEO), Messi (Coder), Sherlock (Supervisor), Guardiola (Orchestrator), MacGyver (DevOps), Satoshi (Finance), and Elon (Growth). The swarm executes sprint-based development cycles autonomously.
+
+## Products
+
+### TikTok Content Agent (Phase 1)
+Automated short-form video creation and publishing pipeline. Subscription model at €9/month. Currently in manual posting mode with pipeline producing videos autonomously.
+
+### Achiri (Phase 2A)
+Culturally adaptive AI companion for Tunisia. Supports Derja and French. Free tier with TND-denominated premium tiers. Voice personality validated 10/10 in testing.
+
+### Founder Intelligence Agent (Phase 2+)
+Internal tool for founder decision support. Aggregates signals from pipeline metrics, market trends, and operational data. Potential future SaaS offering.
+
+### Dynamic Research Instrument (Phase 3)
+Academic research tool with x402 micropayment integration. Enables pay-per-query access to research capabilities.
+
+### x402 Payment Rail (Phase 4)
+Agent-to-agent transaction infrastructure. Enables autonomous financial operations between Kognai agents and external services.
+
+## Architecture Layers
+
+1. Runtime — Agent execution environment
+2. Configuration — Agent configs and prompt management
+3. Adaptation — Cultural and contextual adaptation (ACP)
+4. Health — System monitoring and kill switches
+5. Compression — Context and token optimization
+6. Hosting — Infrastructure (Hetzner VPS, Mac Mini M4 vault)
+7. Plumber — Data pipelines and event bus (Supabase)
+8. Ecosystem — Skills, integrations, external APIs
+9. Financial Autonomy — x402, CEO Wallet, Stripe subscriptions
+
+## Technical Stack
+- Runtime: Node.js/TypeScript, Python
+- Models: qwen3 (0.6b/4b/14b), deepseek-r1:14b (local), Claude Sonnet/Opus (cloud)
+- Infrastructure: Hetzner VPS, Mac Mini M4, Tailscale VPN, PM2
+- Database: Supabase (PostgreSQL + event bus)
+- Payments: Stripe (subscriptions), x402/USDC on Base (agent payments)
+- Video: FFmpeg, Piper TTS, PySceneDetect
+- Messaging: Telegram Bot API
+
+## Links
+- Website: https://kognai.ai
+- GitHub: https://github.com/skingem1/kognai (private)

@@ -1,0 +1,37 @@
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Kognai Runtime",
+  "applicationCategory": "AI Platform",
+  "operatingSystem": "Linux, macOS",
+  "description": "A sovereign AI runtime with 9-layer architecture that orchestrates 29 specialized agents via a dual-supervisor swarm. Features a 5-tier model router (Nano to Apex), OpenClaw skills framework with 31 skills, x402 agent-to-agent payment protocol, and culturally adaptive companion protocol (ACP).",
+  "softwareVersion": "Phase 1",
+  "author": {
+    "@type": "Organization",
+    "name": "Kognai",
+    "url": "https://kognai.ai"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "9.00",
+    "priceCurrency": "EUR",
+    "description": "TikTok Content Agent subscription — automated short-form video pipeline"
+  },
+  "featureList": [
+    "5-tier model routing (Nano → Local → Power → Cloud → Apex)",
+    "29 specialized AI agents with dual-supervisor orchestration",
+    "OpenClaw skills framework (31 skills, T1-T4 tiers)",
+    "SCS-001 short-form video pipeline (discovery → script → video → publish)",
+    "Adaptive Companion Protocol for cultural AI (Derja/French)",
+    "x402 agent-to-agent USDC micropayments on Base",
+    "ClawRouter intelligent gateway with CEO Wallet budgeting",
+    "Supabase event bus for inter-agent communication",
+    "Mac Mini M4 local model vault (qwen3, deepseek-r1)",
+    "Tailscale VPN bridge between local and cloud infrastructure"
+  ],
+  "applicationSubCategory": [
+    "Content Automation",
+    "AI Agent Orchestration",
+    "Payment Infrastructure"
+  ]
+}

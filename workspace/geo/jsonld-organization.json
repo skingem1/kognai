@@ -1,0 +1,44 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Kognai",
+  "url": "https://kognai.ai",
+  "description": "Sovereign AI runtime powering content automation, culturally adaptive companionship, founder intelligence, dynamic research, and agent-to-agent payments via a shared agent swarm.",
+  "foundingDate": "2025",
+  "founder": {
+    "@type": "Person",
+    "name": "Tarek Mnif"
+  },
+  "knowsAbout": [
+    "Artificial Intelligence",
+    "Agent Swarms",
+    "Short-form Video Automation",
+    "Culturally Adaptive AI",
+    "AI Payment Protocols",
+    "Model Routing",
+    "Generative Engine Optimization"
+  ],
+  "offers": [
+    {
+      "@type": "Offer",
+      "name": "TikTok Content Agent",
+      "description": "Automated short-form video creation and publishing pipeline for TikTok and YouTube Shorts.",
+      "price": "9.00",
+      "priceCurrency": "EUR",
+      "priceSpecification": {
+        "@type": "UnitPriceSpecification",
+        "billingDuration": "P1M"
+      }
+    },
+    {
+      "@type": "Offer",
+      "name": "Achiri",
+      "description": "Culturally adaptive AI companion for Tunisia with Derja and French support.",
+      "price": "0",
+      "priceCurrency": "TND"
+    }
+  ],
+  "sameAs": [
+    "https://github.com/skingem1/kognai"
+  ]
+}
