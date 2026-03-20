@@ -1010,3 +1010,49 @@ export function cmdPostLog(): string {
 
   return lines.join('\n');
 }
+
+// Sprint 484: X/Twitter posting command
+export function cmdXPost(args: string): string {
+  const videoId = args.trim().split(/\s+/)[0];
+
+  if (!videoId) {
+    const configured = process.env.X_API_KEY && process.env.X_ACCESS_TOKEN;
+    return [
+      '🐦 *X/Twitter Post*\n',
+      `Status: ${configured ? '✅ Configured' : '⚠️ Not configured (dry-run mode)'}`,
+      '',
+      'Usage: /xpost <video_id>',
+      '',
+      'Required env vars:',
+      '  X_API_KEY, X_API_SECRET',
+      '  X_ACCESS_TOKEN, X_ACCESS_SECRET',
+      '  X_BEARER_TOKEN',
+    ].join('\n');
+  }
+
+  try {
+    const { buildXCaption, isXConfigured } = require('../../agents/scs001-publishing/x-client');
+    const caption = buildTikTokCaption(videoId);
+    const xCaption = buildXCaption(caption);
+    const mp4 = findCaptionedMp4(videoId);
+    const configured = isXConfigured();
+
+    const lines = [
+      '🐦 *X/Twitter Post Preview*\n',
+      `📹 Video: \`${videoId}\``,
+      `📁 File: ${mp4 ? '✅ Found' : '❌ Not found'}`,
+      `🔑 API: ${configured ? '✅ Configured' : '⚠️ Dry-run mode'}`,
+      '',
+      '📝 Caption (280 char formatted):',
+      `\`\`\`\n${xCaption}\n\`\`\``,
+      '',
+      `📊 Length: ${xCaption.length}/280 chars`,
+      '',
+      configured ? '_Ready to post. Full upload requires chunked media API._' : '_Set X_API_KEY + X_ACCESS_TOKEN to enable live posting._',
+    ];
+
+    return lines.join('\n');
+  } catch (err: any) {
+    return `❌ X post error: ${err.message}`;
+  }
+}

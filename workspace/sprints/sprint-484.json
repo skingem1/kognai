@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-484",
+  "title": "POSTING — X/Twitter video posting integration",
+  "description": "Build X API v2 video posting integration. OAuth2 scaffold, video upload via media endpoint, tweet creation. /xpost Telegram command. Dry-run mode when X_BEARER_TOKEN not set.",
+  "source": "queue — Sprint 484 CROSS-PLATFORM",
+  "tasks": [
+    {
+      "id": "484-01",
+      "title": "Create X API client with OAuth2 + media upload",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-484",
+      "deliverables": { "code": ["agents/scs001-publishing/x-client.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "484-02",
+      "title": "Add /xpost Telegram command + caption formatter",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-484",
+      "deliverables": { "code": ["scripts/telegram-commands/cmd-posting.ts", "scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
