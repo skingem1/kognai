@@ -1,6 +1,6 @@
 {
   "_note": "AUTHORITATIVE sprint execution order. The brief generator reads this and injects the first item as a MANDATORY directive, bypassing Qwen's recommendation. Pop items by setting status=done after each sprint ships. Human-maintained — edit to re-prioritise.",
-  "updated": "2026-03-20T20:00",
+  "updated": "2026-03-20T21:00",
   "owner": "Tarek (human)",
   "_plan_rationale": "Queue fixed 2026-03-20. Sprints 442-458 consumed by autonomous swarm. 10 items marked done (work completed). Remaining items have auto-sync guard in brief generator: consumed sprint numbers auto-skipped at runtime. 2 critical un-done items (SAFETY-SPLIT Part 2, progress.md update) re-added as Sprint 496-497 to avoid number collisions.",
   "queue": [
@@ -915,6 +915,47 @@
       "status": "done",
       "rationale": "After hook improvements and more content, run diversity audit and stats report. Verify diversity score improved from 73/100.",
       "_note": "Diversity 73→91. 104 delivered. Gate 104/30 ON TRACK. $1.18 total."
+    },
+    {
+      "sprint": 547,
+      "title": "INFRA — Queue replenish (548-551)",
+      "block": "INFRA",
+      "status": "done",
+      "_note": "Self-referential queue replenish.",
+      "priority": "high",
+      "rationale": "Queue empty after Sprint 546."
+    },
+    {
+      "sprint": 548,
+      "title": "CONTENT — Batch production: 10 more videos + deliver",
+      "block": "CONTENT",
+      "priority": "high",
+      "status": "pending",
+      "rationale": "104 delivered but more content = more options for manual TikTok posting. Produce 10 more with diverse topics and hooks."
+    },
+    {
+      "sprint": 549,
+      "title": "PIPELINE — Add speaker diversity tracking to auto-deliver log",
+      "block": "PIPELINE",
+      "priority": "medium",
+      "status": "pending",
+      "rationale": "Auto-delivered.jsonl only has video_id and viral_score. Add speaker, topic, and hook_formula to each entry for better analytics."
+    },
+    {
+      "sprint": 550,
+      "title": "TELEGRAM — Add /cleanup command to trigger disk cleanup from phone",
+      "block": "TELEGRAM",
+      "priority": "low",
+      "status": "pending",
+      "rationale": "Operator may want to trigger cleanup manually. Add /cleanup command that runs pipeline-cleanup.ts --keep 5 and reports freed space."
+    },
+    {
+      "sprint": 551,
+      "title": "CONTENT — Final batch: 10 more videos to push past 120 delivered",
+      "block": "CONTENT",
+      "priority": "high",
+      "status": "pending",
+      "rationale": "More content buffer for manual posting. Target: 120+ delivered total."
     }
   ]
 }

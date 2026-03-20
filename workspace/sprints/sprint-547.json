@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-547",
+  "title": "INFRA — Queue replenish (548-551)",
+  "description": "Queue empty after Sprint 546. Added 4 sprints: content production x2, speaker tracking, /cleanup command.",
+  "source": "queue-empty-replenish",
+  "tasks": [
+    {
+      "id": "547-01",
+      "title": "Add Sprints 548-551 to queue",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "workspace/sprint-queue.json",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-547",
+      "deliverables": { "code": ["workspace/sprint-queue.json"], "tests": [], "docs": [] }
+    }
+  ]
+}
