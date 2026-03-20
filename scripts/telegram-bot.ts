@@ -1862,6 +1862,55 @@ function cmdPostPlan(): string {
   return lines.join('\n');
 }
 
+// ─── Sprint 371: /todaycaptions — batch captions for today's posts ────────
+
+async function cmdTodayCaptions(chatId: string): Promise<void> {
+  const schedulePath = path.join(ROOT, 'reports', 'posting-schedule.json');
+  if (!fs.existsSync(schedulePath)) {
+    await sendMessage(chatId, '⚠️ No posting schedule found. Run /refresh first.');
+    return;
+  }
+
+  let sched: any;
+  try {
+    sched = JSON.parse(fs.readFileSync(schedulePath, 'utf-8'));
+  } catch {
+    await sendMessage(chatId, '⚠️ Could not parse posting-schedule.json.');
+    return;
+  }
+
+  const today = new Date().toISOString().slice(0, 10);
+  const todaySlots = (sched.slots ?? []).filter((s: any) => s.date === today);
+
+  if (todaySlots.length === 0) {
+    await sendMessage(chatId, `📅 No posts scheduled for today (${today}).\n\nUse /postplan for the full schedule.`);
+    return;
+  }
+
+  await sendMessage(chatId, [
+    `📋 *Today's Captions* (${today})`,
+    `${todaySlots.length} post(s) scheduled`,
+    '',
+    `🎯 ${sched.posts_needed ?? 30} posts needed in ${sched.days_to_gate ?? '?'}d`,
+  ].join('\n'));
+
+  for (const slot of todaySlots) {
+    const caption = buildTikTokCaption(slot.video_id);
+    const score = Math.round((slot.viral_score ?? 0) * 100);
+
+    await sendMessage(chatId, [
+      `⏰ *${slot.slot_label ?? slot.time}*`,
+      `🎬 \`${slot.video_id}\``,
+      slot.speaker ? `🎙️ ${slot.speaker}` : '',
+      `📊 Viral: ${score}% | Hook: ${slot.hook ?? '?'}`,
+    ].filter(Boolean).join('\n'));
+
+    // Caption as code block for easy copy
+    await sendMessage(chatId, '```\n' + caption + '\n```');
+    await sendMessage(chatId, `_After posting: \`/record ${slot.video_id} 0\`_`);
+  }
+}
+
 // ─── Sprint 370: /dashboard — unified system status overview ──────────────
 
 function cmdDashboard(): string {
@@ -2521,6 +2570,7 @@ function cmdHelp(): string {
     `/postplan   — 7-day posting plan with videos\n` +
     `/broadcast  — Send announcement to alpha users\n` +
     `/dashboard  — Full system status overview\n` +
+    `/todaycaptions — Copy-paste captions for today\n` +
     `/help      — This message`
   );
 }
@@ -2594,6 +2644,18 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
       await cmdPostNow(chatId);
     } catch (e: any) {
       await sendMessage(chatId, `❌ PostNow error: ${e.message}`);
+    }
+    const timestamp = new Date().toISOString();
+    fs.appendFileSync(AUDIT_LOG, `[${timestamp}] [TELEGRAM_BOT] Command: ${cmd} from ${chatId}\n`);
+    return;
+  }
+
+  // Sprint 371: /todaycaptions is async (sends multiple messages), handle separately
+  if (cmdName === '/todaycaptions') {
+    try {
+      await cmdTodayCaptions(chatId);
+    } catch (e: any) {
+      await sendMessage(chatId, `❌ TodayCaptions error: ${e.message}`);
     }
     const timestamp = new Date().toISOString();
     fs.appendFileSync(AUDIT_LOG, `[${timestamp}] [TELEGRAM_BOT] Command: ${cmd} from ${chatId}\n`);

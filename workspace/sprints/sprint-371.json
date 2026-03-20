@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-371",
+  "title": "/todaycaptions — batch captions for today's scheduled posts",
+  "description": "Add /todaycaptions command that reads posting-schedule.json, filters today's slots, sends each caption as a copyable code block.",
+  "source": "auto — operator needs ready-to-paste captions for daily posting",
+  "tasks": [
+    {
+      "id": "371-01",
+      "title": "Add /todaycaptions async command to scripts/telegram-bot.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-371",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
