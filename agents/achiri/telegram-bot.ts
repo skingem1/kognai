@@ -134,6 +134,7 @@ async function handleHelp(chatId: string): Promise<void> {
     `/mood — Mood check-in\n` +
     `/quiz — Tunisia trivia\n` +
     `/tip — Daily Tunisian wisdom\n` +
+    `/stats — Your engagement stats\n` +
     `/feedback — Send us feedback\n` +
     `/about — About Achiri\n\n` +
     `Or just send me a message and we'll chat! 💬`
@@ -395,6 +396,88 @@ async function handleTip(chatId: string): Promise<void> {
   );
 }
 
+// --- Sprint 361: /stats — user engagement stats ---
+
+async function handleStats(chatId: string): Promise<void> {
+  const DAILY_COUNTS_FILE = path.join(__dirname, '..', '..', 'workspace', 'achiri', 'daily-counts.json');
+  const memoryDir = path.join(__dirname, '..', '..', 'workspace', 'achiri', 'memory');
+  const historyFile = path.join(memoryDir, chatId.replace(/[^a-zA-Z0-9_-]/g, '_') + '.jsonl');
+
+  // Count messages from history file
+  let totalMessages = 0;
+  let firstSeen = '';
+  let lastSeen = '';
+  if (fs.existsSync(historyFile)) {
+    const lines = fs.readFileSync(historyFile, 'utf-8').split('\n').filter(l => l.trim());
+    totalMessages = lines.filter(l => {
+      try { return JSON.parse(l).role === 'user'; } catch { return false; }
+    }).length;
+
+    // Find first and last timestamps
+    for (const line of lines) {
+      try {
+        const entry = JSON.parse(line);
+        if (entry.timestamp) {
+          if (!firstSeen || entry.timestamp < firstSeen) firstSeen = entry.timestamp;
+          if (!lastSeen || entry.timestamp > lastSeen) lastSeen = entry.timestamp;
+        }
+      } catch {}
+    }
+  }
+
+  // Count active days from daily-counts
+  let activeDays = 0;
+  if (fs.existsSync(DAILY_COUNTS_FILE)) {
+    try {
+      const counts = JSON.parse(fs.readFileSync(DAILY_COUNTS_FILE, 'utf-8'));
+      for (const day of Object.keys(counts)) {
+        if (counts[day][chatId] && counts[day][chatId] > 0) activeDays++;
+      }
+    } catch {}
+  }
+
+  // Mood count
+  const moodLog = path.join(__dirname, '..', '..', 'workspace', 'achiri', 'mood-log.jsonl');
+  let moodCheckins = 0;
+  if (fs.existsSync(moodLog)) {
+    moodCheckins = fs.readFileSync(moodLog, 'utf-8').split('\n')
+      .filter(l => { try { return JSON.parse(l).chat_id === chatId; } catch { return false; } }).length;
+  }
+
+  // Quiz attempts
+  const quizLog = path.join(__dirname, '..', '..', 'workspace', 'achiri', 'quiz-log.jsonl');
+  let quizAttempts = 0;
+  let quizCorrect = 0;
+  if (fs.existsSync(quizLog)) {
+    for (const line of fs.readFileSync(quizLog, 'utf-8').split('\n')) {
+      if (!line.trim()) continue;
+      try {
+        const e = JSON.parse(line);
+        if (e.chat_id === chatId) {
+          quizAttempts++;
+          if (e.correct) quizCorrect++;
+        }
+      } catch {}
+    }
+  }
+
+  const firstSeenStr = firstSeen ? firstSeen.slice(0, 10) : 'N/A';
+  const out: string[] = [
+    `📊 *Your Achiri Stats*`,
+    '',
+    `💬 Messages: ${totalMessages}`,
+    `📅 Active days: ${activeDays}`,
+    `🗓️ First seen: ${firstSeenStr}`,
+  ];
+
+  if (moodCheckins > 0) out.push(`🎭 Mood check-ins: ${moodCheckins}`);
+  if (quizAttempts > 0) out.push(`🎯 Quiz: ${quizCorrect}/${quizAttempts} correct`);
+
+  out.push('', '_Keep chatting — every conversation makes Achiri smarter!_ 🧠');
+
+  await sendMessage(chatId, out.join('\n'));
+}
+
 // --- Main message handler ---
 
 async function handleMessage(chatId: string, text: string, firstName: string, username: string): Promise<void> {
@@ -411,6 +494,7 @@ async function handleMessage(chatId: string, text: string, firstName: string, us
   if (cmd === '/mood') return handleMood(chatId, args);
   if (cmd === '/quiz') return handleQuiz(chatId, args);
   if (cmd === '/tip') return handleTip(chatId);
+  if (cmd === '/stats') return handleStats(chatId);
 
   // Access check
   if (!hasAccess(chatId)) {

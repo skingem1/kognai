@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-361",
+  "title": "/stats — Achiri user engagement stats",
+  "description": "Add /stats command showing user's own engagement: messages sent, days active, first seen date. Creates sense of progress for alpha users.",
+  "source": "auto — alpha retention feature, leverages existing memory-store data",
+  "tasks": [
+    {
+      "id": "361-01",
+      "title": "Add /stats command to agents/achiri/telegram-bot.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-361",
+      "deliverables": { "code": ["agents/achiri/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
