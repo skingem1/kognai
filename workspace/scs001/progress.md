@@ -2687,3 +2687,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (single file)
 - Issues: None. Run when ready: `npx ts-node scripts/achiri/alpha-launch-notify.ts`
 - Timestamp: 2026-03-20T03:25:00Z
+
+## Sprint 329 — /dashboard Telegram Command (Direct Write)
+- Status: PASS
+- Commit: 16c7ba7
+- Files created: workspace/sprints/sprint-329.json
+- Files modified: agents/telegram-bot/commands.ts, agents/telegram-bot/index.ts
+- Tasks completed:
+  - 329-01: handleDashboard() — unified system overview: TikTok gate progress (posts/views/days), Achiri alpha status (readiness/users/waitlist), Stripe ready/not-ready, upcoming gates with countdown, missing critical env vars, latest git commit. One-stop operator cockpit. Added to /help under System.
+- Validation: npx tsc --noEmit PASS
+- Swarm used: no (two-file addition)
+- Issues: None.
+- Timestamp: 2026-03-20T03:35:00Z
