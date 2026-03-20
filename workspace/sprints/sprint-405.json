@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-405",
+  "title": "/abresults — view-based content performance analysis",
+  "description": "Add /abresults command that analyzes manual-posts.jsonl with enriched metadata to show which speakers, hooks, and topics get the most views. Provides actionable content optimization insights.",
+  "source": "auto — Sprint 404 enriched post records, now need analysis command",
+  "tasks": [
+    {
+      "id": "405-01",
+      "title": "Add /abresults command with speaker/hook/topic view analysis",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-405",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

@@ -3788,6 +3788,7 @@ function cmdHelp(): string {
     `/session   — Start interactive posting session\n` +
     `/done      — Record post + get next video (in session)\n` +
     `/endsession — End posting session + summary\n` +
+    `/abresults — View-based A/B content analysis\n` +
     `/help      — This message`
   );
 }
@@ -4360,6 +4361,109 @@ function cmdFilmKit(): string {
     '→ /record to log the post',
     '→ /caption to generate TikTok caption',
   ];
+
+  return lines.join('\n');
+}
+
+// ─── Sprint 405: /abresults — view-based content performance analysis ────
+
+function cmdAbResults(): string {
+  const posts = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+
+  if (posts.length === 0) {
+    return '📊 *A/B Results* — No posts recorded yet.\n\nStart posting with `/session` or `/deliver`, then check back!';
+  }
+
+  const postsWithViews = posts.filter((p: any) => (p.views ?? 0) > 0);
+  const totalViews = posts.reduce((s: number, p: any) => s + (p.views ?? 0), 0);
+  const avgViews = posts.length > 0 ? Math.round(totalViews / posts.length) : 0;
+
+  const lines: string[] = [
+    '📊 *A/B Content Performance*',
+    '',
+    `📦 Posts: ${posts.length} · Views: ${totalViews} · Avg: ${avgViews}/post`,
+    '',
+  ];
+
+  // Speaker analysis
+  const speakerStats: Record<string, { views: number; count: number }> = {};
+  for (const p of posts) {
+    const sp = p.speaker ?? 'unknown';
+    if (!speakerStats[sp]) speakerStats[sp] = { views: 0, count: 0 };
+    speakerStats[sp].views += p.views ?? 0;
+    speakerStats[sp].count++;
+  }
+  const speakerRank = Object.entries(speakerStats)
+    .filter(([k]) => k !== 'unknown')
+    .map(([sp, s]) => ({ speaker: sp, avg: s.count > 0 ? Math.round(s.views / s.count) : 0, count: s.count, total: s.views }))
+    .sort((a, b) => b.avg - a.avg);
+
+  if (speakerRank.length > 0) {
+    lines.push('*🎙️ By Speaker:*');
+    for (const s of speakerRank.slice(0, 5)) {
+      const medal = s === speakerRank[0] ? '🥇' : s === speakerRank[1] ? '🥈' : s === speakerRank[2] ? '🥉' : '  ';
+      lines.push(`${medal} ${s.speaker}: ${s.avg} avg views (${s.count} posts)`);
+    }
+    lines.push('');
+  }
+
+  // Hook formula analysis
+  const hookStats: Record<string, { views: number; count: number }> = {};
+  for (const p of posts) {
+    const h = p.hook_formula ?? 'unknown';
+    if (!hookStats[h]) hookStats[h] = { views: 0, count: 0 };
+    hookStats[h].views += p.views ?? 0;
+    hookStats[h].count++;
+  }
+  const hookRank = Object.entries(hookStats)
+    .filter(([k]) => k !== 'unknown')
+    .map(([h, s]) => ({ hook: h, avg: s.count > 0 ? Math.round(s.views / s.count) : 0, count: s.count }))
+    .sort((a, b) => b.avg - a.avg);
+
+  if (hookRank.length > 0) {
+    lines.push('*🎣 By Hook Formula:*');
+    for (const h of hookRank.slice(0, 5)) {
+      const medal = h === hookRank[0] ? '🥇' : h === hookRank[1] ? '🥈' : h === hookRank[2] ? '🥉' : '  ';
+      lines.push(`${medal} ${h.hook}: ${h.avg} avg views (${h.count} posts)`);
+    }
+    lines.push('');
+  }
+
+  // Topic analysis
+  const topicStats: Record<string, { views: number; count: number }> = {};
+  for (const p of posts) {
+    const t = p.topic ?? 'unknown';
+    if (!topicStats[t]) topicStats[t] = { views: 0, count: 0 };
+    topicStats[t].views += p.views ?? 0;
+    topicStats[t].count++;
+  }
+  const topicRank = Object.entries(topicStats)
+    .filter(([k]) => k !== 'unknown')
+    .map(([t, s]) => ({ topic: t, avg: s.count > 0 ? Math.round(s.views / s.count) : 0, count: s.count }))
+    .sort((a, b) => b.avg - a.avg);
+
+  if (topicRank.length > 0) {
+    lines.push('*📝 By Topic:*');
+    for (const t of topicRank.slice(0, 5)) {
+      lines.push(`  ${t.topic}: ${t.avg} avg views (${t.count} posts)`);
+    }
+    lines.push('');
+  }
+
+  // Best single post
+  const bestPost = posts.reduce((best: any, p: any) => (p.views ?? 0) > (best.views ?? 0) ? p : best, posts[0]);
+  if (bestPost && (bestPost.views ?? 0) > 0) {
+    lines.push(`🏆 *Best post:* \`${bestPost.video_id}\` — ${bestPost.views} views`);
+    if (bestPost.speaker) lines.push(`   🎙️ ${bestPost.speaker} · 🎣 ${bestPost.hook_formula ?? 'unknown'}`);
+  }
+
+  if (postsWithViews.length === 0) {
+    lines.push('');
+    lines.push('⚠️ _No view data yet. Update views with_ `/updateviews <id> <views>`');
+  }
+
+  lines.push('');
+  lines.push('_Post more + update views to get better insights!_');
 
   return lines.join('\n');
 }
@@ -4976,6 +5080,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/status':      response = cmdStatus();             break;
     case '/dedup':       response = cmdDedup();              break;
     case '/top30':       response = cmdTop30();              break;
+    case '/abresults':   response = cmdAbResults();          break;
     case '/help':        response = cmdHelp();        break;
     default:
       response = `Unknown command: \`${cmdName}\`\n\n${cmdHelp()}`;
