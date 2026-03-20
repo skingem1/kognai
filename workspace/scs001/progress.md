@@ -2579,3 +2579,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (multi-file architectural change)
 - Issues: None. Group chat auth bypasses beta gate (intentional — groups may contain non-owner users who need Achiri access).
 - Timestamp: 2026-03-20T01:40:00Z
+
+## Sprint 320 — Context-Aware /help (Direct Write)
+- Status: PASS
+- Commit: 0a532f5
+- Files created: workspace/sprints/sprint-320.json
+- Files modified: agents/telegram-bot/commands.ts, agents/telegram-bot/index.ts
+- Tasks completed:
+  - 320-01: Split /help into two views. Regular users see clean Achiri-focused help (6 commands + group chat hint). Owner sees compact operator reference (all commands grouped by category). handleHelp now takes optional ownerChatId param.
+- Validation: npx tsc --noEmit PASS
+- Swarm used: no (single file edit)
+- Issues: None.
+- Timestamp: 2026-03-20T01:45:00Z
