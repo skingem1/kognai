@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-319",
+  "title": "Achiri Telegram group chat support — @mention-based interaction in groups",
+  "description": "Enable Achiri in Telegram group chats. Bot responds when mentioned (@kognai_bot) or replied to. Uses sender's userId (not group chatId) for memory/personalization. Expands alpha reach — users can invite friends to try Achiri together.",
+  "source": "auto — Achiri alpha Apr 25: group chat = organic growth channel",
+  "tasks": [
+    {
+      "id": "319-01",
+      "title": "Update dispatch() to handle group chats — extract sender userId, detect @mention/reply",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-319",
+      "deliverables": { "code": ["agents/telegram-bot/index.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "319-02",
+      "title": "Update handleAchiri() to accept separate chatId and userId params for group context",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-319",
+      "deliverables": { "code": ["agents/telegram-bot/commands.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

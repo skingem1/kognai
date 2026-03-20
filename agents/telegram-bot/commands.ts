@@ -474,9 +474,12 @@ function checkAlphaAccess(chatId: number): boolean {
   } catch { return false; }
 }
 
-export async function handleAchiri(chatId: number, message: string): Promise<void> {
+export async function handleAchiri(chatId: number, message: string, userId?: number): Promise<void> {
+  // Sprint 319: userId param for group chats — sender's ID distinct from group chatId
+  const effectiveUserId = userId ?? chatId;
+
   // Alpha gate — owner always allowed; whitelist gates non-owners when ACHIRI_ALPHA_ONLY=true
-  if (ACHIRI_ALPHA_ONLY && String(chatId) !== ACHIRI_OWNER_ID && !checkAlphaAccess(chatId)) {
+  if (ACHIRI_ALPHA_ONLY && String(effectiveUserId) !== ACHIRI_OWNER_ID && !checkAlphaAccess(effectiveUserId)) {
     await sendMessage(chatId, 'Achiri Lite Alpha — invitation only. DM @kognai_bot to join the waitlist! 🙏');
     return;
   }
@@ -487,14 +490,14 @@ export async function handleAchiri(chatId: number, message: string): Promise<voi
   }
 
   // Resolve Achiri tier from TelegramDB subscription tier
-  const record = TelegramDB.get(chatId);
+  const record = TelegramDB.get(effectiveUserId);
   const achiriTier = ACHIRI_TIER_MAP[record?.tier ?? 'free'] ?? 'free';
 
   try {
     const res = await fetch(ACHIRI_BASE_URL + '/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ userId: String(chatId), tier: achiriTier, message: message.trim() }),
+      body: JSON.stringify({ userId: String(effectiveUserId), tier: achiriTier, message: message.trim() }),
     });
     const data = await res.json() as {
       reply?: string;
