@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-549",
+  "title": "PIPELINE — Add speaker + hook_formula to auto-deliver log entries",
+  "description": "Enriched auto-delivered.jsonl entries with speaker and hook_formula fields from experiment data. Enables better analytics on delivered content.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "549-01",
+      "title": "Add speaker and hook_formula to delivery log entry",
+      "type": "feature",
+      "task_type": "pipeline",
+      "task_target": "scripts/scs001/posting-auto-deliver.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-549",
+      "deliverables": { "code": ["scripts/scs001/posting-auto-deliver.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

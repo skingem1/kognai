@@ -939,8 +939,9 @@
       "title": "PIPELINE — Add speaker diversity tracking to auto-deliver log",
       "block": "PIPELINE",
       "priority": "medium",
-      "status": "pending",
-      "rationale": "Auto-delivered.jsonl only has video_id and viral_score. Add speaker, topic, and hook_formula to each entry for better analytics."
+      "status": "done",
+      "rationale": "Auto-delivered.jsonl only has video_id and viral_score. Add speaker, topic, and hook_formula to each entry for better analytics.",
+      "_note": "speaker + hook_formula added to delivery log entries."
     },
     {
       "sprint": 550,

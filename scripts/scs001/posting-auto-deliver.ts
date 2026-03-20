@@ -307,6 +307,8 @@ async function main(): Promise<void> {
         video_id: videoId,
         delivered_at: now.toISOString(),
         viral_score: vs ?? null,
+        speaker: speaker ?? null,
+        hook_formula: hook ?? null,
         mp4_path: mp4Path,
       });
       appendFileSync(DELIVERED_LOG, entry + '\n');
