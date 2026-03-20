@@ -3409,3 +3409,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (FP-007 file >4500 lines)
 - Issues: None.
 - Timestamp: 2026-03-20T21:25:00Z
+
+## Sprint 396 — /dedup — Content Deduplication Scanner (Direct Write)
+- Status: PASS
+- Commit: aa88517
+- Files created: workspace/sprints/sprint-396.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 396-01: Added /dedup command. Analyzes posting queue diversity: speaker distribution (warns >40%), hook formula distribution (warns >50%), topic similarity groups from content-calendar.json, diversity score 0-100%, actionable archive suggestions for duplicates. Added to switch router and /help.
+- Validation: tsc --noEmit PASS
+- Swarm used: no (FP-007 file >4600 lines)
+- Issues: None.
+- Timestamp: 2026-03-20T21:35:00Z
