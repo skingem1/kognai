@@ -1,0 +1,44 @@
+{
+  "sprint_id": "sprint-471",
+  "title": "STRIPE — Free trial activation flow for TikTok bio link",
+  "description": "Wire TikTok bio → kognai.ai/start → Telegram onboarding → 7-day free trial → Stripe checkout. Build /start onboarding handler + start page redirect.",
+  "source": "queue — Sprint 471 MONETIZATION",
+  "tasks": [
+    {
+      "id": "471-01",
+      "title": "Build /start onboarding flow in Telegram bot with trial activation",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-471",
+      "deliverables": { "code": ["scripts/telegram-commands/cmd-onboarding.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "471-02",
+      "title": "Build kognai.ai/start landing redirect + funnel tracker",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-471",
+      "deliverables": { "code": ["scripts/scs001/onboarding-funnel.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "471-03",
+      "title": "Create funnel config + tracking data structure",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-471",
+      "deliverables": { "code": ["workspace/billing/funnel-config.json", "workspace/billing/funnel-events.jsonl"], "tests": [], "docs": [] }
+    }
+  ]
+}

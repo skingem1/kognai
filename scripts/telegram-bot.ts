@@ -31,6 +31,7 @@ import { cmdHelp } from './telegram-commands/cmd-help';
 import { cmdSession, cmdDone, cmdEndSession, cmdMenu } from './telegram-commands/cmd-session';
 import { cmdDeliver, cmdPublish, cmdPostNow, cmdPickup, cmdTodayCaptions, cmdBroadcast, cmdRefresh, cmdProduce } from './telegram-commands/cmd-delivery';
 import { cmdCheckout, cmdSubscribers, cmdPortal, cmdFunnel, cmdAchiri, cmdTestStripe } from './telegram-commands/cmd-stripe';
+import { cmdStart, cmdTrial, cmdPlans } from './telegram-commands/cmd-onboarding';
 
 // ─── Env validation ──────────────────────────────────────────────────
 
@@ -87,6 +88,9 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     '/stripestatus': async () => { const r = await cmdStripeStatus(); await sendMessage(chatId, r); },
     '/test-stripe':  () => cmdTestStripe(chatId),
     '/teststripe':   () => cmdTestStripe(chatId),
+    '/start':        () => cmdStart(chatId, cmdArgs),
+    '/trial':        () => cmdTrial(chatId),
+    '/plans':        () => cmdPlans(chatId),
   };
 
   const asyncHandler = asyncHandlers[cmdName];

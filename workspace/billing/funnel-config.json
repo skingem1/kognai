@@ -1,0 +1,29 @@
+{
+  "_note": "Onboarding funnel configuration. TikTok bio → kognai.ai/start → Telegram → Trial → Stripe.",
+  "version": 1,
+  "funnel_stages": [
+    { "id": "tiktok_click", "label": "TikTok bio link click", "source": "kognai.ai/start UTM" },
+    { "id": "telegram_start", "label": "Telegram /start received", "source": "bot" },
+    { "id": "plans_view", "label": "User viewed /plans", "source": "bot" },
+    { "id": "trial_click", "label": "User clicked /trial", "source": "bot" },
+    { "id": "checkout_created", "label": "Stripe checkout session created", "source": "stripe" },
+    { "id": "checkout_completed", "label": "Stripe checkout completed (trial started)", "source": "stripe_webhook" },
+    { "id": "trial_active", "label": "7-day trial active", "source": "stripe" },
+    { "id": "trial_converted", "label": "Trial converted to paid subscription", "source": "stripe_webhook" },
+    { "id": "churned", "label": "Subscription cancelled", "source": "stripe_webhook" }
+  ],
+  "trial_config": {
+    "trial_days": 7,
+    "default_plan": "growth",
+    "plans": {
+      "growth": { "price_env": "STRIPE_PRICE_GROWTH", "amount_eur": 19, "videos_per_week": 10 },
+      "premium": { "price_env": "STRIPE_PRICE_PREMIUM", "amount_eur": 49, "videos_per_week": 25 }
+    }
+  },
+  "redirect_config": {
+    "tiktok_bio_url": "https://kognai.ai/start",
+    "telegram_deeplink": "https://t.me/KognaiBot?start=tiktok",
+    "success_url": "https://kognai.ai/success",
+    "cancel_url": "https://kognai.ai/cancel"
+  }
+}
