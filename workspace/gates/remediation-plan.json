@@ -1,0 +1,73 @@
+{
+  "plan_id": "april7-remediation",
+  "generated": "2026-03-20T18:30:00Z",
+  "gate_date": "2026-04-07",
+  "days_remaining": 18,
+  "situation": "0/30 posts, 0/500 views. Pipeline operational with 198 ready videos. All infrastructure complete. Blocker is HUMAN ACTION: posting videos to TikTok.",
+  "remediation_phases": [
+    {
+      "phase": 1,
+      "name": "IMMEDIATE — Start posting today",
+      "days": "Day 1-3 (Mar 20-22)",
+      "target": "9 posts (3/day)",
+      "actions": [
+        "Use /deliver or /pickup in Telegram to get next video",
+        "Download video + copy caption from Telegram",
+        "Post to TikTok manually from phone",
+        "Use /record <video-id> 0 to log the post",
+        "Check views after 24h: /record <video-id> <views>"
+      ],
+      "operator_time": "15-20 min/day (5 min per video × 3 videos)"
+    },
+    {
+      "phase": 2,
+      "name": "RAMP UP — Increase to 2 posts/day",
+      "days": "Day 4-10 (Mar 23-29)",
+      "target": "14 posts (2/day)",
+      "actions": [
+        "Morning: post 1 video (best time: 7-9am local)",
+        "Evening: post 1 video (best time: 7-9pm local)",
+        "Use /besttime command for optimal posting windows",
+        "Review early post views: are we getting 500 views per 30 posts?"
+      ],
+      "operator_time": "10-15 min/day"
+    },
+    {
+      "phase": 3,
+      "name": "PUSH — Final sprint to 30",
+      "days": "Day 11-17 (Mar 30 - Apr 5)",
+      "target": "7 posts (1/day)",
+      "actions": [
+        "Post 1 video/day minimum",
+        "If views are under pace, increase to 2/day",
+        "Run /gate command daily to check progress",
+        "Run /gateanalytics for detailed breakdown"
+      ],
+      "operator_time": "5-10 min/day"
+    },
+    {
+      "phase": 4,
+      "name": "GATE DAY — Final audit",
+      "days": "Day 18 (Apr 7)",
+      "actions": [
+        "Run /gate — verify 30 posts + 500 views",
+        "Run: npx ts-node scripts/smoke-test-full.ts",
+        "Run /test-stripe to verify payment flow",
+        "If PASS: proceed to launch (Apr 8-15)",
+        "If FAIL: document shortfall, revise timeline"
+      ]
+    }
+  ],
+  "stripe_remediation": {
+    "action": "Run /test-stripe within next 7 days",
+    "required": "Create one test subscription, verify webhook, cancel",
+    "time_needed": "30 minutes one-time setup"
+  },
+  "fallback_if_gate_fails": {
+    "posts_under_30": "Extend gate to Apr 14 (1 week extension). Continue posting.",
+    "views_under_500": "Analyze underperforming content. Switch to trending topics. Increase posting frequency to 3/day.",
+    "both_fail": "Evaluate if TikTok channel is viable. Consider YouTube Shorts as primary (API working, no manual posting needed).",
+    "stripe_not_tested": "Not a hard blocker — can test during launch week. But strongly recommended before."
+  },
+  "critical_path": "The ONLY blocker is human posting. Pipeline is ready. Infrastructure is ready. Content is ready. 198 videos waiting. START POSTING."
+}

@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-494",
+  "title": "GATE — Pre-April-7 readiness audit + remediation",
+  "description": "Generate formal pre-gate readiness report. Audit: posts vs 30 target, views vs 500, pipeline operational, Stripe ready, all critical bugs resolved. If behind on posts: emergency batch plan.",
+  "source": "queue — Sprint 494 GATE",
+  "tasks": [
+    {
+      "id": "494-01",
+      "title": "Generate pre-gate readiness audit report",
+      "type": "audit",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-494",
+      "deliverables": { "code": ["workspace/gates/pre-april7-readiness.json"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "494-02",
+      "title": "Generate emergency remediation plan if gate criteria not met",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-494",
+      "deliverables": { "code": ["workspace/gates/remediation-plan.json"], "tests": [], "docs": [] }
+    }
+  ]
+}
