@@ -374,3 +374,10 @@ export function cmdEnvCheck(): string {
   const { formatEnvCheck } = require('../check-env');
   return formatEnvCheck();
 }
+
+// Sprint 461: /stripestatus — Stripe integration status (async)
+export async function cmdStripeStatus(): Promise<string> {
+  const { runStripeChecks, formatStripeStatus } = require('../test-stripe');
+  const results = await runStripeChecks();
+  return formatStripeStatus(results);
+}

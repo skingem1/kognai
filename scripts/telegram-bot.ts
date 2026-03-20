@@ -23,7 +23,7 @@ import * as https from 'https';
 import { execSync } from 'child_process';
 
 // Sprint 455: Import extracted command modules
-import { cmdPm2, cmdHealth, cmdTier, cmdSprint, cmdReport, cmdCrons, cmdTikTokAuth, cmdQuickStart, cmdEnvCheck } from './telegram-commands/cmd-system';
+import { cmdPm2, cmdHealth, cmdTier, cmdSprint, cmdReport, cmdCrons, cmdTikTokAuth, cmdQuickStart, cmdEnvCheck, cmdStripeStatus } from './telegram-commands/cmd-system';
 import { cmdGate, cmdGoLive, cmdAudit, cmdStreak, cmdPace, cmdCalendar } from './telegram-commands/cmd-gate';
 import { cmdRecord, cmdQueue, cmdReview, cmdCaption, cmdPosted, cmdOnboard, cmdPipeline, cmdToday, cmdAnalytics } from './telegram-commands/cmd-content';
 import { cmdMetrics, cmdPostPlan, cmdYouTube, cmdAutoPost, cmdLastRun, cmdViral, cmdDashboard, cmdDigest, cmdSchedule, cmdLeaderboard, cmdBestTime, cmdHookTest, cmdHookStats, cmdViralStats, cmdQueueOpt, cmdGateAnalytics, cmdRevenue, cmdBatch, cmdPostLog } from './telegram-commands/cmd-posting';
@@ -1915,6 +1915,19 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
       await cmdPublish(chatId, cmdArgs);
     } catch (e: any) {
       await sendMessage(chatId, `❌ Publish error: ${e.message}`);
+    }
+    const timestamp = new Date().toISOString();
+    fs.appendFileSync(AUDIT_LOG, `[${timestamp}] [TELEGRAM_BOT] Command: ${cmd} from ${chatId}\n`);
+    return;
+  }
+
+  // Sprint 461: /stripestatus is async (Stripe API calls)
+  if (cmdName === '/stripestatus') {
+    try {
+      const response = await cmdStripeStatus();
+      await sendMessage(chatId, response);
+    } catch (e: any) {
+      await sendMessage(chatId, `❌ Stripe status error: ${e.message}`);
     }
     const timestamp = new Date().toISOString();
     fs.appendFileSync(AUDIT_LOG, `[${timestamp}] [TELEGRAM_BOT] Command: ${cmd} from ${chatId}\n`);

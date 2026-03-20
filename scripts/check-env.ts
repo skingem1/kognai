@@ -163,7 +163,7 @@ if (require.main === module) {
     for (const line of fs.readFileSync(envPath, 'utf-8').split('\n')) {
       const match = line.match(/^([A-Z_][A-Z0-9_]*)=(.*)$/);
       if (match && !process.env[match[1]]) {
-        process.env[match[1]] = match[2].replace(/^["']|["']$/g, '');
+        process.env[match[1]] = match[2].replace(/^["']|["']$/g, '').split('#')[0].trim();
       }
     }
   }

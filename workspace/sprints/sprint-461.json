@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-461",
+  "title": "STRIPE — Subscription flow test + /stripestatus Telegram command",
+  "description": "Create a Stripe integration test script and a /stripestatus command that shows full Stripe setup status: API key validation, price IDs, webhook health, subscriber count, and test mode indicator.",
+  "source": "queue — Sprint 470 STRIPE",
+  "tasks": [
+    {
+      "id": "461-01",
+      "title": "Create scripts/test-stripe.ts — Stripe API validation",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-461",
+      "deliverables": { "code": ["scripts/test-stripe.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "461-02",
+      "title": "Add /stripestatus command to cmd-system.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-461",
+      "deliverables": { "code": ["scripts/telegram-commands/cmd-system.ts", "scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
