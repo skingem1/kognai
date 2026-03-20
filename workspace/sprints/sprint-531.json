@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-531",
+  "title": "INFRA — Queue replenish + next 5 sprints (532-536)",
+  "description": "Queue empty after Sprint 530. Adding sprints targeting: pipeline auto-scheduling, content quality audit, Telegram /produce command, auto-deliver cron fix, posting analytics summary.",
+  "source": "queue-empty-replenish",
+  "tasks": [
+    {
+      "id": "531-01",
+      "title": "Add Sprints 532-536 to sprint-queue.json",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "workspace/sprint-queue.json",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-531",
+      "deliverables": { "code": ["workspace/sprint-queue.json"], "tests": [], "docs": [] }
+    }
+  ]
+}

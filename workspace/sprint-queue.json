@@ -1,6 +1,6 @@
 {
   "_note": "AUTHORITATIVE sprint execution order. The brief generator reads this and injects the first item as a MANDATORY directive, bypassing Qwen's recommendation. Pop items by setting status=done after each sprint ships. Human-maintained — edit to re-prioritise.",
-  "updated": "2026-03-20T17:00",
+  "updated": "2026-03-20T18:10",
   "owner": "Tarek (human)",
   "_plan_rationale": "Queue fixed 2026-03-20. Sprints 442-458 consumed by autonomous swarm. 10 items marked done (work completed). Remaining items have auto-sync guard in brief generator: consumed sprint numbers auto-skipped at runtime. 2 critical un-done items (SAFETY-SPLIT Part 2, progress.md update) re-added as Sprint 496-497 to avoid number collisions.",
   "queue": [
@@ -771,6 +771,55 @@
       "status": "done",
       "rationale": "smoke-test-full.ts exists (Sprint 493) but not on cron. Add PM2 cron to run every 6h. On failure, send Telegram alert. Ensures system health between operator sessions.",
       "_note": "smoke-test-cron.ts + PM2 every 6h. All 11 checks PASS."
+    },
+    {
+      "sprint": 531,
+      "title": "INFRA — Queue replenish + next 5 sprints (532-536)",
+      "block": "INFRA",
+      "status": "done",
+      "_note": "Self-referential queue replenish.",
+      "priority": "high",
+      "rationale": "Queue empty after Sprint 530. Adding pipeline auto-scheduling, quality audit, /produce command, auto-deliver cron, posting analytics."
+    },
+    {
+      "sprint": 532,
+      "title": "PIPELINE — Auto-run pipeline on PM2 cron (4x/day) + metrics logging",
+      "block": "PIPELINE",
+      "priority": "high",
+      "status": "pending",
+      "rationale": "Pipeline only runs manually. Add PM2 cron to run pipeline 4x/day (06:00, 10:00, 14:00, 18:00) with --mock --limit 3. Auto-deliver after each run. Log metrics via log-pipeline-metrics.ts."
+    },
+    {
+      "sprint": 533,
+      "title": "QUALITY — Content diversity audit + topic dedup enforcement",
+      "block": "VIDEO-QUALITY-V2",
+      "priority": "medium",
+      "status": "pending",
+      "rationale": "57 videos delivered but topic diversity unknown. Audit all auto-delivered.jsonl entries: count unique topics, speakers, hooks. If <50% unique, add dedup enforcement to prevent repeats."
+    },
+    {
+      "sprint": 534,
+      "title": "TELEGRAM — Add /produce N command to trigger pipeline from Telegram",
+      "block": "TELEGRAM",
+      "priority": "medium",
+      "status": "pending",
+      "rationale": "Operator wants to trigger video production from phone. Add /produce N command: runs pipeline with --mock --limit N, then auto-delivers. Progress messages in Telegram."
+    },
+    {
+      "sprint": 535,
+      "title": "FIX — Restart auto-deliver PM2 crons + verify schedule",
+      "block": "FIX",
+      "priority": "medium",
+      "status": "pending",
+      "rationale": "Auto-deliver crons (morning/noon/evening) may have stopped. Restart them and verify they fire on schedule. Check PM2 status for all kognai processes."
+    },
+    {
+      "sprint": 536,
+      "title": "ANALYTICS — Posting analytics summary command + weekly report",
+      "block": "ANALYTICS",
+      "priority": "low",
+      "status": "pending",
+      "rationale": "No way to see posting statistics. Add /stats command: videos produced today/week/total, delivery count, topic distribution, cost breakdown. Generate weekly report JSON."
     }
   ]
 }
