@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-328",
+  "title": "Achiri alpha launch notify — batch welcome message to waitlisted users",
+  "description": "Script to send alpha launch notification to all waitlisted users via Telegram. Used when operator triggers Achiri alpha go-live. Includes welcome message with usage instructions. Also adds /alphanotify Telegram command.",
+  "source": "auto — Achiri Alpha Launch Apr 25 prep",
+  "tasks": [
+    {
+      "id": "328-01",
+      "title": "Create scripts/achiri/alpha-launch-notify.ts — batch welcome sender",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-328",
+      "deliverables": { "code": ["scripts/achiri/alpha-launch-notify.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
