@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-539",
+  "title": "CONTENT — 10 videos with expanded 30-topic feed + delivered",
+  "description": "Produced 10 videos using expanded topic feed (30 topics). All delivered. 74 total auto-delivered. $0.00 cost.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "539-01",
+      "title": "Run pipeline 2x with expanded topics",
+      "type": "feature",
+      "task_type": "content",
+      "task_target": "scripts/scs001/run-full-pipeline.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-539",
+      "deliverables": { "code": [], "tests": [], "docs": [] }
+    },
+    {
+      "id": "539-02",
+      "title": "Deliver all 10 + log metrics",
+      "type": "feature",
+      "task_type": "content",
+      "task_target": "scripts/scs001/posting-auto-deliver.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-539",
+      "deliverables": { "code": [], "tests": [], "docs": [] }
+    }
+  ]
+}

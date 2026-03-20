@@ -849,8 +849,9 @@
       "title": "CONTENT — Batch production: 10 videos with expanded topics",
       "block": "CONTENT",
       "priority": "high",
-      "status": "pending",
-      "rationale": "After topic expansion, produce 10 videos to verify diversity. Target: 10+ unique topics across the batch."
+      "status": "done",
+      "rationale": "After topic expansion, produce 10 videos to verify diversity. Target: 10+ unique topics across the batch.",
+      "_note": "10 videos produced with expanded topics. 74 total auto-delivered."
     },
     {
       "sprint": 540,
