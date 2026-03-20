@@ -1,0 +1,44 @@
+{
+  "sprint_id": "sprint-512",
+  "title": "FIX — Increase mock Insight Agent briefs per run (2→5)",
+  "description": "Added 3 more mock InsightBriefs + matching ClipQualityScores. Pipeline now produces 5 videos per run instead of 2. Topic diversity increased to 5 speakers.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "512-01",
+      "title": "Add 3 more mock InsightBriefs (Google, EU, open-source AI)",
+      "type": "fix",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-512",
+      "deliverables": { "code": ["agents/scs001-insight/index.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "512-02",
+      "title": "Add 3 matching mock ClipQualityScores",
+      "type": "fix",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-512",
+      "deliverables": { "code": ["agents/scs001-insight/index.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "512-03",
+      "title": "Validate pipeline produces 5 videos in single run",
+      "type": "validation",
+      "task_type": "test",
+      "task_target": "local",
+      "agent": "supervisor",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-512",
+      "deliverables": { "code": [], "tests": [], "docs": [] }
+    }
+  ]
+}
