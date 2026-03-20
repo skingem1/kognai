@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-341",
+  "title": "Weekend posting blitz — Saturday batch delivery of 5 videos",
+  "description": "Saturday 09:00 cron sends 5 top-scored videos with captions in one batch. Operator can batch-post to catch up on the 30-post gate. Uses existing /deliver logic pattern but auto-triggered.",
+  "source": "auto — gate urgency 0/30 posts, weekend = best time for batch posting",
+  "tasks": [
+    {
+      "id": "341-01",
+      "title": "Create scripts/scs001/weekend-blitz.ts — Saturday batch video delivery",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-341",
+      "deliverables": { "code": ["scripts/scs001/weekend-blitz.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "341-02",
+      "title": "Add kognai-weekend-blitz PM2 cron to ecosystem.config.js",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-341",
+      "deliverables": { "code": ["ecosystem.config.js"], "tests": [], "docs": [] }
+    }
+  ]
+}

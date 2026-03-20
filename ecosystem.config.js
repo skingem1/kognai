@@ -897,6 +897,26 @@ module.exports = {
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
     {
+      // Sprint 341: Weekend posting blitz — Saturday 09:00, sends 5 top-scored videos
+      // Batch delivery for weekend catch-up posting.
+      // To start: pm2 start ecosystem.config.js --only kognai-weekend-blitz
+      name: "kognai-weekend-blitz",
+      script: "scripts/scs001/weekend-blitz.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: false,
+      watch: false,
+      cron_restart: "0 9 * * 6",
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/weekend-blitz-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/weekend-blitz-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
+    {
       // Sprint 338: Auto-deliver morning — sends next video + caption at 07:30
       // Replaces text-only nudges with actual video file delivery.
       // To start: pm2 start ecosystem.config.js --only kognai-auto-deliver-morning
