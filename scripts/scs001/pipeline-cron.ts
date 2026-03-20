@@ -65,6 +65,18 @@ async function main() {
   );
 
   if (!pipelineOk) {
+    // Sprint 570: Log pipeline failures
+    try {
+      const { appendFileSync } = require('fs');
+      const errEntry = JSON.stringify({
+        type: 'pipeline-cron-failure',
+        stage: 'pipeline',
+        timestamp: now,
+        limit,
+        error: 'Pipeline process exited with non-zero or timed out',
+      });
+      appendFileSync(join(ROOT, 'workspace', 'scs001', 'validation-errors.jsonl'), errEntry + '\n');
+    } catch {}
     await sendTelegram(`🚨 *Pipeline Cron FAILED*\nTime: ${now}\nLimit: ${limit}`);
     process.exit(1);
     return;

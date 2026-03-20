@@ -1,0 +1,26 @@
+{
+  "sprint_id": "sprint-570",
+  "title": "PIPELINE \u2014 Add pipeline failure logging to validation-errors.jsonl",
+  "description": "Pipeline cron now logs failures to validation-errors.jsonl for debugging. Captures timestamp, limit, and error type.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "570-01",
+      "title": "Add failure logging to pipeline-cron.ts",
+      "type": "feature",
+      "task_type": "pipeline",
+      "task_target": "scripts/scs001/pipeline-cron.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-570",
+      "deliverables": {
+        "code": [
+          "scripts/scs001/pipeline-cron.ts"
+        ],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ]
+}

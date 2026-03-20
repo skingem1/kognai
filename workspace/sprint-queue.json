@@ -1128,8 +1128,9 @@
       "title": "PIPELINE — Add validation errors log for pipeline failures",
       "block": "PIPELINE",
       "priority": "medium",
-      "status": "pending",
-      "rationale": "Pipeline cron sometimes fails (timeout). Add error logging to workspace/scs001/validation-errors.jsonl for debugging."
+      "status": "done",
+      "rationale": "Pipeline cron sometimes fails (timeout). Add error logging to workspace/scs001/validation-errors.jsonl for debugging.",
+      "_note": "Pipeline failure logging added to validation-errors.jsonl."
     },
     {
       "sprint": 571,
