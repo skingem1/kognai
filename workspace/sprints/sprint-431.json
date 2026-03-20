@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-431",
+  "title": "Auto-refresh content calendar after each pipeline run",
+  "description": "Regenerate content-calendar.json and posting-schedule.json after each pipeline run so new content appears immediately in /today, /calendar, /schedule. Previously only refreshed by daily PM2 cron at 06:50.",
+  "source": "auto — pipeline runs 4x/day but calendar only regenerates once. New content invisible until next day.",
+  "tasks": [
+    {
+      "id": "431-01",
+      "title": "Add calendar + schedule regen step to pipeline runner after purge/compact",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-431",
+      "deliverables": { "code": ["agents/scs001-orchestrator/run-pipeline.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

@@ -183,6 +183,17 @@ async function main(): Promise<void> {
   } catch (err) {
     console.error('[Runner] Ledger compact failed (non-fatal):', (err as Error).message);
   }
+
+  // Sprint 431: Regenerate content calendar + posting schedule after each run
+  // Without this, new content only appears in calendar after next daily cron (06:50).
+  try {
+    const { execSync } = require('child_process');
+    execSync('npx ts-node scripts/scs001/generate-content-calendar.ts', { cwd: process.cwd(), timeout: 30000, stdio: 'pipe' });
+    execSync('npx ts-node scripts/scs001/generate-posting-schedule.ts', { cwd: process.cwd(), timeout: 30000, stdio: 'pipe' });
+    console.log('[Runner] Content calendar + posting schedule regenerated');
+  } catch (err) {
+    console.error('[Runner] Calendar/schedule regen failed (non-fatal):', (err as Error).message);
+  }
 }
 
 main().catch(async err => {
