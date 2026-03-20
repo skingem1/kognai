@@ -2301,3 +2301,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (surgical fetch timeout edit)
 - Issues: None.
 - Timestamp: 2026-03-20T04:05:00Z
+
+## Sprint 299 — Fix Pipeline Dedup: Deterministic Content-Hashed IDs (Direct Write)
+- Status: PASS
+- Commit: 16f40be
+- Files created: workspace/sprints/sprint-299.json
+- Files modified: agents/scs001-discovery/index.ts, agents/scs001-clip-detection/index.ts, agents/scs001-editing/index.ts, agents/scs001-orchestrator/index.ts, agents/scs001-orchestrator/dedup-ledger.ts
+- Tasks completed:
+  - 299-01: Root cause: discovery_id, clip_id, and video_id all used randomUUID — different every run, making dedup impossible. 264/564 entries were duplicates. Fix: all IDs now use SHA-256 content hashes. discovery_id = hash(url+topicId), clip_id = hash(discoveryId+start+end), video_id = hash(scriptId+clipId). Dedup ledger now tracks both clip_id and video_id. Second run test: 22 clips in, 16 skipped (dedup working), only 6 new.
+- Validation: Two consecutive smoke test runs — first seeds ledger, second correctly deduplicates 16/22 clips. Both PASS.
+- Swarm used: no (multi-file architectural fix)
+- Issues: LLM scoring non-determinism means ~6/22 clips still vary between runs (expected — different clips qualify).
+- Timestamp: 2026-03-20T04:25:00Z
