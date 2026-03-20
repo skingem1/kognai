@@ -2828,3 +2828,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (surgical edit to existing 1200+ line bot file)
 - Issues: None.
 - Timestamp: 2026-03-20T02:35:00Z
+
+## Sprint 340 — /refresh Command (Direct Write)
+- Status: PASS
+- Commit: 2b46aba
+- Files created: workspace/sprints/sprint-340.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 340-01: /refresh command — spawns run-pipeline.ts as child process, sends "starting" ack immediately, sends completion/failure notification async. Reports discovery/captioning counts + elapsed time from latest.json.
+- Validation: npx tsc --noEmit PASS (only node_modules/ox pre-existing errors)
+- Swarm used: no (surgical edit to bot)
+- Issues: None.
+- Timestamp: 2026-03-20T02:42:00Z
