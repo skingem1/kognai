@@ -3495,3 +3495,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (new file creation)
 - Issues: None. Server binds 0.0.0.0 for external access.
 - Timestamp: 2026-03-20T22:40:00Z
+
+## Sprint 403 — Achiri /invite — Referral System (Direct Write)
+- Status: PASS
+- Commit: 145b861
+- Files created: workspace/sprints/sprint-403.json
+- Files modified: agents/achiri/telegram-bot.ts
+- Tasks completed:
+  - 403-01: Added /invite command with deep link generation, referral tracking (referrals.jsonl), ref_ parameter processing in /start, referrer notification on join, referral count in /stats. Handles self-referral prevention and duplicate detection.
+- Validation: tsc --noEmit PASS (no errors in telegram-bot.ts, pre-existing errors in other files)
+- Swarm used: no (complex multi-point edit)
+- Issues: None.
+- Timestamp: 2026-03-20T22:50:00Z
