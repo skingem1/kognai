@@ -3660,6 +3660,93 @@ function cmdStale(args: string): string {
   return lines.join('\n');
 }
 
+// Sprint 419: /purge — quality-based queue filter, bulk-archive low-scoring content
+function cmdPurge(args: string): string {
+  const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
+  const recorded = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  const recordedIds = new Set(recorded.map((e: any) => e.video_id).filter(Boolean));
+  const archivedIds = loadArchived();
+
+  // Load viral scores
+  const viralScores = new Map<string, number>();
+  const expPath = path.join(ROOT, 'workspace', 'scs001', 'experiments.jsonl');
+  if (fs.existsSync(expPath)) {
+    try {
+      for (const line of fs.readFileSync(expPath, 'utf-8').split('\n')) {
+        if (!line.trim()) continue;
+        try {
+          const e = JSON.parse(line);
+          const id = e.clip_id ?? e.video_id;
+          if (id && e.partial_viral_score != null) viralScores.set(id, e.partial_viral_score);
+        } catch { /* skip */ }
+      }
+    } catch { /* skip */ }
+  }
+
+  // Get active queue (not posted, not archived)
+  const active = (ledger as any[]).filter((e: any) =>
+    e.video_id && !recordedIds.has(e.video_id) && !archivedIds.has(e.video_id)
+  );
+
+  if (active.length === 0) {
+    return '📊 *Queue Quality* — No active videos in queue.';
+  }
+
+  // Score each active video
+  const scored = active.map((e: any) => ({
+    video_id: e.video_id,
+    score: viralScores.get(e.video_id) ?? 0,
+  }));
+
+  // Quality tiers
+  const premium = scored.filter(s => s.score >= 0.6);
+  const good = scored.filter(s => s.score >= 0.4 && s.score < 0.6);
+  const mediocre = scored.filter(s => s.score >= 0.3 && s.score < 0.4);
+  const poor = scored.filter(s => s.score < 0.3);
+
+  const PURGE_THRESHOLD = 0.3;
+
+  if (args.trim() === 'confirm') {
+    if (poor.length === 0) {
+      return '✅ No low-quality content to purge — queue is clean!';
+    }
+    const archived = loadArchived();
+    for (const item of poor) archived.add(item.video_id);
+    saveArchived(archived);
+    return (
+      `🗑 *Purged ${poor.length} low-quality videos* (score <${PURGE_THRESHOLD})\n\n` +
+      `Queue reduced: ${active.length} → ${active.length - poor.length} videos\n` +
+      `Restore any with \`/unarchive <video_id>\``
+    );
+  }
+
+  const avgScore = scored.reduce((s, v) => s + v.score, 0) / scored.length;
+  const hasReady = scored.filter(s => findCaptionedMp4(s.video_id) !== null);
+
+  const lines = [
+    '📊 *Queue Quality Report*',
+    '',
+    `Total active: *${active.length}* · Ready (MP4): *${hasReady.length}*`,
+    `Avg viral score: *${(avgScore * 100).toFixed(0)}%*`,
+    '',
+    '*Quality Tiers:*',
+    `  🏆 Premium (≥60%): *${premium.length}* videos`,
+    `  ✅ Good (40-59%): *${good.length}* videos`,
+    `  ⚠️ Mediocre (30-39%): *${mediocre.length}* videos`,
+    `  ❌ Poor (<30%): *${poor.length}* videos`,
+    '',
+  ];
+
+  if (poor.length > 0) {
+    lines.push(`_${poor.length} poor-quality clips are diluting your queue._`);
+    lines.push(`Run \`/purge confirm\` to archive them.`);
+  } else {
+    lines.push('✅ Queue is clean — no poor-quality content!');
+  }
+
+  return lines.join('\n');
+}
+
 // Sprint 393: /note — operator quick notes on videos
 const NOTES_PATH = path.join(ROOT, 'workspace', 'scs001', 'video-notes.json');
 
@@ -5434,6 +5521,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/archive':     response = cmdArchive(cmdArgs);     break;
     case '/unarchive':   response = cmdUnarchive(cmdArgs);   break;
     case '/stale':       response = cmdStale(cmdArgs);       break;
+    case '/purge':       response = cmdPurge(cmdArgs);       break;
     case '/note':        response = cmdNote(cmdArgs);        break;
     case '/status':      response = cmdStatus();             break;
     case '/dedup':       response = cmdDedup();              break;

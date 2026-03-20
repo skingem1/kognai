@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-419",
+  "title": "Quality-based queue filter — /purge command",
+  "description": "Add /purge command that shows content quality tiers and bulk-archives clips below a quality threshold. Ensures posting sessions deliver only high-quality content.",
+  "source": "auto — 102 items in queue include low-quality clips (0.15-0.29 viral score) that dilute delivery",
+  "tasks": [
+    {
+      "id": "419-01",
+      "title": "Add /purge command with quality tier analysis and bulk-archive",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-419",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
