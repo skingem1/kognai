@@ -3308,6 +3308,7 @@ function cmdHelp(): string {
     `/weeklyreport — Weekly performance summary\n` +
     `/speakertest — Speaker A/B test rankings\n` +
     `/contentplan — 7-day content filming plan\n` +
+    `/filmkit   — Instant filming brief for next video\n` +
     `/help      — This message`
   );
 }
@@ -3426,6 +3427,115 @@ function cmdContentPlan(): string {
   }
   lines.push(`• Use /queue to pick ready videos`);
   lines.push(`• Use /record after posting to track`);
+
+  return lines.join('\n');
+}
+
+// ─── Sprint 382: /filmkit — instant filming brief ────────────────────
+
+const HOOK_OPENERS: Record<string, string> = {
+  curiosity_gap: '"You won\'t believe what happens when..."',
+  contrarian: '"Everyone thinks X, but actually..."',
+  authority: '"After 10 years in the industry, here\'s what I know..."',
+  secret: '"Nobody talks about this, but..."',
+  question: '"Have you ever wondered why...?"',
+};
+
+function cmdFilmKit(): string {
+  const experiments = readLines(path.join(ROOT, 'workspace', 'scs001', 'experiments.jsonl'));
+  const posts = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+
+  const GATE_DATE = new Date('2026-04-07T00:00:00Z');
+  const now = new Date();
+  const daysLeft = Math.max(0, Math.ceil((GATE_DATE.getTime() - now.getTime()) / 86_400_000));
+  const postsNeeded = Math.max(0, 30 - posts.length);
+
+  // Best hook formula
+  const hookStats: Record<string, { total: number; count: number }> = {};
+  for (const e of experiments) {
+    const h = e.hook_formula ?? 'unknown';
+    if (h === 'unknown') continue;
+    if (!hookStats[h]) hookStats[h] = { total: 0, count: 0 };
+    hookStats[h].count++;
+    if (e.partial_viral_score != null) hookStats[h].total += e.partial_viral_score;
+  }
+  const bestHook = Object.entries(hookStats)
+    .map(([h, s]) => ({ hook: h, avg: s.count > 0 ? s.total / s.count : 0 }))
+    .sort((a, b) => b.avg - a.avg)[0];
+
+  // Best speaker
+  const spStats: Record<string, { total: number; count: number }> = {};
+  for (const e of experiments) {
+    const sp = e.speaker ?? 'unknown';
+    if (sp === 'unknown') continue;
+    if (!spStats[sp]) spStats[sp] = { total: 0, count: 0 };
+    spStats[sp].count++;
+    if (e.partial_viral_score != null) spStats[sp].total += e.partial_viral_score;
+  }
+  const bestSpeaker = Object.entries(spStats)
+    .map(([sp, s]) => ({ speaker: sp, avg: s.count > 0 ? s.total / s.count : 0 }))
+    .sort((a, b) => b.avg - a.avg)[0];
+
+  // Trending topic
+  let topic = 'general trend';
+  try {
+    const data = JSON.parse(fs.readFileSync(path.join(ROOT, 'workspace', 'scs001', 'viral-topics.json'), 'utf-8'));
+    const topics: string[] = data.topics ?? [];
+    if (topics.length > 0) topic = topics[Math.floor(Math.random() * Math.min(3, topics.length))];
+  } catch { /* ignore */ }
+
+  // Best posting time
+  let postTime = '12:00';
+  try {
+    const sched = JSON.parse(fs.readFileSync(path.join(ROOT, 'reports', 'posting-schedule.json'), 'utf-8'));
+    const slots: any[] = sched.slots ?? [];
+    const todayStr = now.toISOString().slice(0, 10);
+    const currentHour = now.getHours();
+    const nextSlot = slots
+      .filter((s: any) => s.date === todayStr && parseInt(s.time) > currentHour)
+      .sort((a: any, b: any) => a.time.localeCompare(b.time))[0];
+    if (nextSlot) postTime = nextSlot.slot_label ?? nextSlot.time;
+  } catch { /* ignore */ }
+
+  // Hashtags from viral topics
+  let hashtags = '#fyp #viral #trending';
+  try {
+    const data = JSON.parse(fs.readFileSync(path.join(ROOT, 'workspace', 'scs001', 'viral-topics.json'), 'utf-8'));
+    const topics: string[] = (data.topics ?? []).slice(0, 5);
+    if (topics.length > 0) {
+      hashtags = topics.map(t => '#' + t.replace(/[^a-zA-Z0-9]/g, '').toLowerCase()).join(' ') + ' #fyp';
+    }
+  } catch { /* ignore */ }
+
+  const hookName = bestHook?.hook ?? 'curiosity_gap';
+  const hookPct = bestHook ? Math.round(bestHook.avg * 100) : 0;
+  const opener = HOOK_OPENERS[hookName] ?? HOOK_OPENERS['curiosity_gap'] ?? '"Did you know..."';
+  const speakerName = bestSpeaker?.speaker ?? 'TBD';
+  const speakerPct = bestSpeaker ? Math.round(bestSpeaker.avg * 100) : 0;
+
+  const lines = [
+    '🎬 *FILM KIT — Your Next Video*',
+    `${posts.length}/30 posted · ${postsNeeded} to go · ${daysLeft} days left`,
+    '',
+    `📌 *Topic:* ${topic}`,
+    `🪝 *Hook:* ${hookName} (${hookPct}% avg viral)`,
+    `💬 *Opener:* ${opener}`,
+    `🎤 *Speaker:* ${speakerName} (${speakerPct}% avg)`,
+    `⏰ *Post at:* ${postTime}`,
+    '',
+    '📝 *Script Structure:*',
+    `1. Hook (0-3s): ${opener}`,
+    `2. Value (3-45s): Key insight about *${topic}*`,
+    '3. CTA (45-60s): "Follow for more" / ask question',
+    '',
+    `🏷️ *Hashtags:*`,
+    `\`${hashtags}\``,
+    '',
+    '📋 *After filming:*',
+    '→ /queue to check ready videos',
+    '→ /record to log the post',
+    '→ /caption to generate TikTok caption',
+  ];
 
   return lines.join('\n');
 }
@@ -3588,6 +3698,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/weeklyreport': response = cmdWeeklyReport();       break;
     case '/speakertest': response = cmdSpeakerTest();        break;
     case '/contentplan': response = cmdContentPlan();        break;
+    case '/filmkit':     response = cmdFilmKit();            break;
     case '/help':        response = cmdHelp();        break;
     default:
       response = `Unknown command: \`${cmdName}\`\n\n${cmdHelp()}`;

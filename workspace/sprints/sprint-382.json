@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-382",
+  "title": "/filmkit — instant filming brief for next video",
+  "description": "Add /filmkit command that outputs a complete filming brief: trending topic, best hook with sample opener, speaker assignment, posting time, hashtags — everything needed to film one video right now.",
+  "source": "auto — operator needs actionable filming briefs to hit 30-post gate",
+  "tasks": [
+    {
+      "id": "382-01",
+      "title": "Add /filmkit command to scripts/telegram-bot.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-382",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
