@@ -4199,3 +4199,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (feature additions to existing module)
 - Issues: None
 - Timestamp: 2026-03-20T11:20:00Z
+
+## Sprint 460 — SECURITY: Bind all HTTP servers to 127.0.0.1
+- Status: PASS
+- Commit: f17e32c
+- Files modified: backend/src/server.ts, scripts/scs001/checkout-server.ts, scripts/tiktok-oauth.ts, scripts/services/clawrouter-http-server.ts
+- Files created: workspace/sprints/sprint-460.json
+- Tasks completed:
+  - 460-01: Fixed 4 servers binding to 0.0.0.0 → 127.0.0.1 (SEC1+SEC3 compliance)
+- Validation: All .listen() calls now specify '127.0.0.1'. Stripe was already correct
+- Swarm used: no (security fix, surgical edits)
+- Issues: None
+- Timestamp: 2026-03-20T11:30:00Z
