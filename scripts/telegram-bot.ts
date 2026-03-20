@@ -1144,6 +1144,64 @@ function cmdCalendar(): string {
   }
 }
 
+// Sprint 339: /posted — mark last auto-delivered video as posted (zero typing)
+function cmdPosted(): string {
+  const deliveredPath = path.join(ROOT, 'workspace', 'scs001', 'auto-delivered.jsonl');
+  if (!fs.existsSync(deliveredPath)) {
+    return `⚠️ No auto-delivered videos found. Use \`/deliver\` first, then \`/record <id> 0\`.`;
+  }
+
+  const lines = fs.readFileSync(deliveredPath, 'utf-8').split('\n').filter(l => l.trim());
+  if (lines.length === 0) {
+    return `⚠️ No auto-delivered videos found. Use \`/deliver\` first.`;
+  }
+
+  // Get most recent delivery
+  let latest: any = null;
+  for (let i = lines.length - 1; i >= 0; i--) {
+    try { latest = JSON.parse(lines[i]); break; } catch { /* skip */ }
+  }
+  if (!latest || !latest.video_id) {
+    return `⚠️ Could not parse last delivery. Use \`/record <id> 0\` manually.`;
+  }
+
+  const videoId = latest.video_id;
+  const manualPostsPath = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
+
+  // Check for duplicate
+  const existing = readLines(manualPostsPath);
+  if (existing.some((e: any) => e.video_id === videoId)) {
+    return `⚠️ \`${videoId}\` already recorded. Send \`/posted\` again after posting the next delivered video.`;
+  }
+
+  // Record the post
+  const entry = {
+    video_id: videoId,
+    views: 0,
+    posted_at: new Date().toISOString(),
+    recorded_at: new Date().toISOString(),
+    source: 'auto-deliver',
+  };
+  const dir = path.dirname(manualPostsPath);
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+  fs.appendFileSync(manualPostsPath, JSON.stringify(entry) + '\n', 'utf-8');
+
+  // Gate stats
+  const updated = readLines(manualPostsPath);
+  const postCount = updated.length;
+  const totalViews = updated.reduce((s: number, p: any) => s + (p.views ?? 0), 0);
+  const postsLeft = Math.max(0, 30 - postCount);
+  const gateDate = new Date('2026-04-07T00:00:00Z');
+  const daysLeft = Math.max(0, Math.ceil((gateDate.getTime() - Date.now()) / 86_400_000));
+
+  return (
+    `✅ *Posted!* \`${videoId}\`\n\n` +
+    `📊 *Gate:* ${postCount}/30 posts · ${totalViews}/500 views\n` +
+    `${postsLeft > 0 ? `⏳ ${postsLeft} more · ${daysLeft}d to Apr 7` : '🎉 Post target met!'}\n\n` +
+    `_Next video will auto-deliver at the next posting time._`
+  );
+}
+
 function cmdHelp(): string {
   return (
     `*Kognai Bot Commands*\n\n` +
@@ -1156,6 +1214,7 @@ function cmdHelp(): string {
     `/queue     — Unposted videos ranked by viral score\n` +
     `/review    — Latest generated video details\n` +
     `/record    — Record a manual TikTok post\n` +
+    `/posted    — Mark last auto-delivered video as posted\n` +
     `/deliver   — Batch-send ready videos with captions\n` +
     `/caption   — Generate TikTok-ready caption for a video\n` +
     `/streak    — Posting streak tracker + pace\n` +
@@ -1207,6 +1266,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/sprint':  response = cmdSprint(); break;
     case '/gate':    response = cmdGate();   break;
     case '/record':  response = cmdRecord(cmdArgs); break;
+    case '/posted':  response = cmdPosted(); break;
     case '/queue':   response = cmdQueue();  break;
     case '/review':  response = cmdReview(); break;
     case '/caption': response = cmdCaption(cmdArgs); break;

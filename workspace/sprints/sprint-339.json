@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-339",
+  "title": "/posted command — one-tap mark last delivered video as posted",
+  "description": "After auto-deliver sends a video, operator posts it to TikTok and types /posted — marks the most recently delivered video as posted in manual-posts.jsonl. Zero friction, no need to remember video IDs.",
+  "source": "auto — reduce posting friction for 0/30 gate, complement Sprint 338 auto-deliver",
+  "tasks": [
+    {
+      "id": "339-01",
+      "title": "Add /posted command to telegram-bot.ts — marks last auto-delivered video as posted",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-339",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
