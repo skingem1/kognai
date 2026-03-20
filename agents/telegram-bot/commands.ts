@@ -4299,3 +4299,78 @@ export async function handlePostPlan(chatId: number, ownerChatId: string): Promi
     await sendMessage(chatId, `❌ Schedule generation failed: ${(err as Error).message}`);
   }
 }
+
+// ── /todaycaptions — batch captions for today's scheduled posts — Sprint 332 ─
+// Owner-only: generates TikTok-ready captions for all videos scheduled today.
+export async function handleTodayCaptions(chatId: number, ownerChatId: string): Promise<void> {
+  if (String(chatId) !== ownerChatId) {
+    await sendMessage(chatId, '🔒 Owner only.');
+    return;
+  }
+
+  try {
+    const { generateSchedule } = require('../../scripts/scs001/generate-posting-schedule');
+    const schedule = generateSchedule();
+
+    const today = new Date().toISOString().slice(0, 10);
+    const todaySlots = schedule.slots.filter((s: any) => s.date === today);
+
+    if (todaySlots.length === 0) {
+      await sendMessage(chatId, `📅 No posts scheduled for today (${today}).\n\nUse \`/postplan\` to see the full 7-day schedule.`);
+      return;
+    }
+
+    // Load hashtags from viral-topics.json
+    const topicsPath = join(process.cwd(), 'workspace', 'scs001', 'viral-topics.json');
+    let viralHashtags: string[] = [];
+    if (existsSync(topicsPath)) {
+      try {
+        const vt = JSON.parse(readFileSync(topicsPath, 'utf-8'));
+        viralHashtags = (vt.topics ?? []).slice(0, 4).map((t: string) => `#${t}`);
+      } catch { /* ignore */ }
+    }
+    if (viralHashtags.length === 0) viralHashtags = ['#ai', '#tech'];
+    const hashtags = [...viralHashtags, '#fyp', '#viral', '#learnontiktok'].join(' ');
+
+    // Header
+    await sendMessage(chatId, [
+      `📋 *Today's Captions* (${today})`,
+      `${todaySlots.length} post(s) scheduled`,
+      '',
+      `🎯 Gate: *${schedule.posts_needed}* posts needed in *${schedule.days_to_gate}* days`,
+    ].join('\n'));
+
+    // Send each caption as a separate message for easy mobile copy
+    for (const slot of todaySlots) {
+      const cwd = process.cwd();
+
+      // Try to load hook text from script JSON
+      let hookText: string = slot.speaker !== 'unknown' ? `${slot.speaker} on ${slot.hook}` : slot.hook;
+      const scriptPath = findScriptJson(cwd, slot.video_id);
+      if (scriptPath) {
+        try {
+          const script = JSON.parse(readFileSync(scriptPath, 'utf-8'));
+          hookText = script.hook ?? script.title ?? script.headline ?? hookText;
+        } catch { /* fallback */ }
+      }
+
+      const caption = `${hookText}\n\n${hashtags}`;
+      const score = Math.round(slot.viral_score * 100);
+
+      await sendMessage(chatId, [
+        `⏰ *${slot.slot_label}*`,
+        `🎬 \`${slot.video_id}\``,
+        slot.speaker !== 'unknown' ? `🎙️ ${slot.speaker}` : '',
+        `📊 Viral: ${score}% | Hook: ${slot.hook}`,
+      ].filter(Boolean).join('\n'));
+
+      // Caption as code block — tap to copy
+      await sendMessage(chatId, '```\n' + caption + '\n```');
+
+      // Post-paste instruction
+      await sendMessage(chatId, `_After posting: \`/record ${slot.video_id} 0\`_`);
+    }
+  } catch (err) {
+    await sendMessage(chatId, `❌ Caption generation failed: ${(err as Error).message}`);
+  }
+}

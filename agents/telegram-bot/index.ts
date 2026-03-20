@@ -44,6 +44,7 @@ import {
   handlePipeline,
   handleRunPipeline,
   handlePostPlan,
+  handleTodayCaptions,
 } from './commands';
 
 // ── Config ────────────────────────────────────────────────────────────────────
@@ -193,6 +194,7 @@ async function dispatch(update: TelegramUpdate): Promise<void> {
     case '/pipeline':       await handlePipeline(chatId, OWNER_CHAT_ID);            break;
     case '/runpipeline':    await handleRunPipeline(chatId, OWNER_CHAT_ID, text);  break;
     case '/postplan':       await handlePostPlan(chatId, OWNER_CHAT_ID);           break;
+    case '/todaycaptions': await handleTodayCaptions(chatId, OWNER_CHAT_ID);     break;
     default:                 await handleUnknown(chatId, text);                          break;
   }
 }

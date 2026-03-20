@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-332",
+  "title": "Auto-caption batch — /todaycaptions command for scheduled posts",
+  "description": "Generate TikTok-ready captions for all of today's scheduled posts from the 7-day schedule. One command gives operator everything needed to post today.",
+  "source": "auto — follows Sprint 331 posting schedule, operator workflow optimization",
+  "tasks": [
+    {
+      "id": "332-01",
+      "title": "Add /todaycaptions command to agents/telegram-bot/commands.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-332",
+      "deliverables": { "code": ["agents/telegram-bot/commands.ts", "agents/telegram-bot/index.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "332-02",
+      "title": "Create scripts/scs001/validate-today-captions.ts — validation test",
+      "type": "test",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-332",
+      "deliverables": { "code": ["scripts/scs001/validate-today-captions.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
