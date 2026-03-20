@@ -5,6 +5,7 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync, unlinkSync, readdirSync } from 'fs';
 import { join } from 'path';
 import type { ConversationTurn } from './index';
+import { summarizeBeforeTrim } from './conversation-summary';
 
 const MAX_HISTORY_TURNS = 50;
 const DAILY_COUNTS_FILE = join('workspace', 'achiri', 'daily-counts.json');
@@ -40,6 +41,11 @@ export class AchiriMemoryStore {
   }
 
   saveHistory(userId: string, history: ConversationTurn[]): void {
+    // Sprint 302: Before trimming, summarize turns that will be removed
+    if (history.length > MAX_HISTORY_TURNS) {
+      const turnsToRemove = history.slice(0, history.length - MAX_HISTORY_TURNS);
+      try { summarizeBeforeTrim(userId, turnsToRemove); } catch { /* non-fatal */ }
+    }
     const trimmed = history.slice(-MAX_HISTORY_TURNS);
     writeFileSync(this.filePath(userId), trimmed.map(t => JSON.stringify(t)).join('\n') + '\n', 'utf8');
   }

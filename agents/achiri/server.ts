@@ -5,6 +5,7 @@
 //   POST   /chat                { userId, tier?, message } → { reply, turns_in_memory, model, provider, tier }
 //   POST   /voice               { userId, tier, audioText, audioFilePath? } → { transcript, reply, voice_reply, model, provider, tier, whisper_used }
 //   GET    /upgrade             ?tier=tnd_basic&userId=xxx → { checkout_url, order_id, amount_tnd, tier, mock }
+//   GET    /summary/:userId      → { userId, facts, total_turns_summarized, last_updated }
 //   GET    /profile/:userId      → { userId, preferred_language, top_interests, message_count, ... }
 //   DELETE /memory/:userId      → { ok: true }
 //   GET    /stats               → { users, total_turns, uptime_s }
@@ -16,6 +17,7 @@ import { AchiriMemoryStore } from './memory-store';
 import { createCheckoutUrl } from './paymee';
 import { processVoiceMessage, VoiceTierError } from './voice-handler';
 import { extractUserProfile } from './user-profile';
+import { loadSummary } from './conversation-summary';
 
 const PORT = parseInt(process.env.ACHIRI_PORT ?? '3420', 10);
 const START_TIME = Date.now();
@@ -95,6 +97,15 @@ const server = http.createServer(async (req, res) => {
   if (method === 'GET' && url === '/stats') {
     const stats = memStore.getStats();
     return send(res, 200, { ...stats, uptime_s: Math.floor((Date.now() - START_TIME) / 1000) });
+  }
+
+  // GET /summary/:userId — Sprint 302: conversation summary
+  if (method === 'GET' && url.startsWith('/summary/')) {
+    const userId = decodeURIComponent(url.slice('/summary/'.length));
+    if (!userId) return send(res, 400, { error: 'userId required' });
+    const summary = loadSummary(userId);
+    console.log('[Achiri API] /summary userId=' + userId + ' facts=' + (summary?.facts.length ?? 0));
+    return send(res, 200, summary ?? { userId, facts: [], total_turns_summarized: 0, last_updated: null });
   }
 
   // GET /profile/:userId — Sprint 301: user profile extraction
@@ -207,7 +218,7 @@ const server = http.createServer(async (req, res) => {
 
 server.listen(PORT, () => {
   console.log('[Achiri API] listening on port ' + PORT);
-  console.log('[Achiri API] routes: POST /chat, POST /voice, GET /upgrade, GET /profile/:userId, DELETE /memory/:userId, GET /stats, GET /health');
+  console.log('[Achiri API] routes: POST /chat, POST /voice, GET /upgrade, GET /summary/:userId, GET /profile/:userId, DELETE /memory/:userId, GET /stats, GET /health');
 });
 
 export { server };

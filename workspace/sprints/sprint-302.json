@@ -1,0 +1,44 @@
+{
+  "sprint_id": "sprint-302",
+  "title": "Achiri conversation summarizer — compress old turns into persistent summary",
+  "description": "When user exceeds 50 turns, oldest turns are lost. This sprint adds a local summarizer that extracts key facts from older turns into a compact summary file. The summary persists across sessions and is injected into the system prompt alongside the profile context. Zero LLM cost — pattern extraction.",
+  "source": "auto — Achiri Phase 2A roadmap: memory subsystem enhancement",
+  "tasks": [
+    {
+      "id": "302-01",
+      "title": "Build conversation summarizer that extracts key facts from history",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-302",
+      "deliverables": { "code": ["agents/achiri/conversation-summary.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "302-02",
+      "title": "Wire summarizer into memory-store trim cycle and system prompt",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-302",
+      "deliverables": { "code": ["agents/achiri/memory-store.ts", "agents/achiri/index.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "302-03",
+      "title": "Add GET /summary/:userId endpoint to server",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-302",
+      "deliverables": { "code": ["agents/achiri/server.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

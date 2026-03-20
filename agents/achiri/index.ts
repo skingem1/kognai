@@ -16,6 +16,7 @@ import { AchiriMemoryStore } from './memory-store';
 import { safetyCheck } from './safety-filter';
 import { injectMemoryContext } from './memory-search';
 import { extractUserProfile, buildProfileContext } from './user-profile';
+import { buildSummaryContext } from './conversation-summary';
 import { routeCall } from '../../scripts/lib/clawrouter-v2';
 
 export interface AchiriConfig {
@@ -93,14 +94,18 @@ export class AchiriConversationHandler {
     ].join('\n');
 
     // Sprint 301: Inject user profile context (language preference, interests)
-    let profileBlock = '';
+    // Sprint 302: Inject conversation summary (persistent facts from past sessions)
+    let personalBlock = '';
     if (this.memory) {
       const profile = extractUserProfile(this.userId);
-      const ctx301 = buildProfileContext(profile);
-      if (ctx301) profileBlock = ctx301 + '\n\n---\n\n';
+      const profileCtx = buildProfileContext(profile);
+      const summaryCtx = buildSummaryContext(this.userId);
+      if (profileCtx) personalBlock += profileCtx + '\n\n';
+      if (summaryCtx) personalBlock += summaryCtx + '\n\n';
+      if (personalBlock) personalBlock += '---\n\n';
     }
 
-    return header + profileBlock + this.systemPromptRaw;
+    return header + personalBlock + this.systemPromptRaw;
   }
 
   buildMessages(userMessage: string, history: ConversationTurn[] = []): ConversationTurn[] {
