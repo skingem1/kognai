@@ -1468,6 +1468,14 @@
       "status": "done",
       "priority": "critical",
       "rationale": "Live pipeline test: 5/5 videos, 3 formats, captions burned in, $1.50. 13 unique videos in inventory."
+    },
+    {
+      "sprint": 611,
+      "title": "ACHIRI — Enable memory awareness in system prompt",
+      "block": "ACHIRI",
+      "status": "done",
+      "priority": "high",
+      "rationale": "Prompt updated from 'no memory' to memory-aware. Memory subsystem operational. Smoke test 6/6 PASS."
     }
   ]
 }
