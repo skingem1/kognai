@@ -1,0 +1,56 @@
+{
+  "sprint_id": "sprint-487",
+  "title": "LAUNCH — Paid X ads creative + targeting setup",
+  "description": "Prepare paid X ads for launch: 3 ad creative variations, targeting criteria for AI/tech/founders/developers, budget allocation ($50-100 test), UTM tracking config. Store in workspace/launch/ads/.",
+  "source": "queue — Sprint 487 LAUNCH-PREP",
+  "tasks": [
+    {
+      "id": "487-01",
+      "title": "Create 3 ad creative variations (copy + CTA)",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-487",
+      "deliverables": { "code": ["workspace/launch/ads/creatives.json"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "487-02",
+      "title": "Define targeting criteria and audience segments",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-487",
+      "deliverables": { "code": ["workspace/launch/ads/targeting.json"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "487-03",
+      "title": "Budget allocation plan ($50-100 test spend)",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-487",
+      "deliverables": { "code": ["workspace/launch/ads/budget.json"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "487-04",
+      "title": "UTM tracking links for landing page",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-487",
+      "deliverables": { "code": ["workspace/launch/ads/utm-tracking.json"], "tests": [], "docs": [] }
+    }
+  ]
+}

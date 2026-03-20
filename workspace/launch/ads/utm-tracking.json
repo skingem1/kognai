@@ -1,0 +1,48 @@
+{
+  "_note": "UTM tracking links for Kognai X ads campaign",
+  "created": "2026-03-20",
+  "base_url": "https://kognai.ai/start",
+  "links": [
+    {
+      "creative": "creative-A",
+      "audience": "all",
+      "url": "https://kognai.ai/start?utm_source=x&utm_medium=paid&utm_campaign=launch&utm_content=creative-a",
+      "short_label": "X-Paid-A"
+    },
+    {
+      "creative": "creative-B",
+      "audience": "all",
+      "url": "https://kognai.ai/start?utm_source=x&utm_medium=paid&utm_campaign=launch&utm_content=creative-b",
+      "short_label": "X-Paid-B"
+    },
+    {
+      "creative": "creative-C",
+      "audience": "all",
+      "url": "https://kognai.ai/start?utm_source=x&utm_medium=paid&utm_campaign=launch&utm_content=creative-c",
+      "short_label": "X-Paid-C"
+    },
+    {
+      "creative": "organic-manifesto",
+      "audience": "organic",
+      "url": "https://kognai.ai/start?utm_source=x&utm_medium=organic&utm_campaign=manifesto&utm_content=thread",
+      "short_label": "X-Organic-Manifesto"
+    },
+    {
+      "creative": "bio-link",
+      "audience": "profile",
+      "url": "https://kognai.ai/start?utm_source=x&utm_medium=organic&utm_campaign=bio&utm_content=profile",
+      "short_label": "X-Bio"
+    }
+  ],
+  "utm_parameters": {
+    "utm_source": "x (always 'x' for X/Twitter)",
+    "utm_medium": "paid | organic",
+    "utm_campaign": "launch | manifesto | bio",
+    "utm_content": "creative-a | creative-b | creative-c | thread | profile"
+  },
+  "analytics_setup": {
+    "note": "Add UTM parsing to kognai.ai/start landing page. Store utm_* params in Supabase waitlist table alongside email.",
+    "supabase_table": "waitlist_signups",
+    "columns_needed": ["email", "utm_source", "utm_medium", "utm_campaign", "utm_content", "created_at"]
+  }
+}

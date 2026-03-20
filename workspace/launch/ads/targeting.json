@@ -1,0 +1,49 @@
+{
+  "_note": "X Ads targeting criteria for Kognai SCS-001 launch campaign",
+  "created": "2026-03-20",
+  "audiences": [
+    {
+      "id": "audience-1",
+      "name": "AI/Tech Enthusiasts",
+      "interests": ["Artificial Intelligence", "Machine Learning", "LLM", "ChatGPT", "AI Agents", "Automation"],
+      "keywords": ["AI agent", "AI automation", "LLM tools", "AI content creation", "autonomous AI"],
+      "follower_lookalikes": ["@AndrewYNg", "@kaborojevic", "@ylecun", "@sama", "@emaborevkova"],
+      "age_range": "18-45",
+      "languages": ["English"],
+      "geo": "Worldwide (EN-speaking priority: US, UK, CA, AU)",
+      "estimated_reach": "broad"
+    },
+    {
+      "id": "audience-2",
+      "name": "Founders & Indie Hackers",
+      "interests": ["Startups", "Entrepreneurship", "SaaS", "Product Hunt", "Indie Hacking"],
+      "keywords": ["solo founder", "indie hacker", "bootstrap", "side project", "startup tools", "growth hacking"],
+      "follower_lookalikes": ["@levelsio", "@marckohlbrugge", "@dannypostmaa", "@taborovak", "@yaborevkov"],
+      "age_range": "22-40",
+      "languages": ["English"],
+      "geo": "US, EU, UK",
+      "estimated_reach": "medium"
+    },
+    {
+      "id": "audience-3",
+      "name": "Content Creators & Developers",
+      "interests": ["Content Creation", "TikTok Marketing", "Social Media Marketing", "Video Editing", "Developer Tools"],
+      "keywords": ["TikTok growth", "content automation", "video content", "social media tools", "creator economy"],
+      "follower_lookalikes": ["@garaborevkov", "@thecaborevkov", "@aliabdaal"],
+      "age_range": "18-35",
+      "languages": ["English"],
+      "geo": "Worldwide",
+      "estimated_reach": "broad"
+    }
+  ],
+  "exclusions": {
+    "exclude_existing_followers": true,
+    "exclude_converters": true,
+    "note": "Exclude anyone who already signed up via kognai.ai/start"
+  },
+  "ab_test_plan": {
+    "phase1": "Test all 3 creatives × audience-1 (AI/Tech) for 48 hours",
+    "phase2": "Winner creative → test across all 3 audiences for 72 hours",
+    "phase3": "Winner creative × winner audience → scale budget"
+  }
+}

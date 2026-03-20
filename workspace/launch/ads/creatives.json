@@ -1,0 +1,43 @@
+{
+  "_note": "3 X ad creative variations for Kognai SCS-001 TikTok Content Agent launch",
+  "created": "2026-03-20",
+  "campaign": "kognai-scs001-launch",
+  "creatives": [
+    {
+      "id": "creative-A",
+      "name": "Problem-Solution",
+      "headline": "Stop spending hours making TikTok content",
+      "body": "Kognai's AI agent finds trending topics, downloads clips, writes scripts, adds voiceover, and delivers ready-to-post videos — on autopilot.\n\nYour first 7 days are free. No credit card required.",
+      "cta": "Start Free Trial",
+      "cta_url": "https://kognai.ai/start?utm_source=x&utm_medium=paid&utm_campaign=launch&utm_content=creative-a",
+      "tone": "direct, pain-point focused",
+      "target_emotion": "relief"
+    },
+    {
+      "id": "creative-B",
+      "name": "Social-Proof-Tech",
+      "headline": "An AI swarm that runs your TikTok",
+      "body": "6 specialized AI agents collaborate to produce viral-ready short videos. Trend detection → clip sourcing → script writing → editing → quality control → delivery.\n\nBuilt by a solo founder. Powered by open-source AI. €9/mo after trial.",
+      "cta": "Try It Free",
+      "cta_url": "https://kognai.ai/start?utm_source=x&utm_medium=paid&utm_campaign=launch&utm_content=creative-b",
+      "tone": "technical, founder-to-founder",
+      "target_emotion": "curiosity"
+    },
+    {
+      "id": "creative-C",
+      "name": "FOMO-Speed",
+      "headline": "Your competitors are already using AI for TikTok",
+      "body": "While you're spending 3 hours per video, AI agents are producing 10 videos a day — researched, scripted, edited, and ready to post.\n\nKognai does this for €9/mo. Free 7-day trial. Cancel anytime.",
+      "cta": "Get Started Free",
+      "cta_url": "https://kognai.ai/start?utm_source=x&utm_medium=paid&utm_campaign=launch&utm_content=creative-c",
+      "tone": "urgent, competitive",
+      "target_emotion": "urgency"
+    }
+  ],
+  "media_notes": {
+    "format": "Single image or short video (15s max)",
+    "recommended": "Screen recording of Telegram bot delivering a finished video — shows real product",
+    "dimensions": "1200x675 (landscape) or 1080x1080 (square)",
+    "alt_option": "Before/after split: manual process (3 hours) vs Kognai (3 minutes)"
+  }
+}

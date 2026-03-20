@@ -1,0 +1,50 @@
+{
+  "_note": "Budget allocation for Kognai X ads test campaign",
+  "created": "2026-03-20",
+  "total_budget_usd": 75,
+  "currency": "USD",
+  "duration_days": 7,
+  "phases": [
+    {
+      "phase": 1,
+      "name": "Creative Test",
+      "budget_usd": 30,
+      "duration_days": 2,
+      "setup": "3 creatives × 1 audience (AI/Tech)",
+      "spend_per_creative": 10,
+      "objective": "Engagement (clicks + impressions)",
+      "success_metric": "CTR > 1.5%",
+      "kill_switch": "CTR < 0.5% after $5 spend → pause creative"
+    },
+    {
+      "phase": 2,
+      "name": "Audience Test",
+      "budget_usd": 30,
+      "duration_days": 3,
+      "setup": "Winning creative × 3 audiences",
+      "spend_per_audience": 10,
+      "objective": "Website clicks (conversions)",
+      "success_metric": "CPC < $2.00, signups > 0",
+      "kill_switch": "CPC > $5.00 after $10 spend → pause audience"
+    },
+    {
+      "phase": 3,
+      "name": "Scale Winner",
+      "budget_usd": 15,
+      "duration_days": 2,
+      "setup": "Best creative × best audience",
+      "objective": "Conversions (free trial signups)",
+      "success_metric": "CAC < €9 (1-month payback)",
+      "kill_switch": "Zero signups after full $15 → pause campaign entirely"
+    }
+  ],
+  "tracking": {
+    "conversion_event": "Free trial signup at kognai.ai/start",
+    "pixel": "X conversion tracking pixel on /start thank-you page",
+    "reporting": "Daily check via X Ads Manager"
+  },
+  "escalation_rules": {
+    "if_all_fail": "Stop paid ads. Reallocate to organic content + manifesto thread.",
+    "if_winner_found": "Increase Phase 3 budget to $50 if CAC < €5"
+  }
+}
