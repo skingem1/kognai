@@ -3265,3 +3265,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (FP-007 file >3500 lines)
 - Issues: None.
 - Timestamp: 2026-03-20T19:20:00Z
+
+## Sprint 384 — /scorecard — Content Strategy Scorecard (Direct Write)
+- Status: PASS
+- Commit: c5b2ad7
+- Files created: workspace/sprints/sprint-384.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 384-01: Added /scorecard command. Grades content strategy across 5 dimensions: hook diversity (unique hooks/4 target), speaker variety (speakers/3 target), viral score trend (last 20 vs first 20 experiments), QC pass rate, pipeline output rate (experiments/day). Each dimension gets A-D grade with color icons. Overall score calculated. Tailored recommendations for low-scoring dimensions. Updated /help + switch router.
+- Validation: tsc --noEmit PASS
+- Swarm used: no (FP-007 file >3500 lines)
+- Issues: None.
+- Timestamp: 2026-03-20T19:30:00Z
