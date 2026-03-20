@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-378",
+  "title": "/export — batch export manifest for mobile posting",
+  "description": "Add /export command that generates a ready-to-post manifest file with video paths + captions for batch mobile posting.",
+  "source": "auto — reduce friction for manual TikTok posting workflow",
+  "tasks": [
+    {
+      "id": "378-01",
+      "title": "Add /export command to scripts/telegram-bot.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-378",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

@@ -2343,6 +2343,99 @@ function cmdBestTime(): string {
   return lines.join('\n');
 }
 
+// ─── Sprint 378: /export — batch export manifest for mobile posting ─────────
+
+function cmdExport(args: string): string {
+  const count = Math.min(Math.max(parseInt(args) || 10, 1), 30);
+
+  const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
+  const recorded = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  const recordedIds = new Set(recorded.map((e: any) => e.video_id).filter(Boolean));
+
+  // Load viral scores
+  const viralScores = new Map<string, number>();
+  const expPath = path.join(ROOT, 'workspace', 'scs001', 'experiments.jsonl');
+  if (fs.existsSync(expPath)) {
+    for (const line of fs.readFileSync(expPath, 'utf-8').split('\n')) {
+      if (!line.trim()) continue;
+      try {
+        const e = JSON.parse(line);
+        const id = e.clip_id ?? e.video_id;
+        if (id && e.partial_viral_score != null) viralScores.set(id, e.partial_viral_score);
+      } catch { /* skip */ }
+    }
+  }
+
+  // Find unposted videos with captioned mp4
+  const ready: Array<{ video_id: string; filePath: string; score: number }> = [];
+  for (const e of ledger as any[]) {
+    if (!e.video_id || recordedIds.has(e.video_id)) continue;
+    const mp4 = findCaptionedMp4(e.video_id);
+    if (mp4) {
+      ready.push({ video_id: e.video_id, filePath: mp4, score: viralScores.get(e.video_id) ?? -1 });
+    }
+  }
+  ready.sort((a, b) => b.score - a.score);
+  const batch = ready.slice(0, count);
+
+  if (batch.length === 0) {
+    return '⚠️ No ready videos found. Run /refresh first.';
+  }
+
+  // Generate manifest
+  const manifestLines: string[] = [
+    `# TikTok Posting Manifest`,
+    `# Generated: ${new Date().toISOString()}`,
+    `# Videos: ${batch.length} (sorted by viral score)`,
+    '',
+  ];
+
+  for (let i = 0; i < batch.length; i++) {
+    const v = batch[i];
+    const caption = buildTikTokCaption(v.video_id);
+    const exp = getExperimentData(v.video_id);
+    manifestLines.push(`--- Video ${i + 1} of ${batch.length} ---`);
+    manifestLines.push(`ID: ${v.video_id}`);
+    manifestLines.push(`File: ${v.filePath}`);
+    manifestLines.push(`Score: ${Math.round(v.score * 100)}%`);
+    manifestLines.push(`Speaker: ${exp.speaker}`);
+    manifestLines.push(`Hook: ${exp.hook_formula}`);
+    manifestLines.push(`Caption:`);
+    manifestLines.push(caption);
+    manifestLines.push(`After posting: /record ${v.video_id} 0`);
+    manifestLines.push('');
+  }
+
+  // Write manifest file
+  const manifestPath = path.join(ROOT, 'workspace', 'scs001', 'export-manifest.txt');
+  fs.writeFileSync(manifestPath, manifestLines.join('\n'), 'utf-8');
+
+  // Also generate a file list for easy AirDrop
+  const fileListPath = path.join(ROOT, 'workspace', 'scs001', 'export-files.txt');
+  fs.writeFileSync(fileListPath, batch.map(v => v.filePath).join('\n') + '\n', 'utf-8');
+
+  const lines = [
+    `📦 *Export Manifest* — ${batch.length} videos`,
+    '',
+    `📄 Manifest: \`workspace/scs001/export-manifest.txt\``,
+    `📁 File list: \`workspace/scs001/export-files.txt\``,
+    '',
+    '*Top 5 in this batch:*',
+  ];
+
+  for (let i = 0; i < Math.min(5, batch.length); i++) {
+    const v = batch[i];
+    const exp = getExperimentData(v.video_id);
+    lines.push(`${i + 1}. \`${v.video_id.slice(0, 16)}\` — ${exp.speaker} (${Math.round(v.score * 100)}%)`);
+  }
+
+  lines.push('');
+  lines.push('💡 AirDrop: `cat workspace/scs001/export-files.txt | xargs open`');
+  lines.push(`📋 After posting each: \`/record <video_id> 0\``);
+
+  return lines.join('\n');
+}
+
 // ─── Sprint 371: /todaycaptions — batch captions for today's posts ────────
 
 async function cmdTodayCaptions(chatId: string): Promise<void> {
@@ -3058,6 +3151,7 @@ function cmdHelp(): string {
     `/funnel    — Content pipeline funnel + conversions\n` +
     `/hooktest  — Hook formula A/B test rankings\n` +
     `/besttime  — Optimal posting time analysis\n` +
+    `/export    — Batch export manifest for posting\n` +
     `/help      — This message`
   );
 }
@@ -3216,6 +3310,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/funnel':      response = cmdFunnel();              break;
     case '/hooktest':    response = cmdHookTest();            break;
     case '/besttime':    response = cmdBestTime();            break;
+    case '/export':      response = cmdExport(cmdArgs);       break;
     case '/help':        response = cmdHelp();        break;
     default:
       response = `Unknown command: \`${cmdName}\`\n\n${cmdHelp()}`;
