@@ -444,17 +444,16 @@ module.exports = {
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
     {
-      // Smoke Test Cron — runs full 15-stage mock pipeline daily at 06:00 UTC
-      // Writes reports/smoke-test-latest.json (read by daily digest at 07:00).
-      // Ensures digest always has fresh pipeline health data.
+      // Smoke Test Cron — Sprint 530: runs full system smoke test every 6h
+      // Writes reports/smoke-test-latest.json + sends Telegram alert on failure.
       name: "kognai-smoke-test",
-      script: "scripts/smoke-test-pipeline.ts",
+      script: "scripts/smoke-test-cron.ts",
       interpreter: "node",
       interpreter_args: "-r ts-node/register",
       cwd: "/Users/tarekmnif/kognai",
       autorestart: false,
       watch: false,
-      cron_restart: "0 6 * * *",
+      cron_restart: "0 */6 * * *",
       env: {
         TS_NODE_TRANSPILE_ONLY: "true",
         TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",

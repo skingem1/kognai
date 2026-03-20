@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-530",
+  "title": "INFRA — Smoke test cron (every 6h) + Telegram alert on failure",
+  "description": "Created smoke-test-cron.ts wrapper that runs smoke-test-full.ts and sends Telegram alert on failure. Updated PM2 cron from daily to every 6h. All 11 checks pass.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "530-01",
+      "title": "Create smoke-test-cron.ts with Telegram alerting",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/smoke-test-cron.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-530",
+      "deliverables": { "code": ["scripts/smoke-test-cron.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "530-02",
+      "title": "Update PM2 ecosystem to use new smoke test cron (every 6h)",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "ecosystem.config.js",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-530",
+      "deliverables": { "code": ["ecosystem.config.js"], "tests": [], "docs": [] }
+    }
+  ]
+}

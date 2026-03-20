@@ -768,8 +768,9 @@
       "title": "INFRA — End-to-end smoke test cron + auto-alert on failure",
       "block": "INFRA",
       "priority": "medium",
-      "status": "pending",
-      "rationale": "smoke-test-full.ts exists (Sprint 493) but not on cron. Add PM2 cron to run every 6h. On failure, send Telegram alert. Ensures system health between operator sessions."
+      "status": "done",
+      "rationale": "smoke-test-full.ts exists (Sprint 493) but not on cron. Add PM2 cron to run every 6h. On failure, send Telegram alert. Ensures system health between operator sessions.",
+      "_note": "smoke-test-cron.ts + PM2 every 6h. All 11 checks PASS."
     }
   ]
 }
