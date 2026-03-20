@@ -3241,3 +3241,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (FP-007 file >3500 lines)
 - Issues: None.
 - Timestamp: 2026-03-20T19:00:00Z
+
+## Sprint 382 — /filmkit — Instant Filming Brief (Direct Write)
+- Status: PASS
+- Commit: 6cd567b
+- Files created: workspace/sprints/sprint-382.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 382-01: Added /filmkit command. Generates a complete one-shot filming brief: trending topic (random from top 3), best hook formula with sample opener text, best speaker assignment, next posting time slot, script structure (hook/value/CTA), and ready-to-copy hashtags from viral topics. Updated /help + switch router.
+- Validation: tsc --noEmit PASS
+- Swarm used: no (FP-007 file >3500 lines)
+- Issues: None.
+- Timestamp: 2026-03-20T19:10:00Z
