@@ -1,6 +1,6 @@
 {
   "_note": "AUTHORITATIVE sprint execution order. The brief generator reads this and injects the first item as a MANDATORY directive, bypassing Qwen's recommendation. Pop items by setting status=done after each sprint ships. Human-maintained — edit to re-prioritise.",
-  "updated": "2026-03-20T21:00",
+  "updated": "2026-03-20T22:00",
   "owner": "Tarek (human)",
   "_plan_rationale": "Queue fixed 2026-03-20. Sprints 442-458 consumed by autonomous swarm. 10 items marked done (work completed). Remaining items have auto-sync guard in brief generator: consumed sprint numbers auto-skipped at runtime. 2 critical un-done items (SAFETY-SPLIT Part 2, progress.md update) re-added as Sprint 496-497 to avoid number collisions.",
   "queue": [
@@ -960,6 +960,47 @@
       "status": "done",
       "rationale": "More content buffer for manual posting. Target: 120+ delivered total.",
       "_note": "10 produced, 1 new delivery with enriched metadata. 98 total."
+    },
+    {
+      "sprint": 552,
+      "title": "INFRA — Queue replenish (553-556)",
+      "block": "INFRA",
+      "status": "done",
+      "_note": "Self-referential queue replenish.",
+      "priority": "high",
+      "rationale": "Queue empty after Sprint 551."
+    },
+    {
+      "sprint": 553,
+      "title": "TELEGRAM — Restart bot to pick up new commands (/cleanup, enriched /stats)",
+      "block": "TELEGRAM",
+      "priority": "high",
+      "status": "pending",
+      "rationale": "Bot may need restart after QUALITY-01 commit. Verify /health, /stats, /cleanup, /produce all work."
+    },
+    {
+      "sprint": 554,
+      "title": "CONTENT — Batch production: 10 videos + deliver + cleanup",
+      "block": "CONTENT",
+      "priority": "high",
+      "status": "pending",
+      "rationale": "Continue building content buffer. Use pipeline-cron pattern: produce → deliver → metrics → cleanup."
+    },
+    {
+      "sprint": 555,
+      "title": "QUALITY — Update diversity audit classifier to match all 10 hook formulas",
+      "block": "VIDEO-QUALITY-V2",
+      "priority": "medium",
+      "status": "pending",
+      "rationale": "audit-content-diversity.ts classifyHook() only matches 7 patterns. Add countdown and hot_take. This will reduce the \"other\" bucket and give more accurate diversity scoring."
+    },
+    {
+      "sprint": 556,
+      "title": "INFRA — Run full stats + diversity audit, update reports",
+      "block": "INFRA",
+      "priority": "medium",
+      "status": "pending",
+      "rationale": "After all improvements, run stats and diversity audit. Generate fresh reports for gate review preparation."
     }
   ]
 }

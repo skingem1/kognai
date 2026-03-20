@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-552",
+  "title": "INFRA — Queue replenish (553-556)",
+  "description": "Queue empty after Sprint 551. Added: bot restart, content batch, diversity classifier fix, stats refresh.",
+  "source": "queue-empty-replenish",
+  "tasks": [
+    {
+      "id": "552-01",
+      "title": "Add Sprints 553-556 to queue",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "workspace/sprint-queue.json",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-552",
+      "deliverables": { "code": ["workspace/sprint-queue.json"], "tests": [], "docs": [] }
+    }
+  ]
+}
