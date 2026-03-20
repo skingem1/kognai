@@ -2514,3 +2514,16 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (multi-file feature)
 - Issues: None.
 - Timestamp: 2026-03-20T13:00:00Z
+
+## Sprint 315 — Achiri Alpha Readiness Report (Direct Write)
+- Status: PASS
+- Commit: adfc681
+- Files created: scripts/achiri/achiri-readiness.ts, reports/achiri-readiness.json, workspace/sprints/sprint-315.json
+- Files modified: agents/telegram-bot/commands.ts, agents/telegram-bot/index.ts
+- Tasks completed:
+  - 315-01: achiri-readiness.ts — 9 checks across 7 categories: E2E tests (33/33), safety filter, feedback NPS, error rate, user activity (24 users, 431 msgs), deployment package, alpha gate, waitlist, memory system. Score: 100%. Outputs JSON + console report.
+  - 315-02: /achiriready Telegram command — runs readiness script, shows categorized results with score and critical failure count. Ready for Apr 25 launch decision.
+- Validation: achiri-readiness.ts runs PASS — 9/9 checks, 100% score, READY
+- Swarm used: no (multi-file feature)
+- Issues: None.
+- Timestamp: 2026-03-20T13:15:00Z
