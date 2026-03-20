@@ -2393,3 +2393,17 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (2-file feature)
 - Issues: None.
 - Timestamp: 2026-03-20T06:05:00Z
+
+## Sprint 306 — Achiri Smart Context Windowing (Direct Write)
+- Status: PASS
+- Commit: 0600536
+- Files created: agents/achiri/context-window.ts, scripts/achiri/validate-context-window.ts, workspace/sprints/sprint-306.json
+- Files modified: agents/achiri/index.ts
+- Tasks completed:
+  - 306-01: Created context-window.ts — token estimator (4 chars/token), per-model token budgets (qwen3:0.6b=1500, qwen3:4b=3000, qwen3:14b=6000), selectTurnsWithinBudget() preserves last 6 turns (3 exchanges) then fills remaining budget with older turns newest-first.
+  - 306-02: Wired into index.ts chat() — imported selectTurnsWithinBudget, applied to effectiveHistory before buildMessages(). Logs trimming when it occurs.
+  - 306-03: Validation script — 8 tests: token estimation, budget lookup, passthrough for small history, trimming for small model, recency preservation, empty history, order preservation. All PASS.
+- Validation: npx ts-node scripts/achiri/validate-context-window.ts — 8/8 PASS
+- Swarm used: no (multi-file feature)
+- Issues: None.
+- Timestamp: 2026-03-20T06:30:00Z
