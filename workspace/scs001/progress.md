@@ -3584,3 +3584,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (multi-file Stripe integration)
 - Issues: None.
 - Timestamp: 2026-03-21T00:15:00Z
+
+## Sprint 410 — Post-Checkout Success Page (Direct Write)
+- Status: PASS
+- Commit: 0fb9fbe
+- Files created: workspace/sprints/sprint-410.json
+- Files modified: scripts/scs001/checkout-server.ts
+- Tasks completed:
+  - 410-01: Added GET /success route with branded onboarding page. Shows 3-step next actions (videos generating, check Telegram, post and grow). Updated default SUCCESS_URL to /success instead of t.me. Added billing portal link in footer.
+- Validation: tsc --noEmit PASS
+- Swarm used: no (HTML template in single file)
+- Issues: None.
+- Timestamp: 2026-03-21T00:20:00Z
