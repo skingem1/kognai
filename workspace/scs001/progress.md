@@ -2751,3 +2751,17 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (FP-007, multi-file)
 - Issues: None.
 - Timestamp: 2026-03-20T05:35:00Z
+
+## Sprint 334 — Morning Caption Push (Direct Write)
+- Status: PASS
+- Commit: 201a4ec
+- Files created: scripts/scs001/morning-caption-push.ts, scripts/scs001/validate-caption-push.ts, workspace/sprints/sprint-334.json
+- Files modified: ecosystem.config.js, agents/telegram-bot/commands.ts
+- Tasks completed:
+  - 334-01: morning-caption-push.ts — PM2 cron script sends today's scheduled captions to operator at 07:30 daily. Uses generateSchedule() to pick today's slots, loads viral hashtags, sends each caption as code block with /record instruction.
+  - 334-02: kognai-caption-push PM2 entry — cron "30 7 * * *", points to morning-caption-push.ts.
+  - 334-03: /help updated with /postplan, /todaycaptions, /leaderboard from Sprints 331-333.
+- Validation: 15/15 PASS
+- Swarm used: no (FP-007, multi-file)
+- Issues: None.
+- Timestamp: 2026-03-20T05:45:00Z
