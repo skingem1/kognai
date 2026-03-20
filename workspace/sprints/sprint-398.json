@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-398",
+  "title": "Achiri daily engagement — morning word + quiz push",
+  "description": "PM2 cron script that sends active Achiri users a daily morning message at 8am Tunisia time with Darija word of the day, quick trivia question, and streak counter. Drives daily retention for alpha launch.",
+  "source": "auto — Achiri alpha launch Apr 25, need daily engagement for retention metrics",
+  "tasks": [
+    {
+      "id": "398-01",
+      "title": "Create scripts/achiri/daily-engagement.ts — morning push cron",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-398",
+      "deliverables": { "code": ["scripts/achiri/daily-engagement.ts", "ecosystem.config.js"], "tests": [], "docs": [] }
+    }
+  ]
+}

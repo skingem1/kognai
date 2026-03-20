@@ -1056,5 +1056,26 @@ module.exports = {
       out_file: "/Users/tarekmnif/kognai/logs/achiri-reengage-out.log",
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
+    {
+      // Sprint 398: Achiri daily engagement — morning word + quiz push
+      // Sends active users a Darija word of the day + trivia + streak at 8am UTC (9am Tunisia)
+      // To start: pm2 start ecosystem.config.js --only achiri-daily-engage
+      name: "achiri-daily-engage",
+      script: "scripts/achiri/daily-engagement.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: false,
+      watch: false,
+      cron_restart: "0 8 * * *",
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
+        TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN || "",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/achiri-daily-engage-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/achiri-daily-engage-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
   ]
 };
