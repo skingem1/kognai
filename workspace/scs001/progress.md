@@ -2651,3 +2651,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (two-file addition)
 - Issues: None. Requires Achiri API running on ACHIRI_BASE_URL.
 - Timestamp: 2026-03-20T02:50:00Z
+
+## Sprint 326 — Achiri Re-engagement (Direct Write)
+- Status: PASS
+- Commit: e655e5e
+- Files created: scripts/achiri/achiri-reengage.ts, workspace/sprints/sprint-326.json
+- Files modified: ecosystem.config.js
+- Tasks completed:
+  - 326-01: achiri-reengage.ts — identifies alpha users inactive 3+ days from daily-counts.json. Sends friendly check-in messages in Darija/French/English (5 templates, randomized). 7-day cooldown to prevent spam. Max 5 users/run. Logs to workspace/achiri/reengage-log.jsonl. PM2 cron at 15:00 daily (afternoon in Tunisia). Supports --dry-run mode.
+- Validation: npx tsc --noEmit PASS
+- Swarm used: no (new single file + PM2 config update)
+- Issues: None.
+- Timestamp: 2026-03-20T03:00:00Z
