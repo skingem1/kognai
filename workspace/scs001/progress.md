@@ -3049,3 +3049,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (Achiri bot feature additions)
 - Issues: None.
 - Timestamp: 2026-03-20T08:45:00Z
+
+## Sprint 358 — /quiz for Achiri Alpha (Direct Write)
+- Status: PASS
+- Commit: 1974575
+- Files created: workspace/sprints/sprint-358.json
+- Files modified: agents/achiri/telegram-bot.ts
+- Tasks completed:
+  - 358-01: Added /quiz command — 15 culturally relevant Tunisia trivia questions (history, food, Darija, geography). Interactive Q&A flow with /quiz to ask, /quiz <answer> to respond. Accepts Arabic, French, transliterated answers. Logged to workspace/achiri/quiz-log.jsonl. Updated /help.
+- Validation: tsc --noEmit PASS
+- Swarm used: no (Achiri bot feature additions)
+- Issues: None.
+- Timestamp: 2026-03-20T09:00:00Z
