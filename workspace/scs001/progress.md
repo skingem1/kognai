@@ -3716,3 +3716,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (pipeline runner modification)
 - Issues: None.
 - Timestamp: 2026-03-20T14:35:00Z
+
+## Sprint 421 — Auto-Deliver Caption Sync (Direct Write)
+- Status: PASS
+- Commit: 5b97c72
+- Files created: workspace/sprints/sprint-421.json
+- Files modified: scripts/scs001/posting-auto-deliver.ts
+- Tasks completed:
+  - 421-01: Synced buildTikTokCaption in auto-deliver with Sprint 418 engagement templates. Added HOOK_TEMPLATES, ENGAGEMENT_CTAS, NICHE_TAGS constants. Added topic field to getExperimentData return type.
+- Validation: tsc --noEmit PASS
+- Swarm used: no (single file update)
+- Issues: None.
+- Timestamp: 2026-03-20T14:45:00Z
