@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-611",
+  "title": "ACHIRI — Enable memory awareness in system prompt",
+  "description": "Update Achiri prompt from 'no memory' to 'memory-aware' — reflecting actual system state (memory store, search, summary all operational since Sprint 114-128). Verified with smoke test: 6/6 PASS, 19 memory files.",
+  "source": "achiri-milestone",
+  "tasks": [
+    {
+      "id": "611-01",
+      "title": "Update prompt.md to acknowledge persistent memory",
+      "type": "enhancement",
+      "task_type": "achiri",
+      "task_target": "kognai-agents/achiri/prompt.md",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-611"
+    }
+  ]
+}
