@@ -179,6 +179,59 @@ function getAchiriAlphaStats(): { waitlist: number; invited: number } {
   return { waitlist, invited };
 }
 
+// ── Achiri engagement metrics (Sprint 318) ──────────────────────────────────
+
+function getAchiriEngagement(): {
+  dau_today: number; msgs_today: number; total_users: number;
+  returning_users: number; retention_pct: number;
+  error_count_24h: number; quality_avg: number | null;
+} {
+  const countsPath = path.join(ROOT, 'workspace', 'achiri', 'daily-counts.json');
+  const errorPath = path.join(ROOT, 'workspace', 'achiri', 'error-log.jsonl');
+
+  let dau_today = 0, msgs_today = 0, total_users = 0, returning_users = 0, retention_pct = 0;
+  const today = new Date().toISOString().slice(0, 10);
+
+  // Filter out test users
+  const isReal = (id: string) =>
+    !id.startsWith('e2e-') && !id.startsWith('validate-') && !id.startsWith('smoke-test') && id !== 'anonymous';
+
+  if (fs.existsSync(countsPath)) {
+    try {
+      const counts = JSON.parse(fs.readFileSync(countsPath, 'utf-8')) as Record<string, Record<string, number>>;
+      const allDays = Object.keys(counts).sort();
+      const userDays = new Map<string, number>();
+
+      for (const day of allDays) {
+        for (const [uid, count] of Object.entries(counts[day])) {
+          if (!isReal(uid)) continue;
+          userDays.set(uid, (userDays.get(uid) ?? 0) + 1);
+          if (day === today) {
+            dau_today++;
+            msgs_today += count;
+          }
+        }
+      }
+
+      total_users = userDays.size;
+      returning_users = Array.from(userDays.values()).filter(d => d >= 2).length;
+      retention_pct = total_users > 0 ? Math.round((returning_users / total_users) * 100) : 0;
+    } catch { /* ignore */ }
+  }
+
+  // Error count in last 24h
+  let error_count_24h = 0;
+  if (fs.existsSync(errorPath)) {
+    try {
+      const cutoff = new Date(Date.now() - 86400000).toISOString();
+      const errors = readLines(errorPath);
+      error_count_24h = errors.filter((e: any) => (e.timestamp ?? '') >= cutoff).length;
+    } catch { /* ignore */ }
+  }
+
+  return { dau_today, msgs_today, total_users, returning_users, retention_pct, error_count_24h, quality_avg: null };
+}
+
 // ── Content calendar (Sprint 193) ─────────────────────────────────────────────
 
 function getCalendarToday(): Array<{ video_id: string; slot: string; viral_score: number | null; speaker: string; hook_formula?: string; topic?: string }> {
@@ -248,6 +301,7 @@ function buildDigest(): string {
   const smoke    = getSmokeTest();
   const viral    = getViralTopics();
   const achiri   = getAchiriAlphaStats();
+  const achiriEng = getAchiriEngagement();
   const calendarItems = getCalendarToday();
   const stripeStatus = process.env.STRIPE_SECRET_KEY
     ? '💳 Stripe: 🟢 LIVE'
@@ -311,10 +365,11 @@ function buildDigest(): string {
     `• Apr 7  — Phase 1.5 decision (${daysPhase}d)`,
     `• Apr 25 — Achiri alpha launch (${daysAchiri}d)`,
     '',
-    `🤝 *Achiri Alpha:*`,
-    `  • Waitlist: ${achiri.waitlist} signups`,
-    `  • Invited:  ${achiri.invited} users`,
-    `  • Launch:   Apr 25 (${daysAchiri}d away)`,
+    `🤝 *Achiri Alpha:* (Apr 25, ${daysAchiri}d)`,
+    `  • Waitlist: ${achiri.waitlist} | Invited: ${achiri.invited}`,
+    `  • DAU today: ${achiriEng.dau_today} (${achiriEng.msgs_today} msgs)`,
+    `  • Total users: ${achiriEng.total_users} | Returning: ${achiriEng.returning_users} (${achiriEng.retention_pct}%)`,
+    ...(achiriEng.error_count_24h > 0 ? [`  • ⚠️ Errors (24h): ${achiriEng.error_count_24h}`] : [`  • ✅ No errors (24h)`]),
     '',
     ...(calendarItems.length > 0 ? [
       `📅 *Today's Posting Schedule:*`,

@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-318",
+  "title": "Achiri metrics in daily digest — retention, quality, errors in morning report",
+  "description": "Enhance daily-digest.ts to include Achiri engagement metrics: DAU, retention rate, quality score, error count. Gives operator full alpha picture every morning.",
+  "source": "auto — consolidate Achiri monitoring into daily report",
+  "tasks": [
+    {
+      "id": "318-01",
+      "title": "Add Achiri engagement metrics to daily-digest.ts buildDigest()",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-318",
+      "deliverables": { "code": ["scripts/daily-digest.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
