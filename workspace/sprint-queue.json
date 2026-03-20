@@ -1038,8 +1038,9 @@
       "title": "QUALITY — Script quality checker — ban vague phrases in generated scripts",
       "block": "VIDEO-QUALITY-V2",
       "priority": "medium",
-      "status": "pending",
-      "rationale": "Insight agent prompt bans vague phrases but mock briefs still produce them. Add a post-generation quality check that flags/rewrites scripts with banned phrases."
+      "status": "done",
+      "rationale": "Insight agent prompt bans vague phrases but mock briefs still produce them. Add a post-generation quality check that flags/rewrites scripts with banned phrases.",
+      "_note": "script-quality-check.ts created. 19 banned phrases. 4/4 scripts pass."
     },
     {
       "sprint": 561,

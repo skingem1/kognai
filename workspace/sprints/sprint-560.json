@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-560",
+  "title": "QUALITY — Script quality checker with banned phrase detection",
+  "description": "Created script-quality-check.ts: checks SRT scripts for 19 banned vague phrases. Exports checkScript() and checkBriefQuality() for pipeline integration. CLI mode checks last 3 runs. 4/4 scripts pass.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "560-01",
+      "title": "Create script-quality-check.ts",
+      "type": "feature",
+      "task_type": "quality",
+      "task_target": "scripts/scs001/script-quality-check.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-560",
+      "deliverables": { "code": ["scripts/scs001/script-quality-check.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
