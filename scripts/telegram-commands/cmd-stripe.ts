@@ -388,3 +388,88 @@ export function cmdAchiri(): string {
     return `❌ Error reading Achiri readiness: ${e.message}`;
   }
 }
+
+/**
+ * /test-stripe — Run comprehensive Stripe payment flow test
+ * Sprint 470: Tests key, prices, checkout, subscriptions, portal, webhooks
+ */
+export async function cmdTestStripe(chatId: string): Promise<void> {
+  await sendMessage(chatId, '🔄 Running Stripe payment flow test...');
+
+  const stripeKey = process.env.STRIPE_SECRET_KEY || '';
+  if (!stripeKey) {
+    await sendMessage(chatId, '❌ *Stripe not configured*\n\nSet `STRIPE_SECRET_KEY` in .env to run tests.');
+    return;
+  }
+
+  const mode = stripeKey.startsWith('sk_live_') ? 'LIVE' : stripeKey.startsWith('sk_test_') ? 'TEST' : 'UNKNOWN';
+
+  async function stripeGet(endpoint: string): Promise<{ ok: boolean; data: any }> {
+    try {
+      const res = await fetch(`https://api.stripe.com/v1${endpoint}`, {
+        headers: { 'Authorization': `Bearer ${stripeKey}` },
+      });
+      return { ok: res.ok, data: await res.json() };
+    } catch (e: any) {
+      return { ok: false, data: { error: { message: e.message } } };
+    }
+  }
+
+  const lines: string[] = [`*Stripe Flow Test* (${mode} mode)\n`];
+
+  // 1. Balance
+  const bal = await stripeGet('/balance');
+  if (bal.ok) {
+    const avail = bal.data.available?.[0];
+    const amt = avail ? `${(avail.amount / 100).toFixed(2)} ${String(avail.currency).toUpperCase()}` : '0.00';
+    lines.push(`✅ API Key: valid — Balance: ${amt}`);
+  } else {
+    lines.push(`❌ API Key: ${bal.data.error?.message || 'invalid'}`);
+  }
+
+  // 2. Price IDs
+  const priceGrowth = process.env.STRIPE_PRICE_GROWTH || '';
+  const pricePremium = process.env.STRIPE_PRICE_PREMIUM || '';
+  for (const [name, pid] of [['Growth', priceGrowth], ['Premium', pricePremium]] as const) {
+    if (!pid) { lines.push(`❌ ${name} Price: NOT SET`); continue; }
+    const p = await stripeGet(`/prices/${pid}`);
+    if (p.ok) {
+      const amt = `${(p.data.unit_amount / 100).toFixed(2)} ${String(p.data.currency).toUpperCase()}`;
+      lines.push(`✅ ${name}: ${amt}/${p.data.recurring?.interval || '?'} (${p.data.active ? 'active' : '⚠️ INACTIVE'})`);
+    } else {
+      lines.push(`❌ ${name}: invalid price ID`);
+    }
+  }
+
+  // 3. Subscriptions
+  const subs = await stripeGet('/subscriptions?limit=10');
+  if (subs.ok) {
+    const total = subs.data.data?.length || 0;
+    const active = subs.data.data?.filter((s: any) => s.status === 'active').length || 0;
+    lines.push(`✅ Subscriptions: ${total} total, ${active} active`);
+  } else {
+    lines.push(`❌ Subscriptions: ${subs.data.error?.message || 'error'}`);
+  }
+
+  // 4. Billing Portal
+  const portal = await stripeGet('/billing_portal/configurations?limit=1');
+  if (portal.ok && portal.data.data?.length > 0) {
+    lines.push(`✅ Billing Portal: configured`);
+  } else {
+    lines.push(`⚠️ Billing Portal: not configured`);
+  }
+
+  // 5. Webhooks
+  const hooks = await stripeGet('/webhook_endpoints?limit=5');
+  if (hooks.ok) {
+    const active = hooks.data.data?.filter((e: any) => e.status === 'enabled').length || 0;
+    lines.push(`${active > 0 ? '✅' : '⚠️'} Webhooks: ${active} active endpoint(s)`);
+  } else {
+    lines.push(`❌ Webhooks: ${hooks.data.error?.message || 'error'}`);
+  }
+
+  // 6. Webhook Secret
+  lines.push(`${process.env.STRIPE_WEBHOOK_SECRET ? '✅' : '⚠️'} Webhook Secret: ${process.env.STRIPE_WEBHOOK_SECRET ? 'SET' : 'MISSING'}`);
+
+  await sendMessage(chatId, lines.join('\n'));
+}

@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-470",
+  "title": "STRIPE — Subscription tiers wiring + payment flow test",
+  "description": "Create /test-stripe Telegram command + comprehensive payment flow validator. Tests checkout session creation, subscription listing, billing portal, webhook config.",
+  "source": "queue — Sprint 470 MONETIZATION",
+  "tasks": [
+    {
+      "id": "470-01",
+      "title": "Build comprehensive Stripe payment flow test script",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-470",
+      "deliverables": { "code": ["scripts/scs001/stripe-flow-test.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "470-02",
+      "title": "Add /test-stripe command to Telegram bot",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-470",
+      "deliverables": { "code": ["scripts/telegram-commands/cmd-stripe.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

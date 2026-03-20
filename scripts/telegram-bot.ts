@@ -30,7 +30,7 @@ import { cmdHelp } from './telegram-commands/cmd-help';
 // Sprint 496: Import extracted command modules (Part 2: N-Z + interactive)
 import { cmdSession, cmdDone, cmdEndSession, cmdMenu } from './telegram-commands/cmd-session';
 import { cmdDeliver, cmdPublish, cmdPostNow, cmdPickup, cmdTodayCaptions, cmdBroadcast, cmdRefresh, cmdProduce } from './telegram-commands/cmd-delivery';
-import { cmdCheckout, cmdSubscribers, cmdPortal, cmdFunnel, cmdAchiri } from './telegram-commands/cmd-stripe';
+import { cmdCheckout, cmdSubscribers, cmdPortal, cmdFunnel, cmdAchiri, cmdTestStripe } from './telegram-commands/cmd-stripe';
 
 // ─── Env validation ──────────────────────────────────────────────────
 
@@ -85,6 +85,8 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     '/checkout':     () => cmdCheckout(chatId, cmdArgs),
     '/subscribers':  () => cmdSubscribers(chatId),
     '/stripestatus': async () => { const r = await cmdStripeStatus(); await sendMessage(chatId, r); },
+    '/test-stripe':  () => cmdTestStripe(chatId),
+    '/teststripe':   () => cmdTestStripe(chatId),
   };
 
   const asyncHandler = asyncHandlers[cmdName];
