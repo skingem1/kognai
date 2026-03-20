@@ -1,0 +1,24 @@
+{
+  "sprint_id": "sprint-601",
+  "title": "PHASE2 — Achiri conversation analytics dashboard data export",
+  "description": "Create scripts/achiri/export-analytics.ts: reads daily-counts.json, session-logs, waitlist, and error logs to export a comprehensive analytics JSON for future web dashboard. Adds /achiridata Telegram command.",
+  "source": "sprint-queue",
+  "tasks": [
+    {
+      "id": "601-01",
+      "title": "Create export-analytics.ts and add /achiridata Telegram command",
+      "type": "feature",
+      "task_type": "phase2",
+      "task_target": "scripts/achiri/export-analytics.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-601",
+      "deliverables": {
+        "code": ["scripts/achiri/export-analytics.ts", "scripts/telegram-commands/cmd-stripe.ts", "scripts/telegram-bot.ts"],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ]
+}

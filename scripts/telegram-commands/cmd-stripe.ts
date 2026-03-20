@@ -483,3 +483,17 @@ export function cmdUsage(): string {
     return `❌ Usage meter error: ${err.message}`;
   }
 }
+
+// Sprint 601: /achiridata — export Achiri analytics summary
+export function cmdAchiriData(): string {
+  try {
+    const output = execSync(
+      'npx ts-node --transpile-only scripts/achiri/export-analytics.ts',
+      { cwd: ROOT, timeout: 15000, encoding: 'utf-8' }
+    );
+    const lines = output.trim().split('\n').filter(l => l.trim() && !l.startsWith('===') && !l.startsWith('Report:'));
+    return ['📊 *Achiri Analytics Export*', '', ...lines, '', '_Full report: reports/achiri-analytics.json_'].join('\n');
+  } catch (e: any) {
+    return `❌ Analytics export failed: ${(e.message ?? '').slice(0, 200)}`;
+  }
+}
