@@ -503,3 +503,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no
 - Issues: none
 - Timestamp: 2026-03-20T13:30:00Z
+
+## Sprint 517 — CONTENT
+- Status: PASS
+- Commit: 618202f
+- Files modified: scripts/scs001/posting-auto-deliver.ts (fix markdown parse error)
+- Files created: workspace/sprints/sprint-517.json
+- Test: 10 videos produced (2 runs), all 10 delivered to Telegram
+- Pipeline: 33 total session videos. Auto-deliver fixed (removed Markdown parse_mode).
+- Swarm used: no (pipeline runner + manual fix)
+- Issues: Telegram sendVideo failed with "can't parse entities" — fixed by removing parse_mode: Markdown
+- Timestamp: 2026-03-20T14:30:00Z

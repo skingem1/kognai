@@ -650,7 +650,8 @@
       "sprint": 517,
       "title": "CONTENT — Batch video production with diverse topics (10 videos)",
       "block": "CONTENT",
-      "status": "pending",
+      "status": "done",
+      "_note": "10 videos produced (2 runs), all delivered to Telegram. Auto-deliver markdown fix shipped.",
       "priority": "high",
       "rationale": "Sprint 514 expanded topics to 15. Now produce 10 videos using the expanded topic feed. Verify topic diversity across the batch. Push toward 30-post gate."
     },
