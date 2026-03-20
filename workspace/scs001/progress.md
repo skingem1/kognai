@@ -3337,3 +3337,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (FP-007 file >4000 lines, multi-section edit)
 - Issues: None.
 - Timestamp: 2026-03-20T20:20:00Z
+
+## Sprint 390 — /translate — Achiri Translator (Direct Write)
+- Status: PASS
+- Commit: 0cee5bc
+- Files created: workspace/sprints/sprint-390.json
+- Files modified: agents/achiri/telegram-bot.ts
+- Tasks completed:
+  - 390-01: Added /translate command to Achiri Telegram bot. 40-word trilingual dictionary (Darija Arabic script + Latin transliteration + French + English). Cross-language search across all fields. Fuzzy prefix matching for near-misses with "did you mean?" suggestions. Zero LLM cost. Updated /help text and command router.
+- Validation: tsc --noEmit PASS (only pre-existing errors)
+- Swarm used: no (FP-007 multi-section edit on 700+ line bot)
+- Issues: None.
+- Timestamp: 2026-03-20T20:30:00Z
