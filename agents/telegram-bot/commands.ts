@@ -4251,3 +4251,51 @@ export async function handleDashboard(chatId: number, ownerChatId: string): Prom
 
   await sendMessage(chatId, lines.join('\n'));
 }
+
+// ── /postplan — 7-day posting schedule — Sprint 331 ──────────────────────────
+// Owner-only: generates and displays an optimal 7-day posting schedule
+// from the content queue, ranked by viral score.
+export async function handlePostPlan(chatId: number, ownerChatId: string): Promise<void> {
+  if (String(chatId) !== ownerChatId) {
+    await sendMessage(chatId, '🔒 Owner only.');
+    return;
+  }
+
+  try {
+    const { generateSchedule } = require('../../scripts/scs001/generate-posting-schedule');
+    const schedule = generateSchedule();
+
+    const lines: string[] = [
+      '📅 *7-Day Posting Schedule*',
+      '',
+      `🎯 Gate: *${schedule.posts_needed}* posts needed in *${schedule.days_to_gate}* days`,
+      `📊 Pace: *${schedule.pace_needed}* posts/day`,
+      `✅ Posted: *${schedule.posts_done}* / *${schedule.gate_target}*`,
+      `📦 Queue: *${schedule.queue_remaining + schedule.total_scheduled}* videos ready`,
+      '',
+    ];
+
+    // Group slots by date
+    let currentDate = '';
+    for (const slot of schedule.slots) {
+      if (slot.date !== currentDate) {
+        currentDate = slot.date;
+        const dayName = new Date(slot.date + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'short' });
+        lines.push(`*${dayName} ${slot.date}*`);
+      }
+      const score = Math.round(slot.viral_score * 100);
+      lines.push(`  ${slot.time} — \`${slot.video_id.slice(0, 16)}\` (${slot.hook}, ${score}%)`);
+    }
+
+    if (schedule.slots.length === 0) {
+      lines.push('⚠️ No QC-passed videos in queue. Run `/runpipeline` first.');
+    } else {
+      lines.push('');
+      lines.push(`_${schedule.total_scheduled} posts scheduled. Use \`/caption <video_id>\` for full caption._`);
+    }
+
+    await sendMessage(chatId, lines.join('\n'));
+  } catch (err) {
+    await sendMessage(chatId, `❌ Schedule generation failed: ${(err as Error).message}`);
+  }
+}

@@ -43,6 +43,7 @@ import {
   handleDedup,
   handlePipeline,
   handleRunPipeline,
+  handlePostPlan,
 } from './commands';
 
 // ── Config ────────────────────────────────────────────────────────────────────
@@ -191,6 +192,7 @@ async function dispatch(update: TelegramUpdate): Promise<void> {
     case '/dedup':          await handleDedup(chatId, OWNER_CHAT_ID, text);          break;
     case '/pipeline':       await handlePipeline(chatId, OWNER_CHAT_ID);            break;
     case '/runpipeline':    await handleRunPipeline(chatId, OWNER_CHAT_ID, text);  break;
+    case '/postplan':       await handlePostPlan(chatId, OWNER_CHAT_ID);           break;
     default:                 await handleUnknown(chatId, text);                          break;
   }
 }

@@ -1,0 +1,44 @@
+{
+  "sprint_id": "sprint-331",
+  "title": "7-day posting schedule — auto-plan optimal posting slots from content queue",
+  "description": "Generate a 7-day posting schedule that picks top videos by viral score, assigns optimal TikTok posting times, and surfaces via /postplan Telegram command. Helps operator hit 30-post gate target by Apr 7.",
+  "source": "auto — Phase 1 gate urgency: 0/30 posts, 18 days to Apr 7",
+  "tasks": [
+    {
+      "id": "331-01",
+      "title": "Create scripts/scs001/generate-posting-schedule.ts — 7-day schedule generator",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-331",
+      "deliverables": { "code": ["scripts/scs001/generate-posting-schedule.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "331-02",
+      "title": "Add /postplan command to agents/telegram-bot/commands.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-331",
+      "deliverables": { "code": ["agents/telegram-bot/commands.ts", "agents/telegram-bot/index.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "331-03",
+      "title": "Create scripts/scs001/validate-posting-schedule.ts — validation test",
+      "type": "test",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-331",
+      "deliverables": { "code": ["scripts/scs001/validate-posting-schedule.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
