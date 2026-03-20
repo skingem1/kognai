@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-483",
+  "title": "POSTING — Instagram Reels cross-posting (manual workflow)",
+  "description": "Add /instagram command for Instagram Reels manual posting. Reformats TikTok captions: fewer hashtags (8 max), IG-specific tags (#reels, #explore), dot spacer format.",
+  "source": "queue — Sprint 483 CROSS-PLATFORM",
+  "tasks": [
+    {
+      "id": "483-01",
+      "title": "Add cmdInstagram + buildInstagramCaption to cmd-delivery.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-483",
+      "deliverables": { "code": ["scripts/telegram-commands/cmd-delivery.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "483-02",
+      "title": "Wire /instagram into telegram-bot.ts async handlers",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-483",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

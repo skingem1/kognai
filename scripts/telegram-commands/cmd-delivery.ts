@@ -655,3 +655,66 @@ export async function cmdProduce(chatId: string): Promise<void> {
     try { await sendMessage(chatId, `❌ *Pipeline spawn failed:* ${err.message}`); } catch {}
   });
 }
+
+// Sprint 483: Instagram Reels cross-posting (manual workflow)
+export async function cmdInstagram(chatId: string, args: string): Promise<void> {
+  const videoId = args.trim().split(/\s+/)[0];
+
+  if (!videoId) {
+    await sendMessage(chatId, '📸 *Instagram Reels*\n\nUsage: /instagram <video_id>\n\nOr run /deliver first, then use the video ID.');
+    return;
+  }
+
+  const mp4Path = findCaptionedMp4(videoId);
+  if (!mp4Path) {
+    await sendMessage(chatId, `❌ Video \`${videoId}\` not found. Run the pipeline first.`);
+    return;
+  }
+
+  // Build Instagram-optimized caption from TikTok caption
+  const tiktokCaption = buildTikTokCaption(videoId);
+  const igCaption = buildInstagramCaption(tiktokCaption);
+
+  const igButtons = [
+    [
+      { text: '✅ Posted to IG', callback_data: `ig_posted:${videoId}` },
+      { text: '📋 Copy Caption', callback_data: `cmd:/caption ${videoId}` },
+    ],
+    [
+      { text: '🎵 TikTok Version', callback_data: 'cmd:/deliver 1' },
+    ],
+  ];
+
+  try {
+    await sendVideoWithButtons(chatId, mp4Path, `📸 *Post this to Instagram Reels*\n\n${igCaption}`, igButtons);
+  } catch (err: any) {
+    await sendMessage(chatId, `❌ Failed to send: ${err.message}`);
+  }
+}
+
+function buildInstagramCaption(tiktokCaption: string): string {
+  const lines = tiktokCaption.split('\n').filter(l => l.trim());
+  const textLines: string[] = [];
+  const tiktokHashtags: string[] = [];
+
+  for (const line of lines) {
+    const tags = line.match(/#\w+/g);
+    if (tags && tags.length > 2) {
+      tiktokHashtags.push(...tags);
+    } else {
+      textLines.push(line);
+    }
+  }
+
+  // Instagram: fewer hashtags (8 max), add IG-specific, drop TikTok-only tags
+  const igSpecific = ['#reels', '#explore', '#trending', '#viral'];
+  const selectedTags = tiktokHashtags
+    .filter(t => !['#fyp', '#foryou', '#foryoupage', '#tiktok'].includes(t.toLowerCase()))
+    .slice(0, 6);
+  const tagSet = new Set([...selectedTags, ...igSpecific]);
+  const allTags = Array.from(tagSet).slice(0, 10);
+
+  // IG format: text + spacer dots + hashtags
+  const caption = textLines.join('\n');
+  return `${caption}\n\n.\n.\n.\n\n${allTags.join(' ')}`;
+}
