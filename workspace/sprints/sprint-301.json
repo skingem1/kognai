@@ -1,0 +1,44 @@
+{
+  "sprint_id": "sprint-301",
+  "title": "Achiri user profile extraction — auto-learn language + interests from conversation history",
+  "description": "Memory subsystem next step after voice validation. Extracts user profile (preferred language, top interests, conversation count) from JSONL history and injects personalized context into system prompt. Zero LLM cost — pure pattern analysis.",
+  "source": "auto — Achiri Phase 2A roadmap: voice validated, memory subsystem next",
+  "tasks": [
+    {
+      "id": "301-01",
+      "title": "Build user-profile extractor from conversation history",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-301",
+      "deliverables": { "code": ["agents/achiri/user-profile.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "301-02",
+      "title": "Wire user profile injection into AchiriConversationHandler.chat()",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-301",
+      "deliverables": { "code": ["agents/achiri/index.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "301-03",
+      "title": "Add /profile/:userId endpoint to Achiri server",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-301",
+      "deliverables": { "code": ["agents/achiri/server.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

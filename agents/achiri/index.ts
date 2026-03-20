@@ -15,6 +15,7 @@ import { join } from 'path';
 import { AchiriMemoryStore } from './memory-store';
 import { safetyCheck } from './safety-filter';
 import { injectMemoryContext } from './memory-search';
+import { extractUserProfile, buildProfileContext } from './user-profile';
 import { routeCall } from '../../scripts/lib/clawrouter-v2';
 
 export interface AchiriConfig {
@@ -91,7 +92,15 @@ export class AchiriConversationHandler {
       '',
     ].join('\n');
 
-    return header + this.systemPromptRaw;
+    // Sprint 301: Inject user profile context (language preference, interests)
+    let profileBlock = '';
+    if (this.memory) {
+      const profile = extractUserProfile(this.userId);
+      const ctx301 = buildProfileContext(profile);
+      if (ctx301) profileBlock = ctx301 + '\n\n---\n\n';
+    }
+
+    return header + profileBlock + this.systemPromptRaw;
   }
 
   buildMessages(userMessage: string, history: ConversationTurn[] = []): ConversationTurn[] {

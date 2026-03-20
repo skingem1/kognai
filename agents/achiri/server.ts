@@ -5,15 +5,17 @@
 //   POST   /chat                { userId, tier?, message } → { reply, turns_in_memory, model, provider, tier }
 //   POST   /voice               { userId, tier, audioText, audioFilePath? } → { transcript, reply, voice_reply, model, provider, tier, whisper_used }
 //   GET    /upgrade             ?tier=tnd_basic&userId=xxx → { checkout_url, order_id, amount_tnd, tier, mock }
+//   GET    /profile/:userId      → { userId, preferred_language, top_interests, message_count, ... }
 //   DELETE /memory/:userId      → { ok: true }
 //   GET    /stats               → { users, total_turns, uptime_s }
-//   GET    /health              → { status: 'ok', version: '127' }
+//   GET    /health              → { status: 'ok', version: '301' }
 
 import * as http from 'http';
 import { AchiriConversationHandler, ACHIRI_LIMIT_EXCEEDED } from './index';
 import { AchiriMemoryStore } from './memory-store';
 import { createCheckoutUrl } from './paymee';
 import { processVoiceMessage, VoiceTierError } from './voice-handler';
+import { extractUserProfile } from './user-profile';
 
 const PORT = parseInt(process.env.ACHIRI_PORT ?? '3420', 10);
 const START_TIME = Date.now();
@@ -68,7 +70,7 @@ const server = http.createServer(async (req, res) => {
 
   // GET /health
   if (method === 'GET' && url === '/health') {
-    return send(res, 200, { status: 'ok', version: '296', uptime_s: Math.floor((Date.now() - START_TIME) / 1000), cached_handlers: handlerCache.size });
+    return send(res, 200, { status: 'ok', version: '301', uptime_s: Math.floor((Date.now() - START_TIME) / 1000), cached_handlers: handlerCache.size });
   }
 
   // GET /upgrade?tier=tnd_basic&userId=xxx
@@ -93,6 +95,15 @@ const server = http.createServer(async (req, res) => {
   if (method === 'GET' && url === '/stats') {
     const stats = memStore.getStats();
     return send(res, 200, { ...stats, uptime_s: Math.floor((Date.now() - START_TIME) / 1000) });
+  }
+
+  // GET /profile/:userId — Sprint 301: user profile extraction
+  if (method === 'GET' && url.startsWith('/profile/')) {
+    const userId = decodeURIComponent(url.slice('/profile/'.length));
+    if (!userId) return send(res, 400, { error: 'userId required' });
+    const profile = extractUserProfile(userId);
+    console.log('[Achiri API] /profile userId=' + userId + ' lang=' + profile.preferred_language + ' interests=' + profile.top_interests.length);
+    return send(res, 200, profile);
   }
 
   // DELETE /memory/:userId
@@ -196,7 +207,7 @@ const server = http.createServer(async (req, res) => {
 
 server.listen(PORT, () => {
   console.log('[Achiri API] listening on port ' + PORT);
-  console.log('[Achiri API] routes: POST /chat, POST /voice, GET /upgrade, DELETE /memory/:userId, GET /stats, GET /health');
+  console.log('[Achiri API] routes: POST /chat, POST /voice, GET /upgrade, GET /profile/:userId, DELETE /memory/:userId, GET /stats, GET /health');
 });
 
 export { server };
