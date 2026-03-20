@@ -3115,6 +3115,81 @@ function cmdLastRun(): string {
   return lines.join('\n');
 }
 
+// ─── Sprint 425: /autopost — auto-post readiness status ────────────────────
+
+function cmdAutoPost(): string {
+  const hasClientKey = !!process.env.TIKTOK_CLIENT_KEY;
+  const hasClientSecret = !!process.env.TIKTOK_CLIENT_SECRET;
+  const hasToken = !!process.env.TIKTOK_ACCESS_TOKEN;
+  const dryRun = process.env.AUTO_POST_DRY_RUN === '1';
+
+  const lines = [
+    `🤖 *Auto-Post Status*`,
+    '',
+    `*Credentials:*`,
+    `${hasClientKey ? '✅' : '❌'} TIKTOK\\_CLIENT\\_KEY`,
+    `${hasClientSecret ? '✅' : '❌'} TIKTOK\\_CLIENT\\_SECRET`,
+    `${hasToken ? '✅' : '❌'} TIKTOK\\_ACCESS\\_TOKEN`,
+    '',
+  ];
+
+  // Token expiry check
+  const metaPath = path.join(ROOT, 'data', 'tiktok-token-meta.json');
+  if (hasToken && fs.existsSync(metaPath)) {
+    try {
+      const meta = JSON.parse(fs.readFileSync(metaPath, 'utf-8'));
+      if (meta.expires_at) {
+        const expiresAt = new Date(meta.expires_at);
+        const hoursLeft = Math.round((expiresAt.getTime() - Date.now()) / 3600000);
+        if (hoursLeft <= 0) {
+          lines.push(`⏰ Token: *EXPIRED* ${Math.abs(hoursLeft)}h ago`);
+          lines.push(`→ Run: \`npx ts-node scripts/tiktok-refresh-token.ts\``);
+        } else {
+          lines.push(`⏰ Token expires in: *${hoursLeft}h*`);
+          if (meta.refresh_expires_at) {
+            const refreshLeft = Math.round((new Date(meta.refresh_expires_at).getTime() - Date.now()) / 86400000);
+            lines.push(`🔄 Refresh token: *${refreshLeft}d* remaining`);
+          }
+        }
+      }
+      lines.push('');
+    } catch { /* skip */ }
+  }
+
+  // Mode
+  if (hasToken) {
+    if (dryRun) {
+      lines.push(`*Mode:* 🟡 DRY-RUN (set AUTO\\_POST\\_DRY\\_RUN=0 to go live)`);
+    } else {
+      lines.push(`*Mode:* 🟢 LIVE — posting 2x/day via PM2`);
+    }
+  } else if (hasClientKey && hasClientSecret) {
+    lines.push(`*Mode:* 🔴 BLOCKED — token needed`);
+    lines.push('');
+    lines.push(`*To fix:*`);
+    lines.push(`1. SSH to server or open terminal`);
+    lines.push(`2. Run: \`npx ts-node scripts/tiktok-oauth.ts\``);
+    lines.push(`3. Open the URL in browser, authorize`);
+    lines.push(`4. Token auto-saves to .env`);
+    lines.push(`5. Auto-posting starts within 1 hour`);
+  } else {
+    lines.push(`*Mode:* 🔴 NOT CONFIGURED`);
+    lines.push(`Add TIKTOK\\_CLIENT\\_KEY and TIKTOK\\_CLIENT\\_SECRET to .env first.`);
+  }
+
+  // Queue stats
+  const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
+  const recorded = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  const recordedIds = new Set(recorded.map((e: any) => e.video_id).filter(Boolean));
+  const unposted = ledger.filter((e: any) => !recordedIds.has(e.video_id) && e.video_id).length;
+
+  lines.push('');
+  lines.push(`📋 Queue: *${unposted}* unposted videos`);
+  lines.push(`📊 Gate: *${recorded.length}/30* posts | *18d* to Apr 7`);
+
+  return lines.join('\n');
+}
+
 // ─── Sprint 365: /revenue — financial dashboard with MRR and phase gates ───
 
 function cmdRevenue(): string {
@@ -4094,6 +4169,7 @@ function cmdHelp(): string {
     `/pace       — Posting velocity & gate projection\n` +
     `/postnow    — Send best video for immediate posting\n` +
     `/revenue    — Revenue dashboard + financial gates\n` +
+    `/autopost   — Auto-post readiness + token status\n` +
     `/lastrun    — Latest pipeline run details\n` +
     `/viral      — Trending topics for content\n` +
     `/postplan   — 7-day posting plan with videos\n` +
@@ -5419,6 +5495,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/metrics':     response = cmdMetrics();            break;
     case '/pace':        response = cmdPace();               break;
     case '/revenue':     response = cmdRevenue();            break;
+    case '/autopost':    response = cmdAutoPost();           break;
     case '/lastrun':     response = cmdLastRun();            break;
     case '/viral':       response = cmdViral();              break;
     case '/postplan':    response = cmdPostPlan();           break;

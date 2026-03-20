@@ -291,6 +291,66 @@ function getPostingStreak(): { current: number; best: number; todayPosts: number
   return { current: currentStreak, best: bestStreak, todayPosts: daySet[today] || 0 };
 }
 
+// ── Sprint 425: Auto-post readiness ──────────────────────────────────────────
+
+function getAutoPostReadiness(): { status: string; detail: string; action: string } {
+  const hasToken = !!process.env.TIKTOK_ACCESS_TOKEN;
+  const hasClientKey = !!process.env.TIKTOK_CLIENT_KEY;
+  const hasClientSecret = !!process.env.TIKTOK_CLIENT_SECRET;
+
+  if (!hasClientKey || !hasClientSecret) {
+    return {
+      status: '🔴 NOT CONFIGURED',
+      detail: 'TikTok Client Key/Secret missing',
+      action: 'Add TIKTOK_CLIENT_KEY + TIKTOK_CLIENT_SECRET to .env',
+    };
+  }
+
+  if (!hasToken) {
+    return {
+      status: '🟡 TOKEN NEEDED',
+      detail: 'Client keys set, access token missing',
+      action: 'Run: npx ts-node scripts/tiktok-oauth.ts (or /tiktokauth)',
+    };
+  }
+
+  // Check token expiry from metadata
+  const metaPath = path.join(ROOT, 'data', 'tiktok-token-meta.json');
+  let expiryNote = '';
+  if (fs.existsSync(metaPath)) {
+    try {
+      const meta = JSON.parse(fs.readFileSync(metaPath, 'utf-8'));
+      if (meta.expires_at) {
+        const expiresAt = new Date(meta.expires_at);
+        const hoursLeft = Math.round((expiresAt.getTime() - Date.now()) / 3600000);
+        if (hoursLeft <= 0) {
+          return {
+            status: '🔴 TOKEN EXPIRED',
+            detail: `Expired ${Math.abs(hoursLeft)}h ago`,
+            action: 'Run: npx ts-node scripts/tiktok-refresh-token.ts',
+          };
+        }
+        expiryNote = ` (expires in ${hoursLeft}h)`;
+      }
+    } catch { /* skip */ }
+  }
+
+  const dryRun = process.env.AUTO_POST_DRY_RUN === '1';
+  if (dryRun) {
+    return {
+      status: '🟡 DRY-RUN MODE',
+      detail: `Token set${expiryNote}, but AUTO_POST_DRY_RUN=1`,
+      action: 'Remove AUTO_POST_DRY_RUN from .env to go live',
+    };
+  }
+
+  return {
+    status: '🟢 LIVE',
+    detail: `Auto-posting active${expiryNote}`,
+    action: '',
+  };
+}
+
 // ── Format digest message ─────────────────────────────────────────────────────
 
 function buildDigest(): string {
@@ -306,6 +366,7 @@ function buildDigest(): string {
   const stripeStatus = process.env.STRIPE_SECRET_KEY
     ? '💳 Stripe: 🟢 LIVE'
     : '💳 Stripe: 🔴 NOT LIVE (set STRIPE_SECRET_KEY in .env)';
+  const autoPost = getAutoPostReadiness();
 
   const postsLeft  = Math.max(0, 30 - gate.count);
   const viewsLeft  = Math.max(0, 500 - gate.totalViews);
@@ -360,6 +421,8 @@ function buildDigest(): string {
     `• Smoke test: ${smoke}`,
     '',
     stripeStatus,
+    `🤖 Auto-post: ${autoPost.status}${autoPost.detail ? ` — ${autoPost.detail}` : ''}`,
+    ...(autoPost.action ? [`   _${autoPost.action}_`] : []),
     '',
     `📅 *Upcoming gates*`,
     `• Apr 7  — Phase 1.5 decision (${daysPhase}d)`,

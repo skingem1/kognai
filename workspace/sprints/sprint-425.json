@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-425",
+  "title": "Auto-post readiness in daily digest and go-live check",
+  "description": "Add TikTok token status and auto-post readiness to the morning daily digest. Operator sees daily whether auto-posting is blocked and what to do. Also add token expiry check from tiktok-token-meta.json.",
+  "source": "auto — daily digest shows Stripe status but not TikTok auto-post readiness, which is the primary gate blocker",
+  "tasks": [
+    {
+      "id": "425-01",
+      "title": "Add auto-post readiness section to daily-digest.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-425",
+      "deliverables": { "code": ["scripts/daily-digest.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "425-02",
+      "title": "Add /autopost Telegram command showing auto-post status and next steps",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-425",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
