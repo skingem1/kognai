@@ -1404,6 +1404,14 @@
       "status": "skipped",
       "priority": "medium",
       "rationale": "Duplicate: exists (youtube-shorts.ts, 306 lines)"
+    },
+    {
+      "sprint": 603,
+      "title": "GATE-PUSH — Video inventory scanner + batch Telegram delivery",
+      "block": "GATE-PUSH",
+      "status": "done",
+      "priority": "critical",
+      "rationale": "Queue empty, designed from gate urgency (0/30 posts, 17d to Apr 7). Scans multiformat runs, deduplicates, registers into publish-ledger, adds /inventory + /batchdeliver."
     }
   ]
 }

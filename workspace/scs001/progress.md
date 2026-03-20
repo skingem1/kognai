@@ -1,10 +1,10 @@
 # SCS-001 TikTok Content Agent — Progress Log
 
-*Last updated: 2026-03-21 (Sprint 590)*
+*Last updated: 2026-03-21 (Sprint 603)*
 
 ## Summary
 
-- **Total sprints shipped:** 449 (Sprint 059 → Sprint 590)
+- **Total sprints shipped:** 460 (Sprint 059 → Sprint 603)
 - **Total commits:** 1110
 - **Current phase:** Phase 1 Active (Mar 17 – Apr 11 2026)
 - **Pipeline:** 12 stages, 11 agents, closed feedback loop
@@ -1141,3 +1141,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (multi-file, wrote directly)
 - Issues: None
 - Timestamp: 2026-03-21T06:05:00Z
+
+## Sprint 603 — GATE-PUSH
+- Status: PASS
+- Commit: a01cc6f
+- Files created: scripts/scs001/scan-video-inventory.ts, reports/video-inventory.json, workspace/sprints/sprint-603.json
+- Files modified: scripts/telegram-commands/shared.ts, scripts/telegram-commands/cmd-delivery.ts, scripts/telegram-bot.ts
+- Test: scan-video-inventory.ts — PASS (13 runs scanned, 8 unique videos registered)
+- Pipeline: Video inventory scanner + /inventory + /batchdeliver Telegram commands + findCaptionedMp4 multiformat support
+- Swarm used: no (multi-file coordination, wrote directly)
+- Issues: None. Queue was empty — designed sprint from gate urgency (0/30 posts, 17d remaining)
+- Timestamp: 2026-03-21T06:30:00Z
