@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-458",
+  "title": "VIDEO-E2E — Pipeline validation test with mock + local modes",
+  "description": "Run the full SCS-001 pipeline in --mock --local mode to validate all 10 stages chain correctly. Identify broken stages and log results. Gate: pipeline runs end-to-end without fatal errors.",
+  "source": "queue — Sprint 447 VIDEO-E2E",
+  "tasks": [
+    {
+      "id": "458-01",
+      "title": "Run pipeline in mock+local mode and capture results",
+      "type": "test",
+      "task_type": "validation",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-458",
+      "deliverables": { "code": [], "tests": [], "docs": [] }
+    },
+    {
+      "id": "458-02",
+      "title": "Fix any pipeline stage failures found in test",
+      "type": "bugfix",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-458",
+      "deliverables": { "code": [], "tests": [], "docs": [] }
+    }
+  ]
+}
