@@ -1,0 +1,26 @@
+{
+  "sprint_id": "sprint-576",
+  "title": "CONTENT \u2014 178 produced, 118 delivered, $7.03 total",
+  "description": "5 more videos. Stats: 178 produced, 118 delivered. Diversity 100/100. Gate 118/30 ON TRACK. $7.03 total.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "576-01",
+      "title": "Pipeline run + stats",
+      "type": "feature",
+      "task_type": "content",
+      "task_target": "reports/stats-latest.json",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-576",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": [
+          "reports/stats-latest.json"
+        ]
+      }
+    }
+  ]
+}
