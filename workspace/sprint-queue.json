@@ -376,7 +376,7 @@
       "sprint": 483,
       "title": "POSTING — Instagram Reels cross-posting (manual workflow)",
       "block": "CROSS-PLATFORM",
-      "status": "pending",
+      "status": "done",
       "priority": "low",
       "rationale": "Grok feedback suggested Instagram Reels parallel to TikTok. Add /instagram command: reformats caption for Instagram (different hashtag strategy), sends video with Instagram-optimized caption to Telegram for manual posting."
     },
