@@ -1815,6 +1815,61 @@ async function cmdPostNow(chatId: string): Promise<void> {
   }
 }
 
+// ─── Sprint 366: /lastrun — pipeline execution summary ────────────────────
+
+function cmdLastRun(): string {
+  const latestPath = path.join(ROOT, 'reports', 'pipeline-runs', 'latest.json');
+  if (!fs.existsSync(latestPath)) {
+    return '⚠️ No pipeline run data found. Run /refresh first.';
+  }
+
+  let run: any;
+  try {
+    run = JSON.parse(fs.readFileSync(latestPath, 'utf-8'));
+  } catch {
+    return '⚠️ Could not parse latest.json';
+  }
+
+  const lines: string[] = [];
+  const startedAt = run.started_at ? new Date(run.started_at).toLocaleString('en-GB', { timeZone: 'UTC' }) : '?';
+  const totalMin = run.total_elapsed_ms ? (run.total_elapsed_ms / 60000).toFixed(1) : '?';
+
+  lines.push('🔄 *Latest Pipeline Run*');
+  lines.push(`ID: \`${run.run_id ?? '?'}\` · Mode: ${run.mode ?? '?'}`);
+  lines.push(`Started: ${startedAt} UTC · Duration: ${totalMin} min`);
+  lines.push('');
+
+  const stages: any[] = run.stages ?? [];
+  if (stages.length > 0) {
+    lines.push('*Stages:*');
+    for (const s of stages) {
+      const icon = s.status === 'ok' ? '✅' : s.status === 'skipped' ? '⏭️' : '❌';
+      const elapsed = s.elapsed_ms ? `${(s.elapsed_ms / 1000).toFixed(1)}s` : '';
+      const count = s.count != null ? ` (${s.count})` : '';
+      lines.push(`${icon} ${s.stage}${count} ${elapsed}`);
+    }
+  }
+
+  if (run.summary) {
+    const sm = run.summary;
+    lines.push('');
+    lines.push('*Output:*');
+    if (sm.topics_found != null) lines.push(`📊 Topics: ${sm.topics_found}`);
+    if (sm.clips_discovered != null) lines.push(`🎬 Clips: ${sm.clips_discovered}`);
+    if (sm.videos_edited != null) lines.push(`✂️ Edited: ${sm.videos_edited}`);
+    if (sm.videos_captioned != null) lines.push(`📝 Captioned: ${sm.videos_captioned}`);
+    if (sm.qc_passed != null) lines.push(`✅ QC: ${sm.qc_passed}`);
+    if (sm.published != null) lines.push(`📤 Published: ${sm.published}`);
+  }
+
+  if (run.error_count > 0) {
+    lines.push('');
+    lines.push(`⚠️ *${run.error_count} errors detected*`);
+  }
+
+  return lines.join('\n');
+}
+
 // ─── Sprint 365: /revenue — financial dashboard with MRR and phase gates ───
 
 function cmdRevenue(): string {
@@ -2228,6 +2283,7 @@ function cmdHelp(): string {
     `/pace       — Posting velocity & gate projection\n` +
     `/postnow    — Send best video for immediate posting\n` +
     `/revenue    — Revenue dashboard + financial gates\n` +
+    `/lastrun    — Latest pipeline run details\n` +
     `/help      — This message`
   );
 }
@@ -2352,6 +2408,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/metrics':     response = cmdMetrics();            break;
     case '/pace':        response = cmdPace();               break;
     case '/revenue':     response = cmdRevenue();            break;
+    case '/lastrun':     response = cmdLastRun();            break;
     case '/help':        response = cmdHelp();        break;
     default:
       response = `Unknown command: \`${cmdName}\`\n\n${cmdHelp()}`;

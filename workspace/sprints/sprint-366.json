@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-366",
+  "title": "/lastrun — pipeline execution summary in main operator bot",
+  "description": "Port /lastrun command to main Telegram bot. Shows latest pipeline run details: stages, timing, output counts, errors.",
+  "source": "auto — operator needs pipeline visibility from main bot",
+  "tasks": [
+    {
+      "id": "366-01",
+      "title": "Add /lastrun command to scripts/telegram-bot.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-366",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
