@@ -1097,3 +1097,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (surgical edits to 2 files)
 - Issues: None
 - Timestamp: 2026-03-21T05:35:00Z
+
+## Sprint 597 — QUALITY
+- Status: PASS
+- Commit: d4cd2cb
+- Files created: workspace/sprints/sprint-597.json
+- Files modified: scripts/telegram-commands/cmd-content.ts, scripts/telegram-bot.ts
+- Test: TypeScript compile — PASS
+- Pipeline: New /backtest Telegram command ranks hook formulas by QC pass rate + viral score
+- Swarm used: no (surgical edits to 2 files)
+- Issues: None
+- Timestamp: 2026-03-21T05:42:00Z

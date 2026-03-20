@@ -1303,7 +1303,7 @@
       "sprint": 597,
       "title": "QUALITY — /backtest command to compare hook formulas by historical QC pass rate",
       "block": "QUALITY",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "A/B test framework exists but lacks easy backtest comparison via Telegram."
     },
