@@ -3568,6 +3568,7 @@ function cmdHelp(): string {
     `/note      — Add notes to a video\n` +
     `/pickup    — One-tap posting: best video + caption + buttons\n` +
     `/status    — Unified dashboard: gate + queue + streak + next\n` +
+    `/dedup     — Content diversity scanner + duplicate detection\n` +
     `/help      — This message`
   );
 }
@@ -4144,6 +4145,129 @@ function cmdFilmKit(): string {
   return lines.join('\n');
 }
 
+// ─── Sprint 396: /dedup — content deduplication scanner ─────────────────
+
+function cmdDedup(): string {
+  const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
+  const recorded = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  const recordedIds = new Set(recorded.map((e: any) => e.video_id).filter(Boolean));
+  const archivedIds = loadArchived();
+
+  const unposted = (ledger as any[])
+    .filter((e: any) => !recordedIds.has(e.video_id) && e.video_id && !archivedIds.has(e.video_id));
+
+  if (unposted.length === 0) {
+    return '📋 *Dedup* — Queue is empty. Nothing to analyze.';
+  }
+
+  // Load content calendar for topic data
+  const calPath = path.join(ROOT, 'workspace', 'scs001', 'content-calendar.json');
+  const topicMap = new Map<string, string>();
+  if (fs.existsSync(calPath)) {
+    try {
+      const cal = JSON.parse(fs.readFileSync(calPath, 'utf-8'));
+      for (const videos of Object.values(cal.schedule ?? {})) {
+        for (const v of videos as any[]) {
+          if (v.video_id && v.topic) topicMap.set(v.video_id, v.topic);
+        }
+      }
+    } catch { /* skip */ }
+  }
+
+  // Load experiment data for speaker + hook
+  const speakers = new Map<string, string>();
+  const hooks = new Map<string, string>();
+  const expPath = path.join(ROOT, 'workspace', 'scs001', 'experiments.jsonl');
+  if (fs.existsSync(expPath)) {
+    try {
+      for (const line of fs.readFileSync(expPath, 'utf-8').split('\n')) {
+        if (!line.trim()) continue;
+        try {
+          const e = JSON.parse(line);
+          const id = e.clip_id ?? e.video_id;
+          if (id) {
+            if (e.speaker) speakers.set(id, e.speaker);
+            if (e.hook_formula) hooks.set(id, e.hook_formula);
+          }
+        } catch { /* skip */ }
+      }
+    } catch { /* skip */ }
+  }
+
+  // Speaker distribution
+  const speakerCounts: Record<string, number> = {};
+  for (const e of unposted) {
+    const s = speakers.get(e.video_id) ?? 'unknown';
+    speakerCounts[s] = (speakerCounts[s] ?? 0) + 1;
+  }
+  const speakerEntries = Object.entries(speakerCounts).sort((a, b) => b[1] - a[1]);
+
+  // Hook distribution
+  const hookCounts: Record<string, number> = {};
+  for (const e of unposted) {
+    const h = hooks.get(e.video_id) ?? 'unknown';
+    hookCounts[h] = (hookCounts[h] ?? 0) + 1;
+  }
+  const hookEntries = Object.entries(hookCounts).sort((a, b) => b[1] - a[1]);
+
+  // Topic similarity groups (simple: group by first 30 chars of topic)
+  const topicGroups: Record<string, string[]> = {};
+  for (const e of unposted) {
+    const topic = topicMap.get(e.video_id);
+    if (topic) {
+      const key = topic.slice(0, 30).toLowerCase().replace(/[^a-z0-9 ]/g, '').trim();
+      if (!topicGroups[key]) topicGroups[key] = [];
+      topicGroups[key].push(e.video_id);
+    }
+  }
+  const dupeGroups = Object.entries(topicGroups).filter(([, ids]) => ids.length > 1).sort((a, b) => b[1].length - a[1].length);
+
+  // Diversity score (0-100): penalize if top speaker > 50% or dupe groups > 30%
+  const topSpeakerPct = speakerEntries.length > 0 ? (speakerEntries[0][1] / unposted.length) * 100 : 0;
+  const dupePct = dupeGroups.reduce((s, [, ids]) => s + ids.length, 0) / Math.max(1, unposted.length) * 100;
+  const diversity = Math.max(0, Math.round(100 - topSpeakerPct * 0.5 - dupePct * 0.5));
+
+  const lines: string[] = [
+    `🔍 *Content Dedup Scanner*`,
+    '',
+    `📦 Queue: *${unposted.length}* videos · Diversity: *${diversity}%*`,
+    '',
+    `*Speaker Distribution:*`,
+  ];
+
+  for (const [name, count] of speakerEntries.slice(0, 5)) {
+    const pct = Math.round((count / unposted.length) * 100);
+    const warn = pct > 40 ? ' ⚠️' : '';
+    lines.push(`  ${name}: ${count} (${pct}%)${warn}`);
+  }
+  if (speakerEntries.length > 5) lines.push(`  _+${speakerEntries.length - 5} more..._`);
+
+  lines.push('');
+  lines.push(`*Hook Formula Distribution:*`);
+  for (const [name, count] of hookEntries.slice(0, 5)) {
+    const pct = Math.round((count / unposted.length) * 100);
+    const warn = pct > 50 ? ' ⚠️' : '';
+    lines.push(`  ${name}: ${count} (${pct}%)${warn}`);
+  }
+
+  if (dupeGroups.length > 0) {
+    lines.push('');
+    lines.push(`*⚠️ Similar Topics (${dupeGroups.length} groups):*`);
+    for (const [key, ids] of dupeGroups.slice(0, 3)) {
+      lines.push(`  "${key}..." — ${ids.length} videos`);
+      lines.push(`  → Archive ${ids.length - 1}: \`/archive ${ids.slice(1).join(' ')}\``);
+    }
+  } else {
+    lines.push('');
+    lines.push('✅ No duplicate topics detected.');
+  }
+
+  lines.push('');
+  lines.push(`_Post diverse content for better TikTok reach._`);
+
+  return lines.join('\n');
+}
+
 // ─── Sprint 395: /status — unified operator dashboard ───────────────────
 
 function cmdStatus(): string {
@@ -4506,6 +4630,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/unarchive':   response = cmdUnarchive(cmdArgs);   break;
     case '/note':        response = cmdNote(cmdArgs);        break;
     case '/status':      response = cmdStatus();             break;
+    case '/dedup':       response = cmdDedup();              break;
     case '/help':        response = cmdHelp();        break;
     default:
       response = `Unknown command: \`${cmdName}\`\n\n${cmdHelp()}`;

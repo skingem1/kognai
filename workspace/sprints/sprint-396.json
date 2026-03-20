@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-396",
+  "title": "/dedup — content deduplication scanner",
+  "description": "Add /dedup command that scans the posting queue for near-duplicate topics and groups similar videos. Shows diversity score and warns about overrepresented topics. Helps operator post diverse content for better TikTok algorithm performance.",
+  "source": "auto — content calendar shows many similar 'If X continues at this pace' topics, need diversity for TikTok reach",
+  "tasks": [
+    {
+      "id": "396-01",
+      "title": "Add /dedup command with topic similarity detection to scripts/telegram-bot.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-396",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
