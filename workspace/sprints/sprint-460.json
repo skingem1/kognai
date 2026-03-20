@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-460",
+  "title": "SECURITY — Bind all HTTP servers to 127.0.0.1 (SEC1/SEC3)",
+  "description": "Fix 4 servers that bind to 0.0.0.0 — backend, checkout-server, tiktok-oauth, clawrouter. Bind all to 127.0.0.1 for localhost-only access. Nginx reverse proxy handles external access.",
+  "source": "queue — Sprint 472 SECURITY",
+  "tasks": [
+    {
+      "id": "460-01",
+      "title": "Fix all server listen calls to bind 127.0.0.1",
+      "type": "bugfix",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-460",
+      "deliverables": { "code": ["backend/src/server.ts", "scripts/scs001/checkout-server.ts", "scripts/tiktok-oauth.ts", "scripts/services/clawrouter-http-server.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

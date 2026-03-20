@@ -107,6 +107,6 @@ app.get('/wallet', (req, res) => {
 });
 
 // ─── Start ────────────────────────────────────────────────────────────────────
-app.listen(PORT, () => {
-  console.log(`[ClawRouter HTTP] listening on :${PORT} — logs → ${LOGS_DIR}`);
+app.listen(PORT, '127.0.0.1', () => {
+  console.log(`[ClawRouter HTTP] listening on 127.0.0.1:${PORT} — logs → ${LOGS_DIR}`);
 });

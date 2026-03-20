@@ -3,8 +3,8 @@ import { app } from './app';
 
 const PORT = parseInt(process.env.PORT || '3001', 10);
 
-const server = app.listen(PORT, () => {
-  console.log(`Invoica API server running on port ${PORT}`);
+const server = app.listen(PORT, '127.0.0.1', () => {
+  console.log(`Invoica API server running on 127.0.0.1:${PORT}`);
   console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`Health check: http://localhost:${PORT}/v1/health`);
 

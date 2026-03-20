@@ -563,9 +563,9 @@ const server = http.createServer(async (req, res) => {
   res.end('Not found');
 });
 
-server.listen(PORT, '0.0.0.0', () => {
+server.listen(PORT, '127.0.0.1', () => {
   const mode = STRIPE_KEY.startsWith('sk_live_') ? 'LIVE' : STRIPE_KEY ? 'TEST' : 'NO KEY';
-  console.log(`[checkout] Server on http://0.0.0.0:${PORT} (Stripe: ${mode})`);
+  console.log(`[checkout] Server on http://127.0.0.1:${PORT} (Stripe: ${mode})`);
   console.log(`[checkout] Landing:  http://localhost:${PORT}/`);
   console.log(`[checkout] Growth:   http://localhost:${PORT}/checkout/growth`);
   console.log(`[checkout] Premium:  http://localhost:${PORT}/checkout/premium`);
