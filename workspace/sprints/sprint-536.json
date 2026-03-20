@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-536",
+  "title": "ANALYTICS — /stats command + stats report generator",
+  "description": "Created generate-stats-report.ts and /stats Telegram command. Shows: production (68 videos), delivery (72 total), costs ($0.78), quality (73/100 diversity), gate (72/30 ON TRACK).",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "536-01",
+      "title": "Create generate-stats-report.ts",
+      "type": "feature",
+      "task_type": "analytics",
+      "task_target": "scripts/scs001/generate-stats-report.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "low",
+      "sprint_id": "sprint-536",
+      "deliverables": { "code": ["scripts/scs001/generate-stats-report.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "536-02",
+      "title": "Add /stats command to Telegram bot",
+      "type": "feature",
+      "task_type": "analytics",
+      "task_target": "scripts/telegram-commands/cmd-content.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "low",
+      "sprint_id": "sprint-536",
+      "deliverables": { "code": ["scripts/telegram-commands/cmd-content.ts", "scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

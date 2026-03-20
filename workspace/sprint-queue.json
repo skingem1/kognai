@@ -822,8 +822,9 @@
       "title": "ANALYTICS — Posting analytics summary command + weekly report",
       "block": "ANALYTICS",
       "priority": "low",
-      "status": "pending",
-      "rationale": "No way to see posting statistics. Add /stats command: videos produced today/week/total, delivery count, topic distribution, cost breakdown. Generate weekly report JSON."
+      "status": "done",
+      "rationale": "No way to see posting statistics. Add /stats command: videos produced today/week/total, delivery count, topic distribution, cost breakdown. Generate weekly report JSON.",
+      "_note": "/stats command + report generator. 72/30 gate ON TRACK. $0.78 total cost."
     }
   ]
 }

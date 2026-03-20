@@ -728,3 +728,37 @@ export function cmdCompetitor(args: string): string {
 
   return '📊 /competitor commands:\n• /competitor list — show all tracked competitors\n• /competitor add @handle niche followers [avg_views] [freq] [hooks] [topics]\n• /competitor remove @handle\n• /competitor topics — show competitor-sourced topics';
 }
+
+// Sprint 536: Production + delivery stats summary
+export function cmdStats(): string {
+  try {
+    const { execSync } = require('child_process');
+    execSync('npx ts-node --transpile-only scripts/scs001/generate-stats-report.ts', {
+      cwd: ROOT, timeout: 30000, stdio: 'pipe',
+      env: { ...process.env, TS_NODE_TRANSPILE_ONLY: 'true' },
+    });
+
+    const reportPath = path.join(ROOT, 'reports', 'stats-latest.json');
+    if (!fs.existsSync(reportPath)) return '❌ Stats report not generated.';
+
+    const r = JSON.parse(fs.readFileSync(reportPath, 'utf-8'));
+    const totalDelivered = r.delivery.auto_delivered_total + r.delivery.telegram_sent_total;
+
+    return [
+      `📊 *Kognai Stats*\n`,
+      `*Production*`,
+      `  Videos: ${r.production.total_videos} total | ${r.production.videos_today} today | ${r.production.videos_this_week} this week`,
+      `  Runs: ${r.production.pipeline_runs_total} total | ${r.production.pipeline_runs_today} today\n`,
+      `*Delivery*`,
+      `  Auto: ${r.delivery.auto_delivered_total} | Manual: ${r.delivery.telegram_sent_total} | Total: ${totalDelivered}\n`,
+      `*Cost*`,
+      `  Total: $${r.costs.total_usd} | Today: $${r.costs.today_usd} | Per video: $${r.costs.avg_per_video_usd}\n`,
+      `*Quality*`,
+      `  Diversity: ${r.quality.diversity_score}/100 | Topics: ${r.quality.unique_topics} | Hooks: ${r.quality.hook_types}\n`,
+      `*Gate (Apr 7)*`,
+      `  ${totalDelivered}/${r.gate.posts_target} delivered | ${r.gate.days_remaining} days left | ${r.gate.on_track ? '✅ ON TRACK' : '⚠️ BEHIND'}`,
+    ].join('\n');
+  } catch (e: any) {
+    return `❌ Stats error: ${e.message}`;
+  }
+}
