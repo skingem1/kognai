@@ -222,7 +222,7 @@
       "sprint": 464,
       "title": "GEO — kognai.ai GEO foundation (launch day activation)",
       "block": "GEO",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "SPRINT-GEO-001 Sprint 176. Blocked until kognai.ai is live. Run /geo audit kognai.ai. Generate llms.txt defining Kognai entities (SCS, ACP, Five Laws, etc). Generate Organization + Article JSON-LD. Structure all docs pages as citable blocks (134-167 words). Brand mention baseline."
     },
