@@ -681,6 +681,47 @@
       "_note": "kognai_events table exists, publisher works (1747ms round-trip). Listener polling has timing issue.",
       "priority": "medium",
       "rationale": "Supabase backend exists but kognai_events table never tested. Verify: table exists, can insert events, can query recent events. Wire into pipeline for sprint completion logging."
+    },
+    {
+      "sprint": 521,
+      "title": "INFRA — Queue replenish + next 5 sprints (521-525)",
+      "block": "INFRA",
+      "status": "done",
+      "_note": "Self-referential queue replenish.",
+      "priority": "high",
+      "rationale": "Queue empty after Sprint 520. Add sprints targeting: Supabase deep audit, content production with randomized topics, hook formula diversity, auto-deliver batch mode, pipeline metrics logging."
+    },
+    {
+      "sprint": 522,
+      "title": "INFRA — Supabase kognai_events deep audit via MCP + fix listener",
+      "block": "INFRA",
+      "status": "pending",
+      "priority": "medium",
+      "rationale": "Sprint 520 found publisher works but listener fails. Use Supabase MCP to inspect table schema, query events, verify data integrity. Fix listener polling if possible."
+    },
+    {
+      "sprint": 523,
+      "title": "CONTENT — Batch production with randomized topics (10 videos, verify diversity)",
+      "block": "CONTENT",
+      "status": "pending",
+      "priority": "high",
+      "rationale": "Sprint 518 added random topic selection. Run pipeline 2x and verify the 10 videos cover 8+ unique topics (vs. previous 2 unique topics across 13 videos)."
+    },
+    {
+      "sprint": 524,
+      "title": "QUALITY — Hook formula diversity check + script variety audit",
+      "block": "VIDEO-QUALITY-V2",
+      "status": "pending",
+      "priority": "medium",
+      "rationale": "Quality report flagged repetitive hooks. Audit: how many unique hook formulas across last 30 videos? How many unique speakers? Generate diversity report."
+    },
+    {
+      "sprint": 525,
+      "title": "PIPELINE — Auto-deliver batch mode (send 5 videos at once)",
+      "block": "PIPELINE",
+      "status": "pending",
+      "priority": "medium",
+      "rationale": "Current auto-deliver sends 1 video per run. Add --batch N flag to send N videos in one run. Reduces manual Telegram interaction for posting."
     }
   ]
 }

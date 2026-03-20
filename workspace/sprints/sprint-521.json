@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-521",
+  "title": "INFRA — Queue replenish + next 5 sprints (522-525)",
+  "description": "Queue empty after Sprint 520. Added 4 new sprints: Supabase audit, content with diversity, hook audit, auto-deliver batch.",
+  "source": "queue-empty-replenish",
+  "tasks": [
+    {
+      "id": "521-01",
+      "title": "Add 4 new sprints to sprint-queue.json",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "workspace/sprint-queue.json",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-521",
+      "deliverables": { "code": ["workspace/sprint-queue.json"], "tests": [], "docs": [] }
+    }
+  ]
+}
