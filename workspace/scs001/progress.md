@@ -3909,3 +3909,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (async command + new function in large file)
 - Issues: None.
 - Timestamp: 2026-03-20T20:45:00Z
+
+## Sprint 437 — PM2 Auto-Healer (Direct Write)
+- Status: PASS
+- Commit: 47fe993
+- Files created: scripts/pm2-auto-healer.ts, workspace/sprints/sprint-437.json
+- Files modified: ecosystem.config.js
+- Tasks completed:
+  - 437-01: Created pm2-auto-healer.ts — hourly cron that checks 15 essential crons + 2 daemons, auto-restarts errored processes, sends Telegram alert. Added kognai-auto-healer PM2 cron entry (0 * * * *).
+- Validation: tsc --noEmit PASS
+- Swarm used: no (new script + ecosystem config)
+- Issues: None.
+- Timestamp: 2026-03-20T21:00:00Z
