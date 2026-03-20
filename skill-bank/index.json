@@ -1,0 +1,143 @@
+{
+  "generated_at": "2026-03-20T10:42:14.567Z",
+  "total_records": 21,
+  "valid_records": 21,
+  "invalid_records": 0,
+  "categories": {
+    "content-intelligence": 7,
+    "governance": 2,
+    "infrastructure": 4,
+    "distribution": 1,
+    "signal-pipeline": 5,
+    "general": 1,
+    "production": 1
+  },
+  "skills": [
+    {
+      "skill_id": "coder-sprint-067-write-scripts-run-sprint-sh-convenience-",
+      "name": "Write scripts/run-sprint.sh — convenience wrapper for swarm",
+      "category": "content-intelligence",
+      "file": "coder-sprint-067-write-scripts-run-sprint-sh-convenience-.json"
+    },
+    {
+      "skill_id": "coder-sprint-069-bloomberg-cfo-create-soul-md",
+      "name": "Bloomberg CFO: Create SOUL.md",
+      "category": "governance",
+      "file": "coder-sprint-069-bloomberg-cfo-create-soul-md.json"
+    },
+    {
+      "skill_id": "coder-sprint-069-event-bus-listener-module",
+      "name": "Event Bus: Listener module",
+      "category": "infrastructure",
+      "file": "coder-sprint-069-event-bus-listener-module.json"
+    },
+    {
+      "skill_id": "coder-sprint-069-event-bus-publisher-module",
+      "name": "Event Bus: Publisher module",
+      "category": "distribution",
+      "file": "coder-sprint-069-event-bus-publisher-module.json"
+    },
+    {
+      "skill_id": "coder-sprint-070-archive-scraper-scaffold-phase-1-revenue",
+      "name": "Archive scraper scaffold — Phase 1 revenue first file",
+      "category": "signal-pipeline",
+      "file": "coder-sprint-070-archive-scraper-scaffold-phase-1-revenue.json"
+    },
+    {
+      "skill_id": "coder-sprint-070-draft-kognai-constitution-v0",
+      "name": "Draft Kognai Constitution v0",
+      "category": "governance",
+      "file": "coder-sprint-070-draft-kognai-constitution-v0.json"
+    },
+    {
+      "skill_id": "coder-sprint-070-fix-routing-jsonl-remove-js-extension-fr",
+      "name": "Fix routing JSONL: remove .js extension from task-router imp",
+      "category": "infrastructure",
+      "file": "coder-sprint-070-fix-routing-jsonl-remove-js-extension-fr.json"
+    },
+    {
+      "skill_id": "coder-sprint-071-fix-resolve-route-ts-3-surgical-ts-fixes",
+      "name": "Fix resolve-route.ts — 3 surgical TS fixes to unblock routin",
+      "category": "general",
+      "file": "coder-sprint-071-fix-resolve-route-ts-3-surgical-ts-fixes.json"
+    },
+    {
+      "skill_id": "coder-sprint-071-implement-archivescraper-scrape-real-int",
+      "name": "Implement ArchiveScraper.scrape() — real Internet Archive Ad",
+      "category": "signal-pipeline",
+      "file": "coder-sprint-071-implement-archivescraper-scrape-real-int.json"
+    },
+    {
+      "skill_id": "coder-sprint-071-vision-scoring-agent-scaffold-phase-1-st",
+      "name": "Vision scoring agent scaffold — Phase 1 Step 2",
+      "category": "production",
+      "file": "coder-sprint-071-vision-scoring-agent-scaffold-phase-1-st.json"
+    },
+    {
+      "skill_id": "coder-sprint-073-create-aar-middleware-ts-aar-receipt-gen",
+      "name": "Create aar-middleware.ts — AAR receipt generator and JSONL l",
+      "category": "infrastructure",
+      "file": "coder-sprint-073-create-aar-middleware-ts-aar-receipt-gen.json"
+    },
+    {
+      "skill_id": "coder-sprint-073-create-aar-types-ts-typescript-interface",
+      "name": "Create aar-types.ts — TypeScript interfaces for AAR receipts",
+      "category": "content-intelligence",
+      "file": "coder-sprint-073-create-aar-types-ts-typescript-interface.json"
+    },
+    {
+      "skill_id": "coder-sprint-076-scs-001-trend-agent-index-ts-core-agent-",
+      "name": "SCS-001 Trend Agent — index.ts (core agent logic)",
+      "category": "signal-pipeline",
+      "file": "coder-sprint-076-scs-001-trend-agent-index-ts-core-agent-.json"
+    },
+    {
+      "skill_id": "coder-sprint-076-scs-001-trend-agent-prompt-md-agent-iden",
+      "name": "SCS-001 Trend Agent — prompt.md (agent identity + scoring ru",
+      "category": "signal-pipeline",
+      "file": "coder-sprint-076-scs-001-trend-agent-prompt-md-agent-iden.json"
+    },
+    {
+      "skill_id": "coder-sprint-076-scs-001-trend-agent-run-trend-agent-ts-c",
+      "name": "SCS-001 Trend Agent — run-trend-agent.ts (CLI runner)",
+      "category": "signal-pipeline",
+      "file": "coder-sprint-076-scs-001-trend-agent-run-trend-agent-ts-c.json"
+    },
+    {
+      "skill_id": "coder-sprint-079-scs-001-insight-agent-index-ts-core-agen",
+      "name": "SCS-001 Insight Agent — index.ts (core agent logic + Claude ",
+      "category": "content-intelligence",
+      "file": "coder-sprint-079-scs-001-insight-agent-index-ts-core-agen.json"
+    },
+    {
+      "skill_id": "coder-sprint-079-scs-001-insight-agent-prompt-md-identity",
+      "name": "SCS-001 Insight Agent — prompt.md (identity + constitutional",
+      "category": "content-intelligence",
+      "file": "coder-sprint-079-scs-001-insight-agent-prompt-md-identity.json"
+    },
+    {
+      "skill_id": "coder-sprint-079-scs-001-insight-agent-run-insight-agent-",
+      "name": "SCS-001 Insight Agent — run-insight-agent.ts (CLI runner)",
+      "category": "content-intelligence",
+      "file": "coder-sprint-079-scs-001-insight-agent-run-insight-agent-.json"
+    },
+    {
+      "skill_id": "coder-sprint-079-scs-001-insight-agent-validate-insight-o",
+      "name": "SCS-001 Insight Agent — validate-insight-output.ts (Block B ",
+      "category": "content-intelligence",
+      "file": "coder-sprint-079-scs-001-insight-agent-validate-insight-o.json"
+    },
+    {
+      "skill_id": "coder-sprint-095-phase-0-phase-1-gate-validator-script",
+      "name": "Phase 0 → Phase 1 gate validator script",
+      "category": "content-intelligence",
+      "file": "coder-sprint-095-phase-0-phase-1-gate-validator-script.json"
+    },
+    {
+      "skill_id": "coder-sprint-095-update-gate-tracker-md-with-phase-0-phas",
+      "name": "Update gate-tracker.md with Phase 0 → Phase 1 gate result",
+      "category": "infrastructure",
+      "file": "coder-sprint-095-update-gate-tracker-md-with-phase-0-phas.json"
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "sprint_id": "sprint-489",
+  "title": "PHASE2A — Skill Bank directory structure + seed data",
+  "description": "Validate existing 26 skill records against schema, create skill-bank index, organize by category, and produce Phase 2A readiness assessment. Cross-reference EVAL-001/002 integration points.",
+  "source": "queue — Sprint 489 PHASE2A-PREP",
+  "tasks": [
+    {
+      "id": "489-01",
+      "title": "Validate all 26 skill records against schema + produce index",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-489",
+      "deliverables": { "code": ["scripts/validate-skill-bank.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "489-02",
+      "title": "Create skill-bank/index.json with categorized skill inventory",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-489",
+      "deliverables": { "code": ["skill-bank/index.json"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "489-03",
+      "title": "Phase 2A readiness assessment with EVAL-001/002 integration notes",
+      "type": "research",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-489",
+      "deliverables": { "code": ["workspace/evals/phase2a-skill-bank-readiness.json"], "tests": [], "docs": [] }
+    }
+  ]
+}

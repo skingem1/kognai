@@ -1,0 +1,53 @@
+{
+  "assessment_id": "phase2a-skill-bank-readiness",
+  "date": "2026-03-20",
+  "status": "READY_WITH_GAPS",
+  "summary": "Skill Bank has 21 valid records across 7 categories. Schema v1.0 is solid. Directory structure is functional. Phase 2A gate requires: Kojimem integration (BLOCKED on mainnet), OpenViking evaluation (OPEN), and skill marketplace schema extension.",
+  "current_state": {
+    "total_records": 21,
+    "valid_records": 21,
+    "invalid_records": 0,
+    "schema_version": "1.0",
+    "categories": {
+      "content-intelligence": 7,
+      "signal-pipeline": 5,
+      "infrastructure": 4,
+      "governance": 2,
+      "distribution": 1,
+      "general": 1,
+      "production": 1
+    },
+    "access_tiers": {
+      "internal": 21,
+      "free": 0,
+      "rental": 0,
+      "sale": 0
+    }
+  },
+  "eval_001_openviking": {
+    "status": "OPEN — evaluation not started",
+    "relevance": "ByteDance context database. Could provide skill retrieval infrastructure for Skill Bank search/recommendation.",
+    "gate_dependency": "Must complete BEFORE Phase 2A Skill Bank build begins",
+    "action": "Schedule EVAL-001 sprint when Phase 2A timeline approaches"
+  },
+  "eval_002_kojimem": {
+    "status": "DECIDED — INTEGRATE (Kojimem replaces Cognee + ByteRover)",
+    "relevance": "x402-native wallet-scoped memory API. Recall tiers map to ClawRouter T0-T2. Delegation system for SCS memory handoff.",
+    "blocker": "Kojimem on Base Sepolia only — mainnet launch required",
+    "cost": "$0.016/sprint cycle, $3.87/month full swarm",
+    "integration_plan": "5 sprints (2A-01 to 2A-05): SDK install → Harvey memory → swarm rollout → SCS delegation → BrainX bridge"
+  },
+  "gaps_for_phase2a": [
+    "No marketplace schema fields (pricing, license, rental_duration) — needed for Phase 3",
+    "No skill search/discovery mechanism — flat file listing only",
+    "OpenViking evaluation not started — may provide better retrieval",
+    "Kojimem blocked on mainnet — memory-skill bridge deferred",
+    "No skill versioning — records are immutable snapshots",
+    "Only 21 records — need 50+ for meaningful retrieval testing"
+  ],
+  "recommended_next_sprints": [
+    "Continue shipping sprints — crystalliseSkill auto-generates records on approval",
+    "EVAL-001 (OpenViking) — when Phase 2A timeline solidifies",
+    "Schema v2 — add marketplace fields when first external skill submitted"
+  ]
+}
