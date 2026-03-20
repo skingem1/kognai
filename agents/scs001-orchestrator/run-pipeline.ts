@@ -140,6 +140,26 @@ async function main(): Promise<void> {
         }
       }
 
+      // Sprint 430: Also archive experiments with unknown speaker AND hook (no useful metadata)
+      let metadataPurged = 0;
+      for (const line of readFileSync(expPath, 'utf-8').split('\n')) {
+        if (!line.trim()) continue;
+        try {
+          const e = JSON.parse(line);
+          const id = e.clip_id ?? e.video_id;
+          if (id && !archivedSet.has(id) && !postedIds.has(id)
+              && (e.speaker ?? 'unknown') === 'unknown'
+              && (e.hook_formula ?? 'unknown') === 'unknown') {
+            archivedSet.add(id);
+            metadataPurged++;
+          }
+        } catch {}
+      }
+      if (metadataPurged > 0) {
+        console.log(`[Runner] Auto-archived ${metadataPurged} clips with no speaker/hook metadata`);
+        purged += metadataPurged;
+      }
+
       if (purged > 0) {
         writeFileSync(ARCHIVE_PATH, JSON.stringify({
           ids: Array.from(archivedSet),

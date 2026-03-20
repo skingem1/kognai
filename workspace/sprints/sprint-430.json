@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-430",
+  "title": "Archive legacy unknown-speaker experiments from delivery queue",
+  "description": "56 experiments from run scs001-2026-03-16 have speaker=unknown, hook=unknown, score=0.39. These are legacy entries without useful metadata. Archive them so /deliver skips them. Also add unknown-speaker filter to /deliver ranking.",
+  "source": "auto — experiments.jsonl analysis: 56/329 entries have no speaker/hook metadata, degrading queue quality",
+  "tasks": [
+    {
+      "id": "430-01",
+      "title": "Archive unknown-speaker experiment video_ids and filter in deliver",
+      "type": "cleanup",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-430",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
