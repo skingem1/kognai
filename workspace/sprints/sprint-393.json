@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-393",
+  "title": "/note — operator quick notes on videos",
+  "description": "Add /note command for operator to annotate videos with quick notes. Persistent JSON storage. View all notes, per-video notes, clear notes.",
+  "source": "auto — operator needs to track observations about video quality during review",
+  "tasks": [
+    {
+      "id": "393-01",
+      "title": "Add /note command to scripts/telegram-bot.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-393",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

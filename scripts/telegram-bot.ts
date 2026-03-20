@@ -3308,6 +3308,64 @@ function cmdUnarchive(args: string): string {
   return `✅ *Restored:* \`${videoId}\`\n\nThis video will appear in /deliver and /queue again.`;
 }
 
+// Sprint 393: /note — operator quick notes on videos
+const NOTES_PATH = path.join(ROOT, 'workspace', 'scs001', 'video-notes.json');
+
+function loadNotes(): Record<string, { note: string; at: string }> {
+  if (!fs.existsSync(NOTES_PATH)) return {};
+  try { return JSON.parse(fs.readFileSync(NOTES_PATH, 'utf-8')); } catch { return {}; }
+}
+
+function saveNotes(notes: Record<string, { note: string; at: string }>): void {
+  fs.writeFileSync(NOTES_PATH, JSON.stringify(notes, null, 2), 'utf-8');
+}
+
+function cmdNote(args: string): string {
+  const parts = args.trim().split(/\s+/);
+  const videoId = parts[0] || '';
+  const noteText = parts.slice(1).join(' ').trim();
+
+  if (!videoId) {
+    // Show all notes
+    const notes = loadNotes();
+    const keys = Object.keys(notes);
+    if (keys.length === 0) {
+      return `📝 *Video Notes*\n\nNo notes yet.\n\nUsage: \`/note <video_id> <your note>\`\nExample: \`/note video-abc123 Great hook, save for Friday\``;
+    }
+    const lines = [`📝 *Video Notes* — ${keys.length} entries\n`];
+    for (const id of keys.slice(-10)) {
+      lines.push(`\`${id}\` — ${notes[id].note}`);
+    }
+    if (keys.length > 10) lines.push(`\n_...${keys.length - 10} older notes_`);
+    lines.push(`\nClear: \`/note <video_id> clear\``);
+    return lines.join('\n');
+  }
+
+  if (!noteText) {
+    // Show note for specific video
+    const notes = loadNotes();
+    if (notes[videoId]) {
+      return `📝 *Note for* \`${videoId}\`:\n${notes[videoId].note}\n_Added: ${notes[videoId].at.slice(0, 10)}_`;
+    }
+    return `No note for \`${videoId}\`.\n\nAdd one: \`/note ${videoId} your note here\``;
+  }
+
+  if (noteText.toLowerCase() === 'clear') {
+    const notes = loadNotes();
+    if (notes[videoId]) {
+      delete notes[videoId];
+      saveNotes(notes);
+      return `🗑️ Note cleared for \`${videoId}\``;
+    }
+    return `No note found for \`${videoId}\``;
+  }
+
+  const notes = loadNotes();
+  notes[videoId] = { note: noteText, at: new Date().toISOString() };
+  saveNotes(notes);
+  return `📝 *Note saved!*\n\n\`${videoId}\`: ${noteText}`;
+}
+
 // Sprint 351: /updateviews — update view counts for posted videos
 function cmdUpdateViews(args: string): string {
   const parts = args.trim().split(/\s+/);
@@ -3507,6 +3565,7 @@ function cmdHelp(): string {
     `/history   — Posting history timeline + trends\n` +
     `/archive   — Archive a video (hide from queue)\n` +
     `/unarchive — Restore an archived video\n` +
+    `/note      — Add notes to a video\n` +
     `/help      — This message`
   );
 }
@@ -4249,6 +4308,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/history':     response = cmdHistory();            break;
     case '/archive':     response = cmdArchive(cmdArgs);     break;
     case '/unarchive':   response = cmdUnarchive(cmdArgs);   break;
+    case '/note':        response = cmdNote(cmdArgs);        break;
     case '/help':        response = cmdHelp();        break;
     default:
       response = `Unknown command: \`${cmdName}\`\n\n${cmdHelp()}`;
