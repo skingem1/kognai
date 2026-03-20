@@ -488,15 +488,18 @@ function cmdQueue(): string {
     return false;
   }
 
+  // Sprint 392: Filter archived videos from queue
+  const archivedIds = loadArchived();
   const unposted = (ledger as any[])
-    .filter((e: any) => !recordedIds.has(e.video_id) && e.video_id)
+    .filter((e: any) => !recordedIds.has(e.video_id) && e.video_id && !archivedIds.has(e.video_id))
     .sort((a: any, b: any) => (viralScores.get(b.video_id) ?? -1) - (viralScores.get(a.video_id) ?? -1));
 
   if (unposted.length === 0) {
     return (
       `📋 *Posting Queue — Empty*\n\n` +
       `No unposted videos in the ledger.\n` +
-      `Pipeline total: ${ledger.length} | Posted: ${recorded.length}`
+      `Pipeline total: ${ledger.length} | Posted: ${recorded.length}` +
+      (archivedIds.size > 0 ? ` | Archived: ${archivedIds.size}` : '')
     );
   }
 
@@ -3244,6 +3247,67 @@ function cmdHistory(): string {
   return lines.join('\n');
 }
 
+// Sprint 392: /archive + /unarchive — queue management
+const ARCHIVE_PATH = path.join(ROOT, 'workspace', 'scs001', 'archived-videos.json');
+
+function loadArchived(): Set<string> {
+  if (!fs.existsSync(ARCHIVE_PATH)) return new Set();
+  try {
+    const data = JSON.parse(fs.readFileSync(ARCHIVE_PATH, 'utf-8'));
+    return new Set(Array.isArray(data.ids) ? data.ids : []);
+  } catch { return new Set(); }
+}
+
+function saveArchived(ids: Set<string>): void {
+  fs.writeFileSync(ARCHIVE_PATH, JSON.stringify({
+    ids: Array.from(ids),
+    updated_at: new Date().toISOString(),
+    count: ids.size,
+  }, null, 2), 'utf-8');
+}
+
+function cmdArchive(args: string): string {
+  const videoId = args.trim();
+  if (!videoId) {
+    const archived = loadArchived();
+    if (archived.size === 0) {
+      return `📁 *Archive*\n\nNo archived videos.\n\nUsage: \`/archive <video_id>\`\nArchived videos won't appear in /deliver or /queue.`;
+    }
+    const ids = Array.from(archived).slice(0, 10);
+    return (
+      `📁 *Archive* — ${archived.size} video${archived.size !== 1 ? 's' : ''}\n\n` +
+      ids.map(id => `• \`${id}\``).join('\n') +
+      (archived.size > 10 ? `\n_...and ${archived.size - 10} more_` : '') +
+      `\n\nRestore: \`/unarchive <video_id>\``
+    );
+  }
+
+  const archived = loadArchived();
+  if (archived.has(videoId)) {
+    return `⚠️ \`${videoId}\` is already archived.\nUse \`/unarchive ${videoId}\` to restore.`;
+  }
+
+  archived.add(videoId);
+  saveArchived(archived);
+  return `📁 *Archived:* \`${videoId}\`\n\nThis video won't appear in /deliver or /queue.\nRestore: \`/unarchive ${videoId}\``;
+}
+
+function cmdUnarchive(args: string): string {
+  const videoId = args.trim();
+  if (!videoId) {
+    return `Usage: \`/unarchive <video_id>\`\n\nView archived videos: \`/archive\``;
+  }
+
+  const archived = loadArchived();
+  if (!archived.has(videoId)) {
+    return `⚠️ \`${videoId}\` is not in the archive.`;
+  }
+
+  archived.delete(videoId);
+  saveArchived(archived);
+  return `✅ *Restored:* \`${videoId}\`\n\nThis video will appear in /deliver and /queue again.`;
+}
+
 // Sprint 351: /updateviews — update view counts for posted videos
 function cmdUpdateViews(args: string): string {
   const parts = args.trim().split(/\s+/);
@@ -3441,6 +3505,8 @@ function cmdHelp(): string {
     `/compare   — A/B compare hooks or speakers\n` +
     `/suggest   — Data-driven content suggestion\n` +
     `/history   — Posting history timeline + trends\n` +
+    `/archive   — Archive a video (hide from queue)\n` +
+    `/unarchive — Restore an archived video\n` +
     `/help      — This message`
   );
 }
@@ -4181,6 +4247,8 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/compare':     response = cmdCompare(cmdArgs);     break;
     case '/suggest':     response = cmdSuggest();            break;
     case '/history':     response = cmdHistory();            break;
+    case '/archive':     response = cmdArchive(cmdArgs);     break;
+    case '/unarchive':   response = cmdUnarchive(cmdArgs);   break;
     case '/help':        response = cmdHelp();        break;
     default:
       response = `Unknown command: \`${cmdName}\`\n\n${cmdHelp()}`;

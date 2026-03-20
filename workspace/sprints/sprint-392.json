@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-392",
+  "title": "/archive + /unarchive — video queue management",
+  "description": "Add /archive and /unarchive commands to hide/restore low-quality videos from /queue and /deliver. Persistent JSON file, filters integrated into cmdQueue.",
+  "source": "auto — operator needs to curate content queue, remove bad videos without deleting",
+  "tasks": [
+    {
+      "id": "392-01",
+      "title": "Add /archive + /unarchive commands to scripts/telegram-bot.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-392",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
