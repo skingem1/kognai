@@ -3933,3 +3933,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (multi-point modification in large file)
 - Issues: None.
 - Timestamp: 2026-03-20T21:15:00Z
+
+## Sprint 439 — /reload Self-Restart (Direct Write)
+- Status: PASS
+- Commit: 6cd1502
+- Files created: workspace/sprints/sprint-439.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 439-01: Added /reload command — sends confirmation, waits 2s, then runs pm2 restart telegram-bot. Falls back to process.exit(0) if pm2 fails. Added to /help.
+- Validation: tsc --noEmit PASS
+- Swarm used: no (simple command addition)
+- Issues: None.
+- Timestamp: 2026-03-20T21:30:00Z
