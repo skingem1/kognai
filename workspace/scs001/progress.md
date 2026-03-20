@@ -1053,3 +1053,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm bypassed: yes (multi-file coordination). Manual crystallise: skipped (module not found).
 - Issues: None
 - Timestamp: 2026-03-21T05:00:00Z
+
+## Sprint 593 — GATE
+- Status: PASS
+- Commit: 8bfddca
+- Files created: scripts/tiktok-token-validator.ts, workspace/sprints/sprint-593.json
+- Files modified: scripts/telegram-bot.ts, scripts/telegram-commands/cmd-system.ts
+- Test: TypeScript compile — PASS, dry-run — PASS (reports MISSING status correctly)
+- Pipeline: TikTok token health validator + /tokencheck Telegram command
+- Swarm used: no (multi-file task, wrote directly)
+- Issues: None
+- Timestamp: 2026-03-21T05:10:00Z
