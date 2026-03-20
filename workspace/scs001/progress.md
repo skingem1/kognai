@@ -3789,3 +3789,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (single-file enhancement)
 - Issues: None.
 - Timestamp: 2026-03-20T16:20:00Z
+
+## Sprint 427 — Fix Viral Topics Extraction (Direct Write)
+- Status: PASS
+- Commit: e2251b3
+- Files created: workspace/sprints/sprint-427.json
+- Files modified: agents/scs001-orchestrator/index.ts
+- Tasks completed:
+  - 427-01: Fixed viral topics extraction in orchestrator. Previously pulled topic_tags from analytics signals (which used mock data with channel names as hashtags). Now extracts from discoveries[].topic_tags (real keyword_cluster from TrendAgent), merges with analytics, deduplicates. Used Array.from(new Set()) for TS compat.
+- Validation: tsc --noEmit PASS (0 new errors in orchestrator)
+- Swarm used: no (surgical bugfix)
+- Issues: Pre-existing TS2802 errors in scs001-caption, scs001-publishing (downlevelIteration). Not introduced by this sprint.
+- Timestamp: 2026-03-20T16:35:00Z
