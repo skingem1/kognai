@@ -1218,8 +1218,9 @@
       "title": "INFRA — Regenerate sprint brief with current state",
       "block": "INFRA",
       "priority": "medium",
-      "status": "pending",
-      "rationale": "Brief is stale (says Sprint 525). Regenerate with generate-sprint-brief.py to reflect Sprint 576 state."
+      "status": "done",
+      "rationale": "Brief is stale (says Sprint 525). Regenerate with generate-sprint-brief.py to reflect Sprint 576 state.",
+      "_note": "Brief regenerated. Shows Sprint 579 as latest."
     },
     {
       "sprint": 581,

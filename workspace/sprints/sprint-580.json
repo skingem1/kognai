@@ -1,0 +1,26 @@
+{
+  "sprint_id": "sprint-580",
+  "title": "INFRA \u2014 Sprint brief regenerated (Sprint 579 state)",
+  "description": "Regenerated sprint-brief.md via Qwen3:14b. Now reflects Sprint 579 as latest. $0.00 cost.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "580-01",
+      "title": "Regenerate sprint brief",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "workspace/sprint-brief.md",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-580",
+      "deliverables": {
+        "code": [
+          "workspace/sprint-brief.md"
+        ],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ]
+}
