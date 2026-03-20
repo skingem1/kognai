@@ -2354,3 +2354,16 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (multi-file feature, swarm bypass)
 - Issues: None.
 - Timestamp: 2026-03-20T05:25:00Z
+
+## Sprint 303 — Wire Derja-Profiler into Achiri Chat (Direct Write)
+- Status: PASS
+- Commit: 51971bb
+- Files created: workspace/sprints/sprint-303.json
+- Files modified: agents/achiri/user-profile.ts
+- Tasks completed:
+  - 303-01: Added detectDialect() to user-profile.ts — aggregates derja-profiler results across all user messages. Returns dominant dialect (tunisian/moroccan/algerian/libyan/egyptian), formality (informal/neutral/formal), and confidence. Added dialect/formality/dialect_confidence fields to UserProfile interface.
+  - 303-02: Extended buildProfileContext() with dialect-specific system prompt guidance. Each dialect gets tailored instructions (e.g., Moroccan users get "use bzzaf instead of barsha"). Formality adaptation also injected (formal → polite register, informal → casual energy).
+- Validation: TypeScript clean compile. Tunisian user: dialect=tunisian (0.75 confidence), context includes Tunisian Darija guidance. Moroccan user: dialect=moroccan (0.80 confidence), context includes Moroccan Darija guidance. Both PASS.
+- Swarm used: no (single file enhancement)
+- Issues: None.
+- Timestamp: 2026-03-20T05:40:00Z
