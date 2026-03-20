@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-422",
+  "title": "Help update + posting reminder caption sync",
+  "description": "Add /stale and /purge to /help command. Sync posting-reminder.ts caption builder with Sprint 418 engagement templates (hook-based opening lines, CTAs, niche hashtags).",
+  "source": "auto — help command missing new commands, posting reminder still uses old bare caption format",
+  "tasks": [
+    {
+      "id": "422-01",
+      "title": "Update /help and sync posting-reminder.ts caption builder",
+      "type": "enhancement",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-422",
+      "deliverables": { "code": ["scripts/telegram-bot.ts", "scripts/posting-reminder.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

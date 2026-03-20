@@ -4207,6 +4207,8 @@ function cmdHelp(): string {
     `/done      — Record post + get next video (in session)\n` +
     `/endsession — End posting session + summary\n` +
     `/abresults — View-based A/B content analysis\n` +
+    `/stale     — Show/archive stale content (>7 days)\n` +
+    `/purge     — Quality filter: archive low-scoring clips\n` +
     `/help      — This message`
   );
 }
