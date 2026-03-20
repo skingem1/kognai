@@ -3777,3 +3777,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (multi-file feature)
 - Issues: None.
 - Timestamp: 2026-03-20T16:00:00Z
+
+## Sprint 426 — Topic-aware Captions (Direct Write)
+- Status: PASS
+- Commit: 7b6a4d5
+- Files created: workspace/sprints/sprint-426.json
+- Files modified: scripts/scs001/engagement-caption.ts
+- Tasks completed:
+  - 426-01: Added trending hashtag injection from viral-topics.json (top 5 topics converted to hashtags). Added 7 speaker description variations (replaces static "explains it all"). Increased max hashtags from 10 to 12. All deterministic via videoId hash.
+- Validation: tsc --noEmit PASS, ts-node caption output verified with varied speakers/hooks
+- Swarm used: no (single-file enhancement)
+- Issues: None.
+- Timestamp: 2026-03-20T16:20:00Z
