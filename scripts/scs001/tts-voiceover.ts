@@ -13,6 +13,7 @@
 import { writeFileSync, mkdirSync, existsSync } from "fs";
 import { join, basename } from "path";
 import type { ScriptBundle, ScriptSegment } from "../../agents/scs001-script/index";
+import { generateLocalVoiceover, generateLocalVoiceovers, isLocalTTSAvailable } from "./tts-local";
 
 // ── Types ──────────────────────────────────────────────
 
@@ -105,6 +106,15 @@ export async function generateVoiceover(
   outDir: string = DEFAULT_OUT_DIR,
   dryRun: boolean = false
 ): Promise<VoiceoverResult> {
+  // Auto-fallback to local TTS when ElevenLabs key not set
+  if (!ELEVENLABS_API_KEY && !dryRun) {
+    if (isLocalTTSAvailable()) {
+      console.log("  [TTS] ELEVENLABS_API_KEY not set — using local TTS (macOS say, $0.00)");
+      return generateLocalVoiceover(bundle, outDir, false);
+    }
+    console.warn("  [TTS] No TTS available — ELEVENLABS_API_KEY not set and local TTS unavailable");
+  }
+
   mkdirSync(outDir, { recursive: true });
 
   const segments: VoiceoverSegment[] = [];
@@ -171,6 +181,12 @@ export async function generateVoiceovers(
   outDir: string = DEFAULT_OUT_DIR,
   dryRun: boolean = false
 ): Promise<VoiceoverResult[]> {
+  // Auto-fallback to local TTS for batch too
+  if (!ELEVENLABS_API_KEY && !dryRun && isLocalTTSAvailable()) {
+    console.log("  [TTS] ELEVENLABS_API_KEY not set — batch using local TTS (macOS say, $0.00)");
+    return generateLocalVoiceovers(bundles, outDir, false);
+  }
+
   const results: VoiceoverResult[] = [];
 
   for (const bundle of bundles) {

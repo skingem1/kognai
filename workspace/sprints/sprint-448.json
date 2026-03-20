@@ -1,0 +1,44 @@
+{
+  "sprint_id": "sprint-448",
+  "title": "FALLBACK — Local TTS via macOS say + enhanced FFmpeg drawtext captions",
+  "description": "Zero-cost video production fallback for April 7 gate. (1) tts-local.ts: macOS say → AIFF → FFmpeg MP3 conversion, same VoiceoverResult interface. (2) Update tts-voiceover.ts to auto-fallback to local TTS when ELEVENLABS_API_KEY missing. (3) caption-ffmpeg.ts: enhanced FFmpeg drawtext with word timing, keyword highlighting via font color.",
+  "source": "queue — Sprint 448 FALLBACK block",
+  "tasks": [
+    {
+      "id": "448-01",
+      "title": "Create tts-local.ts — free local TTS using macOS say + FFmpeg conversion",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-448",
+      "deliverables": { "code": ["scripts/scs001/tts-local.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "448-02",
+      "title": "Update tts-voiceover.ts with auto-fallback to local TTS",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-448",
+      "deliverables": { "code": ["scripts/scs001/tts-voiceover.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "448-03",
+      "title": "Create caption-ffmpeg.ts — enhanced FFmpeg drawtext caption system",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-448",
+      "deliverables": { "code": ["scripts/scs001/caption-ffmpeg.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
