@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-394",
+  "title": "/pickup — one-tap posting workflow",
+  "description": "Add /pickup command that delivers the next best unposted video with full caption, sends it to Telegram, and offers inline buttons to mark as posted or skip. Reduces manual posting friction for hitting the 30-post gate.",
+  "source": "auto — 0/30 posts with 18 days to kill switch, need minimal-friction posting workflow",
+  "tasks": [
+    {
+      "id": "394-01",
+      "title": "Add /pickup command with inline buttons to scripts/telegram-bot.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-394",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

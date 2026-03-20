@@ -3566,6 +3566,7 @@ function cmdHelp(): string {
     `/archive   — Archive a video (hide from queue)\n` +
     `/unarchive — Restore an archived video\n` +
     `/note      — Add notes to a video\n` +
+    `/pickup    — One-tap posting: best video + caption + buttons\n` +
     `/help      — This message`
   );
 }
@@ -4142,6 +4143,86 @@ function cmdFilmKit(): string {
   return lines.join('\n');
 }
 
+// ─── Sprint 394: /pickup — one-tap posting workflow ─────────────────────
+
+async function cmdPickup(chatId: string): Promise<void> {
+  const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
+  const recorded = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  const recordedIds = new Set(recorded.map((e: any) => e.video_id).filter(Boolean));
+  const archivedIds = loadArchived();
+
+  // Load viral scores for ranking
+  const viralScores = new Map<string, number>();
+  const expPath = path.join(ROOT, 'workspace', 'scs001', 'experiments.jsonl');
+  if (fs.existsSync(expPath)) {
+    try {
+      for (const line of fs.readFileSync(expPath, 'utf-8').split('\n')) {
+        if (!line.trim()) continue;
+        try {
+          const e = JSON.parse(line);
+          const id = e.clip_id ?? e.video_id;
+          if (id && e.partial_viral_score != null) viralScores.set(id, e.partial_viral_score);
+        } catch { /* skip */ }
+      }
+    } catch { /* skip */ }
+  }
+
+  const unposted = (ledger as any[])
+    .filter((e: any) => !recordedIds.has(e.video_id) && e.video_id && !archivedIds.has(e.video_id))
+    .sort((a: any, b: any) => (viralScores.get(b.video_id) ?? -1) - (viralScores.get(a.video_id) ?? -1));
+
+  const ready = unposted.filter((e: any) => findCaptionedMp4(e.video_id) !== null);
+
+  if (ready.length === 0) {
+    await sendMessage(chatId, '📦 *Pickup* — No ready-to-post videos.\n\nRun `/refresh` to generate new content.');
+    return;
+  }
+
+  const pick = ready[0];
+  const videoId = pick.video_id;
+  const mp4Path = findCaptionedMp4(videoId);
+  if (!mp4Path) {
+    await sendMessage(chatId, '⚠️ Video file not found on disk.');
+    return;
+  }
+
+  const caption = buildTikTokCaption(videoId);
+  const vs = viralScores.get(videoId);
+  const vsStr = vs != null ? ` · 🧬 ${vs}` : '';
+  const gate = recorded.length;
+  const remaining = Math.max(0, 30 - gate);
+  const gateDate = new Date('2026-04-07T00:00:00Z');
+  const daysLeft = Math.max(0, Math.ceil((gateDate.getTime() - Date.now()) / 86_400_000));
+
+  const tgCaption = [
+    `🎬 *Next Post* (#${gate + 1}/30)${vsStr}`,
+    '',
+    caption,
+    '',
+    `📊 ${remaining - 1} more needed · ${daysLeft}d to gate`,
+    `📦 ${ready.length - 1} more in queue`,
+  ].join('\n');
+
+  try {
+    await sendVideoFile(chatId, mp4Path, tgCaption);
+  } catch (err: any) {
+    await sendMessage(chatId, `⚠️ Failed to send video: ${err.message}`);
+    return;
+  }
+
+  // Send inline buttons for quick action
+  await sendMessageWithButtons(chatId, `\`${videoId}\`\n_Tap below after posting to TikTok:_`, [
+    [
+      { text: '✅ Mark Posted', callback_data: `cmd:/record ${videoId} 0` },
+      { text: '⏭ Next Video', callback_data: 'cmd:/pickup' },
+    ],
+    [
+      { text: '🗑 Archive & Skip', callback_data: `cmd:/archive ${videoId}` },
+      { text: '📊 Gate Progress', callback_data: 'cmd:/progress' },
+    ],
+  ]);
+}
+
 // ─── Command router ───────────────────────────────────────────────────
 
 async function handleCommand(chatId: string, text: string): Promise<void> {
@@ -4241,6 +4322,18 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     return;
   }
 
+  // Sprint 394: /pickup is async (sends video + buttons)
+  if (cmdName === '/pickup') {
+    try {
+      await cmdPickup(chatId);
+    } catch (e: any) {
+      await sendMessage(chatId, `❌ Pickup error: ${e.message}`);
+    }
+    const timestamp = new Date().toISOString();
+    fs.appendFileSync(AUDIT_LOG, `[${timestamp}] [TELEGRAM_BOT] Command: ${cmd} from ${chatId}\n`);
+    return;
+  }
+
   // Sprint 280: /deliver is async (sends videos), handle separately
   if (cmdName === '/deliver') {
     try {
@@ -4331,9 +4424,12 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     '/queue': [
       [{ text: '📦 Deliver 1', callback_data: 'cmd:/deliver 1' }, { text: '📦 Deliver 3', callback_data: 'cmd:/deliver 3' }],
     ],
+    '/progress': [
+      [{ text: '🎬 Pickup', callback_data: 'cmd:/pickup' }, { text: '📋 Queue', callback_data: 'cmd:/queue' }],
+    ],
     '/help': [
-      [{ text: '📋 Digest', callback_data: 'cmd:/digest' }, { text: '📊 Gate', callback_data: 'cmd:/gate' }],
-      [{ text: '📦 Deliver', callback_data: 'cmd:/deliver 1' }, { text: '🔄 Refresh', callback_data: 'cmd:/refresh' }],
+      [{ text: '🎬 Pickup', callback_data: 'cmd:/pickup' }, { text: '📊 Gate', callback_data: 'cmd:/gate' }],
+      [{ text: '📋 Digest', callback_data: 'cmd:/digest' }, { text: '🔄 Refresh', callback_data: 'cmd:/refresh' }],
     ],
   };
 
