@@ -3229,3 +3229,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (single function)
 - Issues: None.
 - Timestamp: 2026-03-20T12:45:00Z
+
+## Sprint 381 — /contentplan — 7-Day Content Plan Generator (Direct Write)
+- Status: PASS
+- Commit: 81ed14b
+- Files created: workspace/sprints/sprint-381.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 381-01: Added /contentplan command. Generates 7-day filming plan combining top hooks (by viral score), top speakers, and best posting times from schedule. Shows daily pace needed for gate, assigns hook+speaker per day, highlights TODAY. Includes tips section with best hook/speaker/time. Updated /help + switch router.
+- Validation: tsc --noEmit PASS
+- Swarm used: no (FP-007 file >3500 lines)
+- Issues: None.
+- Timestamp: 2026-03-20T19:00:00Z
