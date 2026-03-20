@@ -534,7 +534,8 @@
       "sprint": 504,
       "title": "STRIPE \u2014 Investigate webhook 2078 restarts + ensure stable payment flow",
       "block": "MONETIZATION",
-      "status": "pending",
+      "status": "done",
+      "_note": "Root cause: 64M memory limit too low for ts-node. Fixed to 256M + EADDRINUSE handler.",
       "priority": "medium",
       "rationale": "kognai-stripe-webhook accumulated 2078 restarts (now stable 2D). Review logs to understand root cause. Add restart counter reset. Verify checkout flow works with current Stripe keys."
     },

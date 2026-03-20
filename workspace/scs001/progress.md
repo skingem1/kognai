@@ -362,6 +362,17 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Issues: Insight Agent mock mode caps at 2 briefs/run, needed 3 runs for 6 videos
 - Timestamp: 2026-03-20T12:45:00Z
 
+## Sprint 504 — STRIPE
+- Status: PASS
+- Commit: 41726f0
+- Files modified: ecosystem.config.js (max_memory_restart 64M→256M, +min_uptime, +max_restarts), agents/stripe/server.ts (+memory logging, +EADDRINUSE handler)
+- Files created: workspace/sprints/sprint-504.json
+- Test: curl http://127.0.0.1:3001/health → OK
+- Pipeline: Stripe webhook stable, crash-loop root cause identified and fixed
+- Swarm used: no
+- Issues: none
+- Timestamp: 2026-03-20T12:55:00Z
+
 ## Critical Gaps
 
 1. **0/30 TikTok posts** — April 7 gate requires 30 posts
