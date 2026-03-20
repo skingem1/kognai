@@ -246,7 +246,7 @@
       "sprint": 467,
       "title": "INFRA — Dashboard v2 — unified control panel with all panels",
       "block": "INFRA",
-      "status": "pending",
+      "status": "done",
       "priority": "low",
       "rationale": "Dashboard at localhost:4000 has 13 panels from Sprint 087 but needs: (1) April 7 gate countdown, (2) Posting tracker (done/30), (3) Real-time pipeline status, (4) API health checks, (5) Stripe MRR. Single page with all operational data."
     },

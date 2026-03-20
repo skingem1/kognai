@@ -102,6 +102,17 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - **Env:** ANTHROPIC_API_KEY, TELEGRAM_BOT_TOKEN, SUPABASE keys SET
 - **Missing:** TIKTOK_ACCESS_TOKEN (human action required)
 
+## Sprint 467 — INFRA
+- Status: PASS
+- Commit: 104fe95
+- Files created: workspace/sprints/sprint-467.json
+- Files modified: dashboard/server.py, dashboard/static/index.html, dashboard/static/app.js
+- Test: manual validation — Python syntax clean, JS renderers registered
+- Pipeline: Dashboard v2 complete (22 panels, 4 new: Gate Countdown, Posting Tracker, API Health, Stripe MRR)
+- Swarm used: no (multi-file dashboard work)
+- Issues: none
+- Timestamp: 2026-03-20T16:20:00Z
+
 ## Sprint 465 — GEO
 - Status: PASS
 - Commit: b0a20a3
