@@ -1047,8 +1047,9 @@
       "title": "CONTENT — Final batch: 10 more videos + stats refresh",
       "block": "CONTENT",
       "priority": "high",
-      "status": "pending",
-      "rationale": "Another production batch. Run stats after to update reports."
+      "status": "done",
+      "rationale": "Another production batch. Run stats after to update reports.",
+      "_note": "136 produced, 117 delivered. Diversity 97/100. $2.82 total."
     }
   ]
 }

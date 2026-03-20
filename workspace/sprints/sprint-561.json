@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-561",
+  "title": "CONTENT — 10 videos + stats: 136 produced, 117 delivered, $2.82",
+  "description": "Two pipeline-cron runs (5+5). 136 total produced, 117 delivered. Diversity 97/100. Gate 117/30 ON TRACK. $2.82 total cost.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "561-01",
+      "title": "Run pipeline-cron x2 + stats refresh",
+      "type": "feature",
+      "task_type": "content",
+      "task_target": "scripts/scs001/pipeline-cron.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-561",
+      "deliverables": { "code": [], "tests": [], "docs": ["reports/stats-latest.json"] }
+    }
+  ]
+}
