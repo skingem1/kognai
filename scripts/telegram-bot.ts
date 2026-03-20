@@ -3307,8 +3307,127 @@ function cmdHelp(): string {
     `/export    — Batch export manifest for posting\n` +
     `/weeklyreport — Weekly performance summary\n` +
     `/speakertest — Speaker A/B test rankings\n` +
+    `/contentplan — 7-day content filming plan\n` +
     `/help      — This message`
   );
+}
+
+// ─── Sprint 381: /contentplan — 7-day content plan generator ────────
+
+function cmdContentPlan(): string {
+  const experiments = readLines(path.join(ROOT, 'workspace', 'scs001', 'experiments.jsonl'));
+  const posts = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  const schedulePath = path.join(ROOT, 'reports', 'posting-schedule.json');
+
+  const now = new Date();
+  const GATE_DATE = new Date('2026-04-07T00:00:00Z');
+  const daysLeft = Math.max(0, Math.ceil((GATE_DATE.getTime() - now.getTime()) / 86_400_000));
+  const postsNeeded = Math.max(0, 30 - posts.length);
+
+  // Top hooks by avg viral score
+  const hookStats: Record<string, { scores: number[]; count: number }> = {};
+  for (const e of experiments) {
+    const h = e.hook_formula ?? 'unknown';
+    if (h === 'unknown') continue;
+    if (!hookStats[h]) hookStats[h] = { scores: [], count: 0 };
+    hookStats[h].count++;
+    if (e.partial_viral_score != null) hookStats[h].scores.push(e.partial_viral_score);
+  }
+  const topHooks = Object.entries(hookStats)
+    .map(([hook, s]) => ({
+      hook,
+      avg: s.scores.length > 0 ? s.scores.reduce((a, b) => a + b, 0) / s.scores.length : 0,
+      count: s.count,
+    }))
+    .sort((a, b) => b.avg - a.avg)
+    .slice(0, 5);
+
+  // Top speakers by avg viral score
+  const speakerStats: Record<string, { scores: number[]; count: number }> = {};
+  for (const e of experiments) {
+    const sp = e.speaker ?? 'unknown';
+    if (sp === 'unknown') continue;
+    if (!speakerStats[sp]) speakerStats[sp] = { scores: [], count: 0 };
+    speakerStats[sp].count++;
+    if (e.partial_viral_score != null) speakerStats[sp].scores.push(e.partial_viral_score);
+  }
+  const topSpeakers = Object.entries(speakerStats)
+    .map(([speaker, s]) => ({
+      speaker,
+      avg: s.scores.length > 0 ? s.scores.reduce((a, b) => a + b, 0) / s.scores.length : 0,
+      count: s.count,
+    }))
+    .sort((a, b) => b.avg - a.avg)
+    .slice(0, 3);
+
+  // Best posting times from schedule
+  let bestTimes: { time: string; label: string }[] = [];
+  if (fs.existsSync(schedulePath)) {
+    try {
+      const sched = JSON.parse(fs.readFileSync(schedulePath, 'utf-8'));
+      const slots: any[] = sched.slots ?? [];
+      const timeScores: Record<string, { totalScore: number; count: number; label: string }> = {};
+      for (const s of slots) {
+        const t = s.time ?? '?';
+        if (!timeScores[t]) timeScores[t] = { totalScore: 0, count: 0, label: s.slot_label ?? t };
+        timeScores[t].count++;
+        if (s.viral_score != null) timeScores[t].totalScore += s.viral_score;
+      }
+      bestTimes = Object.entries(timeScores)
+        .map(([time, s]) => ({ time, label: s.label, avg: s.count > 0 ? s.totalScore / s.count : 0 }))
+        .sort((a: any, b: any) => b.avg - a.avg)
+        .slice(0, 3)
+        .map(t => ({ time: t.time, label: t.label }));
+    } catch { /* ignore */ }
+  }
+
+  // Generate 7-day plan
+  const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const lines = [
+    '📋 *7-Day Content Plan*',
+    `${posts.length}/30 posted · ${postsNeeded} needed · ${daysLeft} days to gate`,
+    '',
+  ];
+
+  if (postsNeeded > 0 && daysLeft > 0) {
+    const dailyPace = Math.ceil(postsNeeded / Math.min(daysLeft, 7));
+    lines.push(`🎯 Target: *${dailyPace} posts/day* to stay on track`);
+    lines.push('');
+  }
+
+  for (let d = 0; d < 7; d++) {
+    const date = new Date(now.getTime() + d * 86_400_000);
+    const dayName = dayNames[date.getDay()];
+    const dateStr = date.toISOString().slice(5, 10); // MM-DD
+    const hookIdx = d % Math.max(1, topHooks.length);
+    const speakerIdx = d % Math.max(1, topSpeakers.length);
+    const hook = topHooks[hookIdx]?.hook ?? 'question-hook';
+    const speaker = topSpeakers[speakerIdx]?.speaker ?? 'TBD';
+    const hookPct = topHooks[hookIdx] ? Math.round(topHooks[hookIdx].avg * 100) : 0;
+    const timeSlot = bestTimes[d % Math.max(1, bestTimes.length)]?.label ?? '12:00';
+
+    const dayIcon = d === 0 ? '📌' : '📅';
+    lines.push(`${dayIcon} *${dayName} ${dateStr}* — post at *${timeSlot}*`);
+    lines.push(`   🎤 ${speaker} · 🪝 ${hook} (${hookPct}%)`);
+    if (d === 0) lines.push('   ⬆️ *TODAY — film this first!*');
+    lines.push('');
+  }
+
+  // Summary tips
+  lines.push('💡 *Tips:*');
+  if (topHooks.length > 0) {
+    lines.push(`• Best hook: *${topHooks[0].hook}* (${Math.round(topHooks[0].avg * 100)}% avg)`);
+  }
+  if (topSpeakers.length > 0) {
+    lines.push(`• Best speaker: *${topSpeakers[0].speaker}* (${Math.round(topSpeakers[0].avg * 100)}% avg)`);
+  }
+  if (bestTimes.length > 0) {
+    lines.push(`• Best time: *${bestTimes[0].label}*`);
+  }
+  lines.push(`• Use /queue to pick ready videos`);
+  lines.push(`• Use /record after posting to track`);
+
+  return lines.join('\n');
 }
 
 // ─── Command router ───────────────────────────────────────────────────
@@ -3468,6 +3587,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/export':      response = cmdExport(cmdArgs);       break;
     case '/weeklyreport': response = cmdWeeklyReport();       break;
     case '/speakertest': response = cmdSpeakerTest();        break;
+    case '/contentplan': response = cmdContentPlan();        break;
     case '/help':        response = cmdHelp();        break;
     default:
       response = `Unknown command: \`${cmdName}\`\n\n${cmdHelp()}`;
