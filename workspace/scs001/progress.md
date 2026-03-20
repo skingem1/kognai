@@ -3704,3 +3704,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (complex telegram bot modification)
 - Issues: None.
 - Timestamp: 2026-03-20T14:25:00Z
+
+## Sprint 420 — Pipeline Smart Throttle (Direct Write)
+- Status: PASS
+- Commit: cb31f15
+- Files created: workspace/sprints/sprint-420.json
+- Files modified: agents/scs001-orchestrator/run-pipeline.ts
+- Tasks completed:
+  - 420-01: Added getReadyQueueDepth() function and queue depth check before pipeline execution. Default threshold 80 clips. Configurable via PIPELINE_QUEUE_THRESHOLD env. Checks publish-ledger minus posted/archived, verifies captioned MP4 exists.
+- Validation: tsc --noEmit PASS
+- Swarm used: no (pipeline runner modification)
+- Issues: None.
+- Timestamp: 2026-03-20T14:35:00Z
