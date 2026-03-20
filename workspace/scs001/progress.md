@@ -2602,3 +2602,16 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (single file)
 - Issues: None. This test directly validates the May 14 Full Alpha Gate question: "does memory work?"
 - Timestamp: 2026-03-20T01:55:00Z
+
+## Sprint 322 — Stripe Readiness Checks (Direct Write)
+- Status: PASS
+- Commit: ea92a19
+- Files created: workspace/sprints/sprint-322.json
+- Files modified: scripts/scs001/health-api.ts, scripts/scs001/gate-urgency-alert.ts
+- Tasks completed:
+  - 322-01: health-api.ts — added getStripeReadiness() function (checks 7 Stripe env vars), /health/stripe endpoint (200 if ready, 503 if not), added STRIPE_WEBHOOK_PORT + TIKTOK_ACCESS_TOKEN to env check. Stripe object now included in /health response.
+  - 322-02: gate-urgency-alert.ts — added Stripe readiness section to daily alert. Shows ✅ Ready / ❌ Not Ready with missing vars listed. Added "Configure Stripe env vars" action item when not ready.
+- Validation: npx tsc --noEmit PASS (clean compile)
+- Swarm used: no (surgical edits to 2 existing files)
+- Issues: None. STRIPE_WEBHOOK_PORT still missing from .env (human action).
+- Timestamp: 2026-03-20T02:10:00Z
