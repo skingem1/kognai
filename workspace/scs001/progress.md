@@ -4163,3 +4163,14 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (small feature)
 - Issues: CEO_TELEGRAM_BOT_TOKEN detected as missing because env var name is TELEGRAM_BOT_TOKEN in some configs — non-blocking
 - Timestamp: 2026-03-20T10:45:00Z
+
+## Sprint 457 — TTS-REAL: TTS Integration Test
+- Status: PASS
+- Commit: e540548
+- Files created: scripts/scs001/test-tts.ts, workspace/sprints/sprint-457.json
+- Tasks completed:
+  - 457-01: Created test-tts.ts — tests both ElevenLabs API + local macOS say TTS. Generates sample audio, reports cost/duration/latency
+- Validation: Local TTS PASS (6.7s MP3, 106KB, $0.00, 771ms). ElevenLabs: ELEVENLABS_API_KEY not set (human action)
+- Swarm used: no (test script)
+- Issues: ElevenLabs requires API key setup by human. Local TTS is sufficient for Apr 7 gate
+- Timestamp: 2026-03-20T11:00:00Z
