@@ -1,0 +1,44 @@
+{
+  "sprint_id": "sprint-311",
+  "title": "Phase 1 Go-Live Preflight — posting readiness, gate alert, Stripe validation",
+  "description": "Three production-readiness scripts: (1) posting preflight checker validates all env vars and queued videos, (2) gate urgency Telegram alert sends daily countdown to operator, (3) Stripe go-live validator confirms keys work and reports status.",
+  "source": "auto — Phase 1: Apr 7 kill switch urgency, 0/30 posts",
+  "tasks": [
+    {
+      "id": "311-01",
+      "title": "Posting preflight checker — validate all env vars and queued videos",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-311",
+      "deliverables": { "code": ["scripts/scs001/posting-preflight.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "311-02",
+      "title": "Gate urgency Telegram alert — send daily countdown to operator",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-311",
+      "deliverables": { "code": ["scripts/scs001/gate-urgency-alert.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "311-03",
+      "title": "Stripe go-live validator — verify keys and report status",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-311",
+      "deliverables": { "code": ["scripts/scs001/stripe-validator.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
