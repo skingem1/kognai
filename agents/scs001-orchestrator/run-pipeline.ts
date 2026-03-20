@@ -2,14 +2,72 @@
 // SCS-001 Pipeline Runner — Executes orchestrator, saves report, notifies via Telegram
 // Usage: npx ts-node agents/scs001-orchestrator/run-pipeline.ts [mock|live]
 
-import { writeFileSync, mkdirSync, existsSync } from 'fs';
+import { writeFileSync, readFileSync, mkdirSync, existsSync, readdirSync } from 'fs';
+import { join } from 'path';
 import { SCS001Orchestrator } from './index';
 import { notifyPipelineComplete, notifyPipelineError } from './notifier';
 import { logPipelineMetric } from './metrics-logger';
 import { DedupLedger } from './dedup-ledger';
 
+// Sprint 420: Queue depth check — skip pipeline if queue is saturated
+const QUEUE_THRESHOLD = parseInt(process.env.PIPELINE_QUEUE_THRESHOLD || '80', 10);
+const CAPTIONED_DIR = join(process.cwd(), 'workspace', 'scs001', 'captioned-output');
+const LEDGER_PATH = join(process.cwd(), 'workspace', 'scs001', 'publish-ledger.jsonl');
+const MANUAL_PATH = join(process.cwd(), 'workspace', 'scs001', 'manual-posts.jsonl');
+const ARCHIVE_PATH = join(process.cwd(), 'workspace', 'scs001', 'archived-videos.json');
+
+function getReadyQueueDepth(): number {
+  // Count unposted, unarchived entries in publish ledger that have captioned MP4s
+  const postedIds = new Set<string>();
+  const archivedIds = new Set<string>();
+
+  if (existsSync(MANUAL_PATH)) {
+    for (const line of readFileSync(MANUAL_PATH, 'utf-8').split('\n')) {
+      if (!line.trim()) continue;
+      try { const e = JSON.parse(line); if (e.video_id) postedIds.add(e.video_id); } catch {}
+    }
+  }
+
+  if (existsSync(ARCHIVE_PATH)) {
+    try {
+      const data = JSON.parse(readFileSync(ARCHIVE_PATH, 'utf-8'));
+      if (Array.isArray(data.ids)) for (const id of data.ids) archivedIds.add(id);
+    } catch {}
+  }
+
+  let readyCount = 0;
+  if (existsSync(LEDGER_PATH)) {
+    for (const line of readFileSync(LEDGER_PATH, 'utf-8').split('\n')) {
+      if (!line.trim()) continue;
+      try {
+        const e = JSON.parse(line);
+        if (!e.video_id || postedIds.has(e.video_id) || archivedIds.has(e.video_id)) continue;
+        // Check if captioned MP4 exists
+        if (existsSync(CAPTIONED_DIR)) {
+          const files = readdirSync(CAPTIONED_DIR);
+          if (files.some(f => f.startsWith(e.video_id) && f.endsWith('.mp4'))) {
+            readyCount++;
+          }
+        }
+      } catch {}
+    }
+  }
+
+  return readyCount;
+}
+
 async function main(): Promise<void> {
   const mode = (process.argv[2] === 'live' ? 'live' : 'mock') as 'mock' | 'live';
+
+  // Sprint 420: Smart throttle — check queue depth before running
+  const queueDepth = getReadyQueueDepth();
+  if (queueDepth >= QUEUE_THRESHOLD) {
+    console.log(`[Runner] Queue depth ${queueDepth} >= threshold ${QUEUE_THRESHOLD} — skipping pipeline run.`);
+    console.log(`[Runner] Use PIPELINE_QUEUE_THRESHOLD env to adjust. Post content to reduce queue.`);
+    return;
+  }
+  console.log(`[Runner] Queue depth ${queueDepth}/${QUEUE_THRESHOLD} — proceeding with pipeline run.`);
+
   const orchestrator = new SCS001Orchestrator(mode);
   const report = await orchestrator.run();
 

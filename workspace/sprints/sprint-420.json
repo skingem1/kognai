@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-420",
+  "title": "Pipeline smart throttle — skip runs when queue is full",
+  "description": "Add queue depth check to pipeline runner. If >80 ready-to-post clips exist, skip the run and log why. Saves API costs when queue is already saturated.",
+  "source": "auto — 102 items in queue, pipeline adding ~40/day, wasting compute on InsightAgent cloud calls",
+  "tasks": [
+    {
+      "id": "420-01",
+      "title": "Add queue depth check to run-pipeline.ts with configurable threshold",
+      "type": "enhancement",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-420",
+      "deliverables": { "code": ["agents/scs001-orchestrator/run-pipeline.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
