@@ -1,0 +1,40 @@
+{
+  "sprint_id": "sprint-591",
+  "title": "INFRA — Sprint queue auto-replenisher for autonomous loop",
+  "description": "Create a script that generates fresh sprint queue items when the queue runs dry. Analyzes codebase state, watchdog alerts, and pipeline gaps to produce 10 actionable queue items. Also adds /replenish Telegram command.",
+  "source": "queue-empty-fallback",
+  "tasks": [
+    {
+      "id": "591-01",
+      "title": "Create scripts/replenish-sprint-queue.ts — analyze state and generate queue items",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/replenish-sprint-queue.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-591",
+      "deliverables": {
+        "code": ["scripts/replenish-sprint-queue.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "591-02",
+      "title": "Add cmdReplenish to cmd-management.ts and register in telegram-bot.ts",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/telegram-commands/cmd-management.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-591",
+      "deliverables": {
+        "code": ["scripts/telegram-commands/cmd-management.ts", "scripts/telegram-bot.ts"],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ]
+}

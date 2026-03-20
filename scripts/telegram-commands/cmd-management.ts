@@ -1656,3 +1656,28 @@ export function cmdStatus(): string {
 
   return lines.join('\n');
 }
+
+// Sprint 591: /replenish — auto-generate sprint queue items when queue is empty
+export function cmdReplenish(): string {
+  try {
+    const output = execSync(
+      'npx ts-node --transpile-only scripts/replenish-sprint-queue.ts',
+      { cwd: ROOT, timeout: 30000, encoding: 'utf-8', env: { ...process.env, REPLENISH_DRY_RUN: '0' } }
+    );
+    const lines = output.trim().split('\n').filter(l => l.trim());
+    const itemLines = lines.filter(l => l.includes('Sprint ') && l.includes(':'));
+    if (itemLines.length === 0 && output.includes('No replenishment needed')) {
+      return '✅ Queue still has pending items. No replenishment needed.';
+    }
+    const summary = [
+      '🔄 *Sprint Queue Replenished*',
+      '',
+      ...itemLines.slice(0, 10).map(l => l.trim()),
+      '',
+      `_${itemLines.length} items added to sprint-queue.json_`,
+    ];
+    return summary.join('\n');
+  } catch (e: any) {
+    return `❌ Replenish failed: ${(e.message ?? '').slice(0, 200)}`;
+  }
+}

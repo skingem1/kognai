@@ -24,7 +24,7 @@ import { cmdPm2, cmdHealth, cmdTier, cmdSprint, cmdReport, cmdCrons, cmdTikTokAu
 import { cmdGate, cmdGoLive, cmdAudit, cmdStreak, cmdPace, cmdCalendar } from './telegram-commands/cmd-gate';
 import { cmdRecord, cmdQueue, cmdReview, cmdCaption, cmdPosted, cmdOnboard, cmdPipeline, cmdToday, cmdAnalytics, cmdDiversity, cmdThumbnail, cmdCompetitor, cmdStats, cmdQuality, cmdRadar } from './telegram-commands/cmd-content';
 import { cmdMetrics, cmdPostPlan, cmdYouTube, cmdAutoPost, cmdLastRun, cmdViral, cmdDashboard, cmdDigest, cmdSchedule, cmdLeaderboard, cmdBestTime, cmdHookTest, cmdHookStats, cmdViralStats, cmdQueueOpt, cmdGateAnalytics, cmdRevenue, cmdBatch, cmdPostLog, cmdXPost } from './telegram-commands/cmd-posting';
-import { cmdHistory, cmdArchive, cmdUnarchive, cmdStale, cmdPurge, cmdNote, cmdUpdateViews, cmdExport, cmdWeeklyReport, cmdSpeakerTest, cmdFilmKit, cmdContentPlan, cmdSuggest, cmdCompare, cmdScorecard, cmdProgress, cmdCleanup, cmdDedup, cmdTop30, cmdAbResults, cmdStatus } from './telegram-commands/cmd-management';
+import { cmdHistory, cmdArchive, cmdUnarchive, cmdStale, cmdPurge, cmdNote, cmdUpdateViews, cmdExport, cmdWeeklyReport, cmdSpeakerTest, cmdFilmKit, cmdContentPlan, cmdSuggest, cmdCompare, cmdScorecard, cmdProgress, cmdCleanup, cmdDedup, cmdTop30, cmdAbResults, cmdStatus, cmdReplenish } from './telegram-commands/cmd-management';
 import { cmdHelp } from './telegram-commands/cmd-help';
 
 // Sprint 496: Import extracted command modules (Part 2: N-Z + interactive)
@@ -190,6 +190,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/quality':    response = cmdQuality();             break;
     case '/xpost':      response = cmdXPost(cmdArgs);        break;
     case '/usage':      response = cmdUsage();               break;
+    case '/replenish':  response = cmdReplenish();           break;
     case '/help':        response = cmdHelp();        break;
     default:
       response = `Unknown command: \`${cmdName}\`\n\n${cmdHelp()}`;
