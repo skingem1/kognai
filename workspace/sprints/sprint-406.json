@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-406",
+  "title": "Actionable /dashboard with quick-action inline buttons",
+  "description": "Add inline keyboard buttons to /dashboard for one-tap access to most common actions: Deliver, Session, Gate, Achiri, Refresh.",
+  "source": "auto — reduce friction, make dashboard actionable not just informational",
+  "tasks": [
+    {
+      "id": "406-01",
+      "title": "Add inline buttons to /dashboard response",
+      "type": "enhancement",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-406",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

@@ -5114,6 +5114,12 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
       [{ text: '🎬 Pickup', callback_data: 'cmd:/pickup' }, { text: '📊 Gate', callback_data: 'cmd:/gate' }],
       [{ text: '📋 Digest', callback_data: 'cmd:/digest' }, { text: '🔄 Refresh', callback_data: 'cmd:/refresh' }],
     ],
+    // Sprint 406: Actionable dashboard
+    '/dashboard': [
+      [{ text: '📦 Deliver 1', callback_data: 'cmd:/deliver 1' }, { text: '🎬 Session', callback_data: 'cmd:/session' }],
+      [{ text: '📊 Gate', callback_data: 'cmd:/gate' }, { text: '🤖 Achiri', callback_data: 'cmd:/achiri' }],
+      [{ text: '🔄 Refresh', callback_data: 'cmd:/refresh' }, { text: '📈 A/B Results', callback_data: 'cmd:/abresults' }],
+    ],
   };
 
   const buttons = buttonMap[cmdName];
