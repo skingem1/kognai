@@ -2724,3 +2724,16 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (FP-007, multi-file)
 - Issues: Initial version treated publish-ledger as posted videos (0 slots). Fixed to only check manual-posts.jsonl — 14 slots generated correctly.
 - Timestamp: 2026-03-20T05:15:00Z
+
+## Sprint 332 — Auto-Caption Batch (Direct Write)
+- Status: PASS
+- Commit: fca5924
+- Files created: scripts/scs001/validate-today-captions.ts, workspace/sprints/sprint-332.json
+- Files modified: agents/telegram-bot/commands.ts, agents/telegram-bot/index.ts
+- Tasks completed:
+  - 332-01: /todaycaptions Telegram command — reads today's slots from 7-day posting schedule, loads viral hashtags, generates TikTok-ready captions per video as code blocks. Shows speaker, hook formula, viral score. Includes /record <video_id> 0 instruction for post-posting. Gate progress header.
+  - 332-02: validate-today-captions.ts — 12/12 tests pass (command export, routing, schedule dependency, TypeScript compilation).
+- Validation: 12/12 PASS
+- Swarm used: no (FP-007, multi-file)
+- Issues: None.
+- Timestamp: 2026-03-20T05:25:00Z
