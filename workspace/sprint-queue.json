@@ -1327,15 +1327,16 @@
       "sprint": 600,
       "title": "INFRA — PM2 process auto-healer — restart failed crons after 3 consecutive failures",
       "block": "INFRA",
-      "status": "pending",
+      "status": "skipped",
       "priority": "medium",
+      "_note": "Already exists: scripts/pm2-auto-healer.ts (Sprint 437)"
       "rationale": "Cron processes may fail silently. Auto-healer detects 3+ failures and restarts with Telegram alert."
     },
     {
       "sprint": 601,
       "title": "PHASE2 — Achiri conversation analytics dashboard data export",
       "block": "PHASE2",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "Achiri is at 100% readiness. Export conversation analytics (DAU, retention, topics) as JSON for future web dashboard."
     },
