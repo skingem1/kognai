@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-432",
+  "title": "Register Telegram bot commands for autocomplete menu",
+  "description": "Call setMyCommands on bot startup to register top 17 commands for Telegram's command autocomplete. Operator sees command suggestions when typing / in chat.",
+  "source": "auto — bot has 40+ commands but no autocomplete registration, making them hard to discover on mobile",
+  "tasks": [
+    {
+      "id": "432-01",
+      "title": "Add registerBotCommands() with setMyCommands on startup",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-432",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

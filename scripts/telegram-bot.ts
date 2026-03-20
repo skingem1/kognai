@@ -5624,12 +5624,44 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
 
 // ─── Polling loop ─────────────────────────────────────────────────────
 
+// Sprint 432: Register bot commands for Telegram autocomplete menu
+async function registerBotCommands(): Promise<void> {
+  const commands = [
+    { command: 'deliver', description: 'Send top videos for posting' },
+    { command: 'gate', description: 'Phase 1.5 gate countdown' },
+    { command: 'streak', description: 'Posting streak + pace' },
+    { command: 'queue', description: 'Unposted videos ranked by score' },
+    { command: 'today', description: 'Daily posting brief' },
+    { command: 'record', description: 'Record a manual TikTok post' },
+    { command: 'posted', description: 'Mark last video as posted' },
+    { command: 'digest', description: 'Morning digest: gate + pipeline' },
+    { command: 'autopost', description: 'Auto-post readiness status' },
+    { command: 'analytics', description: 'Content performance insights' },
+    { command: 'lastrun', description: 'Latest pipeline run report' },
+    { command: 'status', description: 'Full system status overview' },
+    { command: 'golive', description: 'Go-live readiness checklist' },
+    { command: 'revenue', description: 'Revenue dashboard + MRR' },
+    { command: 'schedule', description: 'Today\'s posting time slots' },
+    { command: 'quickstart', description: 'Post first video in 5 min' },
+    { command: 'help', description: 'List all commands' },
+  ];
+  try {
+    await telegramRequest('setMyCommands', { commands });
+    console.log(`[Bot] Registered ${commands.length} commands for autocomplete`);
+  } catch (err: any) {
+    console.warn(`[Bot] setMyCommands failed (non-fatal): ${err.message}`);
+  }
+}
+
 async function poll(): Promise<void> {
   let offset = loadOffset();
   let backoffMs = 1000;
 
   console.log(`[Bot] Starting Telegram bot — polling for updates (offset: ${offset})`);
   console.log(`[Bot] Owner chat ID: ${OWNER_CHAT_ID}`);
+
+  // Register autocomplete commands on startup
+  await registerBotCommands();
 
   while (true) {
     try {
