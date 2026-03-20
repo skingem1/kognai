@@ -1,0 +1,56 @@
+{
+  "report_id": "phase-1.5-gate-report",
+  "gate_name": "Phase 1.5 Decision Gate",
+  "gate_date": "2026-04-07",
+  "generated_at": "2026-03-20T10:53:45.637Z",
+  "is_gate_day": false,
+  "days_until_gate": 18,
+  "overall_status": "FAIL",
+  "criteria_passed": "2/4",
+  "criteria": [
+    {
+      "id": "post-count",
+      "name": "30 TikTok Posts",
+      "target": 30,
+      "actual": 0,
+      "pass": false
+    },
+    {
+      "id": "total-views",
+      "name": "500 Total Views",
+      "target": 500,
+      "actual": 0,
+      "pass": false,
+      "avg_per_post": 0
+    },
+    {
+      "id": "pipeline-operational",
+      "name": "Pipeline Producing Videos",
+      "target": "10+ in ledger",
+      "actual": 389,
+      "pass": true
+    },
+    {
+      "id": "monetization-ready",
+      "name": "Stripe Configured",
+      "target": "STRIPE_SECRET_KEY set",
+      "actual": "SET",
+      "pass": true
+    }
+  ],
+  "kill_switch": "NOT TRIGGERED",
+  "system_health": {
+    "smoke_test": "11/11 pass",
+    "commits": 963,
+    "pipeline_videos": 389,
+    "agents": 44,
+    "sprints_shipped": "487+"
+  },
+  "decision": "HOLD — 2 criteria not met. 18 days remaining to remediate.",
+  "next_actions": [
+    "Review remediation plan (workspace/gates/remediation-plan.json)",
+    "Prioritize posting",
+    "Re-run this report daily until gate day"
+  ],
+  "top_performers": []
+}

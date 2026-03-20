@@ -1,0 +1,89 @@
+{
+  "_note": "Phase 2 sprint planning seed — activated after April 7 gate PASS",
+  "generated": "2026-03-20",
+  "activation_condition": "Phase 1.5 gate PASS (30 posts + 500 views + pipeline operational)",
+  "phase2_overview": {
+    "name": "Phase 2 — Scale & Diversify",
+    "timeline": "April 2026 - June 2026",
+    "goals": [
+      "Scale SCS-001 to 100+ posts/month",
+      "Launch Achiri alpha (Apr 25)",
+      "First paying subscriber via Stripe",
+      "YouTube Shorts automated publishing",
+      "Multi-platform distribution (TikTok + YouTube + Instagram)"
+    ]
+  },
+  "sprint_blocks": [
+    {
+      "block": "LAUNCH",
+      "sprints": "498-502",
+      "description": "Execute Launch Strategy v1.0 — manifesto thread, X Space, ads campaign, landing page polish",
+      "tasks": [
+        "Manifesto thread final review + scheduling (15 posts)",
+        "X Space preparation + invite system",
+        "Landing page polish + waitlist form",
+        "X ads go-live (use workspace/launch/ads/ config)",
+        "GEO activation (llms.txt, JSON-LD live)"
+      ]
+    },
+    {
+      "block": "AUTOMATION",
+      "sprints": "503-507",
+      "description": "Automate posting pipeline — reduce human posting time to 0",
+      "tasks": [
+        "TikTok API resubmission (if not already approved)",
+        "YouTube Shorts auto-publish flow live test",
+        "Instagram Reels auto-format + Telegram delivery",
+        "PM2 scheduling operational (4x/day pipeline)",
+        "Auto-post confidence gate (only auto-post high-scoring videos)"
+      ]
+    },
+    {
+      "block": "MONETIZATION",
+      "sprints": "508-512",
+      "description": "First revenue — Stripe go-live, subscriber onboarding, usage tracking",
+      "tasks": [
+        "Stripe live mode activation",
+        "First real subscriber test",
+        "Onboarding flow (TikTok bio → kognai.ai/start → Telegram → trial → Stripe)",
+        "Usage dashboard for subscribers",
+        "Churn prevention (engagement alerts)"
+      ]
+    },
+    {
+      "block": "ACHIRI-ALPHA",
+      "sprints": "513-520",
+      "description": "Achiri alpha launch (Apr 25 gate)",
+      "tasks": [
+        "Achiri memory subsystem implementation",
+        "Cultural filter validation (Derja/French)",
+        "Alpha test group onboarding (waitlist → invite)",
+        "Safety harness live testing",
+        "Day-7 retention measurement (target: 25-30%)"
+      ]
+    },
+    {
+      "block": "QUALITY-V3",
+      "sprints": "521-525",
+      "description": "Video quality improvements based on real posting data",
+      "tasks": [
+        "A/B test analysis (which format wins?)",
+        "Winning format amplification",
+        "Hook formula optimization from view data",
+        "Competitor analysis feed integration",
+        "Video length optimizer calibration"
+      ]
+    }
+  ],
+  "phase2_gate": {
+    "name": "Phase 2 Gate",
+    "target_date": "2026-06-15",
+    "criteria": [
+      "100+ TikTok posts",
+      "5,000+ total views",
+      "First paying subscriber",
+      "Achiri alpha with 25% Day-7 retention",
+      "YouTube Shorts automated publishing live"
+    ]
+  }
+}

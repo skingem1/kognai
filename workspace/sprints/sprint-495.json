@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-495",
+  "title": "GATE — April 7 gate report + Phase 2 planning seed",
+  "description": "Generate formal gate report template. Since gate is 18 days away, build the report generator script that will produce the final report on gate day. Also seed Phase 2 sprint planning.",
+  "source": "queue — Sprint 495 GATE",
+  "tasks": [
+    {
+      "id": "495-01",
+      "title": "Create gate report generator script",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-495",
+      "deliverables": { "code": ["scripts/generate-gate-report.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "495-02",
+      "title": "Seed Phase 2 sprint plan skeleton",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-495",
+      "deliverables": { "code": ["workspace/gates/phase2-sprint-seed.json"], "tests": [], "docs": [] }
+    }
+  ]
+}
