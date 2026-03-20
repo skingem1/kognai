@@ -3813,3 +3813,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (surgical pipeline enhancement)
 - Issues: None.
 - Timestamp: 2026-03-20T16:50:00Z
+
+## Sprint 429 — Speaker Diversity Stats in /lastrun (Direct Write)
+- Status: PASS
+- Commit: a1b0428
+- Files created: workspace/sprints/sprint-429.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 429-01: Added speaker distribution, hook formula breakdown, and diversity percentage to /lastrun command. Filters experiments.jsonl by run_id. Shows unique speakers count, top 4, diversity %, and hook distribution.
+- Validation: tsc --noEmit PASS
+- Swarm used: no (single-command enhancement)
+- Issues: None.
+- Timestamp: 2026-03-20T17:05:00Z
