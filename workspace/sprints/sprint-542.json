@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-542",
+  "title": "INFRA — Queue replenish (543-546: hooks, content, cleanup, audit)",
+  "description": "Queue empty after Sprint 541. Added 4 sprints: hook formula improvements, content production, auto-cleanup in pipeline cron, diversity audit verification.",
+  "source": "queue-empty-replenish",
+  "tasks": [
+    {
+      "id": "542-01",
+      "title": "Add Sprints 543-546 to queue",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "workspace/sprint-queue.json",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-542",
+      "deliverables": { "code": ["workspace/sprint-queue.json"], "tests": [], "docs": [] }
+    }
+  ]
+}

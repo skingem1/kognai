@@ -1,6 +1,6 @@
 {
   "_note": "AUTHORITATIVE sprint execution order. The brief generator reads this and injects the first item as a MANDATORY directive, bypassing Qwen's recommendation. Pop items by setting status=done after each sprint ships. Human-maintained — edit to re-prioritise.",
-  "updated": "2026-03-20T19:10",
+  "updated": "2026-03-20T20:00",
   "owner": "Tarek (human)",
   "_plan_rationale": "Queue fixed 2026-03-20. Sprints 442-458 consumed by autonomous swarm. 10 items marked done (work completed). Remaining items have auto-sync guard in brief generator: consumed sprint numbers auto-skipped at runtime. 2 critical un-done items (SAFETY-SPLIT Part 2, progress.md update) re-added as Sprint 496-497 to avoid number collisions.",
   "queue": [
@@ -870,6 +870,47 @@
       "status": "done",
       "rationale": "Bot has been running 25h+. New commands (/produce N, /stats) added but bot not restarted. Restart via PM2, verify new commands respond, test /health.",
       "_note": "3 bugs fixed: PM2 script path, BOT_TOKEN env var, escaped quotes. Bot online and stable."
+    },
+    {
+      "sprint": 542,
+      "title": "INFRA — Queue replenish + next 5 sprints (543-546)",
+      "block": "INFRA",
+      "status": "done",
+      "_note": "Self-referential queue replenish.",
+      "priority": "high",
+      "rationale": "Queue empty after Sprint 541."
+    },
+    {
+      "sprint": 543,
+      "title": "QUALITY — Add 2 new hook formulas + rebalance hook weights",
+      "block": "VIDEO-QUALITY-V2",
+      "priority": "high",
+      "status": "pending",
+      "rationale": "Diversity audit showed 53% \"other\" hooks. Add \"countdown\" and \"hot-take\" formulas. Rebalance weights so no single formula exceeds 25%."
+    },
+    {
+      "sprint": 544,
+      "title": "CONTENT — Batch production: 10 videos with improved hooks + deliver",
+      "block": "CONTENT",
+      "priority": "high",
+      "status": "pending",
+      "rationale": "After hook rebalance, produce 10 videos to verify improved hook diversity. Deliver all."
+    },
+    {
+      "sprint": 545,
+      "title": "PIPELINE — Add cleanup step to pipeline-cron (auto-archive after each run)",
+      "block": "PIPELINE",
+      "priority": "medium",
+      "status": "pending",
+      "rationale": "Disk filled to 2.7GB before Sprint 540 cleanup. Add cleanup step to pipeline-cron.ts: after each run, call pipeline-cleanup.ts --keep 5 to auto-manage disk."
+    },
+    {
+      "sprint": 546,
+      "title": "INFRA — Run diversity audit + stats report, verify improvements",
+      "block": "INFRA",
+      "priority": "medium",
+      "status": "pending",
+      "rationale": "After hook improvements and more content, run diversity audit and stats report. Verify diversity score improved from 73/100."
     }
   ]
 }
