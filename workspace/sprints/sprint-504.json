@@ -1,0 +1,44 @@
+{
+  "sprint_id": "sprint-504",
+  "title": "STRIPE — Investigate webhook 2078 restarts + ensure stable payment flow",
+  "description": "Root cause: max_memory_restart=64M too low for ts-node (needs ~100-150MB). Fix PM2 config, add startup health check, verify checkout flow.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "504-01",
+      "title": "Fix PM2 max_memory_restart for stripe webhook (64M → 256M)",
+      "type": "fix",
+      "task_type": "config",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-504",
+      "deliverables": { "code": ["ecosystem.config.js"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "504-02",
+      "title": "Add startup health log with memory usage to stripe server",
+      "type": "feature",
+      "task_type": "observability",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-504",
+      "deliverables": { "code": ["agents/stripe/server.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "504-03",
+      "title": "Verify checkout flow works with current Stripe keys",
+      "type": "validation",
+      "task_type": "test",
+      "task_target": "local",
+      "agent": "supervisor",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-504",
+      "deliverables": { "code": [], "tests": [], "docs": [] }
+    }
+  ]
+}

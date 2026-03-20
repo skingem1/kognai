@@ -50,8 +50,19 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(PORT, '127.0.0.1', () => {
-  process.stdout.write(`[stripe-server] Webhook listener on http://127.0.0.1:${PORT}/webhook\n`);
+  const mem = process.memoryUsage();
+  const rss = (mem.rss / 1024 / 1024).toFixed(1);
+  const heap = (mem.heapUsed / 1024 / 1024).toFixed(1);
+  process.stdout.write(`[stripe-server] Webhook listener on http://127.0.0.1:${PORT}/webhook (RSS: ${rss}MB, heap: ${heap}MB)\n`);
   process.stdout.write(`[stripe-server] Dev: stripe listen --forward-to localhost:${PORT}/webhook\n`);
+});
+
+server.on('error', (err: NodeJS.ErrnoException) => {
+  if (err.code === 'EADDRINUSE') {
+    process.stderr.write(`[stripe-server] Port ${PORT} in use — another instance running? Exiting.\n`);
+    process.exit(1);
+  }
+  throw err;
 });
 
 process.on('SIGTERM', () => server.close());
