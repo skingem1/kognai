@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-612",
+  "title": "INFRA — Update /help with Sprint 603-611 commands",
+  "description": "Add /stockpile, /inventory, /batchdeliver, /achiridata to /help command listing.",
+  "source": "housekeeping",
+  "tasks": [
+    {
+      "id": "612-01",
+      "title": "Add new commands to cmd-help.ts",
+      "type": "enhancement",
+      "task_type": "infra",
+      "task_target": "scripts/telegram-commands/cmd-help.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-612"
+    }
+  ]
+}

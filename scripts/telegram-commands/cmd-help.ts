@@ -38,6 +38,9 @@ export function cmdHelp(): string {
     `/onboard   — First-time posting walkthrough\n` +
     `/pipeline  — Content pipeline inventory & health\n` +
     `/produce   — Produce video with local TTS ($0.00)\n` +
+    `/stockpile — Batch-produce N videos (multiformat pipeline)\n` +
+    `/inventory — Video inventory: unique topics + gate status\n` +
+    `/batchdeliver — Send N unposted videos to Telegram\n` +
     `/refresh   — Trigger new pipeline run (2-5 min)\n` +
     `/tiktokauth — TikTok OAuth setup guide\n` +
     `/today     — Daily posting brief + recommendations\n` +
@@ -49,6 +52,7 @@ export function cmdHelp(): string {
     `/leaderboard — Speaker performance rankings\n` +
     `/updateviews — Update view count for a posted video\n` +
     `/achiri     — Achiri alpha readiness status\n` +
+    `/achiridata — Achiri analytics dashboard data\n` +
     `/digest     — Daily digest: gate + queue + Stripe\n` +
     `/metrics    — Pipeline performance metrics\n` +
     `/pace       — Posting velocity & gate projection\n` +
