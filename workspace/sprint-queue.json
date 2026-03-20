@@ -1420,6 +1420,14 @@
       "status": "done",
       "priority": "critical",
       "rationale": "batch-produce.ts for multi-run stockpiling, /stockpile Telegram command. 9 unique videos in inventory."
+    },
+    {
+      "sprint": 605,
+      "title": "GATE-PUSH — Extended explainer format (25s) + topic force-refresh",
+      "block": "GATE-PUSH",
+      "status": "done",
+      "priority": "critical",
+      "rationale": "Explainers extended from 12s to 25s. Topic dedup cache force-refresh for batch production. 5/5 videos validated."
     }
   ]
 }
