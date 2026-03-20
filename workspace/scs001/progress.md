@@ -2313,3 +2313,16 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (multi-file architectural fix)
 - Issues: LLM scoring non-determinism means ~6/22 clips still vary between runs (expected — different clips qualify).
 - Timestamp: 2026-03-20T04:25:00Z
+
+## Sprint 300 — Ledger Maintenance: Auto-Dedup + Cleanup (Direct Write)
+- Status: PASS
+- Commit: 7265188
+- Files created: workspace/sprints/sprint-300.json
+- Files modified: agents/scs001-orchestrator/dedup-ledger.ts, agents/scs001-orchestrator/run-pipeline.ts
+- Tasks completed:
+  - 300-01: Cleaned publish-ledger.jsonl — 1176→368 entries (808 duplicates removed).
+  - 300-02: Added compact() method to DedupLedger — removes duplicate video_ids keeping first occurrence. Added auto-compact to run-pipeline.ts post-run cleanup (non-fatal).
+- Validation: TypeScript clean compile. Ledger cleaned successfully.
+- Swarm used: no (2 files modified)
+- Issues: publish-ledger.jsonl is gitignored (runtime data), so cleanup only applies to local machine.
+- Timestamp: 2026-03-20T04:35:00Z
