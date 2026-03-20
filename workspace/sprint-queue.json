@@ -384,7 +384,7 @@
       "sprint": 484,
       "title": "POSTING — X/Twitter video posting integration",
       "block": "CROSS-PLATFORM",
-      "status": "pending",
+      "status": "done",
       "priority": "low",
       "rationale": "X API v2 allows video uploads. Build integration: (1) OAuth2 flow, (2) Video upload, (3) Tweet with video + caption. Can be automated (no app review needed like TikTok). Wire into /publish multi-platform flow."
     },
