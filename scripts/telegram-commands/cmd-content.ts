@@ -824,3 +824,59 @@ export function cmdRadar(): string {
     '_Run /radar to refresh • Topics feed into pipeline-cron_',
   ].join('\n');
 }
+
+// Sprint 597: /backtest — compare hook formulas by QC pass rate and viral score
+export function cmdBacktest(): string {
+  const expPath = path.join(ROOT, 'workspace', 'scs001', 'experiments.jsonl');
+  if (!fs.existsSync(expPath)) {
+    return '🧪 *Backtest* — no experiments.jsonl found.';
+  }
+
+  const entries = readLines(expPath) as Array<{
+    hook_formula?: string;
+    qc_passed?: boolean;
+    partial_viral_score?: number;
+    clip_id?: string;
+  }>;
+
+  if (entries.length === 0) {
+    return '🧪 *Backtest* — no experiment data.';
+  }
+
+  // Aggregate by hook formula
+  const stats: Record<string, { count: number; passed: number; scores: number[]; ids: string[] }> = {};
+  for (const e of entries) {
+    const formula = e.hook_formula ?? 'unknown';
+    if (!stats[formula]) stats[formula] = { count: 0, passed: 0, scores: [], ids: [] };
+    stats[formula].count++;
+    if (e.qc_passed) stats[formula].passed++;
+    if (e.partial_viral_score != null) stats[formula].scores.push(e.partial_viral_score);
+    if (e.clip_id) stats[formula].ids.push(e.clip_id);
+  }
+
+  // Sort by QC pass rate (desc), then by count (desc)
+  const sorted = Object.entries(stats)
+    .sort((a, b) => {
+      const rateA = a[1].count > 0 ? a[1].passed / a[1].count : 0;
+      const rateB = b[1].count > 0 ? b[1].passed / b[1].count : 0;
+      if (rateB !== rateA) return rateB - rateA;
+      return b[1].count - a[1].count;
+    });
+
+  const lines: string[] = ['🧪 *Hook Formula Backtest*', ''];
+
+  for (const [formula, s] of sorted.slice(0, 10)) {
+    const passRate = s.count > 0 ? Math.round((s.passed / s.count) * 100) : 0;
+    const avgScore = s.scores.length > 0
+      ? (s.scores.reduce((a, b) => a + b, 0) / s.scores.length).toFixed(2)
+      : 'n/a';
+    const icon = passRate >= 80 ? '🟢' : passRate >= 50 ? '🟡' : '🔴';
+    lines.push(`${icon} *${formula}*`);
+    lines.push(`  QC: ${s.passed}/${s.count} (${passRate}%) | Viral: ${avgScore} | n=${s.count}`);
+  }
+
+  lines.push('');
+  lines.push(`_${entries.length} experiments | ${sorted.length} formulas_`);
+
+  return lines.join('\n');
+}

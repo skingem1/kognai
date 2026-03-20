@@ -1,0 +1,24 @@
+{
+  "sprint_id": "sprint-597",
+  "title": "QUALITY — /backtest command for hook formula comparison",
+  "description": "Add /backtest command that reads experiments.jsonl and compares hook formulas by QC pass rate, viral score, and usage count. Helps operator pick the best hooks.",
+  "source": "sprint-queue",
+  "tasks": [
+    {
+      "id": "597-01",
+      "title": "Add cmdBacktest to cmd-content.ts and register in telegram-bot.ts",
+      "type": "feature",
+      "task_type": "quality",
+      "task_target": "scripts/telegram-commands/cmd-content.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-597",
+      "deliverables": {
+        "code": ["scripts/telegram-commands/cmd-content.ts", "scripts/telegram-bot.ts"],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ]
+}
