@@ -3620,3 +3620,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (multi-module integration)
 - Issues: None.
 - Timestamp: 2026-03-21T00:40:00Z
+
+## Sprint 413 — Freshness-Weighted Delivery (Direct Write)
+- Status: PASS
+- Commit: 0fd6928
+- Files created: workspace/sprints/sprint-413.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 413-01: Added freshnessScore() helper with time-decay (15% per day after day 3). Integrated into /deliver and /pickup sorting. Shows content age in delivery messages. Ensures trending content is posted while still relevant.
+- Validation: tsc --noEmit PASS
+- Swarm used: no (algorithmic logic in large file)
+- Issues: None.
+- Timestamp: 2026-03-20T13:00:00Z
