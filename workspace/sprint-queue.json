@@ -597,7 +597,7 @@
       "sprint": 511,
       "title": "INFRA — Queue replenish + next 5 sprints (511-515)",
       "block": "INFRA",
-      "status": "pending",
+      "status": "done",
       "priority": "high",
       "rationale": "Queue empty after Sprint 510. Add sprints targeting: mock Insight Agent fix (increase briefs/run), more content production, Telegram /produce command test, dashboard health, Supabase event bus test."
     },
