@@ -993,8 +993,9 @@
       "title": "QUALITY — Update diversity audit classifier to match all 10 hook formulas",
       "block": "VIDEO-QUALITY-V2",
       "priority": "medium",
-      "status": "pending",
-      "rationale": "audit-content-diversity.ts classifyHook() only matches 7 patterns. Add countdown and hot_take. This will reduce the \"other\" bucket and give more accurate diversity scoring."
+      "status": "done",
+      "rationale": "audit-content-diversity.ts classifyHook() only matches 7 patterns. Add countdown and hot_take. This will reduce the \"other\" bucket and give more accurate diversity scoring.",
+      "_note": "Classifier updated. other: 53%→22%. Diversity: 91→97/100."
     },
     {
       "sprint": 556,

@@ -87,14 +87,22 @@ function scanTopics(): TopicInfo[] {
 
 function classifyHook(hook: string): string {
   const h = hook.toLowerCase();
-  if (h.includes('what if')) return 'what-if';
-  if (h.includes('did you know')) return 'did-you-know';
-  if (h.includes('nobody')) return 'nobody-talking';
-  if (h.includes('changed everything')) return 'changed-everything';
-  if (h.includes('broke') || h.includes('breaking')) return 'breaking';
-  if (h.includes('wrong about')) return 'everyone-wrong';
-  if (h.includes('3... 2... 1') || h.includes('countdown')) return 'countdown';
-  if (h.includes('secret') || h.includes('truth')) return 'secret-truth';
+  // Match all 10 hook formulas from scs001-insight
+  if (h.includes('this is why') || h.includes('wait until')) return 'curiosity_gap';
+  if (h.includes('unpopular opinion') || h.includes('wrong about')) return 'contrarian';
+  if (h.includes('expert') || h.includes('research confirm')) return 'authority';
+  if (h.includes('insider') || h.includes('hidden truth') || h.includes('secret') || h.includes('truth')) return 'secret';
+  if (h.includes('found out') || h.includes('story behind')) return 'story';
+  if (h.includes('did you know') || h.includes('why is nobody asking')) return 'question';
+  if (h.includes('need to know') || h.includes('now') || h.includes('ticking')) return 'urgency';
+  if (h.includes('data proves') || h.includes('evidence')) return 'proof';
+  if (h.includes('3... 2... 1') || h.includes('in 5 seconds') || h.includes('countdown')) return 'countdown';
+  if (h.includes('hot take') || h.includes('controversial') || h.includes('biggest mistake')) return 'hot_take';
+  // Legacy patterns
+  if (h.includes('what if')) return 'curiosity_gap';
+  if (h.includes('nobody')) return 'contrarian';
+  if (h.includes('broke') || h.includes('breaking')) return 'urgency';
+  if (h.includes('changed everything')) return 'proof';
   return 'other';
 }
 

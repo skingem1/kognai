@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-555",
+  "title": "QUALITY — Update diversity classifier to match all 10 hook formulas",
+  "description": "Updated classifyHook() in audit-content-diversity.ts to match all 10 formulas. 'other' bucket: 53%→22%. Diversity score: 91→97/100.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "555-01",
+      "title": "Update hook classifier patterns",
+      "type": "feature",
+      "task_type": "quality",
+      "task_target": "scripts/scs001/audit-content-diversity.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-555",
+      "deliverables": { "code": ["scripts/scs001/audit-content-diversity.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

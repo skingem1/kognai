@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-03-20T17:22:42.073Z",
-  "total_videos": 22,
-  "unique_hooks": 18,
+  "timestamp": "2026-03-20T18:42:54.414Z",
+  "total_videos": 18,
+  "unique_hooks": 17,
   "hook_types": {
-    "other": 7,
-    "did-you-know": 1,
-    "secret-truth": 10,
-    "nobody-talking": 3,
-    "what-if": 1
+    "contrarian": 1,
+    "secret": 10,
+    "other": 4,
+    "curiosity_gap": 2,
+    "urgency": 1
   },
   "unique_topics": 15,
   "topics": [
@@ -29,8 +29,8 @@
   ],
   "pipeline_runs": 5,
   "deliveries": {
-    "auto": 93,
+    "auto": 99,
     "telegram": 11
   },
-  "diversity_score": 91
+  "diversity_score": 97
 }
