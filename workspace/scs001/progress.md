@@ -2553,3 +2553,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (multi-file feature)
 - Issues: Quality scores low on test data (expected pre-alpha — test conversations lack cultural context). Real alpha users should score higher.
 - Timestamp: 2026-03-20T01:25:00Z
+
+## Sprint 318 — Achiri Engagement in Daily Digest (Direct Write)
+- Status: PASS
+- Commit: 4b61c38
+- Files created: workspace/sprints/sprint-318.json
+- Files modified: scripts/daily-digest.ts
+- Tasks completed:
+  - 318-01: Added getAchiriEngagement() to daily-digest.ts — reads daily-counts.json + error-log.jsonl, filters test users, computes DAU today, total users, returning users, retention %, 24h error count. Enhanced Achiri Alpha section in digest with live engagement metrics.
+- Validation: DIGEST_DRY_RUN=1 — PASS. Shows DAU 0, 3 total users, 0% retention, no errors. All metrics render correctly.
+- Swarm used: no (surgical edit to existing file)
+- Issues: None.
+- Timestamp: 2026-03-20T01:30:00Z
