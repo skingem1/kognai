@@ -330,6 +330,16 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Issues: pre-existing type error in scs001-editing/index.ts (unrelated)
 - Timestamp: 2026-03-20T19:15:00Z
 
+## Sprint 501 — FIX
+- Status: PASS
+- Commit: 28ee479
+- Files modified: agents/scs001-editing/index.ts, scripts/scs001/rapidapi-tiktok-client.ts
+- Test: tsc --noEmit PASS (full pipeline compiles clean)
+- Pipeline: Type errors fixed — scs001-editing missing segment colors + rapidapi-client untyped json
+- Swarm used: no (surgical type fixes)
+- Issues: mock pipeline run in progress (Ollama-dependent, takes >2min)
+- Timestamp: 2026-03-20T19:25:00Z
+
 ## Critical Gaps
 
 1. **0/30 TikTok posts** — April 7 gate requires 30 posts
