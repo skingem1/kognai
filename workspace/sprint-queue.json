@@ -17,7 +17,7 @@
       "sprint": 496,
       "title": "SAFETY \u2014 Split telegram-bot.ts Part 2: commands N-Z + router refactor",
       "block": "SAFETY-SPLIT",
-      "status": "pending",
+      "status": "done",
       "priority": "critical",
       "rationale": "Continue from Sprint 455 (Part 1). Extract remaining commands: /notify, /override, /pickup, /pipeline, /publish, /purge, /queue, /reload, /review, /run, /schedule, /send-video, /session, /shutdown, /smoke, /stale, /status, /subscribers, /topics, /version. telegram-bot.ts should become <500 lines (imports + router + startup). Verify all commands respond. Delete agents/telegram-bot/commands.ts (172KB dead code) if confirmed unused."
     },
