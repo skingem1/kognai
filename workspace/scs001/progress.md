@@ -2676,3 +2676,14 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (multi-file feature)
 - Issues: None.
 - Timestamp: 2026-03-20T03:15:00Z
+
+## Sprint 328 — Achiri Alpha Launch Notify (Direct Write)
+- Status: PASS
+- Commit: aa4bec9
+- Files created: scripts/achiri/alpha-launch-notify.ts, workspace/sprints/sprint-328.json
+- Tasks completed:
+  - 328-01: alpha-launch-notify.ts — reads waitlist.jsonl, sends personalized welcome message to each user. Multilingual welcome (English + Darija). Logs to alpha-notify-log.jsonl. Idempotent (skips already-notified). Supports --dry-run and --count modes. 500ms delay between messages to avoid rate limiting.
+- Validation: npx tsc --noEmit PASS
+- Swarm used: no (single file)
+- Issues: None. Run when ready: `npx ts-node scripts/achiri/alpha-launch-notify.ts`
+- Timestamp: 2026-03-20T03:25:00Z
