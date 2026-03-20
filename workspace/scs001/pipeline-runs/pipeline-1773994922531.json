@@ -1,0 +1,89 @@
+{
+  "run_id": "pipeline-1773994922531",
+  "started_at": "2026-03-20T08:22:02.532Z",
+  "finished_at": "2026-03-20T08:23:56.479Z",
+  "mode": {
+    "mock": true,
+    "dryRun": true,
+    "cloud": false,
+    "limit": 3
+  },
+  "steps": [
+    {
+      "step": "trend",
+      "status": "pass",
+      "duration_ms": 0,
+      "cost_usd": 0,
+      "items_in": 0,
+      "items_out": 3
+    },
+    {
+      "step": "discovery",
+      "status": "pass",
+      "duration_ms": 1,
+      "cost_usd": 0,
+      "items_in": 3,
+      "items_out": 6
+    },
+    {
+      "step": "clip-detection",
+      "status": "pass",
+      "duration_ms": 113942,
+      "cost_usd": 0,
+      "items_in": 6,
+      "items_out": 12
+    },
+    {
+      "step": "insight",
+      "status": "pass",
+      "duration_ms": 0,
+      "cost_usd": 0,
+      "items_in": 12,
+      "items_out": 2
+    },
+    {
+      "step": "script",
+      "status": "pass",
+      "duration_ms": 2,
+      "cost_usd": 0,
+      "items_in": 2,
+      "items_out": 2
+    },
+    {
+      "step": "llm-rewrite",
+      "status": "pass",
+      "duration_ms": 0,
+      "cost_usd": 0,
+      "items_in": 2,
+      "items_out": 2
+    },
+    {
+      "step": "editing",
+      "status": "skip",
+      "duration_ms": 0,
+      "cost_usd": 0,
+      "items_in": 2,
+      "items_out": 2
+    },
+    {
+      "step": "tts",
+      "status": "pass",
+      "duration_ms": 0,
+      "cost_usd": 0.32189999999999996,
+      "items_in": 2,
+      "items_out": 2
+    },
+    {
+      "step": "captions",
+      "status": "pass",
+      "duration_ms": 0,
+      "cost_usd": 0,
+      "items_in": 2,
+      "items_out": 2
+    }
+  ],
+  "total_duration_ms": 113947,
+  "total_cost_usd": 0.32189999999999996,
+  "videos_produced": 2,
+  "summary": "8 passed, 0 failed, 1 skipped — 2 videos — $0.3219 — 113.9s"
+}

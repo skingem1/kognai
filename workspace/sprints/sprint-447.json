@@ -1,0 +1,44 @@
+{
+  "sprint_id": "sprint-447",
+  "title": "VIDEO-E2E — Full pipeline runner with step timing and cost logging",
+  "description": "Create a unified end-to-end pipeline runner that chains all SCS-001 stages: Trend→Discovery→ClipDetection→Script→LLMRewrite→Editing→AudioMix→CaptionOverlay. Logs timing and cost per step. Supports --mock and --dry-run modes. Validates output at each stage.",
+  "source": "queue — Sprint 447 VIDEO-E2E block",
+  "tasks": [
+    {
+      "id": "447-01",
+      "title": "Create run-full-pipeline.ts — unified E2E pipeline runner with step timing",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-447",
+      "deliverables": { "code": ["scripts/scs001/run-full-pipeline.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "447-02",
+      "title": "Create validate-full-pipeline.ts — validates E2E output structure",
+      "type": "test",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-447",
+      "deliverables": { "code": ["scripts/scs001/validate-full-pipeline.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "447-03",
+      "title": "Dry-run validation — ensure pipeline runs in mock+dry-run mode without errors",
+      "type": "test",
+      "task_type": "validation",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-447",
+      "deliverables": { "code": [], "tests": ["scripts/scs001/validate-full-pipeline.ts"], "docs": [] }
+    }
+  ]
+}
