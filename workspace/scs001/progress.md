@@ -2565,3 +2565,17 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (surgical edit to existing file)
 - Issues: None.
 - Timestamp: 2026-03-20T01:30:00Z
+
+## Sprint 319 — Achiri Telegram Group Chat Support (Direct Write)
+- Status: PASS
+- Commit: c050f9c
+- Files created: workspace/sprints/sprint-319.json
+- Files modified: agents/telegram-bot/index.ts, agents/telegram-bot/commands.ts
+- Tasks completed:
+  - 319-01: Updated dispatch() — detects group/supergroup chat type, responds to @bot_username mentions and bot replies. Extracts sender's userId (msg.from.id) for Achiri memory. Strips @mention from text before passing to Achiri. Non-mention group messages silently ignored.
+  - 319-02: Updated handleAchiri() — accepts optional userId param. Uses sender's ID for memory/alpha-gate/tier resolution, chatId for response delivery. Backward compatible (private chats unchanged).
+  - Bot username fetched via getMe() on startup and stored in BOT_USERNAME global.
+- Validation: npx tsc --noEmit PASS. Clean compile.
+- Swarm used: no (multi-file architectural change)
+- Issues: None. Group chat auth bypasses beta gate (intentional — groups may contain non-owner users who need Achiri access).
+- Timestamp: 2026-03-20T01:40:00Z
