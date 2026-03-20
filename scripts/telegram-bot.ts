@@ -3311,6 +3311,7 @@ function cmdHelp(): string {
     `/filmkit   — Instant filming brief for next video\n` +
     `/progress  — Visual gate progress tracker\n` +
     `/scorecard — Content strategy scorecard\n` +
+    `/compare   — A/B compare hooks or speakers\n` +
     `/help      — This message`
   );
 }
@@ -3429,6 +3430,87 @@ function cmdContentPlan(): string {
   }
   lines.push(`• Use /queue to pick ready videos`);
   lines.push(`• Use /record after posting to track`);
+
+  return lines.join('\n');
+}
+
+// ─── Sprint 385: /compare — A/B comparison tool ─────────────────────
+
+function cmdCompare(args: string): string {
+  const experiments = readLines(path.join(ROOT, 'workspace', 'scs001', 'experiments.jsonl'));
+  if (experiments.length === 0) return '⚠️ No experiments found.';
+
+  // Parse: /compare hook curiosity_gap vs contrarian
+  // Or:    /compare speaker alice vs bob
+  const parts = args.toLowerCase().trim().split(/\s+/);
+  if (parts.length < 4 || !parts.includes('vs')) {
+    return (
+      '📊 *Compare — A/B Comparison Tool*\n\n' +
+      '*Usage:*\n' +
+      '`/compare hook curiosity_gap vs contrarian`\n' +
+      '`/compare speaker alice vs bob`\n\n' +
+      '*Available hooks:* ' + Array.from(new Set(experiments.map((e: any) => e.hook_formula).filter((h: any) => h && h !== 'unknown'))).join(', ') + '\n' +
+      '*Available speakers:* ' + Array.from(new Set(experiments.map((e: any) => e.speaker).filter((s: any) => s && s !== 'unknown'))).join(', ')
+    );
+  }
+
+  const dimension = parts[0]; // 'hook' or 'speaker'
+  const vsIdx = parts.indexOf('vs');
+  const nameA = parts.slice(1, vsIdx).join('_');
+  const nameB = parts.slice(vsIdx + 1).join('_');
+
+  if (dimension !== 'hook' && dimension !== 'speaker') {
+    return '⚠️ First word must be `hook` or `speaker`.\nExample: `/compare hook curiosity_gap vs contrarian`';
+  }
+
+  const field = dimension === 'hook' ? 'hook_formula' : 'speaker';
+
+  function getStats(name: string) {
+    const matching = experiments.filter((e: any) => (e[field] ?? '').toLowerCase() === name);
+    const scores = matching.filter((e: any) => e.partial_viral_score != null).map((e: any) => e.partial_viral_score);
+    const qcPassed = matching.filter((e: any) => e.qc_passed).length;
+    return {
+      count: matching.length,
+      avg: scores.length > 0 ? scores.reduce((a: number, b: number) => a + b, 0) / scores.length : 0,
+      max: scores.length > 0 ? Math.max(...scores) : 0,
+      min: scores.length > 0 ? Math.min(...scores) : 0,
+      qcRate: matching.length > 0 ? Math.round((qcPassed / matching.length) * 100) : 0,
+      scored: scores.length,
+    };
+  }
+
+  const a = getStats(nameA);
+  const b = getStats(nameB);
+
+  if (a.count === 0 && b.count === 0) return `⚠️ No data found for "${nameA}" or "${nameB}".`;
+
+  const winner = (va: number, vb: number) => va > vb ? '✅' : va < vb ? '  ' : '🟰';
+
+  const lines = [
+    `📊 *${dimension === 'hook' ? 'Hook' : 'Speaker'} Comparison*`,
+    '',
+    `| Metric | *${nameA}* | *${nameB}* |`,
+    `|--------|---------|---------|`,
+    `| Samples | ${a.count} ${winner(a.count, b.count)} | ${b.count} ${winner(b.count, a.count)} |`,
+    `| Avg Viral | ${Math.round(a.avg * 100)}% ${winner(a.avg, b.avg)} | ${Math.round(b.avg * 100)}% ${winner(b.avg, a.avg)} |`,
+    `| Max Viral | ${Math.round(a.max * 100)}% ${winner(a.max, b.max)} | ${Math.round(b.max * 100)}% ${winner(b.max, a.max)} |`,
+    `| QC Pass | ${a.qcRate}% ${winner(a.qcRate, b.qcRate)} | ${b.qcRate}% ${winner(b.qcRate, a.qcRate)} |`,
+    '',
+  ];
+
+  // Verdict
+  const aScore = a.avg * 0.6 + (a.qcRate / 100) * 0.2 + (a.count > b.count ? 0.2 : 0);
+  const bScore = b.avg * 0.6 + (b.qcRate / 100) * 0.2 + (b.count > a.count ? 0.2 : 0);
+  if (a.count === 0) lines.push(`🏆 *Winner: ${nameB}* (no data for ${nameA})`);
+  else if (b.count === 0) lines.push(`🏆 *Winner: ${nameA}* (no data for ${nameB})`);
+  else if (aScore > bScore) lines.push(`🏆 *Winner: ${nameA}* — higher weighted score`);
+  else if (bScore > aScore) lines.push(`🏆 *Winner: ${nameB}* — higher weighted score`);
+  else lines.push('🟰 *Tie* — both perform equally');
+
+  if (Math.abs(a.count - b.count) > 10) {
+    lines.push('');
+    lines.push('⚠️ Sample sizes differ significantly — results may not be reliable');
+  }
 
   return lines.join('\n');
 }
@@ -3862,6 +3944,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/filmkit':     response = cmdFilmKit();            break;
     case '/progress':    response = cmdProgress();           break;
     case '/scorecard':   response = cmdScorecard();          break;
+    case '/compare':     response = cmdCompare(cmdArgs);     break;
     case '/help':        response = cmdHelp();        break;
     default:
       response = `Unknown command: \`${cmdName}\`\n\n${cmdHelp()}`;
