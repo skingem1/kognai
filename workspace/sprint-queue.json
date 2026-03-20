@@ -360,7 +360,7 @@
       "sprint": 481,
       "title": "INFRA — Swarm safety — file size guard in orchestrator",
       "block": "INFRA",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "FP-007: Swarm destructively rewrites files >2,800 lines. Add guard in orchestrate-agents-v2.ts: before any file write, check target file line count. If >2,000 lines, REFUSE the write and log violation. Prevent future telegram-bot.ts disasters."
     },
