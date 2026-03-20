@@ -238,7 +238,7 @@
       "sprint": 466,
       "title": "INFRA — Git housekeeping + tag releases",
       "block": "INFRA",
-      "status": "pending",
+      "status": "done",
       "priority": "low",
       "rationale": "855 commits, no tags, no releases. Add: (1) Git tag for key milestones (v0.1-phase0, v0.2-phase1, v0.3-video-quality), (2) Release notes for each tag, (3) .gitignore cleanup (untracked data files). Keep commit history intact — no squash."
     },
