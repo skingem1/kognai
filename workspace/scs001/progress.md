@@ -3097,3 +3097,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (Achiri bot feature additions)
 - Issues: None.
 - Timestamp: 2026-03-20T09:45:00Z
+
+## Sprint 362 — /metrics for Main Operator Bot (Direct Write)
+- Status: PASS
+- Commit: be61eaf
+- Files created: workspace/sprints/sprint-362.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 362-01: Ported /metrics from agents/telegram-bot/commands.ts to scripts/telegram-bot.ts. Shows pipeline performance: run count, avg duration, error rate, cumulative output (topics/clips/edited/captioned/QC/published), slowest stages. Auto-regenerates metrics if missing. Registered in help + router.
+- Validation: tsc --noEmit PASS
+- Swarm used: no (surgical port from alternate bot)
+- Issues: None.
+- Timestamp: 2026-03-20T10:00:00Z
