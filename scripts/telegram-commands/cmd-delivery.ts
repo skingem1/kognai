@@ -617,11 +617,15 @@ export async function cmdRefresh(chatId: string): Promise<void> {
   });
 }
 
-export async function cmdProduce(chatId: string): Promise<void> {
-  await sendMessage(chatId, `🎬 *Producing video...*\n\nUsing local TTS + FFmpeg captions ($0.00).\nThis takes 2-3 minutes.`);
+export async function cmdProduce(chatId: string, args?: string): Promise<void> {
+  // Sprint 534: Accept /produce N (default 1, max 10)
+  const count = Math.min(10, Math.max(1, parseInt(args?.trim() || '1', 10) || 1));
+  const deliver = count > 1;
+
+  await sendMessage(chatId, `🎬 *Producing ${count} video${count > 1 ? 's' : ''}...*\n\nUsing local TTS + FFmpeg captions ($0.00).\nThis takes ${count * 2}-${count * 3} minutes.${deliver ? '\nWill auto-deliver to Telegram when done.' : ''}`);
   const { spawn } = require('child_process');
   const pipelineScript = path.join(ROOT, 'scripts', 'scs001', 'run-full-pipeline.ts');
-  const child = spawn('npx', ['ts-node', '--transpile-only', pipelineScript, '--mock', '--local', '--limit', '1'], {
+  const child = spawn('npx', ['ts-node', '--transpile-only', pipelineScript, '--mock', '--local', '--limit', String(count)], {
     cwd: ROOT,
     env: { ...process.env, TS_NODE_TRANSPILE_ONLY: 'true' },
     stdio: ['ignore', 'pipe', 'pipe'],
@@ -642,7 +646,19 @@ export async function cmdProduce(chatId: string): Promise<void> {
             reportSummary = `\n\n📊 ${report.summary}`;
           } catch { /* skip */ }
         }
-        await sendMessage(chatId, `✅ *Video produced!*${reportSummary}\n\nUse /postnow to get the video.`);
+
+        // Auto-deliver if count > 1
+        if (deliver) {
+          try {
+            const { execSync } = require('child_process');
+            execSync(`npx ts-node --transpile-only scripts/scs001/posting-auto-deliver.ts --batch ${count}`, {
+              cwd: ROOT, timeout: 120000, env: { ...process.env, TS_NODE_TRANSPILE_ONLY: 'true' },
+            });
+            reportSummary += `\n\n📬 Auto-delivered ${count} videos.`;
+          } catch { reportSummary += '\n\n⚠️ Auto-deliver failed. Use /postnow manually.'; }
+        }
+
+        await sendMessage(chatId, `✅ *${count} video${count > 1 ? 's' : ''} produced!*${reportSummary}\n\nUse /postnow to get ${count > 1 ? 'videos' : 'the video'}.`);
       } else {
         const lastLines = stdout.split('\n').filter((l: string) => l.trim()).slice(-5).join('\n');
         await sendMessage(chatId, `❌ *Pipeline failed* (exit ${code})\n\n\`\`\`\n${lastLines.slice(0, 500)}\n\`\`\``);

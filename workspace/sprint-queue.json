@@ -804,8 +804,9 @@
       "title": "TELEGRAM — Add /produce N command to trigger pipeline from Telegram",
       "block": "TELEGRAM",
       "priority": "medium",
-      "status": "pending",
-      "rationale": "Operator wants to trigger video production from phone. Add /produce N command: runs pipeline with --mock --limit N, then auto-delivers. Progress messages in Telegram."
+      "status": "done",
+      "rationale": "Operator wants to trigger video production from phone. Add /produce N command: runs pipeline with --mock --limit N, then auto-delivers. Progress messages in Telegram.",
+      "_note": "/produce N enhanced. Args passed, auto-deliver on count>1. Compiles OK."
     },
     {
       "sprint": 535,

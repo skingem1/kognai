@@ -69,7 +69,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
 
   const asyncHandlers: Record<string, () => Promise<void>> = {
     '/refresh':      () => cmdRefresh(chatId),
-    '/produce':      () => cmdProduce(chatId),
+    '/produce':      () => cmdProduce(chatId, cmdArgs),
     '/postnow':      () => cmdPostNow(chatId),
     '/todaycaptions': () => cmdTodayCaptions(chatId),
     '/broadcast':    () => cmdBroadcast(chatId, cmdArgs),

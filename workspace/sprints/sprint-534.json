@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-534",
+  "title": "TELEGRAM — /produce N command (trigger pipeline + auto-deliver from Telegram)",
+  "description": "Enhanced /produce command to accept count argument (1-10). /produce 5 runs pipeline with --limit 5 then auto-delivers. Default: /produce = 1 video.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "534-01",
+      "title": "Enhance cmdProduce to accept count arg + auto-deliver",
+      "type": "feature",
+      "task_type": "telegram",
+      "task_target": "scripts/telegram-commands/cmd-delivery.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-534",
+      "deliverables": { "code": ["scripts/telegram-commands/cmd-delivery.ts", "scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
