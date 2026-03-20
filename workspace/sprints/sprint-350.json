@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-350",
+  "title": "/schedule + /leaderboard — expose posting slots and speaker rankings via Telegram",
+  "description": "Add two operator commands: /schedule shows today's posting time slots from posting-schedule.json, /leaderboard shows speaker performance rankings from content-leaderboard.json. Both read existing report files.",
+  "source": "auto — operator has 0/30 posts, needs easy access to schedule and best content sources",
+  "tasks": [
+    {
+      "id": "350-01",
+      "title": "Add /schedule command — today's posting time slots from posting-schedule.json",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-350",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "350-02",
+      "title": "Add /leaderboard command — speaker performance rankings from content-leaderboard.json",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-350",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

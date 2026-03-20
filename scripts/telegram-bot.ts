@@ -1603,6 +1603,97 @@ function cmdQuickStart(): string {
   return lines.join('\n');
 }
 
+// Sprint 350: /schedule — today's posting time slots from posting-schedule.json
+function cmdSchedule(): string {
+  const schedulePath = path.join(ROOT, 'reports', 'posting-schedule.json');
+  if (!fs.existsSync(schedulePath)) {
+    return '📅 No posting schedule found.\nRun the schedule generator first.';
+  }
+
+  try {
+    const data = JSON.parse(fs.readFileSync(schedulePath, 'utf-8'));
+    const today = new Date().toISOString().slice(0, 10);
+    const slots: Array<{ date: string; time: string; video_id: string; speaker: string; viral_score: number; slot_label: string }> = data.slots ?? [];
+
+    const todaySlots = slots.filter(s => s.date === today);
+    const upcomingSlots = slots.filter(s => s.date > today).slice(0, 6);
+
+    const lines: string[] = [
+      `📅 *Posting Schedule*`,
+      `Gate: ${data.posts_done ?? 0}/30 posts · ${data.days_to_gate ?? '?'}d left · ${data.pace_needed ?? '?'}/day needed`,
+      '',
+    ];
+
+    if (todaySlots.length > 0) {
+      lines.push(`*Today (${today}):*`);
+      for (const s of todaySlots) {
+        lines.push(`  ${s.slot_label} — \`${s.video_id}\``);
+        lines.push(`    🎙️ ${s.speaker} · 🧬 ${Math.round((s.viral_score ?? 0) * 100)}%`);
+      }
+      lines.push('');
+    } else {
+      lines.push(`_No slots scheduled for today (${today})._`);
+      lines.push('');
+    }
+
+    if (upcomingSlots.length > 0) {
+      lines.push('*Upcoming:*');
+      for (const s of upcomingSlots) {
+        lines.push(`  ${s.date} ${s.time} — \`${s.video_id}\` 🎙️ ${s.speaker}`);
+      }
+      lines.push('');
+    }
+
+    lines.push(`_Schedule: ${data.posts_per_day ?? '?'}/day · ${data.queue_remaining ?? '?'} in queue_`);
+    lines.push(`_Generated: ${data.generated_at ? data.generated_at.split('T')[0] : 'unknown'}_`);
+
+    return lines.join('\n');
+  } catch (e: any) {
+    return `❌ Error reading schedule: ${e.message}`;
+  }
+}
+
+// Sprint 350: /leaderboard — speaker performance rankings from content-leaderboard.json
+function cmdLeaderboard(): string {
+  const lbPath = path.join(ROOT, 'reports', 'content-leaderboard.json');
+  if (!fs.existsSync(lbPath)) {
+    return '🏆 No content leaderboard found.\nRun the leaderboard generator first.';
+  }
+
+  try {
+    const data = JSON.parse(fs.readFileSync(lbPath, 'utf-8'));
+    const speakers: Array<{ name: string; count: number; avg_score: number; max_score: number; qc_rate: number }> = data.speakers ?? [];
+
+    if (speakers.length === 0) {
+      return '🏆 Leaderboard is empty — no speakers found.';
+    }
+
+    const lines: string[] = [
+      `🏆 *Content Leaderboard*`,
+      `Total experiments: ${data.total_experiments ?? '?'}`,
+      '',
+    ];
+
+    const medals = ['🥇', '🥈', '🥉'];
+    const top = speakers.slice(0, 10);
+
+    for (let i = 0; i < top.length; i++) {
+      const s = top[i];
+      const medal = i < 3 ? medals[i] : `${i + 1}.`;
+      lines.push(`${medal} *${s.name}* — avg ${Math.round(s.avg_score * 100)}% · max ${Math.round(s.max_score * 100)}%`);
+      lines.push(`   ${s.count} clips · QC ${s.qc_rate}%`);
+    }
+
+    lines.push('');
+    lines.push(`_${speakers.length} speakers total_`);
+    lines.push(`_Generated: ${data.generated_at ? data.generated_at.split('T')[0] : 'unknown'}_`);
+
+    return lines.join('\n');
+  } catch (e: any) {
+    return `❌ Error reading leaderboard: ${e.message}`;
+  }
+}
+
 function cmdHelp(): string {
   return (
     `*Kognai Bot Commands*\n\n` +
@@ -1630,6 +1721,8 @@ function cmdHelp(): string {
     `/golive    — Phase 1 go-live readiness check\n` +
     `/audit     — Content quality audit + recommendations\n` +
     `/quickstart — Post your first video in 5 minutes\n` +
+    `/schedule    — Today's posting time slots\n` +
+    `/leaderboard — Speaker performance rankings\n` +
     `/help      — This message`
   );
 }
@@ -1733,8 +1826,10 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/calendar':  response = cmdCalendar(); break;
     case '/golive':    response = cmdGoLive();  break;
     case '/audit':      response = cmdAudit();      break;
-    case '/quickstart': response = cmdQuickStart(); break;
-    case '/help':       response = cmdHelp();       break;
+    case '/quickstart':  response = cmdQuickStart();  break;
+    case '/schedule':    response = cmdSchedule();    break;
+    case '/leaderboard': response = cmdLeaderboard(); break;
+    case '/help':        response = cmdHelp();        break;
     default:
       response = `Unknown command: \`${cmdName}\`\n\n${cmdHelp()}`;
   }
