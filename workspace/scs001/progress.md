@@ -3253,3 +3253,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (FP-007 file >3500 lines)
 - Issues: None.
 - Timestamp: 2026-03-20T19:10:00Z
+
+## Sprint 383 — /progress — Visual Gate Progress Tracker (Direct Write)
+- Status: PASS
+- Commit: 832d0b7
+- Files created: workspace/sprints/sprint-383.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 383-01: Added /progress command. Visual 20-char progress bar toward 30-post gate, percentage, posts remaining, days left. Urgency levels (green/yellow/orange/red/critical based on required daily pace). 7-day posting history with dot visualization. Streak counter, total views, pace calculation. Updated /help + switch router.
+- Validation: tsc --noEmit PASS
+- Swarm used: no (FP-007 file >3500 lines)
+- Issues: None.
+- Timestamp: 2026-03-20T19:20:00Z
