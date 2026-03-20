@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-492",
+  "title": "CONSTITUTION — Five Principles wiring into agent prompts",
+  "description": "Wire FIVE_PRINCIPLES.md reference into all agent prompts that have the Constitution mandate but lack Five Principles. Add consistent mandate block.",
+  "source": "queue — Sprint 492 CONSTITUTION",
+  "tasks": [
+    {
+      "id": "492-01",
+      "title": "Wire Five Principles into all kognai-agents/ and agents/ prompts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-492",
+      "deliverables": { "code": ["scripts/wire-five-principles.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
