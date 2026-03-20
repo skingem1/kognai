@@ -1083,8 +1083,9 @@
       "title": "TELEGRAM — Add /quality command to show script quality stats",
       "block": "TELEGRAM",
       "priority": "low",
-      "status": "pending",
-      "rationale": "Operator should see script quality trends. /quality runs script-quality-check.ts on recent runs and shows pass/fail/violations summary."
+      "status": "done",
+      "rationale": "Operator should see script quality trends. /quality runs script-quality-check.ts on recent runs and shows pass/fail/violations summary.",
+      "_note": "/quality command added. Compiles OK."
     },
     {
       "sprint": 566,

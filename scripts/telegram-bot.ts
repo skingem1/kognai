@@ -22,7 +22,7 @@ import {
 // Sprint 455: Import extracted command modules (Part 1: A-M)
 import { cmdPm2, cmdHealth, cmdTier, cmdSprint, cmdReport, cmdCrons, cmdTikTokAuth, cmdQuickStart, cmdEnvCheck, cmdStripeStatus, cmdReadiness, cmdGitStats, cmdBoot, cmdShutdown, cmdReload, cmdSwarmStats, cmdCleanup } from './telegram-commands/cmd-system';
 import { cmdGate, cmdGoLive, cmdAudit, cmdStreak, cmdPace, cmdCalendar } from './telegram-commands/cmd-gate';
-import { cmdRecord, cmdQueue, cmdReview, cmdCaption, cmdPosted, cmdOnboard, cmdPipeline, cmdToday, cmdAnalytics, cmdDiversity, cmdThumbnail, cmdCompetitor, cmdStats } from './telegram-commands/cmd-content';
+import { cmdRecord, cmdQueue, cmdReview, cmdCaption, cmdPosted, cmdOnboard, cmdPipeline, cmdToday, cmdAnalytics, cmdDiversity, cmdThumbnail, cmdCompetitor, cmdStats, cmdQuality } from './telegram-commands/cmd-content';
 import { cmdMetrics, cmdPostPlan, cmdYouTube, cmdAutoPost, cmdLastRun, cmdViral, cmdDashboard, cmdDigest, cmdSchedule, cmdLeaderboard, cmdBestTime, cmdHookTest, cmdHookStats, cmdViralStats, cmdQueueOpt, cmdGateAnalytics, cmdRevenue, cmdBatch, cmdPostLog, cmdXPost } from './telegram-commands/cmd-posting';
 import { cmdHistory, cmdArchive, cmdUnarchive, cmdStale, cmdPurge, cmdNote, cmdUpdateViews, cmdExport, cmdWeeklyReport, cmdSpeakerTest, cmdFilmKit, cmdContentPlan, cmdSuggest, cmdCompare, cmdScorecard, cmdProgress, cmdCleanup, cmdDedup, cmdTop30, cmdAbResults, cmdStatus } from './telegram-commands/cmd-management';
 import { cmdHelp } from './telegram-commands/cmd-help';
@@ -185,6 +185,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/competitor':  response = cmdCompetitor(cmdArgs);  break;
     case '/swarmstats': response = cmdSwarmStats();          break;
     case '/cleanup':    response = cmdCleanup();             break;
+    case '/quality':    response = cmdQuality();             break;
     case '/xpost':      response = cmdXPost(cmdArgs);        break;
     case '/usage':      response = cmdUsage();               break;
     case '/help':        response = cmdHelp();        break;

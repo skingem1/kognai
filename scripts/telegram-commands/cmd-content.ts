@@ -762,3 +762,16 @@ export function cmdStats(): string {
     return `❌ Stats error: ${e.message}`;
   }
 }
+
+// Sprint 565: Script quality check results
+export function cmdQuality(): string {
+  try {
+    const output = execSync('npx ts-node --transpile-only scripts/scs001/script-quality-check.ts', {
+      cwd: ROOT, timeout: 30000, encoding: 'utf-8',
+      env: { ...process.env, TS_NODE_TRANSPILE_ONLY: 'true' },
+    });
+    return `🔍 *Script Quality*\n\n${output.trim()}`;
+  } catch (e: any) {
+    return `❌ Quality check error: ${e.message}`;
+  }
+}

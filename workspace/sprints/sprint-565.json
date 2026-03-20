@@ -1,0 +1,27 @@
+{
+  "sprint_id": "sprint-565",
+  "title": "TELEGRAM \u2014 /quality command for script quality stats",
+  "description": "Added /quality Telegram command. Runs script-quality-check.ts on recent runs and shows pass/fail/violations.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "565-01",
+      "title": "Add /quality command",
+      "type": "feature",
+      "task_type": "telegram",
+      "task_target": "scripts/telegram-commands/cmd-content.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "low",
+      "sprint_id": "sprint-565",
+      "deliverables": {
+        "code": [
+          "scripts/telegram-commands/cmd-content.ts",
+          "scripts/telegram-bot.ts"
+        ],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ]
+}
