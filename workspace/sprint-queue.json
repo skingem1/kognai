@@ -547,6 +547,46 @@
       "priority": "medium",
       "rationale": "Sprint brief references Sprint 474 as last built (stale). Regenerate via generate-sprint-brief.py with current state. Test run-autonomous.sh for 1 cycle to verify the self-restart loop works.",
       "_note": "Brief regenerated, autonomous loop validated. Queue now empty."
+    },
+    {
+      "sprint": 506,
+      "title": "INFRA — Sprint queue extension + next 5 high-impact sprints",
+      "block": "INFRA",
+      "status": "pending",
+      "priority": "high",
+      "rationale": "Queue empty after Sprint 505. Add 5 new sprints targeting critical gaps: PM2 cron activation, pipeline auto-run, Telegram bot health, content quality review, YouTube OAuth test."
+    },
+    {
+      "sprint": 507,
+      "title": "PIPELINE — Activate essential PM2 crons (daily-digest, pipeline-watchdog, gate-regen)",
+      "block": "PIPELINE",
+      "status": "pending",
+      "priority": "high",
+      "rationale": "pm2-startup.ts exists (Sprint 498) but PM2 crons are NOT running. Activate essential crons: daily-digest, gate-regen, pipeline-watchdog, auto-healer. Verify they fire correctly. This unblocks automated video production."
+    },
+    {
+      "sprint": 508,
+      "title": "CONTENT — Pipeline auto-run test: produce 5 more videos + deliver to Telegram",
+      "block": "CONTENT",
+      "status": "pending",
+      "priority": "high",
+      "rationale": "Sprint 503 proved pipeline works. Run again to build content queue toward 30-post gate. Different topics if possible. Deliver all to Telegram."
+    },
+    {
+      "sprint": 509,
+      "title": "QUALITY — Review produced videos and score quality (hook, retention, production)",
+      "block": "VIDEO-QUALITY-V2",
+      "status": "pending",
+      "priority": "medium",
+      "rationale": "12+ videos produced but no quality review. Run QC checks on captioned outputs: hook scoring, audio quality, caption readability, video length distribution. Generate quality report."
+    },
+    {
+      "sprint": 510,
+      "title": "INFRA — Telegram bot startup test + command smoke test",
+      "block": "INFRA",
+      "status": "pending",
+      "priority": "medium",
+      "rationale": "Telegram bot is the operator interface. Verify it starts without errors, responds to /health, /status, /pipeline, /gate commands. Fix any startup issues."
     }
   ]
 }

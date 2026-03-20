@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-506",
+  "title": "INFRA — Sprint queue extension + next 5 high-impact sprints",
+  "description": "Queue empty after Sprint 505. Add 5 new sprints (507-510) targeting critical gaps: PM2 crons, content production, quality review, Telegram bot health.",
+  "source": "queue-empty — replenish queue",
+  "tasks": [
+    {
+      "id": "506-01",
+      "title": "Add Sprints 506-510 to sprint-queue.json",
+      "type": "feature",
+      "task_type": "config",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-506",
+      "deliverables": { "code": ["workspace/sprint-queue.json"], "tests": [], "docs": [] }
+    }
+  ]
+}
