@@ -1,6 +1,6 @@
 {
-  "description": "Mock ORACLE-6 feed — 5 synthetic Intelligence Signals for SCS-001 Trend Agent development. Matches oracle6-trend-v1.json schema exactly. Replace with live Voxight Module 2 at Phase 2B.",
-  "generated_at": "2026-03-15T00:00:00Z",
+  "description": "Mock ORACLE-6 feed — 15 synthetic Intelligence Signals for SCS-001 Trend Agent development. Matches oracle6-trend-v1.json schema exactly. Replace with live Voxight Module 2 at Phase 2B. Sprint 514: expanded from 5→15 topics for content variety.",
+  "generated_at": "2026-03-20T14:30:00Z",
   "feed_status": "mock",
   "signals": [
     {
@@ -126,6 +126,246 @@
         "mainstream_eta_days": 3
       },
       "domain_tags": ["macro_ai_trends", "ai_agents"],
+      "scs_relevant": true
+    },
+    {
+      "signal_id": "oracle6-00000000-0000-0000-0000-000000000006",
+      "query_type": "TRENDS",
+      "topic": "Open-source AI models closing the gap — Llama 4, Qwen 3, DeepSeek R1 benchmarks",
+      "summary": "Open-source LLMs are matching proprietary models on key benchmarks. Meta's Llama 4, Alibaba's Qwen 3, and DeepSeek R1 are challenging GPT-4 and Claude on coding, math, and reasoning tasks. The cost advantage is driving enterprise adoption.",
+      "confidence": 90,
+      "keyword_cluster": ["open source AI", "Llama 4", "Qwen 3", "DeepSeek", "LLM benchmarks", "self-hosted AI", "enterprise AI", "model weights"],
+      "top_speakers": [
+        { "name": "Mark Zuckerberg", "handle": "@faboroso", "authority_score": 92 },
+        { "name": "Andrej Karpathy", "handle": "@karpathy", "authority_score": 95 }
+      ],
+      "relevant_channels": [
+        { "platform": "youtube", "channel_id": "UCWN3xxRkmTPmbKwht9FuE5A", "channel_name": "Fireship", "recent_activity": "2026-03-18T14:00:00Z" }
+      ],
+      "timestamp": "2026-03-20T07:00:00Z",
+      "provenance": {
+        "source": "manual_seed",
+        "detection_method": "benchmark_release",
+        "first_seen": "2026-03-15T10:00:00Z",
+        "mainstream_eta_days": 5
+      },
+      "domain_tags": ["open_source_ai", "llm_models"],
+      "scs_relevant": true
+    },
+    {
+      "signal_id": "oracle6-00000000-0000-0000-0000-000000000007",
+      "query_type": "NARRATIVE",
+      "topic": "AI replacing junior developers — the great skills debate",
+      "summary": "Tech companies reporting 30-50% reduction in junior dev hiring. Senior engineers debating whether AI tools eliminate the learning path that creates senior developers. Massive engagement on X and LinkedIn. Touches career anxiety.",
+      "confidence": 86,
+      "keyword_cluster": ["AI replacing developers", "junior developer", "tech hiring", "career in tech", "AI coding", "software engineering future", "layoffs tech"],
+      "top_speakers": [
+        { "name": "Pieter Levels", "handle": "@levelsio", "authority_score": 84 },
+        { "name": "DHH", "handle": "@dhh", "authority_score": 82 }
+      ],
+      "relevant_channels": [
+        { "platform": "youtube", "channel_id": "UCsBjURrPoezykLs9EqgamOA", "channel_name": "Fireship", "recent_activity": "2026-03-19T16:00:00Z" }
+      ],
+      "timestamp": "2026-03-20T07:15:00Z",
+      "provenance": {
+        "source": "manual_seed",
+        "detection_method": "narrative_shift",
+        "first_seen": "2026-03-14T08:00:00Z",
+        "mainstream_eta_days": 10
+      },
+      "domain_tags": ["automation_future_of_work", "tech_careers"],
+      "scs_relevant": true
+    },
+    {
+      "signal_id": "oracle6-00000000-0000-0000-0000-000000000008",
+      "query_type": "TRENDS",
+      "topic": "AI voice cloning ethics — deepfake scams hit $25B losses globally",
+      "summary": "FBI reports voice cloning fraud losses surging. Celebrities and executives being impersonated by AI-generated voice. New detection tools emerging. High emotional hook: 'Could someone clone YOUR voice in 3 seconds?'",
+      "confidence": 82,
+      "keyword_cluster": ["voice cloning", "deepfake", "AI fraud", "voice AI", "scam prevention", "ElevenLabs", "AI safety", "identity theft"],
+      "top_speakers": [
+        { "name": "Lex Fridman", "handle": "@lexfridman", "authority_score": 88 },
+        { "name": "Mira Murati", "handle": "@maboroshi", "authority_score": 80 }
+      ],
+      "relevant_channels": [
+        { "platform": "youtube", "channel_id": "UCSHZKyawb77ixDdsGog4iWA", "channel_name": "Lex Fridman", "recent_activity": "2026-03-17T20:00:00Z" }
+      ],
+      "timestamp": "2026-03-20T07:30:00Z",
+      "provenance": {
+        "source": "manual_seed",
+        "detection_method": "keyword_surge",
+        "first_seen": "2026-03-13T12:00:00Z",
+        "mainstream_eta_days": 3
+      },
+      "domain_tags": ["ai_safety", "cybersecurity"],
+      "scs_relevant": true
+    },
+    {
+      "signal_id": "oracle6-00000000-0000-0000-0000-000000000009",
+      "query_type": "THOUGHT_LEADER",
+      "topic": "Elon Musk's Grok 3 goes open — what it means for the AI arms race",
+      "summary": "xAI open-sourced Grok 3's weights, breaking from the trend of proprietary models. Developers racing to fine-tune. Debate: is this competitive strategy or genuine open-source commitment? Major implications for model access democratization.",
+      "confidence": 84,
+      "keyword_cluster": ["Grok 3", "xAI", "Elon Musk", "open source", "AI competition", "model weights", "fine tuning", "AI democratization"],
+      "top_speakers": [
+        { "name": "Elon Musk", "handle": "@elonmusk", "authority_score": 96 },
+        { "name": "Jim Fan", "handle": "@DrJimFan", "authority_score": 85 }
+      ],
+      "relevant_channels": [
+        { "platform": "youtube", "channel_id": "UCZHmQk67mSJgfCCTn7xBfew", "channel_name": "MKBHD", "recent_activity": "2026-03-18T18:00:00Z" }
+      ],
+      "timestamp": "2026-03-20T07:45:00Z",
+      "provenance": {
+        "source": "manual_seed",
+        "detection_method": "keyword_surge",
+        "first_seen": "2026-03-16T09:00:00Z",
+        "mainstream_eta_days": 7
+      },
+      "domain_tags": ["open_source_ai", "tech_industry"],
+      "scs_relevant": true
+    },
+    {
+      "signal_id": "oracle6-00000000-0000-0000-0000-000000000010",
+      "query_type": "TRENDS",
+      "topic": "AI-powered robotics breakthrough — Figure 02 and Tesla Optimus updates",
+      "summary": "Humanoid robots achieving new milestones. Figure's 02 model performing warehouse tasks autonomously. Tesla Optimus walking in unstructured environments. Hardware + AI convergence creating new investment wave. VCs pouring billions into humanoid robotics startups.",
+      "confidence": 80,
+      "keyword_cluster": ["humanoid robot", "Figure 02", "Tesla Optimus", "robotics AI", "embodied AI", "warehouse automation", "physical AI"],
+      "top_speakers": [
+        { "name": "Brett Adcock", "handle": "@adaborobot", "authority_score": 78 },
+        { "name": "Jensen Huang", "handle": "@nvidia", "authority_score": 90 }
+      ],
+      "relevant_channels": [
+        { "platform": "youtube", "channel_id": "UCvjgXvBlbQiAffgfV1vUDCg", "channel_name": "Two Minute Papers", "recent_activity": "2026-03-19T12:00:00Z" }
+      ],
+      "timestamp": "2026-03-20T08:00:00Z",
+      "provenance": {
+        "source": "manual_seed",
+        "detection_method": "hashtag_velocity",
+        "first_seen": "2026-03-15T14:00:00Z",
+        "mainstream_eta_days": 14
+      },
+      "domain_tags": ["robotics", "hardware_ai"],
+      "scs_relevant": true
+    },
+    {
+      "signal_id": "oracle6-00000000-0000-0000-0000-000000000011",
+      "query_type": "NARRATIVE",
+      "topic": "The AI energy crisis — data centers consuming more power than small countries",
+      "summary": "AI training and inference energy consumption is becoming a mainstream concern. Reports of data centers drawing more electricity than entire nations. Nuclear power deals by Microsoft and Google. Environmental impact debate intensifying.",
+      "confidence": 76,
+      "keyword_cluster": ["AI energy", "data center power", "nuclear AI", "sustainability", "GPU power consumption", "carbon footprint AI", "green AI"],
+      "top_speakers": [
+        { "name": "Bill Gates", "handle": "@BillGates", "authority_score": 90 },
+        { "name": "Dario Amodei", "handle": "@DarioAmodei", "authority_score": 85 }
+      ],
+      "relevant_channels": [
+        { "platform": "youtube", "channel_id": "UCHnyfMqiRRG1u-2MsSQLbXA", "channel_name": "Veritasium", "recent_activity": "2026-03-17T15:00:00Z" }
+      ],
+      "timestamp": "2026-03-20T08:15:00Z",
+      "provenance": {
+        "source": "manual_seed",
+        "detection_method": "narrative_shift",
+        "first_seen": "2026-03-10T11:00:00Z",
+        "mainstream_eta_days": 5
+      },
+      "domain_tags": ["macro_ai_trends", "sustainability"],
+      "scs_relevant": true
+    },
+    {
+      "signal_id": "oracle6-00000000-0000-0000-0000-000000000012",
+      "query_type": "TRENDS",
+      "topic": "AI tutoring revolution — Khan Academy, Duolingo, and personalized learning at scale",
+      "summary": "AI tutors outperforming human tutors in controlled studies. Khan Academy's Khanmigo showing 40% improvement in test scores. Duolingo's AI conversations replacing traditional language classes. Education disruption accelerating faster than expected.",
+      "confidence": 74,
+      "keyword_cluster": ["AI tutor", "Khan Academy", "Khanmigo", "Duolingo AI", "personalized learning", "edtech AI", "education disruption"],
+      "top_speakers": [
+        { "name": "Sal Khan", "handle": "@saborohan", "authority_score": 86 },
+        { "name": "Ethan Mollick", "handle": "@emollick", "authority_score": 82 }
+      ],
+      "relevant_channels": [
+        { "platform": "youtube", "channel_id": "UC4a-Gbdw7vOaccHmFo40b9g", "channel_name": "Khan Academy", "recent_activity": "2026-03-18T10:00:00Z" }
+      ],
+      "timestamp": "2026-03-20T08:30:00Z",
+      "provenance": {
+        "source": "manual_seed",
+        "detection_method": "keyword_surge",
+        "first_seen": "2026-03-12T16:00:00Z",
+        "mainstream_eta_days": 10
+      },
+      "domain_tags": ["ai_education", "edtech"],
+      "scs_relevant": true
+    },
+    {
+      "signal_id": "oracle6-00000000-0000-0000-0000-000000000013",
+      "query_type": "SPACES",
+      "topic": "AI music generation lawsuit wave — record labels vs Suno and Udio",
+      "summary": "Major record labels suing AI music generators for copyright infringement. Suno and Udio facing billion-dollar lawsuits. Debate: is AI-generated music transformative fair use or theft? Musicians split between fear and opportunity.",
+      "confidence": 70,
+      "keyword_cluster": ["AI music", "Suno", "Udio", "copyright AI", "music generation", "RIAA lawsuit", "creative AI", "fair use"],
+      "top_speakers": [
+        { "name": "Rick Beato", "handle": "@rickbeato1", "authority_score": 80 },
+        { "name": "Grimes", "handle": "@Grimezsz", "authority_score": 75 }
+      ],
+      "relevant_channels": [
+        { "platform": "youtube", "channel_id": "UCJquYOG5EL82sKTfH9aMA9Q", "channel_name": "Rick Beato", "recent_activity": "2026-03-19T14:00:00Z" }
+      ],
+      "timestamp": "2026-03-20T08:45:00Z",
+      "provenance": {
+        "source": "manual_seed",
+        "detection_method": "spaces_transcription",
+        "first_seen": "2026-03-11T18:00:00Z",
+        "mainstream_eta_days": 7
+      },
+      "domain_tags": ["creative_ai", "legal_ip"],
+      "scs_relevant": true
+    },
+    {
+      "signal_id": "oracle6-00000000-0000-0000-0000-000000000014",
+      "query_type": "THOUGHT_LEADER",
+      "topic": "Apple Intelligence 2.0 — Siri finally gets a brain with on-device LLM",
+      "summary": "Apple's WWDC preview leaks showing major Siri overhaul with on-device language model. Privacy-first approach contrasting with cloud-dependent competitors. Developers excited about new API access. Could shift the consumer AI landscape overnight.",
+      "confidence": 83,
+      "keyword_cluster": ["Apple Intelligence", "Siri upgrade", "on-device AI", "Apple LLM", "privacy AI", "WWDC", "iOS AI", "edge computing"],
+      "top_speakers": [
+        { "name": "Mark Gurman", "handle": "@markgurman", "authority_score": 88 },
+        { "name": "Ben Thompson", "handle": "@benthompson", "authority_score": 86 }
+      ],
+      "relevant_channels": [
+        { "platform": "youtube", "channel_id": "UCZHmQk67mSJgfCCTn7xBfew", "channel_name": "MKBHD", "recent_activity": "2026-03-20T10:00:00Z" }
+      ],
+      "timestamp": "2026-03-20T09:00:00Z",
+      "provenance": {
+        "source": "manual_seed",
+        "detection_method": "keyword_surge",
+        "first_seen": "2026-03-17T08:00:00Z",
+        "mainstream_eta_days": 14
+      },
+      "domain_tags": ["consumer_ai", "mobile_tech"],
+      "scs_relevant": true
+    },
+    {
+      "signal_id": "oracle6-00000000-0000-0000-0000-000000000015",
+      "query_type": "NARRATIVE",
+      "topic": "AI agents are hallucinating financial data — Wall Street's trust problem",
+      "summary": "Bloomberg investigation reveals AI trading agents making decisions based on hallucinated earnings data. Multiple hedge funds quietly pausing AI-driven strategies. Raises fundamental questions about AI reliability in high-stakes domains. Massive engagement from finance + tech crossover audience.",
+      "confidence": 79,
+      "keyword_cluster": ["AI hallucination", "AI finance", "trading AI", "Wall Street AI", "AI reliability", "hallucinated data", "AI risk", "algorithmic trading"],
+      "top_speakers": [
+        { "name": "Chamath Palihapitiya", "handle": "@chamath", "authority_score": 82 },
+        { "name": "Patrick Boyle", "handle": "@PBoyle11", "authority_score": 78 }
+      ],
+      "relevant_channels": [
+        { "platform": "youtube", "channel_id": "UCWN3xxRkmTPmbKwht9FuE5A", "channel_name": "Fireship", "recent_activity": "2026-03-19T20:00:00Z" }
+      ],
+      "timestamp": "2026-03-20T09:15:00Z",
+      "provenance": {
+        "source": "manual_seed",
+        "detection_method": "narrative_shift",
+        "first_seen": "2026-03-16T14:00:00Z",
+        "mainstream_eta_days": 5
+      },
+      "domain_tags": ["ai_safety", "fintech"],
       "scs_relevant": true
     }
   ]

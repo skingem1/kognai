@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-514",
+  "title": "PIPELINE — Add topic variety to mock Trend Agent (10+ diverse topics)",
+  "description": "Quality report (Sprint 509) flagged only 2 unique topics across 13 videos. Expand mock oracle6 feed from 5 to 15 diverse AI/tech topics for better content variety.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "514-01",
+      "title": "Expand mock-oracle6-feed.json with 10 new diverse topics",
+      "type": "feature",
+      "task_type": "pipeline",
+      "task_target": "contracts/scs-001/mock-oracle6-feed.json",
+      "agent": "scs001-trend",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-514",
+      "deliverables": { "code": ["contracts/scs-001/mock-oracle6-feed.json"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "514-02",
+      "title": "Validate Trend Agent loads expanded feed correctly",
+      "type": "test",
+      "task_type": "validation",
+      "task_target": "agents/scs001-trend/index.ts",
+      "agent": "scs001-trend",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-514",
+      "deliverables": { "code": [], "tests": [], "docs": [] }
+    }
+  ]
+}
