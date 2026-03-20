@@ -1,6 +1,6 @@
 {
   "_note": "AUTHORITATIVE sprint execution order. The brief generator reads this and injects the first item as a MANDATORY directive, bypassing Qwen's recommendation. Pop items by setting status=done after each sprint ships. Human-maintained — edit to re-prioritise.",
-  "updated": "2026-03-20T22:00",
+  "updated": "2026-03-20T23:00",
   "owner": "Tarek (human)",
   "_plan_rationale": "Queue fixed 2026-03-20. Sprints 442-458 consumed by autonomous swarm. 10 items marked done (work completed). Remaining items have auto-sync guard in brief generator: consumed sprint numbers auto-skipped at runtime. 2 critical un-done items (SAFETY-SPLIT Part 2, progress.md update) re-added as Sprint 496-497 to avoid number collisions.",
   "queue": [
@@ -1005,6 +1005,47 @@
       "status": "done",
       "rationale": "After all improvements, run stats and diversity audit. Generate fresh reports for gate review preparation.",
       "_note": "116 produced, 110 delivered, diversity 97/100, $1.71 total. Gate ON TRACK."
+    },
+    {
+      "sprint": 557,
+      "title": "INFRA — Queue replenish (558-561)",
+      "block": "INFRA",
+      "status": "done",
+      "_note": "Self-referential queue replenish.",
+      "priority": "high",
+      "rationale": "Queue empty after Sprint 556."
+    },
+    {
+      "sprint": 558,
+      "title": "CONTENT — Batch production: 10 videos + deliver",
+      "block": "CONTENT",
+      "priority": "high",
+      "status": "pending",
+      "rationale": "Continue building content. 110 delivered, more = more options for posting variety."
+    },
+    {
+      "sprint": 559,
+      "title": "PIPELINE — Add topic name to experiment data for better tracking",
+      "block": "PIPELINE",
+      "priority": "medium",
+      "status": "pending",
+      "rationale": "Experiment entries lack topic names, making analytics harder. Wire topic name from trend feed into insight briefs and experiment log."
+    },
+    {
+      "sprint": 560,
+      "title": "QUALITY — Script quality checker — ban vague phrases in generated scripts",
+      "block": "VIDEO-QUALITY-V2",
+      "priority": "medium",
+      "status": "pending",
+      "rationale": "Insight agent prompt bans vague phrases but mock briefs still produce them. Add a post-generation quality check that flags/rewrites scripts with banned phrases."
+    },
+    {
+      "sprint": 561,
+      "title": "CONTENT — Final batch: 10 more videos + stats refresh",
+      "block": "CONTENT",
+      "priority": "high",
+      "status": "pending",
+      "rationale": "Another production batch. Run stats after to update reports."
     }
   ]
 }

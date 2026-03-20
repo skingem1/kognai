@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-557",
+  "title": "INFRA — Queue replenish (558-561)",
+  "description": "Queue empty after Sprint 556. Added: content x2, topic tracking, script quality checker.",
+  "source": "queue-empty-replenish",
+  "tasks": [
+    {
+      "id": "557-01",
+      "title": "Add Sprints 558-561 to queue",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "workspace/sprint-queue.json",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-557",
+      "deliverables": { "code": ["workspace/sprint-queue.json"], "tests": [], "docs": [] }
+    }
+  ]
+}
