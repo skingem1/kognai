@@ -1,0 +1,35 @@
+{
+  "_note": "A/B test configuration for SCS-001 video pipeline. Each dimension has variants with equal initial weight. Weights update automatically after 30+ posts based on performance.",
+  "version": 1,
+  "min_posts_for_analysis": 30,
+  "dimensions": {
+    "template": {
+      "variants": [
+        { "id": "split-screen", "label": "Split Screen (clip left, commentary right)", "weight": 1.0 },
+        { "id": "reaction", "label": "Reaction Style (clip then cut to text)", "weight": 1.0 },
+        { "id": "greenscreen", "label": "Greenscreen (text overlay on clip)", "weight": 1.0 }
+      ]
+    },
+    "hook_formula": {
+      "variants": [
+        { "id": "did-you-know", "label": "Did you know...", "weight": 1.0 },
+        { "id": "changed-everything", "label": "This changed everything...", "weight": 1.0 },
+        { "id": "nobody-talking", "label": "Nobody is talking about...", "weight": 1.0 },
+        { "id": "secret", "label": "The secret to...", "weight": 1.0 },
+        { "id": "stop-doing", "label": "Stop doing X, do Y instead", "weight": 1.0 }
+      ]
+    },
+    "music_style": {
+      "variants": [
+        { "id": "energetic", "label": "Energetic / upbeat", "weight": 1.0 },
+        { "id": "dramatic", "label": "Dramatic / cinematic", "weight": 1.0 },
+        { "id": "chill", "label": "Chill / lo-fi", "weight": 1.0 },
+        { "id": "motivational", "label": "Motivational / inspiring", "weight": 1.0 }
+      ]
+    }
+  },
+  "metrics": {
+    "primary": "views",
+    "secondary": ["likes", "comments", "shares", "retention_pct"]
+  }
+}

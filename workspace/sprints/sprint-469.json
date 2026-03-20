@@ -1,0 +1,44 @@
+{
+  "sprint_id": "sprint-469",
+  "title": "QUALITY — A/B test framework for video formats",
+  "description": "Track template/hook/music assignments per video. Store in workspace/ab-tests/. Analysis script finds winning format after 30+ posts.",
+  "source": "queue — Sprint 469 VIDEO-QUALITY-V2",
+  "tasks": [
+    {
+      "id": "469-01",
+      "title": "Build A/B test assignment engine (assigns template, hook, music per video)",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-469",
+      "deliverables": { "code": ["scripts/scs001/ab-test-assign.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "469-02",
+      "title": "Build A/B test analysis script (find winning format from metrics)",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-469",
+      "deliverables": { "code": ["scripts/scs001/ab-test-analyze.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "469-03",
+      "title": "Create initial A/B test config + seed data",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-469",
+      "deliverables": { "code": ["workspace/ab-tests/config.json", "workspace/ab-tests/assignments.jsonl"], "tests": [], "docs": [] }
+    }
+  ]
+}
