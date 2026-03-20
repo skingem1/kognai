@@ -4,7 +4,7 @@
 
 ## Summary
 
-- **Total sprints shipped:** 446 (Sprint 059 → Sprint 587)
+- **Total sprints shipped:** 447 (Sprint 059 → Sprint 588)
 - **Total commits:** 1110
 - **Current phase:** Phase 1 Active (Mar 17 – Apr 11 2026)
 - **Pipeline:** 12 stages, 11 agents, closed feedback loop
@@ -1008,3 +1008,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (commit of existing validated untracked files)
 - Issues: None
 - Timestamp: 2026-03-21T04:20:00Z
+
+## Sprint 588 — PIPELINE
+- Status: PASS
+- Commit: 9cdfbef
+- Files modified: scripts/scs001/pipeline-cron.ts
+- Files created: workspace/sprints/sprint-588.json
+- Test: TypeScript compile check — PASS
+- Pipeline: Topic radar now runs as Step 0 in pipeline-cron. Extracts keywords from radar, updates viral-topics.json before pipeline runs.
+- Swarm used: no (surgical edit to existing file)
+- Issues: None
+- Timestamp: 2026-03-21T04:25:00Z
