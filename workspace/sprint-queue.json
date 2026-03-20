@@ -432,7 +432,7 @@
       "sprint": 490,
       "title": "PHASE2A — Voxight Module 2 stub (ORACLE-6 live feed)",
       "block": "PHASE2A-PREP",
-      "status": "pending",
+      "status": "done",
       "priority": "low",
       "rationale": "Block D (Voxight Module 2) still BLOCKED. Build stub: mock ORACLE-6 live feed interface that the pipeline can consume. Real Voxight integration deferred to Phase 2. Unblocks SCS-001 live integration testing."
     },
