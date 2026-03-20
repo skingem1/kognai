@@ -3740,3 +3740,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (multi-file update)
 - Issues: None.
 - Timestamp: 2026-03-20T14:55:00Z
+
+## Sprint 423 — Auto-Purge Low-Quality Content (Direct Write)
+- Status: PASS
+- Commit: 08c7a39
+- Files created: workspace/sprints/sprint-423.json
+- Files modified: agents/scs001-orchestrator/run-pipeline.ts
+- Tasks completed:
+  - 423-01: Added auto-purge step to pipeline runner. After each run, scans experiments.jsonl for clips with viral score <0.25, archives them via archived-videos.json. Configurable via PIPELINE_PURGE_THRESHOLD env. Skips already-archived and already-posted clips.
+- Validation: tsc --noEmit PASS
+- Swarm used: no (pipeline runner modification)
+- Issues: None.
+- Timestamp: 2026-03-20T15:05:00Z
