@@ -4095,3 +4095,16 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (small surgical edit)
 - Issues: None. Note: HOOK_OPTIMIZE=1 must be set in .env to activate.
 - Timestamp: 2026-03-20T09:15:00Z
+
+## Sprint 452 — Content Queue Rotation + Diversity Scoring (Direct Write)
+- Status: PASS
+- Commit: d722ed9
+- Files created: scripts/scs001/queue-optimizer.ts, workspace/sprints/sprint-452.json
+- Files modified: scripts/telegram-bot.ts (added /queueopt command + help entry)
+- Tasks completed:
+  - 452-01: Created queue-optimizer.ts — reads publish-ledger.jsonl + experiments.jsonl, builds diversity-scored posting order. Greedy selection: viral_score * 0.6 + diversity_bonus * 0.4. No consecutive same-speaker, topic rotation, formula rotation. Top: Alex Albert (curiosity_gap), Sam Altman (contrarian), Jesse Pollak (curiosity_gap), Margrethe Vestager (authority).
+  - 452-02: Added /queueopt Telegram command — shows optimized 10-video posting order with speaker, formula, combined score. Reports diversity stats + consecutive same-speaker check.
+- Validation: 10 entries, 0 consecutive same-speaker pairs, 5+ unique speakers in top 10
+- Swarm used: no (data analysis + telegram integration)
+- Issues: None.
+- Timestamp: 2026-03-20T09:30:00Z
