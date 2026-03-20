@@ -4618,6 +4618,52 @@ async function cmdMenu(chatId: string): Promise<void> {
   await sendMessageWithButtons(chatId, text, buttons);
 }
 
+// Sprint 442: /cleanup — archive old pipeline runs to free disk space
+function cmdCleanup(): string {
+  const scsDir = path.join(ROOT, 'workspace', 'scs001');
+  const KEEP = 5;
+  try {
+    const runDirs = fs.readdirSync(scsDir)
+      .filter((d: string) => d.startsWith('run-'))
+      .sort()
+      .reverse(); // newest first
+
+    if (runDirs.length <= KEEP) {
+      return `🧹 *Cleanup* — ${runDirs.length} run dirs, all within keep limit (${KEEP}). Nothing to clean.`;
+    }
+
+    const toRemove = runDirs.slice(KEEP);
+    let freedMB = 0;
+    let removed = 0;
+
+    for (const dir of toRemove) {
+      const dirPath = path.join(scsDir, dir);
+      try {
+        // Estimate size by counting mp4 files
+        const files = fs.readdirSync(dirPath, { recursive: true }) as string[];
+        let dirSize = 0;
+        for (const f of files) {
+          try { dirSize += fs.statSync(path.join(dirPath, f as string)).size; } catch {}
+        }
+        freedMB += dirSize / (1024 * 1024);
+        fs.rmSync(dirPath, { recursive: true, force: true });
+        removed++;
+      } catch { /* skip */ }
+    }
+
+    return [
+      `🧹 *Cleanup Complete*`,
+      ``,
+      `📁 Run dirs: ${runDirs.length} → ${runDirs.length - removed}`,
+      `🗑️ Removed: ${removed} old runs`,
+      `💾 Freed: ~${Math.round(freedMB)} MB`,
+      `✅ Kept: ${KEEP} most recent runs`,
+    ].join('\n');
+  } catch (err: any) {
+    return `❌ Cleanup error: ${err.message}`;
+  }
+}
+
 function cmdHelp(): string {
   return (
     `*Kognai Bot Commands*\n\n` +
@@ -4695,6 +4741,7 @@ function cmdHelp(): string {
     `/abresults — View-based A/B content analysis\n` +
     `/stale     — Show/archive stale content (>7 days)\n` +
     `/purge     — Quality filter: archive low-scoring clips\n` +
+    `/cleanup   — Archive old pipeline runs, free disk space\n` +
     `/help      — This message`
   );
 }
@@ -6079,6 +6126,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/dedup':       response = cmdDedup();              break;
     case '/top30':       response = cmdTop30();              break;
     case '/abresults':   response = cmdAbResults();          break;
+    case '/cleanup':     response = cmdCleanup();            break;
     case '/help':        response = cmdHelp();        break;
     default:
       response = `Unknown command: \`${cmdName}\`\n\n${cmdHelp()}`;

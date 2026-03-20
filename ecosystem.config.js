@@ -1118,5 +1118,24 @@ module.exports = {
       out_file: "/Users/tarekmnif/kognai/logs/achiri-daily-engage-out.log",
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
+    {
+      // Sprint 442: Weekly pipeline cleanup — keep 5 latest runs, remove old
+      // To start: pm2 start ecosystem.config.js --only kognai-pipeline-cleanup
+      name: "kognai-pipeline-cleanup",
+      script: "scripts/scs001/pipeline-cleanup.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: false,
+      watch: false,
+      cron_restart: "0 3 * * 0",
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/pipeline-cleanup-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/pipeline-cleanup-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
   ]
 };
