@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-466",
+  "title": "INFRA — Git housekeeping + tag releases",
+  "description": "Tag key milestones in git history. Clean up .gitignore for untracked data files. 903 commits, no tags, no releases.",
+  "source": "queue — Sprint 466 INFRA",
+  "tasks": [
+    {
+      "id": "466-01",
+      "title": "Create git tags for Phase 0, Phase 1, and key milestones",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-466",
+      "deliverables": { "code": [], "tests": [], "docs": [] }
+    },
+    {
+      "id": "466-02",
+      "title": "Update .gitignore for untracked data/temp files",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-466",
+      "deliverables": { "code": [".gitignore"], "tests": [], "docs": [] }
+    }
+  ]
+}
