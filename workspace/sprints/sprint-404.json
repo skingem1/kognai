@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-404",
+  "title": "Enrich post records with experiment metadata for A/B analysis",
+  "description": "When posts are recorded via /record, /posted, or /done, automatically look up experiment data (speaker, hook_formula, viral_score, topic) and include it in the manual-posts.jsonl entry. Enables view-based A/B analysis after posting.",
+  "source": "auto — need to know which speakers/hooks drive views for content optimization",
+  "tasks": [
+    {
+      "id": "404-01",
+      "title": "Enrich /record, /posted, and /done with experiment metadata",
+      "type": "enhancement",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-404",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

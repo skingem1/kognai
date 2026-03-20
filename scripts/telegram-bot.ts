@@ -438,10 +438,16 @@ function cmdRecord(args: string): string {
     return `⚠️ Video \`${videoId}\` already recorded. Use /queue to see unposted videos.`;
   }
 
+  // Sprint 404: Enrich with experiment metadata for A/B analysis
+  const expData = getExperimentData(videoId);
   const entry = {
     video_id: videoId,
     views,
     title,
+    speaker: expData.speaker !== 'unknown' ? expData.speaker : undefined,
+    hook_formula: expData.hook_formula !== 'unknown' ? expData.hook_formula : undefined,
+    viral_score: expData.viral_score,
+    topic: expData.topic,
     posted_at: new Date().toISOString(),
     recorded_at: new Date().toISOString(),
   };
@@ -1201,10 +1207,15 @@ function cmdPosted(): string {
     return `⚠️ \`${videoId}\` already recorded. Send \`/posted\` again after posting the next delivered video.`;
   }
 
-  // Record the post
+  // Record the post (Sprint 404: enriched with experiment metadata)
+  const expData = getExperimentData(videoId);
   const entry = {
     video_id: videoId,
     views: 0,
+    speaker: expData.speaker !== 'unknown' ? expData.speaker : undefined,
+    hook_formula: expData.hook_formula !== 'unknown' ? expData.hook_formula : undefined,
+    viral_score: expData.viral_score,
+    topic: expData.topic,
     posted_at: new Date().toISOString(),
     recorded_at: new Date().toISOString(),
     source: 'auto-deliver',
@@ -3638,12 +3649,17 @@ async function cmdDone(chatId: string): Promise<void> {
     return;
   }
 
-  // Record the post
+  // Record the post (Sprint 404: enriched with experiment metadata)
   const videoId = postingSession.currentVideoId;
   const manualPostsPath = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
+  const expData = getExperimentData(videoId);
   const entry = {
     video_id: videoId,
     views: 0,
+    speaker: expData.speaker !== 'unknown' ? expData.speaker : undefined,
+    hook_formula: expData.hook_formula !== 'unknown' ? expData.hook_formula : undefined,
+    viral_score: expData.viral_score,
+    topic: expData.topic,
     posted_at: new Date().toISOString(),
     recorded_at: new Date().toISOString(),
     source: 'session',
