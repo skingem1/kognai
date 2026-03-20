@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-388",
+  "title": "/learn — Achiri Darija language learning feature",
+  "description": "Add /learn command to Achiri Telegram bot for interactive Darija word-of-the-day lessons with categories, pronunciation, examples, and mini-quiz.",
+  "source": "auto — Achiri alpha engagement: gamified language learning for retention",
+  "tasks": [
+    {
+      "id": "388-01",
+      "title": "Add /learn command to agents/achiri/telegram-bot.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-388",
+      "deliverables": { "code": ["agents/achiri/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

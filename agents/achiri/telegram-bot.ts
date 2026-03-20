@@ -135,6 +135,7 @@ async function handleHelp(chatId: string): Promise<void> {
     `/quiz — Tunisia trivia\n` +
     `/tip — Daily Tunisian wisdom\n` +
     `/stats — Your engagement stats\n` +
+    `/learn — Learn Darija word of the day\n` +
     `/feedback — Send us feedback\n` +
     `/about — About Achiri\n\n` +
     `Or just send me a message and we'll chat! 💬`
@@ -478,6 +479,106 @@ async function handleStats(chatId: string): Promise<void> {
   await sendMessage(chatId, out.join('\n'));
 }
 
+// --- Sprint 388: /learn — Darija word of the day + mini lesson ---
+
+const DARIJA_LESSONS = [
+  { word: 'يزي', latin: 'yezzi', meaning: 'Enough / Stop', example: 'Yezzi, ma t3awdch! (Enough, don\'t repeat it!)', category: 'daily' },
+  { word: 'برشا', latin: 'barcha', meaning: 'A lot / Very much', example: 'N7ebek barcha! (I love you a lot!)', category: 'daily' },
+  { word: 'شنوة', latin: 'chnowa', meaning: 'What?', example: 'Chnowa t7eb? (What do you want?)', category: 'question' },
+  { word: 'كيفاش', latin: 'kifech', meaning: 'How?', example: 'Kifech 7alek? (How are you?)', category: 'question' },
+  { word: 'وين', latin: 'win', meaning: 'Where?', example: 'Win mchi? (Where are you going?)', category: 'question' },
+  { word: 'فيسع', latin: 'fisa3', meaning: 'Quickly / Right away', example: 'Arwah fisa3! (Come quickly!)', category: 'daily' },
+  { word: 'صحبي', latin: 'sa7bi', meaning: 'My friend (male)', example: 'Ahla sa7bi! (Hey, my friend!)', category: 'social' },
+  { word: 'ما ثمّاش', latin: 'ma thammech', meaning: 'There isn\'t / Nothing', example: 'Ma thammech mochkla. (There\'s no problem.)', category: 'daily' },
+  { word: 'خطرة', latin: 'khatra', meaning: 'Sometimes', example: 'Khatra nemchi lel b7ar. (Sometimes I go to the sea.)', category: 'time' },
+  { word: 'نحب', latin: 'n7eb', meaning: 'I want / I love', example: 'N7eb 9ahwa. (I want coffee.)', category: 'daily' },
+  { word: 'إي', latin: 'ey/ih', meaning: 'Yes', example: 'Ih, mech mochkla! (Yes, no problem!)', category: 'basic' },
+  { word: 'لا', latin: 'le', meaning: 'No', example: 'Le, ma n7ebch. (No, I don\'t want.)', category: 'basic' },
+  { word: 'بالاهي', latin: 'bellahi', meaning: 'Please / I beg you', example: 'Bellahi 3awenni. (Please help me.)', category: 'social' },
+  { word: 'يعيشك', latin: 'ya3ichek', meaning: 'Thank you (lit: may you live)', example: 'Ya3ichek, barcha na7ki! (Thank you, much appreciated!)', category: 'social' },
+  { word: 'هكّة', latin: 'hakka', meaning: 'Like this / This way', example: 'A3mlha hakka! (Do it like this!)', category: 'daily' },
+  { word: 'ماهو', latin: 'mehou', meaning: 'Because / Well...', example: 'Mehou, chnowa na3ml? (Well, what should I do?)', category: 'connectors' },
+  { word: 'شوية', latin: 'chwaya', meaning: 'A little / A bit', example: 'Stanna chwaya. (Wait a little.)', category: 'daily' },
+  { word: 'توّا', latin: 'tawa', meaning: 'Now', example: 'Tawa nemchi. (I\'m going now.)', category: 'time' },
+  { word: 'غدوة', latin: 'ghodwa', meaning: 'Tomorrow', example: 'Nchoufek ghodwa! (See you tomorrow!)', category: 'time' },
+  { word: 'البارح', latin: 'lbar7', meaning: 'Yesterday', example: 'Lbar7 kont fi Tunis. (Yesterday I was in Tunis.)', category: 'time' },
+  { word: 'قهوة', latin: '9ahwa', meaning: 'Coffee / Café', example: 'Nemchiw lel 9ahwa? (Shall we go to the café?)', category: 'food' },
+  { word: 'ماكلة', latin: 'makla', meaning: 'Food', example: 'El makla bnina! (The food is delicious!)', category: 'food' },
+  { word: 'بنين', latin: 'bnin', meaning: 'Delicious', example: 'El kosksi bnin barcha! (The couscous is very delicious!)', category: 'food' },
+  { word: 'حومة', latin: '7ouma', meaning: 'Neighborhood', example: 'El 7ouma mte3i hkeya. (My neighborhood is amazing.)', category: 'places' },
+  { word: 'خدمة', latin: 'khedma', meaning: 'Work / Job', example: 'El khedma s3iba lyoum. (Work is hard today.)', category: 'daily' },
+];
+
+const activeLessons = new Map<string, { wordIndex: number }>();
+
+async function handleLearn(chatId: string, args: string): Promise<void> {
+  // Check if user is answering a quiz from /learn
+  const active = activeLessons.get(chatId);
+  if (active && args.trim()) {
+    const lesson = DARIJA_LESSONS[active.wordIndex];
+    const answer = args.trim().toLowerCase();
+    const correct = answer.includes(lesson.meaning.toLowerCase().split('/')[0].trim()) ||
+                    answer.includes(lesson.latin.toLowerCase());
+    activeLessons.delete(chatId);
+
+    if (correct) {
+      await sendMessage(chatId,
+        `✅ *Ahsant!* (Well done!)\n\n` +
+        `*${lesson.latin}* (${lesson.word}) = ${lesson.meaning}\n\n` +
+        `Type /learn for the next word! 📚`
+      );
+    } else {
+      await sendMessage(chatId,
+        `❌ Not quite! The answer is:\n\n` +
+        `*${lesson.latin}* (${lesson.word}) = ${lesson.meaning}\n` +
+        `📝 ${lesson.example}\n\n` +
+        `Type /learn to try another word! 📚`
+      );
+    }
+
+    // Log learning attempt
+    const learnLog = path.join(__dirname, '..', '..', 'workspace', 'achiri', 'learn-log.jsonl');
+    const entry = { chat_id: chatId, word: lesson.latin, correct, timestamp: new Date().toISOString() };
+    try { fs.appendFileSync(learnLog, JSON.stringify(entry) + '\n'); } catch {}
+    return;
+  }
+
+  // Category filter
+  const categoryFilter = args.trim().toLowerCase();
+  const validCategories = Array.from(new Set(DARIJA_LESSONS.map(l => l.category)));
+  let pool = DARIJA_LESSONS;
+  if (categoryFilter && validCategories.includes(categoryFilter)) {
+    pool = DARIJA_LESSONS.filter(l => l.category === categoryFilter);
+  }
+
+  // Pick a word — rotate based on day + user chatId hash
+  const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 86400000);
+  const userHash = chatId.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
+  const idx = (dayOfYear + userHash) % pool.length;
+  const globalIdx = DARIJA_LESSONS.indexOf(pool[idx]);
+  const lesson = pool[idx];
+
+  activeLessons.set(chatId, { wordIndex: globalIdx });
+
+  const categoryEmoji: Record<string, string> = {
+    daily: '🗣️', question: '❓', social: '🤝', time: '⏰',
+    basic: '🔤', food: '🍽️', places: '📍', connectors: '🔗',
+  };
+  const emoji = categoryEmoji[lesson.category] ?? '📚';
+
+  await sendMessage(chatId,
+    `📚 *Ta3allam Darija!* — Learn Tunisian\n\n` +
+    `${emoji} Category: *${lesson.category}*\n\n` +
+    `🇹🇳 *${lesson.word}*\n` +
+    `🔤 Pronounced: *${lesson.latin}*\n` +
+    `📝 ${lesson.example}\n\n` +
+    `❓ *What does "${lesson.latin}" mean?*\n` +
+    `_Reply with: /learn your answer_\n\n` +
+    `_Categories: ${validCategories.join(', ')}_\n` +
+    `_Try: /learn food_`
+  );
+}
+
 // --- Main message handler ---
 
 async function handleMessage(chatId: string, text: string, firstName: string, username: string): Promise<void> {
@@ -495,6 +596,7 @@ async function handleMessage(chatId: string, text: string, firstName: string, us
   if (cmd === '/quiz') return handleQuiz(chatId, args);
   if (cmd === '/tip') return handleTip(chatId);
   if (cmd === '/stats') return handleStats(chatId);
+  if (cmd === '/learn') return handleLearn(chatId, args);
 
   // Access check
   if (!hasAccess(chatId)) {
