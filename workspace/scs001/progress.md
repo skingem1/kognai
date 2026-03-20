@@ -3969,3 +3969,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (HTML template + Stripe param in single file)
 - Issues: None.
 - Timestamp: 2026-03-20T22:15:00Z
+
+## Sprint 442 — Pipeline Cleanup (Direct Write)
+- Status: PASS
+- Commit: 69f25e0
+- Files created: scripts/scs001/pipeline-cleanup.ts, workspace/sprints/sprint-442.json
+- Files modified: scripts/telegram-bot.ts, ecosystem.config.js
+- Tasks completed:
+  - 442-01: Created pipeline-cleanup.ts — removes old run-* directories (keeps 5 latest). Added /cleanup Telegram command. Added kognai-pipeline-cleanup PM2 weekly cron (Sunday 03:00). 2.1GB in workspace/scs001/ with 59 run dirs — cleanup will reclaim ~1.5GB.
+- Validation: tsc --noEmit PASS
+- Swarm used: no (new script + bot command + ecosystem config)
+- Issues: None.
+- Timestamp: 2026-03-20T22:30:00Z
