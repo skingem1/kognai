@@ -3181,3 +3181,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (single function)
 - Issues: None.
 - Timestamp: 2026-03-20T11:45:00Z
+
+## Sprint 369 — /broadcast — Alpha User Announcements (Direct Write)
+- Status: PASS
+- Commit: 53fb565
+- Files created: workspace/sprints/sprint-369.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 369-01: Added /broadcast async command. Reads alpha-whitelist.jsonl + waitlist.jsonl, sends message to all users with 200ms rate limiting, logs to broadcast-log.jsonl. Usage help when no message. Updated /help.
+- Validation: ts-node --transpile-only PASS
+- Swarm used: no (async function with multi-user sends)
+- Issues: None.
+- Timestamp: 2026-03-20T12:00:00Z
