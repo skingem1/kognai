@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-383",
+  "title": "/progress — visual gate progress tracker",
+  "description": "Add /progress command showing visual progress bar toward 30-post gate, daily posting history, streak, and pace projections with urgency warnings.",
+  "source": "auto — operator needs visual feedback on gate progress",
+  "tasks": [
+    {
+      "id": "383-01",
+      "title": "Add /progress command to scripts/telegram-bot.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-383",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

@@ -3309,6 +3309,7 @@ function cmdHelp(): string {
     `/speakertest — Speaker A/B test rankings\n` +
     `/contentplan — 7-day content filming plan\n` +
     `/filmkit   — Instant filming brief for next video\n` +
+    `/progress  — Visual gate progress tracker\n` +
     `/help      — This message`
   );
 }
@@ -3427,6 +3428,84 @@ function cmdContentPlan(): string {
   }
   lines.push(`• Use /queue to pick ready videos`);
   lines.push(`• Use /record after posting to track`);
+
+  return lines.join('\n');
+}
+
+// ─── Sprint 383: /progress — visual gate progress tracker ───────────
+
+function cmdProgress(): string {
+  const posts = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  const now = new Date();
+  const GATE_DATE = new Date('2026-04-07T00:00:00Z');
+  const daysLeft = Math.max(0, Math.ceil((GATE_DATE.getTime() - now.getTime()) / 86_400_000));
+  const totalPosts = posts.length;
+  const target = 30;
+  const postsNeeded = Math.max(0, target - totalPosts);
+  const pct = Math.min(100, Math.round((totalPosts / target) * 100));
+
+  // Visual progress bar (20 chars wide)
+  const filled = Math.round(pct / 5);
+  const bar = '█'.repeat(filled) + '░'.repeat(20 - filled);
+
+  // Daily posting history (last 7 days)
+  const dailyCounts: Record<string, number> = {};
+  for (const p of posts) {
+    const d = (p.posted_at ?? p.recorded_at ?? '').slice(0, 10);
+    if (d) dailyCounts[d] = (dailyCounts[d] ?? 0) + 1;
+  }
+
+  // Streak calculation
+  let streak = 0;
+  for (let i = 0; i < 30; i++) {
+    const d = new Date(now.getTime() - i * 86_400_000).toISOString().slice(0, 10);
+    if ((dailyCounts[d] ?? 0) > 0) streak++;
+    else break;
+  }
+
+  // Total views
+  const totalViews = posts.reduce((sum: number, p: any) => sum + (p.views ?? 0), 0);
+
+  // Urgency level
+  let urgency: string;
+  const pacePerDay = daysLeft > 0 ? postsNeeded / daysLeft : postsNeeded;
+  if (postsNeeded === 0) urgency = '✅ GATE MET';
+  else if (pacePerDay <= 1) urgency = '🟢 On track';
+  else if (pacePerDay <= 2) urgency = '🟡 Needs attention';
+  else if (pacePerDay <= 3) urgency = '🟠 Behind pace';
+  else urgency = '🔴 CRITICAL';
+
+  const lines = [
+    '📊 *Gate Progress — 30 Posts by Apr 7*',
+    '',
+    `\`[${bar}]\` ${pct}%`,
+    `*${totalPosts}/${target}* posted · ${postsNeeded} remaining · ${daysLeft} days`,
+    '',
+    `📈 Status: ${urgency}`,
+    `🎯 Required pace: *${pacePerDay.toFixed(1)} posts/day*`,
+    `🔥 Current streak: *${streak} days*`,
+    `👁️ Total views: *${totalViews.toLocaleString()}*`,
+    '',
+    '*Last 7 days:*',
+  ];
+
+  for (let i = 6; i >= 0; i--) {
+    const date = new Date(now.getTime() - i * 86_400_000);
+    const dateStr = date.toISOString().slice(0, 10);
+    const dayName = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][date.getDay()];
+    const count = dailyCounts[dateStr] ?? 0;
+    const dots = count > 0 ? '●'.repeat(count) : '·';
+    const isToday = i === 0 ? ' ←' : '';
+    lines.push(`  ${dayName} ${dateStr.slice(5)}: ${dots} (${count})${isToday}`);
+  }
+
+  lines.push('');
+  if (postsNeeded > 0) {
+    lines.push('→ /filmkit for your next video brief');
+    lines.push('→ /record after posting');
+  } else {
+    lines.push('🎉 Gate target reached! Keep posting for momentum.');
+  }
 
   return lines.join('\n');
 }
@@ -3699,6 +3778,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/speakertest': response = cmdSpeakerTest();        break;
     case '/contentplan': response = cmdContentPlan();        break;
     case '/filmkit':     response = cmdFilmKit();            break;
+    case '/progress':    response = cmdProgress();           break;
     case '/help':        response = cmdHelp();        break;
     default:
       response = `Unknown command: \`${cmdName}\`\n\n${cmdHelp()}`;
