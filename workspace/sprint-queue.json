@@ -1295,7 +1295,7 @@
       "sprint": 596,
       "title": "INFRA — /costs Telegram command for daily/weekly cost breakdown",
       "block": "INFRA",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "Cost visibility is important for Phase 1 budget tracking. Show model costs, API costs, total spend."
     },

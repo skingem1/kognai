@@ -1086,3 +1086,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (surgical edits to 2 files)
 - Issues: None
 - Timestamp: 2026-03-21T05:25:00Z
+
+## Sprint 596 — INFRA
+- Status: PASS
+- Commit: 78f6449
+- Files created: workspace/sprints/sprint-596.json
+- Files modified: scripts/telegram-commands/cmd-posting.ts, scripts/telegram-bot.ts
+- Test: TypeScript compile — PASS
+- Pipeline: New /costs Telegram command shows cost breakdown (today/week/all-time + daily)
+- Swarm used: no (surgical edits to 2 files)
+- Issues: None
+- Timestamp: 2026-03-21T05:35:00Z
