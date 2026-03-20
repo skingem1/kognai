@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-440",
+  "title": "Telegram /publish — one-tap multi-platform publishing via Blotato",
+  "description": "Wire the existing Blotato client to the Telegram bot. Add /publish command that uploads video to Supabase for a public URL, then publishes via Blotato to TikTok + IG Reels + YouTube Shorts. Add inline Publish button on delivered videos. Dry-run if BLOTATO_API_KEY not set.",
+  "source": "auto — TikTok access token blocker bypass. 203 captioned videos ready, 0 posted, need 30 by Apr 7.",
+  "tasks": [
+    {
+      "id": "440-01",
+      "title": "Add /publish command + Supabase video upload + Blotato integration to Telegram bot",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-440",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

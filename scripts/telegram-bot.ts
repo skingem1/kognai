@@ -1071,14 +1071,15 @@ async function cmdDeliver(chatId: string, args: string): Promise<string> {
     const hookStr = hook ? ` · 🎣 ${hook}` : '';
     const tgCaption = `📦 *Post this to TikTok* ${vsStr} ${spkStr}${hookStr}${ageStr}\n\n${caption}\n\n\`/record ${videoId} 0\``;
 
-    // Sprint 435+438: Inline buttons for one-tap posting + caption copy
+    // Sprint 435+438+440: Inline buttons for one-tap posting + caption copy + publish
     const deliverButtons = [
       [
         { text: '✅ Posted', callback_data: `posted:${videoId}` },
-        { text: '📋 Caption', callback_data: `cmd:/caption ${videoId}` },
+        { text: '📡 Publish', callback_data: `cmd:/publish ${videoId}` },
       ],
       [
-        { text: '⏭️ Next Video', callback_data: 'cmd:/deliver 1' },
+        { text: '📋 Caption', callback_data: `cmd:/caption ${videoId}` },
+        { text: '⏭️ Next', callback_data: 'cmd:/deliver 1' },
       ],
     ];
     try {
@@ -1683,6 +1684,196 @@ function cmdTikTokAuth(): string {
     `*Step 5:* Restart the bot: \`pm2 restart kognai-telegram-bot\`\n\n` +
     `After this, auto-posting will be enabled!`
   );
+}
+
+// Sprint 440: /publish — one-tap multi-platform publishing via Blotato
+// Uploads video to Supabase storage for a public URL, then publishes via Blotato
+// to TikTok + IG Reels + YouTube Shorts. Dry-run if BLOTATO_API_KEY not set.
+async function cmdPublish(chatId: string, args: string): Promise<void> {
+  const SUPABASE_URL = process.env.SUPABASE_URL || '';
+  const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY || '';
+  const BLOTATO_KEY = process.env.BLOTATO_API_KEY || '';
+  const isDryRun = !BLOTATO_KEY;
+  const PLATFORMS = ['tiktok', 'instagram', 'youtube'] as const;
+
+  // Resolve video ID: from args or auto-pick best unposted
+  let videoId = args.trim();
+  if (!videoId) {
+    const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
+    const recorded = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+    const recordedIds = new Set(recorded.map((e: any) => e.video_id).filter(Boolean));
+    const viralScores = new Map<string, number>();
+    const expPath = path.join(ROOT, 'workspace', 'scs001', 'experiments.jsonl');
+    if (fs.existsSync(expPath)) {
+      try {
+        for (const line of fs.readFileSync(expPath, 'utf-8').split('\n')) {
+          if (!line.trim()) continue;
+          try { const e = JSON.parse(line); const id = e.clip_id ?? e.video_id; if (id && e.partial_viral_score != null) viralScores.set(id, e.partial_viral_score); } catch {}
+        }
+      } catch {}
+    }
+    const unposted = (ledger as any[])
+      .filter((e: any) => !recordedIds.has(e.video_id) && e.video_id && findCaptionedMp4(e.video_id))
+      .sort((a: any, b: any) => (viralScores.get(b.video_id) ?? 0) - (viralScores.get(a.video_id) ?? 0));
+    if (unposted.length === 0) {
+      await sendMessage(chatId, `📡 *Publish* — No ready-to-post videos found.\n\nRun /refresh first.`);
+      return;
+    }
+    videoId = unposted[0].video_id;
+  }
+
+  const mp4Path = findCaptionedMp4(videoId);
+  if (!mp4Path) {
+    await sendMessage(chatId, `❌ Video \`${videoId}\` not found or not captioned.`);
+    return;
+  }
+
+  const caption = buildTikTokCaption(videoId);
+  const exp = getExperimentData(videoId);
+  const modeStr = isDryRun ? '🧪 DRY RUN' : '🔴 LIVE';
+  await sendMessage(chatId, `📡 *Publishing ${modeStr}*\n\n🎬 \`${videoId}\`\n🎙️ ${exp.speaker}\n🎯 ${PLATFORMS.join(', ')}\n\n⏳ Uploading to Supabase...`);
+
+  // Step 1: Upload to Supabase storage for a public URL
+  let publicUrl = '';
+  if (!isDryRun && SUPABASE_URL && SUPABASE_KEY) {
+    try {
+      const fileBuffer = fs.readFileSync(mp4Path);
+      const storagePath = `publish/${videoId}.mp4`;
+      const bucket = 'scs001-videos';
+      const uploadUrl = `${SUPABASE_URL}/storage/v1/object/${bucket}/${storagePath}`;
+
+      const uploadRes = await new Promise<{ ok: boolean; status: number; body: string }>((resolve, reject) => {
+        const url = new URL(uploadUrl);
+        const req = https.request({
+          hostname: url.hostname,
+          path: url.pathname,
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${SUPABASE_KEY}`,
+            'Content-Type': 'video/mp4',
+            'Content-Length': fileBuffer.length,
+            'x-upsert': 'true',
+          },
+          timeout: 60000,
+        }, (res) => {
+          let data = '';
+          res.on('data', (c: Buffer) => (data += c.toString()));
+          res.on('end', () => resolve({ ok: res.statusCode! >= 200 && res.statusCode! < 300, status: res.statusCode!, body: data }));
+        });
+        req.on('error', reject);
+        req.on('timeout', () => { req.destroy(); reject(new Error('Upload timeout')); });
+        req.write(fileBuffer);
+        req.end();
+      });
+
+      if (!uploadRes.ok) throw new Error(`Supabase upload ${uploadRes.status}: ${uploadRes.body.slice(0, 200)}`);
+      publicUrl = `${SUPABASE_URL}/storage/v1/object/public/${bucket}/${storagePath}`;
+    } catch (err: any) {
+      await sendMessage(chatId, `⚠️ Supabase upload failed: ${err.message}\n\nFalling back to dry-run.`);
+      publicUrl = '';
+    }
+  }
+
+  // Step 2: Publish via Blotato
+  if (isDryRun || !publicUrl) {
+    // Dry run — show what would be published
+    const lines = [
+      `📡 *Publish — DRY RUN*`,
+      ``,
+      `🎬 Video: \`${videoId}\``,
+      `🎙️ Speaker: ${exp.speaker}`,
+      `🧬 Score: ${exp.viral_score ?? '—'}`,
+      `🎣 Hook: ${exp.hook_formula}`,
+      ``,
+      `*Would publish to:*`,
+      ...PLATFORMS.map(p => `  ✅ ${p}`),
+      ``,
+      `*Caption:*`,
+      caption.slice(0, 200) + (caption.length > 200 ? '...' : ''),
+      ``,
+      `⚙️ Set \`BLOTATO_API_KEY\` in .env to publish live.`,
+    ];
+    await sendMessageWithButtons(chatId, lines.join('\n'), [
+      [{ text: '✅ Record as Posted', callback_data: `posted:${videoId}` }],
+      [{ text: '📋 Caption', callback_data: `cmd:/caption ${videoId}` }],
+    ]);
+    return;
+  }
+
+  // Live publish via Blotato
+  try {
+    const blotatoBody = JSON.stringify({
+      content: caption,
+      media_url: publicUrl,
+      media_type: 'video',
+      platforms: [...PLATFORMS],
+      hashtags: [],
+    });
+
+    const blotatoRes = await new Promise<{ ok: boolean; status: number; body: string }>((resolve, reject) => {
+      const req = https.request({
+        hostname: 'api.blotato.com',
+        path: '/v1/posts',
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${BLOTATO_KEY}`,
+          'Content-Type': 'application/json',
+          'Content-Length': Buffer.byteLength(blotatoBody),
+        },
+        timeout: 30000,
+      }, (res) => {
+        let data = '';
+        res.on('data', (c: Buffer) => (data += c.toString()));
+        res.on('end', () => resolve({ ok: res.statusCode! >= 200 && res.statusCode! < 300, status: res.statusCode!, body: data }));
+      });
+      req.on('error', reject);
+      req.on('timeout', () => { req.destroy(); reject(new Error('Blotato timeout')); });
+      req.write(blotatoBody);
+      req.end();
+    });
+
+    if (!blotatoRes.ok) throw new Error(`Blotato ${blotatoRes.status}: ${blotatoRes.body.slice(0, 200)}`);
+
+    let platformResults = '';
+    try {
+      const parsed = JSON.parse(blotatoRes.body);
+      if (parsed.platforms) {
+        platformResults = (parsed.platforms as any[]).map((p: any) =>
+          `  ${p.success ? '✅' : '❌'} ${p.platform}${p.post_url ? ` — ${p.post_url}` : ''}`
+        ).join('\n');
+      }
+    } catch { platformResults = '  ✅ Published (details unavailable)'; }
+
+    // Record post
+    const postEntry = {
+      video_id: videoId,
+      posted_at: new Date().toISOString(),
+      views: 0,
+      method: 'blotato',
+      platforms: [...PLATFORMS],
+      public_url: publicUrl,
+    };
+    const manualPostsPath = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
+    fs.appendFileSync(manualPostsPath, JSON.stringify(postEntry) + '\n');
+
+    await sendMessageWithButtons(chatId, [
+      `📡 *Published!*`,
+      ``,
+      `🎬 \`${videoId}\``,
+      `🎙️ ${exp.speaker} · 🧬 ${exp.viral_score ?? '—'}`,
+      ``,
+      `*Platforms:*`,
+      platformResults,
+      ``,
+      `✅ Recorded in posting log.`,
+    ].join('\n'), [
+      [{ text: '📡 Publish Next', callback_data: 'cmd:/publish' }],
+      [{ text: '🔥 Streak', callback_data: 'cmd:/streak' }, { text: '📊 Gate', callback_data: 'cmd:/gate' }],
+    ]);
+
+  } catch (err: any) {
+    await sendMessage(chatId, `❌ *Publish failed:* ${err.message}\n\nVideo uploaded to Supabase OK. Try again or post manually.`);
+  }
 }
 
 // Sprint 346: /golive — one-stop Phase 1 go-live readiness checker
@@ -4446,6 +4637,7 @@ function cmdHelp(): string {
     `/record    — Record a manual TikTok post\n` +
     `/posted    — Mark last auto-delivered video as posted\n` +
     `/deliver   — Batch-send ready videos with captions\n` +
+    `/publish   — One-tap publish to TikTok + IG + YouTube via Blotato\n` +
     `/caption   — Generate TikTok-ready caption for a video\n` +
     `/streak    — Posting streak tracker + pace\n` +
     `/analytics — Content performance insights\n` +
@@ -5793,6 +5985,18 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
       else await cmdEndSession(chatId);
     } catch (e: any) {
       await sendMessage(chatId, `❌ Session error: ${e.message?.slice(0, 200)}`);
+    }
+    const timestamp = new Date().toISOString();
+    fs.appendFileSync(AUDIT_LOG, `[${timestamp}] [TELEGRAM_BOT] Command: ${cmd} from ${chatId}\n`);
+    return;
+  }
+
+  // Sprint 440: /publish is async (uploads + publishes), handle separately
+  if (cmdName === '/publish') {
+    try {
+      await cmdPublish(chatId, cmdArgs);
+    } catch (e: any) {
+      await sendMessage(chatId, `❌ Publish error: ${e.message}`);
     }
     const timestamp = new Date().toISOString();
     fs.appendFileSync(AUDIT_LOG, `[${timestamp}] [TELEGRAM_BOT] Command: ${cmd} from ${chatId}\n`);
