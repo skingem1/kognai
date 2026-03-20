@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-437",
+  "title": "PM2 auto-healer cron to restart crashed essential processes",
+  "description": "Create scripts/pm2-auto-healer.ts that runs hourly via PM2 cron. Checks all essential crons, restarts any that are stopped/errored, sends Telegram alert with what was restarted. Prevents silent cron death.",
+  "source": "auto — all kognai PM2 crons found stopped, no auto-recovery mechanism exists",
+  "tasks": [
+    {
+      "id": "437-01",
+      "title": "Create pm2-auto-healer.ts script",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-437",
+      "deliverables": { "code": ["scripts/pm2-auto-healer.ts", "ecosystem.config.js"], "tests": [], "docs": [] }
+    }
+  ]
+}

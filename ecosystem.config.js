@@ -1057,6 +1057,26 @@ module.exports = {
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
     {
+      // Sprint 437: PM2 auto-healer — hourly check + restart of crashed essential crons
+      // Restarts errored crons and daemons, sends Telegram alert on action.
+      // To start: pm2 start ecosystem.config.js --only kognai-auto-healer
+      name: "kognai-auto-healer",
+      script: "scripts/pm2-auto-healer.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: false,
+      watch: false,
+      cron_restart: "0 * * * *",
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/auto-healer-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/auto-healer-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
+    {
       // Sprint 326: Achiri re-engagement — daily at 15:00 (afternoon in Tunisia)
       // Sends check-in messages to alpha users inactive 3+ days.
       // To start: pm2 start ecosystem.config.js --only achiri-reengage
