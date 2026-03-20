@@ -7,6 +7,7 @@
 //   GET    /upgrade             ?tier=tnd_basic&userId=xxx → { checkout_url, order_id, amount_tnd, tier, mock }
 //   GET    /summary/:userId      → { userId, facts, total_turns_summarized, last_updated }
 //   GET    /profile/:userId      → { userId, preferred_language, top_interests, message_count, ... }
+//   GET    /export/:userId       → { userId, turns, profile, summary_facts, conversation }
 //   DELETE /memory/:userId      → { ok: true }
 //   GET    /stats               → { users, total_turns, uptime_s }
 //   GET    /health              → { status: 'ok', version: '301' }
@@ -117,6 +118,31 @@ const server = http.createServer(async (req, res) => {
     return send(res, 200, profile);
   }
 
+  // GET /export/:userId — Sprint 313: conversation export for quality review
+  if (method === 'GET' && url.startsWith('/export/')) {
+    const userId = decodeURIComponent(url.slice('/export/'.length));
+    if (!userId) return send(res, 400, { error: 'userId required' });
+    const history = memStore.loadHistory(userId);
+    const profile = extractUserProfile(userId);
+    const summary = loadSummary(userId);
+    console.log('[Achiri API] /export userId=' + userId + ' turns=' + history.length);
+    return send(res, 200, {
+      userId,
+      turns: history.length,
+      profile: {
+        preferred_language: profile.preferred_language,
+        top_interests: profile.top_interests,
+        message_count: profile.message_count,
+      },
+      summary_facts: summary?.facts ?? [],
+      conversation: history.map((t, i) => ({
+        index: i,
+        role: t.role,
+        content: t.content,
+      })),
+    });
+  }
+
   // DELETE /memory/:userId
   if (method === 'DELETE' && url.startsWith('/memory/')) {
     const userId = decodeURIComponent(url.slice('/memory/'.length));
@@ -218,7 +244,7 @@ const server = http.createServer(async (req, res) => {
 
 server.listen(PORT, () => {
   console.log('[Achiri API] listening on port ' + PORT);
-  console.log('[Achiri API] routes: POST /chat, POST /voice, GET /upgrade, GET /summary/:userId, GET /profile/:userId, DELETE /memory/:userId, GET /stats, GET /health');
+  console.log('[Achiri API] routes: POST /chat, POST /voice, GET /upgrade, GET /summary/:userId, GET /profile/:userId, GET /export/:userId, DELETE /memory/:userId, GET /stats, GET /health');
 });
 
 export { server };

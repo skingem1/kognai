@@ -3647,3 +3647,102 @@ export async function handleAchiriFeedback(chatId: number, ownerChatId: string):
 
   await sendMessage(chatId, lines.join('\n'));
 }
+
+// ── Sprint 313: /achiriexport [userId] — Export conversation for quality review ──
+
+export async function handleAchiriExport(chatId: number, ownerChatId: string, text: string): Promise<void> {
+  if (String(chatId) !== ownerChatId) {
+    await sendMessage(chatId, '🔒 Owner only.');
+    return;
+  }
+
+  const parts = text.trim().split(/\s+/);
+  const userId = parts[1];
+  if (!userId) {
+    // List all users with conversations
+    const achiriDir = join(process.cwd(), 'workspace', 'achiri', 'memory');
+    if (!existsSync(achiriDir)) {
+      await sendMessage(chatId, '📤 *Achiri Export*\n\nNo conversation data found.');
+      return;
+    }
+    const { readdirSync } = await import('fs');
+    const files = readdirSync(achiriDir).filter(f => f.endsWith('.jsonl') && !f.startsWith('e2e-') && !f.startsWith('smoke-'));
+    const userIds = files.map(f => f.replace('.jsonl', ''));
+    if (userIds.length === 0) {
+      await sendMessage(chatId, '📤 *Achiri Export*\n\nNo user conversations found.');
+      return;
+    }
+    const lines = [
+      '📤 *Achiri Export*',
+      '',
+      `*${userIds.length} users with conversations:*`,
+      ...userIds.slice(0, 20).map(id => `• \`/achiriexport ${id}\``),
+    ];
+    if (userIds.length > 20) lines.push(`... +${userIds.length - 20} more`);
+    await sendMessage(chatId, lines.join('\n'));
+    return;
+  }
+
+  // Fetch from Achiri API
+  const achiriUrl = (process.env.ACHIRI_BASE_URL ?? 'http://localhost:3420').replace(/\/$/, '');
+  try {
+    const controller = new AbortController();
+    const t = setTimeout(() => controller.abort(), 10000);
+    const res = await fetch(achiriUrl + '/export/' + encodeURIComponent(userId), { signal: controller.signal });
+    clearTimeout(t);
+
+    if (!res.ok) {
+      await sendMessage(chatId, `❌ Export failed: ${res.status}`);
+      return;
+    }
+
+    const data = await res.json() as {
+      userId: string;
+      turns: number;
+      profile: { preferred_language: string; top_interests: string[]; message_count: number };
+      summary_facts: string[];
+      conversation: Array<{ index: number; role: string; content: string }>;
+    };
+
+    if (data.turns === 0) {
+      await sendMessage(chatId, `📤 *Export: ${userId}*\n\nNo conversation history.`);
+      return;
+    }
+
+    const header = [
+      `📤 *Achiri Export: ${userId}*`,
+      '',
+      `💬 *Turns:* ${data.turns}`,
+      `🌐 *Language:* ${data.profile.preferred_language || 'unknown'}`,
+      `🎯 *Interests:* ${data.profile.top_interests.slice(0, 5).join(', ') || 'none'}`,
+      `📝 *Messages:* ${data.profile.message_count}`,
+    ];
+
+    if (data.summary_facts.length > 0) {
+      header.push('', '*Known facts:*');
+      for (const f of data.summary_facts.slice(0, 5)) {
+        header.push(`  • ${f}`);
+      }
+    }
+
+    await sendMessage(chatId, header.join('\n'));
+
+    // Send conversation in chunks (Telegram has 4096 char limit)
+    const convo = data.conversation;
+    let chunk = '';
+    for (const turn of convo) {
+      const icon = turn.role === 'user' ? '👤' : turn.role === 'assistant' ? '🤖' : '⚙️';
+      const line = `${icon} ${turn.content.slice(0, 500)}${turn.content.length > 500 ? '...' : ''}\n\n`;
+      if (chunk.length + line.length > 3800) {
+        await sendMessage(chatId, chunk);
+        chunk = '';
+      }
+      chunk += line;
+    }
+    if (chunk.trim()) {
+      await sendMessage(chatId, chunk);
+    }
+  } catch (err) {
+    await sendMessage(chatId, `❌ Could not reach Achiri server: ${(err as Error).message?.slice(0, 100)}`);
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-313",
+  "title": "Achiri conversation export — /achiriexport command for alpha quality review",
+  "description": "Operator command to export user conversations as formatted text for manual quality review before Apr 25 alpha. Also adds GET /export/:userId API endpoint.",
+  "source": "auto — Achiri Phase 2A: alpha quality assurance",
+  "tasks": [
+    {
+      "id": "313-01",
+      "title": "Add GET /export/:userId endpoint to Achiri server",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-313",
+      "deliverables": { "code": ["agents/achiri/server.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "313-02",
+      "title": "Add /achiriexport Telegram command",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-313",
+      "deliverables": { "code": ["agents/telegram-bot/commands.ts", "agents/telegram-bot/index.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
