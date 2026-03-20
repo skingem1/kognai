@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-468",
+  "title": "QUALITY — Thumbnail generator for YouTube Shorts",
+  "description": "Extract best frame from captioned video + add text overlay (hook text). Save as JPG thumbnail. Auto-attach to YouTube upload.",
+  "source": "queue — Sprint 468 VIDEO-QUALITY-V2",
+  "tasks": [
+    {
+      "id": "468-01",
+      "title": "Build thumbnail generator script with FFmpeg frame extraction + text overlay",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-468",
+      "deliverables": { "code": ["scripts/scs001/generate-thumbnail.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "468-02",
+      "title": "Add /thumbnail Telegram command to generate + send thumbnail",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-468",
+      "deliverables": { "code": ["scripts/telegram-commands/cmd-content.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

@@ -589,3 +589,24 @@ export function cmdAnalytics(): string {
 
   return lines.join('\n');
 }
+
+// Sprint 468: /thumbnail — generate YouTube Shorts thumbnail
+export function cmdThumbnail(args: string): string {
+  const videoId = args.trim();
+  if (!videoId) {
+    return '🖼 *Thumbnail Generator*\n\nUsage: `/thumbnail <video_id>`\n\nExtracts hook-moment frame + adds text overlay.';
+  }
+
+  try {
+    const { generateThumbnail } = require('../scs001/generate-thumbnail');
+    const result = generateThumbnail(videoId);
+    if (result) {
+      const size = require('fs').statSync(result).size;
+      return `🖼 *Thumbnail Generated*\n\n🎬 \`${videoId}\`\n📁 ${result}\n📊 ${Math.round(size / 1024)}KB\n\n_Use with YouTube Shorts upload._`;
+    } else {
+      return `❌ Failed to generate thumbnail for \`${videoId}\`.\n\nCheck: video exists and has captioned mp4.`;
+    }
+  } catch (err: any) {
+    return `❌ Thumbnail error: ${err.message}`;
+  }
+}
