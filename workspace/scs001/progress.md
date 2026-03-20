@@ -2639,3 +2639,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (single endpoint addition)
 - Issues: None.
 - Timestamp: 2026-03-20T02:35:00Z
+
+## Sprint 325 — /achirianalytics Telegram Command (Direct Write)
+- Status: PASS
+- Commit: 844ffdc
+- Files created: workspace/sprints/sprint-325.json
+- Files modified: agents/telegram-bot/commands.ts, agents/telegram-bot/index.ts
+- Tasks completed:
+  - 325-01: handleAchiriAnalytics() — fetches from Achiri API /analytics endpoint, displays users (total/DAU/returning/retention), messages (today/total/active days), feedback (avg/NPS/recent), errors (24h/total/by type), uptime and cached handlers. Added to /help listing. Wired into dispatch switch.
+- Validation: npx tsc --noEmit PASS
+- Swarm used: no (two-file addition)
+- Issues: None. Requires Achiri API running on ACHIRI_BASE_URL.
+- Timestamp: 2026-03-20T02:50:00Z
