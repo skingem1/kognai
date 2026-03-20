@@ -230,7 +230,7 @@
       "sprint": 465,
       "title": "GEO — Continuous monitoring pipeline + citability gate",
       "block": "GEO",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "SPRINT-GEO-001 Sprint 177. Build geo-monitor.py (weekly cron). Brand-delta.py (weekly mentions scan). Integrate citability scoring into SCS-001 pipeline (scripts below <60 flagged). Add GEO section to Harvey weekly digest. PM2 process. Validation: Telegram alert fires on score drop >10."
     },
