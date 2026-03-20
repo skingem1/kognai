@@ -2889,3 +2889,16 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (surgical bot edit)
 - Issues: None.
 - Timestamp: 2026-03-20T03:12:00Z
+
+## Sprint 345 — Daily Digest Enhancements (Direct Write)
+- Status: PASS
+- Commit: 2dbc830
+- Files created: workspace/sprints/sprint-345.json
+- Files modified: scripts/scs001/morning-caption-push.ts, scripts/scs001/gate-urgency-alert.ts
+- Tasks completed:
+  - 345-01: morning-caption-push.ts — added queue count (unposted videos from ledger), Stripe status, WARNING on 0 queued posts. When no slots scheduled: sends top-3 queue with viral scores. Fixed pre-existing Markdown escaping bug in slot captions (was causing Telegram 400 errors).
+  - 345-02: gate-urgency-alert.ts — auto-regenerates phase1-5-gate.json via execSync before sending alert. Shows gate verdict + queue count inline.
+- Validation: Both scripts tested, Telegram sends PASS
+- Swarm used: no (multi-file surgical edits)
+- Issues: Pre-existing Telegram Markdown parsing bug in slot captions (unescaped special chars in hook/speaker). Fixed with escMd() helper.
+- Timestamp: 2026-03-20T05:20:00Z
