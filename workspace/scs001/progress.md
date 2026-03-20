@@ -3193,3 +3193,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (async function with multi-user sends)
 - Issues: None.
 - Timestamp: 2026-03-20T12:00:00Z
+
+## Sprint 370 — /dashboard — Unified System Status (Direct Write)
+- Status: PASS
+- Commit: 86b59c3
+- Files created: workspace/sprints/sprint-370.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 370-01: Added /dashboard command. Shows: TikTok gate (posts/views/days), Achiri alpha (readiness/waitlist/days), Stripe status, 5 upcoming gates with urgency icons, missing env vars, latest git commit. One-command full system awareness. Updated /help + switch router.
+- Validation: ts-node --transpile-only PASS
+- Swarm used: no (single function)
+- Issues: None.
+- Timestamp: 2026-03-20T12:15:00Z
