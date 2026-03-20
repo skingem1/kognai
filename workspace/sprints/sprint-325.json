@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-325",
+  "title": "/achirianalytics Telegram command — unified Achiri metrics from /analytics API",
+  "description": "Add /achirianalytics Telegram command that fetches from the new Achiri /analytics endpoint and displays DAU, retention, feedback NPS, error rate, and message volume in a single operator view.",
+  "source": "auto — Achiri Alpha Launch Apr 25 prep",
+  "tasks": [
+    {
+      "id": "325-01",
+      "title": "Add handleAchiriAnalytics to commands.ts and wire into index.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-325",
+      "deliverables": { "code": ["agents/telegram-bot/commands.ts", "agents/telegram-bot/index.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

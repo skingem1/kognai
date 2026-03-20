@@ -128,7 +128,7 @@ export async function handleHelp(chatId: number, ownerChatId?: string): Promise<
     '🤖 *Achiri*',
     '/achiri <msg> /achiriprofile /achirihealth',
     '/achiristats /achirifeedback /achiriexport [id]',
-    '/achirierrors /achiriready /achiriretention /achiriquality',
+    '/achirierrors /achiriready /achiriretention /achiriquality /achirianalytics',
     '/waitlist /inviteachiri <id> /deploystatus',
     '',
     '⚙️ *System*',
@@ -4028,5 +4028,69 @@ export async function handleAchiriQuality(chatId: number, ownerChatId: string): 
     await sendMessage(chatId, lines.join('\n'));
   } catch (err) {
     await sendMessage(chatId, `❌ Quality analysis failed: ${(err as Error).message?.slice(0, 100)}`);
+  }
+}
+
+// ── Sprint 325: /achirianalytics — Unified Achiri metrics dashboard ──────────
+
+export async function handleAchiriAnalytics(chatId: number, ownerChatId: string): Promise<void> {
+  if (String(chatId) !== ownerChatId) {
+    await sendMessage(chatId, '🔒 Owner only.');
+    return;
+  }
+
+  const baseUrl = (process.env.ACHIRI_BASE_URL ?? 'http://localhost:3420').replace(/\/$/, '');
+
+  try {
+    const res = await fetch(`${baseUrl}/analytics`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json() as {
+      users: { total: number; dau: number; returning: number; retention_7d_pct: number };
+      messages: { today: number; total_turns: number; active_days: number };
+      feedback: { total: number; average: number; nps: number; recent_avg: number };
+      errors: { total: number; last_24h: number; by_type: Record<string, number> };
+      uptime_s: number;
+      cached_handlers: number;
+    };
+
+    const u = data.users;
+    const m = data.messages;
+    const f = data.feedback;
+    const e = data.errors;
+
+    const retIcon = u.retention_7d_pct >= 20 ? '✅' : '⚠️';
+    const npsIcon = f.nps >= 0 ? '✅' : '⚠️';
+    const errIcon = e.last_24h === 0 ? '✅' : '⚠️';
+
+    const lines = [
+      '📊 *Achiri Analytics Dashboard*',
+      '',
+      '*Users*',
+      `  👥 Total: ${u.total} | DAU: ${u.dau}`,
+      `  🔄 Returning: ${u.returning} | ${retIcon} 7d retention: ${u.retention_7d_pct}%`,
+      '',
+      '*Messages*',
+      `  💬 Today: ${m.today} | Total: ${m.total_turns}`,
+      `  📅 Active days: ${m.active_days}`,
+      '',
+      '*Feedback*',
+      `  ⭐ Avg: ${f.average}/5 | Recent: ${f.recent_avg}/5`,
+      `  ${npsIcon} NPS: ${f.nps}% (${f.total} ratings)`,
+      '',
+      '*Errors*',
+      `  ${errIcon} Last 24h: ${e.last_24h} | Total: ${e.total}`,
+    ];
+
+    const types = Object.entries(e.by_type);
+    if (types.length > 0) {
+      lines.push(`  Types: ${types.map(([t, n]) => `${t}(${n})`).join(', ')}`);
+    }
+
+    const uptimeH = Math.floor(data.uptime_s / 3600);
+    lines.push('', `_Uptime: ${uptimeH}h | Handlers cached: ${data.cached_handlers}_`);
+
+    await sendMessage(chatId, lines.join('\n'));
+  } catch (err) {
+    await sendMessage(chatId, `❌ Analytics fetch failed: ${(err as Error).message?.slice(0, 100)}\n\n_Is Achiri API running? Check: pm2 status achiri-api_`);
   }
 }
