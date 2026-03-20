@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-316",
+  "title": "Achiri retention tracker — DAU, returning users, churn alerts + /achiriretention command",
+  "description": "Analyzes daily-counts.json to compute retention metrics: DAU trend, returning vs new users, retention rates, top engaged users, churn alerts. Critical for May 14 Full Alpha Gate (does memory work = do users return?).",
+  "source": "auto — Full Alpha Gate May 14: retention = memory value proof",
+  "tasks": [
+    {
+      "id": "316-01",
+      "title": "Create achiri-retention.ts — retention analytics from daily-counts.json",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-316",
+      "deliverables": { "code": ["scripts/achiri/achiri-retention.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "316-02",
+      "title": "Add /achiriretention Telegram command",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-316",
+      "deliverables": { "code": ["agents/telegram-bot/commands.ts", "agents/telegram-bot/index.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

@@ -3885,3 +3885,85 @@ export async function handleAchiriReady(chatId: number, ownerChatId: string): Pr
     await sendMessage(chatId, `❌ Readiness check failed: ${(err as Error).message?.slice(0, 100)}`);
   }
 }
+
+// ── Sprint 316: /achiriretention — User retention analytics ────────────────────
+
+export async function handleAchiriRetention(chatId: number, ownerChatId: string): Promise<void> {
+  if (String(chatId) !== ownerChatId) {
+    await sendMessage(chatId, '🔒 Owner only.');
+    return;
+  }
+
+  await sendMessage(chatId, '🔄 Analyzing retention...');
+
+  try {
+    const output = execSync('npx ts-node scripts/achiri/achiri-retention.ts --json 2>/dev/null', {
+      timeout: 15000,
+      cwd: process.cwd(),
+    }).toString();
+
+    let report: {
+      total_days: number;
+      total_real_users: number;
+      total_real_messages: number;
+      returning_users: number;
+      new_only_users: number;
+      retention_rate_pct: number;
+      avg_messages_per_user: number;
+      avg_messages_per_day: number;
+      dau_trend: Array<{ date: string; users: number; messages: number }>;
+      top_users: Array<{ userId: string; total_messages: number; active_days: number; first_seen: string; last_seen: string }>;
+      churned_users: Array<{ userId: string; last_seen: string; days_inactive: number }>;
+    };
+
+    try {
+      report = JSON.parse(output);
+    } catch {
+      const jsonMatch = output.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) throw new Error('No JSON in output');
+      report = JSON.parse(jsonMatch[0]);
+    }
+
+    const lines = [
+      '📊 *Achiri Retention Report*',
+      '',
+      `📅 Period: *${report.total_days}* day(s)`,
+      `👥 Users: *${report.total_real_users}* total (*${report.returning_users}* returning, *${report.new_only_users}* new-only)`,
+      `💬 Messages: *${report.total_real_messages}* total`,
+      `📈 Retention: *${report.retention_rate_pct}%*`,
+      `📊 Avg: *${report.avg_messages_per_user}* msgs/user, *${report.avg_messages_per_day}* msgs/day`,
+    ];
+
+    // DAU trend (last 7 days)
+    if (report.dau_trend.length > 0) {
+      lines.push('', '*DAU Trend (last 7 days)*');
+      const recent = report.dau_trend.slice(-7);
+      for (const d of recent) {
+        const bar = '▓'.repeat(Math.min(d.users, 20));
+        lines.push(`  ${d.date}: *${d.users}* users, *${d.messages}* msgs ${bar}`);
+      }
+    }
+
+    // Top users
+    if (report.top_users.length > 0) {
+      lines.push('', '*Top Users*');
+      for (const u of report.top_users.slice(0, 5)) {
+        lines.push(`  \`${u.userId.slice(0, 15)}\`: *${u.total_messages}* msgs / *${u.active_days}* day(s)`);
+      }
+    }
+
+    // Churn alerts
+    if (report.churned_users.length > 0) {
+      lines.push('', `⚠️ *${report.churned_users.length} churned user(s)* (3+ days inactive)`);
+      for (const u of report.churned_users.slice(0, 3)) {
+        lines.push(`  \`${u.userId.slice(0, 15)}\`: last seen ${u.last_seen} (${u.days_inactive}d ago)`);
+      }
+    } else {
+      lines.push('', '✅ No churned users');
+    }
+
+    await sendMessage(chatId, lines.join('\n'));
+  } catch (err) {
+    await sendMessage(chatId, `❌ Retention analysis failed: ${(err as Error).message?.slice(0, 100)}`);
+  }
+}
