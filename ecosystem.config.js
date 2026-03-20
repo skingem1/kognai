@@ -421,6 +421,27 @@ module.exports = {
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
     {
+      // Sprint 402: Checkout landing page + Stripe redirect server
+      // Serves landing page at / and redirects /checkout/growth, /checkout/premium to Stripe.
+      // For TikTok bio link. To start: pm2 start ecosystem.config.js --only kognai-checkout
+      name: "kognai-checkout",
+      script: "scripts/scs001/checkout-server.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: true,
+      watch: false,
+      max_memory_restart: "64M",
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
+        CHECKOUT_PORT: process.env.CHECKOUT_PORT || "3002",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/checkout-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/checkout-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
+    {
       // Smoke Test Cron — runs full 15-stage mock pipeline daily at 06:00 UTC
       // Writes reports/smoke-test-latest.json (read by daily digest at 07:00).
       // Ensures digest always has fresh pipeline health data.

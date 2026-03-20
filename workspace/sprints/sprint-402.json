@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-402",
+  "title": "Stripe checkout web endpoint for TikTok bio link",
+  "description": "Standalone HTTP server that serves Stripe checkout links and a simple landing page. Enables subscriber acquisition via TikTok bio link (linkin.bio). GET /checkout/growth and /checkout/premium redirect to Stripe Checkout.",
+  "source": "auto — Phase 1 monetization: need public checkout URLs for TikTok bio link",
+  "tasks": [
+    {
+      "id": "402-01",
+      "title": "Create checkout HTTP server with landing page",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-402",
+      "deliverables": { "code": ["scripts/scs001/checkout-server.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "402-02",
+      "title": "Add PM2 config for checkout server",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-402",
+      "deliverables": { "code": ["ecosystem.config.js"], "tests": [], "docs": [] }
+    }
+  ]
+}
