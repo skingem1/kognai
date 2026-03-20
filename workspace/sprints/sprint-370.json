@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-370",
+  "title": "/dashboard — unified system status overview",
+  "description": "Port /dashboard command to main Telegram bot. Shows TikTok gate, Achiri alpha, Stripe, upcoming gates, env status, latest sprint in one view.",
+  "source": "auto — operator needs single command for full system awareness",
+  "tasks": [
+    {
+      "id": "370-01",
+      "title": "Add /dashboard command to scripts/telegram-bot.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-370",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

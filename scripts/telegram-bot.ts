@@ -1862,6 +1862,79 @@ function cmdPostPlan(): string {
   return lines.join('\n');
 }
 
+// ─── Sprint 370: /dashboard — unified system status overview ──────────────
+
+function cmdDashboard(): string {
+  const lines: string[] = ['🏠 *Kognai Dashboard*', ''];
+
+  // 1. TikTok Gate
+  const manualPostsPath = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
+  const posts = readLines(manualPostsPath);
+  const posted = posts.length;
+  const totalViews = posts.reduce((s: number, p: any) => s + (p.views ?? 0), 0);
+  const gateDate = new Date('2026-04-07');
+  const daysToGate = Math.max(0, Math.ceil((gateDate.getTime() - Date.now()) / 86_400_000));
+  const gateIcon = posted >= 30 && totalViews >= 500 ? '✅' : posted === 0 ? '🔴' : '🟡';
+  lines.push(`${gateIcon} *TikTok Gate* (Apr 7, ${daysToGate}d)`);
+  lines.push(`  Posts: ${posted}/30 | Views: ${totalViews}/500`);
+
+  // 2. Achiri Alpha
+  const achiriAlpha = new Date('2026-04-25');
+  const daysToAlpha = Math.max(0, Math.ceil((achiriAlpha.getTime() - Date.now()) / 86_400_000));
+  let readinessScore = '?';
+  const readinessPath = path.join(ROOT, 'reports', 'achiri-readiness.json');
+  if (fs.existsSync(readinessPath)) {
+    try { readinessScore = `${JSON.parse(fs.readFileSync(readinessPath, 'utf-8')).score ?? '?'}%`; } catch {}
+  }
+  let waitlistCount = 0;
+  const waitlistPath = path.join(ROOT, 'workspace', 'achiri', 'waitlist.jsonl');
+  if (fs.existsSync(waitlistPath)) {
+    waitlistCount = fs.readFileSync(waitlistPath, 'utf-8').split('\n').filter(l => l.trim()).length;
+  }
+  lines.push('');
+  lines.push(`🤖 *Achiri Alpha* (Apr 25, ${daysToAlpha}d)`);
+  lines.push(`  Readiness: ${readinessScore} | Waitlist: ${waitlistCount}`);
+
+  // 3. Stripe
+  const stripeReady = !!process.env.STRIPE_SECRET_KEY;
+  lines.push('');
+  lines.push(`💳 *Stripe:* ${stripeReady ? '✅ Ready' : '❌ Not configured'}`);
+
+  // 4. Upcoming Gates
+  const gates = [
+    { name: 'Phase 1.5', date: '2026-04-07', desc: '30 posts + 500 views' },
+    { name: 'Phase 2A', date: '2026-04-11', desc: 'TikTok → Achiri' },
+    { name: 'Achiri Alpha', date: '2026-04-25', desc: 'Lite launch' },
+    { name: 'Voice Gate', date: '2026-05-01', desc: 'Voice works?' },
+    { name: 'Memory Gate', date: '2026-05-14', desc: 'Memory works?' },
+  ];
+  lines.push('');
+  lines.push('📅 *Upcoming Gates*');
+  for (const g of gates) {
+    const d = Math.max(0, Math.ceil((new Date(g.date).getTime() - Date.now()) / 86_400_000));
+    if (d > 0) {
+      lines.push(`  ${d <= 7 ? '⚠️' : '📌'} ${g.name}: ${d}d — ${g.desc}`);
+    }
+  }
+
+  // 5. Missing env
+  const missing = ['TIKTOK_ACCESS_TOKEN'].filter(k => !process.env[k]);
+  if (missing.length > 0) {
+    lines.push('');
+    lines.push(`⚠️ *Missing:* ${missing.join(', ')}`);
+  }
+
+  // 6. Latest sprint
+  try {
+    const { execSync } = require('child_process');
+    const gitLog = execSync('git log --oneline -1 2>/dev/null', { cwd: ROOT }).toString().trim();
+    lines.push('');
+    lines.push(`🔧 *Latest:* ${gitLog}`);
+  } catch { /* skip */ }
+
+  return lines.join('\n');
+}
+
 // ─── Sprint 369: /broadcast — send announcements to alpha users ───────────
 
 async function cmdBroadcast(chatId: string, message: string): Promise<void> {
@@ -2447,6 +2520,7 @@ function cmdHelp(): string {
     `/viral      — Trending topics for content\n` +
     `/postplan   — 7-day posting plan with videos\n` +
     `/broadcast  — Send announcement to alpha users\n` +
+    `/dashboard  — Full system status overview\n` +
     `/help      — This message`
   );
 }
@@ -2586,6 +2660,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/lastrun':     response = cmdLastRun();            break;
     case '/viral':       response = cmdViral();              break;
     case '/postplan':    response = cmdPostPlan();           break;
+    case '/dashboard':   response = cmdDashboard();          break;
     case '/help':        response = cmdHelp();        break;
     default:
       response = `Unknown command: \`${cmdName}\`\n\n${cmdHelp()}`;
