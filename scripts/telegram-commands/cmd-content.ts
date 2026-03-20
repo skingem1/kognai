@@ -775,3 +775,52 @@ export function cmdQuality(): string {
     return `❌ Quality check error: ${e.message}`;
   }
 }
+
+// Sprint 590: /radar — show latest trending topics from topic radar
+export function cmdRadar(): string {
+  const radarDir = path.join(ROOT, 'workspace', 'scs001', 'topic-radar');
+  if (!fs.existsSync(radarDir)) return '❌ *Topic Radar* — no radar data yet. Run: `npx ts-node scripts/scs001/topic-radar.ts`';
+
+  const files = fs.readdirSync(radarDir)
+    .filter(f => f.startsWith('radar-') && f.endsWith('.json'))
+    .sort()
+    .reverse();
+
+  if (files.length === 0) return '❌ *Topic Radar* — no radar scans found.';
+
+  const latest = readJSON<any>(path.join(radarDir, files[0]));
+  if (!latest) return '❌ *Topic Radar* — could not parse latest scan.';
+
+  const topics = latest.topics || [];
+  const scanTime = latest.collected_at ? new Date(latest.collected_at).toLocaleString('en-GB', { timeZone: 'UTC' }) : 'unknown';
+  const sourceHits = latest.sources_hit || [];
+  const errors = latest.errors || [];
+
+  if (topics.length === 0) {
+    return [
+      `📡 *Topic Radar* — Last scan: ${scanTime}`,
+      `Sources: ${sourceHits.join(', ') || 'none'}`,
+      errors.length > 0 ? `⚠️ Errors: ${errors.length}` : '',
+      '',
+      '_No trending topics found. Try again later._',
+    ].filter(Boolean).join('\n');
+  }
+
+  const formatEmoji: Record<string, string> = { explainer: '📝', debate: '⚔️', vision: '🔮' };
+  const topicLines = topics.slice(0, 10).map((t: any, i: number) => {
+    const emoji = formatEmoji[t.format] || '📌';
+    const conf = t.confidence != null ? ` (${t.confidence}%)` : '';
+    const src = t.source ? ` _[${t.source}]_` : '';
+    return `${i + 1}. ${emoji} *${t.title}*${conf}${src}`;
+  });
+
+  return [
+    `📡 *Topic Radar* — ${topics.length} topics | ${scanTime}`,
+    `Sources: ${sourceHits.join(', ') || 'various'}${errors.length > 0 ? ` | ⚠️ ${errors.length} errors` : ''}`,
+    `Scans on file: ${files.length}`,
+    '',
+    ...topicLines,
+    '',
+    '_Run /radar to refresh • Topics feed into pipeline-cron_',
+  ].join('\n');
+}

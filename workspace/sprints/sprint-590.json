@@ -1,0 +1,24 @@
+{
+  "sprint_id": "sprint-590",
+  "title": "INFRA — /radar Telegram command for trending topic insights",
+  "description": "Add /radar command showing latest topic radar results: trending topics from HN, GitHub, ArXiv, CoinGecko, Google Trends with format classification.",
+  "source": "gap-analysis",
+  "tasks": [
+    {
+      "id": "590-01",
+      "title": "Add cmdRadar function to cmd-content.ts and register in telegram-bot.ts",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/telegram-commands/cmd-content.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-590",
+      "deliverables": {
+        "code": ["scripts/telegram-commands/cmd-content.ts", "scripts/telegram-bot.ts"],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ]
+}
