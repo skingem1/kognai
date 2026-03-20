@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-389",
+  "title": "Telegram inline buttons — one-tap actions for operator commands",
+  "description": "Add inline keyboard buttons to key operator commands (/digest, /gate, /today, /queue, /help) for frictionless one-tap actions. Handle callback_query in polling loop.",
+  "source": "auto — reduce operator friction: one tap instead of typing commands",
+  "tasks": [
+    {
+      "id": "389-01",
+      "title": "Add inline keyboard support to scripts/telegram-bot.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-389",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

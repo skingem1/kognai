@@ -60,12 +60,26 @@ function telegramRequest(method: string, body: Record<string, unknown>): Promise
 }
 
 async function getUpdates(offset: number): Promise<any[]> {
-  const res = await telegramRequest('getUpdates', { timeout: 30, offset, allowed_updates: ['message'] });
+  const res = await telegramRequest('getUpdates', { timeout: 30, offset, allowed_updates: ['message', 'callback_query'] });
   return res.ok ? (res.result || []) : [];
 }
 
 async function sendMessage(chatId: string, text: string): Promise<void> {
   await telegramRequest('sendMessage', { chat_id: chatId, text, parse_mode: 'Markdown' });
+}
+
+// Sprint 389: Inline keyboard buttons for one-tap actions
+async function sendMessageWithButtons(chatId: string, text: string, buttons: Array<Array<{ text: string; callback_data: string }>>): Promise<void> {
+  await telegramRequest('sendMessage', {
+    chat_id: chatId,
+    text,
+    parse_mode: 'Markdown',
+    reply_markup: { inline_keyboard: buttons },
+  });
+}
+
+async function answerCallbackQuery(callbackQueryId: string, text?: string): Promise<void> {
+  await telegramRequest('answerCallbackQuery', { callback_query_id: callbackQueryId, text: text ?? '' });
 }
 
 // Sprint 280: Send video file via Telegram sendVideo API
@@ -4172,14 +4186,44 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
       response = `Unknown command: \`${cmdName}\`\n\n${cmdHelp()}`;
   }
 
+  // Sprint 389: Add inline keyboard buttons to key commands
+  const buttonMap: Record<string, Array<Array<{ text: string; callback_data: string }>>> = {
+    '/digest': [
+      [{ text: '📦 Deliver 1', callback_data: 'cmd:/deliver 1' }, { text: '📊 Gate', callback_data: 'cmd:/gate' }],
+      [{ text: '🔄 Refresh', callback_data: 'cmd:/refresh' }, { text: '📈 History', callback_data: 'cmd:/history' }],
+    ],
+    '/gate': [
+      [{ text: '📦 Deliver 1', callback_data: 'cmd:/deliver 1' }, { text: '🔥 Streak', callback_data: 'cmd:/streak' }],
+      [{ text: '📋 Queue', callback_data: 'cmd:/queue' }, { text: '📅 Today', callback_data: 'cmd:/today' }],
+    ],
+    '/today': [
+      [{ text: '📦 Deliver 1', callback_data: 'cmd:/deliver 1' }, { text: '💡 Suggest', callback_data: 'cmd:/suggest' }],
+      [{ text: '🎬 Film Kit', callback_data: 'cmd:/filmkit' }, { text: '📋 Digest', callback_data: 'cmd:/digest' }],
+    ],
+    '/queue': [
+      [{ text: '📦 Deliver 1', callback_data: 'cmd:/deliver 1' }, { text: '📦 Deliver 3', callback_data: 'cmd:/deliver 3' }],
+    ],
+    '/help': [
+      [{ text: '📋 Digest', callback_data: 'cmd:/digest' }, { text: '📊 Gate', callback_data: 'cmd:/gate' }],
+      [{ text: '📦 Deliver', callback_data: 'cmd:/deliver 1' }, { text: '🔄 Refresh', callback_data: 'cmd:/refresh' }],
+    ],
+  };
+
+  const buttons = buttonMap[cmdName];
+
   try {
-    await sendMessage(chatId, response);
+    if (buttons) {
+      await sendMessageWithButtons(chatId, response, buttons);
+    } else {
+      await sendMessage(chatId, response);
+    }
   } catch (e: any) {
-    // If message is too long, truncate and retry
+    // If message is too long or buttons failed, truncate and retry without buttons
     if (response.length > 4000) {
       await sendMessage(chatId, response.slice(0, 3900) + '\n\n_(truncated)_');
     } else {
-      throw e;
+      // Retry without buttons
+      try { await sendMessage(chatId, response); } catch { throw e; }
     }
   }
 
@@ -4202,6 +4246,22 @@ async function poll(): Promise<void> {
 
       for (const update of updates) {
         offset = Math.max(offset, update.update_id + 1);
+
+        // Sprint 389: Handle inline button callback queries
+        if (update.callback_query) {
+          const cb = update.callback_query;
+          const cbChatId = String(cb.message?.chat?.id ?? '');
+          const cbData: string = cb.data ?? '';
+          if (cbChatId && cbData.startsWith('cmd:')) {
+            const cbCmd = cbData.slice(4); // remove 'cmd:' prefix
+            answerCallbackQuery(cb.id, 'Running...').catch(() => {});
+            await handleCommand(cbChatId, cbCmd).catch((e: any) => {
+              console.error(`[Bot] Callback handler error: ${e.message}`);
+            });
+          }
+          continue;
+        }
+
         const msg = update.message;
         if (!msg || !msg.text) continue;
 
