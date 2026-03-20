@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-515",
+  "title": "INFRA — Dashboard v3 health check + PM2 status panel",
+  "description": "Verify dashboard loads on port 11436, add PM2 status API endpoint showing all process states.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "515-01",
+      "title": "Add PM2 status API endpoint to dashboard server",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "dashboard/server.py",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-515",
+      "deliverables": { "code": ["dashboard/server.py"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "515-02",
+      "title": "Verify dashboard starts and health endpoint responds",
+      "type": "test",
+      "task_type": "validation",
+      "task_target": "dashboard/server.py",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-515",
+      "deliverables": { "code": [], "tests": [], "docs": [] }
+    }
+  ]
+}

@@ -855,3 +855,50 @@ async def stripe_status():
         result["status"] = result["status"] if result["status"] != "not_live" else "keys_set_not_tested"
 
     return result
+
+
+# --- Sprint 515: PM2 Status ---
+@app.get("/api/pm2/status")
+async def pm2_status():
+    """Get PM2 process list with status, memory, CPU, restarts."""
+    import subprocess
+    try:
+        proc = subprocess.run(
+            ["pm2", "jlist"],
+            capture_output=True, text=True, timeout=10
+        )
+        if proc.returncode != 0:
+            return {"error": "PM2 not running or not installed", "processes": [], "summary": {}}
+        processes = json.loads(proc.stdout)
+    except FileNotFoundError:
+        return {"error": "PM2 not found in PATH", "processes": [], "summary": {}}
+    except subprocess.TimeoutExpired:
+        return {"error": "PM2 timed out", "processes": [], "summary": {}}
+    except json.JSONDecodeError:
+        return {"error": "PM2 returned invalid JSON", "processes": [], "summary": {}}
+
+    result = []
+    counts = {"online": 0, "stopped": 0, "errored": 0, "total": 0}
+    for p in processes:
+        env = p.get("pm2_env", {})
+        monit = p.get("monit", {})
+        status = env.get("status", "unknown")
+        entry = {
+            "name": p.get("name", "unknown"),
+            "pm_id": p.get("pm_id"),
+            "status": status,
+            "cpu": monit.get("cpu", 0),
+            "memory_mb": round(monit.get("memory", 0) / 1048576, 1),
+            "restarts": env.get("restart_time", 0),
+            "uptime_ms": env.get("pm_uptime", 0),
+        }
+        result.append(entry)
+        counts["total"] += 1
+        if status == "online":
+            counts["online"] += 1
+        elif status == "stopped":
+            counts["stopped"] += 1
+        else:
+            counts["errored"] += 1
+
+    return {"processes": result, "summary": counts}
