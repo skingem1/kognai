@@ -25,6 +25,7 @@ import type { VideoScript, DialogueLine } from './multiformat-scriptgen';
 export interface CompositorInput {
   script:       VideoScript;
   avatar_clips: Map<string, string>;  // avatar_id → video file path
+  tts_audio:    string[];             // ordered list of TTS audio file paths (one per line)
   output_dir:   string;
 }
 
@@ -85,13 +86,243 @@ function ffmpegAvailable(): boolean {
   } catch { return false; }
 }
 
-function createColorVideo(color: string, width: number, height: number, duration: number, outputPath: string, _label?: string): void {
-  // Generate a solid color video (mock/testing — drawtext removed, not available in all ffmpeg builds)
-  const filter = `color=c=${color}:s=${width}x${height}:d=${duration}:r=30`;
-  execSync(
-    `ffmpeg -y -f lavfi -i "${filter}" -c:v libx264 -pix_fmt yuv420p -t ${duration} "${outputPath}"`,
-    { stdio: 'pipe', timeout: 30000 }
-  );
+/**
+ * Generate a title card PNG with text using Python/Pillow.
+ * Used as background frame when no avatar is available.
+ */
+function generateTitleCard(
+  title: string, subtitle: string, color: string,
+  width: number, height: number, outputPath: string,
+): void {
+  const escapedTitle = title.replace(/'/g, "\\'").replace(/"/g, '\\"');
+  const escapedSub = subtitle.replace(/'/g, "\\'").replace(/"/g, '\\"');
+  const pyScript = `
+from PIL import Image, ImageDraw, ImageFont
+import textwrap, sys
+
+W, H = ${width}, ${height}
+img = Image.new('RGB', (W, H), '${color}')
+draw = ImageDraw.Draw(img)
+
+# Use default font (always available)
+try:
+    title_font = ImageFont.truetype('/System/Library/Fonts/Helvetica.ttc', 52)
+    sub_font = ImageFont.truetype('/System/Library/Fonts/Helvetica.ttc', 32)
+    label_font = ImageFont.truetype('/System/Library/Fonts/Helvetica.ttc', 24)
+except:
+    title_font = ImageFont.load_default()
+    sub_font = title_font
+    label_font = title_font
+
+# Top gradient bar
+for y in range(200):
+    alpha = int(255 * (1 - y / 200))
+    draw.rectangle([(0, y), (W, y + 1)], fill=(0, 180, 255, alpha) if alpha > 0 else '${color}')
+
+# Format label
+draw.rounded_rectangle([(W//2 - 80, 80), (W//2 + 80, 115)], radius=10, fill='#00b4d8')
+draw.text((W//2, 97), '${escapedSub}'.upper(), fill='white', font=label_font, anchor='mm')
+
+# Title text (centered, wrapped)
+lines = textwrap.wrap('${escapedTitle}', width=28)
+y_start = H // 2 - len(lines) * 35
+for i, line in enumerate(lines):
+    draw.text((W // 2, y_start + i * 70), line, fill='white', font=title_font, anchor='mm')
+
+# Bottom brand bar
+draw.rectangle([(0, H - 60), (W, H)], fill='#0d0d2b')
+draw.text((W // 2, H - 30), 'KOGNAI', fill='#00b4d8', font=label_font, anchor='mm')
+
+img.save('${outputPath.replace(/'/g, "\\'")}')
+`;
+  execSync(`python3 -c '${pyScript.replace(/'/g, "'\"'\"'")}'`, { stdio: 'pipe', timeout: 10000 });
+}
+
+/**
+ * Generate a subtitle overlay PNG for a single dialogue line.
+ */
+function generateSubtitleFrame(
+  speaker: string, text: string,
+  width: number, height: number, outputPath: string,
+): void {
+  const escapedText = text.replace(/'/g, "\\'").replace(/"/g, '\\"');
+  const escapedSpeaker = speaker.replace(/'/g, "\\'");
+  const pyScript = `
+from PIL import Image, ImageDraw, ImageFont
+import textwrap
+
+W, H = ${width}, ${height}
+img = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+draw = ImageDraw.Draw(img)
+
+try:
+    font = ImageFont.truetype('/System/Library/Fonts/Helvetica.ttc', 36)
+    name_font = ImageFont.truetype('/System/Library/Fonts/Helvetica.ttc', 28)
+except:
+    font = ImageFont.load_default()
+    name_font = font
+
+# Semi-transparent subtitle bar at bottom
+bar_h = 200
+bar_y = H - bar_h - 80
+draw.rounded_rectangle([(40, bar_y), (W - 40, bar_y + bar_h)], radius=20, fill=(10, 10, 40, 200))
+
+# Speaker name
+draw.text((W // 2, bar_y + 25), '${escapedSpeaker}'.upper(), fill=(0, 180, 255), font=name_font, anchor='mt')
+
+# Subtitle text (wrapped)
+lines = textwrap.wrap('${escapedText}', width=35)
+for i, line in enumerate(lines):
+    draw.text((W // 2, bar_y + 65 + i * 45), line, fill='white', font=font, anchor='mt')
+
+img.save('${outputPath.replace(/'/g, "\\'")}')
+`;
+  execSync(`python3 -c '${pyScript.replace(/'/g, "'\"'\"'")}'`, { stdio: 'pipe', timeout: 10000 });
+}
+
+/**
+ * Create a video from a title card with animated subtitles.
+ * Each dialogue line gets its own subtitle frame shown at the right time.
+ */
+function createMockVideo(
+  title: string, formatLabel: string, color: string,
+  width: number, height: number, duration: number,
+  lines: DialogueLine[], outputDir: string, scriptId: string,
+  outputPath: string,
+): void {
+  const framesDir = join(outputDir, `${scriptId}_frames`);
+  mkdirSync(framesDir, { recursive: true });
+
+  // 1. Generate title card background
+  const bgPath = join(framesDir, 'bg.png');
+  generateTitleCard(title, formatLabel, color, width, height, bgPath);
+
+  // 2. Generate subtitle frames for each line
+  const subFrames: { path: string; start: number; end: number }[] = [];
+  for (let i = 0; i < lines.length; i++) {
+    const framePath = join(framesDir, `sub_${i}.png`);
+    generateSubtitleFrame(lines[i].speaker, lines[i].text, width, height, framePath);
+    subFrames.push({ path: framePath, start: lines[i].start_s, end: lines[i].end_s });
+  }
+
+  // 3. Build FFmpeg command: background image → video, then overlay subtitle PNGs at correct times
+  // First: create base video from the title card image
+  const baseVideoPath = join(outputDir, `${scriptId}_base.mp4`);
+  execSync([
+    'ffmpeg -y',
+    `-loop 1 -i "${bgPath}"`,
+    `-c:v libx264 -t ${duration} -pix_fmt yuv420p -r 30`,
+    `-vf "scale=${width}:${height}"`,
+    `"${baseVideoPath}"`,
+  ].join(' '), { stdio: 'pipe', timeout: 30000 });
+
+  // 4. Overlay subtitle frames one by one using FFmpeg
+  let currentVideo = baseVideoPath;
+  for (let i = 0; i < subFrames.length; i++) {
+    const sub = subFrames[i];
+    const nextVideo = join(outputDir, `${scriptId}_sub${i}.mp4`);
+    try {
+      execSync([
+        'ffmpeg -y',
+        `-i "${currentVideo}"`,
+        `-i "${sub.path}"`,
+        `-filter_complex "[0:v][1:v]overlay=0:0:enable='between(t,${sub.start},${sub.end})'[v]"`,
+        '-map "[v]"',
+        '-c:v libx264 -preset fast -crf 23',
+        `"${nextVideo}"`,
+      ].join(' '), { stdio: 'pipe', timeout: 30000 });
+      currentVideo = nextVideo;
+    } catch {
+      // If overlay fails, keep the previous video
+    }
+  }
+
+  // 5. Copy final result
+  if (currentVideo !== outputPath) {
+    execSync(`cp "${currentVideo}" "${outputPath}"`, { stdio: 'pipe' });
+  }
+}
+
+// ── Audio Helpers ─────────────────────────────────────
+
+/**
+ * Concatenate TTS audio segments with silence gaps matching script timings,
+ * then mux into the video file.
+ */
+function muxAudioIntoVideo(
+  videoPath: string,
+  ttsAudioPaths: string[],
+  lines: DialogueLine[],
+  totalDuration: number,
+  outputDir: string,
+  scriptId: string,
+): string {
+  // Build a concat file that interleaves silence and speech per the script timings
+  const concatListPath = join(outputDir, `${scriptId}_audio_concat.txt`);
+  const mergedAudioPath = join(outputDir, `${scriptId}_merged_audio.aiff`);
+  const finalPath = join(outputDir, `${scriptId}_final_av.mp4`);
+
+  // Use ffmpeg to build full audio track with correct timing via filter_complex
+  // Generate silence + speech segments positioned at the right timestamps
+  const validPairs: { audio: string; start: number }[] = [];
+  for (let i = 0; i < Math.min(ttsAudioPaths.length, lines.length); i++) {
+    if (ttsAudioPaths[i] && existsSync(ttsAudioPaths[i])) {
+      validPairs.push({ audio: ttsAudioPaths[i], start: lines[i].start_s });
+    }
+  }
+
+  if (validPairs.length === 0) return videoPath; // No audio to mix
+
+  try {
+    // Build filter_complex: inputs + adelay + amix
+    const inputs = validPairs.map((p, i) => `-i "${p.audio}"`).join(' ');
+    const delays = validPairs.map((p, i) => {
+      const delayMs = Math.round(p.start * 1000);
+      return `[${i + 1}:a]adelay=${delayMs}|${delayMs}[a${i}]`;
+    }).join('; ');
+    const mixInputs = validPairs.map((_, i) => `[a${i}]`).join('');
+    const filterComplex = `${delays}; ${mixInputs}amix=inputs=${validPairs.length}:duration=longest[aout]`;
+
+    execSync([
+      'ffmpeg -y',
+      `-i "${videoPath}"`,       // input 0: video
+      inputs,                     // inputs 1..N: audio files
+      `-filter_complex "${filterComplex}"`,
+      '-map 0:v -map "[aout]"',
+      '-c:v copy',
+      '-c:a aac -b:a 128k',
+      `-t ${totalDuration}`,
+      `"${finalPath}"`,
+    ].join(' '), { stdio: 'pipe', timeout: 60000 });
+
+    return finalPath;
+  } catch (err) {
+    console.warn(`[Compositor] Audio mux failed: ${(err as Error).message.slice(0, 100)}`);
+    return videoPath; // Fallback to video-only
+  }
+}
+
+/**
+ * Burn SRT subtitles into video. Returns the output path.
+ * If subtitle burning fails, returns the original video path.
+ */
+function burnSubtitles(videoPath: string, srtPath: string, _duration: number, outputPath: string): string {
+  // Sprint 608: Use burn-captions.ts (Python+Pillow) for subtitle overlay
+  try {
+    const { burnCaptions } = require('./burn-captions');
+    return burnCaptions(videoPath, srtPath, outputPath);
+  } catch (err: any) {
+    console.warn(`[compositor] Caption burn failed, copying original: ${err.message?.slice(0, 100)}`);
+    if (videoPath !== outputPath) {
+      try {
+        execSync(`cp "${videoPath}" "${outputPath}"`, { stdio: 'pipe' });
+        return outputPath;
+      } catch {
+        return videoPath;
+      }
+    }
+    return videoPath;
+  }
 }
 
 // ── Type 1: Full-Screen Single Avatar ──────────────────
@@ -129,10 +360,22 @@ function compositeExplainer(input: CompositorInput): CompositorResult {
       return { script_id: script.script_id, format: 'explainer', output_path: '', duration_s: 0, resolution: '', srt_path: srtPath, success: false, error: (err as Error).message };
     }
   } else {
-    // Mock: generate color video
+    // Mock: generate video with title card + subtitle overlays + TTS audio
     try {
-      createColorVideo('#1a1a3e', WIDTH, HEIGHT, script.total_duration_s, outputPath, `EXPLAINER\n${script.title.slice(0, 30)}`);
-      return { script_id: script.script_id, format: 'explainer', output_path: outputPath, duration_s: script.total_duration_s, resolution: `${WIDTH}x${HEIGHT}`, srt_path: srtPath, success: true };
+      const videoOnlyPath = join(output_dir, `${script.script_id}_video_only.mp4`);
+      createMockVideo(
+        script.title, 'EXPLAINER', '#1a1a3e',
+        WIDTH, HEIGHT, script.total_duration_s,
+        script.lines, output_dir, script.script_id, videoOnlyPath,
+      );
+
+      // Mux TTS audio into the video
+      const withAudio = muxAudioIntoVideo(videoOnlyPath, input.tts_audio, script.lines, script.total_duration_s, output_dir, script.script_id);
+
+      // Copy to final output path
+      const finalPath = burnSubtitles(withAudio, srtPath, script.total_duration_s, outputPath);
+
+      return { script_id: script.script_id, format: 'explainer', output_path: finalPath, duration_s: script.total_duration_s, resolution: `${WIDTH}x${HEIGHT}`, srt_path: srtPath, success: true };
     } catch (err) {
       return { script_id: script.script_id, format: 'explainer', output_path: '', duration_s: 0, resolution: '', srt_path: srtPath, success: false, error: (err as Error).message };
     }
@@ -190,22 +433,20 @@ function compositeDebate(input: CompositorInput): CompositorResult {
     }
   }
 
-  // Mock: stacked color blocks representing two speakers
+  // Mock: debate with title card + subtitle overlays + TTS audio
   try {
-    const halfH = HEIGHT / 2;
-    const speakerA = script.lines.find(l => l.avatar_id === avatarIds[0])?.speaker ?? 'Speaker A';
-    const speakerB = script.lines.find(l => l.avatar_id === avatarIds[1])?.speaker ?? 'Speaker B';
+    const videoOnlyPath = join(output_dir, `${script.script_id}_video_only.mp4`);
+    createMockVideo(
+      script.title, 'DEBATE', '#0d1b2a',
+      WIDTH, HEIGHT, script.total_duration_s,
+      script.lines, output_dir, script.script_id, videoOnlyPath,
+    );
 
-    execSync([
-      'ffmpeg -y',
-      `-f lavfi -i "color=c=${ACCENT_A.replace('#', '0x')}:s=${WIDTH}x${halfH}:d=${script.total_duration_s}:r=30"`,
-      `-f lavfi -i "color=c=${ACCENT_B.replace('#', '0x')}:s=${WIDTH}x${halfH}:d=${script.total_duration_s}:r=30"`,
-      `-filter_complex "[0:v][1:v]vstack=inputs=2[v]"`,
-      '-map "[v]"',
-      '-c:v libx264 -preset fast -crf 23',
-      `-t ${script.total_duration_s}`,
-      `"${outputPath}"`,
-    ].join(' '), { stdio: 'pipe', timeout: 30000 });
+    // Mux TTS audio into the video
+    const withAudio = muxAudioIntoVideo(videoOnlyPath, input.tts_audio, script.lines, script.total_duration_s, output_dir, script.script_id);
+
+    // Copy to final output path
+    burnSubtitles(withAudio, srtPath, script.total_duration_s, outputPath);
 
     return { script_id: script.script_id, format: 'debate', output_path: outputPath, duration_s: script.total_duration_s, resolution: `${WIDTH}x${HEIGHT}`, srt_path: srtPath, success: true };
   } catch (err) {
@@ -274,23 +515,20 @@ function compositeVision(input: CompositorInput): CompositorResult {
     }
   }
 
-  // Mock: 3-color grid
+  // Mock: vision roundtable with title card + subtitle overlays + TTS audio
   try {
-    const cellH = HEIGHT / 3;
-    const speakers = [...new Set(script.lines.map(l => l.speaker))];
-    const colors = [ACCENT_A, ACCENT_B, ACCENT_C];
+    const videoOnlyPath = join(output_dir, `${script.script_id}_video_only.mp4`);
+    createMockVideo(
+      script.title, 'VISION', '#0a1628',
+      WIDTH, HEIGHT, script.total_duration_s,
+      script.lines, output_dir, script.script_id, videoOnlyPath,
+    );
 
-    execSync([
-      'ffmpeg -y',
-      ...speakers.slice(0, 3).map((s, i) =>
-        `-f lavfi -i "color=c=${colors[i].replace('#', '0x')}:s=${WIDTH}x${cellH}:d=${script.total_duration_s}:r=30"`
-      ),
-      `-filter_complex "[0:v][1:v][2:v]vstack=inputs=3[v]"`,
-      '-map "[v]"',
-      '-c:v libx264 -preset fast -crf 23',
-      `-t ${script.total_duration_s}`,
-      `"${outputPath}"`,
-    ].join(' '), { stdio: 'pipe', timeout: 30000 });
+    // Mux TTS audio into the video
+    const withAudio = muxAudioIntoVideo(videoOnlyPath, input.tts_audio, script.lines, script.total_duration_s, output_dir, script.script_id);
+
+    // Copy to final output path
+    burnSubtitles(withAudio, srtPath, script.total_duration_s, outputPath);
 
     return { script_id: script.script_id, format: 'vision', output_path: outputPath, duration_s: script.total_duration_s, resolution: `${WIDTH}x${HEIGHT}`, srt_path: srtPath, success: true };
   } catch (err) {

@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-608",
+  "title": "QUALITY — SRT subtitle burn-in via Python+Pillow (no libfreetype needed)",
+  "description": "Create burn-captions.ts that renders SRT subtitles onto video using Python+Pillow for text rendering and FFmpeg overlay. Works without libfreetype/libass. Wired into splitscreen-compositor.ts burnSubtitles().",
+  "source": "quality-gap",
+  "tasks": [
+    {
+      "id": "608-01",
+      "title": "Create burn-captions.ts with Python+Pillow text rendering",
+      "type": "feature",
+      "task_type": "quality",
+      "task_target": "scripts/scs001/burn-captions.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-608"
+    },
+    {
+      "id": "608-02",
+      "title": "Wire burn-captions into splitscreen-compositor burnSubtitles",
+      "type": "enhancement",
+      "task_type": "quality",
+      "task_target": "scripts/scs001/splitscreen-compositor.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-608"
+    }
+  ]
+}
