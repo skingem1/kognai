@@ -362,6 +362,17 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Issues: Insight Agent mock mode caps at 2 briefs/run, needed 3 runs for 6 videos
 - Timestamp: 2026-03-20T12:45:00Z
 
+## Sprint 505 — INFRA
+- Status: PASS
+- Commit: 2ad5f04
+- Files created: workspace/sprints/sprint-505.json
+- Files modified: workspace/sprint-brief.md (regenerated)
+- Test: bash -n run-autonomous.sh → OK, brief generated successfully
+- Pipeline: Brief now shows Sprints 503-504, autonomous loop validated
+- Swarm used: no
+- Issues: Ollama unavailable during brief generation (fallback mode used)
+- Timestamp: 2026-03-20T13:00:00Z
+
 ## Sprint 504 — STRIPE
 - Status: PASS
 - Commit: 41726f0

@@ -543,9 +543,10 @@
       "sprint": 505,
       "title": "INFRA \u2014 Regenerate sprint brief + validate autonomous loop",
       "block": "INFRA",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
-      "rationale": "Sprint brief references Sprint 474 as last built (stale). Regenerate via generate-sprint-brief.py with current state. Test run-autonomous.sh for 1 cycle to verify the self-restart loop works."
+      "rationale": "Sprint brief references Sprint 474 as last built (stale). Regenerate via generate-sprint-brief.py with current state. Test run-autonomous.sh for 1 cycle to verify the self-restart loop works.",
+      "_note": "Brief regenerated, autonomous loop validated. Queue now empty."
     }
   ]
 }
