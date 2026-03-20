@@ -885,8 +885,9 @@
       "title": "QUALITY — Add 2 new hook formulas + rebalance hook weights",
       "block": "VIDEO-QUALITY-V2",
       "priority": "high",
-      "status": "pending",
-      "rationale": "Diversity audit showed 53% \"other\" hooks. Add \"countdown\" and \"hot-take\" formulas. Rebalance weights so no single formula exceeds 25%."
+      "status": "done",
+      "rationale": "Diversity audit showed 53% \"other\" hooks. Add \"countdown\" and \"hot-take\" formulas. Rebalance weights so no single formula exceeds 25%.",
+      "_note": "10 hook formulas. countdown + hot_take added. All appearing in randomization."
     },
     {
       "sprint": 544,

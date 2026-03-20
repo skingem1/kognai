@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-543",
+  "title": "QUALITY — Expand hook formulas 8→10 (countdown + hot_take)",
+  "description": "Added countdown and hot_take hook formulas with 2 templates each. 10 formulas total. Randomized across runs — all 10 appearing.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "543-01",
+      "title": "Add countdown and hot_take formulas to insight agent",
+      "type": "feature",
+      "task_type": "quality",
+      "task_target": "agents/scs001-insight/index.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-543",
+      "deliverables": { "code": ["agents/scs001-insight/index.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

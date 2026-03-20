@@ -11,7 +11,7 @@ import { routeCall } from '../../scripts/lib/clawrouter-v2';
 export interface InsightBrief {
   insight_id:           string;
   clip_id:              string;
-  hook:                 { text: string; formula: 'curiosity_gap' | 'contrarian' | 'authority' | 'secret' | 'story' | 'question' | 'urgency' | 'proof' };
+  hook:                 { text: string; formula: 'curiosity_gap' | 'contrarian' | 'authority' | 'secret' | 'story' | 'question' | 'urgency' | 'proof' | 'countdown' | 'hot_take' };
   pre_clip_commentary:  string;
   post_clip_commentary: string;
   insight_statement:    string;
@@ -21,10 +21,11 @@ export interface InsightBrief {
   cloud_cost_usd:       number;
 }
 
-// Sprint 524: All 8 hook formulas for diversity
+// Sprint 543: 10 hook formulas for maximum diversity
 const ALL_HOOK_FORMULAS: InsightBrief['hook']['formula'][] = [
   'curiosity_gap', 'contrarian', 'authority', 'secret',
   'story', 'question', 'urgency', 'proof',
+  'countdown', 'hot_take',
 ];
 
 // Sprint 524: Hook text templates per formula
@@ -37,6 +38,8 @@ const HOOK_TEXTS: Record<string, string[]> = {
   question:      ['Did you know this about %s?', 'Why is nobody asking this about %s?'],
   urgency:       ['%s — and you need to know this NOW', 'The clock is ticking on %s'],
   proof:         ['The data proves %s is real', 'Here is the evidence: %s'],
+  countdown:     ['3... 2... 1... %s just dropped', 'In 5 seconds you will understand why %s matters'],
+  hot_take:      ['Hot take: %s is the biggest mistake in tech right now', 'Controversial opinion: %s will fail — here is why'],
 };
 
 function pickRandomFormula(): InsightBrief['hook']['formula'] {
