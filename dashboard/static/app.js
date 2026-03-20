@@ -1736,12 +1736,131 @@ async function renderAchiriPanel() {
   }
 }
 
+// --- Sprint 467: Dashboard v2 panels ---
+
+async function renderGateCountdown() {
+  const panel = $('#gate-countdown-body');
+  if (!panel) return;
+  try {
+    const d = await fetchJSON('/api/gate-countdown');
+    const paceColor = d.pace_status === 'on_track' ? 'var(--green)' : d.pace_status === 'behind' ? 'var(--yellow, orange)' : 'var(--red, red)';
+    const pct = Math.min(100, Math.round((d.posts_done / d.posts_target) * 100));
+    let html = `<div style="text-align:center;margin-bottom:12px;">`;
+    html += `<div style="font-size:2.2em;font-weight:bold;">${d.days_remaining}</div>`;
+    html += `<div style="color:var(--text-muted);">days to April 7 gate</div>`;
+    html += `</div>`;
+    html += `<div style="background:var(--bg-card,#222);border-radius:6px;overflow:hidden;height:20px;margin-bottom:8px;">`;
+    html += `<div style="background:${paceColor};height:100%;width:${pct}%;transition:width 0.3s;"></div>`;
+    html += `</div>`;
+    html += `<div style="display:flex;justify-content:space-between;font-size:0.9em;">`;
+    html += `<span>Posts: <b>${d.posts_done}/${d.posts_target}</b></span>`;
+    html += `<span>Need: <b style="color:${paceColor}">${d.required_posts_per_day}/day</b></span>`;
+    html += `</div>`;
+    if (d.posts_remaining > 0) {
+      html += `<div style="margin-top:8px;color:var(--text-muted);font-size:0.85em;">${d.posts_remaining} posts remaining</div>`;
+    } else {
+      html += `<div style="margin-top:8px;color:var(--green);font-weight:bold;">Target reached!</div>`;
+    }
+    panel.innerHTML = html;
+  } catch (e) {
+    panel.innerHTML = `<div class="empty-state" style="color:var(--text-muted);">Gate countdown error: ${escHtml(e.message)}</div>`;
+  }
+}
+
+async function renderPostingTracker() {
+  const panel = $('#posting-tracker-body');
+  if (!panel) return;
+  try {
+    const d = await fetchJSON('/api/posting-tracker');
+    let html = `<div style="margin-bottom:8px;"><b>Total posts:</b> ${d.total}</div>`;
+    if (d.tiktok.length > 0) {
+      html += `<div style="margin-bottom:6px;"><b>TikTok</b> (${d.tiktok.length})</div>`;
+      html += `<div style="max-height:120px;overflow-y:auto;font-size:0.85em;">`;
+      for (const p of d.tiktok.slice(-10).reverse()) {
+        const dt = p.date ? p.date.substring(0, 10) : '?';
+        html += `<div style="display:flex;justify-content:space-between;padding:2px 0;border-bottom:1px solid var(--border,#333);">`;
+        html += `<span>${escHtml(p.topic)}</span><span style="color:var(--text-muted);">${dt}</span>`;
+        html += `</div>`;
+      }
+      html += `</div>`;
+    } else {
+      html += `<div style="color:var(--text-muted);">No TikTok posts yet</div>`;
+    }
+    if (d.youtube.length > 0) {
+      html += `<div style="margin-top:8px;"><b>YouTube</b> (${d.youtube.length})</div>`;
+      html += `<div style="max-height:80px;overflow-y:auto;font-size:0.85em;">`;
+      for (const y of d.youtube.slice(-5).reverse()) {
+        html += `<div style="padding:2px 0;">${escHtml(y.title)}</div>`;
+      }
+      html += `</div>`;
+    }
+    panel.innerHTML = html;
+  } catch (e) {
+    panel.innerHTML = `<div class="empty-state" style="color:var(--text-muted);">Posting tracker error: ${escHtml(e.message)}</div>`;
+  }
+}
+
+async function renderApiHealth() {
+  const panel = $('#api-health-body');
+  if (!panel) return;
+  try {
+    const d = await fetchJSON('/api/api-health');
+    let html = `<div style="margin-bottom:8px;"><b>${d.healthy}/${d.total}</b> services healthy (${d.health_pct}%)</div>`;
+    html += `<div style="font-size:0.85em;">`;
+    for (const [name, info] of Object.entries(d.services)) {
+      const color = info.status === 'up' || info.status === 'configured' ? 'var(--green, #0f0)' :
+        info.status === 'missing' ? 'var(--red, red)' : 'var(--yellow, orange)';
+      const icon = info.status === 'up' || info.status === 'configured' ? '&#9679;' : '&#9675;';
+      html += `<div style="display:flex;justify-content:space-between;padding:2px 0;">`;
+      html += `<span style="color:${color};">${icon} ${escHtml(name)}</span>`;
+      html += `<span style="color:var(--text-muted);">${info.status}</span>`;
+      html += `</div>`;
+    }
+    html += `</div>`;
+    panel.innerHTML = html;
+  } catch (e) {
+    panel.innerHTML = `<div class="empty-state" style="color:var(--text-muted);">API health error: ${escHtml(e.message)}</div>`;
+  }
+}
+
+async function renderStripe() {
+  const panel = $('#stripe-body');
+  if (!panel) return;
+  try {
+    const d = await fetchJSON('/api/stripe-status');
+    const statusColor = d.status === 'live' ? 'var(--green, #0f0)' :
+      d.configured ? 'var(--yellow, orange)' : 'var(--red, red)';
+    let html = `<div style="text-align:center;margin-bottom:12px;">`;
+    html += `<div style="font-size:2em;font-weight:bold;">&euro;${d.mrr.toFixed(2)}</div>`;
+    html += `<div style="color:var(--text-muted);">Monthly Recurring Revenue</div>`;
+    html += `</div>`;
+    html += `<div style="font-size:0.9em;">`;
+    html += `<div style="display:flex;justify-content:space-between;padding:2px 0;">`;
+    html += `<span>Status</span><span style="color:${statusColor};font-weight:bold;">${escHtml(d.status)}</span>`;
+    html += `</div>`;
+    html += `<div style="display:flex;justify-content:space-between;padding:2px 0;">`;
+    html += `<span>Subscribers</span><span><b>${d.subscribers}</b></span>`;
+    html += `</div>`;
+    html += `<div style="display:flex;justify-content:space-between;padding:2px 0;">`;
+    html += `<span>API Key</span><span>${d.configured ? '&#9679; Set' : '&#9675; Missing'}</span>`;
+    html += `</div>`;
+    html += `<div style="display:flex;justify-content:space-between;padding:2px 0;">`;
+    html += `<span>Webhook</span><span>${d.webhook_configured ? '&#9679; Set' : '&#9675; Missing'}</span>`;
+    html += `</div>`;
+    html += `</div>`;
+    panel.innerHTML = html;
+  } catch (e) {
+    panel.innerHTML = `<div class="empty-state" style="color:var(--text-muted);">Stripe error: ${escHtml(e.message)}</div>`;
+  }
+}
+
 // --- All render functions ---
 const ALL_RENDERERS = [
   renderProgress, renderTodo, renderOverview, renderSCS001,
   renderCosts, renderRouting, renderAmendments, renderChain,
   renderSecurity, renderAssets, renderLogs, renderPipeline, renderRevenue,
   renderReadiness, renderPublishHistory, renderAchiriPanel, renderSessions, renderExperiments,
+  renderGateCountdown, renderPostingTracker, renderApiHealth, renderStripe,
 ];
 
 // --- Manual Refresh ---

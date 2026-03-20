@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-467",
+  "title": "INFRA — Dashboard v2 — unified control panel with all panels",
+  "description": "Add 4 new dashboard panels: April 7 gate countdown, posting tracker (done/30), API health checks, Stripe MRR. New API endpoints + frontend panels.",
+  "source": "queue — Sprint 467 INFRA",
+  "tasks": [
+    {
+      "id": "467-01",
+      "title": "Add /api/gate-countdown, /api/posting-tracker, /api/api-health, /api/stripe-status endpoints",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-467",
+      "deliverables": { "code": ["dashboard/server.py"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "467-02",
+      "title": "Add 4 new panels to index.html + renderer functions in app.js",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-467",
+      "deliverables": { "code": ["dashboard/static/index.html", "dashboard/static/app.js"], "tests": [], "docs": [] }
+    }
+  ]
+}

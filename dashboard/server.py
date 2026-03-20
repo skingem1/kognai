@@ -659,3 +659,187 @@ async def ping_services():
         ("Dashboard", "127.0.0.1", 11436),
     ]
     return {name: port_open(host, port) for name, host, port in services}
+
+
+# --- Sprint 467: Dashboard v2 panels ---
+
+@app.get("/api/gate-countdown")
+async def gate_countdown():
+    """April 7 gate countdown with posting pace and days remaining."""
+    from datetime import datetime, timezone
+    gate_date = datetime(2026, 4, 7, tzinfo=timezone.utc)
+    now = datetime.now(timezone.utc)
+    days_remaining = max(0, (gate_date - now).days)
+
+    # Read posting log for count
+    posting_log = KOGNAI_ROOT / "workspace" / "posting-log.json"
+    posts_done = 0
+    if posting_log.exists():
+        try:
+            data = json.loads(posting_log.read_text())
+            posts_done = len(data) if isinstance(data, list) else data.get("count", 0)
+        except Exception:
+            pass
+
+    # Also check telegram-sent.jsonl for posted count
+    sent_log = KOGNAI_ROOT / "workspace" / "scs001" / "telegram-sent.jsonl"
+    if sent_log.exists():
+        try:
+            lines = [l for l in sent_log.read_text().strip().split("\n") if l.strip()]
+            posts_done = max(posts_done, len(lines))
+        except Exception:
+            pass
+
+    target = 30
+    posts_remaining = max(0, target - posts_done)
+    posts_per_day = round(posts_remaining / max(1, days_remaining), 1) if days_remaining > 0 else posts_remaining
+
+    # Read gate JSON for phase status
+    gate_file = KOGNAI_ROOT / "workspace" / "gates" / "phase1-5-gate.json"
+    gate_criteria = []
+    if gate_file.exists():
+        try:
+            gdata = json.loads(gate_file.read_text())
+            gate_criteria = gdata.get("criteria", gdata.get("gates", []))
+        except Exception:
+            pass
+
+    return {
+        "gate_date": "2026-04-07",
+        "days_remaining": days_remaining,
+        "posts_done": posts_done,
+        "posts_target": target,
+        "posts_remaining": posts_remaining,
+        "required_posts_per_day": posts_per_day,
+        "pace_status": "on_track" if posts_per_day <= 3 else ("behind" if posts_per_day <= 5 else "critical"),
+        "gate_criteria": gate_criteria,
+    }
+
+
+@app.get("/api/posting-tracker")
+async def posting_tracker():
+    """Track posting progress across platforms."""
+    result = {"tiktok": [], "youtube": [], "total": 0}
+
+    # TikTok posts from telegram-sent
+    sent_log = KOGNAI_ROOT / "workspace" / "scs001" / "telegram-sent.jsonl"
+    if sent_log.exists():
+        try:
+            for line in sent_log.read_text().strip().split("\n"):
+                if line.strip():
+                    entry = json.loads(line)
+                    result["tiktok"].append({
+                        "date": entry.get("timestamp", entry.get("date", "")),
+                        "topic": entry.get("topic", entry.get("niche", "unknown")),
+                        "status": entry.get("status", "sent"),
+                    })
+        except Exception:
+            pass
+
+    # YouTube uploads
+    yt_log = KOGNAI_ROOT / "workspace" / "youtube" / "uploads.json"
+    if yt_log.exists():
+        try:
+            yt_data = json.loads(yt_log.read_text())
+            uploads = yt_data if isinstance(yt_data, list) else yt_data.get("uploads", [])
+            for u in uploads:
+                result["youtube"].append({
+                    "date": u.get("uploaded_at", u.get("date", "")),
+                    "title": u.get("title", "unknown"),
+                    "status": u.get("status", "uploaded"),
+                })
+        except Exception:
+            pass
+
+    result["total"] = len(result["tiktok"]) + len(result["youtube"])
+    return result
+
+
+@app.get("/api/api-health")
+async def api_health():
+    """Check health of all configured API integrations."""
+    import socket
+    import os
+
+    def port_open(host: str, port: int, timeout: float = 0.5) -> bool:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.settimeout(timeout)
+        try:
+            sock.connect((host, port))
+            sock.close()
+            return True
+        except (socket.error, socket.timeout):
+            return False
+
+    checks = {}
+
+    # Local services
+    checks["ollama"] = {"status": "up" if port_open("127.0.0.1", 11434) else "down", "type": "local"}
+    checks["router"] = {"status": "up" if port_open("127.0.0.1", 11435) else "down", "type": "local"}
+    checks["dashboard"] = {"status": "up", "type": "local"}
+
+    # API keys presence
+    api_keys = {
+        "telegram": "TELEGRAM_BOT_TOKEN",
+        "supabase": "SUPABASE_URL",
+        "stripe": "STRIPE_SECRET_KEY",
+        "youtube": "YOUTUBE_API_KEY",
+        "tiktok": "TIKTOK_ACCESS_TOKEN",
+        "elevenlabs": "ELEVENLABS_API_KEY",
+        "openai": "OPENAI_API_KEY",
+        "anthropic": "ANTHROPIC_API_KEY",
+        "pexels": "PEXELS_API_KEY",
+        "fal": "FAL_KEY",
+    }
+    for name, env_var in api_keys.items():
+        val = os.environ.get(env_var, "")
+        checks[name] = {
+            "status": "configured" if val else "missing",
+            "type": "api_key",
+            "env_var": env_var,
+        }
+
+    # Vault (Tailscale)
+    vault_ip = os.environ.get("VAULT_TAILSCALE_IP", "")
+    if vault_ip:
+        checks["vault"] = {"status": "up" if port_open(vault_ip, 11434, timeout=1.0) else "down", "type": "remote"}
+    else:
+        checks["vault"] = {"status": "not_configured", "type": "remote"}
+
+    up_count = sum(1 for c in checks.values() if c["status"] in ("up", "configured"))
+    total = len(checks)
+    return {"services": checks, "healthy": up_count, "total": total, "health_pct": round(up_count / total * 100)}
+
+
+@app.get("/api/stripe-status")
+async def stripe_status():
+    """Stripe subscription and MRR status."""
+    import os
+    result = {
+        "configured": bool(os.environ.get("STRIPE_SECRET_KEY")),
+        "webhook_configured": bool(os.environ.get("STRIPE_WEBHOOK_SECRET")),
+        "prices": {
+            "growth": os.environ.get("STRIPE_PRICE_GROWTH", "not_set"),
+            "premium": os.environ.get("STRIPE_PRICE_PREMIUM", "not_set"),
+        },
+        "mrr": 0.0,
+        "subscribers": 0,
+        "status": "not_live",
+    }
+
+    # Check for local subscription data
+    subs_file = KOGNAI_ROOT / "workspace" / "billing" / "subscriptions.json"
+    if subs_file.exists():
+        try:
+            subs = json.loads(subs_file.read_text())
+            active = [s for s in subs if s.get("status") == "active"]
+            result["subscribers"] = len(active)
+            result["mrr"] = sum(s.get("amount", 9.0) for s in active)
+            result["status"] = "live" if active else "no_subscribers"
+        except Exception:
+            pass
+
+    if result["configured"]:
+        result["status"] = result["status"] if result["status"] != "not_live" else "keys_set_not_tested"
+
+    return result
