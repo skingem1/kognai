@@ -1,6 +1,6 @@
 # SCS-001 TikTok Content Agent — Progress Log
 
-*Last updated: 2026-03-20 (Sprint 484)*
+*Last updated: 2026-03-20 (Sprint 485)*
 
 ## Summary
 
@@ -57,6 +57,7 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 
 | Sprint | Block | Title |
 |--------|-------|-------|
+| 485 | MONETIZATION | Usage metering + /usage command |
 | 484 | POSTING | X/Twitter video posting + /xpost |
 | 483 | POSTING | Instagram Reels cross-posting + /instagram |
 | 482 | INFRA | Swarm metrics dashboard + /swarmstats |

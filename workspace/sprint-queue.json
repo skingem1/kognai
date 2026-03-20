@@ -392,7 +392,7 @@
       "sprint": 485,
       "title": "MONETIZATION — Usage metering for SCS-001 subscribers",
       "block": "MONETIZATION",
-      "status": "pending",
+      "status": "done",
       "priority": "low",
       "rationale": "Track per-subscriber: videos generated, API costs consumed, posting frequency. Store in workspace/billing/usage.json. Feed into Stripe subscription decisions (upgrade prompts, tier suggestions)."
     },
