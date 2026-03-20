@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-407",
+  "title": "Stripe webhook handler — subscription lifecycle events",
+  "description": "Add POST /webhook endpoint to checkout-server.ts: verify Stripe signatures, handle checkout.session.completed + invoice.paid + customer.subscription.deleted, log events to subscribers.jsonl, notify operator via Telegram.",
+  "source": "auto — STRIPE_SECRET_KEY and STRIPE_WEBHOOK_SECRET now set, need webhook processing to close the subscription loop",
+  "tasks": [
+    {
+      "id": "407-01",
+      "title": "Add Stripe webhook endpoint with signature verification and event handling",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-407",
+      "deliverables": { "code": ["scripts/scs001/checkout-server.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

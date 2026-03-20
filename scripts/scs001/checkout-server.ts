@@ -5,18 +5,22 @@
  * Serves a simple landing page and redirects to Stripe Checkout sessions.
  *
  * Routes:
- *   GET /                   → Landing page with pricing
- *   GET /checkout/growth    → Redirect to Stripe Checkout (Growth plan)
- *   GET /checkout/premium   → Redirect to Stripe Checkout (Premium plan)
- *   GET /health             → Health check
+ *   GET  /                   → Landing page with pricing
+ *   GET  /checkout/growth    → Redirect to Stripe Checkout (Growth plan)
+ *   GET  /checkout/premium   → Redirect to Stripe Checkout (Premium plan)
+ *   POST /webhook            → Stripe webhook (signature verified)
+ *   GET  /health             → Health check
  *
  * Env:
  *   STRIPE_SECRET_KEY       — required
+ *   STRIPE_WEBHOOK_SECRET   — webhook signature verification
  *   STRIPE_PRICE_GROWTH     — Stripe Price ID
  *   STRIPE_PRICE_PREMIUM    — Stripe Price ID
  *   STRIPE_SUCCESS_URL      — post-checkout redirect
  *   STRIPE_CANCEL_URL       — cancel redirect
  *   CHECKOUT_PORT           — default 3002
+ *   TELEGRAM_BOT_TOKEN      — for operator notifications
+ *   OWNER_TELEGRAM_CHAT_ID  — operator chat ID
  *
  * Usage: npx ts-node scripts/scs001/checkout-server.ts
  * PM2:   kognai-checkout-server
@@ -24,6 +28,8 @@
 
 import * as http from 'http';
 import * as https from 'https';
+import * as crypto from 'crypto';
+import * as fs from 'fs';
 import * as path from 'path';
 import * as dotenv from 'dotenv';
 
@@ -31,8 +37,13 @@ dotenv.config({ path: path.join(process.cwd(), '.env') });
 
 const PORT        = parseInt(process.env.CHECKOUT_PORT || '3002', 10);
 const STRIPE_KEY  = process.env.STRIPE_SECRET_KEY || '';
+const WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET || '';
 const SUCCESS_URL = process.env.STRIPE_SUCCESS_URL || 'https://t.me';
 const CANCEL_URL  = process.env.STRIPE_CANCEL_URL || 'https://t.me';
+const TELEGRAM_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '';
+const OWNER_CHAT_ID = process.env.OWNER_TELEGRAM_CHAT_ID || '';
+
+const SUBSCRIBERS_LOG = path.join(process.cwd(), 'workspace', 'scs001', 'subscribers.jsonl');
 
 const PLANS: Record<string, { name: string; price_env: string; amount: string; features: string[] }> = {
   growth: {
@@ -164,6 +175,90 @@ function landingPage(): string {
 </html>`;
 }
 
+// ── Stripe Webhook (Sprint 407) ──────────────────────────────────────────
+
+function verifyStripeSignature(payload: string, sigHeader: string): boolean {
+  if (!WEBHOOK_SECRET || !sigHeader) return false;
+  const parts = Object.fromEntries(
+    sigHeader.split(',').map(p => { const [k, v] = p.split('='); return [k, v]; })
+  );
+  const timestamp = parts['t'];
+  const sig = parts['v1'];
+  if (!timestamp || !sig) return false;
+
+  // Reject timestamps older than 5 minutes
+  const age = Math.abs(Date.now() / 1000 - parseInt(timestamp, 10));
+  if (age > 300) return false;
+
+  const expected = crypto
+    .createHmac('sha256', WEBHOOK_SECRET)
+    .update(`${timestamp}.${payload}`)
+    .digest('hex');
+  return crypto.timingSafeEqual(Buffer.from(expected), Buffer.from(sig));
+}
+
+function logSubscriberEvent(event: Record<string, unknown>): void {
+  const line = JSON.stringify({ ...event, logged_at: new Date().toISOString() });
+  fs.appendFileSync(SUBSCRIBERS_LOG, line + '\n');
+}
+
+function notifyOperator(text: string): void {
+  if (!TELEGRAM_TOKEN || !OWNER_CHAT_ID) return;
+  const payload = JSON.stringify({ chat_id: OWNER_CHAT_ID, text, parse_mode: 'Markdown' });
+  const req = https.request({
+    hostname: 'api.telegram.org',
+    path: `/bot${TELEGRAM_TOKEN}/sendMessage`,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(payload) },
+    timeout: 10_000,
+  });
+  req.on('error', (e) => console.error(`[webhook] Telegram notify error: ${e.message}`));
+  req.write(payload);
+  req.end();
+}
+
+function handleWebhookEvent(body: string): { status: number; message: string } {
+  let event: any;
+  try { event = JSON.parse(body); } catch { return { status: 400, message: 'Invalid JSON' }; }
+
+  const type: string = event.type ?? '';
+  const obj = event.data?.object ?? {};
+
+  console.log(`[webhook] Event: ${type} id=${event.id ?? 'unknown'}`);
+
+  switch (type) {
+    case 'checkout.session.completed': {
+      const email = obj.customer_email ?? obj.customer_details?.email ?? 'unknown';
+      const plan = obj.metadata?.plan ?? 'unknown';
+      const amount = obj.amount_total ? (obj.amount_total / 100).toFixed(2) : '?';
+      const currency = (obj.currency ?? 'usd').toUpperCase();
+      logSubscriberEvent({ type, email, plan, amount, currency, stripe_customer: obj.customer, subscription: obj.subscription });
+      notifyOperator(`💰 *New Subscriber!*\n\nEmail: ${email}\nPlan: *${plan}*\nAmount: ${amount} ${currency}\n\n_Checkout completed via Stripe_`);
+      break;
+    }
+    case 'invoice.paid': {
+      const email = obj.customer_email ?? 'unknown';
+      const amount = obj.amount_paid ? (obj.amount_paid / 100).toFixed(2) : '?';
+      const currency = (obj.currency ?? 'usd').toUpperCase();
+      logSubscriberEvent({ type, email, amount, currency, stripe_customer: obj.customer, subscription: obj.subscription });
+      console.log(`[webhook] Invoice paid: ${email} ${amount} ${currency}`);
+      break;
+    }
+    case 'customer.subscription.deleted': {
+      const email = obj.metadata?.email ?? 'unknown';
+      const plan = obj.metadata?.plan ?? 'unknown';
+      logSubscriberEvent({ type, email, plan, stripe_customer: obj.customer, subscription: obj.id });
+      notifyOperator(`⚠️ *Subscription Cancelled*\n\nCustomer: ${obj.customer}\nPlan: ${plan}\n\n_Churn alert — follow up?_`);
+      break;
+    }
+    default:
+      console.log(`[webhook] Unhandled event type: ${type}`);
+      logSubscriberEvent({ type, unhandled: true });
+  }
+
+  return { status: 200, message: 'ok' };
+}
+
 // ── HTTP Server ─────────────────────────────────────────────────────────
 
 const server = http.createServer(async (req, res) => {
@@ -171,7 +266,28 @@ const server = http.createServer(async (req, res) => {
 
   if (url === '/health') {
     res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ ok: true, service: 'checkout-server', stripe: STRIPE_KEY ? 'configured' : 'missing' }));
+    res.end(JSON.stringify({ ok: true, service: 'checkout-server', stripe: STRIPE_KEY ? 'configured' : 'missing', webhook: WEBHOOK_SECRET ? 'configured' : 'missing' }));
+    return;
+  }
+
+  // Sprint 407: Stripe webhook endpoint
+  if (url === '/webhook' && req.method === 'POST') {
+    let body = '';
+    req.on('data', (chunk: Buffer) => { body += chunk.toString(); });
+    req.on('end', () => {
+      const sig = req.headers['stripe-signature'] as string ?? '';
+
+      if (WEBHOOK_SECRET && !verifyStripeSignature(body, sig)) {
+        console.error('[webhook] Signature verification failed');
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Invalid signature' }));
+        return;
+      }
+
+      const result = handleWebhookEvent(body);
+      res.writeHead(result.status, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ received: true }));
+    });
     return;
   }
 
@@ -219,9 +335,10 @@ const server = http.createServer(async (req, res) => {
 server.listen(PORT, '0.0.0.0', () => {
   const mode = STRIPE_KEY.startsWith('sk_live_') ? 'LIVE' : STRIPE_KEY ? 'TEST' : 'NO KEY';
   console.log(`[checkout] Server on http://0.0.0.0:${PORT} (Stripe: ${mode})`);
-  console.log(`[checkout] Landing: http://localhost:${PORT}/`);
-  console.log(`[checkout] Growth:  http://localhost:${PORT}/checkout/growth`);
-  console.log(`[checkout] Premium: http://localhost:${PORT}/checkout/premium`);
+  console.log(`[checkout] Landing:  http://localhost:${PORT}/`);
+  console.log(`[checkout] Growth:   http://localhost:${PORT}/checkout/growth`);
+  console.log(`[checkout] Premium:  http://localhost:${PORT}/checkout/premium`);
+  console.log(`[checkout] Webhook:  http://localhost:${PORT}/webhook (${WEBHOOK_SECRET ? 'signature ON' : 'signature OFF'})`);
 });
 
 process.on('SIGTERM', () => server.close());
