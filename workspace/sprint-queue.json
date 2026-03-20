@@ -352,7 +352,7 @@
       "sprint": 480,
       "title": "QUALITY — Video length optimizer (15s vs 30s vs 60s)",
       "block": "VIDEO-QUALITY-V2",
-      "status": "pending",
+      "status": "done",
       "priority": "low",
       "rationale": "Different content works at different lengths. Build length optimizer: (1) Classify topic complexity, (2) Short (15s) for simple hooks, (3) Medium (30s) for explainers, (4) Long (60s) for deep dives. Currently all videos are ~30s. Add variety."
     },
