@@ -1,0 +1,44 @@
+{
+  "sprint_id": "sprint-309",
+  "title": "Achiri topic suggestions — proactive conversation starters from user interests",
+  "description": "When user sends a short/vague message (e.g. 'bored', 'idk', 'nothing'), inject a topic suggestion hint into the system prompt based on their profile interests. Makes Achiri feel like a real companion that keeps conversations flowing.",
+  "source": "auto — Achiri Phase 2A: companion engagement depth",
+  "tasks": [
+    {
+      "id": "309-01",
+      "title": "Create topic-suggester.ts — detect stall + generate interest-based suggestions",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-309",
+      "deliverables": { "code": ["agents/achiri/topic-suggester.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "309-02",
+      "title": "Wire topic suggestions into buildSystemPrompt",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-309",
+      "deliverables": { "code": ["agents/achiri/index.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "309-03",
+      "title": "Validation script for topic suggestions",
+      "type": "test",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-309",
+      "deliverables": { "code": ["scripts/achiri/validate-topic-suggester.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

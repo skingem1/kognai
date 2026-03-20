@@ -19,6 +19,7 @@ import { extractUserProfile, buildProfileContext } from './user-profile';
 import { buildSummaryContext } from './conversation-summary';
 import { selectTurnsWithinBudget } from './context-window';
 import { detectEmotion, getMoodHint } from './emotion-detector';
+import { buildTopicHint } from './topic-suggester';
 import { routeCall } from '../../scripts/lib/clawrouter-v2';
 
 // Sprint 308: Onboarding hint for brand-new users (first message ever)
@@ -90,7 +91,7 @@ export class AchiriConversationHandler {
     };
   }
 
-  buildSystemPrompt(isNewSession: boolean = false, moodHint: string = ''): string {
+  buildSystemPrompt(isNewSession: boolean = false, moodHint: string = '', topicHint: string = ''): string {
     const ctx = this.config.cultural_markers.tunisian_context;
     const switchRules = this.config.languages.code_switching.rules;
 
@@ -128,12 +129,15 @@ export class AchiriConversationHandler {
     // Sprint 307: Inject mood hint for emotion-adaptive responses
     const moodBlock = moodHint ? moodHint + '\n\n---\n\n' : '';
 
-    return header + personalBlock + moodBlock + this.systemPromptRaw;
+    // Sprint 309: Inject topic suggestion hint for conversation stalls
+    const topicBlock = topicHint ? topicHint + '\n\n---\n\n' : '';
+
+    return header + personalBlock + moodBlock + topicBlock + this.systemPromptRaw;
   }
 
-  buildMessages(userMessage: string, history: ConversationTurn[] = [], isNewSession: boolean = false, moodHint: string = ''): ConversationTurn[] {
+  buildMessages(userMessage: string, history: ConversationTurn[] = [], isNewSession: boolean = false, moodHint: string = '', topicHint: string = ''): ConversationTurn[] {
     return [
-      { role: 'system', content: this.buildSystemPrompt(isNewSession, moodHint) },
+      { role: 'system', content: this.buildSystemPrompt(isNewSession, moodHint, topicHint) },
       ...history,
       { role: 'user', content: userMessage },
     ];
@@ -199,8 +203,15 @@ export class AchiriConversationHandler {
       console.log('[Achiri] emotion=' + emotion.mood + ' confidence=' + emotion.confidence + ' signals=' + emotion.signals.join(','));
     }
 
-    const messages = this.buildMessages(userMessage, windowedHistory, isNewSession, moodHint);
-    console.log('[Achiri] chat() model=' + model.model + ' tier=' + model.tier + ' msg_len=' + userMessage.length + ' history=' + windowedHistory.length + (isNewSession ? ' NEW_SESSION' : '') + (emotion.mood !== 'neutral' ? ' mood=' + emotion.mood : ''));
+    // Sprint 309: Topic suggestions for conversation stalls
+    const topicProfile = this.memory ? extractUserProfile(this.userId) : null;
+    const topicHint = buildTopicHint(userMessage, topicProfile);
+    if (topicHint) {
+      console.log('[Achiri] topic_suggestion injected for stall message');
+    }
+
+    const messages = this.buildMessages(userMessage, windowedHistory, isNewSession, moodHint, topicHint);
+    console.log('[Achiri] chat() model=' + model.model + ' tier=' + model.tier + ' msg_len=' + userMessage.length + ' history=' + windowedHistory.length + (isNewSession ? ' NEW_SESSION' : '') + (emotion.mood !== 'neutral' ? ' mood=' + emotion.mood : '') + (topicHint ? ' TOPIC_HINT' : ''));
 
     // Dry-run mode for CI/tests
     if (process.env.ACHIRI_DRY_RUN === '1') {
