@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-348",
+  "title": "/audit command — content quality audit with posting recommendations",
+  "description": "Operator types /audit to see content quality report: total videos, score distribution, top speakers, hook diversity, best 5 videos to post first, and estimated gate timeline based on quality.",
+  "source": "auto — operator has 368 videos but 0 posted, needs confidence in content quality",
+  "tasks": [
+    {
+      "id": "348-01",
+      "title": "Add /audit command to telegram-bot.ts — content quality audit report",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-348",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

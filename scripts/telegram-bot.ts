@@ -1388,6 +1388,111 @@ function cmdGoLive(): string {
   return lines.join('\n');
 }
 
+// Sprint 348: /audit — content quality audit with posting recommendations
+function cmdAudit(): string {
+  const expPath = path.join(ROOT, 'workspace', 'scs001', 'experiments.jsonl');
+  const ledgerPath = path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl');
+  const mpPath = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
+
+  // Load experiments for scores
+  const scores = new Map<string, number>();
+  const speakers = new Map<string, { count: number; totalScore: number }>();
+  const hooks = new Map<string, number>();
+  if (fs.existsSync(expPath)) {
+    for (const l of fs.readFileSync(expPath, 'utf-8').split('\n').filter((l: string) => l.trim())) {
+      try {
+        const e = JSON.parse(l);
+        const id = e.clip_id ?? e.video_id;
+        const score = e.partial_viral_score ?? 0;
+        if (id) scores.set(id, score);
+        if (e.speaker) {
+          const s = speakers.get(e.speaker) ?? { count: 0, totalScore: 0 };
+          s.count++; s.totalScore += score;
+          speakers.set(e.speaker, s);
+        }
+        if (e.hook_formula) hooks.set(e.hook_formula, (hooks.get(e.hook_formula) ?? 0) + 1);
+      } catch {}
+    }
+  }
+
+  // Load posted IDs
+  const postedIds = new Set<string>();
+  if (fs.existsSync(mpPath)) {
+    for (const l of fs.readFileSync(mpPath, 'utf-8').split('\n').filter((l: string) => l.trim())) {
+      try { const p = JSON.parse(l); if (p.video_id) postedIds.add(p.video_id); } catch {}
+    }
+  }
+
+  // Load unposted videos from ledger
+  const unposted: Array<{ id: string; score: number }> = [];
+  if (fs.existsSync(ledgerPath)) {
+    for (const l of fs.readFileSync(ledgerPath, 'utf-8').split('\n').filter((l: string) => l.trim())) {
+      try {
+        const e = JSON.parse(l);
+        if (e.video_id && !postedIds.has(e.video_id)) {
+          unposted.push({ id: e.video_id, score: scores.get(e.video_id) ?? 0 });
+        }
+      } catch {}
+    }
+  }
+  unposted.sort((a, b) => b.score - a.score);
+
+  // Score distribution
+  const scoreValues = unposted.map(v => v.score);
+  const avgScore = scoreValues.length > 0 ? scoreValues.reduce((a, b) => a + b, 0) / scoreValues.length : 0;
+  const high = scoreValues.filter(s => s >= 0.6).length;
+  const mid = scoreValues.filter(s => s >= 0.3 && s < 0.6).length;
+  const low = scoreValues.filter(s => s < 0.3).length;
+
+  // Top speakers
+  const topSpeakers = Array.from(speakers.entries())
+    .map(([name, s]) => ({ name, avg: s.totalScore / s.count, count: s.count }))
+    .sort((a, b) => b.avg - a.avg)
+    .slice(0, 5);
+
+  // Hook diversity
+  const hookCount = hooks.size;
+
+  const lines: string[] = [
+    '🔍 *Content Quality Audit*',
+    '',
+    `📦 Total in queue: *${unposted.length}* videos`,
+    `📊 Avg viral score: *${Math.round(avgScore * 100)}%*`,
+    `🟢 High (60%+): ${high} | 🟡 Mid (30-59%): ${mid} | 🔴 Low (<30%): ${low}`,
+    `🎣 Hook diversity: ${hookCount} unique formulas`,
+    '',
+    '*Top Speakers:*',
+  ];
+  for (const s of topSpeakers) {
+    lines.push(`  ${Math.round(s.avg * 100)}% — ${s.name} (${s.count} clips)`);
+  }
+
+  lines.push('');
+  lines.push('*Best 5 to post first:*');
+  for (const v of unposted.slice(0, 5)) {
+    lines.push(`  ${Math.round(v.score * 100)}% — \`${v.id}\``);
+  }
+
+  // Posting timeline estimate
+  const GATE_DATE = new Date('2026-04-07T00:00:00Z');
+  const daysLeft = Math.max(0, Math.ceil((GATE_DATE.getTime() - Date.now()) / 86_400_000));
+  const postsNeeded = Math.max(0, 30 - postedIds.size);
+  lines.push('');
+  if (postsNeeded > 0) {
+    const pace = daysLeft > 0 ? Math.round(postsNeeded / daysLeft * 10) / 10 : postsNeeded;
+    lines.push(`⏱ Gate: ${postsNeeded} posts in ${daysLeft} days = ${pace}/day`);
+    if (high >= postsNeeded) {
+      lines.push('✅ Enough high-quality content to hit the gate');
+    } else {
+      lines.push(`⚠️ Only ${high} high-quality videos — consider posting mid-tier too`);
+    }
+  } else {
+    lines.push('✅ Gate posts target met!');
+  }
+
+  return lines.join('\n');
+}
+
 function cmdHelp(): string {
   return (
     `*Kognai Bot Commands*\n\n` +
@@ -1413,6 +1518,7 @@ function cmdHelp(): string {
     `/today     — Daily posting brief + recommendations\n` +
     `/calendar  — 7-day content posting plan\n` +
     `/golive    — Phase 1 go-live readiness check\n` +
+    `/audit     — Content quality audit + recommendations\n` +
     `/help      — This message`
   );
 }
@@ -1515,6 +1621,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/today':     response = cmdToday();  break;
     case '/calendar':  response = cmdCalendar(); break;
     case '/golive':    response = cmdGoLive();  break;
+    case '/audit':     response = cmdAudit();  break;
     case '/help':      response = cmdHelp();   break;
     default:
       response = `Unknown command: \`${cmdName}\`\n\n${cmdHelp()}`;
