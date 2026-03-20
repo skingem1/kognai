@@ -35,6 +35,35 @@ export const HOOK_TEMPLATES: Record<string, string[]> = {
     'Finally someone explains this properly',
     'Listen to someone who actually knows',
   ],
+  // Sprint 443: New hook formulas for content diversity
+  story: [
+    'I just found out something that blew my mind',
+    'This story will change how you see everything',
+    'You won\'t believe what happened next',
+    'Let me tell you something incredible',
+    'The craziest thing just happened in tech',
+  ],
+  question: [
+    'Can you guess what this actually does?',
+    'What would you do with this technology?',
+    'Did you know this was even possible?',
+    'Why is nobody asking this question?',
+    'Is this the future or just hype?',
+  ],
+  urgency: [
+    'This changes everything starting NOW',
+    'You need to know this before it\'s too late',
+    'This is happening right now and most people are clueless',
+    'In 5 years you\'ll wish you saw this today',
+    'The clock is ticking on this one',
+  ],
+  proof: [
+    '97% of people get this wrong',
+    'This one fact changes the entire game',
+    'The numbers don\'t lie — look at this',
+    'After 1000 hours of research, here\'s the truth',
+    'Here\'s proof that everything is about to change',
+  ],
 };
 
 export const ENGAGEMENT_CTAS = [
@@ -43,6 +72,12 @@ export const ENGAGEMENT_CTAS = [
   'Drop a comment if you agree',
   'Share this with someone who needs it',
   'Follow for more mind-blowing tech',
+  // Sprint 443: New CTAs for diversity
+  'Tag someone who needs to see this',
+  'Bookmark this before it disappears',
+  'What do you think? Comment below',
+  'Follow for the stuff they don\'t teach you',
+  'Double tap if this blew your mind',
 ];
 
 // Sprint 426: Speaker description variations (replaces static "explains it all")

@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-443",
+  "title": "Hook library expansion — 4 new hook formulas for TikTok engagement",
+  "description": "Add story, question, urgency, and proof hook formulas to the engagement caption module. Also add them to hook-quality.ts scoring and update the script validator to recognize them.",
+  "source": "auto — Only 4 hook types currently. More diversity = better A/B testing and higher engagement.",
+  "tasks": [
+    {
+      "id": "443-01",
+      "title": "Add 4 new hook formulas to engagement-caption.ts + hook-quality.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-443",
+      "deliverables": { "code": ["scripts/scs001/engagement-caption.ts", "scripts/scs001/hook-quality.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

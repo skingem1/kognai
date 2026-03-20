@@ -80,6 +80,31 @@ const HOOK_TEMPLATES: Record<string, string[]> = {
     'Here\'s what the research says about {topic}',
     'Top minds are rethinking {topic} right now',
   ],
+  // Sprint 443: New hook formulas for content diversity
+  story: [
+    'I just found out something about {topic} that blew my mind',
+    'The story behind {topic} will change how you see everything',
+    'Let me tell you something incredible about {topic}',
+    'You won\'t believe what just happened with {topic}',
+  ],
+  question: [
+    'Can you guess what {topic} actually does?',
+    'Why is nobody asking this question about {topic}?',
+    'Is {topic} the future or just hype?',
+    'Did you know this was even possible with {topic}?',
+  ],
+  urgency: [
+    '{topic} is happening right now and most people are clueless',
+    'You need to know about {topic} before it\'s too late',
+    'In 5 years you\'ll wish you saw this about {topic} today',
+    'The clock is ticking on {topic}',
+  ],
+  proof: [
+    '97% of people get {topic} wrong',
+    'The numbers on {topic} don\'t lie — look at this',
+    'After 1000 hours of research on {topic}, here\'s the truth',
+    'Here\'s proof that {topic} is about to change everything',
+  ],
 };
 
 function applyHookTemplate(formula: string, originalText: string): string {
@@ -241,8 +266,9 @@ export class ScriptAgent {
   }
 
   private buildBundle(brief: InsightBrief): ScriptBundle {
-    // Decide loop: use loop if hook formula is curiosity_gap or secret (re-watch hooks)
-    const useLoop = brief.hook.formula === 'curiosity_gap' || brief.hook.formula === 'secret';
+    // Decide loop: use loop if hook formula triggers re-watch behavior
+    const reWatchHooks = ['curiosity_gap', 'secret', 'story', 'proof'];
+    const useLoop = reWatchHooks.includes(brief.hook.formula);
     const segments = buildSegments(brief, useLoop);
     const totalDuration = segments[segments.length - 1].end_s;
     const interrupts = buildPatternInterrupts(totalDuration);
