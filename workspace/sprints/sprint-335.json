@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-335",
+  "title": "Schedule diversity — speaker repeat limit for posting schedule",
+  "description": "Add diversity constraint to posting schedule: max 3 videos per speaker in 7-day schedule. Prevents one speaker dominating the content feed.",
+  "source": "auto — content variety optimization for TikTok audience engagement",
+  "tasks": [
+    {
+      "id": "335-01",
+      "title": "Update generate-posting-schedule.ts with speaker diversity constraint",
+      "type": "enhancement",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-335",
+      "deliverables": { "code": ["scripts/scs001/generate-posting-schedule.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

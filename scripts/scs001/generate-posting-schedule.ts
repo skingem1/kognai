@@ -103,11 +103,15 @@ export function generateSchedule(): PostingSchedule {
     return true;
   });
 
-  // Build 7-day schedule
+  // Sprint 335: Diversity-aware schedule — max 3 videos per speaker per schedule
+  const MAX_SPEAKER_REPEATS = 3;
+
+  // Build 7-day schedule with speaker diversity
   const slots: ScheduleSlot[] = [];
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  let videoIdx = 0;
+  const speakerCount = new Map<string, number>();
+  let candidateIdx = 0;
 
   for (let day = 0; day < SCHEDULE_DAYS; day++) {
     const date = new Date(today.getTime() + day * 86_400_000);
@@ -115,8 +119,22 @@ export function generateSchedule(): PostingSchedule {
     const daySlots = POSTING_SLOTS.slice(0, POSTS_PER_DAY);
 
     for (const slot of daySlots) {
-      if (videoIdx >= unique.length) break;
-      const video = unique[videoIdx++];
+      // Find next video that respects speaker diversity
+      let video: Experiment | null = null;
+      while (candidateIdx < unique.length) {
+        const candidate = unique[candidateIdx];
+        const speaker = candidate.speaker ?? 'unknown';
+        const count = speakerCount.get(speaker) ?? 0;
+        candidateIdx++;
+        if (count < MAX_SPEAKER_REPEATS) {
+          video = candidate;
+          speakerCount.set(speaker, count + 1);
+          break;
+        }
+        // Skip this candidate (speaker over-represented), try next
+      }
+      if (!video) break;
+
       slots.push({
         date: dateStr,
         time: slot.label.split(' — ')[0],
@@ -141,7 +159,7 @@ export function generateSchedule(): PostingSchedule {
     schedule_days: SCHEDULE_DAYS,
     posts_per_day: POSTS_PER_DAY,
     total_scheduled: slots.length,
-    queue_remaining: unique.length - videoIdx,
+    queue_remaining: unique.length - candidateIdx,
     gate_target: 30,
     gate_date: GATE_DATE,
     posts_done: postsDone,
