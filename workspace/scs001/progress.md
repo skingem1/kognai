@@ -3289,3 +3289,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (FP-007 file >3500 lines)
 - Issues: TS2802 Set iteration — fixed with Array.from().
 - Timestamp: 2026-03-20T19:40:00Z
+
+## Sprint 386 — /suggest — Data-Driven Content Suggestion (Direct Write)
+- Status: PASS
+- Commit: 9ac14f7
+- Files created: workspace/sprints/sprint-386.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 386-01: Added /suggest command. Analyzes experiment data to find optimal next video: ranks hooks by value score (avg viral × 1/ln(count+2)) rewarding high performance AND low usage. Same for speakers. Shows trending topic, untested hook×speaker combinations, hook usage distribution bar chart. Links to /filmkit and /compare. Updated /help + switch router.
+- Validation: tsc --noEmit PASS
+- Swarm used: no (FP-007 file >3500 lines)
+- Issues: None.
+- Timestamp: 2026-03-20T19:50:00Z
