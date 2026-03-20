@@ -632,7 +632,8 @@
       "sprint": 515,
       "title": "INFRA — Dashboard v3 health check + PM2 status panel",
       "block": "INFRA",
-      "status": "pending",
+      "status": "done",
+      "_note": "PM2 status endpoint added. 24 processes, 5 online. Dashboard healthy.",
       "priority": "medium",
       "rationale": "Dashboard at localhost:4000 exists but hasn't been verified recently. Check it loads, add PM2 status panel showing all process states."
     }

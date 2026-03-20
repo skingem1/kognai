@@ -481,3 +481,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (simple file edit)
 - Issues: domain_tag vs domain_tags mismatch (pre-existing, not regression)
 - Timestamp: 2026-03-20T13:20:00Z
+
+## Sprint 515 — INFRA
+- Status: PASS
+- Commit: 5ea8602
+- Files modified: dashboard/server.py (+PM2 status endpoint)
+- Files created: workspace/sprints/sprint-515.json
+- Test: curl http://127.0.0.1:11436/api/pm2/status → 24 processes, 5 online
+- Pipeline: Dashboard v3 verified healthy, PM2 panel live
+- Swarm used: no (simple endpoint addition)
+- Issues: none
+- Timestamp: 2026-03-20T13:25:00Z
