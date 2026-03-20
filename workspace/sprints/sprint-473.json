@@ -1,0 +1,44 @@
+{
+  "sprint_id": "sprint-473",
+  "title": "SKILLS — Install missing T1 skills (sophie-optimizer, context-compressor, lossless-claw)",
+  "description": "Build stub implementations for 3 missing T1 skills. Each gets SKILL.md + _meta.json + implementation script.",
+  "source": "queue — Sprint 473 SKILLS",
+  "tasks": [
+    {
+      "id": "473-01",
+      "title": "Create sophie-optimizer skill (prompt optimization)",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-473",
+      "deliverables": { "code": ["skills/sophie-optimizer/SKILL.md", "skills/sophie-optimizer/_meta.json", "skills/sophie-optimizer/optimize.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "473-02",
+      "title": "Create context-compressor skill (token reduction)",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-473",
+      "deliverables": { "code": ["skills/context-compressor/SKILL.md", "skills/context-compressor/_meta.json", "skills/context-compressor/compress.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "473-03",
+      "title": "Create lossless-claw skill (lossless code edits)",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-473",
+      "deliverables": { "code": ["skills/lossless-claw/SKILL.md", "skills/lossless-claw/_meta.json", "skills/lossless-claw/edit.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
