@@ -1452,6 +1452,14 @@
       "status": "done",
       "priority": "high",
       "rationale": "burn-captions.ts renders SRT via Pillow+FFmpeg overlay. No libfreetype needed. Wired into compositor."
+    },
+    {
+      "sprint": 609,
+      "title": "QUALITY — Improved topic classification for format diversity",
+      "block": "QUALITY",
+      "status": "done",
+      "priority": "high",
+      "rationale": "Format mix from 21:1:0 to 13:3:5. Lowered thresholds, broadened signals, forced reclassification."
     }
   ]
 }

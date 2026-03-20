@@ -1207,3 +1207,13 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (multi-file, wrote directly)
 - Issues: FFmpeg png sequence overlay approach — frame numbers must be contiguous for overlay to work
 - Timestamp: 2026-03-21T07:45:00Z
+
+## Sprint 609 — QUALITY
+- Status: PASS
+- Commit: 34e0c5a
+- Files modified: scripts/scs001/topic-radar.ts
+- Test: topic-radar.ts --force-refresh — PASS (format mix: 13:3:5 explainer:debate:vision, selected 2:2:1)
+- Pipeline: Topic classification improved for format diversity
+- Swarm used: no (single file, wrote directly)
+- Issues: None
+- Timestamp: 2026-03-21T08:00:00Z
