@@ -4043,3 +4043,17 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (multi-file integration with complex imports)
 - Issues: ClipDetection step takes ~114s in mock mode (calls Ollama for LLM scoring). Consider adding --skip-llm flag for faster dry-runs.
 - Timestamp: 2026-03-20T08:30:00Z
+
+## Sprint 448 — FALLBACK: Local TTS + Enhanced FFmpeg Captions (Direct Write)
+- Status: PASS
+- Commit: 3a61d1a
+- Files created: scripts/scs001/tts-local.ts, scripts/scs001/caption-ffmpeg.ts, workspace/sprints/sprint-448.json
+- Files modified: scripts/scs001/tts-voiceover.ts (added auto-fallback to local TTS)
+- Tasks completed:
+  - 448-01: Created tts-local.ts — macOS `say` command → AIFF → FFmpeg MP3 conversion. Voice: Samantha (en_US), 175 wpm. Same VoiceoverResult interface. Cost: $0.00. Tested: 2.3s audio generated for test input, 38KB MP3.
+  - 448-02: Updated tts-voiceover.ts — auto-detects missing ELEVENLABS_API_KEY and falls back to local TTS (isLocalTTSAvailable check). Both single and batch functions patched.
+  - 448-03: Created caption-ffmpeg.ts — enhanced FFmpeg drawtext filter builder. Word-by-word reveal, keyword highlighting (golden #FFD700, larger font), line grouping (5 words/line), bottom-center positioning with semi-transparent background. Replaces JSON2Video API ($0.02/video → $0.00).
+- Validation: Manual test — isLocalTTSAvailable()=true, 2 drawtext filters generated, real MP3 audio produced
+- Swarm used: no (multi-file integration)
+- Issues: None. macOS `say` + FFmpeg available on Mac Mini vault. Hetzner (Linux) will need espeak-ng or Piper as alternative.
+- Timestamp: 2026-03-20T08:35:00Z
