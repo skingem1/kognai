@@ -4429,3 +4429,100 @@ export async function handleLeaderboard(chatId: number, ownerChatId: string): Pr
     await sendMessage(chatId, `❌ Leaderboard failed: ${(err as Error).message}`);
   }
 }
+
+// ── /broadcast — send message to all alpha users — Sprint 336 ───────────────
+// Owner-only: broadcasts a message to all users on the alpha whitelist.
+// Usage: /broadcast Your message here
+export async function handleBroadcast(chatId: number, ownerChatId: string, text: string): Promise<void> {
+  if (String(chatId) !== ownerChatId) {
+    await sendMessage(chatId, '🔒 Owner only.');
+    return;
+  }
+
+  // Extract message (everything after /broadcast)
+  const message = text.replace(/^\/broadcast\s*/i, '').trim();
+  if (!message) {
+    await sendMessage(chatId, [
+      '📢 *Broadcast to Alpha Users*',
+      '',
+      'Usage: `/broadcast Your message here`',
+      '',
+      'Example: `/broadcast Hey everyone! We just added a cool new feature. Try /achiriprofile to see your learning profile!`',
+      '',
+      '_Message will be sent to all alpha-whitelisted users._',
+    ].join('\n'));
+    return;
+  }
+
+  // Load alpha whitelist
+  const whitelistPath = join(process.cwd(), 'workspace', 'achiri', 'alpha-whitelist.jsonl');
+  const waitlistPath = join(process.cwd(), 'workspace', 'achiri', 'waitlist.jsonl');
+  const recipientIds = new Set<string>();
+
+  // Add whitelisted users
+  if (existsSync(whitelistPath)) {
+    readFileSync(whitelistPath, 'utf-8').split('\n').filter(l => l.trim()).forEach(l => {
+      try {
+        const entry = JSON.parse(l);
+        if (entry.chatId || entry.chat_id) recipientIds.add(String(entry.chatId ?? entry.chat_id));
+      } catch { /* skip */ }
+    });
+  }
+
+  // Add waitlisted users too (they opted in)
+  if (existsSync(waitlistPath)) {
+    readFileSync(waitlistPath, 'utf-8').split('\n').filter(l => l.trim()).forEach(l => {
+      try {
+        const entry = JSON.parse(l);
+        if (entry.chatId || entry.chat_id) recipientIds.add(String(entry.chatId ?? entry.chat_id));
+      } catch { /* skip */ }
+    });
+  }
+
+  // Remove owner from broadcast (they already see it)
+  recipientIds.delete(ownerChatId);
+
+  if (recipientIds.size === 0) {
+    await sendMessage(chatId, '⚠️ No alpha users to broadcast to. Invite users with `/inviteachiri <id>` first.');
+    return;
+  }
+
+  // Confirm before sending
+  await sendMessage(chatId, [
+    `📢 *Broadcasting to ${recipientIds.size} user(s):*`,
+    '',
+    `"${message.slice(0, 200)}${message.length > 200 ? '...' : ''}"`,
+    '',
+    '_Sending now..._',
+  ].join('\n'));
+
+  // Send to each user
+  let sent = 0;
+  let failed = 0;
+  const broadcastText = `📢 *Achiri Update*\n\n${message}`;
+
+  for (const userId of Array.from(recipientIds)) {
+    try {
+      await sendMessage(parseInt(userId, 10), broadcastText);
+      sent++;
+      // Small delay to avoid Telegram rate limits
+      await new Promise(r => setTimeout(r, 200));
+    } catch (err) {
+      failed++;
+      console.error(`[broadcast] Failed to send to ${userId}: ${(err as Error).message}`);
+    }
+  }
+
+  // Log broadcast
+  const logPath = join(process.cwd(), 'workspace', 'achiri', 'broadcast-log.jsonl');
+  mkdirSync(dirname(logPath), { recursive: true });
+  appendFileSync(logPath, JSON.stringify({
+    timestamp: new Date().toISOString(),
+    message: message.slice(0, 500),
+    recipients: recipientIds.size,
+    sent,
+    failed,
+  }) + '\n');
+
+  await sendMessage(chatId, `✅ Broadcast complete: *${sent}* sent, *${failed}* failed (${recipientIds.size} total)`);
+}
