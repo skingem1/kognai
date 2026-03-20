@@ -440,7 +440,7 @@
       "sprint": 491,
       "title": "INFRA — Daily report generator fix + CMO report activation",
       "block": "INFRA",
-      "status": "pending",
+      "status": "done",
       "priority": "low",
       "rationale": "Daily report code exists (commit 3cebfa5) but ZERO reports generated. CMO reports always empty (CMO was Invoica-focused, now fixed Sprint 258). Fix: (1) Report generator path issues, (2) Wire CMO report into daily digest, (3) Verify reports land in reports/swarm-runs/daily-YYYY-MM-DD.json."
     },

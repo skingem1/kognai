@@ -199,6 +199,17 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Issues: skill-crystalliser module not found (skipped, non-blocking)
 - Timestamp: 2026-03-20T16:00:00Z
 
+## Sprint 491 — INFRA
+- Status: PASS
+- Commit: 83219d4
+- Files created: scripts/generate-daily-report.ts, workspace/sprints/sprint-491.json
+- Files modified: scripts/daily-digest.ts (added CMO launch prep section)
+- Test: generate-daily-report.ts PASS, daily-digest.ts dry-run PASS (CMO section visible)
+- Pipeline: Daily report generator standalone + CMO wired into digest
+- Swarm used: no (integration work)
+- Issues: daily report .json is gitignored — report stays local only
+- Timestamp: 2026-03-20T18:00:00Z
+
 ## Sprint 490 — PHASE2A-PREP
 - Status: PASS
 - Commit: 4ed54b5
