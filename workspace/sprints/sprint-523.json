@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-523",
+  "title": "CONTENT — Batch production with randomized topics (10 videos, verify diversity)",
+  "description": "Run pipeline 2x with Sprint 518 random topic selection. Verify 8+ unique topics across 10 videos (vs. previous 2 unique across 13).",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "523-01",
+      "title": "Run pipeline 2x (5+5 videos) with randomized topics",
+      "type": "feature",
+      "task_type": "pipeline",
+      "task_target": "local",
+      "agent": "scs001-orchestrator",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-523",
+      "deliverables": { "code": [], "tests": [], "docs": ["workspace/scs001/pipeline-runs/"] }
+    },
+    {
+      "id": "523-02",
+      "title": "Send all videos to Telegram + verify topic diversity",
+      "type": "feature",
+      "task_type": "delivery",
+      "task_target": "local",
+      "agent": "telegram-bot",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-523",
+      "deliverables": { "code": [], "tests": [], "docs": [] }
+    }
+  ]
+}
