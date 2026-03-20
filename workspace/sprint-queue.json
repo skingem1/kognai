@@ -295,7 +295,7 @@
       "sprint": 473,
       "title": "SKILLS — Install missing T1 skills (sophie-optimizer, context-compressor, lossless-claw)",
       "block": "SKILLS",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "10/13 T1 skills installed. Missing 3: sophie-optimizer (prompt optimization), context-compressor (token reduction), lossless-claw (lossless code edits). Per Master Architecture skill catalog. Build stub implementations that can be enhanced later."
     },
