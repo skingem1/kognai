@@ -4070,3 +4070,16 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (multi-file integration)
 - Issues: None.
 - Timestamp: 2026-03-20T08:45:00Z
+
+## Sprint 450 — Hook Optimization Engine (Direct Write)
+- Status: PASS
+- Commit: 3deea3f
+- Files created: scripts/scs001/hook-optimizer.ts, workspace/sprints/sprint-450.json
+- Files modified: scripts/telegram-bot.ts (added /hookstats command + help entry)
+- Tasks completed:
+  - 450-01: Created hook-optimizer.ts — reads experiments.jsonl, computes per-formula stats (avg/max/min/count/stddev), weighted random selection (softmax-like), 10% exploration floor for new formulas. Top: contrarian (0.547, 39% weight), curiosity_gap (0.536, 30%). New Sprint 443 formulas (story/question/urgency/proof) get exploration bonus.
+  - 450-02: Added /hookstats Telegram command — shows ranked table + top speaker×formula combos. Jesse Pollak × contrarian = 0.680 (best combo).
+- Validation: 8 formulas ranked, 100 weighted picks distributed correctly, speaker×formula cross-analysis works
+- Swarm used: no (data analysis + telegram integration)
+- Issues: None.
+- Timestamp: 2026-03-20T09:00:00Z
