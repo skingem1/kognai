@@ -636,6 +636,47 @@
       "_note": "PM2 status endpoint added. 24 processes, 5 online. Dashboard healthy.",
       "priority": "medium",
       "rationale": "Dashboard at localhost:4000 exists but hasn't been verified recently. Check it loads, add PM2 status panel showing all process states."
+    },
+    {
+      "sprint": 516,
+      "title": "INFRA — Queue replenish + next 5 sprints (516-520)",
+      "block": "INFRA",
+      "status": "done",
+      "_note": "Self-referential: this IS the queue replenish sprint.",
+      "priority": "high",
+      "rationale": "Queue empty after Sprint 515. Add sprints targeting: content production, pipeline randomization, auto-deliver fix, Supabase event logging, smoke test cron."
+    },
+    {
+      "sprint": 517,
+      "title": "CONTENT — Batch video production with diverse topics (10 videos)",
+      "block": "CONTENT",
+      "status": "pending",
+      "priority": "high",
+      "rationale": "Sprint 514 expanded topics to 15. Now produce 10 videos using the expanded topic feed. Verify topic diversity across the batch. Push toward 30-post gate."
+    },
+    {
+      "sprint": 518,
+      "title": "PIPELINE — Add random topic selection to pipeline (avoid sequential bias)",
+      "block": "PIPELINE",
+      "status": "pending",
+      "priority": "medium",
+      "rationale": "Pipeline always picks topics in confidence-sorted order, causing repeated topics across runs. Add randomization: shuffle qualified topics, pick top N from shuffled list. Ensures diverse content per run."
+    },
+    {
+      "sprint": 519,
+      "title": "FIX — Auto-deliver scripts startup + PM2 cron activation",
+      "block": "FIX",
+      "status": "pending",
+      "priority": "medium",
+      "rationale": "19/24 PM2 processes stopped. auto-deliver (morning/noon/evening), pipeline-watchdog, daily-digest all stopped. Investigate why they stopped and fix. At minimum, restart essential crons."
+    },
+    {
+      "sprint": 520,
+      "title": "INFRA — Supabase event bus test + kognai_events table verification",
+      "block": "INFRA",
+      "status": "pending",
+      "priority": "medium",
+      "rationale": "Supabase backend exists but kognai_events table never tested. Verify: table exists, can insert events, can query recent events. Wire into pipeline for sprint completion logging."
     }
   ]
 }

@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-516",
+  "title": "INFRA — Queue replenish + next 5 sprints (517-520)",
+  "description": "Queue empty after Sprint 515. Added 4 new sprints: content production with diverse topics, pipeline randomization, PM2 cron fix, Supabase event bus test.",
+  "source": "queue-empty-replenish",
+  "tasks": [
+    {
+      "id": "516-01",
+      "title": "Add 4 new sprints to sprint-queue.json",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "workspace/sprint-queue.json",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-516",
+      "deliverables": { "code": ["workspace/sprint-queue.json"], "tests": [], "docs": [] }
+    }
+  ]
+}
