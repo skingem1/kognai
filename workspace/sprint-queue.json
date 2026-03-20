@@ -1155,8 +1155,9 @@
       "title": "CONTENT — Batch: 10 more videos + deliver",
       "block": "CONTENT",
       "priority": "high",
-      "status": "pending",
-      "rationale": "Push toward 130+ delivered. Content buffer for manual TikTok posting."
+      "status": "done",
+      "rationale": "Push toward 130+ delivered. Content buffer for manual TikTok posting.",
+      "_note": "10 produced. 107 delivered. QC active."
     },
     {
       "sprint": 574,
