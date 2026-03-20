@@ -720,6 +720,27 @@ module.exports = {
       out_file: "/Users/tarekmnif/kognai/logs/achiri-api-out.log",
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
+    {
+      // Achiri Telegram Bot — Sprint 352: user-facing chat interface for alpha
+      // Bridges Telegram messages → AchiriConversationHandler → reply
+      // Env: ACHIRI_TELEGRAM_BOT_TOKEN (required), ACHIRI_ALLOWED_CHAT_IDS (optional CSV whitelist)
+      // To start: pm2 start ecosystem.config.js --only achiri-telegram
+      name: "achiri-telegram",
+      script: "npx",
+      args: "ts-node --transpile-only agents/achiri/telegram-bot.ts",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: true,
+      watch: false,
+      env: {
+        NODE_ENV: "production",
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
+        OLLAMA_URL: "http://127.0.0.1:11434",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/achiri-telegram-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/achiri-telegram-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
     // ─── SPRINT-171-PUB: Auto-send video to owner via Telegram (07:30 + 17:30 UTC) ──
     {
       name: "kognai-auto-send-video",

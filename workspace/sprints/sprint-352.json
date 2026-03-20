@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-352",
+  "title": "Achiri Telegram bot — user-facing chat interface for alpha launch",
+  "description": "Create agents/achiri/telegram-bot.ts — a Telegram bot that bridges user messages to Achiri's conversation handler. Users message the bot, it calls AchiriConversationHandler.chat(), returns the response. Separate from the operator bot (scripts/telegram-bot.ts). Essential for Apr 25 alpha launch.",
+  "source": "auto — Achiri Lite Alpha Launch gate Apr 25, no user-facing interface exists yet",
+  "tasks": [
+    {
+      "id": "352-01",
+      "title": "Create Achiri Telegram bot — user chat interface via AchiriConversationHandler",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-352",
+      "deliverables": { "code": ["agents/achiri/telegram-bot.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "352-02",
+      "title": "Add Achiri Telegram bot to PM2 ecosystem config",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-352",
+      "deliverables": { "code": ["ecosystem.config.js"], "tests": [], "docs": [] }
+    }
+  ]
+}
