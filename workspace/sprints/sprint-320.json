@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-320",
+  "title": "Context-aware /help — user-friendly Achiri help for alpha users vs operator help",
+  "description": "Regular users see a clean Achiri-focused help message. Owner sees the full operator command list. Prevents alpha users from seeing confusing pipeline/admin commands.",
+  "source": "auto — Achiri alpha Apr 25: user-facing UX polish",
+  "tasks": [
+    {
+      "id": "320-01",
+      "title": "Split /help into user vs operator views based on chatId",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-320",
+      "deliverables": { "code": ["agents/telegram-bot/commands.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

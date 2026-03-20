@@ -86,56 +86,53 @@ export async function handleStart(chatId: number, firstName: string, username?: 
   ].join('\n'));
 }
 
-export async function handleHelp(chatId: number): Promise<void> {
+export async function handleHelp(chatId: number, ownerChatId?: string): Promise<void> {
+  const isOwner = ownerChatId && String(chatId) === String(ownerChatId);
+
+  if (!isOwner) {
+    // Sprint 320: User-friendly help for alpha users
+    await sendMessage(chatId, [
+      '🤖 *Achiri — Your Tunisian AI Companion*',
+      '',
+      '💬 *Chat with me:*',
+      '/achiri <message> — Talk to me in Darija, French, or English',
+      '',
+      '📋 *Your tools:*',
+      '/achiriprofile — See your profile (language, interests)',
+      '/waitlist — Join the alpha if you\'re not in yet',
+      '/start — Set up your account',
+      '/subscribe — Upgrade for more features',
+      '/help — This message',
+      '',
+      '💡 In group chats, just @mention me!',
+      '',
+      '_Achiri Alpha — launching Apr 25 🇹🇳_',
+    ].join('\n'));
+    return;
+  }
+
+  // Full operator help
   await sendMessage(chatId, [
-    '📖 *Available Commands*',
+    '📖 *Operator Commands*',
     '',
     '🎬 *TikTok Pipeline*',
-    '/start — Register & see your account',
-    '/preview — Show the next post candidate',
-    '/schedule — Configure daily posting frequency',
-    '/status — Latest SCS-001 pipeline run',
-    '/stats — Pipeline statistics',
-    '/subscribe — Subscribe to TikTok Agent ($19/$49/mo)',
-    '/stripestatus — Stripe go-live checklist (owner)',
-    '/tiktokstatus — TikTok live mode readiness (owner)',
-    '/tiktokauth — TikTok OAuth flow: get/refresh access token (owner)',
-    '/autopost — Auto-post daemon: status, run, dry-run (owner)',
-    '/verifyposts — Post-publish verification: check if posts went live (owner)',
-    '/activate — Go-live checklist: all steps to activate auto-posting (owner)',
-    '/gate — Phase 1.5 gate review (Apr 7 kill switch)',
-    '/postreminder — Apr 7 gate progress + posting workflow (owner)',
-    '/review — Top-3 QC-passed videos for manual posting (owner)',
-    '/record <id> <views> [title] — Record posted video to gate tracker (owner)',
-    '/updateviews <id> <views> — Update view count on recorded post (owner)',
-    '/queue — Posting queue: unposted videos + daily pace (owner)',
-    '/postnow — Find videos ready to post with file path + metadata (owner)',
-    '/postbatch [N] — Batch post N videos with file paths + captions (default 5, owner)',
-    '/caption [video_id] — Ready-to-paste TikTok caption for a video (owner)',
-    '/pace — Posting pace vs Apr 7 gate target (owner)',
-    '/today — Morning cockpit: target + next video + trending topics (owner)',
-    '/viral — Top 10 trending topics from pipeline (owner)',
-    '/viralstats — Viral score summary: avg/max/top-3 (owner)',
-    '/sendvideo <id> — Send captioned video file to Telegram for manual posting (owner)',
-    '/calendar — Today\'s posting schedule from content calendar (owner)',
+    '/start /preview /schedule /status /stats /subscribe',
+    '/gate /postreminder /review /queue /pace /today',
+    '/record <id> <views> /updateviews <id> <views>',
+    '/postnow /postbatch [N] /caption [id] /sendvideo <id>',
+    '/calendar /viral /viralstats',
+    '/autopost /verifyposts /activate',
+    '/stripestatus /tiktokstatus /tiktokauth',
+    '/pipeline /runpipeline /lastrun /metrics /revenue',
     '',
-    '🤖 *Achiri AI Companion*',
-    '/achiri <msg> — Chat with Achiri (free tier, Darija/Arabic/French)',
-    '/waitlist — Join Achiri alpha waitlist (launches Apr 25)',
-    '/inviteachiri <id> — Invite user to Achiri alpha whitelist (owner)',
-    '/deploystatus — Achiri alpha deploy checklist (owner)',
-    '/achirihealth — Achiri server status (owner)',
-    '/achiriprofile — Your Achiri profile: language, dialect, interests, memory',
-    '/achiristats — Achiri usage analytics: users, messages, memory (owner)',
-    '/lastrun — Latest pipeline run: stage-by-stage results + timing (owner)',
-    '/metrics — Pipeline performance metrics: throughput, QC rate, trends (owner)',
-    '/revenue — Revenue dashboard: subscribers, MRR, financial gates (owner)',
-    '/pipeline — Content pipeline inventory + health dashboard (owner)',
-    '/runpipeline — Trigger pipeline run on demand (owner)',
-    '/pm2status — All PM2 processes: status, uptime, restarts (owner)',
-    '/health — Full system health check: env, gate, PM2, Achiri, pipeline (owner)',
-    '/preflight — Production go-live checklist with operator action items (owner)',
+    '🤖 *Achiri*',
+    '/achiri <msg> /achiriprofile /achirihealth',
+    '/achiristats /achirifeedback /achiriexport [id]',
+    '/achirierrors /achiriready /achiriretention /achiriquality',
+    '/waitlist /inviteachiri <id> /deploystatus',
     '',
+    '⚙️ *System*',
+    '/pm2status /health /preflight /dedup',
     '/help — This message',
   ].join('\n'));
 }

@@ -136,7 +136,7 @@ async function dispatch(update: TelegramUpdate): Promise<void> {
 
   switch (cmd) {
     case '/start':      await handleStart(chatId, firstName, username);   break;
-    case '/help':       await handleHelp(chatId);                         break;
+    case '/help':       await handleHelp(chatId, OWNER_CHAT_ID);           break;
     case '/preview':    await handlePreview(chatId);                      break;
     case '/schedule':   await handleSchedule(chatId, text);               break;
     case '/status':     await handleStatus(chatId);                       break;
