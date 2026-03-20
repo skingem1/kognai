@@ -1245,8 +1245,9 @@
       "title": "CONTENT — Batch: 10 videos via pipeline-cron",
       "block": "CONTENT",
       "priority": "high",
-      "status": "pending",
-      "rationale": "Push production past 200 videos."
+      "status": "done",
+      "rationale": "Push production past 200 videos.",
+      "_note": "10 produced. Full chain OK."
     },
     {
       "sprint": 584,
