@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-416",
+  "title": "Update posting schedule generator with freshness decay and hook diversity",
+  "description": "Incorporate Sprint 413 freshness scoring and Sprint 415 hook formula diversity into generate-posting-schedule.ts. Also filter to only videos with captioned MP4s ready. Makes /schedule reflect the same quality-aware ranking as /deliver.",
+  "source": "auto — schedule generator uses old viral-score-only ranking, inconsistent with delivery",
+  "tasks": [
+    {
+      "id": "416-01",
+      "title": "Add freshness decay and hook diversity to posting schedule generator",
+      "type": "enhancement",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-416",
+      "deliverables": { "code": ["scripts/scs001/generate-posting-schedule.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

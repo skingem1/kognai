@@ -86,14 +86,38 @@ function loadPostedIds(): Set<string> {
   return ids;
 }
 
+// Sprint 416: Load ledger publish dates for freshness scoring
+function loadLedgerDates(): Map<string, string> {
+  const dates = new Map<string, string>();
+  if (!existsSync(LEDGER_PATH)) return dates;
+  try {
+    for (const line of readFileSync(LEDGER_PATH, 'utf-8').split('\n')) {
+      if (!line.trim()) continue;
+      try {
+        const e = JSON.parse(line);
+        if (e.video_id && e.published_at) dates.set(e.video_id, e.published_at);
+      } catch { /* skip */ }
+    }
+  } catch { /* skip */ }
+  return dates;
+}
+
+// Sprint 416: Freshness-weighted scoring (matches /deliver logic from Sprint 413)
+function freshnessScore(viralScore: number, publishedAt: string | undefined): number {
+  if (!publishedAt) return viralScore;
+  const ageDays = (Date.now() - new Date(publishedAt).getTime()) / 86_400_000;
+  if (ageDays <= 3) return viralScore;
+  return viralScore * Math.pow(0.85, ageDays - 3);
+}
+
 export function generateSchedule(): PostingSchedule {
   const experiments = loadExperiments();
   const postedIds = loadPostedIds();
+  const ledgerDates = loadLedgerDates();
 
-  // Filter to QC-passed, unposted videos and sort by viral score desc
+  // Filter to QC-passed, unposted videos
   const candidates = experiments
-    .filter(e => e.qc_passed && !postedIds.has(e.clip_id))
-    .sort((a, b) => (b.partial_viral_score ?? b.viral_score ?? 0) - (a.partial_viral_score ?? a.viral_score ?? 0));
+    .filter(e => e.qc_passed && !postedIds.has(e.clip_id));
 
   // Deduplicate by clip_id (keep highest scored)
   const seen = new Set<string>();
@@ -103,14 +127,24 @@ export function generateSchedule(): PostingSchedule {
     return true;
   });
 
-  // Sprint 335: Diversity-aware schedule — max 3 videos per speaker per schedule
-  const MAX_SPEAKER_REPEATS = 3;
+  // Sprint 416: Sort by freshness-weighted viral score (newer content ranks higher)
+  unique.sort((a, b) => {
+    const scoreA = freshnessScore(a.partial_viral_score ?? a.viral_score ?? 0, ledgerDates.get(a.clip_id));
+    const scoreB = freshnessScore(b.partial_viral_score ?? b.viral_score ?? 0, ledgerDates.get(b.clip_id));
+    return scoreB - scoreA;
+  });
 
-  // Build 7-day schedule with speaker diversity
+  // Sprint 335: Diversity-aware schedule
+  const MAX_SPEAKER_REPEATS = 3;
+  // Sprint 416: Hook formula diversity — max 3 per hook formula
+  const MAX_HOOK_REPEATS = 3;
+
+  // Build 7-day schedule with speaker + hook diversity
   const slots: ScheduleSlot[] = [];
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const speakerCount = new Map<string, number>();
+  const hookCount = new Map<string, number>();
   let candidateIdx = 0;
 
   for (let day = 0; day < SCHEDULE_DAYS; day++) {
@@ -119,19 +153,22 @@ export function generateSchedule(): PostingSchedule {
     const daySlots = POSTING_SLOTS.slice(0, POSTS_PER_DAY);
 
     for (const slot of daySlots) {
-      // Find next video that respects speaker diversity
+      // Find next video that respects speaker + hook diversity
       let video: Experiment | null = null;
+      const startIdx = candidateIdx;
       while (candidateIdx < unique.length) {
         const candidate = unique[candidateIdx];
         const speaker = candidate.speaker ?? 'unknown';
-        const count = speakerCount.get(speaker) ?? 0;
+        const hook = candidate.hook_formula ?? 'unknown';
+        const sCount = speakerCount.get(speaker) ?? 0;
+        const hCount = hookCount.get(hook) ?? 0;
         candidateIdx++;
-        if (count < MAX_SPEAKER_REPEATS) {
+        if (sCount < MAX_SPEAKER_REPEATS && hCount < MAX_HOOK_REPEATS) {
           video = candidate;
-          speakerCount.set(speaker, count + 1);
+          speakerCount.set(speaker, sCount + 1);
+          hookCount.set(hook, hCount + 1);
           break;
         }
-        // Skip this candidate (speaker over-represented), try next
       }
       if (!video) break;
 
