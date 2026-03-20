@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-357",
+  "title": "/feedback + /mood — Achiri alpha user engagement commands",
+  "description": "Add /feedback command for alpha user bug reports and suggestions, and /mood command for mood check-in with personalized Achiri response. Both critical for alpha user retention.",
+  "source": "auto — alpha readiness at 100%, need user engagement features before Apr 25 launch",
+  "tasks": [
+    {
+      "id": "357-01",
+      "title": "Add /feedback and /mood commands to agents/achiri/telegram-bot.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-357",
+      "deliverables": { "code": ["agents/achiri/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

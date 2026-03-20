@@ -131,6 +131,8 @@ async function handleHelp(chatId: string): Promise<void> {
     `/help — This message\n` +
     `/clear — Clear conversation history\n` +
     `/lang — Switch language preference\n` +
+    `/mood — Mood check-in\n` +
+    `/feedback — Send us feedback\n` +
     `/about — About Achiri\n\n` +
     `Or just send me a message and we'll chat! 💬`
   );
@@ -208,6 +210,95 @@ async function handleAbout(chatId: string): Promise<void> {
   );
 }
 
+// --- Sprint 357: /feedback — user bug reports and suggestions ---
+
+const FEEDBACK_PATH = path.join(__dirname, '..', '..', 'workspace', 'achiri', 'feedback.jsonl');
+
+async function handleFeedback(chatId: string, args: string, firstName: string, username: string): Promise<void> {
+  if (!args.trim()) {
+    await sendMessage(chatId,
+      `📝 *Send Feedback*\n\n` +
+      `Tell us what you think! Usage:\n` +
+      `/feedback Your message here\n\n` +
+      `Example:\n` +
+      `/feedback The language switch is great but Darija responses could be more natural`
+    );
+    return;
+  }
+
+  const entry = {
+    chat_id: chatId,
+    username: username || '',
+    first_name: firstName || '',
+    feedback: args.trim(),
+    timestamp: new Date().toISOString(),
+  };
+
+  try {
+    fs.appendFileSync(FEEDBACK_PATH, JSON.stringify(entry) + '\n');
+    await sendMessage(chatId,
+      `✅ *Merci bel feedback!*\n\n` +
+      `Your feedback has been recorded. It helps us make Achiri better! 🙏\n` +
+      `_Chokran 3al feedback — n7asnou Achiri bih!_`
+    );
+  } catch (err: any) {
+    console.error(`[Achiri-TG] Feedback write error: ${err.message}`);
+    await sendMessage(chatId, `⚠️ Could not save feedback. Please try again.`);
+  }
+}
+
+// --- Sprint 357: /mood — mood check-in with personalized response ---
+
+const MOOD_RESPONSES: Record<string, string> = {
+  happy:   `😊 That's great to hear! Farhaan/e bik! Keep that energy going — tell me about your day!`,
+  sad:     `💙 I'm here for you. Kol shi bahi, yji waqt w yetbaddel. Want to talk about what's on your mind?`,
+  anxious: `🌿 Take a deep breath. Khodh nafs kbir... Sometimes just saying it out loud helps. What's worrying you?`,
+  tired:   `😴 Rest is important, ya sahbi. Lazem terta7. Want a light chat to wind down, or should I leave you to rest?`,
+  angry:   `🔥 I hear you. El ghadhab 3adi. Want to vent? I'm listening — no judgment.`,
+  excited: `🎉 Yay! 7amasni! What's got you so excited? Tell me everything!`,
+  bored:   `🎲 Mechi, let me fix that! Want a fun fact, a riddle, or should we talk about something interesting?`,
+  neutral: `🤝 Alright, steady vibes. Ma3andek 7atta mochkla? Let's chat about whatever you want!`,
+};
+
+async function handleMood(chatId: string, args: string): Promise<void> {
+  if (!args.trim()) {
+    const moods = Object.keys(MOOD_RESPONSES);
+    await sendMessage(chatId,
+      `🎭 *How are you feeling?*\n\n` +
+      `Tell me your mood:\n` +
+      moods.map(m => `/mood ${m}`).join('\n') +
+      `\n\nOr just type: /mood <anything you feel>`
+    );
+    return;
+  }
+
+  const mood = args.trim().toLowerCase();
+  const response = MOOD_RESPONSES[mood];
+
+  if (response) {
+    // Log mood for analytics
+    const moodLog = path.join(__dirname, '..', '..', 'workspace', 'achiri', 'mood-log.jsonl');
+    const entry = { chat_id: chatId, mood, timestamp: new Date().toISOString() };
+    try { fs.appendFileSync(moodLog, JSON.stringify(entry) + '\n'); } catch {}
+
+    await sendMessage(chatId, `🎭 *Mood: ${mood}*\n\n${response}`);
+  } else {
+    // Free-form mood — route through Achiri for a personalized response
+    const moodLog = path.join(__dirname, '..', '..', 'workspace', 'achiri', 'mood-log.jsonl');
+    const entry = { chat_id: chatId, mood, timestamp: new Date().toISOString() };
+    try { fs.appendFileSync(moodLog, JSON.stringify(entry) + '\n'); } catch {}
+
+    try {
+      tgApi('sendChatAction', { chat_id: chatId, action: 'typing' }).catch(() => {});
+      const handler = getHandler(chatId);
+      const reply = await handler.chat(`[User is checking in with mood: "${mood}". Respond warmly and empathetically in their preferred language. Acknowledge their feeling and engage naturally.]`);
+      await sendMessage(chatId, `🎭 *Mood: ${mood}*\n\n${reply}`);
+    } catch {
+      await sendMessage(chatId, `🎭 *${mood}* — thanks for sharing! I'm here if you want to talk. 💬`);
+    }
+  }
+}
+
 // --- Main message handler ---
 
 async function handleMessage(chatId: string, text: string, firstName: string, username: string): Promise<void> {
@@ -220,6 +311,8 @@ async function handleMessage(chatId: string, text: string, firstName: string, us
   if (cmd === '/clear') return handleClear(chatId);
   if (cmd === '/lang') return handleLang(chatId, args);
   if (cmd === '/about') return handleAbout(chatId);
+  if (cmd === '/feedback') return handleFeedback(chatId, args, firstName, username);
+  if (cmd === '/mood') return handleMood(chatId, args);
 
   // Access check
   if (!hasAccess(chatId)) {
