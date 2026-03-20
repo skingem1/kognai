@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-359",
+  "title": "Gate recommendation fix — time-aware recommendations instead of premature KILL SWITCH",
+  "description": "Fix generate-phase1-5-gate.ts recommendation logic to use urgency level instead of always showing KILL SWITCH when criteria not yet met.",
+  "source": "auto — gate report shows KILL SWITCH with 18 days left, should show NOT_STARTED with guidance",
+  "tasks": [
+    {
+      "id": "359-01",
+      "title": "Fix recommendation logic in generate-phase1-5-gate.ts",
+      "type": "bugfix",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-359",
+      "deliverables": { "code": ["scripts/scs001/generate-phase1-5-gate.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

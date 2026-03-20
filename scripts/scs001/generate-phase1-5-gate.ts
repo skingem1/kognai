@@ -63,9 +63,21 @@ function main(): void {
   const paceNeeded = daysLeft > 0 && postsLeft > 0 ? Math.round(postsLeft / daysLeft * 10) / 10 : 0;
   const urgency = getUrgencyLevel(postsLeft, daysLeft, totalViews);
 
-  const recommendation = overallPass
-    ? 'PROCEED to Phase 2A — TikTok stable. Launch Achiri alpha Apr 25.'
-    : `KILL SWITCH — ${!passesPostCount ? `only ${postsCount}/${POSTS_TARGET} posts` : `only ${totalViews}/${VIEWS_TARGET} views`}. Shut down TikTok agent, focus on Achiri-only roadmap.`;
+  // Sprint 359: Time-aware recommendations instead of premature KILL SWITCH
+  let recommendation: string;
+  if (overallPass) {
+    recommendation = 'PROCEED to Phase 2A — TikTok stable. Launch Achiri alpha Apr 25.';
+  } else if (urgency.level === 'FAILED') {
+    recommendation = `KILL SWITCH — ${!passesPostCount ? `only ${postsCount}/${POSTS_TARGET} posts` : `only ${totalViews}/${VIEWS_TARGET} views`} at deadline. Shut down TikTok agent, focus on Achiri-only roadmap.`;
+  } else if (urgency.level === 'CRITICAL') {
+    recommendation = `CRITICAL — ${postsLeft} posts needed in ${daysLeft} days. Post ${paceNeeded}/day or gate will fail. Start posting NOW.`;
+  } else if (urgency.level === 'WARNING') {
+    recommendation = `WARNING — Behind pace. Need ${postsLeft} posts in ${daysLeft} days (${paceNeeded}/day). Increase posting frequency.`;
+  } else if (urgency.level === 'NOT_STARTED') {
+    recommendation = `NOT STARTED — 0 posts with ${daysLeft} days remaining. Begin posting today. Need ${paceNeeded} posts/day to meet gate.`;
+  } else {
+    recommendation = `ON TRACK — ${postsCount}/${POSTS_TARGET} posts, ${daysLeft} days remaining. Keep posting at current pace.`;
+  }
 
   const gateReport = {
     gate:    'phase1-5-tiktok-kill-switch',

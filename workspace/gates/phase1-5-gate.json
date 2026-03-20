@@ -1,12 +1,12 @@
 {
   "gate": "phase1-5-tiktok-kill-switch",
-  "date": "2026-03-19",
-  "generated_at": "2026-03-19T23:17:10.702Z",
+  "date": "2026-03-20",
+  "generated_at": "2026-03-20T03:36:52.992Z",
   "deadline": "2026-04-07",
-  "days_remaining": 19,
+  "days_remaining": 18,
   "urgency": "NOT_STARTED",
   "urgency_signal": "0 posts recorded. Start posting now.",
-  "pace_needed": 1.6,
+  "pace_needed": 1.7,
   "criteria": [
     {
       "id": "post-count",
@@ -22,7 +22,7 @@
     }
   ],
   "overall_pass": false,
-  "recommendation": "KILL SWITCH — only 0/30 posts. Shut down TikTok agent, focus on Achiri-only roadmap.",
+  "recommendation": "NOT STARTED — 0 posts with 18 days remaining. Begin posting today. Need 1.7 posts/day to meet gate.",
   "raw": {
     "posts_count": 0,
     "total_views": 0,
