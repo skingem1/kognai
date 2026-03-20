@@ -1,10 +1,10 @@
 # SCS-001 TikTok Content Agent — Progress Log
 
-*Last updated: 2026-03-21 (Sprint 585)*
+*Last updated: 2026-03-21 (Sprint 590)*
 
 ## Summary
 
-- **Total sprints shipped:** 448 (Sprint 059 → Sprint 589)
+- **Total sprints shipped:** 449 (Sprint 059 → Sprint 590)
 - **Total commits:** 1110
 - **Current phase:** Phase 1 Active (Mar 17 – Apr 11 2026)
 - **Pipeline:** 12 stages, 11 agents, closed feedback loop
@@ -1030,3 +1030,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (surgical edits to 2 files)
 - Issues: None
 - Timestamp: 2026-03-21T04:30:00Z
+
+## Sprint 590 — INFRA
+- Status: PASS
+- Commit: a4e0314
+- Files modified: scripts/telegram-commands/cmd-content.ts, scripts/telegram-bot.ts
+- Files created: workspace/sprints/sprint-590.json
+- Test: TypeScript compile check — PASS
+- Pipeline: New /radar Telegram command shows trending topics from topic radar (HN, GitHub, ArXiv, CoinGecko, Google Trends)
+- Swarm used: no (surgical edits to 2 files)
+- Issues: None
+- Timestamp: 2026-03-21T04:35:00Z
