@@ -3061,3 +3061,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (Achiri bot feature additions)
 - Issues: None.
 - Timestamp: 2026-03-20T09:00:00Z
+
+## Sprint 359 — Gate Recommendation Fix (Direct Write)
+- Status: PASS
+- Commit: 5d3d066
+- Files created: workspace/sprints/sprint-359.json
+- Files modified: scripts/scs001/generate-phase1-5-gate.ts, workspace/gates/phase1-5-gate.json
+- Tasks completed:
+  - 359-01: Fixed recommendation logic — was showing "KILL SWITCH" with 18 days left. Now uses urgency-based recommendations: NOT_STARTED (0 posts, time left), WARNING (behind pace), CRITICAL (very behind), FAILED (<=3 days, kill switch). Verified with gate regeneration.
+- Validation: Gate regen output shows correct "NOT STARTED" recommendation. PASS.
+- Swarm used: no (surgical fix to recommendation logic)
+- Issues: None.
+- Timestamp: 2026-03-20T09:15:00Z
