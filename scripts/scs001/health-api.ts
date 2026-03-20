@@ -77,8 +77,8 @@ function getEnvCheck(): Record<string, boolean> {
   const keys = [
     'ANTHROPIC_API_KEY', 'TELEGRAM_BOT_TOKEN', 'OWNER_TELEGRAM_CHAT_ID',
     'OLLAMA_HOST', 'SUPABASE_URL', 'SUPABASE_ANON_KEY',
-    'STRIPE_SECRET_KEY', 'STRIPE_WEBHOOK_SECRET',
-    'YOUTUBE_API_KEY', 'TIKTOK_CLIENT_KEY', 'SCS_EDITING_MODE',
+    'STRIPE_SECRET_KEY', 'STRIPE_WEBHOOK_SECRET', 'STRIPE_WEBHOOK_PORT',
+    'YOUTUBE_API_KEY', 'TIKTOK_CLIENT_KEY', 'TIKTOK_ACCESS_TOKEN', 'SCS_EDITING_MODE',
     'PEXELS_API_KEY', 'FAL_KEY',
   ];
   const result: Record<string, boolean> = {};
@@ -86,6 +86,24 @@ function getEnvCheck(): Record<string, boolean> {
     result[k] = Boolean(process.env[k]);
   }
   return result;
+}
+
+function getStripeReadiness(): { ready: boolean; status: string; checks: Record<string, boolean> } {
+  const checks = {
+    secret_key: Boolean(process.env.STRIPE_SECRET_KEY),
+    webhook_secret: Boolean(process.env.STRIPE_WEBHOOK_SECRET),
+    webhook_port: Boolean(process.env.STRIPE_WEBHOOK_PORT),
+    price_growth: Boolean(process.env.STRIPE_PRICE_GROWTH),
+    price_premium: Boolean(process.env.STRIPE_PRICE_PREMIUM),
+    success_url: Boolean(process.env.STRIPE_SUCCESS_URL),
+    cancel_url: Boolean(process.env.STRIPE_CANCEL_URL),
+  };
+  const allSet = Object.values(checks).every(Boolean);
+  return {
+    ready: allSet,
+    status: allSet ? 'Ready' : 'Not Ready — missing env vars',
+    checks,
+  };
 }
 
 function getPipelineStats(): Record<string, unknown> {
@@ -129,6 +147,7 @@ export function buildHealthReport(): Record<string, unknown> {
     timestamp: new Date().toISOString(),
     gate: getGateProgress(),
     pipeline: getPipelineStats(),
+    stripe: getStripeReadiness(),
     environment: getEnvCheck(),
     workspace: WORKSPACE,
   };
@@ -146,6 +165,10 @@ const server = http.createServer((req, res) => {
   } else if (req.method === 'GET' && req.url === '/health/gate') {
     res.writeHead(200);
     res.end(JSON.stringify({ gate: getGateProgress(), timestamp: new Date().toISOString() }, null, 2));
+  } else if (req.method === 'GET' && req.url === '/health/stripe') {
+    const stripe = getStripeReadiness();
+    res.writeHead(stripe.ready ? 200 : 503);
+    res.end(JSON.stringify({ stripe, timestamp: new Date().toISOString() }, null, 2));
   } else if (req.method === 'GET' && req.url === '/health/env') {
     res.writeHead(200);
     res.end(JSON.stringify({ environment: getEnvCheck(), timestamp: new Date().toISOString() }, null, 2));

@@ -101,10 +101,23 @@ async function main(): Promise<void> {
     lines.push('', '🟠 *CRITICAL* — behind pace, increase posting frequency');
   }
 
+  // Stripe readiness check
+  const stripeKeys = ['STRIPE_SECRET_KEY', 'STRIPE_WEBHOOK_SECRET', 'STRIPE_WEBHOOK_PORT'];
+  const stripeMissing = stripeKeys.filter(k => !process.env[k]);
+  const stripeReady = stripeMissing.length === 0;
+
+  lines.push('', `💳 *Stripe:* ${stripeReady ? '✅ Ready' : '❌ Not Ready'}`);
+  if (!stripeReady) {
+    lines.push(`   Missing: ${stripeMissing.map(k => `\`${k.replace(/_/g, '\\_')}\``).join(', ')}`);
+  }
+
   // Action items
   const actions: string[] = [];
   if (!process.env.TIKTOK_ACCESS_TOKEN) {
     actions.push('• Set `TIKTOK\\_ACCESS\\_TOKEN` in .env');
+  }
+  if (!stripeReady) {
+    actions.push('• Configure Stripe env vars for payment processing');
   }
   if (postsLeft > 0) {
     actions.push(`• Post ${Math.min(postsLeft, 3)} videos today`);

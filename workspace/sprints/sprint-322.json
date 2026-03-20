@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-322",
+  "title": "Stripe readiness checks — health API endpoint + gate alert integration",
+  "description": "Add Stripe and TikTok readiness checks to the health API (new /health/stripe endpoint) and integrate Stripe status into the daily gate urgency alert so operator is notified if Stripe is not live.",
+  "source": "auto — sprint-brief recommendation, Phase 1 blockers",
+  "tasks": [
+    {
+      "id": "322-01",
+      "title": "Add Stripe readiness endpoint and env checks to health-api.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-322",
+      "deliverables": { "code": ["scripts/scs001/health-api.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "322-02",
+      "title": "Add Stripe readiness alert to gate-urgency-alert.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-322",
+      "deliverables": { "code": ["scripts/scs001/gate-urgency-alert.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
