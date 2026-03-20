@@ -3668,3 +3668,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (single file update)
 - Issues: None.
 - Timestamp: 2026-03-20T13:45:00Z
+
+## Sprint 417 — Auto-Deliver Freshness + Diversity (Direct Write)
+- Status: PASS
+- Commit: d5ebcb7
+- Files created: workspace/sprints/sprint-417.json
+- Files modified: scripts/scs001/posting-auto-deliver.ts
+- Tasks completed:
+  - 417-01: Added freshness-weighted scoring, speaker diversity, and hook diversity to auto-deliver PM2 cron. Checks last 5 deliveries for consecutive speaker/hook. Shows speaker, hook, and age in delivery messages.
+- Validation: tsc --noEmit PASS
+- Swarm used: no (single file update)
+- Issues: None.
+- Timestamp: 2026-03-20T14:00:00Z
