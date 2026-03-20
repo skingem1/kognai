@@ -3680,3 +3680,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (single file update)
 - Issues: None.
 - Timestamp: 2026-03-20T14:00:00Z
+
+## Sprint 418 — Engagement-Optimized Captions (Direct Write)
+- Status: PASS
+- Commit: 2bcf665
+- Files created: workspace/sprints/sprint-418.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 418-01: Upgraded buildTikTokCaption with hook-formula-based opening lines (curiosity_gap, secret, contrarian, authority), engagement CTAs, niche-specific hashtags, and speaker attribution. Deterministic per video_id via hash code.
+- Validation: tsc --noEmit PASS, sample caption verified
+- Swarm used: no (complex telegram bot modification)
+- Issues: None.
+- Timestamp: 2026-03-20T14:15:00Z
