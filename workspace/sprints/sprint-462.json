@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-462",
+  "title": "LAUNCH — /readiness unified go-live dashboard command",
+  "description": "Create a /readiness command that combines gate progress, env check summary, Stripe status, pipeline health, and TTS readiness into one unified dashboard. Shows overall readiness percentage and blockers.",
+  "source": "queue — Sprint 460/461 LAUNCH",
+  "tasks": [
+    {
+      "id": "462-01",
+      "title": "Add cmdReadiness to cmd-system.ts — unified readiness dashboard",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-462",
+      "deliverables": { "code": ["scripts/telegram-commands/cmd-system.ts", "scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

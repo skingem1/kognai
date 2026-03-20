@@ -381,3 +381,124 @@ export async function cmdStripeStatus(): Promise<string> {
   const results = await runStripeChecks();
   return formatStripeStatus(results);
 }
+
+// Sprint 462: /readiness — unified go-live dashboard
+export function cmdReadiness(): string {
+  const lines: string[] = ['🚀 *Go-Live Readiness Dashboard*', ''];
+
+  let totalChecks = 0;
+  let passedChecks = 0;
+
+  // 1. Gate Progress
+  const mpPath = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
+  let postCount = 0;
+  let totalViews = 0;
+  if (fs.existsSync(mpPath)) {
+    const posts = fs.readFileSync(mpPath, 'utf-8').split('\n').filter((l: string) => l.trim());
+    postCount = posts.length;
+    for (const l of posts) {
+      try { totalViews += JSON.parse(l).views ?? 0; } catch {}
+    }
+  }
+  const gateDate = new Date('2026-04-07T00:00:00Z');
+  const daysLeft = Math.max(0, Math.ceil((gateDate.getTime() - Date.now()) / 86_400_000));
+  const postsOk = postCount >= 30;
+  const viewsOk = totalViews >= 500;
+
+  lines.push('*📊 Phase 1.5 Gate (Apr 7)*');
+  lines.push(`  ${postsOk ? '✅' : '❌'} Posts: ${postCount}/30${!postsOk ? ` (${30 - postCount} more needed)` : ''}`);
+  lines.push(`  ${viewsOk ? '✅' : '❌'} Views: ${totalViews}/500${!viewsOk ? ` (${500 - totalViews} more needed)` : ''}`);
+  lines.push(`  ⏱ ${daysLeft} days remaining`);
+  totalChecks += 2;
+  passedChecks += (postsOk ? 1 : 0) + (viewsOk ? 1 : 0);
+
+  // 2. Key Environment Variables
+  lines.push('');
+  lines.push('*🔧 Environment*');
+  const envChecks: Array<[string, string]> = [
+    ['TIKTOK_ACCESS_TOKEN', 'TikTok API'],
+    ['STRIPE_SECRET_KEY', 'Stripe'],
+    ['ANTHROPIC_API_KEY', 'Claude API'],
+    ['TELEGRAM_BOT_TOKEN', 'Telegram Bot'],
+    ['SUPABASE_URL', 'Supabase'],
+  ];
+  // Also check alternate telegram token name
+  const tgToken = process.env.CEO_TELEGRAM_BOT_TOKEN || process.env.TELEGRAM_BOT_TOKEN;
+  for (const [envVar, label] of envChecks) {
+    let isSet = !!process.env[envVar];
+    if (envVar === 'TELEGRAM_BOT_TOKEN') isSet = !!tgToken;
+    lines.push(`  ${isSet ? '✅' : '❌'} ${label}`);
+    totalChecks++;
+    if (isSet) passedChecks++;
+  }
+
+  // 3. Pipeline Health
+  lines.push('');
+  lines.push('*📦 Pipeline*');
+  const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
+  const readyCount = ledger.filter((e: any) => findCaptionedMp4(e.video_id) !== null).length;
+  const pipelineOk = readyCount >= 5;
+  lines.push(`  ${pipelineOk ? '✅' : '❌'} Captioned videos: ${readyCount} ready`);
+  lines.push(`  📋 Ledger: ${ledger.length} total entries`);
+  totalChecks++;
+  if (pipelineOk) passedChecks++;
+
+  // 4. Pipeline runner status
+  const latestRunPath = path.join(ROOT, 'reports', 'pipeline-runs', 'latest.json');
+  let lastRunAge = Infinity;
+  if (fs.existsSync(latestRunPath)) {
+    try {
+      const run = JSON.parse(fs.readFileSync(latestRunPath, 'utf-8'));
+      if (run.completed_at) {
+        lastRunAge = Math.round((Date.now() - new Date(run.completed_at).getTime()) / 3600000);
+      }
+    } catch {}
+  }
+  const pipelineFresh = lastRunAge < 24;
+  lines.push(`  ${pipelineFresh ? '✅' : '⚠️'} Last run: ${lastRunAge < Infinity ? `${lastRunAge}h ago` : 'never'}`);
+  totalChecks++;
+  if (pipelineFresh) passedChecks++;
+
+  // 5. Stripe
+  lines.push('');
+  lines.push('*💳 Stripe*');
+  const stripeKey = process.env.STRIPE_SECRET_KEY;
+  const isLive = stripeKey?.startsWith('sk_live_');
+  const stripeOk = !!stripeKey;
+  lines.push(`  ${stripeOk ? '✅' : '❌'} API: ${isLive ? '🟢 LIVE' : stripeOk ? '🟡 TEST' : '❌ NOT SET'}`);
+  const webhookOk = !!process.env.STRIPE_WEBHOOK_SECRET;
+  lines.push(`  ${webhookOk ? '✅' : '❌'} Webhook: ${webhookOk ? 'configured' : 'missing'}`);
+  totalChecks += 2;
+  passedChecks += (stripeOk ? 1 : 0) + (webhookOk ? 1 : 0);
+
+  // 6. TTS
+  lines.push('');
+  lines.push('*🔊 TTS*');
+  const hasSay = (() => { try { require('child_process').execSync('which say', { stdio: 'pipe' }); return true; } catch { return false; } })();
+  const hasElevenlabs = !!process.env.ELEVENLABS_API_KEY;
+  lines.push(`  ${hasSay ? '✅' : '❌'} Local TTS (macOS say)`);
+  lines.push(`  ${hasElevenlabs ? '✅' : '⚪'} ElevenLabs API${hasElevenlabs ? '' : ' (optional)'}`);
+  totalChecks++;
+  if (hasSay || hasElevenlabs) passedChecks++;
+
+  // Overall readiness
+  const pct = Math.round((passedChecks / totalChecks) * 100);
+  const emoji = pct >= 80 ? '🟢' : pct >= 50 ? '🟡' : '🔴';
+  lines.push('');
+  lines.push(`${emoji} *Overall: ${pct}% ready* (${passedChecks}/${totalChecks} checks)`);
+
+  // Blockers
+  const blockers: string[] = [];
+  if (!postsOk) blockers.push(`Post ${30 - postCount} videos to TikTok`);
+  if (!process.env.TIKTOK_ACCESS_TOKEN) blockers.push('Set TIKTOK_ACCESS_TOKEN');
+  if (!isLive && stripeOk) blockers.push('Switch Stripe to LIVE mode');
+  if (!stripeOk) blockers.push('Set STRIPE_SECRET_KEY');
+
+  if (blockers.length > 0) {
+    lines.push('');
+    lines.push('*🔴 Blockers:*');
+    for (const b of blockers) lines.push(`  • ${b}`);
+  }
+
+  return lines.join('\n');
+}
