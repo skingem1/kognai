@@ -2448,3 +2448,14 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (multi-file feature)
 - Issues: None.
 - Timestamp: 2026-03-20T07:15:00Z
+
+## Sprint 310 — Achiri E2E Alpha Integration Test (Direct Write)
+- Status: PASS
+- Commit: e648cf4
+- Files created: scripts/achiri/validate-e2e-alpha.ts, workspace/sprints/sprint-310.json
+- Tasks completed:
+  - 310-01: Comprehensive E2E test covering 7 sections: Safety Filter (3 tests), Emotion Detection (8 tests), Topic Suggestions (5 tests), Context Windowing (3 tests), System Prompt Assembly (4 tests), Full Chat Flow dry-run (3 tests), Safety Integration (1 test). Total: 27/27 PASS.
+- Validation: ACHIRI_DRY_RUN=1 npx ts-node scripts/achiri/validate-e2e-alpha.ts — 27/27 PASS
+- Swarm used: no (test file only)
+- Issues: Initial version used top-level await — wrapped in async main() to fix TS compilation.
+- Timestamp: 2026-03-20T07:30:00Z
