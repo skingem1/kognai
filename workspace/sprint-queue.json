@@ -320,7 +320,7 @@
       "sprint": 476,
       "title": "ACHIRI — Safety harness review + cultural filter validation",
       "block": "ACHIRI",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "Achiri (Tunisian AI) had multiple sprints (317, 328, 352, etc.) but needs safety review. Validate: (1) Derja/French code-switching works, (2) Cultural sensitivity filters active, (3) Safety boundaries tested (from e2e reports), (4) Memory system works. Quick audit, not rebuild."
     },
