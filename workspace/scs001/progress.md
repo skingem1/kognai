@@ -199,6 +199,17 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Issues: skill-crystalliser module not found (skipped, non-blocking)
 - Timestamp: 2026-03-20T16:00:00Z
 
+## Sprint 493 — INFRA
+- Status: PASS
+- Commit: 4e1bb23
+- Files created: scripts/smoke-test-full.ts, workspace/sprints/sprint-493.json
+- Files modified: reports/smoke-test-latest.json
+- Test: npx ts-node scripts/smoke-test-full.ts — 11/11 PASS (Ollama, ClawRouter, Telegram, Dashboard, Stripe, YouTube, TikTok, pipeline files, git, env, Supabase)
+- Pipeline: Full system smoke test operational
+- Swarm used: no (testing infrastructure)
+- Issues: none — all 11 services green
+- Timestamp: 2026-03-20T18:30:00Z
+
 ## Sprint 492 — CONSTITUTION
 - Status: PASS
 - Commit: aa5c52b

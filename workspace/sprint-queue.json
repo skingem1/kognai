@@ -456,7 +456,7 @@
       "sprint": 493,
       "title": "INFRA — Comprehensive e2e smoke test for full system",
       "block": "INFRA",
-      "status": "pending",
+      "status": "done",
       "priority": "low",
       "rationale": "Build scripts/smoke-test-full.ts: (1) Ollama health, (2) ClawRouter routing (T0-T2), (3) Telegram bot responds, (4) Pipeline runs 1 topic end-to-end, (5) Dashboard loads, (6) Stripe health (if keys present), (7) YouTube upload test (if keys present). Single command: npx tsx scripts/smoke-test-full.ts. Gate: all available services green."
     },
