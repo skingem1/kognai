@@ -3169,3 +3169,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (single function port)
 - Issues: None.
 - Timestamp: 2026-03-20T11:30:00Z
+
+## Sprint 368 — /postplan — 7-Day Posting Plan (Direct Write)
+- Status: PASS
+- Commit: 3d88c13
+- Files created: workspace/sprints/sprint-368.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 368-01: Added /postplan command. Reads reports/posting-schedule.json, displays 7-day plan grouped by date with video assignments (speaker, hook, viral score %). Shows gate progress, pace needed, queue size. Updated /help + switch router.
+- Validation: ts-node --transpile-only PASS
+- Swarm used: no (single function)
+- Issues: None.
+- Timestamp: 2026-03-20T11:45:00Z
