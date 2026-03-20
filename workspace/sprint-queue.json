@@ -930,8 +930,9 @@
       "title": "CONTENT — Batch production: 10 more videos + deliver",
       "block": "CONTENT",
       "priority": "high",
-      "status": "pending",
-      "rationale": "104 delivered but more content = more options for manual TikTok posting. Produce 10 more with diverse topics and hooks."
+      "status": "done",
+      "rationale": "104 delivered but more content = more options for manual TikTok posting. Produce 10 more with diverse topics and hooks.",
+      "_note": "10 produced, 4 delivered. 97 total. All eligible videos now delivered."
     },
     {
       "sprint": 549,
