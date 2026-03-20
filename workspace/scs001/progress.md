@@ -1,10 +1,10 @@
 # SCS-001 TikTok Content Agent — Progress Log
 
-*Last updated: 2026-03-21 (Sprint 611)*
+*Last updated: 2026-03-21 (Sprint 612)*
 
 ## Summary
 
-- **Total sprints shipped:** 468 (Sprint 059 → Sprint 611)
+- **Total sprints shipped:** 469 (Sprint 059 → Sprint 612)
 - **Total commits:** 1110
 - **Current phase:** Phase 1 Active (Mar 17 – Apr 11 2026)
 - **Pipeline:** 12 stages, 11 agents, closed feedback loop
@@ -1237,3 +1237,13 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (single file, wrote directly)
 - Issues: None
 - Timestamp: 2026-03-21T08:30:00Z
+
+## Sprint 612 — INFRA
+- Status: PASS
+- Commit: 9a34e3a
+- Files modified: scripts/telegram-commands/cmd-help.ts
+- Test: Code review — PASS
+- Pipeline: /help now includes /stockpile, /inventory, /batchdeliver, /achiridata
+- Swarm used: no (single file)
+- Issues: None
+- Timestamp: 2026-03-21T08:45:00Z

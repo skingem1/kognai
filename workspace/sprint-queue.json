@@ -1476,6 +1476,14 @@
       "status": "done",
       "priority": "high",
       "rationale": "Prompt updated from 'no memory' to memory-aware. Memory subsystem operational. Smoke test 6/6 PASS."
+    },
+    {
+      "sprint": 612,
+      "title": "INFRA — Update /help with Sprint 603-611 commands",
+      "block": "INFRA",
+      "status": "done",
+      "priority": "medium",
+      "rationale": "Added /stockpile, /inventory, /batchdeliver, /achiridata to /help."
     }
   ]
 }
