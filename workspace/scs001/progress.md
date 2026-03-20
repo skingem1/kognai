@@ -3000,3 +3000,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (config-only change)
 - Issues: None.
 - Timestamp: 2026-03-20T07:45:00Z
+
+## Sprint 354 — /achiri Command (Direct Write)
+- Status: PASS
+- Commit: 617d7cc
+- Files created: workspace/sprints/sprint-354.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 354-01: cmdAchiri() — reads reports/achiri-readiness.json + workspace/achiri/waitlist.jsonl. Shows alpha launch date + countdown, readiness score %, check results with pass/fail icons, critical failure highlights, waitlist count, Telegram bot token status.
+- Validation: ts-node transpile-only import PASS
+- Swarm used: no (surgical bot edit)
+- Issues: None.
+- Timestamp: 2026-03-20T08:00:00Z
