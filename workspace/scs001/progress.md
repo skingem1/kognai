@@ -2803,3 +2803,16 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (single file + ecosystem edit)
 - Issues: None.
 - Timestamp: 2026-03-20T06:15:00Z
+
+## Sprint 338 — Posting Auto-Deliver (Direct Write)
+- Status: PASS
+- Commit: b8d2593
+- Files created: scripts/scs001/posting-auto-deliver.ts, workspace/scs001/auto-delivered.jsonl, workspace/sprints/sprint-338.json
+- Files modified: ecosystem.config.js
+- Tasks completed:
+  - 338-01: posting-auto-deliver.ts — sends next top-scored video file + TikTok-ready caption via Telegram. Tracks deliveries in auto-delivered.jsonl to avoid duplicates per day. Gate math inline. Time-of-day labels (Morning/Midday/Evening). Exits silently if 30-post gate met.
+  - 338-02: 3 PM2 crons added — kognai-auto-deliver-morning (07:30), kognai-auto-deliver-noon (12:00), kognai-auto-deliver-evening (18:00).
+- Validation: Ran script twice — sent 2 different videos (dedup confirmed). Fixed Markdown parse error in caption (escaped special chars).
+- Swarm used: no (FP-007, video file sending + multipart HTTP)
+- Issues: Initial run failed with Telegram Markdown parse error — fixed by escaping special chars in caption content.
+- Timestamp: 2026-03-20T02:31:00Z
