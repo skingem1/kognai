@@ -3,7 +3,12 @@
 // Produces: DiscoveryOutput[] (per contracts/scs-001/clip-quality-v1.json#DiscoveryOutput)
 // Sprint 101: real YouTube search when YOUTUBE_API_KEY is set; falls back to mock URLs
 
-import { randomUUID } from 'crypto';
+import { randomUUID, createHash } from 'crypto';
+
+// Sprint 299: Deterministic discovery_id from content hash — enables downstream dedup
+function deterministicDiscId(url: string, topicId: string): string {
+  return `disc-${createHash('sha256').update(`${url}:${topicId}`).digest('hex').slice(0, 8)}`;
+}
 import type { TrendingTopicBatch, TrendingTopic } from '../scs001-trend/index';
 import { YouTubeSearchProvider } from './youtube-search';
 
@@ -120,7 +125,7 @@ export class DiscoveryAgent {
           const results = await searcher.searchForTopic(topic, 2);
           for (const result of results) {
             outputs.push({
-              discovery_id: `disc-${randomUUID().slice(0, 8)}`,
+              discovery_id: deterministicDiscId(result.url, topic.topic_id),
               url: result.url,
               timestamps: deriveTimestamps(topic),
               speaker: result.channelName,
@@ -146,7 +151,7 @@ export class DiscoveryAgent {
           const baseUrl = MOCK_VIDEO_BASE[channel.platform] ?? 'https://video.example.com/';
           const url = `${baseUrl}${channel.channel_id}`;
           outputs.push({
-            discovery_id: `disc-${randomUUID().slice(0, 8)}`,
+            discovery_id: deterministicDiscId(url, topic.topic_id),
             url,
             timestamps: deriveTimestamps(topic),
             speaker: pickSpeaker(topic),

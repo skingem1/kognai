@@ -307,7 +307,8 @@ export class SCS001Orchestrator {
           const edited = editedByVideoId2.get(p.video_id);
           const bundle = edited ? bundleByInsightId2.get(edited.insight_id) : undefined;
           return {
-            clip_id:      p.video_id,
+            // Sprint 299: Store original clip_id for dedup matching (was storing video_id)
+            clip_id:      edited?.clip_id ?? p.video_id,
             video_id:     p.video_id,
             published_at: p.posted_at,
             run_id:       runId,

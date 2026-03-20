@@ -3,8 +3,14 @@
 // Produces: ClipQualityScore[] (per contracts/scs-001/clip-quality-v1.json#ClipQualityScore)
 // Model: qwen3:14b (POWER tier) via Ollama
 
-import { randomUUID } from 'crypto';
+import { randomUUID, createHash } from 'crypto';
 import type { DiscoveryOutput } from '../scs001-discovery/index';
+
+// Sprint 299: Deterministic clip_id from content hash — enables dedup across runs
+function deterministicClipId(discoveryId: string, startS: number, endS: number): string {
+  const hash = createHash('sha256').update(`${discoveryId}:${startS}:${endS}`).digest('hex').slice(0, 8);
+  return `clip-${hash}`;
+}
 import { viralScorer } from '../../scripts/scs001/viral-scorer';
 import { hookQualityScore } from '../../scripts/scs001/hook-quality';
 
@@ -138,7 +144,7 @@ export class ClipDetectionAgent {
 
         if (duration < MIN_DURATION || duration > MAX_DURATION) {
           results.push({
-            clip_id:                 `clip-${randomUUID().slice(0, 8)}`,
+            clip_id:                 deterministicClipId(disc.discovery_id, ts.start_seconds, ts.end_seconds),
             discovery_id:            disc.discovery_id,
             url:                     disc.url,
             start_seconds:           ts.start_seconds,
@@ -179,7 +185,7 @@ export class ClipDetectionAgent {
       console.log(`[ClipDetection] ${qualified ? '✓' : '✗'} score=${total}/25 hook=${hookQuality} viral=${viralScores.partial_viral_score} | ${disc.speaker} | ${ts.start_seconds}s-${ts.end_seconds}s`);
 
       return {
-        clip_id:                 `clip-${randomUUID().slice(0, 8)}`,
+        clip_id:                 deterministicClipId(disc.discovery_id, ts.start_seconds, ts.end_seconds),
         discovery_id:            disc.discovery_id,
         url:                     disc.url,
         start_seconds:           ts.start_seconds,

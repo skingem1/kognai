@@ -35,7 +35,9 @@ export class DedupLedger {
         if (!trimmed) continue;
         try {
           const entry = JSON.parse(trimmed) as LedgerEntry;
+          // Sprint 299: Track both clip_id and video_id to catch all duplicates
           if (entry.clip_id) ids.add(entry.clip_id);
+          if (entry.video_id && entry.video_id !== entry.clip_id) ids.add(entry.video_id);
         } catch {
           console.warn('[DedupLedger] Skipping corrupt ledger line');
         }

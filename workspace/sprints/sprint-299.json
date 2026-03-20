@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-299",
+  "title": "Fix pipeline dedup — deterministic clip_ids from content hash",
+  "description": "Clip detection generates random clip_ids (randomUUID) each run, so dedup ledger can never match previously published clips. Results in 264/564 duplicate ledger entries. Fix: generate clip_id from hash of discovery_id + start + end seconds.",
+  "source": "auto — found 264 duplicates in publish-ledger.jsonl analysis",
+  "tasks": [
+    {
+      "id": "299-01",
+      "title": "Replace randomUUID clip_ids with deterministic content hash",
+      "type": "bugfix",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-299",
+      "deliverables": { "code": ["agents/scs001-clip-detection/index.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

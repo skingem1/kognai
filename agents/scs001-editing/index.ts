@@ -5,7 +5,7 @@
 // Block C: mock mode generates test-pattern videos for validation
 // Note: drawtext requires libfreetype. Mock mode uses pure color sources.
 
-import { randomUUID } from 'crypto';
+import { randomUUID, createHash } from 'crypto';
 import { execSync } from 'child_process';
 import { existsSync, mkdirSync, readdirSync } from 'fs';
 import { join } from 'path';
@@ -285,7 +285,8 @@ export class EditingAgent {
   }
 
   private assembleVideo(bundle: ScriptBundle): EditedVideo {
-    const videoId = 'video-' + randomUUID().slice(0, 8);
+    // Sprint 299: Deterministic video_id from bundle content hash — enables dedup
+    const videoId = 'video-' + createHash('sha256').update(bundle.script_id + ':' + bundle.clip_id).digest('hex').slice(0, 8);
     const outputPath = this.outputDir + '/' + videoId + '.mp4';
 
     // Build and execute FFmpeg command.
