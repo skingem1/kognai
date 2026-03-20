@@ -118,7 +118,6 @@ function sendVideoFile(videoPath: string, caption: string): Promise<void> {
   const parts: Buffer[] = [];
   parts.push(Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="chat_id"\r\n\r\n${CHAT_ID}\r\n`));
   parts.push(Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="caption"\r\n\r\n${caption}\r\n`));
-  parts.push(Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="parse_mode"\r\n\r\nMarkdown\r\n`));
   parts.push(Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="video"; filename="${filename}"\r\nContent-Type: video/mp4\r\n\r\n`));
   parts.push(fileData);
   parts.push(Buffer.from(`\r\n--${boundary}--\r\n`));
@@ -272,11 +271,12 @@ async function main(): Promise<void> {
   const now = new Date();
   const timeLabel = now.getHours() < 10 ? '☀️ Morning' : now.getHours() < 15 ? '🌤️ Midday' : '🌙 Evening';
 
-  // Escape Markdown special chars in caption content (hashtags with underscores, etc)
-  const safeCaption = caption.replace(/([_*`\[\]])/g, '\\$1');
+  // Sprint 517: Strip all markdown formatting from caption to avoid Telegram parse errors
+  // Use plain text mode instead of Markdown parse_mode
+  const safeCaption = caption;
 
   const tgCaption =
-    `📦 *${timeLabel} Auto-Deliver* ${vsStr}${spkStr}${hookStr}${ageStr}\n\n` +
+    `📦 ${timeLabel} Auto-Deliver ${vsStr}${spkStr}${hookStr}${ageStr}\n\n` +
     `${safeCaption}\n\n` +
     `📊 ${manualPosts.length}/${GATE_TARGET} posts · ${daysLeft}d left · ${dailyTarget}/day\n\n` +
     `Save video → post to TikTok → /record ${videoId} 0`;
