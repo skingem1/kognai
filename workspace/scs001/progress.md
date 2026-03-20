@@ -3433,3 +3433,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (pipeline script, needed context of full codebase)
 - Issues: None.
 - Timestamp: 2026-03-20T21:45:00Z
+
+## Sprint 398 — Achiri Daily Engagement Push (Direct Write)
+- Status: PASS
+- Commit: 6c53064
+- Files created: scripts/achiri/daily-engagement.ts, workspace/sprints/sprint-398.json
+- Files modified: ecosystem.config.js
+- Tasks completed:
+  - 398-01: Created daily-engagement.ts — PM2 cron at 8am UTC that sends active Achiri users (last 7 days) a morning message with: Darija word of the day + example, Tunisian trivia, engagement streak counter. Anti-spam: log-based dedup, skips users already active today. Max 20 users/run. Added PM2 config (achiri-daily-engage). Dry-run verified: 20 active users found.
+- Validation: tsc --noEmit PASS + dry-run PASS (20 users found)
+- Swarm used: no (new file creation + ecosystem.config.js edit)
+- Issues: None.
+- Timestamp: 2026-03-20T22:00:00Z
