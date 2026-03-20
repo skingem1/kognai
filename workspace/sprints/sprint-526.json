@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-526",
+  "title": "INFRA — Queue replenish + next 4 sprints (527-530)",
+  "description": "Queue empty after Sprint 525. Added Sprints 527-530: two content production batches (targeting 30-post gate), pipeline metrics logging, smoke test cron.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "526-01",
+      "title": "Add Sprints 527-530 to sprint-queue.json",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "workspace/sprint-queue.json",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-526",
+      "deliverables": { "code": ["workspace/sprint-queue.json"], "tests": [], "docs": [] }
+    }
+  ]
+}
