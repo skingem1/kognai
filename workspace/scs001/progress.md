@@ -3849,3 +3849,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (pipeline enhancement)
 - Issues: None.
 - Timestamp: 2026-03-20T17:35:00Z
+
+## Sprint 432 — Telegram Bot Commands Autocomplete (Direct Write)
+- Status: PASS
+- Commit: 177bd78
+- Files created: workspace/sprints/sprint-432.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 432-01: Added registerBotCommands() function that calls Telegram setMyCommands API on bot startup. Registers top 17 commands (deliver, gate, streak, queue, today, record, posted, digest, autopost, analytics, lastrun, status, golive, revenue, schedule, quickstart, help) for / autocomplete in Telegram chat. Non-fatal on failure.
+- Validation: tsc --noEmit PASS
+- Swarm used: no (single-function addition)
+- Issues: None.
+- Timestamp: 2026-03-20T17:50:00Z
