@@ -2022,6 +2022,105 @@ async function cmdCheckout(chatId: string, args: string): Promise<void> {
   }
 }
 
+// ─── Sprint 374: /subscribers — Stripe subscriber list + MRR ────────────────
+
+async function cmdSubscribers(chatId: string): Promise<void> {
+  const stripeKey = process.env.STRIPE_SECRET_KEY || '';
+  if (!stripeKey) {
+    await sendMessage(chatId, '⚠️ *Stripe not configured.* Set `STRIPE_SECRET_KEY` in .env');
+    return;
+  }
+
+  try {
+    const query = new URLSearchParams({
+      status: 'active',
+      limit: '100',
+      'expand[]': 'data.customer',
+    }).toString();
+
+    const result = await new Promise<any>((resolve, reject) => {
+      const req = https.request({
+        hostname: 'api.stripe.com',
+        path: `/v1/subscriptions?${query}`,
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${stripeKey}`,
+        },
+      }, (res) => {
+        let data = '';
+        res.on('data', (c: Buffer) => (data += c.toString()));
+        res.on('end', () => {
+          try { resolve(JSON.parse(data)); }
+          catch { reject(new Error(`Stripe parse error: ${data.slice(0, 200)}`)); }
+        });
+      });
+      req.on('error', reject);
+      req.setTimeout(15000, () => { req.destroy(); reject(new Error('Stripe API timeout')); });
+      req.end();
+    });
+
+    if (result.error) {
+      await sendMessage(chatId, `❌ Stripe error: ${result.error.message ?? JSON.stringify(result.error).slice(0, 200)}`);
+      return;
+    }
+
+    const subs = result.data ?? [];
+    const mode = stripeKey.startsWith('sk_live_') ? '🟢 LIVE' : '🟡 TEST';
+
+    if (subs.length === 0) {
+      await sendMessage(chatId, `👥 *Subscribers* ${mode}\n\nNo active subscriptions yet.\n\nUse \`/checkout growth\` or \`/checkout premium\` to generate payment links.`);
+      return;
+    }
+
+    // Calculate MRR and plan breakdown
+    let mrrCents = 0;
+    const planCounts: Record<string, number> = {};
+    const subLines: string[] = [];
+
+    for (const sub of subs) {
+      const item = sub.items?.data?.[0];
+      const amount = item?.price?.unit_amount ?? 0;
+      const interval = item?.price?.recurring?.interval ?? 'month';
+      const monthlyAmount = interval === 'year' ? Math.round(amount / 12) : amount;
+      mrrCents += monthlyAmount;
+
+      const planName = item?.price?.nickname ?? item?.price?.id?.slice(0, 20) ?? 'unknown';
+      planCounts[planName] = (planCounts[planName] ?? 0) + 1;
+
+      const customer = typeof sub.customer === 'object' ? sub.customer : null;
+      const email = customer?.email ?? 'no email';
+      const created = new Date(sub.created * 1000).toISOString().slice(0, 10);
+
+      subLines.push(`• ${email} — ${planName} (€${(amount / 100).toFixed(0)}) since ${created}`);
+    }
+
+    const mrr = (mrrCents / 100).toFixed(2);
+    const arr = ((mrrCents * 12) / 100).toFixed(0);
+
+    const plans = Object.entries(planCounts)
+      .map(([name, count]) => `${name}: ${count}`)
+      .join(' · ');
+
+    const lines = [
+      `👥 *Subscribers* ${mode}`,
+      '',
+      `📊 Active: *${subs.length}* | MRR: *€${mrr}* | ARR: €${arr}`,
+      `📋 ${plans}`,
+      '',
+      ...subLines.slice(0, 20),
+    ];
+
+    if (subs.length > 20) {
+      lines.push(`\n_...and ${subs.length - 20} more_`);
+    }
+
+    await sendMessage(chatId, lines.join('\n'));
+
+  } catch (err: any) {
+    await sendMessage(chatId, `❌ Subscribers fetch failed: ${err.message?.slice(0, 200)}`);
+  }
+}
+
 // ─── Sprint 371: /todaycaptions — batch captions for today's posts ────────
 
 async function cmdTodayCaptions(chatId: string): Promise<void> {
@@ -2733,6 +2832,7 @@ function cmdHelp(): string {
     `/todaycaptions — Copy-paste captions for today\n` +
     `/viralstats — Viral score summary + top 3\n` +
     `/checkout  — Generate Stripe checkout link\n` +
+    `/subscribers — Active Stripe subscribers + MRR\n` +
     `/help      — This message`
   );
 }
@@ -2887,6 +2987,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/dashboard':   response = cmdDashboard();          break;
     case '/viralstats':  response = cmdViralStats();         break;
     case '/checkout':    await cmdCheckout(chatId, cmdArgs); return;
+    case '/subscribers': await cmdSubscribers(chatId); return;
     case '/help':        response = cmdHelp();        break;
     default:
       response = `Unknown command: \`${cmdName}\`\n\n${cmdHelp()}`;
