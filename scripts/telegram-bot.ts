@@ -352,6 +352,62 @@ async function cmdBoot(chatId: string): Promise<void> {
   await sendMessage(chatId, lines.join('\n'));
 }
 
+// ─── Sprint 438: /shutdown — stop all non-essential PM2 crons ─────────
+
+async function cmdShutdown(chatId: string): Promise<void> {
+  const STOPPABLE_CRONS = [
+    'kognai-daily-digest',
+    'kognai-gate-regen',
+    'kognai-gate-tracker-update',
+    'kognai-brief-regen',
+    'kognai-post-noon',
+    'kognai-post-evening',
+    'kognai-pipeline-watchdog',
+    'kognai-smoke-test',
+    'kognai-calendar-regen',
+    'kognai-schedule-regen',
+    'kognai-leaderboard-regen',
+    'kognai-auto-deliver-morning',
+    'kognai-auto-deliver-noon',
+    'kognai-auto-deliver-evening',
+    'kognai-view-tracker',
+    'kognai-watchdog',
+    'kognai-caption-push',
+    'kognai-auto-healer',
+    'scs001-pipeline',
+  ];
+
+  await sendMessage(chatId, `🛑 *Stopping ${STOPPABLE_CRONS.length} crons...*\n\n_telegram-bot and stripe-webhook will keep running._`);
+
+  let stopped = 0;
+  let alreadyStopped = 0;
+
+  const procs = getPm2List();
+  const onlineNames = new Set(procs.filter(p => p.status === 'online').map(p => p.name));
+
+  for (const name of STOPPABLE_CRONS) {
+    if (!onlineNames.has(name)) {
+      alreadyStopped++;
+      continue;
+    }
+    try {
+      execSync(`pm2 stop ${name}`, { timeout: 10000, stdio: 'pipe' });
+      stopped++;
+    } catch { /* ignore */ }
+  }
+
+  await sendMessage(chatId, [
+    '🛑 *Shutdown Complete*',
+    '',
+    `⏹ Stopped: *${stopped}* crons`,
+    `⏩ Already stopped: *${alreadyStopped}*`,
+    '',
+    `🟢 Still running: telegram-bot, stripe-webhook`,
+    '',
+    `_Type \`/boot\` to restart everything._`,
+  ].join('\n'));
+}
+
 function cmdHealth(): string {
   const h = readJSON<any>(path.join(ROOT, 'health.json'));
   if (!h) return '❌ *Health* — health.json not found';
@@ -1015,10 +1071,13 @@ async function cmdDeliver(chatId: string, args: string): Promise<string> {
     const hookStr = hook ? ` · 🎣 ${hook}` : '';
     const tgCaption = `📦 *Post this to TikTok* ${vsStr} ${spkStr}${hookStr}${ageStr}\n\n${caption}\n\n\`/record ${videoId} 0\``;
 
-    // Sprint 435: Add inline buttons for one-tap posting
+    // Sprint 435+438: Inline buttons for one-tap posting + caption copy
     const deliverButtons = [
       [
         { text: '✅ Posted', callback_data: `posted:${videoId}` },
+        { text: '📋 Caption', callback_data: `cmd:/caption ${videoId}` },
+      ],
+      [
         { text: '⏭️ Next Video', callback_data: 'cmd:/deliver 1' },
       ],
     ];
@@ -4357,7 +4416,12 @@ async function cmdMenu(chatId: string): Promise<void> {
     ],
     [
       { text: '📝 Digest', callback_data: 'cmd:/digest' },
+      { text: '🔄 Refresh', callback_data: 'cmd:/refresh' },
       { text: '❓ Help', callback_data: 'cmd:/help' },
+    ],
+    [
+      { text: '🚀 Boot Crons', callback_data: 'cmd:/boot' },
+      { text: '🛑 Shutdown', callback_data: 'cmd:/shutdown' },
     ],
   ];
   await sendMessageWithButtons(chatId, text, buttons);
@@ -4370,6 +4434,7 @@ function cmdHelp(): string {
     `/report    — Full system status (real data, no AI)\n` +
     `/pm2       — Live PM2 process table\n` +
     `/boot      — Start all essential PM2 crons\n` +
+    `/shutdown  — Stop all non-essential PM2 crons\n` +
     `/crons     — All PM2 cron schedules\n` +
     `/health    — Health check summary\n` +
     `/tier      — Current tier + MRR\n` +
@@ -5673,6 +5738,18 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
       await cmdBoot(chatId);
     } catch (e: any) {
       await sendMessage(chatId, `❌ Boot error: ${e.message}`);
+    }
+    const timestamp = new Date().toISOString();
+    fs.appendFileSync(AUDIT_LOG, `[${timestamp}] [TELEGRAM_BOT] Command: ${cmd} from ${chatId}\n`);
+    return;
+  }
+
+  // Sprint 438: /shutdown — stop all non-essential PM2 crons
+  if (cmdName === '/shutdown') {
+    try {
+      await cmdShutdown(chatId);
+    } catch (e: any) {
+      await sendMessage(chatId, `❌ Shutdown error: ${e.message}`);
     }
     const timestamp = new Date().toISOString();
     fs.appendFileSync(AUDIT_LOG, `[${timestamp}] [TELEGRAM_BOT] Command: ${cmd} from ${chatId}\n`);

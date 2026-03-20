@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-438",
+  "title": "Deliver flow polish: caption button, /shutdown, menu update",
+  "description": "Add '📋 Caption' inline button to delivered videos for easy copy-paste. Add /shutdown command (complement to /boot). Add boot/shutdown to /menu quick access.",
+  "source": "auto — operator needs friction-free caption copy + ability to stop all crons from phone",
+  "tasks": [
+    {
+      "id": "438-01",
+      "title": "Add caption button to deliver, /shutdown command, update /menu",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-438",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
