@@ -2777,3 +2777,16 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (surgical edit)
 - Issues: None.
 - Timestamp: 2026-03-20T05:55:00Z
+
+## Sprint 336 — Achiri Broadcast (Direct Write)
+- Status: PASS
+- Commit: 406e164
+- Files created: scripts/scs001/validate-broadcast.ts, workspace/sprints/sprint-336.json
+- Files modified: agents/telegram-bot/commands.ts, agents/telegram-bot/index.ts
+- Tasks completed:
+  - 336-01: /broadcast Telegram command — sends message to all alpha-whitelisted + waitlisted users. 200ms rate limit delay between sends. Logs to workspace/achiri/broadcast-log.jsonl with timestamp, recipients, sent/failed counts. Empty-message shows usage help. Owner-only guard.
+  - 336-02: validate-broadcast.ts — 11/11 tests pass (command export, file reads, rate limiting, routing, TypeScript compilation). Fixed Set iteration TS2802 with Array.from().
+- Validation: 11/11 PASS
+- Swarm used: no (FP-007, multi-file)
+- Issues: TS2802 Set iteration — fixed with Array.from().
+- Timestamp: 2026-03-20T06:05:00Z
