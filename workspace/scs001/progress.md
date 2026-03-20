@@ -2663,3 +2663,16 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (new single file + PM2 config update)
 - Issues: None.
 - Timestamp: 2026-03-20T03:00:00Z
+
+## Sprint 327 — Achiri Topic Analytics (Direct Write)
+- Status: PASS
+- Commit: 616147f
+- Files created: scripts/achiri/achiri-topic-analytics.ts, workspace/sprints/sprint-327.json
+- Files modified: agents/telegram-bot/commands.ts, agents/telegram-bot/index.ts
+- Tasks completed:
+  - 327-01: achiri-topic-analytics.ts — keyword-based topic detection (9 categories: education, technology, health, career, relationships, entertainment, emotions, culture, goals). Multilingual keywords (English, French, Darija). Reads user messages from memory JSONL files. Outputs workspace/achiri/topic-analytics.json. Supports --json mode. Zero LLM cost.
+  - 327-02: /achiritopics Telegram command — runs topic analytics and displays bar chart of topic distribution with counts and percentages. Added to /help listing.
+- Validation: npx tsc --noEmit PASS
+- Swarm used: no (multi-file feature)
+- Issues: None.
+- Timestamp: 2026-03-20T03:15:00Z
