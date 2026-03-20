@@ -1,0 +1,26 @@
+{
+  "sprint_id": "sprint-562",
+  "title": "INFRA \u2014 Queue replenish (563-566)",
+  "description": "Queue empty after Sprint 561. Added: content, pipeline QC integration, /quality command, final batch.",
+  "source": "queue-empty-replenish",
+  "tasks": [
+    {
+      "id": "562-01",
+      "title": "Add Sprints 563-566 to queue",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "workspace/sprint-queue.json",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-562",
+      "deliverables": {
+        "code": [
+          "workspace/sprint-queue.json"
+        ],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ]
+}
