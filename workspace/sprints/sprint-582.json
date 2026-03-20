@@ -1,0 +1,26 @@
+{
+  "sprint_id": "sprint-582",
+  "title": "INFRA \u2014 Queue replenish (583-585)",
+  "description": "Added: content x2, comprehensive snapshot.",
+  "source": "queue-empty-replenish",
+  "tasks": [
+    {
+      "id": "582-01",
+      "title": "Add Sprints 583-585",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "workspace/sprint-queue.json",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-582",
+      "deliverables": {
+        "code": [
+          "workspace/sprint-queue.json"
+        ],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ]
+}

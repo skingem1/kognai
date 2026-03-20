@@ -1,6 +1,6 @@
 {
   "_note": "AUTHORITATIVE sprint execution order. The brief generator reads this and injects the first item as a MANDATORY directive, bypassing Qwen's recommendation. Pop items by setting status=done after each sprint ships. Human-maintained — edit to re-prioritise.",
-  "updated": "2026-03-21T02:00",
+  "updated": "2026-03-21T03:00",
   "owner": "Tarek (human)",
   "_plan_rationale": "Queue fixed 2026-03-20. Sprints 442-458 consumed by autonomous swarm. 10 items marked done (work completed). Remaining items have auto-sync guard in brief generator: consumed sprint numbers auto-skipped at runtime. 2 critical un-done items (SAFETY-SPLIT Part 2, progress.md update) re-added as Sprint 496-497 to avoid number collisions.",
   "queue": [
@@ -1230,6 +1230,39 @@
       "status": "done",
       "rationale": "Another 10 videos + full stats refresh.",
       "_note": "193 produced, 118 delivered. $8.61 total. Gate ON TRACK."
+    },
+    {
+      "sprint": 582,
+      "title": "INFRA — Queue replenish (583-585)",
+      "block": "INFRA",
+      "status": "done",
+      "_note": "Self-referential.",
+      "priority": "high",
+      "rationale": "Queue empty after Sprint 581."
+    },
+    {
+      "sprint": 583,
+      "title": "CONTENT — Batch: 10 videos via pipeline-cron",
+      "block": "CONTENT",
+      "priority": "high",
+      "status": "pending",
+      "rationale": "Push production past 200 videos."
+    },
+    {
+      "sprint": 584,
+      "title": "INFRA — Final comprehensive stats + system snapshot",
+      "block": "INFRA",
+      "priority": "medium",
+      "status": "pending",
+      "rationale": "Run all reports: stats, diversity, quality, smoke test. Comprehensive session-end snapshot."
+    },
+    {
+      "sprint": 585,
+      "title": "CONTENT — Final batch: 5 more videos + state commit",
+      "block": "CONTENT",
+      "priority": "high",
+      "status": "pending",
+      "rationale": "Last batch this session. Run pipeline, commit all state."
     }
   ]
 }
