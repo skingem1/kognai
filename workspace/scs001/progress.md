@@ -1,6 +1,6 @@
 # SCS-001 TikTok Content Agent — Progress Log
 
-*Last updated: 2026-03-20 (Sprint 477)*
+*Last updated: 2026-03-20 (Sprint 479)*
 
 ## Summary
 
@@ -57,6 +57,7 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 
 | Sprint | Block | Title |
 |--------|-------|-------|
+| 479 | PIPELINE | Competitor analysis feed + /competitor command |
 | 477 | EVAL | Context Hub (chub CLI) evaluation — ADOPT 3.55/5.0 |
 | 476 | ACHIRI | Safety harness review + cultural filter validation |
 | 496 | SAFETY | Split telegram-bot.ts Part 2 (2193→339 lines) |

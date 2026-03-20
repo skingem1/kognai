@@ -344,7 +344,7 @@
       "sprint": 479,
       "title": "PIPELINE — Competitor analysis feed (top 10 TikTok accounts in niche)",
       "block": "PIPELINE-V2",
-      "status": "pending",
+      "status": "done",
       "priority": "low",
       "rationale": "Trend Agent currently uses Internet Archive. Add competitor monitoring: track top 10 TikTok accounts in target niches, analyze their posting patterns, extract hook formulas. Feed into topic selection."
     },
