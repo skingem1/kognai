@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-513",
+  "title": "CONTENT — High-volume batch: produce 10 videos in single session",
+  "description": "With Sprint 512 fix (5 briefs/run), produced 10 videos in 2 runs. All 10 sent to Telegram. Total session videos: 23.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "513-01",
+      "title": "Run pipeline 2x (5+5 videos)",
+      "type": "feature",
+      "task_type": "pipeline",
+      "task_target": "local",
+      "agent": "scs001-orchestrator",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-513",
+      "deliverables": { "code": [], "tests": [], "docs": ["workspace/scs001/pipeline-runs/"] }
+    },
+    {
+      "id": "513-02",
+      "title": "Send all 10 videos to Telegram",
+      "type": "feature",
+      "task_type": "delivery",
+      "task_target": "local",
+      "agent": "telegram-bot",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-513",
+      "deliverables": { "code": [], "tests": [], "docs": [] }
+    }
+  ]
+}
