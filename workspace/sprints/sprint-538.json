@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-538",
+  "title": "CONTENT — Expand mock trend feed from 15 to 30 diverse topics",
+  "description": "Added 15 new topics: healthcare AI, quantum, AI movies, chips, climate, gaming, wearables, jobs, China AI, cybersecurity, education, biotech, farming, copyright, AI scientists. All 30 qualified.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "538-01",
+      "title": "Expand mock-oracle6-feed.json from 15 to 30 topics",
+      "type": "feature",
+      "task_type": "content",
+      "task_target": "contracts/scs-001/mock-oracle6-feed.json",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-538",
+      "deliverables": { "code": ["contracts/scs-001/mock-oracle6-feed.json"], "tests": [], "docs": [] }
+    }
+  ]
+}

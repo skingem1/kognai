@@ -1,6 +1,6 @@
 {
-  "description": "Mock ORACLE-6 feed — 15 synthetic Intelligence Signals for SCS-001 Trend Agent development. Matches oracle6-trend-v1.json schema exactly. Replace with live Voxight Module 2 at Phase 2B. Sprint 514: expanded from 5→15 topics for content variety.",
-  "generated_at": "2026-03-20T14:30:00Z",
+  "description": "Mock ORACLE-6 feed — 30 synthetic Intelligence Signals for SCS-001 Trend Agent development. Sprint 538: expanded from 15→30 topics for maximum content diversity.",
+  "generated_at": "2026-03-20T19:15:00Z",
   "feed_status": "mock",
   "signals": [
     {
@@ -9,14 +9,42 @@
       "topic": "MCP Protocol adoption surge — Claude, Cursor, Windsurf integrating Model Context Protocol",
       "summary": "Model Context Protocol (MCP) adoption has accelerated across major AI coding tools. Anthropic's open standard for connecting AI to external tools is being integrated by Cursor, Windsurf, and multiple IDE vendors. Developer discussion volume up 340% on X in the past 7 days.",
       "confidence": 92,
-      "keyword_cluster": ["MCP", "Model Context Protocol", "Anthropic", "tool use", "AI IDE", "Cursor", "Windsurf", "agent tools", "function calling"],
+      "keyword_cluster": [
+        "MCP",
+        "Model Context Protocol",
+        "Anthropic",
+        "tool use",
+        "AI IDE",
+        "Cursor",
+        "Windsurf",
+        "agent tools",
+        "function calling"
+      ],
       "top_speakers": [
-        { "name": "Alex Albert", "handle": "@alexalbert__", "authority_score": 88 },
-        { "name": "Sahil Lavingia", "handle": "@shl", "authority_score": 82 }
+        {
+          "name": "Alex Albert",
+          "handle": "@alexalbert__",
+          "authority_score": 88
+        },
+        {
+          "name": "Sahil Lavingia",
+          "handle": "@shl",
+          "authority_score": 82
+        }
       ],
       "relevant_channels": [
-        { "platform": "youtube", "channel_id": "UCa1sFzPrJr4d6HcKqN0n_8Q", "channel_name": "AI Explained", "recent_activity": "2026-03-14T18:00:00Z" },
-        { "platform": "x_spaces", "channel_id": "space-mcp-builders-weekly", "channel_name": "MCP Builders Weekly", "recent_activity": "2026-03-14T20:00:00Z" }
+        {
+          "platform": "youtube",
+          "channel_id": "UCa1sFzPrJr4d6HcKqN0n_8Q",
+          "channel_name": "AI Explained",
+          "recent_activity": "2026-03-14T18:00:00Z"
+        },
+        {
+          "platform": "x_spaces",
+          "channel_id": "space-mcp-builders-weekly",
+          "channel_name": "MCP Builders Weekly",
+          "recent_activity": "2026-03-14T20:00:00Z"
+        }
       ],
       "timestamp": "2026-03-15T06:00:00Z",
       "provenance": {
@@ -25,7 +53,10 @@
         "first_seen": "2026-03-08T12:00:00Z",
         "mainstream_eta_days": 21
       },
-      "domain_tags": ["ai_agents", "autonomous_systems"],
+      "domain_tags": [
+        "ai_agents",
+        "autonomous_systems"
+      ],
       "scs_relevant": true
     },
     {
@@ -34,14 +65,41 @@
       "topic": "Agent-to-Agent payments — x402 protocol and the PayAI moment",
       "summary": "Multiple X Spaces this week discussed the emerging agent payment infrastructure. The x402 protocol (HTTP 402 for machine payments) and Coinbase's PayAI are positioning as competing standards. Founders debating whether agents need their own wallets.",
       "confidence": 85,
-      "keyword_cluster": ["x402", "PayAI", "agent payments", "HTTP 402", "machine payments", "agent wallet", "Coinbase", "autonomous transactions"],
+      "keyword_cluster": [
+        "x402",
+        "PayAI",
+        "agent payments",
+        "HTTP 402",
+        "machine payments",
+        "agent wallet",
+        "Coinbase",
+        "autonomous transactions"
+      ],
       "top_speakers": [
-        { "name": "Jesse Pollak", "handle": "@jessepollak", "authority_score": 90 },
-        { "name": "Erik Voorhees", "handle": "@ErikVoorhees", "authority_score": 78 }
+        {
+          "name": "Jesse Pollak",
+          "handle": "@jessepollak",
+          "authority_score": 90
+        },
+        {
+          "name": "Erik Voorhees",
+          "handle": "@ErikVoorhees",
+          "authority_score": 78
+        }
       ],
       "relevant_channels": [
-        { "platform": "x_spaces", "channel_id": "space-agent-payments-debate", "channel_name": "Agent Payments Debate", "recent_activity": "2026-03-13T21:00:00Z" },
-        { "platform": "youtube", "channel_id": "UCBcRF18a7Qf58cCRy5xuWwQ", "channel_name": "Bankless", "recent_activity": "2026-03-12T16:00:00Z" }
+        {
+          "platform": "x_spaces",
+          "channel_id": "space-agent-payments-debate",
+          "channel_name": "Agent Payments Debate",
+          "recent_activity": "2026-03-13T21:00:00Z"
+        },
+        {
+          "platform": "youtube",
+          "channel_id": "UCBcRF18a7Qf58cCRy5xuWwQ",
+          "channel_name": "Bankless",
+          "recent_activity": "2026-03-12T16:00:00Z"
+        }
       ],
       "timestamp": "2026-03-15T06:15:00Z",
       "provenance": {
@@ -50,7 +108,10 @@
         "first_seen": "2026-03-10T09:00:00Z",
         "mainstream_eta_days": 28
       },
-      "domain_tags": ["web3_crypto_ai", "ai_agents"],
+      "domain_tags": [
+        "web3_crypto_ai",
+        "ai_agents"
+      ],
       "scs_relevant": true
     },
     {
@@ -59,14 +120,41 @@
       "topic": "Vibe coding backlash — 'AI-generated code is a ticking time bomb'",
       "summary": "Counter-narrative emerging against vibe coding. Senior engineers warning that AI-generated code without review is creating technical debt. The phrase 'vibe coding' itself becoming polarising. High controversy = high engagement potential.",
       "confidence": 78,
-      "keyword_cluster": ["vibe coding", "AI code quality", "technical debt", "code review", "AI coding tools", "Copilot", "agentic coding", "software quality"],
+      "keyword_cluster": [
+        "vibe coding",
+        "AI code quality",
+        "technical debt",
+        "code review",
+        "AI coding tools",
+        "Copilot",
+        "agentic coding",
+        "software quality"
+      ],
       "top_speakers": [
-        { "name": "ThePrimeagen", "handle": "@ThePrimeagen", "authority_score": 85 },
-        { "name": "Kelsey Hightower", "handle": "@kelseyhightower", "authority_score": 82 }
+        {
+          "name": "ThePrimeagen",
+          "handle": "@ThePrimeagen",
+          "authority_score": 85
+        },
+        {
+          "name": "Kelsey Hightower",
+          "handle": "@kelseyhightower",
+          "authority_score": 82
+        }
       ],
       "relevant_channels": [
-        { "platform": "youtube", "channel_id": "UC2Xd-TjJByJyK2w1zNwY0zQ", "channel_name": "ThePrimeTime", "recent_activity": "2026-03-14T22:00:00Z" },
-        { "platform": "reddit", "channel_id": "r/programming", "channel_name": "r/programming", "recent_activity": "2026-03-15T03:00:00Z" }
+        {
+          "platform": "youtube",
+          "channel_id": "UC2Xd-TjJByJyK2w1zNwY0zQ",
+          "channel_name": "ThePrimeTime",
+          "recent_activity": "2026-03-14T22:00:00Z"
+        },
+        {
+          "platform": "reddit",
+          "channel_id": "r/programming",
+          "channel_name": "r/programming",
+          "recent_activity": "2026-03-15T03:00:00Z"
+        }
       ],
       "timestamp": "2026-03-15T06:30:00Z",
       "provenance": {
@@ -75,7 +163,10 @@
         "first_seen": "2026-03-11T14:00:00Z",
         "mainstream_eta_days": 14
       },
-      "domain_tags": ["tech_predictions", "ai_agents"],
+      "domain_tags": [
+        "tech_predictions",
+        "ai_agents"
+      ],
       "scs_relevant": true
     },
     {
@@ -84,14 +175,41 @@
       "topic": "Sam Altman predicts 'one-person billion-dollar company' within 2 years",
       "summary": "Sam Altman's prediction about AI enabling single-person billion-dollar companies is generating massive debate. Founders both agreeing and pushing back. High emotional resonance — touches on founder identity, future of work, and AI capability trajectory.",
       "confidence": 88,
-      "keyword_cluster": ["Sam Altman", "one person company", "billion dollar", "AI company", "solopreneur", "founder", "future of work", "AI capability"],
+      "keyword_cluster": [
+        "Sam Altman",
+        "one person company",
+        "billion dollar",
+        "AI company",
+        "solopreneur",
+        "founder",
+        "future of work",
+        "AI capability"
+      ],
       "top_speakers": [
-        { "name": "Sam Altman", "handle": "@sama", "authority_score": 95 },
-        { "name": "Garry Tan", "handle": "@garrytan", "authority_score": 80 }
+        {
+          "name": "Sam Altman",
+          "handle": "@sama",
+          "authority_score": 95
+        },
+        {
+          "name": "Garry Tan",
+          "handle": "@garrytan",
+          "authority_score": 80
+        }
       ],
       "relevant_channels": [
-        { "platform": "youtube", "channel_id": "UCnUYZLuoy1rq1aVMwx4piYg", "channel_name": "Y Combinator", "recent_activity": "2026-03-13T19:00:00Z" },
-        { "platform": "podcast", "channel_id": "all-in-podcast", "channel_name": "All-In Podcast", "recent_activity": "2026-03-14T17:00:00Z" }
+        {
+          "platform": "youtube",
+          "channel_id": "UCnUYZLuoy1rq1aVMwx4piYg",
+          "channel_name": "Y Combinator",
+          "recent_activity": "2026-03-13T19:00:00Z"
+        },
+        {
+          "platform": "podcast",
+          "channel_id": "all-in-podcast",
+          "channel_name": "All-In Podcast",
+          "recent_activity": "2026-03-14T17:00:00Z"
+        }
       ],
       "timestamp": "2026-03-15T06:45:00Z",
       "provenance": {
@@ -100,7 +218,11 @@
         "first_seen": "2026-03-09T11:00:00Z",
         "mainstream_eta_days": 7
       },
-      "domain_tags": ["startup_founders", "builder_predictions", "automation_future_of_work"],
+      "domain_tags": [
+        "startup_founders",
+        "builder_predictions",
+        "automation_future_of_work"
+      ],
       "scs_relevant": true
     },
     {
@@ -109,14 +231,40 @@
       "topic": "EU AI Act enforcement begins — agent registration requirements",
       "summary": "The EU AI Act's first enforcement provisions are taking effect. Agent developers may need to register autonomous systems. This is the first real regulatory pressure on the agent economy. Implications for every agent builder.",
       "confidence": 72,
-      "keyword_cluster": ["EU AI Act", "AI regulation", "agent registration", "autonomous systems regulation", "compliance", "AI governance", "European Commission"],
+      "keyword_cluster": [
+        "EU AI Act",
+        "AI regulation",
+        "agent registration",
+        "autonomous systems regulation",
+        "compliance",
+        "AI governance",
+        "European Commission"
+      ],
       "top_speakers": [
-        { "name": "Margrethe Vestager", "handle": "@vestaboransen", "authority_score": 70 },
-        { "name": "Yann LeCun", "handle": "@ylecun", "authority_score": 88 }
+        {
+          "name": "Margrethe Vestager",
+          "handle": "@vestaboransen",
+          "authority_score": 70
+        },
+        {
+          "name": "Yann LeCun",
+          "handle": "@ylecun",
+          "authority_score": 88
+        }
       ],
       "relevant_channels": [
-        { "platform": "youtube", "channel_id": "UC0RhatS1pyxInC00YKjjBqQ", "channel_name": "TechCrunch", "recent_activity": "2026-03-14T15:00:00Z" },
-        { "platform": "hacker_news", "channel_id": "hn-front-page", "channel_name": "Hacker News", "recent_activity": "2026-03-15T02:00:00Z" }
+        {
+          "platform": "youtube",
+          "channel_id": "UC0RhatS1pyxInC00YKjjBqQ",
+          "channel_name": "TechCrunch",
+          "recent_activity": "2026-03-14T15:00:00Z"
+        },
+        {
+          "platform": "hacker_news",
+          "channel_id": "hn-front-page",
+          "channel_name": "Hacker News",
+          "recent_activity": "2026-03-15T02:00:00Z"
+        }
       ],
       "timestamp": "2026-03-15T07:00:00Z",
       "provenance": {
@@ -125,7 +273,10 @@
         "first_seen": "2026-03-12T08:00:00Z",
         "mainstream_eta_days": 3
       },
-      "domain_tags": ["macro_ai_trends", "ai_agents"],
+      "domain_tags": [
+        "macro_ai_trends",
+        "ai_agents"
+      ],
       "scs_relevant": true
     },
     {
@@ -134,13 +285,35 @@
       "topic": "Open-source AI models closing the gap — Llama 4, Qwen 3, DeepSeek R1 benchmarks",
       "summary": "Open-source LLMs are matching proprietary models on key benchmarks. Meta's Llama 4, Alibaba's Qwen 3, and DeepSeek R1 are challenging GPT-4 and Claude on coding, math, and reasoning tasks. The cost advantage is driving enterprise adoption.",
       "confidence": 90,
-      "keyword_cluster": ["open source AI", "Llama 4", "Qwen 3", "DeepSeek", "LLM benchmarks", "self-hosted AI", "enterprise AI", "model weights"],
+      "keyword_cluster": [
+        "open source AI",
+        "Llama 4",
+        "Qwen 3",
+        "DeepSeek",
+        "LLM benchmarks",
+        "self-hosted AI",
+        "enterprise AI",
+        "model weights"
+      ],
       "top_speakers": [
-        { "name": "Mark Zuckerberg", "handle": "@faboroso", "authority_score": 92 },
-        { "name": "Andrej Karpathy", "handle": "@karpathy", "authority_score": 95 }
+        {
+          "name": "Mark Zuckerberg",
+          "handle": "@faboroso",
+          "authority_score": 92
+        },
+        {
+          "name": "Andrej Karpathy",
+          "handle": "@karpathy",
+          "authority_score": 95
+        }
       ],
       "relevant_channels": [
-        { "platform": "youtube", "channel_id": "UCWN3xxRkmTPmbKwht9FuE5A", "channel_name": "Fireship", "recent_activity": "2026-03-18T14:00:00Z" }
+        {
+          "platform": "youtube",
+          "channel_id": "UCWN3xxRkmTPmbKwht9FuE5A",
+          "channel_name": "Fireship",
+          "recent_activity": "2026-03-18T14:00:00Z"
+        }
       ],
       "timestamp": "2026-03-20T07:00:00Z",
       "provenance": {
@@ -149,7 +322,10 @@
         "first_seen": "2026-03-15T10:00:00Z",
         "mainstream_eta_days": 5
       },
-      "domain_tags": ["open_source_ai", "llm_models"],
+      "domain_tags": [
+        "open_source_ai",
+        "llm_models"
+      ],
       "scs_relevant": true
     },
     {
@@ -158,13 +334,34 @@
       "topic": "AI replacing junior developers — the great skills debate",
       "summary": "Tech companies reporting 30-50% reduction in junior dev hiring. Senior engineers debating whether AI tools eliminate the learning path that creates senior developers. Massive engagement on X and LinkedIn. Touches career anxiety.",
       "confidence": 86,
-      "keyword_cluster": ["AI replacing developers", "junior developer", "tech hiring", "career in tech", "AI coding", "software engineering future", "layoffs tech"],
+      "keyword_cluster": [
+        "AI replacing developers",
+        "junior developer",
+        "tech hiring",
+        "career in tech",
+        "AI coding",
+        "software engineering future",
+        "layoffs tech"
+      ],
       "top_speakers": [
-        { "name": "Pieter Levels", "handle": "@levelsio", "authority_score": 84 },
-        { "name": "DHH", "handle": "@dhh", "authority_score": 82 }
+        {
+          "name": "Pieter Levels",
+          "handle": "@levelsio",
+          "authority_score": 84
+        },
+        {
+          "name": "DHH",
+          "handle": "@dhh",
+          "authority_score": 82
+        }
       ],
       "relevant_channels": [
-        { "platform": "youtube", "channel_id": "UCsBjURrPoezykLs9EqgamOA", "channel_name": "Fireship", "recent_activity": "2026-03-19T16:00:00Z" }
+        {
+          "platform": "youtube",
+          "channel_id": "UCsBjURrPoezykLs9EqgamOA",
+          "channel_name": "Fireship",
+          "recent_activity": "2026-03-19T16:00:00Z"
+        }
       ],
       "timestamp": "2026-03-20T07:15:00Z",
       "provenance": {
@@ -173,7 +370,10 @@
         "first_seen": "2026-03-14T08:00:00Z",
         "mainstream_eta_days": 10
       },
-      "domain_tags": ["automation_future_of_work", "tech_careers"],
+      "domain_tags": [
+        "automation_future_of_work",
+        "tech_careers"
+      ],
       "scs_relevant": true
     },
     {
@@ -182,13 +382,35 @@
       "topic": "AI voice cloning ethics — deepfake scams hit $25B losses globally",
       "summary": "FBI reports voice cloning fraud losses surging. Celebrities and executives being impersonated by AI-generated voice. New detection tools emerging. High emotional hook: 'Could someone clone YOUR voice in 3 seconds?'",
       "confidence": 82,
-      "keyword_cluster": ["voice cloning", "deepfake", "AI fraud", "voice AI", "scam prevention", "ElevenLabs", "AI safety", "identity theft"],
+      "keyword_cluster": [
+        "voice cloning",
+        "deepfake",
+        "AI fraud",
+        "voice AI",
+        "scam prevention",
+        "ElevenLabs",
+        "AI safety",
+        "identity theft"
+      ],
       "top_speakers": [
-        { "name": "Lex Fridman", "handle": "@lexfridman", "authority_score": 88 },
-        { "name": "Mira Murati", "handle": "@maboroshi", "authority_score": 80 }
+        {
+          "name": "Lex Fridman",
+          "handle": "@lexfridman",
+          "authority_score": 88
+        },
+        {
+          "name": "Mira Murati",
+          "handle": "@maboroshi",
+          "authority_score": 80
+        }
       ],
       "relevant_channels": [
-        { "platform": "youtube", "channel_id": "UCSHZKyawb77ixDdsGog4iWA", "channel_name": "Lex Fridman", "recent_activity": "2026-03-17T20:00:00Z" }
+        {
+          "platform": "youtube",
+          "channel_id": "UCSHZKyawb77ixDdsGog4iWA",
+          "channel_name": "Lex Fridman",
+          "recent_activity": "2026-03-17T20:00:00Z"
+        }
       ],
       "timestamp": "2026-03-20T07:30:00Z",
       "provenance": {
@@ -197,7 +419,10 @@
         "first_seen": "2026-03-13T12:00:00Z",
         "mainstream_eta_days": 3
       },
-      "domain_tags": ["ai_safety", "cybersecurity"],
+      "domain_tags": [
+        "ai_safety",
+        "cybersecurity"
+      ],
       "scs_relevant": true
     },
     {
@@ -206,13 +431,35 @@
       "topic": "Elon Musk's Grok 3 goes open — what it means for the AI arms race",
       "summary": "xAI open-sourced Grok 3's weights, breaking from the trend of proprietary models. Developers racing to fine-tune. Debate: is this competitive strategy or genuine open-source commitment? Major implications for model access democratization.",
       "confidence": 84,
-      "keyword_cluster": ["Grok 3", "xAI", "Elon Musk", "open source", "AI competition", "model weights", "fine tuning", "AI democratization"],
+      "keyword_cluster": [
+        "Grok 3",
+        "xAI",
+        "Elon Musk",
+        "open source",
+        "AI competition",
+        "model weights",
+        "fine tuning",
+        "AI democratization"
+      ],
       "top_speakers": [
-        { "name": "Elon Musk", "handle": "@elonmusk", "authority_score": 96 },
-        { "name": "Jim Fan", "handle": "@DrJimFan", "authority_score": 85 }
+        {
+          "name": "Elon Musk",
+          "handle": "@elonmusk",
+          "authority_score": 96
+        },
+        {
+          "name": "Jim Fan",
+          "handle": "@DrJimFan",
+          "authority_score": 85
+        }
       ],
       "relevant_channels": [
-        { "platform": "youtube", "channel_id": "UCZHmQk67mSJgfCCTn7xBfew", "channel_name": "MKBHD", "recent_activity": "2026-03-18T18:00:00Z" }
+        {
+          "platform": "youtube",
+          "channel_id": "UCZHmQk67mSJgfCCTn7xBfew",
+          "channel_name": "MKBHD",
+          "recent_activity": "2026-03-18T18:00:00Z"
+        }
       ],
       "timestamp": "2026-03-20T07:45:00Z",
       "provenance": {
@@ -221,7 +468,10 @@
         "first_seen": "2026-03-16T09:00:00Z",
         "mainstream_eta_days": 7
       },
-      "domain_tags": ["open_source_ai", "tech_industry"],
+      "domain_tags": [
+        "open_source_ai",
+        "tech_industry"
+      ],
       "scs_relevant": true
     },
     {
@@ -230,13 +480,34 @@
       "topic": "AI-powered robotics breakthrough — Figure 02 and Tesla Optimus updates",
       "summary": "Humanoid robots achieving new milestones. Figure's 02 model performing warehouse tasks autonomously. Tesla Optimus walking in unstructured environments. Hardware + AI convergence creating new investment wave. VCs pouring billions into humanoid robotics startups.",
       "confidence": 80,
-      "keyword_cluster": ["humanoid robot", "Figure 02", "Tesla Optimus", "robotics AI", "embodied AI", "warehouse automation", "physical AI"],
+      "keyword_cluster": [
+        "humanoid robot",
+        "Figure 02",
+        "Tesla Optimus",
+        "robotics AI",
+        "embodied AI",
+        "warehouse automation",
+        "physical AI"
+      ],
       "top_speakers": [
-        { "name": "Brett Adcock", "handle": "@adaborobot", "authority_score": 78 },
-        { "name": "Jensen Huang", "handle": "@nvidia", "authority_score": 90 }
+        {
+          "name": "Brett Adcock",
+          "handle": "@adaborobot",
+          "authority_score": 78
+        },
+        {
+          "name": "Jensen Huang",
+          "handle": "@nvidia",
+          "authority_score": 90
+        }
       ],
       "relevant_channels": [
-        { "platform": "youtube", "channel_id": "UCvjgXvBlbQiAffgfV1vUDCg", "channel_name": "Two Minute Papers", "recent_activity": "2026-03-19T12:00:00Z" }
+        {
+          "platform": "youtube",
+          "channel_id": "UCvjgXvBlbQiAffgfV1vUDCg",
+          "channel_name": "Two Minute Papers",
+          "recent_activity": "2026-03-19T12:00:00Z"
+        }
       ],
       "timestamp": "2026-03-20T08:00:00Z",
       "provenance": {
@@ -245,7 +516,10 @@
         "first_seen": "2026-03-15T14:00:00Z",
         "mainstream_eta_days": 14
       },
-      "domain_tags": ["robotics", "hardware_ai"],
+      "domain_tags": [
+        "robotics",
+        "hardware_ai"
+      ],
       "scs_relevant": true
     },
     {
@@ -254,13 +528,34 @@
       "topic": "The AI energy crisis — data centers consuming more power than small countries",
       "summary": "AI training and inference energy consumption is becoming a mainstream concern. Reports of data centers drawing more electricity than entire nations. Nuclear power deals by Microsoft and Google. Environmental impact debate intensifying.",
       "confidence": 76,
-      "keyword_cluster": ["AI energy", "data center power", "nuclear AI", "sustainability", "GPU power consumption", "carbon footprint AI", "green AI"],
+      "keyword_cluster": [
+        "AI energy",
+        "data center power",
+        "nuclear AI",
+        "sustainability",
+        "GPU power consumption",
+        "carbon footprint AI",
+        "green AI"
+      ],
       "top_speakers": [
-        { "name": "Bill Gates", "handle": "@BillGates", "authority_score": 90 },
-        { "name": "Dario Amodei", "handle": "@DarioAmodei", "authority_score": 85 }
+        {
+          "name": "Bill Gates",
+          "handle": "@BillGates",
+          "authority_score": 90
+        },
+        {
+          "name": "Dario Amodei",
+          "handle": "@DarioAmodei",
+          "authority_score": 85
+        }
       ],
       "relevant_channels": [
-        { "platform": "youtube", "channel_id": "UCHnyfMqiRRG1u-2MsSQLbXA", "channel_name": "Veritasium", "recent_activity": "2026-03-17T15:00:00Z" }
+        {
+          "platform": "youtube",
+          "channel_id": "UCHnyfMqiRRG1u-2MsSQLbXA",
+          "channel_name": "Veritasium",
+          "recent_activity": "2026-03-17T15:00:00Z"
+        }
       ],
       "timestamp": "2026-03-20T08:15:00Z",
       "provenance": {
@@ -269,7 +564,10 @@
         "first_seen": "2026-03-10T11:00:00Z",
         "mainstream_eta_days": 5
       },
-      "domain_tags": ["macro_ai_trends", "sustainability"],
+      "domain_tags": [
+        "macro_ai_trends",
+        "sustainability"
+      ],
       "scs_relevant": true
     },
     {
@@ -278,13 +576,34 @@
       "topic": "AI tutoring revolution — Khan Academy, Duolingo, and personalized learning at scale",
       "summary": "AI tutors outperforming human tutors in controlled studies. Khan Academy's Khanmigo showing 40% improvement in test scores. Duolingo's AI conversations replacing traditional language classes. Education disruption accelerating faster than expected.",
       "confidence": 74,
-      "keyword_cluster": ["AI tutor", "Khan Academy", "Khanmigo", "Duolingo AI", "personalized learning", "edtech AI", "education disruption"],
+      "keyword_cluster": [
+        "AI tutor",
+        "Khan Academy",
+        "Khanmigo",
+        "Duolingo AI",
+        "personalized learning",
+        "edtech AI",
+        "education disruption"
+      ],
       "top_speakers": [
-        { "name": "Sal Khan", "handle": "@saborohan", "authority_score": 86 },
-        { "name": "Ethan Mollick", "handle": "@emollick", "authority_score": 82 }
+        {
+          "name": "Sal Khan",
+          "handle": "@saborohan",
+          "authority_score": 86
+        },
+        {
+          "name": "Ethan Mollick",
+          "handle": "@emollick",
+          "authority_score": 82
+        }
       ],
       "relevant_channels": [
-        { "platform": "youtube", "channel_id": "UC4a-Gbdw7vOaccHmFo40b9g", "channel_name": "Khan Academy", "recent_activity": "2026-03-18T10:00:00Z" }
+        {
+          "platform": "youtube",
+          "channel_id": "UC4a-Gbdw7vOaccHmFo40b9g",
+          "channel_name": "Khan Academy",
+          "recent_activity": "2026-03-18T10:00:00Z"
+        }
       ],
       "timestamp": "2026-03-20T08:30:00Z",
       "provenance": {
@@ -293,7 +612,10 @@
         "first_seen": "2026-03-12T16:00:00Z",
         "mainstream_eta_days": 10
       },
-      "domain_tags": ["ai_education", "edtech"],
+      "domain_tags": [
+        "ai_education",
+        "edtech"
+      ],
       "scs_relevant": true
     },
     {
@@ -302,13 +624,35 @@
       "topic": "AI music generation lawsuit wave — record labels vs Suno and Udio",
       "summary": "Major record labels suing AI music generators for copyright infringement. Suno and Udio facing billion-dollar lawsuits. Debate: is AI-generated music transformative fair use or theft? Musicians split between fear and opportunity.",
       "confidence": 70,
-      "keyword_cluster": ["AI music", "Suno", "Udio", "copyright AI", "music generation", "RIAA lawsuit", "creative AI", "fair use"],
+      "keyword_cluster": [
+        "AI music",
+        "Suno",
+        "Udio",
+        "copyright AI",
+        "music generation",
+        "RIAA lawsuit",
+        "creative AI",
+        "fair use"
+      ],
       "top_speakers": [
-        { "name": "Rick Beato", "handle": "@rickbeato1", "authority_score": 80 },
-        { "name": "Grimes", "handle": "@Grimezsz", "authority_score": 75 }
+        {
+          "name": "Rick Beato",
+          "handle": "@rickbeato1",
+          "authority_score": 80
+        },
+        {
+          "name": "Grimes",
+          "handle": "@Grimezsz",
+          "authority_score": 75
+        }
       ],
       "relevant_channels": [
-        { "platform": "youtube", "channel_id": "UCJquYOG5EL82sKTfH9aMA9Q", "channel_name": "Rick Beato", "recent_activity": "2026-03-19T14:00:00Z" }
+        {
+          "platform": "youtube",
+          "channel_id": "UCJquYOG5EL82sKTfH9aMA9Q",
+          "channel_name": "Rick Beato",
+          "recent_activity": "2026-03-19T14:00:00Z"
+        }
       ],
       "timestamp": "2026-03-20T08:45:00Z",
       "provenance": {
@@ -317,7 +661,10 @@
         "first_seen": "2026-03-11T18:00:00Z",
         "mainstream_eta_days": 7
       },
-      "domain_tags": ["creative_ai", "legal_ip"],
+      "domain_tags": [
+        "creative_ai",
+        "legal_ip"
+      ],
       "scs_relevant": true
     },
     {
@@ -326,13 +673,35 @@
       "topic": "Apple Intelligence 2.0 — Siri finally gets a brain with on-device LLM",
       "summary": "Apple's WWDC preview leaks showing major Siri overhaul with on-device language model. Privacy-first approach contrasting with cloud-dependent competitors. Developers excited about new API access. Could shift the consumer AI landscape overnight.",
       "confidence": 83,
-      "keyword_cluster": ["Apple Intelligence", "Siri upgrade", "on-device AI", "Apple LLM", "privacy AI", "WWDC", "iOS AI", "edge computing"],
+      "keyword_cluster": [
+        "Apple Intelligence",
+        "Siri upgrade",
+        "on-device AI",
+        "Apple LLM",
+        "privacy AI",
+        "WWDC",
+        "iOS AI",
+        "edge computing"
+      ],
       "top_speakers": [
-        { "name": "Mark Gurman", "handle": "@markgurman", "authority_score": 88 },
-        { "name": "Ben Thompson", "handle": "@benthompson", "authority_score": 86 }
+        {
+          "name": "Mark Gurman",
+          "handle": "@markgurman",
+          "authority_score": 88
+        },
+        {
+          "name": "Ben Thompson",
+          "handle": "@benthompson",
+          "authority_score": 86
+        }
       ],
       "relevant_channels": [
-        { "platform": "youtube", "channel_id": "UCZHmQk67mSJgfCCTn7xBfew", "channel_name": "MKBHD", "recent_activity": "2026-03-20T10:00:00Z" }
+        {
+          "platform": "youtube",
+          "channel_id": "UCZHmQk67mSJgfCCTn7xBfew",
+          "channel_name": "MKBHD",
+          "recent_activity": "2026-03-20T10:00:00Z"
+        }
       ],
       "timestamp": "2026-03-20T09:00:00Z",
       "provenance": {
@@ -341,7 +710,10 @@
         "first_seen": "2026-03-17T08:00:00Z",
         "mainstream_eta_days": 14
       },
-      "domain_tags": ["consumer_ai", "mobile_tech"],
+      "domain_tags": [
+        "consumer_ai",
+        "mobile_tech"
+      ],
       "scs_relevant": true
     },
     {
@@ -350,13 +722,35 @@
       "topic": "AI agents are hallucinating financial data — Wall Street's trust problem",
       "summary": "Bloomberg investigation reveals AI trading agents making decisions based on hallucinated earnings data. Multiple hedge funds quietly pausing AI-driven strategies. Raises fundamental questions about AI reliability in high-stakes domains. Massive engagement from finance + tech crossover audience.",
       "confidence": 79,
-      "keyword_cluster": ["AI hallucination", "AI finance", "trading AI", "Wall Street AI", "AI reliability", "hallucinated data", "AI risk", "algorithmic trading"],
+      "keyword_cluster": [
+        "AI hallucination",
+        "AI finance",
+        "trading AI",
+        "Wall Street AI",
+        "AI reliability",
+        "hallucinated data",
+        "AI risk",
+        "algorithmic trading"
+      ],
       "top_speakers": [
-        { "name": "Chamath Palihapitiya", "handle": "@chamath", "authority_score": 82 },
-        { "name": "Patrick Boyle", "handle": "@PBoyle11", "authority_score": 78 }
+        {
+          "name": "Chamath Palihapitiya",
+          "handle": "@chamath",
+          "authority_score": 82
+        },
+        {
+          "name": "Patrick Boyle",
+          "handle": "@PBoyle11",
+          "authority_score": 78
+        }
       ],
       "relevant_channels": [
-        { "platform": "youtube", "channel_id": "UCWN3xxRkmTPmbKwht9FuE5A", "channel_name": "Fireship", "recent_activity": "2026-03-19T20:00:00Z" }
+        {
+          "platform": "youtube",
+          "channel_id": "UCWN3xxRkmTPmbKwht9FuE5A",
+          "channel_name": "Fireship",
+          "recent_activity": "2026-03-19T20:00:00Z"
+        }
       ],
       "timestamp": "2026-03-20T09:15:00Z",
       "provenance": {
@@ -365,7 +759,642 @@
         "first_seen": "2026-03-16T14:00:00Z",
         "mainstream_eta_days": 5
       },
-      "domain_tags": ["ai_safety", "fintech"],
+      "domain_tags": [
+        "ai_safety",
+        "fintech"
+      ],
+      "scs_relevant": true
+    },
+    {
+      "topic": "AI in healthcare — FDA approves first autonomous diagnostic AI for radiology",
+      "summary": "The FDA granted de novo authorization to an AI system that can independently diagnose certain conditions from medical imaging without requiring physician oversight. This marks a paradigm shift in healthcare AI regulation.",
+      "confidence": 89,
+      "keyword_cluster": [
+        "healthcare AI",
+        "FDA",
+        "radiology",
+        "diagnostic AI",
+        "medical imaging",
+        "autonomous diagnosis"
+      ],
+      "top_speakers": [
+        {
+          "name": "Eric Topol",
+          "handle": "@EricTopol",
+          "authority_score": 91
+        }
+      ],
+      "domain_tags": [
+        "healthcare",
+        "regulation"
+      ],
+      "signal_id": "oracle6-00000000-0000-0000-0000-000000000016",
+      "query_type": "TRENDS",
+      "relevant_channels": [
+        {
+          "platform": "youtube",
+          "channel_id": "ch-16",
+          "channel_name": "AI Channel",
+          "recent_activity": "2026-03-18T10:00:00Z"
+        }
+      ],
+      "timestamp": "2026-03-15T06:00:00Z",
+      "provenance": {
+        "source": "manual_seed",
+        "detection_method": "hashtag_velocity",
+        "first_seen": "2026-03-8T12:00:00Z",
+        "mainstream_eta_days": 14
+      },
+      "scs_relevant": true
+    },
+    {
+      "topic": "Quantum computing meets AI — Google's Willow chip enables 1000-qubit error correction",
+      "summary": "Google's Willow quantum processor achieves practical error correction at scale, opening doors for quantum-enhanced machine learning. Researchers demonstrate quantum speedup on optimization problems relevant to AI training.",
+      "confidence": 85,
+      "keyword_cluster": [
+        "quantum computing",
+        "Google Willow",
+        "quantum ML",
+        "error correction",
+        "qubit"
+      ],
+      "top_speakers": [
+        {
+          "name": "Hartmut Neven",
+          "handle": "@HartmutNeven",
+          "authority_score": 88
+        }
+      ],
+      "domain_tags": [
+        "quantum",
+        "research"
+      ],
+      "signal_id": "oracle6-00000000-0000-0000-0000-000000000018",
+      "query_type": "TRENDS",
+      "relevant_channels": [
+        {
+          "platform": "youtube",
+          "channel_id": "ch-18",
+          "channel_name": "AI Channel",
+          "recent_activity": "2026-03-18T10:00:00Z"
+        }
+      ],
+      "timestamp": "2026-03-16T07:00:00Z",
+      "provenance": {
+        "source": "manual_seed",
+        "detection_method": "hashtag_velocity",
+        "first_seen": "2026-03-9T12:00:00Z",
+        "mainstream_eta_days": 15
+      },
+      "scs_relevant": true
+    },
+    {
+      "topic": "AI-generated movies are here — OpenAI Sora and Runway Gen-3 compete for Hollywood",
+      "summary": "Film studios begin experimenting with AI-generated footage for pre-visualization and VFX. SAG-AFTRA negotiations include new AI clauses. First fully AI-generated short film wins Sundance jury mention.",
+      "confidence": 87,
+      "keyword_cluster": [
+        "AI video",
+        "Sora",
+        "Runway",
+        "Hollywood",
+        "VFX",
+        "film",
+        "SAG-AFTRA"
+      ],
+      "top_speakers": [
+        {
+          "name": "Cristóbal Valenzuela",
+          "handle": "@c_valenzuela",
+          "authority_score": 85
+        }
+      ],
+      "domain_tags": [
+        "creative_ai",
+        "entertainment"
+      ],
+      "signal_id": "oracle6-00000000-0000-0000-0000-000000000020",
+      "query_type": "TRENDS",
+      "relevant_channels": [
+        {
+          "platform": "youtube",
+          "channel_id": "ch-20",
+          "channel_name": "AI Channel",
+          "recent_activity": "2026-03-18T10:00:00Z"
+        }
+      ],
+      "timestamp": "2026-03-17T08:00:00Z",
+      "provenance": {
+        "source": "manual_seed",
+        "detection_method": "hashtag_velocity",
+        "first_seen": "2026-03-10T12:00:00Z",
+        "mainstream_eta_days": 16
+      },
+      "scs_relevant": true
+    },
+    {
+      "topic": "The AI chip shortage is over — TSMC ramps 3nm production, NVIDIA H200 ships at scale",
+      "summary": "TSMC's expanded 3nm fabs are now at full capacity. NVIDIA's H200 GPUs shipping in volume to hyperscalers. GPU prices dropping 40% from 2025 peak. Democratization of AI compute accelerates.",
+      "confidence": 83,
+      "keyword_cluster": [
+        "TSMC",
+        "NVIDIA",
+        "H200",
+        "GPU",
+        "AI chips",
+        "compute",
+        "semiconductor"
+      ],
+      "top_speakers": [
+        {
+          "name": "Dylan Patel",
+          "handle": "@dylan522p",
+          "authority_score": 86
+        }
+      ],
+      "domain_tags": [
+        "hardware",
+        "semiconductor"
+      ],
+      "signal_id": "oracle6-00000000-0000-0000-0000-000000000022",
+      "query_type": "TRENDS",
+      "relevant_channels": [
+        {
+          "platform": "youtube",
+          "channel_id": "ch-22",
+          "channel_name": "AI Channel",
+          "recent_activity": "2026-03-18T10:00:00Z"
+        }
+      ],
+      "timestamp": "2026-03-18T09:00:00Z",
+      "provenance": {
+        "source": "manual_seed",
+        "detection_method": "hashtag_velocity",
+        "first_seen": "2026-03-11T12:00:00Z",
+        "mainstream_eta_days": 17
+      },
+      "scs_relevant": true
+    },
+    {
+      "topic": "AI climate modeling breakthrough — DeepMind's GenCast predicts extreme weather 10 days out",
+      "summary": "DeepMind's GenCast weather model now outperforms traditional numerical models for 10-day forecasts. Insurance companies and governments racing to integrate AI weather predictions for disaster preparedness.",
+      "confidence": 86,
+      "keyword_cluster": [
+        "climate AI",
+        "DeepMind",
+        "GenCast",
+        "weather",
+        "prediction",
+        "climate modeling"
+      ],
+      "top_speakers": [
+        {
+          "name": "Demis Hassabis",
+          "handle": "@demaborsa",
+          "authority_score": 92
+        }
+      ],
+      "domain_tags": [
+        "climate",
+        "research"
+      ],
+      "signal_id": "oracle6-00000000-0000-0000-0000-000000000024",
+      "query_type": "TRENDS",
+      "relevant_channels": [
+        {
+          "platform": "youtube",
+          "channel_id": "ch-24",
+          "channel_name": "AI Channel",
+          "recent_activity": "2026-03-18T10:00:00Z"
+        }
+      ],
+      "timestamp": "2026-03-19T10:00:00Z",
+      "provenance": {
+        "source": "manual_seed",
+        "detection_method": "hashtag_velocity",
+        "first_seen": "2026-03-12T12:00:00Z",
+        "mainstream_eta_days": 18
+      },
+      "scs_relevant": true
+    },
+    {
+      "topic": "AI gaming revolution — NPCs with real personalities using LLMs in AAA games",
+      "summary": "Ubisoft and EA showcase games where NPC dialogue is dynamically generated by fine-tuned LLMs. Players report unprecedented immersion. Gaming industry AI spend up 500% YoY.",
+      "confidence": 81,
+      "keyword_cluster": [
+        "gaming AI",
+        "NPC",
+        "LLM",
+        "game design",
+        "Ubisoft",
+        "EA",
+        "procedural generation"
+      ],
+      "top_speakers": [
+        {
+          "name": "Yves Guillemot",
+          "handle": "@YvesGuillemot",
+          "authority_score": 78
+        }
+      ],
+      "domain_tags": [
+        "gaming",
+        "entertainment"
+      ],
+      "signal_id": "oracle6-00000000-0000-0000-0000-000000000026",
+      "query_type": "TRENDS",
+      "relevant_channels": [
+        {
+          "platform": "youtube",
+          "channel_id": "ch-26",
+          "channel_name": "AI Channel",
+          "recent_activity": "2026-03-18T10:00:00Z"
+        }
+      ],
+      "timestamp": "2026-03-15T11:00:00Z",
+      "provenance": {
+        "source": "manual_seed",
+        "detection_method": "hashtag_velocity",
+        "first_seen": "2026-03-13T12:00:00Z",
+        "mainstream_eta_days": 19
+      },
+      "scs_relevant": true
+    },
+    {
+      "topic": "AI wearables go mainstream — Meta Ray-Bans and Humane AI Pin 2.0 battle for your face",
+      "summary": "Meta's Ray-Ban smart glasses with multimodal AI hit 5M sales. Humane launches AI Pin 2.0 with improved battery life. Apple Vision Pro adds AI assistant layer. Wearable AI market projected $45B by 2028.",
+      "confidence": 84,
+      "keyword_cluster": [
+        "wearable AI",
+        "Meta Ray-Ban",
+        "Humane",
+        "AI glasses",
+        "Vision Pro",
+        "smart glasses"
+      ],
+      "top_speakers": [
+        {
+          "name": "Mark Zuckerberg",
+          "handle": "@faborsa",
+          "authority_score": 95
+        }
+      ],
+      "domain_tags": [
+        "hardware",
+        "consumer"
+      ],
+      "signal_id": "oracle6-00000000-0000-0000-0000-000000000028",
+      "query_type": "TRENDS",
+      "relevant_channels": [
+        {
+          "platform": "youtube",
+          "channel_id": "ch-28",
+          "channel_name": "AI Channel",
+          "recent_activity": "2026-03-18T10:00:00Z"
+        }
+      ],
+      "timestamp": "2026-03-16T12:00:00Z",
+      "provenance": {
+        "source": "manual_seed",
+        "detection_method": "hashtag_velocity",
+        "first_seen": "2026-03-14T12:00:00Z",
+        "mainstream_eta_days": 20
+      },
+      "scs_relevant": true
+    },
+    {
+      "topic": "AI job market paradox — tech layoffs continue while AI engineer salaries hit $500K",
+      "summary": "Major tech companies cut 10% of workforce while simultaneously offering $500K+ packages for senior AI engineers. The great AI talent divide widens. Non-AI software roles shrinking 15% annually.",
+      "confidence": 90,
+      "keyword_cluster": [
+        "AI jobs",
+        "tech layoffs",
+        "talent",
+        "salary",
+        "engineering",
+        "career",
+        "hiring"
+      ],
+      "top_speakers": [
+        {
+          "name": "Gergely Orosz",
+          "handle": "@GergelyOrosz",
+          "authority_score": 84
+        }
+      ],
+      "domain_tags": [
+        "career",
+        "economy"
+      ],
+      "signal_id": "oracle6-00000000-0000-0000-0000-000000000030",
+      "query_type": "TRENDS",
+      "relevant_channels": [
+        {
+          "platform": "youtube",
+          "channel_id": "ch-30",
+          "channel_name": "AI Channel",
+          "recent_activity": "2026-03-18T10:00:00Z"
+        }
+      ],
+      "timestamp": "2026-03-17T13:00:00Z",
+      "provenance": {
+        "source": "manual_seed",
+        "detection_method": "hashtag_velocity",
+        "first_seen": "2026-03-8T12:00:00Z",
+        "mainstream_eta_days": 21
+      },
+      "scs_relevant": true
+    },
+    {
+      "topic": "China's AI moonshot — Baidu Ernie 5.0 and ByteDance Doubao challenge Western dominance",
+      "summary": "China's AI labs release models competitive with GPT-4o. ByteDance's Doubao powers TikTok recommendation engine. Baidu's Ernie 5.0 beats Claude on Chinese-language benchmarks. Geopolitical AI competition intensifies.",
+      "confidence": 88,
+      "keyword_cluster": [
+        "China AI",
+        "Baidu",
+        "ByteDance",
+        "Doubao",
+        "Ernie",
+        "geopolitics",
+        "competition"
+      ],
+      "top_speakers": [
+        {
+          "name": "Kai-Fu Lee",
+          "handle": "@kaaborsa",
+          "authority_score": 90
+        }
+      ],
+      "domain_tags": [
+        "geopolitics",
+        "competition"
+      ],
+      "signal_id": "oracle6-00000000-0000-0000-0000-000000000032",
+      "query_type": "TRENDS",
+      "relevant_channels": [
+        {
+          "platform": "youtube",
+          "channel_id": "ch-32",
+          "channel_name": "AI Channel",
+          "recent_activity": "2026-03-18T10:00:00Z"
+        }
+      ],
+      "timestamp": "2026-03-18T14:00:00Z",
+      "provenance": {
+        "source": "manual_seed",
+        "detection_method": "hashtag_velocity",
+        "first_seen": "2026-03-9T12:00:00Z",
+        "mainstream_eta_days": 22
+      },
+      "scs_relevant": true
+    },
+    {
+      "topic": "AI-powered cybersecurity — autonomous SOC agents detect and patch vulnerabilities in real-time",
+      "summary": "CrowdStrike and Palo Alto Networks deploy AI agents that autonomously detect, triage, and remediate security threats. Mean time to patch drops from days to minutes. AI vs AI cyberwarfare becomes reality.",
+      "confidence": 86,
+      "keyword_cluster": [
+        "cybersecurity",
+        "AI security",
+        "SOC",
+        "autonomous patching",
+        "threat detection"
+      ],
+      "top_speakers": [
+        {
+          "name": "George Kurtz",
+          "handle": "@George_Kurtz",
+          "authority_score": 83
+        }
+      ],
+      "domain_tags": [
+        "security",
+        "enterprise"
+      ],
+      "signal_id": "oracle6-00000000-0000-0000-0000-000000000034",
+      "query_type": "TRENDS",
+      "relevant_channels": [
+        {
+          "platform": "youtube",
+          "channel_id": "ch-34",
+          "channel_name": "AI Channel",
+          "recent_activity": "2026-03-18T10:00:00Z"
+        }
+      ],
+      "timestamp": "2026-03-19T15:00:00Z",
+      "provenance": {
+        "source": "manual_seed",
+        "detection_method": "hashtag_velocity",
+        "first_seen": "2026-03-10T12:00:00Z",
+        "mainstream_eta_days": 23
+      },
+      "scs_relevant": true
+    },
+    {
+      "topic": "Personalized AI tutors replace test prep — College Board partners with AI companies",
+      "summary": "Khan Academy's Khanmigo handles 50M tutoring sessions monthly. College Board announces AI-powered SAT prep. Students using AI tutors score 15% higher on average. Traditional test prep industry disrupted.",
+      "confidence": 87,
+      "keyword_cluster": [
+        "education AI",
+        "tutoring",
+        "Khan Academy",
+        "Khanmigo",
+        "SAT",
+        "personalized learning"
+      ],
+      "top_speakers": [
+        {
+          "name": "Sal Khan",
+          "handle": "@saborsa",
+          "authority_score": 89
+        }
+      ],
+      "domain_tags": [
+        "education",
+        "consumer"
+      ],
+      "signal_id": "oracle6-00000000-0000-0000-0000-000000000036",
+      "query_type": "TRENDS",
+      "relevant_channels": [
+        {
+          "platform": "youtube",
+          "channel_id": "ch-36",
+          "channel_name": "AI Channel",
+          "recent_activity": "2026-03-18T10:00:00Z"
+        }
+      ],
+      "timestamp": "2026-03-15T16:00:00Z",
+      "provenance": {
+        "source": "manual_seed",
+        "detection_method": "hashtag_velocity",
+        "first_seen": "2026-03-11T12:00:00Z",
+        "mainstream_eta_days": 24
+      },
+      "scs_relevant": true
+    },
+    {
+      "topic": "AI drug discovery hits Phase 3 — Isomorphic Labs' first AI-designed drug enters late trials",
+      "summary": "DeepMind spinoff Isomorphic Labs advances an AI-designed small molecule to Phase 3 clinical trials for inflammatory disease. AI-discovered drugs now represent 15% of pharma pipeline. Drug development time cut by 60%.",
+      "confidence": 85,
+      "keyword_cluster": [
+        "drug discovery",
+        "pharma",
+        "Isomorphic Labs",
+        "clinical trials",
+        "AlphaFold",
+        "biotech"
+      ],
+      "top_speakers": [
+        {
+          "name": "Demis Hassabis",
+          "handle": "@demaborsa",
+          "authority_score": 92
+        }
+      ],
+      "domain_tags": [
+        "biotech",
+        "healthcare"
+      ],
+      "signal_id": "oracle6-00000000-0000-0000-0000-000000000038",
+      "query_type": "TRENDS",
+      "relevant_channels": [
+        {
+          "platform": "youtube",
+          "channel_id": "ch-38",
+          "channel_name": "AI Channel",
+          "recent_activity": "2026-03-18T10:00:00Z"
+        }
+      ],
+      "timestamp": "2026-03-16T17:00:00Z",
+      "provenance": {
+        "source": "manual_seed",
+        "detection_method": "hashtag_velocity",
+        "first_seen": "2026-03-12T12:00:00Z",
+        "mainstream_eta_days": 25
+      },
+      "scs_relevant": true
+    },
+    {
+      "topic": "AI-powered farming — autonomous tractors and crop prediction models boost yields 30%",
+      "summary": "John Deere's autonomous tractors with computer vision now manage 5M acres. AI crop prediction models help farmers optimize planting and irrigation. Food security improves as AI agriculture scales globally.",
+      "confidence": 79,
+      "keyword_cluster": [
+        "agriculture AI",
+        "farming",
+        "autonomous tractors",
+        "crop prediction",
+        "food security"
+      ],
+      "top_speakers": [
+        {
+          "name": "John May",
+          "handle": "@JohnDeere",
+          "authority_score": 75
+        }
+      ],
+      "domain_tags": [
+        "agriculture",
+        "sustainability"
+      ],
+      "signal_id": "oracle6-00000000-0000-0000-0000-000000000040",
+      "query_type": "TRENDS",
+      "relevant_channels": [
+        {
+          "platform": "youtube",
+          "channel_id": "ch-40",
+          "channel_name": "AI Channel",
+          "recent_activity": "2026-03-18T10:00:00Z"
+        }
+      ],
+      "timestamp": "2026-03-17T06:00:00Z",
+      "provenance": {
+        "source": "manual_seed",
+        "detection_method": "hashtag_velocity",
+        "first_seen": "2026-03-13T12:00:00Z",
+        "mainstream_eta_days": 26
+      },
+      "scs_relevant": true
+    },
+    {
+      "topic": "AI copyright showdown — NYT v. OpenAI trial begins, could reshape fair use forever",
+      "summary": "The landmark NYT v. OpenAI copyright case goes to trial. Both sides present expert testimony on fair use, transformative works, and training data rights. Outcome will set precedent for all AI companies.",
+      "confidence": 91,
+      "keyword_cluster": [
+        "copyright",
+        "NYT",
+        "OpenAI",
+        "fair use",
+        "legal",
+        "training data",
+        "IP"
+      ],
+      "top_speakers": [
+        {
+          "name": "Ryan Heath",
+          "handle": "@PoliticoRyan",
+          "authority_score": 80
+        }
+      ],
+      "domain_tags": [
+        "legal",
+        "regulation"
+      ],
+      "signal_id": "oracle6-00000000-0000-0000-0000-000000000042",
+      "query_type": "TRENDS",
+      "relevant_channels": [
+        {
+          "platform": "youtube",
+          "channel_id": "ch-42",
+          "channel_name": "AI Channel",
+          "recent_activity": "2026-03-18T10:00:00Z"
+        }
+      ],
+      "timestamp": "2026-03-18T07:00:00Z",
+      "provenance": {
+        "source": "manual_seed",
+        "detection_method": "hashtag_velocity",
+        "first_seen": "2026-03-14T12:00:00Z",
+        "mainstream_eta_days": 27
+      },
+      "scs_relevant": true
+    },
+    {
+      "topic": "Autonomous AI scientists — AI agents now design and run their own experiments",
+      "summary": "Carnegie Mellon's COSCIENTIST and Google's AMIE systems autonomously design experiments, write code, analyze results, and iterate. Nature publishes first paper with AI listed as co-researcher.",
+      "confidence": 84,
+      "keyword_cluster": [
+        "AI research",
+        "autonomous science",
+        "COSCIENTIST",
+        "experiment design",
+        "AI scientist"
+      ],
+      "top_speakers": [
+        {
+          "name": "Yann LeCun",
+          "handle": "@ylaborsa",
+          "authority_score": 93
+        }
+      ],
+      "domain_tags": [
+        "research",
+        "science"
+      ],
+      "signal_id": "oracle6-00000000-0000-0000-0000-000000000044",
+      "query_type": "TRENDS",
+      "relevant_channels": [
+        {
+          "platform": "youtube",
+          "channel_id": "ch-44",
+          "channel_name": "AI Channel",
+          "recent_activity": "2026-03-18T10:00:00Z"
+        }
+      ],
+      "timestamp": "2026-03-19T08:00:00Z",
+      "provenance": {
+        "source": "manual_seed",
+        "detection_method": "hashtag_velocity",
+        "first_seen": "2026-03-8T12:00:00Z",
+        "mainstream_eta_days": 14
+      },
       "scs_relevant": true
     }
   ]

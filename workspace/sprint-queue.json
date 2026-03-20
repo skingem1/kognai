@@ -840,8 +840,9 @@
       "title": "CONTENT — Expand mock trend feed to 25+ diverse topics",
       "block": "CONTENT",
       "priority": "high",
-      "status": "pending",
-      "rationale": "Diversity audit shows only 15 unique topics. Expand to 25+ covering: AI safety, robotics, crypto/web3, biotech, space, education, climate, gaming, enterprise AI, creative AI. More variety = better content."
+      "status": "done",
+      "rationale": "Diversity audit shows only 15 unique topics. Expand to 25+ covering: AI safety, robotics, crypto/web3, biotech, space, education, climate, gaming, enterprise AI, creative AI. More variety = better content.",
+      "_note": "Mock feed expanded 15→30 topics. All 30 qualified. 15 new verticals added."
     },
     {
       "sprint": 539,
