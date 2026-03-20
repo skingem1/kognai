@@ -1,0 +1,44 @@
+{
+  "sprint_id": "sprint-486",
+  "title": "LAUNCH — GitHub public branch preparation",
+  "description": "Prepare files for future public branch: clean README.md for Kognai, add CONTRIBUTING.md, update LICENSE to reference Kognai, review .gitignore for secrets. Don't push yet.",
+  "source": "queue — Sprint 486 LAUNCH-PREP",
+  "tasks": [
+    {
+      "id": "486-01",
+      "title": "Rewrite README.md for Kognai (not Invoica)",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-486",
+      "deliverables": { "code": ["README.md"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "486-02",
+      "title": "Add CONTRIBUTING.md + update LICENSE",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-486",
+      "deliverables": { "code": ["CONTRIBUTING.md", "LICENSE"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "486-03",
+      "title": "Review .gitignore for secrets and data files",
+      "type": "audit",
+      "task_type": "review",
+      "task_target": "local",
+      "agent": "supervisor",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-486",
+      "deliverables": { "code": [".gitignore"], "tests": [], "docs": [] }
+    }
+  ]
+}

@@ -125,3 +125,16 @@ workspace/scs001/voiceover-audio/
 
 # Workspace scripts (auto-generated)
 workspace/scripts/
+
+# Sprint 486: Additional safety for public branch
+# Credential files
+*.pem
+*.key
+*-keypair.json
+credentials*.json
+
+# Internal planning docs (not for public)
+~/Documents/Kognai/
+
+# Telegram bot state
+data/telegram-bot-offset.txt
