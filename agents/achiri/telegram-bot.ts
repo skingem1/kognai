@@ -21,6 +21,7 @@ const ALLOWED_IDS = (process.env.ACHIRI_ALLOWED_CHAT_IDS || '')
   .filter(Boolean);
 
 const WAITLIST_PATH = path.join(__dirname, '..', '..', 'workspace', 'achiri', 'waitlist.jsonl');
+const REFERRALS_PATH = path.join(__dirname, '..', '..', 'workspace', 'achiri', 'referrals.jsonl');
 const OFFSET_PATH = path.join(__dirname, '..', '..', 'data', 'achiri-bot-offset.txt');
 
 // --- Telegram API helpers ---
@@ -83,6 +84,36 @@ function addToWaitlist(chatId: string, firstName: string, username: string): voi
   fs.appendFileSync(WAITLIST_PATH, JSON.stringify(entry) + '\n', 'utf-8');
 }
 
+// --- Sprint 403: Referral tracking ---
+
+interface Referral {
+  referrer_id: string;
+  referred_id: string;
+  referred_name: string;
+  referred_username: string;
+  timestamp: string;
+}
+
+function recordReferral(referrerId: string, referredId: string, referredName: string, referredUsername: string): void {
+  // Don't record self-referrals or duplicates
+  if (referrerId === referredId) return;
+  const existing = loadReferrals();
+  if (existing.some(r => r.referred_id === referredId)) return;
+  const entry: Referral = { referrer_id: referrerId, referred_id: referredId, referred_name: referredName, referred_username: referredUsername, timestamp: new Date().toISOString() };
+  const dir = path.dirname(REFERRALS_PATH);
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+  fs.appendFileSync(REFERRALS_PATH, JSON.stringify(entry) + '\n', 'utf-8');
+}
+
+function loadReferrals(): Referral[] {
+  if (!fs.existsSync(REFERRALS_PATH)) return [];
+  return fs.readFileSync(REFERRALS_PATH, 'utf-8').split('\n').filter(l => l.trim()).map(l => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
+}
+
+function getReferralCount(chatId: string): number {
+  return loadReferrals().filter(r => r.referrer_id === chatId).length;
+}
+
 // --- Access control ---
 
 function hasAccess(chatId: string): boolean {
@@ -110,10 +141,25 @@ function getHandler(chatId: string): AchiriConversationHandler {
 
 // --- Command handling ---
 
-async function handleStart(chatId: string, firstName: string, username: string): Promise<void> {
+async function handleStart(chatId: string, firstName: string, username: string, args: string = ''): Promise<void> {
   if (!isOnWaitlist(chatId)) {
     addToWaitlist(chatId, firstName, username);
   }
+
+  // Sprint 403: Process referral parameter (e.g. /start ref_12345)
+  if (args.startsWith('ref_')) {
+    const referrerId = args.slice(4);
+    if (referrerId && referrerId !== chatId) {
+      recordReferral(referrerId, chatId, firstName, username);
+      // Notify referrer
+      const refCount = getReferralCount(referrerId);
+      sendMessage(referrerId,
+        `🎉 *${firstName}* joined Achiri through your invite link!\n` +
+        `📊 You've referred *${refCount}* friend${refCount !== 1 ? 's' : ''} so far. Ya3ichek! 🤝`
+      ).catch(() => {}); // non-fatal
+    }
+  }
+
   await sendMessage(chatId,
     `مرحبا ${firstName}! 🇹🇳\n\n` +
     `أنا *Achiri* — رفيقك الذكي، مصنوع لتونس.\n` +
@@ -137,6 +183,7 @@ async function handleHelp(chatId: string): Promise<void> {
     `/stats — Your engagement stats\n` +
     `/learn — Learn Darija word of the day\n` +
     `/translate — Darija/French/English translator\n` +
+    `/invite — Share Achiri with friends\n` +
     `/feedback — Send us feedback\n` +
     `/about — About Achiri\n\n` +
     `Or just send me a message and we'll chat! 💬`
@@ -540,9 +587,43 @@ async function handleStats(chatId: string): Promise<void> {
   }
   if (learnAttempts > 0) out.push(`📚 Darija lessons: ${learnCorrect}/${learnAttempts} correct`);
 
+  // Sprint 403: Referral count
+  const refCount = getReferralCount(chatId);
+  if (refCount > 0) out.push(`🤝 Referrals: ${refCount} friend${refCount !== 1 ? 's' : ''} invited`);
+
   out.push('', currentStreak === 0 ? '_Chat daily to build your streak!_ 🔥' : '_Keep chatting — every conversation makes Achiri smarter!_ 🧠');
 
   await sendMessage(chatId, out.join('\n'));
+}
+
+// --- Sprint 403: /invite — referral sharing ---
+
+async function handleInvite(chatId: string, firstName: string): Promise<void> {
+  // Get bot username from the bot API (cached)
+  let botUsername = 'AchiriBot'; // fallback
+  try {
+    const me = await tgApi('getMe');
+    if (me?.username) botUsername = me.username;
+  } catch { /* use fallback */ }
+
+  const refLink = `https://t.me/${botUsername}?start=ref_${chatId}`;
+  const refCount = getReferralCount(chatId);
+
+  await sendMessage(chatId, [
+    '🤝 *Invite Your Friends to Achiri!*',
+    '',
+    '📲 Share this link:',
+    `\`${refLink}\``,
+    '',
+    '💬 Or copy-paste this message:',
+    '',
+    `_"${firstName} invites you to Achiri 🇹🇳 — your AI companion made for Tunisia! Chat in Darija, French, or English. Try it:_ ${refLink}_"_`,
+    '',
+    `📊 Your referrals: *${refCount}* friend${refCount !== 1 ? 's' : ''}`,
+    refCount >= 5 ? '🏆 _Champion referrer! Barcha ya3ichek!_' :
+    refCount >= 1 ? '🔥 _Keep sharing — every friend counts!_' :
+    '💡 _Share with sa7bek/sa7abtek and grow the Achiri community!_',
+  ].join('\n'));
 }
 
 // --- Sprint 388: /learn — Darija word of the day + mini lesson ---
@@ -751,7 +832,7 @@ async function handleMessage(chatId: string, text: string, firstName: string, us
   const cmd = text.split(' ')[0].toLowerCase().split('@')[0];
   const args = text.includes(' ') ? text.slice(text.indexOf(' ') + 1).trim() : '';
 
-  if (cmd === '/start') return handleStart(chatId, firstName, username);
+  if (cmd === '/start') return handleStart(chatId, firstName, username, args);
   if (cmd === '/help') return handleHelp(chatId);
   if (cmd === '/clear') return handleClear(chatId);
   if (cmd === '/lang') return handleLang(chatId, args);
@@ -761,6 +842,7 @@ async function handleMessage(chatId: string, text: string, firstName: string, us
   if (cmd === '/quiz') return handleQuiz(chatId, args);
   if (cmd === '/tip') return handleTip(chatId);
   if (cmd === '/stats') return handleStats(chatId);
+  if (cmd === '/invite') return handleInvite(chatId, firstName);
   if (cmd === '/learn') return handleLearn(chatId, args);
   if (cmd === '/translate') return sendMessage(chatId, handleTranslate(args));
 

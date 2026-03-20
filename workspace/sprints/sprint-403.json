@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-403",
+  "title": "Achiri /invite — referral system for alpha growth",
+  "description": "Add /invite command to Achiri bot that generates shareable deep links with referral tracking. Track who referred whom. Show referral count in /stats. Process ref_ parameter in /start.",
+  "source": "auto — Achiri alpha Apr 25, waitlist only 1 user, need organic growth mechanism",
+  "tasks": [
+    {
+      "id": "403-01",
+      "title": "Add /invite, referral tracking, and ref_ start parameter handling",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-403",
+      "deliverables": { "code": ["agents/achiri/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
