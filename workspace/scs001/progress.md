@@ -2473,3 +2473,17 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (multi-file feature, direct write)
 - Issues: stripe-validator.ts had TypeScript strict mode errors with `unknown` types on Stripe API response — fixed with explicit type assertions.
 - Timestamp: 2026-03-20T12:00:00Z
+
+## Sprint 312 — Achiri Feedback Collector (Direct Write)
+- Status: PASS
+- Commit: e1d7ef2
+- Files created: agents/achiri/feedback-collector.ts, workspace/sprints/sprint-312.json
+- Files modified: agents/achiri/index.ts, agents/telegram-bot/commands.ts, agents/telegram-bot/index.ts
+- Tasks completed:
+  - 312-01: feedback-collector.ts — shouldAskFeedback (every 10 msgs), parseFeedbackRating (1-5, Darija/French/English), storeFeedback (workspace/achiri/feedback.jsonl), getFeedbackSummary (avg, NPS, distribution), buildFeedbackPromptHint (system prompt injection). 11/11 parseFeedbackRating tests PASS.
+  - 312-02: Wired into index.ts chat() — parseFeedbackRating before safety check (stores silently), shouldAskFeedback triggers buildFeedbackPromptHint injection into system prompt. Dry-run PASS.
+  - 312-03: /achirifeedback Telegram command — owner-only, reads feedback.jsonl, shows avg rating, NPS score, distribution histogram, recent avg. Kill switch warning at NPS <-60%.
+- Validation: feedback-collector.ts 11/11 PASS, Achiri dry-run chat PASS with feedback wiring
+- Swarm used: no (multi-file feature)
+- Issues: None.
+- Timestamp: 2026-03-20T12:30:00Z
