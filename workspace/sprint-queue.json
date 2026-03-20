@@ -1002,8 +1002,9 @@
       "title": "INFRA — Run full stats + diversity audit, update reports",
       "block": "INFRA",
       "priority": "medium",
-      "status": "pending",
-      "rationale": "After all improvements, run stats and diversity audit. Generate fresh reports for gate review preparation."
+      "status": "done",
+      "rationale": "After all improvements, run stats and diversity audit. Generate fresh reports for gate review preparation.",
+      "_note": "116 produced, 110 delivered, diversity 97/100, $1.71 total. Gate ON TRACK."
     }
   ]
 }

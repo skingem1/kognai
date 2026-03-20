@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-556",
+  "title": "INFRA — Final stats: 116 produced, 110 delivered, diversity 97/100, $1.71",
+  "description": "Ran stats + diversity reports. Gate 110/30 ON TRACK. 18 days remaining. $0.015/video avg cost.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "556-01",
+      "title": "Generate stats and diversity reports",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "reports/stats-latest.json",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-556",
+      "deliverables": { "code": [], "tests": [], "docs": ["reports/stats-latest.json", "reports/content-diversity-audit.json"] }
+    }
+  ]
+}

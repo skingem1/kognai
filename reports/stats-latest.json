@@ -1,34 +1,34 @@
 {
-  "timestamp": "2026-03-20T17:22:48.467Z",
+  "timestamp": "2026-03-20T18:43:15.670Z",
   "period": {
     "today": "2026-03-20",
     "week_start": "2026-03-15"
   },
   "production": {
-    "total_videos": 91,
-    "videos_today": 91,
-    "videos_this_week": 91,
-    "pipeline_runs_total": 58,
-    "pipeline_runs_today": 32
+    "total_videos": 116,
+    "videos_today": 116,
+    "videos_this_week": 116,
+    "pipeline_runs_total": 70,
+    "pipeline_runs_today": 44
   },
   "delivery": {
-    "auto_delivered_total": 93,
-    "auto_delivered_today": 93,
+    "auto_delivered_total": 99,
+    "auto_delivered_today": 99,
     "telegram_sent_total": 11
   },
   "costs": {
-    "total_usd": 1.1781,
-    "today_usd": 1.1781,
-    "avg_per_video_usd": 0.0129
+    "total_usd": 1.7061,
+    "today_usd": 1.7061,
+    "avg_per_video_usd": 0.0147
   },
   "quality": {
-    "diversity_score": 91,
+    "diversity_score": 97,
     "unique_topics": 15,
     "hook_types": 5
   },
   "gate": {
     "posts_target": 30,
-    "posts_delivered": 104,
+    "posts_delivered": 110,
     "days_remaining": 18,
     "on_track": true
   }
