@@ -298,10 +298,22 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Issues: skill-crystalliser module not found (skipped, non-blocking)
 - Timestamp: 2026-03-20T17:00:00Z
 
+## Sprint 498 — PIPELINE
+- Status: PASS
+- Commit: 804d4c0
+- Files created: scripts/pm2-startup.ts, scripts/pm2-health.ts, workspace/sprints/sprint-498.json
+- Files modified: none
+- Test: manual validation — dry-run PASS, health report PASS, JSON output PASS
+- Pipeline: PM2 startup orchestrator + health validator complete
+- Swarm used: no (simple operational tooling, wrote directly)
+- Issues: stripe-webhook crash-looping (2078 restarts) — needs investigation
+- Timestamp: 2026-03-20T19:00:00Z
+
 ## Critical Gaps
 
 1. **0/30 TikTok posts** — April 7 gate requires 30 posts
 2. **TIKTOK_ACCESS_TOKEN** not set — live posting blocked
 3. **Stripe not live** — human must activate live mode
-4. **PM2 not running** — processes configured but not started
+4. **PM2 crons mostly stopped** — pm2-startup.ts created, needs `npx ts-node scripts/pm2-startup.ts` to activate
 5. **YouTube OAuth** not configured — Shorts upload not tested
+6. **Stripe webhook crash-looping** — 2078 restarts, needs log investigation
