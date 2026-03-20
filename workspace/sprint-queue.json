@@ -858,8 +858,9 @@
       "title": "INFRA — Disk cleanup: archive old pipeline runs + compress",
       "block": "INFRA",
       "priority": "medium",
-      "status": "pending",
-      "rationale": "222 videos in workspace/scs001/run-*/ dirs. Each ~50MB with mp4 files. Create archive script that moves delivered videos to workspace/scs001/archive/ and compresses. Keep only last 3 runs active."
+      "status": "done",
+      "rationale": "222 videos in workspace/scs001/run-*/ dirs. Each ~50MB with mp4 files. Create archive script that moves delivered videos to workspace/scs001/archive/ and compresses. Keep only last 3 runs active.",
+      "_note": "14 old runs removed. 2.7GB → 674MB. 5 runs kept."
     },
     {
       "sprint": 541,

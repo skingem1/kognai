@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-540",
+  "title": "INFRA — Disk cleanup: archive old pipeline runs (2GB freed)",
+  "description": "Ran existing pipeline-cleanup.ts --keep 5. Removed 14 old run dirs. 2.7GB → 674MB. 5 runs kept.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "540-01",
+      "title": "Run pipeline-cleanup.ts to remove old runs",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "workspace/scs001/run-*/",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-540",
+      "deliverables": { "code": [], "tests": [], "docs": [] }
+    }
+  ]
+}
