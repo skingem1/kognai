@@ -659,7 +659,8 @@
       "sprint": 518,
       "title": "PIPELINE — Add random topic selection to pipeline (avoid sequential bias)",
       "block": "PIPELINE",
-      "status": "pending",
+      "status": "done",
+      "_note": "Weighted random shuffle added. 3 runs show different top-5 each time.",
       "priority": "medium",
       "rationale": "Pipeline always picks topics in confidence-sorted order, causing repeated topics across runs. Add randomization: shuffle qualified topics, pick top N from shuffled list. Ensures diverse content per run."
     },

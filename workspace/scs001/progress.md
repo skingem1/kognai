@@ -514,3 +514,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (pipeline runner + manual fix)
 - Issues: Telegram sendVideo failed with "can't parse entities" — fixed by removing parse_mode: Markdown
 - Timestamp: 2026-03-20T14:30:00Z
+
+## Sprint 518 — PIPELINE
+- Status: PASS
+- Commit: 70ce037
+- Files modified: agents/scs001-trend/index.ts (+weightedShuffle method)
+- Files created: workspace/sprints/sprint-518.json
+- Test: 3 runs → 3 different top-5 topic lists. Diversity confirmed.
+- Pipeline: Topic selection now randomized with confidence weighting
+- Swarm used: no (simple code change)
+- Issues: none
+- Timestamp: 2026-03-20T14:45:00Z
