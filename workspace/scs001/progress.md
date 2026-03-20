@@ -2459,3 +2459,17 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (test file only)
 - Issues: Initial version used top-level await — wrapped in async main() to fix TS compilation.
 - Timestamp: 2026-03-20T07:30:00Z
+
+## Sprint 311 — Phase 1 Go-Live Preflight (Direct Write)
+- Status: PASS
+- Commit: 687de67
+- Files created: scripts/scs001/posting-preflight.ts, scripts/scs001/gate-urgency-alert.ts, scripts/scs001/stripe-validator.ts, workspace/sprints/sprint-311.json
+- Files modified: none
+- Tasks completed:
+  - 311-01: posting-preflight.ts — validates 8 env vars (TIKTOK_ACCESS_TOKEN blocker), queued videos (368 in ledger), posted count (0/30), gate deadline (18d), gate report status. Exit 1 on blockers, exit 0 on clear.
+  - 311-02: gate-urgency-alert.ts — daily Telegram alert with countdown to Apr 7 kill switch. Shows posts/views progress, pace needed, action items. PM2 cron ready (09:00 daily).
+  - 311-03: stripe-validator.ts — validates STRIPE_SECRET_KEY via /v1/balance API call. Reports LIVE/TEST mode, balance, webhook secret, price IDs. Sends Telegram summary.
+- Validation: All 3 scripts compile and run successfully. Preflight correctly reports TIKTOK_ACCESS_TOKEN as blocker. Stripe reports TEST mode with €35.32 balance.
+- Swarm used: no (multi-file feature, direct write)
+- Issues: stripe-validator.ts had TypeScript strict mode errors with `unknown` types on Stripe API response — fixed with explicit type assertions.
+- Timestamp: 2026-03-20T12:00:00Z
