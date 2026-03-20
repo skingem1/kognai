@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-522",
+  "title": "INFRA — Supabase kognai_events deep audit via MCP + table creation",
+  "description": "Discovered .env SUPABASE_URL points to hroblewzdsosomytdvwe (not in MCP). Created kognai_events table on invoica-backend (igspopoejhsxvwvxyhbh) shared infra project. Table verified with insert+query.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "522-01",
+      "title": "Audit Supabase projects via MCP",
+      "type": "investigation",
+      "task_type": "infra",
+      "task_target": "supabase",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-522",
+      "deliverables": { "code": [], "tests": [], "docs": [] }
+    },
+    {
+      "id": "522-02",
+      "title": "Create kognai_events table on shared Supabase project",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "supabase",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-522",
+      "deliverables": { "code": [], "tests": [], "docs": [] }
+    }
+  ]
+}

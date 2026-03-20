@@ -545,3 +545,20 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no
 - Issues: Listener subscription polling doesn't pick up events in 8s — likely Supabase Realtime not enabled or polling interval too slow. Publisher + table verified working.
 - Timestamp: 2026-03-20T15:15:00Z
+
+## Sprint 521 — INFRA
+- Status: PASS
+- Commit: 4600e3f
+- Files created: workspace/sprints/sprint-521.json
+- Queue: replenished with sprints 522-525
+- Timestamp: 2026-03-20T15:20:00Z
+
+## Sprint 522 — INFRA
+- Status: PASS
+- Commit: (combined)
+- Files created: workspace/sprints/sprint-522.json
+- Test: Supabase MCP audit — 2 projects found. kognai_events table created on invoica-backend (igspopoejhsxvwvxyhbh). Insert+query verified.
+- Finding: .env SUPABASE_URL points to hroblewzdsosomytdvwe (not in MCP projects list). May be paused/deleted. Human should update .env to point to igspopoejhsxvwvxyhbh.
+- Swarm used: no
+- Issues: .env Supabase URL mismatch — needs human review
+- Timestamp: 2026-03-20T15:35:00Z

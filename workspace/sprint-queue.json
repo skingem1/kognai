@@ -695,7 +695,8 @@
       "sprint": 522,
       "title": "INFRA — Supabase kognai_events deep audit via MCP + fix listener",
       "block": "INFRA",
-      "status": "pending",
+      "status": "done",
+      "_note": "kognai_events table created on invoica-backend (igspopoejhsxvwvxyhbh). .env points to different project (hroblewzdsosomytdvwe) — needs human review.",
       "priority": "medium",
       "rationale": "Sprint 520 found publisher works but listener fails. Use Supabase MCP to inspect table schema, query events, verify data integrity. Fix listener polling if possible."
     },
