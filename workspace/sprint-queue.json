@@ -605,7 +605,8 @@
       "sprint": 512,
       "title": "FIX — Increase mock Insight Agent briefs per run (2→5)",
       "block": "FIX",
-      "status": "pending",
+      "status": "done",
+      "_note": "5 briefs/run now. Single pipeline run = 5 videos with 5 different speakers.",
       "priority": "high",
       "rationale": "Mock Insight Agent only produces 2 briefs per pipeline run, forcing 3 runs to get 6 videos. Fix to produce 5 briefs (matching --limit) so 1 run = 5 videos. Much faster content production."
     },

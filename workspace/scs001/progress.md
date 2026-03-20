@@ -362,6 +362,17 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Issues: Insight Agent mock mode caps at 2 briefs/run, needed 3 runs for 6 videos
 - Timestamp: 2026-03-20T12:45:00Z
 
+## Sprint 512 — FIX
+- Status: PASS
+- Commit: 10af198
+- Files modified: agents/scs001-insight/index.ts (+3 mock briefs, +3 mock clips)
+- Files created: workspace/sprints/sprint-512.json
+- Test: Pipeline run → 5 briefs → 5 scripts → 5 videos in single run
+- Pipeline: 2.5x throughput improvement (2→5 videos/run). 5 speakers, mixed 30s/60s lengths.
+- Swarm used: no
+- Issues: none
+- Timestamp: 2026-03-20T14:45:00Z
+
 ## Sprint 510 — INFRA
 - Status: PASS
 - Commit: 7e09191
