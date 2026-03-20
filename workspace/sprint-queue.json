@@ -475,6 +475,74 @@
       "status": "done",
       "priority": "medium",
       "rationale": "Generate formal gate report: workspace/gates/april-7-gate.json. Criteria: 30 TikTok posts (✅/❌), 500 views (✅/❌), pipeline operational (✅/❌), monetization ready (✅/❌). If PASS: seed Phase 2 sprint plan. If FAIL: generate remediation plan with revised timeline."
+    },
+    {
+      "sprint": 498,
+      "title": "PIPELINE — PM2 startup orchestrator + health validator",
+      "block": "PIPELINE",
+      "status": "done",
+      "priority": "high",
+      "rationale": "Created scripts/pm2-startup.ts (starts all Kognai PM2 processes) + scripts/pm2-health.ts (health reporter with --json/--telegram modes). 39 Kognai-local processes identified.",
+      "_note": "Shipped session 21 (2026-03-20)"
+    },
+    {
+      "sprint": 499,
+      "title": "PIPELINE — Viral TikTok downloader + RapidAPI client",
+      "block": "PIPELINE",
+      "status": "done",
+      "priority": "high",
+      "rationale": "Committed agents/scs001-viral-downloader/index.ts + scripts/scs001/rapidapi-tiktok-client.ts. Uses RapidAPI to search TikTok for trending clips.",
+      "_note": "Shipped session 21 (2026-03-20)"
+    },
+    {
+      "sprint": 500,
+      "title": "CORE — Pipeline stages (viral/avatar/captions) + constitutional preamble",
+      "block": "CORE",
+      "status": "done",
+      "priority": "high",
+      "rationale": "Added stages 2.5 (viral TikTok), 6.5 (avatar), 7.5 (animated captions) to orchestrator. Constitutional preamble injection in swarm agents.",
+      "_note": "Shipped session 21 (2026-03-20)"
+    },
+    {
+      "sprint": 501,
+      "title": "FIX — Pipeline type errors (scs001-editing + rapidapi-client)",
+      "block": "FIX",
+      "status": "done",
+      "priority": "high",
+      "rationale": "Fixed SEGMENT_COLORS missing 4 entries + rapidapi json() type casting. Pipeline compiles cleanly.",
+      "_note": "Shipped session 21 (2026-03-20)"
+    },
+    {
+      "sprint": 502,
+      "title": "PIPELINE — PM2 essential crons activation + Telegram /pm2 command",
+      "block": "PIPELINE",
+      "status": "pending",
+      "priority": "high",
+      "rationale": "Run pm2-startup.ts --only essential to activate critical crons (daily-digest, gate-regen, pipeline-watchdog, auto-healer). Wire pm2-health.ts into Telegram as /pm2 command. Verify crons fire correctly."
+    },
+    {
+      "sprint": 503,
+      "title": "CONTENT — Batch video production with real local models (5 videos)",
+      "block": "CONTENT",
+      "status": "pending",
+      "priority": "high",
+      "rationale": "Run pipeline in mock+local mode with Ollama (qwen3:4b for scripts). Produce 5 videos with real LLM-generated scripts and local TTS. Verify quality. Send to Telegram for manual TikTok posting. Direct progress toward 30-post gate."
+    },
+    {
+      "sprint": 504,
+      "title": "STRIPE — Investigate webhook 2078 restarts + ensure stable payment flow",
+      "block": "MONETIZATION",
+      "status": "pending",
+      "priority": "medium",
+      "rationale": "kognai-stripe-webhook accumulated 2078 restarts (now stable 2D). Review logs to understand root cause. Add restart counter reset. Verify checkout flow works with current Stripe keys."
+    },
+    {
+      "sprint": 505,
+      "title": "INFRA — Regenerate sprint brief + validate autonomous loop",
+      "block": "INFRA",
+      "status": "pending",
+      "priority": "medium",
+      "rationale": "Sprint brief references Sprint 474 as last built (stale). Regenerate via generate-sprint-brief.py with current state. Test run-autonomous.sh for 1 cycle to verify the self-restart loop works."
     }
   ]
 }

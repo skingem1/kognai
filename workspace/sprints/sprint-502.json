@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-502",
+  "title": "INFRA — Sprint queue extension + session handoff",
+  "description": "Add Sprints 498-501 (done) and 502-505 (pending) to sprint-queue.json. Provides next 4 sessions with clear execution targets. Update MEMORY.md.",
+  "source": "queue-empty — replenish queue for next sessions",
+  "tasks": [
+    {
+      "id": "502-01",
+      "title": "Extend sprint queue with 498-505 entries",
+      "type": "feature",
+      "task_type": "config",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-502",
+      "deliverables": { "code": ["workspace/sprint-queue.json"], "tests": [], "docs": [] }
+    }
+  ]
+}
