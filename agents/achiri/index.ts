@@ -92,7 +92,7 @@ export class AchiriConversationHandler {
     };
   }
 
-  buildSystemPrompt(isNewSession: boolean = false, moodHint: string = '', topicHint: string = '', feedbackHint: string = ''): string {
+  buildSystemPrompt(isNewSession: boolean = false, moodHint: string = '', topicHint: string = '', feedbackHint: string = '', timeHint: string = ''): string {
     const ctx = this.config.cultural_markers.tunisian_context;
     const switchRules = this.config.languages.code_switching.rules;
 
@@ -136,12 +136,15 @@ export class AchiriConversationHandler {
     // Sprint 312: Inject feedback request hint
     const feedbackBlock = feedbackHint ? feedbackHint + '\n\n---\n\n' : '';
 
-    return header + personalBlock + moodBlock + topicBlock + feedbackBlock + this.systemPromptRaw;
+    // Sprint 343: Inject time-of-day context
+    const timeBlock = timeHint ? timeHint + '\n\n---\n\n' : '';
+
+    return header + personalBlock + moodBlock + topicBlock + feedbackBlock + timeBlock + this.systemPromptRaw;
   }
 
-  buildMessages(userMessage: string, history: ConversationTurn[] = [], isNewSession: boolean = false, moodHint: string = '', topicHint: string = '', feedbackHint: string = ''): ConversationTurn[] {
+  buildMessages(userMessage: string, history: ConversationTurn[] = [], isNewSession: boolean = false, moodHint: string = '', topicHint: string = '', feedbackHint: string = '', timeHint: string = ''): ConversationTurn[] {
     return [
-      { role: 'system', content: this.buildSystemPrompt(isNewSession, moodHint, topicHint, feedbackHint) },
+      { role: 'system', content: this.buildSystemPrompt(isNewSession, moodHint, topicHint, feedbackHint, timeHint) },
       ...history,
       { role: 'user', content: userMessage },
     ];
@@ -221,6 +224,19 @@ export class AchiriConversationHandler {
       console.log('[Achiri] topic_suggestion injected for stall message');
     }
 
+    // Sprint 343: Time-of-day context — Tunisian time zone greeting hints
+    const tunisiaHour = new Date(Date.now() + 3600_000).getUTCHours(); // CET = UTC+1
+    let timeOfDayHint = '';
+    if (tunisiaHour >= 5 && tunisiaHour < 12) {
+      timeOfDayHint = '## Time Context\nIt is morning in Tunisia (صباح الخير — sabah el kheir). The user may be starting their day. Be energetic and encouraging.';
+    } else if (tunisiaHour >= 12 && tunisiaHour < 17) {
+      timeOfDayHint = '## Time Context\nIt is afternoon in Tunisia. The user may be on a break. Be warm and relaxed.';
+    } else if (tunisiaHour >= 17 && tunisiaHour < 21) {
+      timeOfDayHint = '## Time Context\nIt is evening in Tunisia (مساء الخير — mesa el kheir). The user may be winding down. Be calm and supportive.';
+    } else {
+      timeOfDayHint = '## Time Context\nIt is nighttime in Tunisia (تصبح على خير — tosbah ala kheir). The user is up late. Be gentle and brief.';
+    }
+
     // Sprint 312: Feedback collection — inject rating request hint every N messages
     const askFeedback = shouldAskFeedback(this.userId) && feedbackRating === 0;
     if (askFeedback) {
@@ -228,8 +244,8 @@ export class AchiriConversationHandler {
     }
 
     const feedbackHint = askFeedback ? buildFeedbackPromptHint() : '';
-    const messages = this.buildMessages(userMessage, windowedHistory, isNewSession, moodHint, topicHint, feedbackHint);
-    console.log('[Achiri] chat() model=' + model.model + ' tier=' + model.tier + ' msg_len=' + userMessage.length + ' history=' + windowedHistory.length + (isNewSession ? ' NEW_SESSION' : '') + (emotion.mood !== 'neutral' ? ' mood=' + emotion.mood : '') + (topicHint ? ' TOPIC_HINT' : ''));
+    const messages = this.buildMessages(userMessage, windowedHistory, isNewSession, moodHint, topicHint, feedbackHint, timeOfDayHint);
+    console.log('[Achiri] chat() model=' + model.model + ' tier=' + model.tier + ' msg_len=' + userMessage.length + ' history=' + windowedHistory.length + (isNewSession ? ' NEW_SESSION' : '') + (emotion.mood !== 'neutral' ? ' mood=' + emotion.mood : '') + (topicHint ? ' TOPIC_HINT' : '') + (timeOfDayHint ? ' TIME_HINT' : ''));
 
     // Dry-run mode for CI/tests
     if (process.env.ACHIRI_DRY_RUN === '1') {

@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-343",
+  "title": "Achiri time-of-day context — Tunisian greeting hints in system prompt",
+  "description": "Inject Tunisia time zone (CET) and culturally appropriate greeting hints (sabah el kheir, mesa el kheir, tosbah ala kheir) into Achiri system prompt. Makes conversations feel more natural and time-aware.",
+  "source": "auto — Achiri cultural authenticity, pre-Apr 25 alpha polish",
+  "tasks": [
+    {
+      "id": "343-01",
+      "title": "Add time-of-day context to agents/achiri/index.ts buildSystemPrompt + chat()",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-343",
+      "deliverables": { "code": ["agents/achiri/index.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
