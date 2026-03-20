@@ -1041,3 +1041,15 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (surgical edits to 2 files)
 - Issues: None
 - Timestamp: 2026-03-21T04:35:00Z
+
+## Sprint 591 — INFRA
+- Status: PASS
+- Commit: 260e90e
+- Files created: scripts/replenish-sprint-queue.ts, workspace/sprints/sprint-591.json
+- Files modified: scripts/telegram-bot.ts, scripts/telegram-commands/cmd-management.ts
+- Test: TypeScript compile — PASS, dry-run — PASS (10 items generated)
+- Pipeline: Sprint queue auto-replenisher + /replenish Telegram command
+- Swarm used: no (multi-file task, wrote directly)
+- Swarm bypassed: yes (multi-file coordination). Manual crystallise: skipped (module not found).
+- Issues: None
+- Timestamp: 2026-03-21T05:00:00Z
