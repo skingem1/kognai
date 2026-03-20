@@ -3121,3 +3121,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (single function addition)
 - Issues: None.
 - Timestamp: 2026-03-20T10:30:00Z
+
+## Sprint 364 — /postnow — Send Best Video for Posting (Direct Write)
+- Status: PASS
+- Commit: 9cd348d
+- Files created: workspace/sprints/sprint-364.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 364-01: Added /postnow async command. Finds top unposted captioned video by viral score, sends caption (copy-paste ready) + video file directly in Telegram. Shows gate progress (posts/30, days left). Updated /help.
+- Validation: ts-node --transpile-only PASS
+- Swarm used: no (async function with video file sending)
+- Issues: None.
+- Timestamp: 2026-03-20T10:45:00Z
