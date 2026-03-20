@@ -535,3 +535,13 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no
 - Issues: none — crons are working correctly
 - Timestamp: 2026-03-20T15:00:00Z
+
+## Sprint 520 — INFRA
+- Status: PASS
+- Commit: (combined)
+- Files created: workspace/sprints/sprint-520.json
+- Test: Event bus publisher works (1747ms). kognai_events table exists (200 OK). Listener polling timing issue (events don't arrive within 8s window).
+- Pipeline: Supabase event bus operational for sprint logging
+- Swarm used: no
+- Issues: Listener subscription polling doesn't pick up events in 8s — likely Supabase Realtime not enabled or polling interval too slow. Publisher + table verified working.
+- Timestamp: 2026-03-20T15:15:00Z

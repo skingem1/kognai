@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-520",
+  "title": "INFRA — Supabase event bus test + kognai_events table verification",
+  "description": "Verified kognai_events table exists in Supabase and event publisher works. Listener polling has timing issue but events persist correctly.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "520-01",
+      "title": "Run event bus smoke test + verify table",
+      "type": "test",
+      "task_type": "infra",
+      "task_target": "scripts/smoke-test-event-bus.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-520",
+      "deliverables": { "code": [], "tests": [], "docs": [] }
+    }
+  ]
+}

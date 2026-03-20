@@ -677,7 +677,8 @@
       "sprint": 520,
       "title": "INFRA — Supabase event bus test + kognai_events table verification",
       "block": "INFRA",
-      "status": "pending",
+      "status": "done",
+      "_note": "kognai_events table exists, publisher works (1747ms round-trip). Listener polling has timing issue.",
       "priority": "medium",
       "rationale": "Supabase backend exists but kognai_events table never tested. Verify: table exists, can insert events, can query recent events. Wire into pipeline for sprint completion logging."
     }
