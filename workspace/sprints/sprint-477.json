@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-477",
+  "title": "EVAL-003 — Context Hub evaluation (chub CLI)",
+  "description": "CTO evaluation of Andrew Ng's context-hub (chub CLI) for AMD-02 Skill Bank retrieval interface. Same pattern as EVAL-001/002.",
+  "source": "queue — Sprint 477 EVAL",
+  "tasks": [
+    {
+      "id": "477-01",
+      "title": "Write EVAL-003 evaluation script following CTO eval framework",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-477",
+      "deliverables": { "code": ["scripts/evaluations/eval-003-context-hub.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "477-02",
+      "title": "Run EVAL-003 and save report to workspace/intel/eval-results/",
+      "type": "validation",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "supervisor",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-477",
+      "deliverables": { "code": [], "tests": ["scripts/evaluations/eval-003-context-hub.ts"], "docs": [] }
+    }
+  ]
+}
