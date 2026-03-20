@@ -1604,6 +1604,114 @@ function cmdQuickStart(): string {
 }
 
 // Sprint 354: /achiri — alpha readiness dashboard from reports/achiri-readiness.json
+// ─── Sprint 356: /digest — unified daily digest ──────────────────────
+
+function cmdDigest(): string {
+  // Gate status
+  const manualPostsPath = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
+  let postCount = 0;
+  let totalViews = 0;
+  if (fs.existsSync(manualPostsPath)) {
+    const lines = fs.readFileSync(manualPostsPath, 'utf-8').split('\n').filter(l => l.trim());
+    postCount = lines.length;
+    for (const line of lines) {
+      try { totalViews += JSON.parse(line).views ?? 0; } catch {}
+    }
+  }
+  const gateDate = new Date('2026-04-07T00:00:00Z');
+  const now = new Date();
+  const daysLeft = Math.max(0, Math.ceil((gateDate.getTime() - now.getTime()) / 86_400_000));
+  const postsNeeded = Math.max(0, 30 - postCount);
+  const viewsNeeded = Math.max(0, 500 - totalViews);
+  const postsPerDay = daysLeft > 0 && postsNeeded > 0 ? (postsNeeded / daysLeft).toFixed(1) : '0';
+
+  let urgency = '🟢 ON TRACK';
+  if (postsNeeded <= 0 && viewsNeeded <= 0) urgency = '✅ GATE MET';
+  else if (daysLeft <= 3 && postsNeeded > 0) urgency = '🔴 KILL SWITCH IMMINENT';
+  else if (daysLeft <= 7 && postsNeeded > 0) urgency = '🟠 CRITICAL';
+  else if (postCount === 0) urgency = '🟡 WARNING — 0 posts';
+  else if (daysLeft <= 14 && postsNeeded > 0) urgency = '🟡 WARNING';
+
+  // Queue — top 3
+  const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
+  const recorded = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  const recordedIds = new Set(recorded.map((e: any) => e.video_id).filter(Boolean));
+
+  const viralScores = new Map<string, number>();
+  const expPath = path.join(ROOT, 'workspace', 'scs001', 'experiments.jsonl');
+  if (fs.existsSync(expPath)) {
+    for (const line of fs.readFileSync(expPath, 'utf-8').split('\n')) {
+      if (!line.trim()) continue;
+      try {
+        const e = JSON.parse(line);
+        const id = e.clip_id ?? e.video_id;
+        if (id && e.partial_viral_score != null) viralScores.set(id, e.partial_viral_score);
+      } catch {}
+    }
+  }
+
+  const unposted = (ledger as any[])
+    .filter((e: any) => !recordedIds.has(e.video_id) && e.video_id)
+    .sort((a: any, b: any) => (viralScores.get(b.video_id) ?? -1) - (viralScores.get(a.video_id) ?? -1));
+  const queueCount = unposted.length;
+  const top3 = unposted.slice(0, 3);
+
+  // Stripe
+  const stripeKeys = ['STRIPE_SECRET_KEY', 'STRIPE_WEBHOOK_SECRET', 'STRIPE_WEBHOOK_PORT'];
+  const stripeMissing = stripeKeys.filter(k => !process.env[k]);
+  const stripeReady = stripeMissing.length === 0;
+
+  // TikTok token
+  const tiktokReady = Boolean(process.env.TIKTOK_ACCESS_TOKEN);
+
+  // Build message
+  const out: string[] = [
+    `📋 *Daily Digest* — ${now.toISOString().slice(0, 10)}`,
+    '',
+    `*Gate:* ${urgency}`,
+    `📅 Apr 7 · ${daysLeft} days left`,
+    `📊 Posts: ${postCount}/30 · Views: ${totalViews}/500`,
+  ];
+
+  if (postsNeeded > 0 && daysLeft > 0) {
+    out.push(`⏱ Pace: ${postsPerDay} posts/day needed`);
+  }
+
+  out.push('');
+  if (top3.length > 0) {
+    out.push(`📦 *Queue:* ${queueCount} videos`);
+    out.push('🎬 *Top 3 to post:*');
+    for (let i = 0; i < top3.length; i++) {
+      const v = top3[i];
+      const vs = viralScores.get(v.video_id);
+      const vsStr = vs != null ? ` 🧬${vs}` : '';
+      out.push(`  ${i + 1}. \`${v.video_id}\`${vsStr}`);
+    }
+  } else {
+    out.push(`📦 *Queue:* EMPTY — run /refresh to generate content`);
+  }
+
+  out.push('');
+  out.push(`💳 *Stripe:* ${stripeReady ? '✅ Ready' : '❌ Not Ready'}`);
+  out.push(`🎵 *TikTok API:* ${tiktokReady ? '✅ Token set' : '❌ No token'}`);
+
+  // Action items
+  const actions: string[] = [];
+  if (!tiktokReady) actions.push('• Set `TIKTOK\\_ACCESS\\_TOKEN` in .env');
+  if (!stripeReady) actions.push('• Configure missing Stripe env vars');
+  if (postsNeeded > 0) {
+    actions.push(`• Post ${Math.min(postsNeeded, 3)} videos today`);
+    actions.push('• Use `/record` after each manual post');
+  }
+  if (queueCount === 0) actions.push('• Run `/refresh` to fill the queue');
+
+  if (actions.length > 0) {
+    out.push('', '*Action items:*', ...actions);
+  }
+
+  return out.join('\n');
+}
+
 function cmdAchiri(): string {
   const readinessPath = path.join(ROOT, 'reports', 'achiri-readiness.json');
   const waitlistPath = path.join(ROOT, 'workspace', 'achiri', 'waitlist.jsonl');
@@ -1842,6 +1950,7 @@ function cmdHelp(): string {
     `/leaderboard — Speaker performance rankings\n` +
     `/updateviews — Update view count for a posted video\n` +
     `/achiri     — Achiri alpha readiness status\n` +
+    `/digest     — Daily digest: gate + queue + Stripe\n` +
     `/help      — This message`
   );
 }
@@ -1950,6 +2059,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/leaderboard': response = cmdLeaderboard(); break;
     case '/updateviews': response = cmdUpdateViews(cmdArgs); break;
     case '/achiri':      response = cmdAchiri();             break;
+    case '/digest':      response = cmdDigest();             break;
     case '/help':        response = cmdHelp();        break;
     default:
       response = `Unknown command: \`${cmdName}\`\n\n${cmdHelp()}`;

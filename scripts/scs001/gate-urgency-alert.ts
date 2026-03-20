@@ -45,12 +45,56 @@ function loadPosts(): ManualPost[] {
     .filter(Boolean) as ManualPost[];
 }
 
-function getUrgencyEmoji(daysLeft: number, postsLeft: number): string {
+function getUrgencyEmoji(daysLeft: number, postsLeft: number, postsCount: number): string {
   if (postsLeft <= 0) return '✅';
   if (daysLeft <= 3) return '🔴';
   if (daysLeft <= 7) return '🟠';
+  if (postsCount === 0) return '🟡';   // Sprint 356: WARNING when 0 posts
   if (daysLeft <= 14) return '🟡';
   return '🟢';
+}
+
+// Sprint 356: Load top-3 queue videos for inline display
+function getTop3Queue(): { videoId: string; viralScore: number | null }[] {
+  const ledgerPath = join(CWD, 'workspace', 'scs001', 'publish-ledger.jsonl');
+  const manualPath = join(CWD, 'workspace', 'scs001', 'manual-posts.jsonl');
+  const expPath = join(CWD, 'workspace', 'scs001', 'experiments.jsonl');
+
+  if (!existsSync(ledgerPath)) return [];
+
+  const postedIds = new Set<string>();
+  if (existsSync(manualPath)) {
+    for (const line of readFileSync(manualPath, 'utf-8').split('\n')) {
+      if (!line.trim()) continue;
+      try { const e = JSON.parse(line); if (e.video_id) postedIds.add(e.video_id); } catch {}
+    }
+  }
+
+  const viralScores = new Map<string, number>();
+  if (existsSync(expPath)) {
+    for (const line of readFileSync(expPath, 'utf-8').split('\n')) {
+      if (!line.trim()) continue;
+      try {
+        const e = JSON.parse(line);
+        const id = e.clip_id ?? e.video_id;
+        if (id && e.partial_viral_score != null) viralScores.set(id, e.partial_viral_score);
+      } catch {}
+    }
+  }
+
+  const unposted: { videoId: string; viralScore: number | null }[] = [];
+  for (const line of readFileSync(ledgerPath, 'utf-8').split('\n')) {
+    if (!line.trim()) continue;
+    try {
+      const e = JSON.parse(line);
+      if (e.video_id && !postedIds.has(e.video_id)) {
+        unposted.push({ videoId: e.video_id, viralScore: viralScores.get(e.video_id) ?? null });
+      }
+    } catch {}
+  }
+
+  unposted.sort((a, b) => (b.viralScore ?? -1) - (a.viralScore ?? -1));
+  return unposted.slice(0, 3);
 }
 
 async function sendTelegram(text: string): Promise<void> {
@@ -103,7 +147,7 @@ async function main(): Promise<void> {
   const postsLeft = Math.max(0, POSTS_TARGET - postsCount);
   const viewsLeft = Math.max(0, VIEWS_TARGET - totalViews);
   const paceNeeded = daysLeft > 0 && postsLeft > 0 ? Math.round(postsLeft / daysLeft * 10) / 10 : 0;
-  const emoji = getUrgencyEmoji(daysLeft, postsLeft);
+  const emoji = getUrgencyEmoji(daysLeft, postsLeft, postsCount);
 
   const lines: string[] = [
     `${emoji} *Phase 1.5 Gate — Daily Alert*`,
@@ -121,8 +165,21 @@ async function main(): Promise<void> {
     lines.push('', '✅ *Gate criteria MET* — ready for Phase 2A');
   } else if (daysLeft <= 3 && postsLeft > 0) {
     lines.push('', '🔴 *KILL SWITCH IMMINENT* — post NOW or TikTok agent shuts down');
+  } else if (postsCount === 0) {
+    lines.push('', '🟡 *WARNING* — 0 posts recorded. Start posting to avoid gate failure');
   } else if (daysLeft <= 7 && postsLeft > 0) {
     lines.push('', '🟠 *CRITICAL* — behind pace, increase posting frequency');
+  }
+
+  // Sprint 356: Inline top-3 queue videos
+  const top3 = getTop3Queue();
+  if (top3.length > 0) {
+    lines.push('', '🎬 *Top 3 ready to post:*');
+    for (let i = 0; i < top3.length; i++) {
+      const v = top3[i];
+      const vs = v.viralScore != null ? ` 🧬${v.viralScore}` : '';
+      lines.push(`  ${i + 1}. \`${v.videoId}\`${vs}`);
+    }
   }
 
   // Queue count

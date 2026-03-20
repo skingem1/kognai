@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-356",
+  "title": "/digest — unified daily digest command + gate urgency improvements",
+  "description": "Add /digest Telegram command combining gate countdown, top-3 queue, Stripe status, and action items. Enhance gate-urgency-alert.ts with inline top-3 queue and WARNING on 0 posts.",
+  "source": "auto — sprint brief recommends gate urgency escalation + daily digest enhancements",
+  "tasks": [
+    {
+      "id": "356-01",
+      "title": "Add /digest command to telegram-bot.ts — unified daily digest",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-356",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "356-02",
+      "title": "Enhance gate-urgency-alert.ts — inline top-3 queue + WARNING on 0 posts",
+      "type": "enhancement",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-356",
+      "deliverables": { "code": ["scripts/scs001/gate-urgency-alert.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
