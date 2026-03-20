@@ -4057,3 +4057,16 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (multi-file integration)
 - Issues: None. macOS `say` + FFmpeg available on Mac Mini vault. Hetzner (Linux) will need espeak-ng or Piper as alternative.
 - Timestamp: 2026-03-20T08:35:00Z
+
+## Sprint 449 — Wire Zero-Cost Fallbacks + /produce Command (Direct Write)
+- Status: PASS
+- Commit: 13b959e
+- Files created: workspace/sprints/sprint-449.json
+- Files modified: scripts/scs001/run-full-pipeline.ts, scripts/telegram-bot.ts
+- Tasks completed:
+  - 449-01: Wired tts-local.ts + caption-ffmpeg.ts into run-full-pipeline.ts. Added --local flag. Auto-detects missing API keys and falls back to local TTS (macOS say) + enhanced FFmpeg captions. Both at $0.00. Mode display shows TTS:LOCAL-TTS-AUTO when no ELEVENLABS_API_KEY.
+  - 449-02: Added /produce Telegram command. Spawns full pipeline with --mock --local --limit 1. Reports results async. Reads latest pipeline report for summary stats. Added to /help.
+- Validation: Module compile checks pass. isLocalTTSAvailable=true, buildDrawtextFilters works, generateEnhancedCaptions works.
+- Swarm used: no (multi-file integration)
+- Issues: None.
+- Timestamp: 2026-03-20T08:45:00Z
