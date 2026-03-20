@@ -3548,3 +3548,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (small edit)
 - Issues: None.
 - Timestamp: 2026-03-20T23:20:00Z
+
+## Sprint 407 — Stripe Webhook Handler (Direct Write)
+- Status: PASS
+- Commit: 1230012
+- Files created: scripts/scs001/validate-webhook.ts, workspace/sprints/sprint-407.json
+- Files modified: scripts/scs001/checkout-server.ts
+- Tasks completed:
+  - 407-01: Added POST /webhook endpoint to checkout-server.ts. Stripe signature verification (HMAC SHA256 + timing-safe compare + 5min anti-replay). Handles checkout.session.completed, invoice.paid, customer.subscription.deleted. Logs events to workspace/scs001/subscribers.jsonl. Sends Telegram notifications to operator on new subscriber and churn.
+- Validation: validate-webhook.ts — 19/19 PASS
+- Swarm used: no (multi-integration: Stripe API + Telegram + file I/O)
+- Issues: None.
+- Timestamp: 2026-03-21T00:00:00Z
