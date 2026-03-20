@@ -19,6 +19,7 @@ import { createCheckoutUrl } from './paymee';
 import { processVoiceMessage, VoiceTierError } from './voice-handler';
 import { extractUserProfile } from './user-profile';
 import { loadSummary } from './conversation-summary';
+import { trackError } from './error-tracker';
 
 const PORT = parseInt(process.env.ACHIRI_PORT ?? '3420', 10);
 const START_TIME = Date.now();
@@ -178,6 +179,7 @@ const server = http.createServer(async (req, res) => {
         return send(res, 403, { error: 'tier_error', message: (err as Error).message, required_tier: 'tnd_premium' });
       }
       console.error('[Achiri API] /voice error:', err);
+      trackError({ type: 'voice_error', userId, message: err instanceof Error ? err.message.slice(0, 200) : String(err) });
       return send(res, 500, { error: 'internal error' });
     }
   }
@@ -209,6 +211,7 @@ const server = http.createServer(async (req, res) => {
         tomorrow.setUTCHours(24, 0, 0, 0);
         const resetAt = tomorrow.toISOString();
         console.log('[Achiri API] limit_exceeded userId=' + userId + ' tier=' + tier);
+        trackError({ type: 'limit_exceeded', userId, message: 'Daily limit reached for tier ' + tier });
         // Generate upgrade link for tnd_basic (cheapest paid tier) — Sprint 126
         let upgradeUrl: string | undefined;
         try {
@@ -235,6 +238,9 @@ const server = http.createServer(async (req, res) => {
       });
     } catch (err) {
       console.error('[Achiri API] /chat error:', err);
+      const errMsg = err instanceof Error ? err.message : String(err);
+      const errType = errMsg.includes('abort') || errMsg.includes('timeout') ? 'timeout' as const : 'llm_error' as const;
+      trackError({ type: errType, userId, message: errMsg.slice(0, 200) });
       return send(res, 500, { error: 'internal error' });
     }
   }

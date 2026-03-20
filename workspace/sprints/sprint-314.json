@@ -1,0 +1,44 @@
+{
+  "sprint_id": "sprint-314",
+  "title": "Achiri error alerting — server error tracking + operator Telegram alerts",
+  "description": "Track Achiri server errors in error-log.jsonl, send Telegram alerts when error rate exceeds threshold. Critical for Apr 25 alpha monitoring.",
+  "source": "auto — Achiri Phase 2A: production monitoring for alpha",
+  "tasks": [
+    {
+      "id": "314-01",
+      "title": "Create error-tracker.ts module for Achiri server error logging + alerting",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-314",
+      "deliverables": { "code": ["agents/achiri/error-tracker.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "314-02",
+      "title": "Wire error tracking into Achiri server.ts error handlers",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-314",
+      "deliverables": { "code": ["agents/achiri/server.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "314-03",
+      "title": "Add /achirierrors Telegram command for error dashboard",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-314",
+      "deliverables": { "code": ["agents/telegram-bot/commands.ts", "agents/telegram-bot/index.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

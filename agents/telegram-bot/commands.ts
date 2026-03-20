@@ -3746,3 +3746,70 @@ export async function handleAchiriExport(chatId: number, ownerChatId: string, te
     await sendMessage(chatId, `❌ Could not reach Achiri server: ${(err as Error).message?.slice(0, 100)}`);
   }
 }
+
+// ── Sprint 314: /achirierrors — Error dashboard for alpha monitoring ───────────
+
+export async function handleAchiriErrors(chatId: number, ownerChatId: string): Promise<void> {
+  if (String(chatId) !== ownerChatId) {
+    await sendMessage(chatId, '🔒 Owner only.');
+    return;
+  }
+
+  const errorLogPath = join(process.cwd(), 'workspace', 'achiri', 'error-log.jsonl');
+  if (!existsSync(errorLogPath)) {
+    await sendMessage(chatId, '🔴 *Achiri Errors*\n\n✅ No errors logged. Clean slate!');
+    return;
+  }
+
+  interface EEntry { timestamp: string; type: string; userId: string; message: string }
+  const entries: EEntry[] = readFileSync(errorLogPath, 'utf-8')
+    .split('\n').filter(l => l.trim())
+    .map(l => { try { return JSON.parse(l); } catch { return null; } })
+    .filter(Boolean) as EEntry[];
+
+  if (entries.length === 0) {
+    await sendMessage(chatId, '🔴 *Achiri Errors*\n\n✅ No errors logged.');
+    return;
+  }
+
+  const now = Date.now();
+  const h24 = now - 24 * 60 * 60 * 1000;
+  const h1 = now - 60 * 60 * 1000;
+
+  const byType: Record<string, number> = {};
+  let last24h = 0;
+  let lastHour = 0;
+  for (const e of entries) {
+    byType[e.type] = (byType[e.type] ?? 0) + 1;
+    const ts = new Date(e.timestamp).getTime();
+    if (ts >= h24) last24h++;
+    if (ts >= h1) lastHour++;
+  }
+
+  const statusEmoji = lastHour >= 3 ? '🔴' : last24h >= 5 ? '🟡' : '🟢';
+
+  const lines = [
+    `${statusEmoji} *Achiri Error Dashboard*`,
+    '',
+    `⏱ *Last hour:* ${lastHour} errors`,
+    `📅 *Last 24h:* ${last24h} errors`,
+    `📊 *All time:* ${entries.length} errors`,
+    '',
+    '*By type:*',
+    ...Object.entries(byType).sort((a, b) => b[1] - a[1]).map(([type, count]) => `  • ${type}: ${count}`),
+    '',
+    '*Recent errors:*',
+  ];
+
+  const recent = entries.slice(-5).reverse();
+  for (const e of recent) {
+    const time = e.timestamp.slice(11, 19);
+    lines.push(`  ${time} — \`${e.type}\` ${e.message.slice(0, 60)}`);
+  }
+
+  if (lastHour >= 3) {
+    lines.push('', '🔴 *HIGH ERROR RATE* — check Achiri server logs immediately');
+  }
+
+  await sendMessage(chatId, lines.join('\n'));
+}

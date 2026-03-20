@@ -30,6 +30,7 @@ import {
   handleAchiriProfile,
   handleAchiriFeedback,
   handleAchiriExport,
+  handleAchiriErrors,
   handleLastRun,
   handleMetrics,
   handleRevenue,
@@ -142,6 +143,7 @@ async function dispatch(update: TelegramUpdate): Promise<void> {
     case '/achiristats':    await handleAchiriStats(chatId, OWNER_CHAT_ID);           break;
     case '/achirifeedback': await handleAchiriFeedback(chatId, OWNER_CHAT_ID);       break;
     case '/achiriexport':   await handleAchiriExport(chatId, OWNER_CHAT_ID, text);  break;
+    case '/achirierrors':   await handleAchiriErrors(chatId, OWNER_CHAT_ID);        break;
     case '/lastrun':        await handleLastRun(chatId, OWNER_CHAT_ID);              break;
     case '/metrics':        await handleMetrics(chatId, OWNER_CHAT_ID);              break;
     case '/revenue':        await handleRevenue(chatId, OWNER_CHAT_ID);              break;
