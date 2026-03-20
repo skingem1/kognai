@@ -416,7 +416,7 @@
       "sprint": 488,
       "title": "EVAL-005 — AgentPay SDK pattern extraction for OMEL",
       "block": "PHASE2A-PREP",
-      "status": "pending",
+      "status": "done",
       "priority": "low",
       "rationale": "BACKLOG-EVAL-005: WLFI AgentPay SDK ships production implementations of Credential Vault (vault-daemon Unix socket signing) + Human Brake (policy engine with approval-request UUID). Read vault-daemon + policy engine source code BEFORE OMEL Sprint 004. Extract patterns for ClawRouter key management. DO NOT use USD1 — Kognai standard is USDC on Base. Watch EIP-3009 (gasless meta-transactions) for Invoica integration."
     },
