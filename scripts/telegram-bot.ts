@@ -1924,6 +1924,104 @@ function cmdViralStats(): string {
   return lines.join('\n');
 }
 
+// ─── Sprint 373: /checkout — Stripe checkout session generator ──────────────
+
+async function cmdCheckout(chatId: string, args: string): Promise<void> {
+  const stripeKey = process.env.STRIPE_SECRET_KEY || '';
+  if (!stripeKey) {
+    await sendMessage(chatId, '⚠️ *Stripe not configured.* Set `STRIPE_SECRET_KEY` in .env');
+    return;
+  }
+
+  const tier = args.trim().toLowerCase() || 'growth';
+  const priceMap: Record<string, { priceId: string; name: string; amount: string }> = {
+    growth: {
+      priceId: process.env.STRIPE_PRICE_GROWTH || '',
+      name: 'Growth',
+      amount: '€19/mo',
+    },
+    premium: {
+      priceId: process.env.STRIPE_PRICE_PREMIUM || '',
+      name: 'Premium',
+      amount: '€49/mo',
+    },
+  };
+
+  const plan = priceMap[tier];
+  if (!plan) {
+    await sendMessage(chatId, `❌ Unknown tier: \`${tier}\`\n\nUsage: \`/checkout growth\` or \`/checkout premium\``);
+    return;
+  }
+  if (!plan.priceId) {
+    await sendMessage(chatId, `⚠️ Price ID not configured for ${plan.name}. Set \`STRIPE_PRICE_${tier.toUpperCase()}\` in .env`);
+    return;
+  }
+
+  const successUrl = process.env.STRIPE_SUCCESS_URL || 'https://kognai.com/success';
+  const cancelUrl = process.env.STRIPE_CANCEL_URL || 'https://kognai.com/cancel';
+
+  const body = new URLSearchParams({
+    'mode': 'subscription',
+    'line_items[0][price]': plan.priceId,
+    'line_items[0][quantity]': '1',
+    'success_url': successUrl,
+    'cancel_url': cancelUrl,
+  }).toString();
+
+  try {
+    const result = await new Promise<any>((resolve, reject) => {
+      const req = https.request({
+        hostname: 'api.stripe.com',
+        path: '/v1/checkout/sessions',
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${stripeKey}`,
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Content-Length': Buffer.byteLength(body),
+        },
+      }, (res) => {
+        let data = '';
+        res.on('data', (c: Buffer) => (data += c.toString()));
+        res.on('end', () => {
+          try { resolve(JSON.parse(data)); }
+          catch { reject(new Error(`Stripe parse error: ${data.slice(0, 200)}`)); }
+        });
+      });
+      req.on('error', reject);
+      req.setTimeout(15000, () => { req.destroy(); reject(new Error('Stripe API timeout')); });
+      req.write(body);
+      req.end();
+    });
+
+    if (result.error) {
+      await sendMessage(chatId, `❌ Stripe error: ${result.error.message ?? JSON.stringify(result.error).slice(0, 200)}`);
+      return;
+    }
+
+    const url = result.url;
+    if (!url) {
+      await sendMessage(chatId, `⚠️ No checkout URL returned. Response: ${JSON.stringify(result).slice(0, 300)}`);
+      return;
+    }
+
+    const mode = stripeKey.startsWith('sk_live_') ? '🟢 LIVE' : '🟡 TEST';
+
+    await sendMessage(chatId, [
+      `💳 *${plan.name} Checkout* (${plan.amount}) ${mode}`,
+      '',
+      `🔗 ${url}`,
+      '',
+      `Session: \`${result.id?.slice(0, 30) ?? 'n/a'}\``,
+      `Expires: ${result.expires_at ? new Date(result.expires_at * 1000).toISOString().slice(0, 16) : '24h'}`,
+      '',
+      '_Share this link with the subscriber. It expires in ~24h._',
+    ].join('\n'));
+
+  } catch (err: any) {
+    await sendMessage(chatId, `❌ Checkout failed: ${err.message?.slice(0, 200)}`);
+  }
+}
+
 // ─── Sprint 371: /todaycaptions — batch captions for today's posts ────────
 
 async function cmdTodayCaptions(chatId: string): Promise<void> {
@@ -2634,6 +2732,7 @@ function cmdHelp(): string {
     `/dashboard  — Full system status overview\n` +
     `/todaycaptions — Copy-paste captions for today\n` +
     `/viralstats — Viral score summary + top 3\n` +
+    `/checkout  — Generate Stripe checkout link\n` +
     `/help      — This message`
   );
 }
@@ -2787,6 +2886,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/postplan':    response = cmdPostPlan();           break;
     case '/dashboard':   response = cmdDashboard();          break;
     case '/viralstats':  response = cmdViralStats();         break;
+    case '/checkout':    await cmdCheckout(chatId, cmdArgs); return;
     case '/help':        response = cmdHelp();        break;
     default:
       response = `Unknown command: \`${cmdName}\`\n\n${cmdHelp()}`;
