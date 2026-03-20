@@ -3012,3 +3012,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (surgical bot edit)
 - Issues: None.
 - Timestamp: 2026-03-20T08:00:00Z
+
+## Sprint 355 — /lang + /about for Achiri TG Bot (Direct Write)
+- Status: PASS
+- Commit: 5139bb1
+- Files created: workspace/sprints/sprint-355.json
+- Files modified: agents/achiri/telegram-bot.ts
+- Tasks completed:
+  - 355-01: Added /lang command — supports darija/french/english (and aliases ar, fr, en, tunsi, français, etc.). Persists to workspace/achiri/lang-prefs.json. Injects language hint as prefix to user messages for Achiri. Added /about with Achiri description. Fixed command parsing to support args (e.g. /lang darija). Updated /help.
+- Validation: ts-node transpile-only import PASS
+- Swarm used: no (Achiri bot feature additions)
+- Issues: None.
+- Timestamp: 2026-03-20T08:15:00Z
