@@ -2,3 +2,7 @@
 {"role":"assistant","content":"Aslema! Chnahwelek? 😄 Hé, t'as déjà vu le nouveau malouf? (M3a tchouf tchouf... kif t'as?)"}
 {"role":"user","content":"مرحبا"}
 {"role":"assistant","content":"Aslema! T'as déjà dit \"merhaba\" 3ala 3alim? 😄 Hé, mrigoul — t'as déjà vu le malouf?"}
+{"role":"user","content":"مرحبا"}
+{"role":"assistant","content":"Aslema! T'as déjà dit \"merhaba\" 3 fois? 😂 Hé, mrigoul — t'as déjà vu le malouf? (M3a tchouf tchouf... kif t'as?)"}
+{"role":"user","content":"مرحبا"}
+{"role":"assistant","content":"Aslema! T'as déjà dit \"merhaba\" **4 fois**? 😂 Hé, mrigoul — t'as déjà vu le lablabi? (M3a tchouf... Ramadan kif t'as? T'as faqas tchouf m3a kif t'as?)"}

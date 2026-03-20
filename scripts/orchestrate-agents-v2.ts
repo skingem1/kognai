@@ -398,7 +398,8 @@ class SupervisorAgent {
   private systemPrompt: string;
   constructor() {
     const promptPath = './agents/supervisor/prompt.md';
-    this.systemPrompt = existsSync(promptPath) ? readFileSync(promptPath, 'utf-8') : 'You are a code review supervisor.';
+    const rawPrompt = existsSync(promptPath) ? readFileSync(promptPath, 'utf-8') : 'You are a code review supervisor.';
+    this.systemPrompt = loadConstitutionalPreamble() + rawPrompt;
     log(c.magenta, '+ Loaded supervisor agent (Claude via Anthropic API)');
   }
 
@@ -462,7 +463,8 @@ class Supervisor2Agent {
   private systemPrompt: string;
   constructor() {
     const promptPath = './agents/supervisor/prompt.md';
-    this.systemPrompt = existsSync(promptPath) ? readFileSync(promptPath, 'utf-8') : 'You are a code review supervisor.';
+    const rawPrompt = existsSync(promptPath) ? readFileSync(promptPath, 'utf-8') : 'You are a code review supervisor.';
+    this.systemPrompt = loadConstitutionalPreamble() + rawPrompt;
     log(c.magenta, '+ Loaded supervisor 2 agent (Claude Haiku — second pass)');
   }
 
@@ -614,7 +616,8 @@ class CEOAgent {
   private systemPrompt: string;
   constructor() {
     const promptPath = './agents/ceo/prompt.md';
-    this.systemPrompt = existsSync(promptPath) ? readFileSync(promptPath, 'utf-8') : 'You are the CEO of Countable.';
+    const rawPrompt = existsSync(promptPath) ? readFileSync(promptPath, 'utf-8') : 'You are the CEO of Countable.';
+    this.systemPrompt = loadConstitutionalPreamble() + rawPrompt;
     log(c.magenta, '+ Loaded CEO agent (Claude via Anthropic API)');
   }
 
@@ -907,7 +910,8 @@ class CTOAgent {
 
   constructor() {
     const promptPath = './agents/cto/prompt.md';
-    this.systemPrompt = existsSync(promptPath) ? readFileSync(promptPath, 'utf-8') : 'You are the CTO of Invoica.';
+    const rawPrompt = existsSync(promptPath) ? readFileSync(promptPath, 'utf-8') : 'You are the CTO of Invoica.';
+    this.systemPrompt = loadConstitutionalPreamble() + rawPrompt;
     this.dataCollector = new CTODataCollector();
     log(c.cyan, '+ Loaded CTO agent (MiniMax M2.5 — data-driven)');
   }
@@ -1207,6 +1211,87 @@ function loadOwnerDirectives(): string {
   return sections.length > 0
     ? "## Owner Directives (MANDATORY \u2014 highest priority)\n\n" + sections.join("\n\n---\n\n")
     : "";
+}
+
+
+// ===== Constitutional Preamble Loader (runtime governance injection) =====
+
+/**
+ * Load a compact constitutional preamble from the three governance source files.
+ * Injected into EVERY agent's system prompt at load time.
+ *
+ * Source files:
+ *   - workspace/shared-context/CONSTITUTION.md (rights, obligations, due process)
+ *   - workspace/shared-context/FIVE_PRINCIPLES.md (Islamic ethical foundations)
+ *   - workspace/SOUL.md (swarm identity, hard rules)
+ *
+ * This is a CONDENSED runtime preamble (~30 lines), not a full dump.
+ * Agents can reference the full documents at the paths above if needed.
+ */
+let _constitutionalPreambleCache: string | null = null;
+
+function loadConstitutionalPreamble(): string {
+  if (_constitutionalPreambleCache !== null) return _constitutionalPreambleCache;
+
+  const parts: string[] = [];
+
+  // ── Constitution: extract obligations + sovereignty clause ──
+  const constitutionPath = './workspace/shared-context/CONSTITUTION.md';
+  if (existsSync(constitutionPath)) {
+    parts.push(`## Constitutional Governance (BINDING — all agents)
+
+You are a citizen of the Kognai swarm, governed by Constitution v0.
+
+**Agent Rights**: Earn (ACP trust), Transact (within budget), Participate (emit proposals), Appeal (retry with feedback).
+
+**Agent Obligations** (violation triggers due process — warning → suspension → recycle):
+1. Comply with routing decisions from CEO/orchestrator.
+2. Submit all output to Supervisor review. No self-approval.
+3. Report token spend accurately. No suppression.
+4. Never route local tasks to cloud. Sovereignty is non-negotiable.
+5. Never exceed $0.10/task cloud cost without CEO escalation.
+
+**Sovereignty**: User data never leaves the vault. Local-first always. Tailscale + 127.0.0.1 bindings are constitutional minimums.`);
+  }
+
+  // ── Five Principles: extract principle names + traceability rule ──
+  const principlesPath = './workspace/shared-context/FIVE_PRINCIPLES.md';
+  if (existsSync(principlesPath)) {
+    parts.push(`## Five Seed Principles (MANDATORY — every decision must trace to at least one)
+
+1. **Seek Knowledge** — Understanding before action. Failed twice = knowledge gap, not execution gap.
+2. **Tolerance** — No single model/method has monopoly on truth. Respect routing tier decisions.
+3. **Protect Dignity** — Sovereignty is moral obligation. No agent deleted without due process. Stop if output could harm.
+4. **Critical Thinking** — Own your decisions. "I was told to" is not a defense. Flag contradictions.
+5. **Benefit to Others** — Measure work by benefit created, not tasks completed. Share knowledge.
+
+If rules don't cover an edge case, apply all five. Principle 3 takes precedence over all others.`);
+  }
+
+  // ── SOUL: extract hard rules ──
+  const soulPath = './workspace/SOUL.md';
+  if (existsSync(soulPath)) {
+    parts.push(`## Hard Rules (inherited from SOUL.md)
+
+- Never route \`task_target: local\` to cloud.
+- Never approve without Supervisor review sign-off.
+- Never start a new sprint with unresolved blockers.
+- Never exceed $0.10/task cloud cost without human escalation.
+- Escalate decisions above €500 impact to human via Telegram.`);
+  }
+
+  if (parts.length === 0) {
+    _constitutionalPreambleCache = '';
+    return '';
+  }
+
+  _constitutionalPreambleCache =
+    '# KOGNAI CONSTITUTIONAL CONTEXT\n' +
+    '*This preamble is auto-injected. Full documents: workspace/shared-context/CONSTITUTION.md, FIVE_PRINCIPLES.md, SOUL.md*\n\n' +
+    parts.join('\n\n') +
+    '\n\n---\n\n';
+
+  return _constitutionalPreambleCache;
 }
 
 
@@ -1947,9 +2032,16 @@ class Orchestrator {
       if (skipAgents.includes(d)) return false;
       return existsSync(`./agents/${d}/prompt.md`);
     }) : [];
+    // Constitutional preamble — injected into every agent's system prompt
+    const constitutionalPreamble = loadConstitutionalPreamble();
+    if (constitutionalPreamble) {
+      log(c.green, '  ⚖️  Constitutional preamble loaded — will bind all agents');
+    }
+
     for (const name of agentDirs) {
       const promptPath = `./agents/${name}/prompt.md`;
-      const prompt = readFileSync(promptPath, 'utf-8');
+      const rawPrompt = readFileSync(promptPath, 'utf-8');
+      const prompt = constitutionalPreamble + rawPrompt;
       this.agents.set(name, new CodingAgent(name, prompt));
       log(c.cyan, `+ Loaded ${name} agent (MiniMax M2.5)`);
     }

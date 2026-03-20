@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-500",
+  "title": "CORE — Pipeline stages (viral/avatar/captions) + constitutional preamble",
+  "description": "Commit uncommitted functional changes from previous sessions: (1) Pipeline stages 2.5 (viral TikTok), 6.5 (avatar), 7.5 (animated captions) in orchestrator index.ts, (2) Constitutional preamble injection in swarm orchestrator (supervisor, CEO, CTO agents), (3) Updated state files.",
+  "source": "queue-empty — committing accumulated uncommitted work",
+  "tasks": [
+    {
+      "id": "500-01",
+      "title": "Commit pipeline stage additions + constitutional preamble + state files",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-500",
+      "deliverables": { "code": ["agents/scs001-orchestrator/index.ts", "scripts/orchestrate-agents-v2.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

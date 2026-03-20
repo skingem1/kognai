@@ -1,10 +1,10 @@
-# KOGNAI DAILY BRIEF — 2026-03-19
-## Thursday, March 19, 2026
+# KOGNAI DAILY BRIEF — 2026-03-20
+## Friday, March 20, 2026
 
-**Generated:** 2026-03-19 16:02
-**Active Sprint:** Sprint 066
-**Hours Today:** 4h
-**Midday Block:** NO (Tuesday/Thursday)
+**Generated:** 2026-03-20 06:45
+**Active Sprint:** sprint-066
+**Hours Today:** 6h
+**Midday Block:** YES (12:00-14:00)
 
 ---
 
@@ -13,37 +13,12 @@
 | Block | Time | Available |
 |-------|------|-----------|
 | AM | 07:00–09:30 | YES |
-| MID | 12:00–14:00 | NO |
+| MID | 12:00–14:00 | YES |
 | PM | 18:00–19:30 | YES |
 
 ---
 
 ## TODAY'S TASKS
-
-### Wednesday, March 19
-**Sprint 066 — Autonomous Content Loop**
-
-**AM 07:00–09:30**
-- [ ] Read sprint-066 early output
-- [ ] Review `scripts/content/daily-pipeline.ts` — full automation chain
-- [ ] Review A/B testing framework: `scripts/content/ab-test.ts`
-- [ ] Check: does daily pipeline fetch → extract → score → compose → queue?
-
-**MID 12:00–14:00**
-- [ ] [YOU] Run daily pipeline manually, review output quality
-- [ ] [YOU] Calibrate vision scoring weights — are the "funny" clips actually funny?
-- [ ] Test in-bot feedback buttons (🔥 / 😐 / 👎) — do they store correctly?
-- [ ] Review feedback loop logic — does high engagement feed back into generation?
-
-**PM 18:00–19:30**
-- [ ] Review sprint-066 progress
-- [ ] Test: run pipeline twice — does A/B framework generate 2 caption variants?
-- [ ] Check cost per daily run — is it within $0.10-0.30 budget?
-- [ ] Write session log
-
----
-
-## TOMORROW PREVIEW
 
 ### Thursday, March 20
 **AM 07:00–09:30**
@@ -53,6 +28,13 @@
 - [ ] Review content quality of auto-generated batch
 
 **NO MIDDAY BLOCK**
+
+**PM 18:00–19:30**
+- [ ] Sprint-066 final approval
+- [ ] [YOU] Post today's content batch manually (Model A: content delivery)
+- [ ] Monitor engagement on yesterday's posts (check 24h metrics)
+- [ ] Write session log
+- [ ] If 066 done: prepare sprint-067 JSON (subscription bot)
 
 ---
 

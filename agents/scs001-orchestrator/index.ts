@@ -20,6 +20,10 @@ import { ScriptValidator } from '../scs001-script-validator/index';
 import { ExperimentTracker, ExperimentEntry } from '../scs001-experiment/index';
 import { withRetry, withFallback } from './retry';
 import { DedupLedger, LedgerEntry } from './dedup-ledger';
+// Sprint N8N: Viral TikTok downloader + Avatar + Animated captions
+import { ViralTikTokDownloader, isViralDownloaderAvailable } from '../scs001-viral-downloader/index';
+import { generateAvatarSegments, isAvatarAvailable, type AvatarResult } from '../../scripts/scs001/avatar-presenter';
+import { generateCaptions as generateAnimatedCaptions } from '../../scripts/scs001/caption-overlay';
 import { existsSync, readFileSync, writeFileSync, readdirSync } from 'fs';
 import { resolve, join, basename } from 'path';
 
@@ -127,6 +131,18 @@ export class SCS001Orchestrator {
         const agent = new DiscoveryAgent();
         discoveries = await agent.run(trendBatch!);
         return discoveries.length;
+      }));
+    }
+
+    // --- Stage 2.5: Viral TikTok Downloader (RapidAPI) ---
+    const viralStatus = isViralDownloaderAvailable();
+    if (viralStatus.enabled) {
+      stages.push(await this.runStage('2.5-viral-tiktok', 'ViralTikTokDownloader', async () => {
+        const downloader = new ViralTikTokDownloader();
+        const viralClips = await downloader.run(trendBatch ?? undefined);
+        // Merge viral TikTok clips into discovery pool — they flow through normal pipeline
+        discoveries.push(...viralClips);
+        return viralClips.length;
       }));
     }
 
@@ -248,12 +264,62 @@ export class SCS001Orchestrator {
       }));
     }
 
+    // --- Stage 6.5: Avatar Presenter (Captions.ai — optional premium) ---
+    const avatarStatus = isAvatarAvailable();
+    if (avatarStatus.enabled && bundles.length > 0) {
+      stages.push(await this.runStage('6.5-avatar', 'AvatarPresenter', async () => {
+        let avatarCount = 0;
+        for (const bundle of bundles) {
+          try {
+            const avatarResult = await generateAvatarSegments(bundle);
+            const avatarSegments = avatarResult.segments.filter(s => s.avatar_used);
+            avatarCount += avatarSegments.length;
+            // Attach avatar paths to edited videos for EditingAgent to merge
+            const edited = editedVideos.find(ev => ev.insight_id === bundle.insight_id);
+            if (edited) {
+              (edited as any).avatar_segments = avatarResult.segments;
+              (edited as any).avatar_cost_usd = avatarResult.total_cost_usd;
+            }
+          } catch (err: any) {
+            console.warn(`[Orchestrator] Avatar failed for ${bundle.script_id}: ${err.message}`);
+          }
+        }
+        return avatarCount;
+      }));
+    }
+
     // --- Stage 7: Caption Agent ---
     if (editedVideos.length > 0) {
       stages.push(await this.runStage('7-caption', 'CaptionAgent', async () => {
         const agent = new CaptionAgent(this.workDir + '/caption');
         captionedVideos = agent.run(editedVideos, bundles);
         return captionedVideos.length;
+      }));
+    }
+
+    // --- Stage 7.5: Animated Captions (JSON2Video — optional) ---
+    const json2videoKey = process.env.JSON2VIDEO_API_KEY ?? '';
+    if (json2videoKey && captionedVideos.length > 0 && this.mode === 'live') {
+      stages.push(await this.runStage('7.5-animated-captions', 'JSON2Video', async () => {
+        let animatedCount = 0;
+        for (let i = 0; i < captionedVideos.length; i++) {
+          const cv = captionedVideos[i];
+          const bundle = bundles.find(b => b.insight_id === (editedVideos.find(ev => ev.video_id === cv.video_id) as any)?.insight_id);
+          if (!bundle || !cv.file_path) continue;
+          try {
+            const captionResult = await generateAnimatedCaptions(bundle, cv.file_path);
+            if (captionResult.video_path) {
+              // Replace captioned video path with animated version
+              (cv as any).file_path = captionResult.video_path;
+              (cv as any).animated_captions = true;
+              animatedCount++;
+            }
+          } catch (err: any) {
+            console.warn(`[Orchestrator] Animated captions failed for ${cv.video_id}: ${err.message}`);
+            // Falls through — original SRT captions preserved
+          }
+        }
+        return animatedCount;
       }));
     }
 

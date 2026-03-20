@@ -11,7 +11,7 @@
       "task_type": "code",
       "task_target": "local",
       "agent": "coder",
-      "status": "pending",
+      "status": "done",
       "priority": "high",
       "sprint_id": "sprint-249",
       "deliverables": { "code": ["scripts/scs001/llm-script-rewriter.ts"], "tests": [], "docs": [] }
@@ -23,7 +23,7 @@
       "task_type": "code",
       "task_target": "local",
       "agent": "coder",
-      "status": "pending",
+      "status": "done",
       "priority": "high",
       "sprint_id": "sprint-249",
       "deliverables": { "code": ["agents/scs001-script/index.ts"], "tests": [], "docs": [] }
@@ -35,7 +35,7 @@
       "task_type": "code",
       "task_target": "local",
       "agent": "coder",
-      "status": "pending",
+      "status": "done",
       "priority": "high",
       "sprint_id": "sprint-249",
       "deliverables": { "code": ["scripts/scs001/validate-llm-rewriter.ts"], "tests": [], "docs": [] }

@@ -1,71 +1,71 @@
 {
-  "run_id": "scs001-2026-03-19T17-00-00-427Z",
-  "mode": "mock",
-  "started_at": "2026-03-19T17:00:00.427Z",
-  "completed_at": "2026-03-19T17:05:16.884Z",
-  "total_elapsed_ms": 316457,
+  "run_id": "scs001-2026-03-20T06-00-00-424Z",
+  "mode": "live",
+  "started_at": "2026-03-20T06:00:00.424Z",
+  "completed_at": "2026-03-20T06:16:20.349Z",
+  "total_elapsed_ms": 979925,
   "stages": [
     {
       "stage": "1-trend",
       "agent": "TrendAgent",
-      "count": 5,
-      "elapsed_ms": 1,
+      "count": 11,
+      "elapsed_ms": 485,
       "status": "ok"
     },
     {
       "stage": "2-discovery",
       "agent": "DiscoveryAgent",
-      "count": 10,
-      "elapsed_ms": 2034,
+      "count": 18,
+      "elapsed_ms": 3926,
       "status": "ok"
     },
     {
       "stage": "3-clip-detection",
       "agent": "ClipDetectionAgent",
-      "count": 36,
-      "elapsed_ms": 302231,
+      "count": 59,
+      "elapsed_ms": 542867,
       "status": "ok"
     },
     {
       "stage": "4-insight",
-      "agent": "InsightAgent (mock-from-clips)",
-      "count": 18,
-      "elapsed_ms": 0,
+      "agent": "InsightAgent (live)",
+      "count": 23,
+      "elapsed_ms": 419187,
       "status": "ok"
     },
     {
       "stage": "5-script",
       "agent": "ScriptAgent",
-      "count": 18,
-      "elapsed_ms": 1,
+      "count": 23,
+      "elapsed_ms": 3,
       "status": "ok"
     },
     {
       "stage": "5.5-score",
       "agent": "ScriptScorer",
       "count": 13,
-      "elapsed_ms": 0,
+      "elapsed_ms": 4,
       "status": "ok"
     },
     {
       "stage": "6-validate",
       "agent": "ScriptValidator",
       "count": 13,
-      "elapsed_ms": 0,
+      "elapsed_ms": 1,
       "status": "ok"
     },
     {
       "stage": "6-editing",
       "agent": "EditingAgent",
       "count": 13,
-      "elapsed_ms": 11834,
+      "elapsed_ms": 9981,
       "status": "ok"
     },
     {
       "stage": "7-caption",
       "agent": "CaptionAgent",
       "count": 13,
-      "elapsed_ms": 343,
+      "elapsed_ms": 263,
       "status": "ok"
     },
     {
@@ -79,57 +79,59 @@
       "stage": "9-experiment",
       "agent": "ExperimentTracker",
       "count": 13,
-      "elapsed_ms": 2,
+      "elapsed_ms": 1,
       "status": "ok"
     },
     {
       "stage": "9-publishing",
       "agent": "PublishingAgent",
-      "count": 13,
-      "elapsed_ms": 4,
+      "count": 10,
+      "elapsed_ms": 3195,
       "status": "ok"
     },
     {
       "stage": "10-analytics",
       "agent": "AnalyticsAgent",
-      "count": 13,
-      "elapsed_ms": 1,
+      "count": 10,
+      "elapsed_ms": 3,
       "status": "ok"
     },
     {
       "stage": "11-flywheel",
       "agent": "ContentFlywheelAgent",
-      "count": 20,
-      "elapsed_ms": 2,
+      "count": 16,
+      "elapsed_ms": 3,
       "status": "ok"
     },
     {
       "stage": "12-failure-library",
       "agent": "FailureLibraryAgent",
-      "count": 4,
-      "elapsed_ms": 1,
+      "count": 3,
+      "elapsed_ms": 3,
       "status": "ok"
     }
   ],
   "summary": {
-    "topics_found": 5,
-    "clips_discovered": 10,
-    "clips_qualified": 18,
-    "insights_generated": 18,
-    "scripts_produced": 18,
-    "scripts_scored": 18,
-    "scripts_filtered": 5,
+    "topics_found": 11,
+    "clips_discovered": 18,
+    "clips_qualified": 23,
+    "insights_generated": 23,
+    "scripts_produced": 23,
+    "scripts_scored": 23,
+    "scripts_filtered": 10,
     "scripts_validation_skipped": 0,
     "videos_edited": 13,
     "videos_captioned": 13,
-    "qc_passed": 13,
-    "qc_failed": 0,
-    "published": 13,
-    "viral": 5,
-    "performing": 4,
-    "failure_library": 4,
-    "flywheel_derivatives": 20,
-    "failure_entries": 4,
-    "clips_deduplicated": 0
+    "qc_passed": 10,
+    "qc_failed": 3,
+    "published": 10,
+    "viral": 4,
+    "performing": 3,
+    "failure_library": 3,
+    "flywheel_derivatives": 16,
+    "failure_entries": 3,
+    "clips_deduplicated": 0,
+    "platforms_targeted": 9,
+    "publish_method": "tiktok-direct"
   }
 }
