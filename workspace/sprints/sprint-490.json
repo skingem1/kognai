@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-490",
+  "title": "PHASE2A — Voxight Module 2 stub (ORACLE-6 live feed)",
+  "description": "Build mock ORACLE-6 live feed interface that the SCS-001 pipeline can consume. Real Voxight integration deferred to Phase 2. Unblocks live integration testing.",
+  "source": "queue — Sprint 490 PHASE2A-PREP",
+  "tasks": [
+    {
+      "id": "490-01",
+      "title": "Create voxight-live-feed.ts mock live feed interface",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-490",
+      "deliverables": { "code": ["scripts/lib/voxight-live-feed.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "490-02",
+      "title": "Create mock feed data for pipeline testing",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-490",
+      "deliverables": { "code": ["workspace/intelligence/mock-feed-data.json"], "tests": [], "docs": [] }
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "_note": "Mock ORACLE-6 live feed data for SCS-001 pipeline testing. Sprint 490.",
+  "generated": "2026-03-20",
+  "events": [
+    {
+      "event_id": "mock-001",
+      "event_type": "trend_spike",
+      "signal": {
+        "signal_id": "mock-sig-001",
+        "query_type": "TRENDS",
+        "topic": "AI agents autonomous coding",
+        "summary": "Spike in X posts about AI agents that write code autonomously — 340% increase in 6 hours. Key accounts: @levelsio, @karpathy discussing Claude Code and Cursor as paradigm shift.",
+        "confidence": 85,
+        "sources": ["x.com/trending", "x.com/spaces"],
+        "timestamp": "2026-03-20T12:00:00Z",
+        "scs_relevant": true
+      },
+      "received_at": "2026-03-20T12:01:00Z",
+      "processed": false
+    },
+    {
+      "event_id": "mock-002",
+      "event_type": "viral_content",
+      "signal": {
+        "signal_id": "mock-sig-002",
+        "query_type": "TRENDS",
+        "topic": "open source AI tools for creators",
+        "summary": "Viral thread on free AI tools for content creators — 12K retweets in 3 hours. Focus on video editing automation and TikTok content at scale.",
+        "confidence": 78,
+        "sources": ["x.com/viral"],
+        "timestamp": "2026-03-20T14:00:00Z",
+        "scs_relevant": true
+      },
+      "received_at": "2026-03-20T14:02:00Z",
+      "processed": false
+    },
+    {
+      "event_id": "mock-003",
+      "event_type": "thought_leader_post",
+      "signal": {
+        "signal_id": "mock-sig-003",
+        "query_type": "THOUGHT_LEADER",
+        "topic": "TikTok algorithm changes 2026",
+        "summary": "Prominent creator analyst reports TikTok favoring 15-30s clips with text hooks over 60s content. Recommendation: front-load hooks in first 2 seconds.",
+        "confidence": 72,
+        "sources": ["x.com/thought-leaders"],
+        "timestamp": "2026-03-20T09:00:00Z",
+        "scs_relevant": true
+      },
+      "received_at": "2026-03-20T09:05:00Z",
+      "processed": false
+    },
+    {
+      "event_id": "mock-004",
+      "event_type": "narrative_shift",
+      "signal": {
+        "signal_id": "mock-sig-004",
+        "query_type": "NARRATIVE",
+        "topic": "sovereign AI infrastructure",
+        "summary": "Growing narrative around sovereign AI — countries and companies wanting to run AI locally instead of depending on US cloud providers. Tunisia and EU prominent.",
+        "confidence": 68,
+        "sources": ["x.com/narrative"],
+        "timestamp": "2026-03-20T10:00:00Z",
+        "scs_relevant": false
+      },
+      "received_at": "2026-03-20T10:03:00Z",
+      "processed": false
+    },
+    {
+      "event_id": "mock-005",
+      "event_type": "space_started",
+      "signal": {
+        "signal_id": "mock-sig-005",
+        "query_type": "SPACES",
+        "topic": "AI agent economy and tokenomics",
+        "summary": "X Space with 450 listeners discussing agent-to-agent payments, x402 protocol, and autonomous agent economies. Mentions ERC-8004 and USDC on Base.",
+        "confidence": 82,
+        "sources": ["x.com/spaces/live"],
+        "timestamp": "2026-03-20T16:00:00Z",
+        "scs_relevant": false
+      },
+      "received_at": "2026-03-20T16:01:00Z",
+      "processed": false
+    }
+  ]
+}
