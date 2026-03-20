@@ -3157,3 +3157,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (single function port)
 - Issues: None.
 - Timestamp: 2026-03-20T11:15:00Z
+
+## Sprint 367 — /viral — Trending Topics (Direct Write)
+- Status: PASS
+- Commit: 3595fba
+- Files created: workspace/sprints/sprint-367.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 367-01: Added /viral command. Shows top 10 trending topics from viral-topics.json with freshness indicator (minutes/hours/days since update). Updated /help + switch router.
+- Validation: ts-node --transpile-only PASS
+- Swarm used: no (single function port)
+- Issues: None.
+- Timestamp: 2026-03-20T11:30:00Z
