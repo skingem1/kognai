@@ -245,6 +245,18 @@ function getCalendarToday(): Array<{ video_id: string; slot: string; viral_score
   } catch { return []; }
 }
 
+// ── CMO status (Sprint 491) ──────────────────────────────────────────────────
+
+function getCMOLaunchStatus(): string {
+  const adsReady = fs.existsSync(path.join(ROOT, 'workspace', 'launch', 'ads', 'creatives.json'));
+  const manifestoReady = fs.existsSync(path.join(ROOT, 'workspace', 'launch', 'manifesto-thread.json'));
+
+  const items: string[] = [];
+  items.push(adsReady ? '✅ X ads creative' : '❌ X ads creative');
+  items.push(manifestoReady ? '✅ Manifesto thread' : '❌ Manifesto thread');
+  return items.join(' | ');
+}
+
 // ── Gate countdown ────────────────────────────────────────────────────────────
 
 function getDaysUntil(isoDate: string): number {
@@ -423,6 +435,8 @@ function buildDigest(): string {
     stripeStatus,
     `🤖 Auto-post: ${autoPost.status}${autoPost.detail ? ` — ${autoPost.detail}` : ''}`,
     ...(autoPost.action ? [`   _${autoPost.action}_`] : []),
+    '',
+    `📣 *CMO Launch Prep:* ${getCMOLaunchStatus()}`,
     '',
     `📅 *Upcoming gates*`,
     `• Apr 7  — Phase 1.5 decision (${daysPhase}d)`,

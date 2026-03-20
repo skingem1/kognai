@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-491",
+  "title": "INFRA — Daily report generator fix + CMO report activation",
+  "description": "Create standalone daily report generator (not dependent on swarm runs), wire CMO report section into daily digest, verify reports land in reports/swarm-runs/daily-YYYY-MM-DD.json.",
+  "source": "queue — Sprint 491 INFRA",
+  "tasks": [
+    {
+      "id": "491-01",
+      "title": "Create standalone daily report aggregator script",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-491",
+      "deliverables": { "code": ["scripts/generate-daily-report.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "491-02",
+      "title": "Wire CMO report section into daily-digest.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-491",
+      "deliverables": { "code": ["scripts/daily-digest.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
