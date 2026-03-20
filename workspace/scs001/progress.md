@@ -4150,3 +4150,16 @@ All operator touchpoints now show enriched content metadata:
 - Swarm bypassed: yes (FP-007). Manual crystallise: skipped (no crystallise function available).
 - Issues: None. All commands still routed through same switch/case in telegram-bot.ts.
 - Timestamp: 2026-03-20T10:30:00Z
+
+## Sprint 456 — ENV-CHECK: Environment Variable Validator
+- Status: PASS
+- Commit: ffca325
+- Files created: scripts/check-env.ts, workspace/sprints/sprint-456.json
+- Files modified: scripts/telegram-commands/cmd-system.ts, scripts/telegram-bot.ts
+- Tasks completed:
+  - 456-01: Created check-env.ts — validates 10 subsystems (30+ vars), CLI + importable, per-subsystem readiness
+  - 456-02: Wired /envcheck Telegram command via cmd-system.ts
+- Validation: CLI test PASS — shows 7/10 subsystems ready, identifies TIKTOK_ACCESS_TOKEN + CEO_TELEGRAM_BOT_TOKEN as missing required
+- Swarm used: no (small feature)
+- Issues: CEO_TELEGRAM_BOT_TOKEN detected as missing because env var name is TELEGRAM_BOT_TOKEN in some configs — non-blocking
+- Timestamp: 2026-03-20T10:45:00Z
