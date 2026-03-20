@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-358",
+  "title": "/quiz — Achiri daily trivia for alpha user retention",
+  "description": "Add /quiz command to Achiri bot with culturally relevant Tunisia trivia. Drives daily active usage and retention for alpha users.",
+  "source": "auto — Achiri alpha engagement features needed before Apr 25 launch",
+  "tasks": [
+    {
+      "id": "358-01",
+      "title": "Add /quiz command to agents/achiri/telegram-bot.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-358",
+      "deliverables": { "code": ["agents/achiri/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

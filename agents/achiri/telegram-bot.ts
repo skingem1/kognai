@@ -132,6 +132,7 @@ async function handleHelp(chatId: string): Promise<void> {
     `/clear — Clear conversation history\n` +
     `/lang — Switch language preference\n` +
     `/mood — Mood check-in\n` +
+    `/quiz — Tunisia trivia\n` +
     `/feedback — Send us feedback\n` +
     `/about — About Achiri\n\n` +
     `Or just send me a message and we'll chat! 💬`
@@ -299,6 +300,62 @@ async function handleMood(chatId: string, args: string): Promise<void> {
   }
 }
 
+// --- Sprint 358: /quiz — daily trivia for engagement ---
+
+const QUIZ_QUESTIONS = [
+  { q: 'What is the capital of Tunisia?', a: ['tunis', 'tunes'], answer: 'Tunis 🏛️' },
+  { q: 'What is the traditional Tunisian pastry made with almonds and honey?', a: ['makroudh', 'makroud', 'مقروض'], answer: 'Makroudh 🍯' },
+  { q: 'Which Tunisian city is known as the "Blue and White City"?', a: ['sidi bou said', 'sidi bou saïd', 'سيدي بوسعيد'], answer: 'Sidi Bou Said 💙🤍' },
+  { q: 'What is the Tunisian national dish?', a: ['couscous', 'كسكسي', 'kosksi'], answer: 'Couscous 🍲' },
+  { q: 'Which ancient civilization built Carthage?', a: ['phoenician', 'phoenicians', 'phéniciens', 'فينيقيين'], answer: 'The Phoenicians 🏛️' },
+  { q: 'What is the largest desert in Tunisia?', a: ['sahara', 'صحراء'], answer: 'The Sahara 🏜️' },
+  { q: 'What year did Tunisia gain independence?', a: ['1956'], answer: '1956 🇹🇳' },
+  { q: 'What is "brik" in Tunisian cuisine?', a: ['pastry', 'egg pastry', 'fried pastry', 'بريك'], answer: 'A crispy fried pastry usually filled with egg, tuna, and capers 🥚' },
+  { q: 'Which Tunisian island is the legendary land of the Lotus Eaters?', a: ['djerba', 'jerba', 'جربة'], answer: 'Djerba 🏝️' },
+  { q: 'What does "yezzi" mean in Darija?', a: ['enough', 'stop', 'يزي', 'baraka'], answer: 'Enough / Stop! ✋' },
+  { q: 'What is harissa?', a: ['chili paste', 'hot paste', 'pepper paste', 'هريسة'], answer: 'A spicy chili pepper paste — Tunisia\'s signature condiment 🌶️' },
+  { q: 'Which Tunisian footballer played for Bayern Munich?', a: ['ali maaloul', 'maaloul'], answer: 'Trick question — no Tunisian played for Bayern! But Ali Maaloul is a legend 🔴' },
+  { q: 'What is the old name of Tunisia?', a: ['ifriqiya', 'africa', 'إفريقية'], answer: 'Ifriqiya — the name "Africa" comes from it! 🌍' },
+  { q: 'What is "7ouma" in Darija?', a: ['neighborhood', 'quartier', 'حومة'], answer: 'Neighborhood / quartier 🏘️' },
+  { q: 'Which Tunisian city has the largest Roman amphitheatre in Africa?', a: ['el jem', 'el djem', 'الجم'], answer: 'El Jem — fits 35,000 spectators! 🏟️' },
+];
+
+const activeQuizzes = new Map<string, { questionIndex: number; asked: string }>();
+
+async function handleQuiz(chatId: string, args: string): Promise<void> {
+  // If user has an active quiz, check answer
+  const active = activeQuizzes.get(chatId);
+  if (active && args.trim()) {
+    const q = QUIZ_QUESTIONS[active.questionIndex];
+    const userAnswer = args.trim().toLowerCase();
+    const correct = q.a.some(a => userAnswer.includes(a));
+    activeQuizzes.delete(chatId);
+
+    if (correct) {
+      await sendMessage(chatId, `✅ *Correct!* ${q.answer}\n\nBravo! 🎉 Type /quiz for another question.`);
+    } else {
+      await sendMessage(chatId, `❌ *Not quite!* The answer is: ${q.answer}\n\nType /quiz to try another!`);
+    }
+
+    // Log quiz attempt
+    const quizLog = path.join(__dirname, '..', '..', 'workspace', 'achiri', 'quiz-log.jsonl');
+    const entry = { chat_id: chatId, question: q.q, user_answer: args.trim(), correct, timestamp: new Date().toISOString() };
+    try { fs.appendFileSync(quizLog, JSON.stringify(entry) + '\n'); } catch {}
+    return;
+  }
+
+  // Pick a random question
+  const idx = Math.floor(Math.random() * QUIZ_QUESTIONS.length);
+  const q = QUIZ_QUESTIONS[idx];
+  activeQuizzes.set(chatId, { questionIndex: idx, asked: new Date().toISOString() });
+
+  await sendMessage(chatId,
+    `🎯 *Achiri Quiz Time!*\n\n` +
+    `${q.q}\n\n` +
+    `_Reply with: /quiz your answer_`
+  );
+}
+
 // --- Main message handler ---
 
 async function handleMessage(chatId: string, text: string, firstName: string, username: string): Promise<void> {
@@ -313,6 +370,7 @@ async function handleMessage(chatId: string, text: string, firstName: string, us
   if (cmd === '/about') return handleAbout(chatId);
   if (cmd === '/feedback') return handleFeedback(chatId, args, firstName, username);
   if (cmd === '/mood') return handleMood(chatId, args);
+  if (cmd === '/quiz') return handleQuiz(chatId, args);
 
   // Access check
   if (!hasAccess(chatId)) {
