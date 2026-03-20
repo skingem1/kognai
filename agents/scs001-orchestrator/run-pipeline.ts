@@ -97,6 +97,62 @@ async function main(): Promise<void> {
     console.error('[Runner] Notification failed (non-fatal):', (err as Error).message);
   }
 
+  // Sprint 423: Auto-purge low-quality content (viral score < threshold)
+  const PURGE_THRESHOLD = parseFloat(process.env.PIPELINE_PURGE_THRESHOLD || '0.25');
+  try {
+    const expPath = join(process.cwd(), 'workspace', 'scs001', 'experiments.jsonl');
+    if (existsSync(expPath)) {
+      const viralScores = new Map<string, number>();
+      for (const line of readFileSync(expPath, 'utf-8').split('\n')) {
+        if (!line.trim()) continue;
+        try {
+          const e = JSON.parse(line);
+          const id = e.clip_id ?? e.video_id;
+          if (id && e.partial_viral_score != null) viralScores.set(id, e.partial_viral_score);
+        } catch {}
+      }
+
+      // Load existing archive
+      let archivedIds: string[] = [];
+      if (existsSync(ARCHIVE_PATH)) {
+        try {
+          const data = JSON.parse(readFileSync(ARCHIVE_PATH, 'utf-8'));
+          archivedIds = Array.isArray(data.ids) ? data.ids : [];
+        } catch {}
+      }
+      const archivedSet = new Set(archivedIds);
+
+      // Load posted IDs
+      const postedIds = new Set<string>();
+      if (existsSync(MANUAL_PATH)) {
+        for (const line of readFileSync(MANUAL_PATH, 'utf-8').split('\n')) {
+          if (!line.trim()) continue;
+          try { const e = JSON.parse(line); if (e.video_id) postedIds.add(e.video_id); } catch {}
+        }
+      }
+
+      // Find low-quality clips to archive
+      let purged = 0;
+      for (const [id, score] of viralScores) {
+        if (score < PURGE_THRESHOLD && !archivedSet.has(id) && !postedIds.has(id)) {
+          archivedSet.add(id);
+          purged++;
+        }
+      }
+
+      if (purged > 0) {
+        writeFileSync(ARCHIVE_PATH, JSON.stringify({
+          ids: Array.from(archivedSet),
+          updated_at: new Date().toISOString(),
+          count: archivedSet.size,
+        }, null, 2));
+        console.log(`[Runner] Auto-purged ${purged} low-quality clips (score <${PURGE_THRESHOLD})`);
+      }
+    }
+  } catch (err) {
+    console.error('[Runner] Auto-purge failed (non-fatal):', (err as Error).message);
+  }
+
   // Sprint 300: Auto-compact ledger to prevent duplicate accumulation
   try {
     const ledger = new DedupLedger();

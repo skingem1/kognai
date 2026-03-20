@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-423",
+  "title": "Auto-purge low-quality content after pipeline runs",
+  "description": "Add automatic quality filter to pipeline runner — archive clips with viral score <0.25 after each run. Keeps queue focused on high-quality content without manual /purge.",
+  "source": "auto — 389 ledger entries with no archival, low-quality clips dilute delivery",
+  "tasks": [
+    {
+      "id": "423-01",
+      "title": "Add auto-purge step to run-pipeline.ts after pipeline completion",
+      "type": "enhancement",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-423",
+      "deliverables": { "code": ["agents/scs001-orchestrator/run-pipeline.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
