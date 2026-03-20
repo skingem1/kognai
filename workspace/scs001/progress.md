@@ -3037,3 +3037,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (multi-file feature, swarm bypass)
 - Issues: None.
 - Timestamp: 2026-03-20T08:30:00Z
+
+## Sprint 357 — /feedback + /mood for Achiri Alpha (Direct Write)
+- Status: PASS
+- Commit: 948f547
+- Files created: workspace/sprints/sprint-357.json
+- Files modified: agents/achiri/telegram-bot.ts
+- Tasks completed:
+  - 357-01: Added /feedback command — saves user feedback to workspace/achiri/feedback.jsonl with chat_id, username, timestamp. Added /mood command — 8 preset moods with culturally-adapted Darija-English responses (happy, sad, anxious, tired, angry, excited, bored, neutral). Free-form moods routed through Achiri LLM. Mood history logged to workspace/achiri/mood-log.jsonl. Updated /help.
+- Validation: tsc --noEmit PASS
+- Swarm used: no (Achiri bot feature additions)
+- Issues: None.
+- Timestamp: 2026-03-20T08:45:00Z
