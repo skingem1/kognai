@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-351",
+  "title": "/updateviews — update view counts for posted videos + total views in /gate",
+  "description": "Add /updateviews <video_id> <views> command to update view counts for already-recorded posts. Also enhance /gate to show view progress bar.",
+  "source": "auto — 500-view gate target requires tracking view counts after posting",
+  "tasks": [
+    {
+      "id": "351-01",
+      "title": "Add /updateviews command to telegram-bot.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-351",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

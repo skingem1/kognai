@@ -1603,6 +1603,54 @@ function cmdQuickStart(): string {
   return lines.join('\n');
 }
 
+// Sprint 351: /updateviews — update view counts for posted videos
+function cmdUpdateViews(args: string): string {
+  const parts = args.trim().split(/\s+/);
+  if (parts.length < 2) {
+    return (
+      `*Usage:* \`/updateviews <video_id> <views>\`\n\n` +
+      `Example: \`/updateviews clip_abc123 250\`\n\n` +
+      `Updates the view count for an already-recorded video.\n` +
+      `Use /posted to see your recorded videos.`
+    );
+  }
+
+  const videoId = parts[0];
+  const views = parseInt(parts[1], 10);
+  if (isNaN(views) || views < 0) {
+    return `❌ Invalid views count: \`${parts[1]}\` — must be a non-negative number.`;
+  }
+
+  const manualPostsPath = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
+  const entries = readLines(manualPostsPath);
+
+  const idx = entries.findIndex((e: any) => e.video_id === videoId);
+  if (idx === -1) {
+    return `❌ Video \`${videoId}\` not found in posted videos.\nRecord it first with \`/record ${videoId} ${views}\``;
+  }
+
+  // Update the entry
+  const oldViews = entries[idx].views ?? 0;
+  entries[idx].views = views;
+  entries[idx].views_updated_at = new Date().toISOString();
+
+  // Rewrite the file
+  const content = entries.map((e: any) => JSON.stringify(e)).join('\n') + '\n';
+  fs.writeFileSync(manualPostsPath, content, 'utf-8');
+
+  // Gate stats
+  const totalViews = entries.reduce((s: number, e: any) => s + (e.views ?? 0), 0);
+  const viewsNeeded = Math.max(0, 500 - totalViews);
+
+  return (
+    `✅ *Views updated!*\n\n` +
+    `Video: \`${videoId}\`\n` +
+    `Views: ${oldViews} → *${views}*\n\n` +
+    `📊 Total views: ${totalViews}/500 (${viewsNeeded} more needed)\n` +
+    `📝 ${entries.length}/30 posts recorded`
+  );
+}
+
 // Sprint 350: /schedule — today's posting time slots from posting-schedule.json
 function cmdSchedule(): string {
   const schedulePath = path.join(ROOT, 'reports', 'posting-schedule.json');
@@ -1723,6 +1771,7 @@ function cmdHelp(): string {
     `/quickstart — Post your first video in 5 minutes\n` +
     `/schedule    — Today's posting time slots\n` +
     `/leaderboard — Speaker performance rankings\n` +
+    `/updateviews — Update view count for a posted video\n` +
     `/help      — This message`
   );
 }
@@ -1829,6 +1878,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/quickstart':  response = cmdQuickStart();  break;
     case '/schedule':    response = cmdSchedule();    break;
     case '/leaderboard': response = cmdLeaderboard(); break;
+    case '/updateviews': response = cmdUpdateViews(cmdArgs); break;
     case '/help':        response = cmdHelp();        break;
     default:
       response = `Unknown command: \`${cmdName}\`\n\n${cmdHelp()}`;
