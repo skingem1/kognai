@@ -10,13 +10,16 @@ import type { InsightBrief } from '../scs001-insight/index';
 import { rewriteScript, type RewriteResult } from '../../scripts/scs001/llm-script-rewriter';
 
 export interface ScriptSegment {
-  segment_name: 'hook' | 'context' | 'clip' | 'commentary' | 'insight' | 'loop';
+  segment_name: 'hook' | 'context' | 'clip' | 'commentary' | 'insight' | 'loop' | 'reaction' | 'point' | 'twist' | 'cta';
   start_s:      number;
   end_s:        number;
   voiceover_text:   string;
   visual_directive: string;
   caption_text:     string;
 }
+
+// Sprint 444: Video template types
+type VideoTemplate = 'standard' | 'reaction' | 'listicle';
 
 export interface PatternInterrupt {
   time_s: number;
@@ -34,6 +37,7 @@ export interface ScriptBundle {
   why_does_this_matter:   string;
   speaker_name:           string;
   hook_formula_used:      string;
+  template?:              VideoTemplate;  // Sprint 444
 }
 
 // Interrupt type rotation — ensures visual variety
@@ -174,6 +178,98 @@ function buildSegments(brief: InsightBrief, useLoop: boolean): ScriptSegment[] {
   return segments;
 }
 
+// Sprint 444: Reaction template — clip first, then react
+// TikTok native: viewers see the interesting clip immediately, hook is visual
+function buildReactionSegments(brief: InsightBrief): ScriptSegment[] {
+  const hookText = applyHookTemplate(brief.hook.formula, brief.hook.text);
+  return [
+    {
+      segment_name:     'clip',
+      start_s:          0,
+      end_s:            8,
+      voiceover_text:   '',  // original audio plays
+      visual_directive: 'source_clip',
+      caption_text:     '',
+    },
+    {
+      segment_name:     'reaction',
+      start_s:          8,
+      end_s:            13,
+      voiceover_text:   hookText,
+      visual_directive: 'text_overlay',
+      caption_text:     hookText,
+    },
+    {
+      segment_name:     'insight',
+      start_s:          13,
+      end_s:            20,
+      voiceover_text:   brief.insight_statement + ' ' + brief.why_does_this_matter.substring(0, 80),
+      visual_directive: 'text_overlay',
+      caption_text:     brief.insight_statement,
+    },
+    {
+      segment_name:     'cta',
+      start_s:          20,
+      end_s:            24,
+      voiceover_text:   'Follow for more like this',
+      visual_directive: 'title_card',
+      caption_text:     'Follow for more',
+    },
+  ];
+}
+
+// Sprint 444: Listicle template — numbered points, fast pacing
+// TikTok native: "3 things about X" format drives completion rate
+function buildListicleSegments(brief: InsightBrief): ScriptSegment[] {
+  const hookText = applyHookTemplate(brief.hook.formula, brief.hook.text);
+  const points = [
+    brief.pre_clip_commentary,
+    brief.insight_statement,
+    brief.post_clip_commentary,
+  ];
+  return [
+    {
+      segment_name:     'hook',
+      start_s:          0,
+      end_s:            3,
+      voiceover_text:   hookText,
+      visual_directive: 'title_card',
+      caption_text:     hookText,
+    },
+    {
+      segment_name:     'point',
+      start_s:          3,
+      end_s:            10,
+      voiceover_text:   '1. ' + points[0],
+      visual_directive: 'source_clip',
+      caption_text:     '1. ' + points[0].substring(0, 60),
+    },
+    {
+      segment_name:     'point',
+      start_s:          10,
+      end_s:            16,
+      voiceover_text:   '2. ' + points[1],
+      visual_directive: 'text_overlay',
+      caption_text:     '2. ' + points[1].substring(0, 60),
+    },
+    {
+      segment_name:     'twist',
+      start_s:          16,
+      end_s:            22,
+      voiceover_text:   '3. ' + points[2] + ' ' + brief.why_does_this_matter.substring(0, 60),
+      visual_directive: 'text_overlay',
+      caption_text:     '3. ' + points[2].substring(0, 60),
+    },
+  ];
+}
+
+// Sprint 444: Template selection — deterministic based on insight_id hash
+function selectTemplate(insightId: string): VideoTemplate {
+  const hash = insightId.split('').reduce((a, c) => ((a << 5) - a) + c.charCodeAt(0), 0);
+  const templates: VideoTemplate[] = ['standard', 'standard', 'reaction', 'listicle']; // 50% standard, 25% each alt
+  return templates[Math.abs(hash) % templates.length];
+}
+
 function buildPatternInterrupts(totalDuration: number): PatternInterrupt[] {
   const interrupts: PatternInterrupt[] = [];
   // Place interrupts every 2.5 seconds (ensures >= 8 for 24s, >= 10 for 28s)
@@ -266,10 +362,28 @@ export class ScriptAgent {
   }
 
   private buildBundle(brief: InsightBrief): ScriptBundle {
-    // Decide loop: use loop if hook formula triggers re-watch behavior
-    const reWatchHooks = ['curiosity_gap', 'secret', 'story', 'proof'];
-    const useLoop = reWatchHooks.includes(brief.hook.formula);
-    const segments = buildSegments(brief, useLoop);
+    // Sprint 444: Select video template based on insight ID
+    const template = selectTemplate(brief.insight_id);
+
+    let segments: ScriptSegment[];
+    let useLoop = false;
+
+    switch (template) {
+      case 'reaction':
+        segments = buildReactionSegments(brief);
+        break;
+      case 'listicle':
+        segments = buildListicleSegments(brief);
+        break;
+      default: {
+        // Standard template — original behavior
+        const reWatchHooks = ['curiosity_gap', 'secret', 'story', 'proof'];
+        useLoop = reWatchHooks.includes(brief.hook.formula);
+        segments = buildSegments(brief, useLoop);
+        break;
+      }
+    }
+
     const totalDuration = segments[segments.length - 1].end_s;
     const interrupts = buildPatternInterrupts(totalDuration);
 
@@ -284,6 +398,7 @@ export class ScriptAgent {
       why_does_this_matter:   brief.why_does_this_matter,
       speaker_name:           brief.speaker_name,
       hook_formula_used:      brief.hook_formula_used,
+      template,
     };
   }
 }

@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-444",
+  "title": "Video template system — 3 TikTok-proven formats for content variety",
+  "description": "Add 2 alternative script templates (Reaction, Listicle) to scs001-script agent. Default template keeps current structure. Script agent randomly selects template per video for variety. Template choice recorded in experiment data for A/B analysis.",
+  "source": "auto — sprint queue VIDEO-QUALITY. One script structure = repetitive. Multiple formats = better TikTok algorithm signal.",
+  "tasks": [
+    {
+      "id": "444-01",
+      "title": "Add Reaction and Listicle templates to scs001-script/index.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-444",
+      "deliverables": { "code": ["agents/scs001-script/index.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
