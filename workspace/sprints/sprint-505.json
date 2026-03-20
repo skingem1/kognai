@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-505",
+  "title": "INFRA — Regenerate sprint brief + validate autonomous loop",
+  "description": "Sprint brief references Sprint 474 as last built (stale). Regenerate via generate-sprint-brief.py. Validate run-autonomous.sh exists and works.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "505-01",
+      "title": "Regenerate sprint brief with current state",
+      "type": "feature",
+      "task_type": "config",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-505",
+      "deliverables": { "code": [], "tests": [], "docs": ["workspace/sprint-brief.md"] }
+    },
+    {
+      "id": "505-02",
+      "title": "Validate run-autonomous.sh exists and can restart loop",
+      "type": "validation",
+      "task_type": "test",
+      "task_target": "local",
+      "agent": "supervisor",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-505",
+      "deliverables": { "code": [], "tests": [], "docs": [] }
+    }
+  ]
+}
