@@ -1412,6 +1412,14 @@
       "status": "done",
       "priority": "critical",
       "rationale": "Queue empty, designed from gate urgency (0/30 posts, 17d to Apr 7). Scans multiformat runs, deduplicates, registers into publish-ledger, adds /inventory + /batchdeliver."
+    },
+    {
+      "sprint": 604,
+      "title": "GATE-PUSH — Batch video production + /stockpile command",
+      "block": "GATE-PUSH",
+      "status": "done",
+      "priority": "critical",
+      "rationale": "batch-produce.ts for multi-run stockpiling, /stockpile Telegram command. 9 unique videos in inventory."
     }
   ]
 }
