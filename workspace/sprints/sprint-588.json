@@ -1,0 +1,24 @@
+{
+  "sprint_id": "sprint-588",
+  "title": "PIPELINE — Integrate topic radar into pipeline-cron (fresh trending topics)",
+  "description": "Add topic radar scan as Step 0 in pipeline-cron. Extract keywords from radar results and update viral-topics.json so pipeline uses real trending topics.",
+  "source": "gap-analysis",
+  "tasks": [
+    {
+      "id": "588-01",
+      "title": "Add radar scan step to pipeline-cron.ts before pipeline execution",
+      "type": "feature",
+      "task_type": "pipeline",
+      "task_target": "scripts/scs001/pipeline-cron.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-588",
+      "deliverables": {
+        "code": ["scripts/scs001/pipeline-cron.ts"],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ]
+}
