@@ -4186,3 +4186,16 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (test execution)
 - Issues: None. Pipeline is fully operational in mock+local mode. Real API mode needs TIKTOK_ACCESS_TOKEN for live content
 - Timestamp: 2026-03-20T11:10:00Z
+
+## Sprint 459 — POSTING: /batch + /postlog Commands
+- Status: PASS
+- Commit: 1a3da59
+- Files modified: scripts/telegram-commands/cmd-posting.ts, scripts/telegram-bot.ts
+- Files created: workspace/sprints/sprint-459.json
+- Tasks completed:
+  - 459-01: /batch [N] — shows N videos with captions+scores for batch posting workflow
+  - 459-02: /postlog — posting activity log by day, last 7 days, with pace indicator
+- Validation: TypeScript compilation PASS
+- Swarm used: no (feature additions to existing module)
+- Issues: None
+- Timestamp: 2026-03-20T11:20:00Z
