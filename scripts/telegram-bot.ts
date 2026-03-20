@@ -1737,9 +1737,82 @@ function cmdPace(): string {
   }
 
   lines.push('');
-  lines.push('_Use /deliver to get your next video, /posted after posting._');
+  lines.push('_Use /postnow to get your next video, /posted after posting._');
 
   return lines.join('\n');
+}
+
+// ─── Sprint 364: /postnow — send best ready video for immediate posting ───
+
+async function cmdPostNow(chatId: string): Promise<void> {
+  const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
+  const recorded = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  const recordedIds = new Set(recorded.map((e: any) => e.video_id).filter(Boolean));
+
+  // Load viral scores for ranking
+  const viralScores = new Map<string, number>();
+  const expPath = path.join(ROOT, 'workspace', 'scs001', 'experiments.jsonl');
+  if (fs.existsSync(expPath)) {
+    try {
+      for (const line of fs.readFileSync(expPath, 'utf-8').split('\n')) {
+        if (!line.trim()) continue;
+        try {
+          const e = JSON.parse(line);
+          const id = e.clip_id ?? e.video_id;
+          if (id && e.partial_viral_score != null) viralScores.set(id, e.partial_viral_score);
+        } catch { /* skip */ }
+      }
+    } catch { /* skip */ }
+  }
+
+  // Find unposted videos with captioned mp4 on disk, sorted by viral score
+  const ready: Array<{ video_id: string; filePath: string; score: number }> = [];
+  for (const e of ledger as any[]) {
+    if (!e.video_id || recordedIds.has(e.video_id)) continue;
+    const mp4 = findCaptionedMp4(e.video_id);
+    if (mp4) {
+      ready.push({ video_id: e.video_id, filePath: mp4, score: viralScores.get(e.video_id) ?? -1 });
+    }
+  }
+  ready.sort((a, b) => b.score - a.score);
+
+  if (ready.length === 0) {
+    await sendMessage(chatId, '⚠️ *No ready videos found.* Run /refresh to generate new content.');
+    return;
+  }
+
+  // Take top video
+  const best = ready[0];
+  const caption = buildTikTokCaption(best.video_id);
+  const exp = getExperimentData(best.video_id);
+
+  const GATE_DATE = new Date('2026-04-07T00:00:00Z');
+  const daysLeft = Math.max(0, Math.ceil((GATE_DATE.getTime() - Date.now()) / 86_400_000));
+  const postCount = recorded.length;
+  const postsNeeded = Math.max(0, 30 - postCount);
+
+  const header = [
+    `🎬 *Post Now* — ${postCount}/30 posts · ${daysLeft}d to gate`,
+    '',
+    `🎙️ ${exp.speaker} · 🧬 ${exp.viral_score ?? 'n/a'}`,
+    `🎣 ${exp.hook_formula}`,
+    '',
+    '📋 *Caption (copy & paste):*',
+    '```',
+    caption,
+    '```',
+    '',
+    `After posting: \`/record ${best.video_id} 0\``,
+    `Queue: ${ready.length} more ready`,
+  ].join('\n');
+
+  await sendMessage(chatId, header);
+
+  try {
+    await sendVideoFile(chatId, best.filePath, `${exp.speaker} · /record ${best.video_id} 0`);
+  } catch (err) {
+    await sendMessage(chatId, `⚠️ Could not send video: ${(err as Error).message?.slice(0, 100)}`);
+  }
 }
 
 // ─── Sprint 356: /digest — unified daily digest ──────────────────────
@@ -2091,6 +2164,7 @@ function cmdHelp(): string {
     `/digest     — Daily digest: gate + queue + Stripe\n` +
     `/metrics    — Pipeline performance metrics\n` +
     `/pace       — Posting velocity & gate projection\n` +
+    `/postnow    — Send best video for immediate posting\n` +
     `/help      — This message`
   );
 }
@@ -2153,6 +2227,18 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     child.on('error', async (err: Error) => {
       try { await sendMessage(chatId, `❌ *Pipeline spawn failed:* ${err.message}`); } catch {}
     });
+    const timestamp = new Date().toISOString();
+    fs.appendFileSync(AUDIT_LOG, `[${timestamp}] [TELEGRAM_BOT] Command: ${cmd} from ${chatId}\n`);
+    return;
+  }
+
+  // Sprint 364: /postnow is async (sends video file), handle separately
+  if (cmdName === '/postnow') {
+    try {
+      await cmdPostNow(chatId);
+    } catch (e: any) {
+      await sendMessage(chatId, `❌ PostNow error: ${e.message}`);
+    }
     const timestamp = new Date().toISOString();
     fs.appendFileSync(AUDIT_LOG, `[${timestamp}] [TELEGRAM_BOT] Command: ${cmd} from ${chatId}\n`);
     return;

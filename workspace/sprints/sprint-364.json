@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-364",
+  "title": "/postnow — send best ready video for immediate posting",
+  "description": "Add /postnow command that sends the top captioned video file directly in Telegram chat with caption and hashtags for zero-friction posting.",
+  "source": "auto — 0/30 posts, operator needs frictionless video delivery to hit Apr 7 gate",
+  "tasks": [
+    {
+      "id": "364-01",
+      "title": "Add /postnow async command to scripts/telegram-bot.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-364",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
