@@ -2865,3 +2865,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (surgical bot edit)
 - Issues: None.
 - Timestamp: 2026-03-20T02:55:00Z
+
+## Sprint 343 — Achiri Time-of-Day Context (Direct Write)
+- Status: PASS
+- Commit: 2ce292c
+- Files created: workspace/sprints/sprint-343.json
+- Files modified: agents/achiri/index.ts
+- Tasks completed:
+  - 343-01: Time-of-day hint in buildSystemPrompt + chat(). Tunisia CET (UTC+1) calculation. 4 time zones: morning (5-12), afternoon (12-17), evening (17-21), night (21-5). Arabic greetings: sabah el kheir, mesa el kheir, tosbah ala kheir. Added timeHint parameter to buildSystemPrompt() and buildMessages().
+- Validation: npx tsc --noEmit PASS
+- Swarm used: no (surgical Achiri edit)
+- Issues: None.
+- Timestamp: 2026-03-20T03:05:00Z
