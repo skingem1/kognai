@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-355",
+  "title": "/lang + /about — language switch and about commands for Achiri Telegram bot",
+  "description": "Implement /lang command (switch Darija/French/English) and /about command in the Achiri Telegram bot. Language preference persisted to user profile JSONL.",
+  "source": "auto — /lang listed in help but not implemented, /about needed for alpha discoverability",
+  "tasks": [
+    {
+      "id": "355-01",
+      "title": "Add /lang and /about commands to agents/achiri/telegram-bot.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-355",
+      "deliverables": { "code": ["agents/achiri/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

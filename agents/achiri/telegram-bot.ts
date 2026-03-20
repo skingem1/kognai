@@ -130,7 +130,8 @@ async function handleHelp(chatId: string): Promise<void> {
     `/start — Welcome message\n` +
     `/help — This message\n` +
     `/clear — Clear conversation history\n` +
-    `/lang — Switch language preference\n\n` +
+    `/lang — Switch language preference\n` +
+    `/about — About Achiri\n\n` +
     `Or just send me a message and we'll chat! 💬`
   );
 }
@@ -142,13 +143,83 @@ async function handleClear(chatId: string): Promise<void> {
   await sendMessage(chatId, '🗑️ Conversation history cleared. Bnédi min jdid! (Fresh start!)');
 }
 
+// Sprint 355: /lang — language preference switch
+const LANG_PREFS_PATH = path.join(__dirname, '..', '..', 'workspace', 'achiri', 'lang-prefs.json');
+
+function loadLangPrefs(): Record<string, string> {
+  try { return JSON.parse(fs.readFileSync(LANG_PREFS_PATH, 'utf-8')); } catch { return {}; }
+}
+
+function saveLangPref(chatId: string, lang: string): void {
+  const prefs = loadLangPrefs();
+  prefs[chatId] = lang;
+  const dir = path.dirname(LANG_PREFS_PATH);
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(LANG_PREFS_PATH, JSON.stringify(prefs, null, 2), 'utf-8');
+}
+
+async function handleLang(chatId: string, args: string): Promise<void> {
+  const lang = args.toLowerCase().trim();
+  const langMap: Record<string, string> = {
+    'darija': 'darija', 'دارجة': 'darija', 'ar': 'darija', 'tunsi': 'darija',
+    'french': 'french', 'français': 'french', 'fr': 'french', 'francais': 'french',
+    'english': 'english', 'en': 'english', 'eng': 'english',
+  };
+
+  if (!lang || !langMap[lang]) {
+    const current = loadLangPrefs()[chatId] ?? 'auto';
+    await sendMessage(chatId,
+      `🌍 *Language / اللغة / Langue*\n\n` +
+      `Current: *${current}*\n\n` +
+      `Switch:\n` +
+      `/lang darija — 🇹🇳 دارجة تونسية\n` +
+      `/lang french — 🇫🇷 Français\n` +
+      `/lang english — 🇬🇧 English\n\n` +
+      `_Achiri auto-detects your language, but you can set a preference here._`
+    );
+    return;
+  }
+
+  const resolved = langMap[lang];
+  saveLangPref(chatId, resolved);
+
+  // Inject preference into next chat by prepending a system hint
+  handlers.delete(chatId); // reset handler to pick up new pref
+
+  const responses: Record<string, string> = {
+    darija: '✅ Tawa n7ki m3ak bel Darija! 🇹🇳',
+    french: '✅ Je parlerai en français maintenant! 🇫🇷',
+    english: '✅ I\'ll chat in English now! 🇬🇧',
+  };
+  await sendMessage(chatId, responses[resolved] ?? '✅ Language updated!');
+}
+
+// Sprint 355: /about — about Achiri
+async function handleAbout(chatId: string): Promise<void> {
+  await sendMessage(chatId,
+    `🤖 *About Achiri*\n\n` +
+    `Achiri is a culturally adaptive AI companion built specifically for Tunisia.\n\n` +
+    `🇹🇳 Speaks Darija, French, and English\n` +
+    `🧠 Remembers your conversations\n` +
+    `🎭 Adapts to your mood and style\n` +
+    `🔒 Private and safe\n\n` +
+    `Built by Kognai — sovereign AI, made in Tunisia.\n\n` +
+    `_Version: Alpha · Phase 2A_`
+  );
+}
+
 // --- Main message handler ---
 
 async function handleMessage(chatId: string, text: string, firstName: string, username: string): Promise<void> {
   // Commands
-  if (text === '/start') return handleStart(chatId, firstName, username);
-  if (text === '/help') return handleHelp(chatId);
-  if (text === '/clear') return handleClear(chatId);
+  const cmd = text.split(' ')[0].toLowerCase().split('@')[0];
+  const args = text.includes(' ') ? text.slice(text.indexOf(' ') + 1).trim() : '';
+
+  if (cmd === '/start') return handleStart(chatId, firstName, username);
+  if (cmd === '/help') return handleHelp(chatId);
+  if (cmd === '/clear') return handleClear(chatId);
+  if (cmd === '/lang') return handleLang(chatId, args);
+  if (cmd === '/about') return handleAbout(chatId);
 
   // Access check
   if (!hasAccess(chatId)) {
@@ -167,7 +238,15 @@ async function handleMessage(chatId: string, text: string, firstName: string, us
     tgApi('sendChatAction', { chat_id: chatId, action: 'typing' }).catch(() => {});
 
     const handler = getHandler(chatId);
-    const reply = await handler.chat(text);
+    // Inject language preference as prefix hint
+    const langPref = loadLangPrefs()[chatId];
+    const langHints: Record<string, string> = {
+      darija: '[User prefers Darija (Tunisian Arabic). Respond primarily in Darija.] ',
+      french: '[User prefers French. Respond primarily in French.] ',
+      english: '[User prefers English. Respond primarily in English.] ',
+    };
+    const effectiveMsg = langPref && langHints[langPref] ? langHints[langPref] + text : text;
+    const reply = await handler.chat(effectiveMsg);
 
     // Check for limit exceeded
     if (reply.startsWith(ACHIRI_LIMIT_EXCEEDED)) {
