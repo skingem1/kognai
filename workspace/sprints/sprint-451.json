@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-451",
+  "title": "QUALITY — Wire hook optimizer into ScriptAgent + HOOK_OPTIMIZE env flag",
+  "description": "Connect Sprint 450's hook-optimizer.ts into the ScriptAgent. When HOOK_OPTIMIZE=1, the ScriptAgent overrides each brief's hook formula with a weighted random pick from the optimizer (favoring top-performing formulas). Logs the formula swap. Adds /hookstats to Telegram help.",
+  "source": "queue — Sprint 453 continuation (optimizer built, now wiring)",
+  "tasks": [
+    {
+      "id": "451-01",
+      "title": "Wire getOptimalHookFormula() into ScriptAgent.buildBundle() with HOOK_OPTIMIZE env flag",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-451",
+      "deliverables": { "code": ["agents/scs001-script/index.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

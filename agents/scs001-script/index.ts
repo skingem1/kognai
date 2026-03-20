@@ -8,6 +8,7 @@
 import { randomUUID } from 'crypto';
 import type { InsightBrief } from '../scs001-insight/index';
 import { rewriteScript, type RewriteResult } from '../../scripts/scs001/llm-script-rewriter';
+import { getOptimalHookFormula } from '../../scripts/scs001/hook-optimizer';
 
 export interface ScriptSegment {
   segment_name: 'hook' | 'context' | 'clip' | 'commentary' | 'insight' | 'loop' | 'reaction' | 'point' | 'twist' | 'cta';
@@ -362,24 +363,45 @@ export class ScriptAgent {
   }
 
   private buildBundle(brief: InsightBrief): ScriptBundle {
+    // Sprint 451: Hook formula optimization — use optimizer when HOOK_OPTIMIZE=1
+    const HOOK_OPTIMIZE = process.env.HOOK_OPTIMIZE === '1' || process.env.HOOK_OPTIMIZE === 'true';
+    let effectiveBrief = brief;
+    let optimizedFormula: string | undefined;
+
+    if (HOOK_OPTIMIZE) {
+      try {
+        optimizedFormula = getOptimalHookFormula();
+        // Override the brief's formula with the optimizer's pick
+        effectiveBrief = {
+          ...brief,
+          hook: { ...brief.hook, formula: optimizedFormula as any },
+          hook_formula_used: optimizedFormula,
+        };
+        console.log(`[ScriptAgent] Hook optimizer: ${brief.hook.formula} → ${optimizedFormula}`);
+      } catch (e) {
+        // Fallback to original formula
+        console.warn(`[ScriptAgent] Hook optimizer failed, using original: ${(e as Error).message}`);
+      }
+    }
+
     // Sprint 444: Select video template based on insight ID
-    const template = selectTemplate(brief.insight_id);
+    const template = selectTemplate(effectiveBrief.insight_id);
 
     let segments: ScriptSegment[];
     let useLoop = false;
 
     switch (template) {
       case 'reaction':
-        segments = buildReactionSegments(brief);
+        segments = buildReactionSegments(effectiveBrief);
         break;
       case 'listicle':
-        segments = buildListicleSegments(brief);
+        segments = buildListicleSegments(effectiveBrief);
         break;
       default: {
         // Standard template — original behavior
         const reWatchHooks = ['curiosity_gap', 'secret', 'story', 'proof'];
-        useLoop = reWatchHooks.includes(brief.hook.formula);
-        segments = buildSegments(brief, useLoop);
+        useLoop = reWatchHooks.includes(effectiveBrief.hook.formula);
+        segments = buildSegments(effectiveBrief, useLoop);
         break;
       }
     }
@@ -389,15 +411,15 @@ export class ScriptAgent {
 
     return {
       script_id:              'script-' + randomUUID().slice(0, 8),
-      insight_id:             brief.insight_id,
-      clip_id:                brief.clip_id,
+      insight_id:             effectiveBrief.insight_id,
+      clip_id:                effectiveBrief.clip_id,
       segments,
       pattern_interrupts:     interrupts,
       total_duration_seconds: totalDuration,
       loop_ending:            useLoop,
-      why_does_this_matter:   brief.why_does_this_matter,
-      speaker_name:           brief.speaker_name,
-      hook_formula_used:      brief.hook_formula_used,
+      why_does_this_matter:   effectiveBrief.why_does_this_matter,
+      speaker_name:           effectiveBrief.speaker_name,
+      hook_formula_used:      optimizedFormula ?? effectiveBrief.hook_formula_used,
       template,
     };
   }
