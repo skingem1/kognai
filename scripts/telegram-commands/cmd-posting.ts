@@ -1,0 +1,886 @@
+/**
+ * Telegram bot commands — extracted from telegram-bot.ts (Sprint 455)
+ */
+
+import * as fs from 'fs';
+import * as path from 'path';
+import { execSync } from 'child_process';
+import {
+  ROOT, readJSON, readLines, getPm2List, fmtUptime, fmtMem, latestSprintFile,
+  findCaptionedMp4, getExperimentData, buildTikTokCaption,
+  loadSpeakerMap, diversifyBySpeaker, loadHookMap, diversifyByHook,
+  freshnessScore, loadArchived, saveArchived, ARCHIVE_PATH,
+} from './shared';
+
+export function cmdMetrics(): string {
+  const metricsPath = path.join(ROOT, 'reports', 'pipeline-metrics.json');
+
+  // Auto-regenerate if missing
+  if (!fs.existsSync(metricsPath)) {
+    try {
+      const { execSync } = require('child_process');
+      execSync('npx ts-node --transpile-only scripts/scs001/aggregate-pipeline-metrics.ts', {
+        cwd: ROOT, timeout: 30000, stdio: 'pipe'
+      });
+    } catch { /* will still try to read whatever exists */ }
+  }
+
+  if (!fs.existsSync(metricsPath)) {
+    return '⚠️ No pipeline metrics available.\nRun: `npx ts-node scripts/scs001/aggregate-pipeline-metrics.ts`';
+  }
+
+  let m: any;
+  try {
+    m = JSON.parse(fs.readFileSync(metricsPath, 'utf-8'));
+  } catch {
+    return '⚠️ Could not parse pipeline-metrics.json';
+  }
+
+  const lines: string[] = [];
+  lines.push('📊 *Pipeline Performance Metrics*');
+  lines.push(`Period: ${m.period?.first ?? '?'} → ${m.period?.last ?? '?'}`);
+  lines.push('');
+
+  const avgMin = m.avg_duration_ms ? (m.avg_duration_ms / 60000).toFixed(1) : '?';
+  lines.push('*Overview:*');
+  lines.push(`• Runs: ${m.total_runs ?? 0} (${m.runs_per_day ?? 0}/day)`);
+  lines.push(`• Avg duration: ${avgMin} min`);
+  lines.push(`• Error rate: ${m.error_runs ?? 0}/${m.total_runs ?? 0}`);
+  lines.push('');
+
+  const c = m.cumulative ?? {};
+  lines.push('*Cumulative Output:*');
+  lines.push(`• Topics: ${c.topics_found ?? 0}`);
+  lines.push(`• Clips: ${c.clips_discovered ?? 0}`);
+  lines.push(`• Edited: ${c.videos_edited ?? 0}`);
+  lines.push(`• Captioned: ${c.videos_captioned ?? 0}`);
+  lines.push(`• QC passed: ${c.qc_passed ?? 0} (${c.qc_pass_rate_pct ?? 0}%)`);
+  lines.push(`• Published: ${c.published ?? 0}`);
+  lines.push('');
+
+  const stageAvgs = m.stage_averages ?? {};
+  const sorted = Object.entries(stageAvgs)
+    .map(([stage, data]: [string, any]) => ({ stage, avgMs: data.avg_ms ?? 0 }))
+    .sort((a, b) => b.avgMs - a.avgMs)
+    .slice(0, 3);
+
+  if (sorted.length > 0) {
+    lines.push('*Slowest Stages:*');
+    for (const s of sorted) {
+      const sec = (s.avgMs / 1000).toFixed(1);
+      lines.push(`• ${s.stage}: ${sec}s avg`);
+    }
+  }
+
+  return lines.join('\n');
+}
+
+export function cmdPostPlan(): string {
+  const schedulePath = path.join(ROOT, 'reports', 'posting-schedule.json');
+  if (!fs.existsSync(schedulePath)) {
+    return '⚠️ No posting schedule found. Run the pipeline first.';
+  }
+
+  let sched: any;
+  try {
+    sched = JSON.parse(fs.readFileSync(schedulePath, 'utf-8'));
+  } catch {
+    return '⚠️ Could not parse posting-schedule.json.';
+  }
+
+  const lines: string[] = [
+    '📅 *7-Day Posting Plan*',
+    '',
+    `🎯 Gate: *${sched.posts_needed ?? 30}* posts needed in *${sched.days_to_gate ?? '?'}* days`,
+    `📊 Pace: *${sched.pace_needed ?? '?'}* posts/day`,
+    `✅ Posted: *${sched.posts_done ?? 0}* / *${sched.gate_target ?? 30}*`,
+    `📦 Queue: *${sched.queue_remaining ?? 0}* videos ready`,
+    '',
+  ];
+
+  const slots: any[] = sched.slots ?? [];
+  if (slots.length === 0) {
+    lines.push('⚠️ No videos scheduled. Run /refresh first.');
+  } else {
+    let currentDate = '';
+    for (const slot of slots) {
+      if (slot.date !== currentDate) {
+        currentDate = slot.date;
+        const dayName = new Date(slot.date + 'T12:00:00Z').toLocaleDateString('en-US', { weekday: 'short' });
+        lines.push(`*${dayName} ${slot.date}*`);
+      }
+      const score = Math.round((slot.viral_score ?? 0) * 100);
+      const vid = (slot.video_id ?? '?').slice(0, 16);
+      lines.push(`  ${slot.time} — \`${vid}\` · ${slot.speaker ?? '?'} (${slot.hook ?? '?'}, ${score}%)`);
+    }
+    lines.push('');
+    lines.push(`_${slots.length} posts planned. /caption <id> for full caption._`);
+  }
+
+  return lines.join('\n');
+}
+
+export function cmdYouTube(): string {
+  try {
+    const { formatYouTubeStatus } = require('./scs001/youtube-shorts');
+    return formatYouTubeStatus();
+  } catch (e: any) {
+    return `❌ YouTube status error: ${e.message}`;
+  }
+}
+
+export function cmdAutoPost(): string {
+  const hasClientKey = !!process.env.TIKTOK_CLIENT_KEY;
+  const hasClientSecret = !!process.env.TIKTOK_CLIENT_SECRET;
+  const hasToken = !!process.env.TIKTOK_ACCESS_TOKEN;
+  const dryRun = process.env.AUTO_POST_DRY_RUN === '1';
+
+  const lines = [
+    `🤖 *Auto-Post Status*`,
+    '',
+    `*Credentials:*`,
+    `${hasClientKey ? '✅' : '❌'} TIKTOK\\_CLIENT\\_KEY`,
+    `${hasClientSecret ? '✅' : '❌'} TIKTOK\\_CLIENT\\_SECRET`,
+    `${hasToken ? '✅' : '❌'} TIKTOK\\_ACCESS\\_TOKEN`,
+    '',
+  ];
+
+  // Token expiry check
+  const metaPath = path.join(ROOT, 'data', 'tiktok-token-meta.json');
+  if (hasToken && fs.existsSync(metaPath)) {
+    try {
+      const meta = JSON.parse(fs.readFileSync(metaPath, 'utf-8'));
+      if (meta.expires_at) {
+        const expiresAt = new Date(meta.expires_at);
+        const hoursLeft = Math.round((expiresAt.getTime() - Date.now()) / 3600000);
+        if (hoursLeft <= 0) {
+          lines.push(`⏰ Token: *EXPIRED* ${Math.abs(hoursLeft)}h ago`);
+          lines.push(`→ Run: \`npx ts-node scripts/tiktok-refresh-token.ts\``);
+        } else {
+          lines.push(`⏰ Token expires in: *${hoursLeft}h*`);
+          if (meta.refresh_expires_at) {
+            const refreshLeft = Math.round((new Date(meta.refresh_expires_at).getTime() - Date.now()) / 86400000);
+            lines.push(`🔄 Refresh token: *${refreshLeft}d* remaining`);
+          }
+        }
+      }
+      lines.push('');
+    } catch { /* skip */ }
+  }
+
+  // Mode
+  if (hasToken) {
+    if (dryRun) {
+      lines.push(`*Mode:* 🟡 DRY-RUN (set AUTO\\_POST\\_DRY\\_RUN=0 to go live)`);
+    } else {
+      lines.push(`*Mode:* 🟢 LIVE — posting 2x/day via PM2`);
+    }
+  } else if (hasClientKey && hasClientSecret) {
+    lines.push(`*Mode:* 🔴 BLOCKED — token needed`);
+    lines.push('');
+    lines.push(`*To fix:*`);
+    lines.push(`1. SSH to server or open terminal`);
+    lines.push(`2. Run: \`npx ts-node scripts/tiktok-oauth.ts\``);
+    lines.push(`3. Open the URL in browser, authorize`);
+    lines.push(`4. Token auto-saves to .env`);
+    lines.push(`5. Auto-posting starts within 1 hour`);
+  } else {
+    lines.push(`*Mode:* 🔴 NOT CONFIGURED`);
+    lines.push(`Add TIKTOK\\_CLIENT\\_KEY and TIKTOK\\_CLIENT\\_SECRET to .env first.`);
+  }
+
+  // Queue stats
+  const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
+  const recorded = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  const recordedIds = new Set(recorded.map((e: any) => e.video_id).filter(Boolean));
+  const unposted = ledger.filter((e: any) => !recordedIds.has(e.video_id) && e.video_id).length;
+
+  lines.push('');
+  lines.push(`📋 Queue: *${unposted}* unposted videos`);
+  lines.push(`📊 Gate: *${recorded.length}/30* posts | *18d* to Apr 7`);
+
+  return lines.join('\n');
+}
+
+export function cmdLastRun(): string {
+  const latestPath = path.join(ROOT, 'reports', 'pipeline-runs', 'latest.json');
+  if (!fs.existsSync(latestPath)) {
+    return '⚠️ No pipeline run data found. Run /refresh first.';
+  }
+
+  let run: any;
+  try {
+    run = JSON.parse(fs.readFileSync(latestPath, 'utf-8'));
+  } catch {
+    return '⚠️ Could not parse latest.json';
+  }
+
+  const lines: string[] = [];
+  const startedAt = run.started_at ? new Date(run.started_at).toLocaleString('en-GB', { timeZone: 'UTC' }) : '?';
+  const totalMin = run.total_elapsed_ms ? (run.total_elapsed_ms / 60000).toFixed(1) : '?';
+
+  lines.push('🔄 *Latest Pipeline Run*');
+  lines.push(`ID: \`${run.run_id ?? '?'}\` · Mode: ${run.mode ?? '?'}`);
+  lines.push(`Started: ${startedAt} UTC · Duration: ${totalMin} min`);
+  lines.push('');
+
+  const stages: any[] = run.stages ?? [];
+  if (stages.length > 0) {
+    lines.push('*Stages:*');
+    for (const s of stages) {
+      const icon = s.status === 'ok' ? '✅' : s.status === 'skipped' ? '⏭️' : '❌';
+      const elapsed = s.elapsed_ms ? `${(s.elapsed_ms / 1000).toFixed(1)}s` : '';
+      const count = s.count != null ? ` (${s.count})` : '';
+      lines.push(`${icon} ${s.stage}${count} ${elapsed}`);
+    }
+  }
+
+  if (run.summary) {
+    const sm = run.summary;
+    lines.push('');
+    lines.push('*Output:*');
+    if (sm.topics_found != null) lines.push(`📊 Topics: ${sm.topics_found}`);
+    if (sm.clips_discovered != null) lines.push(`🎬 Clips: ${sm.clips_discovered}`);
+    if (sm.videos_edited != null) lines.push(`✂️ Edited: ${sm.videos_edited}`);
+    if (sm.videos_captioned != null) lines.push(`📝 Captioned: ${sm.videos_captioned}`);
+    if (sm.qc_passed != null) lines.push(`✅ QC: ${sm.qc_passed}`);
+    if (sm.published != null) lines.push(`📤 Published: ${sm.published}`);
+  }
+
+  if (run.error_count > 0) {
+    lines.push('');
+    lines.push(`⚠️ *${run.error_count} errors detected*`);
+  }
+
+  // Sprint 429: Speaker and hook distribution from this run's experiments
+  if (run.run_id) {
+    const expPath = path.join(ROOT, 'workspace', 'scs001', 'experiments.jsonl');
+    if (fs.existsSync(expPath)) {
+      const speakers: Record<string, number> = {};
+      const hooks: Record<string, number> = {};
+      let runClips = 0;
+      for (const l of fs.readFileSync(expPath, 'utf-8').split('\n')) {
+        if (!l.trim()) continue;
+        try {
+          const e = JSON.parse(l);
+          if (e.run_id !== run.run_id) continue;
+          runClips++;
+          const spk = e.speaker ?? 'unknown';
+          const hook = e.hook_formula ?? 'unknown';
+          speakers[spk] = (speakers[spk] ?? 0) + 1;
+          hooks[hook] = (hooks[hook] ?? 0) + 1;
+        } catch { /* skip */ }
+      }
+      if (runClips > 0) {
+        const uniqueSpeakers = Object.keys(speakers).length;
+        const diversityPct = Math.round((uniqueSpeakers / runClips) * 100);
+        lines.push('');
+        lines.push(`*Diversity (${runClips} clips):*`);
+        lines.push(`🎙️ ${uniqueSpeakers} speakers (${diversityPct}% diversity)`);
+        const topSpeakers = Object.entries(speakers).sort((a, b) => b[1] - a[1]).slice(0, 4);
+        lines.push(topSpeakers.map(([s, c]) => `  • ${s}: ${c}`).join('\n'));
+        const hookList = Object.entries(hooks).sort((a, b) => b[1] - a[1]);
+        lines.push(`🎣 Hooks: ${hookList.map(([h, c]) => `${h}(${c})`).join(', ')}`);
+      }
+    }
+  }
+
+  return lines.join('\n');
+}
+
+export function cmdViral(): string {
+  const topicsPath = path.join(ROOT, 'workspace', 'scs001', 'viral-topics.json');
+  if (!fs.existsSync(topicsPath)) {
+    return '⚠️ No viral topics yet — run /refresh first.';
+  }
+
+  let topics: string[] = [];
+  try {
+    const data = JSON.parse(fs.readFileSync(topicsPath, 'utf-8'));
+    topics = (Array.isArray(data.topics) ? data.topics : []).slice(0, 10);
+  } catch {
+    return '⚠️ Failed to read viral-topics.json.';
+  }
+
+  if (topics.length === 0) return '⚠️ No viral topics yet — run /refresh first.';
+
+  let freshness = '?';
+  try {
+    const stat = fs.statSync(topicsPath);
+    const ageMs = Date.now() - stat.mtimeMs;
+    const ageH = Math.floor(ageMs / 3600000);
+    if (ageH === 0) freshness = `${Math.floor(ageMs / 60000)}m ago`;
+    else if (ageH < 24) freshness = `${ageH}h ago`;
+    else freshness = `${Math.floor(ageH / 24)}d ago`;
+  } catch { /* ignore */ }
+
+  const lines: string[] = [
+    `🔥 *Viral Topics* — top ${topics.length} trending`,
+    `_(Updated: ${freshness})_`,
+    '',
+  ];
+  topics.forEach((t, i) => lines.push(`${i + 1}. ${t}`));
+  lines.push('');
+  lines.push('💡 Use these for your next videos.');
+  lines.push('→ /postnow for ready content | /queue for queue');
+
+  return lines.join('\n');
+}
+
+export function cmdDashboard(): string {
+  const lines: string[] = ['🏠 *Kognai Dashboard*', ''];
+
+  // 1. TikTok Gate
+  const manualPostsPath = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
+  const posts = readLines(manualPostsPath);
+  const posted = posts.length;
+  const totalViews = posts.reduce((s: number, p: any) => s + (p.views ?? 0), 0);
+  const gateDate = new Date('2026-04-07');
+  const daysToGate = Math.max(0, Math.ceil((gateDate.getTime() - Date.now()) / 86_400_000));
+  const gateIcon = posted >= 30 && totalViews >= 500 ? '✅' : posted === 0 ? '🔴' : '🟡';
+  lines.push(`${gateIcon} *TikTok Gate* (Apr 7, ${daysToGate}d)`);
+  lines.push(`  Posts: ${posted}/30 | Views: ${totalViews}/500`);
+
+  // 2. Achiri Alpha
+  const achiriAlpha = new Date('2026-04-25');
+  const daysToAlpha = Math.max(0, Math.ceil((achiriAlpha.getTime() - Date.now()) / 86_400_000));
+  let readinessScore = '?';
+  const readinessPath = path.join(ROOT, 'reports', 'achiri-readiness.json');
+  if (fs.existsSync(readinessPath)) {
+    try { readinessScore = `${JSON.parse(fs.readFileSync(readinessPath, 'utf-8')).score ?? '?'}%`; } catch {}
+  }
+  let waitlistCount = 0;
+  const waitlistPath = path.join(ROOT, 'workspace', 'achiri', 'waitlist.jsonl');
+  if (fs.existsSync(waitlistPath)) {
+    waitlistCount = fs.readFileSync(waitlistPath, 'utf-8').split('\n').filter(l => l.trim()).length;
+  }
+  lines.push('');
+  lines.push(`🤖 *Achiri Alpha* (Apr 25, ${daysToAlpha}d)`);
+  lines.push(`  Readiness: ${readinessScore} | Waitlist: ${waitlistCount}`);
+
+  // 3. Stripe
+  const stripeReady = !!process.env.STRIPE_SECRET_KEY;
+  lines.push('');
+  lines.push(`💳 *Stripe:* ${stripeReady ? '✅ Ready' : '❌ Not configured'}`);
+
+  // 4. Upcoming Gates
+  const gates = [
+    { name: 'Phase 1.5', date: '2026-04-07', desc: '30 posts + 500 views' },
+    { name: 'Phase 2A', date: '2026-04-11', desc: 'TikTok → Achiri' },
+    { name: 'Achiri Alpha', date: '2026-04-25', desc: 'Lite launch' },
+    { name: 'Voice Gate', date: '2026-05-01', desc: 'Voice works?' },
+    { name: 'Memory Gate', date: '2026-05-14', desc: 'Memory works?' },
+  ];
+  lines.push('');
+  lines.push('📅 *Upcoming Gates*');
+  for (const g of gates) {
+    const d = Math.max(0, Math.ceil((new Date(g.date).getTime() - Date.now()) / 86_400_000));
+    if (d > 0) {
+      lines.push(`  ${d <= 7 ? '⚠️' : '📌'} ${g.name}: ${d}d — ${g.desc}`);
+    }
+  }
+
+  // 5. Missing env
+  const missing = ['TIKTOK_ACCESS_TOKEN'].filter(k => !process.env[k]);
+  if (missing.length > 0) {
+    lines.push('');
+    lines.push(`⚠️ *Missing:* ${missing.join(', ')}`);
+  }
+
+  // 6. Latest sprint
+  try {
+    const { execSync } = require('child_process');
+    const gitLog = execSync('git log --oneline -1 2>/dev/null', { cwd: ROOT }).toString().trim();
+    lines.push('');
+    lines.push(`🔧 *Latest:* ${gitLog}`);
+  } catch { /* skip */ }
+
+  return lines.join('\n');
+}
+
+export function cmdDigest(): string {
+  // Gate status
+  const manualPostsPath = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
+  let postCount = 0;
+  let totalViews = 0;
+  if (fs.existsSync(manualPostsPath)) {
+    const lines = fs.readFileSync(manualPostsPath, 'utf-8').split('\n').filter(l => l.trim());
+    postCount = lines.length;
+    for (const line of lines) {
+      try { totalViews += JSON.parse(line).views ?? 0; } catch {}
+    }
+  }
+  const gateDate = new Date('2026-04-07T00:00:00Z');
+  const now = new Date();
+  const daysLeft = Math.max(0, Math.ceil((gateDate.getTime() - now.getTime()) / 86_400_000));
+  const postsNeeded = Math.max(0, 30 - postCount);
+  const viewsNeeded = Math.max(0, 500 - totalViews);
+  const postsPerDay = daysLeft > 0 && postsNeeded > 0 ? (postsNeeded / daysLeft).toFixed(1) : '0';
+
+  let urgency = '🟢 ON TRACK';
+  if (postsNeeded <= 0 && viewsNeeded <= 0) urgency = '✅ GATE MET';
+  else if (daysLeft <= 3 && postsNeeded > 0) urgency = '🔴 KILL SWITCH IMMINENT';
+  else if (daysLeft <= 7 && postsNeeded > 0) urgency = '🟠 CRITICAL';
+  else if (postCount === 0) urgency = '🟡 WARNING — 0 posts';
+  else if (daysLeft <= 14 && postsNeeded > 0) urgency = '🟡 WARNING';
+
+  // Queue — top 3
+  const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
+  const recorded = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  const recordedIds = new Set(recorded.map((e: any) => e.video_id).filter(Boolean));
+
+  const viralScores = new Map<string, number>();
+  const expPath = path.join(ROOT, 'workspace', 'scs001', 'experiments.jsonl');
+  if (fs.existsSync(expPath)) {
+    for (const line of fs.readFileSync(expPath, 'utf-8').split('\n')) {
+      if (!line.trim()) continue;
+      try {
+        const e = JSON.parse(line);
+        const id = e.clip_id ?? e.video_id;
+        if (id && e.partial_viral_score != null) viralScores.set(id, e.partial_viral_score);
+      } catch {}
+    }
+  }
+
+  const unposted = (ledger as any[])
+    .filter((e: any) => !recordedIds.has(e.video_id) && e.video_id)
+    .sort((a: any, b: any) => (viralScores.get(b.video_id) ?? -1) - (viralScores.get(a.video_id) ?? -1));
+  const queueCount = unposted.length;
+  const top3 = unposted.slice(0, 3);
+
+  // Stripe
+  const stripeKeys = ['STRIPE_SECRET_KEY', 'STRIPE_WEBHOOK_SECRET', 'STRIPE_WEBHOOK_PORT'];
+  const stripeMissing = stripeKeys.filter(k => !process.env[k]);
+  const stripeReady = stripeMissing.length === 0;
+
+  // TikTok token
+  const tiktokReady = Boolean(process.env.TIKTOK_ACCESS_TOKEN);
+
+  // Build message
+  const out: string[] = [
+    `📋 *Daily Digest* — ${now.toISOString().slice(0, 10)}`,
+    '',
+    `*Gate:* ${urgency}`,
+    `📅 Apr 7 · ${daysLeft} days left`,
+    `📊 Posts: ${postCount}/30 · Views: ${totalViews}/500`,
+  ];
+
+  if (postsNeeded > 0 && daysLeft > 0) {
+    out.push(`⏱ Pace: ${postsPerDay} posts/day needed`);
+  }
+
+  out.push('');
+  if (top3.length > 0) {
+    out.push(`📦 *Queue:* ${queueCount} videos`);
+    out.push('🎬 *Top 3 to post:*');
+    for (let i = 0; i < top3.length; i++) {
+      const v = top3[i];
+      const vs = viralScores.get(v.video_id);
+      const vsStr = vs != null ? ` 🧬${vs}` : '';
+      out.push(`  ${i + 1}. \`${v.video_id}\`${vsStr}`);
+    }
+  } else {
+    out.push(`📦 *Queue:* EMPTY — run /refresh to generate content`);
+  }
+
+  out.push('');
+  out.push(`💳 *Stripe:* ${stripeReady ? '✅ Ready' : '❌ Not Ready'}`);
+  out.push(`🎵 *TikTok API:* ${tiktokReady ? '✅ Token set' : '❌ No token'}`);
+
+  // Action items
+  const actions: string[] = [];
+  if (!tiktokReady) actions.push('• Set `TIKTOK\\_ACCESS\\_TOKEN` in .env');
+  if (!stripeReady) actions.push('• Configure missing Stripe env vars');
+  if (postsNeeded > 0) {
+    actions.push(`• Post ${Math.min(postsNeeded, 3)} videos today`);
+    actions.push('• Use `/record` after each manual post');
+  }
+  if (queueCount === 0) actions.push('• Run `/refresh` to fill the queue');
+
+  if (actions.length > 0) {
+    out.push('', '*Action items:*', ...actions);
+  }
+
+  return out.join('\n');
+}
+
+export function cmdSchedule(): string {
+  const schedulePath = path.join(ROOT, 'reports', 'posting-schedule.json');
+  if (!fs.existsSync(schedulePath)) {
+    return '📅 No posting schedule found.\nRun the schedule generator first.';
+  }
+
+  try {
+    const data = JSON.parse(fs.readFileSync(schedulePath, 'utf-8'));
+    const today = new Date().toISOString().slice(0, 10);
+    const slots: Array<{ date: string; time: string; video_id: string; speaker: string; viral_score: number; slot_label: string }> = data.slots ?? [];
+
+    const todaySlots = slots.filter(s => s.date === today);
+    const upcomingSlots = slots.filter(s => s.date > today).slice(0, 6);
+
+    const lines: string[] = [
+      `📅 *Posting Schedule*`,
+      `Gate: ${data.posts_done ?? 0}/30 posts · ${data.days_to_gate ?? '?'}d left · ${data.pace_needed ?? '?'}/day needed`,
+      '',
+    ];
+
+    if (todaySlots.length > 0) {
+      lines.push(`*Today (${today}):*`);
+      for (const s of todaySlots) {
+        lines.push(`  ${s.slot_label} — \`${s.video_id}\``);
+        lines.push(`    🎙️ ${s.speaker} · 🧬 ${Math.round((s.viral_score ?? 0) * 100)}%`);
+      }
+      lines.push('');
+    } else {
+      lines.push(`_No slots scheduled for today (${today})._`);
+      lines.push('');
+    }
+
+    if (upcomingSlots.length > 0) {
+      lines.push('*Upcoming:*');
+      for (const s of upcomingSlots) {
+        lines.push(`  ${s.date} ${s.time} — \`${s.video_id}\` 🎙️ ${s.speaker}`);
+      }
+      lines.push('');
+    }
+
+    lines.push(`_Schedule: ${data.posts_per_day ?? '?'}/day · ${data.queue_remaining ?? '?'} in queue_`);
+    lines.push(`_Generated: ${data.generated_at ? data.generated_at.split('T')[0] : 'unknown'}_`);
+
+    return lines.join('\n');
+  } catch (e: any) {
+    return `❌ Error reading schedule: ${e.message}`;
+  }
+}
+
+export function cmdLeaderboard(): string {
+  const lbPath = path.join(ROOT, 'reports', 'content-leaderboard.json');
+  if (!fs.existsSync(lbPath)) {
+    return '🏆 No content leaderboard found.\nRun the leaderboard generator first.';
+  }
+
+  try {
+    const data = JSON.parse(fs.readFileSync(lbPath, 'utf-8'));
+    const speakers: Array<{ name: string; count: number; avg_score: number; max_score: number; qc_rate: number }> = data.speakers ?? [];
+
+    if (speakers.length === 0) {
+      return '🏆 Leaderboard is empty — no speakers found.';
+    }
+
+    const lines: string[] = [
+      `🏆 *Content Leaderboard*`,
+      `Total experiments: ${data.total_experiments ?? '?'}`,
+      '',
+    ];
+
+    const medals = ['🥇', '🥈', '🥉'];
+    const top = speakers.slice(0, 10);
+
+    for (let i = 0; i < top.length; i++) {
+      const s = top[i];
+      const medal = i < 3 ? medals[i] : `${i + 1}.`;
+      lines.push(`${medal} *${s.name}* — avg ${Math.round(s.avg_score * 100)}% · max ${Math.round(s.max_score * 100)}%`);
+      lines.push(`   ${s.count} clips · QC ${s.qc_rate}%`);
+    }
+
+    lines.push('');
+    lines.push(`_${speakers.length} speakers total_`);
+    lines.push(`_Generated: ${data.generated_at ? data.generated_at.split('T')[0] : 'unknown'}_`);
+
+    return lines.join('\n');
+  } catch (e: any) {
+    return `❌ Error reading leaderboard: ${e.message}`;
+  }
+}
+
+export function cmdBestTime(): string {
+  const schedulePath = path.join(ROOT, 'reports', 'posting-schedule.json');
+  if (!fs.existsSync(schedulePath)) {
+    return '⚠️ No posting schedule found. Run /refresh first.';
+  }
+
+  let sched: any;
+  try {
+    sched = JSON.parse(fs.readFileSync(schedulePath, 'utf-8'));
+  } catch {
+    return '⚠️ Could not parse posting-schedule.json.';
+  }
+
+  const slots: any[] = sched.slots ?? [];
+  if (slots.length === 0) return '⚠️ No scheduled slots found.';
+
+  // Group by time slot → avg viral score
+  const timeStats: Record<string, { scores: number[]; count: number; label: string }> = {};
+  for (const s of slots) {
+    const time = s.time ?? '?';
+    if (!timeStats[time]) timeStats[time] = { scores: [], count: 0, label: s.slot_label ?? time };
+    timeStats[time].count++;
+    if (s.viral_score != null) timeStats[time].scores.push(s.viral_score);
+  }
+
+  const ranked = Object.entries(timeStats)
+    .map(([time, stats]) => ({
+      time,
+      label: stats.label,
+      avg: stats.scores.length > 0 ? stats.scores.reduce((a, b) => a + b, 0) / stats.scores.length : 0,
+      count: stats.count,
+    }))
+    .sort((a, b) => b.avg - a.avg);
+
+  // Today's remaining slots
+  const now = new Date();
+  const today = now.toISOString().slice(0, 10);
+  const currentHour = now.getHours();
+  const todaySlots = slots
+    .filter((s: any) => s.date === today && parseInt(s.time) > currentHour)
+    .sort((a: any, b: any) => a.time.localeCompare(b.time));
+
+  // Next 3 days upcoming
+  const upcoming = slots
+    .filter((s: any) => s.date >= today)
+    .sort((a: any, b: any) => `${a.date}${a.time}`.localeCompare(`${b.date}${b.time}`))
+    .slice(0, 6);
+
+  const lines = [
+    '⏰ *Best Posting Times*',
+    '',
+    '*Time slot rankings (by avg viral score):*',
+  ];
+
+  for (const r of ranked) {
+    const avgPct = Math.round(r.avg * 100);
+    const icon = r === ranked[0] ? '🏆' : '📊';
+    lines.push(`${icon} *${r.label}* — avg ${avgPct}% · ${r.count} posts`);
+  }
+
+  if (todaySlots.length > 0) {
+    lines.push('');
+    lines.push('*Remaining today:*');
+    for (const s of todaySlots) {
+      const score = Math.round((s.viral_score ?? 0) * 100);
+      lines.push(`  ⏰ ${s.slot_label ?? s.time} — ${s.speaker ?? '?'} (${score}%)`);
+    }
+  } else {
+    lines.push('');
+    lines.push('_No remaining slots today._');
+  }
+
+  if (upcoming.length > 0) {
+    lines.push('');
+    lines.push('*Upcoming schedule:*');
+    for (const s of upcoming) {
+      const score = Math.round((s.viral_score ?? 0) * 100);
+      lines.push(`  📅 ${s.date} ${s.time} — ${s.speaker ?? '?'} (${score}%)`);
+    }
+  }
+
+  lines.push('');
+  lines.push(`📋 ${sched.pace_needed ?? '?'} posts/day needed for gate`);
+
+  return lines.join('\n');
+}
+
+export function cmdHookTest(): string {
+  const experiments = readLines(path.join(ROOT, 'workspace', 'scs001', 'experiments.jsonl'));
+  if (experiments.length === 0) return '⚠️ No experiments found. Run pipeline first.';
+
+  // Aggregate by hook formula
+  const hookStats: Record<string, { scores: number[]; count: number; speakers: Set<string> }> = {};
+  for (const e of experiments) {
+    const hook = e.hook_formula ?? 'unknown';
+    if (hook === 'unknown') continue;
+    if (!hookStats[hook]) hookStats[hook] = { scores: [], count: 0, speakers: new Set() };
+    hookStats[hook].count++;
+    if (e.partial_viral_score != null) hookStats[hook].scores.push(e.partial_viral_score);
+    if (e.speaker && e.speaker !== 'unknown') hookStats[hook].speakers.add(e.speaker);
+  }
+
+  const ranked = Object.entries(hookStats)
+    .map(([hook, stats]) => {
+      const avg = stats.scores.length > 0
+        ? stats.scores.reduce((a, b) => a + b, 0) / stats.scores.length
+        : 0;
+      const max = stats.scores.length > 0 ? Math.max(...stats.scores) : 0;
+      return { hook, avg, max, count: stats.count, speakers: stats.speakers.size };
+    })
+    .sort((a, b) => b.avg - a.avg);
+
+  if (ranked.length === 0) return '⚠️ No hook formulas found in experiments.';
+
+  const best = ranked[0];
+  const worst = ranked[ranked.length - 1];
+
+  const lines = [
+    '🎣 *Hook Formula A/B Test*',
+    `${experiments.length} experiments · ${ranked.length} hooks tested`,
+    '',
+    '*Rankings (by avg viral score):*',
+  ];
+
+  const medals = ['🥇', '🥈', '🥉'];
+  for (let i = 0; i < ranked.length; i++) {
+    const r = ranked[i];
+    const medal = i < 3 ? medals[i] : `${i + 1}.`;
+    const avgPct = Math.round(r.avg * 100);
+    const maxPct = Math.round(r.max * 100);
+    lines.push(`${medal} *${r.hook}* — avg ${avgPct}% · max ${maxPct}% · n=${r.count} · ${r.speakers} speakers`);
+  }
+
+  lines.push('');
+  lines.push(`✅ Best: *${best.hook}* (${Math.round(best.avg * 100)}% avg)`);
+  if (ranked.length > 1) {
+    lines.push(`⚠️ Worst: *${worst.hook}* (${Math.round(worst.avg * 100)}% avg)`);
+  }
+
+  lines.push('');
+  lines.push('💡 Prioritize top hooks in /postplan for gate acceleration');
+
+  return lines.join('\n');
+}
+
+export function cmdHookStats(): string {
+  try {
+    const { formatRankings } = require('./scs001/hook-optimizer');
+    return formatRankings();
+  } catch (e: any) {
+    return `❌ Hook optimizer error: ${e.message}`;
+  }
+}
+
+export function cmdViralStats(): string {
+  const expPath = path.join(ROOT, 'workspace', 'scs001', 'experiments.jsonl');
+  if (!fs.existsSync(expPath)) {
+    return '⚠️ No experiments.jsonl found. Run pipeline first.';
+  }
+
+  const scored: Array<{ video_id: string; score: number; hook: string; speaker: string }> = [];
+  let total = 0;
+
+  try {
+    for (const line of fs.readFileSync(expPath, 'utf-8').split('\n')) {
+      if (!line.trim()) continue;
+      try {
+        const e = JSON.parse(line);
+        total++;
+        if (e.partial_viral_score != null) {
+          scored.push({
+            video_id: e.clip_id ?? e.video_id ?? '?',
+            score: e.partial_viral_score,
+            hook: e.hook_formula ?? 'unknown',
+            speaker: e.speaker ?? 'unknown',
+          });
+        }
+      } catch { /* skip */ }
+    }
+  } catch {
+    return '⚠️ Could not read experiments.jsonl.';
+  }
+
+  if (scored.length === 0) {
+    return '🧬 *Viral Stats*\n\nNo viral scores yet. Run the pipeline.';
+  }
+
+  const scores = scored.map(s => s.score);
+  const avg = (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(3);
+  const max = Math.max(...scores).toFixed(3);
+  const min = Math.min(...scores).toFixed(3);
+  const above07 = scores.filter(s => s >= 0.7).length;
+
+  scored.sort((a, b) => b.score - a.score);
+  const top3 = scored.slice(0, 3);
+
+  const lines: string[] = [
+    '🧬 *Viral Score Summary*',
+    '',
+    `📊 Scored: *${scored.length}* / ${total} experiments`,
+    `📈 Avg: *${avg}* | Max: *${max}* | Min: *${min}*`,
+    `🔥 High (≥0.7): *${above07}*`,
+    '',
+    '*Top 3:*',
+  ];
+
+  top3.forEach((e, i) => {
+    lines.push(`${i + 1}. \`${e.video_id.slice(0, 16)}\` — ${e.score} · ${e.speaker} · ${e.hook}`);
+  });
+
+  lines.push('', '💡 /postnow posts the highest-scoring video');
+  return lines.join('\n');
+}
+
+export function cmdQueueOpt(): string {
+  try {
+    const { formatOptimizedQueue } = require('./scs001/queue-optimizer');
+    return formatOptimizedQueue(10);
+  } catch (e: any) {
+    return `❌ Queue optimizer error: ${e.message}`;
+  }
+}
+
+export function cmdGateAnalytics(): string {
+  try {
+    const { formatGateAnalytics } = require('./scs001/posting-analytics');
+    return formatGateAnalytics();
+  } catch (e: any) {
+    return `❌ Analytics error: ${e.message}`;
+  }
+}
+
+export function cmdRevenue(): string {
+  const dbPath = path.join(ROOT, 'data', 'telegram-db.json');
+  let totalUsers = 0;
+  let paidUsers = 0;
+  let mrr = 0;
+  const planCounts: Record<string, number> = { growth: 0, premium: 0, free: 0 };
+  const PRICES: Record<string, number> = { growth: 19, premium: 49 };
+
+  if (fs.existsSync(dbPath)) {
+    try {
+      const db = JSON.parse(fs.readFileSync(dbPath, 'utf-8'));
+      for (const [_, entry] of Object.entries(db) as [string, any][]) {
+        totalUsers++;
+        const tier = entry.tier ?? 'free';
+        planCounts[tier] = (planCounts[tier] ?? 0) + 1;
+        if (tier !== 'free' && entry.active !== false) {
+          paidUsers++;
+          mrr += PRICES[tier] ?? 0;
+        }
+      }
+    } catch { /* skip */ }
+  }
+
+  const arr = mrr * 12;
+  const freeUsers = totalUsers - paidUsers;
+
+  const lines: string[] = [];
+  lines.push('💰 *Revenue Dashboard*');
+  lines.push('');
+  lines.push('*Subscribers:*');
+  lines.push(`• Total: ${totalUsers} | Free: ${freeUsers} | Growth: ${planCounts.growth} | Premium: ${planCounts.premium}`);
+  lines.push(`• Active paid: ${paidUsers}`);
+  lines.push('');
+  lines.push('*Revenue:*');
+  lines.push(`• MRR: *$${mrr}* · ARR: $${arr}`);
+  lines.push('');
+
+  const gates = [
+    { name: 'Phase 1.5 — TikTok live', target: 0, label: 'posts+views' },
+    { name: 'Phase 2A — Achiri alpha', target: 0, label: 'waitlist' },
+    { name: 'Phase 2B — 10 subs', target: 190, label: '$190 MRR' },
+    { name: 'Phase 3 — Autonomy', target: 500, label: '$500 MRR' },
+    { name: 'Phase 4 — x402', target: 1000, label: '$1000 MRR' },
+  ];
+
+  lines.push('*Financial Gates:*');
+  for (const g of gates) {
+    const met = mrr >= g.target;
+    const icon = met ? '✅' : '⏳';
+    const pct = g.target > 0 ? Math.round((mrr / g.target) * 100) : 100;
+    lines.push(`${icon} ${g.name} — ${g.label} (${Math.min(pct, 100)}%)`);
+  }
+
+  lines.push('');
+  const stripeKey = process.env.STRIPE_SECRET_KEY;
+  lines.push(stripeKey ? '💳 Stripe: 🟢 CONFIGURED' : '💳 Stripe: 🔴 NOT CONFIGURED');
+
+  return lines.join('\n');
+}

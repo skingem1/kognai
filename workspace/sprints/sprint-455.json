@@ -1,0 +1,56 @@
+{
+  "sprint_id": "sprint-455",
+  "title": "SAFETY — Split telegram-bot.ts Part 1: shared utils + command modules A-M",
+  "description": "Extract shared utilities and A-M command handlers from telegram-bot.ts (6,397 lines) into scripts/telegram-commands/ modules. Part 1 of 2-sprint safety split to get below FP-007 threshold.",
+  "source": "queue — SAFETY-SPLIT (queue items 442-443 renumbered to 455-456)",
+  "tasks": [
+    {
+      "id": "455-01",
+      "title": "Create scripts/telegram-commands/shared.ts with shared utilities",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-455",
+      "deliverables": { "code": ["scripts/telegram-commands/shared.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "455-02",
+      "title": "Create command module files for A-M handlers",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-455",
+      "deliverables": { "code": ["scripts/telegram-commands/cmd-system.ts", "scripts/telegram-commands/cmd-gate.ts", "scripts/telegram-commands/cmd-analytics.ts", "scripts/telegram-commands/cmd-content.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "455-03",
+      "title": "Update telegram-bot.ts to import from new modules and remove extracted functions",
+      "type": "refactor",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-455",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "455-04",
+      "title": "Validate TypeScript compilation and bot startup",
+      "type": "test",
+      "task_type": "validation",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-455",
+      "deliverables": { "code": [], "tests": [], "docs": [] }
+    }
+  ]
+}
