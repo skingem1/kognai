@@ -3482,6 +3482,59 @@ function cmdUnarchive(args: string): string {
   return `✅ *Restored:* \`${videoId}\`\n\nThis video will appear in /deliver and /queue again.`;
 }
 
+// Sprint 414: /stale — show and bulk-archive content older than 7 days
+function cmdStale(args: string): string {
+  const STALE_DAYS = 7;
+  const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
+  const recorded = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  const recordedIds = new Set(recorded.map((e: any) => e.video_id).filter(Boolean));
+  const archivedIds = loadArchived();
+  const now = Date.now();
+
+  const stale = (ledger as any[]).filter((e: any) => {
+    if (!e.video_id || recordedIds.has(e.video_id) || archivedIds.has(e.video_id)) return false;
+    if (!e.published_at) return false;
+    const ageDays = (now - new Date(e.published_at).getTime()) / 86_400_000;
+    return ageDays > STALE_DAYS;
+  });
+
+  if (stale.length === 0) {
+    return `✅ *No stale content* — all queued videos are <${STALE_DAYS} days old.`;
+  }
+
+  if (args.trim() === 'archive') {
+    const archived = loadArchived();
+    for (const e of stale) archived.add(e.video_id);
+    saveArchived(archived);
+    return (
+      `📁 *Bulk archived ${stale.length} stale videos* (>${STALE_DAYS} days old)\n\n` +
+      `Queue is now focused on fresh content.\n` +
+      `Restore any with \`/unarchive <video_id>\``
+    );
+  }
+
+  // Show stale summary grouped by age
+  const byAge: Record<string, number> = {};
+  for (const e of stale) {
+    const ageDays = Math.round((now - new Date(e.published_at).getTime()) / 86_400_000);
+    const bucket = ageDays <= 10 ? '7-10d' : ageDays <= 14 ? '11-14d' : '15d+';
+    byAge[bucket] = (byAge[bucket] ?? 0) + 1;
+  }
+
+  const lines = [
+    `🕰 *Stale Content* — ${stale.length} videos >${STALE_DAYS} days old`,
+    '',
+  ];
+  for (const [bucket, count] of Object.entries(byAge)) {
+    lines.push(`• ${bucket}: ${count} videos`);
+  }
+  lines.push('');
+  lines.push(`Run \`/stale archive\` to bulk-archive all ${stale.length} stale videos.`);
+  lines.push(`_Archived videos can be restored with /unarchive_`);
+
+  return lines.join('\n');
+}
+
 // Sprint 393: /note — operator quick notes on videos
 const NOTES_PATH = path.join(ROOT, 'workspace', 'scs001', 'video-notes.json');
 
@@ -5249,6 +5302,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/history':     response = cmdHistory();            break;
     case '/archive':     response = cmdArchive(cmdArgs);     break;
     case '/unarchive':   response = cmdUnarchive(cmdArgs);   break;
+    case '/stale':       response = cmdStale(cmdArgs);       break;
     case '/note':        response = cmdNote(cmdArgs);        break;
     case '/status':      response = cmdStatus();             break;
     case '/dedup':       response = cmdDedup();              break;

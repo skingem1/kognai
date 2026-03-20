@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-414",
+  "title": "Auto-archive stale content — /stale command for bulk cleanup",
+  "description": "Add /stale command to show videos older than 7 days that haven't been posted. /stale archive to bulk-archive them all. Keeps delivery queue focused on fresh, relevant content.",
+  "source": "auto — 379 ledger entries accumulating, stale content clutters queue",
+  "tasks": [
+    {
+      "id": "414-01",
+      "title": "Add /stale command with show and bulk-archive modes",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-414",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
