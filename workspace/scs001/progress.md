@@ -2710,3 +2710,17 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (single file)
 - Issues: None.
 - Timestamp: 2026-03-20T03:45:00Z
+
+## Sprint 331 — 7-Day Posting Schedule (Direct Write)
+- Status: PASS
+- Commit: de87e27
+- Files created: scripts/scs001/generate-posting-schedule.ts, scripts/scs001/validate-posting-schedule.ts, workspace/sprints/sprint-331.json
+- Files modified: agents/telegram-bot/commands.ts, agents/telegram-bot/index.ts
+- Tasks completed:
+  - 331-01: generate-posting-schedule.ts — picks top QC-passed unposted videos by viral score, assigns optimal TikTok posting time slots (07:00, 12:00, 18:00, 21:00), generates 7-day schedule with 2 posts/day. Outputs reports/posting-schedule.json with gate metrics (posts needed, pace, days to Apr 7).
+  - 331-02: /postplan Telegram command — shows 7-day schedule grouped by date, with video IDs, hook formulas, viral scores. Gate urgency stats at top.
+  - 331-03: validate-posting-schedule.ts — 26/26 tests pass (generator module, bot command, routing, functional, TypeScript compilation).
+- Validation: 26/26 PASS
+- Swarm used: no (FP-007, multi-file)
+- Issues: Initial version treated publish-ledger as posted videos (0 slots). Fixed to only check manual-posts.jsonl — 14 slots generated correctly.
+- Timestamp: 2026-03-20T05:15:00Z
