@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-400",
+  "title": "/top30 — optimal 30 video selection for gate",
+  "description": "Add /top30 command that auto-selects the best 30 videos to post from the queue, optimizing for speaker diversity, hook formula variety, and viral score. Gives the operator a clear 'post these 30' answer.",
+  "source": "auto — operator needs clarity on which 30 of 267 videos to post for the Apr 7 gate",
+  "tasks": [
+    {
+      "id": "400-01",
+      "title": "Add /top30 command with diversity-optimized selection",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-400",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

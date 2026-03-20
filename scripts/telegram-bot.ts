@@ -3569,6 +3569,7 @@ function cmdHelp(): string {
     `/pickup    — One-tap posting: best video + caption + buttons\n` +
     `/status    — Unified dashboard: gate + queue + streak + next\n` +
     `/dedup     — Content diversity scanner + duplicate detection\n` +
+    `/top30     — Auto-select best 30 videos for the gate\n` +
     `/help      — This message`
   );
 }
@@ -4145,6 +4146,108 @@ function cmdFilmKit(): string {
   return lines.join('\n');
 }
 
+// ─── Sprint 400: /top30 — optimal 30 video selection for gate ───────────
+
+function cmdTop30(): string {
+  const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
+  const recorded = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  const recordedIds = new Set(recorded.map((e: any) => e.video_id).filter(Boolean));
+  const archivedIds = loadArchived();
+
+  // Load experiment data
+  const viralScores = new Map<string, number>();
+  const speakerMap = new Map<string, string>();
+  const hookMap = new Map<string, string>();
+  const expPath = path.join(ROOT, 'workspace', 'scs001', 'experiments.jsonl');
+  if (fs.existsSync(expPath)) {
+    try {
+      for (const line of fs.readFileSync(expPath, 'utf-8').split('\n')) {
+        if (!line.trim()) continue;
+        try {
+          const e = JSON.parse(line);
+          const id = e.clip_id ?? e.video_id;
+          if (id) {
+            if (e.partial_viral_score != null) viralScores.set(id, e.partial_viral_score);
+            if (e.speaker) speakerMap.set(id, e.speaker);
+            if (e.hook_formula) hookMap.set(id, e.hook_formula);
+          }
+        } catch { /* skip */ }
+      }
+    } catch { /* skip */ }
+  }
+
+  // Get unposted videos with mp4 on disk
+  const unposted = (ledger as any[])
+    .filter((e: any) => !recordedIds.has(e.video_id) && e.video_id && !archivedIds.has(e.video_id))
+    .filter((e: any) => findCaptionedMp4(e.video_id) !== null)
+    .sort((a: any, b: any) => (viralScores.get(b.video_id) ?? -1) - (viralScores.get(a.video_id) ?? -1));
+
+  if (unposted.length === 0) {
+    return '📋 *Top 30* — No ready-to-post videos found.';
+  }
+
+  const TARGET = 30 - recorded.length;
+  if (TARGET <= 0) {
+    return '✅ *Gate target already met!* ' + recorded.length + '/30 posts recorded.';
+  }
+
+  // Diversity-aware greedy selection
+  const selected: Array<{ video_id: string; score: number; speaker: string; hook: string }> = [];
+  const usedSpeakers = new Map<string, number>(); // speaker → count
+  const usedHooks = new Map<string, number>();
+  const MAX_PER_SPEAKER = Math.max(3, Math.ceil(TARGET / 5)); // at most ~20% per speaker
+
+  for (const e of unposted) {
+    if (selected.length >= TARGET) break;
+    const vid = e.video_id;
+    const speaker = (speakerMap.get(vid) ?? 'unknown').toLowerCase();
+    const hook = (hookMap.get(vid) ?? 'unknown').toLowerCase();
+    const speakerCount = usedSpeakers.get(speaker) ?? 0;
+
+    // Enforce speaker diversity cap
+    if (speakerCount >= MAX_PER_SPEAKER && speaker !== 'unknown') continue;
+
+    selected.push({
+      video_id: vid,
+      score: viralScores.get(vid) ?? 0,
+      speaker: speakerMap.get(vid) ?? 'unknown',
+      hook: hookMap.get(vid) ?? 'unknown',
+    });
+    usedSpeakers.set(speaker, speakerCount + 1);
+    usedHooks.set(hook, (usedHooks.get(hook) ?? 0) + 1);
+  }
+
+  // Stats
+  const avgScore = selected.length > 0 ? selected.reduce((s, v) => s + v.score, 0) / selected.length : 0;
+  const uniqueSpeakers = new Set(selected.map(v => v.speaker.toLowerCase())).size;
+  const uniqueHooks = new Set(selected.map(v => v.hook.toLowerCase())).size;
+
+  const lines: string[] = [
+    `🏆 *Top ${selected.length} Videos — Optimized for Gate*`,
+    '',
+    `📊 Avg viral score: *${avgScore.toFixed(2)}*`,
+    `🎙️ Speakers: *${uniqueSpeakers}* unique`,
+    `🎣 Hooks: *${uniqueHooks}* unique`,
+    `📦 From: ${unposted.length} available`,
+    '',
+  ];
+
+  // Show top 10 with details
+  const showCount = Math.min(10, selected.length);
+  for (let i = 0; i < showCount; i++) {
+    const v = selected[i];
+    lines.push(`${i + 1}. \`${v.video_id}\` 🧬${v.score} · ${v.speaker} · ${v.hook}`);
+  }
+  if (selected.length > showCount) {
+    lines.push(`_... and ${selected.length - showCount} more_`);
+  }
+
+  lines.push('');
+  lines.push(`_Use /pickup to start posting these in order._`);
+
+  return lines.join('\n');
+}
+
 // ─── Sprint 396: /dedup — content deduplication scanner ─────────────────
 
 function cmdDedup(): string {
@@ -4640,6 +4743,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/note':        response = cmdNote(cmdArgs);        break;
     case '/status':      response = cmdStatus();             break;
     case '/dedup':       response = cmdDedup();              break;
+    case '/top30':       response = cmdTop30();              break;
     case '/help':        response = cmdHelp();        break;
     default:
       response = `Unknown command: \`${cmdName}\`\n\n${cmdHelp()}`;
