@@ -1279,7 +1279,7 @@
       "sprint": 594,
       "title": "BUGFIX — Fix pipeline error: daily-digest-error.log",
       "block": "BUGFIX",
-      "status": "pending",
+      "status": "done",
       "priority": "high",
       "rationale": "Pipeline error detected: daily-digest-error.log: 2026-03-20 17:13:54 +01:00: [daily-digest] Send failed: Telegram error: Bad "
     },

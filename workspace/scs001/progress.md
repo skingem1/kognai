@@ -1064,3 +1064,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (multi-file task, wrote directly)
 - Issues: None
 - Timestamp: 2026-03-21T05:10:00Z
+
+## Sprint 594 — BUGFIX
+- Status: PASS
+- Commit: 16f4a1c
+- Files created: workspace/sprints/sprint-594.json
+- Files modified: scripts/daily-digest.ts
+- Test: Dry-run — PASS (no angle brackets in output)
+- Pipeline: Fixed Telegram Markdown parse error (byte offset ~1518) caused by angle brackets
+- Swarm used: no (surgical edit)
+- Issues: None
+- Timestamp: 2026-03-21T05:20:00Z
