@@ -133,7 +133,7 @@ export async function handleHelp(chatId: number, ownerChatId?: string): Promise<
     '/waitlist /inviteachiri <id> /deploystatus',
     '',
     '⚙️ *System*',
-    '/pm2status /health /preflight /dedup',
+    '/dashboard /pm2status /health /preflight /dedup',
     '/help — This message',
   ].join('\n'));
 }
@@ -4148,4 +4148,106 @@ export async function handleAchiriTopics(chatId: number, ownerChatId: string): P
   } catch (err) {
     await sendMessage(chatId, `❌ Topic analysis failed: ${(err as Error).message?.slice(0, 100)}`);
   }
+}
+
+// ── Sprint 329: /dashboard — Unified Kognai system status ────────────────────
+
+export async function handleDashboard(chatId: number, ownerChatId: string): Promise<void> {
+  if (String(chatId) !== ownerChatId) {
+    await sendMessage(chatId, '🔒 Owner only.');
+    return;
+  }
+
+  const ROOT = process.cwd();
+  const lines: string[] = ['🏠 *Kognai Dashboard*', ''];
+
+  // 1. TikTok Gate Progress
+  const manualPostsPath = join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
+  let posted = 0;
+  let totalViews = 0;
+  if (existsSync(manualPostsPath)) {
+    const entries = readFileSync(manualPostsPath, 'utf-8').split('\n').filter(l => l.trim());
+    posted = entries.length;
+    for (const line of entries) {
+      try { totalViews += (JSON.parse(line).views ?? 0); } catch { /* skip */ }
+    }
+  }
+  const gateDate = new Date('2026-04-07');
+  const daysToGate = Math.max(0, Math.ceil((gateDate.getTime() - Date.now()) / 86_400_000));
+  const gateIcon = posted >= 30 && totalViews >= 500 ? '✅' : posted === 0 ? '🔴' : '🟡';
+  lines.push(`${gateIcon} *TikTok Gate* (Apr 7, ${daysToGate}d)`);
+  lines.push(`  Posts: ${posted}/30 | Views: ${totalViews}/500`);
+
+  // 2. Achiri Alpha Status
+  const achiriAlpha = new Date('2026-04-25');
+  const daysToAlpha = Math.max(0, Math.ceil((achiriAlpha.getTime() - Date.now()) / 86_400_000));
+  const readinessPath = join(ROOT, 'reports', 'achiri-readiness.json');
+  let readinessScore = '?';
+  if (existsSync(readinessPath)) {
+    try {
+      const r = JSON.parse(readFileSync(readinessPath, 'utf-8'));
+      readinessScore = `${r.score ?? '?'}%`;
+    } catch { /* skip */ }
+  }
+  const countsPath = join(ROOT, 'workspace', 'achiri', 'daily-counts.json');
+  let achiriUsers = 0;
+  if (existsSync(countsPath)) {
+    try {
+      const counts = JSON.parse(readFileSync(countsPath, 'utf-8')) as Record<string, Record<string, number>>;
+      const allUsers = new Set<string>();
+      for (const day of Object.values(counts)) {
+        for (const uid of Object.keys(day)) allUsers.add(uid);
+      }
+      achiriUsers = allUsers.size;
+    } catch { /* skip */ }
+  }
+  const waitlistPath = join(ROOT, 'workspace', 'achiri', 'waitlist.jsonl');
+  let waitlistCount = 0;
+  if (existsSync(waitlistPath)) {
+    waitlistCount = readFileSync(waitlistPath, 'utf-8').split('\n').filter(l => l.trim()).length;
+  }
+  lines.push('');
+  lines.push(`🤖 *Achiri Alpha* (Apr 25, ${daysToAlpha}d)`);
+  lines.push(`  Readiness: ${readinessScore} | Users: ${achiriUsers} | Waitlist: ${waitlistCount}`);
+
+  // 3. Stripe Status
+  const stripeKeys = ['STRIPE_SECRET_KEY', 'STRIPE_WEBHOOK_SECRET', 'STRIPE_WEBHOOK_PORT'];
+  const stripeMissing = stripeKeys.filter(k => !process.env[k]);
+  const stripeIcon = stripeMissing.length === 0 ? '✅' : '❌';
+  lines.push('');
+  lines.push(`💳 *Stripe:* ${stripeIcon} ${stripeMissing.length === 0 ? 'Ready' : `Missing: ${stripeMissing.length} vars`}`);
+
+  // 4. Upcoming Gates
+  const gates = [
+    { name: 'Phase 1.5', date: '2026-04-07', desc: '30 posts + 500 views' },
+    { name: 'Phase 2A', date: '2026-04-11', desc: 'TikTok → Achiri' },
+    { name: 'Achiri Alpha', date: '2026-04-25', desc: 'Lite launch' },
+    { name: 'Voice Gate', date: '2026-05-01', desc: 'Voice works?' },
+    { name: 'Memory Gate', date: '2026-05-14', desc: 'Memory works?' },
+  ];
+  lines.push('');
+  lines.push('📅 *Upcoming Gates*');
+  for (const g of gates) {
+    const d = Math.max(0, Math.ceil((new Date(g.date).getTime() - Date.now()) / 86_400_000));
+    if (d > 0) {
+      lines.push(`  ${d <= 7 ? '⚠️' : '📌'} ${g.name}: ${d}d — ${g.desc}`);
+    }
+  }
+
+  // 5. Environment
+  const criticalEnv = ['TIKTOK_ACCESS_TOKEN', 'STRIPE_WEBHOOK_PORT'];
+  const missing = criticalEnv.filter(k => !process.env[k]);
+  if (missing.length > 0) {
+    lines.push('');
+    lines.push(`⚠️ *Missing env:* ${missing.join(', ')}`);
+  }
+
+  // 6. Latest sprint
+  try {
+    const gitLog = execSync('git log --oneline -1 2>/dev/null', { cwd: ROOT }).toString().trim();
+    lines.push('');
+    lines.push(`🔧 *Latest:* ${gitLog}`);
+  } catch { /* skip */ }
+
+  await sendMessage(chatId, lines.join('\n'));
 }
