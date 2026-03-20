@@ -3692,3 +3692,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (complex telegram bot modification)
 - Issues: None.
 - Timestamp: 2026-03-20T14:15:00Z
+
+## Sprint 419 — Quality-Based Queue Filter (Direct Write)
+- Status: PASS
+- Commit: 2e1db35
+- Files created: workspace/sprints/sprint-419.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 419-01: Added /purge command with quality tier analysis (premium ≥60%, good 40-59%, mediocre 30-39%, poor <30%) and bulk-archive for low-scoring clips. Uses existing loadArchived/saveArchived infrastructure.
+- Validation: tsc --noEmit PASS
+- Swarm used: no (complex telegram bot modification)
+- Issues: None.
+- Timestamp: 2026-03-20T14:25:00Z
