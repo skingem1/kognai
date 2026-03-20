@@ -743,6 +743,17 @@ function cmdCaption(args: string): string {
   );
 }
 
+// Sprint 413: Freshness-weighted scoring — penalize stale content
+function freshnessScore(videoId: string, viralScore: number, ledgerMap: Map<string, string>): number {
+  const publishedAt = ledgerMap.get(videoId);
+  if (!publishedAt) return viralScore;
+  const ageMs = Date.now() - new Date(publishedAt).getTime();
+  const ageDays = ageMs / 86_400_000;
+  if (ageDays <= 3) return viralScore; // no penalty for first 3 days
+  const decay = Math.pow(0.85, ageDays - 3); // 15% penalty per day after day 3
+  return viralScore * decay;
+}
+
 // Sprint 280: /deliver [N] — batch-send top videos with captions
 async function cmdDeliver(chatId: string, args: string): Promise<string> {
   const count = Math.min(Math.max(parseInt(args) || 3, 1), 10);
@@ -767,9 +778,18 @@ async function cmdDeliver(chatId: string, args: string): Promise<string> {
     } catch { /* skip */ }
   }
 
+  // Sprint 413: Build ledger timestamp map for freshness scoring
+  const ledgerDates = new Map<string, string>();
+  for (const e of ledger as any[]) {
+    if (e.video_id && e.published_at) ledgerDates.set(e.video_id, e.published_at);
+  }
+
   const unposted = (ledger as any[])
     .filter((e: any) => !recordedIds.has(e.video_id) && e.video_id)
-    .sort((a: any, b: any) => (viralScores.get(b.video_id) ?? -1) - (viralScores.get(a.video_id) ?? -1));
+    .sort((a: any, b: any) =>
+      freshnessScore(b.video_id, viralScores.get(b.video_id) ?? 0, ledgerDates) -
+      freshnessScore(a.video_id, viralScores.get(a.video_id) ?? 0, ledgerDates)
+    );
 
   // Filter to only those with captioned mp4 ready
   const ready = unposted.filter((e: any) => findCaptionedMp4(e.video_id) !== null);
@@ -796,7 +816,11 @@ async function cmdDeliver(chatId: string, args: string): Promise<string> {
     const vsStr = vs != null ? `🧬 ${vs}` : '';
     const speaker = speakerMap.get(videoId);
     const spkStr = speaker ? `🎙️ ${speaker}` : '';
-    const tgCaption = `📦 *Post this to TikTok* ${vsStr} ${spkStr}\n\n${caption}\n\n\`/record ${videoId} 0\``;
+    // Sprint 413: Show age indicator
+    const pubAt = ledgerDates.get(videoId);
+    const ageDays = pubAt ? Math.round((Date.now() - new Date(pubAt).getTime()) / 86_400_000) : 0;
+    const ageStr = ageDays > 0 ? ` · ${ageDays}d old` : '';
+    const tgCaption = `📦 *Post this to TikTok* ${vsStr} ${spkStr}${ageStr}\n\n${caption}\n\n\`/record ${videoId} 0\``;
 
     try {
       await sendVideoFile(chatId, mp4Path, tgCaption);
@@ -4948,9 +4972,18 @@ async function cmdPickup(chatId: string): Promise<void> {
     } catch { /* skip */ }
   }
 
+  // Sprint 413: Build ledger timestamp map for freshness scoring
+  const ledgerDates = new Map<string, string>();
+  for (const e of ledger as any[]) {
+    if (e.video_id && e.published_at) ledgerDates.set(e.video_id, e.published_at);
+  }
+
   const unposted = (ledger as any[])
     .filter((e: any) => !recordedIds.has(e.video_id) && e.video_id && !archivedIds.has(e.video_id))
-    .sort((a: any, b: any) => (viralScores.get(b.video_id) ?? -1) - (viralScores.get(a.video_id) ?? -1));
+    .sort((a: any, b: any) =>
+      freshnessScore(b.video_id, viralScores.get(b.video_id) ?? 0, ledgerDates) -
+      freshnessScore(a.video_id, viralScores.get(a.video_id) ?? 0, ledgerDates)
+    );
 
   const readyRaw = unposted.filter((e: any) => findCaptionedMp4(e.video_id) !== null);
 
@@ -4976,13 +5009,17 @@ async function cmdPickup(chatId: string): Promise<void> {
   const speaker = speakerMap.get(videoId);
   const spkStr = speaker ? ` · 🎙️ ${speaker}` : '';
   const vsStr = vs != null ? ` · 🧬 ${vs}` : '';
+  // Sprint 413: Show content age
+  const pubAt = ledgerDates.get(videoId);
+  const ageDays = pubAt ? Math.round((Date.now() - new Date(pubAt).getTime()) / 86_400_000) : 0;
+  const ageStr = ageDays > 0 ? ` · ${ageDays}d` : '';
   const gate = recorded.length;
   const remaining = Math.max(0, 30 - gate);
   const gateDate = new Date('2026-04-07T00:00:00Z');
   const daysLeft = Math.max(0, Math.ceil((gateDate.getTime() - Date.now()) / 86_400_000));
 
   const tgCaption = [
-    `🎬 *Next Post* (#${gate + 1}/30)${vsStr}${spkStr}`,
+    `🎬 *Next Post* (#${gate + 1}/30)${vsStr}${spkStr}${ageStr}`,
     '',
     caption,
     '',

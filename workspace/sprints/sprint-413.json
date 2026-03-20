@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-413",
+  "title": "Freshness-weighted delivery — deprioritize stale content in /deliver and /pickup",
+  "description": "Add time-decay scoring to /deliver and /pickup. Videos older than 3 days get progressively penalized (0.9x per day after day 3). Prevents posting stale trending content that won't perform on TikTok.",
+  "source": "auto — Phase 1.5 gate needs 30 posts with good views, stale content hurts performance",
+  "tasks": [
+    {
+      "id": "413-01",
+      "title": "Add freshness decay to /deliver and /pickup video ranking",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-413",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
