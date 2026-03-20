@@ -3109,3 +3109,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (surgical port from alternate bot)
 - Issues: None.
 - Timestamp: 2026-03-20T10:00:00Z
+
+## Sprint 363 — /pace — Posting Velocity Tracker (Direct Write)
+- Status: PASS
+- Commit: cb5d727
+- Files created: workspace/sprints/sprint-363.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 363-01: Added /pace command to scripts/telegram-bot.ts. Shows posting velocity with gate countdown: posts done/needed, current pace (posts/day), pace needed, projection at current pace by Apr 7, on-track/off-track status with deficit. Weekly breakdown. Views progress. Registered in help + router.
+- Validation: ts-node --transpile-only PASS
+- Swarm used: no (single function addition)
+- Issues: None.
+- Timestamp: 2026-03-20T10:30:00Z
