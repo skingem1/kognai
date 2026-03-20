@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-551",
+  "title": "CONTENT — 10 videos produced, 1 delivered (98 total)",
+  "description": "Produced 10 videos (2 runs). 1 new delivery with enriched metadata (speaker + hook_formula). 98 total auto-delivered. Most videos already delivered from prior runs.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "551-01",
+      "title": "Produce 10 videos and deliver",
+      "type": "feature",
+      "task_type": "content",
+      "task_target": "scripts/scs001/run-full-pipeline.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-551",
+      "deliverables": { "code": [], "tests": [], "docs": [] }
+    }
+  ]
+}
