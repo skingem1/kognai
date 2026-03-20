@@ -2527,3 +2527,16 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (multi-file feature)
 - Issues: None.
 - Timestamp: 2026-03-20T13:15:00Z
+
+## Sprint 316 — Achiri Retention Tracker (Direct Write)
+- Status: PASS
+- Commit: 2da01bf
+- Files created: scripts/achiri/achiri-retention.ts, workspace/sprints/sprint-316.json
+- Files modified: agents/telegram-bot/commands.ts, agents/telegram-bot/index.ts
+- Tasks completed:
+  - 316-01: achiri-retention.ts — analyzes daily-counts.json, filters test users, computes DAU trend, returning vs new users, retention rate, top users, churn alerts. JSON + console output.
+  - 316-02: /achiriretention Telegram command — retention dashboard with DAU trend, top users, churn alerts. Owner-only.
+- Validation: achiri-retention.ts runs PASS — 3 real users, 7 msgs, churn detection works, JSON output clean
+- Swarm used: no (multi-file feature)
+- Issues: None. Low data (pre-alpha) but metrics structure ready for alpha launch.
+- Timestamp: 2026-03-20T01:20:00Z
