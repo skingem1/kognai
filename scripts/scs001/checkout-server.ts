@@ -63,6 +63,9 @@ const PLANS: Record<string, { name: string; price_env: string; amount: string; f
 
 // ── Stripe API ──────────────────────────────────────────────────────────
 
+// Sprint 441: Free trial duration (days) — set 0 to disable
+const FREE_TRIAL_DAYS = parseInt(process.env.STRIPE_TRIAL_DAYS || '3', 10);
+
 function createCheckoutSession(priceId: string, plan: string): Promise<{ url: string }> {
   return new Promise((resolve, reject) => {
     const params = new URLSearchParams({
@@ -74,6 +77,10 @@ function createCheckoutSession(priceId: string, plan: string): Promise<{ url: st
       'metadata[plan]': plan,
       'metadata[source]': 'tiktok-bio',
     });
+    // Sprint 441: Add free trial if configured
+    if (FREE_TRIAL_DAYS > 0) {
+      params.set('subscription_data[trial_period_days]', String(FREE_TRIAL_DAYS));
+    }
     const payload = params.toString();
     const auth = Buffer.from(`${STRIPE_KEY}:`).toString('base64');
 
@@ -111,40 +118,93 @@ function createCheckoutSession(priceId: string, plan: string): Promise<{ url: st
 function landingPage(): string {
   const isLive = STRIPE_KEY.startsWith('sk_live_');
   const mode = isLive ? '' : '<span style="color:#e74c3c;font-size:12px;">[TEST MODE]</span>';
+  const trialBadge = FREE_TRIAL_DAYS > 0 ? `<span class="trial-badge">${FREE_TRIAL_DAYS}-day free trial</span>` : '';
+  const trialCta = FREE_TRIAL_DAYS > 0 ? `Start Free Trial` : 'Get Started';
 
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI TikTok Content Agent</title>
+  <title>AI TikTok Content Agent — Grow on Autopilot</title>
+  <meta name="description" content="AI-generated TikTok videos optimized for virality. Trending topics, viral hooks, captions — all automated.">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0a0a0a; color: #fff; min-height: 100vh; }
     .container { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
-    h1 { font-size: 2rem; text-align: center; margin-bottom: 8px; }
-    .subtitle { text-align: center; color: #999; margin-bottom: 40px; font-size: 1.1rem; }
-    .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .hero { text-align: center; margin-bottom: 48px; }
+    h1 { font-size: 2.2rem; line-height: 1.2; margin-bottom: 12px; }
+    @media (max-width: 600px) { h1 { font-size: 1.6rem; } }
+    .subtitle { color: #999; margin-bottom: 20px; font-size: 1.1rem; line-height: 1.5; }
+    .trial-badge { display: inline-block; background: linear-gradient(135deg, #6c5ce7, #a29bfe); color: #fff; padding: 6px 16px; border-radius: 20px; font-size: 0.9rem; font-weight: 600; margin-bottom: 8px; }
+    .social-proof { display: flex; justify-content: center; gap: 24px; margin: 24px 0; flex-wrap: wrap; }
+    .proof-item { text-align: center; }
+    .proof-num { font-size: 1.5rem; font-weight: 700; color: #6c5ce7; }
+    .proof-label { font-size: 0.8rem; color: #888; }
+    .how-it-works { background: #111; border-radius: 16px; padding: 32px; margin-bottom: 40px; }
+    .how-it-works h2 { font-size: 1.2rem; text-align: center; margin-bottom: 24px; color: #a29bfe; }
+    .steps { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+    @media (max-width: 600px) { .steps { grid-template-columns: 1fr; } }
+    .step { text-align: center; }
+    .step-icon { font-size: 2rem; margin-bottom: 8px; }
+    .step-title { font-weight: 600; margin-bottom: 4px; }
+    .step-desc { color: #999; font-size: 0.85rem; line-height: 1.4; }
+    .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 32px; }
     @media (max-width: 600px) { .cards { grid-template-columns: 1fr; } }
-    .card { background: #1a1a2e; border-radius: 16px; padding: 32px 24px; border: 1px solid #333; }
+    .card { background: #1a1a2e; border-radius: 16px; padding: 32px 24px; border: 1px solid #333; position: relative; }
     .card.featured { border-color: #6c5ce7; }
+    .card.featured::before { content: "MOST POPULAR"; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #6c5ce7; color: #fff; padding: 4px 16px; border-radius: 12px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.5px; }
     .card h2 { font-size: 1.3rem; margin-bottom: 8px; }
     .price { font-size: 2rem; font-weight: bold; margin: 16px 0; }
     .price span { font-size: 1rem; color: #999; }
     ul { list-style: none; margin: 20px 0; }
     ul li { padding: 6px 0; color: #ccc; }
-    ul li::before { content: "✓ "; color: #6c5ce7; font-weight: bold; }
-    .btn { display: block; width: 100%; padding: 14px; background: #6c5ce7; color: #fff; text-align: center; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 1rem; transition: background 0.2s; }
-    .btn:hover { background: #5a4bd1; }
+    ul li::before { content: "\\2713 "; color: #6c5ce7; font-weight: bold; }
+    .btn { display: block; width: 100%; padding: 14px; background: #6c5ce7; color: #fff; text-align: center; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 1rem; transition: all 0.2s; }
+    .btn:hover { background: #5a4bd1; transform: translateY(-1px); }
     .btn.secondary { background: transparent; border: 2px solid #6c5ce7; }
     .btn.secondary:hover { background: #6c5ce710; }
-    .footer { text-align: center; margin-top: 40px; color: #666; font-size: 0.85rem; }
+    .guarantee { text-align: center; margin-bottom: 32px; padding: 20px; background: #111; border-radius: 12px; }
+    .guarantee-title { font-weight: 600; margin-bottom: 4px; }
+    .guarantee-text { color: #999; font-size: 0.9rem; }
+    .footer { text-align: center; color: #666; font-size: 0.85rem; }
+    .footer a { color: #6c5ce7; text-decoration: none; }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>AI TikTok Content Agent ${mode}</h1>
-    <p class="subtitle">AI-generated TikTok videos optimized for virality. Set it and grow.</p>
+    <div class="hero">
+      ${trialBadge}
+      <h1>Stop Creating. Start Growing. ${mode}</h1>
+      <p class="subtitle">AI finds trending topics, generates viral TikTok videos, writes captions and hashtags — delivered daily to your phone. You just post.</p>
+      <div class="social-proof">
+        <div class="proof-item"><div class="proof-num">200+</div><div class="proof-label">Videos Generated</div></div>
+        <div class="proof-item"><div class="proof-num">22</div><div class="proof-label">Content Sources</div></div>
+        <div class="proof-item"><div class="proof-num">9</div><div class="proof-label">Platforms Supported</div></div>
+      </div>
+    </div>
+
+    <div class="how-it-works">
+      <h2>How It Works</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="step-icon">&#x1F50D;</div>
+          <div class="step-title">AI Finds Trends</div>
+          <div class="step-desc">Our AI scans 22+ sources daily for viral topics in your niche.</div>
+        </div>
+        <div class="step">
+          <div class="step-icon">&#x1F3AC;</div>
+          <div class="step-title">Videos Are Generated</div>
+          <div class="step-desc">Clips are scored for virality, edited with hooks, and captioned — all automatically.</div>
+        </div>
+        <div class="step">
+          <div class="step-icon">&#x1F4F1;</div>
+          <div class="step-title">You Post &amp; Grow</div>
+          <div class="step-desc">Get videos + captions on Telegram. Save, post to TikTok, and watch your audience grow.</div>
+        </div>
+      </div>
+    </div>
+
     <div class="cards">
       <div class="card">
         <h2>Growth</h2>
@@ -153,9 +213,9 @@ function landingPage(): string {
           <li>5 AI videos per day</li>
           <li>Viral score optimization</li>
           <li>Trending topic research</li>
-          <li>Caption generation</li>
+          <li>Caption + hashtag generation</li>
         </ul>
-        <a href="/checkout/growth" class="btn secondary">Get Started</a>
+        <a href="/checkout/growth" class="btn secondary">${trialCta}</a>
       </div>
       <div class="card featured">
         <h2>Premium</h2>
@@ -167,10 +227,16 @@ function landingPage(): string {
           <li>Custom speaker selection</li>
           <li>A/B hook testing</li>
         </ul>
-        <a href="/checkout/premium" class="btn">Get Started</a>
+        <a href="/checkout/premium" class="btn">${trialCta}</a>
       </div>
     </div>
-    <p class="footer">Powered by Kognai · AI-first content automation</p>
+
+    <div class="guarantee">
+      <div class="guarantee-title">Cancel anytime. No questions asked.</div>
+      <div class="guarantee-text">${FREE_TRIAL_DAYS > 0 ? `Try free for ${FREE_TRIAL_DAYS} days. ` : ''}If it doesn't work for you, cancel in one click from your billing portal.</div>
+    </div>
+
+    <p class="footer">Powered by <a href="#">Kognai</a> &middot; AI-first content automation<br>Questions? <a href="https://t.me">Contact us on Telegram</a></p>
   </div>
 </body>
 </html>`;

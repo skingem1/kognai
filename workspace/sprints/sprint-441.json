@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-441",
+  "title": "Stripe free trial + landing page upgrade for conversion",
+  "description": "Upgrade checkout-server.ts landing page: add 3-day free trial via Stripe trial_period_days, email capture to Supabase, social proof section, improved mobile UX. This is the TikTok bio link destination — conversion rate directly impacts revenue.",
+  "source": "auto — Phase 1 revenue infrastructure. Landing page is live but basic. Free trial reduces friction for first subscribers.",
+  "tasks": [
+    {
+      "id": "441-01",
+      "title": "Add Stripe free trial + landing page upgrade",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-441",
+      "deliverables": { "code": ["scripts/scs001/checkout-server.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
