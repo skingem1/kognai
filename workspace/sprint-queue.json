@@ -278,7 +278,7 @@
       "sprint": 471,
       "title": "STRIPE — Free trial activation flow for TikTok bio link",
       "block": "MONETIZATION",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "Sprint 441 built free trial + Sprint 402 built checkout web endpoint. Wire together: TikTok bio → kognai.ai/start → Telegram bot onboarding → 7-day free trial → Stripe checkout. Test full funnel."
     },

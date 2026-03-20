@@ -102,6 +102,17 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - **Env:** ANTHROPIC_API_KEY, TELEGRAM_BOT_TOKEN, SUPABASE keys SET
 - **Missing:** TIKTOK_ACCESS_TOKEN (human action required)
 
+## Sprint 471 — STRIPE
+- Status: PASS
+- Commit: 1806fe1
+- Files created: scripts/telegram-commands/cmd-onboarding.ts, scripts/scs001/onboarding-funnel.ts, workspace/billing/funnel-config.json, workspace/billing/funnel-events.jsonl
+- Files modified: scripts/telegram-bot.ts
+- Test: manual validation — TS syntax clean, commands wired
+- Pipeline: Onboarding funnel complete (/start, /trial, /plans + funnel analytics)
+- Swarm used: no (multi-file onboarding flow)
+- Issues: none
+- Timestamp: 2026-03-20T16:50:00Z
+
 ## Sprint 470 — STRIPE
 - Status: PASS
 - Commit: 64e2a66
