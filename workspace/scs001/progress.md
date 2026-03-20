@@ -3825,3 +3825,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (single-command enhancement)
 - Issues: None.
 - Timestamp: 2026-03-20T17:05:00Z
+
+## Sprint 430 — Archive Unknown-Speaker Experiments (Direct Write)
+- Status: PASS
+- Commit: 1873dde
+- Files created: workspace/scs001/archived-videos.json, workspace/sprints/sprint-430.json
+- Files modified: agents/scs001-orchestrator/run-pipeline.ts
+- Tasks completed:
+  - 430-01: Archived 56 legacy experiments from run scs001-2026-03-16 with speaker=unknown AND hook=unknown. Added auto-archive step to pipeline purge (run-pipeline.ts) so future experiments with no metadata are auto-archived. Queue now has 56 fewer low-quality entries.
+- Validation: tsc --noEmit PASS (0 new errors), archived-videos.json has 56 entries
+- Swarm used: no (data cleanup + pipeline fix)
+- Issues: Pre-existing TS2802 in run-pipeline.ts (Map iteration, not from this sprint).
+- Timestamp: 2026-03-20T17:20:00Z
