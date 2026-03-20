@@ -408,7 +408,7 @@
       "sprint": 487,
       "title": "LAUNCH — Paid X ads creative + targeting setup",
       "block": "LAUNCH-PREP",
-      "status": "pending",
+      "status": "done",
       "priority": "low",
       "rationale": "Launch Strategy v1.0 includes paid X ads. Prepare: (1) Ad creative (3 variations), (2) Targeting criteria (AI/tech, founders, developers), (3) Budget allocation ($50-100 test), (4) Landing page UTM tracking. Store in workspace/launch/ads/."
     },
