@@ -3312,6 +3312,7 @@ function cmdHelp(): string {
     `/progress  — Visual gate progress tracker\n` +
     `/scorecard — Content strategy scorecard\n` +
     `/compare   — A/B compare hooks or speakers\n` +
+    `/suggest   — Data-driven content suggestion\n` +
     `/help      — This message`
   );
 }
@@ -3430,6 +3431,111 @@ function cmdContentPlan(): string {
   }
   lines.push(`• Use /queue to pick ready videos`);
   lines.push(`• Use /record after posting to track`);
+
+  return lines.join('\n');
+}
+
+// ─── Sprint 386: /suggest — data-driven content suggestion ──────────
+
+function cmdSuggest(): string {
+  const experiments = readLines(path.join(ROOT, 'workspace', 'scs001', 'experiments.jsonl'));
+  if (experiments.length === 0) return '⚠️ No experiments found — run /refresh first.';
+
+  // Count hook usage
+  const hookUsage: Record<string, { count: number; totalScore: number }> = {};
+  const speakerUsage: Record<string, { count: number; totalScore: number }> = {};
+  for (const e of experiments) {
+    const h = e.hook_formula ?? 'unknown';
+    const s = e.speaker ?? 'unknown';
+    if (h !== 'unknown') {
+      if (!hookUsage[h]) hookUsage[h] = { count: 0, totalScore: 0 };
+      hookUsage[h].count++;
+      if (e.partial_viral_score != null) hookUsage[h].totalScore += e.partial_viral_score;
+    }
+    if (s !== 'unknown') {
+      if (!speakerUsage[s]) speakerUsage[s] = { count: 0, totalScore: 0 };
+      speakerUsage[s].count++;
+      if (e.partial_viral_score != null) speakerUsage[s].totalScore += e.partial_viral_score;
+    }
+  }
+
+  // Find highest-value underexplored hook (high avg, low count)
+  const hookRanked = Object.entries(hookUsage)
+    .map(([hook, s]) => ({
+      hook,
+      avg: s.count > 0 ? s.totalScore / s.count : 0,
+      count: s.count,
+      // Value = avg score * (1 / ln(count+2)) — rewards high avg AND low usage
+      value: (s.count > 0 ? s.totalScore / s.count : 0) * (1 / Math.log(s.count + 2)),
+    }))
+    .sort((a, b) => b.value - a.value);
+
+  // Find highest-value underexplored speaker
+  const speakerRanked = Object.entries(speakerUsage)
+    .map(([speaker, s]) => ({
+      speaker,
+      avg: s.count > 0 ? s.totalScore / s.count : 0,
+      count: s.count,
+      value: (s.count > 0 ? s.totalScore / s.count : 0) * (1 / Math.log(s.count + 2)),
+    }))
+    .sort((a, b) => b.value - a.value);
+
+  // Trending topic
+  let topic = 'general trend';
+  try {
+    const data = JSON.parse(fs.readFileSync(path.join(ROOT, 'workspace', 'scs001', 'viral-topics.json'), 'utf-8'));
+    const topics: string[] = data.topics ?? [];
+    if (topics.length > 0) topic = topics[0];
+  } catch { /* ignore */ }
+
+  // Find untested combinations (hook × speaker)
+  const combos = new Set(experiments
+    .filter((e: any) => e.hook_formula && e.hook_formula !== 'unknown' && e.speaker && e.speaker !== 'unknown')
+    .map((e: any) => `${e.hook_formula}|${e.speaker}`));
+  const allHooks = Object.keys(hookUsage);
+  const allSpeakers = Object.keys(speakerUsage);
+  const untested: string[] = [];
+  for (const h of allHooks) {
+    for (const s of allSpeakers) {
+      if (!combos.has(`${h}|${s}`)) untested.push(`${h} + ${s}`);
+    }
+  }
+
+  const bestHook = hookRanked[0];
+  const bestSpeaker = speakerRanked[0];
+  const opener = HOOK_OPENERS[bestHook?.hook ?? ''] ?? '"Did you know..."';
+
+  const lines = [
+    '💡 *Content Suggestion*',
+    `Based on ${experiments.length} experiments`,
+    '',
+    '🎯 *Recommended Next Video:*',
+    '',
+    `📌 *Topic:* ${topic}`,
+    `🪝 *Hook:* ${bestHook?.hook ?? '?'} — ${Math.round((bestHook?.avg ?? 0) * 100)}% avg, ${bestHook?.count ?? 0} samples`,
+    `   (high value: strong performance + room for more data)`,
+    `💬 *Opener:* ${opener}`,
+    `🎤 *Speaker:* ${bestSpeaker?.speaker ?? '?'} — ${Math.round((bestSpeaker?.avg ?? 0) * 100)}% avg, ${bestSpeaker?.count ?? 0} samples`,
+    '',
+  ];
+
+  if (untested.length > 0) {
+    lines.push(`🧪 *Untested combos* (${untested.length} remaining):`);
+    untested.slice(0, 3).forEach(c => lines.push(`  • ${c}`));
+    if (untested.length > 3) lines.push(`  • ...and ${untested.length - 3} more`);
+    lines.push('');
+  }
+
+  // Hook usage distribution
+  lines.push('📊 *Hook usage:*');
+  for (const h of hookRanked.slice(0, 5)) {
+    const bar = '█'.repeat(Math.min(10, Math.round(h.count / 5))) + '░'.repeat(Math.max(0, 10 - Math.round(h.count / 5)));
+    lines.push(`  ${h.hook}: \`${bar}\` ${h.count}`);
+  }
+
+  lines.push('');
+  lines.push('→ /filmkit for full filming brief');
+  lines.push('→ /compare to compare options');
 
   return lines.join('\n');
 }
@@ -3945,6 +4051,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/progress':    response = cmdProgress();           break;
     case '/scorecard':   response = cmdScorecard();          break;
     case '/compare':     response = cmdCompare(cmdArgs);     break;
+    case '/suggest':     response = cmdSuggest();            break;
     case '/help':        response = cmdHelp();        break;
     default:
       response = `Unknown command: \`${cmdName}\`\n\n${cmdHelp()}`;

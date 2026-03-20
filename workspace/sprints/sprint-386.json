@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-386",
+  "title": "/suggest — data-driven content suggestion engine",
+  "description": "Add /suggest command that analyzes experiment data gaps (underused hooks, untested speakers, trending topics) to suggest the optimal next video to create.",
+  "source": "auto — operator needs intelligent suggestions to maximize gate progress",
+  "tasks": [
+    {
+      "id": "386-01",
+      "title": "Add /suggest command to scripts/telegram-bot.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-386",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
