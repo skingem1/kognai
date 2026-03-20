@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-391",
+  "title": "Achiri streak tracker + enhanced /stats",
+  "description": "Add conversation streak tracking to Achiri /stats — current streak, best streak, milestone celebrations (3/7/14/30 days), learning stats from /learn log.",
+  "source": "auto — gamified retention: daily engagement streaks drive DAU",
+  "tasks": [
+    {
+      "id": "391-01",
+      "title": "Add streak tracker + learning stats to /stats in agents/achiri/telegram-bot.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-391",
+      "deliverables": { "code": ["agents/achiri/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

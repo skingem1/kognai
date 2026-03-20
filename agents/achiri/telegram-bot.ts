@@ -463,10 +463,60 @@ async function handleStats(chatId: string): Promise<void> {
     }
   }
 
+  // Sprint 391: Conversation streak tracker
+  let currentStreak = 0;
+  let bestStreak = 0;
+  const activeDaysSorted: string[] = [];
+  if (fs.existsSync(DAILY_COUNTS_FILE)) {
+    try {
+      const counts = JSON.parse(fs.readFileSync(DAILY_COUNTS_FILE, 'utf-8'));
+      for (const day of Object.keys(counts)) {
+        if (counts[day][chatId] && counts[day][chatId] > 0) activeDaysSorted.push(day);
+      }
+      activeDaysSorted.sort();
+    } catch {}
+  }
+
+  if (activeDaysSorted.length > 0) {
+    // Calculate current streak (counting back from today/yesterday)
+    const today = new Date().toISOString().slice(0, 10);
+    const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+    const hasToday = activeDaysSorted.includes(today);
+    const hasYesterday = activeDaysSorted.includes(yesterday);
+
+    if (hasToday || hasYesterday) {
+      let checkDate = new Date(hasToday ? today : yesterday);
+      while (true) {
+        const ds = checkDate.toISOString().slice(0, 10);
+        if (activeDaysSorted.includes(ds)) {
+          currentStreak++;
+          checkDate = new Date(checkDate.getTime() - 86400000);
+        } else break;
+      }
+    }
+
+    // Calculate best streak
+    let streak = 1;
+    for (let i = 1; i < activeDaysSorted.length; i++) {
+      const prev = new Date(activeDaysSorted[i - 1]).getTime();
+      const curr = new Date(activeDaysSorted[i]).getTime();
+      if (curr - prev === 86400000) streak++;
+      else { bestStreak = Math.max(bestStreak, streak); streak = 1; }
+    }
+    bestStreak = Math.max(bestStreak, streak);
+  }
+
+  const streakEmoji = currentStreak >= 7 ? '🔥🔥🔥' : currentStreak >= 3 ? '🔥🔥' : currentStreak >= 1 ? '🔥' : '❄️';
+  const milestoneMsg = currentStreak === 3 ? '\n🎉 _3-day streak! Keep it up!_' :
+                       currentStreak === 7 ? '\n🏆 _1 week streak! You\'re on fire!_' :
+                       currentStreak === 14 ? '\n👑 _2 week streak! Legend!_' :
+                       currentStreak === 30 ? '\n💎 _30-day streak! Tunisian champion!_' : '';
+
   const firstSeenStr = firstSeen ? firstSeen.slice(0, 10) : 'N/A';
   const out: string[] = [
     `📊 *Your Achiri Stats*`,
     '',
+    `${streakEmoji} Streak: *${currentStreak} day${currentStreak !== 1 ? 's' : ''}* (best: ${bestStreak})${milestoneMsg}`,
     `💬 Messages: ${totalMessages}`,
     `📅 Active days: ${activeDays}`,
     `🗓️ First seen: ${firstSeenStr}`,
@@ -475,7 +525,22 @@ async function handleStats(chatId: string): Promise<void> {
   if (moodCheckins > 0) out.push(`🎭 Mood check-ins: ${moodCheckins}`);
   if (quizAttempts > 0) out.push(`🎯 Quiz: ${quizCorrect}/${quizAttempts} correct`);
 
-  out.push('', '_Keep chatting — every conversation makes Achiri smarter!_ 🧠');
+  // Learning stats (Sprint 391)
+  const learnLog = path.join(__dirname, '..', '..', 'workspace', 'achiri', 'learn-log.jsonl');
+  let learnAttempts = 0;
+  let learnCorrect = 0;
+  if (fs.existsSync(learnLog)) {
+    for (const line of fs.readFileSync(learnLog, 'utf-8').split('\n')) {
+      if (!line.trim()) continue;
+      try {
+        const e = JSON.parse(line);
+        if (e.chat_id === chatId) { learnAttempts++; if (e.correct) learnCorrect++; }
+      } catch {}
+    }
+  }
+  if (learnAttempts > 0) out.push(`📚 Darija lessons: ${learnCorrect}/${learnAttempts} correct`);
+
+  out.push('', currentStreak === 0 ? '_Chat daily to build your streak!_ 🔥' : '_Keep chatting — every conversation makes Achiri smarter!_ 🧠');
 
   await sendMessage(chatId, out.join('\n'));
 }
