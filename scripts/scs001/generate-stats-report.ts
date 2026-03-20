@@ -46,7 +46,15 @@ interface StatsReport {
     posts_delivered: number;
     days_remaining: number;
     on_track: boolean;
+    urgency: string;
+    urgency_signal: string;
   };
+  queue: {
+    ready_count: number;
+    unposted_count: number;
+    top3_video_ids: string[];
+  };
+  stripe_status: string;
 }
 
 function readJsonLines(path: string): any[] {
@@ -107,6 +115,34 @@ function main() {
   const daysRemaining = Math.max(0, Math.ceil((gateDate.getTime() - Date.now()) / 86400000));
   const postsDelivered = delivered.length + telegramSent.length;
 
+  // Sprint 586: Urgency level
+  const postsLeft = Math.max(0, 30 - postsDelivered);
+  let urgency = 'ON_TRACK';
+  let urgencySignal = 'Posting pace is sufficient';
+  if (postsLeft <= 0) {
+    urgency = 'PASSED'; urgencySignal = 'Gate criteria met — PROCEED';
+  } else if (postsDelivered === 0) {
+    urgency = 'WARNING'; urgencySignal = '0 posts recorded. Start posting now.';
+  } else if (daysRemaining <= 3) {
+    urgency = 'FAILED'; urgencySignal = 'Kill switch trigger — deadline imminent';
+  } else if (daysRemaining <= 7 && postsLeft > daysRemaining * 3) {
+    urgency = 'CRITICAL'; urgencySignal = `${postsLeft} posts needed in ${daysRemaining}d — kill risk`;
+  } else if (daysRemaining <= 14 && postsLeft > daysRemaining * 2) {
+    urgency = 'WARNING'; urgencySignal = `Behind pace — ${postsLeft} posts in ${daysRemaining}d`;
+  }
+
+  // Sprint 586: Queue stats — ready-to-post videos
+  const ledgerPath2 = join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl');
+  const ledgerEntries = readJsonLines(ledgerPath2);
+  const manualPath = join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
+  const manualEntries = readJsonLines(manualPath);
+  const postedIds = new Set(manualEntries.map((e: any) => e.video_id).filter(Boolean));
+  const unposted = ledgerEntries.filter((e: any) => e.video_id && !postedIds.has(e.video_id));
+  const top3VideoIds = unposted.slice(0, 3).map((e: any) => e.video_id as string);
+
+  // Sprint 586: Stripe status
+  const stripeStatus = process.env.STRIPE_SECRET_KEY ? 'LIVE' : 'NOT_LIVE';
+
   const report: StatsReport = {
     timestamp: new Date().toISOString(),
     period: { today: todayStr, week_start: weekStr },
@@ -137,7 +173,15 @@ function main() {
       posts_delivered: postsDelivered,
       days_remaining: daysRemaining,
       on_track: postsDelivered >= 30,
+      urgency,
+      urgency_signal: urgencySignal,
     },
+    queue: {
+      ready_count: unposted.length,
+      unposted_count: unposted.length,
+      top3_video_ids: top3VideoIds,
+    },
+    stripe_status: stripeStatus,
   };
 
   // Write report
@@ -151,6 +195,9 @@ function main() {
   console.log(`💰 Cost: $${report.costs.total_usd} total | $${report.costs.today_usd} today | $${report.costs.avg_per_video_usd}/video`);
   console.log(`🎯 Quality: Diversity ${report.quality.diversity_score}/100 | ${report.quality.unique_topics} topics | ${report.quality.hook_types} hook types`);
   console.log(`🚪 Gate: ${postsDelivered}/${report.gate.posts_target} delivered | ${daysRemaining} days left | ${report.gate.on_track ? '✅ ON TRACK' : '⚠️ BEHIND'}`);
+  console.log(`⚡ Urgency: ${urgency} — ${urgencySignal}`);
+  console.log(`📋 Queue: ${unposted.length} unposted${top3VideoIds.length > 0 ? ` | Top 3: ${top3VideoIds.join(', ')}` : ''}`);
+  console.log(`💳 Stripe: ${stripeStatus}`);
   console.log(`\nReport: reports/stats-latest.json`);
 
   return report;
