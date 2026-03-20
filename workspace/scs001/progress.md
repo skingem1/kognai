@@ -3507,3 +3507,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (complex multi-point edit)
 - Issues: None.
 - Timestamp: 2026-03-20T22:50:00Z
+
+## Sprint 404 — Enrich Post Records with Experiment Metadata (Direct Write)
+- Status: PASS
+- Commit: bc5ff04
+- Files created: workspace/sprints/sprint-404.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 404-01: Enriched all 3 post recording paths (/record, /posted auto-deliver, /done session) with experiment metadata: speaker, hook_formula, viral_score, topic. Uses existing getExperimentData() function. Enables view-based A/B analysis.
+- Validation: tsc --noEmit PASS
+- Swarm used: no (surgical edits across 3 code points)
+- Issues: None.
+- Timestamp: 2026-03-20T23:00:00Z
