@@ -3470,3 +3470,15 @@ All operator touchpoints now show enriched content metadata:
 - Issues: None.
 - Timestamp: 2026-03-20T22:20:00Z
 - Milestone: Sprint 400!
+
+## Sprint 401 — /session — Interactive Batch Posting Flow (Direct Write)
+- Status: PASS
+- Commit: ea87e52
+- Files created: workspace/sprints/sprint-401.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 401-01: Added /session, /done, /endsession commands. /session starts interactive posting flow: sends one video at a time (sorted by viral score, skipping posted), operator types /done to record + get next. Tracks session state, gate progress, session stats. /endsession shows summary with count, duration, gate status.
+- Validation: tsc --noEmit PASS
+- Swarm used: no (FP-007 file >4800 lines)
+- Issues: None.
+- Timestamp: 2026-03-20T22:30:00Z
