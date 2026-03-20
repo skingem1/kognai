@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-606",
+  "title": "GATE-PUSH — Multiformat pipeline wired into production cron",
+  "description": "Integrate multiformat pipeline (25s explainers, 27s debates) into the 4x/day PM2 production cron. Adds inventory scan and gate status to cron notifications.",
+  "source": "gate-urgency",
+  "tasks": [
+    {
+      "id": "606-01",
+      "title": "Add multiformat pipeline + inventory scan to pipeline-cron.ts",
+      "type": "enhancement",
+      "task_type": "gate-push",
+      "task_target": "scripts/scs001/pipeline-cron.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "critical",
+      "sprint_id": "sprint-606"
+    }
+  ]
+}

@@ -121,6 +121,20 @@ async function main() {
     return;
   }
 
+  // Step 1B: Run multiformat pipeline (Sprint 606 — 25s explainers + debates)
+  const mfOk = run(
+    'npx ts-node --transpile-only scripts/scs001/run-multiformat-pipeline.ts',
+    'Multiformat pipeline',
+    180000 // 3min
+  );
+
+  // Step 1C: Update video inventory (Sprint 606)
+  run(
+    'npx ts-node --transpile-only scripts/scs001/scan-video-inventory.ts',
+    'Video inventory scan',
+    30000
+  );
+
   // Step 2: Auto-deliver
   const deliverOk = run(
     `npx ts-node scripts/scs001/posting-auto-deliver.ts --batch ${limit}`,
@@ -142,14 +156,25 @@ async function main() {
     30000
   );
 
-  // Step 5: Notify
+  // Step 5: Notify — include inventory stats (Sprint 606)
+  let inventoryInfo = '';
+  try {
+    const { readFileSync: rf, existsSync: ex } = require('fs');
+    const invPath = join(ROOT, 'reports', 'video-inventory.json');
+    if (ex(invPath)) {
+      const inv = JSON.parse(rf(invPath, 'utf-8'));
+      inventoryInfo = `\nInventory: ${inv.unique_topics ?? '?'} unique · ${inv.ready_to_post ?? '?'} ready`;
+      inventoryInfo += `\nGate: ${inv.gate_status?.posted ?? 0}/30 (${inv.gate_status?.gap ?? '?'} to go)`;
+    }
+  } catch {}
+
   const status = pipelineOk && deliverOk ? 'OK' : 'PARTIAL';
   await sendTelegram(
     `📊 *Pipeline Cron ${status}*\n` +
-    `Videos: ${limit}\n` +
-    `Pipeline: ${pipelineOk ? '✅' : '❌'}\n` +
-    `Deliver: ${deliverOk ? '✅' : '❌'}\n` +
-    `Time: ${now}`
+    `Legacy: ${pipelineOk ? '✅' : '❌'} · Multiformat: ${mfOk ? '✅' : '❌'}\n` +
+    `Deliver: ${deliverOk ? '✅' : '❌'}` +
+    inventoryInfo +
+    `\nTime: ${now}`
   );
 
   console.log(`[pipeline-cron] Done — ${status}`);
