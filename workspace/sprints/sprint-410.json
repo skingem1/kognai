@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-410",
+  "title": "Post-checkout success page with subscriber onboarding",
+  "description": "Add GET /success route to checkout-server.ts with a branded 'Welcome aboard' page showing next steps: join Telegram, expect first video, manage subscription. Update STRIPE_SUCCESS_URL to point to this page.",
+  "source": "auto — current success URL is just t.me, need proper onboarding UX",
+  "tasks": [
+    {
+      "id": "410-01",
+      "title": "Add /success onboarding page to checkout-server.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-410",
+      "deliverables": { "code": ["scripts/scs001/checkout-server.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

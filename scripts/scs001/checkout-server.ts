@@ -39,7 +39,7 @@ dotenv.config({ path: path.join(process.cwd(), '.env') });
 const PORT        = parseInt(process.env.CHECKOUT_PORT || '3002', 10);
 const STRIPE_KEY  = process.env.STRIPE_SECRET_KEY || '';
 const WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET || '';
-const SUCCESS_URL = process.env.STRIPE_SUCCESS_URL || 'https://t.me';
+const SUCCESS_URL = process.env.STRIPE_SUCCESS_URL || `http://localhost:${PORT}/success`;
 const CANCEL_URL  = process.env.STRIPE_CANCEL_URL || 'https://t.me';
 const TELEGRAM_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '';
 const OWNER_CHAT_ID = process.env.OWNER_TELEGRAM_CHAT_ID || '';
@@ -171,6 +171,62 @@ function landingPage(): string {
       </div>
     </div>
     <p class="footer">Powered by Kognai · AI-first content automation</p>
+  </div>
+</body>
+</html>`;
+}
+
+// ── Success page (Sprint 410) ─────────────────────────────────────────────
+
+function successPage(): string {
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome Aboard — AI TikTok Content Agent</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0a0a0a; color: #fff; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+    .container { max-width: 600px; padding: 40px 20px; text-align: center; }
+    .check { font-size: 4rem; margin-bottom: 20px; }
+    h1 { font-size: 2rem; margin-bottom: 12px; }
+    .subtitle { color: #999; font-size: 1.1rem; margin-bottom: 32px; }
+    .steps { text-align: left; background: #1a1a2e; border-radius: 16px; padding: 28px; margin-bottom: 28px; }
+    .steps h2 { font-size: 1.1rem; margin-bottom: 16px; color: #6c5ce7; }
+    .step { display: flex; gap: 12px; margin-bottom: 16px; align-items: flex-start; }
+    .step-num { background: #6c5ce7; color: #fff; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.9rem; flex-shrink: 0; }
+    .step-text { color: #ccc; line-height: 1.5; }
+    .step-text strong { color: #fff; }
+    .btn { display: inline-block; padding: 14px 32px; background: #6c5ce7; color: #fff; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 1rem; transition: background 0.2s; margin: 8px; }
+    .btn:hover { background: #5a4bd1; }
+    .btn.secondary { background: transparent; border: 2px solid #6c5ce7; }
+    .footer { margin-top: 28px; color: #666; font-size: 0.85rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="check">✅</div>
+    <h1>You're In!</h1>
+    <p class="subtitle">Your subscription is active. AI-powered TikTok content is on the way.</p>
+    <div class="steps">
+      <h2>What happens next?</h2>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-text"><strong>Videos are being generated</strong> — our AI pipeline discovers trending topics, scores content for virality, and produces videos optimized for TikTok.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-text"><strong>Check your Telegram</strong> — your personalized videos will be delivered through our Telegram bot with ready-to-use captions and hashtags.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-text"><strong>Post and grow</strong> — save videos to your camera roll, post to TikTok, and watch your audience grow with AI-optimized content.</div>
+      </div>
+    </div>
+    <a href="https://t.me" class="btn">Open Telegram</a>
+    <a href="/" class="btn secondary">Back to Home</a>
+    <p class="footer">Need help? Reply to any message in Telegram. · Manage subscription: <a href="/portal" style="color:#6c5ce7;">Billing Portal</a></p>
   </div>
 </body>
 </html>`;
@@ -364,6 +420,13 @@ const server = http.createServer(async (req, res) => {
   if (url === '/') {
     res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
     res.end(landingPage());
+    return;
+  }
+
+  // Sprint 410: Post-checkout success page
+  if (url === '/success' || url.startsWith('/success?')) {
+    res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+    res.end(successPage());
     return;
   }
 
