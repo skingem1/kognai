@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-457",
+  "title": "TTS-REAL — Test TTS integration with real API keys + produce sample voiceover",
+  "description": "Create scripts/scs001/test-tts.ts that tests both ElevenLabs (if API key set) and local TTS (macOS say). Produces a sample audio file and reports cost/duration. Gate: at least 1 audio file generated.",
+  "source": "queue — Sprint 446 TTS-REAL",
+  "tasks": [
+    {
+      "id": "457-01",
+      "title": "Create test-tts.ts — TTS integration test with sample generation",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-457",
+      "deliverables": { "code": ["scripts/scs001/test-tts.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
