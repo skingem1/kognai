@@ -1202,6 +1202,55 @@ function cmdPosted(): string {
   );
 }
 
+// Sprint 344: /crons — show all PM2 cron schedules
+function cmdCrons(): string {
+  try {
+    const out = execSync('pm2 jlist', { timeout: 8000, stdio: 'pipe' }).toString();
+    const list: any[] = JSON.parse(out);
+
+    const crons = list
+      .filter((p: any) => p.pm2_env?.cron_restart)
+      .map((p: any) => ({
+        name: p.name as string,
+        cron: p.pm2_env.cron_restart as string,
+        status: (p.pm2_env?.status ?? 'unknown') as string,
+      }))
+      .sort((a, b) => a.name.localeCompare(b.name));
+
+    if (crons.length === 0) {
+      return `⏰ *Cron Schedules* — No cron jobs found in PM2.`;
+    }
+
+    // Categorize
+    const categories: Record<string, typeof crons> = {};
+    for (const c of crons) {
+      let cat = 'Other';
+      if (c.name.includes('deliver') || c.name.includes('post') || c.name.includes('blitz')) cat = 'Posting';
+      else if (c.name.includes('digest') || c.name.includes('brief') || c.name.includes('gate')) cat = 'Digest/Gates';
+      else if (c.name.includes('achiri')) cat = 'Achiri';
+      else if (c.name.includes('pipeline') || c.name.includes('smoke') || c.name.includes('watchdog')) cat = 'Pipeline';
+      else if (c.name.includes('caption') || c.name.includes('schedule') || c.name.includes('view')) cat = 'Content';
+      if (!categories[cat]) categories[cat] = [];
+      categories[cat].push(c);
+    }
+
+    const lines: string[] = [`⏰ *Cron Schedules* (${crons.length} jobs)\n`];
+
+    for (const [cat, items] of Object.entries(categories)) {
+      lines.push(`*${cat}:*`);
+      for (const c of items) {
+        const icon = c.status === 'online' ? '🟢' : c.status === 'stopped' ? '⏸️' : '🔴';
+        lines.push(`${icon} \`${c.cron}\` ${c.name}`);
+      }
+      lines.push('');
+    }
+
+    return lines.join('\n');
+  } catch (e: any) {
+    return `❌ Failed to read PM2 cron list: ${e.message}`;
+  }
+}
+
 // Sprint 342: /tiktokauth — OAuth URL + step-by-step guide for getting TIKTOK_ACCESS_TOKEN
 function cmdTikTokAuth(): string {
   const clientKey = process.env.TIKTOK_CLIENT_KEY || '';
@@ -1258,6 +1307,7 @@ function cmdHelp(): string {
     `*Kognai Bot Commands*\n\n` +
     `/report    — Full system status (real data, no AI)\n` +
     `/pm2       — Live PM2 process table\n` +
+    `/crons     — All PM2 cron schedules\n` +
     `/health    — Health check summary\n` +
     `/tier      — Current tier + MRR\n` +
     `/sprint    — Latest sprint progress\n` +
@@ -1367,6 +1417,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/record':  response = cmdRecord(cmdArgs); break;
     case '/posted':  response = cmdPosted(); break;
     case '/tiktokauth': response = cmdTikTokAuth(); break;
+    case '/crons':      response = cmdCrons(); break;
     case '/queue':   response = cmdQueue();  break;
     case '/review':  response = cmdReview(); break;
     case '/caption': response = cmdCaption(cmdArgs); break;

@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-344",
+  "title": "/crons command — show all active PM2 cron schedules",
+  "description": "Operator types /crons to see all 41 PM2 cron jobs with their schedules and status. Groups by category (posting, digest, Achiri, pipeline, monitoring).",
+  "source": "auto — operator visibility into 41 cron jobs",
+  "tasks": [
+    {
+      "id": "344-01",
+      "title": "Add /crons command to telegram-bot.ts — list all PM2 cron schedules",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-344",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
