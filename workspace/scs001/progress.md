@@ -2877,3 +2877,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (surgical Achiri edit)
 - Issues: None.
 - Timestamp: 2026-03-20T03:05:00Z
+
+## Sprint 344 — /crons Command (Direct Write)
+- Status: PASS
+- Commit: 5b763ac
+- Files created: workspace/sprints/sprint-344.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 344-01: cmdCrons() — reads pm2 jlist, extracts cron_restart from each process, categorizes (Posting, Digest/Gates, Achiri, Pipeline, Content, Other), shows status icon + cron expression + name.
+- Validation: npx tsc --noEmit PASS
+- Swarm used: no (surgical bot edit)
+- Issues: None.
+- Timestamp: 2026-03-20T03:12:00Z
