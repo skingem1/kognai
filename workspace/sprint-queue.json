@@ -1074,8 +1074,9 @@
       "title": "PIPELINE — Wire script-quality-check into pipeline as post-QC step",
       "block": "PIPELINE",
       "priority": "medium",
-      "status": "pending",
-      "rationale": "Sprint 560 created the checker. Now wire it into run-full-pipeline.ts after caption overlay as a validation step. Log violations but dont block (soft gate)."
+      "status": "done",
+      "rationale": "Sprint 560 created the checker. Now wire it into run-full-pipeline.ts after caption overlay as a validation step. Log violations but dont block (soft gate).",
+      "_note": "Step 10 (script QC) added. Pipeline now 10 steps. 1/1 passed test."
     },
     {
       "sprint": 565,

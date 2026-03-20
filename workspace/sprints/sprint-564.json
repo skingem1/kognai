@@ -1,0 +1,26 @@
+{
+  "sprint_id": "sprint-564",
+  "title": "PIPELINE \u2014 Wire script-quality-check into pipeline as Step 10",
+  "description": "Added Step 10 (script QC) to run-full-pipeline.ts. Checks rewritten scripts for banned phrases. Soft gate \u2014 logs but doesnt block. Pipeline now 10 steps.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "564-01",
+      "title": "Add script QC step to pipeline",
+      "type": "feature",
+      "task_type": "pipeline",
+      "task_target": "scripts/scs001/run-full-pipeline.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-564",
+      "deliverables": {
+        "code": [
+          "scripts/scs001/run-full-pipeline.ts"
+        ],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ]
+}

@@ -328,6 +328,25 @@ async function main(): Promise<void> {
     console.log("  ✗ FAIL: " + e.message);
   }
 
+  // ── Step 10: Script Quality Check (soft gate) ───────
+  console.log("▶ Step 10: Script Quality Check");
+  try {
+    const { checkScript } = require("./script-quality-check");
+    let qcPassed = 0, qcFailed = 0;
+    const qcViolations: string[] = [];
+    // Check rewritten scripts (text content)
+    for (const bundle of rewrittenBundles) {
+      const scriptText = [bundle.hook_text, bundle.pre_clip_commentary, bundle.post_clip_commentary, bundle.insight_statement].filter(Boolean).join(" ");
+      const result = checkScript(scriptText);
+      if (result.pass) qcPassed++; else { qcFailed++; qcViolations.push(...result.violations); }
+    }
+    steps.push({ step: "script-qc", status: "pass", duration_ms: 0, cost_usd: 0, items_in: rewrittenBundles.length, items_out: qcPassed });
+    console.log("  ✓ " + qcPassed + " passed, " + qcFailed + " flagged" + (qcViolations.length > 0 ? " (" + [...new Set(qcViolations)].join(", ") + ")" : ""));
+  } catch (e: any) {
+    steps.push({ step: "script-qc", status: "skip", duration_ms: 0, cost_usd: 0, items_in: rewrittenBundles.length, items_out: 0, error: e.message });
+    console.log("  ⏭️ Skipped: " + e.message);
+  }
+
   // ── Report ──────────────────────────────────────────
   const videosProduced = videos.filter((v) => v.output_path !== "FAILED").length;
   saveReport(runId, pipelineStart, opts, steps, totalCost, videosProduced);
