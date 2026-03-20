@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-610",
+  "title": "E2E — Full production pipeline integration test with all Sprint 603-609 improvements",
+  "description": "End-to-end integration test: ran live pipeline with force-refresh, balanced format mix, caption burn-in, and inventory registration. 5/5 videos produced (2 explainers 25s, 2 debates 27s, 1 vision 33s), all with burned-in captions. Total inventory: 13 unique videos ready to post.",
+  "source": "integration-test",
+  "tasks": [
+    {
+      "id": "610-01",
+      "title": "Run live multiformat pipeline with all improvements",
+      "type": "test",
+      "task_type": "e2e",
+      "task_target": "scripts/scs001/run-multiformat-pipeline.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "critical",
+      "sprint_id": "sprint-610"
+    }
+  ]
+}
