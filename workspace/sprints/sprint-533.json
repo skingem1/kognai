@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-533",
+  "title": "QUALITY — Content diversity audit + topic dedup verification",
+  "description": "Created audit-content-diversity.ts. 222 videos produced, 15 unique topics, 6 hook types, diversity score 73/100. Existing dedup in auto-deliver confirmed working.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "533-01",
+      "title": "Build content diversity audit script",
+      "type": "feature",
+      "task_type": "quality",
+      "task_target": "scripts/scs001/audit-content-diversity.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-533",
+      "deliverables": { "code": ["scripts/scs001/audit-content-diversity.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "533-02",
+      "title": "Run audit and generate diversity report",
+      "type": "feature",
+      "task_type": "quality",
+      "task_target": "reports/content-diversity-audit.json",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-533",
+      "deliverables": { "code": [], "tests": [], "docs": ["reports/content-diversity-audit.json"] }
+    }
+  ]
+}

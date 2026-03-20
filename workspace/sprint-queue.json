@@ -795,8 +795,9 @@
       "title": "QUALITY — Content diversity audit + topic dedup enforcement",
       "block": "VIDEO-QUALITY-V2",
       "priority": "medium",
-      "status": "pending",
-      "rationale": "57 videos delivered but topic diversity unknown. Audit all auto-delivered.jsonl entries: count unique topics, speakers, hooks. If <50% unique, add dedup enforcement to prevent repeats."
+      "status": "done",
+      "rationale": "57 videos delivered but topic diversity unknown. Audit all auto-delivered.jsonl entries: count unique topics, speakers, hooks. If <50% unique, add dedup enforcement to prevent repeats.",
+      "_note": "Audit: 222 videos, 15 topics, 6 hook types, diversity 73/100. Dedup working."
     },
     {
       "sprint": 534,

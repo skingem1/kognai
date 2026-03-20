@@ -1,0 +1,37 @@
+{
+  "timestamp": "2026-03-20T16:11:37.321Z",
+  "total_videos": 222,
+  "unique_hooks": 100,
+  "hook_types": {
+    "other": 118,
+    "did-you-know": 17,
+    "nobody-talking": 36,
+    "secret-truth": 42,
+    "everyone-wrong": 8,
+    "what-if": 1
+  },
+  "unique_topics": 15,
+  "topics": [
+    "MCP Protocol adoption surge — Claude, Cursor, Windsurf integrating Model Context Protocol",
+    "Open-source AI models closing the gap — Llama 4, Qwen 3, DeepSeek R1 benchmarks",
+    "Sam Altman predicts 'one-person billion-dollar company' within 2 years",
+    "AI replacing junior developers — the great skills debate",
+    "Agent-to-Agent payments — x402 protocol and the PayAI moment",
+    "Elon Musk's Grok 3 goes open — what it means for the AI arms race",
+    "Apple Intelligence 2.0 — Siri finally gets a brain with on-device LLM",
+    "AI voice cloning ethics — deepfake scams hit $25B losses globally",
+    "AI-powered robotics breakthrough — Figure 02 and Tesla Optimus updates",
+    "AI agents are hallucinating financial data — Wall Street's trust problem",
+    "Vibe coding backlash — 'AI-generated code is a ticking time bomb'",
+    "The AI energy crisis — data centers consuming more power than small countries",
+    "AI tutoring revolution — Khan Academy, Duolingo, and personalized learning at scale",
+    "EU AI Act enforcement begins — agent registration requirements",
+    "AI music generation lawsuit wave — record labels vs Suno and Udio"
+  ],
+  "pipeline_runs": 19,
+  "deliveries": {
+    "auto": 58,
+    "telegram": 11
+  },
+  "diversity_score": 73
+}
