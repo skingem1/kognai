@@ -4211,3 +4211,17 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (security fix, surgical edits)
 - Issues: None
 - Timestamp: 2026-03-20T11:30:00Z
+
+## Sprint 461 — STRIPE: Integration Test + /stripestatus
+- Status: PASS
+- Commit: d4e997e
+- Files created: scripts/test-stripe.ts, workspace/sprints/sprint-461.json
+- Files modified: scripts/telegram-commands/cmd-system.ts, scripts/telegram-bot.ts, scripts/check-env.ts
+- Tasks completed:
+  - 461-01: test-stripe.ts — 7 checks: API key (TEST), balance (EUR 35.32), Growth $19/mo (active), Premium $49/mo (active), webhook secret, 1 active sub, checkout URLs. ALL PASS
+  - 461-02: /stripestatus async Telegram command via cmd-system.ts
+  - Bonus: Fixed .env inline comment parsing in test-stripe.ts and check-env.ts
+- Validation: 7/7 Stripe checks PASS. TypeScript compilation PASS
+- Swarm used: no (API test + feature)
+- Issues: Stripe in TEST mode. Switch to LIVE mode requires human action
+- Timestamp: 2026-03-20T11:45:00Z
