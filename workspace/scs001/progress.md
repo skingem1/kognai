@@ -4083,3 +4083,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (data analysis + telegram integration)
 - Issues: None.
 - Timestamp: 2026-03-20T09:00:00Z
+
+## Sprint 451 — Wire Hook Optimizer into ScriptAgent (Direct Write)
+- Status: PASS
+- Commit: d2052af
+- Files created: workspace/sprints/sprint-451.json
+- Files modified: agents/scs001-script/index.ts (added hook optimizer import + HOOK_OPTIMIZE env flag)
+- Tasks completed:
+  - 451-01: Wired getOptimalHookFormula() into ScriptAgent.buildBundle(). When HOOK_OPTIMIZE=1, overrides each brief's hook formula with weighted random pick from optimizer. Logs formula swap. Second mock brief correctly swapped secret→curiosity_gap based on experiment data.
+- Validation: HOOK_OPTIMIZE=1 test — 2/2 bundles generated with optimized formulas
+- Swarm used: no (small surgical edit)
+- Issues: None. Note: HOOK_OPTIMIZE=1 must be set in .env to activate.
+- Timestamp: 2026-03-20T09:15:00Z
