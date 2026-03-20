@@ -116,21 +116,62 @@ function main() {
 
   console.log(`📅 ${dates.length} days until gate (${formatDate(today)} → ${formatDate(GATE_DATE)})`);
 
-  // Assign videos to slots
+  // Sprint 397: Diversity-aware scheduling — no same-speaker same-day
+  // Greedy assignment: for each slot, pick highest-scoring unused video
+  // that doesn't share a speaker (or hook, if possible) with other day entries.
   const schedule: Record<string, CalendarEntry[]> = {};
-  let videoIdx = 0;
+  const used = new Set<string>();
 
   for (const date of dates) {
     schedule[date] = [];
-    for (let slot = 0; slot < POSTS_PER_DAY && videoIdx < unposted.length; slot++) {
-      const v = unposted[videoIdx++];
+    const daySpeakers = new Set<string>();
+    const dayHooks = new Set<string>();
+
+    for (let slot = 0; slot < POSTS_PER_DAY; slot++) {
+      // Find best candidate that doesn't conflict
+      let pick = null;
+      for (const v of unposted) {
+        if (used.has(v.video_id)) continue;
+        const speaker = (v.speaker ?? 'unknown').toLowerCase();
+        const hook = (v.hook_formula ?? '').toLowerCase();
+
+        // Hard rule: no same speaker on same day
+        if (daySpeakers.has(speaker) && speaker !== 'unknown') continue;
+
+        // Soft preference: different hook formula (skip if we can find one)
+        if (dayHooks.has(hook) && hook && hook !== 'unknown') {
+          // Only skip if there are more options — don't leave slot empty
+          const hasAlternative = unposted.some(alt =>
+            !used.has(alt.video_id) &&
+            !(daySpeakers.has((alt.speaker ?? 'unknown').toLowerCase()) && (alt.speaker ?? 'unknown').toLowerCase() !== 'unknown') &&
+            (alt.hook_formula ?? '').toLowerCase() !== hook
+          );
+          if (hasAlternative) continue;
+        }
+
+        pick = v;
+        break;
+      }
+
+      if (!pick) {
+        // Fallback: take any remaining video (relax speaker constraint)
+        for (const v of unposted) {
+          if (!used.has(v.video_id)) { pick = v; break; }
+        }
+      }
+      if (!pick) break; // no more videos
+
+      used.add(pick.video_id);
+      daySpeakers.add((pick.speaker ?? 'unknown').toLowerCase());
+      dayHooks.add((pick.hook_formula ?? '').toLowerCase());
+
       schedule[date].push({
-        video_id: v.video_id,
+        video_id: pick.video_id,
         slot: POSTING_SLOTS[slot],
-        viral_score: v.viral_score,
-        speaker: v.speaker ?? 'unknown',
-        topic: (v.topic ?? '').slice(0, 80),
-        hook_formula: v.hook_formula || undefined,
+        viral_score: pick.viral_score,
+        speaker: pick.speaker ?? 'unknown',
+        topic: (pick.topic ?? '').slice(0, 80),
+        hook_formula: pick.hook_formula || undefined,
       });
     }
   }

@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-397",
+  "title": "Content calendar diversity — speaker + hook variety",
+  "description": "Improve content calendar generator to ensure no two videos on the same day share the same speaker. Interleaves hook formulas for variety. Greedy assignment: pick highest-scoring video that doesn't conflict with existing day assignments.",
+  "source": "auto — /dedup revealed repetitive content; calendar assigns by score only, causing speaker clustering",
+  "tasks": [
+    {
+      "id": "397-01",
+      "title": "Add diversity-aware scheduling to generate-content-calendar.ts",
+      "type": "enhancement",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-397",
+      "deliverables": { "code": ["scripts/scs001/generate-content-calendar.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
