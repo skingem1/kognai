@@ -1,0 +1,45 @@
+{
+  "pattern_id": "vault-daemon",
+  "source": "EVAL-005 AgentPay SDK",
+  "maps_to": "AMD-13 Credential Vault",
+  "description": "Local signing daemon that holds private keys and signs transactions via Unix domain sockets. Key never leaves the vault process. Agents see only signed output.",
+  "architecture": {
+    "components": [
+      {
+        "name": "vault-daemon",
+        "role": "Key custodian + transaction signer",
+        "runs_as": "Separate OS process with restricted permissions",
+        "communication": "Unix domain socket (no network exposure)",
+        "holds": "Private keys, encrypted at rest",
+        "exposes": "sign(to, amount, token, network) → signed_tx_hex"
+      },
+      {
+        "name": "agent-process",
+        "role": "Transaction requester",
+        "receives": "Mock .env with placeholder keys",
+        "sends_to_vault": "{ to, amount, token, network }",
+        "receives_from_vault": "{ signed_tx_hex }",
+        "never_sees": "Private key material"
+      }
+    ],
+    "data_flow": "Agent → Unix socket → vault-daemon (signs) → signed_tx → Agent → broadcast",
+    "key_principle": "Zero-knowledge agent — agent can request signatures but cannot extract or export keys"
+  },
+  "kognai_implementation_plan": {
+    "target": "ClawRouter v2 key management layer",
+    "file": "scripts/lib/clawrouter-vault.ts",
+    "socket_path": "/tmp/kognai-vault.sock",
+    "key_storage": "Encrypted JSON file, decrypted only in vault process memory",
+    "agent_isolation": "Each agent gets MOCK_WALLET_ADDRESS in .env, real signing routed through vault",
+    "supported_chain": "Base (chainId 8453)",
+    "supported_token": "USDC (0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913)",
+    "sprint_target": "OMEL Sprint 004"
+  },
+  "security_properties": [
+    "Key isolation: private key exists only in vault-daemon memory",
+    "No network exposure: Unix socket is local-only",
+    "Process isolation: vault runs as separate OS process",
+    "Audit trail: all sign requests logged with timestamp + agent ID",
+    "Key rotation: vault supports hot-swap without agent restart"
+  ]
+}

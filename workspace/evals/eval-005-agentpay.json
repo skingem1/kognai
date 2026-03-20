@@ -1,0 +1,62 @@
+{
+  "eval_id": "EVAL-005",
+  "title": "AgentPay SDK — Pattern Extraction for OMEL",
+  "status": "COMPLETE",
+  "date": "2026-03-20",
+  "source": "BACKLOG-EVAL-005",
+  "repo": "github.com/wlfi/agentpay-sdk",
+  "license": "MIT",
+  "decision": "ADOPT_PATTERN — Copy architecture patterns for ClawRouter key management. DO NOT integrate SDK directly. DO NOT use USD1.",
+  "rationale": "AgentPay ships production implementations of 2/5 OMEL mechanisms (Credential Vault + Human Brake). Architecture is sound and MIT-licensed. Political risk (WLFI/Trump association) makes direct SDK integration inadvisable for Deeploy enterprise/pharma. Pattern extraction is the safe path.",
+  "criteria": [
+    {
+      "id": 1,
+      "name": "Token agnosticism",
+      "question": "Does the policy engine support any ERC-20, or is it USD1-hardcoded?",
+      "assessment": "LIKELY_PASS — Backlog doc describes policy engine accepting 'arbitrary token contract address'. USDC contract works on Ethereum. Needs source code verification when repo cloned.",
+      "kognai_action": "Implement policy engine with USDC on Base (0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913) as default token. Token address configurable."
+    },
+    {
+      "id": 2,
+      "name": "Chain flexibility",
+      "question": "Does the SDK support Base (chainId 8453)?",
+      "assessment": "LIKELY_PASS — Config file accepts chainId. Base (8453) should work if RPC endpoint provided.",
+      "kognai_action": "ClawRouter key management layer targets Base (8453) exclusively. No BSC support needed."
+    },
+    {
+      "id": 3,
+      "name": "vault-daemon isolation",
+      "question": "Does Unix socket pattern prevent key exposure to agent processes?",
+      "assessment": "PASS — Architecture confirmed: agent sends {to, amount, token, network}, vault returns {signed_tx_hex}. Key never in agent memory or logs.",
+      "kognai_action": "Replicate Unix domain socket pattern in ClawRouter. Agent processes get mock .env. Real keys only in vault process."
+    },
+    {
+      "id": 4,
+      "name": "Policy engine extensibility",
+      "question": "Can spend limits be customised for ACP-based rules?",
+      "assessment": "LIKELY_PASS — Three-outcome model (auto-execute, pause, reject) with configurable thresholds. Custom rule functions described.",
+      "kognai_action": "Map ACP score tiers to spend thresholds: ACP>80 = higher daily cap, ACP<50 = lower cap + mandatory approval."
+    },
+    {
+      "id": 5,
+      "name": "EIP-3009 timeline",
+      "question": "Is gasless meta-transaction support on roadmap?",
+      "assessment": "IN_PROGRESS — EIP-3009 mentioned as roadmap item. Not yet shipped.",
+      "kognai_action": "Watch EIP-3009 for Invoica agent wallets (eliminates gas management). Not blocking for Kognai Phase 2A."
+    }
+  ],
+  "political_risk_assessment": {
+    "internal_ops": "LOW — Godman decides infrastructure",
+    "invoica_x402": "MEDIUM — current stack is USDC on Base, no reason to change",
+    "deeploy_pharma": "HIGH — EU MDR/FDA compliance clients cannot use Trump-affiliated infra",
+    "deeploy_gov": "HIGH — political association disqualifying for government procurement",
+    "achiri": "LOW-MEDIUM — consumer-facing, USD1 less visible but USDC preferred",
+    "resolution": "Use architecture patterns only. USDC on Base. No USD1. No direct SDK dependency."
+  },
+  "patterns_extracted": ["vault-daemon", "policy-engine"],
+  "next_steps": [
+    "OMEL Sprint 004: Implement Credential Vault using vault-daemon Unix socket pattern",
+    "OMEL Sprint 005: Implement Human Brake using policy engine 3-outcome model",
+    "Clone repo for source code audit when OMEL sprints begin (not before — avoid premature dependency)"
+  ]
+}

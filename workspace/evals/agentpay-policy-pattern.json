@@ -1,0 +1,52 @@
+{
+  "pattern_id": "policy-engine",
+  "source": "EVAL-005 AgentPay SDK",
+  "maps_to": "AMD-13 Human Brake",
+  "description": "Transaction policy engine that evaluates every payment against configurable rules before signing. Three outcomes: auto-execute, pause-for-approval, reject.",
+  "architecture": {
+    "evaluation_flow": [
+      "1. Balance check: sufficient token + gas?",
+      "2. Per-transaction limit: amount < tx_limit?",
+      "3. Daily cap: today_total + amount < daily_cap?",
+      "4. Allowlist check: recipient in approved addresses?",
+      "5. Custom rules: ACP-based thresholds (Kognai extension)"
+    ],
+    "outcomes": {
+      "auto_execute": "All checks pass, amount under threshold → sign and broadcast immediately",
+      "pause_for_approval": "Amount exceeds threshold → generate approval-request UUID, notify operator, wait",
+      "reject": "Policy violation (blocked recipient, budget exceeded) → reject with reason"
+    },
+    "approval_mechanism": {
+      "trigger": "Transaction exceeds per-tx or daily threshold",
+      "notification": "Operator notified via configured channel (Telegram for Kognai)",
+      "approval": "Operator approves via UUID reference",
+      "timeout": "Configurable — auto-reject after N minutes if no response",
+      "audit": "All approvals/rejections logged with operator ID + timestamp"
+    }
+  },
+  "kognai_implementation_plan": {
+    "target": "ClawRouter v2 spend policy layer",
+    "file": "scripts/lib/clawrouter-policy.ts",
+    "config_file": "workspace/config/spend-policy.json",
+    "thresholds": {
+      "auto_execute_max_usdc": 5.00,
+      "approval_required_max_usdc": 50.00,
+      "daily_cap_usdc": 100.00,
+      "per_agent_daily_cap_usdc": 25.00
+    },
+    "acp_integration": {
+      "high_acp_80_plus": { "auto_execute_max": 10.00, "daily_cap": 150.00 },
+      "medium_acp_50_79": { "auto_execute_max": 5.00, "daily_cap": 100.00 },
+      "low_acp_below_50": { "auto_execute_max": 1.00, "daily_cap": 25.00, "always_require_approval": true }
+    },
+    "notification_channel": "Telegram (OWNER_TELEGRAM_CHAT_ID)",
+    "approval_command": "/approve <uuid>",
+    "sprint_target": "OMEL Sprint 005"
+  },
+  "kognai_extensions_beyond_agentpay": [
+    "ACP-based dynamic thresholds (agents earn higher limits via performance)",
+    "Telegram approval flow (not CLI-only like AgentPay)",
+    "Constitutional compliance check (Five Principles audit before high-value tx)",
+    "CEO Wallet integration (x402 budget tracking per AMD-01)"
+  ]
+}

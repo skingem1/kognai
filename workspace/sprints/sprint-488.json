@@ -1,0 +1,44 @@
+{
+  "sprint_id": "sprint-488",
+  "title": "EVAL-005 — AgentPay SDK pattern extraction for OMEL",
+  "description": "Extract vault-daemon and policy engine patterns from WLFI AgentPay SDK for ClawRouter key management. Evaluate token agnosticism, chain flexibility, vault isolation. DO NOT use USD1 — Kognai standard is USDC on Base.",
+  "source": "queue — Sprint 488 PHASE2A-PREP",
+  "tasks": [
+    {
+      "id": "488-01",
+      "title": "Produce EVAL-005 evaluation report with 5-criteria assessment",
+      "type": "research",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-488",
+      "deliverables": { "code": ["workspace/evals/eval-005-agentpay.json"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "488-02",
+      "title": "Extract vault-daemon pattern for ClawRouter key management reference",
+      "type": "research",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-488",
+      "deliverables": { "code": ["workspace/evals/agentpay-vault-pattern.json"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "488-03",
+      "title": "Extract policy engine pattern for Human Brake reference",
+      "type": "research",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-488",
+      "deliverables": { "code": ["workspace/evals/agentpay-policy-pattern.json"], "tests": [], "docs": [] }
+    }
+  ]
+}
