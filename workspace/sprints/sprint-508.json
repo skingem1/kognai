@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-508",
+  "title": "CONTENT — Pipeline auto-run test: produce 5 more videos + deliver to Telegram",
+  "description": "Run pipeline again to build content queue. Sprint 503 produced 6, this adds 6 more. Deliver all to Telegram for manual posting.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "508-01",
+      "title": "Run full pipeline 3x (mock+local) to produce 6 videos",
+      "type": "feature",
+      "task_type": "pipeline",
+      "task_target": "local",
+      "agent": "scs001-orchestrator",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-508",
+      "deliverables": { "code": [], "tests": [], "docs": ["workspace/scs001/pipeline-runs/"] }
+    },
+    {
+      "id": "508-02",
+      "title": "Send new videos to Telegram",
+      "type": "feature",
+      "task_type": "delivery",
+      "task_target": "local",
+      "agent": "telegram-bot",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-508",
+      "deliverables": { "code": [], "tests": [], "docs": [] }
+    }
+  ]
+}
