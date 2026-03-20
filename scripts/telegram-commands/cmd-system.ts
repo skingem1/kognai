@@ -786,3 +786,23 @@ export function cmdErrors(): string {
     ...formatted,
   ].join('\n');
 }
+
+// Sprint 593: /tokencheck — validate TikTok access token health
+export function cmdTokenCheck(): string {
+  try {
+    const output = execSync(
+      'npx ts-node --transpile-only scripts/tiktok-token-validator.ts',
+      { cwd: ROOT, timeout: 15000, encoding: 'utf-8' }
+    );
+    // Extract the formatted report (everything before "Report:" line)
+    const lines = output.split('\n');
+    const reportIdx = lines.findIndex(l => l.startsWith('Report:'));
+    return (reportIdx > 0 ? lines.slice(0, reportIdx) : lines).join('\n').trim();
+  } catch (e: any) {
+    const stderr = e.stderr?.toString() ?? '';
+    const stdout = e.stdout?.toString() ?? '';
+    // The script prints the report to stdout even on non-zero exit
+    if (stdout.includes('Token Status')) return stdout.trim();
+    return `❌ Token check failed: ${(stderr || e.message || '').slice(0, 200)}`;
+  }
+}

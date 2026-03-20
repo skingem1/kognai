@@ -1,0 +1,24 @@
+{
+  "sprint_id": "sprint-593",
+  "title": "GATE — TikTok token health validator + /tokencheck command",
+  "description": "Add scripts/tiktok-token-validator.ts: validates token by calling TikTok user.info.basic endpoint, checks expiry metadata, and reports status. Add /tokencheck Telegram command.",
+  "source": "sprint-queue",
+  "tasks": [
+    {
+      "id": "593-01",
+      "title": "Create tiktok-token-validator.ts and add /tokencheck to telegram-bot",
+      "type": "feature",
+      "task_type": "gate",
+      "task_target": "scripts/tiktok-token-validator.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-593",
+      "deliverables": {
+        "code": ["scripts/tiktok-token-validator.ts", "scripts/telegram-commands/cmd-system.ts", "scripts/telegram-bot.ts"],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ]
+}
