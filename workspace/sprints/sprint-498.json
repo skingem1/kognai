@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-498",
+  "title": "PIPELINE — PM2 startup orchestrator + health validator",
+  "description": "Most Kognai PM2 processes are stopped. Create startup orchestrator that starts all Kognai-local processes, reports health, and flags crash-loopers (stripe-webhook has 2078 restarts). Wire into /pm2 Telegram command.",
+  "source": "queue-empty — PM2 processes critical for pipeline ops are all stopped",
+  "tasks": [
+    {
+      "id": "498-01",
+      "title": "Create PM2 startup orchestrator script",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-498",
+      "deliverables": { "code": ["scripts/pm2-startup.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "498-02",
+      "title": "Create PM2 health status reporter",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-498",
+      "deliverables": { "code": ["scripts/pm2-health.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
