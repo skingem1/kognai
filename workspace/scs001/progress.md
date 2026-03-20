@@ -2963,3 +2963,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (surgical bot edit, 1800-line file)
 - Issues: None.
 - Timestamp: 2026-03-20T07:00:00Z
+
+## Sprint 351 — /updateviews Command (Direct Write)
+- Status: PASS
+- Commit: d87d76a
+- Files created: workspace/sprints/sprint-351.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 351-01: cmdUpdateViews() — updates view count for already-recorded videos in manual-posts.jsonl. Finds entry by video_id, updates views field + views_updated_at timestamp, rewrites file, shows old→new views and gate progress (total views/500).
+- Validation: ts-node transpile-only import PASS
+- Swarm used: no (surgical bot edit)
+- Issues: None.
+- Timestamp: 2026-03-20T07:15:00Z
