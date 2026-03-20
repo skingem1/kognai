@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-429",
+  "title": "Speaker diversity stats in /lastrun pipeline report",
+  "description": "Add speaker and hook distribution from the latest run to /lastrun command. Shows diversity guard effectiveness and content variety.",
+  "source": "auto — /lastrun shows stage counts but not content diversity, which is key after Sprint 428 diversity quota",
+  "tasks": [
+    {
+      "id": "429-01",
+      "title": "Add speaker/hook distribution to cmdLastRun in telegram-bot.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-429",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

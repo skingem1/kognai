@@ -3112,6 +3112,39 @@ function cmdLastRun(): string {
     lines.push(`⚠️ *${run.error_count} errors detected*`);
   }
 
+  // Sprint 429: Speaker and hook distribution from this run's experiments
+  if (run.run_id) {
+    const expPath = path.join(ROOT, 'workspace', 'scs001', 'experiments.jsonl');
+    if (fs.existsSync(expPath)) {
+      const speakers: Record<string, number> = {};
+      const hooks: Record<string, number> = {};
+      let runClips = 0;
+      for (const l of fs.readFileSync(expPath, 'utf-8').split('\n')) {
+        if (!l.trim()) continue;
+        try {
+          const e = JSON.parse(l);
+          if (e.run_id !== run.run_id) continue;
+          runClips++;
+          const spk = e.speaker ?? 'unknown';
+          const hook = e.hook_formula ?? 'unknown';
+          speakers[spk] = (speakers[spk] ?? 0) + 1;
+          hooks[hook] = (hooks[hook] ?? 0) + 1;
+        } catch { /* skip */ }
+      }
+      if (runClips > 0) {
+        const uniqueSpeakers = Object.keys(speakers).length;
+        const diversityPct = Math.round((uniqueSpeakers / runClips) * 100);
+        lines.push('');
+        lines.push(`*Diversity (${runClips} clips):*`);
+        lines.push(`🎙️ ${uniqueSpeakers} speakers (${diversityPct}% diversity)`);
+        const topSpeakers = Object.entries(speakers).sort((a, b) => b[1] - a[1]).slice(0, 4);
+        lines.push(topSpeakers.map(([s, c]) => `  • ${s}: ${c}`).join('\n'));
+        const hookList = Object.entries(hooks).sort((a, b) => b[1] - a[1]);
+        lines.push(`🎣 Hooks: ${hookList.map(([h, c]) => `${h}(${c})`).join(', ')}`);
+      }
+    }
+  }
+
   return lines.join('\n');
 }
 
