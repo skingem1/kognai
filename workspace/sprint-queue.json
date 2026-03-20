@@ -1,6 +1,6 @@
 {
   "_note": "AUTHORITATIVE sprint execution order. The brief generator reads this and injects the first item as a MANDATORY directive, bypassing Qwen's recommendation. Pop items by setting status=done after each sprint ships. Human-maintained — edit to re-prioritise.",
-  "updated": "2026-03-21T00:40",
+  "updated": "2026-03-21T01:20",
   "owner": "Tarek (human)",
   "_plan_rationale": "Queue fixed 2026-03-20. Sprints 442-458 consumed by autonomous swarm. 10 items marked done (work completed). Remaining items have auto-sync guard in brief generator: consumed sprint numbers auto-skipped at runtime. 2 critical un-done items (SAFETY-SPLIT Part 2, progress.md update) re-added as Sprint 496-497 to avoid number collisions.",
   "queue": [
@@ -1140,6 +1140,47 @@
       "status": "done",
       "rationale": "Generate comprehensive system health report. Run all checks: smoke test, stats, diversity, quality. Document full system state for next session.",
       "_note": "All green. 11/11 smoke. 162 produced, 118 delivered. Diversity 100. $5.46."
+    },
+    {
+      "sprint": 572,
+      "title": "INFRA — Queue replenish (573-576)",
+      "block": "INFRA",
+      "status": "done",
+      "_note": "Self-referential.",
+      "priority": "high",
+      "rationale": "Queue empty after Sprint 571."
+    },
+    {
+      "sprint": 573,
+      "title": "CONTENT — Batch: 10 more videos + deliver",
+      "block": "CONTENT",
+      "priority": "high",
+      "status": "pending",
+      "rationale": "Push toward 130+ delivered. Content buffer for manual TikTok posting."
+    },
+    {
+      "sprint": 574,
+      "title": "PIPELINE — Add per-video topic tracking in run-full-pipeline.ts",
+      "block": "PIPELINE",
+      "priority": "medium",
+      "status": "pending",
+      "rationale": "Pipeline report doesnt include per-video topic info. Add topics_used array to report JSON for better analytics."
+    },
+    {
+      "sprint": 575,
+      "title": "QUALITY — Add speaker name to SRT metadata line for posting context",
+      "block": "VIDEO-QUALITY-V2",
+      "priority": "low",
+      "status": "pending",
+      "rationale": "When posting to TikTok, operator needs to know which speaker the video quotes. Add speaker name as first SRT subtitle entry."
+    },
+    {
+      "sprint": 576,
+      "title": "CONTENT — Final production batch + stats refresh",
+      "block": "CONTENT",
+      "priority": "high",
+      "status": "pending",
+      "rationale": "Another 10 videos + comprehensive stats update."
     }
   ]
 }

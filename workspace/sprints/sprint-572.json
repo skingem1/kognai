@@ -1,0 +1,26 @@
+{
+  "sprint_id": "sprint-572",
+  "title": "INFRA \u2014 Queue replenish (573-576)",
+  "description": "Added: content x2, topic tracking, speaker in SRT.",
+  "source": "queue-empty-replenish",
+  "tasks": [
+    {
+      "id": "572-01",
+      "title": "Add Sprints 573-576",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "workspace/sprint-queue.json",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-572",
+      "deliverables": {
+        "code": [
+          "workspace/sprint-queue.json"
+        ],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ]
+}
