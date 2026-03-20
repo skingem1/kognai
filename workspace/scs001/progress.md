@@ -2326,3 +2326,17 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (2 files modified)
 - Issues: publish-ledger.jsonl is gitignored (runtime data), so cleanup only applies to local machine.
 - Timestamp: 2026-03-20T04:35:00Z
+
+## Sprint 301 — Achiri User Profile Extraction (Direct Write)
+- Status: PASS
+- Commit: 83e14e9
+- Files created: agents/achiri/user-profile.ts, workspace/sprints/sprint-301.json
+- Files modified: agents/achiri/index.ts, agents/achiri/server.ts
+- Tasks completed:
+  - 301-01: Built user-profile.ts — extracts preferred language (darija/french/english/mixed) and top interests (8 topic categories) from JSONL conversation history. Zero LLM cost.
+  - 301-02: Wired profile injection into AchiriConversationHandler.buildSystemPrompt(). Profile context block injected when user has 3+ messages.
+  - 301-03: Added GET /profile/:userId endpoint to Achiri server. Returns full profile JSON.
+- Validation: TypeScript clean compile (3 files). Dry-run chat PASS. Profile extraction PASS (empty user → null context, rich user → full context block).
+- Swarm used: no (multi-file feature, swarm bypass)
+- Issues: None.
+- Timestamp: 2026-03-20T05:00:00Z
