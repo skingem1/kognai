@@ -1319,7 +1319,7 @@
       "sprint": 599,
       "title": "QUALITY — Content freshness decay — auto-archive stale queue items older than 7 days",
       "block": "QUALITY",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "Queue items may become stale (old trending topics). Auto-archive after 7 days to keep queue fresh."
     },

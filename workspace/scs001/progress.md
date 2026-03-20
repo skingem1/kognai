@@ -1118,3 +1118,15 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (single file)
 - Issues: None
 - Timestamp: 2026-03-21T05:50:00Z
+
+## Sprint 598 — INFRA (correction: already logged above)
+
+## Sprint 599 — QUALITY
+- Status: PASS
+- Commit: 9d71795
+- Files created: scripts/scs001/auto-archive-stale.ts, workspace/sprints/sprint-599.json
+- Test: Dry-run — PASS (78 previously archived, 0 new stale)
+- Pipeline: Auto-archive stale queue items older than 7 days
+- Swarm used: no (single file)
+- Issues: None
+- Timestamp: 2026-03-21T05:55:00Z
