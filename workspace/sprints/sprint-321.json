@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-321",
+  "title": "Achiri memory persistence test — automated multi-session memory validation",
+  "description": "Automated test that verifies: (1) user facts are extracted and saved, (2) facts survive session boundaries, (3) returning user greeting references history. Directly validates May 14 Full Alpha Gate: does memory work?",
+  "source": "auto — Full Alpha Gate May 14: automated memory proof",
+  "tasks": [
+    {
+      "id": "321-01",
+      "title": "Create validate-memory-persistence.ts — multi-session memory test",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-321",
+      "deliverables": { "code": ["scripts/achiri/validate-memory-persistence.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
