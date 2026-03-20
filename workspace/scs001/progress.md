@@ -2840,3 +2840,16 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (surgical edit to bot)
 - Issues: None.
 - Timestamp: 2026-03-20T02:42:00Z
+
+## Sprint 341 — Weekend Posting Blitz (Direct Write)
+- Status: PASS
+- Commit: daddb49
+- Files created: scripts/scs001/weekend-blitz.ts, workspace/sprints/sprint-341.json
+- Files modified: ecosystem.config.js
+- Tasks completed:
+  - 341-01: weekend-blitz.ts — Saturday 09:00 cron, sends 5 top-scored videos with captions. Rate-limited 3s between sends. Dedup via auto-delivered.jsonl. Gate-aware (silent if 30+ posts).
+  - 341-02: kognai-weekend-blitz PM2 entry — cron "0 9 * * 6".
+- Validation: npx tsc --noEmit PASS (only node_modules/ox pre-existing errors)
+- Swarm used: no (video file sending pattern)
+- Issues: None.
+- Timestamp: 2026-03-20T02:48:00Z
