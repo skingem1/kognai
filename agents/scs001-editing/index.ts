@@ -199,54 +199,31 @@ function buildProductionFFmpegCommand(bundle: ScriptBundle, outputPath: string):
 
 // Real-clip FFmpeg command.
 // Input 0 : anullsrc (silent audio for full duration)
-// Input 1 : actual clip MP4 (real content — used for the 'clip' segment only)
+// Input 1 : actual clip MP4 (real content — used as FULL-SCREEN background)
 //
-// Structure:
-//   hook       → colored title card (dark navy)
-//   context    → colored title card (midnight blue)
-//   clip       → trimmed real clip, scaled to 1080×1920, 30 fps
-//   commentary → colored title card (purple)
-//   insight    → colored title card (red)
-//   loop       → colored title card (slate) — callback to hook tone
+// Sprint QUALITY-01b: The clip plays as the background for the entire video
+// duration, scaled/padded to 9:16 portrait. If the clip is shorter than total
+// duration, it loops. Voiceover/TTS audio is layered on in Stage 6.8 (mixer).
 //
-// Audio: silent throughout (TTS/voiceover layer added later).
-// Works without libfreetype — no drawtext dependency.
+// Audio: silent throughout (TTS/voiceover layer added by audio-mixer later).
 function buildRealFFmpegCommand(bundle: ScriptBundle, outputPath: string, clipFile: string): string {
-  const segments = bundle.segments;
-  const filterParts: string[] = [];
-  const concatInputs: string[] = [];
-
-  segments.forEach((seg, idx) => {
-    const duration = seg.end_s - seg.start_s;
-    if (seg.segment_name === 'clip') {
-      // Use real video: trim to segment duration, force 1080×1920, 30 fps.
-      // The clips on disk are already 1080×1920 so scale is a no-op but keeps
-      // the filter chain robust if clip dimensions ever differ.
-      // setsar=1 normalises pixel aspect ratio (clips often have SAR ≠ 1:1)
-      // so concat can mix them with the 1:1 color sources without a mismatch error.
-      filterParts.push(
-        `[1:v]trim=start=0:duration=${duration},setpts=PTS-STARTPTS,` +
-        `scale=1080:1920:force_original_aspect_ratio=decrease,` +
-        `pad=1080:1920:(ow-iw)/2:(oh-ih)/2,fps=30,setsar=1[seg${idx}]`
-      );
-    } else {
-      const color = SEGMENT_COLORS[seg.segment_name];
-      filterParts.push(`color=c=${color}:s=1080x1920:d=${duration}:r=30[seg${idx}]`);
-    }
-    concatInputs.push(`[seg${idx}]`);
-  });
-
-  const concatFilter = concatInputs.join('') + `concat=n=${segments.length}:v=1:a=0[outv]`;
-  filterParts.push(concatFilter);
-
-  const filterComplex = filterParts.join('; ');
   const totalDuration = bundle.total_duration_seconds;
+
+  // Use the clip as full-screen background for the entire video:
+  // - stream_loop -1 loops the clip if shorter than total duration
+  // - scale to 1080×1920 (9:16 portrait), pad if aspect doesn't match
+  // - trim to exact total duration, 30 fps
+  const filterComplex = [
+    `[1:v]scale=1080:1920:force_original_aspect_ratio=decrease,` +
+    `pad=1080:1920:(ow-iw)/2:(oh-ih)/2,fps=30,setsar=1,` +
+    `trim=0:${totalDuration},setpts=PTS-STARTPTS[outv]`,
+  ].join('; ');
 
   return [
     FFMPEG,
     '-y',
     '-f lavfi -i anullsrc=r=44100:cl=stereo',
-    `-i "${clipFile}"`,
+    `-stream_loop -1 -i "${clipFile}"`,
     `-filter_complex "${filterComplex}"`,
     '-map "[outv]"',
     '-map 0:a',

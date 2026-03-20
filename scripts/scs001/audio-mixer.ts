@@ -89,43 +89,47 @@ export function concatVoiceover(
     throw new Error("No voiceover segments to concatenate");
   }
 
-  // Build FFmpeg filter for timeline positioning
-  // Each segment gets placed at its start_s position
-  const inputs: string[] = [];
-  const filterParts: string[] = [];
+  // Build FFmpeg filter: concat voiceover segments sequentially using the
+  // concat demuxer approach (file-based). This avoids the broken adelay/atrim
+  // filter chain that was truncating audio to ~2s.
+  const totalDuration = bundle.total_duration_seconds;
 
+  // Collect voiceover files in segment order, inserting silence for gaps.
+  // All paths must be ABSOLUTE for the concat demuxer to find them.
+  const { resolve } = require('path');
+  const concatParts: string[] = [];
   for (let i = 0; i < bundle.segments.length; i++) {
     const seg = bundle.segments[i];
     const voSeg = voiceover.segments.find((v) => v.segment_name === seg.segment_name);
-    const duration = seg.end_s - seg.start_s;
-
     if (voSeg && existsSync(voSeg.audio_path)) {
-      inputs.push(`-i "${voSeg.audio_path}"`);
-      const inputIdx = inputs.length - 1;
-      // Pad with silence before and trim to segment duration
-      filterParts.push(
-        `[${inputIdx}:a]adelay=${Math.round(seg.start_s * 1000)}|${Math.round(seg.start_s * 1000)},atrim=0:${duration}[vo${i}]`
-      );
+      concatParts.push(resolve(voSeg.audio_path));
     } else {
-      // Generate silence for this segment duration
-      filterParts.push(
-        `anullsrc=r=44100:cl=stereo,atrim=0:${duration},adelay=${Math.round(seg.start_s * 1000)}|${Math.round(seg.start_s * 1000)}[vo${i}]`
+      // No voiceover for this segment — generate a silence file
+      const silDur = seg.end_s - seg.start_s;
+      const silPath = resolve(outputPath.replace('.mp3', `_silence_${i}.mp3`));
+      execSync(
+        `ffmpeg -y -f lavfi -i anullsrc=r=44100:cl=stereo -t ${silDur} -c:a libmp3lame -q:a 9 "${silPath}"`,
+        { stdio: "pipe", timeout: 10000 }
       );
+      concatParts.push(silPath);
     }
   }
 
-  const mixInputs = bundle.segments.map((_, i) => `[vo${i}]`).join("");
-  const totalDuration = bundle.total_duration_seconds;
+  // Build concat demuxer file list with absolute paths
+  const concatListPath = resolve(outputPath.replace('.mp3', '_concat_list.txt'));
+  const concatListContent = concatParts.map(p => `file '${p}'`).join('\n');
+  require('fs').writeFileSync(concatListPath, concatListContent);
 
-  const filter = [
-    ...filterParts,
-    `${mixInputs}amix=inputs=${bundle.segments.length}:duration=first:dropout_transition=0,atrim=0:${totalDuration}[out]`,
-  ].join(";");
-
-  const cmd = `ffmpeg -y ${inputs.join(" ")} -filter_complex "${filter}" -map "[out]" "${outputPath}" 2>/dev/null`;
+  const cmd = `ffmpeg -y -f concat -safe 0 -i "${concatListPath}" -c:a libmp3lame -q:a 2 -t ${totalDuration} "${resolve(outputPath)}"`;
+  console.log(`  [VoConcat] ${concatParts.length} parts, total_dur=${totalDuration}s`);
 
   try {
     execSync(cmd, { stdio: "pipe", timeout: 60000 });
+    // Clean up temp files
+    try { require('fs').unlinkSync(concatListPath); } catch {}
+    for (const p of concatParts) {
+      if (p.includes('_silence_')) try { require('fs').unlinkSync(p); } catch {}
+    }
     return outputPath;
   } catch (err: any) {
     console.warn(`  Voiceover concat failed: ${err.message}`);
@@ -213,7 +217,7 @@ export function mixAudio(config: MixConfig, dryRun: boolean = false): MixResult 
 
   const filterComplex = [
     ...filters,
-    `${mixSources.join("")}amix=inputs=${mixSources.length}:duration=first:dropout_transition=2[aout]`,
+    `${mixSources.join("")}amix=inputs=${mixSources.length}:duration=longest:dropout_transition=2[aout]`,
   ].join(";");
 
   const cmd = [
