@@ -857,6 +857,26 @@ module.exports = {
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
     {
+      // Sprint 337: Achiri weekly usage digest — Sunday 10:00
+      // Sends weekly DAU trend, top users, memory stats, feedback to operator.
+      // To start: pm2 start ecosystem.config.js --only achiri-weekly-digest
+      name: "achiri-weekly-digest",
+      script: "scripts/achiri/weekly-usage-digest.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: false,
+      watch: false,
+      cron_restart: "0 10 * * 0",
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/achiri-weekly-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/achiri-weekly-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
+    {
       // Sprint 334: Morning caption push — sends today's scheduled captions at 07:30
       // Operator wakes up to their posting pack (after 07:00 digest).
       // To start: pm2 start ecosystem.config.js --only kognai-caption-push

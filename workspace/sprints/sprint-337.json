@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-337",
+  "title": "Achiri weekly usage digest — Sunday 10:00 PM2 cron",
+  "description": "Weekly Achiri usage report: DAU trend, top users, message volume, memory stats, feedback summary. Sent to operator every Sunday.",
+  "source": "auto — Achiri alpha monitoring, Apr 25 launch prep",
+  "tasks": [
+    {
+      "id": "337-01",
+      "title": "Create scripts/achiri/weekly-usage-digest.ts — weekly report script",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-337",
+      "deliverables": { "code": ["scripts/achiri/weekly-usage-digest.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "337-02",
+      "title": "Add achiri-weekly-digest PM2 cron to ecosystem.config.js",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-337",
+      "deliverables": { "code": ["ecosystem.config.js"], "tests": [], "docs": [] }
+    }
+  ]
+}
