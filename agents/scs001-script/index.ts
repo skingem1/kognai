@@ -122,7 +122,11 @@ function applyHookTemplate(formula: string, originalText: string): string {
 }
 
 function buildSegments(brief: InsightBrief, useLoop: boolean, durConfig?: DurationConfig): ScriptSegment[] {
-  const hookText = applyHookTemplate(brief.hook.formula, brief.hook.text);
+  // Use hook.text directly — InsightAgent (live or mock) already generates a
+  // complete hook sentence. applyHookTemplate() double-wraps it in another
+  // template creating garbage like "The truth about By 2026... will change everything".
+  // HOOK_TEMPLATES are preserved for the LLM rewriter prompt context only.
+  const hookText = brief.hook.text;
   const t = durConfig?.segment_timings ?? {
     hook: [0, 2], context: [2, 5], clip: [5, 12],
     commentary: [12, 18], insight: [18, 24], loop: [24, 28],
