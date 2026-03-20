@@ -3728,3 +3728,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (single file update)
 - Issues: None.
 - Timestamp: 2026-03-20T14:45:00Z
+
+## Sprint 422 — Help Update + Posting Reminder Caption Sync (Direct Write)
+- Status: PASS
+- Commit: 3992ee5
+- Files created: workspace/sprints/sprint-422.json
+- Files modified: scripts/telegram-bot.ts, scripts/posting-reminder.ts
+- Tasks completed:
+  - 422-01: Added /stale and /purge to /help command. Synced posting-reminder.ts with Sprint 418 engagement caption templates (HOOK_TEMPLATES, ENGAGEMENT_CTAS, buildEngagementCaption function). All 3 caption generators (telegram-bot, auto-deliver, posting-reminder) now use the same format.
+- Validation: tsc --noEmit PASS
+- Swarm used: no (multi-file update)
+- Issues: None.
+- Timestamp: 2026-03-20T14:55:00Z
