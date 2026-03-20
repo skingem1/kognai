@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-390",
+  "title": "/translate — Achiri Darija/French/English translator",
+  "description": "Add /translate command to Achiri Telegram bot with 40-word trilingual dictionary for instant Darija/French/English translations. Zero LLM cost.",
+  "source": "auto — language utility for Tunisian users, drives daily engagement",
+  "tasks": [
+    {
+      "id": "390-01",
+      "title": "Add /translate command to agents/achiri/telegram-bot.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-390",
+      "deliverables": { "code": ["agents/achiri/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

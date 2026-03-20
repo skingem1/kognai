@@ -136,6 +136,7 @@ async function handleHelp(chatId: string): Promise<void> {
     `/tip — Daily Tunisian wisdom\n` +
     `/stats — Your engagement stats\n` +
     `/learn — Learn Darija word of the day\n` +
+    `/translate — Darija/French/English translator\n` +
     `/feedback — Send us feedback\n` +
     `/about — About Achiri\n\n` +
     `Or just send me a message and we'll chat! 💬`
@@ -579,6 +580,105 @@ async function handleLearn(chatId: string, args: string): Promise<void> {
   );
 }
 
+// --- Sprint 390: /translate — Darija/French/English quick translator ---
+
+const TRANSLATION_DICT: Array<{ darija: string; latin: string; french: string; english: string }> = [
+  { darija: 'مرحبا', latin: 'marhba', french: 'bienvenue', english: 'welcome' },
+  { darija: 'لاباس', latin: 'labas', french: 'ça va', english: 'how are you / fine' },
+  { darija: 'شكرا', latin: 'choukran', french: 'merci', english: 'thank you' },
+  { darija: 'يعيشك', latin: 'ya3ichek', french: 'merci beaucoup', english: 'thank you (may you live)' },
+  { darija: 'نعم', latin: 'na3am', french: 'oui', english: 'yes' },
+  { darija: 'إي', latin: 'ih/ey', french: 'oui', english: 'yes (informal)' },
+  { darija: 'لا', latin: 'le', french: 'non', english: 'no' },
+  { darija: 'بالاهي', latin: 'bellahi', french: 's\'il te plaît', english: 'please' },
+  { darija: 'سماحني', latin: 'sme7ni', french: 'excuse-moi', english: 'excuse me / sorry' },
+  { darija: 'ماء', latin: 'me', french: 'eau', english: 'water' },
+  { darija: 'خبز', latin: 'khobz', french: 'pain', english: 'bread' },
+  { darija: 'قهوة', latin: '9ahwa', french: 'café', english: 'coffee' },
+  { darija: 'حليب', latin: '7lib', french: 'lait', english: 'milk' },
+  { darija: 'ماكلة', latin: 'makla', french: 'nourriture', english: 'food' },
+  { darija: 'بنين', latin: 'bnin', french: 'délicieux', english: 'delicious' },
+  { darija: 'دار', latin: 'dar', french: 'maison', english: 'house / home' },
+  { darija: 'خدمة', latin: 'khedma', french: 'travail', english: 'work' },
+  { darija: 'فلوس', latin: 'flous', french: 'argent', english: 'money' },
+  { darija: 'صحبي', latin: 'sa7bi', french: 'mon ami', english: 'my friend (male)' },
+  { darija: 'صحبتي', latin: 'sa7bti', french: 'mon amie', english: 'my friend (female)' },
+  { darija: 'عائلة', latin: '3ayla', french: 'famille', english: 'family' },
+  { darija: 'حب', latin: '7ob', french: 'amour', english: 'love' },
+  { darija: 'نحبك', latin: 'n7ebek', french: 'je t\'aime', english: 'I love you' },
+  { darija: 'برشا', latin: 'barcha', french: 'beaucoup', english: 'a lot / very much' },
+  { darija: 'شوية', latin: 'chwaya', french: 'un peu', english: 'a little' },
+  { darija: 'توا', latin: 'tawa', french: 'maintenant', english: 'now' },
+  { darija: 'غدوة', latin: 'ghodwa', french: 'demain', english: 'tomorrow' },
+  { darija: 'البارح', latin: 'lbar7', french: 'hier', english: 'yesterday' },
+  { darija: 'كبير', latin: 'kbir', french: 'grand', english: 'big / old' },
+  { darija: 'صغير', latin: 'sghir', french: 'petit', english: 'small / young' },
+  { darija: 'مليح', latin: 'mli7', french: 'bon / bien', english: 'good / well' },
+  { darija: 'خايب', latin: 'kheyeb', french: 'mauvais', english: 'bad' },
+  { darija: 'فيسع', latin: 'fisa3', french: 'vite', english: 'quickly' },
+  { darija: 'حومة', latin: '7ouma', french: 'quartier', english: 'neighborhood' },
+  { darija: 'سوق', latin: 'sou9', french: 'marché', english: 'market' },
+  { darija: 'بحر', latin: 'b7ar', french: 'mer', english: 'sea' },
+  { darija: 'شمس', latin: 'chams', french: 'soleil', english: 'sun' },
+  { darija: 'مطر', latin: 'mtar', french: 'pluie', english: 'rain' },
+  { darija: 'بنت', latin: 'bent', french: 'fille', english: 'girl / daughter' },
+  { darija: 'ولد', latin: 'weld', french: 'garçon / fils', english: 'boy / son' },
+];
+
+function handleTranslate(args: string): string {
+  const query = args.trim().toLowerCase();
+  if (!query) {
+    return (
+      `🌍 *Achiri Translator*\n\n` +
+      `Usage: \`/translate <word>\`\n\n` +
+      `Examples:\n` +
+      `• \`/translate hello\`\n` +
+      `• \`/translate merci\`\n` +
+      `• \`/translate barcha\`\n` +
+      `• \`/translate مرحبا\`\n\n` +
+      `Supports Darija ↔ French ↔ English\n` +
+      `_${TRANSLATION_DICT.length} words in dictionary_`
+    );
+  }
+
+  // Search across all fields
+  const results = TRANSLATION_DICT.filter(entry =>
+    entry.darija.includes(query) ||
+    entry.latin.toLowerCase().includes(query) ||
+    entry.french.toLowerCase().includes(query) ||
+    entry.english.toLowerCase().includes(query)
+  );
+
+  if (results.length === 0) {
+    // Find closest match by prefix
+    const partial = TRANSLATION_DICT.filter(entry =>
+      entry.latin.toLowerCase().startsWith(query.slice(0, 3)) ||
+      entry.french.toLowerCase().startsWith(query.slice(0, 3)) ||
+      entry.english.toLowerCase().startsWith(query.slice(0, 3))
+    ).slice(0, 3);
+
+    if (partial.length > 0) {
+      const suggestions = partial.map(p => `  • ${p.latin} — ${p.english}`).join('\n');
+      return `❓ No exact match for "${query}"\n\n*Did you mean:*\n${suggestions}\n\n_Try: /translate ${partial[0].latin}_`;
+    }
+    return `❓ No translation found for "${query}"\n\n_Try common words like: hello, merci, barcha, choukran_`;
+  }
+
+  const lines: string[] = [`🌍 *Translation: "${query}"*`, ''];
+  for (const r of results.slice(0, 5)) {
+    lines.push(`🇹🇳 *${r.darija}* (${r.latin})`);
+    lines.push(`🇫🇷 ${r.french}`);
+    lines.push(`🇬🇧 ${r.english}`);
+    lines.push('');
+  }
+
+  if (results.length > 5) {
+    lines.push(`_...and ${results.length - 5} more matches_`);
+  }
+
+  return lines.join('\n');
+}
+
 // --- Main message handler ---
 
 async function handleMessage(chatId: string, text: string, firstName: string, username: string): Promise<void> {
@@ -597,6 +697,7 @@ async function handleMessage(chatId: string, text: string, firstName: string, us
   if (cmd === '/tip') return handleTip(chatId);
   if (cmd === '/stats') return handleStats(chatId);
   if (cmd === '/learn') return handleLearn(chatId, args);
+  if (cmd === '/translate') return sendMessage(chatId, handleTranslate(args));
 
   // Access check
   if (!hasAccess(chatId)) {
