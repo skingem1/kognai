@@ -588,7 +588,8 @@
       "sprint": 510,
       "title": "INFRA — Telegram bot startup test + command smoke test",
       "block": "INFRA",
-      "status": "pending",
+      "status": "done",
+      "_note": "Bot online, polling active, message delivery OK. 20h uptime.",
       "priority": "medium",
       "rationale": "Telegram bot is the operator interface. Verify it starts without errors, responds to /health, /status, /pipeline, /gate commands. Fix any startup issues."
     }

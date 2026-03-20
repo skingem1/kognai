@@ -362,6 +362,16 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Issues: Insight Agent mock mode caps at 2 briefs/run, needed 3 runs for 6 videos
 - Timestamp: 2026-03-20T12:45:00Z
 
+## Sprint 510 — INFRA
+- Status: PASS
+- Commit: 7e09191
+- Files created: workspace/sprints/sprint-510.json
+- Test: getMe OK, sendMessage OK, PM2 online 20h uptime
+- Pipeline: Telegram bot @MessiKognai_Bot verified healthy
+- Swarm used: no
+- Issues: Historical 30s restart loop on Mar 19 (resolved — internet outage)
+- Timestamp: 2026-03-20T14:15:00Z
+
 ## Sprint 509 — QUALITY
 - Status: PASS
 - Commit: 05dd6c3
