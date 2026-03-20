@@ -3531,3 +3531,20 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (FP-007 file >5000 lines)
 - Issues: None.
 - Timestamp: 2026-03-20T23:10:00Z
+
+## Sprint 405 — /abresults — View-Based A/B Analysis (Direct Write)
+- Status: PASS
+- Commit: 35b79a5
+- (logged above)
+
+## Sprint 406 — Actionable /dashboard with Inline Buttons (Direct Write)
+- Status: PASS
+- Commit: 8a94bcf
+- Files created: workspace/sprints/sprint-406.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 406-01: Added inline keyboard buttons to /dashboard: Deliver 1, Session, Gate, Achiri, Refresh, A/B Results. Uses existing buttonMap pattern from Sprint 389.
+- Validation: tsc --noEmit PASS
+- Swarm used: no (small edit)
+- Issues: None.
+- Timestamp: 2026-03-20T23:20:00Z
