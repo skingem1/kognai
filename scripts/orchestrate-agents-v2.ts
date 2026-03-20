@@ -1729,6 +1729,23 @@ Continue from where it left off and output ONLY the remaining code (no duplicate
       }
     }
 
+    // FP-007: File size guard — refuse writes to files >2000 lines
+    // Prevents swarm from destructively rewriting large files (telegram-bot.ts disaster)
+    const FP007_LINE_LIMIT = 2000;
+    for (const file of createdFiles) {
+      if (existsSync(file.path)) {
+        try {
+          const existingLines = readFileSync(file.path, 'utf-8').split('\n').length;
+          if (existingLines > FP007_LINE_LIMIT) {
+            log(c.red, `  ✗ FP-007 GUARD: ${file.path} has ${existingLines} lines (limit: ${FP007_LINE_LIMIT})`);
+            log(c.red, `    Refusing write — file too large for safe swarm edit. Use manual edit.`);
+            file.content = `// FP-007 GUARD: Write refused — target file has ${existingLines} lines (>${FP007_LINE_LIMIT})\n// Task: ${task.id}. Edit this file manually or split it first.\n`;
+            (task as any)._fp007Blocked = true;
+          }
+        } catch { /* can't read — allow write */ }
+      }
+    }
+
     // Write all files to disk
     const writtenFiles: string[] = [];
     for (const file of createdFiles) {

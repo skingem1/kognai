@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-481",
+  "title": "INFRA — Swarm safety — file size guard in orchestrator",
+  "description": "FP-007 prevention: Add guard in orchestrate-agents-v2.ts to reject writes to files >2000 lines. Existing CTO-004 checks shrinkage but not absolute size. Add FP-007 guard before file write loop.",
+  "source": "queue — Sprint 481 INFRA",
+  "tasks": [
+    {
+      "id": "481-01",
+      "title": "Add FP-007 file size guard in orchestrator write loop",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-481",
+      "deliverables": { "code": ["scripts/orchestrate-agents-v2.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
