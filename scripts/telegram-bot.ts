@@ -2436,6 +2436,17 @@ function cmdPostPlan(): string {
   return lines.join('\n');
 }
 
+// ─── Sprint 453: /gateanalytics — gate progress + projections ─────────────
+
+function cmdGateAnalytics(): string {
+  try {
+    const { formatGateAnalytics } = require('./scs001/posting-analytics');
+    return formatGateAnalytics();
+  } catch (e: any) {
+    return `❌ Analytics error: ${e.message}`;
+  }
+}
+
 // ─── Sprint 452: /queueopt — diversity-optimized posting queue ────────────
 
 function cmdQueueOpt(): string {
@@ -4736,6 +4747,7 @@ function cmdHelp(): string {
     `/dashboard  — Full system status overview\n` +
     `/todaycaptions — Copy-paste captions for today\n` +
     `/hookstats  — Hook formula performance rankings\n` +
+    `/gateanalytics — April 7 gate progress + projections\n` +
     `/queueopt   — Diversity-optimized posting order\n` +
     `/viralstats — Viral score summary + top 3\n` +
     `/checkout  — Generate Stripe checkout link\n` +
@@ -6172,6 +6184,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/viralstats':  response = cmdViralStats();         break;
     case '/hookstats':   response = cmdHookStats();          break;
     case '/queueopt':    response = cmdQueueOpt();           break;
+    case '/gateanalytics': response = cmdGateAnalytics();   break;
     case '/checkout':    await cmdCheckout(chatId, cmdArgs); return;
     case '/subscribers': await cmdSubscribers(chatId); return;
     case '/portal':      response = cmdPortal(cmdArgs);        break;

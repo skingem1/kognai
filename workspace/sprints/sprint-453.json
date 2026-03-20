@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-453",
+  "title": "ANALYTICS — Posting analytics tracker + /analytics command enhancement",
+  "description": "Build posting-analytics.ts that analyzes manual-posts.jsonl data for April 7 gate tracking. Computes: daily posting cadence, view velocity, best-performing content, gate projection, streak tracking. Enhances /analytics Telegram command with gate-focused metrics.",
+  "source": "queue — Sprint 457 ANALYTICS block",
+  "tasks": [
+    {
+      "id": "453-01",
+      "title": "Create posting-analytics.ts — gate-focused posting performance tracker",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-453",
+      "deliverables": { "code": ["scripts/scs001/posting-analytics.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "453-02",
+      "title": "Add /gateanalytics Telegram command — gate progress + projections",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-453",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
