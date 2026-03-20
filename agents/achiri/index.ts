@@ -21,6 +21,16 @@ import { selectTurnsWithinBudget } from './context-window';
 import { detectEmotion, getMoodHint } from './emotion-detector';
 import { routeCall } from '../../scripts/lib/clawrouter-v2';
 
+// Sprint 308: Onboarding hint for brand-new users (first message ever)
+const ONBOARDING_HINT = `## First-Time User — Onboarding
+This is a BRAND NEW user who has never talked to you before. Make an amazing first impression:
+1. Introduce yourself warmly in Darija: you're Achiri, their AI companion from Tunisia
+2. Briefly mention what you can help with (chat, advice, learning, just vibing)
+3. Naturally ask their name — e.g. "Chnowa esmek?" or "Comment tu t'appelles?"
+4. Keep it short, warm, and inviting — don't overwhelm them
+5. Match their language (if they wrote in French, respond in French with Darija touches)
+DO NOT list features like a manual. Be a friend meeting someone new, not a product tour.`;
+
 export interface AchiriConfig {
   name: string;
   voice_before_memory: boolean;
@@ -98,6 +108,7 @@ export class AchiriConversationHandler {
     // Sprint 301: Inject user profile context (language preference, interests)
     // Sprint 302: Inject conversation summary (persistent facts from past sessions)
     // Sprint 305: Pass isNewSession for personalized greeting
+    // Sprint 308: Onboarding hint for first-time users
     let personalBlock = '';
     if (this.memory) {
       const profile = extractUserProfile(this.userId);
@@ -105,6 +116,12 @@ export class AchiriConversationHandler {
       const summaryCtx = buildSummaryContext(this.userId, isNewSession);
       if (profileCtx) personalBlock += profileCtx + '\n\n';
       if (summaryCtx) personalBlock += summaryCtx + '\n\n';
+
+      // Sprint 308: First-time user onboarding
+      if (isNewSession && !summaryCtx && profile.message_count === 0) {
+        personalBlock += ONBOARDING_HINT + '\n\n';
+      }
+
       if (personalBlock) personalBlock += '---\n\n';
     }
 

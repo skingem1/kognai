@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-308",
+  "title": "Achiri onboarding flow — first-time user welcome + name collection",
+  "description": "When a brand new user (no profile, no summary) starts their first conversation, inject an onboarding hint into the system prompt so Achiri introduces itself warmly, explains what it can do, and naturally asks for the user's name. Creates a great first impression for alpha.",
+  "source": "auto — Achiri Phase 2A: alpha first-run experience",
+  "tasks": [
+    {
+      "id": "308-01",
+      "title": "Add onboarding detection + system prompt hint to buildSystemPrompt",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-308",
+      "deliverables": { "code": ["agents/achiri/index.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "308-02",
+      "title": "Validation script for onboarding flow",
+      "type": "test",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-308",
+      "deliverables": { "code": ["scripts/achiri/validate-onboarding.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
