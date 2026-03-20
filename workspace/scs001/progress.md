@@ -2902,3 +2902,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (multi-file surgical edits)
 - Issues: Pre-existing Telegram Markdown parsing bug in slot captions (unescaped special chars in hook/speaker). Fixed with escMd() helper.
 - Timestamp: 2026-03-20T05:20:00Z
+
+## Sprint 346 — /golive Command (Direct Write)
+- Status: PASS
+- Commit: 16b294d
+- Files created: workspace/sprints/sprint-346.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 346-01: cmdGoLive() — comprehensive go-live readiness checker. Shows: TikTok OAuth (3 keys), Stripe (4 keys), gate countdown (posts/views/pace/days), queue count, urgency signal (5 levels), actionable next steps.
+- Validation: npx tsc --noEmit PASS
+- Swarm used: no (surgical bot edit)
+- Issues: None.
+- Timestamp: 2026-03-20T05:35:00Z
