@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-445",
+  "title": "Background music library — FFmpeg-generated ambient tracks + selector",
+  "description": "Generate 3 ambient background music tracks using FFmpeg (tech-ambient, lo-fi-pulse, calm-pad). Create music selector that picks track based on hook formula. Wire into audio-mixer.ts pipeline. No external deps or downloads needed.",
+  "source": "auto — sprint queue QUALITY. Videos have no background music, reducing engagement. FFmpeg can generate ambient audio at $0.",
+  "tasks": [
+    {
+      "id": "445-01",
+      "title": "Create music generator script + music selector + wire to audio mixer",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-445",
+      "deliverables": { "code": ["scripts/scs001/generate-background-music.ts", "scripts/scs001/music-selector.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

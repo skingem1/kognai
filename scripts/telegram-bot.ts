@@ -6213,6 +6213,8 @@ async function registerBotCommands(): Promise<void> {
     { command: 'schedule', description: 'Today\'s posting time slots' },
     { command: 'quickstart', description: 'Post first video in 5 min' },
     { command: 'boot', description: 'Start all essential PM2 crons' },
+    { command: 'publish', description: 'One-tap publish to TikTok+IG+YouTube' },
+    { command: 'cleanup', description: 'Archive old runs, free disk space' },
     { command: 'help', description: 'List all commands' },
   ];
   try {
