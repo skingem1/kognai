@@ -592,6 +592,46 @@
       "_note": "Bot online, polling active, message delivery OK. 20h uptime.",
       "priority": "medium",
       "rationale": "Telegram bot is the operator interface. Verify it starts without errors, responds to /health, /status, /pipeline, /gate commands. Fix any startup issues."
+    },
+    {
+      "sprint": 511,
+      "title": "INFRA — Queue replenish + next 5 sprints (511-515)",
+      "block": "INFRA",
+      "status": "pending",
+      "priority": "high",
+      "rationale": "Queue empty after Sprint 510. Add sprints targeting: mock Insight Agent fix (increase briefs/run), more content production, Telegram /produce command test, dashboard health, Supabase event bus test."
+    },
+    {
+      "sprint": 512,
+      "title": "FIX — Increase mock Insight Agent briefs per run (2→5)",
+      "block": "FIX",
+      "status": "pending",
+      "priority": "high",
+      "rationale": "Mock Insight Agent only produces 2 briefs per pipeline run, forcing 3 runs to get 6 videos. Fix to produce 5 briefs (matching --limit) so 1 run = 5 videos. Much faster content production."
+    },
+    {
+      "sprint": 513,
+      "title": "CONTENT — High-volume batch: produce 10 videos in single session",
+      "block": "CONTENT",
+      "status": "pending",
+      "priority": "high",
+      "rationale": "With fix from Sprint 512, run pipeline twice to produce 10 videos. Deliver all to Telegram. Pushes total produced toward 30-post gate target."
+    },
+    {
+      "sprint": 514,
+      "title": "PIPELINE — Add topic variety to mock Trend Agent (10+ diverse topics)",
+      "block": "PIPELINE",
+      "status": "pending",
+      "priority": "medium",
+      "rationale": "Quality report (Sprint 509) flagged only 2 unique topics across 13 videos. Expand mock trend feed with 10+ diverse AI/tech topics for better content variety."
+    },
+    {
+      "sprint": 515,
+      "title": "INFRA — Dashboard v3 health check + PM2 status panel",
+      "block": "INFRA",
+      "status": "pending",
+      "priority": "medium",
+      "rationale": "Dashboard at localhost:4000 exists but hasn't been verified recently. Check it loads, add PM2 status panel showing all process states."
     }
   ]
 }

@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-511",
+  "title": "INFRA — Queue replenish + next 5 sprints (511-515)",
+  "description": "Queue empty after Sprint 510. Added 5 sprints: Insight Agent fix, high-volume content, topic variety, dashboard check.",
+  "source": "queue-empty — replenish queue",
+  "tasks": [
+    {
+      "id": "511-01",
+      "title": "Add Sprints 511-515 to sprint-queue.json",
+      "type": "feature",
+      "task_type": "config",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-511",
+      "deliverables": { "code": ["workspace/sprint-queue.json"], "tests": [], "docs": [] }
+    }
+  ]
+}
