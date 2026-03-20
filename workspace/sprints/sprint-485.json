@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-485",
+  "title": "MONETIZATION — Usage metering for SCS-001 subscribers",
+  "description": "Track per-subscriber usage: videos generated, API costs, posting frequency. Store in workspace/billing/usage.json. /usage Telegram command for operator view.",
+  "source": "queue — Sprint 485 MONETIZATION",
+  "tasks": [
+    {
+      "id": "485-01",
+      "title": "Create usage metering module + data store",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-485",
+      "deliverables": { "code": ["scripts/scs001/usage-meter.ts", "workspace/billing/usage.json"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "485-02",
+      "title": "Add /usage Telegram command",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-485",
+      "deliverables": { "code": ["scripts/telegram-commands/cmd-stripe.ts", "scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

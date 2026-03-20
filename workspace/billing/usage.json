@@ -1,0 +1,27 @@
+{
+  "updated_at": "2026-03-20T10:31:10.930Z",
+  "subscribers": [
+    {
+      "subscriber_id": "operator-tarek",
+      "tier": "premium",
+      "videos_generated": 1,
+      "videos_posted": 0,
+      "api_cost_usd": 0.002,
+      "created_at": "2026-03-20T16:00:00.000Z",
+      "monthly_usage": {
+        "2026-03": {
+          "videos": 1,
+          "cost_usd": 0.002,
+          "posts": 0
+        }
+      },
+      "last_video_at": "2026-03-20T10:31:10.929Z"
+    }
+  ],
+  "totals": {
+    "total_videos": 1,
+    "total_posts": 0,
+    "total_cost_usd": 0,
+    "active_subscribers": 1
+  }
+}

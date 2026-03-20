@@ -473,3 +473,13 @@ export async function cmdTestStripe(chatId: string): Promise<void> {
 
   await sendMessage(chatId, lines.join('\n'));
 }
+
+// Sprint 485: Usage metering command
+export function cmdUsage(): string {
+  try {
+    const { getUsageSummary } = require('../../scripts/scs001/usage-meter');
+    return getUsageSummary();
+  } catch (err: any) {
+    return `❌ Usage meter error: ${err.message}`;
+  }
+}
