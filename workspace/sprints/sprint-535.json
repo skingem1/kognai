@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-535",
+  "title": "FIX — Restart PM2 crons + register new pipeline-auto + save state",
+  "description": "Registered kognai-pipeline-auto (4x/day). Re-registered kognai-smoke-test with new cron config. PM2 state saved. 6 processes online, crons will fire on schedule.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "535-01",
+      "title": "Register kognai-pipeline-auto PM2 process",
+      "type": "feature",
+      "task_type": "fix",
+      "task_target": "ecosystem.config.js",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-535",
+      "deliverables": { "code": [], "tests": [], "docs": [] }
+    },
+    {
+      "id": "535-02",
+      "title": "Re-register smoke test with updated config + save PM2",
+      "type": "feature",
+      "task_type": "fix",
+      "task_target": "ecosystem.config.js",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-535",
+      "deliverables": { "code": [], "tests": [], "docs": [] }
+    }
+  ]
+}

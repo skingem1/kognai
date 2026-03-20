@@ -813,8 +813,9 @@
       "title": "FIX — Restart auto-deliver PM2 crons + verify schedule",
       "block": "FIX",
       "priority": "medium",
-      "status": "pending",
-      "rationale": "Auto-deliver crons (morning/noon/evening) may have stopped. Restart them and verify they fire on schedule. Check PM2 status for all kognai processes."
+      "status": "done",
+      "rationale": "Auto-deliver crons (morning/noon/evening) may have stopped. Restart them and verify they fire on schedule. Check PM2 status for all kognai processes.",
+      "_note": "pipeline-auto registered, smoke-test re-registered, PM2 saved. 6 online."
     },
     {
       "sprint": 536,
