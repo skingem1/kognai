@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-317",
+  "title": "Achiri quality monitor — eval-harness on real conversations + /achiriquality command",
+  "description": "Runs eval-harness (pattern-based, $0) on all real conversation memory files. Reports quality scores, flag frequency, per-user quality, trends. Critical for May 14 Full Alpha Gate proof.",
+  "source": "auto — Full Alpha Gate May 14: conversation quality measurement",
+  "tasks": [
+    {
+      "id": "317-01",
+      "title": "Create achiri-quality-monitor.ts — batch eval real conversations from memory files",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-317",
+      "deliverables": { "code": ["scripts/achiri/achiri-quality-monitor.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "317-02",
+      "title": "Add /achiriquality Telegram command",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-317",
+      "deliverables": { "code": ["agents/telegram-bot/commands.ts", "agents/telegram-bot/index.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

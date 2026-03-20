@@ -3967,3 +3967,66 @@ export async function handleAchiriRetention(chatId: number, ownerChatId: string)
     await sendMessage(chatId, `❌ Retention analysis failed: ${(err as Error).message?.slice(0, 100)}`);
   }
 }
+
+// ── Sprint 317: /achiriquality — Conversation quality from eval-harness ────────
+
+export async function handleAchiriQuality(chatId: number, ownerChatId: string): Promise<void> {
+  if (String(chatId) !== ownerChatId) {
+    await sendMessage(chatId, '🔒 Owner only.');
+    return;
+  }
+
+  await sendMessage(chatId, '🔄 Running quality analysis...');
+
+  try {
+    const output = execSync('npx ts-node scripts/achiri/achiri-quality-monitor.ts --json 2>/dev/null', {
+      timeout: 20000,
+      cwd: process.cwd(),
+    }).toString();
+
+    let report: {
+      total_users: number;
+      total_pairs: number;
+      aggregate: { avg_score: number; pass_rate_pct: number; min_score: number; max_score: number; flag_frequency: Record<string, number> };
+      per_user: Array<{ userId: string; pairs: number; avg_score: number; pass_rate_pct: number; top_flags: string[] }>;
+    };
+
+    try {
+      report = JSON.parse(output);
+    } catch {
+      const jsonMatch = output.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) throw new Error('No JSON in output');
+      report = JSON.parse(jsonMatch[0]);
+    }
+
+    const icon = report.aggregate.pass_rate_pct >= 70 ? '✅' : '⚠️';
+    const lines = [
+      `${icon} *Achiri Quality Monitor*`,
+      '',
+      `👥 Users: *${report.total_users}* | Pairs: *${report.total_pairs}*`,
+      `📊 Avg score: *${report.aggregate.avg_score}/100*`,
+      `✅ Pass rate: *${report.aggregate.pass_rate_pct}%* (target: ≥70%)`,
+      `📈 Range: ${report.aggregate.min_score}–${report.aggregate.max_score}`,
+    ];
+
+    if (report.per_user.length > 0) {
+      lines.push('', '*Per-User Quality*');
+      for (const u of report.per_user.slice(0, 8)) {
+        const ui = u.pass_rate_pct >= 70 ? '✅' : u.pass_rate_pct >= 50 ? '⚠️' : '❌';
+        lines.push(`${ui} \`${u.userId.slice(0, 15)}\`: avg *${u.avg_score}*, *${u.pass_rate_pct}%* pass (${u.pairs}p)`);
+      }
+    }
+
+    const flags = Object.entries(report.aggregate.flag_frequency).sort((a, b) => b[1] - a[1]);
+    if (flags.length > 0) {
+      lines.push('', '*Top Flags*');
+      for (const [flag, count] of flags.slice(0, 5)) {
+        lines.push(`  🚩 ${flag}: ${count}×`);
+      }
+    }
+
+    await sendMessage(chatId, lines.join('\n'));
+  } catch (err) {
+    await sendMessage(chatId, `❌ Quality analysis failed: ${(err as Error).message?.slice(0, 100)}`);
+  }
+}
