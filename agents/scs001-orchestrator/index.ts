@@ -332,22 +332,35 @@ export class SCS001Orchestrator {
     }
 
     // --- Write viral topics for next run's TrendAgent boost ---
-    const viralSignals = signals.filter(s => s.viral_status === 'viral');
-    if (viralSignals.length > 0) {
-      try {
-        const viralTopics = [...new Set(
-          viralSignals.flatMap(s => s.topic_performance?.topic_tags?.length
-            ? s.topic_performance.topic_tags
-            : [s.video_id])
-        )].slice(0, 10);
+    // Sprint 427: Prefer discovery topic_tags (real keyword_cluster from TrendAgent)
+    // over analytics topic_performance (mock data that uses hashtags/channel names).
+    // Merge both sources but prioritize discovery keywords.
+    try {
+      const discoveryTopics = Array.from(new Set(
+        discoveries.flatMap(d => d.topic_tags ?? [])
+      )).filter(t => t.length > 1 && t.length < 30);
+
+      const viralSignals = signals.filter(s => s.viral_status === 'viral');
+      const analyticTopics = viralSignals.flatMap(s =>
+        s.topic_performance?.topic_tags?.length
+          ? s.topic_performance.topic_tags
+          : []
+      );
+
+      // Discovery keywords first, then analytics, deduplicated
+      const merged = Array.from(new Set([...discoveryTopics, ...analyticTopics]));
+      const viralTopics = merged.slice(0, 10);
+
+      if (viralTopics.length > 0) {
         writeFileSync(VIRAL_TOPICS_PATH, JSON.stringify({
           topics: viralTopics,
           updated_at: new Date().toISOString(),
           run_id: runId,
+          source: 'discovery+analytics',
         }, null, 2));
-        console.log('[Orchestrator] Saved ' + viralTopics.length + ' viral topics → viral-topics.json');
-      } catch { /* non-fatal */ }
-    }
+        console.log('[Orchestrator] Saved ' + viralTopics.length + ' viral topics → viral-topics.json (discovery: ' + discoveryTopics.length + ', analytics: ' + analyticTopics.length + ')');
+      }
+    } catch { /* non-fatal */ }
 
     // --- Stage 11: Content Flywheel (flywheel-triggered signals only) ---
     const flywheelSignals = signals.filter(s => s.flywheel_triggered);

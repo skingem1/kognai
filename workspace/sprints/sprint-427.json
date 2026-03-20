@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-427",
+  "title": "Fix viral topics extraction — use discovery keywords not mock analytics",
+  "description": "viral-topics.json contains channel names because analytics agent uses hashtags as topic_tags. Fix: also extract from discoveries[].topic_tags (keyword_cluster from TrendAgent) for real trending topics.",
+  "source": "auto — Sprint 426 revealed viral-topics.json has speaker names not actual topics, degrading caption hashtag quality",
+  "tasks": [
+    {
+      "id": "427-01",
+      "title": "Update orchestrator viral topics extraction to prefer discovery topic_tags",
+      "type": "bugfix",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-427",
+      "deliverables": { "code": ["agents/scs001-orchestrator/index.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
