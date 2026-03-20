@@ -1,11 +1,11 @@
 # SCS-001 TikTok Content Agent — Progress Log
 
-*Last updated: 2026-03-20 (Sprint 536)*
+*Last updated: 2026-03-20 (Sprint 541)*
 
 ## Summary
 
-- **Total sprints shipped:** 395 (Sprint 059 → Sprint 536)
-- **Total commits:** 1033
+- **Total sprints shipped:** 400 (Sprint 059 → Sprint 541)
+- **Total commits:** 1040
 - **Current phase:** Phase 1 Active (Mar 17 – Apr 11 2026)
 - **Pipeline:** 12 stages, 11 agents, closed feedback loop
 - **Telegram bot:** 62+ commands across 10 modular files (339-line router)
@@ -687,3 +687,35 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Feature: /stats command showing production, delivery, costs, quality, gate status
 - Stats: 68 videos produced, 72 delivered, $0.78 total, gate 72/30 ON TRACK
 - Timestamp: 2026-03-20T19:00:00Z
+
+## Sprint 537 — INFRA
+- Status: PASS
+- Commit: afef28d
+- Queue replenish: 538-541 added. Sprint brief regenerated.
+- Timestamp: 2026-03-20T19:10:00Z
+
+## Sprint 538 — CONTENT
+- Status: PASS
+- Commit: 03e7cc6
+- Files modified: contracts/scs-001/mock-oracle6-feed.json (15→30 topics)
+- New verticals: healthcare, quantum, movies, chips, climate, gaming, wearables, jobs, China, cybersec, education, biotech, farming, copyright, AI scientists
+- Timestamp: 2026-03-20T19:20:00Z
+
+## Sprint 539 — CONTENT
+- Status: PASS
+- Commit: 02590a2
+- 10 videos produced with expanded topics, all delivered. 74 total auto-delivered.
+- Timestamp: 2026-03-20T19:30:00Z
+
+## Sprint 540 — INFRA
+- Status: PASS
+- Commit: 61ebc12
+- Disk cleanup: 2.7GB → 674MB. 14 old runs removed, 5 kept.
+- Timestamp: 2026-03-20T19:40:00Z
+
+## Sprint 541 — FIX
+- Status: PASS
+- Commit: e585d0b
+- 3 bugs fixed: PM2 telegram-bot script path (agents/ → scripts/), BOT_TOKEN env var (CEO_ prefix), escaped quotes in cmd-onboarding.ts
+- Bot: online and stable with correct scripts/telegram-bot.ts
+- Timestamp: 2026-03-20T19:50:00Z
