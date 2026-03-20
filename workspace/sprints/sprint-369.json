@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-369",
+  "title": "/broadcast — send announcements to alpha users",
+  "description": "Port /broadcast command to main Telegram bot. Sends message to all alpha-whitelisted + waitlisted Achiri users with rate limiting and logging.",
+  "source": "auto — Phase 1.5 needs announcement capability for alpha launch",
+  "tasks": [
+    {
+      "id": "369-01",
+      "title": "Add /broadcast async command to scripts/telegram-bot.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-369",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

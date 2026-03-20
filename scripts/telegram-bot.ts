@@ -1862,6 +1862,78 @@ function cmdPostPlan(): string {
   return lines.join('\n');
 }
 
+// ─── Sprint 369: /broadcast — send announcements to alpha users ───────────
+
+async function cmdBroadcast(chatId: string, message: string): Promise<void> {
+  if (!message.trim()) {
+    await sendMessage(chatId, [
+      '📢 *Broadcast to Alpha Users*',
+      '',
+      'Usage: `/broadcast Your message here`',
+      '',
+      '_Message will be sent to all alpha-whitelisted + waitlisted users._',
+    ].join('\n'));
+    return;
+  }
+
+  // Load recipients from alpha whitelist + waitlist
+  const recipientIds = new Set<string>();
+  const files = [
+    path.join(ROOT, 'workspace', 'achiri', 'alpha-whitelist.jsonl'),
+    path.join(ROOT, 'workspace', 'achiri', 'waitlist.jsonl'),
+  ];
+
+  for (const f of files) {
+    if (!fs.existsSync(f)) continue;
+    for (const line of fs.readFileSync(f, 'utf-8').split('\n')) {
+      if (!line.trim()) continue;
+      try {
+        const entry = JSON.parse(line);
+        const id = entry.chatId ?? entry.chat_id;
+        if (id) recipientIds.add(String(id));
+      } catch { /* skip */ }
+    }
+  }
+
+  // Remove sender
+  recipientIds.delete(chatId);
+
+  if (recipientIds.size === 0) {
+    await sendMessage(chatId, '⚠️ No alpha users to broadcast to. Use /invite first.');
+    return;
+  }
+
+  await sendMessage(chatId, `📢 *Broadcasting to ${recipientIds.size} user(s)...*\n\n"${message.slice(0, 200)}${message.length > 200 ? '...' : ''}"`);
+
+  let sent = 0;
+  let failed = 0;
+  const broadcastText = `📢 *Achiri Update*\n\n${message}`;
+
+  for (const userId of Array.from(recipientIds)) {
+    try {
+      await sendMessage(userId, broadcastText);
+      sent++;
+      await new Promise(r => setTimeout(r, 200)); // rate limit
+    } catch {
+      failed++;
+    }
+  }
+
+  // Log broadcast
+  const logPath = path.join(ROOT, 'workspace', 'achiri', 'broadcast-log.jsonl');
+  const dir = path.dirname(logPath);
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+  fs.appendFileSync(logPath, JSON.stringify({
+    timestamp: new Date().toISOString(),
+    message: message.slice(0, 500),
+    recipients: recipientIds.size,
+    sent,
+    failed,
+  }) + '\n');
+
+  await sendMessage(chatId, `✅ Broadcast complete: *${sent}* sent, *${failed}* failed`);
+}
+
 // ─── Sprint 367: /viral — trending topics for content strategy ────────────
 
 function cmdViral(): string {
@@ -2374,6 +2446,7 @@ function cmdHelp(): string {
     `/lastrun    — Latest pipeline run details\n` +
     `/viral      — Trending topics for content\n` +
     `/postplan   — 7-day posting plan with videos\n` +
+    `/broadcast  — Send announcement to alpha users\n` +
     `/help      — This message`
   );
 }
@@ -2447,6 +2520,18 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
       await cmdPostNow(chatId);
     } catch (e: any) {
       await sendMessage(chatId, `❌ PostNow error: ${e.message}`);
+    }
+    const timestamp = new Date().toISOString();
+    fs.appendFileSync(AUDIT_LOG, `[${timestamp}] [TELEGRAM_BOT] Command: ${cmd} from ${chatId}\n`);
+    return;
+  }
+
+  // Sprint 369: /broadcast is async (sends to multiple users), handle separately
+  if (cmdName === '/broadcast') {
+    try {
+      await cmdBroadcast(chatId, cmdArgs);
+    } catch (e: any) {
+      await sendMessage(chatId, `❌ Broadcast error: ${e.message}`);
     }
     const timestamp = new Date().toISOString();
     fs.appendFileSync(AUDIT_LOG, `[${timestamp}] [TELEGRAM_BOT] Command: ${cmd} from ${chatId}\n`);
