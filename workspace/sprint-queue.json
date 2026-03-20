@@ -948,8 +948,9 @@
       "title": "TELEGRAM — Add /cleanup command to trigger disk cleanup from phone",
       "block": "TELEGRAM",
       "priority": "low",
-      "status": "pending",
-      "rationale": "Operator may want to trigger cleanup manually. Add /cleanup command that runs pipeline-cleanup.ts --keep 5 and reports freed space."
+      "status": "done",
+      "rationale": "Operator may want to trigger cleanup manually. Add /cleanup command that runs pipeline-cleanup.ts --keep 5 and reports freed space.",
+      "_note": "/cleanup command added. Runs pipeline-cleanup.ts --keep 5."
     },
     {
       "sprint": 551,

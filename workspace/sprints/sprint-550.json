@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-550",
+  "title": "TELEGRAM — /cleanup command for disk cleanup from phone",
+  "description": "Added /cleanup command that runs pipeline-cleanup.ts --keep 5. Reports freed space and remaining runs.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "550-01",
+      "title": "Add cmdCleanup to cmd-system.ts + register in telegram-bot.ts",
+      "type": "feature",
+      "task_type": "telegram",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "low",
+      "sprint_id": "sprint-550",
+      "deliverables": { "code": ["scripts/telegram-commands/cmd-system.ts", "scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
