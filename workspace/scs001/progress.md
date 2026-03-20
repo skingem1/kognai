@@ -2853,3 +2853,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (video file sending pattern)
 - Issues: None.
 - Timestamp: 2026-03-20T02:48:00Z
+
+## Sprint 342 — /tiktokauth Command (Direct Write)
+- Status: PASS
+- Commit: 86c3346
+- Files created: workspace/sprints/sprint-342.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 342-01: cmdTikTokAuth() — generates OAuth authorization URL with client_key, scopes (user.info.basic,video.publish), redirect URI. Shows 5-step guide. Checks if token already set. Added to switch + cmdHelp.
+- Validation: npx tsc --noEmit PASS
+- Swarm used: no (surgical bot edit)
+- Issues: None.
+- Timestamp: 2026-03-20T02:55:00Z
