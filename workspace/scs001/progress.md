@@ -2340,3 +2340,17 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (multi-file feature, swarm bypass)
 - Issues: None.
 - Timestamp: 2026-03-20T05:00:00Z
+
+## Sprint 302 — Achiri Conversation Summarizer (Direct Write)
+- Status: PASS
+- Commit: 9ba6293
+- Files created: agents/achiri/conversation-summary.ts, workspace/sprints/sprint-302.json
+- Files modified: agents/achiri/memory-store.ts, agents/achiri/index.ts, agents/achiri/server.ts
+- Tasks completed:
+  - 302-01: Built conversation-summary.ts — extracts key facts (name, age, location, studies, work, family, preferences, goals) from turns about to be trimmed. 8 regex patterns for user facts + 1 for assistant commitments. Persists as workspace/achiri/summaries/<userId>.json. Max 15 facts, dedup on prefix match.
+  - 302-02: Wired summarizer into memory-store.ts saveHistory() — calls summarizeBeforeTrim() before slicing to 50 turns. Also injected buildSummaryContext() into index.ts buildSystemPrompt() alongside user profile.
+  - 302-03: Added GET /summary/:userId endpoint to server.ts. Returns persistent summary JSON.
+- Validation: TypeScript clean compile (4 files). Fact extraction: 5/5 facts from synthetic turns (name=Ahmed, location=Sousse, studies CS, loves programming, wants to build app). Dry-run chat PASS.
+- Swarm used: no (multi-file feature, swarm bypass)
+- Issues: None.
+- Timestamp: 2026-03-20T05:25:00Z
