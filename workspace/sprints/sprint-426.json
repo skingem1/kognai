@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-426",
+  "title": "Topic-aware captions with trending hashtags and speaker variation",
+  "description": "Improve engagement-caption.ts: inject trending topics from viral-topics.json into hashtags, add speaker description variations (not always 'explains it all'), add topic-specific caption lines.",
+  "source": "auto — captions are generic; trending topics exist in viral-topics.json but aren't used in caption generation",
+  "tasks": [
+    {
+      "id": "426-01",
+      "title": "Update engagement-caption.ts with trending hashtags and speaker variations",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-426",
+      "deliverables": { "code": ["scripts/scs001/engagement-caption.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
