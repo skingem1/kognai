@@ -3813,3 +3813,75 @@ export async function handleAchiriErrors(chatId: number, ownerChatId: string): P
 
   await sendMessage(chatId, lines.join('\n'));
 }
+
+// ── Sprint 315: /achiriready — Alpha readiness dashboard ──────────────────────
+
+export async function handleAchiriReady(chatId: number, ownerChatId: string): Promise<void> {
+  if (String(chatId) !== ownerChatId) {
+    await sendMessage(chatId, '🔒 Owner only.');
+    return;
+  }
+
+  await sendMessage(chatId, '🔄 Running Achiri readiness check...');
+
+  try {
+    const { execSync } = await import('child_process');
+    const output = execSync('npx ts-node scripts/achiri/achiri-readiness.ts --json 2>/dev/null || npx ts-node scripts/achiri/achiri-readiness.ts --json 2>&1', {
+      timeout: 30000,
+      cwd: process.cwd(),
+    }).toString();
+
+    let report: {
+      alpha_date: string;
+      days_to_alpha: number;
+      overall_ready: boolean;
+      score: number;
+      checks: Array<{ name: string; category: string; pass: boolean; detail: string; critical: boolean }>;
+      summary: { passed: number; failed: number; critical_failures: number };
+    };
+
+    try {
+      report = JSON.parse(output);
+    } catch {
+      // Try extracting JSON from mixed output
+      const jsonMatch = output.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) throw new Error('No JSON in output');
+      report = JSON.parse(jsonMatch[0]);
+    }
+
+    const icon = report.overall_ready ? '✅' : '❌';
+    const lines = [
+      `${icon} *Achiri Alpha Readiness*`,
+      '',
+      `📅 Alpha: ${report.alpha_date} (${report.days_to_alpha} days)`,
+      `📊 Score: *${report.score}%* | ${report.summary.passed}/${report.checks.length} checks`,
+      '',
+    ];
+
+    // Group by category
+    const cats = new Map<string, typeof report.checks>();
+    for (const c of report.checks) {
+      if (!cats.has(c.category)) cats.set(c.category, []);
+      cats.get(c.category)!.push(c);
+    }
+
+    cats.forEach((items, cat) => {
+      lines.push(`*${cat}*`);
+      for (const item of items) {
+        const ci = item.pass ? '✅' : item.critical ? '🚫' : '⚠️';
+        lines.push(`${ci} ${item.name}: ${item.detail.slice(0, 80)}`);
+      }
+      lines.push('');
+    });
+
+    if (report.summary.critical_failures > 0) {
+      lines.push(`🚫 *${report.summary.critical_failures} critical failure(s)* — must fix before alpha`);
+    } else {
+      lines.push('✅ *No critical failures* — ready for alpha launch');
+    }
+
+    await sendMessage(chatId, lines.join('\n'));
+  } catch (err) {
+    await sendMessage(chatId, `❌ Readiness check failed: ${(err as Error).message?.slice(0, 100)}`);
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-315",
+  "title": "Achiri alpha readiness report — comprehensive launch decision dashboard",
+  "description": "Single script that aggregates all alpha metrics: E2E results, feedback NPS, error rate, user stats, deployment status, gate progress. Outputs JSON + Telegram command /achiriready.",
+  "source": "auto — Achiri Phase 2A: Apr 25 alpha launch decision",
+  "tasks": [
+    {
+      "id": "315-01",
+      "title": "Create achiri-readiness.ts — aggregate all alpha metrics into readiness report",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-315",
+      "deliverables": { "code": ["scripts/achiri/achiri-readiness.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "315-02",
+      "title": "Add /achiriready Telegram command",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-315",
+      "deliverables": { "code": ["agents/telegram-bot/commands.ts", "agents/telegram-bot/index.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "generated_at": "2026-03-20T01:09:57.587Z",
+  "alpha_date": "2026-04-25",
+  "days_to_alpha": 36,
+  "overall_ready": true,
+  "score": 100,
+  "checks": [
+    {
+      "name": "E2E Test Suite",
+      "category": "Testing",
+      "pass": true,
+      "detail": "33/33 tests passed",
+      "critical": true
+    },
+    {
+      "name": "Safety Filter",
+      "category": "Safety",
+      "pass": true,
+      "detail": "safety-filter.ts present (4 categories)",
+      "critical": true
+    },
+    {
+      "name": "User Feedback",
+      "category": "Quality",
+      "pass": true,
+      "detail": "No feedback yet (expected pre-alpha)",
+      "critical": false
+    },
+    {
+      "name": "Error Rate",
+      "category": "Stability",
+      "pass": true,
+      "detail": "No errors logged",
+      "critical": false
+    },
+    {
+      "name": "User Activity",
+      "category": "Engagement",
+      "pass": true,
+      "detail": "24 users, 431 messages over 2 days",
+      "critical": false
+    },
+    {
+      "name": "Deployment Package",
+      "category": "Infrastructure",
+      "pass": true,
+      "detail": "✓ deploy script, ✓ ecosystem config, ✗ ACHIRI_BASE_URL not set (local mode)",
+      "critical": false
+    },
+    {
+      "name": "Alpha Access Gate",
+      "category": "Access Control",
+      "pass": true,
+      "detail": "0 invited, ACHIRI_ALPHA_ONLY=false (open)",
+      "critical": false
+    },
+    {
+      "name": "Waitlist",
+      "category": "Growth",
+      "pass": true,
+      "detail": "1 users on waitlist",
+      "critical": false
+    },
+    {
+      "name": "Memory System",
+      "category": "Features",
+      "pass": true,
+      "detail": "5 user memory files",
+      "critical": false
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "failed": 0,
+    "critical_failures": 0
+  }
+}
