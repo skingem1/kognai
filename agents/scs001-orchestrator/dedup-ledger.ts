@@ -58,6 +58,30 @@ export class DedupLedger {
     console.log('[DedupLedger] Recorded ' + entries.length + ' published clips');
   }
 
+  // Sprint 300: Remove duplicate video_ids, keeping first occurrence
+  compact(): { before: number; after: number } {
+    if (!existsSync(this.ledgerPath)) return { before: 0, after: 0 };
+    const data = readFileSync(this.ledgerPath, 'utf-8');
+    const lines = data.split('\n').filter(l => l.trim());
+    const seen = new Set<string>();
+    const unique: string[] = [];
+    for (const line of lines) {
+      try {
+        const entry = JSON.parse(line) as LedgerEntry;
+        const key = entry.video_id || entry.clip_id;
+        if (key && !seen.has(key)) {
+          seen.add(key);
+          unique.push(line);
+        }
+      } catch { /* skip corrupt */ }
+    }
+    if (unique.length < lines.length) {
+      writeFileSync(this.ledgerPath, unique.join('\n') + '\n', 'utf-8');
+      console.log(`[DedupLedger] Compacted: ${lines.length} → ${unique.length} (removed ${lines.length - unique.length} duplicates)`);
+    }
+    return { before: lines.length, after: unique.length };
+  }
+
   filterNewClips<T extends { clip_id: string }>(clips: T[]): T[] {
     const published = this.loadPublished();
     const newClips = clips.filter(c => !published.has(c.clip_id));

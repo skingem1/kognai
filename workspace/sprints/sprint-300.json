@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-300",
+  "title": "Ledger maintenance — auto-dedup in pipeline runner + cleanup 808 duplicates",
+  "description": "publish-ledger.jsonl had 808 duplicate entries (1176→368 after dedup). Sprint 299 fixed the root cause (deterministic IDs). This sprint cleans up existing duplicates and adds auto-dedup to the pipeline runner to prevent future accumulation.",
+  "source": "auto — ledger analysis after Sprint 299 dedup fix",
+  "tasks": [
+    {
+      "id": "300-01",
+      "title": "Clean existing 808 duplicate ledger entries",
+      "type": "bugfix",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-300",
+      "deliverables": { "code": ["workspace/scs001/publish-ledger.jsonl"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "300-02",
+      "title": "Add auto-dedup to pipeline runner post-run cleanup",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-300",
+      "deliverables": { "code": ["agents/scs001-orchestrator/dedup-ledger.ts", "agents/scs001-orchestrator/run-pipeline.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

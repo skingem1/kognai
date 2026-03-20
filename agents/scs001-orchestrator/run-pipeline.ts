@@ -6,6 +6,7 @@ import { writeFileSync, mkdirSync, existsSync } from 'fs';
 import { SCS001Orchestrator } from './index';
 import { notifyPipelineComplete, notifyPipelineError } from './notifier';
 import { logPipelineMetric } from './metrics-logger';
+import { DedupLedger } from './dedup-ledger';
 
 async function main(): Promise<void> {
   const mode = (process.argv[2] === 'live' ? 'live' : 'mock') as 'mock' | 'live';
@@ -36,6 +37,17 @@ async function main(): Promise<void> {
     await notifyPipelineComplete(report);
   } catch (err) {
     console.error('[Runner] Notification failed (non-fatal):', (err as Error).message);
+  }
+
+  // Sprint 300: Auto-compact ledger to prevent duplicate accumulation
+  try {
+    const ledger = new DedupLedger();
+    const { before, after } = ledger.compact();
+    if (before > after) {
+      console.log(`[Runner] Ledger compacted: ${before} → ${after}`);
+    }
+  } catch (err) {
+    console.error('[Runner] Ledger compact failed (non-fatal):', (err as Error).message);
   }
 }
 
