@@ -3993,3 +3993,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (multi-file template additions)
 - Issues: None.
 - Timestamp: 2026-03-20T22:45:00Z
+
+## Sprint 444 — Video Template System (Direct Write)
+- Status: PASS
+- Commit: 3326afe
+- Files created: workspace/sprints/sprint-444.json
+- Files modified: agents/scs001-script/index.ts
+- Tasks completed:
+  - 444-01: Added 3 video templates: standard (50%, original), reaction (25%, clip-first), listicle (25%, numbered points). Template selected deterministically per insight_id. Added ScriptSegment types: reaction, point, twist, cta. Template field added to ScriptBundle for A/B tracking.
+- Validation: tsc --noEmit PASS
+- Swarm used: no (complex template logic in single file)
+- Issues: None.
+- Timestamp: 2026-03-20T23:00:00Z
