@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-330",
+  "title": "Achiri pre-deploy test suite — run all validations before Hetzner deploy",
+  "description": "Meta test runner that executes all Achiri validation scripts in sequence, collects results, and reports overall pass/fail with details. Used as final gate before deploying to Hetzner.",
+  "source": "auto — Achiri Alpha deploy confidence, Apr 25 prep",
+  "tasks": [
+    {
+      "id": "330-01",
+      "title": "Create scripts/achiri/run-all-tests.ts — meta test runner",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-330",
+      "deliverables": { "code": ["scripts/achiri/run-all-tests.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
