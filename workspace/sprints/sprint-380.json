@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-380",
+  "title": "/speakertest — speaker performance A/B test rankings",
+  "description": "Add /speakertest command showing speaker viral score rankings with sample counts, best hooks per speaker.",
+  "source": "auto — content strategy, complements /hooktest",
+  "tasks": [
+    {
+      "id": "380-01",
+      "title": "Add /speakertest command to scripts/telegram-bot.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-380",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

@@ -2436,6 +2436,54 @@ function cmdExport(args: string): string {
   return lines.join('\n');
 }
 
+// ─── Sprint 380: /speakertest — speaker performance A/B test ────────────────
+
+function cmdSpeakerTest(): string {
+  const experiments = readLines(path.join(ROOT, 'workspace', 'scs001', 'experiments.jsonl'));
+  if (experiments.length === 0) return '⚠️ No experiments found.';
+
+  const stats: Record<string, { scores: number[]; hooks: Record<string, number> }> = {};
+  for (const e of experiments) {
+    const speaker = e.speaker ?? 'unknown';
+    if (speaker === 'unknown') continue;
+    if (!stats[speaker]) stats[speaker] = { scores: [], hooks: {} };
+    if (e.partial_viral_score != null) stats[speaker].scores.push(e.partial_viral_score);
+    const hook = e.hook_formula ?? 'unknown';
+    if (hook !== 'unknown') stats[speaker].hooks[hook] = (stats[speaker].hooks[hook] ?? 0) + 1;
+  }
+
+  const ranked = Object.entries(stats)
+    .map(([speaker, s]) => {
+      const avg = s.scores.length > 0 ? s.scores.reduce((a, b) => a + b, 0) / s.scores.length : 0;
+      const max = s.scores.length > 0 ? Math.max(...s.scores) : 0;
+      const bestHook = Object.entries(s.hooks).sort((a, b) => b[1] - a[1])[0]?.[0] ?? '?';
+      return { speaker, avg, max, count: s.scores.length, bestHook };
+    })
+    .sort((a, b) => b.avg - a.avg);
+
+  if (ranked.length === 0) return '⚠️ No speaker data found.';
+
+  const medals = ['🥇', '🥈', '🥉'];
+  const lines = [
+    '🎙️ *Speaker A/B Test Rankings*',
+    `${experiments.length} experiments · ${ranked.length} speakers`,
+    '',
+  ];
+
+  for (let i = 0; i < ranked.length; i++) {
+    const r = ranked[i];
+    const medal = i < 3 ? medals[i] : `${i + 1}.`;
+    const avgPct = Math.round(r.avg * 100);
+    const maxPct = Math.round(r.max * 100);
+    lines.push(`${medal} *${r.speaker}* — avg ${avgPct}% · max ${maxPct}% · n=${r.count} · best: ${r.bestHook}`);
+  }
+
+  lines.push('');
+  lines.push('💡 Focus on top speakers for gate acceleration');
+
+  return lines.join('\n');
+}
+
 // ─── Sprint 379: /weeklyreport — automated weekly performance summary ────────
 
 function cmdWeeklyReport(): string {
@@ -3258,6 +3306,7 @@ function cmdHelp(): string {
     `/besttime  — Optimal posting time analysis\n` +
     `/export    — Batch export manifest for posting\n` +
     `/weeklyreport — Weekly performance summary\n` +
+    `/speakertest — Speaker A/B test rankings\n` +
     `/help      — This message`
   );
 }
@@ -3418,6 +3467,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/besttime':    response = cmdBestTime();            break;
     case '/export':      response = cmdExport(cmdArgs);       break;
     case '/weeklyreport': response = cmdWeeklyReport();       break;
+    case '/speakertest': response = cmdSpeakerTest();        break;
     case '/help':        response = cmdHelp();        break;
     default:
       response = `Unknown command: \`${cmdName}\`\n\n${cmdHelp()}`;
