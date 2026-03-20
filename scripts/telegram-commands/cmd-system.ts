@@ -762,3 +762,27 @@ export function cmdCleanup(): string {
     return `❌ Cleanup error: ${err.message}`;
   }
 }
+
+// Sprint 589: /errors — show recent pipeline validation errors
+export function cmdErrors(): string {
+  const errPath = path.join(ROOT, 'workspace', 'scs001', 'validation-errors.jsonl');
+  if (!fs.existsSync(errPath)) return '✅ *No validation errors file found* — pipeline is clean.';
+
+  const lines = readLines(errPath);
+  if (lines.length === 0) return '✅ *No validation errors* — pipeline is clean.';
+
+  const recent = lines.slice(-10).reverse();
+  const formatted = recent.map((e: any, i: number) => {
+    const ts = e.timestamp ? new Date(e.timestamp).toLocaleString('en-GB', { timeZone: 'UTC' }) : 'unknown';
+    const type = e.type || 'unknown';
+    const stage = e.stage || '';
+    const err = e.error || e.message || 'no details';
+    return `${i + 1}. *${type}*${stage ? ` (${stage})` : ''}\n   ${err}\n   _${ts}_`;
+  });
+
+  return [
+    `⚠️ *Pipeline Errors* — last ${recent.length} of ${lines.length} total`,
+    '',
+    ...formatted,
+  ].join('\n');
+}

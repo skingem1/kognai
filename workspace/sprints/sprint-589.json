@@ -1,0 +1,24 @@
+{
+  "sprint_id": "sprint-589",
+  "title": "INFRA — /errors Telegram command for pipeline validation errors",
+  "description": "Add /errors command to Telegram bot showing last 10 validation errors from validation-errors.jsonl. Gives operator visibility into pipeline failures.",
+  "source": "gap-analysis",
+  "tasks": [
+    {
+      "id": "589-01",
+      "title": "Add cmdErrors function to cmd-system.ts",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-589",
+      "deliverables": {
+        "code": ["scripts/telegram-commands/cmd-system.ts", "scripts/telegram-bot.ts"],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ]
+}

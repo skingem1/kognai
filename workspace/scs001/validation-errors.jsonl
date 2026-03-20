@@ -1,0 +1,6 @@
+{"script_id":"script-eae9501b","clip_id":"clip-6f8858ba","errors":["Duration out of range (60s, expected 24-28)"],"timestamp":"2026-03-20T14:43:22.873Z"}
+{"script_id":"script-cfaabef3","clip_id":"clip-6f796f5a","errors":["Segment count out of range (4, expected 5-6)","Duration out of range (22s, expected 24-28)"],"timestamp":"2026-03-20T18:23:31.063Z"}
+{"script_id":"script-10dc050d","clip_id":"clip-67880323","errors":["Segment count out of range (4, expected 5-6)","Duration out of range (22s, expected 24-28)"],"timestamp":"2026-03-20T18:23:31.064Z"}
+{"script_id":"script-0bbe0758","clip_id":"clip-e53ac8bb","errors":["Segment count out of range (4, expected 5-6)","Duration out of range (22s, expected 24-28)"],"timestamp":"2026-03-20T18:43:00.845Z"}
+{"script_id":"script-1c9bf8cf","clip_id":"clip-4b39a2b5","errors":["Segment count out of range (4, expected 5-6)","Duration out of range (22s, expected 24-28)"],"timestamp":"2026-03-20T18:43:00.846Z"}
+{"script_id":"script-1cd5d43e","clip_id":"clip-739a7bfa","errors":["Segment count out of range (4, expected 5-6)","Duration out of range (22s, expected 24-28)"],"timestamp":"2026-03-20T19:05:59.461Z"}
