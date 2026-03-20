@@ -2487,3 +2487,16 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (multi-file feature)
 - Issues: None.
 - Timestamp: 2026-03-20T12:30:00Z
+
+## Sprint 313 — Achiri Conversation Export (Direct Write)
+- Status: PASS
+- Commit: 5369e51
+- Files created: workspace/sprints/sprint-313.json
+- Files modified: agents/achiri/server.ts, agents/telegram-bot/commands.ts, agents/telegram-bot/index.ts
+- Tasks completed:
+  - 313-01: GET /export/:userId endpoint — returns full conversation history with profile + summary facts. Added to server routes.
+  - 313-02: /achiriexport Telegram command — lists users with /achiriexport, exports conversation with /achiriexport <userId>. Shows profile, interests, facts, then conversation turns in chunked messages (4096 char limit).
+- Validation: server module loads PASS, tsc errors are pre-existing only
+- Swarm used: no (multi-file feature)
+- Issues: None.
+- Timestamp: 2026-03-20T12:45:00Z
