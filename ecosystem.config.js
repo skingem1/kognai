@@ -463,6 +463,27 @@ module.exports = {
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
     {
+      // Pipeline Auto-Run — Sprint 532. Runs pipeline + auto-deliver + metrics 4x/day.
+      // Produces 3 videos per run, delivers to Telegram, logs metrics.
+      name: "kognai-pipeline-auto",
+      script: "scripts/scs001/pipeline-cron.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      args: "--limit 3",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: false,
+      watch: false,
+      cron_restart: "0 6,10,14,18 * * *",
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/pipeline-auto-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/pipeline-auto-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z",
+      max_memory_restart: "512M"
+    },
+    {
       // Pipeline Watchdog — Sprint 141. Checks publish-ledger.jsonl freshness every 30 min.
       // Sends Telegram alert if ledger hasn't been updated in >4h (pipeline stuck/failed).
       // Silent when pipeline is healthy. Set WATCHDOG_DRY_RUN=1 to test without sending.

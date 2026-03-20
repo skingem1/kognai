@@ -786,8 +786,9 @@
       "title": "PIPELINE — Auto-run pipeline on PM2 cron (4x/day) + metrics logging",
       "block": "PIPELINE",
       "priority": "high",
-      "status": "pending",
-      "rationale": "Pipeline only runs manually. Add PM2 cron to run pipeline 4x/day (06:00, 10:00, 14:00, 18:00) with --mock --limit 3. Auto-deliver after each run. Log metrics via log-pipeline-metrics.ts."
+      "status": "done",
+      "rationale": "Pipeline only runs manually. Add PM2 cron to run pipeline 4x/day (06:00, 10:00, 14:00, 18:00) with --mock --limit 3. Auto-deliver after each run. Log metrics via log-pipeline-metrics.ts.",
+      "_note": "pipeline-cron.ts created. PM2 cron 4x/day. Tested OK."
     },
     {
       "sprint": 533,

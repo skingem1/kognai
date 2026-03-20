@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-532",
+  "title": "PIPELINE — Auto-run pipeline on PM2 cron (4x/day) + metrics logging",
+  "description": "Created pipeline-cron.ts: chains pipeline → auto-deliver → metrics log with Telegram notifications. PM2 cron at 06/10/14/18. Tested with --limit 1: full chain OK.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "532-01",
+      "title": "Create pipeline-cron.ts wrapper script",
+      "type": "feature",
+      "task_type": "pipeline",
+      "task_target": "scripts/scs001/pipeline-cron.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-532",
+      "deliverables": { "code": ["scripts/scs001/pipeline-cron.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "532-02",
+      "title": "Add PM2 cron entry for kognai-pipeline-auto",
+      "type": "feature",
+      "task_type": "pipeline",
+      "task_target": "ecosystem.config.js",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-532",
+      "deliverables": { "code": ["ecosystem.config.js"], "tests": [], "docs": [] }
+    }
+  ]
+}
