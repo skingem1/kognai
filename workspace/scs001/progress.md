@@ -3301,3 +3301,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (FP-007 file >3500 lines)
 - Issues: None.
 - Timestamp: 2026-03-20T19:50:00Z
+
+## Sprint 387 — /history — Posting History Timeline (Direct Write)
+- Status: PASS
+- Commit: 2e80c19
+- Files created: workspace/sprints/sprint-387.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 387-01: Added /history command. Shows posting activity timeline with visual bars per day, view/pace trends (first-half vs second-half comparison), gate projection with pace-based ETA, top 3 performers by views. Updated /help + switch router.
+- Validation: tsc --noEmit PASS
+- Swarm used: no (FP-007 file >4000 lines)
+- Issues: MEMORY.md update blocked by file permissions.
+- Timestamp: 2026-03-20T20:00:00Z
