@@ -1815,6 +1815,47 @@ async function cmdPostNow(chatId: string): Promise<void> {
   }
 }
 
+// ─── Sprint 367: /viral — trending topics for content strategy ────────────
+
+function cmdViral(): string {
+  const topicsPath = path.join(ROOT, 'workspace', 'scs001', 'viral-topics.json');
+  if (!fs.existsSync(topicsPath)) {
+    return '⚠️ No viral topics yet — run /refresh first.';
+  }
+
+  let topics: string[] = [];
+  try {
+    const data = JSON.parse(fs.readFileSync(topicsPath, 'utf-8'));
+    topics = (Array.isArray(data.topics) ? data.topics : []).slice(0, 10);
+  } catch {
+    return '⚠️ Failed to read viral-topics.json.';
+  }
+
+  if (topics.length === 0) return '⚠️ No viral topics yet — run /refresh first.';
+
+  let freshness = '?';
+  try {
+    const stat = fs.statSync(topicsPath);
+    const ageMs = Date.now() - stat.mtimeMs;
+    const ageH = Math.floor(ageMs / 3600000);
+    if (ageH === 0) freshness = `${Math.floor(ageMs / 60000)}m ago`;
+    else if (ageH < 24) freshness = `${ageH}h ago`;
+    else freshness = `${Math.floor(ageH / 24)}d ago`;
+  } catch { /* ignore */ }
+
+  const lines: string[] = [
+    `🔥 *Viral Topics* — top ${topics.length} trending`,
+    `_(Updated: ${freshness})_`,
+    '',
+  ];
+  topics.forEach((t, i) => lines.push(`${i + 1}. ${t}`));
+  lines.push('');
+  lines.push('💡 Use these for your next videos.');
+  lines.push('→ /postnow for ready content | /queue for queue');
+
+  return lines.join('\n');
+}
+
 // ─── Sprint 366: /lastrun — pipeline execution summary ────────────────────
 
 function cmdLastRun(): string {
@@ -2284,6 +2325,7 @@ function cmdHelp(): string {
     `/postnow    — Send best video for immediate posting\n` +
     `/revenue    — Revenue dashboard + financial gates\n` +
     `/lastrun    — Latest pipeline run details\n` +
+    `/viral      — Trending topics for content\n` +
     `/help      — This message`
   );
 }
@@ -2409,6 +2451,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/pace':        response = cmdPace();               break;
     case '/revenue':     response = cmdRevenue();            break;
     case '/lastrun':     response = cmdLastRun();            break;
+    case '/viral':       response = cmdViral();              break;
     case '/help':        response = cmdHelp();        break;
     default:
       response = `Unknown command: \`${cmdName}\`\n\n${cmdHelp()}`;

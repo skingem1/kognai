@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-367",
+  "title": "/viral — trending topics for content strategy",
+  "description": "Port /viral command to main Telegram bot. Shows top 10 viral topics from viral-topics.json with freshness indicator.",
+  "source": "auto — content strategy needs trending topics visibility",
+  "tasks": [
+    {
+      "id": "367-01",
+      "title": "Add /viral command to scripts/telegram-bot.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-367",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
