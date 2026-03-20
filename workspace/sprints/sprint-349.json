@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-349",
+  "title": "/quickstart — zero-friction first post guide with best video + caption",
+  "description": "Operator types /quickstart to get: the single best video (by viral score), its exact file path, a ready-to-paste TikTok caption, and step-by-step instructions. Goal: first post in 5 minutes.",
+  "source": "auto — operator has 368 videos but 0 posted, need to eliminate friction for first post",
+  "tasks": [
+    {
+      "id": "349-01",
+      "title": "Add /quickstart command to telegram-bot.ts — single best video + caption + step-by-step",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-349",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

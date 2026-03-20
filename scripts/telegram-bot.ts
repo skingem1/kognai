@@ -1493,6 +1493,116 @@ function cmdAudit(): string {
   return lines.join('\n');
 }
 
+// Sprint 349: /quickstart — zero-friction first post guide
+function cmdQuickStart(): string {
+  const expPath = path.join(ROOT, 'workspace', 'scs001', 'experiments.jsonl');
+  const ledgerPath = path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl');
+  const mpPath = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
+  const topicsPath = path.join(ROOT, 'workspace', 'scs001', 'viral-topics.json');
+  const scsDir = path.join(ROOT, 'workspace', 'scs001');
+
+  // Load posted IDs
+  const postedIds = new Set<string>();
+  if (fs.existsSync(mpPath)) {
+    for (const l of fs.readFileSync(mpPath, 'utf-8').split('\n').filter((l: string) => l.trim())) {
+      try { const p = JSON.parse(l); if (p.video_id) postedIds.add(p.video_id); } catch {}
+    }
+  }
+
+  // Load experiment scores
+  const scores = new Map<string, number>();
+  const expData = new Map<string, { speaker: string; hook: string }>();
+  if (fs.existsSync(expPath)) {
+    for (const l of fs.readFileSync(expPath, 'utf-8').split('\n').filter((l: string) => l.trim())) {
+      try {
+        const e = JSON.parse(l);
+        const id = e.clip_id ?? e.video_id;
+        if (id) {
+          scores.set(id, e.partial_viral_score ?? 0);
+          expData.set(id, { speaker: e.speaker ?? 'unknown', hook: e.hook_formula ?? '' });
+        }
+      } catch {}
+    }
+  }
+
+  // Find best unposted video with captioned mp4
+  const candidates: Array<{ id: string; score: number; mp4: string }> = [];
+  if (fs.existsSync(ledgerPath)) {
+    const runDirs = fs.existsSync(scsDir)
+      ? fs.readdirSync(scsDir).filter((d: string) => d.startsWith('run-'))
+      : [];
+    for (const l of fs.readFileSync(ledgerPath, 'utf-8').split('\n').filter((l: string) => l.trim())) {
+      try {
+        const e = JSON.parse(l);
+        if (!e.video_id || postedIds.has(e.video_id)) continue;
+        for (const dir of runDirs) {
+          const mp4 = path.join(scsDir, dir, 'caption', `${e.video_id}-captioned.mp4`);
+          if (fs.existsSync(mp4)) {
+            candidates.push({ id: e.video_id, score: scores.get(e.video_id) ?? 0, mp4 });
+            break;
+          }
+        }
+      } catch {}
+    }
+  }
+  candidates.sort((a, b) => b.score - a.score);
+
+  if (candidates.length === 0) {
+    return '❌ No captioned videos found. Run /refresh to generate content first.';
+  }
+
+  const best = candidates[0];
+  const exp = expData.get(best.id);
+
+  // Build caption
+  let hashtags = ['#fyp', '#viral', '#learnontiktok', '#ai', '#tech'];
+  if (fs.existsSync(topicsPath)) {
+    try {
+      const vt = JSON.parse(fs.readFileSync(topicsPath, 'utf-8'));
+      const topicTags = (vt.topics ?? []).slice(0, 4).map((t: string) => '#' + t.replace(/\s+/g, ''));
+      hashtags = [...topicTags, ...hashtags].slice(0, 8);
+    } catch {}
+  }
+  const captionLines: string[] = [];
+  if (exp?.speaker && exp.speaker !== 'unknown') captionLines.push(exp.speaker);
+  if (exp?.hook) captionLines.push(exp.hook);
+  captionLines.push('');
+  captionLines.push(hashtags.join(' '));
+  const caption = captionLines.join('\n');
+
+  const lines: string[] = [
+    '🚀 *Quick Start — Post Your First Video*',
+    '',
+    `🎬 Best video: \`${best.id}\``,
+    `📊 Viral score: *${Math.round(best.score * 100)}%*`,
+    exp?.speaker ? `🎙️ ${exp.speaker}` : '',
+    '',
+    '*Step 1:* Find the video file:',
+    `\`${best.mp4}\``,
+    '',
+    '*Step 2:* Copy this caption for TikTok:',
+  ].filter(Boolean);
+
+  // Add caption as code block
+  lines.push('```');
+  lines.push(caption);
+  lines.push('```');
+
+  lines.push('');
+  lines.push('*Step 3:* Upload to TikTok:');
+  lines.push('  1. Open TikTok app → tap +');
+  lines.push('  2. Upload the video file');
+  lines.push('  3. Paste the caption');
+  lines.push('  4. Post!');
+  lines.push('');
+  lines.push('*Step 4:* After posting, run:');
+  lines.push(`\`/record ${best.id} 0\``);
+  lines.push('');
+  lines.push(`_${candidates.length} more videos ready after this one!_`);
+
+  return lines.join('\n');
+}
+
 function cmdHelp(): string {
   return (
     `*Kognai Bot Commands*\n\n` +
@@ -1519,6 +1629,7 @@ function cmdHelp(): string {
     `/calendar  — 7-day content posting plan\n` +
     `/golive    — Phase 1 go-live readiness check\n` +
     `/audit     — Content quality audit + recommendations\n` +
+    `/quickstart — Post your first video in 5 minutes\n` +
     `/help      — This message`
   );
 }
@@ -1621,8 +1732,9 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/today':     response = cmdToday();  break;
     case '/calendar':  response = cmdCalendar(); break;
     case '/golive':    response = cmdGoLive();  break;
-    case '/audit':     response = cmdAudit();  break;
-    case '/help':      response = cmdHelp();   break;
+    case '/audit':      response = cmdAudit();      break;
+    case '/quickstart': response = cmdQuickStart(); break;
+    case '/help':       response = cmdHelp();       break;
     default:
       response = `Unknown command: \`${cmdName}\`\n\n${cmdHelp()}`;
   }
