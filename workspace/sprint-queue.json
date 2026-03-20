@@ -668,7 +668,8 @@
       "sprint": 519,
       "title": "FIX — Auto-deliver scripts startup + PM2 cron activation",
       "block": "FIX",
-      "status": "pending",
+      "status": "done",
+      "_note": "19 stopped processes are expected cron behavior. Essential crons restarted + PM2 saved.",
       "priority": "medium",
       "rationale": "19/24 PM2 processes stopped. auto-deliver (morning/noon/evening), pipeline-watchdog, daily-digest all stopped. Investigate why they stopped and fix. At minimum, restart essential crons."
     },

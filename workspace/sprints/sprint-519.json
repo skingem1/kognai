@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-519",
+  "title": "FIX — Auto-deliver scripts startup + PM2 cron activation",
+  "description": "Investigated 19 stopped PM2 processes. All are cron-style (run once, exit, wait for next cron_restart). This is expected behavior. Restarted essential crons. PM2 state saved.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "519-01",
+      "title": "Investigate stopped PM2 processes",
+      "type": "investigation",
+      "task_type": "infra",
+      "task_target": "ecosystem.config.js",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-519",
+      "deliverables": { "code": [], "tests": [], "docs": [] }
+    },
+    {
+      "id": "519-02",
+      "title": "Restart essential crons + save PM2 state",
+      "type": "fix",
+      "task_type": "infra",
+      "task_target": "pm2",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-519",
+      "deliverables": { "code": [], "tests": [], "docs": [] }
+    }
+  ]
+}
