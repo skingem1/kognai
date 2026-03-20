@@ -4017,3 +4017,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (new scripts + bot command registration)
 - Issues: Music files not yet generated — operator needs to run: npx ts-node scripts/scs001/generate-background-music.ts
 - Timestamp: 2026-03-20T23:15:00Z
+
+## Sprint 446 — Wire Music Selector into Audio Mixer (Direct Write)
+- Status: PASS
+- Commit: afeffc4
+- Files created: workspace/sprints/sprint-446.json
+- Files modified: scripts/scs001/audio-mixer.ts
+- Tasks completed:
+  - 446-01: Imported music-selector.ts in audio-mixer.ts. Auto-selects background music track based on hook_formula_used when backgroundMusicPath not explicitly provided. Pipeline runs now get mood-matched music: tech-ambient for curiosity/secret/urgency, lo-fi-pulse for story/question, calm-pad for authority/proof.
+- Validation: tsc --noEmit PASS
+- Swarm used: no (small import + config change)
+- Issues: Operator must first run generate-background-music.ts to create the mp3 files.
+- Timestamp: 2026-03-20T23:30:00Z
