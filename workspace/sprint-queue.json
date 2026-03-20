@@ -1436,6 +1436,14 @@
       "status": "done",
       "priority": "critical",
       "rationale": "Multiformat pipeline + inventory scan added to 4x/day PM2 cron. Gate status in notifications."
+    },
+    {
+      "sprint": 607,
+      "title": "GATE-PUSH — Auto-deliver multiformat videos + daily digest inventory",
+      "block": "GATE-PUSH",
+      "status": "done",
+      "priority": "critical",
+      "rationale": "Auto-deliver now finds multiformat videos. Daily digest shows inventory stats."
     }
   ]
 }
