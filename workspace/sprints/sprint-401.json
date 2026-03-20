@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-401",
+  "title": "/session — interactive batch posting flow",
+  "description": "Add /session command that starts an interactive posting flow. Sends one video at a time, operator types /done to record and get next. /endsession to finish. Reduces posting friction from multi-command to simple done-loop.",
+  "source": "auto — gate pressure 0/30 posts, 18d to Apr 7, reduce manual posting friction",
+  "tasks": [
+    {
+      "id": "401-01",
+      "title": "Add /session, /done, /endsession commands with state tracking",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-401",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
