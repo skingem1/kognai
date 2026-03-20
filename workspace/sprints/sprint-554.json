@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-554",
+  "title": "CONTENT — Pipeline cron test: 5 produced, 1 delivered (99 total)",
+  "description": "Ran pipeline-cron.ts twice. First run: 5 produced, 1 delivered, cleanup OK. Second run: pipeline timeout (resource contention). 99 total auto-delivered.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "554-01",
+      "title": "Run pipeline-cron with produce + deliver + cleanup",
+      "type": "feature",
+      "task_type": "content",
+      "task_target": "scripts/scs001/pipeline-cron.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-554",
+      "deliverables": { "code": [], "tests": [], "docs": [] }
+    }
+  ]
+}

@@ -1,134 +1,134 @@
 {
-  "run_id": "scs001-2026-03-20T18-02-53-585Z",
+  "run_id": "scs001-2026-03-20T18-18-47-192Z",
   "mode": "live",
-  "started_at": "2026-03-20T18:02:53.585Z",
-  "completed_at": "2026-03-20T18:11:51.931Z",
-  "total_elapsed_ms": 538346,
+  "started_at": "2026-03-20T18:18:47.192Z",
+  "completed_at": "2026-03-20T18:23:37.076Z",
+  "total_elapsed_ms": 289884,
   "stages": [
     {
       "stage": "1-trend",
       "agent": "TrendAgent",
       "count": 1,
-      "elapsed_ms": 385,
+      "elapsed_ms": 427,
       "status": "ok"
     },
     {
       "stage": "2-discovery",
       "agent": "DiscoveryAgent",
       "count": 1,
-      "elapsed_ms": 38,
+      "elapsed_ms": 28,
       "status": "ok"
     },
     {
       "stage": "2.5-viral-tiktok",
       "agent": "ViralTikTokDownloader",
       "count": 0,
-      "elapsed_ms": 1141,
+      "elapsed_ms": 1055,
       "status": "empty"
     },
     {
       "stage": "3-clip-detection",
       "agent": "ClipDetectionAgent",
       "count": 4,
-      "elapsed_ms": 94761,
+      "elapsed_ms": 20239,
       "status": "ok"
     },
     {
       "stage": "4-insight",
       "agent": "InsightAgent (live)",
       "count": 3,
-      "elapsed_ms": 86679,
+      "elapsed_ms": 45154,
       "status": "ok"
     },
     {
       "stage": "5-script",
       "agent": "ScriptAgent",
       "count": 3,
-      "elapsed_ms": 343753,
+      "elapsed_ms": 216958,
       "status": "ok"
     },
     {
       "stage": "5.5-score",
       "agent": "ScriptScorer",
-      "count": 2,
-      "elapsed_ms": 7,
+      "count": 3,
+      "elapsed_ms": 3,
       "status": "ok"
     },
     {
       "stage": "6-validate",
       "agent": "ScriptValidator",
-      "count": 2,
-      "elapsed_ms": 1,
+      "count": 1,
+      "elapsed_ms": 3,
       "status": "ok"
     },
     {
       "stage": "6-editing",
       "agent": "EditingAgent",
-      "count": 2,
-      "elapsed_ms": 1794,
+      "count": 1,
+      "elapsed_ms": 902,
       "status": "ok"
     },
     {
       "stage": "6.5-avatar",
       "agent": "AvatarPresenter",
       "count": 0,
-      "elapsed_ms": 1823,
+      "elapsed_ms": 1035,
       "status": "empty"
     },
     {
       "stage": "6.8-tts-mix",
       "agent": "TTS+AudioMix",
-      "count": 2,
-      "elapsed_ms": 3240,
+      "count": 1,
+      "elapsed_ms": 1612,
       "status": "ok"
     },
     {
       "stage": "7-caption",
       "agent": "CaptionAgent",
-      "count": 2,
-      "elapsed_ms": 51,
+      "count": 1,
+      "elapsed_ms": 25,
       "status": "ok"
     },
     {
       "stage": "7.5-animated-captions",
       "agent": "JSON2Video",
       "count": 0,
-      "elapsed_ms": 4236,
+      "elapsed_ms": 1884,
       "status": "empty"
     },
     {
       "stage": "8-qc",
       "agent": "QCAgent",
-      "count": 2,
-      "elapsed_ms": 3,
+      "count": 1,
+      "elapsed_ms": 1,
       "status": "ok"
     },
     {
       "stage": "9-experiment",
       "agent": "ExperimentTracker",
-      "count": 2,
-      "elapsed_ms": 1,
+      "count": 1,
+      "elapsed_ms": 2,
       "status": "ok"
     },
     {
       "stage": "9-publishing",
       "agent": "PublishingAgent",
       "count": 1,
-      "elapsed_ms": 424,
+      "elapsed_ms": 545,
       "status": "ok"
     },
     {
       "stage": "10-analytics",
       "agent": "AnalyticsAgent",
       "count": 1,
-      "elapsed_ms": 0,
+      "elapsed_ms": 1,
       "status": "ok"
     },
     {
       "stage": "11-flywheel",
       "agent": "ContentFlywheelAgent",
       "count": 4,
-      "elapsed_ms": 1,
+      "elapsed_ms": 2,
       "status": "ok"
     }
   ],
@@ -137,14 +137,14 @@
     "clips_discovered": 1,
     "clips_qualified": 3,
     "insights_generated": 3,
-    "scripts_produced": 3,
+    "scripts_produced": 1,
     "scripts_scored": 3,
-    "scripts_filtered": 1,
-    "scripts_validation_skipped": 0,
-    "videos_edited": 2,
-    "videos_captioned": 2,
+    "scripts_filtered": 0,
+    "scripts_validation_skipped": 2,
+    "videos_edited": 1,
+    "videos_captioned": 1,
     "qc_passed": 1,
-    "qc_failed": 1,
+    "qc_failed": 0,
     "published": 1,
     "viral": 1,
     "performing": 0,
