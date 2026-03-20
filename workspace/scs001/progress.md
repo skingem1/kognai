@@ -3421,3 +3421,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (FP-007 file >4600 lines)
 - Issues: None.
 - Timestamp: 2026-03-20T21:35:00Z
+
+## Sprint 397 — Content Calendar Diversity (Direct Write)
+- Status: PASS
+- Commit: f5413e8
+- Files created: workspace/sprints/sprint-397.json
+- Files modified: scripts/scs001/generate-content-calendar.ts
+- Tasks completed:
+  - 397-01: Replaced naive sequential video assignment with diversity-aware greedy scheduling. Hard rule: no same-speaker same-day. Soft preference: different hook formulas per day. Fallback relaxes constraints when no alternatives exist. Dry-run verified: 267 videos, 38 assigned across 19 days, zero same-day speaker conflicts.
+- Validation: tsc --noEmit PASS + dry-run PASS
+- Swarm used: no (pipeline script, needed context of full codebase)
+- Issues: None.
+- Timestamp: 2026-03-20T21:45:00Z
