@@ -3752,3 +3752,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (pipeline runner modification)
 - Issues: None.
 - Timestamp: 2026-03-20T15:05:00Z
+
+## Sprint 424 — Shared Engagement Caption Module (Direct Write)
+- Status: PASS
+- Commit: c2e53b0
+- Files created: scripts/scs001/engagement-caption.ts, workspace/sprints/sprint-424.json
+- Files modified: scripts/telegram-bot.ts, scripts/scs001/posting-auto-deliver.ts, scripts/posting-reminder.ts, scripts/scs001/morning-caption-push.ts
+- Tasks completed:
+  - 424-01: Extracted HOOK_TEMPLATES, ENGAGEMENT_CTAS, NICHE_TAGS, and buildEngagementCaption into shared module. Updated all 4 consumers to import from it. Net -18 lines (131 added, 149 removed).
+- Validation: tsc --noEmit PASS on all 5 files
+- Swarm used: no (multi-file refactor)
+- Issues: None.
+- Timestamp: 2026-03-20T15:20:00Z
