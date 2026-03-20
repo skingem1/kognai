@@ -45,7 +45,9 @@ async function main(): Promise<void> {
     const startTime = Date.now();
 
     try {
-      const cmd = `npx ts-node --transpile-only scripts/scs001/run-multiformat-pipeline.ts${dryRun ? ' --dry-run' : ''}`;
+      // Sprint 605: Use --force-refresh on first run to clear stale dedup cache
+      const forceFlag = i === 1 ? ' --force-refresh' : '';
+      const cmd = `npx ts-node --transpile-only scripts/scs001/run-multiformat-pipeline.ts${dryRun ? ' --dry-run' : ''}${forceFlag}`;
       const output = execSync(cmd, {
         cwd: ROOT,
         timeout: 120000, // 2 min per run

@@ -3,9 +3,9 @@
  *
  * Generates scripts for 3 video format types:
  *
- *   Type 1 (EXPLAINER) — Mono avatar, <15s
+ *   Type 1 (EXPLAINER) — Mono avatar, ~25s
  *     Single presenter explains a new tech/protocol/tool.
- *     Structure: Hook (2s) → Explain (8s) → Takeaway (3s) → CTA (2s)
+ *     Structure: Hook (3s) → Context (3s) → Explain (5s) → Detail (4s) → Impact (4s) → Takeaway (3s) → CTA (3s)
  *
  *   Type 2 (DEBATE) — 2 avatars split-screen, <30s
  *     Two agents defend competing technologies.
@@ -103,59 +103,71 @@ async function callOllama(prompt: string, maxTokens: number = 800): Promise<stri
   }
 }
 
-// ── Format 1: Explainer (Mono Avatar, <15s) ───────────
+// ── Format 1: Explainer (Mono Avatar, ~25s) ───────────
+// Sprint 605: Extended from 12s to 25s for better TikTok performance
 
 async function generateExplainerScript(topic: TopicBrief): Promise<VideoScript> {
   const avatar = AVATARS.NOVA;
 
   // Try LLM first
-  const prompt = `You are ${avatar.name}, an AI tech analyst creating a 12-second TikTok video.
+  const prompt = `You are ${avatar.name}, an AI tech analyst creating a 25-second TikTok video.
 Topic: ${topic.title}
 Context: ${topic.summary}
 
-Write a punchy 4-line script (each line is one shot):
-1. HOOK (2 sec): Attention-grabbing opener about this topic
-2. EXPLAIN (5 sec): What it is and why it matters — one clear sentence
-3. TAKEAWAY (3 sec): The key insight or implication
-4. CTA (2 sec): End with a question or call to follow
+Write a punchy 7-line script (each line is one shot):
+1. HOOK (3 sec): Attention-grabbing opener — make them stop scrolling
+2. CONTEXT (3 sec): Why this matters RIGHT NOW
+3. EXPLAIN (5 sec): What it is — one clear, specific sentence
+4. DETAIL (4 sec): The most interesting technical detail or feature
+5. IMPACT (4 sec): Who this affects and how — be specific
+6. TAKEAWAY (3 sec): The key insight they should remember
+7. CTA (3 sec): End with a question or call to follow
 
 Rules:
-- Total speaking time: 12 seconds max
-- Each line must be under 20 words
+- Total speaking time: 25 seconds max
+- Each line must be under 25 words
 - Be direct, conversational, no jargon
 - Sound like a knowledgeable friend, not a lecturer
 - No emojis in the script text
+- Reference specific names, numbers, or features when possible
 
-Output ONLY the 4 lines, one per line, no labels or numbers.`;
+Output ONLY the 7 lines, one per line, no labels or numbers.`;
 
-  const llmOutput = await callOllama(prompt, 300);
+  const llmOutput = await callOllama(prompt, 500);
   let lines: DialogueLine[];
   let llmUsed = false;
 
-  if (llmOutput && llmOutput.split('\n').filter(l => l.trim()).length >= 3) {
-    const rawLines = llmOutput.split('\n').filter(l => l.trim()).slice(0, 4);
+  if (llmOutput && llmOutput.split('\n').filter(l => l.trim()).length >= 5) {
+    const rawLines = llmOutput.split('\n').filter(l => l.trim()).slice(0, 7);
     const timings = [
-      { start_s: 0, end_s: 2, emotion: 'excited' as const },
-      { start_s: 2, end_s: 7, emotion: 'neutral' as const },
-      { start_s: 7, end_s: 10, emotion: 'thoughtful' as const },
-      { start_s: 10, end_s: 12, emotion: 'passionate' as const },
+      { start_s: 0, end_s: 3, emotion: 'excited' as const },
+      { start_s: 3, end_s: 6, emotion: 'neutral' as const },
+      { start_s: 6, end_s: 11, emotion: 'neutral' as const },
+      { start_s: 11, end_s: 15, emotion: 'thoughtful' as const },
+      { start_s: 15, end_s: 19, emotion: 'passionate' as const },
+      { start_s: 19, end_s: 22, emotion: 'thoughtful' as const },
+      { start_s: 22, end_s: 25, emotion: 'passionate' as const },
     ];
 
     lines = rawLines.map((text, i) => ({
       speaker: avatar.name,
       avatar_id: avatar.id,
-      text: text.replace(/^\d+[.)]\s*/, '').replace(/^(HOOK|EXPLAIN|TAKEAWAY|CTA)[:\s]*/i, '').trim(),
-      ...timings[i],
+      text: text.replace(/^\d+[.)]\s*/, '').replace(/^(HOOK|CONTEXT|EXPLAIN|DETAIL|IMPACT|TAKEAWAY|CTA)[:\s]*/i, '').trim(),
+      ...(timings[i] ?? { start_s: i * 3, end_s: (i + 1) * 3, emotion: 'neutral' as const }),
     }));
     llmUsed = true;
   } else {
     // Deterministic fallback
     const topicShort = topic.title.slice(0, 50);
+    const summaryShort = topic.summary.slice(0, 80);
     lines = [
-      { speaker: avatar.name, avatar_id: avatar.id, text: `You need to know about ${topicShort}.`, start_s: 0, end_s: 2, emotion: 'excited' },
-      { speaker: avatar.name, avatar_id: avatar.id, text: `${topic.summary.slice(0, 80)}.`, start_s: 2, end_s: 7, emotion: 'neutral' },
-      { speaker: avatar.name, avatar_id: avatar.id, text: `This could change how we build AI systems.`, start_s: 7, end_s: 10, emotion: 'thoughtful' },
-      { speaker: avatar.name, avatar_id: avatar.id, text: `Follow for more AI insights.`, start_s: 10, end_s: 12, emotion: 'passionate' },
+      { speaker: avatar.name, avatar_id: avatar.id, text: `Stop. You need to hear about ${topicShort}.`, start_s: 0, end_s: 3, emotion: 'excited' },
+      { speaker: avatar.name, avatar_id: avatar.id, text: `This just dropped and it changes everything.`, start_s: 3, end_s: 6, emotion: 'neutral' },
+      { speaker: avatar.name, avatar_id: avatar.id, text: `${summaryShort}.`, start_s: 6, end_s: 11, emotion: 'neutral' },
+      { speaker: avatar.name, avatar_id: avatar.id, text: `The key feature here is the speed and efficiency.`, start_s: 11, end_s: 15, emotion: 'thoughtful' },
+      { speaker: avatar.name, avatar_id: avatar.id, text: `If you build anything with AI, this affects you directly.`, start_s: 15, end_s: 19, emotion: 'passionate' },
+      { speaker: avatar.name, avatar_id: avatar.id, text: `Remember this name. It will be everywhere soon.`, start_s: 19, end_s: 22, emotion: 'thoughtful' },
+      { speaker: avatar.name, avatar_id: avatar.id, text: `Follow for more AI insights every single day.`, start_s: 22, end_s: 25, emotion: 'passionate' },
     ];
   }
 
@@ -165,7 +177,7 @@ Output ONLY the 4 lines, one per line, no labels or numbers.`;
     format: 'explainer',
     title: topic.title,
     lines,
-    total_duration_s: 12,
+    total_duration_s: 25,
     caption_text: topic.title,
     hashtags: ['#AI', '#Tech', '#Innovation', ...topic.keywords.slice(0, 3).map(k => '#' + k)],
     generated_at: new Date().toISOString(),

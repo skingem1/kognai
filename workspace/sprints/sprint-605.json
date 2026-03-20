@@ -1,0 +1,41 @@
+{
+  "sprint_id": "sprint-605",
+  "title": "GATE-PUSH — Extended explainer format (25s) + topic force-refresh",
+  "description": "Extend explainer video format from 12s to 25s with 7-line scripts for better TikTok engagement. Add --force-refresh flag to topic radar and pipeline for topic cache rotation. Critical for Apr 7 gate content quality.",
+  "source": "gate-urgency",
+  "tasks": [
+    {
+      "id": "605-01",
+      "title": "Extend explainer script template from 12s to 25s (7 lines)",
+      "type": "enhancement",
+      "task_type": "gate-push",
+      "task_target": "scripts/scs001/multiformat-scriptgen.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "critical",
+      "sprint_id": "sprint-605"
+    },
+    {
+      "id": "605-02",
+      "title": "Add --force-refresh flag to topic radar and pipeline",
+      "type": "feature",
+      "task_type": "gate-push",
+      "task_target": "scripts/scs001/topic-radar.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "critical",
+      "sprint_id": "sprint-605"
+    },
+    {
+      "id": "605-03",
+      "title": "Wire force-refresh into batch-produce.ts (first run clears cache)",
+      "type": "enhancement",
+      "task_type": "gate-push",
+      "task_target": "scripts/scs001/batch-produce.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-605"
+    }
+  ]
+}

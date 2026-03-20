@@ -12,7 +12,7 @@
  *   7. Output         → Final videos ready for posting
  *
  * Usage:
- *   npx ts-node scripts/scs001/run-multiformat-pipeline.ts [--dry-run] [--format explainer|debate|vision]
+ *   npx ts-node scripts/scs001/run-multiformat-pipeline.ts [--dry-run] [--force-refresh] [--format explainer|debate|vision]
  *
  * Env vars:
  *   CAPTIONS_API_KEY   — Captions.ai API key (required for real avatars)
@@ -229,8 +229,9 @@ async function runPipeline(options: {
   dryRun?: boolean;
   formatFilter?: VideoFormat;
   maxVideos?: number;
+  forceRefresh?: boolean;
 }): Promise<PipelineRunResult> {
-  const { dryRun = false, formatFilter, maxVideos = 6 } = options;
+  const { dryRun = false, formatFilter, maxVideos = 6, forceRefresh = false } = options;
   const startedAt = new Date().toISOString();
   const runId = `mf-${new Date().toISOString().slice(0, 13).replace(/[:-]/g, '')}-${Math.random().toString(36).slice(2, 6)}`;
 
@@ -244,7 +245,7 @@ async function runPipeline(options: {
 
   // ── Stage 1: Topic Radar ──
   console.log('📡 Stage 1: Topic Radar — scanning real-world sources...');
-  const radar = new TopicRadar();
+  const radar = new TopicRadar({ forceRefresh });
   const radarResult = await radar.scan();
   let topics = radarResult.topics;
 
@@ -294,6 +295,7 @@ async function runPipeline(options: {
     const compositorInput = {
       script,
       avatar_clips: clips,
+      tts_audio: ttsSegments.map(s => s.audio_path),
       output_dir: join(runDir, 'output'),
     };
     const compResult = composite(compositorInput);
@@ -369,11 +371,13 @@ async function runPipeline(options: {
 if (require.main === module) {
   const args = process.argv.slice(2);
   const dryRun = args.includes('--dry-run');
+  const forceRefresh = args.includes('--force-refresh');
   const formatArg = args.find(a => a.startsWith('--format='))?.split('=')[1] as VideoFormat | undefined;
   const maxArg = args.find(a => a.startsWith('--max='))?.split('=')[1];
 
   runPipeline({
     dryRun,
+    forceRefresh,
     formatFilter: formatArg,
     maxVideos: maxArg ? parseInt(maxArg) : 6,
   }).then(result => {

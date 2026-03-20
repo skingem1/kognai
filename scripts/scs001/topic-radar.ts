@@ -398,10 +398,19 @@ async function fetchGoogleTrends(): Promise<TopicBrief[]> {
 
 export class TopicRadar {
   private seen: Set<string>;
+  private forceRefresh: boolean;
 
-  constructor() {
+  constructor(opts?: { forceRefresh?: boolean }) {
     mkdirSync(OUT_DIR, { recursive: true });
-    this.seen = loadSeenTopics();
+    this.forceRefresh = opts?.forceRefresh ?? false;
+    if (this.forceRefresh) {
+      // Sprint 605: Clear dedup cache to allow topic re-discovery
+      console.log('[TopicRadar] Force refresh — clearing seen topics cache');
+      this.seen = new Set();
+      saveSeenTopics(this.seen);
+    } else {
+      this.seen = loadSeenTopics();
+    }
   }
 
   async scan(): Promise<TopicRadarResult> {
@@ -490,7 +499,8 @@ export class TopicRadar {
 // ── CLI Runner ─────────────────────────────────────────
 
 if (require.main === module) {
-  const radar = new TopicRadar();
+  const forceRefresh = process.argv.includes('--force-refresh');
+  const radar = new TopicRadar({ forceRefresh });
   radar.scan().then(result => {
     console.log('\n=== Topic Radar Results ===');
     for (const t of result.topics) {
