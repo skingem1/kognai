@@ -1263,8 +1263,9 @@
       "title": "CONTENT — Final batch: 5 more videos + state commit",
       "block": "CONTENT",
       "priority": "high",
-      "status": "pending",
-      "rationale": "Last batch this session. Run pipeline, commit all state."
+      "status": "done",
+      "rationale": "Last batch this session. Run pipeline, commit all state.",
+      "_note": "5 more videos. 208+ produced total. Session complete."
     }
   ]
 }

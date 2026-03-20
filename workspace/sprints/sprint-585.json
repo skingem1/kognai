@@ -1,0 +1,24 @@
+{
+  "sprint_id": "sprint-585",
+  "title": "CONTENT \u2014 Final batch: 5 more videos (208+ produced)",
+  "description": "Final pipeline-cron run. 5 more videos. 208+ total produced. Session complete.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "585-01",
+      "title": "Run pipeline-cron",
+      "type": "feature",
+      "task_type": "content",
+      "task_target": "scripts/scs001/pipeline-cron.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-585",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ]
+}
