@@ -3608,3 +3608,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (algorithmic logic in large file)
 - Issues: None.
 - Timestamp: 2026-03-21T00:30:00Z
+
+## Sprint 412 — Achiri /memory Command (Direct Write)
+- Status: PASS
+- Commit: 824030d
+- Files created: workspace/sprints/sprint-412.json
+- Files modified: agents/achiri/telegram-bot.ts
+- Tasks completed:
+  - 412-01: Added /memory command to Achiri Telegram bot. Shows user profile (language, dialect, formality, interests, message count, timestamps), conversation summary, and data clear option (/memory clear). Imports extractUserProfile and loadSummary. Updated /help text. Builds trust through data transparency.
+- Validation: Pre-existing TS type errors (derja-profiler es6 flag, memory-search downlevelIteration) — not from this sprint. Runtime works via ts-node.
+- Swarm used: no (multi-module integration)
+- Issues: None.
+- Timestamp: 2026-03-21T00:40:00Z
