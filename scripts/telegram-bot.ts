@@ -3567,6 +3567,7 @@ function cmdHelp(): string {
     `/unarchive — Restore an archived video\n` +
     `/note      — Add notes to a video\n` +
     `/pickup    — One-tap posting: best video + caption + buttons\n` +
+    `/status    — Unified dashboard: gate + queue + streak + next\n` +
     `/help      — This message`
   );
 }
@@ -4143,6 +4144,108 @@ function cmdFilmKit(): string {
   return lines.join('\n');
 }
 
+// ─── Sprint 395: /status — unified operator dashboard ───────────────────
+
+function cmdStatus(): string {
+  const posts = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
+  const recordedIds = new Set(posts.map((e: any) => e.video_id).filter(Boolean));
+  const archivedIds = loadArchived();
+
+  // Gate stats
+  const now = new Date();
+  const GATE_DATE = new Date('2026-04-07T00:00:00Z');
+  const daysLeft = Math.max(0, Math.ceil((GATE_DATE.getTime() - now.getTime()) / 86_400_000));
+  const totalPosts = posts.length;
+  const target = 30;
+  const postsNeeded = Math.max(0, target - totalPosts);
+  const pct = Math.min(100, Math.round((totalPosts / target) * 100));
+
+  // Progress bar
+  const filled = Math.round(pct / 5);
+  const bar = '█'.repeat(filled) + '░'.repeat(20 - filled);
+
+  // Total views
+  const totalViews = posts.reduce((s: number, p: any) => s + (p.views ?? 0), 0);
+
+  // Queue stats
+  const viralScores = new Map<string, number>();
+  const expPath = path.join(ROOT, 'workspace', 'scs001', 'experiments.jsonl');
+  if (fs.existsSync(expPath)) {
+    try {
+      for (const line of fs.readFileSync(expPath, 'utf-8').split('\n')) {
+        if (!line.trim()) continue;
+        try {
+          const e = JSON.parse(line);
+          const id = e.clip_id ?? e.video_id;
+          if (id && e.partial_viral_score != null) viralScores.set(id, e.partial_viral_score);
+        } catch { /* skip */ }
+      }
+    } catch { /* skip */ }
+  }
+
+  const unposted = (ledger as any[])
+    .filter((e: any) => !recordedIds.has(e.video_id) && e.video_id && !archivedIds.has(e.video_id));
+  const readyCount = unposted.filter((e: any) => findCaptionedMp4(e.video_id) !== null).length;
+
+  // Streak
+  const dailyCounts: Record<string, number> = {};
+  for (const p of posts) {
+    const d = (p.posted_at ?? p.recorded_at ?? '').slice(0, 10);
+    if (d) dailyCounts[d] = (dailyCounts[d] ?? 0) + 1;
+  }
+  let streak = 0;
+  for (let i = 0; i < 30; i++) {
+    const d = new Date(now.getTime() - i * 86_400_000).toISOString().slice(0, 10);
+    if ((dailyCounts[d] ?? 0) > 0) streak++;
+    else break;
+  }
+
+  // Today's posts
+  const today = now.toISOString().slice(0, 10);
+  const todayPosts = dailyCounts[today] ?? 0;
+
+  // Pace
+  const paceNeeded = daysLeft > 0 ? postsNeeded / daysLeft : postsNeeded;
+
+  // Urgency indicator
+  let urgency: string;
+  if (postsNeeded === 0) urgency = '✅ GATE MET';
+  else if (paceNeeded <= 1) urgency = '🟢 On track';
+  else if (paceNeeded <= 2) urgency = '🟡 Needs attention';
+  else if (paceNeeded <= 3) urgency = '🟠 Behind pace';
+  else urgency = '🔴 CRITICAL';
+
+  // Next video preview
+  const sortedUnposted = unposted
+    .sort((a: any, b: any) => (viralScores.get(b.video_id) ?? -1) - (viralScores.get(a.video_id) ?? -1));
+  const nextReady = sortedUnposted.find((e: any) => findCaptionedMp4(e.video_id) !== null);
+  let nextLine = '⚠️ No videos ready — run /refresh';
+  if (nextReady) {
+    const vs = viralScores.get(nextReady.video_id);
+    const vsStr = vs != null ? ` · 🧬${vs}` : '';
+    nextLine = `\`${nextReady.video_id}\`${vsStr}`;
+  }
+
+  const lines = [
+    '📊 *Kognai Status Dashboard*',
+    '',
+    `\`[${bar}]\` ${pct}%`,
+    `*${totalPosts}/${target}* posts · *${totalViews}/500* views · *${daysLeft}d* left`,
+    `${urgency} · Pace needed: *${paceNeeded.toFixed(1)}/day*`,
+    '',
+    `📅 Today: *${todayPosts}* posted`,
+    `🔥 Streak: *${streak}* days`,
+    `📦 Queue: *${readyCount}* ready · ${unposted.length} total`,
+    '',
+    `🎬 Next: ${nextLine}`,
+    '',
+    `_Tap /pickup to post next video_`,
+  ];
+
+  return lines.join('\n');
+}
+
 // ─── Sprint 394: /pickup — one-tap posting workflow ─────────────────────
 
 async function cmdPickup(chatId: string): Promise<void> {
@@ -4402,6 +4505,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/archive':     response = cmdArchive(cmdArgs);     break;
     case '/unarchive':   response = cmdUnarchive(cmdArgs);   break;
     case '/note':        response = cmdNote(cmdArgs);        break;
+    case '/status':      response = cmdStatus();             break;
     case '/help':        response = cmdHelp();        break;
     default:
       response = `Unknown command: \`${cmdName}\`\n\n${cmdHelp()}`;
@@ -4423,6 +4527,10 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     ],
     '/queue': [
       [{ text: '📦 Deliver 1', callback_data: 'cmd:/deliver 1' }, { text: '📦 Deliver 3', callback_data: 'cmd:/deliver 3' }],
+    ],
+    '/status': [
+      [{ text: '🎬 Pickup', callback_data: 'cmd:/pickup' }, { text: '📋 Queue', callback_data: 'cmd:/queue' }],
+      [{ text: '📊 Progress', callback_data: 'cmd:/progress' }, { text: '🔄 Refresh', callback_data: 'cmd:/refresh' }],
     ],
     '/progress': [
       [{ text: '🎬 Pickup', callback_data: 'cmd:/pickup' }, { text: '📋 Queue', callback_data: 'cmd:/queue' }],

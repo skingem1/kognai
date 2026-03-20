@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-395",
+  "title": "/status — unified operator dashboard",
+  "description": "Add /status command that shows gate progress, today's posting stats, queue status, streak, and next video — all in one message with inline action buttons. Single command replaces running /progress + /queue + /streak + /pace.",
+  "source": "auto — operator needs a single glanceable view of all key metrics",
+  "tasks": [
+    {
+      "id": "395-01",
+      "title": "Add /status unified dashboard command to scripts/telegram-bot.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-395",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
