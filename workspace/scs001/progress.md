@@ -3361,3 +3361,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (FP-007 multi-section edit)
 - Issues: None.
 - Timestamp: 2026-03-20T20:40:00Z
+
+## Sprint 392 — /archive + /unarchive — Queue Management (Direct Write)
+- Status: PASS
+- Commit: 37ffe37
+- Files created: workspace/sprints/sprint-392.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 392-01: Added /archive and /unarchive commands. Persistent archived-videos.json in workspace/scs001/. /archive <video_id> hides from queue, /archive (no args) lists archived videos. /unarchive restores. Integrated archived filter into cmdQueue so archived videos don't appear in /queue or /deliver. Updated /help + switch router.
+- Validation: tsc --noEmit PASS
+- Swarm used: no (FP-007 file >4000 lines)
+- Issues: None.
+- Timestamp: 2026-03-20T20:50:00Z
