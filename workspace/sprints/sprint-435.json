@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-435",
+  "title": "One-tap posting buttons on delivered videos",
+  "description": "Add inline keyboard buttons to videos sent by /deliver and posting-reminder. Operator taps '✅ Posted' to record instead of typing /posted. Also adds 'Next Video' button to continue the flow.",
+  "source": "auto — friction reduction for manual posting workflow, 0/30 posts with 18 days to gate",
+  "tasks": [
+    {
+      "id": "435-01",
+      "title": "Add sendVideoWithButtons function and inline buttons to /deliver flow",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-435",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

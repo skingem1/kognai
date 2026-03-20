@@ -135,6 +135,50 @@ function sendVideoFile(chatId: string, videoPath: string, caption?: string): Pro
   });
 }
 
+// ─── Sprint 435: Send video file with inline keyboard buttons ─────────
+
+function sendVideoWithButtons(chatId: string, videoPath: string, caption: string, buttons: Array<Array<{ text: string; callback_data: string }>>): Promise<void> {
+  const boundary = '----TgBotBoundary' + Date.now().toString(16);
+  const filename = path.basename(videoPath);
+  const fileData = fs.readFileSync(videoPath);
+  const replyMarkup = JSON.stringify({ inline_keyboard: buttons });
+
+  const parts: Buffer[] = [];
+  parts.push(Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="chat_id"\r\n\r\n${chatId}\r\n`));
+  parts.push(Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="caption"\r\n\r\n${caption}\r\n`));
+  parts.push(Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="parse_mode"\r\n\r\nMarkdown\r\n`));
+  parts.push(Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="reply_markup"\r\n\r\n${replyMarkup}\r\n`));
+  parts.push(Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="video"; filename="${filename}"\r\nContent-Type: video/mp4\r\n\r\n`));
+  parts.push(fileData);
+  parts.push(Buffer.from(`\r\n--${boundary}--\r\n`));
+
+  const body = Buffer.concat(parts);
+
+  return new Promise((resolve, reject) => {
+    const req = https.request({
+      hostname: 'api.telegram.org',
+      path: `/bot${BOT_TOKEN}/sendVideo`,
+      method: 'POST',
+      headers: { 'Content-Type': `multipart/form-data; boundary=${boundary}`, 'Content-Length': body.length },
+      timeout: 180_000,
+    }, (res) => {
+      let data = '';
+      res.on('data', (c: Buffer) => (data += c.toString()));
+      res.on('end', () => {
+        try {
+          const parsed = JSON.parse(data) as { ok: boolean; description?: string };
+          if (!parsed.ok) reject(new Error(`sendVideo: ${parsed.description ?? data.slice(0, 200)}`));
+          else resolve();
+        } catch { reject(new Error(`sendVideo parse: ${data.slice(0, 200)}`)); }
+      });
+    });
+    req.on('error', reject);
+    req.on('timeout', () => { req.destroy(); reject(new Error('sendVideo timeout')); });
+    req.write(body);
+    req.end();
+  });
+}
+
 // ─── Offset persistence ───────────────────────────────────────────────
 
 function loadOffset(): number {
@@ -893,8 +937,15 @@ async function cmdDeliver(chatId: string, args: string): Promise<string> {
     const hookStr = hook ? ` · 🎣 ${hook}` : '';
     const tgCaption = `📦 *Post this to TikTok* ${vsStr} ${spkStr}${hookStr}${ageStr}\n\n${caption}\n\n\`/record ${videoId} 0\``;
 
+    // Sprint 435: Add inline buttons for one-tap posting
+    const deliverButtons = [
+      [
+        { text: '✅ Posted', callback_data: `posted:${videoId}` },
+        { text: '⏭️ Next Video', callback_data: 'cmd:/deliver 1' },
+      ],
+    ];
     try {
-      await sendVideoFile(chatId, mp4Path, tgCaption);
+      await sendVideoWithButtons(chatId, mp4Path, tgCaption, deliverButtons);
       sent++;
     } catch (err: any) {
       await sendMessage(chatId, `⚠️ Failed to send \`${videoId}\`: ${err.message}`);
@@ -4099,11 +4150,21 @@ async function sendNextSessionVideo(chatId: string): Promise<void> {
     '',
     next.caption,
     '',
-    '_Save → post on TikTok → type_ `/done`',
+    '_Save → post on TikTok → tap ✅ Done below_',
   ].join('\n');
 
+  // Sprint 435: Inline buttons on session videos
+  const sessionButtons = [
+    [
+      { text: '✅ Done — Posted', callback_data: 'cmd:/done' },
+      { text: '⏭ Skip', callback_data: 'cmd:/done' },
+    ],
+    [
+      { text: '🛑 End Session', callback_data: 'cmd:/endsession' },
+    ],
+  ];
   try {
-    await sendVideoFile(chatId, next.mp4Path, tgCaption);
+    await sendVideoWithButtons(chatId, next.mp4Path, tgCaption, sessionButtons);
   } catch (err: any) {
     await sendMessage(chatId, `⚠️ Failed to send video \`${next.video_id}\`: ${err.message?.slice(0, 100)}\nSkipping — type \`/done\` to get next.`);
   }
@@ -5388,24 +5449,23 @@ async function cmdPickup(chatId: string): Promise<void> {
     `📦 ${ready.length - 1} more in queue`,
   ].join('\n');
 
+  // Sprint 435: Send video with inline buttons directly attached
+  const pickupButtons = [
+    [
+      { text: '✅ Posted', callback_data: `posted:${videoId}` },
+      { text: '⏭ Next Video', callback_data: 'cmd:/pickup' },
+    ],
+    [
+      { text: '🗑 Archive', callback_data: `cmd:/archive ${videoId}` },
+      { text: '📊 Progress', callback_data: 'cmd:/progress' },
+    ],
+  ];
   try {
-    await sendVideoFile(chatId, mp4Path, tgCaption);
+    await sendVideoWithButtons(chatId, mp4Path, tgCaption, pickupButtons);
   } catch (err: any) {
     await sendMessage(chatId, `⚠️ Failed to send video: ${err.message}`);
     return;
   }
-
-  // Send inline buttons for quick action
-  await sendMessageWithButtons(chatId, `\`${videoId}\`\n_Tap below after posting to TikTok:_`, [
-    [
-      { text: '✅ Mark Posted', callback_data: `cmd:/record ${videoId} 0` },
-      { text: '⏭ Next Video', callback_data: 'cmd:/pickup' },
-    ],
-    [
-      { text: '🗑 Archive & Skip', callback_data: `cmd:/archive ${videoId}` },
-      { text: '📊 Gate Progress', callback_data: 'cmd:/progress' },
-    ],
-  ]);
 }
 
 // ─── Command router ───────────────────────────────────────────────────
@@ -5752,6 +5812,14 @@ async function poll(): Promise<void> {
             answerCallbackQuery(cb.id, 'Running...').catch(() => {});
             await handleCommand(cbChatId, cbCmd).catch((e: any) => {
               console.error(`[Bot] Callback handler error: ${e.message}`);
+            });
+          }
+          // Sprint 435: Handle one-tap "Posted" button from delivered videos
+          if (cbChatId && cbData.startsWith('posted:')) {
+            const videoId = cbData.slice(7); // remove 'posted:' prefix
+            answerCallbackQuery(cb.id, 'Recording post...').catch(() => {});
+            await handleCommand(cbChatId, `/record ${videoId} 0`).catch((e: any) => {
+              console.error(`[Bot] Posted callback error: ${e.message}`);
             });
           }
           continue;
