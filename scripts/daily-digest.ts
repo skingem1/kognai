@@ -363,6 +363,18 @@ function getAutoPostReadiness(): { status: string; detail: string; action: strin
   };
 }
 
+// ── Sprint 607: Video inventory summary for digest ──────────────────────────
+function getVideoInventorySummary(): string[] {
+  try {
+    const invPath = path.join(ROOT, 'reports', 'video-inventory.json');
+    if (!fs.existsSync(invPath)) return [];
+    const inv = JSON.parse(fs.readFileSync(invPath, 'utf-8'));
+    return [
+      `📦 Multiformat: *${inv.unique_topics ?? 0}* unique videos · *${inv.ready_to_post ?? 0}* ready`,
+    ];
+  } catch { return []; }
+}
+
 // ── Sprint 579: Pipeline metrics for digest ──────────────────────────────────
 
 function getPipelineMetricsSummary(): string[] {
@@ -469,6 +481,7 @@ function buildDigest(): string {
     `🎬 *Pipeline* (dry-run)`,
     `• Total generated: ${ledger.total} | Today: ${ledger.todayCount}`,
     `📋 Queue: *${queue.readyCount}* ready to post (${queue.unposted} in ledger)`,
+    ...getVideoInventorySummary(),
     `• Top formula: ${escapeMd(formula)}`,
     `• Smoke test: ${smoke}`,
     ...getPipelineMetricsSummary(),

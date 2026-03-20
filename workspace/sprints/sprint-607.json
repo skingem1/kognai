@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-607",
+  "title": "GATE-PUSH — Auto-deliver multiformat videos + daily digest inventory",
+  "description": "Update posting-auto-deliver.ts to find multiformat videos, add video inventory summary to daily digest.",
+  "source": "gate-urgency",
+  "tasks": [
+    {
+      "id": "607-01",
+      "title": "Update auto-deliver findCaptionedMp4 to search multiformat runs",
+      "type": "enhancement",
+      "task_type": "gate-push",
+      "task_target": "scripts/scs001/posting-auto-deliver.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "critical",
+      "sprint_id": "sprint-607"
+    },
+    {
+      "id": "607-02",
+      "title": "Add video inventory summary to daily digest",
+      "type": "enhancement",
+      "task_type": "gate-push",
+      "task_target": "scripts/daily-digest.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-607"
+    }
+  ]
+}

@@ -51,10 +51,24 @@ function readJsonLines(filePath: string): any[] {
 function findCaptionedMp4(videoId: string): string | null {
   try {
     const scsDir = join(ROOT, 'workspace', 'scs001');
+    // Check legacy run-* dirs
     const runDirs = readdirSync(scsDir).filter(d => d.startsWith('run-'));
     for (const dir of runDirs) {
       const p = join(scsDir, dir, 'caption', `${videoId}-captioned.mp4`);
       if (existsSync(p)) return p;
+    }
+    // Sprint 607: Check multiformat-runs output dirs
+    const mfDir = join(scsDir, 'multiformat-runs');
+    if (existsSync(mfDir)) {
+      const mfRuns = readdirSync(mfDir).filter(d => d.startsWith('mf-'));
+      for (const dir of mfRuns) {
+        const outDir = join(mfDir, dir, 'output');
+        if (!existsSync(outDir)) continue;
+        for (const suffix of ['_final.mp4', '_final_av.mp4', '_video_only.mp4', '_base.mp4']) {
+          const p = join(outDir, `${videoId}${suffix}`);
+          if (existsSync(p)) return p;
+        }
+      }
     }
   } catch { /* ignore */ }
   return null;
