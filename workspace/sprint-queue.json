@@ -336,7 +336,7 @@
       "sprint": 478,
       "title": "PIPELINE — Niche rotation engine + content diversity scoring",
       "block": "PIPELINE-V2",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "Avoid posting same niche repeatedly. Build niche rotation: track last 10 posts' niches, weight underrepresented niches higher, diversity score per pipeline run. Target: no niche appears >30% in any 10-post window."
     },
