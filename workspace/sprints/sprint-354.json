@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-354",
+  "title": "/achiri — Achiri alpha readiness status in operator Telegram bot",
+  "description": "Add /achiri command to scripts/telegram-bot.ts that reads reports/achiri-readiness.json and shows alpha launch readiness status, score, waitlist count, and check results.",
+  "source": "auto — operator needs visibility into Achiri alpha readiness (Apr 25 gate)",
+  "tasks": [
+    {
+      "id": "354-01",
+      "title": "Add /achiri command to telegram-bot.ts — alpha readiness dashboard",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-354",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

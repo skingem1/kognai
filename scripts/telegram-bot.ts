@@ -1603,6 +1603,75 @@ function cmdQuickStart(): string {
   return lines.join('\n');
 }
 
+// Sprint 354: /achiri — alpha readiness dashboard from reports/achiri-readiness.json
+function cmdAchiri(): string {
+  const readinessPath = path.join(ROOT, 'reports', 'achiri-readiness.json');
+  const waitlistPath = path.join(ROOT, 'workspace', 'achiri', 'waitlist.jsonl');
+
+  // Waitlist count
+  let waitlistCount = 0;
+  if (fs.existsSync(waitlistPath)) {
+    waitlistCount = fs.readFileSync(waitlistPath, 'utf-8').split('\n').filter(l => l.trim()).length;
+  }
+
+  if (!fs.existsSync(readinessPath)) {
+    return (
+      `🤖 *Achiri Alpha Status*\n\n` +
+      `❌ No readiness report found.\n` +
+      `Run: \`npx ts-node scripts/achiri/achiri-readiness.ts\`\n\n` +
+      `📋 Waitlist: ${waitlistCount} users`
+    );
+  }
+
+  try {
+    const data = JSON.parse(fs.readFileSync(readinessPath, 'utf-8'));
+    const checks: Array<{ name: string; pass: boolean; detail: string; critical: boolean }> = data.checks ?? [];
+
+    const passCount = checks.filter(c => c.pass).length;
+    const failCount = checks.filter(c => !c.pass).length;
+    const critFails = checks.filter(c => !c.pass && c.critical);
+
+    const statusIcon = data.overall_ready ? '✅' : '⚠️';
+    const lines: string[] = [
+      `🤖 *Achiri Alpha Status* ${statusIcon}`,
+      '',
+      `📅 Alpha launch: ${data.alpha_date ?? '?'} (${data.days_to_alpha ?? '?'}d)`,
+      `📊 Readiness: *${data.score ?? '?'}%* (${passCount}/${checks.length} checks pass)`,
+      `📋 Waitlist: *${waitlistCount}* users`,
+      '',
+    ];
+
+    // Show critical failures first
+    if (critFails.length > 0) {
+      lines.push('*🔴 Critical Failures:*');
+      for (const c of critFails) {
+        lines.push(`  ❌ ${c.name}: ${c.detail}`);
+      }
+      lines.push('');
+    }
+
+    // Show all checks summary
+    lines.push('*Checks:*');
+    for (const c of checks) {
+      const icon = c.pass ? '✅' : '❌';
+      const crit = c.critical ? ' ⚡' : '';
+      lines.push(`  ${icon} ${c.name}${crit}`);
+    }
+    lines.push('');
+
+    // Telegram bot status
+    const tgToken = process.env.ACHIRI_TELEGRAM_BOT_TOKEN ? 'SET' : 'NOT SET';
+    lines.push(`*Telegram Bot:* ${tgToken === 'SET' ? '✅' : '⚠️'} Token: ${tgToken}`);
+
+    lines.push('');
+    lines.push(`_Report: ${data.generated_at ? data.generated_at.split('T')[0] : 'unknown'}_`);
+
+    return lines.join('\n');
+  } catch (e: any) {
+    return `❌ Error reading Achiri readiness: ${e.message}`;
+  }
+}
+
 // Sprint 351: /updateviews — update view counts for posted videos
 function cmdUpdateViews(args: string): string {
   const parts = args.trim().split(/\s+/);
@@ -1772,6 +1841,7 @@ function cmdHelp(): string {
     `/schedule    — Today's posting time slots\n` +
     `/leaderboard — Speaker performance rankings\n` +
     `/updateviews — Update view count for a posted video\n` +
+    `/achiri     — Achiri alpha readiness status\n` +
     `/help      — This message`
   );
 }
@@ -1879,6 +1949,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/schedule':    response = cmdSchedule();    break;
     case '/leaderboard': response = cmdLeaderboard(); break;
     case '/updateviews': response = cmdUpdateViews(cmdArgs); break;
+    case '/achiri':      response = cmdAchiri();             break;
     case '/help':        response = cmdHelp();        break;
     default:
       response = `Unknown command: \`${cmdName}\`\n\n${cmdHelp()}`;
