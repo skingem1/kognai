@@ -3801,3 +3801,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (surgical bugfix)
 - Issues: Pre-existing TS2802 errors in scs001-caption, scs001-publishing (downlevelIteration). Not introduced by this sprint.
 - Timestamp: 2026-03-20T16:35:00Z
+
+## Sprint 428 — Speaker Diversity Quota (Direct Write)
+- Status: PASS
+- Commit: 956cf19
+- Files created: workspace/sprints/sprint-428.json
+- Files modified: agents/scs001-orchestrator/index.ts
+- Tasks completed:
+  - 428-01: Added Stage 3.6 speaker diversity quota after dedup. Max 3 clips per speaker per run. Sam Altman was 33% of experiments (107/329). Speaker counts tracked, excess clips filtered. Logs capped count.
+- Validation: tsc --noEmit PASS (0 new errors in orchestrator)
+- Swarm used: no (surgical pipeline enhancement)
+- Issues: None.
+- Timestamp: 2026-03-20T16:50:00Z
