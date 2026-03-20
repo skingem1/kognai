@@ -3957,3 +3957,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (complex async integration across large file)
 - Issues: None. BLOTATO_API_KEY not yet in .env — runs in dry-run mode.
 - Timestamp: 2026-03-20T22:00:00Z
+
+## Sprint 441 — Stripe Free Trial + Landing Page Upgrade (Direct Write)
+- Status: PASS
+- Commit: 07a2afa
+- Files created: workspace/sprints/sprint-441.json
+- Files modified: scripts/scs001/checkout-server.ts
+- Tasks completed:
+  - 441-01: Added 3-day free trial via Stripe trial_period_days (configurable via STRIPE_TRIAL_DAYS env). Upgraded landing page: hero with value prop, social proof (200+ videos, 22 sources, 9 platforms), 3-step How It Works, MOST POPULAR badge, cancel-anytime guarantee, SEO meta, mobile-responsive.
+- Validation: tsc --noEmit PASS
+- Swarm used: no (HTML template + Stripe param in single file)
+- Issues: None.
+- Timestamp: 2026-03-20T22:15:00Z
