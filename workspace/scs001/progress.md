@@ -3596,3 +3596,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (HTML template in single file)
 - Issues: None.
 - Timestamp: 2026-03-21T00:20:00Z
+
+## Sprint 411 — Speaker Diversity Guard (Direct Write)
+- Status: PASS
+- Commit: bae2590
+- Files created: workspace/sprints/sprint-411.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 411-01: Added loadSpeakerMap() and diversifyBySpeaker() helpers. Integrated into both /deliver and /pickup. Max 2 consecutive videos from same speaker. Shows speaker name in delivery messages. Sam Altman's 107 clips won't dominate the feed anymore.
+- Validation: tsc --noEmit PASS
+- Swarm used: no (algorithmic logic in large file)
+- Issues: None.
+- Timestamp: 2026-03-21T00:30:00Z
