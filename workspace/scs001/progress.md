@@ -3764,3 +3764,16 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (multi-file refactor)
 - Issues: None.
 - Timestamp: 2026-03-20T15:20:00Z
+
+## Sprint 425 — Auto-post Readiness in Daily Digest (Direct Write)
+- Status: PASS
+- Commit: bfb9f5b
+- Files created: workspace/sprints/sprint-425.json
+- Files modified: scripts/daily-digest.ts, scripts/telegram-bot.ts
+- Tasks completed:
+  - 425-01: Added getAutoPostReadiness() to daily-digest.ts — shows token status (LIVE/TOKEN NEEDED/EXPIRED/DRY-RUN), token expiry from tiktok-token-meta.json, and action hint. Renders after Stripe status line.
+  - 425-02: Added /autopost Telegram command — shows credentials check, token expiry, mode, queue stats, and step-by-step fix instructions when blocked.
+- Validation: tsc --noEmit PASS, DIGEST_DRY_RUN=1 output shows auto-post status correctly
+- Swarm used: no (multi-file feature)
+- Issues: None.
+- Timestamp: 2026-03-20T16:00:00Z
