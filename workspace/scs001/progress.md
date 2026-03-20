@@ -470,3 +470,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 4. **PM2 crons mostly stopped** — pm2-startup.ts created, needs `npx ts-node scripts/pm2-startup.ts` to activate
 5. **YouTube OAuth** not configured — Shorts upload not tested
 6. **Stripe webhook crash-looping** — 2078 restarts, needs log investigation
+
+## Sprint 514 — PIPELINE
+- Status: PASS
+- Commit: bdc1d9d
+- Files modified: contracts/scs-001/mock-oracle6-feed.json (5→15 topics)
+- Files created: workspace/sprints/sprint-514.json
+- Test: npx ts-node agents/scs001-trend/index.ts — 15 signals → 15 qualified
+- Pipeline: Mock Trend Agent now has 15 diverse topics across 11 niches
+- Swarm used: no (simple file edit)
+- Issues: domain_tag vs domain_tags mismatch (pre-existing, not regression)
+- Timestamp: 2026-03-20T13:20:00Z
