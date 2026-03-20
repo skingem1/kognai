@@ -84,7 +84,14 @@ async function main() {
     30000
   );
 
-  // Step 4: Notify
+  // Step 4: Cleanup old runs (keep last 5)
+  run(
+    'npx ts-node scripts/scs001/pipeline-cleanup.ts --keep 5',
+    'Disk cleanup',
+    30000
+  );
+
+  // Step 5: Notify
   const status = pipelineOk && deliverOk ? 'OK' : 'PARTIAL';
   await sendTelegram(
     `📊 *Pipeline Cron ${status}*\n` +

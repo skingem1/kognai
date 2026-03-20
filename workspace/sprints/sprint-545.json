@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-545",
+  "title": "PIPELINE — Add auto-cleanup step to pipeline-cron (keep last 5 runs)",
+  "description": "Added Step 4 (disk cleanup) to pipeline-cron.ts. Runs pipeline-cleanup.ts --keep 5 after each pipeline run. Prevents disk from filling up between sessions.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "545-01",
+      "title": "Add cleanup step to pipeline-cron.ts",
+      "type": "feature",
+      "task_type": "pipeline",
+      "task_target": "scripts/scs001/pipeline-cron.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-545",
+      "deliverables": { "code": ["scripts/scs001/pipeline-cron.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

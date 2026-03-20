@@ -903,8 +903,9 @@
       "title": "PIPELINE — Add cleanup step to pipeline-cron (auto-archive after each run)",
       "block": "PIPELINE",
       "priority": "medium",
-      "status": "pending",
-      "rationale": "Disk filled to 2.7GB before Sprint 540 cleanup. Add cleanup step to pipeline-cron.ts: after each run, call pipeline-cleanup.ts --keep 5 to auto-manage disk."
+      "status": "done",
+      "rationale": "Disk filled to 2.7GB before Sprint 540 cleanup. Add cleanup step to pipeline-cron.ts: after each run, call pipeline-cleanup.ts --keep 5 to auto-manage disk.",
+      "_note": "Auto-cleanup added to pipeline-cron.ts. Keeps last 5 runs."
     },
     {
       "sprint": 546,
