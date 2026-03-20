@@ -759,8 +759,9 @@
       "title": "PIPELINE — Pipeline metrics logging to Supabase + local JSONL",
       "block": "PIPELINE",
       "priority": "medium",
-      "status": "pending",
-      "rationale": "Pipeline runs produce videos but no metrics logged. Add: run duration, videos produced, topics used, model costs, success/failure. Log to workspace/pipeline-metrics/ + Supabase kognai_events."
+      "status": "done",
+      "rationale": "Pipeline runs produce videos but no metrics logged. Add: run duration, videos produced, topics used, model costs, success/failure. Log to workspace/pipeline-metrics/ + Supabase kognai_events.",
+      "_note": "log-pipeline-metrics.ts created. 19 new runs logged. 67 videos total."
     },
     {
       "sprint": 530,

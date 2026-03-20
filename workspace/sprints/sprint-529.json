@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-529",
+  "title": "PIPELINE — Pipeline metrics logging to local JSONL + Supabase",
+  "description": "Created log-pipeline-metrics.ts: consolidates workspace pipeline reports into metrics.jsonl with deduplication. Optional --supabase flag for kognai_events logging. 19 new runs logged (67 videos, $0.63 total).",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "529-01",
+      "title": "Create log-pipeline-metrics.ts script",
+      "type": "feature",
+      "task_type": "pipeline",
+      "task_target": "scripts/scs001/log-pipeline-metrics.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-529",
+      "deliverables": { "code": ["scripts/scs001/log-pipeline-metrics.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "529-02",
+      "title": "Run metrics consolidation on all pipeline reports",
+      "type": "feature",
+      "task_type": "pipeline",
+      "task_target": "logs/pipeline-metrics/metrics.jsonl",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-529",
+      "deliverables": { "code": [], "tests": [], "docs": [] }
+    }
+  ]
+}
