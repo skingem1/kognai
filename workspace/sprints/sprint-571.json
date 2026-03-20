@@ -1,0 +1,27 @@
+{
+  "sprint_id": "sprint-571",
+  "title": "INFRA \u2014 System health report: all green, 162 produced, 118 delivered",
+  "description": "Comprehensive health check. Smoke: 11/11 pass. Stats: 162 produced, 118 delivered. Diversity: 100/100. Cost: $5.46. Gate: 118/30 ON TRACK. PM2: 5 online. Git: 1069 commits.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "571-01",
+      "title": "Run all health checks",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "reports/",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-571",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": [
+          "reports/smoke-test-latest.json",
+          "reports/stats-latest.json"
+        ]
+      }
+    }
+  ]
+}

@@ -1,22 +1,17 @@
 {
-  "timestamp": "2026-03-19T21:58:33.206Z",
+  "timestamp": "2026-03-20T20:00:01.028Z",
   "alerts": [
     {
       "severity": "critical",
       "title": "Zero posts recorded",
-      "detail": "19d until Apr 7. Need 30 posts + 500 views. Start NOW."
-    },
-    {
-      "severity": "warning",
-      "title": "Ledger has duplicates",
-      "detail": "651 entries, 267 unique (384 dupes). Consider dedup."
+      "detail": "18d until Apr 7. Need 30 posts + 500 views. Start NOW."
     },
     {
       "severity": "info",
       "title": "Captioned videos",
-      "detail": "76 videos ready"
+      "detail": "7 videos ready"
     }
   ],
   "critical_count": 1,
-  "warning_count": 1
+  "warning_count": 0
 }
