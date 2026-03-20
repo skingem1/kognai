@@ -1669,6 +1669,79 @@ function cmdMetrics(): string {
   return lines.join('\n');
 }
 
+// ─── Sprint 363: /pace — posting velocity tracker and gate countdown ───
+
+function cmdPace(): string {
+  const manualPostsPath = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
+  const posts = readLines(manualPostsPath);
+  const postCount = posts.length;
+
+  const GATE_TARGET = 30;
+  const GATE_DATE = new Date('2026-04-07T00:00:00Z');
+  const now = new Date();
+  const daysLeft = Math.max(0, Math.ceil((GATE_DATE.getTime() - now.getTime()) / 86_400_000));
+  const postsNeeded = Math.max(0, GATE_TARGET - postCount);
+
+  // Calculate current pace (posts per day since first post)
+  let pacePerDay = 0;
+  let daysSinceFirst = 0;
+  if (posts.length > 0) {
+    const dates = posts
+      .map((p: any) => new Date(p.posted_at ?? p.recorded_at))
+      .filter((d: Date) => !isNaN(d.getTime()))
+      .sort((a: Date, b: Date) => a.getTime() - b.getTime());
+    if (dates.length > 0) {
+      daysSinceFirst = Math.max(1, Math.ceil((now.getTime() - dates[0].getTime()) / 86_400_000));
+      pacePerDay = postCount / daysSinceFirst;
+    }
+  }
+
+  // Pace needed to hit gate
+  const paceNeeded = daysLeft > 0 ? postsNeeded / daysLeft : postsNeeded > 0 ? Infinity : 0;
+
+  // Projection at current pace
+  const projectedAtGate = postCount + Math.floor(pacePerDay * daysLeft);
+  const willPass = projectedAtGate >= GATE_TARGET;
+
+  // Weekly breakdown (posts per week)
+  const weeksLeft = Math.ceil(daysLeft / 7);
+  const perWeek = daysLeft > 0 ? Math.ceil(postsNeeded / weeksLeft) : 0;
+
+  // Total views
+  const totalViews = posts.reduce((s: number, p: any) => s + (p.views ?? 0), 0);
+
+  const lines: string[] = [];
+  lines.push('🏃 *Posting Pace — Gate Countdown*');
+  lines.push('');
+  lines.push(`📅 Gate: Apr 7 · *${daysLeft}d remaining*`);
+  lines.push(`📊 Posts: *${postCount}/${GATE_TARGET}* · ${postsNeeded} to go`);
+  lines.push(`👁️ Views: ${totalViews}/500`);
+  lines.push('');
+
+  if (postCount === 0) {
+    lines.push('⚠️ *No posts yet!* You need to start posting NOW.');
+    lines.push(`📌 Required pace: *${paceNeeded.toFixed(1)} posts/day*`);
+    lines.push(`📌 That's *${perWeek} posts/week*`);
+  } else {
+    lines.push(`*Current pace:* ${pacePerDay.toFixed(1)} posts/day`);
+    lines.push(`*Needed pace:* ${paceNeeded.toFixed(1)} posts/day`);
+    lines.push('');
+    lines.push(`*Projection at current pace:* ${projectedAtGate} posts by Apr 7`);
+    if (willPass) {
+      lines.push('✅ *On track* — keep it up!');
+    } else {
+      const deficit = GATE_TARGET - projectedAtGate;
+      lines.push(`❌ *Off track* — ${deficit} posts short`);
+      lines.push(`📌 Increase to *${paceNeeded.toFixed(1)} posts/day* (${perWeek}/week)`);
+    }
+  }
+
+  lines.push('');
+  lines.push('_Use /deliver to get your next video, /posted after posting._');
+
+  return lines.join('\n');
+}
+
 // ─── Sprint 356: /digest — unified daily digest ──────────────────────
 
 function cmdDigest(): string {
@@ -2017,6 +2090,7 @@ function cmdHelp(): string {
     `/achiri     — Achiri alpha readiness status\n` +
     `/digest     — Daily digest: gate + queue + Stripe\n` +
     `/metrics    — Pipeline performance metrics\n` +
+    `/pace       — Posting velocity & gate projection\n` +
     `/help      — This message`
   );
 }
@@ -2127,6 +2201,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/achiri':      response = cmdAchiri();             break;
     case '/digest':      response = cmdDigest();             break;
     case '/metrics':     response = cmdMetrics();            break;
+    case '/pace':        response = cmdPace();               break;
     case '/help':        response = cmdHelp();        break;
     default:
       response = `Unknown command: \`${cmdName}\`\n\n${cmdHelp()}`;

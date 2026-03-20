@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-363",
+  "title": "/pace — posting velocity tracker and gate countdown",
+  "description": "Add /pace command to Telegram bot showing posting velocity, gate countdown projection, and whether operator is on track to hit 30 posts by Apr 7.",
+  "source": "auto — 0/30 posts with 18 days to kill switch, operator needs velocity awareness",
+  "tasks": [
+    {
+      "id": "363-01",
+      "title": "Add /pace command to scripts/telegram-bot.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-363",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
