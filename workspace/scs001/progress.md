@@ -3085,3 +3085,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (Achiri bot feature additions)
 - Issues: None.
 - Timestamp: 2026-03-20T09:30:00Z
+
+## Sprint 361 — /stats for Achiri Alpha (Direct Write)
+- Status: PASS
+- Commit: b3becfd
+- Files created: workspace/sprints/sprint-361.json
+- Files modified: agents/achiri/telegram-bot.ts
+- Tasks completed:
+  - 361-01: Added /stats command — shows user's message count, active days, first seen date, mood check-in count, quiz score. Reads from memory-store JSONL, daily-counts.json, mood-log.jsonl, quiz-log.jsonl. Updated /help.
+- Validation: tsc --noEmit PASS
+- Swarm used: no (Achiri bot feature additions)
+- Issues: None.
+- Timestamp: 2026-03-20T09:45:00Z
