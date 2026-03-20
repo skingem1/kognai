@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-452",
+  "title": "QUALITY — Content queue rotation + diversity scoring for posting order",
+  "description": "Build queue-optimizer.ts that reorders the posting queue for maximum content diversity. No consecutive same-speaker videos, topic rotation, time-of-day optimization. Provides getNextPostOrder() for /deliver and /postnow commands.",
+  "source": "queue — Sprint 456 adapted as Sprint 452 (diversity is key for April 7 gate engagement)",
+  "tasks": [
+    {
+      "id": "452-01",
+      "title": "Create queue-optimizer.ts — diversity-scored posting order",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-452",
+      "deliverables": { "code": ["scripts/scs001/queue-optimizer.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "452-02",
+      "title": "Add /queueopt Telegram command — show optimized posting order",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-452",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
