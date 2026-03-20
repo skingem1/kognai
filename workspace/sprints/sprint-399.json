@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-399",
+  "title": "Auto-regenerate calendar after /refresh",
+  "description": "After /refresh pipeline completes, auto-run content calendar and posting schedule generators. Ensures fresh content is immediately available in /pickup, /postplan, /schedule without waiting for the 6:50am cron.",
+  "source": "auto — /refresh generates new content but doesn't update the calendar, leaving stale data in /pickup and /postplan",
+  "tasks": [
+    {
+      "id": "399-01",
+      "title": "Add post-pipeline calendar/schedule regen to /refresh handler in telegram-bot.ts",
+      "type": "enhancement",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-399",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

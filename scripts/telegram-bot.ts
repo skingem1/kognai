@@ -4498,7 +4498,16 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
               if (report.total_elapsed_ms) stats += ` · ${Math.round(report.total_elapsed_ms / 1000)}s`;
             } catch { /* skip */ }
           }
-          await sendMessage(chatId, `✅ *Pipeline refresh complete!*${stats}\n\nUse /deliver to get fresh videos.`);
+          await sendMessage(chatId, `✅ *Pipeline refresh complete!*${stats}\n\nRegenerating calendar...`);
+          // Sprint 399: Auto-regenerate content calendar + posting schedule after pipeline
+          try {
+            const { execSync } = require('child_process');
+            execSync('npx ts-node --transpile-only scripts/scs001/generate-content-calendar.ts', { cwd: ROOT, timeout: 30000, env: { ...process.env, TS_NODE_TRANSPILE_ONLY: 'true' } });
+            execSync('npx ts-node --transpile-only scripts/scs001/generate-posting-schedule.ts', { cwd: ROOT, timeout: 30000, env: { ...process.env, TS_NODE_TRANSPILE_ONLY: 'true' } });
+            await sendMessage(chatId, `📅 *Calendar + schedule regenerated!*\n\nUse /pickup to post next video.`);
+          } catch (regenErr: any) {
+            await sendMessage(chatId, `⚠️ Calendar regen failed (non-fatal): ${(regenErr as Error).message?.slice(0, 100)}\n\nVideos still available via /deliver.`);
+          }
         } else {
           const errSnippet = (stderr || stdout).slice(-300);
           await sendMessage(chatId, `❌ *Pipeline failed* (exit ${code})\n\n\`\`\`\n${errSnippet}\n\`\`\``);
