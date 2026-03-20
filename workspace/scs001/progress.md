@@ -3217,3 +3217,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (async multi-message command)
 - Issues: None.
 - Timestamp: 2026-03-20T12:30:00Z
+
+## Sprint 372 — /viralstats — Viral Score Summary (Direct Write)
+- Status: PASS
+- Commit: 998280c
+- Files created: workspace/sprints/sprint-372.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 372-01: Added /viralstats command. Shows scored/total experiments, avg/max/min viral scores, count ≥0.7, top 3 by score with speaker+hook. Updated /help + switch router.
+- Validation: ts-node --transpile-only PASS
+- Swarm used: no (single function)
+- Issues: None.
+- Timestamp: 2026-03-20T12:45:00Z
