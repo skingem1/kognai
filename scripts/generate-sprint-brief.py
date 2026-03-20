@@ -305,10 +305,44 @@ def get_existing_scripts(project_root: Path) -> str:
         return "scan error"
 
 
+def _get_committed_sprint_numbers(project_root: Path) -> set:
+    """Scan git log for sprint numbers that are already committed.
+
+    Looks for commit messages matching 'Sprint NNN:' pattern.
+    Also checks for sprint-NNN.json files in workspace/sprints/.
+    Returns set of consumed sprint numbers.
+    """
+    consumed = set()
+    # Method 1: git log
+    try:
+        result = subprocess.run(
+            ["git", "log", "--oneline", "--all", "-200"],
+            capture_output=True, text=True, cwd=str(project_root), timeout=10
+        )
+        if result.returncode == 0:
+            import re as _re
+            for match in _re.finditer(r'Sprint (\d+):', result.stdout):
+                consumed.add(int(match.group(1)))
+    except Exception:
+        pass
+    # Method 2: existing sprint files
+    sprints_dir = project_root / "workspace" / "sprints"
+    if sprints_dir.exists():
+        import re as _re
+        for f in sprints_dir.iterdir():
+            m = _re.match(r'sprint-(\d+)\.json', f.name)
+            if m:
+                consumed.add(int(m.group(1)))
+    return consumed
+
+
 def get_sprint_queue(project_root: Path) -> Optional[dict]:
     """Read workspace/sprint-queue.json — authoritative ordered sprint plan.
 
-    Returns the first queued item (status != 'done') if any exist, else None.
+    Returns the first queued item (status != 'done'/'skipped') if any exist,
+    else None. Auto-skips items whose sprint number is already in git log
+    (prevents collision with consumed sprint numbers).
+
     This bypasses Qwen's sprint recommendation when the human has prescribed
     a specific next sprint.
     """
@@ -318,10 +352,33 @@ def get_sprint_queue(project_root: Path) -> Optional[dict]:
     try:
         data = json.loads(queue_file.read_text())
         items = data.get("queue", [])
+
+        # Auto-sync: find sprint numbers already consumed in git
+        consumed = _get_committed_sprint_numbers(project_root)
+        queue_modified = False
+
         for item in items:
-            if item.get("status") not in ("done", "skipped"):
-                return item
-        return None  # All items done or skipped
+            if item.get("status") in ("done", "skipped"):
+                continue
+            sprint_num = item.get("sprint")
+            if sprint_num and sprint_num in consumed:
+                # Auto-skip: sprint number already exists in git
+                item["status"] = "skipped"
+                item["_note"] = f"Auto-skipped: sprint-{sprint_num} already committed"
+                queue_modified = True
+                print(f"[QUEUE AUTO-SYNC] Sprint {sprint_num} already in git — auto-skipped")
+                continue
+            # This is the first valid pending item
+            if queue_modified:
+                # Write back auto-sync changes
+                queue_file.write_text(json.dumps(data, indent=2) + "\n")
+                print(f"[QUEUE AUTO-SYNC] Wrote {sum(1 for i in items if i.get('_note','').startswith('Auto-skipped'))} auto-skip(s) to queue file")
+            return item
+
+        # All items done or skipped
+        if queue_modified:
+            queue_file.write_text(json.dumps(data, indent=2) + "\n")
+        return None
     except Exception as e:
         print(f"[WARNING] Could not read sprint-queue.json: {e}")
         return None

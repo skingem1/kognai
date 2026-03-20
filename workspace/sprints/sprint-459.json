@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-459",
+  "title": "POSTING — /batch command for bulk video delivery + posting tracker",
+  "description": "Add /batch [N] command that sends N videos (default 5, max 10) in sequence with captions and one-tap posted buttons. Add /postlog command showing recent posting activity with daily counts. Wire into cmd-posting.ts.",
+  "source": "queue — Sprint 450 POSTING + Sprint 457 ANALYTICS",
+  "tasks": [
+    {
+      "id": "459-01",
+      "title": "Add cmdBatch to cmd-posting.ts — bulk video delivery",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-459",
+      "deliverables": { "code": ["scripts/telegram-commands/cmd-posting.ts", "scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "459-02",
+      "title": "Add cmdPostLog to cmd-posting.ts — recent posting activity log",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-459",
+      "deliverables": { "code": ["scripts/telegram-commands/cmd-posting.ts", "scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

@@ -884,3 +884,129 @@ export function cmdRevenue(): string {
 
   return lines.join('\n');
 }
+
+// Sprint 459: /batch [N] — prepare N videos with captions for batch posting
+export function cmdBatch(args: string): string {
+  const count = Math.min(Math.max(parseInt(args) || 5, 1), 10);
+
+  const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
+  const recorded = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  const recordedIds = new Set(recorded.map((e: any) => e.video_id).filter(Boolean));
+  const archivedIds = loadArchived();
+
+  // Load viral scores
+  const viralScores = new Map<string, number>();
+  const expPath = path.join(ROOT, 'workspace', 'scs001', 'experiments.jsonl');
+  if (fs.existsSync(expPath)) {
+    try {
+      for (const line of fs.readFileSync(expPath, 'utf-8').split('\n')) {
+        if (!line.trim()) continue;
+        try {
+          const e = JSON.parse(line);
+          const id = e.clip_id ?? e.video_id;
+          if (id && e.partial_viral_score != null) viralScores.set(id, e.partial_viral_score);
+        } catch {}
+      }
+    } catch {}
+  }
+
+  // Get unposted, unarchived, sorted by viral score
+  const unposted = (ledger as any[])
+    .filter((e: any) => e.video_id && !recordedIds.has(e.video_id) && !archivedIds.has(e.video_id))
+    .sort((a: any, b: any) => (viralScores.get(b.video_id) ?? -1) - (viralScores.get(a.video_id) ?? -1));
+
+  // Filter to only those with captioned mp4
+  const ready = unposted.filter((e: any) => findCaptionedMp4(e.video_id) !== null);
+
+  if (ready.length === 0) {
+    return '📦 *Batch* — No ready-to-post videos found.\n\nRun the pipeline first.';
+  }
+
+  const batch = ready.slice(0, count);
+  const speakerMap = loadSpeakerMap();
+  const hookMap = loadHookMap();
+
+  const lines: string[] = [
+    `📦 *Batch Posting Kit — ${batch.length} Videos*`,
+    '',
+    `🎯 Gate: ${recorded.length}/30 posts · ${Math.max(0, 30 - recorded.length)} to go`,
+    '',
+  ];
+
+  for (let i = 0; i < batch.length; i++) {
+    const v = batch[i];
+    const vid = v.video_id;
+    const vs = viralScores.get(vid);
+    const speaker = speakerMap.get(vid) ?? 'unknown';
+    const hook = hookMap.get(vid) ?? '';
+    const mp4 = findCaptionedMp4(vid);
+    const caption = buildTikTokCaption(vid);
+
+    lines.push(`*${i + 1}. \`${vid}\`*`);
+    if (vs != null) lines.push(`   🧬 ${vs.toFixed(2)} · 🎙️ ${speaker}${hook ? ` · 🎣 ${hook}` : ''}`);
+    lines.push(`   📋 Caption:`);
+    lines.push('```');
+    lines.push(caption.slice(0, 280));
+    lines.push('```');
+    lines.push(`   ✅ After posting: \`/record ${vid} 0\``);
+    lines.push('');
+  }
+
+  lines.push(`_Use \`/deliver ${count}\` to get video files sent directly._`);
+  lines.push(`_Queue: ${ready.length} total ready · ${unposted.length} unposted_`);
+
+  return lines.join('\n');
+}
+
+// Sprint 459: /postlog — recent posting activity log
+export function cmdPostLog(): string {
+  const posts = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+
+  if (posts.length === 0) {
+    return '📝 *Post Log* — No posts recorded yet.\n\nUse `/deliver` then `/record <id> <views>` after posting.';
+  }
+
+  // Group by date
+  const byDate: Record<string, any[]> = {};
+  for (const p of posts as any[]) {
+    const date = (p.posted_at ?? p.recorded_at ?? '').slice(0, 10);
+    if (!date) continue;
+    if (!byDate[date]) byDate[date] = [];
+    byDate[date].push(p);
+  }
+
+  const dates = Object.keys(byDate).sort().reverse().slice(0, 7); // Last 7 days
+
+  const lines: string[] = [
+    `📝 *Post Log — Last 7 Days*`,
+    `Total: *${posts.length}/30* posts · ${posts.reduce((s: number, p: any) => s + (p.views ?? 0), 0)} views`,
+    '',
+  ];
+
+  for (const date of dates) {
+    const dayPosts = byDate[date];
+    const dayName = new Date(date + 'T12:00:00Z').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+    const dayViews = dayPosts.reduce((s: number, p: any) => s + (p.views ?? 0), 0);
+
+    lines.push(`*${dayName}* — ${dayPosts.length} posts · ${dayViews} views`);
+    for (const p of dayPosts.slice(0, 5)) {
+      const vs = p.viral_score != null ? ` 🧬${p.viral_score.toFixed(2)}` : '';
+      const views = p.views > 0 ? ` 👁${p.views}` : '';
+      const spk = p.speaker ? ` 🎙️${p.speaker}` : '';
+      lines.push(`  • \`${p.video_id}\`${vs}${views}${spk}`);
+    }
+    if (dayPosts.length > 5) {
+      lines.push(`  _...and ${dayPosts.length - 5} more_`);
+    }
+    lines.push('');
+  }
+
+  // Pace indicator
+  const gateDate = new Date('2026-04-07T00:00:00Z');
+  const daysLeft = Math.max(1, Math.ceil((gateDate.getTime() - Date.now()) / 86_400_000));
+  const postsLeft = Math.max(0, 30 - posts.length);
+  const paceNeeded = postsLeft > 0 ? (postsLeft / daysLeft).toFixed(1) : '0';
+  lines.push(`⏱ Pace needed: *${paceNeeded}* posts/day to hit Apr 7 gate`);
+
+  return lines.join('\n');
+}

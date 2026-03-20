@@ -26,7 +26,7 @@ import { execSync } from 'child_process';
 import { cmdPm2, cmdHealth, cmdTier, cmdSprint, cmdReport, cmdCrons, cmdTikTokAuth, cmdQuickStart, cmdEnvCheck } from './telegram-commands/cmd-system';
 import { cmdGate, cmdGoLive, cmdAudit, cmdStreak, cmdPace, cmdCalendar } from './telegram-commands/cmd-gate';
 import { cmdRecord, cmdQueue, cmdReview, cmdCaption, cmdPosted, cmdOnboard, cmdPipeline, cmdToday, cmdAnalytics } from './telegram-commands/cmd-content';
-import { cmdMetrics, cmdPostPlan, cmdYouTube, cmdAutoPost, cmdLastRun, cmdViral, cmdDashboard, cmdDigest, cmdSchedule, cmdLeaderboard, cmdBestTime, cmdHookTest, cmdHookStats, cmdViralStats, cmdQueueOpt, cmdGateAnalytics, cmdRevenue } from './telegram-commands/cmd-posting';
+import { cmdMetrics, cmdPostPlan, cmdYouTube, cmdAutoPost, cmdLastRun, cmdViral, cmdDashboard, cmdDigest, cmdSchedule, cmdLeaderboard, cmdBestTime, cmdHookTest, cmdHookStats, cmdViralStats, cmdQueueOpt, cmdGateAnalytics, cmdRevenue, cmdBatch, cmdPostLog } from './telegram-commands/cmd-posting';
 import { cmdHistory, cmdArchive, cmdUnarchive, cmdStale, cmdPurge, cmdNote, cmdUpdateViews, cmdExport, cmdWeeklyReport, cmdSpeakerTest, cmdFilmKit, cmdContentPlan, cmdSuggest, cmdCompare, cmdScorecard, cmdProgress, cmdCleanup, cmdDedup, cmdTop30, cmdAbResults, cmdStatus } from './telegram-commands/cmd-management';
 import { cmdHelp } from './telegram-commands/cmd-help';
 import { readLines, findCaptionedMp4, getExperimentData, buildTikTokCaption, loadSpeakerMap, diversifyBySpeaker, loadHookMap, diversifyByHook, freshnessScore, loadArchived, getPm2List } from './telegram-commands/shared';
@@ -2003,6 +2003,8 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/abresults':   response = cmdAbResults();          break;
     case '/cleanup':     response = cmdCleanup();            break;
     case '/envcheck':    response = cmdEnvCheck();           break;
+    case '/batch':       response = cmdBatch(cmdArgs);       break;
+    case '/postlog':     response = cmdPostLog();            break;
     case '/help':        response = cmdHelp();        break;
     default:
       response = `Unknown command: \`${cmdName}\`\n\n${cmdHelp()}`;
