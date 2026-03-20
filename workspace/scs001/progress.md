@@ -2421,3 +2421,16 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (multi-file feature)
 - Issues: Initial test had "lonely" matching "sad" due to overlapping pattern. Fixed by removing "lonely" from sad patterns (it has its own category).
 - Timestamp: 2026-03-20T06:45:00Z
+
+## Sprint 308 — Achiri Onboarding Flow (Direct Write)
+- Status: PASS
+- Commit: bb4fd8b
+- Files created: scripts/achiri/validate-onboarding.ts, workspace/sprints/sprint-308.json
+- Files modified: agents/achiri/index.ts
+- Tasks completed:
+  - 308-01: Added ONBOARDING_HINT constant with warm Darija-first introduction, capability overview, natural name-ask. Gated on isNewSession && !summaryCtx && profile.message_count === 0 — only triggers for brand-new users on their very first message.
+  - 308-02: Validation — 7 tests: constant exists, self-intro instruction, name-asking, gate condition, dry-run new user (includes onboarding), dry-run returning user (excludes onboarding), anti-product-tour. All PASS.
+- Validation: npx ts-node scripts/achiri/validate-onboarding.ts — 7/7 PASS
+- Swarm used: no (single-file feature + validation)
+- Issues: None.
+- Timestamp: 2026-03-20T07:00:00Z
