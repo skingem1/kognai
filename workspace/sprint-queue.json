@@ -614,7 +614,8 @@
       "sprint": 513,
       "title": "CONTENT — High-volume batch: produce 10 videos in single session",
       "block": "CONTENT",
-      "status": "pending",
+      "status": "done",
+      "_note": "10 videos (2 runs), all sent to Telegram. 23 total this session.",
       "priority": "high",
       "rationale": "With fix from Sprint 512, run pipeline twice to produce 10 videos. Deliver all to Telegram. Pushes total produced toward 30-post gate target."
     },
