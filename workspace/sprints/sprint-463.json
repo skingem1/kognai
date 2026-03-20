@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-463",
+  "title": "INFRA — Git milestone tags + /gitstats command",
+  "description": "Tag key milestones in git history. Add /gitstats Telegram command showing commit count, sprint count, tag list, last 5 commits.",
+  "source": "queue — Sprint 466 INFRA",
+  "tasks": [
+    {
+      "id": "463-01",
+      "title": "Create git milestone tags for Phase 1 milestones",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-463",
+      "deliverables": { "code": [], "tests": [], "docs": [] }
+    },
+    {
+      "id": "463-02",
+      "title": "Add /gitstats command to cmd-system.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-463",
+      "deliverables": { "code": ["scripts/telegram-commands/cmd-system.ts", "scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

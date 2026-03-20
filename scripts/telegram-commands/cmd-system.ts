@@ -369,6 +369,43 @@ export function cmdQuickStart(): string {
   return lines.join('\n');
 }
 
+// Sprint 463: /gitstats — repository statistics
+export function cmdGitStats(): string {
+  const lines: string[] = ['*📊 Git Repository Stats*', ''];
+
+  try {
+    const commitCount = execSync('git rev-list --count HEAD', { cwd: ROOT, timeout: 5000, stdio: 'pipe' }).toString().trim();
+    const sprintCount = execSync('git log --oneline | grep -c "Sprint [0-9]"', { cwd: ROOT, timeout: 5000, stdio: 'pipe' }).toString().trim();
+    const tags = execSync('git tag -l --sort=-creatordate', { cwd: ROOT, timeout: 5000, stdio: 'pipe' }).toString().trim();
+    const lastCommits = execSync('git log --oneline -5', { cwd: ROOT, timeout: 5000, stdio: 'pipe' }).toString().trim();
+    const firstCommit = execSync('git log --reverse --format="%ai" | head -1', { cwd: ROOT, timeout: 5000, stdio: 'pipe' }).toString().trim().slice(0, 10);
+    const branch = execSync('git branch --show-current', { cwd: ROOT, timeout: 5000, stdio: 'pipe' }).toString().trim();
+
+    lines.push(`*Branch:* \`${branch}\``);
+    lines.push(`*Commits:* ${commitCount}`);
+    lines.push(`*Sprints shipped:* ${sprintCount}`);
+    lines.push(`*Since:* ${firstCommit}`);
+    lines.push('');
+
+    if (tags) {
+      lines.push('*Tags:*');
+      for (const tag of tags.split('\n').slice(0, 5)) {
+        lines.push(`  🏷 \`${tag}\``);
+      }
+      lines.push('');
+    }
+
+    lines.push('*Last 5 commits:*');
+    for (const line of lastCommits.split('\n')) {
+      lines.push(`  ${line}`);
+    }
+  } catch (e: any) {
+    lines.push(`❌ Error: ${e.message}`);
+  }
+
+  return lines.join('\n');
+}
+
 // Sprint 456: /envcheck — environment variable audit
 export function cmdEnvCheck(): string {
   const { formatEnvCheck } = require('../check-env');
