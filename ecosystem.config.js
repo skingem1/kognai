@@ -1137,5 +1137,25 @@ module.exports = {
       out_file: "/Users/tarekmnif/kognai/logs/pipeline-cleanup-out.log",
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
+    {
+      // Sprint 465: GEO monitor — weekly health check + brand mention scan + citability scoring
+      // Runs every Monday at 8am. Checks robots.txt, llms.txt, JSON-LD, citable blocks, brand mentions.
+      // Sends Telegram alert if GEO score drops >10 points.
+      // To start: pm2 start ecosystem.config.js --only kognai-geo-monitor
+      name: "kognai-geo-monitor",
+      script: "scripts/geo/geo-monitor.py",
+      interpreter: "python3",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: false,
+      watch: false,
+      cron_restart: "0 8 * * 1",
+      env: {
+        TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN || "",
+        OWNER_TELEGRAM_CHAT_ID: process.env.OWNER_TELEGRAM_CHAT_ID || "",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/geo-monitor-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/geo-monitor-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
   ]
 };

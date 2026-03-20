@@ -1,0 +1,56 @@
+{
+  "sprint_id": "sprint-465",
+  "title": "GEO — Continuous monitoring pipeline + citability gate",
+  "description": "Build geo-monitor.py (weekly cron), citability scorer for SCS-001 scripts, Telegram alert on score drops, PM2 cron config.",
+  "source": "queue — Sprint 465 GEO",
+  "tasks": [
+    {
+      "id": "465-01",
+      "title": "Build geo-monitor.py — weekly GEO health check (robots.txt, llms.txt, JSON-LD validation)",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-465",
+      "deliverables": { "code": ["scripts/geo/geo-monitor.py"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "465-02",
+      "title": "Build citability-scorer.ts — score content blocks, flag scripts below 60",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-465",
+      "deliverables": { "code": ["scripts/geo/citability-scorer.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "465-03",
+      "title": "Build geo-telegram-alert.ts — Telegram notification on score drop >10",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-465",
+      "deliverables": { "code": ["scripts/geo/geo-telegram-alert.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "465-04",
+      "title": "Add GEO monitor PM2 cron entry to ecosystem.config.js",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-465",
+      "deliverables": { "code": ["ecosystem.config.js"], "tests": [], "docs": [] }
+    }
+  ]
+}
