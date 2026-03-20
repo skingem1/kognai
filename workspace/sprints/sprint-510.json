@@ -1,0 +1,44 @@
+{
+  "sprint_id": "sprint-510",
+  "title": "INFRA — Telegram bot startup test + command smoke test",
+  "description": "Verify Telegram bot is online, responds to API calls, and can send messages. Check PM2 status and logs.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "510-01",
+      "title": "Verify bot identity and polling status via Telegram API",
+      "type": "validation",
+      "task_type": "test",
+      "task_target": "local",
+      "agent": "supervisor",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-510",
+      "deliverables": { "code": [], "tests": [], "docs": [] }
+    },
+    {
+      "id": "510-02",
+      "title": "Send health check message to operator chat",
+      "type": "validation",
+      "task_type": "test",
+      "task_target": "local",
+      "agent": "telegram-bot",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-510",
+      "deliverables": { "code": [], "tests": [], "docs": [] }
+    },
+    {
+      "id": "510-03",
+      "title": "Review PM2 logs for restart patterns and errors",
+      "type": "validation",
+      "task_type": "analysis",
+      "task_target": "local",
+      "agent": "supervisor",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-510",
+      "deliverables": { "code": [], "tests": [], "docs": [] }
+    }
+  ]
+}
