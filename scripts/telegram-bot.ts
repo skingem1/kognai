@@ -655,6 +655,60 @@ function diversifyBySpeaker(videos: any[], speakerMap: Map<string, string>, maxC
   return result;
 }
 
+// Sprint 415: Load hook formula map from experiments
+function loadHookMap(): Map<string, string> {
+  const hooks = new Map<string, string>();
+  const expPath = path.join(ROOT, 'workspace', 'scs001', 'experiments.jsonl');
+  if (!fs.existsSync(expPath)) return hooks;
+  try {
+    for (const line of fs.readFileSync(expPath, 'utf-8').split('\n')) {
+      if (!line.trim()) continue;
+      try {
+        const e = JSON.parse(line);
+        const id = e.clip_id ?? e.video_id;
+        const hook = e.hook_formula;
+        if (id && hook && hook !== 'unknown') hooks.set(id, hook);
+      } catch { /* skip */ }
+    }
+  } catch { /* skip */ }
+  return hooks;
+}
+
+// Sprint 415: Interleave videos so no hook formula appears 3+ times in a row
+function diversifyByHook(videos: any[], hookMap: Map<string, string>, maxConsecutive: number = 2): any[] {
+  if (videos.length <= maxConsecutive) return videos;
+  const result: any[] = [];
+  const remaining = [...videos];
+
+  while (remaining.length > 0) {
+    let lastHook = '';
+    let consecutiveCount = 0;
+    if (result.length > 0) {
+      lastHook = hookMap.get(result[result.length - 1].video_id) ?? '';
+      for (let i = result.length - 1; i >= 0; i--) {
+        const h = hookMap.get(result[i].video_id) ?? '';
+        if (h === lastHook && lastHook) consecutiveCount++;
+        else break;
+      }
+    }
+
+    let picked = -1;
+    for (let i = 0; i < remaining.length; i++) {
+      const candidateHook = hookMap.get(remaining[i].video_id) ?? '';
+      if (consecutiveCount >= maxConsecutive && candidateHook === lastHook && lastHook) {
+        continue;
+      }
+      picked = i;
+      break;
+    }
+
+    if (picked === -1) picked = 0;
+    result.push(remaining.splice(picked, 1)[0]);
+  }
+
+  return result;
+}
+
 // Sprint 280: Find captioned mp4 path for a video ID
 function findCaptionedMp4(videoId: string): string | null {
   try {
@@ -800,7 +854,10 @@ async function cmdDeliver(chatId: string, args: string): Promise<string> {
 
   // Sprint 411: Apply speaker diversity guard
   const speakerMap = loadSpeakerMap();
-  const diversified = diversifyBySpeaker(ready, speakerMap);
+  const speakerDiversified = diversifyBySpeaker(ready, speakerMap);
+  // Sprint 415: Apply hook formula diversity guard
+  const hookMap = loadHookMap();
+  const diversified = diversifyByHook(speakerDiversified, hookMap);
   const batch = diversified.slice(0, count);
   let sent = 0;
 
@@ -820,7 +877,10 @@ async function cmdDeliver(chatId: string, args: string): Promise<string> {
     const pubAt = ledgerDates.get(videoId);
     const ageDays = pubAt ? Math.round((Date.now() - new Date(pubAt).getTime()) / 86_400_000) : 0;
     const ageStr = ageDays > 0 ? ` · ${ageDays}d old` : '';
-    const tgCaption = `📦 *Post this to TikTok* ${vsStr} ${spkStr}${ageStr}\n\n${caption}\n\n\`/record ${videoId} 0\``;
+    // Sprint 415: Show hook formula
+    const hook = hookMap.get(videoId);
+    const hookStr = hook ? ` · 🎣 ${hook}` : '';
+    const tgCaption = `📦 *Post this to TikTok* ${vsStr} ${spkStr}${hookStr}${ageStr}\n\n${caption}\n\n\`/record ${videoId} 0\``;
 
     try {
       await sendVideoFile(chatId, mp4Path, tgCaption);
@@ -5047,7 +5107,10 @@ async function cmdPickup(chatId: string): Promise<void> {
 
   // Sprint 411: Apply speaker diversity guard
   const speakerMap = loadSpeakerMap();
-  const ready = diversifyBySpeaker(readyRaw, speakerMap);
+  const speakerDiversified = diversifyBySpeaker(readyRaw, speakerMap);
+  // Sprint 415: Apply hook formula diversity guard
+  const hookMap = loadHookMap();
+  const ready = diversifyByHook(speakerDiversified, hookMap);
 
   const pick = ready[0];
   const videoId = pick.video_id;
@@ -5066,13 +5129,16 @@ async function cmdPickup(chatId: string): Promise<void> {
   const pubAt = ledgerDates.get(videoId);
   const ageDays = pubAt ? Math.round((Date.now() - new Date(pubAt).getTime()) / 86_400_000) : 0;
   const ageStr = ageDays > 0 ? ` · ${ageDays}d` : '';
+  // Sprint 415: Show hook formula
+  const hook = hookMap.get(videoId);
+  const hookStr = hook ? ` · 🎣 ${hook}` : '';
   const gate = recorded.length;
   const remaining = Math.max(0, 30 - gate);
   const gateDate = new Date('2026-04-07T00:00:00Z');
   const daysLeft = Math.max(0, Math.ceil((gateDate.getTime() - Date.now()) / 86_400_000));
 
   const tgCaption = [
-    `🎬 *Next Post* (#${gate + 1}/30)${vsStr}${spkStr}${ageStr}`,
+    `🎬 *Next Post* (#${gate + 1}/30)${vsStr}${spkStr}${hookStr}${ageStr}`,
     '',
     caption,
     '',

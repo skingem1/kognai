@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-415",
+  "title": "Hook formula diversity — vary content types in /deliver and /pickup",
+  "description": "Add hook formula diversity to /deliver and /pickup. Max 2 consecutive videos with same hook formula (curiosity_gap, contrarian, authority, secret). Shows hook formula in delivery messages. Ensures content variety for better audience retention.",
+  "source": "auto — speaker diversity exists (Sprint 411) but hook formula diversity missing",
+  "tasks": [
+    {
+      "id": "415-01",
+      "title": "Add hook formula diversity guard to /deliver and /pickup",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-415",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
