@@ -1,0 +1,24 @@
+{
+  "sprint_id": "sprint-599",
+  "title": "QUALITY — Content freshness decay: auto-archive stale queue items",
+  "description": "Create scripts/scs001/auto-archive-stale.ts: scans publish-ledger.jsonl, identifies unposted videos older than 7 days, moves them to archived status. Prevents stale trending topics from being posted.",
+  "source": "sprint-queue",
+  "tasks": [
+    {
+      "id": "599-01",
+      "title": "Create auto-archive-stale.ts to archive queue items older than 7 days",
+      "type": "feature",
+      "task_type": "quality",
+      "task_target": "scripts/scs001/auto-archive-stale.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-599",
+      "deliverables": {
+        "code": ["scripts/scs001/auto-archive-stale.ts"],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ]
+}
