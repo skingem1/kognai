@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-478",
+  "title": "PIPELINE — Niche rotation engine + content diversity scoring",
+  "description": "Prevent posting same niche repeatedly. Track niches in last 10 posts, weight underrepresented niches higher. Add /diversity command to Telegram.",
+  "source": "queue — Sprint 478 PIPELINE-V2",
+  "tasks": [
+    {
+      "id": "478-01",
+      "title": "Add niche diversity guard to shared.ts and wire into delivery commands",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-478",
+      "deliverables": { "code": ["scripts/telegram-commands/shared.ts", "scripts/telegram-commands/cmd-delivery.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "478-02",
+      "title": "Add /diversity Telegram command showing niche distribution",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-478",
+      "deliverables": { "code": ["scripts/telegram-commands/cmd-content.ts", "scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

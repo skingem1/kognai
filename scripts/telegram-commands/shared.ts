@@ -259,6 +259,70 @@ export function saveNotes(notes: Record<string, { note: string; at: string }>): 
   fs.writeFileSync(NOTES_PATH, JSON.stringify(notes, null, 2), 'utf-8');
 }
 
+// Sprint 478: Niche/topic diversity guard
+export function loadTopicMap(): Map<string, string> {
+  const topics = new Map<string, string>();
+  const expPath = path.join(ROOT, 'workspace', 'scs001', 'experiments.jsonl');
+  if (!fs.existsSync(expPath)) return topics;
+  try {
+    for (const line of fs.readFileSync(expPath, 'utf-8').split('\n')) {
+      if (!line.trim()) continue;
+      try {
+        const e = JSON.parse(line);
+        const id = e.clip_id ?? e.video_id;
+        const topic = e.topic ?? e.niche ?? e.category;
+        if (id && topic && topic !== 'unknown') topics.set(id, topic);
+      } catch {}
+    }
+  } catch {}
+  return topics;
+}
+
+export function diversifyByTopic(videos: any[], topicMap: Map<string, string>, maxConsecutive: number = 2): any[] {
+  if (videos.length <= maxConsecutive) return videos;
+  const result: any[] = [];
+  const remaining = [...videos];
+  while (remaining.length > 0) {
+    let lastTopic = '';
+    let consecutiveCount = 0;
+    if (result.length > 0) {
+      lastTopic = topicMap.get(result[result.length - 1].video_id) ?? '';
+      for (let i = result.length - 1; i >= 0; i--) {
+        const t = topicMap.get(result[i].video_id) ?? '';
+        if (t === lastTopic && lastTopic) consecutiveCount++;
+        else break;
+      }
+    }
+    let picked = -1;
+    for (let i = 0; i < remaining.length; i++) {
+      const candidateTopic = topicMap.get(remaining[i].video_id) ?? '';
+      if (consecutiveCount >= maxConsecutive && candidateTopic === lastTopic && lastTopic) continue;
+      picked = i;
+      break;
+    }
+    if (picked === -1) picked = 0;
+    result.push(remaining.splice(picked, 1)[0]);
+  }
+  return result;
+}
+
+export function getNicheDiversityScore(recentPosts: any[], topicMap: Map<string, string>): { score: number; distribution: Record<string, number>; total: number } {
+  const distribution: Record<string, number> = {};
+  let total = 0;
+  for (const post of recentPosts) {
+    const topic = topicMap.get(post.video_id) ?? 'unknown';
+    distribution[topic] = (distribution[topic] ?? 0) + 1;
+    total++;
+  }
+  if (total === 0) return { score: 100, distribution, total };
+  const uniqueTopics = Object.keys(distribution).length;
+  const maxPct = Math.max(...Object.values(distribution)) / total;
+  // Score: 100 = perfect diversity, 0 = all same niche
+  // Penalize if any niche >30% of window
+  const score = Math.round(Math.min(100, (uniqueTopics / Math.max(total, 1)) * 100 * (1 - Math.max(0, maxPct - 0.3))));
+  return { score, distribution, total };
+}
+
 export const HOOK_OPENERS: Record<string, string> = {
   curiosity_gap: '"You won\'t believe what happens when..."',
   contrarian: '"Everyone thinks X, but actually..."',

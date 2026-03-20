@@ -10,6 +10,7 @@ import {
   findCaptionedMp4, getExperimentData, buildTikTokCaption,
   loadSpeakerMap, diversifyBySpeaker, loadHookMap, diversifyByHook,
   freshnessScore, loadArchived, saveArchived, ARCHIVE_PATH,
+  loadTopicMap, getNicheDiversityScore,
 } from './shared';
 
 export function cmdRecord(args: string): string {
@@ -586,6 +587,52 @@ export function cmdAnalytics(): string {
   lines.push(`*Posting:*`);
   lines.push(`• Recorded: ${recorded.length}/30 | Ready: ~76 captioned`);
   lines.push(`• Use \`/deliver\` to post top-scored content first`);
+
+  return lines.join('\n');
+}
+
+// Sprint 478: /diversity — niche distribution analysis
+export function cmdDiversity(): string {
+  const topicMap = loadTopicMap();
+  const posts = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
+
+  // Last 10 posts diversity
+  const recent10 = posts.slice(-10);
+  const postDiversity = getNicheDiversityScore(recent10, topicMap);
+
+  // Queue diversity (ready to post)
+  const recordedIds = new Set(posts.map((p: any) => p.video_id).filter(Boolean));
+  const ready = (ledger as any[]).filter((e: any) => !recordedIds.has(e.video_id) && e.video_id);
+  const queueDiversity = getNicheDiversityScore(ready.slice(0, 20), topicMap);
+
+  const lines = [
+    '🎯 *Content Diversity Report*',
+    '',
+    `*Last 10 Posts* (score: ${postDiversity.score}/100):`,
+  ];
+
+  const sortedPost = Object.entries(postDiversity.distribution).sort((a, b) => b[1] - a[1]);
+  for (const [topic, count] of sortedPost) {
+    const pct = Math.round((count / Math.max(postDiversity.total, 1)) * 100);
+    const warn = pct > 30 ? ' ⚠️' : '';
+    lines.push(`  ${topic}: ${count} (${pct}%)${warn}`);
+  }
+
+  lines.push('');
+  lines.push(`*Queue (next 20)* (score: ${queueDiversity.score}/100):`);
+  const sortedQueue = Object.entries(queueDiversity.distribution).sort((a, b) => b[1] - a[1]);
+  for (const [topic, count] of sortedQueue.slice(0, 8)) {
+    const pct = Math.round((count / Math.max(queueDiversity.total, 1)) * 100);
+    const warn = pct > 30 ? ' ⚠️' : '';
+    lines.push(`  ${topic}: ${count} (${pct}%)${warn}`);
+  }
+
+  lines.push('');
+  lines.push('_Target: no niche >30% in any 10-post window_');
+  if (postDiversity.score < 50) {
+    lines.push('⚠️ Low diversity — consider varying topics before next post');
+  }
 
   return lines.join('\n');
 }

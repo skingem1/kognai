@@ -10,7 +10,7 @@ import { sendMessage, sendMessageWithButtons, sendVideoFile, sendVideoWithButton
 import {
   ROOT, readLines, findCaptionedMp4, getExperimentData, buildTikTokCaption,
   loadSpeakerMap, diversifyBySpeaker, loadHookMap, diversifyByHook,
-  freshnessScore, loadArchived,
+  freshnessScore, loadArchived, loadTopicMap, diversifyByTopic,
 } from './shared';
 
 export async function cmdDeliver(chatId: string, args: string): Promise<string> {
@@ -56,7 +56,9 @@ export async function cmdDeliver(chatId: string, args: string): Promise<string> 
   const speakerMap = loadSpeakerMap();
   const speakerDiversified = diversifyBySpeaker(ready, speakerMap);
   const hookMap = loadHookMap();
-  const diversified = diversifyByHook(speakerDiversified, hookMap);
+  const hookDiversified = diversifyByHook(speakerDiversified, hookMap);
+  const topicMap = loadTopicMap();
+  const diversified = diversifyByTopic(hookDiversified, topicMap);
   const batch = diversified.slice(0, count);
   let sent = 0;
 
@@ -400,7 +402,9 @@ export async function cmdPickup(chatId: string): Promise<void> {
   const speakerMap = loadSpeakerMap();
   const speakerDiversified = diversifyBySpeaker(readyRaw, speakerMap);
   const hookMap = loadHookMap();
-  const ready = diversifyByHook(speakerDiversified, hookMap);
+  const hookDiversified = diversifyByHook(speakerDiversified, hookMap);
+  const topicMap = loadTopicMap();
+  const ready = diversifyByTopic(hookDiversified, topicMap);
 
   const pick = ready[0];
   const videoId = pick.video_id;
