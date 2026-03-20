@@ -3385,3 +3385,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (FP-007 file >4000 lines)
 - Issues: None.
 - Timestamp: 2026-03-20T21:00:00Z
+
+## Sprint 394 — /pickup — One-Tap Posting Workflow (Direct Write)
+- Status: PASS
+- Commit: 1b61b9a
+- Files created: workspace/sprints/sprint-394.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 394-01: Added /pickup command — async handler that finds next best unposted video (highest viral score, has captioned mp4), sends it via Telegram with full TikTok caption, then shows inline buttons: Mark Posted, Next Video, Archive & Skip, Gate Progress. Added to /help, added /progress and /help button maps. Reduces 3+ command workflow to 1 tap.
+- Validation: tsc --noEmit PASS
+- Swarm used: no (FP-007 file >4400 lines)
+- Issues: None.
+- Timestamp: 2026-03-20T21:15:00Z
