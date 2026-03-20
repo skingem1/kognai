@@ -8,6 +8,8 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { AchiriConversationHandler, ACHIRI_LIMIT_EXCEEDED } from './index';
 import { AchiriMemoryStore } from './memory-store';
+import { extractUserProfile } from './user-profile';
+import { loadSummary } from './conversation-summary';
 
 const BOT_TOKEN = process.env.ACHIRI_TELEGRAM_BOT_TOKEN || '';
 if (!BOT_TOKEN) {
@@ -183,6 +185,7 @@ async function handleHelp(chatId: string): Promise<void> {
     `/stats — Your engagement stats\n` +
     `/learn — Learn Darija word of the day\n` +
     `/translate — Darija/French/English translator\n` +
+    `/memory — See what Achiri remembers about you\n` +
     `/invite — Share Achiri with friends\n` +
     `/feedback — Send us feedback\n` +
     `/about — About Achiri\n\n` +
@@ -726,6 +729,78 @@ async function handleLearn(chatId: string, args: string): Promise<void> {
   );
 }
 
+// --- Sprint 412: /memory — transparency into what Achiri remembers ---
+
+async function handleMemory(chatId: string, args: string): Promise<void> {
+  const subCmd = args.toLowerCase().trim();
+
+  // /memory clear — wipe all data
+  if (subCmd === 'clear') {
+    const store = new AchiriMemoryStore();
+    store.clearHistory(chatId);
+    handlers.delete(chatId);
+    await sendMessage(chatId,
+      `🗑️ *Memory cleared!*\n\n` +
+      `All your conversation history, profile data, and summaries have been deleted.\n` +
+      `Fresh start — bnédi min jdid! 🌱`
+    );
+    return;
+  }
+
+  // /memory — show what we know
+  const profile = extractUserProfile(chatId);
+  const summary = loadSummary(chatId);
+
+  const langMap: Record<string, string> = {
+    darija: '🇹🇳 Darija',
+    french: '🇫🇷 French',
+    english: '🇬🇧 English',
+    mixed: '🌍 Mixed',
+  };
+
+  const lines: string[] = [
+    `🧠 *What Achiri Remembers About You*`,
+    '',
+  ];
+
+  if (profile.message_count === 0) {
+    lines.push(`_No conversations yet — say something and I'll start remembering!_`);
+  } else {
+    lines.push(`*Profile:*`);
+    lines.push(`• Language: ${langMap[profile.preferred_language] ?? profile.preferred_language}`);
+    if (profile.dialect !== 'unknown') {
+      lines.push(`• Dialect: ${profile.dialect} (confidence: ${Math.round(profile.dialect_confidence * 100)}%)`);
+    }
+    lines.push(`• Formality: ${profile.formality}`);
+    lines.push(`• Messages: ${profile.message_count}`);
+    lines.push(`• Avg length: ${profile.avg_message_length} chars`);
+    if (profile.first_seen) lines.push(`• First seen: ${profile.first_seen.split('T')[0]}`);
+    if (profile.last_seen) lines.push(`• Last seen: ${profile.last_seen.split('T')[0]}`);
+    lines.push('');
+
+    if (profile.top_interests.length > 0) {
+      lines.push(`*Your Interests:*`);
+      for (const interest of profile.top_interests) {
+        lines.push(`• ${interest}`);
+      }
+      lines.push('');
+    }
+
+    if (summary) {
+      lines.push(`*Conversation Summary:*`);
+      const summaryText = typeof summary === 'string' ? summary : (summary as any).summary ?? JSON.stringify(summary);
+      lines.push(summaryText.slice(0, 500));
+      if (summaryText.length > 500) lines.push('_...(truncated)_');
+      lines.push('');
+    }
+  }
+
+  lines.push(`_To clear all data: /memory clear_`);
+  lines.push(`_Your data stays on our server only. Never shared._`);
+
+  await sendMessage(chatId, lines.join('\n'));
+}
+
 // --- Sprint 390: /translate — Darija/French/English quick translator ---
 
 const TRANSLATION_DICT: Array<{ darija: string; latin: string; french: string; english: string }> = [
@@ -845,6 +920,7 @@ async function handleMessage(chatId: string, text: string, firstName: string, us
   if (cmd === '/invite') return handleInvite(chatId, firstName);
   if (cmd === '/learn') return handleLearn(chatId, args);
   if (cmd === '/translate') return sendMessage(chatId, handleTranslate(args));
+  if (cmd === '/memory') return handleMemory(chatId, args);
 
   // Access check
   if (!hasAccess(chatId)) {

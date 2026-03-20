@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-412",
+  "title": "Achiri /memory command — transparency into what AI remembers",
+  "description": "Add /memory command to Achiri Telegram bot. Shows user their profile (detected language, dialect, interests, message count, first/last seen) and conversation summary. Users can /memory clear to wipe their data. Builds trust through transparency.",
+  "source": "auto — Achiri memory subsystem exists but users can't see what's stored about them",
+  "tasks": [
+    {
+      "id": "412-01",
+      "title": "Add /memory command to Achiri Telegram bot with profile display and clear option",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-412",
+      "deliverables": { "code": ["agents/achiri/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
