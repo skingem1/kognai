@@ -25,7 +25,7 @@
       "sprint": 497,
       "title": "SAFETY \u2014 Update progress.md from Sprint 103 to current state",
       "block": "SAFETY-SPLIT",
-      "status": "pending",
+      "status": "done",
       "priority": "critical",
       "rationale": "progress.md still says Sprint 103. Qwen reads this for context. Stale data causes bad sprint briefs. Update to reflect current state: 460+ sprints shipped, all blocks A-G done, VIDEO-QUALITY block done, 890+ commits. Keep under 200 lines \u2014 summary only."
     },

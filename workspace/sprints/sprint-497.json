@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-497",
+  "title": "SAFETY — Update progress.md from Sprint 103 to current state",
+  "description": "progress.md is stale (only up to Sprint 125, 4253 lines). Qwen reads this for context. Rewrite as compact <200 line summary: pipeline architecture, block completion status, milestone summary, last 30 sprints, current state.",
+  "source": "queue — Sprint 497 SAFETY-SPLIT",
+  "tasks": [
+    {
+      "id": "497-01",
+      "title": "Rewrite progress.md as compact summary (<200 lines)",
+      "type": "refactor",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-497",
+      "deliverables": { "code": ["workspace/scs001/progress.md"], "tests": [], "docs": [] }
+    }
+  ]
+}
