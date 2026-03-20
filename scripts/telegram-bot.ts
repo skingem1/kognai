@@ -475,8 +475,10 @@ function cmdQueue(): string {
   const recorded = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
   const recordedIds = new Set(recorded.map((e: any) => e.video_id).filter(Boolean));
 
-  // Load viral scores for ranking
+  // Sprint 434: Load viral scores + metadata for ranking and display
   const viralScores = new Map<string, number>();
+  const queueSpeakers = new Map<string, string>();
+  const queueHooks = new Map<string, string>();
   const expPath = path.join(ROOT, 'workspace', 'scs001', 'experiments.jsonl');
   if (fs.existsSync(expPath)) {
     try {
@@ -485,10 +487,20 @@ function cmdQueue(): string {
         try {
           const e = JSON.parse(line);
           const id = e.clip_id ?? e.video_id;
-          if (id && e.partial_viral_score != null) viralScores.set(id, e.partial_viral_score);
+          if (id) {
+            if (e.partial_viral_score != null) viralScores.set(id, e.partial_viral_score);
+            if (e.speaker && e.speaker !== 'unknown') queueSpeakers.set(id, e.speaker);
+            if (e.hook_formula && e.hook_formula !== 'unknown') queueHooks.set(id, e.hook_formula);
+          }
         } catch { /* skip */ }
       }
     } catch { /* skip */ }
+  }
+
+  // Sprint 434: Build publish date map for age display
+  const publishDates = new Map<string, string>();
+  for (const e of ledger as any[]) {
+    if (e.video_id && e.published_at) publishDates.set(e.video_id, e.published_at);
   }
 
   // Check for captioned mp4 on disk
@@ -522,18 +534,32 @@ function cmdQueue(): string {
   const top5 = unposted.slice(0, 5);
   const readyCount = unposted.filter((e: any) => hasCaptionedMp4(e.video_id)).length;
 
+  // Sprint 434: Show speaker, hook, and age alongside score
   const lines = top5.map((e: any, i: number) => {
     const vs = viralScores.get(e.video_id);
-    const vsStr = vs != null ? ` 🧬${vs}` : '';
+    const vsStr = vs != null ? ` 🧬${vs.toFixed(2)}` : '';
     const ready = hasCaptionedMp4(e.video_id) ? ' ✅' : ' ⏳';
-    return `${i + 1}. \`${e.video_id}\`${vsStr}${ready}`;
+    const spk = queueSpeakers.get(e.video_id);
+    const hook = queueHooks.get(e.video_id);
+    const pubAt = publishDates.get(e.video_id);
+    const ageDays = pubAt ? Math.round((Date.now() - new Date(pubAt).getTime()) / 86_400_000) : 0;
+    const ageStr = ageDays > 0 ? `${ageDays}d` : 'new';
+    const meta: string[] = [];
+    if (spk) meta.push(`🎙️${spk}`);
+    if (hook) meta.push(`🎣${hook}`);
+    meta.push(`⏱${ageStr}`);
+    return `${i + 1}. \`${e.video_id}\`${vsStr}${ready}\n   ${meta.join(' · ')}`;
   });
 
+  // Sprint 434: Unique speaker count for diversity indicator
+  const uniqueSpeakers = new Set(unposted.map((e: any) => queueSpeakers.get(e.video_id) ?? 'unknown')).size;
+
   return (
-    `📋 *Posting Queue* — ${unposted.length} unposted (${readyCount} ready)\n\n` +
+    `📋 *Posting Queue* — ${unposted.length} unposted (${readyCount} ready)\n` +
+    `🎙️ ${uniqueSpeakers} speakers in queue\n\n` +
     lines.join('\n') +
     `\n\n_To record: \`/record <video_id> <views>\`_` +
-    `\n_✅ = captioned mp4 ready · 🧬 = viral score_`
+    `\n_✅ = mp4 ready · 🧬 = viral score · ⏱ = age_`
   );
 }
 

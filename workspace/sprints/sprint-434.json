@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-434",
+  "title": "Enrich /queue display with speaker, hook formula, and content age",
+  "description": "Add speaker name, hook formula, and days-old to /queue items. Currently only shows video_id and viral score. Richer info helps operator decide what to post.",
+  "source": "auto — /queue shows bare video IDs, operator can't tell what content is about without running /review on each",
+  "tasks": [
+    {
+      "id": "434-01",
+      "title": "Add speaker/hook/age metadata to /queue output",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-434",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
