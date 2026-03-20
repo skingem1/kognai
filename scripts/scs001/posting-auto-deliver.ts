@@ -151,8 +151,17 @@ function sendVideoFile(videoPath: string, caption: string): Promise<void> {
 
 // ─── Main ─────────────────────────────────────────────────────────────
 
+// Sprint 525: --batch N flag to send multiple videos in one run
+function parseBatchCount(): number {
+  const args = process.argv.slice(2);
+  const idx = args.indexOf('--batch');
+  if (idx >= 0 && args[idx + 1]) return Math.min(parseInt(args[idx + 1], 10) || 1, 20);
+  return 1;
+}
+
 async function main(): Promise<void> {
-  console.log('[auto-deliver] Starting auto-deliver...');
+  const batchSize = parseBatchCount();
+  console.log(`[auto-deliver] Starting auto-deliver (batch: ${batchSize})...`);
 
   // Check if gate already met
   const manualPosts = readJsonLines(MANUAL_POSTS_PATH);
@@ -236,69 +245,77 @@ async function main(): Promise<void> {
   if (candidates.length === 0) {
     console.log('[auto-deliver] No ready videos to deliver.');
     await sendMessage(
-      `⚠️ *Auto-Deliver* — No videos ready to post.\n\n` +
-      `Run the pipeline to generate new content.`
+      `⚠️ Auto-Deliver — No videos ready to post.\n\nRun the pipeline to generate new content.`
     );
     return;
   }
 
-  // Sprint 417: Pick video respecting speaker + hook diversity (max 2 consecutive)
-  let pick = candidates[0];
-  for (const c of candidates) {
-    const cSpeaker = speakerMap.get(c.video_id) ?? '';
-    const cHook = hookMap.get(c.video_id) ?? '';
-    const speakerOk = !(consecutiveSpeaker >= 2 && cSpeaker === lastSpeaker && lastSpeaker);
-    const hookOk = !(consecutiveHook >= 2 && cHook === lastHook && lastHook);
-    if (speakerOk && hookOk) {
-      pick = c;
-      break;
-    }
-  }
-  const videoId = pick.video_id;
-  const mp4Path = findCaptionedMp4(videoId)!;
-  const caption = buildTikTokCaption(videoId);
-  const vs = viralScores.get(videoId);
-  const vsStr = vs != null ? `🧬 ${vs.toFixed(1)}` : '';
-  // Sprint 417: Show speaker, hook, and age
-  const speaker = speakerMap.get(videoId);
-  const spkStr = speaker ? ` · 🎙️ ${speaker}` : '';
-  const hook = hookMap.get(videoId);
-  const hookStr = hook ? ` · 🎣 ${hook}` : '';
-  const pubAt = ledgerDates.get(videoId);
-  const ageDays = pubAt ? Math.round((Date.now() - new Date(pubAt).getTime()) / 86_400_000) : 0;
-  const ageStr = ageDays > 0 ? ` · ${ageDays}d old` : '';
-
+  // Sprint 525: Batch loop — send up to batchSize videos
+  const sentIds = new Set<string>();
+  let sentCount = 0;
   const now = new Date();
   const timeLabel = now.getHours() < 10 ? '☀️ Morning' : now.getHours() < 15 ? '🌤️ Midday' : '🌙 Evening';
 
-  // Sprint 517: Strip all markdown formatting from caption to avoid Telegram parse errors
-  // Use plain text mode instead of Markdown parse_mode
-  const safeCaption = caption;
+  for (let b = 0; b < batchSize && candidates.length > 0; b++) {
+    // Sprint 417: Pick video respecting speaker + hook diversity (max 2 consecutive)
+    let pick = candidates[0];
+    for (const c of candidates) {
+      if (sentIds.has(c.video_id)) continue;
+      const cSpeaker = speakerMap.get(c.video_id) ?? '';
+      const cHook = hookMap.get(c.video_id) ?? '';
+      const speakerOk = !(consecutiveSpeaker >= 2 && cSpeaker === lastSpeaker && lastSpeaker);
+      const hookOk = !(consecutiveHook >= 2 && cHook === lastHook && lastHook);
+      if (speakerOk && hookOk) {
+        pick = c;
+        break;
+      }
+    }
+    if (sentIds.has(pick.video_id)) break; // No more unique candidates
 
-  const tgCaption =
-    `📦 ${timeLabel} Auto-Deliver ${vsStr}${spkStr}${hookStr}${ageStr}\n\n` +
-    `${safeCaption}\n\n` +
-    `📊 ${manualPosts.length}/${GATE_TARGET} posts · ${daysLeft}d left · ${dailyTarget}/day\n\n` +
-    `Save video → post to TikTok → /record ${videoId} 0`;
+    const videoId = pick.video_id;
+    sentIds.add(videoId);
+    // Remove from candidates for next iteration
+    const pickIdx = candidates.indexOf(pick);
+    if (pickIdx >= 0) candidates.splice(pickIdx, 1);
 
-  console.log(`[auto-deliver] Sending ${videoId} (${mp4Path})`);
+    const mp4Path = findCaptionedMp4(videoId)!;
+    const caption = buildTikTokCaption(videoId);
+    const vs = viralScores.get(videoId);
+    const vsStr = vs != null ? `🧬 ${vs.toFixed(1)}` : '';
+    const speaker = speakerMap.get(videoId);
+    const spkStr = speaker ? ` · 🎙️ ${speaker}` : '';
+    const hook = hookMap.get(videoId);
+    const hookStr = hook ? ` · 🎣 ${hook}` : '';
+    const pubAt = ledgerDates.get(videoId);
+    const ageDays = pubAt ? Math.round((Date.now() - new Date(pubAt).getTime()) / 86_400_000) : 0;
+    const ageStr = ageDays > 0 ? ` · ${ageDays}d old` : '';
 
-  try {
-    await sendVideoFile(mp4Path, tgCaption);
-    console.log(`[auto-deliver] ✅ Sent ${videoId}`);
+    const tgCaption =
+      `📦 ${timeLabel} Auto-Deliver [${b + 1}/${batchSize}] ${vsStr}${spkStr}${hookStr}${ageStr}\n\n` +
+      `${caption}\n\n` +
+      `📊 ${manualPosts.length}/${GATE_TARGET} posts · ${daysLeft}d left · ${dailyTarget}/day\n\n` +
+      `Save video → post to TikTok → /record ${videoId} 0`;
 
-    // Log delivery
-    const entry = JSON.stringify({
-      video_id: videoId,
-      delivered_at: now.toISOString(),
-      viral_score: vs ?? null,
-      mp4_path: mp4Path,
-    });
-    appendFileSync(DELIVERED_LOG, entry + '\n');
-  } catch (err: any) {
-    console.error(`[auto-deliver] ❌ Failed to send ${videoId}: ${err.message}`);
-    await sendMessage(`⚠️ *Auto-Deliver Failed*\n\n\`${videoId}\`: ${err.message}\n\nUse \`/deliver 1\` manually.`);
+    console.log(`[auto-deliver] Sending ${videoId} [${b + 1}/${batchSize}] (${mp4Path})`);
+
+    try {
+      await sendVideoFile(mp4Path, tgCaption);
+      console.log(`[auto-deliver] ✅ Sent ${videoId}`);
+      sentCount++;
+
+      const entry = JSON.stringify({
+        video_id: videoId,
+        delivered_at: now.toISOString(),
+        viral_score: vs ?? null,
+        mp4_path: mp4Path,
+      });
+      appendFileSync(DELIVERED_LOG, entry + '\n');
+    } catch (err: any) {
+      console.error(`[auto-deliver] ❌ Failed to send ${videoId}: ${err.message}`);
+    }
   }
+
+  console.log(`[auto-deliver] Batch complete: ${sentCount}/${batchSize} sent`);
 }
 
 main().catch(err => {

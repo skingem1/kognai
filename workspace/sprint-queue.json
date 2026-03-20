@@ -722,7 +722,8 @@
       "sprint": 525,
       "title": "PIPELINE — Auto-deliver batch mode (send 5 videos at once)",
       "block": "PIPELINE",
-      "status": "pending",
+      "status": "done",
+      "_note": "--batch N flag added. Tested with --batch 3. All 3 sent successfully.",
       "priority": "medium",
       "rationale": "Current auto-deliver sends 1 video per run. Add --batch N flag to send N videos in one run. Reduces manual Telegram interaction for posting."
     }

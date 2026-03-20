@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-525",
+  "title": "PIPELINE — Auto-deliver batch mode (send 5 videos at once)",
+  "description": "Added --batch N flag to posting-auto-deliver.ts. Sends N videos in one run with [1/N] counter in caption. Tested with --batch 3.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "525-01",
+      "title": "Add --batch N flag to auto-deliver script",
+      "type": "feature",
+      "task_type": "pipeline",
+      "task_target": "scripts/scs001/posting-auto-deliver.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-525",
+      "deliverables": { "code": ["scripts/scs001/posting-auto-deliver.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
