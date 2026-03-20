@@ -2765,3 +2765,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (FP-007, multi-file)
 - Issues: None.
 - Timestamp: 2026-03-20T05:45:00Z
+
+## Sprint 335 — Schedule Diversity (Direct Write)
+- Status: PASS
+- Commit: 7d2fc30
+- Files created: workspace/sprints/sprint-335.json
+- Files modified: scripts/scs001/generate-posting-schedule.ts
+- Tasks completed:
+  - 335-01: Added MAX_SPEAKER_REPEATS=3 diversity constraint to schedule generator. Before: potentially 1 speaker for all 14 slots. After: 6 speakers represented (Alex Albert 3, Sam Altman 3, Jesse Pollak 3, ThePrimeagen 3, Margrethe Vestager 1, TED 1).
+- Validation: 26/26 PASS (existing posting-schedule validator)
+- Swarm used: no (surgical edit)
+- Issues: None.
+- Timestamp: 2026-03-20T05:55:00Z
