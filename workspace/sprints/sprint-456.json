@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-456",
+  "title": "ENV-CHECK — Audit all .env variables and create setup validator",
+  "description": "Create scripts/check-env.ts that validates all required environment variables for each subsystem (TikTok, Stripe, YouTube, Telegram, Ollama, Supabase, etc). Print status with icons. Wire into /health Telegram command.",
+  "source": "queue — Sprint 445 ENV-SETUP",
+  "tasks": [
+    {
+      "id": "456-01",
+      "title": "Create scripts/check-env.ts — environment variable validator",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-456",
+      "deliverables": { "code": ["scripts/check-env.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "456-02",
+      "title": "Wire check-env into /envcheck Telegram command",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-456",
+      "deliverables": { "code": ["scripts/telegram-commands/cmd-system.ts", "scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

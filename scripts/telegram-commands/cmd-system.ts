@@ -368,3 +368,9 @@ export function cmdQuickStart(): string {
 
   return lines.join('\n');
 }
+
+// Sprint 456: /envcheck — environment variable audit
+export function cmdEnvCheck(): string {
+  const { formatEnvCheck } = require('../check-env');
+  return formatEnvCheck();
+}
