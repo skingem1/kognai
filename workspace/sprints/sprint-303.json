@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-303",
+  "title": "Wire derja-profiler into Achiri chat — dialect-adaptive system prompt",
+  "description": "derja-profiler (Sprint 125) detects Tunisian/Moroccan/Algerian/Libyan/Egyptian dialect + formality but was never wired into chat(). This sprint integrates it: detect dialect from user messages, persist in user profile, inject dialect-specific instructions into system prompt.",
+  "source": "auto — gap analysis: derja-profiler built but unwired",
+  "tasks": [
+    {
+      "id": "303-01",
+      "title": "Add dialect detection to user-profile.ts using derja-profiler",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-303",
+      "deliverables": { "code": ["agents/achiri/user-profile.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "303-02",
+      "title": "Inject dialect-specific guidance into system prompt",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-303",
+      "deliverables": { "code": ["agents/achiri/user-profile.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

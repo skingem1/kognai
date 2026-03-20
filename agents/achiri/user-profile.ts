@@ -1,16 +1,20 @@
-// Achiri User Profile Extractor — Sprint 301
+// Achiri User Profile Extractor — Sprint 301 + Sprint 303 (dialect detection)
 // Extracts user preferences from conversation history JSONL.
 // Zero LLM cost — pure pattern analysis ($0.00).
 //
-// Detects: preferred language, top interests/topics, conversation stats.
+// Detects: preferred language, dialect variant, formality, top interests/topics, conversation stats.
 // Used by: chat() to inject personalized context into system prompt.
 
 import type { ConversationTurn } from './index';
 import { AchiriMemoryStore } from './memory-store';
+import { profileMessage, type DialectVariant, type Formality } from './derja-profiler';
 
 export interface UserProfile {
   userId: string;
   preferred_language: 'darija' | 'french' | 'english' | 'mixed';
+  dialect: DialectVariant;       // Sprint 303: tunisian | moroccan | algerian | etc.
+  formality: Formality;          // Sprint 303: informal | neutral | formal
+  dialect_confidence: number;    // Sprint 303: 0.0-1.0
   top_interests: string[];       // up to 5 recurring topics
   message_count: number;
   first_seen: string | null;     // ISO date of earliest turn
@@ -77,6 +81,43 @@ function extractInterests(messages: string[]): string[] {
     .map(([topic]) => topic);
 }
 
+// Sprint 303: Aggregate dialect detection across all user messages
+function detectDialect(messages: string[]): { dialect: DialectVariant; formality: Formality; confidence: number } {
+  if (messages.length === 0) return { dialect: 'unknown', formality: 'neutral', confidence: 0 };
+
+  const dialectCounts: Record<string, number> = {};
+  const formalityCounts: Record<string, number> = {};
+  let totalConfidence = 0;
+  let profiledCount = 0;
+
+  for (const msg of messages) {
+    const profile = profileMessage(msg);
+    if (profile.dialect !== 'unknown') {
+      dialectCounts[profile.dialect] = (dialectCounts[profile.dialect] ?? 0) + 1;
+      totalConfidence += profile.confidence;
+      profiledCount++;
+    }
+    formalityCounts[profile.formality] = (formalityCounts[profile.formality] ?? 0) + 1;
+  }
+
+  // Winner dialect
+  let dialect: DialectVariant = 'unknown';
+  let maxCount = 0;
+  for (const [d, count] of Object.entries(dialectCounts)) {
+    if (count > maxCount) { dialect = d as DialectVariant; maxCount = count; }
+  }
+
+  // Winner formality
+  let formality: Formality = 'neutral';
+  let maxF = 0;
+  for (const [f, count] of Object.entries(formalityCounts)) {
+    if (count > maxF) { formality = f as Formality; maxF = count; }
+  }
+
+  const confidence = profiledCount > 0 ? totalConfidence / profiledCount : 0;
+  return { dialect, formality, confidence: Math.round(confidence * 100) / 100 };
+}
+
 export function extractUserProfile(userId: string): UserProfile {
   const history = store.loadHistory(userId);
   const userTurns = history.filter(t => t.role === 'user');
@@ -91,9 +132,15 @@ export function extractUserProfile(userId: string): UserProfile {
     ? Math.round(messages.reduce((sum, m) => sum + m.length, 0) / messages.length)
     : 0;
 
+  // Sprint 303: Dialect detection
+  const dialectInfo = detectDialect(messages);
+
   return {
     userId,
     preferred_language: messages.length > 0 ? detectLanguage(messages) : 'mixed',
+    dialect: dialectInfo.dialect,
+    formality: dialectInfo.formality,
+    dialect_confidence: dialectInfo.confidence,
     top_interests: extractInterests(messages),
     message_count: userTurns.length,
     first_seen: timestamps.length > 0 ? timestamps[0] : null,
@@ -123,6 +170,28 @@ export function buildProfileContext(profile: UserProfile): string | null {
     lines.push('- User prefers French. Mix in some Darija naturally.');
   } else if (profile.preferred_language === 'english') {
     lines.push('- User communicates in English. Keep Darija greetings but reply in English.');
+  }
+
+  // Sprint 303: Dialect-specific guidance from derja-profiler
+  if (profile.dialect !== 'unknown' && profile.dialect_confidence >= 0.5) {
+    const dialectGuidance: Record<string, string> = {
+      tunisian: 'User speaks Tunisian Darija. Use "barsha", "mrigoul", "3lech", "kifeh". This is your home dialect — be natural.',
+      moroccan: 'User speaks Moroccan Darija. Adapt: use "bzzaf" instead of "barsha", "daba" instead of "taw", "wach" for questions. Keep warmth but respect their dialect.',
+      algerian: 'User speaks Algerian Darija. Adapt: use "brabi" for please, "ki rak" for how are you. Similar to Tunisian but respect their variant.',
+      libyan: 'User speaks Libyan Arabic. Adapt: use "tayyib" for ok. Stay warm and culturally respectful.',
+      egyptian: 'User speaks Egyptian Arabic. Adapt: use "izzayak" for greetings, "kwayyes" for good. Switch to a more Egyptian register while keeping Achiri personality.',
+    };
+    if (dialectGuidance[profile.dialect]) {
+      lines.push(`- Detected dialect: ${profile.dialect} (confidence: ${profile.dialect_confidence})`);
+      lines.push(`- ${dialectGuidance[profile.dialect]}`);
+    }
+  }
+
+  // Sprint 303: Formality adaptation
+  if (profile.formality === 'formal') {
+    lines.push('- User tends toward formal register. Use polite forms, avoid excessive slang.');
+  } else if (profile.formality === 'informal') {
+    lines.push('- User is informal. Match their casual energy — use slang, emojis, short messages.');
   }
 
   // Interests
