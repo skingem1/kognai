@@ -3133,3 +3133,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (async function with video file sending)
 - Issues: None.
 - Timestamp: 2026-03-20T10:45:00Z
+
+## Sprint 365 — /revenue — Financial Dashboard (Direct Write)
+- Status: PASS
+- Commit: 2dcacff
+- Files created: workspace/sprints/sprint-365.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 365-01: Added /revenue command. Shows subscriber breakdown (free/growth/premium), MRR/ARR, 5 financial gate progress bars (Phase 1.5→4), Stripe status. Reads telegram-db.json. Updated /help + switch router.
+- Validation: ts-node --transpile-only PASS
+- Swarm used: no (single function port)
+- Issues: None.
+- Timestamp: 2026-03-20T11:00:00Z
