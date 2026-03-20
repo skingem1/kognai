@@ -4166,9 +4166,42 @@ async function cmdEndSession(chatId: string): Promise<void> {
   ].join('\n'));
 }
 
+// Sprint 433: /menu — Interactive button menu for quick access
+async function cmdMenu(chatId: string): Promise<void> {
+  const text = `📱 *Quick Menu*\n\nTap any button below:`;
+  const buttons = [
+    [
+      { text: '📦 Deliver', callback_data: 'cmd:/deliver 1' },
+      { text: '📊 Gate', callback_data: 'cmd:/gate' },
+      { text: '🔥 Streak', callback_data: 'cmd:/streak' },
+    ],
+    [
+      { text: '📋 Queue', callback_data: 'cmd:/queue' },
+      { text: '📅 Today', callback_data: 'cmd:/today' },
+      { text: '🏃 Pace', callback_data: 'cmd:/pace' },
+    ],
+    [
+      { text: '📈 Analytics', callback_data: 'cmd:/analytics' },
+      { text: '🔄 Last Run', callback_data: 'cmd:/lastrun' },
+      { text: '🤖 Auto-post', callback_data: 'cmd:/autopost' },
+    ],
+    [
+      { text: '🚀 Go Live', callback_data: 'cmd:/golive' },
+      { text: '💰 Revenue', callback_data: 'cmd:/revenue' },
+      { text: '📊 Status', callback_data: 'cmd:/status' },
+    ],
+    [
+      { text: '📝 Digest', callback_data: 'cmd:/digest' },
+      { text: '❓ Help', callback_data: 'cmd:/help' },
+    ],
+  ];
+  await sendMessageWithButtons(chatId, text, buttons);
+}
+
 function cmdHelp(): string {
   return (
     `*Kognai Bot Commands*\n\n` +
+    `/menu      — Quick access button menu\n` +
     `/report    — Full system status (real data, no AI)\n` +
     `/pm2       — Live PM2 process table\n` +
     `/crons     — All PM2 cron schedules\n` +
@@ -5457,6 +5490,18 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     return;
   }
 
+  // Sprint 433: /menu is async (sends inline keyboard buttons)
+  if (cmdName === '/menu') {
+    try {
+      await cmdMenu(chatId);
+    } catch (e: any) {
+      await sendMessage(chatId, `❌ Menu error: ${e.message}`);
+    }
+    const timestamp = new Date().toISOString();
+    fs.appendFileSync(AUDIT_LOG, `[${timestamp}] [TELEGRAM_BOT] Command: ${cmd} from ${chatId}\n`);
+    return;
+  }
+
   // Sprint 394: /pickup is async (sends video + buttons)
   if (cmdName === '/pickup') {
     try {
@@ -5627,6 +5672,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
 // Sprint 432: Register bot commands for Telegram autocomplete menu
 async function registerBotCommands(): Promise<void> {
   const commands = [
+    { command: 'menu', description: 'Quick access button menu' },
     { command: 'deliver', description: 'Send top videos for posting' },
     { command: 'gate', description: 'Phase 1.5 gate countdown' },
     { command: 'streak', description: 'Posting streak + pace' },
