@@ -27,6 +27,7 @@ import {
   handleViralStats, handleCalendar, handleHealth, handlePreflight,
   handleTiktokAuth, handleAutoPost, handleVerifyPosts, handleActivate,
   handleAchiriStats,
+  handleAchiriProfile,
   handleLastRun,
   handleMetrics,
   handleRevenue,
@@ -135,6 +136,7 @@ async function dispatch(update: TelegramUpdate): Promise<void> {
     case '/autopost':       await handleAutoPost(chatId, OWNER_CHAT_ID, text);        break;
     case '/verifyposts':    await handleVerifyPosts(chatId, OWNER_CHAT_ID, text);     break;
     case '/activate':       await handleActivate(chatId, OWNER_CHAT_ID);              break;
+    case '/achiriprofile':  await handleAchiriProfile(chatId);                         break;
     case '/achiristats':    await handleAchiriStats(chatId, OWNER_CHAT_ID);           break;
     case '/lastrun':        await handleLastRun(chatId, OWNER_CHAT_ID);              break;
     case '/metrics':        await handleMetrics(chatId, OWNER_CHAT_ID);              break;

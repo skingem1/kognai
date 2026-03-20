@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-304",
+  "title": "Telegram /achiriprofile — user-facing profile + summary display",
+  "description": "Let Achiri users see their detected profile via Telegram. Calls GET /profile/:userId and GET /summary/:userId from Achiri server. Shows language, dialect, interests, and remembered facts.",
+  "source": "auto — connect Sprint 301-303 personalization to user-facing product",
+  "tasks": [
+    {
+      "id": "304-01",
+      "title": "Add handleAchiriProfile command to commands.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-304",
+      "deliverables": { "code": ["agents/telegram-bot/commands.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "304-02",
+      "title": "Route /achiriprofile in index.ts and add to help",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-304",
+      "deliverables": { "code": ["agents/telegram-bot/index.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

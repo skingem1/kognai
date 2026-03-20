@@ -125,6 +125,7 @@ export async function handleHelp(chatId: number): Promise<void> {
     '/inviteachiri <id> — Invite user to Achiri alpha whitelist (owner)',
     '/deploystatus — Achiri alpha deploy checklist (owner)',
     '/achirihealth — Achiri server status (owner)',
+    '/achiriprofile — Your Achiri profile: language, dialect, interests, memory',
     '/achiristats — Achiri usage analytics: users, messages, memory (owner)',
     '/lastrun — Latest pipeline run: stage-by-stage results + timing (owner)',
     '/metrics — Pipeline performance metrics: throughput, QC rate, trends (owner)',
@@ -3499,6 +3500,79 @@ export async function handlePipeline(chatId: number, ownerChatId: string): Promi
     lines.push('⚠️ No captioned videos ready. Pipeline needs to run.');
   } else {
     lines.push('🎉 Phase 1.5 post target reached!');
+  }
+
+  await sendMessage(chatId, lines.join('\n'));
+}
+
+// ── /achiriprofile — Sprint 304: User-facing profile + summary ──────────────
+
+export async function handleAchiriProfile(chatId: number): Promise<void> {
+  const userId = String(chatId);
+  const lines: string[] = ['🪪 *Your Achiri Profile*', ''];
+
+  try {
+    // Fetch profile from Achiri server
+    const profileRes = await fetch(ACHIRI_BASE_URL + '/profile/' + encodeURIComponent(userId));
+    const profile = await profileRes.json() as {
+      preferred_language?: string;
+      dialect?: string;
+      formality?: string;
+      dialect_confidence?: number;
+      top_interests?: string[];
+      message_count?: number;
+    };
+
+    if (!profile.message_count || profile.message_count === 0) {
+      await sendMessage(chatId, '🪪 *Your Achiri Profile*\n\nNo conversation history yet! Start chatting with /achiri <msg> to build your profile.');
+      return;
+    }
+
+    // Language
+    const langEmoji: Record<string, string> = { darija: '🇹🇳', french: '🇫🇷', english: '🇬🇧', mixed: '🌍' };
+    const langLabel: Record<string, string> = { darija: 'Darija (Tunisian Arabic)', french: 'French', english: 'English', mixed: 'Mixed (code-switching)' };
+    lines.push(`🗣 *Language:* ${langEmoji[profile.preferred_language ?? 'mixed'] ?? '🌍'} ${langLabel[profile.preferred_language ?? 'mixed'] ?? 'Mixed'}`);
+
+    // Dialect
+    if (profile.dialect && profile.dialect !== 'unknown' && (profile.dialect_confidence ?? 0) >= 0.5) {
+      const dialectLabel: Record<string, string> = {
+        tunisian: '🇹🇳 Tunisian', moroccan: '🇲🇦 Moroccan', algerian: '🇩🇿 Algerian',
+        libyan: '🇱🇾 Libyan', egyptian: '🇪🇬 Egyptian',
+      };
+      lines.push(`🎯 *Dialect:* ${dialectLabel[profile.dialect] ?? profile.dialect} (${Math.round((profile.dialect_confidence ?? 0) * 100)}% confidence)`);
+    }
+
+    // Formality
+    if (profile.formality && profile.formality !== 'neutral') {
+      lines.push(`📝 *Style:* ${profile.formality === 'formal' ? '👔 Formal' : '😎 Casual'}`);
+    }
+
+    // Interests
+    if (profile.top_interests && profile.top_interests.length > 0) {
+      lines.push(`💡 *Interests:* ${profile.top_interests.join(', ')}`);
+    }
+
+    // Message count
+    lines.push(`💬 *Messages:* ${profile.message_count}`);
+
+    // Fetch summary
+    try {
+      const summaryRes = await fetch(ACHIRI_BASE_URL + '/summary/' + encodeURIComponent(userId));
+      const summary = await summaryRes.json() as { facts?: string[]; total_turns_summarized?: number };
+      if (summary.facts && summary.facts.length > 0) {
+        lines.push('');
+        lines.push('🧠 *What Achiri remembers:*');
+        for (const fact of summary.facts.slice(0, 5)) {
+          lines.push(`  • ${fact}`);
+        }
+      }
+    } catch { /* non-fatal */ }
+
+    lines.push('');
+    lines.push('_Profile auto-detected from your conversations. Chat more to refine it!_');
+  } catch (err) {
+    lines.push('⚠️ Could not reach Achiri server. Is it running?');
+    console.error('[telegram-bot] /achiriprofile error:', err);
   }
 
   await sendMessage(chatId, lines.join('\n'));
