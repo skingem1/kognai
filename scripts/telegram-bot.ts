@@ -4435,6 +4435,7 @@ function cmdHelp(): string {
     `/pm2       — Live PM2 process table\n` +
     `/boot      — Start all essential PM2 crons\n` +
     `/shutdown  — Stop all non-essential PM2 crons\n` +
+    `/reload    — Restart bot to pick up code changes\n` +
     `/crons     — All PM2 cron schedules\n` +
     `/health    — Health check summary\n` +
     `/tier      — Current tier + MRR\n` +
@@ -5741,6 +5742,22 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     }
     const timestamp = new Date().toISOString();
     fs.appendFileSync(AUDIT_LOG, `[${timestamp}] [TELEGRAM_BOT] Command: ${cmd} from ${chatId}\n`);
+    return;
+  }
+
+  // Sprint 439: /reload — restart telegram-bot to pick up code changes
+  if (cmdName === '/reload') {
+    await sendMessage(chatId, '🔄 *Reloading bot...*\n\nRestarting in 2 seconds. Bot will be back shortly.');
+    const timestamp = new Date().toISOString();
+    fs.appendFileSync(AUDIT_LOG, `[${timestamp}] [TELEGRAM_BOT] Command: ${cmd} from ${chatId}\n`);
+    setTimeout(() => {
+      try {
+        execSync('pm2 restart telegram-bot', { timeout: 10000, stdio: 'pipe' });
+      } catch {
+        // If pm2 restart fails, exit and let PM2 auto-restart
+        process.exit(0);
+      }
+    }, 2000);
     return;
   }
 
