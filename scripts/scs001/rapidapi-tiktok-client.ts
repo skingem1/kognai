@@ -104,7 +104,7 @@ export async function getVideoInfo(tiktokUrl: string): Promise<TikTokVideoInfo> 
     throw new Error(`RapidAPI TikTok ${postRes.status}: ${errText}`);
   }
 
-  const data = await postRes.json();
+  const data: any = await postRes.json();
 
   // Parse response — structure varies by API version
   const videoData = data?.data ?? data;
@@ -247,7 +247,7 @@ export async function searchByKeyword(
     throw new Error(`RapidAPI search ${res.status}: ${errText}`);
   }
 
-  const data = await res.json();
+  const data: any = await res.json();
   const videos = data?.data?.videos ?? data?.data ?? [];
 
   if (!Array.isArray(videos)) return [];
@@ -284,7 +284,7 @@ export async function getTrendingFeed(
     throw new Error(`RapidAPI trending ${res.status}: ${errText}`);
   }
 
-  const data = await res.json();
+  const data: any = await res.json();
   const videos = data?.data?.videos ?? data?.data ?? [];
 
   if (!Array.isArray(videos)) return [];

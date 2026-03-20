@@ -57,6 +57,10 @@ const SEGMENT_COLORS: Record<ScriptSegment['segment_name'], string> = {
   commentary: '0x533483',   // purple
   insight:    '0xE94560',   // red accent
   loop:       '0x2D2D44',   // slate (callback to hook, slightly different)
+  twist:      '0x7B2D8E',   // violet
+  reaction:   '0x3D5A80',   // steel blue
+  point:      '0xD4A373',   // warm tan
+  cta:        '0x2A9D8F',   // teal
 };
 
 function buildMockSegmentFilter(seg: ScriptSegment, idx: number): string {

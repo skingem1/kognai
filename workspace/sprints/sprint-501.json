@@ -1,0 +1,44 @@
+{
+  "sprint_id": "sprint-501",
+  "title": "FIX — Pipeline type errors (scs001-editing + rapidapi-client) + mock validation",
+  "description": "Fix type errors blocking pipeline execution: (1) scs001-editing missing segment colors for twist/reaction/point/cta, (2) rapidapi-tiktok-client untyped json responses. Validate with mock pipeline run.",
+  "source": "queue-empty — pipeline was broken, fix enables content production",
+  "tasks": [
+    {
+      "id": "501-01",
+      "title": "Fix SEGMENT_COLORS missing entries in scs001-editing",
+      "type": "fix",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-501",
+      "deliverables": { "code": ["agents/scs001-editing/index.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "501-02",
+      "title": "Fix rapidapi-tiktok-client type errors (json() returns unknown)",
+      "type": "fix",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-501",
+      "deliverables": { "code": ["scripts/scs001/rapidapi-tiktok-client.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "501-03",
+      "title": "Validate mock pipeline runs end-to-end",
+      "type": "test",
+      "task_type": "validation",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-501",
+      "deliverables": { "code": [], "tests": [], "docs": [] }
+    }
+  ]
+}
