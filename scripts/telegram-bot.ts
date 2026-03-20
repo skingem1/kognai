@@ -1862,6 +1862,68 @@ function cmdPostPlan(): string {
   return lines.join('\n');
 }
 
+// ─── Sprint 372: /viralstats — viral score summary ────────────────────────
+
+function cmdViralStats(): string {
+  const expPath = path.join(ROOT, 'workspace', 'scs001', 'experiments.jsonl');
+  if (!fs.existsSync(expPath)) {
+    return '⚠️ No experiments.jsonl found. Run pipeline first.';
+  }
+
+  const scored: Array<{ video_id: string; score: number; hook: string; speaker: string }> = [];
+  let total = 0;
+
+  try {
+    for (const line of fs.readFileSync(expPath, 'utf-8').split('\n')) {
+      if (!line.trim()) continue;
+      try {
+        const e = JSON.parse(line);
+        total++;
+        if (e.partial_viral_score != null) {
+          scored.push({
+            video_id: e.clip_id ?? e.video_id ?? '?',
+            score: e.partial_viral_score,
+            hook: e.hook_formula ?? 'unknown',
+            speaker: e.speaker ?? 'unknown',
+          });
+        }
+      } catch { /* skip */ }
+    }
+  } catch {
+    return '⚠️ Could not read experiments.jsonl.';
+  }
+
+  if (scored.length === 0) {
+    return '🧬 *Viral Stats*\n\nNo viral scores yet. Run the pipeline.';
+  }
+
+  const scores = scored.map(s => s.score);
+  const avg = (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(3);
+  const max = Math.max(...scores).toFixed(3);
+  const min = Math.min(...scores).toFixed(3);
+  const above07 = scores.filter(s => s >= 0.7).length;
+
+  scored.sort((a, b) => b.score - a.score);
+  const top3 = scored.slice(0, 3);
+
+  const lines: string[] = [
+    '🧬 *Viral Score Summary*',
+    '',
+    `📊 Scored: *${scored.length}* / ${total} experiments`,
+    `📈 Avg: *${avg}* | Max: *${max}* | Min: *${min}*`,
+    `🔥 High (≥0.7): *${above07}*`,
+    '',
+    '*Top 3:*',
+  ];
+
+  top3.forEach((e, i) => {
+    lines.push(`${i + 1}. \`${e.video_id.slice(0, 16)}\` — ${e.score} · ${e.speaker} · ${e.hook}`);
+  });
+
+  lines.push('', '💡 /postnow posts the highest-scoring video');
+  return lines.join('\n');
+}
+
 // ─── Sprint 371: /todaycaptions — batch captions for today's posts ────────
 
 async function cmdTodayCaptions(chatId: string): Promise<void> {
@@ -2571,6 +2633,7 @@ function cmdHelp(): string {
     `/broadcast  — Send announcement to alpha users\n` +
     `/dashboard  — Full system status overview\n` +
     `/todaycaptions — Copy-paste captions for today\n` +
+    `/viralstats — Viral score summary + top 3\n` +
     `/help      — This message`
   );
 }
@@ -2723,6 +2786,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/viral':       response = cmdViral();              break;
     case '/postplan':    response = cmdPostPlan();           break;
     case '/dashboard':   response = cmdDashboard();          break;
+    case '/viralstats':  response = cmdViralStats();         break;
     case '/help':        response = cmdHelp();        break;
     default:
       response = `Unknown command: \`${cmdName}\`\n\n${cmdHelp()}`;

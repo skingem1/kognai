@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-372",
+  "title": "/viralstats — viral score summary and top experiments",
+  "description": "Port /viralstats command to main Telegram bot. Shows viral score distribution, average/max/min, top 3 by score.",
+  "source": "auto — content quality requires viral score visibility",
+  "tasks": [
+    {
+      "id": "372-01",
+      "title": "Add /viralstats command to scripts/telegram-bot.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-372",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
