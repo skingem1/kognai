@@ -1,0 +1,24 @@
+{
+  "sprint_id": "sprint-598",
+  "title": "INFRA — Pipeline output validator (verify captioned videos are playable)",
+  "description": "Create scripts/scs001/validate-video-playback.ts: scans captioned mp4s, runs ffprobe to verify they are playable, reports corrupt/missing audio/zero-duration files. Outputs report to reports/video-playback-audit.json.",
+  "source": "sprint-queue",
+  "tasks": [
+    {
+      "id": "598-01",
+      "title": "Create validate-video-playback.ts with ffprobe checks",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/scs001/validate-video-playback.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-598",
+      "deliverables": {
+        "code": ["scripts/scs001/validate-video-playback.ts"],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ]
+}
