@@ -1,0 +1,44 @@
+{
+  "sprint_id": "sprint-334",
+  "title": "Morning caption push — auto-send today's captions at 07:30 via PM2 cron",
+  "description": "PM2 cron that sends today's scheduled captions to operator at 07:30 (after 07:00 digest). No command needed. Also updates /help with Sprint 331-333 commands.",
+  "source": "auto — operator posting workflow automation, Phase 1 gate urgency",
+  "tasks": [
+    {
+      "id": "334-01",
+      "title": "Create scripts/scs001/morning-caption-push.ts — cron script",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-334",
+      "deliverables": { "code": ["scripts/scs001/morning-caption-push.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "334-02",
+      "title": "Add kognai-caption-push to ecosystem.config.js — PM2 cron 07:30",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-334",
+      "deliverables": { "code": ["ecosystem.config.js"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "334-03",
+      "title": "Update /help with Sprint 331-333 commands",
+      "type": "enhancement",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "low",
+      "sprint_id": "sprint-334",
+      "deliverables": { "code": ["agents/telegram-bot/commands.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

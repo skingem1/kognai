@@ -124,6 +124,7 @@ export async function handleHelp(chatId: number, ownerChatId?: string): Promise<
     '/autopost /verifyposts /activate',
     '/stripestatus /tiktokstatus /tiktokauth',
     '/pipeline /runpipeline /lastrun /metrics /revenue',
+    '/postplan /todaycaptions /leaderboard',
     '',
     '🤖 *Achiri*',
     '/achiri <msg> /achiriprofile /achirihealth',

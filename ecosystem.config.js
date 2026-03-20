@@ -857,6 +857,26 @@ module.exports = {
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
     {
+      // Sprint 334: Morning caption push — sends today's scheduled captions at 07:30
+      // Operator wakes up to their posting pack (after 07:00 digest).
+      // To start: pm2 start ecosystem.config.js --only kognai-caption-push
+      name: "kognai-caption-push",
+      script: "scripts/scs001/morning-caption-push.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: false,
+      watch: false,
+      cron_restart: "30 7 * * *",
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/caption-push-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/caption-push-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
+    {
       // Sprint 326: Achiri re-engagement — daily at 15:00 (afternoon in Tunisia)
       // Sends check-in messages to alpha users inactive 3+ days.
       // To start: pm2 start ecosystem.config.js --only achiri-reengage
