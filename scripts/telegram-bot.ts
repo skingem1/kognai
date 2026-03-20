@@ -1221,6 +1221,7 @@ function cmdHelp(): string {
     `/analytics — Content performance insights\n` +
     `/onboard   — First-time posting walkthrough\n` +
     `/pipeline  — Content pipeline inventory & health\n` +
+    `/refresh   — Trigger new pipeline run (2-5 min)\n` +
     `/today     — Daily posting brief + recommendations\n` +
     `/calendar  — 7-day content posting plan\n` +
     `/help      — This message`
@@ -1243,6 +1244,52 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
   const spaceIdx = text.indexOf(' ');
   const cmdName = spaceIdx === -1 ? cmd : text.slice(0, spaceIdx).split('@')[0].toLowerCase().trim();
   const cmdArgs = spaceIdx === -1 ? '' : text.slice(spaceIdx + 1).trim();
+
+  // Sprint 340: /refresh — trigger pipeline run from Telegram
+  if (cmdName === '/refresh') {
+    await sendMessage(chatId, `🔄 *Pipeline refresh starting...*\n\nThis takes 2-5 minutes. I'll notify you when it's done.`);
+    const { spawn } = require('child_process');
+    const pipelineScript = path.join(ROOT, 'agents', 'scs001-orchestrator', 'run-pipeline.ts');
+    const child = spawn('npx', ['ts-node', '--transpile-only', pipelineScript, 'mock'], {
+      cwd: ROOT,
+      env: { ...process.env, TS_NODE_TRANSPILE_ONLY: 'true' },
+      stdio: ['ignore', 'pipe', 'pipe'],
+      detached: false,
+    });
+    let stdout = '';
+    let stderr = '';
+    child.stdout.on('data', (d: Buffer) => { stdout += d.toString(); });
+    child.stderr.on('data', (d: Buffer) => { stderr += d.toString(); });
+    child.on('close', async (code: number) => {
+      try {
+        if (code === 0) {
+          // Read latest report for stats
+          const latestPath = path.join(ROOT, 'reports', 'pipeline-runs', 'latest.json');
+          let stats = '';
+          if (fs.existsSync(latestPath)) {
+            try {
+              const report = JSON.parse(fs.readFileSync(latestPath, 'utf-8'));
+              const stages = report.stages ?? {};
+              const discovered = stages.discovery?.count ?? '?';
+              const captioned = stages.captioning?.count ?? stages.caption?.count ?? '?';
+              stats = `\n\n📊 Discovered: ${discovered} · Captioned: ${captioned}`;
+              if (report.total_elapsed_ms) stats += ` · ${Math.round(report.total_elapsed_ms / 1000)}s`;
+            } catch { /* skip */ }
+          }
+          await sendMessage(chatId, `✅ *Pipeline refresh complete!*${stats}\n\nUse /deliver to get fresh videos.`);
+        } else {
+          const errSnippet = (stderr || stdout).slice(-300);
+          await sendMessage(chatId, `❌ *Pipeline failed* (exit ${code})\n\n\`\`\`\n${errSnippet}\n\`\`\``);
+        }
+      } catch { /* notification failed, nothing we can do */ }
+    });
+    child.on('error', async (err: Error) => {
+      try { await sendMessage(chatId, `❌ *Pipeline spawn failed:* ${err.message}`); } catch {}
+    });
+    const timestamp = new Date().toISOString();
+    fs.appendFileSync(AUDIT_LOG, `[${timestamp}] [TELEGRAM_BOT] Command: ${cmd} from ${chatId}\n`);
+    return;
+  }
 
   // Sprint 280: /deliver is async (sends videos), handle separately
   if (cmdName === '/deliver') {

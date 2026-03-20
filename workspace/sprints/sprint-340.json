@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-340",
+  "title": "/refresh command — trigger pipeline run from Telegram",
+  "description": "Operator types /refresh to kick off a content pipeline run without SSH. Spawns run-pipeline.ts in background, sends completion notification with video count.",
+  "source": "auto — operator convenience, pipeline triggers shouldn't need terminal access",
+  "tasks": [
+    {
+      "id": "340-01",
+      "title": "Add /refresh command to telegram-bot.ts — trigger pipeline and report result",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-340",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
