@@ -3073,3 +3073,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (surgical fix to recommendation logic)
 - Issues: None.
 - Timestamp: 2026-03-20T09:15:00Z
+
+## Sprint 360 — /tip for Achiri Alpha (Direct Write)
+- Status: PASS
+- Commit: c565b7f
+- Files created: workspace/sprints/sprint-360.json
+- Files modified: agents/achiri/telegram-bot.ts
+- Tasks completed:
+  - 360-01: Added /tip command — 18 curated Tunisian proverbs in Darija/French/English. Day-of-year rotation for consistent daily wisdom. Updated /help.
+- Validation: tsc --noEmit PASS
+- Swarm used: no (Achiri bot feature additions)
+- Issues: None.
+- Timestamp: 2026-03-20T09:30:00Z
