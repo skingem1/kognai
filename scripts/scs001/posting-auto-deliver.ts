@@ -60,8 +60,8 @@ function findCaptionedMp4(videoId: string): string | null {
   return null;
 }
 
-function getExperimentData(videoId: string): { speaker: string; hook_formula: string; viral_score: number | null } {
-  const result = { speaker: 'unknown', hook_formula: 'unknown', viral_score: null as number | null };
+function getExperimentData(videoId: string): { speaker: string; hook_formula: string; viral_score: number | null; topic: string | null } {
+  const result = { speaker: 'unknown', hook_formula: 'unknown', viral_score: null as number | null, topic: null as string | null };
   const lines = readJsonLines(EXPERIMENTS_PATH);
   for (const e of lines) {
     const id = e.clip_id ?? e.video_id;
@@ -69,25 +69,58 @@ function getExperimentData(videoId: string): { speaker: string; hook_formula: st
       if (e.speaker) result.speaker = e.speaker;
       if (e.hook_formula) result.hook_formula = e.hook_formula;
       if (e.partial_viral_score != null) result.viral_score = e.partial_viral_score;
+      if (e.topic) result.topic = e.topic;
     }
   }
   return result;
 }
 
+// Sprint 421: Synced with Sprint 418 engagement-optimized templates
+const HOOK_TEMPLATES: Record<string, string[]> = {
+  curiosity_gap: ['Wait for it... this changes everything', 'Nobody is talking about this yet', 'This is the part they don\'t teach you', 'I wasn\'t ready for this', 'Watch till the end, trust me'],
+  secret: ['The secret nobody wants you to know', 'They really don\'t want this going viral', 'This wasn\'t supposed to get out', 'Here\'s what they\'re hiding from you', 'Most people will never know this'],
+  contrarian: ['Everyone is wrong about this', 'Unpopular opinion but hear me out', 'This might be controversial but...', 'Hot take: everything you know is wrong', 'I\'m about to upset a lot of people'],
+  authority: ['Expert drops a truth bomb', 'Years of experience in 60 seconds', 'This is what the pros actually do', 'Finally someone explains this properly', 'Listen to someone who actually knows'],
+};
+const ENGAGEMENT_CTAS = ['Follow for daily tech insights', 'Save this for later', 'Drop a comment if you agree', 'Share this with someone who needs it', 'Follow for more mind-blowing tech'];
+const NICHE_TAGS: Record<string, string[]> = {
+  ai: ['#artificialintelligence', '#machinelearning', '#deeplearning', '#chatgpt', '#airevolution'],
+  tech: ['#technology', '#innovation', '#futuretech', '#techtrends', '#digitaltransformation'],
+  coding: ['#programming', '#developer', '#coding', '#software', '#webdev'],
+  science: ['#science', '#research', '#discovery', '#stem', '#education'],
+};
+
 function buildTikTokCaption(videoId: string): string {
   const exp = getExperimentData(videoId);
+  const hook = exp.hook_formula && exp.hook_formula !== 'unknown' ? exp.hook_formula : 'curiosity_gap';
+  const templates = HOOK_TEMPLATES[hook] ?? HOOK_TEMPLATES.curiosity_gap;
+  const hashCode = videoId.split('').reduce((a, c) => ((a << 5) - a) + c.charCodeAt(0), 0);
+  const hookLine = templates[Math.abs(hashCode) % templates.length];
+  const cta = ENGAGEMENT_CTAS[Math.abs(hashCode >> 3) % ENGAGEMENT_CTAS.length];
+
+  const topic = (exp.topic ?? '').toLowerCase();
+  let nicheTags: string[] = [];
+  for (const [key, tags] of Object.entries(NICHE_TAGS)) {
+    if (topic.includes(key)) { nicheTags = tags.slice(0, 3); break; }
+  }
+  if (nicheTags.length === 0) nicheTags = NICHE_TAGS.ai.slice(0, 3);
+
   let topicTags: string[] = [];
   try {
     const vt = JSON.parse(readFileSync(VIRAL_TOPICS_PATH, 'utf-8'));
-    topicTags = (vt.topics ?? []).slice(0, 5).map((t: string) => `#${t.replace(/\s+/g, '')}`);
+    topicTags = (vt.topics ?? []).slice(0, 3).map((t: string) => `#${t.replace(/\s+/g, '')}`);
   } catch { /* fallback */ }
-  const baseTags = ['#fyp', '#viral', '#learnontiktok', '#ai', '#tech'];
+
+  const baseTags = ['#fyp', '#viral', '#learnontiktok'];
   const tagSet: Record<string, boolean> = {};
-  for (const t of [...topicTags, ...baseTags]) tagSet[t] = true;
-  const allTags = Object.keys(tagSet).slice(0, 8);
+  for (const t of [...nicheTags, ...topicTags, ...baseTags]) tagSet[t] = true;
+  const allTags = Object.keys(tagSet).slice(0, 10);
+
   const lines: string[] = [];
-  if (exp.speaker && exp.speaker !== 'unknown') lines.push(`🎙️ ${exp.speaker}`);
-  if (exp.hook_formula && exp.hook_formula !== 'unknown') lines.push(`Hook: ${exp.hook_formula}`);
+  lines.push(hookLine);
+  lines.push('');
+  if (exp.speaker && exp.speaker !== 'unknown') { lines.push(`${exp.speaker} explains it all`); lines.push(''); }
+  lines.push(cta);
   lines.push('');
   lines.push(allTags.join(' '));
   return lines.join('\n');

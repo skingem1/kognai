@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-421",
+  "title": "Sync auto-deliver captions with engagement-optimized templates",
+  "description": "Update buildTikTokCaption in posting-auto-deliver.ts to match Sprint 418 engagement templates (hook-based opening lines, CTAs, niche hashtags). Currently auto-deliver still uses the old bare format.",
+  "source": "auto — auto-deliver captions out of sync with telegram bot after Sprint 418 engagement upgrade",
+  "tasks": [
+    {
+      "id": "421-01",
+      "title": "Update buildTikTokCaption in posting-auto-deliver.ts with engagement templates",
+      "type": "enhancement",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-421",
+      "deliverables": { "code": ["scripts/scs001/posting-auto-deliver.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
