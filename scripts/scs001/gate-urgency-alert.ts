@@ -1,7 +1,8 @@
 #!/usr/bin/env npx ts-node
 /**
- * gate-urgency-alert.ts — Sprint 311
+ * gate-urgency-alert.ts — Sprint 345
  * Sends a daily gate urgency alert to operator via Telegram.
+ * Auto-regenerates the gate report (phase1-5-gate.json) before sending.
  *
  * Reads manual-posts.jsonl, computes countdown to Apr 7 kill switch,
  * and sends a formatted Telegram message with urgency level.
@@ -14,6 +15,7 @@
 
 import { readFileSync, existsSync } from 'fs';
 import { join } from 'path';
+import { execSync } from 'child_process';
 import * as dotenv from 'dotenv';
 
 dotenv.config({ path: join(process.cwd(), '.env') });
@@ -72,6 +74,28 @@ async function sendTelegram(text: string): Promise<void> {
 }
 
 async function main(): Promise<void> {
+  // Auto-regenerate gate report before sending alert
+  const gateScript = join(CWD, 'scripts', 'scs001', 'generate-phase1-5-gate.ts');
+  if (existsSync(gateScript)) {
+    try {
+      console.log('[gate-alert] Regenerating gate report...');
+      execSync(`npx ts-node "${gateScript}"`, { cwd: CWD, timeout: 30_000, stdio: 'pipe' });
+      console.log('[gate-alert] Gate report regenerated.');
+    } catch (e: any) {
+      console.warn(`[gate-alert] Gate regen failed (non-blocking): ${e.message}`);
+    }
+  }
+
+  // Load gate report status for inline display
+  const gatePath = join(CWD, 'workspace', 'gates', 'phase1-5-gate.json');
+  let gateVerdict = '';
+  if (existsSync(gatePath)) {
+    try {
+      const gate = JSON.parse(readFileSync(gatePath, 'utf-8'));
+      gateVerdict = `📄 Gate report: *${gate.recommendation ?? gate.urgency ?? 'N/A'}* — ${gate.urgency_signal ?? ''}`;
+    } catch { /* ignore */ }
+  }
+
   const posts = loadPosts();
   const postsCount = posts.length;
   const totalViews = posts.reduce((s, p) => s + (p.views ?? 0), 0);
@@ -100,6 +124,23 @@ async function main(): Promise<void> {
   } else if (daysLeft <= 7 && postsLeft > 0) {
     lines.push('', '🟠 *CRITICAL* — behind pace, increase posting frequency');
   }
+
+  // Queue count
+  const ledgerPath = join(CWD, 'workspace', 'scs001', 'publish-ledger.jsonl');
+  let queueCount = 0;
+  const postedIds = new Set(posts.map(p => p.video_id).filter(Boolean));
+  if (existsSync(ledgerPath)) {
+    const ledgerLines = readFileSync(ledgerPath, 'utf-8').split('\n').filter(l => l.trim());
+    for (const l of ledgerLines) {
+      try { const e = JSON.parse(l); if (e.video_id && !postedIds.has(e.video_id)) queueCount++; } catch {}
+    }
+  }
+  lines.push(`📦 *Queue:* ${queueCount} videos ready`);
+  if (queueCount === 0) {
+    lines.push('⚠️ *Queue EMPTY* — run pipeline to generate content');
+  }
+
+  if (gateVerdict) lines.push(gateVerdict);
 
   // Stripe readiness check
   const stripeKeys = ['STRIPE_SECRET_KEY', 'STRIPE_WEBHOOK_SECRET', 'STRIPE_WEBHOOK_PORT'];

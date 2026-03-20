@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-345",
+  "title": "Daily digest enhancements — queue count, Stripe status, zero-post warning",
+  "description": "Enhance morning-caption-push with queue count, Stripe status, and WARNING on 0 queued posts with top-3 queue inline. Enhance gate-urgency-alert to auto-regen gate report before sending.",
+  "source": "auto — sprint brief recommendation for Phase 1.5 gate readiness",
+  "tasks": [
+    {
+      "id": "345-01",
+      "title": "Enhance morning-caption-push.ts — add queue count, Stripe status, zero-post WARNING with top-3 queue",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-345",
+      "deliverables": { "code": ["scripts/scs001/morning-caption-push.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "345-02",
+      "title": "Enhance gate-urgency-alert.ts — auto-regenerate gate report before sending alert",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-345",
+      "deliverables": { "code": ["scripts/scs001/gate-urgency-alert.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
