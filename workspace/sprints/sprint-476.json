@@ -1,0 +1,56 @@
+{
+  "sprint_id": "sprint-476",
+  "title": "ACHIRI — Safety harness review + cultural filter validation",
+  "description": "Audit Achiri safety harness, cultural filters, Derja/French code-switching, and memory system. Quick validation, not rebuild. Generate consolidated safety audit report.",
+  "source": "queue — Sprint 476 ACHIRI",
+  "tasks": [
+    {
+      "id": "476-01",
+      "title": "Audit safety-filter.ts patterns and coverage",
+      "type": "audit",
+      "task_type": "review",
+      "task_target": "local",
+      "agent": "supervisor",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-476",
+      "deliverables": { "code": [], "tests": ["scripts/achiri/validate-safety-filter.ts"], "docs": [] }
+    },
+    {
+      "id": "476-02",
+      "title": "Validate Derja/French code-switching in prompt + config",
+      "type": "audit",
+      "task_type": "review",
+      "task_target": "local",
+      "agent": "supervisor",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-476",
+      "deliverables": { "code": [], "tests": ["scripts/achiri/e2e-integration-test.ts"], "docs": [] }
+    },
+    {
+      "id": "476-03",
+      "title": "Validate memory system persistence and daily limits",
+      "type": "audit",
+      "task_type": "review",
+      "task_target": "local",
+      "agent": "supervisor",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-476",
+      "deliverables": { "code": [], "tests": ["scripts/achiri/validate-memory-persistence.ts"], "docs": [] }
+    },
+    {
+      "id": "476-04",
+      "title": "Generate consolidated safety audit report",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-476",
+      "deliverables": { "code": ["reports/achiri-safety-audit.json"], "tests": [], "docs": [] }
+    }
+  ]
+}
