@@ -213,7 +213,10 @@ async function main(): Promise<void> {
       }
     }
 
-    const caption = `${hookText}\n\n${hashtags}`;
+    // Sprint 424: Use shared engagement caption module
+    const { buildEngagementCaption: _buildCap } = require('./engagement-caption');
+    const extraTags = hashtags.split(' ').filter((t: string) => t.startsWith('#'));
+    const caption = _buildCap({ videoId: slot.video_id, hookFormula: slot.hook, speaker: slot.speaker, extraHashtags: extraTags });
     const score = Math.round(slot.viral_score * 100);
 
     // Escape Markdown special chars in dynamic content

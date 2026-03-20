@@ -142,29 +142,13 @@ function sendTelegram(chatId: string, text: string): Promise<void> {
   });
 }
 
-// Sprint 422: Engagement-optimized caption templates (synced with Sprint 418)
-const HOOK_TEMPLATES: Record<string, string[]> = {
-  curiosity_gap: ['Wait for it... this changes everything', 'Nobody is talking about this yet', 'This is the part they don\'t teach you', 'I wasn\'t ready for this', 'Watch till the end, trust me'],
-  secret: ['The secret nobody wants you to know', 'They really don\'t want this going viral', 'This wasn\'t supposed to get out', 'Here\'s what they\'re hiding from you', 'Most people will never know this'],
-  contrarian: ['Everyone is wrong about this', 'Unpopular opinion but hear me out', 'This might be controversial but...', 'Hot take: everything you know is wrong', 'I\'m about to upset a lot of people'],
-  authority: ['Expert drops a truth bomb', 'Years of experience in 60 seconds', 'This is what the pros actually do', 'Finally someone explains this properly', 'Listen to someone who actually knows'],
-};
-const ENGAGEMENT_CTAS = ['Follow for daily tech insights', 'Save this for later', 'Drop a comment if you agree', 'Share this with someone who needs it', 'Follow for more mind-blowing tech'];
+// Sprint 424: Import shared engagement caption module
+const { buildEngagementCaption: _buildCaptionShared } = require('./scs001/engagement-caption');
 
-function buildEngagementCaption(videoId: string, hook_formula: string | null, speaker: string | null, hashtags: string): string {
-  const hook = hook_formula && hook_formula !== 'unknown' ? hook_formula : 'curiosity_gap';
-  const templates = HOOK_TEMPLATES[hook] ?? HOOK_TEMPLATES.curiosity_gap;
-  const hashCode = videoId.split('').reduce((a, c) => ((a << 5) - a) + c.charCodeAt(0), 0);
-  const hookLine = templates[Math.abs(hashCode) % templates.length];
-  const cta = ENGAGEMENT_CTAS[Math.abs(hashCode >> 3) % ENGAGEMENT_CTAS.length];
-  const lines: string[] = [hookLine, ''];
-  if (speaker && speaker !== 'unknown') { lines.push(`${speaker} explains it all`); lines.push(''); }
-  lines.push(cta);
-  lines.push('');
-  lines.push(hashtags);
-  lines.push('');
-  lines.push(`/record ${videoId} 0`);
-  return lines.join('\n');
+function buildReminderCaption(videoId: string, hook_formula: string | null, speaker: string | null, hashtags: string): string {
+  const extraHashtags = hashtags.split(' ').filter(t => t.startsWith('#'));
+  const caption = _buildCaptionShared({ videoId, hookFormula: hook_formula, speaker, extraHashtags });
+  return caption + '\n\n/record ' + videoId + ' 0';
 }
 
 async function main(): Promise<void> {
@@ -257,7 +241,7 @@ async function main(): Promise<void> {
   // Sprint 281 + Sprint 422: Send all batch videos with engagement captions
   for (const v of readyVideos) {
     try {
-      const vidCaption = buildEngagementCaption(v.video_id, v.hook_formula, v.speaker, hashtags);
+      const vidCaption = buildReminderCaption(v.video_id, v.hook_formula, v.speaker, hashtags);
       await sendVideoTelegram(OWNER_ID, v.absPath, vidCaption);
       process.stdout.write(`[posting-reminder] Video sent: ${v.video_id}\n`);
     } catch (err) {

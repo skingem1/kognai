@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-424",
+  "title": "Extract shared engagement caption module",
+  "description": "Consolidate duplicated engagement caption logic (hook templates, CTAs, niche tags) into scripts/scs001/engagement-caption.ts. Import from telegram-bot, auto-deliver, posting-reminder, morning-caption-push.",
+  "source": "auto — 4 files have duplicate caption templates after Sprint 418/421/422, single-file updates risk drift",
+  "tasks": [
+    {
+      "id": "424-01",
+      "title": "Create engagement-caption.ts shared module and update 4 consumers",
+      "type": "refactor",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-424",
+      "deliverables": { "code": ["scripts/scs001/engagement-caption.ts", "scripts/telegram-bot.ts", "scripts/scs001/posting-auto-deliver.ts", "scripts/posting-reminder.ts", "scripts/scs001/morning-caption-push.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
