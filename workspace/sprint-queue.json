@@ -552,7 +552,8 @@
       "sprint": 506,
       "title": "INFRA — Sprint queue extension + next 5 high-impact sprints",
       "block": "INFRA",
-      "status": "pending",
+      "status": "done",
+      "_note": "Added Sprints 507-510 to queue.",
       "priority": "high",
       "rationale": "Queue empty after Sprint 505. Add 5 new sprints targeting critical gaps: PM2 cron activation, pipeline auto-run, Telegram bot health, content quality review, YouTube OAuth test."
     },
