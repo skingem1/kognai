@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-474",
+  "title": "SKILLS — T2 Content Skills seed (6 skills for SCS-001)",
+  "description": "Seed 6 T2 Content skills: trend-analyzer, clip-scorer, script-generator, caption-optimizer, scheduling-engine, analytics-aggregator. Each wraps existing SCS-001 agent logic as reusable skills.",
+  "source": "queue — Sprint 474 SKILLS",
+  "tasks": [
+    {
+      "id": "474-01",
+      "title": "Create 6 T2 Content skills (SKILL.md + _meta.json + stub implementation each)",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-474",
+      "deliverables": { "code": ["skills/trend-analyzer/", "skills/clip-scorer/", "skills/script-generator/", "skills/caption-optimizer/", "skills/scheduling-engine/", "skills/analytics-aggregator/"], "tests": [], "docs": [] }
+    }
+  ]
+}
