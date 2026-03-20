@@ -1,12 +1,12 @@
 {
-  "scanned_at": "2026-03-20T23:14:02.793Z",
-  "total_runs": 13,
-  "total_videos": 19,
-  "unique_topics": 8,
-  "already_registered": 0,
-  "newly_registered": 8,
+  "scanned_at": "2026-03-20T23:18:55.970Z",
+  "total_runs": 14,
+  "total_videos": 20,
+  "unique_topics": 9,
+  "already_registered": 8,
+  "newly_registered": 1,
   "already_posted": 0,
-  "ready_to_post": 8,
+  "ready_to_post": 9,
   "gate_status": {
     "posted": 0,
     "target": 30,
@@ -20,6 +20,14 @@
       "duration_s": 27,
       "posted": false,
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260320T21-kfes/output/dbt-b87db595_final.mp4"
+    },
+    {
+      "video_id": "exp-bb8beedc",
+      "format": "explainer",
+      "title": "Ethereum (ETH) 📈 0.1%",
+      "duration_s": 12,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260320T23-kj0x/output/exp-bb8beedc_final.mp4"
     },
     {
       "video_id": "exp-560203b8",

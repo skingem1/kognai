@@ -836,3 +836,48 @@ export async function cmdBatchDeliver(chatId: string, args: string): Promise<str
 
   return `📦 Batch delivery: ${sent}/${toDeliver.length} videos sent.\nGate: ${inv.gate_status?.posted ?? 0}/30 · ${unposted.length - sent} remaining in queue.`;
 }
+
+export async function cmdStockpile(chatId: string, args: string): Promise<void> {
+  const count = Math.min(Math.max(parseInt(args) || 3, 1), 10);
+
+  await sendMessage(chatId, `🏭 *Stockpiling ${count} batch runs...*\nMultiformat pipeline (local TTS $0 + avatars ~$0.25/video).\nETA: ${count * 40}-${count * 60}s`);
+
+  const { spawn } = require('child_process');
+  const child = spawn('npx', [
+    'ts-node', '--transpile-only',
+    'scripts/scs001/batch-produce.ts',
+    '--runs', String(count),
+  ], {
+    cwd: ROOT,
+    env: { ...process.env, TS_NODE_TRANSPILE_ONLY: 'true' },
+    stdio: ['ignore', 'pipe', 'pipe'],
+    detached: false,
+  });
+
+  let stdout = '';
+  child.stdout.on('data', (d: Buffer) => { stdout += d.toString(); });
+  child.stderr.on('data', (d: Buffer) => { /* ignore */ });
+
+  child.on('close', async (code: number) => {
+    try {
+      if (code === 0) {
+        // Read inventory for summary
+        const invPath = path.join(ROOT, 'reports', 'video-inventory.json');
+        let summary = `✅ Stockpile complete (${count} runs).`;
+        if (fs.existsSync(invPath)) {
+          try {
+            const inv = JSON.parse(fs.readFileSync(invPath, 'utf-8'));
+            summary += `\n📦 Unique videos: ${inv.unique_topics ?? '?'}`;
+            summary += `\n🎯 Gate: ${inv.gate_status?.posted ?? 0}/30 (${inv.gate_status?.gap ?? '?'} to go)`;
+            summary += `\n⏳ Ready to post: ${inv.ready_to_post ?? '?'}`;
+          } catch { /* skip */ }
+        }
+        await sendMessage(chatId, summary);
+      } else {
+        await sendMessage(chatId, `❌ Stockpile failed (exit ${code}).\n\`\`\`\n${stdout.slice(-500)}\n\`\`\``);
+      }
+    } catch (e: any) {
+      await sendMessage(chatId, `❌ Stockpile error: ${e.message?.slice(0, 200)}`);
+    }
+  });
+}

@@ -29,7 +29,7 @@ import { cmdHelp } from './telegram-commands/cmd-help';
 
 // Sprint 496: Import extracted command modules (Part 2: N-Z + interactive)
 import { cmdSession, cmdDone, cmdEndSession, cmdMenu } from './telegram-commands/cmd-session';
-import { cmdDeliver, cmdPublish, cmdPostNow, cmdPickup, cmdTodayCaptions, cmdBroadcast, cmdRefresh, cmdProduce, cmdInstagram, cmdInventory, cmdBatchDeliver } from './telegram-commands/cmd-delivery';
+import { cmdDeliver, cmdPublish, cmdPostNow, cmdPickup, cmdTodayCaptions, cmdBroadcast, cmdRefresh, cmdProduce, cmdInstagram, cmdInventory, cmdBatchDeliver, cmdStockpile } from './telegram-commands/cmd-delivery';
 import { cmdCheckout, cmdSubscribers, cmdPortal, cmdFunnel, cmdAchiri, cmdTestStripe, cmdUsage, cmdAchiriData } from './telegram-commands/cmd-stripe';
 import { cmdStart, cmdTrial, cmdPlans } from './telegram-commands/cmd-onboarding';
 
@@ -94,6 +94,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     '/instagram':    () => cmdInstagram(chatId, cmdArgs),
     '/inventory':    async () => { const r = cmdInventory(); await sendMessage(chatId, r); },
     '/batchdeliver': async () => { const r = await cmdBatchDeliver(chatId, cmdArgs); await sendMessage(chatId, r); },
+    '/stockpile':    () => cmdStockpile(chatId, cmdArgs),
   };
 
   const asyncHandler = asyncHandlers[cmdName];

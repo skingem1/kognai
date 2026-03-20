@@ -1,0 +1,40 @@
+{
+  "sprint_id": "sprint-604",
+  "title": "GATE-PUSH — Batch video production + /stockpile command",
+  "description": "Create batch-produce.ts for multi-run video stockpiling and wire /stockpile Telegram command. Critical for reaching 30 posts by Apr 7 gate.",
+  "source": "gate-urgency",
+  "tasks": [
+    {
+      "id": "604-01",
+      "title": "Create batch-produce.ts — run multiformat pipeline N times with dedup tracking",
+      "type": "feature",
+      "task_type": "gate-push",
+      "task_target": "scripts/scs001/batch-produce.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "critical",
+      "sprint_id": "sprint-604",
+      "deliverables": {
+        "code": ["scripts/scs001/batch-produce.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "604-02",
+      "title": "Add /stockpile Telegram command for batch production",
+      "type": "feature",
+      "task_type": "gate-push",
+      "task_target": "scripts/telegram-commands/cmd-delivery.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "critical",
+      "sprint_id": "sprint-604",
+      "deliverables": {
+        "code": ["scripts/telegram-commands/cmd-delivery.ts", "scripts/telegram-bot.ts"],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ]
+}
