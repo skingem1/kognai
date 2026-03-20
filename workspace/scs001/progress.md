@@ -3656,3 +3656,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (algorithmic logic in large file)
 - Issues: None.
 - Timestamp: 2026-03-20T13:30:00Z
+
+## Sprint 416 — Schedule Generator Freshness + Hook Diversity (Direct Write)
+- Status: PASS
+- Commit: 6567d25
+- Files created: workspace/sprints/sprint-416.json
+- Files modified: scripts/scs001/generate-posting-schedule.ts
+- Tasks completed:
+  - 416-01: Added freshnessScore() and loadLedgerDates() to schedule generator. Sort candidates by freshness-weighted viral score. Added hook formula diversity (max 3 per hook). Schedule now consistent with /deliver ranking.
+- Validation: tsc --noEmit PASS, runtime generates 14 slots correctly
+- Swarm used: no (single file update)
+- Issues: None.
+- Timestamp: 2026-03-20T13:45:00Z
