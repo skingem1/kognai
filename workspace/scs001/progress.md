@@ -3457,3 +3457,16 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (FP-007 file >4700 lines)
 - Issues: None.
 - Timestamp: 2026-03-20T22:10:00Z
+
+## Sprint 400 — /top30 — Optimal 30 Video Selection (Direct Write)
+- Status: PASS
+- Commit: e2cbba9
+- Files created: workspace/sprints/sprint-400.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 400-01: Added /top30 command. Diversity-aware greedy selection of best videos for gate: sorts by viral score, caps per-speaker at ~20% of target, shows top 10 with details + aggregate stats (avg score, unique speakers, unique hooks). Accounts for already-posted videos. Added to switch router and /help.
+- Validation: tsc --noEmit PASS
+- Swarm used: no (FP-007 file >4800 lines)
+- Issues: None.
+- Timestamp: 2026-03-20T22:20:00Z
+- Milestone: Sprint 400!
