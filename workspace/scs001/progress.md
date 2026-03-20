@@ -4,7 +4,7 @@
 
 ## Summary
 
-- **Total sprints shipped:** 447 (Sprint 059 → Sprint 588)
+- **Total sprints shipped:** 448 (Sprint 059 → Sprint 589)
 - **Total commits:** 1110
 - **Current phase:** Phase 1 Active (Mar 17 – Apr 11 2026)
 - **Pipeline:** 12 stages, 11 agents, closed feedback loop
@@ -1019,3 +1019,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (surgical edit to existing file)
 - Issues: None
 - Timestamp: 2026-03-21T04:25:00Z
+
+## Sprint 589 — INFRA
+- Status: PASS
+- Commit: b2f000a
+- Files modified: scripts/telegram-commands/cmd-system.ts, scripts/telegram-bot.ts
+- Files created: workspace/sprints/sprint-589.json
+- Test: TypeScript compile check — PASS
+- Pipeline: New /errors Telegram command shows last 10 pipeline validation errors
+- Swarm used: no (surgical edits to 2 files)
+- Issues: None
+- Timestamp: 2026-03-21T04:30:00Z
