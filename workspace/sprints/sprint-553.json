@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-553",
+  "title": "TELEGRAM — Restart bot with latest code + verify stable",
+  "description": "Restarted telegram-bot via PM2. Online, 0 unstable restarts. All new commands available (/cleanup, /stats, /produce N). PM2 saved.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "553-01",
+      "title": "Restart bot and verify stability",
+      "type": "feature",
+      "task_type": "telegram",
+      "task_target": "scripts/telegram-bot.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-553",
+      "deliverables": { "code": [], "tests": [], "docs": [] }
+    }
+  ]
+}

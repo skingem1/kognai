@@ -975,8 +975,9 @@
       "title": "TELEGRAM — Restart bot to pick up new commands (/cleanup, enriched /stats)",
       "block": "TELEGRAM",
       "priority": "high",
-      "status": "pending",
-      "rationale": "Bot may need restart after QUALITY-01 commit. Verify /health, /stats, /cleanup, /produce all work."
+      "status": "done",
+      "rationale": "Bot may need restart after QUALITY-01 commit. Verify /health, /stats, /cleanup, /produce all work.",
+      "_note": "Bot restarted. Online, stable. PM2 saved."
     },
     {
       "sprint": 554,
