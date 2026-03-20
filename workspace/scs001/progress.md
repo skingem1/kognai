@@ -1196,3 +1196,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (multi-file, wrote directly)
 - Issues: None
 - Timestamp: 2026-03-21T07:30:00Z
+
+## Sprint 608 — QUALITY
+- Status: PASS
+- Commit: ac56527
+- Files created: scripts/scs001/burn-captions.ts, workspace/sprints/sprint-608.json
+- Files modified: scripts/scs001/splitscreen-compositor.ts
+- Test: burn-captions.ts on real 25s explainer — PASS (7 captions, 1080x1920, h264+aac)
+- Pipeline: SRT subtitle burn-in now works without libfreetype via Python+Pillow
+- Swarm used: no (multi-file, wrote directly)
+- Issues: FFmpeg png sequence overlay approach — frame numbers must be contiguous for overlay to work
+- Timestamp: 2026-03-21T07:45:00Z

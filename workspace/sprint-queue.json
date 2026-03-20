@@ -1444,6 +1444,14 @@
       "status": "done",
       "priority": "critical",
       "rationale": "Auto-deliver now finds multiformat videos. Daily digest shows inventory stats."
+    },
+    {
+      "sprint": 608,
+      "title": "QUALITY — SRT subtitle burn-in via Python+Pillow",
+      "block": "QUALITY",
+      "status": "done",
+      "priority": "high",
+      "rationale": "burn-captions.ts renders SRT via Pillow+FFmpeg overlay. No libfreetype needed. Wired into compositor."
     }
   ]
 }
