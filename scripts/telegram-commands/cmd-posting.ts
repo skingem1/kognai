@@ -1056,3 +1056,64 @@ export function cmdXPost(args: string): string {
     return `❌ X post error: ${err.message}`;
   }
 }
+
+// Sprint 596: /costs — daily/weekly cost breakdown from pipeline metrics
+export function cmdCosts(): string {
+  const metricsPath = path.join(ROOT, 'logs', 'pipeline-metrics', 'metrics.jsonl');
+  if (!fs.existsSync(metricsPath)) {
+    return '💰 *Costs* — no pipeline metrics found yet.';
+  }
+
+  const lines = fs.readFileSync(metricsPath, 'utf-8').trim().split('\n').filter(Boolean);
+  const entries: Array<{ timestamp: string; total_cost_usd: number; videos_produced: number }> = [];
+  for (const line of lines) {
+    try { entries.push(JSON.parse(line)); } catch { /* skip */ }
+  }
+
+  if (entries.length === 0) {
+    return '💰 *Costs* — no metrics entries found.';
+  }
+
+  const now = new Date();
+  const todayStr = now.toISOString().slice(0, 10);
+  const weekAgo = new Date(now.getTime() - 7 * 86_400_000).toISOString().slice(0, 10);
+
+  let totalCost = 0, todayCost = 0, weekCost = 0;
+  let totalVideos = 0, todayVideos = 0, weekVideos = 0;
+  let totalRuns = 0, todayRuns = 0, weekRuns = 0;
+  const dailyCosts: Record<string, number> = {};
+
+  for (const e of entries) {
+    const cost = e.total_cost_usd || 0;
+    const vids = e.videos_produced || 0;
+    const day = (e.timestamp || '').slice(0, 10);
+
+    totalCost += cost;
+    totalVideos += vids;
+    totalRuns++;
+
+    if (day === todayStr) { todayCost += cost; todayVideos += vids; todayRuns++; }
+    if (day >= weekAgo) { weekCost += cost; weekVideos += vids; weekRuns++; }
+
+    dailyCosts[day] = (dailyCosts[day] || 0) + cost;
+  }
+
+  const avgPerVideo = totalVideos > 0 ? totalCost / totalVideos : 0;
+  const sortedDays = Object.keys(dailyCosts).sort().reverse().slice(0, 7);
+  const dailyBreakdown = sortedDays.map(d => `  ${d}: $${dailyCosts[d].toFixed(2)}`);
+
+  const output = [
+    '💰 *Cost Breakdown*',
+    '',
+    `*Today:* $${todayCost.toFixed(2)} (${todayVideos} videos, ${todayRuns} runs)`,
+    `*This week:* $${weekCost.toFixed(2)} (${weekVideos} videos, ${weekRuns} runs)`,
+    `*All time:* $${totalCost.toFixed(2)} (${totalVideos} videos, ${totalRuns} runs)`,
+    '',
+    `*Avg cost/video:* $${avgPerVideo.toFixed(4)}`,
+    '',
+    '*Last 7 days:*',
+    ...dailyBreakdown,
+  ];
+
+  return output.join('\n');
+}

@@ -1,0 +1,24 @@
+{
+  "sprint_id": "sprint-596",
+  "title": "INFRA — /costs Telegram command for daily/weekly cost breakdown",
+  "description": "Add /costs command that reads pipeline-metrics.jsonl and breaks down costs by day, week, and model tier. Shows total spend, avg cost per video, and daily burn rate.",
+  "source": "sprint-queue",
+  "tasks": [
+    {
+      "id": "596-01",
+      "title": "Add cmdCosts function to cmd-posting.ts and register in telegram-bot.ts",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/telegram-commands/cmd-posting.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-596",
+      "deliverables": {
+        "code": ["scripts/telegram-commands/cmd-posting.ts", "scripts/telegram-bot.ts"],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ]
+}
