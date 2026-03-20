@@ -3205,3 +3205,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (single function)
 - Issues: None.
 - Timestamp: 2026-03-20T12:15:00Z
+
+## Sprint 371 — /todaycaptions — Today's Batch Captions (Direct Write)
+- Status: PASS
+- Commit: 156cdfe
+- Files created: workspace/sprints/sprint-371.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 371-01: Added /todaycaptions async command. Reads posting-schedule.json, filters today's slots, sends each caption as copyable code block with speaker/hook/viral score and /record instruction. Updated /help.
+- Validation: ts-node --transpile-only PASS
+- Swarm used: no (async multi-message command)
+- Issues: None.
+- Timestamp: 2026-03-20T12:30:00Z
