@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-436",
+  "title": "Telegram /boot command to start all essential PM2 crons",
+  "description": "Add /boot command that starts all stopped kognai PM2 crons from Telegram. Shows which processes were started. Essential for operator to restart pipeline, reminders, watchdog, digest crons after system restart.",
+  "source": "auto — PM2 crons (pipeline, reminders, digest, watchdog) are stopped, operator has no easy way to restart from phone",
+  "tasks": [
+    {
+      "id": "436-01",
+      "title": "Add /boot command to telegram-bot.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-436",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

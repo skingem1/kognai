@@ -274,6 +274,84 @@ function cmdPm2(): string {
   return `*PM2 Processes* — ${online}/${procs.length} online\n\n${lines}`;
 }
 
+// ─── Sprint 436: /boot — start all essential PM2 crons ────────────────
+
+async function cmdBoot(chatId: string): Promise<void> {
+  const ESSENTIAL_CRONS = [
+    'kognai-daily-digest',
+    'kognai-gate-regen',
+    'kognai-gate-tracker-update',
+    'kognai-brief-regen',
+    'kognai-post-noon',
+    'kognai-post-evening',
+    'kognai-pipeline-watchdog',
+    'kognai-smoke-test',
+    'kognai-calendar-regen',
+    'kognai-schedule-regen',
+    'kognai-leaderboard-regen',
+    'kognai-auto-deliver-morning',
+    'kognai-auto-deliver-noon',
+    'kognai-auto-deliver-evening',
+    'kognai-view-tracker',
+    'kognai-watchdog',
+    'kognai-caption-push',
+    'scs001-pipeline',
+  ];
+
+  await sendMessage(chatId, `🔄 *Booting ${ESSENTIAL_CRONS.length} essential crons...*`);
+
+  const started: string[] = [];
+  const failed: string[] = [];
+  const alreadyOnline: string[] = [];
+
+  // Check current status first
+  const procs = getPm2List();
+  const onlineNames = new Set(procs.filter(p => p.status === 'online').map(p => p.name));
+
+  for (const name of ESSENTIAL_CRONS) {
+    if (onlineNames.has(name)) {
+      alreadyOnline.push(name);
+      continue;
+    }
+    try {
+      execSync(`pm2 start ecosystem.config.js --only ${name}`, { cwd: ROOT, timeout: 15000, stdio: 'pipe' });
+      started.push(name);
+    } catch {
+      failed.push(name);
+    }
+  }
+
+  const lines = [
+    '🚀 *Boot Complete*',
+    '',
+  ];
+
+  if (started.length > 0) {
+    lines.push(`✅ *Started (${started.length}):*`);
+    for (const n of started) lines.push(`  🟢 ${n}`);
+    lines.push('');
+  }
+  if (alreadyOnline.length > 0) {
+    lines.push(`⏩ *Already running (${alreadyOnline.length}):*`);
+    for (const n of alreadyOnline) lines.push(`  🟢 ${n}`);
+    lines.push('');
+  }
+  if (failed.length > 0) {
+    lines.push(`❌ *Failed (${failed.length}):*`);
+    for (const n of failed) lines.push(`  🔴 ${n}`);
+    lines.push('');
+  }
+
+  // Summary
+  const totalOnline = started.length + alreadyOnline.length;
+  lines.push(`📊 ${totalOnline}/${ESSENTIAL_CRONS.length} crons active`);
+  if (failed.length > 0) {
+    lines.push(`\n_Check logs: \`pm2 logs <name> --lines 20\`_`);
+  }
+
+  await sendMessage(chatId, lines.join('\n'));
+}
+
 function cmdHealth(): string {
   const h = readJSON<any>(path.join(ROOT, 'health.json'));
   if (!h) return '❌ *Health* — health.json not found';
@@ -4291,6 +4369,7 @@ function cmdHelp(): string {
     `/menu      — Quick access button menu\n` +
     `/report    — Full system status (real data, no AI)\n` +
     `/pm2       — Live PM2 process table\n` +
+    `/boot      — Start all essential PM2 crons\n` +
     `/crons     — All PM2 cron schedules\n` +
     `/health    — Health check summary\n` +
     `/tier      — Current tier + MRR\n` +
@@ -5588,6 +5667,18 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     return;
   }
 
+  // Sprint 436: /boot — start all essential PM2 crons from Telegram
+  if (cmdName === '/boot') {
+    try {
+      await cmdBoot(chatId);
+    } catch (e: any) {
+      await sendMessage(chatId, `❌ Boot error: ${e.message}`);
+    }
+    const timestamp = new Date().toISOString();
+    fs.appendFileSync(AUDIT_LOG, `[${timestamp}] [TELEGRAM_BOT] Command: ${cmd} from ${chatId}\n`);
+    return;
+  }
+
   // Sprint 394: /pickup is async (sends video + buttons)
   if (cmdName === '/pickup') {
     try {
@@ -5775,6 +5866,7 @@ async function registerBotCommands(): Promise<void> {
     { command: 'revenue', description: 'Revenue dashboard + MRR' },
     { command: 'schedule', description: 'Today\'s posting time slots' },
     { command: 'quickstart', description: 'Post first video in 5 min' },
+    { command: 'boot', description: 'Start all essential PM2 crons' },
     { command: 'help', description: 'List all commands' },
   ];
   try {
