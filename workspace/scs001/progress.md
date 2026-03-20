@@ -3277,3 +3277,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (FP-007 file >3500 lines)
 - Issues: None.
 - Timestamp: 2026-03-20T19:30:00Z
+
+## Sprint 385 — /compare — A/B Comparison Tool (Direct Write)
+- Status: PASS
+- Commit: b1e0c5d
+- Files created: workspace/sprints/sprint-385.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 385-01: Added /compare command. Supports `/compare hook X vs Y` and `/compare speaker X vs Y`. Shows side-by-side table: samples, avg/max viral score, QC pass rate. Weighted winner calculation (60% avg viral, 20% QC, 20% sample size). Sample size warning when counts differ significantly. Shows available hooks/speakers when called without args. Updated /help + switch router.
+- Validation: tsc --noEmit PASS (fixed Set iteration with Array.from)
+- Swarm used: no (FP-007 file >3500 lines)
+- Issues: TS2802 Set iteration — fixed with Array.from().
+- Timestamp: 2026-03-20T19:40:00Z
