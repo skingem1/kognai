@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-558",
+  "title": "CONTENT — 10 videos produced + 3 delivered (106 total)",
+  "description": "Produced 10 videos (2 runs). 3 delivered (106 total). 151MB freed by cleanup. $0.00 cost.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "558-01",
+      "title": "Produce 10 videos, deliver, metrics, cleanup",
+      "type": "feature",
+      "task_type": "content",
+      "task_target": "scripts/scs001/run-full-pipeline.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-558",
+      "deliverables": { "code": [], "tests": [], "docs": [] }
+    }
+  ]
+}
