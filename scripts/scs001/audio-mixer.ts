@@ -17,6 +17,7 @@ import { existsSync, mkdirSync } from "fs";
 import { join, basename, extname } from "path";
 import type { VoiceoverResult, VoiceoverSegment } from "./tts-voiceover";
 import type { ScriptBundle } from "../../agents/scs001-script/index";
+import { selectMusic } from "./music-selector"; // Sprint 446
 
 // ── Types ──────────────────────────────────────────────
 
@@ -142,10 +143,11 @@ export function mixAudio(config: MixConfig, dryRun: boolean = false): MixResult 
     voiceover,
     bundle,
     videoPath,
-    backgroundMusicPath,
     outputDir = DEFAULT_OUT_DIR,
     backgroundMusicVolume = 0.15,
   } = config;
+  // Sprint 446: Auto-select background music based on hook formula if not provided
+  const backgroundMusicPath = config.backgroundMusicPath ?? selectMusic(bundle.hook_formula_used);
 
   mkdirSync(outputDir, { recursive: true });
   const outputPath = join(outputDir, `${bundle.script_id}_mixed.mp4`);

@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-446",
+  "title": "Wire music selector into audio mixer pipeline",
+  "description": "Connect Sprint 445 music-selector.ts to audio-mixer.ts. When backgroundMusicPath is not explicitly provided, auto-select track based on the video's hook formula. Pipeline runs now automatically get mood-matched background music.",
+  "source": "auto — music selector built in Sprint 445, needs pipeline integration.",
+  "tasks": [
+    {
+      "id": "446-01",
+      "title": "Import music-selector in audio-mixer and auto-select when path not provided",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-446",
+      "deliverables": { "code": ["scripts/scs001/audio-mixer.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
