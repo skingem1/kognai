@@ -1,0 +1,44 @@
+{
+  "sprint_id": "sprint-541",
+  "title": "TELEGRAM — Fix bot startup + restart with correct script and env vars",
+  "description": "Fixed 3 bugs: (1) PM2 pointed to dead agents/telegram-bot/index.ts → changed to scripts/telegram-bot.ts, (2) BOT_TOKEN read CEO_TELEGRAM_BOT_TOKEN instead of TELEGRAM_BOT_TOKEN, (3) Escaped quotes in cmd-onboarding.ts. Bot now online and stable.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "541-01",
+      "title": "Fix PM2 script path for telegram-bot",
+      "type": "bugfix",
+      "task_type": "telegram",
+      "task_target": "ecosystem.config.js",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-541",
+      "deliverables": { "code": ["ecosystem.config.js"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "541-02",
+      "title": "Fix BOT_TOKEN env var name in telegram-api.ts",
+      "type": "bugfix",
+      "task_type": "telegram",
+      "task_target": "scripts/telegram-commands/telegram-api.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-541",
+      "deliverables": { "code": ["scripts/telegram-commands/telegram-api.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "541-03",
+      "title": "Fix escaped quotes in cmd-onboarding.ts",
+      "type": "bugfix",
+      "task_type": "telegram",
+      "task_target": "scripts/telegram-commands/cmd-onboarding.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-541",
+      "deliverables": { "code": ["scripts/telegram-commands/cmd-onboarding.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

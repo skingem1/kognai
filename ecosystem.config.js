@@ -379,7 +379,7 @@ module.exports = {
       // Commands: /start, /help, /preview, /schedule, /status, /stats, /subscribe
       // Requires: TELEGRAM_BOT_TOKEN + OWNER_TELEGRAM_CHAT_ID in .env
       name: "telegram-bot",
-      script: "agents/telegram-bot/index.ts",
+      script: "scripts/telegram-bot.ts",
       interpreter: "node",
       interpreter_args: "-r ts-node/register",
       cwd: "/Users/tarekmnif/kognai",

@@ -867,8 +867,9 @@
       "title": "TELEGRAM — Restart bot + verify all new commands work (/produce, /stats)",
       "block": "TELEGRAM",
       "priority": "medium",
-      "status": "pending",
-      "rationale": "Bot has been running 25h+. New commands (/produce N, /stats) added but bot not restarted. Restart via PM2, verify new commands respond, test /health."
+      "status": "done",
+      "rationale": "Bot has been running 25h+. New commands (/produce N, /stats) added but bot not restarted. Restart via PM2, verify new commands respond, test /health.",
+      "_note": "3 bugs fixed: PM2 script path, BOT_TOKEN env var, escaped quotes. Bot online and stable."
     }
   ]
 }

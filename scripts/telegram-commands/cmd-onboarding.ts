@@ -101,7 +101,7 @@ export async function cmdTrial(chatId: string): Promise<void> {
       '',
       '1. Send `/demo` to see a sample video',
       '2. Send `/plans` to view pricing',
-      '3. We\\'ll notify you when trials are live!',
+      "3. We'll notify you when trials are live!",
       '',
       '_Your interest has been recorded._',
     ].join('\n'));
@@ -160,7 +160,7 @@ export async function cmdTrial(chatId: string): Promise<void> {
         '• Growth plan: €19/mo after trial',
         '• 10+ videos per week',
         '',
-        '_You won\\'t be charged during the trial period._',
+        "_You won't be charged during the trial period._",
       ].join('\n'));
     } else {
       await sendMessage(chatId, `⚠️ Could not create trial session. Error: ${data.error?.message || 'unknown'}`);

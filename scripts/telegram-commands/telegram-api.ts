@@ -8,7 +8,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 export const ROOT = path.resolve(__dirname, '../..');
-export const BOT_TOKEN = process.env.CEO_TELEGRAM_BOT_TOKEN || '';
+export const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || process.env.CEO_TELEGRAM_BOT_TOKEN || '';
 export const OWNER_CHAT_ID = process.env.OWNER_TELEGRAM_CHAT_ID || process.env.CEO_TELEGRAM_CHAT_ID || '';
 export const AUDIT_LOG = path.join(ROOT, 'audit.log');
 
