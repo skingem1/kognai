@@ -894,8 +894,9 @@
       "title": "CONTENT — Batch production: 10 videos with improved hooks + deliver",
       "block": "CONTENT",
       "priority": "high",
-      "status": "pending",
-      "rationale": "After hook rebalance, produce 10 videos to verify improved hook diversity. Deliver all."
+      "status": "done",
+      "rationale": "After hook rebalance, produce 10 videos to verify improved hook diversity. Deliver all.",
+      "_note": "10 videos produced + delivered. 93 total. $0.00 cost."
     },
     {
       "sprint": 545,

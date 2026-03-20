@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-544",
+  "title": "CONTENT — 10 videos with improved hooks (93 total delivered)",
+  "description": "Produced 10 videos with 10 hook formulas. All delivered. 93 total auto-delivered. $0.00 cost.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "544-01",
+      "title": "Produce and deliver 10 videos",
+      "type": "feature",
+      "task_type": "content",
+      "task_target": "scripts/scs001/run-full-pipeline.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-544",
+      "deliverables": { "code": [], "tests": [], "docs": [] }
+    }
+  ]
+}
