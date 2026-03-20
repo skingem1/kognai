@@ -1460,6 +1460,14 @@
       "status": "done",
       "priority": "high",
       "rationale": "Format mix from 21:1:0 to 13:3:5. Lowered thresholds, broadened signals, forced reclassification."
+    },
+    {
+      "sprint": 610,
+      "title": "E2E — Full production pipeline integration test",
+      "block": "E2E",
+      "status": "done",
+      "priority": "critical",
+      "rationale": "Live pipeline test: 5/5 videos, 3 formats, captions burned in, $1.50. 13 unique videos in inventory."
     }
   ]
 }
