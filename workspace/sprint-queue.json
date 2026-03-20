@@ -368,7 +368,7 @@
       "sprint": 482,
       "title": "INFRA — Swarm metrics dashboard + sprint quality scoring",
       "block": "INFRA",
-      "status": "pending",
+      "status": "done",
       "priority": "low",
       "rationale": "Track swarm health: (1) Sprints per hour, (2) CTO gate pass/reject ratio, (3) Average sprint line changes, (4) Files modified per sprint, (5) Queue compliance (did swarm follow queue?). Dashboard panel at localhost:4000/swarm."
     },
