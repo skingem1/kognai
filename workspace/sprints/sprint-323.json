@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-323",
+  "title": "/calendar Telegram command — weekly posting plan from content calendar",
+  "description": "Add /calendar command to Telegram bot. Reads content-calendar.json (or generates fresh if stale), shows next 7 days of posting plan with video IDs, time slots, viral scores, and daily targets. Reduces friction for Phase 1.5 gate (0/30 posts, 18 days left).",
+  "source": "auto — Phase 1.5 gate friction reduction",
+  "tasks": [
+    {
+      "id": "323-01",
+      "title": "Add cmdCalendar() function + /calendar case to telegram-bot.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-323",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

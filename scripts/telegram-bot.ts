@@ -1079,6 +1079,71 @@ function cmdPipeline(): string {
   return lines.join('\n');
 }
 
+function cmdCalendar(): string {
+  const calPath = path.join(ROOT, 'workspace', 'scs001', 'content-calendar.json');
+  if (!fs.existsSync(calPath)) {
+    return '📅 No content calendar found.\nGenerate one: `npx ts-node scripts/scs001/generate-content-calendar.ts`';
+  }
+
+  try {
+    const cal = JSON.parse(fs.readFileSync(calPath, 'utf-8'));
+    const schedule: Record<string, Array<{ video_id: string; slot: string; viral_score: number | null; speaker: string; topic: string; hook_formula?: string }>> = cal.schedule || {};
+    const dates = Object.keys(schedule).sort();
+
+    if (dates.length === 0) {
+      return '📅 Calendar is empty — no videos assigned.';
+    }
+
+    // Show next 7 days from today
+    const today = new Date().toISOString().split('T')[0];
+    const upcoming = dates.filter(d => d >= today).slice(0, 7);
+
+    if (upcoming.length === 0) {
+      return '📅 No upcoming dates in calendar. Regenerate:\n`npx ts-node scripts/scs001/generate-content-calendar.ts`';
+    }
+
+    // Count manual posts
+    const manualPath = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
+    let posted = 0;
+    if (fs.existsSync(manualPath)) {
+      posted = fs.readFileSync(manualPath, 'utf-8').split('\n').filter(l => l.trim()).length;
+    }
+    const postsLeft = Math.max(0, 30 - posted);
+    const gateDate = new Date('2026-04-07');
+    const daysLeft = Math.max(0, Math.ceil((gateDate.getTime() - Date.now()) / 86_400_000));
+
+    const lines: string[] = [
+      `📅 *Content Calendar — Next 7 Days*`,
+      `Gate: ${postsLeft} posts needed, ${daysLeft}d left`,
+      '',
+    ];
+
+    for (const date of upcoming) {
+      const items = schedule[date] || [];
+      const dayName = new Date(date + 'T12:00:00Z').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+      lines.push(`*${dayName}:*`);
+
+      if (items.length === 0) {
+        lines.push('  (no videos assigned)');
+      } else {
+        for (const item of items) {
+          const vs = item.viral_score != null ? `🧬${item.viral_score}` : '';
+          const spk = item.speaker && item.speaker !== 'unknown' ? `🎙️${item.speaker}` : '';
+          lines.push(`  ${item.slot} — \`${item.video_id}\` ${vs} ${spk}`);
+        }
+      }
+      lines.push('');
+    }
+
+    lines.push(`_Total: ${cal.total_videos_assigned ?? '?'} videos across ${cal.total_days ?? '?'} days_`);
+    lines.push(`_Generated: ${cal.generated_at ? cal.generated_at.split('T')[0] : 'unknown'}_`);
+
+    return lines.join('\n');
+  } catch (e: any) {
+    return `❌ Error reading calendar: ${e.message}`;
+  }
+}
+
 function cmdHelp(): string {
   return (
     `*Kognai Bot Commands*\n\n` +
@@ -1098,6 +1163,7 @@ function cmdHelp(): string {
     `/onboard   — First-time posting walkthrough\n` +
     `/pipeline  — Content pipeline inventory & health\n` +
     `/today     — Daily posting brief + recommendations\n` +
+    `/calendar  — 7-day content posting plan\n` +
     `/help      — This message`
   );
 }
@@ -1149,6 +1215,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/onboard':   response = cmdOnboard(); break;
     case '/pipeline':  response = cmdPipeline(); break;
     case '/today':     response = cmdToday();  break;
+    case '/calendar':  response = cmdCalendar(); break;
     case '/help':      response = cmdHelp();   break;
     default:
       response = `Unknown command: \`${cmdName}\`\n\n${cmdHelp()}`;
