@@ -1,137 +1,60 @@
 {
-  "run_id": "scs001-2026-03-20T06-00-00-424Z",
+  "run_id": "scs001-2026-03-20T11-23-48-783Z",
   "mode": "live",
-  "started_at": "2026-03-20T06:00:00.424Z",
-  "completed_at": "2026-03-20T06:16:20.349Z",
-  "total_elapsed_ms": 979925,
+  "started_at": "2026-03-20T11:23:48.783Z",
+  "completed_at": "2026-03-20T11:23:54.459Z",
+  "total_elapsed_ms": 5676,
   "stages": [
     {
       "stage": "1-trend",
       "agent": "TrendAgent",
-      "count": 11,
-      "elapsed_ms": 485,
+      "count": 10,
+      "elapsed_ms": 433,
       "status": "ok"
     },
     {
       "stage": "2-discovery",
       "agent": "DiscoveryAgent",
       "count": 18,
-      "elapsed_ms": 3926,
+      "elapsed_ms": 3394,
       "status": "ok"
+    },
+    {
+      "stage": "2.5-viral-tiktok",
+      "agent": "ViralTikTokDownloader",
+      "count": 0,
+      "elapsed_ms": 1366,
+      "status": "empty"
     },
     {
       "stage": "3-clip-detection",
       "agent": "ClipDetectionAgent",
-      "count": 59,
-      "elapsed_ms": 542867,
-      "status": "ok"
-    },
-    {
-      "stage": "4-insight",
-      "agent": "InsightAgent (live)",
-      "count": 23,
-      "elapsed_ms": 419187,
-      "status": "ok"
-    },
-    {
-      "stage": "5-script",
-      "agent": "ScriptAgent",
-      "count": 23,
-      "elapsed_ms": 3,
-      "status": "ok"
-    },
-    {
-      "stage": "5.5-score",
-      "agent": "ScriptScorer",
-      "count": 13,
-      "elapsed_ms": 4,
-      "status": "ok"
-    },
-    {
-      "stage": "6-validate",
-      "agent": "ScriptValidator",
-      "count": 13,
-      "elapsed_ms": 1,
-      "status": "ok"
-    },
-    {
-      "stage": "6-editing",
-      "agent": "EditingAgent",
-      "count": 13,
-      "elapsed_ms": 9981,
-      "status": "ok"
-    },
-    {
-      "stage": "7-caption",
-      "agent": "CaptionAgent",
-      "count": 13,
-      "elapsed_ms": 263,
-      "status": "ok"
-    },
-    {
-      "stage": "8-qc",
-      "agent": "QCAgent",
-      "count": 13,
-      "elapsed_ms": 1,
-      "status": "ok"
-    },
-    {
-      "stage": "9-experiment",
-      "agent": "ExperimentTracker",
-      "count": 13,
-      "elapsed_ms": 1,
-      "status": "ok"
-    },
-    {
-      "stage": "9-publishing",
-      "agent": "PublishingAgent",
-      "count": 10,
-      "elapsed_ms": 3195,
-      "status": "ok"
-    },
-    {
-      "stage": "10-analytics",
-      "agent": "AnalyticsAgent",
-      "count": 10,
-      "elapsed_ms": 3,
-      "status": "ok"
-    },
-    {
-      "stage": "11-flywheel",
-      "agent": "ContentFlywheelAgent",
-      "count": 16,
-      "elapsed_ms": 3,
-      "status": "ok"
-    },
-    {
-      "stage": "12-failure-library",
-      "agent": "FailureLibraryAgent",
-      "count": 3,
-      "elapsed_ms": 3,
+      "count": 62,
+      "elapsed_ms": 480,
       "status": "ok"
     }
   ],
   "summary": {
-    "topics_found": 11,
+    "topics_found": 10,
     "clips_discovered": 18,
-    "clips_qualified": 23,
-    "insights_generated": 23,
-    "scripts_produced": 23,
-    "scripts_scored": 23,
-    "scripts_filtered": 10,
+    "clips_qualified": 0,
+    "insights_generated": 0,
+    "scripts_produced": 0,
+    "scripts_scored": 0,
+    "scripts_filtered": 0,
     "scripts_validation_skipped": 0,
-    "videos_edited": 13,
-    "videos_captioned": 13,
-    "qc_passed": 10,
-    "qc_failed": 3,
-    "published": 10,
-    "viral": 4,
-    "performing": 3,
-    "failure_library": 3,
-    "flywheel_derivatives": 16,
-    "failure_entries": 3,
+    "videos_edited": 0,
+    "videos_captioned": 0,
+    "qc_passed": 0,
+    "qc_failed": 0,
+    "published": 0,
+    "viral": 0,
+    "performing": 0,
+    "failure_library": 0,
+    "flywheel_derivatives": 0,
+    "failure_entries": 0,
     "clips_deduplicated": 0,
-    "platforms_targeted": 9,
-    "publish_method": "tiktok-direct"
+    "platforms_targeted": 0,
+    "publish_method": "none"
   }
 }

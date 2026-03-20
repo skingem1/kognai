@@ -5,6 +5,7 @@
 
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs';
 import { join } from 'path';
+import { randomUUID } from 'crypto';
 import { LiveFeedProvider } from './live-feed';
 import { getCompetitorTopics } from './competitor-feed';
 
@@ -84,6 +85,25 @@ export class TrendAgent {
       }
       if (boostedCount > 0) {
         console.log(`[TrendAgent] Boosted ${boostedCount} viral topic(s) by +${BOOST} confidence`);
+      }
+    }
+
+    // Sprint 500: If live feed has 0 SCS-relevant topics, inject competitor topics
+    // as synthetic signals so the pipeline always has content to produce.
+    const scsRelevantCount = feed.signals.filter(s => s.scs_relevant === true).length;
+    if (scsRelevantCount === 0 && competitorTopics.length > 0) {
+      console.log(`[TrendAgent] Live feed has 0 SCS-relevant topics — injecting ${competitorTopics.length} competitor topics as signals`);
+      for (let i = 0; i < competitorTopics.length; i++) {
+        feed.signals.push({
+          signal_id: 'comp-' + randomUUID().slice(0, 8),
+          topic: competitorTopics[i],
+          confidence: 75 - i,  // 75, 74, 73... (all above gate=60)
+          scs_relevant: true,
+          domain_tag: 'competitor_feed',
+          keyword_cluster: competitorTopics[i].toLowerCase().split(/\s+/).filter(w => w.length > 2),
+          provenance_source: 'competitor_feed',
+          mainstream_eta_days: 7,
+        });
       }
     }
 

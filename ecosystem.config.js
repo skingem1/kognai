@@ -753,6 +753,8 @@ module.exports = {
         SCS_MODE: "live",
         SCS_CLIPS_DIR: "/Users/tarekmnif/kognai/clips",
         TIKTOK_ACCESS_TOKEN: process.env.TIKTOK_ACCESS_TOKEN || "",
+        YOUTUBE_API_KEY: process.env.YOUTUBE_API_KEY || "",
+        LLM_REWRITE: "1",
       },
       error_file: "/Users/tarekmnif/kognai/logs/scs001-live-error.log",
       out_file: "/Users/tarekmnif/kognai/logs/scs001-live-out.log",

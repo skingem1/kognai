@@ -33,7 +33,7 @@ export interface RewriteResult {
 
 // ── Config ─────────────────────────────────────────────
 
-const OLLAMA_BASE = process.env.OLLAMA_HOST ?? "http://localhost:11434";
+const OLLAMA_BASE = (() => { const h = process.env.OLLAMA_HOST ?? "http://localhost:11434"; return h.startsWith("http") ? h : `http://${h}`; })();
 const LOCAL_MODEL = process.env.SCRIPT_REWRITE_MODEL ?? "qwen3:14b";
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY ?? "";
 const CLAUDE_MODEL = "claude-sonnet-4-20250514";

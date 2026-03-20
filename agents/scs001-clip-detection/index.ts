@@ -49,7 +49,7 @@ const QUALITY_GATE    = 20;
 const MIN_DURATION    = 5;
 const MAX_DURATION    = 20;
 const CONCURRENCY     = parseInt(process.env.CLIP_DETECTION_CONCURRENCY ?? '4', 10);
-const OLLAMA_BASE     = process.env.OLLAMA_HOST ?? 'http://localhost:11434';
+const OLLAMA_BASE     = (() => { const h = process.env.OLLAMA_HOST ?? 'http://localhost:11434'; return h.startsWith('http') ? h : `http://${h}`; })();
 const MODEL           = process.env.CLIP_DETECTION_MODEL ?? 'qwen3:14b';
 
 const PHRASE_TRIGGERS = [

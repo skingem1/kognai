@@ -2,6 +2,7 @@
 // SCS-001 Pipeline Runner — Executes orchestrator, saves report, notifies via Telegram
 // Usage: npx ts-node agents/scs001-orchestrator/run-pipeline.ts [mock|live]
 
+import 'dotenv/config';
 import { writeFileSync, readFileSync, mkdirSync, existsSync, readdirSync } from 'fs';
 import { join } from 'path';
 import { SCS001Orchestrator } from './index';

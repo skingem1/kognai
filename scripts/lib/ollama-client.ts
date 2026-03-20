@@ -8,7 +8,7 @@
 
 import * as http from 'http';
 
-const OLLAMA_BASE = process.env.OLLAMA_HOST || 'http://localhost:11434';
+const OLLAMA_BASE = (() => { const h = process.env.OLLAMA_HOST || 'http://localhost:11434'; return h.startsWith('http') ? h : `http://${h}`; })();
 const OLLAMA_TIMEOUT_MS = 600_000; // 10 min — local models can be slow
 
 export interface OllamaOptions {

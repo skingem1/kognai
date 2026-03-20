@@ -352,7 +352,7 @@ function saveReport(
     run_id: runId,
     started_at: new Date(startTime).toISOString(),
     finished_at: finishedAt,
-    mode: opts,
+    mode: { mock: opts.mock, dry_run: opts.dryRun, cloud: opts.cloud, limit: opts.limit },
     steps,
     total_duration_ms: totalMs,
     total_cost_usd: totalCost,

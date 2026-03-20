@@ -1,0 +1,56 @@
+{
+  "sprint_id": "sprint-503",
+  "title": "CONTENT — Batch video production with real local models (5 videos)",
+  "description": "Run SCS-001 pipeline in mock+local mode with Ollama (qwen3:4b for scripts). Produce 5 videos with real LLM-generated scripts and local TTS. Verify quality. Send to Telegram for manual TikTok posting.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "503-01",
+      "title": "Run full pipeline 5x with local models (mock+local, limit 5)",
+      "type": "feature",
+      "task_type": "pipeline",
+      "task_target": "local",
+      "agent": "scs001-orchestrator",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-503",
+      "deliverables": { "code": [], "tests": [], "docs": ["workspace/scs001/pipeline-runs/"] }
+    },
+    {
+      "id": "503-02",
+      "title": "Validate 5 new captioned MP4 files exist and are >0 bytes",
+      "type": "validation",
+      "task_type": "test",
+      "task_target": "local",
+      "agent": "supervisor",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-503",
+      "deliverables": { "code": [], "tests": [], "docs": [] }
+    },
+    {
+      "id": "503-03",
+      "title": "Send produced videos to Telegram for manual posting",
+      "type": "feature",
+      "task_type": "delivery",
+      "task_target": "local",
+      "agent": "telegram-bot",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-503",
+      "deliverables": { "code": [], "tests": [], "docs": [] }
+    },
+    {
+      "id": "503-04",
+      "title": "Log pipeline run metrics and update progress",
+      "type": "docs",
+      "task_type": "state",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-503",
+      "deliverables": { "code": [], "tests": [], "docs": ["workspace/scs001/progress.md"] }
+    }
+  ]
+}
