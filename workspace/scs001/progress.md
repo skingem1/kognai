@@ -3837,3 +3837,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (data cleanup + pipeline fix)
 - Issues: Pre-existing TS2802 in run-pipeline.ts (Map iteration, not from this sprint).
 - Timestamp: 2026-03-20T17:20:00Z
+
+## Sprint 431 — Auto-refresh Calendar After Pipeline Run (Direct Write)
+- Status: PASS
+- Commit: 0eea9b8
+- Files created: workspace/sprints/sprint-431.json
+- Files modified: agents/scs001-orchestrator/run-pipeline.ts
+- Tasks completed:
+  - 431-01: Added post-pipeline regeneration of content-calendar.json and posting-schedule.json. Runs generate-content-calendar.ts and generate-posting-schedule.ts with 30s timeout after purge/compact. Non-fatal on failure.
+- Validation: tsc --noEmit PASS (0 new errors)
+- Swarm used: no (pipeline enhancement)
+- Issues: None.
+- Timestamp: 2026-03-20T17:35:00Z
