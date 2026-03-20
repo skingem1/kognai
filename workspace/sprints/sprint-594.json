@@ -1,0 +1,24 @@
+{
+  "sprint_id": "sprint-594",
+  "title": "BUGFIX — Fix daily digest Telegram Markdown parse error",
+  "description": "Daily digest fails with 'can't parse entities' at byte offset ~1518. Fix by escaping special Markdown characters in dynamic content (topic names, video IDs, formulas).",
+  "source": "sprint-queue",
+  "tasks": [
+    {
+      "id": "594-01",
+      "title": "Add Markdown escape function and apply to dynamic content in daily-digest.ts",
+      "type": "bugfix",
+      "task_type": "bugfix",
+      "task_target": "scripts/daily-digest.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-594",
+      "deliverables": {
+        "code": ["scripts/daily-digest.ts"],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ]
+}

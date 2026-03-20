@@ -396,6 +396,13 @@ function getPipelineMetricsSummary(): string[] {
   }
 }
 
+// ── Sprint 594: Escape Telegram Markdown special chars in dynamic content ─────
+function escapeMd(text: string): string {
+  // Telegram Markdown v1: escape [ ] ( ) ~ ` > # + - = | { } . !
+  // But mostly < > cause parse failures. Also escape unmatched _ and *
+  return text.replace(/[<>]/g, '');
+}
+
 // ── Format digest message ─────────────────────────────────────────────────────
 
 function buildDigest(): string {
@@ -452,7 +459,7 @@ function buildDigest(): string {
     `${postIcon}  Posts:  *${gate.count}/30* ${postsLeft > 0 ? `(${postsLeft} more) ${postsPerDay}` : ''}`,
     `${viewsIcon}  Views:  *${gate.totalViews}/500* ${viewsLeft > 0 ? `(avg ${gate.avgViews}/post)` : ''}`,
     `→ ${urgency}`,
-    ...(showKillReminder ? [`   _Kill switch: <500 views/30 posts by Apr 7_`] : []),
+    ...(showKillReminder ? [`   _Kill switch: under 500 views/30 posts by Apr 7_`] : []),
     ...(showKillReminder && queue.top3.length > 0 ? [
       '',
       '📌 *Post these now:*',
@@ -462,7 +469,7 @@ function buildDigest(): string {
     `🎬 *Pipeline* (dry-run)`,
     `• Total generated: ${ledger.total} | Today: ${ledger.todayCount}`,
     `📋 Queue: *${queue.readyCount}* ready to post (${queue.unposted} in ledger)`,
-    `• Top formula: ${formula}`,
+    `• Top formula: ${escapeMd(formula)}`,
     `• Smoke test: ${smoke}`,
     ...getPipelineMetricsSummary(),
     '',
@@ -488,8 +495,8 @@ function buildDigest(): string {
         const vs = item.viral_score != null ? ` 🧬 ${item.viral_score}` : '';
         const lines = [`${i + 1}. ⏰ ${item.slot} — \`${item.video_id}\`${vs}`];
         const meta: string[] = [];
-        if (item.speaker && item.speaker !== 'unknown') meta.push(`🎙️ ${item.speaker}`);
-        if (item.hook_formula) meta.push(`🎣 ${item.hook_formula}`);
+        if (item.speaker && item.speaker !== 'unknown') meta.push(`🎙️ ${escapeMd(item.speaker)}`);
+        if (item.hook_formula) meta.push(`🎣 ${escapeMd(item.hook_formula)}`);
         if (meta.length > 0) lines.push(`   ${meta.join(' | ')}`);
         return lines;
       }),
@@ -497,11 +504,11 @@ function buildDigest(): string {
     ] : []),
     ...(viral.length > 0 ? [
       `🔥 *Trending topics (post one of these today):*`,
-      ...viral.map(t => `• ${t}`),
+      ...viral.map(t => `• ${escapeMd(t)}`),
       '',
     ] : []),
     ledger.total > 0
-      ? `💡 _Telegram: /queue to see unposted, /review for latest, /record <id> <views> to track_`
+      ? `💡 _Telegram: /queue to see unposted, /review for latest, /record {id} {views} to track_`
       : `⚠️ _No pipeline output yet — check PM2: \`pm2 status\` | /queue when ready_`,
   ];
 
