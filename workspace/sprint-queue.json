@@ -1,21 +1,21 @@
 {
-  "_note": "AUTHORITATIVE sprint execution order. The brief generator reads this and injects the first item as a MANDATORY directive, bypassing Qwen's recommendation. Pop items by setting status=done after each sprint ships. Human-maintained \u2014 edit to re-prioritise.",
+  "_note": "AUTHORITATIVE sprint execution order. The brief generator reads this and injects the first item as a MANDATORY directive, bypassing Qwen's recommendation. Pop items by setting status=done after each sprint ships. Human-maintained — edit to re-prioritise.",
   "updated": "2026-03-20T15:00",
   "owner": "Tarek (human)",
   "_plan_rationale": "Queue fixed 2026-03-20. Sprints 442-458 consumed by autonomous swarm. 10 items marked done (work completed). Remaining items have auto-sync guard in brief generator: consumed sprint numbers auto-skipped at runtime. 2 critical un-done items (SAFETY-SPLIT Part 2, progress.md update) re-added as Sprint 496-497 to avoid number collisions.",
   "queue": [
     {
       "sprint": 442,
-      "title": "SAFETY \u2014 Split telegram-bot.ts into modular command files (Part 1: extract commands A-M)",
+      "title": "SAFETY — Split telegram-bot.ts into modular command files (Part 1: extract commands A-M)",
       "block": "SAFETY-SPLIT",
       "status": "done",
       "priority": "critical",
-      "rationale": "telegram-bot.ts is 6,250 lines \u2014 ABOVE the 2,800-line swarm destructive rewrite threshold (FP-007). MUST split BEFORE any further Telegram work. Extract /achiri*, /analytics, /autopost, /besttime, /boot, /calendar, /checkout, /config, /deliver, /export, /freshness, /gate, /health, /help, /history, /lastrun, /leaderboard, /menu, /metrics into separate files under scripts/telegram-commands/. Keep telegram-bot.ts as thin router importing handlers. DO NOT rewrite telegram-bot.ts \u2014 create new files and update imports ONLY.",
+      "rationale": "telegram-bot.ts is 6,250 lines — ABOVE the 2,800-line swarm destructive rewrite threshold (FP-007). MUST split BEFORE any further Telegram work. Extract /achiri*, /analytics, /autopost, /besttime, /boot, /calendar, /checkout, /config, /deliver, /export, /freshness, /gate, /health, /help, /history, /lastrun, /leaderboard, /menu, /metrics into separate files under scripts/telegram-commands/. Keep telegram-bot.ts as thin router importing handlers. DO NOT rewrite telegram-bot.ts — create new files and update imports ONLY.",
       "_note": "Work completed by autonomous swarm (possibly under different sprint number)"
     },
     {
       "sprint": 496,
-      "title": "SAFETY \u2014 Split telegram-bot.ts Part 2: commands N-Z + router refactor",
+      "title": "SAFETY — Split telegram-bot.ts Part 2: commands N-Z + router refactor",
       "block": "SAFETY-SPLIT",
       "status": "done",
       "priority": "critical",
@@ -23,47 +23,51 @@
     },
     {
       "sprint": 497,
-      "title": "SAFETY \u2014 Update progress.md from Sprint 103 to current state",
+      "title": "SAFETY — Update progress.md from Sprint 103 to current state",
       "block": "SAFETY-SPLIT",
       "status": "done",
       "priority": "critical",
-      "rationale": "progress.md still says Sprint 103. Qwen reads this for context. Stale data causes bad sprint briefs. Update to reflect current state: 460+ sprints shipped, all blocks A-G done, VIDEO-QUALITY block done, 890+ commits. Keep under 200 lines \u2014 summary only."
+      "rationale": "progress.md still says Sprint 103. Qwen reads this for context. Stale data causes bad sprint briefs. Update to reflect current state: 460+ sprints shipped, all blocks A-G done, VIDEO-QUALITY block done, 890+ commits. Keep under 200 lines — summary only."
     },
     {
       "sprint": 443,
-      "title": "SAFETY \u2014 Split telegram-bot.ts into modular command files (Part 2: commands N-Z + router)",
+      "title": "SAFETY — Split telegram-bot.ts into modular command files (Part 2: commands N-Z + router)",
       "block": "SAFETY-SPLIT",
-      "status": "pending",
+      "status": "done",
+      "_note": "Completed by Sprint 496 (duplicate entry)",
       "priority": "critical",
       "rationale": "Continue split: /notify, /override, /pickup, /pipeline, /publish, /purge, /queue, /reload, /review, /run, /schedule, /send-video, /session, /shutdown, /smoke, /stale, /status, /subscribers, /topics, /version. After extraction: telegram-bot.ts should be <500 lines (imports + router + startup). Verify: all 62 commands still respond. Delete agents/telegram-bot/commands.ts (172KB dead code) if confirmed unused."
     },
     {
       "sprint": 444,
-      "title": "SAFETY \u2014 Update progress.md from Sprint 103 to Sprint 441",
+      "title": "SAFETY — Update progress.md from Sprint 103 to Sprint 441",
       "block": "SAFETY-SPLIT",
-      "status": "pending",
+      "status": "done",
+      "_note": "Completed by Sprint 497 (duplicate entry)",
       "priority": "critical",
-      "rationale": "progress.md still says Sprint 103. Qwen reads this for context. Stale data causes bad sprint briefs. Update to reflect: 441 sprints shipped, all blocks A-G done, VIDEO-QUALITY block done (248-254), Constitution/ACP/BrainX done, 855 commits. Keep under 200 lines \u2014 summary only, not every sprint."
+      "rationale": "progress.md still says Sprint 103. Qwen reads this for context. Stale data causes bad sprint briefs. Update to reflect: 441 sprints shipped, all blocks A-G done, VIDEO-QUALITY block done (248-254), Constitution/ACP/BrainX done, 855 commits. Keep under 200 lines — summary only, not every sprint."
     },
     {
       "sprint": 445,
-      "title": "ENV-CHECK \u2014 Audit all .env variables and create setup validator",
+      "title": "ENV-CHECK — Audit all .env variables and create setup validator",
       "block": "ENV-SETUP",
-      "status": "pending",
+      "status": "done",
+      "_note": "Completed by Sprint 456 (duplicate entry)",
       "priority": "critical",
-      "rationale": "Multiple API integrations coded but never tested because env vars missing. Create scripts/check-env.ts that validates: ELEVENLABS_API_KEY, CAPTIONS_API_KEY, JSON2VIDEO_API_KEY, BLOTATO_API_KEY, STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, STRIPE_PRICE_GROWTH, STRIPE_PRICE_PREMIUM, TIKTOK_ACCESS_TOKEN, YOUTUBE_API_KEY, TELEGRAM_BOT_TOKEN, OLLAMA_HOST, OPENCLAW_API_KEY. Print \u2705/\u274c for each. Wire into /health Telegram command."
+      "rationale": "Multiple API integrations coded but never tested because env vars missing. Create scripts/check-env.ts that validates: ELEVENLABS_API_KEY, CAPTIONS_API_KEY, JSON2VIDEO_API_KEY, BLOTATO_API_KEY, STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, STRIPE_PRICE_GROWTH, STRIPE_PRICE_PREMIUM, TIKTOK_ACCESS_TOKEN, YOUTUBE_API_KEY, TELEGRAM_BOT_TOKEN, OLLAMA_HOST, OPENCLAW_API_KEY. Print ✅/❌ for each. Wire into /health Telegram command."
     },
     {
       "sprint": 446,
-      "title": "TTS-REAL \u2014 Test ElevenLabs TTS integration with real API key",
+      "title": "TTS-REAL — Test ElevenLabs TTS integration with real API key",
       "block": "VIDEO-REAL",
-      "status": "pending",
+      "status": "done",
+      "_note": "Completed by Sprint 457 (duplicate entry)",
       "priority": "high",
       "rationale": "Sprint 250 built ElevenLabs scaffold but was never tested with real API key. Verify: (1) API key works, (2) voice selection, (3) audio file generation, (4) FFmpeg mixing with source clip audio. If ELEVENLABS_API_KEY missing, fall back to local Piper TTS (free). Gate: produce 1 video with real voiceover audio (not silent)."
     },
     {
       "sprint": 447,
-      "title": "VIDEO-E2E \u2014 Full pipeline test with real APIs (Whisper\u2192LLM\u2192TTS\u2192QC)",
+      "title": "VIDEO-E2E — Full pipeline test with real APIs (Whisper→LLM→TTS→QC)",
       "block": "VIDEO-REAL",
       "status": "done",
       "priority": "high",
@@ -72,32 +76,34 @@
     },
     {
       "sprint": 448,
-      "title": "FALLBACK \u2014 Local TTS via Piper + free caption overlay via FFmpeg drawtext",
+      "title": "FALLBACK — Local TTS via Piper + free caption overlay via FFmpeg drawtext",
       "block": "VIDEO-REAL",
       "status": "done",
       "priority": "high",
-      "rationale": "For April 7 gate we need to produce videos NOW, not wait for paid API keys. Build zero-cost fallback: (1) Piper TTS (local, free, good quality) replaces ElevenLabs, (2) Enhanced FFmpeg drawtext replaces JSON2Video for captions, (3) Skip Captions.ai avatar \u2014 use text-on-video with better templates. Gate: produce 5 videos using ONLY free/local tools.",
+      "rationale": "For April 7 gate we need to produce videos NOW, not wait for paid API keys. Build zero-cost fallback: (1) Piper TTS (local, free, good quality) replaces ElevenLabs, (2) Enhanced FFmpeg drawtext replaces JSON2Video for captions, (3) Skip Captions.ai avatar — use text-on-video with better templates. Gate: produce 5 videos using ONLY free/local tools.",
       "_note": "Work completed by autonomous swarm (possibly under different sprint number)"
     },
     {
       "sprint": 449,
-      "title": "POSTING \u2014 Manual posting workflow via Telegram /post command",
+      "title": "POSTING — Manual posting workflow via Telegram /post command",
       "block": "POSTING",
-      "status": "pending",
+      "status": "done",
+      "_note": "Covered by Sprints 435-440, 459 (deliver/publish/pickup/batch)",
       "priority": "high",
       "rationale": "April 7 gate = 30 TikTok posts. TikTok API rejected. Blotato costs $29/mo. Fastest path: (1) Pipeline produces video + caption, (2) /post command sends video + caption to Telegram, (3) Human manually posts to TikTok from phone (copy caption, upload video). Add /post command that: picks best unposted video from queue, sends it with ready-to-paste caption + hashtags. Track posted count in workspace/posting-log.json."
     },
     {
       "sprint": 450,
-      "title": "POSTING \u2014 Batch video preparation for manual TikTok posting",
+      "title": "POSTING — Batch video preparation for manual TikTok posting",
       "block": "POSTING",
-      "status": "pending",
+      "status": "done",
+      "_note": "Completed by Sprint 459 (/batch command)",
       "priority": "high",
       "rationale": "Produce 5 videos in one pipeline run, send ALL to Telegram in sequence. Each message: video file + caption text + hashtags + posting instructions. Human can then post 5 at once to TikTok. Add /batch command. Target: prepare 5 posts per session, 2 sessions per day = 10 posts/day. At that rate, 30 posts in 3 days."
     },
     {
       "sprint": 451,
-      "title": "QUALITY \u2014 Video template system with 3 proven formats",
+      "title": "QUALITY — Video template system with 3 proven formats",
       "block": "VIDEO-QUALITY-V2",
       "status": "done",
       "priority": "high",
@@ -106,7 +112,7 @@
     },
     {
       "sprint": 452,
-      "title": "QUALITY \u2014 Background music library + auto-mixing",
+      "title": "QUALITY — Background music library + auto-mixing",
       "block": "VIDEO-QUALITY-V2",
       "status": "done",
       "priority": "medium",
@@ -115,7 +121,7 @@
     },
     {
       "sprint": 453,
-      "title": "QUALITY \u2014 Hook optimization engine using viral transcript analysis",
+      "title": "QUALITY — Hook optimization engine using viral transcript analysis",
       "block": "VIDEO-QUALITY-V2",
       "status": "done",
       "priority": "medium",
@@ -124,32 +130,34 @@
     },
     {
       "sprint": 454,
-      "title": "GATE-TRACKER \u2014 April 7 countdown dashboard + daily posting quota",
+      "title": "GATE-TRACKER — April 7 countdown dashboard + daily posting quota",
       "block": "GATE",
-      "status": "pending",
+      "status": "done",
+      "_note": "Sprint 454 consumed by YouTube. Gate functionality covered by /gate, /gateanalytics, /pace commands",
       "priority": "high",
       "rationale": "18 days to April 7. Need: (1) Telegram /gate command showing: posts done/30, views/500, days remaining, required posts/day, (2) Daily reminder at 9am: 'You need X posts today', (3) Gate dashboard panel on localhost:4000. Wire into daily digest. If pace falls behind, escalate to URGENT."
     },
     {
       "sprint": 455,
-      "title": "PIPELINE-FIX \u2014 Verify and fix SCS-001 pipeline scheduler (PM2)",
+      "title": "PIPELINE-FIX — Verify and fix SCS-001 pipeline scheduler (PM2)",
       "block": "PIPELINE",
-      "status": "pending",
+      "status": "skipped",
+      "_note": "Sprint 455 consumed by SAFETY-SPLIT. Task still needed — re-add under future sprint number",
       "priority": "high",
       "rationale": "PM2 ecosystem.config.js has 11 processes but PM2 is NOT running. Pipeline should run 4x/day automatically. Fix: (1) Verify ecosystem.config.js processes are correct, (2) Start PM2, (3) Verify pipeline runs on schedule, (4) Add /pm2 Telegram command for status. Gate: pipeline runs automatically and produces videos without human trigger."
     },
     {
       "sprint": 456,
-      "title": "PIPELINE-FIX \u2014 Content queue management + auto-rotate topics",
+      "title": "PIPELINE-FIX — Content queue management + auto-rotate topics",
       "block": "PIPELINE",
       "status": "done",
       "priority": "medium",
-      "rationale": "Pipeline produces clips but topic selection is random. Add: (1) Topic rotation \u2014 don't repeat same topic within 24h, (2) Trending topics weighted higher, (3) Manual topic injection via /topics command, (4) Content calendar showing next 7 days of planned topics. Prevent: posting same niche 5 times in a row.",
+      "rationale": "Pipeline produces clips but topic selection is random. Add: (1) Topic rotation — don't repeat same topic within 24h, (2) Trending topics weighted higher, (3) Manual topic injection via /topics command, (4) Content calendar showing next 7 days of planned topics. Prevent: posting same niche 5 times in a row.",
       "_note": "Work completed by autonomous swarm (possibly under different sprint number)"
     },
     {
       "sprint": 457,
-      "title": "ANALYTICS \u2014 Real posting analytics tracker (manual input)",
+      "title": "ANALYTICS — Real posting analytics tracker (manual input)",
       "block": "ANALYTICS",
       "status": "done",
       "priority": "medium",
@@ -158,7 +166,7 @@
     },
     {
       "sprint": 458,
-      "title": "ANALYTICS \u2014 YouTube Shorts automated posting (Data API v3)",
+      "title": "ANALYTICS — YouTube Shorts automated posting (Data API v3)",
       "block": "YOUTUBE",
       "status": "done",
       "priority": "medium",
@@ -167,7 +175,7 @@
     },
     {
       "sprint": 459,
-      "title": "YOUTUBE \u2014 YouTube Shorts upload integration + auto-publish flow",
+      "title": "YOUTUBE — YouTube Shorts upload integration + auto-publish flow",
       "block": "YOUTUBE",
       "status": "done",
       "priority": "medium",
@@ -176,39 +184,43 @@
     },
     {
       "sprint": 460,
-      "title": "LAUNCH \u2014 Manifesto thread (15 posts) final review + scheduling",
+      "title": "LAUNCH — Manifesto thread (15 posts) final review + scheduling",
       "block": "LAUNCH-PREP",
-      "status": "pending",
+      "status": "skipped",
       "priority": "medium",
-      "rationale": "Launch Strategy v1.0 \u00a75 has 15 manifesto posts already written. Review, polish, add thread numbers. Create posting schedule for April 8-15 launch window. Store in workspace/launch/manifesto-thread.json. Wire into CMO agent for execution."
+      "rationale": "Launch Strategy v1.0 §5 has 15 manifesto posts already written. Review, polish, add thread numbers. Create posting schedule for April 8-15 launch window. Store in workspace/launch/manifesto-thread.json. Wire into CMO agent for execution.",
+      "_note": "Sprint 460 consumed by autonomous swarm for different task. Re-add under future number if needed."
     },
     {
       "sprint": 461,
-      "title": "LAUNCH \u2014 kognai.ai landing page polish + waitlist form",
+      "title": "LAUNCH — kognai.ai landing page polish + waitlist form",
       "block": "LAUNCH-PREP",
-      "status": "pending",
+      "status": "skipped",
       "priority": "medium",
-      "rationale": "Sprint 259 built landing page MVP. Polish: (1) Add email waitlist form (Supabase or simple API), (2) Social proof section, (3) Product screenshots/demos, (4) Mobile responsive check, (5) SEO meta tags. Gate: page loads fast, form captures emails, looks professional."
+      "rationale": "Sprint 259 built landing page MVP. Polish: (1) Add email waitlist form (Supabase or simple API), (2) Social proof section, (3) Product screenshots/demos, (4) Mobile responsive check, (5) SEO meta tags. Gate: page loads fast, form captures emails, looks professional.",
+      "_note": "Sprint 461 consumed by autonomous swarm for different task. Re-add under future number if needed."
     },
     {
       "sprint": 462,
-      "title": "LAUNCH \u2014 X Space preparation + invite system",
+      "title": "LAUNCH — X Space preparation + invite system",
       "block": "LAUNCH-PREP",
-      "status": "pending",
+      "status": "skipped",
       "priority": "low",
-      "rationale": "Launch Strategy v1.0 includes X Space as launch element. Prepare: (1) X Space title and description, (2) Talking points doc (from SOUL.md + manifesto), (3) Invite list (Telegram subscribers + waitlist), (4) Post-Space follow-up automation. Store in workspace/launch/x-space-prep.md."
+      "rationale": "Launch Strategy v1.0 includes X Space as launch element. Prepare: (1) X Space title and description, (2) Talking points doc (from SOUL.md + manifesto), (3) Invite list (Telegram subscribers + waitlist), (4) Post-Space follow-up automation. Store in workspace/launch/x-space-prep.md.",
+      "_note": "Sprint 462 consumed by autonomous swarm for different task. Re-add under future number if needed."
     },
     {
       "sprint": 463,
-      "title": "GEO \u2014 Install geo-seo-claude + initial invoica.ai audit",
+      "title": "GEO — Install geo-seo-claude + initial invoica.ai audit",
       "block": "GEO",
-      "status": "pending",
+      "status": "skipped",
       "priority": "medium",
-      "rationale": "SPRINT-GEO-001 Sprint 175. Install geo-seo-claude tooling (MIT). Run /geo audit invoica.ai. Capture baseline GEO score. Verify GPTBot/ClaudeBot/PerplexityBot allowed in robots.txt. Generate llms.txt for invoica.ai. Generate SoftwareApplication JSON-LD. Store baseline in workspace/geo/baseline-scores.json."
+      "rationale": "SPRINT-GEO-001 Sprint 175. Install geo-seo-claude tooling (MIT). Run /geo audit invoica.ai. Capture baseline GEO score. Verify GPTBot/ClaudeBot/PerplexityBot allowed in robots.txt. Generate llms.txt for invoica.ai. Generate SoftwareApplication JSON-LD. Store baseline in workspace/geo/baseline-scores.json.",
+      "_note": "Sprint 463 consumed by autonomous swarm for different task. Re-add under future number if needed."
     },
     {
       "sprint": 464,
-      "title": "GEO \u2014 kognai.ai GEO foundation (launch day activation)",
+      "title": "GEO — kognai.ai GEO foundation (launch day activation)",
       "block": "GEO",
       "status": "pending",
       "priority": "medium",
@@ -216,7 +228,7 @@
     },
     {
       "sprint": 465,
-      "title": "GEO \u2014 Continuous monitoring pipeline + citability gate",
+      "title": "GEO — Continuous monitoring pipeline + citability gate",
       "block": "GEO",
       "status": "pending",
       "priority": "medium",
@@ -224,15 +236,15 @@
     },
     {
       "sprint": 466,
-      "title": "INFRA \u2014 Git housekeeping + tag releases",
+      "title": "INFRA — Git housekeeping + tag releases",
       "block": "INFRA",
       "status": "pending",
       "priority": "low",
-      "rationale": "855 commits, no tags, no releases. Add: (1) Git tag for key milestones (v0.1-phase0, v0.2-phase1, v0.3-video-quality), (2) Release notes for each tag, (3) .gitignore cleanup (untracked data files). Keep commit history intact \u2014 no squash."
+      "rationale": "855 commits, no tags, no releases. Add: (1) Git tag for key milestones (v0.1-phase0, v0.2-phase1, v0.3-video-quality), (2) Release notes for each tag, (3) .gitignore cleanup (untracked data files). Keep commit history intact — no squash."
     },
     {
       "sprint": 467,
-      "title": "INFRA \u2014 Dashboard v2 \u2014 unified control panel with all panels",
+      "title": "INFRA — Dashboard v2 — unified control panel with all panels",
       "block": "INFRA",
       "status": "pending",
       "priority": "low",
@@ -240,7 +252,7 @@
     },
     {
       "sprint": 468,
-      "title": "QUALITY \u2014 Thumbnail generator for YouTube Shorts",
+      "title": "QUALITY — Thumbnail generator for YouTube Shorts",
       "block": "VIDEO-QUALITY-V2",
       "status": "pending",
       "priority": "medium",
@@ -248,7 +260,7 @@
     },
     {
       "sprint": 469,
-      "title": "QUALITY \u2014 A/B test framework for video formats",
+      "title": "QUALITY — A/B test framework for video formats",
       "block": "VIDEO-QUALITY-V2",
       "status": "pending",
       "priority": "low",
@@ -256,7 +268,7 @@
     },
     {
       "sprint": 470,
-      "title": "STRIPE \u2014 Subscription tiers wiring + payment flow test",
+      "title": "STRIPE — Subscription tiers wiring + payment flow test",
       "block": "MONETIZATION",
       "status": "pending",
       "priority": "medium",
@@ -264,23 +276,24 @@
     },
     {
       "sprint": 471,
-      "title": "STRIPE \u2014 Free trial activation flow for TikTok bio link",
+      "title": "STRIPE — Free trial activation flow for TikTok bio link",
       "block": "MONETIZATION",
       "status": "pending",
       "priority": "medium",
-      "rationale": "Sprint 441 built free trial + Sprint 402 built checkout web endpoint. Wire together: TikTok bio \u2192 kognai.ai/start \u2192 Telegram bot onboarding \u2192 7-day free trial \u2192 Stripe checkout. Test full funnel."
+      "rationale": "Sprint 441 built free trial + Sprint 402 built checkout web endpoint. Wire together: TikTok bio → kognai.ai/start → Telegram bot onboarding → 7-day free trial → Stripe checkout. Test full funnel."
     },
     {
       "sprint": 472,
-      "title": "SECURITY \u2014 SEC1+SEC3 localhost binding verification",
+      "title": "SECURITY — SEC1+SEC3 localhost binding verification",
       "block": "SECURITY",
-      "status": "pending",
+      "status": "done",
+      "_note": "Completed by Sprint 460 (SECURITY — Bind all HTTP servers to 127.0.0.1)",
       "priority": "medium",
       "rationale": "SEC1 (Ollama) + SEC3 (router_server) should bind to localhost only. Memory says 'already bound' but never verified post-Sprint-441. Quick check + add to /health command output."
     },
     {
       "sprint": 473,
-      "title": "SKILLS \u2014 Install missing T1 skills (sophie-optimizer, context-compressor, lossless-claw)",
+      "title": "SKILLS — Install missing T1 skills (sophie-optimizer, context-compressor, lossless-claw)",
       "block": "SKILLS",
       "status": "pending",
       "priority": "medium",
@@ -288,7 +301,7 @@
     },
     {
       "sprint": 474,
-      "title": "SKILLS \u2014 T2 Content Skills seed (6 skills for SCS-001)",
+      "title": "SKILLS — T2 Content Skills seed (6 skills for SCS-001)",
       "block": "SKILLS",
       "status": "pending",
       "priority": "medium",
@@ -296,15 +309,16 @@
     },
     {
       "sprint": 475,
-      "title": "ACHIRI \u2014 Consolidate 3 duplicate Telegram bot implementations",
+      "title": "ACHIRI — Consolidate 3 duplicate Telegram bot implementations",
       "block": "CLEANUP",
-      "status": "pending",
+      "status": "done",
+      "_note": "Sprint 496 deleted agents/telegram-bot/commands.ts (4528 lines). Only telegram-bot.ts (primary, 339 lines) and achiri-telegram-bot.ts (separate product) remain.",
       "priority": "medium",
-      "rationale": "Codebase audit found 3 Telegram bot implementations: (1) scripts/telegram-bot.ts (6,250 lines \u2014 primary), (2) agents/telegram-bot/commands.ts (172KB \u2014 possibly dead), (3) scripts/achiri-telegram-bot.ts (Achiri-specific). Verify which are active, delete dead code, ensure single source of truth. Check PM2 ecosystem.config.js for which is actually started."
+      "rationale": "Codebase audit found 3 Telegram bot implementations: (1) scripts/telegram-bot.ts (6,250 lines — primary), (2) agents/telegram-bot/commands.ts (172KB — possibly dead), (3) scripts/achiri-telegram-bot.ts (Achiri-specific). Verify which are active, delete dead code, ensure single source of truth. Check PM2 ecosystem.config.js for which is actually started."
     },
     {
       "sprint": 476,
-      "title": "ACHIRI \u2014 Safety harness review + cultural filter validation",
+      "title": "ACHIRI — Safety harness review + cultural filter validation",
       "block": "ACHIRI",
       "status": "pending",
       "priority": "medium",
@@ -312,7 +326,7 @@
     },
     {
       "sprint": 477,
-      "title": "EVAL-003 \u2014 Context Hub evaluation (chub CLI)",
+      "title": "EVAL-003 — Context Hub evaluation (chub CLI)",
       "block": "EVAL",
       "status": "pending",
       "priority": "low",
@@ -320,7 +334,7 @@
     },
     {
       "sprint": 478,
-      "title": "PIPELINE \u2014 Niche rotation engine + content diversity scoring",
+      "title": "PIPELINE — Niche rotation engine + content diversity scoring",
       "block": "PIPELINE-V2",
       "status": "pending",
       "priority": "medium",
@@ -328,7 +342,7 @@
     },
     {
       "sprint": 479,
-      "title": "PIPELINE \u2014 Competitor analysis feed (top 10 TikTok accounts in niche)",
+      "title": "PIPELINE — Competitor analysis feed (top 10 TikTok accounts in niche)",
       "block": "PIPELINE-V2",
       "status": "pending",
       "priority": "low",
@@ -336,7 +350,7 @@
     },
     {
       "sprint": 480,
-      "title": "QUALITY \u2014 Video length optimizer (15s vs 30s vs 60s)",
+      "title": "QUALITY — Video length optimizer (15s vs 30s vs 60s)",
       "block": "VIDEO-QUALITY-V2",
       "status": "pending",
       "priority": "low",
@@ -344,7 +358,7 @@
     },
     {
       "sprint": 481,
-      "title": "INFRA \u2014 Swarm safety \u2014 file size guard in orchestrator",
+      "title": "INFRA — Swarm safety — file size guard in orchestrator",
       "block": "INFRA",
       "status": "pending",
       "priority": "medium",
@@ -352,7 +366,7 @@
     },
     {
       "sprint": 482,
-      "title": "INFRA \u2014 Swarm metrics dashboard + sprint quality scoring",
+      "title": "INFRA — Swarm metrics dashboard + sprint quality scoring",
       "block": "INFRA",
       "status": "pending",
       "priority": "low",
@@ -360,7 +374,7 @@
     },
     {
       "sprint": 483,
-      "title": "POSTING \u2014 Instagram Reels cross-posting (manual workflow)",
+      "title": "POSTING — Instagram Reels cross-posting (manual workflow)",
       "block": "CROSS-PLATFORM",
       "status": "pending",
       "priority": "low",
@@ -368,7 +382,7 @@
     },
     {
       "sprint": 484,
-      "title": "POSTING \u2014 X/Twitter video posting integration",
+      "title": "POSTING — X/Twitter video posting integration",
       "block": "CROSS-PLATFORM",
       "status": "pending",
       "priority": "low",
@@ -376,7 +390,7 @@
     },
     {
       "sprint": 485,
-      "title": "MONETIZATION \u2014 Usage metering for SCS-001 subscribers",
+      "title": "MONETIZATION — Usage metering for SCS-001 subscribers",
       "block": "MONETIZATION",
       "status": "pending",
       "priority": "low",
@@ -384,15 +398,15 @@
     },
     {
       "sprint": 486,
-      "title": "LAUNCH \u2014 GitHub public branch preparation",
+      "title": "LAUNCH — GitHub public branch preparation",
       "block": "LAUNCH-PREP",
       "status": "pending",
       "priority": "low",
-      "rationale": "Launch Strategy v1.0 includes GitHub public branch. Repo is now PRIVATE. Prepare public branch: (1) Filter out .env, secrets, internal docs, (2) Clean README.md, (3) Add CONTRIBUTING.md, (4) License file. Don't push yet \u2014 prepare only."
+      "rationale": "Launch Strategy v1.0 includes GitHub public branch. Repo is now PRIVATE. Prepare public branch: (1) Filter out .env, secrets, internal docs, (2) Clean README.md, (3) Add CONTRIBUTING.md, (4) License file. Don't push yet — prepare only."
     },
     {
       "sprint": 487,
-      "title": "LAUNCH \u2014 Paid X ads creative + targeting setup",
+      "title": "LAUNCH — Paid X ads creative + targeting setup",
       "block": "LAUNCH-PREP",
       "status": "pending",
       "priority": "low",
@@ -400,23 +414,23 @@
     },
     {
       "sprint": 488,
-      "title": "EVAL-005 \u2014 AgentPay SDK pattern extraction for OMEL",
+      "title": "EVAL-005 — AgentPay SDK pattern extraction for OMEL",
       "block": "PHASE2A-PREP",
       "status": "pending",
       "priority": "low",
-      "rationale": "BACKLOG-EVAL-005: WLFI AgentPay SDK ships production implementations of Credential Vault (vault-daemon Unix socket signing) + Human Brake (policy engine with approval-request UUID). Read vault-daemon + policy engine source code BEFORE OMEL Sprint 004. Extract patterns for ClawRouter key management. DO NOT use USD1 \u2014 Kognai standard is USDC on Base. Watch EIP-3009 (gasless meta-transactions) for Invoica integration."
+      "rationale": "BACKLOG-EVAL-005: WLFI AgentPay SDK ships production implementations of Credential Vault (vault-daemon Unix socket signing) + Human Brake (policy engine with approval-request UUID). Read vault-daemon + policy engine source code BEFORE OMEL Sprint 004. Extract patterns for ClawRouter key management. DO NOT use USD1 — Kognai standard is USDC on Base. Watch EIP-3009 (gasless meta-transactions) for Invoica integration."
     },
     {
       "sprint": 489,
-      "title": "PHASE2A \u2014 Skill Bank directory structure + seed data",
+      "title": "PHASE2A — Skill Bank directory structure + seed data",
       "block": "PHASE2A-PREP",
       "status": "pending",
       "priority": "low",
-      "rationale": "Phase 2A gate requires Skill Bank seed. Use EVAL-001 (OpenViking) and EVAL-002 (Kojimem \u2014 supersedes Cognee, DECIDED) results to design directory structure. Create workspace/skill-bank/ with initial schema. Sprint 202 backfilled ~300 records \u2014 validate and organize. Kojimem integration blocked until mainnet."
+      "rationale": "Phase 2A gate requires Skill Bank seed. Use EVAL-001 (OpenViking) and EVAL-002 (Kojimem — supersedes Cognee, DECIDED) results to design directory structure. Create workspace/skill-bank/ with initial schema. Sprint 202 backfilled ~300 records — validate and organize. Kojimem integration blocked until mainnet."
     },
     {
       "sprint": 490,
-      "title": "PHASE2A \u2014 Voxight Module 2 stub (ORACLE-6 live feed)",
+      "title": "PHASE2A — Voxight Module 2 stub (ORACLE-6 live feed)",
       "block": "PHASE2A-PREP",
       "status": "pending",
       "priority": "low",
@@ -424,7 +438,7 @@
     },
     {
       "sprint": 491,
-      "title": "INFRA \u2014 Daily report generator fix + CMO report activation",
+      "title": "INFRA — Daily report generator fix + CMO report activation",
       "block": "INFRA",
       "status": "pending",
       "priority": "low",
@@ -432,7 +446,7 @@
     },
     {
       "sprint": 492,
-      "title": "CONSTITUTION \u2014 Five Principles wiring into agent prompts",
+      "title": "CONSTITUTION — Five Principles wiring into agent prompts",
       "block": "CONSTITUTION",
       "status": "pending",
       "priority": "low",
@@ -440,7 +454,7 @@
     },
     {
       "sprint": 493,
-      "title": "INFRA \u2014 Comprehensive e2e smoke test for full system",
+      "title": "INFRA — Comprehensive e2e smoke test for full system",
       "block": "INFRA",
       "status": "pending",
       "priority": "low",
@@ -448,7 +462,7 @@
     },
     {
       "sprint": 494,
-      "title": "GATE \u2014 Pre-April-7 readiness audit + remediation",
+      "title": "GATE — Pre-April-7 readiness audit + remediation",
       "block": "GATE",
       "status": "pending",
       "priority": "medium",
@@ -456,11 +470,11 @@
     },
     {
       "sprint": 495,
-      "title": "GATE \u2014 April 7 gate report + Phase 2 planning seed",
+      "title": "GATE — April 7 gate report + Phase 2 planning seed",
       "block": "GATE",
       "status": "pending",
       "priority": "medium",
-      "rationale": "Generate formal gate report: workspace/gates/april-7-gate.json. Criteria: 30 TikTok posts (\u2705/\u274c), 500 views (\u2705/\u274c), pipeline operational (\u2705/\u274c), monetization ready (\u2705/\u274c). If PASS: seed Phase 2 sprint plan. If FAIL: generate remediation plan with revised timeline."
+      "rationale": "Generate formal gate report: workspace/gates/april-7-gate.json. Criteria: 30 TikTok posts (✅/❌), 500 views (✅/❌), pipeline operational (✅/❌), monetization ready (✅/❌). If PASS: seed Phase 2 sprint plan. If FAIL: generate remediation plan with revised timeline."
     }
   ]
 }
