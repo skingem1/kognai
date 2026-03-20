@@ -464,7 +464,7 @@
       "sprint": 494,
       "title": "GATE — Pre-April-7 readiness audit + remediation",
       "block": "GATE",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "Final check before April 7 gate. Audit: (1) Posts done vs. 30 target, (2) Views vs. 500 target, (3) Pipeline producing quality videos, (4) All critical bugs resolved, (5) Stripe ready for first subscriber. If behind on posts: emergency batch production plan."
     },
