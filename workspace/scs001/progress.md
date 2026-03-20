@@ -3313,3 +3313,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (FP-007 file >4000 lines)
 - Issues: MEMORY.md update blocked by file permissions.
 - Timestamp: 2026-03-20T20:00:00Z
+
+## Sprint 388 — /learn — Achiri Darija Language Learning (Direct Write)
+- Status: PASS
+- Commit: 714bf7e
+- Files created: workspace/sprints/sprint-388.json
+- Files modified: agents/achiri/telegram-bot.ts
+- Tasks completed:
+  - 388-01: Added /learn command to Achiri Telegram bot. 25-word Darija vocabulary bank across 8 categories (daily, question, social, time, basic, food, places, connectors). Each lesson shows Arabic script, Latin pronunciation, usage example, and interactive quiz. Category filtering (/learn food). Per-user word rotation. Learning attempts logged to workspace/achiri/learn-log.jsonl. Updated /help text.
+- Validation: tsc --noEmit PASS (only pre-existing errors in derja-profiler.ts and memory-search.ts)
+- Swarm used: no (FP-007 file requires context of 580+ line bot)
+- Issues: None.
+- Timestamp: 2026-03-20T20:10:00Z
