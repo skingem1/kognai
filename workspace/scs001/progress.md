@@ -4,7 +4,7 @@
 
 ## Summary
 
-- **Total sprints shipped:** 445 (Sprint 059 → Sprint 586)
+- **Total sprints shipped:** 446 (Sprint 059 → Sprint 587)
 - **Total commits:** 1110
 - **Current phase:** Phase 1 Active (Mar 17 – Apr 11 2026)
 - **Pipeline:** 12 stages, 11 agents, closed feedback loop
@@ -998,3 +998,13 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (single-file surgical edit, wrote directly)
 - Issues: None
 - Timestamp: 2026-03-21T04:15:00Z
+
+## Sprint 587 — INFRA
+- Status: PASS
+- Commit: a2f2163
+- Files created: scripts/scs001/topic-radar.ts, scripts/scs001/multiformat-scriptgen.ts, scripts/scs001/run-multiformat-pipeline.ts, scripts/scs001/splitscreen-compositor.ts, workspace/sprints/sprint-587.json, workspace/scs001/topic-radar/*, workspace/scs001/multiformat-runs/*, workspace/scs001/scripts/*, workspace/scs001/trend-outputs/*
+- Test: topic-radar.ts --dry-run PASS, run-multiformat-pipeline.ts --dry-run PASS
+- Pipeline: Multiformat pipeline (explainer, debate, vision formats) + topic radar (CoinGecko, ArXiv, GitHub, HN, Google Trends)
+- Swarm used: no (commit of existing validated untracked files)
+- Issues: None
+- Timestamp: 2026-03-21T04:20:00Z
