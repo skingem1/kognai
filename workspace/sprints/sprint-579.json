@@ -1,0 +1,26 @@
+{
+  "sprint_id": "sprint-579",
+  "title": "PIPELINE \u2014 Add production metrics to daily digest",
+  "description": "Added getPipelineMetricsSummary() to daily-digest.ts. Shows: total videos, today videos, runs, cost, deliveries. Tested \u2014 digest sent successfully.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "579-01",
+      "title": "Add pipeline metrics to digest",
+      "type": "feature",
+      "task_type": "pipeline",
+      "task_target": "scripts/daily-digest.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-579",
+      "deliverables": {
+        "code": [
+          "scripts/daily-digest.ts"
+        ],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ]
+}

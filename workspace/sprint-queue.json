@@ -1209,8 +1209,9 @@
       "title": "PIPELINE — Add pipeline run counter to daily digest",
       "block": "PIPELINE",
       "priority": "medium",
-      "status": "pending",
-      "rationale": "Daily digest should include: runs today, videos produced today, deliveries today. Read from metrics.jsonl."
+      "status": "done",
+      "rationale": "Daily digest should include: runs today, videos produced today, deliveries today. Read from metrics.jsonl.",
+      "_note": "Pipeline metrics added to digest. Tested — sent successfully."
     },
     {
       "sprint": 580,

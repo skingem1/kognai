@@ -363,6 +363,39 @@ function getAutoPostReadiness(): { status: string; detail: string; action: strin
   };
 }
 
+// ── Sprint 579: Pipeline metrics for digest ──────────────────────────────────
+
+function getPipelineMetricsSummary(): string[] {
+  try {
+    const metricsPath = path.join(ROOT, 'logs', 'pipeline-metrics', 'metrics.jsonl');
+    if (!fs.existsSync(metricsPath)) return [];
+    const lines = fs.readFileSync(metricsPath, 'utf-8').trim().split('\n').filter(Boolean);
+    const today = new Date().toISOString().slice(0, 10);
+    let totalVideos = 0, todayVideos = 0, totalRuns = 0, todayRuns = 0, totalCost = 0;
+    for (const line of lines) {
+      try {
+        const m = JSON.parse(line);
+        totalRuns++;
+        totalVideos += m.videos_produced || 0;
+        totalCost += m.total_cost_usd || 0;
+        if ((m.timestamp || '').startsWith(today)) {
+          todayRuns++;
+          todayVideos += m.videos_produced || 0;
+        }
+      } catch {}
+    }
+    const delivered = fs.existsSync(path.join(ROOT, 'workspace', 'scs001', 'auto-delivered.jsonl'))
+      ? fs.readFileSync(path.join(ROOT, 'workspace', 'scs001', 'auto-delivered.jsonl'), 'utf-8').trim().split('\n').filter(Boolean).length
+      : 0;
+    return [
+      `📈 *Production:* ${totalVideos} total | ${todayVideos} today | ${totalRuns} runs | $${totalCost.toFixed(2)}`,
+      `📬 *Delivered:* ${delivered} auto-sent | Gate: ${delivered + 11}/30`,
+    ];
+  } catch {
+    return [];
+  }
+}
+
 // ── Format digest message ─────────────────────────────────────────────────────
 
 function buildDigest(): string {
@@ -431,6 +464,7 @@ function buildDigest(): string {
     `📋 Queue: *${queue.readyCount}* ready to post (${queue.unposted} in ledger)`,
     `• Top formula: ${formula}`,
     `• Smoke test: ${smoke}`,
+    ...getPipelineMetricsSummary(),
     '',
     stripeStatus,
     `🤖 Auto-post: ${autoPost.status}${autoPost.detail ? ` — ${autoPost.detail}` : ''}`,
