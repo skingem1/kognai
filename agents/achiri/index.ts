@@ -18,6 +18,7 @@ import { injectMemoryContext } from './memory-search';
 import { extractUserProfile, buildProfileContext } from './user-profile';
 import { buildSummaryContext } from './conversation-summary';
 import { selectTurnsWithinBudget } from './context-window';
+import { detectEmotion, getMoodHint } from './emotion-detector';
 import { routeCall } from '../../scripts/lib/clawrouter-v2';
 
 export interface AchiriConfig {
@@ -79,7 +80,7 @@ export class AchiriConversationHandler {
     };
   }
 
-  buildSystemPrompt(isNewSession: boolean = false): string {
+  buildSystemPrompt(isNewSession: boolean = false, moodHint: string = ''): string {
     const ctx = this.config.cultural_markers.tunisian_context;
     const switchRules = this.config.languages.code_switching.rules;
 
@@ -107,12 +108,15 @@ export class AchiriConversationHandler {
       if (personalBlock) personalBlock += '---\n\n';
     }
 
-    return header + personalBlock + this.systemPromptRaw;
+    // Sprint 307: Inject mood hint for emotion-adaptive responses
+    const moodBlock = moodHint ? moodHint + '\n\n---\n\n' : '';
+
+    return header + personalBlock + moodBlock + this.systemPromptRaw;
   }
 
-  buildMessages(userMessage: string, history: ConversationTurn[] = [], isNewSession: boolean = false): ConversationTurn[] {
+  buildMessages(userMessage: string, history: ConversationTurn[] = [], isNewSession: boolean = false, moodHint: string = ''): ConversationTurn[] {
     return [
-      { role: 'system', content: this.buildSystemPrompt(isNewSession) },
+      { role: 'system', content: this.buildSystemPrompt(isNewSession, moodHint) },
       ...history,
       { role: 'user', content: userMessage },
     ];
@@ -171,8 +175,15 @@ export class AchiriConversationHandler {
       console.log('[Achiri] context_window trimmed=' + effectiveHistory.length + '→' + windowedHistory.length + ' model=' + model.model);
     }
 
-    const messages = this.buildMessages(userMessage, windowedHistory, isNewSession);
-    console.log('[Achiri] chat() model=' + model.model + ' tier=' + model.tier + ' msg_len=' + userMessage.length + ' history=' + windowedHistory.length + (isNewSession ? ' NEW_SESSION' : ''));
+    // Sprint 307: Emotion detection — inject mood hint into system prompt
+    const emotion = detectEmotion(userMessage);
+    const moodHint = getMoodHint(emotion.mood);
+    if (emotion.mood !== 'neutral') {
+      console.log('[Achiri] emotion=' + emotion.mood + ' confidence=' + emotion.confidence + ' signals=' + emotion.signals.join(','));
+    }
+
+    const messages = this.buildMessages(userMessage, windowedHistory, isNewSession, moodHint);
+    console.log('[Achiri] chat() model=' + model.model + ' tier=' + model.tier + ' msg_len=' + userMessage.length + ' history=' + windowedHistory.length + (isNewSession ? ' NEW_SESSION' : '') + (emotion.mood !== 'neutral' ? ' mood=' + emotion.mood : ''));
 
     // Dry-run mode for CI/tests
     if (process.env.ACHIRI_DRY_RUN === '1') {

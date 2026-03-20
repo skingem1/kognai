@@ -1,0 +1,44 @@
+{
+  "sprint_id": "sprint-307",
+  "title": "Achiri emotion detection — mood-aware system prompt for adaptive companion tone",
+  "description": "Detect emotional cues from user messages (happy, sad, stressed, angry, neutral) using pattern matching. Inject mood hint into system prompt so the model adapts its response style. Zero LLM cost — pattern-based. Core companion feature for Apr 25 alpha.",
+  "source": "auto — Achiri Phase 2A: companion personality depth",
+  "tasks": [
+    {
+      "id": "307-01",
+      "title": "Create emotion-detector.ts — pattern-based mood detection for Darija/French/English",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-307",
+      "deliverables": { "code": ["agents/achiri/emotion-detector.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "307-02",
+      "title": "Wire emotion detection into buildSystemPrompt — inject mood hint",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-307",
+      "deliverables": { "code": ["agents/achiri/index.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "307-03",
+      "title": "Validation script for emotion detection",
+      "type": "test",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-307",
+      "deliverables": { "code": ["scripts/achiri/validate-emotion-detector.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
