@@ -2194,6 +2194,66 @@ function cmdFunnel(): string {
   return lines.join('\n');
 }
 
+// ─── Sprint 376: /hooktest — A/B test hook formula performance ──────────────
+
+function cmdHookTest(): string {
+  const experiments = readLines(path.join(ROOT, 'workspace', 'scs001', 'experiments.jsonl'));
+  if (experiments.length === 0) return '⚠️ No experiments found. Run pipeline first.';
+
+  // Aggregate by hook formula
+  const hookStats: Record<string, { scores: number[]; count: number; speakers: Set<string> }> = {};
+  for (const e of experiments) {
+    const hook = e.hook_formula ?? 'unknown';
+    if (hook === 'unknown') continue;
+    if (!hookStats[hook]) hookStats[hook] = { scores: [], count: 0, speakers: new Set() };
+    hookStats[hook].count++;
+    if (e.partial_viral_score != null) hookStats[hook].scores.push(e.partial_viral_score);
+    if (e.speaker && e.speaker !== 'unknown') hookStats[hook].speakers.add(e.speaker);
+  }
+
+  const ranked = Object.entries(hookStats)
+    .map(([hook, stats]) => {
+      const avg = stats.scores.length > 0
+        ? stats.scores.reduce((a, b) => a + b, 0) / stats.scores.length
+        : 0;
+      const max = stats.scores.length > 0 ? Math.max(...stats.scores) : 0;
+      return { hook, avg, max, count: stats.count, speakers: stats.speakers.size };
+    })
+    .sort((a, b) => b.avg - a.avg);
+
+  if (ranked.length === 0) return '⚠️ No hook formulas found in experiments.';
+
+  const best = ranked[0];
+  const worst = ranked[ranked.length - 1];
+
+  const lines = [
+    '🎣 *Hook Formula A/B Test*',
+    `${experiments.length} experiments · ${ranked.length} hooks tested`,
+    '',
+    '*Rankings (by avg viral score):*',
+  ];
+
+  const medals = ['🥇', '🥈', '🥉'];
+  for (let i = 0; i < ranked.length; i++) {
+    const r = ranked[i];
+    const medal = i < 3 ? medals[i] : `${i + 1}.`;
+    const avgPct = Math.round(r.avg * 100);
+    const maxPct = Math.round(r.max * 100);
+    lines.push(`${medal} *${r.hook}* — avg ${avgPct}% · max ${maxPct}% · n=${r.count} · ${r.speakers} speakers`);
+  }
+
+  lines.push('');
+  lines.push(`✅ Best: *${best.hook}* (${Math.round(best.avg * 100)}% avg)`);
+  if (ranked.length > 1) {
+    lines.push(`⚠️ Worst: *${worst.hook}* (${Math.round(worst.avg * 100)}% avg)`);
+  }
+
+  lines.push('');
+  lines.push('💡 Prioritize top hooks in /postplan for gate acceleration');
+
+  return lines.join('\n');
+}
+
 // ─── Sprint 371: /todaycaptions — batch captions for today's posts ────────
 
 async function cmdTodayCaptions(chatId: string): Promise<void> {
@@ -2907,6 +2967,7 @@ function cmdHelp(): string {
     `/checkout  — Generate Stripe checkout link\n` +
     `/subscribers — Active Stripe subscribers + MRR\n` +
     `/funnel    — Content pipeline funnel + conversions\n` +
+    `/hooktest  — Hook formula A/B test rankings\n` +
     `/help      — This message`
   );
 }
@@ -3063,6 +3124,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/checkout':    await cmdCheckout(chatId, cmdArgs); return;
     case '/subscribers': await cmdSubscribers(chatId); return;
     case '/funnel':      response = cmdFunnel();              break;
+    case '/hooktest':    response = cmdHookTest();            break;
     case '/help':        response = cmdHelp();        break;
     default:
       response = `Unknown command: \`${cmdName}\`\n\n${cmdHelp()}`;

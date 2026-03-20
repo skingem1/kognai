@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-376",
+  "title": "/hooktest — A/B test hook formula performance rankings",
+  "description": "Add /hooktest command showing hook formula A/B test results: avg viral score, sample count, best/worst hooks.",
+  "source": "auto — content strategy optimization, data exists in experiments.jsonl",
+  "tasks": [
+    {
+      "id": "376-01",
+      "title": "Add /hooktest command to scripts/telegram-bot.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-376",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
