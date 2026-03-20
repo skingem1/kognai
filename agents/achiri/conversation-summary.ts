@@ -134,9 +134,21 @@ export function summarizeBeforeTrim(
   saveSummary(summary);
 }
 
+// Extract user's name from summary facts, if known.
+export function getUserName(userId: string): string | null {
+  const summary = loadSummary(userId);
+  if (!summary) return null;
+  for (const fact of summary.facts) {
+    const match = fact.match(/User's name:\s*(\w+)/i);
+    if (match) return match[1];
+  }
+  return null;
+}
+
 // Build a context block for the system prompt from the persistent summary.
 // Returns null if no summary exists.
-export function buildSummaryContext(userId: string): string | null {
+// Sprint 305: isNewSession flag triggers a personalized greeting hint.
+export function buildSummaryContext(userId: string, isNewSession: boolean = false): string | null {
   const summary = loadSummary(userId);
   if (!summary || summary.facts.length === 0) return null;
 
@@ -147,6 +159,18 @@ export function buildSummaryContext(userId: string): string | null {
     '',
     'Use these facts naturally — don\'t list them back. Reference them when relevant.',
   ];
+
+  // Sprint 305: Personalized greeting for returning users at session start
+  if (isNewSession) {
+    const name = getUserName(userId);
+    if (name) {
+      lines.push('');
+      lines.push(`IMPORTANT: This is a new session with a returning user. Greet them warmly by name ("${name}") and briefly reference something from your shared history. Be natural, not robotic.`);
+    } else {
+      lines.push('');
+      lines.push('IMPORTANT: This is a returning user starting a new session. Greet them warmly and show you remember past conversations.');
+    }
+  }
 
   return lines.join('\n');
 }

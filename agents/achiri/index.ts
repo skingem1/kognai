@@ -78,7 +78,7 @@ export class AchiriConversationHandler {
     };
   }
 
-  buildSystemPrompt(): string {
+  buildSystemPrompt(isNewSession: boolean = false): string {
     const ctx = this.config.cultural_markers.tunisian_context;
     const switchRules = this.config.languages.code_switching.rules;
 
@@ -95,11 +95,12 @@ export class AchiriConversationHandler {
 
     // Sprint 301: Inject user profile context (language preference, interests)
     // Sprint 302: Inject conversation summary (persistent facts from past sessions)
+    // Sprint 305: Pass isNewSession for personalized greeting
     let personalBlock = '';
     if (this.memory) {
       const profile = extractUserProfile(this.userId);
       const profileCtx = buildProfileContext(profile);
-      const summaryCtx = buildSummaryContext(this.userId);
+      const summaryCtx = buildSummaryContext(this.userId, isNewSession);
       if (profileCtx) personalBlock += profileCtx + '\n\n';
       if (summaryCtx) personalBlock += summaryCtx + '\n\n';
       if (personalBlock) personalBlock += '---\n\n';
@@ -108,9 +109,9 @@ export class AchiriConversationHandler {
     return header + personalBlock + this.systemPromptRaw;
   }
 
-  buildMessages(userMessage: string, history: ConversationTurn[] = []): ConversationTurn[] {
+  buildMessages(userMessage: string, history: ConversationTurn[] = [], isNewSession: boolean = false): ConversationTurn[] {
     return [
-      { role: 'system', content: this.buildSystemPrompt() },
+      { role: 'system', content: this.buildSystemPrompt(isNewSession) },
       ...history,
       { role: 'user', content: userMessage },
     ];
@@ -159,9 +160,12 @@ export class AchiriConversationHandler {
       }
     }
 
-    const messages = this.buildMessages(userMessage, effectiveHistory);
+    // Sprint 305: Detect new session (returning user, empty current history)
+    const isNewSession = resolvedHistory.length === 0 && this.memory !== null;
+
+    const messages = this.buildMessages(userMessage, effectiveHistory, isNewSession);
     const model = this.getModelConfig();
-    console.log('[Achiri] chat() model=' + model.model + ' tier=' + model.tier + ' msg_len=' + userMessage.length + ' history=' + resolvedHistory.length);
+    console.log('[Achiri] chat() model=' + model.model + ' tier=' + model.tier + ' msg_len=' + userMessage.length + ' history=' + resolvedHistory.length + (isNewSession ? ' NEW_SESSION' : ''));
 
     // Dry-run mode for CI/tests
     if (process.env.ACHIRI_DRY_RUN === '1') {

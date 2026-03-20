@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-305",
+  "title": "Achiri personalized greeting — returning user detection + name greeting",
+  "description": "When a returning user (with summary facts including their name) starts a new conversation, inject a greeting hint into the system prompt so Achiri greets them personally. Enhances the companion feel for alpha launch.",
+  "source": "auto — Achiri Phase 2A: personalization polish before Apr 25 alpha",
+  "tasks": [
+    {
+      "id": "305-01",
+      "title": "Add returning-user greeting hint to buildSummaryContext",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-305",
+      "deliverables": { "code": ["agents/achiri/conversation-summary.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "305-02",
+      "title": "Add session detection to chat() — detect first message of session",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-305",
+      "deliverables": { "code": ["agents/achiri/index.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
