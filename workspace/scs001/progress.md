@@ -3445,3 +3445,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (new file creation + ecosystem.config.js edit)
 - Issues: None.
 - Timestamp: 2026-03-20T22:00:00Z
+
+## Sprint 399 — Auto-Regenerate Calendar After /refresh (Direct Write)
+- Status: PASS
+- Commit: a6fa8b3
+- Files created: workspace/sprints/sprint-399.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 399-01: Added post-pipeline calendar/schedule regen to /refresh handler. After pipeline completes successfully, auto-runs generate-content-calendar.ts (with Sprint 397 diversity algorithm) and generate-posting-schedule.ts. Non-fatal: if regen fails, user still gets videos via /deliver. Sends confirmation message when done.
+- Validation: tsc --noEmit PASS
+- Swarm used: no (FP-007 file >4700 lines)
+- Issues: None.
+- Timestamp: 2026-03-20T22:10:00Z
