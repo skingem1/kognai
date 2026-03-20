@@ -2,7 +2,7 @@
   "_note": "AUTHORITATIVE sprint execution order. The brief generator reads this and injects the first item as a MANDATORY directive, bypassing Qwen's recommendation. Pop items by setting status=done after each sprint ships. Human-maintained — edit to re-prioritise.",
   "updated": "2026-03-20T10:00",
   "owner": "Tarek (human)",
-  "_plan_rationale": "50-sprint plan (442-491). April 7 gate: 30 TikTok posts + 500 views. Priorities: (1) SAFETY — split 6,250-line telegram-bot.ts before swarm destroys it, (2) GATE — real video production with API keys, (3) QUALITY — pipeline hardening, (4) LAUNCH — April 8-15 readiness, (5) INFRA — Phase 2A prerequisites.",
+  "_plan_rationale": "50-sprint plan (442-491). April 7 gate: 30 TikTok posts + 500 views. Priorities: (1) SAFETY — split 6,250-line telegram-bot.ts before swarm destroys it, (2) GATE — real video production with API keys, (3) QUALITY — pipeline hardening, (4) LAUNCH — April 8-15 readiness, (5) INFRA — Phase 2A prerequisites. New docs integrated 2026-03-20: EVAL-002 Kojimem (DECIDED, Phase 2A blocked on mainnet), EVAL-004 MAIN (Phase 3 watch), EVAL-005 AgentPay (OMEL reference read), SPRINT-GEO-001 (3 GEO sprints for launch).",
   "queue": [
     {
       "sprint": 442,
@@ -174,14 +174,38 @@
     },
     {
       "sprint": 463,
-      "title": "INFRA — Git housekeeping + commit squash guide + tag releases",
+      "title": "GEO — Install geo-seo-claude + initial invoica.ai audit",
+      "block": "GEO",
+      "status": "pending",
+      "priority": "medium",
+      "rationale": "SPRINT-GEO-001 Sprint 175. Install geo-seo-claude tooling (MIT). Run /geo audit invoica.ai. Capture baseline GEO score. Verify GPTBot/ClaudeBot/PerplexityBot allowed in robots.txt. Generate llms.txt for invoica.ai. Generate SoftwareApplication JSON-LD. Store baseline in workspace/geo/baseline-scores.json."
+    },
+    {
+      "sprint": 464,
+      "title": "GEO — kognai.ai GEO foundation (launch day activation)",
+      "block": "GEO",
+      "status": "pending",
+      "priority": "medium",
+      "rationale": "SPRINT-GEO-001 Sprint 176. Blocked until kognai.ai is live. Run /geo audit kognai.ai. Generate llms.txt defining Kognai entities (SCS, ACP, Five Laws, etc). Generate Organization + Article JSON-LD. Structure all docs pages as citable blocks (134-167 words). Brand mention baseline."
+    },
+    {
+      "sprint": 465,
+      "title": "GEO — Continuous monitoring pipeline + citability gate",
+      "block": "GEO",
+      "status": "pending",
+      "priority": "medium",
+      "rationale": "SPRINT-GEO-001 Sprint 177. Build geo-monitor.py (weekly cron). Brand-delta.py (weekly mentions scan). Integrate citability scoring into SCS-001 pipeline (scripts below <60 flagged). Add GEO section to Harvey weekly digest. PM2 process. Validation: Telegram alert fires on score drop >10."
+    },
+    {
+      "sprint": 466,
+      "title": "INFRA — Git housekeeping + tag releases",
       "block": "INFRA",
       "status": "pending",
       "priority": "low",
       "rationale": "855 commits, no tags, no releases. Add: (1) Git tag for key milestones (v0.1-phase0, v0.2-phase1, v0.3-video-quality), (2) Release notes for each tag, (3) .gitignore cleanup (untracked data files). Keep commit history intact — no squash."
     },
     {
-      "sprint": 464,
+      "sprint": 467,
       "title": "INFRA — Dashboard v2 — unified control panel with all panels",
       "block": "INFRA",
       "status": "pending",
@@ -189,7 +213,7 @@
       "rationale": "Dashboard at localhost:4000 has 13 panels from Sprint 087 but needs: (1) April 7 gate countdown, (2) Posting tracker (done/30), (3) Real-time pipeline status, (4) API health checks, (5) Stripe MRR. Single page with all operational data."
     },
     {
-      "sprint": 465,
+      "sprint": 468,
       "title": "QUALITY — Thumbnail generator for YouTube Shorts",
       "block": "VIDEO-QUALITY-V2",
       "status": "pending",
@@ -197,7 +221,7 @@
       "rationale": "YouTube Shorts need thumbnails for browse. Build: (1) Extract best frame from clip using PySceneDetect (most motion/faces), (2) Add text overlay (hook text, bold font), (3) Save as workspace/thumbnails/{video-id}.jpg. Auto-attach to YouTube upload."
     },
     {
-      "sprint": 466,
+      "sprint": 469,
       "title": "QUALITY — A/B test framework for video formats",
       "block": "VIDEO-QUALITY-V2",
       "status": "pending",
@@ -205,7 +229,7 @@
       "rationale": "Track which template (split-screen, reaction, greenscreen) + which hook formula + which music style performs best. Store A/B assignments in workspace/ab-tests/. After 30 posts, analyze: which format gets most views? Feed winning format back into pipeline as default."
     },
     {
-      "sprint": 467,
+      "sprint": 470,
       "title": "STRIPE — Subscription tiers wiring + payment flow test",
       "block": "MONETIZATION",
       "status": "pending",
@@ -213,7 +237,7 @@
       "rationale": "Stripe code exists across 10+ sprints (322, 345, 373, 374, 402, 407-409, 441) but never tested with real Stripe keys. Create /test-stripe command that validates: (1) Checkout session creation, (2) Webhook reception, (3) Subscription status check, (4) Billing portal link. Gate: one test subscription created and cancelled."
     },
     {
-      "sprint": 468,
+      "sprint": 471,
       "title": "STRIPE — Free trial activation flow for TikTok bio link",
       "block": "MONETIZATION",
       "status": "pending",
@@ -221,7 +245,7 @@
       "rationale": "Sprint 441 built free trial + Sprint 402 built checkout web endpoint. Wire together: TikTok bio → kognai.ai/start → Telegram bot onboarding → 7-day free trial → Stripe checkout. Test full funnel."
     },
     {
-      "sprint": 469,
+      "sprint": 472,
       "title": "SECURITY — SEC1+SEC3 localhost binding verification",
       "block": "SECURITY",
       "status": "pending",
@@ -229,7 +253,7 @@
       "rationale": "SEC1 (Ollama) + SEC3 (router_server) should bind to localhost only. Memory says 'already bound' but never verified post-Sprint-441. Quick check + add to /health command output."
     },
     {
-      "sprint": 470,
+      "sprint": 473,
       "title": "SKILLS — Install missing T1 skills (sophie-optimizer, context-compressor, lossless-claw)",
       "block": "SKILLS",
       "status": "pending",
@@ -237,7 +261,7 @@
       "rationale": "10/13 T1 skills installed. Missing 3: sophie-optimizer (prompt optimization), context-compressor (token reduction), lossless-claw (lossless code edits). Per Master Architecture skill catalog. Build stub implementations that can be enhanced later."
     },
     {
-      "sprint": 471,
+      "sprint": 474,
       "title": "SKILLS — T2 Content Skills seed (6 skills for SCS-001)",
       "block": "SKILLS",
       "status": "pending",
@@ -245,7 +269,7 @@
       "rationale": "Master Architecture specifies 6 T2 content/monetization skills. Seed: trend-analyzer, clip-scorer, script-generator, caption-optimizer, scheduling-engine, analytics-aggregator. These wrap existing SCS-001 agent logic as reusable skills for future SCS agents."
     },
     {
-      "sprint": 472,
+      "sprint": 475,
       "title": "ACHIRI — Consolidate 3 duplicate Telegram bot implementations",
       "block": "CLEANUP",
       "status": "pending",
@@ -253,7 +277,7 @@
       "rationale": "Codebase audit found 3 Telegram bot implementations: (1) scripts/telegram-bot.ts (6,250 lines — primary), (2) agents/telegram-bot/commands.ts (172KB — possibly dead), (3) scripts/achiri-telegram-bot.ts (Achiri-specific). Verify which are active, delete dead code, ensure single source of truth. Check PM2 ecosystem.config.js for which is actually started."
     },
     {
-      "sprint": 473,
+      "sprint": 476,
       "title": "ACHIRI — Safety harness review + cultural filter validation",
       "block": "ACHIRI",
       "status": "pending",
@@ -261,7 +285,7 @@
       "rationale": "Achiri (Tunisian AI) had multiple sprints (317, 328, 352, etc.) but needs safety review. Validate: (1) Derja/French code-switching works, (2) Cultural sensitivity filters active, (3) Safety boundaries tested (from e2e reports), (4) Memory system works. Quick audit, not rebuild."
     },
     {
-      "sprint": 474,
+      "sprint": 477,
       "title": "EVAL-003 — Context Hub evaluation (chub CLI)",
       "block": "EVAL",
       "status": "pending",
@@ -269,7 +293,7 @@
       "rationale": "BACKLOG-EVAL-003: Andrew Ng's chub CLI (6.1k stars, MIT). Maps to AMD-02 Skill Bank retrieval interface. P3 priority per Master Documents. CTO evaluation same pattern as EVAL-001/002."
     },
     {
-      "sprint": 475,
+      "sprint": 478,
       "title": "PIPELINE — Niche rotation engine + content diversity scoring",
       "block": "PIPELINE-V2",
       "status": "pending",
@@ -277,7 +301,7 @@
       "rationale": "Avoid posting same niche repeatedly. Build niche rotation: track last 10 posts' niches, weight underrepresented niches higher, diversity score per pipeline run. Target: no niche appears >30% in any 10-post window."
     },
     {
-      "sprint": 476,
+      "sprint": 479,
       "title": "PIPELINE — Competitor analysis feed (top 10 TikTok accounts in niche)",
       "block": "PIPELINE-V2",
       "status": "pending",
@@ -285,7 +309,7 @@
       "rationale": "Trend Agent currently uses Internet Archive. Add competitor monitoring: track top 10 TikTok accounts in target niches, analyze their posting patterns, extract hook formulas. Feed into topic selection."
     },
     {
-      "sprint": 477,
+      "sprint": 480,
       "title": "QUALITY — Video length optimizer (15s vs 30s vs 60s)",
       "block": "VIDEO-QUALITY-V2",
       "status": "pending",
@@ -293,7 +317,7 @@
       "rationale": "Different content works at different lengths. Build length optimizer: (1) Classify topic complexity, (2) Short (15s) for simple hooks, (3) Medium (30s) for explainers, (4) Long (60s) for deep dives. Currently all videos are ~30s. Add variety."
     },
     {
-      "sprint": 478,
+      "sprint": 481,
       "title": "INFRA — Swarm safety — file size guard in orchestrator",
       "block": "INFRA",
       "status": "pending",
@@ -301,7 +325,7 @@
       "rationale": "FP-007: Swarm destructively rewrites files >2,800 lines. Add guard in orchestrate-agents-v2.ts: before any file write, check target file line count. If >2,000 lines, REFUSE the write and log violation. Prevent future telegram-bot.ts disasters."
     },
     {
-      "sprint": 479,
+      "sprint": 482,
       "title": "INFRA — Swarm metrics dashboard + sprint quality scoring",
       "block": "INFRA",
       "status": "pending",
@@ -309,7 +333,7 @@
       "rationale": "Track swarm health: (1) Sprints per hour, (2) CTO gate pass/reject ratio, (3) Average sprint line changes, (4) Files modified per sprint, (5) Queue compliance (did swarm follow queue?). Dashboard panel at localhost:4000/swarm."
     },
     {
-      "sprint": 480,
+      "sprint": 483,
       "title": "POSTING — Instagram Reels cross-posting (manual workflow)",
       "block": "CROSS-PLATFORM",
       "status": "pending",
@@ -317,7 +341,7 @@
       "rationale": "Grok feedback suggested Instagram Reels parallel to TikTok. Add /instagram command: reformats caption for Instagram (different hashtag strategy), sends video with Instagram-optimized caption to Telegram for manual posting."
     },
     {
-      "sprint": 481,
+      "sprint": 484,
       "title": "POSTING — X/Twitter video posting integration",
       "block": "CROSS-PLATFORM",
       "status": "pending",
@@ -325,7 +349,7 @@
       "rationale": "X API v2 allows video uploads. Build integration: (1) OAuth2 flow, (2) Video upload, (3) Tweet with video + caption. Can be automated (no app review needed like TikTok). Wire into /publish multi-platform flow."
     },
     {
-      "sprint": 482,
+      "sprint": 485,
       "title": "MONETIZATION — Usage metering for SCS-001 subscribers",
       "block": "MONETIZATION",
       "status": "pending",
@@ -333,7 +357,7 @@
       "rationale": "Track per-subscriber: videos generated, API costs consumed, posting frequency. Store in workspace/billing/usage.json. Feed into Stripe subscription decisions (upgrade prompts, tier suggestions)."
     },
     {
-      "sprint": 483,
+      "sprint": 486,
       "title": "LAUNCH — GitHub public branch preparation",
       "block": "LAUNCH-PREP",
       "status": "pending",
@@ -341,7 +365,7 @@
       "rationale": "Launch Strategy v1.0 includes GitHub public branch. Repo is now PRIVATE. Prepare public branch: (1) Filter out .env, secrets, internal docs, (2) Clean README.md, (3) Add CONTRIBUTING.md, (4) License file. Don't push yet — prepare only."
     },
     {
-      "sprint": 484,
+      "sprint": 487,
       "title": "LAUNCH — Paid X ads creative + targeting setup",
       "block": "LAUNCH-PREP",
       "status": "pending",
@@ -349,15 +373,23 @@
       "rationale": "Launch Strategy v1.0 includes paid X ads. Prepare: (1) Ad creative (3 variations), (2) Targeting criteria (AI/tech, founders, developers), (3) Budget allocation ($50-100 test), (4) Landing page UTM tracking. Store in workspace/launch/ads/."
     },
     {
-      "sprint": 485,
+      "sprint": 488,
+      "title": "EVAL-005 — AgentPay SDK pattern extraction for OMEL",
+      "block": "PHASE2A-PREP",
+      "status": "pending",
+      "priority": "low",
+      "rationale": "BACKLOG-EVAL-005: WLFI AgentPay SDK ships production implementations of Credential Vault (vault-daemon Unix socket signing) + Human Brake (policy engine with approval-request UUID). Read vault-daemon + policy engine source code BEFORE OMEL Sprint 004. Extract patterns for ClawRouter key management. DO NOT use USD1 — Kognai standard is USDC on Base. Watch EIP-3009 (gasless meta-transactions) for Invoica integration."
+    },
+    {
+      "sprint": 489,
       "title": "PHASE2A — Skill Bank directory structure + seed data",
       "block": "PHASE2A-PREP",
       "status": "pending",
       "priority": "low",
-      "rationale": "Phase 2A gate requires Skill Bank seed. Use EVAL-001 (OpenViking) and EVAL-002 (Cognee) results to design directory structure. Create workspace/skill-bank/ with initial schema. Sprint 202 backfilled ~300 records — validate and organize."
+      "rationale": "Phase 2A gate requires Skill Bank seed. Use EVAL-001 (OpenViking) and EVAL-002 (Kojimem — supersedes Cognee, DECIDED) results to design directory structure. Create workspace/skill-bank/ with initial schema. Sprint 202 backfilled ~300 records — validate and organize. Kojimem integration blocked until mainnet."
     },
     {
-      "sprint": 486,
+      "sprint": 490,
       "title": "PHASE2A — Voxight Module 2 stub (ORACLE-6 live feed)",
       "block": "PHASE2A-PREP",
       "status": "pending",
@@ -365,7 +397,7 @@
       "rationale": "Block D (Voxight Module 2) still BLOCKED. Build stub: mock ORACLE-6 live feed interface that the pipeline can consume. Real Voxight integration deferred to Phase 2. Unblocks SCS-001 live integration testing."
     },
     {
-      "sprint": 487,
+      "sprint": 491,
       "title": "INFRA — Daily report generator fix + CMO report activation",
       "block": "INFRA",
       "status": "pending",
@@ -373,7 +405,7 @@
       "rationale": "Daily report code exists (commit 3cebfa5) but ZERO reports generated. CMO reports always empty (CMO was Invoica-focused, now fixed Sprint 258). Fix: (1) Report generator path issues, (2) Wire CMO report into daily digest, (3) Verify reports land in reports/swarm-runs/daily-YYYY-MM-DD.json."
     },
     {
-      "sprint": 488,
+      "sprint": 492,
       "title": "CONSTITUTION — Five Principles wiring into agent prompts",
       "block": "CONSTITUTION",
       "status": "pending",
@@ -381,7 +413,7 @@
       "rationale": "FIVE_PRINCIPLES.md committed (35cc15a) but NOT wired into any agent prompt. Constitution is wired (Sprint 238) but Five Principles are separate. Wire into all 29 agent prompts (16 kognai + 13 SCS-001)."
     },
     {
-      "sprint": 489,
+      "sprint": 493,
       "title": "INFRA — Comprehensive e2e smoke test for full system",
       "block": "INFRA",
       "status": "pending",
@@ -389,7 +421,7 @@
       "rationale": "Build scripts/smoke-test-full.ts: (1) Ollama health, (2) ClawRouter routing (T0-T2), (3) Telegram bot responds, (4) Pipeline runs 1 topic end-to-end, (5) Dashboard loads, (6) Stripe health (if keys present), (7) YouTube upload test (if keys present). Single command: npx tsx scripts/smoke-test-full.ts. Gate: all available services green."
     },
     {
-      "sprint": 490,
+      "sprint": 494,
       "title": "GATE — Pre-April-7 readiness audit + remediation",
       "block": "GATE",
       "status": "pending",
@@ -397,7 +429,7 @@
       "rationale": "Final check before April 7 gate. Audit: (1) Posts done vs. 30 target, (2) Views vs. 500 target, (3) Pipeline producing quality videos, (4) All critical bugs resolved, (5) Stripe ready for first subscriber. If behind on posts: emergency batch production plan."
     },
     {
-      "sprint": 491,
+      "sprint": 495,
       "title": "GATE — April 7 gate report + Phase 2 planning seed",
       "block": "GATE",
       "status": "pending",
