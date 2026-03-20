@@ -1,13 +1,12 @@
 {
-  "timestamp": "2026-03-20T16:11:37.321Z",
-  "total_videos": 222,
-  "unique_hooks": 100,
+  "timestamp": "2026-03-20T17:22:42.073Z",
+  "total_videos": 22,
+  "unique_hooks": 18,
   "hook_types": {
-    "other": 118,
-    "did-you-know": 17,
-    "nobody-talking": 36,
-    "secret-truth": 42,
-    "everyone-wrong": 8,
+    "other": 7,
+    "did-you-know": 1,
+    "secret-truth": 10,
+    "nobody-talking": 3,
     "what-if": 1
   },
   "unique_topics": 15,
@@ -28,10 +27,10 @@
     "EU AI Act enforcement begins — agent registration requirements",
     "AI music generation lawsuit wave — record labels vs Suno and Udio"
   ],
-  "pipeline_runs": 19,
+  "pipeline_runs": 5,
   "deliveries": {
-    "auto": 58,
+    "auto": 93,
     "telegram": 11
   },
-  "diversity_score": 73
+  "diversity_score": 91
 }

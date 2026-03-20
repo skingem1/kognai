@@ -912,8 +912,9 @@
       "title": "INFRA — Run diversity audit + stats report, verify improvements",
       "block": "INFRA",
       "priority": "medium",
-      "status": "pending",
-      "rationale": "After hook improvements and more content, run diversity audit and stats report. Verify diversity score improved from 73/100."
+      "status": "done",
+      "rationale": "After hook improvements and more content, run diversity audit and stats report. Verify diversity score improved from 73/100.",
+      "_note": "Diversity 73→91. 104 delivered. Gate 104/30 ON TRACK. $1.18 total."
     }
   ]
 }

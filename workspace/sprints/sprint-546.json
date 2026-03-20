@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-546",
+  "title": "INFRA — Diversity audit + stats: 91/100 score, 104 delivered, $1.18 total",
+  "description": "Diversity improved 73→91. 104 total delivered (gate 104/30 ON TRACK). $1.18 total cost. 15 topics, 5 hook types in current runs.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "546-01",
+      "title": "Run diversity audit and stats report",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "reports/content-diversity-audit.json",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-546",
+      "deliverables": { "code": [], "tests": [], "docs": ["reports/content-diversity-audit.json", "reports/stats-latest.json"] }
+    }
+  ]
+}
