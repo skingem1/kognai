@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-342",
+  "title": "/tiktokauth Telegram command — OAuth URL + step-by-step guide",
+  "description": "Operator types /tiktokauth to get the TikTok OAuth authorization URL and step-by-step instructions for obtaining TIKTOK_ACCESS_TOKEN. Also starts the callback server if not already running.",
+  "source": "auto — TIKTOK_ACCESS_TOKEN is the key blocker for automated posting",
+  "tasks": [
+    {
+      "id": "342-01",
+      "title": "Add /tiktokauth command to telegram-bot.ts — OAuth guide + auth URL",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-342",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

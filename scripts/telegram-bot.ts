@@ -1202,6 +1202,57 @@ function cmdPosted(): string {
   );
 }
 
+// Sprint 342: /tiktokauth — OAuth URL + step-by-step guide for getting TIKTOK_ACCESS_TOKEN
+function cmdTikTokAuth(): string {
+  const clientKey = process.env.TIKTOK_CLIENT_KEY || '';
+  const hasToken = !!process.env.TIKTOK_ACCESS_TOKEN;
+
+  if (hasToken) {
+    return (
+      `✅ *TikTok Access Token is SET!*\n\n` +
+      `Auto-posting is ready. The token will be refreshed automatically.\n\n` +
+      `To re-authorize: remove TIKTOK\\_ACCESS\\_TOKEN from .env and run /tiktokauth again.`
+    );
+  }
+
+  if (!clientKey) {
+    return (
+      `❌ *TIKTOK\\_CLIENT\\_KEY not set*\n\n` +
+      `Add it to .env first:\n` +
+      `1. Go to developers.tiktok.com\n` +
+      `2. Create an app → get Client Key + Client Secret\n` +
+      `3. Add to .env:\n` +
+      `   TIKTOK\\_CLIENT\\_KEY=your\\_key\n` +
+      `   TIKTOK\\_CLIENT\\_SECRET=your\\_secret`
+    );
+  }
+
+  const port = process.env.TIKTOK_OAUTH_PORT || '3456';
+  const redirectUri = process.env.TIKTOK_REDIRECT_URI || `http://localhost:${port}/callback`;
+  const scopes = 'user.info.basic,video.publish';
+
+  const params = new URLSearchParams({
+    client_key: clientKey,
+    scope: scopes,
+    response_type: 'code',
+    redirect_uri: redirectUri,
+    state: require('crypto').randomBytes(8).toString('hex'),
+  });
+  const authUrl = `https://www.tiktok.com/v2/auth/authorize/?${params.toString()}`;
+
+  return (
+    `🔑 *TikTok Authorization*\n\n` +
+    `*Step 1:* Start the callback server on your Mac:\n` +
+    `\`npx ts-node scripts/tiktok-oauth.ts\`\n\n` +
+    `*Step 2:* Open this URL in your browser:\n` +
+    `${authUrl}\n\n` +
+    `*Step 3:* Authorize the app on TikTok\n\n` +
+    `*Step 4:* The callback server will save the token to .env automatically\n\n` +
+    `*Step 5:* Restart the bot: \`pm2 restart kognai-telegram-bot\`\n\n` +
+    `After this, auto-posting will be enabled!`
+  );
+}
+
 function cmdHelp(): string {
   return (
     `*Kognai Bot Commands*\n\n` +
@@ -1222,6 +1273,7 @@ function cmdHelp(): string {
     `/onboard   — First-time posting walkthrough\n` +
     `/pipeline  — Content pipeline inventory & health\n` +
     `/refresh   — Trigger new pipeline run (2-5 min)\n` +
+    `/tiktokauth — TikTok OAuth setup guide\n` +
     `/today     — Daily posting brief + recommendations\n` +
     `/calendar  — 7-day content posting plan\n` +
     `/help      — This message`
@@ -1314,6 +1366,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/gate':    response = cmdGate();   break;
     case '/record':  response = cmdRecord(cmdArgs); break;
     case '/posted':  response = cmdPosted(); break;
+    case '/tiktokauth': response = cmdTikTokAuth(); break;
     case '/queue':   response = cmdQueue();  break;
     case '/review':  response = cmdReview(); break;
     case '/caption': response = cmdCaption(cmdArgs); break;
