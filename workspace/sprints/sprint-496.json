@@ -1,0 +1,68 @@
+{
+  "sprint_id": "sprint-496",
+  "title": "SAFETY — Split telegram-bot.ts Part 2: commands N-Z + router refactor",
+  "description": "Extract remaining command implementations from telegram-bot.ts into modular files. Create telegram-api.ts shared module. Target: telegram-bot.ts <500 lines (imports + router + startup).",
+  "source": "queue — Sprint 496 SAFETY-SPLIT",
+  "tasks": [
+    {
+      "id": "496-01",
+      "title": "Create telegram-api.ts — shared Telegram API helpers",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-496",
+      "deliverables": { "code": ["scripts/telegram-commands/telegram-api.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "496-02",
+      "title": "Create cmd-session.ts, cmd-delivery.ts, cmd-stripe.ts — extract remaining commands",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-496",
+      "deliverables": { "code": ["scripts/telegram-commands/cmd-session.ts", "scripts/telegram-commands/cmd-delivery.ts", "scripts/telegram-commands/cmd-stripe.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "496-03",
+      "title": "Move cmdBoot/cmdShutdown to cmd-system.ts, cmdAchiri to cmd-content.ts",
+      "type": "refactor",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-496",
+      "deliverables": { "code": ["scripts/telegram-commands/cmd-system.ts", "scripts/telegram-commands/cmd-content.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "496-04",
+      "title": "Rewrite telegram-bot.ts as thin router (<500 lines)",
+      "type": "refactor",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-496",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "496-05",
+      "title": "Validate: TypeScript compiles, all commands imported correctly",
+      "type": "test",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-496",
+      "deliverables": { "code": [], "tests": [], "docs": [] }
+    }
+  ]
+}

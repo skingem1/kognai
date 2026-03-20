@@ -11,6 +11,7 @@ import {
   loadSpeakerMap, diversifyBySpeaker, loadHookMap, diversifyByHook,
   freshnessScore, loadArchived, saveArchived, ARCHIVE_PATH,
 } from './shared';
+import { sendMessage } from './telegram-api';
 
 export function cmdPm2(): string {
   const procs = getPm2List();
@@ -538,4 +539,145 @@ export function cmdReadiness(): string {
   }
 
   return lines.join('\n');
+}
+
+// Sprint 496: Extracted from telegram-bot.ts
+
+export async function cmdBoot(chatId: string): Promise<void> {
+  const ESSENTIAL_CRONS = [
+    'kognai-daily-digest',
+    'kognai-gate-regen',
+    'kognai-gate-tracker-update',
+    'kognai-brief-regen',
+    'kognai-post-noon',
+    'kognai-post-evening',
+    'kognai-pipeline-watchdog',
+    'kognai-smoke-test',
+    'kognai-calendar-regen',
+    'kognai-schedule-regen',
+    'kognai-leaderboard-regen',
+    'kognai-auto-deliver-morning',
+    'kognai-auto-deliver-noon',
+    'kognai-auto-deliver-evening',
+    'kognai-view-tracker',
+    'kognai-watchdog',
+    'kognai-caption-push',
+    'scs001-pipeline',
+  ];
+
+  await sendMessage(chatId, `🔄 *Booting ${ESSENTIAL_CRONS.length} essential crons...*`);
+
+  const started: string[] = [];
+  const failed: string[] = [];
+  const alreadyOnline: string[] = [];
+
+  const procs = getPm2List();
+  const onlineNames = new Set(procs.filter(p => p.status === 'online').map(p => p.name));
+
+  for (const name of ESSENTIAL_CRONS) {
+    if (onlineNames.has(name)) {
+      alreadyOnline.push(name);
+      continue;
+    }
+    try {
+      execSync(`pm2 start ecosystem.config.js --only ${name}`, { cwd: ROOT, timeout: 15000, stdio: 'pipe' });
+      started.push(name);
+    } catch {
+      failed.push(name);
+    }
+  }
+
+  const lines = [
+    '🚀 *Boot Complete*',
+    '',
+  ];
+
+  if (started.length > 0) {
+    lines.push(`✅ *Started (${started.length}):*`);
+    for (const n of started) lines.push(`  🟢 ${n}`);
+    lines.push('');
+  }
+  if (alreadyOnline.length > 0) {
+    lines.push(`⏩ *Already running (${alreadyOnline.length}):*`);
+    for (const n of alreadyOnline) lines.push(`  🟢 ${n}`);
+    lines.push('');
+  }
+  if (failed.length > 0) {
+    lines.push(`❌ *Failed (${failed.length}):*`);
+    for (const n of failed) lines.push(`  🔴 ${n}`);
+    lines.push('');
+  }
+
+  const totalOnline = started.length + alreadyOnline.length;
+  lines.push(`📊 ${totalOnline}/${ESSENTIAL_CRONS.length} crons active`);
+  if (failed.length > 0) {
+    lines.push(`\n_Check logs: \`pm2 logs <name> --lines 20\`_`);
+  }
+
+  await sendMessage(chatId, lines.join('\n'));
+}
+
+export async function cmdShutdown(chatId: string): Promise<void> {
+  const STOPPABLE_CRONS = [
+    'kognai-daily-digest',
+    'kognai-gate-regen',
+    'kognai-gate-tracker-update',
+    'kognai-brief-regen',
+    'kognai-post-noon',
+    'kognai-post-evening',
+    'kognai-pipeline-watchdog',
+    'kognai-smoke-test',
+    'kognai-calendar-regen',
+    'kognai-schedule-regen',
+    'kognai-leaderboard-regen',
+    'kognai-auto-deliver-morning',
+    'kognai-auto-deliver-noon',
+    'kognai-auto-deliver-evening',
+    'kognai-view-tracker',
+    'kognai-watchdog',
+    'kognai-caption-push',
+    'kognai-auto-healer',
+    'scs001-pipeline',
+  ];
+
+  await sendMessage(chatId, `🛑 *Stopping ${STOPPABLE_CRONS.length} crons...*\n\n_telegram-bot and stripe-webhook will keep running._`);
+
+  let stopped = 0;
+  let alreadyStopped = 0;
+
+  const procs = getPm2List();
+  const onlineNames = new Set(procs.filter(p => p.status === 'online').map(p => p.name));
+
+  for (const name of STOPPABLE_CRONS) {
+    if (!onlineNames.has(name)) {
+      alreadyStopped++;
+      continue;
+    }
+    try {
+      execSync(`pm2 stop ${name}`, { timeout: 10000, stdio: 'pipe' });
+      stopped++;
+    } catch { /* ignore */ }
+  }
+
+  await sendMessage(chatId, [
+    '🛑 *Shutdown Complete*',
+    '',
+    `⏹ Stopped: *${stopped}* crons`,
+    `⏩ Already stopped: *${alreadyStopped}*`,
+    '',
+    `🟢 Still running: telegram-bot, stripe-webhook`,
+    '',
+    `_Type \`/boot\` to restart everything._`,
+  ].join('\n'));
+}
+
+export async function cmdReload(chatId: string): Promise<void> {
+  await sendMessage(chatId, '🔄 *Reloading bot...*\n\nRestarting in 2 seconds. Bot will be back shortly.');
+  setTimeout(() => {
+    try {
+      execSync('pm2 restart telegram-bot', { timeout: 10000, stdio: 'pipe' });
+    } catch {
+      process.exit(0);
+    }
+  }, 2000);
 }
