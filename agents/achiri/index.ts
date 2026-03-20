@@ -277,7 +277,11 @@ export class AchiriConversationHandler {
         }
       } else if (model.provider === 'anthropic') {
         const conversationText = chatMessages.map(m => (m.role === 'user' ? 'User' : 'Assistant') + ': ' + m.content).join('\n');
-        const result = await routeCall({
+        // Sprint 347: 45s timeout on Anthropic calls — prevents undici UND_ERR_HEADERS_TIMEOUT
+        const anthropicTimeout = new Promise<never>((_, reject) =>
+          setTimeout(() => reject(new Error('ACHIRI_ANTHROPIC_TIMEOUT')), 45_000)
+        );
+        const anthropicCall = routeCall({
           task_type:           'conversation',
           tier_class:          'text',
           complexity:          'apex',
@@ -286,12 +290,18 @@ export class AchiriConversationHandler {
           agent_id:            'achiri',
           payload:             { prompt: systemPrompt + '\n\n' + conversationText },
         });
+        const result = await Promise.race([anthropicCall, anthropicTimeout]);
         reply = result.content;
       } else {
         throw new Error('Unknown provider: ' + model.provider);
       }
-    } catch (err) {
-      console.error('[Achiri] chat() error:', err);
+    } catch (err: any) {
+      const errMsg = err?.message ?? String(err);
+      const isTimeout = errMsg.includes('TIMEOUT') || errMsg.includes('timeout') || errMsg.includes('abort');
+      console.error('[Achiri] chat() error' + (isTimeout ? ' (timeout)' : '') + ':', err);
+      if (isTimeout) {
+        return 'Serveur chwaya b6i2 tawa — 3awedha ba3d chwaya. (Server is slow, try again in a moment.)';
+      }
       return 'Mrigoul, ma njemtch nchouf — 3awedha marra oukhra.';
     }
 

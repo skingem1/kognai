@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-347",
+  "title": "Fix Achiri Anthropic API timeout — graceful 45s timeout with retry hint",
+  "description": "Achiri Anthropic API calls hit undici headers timeout (30s default) before the 5-min cloud timeout fires. Add explicit AbortController timeout (45s) to the routeCall in chat(), catch timeout specifically, and return a Darija-friendly retry message.",
+  "source": "bug — logs/achiri-api-error.log shows UND_ERR_HEADERS_TIMEOUT on Anthropic calls",
+  "tasks": [
+    {
+      "id": "347-01",
+      "title": "Add 45s AbortController timeout to Achiri Anthropic chat() call + timeout-specific error message",
+      "type": "bugfix",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-347",
+      "deliverables": { "code": ["agents/achiri/index.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
