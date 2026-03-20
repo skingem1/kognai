@@ -806,3 +806,48 @@ export function cmdTokenCheck(): string {
     return `❌ Token check failed: ${(stderr || e.message || '').slice(0, 200)}`;
   }
 }
+
+// Sprint 595: /logs — tail recent error logs from key processes
+export function cmdLogs(): string {
+  const logDir = path.join(ROOT, 'logs');
+  const logFiles: Array<{ name: string; file: string }> = [
+    { name: 'Pipeline', file: 'scs001-pipeline-error.log' },
+    { name: 'Digest', file: 'daily-digest-error.log' },
+    { name: 'Bot', file: 'telegram-bot-error.log' },
+    { name: 'Gate Regen', file: 'gate-regen-error.log' },
+    { name: 'Token Refresh', file: 'token-refresh-error.log' },
+    { name: 'Watchdog', file: 'watchdog-error.log' },
+  ];
+
+  const sections: string[] = ['📋 *Recent Error Logs*', ''];
+  let totalErrors = 0;
+
+  for (const log of logFiles) {
+    const filePath = path.join(logDir, log.file);
+    if (!fs.existsSync(filePath)) {
+      sections.push(`*${log.name}:* no log file`);
+      continue;
+    }
+
+    const content = fs.readFileSync(filePath, 'utf-8').trim();
+    if (!content) {
+      sections.push(`*${log.name}:* ✅ empty (no errors)`);
+      continue;
+    }
+
+    const lines = content.split('\n').filter(l => l.trim());
+    const recent = lines.slice(-3); // Last 3 entries
+    totalErrors += lines.length;
+
+    sections.push(`*${log.name}:* ${lines.length} entries`);
+    for (const line of recent) {
+      // Truncate and escape for Telegram
+      const clean = line.replace(/[<>]/g, '').slice(0, 120);
+      sections.push(`  \`${clean}\``);
+    }
+    sections.push('');
+  }
+
+  sections.push(`_Total: ${totalErrors} errors across ${logFiles.length} logs_`);
+  return sections.join('\n');
+}

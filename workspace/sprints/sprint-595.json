@@ -1,0 +1,24 @@
+{
+  "sprint_id": "sprint-595",
+  "title": "INFRA — /logs Telegram command for recent error log tailing",
+  "description": "Add /logs command that shows last 10 error entries from pipeline, digest, bot, and gate regen logs. Quick way for operator to check system health.",
+  "source": "sprint-queue",
+  "tasks": [
+    {
+      "id": "595-01",
+      "title": "Add cmdLogs function to cmd-system.ts and register in telegram-bot.ts",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-595",
+      "deliverables": {
+        "code": ["scripts/telegram-commands/cmd-system.ts", "scripts/telegram-bot.ts"],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ]
+}
