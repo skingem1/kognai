@@ -2192,6 +2192,40 @@ function loadRecentWebhookEvents(limit: number): Array<Record<string, any>> {
   } catch { return []; }
 }
 
+// ─── Sprint 409: /portal — generate Stripe billing portal link ─────────────
+
+function cmdPortal(args: string): string {
+  const checkoutPort = process.env.CHECKOUT_PORT || '3002';
+  const email = args.trim();
+
+  if (!process.env.STRIPE_SECRET_KEY) {
+    return '⚠️ Stripe not configured. Set `STRIPE_SECRET_KEY` in .env';
+  }
+
+  if (!email) {
+    return (
+      `🔗 *Billing Portal*\n\n` +
+      `Generate a self-service link for a subscriber:\n\n` +
+      `Usage: \`/portal user@example.com\`\n\n` +
+      `The subscriber can manage their subscription, update payment, or cancel.\n\n` +
+      `_Or direct link: \`http://localhost:${checkoutPort}/portal?email=<email>\`_`
+    );
+  }
+
+  // Validate email format
+  if (!email.includes('@') || !email.includes('.')) {
+    return `❌ Invalid email: \`${email}\`\n\nUsage: \`/portal user@example.com\``;
+  }
+
+  const portalUrl = `http://localhost:${checkoutPort}/portal?email=${encodeURIComponent(email)}`;
+  return (
+    `🔗 *Billing Portal Link*\n\n` +
+    `Subscriber: ${email}\n` +
+    `Link: ${portalUrl}\n\n` +
+    `_Send this link to the subscriber. They can manage their subscription, update payment method, or cancel._`
+  );
+}
+
 // ─── Sprint 375: /funnel — content pipeline funnel visualization ────────────
 
 function cmdFunnel(): string {
@@ -5094,6 +5128,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/viralstats':  response = cmdViralStats();         break;
     case '/checkout':    await cmdCheckout(chatId, cmdArgs); return;
     case '/subscribers': await cmdSubscribers(chatId); return;
+    case '/portal':      response = cmdPortal(cmdArgs);        break;
     case '/funnel':      response = cmdFunnel();              break;
     case '/hooktest':    response = cmdHookTest();            break;
     case '/besttime':    response = cmdBestTime();            break;

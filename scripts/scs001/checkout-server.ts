@@ -9,6 +9,7 @@
  *   GET  /checkout/growth    → Redirect to Stripe Checkout (Growth plan)
  *   GET  /checkout/premium   → Redirect to Stripe Checkout (Premium plan)
  *   POST /webhook            → Stripe webhook (signature verified)
+ *   GET  /portal?customer=X  → Stripe billing portal (subscription management)
  *   GET  /health             → Health check
  *
  * Env:
@@ -259,6 +260,75 @@ function handleWebhookEvent(body: string): { status: number; message: string } {
   return { status: 200, message: 'ok' };
 }
 
+// ── Stripe Billing Portal (Sprint 409) ───────────────────────────────────
+
+function createBillingPortalSession(customerId: string): Promise<{ url: string }> {
+  return new Promise((resolve, reject) => {
+    const params = new URLSearchParams({
+      customer: customerId,
+      return_url: `http://localhost:${PORT}/`,
+    });
+    const payload = params.toString();
+    const auth = Buffer.from(`${STRIPE_KEY}:`).toString('base64');
+
+    const req = https.request({
+      hostname: 'api.stripe.com',
+      path: '/v1/billing_portal/sessions',
+      method: 'POST',
+      headers: {
+        'Authorization': `Basic ${auth}`,
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Length': Buffer.byteLength(payload),
+      },
+      timeout: 15_000,
+    }, (res) => {
+      let data = '';
+      res.on('data', (c: Buffer) => (data += c.toString()));
+      res.on('end', () => {
+        try {
+          const parsed = JSON.parse(data);
+          if (parsed.error) reject(new Error(parsed.error.message ?? 'Stripe portal error'));
+          else if (parsed.url) resolve({ url: parsed.url });
+          else reject(new Error('No portal URL in response'));
+        } catch { reject(new Error('Invalid Stripe response')); }
+      });
+    });
+    req.on('error', reject);
+    req.on('timeout', () => { req.destroy(); reject(new Error('Stripe timeout')); });
+    req.write(payload);
+    req.end();
+  });
+}
+
+// Look up Stripe customer ID by email
+function findCustomerByEmail(email: string): Promise<string | null> {
+  return new Promise((resolve, reject) => {
+    const params = new URLSearchParams({ email, limit: '1' });
+    const auth = Buffer.from(`${STRIPE_KEY}:`).toString('base64');
+
+    const req = https.request({
+      hostname: 'api.stripe.com',
+      path: `/v1/customers?${params.toString()}`,
+      method: 'GET',
+      headers: { 'Authorization': `Basic ${auth}` },
+      timeout: 15_000,
+    }, (res) => {
+      let data = '';
+      res.on('data', (c: Buffer) => (data += c.toString()));
+      res.on('end', () => {
+        try {
+          const parsed = JSON.parse(data);
+          if (parsed.data?.[0]?.id) resolve(parsed.data[0].id);
+          else resolve(null);
+        } catch { resolve(null); }
+      });
+    });
+    req.on('error', reject);
+    req.on('timeout', () => { req.destroy(); reject(new Error('Stripe timeout')); });
+    req.end();
+  });
+}
+
 // ── HTTP Server ─────────────────────────────────────────────────────────
 
 const server = http.createServer(async (req, res) => {
@@ -294,6 +364,38 @@ const server = http.createServer(async (req, res) => {
   if (url === '/') {
     res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
     res.end(landingPage());
+    return;
+  }
+
+  // Sprint 409: /portal?customer=cus_xxx or /portal?email=user@example.com
+  if (url.startsWith('/portal') && req.method === 'GET') {
+    if (!STRIPE_KEY) {
+      res.writeHead(503, { 'Content-Type': 'text/plain' });
+      res.end('Stripe not configured.');
+      return;
+    }
+    const params = new URL(url, `http://localhost:${PORT}`).searchParams;
+    let customerId = params.get('customer') || '';
+    const email = params.get('email') || '';
+
+    try {
+      if (!customerId && email) {
+        customerId = (await findCustomerByEmail(email)) ?? '';
+      }
+      if (!customerId) {
+        res.writeHead(400, { 'Content-Type': 'text/plain' });
+        res.end('Missing customer ID or email. Use /portal?customer=cus_xxx or /portal?email=user@example.com');
+        return;
+      }
+      const session = await createBillingPortalSession(customerId);
+      res.writeHead(303, { 'Location': session.url });
+      res.end();
+      console.log(`[portal] Redirected customer ${customerId} to billing portal`);
+    } catch (err: any) {
+      console.error(`[portal] Error: ${err.message}`);
+      res.writeHead(500, { 'Content-Type': 'text/plain' });
+      res.end('Unable to create portal session. Please try again.');
+    }
     return;
   }
 
@@ -338,6 +440,7 @@ server.listen(PORT, '0.0.0.0', () => {
   console.log(`[checkout] Landing:  http://localhost:${PORT}/`);
   console.log(`[checkout] Growth:   http://localhost:${PORT}/checkout/growth`);
   console.log(`[checkout] Premium:  http://localhost:${PORT}/checkout/premium`);
+  console.log(`[checkout] Portal:   http://localhost:${PORT}/portal?email=<email>`);
   console.log(`[checkout] Webhook:  http://localhost:${PORT}/webhook (${WEBHOOK_SECRET ? 'signature ON' : 'signature OFF'})`);
 });
 

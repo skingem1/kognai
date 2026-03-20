@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-409",
+  "title": "Stripe billing portal — self-service subscription management",
+  "description": "Add GET /portal route to checkout-server.ts that creates a Stripe billing portal session for existing subscribers. Customers can manage their subscription, update payment, or cancel. Also add /portal Telegram command for operator to generate portal links.",
+  "source": "auto — standard SaaS feature, completes Stripe integration loop",
+  "tasks": [
+    {
+      "id": "409-01",
+      "title": "Add /portal route to checkout-server.ts + /portal operator command",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-409",
+      "deliverables": { "code": ["scripts/scs001/checkout-server.ts", "scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
