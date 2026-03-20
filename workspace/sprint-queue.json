@@ -516,7 +516,8 @@
       "sprint": 502,
       "title": "PIPELINE — PM2 essential crons activation + Telegram /pm2 command",
       "block": "PIPELINE",
-      "status": "pending",
+      "status": "deferred",
+      "_note": "Sprint 502 number used for queue extension. PM2 activation deferred to Sprint 506.",
       "priority": "high",
       "rationale": "Run pm2-startup.ts --only essential to activate critical crons (daily-digest, gate-regen, pipeline-watchdog, auto-healer). Wire pm2-health.ts into Telegram as /pm2 command. Verify crons fire correctly."
     },
