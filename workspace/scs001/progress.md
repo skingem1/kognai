@@ -3945,3 +3945,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (simple command addition)
 - Issues: None.
 - Timestamp: 2026-03-20T21:30:00Z
+
+## Sprint 440 — /publish Multi-Platform Publishing (Direct Write)
+- Status: PASS
+- Commit: 8f36113
+- Files created: workspace/sprints/sprint-440.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 440-01: Added cmdPublish() — uploads video to Supabase storage via REST, publishes to TikTok + IG Reels + YouTube Shorts via Blotato API. Dry-run mode if BLOTATO_API_KEY not set. Added /publish async handler, "Publish" inline button on delivered videos, /help entry. Auto-picks best unposted video if no video_id arg given. Records to manual-posts.jsonl on success.
+- Validation: tsc --noEmit PASS
+- Swarm used: no (complex async integration across large file)
+- Issues: None. BLOTATO_API_KEY not yet in .env — runs in dry-run mode.
+- Timestamp: 2026-03-20T22:00:00Z
