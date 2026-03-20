@@ -424,7 +424,7 @@
       "sprint": 489,
       "title": "PHASE2A — Skill Bank directory structure + seed data",
       "block": "PHASE2A-PREP",
-      "status": "pending",
+      "status": "done",
       "priority": "low",
       "rationale": "Phase 2A gate requires Skill Bank seed. Use EVAL-001 (OpenViking) and EVAL-002 (Kojimem — supersedes Cognee, DECIDED) results to design directory structure. Create workspace/skill-bank/ with initial schema. Sprint 202 backfilled ~300 records — validate and organize. Kojimem integration blocked until mainnet."
     },
