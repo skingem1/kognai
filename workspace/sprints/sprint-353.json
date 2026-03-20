@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-353",
+  "title": "Auto-regen crons — posting schedule + content leaderboard daily refresh",
+  "description": "Add PM2 cron entries for generate-posting-schedule.ts and content-leaderboard.ts so reports stay fresh daily. Currently these are one-shot scripts — without crons, /schedule and /leaderboard show stale data.",
+  "source": "auto — /schedule and /leaderboard (Sprint 350) need fresh data to be useful",
+  "tasks": [
+    {
+      "id": "353-01",
+      "title": "Add PM2 crons for posting-schedule and content-leaderboard generators",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-353",
+      "deliverables": { "code": ["ecosystem.config.js"], "tests": [], "docs": [] }
+    }
+  ]
+}

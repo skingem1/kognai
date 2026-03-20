@@ -588,6 +588,46 @@ module.exports = {
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
     {
+      // Sprint 353: Posting schedule regen — daily at 06:52 (after calendar regen at 06:50)
+      // Regenerates reports/posting-schedule.json with time-slotted videos.
+      // To start: pm2 start ecosystem.config.js --only kognai-schedule-regen
+      name: "kognai-schedule-regen",
+      script: "scripts/scs001/generate-posting-schedule.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: false,
+      watch: false,
+      cron_restart: "52 6 * * *",
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/schedule-regen-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/schedule-regen-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
+    {
+      // Sprint 353: Content leaderboard regen — daily at 06:54 (after schedule regen)
+      // Regenerates reports/content-leaderboard.json with speaker rankings.
+      // To start: pm2 start ecosystem.config.js --only kognai-leaderboard-regen
+      name: "kognai-leaderboard-regen",
+      script: "scripts/scs001/content-leaderboard.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: false,
+      watch: false,
+      cron_restart: "54 6 * * *",
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/leaderboard-regen-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/leaderboard-regen-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
+    {
       // Sprint 155: Posting time reminder — noon (12:00)
       // Sends owner a Telegram nudge with next video to post + file path + /record shortcut.
       // Silent if gate already met (30 posts). To start: pm2 start ecosystem.config.js --only kognai-post-noon
