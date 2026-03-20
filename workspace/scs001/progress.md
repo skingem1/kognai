@@ -3349,3 +3349,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (FP-007 multi-section edit on 700+ line bot)
 - Issues: None.
 - Timestamp: 2026-03-20T20:30:00Z
+
+## Sprint 391 — Achiri Streak Tracker + Enhanced Stats (Direct Write)
+- Status: PASS
+- Commit: 184d62c
+- Files created: workspace/sprints/sprint-391.json
+- Files modified: agents/achiri/telegram-bot.ts
+- Tasks completed:
+  - 391-01: Enhanced /stats command with: (1) Current conversation streak (consecutive days of chatting), (2) Best streak tracking, (3) Streak emoji indicators (❄️→🔥→🔥🔥→🔥🔥🔥), (4) Milestone celebrations at 3/7/14/30 day streaks, (5) Learning stats from /learn log (correct/total). Streak calculated from daily-counts.json. CTA changes based on streak state.
+- Validation: tsc --noEmit PASS (only pre-existing errors)
+- Swarm used: no (FP-007 multi-section edit)
+- Issues: None.
+- Timestamp: 2026-03-20T20:40:00Z
