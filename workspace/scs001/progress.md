@@ -2816,3 +2816,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (FP-007, video file sending + multipart HTTP)
 - Issues: Initial run failed with Telegram Markdown parse error — fixed by escaping special chars in caption content.
 - Timestamp: 2026-03-20T02:31:00Z
+
+## Sprint 339 — /posted Command (Direct Write)
+- Status: PASS
+- Commit: 2284560
+- Files created: workspace/sprints/sprint-339.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 339-01: cmdPosted() — reads auto-delivered.jsonl for last delivered video, records it in manual-posts.jsonl, shows gate progress. Added to switch + cmdHelp. Dedup check included.
+- Validation: npx tsc --noEmit PASS (only node_modules/ox pre-existing errors)
+- Swarm used: no (surgical edit to existing 1200+ line bot file)
+- Issues: None.
+- Timestamp: 2026-03-20T02:35:00Z
