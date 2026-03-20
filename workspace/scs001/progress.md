@@ -2591,3 +2591,14 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (single file edit)
 - Issues: None.
 - Timestamp: 2026-03-20T01:45:00Z
+
+## Sprint 321 — Achiri Memory Persistence Test (Direct Write)
+- Status: PASS
+- Commit: 11f1906
+- Files created: scripts/achiri/validate-memory-persistence.ts, workspace/sprints/sprint-321.json
+- Tasks completed:
+  - 321-01: validate-memory-persistence.ts — 18-check automated test. Verifies: (1) history saved/loaded across store ops, (2) fact extraction from conversations (name, studies, interests), (3) getUserName() works, (4) summary context generated for returning users with greeting instruction, (5) user profile extraction, (6) memory search/context injection, (7) summary merging across sessions preserves old facts and adds new ones. Uses temp userId, cleans up after.
+- Validation: 18/18 PASS. All memory subsystem components verified end-to-end.
+- Swarm used: no (single file)
+- Issues: None. This test directly validates the May 14 Full Alpha Gate question: "does memory work?"
+- Timestamp: 2026-03-20T01:55:00Z
