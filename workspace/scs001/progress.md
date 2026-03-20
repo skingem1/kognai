@@ -3981,3 +3981,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (new script + bot command + ecosystem config)
 - Issues: None.
 - Timestamp: 2026-03-20T22:30:00Z
+
+## Sprint 443 — Hook Library Expansion (Direct Write)
+- Status: PASS
+- Commit: 4eb3a7b
+- Files created: workspace/sprints/sprint-443.json
+- Files modified: scripts/scs001/engagement-caption.ts, agents/scs001-script/index.ts
+- Tasks completed:
+  - 443-01: Added 4 new hook formulas (story, question, urgency, proof) + 5 new CTAs. Updated re-watch hooks. Total: 8 hook types, 10 CTAs.
+- Validation: tsc --noEmit PASS
+- Swarm used: no (multi-file template additions)
+- Issues: None.
+- Timestamp: 2026-03-20T22:45:00Z
