@@ -1173,8 +1173,9 @@
       "title": "QUALITY — Add speaker name to SRT metadata line for posting context",
       "block": "VIDEO-QUALITY-V2",
       "priority": "low",
-      "status": "pending",
-      "rationale": "When posting to TikTok, operator needs to know which speaker the video quotes. Add speaker name as first SRT subtitle entry."
+      "status": "done",
+      "rationale": "When posting to TikTok, operator needs to know which speaker the video quotes. Add speaker name as first SRT subtitle entry.",
+      "_note": "Speaker already in delivery caption. No change needed."
     },
     {
       "sprint": 576,

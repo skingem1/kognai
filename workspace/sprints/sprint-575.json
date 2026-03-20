@@ -1,0 +1,24 @@
+{
+  "sprint_id": "sprint-575",
+  "title": "QUALITY \u2014 Speaker name already in delivery caption (no change needed)",
+  "description": "Investigated: speaker name already shown in auto-deliver Telegram caption via speakerMap. No additional changes needed.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "575-01",
+      "title": "Verify speaker in delivery caption",
+      "type": "feature",
+      "task_type": "quality",
+      "task_target": "scripts/scs001/posting-auto-deliver.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "low",
+      "sprint_id": "sprint-575",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ]
+}
