@@ -3921,3 +3921,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (new script + ecosystem config)
 - Issues: None.
 - Timestamp: 2026-03-20T21:00:00Z
+
+## Sprint 438 — Deliver Flow Polish (Direct Write)
+- Status: PASS
+- Commit: 6aa031d
+- Files created: workspace/sprints/sprint-438.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 438-01: Added 📋 Caption button to delivered video inline keyboard. Added /shutdown command to stop all non-essential PM2 crons (19 stoppable, keeps telegram-bot + stripe-webhook running). Updated /menu with Boot Crons, Shutdown, and Refresh buttons. Added /shutdown to /help listing.
+- Validation: tsc --noEmit PASS
+- Swarm used: no (multi-point modification in large file)
+- Issues: None.
+- Timestamp: 2026-03-20T21:15:00Z
