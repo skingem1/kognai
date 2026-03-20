@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-559",
+  "title": "PIPELINE — Add topic field to experiment data for analytics",
+  "description": "Added optional topic field to ExperimentEntry interface. Orchestrator now logs clip topic_tags[0] with each experiment. Enables topic-level analytics.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "559-01",
+      "title": "Add topic to ExperimentEntry + orchestrator logging",
+      "type": "feature",
+      "task_type": "pipeline",
+      "task_target": "agents/scs001-experiment/index.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-559",
+      "deliverables": { "code": ["agents/scs001-experiment/index.ts", "agents/scs001-orchestrator/index.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

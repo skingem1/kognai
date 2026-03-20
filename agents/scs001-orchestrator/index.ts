@@ -401,6 +401,7 @@ export class SCS001Orchestrator {
             clip_id:               gate.video_id,
             hook_formula:          bundle?.hook_formula_used ?? 'unknown',
             speaker:               bundle?.speaker_name ?? 'unknown',
+            topic:                 clip?.topic_tags?.[0] ?? 'unknown',
             qc_passed:             gate.overall_pass,
             run_id:                runId,
             timestamp:             new Date().toISOString(),

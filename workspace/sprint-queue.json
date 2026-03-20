@@ -1029,8 +1029,9 @@
       "title": "PIPELINE — Add topic name to experiment data for better tracking",
       "block": "PIPELINE",
       "priority": "medium",
-      "status": "pending",
-      "rationale": "Experiment entries lack topic names, making analytics harder. Wire topic name from trend feed into insight briefs and experiment log."
+      "status": "done",
+      "rationale": "Experiment entries lack topic names, making analytics harder. Wire topic name from trend feed into insight briefs and experiment log.",
+      "_note": "topic field added to ExperimentEntry + orchestrator. Compiles OK."
     },
     {
       "sprint": 560,

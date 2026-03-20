@@ -10,6 +10,7 @@ export interface ExperimentEntry {
   clip_id:                string;
   hook_formula:           string;
   speaker:                string;
+  topic?:                 string;
   qc_passed:              boolean;
   run_id:                 string;
   timestamp:              string;
