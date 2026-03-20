@@ -570,7 +570,8 @@
       "sprint": 508,
       "title": "CONTENT — Pipeline auto-run test: produce 5 more videos + deliver to Telegram",
       "block": "CONTENT",
-      "status": "pending",
+      "status": "done",
+      "_note": "6 videos produced (3 runs), all 6 sent to Telegram. 12 total today.",
       "priority": "high",
       "rationale": "Sprint 503 proved pipeline works. Run again to build content queue toward 30-post gate. Different topics if possible. Deliver all to Telegram."
     },
