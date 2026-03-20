@@ -1,0 +1,24 @@
+{
+  "sprint_id": "sprint-568",
+  "title": "TELEGRAM \u2014 Bot restarted with /quality command",
+  "description": "Restarted bot. Online, 0 unstable restarts. All commands available including /quality.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "568-01",
+      "title": "Restart bot and verify",
+      "type": "feature",
+      "task_type": "telegram",
+      "task_target": "scripts/telegram-bot.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-568",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ]
+}

@@ -1110,8 +1110,9 @@
       "title": "TELEGRAM — Restart bot with /quality command + verify all commands",
       "block": "TELEGRAM",
       "priority": "high",
-      "status": "pending",
-      "rationale": "Bot needs restart to pick up /quality command from Sprint 565."
+      "status": "done",
+      "rationale": "Bot needs restart to pick up /quality command from Sprint 565.",
+      "_note": "Bot restarted. Online, stable, 0 unstable restarts."
     },
     {
       "sprint": 569,
