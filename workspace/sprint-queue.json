@@ -1428,6 +1428,14 @@
       "status": "done",
       "priority": "critical",
       "rationale": "Explainers extended from 12s to 25s. Topic dedup cache force-refresh for batch production. 5/5 videos validated."
+    },
+    {
+      "sprint": 606,
+      "title": "GATE-PUSH — Multiformat pipeline wired into production cron",
+      "block": "GATE-PUSH",
+      "status": "done",
+      "priority": "critical",
+      "rationale": "Multiformat pipeline + inventory scan added to 4x/day PM2 cron. Gate status in notifications."
     }
   ]
 }

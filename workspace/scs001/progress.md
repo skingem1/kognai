@@ -1174,3 +1174,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (multi-file, wrote directly)
 - Issues: None
 - Timestamp: 2026-03-21T07:00:00Z
+
+## Sprint 606 — GATE-PUSH
+- Status: PASS
+- Commit: e25a700
+- Files created: workspace/sprints/sprint-606.json
+- Files modified: scripts/scs001/pipeline-cron.ts
+- Test: Code review — PASS (multiformat pipeline + inventory scan added to cron)
+- Pipeline: Production cron now runs both legacy + multiformat pipelines 4x/day
+- Swarm used: no (single file, wrote directly)
+- Issues: None
+- Timestamp: 2026-03-21T07:15:00Z
