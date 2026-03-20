@@ -2540,3 +2540,16 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (multi-file feature)
 - Issues: None. Low data (pre-alpha) but metrics structure ready for alpha launch.
 - Timestamp: 2026-03-20T01:20:00Z
+
+## Sprint 317 — Achiri Quality Monitor (Direct Write)
+- Status: PASS
+- Commit: dad8310
+- Files created: scripts/achiri/achiri-quality-monitor.ts, workspace/sprints/sprint-317.json
+- Files modified: agents/telegram-bot/commands.ts, agents/telegram-bot/index.ts
+- Tasks completed:
+  - 317-01: achiri-quality-monitor.ts — loads memory files, filters test users, runs eval-harness batchEval on user/assistant pairs. Reports per-user quality (avg score, pass rate, top flags), aggregate stats, flag frequency. JSON + console output.
+  - 317-02: /achiriquality Telegram command — quality dashboard with per-user scores, top flags. Owner-only.
+- Validation: achiri-quality-monitor.ts runs PASS — 4 users, 10 pairs, avg 44/100, 0% pass rate (expected — short test conversations). Reveals code_switch and cultural_markers as top gaps.
+- Swarm used: no (multi-file feature)
+- Issues: Quality scores low on test data (expected pre-alpha — test conversations lack cultural context). Real alpha users should score higher.
+- Timestamp: 2026-03-20T01:25:00Z
