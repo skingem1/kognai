@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-360",
+  "title": "/tip — Tunisian proverbs and daily wisdom for Achiri",
+  "description": "Add /tip command to Achiri bot with curated Tunisian proverbs in Darija + French + English. Drives daily engagement and cultural connection.",
+  "source": "auto — alpha engagement feature, cultural differentiation for Achiri",
+  "tasks": [
+    {
+      "id": "360-01",
+      "title": "Add /tip command to agents/achiri/telegram-bot.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-360",
+      "deliverables": { "code": ["agents/achiri/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

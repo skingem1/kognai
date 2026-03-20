@@ -133,6 +133,7 @@ async function handleHelp(chatId: string): Promise<void> {
     `/lang — Switch language preference\n` +
     `/mood — Mood check-in\n` +
     `/quiz — Tunisia trivia\n` +
+    `/tip — Daily Tunisian wisdom\n` +
     `/feedback — Send us feedback\n` +
     `/about — About Achiri\n\n` +
     `Or just send me a message and we'll chat! 💬`
@@ -356,6 +357,44 @@ async function handleQuiz(chatId: string, args: string): Promise<void> {
   );
 }
 
+// --- Sprint 360: /tip — Tunisian proverbs and daily wisdom ---
+
+const TUNISIAN_PROVERBS = [
+  { darija: 'اللي فات مات', french: 'Ce qui est passé est mort', english: 'What\'s past is dead — move forward', emoji: '🚀' },
+  { darija: 'اللي يحب الورد يصبر على الشوك', french: 'Qui aime la rose supporte les épines', english: 'If you love roses, endure the thorns', emoji: '🌹' },
+  { darija: 'الصبر مفتاح الفرج', french: 'La patience est la clé du soulagement', english: 'Patience is the key to relief', emoji: '🔑' },
+  { darija: 'اللي ما عندوش الكبير يشريه', french: 'Qui n\'a pas de grand, qu\'il en achète un', english: 'If you don\'t have a mentor, find one', emoji: '🧠' },
+  { darija: 'كل فول و أنت مسرور', french: 'Mange des fèves mais sois heureux', english: 'Eat simply but stay happy', emoji: '😊' },
+  { darija: 'الدار دار بويا و الزنقة زنقة أميا', french: 'La maison est à mon père, la rue à ma mère', english: 'Home is where family is — treasure it', emoji: '🏠' },
+  { darija: 'القرد في عين أمو غزال', french: 'Le singe est une gazelle aux yeux de sa mère', english: 'Every mother sees her child as beautiful', emoji: '🦌' },
+  { darija: 'يد وحدة ما تصفق', french: 'Une seule main ne peut pas applaudir', english: 'One hand can\'t clap — teamwork matters', emoji: '👏' },
+  { darija: 'اللي يزرع الريح يحصد العاصفة', french: 'Qui sème le vent récolte la tempête', english: 'Sow the wind, reap the storm', emoji: '🌪️' },
+  { darija: 'الخبز خبزك و الزيت زيتك', french: 'Ton pain est ton pain, ton huile est ton huile', english: 'What\'s yours is yours — be self-reliant', emoji: '🫒' },
+  { darija: 'العلم نور و الجهل ظلام', french: 'Le savoir est lumière, l\'ignorance est ténèbres', english: 'Knowledge is light, ignorance is darkness', emoji: '💡' },
+  { darija: 'الحق يعلو و لا يُعلى عليه', french: 'La vérité s\'élève et ne peut être surpassée', english: 'Truth rises and nothing can overcome it', emoji: '⚖️' },
+  { darija: 'اللي يضحك بالأول يبكي بالتالي', french: 'Qui rit en premier pleure après', english: 'Who laughs first, cries later — stay humble', emoji: '🙏' },
+  { darija: 'كثر الدق يفك اللحام', french: 'Trop frapper finit par défaire la soudure', english: 'Persistence breaks through any barrier', emoji: '💪' },
+  { darija: 'اللي ما يعرفك ما يثمنك', french: 'Qui ne te connaît pas ne te valorise pas', english: 'Those who don\'t know you can\'t appreciate you', emoji: '✨' },
+  { darija: 'الجار قبل الدار', french: 'Le voisin avant la maison', english: 'Choose your neighbor before your house', emoji: '🤝' },
+  { darija: 'اللي يعمل الخير ما يضيعش', french: 'Qui fait le bien ne perd jamais', english: 'Good deeds are never wasted', emoji: '🌟' },
+  { darija: 'حتى لو قلتلك مش ممكن، جرب', french: 'Même si on te dit que c\'est impossible, essaie', english: 'Even if they say it\'s impossible, try', emoji: '🎯' },
+];
+
+async function handleTip(chatId: string): Promise<void> {
+  // Pick based on day of year for consistency (same tip per day)
+  const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 86400000);
+  const idx = dayOfYear % TUNISIAN_PROVERBS.length;
+  const p = TUNISIAN_PROVERBS[idx];
+
+  await sendMessage(chatId,
+    `${p.emoji} *Hikma tounsia* — Tunisian Wisdom\n\n` +
+    `🇹🇳 *${p.darija}*\n` +
+    `🇫🇷 _${p.french}_\n` +
+    `🇬🇧 ${p.english}\n\n` +
+    `_Type /tip anytime for today's wisdom_`
+  );
+}
+
 // --- Main message handler ---
 
 async function handleMessage(chatId: string, text: string, firstName: string, username: string): Promise<void> {
@@ -371,6 +410,7 @@ async function handleMessage(chatId: string, text: string, firstName: string, us
   if (cmd === '/feedback') return handleFeedback(chatId, args, firstName, username);
   if (cmd === '/mood') return handleMood(chatId, args);
   if (cmd === '/quiz') return handleQuiz(chatId, args);
+  if (cmd === '/tip') return handleTip(chatId);
 
   // Access check
   if (!hasAccess(chatId)) {
