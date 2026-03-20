@@ -3560,3 +3560,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (multi-integration: Stripe API + Telegram + file I/O)
 - Issues: None.
 - Timestamp: 2026-03-21T00:00:00Z
+
+## Sprint 408 — /subscribers Webhook Event Feed (Direct Write)
+- Status: PASS
+- Commit: 6cc11f1
+- Files created: workspace/sprints/sprint-408.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 408-01: Enhanced /subscribers command to show last 5 Stripe webhook events from subscribers.jsonl. Shows event type, email, plan, amount, and date with emoji icons. Added loadRecentWebhookEvents() helper. Completes Sprint 407 webhook visibility.
+- Validation: tsc --noEmit PASS
+- Swarm used: no (small edit to large file)
+- Issues: None.
+- Timestamp: 2026-03-21T00:05:00Z
