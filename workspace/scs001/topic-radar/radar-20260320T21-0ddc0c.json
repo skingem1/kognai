@@ -1,0 +1,12 @@
+{
+  "radar_id": "radar-20260320T21-0ddc0c",
+  "collected_at": "2026-03-20T21:47:21.688Z",
+  "topics": [],
+  "sources_hit": [
+    "hacker_news",
+    "github",
+    "arxiv",
+    "coingecko"
+  ],
+  "errors": []
+}

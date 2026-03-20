@@ -1,0 +1,68 @@
+{
+  "run_id": "mf-20260320T21-kfes",
+  "started_at": "2026-03-20T21:47:34.402Z",
+  "completed_at": "2026-03-20T21:47:52.592Z",
+  "topics_found": 5,
+  "scripts_generated": 5,
+  "videos_composited": 5,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "exp-8a250be5",
+      "format": "explainer",
+      "title": "NVIDIA/NemoClaw — Run OpenClaw securely inside NVIDIA OpenShell with managed inference",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260320T21-kfes/output/exp-8a250be5_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260320T21-kfes/output/exp-8a250be5.srt",
+      "duration_s": 12,
+      "success": true,
+      "avatar_cost": 0,
+      "llm_used": false
+    },
+    {
+      "script_id": "exp-4c25f9ef",
+      "format": "explainer",
+      "title": "aiming-lab/AutoResearchClaw — Fully autonomous & self-evolving research from idea to paper. Chat an Idea. Get ",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260320T21-kfes/output/exp-4c25f9ef_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260320T21-kfes/output/exp-4c25f9ef.srt",
+      "duration_s": 12,
+      "success": true,
+      "avatar_cost": 0,
+      "llm_used": false
+    },
+    {
+      "script_id": "exp-4aaca82f",
+      "format": "explainer",
+      "title": "jackwener/opencli — Make Any Website & Tool Your CLI. A universal CLI Hub and AI-native runtime. Tra",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260320T21-kfes/output/exp-4aaca82f_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260320T21-kfes/output/exp-4aaca82f.srt",
+      "duration_s": 12,
+      "success": true,
+      "avatar_cost": 0,
+      "llm_used": false
+    },
+    {
+      "script_id": "dbt-b87db595",
+      "format": "debate",
+      "title": "Wiki Cat (WKC) 📈 21.5%",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260320T21-kfes/output/dbt-b87db595_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260320T21-kfes/output/dbt-b87db595.srt",
+      "duration_s": 27,
+      "success": true,
+      "avatar_cost": 0,
+      "llm_used": false
+    },
+    {
+      "script_id": "exp-16516b9d",
+      "format": "explainer",
+      "title": "Zano (ZANO) 📈 19.5%",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260320T21-kfes/output/exp-16516b9d_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260320T21-kfes/output/exp-16516b9d.srt",
+      "duration_s": 12,
+      "success": true,
+      "avatar_cost": 0,
+      "llm_used": false
+    }
+  ],
+  "dry_run": true,
+  "total_cost_usd": 0
+}

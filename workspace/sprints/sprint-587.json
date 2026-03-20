@@ -1,0 +1,29 @@
+{
+  "sprint_id": "sprint-587",
+  "title": "INFRA — Commit multiformat pipeline + topic radar (validated)",
+  "description": "Commit 4 untracked scripts that are validated and working: topic-radar.ts, multiformat-scriptgen.ts, run-multiformat-pipeline.ts, splitscreen-compositor.ts. Also commit their output directories.",
+  "source": "gap-analysis",
+  "tasks": [
+    {
+      "id": "587-01",
+      "title": "Validate and commit topic-radar.ts and multiformat pipeline scripts",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/scs001/",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-587",
+      "deliverables": {
+        "code": [
+          "scripts/scs001/topic-radar.ts",
+          "scripts/scs001/multiformat-scriptgen.ts",
+          "scripts/scs001/run-multiformat-pipeline.ts",
+          "scripts/scs001/splitscreen-compositor.ts"
+        ],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ]
+}

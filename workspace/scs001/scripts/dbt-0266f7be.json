@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-0266f7be",
+  "topic_id": "cg-84f4d8d63c15",
+  "format": "debate",
+  "title": "Wiki Cat (WKC) 📈 21.5%",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Wiki Cat is overvalued is clearly the better approach here. Let me tell you why.",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Hold on. Wiki Cat rally is justified solves this problem in a fundamentally better way.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "But Wiki Cat is overvalued has proven scalability and a massive ecosystem.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Scalability means nothing if the architecture is wrong. Wiki Cat rally is justified gets this right.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "The market will decide. But my money's on Wiki Cat is overvalued.",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "Wiki Cat is overvalued vs Wiki Cat rally is justified",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#wiki cat",
+    "#wkc",
+    "#crypto"
+  ],
+  "generated_at": "2026-03-20T21:45:53.046Z",
+  "llm_used": false
+}

@@ -1,0 +1,618 @@
+{
+  "batch_id": "trend-batch-2026-03-20-001",
+  "generated_at": "2026-03-20T13:18:31.356Z",
+  "oracle6_feed_status": "mock",
+  "topics": [
+    {
+      "topic_id": "oracle6-00000000-0000-0000-0000-000000000001",
+      "topic_name": "MCP Protocol adoption surge — Claude, Cursor, Windsurf integrating Model Context Protocol",
+      "confidence_score": 92,
+      "keyword_cluster": [
+        "MCP",
+        "Model Context Protocol",
+        "Anthropic",
+        "tool use",
+        "AI IDE",
+        "Cursor",
+        "Windsurf",
+        "agent tools",
+        "function calling"
+      ],
+      "top_speakers": [
+        {
+          "name": "Alex Albert",
+          "handle": "@alexalbert__",
+          "authority_score": 88
+        },
+        {
+          "name": "Sahil Lavingia",
+          "handle": "@shl",
+          "authority_score": 82
+        }
+      ],
+      "relevant_channels": [
+        {
+          "platform": "youtube",
+          "channel_id": "UCa1sFzPrJr4d6HcKqN0n_8Q",
+          "channel_name": "AI Explained",
+          "recent_activity": "2026-03-14T18:00:00Z"
+        },
+        {
+          "platform": "x_spaces",
+          "channel_id": "space-mcp-builders-weekly",
+          "channel_name": "MCP Builders Weekly",
+          "recent_activity": "2026-03-14T20:00:00Z"
+        }
+      ],
+      "domain_tags": [
+        null
+      ],
+      "provenance_source": "manual_seed"
+    },
+    {
+      "topic_id": "oracle6-00000000-0000-0000-0000-000000000006",
+      "topic_name": "Open-source AI models closing the gap — Llama 4, Qwen 3, DeepSeek R1 benchmarks",
+      "confidence_score": 90,
+      "keyword_cluster": [
+        "open source AI",
+        "Llama 4",
+        "Qwen 3",
+        "DeepSeek",
+        "LLM benchmarks",
+        "self-hosted AI",
+        "enterprise AI",
+        "model weights"
+      ],
+      "top_speakers": [
+        {
+          "name": "Mark Zuckerberg",
+          "handle": "@faboroso",
+          "authority_score": 92
+        },
+        {
+          "name": "Andrej Karpathy",
+          "handle": "@karpathy",
+          "authority_score": 95
+        }
+      ],
+      "relevant_channels": [
+        {
+          "platform": "youtube",
+          "channel_id": "UCWN3xxRkmTPmbKwht9FuE5A",
+          "channel_name": "Fireship",
+          "recent_activity": "2026-03-18T14:00:00Z"
+        }
+      ],
+      "domain_tags": [
+        null
+      ],
+      "provenance_source": "manual_seed"
+    },
+    {
+      "topic_id": "oracle6-00000000-0000-0000-0000-000000000004",
+      "topic_name": "Sam Altman predicts 'one-person billion-dollar company' within 2 years",
+      "confidence_score": 88,
+      "keyword_cluster": [
+        "Sam Altman",
+        "one person company",
+        "billion dollar",
+        "AI company",
+        "solopreneur",
+        "founder",
+        "future of work",
+        "AI capability"
+      ],
+      "top_speakers": [
+        {
+          "name": "Sam Altman",
+          "handle": "@sama",
+          "authority_score": 95
+        },
+        {
+          "name": "Garry Tan",
+          "handle": "@garrytan",
+          "authority_score": 80
+        }
+      ],
+      "relevant_channels": [
+        {
+          "platform": "youtube",
+          "channel_id": "UCnUYZLuoy1rq1aVMwx4piYg",
+          "channel_name": "Y Combinator",
+          "recent_activity": "2026-03-13T19:00:00Z"
+        },
+        {
+          "platform": "podcast",
+          "channel_id": "all-in-podcast",
+          "channel_name": "All-In Podcast",
+          "recent_activity": "2026-03-14T17:00:00Z"
+        }
+      ],
+      "domain_tags": [
+        null
+      ],
+      "provenance_source": "manual_seed"
+    },
+    {
+      "topic_id": "oracle6-00000000-0000-0000-0000-000000000007",
+      "topic_name": "AI replacing junior developers — the great skills debate",
+      "confidence_score": 86,
+      "keyword_cluster": [
+        "AI replacing developers",
+        "junior developer",
+        "tech hiring",
+        "career in tech",
+        "AI coding",
+        "software engineering future",
+        "layoffs tech"
+      ],
+      "top_speakers": [
+        {
+          "name": "Pieter Levels",
+          "handle": "@levelsio",
+          "authority_score": 84
+        },
+        {
+          "name": "DHH",
+          "handle": "@dhh",
+          "authority_score": 82
+        }
+      ],
+      "relevant_channels": [
+        {
+          "platform": "youtube",
+          "channel_id": "UCsBjURrPoezykLs9EqgamOA",
+          "channel_name": "Fireship",
+          "recent_activity": "2026-03-19T16:00:00Z"
+        }
+      ],
+      "domain_tags": [
+        null
+      ],
+      "provenance_source": "manual_seed"
+    },
+    {
+      "topic_id": "oracle6-00000000-0000-0000-0000-000000000002",
+      "topic_name": "Agent-to-Agent payments — x402 protocol and the PayAI moment",
+      "confidence_score": 85,
+      "keyword_cluster": [
+        "x402",
+        "PayAI",
+        "agent payments",
+        "HTTP 402",
+        "machine payments",
+        "agent wallet",
+        "Coinbase",
+        "autonomous transactions"
+      ],
+      "top_speakers": [
+        {
+          "name": "Jesse Pollak",
+          "handle": "@jessepollak",
+          "authority_score": 90
+        },
+        {
+          "name": "Erik Voorhees",
+          "handle": "@ErikVoorhees",
+          "authority_score": 78
+        }
+      ],
+      "relevant_channels": [
+        {
+          "platform": "x_spaces",
+          "channel_id": "space-agent-payments-debate",
+          "channel_name": "Agent Payments Debate",
+          "recent_activity": "2026-03-13T21:00:00Z"
+        },
+        {
+          "platform": "youtube",
+          "channel_id": "UCBcRF18a7Qf58cCRy5xuWwQ",
+          "channel_name": "Bankless",
+          "recent_activity": "2026-03-12T16:00:00Z"
+        }
+      ],
+      "domain_tags": [
+        null
+      ],
+      "provenance_source": "manual_seed"
+    },
+    {
+      "topic_id": "oracle6-00000000-0000-0000-0000-000000000009",
+      "topic_name": "Elon Musk's Grok 3 goes open — what it means for the AI arms race",
+      "confidence_score": 84,
+      "keyword_cluster": [
+        "Grok 3",
+        "xAI",
+        "Elon Musk",
+        "open source",
+        "AI competition",
+        "model weights",
+        "fine tuning",
+        "AI democratization"
+      ],
+      "top_speakers": [
+        {
+          "name": "Elon Musk",
+          "handle": "@elonmusk",
+          "authority_score": 96
+        },
+        {
+          "name": "Jim Fan",
+          "handle": "@DrJimFan",
+          "authority_score": 85
+        }
+      ],
+      "relevant_channels": [
+        {
+          "platform": "youtube",
+          "channel_id": "UCZHmQk67mSJgfCCTn7xBfew",
+          "channel_name": "MKBHD",
+          "recent_activity": "2026-03-18T18:00:00Z"
+        }
+      ],
+      "domain_tags": [
+        null
+      ],
+      "provenance_source": "manual_seed"
+    },
+    {
+      "topic_id": "oracle6-00000000-0000-0000-0000-000000000014",
+      "topic_name": "Apple Intelligence 2.0 — Siri finally gets a brain with on-device LLM",
+      "confidence_score": 83,
+      "keyword_cluster": [
+        "Apple Intelligence",
+        "Siri upgrade",
+        "on-device AI",
+        "Apple LLM",
+        "privacy AI",
+        "WWDC",
+        "iOS AI",
+        "edge computing"
+      ],
+      "top_speakers": [
+        {
+          "name": "Mark Gurman",
+          "handle": "@markgurman",
+          "authority_score": 88
+        },
+        {
+          "name": "Ben Thompson",
+          "handle": "@benthompson",
+          "authority_score": 86
+        }
+      ],
+      "relevant_channels": [
+        {
+          "platform": "youtube",
+          "channel_id": "UCZHmQk67mSJgfCCTn7xBfew",
+          "channel_name": "MKBHD",
+          "recent_activity": "2026-03-20T10:00:00Z"
+        }
+      ],
+      "domain_tags": [
+        null
+      ],
+      "provenance_source": "manual_seed"
+    },
+    {
+      "topic_id": "oracle6-00000000-0000-0000-0000-000000000008",
+      "topic_name": "AI voice cloning ethics — deepfake scams hit $25B losses globally",
+      "confidence_score": 82,
+      "keyword_cluster": [
+        "voice cloning",
+        "deepfake",
+        "AI fraud",
+        "voice AI",
+        "scam prevention",
+        "ElevenLabs",
+        "AI safety",
+        "identity theft"
+      ],
+      "top_speakers": [
+        {
+          "name": "Lex Fridman",
+          "handle": "@lexfridman",
+          "authority_score": 88
+        },
+        {
+          "name": "Mira Murati",
+          "handle": "@maboroshi",
+          "authority_score": 80
+        }
+      ],
+      "relevant_channels": [
+        {
+          "platform": "youtube",
+          "channel_id": "UCSHZKyawb77ixDdsGog4iWA",
+          "channel_name": "Lex Fridman",
+          "recent_activity": "2026-03-17T20:00:00Z"
+        }
+      ],
+      "domain_tags": [
+        null
+      ],
+      "provenance_source": "manual_seed"
+    },
+    {
+      "topic_id": "oracle6-00000000-0000-0000-0000-000000000010",
+      "topic_name": "AI-powered robotics breakthrough — Figure 02 and Tesla Optimus updates",
+      "confidence_score": 80,
+      "keyword_cluster": [
+        "humanoid robot",
+        "Figure 02",
+        "Tesla Optimus",
+        "robotics AI",
+        "embodied AI",
+        "warehouse automation",
+        "physical AI"
+      ],
+      "top_speakers": [
+        {
+          "name": "Brett Adcock",
+          "handle": "@adaborobot",
+          "authority_score": 78
+        },
+        {
+          "name": "Jensen Huang",
+          "handle": "@nvidia",
+          "authority_score": 90
+        }
+      ],
+      "relevant_channels": [
+        {
+          "platform": "youtube",
+          "channel_id": "UCvjgXvBlbQiAffgfV1vUDCg",
+          "channel_name": "Two Minute Papers",
+          "recent_activity": "2026-03-19T12:00:00Z"
+        }
+      ],
+      "domain_tags": [
+        null
+      ],
+      "provenance_source": "manual_seed"
+    },
+    {
+      "topic_id": "oracle6-00000000-0000-0000-0000-000000000015",
+      "topic_name": "AI agents are hallucinating financial data — Wall Street's trust problem",
+      "confidence_score": 79,
+      "keyword_cluster": [
+        "AI hallucination",
+        "AI finance",
+        "trading AI",
+        "Wall Street AI",
+        "AI reliability",
+        "hallucinated data",
+        "AI risk",
+        "algorithmic trading"
+      ],
+      "top_speakers": [
+        {
+          "name": "Chamath Palihapitiya",
+          "handle": "@chamath",
+          "authority_score": 82
+        },
+        {
+          "name": "Patrick Boyle",
+          "handle": "@PBoyle11",
+          "authority_score": 78
+        }
+      ],
+      "relevant_channels": [
+        {
+          "platform": "youtube",
+          "channel_id": "UCWN3xxRkmTPmbKwht9FuE5A",
+          "channel_name": "Fireship",
+          "recent_activity": "2026-03-19T20:00:00Z"
+        }
+      ],
+      "domain_tags": [
+        null
+      ],
+      "provenance_source": "manual_seed"
+    },
+    {
+      "topic_id": "oracle6-00000000-0000-0000-0000-000000000003",
+      "topic_name": "Vibe coding backlash — 'AI-generated code is a ticking time bomb'",
+      "confidence_score": 78,
+      "keyword_cluster": [
+        "vibe coding",
+        "AI code quality",
+        "technical debt",
+        "code review",
+        "AI coding tools",
+        "Copilot",
+        "agentic coding",
+        "software quality"
+      ],
+      "top_speakers": [
+        {
+          "name": "ThePrimeagen",
+          "handle": "@ThePrimeagen",
+          "authority_score": 85
+        },
+        {
+          "name": "Kelsey Hightower",
+          "handle": "@kelseyhightower",
+          "authority_score": 82
+        }
+      ],
+      "relevant_channels": [
+        {
+          "platform": "youtube",
+          "channel_id": "UC2Xd-TjJByJyK2w1zNwY0zQ",
+          "channel_name": "ThePrimeTime",
+          "recent_activity": "2026-03-14T22:00:00Z"
+        },
+        {
+          "platform": "reddit",
+          "channel_id": "r/programming",
+          "channel_name": "r/programming",
+          "recent_activity": "2026-03-15T03:00:00Z"
+        }
+      ],
+      "domain_tags": [
+        null
+      ],
+      "provenance_source": "manual_seed"
+    },
+    {
+      "topic_id": "oracle6-00000000-0000-0000-0000-000000000011",
+      "topic_name": "The AI energy crisis — data centers consuming more power than small countries",
+      "confidence_score": 76,
+      "keyword_cluster": [
+        "AI energy",
+        "data center power",
+        "nuclear AI",
+        "sustainability",
+        "GPU power consumption",
+        "carbon footprint AI",
+        "green AI"
+      ],
+      "top_speakers": [
+        {
+          "name": "Bill Gates",
+          "handle": "@BillGates",
+          "authority_score": 90
+        },
+        {
+          "name": "Dario Amodei",
+          "handle": "@DarioAmodei",
+          "authority_score": 85
+        }
+      ],
+      "relevant_channels": [
+        {
+          "platform": "youtube",
+          "channel_id": "UCHnyfMqiRRG1u-2MsSQLbXA",
+          "channel_name": "Veritasium",
+          "recent_activity": "2026-03-17T15:00:00Z"
+        }
+      ],
+      "domain_tags": [
+        null
+      ],
+      "provenance_source": "manual_seed"
+    },
+    {
+      "topic_id": "oracle6-00000000-0000-0000-0000-000000000012",
+      "topic_name": "AI tutoring revolution — Khan Academy, Duolingo, and personalized learning at scale",
+      "confidence_score": 74,
+      "keyword_cluster": [
+        "AI tutor",
+        "Khan Academy",
+        "Khanmigo",
+        "Duolingo AI",
+        "personalized learning",
+        "edtech AI",
+        "education disruption"
+      ],
+      "top_speakers": [
+        {
+          "name": "Sal Khan",
+          "handle": "@saborohan",
+          "authority_score": 86
+        },
+        {
+          "name": "Ethan Mollick",
+          "handle": "@emollick",
+          "authority_score": 82
+        }
+      ],
+      "relevant_channels": [
+        {
+          "platform": "youtube",
+          "channel_id": "UC4a-Gbdw7vOaccHmFo40b9g",
+          "channel_name": "Khan Academy",
+          "recent_activity": "2026-03-18T10:00:00Z"
+        }
+      ],
+      "domain_tags": [
+        null
+      ],
+      "provenance_source": "manual_seed"
+    },
+    {
+      "topic_id": "oracle6-00000000-0000-0000-0000-000000000005",
+      "topic_name": "EU AI Act enforcement begins — agent registration requirements",
+      "confidence_score": 72,
+      "keyword_cluster": [
+        "EU AI Act",
+        "AI regulation",
+        "agent registration",
+        "autonomous systems regulation",
+        "compliance",
+        "AI governance",
+        "European Commission"
+      ],
+      "top_speakers": [
+        {
+          "name": "Margrethe Vestager",
+          "handle": "@vestaboransen",
+          "authority_score": 70
+        },
+        {
+          "name": "Yann LeCun",
+          "handle": "@ylecun",
+          "authority_score": 88
+        }
+      ],
+      "relevant_channels": [
+        {
+          "platform": "youtube",
+          "channel_id": "UC0RhatS1pyxInC00YKjjBqQ",
+          "channel_name": "TechCrunch",
+          "recent_activity": "2026-03-14T15:00:00Z"
+        },
+        {
+          "platform": "hacker_news",
+          "channel_id": "hn-front-page",
+          "channel_name": "Hacker News",
+          "recent_activity": "2026-03-15T02:00:00Z"
+        }
+      ],
+      "domain_tags": [
+        null
+      ],
+      "provenance_source": "manual_seed"
+    },
+    {
+      "topic_id": "oracle6-00000000-0000-0000-0000-000000000013",
+      "topic_name": "AI music generation lawsuit wave — record labels vs Suno and Udio",
+      "confidence_score": 70,
+      "keyword_cluster": [
+        "AI music",
+        "Suno",
+        "Udio",
+        "copyright AI",
+        "music generation",
+        "RIAA lawsuit",
+        "creative AI",
+        "fair use"
+      ],
+      "top_speakers": [
+        {
+          "name": "Rick Beato",
+          "handle": "@rickbeato1",
+          "authority_score": 80
+        },
+        {
+          "name": "Grimes",
+          "handle": "@Grimezsz",
+          "authority_score": 75
+        }
+      ],
+      "relevant_channels": [
+        {
+          "platform": "youtube",
+          "channel_id": "UCJquYOG5EL82sKTfH9aMA9Q",
+          "channel_name": "Rick Beato",
+          "recent_activity": "2026-03-19T14:00:00Z"
+        }
+      ],
+      "domain_tags": [
+        null
+      ],
+      "provenance_source": "manual_seed"
+    }
+  ]
+}
