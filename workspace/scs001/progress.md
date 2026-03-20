@@ -1108,3 +1108,13 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (surgical edits to 2 files)
 - Issues: None
 - Timestamp: 2026-03-21T05:42:00Z
+
+## Sprint 598 — INFRA
+- Status: PASS
+- Commit: 7a1699d
+- Files created: scripts/scs001/validate-video-playback.ts, workspace/sprints/sprint-598.json
+- Test: ffprobe validation — PASS (6/6 videos playable, 1080x1920, 24-28s, audio)
+- Pipeline: Video playback audit script validates captioned mp4s via ffprobe
+- Swarm used: no (single file)
+- Issues: None
+- Timestamp: 2026-03-21T05:50:00Z

@@ -1311,7 +1311,7 @@
       "sprint": 598,
       "title": "INFRA — Pipeline output validator cron (verify captioned videos are playable)",
       "block": "INFRA",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "Pipeline produces videos but no automated check verifies they are playable. Add ffprobe validation step."
     },
