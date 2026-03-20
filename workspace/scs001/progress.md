@@ -3519,3 +3519,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (surgical edits across 3 code points)
 - Issues: None.
 - Timestamp: 2026-03-20T23:00:00Z
+
+## Sprint 405 — /abresults — View-Based A/B Analysis (Direct Write)
+- Status: PASS
+- Commit: 35b79a5
+- Files created: workspace/sprints/sprint-405.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 405-01: Added /abresults command. Analyzes manual-posts.jsonl with Sprint 404 enriched metadata. Shows speaker/hook/topic rankings by avg views with medal emojis. Highlights best single post. Gracefully handles 0 posts and 0 views scenarios.
+- Validation: tsc --noEmit PASS
+- Swarm used: no (FP-007 file >5000 lines)
+- Issues: None.
+- Timestamp: 2026-03-20T23:10:00Z
