@@ -2737,3 +2737,17 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (FP-007, multi-file)
 - Issues: None.
 - Timestamp: 2026-03-20T05:25:00Z
+
+## Sprint 333 — Content Leaderboard (Direct Write)
+- Status: PASS
+- Commit: 2660a1f
+- Files created: scripts/scs001/content-leaderboard.ts, scripts/scs001/validate-leaderboard.ts, workspace/sprints/sprint-333.json
+- Files modified: agents/telegram-bot/commands.ts, agents/telegram-bot/index.ts
+- Tasks completed:
+  - 333-01: content-leaderboard.ts — analyzes experiments.jsonl, deduplicates by clip_id, ranks speakers (9) and hook formulas (5) by avg viral score. Top speaker: Popular Mechanics (70%). Outputs reports/content-leaderboard.json.
+  - 333-02: /leaderboard Telegram command — shows top 7 speakers with medals, top 5 hooks, top 5 individual videos. QC rate per speaker.
+  - 333-03: validate-leaderboard.ts — 26/26 tests pass.
+- Validation: 26/26 PASS
+- Swarm used: no (FP-007, multi-file)
+- Issues: None.
+- Timestamp: 2026-03-20T05:35:00Z
