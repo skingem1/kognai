@@ -102,6 +102,17 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - **Env:** ANTHROPIC_API_KEY, TELEGRAM_BOT_TOKEN, SUPABASE keys SET
 - **Missing:** TIKTOK_ACCESS_TOKEN (human action required)
 
+## Sprint 469 — QUALITY
+- Status: PASS
+- Commit: dbac1e9
+- Files created: scripts/scs001/ab-test-assign.ts, scripts/scs001/ab-test-analyze.ts, workspace/ab-tests/config.json, workspace/ab-tests/assignments.jsonl, workspace/sprints/sprint-469.json
+- Files modified: none
+- Test: manual validation — TS syntax clean, config JSON valid
+- Pipeline: A/B test framework complete (assignment engine + analysis + config)
+- Swarm used: no (multi-file framework)
+- Issues: none
+- Timestamp: 2026-03-20T16:30:00Z
+
 ## Sprint 467 — INFRA
 - Status: PASS
 - Commit: 104fe95

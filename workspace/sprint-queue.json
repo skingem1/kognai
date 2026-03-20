@@ -262,7 +262,7 @@
       "sprint": 469,
       "title": "QUALITY — A/B test framework for video formats",
       "block": "VIDEO-QUALITY-V2",
-      "status": "pending",
+      "status": "done",
       "priority": "low",
       "rationale": "Track which template (split-screen, reaction, greenscreen) + which hook formula + which music style performs best. Store A/B assignments in workspace/ab-tests/. After 30 posts, analyze: which format gets most views? Feed winning format back into pipeline as default."
     },
