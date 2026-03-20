@@ -2914,3 +2914,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (surgical bot edit)
 - Issues: None.
 - Timestamp: 2026-03-20T05:35:00Z
+
+## Sprint 347 — Achiri Anthropic Timeout Fix (Direct Write)
+- Status: PASS
+- Commit: ec9246a
+- Files created: workspace/sprints/sprint-347.json
+- Files modified: agents/achiri/index.ts
+- Tasks completed:
+  - 347-01: Wrapped routeCall() in Promise.race with 45s timeout. Prevents undici UND_ERR_HEADERS_TIMEOUT by racing against explicit timer. Timeout returns Darija-friendly retry message ("Serveur chwaya b6i2 tawa"). Error handler differentiates timeout vs generic errors in console.error logging.
+- Validation: npx tsc --noEmit PASS (pre-existing errors in derja-profiler.ts and memory-search.ts unrelated)
+- Swarm used: no (surgical Achiri edit)
+- Issues: Pre-existing TS errors in derja-profiler.ts (regex flag) and memory-search.ts (Set iteration) — not related to this fix.
+- Timestamp: 2026-03-20T05:45:00Z
