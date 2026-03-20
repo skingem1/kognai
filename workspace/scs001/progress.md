@@ -2975,3 +2975,16 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (surgical bot edit)
 - Issues: None.
 - Timestamp: 2026-03-20T07:15:00Z
+
+## Sprint 352 — Achiri Telegram Bot (Direct Write)
+- Status: PASS
+- Commit: fdaf7c9
+- Files created: agents/achiri/telegram-bot.ts, workspace/sprints/sprint-352.json
+- Files modified: ecosystem.config.js
+- Tasks completed:
+  - 352-01: Achiri Telegram bot — polls for messages, routes to AchiriConversationHandler.chat(). Features: /start welcome (bilingual), /help, /clear, whitelist access control (ACHIRI_ALLOWED_CHAT_IDS), waitlist auto-add, typing indicator, daily limit handling, error recovery with Darija message, LRU handler cache (200 max).
+  - 352-02: Added achiri-telegram PM2 config to ecosystem.config.js with proper env vars.
+- Validation: ts-node transpile-only import PASS (graceful exit when token not set)
+- Swarm used: no (new file + multi-file changes)
+- Issues: ACHIRI_TELEGRAM_BOT_TOKEN needs to be created via BotFather and added to .env.
+- Timestamp: 2026-03-20T07:30:00Z
