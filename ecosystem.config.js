@@ -774,6 +774,7 @@ module.exports = {
         OLLAMA_HOST: "http://127.0.0.1:11434",
         SCS_MODE: "live",
         SCS_CLIPS_DIR: "/Users/tarekmnif/kognai/clips",
+        ELEVENLABS_API_KEY: process.env.ELEVENLABS_API_KEY || "",
         TIKTOK_ACCESS_TOKEN: process.env.TIKTOK_ACCESS_TOKEN || "",
         YOUTUBE_API_KEY: process.env.YOUTUBE_API_KEY || "",
         LLM_REWRITE: "1",

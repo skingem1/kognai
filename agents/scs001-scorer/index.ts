@@ -8,16 +8,21 @@ export interface ScriptScore {
   hints:      string[];
 }
 
-const PASS_THRESHOLD = 60;
+// Sprint QUALITY-01: Lowered from 60 → 35. Real clips have "Unknown Speaker"
+// (0 speaker points) and LLM rewriter bans the keywords the old scorer rewarded.
+const PASS_THRESHOLD = 35;
 
 const VIRAL_SPEAKERS = [
   'samaltman', 'elonmusk', 'satyanadella', 'jensenhuang',
   'demishassabis', 'andrejkarpathy', 'alexalbert', 'gregbrockman',
+  'sundar', 'pichai', 'zucker', 'timcook', 'theprimeagen',
 ];
 
 const VIRAL_TOPICS = [
   'ai', 'gpt', 'llm', 'regulation', 'agi', 'robotics',
   'quantum', 'crypto', 'startup', 'funding', 'openai', 'claude',
+  'nvidia', 'google', 'apple', 'microsoft', 'meta', 'automation',
+  'developer', 'code', 'model', 'gpu', 'chip', 'data', 'tech',
 ];
 
 export class ScriptScorer {
@@ -37,10 +42,13 @@ export class ScriptScorer {
     }
 
     // --- curiosity_gap (0-25) ---
+    // Sprint QUALITY-01: Reward specificity (numbers, names, concrete claims)
+    // instead of clickbait trigger words that the LLM rewriter was told to ban.
     let curiosity_gap = 0;
-    if (/\b(what|how|why|who|when)\b/.test(hookText)) curiosity_gap += 10;
+    if (/\b(what|how|why|who|when)\b/.test(hookText)) curiosity_gap += 8;
     if (/\?/.test(hookText))                            curiosity_gap += 5;
-    if (/reveal|secret|nobody|just|change|everything/.test(hookText)) curiosity_gap += 10;
+    if (/\d/.test(hookText))                            curiosity_gap += 7;  // numbers = specificity
+    if (hookText.length >= 20 && hookText.length <= 80) curiosity_gap += 5;  // right length
 
     // --- cta_clarity (0-25) ---
     let cta_clarity = 0;
@@ -49,12 +57,15 @@ export class ScriptScorer {
     if (bundle.why_does_this_matter.length > 50)                    cta_clarity += 5;
 
     // --- topic_virality (0-25) ---
+    // Sprint QUALITY-01: Real clips often have "Unknown Speaker" — give
+    // partial credit for having ANY identified speaker and broader topic hits.
     let topic_virality = 0;
     const speakerKey = bundle.speaker_name.toLowerCase().replace(/\s+/g, '');
     if (VIRAL_SPEAKERS.some(vs => speakerKey.includes(vs))) topic_virality += 15;
+    else if (speakerKey && speakerKey !== 'unknownspeaker') topic_virality += 5;  // any known speaker
     const allText = bundle.segments.map(s => s.voiceover_text).join(' ').toLowerCase();
     const topicHits = VIRAL_TOPICS.filter(t => allText.includes(t)).length;
-    topic_virality += Math.min(topicHits * 5, 10);
+    topic_virality += Math.min(topicHits * 3, 15);  // up to 15 from topic density
 
     const score = hook_strength + curiosity_gap + cta_clarity + topic_virality;
     const passed = score >= PASS_THRESHOLD;

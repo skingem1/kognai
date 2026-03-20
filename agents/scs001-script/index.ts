@@ -155,7 +155,7 @@ function buildSegments(brief: InsightBrief, useLoop: boolean, durConfig?: Durati
       end_s:            t.clip[1],
       voiceover_text:   '',  // original audio plays
       visual_directive: 'source_clip',
-      caption_text:     '',  // no caption during clip
+      caption_text:     '👀 Watch this',  // short visual cue — not empty dead air
     },
     {
       segment_name:     'commentary',
@@ -180,9 +180,9 @@ function buildSegments(brief: InsightBrief, useLoop: boolean, durConfig?: Durati
       segment_name:     'loop',
       start_s:          t.loop[0],
       end_s:            t.loop[1],
-      voiceover_text:   hookText,
+      voiceover_text:   'Wait — did you catch that?',
       visual_directive: 'title_card',
-      caption_text:     'Watch again? ' + hookText.substring(0, 40),
+      caption_text:     '🔄 Wait — did you catch that?',
     });
   }
 
@@ -192,7 +192,8 @@ function buildSegments(brief: InsightBrief, useLoop: boolean, durConfig?: Durati
 // Sprint 444: Reaction template — clip first, then react
 // TikTok native: viewers see the interesting clip immediately, hook is visual
 function buildReactionSegments(brief: InsightBrief): ScriptSegment[] {
-  const hookText = applyHookTemplate(brief.hook.formula, brief.hook.text);
+  // Use hook.text directly — same fix as buildSegments() (see comment at line 125)
+  const hookText = brief.hook.text;
   return [
     {
       segment_name:     'clip',
@@ -200,7 +201,7 @@ function buildReactionSegments(brief: InsightBrief): ScriptSegment[] {
       end_s:            8,
       voiceover_text:   '',  // original audio plays
       visual_directive: 'source_clip',
-      caption_text:     '',
+      caption_text:     '👀 Watch this',
     },
     {
       segment_name:     'reaction',
@@ -232,7 +233,8 @@ function buildReactionSegments(brief: InsightBrief): ScriptSegment[] {
 // Sprint 444: Listicle template — numbered points, fast pacing
 // TikTok native: "3 things about X" format drives completion rate
 function buildListicleSegments(brief: InsightBrief): ScriptSegment[] {
-  const hookText = applyHookTemplate(brief.hook.formula, brief.hook.text);
+  // Use hook.text directly — same fix as buildSegments() (see comment at line 125)
+  const hookText = brief.hook.text;
   const points = [
     brief.pre_clip_commentary,
     brief.insight_statement,

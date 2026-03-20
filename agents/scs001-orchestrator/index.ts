@@ -24,6 +24,9 @@ import { DedupLedger, LedgerEntry } from './dedup-ledger';
 import { ViralTikTokDownloader, isViralDownloaderAvailable } from '../scs001-viral-downloader/index';
 import { generateAvatarSegments, isAvatarAvailable, type AvatarResult } from '../../scripts/scs001/avatar-presenter';
 import { generateCaptions as generateAnimatedCaptions } from '../../scripts/scs001/caption-overlay';
+// Sprint QUALITY-01: TTS voiceover + audio mix
+import { generateVoiceover, type VoiceoverResult } from '../../scripts/scs001/tts-voiceover';
+import { mixAudio, type MixResult } from '../../scripts/scs001/audio-mixer';
 import { existsSync, readFileSync, writeFileSync, readdirSync } from 'fs';
 import { resolve, join, basename } from 'path';
 
@@ -285,6 +288,48 @@ export class SCS001Orchestrator {
           }
         }
         return avatarCount;
+      }));
+    }
+
+    // --- Stage 6.8: TTS Voiceover + Audio Mix ---
+    // Sprint QUALITY-01: Generate voiceover audio for each bundle, then mix into
+    // the silent video produced by EditingAgent. Uses ElevenLabs (cloud, ~$0.15/video)
+    // with macOS `say` fallback ($0). Updates editedVideos[].file_path to the mixed
+    // output so downstream stages (caption, QC, publish) use audio-included video.
+    if (editedVideos.length > 0 && bundles.length > 0) {
+      stages.push(await this.runStage('6.8-tts-mix', 'TTS+AudioMix', async () => {
+        const voiceoverDir = this.workDir + '/voiceover-audio';
+        const mixedDir = this.workDir + '/mixed-output';
+        let mixedCount = 0;
+        for (let i = 0; i < editedVideos.length; i++) {
+          const edited = editedVideos[i];
+          // Find the matching bundle for this video
+          const bundle = bundles.find(b => b.insight_id === edited.insight_id);
+          if (!bundle) continue;
+          try {
+            // 1. Generate per-segment voiceover MP3s
+            const voResult = await generateVoiceover(bundle, voiceoverDir, false);
+            if (voResult.segments.length === 0) {
+              console.warn(`[TTS] No voiceover segments for ${bundle.script_id} — skipping mix`);
+              continue;
+            }
+            // 2. Mix voiceover audio into the silent video
+            const mixResult = mixAudio({
+              voiceover: voResult,
+              bundle,
+              videoPath: edited.file_path,
+              outputDir: mixedDir,
+            }, false);
+            // 3. Update edited video to point at mixed output
+            edited.file_path = mixResult.output_path;
+            edited.has_voiceover = true;
+            mixedCount++;
+            console.log(`[TTS+Mix] ✓ ${bundle.script_id}: ${voResult.segments.length} segments, cost=$${voResult.total_cost_usd.toFixed(4)}`);
+          } catch (err: any) {
+            console.warn(`[TTS+Mix] ✗ ${bundle.script_id}: ${err.message} — video stays silent`);
+          }
+        }
+        return mixedCount;
       }));
     }
 

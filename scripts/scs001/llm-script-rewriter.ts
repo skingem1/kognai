@@ -47,38 +47,55 @@ function buildRewritePrompt(ctx: RewriteContext): string {
     .map((s) => `[${s.segment_name}] ${s.voiceover_text || "(no voiceover)"}`)
     .join("\n");
 
-  return `You are a TikTok content specialist rewriting a video script for maximum engagement.
+  return `You are rewriting a short-form video script. Your job: make every line SPECIFIC, CONVERSATIONAL, and worth watching.
 
-ORIGINAL SCRIPT (deterministic template — needs human-like creativity):
+CONTEXT:
 Speaker: ${bundle.speaker_name}
-Hook formula: ${bundle.hook_formula_used}
-Why this matters: ${bundle.why_does_this_matter}
+Topic: ${bundle.why_does_this_matter}
 ${niche ? `Niche: ${niche}` : ""}
-${target_audience ? `Target audience: ${target_audience}` : ""}
+${target_audience ? `Audience: ${target_audience}` : ""}
 
-SEGMENTS:
+CURRENT SCRIPT (template — needs to sound like a real person talking):
 ${segmentText}
 
-${transcript ? `ORIGINAL AUDIO TRANSCRIPT (the actual words from the viral clip):
+${transcript ? `TRANSCRIPT OF THE ACTUAL CLIP:
 ${transcript}
 
-Use the transcript to inform your rewrite — reference specific phrases, statistics, or claims the speaker actually said. This makes the script authentic.` : ""}
+IMPORTANT: Use real details from the transcript — names, numbers, specific claims. Viewers can tell when captions match what they hear.` : ""}
 
-REWRITE RULES:
-1. Hook (0-2s): Must grab attention in first 1.5 seconds. Use a pattern interrupt.
-2. Context (2-5s): Setup what the viewer is about to see. Build anticipation.
-3. Clip segment: Do NOT rewrite — original audio plays.
-4. Commentary (12-18s): React to what was just shown. Be specific, not generic.
-5. Insight (18-24s): The "so what" — why should the viewer care?
-6. Loop (if present): Callback to hook for re-watch.
-7. Keep the "why_does_this_matter" content — you may rephrase but NOT remove the core message.
-8. Captions must be readable in 2 seconds per line. Short, punchy.
-9. Do NOT use emojis in voiceover text. Captions may use 1-2 relevant emojis max.
+REWRITE REQUIREMENTS — READ CAREFULLY:
 
-Respond with a JSON array of segments. Each segment:
-{"segment_name":"hook","voiceover_text":"...","caption_text":"...","visual_directive":"..."}
+BANNED PHRASES (instant rejection if you use these):
+- "this changes everything"
+- "you won't believe"
+- "nobody is talking about"
+- "here's the truth"
+- "most people don't know"
+- "you need to know this"
+- "prepare to be shocked"
+- "you're NOT ready"
+- Any variation of generic clickbait filler
 
-Return ONLY the JSON array, no explanation.`;
+WHAT GOOD CONTENT LOOKS LIKE:
+- Hook: One bold SPECIFIC claim. "NVIDIA just made their GPUs 3x faster with one firmware update" NOT "What NVIDIA just did will shock you"
+- Context: Set up the clip with ONE factual sentence. Say WHO said WHAT.
+- Commentary: React to a SPECIFIC moment. "He just admitted the $500 GPU can't run this at 60fps" NOT "This confirms what insiders have been warning about"
+- Insight: One concrete takeaway with a real number or consequence. "That means your $2000 gaming PC is obsolete by December" NOT "The implications will reshape the field"
+- Caption text: MAX 8 words per line. Punchy. Use 1 emoji per caption max.
+
+SEGMENT RULES:
+- hook: 1 sentence, under 15 words. A specific claim or question.
+- context: 1 sentence, under 20 words. Who + what they said/did.
+- clip: Keep caption_text as "👀 Watch this" — do NOT change.
+- commentary: 1-2 sentences reacting to something SPECIFIC.
+- insight: 1 sentence with a real consequence (money, time, career impact).
+- loop: Keep as-is if present.
+- cta: Keep as-is if present.
+- voiceover_text: Natural speech. No emojis. Contractions OK.
+- caption_text: Short version of voiceover. 1 emoji max per line.
+
+OUTPUT: JSON array only. No markdown, no explanation.
+[{"segment_name":"hook","voiceover_text":"...","caption_text":"...","visual_directive":"..."},...]`;
 }
 
 // ── LLM Backends ───────────────────────────────────────
