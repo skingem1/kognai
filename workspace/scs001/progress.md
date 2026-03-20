@@ -3885,3 +3885,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (single-command enhancement)
 - Issues: None.
 - Timestamp: 2026-03-20T18:20:00Z
+
+## Sprint 435 — One-Tap Posting Buttons (Direct Write)
+- Status: PASS
+- Commit: 574345b
+- Files created: workspace/sprints/sprint-435.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 435-01: Added sendVideoWithButtons() function for multipart video upload with inline keyboard. Updated /deliver to attach "✅ Posted" + "⏭️ Next Video" buttons on each video. Updated /pickup to use buttons directly on video (was separate message). Updated /session to show "✅ Done" + "🛑 End Session" buttons. Added "posted:" callback handler to auto-record posts via button tap.
+- Validation: tsc --noEmit PASS
+- Swarm used: no (multi-function modification across large file)
+- Issues: None.
+- Timestamp: 2026-03-20T20:30:00Z
