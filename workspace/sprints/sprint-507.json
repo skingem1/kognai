@@ -1,0 +1,44 @@
+{
+  "sprint_id": "sprint-507",
+  "title": "PIPELINE — Activate essential PM2 crons (daily-digest, pipeline-watchdog, gate-regen)",
+  "description": "Most PM2 crons are stopped. Activate essential processes: daily-digest, gate-regen, pipeline-watchdog, brief-regen, scs001-pipeline. Verify they start and stay alive.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "507-01",
+      "title": "Start essential PM2 crons via pm2-startup.ts --only essential",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-507",
+      "deliverables": { "code": [], "tests": [], "docs": [] }
+    },
+    {
+      "id": "507-02",
+      "title": "Verify all essential crons show online status",
+      "type": "validation",
+      "task_type": "test",
+      "task_target": "local",
+      "agent": "supervisor",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-507",
+      "deliverables": { "code": [], "tests": [], "docs": [] }
+    },
+    {
+      "id": "507-03",
+      "title": "Reset stripe webhook restart counter",
+      "type": "fix",
+      "task_type": "ops",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-507",
+      "deliverables": { "code": [], "tests": [], "docs": [] }
+    }
+  ]
+}
