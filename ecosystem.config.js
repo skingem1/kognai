@@ -897,6 +897,64 @@ module.exports = {
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
     {
+      // Sprint 338: Auto-deliver morning — sends next video + caption at 07:30
+      // Replaces text-only nudges with actual video file delivery.
+      // To start: pm2 start ecosystem.config.js --only kognai-auto-deliver-morning
+      name: "kognai-auto-deliver-morning",
+      script: "scripts/scs001/posting-auto-deliver.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: false,
+      watch: false,
+      cron_restart: "30 7 * * *",
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/auto-deliver-morning-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/auto-deliver-morning-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
+    {
+      // Sprint 338: Auto-deliver noon — sends next video + caption at 12:00
+      // To start: pm2 start ecosystem.config.js --only kognai-auto-deliver-noon
+      name: "kognai-auto-deliver-noon",
+      script: "scripts/scs001/posting-auto-deliver.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: false,
+      watch: false,
+      cron_restart: "0 12 * * *",
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/auto-deliver-noon-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/auto-deliver-noon-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
+    {
+      // Sprint 338: Auto-deliver evening — sends next video + caption at 18:00
+      // To start: pm2 start ecosystem.config.js --only kognai-auto-deliver-evening
+      name: "kognai-auto-deliver-evening",
+      script: "scripts/scs001/posting-auto-deliver.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: false,
+      watch: false,
+      cron_restart: "0 18 * * *",
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/auto-deliver-evening-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/auto-deliver-evening-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
+    {
       // Sprint 326: Achiri re-engagement — daily at 15:00 (afternoon in Tunisia)
       // Sends check-in messages to alpha users inactive 3+ days.
       // To start: pm2 start ecosystem.config.js --only achiri-reengage

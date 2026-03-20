@@ -1,0 +1,259 @@
+// Sprint 338 — posting-auto-deliver.ts
+// PM2 cron — auto-sends the NEXT scheduled video + TikTok-ready caption to operator.
+// Runs at 07:30, 12:00, 18:00. Sends the actual mp4 file, not just a text nudge.
+// Tracks what was delivered to avoid duplicates.
+//
+// Usage: npx ts-node scripts/scs001/posting-auto-deliver.ts
+// PM2:   kognai-auto-deliver-morning  (30 7 * * *)
+//        kognai-auto-deliver-noon     (0 12 * * *)
+//        kognai-auto-deliver-evening  (0 18 * * *)
+
+import { readFileSync, writeFileSync, existsSync, readdirSync, appendFileSync } from 'fs';
+import { join, basename } from 'path';
+import * as https from 'https';
+
+const ROOT = join(__dirname, '..', '..');
+
+// Load .env
+try {
+  require('dotenv').config({ path: join(ROOT, '.env') });
+} catch { /* dotenv optional */ }
+
+const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '';
+const CHAT_ID = process.env.OWNER_TELEGRAM_CHAT_ID || '';
+
+if (!BOT_TOKEN || !CHAT_ID) {
+  console.log('[auto-deliver] Missing TELEGRAM_BOT_TOKEN or OWNER_TELEGRAM_CHAT_ID');
+  process.exit(0);
+}
+
+const MANUAL_POSTS_PATH = join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
+const LEDGER_PATH = join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl');
+const EXPERIMENTS_PATH = join(ROOT, 'workspace', 'scs001', 'experiments.jsonl');
+const VIRAL_TOPICS_PATH = join(ROOT, 'workspace', 'scs001', 'viral-topics.json');
+const DELIVERED_LOG = join(ROOT, 'workspace', 'scs001', 'auto-delivered.jsonl');
+const GATE_TARGET = 30;
+const GATE_DATE = new Date('2026-04-07T00:00:00Z');
+
+// ─── Helpers ──────────────────────────────────────────────────────────
+
+function readJsonLines(filePath: string): any[] {
+  if (!existsSync(filePath)) return [];
+  try {
+    return readFileSync(filePath, 'utf-8')
+      .split('\n')
+      .filter(l => l.trim())
+      .map(l => { try { return JSON.parse(l); } catch { return null; } })
+      .filter(Boolean);
+  } catch { return []; }
+}
+
+function findCaptionedMp4(videoId: string): string | null {
+  try {
+    const scsDir = join(ROOT, 'workspace', 'scs001');
+    const runDirs = readdirSync(scsDir).filter(d => d.startsWith('run-'));
+    for (const dir of runDirs) {
+      const p = join(scsDir, dir, 'caption', `${videoId}-captioned.mp4`);
+      if (existsSync(p)) return p;
+    }
+  } catch { /* ignore */ }
+  return null;
+}
+
+function getExperimentData(videoId: string): { speaker: string; hook_formula: string; viral_score: number | null } {
+  const result = { speaker: 'unknown', hook_formula: 'unknown', viral_score: null as number | null };
+  const lines = readJsonLines(EXPERIMENTS_PATH);
+  for (const e of lines) {
+    const id = e.clip_id ?? e.video_id;
+    if (id === videoId) {
+      if (e.speaker) result.speaker = e.speaker;
+      if (e.hook_formula) result.hook_formula = e.hook_formula;
+      if (e.partial_viral_score != null) result.viral_score = e.partial_viral_score;
+    }
+  }
+  return result;
+}
+
+function buildTikTokCaption(videoId: string): string {
+  const exp = getExperimentData(videoId);
+  let topicTags: string[] = [];
+  try {
+    const vt = JSON.parse(readFileSync(VIRAL_TOPICS_PATH, 'utf-8'));
+    topicTags = (vt.topics ?? []).slice(0, 5).map((t: string) => `#${t.replace(/\s+/g, '')}`);
+  } catch { /* fallback */ }
+  const baseTags = ['#fyp', '#viral', '#learnontiktok', '#ai', '#tech'];
+  const tagSet: Record<string, boolean> = {};
+  for (const t of [...topicTags, ...baseTags]) tagSet[t] = true;
+  const allTags = Object.keys(tagSet).slice(0, 8);
+  const lines: string[] = [];
+  if (exp.speaker && exp.speaker !== 'unknown') lines.push(`🎙️ ${exp.speaker}`);
+  if (exp.hook_formula && exp.hook_formula !== 'unknown') lines.push(`Hook: ${exp.hook_formula}`);
+  lines.push('');
+  lines.push(allTags.join(' '));
+  return lines.join('\n');
+}
+
+function sendMessage(text: string): Promise<void> {
+  const payload = JSON.stringify({ chat_id: CHAT_ID, text, parse_mode: 'Markdown' });
+  return new Promise((resolve, reject) => {
+    const req = https.request({
+      hostname: 'api.telegram.org',
+      path: `/bot${BOT_TOKEN}/sendMessage`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(payload) },
+    }, (res) => {
+      let data = '';
+      res.on('data', (c: string) => (data += c));
+      res.on('end', () => {
+        if (res.statusCode === 200) resolve();
+        else reject(new Error(`Telegram ${res.statusCode}: ${data}`));
+      });
+    });
+    req.on('error', reject);
+    req.write(payload);
+    req.end();
+  });
+}
+
+function sendVideoFile(videoPath: string, caption: string): Promise<void> {
+  const boundary = '----TgBotBoundary' + Date.now().toString(16);
+  const filename = basename(videoPath);
+  const fileData = readFileSync(videoPath);
+
+  const parts: Buffer[] = [];
+  parts.push(Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="chat_id"\r\n\r\n${CHAT_ID}\r\n`));
+  parts.push(Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="caption"\r\n\r\n${caption}\r\n`));
+  parts.push(Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="parse_mode"\r\n\r\nMarkdown\r\n`));
+  parts.push(Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="video"; filename="${filename}"\r\nContent-Type: video/mp4\r\n\r\n`));
+  parts.push(fileData);
+  parts.push(Buffer.from(`\r\n--${boundary}--\r\n`));
+
+  const body = Buffer.concat(parts);
+
+  return new Promise((resolve, reject) => {
+    const req = https.request({
+      hostname: 'api.telegram.org',
+      path: `/bot${BOT_TOKEN}/sendVideo`,
+      method: 'POST',
+      headers: { 'Content-Type': `multipart/form-data; boundary=${boundary}`, 'Content-Length': body.length },
+      timeout: 180_000,
+    }, (res) => {
+      let data = '';
+      res.on('data', (c: Buffer) => (data += c.toString()));
+      res.on('end', () => {
+        try {
+          const parsed = JSON.parse(data) as { ok: boolean; description?: string };
+          if (!parsed.ok) reject(new Error(`sendVideo: ${parsed.description ?? data.slice(0, 200)}`));
+          else resolve();
+        } catch { reject(new Error(`sendVideo parse: ${data.slice(0, 200)}`)); }
+      });
+    });
+    req.on('error', reject);
+    req.on('timeout', () => { req.destroy(); reject(new Error('sendVideo timeout')); });
+    req.write(body);
+    req.end();
+  });
+}
+
+// ─── Main ─────────────────────────────────────────────────────────────
+
+async function main(): Promise<void> {
+  console.log('[auto-deliver] Starting auto-deliver...');
+
+  // Check if gate already met
+  const manualPosts = readJsonLines(MANUAL_POSTS_PATH);
+  if (manualPosts.length >= GATE_TARGET) {
+    console.log('[auto-deliver] Gate target met (30+ posts). Skipping.');
+    return;
+  }
+
+  // Gate math
+  const daysLeft = Math.max(1, Math.ceil((GATE_DATE.getTime() - Date.now()) / 86_400_000));
+  const postsLeft = Math.max(0, GATE_TARGET - manualPosts.length);
+  const dailyTarget = Math.ceil(postsLeft / daysLeft);
+
+  // Load already-delivered IDs (today only)
+  const today = new Date().toISOString().slice(0, 10);
+  const deliveredToday = new Set<string>();
+  const deliveredLines = readJsonLines(DELIVERED_LOG);
+  for (const d of deliveredLines) {
+    if ((d.delivered_at ?? '').startsWith(today)) {
+      deliveredToday.add(d.video_id);
+    }
+  }
+
+  // Load recorded (already posted) IDs
+  const recordedIds = new Set(manualPosts.map((e: any) => e.video_id).filter(Boolean));
+
+  // Load ledger and viral scores
+  const ledger = readJsonLines(LEDGER_PATH);
+  const viralScores = new Map<string, number>();
+  for (const e of readJsonLines(EXPERIMENTS_PATH)) {
+    const id = e.clip_id ?? e.video_id;
+    if (id && e.partial_viral_score != null) viralScores.set(id, e.partial_viral_score);
+  }
+
+  // Find best unposted, un-delivered video with captioned mp4
+  const candidates = ledger
+    .filter((e: any) =>
+      e.video_id &&
+      !recordedIds.has(e.video_id) &&
+      !deliveredToday.has(e.video_id) &&
+      findCaptionedMp4(e.video_id) !== null
+    )
+    .sort((a: any, b: any) =>
+      (viralScores.get(b.video_id) ?? -1) - (viralScores.get(a.video_id) ?? -1)
+    );
+
+  if (candidates.length === 0) {
+    console.log('[auto-deliver] No ready videos to deliver.');
+    await sendMessage(
+      `⚠️ *Auto-Deliver* — No videos ready to post.\n\n` +
+      `Run the pipeline to generate new content.`
+    );
+    return;
+  }
+
+  const pick = candidates[0];
+  const videoId = pick.video_id;
+  const mp4Path = findCaptionedMp4(videoId)!;
+  const caption = buildTikTokCaption(videoId);
+  const vs = viralScores.get(videoId);
+  const vsStr = vs != null ? `🧬 ${vs.toFixed(1)}` : '';
+
+  const now = new Date();
+  const timeLabel = now.getHours() < 10 ? '☀️ Morning' : now.getHours() < 15 ? '🌤️ Midday' : '🌙 Evening';
+
+  // Escape Markdown special chars in caption content (hashtags with underscores, etc)
+  const safeCaption = caption.replace(/([_*`\[\]])/g, '\\$1');
+
+  const tgCaption =
+    `📦 *${timeLabel} Auto-Deliver* ${vsStr}\n\n` +
+    `${safeCaption}\n\n` +
+    `📊 ${manualPosts.length}/${GATE_TARGET} posts · ${daysLeft}d left · ${dailyTarget}/day\n\n` +
+    `Save video → post to TikTok → /record ${videoId} 0`;
+
+  console.log(`[auto-deliver] Sending ${videoId} (${mp4Path})`);
+
+  try {
+    await sendVideoFile(mp4Path, tgCaption);
+    console.log(`[auto-deliver] ✅ Sent ${videoId}`);
+
+    // Log delivery
+    const entry = JSON.stringify({
+      video_id: videoId,
+      delivered_at: now.toISOString(),
+      viral_score: vs ?? null,
+      mp4_path: mp4Path,
+    });
+    appendFileSync(DELIVERED_LOG, entry + '\n');
+  } catch (err: any) {
+    console.error(`[auto-deliver] ❌ Failed to send ${videoId}: ${err.message}`);
+    await sendMessage(`⚠️ *Auto-Deliver Failed*\n\n\`${videoId}\`: ${err.message}\n\nUse \`/deliver 1\` manually.`);
+  }
+}
+
+main().catch(err => {
+  console.error('[auto-deliver] Fatal:', err);
+  process.exit(1);
+});

@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-338",
+  "title": "Posting auto-deliver — send video files at scheduled posting times",
+  "description": "Replace text-only posting reminders with actual video file delivery via Telegram. At 07:30, 12:00, and 18:00 the operator gets the next scheduled video + TikTok-ready caption automatically — zero friction posting.",
+  "source": "auto — gate urgency 0/30 posts, 18 days to Apr 7 kill switch",
+  "tasks": [
+    {
+      "id": "338-01",
+      "title": "Create scripts/scs001/posting-auto-deliver.ts — auto-send video + caption at posting times",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-338",
+      "deliverables": { "code": ["scripts/scs001/posting-auto-deliver.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "338-02",
+      "title": "Add posting-auto-deliver PM2 crons (07:30, 12:00, 18:00) to ecosystem.config.js",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-338",
+      "deliverables": { "code": ["ecosystem.config.js"], "tests": [], "docs": [] }
+    }
+  ]
+}
