@@ -19,7 +19,8 @@ import { createCheckoutUrl } from './paymee';
 import { processVoiceMessage, VoiceTierError } from './voice-handler';
 import { extractUserProfile } from './user-profile';
 import { loadSummary } from './conversation-summary';
-import { trackError } from './error-tracker';
+import { trackError, getErrorSummary } from './error-tracker';
+import { getFeedbackSummary } from './feedback-collector';
 
 const PORT = parseInt(process.env.ACHIRI_PORT ?? '3420', 10);
 const START_TIME = Date.now();
@@ -93,6 +94,72 @@ const server = http.createServer(async (req, res) => {
       console.error('[Achiri API] /upgrade error:', err);
       return send(res, 500, { error: 'payment gateway error' });
     }
+  }
+
+  // GET /analytics — Sprint 324: unified alpha monitoring dashboard
+  if (method === 'GET' && url === '/analytics') {
+    const stats = memStore.getStats();
+    const feedback = getFeedbackSummary();
+    const errors = getErrorSummary();
+
+    // DAU from daily-counts.json
+    const dailyCountsPath = require('path').join(__dirname, '..', '..', 'workspace', 'achiri', 'daily-counts.json');
+    let dau = 0;
+    let totalMessages = 0;
+    let activeDays = 0;
+    let retention7d = 0;
+    let returningUsers = 0;
+    try {
+      const counts = JSON.parse(require('fs').readFileSync(dailyCountsPath, 'utf-8')) as Record<string, Record<string, number>>;
+      const today = new Date().toISOString().split('T')[0];
+      const todayCounts = counts[today] ?? {};
+      dau = Object.keys(todayCounts).length;
+      totalMessages = Object.values(todayCounts).reduce((s, n) => s + n, 0);
+      activeDays = Object.keys(counts).length;
+
+      // 7-day retention: users active in last 7 days who were also active 7+ days ago
+      const dates = Object.keys(counts).sort().reverse();
+      const recent7 = new Set<string>();
+      const older = new Set<string>();
+      for (const date of dates) {
+        const dayDiff = Math.floor((Date.now() - new Date(date).getTime()) / 86_400_000);
+        for (const userId of Object.keys(counts[date])) {
+          if (dayDiff <= 7) recent7.add(userId);
+          if (dayDiff > 7) older.add(userId);
+        }
+      }
+      const returning = Array.from(recent7).filter(u => older.has(u)).length;
+      retention7d = older.size > 0 ? Math.round((returning / older.size) * 100) : 0;
+      returningUsers = returning;
+    } catch { /* daily-counts.json not available */ }
+
+    return send(res, 200, {
+      timestamp: new Date().toISOString(),
+      uptime_s: Math.floor((Date.now() - START_TIME) / 1000),
+      users: {
+        total: stats.users ?? 0,
+        dau,
+        returning: returningUsers,
+        retention_7d_pct: retention7d,
+      },
+      messages: {
+        today: totalMessages,
+        total_turns: stats.total_turns ?? 0,
+        active_days: activeDays,
+      },
+      feedback: {
+        total: feedback.total,
+        average: feedback.average,
+        nps: feedback.nps,
+        recent_avg: feedback.recentAvg,
+      },
+      errors: {
+        total: errors.total,
+        last_24h: errors.last24h,
+        by_type: errors.byType,
+      },
+      cached_handlers: handlerCache.size,
+    });
   }
 
   // GET /stats
@@ -250,7 +317,7 @@ const server = http.createServer(async (req, res) => {
 
 server.listen(PORT, () => {
   console.log('[Achiri API] listening on port ' + PORT);
-  console.log('[Achiri API] routes: POST /chat, POST /voice, GET /upgrade, GET /summary/:userId, GET /profile/:userId, GET /export/:userId, DELETE /memory/:userId, GET /stats, GET /health');
+  console.log('[Achiri API] routes: POST /chat, POST /voice, GET /upgrade, GET /summary/:userId, GET /profile/:userId, GET /export/:userId, DELETE /memory/:userId, GET /analytics, GET /stats, GET /health');
 });
 
 export { server };

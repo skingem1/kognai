@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-324",
+  "title": "Achiri /analytics API endpoint — unified alpha monitoring dashboard",
+  "description": "Add GET /analytics endpoint to Achiri server. Aggregates retention stats, feedback summary, error counts, quality scores, and user activity into a single JSON response. Primary monitoring endpoint for Apr 25 alpha launch.",
+  "source": "auto — Achiri Alpha Launch Apr 25 prep",
+  "tasks": [
+    {
+      "id": "324-01",
+      "title": "Add GET /analytics endpoint to agents/achiri/server.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-324",
+      "deliverables": { "code": ["agents/achiri/server.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
