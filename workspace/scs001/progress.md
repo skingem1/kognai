@@ -3632,3 +3632,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (algorithmic logic in large file)
 - Issues: None.
 - Timestamp: 2026-03-20T13:00:00Z
+
+## Sprint 414 — /stale Command — Bulk Archive Stale Content (Direct Write)
+- Status: PASS
+- Commit: 9a83ec3
+- Files created: workspace/sprints/sprint-414.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 414-01: Added cmdStale() function. Shows stale videos (>7 days old) grouped by age bucket. /stale archive bulk-archives all stale videos. Registered in command switch. Keeps delivery queue focused on fresh content.
+- Validation: tsc --noEmit PASS
+- Swarm used: no (algorithmic logic in large file)
+- Issues: None.
+- Timestamp: 2026-03-20T13:15:00Z
