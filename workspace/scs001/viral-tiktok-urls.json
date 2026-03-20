@@ -1,0 +1,5 @@
+{
+  "urls": [],
+  "updated_at": "2026-03-20T12:00:00.000Z",
+  "instructions": "This file is auto-populated by the ViralTikTokDownloader agent. URLs are discovered autonomously by searching TikTok for keywords from TrendAgent topics. Manual entries are also supported as a fallback. Format: { url: string, topic: string, added_at: ISO string, processed: boolean, source: 'auto-discovery' | 'manual', play_count?: number, author?: string }. Manual example: { \"url\": \"https://www.tiktok.com/@user/video/123456\", \"topic\": \"AI agents\", \"added_at\": \"2026-03-20\", \"processed\": false, \"source\": \"manual\" }"
+}

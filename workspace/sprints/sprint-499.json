@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-499",
+  "title": "PIPELINE — Commit viral TikTok downloader + RapidAPI client",
+  "description": "Untracked viral downloader agent and RapidAPI TikTok client from previous session. Both type-check clean. Commit and integrate into pipeline.",
+  "source": "queue-empty — committing existing untracked work",
+  "tasks": [
+    {
+      "id": "499-01",
+      "title": "Validate and commit viral downloader agent + RapidAPI client",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-499",
+      "deliverables": { "code": ["agents/scs001-viral-downloader/index.ts", "scripts/scs001/rapidapi-tiktok-client.ts", "workspace/scs001/viral-tiktok-urls.json"], "tests": [], "docs": [] }
+    }
+  ]
+}
