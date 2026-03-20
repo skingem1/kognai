@@ -2790,3 +2790,16 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (FP-007, multi-file)
 - Issues: TS2802 Set iteration — fixed with Array.from().
 - Timestamp: 2026-03-20T06:05:00Z
+
+## Sprint 337 — Achiri Weekly Usage Digest (Direct Write)
+- Status: PASS
+- Commit: f39b31d
+- Files created: scripts/achiri/weekly-usage-digest.ts, workspace/sprints/sprint-337.json
+- Files modified: ecosystem.config.js
+- Tasks completed:
+  - 337-01: weekly-usage-digest.ts — sends weekly Achiri report every Sunday 10:00 via Telegram. Shows 7-day DAU trend (bar chart), top 5 users, message volume, avg msgs/day, memory files, stored turns, feedback avg, waitlist count. Filters test users (validate-*, e2e-*, smoke-*, tarek-test, user-premium).
+  - 337-02: achiri-weekly-digest PM2 entry — cron "0 10 * * 0" (Sunday 10:00).
+- Validation: npx tsc --noEmit PASS
+- Swarm used: no (single file + ecosystem edit)
+- Issues: None.
+- Timestamp: 2026-03-20T06:15:00Z
