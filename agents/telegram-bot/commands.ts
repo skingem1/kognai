@@ -3577,3 +3577,73 @@ export async function handleAchiriProfile(chatId: number): Promise<void> {
 
   await sendMessage(chatId, lines.join('\n'));
 }
+
+// ── Sprint 312: /achirifeedback — Aggregate user feedback ratings ─────────────
+
+export async function handleAchiriFeedback(chatId: number, ownerChatId: string): Promise<void> {
+  if (String(chatId) !== ownerChatId) {
+    await sendMessage(chatId, '🔒 Owner only.');
+    return;
+  }
+
+  const feedbackPath = join(process.cwd(), 'workspace', 'achiri', 'feedback.jsonl');
+  if (!existsSync(feedbackPath)) {
+    await sendMessage(chatId, '📊 *Achiri Feedback*\n\nNo feedback collected yet. Ratings are requested every 10 messages.');
+    return;
+  }
+
+  interface FEntry { userId: string; rating: number; timestamp: string; messageCount: number }
+  const entries: FEntry[] = readFileSync(feedbackPath, 'utf-8')
+    .split('\n').filter(l => l.trim())
+    .map(l => { try { return JSON.parse(l); } catch { return null; } })
+    .filter(Boolean) as FEntry[];
+
+  if (entries.length === 0) {
+    await sendMessage(chatId, '📊 *Achiri Feedback*\n\nNo feedback collected yet.');
+    return;
+  }
+
+  const dist: Record<number, number> = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+  const users = new Set<string>();
+  let sum = 0;
+  for (const e of entries) {
+    dist[e.rating] = (dist[e.rating] ?? 0) + 1;
+    users.add(e.userId);
+    sum += e.rating;
+  }
+
+  const avg = Math.round((sum / entries.length) * 10) / 10;
+  const recent = entries.slice(-20);
+  const recentAvg = Math.round((recent.reduce((s, e) => s + e.rating, 0) / recent.length) * 10) / 10;
+  const promoters = (dist[4] ?? 0) + (dist[5] ?? 0);
+  const detractors = (dist[1] ?? 0) + (dist[2] ?? 0);
+  const nps = Math.round(((promoters - detractors) / entries.length) * 100);
+
+  const bars = [5, 4, 3, 2, 1].map(n => {
+    const count = dist[n] ?? 0;
+    const bar = '█'.repeat(Math.min(count, 20));
+    return `${n}⭐ ${bar} ${count}`;
+  });
+
+  const npsEmoji = nps >= 50 ? '🟢' : nps >= 0 ? '🟡' : '🔴';
+  const avgEmoji = avg >= 4 ? '🟢' : avg >= 3 ? '🟡' : '🔴';
+
+  const lines = [
+    '📊 *Achiri User Feedback*',
+    '',
+    `${avgEmoji} *Average:* ${avg}/5 (${entries.length} ratings from ${users.size} users)`,
+    `${npsEmoji} *NPS:* ${nps}% (promoters: ${promoters}, detractors: ${detractors})`,
+    `📈 *Recent avg:* ${recentAvg}/5 (last ${recent.length})`,
+    '',
+    '*Distribution:*',
+    '```',
+    ...bars,
+    '```',
+  ];
+
+  if (nps < -60) {
+    lines.push('', '🔴 *KILL SWITCH WARNING* — NPS below -60%. Review conversation quality immediately.');
+  }
+
+  await sendMessage(chatId, lines.join('\n'));
+}

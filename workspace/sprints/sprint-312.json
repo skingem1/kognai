@@ -1,0 +1,44 @@
+{
+  "sprint_id": "sprint-312",
+  "title": "Achiri feedback collector — in-conversation ratings + /achirifeedback command",
+  "description": "Alpha quality monitoring: feedback-collector.ts module tracks user satisfaction (1-5 ratings), wired into chat flow every 10th message. /achirifeedback Telegram command shows aggregate NPS for operator.",
+  "source": "auto — Achiri Phase 2A: alpha quality monitoring for Apr 25",
+  "tasks": [
+    {
+      "id": "312-01",
+      "title": "Create feedback-collector.ts module with shouldAskFeedback + storeFeedback",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-312",
+      "deliverables": { "code": ["agents/achiri/feedback-collector.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "312-02",
+      "title": "Wire feedback into Achiri chat flow",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-312",
+      "deliverables": { "code": ["agents/achiri/index.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "312-03",
+      "title": "Add /achirifeedback Telegram command for aggregate ratings",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-312",
+      "deliverables": { "code": ["agents/telegram-bot/commands.ts", "agents/telegram-bot/index.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
