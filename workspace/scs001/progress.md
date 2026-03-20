@@ -2938,3 +2938,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (surgical bot edit)
 - Issues: Fixed Map iteration (TS2802) — used Array.from() instead of spread.
 - Timestamp: 2026-03-20T06:00:00Z
+
+## Sprint 349 — /quickstart Command (Direct Write)
+- Status: PASS
+- Commit: e10e699
+- Files created: workspace/sprints/sprint-349.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 349-01: cmdQuickStart() — picks single best unposted video by viral score, finds captioned mp4, generates TikTok caption (speaker + hook + viral hashtags), shows 4-step walkthrough (find file → copy caption → upload → /record). Shows remaining video count.
+- Validation: npx tsc --noEmit PASS
+- Swarm used: no (surgical bot edit)
+- Issues: None.
+- Timestamp: 2026-03-20T06:15:00Z
