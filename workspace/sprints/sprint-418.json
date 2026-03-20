@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-418",
+  "title": "Engagement-optimized captions with hook templates and CTAs",
+  "description": "Upgrade buildTikTokCaption to use hook-formula-based caption templates, add engagement CTAs, and generate niche-specific hashtags. Currently captions are bare (speaker + hook name + generic tags). This upgrade improves view potential to help hit the 500-views gate target.",
+  "source": "auto — current captions are too basic for TikTok algorithm, hurting view potential",
+  "tasks": [
+    {
+      "id": "418-01",
+      "title": "Add hook-based caption templates + CTAs + niche hashtags to buildTikTokCaption",
+      "type": "enhancement",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-418",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
