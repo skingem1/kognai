@@ -2988,3 +2988,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (new file + multi-file changes)
 - Issues: ACHIRI_TELEGRAM_BOT_TOKEN needs to be created via BotFather and added to .env.
 - Timestamp: 2026-03-20T07:30:00Z
+
+## Sprint 353 — Auto-Regen Crons (Direct Write)
+- Status: PASS
+- Commit: aaec173
+- Files created: workspace/sprints/sprint-353.json
+- Files modified: ecosystem.config.js
+- Tasks completed:
+  - 353-01: Added PM2 crons for kognai-schedule-regen (06:52 daily) and kognai-leaderboard-regen (06:54 daily). Ensures /schedule and /leaderboard commands always show fresh data. Follows existing pattern from calendar-regen (06:50).
+- Validation: ecosystem.config.js loads, 53 total apps, new crons visible
+- Swarm used: no (config-only change)
+- Issues: None.
+- Timestamp: 2026-03-20T07:45:00Z
