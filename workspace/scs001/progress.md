@@ -3325,3 +3325,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (FP-007 file requires context of 580+ line bot)
 - Issues: None.
 - Timestamp: 2026-03-20T20:10:00Z
+
+## Sprint 389 — Telegram Inline Buttons (Direct Write)
+- Status: PASS
+- Commit: aec0f06
+- Files created: workspace/sprints/sprint-389.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 389-01: Added inline keyboard button support to operator Telegram bot. Key changes: (1) sendMessageWithButtons() helper for Telegram reply_markup API, (2) answerCallbackQuery() for button acknowledgement, (3) getUpdates now accepts callback_query events, (4) Callback query handler in polling loop routes button presses to handleCommand(), (5) Button maps for /digest, /gate, /today, /queue, /help with contextual quick-actions (Deliver 1, Gate, Refresh, Streak, Queue, Film Kit, Suggest, etc.). Graceful fallback to plain text if buttons fail.
+- Validation: tsc --noEmit PASS
+- Swarm used: no (FP-007 file >4000 lines, multi-section edit)
+- Issues: None.
+- Timestamp: 2026-03-20T20:20:00Z
