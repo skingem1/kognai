@@ -2254,6 +2254,95 @@ function cmdHookTest(): string {
   return lines.join('\n');
 }
 
+// ─── Sprint 377: /besttime — optimal posting time recommendations ───────────
+
+function cmdBestTime(): string {
+  const schedulePath = path.join(ROOT, 'reports', 'posting-schedule.json');
+  if (!fs.existsSync(schedulePath)) {
+    return '⚠️ No posting schedule found. Run /refresh first.';
+  }
+
+  let sched: any;
+  try {
+    sched = JSON.parse(fs.readFileSync(schedulePath, 'utf-8'));
+  } catch {
+    return '⚠️ Could not parse posting-schedule.json.';
+  }
+
+  const slots: any[] = sched.slots ?? [];
+  if (slots.length === 0) return '⚠️ No scheduled slots found.';
+
+  // Group by time slot → avg viral score
+  const timeStats: Record<string, { scores: number[]; count: number; label: string }> = {};
+  for (const s of slots) {
+    const time = s.time ?? '?';
+    if (!timeStats[time]) timeStats[time] = { scores: [], count: 0, label: s.slot_label ?? time };
+    timeStats[time].count++;
+    if (s.viral_score != null) timeStats[time].scores.push(s.viral_score);
+  }
+
+  const ranked = Object.entries(timeStats)
+    .map(([time, stats]) => ({
+      time,
+      label: stats.label,
+      avg: stats.scores.length > 0 ? stats.scores.reduce((a, b) => a + b, 0) / stats.scores.length : 0,
+      count: stats.count,
+    }))
+    .sort((a, b) => b.avg - a.avg);
+
+  // Today's remaining slots
+  const now = new Date();
+  const today = now.toISOString().slice(0, 10);
+  const currentHour = now.getHours();
+  const todaySlots = slots
+    .filter((s: any) => s.date === today && parseInt(s.time) > currentHour)
+    .sort((a: any, b: any) => a.time.localeCompare(b.time));
+
+  // Next 3 days upcoming
+  const upcoming = slots
+    .filter((s: any) => s.date >= today)
+    .sort((a: any, b: any) => `${a.date}${a.time}`.localeCompare(`${b.date}${b.time}`))
+    .slice(0, 6);
+
+  const lines = [
+    '⏰ *Best Posting Times*',
+    '',
+    '*Time slot rankings (by avg viral score):*',
+  ];
+
+  for (const r of ranked) {
+    const avgPct = Math.round(r.avg * 100);
+    const icon = r === ranked[0] ? '🏆' : '📊';
+    lines.push(`${icon} *${r.label}* — avg ${avgPct}% · ${r.count} posts`);
+  }
+
+  if (todaySlots.length > 0) {
+    lines.push('');
+    lines.push('*Remaining today:*');
+    for (const s of todaySlots) {
+      const score = Math.round((s.viral_score ?? 0) * 100);
+      lines.push(`  ⏰ ${s.slot_label ?? s.time} — ${s.speaker ?? '?'} (${score}%)`);
+    }
+  } else {
+    lines.push('');
+    lines.push('_No remaining slots today._');
+  }
+
+  if (upcoming.length > 0) {
+    lines.push('');
+    lines.push('*Upcoming schedule:*');
+    for (const s of upcoming) {
+      const score = Math.round((s.viral_score ?? 0) * 100);
+      lines.push(`  📅 ${s.date} ${s.time} — ${s.speaker ?? '?'} (${score}%)`);
+    }
+  }
+
+  lines.push('');
+  lines.push(`📋 ${sched.pace_needed ?? '?'} posts/day needed for gate`);
+
+  return lines.join('\n');
+}
+
 // ─── Sprint 371: /todaycaptions — batch captions for today's posts ────────
 
 async function cmdTodayCaptions(chatId: string): Promise<void> {
@@ -2968,6 +3057,7 @@ function cmdHelp(): string {
     `/subscribers — Active Stripe subscribers + MRR\n` +
     `/funnel    — Content pipeline funnel + conversions\n` +
     `/hooktest  — Hook formula A/B test rankings\n` +
+    `/besttime  — Optimal posting time analysis\n` +
     `/help      — This message`
   );
 }
@@ -3125,6 +3215,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/subscribers': await cmdSubscribers(chatId); return;
     case '/funnel':      response = cmdFunnel();              break;
     case '/hooktest':    response = cmdHookTest();            break;
+    case '/besttime':    response = cmdBestTime();            break;
     case '/help':        response = cmdHelp();        break;
     default:
       response = `Unknown command: \`${cmdName}\`\n\n${cmdHelp()}`;

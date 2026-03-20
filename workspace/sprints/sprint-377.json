@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-377",
+  "title": "/besttime — optimal posting time recommendations",
+  "description": "Add /besttime command showing best posting slots based on schedule data, viral scores, and time-of-day analysis.",
+  "source": "auto — posting optimization, schedule data available in posting-schedule.json",
+  "tasks": [
+    {
+      "id": "377-01",
+      "title": "Add /besttime command to scripts/telegram-bot.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-377",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
