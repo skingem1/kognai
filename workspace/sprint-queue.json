@@ -579,7 +579,8 @@
       "sprint": 509,
       "title": "QUALITY — Review produced videos and score quality (hook, retention, production)",
       "block": "VIDEO-QUALITY-V2",
-      "status": "pending",
+      "status": "done",
+      "_note": "13 videos audited. All meet TikTok specs. Quality report generated.",
       "priority": "medium",
       "rationale": "12+ videos produced but no quality review. Run QC checks on captioned outputs: hook scoring, audio quality, caption readability, video length distribution. Generate quality report."
     },

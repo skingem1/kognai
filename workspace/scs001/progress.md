@@ -362,6 +362,16 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Issues: Insight Agent mock mode caps at 2 briefs/run, needed 3 runs for 6 videos
 - Timestamp: 2026-03-20T12:45:00Z
 
+## Sprint 509 — QUALITY
+- Status: PASS
+- Commit: 05dd6c3
+- Files created: workspace/scs001/quality-report-sprint509.json, workspace/sprints/sprint-509.json
+- Test: ffprobe validation of all 13 videos — all 1080x1920, 28s, ~3.75MB
+- Pipeline: Quality review complete. Hook scores 15-45%. Topic diversity LOW (mock mode).
+- Swarm used: no
+- Issues: Only 2 unique topics across 13 videos (mock Insight Agent limitation)
+- Timestamp: 2026-03-20T14:05:00Z
+
 ## Sprint 508 — CONTENT
 - Status: PASS
 - Commit: 221a94c
