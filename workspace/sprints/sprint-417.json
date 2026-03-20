@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-417",
+  "title": "Auto-deliver with freshness decay, speaker and hook diversity",
+  "description": "Update posting-auto-deliver.ts to use freshness-weighted viral scores (Sprint 413), speaker diversity (Sprint 411), and hook diversity (Sprint 415). Prevents auto-deliver from sending stale or repetitive content.",
+  "source": "auto — auto-deliver uses raw viral score only, inconsistent with /deliver",
+  "tasks": [
+    {
+      "id": "417-01",
+      "title": "Add freshness decay and diversity guards to auto-deliver",
+      "type": "enhancement",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-417",
+      "deliverables": { "code": ["scripts/scs001/posting-auto-deliver.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

@@ -193,6 +193,39 @@ async function main(): Promise<void> {
     if (id && e.partial_viral_score != null) viralScores.set(id, e.partial_viral_score);
   }
 
+  // Sprint 417: Build ledger dates for freshness scoring
+  const ledgerDates = new Map<string, string>();
+  for (const e of ledger) {
+    if (e.video_id && e.published_at) ledgerDates.set(e.video_id, e.published_at);
+  }
+
+  // Sprint 417: Freshness decay (matches Sprint 413 /deliver logic)
+  function freshnessScore(vid: string, rawScore: number): number {
+    const pubAt = ledgerDates.get(vid);
+    if (!pubAt) return rawScore;
+    const ageDays = (Date.now() - new Date(pubAt).getTime()) / 86_400_000;
+    if (ageDays <= 3) return rawScore;
+    return rawScore * Math.pow(0.85, ageDays - 3);
+  }
+
+  // Sprint 417: Load speaker and hook maps for diversity
+  const speakerMap = new Map<string, string>();
+  const hookMap = new Map<string, string>();
+  for (const e of readJsonLines(EXPERIMENTS_PATH)) {
+    const id = e.clip_id ?? e.video_id;
+    if (id && e.speaker && e.speaker !== 'unknown') speakerMap.set(id, e.speaker);
+    if (id && e.hook_formula && e.hook_formula !== 'unknown') hookMap.set(id, e.hook_formula);
+  }
+
+  // Check recently delivered speakers/hooks (last 5 deliveries)
+  const recentDeliveries = deliveredLines.slice(-5);
+  const recentSpeakers = recentDeliveries.map((d: any) => speakerMap.get(d.video_id) ?? '').filter(Boolean);
+  const recentHooks = recentDeliveries.map((d: any) => hookMap.get(d.video_id) ?? '').filter(Boolean);
+  const lastSpeaker = recentSpeakers[recentSpeakers.length - 1] ?? '';
+  const lastHook = recentHooks[recentHooks.length - 1] ?? '';
+  const consecutiveSpeaker = recentSpeakers.filter(s => s === lastSpeaker).length;
+  const consecutiveHook = recentHooks.filter(h => h === lastHook).length;
+
   // Find best unposted, un-delivered video with captioned mp4
   const candidates = ledger
     .filter((e: any) =>
@@ -202,7 +235,8 @@ async function main(): Promise<void> {
       findCaptionedMp4(e.video_id) !== null
     )
     .sort((a: any, b: any) =>
-      (viralScores.get(b.video_id) ?? -1) - (viralScores.get(a.video_id) ?? -1)
+      freshnessScore(b.video_id, viralScores.get(b.video_id) ?? 0) -
+      freshnessScore(a.video_id, viralScores.get(a.video_id) ?? 0)
     );
 
   if (candidates.length === 0) {
@@ -214,12 +248,31 @@ async function main(): Promise<void> {
     return;
   }
 
-  const pick = candidates[0];
+  // Sprint 417: Pick video respecting speaker + hook diversity (max 2 consecutive)
+  let pick = candidates[0];
+  for (const c of candidates) {
+    const cSpeaker = speakerMap.get(c.video_id) ?? '';
+    const cHook = hookMap.get(c.video_id) ?? '';
+    const speakerOk = !(consecutiveSpeaker >= 2 && cSpeaker === lastSpeaker && lastSpeaker);
+    const hookOk = !(consecutiveHook >= 2 && cHook === lastHook && lastHook);
+    if (speakerOk && hookOk) {
+      pick = c;
+      break;
+    }
+  }
   const videoId = pick.video_id;
   const mp4Path = findCaptionedMp4(videoId)!;
   const caption = buildTikTokCaption(videoId);
   const vs = viralScores.get(videoId);
   const vsStr = vs != null ? `🧬 ${vs.toFixed(1)}` : '';
+  // Sprint 417: Show speaker, hook, and age
+  const speaker = speakerMap.get(videoId);
+  const spkStr = speaker ? ` · 🎙️ ${speaker}` : '';
+  const hook = hookMap.get(videoId);
+  const hookStr = hook ? ` · 🎣 ${hook}` : '';
+  const pubAt = ledgerDates.get(videoId);
+  const ageDays = pubAt ? Math.round((Date.now() - new Date(pubAt).getTime()) / 86_400_000) : 0;
+  const ageStr = ageDays > 0 ? ` · ${ageDays}d old` : '';
 
   const now = new Date();
   const timeLabel = now.getHours() < 10 ? '☀️ Morning' : now.getHours() < 15 ? '🌤️ Midday' : '🌙 Evening';
@@ -228,7 +281,7 @@ async function main(): Promise<void> {
   const safeCaption = caption.replace(/([_*`\[\]])/g, '\\$1');
 
   const tgCaption =
-    `📦 *${timeLabel} Auto-Deliver* ${vsStr}\n\n` +
+    `📦 *${timeLabel} Auto-Deliver* ${vsStr}${spkStr}${hookStr}${ageStr}\n\n` +
     `${safeCaption}\n\n` +
     `📊 ${manualPosts.length}/${GATE_TARGET} posts · ${daysLeft}d left · ${dailyTarget}/day\n\n` +
     `Save video → post to TikTok → /record ${videoId} 0`;
