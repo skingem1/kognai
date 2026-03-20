@@ -3644,3 +3644,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (algorithmic logic in large file)
 - Issues: None.
 - Timestamp: 2026-03-20T13:15:00Z
+
+## Sprint 415 — Hook Formula Diversity (Direct Write)
+- Status: PASS
+- Commit: fa233a7
+- Files created: workspace/sprints/sprint-415.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 415-01: Added loadHookMap() and diversifyByHook() helpers. Integrated into /deliver and /pickup after speaker diversity. Max 2 consecutive videos with same hook formula. Shows hook formula in delivery messages (🎣 curiosity_gap, etc).
+- Validation: tsc --noEmit PASS
+- Swarm used: no (algorithmic logic in large file)
+- Issues: None.
+- Timestamp: 2026-03-20T13:30:00Z
