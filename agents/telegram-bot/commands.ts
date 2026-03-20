@@ -128,7 +128,8 @@ export async function handleHelp(chatId: number, ownerChatId?: string): Promise<
     '🤖 *Achiri*',
     '/achiri <msg> /achiriprofile /achirihealth',
     '/achiristats /achirifeedback /achiriexport [id]',
-    '/achirierrors /achiriready /achiriretention /achiriquality /achirianalytics',
+    '/achirierrors /achiriready /achiriretention /achiriquality',
+    '/achirianalytics /achiritopics',
     '/waitlist /inviteachiri <id> /deploystatus',
     '',
     '⚙️ *System*',
@@ -4092,5 +4093,59 @@ export async function handleAchiriAnalytics(chatId: number, ownerChatId: string)
     await sendMessage(chatId, lines.join('\n'));
   } catch (err) {
     await sendMessage(chatId, `❌ Analytics fetch failed: ${(err as Error).message?.slice(0, 100)}\n\n_Is Achiri API running? Check: pm2 status achiri-api_`);
+  }
+}
+
+// ── Sprint 327: /achiritopics — Conversation topic distribution ──────────────
+
+export async function handleAchiriTopics(chatId: number, ownerChatId: string): Promise<void> {
+  if (String(chatId) !== ownerChatId) {
+    await sendMessage(chatId, '🔒 Owner only.');
+    return;
+  }
+
+  await sendMessage(chatId, '🔄 Analyzing conversation topics...');
+
+  try {
+    const output = execSync('npx ts-node scripts/achiri/achiri-topic-analytics.ts --json 2>/dev/null', {
+      timeout: 15000,
+      cwd: process.cwd(),
+    }).toString();
+
+    let report: {
+      total_messages_analyzed: number;
+      total_users: number;
+      topics: Array<{ topic: string; count: number; percentage: number }>;
+      uncategorized_count: number;
+      uncategorized_pct: number;
+    };
+
+    try {
+      report = JSON.parse(output);
+    } catch {
+      const jsonMatch = output.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) throw new Error('No JSON in output');
+      report = JSON.parse(jsonMatch[0]);
+    }
+
+    const lines = [
+      '📊 *Achiri Topic Analytics*',
+      `Messages: ${report.total_messages_analyzed} | Users: ${report.total_users}`,
+      '',
+    ];
+
+    const topTopics = report.topics.filter(t => t.count > 0).slice(0, 8);
+    for (const t of topTopics) {
+      const bar = '▓'.repeat(Math.max(1, Math.round(t.percentage / 10)));
+      lines.push(`  ${t.topic}: ${bar} ${t.count} (${t.percentage}%)`);
+    }
+
+    if (report.uncategorized_count > 0) {
+      lines.push(`  other: ${report.uncategorized_count} (${report.uncategorized_pct}%)`);
+    }
+
+    await sendMessage(chatId, lines.join('\n'));
+  } catch (err) {
+    await sendMessage(chatId, `❌ Topic analysis failed: ${(err as Error).message?.slice(0, 100)}`);
   }
 }

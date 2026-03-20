@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-327",
+  "title": "Achiri topic analytics — conversation topic distribution + /achiritopics command",
+  "description": "Keyword-based topic detection on Achiri conversations. Analyzes user messages from memory JSONL files, classifies into topic categories, and exposes distribution via /achiritopics Telegram command. Zero LLM cost. Product insight for alpha iteration.",
+  "source": "auto — Achiri Alpha product insight, Apr 25 prep",
+  "tasks": [
+    {
+      "id": "327-01",
+      "title": "Create scripts/achiri/achiri-topic-analytics.ts — topic detection + JSON output",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-327",
+      "deliverables": { "code": ["scripts/achiri/achiri-topic-analytics.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "327-02",
+      "title": "Add /achiritopics command to agents/telegram-bot/commands.ts + index.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-327",
+      "deliverables": { "code": ["agents/telegram-bot/commands.ts", "agents/telegram-bot/index.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

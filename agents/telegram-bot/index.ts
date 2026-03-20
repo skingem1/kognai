@@ -35,6 +35,7 @@ import {
   handleAchiriRetention,
   handleAchiriQuality,
   handleAchiriAnalytics,
+  handleAchiriTopics,
   handleLastRun,
   handleMetrics,
   handleRevenue,
@@ -181,6 +182,7 @@ async function dispatch(update: TelegramUpdate): Promise<void> {
     case '/achiriretention': await handleAchiriRetention(chatId, OWNER_CHAT_ID);    break;
     case '/achiriquality':   await handleAchiriQuality(chatId, OWNER_CHAT_ID);      break;
     case '/achirianalytics': await handleAchiriAnalytics(chatId, OWNER_CHAT_ID);  break;
+    case '/achiritopics':   await handleAchiriTopics(chatId, OWNER_CHAT_ID);    break;
     case '/lastrun':        await handleLastRun(chatId, OWNER_CHAT_ID);              break;
     case '/metrics':        await handleMetrics(chatId, OWNER_CHAT_ID);              break;
     case '/revenue':        await handleRevenue(chatId, OWNER_CHAT_ID);              break;
