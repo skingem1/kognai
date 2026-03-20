@@ -1815,6 +1815,53 @@ async function cmdPostNow(chatId: string): Promise<void> {
   }
 }
 
+// ─── Sprint 368: /postplan — 7-day posting plan with video assignments ─────
+
+function cmdPostPlan(): string {
+  const schedulePath = path.join(ROOT, 'reports', 'posting-schedule.json');
+  if (!fs.existsSync(schedulePath)) {
+    return '⚠️ No posting schedule found. Run the pipeline first.';
+  }
+
+  let sched: any;
+  try {
+    sched = JSON.parse(fs.readFileSync(schedulePath, 'utf-8'));
+  } catch {
+    return '⚠️ Could not parse posting-schedule.json.';
+  }
+
+  const lines: string[] = [
+    '📅 *7-Day Posting Plan*',
+    '',
+    `🎯 Gate: *${sched.posts_needed ?? 30}* posts needed in *${sched.days_to_gate ?? '?'}* days`,
+    `📊 Pace: *${sched.pace_needed ?? '?'}* posts/day`,
+    `✅ Posted: *${sched.posts_done ?? 0}* / *${sched.gate_target ?? 30}*`,
+    `📦 Queue: *${sched.queue_remaining ?? 0}* videos ready`,
+    '',
+  ];
+
+  const slots: any[] = sched.slots ?? [];
+  if (slots.length === 0) {
+    lines.push('⚠️ No videos scheduled. Run /refresh first.');
+  } else {
+    let currentDate = '';
+    for (const slot of slots) {
+      if (slot.date !== currentDate) {
+        currentDate = slot.date;
+        const dayName = new Date(slot.date + 'T12:00:00Z').toLocaleDateString('en-US', { weekday: 'short' });
+        lines.push(`*${dayName} ${slot.date}*`);
+      }
+      const score = Math.round((slot.viral_score ?? 0) * 100);
+      const vid = (slot.video_id ?? '?').slice(0, 16);
+      lines.push(`  ${slot.time} — \`${vid}\` · ${slot.speaker ?? '?'} (${slot.hook ?? '?'}, ${score}%)`);
+    }
+    lines.push('');
+    lines.push(`_${slots.length} posts planned. /caption <id> for full caption._`);
+  }
+
+  return lines.join('\n');
+}
+
 // ─── Sprint 367: /viral — trending topics for content strategy ────────────
 
 function cmdViral(): string {
@@ -2326,6 +2373,7 @@ function cmdHelp(): string {
     `/revenue    — Revenue dashboard + financial gates\n` +
     `/lastrun    — Latest pipeline run details\n` +
     `/viral      — Trending topics for content\n` +
+    `/postplan   — 7-day posting plan with videos\n` +
     `/help      — This message`
   );
 }
@@ -2452,6 +2500,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/revenue':     response = cmdRevenue();            break;
     case '/lastrun':     response = cmdLastRun();            break;
     case '/viral':       response = cmdViral();              break;
+    case '/postplan':    response = cmdPostPlan();           break;
     case '/help':        response = cmdHelp();        break;
     default:
       response = `Unknown command: \`${cmdName}\`\n\n${cmdHelp()}`;

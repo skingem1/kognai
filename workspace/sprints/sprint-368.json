@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-368",
+  "title": "/postplan — 7-day posting plan with video assignments",
+  "description": "Add /postplan command that reads posting-schedule.json and displays a structured 7-day posting plan grouped by date with video assignments.",
+  "source": "auto — operator needs structured plan to hit 30 posts by Apr 7",
+  "tasks": [
+    {
+      "id": "368-01",
+      "title": "Add /postplan command to scripts/telegram-bot.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-368",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
