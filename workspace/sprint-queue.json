@@ -1200,8 +1200,9 @@
       "title": "CONTENT — Batch: 10 videos + deliver + cleanup",
       "block": "CONTENT",
       "priority": "high",
-      "status": "pending",
-      "rationale": "Continue content production. Target: push delivered count higher."
+      "status": "done",
+      "rationale": "Continue content production. Target: push delivered count higher.",
+      "_note": "10 produced. 107 delivered (all eligible sent)."
     },
     {
       "sprint": 579,

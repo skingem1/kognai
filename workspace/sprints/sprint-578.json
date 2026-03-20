@@ -1,0 +1,24 @@
+{
+  "sprint_id": "sprint-578",
+  "title": "CONTENT \u2014 10 videos produced (107 delivered, all eligible sent)",
+  "description": "Two pipeline-cron runs. 10 videos produced. All eligible videos already delivered (107 total).",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "578-01",
+      "title": "Run pipeline-cron x2",
+      "type": "feature",
+      "task_type": "content",
+      "task_target": "scripts/scs001/pipeline-cron.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-578",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ]
+}
