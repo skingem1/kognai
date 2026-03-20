@@ -4174,3 +4174,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (test script)
 - Issues: ElevenLabs requires API key setup by human. Local TTS is sufficient for Apr 7 gate
 - Timestamp: 2026-03-20T11:00:00Z
+
+## Sprint 458 — VIDEO-E2E: Pipeline Validation Test
+- Status: PASS
+- Commit: 3bbe20b
+- Files created: workspace/sprints/sprint-458.json
+- Tasks completed:
+  - 458-01: Ran full pipeline --mock --local --limit 1. All 9 stages PASS. 1 video produced, $0.00 cost, 269.7s
+  - 458-02: No fixes needed — all stages chain correctly
+- Pipeline stages tested: Trend→Discovery→ClipDetection→Insight→Script→LLMRewrite(qwen3:14b,93.5s)→Editing→TTS(macOS say,31.2s)→CaptionOverlay
+- Swarm used: no (test execution)
+- Issues: None. Pipeline is fully operational in mock+local mode. Real API mode needs TIKTOK_ACCESS_TOKEN for live content
+- Timestamp: 2026-03-20T11:10:00Z
