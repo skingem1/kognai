@@ -270,7 +270,7 @@
       "sprint": 470,
       "title": "STRIPE — Subscription tiers wiring + payment flow test",
       "block": "MONETIZATION",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "Stripe code exists across 10+ sprints (322, 345, 373, 374, 402, 407-409, 441) but never tested with real Stripe keys. Create /test-stripe command that validates: (1) Checkout session creation, (2) Webhook reception, (3) Subscription status check, (4) Billing portal link. Gate: one test subscription created and cancelled."
     },
