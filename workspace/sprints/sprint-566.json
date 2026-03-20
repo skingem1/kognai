@@ -1,0 +1,26 @@
+{
+  "sprint_id": "sprint-566",
+  "title": "CONTENT \u2014 Final batch + stats: 152 produced, 117 delivered, $4.40",
+  "description": "5 more videos produced. Comprehensive stats: 152 produced, 117 delivered, diversity 97/100, script QC 4/4 pass, gate 117/30 ON TRACK, $4.40 total.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "566-01",
+      "title": "Pipeline cron + comprehensive stats",
+      "type": "feature",
+      "task_type": "content",
+      "task_target": "reports/stats-latest.json",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-566",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": [
+          "reports/stats-latest.json"
+        ]
+      }
+    }
+  ]
+}
