@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-509",
+  "title": "QUALITY — Review produced videos and score quality",
+  "description": "Quality audit of 13 produced videos. Check specs, hook scores, topic diversity, production issues. Generate quality report.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "509-01",
+      "title": "Audit all video specs (duration, resolution, file size)",
+      "type": "validation",
+      "task_type": "test",
+      "task_target": "local",
+      "agent": "supervisor",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-509",
+      "deliverables": { "code": [], "tests": [], "docs": ["workspace/scs001/quality-report-sprint509.json"] }
+    },
+    {
+      "id": "509-02",
+      "title": "Generate quality report with recommendations",
+      "type": "docs",
+      "task_type": "analysis",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-509",
+      "deliverables": { "code": [], "tests": [], "docs": ["workspace/scs001/quality-report-sprint509.json"] }
+    }
+  ]
+}
