@@ -561,7 +561,8 @@
       "sprint": 507,
       "title": "PIPELINE — Activate essential PM2 crons (daily-digest, pipeline-watchdog, gate-regen)",
       "block": "PIPELINE",
-      "status": "pending",
+      "status": "done",
+      "_note": "9 essential processes started. Stripe counter reset. PM2 state saved.",
       "priority": "high",
       "rationale": "pm2-startup.ts exists (Sprint 498) but PM2 crons are NOT running. Activate essential crons: daily-digest, gate-regen, pipeline-watchdog, auto-healer. Verify they fire correctly. This unblocks automated video production."
     },

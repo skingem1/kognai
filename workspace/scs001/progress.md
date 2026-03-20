@@ -362,6 +362,18 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Issues: Insight Agent mock mode caps at 2 briefs/run, needed 3 runs for 6 videos
 - Timestamp: 2026-03-20T12:45:00Z
 
+## Sprint 507 — PIPELINE
+- Status: PASS
+- Commit: 349f108
+- Files created: workspace/sprints/sprint-507.json
+- Test: pm2-startup.ts --only essential → 9 started, 2 already online, 0 failed
+- Pipeline: Essential PM2 crons activated, stripe restart counter reset (2078→0)
+- Online daemons: telegram-bot, stripe-webhook, smoke-test, scs001-pipeline, vault-dashboard, clawrouter-gateway, achiri-api
+- Cron jobs registered: daily-digest, gate-regen, brief-regen, pipeline-watchdog, auto-healer
+- Swarm used: no
+- Issues: none
+- Timestamp: 2026-03-20T13:10:00Z
+
 ## Sprint 506 — INFRA
 - Status: PASS
 - Commit: ef7fcfe
