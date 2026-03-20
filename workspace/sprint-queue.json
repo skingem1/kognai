@@ -448,7 +448,7 @@
       "sprint": 492,
       "title": "CONSTITUTION — Five Principles wiring into agent prompts",
       "block": "CONSTITUTION",
-      "status": "pending",
+      "status": "done",
       "priority": "low",
       "rationale": "FIVE_PRINCIPLES.md committed (35cc15a) but NOT wired into any agent prompt. Constitution is wired (Sprint 238) but Five Principles are separate. Wire into all 29 agent prompts (16 kognai + 13 SCS-001)."
     },

@@ -199,6 +199,17 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Issues: skill-crystalliser module not found (skipped, non-blocking)
 - Timestamp: 2026-03-20T16:00:00Z
 
+## Sprint 492 — CONSTITUTION
+- Status: PASS
+- Commit: aa5c52b
+- Files created: scripts/wire-five-principles.ts, workspace/sprints/sprint-492.json
+- Files modified: 40 agent prompt.md files (kognai-agents/ + agents/)
+- Test: wire-five-principles.ts — 40 wired, 4 already had, 0 skipped, PASS
+- Pipeline: All 44 agents now bound by Constitution + Five Principles
+- Swarm used: no (batch prompt modification)
+- Issues: none
+- Timestamp: 2026-03-20T18:15:00Z
+
 ## Sprint 491 — INFRA
 - Status: PASS
 - Commit: 83219d4
