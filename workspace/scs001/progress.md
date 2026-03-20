@@ -2380,3 +2380,16 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (2-file command wiring)
 - Issues: None.
 - Timestamp: 2026-03-20T05:50:00Z
+
+## Sprint 305 — Achiri Personalized Greeting (Direct Write)
+- Status: PASS
+- Commit: 7722010
+- Files created: workspace/sprints/sprint-305.json
+- Files modified: agents/achiri/conversation-summary.ts, agents/achiri/index.ts
+- Tasks completed:
+  - 305-01: Added getUserName() to conversation-summary.ts — extracts user's name from summary facts. Enhanced buildSummaryContext() with isNewSession flag — when true, injects greeting hint with user's name ("Greet them warmly by name (Sami)...").
+  - 305-02: Added session detection to chat() — isNewSession = resolvedHistory.length === 0 && memory enabled. Passed through buildMessages() → buildSystemPrompt() → buildSummaryContext(). Log line shows NEW_SESSION tag.
+- Validation: TypeScript clean compile. getUserName PASS (extracts "Sami"). Greeting hint PASS (present on new session, absent otherwise). Dry-run chat PASS with NEW_SESSION detection.
+- Swarm used: no (2-file feature)
+- Issues: None.
+- Timestamp: 2026-03-20T06:05:00Z
