@@ -9,6 +9,7 @@ import { randomUUID } from 'crypto';
 import type { InsightBrief } from '../scs001-insight/index';
 import { rewriteScript, type RewriteResult } from '../../scripts/scs001/llm-script-rewriter';
 import { getOptimalHookFormula } from '../../scripts/scs001/hook-optimizer';
+import { getOptimalDuration, type DurationConfig } from './length-optimizer';
 
 export interface ScriptSegment {
   segment_name: 'hook' | 'context' | 'clip' | 'commentary' | 'insight' | 'loop' | 'reaction' | 'point' | 'twist' | 'cta';
@@ -120,56 +121,61 @@ function applyHookTemplate(formula: string, originalText: string): string {
   return tpl.replace('{topic}', topic);
 }
 
-function buildSegments(brief: InsightBrief, useLoop: boolean): ScriptSegment[] {
+function buildSegments(brief: InsightBrief, useLoop: boolean, durConfig?: DurationConfig): ScriptSegment[] {
   const hookText = applyHookTemplate(brief.hook.formula, brief.hook.text);
+  const t = durConfig?.segment_timings ?? {
+    hook: [0, 2], context: [2, 5], clip: [5, 12],
+    commentary: [12, 18], insight: [18, 24], loop: [24, 28],
+  };
+
   const segments: ScriptSegment[] = [
     {
       segment_name:     'hook',
-      start_s:          0,
-      end_s:            2,
+      start_s:          t.hook[0],
+      end_s:            t.hook[1],
       voiceover_text:   hookText,
       visual_directive: 'title_card',
       caption_text:     hookText,
     },
     {
       segment_name:     'context',
-      start_s:          2,
-      end_s:            5,
+      start_s:          t.context[0],
+      end_s:            t.context[1],
       voiceover_text:   brief.pre_clip_commentary,
       visual_directive: 'text_overlay',
       caption_text:     brief.pre_clip_commentary,
     },
     {
       segment_name:     'clip',
-      start_s:          5,
-      end_s:            12,
+      start_s:          t.clip[0],
+      end_s:            t.clip[1],
       voiceover_text:   '',  // original audio plays
       visual_directive: 'source_clip',
       caption_text:     '',  // no caption during clip
     },
     {
       segment_name:     'commentary',
-      start_s:          12,
-      end_s:            18,
+      start_s:          t.commentary[0],
+      end_s:            t.commentary[1],
       voiceover_text:   brief.post_clip_commentary,
       visual_directive: 'text_overlay',
       caption_text:     brief.post_clip_commentary,
     },
     {
       segment_name:     'insight',
-      start_s:          18,
-      end_s:            24,
+      start_s:          t.insight[0],
+      end_s:            t.insight[1],
       voiceover_text:   brief.insight_statement + ' ' + brief.why_does_this_matter.substring(0, 100),
       visual_directive: 'text_overlay',
       caption_text:     brief.insight_statement,
     },
   ];
 
-  if (useLoop) {
+  if (useLoop && t.loop) {
     segments.push({
       segment_name:     'loop',
-      start_s:          24,
-      end_s:            28,
+      start_s:          t.loop[0],
+      end_s:            t.loop[1],
       voiceover_text:   hookText,
       visual_directive: 'title_card',
       caption_text:     'Watch again? ' + hookText.substring(0, 40),
@@ -384,6 +390,17 @@ export class ScriptAgent {
       }
     }
 
+    // Sprint 480: Video length optimizer — classify complexity → pick duration
+    const durConfig = getOptimalDuration({
+      hook_text: effectiveBrief.hook.text,
+      pre_clip_commentary: effectiveBrief.pre_clip_commentary,
+      post_clip_commentary: effectiveBrief.post_clip_commentary,
+      insight_statement: effectiveBrief.insight_statement,
+      why_does_this_matter: effectiveBrief.why_does_this_matter,
+      hook_formula: effectiveBrief.hook.formula,
+    });
+    console.log(`[ScriptAgent] Length optimizer: ${durConfig.target_duration}s (${durConfig.reason})`);
+
     // Sprint 444: Select video template based on insight ID
     const template = selectTemplate(effectiveBrief.insight_id);
 
@@ -398,10 +415,10 @@ export class ScriptAgent {
         segments = buildListicleSegments(effectiveBrief);
         break;
       default: {
-        // Standard template — original behavior
+        // Standard template — use length-optimized timings
         const reWatchHooks = ['curiosity_gap', 'secret', 'story', 'proof'];
         useLoop = reWatchHooks.includes(effectiveBrief.hook.formula);
-        segments = buildSegments(effectiveBrief, useLoop);
+        segments = buildSegments(effectiveBrief, useLoop, durConfig);
         break;
       }
     }

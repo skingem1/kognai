@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-480",
+  "title": "QUALITY — Video length optimizer (15s vs 30s vs 60s)",
+  "description": "Classify topic complexity and vary video length: 15s for simple hooks, 30s for standard explainers, 60s for deep dives. Currently all videos ~24-28s.",
+  "source": "queue — Sprint 480 VIDEO-QUALITY-V2",
+  "tasks": [
+    {
+      "id": "480-01",
+      "title": "Create length optimizer module with complexity classifier",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-480",
+      "deliverables": { "code": ["agents/scs001-script/length-optimizer.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "480-02",
+      "title": "Wire length optimizer into ScriptAgent.buildBundle",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-480",
+      "deliverables": { "code": ["agents/scs001-script/index.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
