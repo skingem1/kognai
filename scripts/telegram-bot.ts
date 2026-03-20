@@ -1302,6 +1302,92 @@ function cmdTikTokAuth(): string {
   );
 }
 
+// Sprint 346: /golive — one-stop Phase 1 go-live readiness checker
+function cmdGoLive(): string {
+  const lines: string[] = ['🚀 *Phase 1 Go-Live Readiness*', ''];
+
+  // 1. TikTok OAuth
+  const hasToken = !!process.env.TIKTOK_ACCESS_TOKEN;
+  const hasClientKey = !!process.env.TIKTOK_CLIENT_KEY;
+  const hasClientSecret = !!process.env.TIKTOK_CLIENT_SECRET;
+  lines.push(hasToken ? '✅ TikTok Access Token: SET' : '❌ TikTok Access Token: MISSING');
+  lines.push(hasClientKey ? '✅ TikTok Client Key: SET' : '❌ TikTok Client Key: MISSING');
+  lines.push(hasClientSecret ? '✅ TikTok Client Secret: SET' : '❌ TikTok Client Secret: MISSING');
+
+  // 2. Stripe
+  const stripeKeys = ['STRIPE_SECRET_KEY', 'STRIPE_WEBHOOK_SECRET', 'STRIPE_PRICE_GROWTH', 'STRIPE_PRICE_PREMIUM'];
+  const stripeSet = stripeKeys.filter(k => !!process.env[k]).length;
+  lines.push(stripeSet === stripeKeys.length ? '✅ Stripe: READY' : `⚠️ Stripe: ${stripeSet}/${stripeKeys.length} keys set`);
+
+  // 3. Gate progress
+  const GATE_DATE = new Date('2026-04-07T00:00:00Z');
+  const daysLeft = Math.max(0, Math.ceil((GATE_DATE.getTime() - Date.now()) / 86_400_000));
+  let postsCount = 0;
+  let totalViews = 0;
+  const mpPath = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
+  if (fs.existsSync(mpPath)) {
+    const posts = fs.readFileSync(mpPath, 'utf-8').split('\n').filter((l: string) => l.trim());
+    postsCount = posts.length;
+    for (const l of posts) {
+      try { const p = JSON.parse(l); totalViews += (p.views ?? 0); } catch {}
+    }
+  }
+  const postsLeft = Math.max(0, 30 - postsCount);
+  const viewsLeft = Math.max(0, 500 - totalViews);
+  const paceNeeded = daysLeft > 0 && postsLeft > 0 ? Math.round(postsLeft / daysLeft * 10) / 10 : 0;
+
+  lines.push('');
+  lines.push(`📅 Gate Deadline: Apr 7 (${daysLeft} days left)`);
+  lines.push(`📊 Posts: ${postsCount}/30 ${postsLeft > 0 ? `(${postsLeft} more needed)` : '✅'}`);
+  lines.push(`👁 Views: ${totalViews}/500 ${viewsLeft > 0 ? `(${viewsLeft} more needed)` : '✅'}`);
+  if (paceNeeded > 0) lines.push(`⏱ Pace: ${paceNeeded} posts/day`);
+
+  // 4. Queue
+  const ledgerPath = path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl');
+  let queueCount = 0;
+  if (fs.existsSync(ledgerPath)) {
+    const postedIds = new Set<string>();
+    if (fs.existsSync(mpPath)) {
+      for (const l of fs.readFileSync(mpPath, 'utf-8').split('\n').filter((l: string) => l.trim())) {
+        try { const p = JSON.parse(l); if (p.video_id) postedIds.add(p.video_id); } catch {}
+      }
+    }
+    for (const l of fs.readFileSync(ledgerPath, 'utf-8').split('\n').filter((l: string) => l.trim())) {
+      try { const e = JSON.parse(l); if (e.video_id && !postedIds.has(e.video_id)) queueCount++; } catch {}
+    }
+  }
+  lines.push(`📦 Queue: ${queueCount} videos ready to post`);
+
+  // 5. Urgency signal
+  lines.push('');
+  if (postsLeft <= 0 && viewsLeft <= 0) {
+    lines.push('✅ GATE CRITERIA MET — ready for Phase 2A!');
+  } else if (daysLeft <= 3 && postsLeft > 0) {
+    lines.push('💀 KILL SWITCH IMMINENT — post NOW or TikTok agent shuts down');
+  } else if (daysLeft <= 7 && postsLeft > 0) {
+    lines.push('🚨 CRITICAL — behind pace, increase posting frequency');
+  } else if (postsCount === 0) {
+    lines.push('⚠️ WARNING — 0 posts recorded. Start posting now!');
+  } else if (paceNeeded > 3) {
+    lines.push('🟠 Behind pace — need to accelerate posting');
+  } else {
+    lines.push('🟢 On track — maintain current pace');
+  }
+
+  // 6. Next steps
+  lines.push('');
+  lines.push('*Next Steps:*');
+  const steps: string[] = [];
+  if (!hasToken) steps.push('1. Run /tiktokauth to get TikTok access token');
+  if (queueCount > 0) steps.push(`${steps.length + 1}. Use /postbatch to get videos to post`);
+  if (postsCount === 0) steps.push(`${steps.length + 1}. Post first video + /record <id> <views>`);
+  if (hasToken && queueCount > 0) steps.push(`${steps.length + 1}. Enable auto-posting: AUTO\\_POST\\_DRY\\_RUN=0`);
+  if (steps.length === 0) steps.push('All systems go! Keep posting to hit the gate.');
+  lines.push(...steps);
+
+  return lines.join('\n');
+}
+
 function cmdHelp(): string {
   return (
     `*Kognai Bot Commands*\n\n` +
@@ -1326,6 +1412,7 @@ function cmdHelp(): string {
     `/tiktokauth — TikTok OAuth setup guide\n` +
     `/today     — Daily posting brief + recommendations\n` +
     `/calendar  — 7-day content posting plan\n` +
+    `/golive    — Phase 1 go-live readiness check\n` +
     `/help      — This message`
   );
 }
@@ -1427,6 +1514,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/pipeline':  response = cmdPipeline(); break;
     case '/today':     response = cmdToday();  break;
     case '/calendar':  response = cmdCalendar(); break;
+    case '/golive':    response = cmdGoLive();  break;
     case '/help':      response = cmdHelp();   break;
     default:
       response = `Unknown command: \`${cmdName}\`\n\n${cmdHelp()}`;

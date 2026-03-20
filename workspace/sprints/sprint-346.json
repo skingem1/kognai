@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-346",
+  "title": "/golive command — one-stop Phase 1 go-live readiness checker",
+  "description": "Operator types /golive to see full go-live readiness: env vars, TikTok OAuth, Stripe, queue stats, gate countdown, auto-post dry-run result, and exact next steps.",
+  "source": "auto — Phase 1.5 gate readiness, operator needs single command to see all blockers",
+  "tasks": [
+    {
+      "id": "346-01",
+      "title": "Add /golive command to telegram-bot.ts — comprehensive go-live readiness check",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-346",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
