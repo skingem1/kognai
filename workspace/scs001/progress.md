@@ -3861,3 +3861,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (single-function addition)
 - Issues: None.
 - Timestamp: 2026-03-20T17:50:00Z
+
+## Sprint 433 — Interactive /menu Command (Direct Write)
+- Status: PASS
+- Commit: 09059fa
+- Files created: workspace/sprints/sprint-433.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 433-01: Added /menu command with 5-row inline keyboard (15 buttons). Categories: Posting (deliver, gate, streak), Pipeline (queue, today, pace), Analytics (analytics, lastrun, autopost), System (golive, revenue, status), Quick (digest, help). Added to setMyCommands registration and /help listing.
+- Validation: tsc --noEmit PASS
+- Swarm used: no (single-command addition)
+- Issues: None.
+- Timestamp: 2026-03-20T18:05:00Z
