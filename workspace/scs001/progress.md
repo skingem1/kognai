@@ -3373,3 +3373,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (FP-007 file >4000 lines)
 - Issues: None.
 - Timestamp: 2026-03-20T20:50:00Z
+
+## Sprint 393 — /note — Operator Video Notes (Direct Write)
+- Status: PASS
+- Commit: f35e872
+- Files created: workspace/sprints/sprint-393.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 393-01: Added /note command. Persistent video-notes.json in workspace/scs001/. /note (no args) shows all notes. /note <id> shows specific note. /note <id> <text> saves note. /note <id> clear removes note. Updated /help + switch router.
+- Validation: tsc --noEmit PASS
+- Swarm used: no (FP-007 file >4000 lines)
+- Issues: None.
+- Timestamp: 2026-03-20T21:00:00Z
