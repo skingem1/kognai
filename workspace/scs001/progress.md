@@ -2926,3 +2926,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (surgical Achiri edit)
 - Issues: Pre-existing TS errors in derja-profiler.ts (regex flag) and memory-search.ts (Set iteration) — not related to this fix.
 - Timestamp: 2026-03-20T05:45:00Z
+
+## Sprint 348 — /audit Command (Direct Write)
+- Status: PASS
+- Commit: 525c409
+- Files created: workspace/sprints/sprint-348.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 348-01: cmdAudit() — content quality audit. Analyzes experiments.jsonl for score distribution (high/mid/low), top-5 speakers by avg viral score, hook formula diversity count, best-5 unposted videos to post first, gate timeline estimate with quality assessment.
+- Validation: npx tsc --noEmit PASS
+- Swarm used: no (surgical bot edit)
+- Issues: Fixed Map iteration (TS2802) — used Array.from() instead of spread.
+- Timestamp: 2026-03-20T06:00:00Z
