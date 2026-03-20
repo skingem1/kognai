@@ -4121,3 +4121,16 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (analytics module + telegram integration)
 - Issues: None.
 - Timestamp: 2026-03-20T09:45:00Z
+
+## Sprint 454 — YouTube Shorts Upload Client (Direct Write)
+- Status: PASS
+- Commit: 763cc64
+- Files created: scripts/scs001/youtube-shorts.ts, workspace/sprints/sprint-454.json
+- Files modified: scripts/telegram-bot.ts (added /youtube command + help entry)
+- Tasks completed:
+  - 454-01: Created youtube-shorts.ts — YouTube Data API v3 Shorts upload client. OAuth2 token refresh, resumable upload protocol, dry-run mode (YOUTUBE_DRY_RUN=1), upload logging to youtube-uploads.jsonl. Videos < 60s + vertical = auto Shorts classification.
+  - 454-02: Added /youtube Telegram command — shows API key/OAuth status, upload readiness, setup guide. Shows upload history if available.
+- Validation: checkUploadReadiness() correctly reports missing credentials, formatYouTubeStatus() renders setup guide
+- Swarm used: no (API integration + telegram)
+- Issues: Requires YOUTUBE_CLIENT_ID/SECRET/REFRESH_TOKEN for actual uploads. Human must set up OAuth2 at console.cloud.google.com.
+- Timestamp: 2026-03-20T10:00:00Z
