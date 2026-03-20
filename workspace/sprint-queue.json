@@ -303,7 +303,7 @@
       "sprint": 474,
       "title": "SKILLS — T2 Content Skills seed (6 skills for SCS-001)",
       "block": "SKILLS",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "Master Architecture specifies 6 T2 content/monetization skills. Seed: trend-analyzer, clip-scorer, script-generator, caption-optimizer, scheduling-engine, analytics-aggregator. These wrap existing SCS-001 agent logic as reusable skills for future SCS agents."
     },
