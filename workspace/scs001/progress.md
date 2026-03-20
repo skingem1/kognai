@@ -2434,3 +2434,17 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (single-file feature + validation)
 - Issues: None.
 - Timestamp: 2026-03-20T07:00:00Z
+
+## Sprint 309 — Achiri Topic Suggestions (Direct Write)
+- Status: PASS
+- Commit: fcc11ae
+- Files created: agents/achiri/topic-suggester.ts, scripts/achiri/validate-topic-suggester.ts, workspace/sprints/sprint-309.json
+- Files modified: agents/achiri/index.ts
+- Tasks completed:
+  - 309-01: Created topic-suggester.ts — stall detection (bored, idk, walou, meh, greetings), interest-based suggestions from 8 topic categories (education, tech, health, relationships, work, culture, food, religion), default suggestions for new users. buildTopicHint() returns system prompt hint.
+  - 309-02: Wired into index.ts — buildTopicHint called with userMessage + user profile, passed through buildMessages → buildSystemPrompt. Logs when topic hint is injected.
+  - 309-03: Validation — 12 tests: stall detection (Darija/English), rejection of normal messages, suggestion generation with/without profile, hint content. All PASS.
+- Validation: npx ts-node scripts/achiri/validate-topic-suggester.ts — 12/12 PASS
+- Swarm used: no (multi-file feature)
+- Issues: None.
+- Timestamp: 2026-03-20T07:15:00Z
