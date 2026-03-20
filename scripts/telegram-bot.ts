@@ -2436,6 +2436,111 @@ function cmdExport(args: string): string {
   return lines.join('\n');
 }
 
+// ─── Sprint 379: /weeklyreport — automated weekly performance summary ────────
+
+function cmdWeeklyReport(): string {
+  const now = new Date();
+  const weekAgo = new Date(now.getTime() - 7 * 86_400_000);
+  const weekAgoStr = weekAgo.toISOString().slice(0, 10);
+  const todayStr = now.toISOString().slice(0, 10);
+
+  // Posts this week
+  const posts = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  const thisWeekPosts = posts.filter((p: any) => {
+    const d = (p.posted_at ?? p.recorded_at ?? '').slice(0, 10);
+    return d >= weekAgoStr && d <= todayStr;
+  });
+  const totalPosts = posts.length;
+  const totalViews = posts.reduce((sum: number, p: any) => sum + (p.views ?? 0), 0);
+  const weekViews = thisWeekPosts.reduce((sum: number, p: any) => sum + (p.views ?? 0), 0);
+
+  // Pipeline output this week
+  const experiments = readLines(path.join(ROOT, 'workspace', 'scs001', 'experiments.jsonl'));
+  const weekExperiments = experiments.filter((e: any) => {
+    const d = (e.timestamp ?? '').slice(0, 10);
+    return d >= weekAgoStr && d <= todayStr;
+  });
+  const weekQcPassed = weekExperiments.filter((e: any) => e.qc_passed).length;
+
+  // Top hook this week
+  const hookCounts: Record<string, { count: number; totalScore: number }> = {};
+  for (const e of weekExperiments) {
+    const h = e.hook_formula ?? 'unknown';
+    if (h === 'unknown') continue;
+    if (!hookCounts[h]) hookCounts[h] = { count: 0, totalScore: 0 };
+    hookCounts[h].count++;
+    if (e.partial_viral_score != null) hookCounts[h].totalScore += e.partial_viral_score;
+  }
+  const topHook = Object.entries(hookCounts)
+    .map(([h, s]) => ({ hook: h, avg: s.count > 0 ? s.totalScore / s.count : 0, count: s.count }))
+    .sort((a, b) => b.avg - a.avg)[0];
+
+  // Gate progress
+  const GATE_DATE = new Date('2026-04-07T00:00:00Z');
+  const daysLeft = Math.max(0, Math.ceil((GATE_DATE.getTime() - now.getTime()) / 86_400_000));
+  const postsNeeded = Math.max(0, 30 - totalPosts);
+  const paceNeeded = daysLeft > 0 ? (postsNeeded / daysLeft).toFixed(1) : '0';
+
+  // Captioned videos ready
+  let captionedCount = 0;
+  try {
+    const scsDir = path.join(ROOT, 'workspace', 'scs001');
+    const seen = new Set<string>();
+    for (const dir of fs.readdirSync(scsDir).filter(d => d.startsWith('run-'))) {
+      const capDir = path.join(scsDir, dir, 'caption');
+      if (!fs.existsSync(capDir)) continue;
+      for (const f of fs.readdirSync(capDir)) {
+        if (f.endsWith('-captioned.mp4')) seen.add(f);
+      }
+    }
+    captionedCount = seen.size;
+  } catch { /* skip */ }
+
+  // Revenue
+  const dbPath = path.join(ROOT, 'data', 'telegram-db.json');
+  let mrr = 0;
+  let paidUsers = 0;
+  if (fs.existsSync(dbPath)) {
+    try {
+      const db = JSON.parse(fs.readFileSync(dbPath, 'utf-8'));
+      const PRICES: Record<string, number> = { growth: 19, premium: 49 };
+      for (const [_, entry] of Object.entries(db) as [string, any][]) {
+        const tier = entry.tier ?? 'free';
+        if (tier !== 'free' && entry.active !== false) {
+          paidUsers++;
+          mrr += PRICES[tier] ?? 0;
+        }
+      }
+    } catch { /* skip */ }
+  }
+
+  const lines = [
+    `📊 *Weekly Report* (${weekAgoStr} → ${todayStr})`,
+    '',
+    '*📱 Posting:*',
+    `• This week: ${thisWeekPosts.length} posts · ${weekViews} views`,
+    `• All time: ${totalPosts}/30 posts · ${totalViews} total views`,
+    `• Gate: ${daysLeft}d left · ${paceNeeded} posts/day needed`,
+    '',
+    '*🔬 Pipeline:*',
+    `• New experiments: ${weekExperiments.length}`,
+    `• QC passed: ${weekQcPassed}`,
+    `• Videos ready: ${captionedCount}`,
+    topHook ? `• Top hook: *${topHook.hook}* (${Math.round(topHook.avg * 100)}% avg, n=${topHook.count})` : '',
+    '',
+    '*💰 Revenue:*',
+    `• MRR: €${mrr} · Paid users: ${paidUsers}`,
+    `• Stripe: ${process.env.STRIPE_SECRET_KEY ? '🟢' : '🔴'}`,
+    '',
+    '*📈 Next week targets:*',
+    `• Post ${Math.min(postsNeeded, 14)} videos (2/day)`,
+    `• Run /postnow daily`,
+    `• Track views with /updateviews`,
+  ].filter(Boolean);
+
+  return lines.join('\n');
+}
+
 // ─── Sprint 371: /todaycaptions — batch captions for today's posts ────────
 
 async function cmdTodayCaptions(chatId: string): Promise<void> {
@@ -3152,6 +3257,7 @@ function cmdHelp(): string {
     `/hooktest  — Hook formula A/B test rankings\n` +
     `/besttime  — Optimal posting time analysis\n` +
     `/export    — Batch export manifest for posting\n` +
+    `/weeklyreport — Weekly performance summary\n` +
     `/help      — This message`
   );
 }
@@ -3311,6 +3417,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/hooktest':    response = cmdHookTest();            break;
     case '/besttime':    response = cmdBestTime();            break;
     case '/export':      response = cmdExport(cmdArgs);       break;
+    case '/weeklyreport': response = cmdWeeklyReport();       break;
     case '/help':        response = cmdHelp();        break;
     default:
       response = `Unknown command: \`${cmdName}\`\n\n${cmdHelp()}`;
