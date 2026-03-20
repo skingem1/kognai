@@ -4374,3 +4374,57 @@ export async function handleTodayCaptions(chatId: number, ownerChatId: string): 
     await sendMessage(chatId, `❌ Caption generation failed: ${(err as Error).message}`);
   }
 }
+
+// ── /leaderboard — content quality ranking — Sprint 333 ─────────────────────
+// Owner-only: ranks speakers and hook formulas by average viral score.
+export async function handleLeaderboard(chatId: number, ownerChatId: string): Promise<void> {
+  if (String(chatId) !== ownerChatId) {
+    await sendMessage(chatId, '🔒 Owner only.');
+    return;
+  }
+
+  try {
+    const { generateLeaderboard } = require('../../scripts/scs001/content-leaderboard');
+    const lb = generateLeaderboard();
+
+    const lines: string[] = [
+      '🏆 *Content Leaderboard*',
+      `📊 ${lb.total_experiments} unique experiments analyzed`,
+      '',
+    ];
+
+    // Top speakers
+    lines.push('*Top Speakers (by avg viral score)*');
+    const topSpeakers = lb.speakers.slice(0, 7);
+    for (let i = 0; i < topSpeakers.length; i++) {
+      const s = topSpeakers[i];
+      const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '  ';
+      const pct = Math.round(s.avg_score * 100);
+      lines.push(`${medal} ${s.name}: *${pct}%* avg (${s.count} clips, QC ${s.qc_rate}%)`);
+    }
+
+    // Top hooks
+    lines.push('');
+    lines.push('*Top Hook Formulas*');
+    const topHooks = lb.hooks.slice(0, 5);
+    for (const h of topHooks) {
+      const pct = Math.round(h.avg_score * 100);
+      lines.push(`  ${h.name}: *${pct}%* avg (${h.count} clips)`);
+    }
+
+    // Top 5 individual videos
+    lines.push('');
+    lines.push('*Best Videos*');
+    for (const v of lb.top_videos.slice(0, 5)) {
+      const pct = Math.round(v.score * 100);
+      lines.push(`  \`${v.clip_id.slice(0, 16)}\` — ${v.speaker} (${v.hook}, ${pct}%)`);
+    }
+
+    lines.push('');
+    lines.push('_Post highest-ranked content first for best engagement._');
+
+    await sendMessage(chatId, lines.join('\n'));
+  } catch (err) {
+    await sendMessage(chatId, `❌ Leaderboard failed: ${(err as Error).message}`);
+  }
+}

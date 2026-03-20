@@ -45,6 +45,7 @@ import {
   handleRunPipeline,
   handlePostPlan,
   handleTodayCaptions,
+  handleLeaderboard,
 } from './commands';
 
 // ── Config ────────────────────────────────────────────────────────────────────
@@ -195,6 +196,7 @@ async function dispatch(update: TelegramUpdate): Promise<void> {
     case '/runpipeline':    await handleRunPipeline(chatId, OWNER_CHAT_ID, text);  break;
     case '/postplan':       await handlePostPlan(chatId, OWNER_CHAT_ID);           break;
     case '/todaycaptions': await handleTodayCaptions(chatId, OWNER_CHAT_ID);     break;
+    case '/leaderboard':   await handleLeaderboard(chatId, OWNER_CHAT_ID);       break;
     default:                 await handleUnknown(chatId, text);                          break;
   }
 }

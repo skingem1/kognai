@@ -1,0 +1,44 @@
+{
+  "sprint_id": "sprint-333",
+  "title": "Content leaderboard — rank speakers and hooks by viral score + /leaderboard command",
+  "description": "Analyze experiments.jsonl to rank speakers and hook formulas by average viral score. Surface via /leaderboard Telegram command so operator knows which content types to prioritize for posting.",
+  "source": "auto — Phase 1 gate optimization, maximize engagement per post",
+  "tasks": [
+    {
+      "id": "333-01",
+      "title": "Create scripts/scs001/content-leaderboard.ts — speaker + hook ranking",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-333",
+      "deliverables": { "code": ["scripts/scs001/content-leaderboard.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "333-02",
+      "title": "Add /leaderboard command to agents/telegram-bot/commands.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-333",
+      "deliverables": { "code": ["agents/telegram-bot/commands.ts", "agents/telegram-bot/index.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "333-03",
+      "title": "Create scripts/scs001/validate-leaderboard.ts — validation test",
+      "type": "test",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-333",
+      "deliverables": { "code": ["scripts/scs001/validate-leaderboard.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
