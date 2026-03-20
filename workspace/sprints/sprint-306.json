@@ -1,0 +1,44 @@
+{
+  "sprint_id": "sprint-306",
+  "title": "Achiri smart context windowing — token-budget turn selector for Ollama",
+  "description": "Currently all 50 history turns are sent to the LLM. Small local models (qwen3:0.6b/4b) can't handle this — quality degrades or context overflows. Add a token-budget context selector that picks the most recent + most relevant turns within a configurable token budget. Critical for Apr 25 alpha quality.",
+  "source": "auto — Achiri Phase 2A: alpha quality hardening",
+  "tasks": [
+    {
+      "id": "306-01",
+      "title": "Create context-window.ts — token estimator + budget-based turn selector",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-306",
+      "deliverables": { "code": ["agents/achiri/context-window.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "306-02",
+      "title": "Wire context windowing into chat() — replace raw history with windowed history",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-306",
+      "deliverables": { "code": ["agents/achiri/index.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "306-03",
+      "title": "Validation script for context windowing",
+      "type": "test",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-306",
+      "deliverables": { "code": ["scripts/achiri/validate-context-window.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

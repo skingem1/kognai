@@ -17,6 +17,7 @@ import { safetyCheck } from './safety-filter';
 import { injectMemoryContext } from './memory-search';
 import { extractUserProfile, buildProfileContext } from './user-profile';
 import { buildSummaryContext } from './conversation-summary';
+import { selectTurnsWithinBudget } from './context-window';
 import { routeCall } from '../../scripts/lib/clawrouter-v2';
 
 export interface AchiriConfig {
@@ -163,9 +164,15 @@ export class AchiriConversationHandler {
     // Sprint 305: Detect new session (returning user, empty current history)
     const isNewSession = resolvedHistory.length === 0 && this.memory !== null;
 
-    const messages = this.buildMessages(userMessage, effectiveHistory, isNewSession);
+    // Sprint 306: Smart context windowing — trim history to fit model's token budget
     const model = this.getModelConfig();
-    console.log('[Achiri] chat() model=' + model.model + ' tier=' + model.tier + ' msg_len=' + userMessage.length + ' history=' + resolvedHistory.length + (isNewSession ? ' NEW_SESSION' : ''));
+    const windowedHistory = selectTurnsWithinBudget(effectiveHistory, model.model);
+    if (windowedHistory.length < effectiveHistory.length) {
+      console.log('[Achiri] context_window trimmed=' + effectiveHistory.length + '→' + windowedHistory.length + ' model=' + model.model);
+    }
+
+    const messages = this.buildMessages(userMessage, windowedHistory, isNewSession);
+    console.log('[Achiri] chat() model=' + model.model + ' tier=' + model.tier + ' msg_len=' + userMessage.length + ' history=' + windowedHistory.length + (isNewSession ? ' NEW_SESSION' : ''));
 
     // Dry-run mode for CI/tests
     if (process.env.ACHIRI_DRY_RUN === '1') {
