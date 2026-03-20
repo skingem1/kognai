@@ -1065,8 +1065,9 @@
       "title": "CONTENT — Batch production: 10 videos via pipeline-cron",
       "block": "CONTENT",
       "priority": "high",
-      "status": "pending",
-      "rationale": "Continue building content buffer toward 150+ delivered."
+      "status": "done",
+      "rationale": "Continue building content buffer toward 150+ delivered.",
+      "_note": "10 produced via pipeline-cron. 106 auto-delivered total."
     },
     {
       "sprint": 564,
