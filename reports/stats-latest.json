@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-03-20T21:42:38.890Z",
+  "timestamp": "2026-03-20T22:00:46.194Z",
   "period": {
     "today": "2026-03-20",
     "week_start": "2026-03-15"
   },
   "production": {
-    "total_videos": 193,
-    "videos_today": 193,
-    "videos_this_week": 193,
-    "pipeline_runs_total": 90,
-    "pipeline_runs_today": 64
+    "total_videos": 203,
+    "videos_today": 203,
+    "videos_this_week": 203,
+    "pipeline_runs_total": 92,
+    "pipeline_runs_today": 66
   },
   "delivery": {
     "auto_delivered_total": 107,
@@ -17,9 +17,9 @@
     "telegram_sent_total": 11
   },
   "costs": {
-    "total_usd": 8.6058,
-    "today_usd": 8.6058,
-    "avg_per_video_usd": 0.0446
+    "total_usd": 9.5745,
+    "today_usd": 9.5745,
+    "avg_per_video_usd": 0.0472
   },
   "quality": {
     "diversity_score": 100,

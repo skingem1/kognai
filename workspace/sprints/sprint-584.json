@@ -1,0 +1,26 @@
+{
+  "sprint_id": "sprint-584",
+  "title": "INFRA \u2014 System snapshot: 203 produced, 118 delivered, $9.57, all green",
+  "description": "Comprehensive snapshot: 203 produced (past 200!), 118 delivered, diversity 100/100, QC 4/4 pass, 5 PM2 online, 1085 commits. Gate 118/30 ON TRACK.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "584-01",
+      "title": "Run all reports",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "reports/",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-584",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": [
+          "reports/stats-latest.json"
+        ]
+      }
+    }
+  ]
+}
