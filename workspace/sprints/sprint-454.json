@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-454",
+  "title": "YOUTUBE — YouTube Shorts upload client + /youtube Telegram command",
+  "description": "Build youtube-shorts.ts using YouTube Data API v3 for automated Shorts upload. Supports: OAuth2 token refresh, video upload with TikTok-optimized metadata, dry-run mode. Add /youtube Telegram command showing upload readiness + last upload status.",
+  "source": "queue — Sprint 459 YOUTUBE block (moved up for multi-platform posting)",
+  "tasks": [
+    {
+      "id": "454-01",
+      "title": "Create youtube-shorts.ts — YouTube Shorts upload client via Data API v3",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-454",
+      "deliverables": { "code": ["scripts/scs001/youtube-shorts.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "454-02",
+      "title": "Add /youtube Telegram command — upload readiness + status",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-454",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

@@ -2436,6 +2436,17 @@ function cmdPostPlan(): string {
   return lines.join('\n');
 }
 
+// ─── Sprint 454: /youtube — YouTube Shorts upload status ──────────────────
+
+function cmdYouTube(): string {
+  try {
+    const { formatYouTubeStatus } = require('./scs001/youtube-shorts');
+    return formatYouTubeStatus();
+  } catch (e: any) {
+    return `❌ YouTube status error: ${e.message}`;
+  }
+}
+
 // ─── Sprint 453: /gateanalytics — gate progress + projections ─────────────
 
 function cmdGateAnalytics(): string {
@@ -4748,6 +4759,7 @@ function cmdHelp(): string {
     `/todaycaptions — Copy-paste captions for today\n` +
     `/hookstats  — Hook formula performance rankings\n` +
     `/gateanalytics — April 7 gate progress + projections\n` +
+    `/youtube    — YouTube Shorts upload status\n` +
     `/queueopt   — Diversity-optimized posting order\n` +
     `/viralstats — Viral score summary + top 3\n` +
     `/checkout  — Generate Stripe checkout link\n` +
@@ -6185,6 +6197,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/hookstats':   response = cmdHookStats();          break;
     case '/queueopt':    response = cmdQueueOpt();           break;
     case '/gateanalytics': response = cmdGateAnalytics();   break;
+    case '/youtube':     response = cmdYouTube();            break;
     case '/checkout':    await cmdCheckout(chatId, cmdArgs); return;
     case '/subscribers': await cmdSubscribers(chatId); return;
     case '/portal':      response = cmdPortal(cmdArgs);        break;
