@@ -145,8 +145,23 @@ export class SCS001Orchestrator {
 
     // --- Stage 3.5: Deduplication ---
     const qualifiedClipsRaw = clips.filter(c => c.qualified);
-    const qualifiedClips = this.ledger.filterNewClips(qualifiedClipsRaw);
-    const clipsDeduplicated = qualifiedClipsRaw.length - qualifiedClips.length;
+    const qualifiedClipsDeduped = this.ledger.filterNewClips(qualifiedClipsRaw);
+    const clipsDeduplicated = qualifiedClipsRaw.length - qualifiedClipsDeduped.length;
+
+    // --- Stage 3.6: Speaker diversity quota (Sprint 428) ---
+    // Cap clips per speaker to ensure content variety. Without this,
+    // a trending speaker (e.g., Sam Altman) can dominate the entire batch.
+    const MAX_CLIPS_PER_SPEAKER = 3;
+    const speakerCounts: Record<string, number> = {};
+    const qualifiedClips = qualifiedClipsDeduped.filter(c => {
+      const spk = (c.speaker ?? 'unknown').toLowerCase();
+      speakerCounts[spk] = (speakerCounts[spk] ?? 0) + 1;
+      return speakerCounts[spk] <= MAX_CLIPS_PER_SPEAKER;
+    });
+    const speakerCapped = qualifiedClipsDeduped.length - qualifiedClips.length;
+    if (speakerCapped > 0) {
+      console.log(`[Orchestrator] Speaker diversity: capped ${speakerCapped} clips (max ${MAX_CLIPS_PER_SPEAKER}/speaker)`);
+    }
 
     // --- Stage 4: Insight Agent ---
     if (qualifiedClips.length > 0 && this.mode === 'live') {

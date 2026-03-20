@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-428",
+  "title": "Speaker diversity quota in pipeline — max 3 clips per speaker per run",
+  "description": "Sam Altman has 33% of all experiments. Add per-speaker cap (max 3) after deduplication to ensure content variety. Excess clips from same speaker are dropped before insight stage.",
+  "source": "auto — experiments.jsonl analysis: Sam Altman 107/329, ThePrimeagen 50/329. Pipeline over-concentrates on trending speakers.",
+  "tasks": [
+    {
+      "id": "428-01",
+      "title": "Add speaker diversity quota after dedup in orchestrator",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-428",
+      "deliverables": { "code": ["agents/scs001-orchestrator/index.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
