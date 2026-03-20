@@ -734,3 +734,105 @@ function buildInstagramCaption(tiktokCaption: string): string {
   const caption = textLines.join('\n');
   return `${caption}\n\n.\n.\n.\n\n${allTags.join(' ')}`;
 }
+
+// ── Sprint 603: Video Inventory & Batch Delivery ──────────────────────
+
+export function cmdInventory(): string {
+  const inventoryPath = path.join(ROOT, 'reports', 'video-inventory.json');
+
+  // Auto-regenerate inventory
+  try {
+    const { execSync } = require('child_process');
+    execSync('npx ts-node --transpile-only scripts/scs001/scan-video-inventory.ts', {
+      cwd: ROOT, timeout: 30000, stdio: 'pipe',
+    });
+  } catch { /* try to read whatever exists */ }
+
+  if (!fs.existsSync(inventoryPath)) {
+    return '⚠️ No video inventory. Run: `npx ts-node scripts/scs001/scan-video-inventory.ts`';
+  }
+
+  let inv: any;
+  try {
+    inv = JSON.parse(fs.readFileSync(inventoryPath, 'utf-8'));
+  } catch {
+    return '⚠️ Could not parse video-inventory.json';
+  }
+
+  const lines: string[] = [];
+  lines.push('📦 *Video Inventory*');
+  lines.push(`Scanned: ${inv.total_runs ?? 0} runs · ${inv.total_videos ?? 0} total videos`);
+  lines.push(`Unique topics: ${inv.unique_topics ?? 0}`);
+  lines.push(`Ready to post: ${inv.ready_to_post ?? 0}`);
+  lines.push(`Already posted: ${inv.already_posted ?? 0}`);
+  lines.push('');
+
+  const g = inv.gate_status ?? {};
+  const gap = g.gap ?? 30;
+  lines.push(`🎯 *Gate: ${g.posted ?? 0}/30 posts* (${gap} to go)`);
+  lines.push('');
+
+  if (inv.videos?.length > 0) {
+    lines.push('*Videos (best per topic):*');
+    for (const v of inv.videos.slice(0, 15)) {
+      const status = v.posted ? '✅' : '⏳';
+      lines.push(`${status} [${v.format}] ${v.title?.slice(0, 40)} (${v.duration_s}s)`);
+    }
+    if (inv.videos.length > 15) {
+      lines.push(`... +${inv.videos.length - 15} more`);
+    }
+  }
+
+  return lines.join('\n');
+}
+
+export async function cmdBatchDeliver(chatId: string, args: string): Promise<string> {
+  const count = Math.min(Math.max(parseInt(args) || 5, 1), 15);
+
+  // Regenerate inventory first
+  try {
+    const { execSync } = require('child_process');
+    execSync('npx ts-node --transpile-only scripts/scs001/scan-video-inventory.ts', {
+      cwd: ROOT, timeout: 30000, stdio: 'pipe',
+    });
+  } catch { /* continue with existing */ }
+
+  const inventoryPath = path.join(ROOT, 'reports', 'video-inventory.json');
+  if (!fs.existsSync(inventoryPath)) {
+    return '⚠️ No inventory. Run the pipeline first to generate videos.';
+  }
+
+  let inv: any;
+  try {
+    inv = JSON.parse(fs.readFileSync(inventoryPath, 'utf-8'));
+  } catch {
+    return '⚠️ Could not parse video-inventory.json';
+  }
+
+  const unposted = (inv.videos ?? []).filter((v: any) => !v.posted);
+  if (unposted.length === 0) {
+    return '✅ All videos have been posted! Generate more with the pipeline.';
+  }
+
+  const toDeliver = unposted.slice(0, count);
+  let sent = 0;
+
+  for (const v of toDeliver) {
+    const videoPath = v.video_path;
+    if (!videoPath || !fs.existsSync(videoPath)) {
+      await sendMessage(chatId, `⚠️ ${v.video_id}: video file not found`);
+      continue;
+    }
+
+    const caption = `📹 *${v.title}*\nFormat: ${v.format} · ${v.duration_s}s\nID: \`${v.video_id}\`\n\nPost to TikTok, then run:\n/done ${v.video_id}`;
+
+    try {
+      await sendVideoFile(chatId, videoPath, caption);
+      sent++;
+    } catch (err: any) {
+      await sendMessage(chatId, `⚠️ ${v.video_id}: send failed — ${err.message?.slice(0, 100)}`);
+    }
+  }
+
+  return `📦 Batch delivery: ${sent}/${toDeliver.length} videos sent.\nGate: ${inv.gate_status?.posted ?? 0}/30 · ${unposted.length - sent} remaining in queue.`;
+}

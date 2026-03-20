@@ -1,0 +1,81 @@
+{
+  "scanned_at": "2026-03-20T23:14:02.793Z",
+  "total_runs": 13,
+  "total_videos": 19,
+  "unique_topics": 8,
+  "already_registered": 0,
+  "newly_registered": 8,
+  "already_posted": 0,
+  "ready_to_post": 8,
+  "gate_status": {
+    "posted": 0,
+    "target": 30,
+    "gap": 30
+  },
+  "videos": [
+    {
+      "video_id": "dbt-b87db595",
+      "format": "debate",
+      "title": "Wiki Cat (WKC) 📈 21.5%",
+      "duration_s": 27,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260320T21-kfes/output/dbt-b87db595_final.mp4"
+    },
+    {
+      "video_id": "exp-560203b8",
+      "format": "explainer",
+      "title": "Katana (KAT) 📈 2.2%",
+      "duration_s": 12,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260320T22-pxzq/output/exp-560203b8_final.mp4"
+    },
+    {
+      "video_id": "exp-72c42c90",
+      "format": "explainer",
+      "title": "Render (RENDER) 📈 1.9%",
+      "duration_s": 12,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260320T22-pxzq/output/exp-72c42c90_final.mp4"
+    },
+    {
+      "video_id": "exp-4aec210d",
+      "format": "explainer",
+      "title": "Solana (SOL) 📈 1.1%",
+      "duration_s": 12,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260320T22-pxzq/output/exp-4aec210d_final.mp4"
+    },
+    {
+      "video_id": "exp-0ff2d2fc",
+      "format": "explainer",
+      "title": "NVIDIA/NemoClaw — Run OpenClaw securely inside NVIDIA OpenShell with managed inference",
+      "duration_s": 12,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260320T21-bhp8/output/exp-0ff2d2fc_final.mp4"
+    },
+    {
+      "video_id": "exp-4c25f9ef",
+      "format": "explainer",
+      "title": "aiming-lab/AutoResearchClaw — Fully autonomous & self-evolving research from idea to paper. Chat an Idea. Get ",
+      "duration_s": 12,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260320T21-kfes/output/exp-4c25f9ef_final.mp4"
+    },
+    {
+      "video_id": "exp-4aaca82f",
+      "format": "explainer",
+      "title": "jackwener/opencli — Make Any Website & Tool Your CLI. A universal CLI Hub and AI-native runtime. Tra",
+      "duration_s": 12,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260320T21-kfes/output/exp-4aaca82f_final.mp4"
+    },
+    {
+      "video_id": "exp-16516b9d",
+      "format": "explainer",
+      "title": "Zano (ZANO) 📈 19.5%",
+      "duration_s": 12,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260320T21-kfes/output/exp-16516b9d_final.mp4"
+    }
+  ]
+}

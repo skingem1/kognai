@@ -86,10 +86,25 @@ export function latestSprintFile(): string | null {
 export function findCaptionedMp4(videoId: string): string | null {
   try {
     const scsDir = path.join(ROOT, 'workspace', 'scs001');
+    // Check legacy run-* dirs
     const runDirs = fs.readdirSync(scsDir).filter(d => d.startsWith('run-'));
     for (const dir of runDirs) {
       const p = path.join(scsDir, dir, 'caption', `${videoId}-captioned.mp4`);
       if (fs.existsSync(p)) return p;
+    }
+    // Check multiformat-runs output dirs (Sprint 603)
+    const mfDir = path.join(scsDir, 'multiformat-runs');
+    if (fs.existsSync(mfDir)) {
+      const mfRuns = fs.readdirSync(mfDir).filter(d => d.startsWith('mf-'));
+      for (const dir of mfRuns) {
+        const outDir = path.join(mfDir, dir, 'output');
+        if (!fs.existsSync(outDir)) continue;
+        // Try _final.mp4 first (best quality), then _final_av.mp4, then base
+        for (const suffix of ['_final.mp4', '_final_av.mp4', '_video_only.mp4', '_base.mp4']) {
+          const p = path.join(outDir, `${videoId}${suffix}`);
+          if (fs.existsSync(p)) return p;
+        }
+      }
     }
   } catch { /* ignore */ }
   return null;

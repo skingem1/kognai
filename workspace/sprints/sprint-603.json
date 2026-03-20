@@ -1,0 +1,40 @@
+{
+  "sprint_id": "sprint-603",
+  "title": "GATE-PUSH — Video inventory scanner + batch Telegram delivery",
+  "description": "Create video inventory scanner that deduplicates across multiformat runs, ranks by quality/diversity, and enables batch delivery to Telegram for manual TikTok posting. Critical for Apr 7 gate (0/30 posts).",
+  "source": "gate-urgency",
+  "tasks": [
+    {
+      "id": "603-01",
+      "title": "Create scan-video-inventory.ts — scan all multiformat runs, deduplicate, rank, output JSON",
+      "type": "feature",
+      "task_type": "gate-push",
+      "task_target": "scripts/scs001/scan-video-inventory.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-603",
+      "deliverables": {
+        "code": ["scripts/scs001/scan-video-inventory.ts"],
+        "tests": [],
+        "docs": []
+      }
+    },
+    {
+      "id": "603-02",
+      "title": "Add /inventory and /batchdeliver commands to Telegram bot",
+      "type": "feature",
+      "task_type": "gate-push",
+      "task_target": "scripts/telegram-commands/cmd-delivery.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-603",
+      "deliverables": {
+        "code": ["scripts/telegram-commands/cmd-delivery.ts", "scripts/telegram-bot.ts"],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ]
+}
