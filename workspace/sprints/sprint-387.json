@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-387",
+  "title": "/history — posting history timeline with trend analysis",
+  "description": "Add /history command that shows posting activity over time with visual timeline bars, view trends, and gate projection based on current pace.",
+  "source": "auto — operator needs to see posting momentum and gate trajectory",
+  "tasks": [
+    {
+      "id": "387-01",
+      "title": "Add /history command to scripts/telegram-bot.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-387",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

@@ -3117,6 +3117,119 @@ function cmdAchiri(): string {
   }
 }
 
+// Sprint 387: /history — posting history timeline with trend analysis
+function cmdHistory(): string {
+  const manualPostsPath = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
+  const posts = readLines(manualPostsPath) as Array<{ video_id: string; views?: number; posted_at?: string; recorded_at?: string; title?: string }>;
+
+  if (posts.length === 0) {
+    return (
+      `📅 *Posting History*\n\n` +
+      `No posts recorded yet.\n\n` +
+      `Start with \`/deliver 1\` to get a video, then \`/record <id> <views>\` after posting.`
+    );
+  }
+
+  // Group posts by date
+  const byDate: Record<string, Array<{ video_id: string; views: number }>> = {};
+  for (const p of posts) {
+    const date = (p.posted_at ?? p.recorded_at ?? '').slice(0, 10);
+    if (!date) continue;
+    if (!byDate[date]) byDate[date] = [];
+    byDate[date].push({ video_id: p.video_id, views: p.views ?? 0 });
+  }
+
+  const sortedDates = Object.keys(byDate).sort();
+  const totalViews = posts.reduce((s, p) => s + (p.views ?? 0), 0);
+
+  // Build timeline bars
+  const maxPostsInDay = Math.max(...sortedDates.map(d => byDate[d].length));
+  const lines: string[] = [
+    `📅 *Posting History*`,
+    `${posts.length}/30 posts · ${totalViews}/500 views`,
+    '',
+    `*Timeline:*`,
+  ];
+
+  for (const date of sortedDates) {
+    const dayPosts = byDate[date];
+    const dayViews = dayPosts.reduce((s, p) => s + p.views, 0);
+    const barLength = Math.max(1, Math.round((dayPosts.length / Math.max(maxPostsInDay, 1)) * 8));
+    const bar = '█'.repeat(barLength);
+    const shortDate = date.slice(5); // MM-DD
+    lines.push(`\`${shortDate}\` ${bar} ${dayPosts.length} post${dayPosts.length > 1 ? 's' : ''} · ${dayViews} views`);
+  }
+
+  // View trend: compare first half vs second half
+  lines.push('');
+  if (sortedDates.length >= 2) {
+    const mid = Math.floor(sortedDates.length / 2);
+    const firstHalfViews = sortedDates.slice(0, mid).reduce((s, d) => s + byDate[d].reduce((vs, p) => vs + p.views, 0), 0);
+    const secondHalfViews = sortedDates.slice(mid).reduce((s, d) => s + byDate[d].reduce((vs, p) => vs + p.views, 0), 0);
+    const firstHalfPosts = sortedDates.slice(0, mid).reduce((s, d) => s + byDate[d].length, 0);
+    const secondHalfPosts = sortedDates.slice(mid).reduce((s, d) => s + byDate[d].length, 0);
+
+    const viewTrend = secondHalfViews > firstHalfViews ? '📈 Views trending UP' :
+                      secondHalfViews < firstHalfViews ? '📉 Views trending DOWN' : '➡️ Views steady';
+    const paceTrend = secondHalfPosts > firstHalfPosts ? '📈 Pace increasing' :
+                      secondHalfPosts < firstHalfPosts ? '📉 Pace slowing' : '➡️ Pace steady';
+    lines.push(`*Trends:*`);
+    lines.push(`${viewTrend}`);
+    lines.push(`${paceTrend}`);
+  }
+
+  // Gate projection
+  lines.push('');
+  const gateDate = new Date('2026-04-07T00:00:00Z');
+  const now = new Date();
+  const daysLeft = Math.max(0, Math.ceil((gateDate.getTime() - now.getTime()) / 86_400_000));
+  const postsLeft = Math.max(0, 30 - posts.length);
+  const viewsLeft = Math.max(0, 500 - totalViews);
+
+  if (postsLeft === 0 && viewsLeft === 0) {
+    lines.push(`✅ *Gate: MET* — both targets achieved!`);
+  } else {
+    // Calculate pace from actual posting history
+    const firstDate = new Date(sortedDates[0]);
+    const daysSinceStart = Math.max(1, Math.ceil((now.getTime() - firstDate.getTime()) / 86_400_000));
+    const postsPerDay = posts.length / daysSinceStart;
+    const viewsPerPost = posts.length > 0 ? totalViews / posts.length : 0;
+
+    lines.push(`*Gate Projection (Apr 7):*`);
+    lines.push(`📊 Current pace: ${postsPerDay.toFixed(1)} posts/day`);
+
+    if (postsLeft > 0) {
+      const daysToComplete = postsPerDay > 0 ? Math.ceil(postsLeft / postsPerDay) : Infinity;
+      if (daysToComplete <= daysLeft) {
+        lines.push(`✅ Posts: on track (${daysToComplete}d needed, ${daysLeft}d left)`);
+      } else {
+        const needed = daysLeft > 0 ? (postsLeft / daysLeft).toFixed(1) : '∞';
+        lines.push(`⚠️ Posts: need ${needed}/day (${postsLeft} remaining in ${daysLeft}d)`);
+      }
+    }
+
+    if (viewsLeft > 0 && viewsPerPost > 0) {
+      const postsForViews = Math.ceil(viewsLeft / viewsPerPost);
+      lines.push(`👁 Avg ${Math.round(viewsPerPost)} views/post → ~${postsForViews} more posts for 500 views`);
+    } else if (viewsLeft > 0) {
+      lines.push(`👁 ${viewsLeft} more views needed`);
+    }
+  }
+
+  // Top performers
+  const withViews = posts.filter(p => (p.views ?? 0) > 0).sort((a, b) => (b.views ?? 0) - (a.views ?? 0));
+  if (withViews.length > 0) {
+    lines.push('');
+    lines.push(`*Top Performers:*`);
+    for (const p of withViews.slice(0, 3)) {
+      const title = p.title ? ` — ${p.title.slice(0, 25)}` : '';
+      lines.push(`🏆 \`${p.video_id}\` · ${p.views} views${title}`);
+    }
+  }
+
+  return lines.join('\n');
+}
+
 // Sprint 351: /updateviews — update view counts for posted videos
 function cmdUpdateViews(args: string): string {
   const parts = args.trim().split(/\s+/);
@@ -3313,6 +3426,7 @@ function cmdHelp(): string {
     `/scorecard — Content strategy scorecard\n` +
     `/compare   — A/B compare hooks or speakers\n` +
     `/suggest   — Data-driven content suggestion\n` +
+    `/history   — Posting history timeline + trends\n` +
     `/help      — This message`
   );
 }
@@ -4052,6 +4166,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/scorecard':   response = cmdScorecard();          break;
     case '/compare':     response = cmdCompare(cmdArgs);     break;
     case '/suggest':     response = cmdSuggest();            break;
+    case '/history':     response = cmdHistory();            break;
     case '/help':        response = cmdHelp();        break;
     default:
       response = `Unknown command: \`${cmdName}\`\n\n${cmdHelp()}`;
