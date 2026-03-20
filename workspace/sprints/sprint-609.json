@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-609",
+  "title": "QUALITY — Improved topic classification for format diversity",
+  "description": "Broadened debate/vision signal keywords, lowered thresholds from 2 to 1, added forced format reclassification to ensure at least 1 debate + 1 vision per scan. Changes format mix from 21:1:0 to 13:3:5.",
+  "source": "quality-gap",
+  "tasks": [
+    {
+      "id": "609-01",
+      "title": "Broaden debate/vision signals and lower classification threshold",
+      "type": "enhancement",
+      "task_type": "quality",
+      "task_target": "scripts/scs001/topic-radar.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-609"
+    }
+  ]
+}

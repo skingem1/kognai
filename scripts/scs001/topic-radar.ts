@@ -68,18 +68,26 @@ const RELEVANCE_KEYWORDS = [
 ];
 
 // Keywords that suggest debate potential (competing approaches)
+// Sprint 609: Broadened to catch more debate-worthy topics
 const DEBATE_SIGNALS = [
   'vs', 'versus', 'compared', 'comparison', 'alternative', 'competitor',
   'better than', 'replaces', 'kills', 'outperforms', 'benchmark',
   'open source vs', 'centralized vs', 'on-chain vs', 'cloud vs local',
+  'fork', 'war', 'battle', 'rivalry', 'challenge', 'threat',
+  'controversy', 'debate', 'disagree', 'split', 'divide',
+  'bullish', 'bearish', 'overrated', 'underrated',
 ];
 
 // Keywords suggesting big-picture vision topics
+// Sprint 609: Broadened + lowered threshold for more format diversity
 const VISION_SIGNALS = [
   'future', 'agi', 'singularity', 'next era', 'paradigm', 'revolution',
   'transform', 'reshape', 'redefine', 'world', 'society', 'humanity',
   'superintelligence', 'alignment', 'existential', 'consciousness',
   'economy', 'labor', 'jobs', 'automation', 'governance',
+  'prediction', 'forecast', 'roadmap', '2030', '2040', 'next decade',
+  'impact', 'disruption', 'breakthrough', 'milestone', 'inflection',
+  'regulation', 'policy', 'ethics', 'safety', 'risk',
 ];
 
 // ── Dedup ──────────────────────────────────────────────
@@ -118,11 +126,11 @@ function classifyFormat(title: string, summary: string): VideoFormat {
 
   // Check for debate signals first (most specific)
   const debateScore = DEBATE_SIGNALS.filter(s => text.includes(s)).length;
-  if (debateScore >= 2) return 'debate';
+  if (debateScore >= 1) return 'debate';  // Sprint 609: lowered from 2 to 1
 
   // Check for vision signals
   const visionScore = VISION_SIGNALS.filter(s => text.includes(s)).length;
-  if (visionScore >= 2) return 'vision';
+  if (visionScore >= 1) return 'vision';  // Sprint 609: lowered from 2 to 1
 
   // Default: quick explainer
   return 'explainer';
@@ -456,16 +464,32 @@ export class TopicRadar {
     for (const t of fresh) this.seen.add(t.topic_id);
     saveSeenTopics(this.seen);
 
-    // Ensure format mix — at least 1 of each type if available
+    // Sprint 609: Ensure format mix — force at least 1 of each type
     const byFormat = {
       explainer: fresh.filter(t => t.format === 'explainer'),
       debate: fresh.filter(t => t.format === 'debate'),
       vision: fresh.filter(t => t.format === 'vision'),
     };
 
-    // Select top topics: 3 explainers, 2 debates, 1 vision (if available)
+    // If a format has 0 topics, reclassify the highest-confidence explainer
+    if (byFormat.debate.length === 0 && byFormat.explainer.length >= 2) {
+      const reclassified = byFormat.explainer.pop()!;
+      reclassified.format = 'debate';
+      // Auto-generate debate sides from keywords
+      if (!reclassified.debate_sides && reclassified.keywords.length >= 2) {
+        reclassified.debate_sides = { side_a: reclassified.keywords[0], side_b: reclassified.keywords[1] };
+      }
+      byFormat.debate.push(reclassified);
+    }
+    if (byFormat.vision.length === 0 && byFormat.explainer.length >= 2) {
+      const reclassified = byFormat.explainer.pop()!;
+      reclassified.format = 'vision';
+      byFormat.vision.push(reclassified);
+    }
+
+    // Select top topics: 2 explainers, 2 debates, 1 vision (balanced mix)
     const selected: TopicBrief[] = [
-      ...byFormat.explainer.slice(0, 3),
+      ...byFormat.explainer.slice(0, 2),
       ...byFormat.debate.slice(0, 2),
       ...byFormat.vision.slice(0, 1),
     ];
