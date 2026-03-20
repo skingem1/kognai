@@ -1075,3 +1075,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (surgical edit)
 - Issues: None
 - Timestamp: 2026-03-21T05:20:00Z
+
+## Sprint 595 — INFRA
+- Status: PASS
+- Commit: 4c7e490
+- Files created: workspace/sprints/sprint-595.json
+- Files modified: scripts/telegram-commands/cmd-system.ts, scripts/telegram-bot.ts
+- Test: TypeScript compile — PASS
+- Pipeline: New /logs Telegram command shows last 3 entries from 6 error log files
+- Swarm used: no (surgical edits to 2 files)
+- Issues: None
+- Timestamp: 2026-03-21T05:25:00Z

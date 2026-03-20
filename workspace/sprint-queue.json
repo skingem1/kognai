@@ -1287,7 +1287,7 @@
       "sprint": 595,
       "title": "INFRA — /logs Telegram command for recent error log tailing",
       "block": "INFRA",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "Operator cannot view error logs from Telegram. Add /logs to tail recent pipeline/bot errors."
     },
