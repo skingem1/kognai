@@ -1,0 +1,26 @@
+{
+  "sprint_id": "sprint-577",
+  "title": "INFRA \u2014 Queue replenish (578-581)",
+  "description": "Added: content x2, digest pipeline stats, brief regen.",
+  "source": "queue-empty-replenish",
+  "tasks": [
+    {
+      "id": "577-01",
+      "title": "Add Sprints 578-581",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "workspace/sprint-queue.json",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-577",
+      "deliverables": {
+        "code": [
+          "workspace/sprint-queue.json"
+        ],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ]
+}
