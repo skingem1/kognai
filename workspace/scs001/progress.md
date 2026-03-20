@@ -2367,3 +2367,16 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (single file enhancement)
 - Issues: None.
 - Timestamp: 2026-03-20T05:40:00Z
+
+## Sprint 304 — Telegram /achiriprofile Command (Direct Write)
+- Status: PASS
+- Commit: 8742c09
+- Files created: workspace/sprints/sprint-304.json
+- Files modified: agents/telegram-bot/commands.ts, agents/telegram-bot/index.ts
+- Tasks completed:
+  - 304-01: Added handleAchiriProfile() — calls GET /profile/:userId and GET /summary/:userId from Achiri server. Displays: language (with flag emoji), dialect + confidence, formality style, interests, message count, remembered facts (up to 5). Handles empty profile gracefully.
+  - 304-02: Routed /achiriprofile in index.ts dispatcher. Added to /help under Achiri AI Companion section. Available to all users (not owner-only).
+- Validation: TypeScript clean compile (2 files). Command available in dispatch table. Help text updated.
+- Swarm used: no (2-file command wiring)
+- Issues: None.
+- Timestamp: 2026-03-20T05:50:00Z
