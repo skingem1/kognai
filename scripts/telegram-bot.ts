@@ -1604,6 +1604,71 @@ function cmdQuickStart(): string {
 }
 
 // Sprint 354: /achiri — alpha readiness dashboard from reports/achiri-readiness.json
+// ─── Sprint 362: /metrics — pipeline performance metrics ─────────────
+
+function cmdMetrics(): string {
+  const metricsPath = path.join(ROOT, 'reports', 'pipeline-metrics.json');
+
+  // Auto-regenerate if missing
+  if (!fs.existsSync(metricsPath)) {
+    try {
+      const { execSync } = require('child_process');
+      execSync('npx ts-node --transpile-only scripts/scs001/aggregate-pipeline-metrics.ts', {
+        cwd: ROOT, timeout: 30000, stdio: 'pipe'
+      });
+    } catch { /* will still try to read whatever exists */ }
+  }
+
+  if (!fs.existsSync(metricsPath)) {
+    return '⚠️ No pipeline metrics available.\nRun: `npx ts-node scripts/scs001/aggregate-pipeline-metrics.ts`';
+  }
+
+  let m: any;
+  try {
+    m = JSON.parse(fs.readFileSync(metricsPath, 'utf-8'));
+  } catch {
+    return '⚠️ Could not parse pipeline-metrics.json';
+  }
+
+  const lines: string[] = [];
+  lines.push('📊 *Pipeline Performance Metrics*');
+  lines.push(`Period: ${m.period?.first ?? '?'} → ${m.period?.last ?? '?'}`);
+  lines.push('');
+
+  const avgMin = m.avg_duration_ms ? (m.avg_duration_ms / 60000).toFixed(1) : '?';
+  lines.push('*Overview:*');
+  lines.push(`• Runs: ${m.total_runs ?? 0} (${m.runs_per_day ?? 0}/day)`);
+  lines.push(`• Avg duration: ${avgMin} min`);
+  lines.push(`• Error rate: ${m.error_runs ?? 0}/${m.total_runs ?? 0}`);
+  lines.push('');
+
+  const c = m.cumulative ?? {};
+  lines.push('*Cumulative Output:*');
+  lines.push(`• Topics: ${c.topics_found ?? 0}`);
+  lines.push(`• Clips: ${c.clips_discovered ?? 0}`);
+  lines.push(`• Edited: ${c.videos_edited ?? 0}`);
+  lines.push(`• Captioned: ${c.videos_captioned ?? 0}`);
+  lines.push(`• QC passed: ${c.qc_passed ?? 0} (${c.qc_pass_rate_pct ?? 0}%)`);
+  lines.push(`• Published: ${c.published ?? 0}`);
+  lines.push('');
+
+  const stageAvgs = m.stage_averages ?? {};
+  const sorted = Object.entries(stageAvgs)
+    .map(([stage, data]: [string, any]) => ({ stage, avgMs: data.avg_ms ?? 0 }))
+    .sort((a, b) => b.avgMs - a.avgMs)
+    .slice(0, 3);
+
+  if (sorted.length > 0) {
+    lines.push('*Slowest Stages:*');
+    for (const s of sorted) {
+      const sec = (s.avgMs / 1000).toFixed(1);
+      lines.push(`• ${s.stage}: ${sec}s avg`);
+    }
+  }
+
+  return lines.join('\n');
+}
+
 // ─── Sprint 356: /digest — unified daily digest ──────────────────────
 
 function cmdDigest(): string {
@@ -1951,6 +2016,7 @@ function cmdHelp(): string {
     `/updateviews — Update view count for a posted video\n` +
     `/achiri     — Achiri alpha readiness status\n` +
     `/digest     — Daily digest: gate + queue + Stripe\n` +
+    `/metrics    — Pipeline performance metrics\n` +
     `/help      — This message`
   );
 }
@@ -2060,6 +2126,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/updateviews': response = cmdUpdateViews(cmdArgs); break;
     case '/achiri':      response = cmdAchiri();             break;
     case '/digest':      response = cmdDigest();             break;
+    case '/metrics':     response = cmdMetrics();            break;
     case '/help':        response = cmdHelp();        break;
     default:
       response = `Unknown command: \`${cmdName}\`\n\n${cmdHelp()}`;
