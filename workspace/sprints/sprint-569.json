@@ -1,0 +1,24 @@
+{
+  "sprint_id": "sprint-569",
+  "title": "CONTENT \u2014 10 videos with script QC (10/10 pass)",
+  "description": "Two pipeline-cron runs with Step 10 active. 10/10 scripts passed QC. 107 auto-delivered.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "569-01",
+      "title": "Run pipeline-cron x2 with QC",
+      "type": "feature",
+      "task_type": "content",
+      "task_target": "scripts/scs001/pipeline-cron.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-569",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ]
+}

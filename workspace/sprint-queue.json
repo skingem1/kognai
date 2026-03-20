@@ -1119,8 +1119,9 @@
       "title": "CONTENT — Batch: 10 videos with script QC step enabled",
       "block": "CONTENT",
       "priority": "high",
-      "status": "pending",
-      "rationale": "Produce 10 videos with Step 10 (script QC) active. Verify QC results in pipeline reports."
+      "status": "done",
+      "rationale": "Produce 10 videos with Step 10 (script QC) active. Verify QC results in pipeline reports.",
+      "_note": "10/10 QC pass. 107 delivered. Full pipeline chain OK."
     },
     {
       "sprint": 570,
