@@ -3873,3 +3873,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (single-command addition)
 - Issues: None.
 - Timestamp: 2026-03-20T18:05:00Z
+
+## Sprint 434 — Enriched /queue Display (Direct Write)
+- Status: PASS
+- Commit: 28e7c6f
+- Files created: workspace/sprints/sprint-434.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 434-01: Enhanced /queue to show speaker name, hook formula, age (days since published), and unique speaker count. Queue items now display 2 lines each — ID+score on first line, metadata on second. Helps operator decide what to post.
+- Validation: tsc --noEmit PASS
+- Swarm used: no (single-command enhancement)
+- Issues: None.
+- Timestamp: 2026-03-20T18:20:00Z
