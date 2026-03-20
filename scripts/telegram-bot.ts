@@ -2121,6 +2121,79 @@ async function cmdSubscribers(chatId: string): Promise<void> {
   }
 }
 
+// ─── Sprint 375: /funnel — content pipeline funnel visualization ────────────
+
+function cmdFunnel(): string {
+  // Stage 1: Total experiments
+  const experiments = readLines(path.join(ROOT, 'workspace', 'scs001', 'experiments.jsonl'));
+  const totalExp = experiments.length;
+
+  // Stage 2: QC passed
+  const qcPassed = experiments.filter((e: any) => e.qc_passed === true);
+  const qcCount = qcPassed.length;
+
+  // Stage 3: In publish ledger (made it through pipeline)
+  const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
+  const ledgerCount = ledger.length;
+
+  // Stage 4: Captioned MP4 on disk (ready to post)
+  let captionedCount = 0;
+  try {
+    const scsDir = path.join(ROOT, 'workspace', 'scs001');
+    const runDirs = fs.readdirSync(scsDir).filter(d => d.startsWith('run-'));
+    const seen = new Set<string>();
+    for (const dir of runDirs) {
+      const capDir = path.join(scsDir, dir, 'caption');
+      if (!fs.existsSync(capDir)) continue;
+      for (const f of fs.readdirSync(capDir)) {
+        if (f.endsWith('-captioned.mp4')) seen.add(f);
+      }
+    }
+    captionedCount = seen.size;
+  } catch { /* skip */ }
+
+  // Stage 5: Posted (manual-posts.jsonl)
+  const posts = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  const postedCount = posts.length;
+
+  // Stage 6: Views > 500 (gate target)
+  const over500 = posts.filter((p: any) => (p.views ?? 0) >= 500).length;
+
+  // Conversion rates
+  const pct = (a: number, b: number) => b > 0 ? `${Math.round((a / b) * 100)}%` : '—';
+
+  // Bar chart (text-based)
+  const maxWidth = 20;
+  const maxVal = Math.max(totalExp, 1);
+  const bar = (val: number) => {
+    const len = Math.max(1, Math.round((val / maxVal) * maxWidth));
+    return '█'.repeat(len) + '░'.repeat(maxWidth - len);
+  };
+
+  const GATE_DATE = new Date('2026-04-07T00:00:00Z');
+  const daysLeft = Math.max(0, Math.ceil((GATE_DATE.getTime() - Date.now()) / 86_400_000));
+
+  const lines = [
+    '🔬 *Content Pipeline Funnel*',
+    '',
+    `${bar(totalExp)} Experiments: *${totalExp}*`,
+    `${bar(qcCount)} QC Passed: *${qcCount}* (${pct(qcCount, totalExp)})`,
+    `${bar(ledgerCount)} In Ledger: *${ledgerCount}* (${pct(ledgerCount, qcCount)})`,
+    `${bar(captionedCount)} Captioned: *${captionedCount}* (${pct(captionedCount, ledgerCount)})`,
+    `${bar(postedCount)} Posted: *${postedCount}* (${pct(postedCount, captionedCount)})`,
+    `${bar(over500)} Views ≥500: *${over500}* (${pct(over500, postedCount)})`,
+    '',
+    `🎯 Gate: ${postedCount}/30 posts · ${over500}/30 with 500+ views · ${daysLeft}d left`,
+    '',
+    `📊 Overall: ${pct(postedCount, totalExp)} experiment→posted`,
+    captionedCount > postedCount
+      ? `💡 ${captionedCount - postedCount} videos ready — use /postnow`
+      : '',
+  ].filter(Boolean);
+
+  return lines.join('\n');
+}
+
 // ─── Sprint 371: /todaycaptions — batch captions for today's posts ────────
 
 async function cmdTodayCaptions(chatId: string): Promise<void> {
@@ -2833,6 +2906,7 @@ function cmdHelp(): string {
     `/viralstats — Viral score summary + top 3\n` +
     `/checkout  — Generate Stripe checkout link\n` +
     `/subscribers — Active Stripe subscribers + MRR\n` +
+    `/funnel    — Content pipeline funnel + conversions\n` +
     `/help      — This message`
   );
 }
@@ -2988,6 +3062,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/viralstats':  response = cmdViralStats();         break;
     case '/checkout':    await cmdCheckout(chatId, cmdArgs); return;
     case '/subscribers': await cmdSubscribers(chatId); return;
+    case '/funnel':      response = cmdFunnel();              break;
     case '/help':        response = cmdHelp();        break;
     default:
       response = `Unknown command: \`${cmdName}\`\n\n${cmdHelp()}`;
