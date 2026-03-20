@@ -2500,3 +2500,17 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (multi-file feature)
 - Issues: None.
 - Timestamp: 2026-03-20T12:45:00Z
+
+## Sprint 314 — Achiri Error Alerting (Direct Write)
+- Status: PASS
+- Commit: 1ee7070
+- Files created: agents/achiri/error-tracker.ts, workspace/sprints/sprint-314.json
+- Files modified: agents/achiri/server.ts, agents/telegram-bot/commands.ts, agents/telegram-bot/index.ts
+- Tasks completed:
+  - 314-01: error-tracker.ts — trackError (logs to error-log.jsonl), getErrorSummary (last 1h/24h/total, by type), maybeAlert (Telegram alert when 3+ errors/hour, 30min cooldown).
+  - 314-02: Wired into server.ts — tracks llm_error, timeout (abort signals), limit_exceeded, voice_error at all catch blocks.
+  - 314-03: /achirierrors Telegram command — error dashboard with by-type breakdown, recent errors, high rate warning.
+- Validation: error-tracker.ts unit test PASS, server module loads PASS
+- Swarm used: no (multi-file feature)
+- Issues: None.
+- Timestamp: 2026-03-20T13:00:00Z
