@@ -3310,6 +3310,7 @@ function cmdHelp(): string {
     `/contentplan — 7-day content filming plan\n` +
     `/filmkit   — Instant filming brief for next video\n` +
     `/progress  — Visual gate progress tracker\n` +
+    `/scorecard — Content strategy scorecard\n` +
     `/help      — This message`
   );
 }
@@ -3428,6 +3429,87 @@ function cmdContentPlan(): string {
   }
   lines.push(`• Use /queue to pick ready videos`);
   lines.push(`• Use /record after posting to track`);
+
+  return lines.join('\n');
+}
+
+// ─── Sprint 384: /scorecard — content strategy scorecard ────────────
+
+function cmdScorecard(): string {
+  const experiments = readLines(path.join(ROOT, 'workspace', 'scs001', 'experiments.jsonl'));
+  if (experiments.length === 0) return '⚠️ No experiments found — run /refresh first.';
+
+  // 1. Hook diversity (more unique hooks = better, target 4+)
+  const hooks = new Set(experiments.map((e: any) => e.hook_formula).filter((h: any) => h && h !== 'unknown'));
+  const hookScore = Math.min(100, Math.round((hooks.size / 4) * 100));
+  const hookGrade = hookScore >= 80 ? 'A' : hookScore >= 60 ? 'B' : hookScore >= 40 ? 'C' : 'D';
+
+  // 2. Speaker variety (more speakers = better, target 3+)
+  const speakers = new Set(experiments.map((e: any) => e.speaker).filter((s: any) => s && s !== 'unknown'));
+  const speakerScore = Math.min(100, Math.round((speakers.size / 3) * 100));
+  const speakerGrade = speakerScore >= 80 ? 'A' : speakerScore >= 60 ? 'B' : speakerScore >= 40 ? 'C' : 'D';
+
+  // 3. Viral score trend (avg of last 20 vs first 20)
+  const scored = experiments.filter((e: any) => e.partial_viral_score != null);
+  let trendScore = 50;
+  let trendDir = '→';
+  if (scored.length >= 20) {
+    const first20 = scored.slice(0, 20);
+    const last20 = scored.slice(-20);
+    const avgFirst = first20.reduce((s: number, e: any) => s + e.partial_viral_score, 0) / 20;
+    const avgLast = last20.reduce((s: number, e: any) => s + e.partial_viral_score, 0) / 20;
+    const improvement = avgLast - avgFirst;
+    trendScore = Math.min(100, Math.max(0, 50 + Math.round(improvement * 200)));
+    trendDir = improvement > 0.05 ? '↑' : improvement < -0.05 ? '↓' : '→';
+  }
+  const trendGrade = trendScore >= 80 ? 'A' : trendScore >= 60 ? 'B' : trendScore >= 40 ? 'C' : 'D';
+
+  // 4. QC pass rate
+  const qcPassed = experiments.filter((e: any) => e.qc_passed).length;
+  const qcRate = experiments.length > 0 ? Math.round((qcPassed / experiments.length) * 100) : 0;
+  const qcGrade = qcRate >= 80 ? 'A' : qcRate >= 60 ? 'B' : qcRate >= 40 ? 'C' : 'D';
+
+  // 5. Pipeline output rate (experiments per day over last 7 days)
+  const now = new Date();
+  const weekAgo = new Date(now.getTime() - 7 * 86_400_000).toISOString().slice(0, 10);
+  const recentExps = experiments.filter((e: any) => (e.timestamp ?? '').slice(0, 10) >= weekAgo);
+  const dailyRate = recentExps.length / 7;
+  const outputScore = Math.min(100, Math.round((dailyRate / 10) * 100)); // target 10/day
+  const outputGrade = outputScore >= 80 ? 'A' : outputScore >= 60 ? 'B' : outputScore >= 40 ? 'C' : 'D';
+
+  // Overall
+  const overall = Math.round((hookScore + speakerScore + trendScore + qcRate + outputScore) / 5);
+  const overallGrade = overall >= 80 ? 'A' : overall >= 60 ? 'B' : overall >= 40 ? 'C' : 'D';
+
+  const gradeIcon = (g: string) => g === 'A' ? '🟢' : g === 'B' ? '🟡' : g === 'C' ? '🟠' : '🔴';
+
+  const lines = [
+    '📊 *Content Strategy Scorecard*',
+    `${experiments.length} experiments analyzed`,
+    '',
+    `${gradeIcon(overallGrade)} *Overall: ${overallGrade}* (${overall}%)`,
+    '',
+    `${gradeIcon(hookGrade)} Hook Diversity: *${hookGrade}* — ${hooks.size} hooks (${hookScore}%)`,
+    `${gradeIcon(speakerGrade)} Speaker Variety: *${speakerGrade}* — ${speakers.size} speakers (${speakerScore}%)`,
+    `${gradeIcon(trendGrade)} Viral Trend: *${trendGrade}* — ${trendDir} (${trendScore}%)`,
+    `${gradeIcon(qcGrade)} QC Pass Rate: *${qcGrade}* — ${qcRate}% pass`,
+    `${gradeIcon(outputGrade)} Output Rate: *${outputGrade}* — ${dailyRate.toFixed(1)}/day (${outputScore}%)`,
+    '',
+  ];
+
+  // Recommendations
+  const recs: string[] = [];
+  if (hookScore < 60) recs.push('• Try new hook formulas: curiosity\\_gap, contrarian, secret');
+  if (speakerScore < 60) recs.push('• Add more speakers to A/B test');
+  if (trendScore < 50) recs.push('• Viral scores declining — review /hooktest for top formulas');
+  if (qcRate < 70) recs.push('• QC rate low — check video quality settings');
+  if (outputScore < 40) recs.push('• Pipeline output low — run /refresh more often');
+  if (recs.length > 0) {
+    lines.push('💡 *Recommendations:*');
+    recs.forEach(r => lines.push(r));
+  } else {
+    lines.push('✅ All metrics look healthy!');
+  }
 
   return lines.join('\n');
 }
@@ -3779,6 +3861,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/contentplan': response = cmdContentPlan();        break;
     case '/filmkit':     response = cmdFilmKit();            break;
     case '/progress':    response = cmdProgress();           break;
+    case '/scorecard':   response = cmdScorecard();          break;
     case '/help':        response = cmdHelp();        break;
     default:
       response = `Unknown command: \`${cmdName}\`\n\n${cmdHelp()}`;

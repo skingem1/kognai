@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-384",
+  "title": "/scorecard — content strategy scorecard",
+  "description": "Add /scorecard command showing a graded content strategy scorecard across 5 dimensions: hook diversity, speaker variety, viral score trend, time slot coverage, and pipeline output rate.",
+  "source": "auto — operator needs coaching on content strategy optimization",
+  "tasks": [
+    {
+      "id": "384-01",
+      "title": "Add /scorecard command to scripts/telegram-bot.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-384",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
