@@ -741,8 +741,9 @@
       "title": "CONTENT — High-volume batch: produce 10 videos with diverse topics",
       "block": "CONTENT",
       "priority": "high",
-      "status": "pending",
-      "rationale": "11 videos delivered so far. Need 19 more for 30-post gate (Apr 7). Run pipeline 2x with randomized topics. Deliver all to Telegram."
+      "status": "done",
+      "rationale": "11 videos delivered so far. Need 19 more for 30-post gate (Apr 7). Run pipeline 2x with randomized topics. Deliver all to Telegram.",
+      "_note": "10 videos produced (2 runs), all delivered to Telegram. 44 total auto-delivered."
     },
     {
       "sprint": 528,

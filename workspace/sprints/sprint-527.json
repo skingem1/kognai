@@ -1,0 +1,44 @@
+{
+  "sprint_id": "sprint-527",
+  "title": "CONTENT — High-volume batch: produce 10 videos with diverse topics",
+  "description": "Ran pipeline 2x (--mock --limit 5). Produced 10 videos, all delivered to Telegram via --batch 10. Total auto-delivered: 44. $0.00 cost.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "527-01",
+      "title": "Run pipeline batch 1 (5 videos)",
+      "type": "feature",
+      "task_type": "content",
+      "task_target": "scripts/scs001/run-full-pipeline.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-527",
+      "deliverables": { "code": [], "tests": [], "docs": [] }
+    },
+    {
+      "id": "527-02",
+      "title": "Run pipeline batch 2 (5 videos)",
+      "type": "feature",
+      "task_type": "content",
+      "task_target": "scripts/scs001/run-full-pipeline.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-527",
+      "deliverables": { "code": [], "tests": [], "docs": [] }
+    },
+    {
+      "id": "527-03",
+      "title": "Deliver all 10 videos to Telegram",
+      "type": "feature",
+      "task_type": "content",
+      "task_target": "scripts/scs001/posting-auto-deliver.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-527",
+      "deliverables": { "code": [], "tests": [], "docs": [] }
+    }
+  ]
+}
