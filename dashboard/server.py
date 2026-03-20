@@ -48,6 +48,7 @@ from parsers.invoica_knowledge import (
 )
 from parsers.sessions import get_sessions_live
 from parsers.achiri import parse_achiri_stats
+from parsers.swarm import get_swarm_metrics, get_sprint_quality_scores
 
 
 class ToggleRequest(BaseModel):
@@ -539,6 +540,17 @@ async def experiments_history():
 @app.get("/api/achiri/stats")
 async def achiri_stats():
     return parse_achiri_stats(KOGNAI_ROOT)
+
+
+# Sprint 482: Swarm metrics
+@app.get("/api/swarm/metrics")
+async def swarm_metrics():
+    return get_swarm_metrics()
+
+
+@app.get("/api/swarm/quality")
+async def swarm_quality():
+    return get_sprint_quality_scores()
 
 
 # --- Validation Errors ---

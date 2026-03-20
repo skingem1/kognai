@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-482",
+  "title": "INFRA — Swarm metrics dashboard + sprint quality scoring",
+  "description": "Parse swarm run reports, compute quality metrics (pass/reject ratio, tokens, speed), expose via dashboard API + Telegram /swarmstats command.",
+  "source": "queue — Sprint 482 INFRA",
+  "tasks": [
+    {
+      "id": "482-01",
+      "title": "Create swarm metrics parser + dashboard API endpoint",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-482",
+      "deliverables": { "code": ["dashboard/parsers/swarm.py"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "482-02",
+      "title": "Add /swarmstats Telegram command",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-482",
+      "deliverables": { "code": ["scripts/telegram-commands/cmd-system.ts", "scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

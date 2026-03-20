@@ -681,3 +681,55 @@ export async function cmdReload(chatId: string): Promise<void> {
     }
   }, 2000);
 }
+
+// Sprint 482: Swarm metrics summary
+export function cmdSwarmStats(): string {
+  const SWARM_DIR = path.join(ROOT, 'reports', 'swarm-runs');
+  try {
+    const files = fs.readdirSync(SWARM_DIR).filter(f => f.endsWith('.json')).sort();
+    if (files.length === 0) return '📊 No swarm runs found.';
+
+    let totalTasks = 0, totalDone = 0, totalRejected = 0, totalTokens = 0, totalDuration = 0;
+    const modelCalls: Record<string, number> = {};
+
+    for (const file of files) {
+      try {
+        const run = JSON.parse(fs.readFileSync(path.join(SWARM_DIR, file), 'utf8'));
+        const s = run.summary || {};
+        totalTasks += s.total_tasks || 0;
+        totalDone += s.done || 0;
+        totalRejected += s.rejected || 0;
+        totalTokens += s.total_tokens || 0;
+        totalDuration += run.duration_seconds || 0;
+        for (const [model, stats] of Object.entries(run.models_used || {})) {
+          modelCalls[model] = (modelCalls[model] || 0) + ((stats as any).calls || 0);
+        }
+      } catch { /* skip corrupt files */ }
+    }
+
+    const passRate = totalTasks > 0 ? (totalDone / totalTasks * 100).toFixed(1) : '0';
+    const avgDuration = files.length > 0 ? Math.round(totalDuration / files.length) : 0;
+    const avgTokens = files.length > 0 ? Math.round(totalTokens / files.length) : 0;
+
+    const modelLines = Object.entries(modelCalls)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 5)
+      .map(([m, c]) => `  ${m}: ${c} calls`)
+      .join('\n');
+
+    return [
+      '🤖 *Swarm Metrics*\n',
+      `📦 Total runs: ${files.length}`,
+      `✅ Tasks done: ${totalDone}/${totalTasks} (${passRate}% pass)`,
+      `❌ Rejected: ${totalRejected}`,
+      `⏱ Avg duration: ${Math.round(avgDuration / 60)}min`,
+      `🔤 Avg tokens/run: ${avgTokens.toLocaleString()}`,
+      `🔤 Total tokens: ${totalTokens.toLocaleString()}`,
+      '',
+      '📊 Model usage:',
+      modelLines,
+    ].join('\n');
+  } catch (err: any) {
+    return `❌ Swarm stats error: ${err.message}`;
+  }
+}
