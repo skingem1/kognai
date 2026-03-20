@@ -3145,3 +3145,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (single function port)
 - Issues: None.
 - Timestamp: 2026-03-20T11:00:00Z
+
+## Sprint 366 — /lastrun — Pipeline Execution Summary (Direct Write)
+- Status: PASS
+- Commit: 820af23
+- Files created: workspace/sprints/sprint-366.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 366-01: Added /lastrun command. Shows latest pipeline run: run ID, mode, timing, stage-by-stage status with counts/elapsed, output summary (topics/clips/edited/captioned/QC/published), error count. Reads reports/pipeline-runs/latest.json. Updated /help + switch router.
+- Validation: ts-node --transpile-only PASS
+- Swarm used: no (single function port)
+- Issues: None.
+- Timestamp: 2026-03-20T11:15:00Z
