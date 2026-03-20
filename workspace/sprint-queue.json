@@ -713,7 +713,8 @@
       "sprint": 524,
       "title": "QUALITY — Hook formula diversity check + script variety audit",
       "block": "VIDEO-QUALITY-V2",
-      "status": "pending",
+      "status": "done",
+      "_note": "Hook formulas expanded 4→8. Randomized per brief. 3 test runs show all 8 formulas appearing.",
       "priority": "medium",
       "rationale": "Quality report flagged repetitive hooks. Audit: how many unique hook formulas across last 30 videos? How many unique speakers? Generate diversity report."
     },

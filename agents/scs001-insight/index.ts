@@ -11,7 +11,7 @@ import { routeCall } from '../../scripts/lib/clawrouter-v2';
 export interface InsightBrief {
   insight_id:           string;
   clip_id:              string;
-  hook:                 { text: string; formula: 'curiosity_gap' | 'contrarian' | 'authority' | 'secret' };
+  hook:                 { text: string; formula: 'curiosity_gap' | 'contrarian' | 'authority' | 'secret' | 'story' | 'question' | 'urgency' | 'proof' };
   pre_clip_commentary:  string;
   post_clip_commentary: string;
   insight_statement:    string;
@@ -21,71 +21,71 @@ export interface InsightBrief {
   cloud_cost_usd:       number;
 }
 
+// Sprint 524: All 8 hook formulas for diversity
+const ALL_HOOK_FORMULAS: InsightBrief['hook']['formula'][] = [
+  'curiosity_gap', 'contrarian', 'authority', 'secret',
+  'story', 'question', 'urgency', 'proof',
+];
+
+// Sprint 524: Hook text templates per formula
+const HOOK_TEXTS: Record<string, string[]> = {
+  curiosity_gap: ['This is why %s — here is what nobody expected', 'Wait until you see what %s just revealed'],
+  secret:        ['Insiders know this about %s', 'The hidden truth about %s that nobody talks about'],
+  contrarian:    ['Unpopular opinion: %s', 'Everyone is wrong about %s — here is why'],
+  authority:     ['The expert take on %s', 'Years of research confirm %s'],
+  story:         ['I just found out something mind-blowing about %s', 'The story behind %s will change how you see everything'],
+  question:      ['Did you know this about %s?', 'Why is nobody asking this about %s?'],
+  urgency:       ['%s — and you need to know this NOW', 'The clock is ticking on %s'],
+  proof:         ['The data proves %s is real', 'Here is the evidence: %s'],
+};
+
+function pickRandomFormula(): InsightBrief['hook']['formula'] {
+  return ALL_HOOK_FORMULAS[Math.floor(Math.random() * ALL_HOOK_FORMULAS.length)];
+}
+
+function pickHookText(formula: string, topic: string): string {
+  const templates = HOOK_TEXTS[formula] || HOOK_TEXTS['curiosity_gap'];
+  const template = templates[Math.floor(Math.random() * templates.length)];
+  return template.replace('%s', topic).slice(0, 80);
+}
+
 // Mock InsightBriefs for Block B testing
+// Sprint 524: Randomize hook formula per brief for content diversity
 export function getMockInsightBriefs(): InsightBrief[] {
   const clips = getMockQualifiedClips();
-  return [
-    {
-      insight_id:           'insight-mock-001',
-      clip_id:              clips[0].clip_id,
-      hook:                 { text: 'OpenAI just mass-fired its safety team — here is why that matters', formula: 'curiosity_gap' },
-      pre_clip_commentary:  'Sam Altman made a statement that sent shockwaves through the AI safety community.',
-      post_clip_commentary: 'This confirms what insiders have been warning about for months — speed over safety.',
-      insight_statement:    'When the company building AGI deprioritizes safety, every AI user bears the risk.',
-      why_does_this_matter: 'If OpenAI ships unsafe models at scale, the regulatory backlash could freeze AI development industry-wide, costing startups and developers billions in delayed deployments and compliance overhead.',
-      hook_formula_used:    'curiosity_gap',
-      speaker_name:         clips[0].speaker,
-      cloud_cost_usd:       0.004,
-    },
-    {
-      insight_id:           'insight-mock-002',
-      clip_id:              clips[1].clip_id,
-      hook:                 { text: 'NVIDIA is quietly building something nobody is talking about', formula: 'secret' },
-      pre_clip_commentary:  'Jensen Huang dropped a bombshell at GTC that the media completely missed.',
-      post_clip_commentary: 'This GPU scarcity problem is not temporary — it is structural and accelerating.',
-      insight_statement:    'The compute bottleneck will determine which AI companies survive the next 18 months.',
-      why_does_this_matter: 'Companies without guaranteed GPU access face 6-12 month inference delays, making their AI products uncompetitive. Cloud providers are already rationing capacity, forcing startups to choose between quality and cost.',
-      hook_formula_used:    'secret',
-      speaker_name:         clips[1].speaker,
-      cloud_cost_usd:       0.004,
-    },
-    {
-      insight_id:           'insight-mock-003',
-      clip_id:              clips.length > 2 ? clips[2].clip_id : 'clip-mock-003',
-      hook:                 { text: 'Google just made a move that could kill every AI startup overnight', formula: 'contrarian' },
-      pre_clip_commentary:  'Sundar Pichai quietly announced a pricing change that flew under the radar.',
-      post_clip_commentary: 'When the biggest player drops prices 90%, everyone else is in trouble.',
-      insight_statement:    'Free AI APIs from big tech could wipe out the entire AI middleware market within 12 months.',
-      why_does_this_matter: 'Startups building on top of OpenAI or Anthropic APIs face an existential threat as Google offers comparable models at near-zero cost, forcing a race to the bottom that only hyperscalers can survive.',
-      hook_formula_used:    'contrarian',
-      speaker_name:         'Sundar Pichai',
-      cloud_cost_usd:       0.004,
-    },
-    {
-      insight_id:           'insight-mock-004',
-      clip_id:              clips.length > 3 ? clips[3].clip_id : 'clip-mock-004',
-      hook:                 { text: 'The EU just passed a law that changes everything about AI — and nobody noticed', formula: 'authority' },
-      pre_clip_commentary:  'The EU AI Act went into effect and most companies are not ready for what comes next.',
-      post_clip_commentary: 'Compliance deadlines are closer than you think — and the penalties are massive.',
-      insight_statement:    'The EU AI Act creates a two-tier internet where compliant AI thrives and non-compliant AI gets banned.',
-      why_does_this_matter: 'Companies deploying AI in Europe face fines up to 7% of global revenue for non-compliance. This affects every SaaS product using AI features, from chatbots to recommendation engines.',
-      hook_formula_used:    'authority',
-      speaker_name:         'Margrethe Vestager',
-      cloud_cost_usd:       0.004,
-    },
-    {
-      insight_id:           'insight-mock-005',
-      clip_id:              clips.length > 4 ? clips[4].clip_id : 'clip-mock-005',
-      hook:                 { text: 'This open-source AI model just beat GPT-4 — and it runs on your laptop', formula: 'curiosity_gap' },
-      pre_clip_commentary:  'A small team just released a model that changes the economics of AI forever.',
-      post_clip_commentary: 'When frontier-level AI runs locally for free, the entire cloud AI business model breaks.',
-      insight_statement:    'Local AI models reaching GPT-4 quality means the end of the API-as-moat strategy for AI companies.',
-      why_does_this_matter: 'Developers can now run production-quality AI without paying per token. This shifts power from cloud providers to hardware makers and open-source communities.',
-      hook_formula_used:    'curiosity_gap',
-      speaker_name:         'ThePrimeagen',
-      cloud_cost_usd:       0.004,
-    },
+  const topics = [
+    'OpenAI just mass-fired its safety team',
+    'NVIDIA is quietly building something nobody is talking about',
+    'Google just made a move that could kill every AI startup overnight',
+    'The EU just passed a law that changes everything about AI',
+    'This open-source AI model just beat GPT-4 — and it runs on your laptop',
   ];
+  const commentaries = [
+    { pre: 'Sam Altman made a statement that sent shockwaves through the AI safety community.', post: 'This confirms what insiders have been warning about for months — speed over safety.', insight: 'When the company building AGI deprioritizes safety, every AI user bears the risk.', why: 'If OpenAI ships unsafe models at scale, the regulatory backlash could freeze AI development industry-wide, costing startups and developers billions in delayed deployments and compliance overhead.' },
+    { pre: 'Jensen Huang dropped a bombshell at GTC that the media completely missed.', post: 'This GPU scarcity problem is not temporary — it is structural and accelerating.', insight: 'The compute bottleneck will determine which AI companies survive the next 18 months.', why: 'Companies without guaranteed GPU access face 6-12 month inference delays, making their AI products uncompetitive. Cloud providers are already rationing capacity, forcing startups to choose between quality and cost.' },
+    { pre: 'Sundar Pichai quietly announced a pricing change that flew under the radar.', post: 'When the biggest player drops prices 90%, everyone else is in trouble.', insight: 'Free AI APIs from big tech could wipe out the entire AI middleware market within 12 months.', why: 'Startups building on top of OpenAI or Anthropic APIs face an existential threat as Google offers comparable models at near-zero cost, forcing a race to the bottom that only hyperscalers can survive.' },
+    { pre: 'The EU AI Act went into effect and most companies are not ready for what comes next.', post: 'Compliance deadlines are closer than you think — and the penalties are massive.', insight: 'The EU AI Act creates a two-tier internet where compliant AI thrives and non-compliant AI gets banned.', why: 'Companies deploying AI in Europe face fines up to 7% of global revenue for non-compliance. This affects every SaaS product using AI features, from chatbots to recommendation engines.' },
+    { pre: 'A small team just released a model that changes the economics of AI forever.', post: 'When frontier-level AI runs locally for free, the entire cloud AI business model breaks.', insight: 'Local AI models reaching GPT-4 quality means the end of the API-as-moat strategy for AI companies.', why: 'Developers can now run production-quality AI without paying per token. This shifts power from cloud providers to hardware makers and open-source communities.' },
+  ];
+  const defaultSpeakers = ['Sam Altman', 'Jensen Huang', 'Sundar Pichai', 'Margrethe Vestager', 'ThePrimeagen'];
+
+  return topics.map((topic, i) => {
+    const formula = pickRandomFormula();
+    const hookText = pickHookText(formula, topic);
+    const c = commentaries[i];
+    return {
+      insight_id:           `insight-mock-${String(i + 1).padStart(3, '0')}`,
+      clip_id:              clips.length > i ? clips[i].clip_id : `clip-mock-${String(i + 1).padStart(3, '0')}`,
+      hook:                 { text: hookText, formula },
+      pre_clip_commentary:  c.pre,
+      post_clip_commentary: c.post,
+      insight_statement:    c.insight,
+      why_does_this_matter: c.why,
+      hook_formula_used:    formula,
+      speaker_name:         clips.length > i ? clips[i].speaker : defaultSpeakers[i],
+      cloud_cost_usd:       0.004,
+    };
+  });
 }
 
 // Mock qualified clips for Block B testing (quality_score >= 20, qualified === true)

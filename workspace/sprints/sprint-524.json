@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-524",
+  "title": "QUALITY — Hook formula diversity check + script variety audit",
+  "description": "Audited 350 experiments: only 4 of 8 hook formulas used (curiosity_gap dominated). Updated InsightBrief type to include all 8 formulas. Randomized mock brief hook selection.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "524-01",
+      "title": "Audit hook formula and speaker diversity",
+      "type": "investigation",
+      "task_type": "quality",
+      "task_target": "workspace/scs001/experiments.jsonl",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-524",
+      "deliverables": { "code": [], "tests": [], "docs": [] }
+    },
+    {
+      "id": "524-02",
+      "title": "Expand InsightBrief hook formula type + randomize mock selection",
+      "type": "fix",
+      "task_type": "quality",
+      "task_target": "agents/scs001-insight/index.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-524",
+      "deliverables": { "code": ["agents/scs001-insight/index.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
