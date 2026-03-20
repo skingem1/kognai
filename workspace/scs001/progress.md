@@ -2950,3 +2950,16 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (surgical bot edit)
 - Issues: None.
 - Timestamp: 2026-03-20T06:15:00Z
+
+## Sprint 350 — /schedule + /leaderboard Commands (Direct Write)
+- Status: PASS
+- Commit: 684130e
+- Files created: workspace/sprints/sprint-350.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 350-01: cmdSchedule() — reads posting-schedule.json, shows today's time slots with video IDs/speakers/scores, upcoming slots, gate pace stats.
+  - 350-02: cmdLeaderboard() — reads content-leaderboard.json, shows top-10 speakers with medals, avg/max viral scores, clip counts, QC rates.
+- Validation: ts-node transpile-only import PASS
+- Swarm used: no (surgical bot edit, 1800-line file)
+- Issues: None.
+- Timestamp: 2026-03-20T07:00:00Z
