@@ -3572,3 +3572,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (small edit to large file)
 - Issues: None.
 - Timestamp: 2026-03-21T00:05:00Z
+
+## Sprint 409 — Stripe Billing Portal (Direct Write)
+- Status: PASS
+- Commit: 1f25d3e
+- Files created: workspace/sprints/sprint-409.json
+- Files modified: scripts/scs001/checkout-server.ts, scripts/telegram-bot.ts
+- Tasks completed:
+  - 409-01: Added GET /portal?customer=X or /portal?email=X route to checkout-server.ts. Creates Stripe billing portal session and redirects. Added findCustomerByEmail() for email→customer lookup. Added /portal Telegram command for operator to generate portal links for subscribers.
+- Validation: tsc --noEmit PASS
+- Swarm used: no (multi-file Stripe integration)
+- Issues: None.
+- Timestamp: 2026-03-21T00:15:00Z
