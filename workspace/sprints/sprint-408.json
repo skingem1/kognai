@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-408",
+  "title": "/subscribers webhook event feed — show recent Stripe events inline",
+  "description": "Enhance /subscribers command to include last 5 webhook events from subscribers.jsonl, showing new signups, payments, and cancellations with timestamps. Completes Sprint 407 webhook visibility loop.",
+  "source": "auto — Sprint 407 webhook handler needs operator visibility",
+  "tasks": [
+    {
+      "id": "408-01",
+      "title": "Add webhook event feed to /subscribers command",
+      "type": "enhancement",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-408",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

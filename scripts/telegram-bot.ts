@@ -2152,11 +2152,44 @@ async function cmdSubscribers(chatId: string): Promise<void> {
       lines.push(`\n_...and ${subs.length - 20} more_`);
     }
 
+    // Sprint 408: Append recent webhook events from subscribers.jsonl
+    const webhookEvents = loadRecentWebhookEvents(5);
+    if (webhookEvents.length > 0) {
+      lines.push('');
+      lines.push('*Recent Stripe Events:*');
+      for (const ev of webhookEvents) {
+        const icon = ev.type === 'checkout.session.completed' ? '💰'
+          : ev.type === 'invoice.paid' ? '💳'
+          : ev.type === 'customer.subscription.deleted' ? '⚠️'
+          : '📋';
+        const email = ev.email ?? 'unknown';
+        const plan = ev.plan ? ` (${ev.plan})` : '';
+        const amount = ev.amount ? ` $${ev.amount}` : '';
+        const time = ev.logged_at ? ev.logged_at.split('T')[0] : '?';
+        const typeLabel = ev.type?.split('.').pop()?.replace(/_/g, ' ') ?? ev.type ?? 'event';
+        lines.push(`${icon} ${time} — ${typeLabel}: ${email}${plan}${amount}`);
+      }
+    }
+
     await sendMessage(chatId, lines.join('\n'));
 
   } catch (err: any) {
     await sendMessage(chatId, `❌ Subscribers fetch failed: ${err.message?.slice(0, 200)}`);
   }
+}
+
+// Sprint 408: Load recent webhook events from subscribers.jsonl
+function loadRecentWebhookEvents(limit: number): Array<Record<string, any>> {
+  const logPath = path.join(ROOT, 'workspace', 'scs001', 'subscribers.jsonl');
+  if (!fs.existsSync(logPath)) return [];
+  try {
+    const lines = fs.readFileSync(logPath, 'utf-8').split('\n').filter(l => l.trim());
+    const events: Array<Record<string, any>> = [];
+    for (const line of lines) {
+      try { events.push(JSON.parse(line)); } catch { /* skip */ }
+    }
+    return events.slice(-limit);
+  } catch { return []; }
 }
 
 // ─── Sprint 375: /funnel — content pipeline funnel visualization ────────────
