@@ -2699,3 +2699,14 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (two-file addition)
 - Issues: None.
 - Timestamp: 2026-03-20T03:35:00Z
+
+## Sprint 330 — Achiri Pre-Deploy Test Suite (Direct Write)
+- Status: PASS
+- Commit: bf07ca5
+- Files created: scripts/achiri/run-all-tests.ts, workspace/sprints/sprint-330.json
+- Tasks completed:
+  - 330-01: run-all-tests.ts — meta test runner for 17 Achiri validation scripts. Runs all core tests (safety, derja, emotion, topic, memory, context, limits, alpha access, onboarding, paymee, voice, eval, deploy, HTTP API, e2e integration, e2e alpha). Reports pass/fail per test with duration. Supports --quick (skip slow HTTP/e2e tests) and --json modes. Saves to reports/achiri-test-suite.json. Exit code 1 on any failure.
+- Validation: npx tsc --noEmit PASS
+- Swarm used: no (single file)
+- Issues: None.
+- Timestamp: 2026-03-20T03:45:00Z
