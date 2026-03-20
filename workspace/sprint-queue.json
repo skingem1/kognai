@@ -1,6 +1,6 @@
 {
   "_note": "AUTHORITATIVE sprint execution order. The brief generator reads this and injects the first item as a MANDATORY directive, bypassing Qwen's recommendation. Pop items by setting status=done after each sprint ships. Human-maintained — edit to re-prioritise.",
-  "updated": "2026-03-20T18:10",
+  "updated": "2026-03-20T19:10",
   "owner": "Tarek (human)",
   "_plan_rationale": "Queue fixed 2026-03-20. Sprints 442-458 consumed by autonomous swarm. 10 items marked done (work completed). Remaining items have auto-sync guard in brief generator: consumed sprint numbers auto-skipped at runtime. 2 critical un-done items (SAFETY-SPLIT Part 2, progress.md update) re-added as Sprint 496-497 to avoid number collisions.",
   "queue": [
@@ -825,6 +825,47 @@
       "status": "done",
       "rationale": "No way to see posting statistics. Add /stats command: videos produced today/week/total, delivery count, topic distribution, cost breakdown. Generate weekly report JSON.",
       "_note": "/stats command + report generator. 72/30 gate ON TRACK. $0.78 total cost."
+    },
+    {
+      "sprint": 537,
+      "title": "INFRA — Queue replenish + regenerate sprint brief (537-541)",
+      "block": "INFRA",
+      "status": "done",
+      "_note": "Self-referential queue replenish.",
+      "priority": "high",
+      "rationale": "Queue empty after Sprint 536. Brief stale (says 525). Regenerate + add 5 sprints targeting: topic expansion, more content, Telegram bot refresh, disk cleanup, dashboard update."
+    },
+    {
+      "sprint": 538,
+      "title": "CONTENT — Expand mock trend feed to 25+ diverse topics",
+      "block": "CONTENT",
+      "priority": "high",
+      "status": "pending",
+      "rationale": "Diversity audit shows only 15 unique topics. Expand to 25+ covering: AI safety, robotics, crypto/web3, biotech, space, education, climate, gaming, enterprise AI, creative AI. More variety = better content."
+    },
+    {
+      "sprint": 539,
+      "title": "CONTENT — Batch production: 10 videos with expanded topics",
+      "block": "CONTENT",
+      "priority": "high",
+      "status": "pending",
+      "rationale": "After topic expansion, produce 10 videos to verify diversity. Target: 10+ unique topics across the batch."
+    },
+    {
+      "sprint": 540,
+      "title": "INFRA — Disk cleanup: archive old pipeline runs + compress",
+      "block": "INFRA",
+      "priority": "medium",
+      "status": "pending",
+      "rationale": "222 videos in workspace/scs001/run-*/ dirs. Each ~50MB with mp4 files. Create archive script that moves delivered videos to workspace/scs001/archive/ and compresses. Keep only last 3 runs active."
+    },
+    {
+      "sprint": 541,
+      "title": "TELEGRAM — Restart bot + verify all new commands work (/produce, /stats)",
+      "block": "TELEGRAM",
+      "priority": "medium",
+      "status": "pending",
+      "rationale": "Bot has been running 25h+. New commands (/produce N, /stats) added but bot not restarted. Restart via PM2, verify new commands respond, test /health."
     }
   ]
 }

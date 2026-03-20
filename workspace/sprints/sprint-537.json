@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-537",
+  "title": "INFRA — Queue replenish (538-541) + regenerate sprint brief",
+  "description": "Queue empty after Sprint 536. Added Sprints 538-541: topic expansion, content production, disk cleanup, bot restart. Brief regenerated.",
+  "source": "queue-empty-replenish",
+  "tasks": [
+    {
+      "id": "537-01",
+      "title": "Add Sprints 538-541 to queue + regenerate brief",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "workspace/sprint-queue.json",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-537",
+      "deliverables": { "code": ["workspace/sprint-queue.json", "workspace/sprint-brief.md"], "tests": [], "docs": [] }
+    }
+  ]
+}
