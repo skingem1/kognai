@@ -1,0 +1,26 @@
+{
+  "sprint_id": "sprint-567",
+  "title": "INFRA \u2014 Queue replenish (568-571)",
+  "description": "Queue empty after Sprint 566. Added: bot restart, content with QC, error logging, health report.",
+  "source": "queue-empty-replenish",
+  "tasks": [
+    {
+      "id": "567-01",
+      "title": "Add Sprints 568-571 to queue",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "workspace/sprint-queue.json",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-567",
+      "deliverables": {
+        "code": [
+          "workspace/sprint-queue.json"
+        ],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ]
+}
