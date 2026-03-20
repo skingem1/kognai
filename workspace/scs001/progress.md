@@ -2407,3 +2407,17 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (multi-file feature)
 - Issues: None.
 - Timestamp: 2026-03-20T06:30:00Z
+
+## Sprint 307 — Achiri Emotion Detection (Direct Write)
+- Status: PASS
+- Commit: ee035ff
+- Files created: agents/achiri/emotion-detector.ts, scripts/achiri/validate-emotion-detector.ts, workspace/sprints/sprint-307.json
+- Files modified: agents/achiri/index.ts
+- Tasks completed:
+  - 307-01: Created emotion-detector.ts — pattern-based mood detection (happy, sad, stressed, angry, grateful, lonely, neutral) with Darija/French/English support. Weighted scoring, 0.3 minimum confidence threshold. Per-mood system prompt hints guide model tone.
+  - 307-02: Wired into index.ts — detectEmotion() called on userMessage, getMoodHint() injected into buildSystemPrompt(). Logs mood + confidence when non-neutral.
+  - 307-03: Validation — 13 tests covering all moods, multilingual detection, neutral fallback, confidence range, hint generation. All PASS.
+- Validation: npx ts-node scripts/achiri/validate-emotion-detector.ts — 13/13 PASS
+- Swarm used: no (multi-file feature)
+- Issues: Initial test had "lonely" matching "sad" due to overlapping pattern. Fixed by removing "lonely" from sad patterns (it has its own category).
+- Timestamp: 2026-03-20T06:45:00Z
