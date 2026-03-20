@@ -254,7 +254,7 @@
       "sprint": 468,
       "title": "QUALITY — Thumbnail generator for YouTube Shorts",
       "block": "VIDEO-QUALITY-V2",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "YouTube Shorts need thumbnails for browse. Build: (1) Extract best frame from clip using PySceneDetect (most motion/faces), (2) Add text overlay (hook text, bold font), (3) Save as workspace/thumbnails/{video-id}.jpg. Auto-attach to YouTube upload."
     },
