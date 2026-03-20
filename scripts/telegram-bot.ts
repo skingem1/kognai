@@ -2436,6 +2436,17 @@ function cmdPostPlan(): string {
   return lines.join('\n');
 }
 
+// ─── Sprint 450: /hookstats — hook formula optimization rankings ──────────
+
+function cmdHookStats(): string {
+  try {
+    const { formatRankings } = require('./scs001/hook-optimizer');
+    return formatRankings();
+  } catch (e: any) {
+    return `❌ Hook optimizer error: ${e.message}`;
+  }
+}
+
 // ─── Sprint 372: /viralstats — viral score summary ────────────────────────
 
 function cmdViralStats(): string {
@@ -4713,6 +4724,7 @@ function cmdHelp(): string {
     `/broadcast  — Send announcement to alpha users\n` +
     `/dashboard  — Full system status overview\n` +
     `/todaycaptions — Copy-paste captions for today\n` +
+    `/hookstats  — Hook formula performance rankings\n` +
     `/viralstats — Viral score summary + top 3\n` +
     `/checkout  — Generate Stripe checkout link\n` +
     `/subscribers — Active Stripe subscribers + MRR\n` +
@@ -6146,6 +6158,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/postplan':    response = cmdPostPlan();           break;
     case '/dashboard':   response = cmdDashboard();          break;
     case '/viralstats':  response = cmdViralStats();         break;
+    case '/hookstats':   response = cmdHookStats();          break;
     case '/checkout':    await cmdCheckout(chatId, cmdArgs); return;
     case '/subscribers': await cmdSubscribers(chatId); return;
     case '/portal':      response = cmdPortal(cmdArgs);        break;

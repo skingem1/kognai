@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-450",
+  "title": "QUALITY — Hook optimization engine using experiment data + A/B selection",
+  "description": "Analyze experiments.jsonl to rank hook formulas by viral score performance. Build hook-optimizer.ts that: (1) reads experiment data, (2) computes per-formula stats (avg/max/count), (3) provides getOptimalHookFormula() for weighted random selection favoring top performers, (4) adds /hookstats Telegram command showing formula rankings.",
+  "source": "queue — Sprint 453 adapted as Sprint 450 (451-452 already shipped as 444-446)",
+  "tasks": [
+    {
+      "id": "450-01",
+      "title": "Create hook-optimizer.ts — experiment-driven hook formula ranking + selection",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-450",
+      "deliverables": { "code": ["scripts/scs001/hook-optimizer.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "450-02",
+      "title": "Add /hookstats Telegram command — show formula rankings",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-450",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
