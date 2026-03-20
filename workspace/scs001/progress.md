@@ -4029,3 +4029,17 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (small import + config change)
 - Issues: Operator must first run generate-background-music.ts to create the mp3 files.
 - Timestamp: 2026-03-20T23:30:00Z
+
+## Sprint 447 — VIDEO-E2E Full Pipeline Runner (Direct Write)
+- Status: PASS
+- Commit: 3192d94
+- Files created: scripts/scs001/run-full-pipeline.ts, scripts/scs001/validate-full-pipeline.ts, workspace/sprints/sprint-447.json, workspace/scs001/pipeline-runs/pipeline-*.json
+- Files modified: none
+- Tasks completed:
+  - 447-01: Created run-full-pipeline.ts — unified E2E pipeline runner chaining all 9 stages (Trend→Discovery→ClipDetection→Insight→Script→LLMRewrite→Editing→TTS→Captions). Supports --mock, --dry-run, --cloud, --limit N flags. Logs step timing + cost per stage. Outputs JSON report to workspace/scs001/pipeline-runs/.
+  - 447-02: Created validate-full-pipeline.ts — 23 checks (file existence, TS compilation, agent/script module imports, dry-run execution, report JSON structure). All pass.
+  - 447-03: Dry-run pipeline test — all 9 steps pass, 2 videos produced in mock+dry-run mode. ClipDetection uses Ollama (~114s). Total cost $0.32 (TTS dry-run estimate).
+- Validation: validate-full-pipeline.ts — 23/23 PASS
+- Swarm used: no (multi-file integration with complex imports)
+- Issues: ClipDetection step takes ~114s in mock mode (calls Ollama for LLM scoring). Consider adding --skip-llm flag for faster dry-runs.
+- Timestamp: 2026-03-20T08:30:00Z
