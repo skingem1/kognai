@@ -598,6 +598,63 @@ function cmdReview(): string {
   );
 }
 
+// Sprint 411: Load speaker map from experiments.jsonl (video_id/clip_id → speaker)
+function loadSpeakerMap(): Map<string, string> {
+  const speakers = new Map<string, string>();
+  const expPath = path.join(ROOT, 'workspace', 'scs001', 'experiments.jsonl');
+  if (!fs.existsSync(expPath)) return speakers;
+  try {
+    for (const line of fs.readFileSync(expPath, 'utf-8').split('\n')) {
+      if (!line.trim()) continue;
+      try {
+        const e = JSON.parse(line);
+        const id = e.clip_id ?? e.video_id;
+        const speaker = e.speaker;
+        if (id && speaker && speaker !== 'unknown') speakers.set(id, speaker);
+      } catch { /* skip */ }
+    }
+  } catch { /* skip */ }
+  return speakers;
+}
+
+// Sprint 411: Interleave videos so no speaker appears 3+ times in a row
+function diversifyBySpeaker(videos: any[], speakerMap: Map<string, string>, maxConsecutive: number = 2): any[] {
+  if (videos.length <= maxConsecutive) return videos;
+  const result: any[] = [];
+  const remaining = [...videos];
+
+  while (remaining.length > 0) {
+    // Count consecutive same-speaker at end of result
+    let lastSpeaker = '';
+    let consecutiveCount = 0;
+    if (result.length > 0) {
+      lastSpeaker = speakerMap.get(result[result.length - 1].video_id) ?? '';
+      for (let i = result.length - 1; i >= 0; i--) {
+        const s = speakerMap.get(result[i].video_id) ?? '';
+        if (s === lastSpeaker && lastSpeaker) consecutiveCount++;
+        else break;
+      }
+    }
+
+    // Find the best candidate that doesn't violate diversity
+    let picked = -1;
+    for (let i = 0; i < remaining.length; i++) {
+      const candidateSpeaker = speakerMap.get(remaining[i].video_id) ?? '';
+      if (consecutiveCount >= maxConsecutive && candidateSpeaker === lastSpeaker && lastSpeaker) {
+        continue; // skip — would exceed max consecutive
+      }
+      picked = i;
+      break;
+    }
+
+    // If all remaining are the same speaker, just take the first one
+    if (picked === -1) picked = 0;
+    result.push(remaining.splice(picked, 1)[0]);
+  }
+
+  return result;
+}
+
 // Sprint 280: Find captioned mp4 path for a video ID
 function findCaptionedMp4(videoId: string): string | null {
   try {
@@ -721,7 +778,10 @@ async function cmdDeliver(chatId: string, args: string): Promise<string> {
     return `📦 *Deliver* — No ready-to-post videos found.\n\nRun the pipeline first, then try again.`;
   }
 
-  const batch = ready.slice(0, count);
+  // Sprint 411: Apply speaker diversity guard
+  const speakerMap = loadSpeakerMap();
+  const diversified = diversifyBySpeaker(ready, speakerMap);
+  const batch = diversified.slice(0, count);
   let sent = 0;
 
   await sendMessage(chatId, `📦 *Delivering ${batch.length} videos for posting...*`);
@@ -734,7 +794,9 @@ async function cmdDeliver(chatId: string, args: string): Promise<string> {
     const caption = buildTikTokCaption(videoId);
     const vs = viralScores.get(videoId);
     const vsStr = vs != null ? `🧬 ${vs}` : '';
-    const tgCaption = `📦 *Post this to TikTok* ${vsStr}\n\n${caption}\n\n\`/record ${videoId} 0\``;
+    const speaker = speakerMap.get(videoId);
+    const spkStr = speaker ? `🎙️ ${speaker}` : '';
+    const tgCaption = `📦 *Post this to TikTok* ${vsStr} ${spkStr}\n\n${caption}\n\n\`/record ${videoId} 0\``;
 
     try {
       await sendVideoFile(chatId, mp4Path, tgCaption);
@@ -4890,12 +4952,16 @@ async function cmdPickup(chatId: string): Promise<void> {
     .filter((e: any) => !recordedIds.has(e.video_id) && e.video_id && !archivedIds.has(e.video_id))
     .sort((a: any, b: any) => (viralScores.get(b.video_id) ?? -1) - (viralScores.get(a.video_id) ?? -1));
 
-  const ready = unposted.filter((e: any) => findCaptionedMp4(e.video_id) !== null);
+  const readyRaw = unposted.filter((e: any) => findCaptionedMp4(e.video_id) !== null);
 
-  if (ready.length === 0) {
+  if (readyRaw.length === 0) {
     await sendMessage(chatId, '📦 *Pickup* — No ready-to-post videos.\n\nRun `/refresh` to generate new content.');
     return;
   }
+
+  // Sprint 411: Apply speaker diversity guard
+  const speakerMap = loadSpeakerMap();
+  const ready = diversifyBySpeaker(readyRaw, speakerMap);
 
   const pick = ready[0];
   const videoId = pick.video_id;
@@ -4907,6 +4973,8 @@ async function cmdPickup(chatId: string): Promise<void> {
 
   const caption = buildTikTokCaption(videoId);
   const vs = viralScores.get(videoId);
+  const speaker = speakerMap.get(videoId);
+  const spkStr = speaker ? ` · 🎙️ ${speaker}` : '';
   const vsStr = vs != null ? ` · 🧬 ${vs}` : '';
   const gate = recorded.length;
   const remaining = Math.max(0, 30 - gate);
@@ -4914,7 +4982,7 @@ async function cmdPickup(chatId: string): Promise<void> {
   const daysLeft = Math.max(0, Math.ceil((gateDate.getTime() - Date.now()) / 86_400_000));
 
   const tgCaption = [
-    `🎬 *Next Post* (#${gate + 1}/30)${vsStr}`,
+    `🎬 *Next Post* (#${gate + 1}/30)${vsStr}${spkStr}`,
     '',
     caption,
     '',

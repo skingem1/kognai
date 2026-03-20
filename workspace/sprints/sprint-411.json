@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-411",
+  "title": "Speaker diversity guard in /deliver and /pickup",
+  "description": "Prevent posting 3+ videos from the same speaker in a row. After sorting by viral score, re-order the batch so no speaker appears more than 2 times consecutively. Show speaker name in delivery messages. Improves content variety for audience engagement.",
+  "source": "auto — top-scored videos often cluster by speaker (107 Sam Altman clips), need diversity",
+  "tasks": [
+    {
+      "id": "411-01",
+      "title": "Add speaker diversity interleaving to /deliver and /pickup video selection",
+      "type": "enhancement",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-411",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
