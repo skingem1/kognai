@@ -199,6 +199,17 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Issues: skill-crystalliser module not found (skipped, non-blocking)
 - Timestamp: 2026-03-20T16:00:00Z
 
+## Sprint 495 — GATE
+- Status: PASS
+- Commit: 683aa36
+- Files created: scripts/generate-gate-report.ts, workspace/gates/april-7-gate.json, workspace/gates/phase2-sprint-seed.json, workspace/sprints/sprint-495.json
+- Files modified: none
+- Test: npx ts-node scripts/generate-gate-report.ts — report generated, 2/4 criteria pass (pipeline + Stripe), 2/4 fail (posts + views)
+- Pipeline: Gate report generator + Phase 2 planning seed (5 blocks, 25 sprints planned)
+- Swarm used: no (planning/tooling work)
+- Issues: Gate currently FAIL — 0 posts, 0 views. Human posting required.
+- Timestamp: 2026-03-20T19:00:00Z
+
 ## Sprint 494 — GATE
 - Status: PASS
 - Commit: d52634b

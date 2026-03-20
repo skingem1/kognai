@@ -472,7 +472,7 @@
       "sprint": 495,
       "title": "GATE — April 7 gate report + Phase 2 planning seed",
       "block": "GATE",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "Generate formal gate report: workspace/gates/april-7-gate.json. Criteria: 30 TikTok posts (✅/❌), 500 views (✅/❌), pipeline operational (✅/❌), monetization ready (✅/❌). If PASS: seed Phase 2 sprint plan. If FAIL: generate remediation plan with revised timeline."
     }
