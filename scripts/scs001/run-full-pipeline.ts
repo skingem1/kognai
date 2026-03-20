@@ -61,6 +61,8 @@ interface PipelineReport {
   total_duration_ms: number;
   total_cost_usd: number;
   videos_produced: number;
+  topics_used?: string[];
+  speakers_used?: string[];
   summary: string;
 }
 
@@ -349,7 +351,10 @@ async function main(): Promise<void> {
 
   // ── Report ──────────────────────────────────────────
   const videosProduced = videos.filter((v) => v.output_path !== "FAILED").length;
-  saveReport(runId, pipelineStart, opts, steps, totalCost, videosProduced);
+  // Sprint 574: Collect topics and speakers for report
+  const topicsUsed = [...new Set(rewrittenBundles.map((b: any) => b.topic_name || b.hook_text?.slice(0, 40) || 'unknown'))];
+  const speakersUsed = [...new Set(rewrittenBundles.map((b: any) => b.speaker_name || 'unknown'))];
+  saveReport(runId, pipelineStart, opts, steps, totalCost, videosProduced, topicsUsed, speakersUsed);
 }
 
 function saveReport(
@@ -358,7 +363,9 @@ function saveReport(
   opts: { mock: boolean; dryRun: boolean; cloud: boolean; local: boolean; limit: number },
   steps: StepResult[],
   totalCost: number,
-  videosProduced: number
+  videosProduced: number,
+  topicsUsed: string[] = [],
+  speakersUsed: string[] = []
 ): void {
   const finishedAt = new Date().toISOString();
   const totalMs = Date.now() - startTime;
@@ -376,6 +383,8 @@ function saveReport(
     total_duration_ms: totalMs,
     total_cost_usd: totalCost,
     videos_produced: videosProduced,
+    topics_used: topicsUsed,
+    speakers_used: speakersUsed,
     summary: passed + " passed, " + failed + " failed, " + skipped + " skipped — " + videosProduced + " videos — $" + totalCost.toFixed(4) + " — " + (totalMs / 1000).toFixed(1) + "s",
   };
 

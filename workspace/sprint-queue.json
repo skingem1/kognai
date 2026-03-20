@@ -1164,8 +1164,9 @@
       "title": "PIPELINE — Add per-video topic tracking in run-full-pipeline.ts",
       "block": "PIPELINE",
       "priority": "medium",
-      "status": "pending",
-      "rationale": "Pipeline report doesnt include per-video topic info. Add topics_used array to report JSON for better analytics."
+      "status": "done",
+      "rationale": "Pipeline report doesnt include per-video topic info. Add topics_used array to report JSON for better analytics.",
+      "_note": "topics_used + speakers_used added to reports. Speaker works, topic ready for orchestrator."
     },
     {
       "sprint": 575,

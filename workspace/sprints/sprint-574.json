@@ -1,0 +1,26 @@
+{
+  "sprint_id": "sprint-574",
+  "title": "PIPELINE \u2014 Add topics_used + speakers_used to pipeline reports",
+  "description": "Pipeline reports now include topics_used and speakers_used arrays. Speaker tracking works. Topic tracking ready for orchestrator mode.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "574-01",
+      "title": "Add topic/speaker tracking to report",
+      "type": "feature",
+      "task_type": "pipeline",
+      "task_target": "scripts/scs001/run-full-pipeline.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-574",
+      "deliverables": {
+        "code": [
+          "scripts/scs001/run-full-pipeline.ts"
+        ],
+        "tests": [],
+        "docs": []
+      }
+    }
+  ]
+}
