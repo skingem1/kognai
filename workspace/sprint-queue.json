@@ -400,7 +400,7 @@
       "sprint": 486,
       "title": "LAUNCH — GitHub public branch preparation",
       "block": "LAUNCH-PREP",
-      "status": "pending",
+      "status": "done",
       "priority": "low",
       "rationale": "Launch Strategy v1.0 includes GitHub public branch. Repo is now PRIVATE. Prepare public branch: (1) Filter out .env, secrets, internal docs, (2) Clean README.md, (3) Add CONTRIBUTING.md, (4) License file. Don't push yet — prepare only."
     },
