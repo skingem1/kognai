@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-310",
+  "title": "Achiri E2E integration test — full companion flow validation for alpha",
+  "description": "Comprehensive dry-run E2E test covering: new user onboarding, emotion detection, context windowing, topic suggestions, returning user greeting. Quality gate before Apr 25 alpha.",
+  "source": "auto — Achiri Phase 2A: alpha quality gate",
+  "tasks": [
+    {
+      "id": "310-01",
+      "title": "Create comprehensive E2E integration test for all Sprint 301-309 features",
+      "type": "test",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-310",
+      "deliverables": { "code": ["scripts/achiri/validate-e2e-alpha.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
