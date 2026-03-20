@@ -3482,3 +3482,16 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (FP-007 file >4800 lines)
 - Issues: None.
 - Timestamp: 2026-03-20T22:30:00Z
+
+## Sprint 402 — Stripe Checkout Web Endpoint (Direct Write)
+- Status: PASS
+- Commit: 81b350f
+- Files created: scripts/scs001/checkout-server.ts, workspace/sprints/sprint-402.json
+- Files modified: ecosystem.config.js
+- Tasks completed:
+  - 402-01: Created checkout-server.ts — standalone HTTP server (port 3002) with landing page at / and Stripe checkout redirects at /checkout/growth and /checkout/premium. Dark theme, mobile-responsive, shows pricing + features. Creates Stripe Checkout sessions via raw HTTPS (no npm dep).
+  - 402-02: Added PM2 config kognai-checkout for the checkout server.
+- Validation: tsc --noEmit PASS
+- Swarm used: no (new file creation)
+- Issues: None. Server binds 0.0.0.0 for external access.
+- Timestamp: 2026-03-20T22:40:00Z
