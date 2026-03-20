@@ -856,5 +856,26 @@ module.exports = {
       out_file: "/Users/tarekmnif/kognai/logs/watchdog-out.log",
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
+    {
+      // Sprint 326: Achiri re-engagement — daily at 15:00 (afternoon in Tunisia)
+      // Sends check-in messages to alpha users inactive 3+ days.
+      // To start: pm2 start ecosystem.config.js --only achiri-reengage
+      name: "achiri-reengage",
+      script: "scripts/achiri/achiri-reengage.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: false,
+      watch: false,
+      cron_restart: "0 15 * * *",
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
+        TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN || "",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/achiri-reengage-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/achiri-reengage-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
   ]
 };

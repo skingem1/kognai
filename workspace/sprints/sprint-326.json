@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-326",
+  "title": "Achiri re-engagement — check-in messages for lapsed alpha users",
+  "description": "Create a PM2 cron script that identifies alpha users who haven't chatted in 3+ days and sends a friendly Telegram check-in message. Uses daily-counts.json for activity tracking. Key metric for May 1 'voice works?' gate: Day-7 retention >20%.",
+  "source": "auto — Achiri Alpha retention, May 1 Lite Alpha Gate prep",
+  "tasks": [
+    {
+      "id": "326-01",
+      "title": "Create scripts/achiri/achiri-reengage.ts — lapsed user check-in sender",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-326",
+      "deliverables": { "code": ["scripts/achiri/achiri-reengage.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
