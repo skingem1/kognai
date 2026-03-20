@@ -1,33 +1,75 @@
 {
-  "passed": true,
-  "timestamp": "2026-03-20T00:08:13.720Z",
-  "stage_count": 15,
-  "error_count": 0,
-  "zero_counters": 0,
-  "viral_scored_count": 12,
-  "viral_warning": false,
-  "summary": {
-    "topics_found": 5,
-    "clips_discovered": 10,
-    "clips_qualified": 6,
-    "insights_generated": 6,
-    "scripts_produced": 6,
-    "scripts_scored": 6,
-    "scripts_filtered": 2,
-    "scripts_validation_skipped": 0,
-    "videos_edited": 4,
-    "videos_captioned": 4,
-    "qc_passed": 4,
-    "qc_failed": 0,
-    "published": 36,
-    "viral": 12,
-    "performing": 12,
-    "failure_library": 12,
-    "flywheel_derivatives": 48,
-    "failure_entries": 12,
-    "clips_deduplicated": 16,
-    "platforms_targeted": 9,
-    "publish_method": "blotato"
-  },
-  "errors": []
+  "timestamp": "2026-03-20T10:50:29.138Z",
+  "pass": 11,
+  "fail": 0,
+  "skip": 0,
+  "total": 11,
+  "results": [
+    {
+      "name": "1. Ollama (local models)",
+      "status": "PASS",
+      "detail": "7 models: nomic-embed-text:latest, qwen2.5vl:7b, deepseek-r1:14b, qwen3:14b, qwen3:32b, qwen3:4b, qwen3:0.6b",
+      "duration_ms": 17
+    },
+    {
+      "name": "2. ClawRouter Gateway",
+      "status": "PASS",
+      "detail": "ClawRouter gateway healthy",
+      "duration_ms": 12
+    },
+    {
+      "name": "3. Telegram Bot",
+      "status": "PASS",
+      "detail": "Bot: @MessiKognai_Bot",
+      "duration_ms": 84
+    },
+    {
+      "name": "4. Dashboard",
+      "status": "PASS",
+      "detail": "Dashboard responding on :11436",
+      "duration_ms": 6
+    },
+    {
+      "name": "5. Stripe",
+      "status": "PASS",
+      "detail": "Stripe API key set (reachable)",
+      "duration_ms": 91
+    },
+    {
+      "name": "6. YouTube API",
+      "status": "PASS",
+      "detail": "YouTube API key configured",
+      "duration_ms": 1
+    },
+    {
+      "name": "7. TikTok API",
+      "status": "PASS",
+      "detail": "TikTok client credentials configured (token may need refresh)",
+      "duration_ms": 0
+    },
+    {
+      "name": "8. Pipeline Data Files",
+      "status": "PASS",
+      "detail": "All 4 pipeline data files present",
+      "duration_ms": 0
+    },
+    {
+      "name": "9. Git Health",
+      "status": "PASS",
+      "detail": "959 commits, 23 uncommitted changes",
+      "duration_ms": 79
+    },
+    {
+      "name": "10. Critical Env Vars",
+      "status": "PASS",
+      "detail": "All 4 critical env vars set",
+      "duration_ms": 0
+    },
+    {
+      "name": "11. Supabase",
+      "status": "PASS",
+      "detail": "Supabase reachable",
+      "duration_ms": 111
+    }
+  ]
 }

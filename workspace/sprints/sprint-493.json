@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-493",
+  "title": "INFRA — Comprehensive e2e smoke test for full system",
+  "description": "Build scripts/smoke-test-full.ts: Ollama, ClawRouter, Telegram bot, pipeline stages, dashboard, Stripe, YouTube. Single command validates all available services.",
+  "source": "queue — Sprint 493 INFRA",
+  "tasks": [
+    {
+      "id": "493-01",
+      "title": "Create comprehensive smoke-test-full.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-493",
+      "deliverables": { "code": ["scripts/smoke-test-full.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}
