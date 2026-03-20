@@ -10,6 +10,7 @@
  *   --mock      Use mock data (no API calls for Trend/Discovery)
  *   --dry-run   Skip FFmpeg/API execution, log what would happen
  *   --cloud     Use Claude Sonnet for LLM rewrite (default: local qwen3:14b)
+ *   --local     Force local TTS (macOS say) + enhanced FFmpeg captions ($0.00)
  *   --limit N   Process only first N topics (default: 3)
  *
  * Usage:
@@ -34,6 +35,8 @@ import { rewriteScript, RewriteResult } from "./llm-script-rewriter";
 import { generateVoiceover, VoiceoverResult } from "./tts-voiceover";
 import { mixAudio, MixResult } from "./audio-mixer";
 import { generateCaptions, CaptionResult } from "./caption-overlay";
+import { generateEnhancedCaptions } from "./caption-ffmpeg";
+import { generateLocalVoiceover, isLocalTTSAvailable } from "./tts-local";
 import { hookQualityScore } from "./hook-quality";
 import { selectMusic } from "./music-selector";
 
@@ -70,13 +73,14 @@ function ensureDir(dir: string): void {
   if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
 }
 
-function parseArgs(): { mock: boolean; dryRun: boolean; cloud: boolean; limit: number } {
+function parseArgs(): { mock: boolean; dryRun: boolean; cloud: boolean; local: boolean; limit: number } {
   const args = process.argv.slice(2);
   const limitIdx = args.indexOf("--limit");
   return {
     mock: args.includes("--mock"),
     dryRun: args.includes("--dry-run"),
     cloud: args.includes("--cloud"),
+    local: args.includes("--local"),
     limit: limitIdx >= 0 ? parseInt(args[limitIdx + 1], 10) || 3 : 3,
   };
 }
@@ -101,7 +105,8 @@ async function main(): Promise<void> {
   console.log("");
   console.log("═══════════════════════════════════════════════════════");
   console.log("  SCS-001 Full Pipeline — E2E Run");
-  console.log("  Mode: " + (opts.mock ? "MOCK" : "LIVE") + " | " + (opts.dryRun ? "DRY-RUN" : "EXECUTE") + " | " + (opts.cloud ? "CLOUD" : "LOCAL"));
+  const ttsMode = opts.local ? "LOCAL-TTS" : (process.env.ELEVENLABS_API_KEY ? "ELEVENLABS" : (isLocalTTSAvailable() ? "LOCAL-TTS-AUTO" : "DRY-ONLY"));
+  console.log("  Mode: " + (opts.mock ? "MOCK" : "LIVE") + " | " + (opts.dryRun ? "DRY-RUN" : "EXECUTE") + " | " + (opts.cloud ? "CLOUD" : "LOCAL") + " | TTS:" + ttsMode);
   console.log("  Limit: " + opts.limit + " topics");
   console.log("  Run ID: " + runId);
   console.log("═══════════════════════════════════════════════════════");
@@ -276,14 +281,16 @@ async function main(): Promise<void> {
   }
 
   // ── Step 8: TTS Voiceover ──────────────────────────
-  console.log("▶ Step 8/9: TTS Voiceover");
+  const useLocalTTS = opts.local || (!process.env.ELEVENLABS_API_KEY && isLocalTTSAvailable());
+  console.log("▶ Step 8/9: TTS Voiceover" + (useLocalTTS ? " (LOCAL — $0.00)" : ""));
   const voiceovers: VoiceoverResult[] = [];
   let ttsCost = 0;
   try {
     for (const bundle of rewrittenBundles) {
-      const { result, duration_ms } = await timed("tts-" + bundle.script_id, () =>
-        generateVoiceover(bundle, undefined, opts.dryRun)
-      );
+      const ttsFunc = useLocalTTS && !opts.dryRun
+        ? () => generateLocalVoiceover(bundle)
+        : () => generateVoiceover(bundle, undefined, opts.dryRun);
+      const { result, duration_ms } = await timed("tts-" + bundle.script_id, ttsFunc);
       voiceovers.push(result);
       ttsCost += result.total_cost_usd;
       console.log("    TTS " + bundle.script_id + ": " + result.segments.length + " segments, " + result.total_duration_s.toFixed(1) + "s ($" + result.total_cost_usd.toFixed(4) + ")");
@@ -297,16 +304,18 @@ async function main(): Promise<void> {
   }
 
   // ── Step 9: Caption Overlay ─────────────────────────
-  console.log("▶ Step 9/9: Caption Overlay");
+  const useEnhancedCaptions = opts.local || !process.env.JSON2VIDEO_API_KEY;
+  console.log("▶ Step 9/9: Caption Overlay" + (useEnhancedCaptions ? " (ENHANCED FFmpeg — $0.00)" : ""));
   const captions: CaptionResult[] = [];
   let captionCost = 0;
   try {
     for (let i = 0; i < rewrittenBundles.length; i++) {
       const bundle = rewrittenBundles[i];
       const videoPath = videos[i]?.output_path;
-      const { result, duration_ms } = await timed("caption-" + bundle.script_id, () =>
-        generateCaptions(bundle, videoPath !== "FAILED" ? videoPath : undefined, undefined, opts.dryRun)
-      );
+      const captionFunc = useEnhancedCaptions
+        ? () => generateEnhancedCaptions(bundle, videoPath !== "FAILED" ? videoPath : undefined, undefined, opts.dryRun)
+        : () => generateCaptions(bundle, videoPath !== "FAILED" ? videoPath : undefined, undefined, opts.dryRun);
+      const { result, duration_ms } = await timed("caption-" + bundle.script_id, captionFunc);
       captions.push(result);
       captionCost += result.cost_usd;
       console.log("    Caption " + bundle.script_id + ": " + result.overlays.length + " overlays ($" + result.cost_usd.toFixed(4) + ")");
@@ -327,7 +336,7 @@ async function main(): Promise<void> {
 function saveReport(
   runId: string,
   startTime: number,
-  opts: { mock: boolean; dryRun: boolean; cloud: boolean; limit: number },
+  opts: { mock: boolean; dryRun: boolean; cloud: boolean; local: boolean; limit: number },
   steps: StepResult[],
   totalCost: number,
   videosProduced: number

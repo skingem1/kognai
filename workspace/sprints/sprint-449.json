@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-449",
+  "title": "POSTING — Wire zero-cost fallbacks into pipeline + /produce command",
+  "description": "Wire Sprint 448 zero-cost TTS + caption fallbacks into the full pipeline runner (Sprint 447). Add --local flag to force local TTS + FFmpeg captions. Create /produce Telegram command that triggers mock pipeline run and delivers video-ready output. Updates run-full-pipeline.ts to use enhanced captions when JSON2VIDEO_API_KEY missing.",
+  "source": "queue — Sprint 449 POSTING block (adapted: /postnow already exists, wiring fallbacks is more valuable)",
+  "tasks": [
+    {
+      "id": "449-01",
+      "title": "Wire local TTS + enhanced captions into run-full-pipeline.ts",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-449",
+      "deliverables": { "code": ["scripts/scs001/run-full-pipeline.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "449-02",
+      "title": "Add /produce Telegram command — trigger pipeline + deliver ready video",
+      "type": "feature",
+      "task_type": "code",
+      "task_target": "local",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-449",
+      "deliverables": { "code": ["scripts/telegram-bot.ts"], "tests": [], "docs": [] }
+    }
+  ]
+}

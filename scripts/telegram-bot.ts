@@ -4689,6 +4689,7 @@ function cmdHelp(): string {
     `/analytics — Content performance insights\n` +
     `/onboard   — First-time posting walkthrough\n` +
     `/pipeline  — Content pipeline inventory & health\n` +
+    `/produce   — Produce video with local TTS ($0.00)\n` +
     `/refresh   — Trigger new pipeline run (2-5 min)\n` +
     `/tiktokauth — TikTok OAuth setup guide\n` +
     `/today     — Daily posting brief + recommendations\n` +
@@ -5915,6 +5916,50 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
           await sendMessage(chatId, `❌ *Pipeline failed* (exit ${code})\n\n\`\`\`\n${errSnippet}\n\`\`\``);
         }
       } catch { /* notification failed, nothing we can do */ }
+    });
+    child.on('error', async (err: Error) => {
+      try { await sendMessage(chatId, `❌ *Pipeline spawn failed:* ${err.message}`); } catch {}
+    });
+    const timestamp = new Date().toISOString();
+    fs.appendFileSync(AUDIT_LOG, `[${timestamp}] [TELEGRAM_BOT] Command: ${cmd} from ${chatId}\n`);
+    return;
+  }
+
+  // Sprint 449: /produce — run full pipeline with local TTS + enhanced captions ($0.00)
+  if (cmdName === '/produce') {
+    await sendMessage(chatId, `🎬 *Producing video...*\n\nUsing local TTS + FFmpeg captions ($0.00).\nThis takes 2-3 minutes.`);
+    const { spawn } = require('child_process');
+    const pipelineScript = path.join(ROOT, 'scripts', 'scs001', 'run-full-pipeline.ts');
+    const child = spawn('npx', ['ts-node', '--transpile-only', pipelineScript, '--mock', '--local', '--limit', '1'], {
+      cwd: ROOT,
+      env: { ...process.env, TS_NODE_TRANSPILE_ONLY: 'true' },
+      stdio: ['ignore', 'pipe', 'pipe'],
+      detached: false,
+    });
+    let stdout = '';
+    child.stdout.on('data', (d: Buffer) => { stdout += d.toString(); });
+    child.stderr.on('data', (d: Buffer) => { /* ignore stderr */ });
+    child.on('close', async (code: number) => {
+      try {
+        if (code === 0) {
+          // Read latest pipeline report
+          const runsDir = path.join(ROOT, 'workspace', 'scs001', 'pipeline-runs');
+          const reports = fs.existsSync(runsDir) ? fs.readdirSync(runsDir).filter((f: string) => f.startsWith('pipeline-') && f.endsWith('.json')).sort() : [];
+          let reportSummary = '';
+          if (reports.length > 0) {
+            try {
+              const report = JSON.parse(fs.readFileSync(path.join(runsDir, reports[reports.length - 1]), 'utf-8'));
+              reportSummary = `\n\n📊 ${report.summary}`;
+            } catch { /* skip */ }
+          }
+          await sendMessage(chatId, `✅ *Video produced!*${reportSummary}\n\nUse /postnow to get the video.`);
+        } else {
+          const lastLines = stdout.split('\n').filter((l: string) => l.trim()).slice(-5).join('\n');
+          await sendMessage(chatId, `❌ *Pipeline failed* (exit ${code})\n\n\`\`\`\n${lastLines.slice(0, 500)}\n\`\`\``);
+        }
+      } catch (err: any) {
+        try { await sendMessage(chatId, `❌ *Pipeline error:* ${err.message}`); } catch {}
+      }
     });
     child.on('error', async (err: Error) => {
       try { await sendMessage(chatId, `❌ *Pipeline spawn failed:* ${err.message}`); } catch {}
