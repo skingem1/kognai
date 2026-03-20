@@ -3897,3 +3897,15 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (multi-function modification across large file)
 - Issues: None.
 - Timestamp: 2026-03-20T20:30:00Z
+
+## Sprint 436 — /boot Command (Direct Write)
+- Status: PASS
+- Commit: 8ccac39
+- Files created: workspace/sprints/sprint-436.json
+- Files modified: scripts/telegram-bot.ts
+- Tasks completed:
+  - 436-01: Added /boot command — starts 18 essential PM2 crons (pipeline, digest, reminders, watchdog, calendar, schedule, leaderboard, auto-deliver, view-tracker, caption-push). Shows started/already-running/failed counts. Added to /help and bot command registration.
+- Validation: tsc --noEmit PASS
+- Swarm used: no (async command + new function in large file)
+- Issues: None.
+- Timestamp: 2026-03-20T20:45:00Z
