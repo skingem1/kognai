@@ -4134,3 +4134,19 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (API integration + telegram)
 - Issues: Requires YOUTUBE_CLIENT_ID/SECRET/REFRESH_TOKEN for actual uploads. Human must set up OAuth2 at console.cloud.google.com.
 - Timestamp: 2026-03-20T10:00:00Z
+
+## Sprint 455 — SAFETY: Split telegram-bot.ts (Part 1)
+- Status: PASS
+- Commit: 80eb28a
+- Files created: scripts/telegram-commands/shared.ts, scripts/telegram-commands/cmd-system.ts, scripts/telegram-commands/cmd-gate.ts, scripts/telegram-commands/cmd-content.ts, scripts/telegram-commands/cmd-posting.ts, scripts/telegram-commands/cmd-management.ts, scripts/telegram-commands/cmd-help.ts, workspace/sprints/sprint-455.json
+- Files modified: scripts/telegram-bot.ts (removed 4,232 lines, added imports)
+- Tasks completed:
+  - 455-01: Created shared.ts with 19 exported utilities (ROOT, readJSON, readLines, getPm2List, fmtUptime, fmtMem, latestSprintFile, findCaptionedMp4, getExperimentData, buildTikTokCaption, loadSpeakerMap, diversifyBySpeaker, loadHookMap, diversifyByHook, freshnessScore, loadArchived, saveArchived, loadNotes, saveNotes, HOOK_OPENERS)
+  - 455-02: Extracted 62 command handlers into 6 grouped module files
+  - 455-03: Updated telegram-bot.ts with imports from new modules
+  - 455-04: TypeScript compilation PASS — all 8 files compile clean
+- Result: telegram-bot.ts 6,397 → 2,175 lines (below 2,800 FP-007 threshold)
+- Swarm used: no (FP-007 — file too large for swarm)
+- Swarm bypassed: yes (FP-007). Manual crystallise: skipped (no crystallise function available).
+- Issues: None. All commands still routed through same switch/case in telegram-bot.ts.
+- Timestamp: 2026-03-20T10:30:00Z
