@@ -3024,3 +3024,16 @@ All operator touchpoints now show enriched content metadata:
 - Swarm used: no (Achiri bot feature additions)
 - Issues: None.
 - Timestamp: 2026-03-20T08:15:00Z
+
+## Sprint 356 — /digest + Gate Urgency Improvements (Direct Write)
+- Status: PASS
+- Commit: 86affd1
+- Files created: workspace/sprints/sprint-356.json
+- Files modified: scripts/telegram-bot.ts, scripts/scs001/gate-urgency-alert.ts
+- Tasks completed:
+  - 356-01: Added /digest Telegram command — unified daily digest showing gate countdown, top-3 queue videos with viral scores, Stripe status, TikTok token status, and action items. Registered in help text and command router.
+  - 356-02: Enhanced gate-urgency-alert.ts — added inline top-3 queue display with viral scores, added WARNING urgency level when 0 posts recorded, added getTop3Queue() helper function.
+- Validation: tsc --noEmit PASS on both files
+- Swarm used: no (multi-file feature, swarm bypass)
+- Issues: None.
+- Timestamp: 2026-03-20T08:30:00Z
