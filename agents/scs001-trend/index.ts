@@ -108,10 +108,13 @@ export class TrendAgent {
     }
 
     const qualified = feed.signals
-      .filter(s => s.scs_relevant === true && s.confidence >= CONFIDENCE_GATE)
-      .sort((a, b) => b.confidence - a.confidence);
+      .filter(s => s.scs_relevant === true && s.confidence >= CONFIDENCE_GATE);
 
-    const topics: TrendingTopic[] = qualified.map(s => ({
+    // Sprint 518: Weighted random shuffle — confidence as weight, not strict sort.
+    // This ensures each run produces a different topic mix from the pool.
+    const shuffled = this.weightedShuffle(qualified);
+
+    const topics: TrendingTopic[] = shuffled.map(s => ({
       topic_id: s.signal_id,
       topic_name: s.topic,
       confidence_score: s.confidence,
@@ -143,6 +146,24 @@ export class TrendAgent {
     console.log('[TrendAgent] Mode: mock — reading static feed');
     const raw = readFileSync(this.feedPath, 'utf8');
     return JSON.parse(raw) as Oracle6Feed;
+  }
+
+  /** Sprint 518: Weighted random shuffle — higher confidence = more likely to appear first,
+   *  but not deterministic. Uses confidence as weight for random sampling. */
+  private weightedShuffle(items: Oracle6Signal[]): Oracle6Signal[] {
+    const pool = [...items];
+    const result: Oracle6Signal[] = [];
+    while (pool.length > 0) {
+      const totalWeight = pool.reduce((sum, s) => sum + s.confidence, 0);
+      let r = Math.random() * totalWeight;
+      let idx = 0;
+      for (let i = 0; i < pool.length; i++) {
+        r -= pool[i].confidence;
+        if (r <= 0) { idx = i; break; }
+      }
+      result.push(pool.splice(idx, 1)[0]);
+    }
+    return result;
   }
 
   private deriveKeywords(topic: string): string[] {

@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-518",
+  "title": "PIPELINE — Add random topic selection to pipeline (avoid sequential bias)",
+  "description": "Pipeline always picks topics in confidence-sorted order. Add weighted random shuffle so each run produces different topics from the 15-topic pool.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "518-01",
+      "title": "Add weighted random shuffle to TrendAgent topic selection",
+      "type": "feature",
+      "task_type": "pipeline",
+      "task_target": "agents/scs001-trend/index.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-518",
+      "deliverables": { "code": ["agents/scs001-trend/index.ts"], "tests": [], "docs": [] }
+    },
+    {
+      "id": "518-02",
+      "title": "Validate diverse topic output across 3 runs",
+      "type": "test",
+      "task_type": "validation",
+      "task_target": "agents/scs001-trend/index.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-518",
+      "deliverables": { "code": [], "tests": [], "docs": [] }
+    }
+  ]
+}
