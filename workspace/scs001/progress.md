@@ -2948,8 +2948,20 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Cost: $0.00
 - Timestamp: 2026-03-21T18:55:00Z
 
-## Session 28 Final Summary (Sprints 770-777)
-- 8 sprints shipped
+## Sprint 778 — OPS
+- Status: PASS
+- Commit: e771f35
+- Files created: workspace/sprints/sprint-778.json
+- Files modified: scripts/telegram-commands/cmd-content.ts
+- Test: /queue shows curated manifest at top — PASS
+- Pipeline: Operator now sees curated queue in Telegram
+- Swarm used: no (surgical edit)
+- Issues: None
+- Cost: $0.00
+- Timestamp: 2026-03-21T19:00:00Z
+
+## Session 28 Final Summary (Sprints 770-778)
+- 9 sprints shipped
 - 20 new videos produced (~$7.50 total avatar cost)
 - Ledger: 572 → 606 (+34)
 - 3 new radar sources added (Dev.to, Lobsters, TechCrunch), Reddit expanded 4→8 subs
@@ -2959,5 +2971,6 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Gate alert: enhanced with curated queue display
 - Gate: 606 videos, 1/30 posts, 17 days to April 7 (AT_RISK)
 - Bug fix: dry-run no longer pollutes publish-ledger (was amplifying topic saturation)
-- HANDOFF: next session starts at Sprint 778, read sprint-brief.md first
+- /queue command enhanced: curated manifest shown at top
+- HANDOFF: next session starts at Sprint 779, read sprint-brief.md first
 - CRITICAL: Operator must start manual TikTok posting (29 posts needed in 17 days, 2/day pace)
