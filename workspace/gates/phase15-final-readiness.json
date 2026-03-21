@@ -1,0 +1,52 @@
+{
+  "generated_at": "2026-03-21T09:14:26.347Z",
+  "gate_date": "2026-04-07",
+  "days_remaining": 17,
+  "result": "PENDING",
+  "gate_metrics": {
+    "posts": 0,
+    "target_posts": 30,
+    "views": 0,
+    "target_views": 500,
+    "days_remaining": 17,
+    "gate_date": "2026-04-07",
+    "assessment_date": "2026-03-21"
+  },
+  "pipeline_health": {
+    "total_videos_generated": 436,
+    "total_videos_delivered": 137,
+    "experiments_count": 359,
+    "qc_pass_rate": 97,
+    "avg_viral_score": 0.498,
+    "best_hook_formula": "urgency",
+    "cost_per_video": 0.14999999999999977,
+    "monthly_cost": 65.3999999999999
+  },
+  "infrastructure": {
+    "stripe": false,
+    "supabase": false,
+    "telegram": false,
+    "ollama": false,
+    "tiktok_token": false,
+    "pm2_processes": 5
+  },
+  "phase2_plan": {
+    "activation_criteria": [
+      "GATE FAILED — remediation required before Phase 2"
+    ],
+    "phase2_sprints": [],
+    "blockers": [
+      "Insufficient posts — need manual posting effort",
+      "TIKTOK_ACCESS_TOKEN still not set — automated posting impossible",
+      "Must hit 30 posts + 500 views before April 7"
+    ]
+  },
+  "kill_switches": {
+    "account_banned": false,
+    "low_views": false,
+    "low_retention": false,
+    "low_approval": false,
+    "memory_exceeded": false,
+    "high_oversight": false
+  }
+}

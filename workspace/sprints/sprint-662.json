@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-662",
+  "title": "GATE — April 7 final readiness report + Phase 2 planning",
+  "description": "Build comprehensive gate assessment tool for April 7. Generates readiness report with actual posting stats, pipeline health, and Phase 2 activation plan.",
+  "source": "sprint-queue",
+  "tasks": [
+    {
+      "id": "662-01",
+      "title": "Build gate readiness assessment tool",
+      "type": "feature",
+      "task_type": "gate",
+      "task_target": "scripts/scs001/gate-readiness-final.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-662"
+    }
+  ]
+}
