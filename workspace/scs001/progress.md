@@ -2655,3 +2655,15 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Issues: None — ledger dedup working perfectly
 - Cost: $1.50
 - Timestamp: 2026-03-21T15:30:00Z
+
+## Sprint 757 — CONTENT+POSTING
+- Status: PASS
+- Commit: 3fe02c4
+- Files created: workspace/sprints/sprint-757.json
+- Files modified: workspace/scs001/publish-ledger.jsonl, workspace/scs001/topic-radar/seen-topics.json, workspace/scs001/manual-post-queue/post-manifest.json
+- Test: 5 new videos produced, 15-video post manifest — all files OK — PASS
+- Pipeline: 519 total ledger, 15 videos in post queue (6 explainer, 3 debate, 3 vision, 3 listicle)
+- Swarm used: no (pipeline + JSON generation)
+- Issues: None
+- Cost: $1.50
+- Timestamp: 2026-03-21T15:35:00Z
