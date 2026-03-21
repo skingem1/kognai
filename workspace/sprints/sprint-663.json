@@ -1,0 +1,37 @@
+{
+  "sprint_id": "sprint-663",
+  "title": "RADAR — Consolidate topic radar into digest + viral-topics upgrade",
+  "description": "Wire topic radar data into viral-topics.json with real trending titles/sources. Enrich daily digest trending section with actionable radar topics for April 7 gate.",
+  "source": "queue-empty-qwen-recommendation",
+  "tasks": [
+    {
+      "id": "663-01",
+      "title": "Build radar consolidation script (radar-*.json → viral-topics.json)",
+      "type": "feature",
+      "task_type": "pipeline",
+      "task_target": "scripts/scs001/consolidate-radar.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-663"
+    },
+    {
+      "id": "663-02",
+      "title": "Enrich daily digest trending section with radar topic titles and sources",
+      "type": "enhancement",
+      "task_type": "pipeline",
+      "task_target": "scripts/daily-digest.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-663"
+    }
+  ],
+  "cto_gate": {
+    "approved": false,
+    "reason": "The sprint is not in any plan and is not a critical fix.",
+    "plan_reference": "NOT_IN_PLAN",
+    "confidence": 85,
+    "timestamp": "2026-03-21T09:20:23.202Z"
+  }
+}

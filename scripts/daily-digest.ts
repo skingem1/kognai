@@ -103,12 +103,26 @@ function getTopFormula(): string {
   return `${formula} (${pct}% QC pass)`;
 }
 
-// ── Viral topics (Sprint 161) ─────────────────────────────────────────────────
+// ── Viral topics (Sprint 161, enriched Sprint 663) ───────────────────────────
+
+interface TrendingTopic {
+  title: string;
+  source: string;
+  confidence: number;
+  format: string;
+}
 
 function getViralTopics(): string[] {
   try {
     const data = JSON.parse(fs.readFileSync(path.join(ROOT, 'workspace', 'scs001', 'viral-topics.json'), 'utf-8'));
     return (Array.isArray(data.topics) ? data.topics : []).slice(0, 3);
+  } catch { return []; }
+}
+
+function getTrendingTopics(): TrendingTopic[] {
+  try {
+    const data = JSON.parse(fs.readFileSync(path.join(ROOT, 'workspace', 'scs001', 'viral-topics.json'), 'utf-8'));
+    return (Array.isArray(data.trending) ? data.trending : []).slice(0, 5);
   } catch { return []; }
 }
 
@@ -515,11 +529,25 @@ function buildDigest(): string {
       }),
       '',
     ] : []),
-    ...(viral.length > 0 ? [
-      `🔥 *Trending topics (post one of these today):*`,
-      ...viral.map(t => `• ${escapeMd(t)}`),
-      '',
-    ] : []),
+    ...((() => {
+      const trending = getTrendingTopics();
+      if (trending.length > 0) {
+        const srcIcon: Record<string, string> = { hacker_news: '🟠 HN', github: '🐙 GH', arxiv: '📄 ArXiv', coingecko: '🪙 CG' };
+        return [
+          `🔥 *Trending topics (make a video on these):*`,
+          ...trending.map((t, i) => `${i + 1}. ${escapeMd(t.title)} — ${srcIcon[t.source] ?? t.source} (${Math.round(t.confidence)}%)`),
+          '',
+        ];
+      }
+      if (viral.length > 0) {
+        return [
+          `🔥 *Trending topics (post one of these today):*`,
+          ...viral.map(t => `• ${escapeMd(t)}`),
+          '',
+        ];
+      }
+      return [];
+    })()),
     ledger.total > 0
       ? `💡 _Telegram: /queue to see unposted, /review for latest, /record {id} {views} to track_`
       : `⚠️ _No pipeline output yet — check PM2: \`pm2 status\` | /queue when ready_`,
