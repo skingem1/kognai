@@ -34,7 +34,7 @@
       "sprint": 704,
       "title": "GOV — Add daily report generator to PM2 cron",
       "block": "GOV-PHASE1",
-      "status": "pending",
+      "status": "done",
       "priority": "high",
       "rationale": "GOVERNANCE REMEDIATION Phase 1. scripts/generate-daily-report.ts exists (187 lines) but has no PM2 cron. Add kognai-daily-report entry to ecosystem.config.js — cron at 23:55 daily. Only 4 daily reports generated ever (Mar 7/8/10/19). This fixes the reporting gap."
     },

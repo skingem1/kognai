@@ -2043,3 +2043,15 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (governance wiring, wrote directly)
 - Issues: none
 - Timestamp: 2026-03-22T00:55:00Z
+
+## Sprint 704 — GOV — Add daily report generator to PM2 cron
+- Status: PASS
+- Commit: 31bbe9d
+- Files created: workspace/sprints/sprint-704.json
+- Files modified: ecosystem.config.js, scripts/generate-daily-report.ts
+- Test: npx ts-node scripts/generate-daily-report.ts — PASS (AMBER health)
+- Pipeline: GOV Phase 1 complete (701-704 all done). Daily report PM2 cron at 23:55. Fixed getSwarmRuns() bug (was reading report object as array).
+- Swarm used: no (config task + bug fix, wrote directly)
+- Swarm bypassed: yes (FP-007). Manual crystallise: skipped (module not found).
+- Issues: Pre-existing bug in getSwarmRuns() — was reading daily-*.json report object instead of swarm run files. Fixed.
+- Timestamp: 2026-03-21T12:15:00Z
