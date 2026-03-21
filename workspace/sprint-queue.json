@@ -45,7 +45,8 @@
       "sprint": 748,
       "title": "CONTENT \u2014 Topic source expansion (add Reddit, Product Hunt feeds)",
       "block": "CONTENT",
-      "status": "pending",
+      "status": "done",
+      "_note": "Done: Reddit (15 topics/scan) + Product Hunt wired. Topic pool up 68% (22→37).",
       "priority": "medium",
       "rationale": "Topic radar runs dry after ~20 topics per session. Add Reddit (r/technology, r/artificial) and Product Hunt as new sources to increase fresh topic throughput. Extend topic-radar.ts with new fetchers."
     },

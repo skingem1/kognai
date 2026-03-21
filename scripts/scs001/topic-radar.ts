@@ -432,6 +432,102 @@ async function fetchGoogleTrends(): Promise<TopicBrief[]> {
   return topics;
 }
 
+// ── Reddit Fetcher (Sprint 748) ──────────────────────────
+
+async function fetchReddit(): Promise<TopicBrief[]> {
+  const topics: TopicBrief[] = [];
+  const subreddits = ['technology', 'artificial', 'MachineLearning', 'cryptocurrency'];
+  try {
+    for (const sub of subreddits) {
+      const res = await fetch(`https://www.reddit.com/r/${sub}/hot.json?limit=10`, {
+        signal: AbortSignal.timeout(8000),
+        headers: { 'User-Agent': 'Kognai-TopicRadar/1.0' },
+      });
+      if (!res.ok) continue;
+      const data = await res.json() as {
+        data: { children: Array<{ data: { title: string; selftext: string; url: string; score: number; num_comments: number; permalink: string } }> };
+      };
+      for (const post of data.data.children) {
+        const p = post.data;
+        const relevance = scoreRelevance(p.title + ' ' + (p.selftext ?? '').slice(0, 200));
+        if (relevance < 10) continue;
+        const format = classifyFormat(p.title, p.selftext ?? '');
+        topics.push({
+          topic_id: 'reddit-' + topicHash(p.title),
+          title: p.title.slice(0, 120),
+          summary: `Reddit r/${sub} (${p.score} pts, ${p.num_comments} comments)`,
+          format,
+          source: 'reddit',
+          source_url: `https://www.reddit.com${p.permalink}`,
+          confidence: Math.min(85, 40 + Math.floor(p.score / 100)),
+          keywords: p.title.toLowerCase().split(/[\s,\-\/]+/).filter(w => w.length > 3).slice(0, 6),
+          debate_sides: format === 'debate' ? extractDebateSides(p.title, p.selftext ?? '') : undefined,
+          vision_angles: format === 'vision' ? extractVisionAngles(p.selftext ?? p.title) : undefined,
+          listicle_items: format === 'listicle' ? extractListicleItems(p.title, p.selftext ?? '') : undefined,
+          collected_at: new Date().toISOString(),
+        });
+      }
+    }
+    console.log(`[TopicRadar] Reddit: ${topics.length} relevant posts`);
+  } catch (err) {
+    console.warn(`[TopicRadar] Reddit failed: ${(err as Error).message}`);
+  }
+  return topics;
+}
+
+// ── Product Hunt Fetcher (Sprint 748) ────────────────────
+
+async function fetchProductHunt(): Promise<TopicBrief[]> {
+  const topics: TopicBrief[] = [];
+  try {
+    // Use Product Hunt's public RSS feed
+    const res = await fetch('https://www.producthunt.com/feed', {
+      signal: AbortSignal.timeout(8000),
+      headers: { 'User-Agent': 'Kognai-TopicRadar/1.0' },
+    });
+    if (!res.ok) throw new Error(`Product Hunt ${res.status}`);
+    const xml = await res.text();
+    const items = xml.matchAll(/<item>([\s\S]*?)<\/item>/g);
+
+    for (const match of Array.from(items).slice(0, 15)) {
+      const item = match[1];
+      const titleMatch = item.match(/<title><!\[CDATA\[(.*?)\]\]><\/title>/) ||
+                         item.match(/<title>(.*?)<\/title>/);
+      const descMatch = item.match(/<description><!\[CDATA\[(.*?)\]\]><\/description>/) ||
+                        item.match(/<description>(.*?)<\/description>/);
+      const linkMatch = item.match(/<link>(.*?)<\/link>/);
+      if (!titleMatch) continue;
+
+      const title = titleMatch[1].trim();
+      const desc = (descMatch?.[1] ?? '').replace(/<[^>]+>/g, '').trim().slice(0, 200);
+      const url = linkMatch?.[1]?.trim() ?? 'https://www.producthunt.com';
+
+      const relevance = scoreRelevance(title + ' ' + desc);
+      if (relevance < 10) continue;
+
+      const format = classifyFormat(title, desc);
+      topics.push({
+        topic_id: 'ph-' + topicHash(title),
+        title: title.slice(0, 120),
+        summary: `Product Hunt — ${desc.slice(0, 100)}`,
+        format,
+        source: 'product_hunt',
+        source_url: url,
+        confidence: 70,
+        keywords: title.toLowerCase().split(/[\s,\-\/]+/).filter(w => w.length > 3).slice(0, 6),
+        debate_sides: format === 'debate' ? extractDebateSides(title, desc) : undefined,
+        vision_angles: format === 'vision' ? extractVisionAngles(desc) : undefined,
+        listicle_items: format === 'listicle' ? extractListicleItems(title, desc) : undefined,
+        collected_at: new Date().toISOString(),
+      });
+    }
+    console.log(`[TopicRadar] Product Hunt: ${topics.length} relevant products`);
+  } catch (err) {
+    console.warn(`[TopicRadar] Product Hunt failed: ${(err as Error).message}`);
+  }
+  return topics;
+}
+
 // ── Main Radar ─────────────────────────────────────────
 
 export class TopicRadar {
@@ -458,12 +554,14 @@ export class TopicRadar {
     console.log('[TopicRadar] Starting scan across all sources...');
 
     // Fetch all sources in parallel
-    const [hn, gh, arxiv, crypto, gtrends] = await Promise.allSettled([
+    const [hn, gh, arxiv, crypto, gtrends, reddit, ph] = await Promise.allSettled([
       fetchHackerNews(),
       fetchGitHubTrending(),
       fetchArxivAI(),
       fetchCryptoMovers(),
       fetchGoogleTrends(),
+      fetchReddit(),
+      fetchProductHunt(),
     ]);
 
     const allTopics: TopicBrief[] = [];
@@ -473,6 +571,8 @@ export class TopicRadar {
       { name: 'arxiv', result: arxiv },
       { name: 'coingecko', result: crypto },
       { name: 'google_trends', result: gtrends },
+      { name: 'reddit', result: reddit },
+      { name: 'product_hunt', result: ph },
     ];
 
     for (const { name, result } of results) {

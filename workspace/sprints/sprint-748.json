@@ -1,0 +1,28 @@
+{
+  "sprint_id": "sprint-748",
+  "title": "CONTENT — Topic source expansion (add Reddit + Product Hunt feeds)",
+  "description": "Topic radar exhausts ~22 topics per session. Add Reddit (r/technology, r/artificial) and Product Hunt as new sources to increase throughput.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "748-01",
+      "title": "Add Reddit fetcher to topic-radar.ts",
+      "type": "feature",
+      "task_type": "content",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-748"
+    },
+    {
+      "id": "748-02",
+      "title": "Add Product Hunt fetcher to topic-radar.ts",
+      "type": "feature",
+      "task_type": "content",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-748"
+    }
+  ]
+}

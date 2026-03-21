@@ -2557,3 +2557,13 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Manual-post-queue: 20 videos exported
 - Days remaining: 17
 - Timestamp: 2026-03-21T17:30:00Z
+
+## Sprint 748 — CONTENT (Topic Source Expansion)
+- Status: PASS
+- Added Reddit fetcher: r/technology, r/artificial, r/MachineLearning, r/cryptocurrency (15 topics/scan)
+- Added Product Hunt fetcher: RSS feed (0 relevant this scan — keywords don't match PH products)
+- Topic pool: 22 → 37 per scan (68% increase)
+- File modified: scripts/scs001/topic-radar.ts (+90 lines)
+- Tested: --force-refresh scan confirms 37 fresh topics
+- Swarm used: no (wrote directly — multi-file edit)
+- Timestamp: 2026-03-21T17:40:00Z
