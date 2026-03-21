@@ -180,7 +180,7 @@
       "sprint": 677,
       "title": "PHASE2 — Achiri conversation analytics dashboard data export",
       "block": "PHASE2",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "Achiri is at 100% readiness. Export conversation analytics (DAU, retention, topics) as JSON for future web dashboard."
     },
