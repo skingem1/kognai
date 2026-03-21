@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-659",
+  "title": "CHAIN — Founding Charter commit to Base mainnet",
+  "description": "Build charter attestation preparation script. SHA-256 hash of charter, EAS schema for charter attestation, transaction builder for Base mainnet. Ready for Genesis Ceremony execution.",
+  "source": "sprint-queue",
+  "tasks": [
+    {
+      "id": "659-01",
+      "title": "Build charter attestation preparation script",
+      "type": "feature",
+      "task_type": "chain",
+      "task_target": "scripts/chain/prepare-charter-attestation.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-659"
+    }
+  ]
+}

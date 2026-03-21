@@ -1,0 +1,38 @@
+{
+  "schema": {
+    "fields": "bytes32 charterHash,string charterVersion,uint256 articleCount,uint256 immutableLawCount,uint256 timestamp,string ipfsHash",
+    "description": "Kognai Founding Charter — immutable after Genesis Ceremony. charterHash is SHA-256 of the full charter text.",
+    "revocable": false
+  },
+  "values": {
+    "charterHash": "0xb6e8f7b9f751ae285f44da214e1add22d91d016e60822ae2b69f1e52421a8f93",
+    "charterVersion": "v1.0",
+    "articleCount": 9,
+    "immutableLawCount": 5,
+    "timestamp": 1774084088,
+    "ipfsHash": ""
+  },
+  "metadata": {
+    "network": "base",
+    "chainId": 8453,
+    "easContract": "0xC2679fBD37d54388Ce493F1DB75320D236e1815e",
+    "existingSchemas": [
+      "sprintCompletion",
+      "taskCompletion",
+      "paymentReceipt"
+    ],
+    "charterPath": "workspace/shared-context/FOUNDING_CHARTER.md",
+    "charterLengthChars": 11753,
+    "charterLengthLines": 233,
+    "charterStatus": "DRAFT",
+    "preparedAt": "2026-03-21T09:08:08.924Z"
+  },
+  "genesisChecklist": {
+    "1_finalise_charter": "PENDING — change status from DRAFT to FINAL",
+    "2_upload_to_ipfs": "PENDING — upload full charter text to IPFS, record CID",
+    "3_register_eas_schema": "PENDING — register charter schema on Base EAS",
+    "4_create_attestation": "PENDING — sign attestation with founder wallet",
+    "5_record_attestation_uid": "PENDING — save EAS attestation UID to EAS_SCHEMAS.json",
+    "6_commit_to_repo": "PENDING — commit attestation record to git"
+  }
+}
