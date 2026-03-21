@@ -4,7 +4,7 @@
 
 ## Summary
 
-- **Total sprints shipped:** 485 (Sprint 059 → Sprint 628)
+- **Total sprints shipped:** 486 (Sprint 059 → Sprint 629)
 - **Total commits:** 1110
 - **Current phase:** Phase 1 Active (Mar 17 – Apr 11 2026)
 - **Pipeline:** 12 stages, 11 agents, closed feedback loop
@@ -1425,3 +1425,15 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (single line fix)
 - Issues: None
 - Timestamp: 2026-03-21T14:20:00Z
+
+## Sprint 629 — OPERATOR
+- Status: PASS
+- Commit: 04ed638
+- Files created: workspace/sprints/sprint-629.json
+- Files modified: scripts/telegram-commands/cmd-system.ts, scripts/telegram-bot.ts, scripts/telegram-commands/cmd-help.ts
+- Test: TypeScript compile — PASS (no new errors; pre-existing cmdCleanup duplicate + cmd-stripe execSync unrelated)
+- Pipeline: /preflight command checks env vars, video queue, PM2 status — operator gets instant production readiness view
+- Swarm used: no (multi-file feature, 3 files touched)
+- Swarm bypassed: yes (FP-007). Manual crystallise: skipped (multi-file).
+- Issues: None
+- Timestamp: 2026-03-21T14:30:00Z
