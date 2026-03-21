@@ -4,7 +4,7 @@
 
 ## Summary
 
-- **Total sprints shipped:** 486 (Sprint 059 → Sprint 629)
+- **Total sprints shipped:** 487 (Sprint 059 → Sprint 630)
 - **Total commits:** 1110
 - **Current phase:** Phase 1 Active (Mar 17 – Apr 11 2026)
 - **Pipeline:** 12 stages, 11 agents, closed feedback loop
@@ -1437,3 +1437,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm bypassed: yes (FP-007). Manual crystallise: skipped (multi-file).
 - Issues: None
 - Timestamp: 2026-03-21T14:30:00Z
+
+## Sprint 630 — FIX
+- Status: PASS
+- Commit: 3817019
+- Files created: workspace/sprints/sprint-630.json
+- Files modified: scripts/telegram-commands/cmd-system.ts, scripts/telegram-commands/cmd-stripe.ts, scripts/telegram-bot.ts
+- Test: TypeScript compile — PASS (0 errors, down from 3 pre-existing errors)
+- Pipeline: Codebase now compiles cleanly. Fixed: duplicate cmdCleanup (cmd-system vs cmd-management), missing execSync in cmd-stripe, duplicate /cleanup router case.
+- Swarm used: no (multi-file surgical fix)
+- Issues: None
+- Timestamp: 2026-03-21T14:40:00Z
