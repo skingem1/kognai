@@ -456,7 +456,7 @@ async function fetchGoogleTrends(): Promise<TopicBrief[]> {
 
 async function fetchReddit(): Promise<TopicBrief[]> {
   const topics: TopicBrief[] = [];
-  const subreddits = ['technology', 'artificial', 'MachineLearning', 'cryptocurrency'];
+  const subreddits = ['technology', 'artificial', 'MachineLearning', 'cryptocurrency', 'LocalLLaMA', 'singularity', 'ChatGPT', 'StableDiffusion'];
   try {
     for (const sub of subreddits) {
       const res = await fetch(`https://www.reddit.com/r/${sub}/hot.json?limit=10`, {
@@ -548,6 +548,141 @@ async function fetchProductHunt(): Promise<TopicBrief[]> {
   return topics;
 }
 
+// ── Dev.to Fetcher (Sprint 770) ──────────────────────────
+
+async function fetchDevTo(): Promise<TopicBrief[]> {
+  const topics: TopicBrief[] = [];
+  try {
+    const res = await fetch('https://dev.to/api/articles?top=1&per_page=20', {
+      signal: AbortSignal.timeout(8000),
+      headers: { 'User-Agent': 'Kognai-TopicRadar/1.0' },
+    });
+    if (!res.ok) throw new Error(`Dev.to ${res.status}`);
+    const articles = await res.json() as Array<{
+      title: string; description: string; url: string;
+      positive_reactions_count: number; comments_count: number; tag_list: string[];
+    }>;
+
+    for (const a of articles) {
+      const relevance = scoreRelevance(a.title + ' ' + (a.description ?? '') + ' ' + (a.tag_list ?? []).join(' '));
+      if (relevance < 10) continue;
+      const format = classifyFormat(a.title, a.description ?? '');
+      topics.push({
+        topic_id: 'devto-' + topicHash(a.title),
+        title: a.title.slice(0, 120),
+        summary: `Dev.to (${a.positive_reactions_count} reactions, ${a.comments_count} comments)`,
+        format,
+        source: 'dev_to',
+        source_url: a.url,
+        confidence: Math.min(85, 45 + Math.floor(a.positive_reactions_count / 20)),
+        keywords: a.title.toLowerCase().split(/[\s,\-\/]+/).filter(w => w.length > 3).slice(0, 6),
+        debate_sides: format === 'debate' ? extractDebateSides(a.title, a.description ?? '') : undefined,
+        vision_angles: format === 'vision' ? extractVisionAngles(a.description ?? a.title) : undefined,
+        listicle_items: format === 'listicle' ? extractListicleItems(a.title, a.description ?? '') : undefined,
+        collected_at: new Date().toISOString(),
+      });
+    }
+    console.log(`[TopicRadar] Dev.to: ${topics.length} relevant articles`);
+  } catch (err) {
+    console.warn(`[TopicRadar] Dev.to failed: ${(err as Error).message}`);
+  }
+  return topics;
+}
+
+// ── Lobste.rs Fetcher (Sprint 770) ──────────────────────
+
+async function fetchLobsters(): Promise<TopicBrief[]> {
+  const topics: TopicBrief[] = [];
+  try {
+    const res = await fetch('https://lobste.rs/hottest.json', {
+      signal: AbortSignal.timeout(8000),
+      headers: { 'User-Agent': 'Kognai-TopicRadar/1.0' },
+    });
+    if (!res.ok) throw new Error(`Lobsters ${res.status}`);
+    const stories = await res.json() as Array<{
+      title: string; description: string; url: string; comments_url: string;
+      score: number; comment_count: number; tags: string[];
+    }>;
+
+    for (const s of stories.slice(0, 20)) {
+      const tagText = (s.tags ?? []).join(' ');
+      const relevance = scoreRelevance(s.title + ' ' + tagText);
+      if (relevance < 10) continue;
+      const format = classifyFormat(s.title, tagText);
+      topics.push({
+        topic_id: 'lobsters-' + topicHash(s.title),
+        title: s.title.slice(0, 120),
+        summary: `Lobste.rs (${s.score} pts, ${s.comment_count} comments, tags: ${tagText})`,
+        format,
+        source: 'lobsters',
+        source_url: s.url || s.comments_url,
+        confidence: Math.min(85, 45 + Math.floor(s.score / 5)),
+        keywords: s.title.toLowerCase().split(/[\s,\-\/]+/).filter(w => w.length > 3).slice(0, 6),
+        debate_sides: format === 'debate' ? extractDebateSides(s.title, tagText) : undefined,
+        vision_angles: format === 'vision' ? extractVisionAngles(tagText) : undefined,
+        listicle_items: format === 'listicle' ? extractListicleItems(s.title, tagText) : undefined,
+        collected_at: new Date().toISOString(),
+      });
+    }
+    console.log(`[TopicRadar] Lobsters: ${topics.length} relevant stories`);
+  } catch (err) {
+    console.warn(`[TopicRadar] Lobsters failed: ${(err as Error).message}`);
+  }
+  return topics;
+}
+
+// ── TechCrunch RSS Fetcher (Sprint 770) ──────────────────
+
+async function fetchTechCrunch(): Promise<TopicBrief[]> {
+  const topics: TopicBrief[] = [];
+  try {
+    const res = await fetch('https://techcrunch.com/feed/', {
+      signal: AbortSignal.timeout(8000),
+      headers: { 'User-Agent': 'Kognai-TopicRadar/1.0' },
+    });
+    if (!res.ok) throw new Error(`TechCrunch ${res.status}`);
+    const xml = await res.text();
+    const items = xml.matchAll(/<item>([\s\S]*?)<\/item>/g);
+
+    for (const match of Array.from(items).slice(0, 15)) {
+      const item = match[1];
+      const titleMatch = item.match(/<title><!\[CDATA\[(.*?)\]\]><\/title>/) ||
+                         item.match(/<title>(.*?)<\/title>/);
+      const descMatch = item.match(/<description><!\[CDATA\[(.*?)\]\]><\/description>/) ||
+                        item.match(/<description>(.*?)<\/description>/);
+      const linkMatch = item.match(/<link>(.*?)<\/link>/);
+      if (!titleMatch) continue;
+
+      const title = titleMatch[1].trim();
+      const desc = (descMatch?.[1] ?? '').replace(/<[^>]+>/g, '').trim().slice(0, 200);
+      const url = linkMatch?.[1]?.trim() ?? 'https://techcrunch.com';
+
+      const relevance = scoreRelevance(title + ' ' + desc);
+      if (relevance < 10) continue;
+
+      const format = classifyFormat(title, desc);
+      topics.push({
+        topic_id: 'tc-' + topicHash(title),
+        title: title.slice(0, 120),
+        summary: `TechCrunch — ${desc.slice(0, 100)}`,
+        format,
+        source: 'techcrunch',
+        source_url: url,
+        confidence: 75,
+        keywords: title.toLowerCase().split(/[\s,\-\/]+/).filter(w => w.length > 3).slice(0, 6),
+        debate_sides: format === 'debate' ? extractDebateSides(title, desc) : undefined,
+        vision_angles: format === 'vision' ? extractVisionAngles(desc) : undefined,
+        listicle_items: format === 'listicle' ? extractListicleItems(title, desc) : undefined,
+        collected_at: new Date().toISOString(),
+      });
+    }
+    console.log(`[TopicRadar] TechCrunch: ${topics.length} relevant articles`);
+  } catch (err) {
+    console.warn(`[TopicRadar] TechCrunch failed: ${(err as Error).message}`);
+  }
+  return topics;
+}
+
 // ── Main Radar ─────────────────────────────────────────
 
 export class TopicRadar {
@@ -574,7 +709,7 @@ export class TopicRadar {
     console.log('[TopicRadar] Starting scan across all sources...');
 
     // Fetch all sources in parallel
-    const [hn, gh, arxiv, crypto, gtrends, reddit, ph] = await Promise.allSettled([
+    const [hn, gh, arxiv, crypto, gtrends, reddit, ph, devto, lobsters, tc] = await Promise.allSettled([
       fetchHackerNews(),
       fetchGitHubTrending(),
       fetchArxivAI(),
@@ -582,6 +717,9 @@ export class TopicRadar {
       fetchGoogleTrends(),
       fetchReddit(),
       fetchProductHunt(),
+      fetchDevTo(),
+      fetchLobsters(),
+      fetchTechCrunch(),
     ]);
 
     const allTopics: TopicBrief[] = [];
@@ -593,6 +731,9 @@ export class TopicRadar {
       { name: 'google_trends', result: gtrends },
       { name: 'reddit', result: reddit },
       { name: 'product_hunt', result: ph },
+      { name: 'dev_to', result: devto },
+      { name: 'lobsters', result: lobsters },
+      { name: 'techcrunch', result: tc },
     ];
 
     for (const { name, result } of results) {

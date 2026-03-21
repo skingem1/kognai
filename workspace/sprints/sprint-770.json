@@ -1,0 +1,38 @@
+{
+  "sprint_id": "sprint-770",
+  "title": "CONTENT — Add 3 new radar sources (Dev.to, Lobsters, TechCrunch) to break topic saturation",
+  "description": "Topic radar returning 0 fresh topics (34/34 in ledger). Add 3 new sources to increase topic diversity. Also add more Reddit subreddits.",
+  "source": "queue-exhausted-topic-saturation-fix",
+  "tasks": [
+    {
+      "id": "770-01",
+      "title": "Add fetchDevTo, fetchLobsters, fetchTechCrunch to topic-radar.ts",
+      "type": "feature",
+      "task_type": "content",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-770"
+    },
+    {
+      "id": "770-02",
+      "title": "Wire new sources into TopicRadar.scan() and add more Reddit subs",
+      "type": "feature",
+      "task_type": "content",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-770"
+    },
+    {
+      "id": "770-03",
+      "title": "Validate: run pipeline dry-run and confirm >0 fresh topics",
+      "type": "validation",
+      "task_type": "content",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-770"
+    }
+  ]
+}
