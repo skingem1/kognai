@@ -2,9 +2,9 @@
   "report_id": "phase-1.5-gate-report",
   "gate_name": "Phase 1.5 Decision Gate",
   "gate_date": "2026-04-07",
-  "generated_at": "2026-03-20T10:53:45.637Z",
+  "generated_at": "2026-03-21T15:40:00.000Z",
   "is_gate_day": false,
-  "days_until_gate": 18,
+  "days_until_gate": 17,
   "overall_status": "FAIL",
   "criteria_passed": "2/4",
   "criteria": [
@@ -13,7 +13,8 @@
       "name": "30 TikTok Posts",
       "target": 30,
       "actual": 0,
-      "pass": false
+      "pass": false,
+      "note": "BLOCKED — TIKTOK_ACCESS_TOKEN not set. Manual posting required."
     },
     {
       "id": "total-views",
@@ -21,14 +22,22 @@
       "target": 500,
       "actual": 0,
       "pass": false,
-      "avg_per_post": 0
+      "note": "Depends on posts being published first."
     },
     {
       "id": "pipeline-operational",
       "name": "Pipeline Producing Videos",
       "target": "10+ in ledger",
-      "actual": 389,
-      "pass": true
+      "actual": 471,
+      "pass": true,
+      "breakdown": {
+        "pipeline_1_legacy": 411,
+        "pipeline_2_multiformat": 60,
+        "total": 471,
+        "real_content_videos": 60,
+        "pipeline_1_status": "HUNG — produces color blocks only",
+        "pipeline_2_status": "OPERATIONAL — real videos with avatars + TTS"
+      }
     },
     {
       "id": "monetization-ready",
@@ -38,19 +47,39 @@
       "pass": true
     }
   ],
+  "dual_pipeline_stats": {
+    "pipeline_1": {
+      "name": "SCS-001 Original (Hailuo)",
+      "status": "HUNG",
+      "videos_total": 411,
+      "videos_with_real_clips": 0,
+      "last_successful_run": "2026-03-20T20:15:53Z"
+    },
+    "pipeline_2": {
+      "name": "Multi-Format (Avatar)",
+      "status": "OPERATIONAL",
+      "videos_total": 60,
+      "videos_with_real_clips": 60,
+      "last_run": "2026-03-21T13:35:00Z",
+      "formats": ["explainer", "debate", "vision", "listicle"],
+      "cost_per_batch": "$1.50"
+    }
+  },
   "kill_switch": "NOT TRIGGERED",
   "system_health": {
     "smoke_test": "11/11 pass",
-    "commits": 963,
-    "pipeline_videos": 389,
+    "commits": 970,
+    "pipeline_videos": 471,
+    "real_content_videos": 60,
     "agents": 44,
-    "sprints_shipped": "487+"
+    "sprints_shipped": "583+"
   },
-  "decision": "HOLD — 2 criteria not met. 18 days remaining to remediate.",
+  "decision": "HOLD — 2 criteria not met (posting + views). 17 days remaining. Pipeline producing real content. Manual posting must begin NOW.",
+  "critical_action": "Operator must start posting Pipeline 2 videos to TikTok manually. 60 publishable videos ready.",
   "next_actions": [
-    "Review remediation plan (workspace/gates/remediation-plan.json)",
-    "Prioritize posting",
-    "Re-run this report daily until gate day"
-  ],
-  "top_performers": []
+    "START POSTING — 60 videos ready in publish-ledger.jsonl",
+    "Set TIKTOK_ACCESS_TOKEN for automated posting",
+    "Run multiformat pipeline daily for fresh content",
+    "Re-run this report weekly until gate day"
+  ]
 }

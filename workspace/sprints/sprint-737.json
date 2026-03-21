@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-737",
+  "title": "GATE — Refresh April 7 gate tracker with dual pipeline stats",
+  "description": "Update april-7-gate.json with dual pipeline stats: total publishable videos, real clips, audio, posting progress, days remaining.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "737-01",
+      "title": "Update april-7-gate.json with current dual pipeline stats",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "workspace/gates/april-7-gate.json",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-737"
+    },
+    {
+      "id": "737-02",
+      "title": "Add /gate Telegram command handler",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/scs001/telegram-commands.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-737"
+    }
+  ]
+}
