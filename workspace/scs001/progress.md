@@ -4,7 +4,7 @@
 
 ## Summary
 
-- **Total sprints shipped:** 495 (Sprint 059 → Sprint 642)
+- **Total sprints shipped:** 496 (Sprint 059 → Sprint 643)
 - **Total commits:** 1110
 - **Current phase:** Phase 1 Active (Mar 17 – Apr 11 2026)
 - **Pipeline:** 12 stages, 11 agents, closed feedback loop
@@ -1525,3 +1525,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (2 surgical edits)
 - Issues: None
 - Timestamp: 2026-03-21T22:30:00Z
+
+## Sprint 643 — ACHIRI
+- Status: PASS
+- Commit: a130243
+- Files created: workspace/sprints/sprint-643.json
+- Files modified: scripts/lib/event-bus-types.ts, scripts/lib/event-bus-publisher.ts, agents/achiri/server.ts
+- Test: TypeScript compile — PASS. Runtime import verification — PASS.
+- Pipeline: Achiri /chat now logs achiri.chat events to Supabase kognai_events table. Fire-and-forget, non-blocking. Includes user_id, tier, model, provider, message_length, response_time_ms, turns_in_memory.
+- Swarm used: no (3 surgical edits across files)
+- Issues: None
+- Timestamp: 2026-03-21T22:45:00Z

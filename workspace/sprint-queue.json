@@ -1579,6 +1579,14 @@
       "status": "done",
       "priority": "medium",
       "rationale": "E2E Integration test timing out at 120s (needs 240s for Ollama calls). /preflight only showed PM2 count, not individual process names."
+    },
+    {
+      "sprint": 643,
+      "title": "ACHIRI — Add Supabase event logging for alpha monitoring",
+      "block": "ACHIRI",
+      "status": "done",
+      "priority": "medium",
+      "rationale": "Wire Achiri conversations into kognai_events Supabase table for real-time alpha monitoring. Logs user_id, tier, model, response_time_ms per chat."
     }
   ]
 }
