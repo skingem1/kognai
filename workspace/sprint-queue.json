@@ -50,7 +50,7 @@
       "sprint": 706,
       "title": "GOV — Wire BrainX swarm bridge into orchestrator execution loop",
       "block": "GOV-PHASE2",
-      "status": "pending",
+      "status": "done",
       "priority": "high",
       "rationale": "GOVERNANCE REMEDIATION Phase 2. scripts/lib/brainx-swarm-bridge.ts (304 lines) has full API: createSwarmBridge(), injectMemories(), storeTaskMemory(), close(). ALL DEAD CODE. In orchestrate-agents-v2.ts: (1) At sprint start, createSwarmBridge(swarmRunId, sprintId, agentIds). (2) Before each task, bridge.injectMemories(task.agent) prepend context. (3) After approval, bridge.storeTaskMemory outcome success. (4) After rejection, outcome failure. (5) At sprint end, bridge.close(). ALL wrapped in try-catch. SURGICAL EDITS ONLY (FP-007)."
     },
