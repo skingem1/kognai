@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-779",
+  "title": "OPS — YouTube OAuth setup helper for cross-platform publishing",
+  "description": "Built youtube-oauth-setup.ts to help operator get YOUTUBE_REFRESH_TOKEN. Generates consent URL, exchanges auth code for refresh token. Enables YouTube Shorts cross-platform publishing.",
+  "source": "queue-exhausted-cross-platform",
+  "tasks": [
+    {
+      "id": "779-01",
+      "title": "Create youtube-oauth-setup.ts with OOB OAuth2 flow",
+      "type": "feature",
+      "task_type": "ops",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-779"
+    }
+  ]
+}
