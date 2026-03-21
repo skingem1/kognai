@@ -57,7 +57,7 @@
       "sprint": 653,
       "title": "EVAL-001 — OpenViking evaluation for Skill Bank",
       "block": "EVAL",
-      "status": "pending",
+      "status": "done",
       "priority": "high",
       "rationale": "Phase 2A gate dependency. Evaluate OpenViking (ByteDance context database, 1000 stars, Apache 2.0) against 5 criteria: Python SDK + ARM64, Skill Bank mount, Memory architecture, Distillation hook, Production readiness. CTO agent (deepseek-r1:14b) runs evaluation. 3 outcomes: ADOPT/PARTIAL/REJECT. Saves 4-5 sprints if ADOPT."
     },
