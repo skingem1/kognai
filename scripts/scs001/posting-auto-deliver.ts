@@ -92,6 +92,11 @@ function getExperimentData(videoId: string): { speaker: string; hook_formula: st
 // Sprint 424: Import shared engagement caption module
 const { buildEngagementCaption } = require('./engagement-caption');
 
+// Sprint 680: Escape Telegram special chars in dynamic text
+function escapeTg(text: string): string {
+  return text.replace(/[<>]/g, '').replace(/([_*`\[\]])/g, '\\$1');
+}
+
 function buildTikTokCaption(videoId: string): string {
   const exp = getExperimentData(videoId);
   let topicTags: string[] = [];
@@ -302,9 +307,9 @@ async function main(): Promise<void> {
     const vs = viralScores.get(videoId);
     const vsStr = vs != null ? `🧬 ${vs.toFixed(1)}` : '';
     const speaker = speakerMap.get(videoId);
-    const spkStr = speaker ? ` · 🎙️ ${speaker}` : '';
+    const spkStr = speaker ? ` · 🎙️ ${escapeTg(speaker)}` : '';
     const hook = hookMap.get(videoId);
-    const hookStr = hook ? ` · 🎣 ${hook}` : '';
+    const hookStr = hook ? ` · 🎣 ${escapeTg(hook)}` : '';
     const pubAt = ledgerDates.get(videoId);
     const ageDays = pubAt ? Math.round((Date.now() - new Date(pubAt).getTime()) / 86_400_000) : 0;
     const ageStr = ageDays > 0 ? ` · ${ageDays}d old` : '';

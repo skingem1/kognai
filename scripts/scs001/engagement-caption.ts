@@ -98,6 +98,11 @@ export const NICHE_TAGS: Record<string, string[]> = {
   science: ['#science', '#research', '#discovery', '#stem', '#education'],
 };
 
+// Sprint 680: Escape Telegram Markdown V1 special chars in dynamic content
+function escapeMd(text: string): string {
+  return text.replace(/[<>]/g, '').replace(/([_*`\[\]])/g, '\\$1');
+}
+
 /** Deterministic hash for consistent caption per video_id */
 function hashVideoId(videoId: string): number {
   return videoId.split('').reduce((a, c) => ((a << 5) - a) + c.charCodeAt(0), 0);
@@ -170,9 +175,9 @@ export function buildEngagementCaption(opts: {
 
   const lines: string[] = [hookLine, ''];
   if (opts.speaker && opts.speaker !== 'unknown') {
-    // Sprint 426: Deterministic speaker description variation
+    // Sprint 426/680: Deterministic speaker description variation (escaped for Markdown)
     const desc = SPEAKER_DESCRIPTIONS[Math.abs(h >> 5) % SPEAKER_DESCRIPTIONS.length];
-    lines.push(desc.replace('{speaker}', opts.speaker));
+    lines.push(desc.replace('{speaker}', escapeMd(opts.speaker)));
     lines.push('');
   }
   lines.push(cta);

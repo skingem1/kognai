@@ -1,0 +1,41 @@
+{
+  "sprint_id": "sprint-680",
+  "title": "BUGFIX — Fix Markdown parsing in engagement-caption + delivery scripts",
+  "description": "engagement-caption.ts doesn't escape Telegram Markdown chars in dynamic content (speaker, topic). This crashes auto-deliver and posting-reminder. Fix shared module + add plain text fallback to delivery scripts.",
+  "source": "error-log",
+  "tasks": [
+    {
+      "id": "680-01",
+      "title": "Add Markdown escaping to engagement-caption.ts for dynamic fields",
+      "type": "bugfix",
+      "task_type": "bugfix",
+      "task_target": "scripts/scs001/engagement-caption.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-680"
+    },
+    {
+      "id": "680-02",
+      "title": "Add plain text fallback to posting-auto-deliver.ts and posting-reminder.ts",
+      "type": "bugfix",
+      "task_type": "bugfix",
+      "task_target": "scripts/scs001/posting-auto-deliver.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-680"
+    },
+    {
+      "id": "680-03",
+      "title": "Create validate-caption-markdown.ts",
+      "type": "test",
+      "task_type": "test",
+      "task_target": "scripts/scs001/validate-caption-markdown.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-680"
+    }
+  ]
+}
