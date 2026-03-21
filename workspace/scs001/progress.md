@@ -1957,3 +1957,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (new script, wrote directly)
 - Issues: none
 - Timestamp: 2026-03-21T13:00:00Z
+
+## Sprint 686 — BUGFIX
+- Status: PASS
+- Commit: ed00a09
+- Files modified: scripts/scs001/posting-auto-deliver.ts, scripts/drain-local-queue.ts
+- Files created: scripts/scs001/validate-bugfix-686.ts, workspace/sprints/sprint-686.json
+- Test: scripts/scs001/validate-bugfix-686.ts — 11/11 PASS
+- Pipeline: Fixed 2 production bugs: (1) auto-deliver Telegram entity parse errors — added stripEntities fallback + failure tracking (skip after 3 failures), (2) drain-local-queue crashed every 5min because drainLocalQueue/dequeueLocalTask never existed in task-router — rewrote as self-contained implementation
+- Swarm used: no (multi-file bugfix, wrote directly)
+- Issues: none
+- Timestamp: 2026-03-21T23:45:00Z
