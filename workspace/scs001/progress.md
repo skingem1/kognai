@@ -2424,3 +2424,13 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - ClawRouter C4 quality:emotional wired — ready for MiMo re-test when API confirmed
 - Swarm used: no (multi-file API integration + test)
 - Timestamp: 2026-03-21T15:00:00Z
+
+## Sprint 734 — CR-AMD-001 A/B routing MiMo-V2-Pro vs Gemini Flash
+- Status: PASS
+- Commit: b4f45c8a6aa077d6ed1687a2e88b88a8d58641dc
+- Files created: workspace/sprints/sprint-734.json
+- Files modified: scripts/lib/clawrouter-v2.ts (A/B split in resolveTextTier exec case, logABTest function, T2_5_MIMO model, CreativeQuality emotional type)
+- Test: tsc --noEmit — PASS (clean compile)
+- Pipeline: ClawRouter now routes exec calls 50/50 MiMo-V2-Pro/Gemini Flash when MIMO_AB_TEST_ACTIVE=true
+- Swarm used: no (surgical ClawRouter edit, single file)
+- Timestamp: 2026-03-21T15:10:00Z

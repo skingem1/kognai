@@ -36,9 +36,10 @@
       "sprint": 734,
       "title": "MIMO-04 \u2014 Wire T2.5 A/B routing: MiMo-V2-Pro vs Gemini Flash (50/50)",
       "block": "CR-AMD-001",
-      "status": "pending",
+      "status": "done",
       "priority": "high",
-      "rationale": "CR-AMD-001 Section 04. In scripts/lib/clawrouter-v2.ts resolveTextTier(): when complexity==='exec', add A/B split \u2014 if MIMO_AB_TEST_ACTIVE=true, route 50% to MiMo-V2-Pro (via MIMO_API_URL) and 50% to Gemini Flash (existing). Track: logs/clawrouter/ab-test-mimo.jsonl with {timestamp, agent_id, model, latency_ms, cost_usd, success}. Decision at March 30. SURGICAL EDIT \u2014 max 20 lines."
+      "rationale": "CR-AMD-001 Section 04. In scripts/lib/clawrouter-v2.ts resolveTextTier(): when complexity==='exec', add A/B split \u2014 if MIMO_AB_TEST_ACTIVE=true, route 50% to MiMo-V2-Pro (via MIMO_API_URL) and 50% to Gemini Flash (existing). Track: logs/clawrouter/ab-test-mimo.jsonl with {timestamp, agent_id, model, latency_ms, cost_usd, success}. Decision at March 30. SURGICAL EDIT \u2014 max 20 lines.",
+      "_note": "Done: A/B split + logging wired. Decision at March 30."
     },
     {
       "sprint": 735,
