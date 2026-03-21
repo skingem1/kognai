@@ -2667,3 +2667,24 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Issues: None
 - Cost: $1.50
 - Timestamp: 2026-03-21T15:35:00Z
+
+## Sprint 758 — CONTENT
+- Status: PASS
+- Commit: 28c8029
+- Files created: workspace/sprints/sprint-758.json
+- Files modified: workspace/scs001/publish-ledger.jsonl, workspace/scs001/topic-radar/seen-topics.json
+- Test: 5 final .mp4 files with fresh topics — PASS
+- Pipeline: 524 total ledger entries, ~113 real multiformat content
+- Swarm used: no (pipeline run directly)
+- Issues: None
+- Cost: $1.50
+- Timestamp: 2026-03-21T15:40:00Z
+
+## Session 25 Summary (Sprints 751-758)
+- 8 sprints shipped
+- 27 new videos produced ($10.20 total avatar cost)
+- Ledger: 497 → 524 (+27)
+- Key improvement: Sprint 755 added ledger dedup + error recovery
+- Post queue: refreshed to 15 diverse videos
+- Gate: updated to reflect 509→524 stats
+- Queue: exhausted, needs replenishment at 759+
