@@ -2502,3 +2502,10 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Formats: 4 explainer, 2 debate, 2 vision, 2 listicle
 - Swarm used: no (pipeline execution)
 - Timestamp: 2026-03-21T16:20:00Z
+
+## Sprint 742 — INFRA Verify PM2 Cron Jobs
+- Status: PASS (verified, no action needed)
+- PM2 cron jobs: all 17 "stopped" processes use cron_restart + autorestart:false
+- Today's logs confirm execution (auto-deliver sent videos, watchdog checked ledger)
+- No restart needed — stopped between cron runs is expected behavior
+- Timestamp: 2026-03-21T16:30:00Z

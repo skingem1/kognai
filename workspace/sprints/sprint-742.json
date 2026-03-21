@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-742",
+  "title": "INFRA — Restart stopped PM2 cron jobs",
+  "description": "VERIFIED: All 17 'stopped' PM2 processes are cron-based (autorestart:false, cron_restart schedules). Stopped between runs is normal. Logs confirm today's execution. No restart needed.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "742-01",
+      "title": "Verify PM2 cron jobs are working correctly",
+      "type": "investigation",
+      "task_type": "infra",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-742",
+      "result": "All cron jobs running on schedule. Stopped status is expected between runs."
+    }
+  ]
+}
