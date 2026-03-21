@@ -1,63 +1,64 @@
 {
-  "_note": "AUTHORITATIVE sprint execution order. The brief generator reads this and injects the first item as a MANDATORY directive, bypassing Qwen's recommendation. Pop items by setting status=done after each sprint ships. Human-maintained \u2014 edit to re-prioritise.",
-  "updated": "2026-03-21T15:30",
+  "_note": "AUTHORITATIVE sprint execution order. The brief generator reads this and injects the first item as a MANDATORY directive, bypassing Qwen's recommendation. Pop items by setting status=done after each sprint ships. Human-maintained — edit to re-prioritise.",
+  "updated": "2026-03-21T16:00",
   "owner": "Tarek (human)",
-  "_plan_rationale": "RESEEDED 2026-03-21 (round 5). Queue exhausted after Sprint 743. Replenished 744-749: content batches, posting workflow, gate refresh, topic expansion, auto-deliver improvements.",
-  "_achiri_status": "PAUSED \u2014 all Achiri sprints removed from queue. Resume after April 7 gate.",
+  "_plan_rationale": "RESEEDED 2026-03-21 (round 6). Queue exhausted after Sprint 750. Replenished 751-756: content batches, posting refresh, gate update, pipeline hardening.",
+  "_achiri_status": "PAUSED — all Achiri sprints removed from queue. Resume after April 7 gate.",
   "queue": [
+    { "sprint": 744, "title": "CONTENT — Fresh multiformat batch + queue replenish for April 7 gate", "block": "CONTENT", "status": "done", "priority": "critical", "rationale": "Produce 6+ new multiformat videos.", "_note": "Done: 6 new videos ($1.85), ledger at 487. Queue replenished." },
+    { "sprint": 745, "title": "CONTENT — Batch 2: multiformat videos (clear seen-topics + produce 5+)", "block": "CONTENT", "status": "done", "priority": "critical", "rationale": "Continue content production.", "_note": "Done: 5 new videos ($1.50), ledger at 492." },
+    { "sprint": 746, "title": "POSTING — Refresh manual-post-queue with latest 10 best videos", "block": "POSTING", "status": "done", "priority": "critical", "rationale": "Update manual-post-queue.", "_note": "Done: 10 videos refreshed." },
+    { "sprint": 747, "title": "GATE — Refresh April 7 gate tracker (492 videos, posting progress)", "block": "GATE", "status": "done", "priority": "high", "rationale": "Update gate tracker.", "_note": "Done: gate refreshed — 492 videos, 81 real content, 17 days remaining." },
+    { "sprint": 748, "title": "CONTENT — Topic source expansion (add Reddit, Product Hunt feeds)", "block": "CONTENT", "status": "done", "priority": "medium", "rationale": "Add Reddit + PH sources.", "_note": "Done: Reddit (15 topics/scan) + Product Hunt wired. +68%." },
+    { "sprint": 749, "title": "FIX — Auto-deliver: ensure new videos get delivered to Telegram", "block": "FIX", "status": "done", "priority": "high", "rationale": "Fix auto-deliver.", "_note": "Done: auto-deliver working. 22 video backlog flushed." },
+    { "sprint": 750, "title": "CONTENT — Produce videos with expanded radar (Reddit + 7 sources)", "block": "CONTENT", "status": "done", "priority": "critical", "rationale": "First batch with Reddit sources.", "_note": "Done: 5 new videos ($1.50), ledger at 497." },
     {
-      "sprint": 744,
-      "title": "CONTENT \u2014 Fresh multiformat batch + queue replenish for April 7 gate",
+      "sprint": 751,
+      "title": "CONTENT — Batch 4: fresh videos (target 5+, 502+ ledger)",
       "block": "CONTENT",
-      "status": "done",
+      "status": "pending",
       "priority": "critical",
-      "rationale": "Produce 6+ new multiformat videos. Clear seen-topics to unblock topic radar. Replenish sprint queue with 745-749. April 7 gate: 30 posts needed.",
-      "_note": "Done: 6 new videos ($1.85), ledger at 487. Queue replenished."
+      "rationale": "Continue content production for April 7 gate. Clear seen-topics, produce 5+ videos. Ledger at 497, target 502+."
     },
     {
-      "sprint": 745,
-      "title": "CONTENT \u2014 Batch 2: multiformat videos (clear seen-topics + produce 5+)",
-      "block": "CONTENT",
-      "status": "done",
-      "priority": "critical",
-      "rationale": "Continue content production for April 7 gate. Clear seen-topics, run pipeline, target 5+ new videos. Keep ledger growing.",
-      "_note": "Done: 5 new videos ($1.50), ledger at 492."
-    },
-    {
-      "sprint": 746,
-      "title": "POSTING \u2014 Refresh manual-post-queue with latest 10 best videos",
+      "sprint": 752,
+      "title": "POSTING — Refresh manual-post-queue with latest 15 best videos",
       "block": "POSTING",
-      "status": "done",
-      "_note": "Done: 10 videos refreshed from sprints 744-745 (4 explainer, 2 debate, 2 vision, 2 listicle).",
+      "status": "pending",
       "priority": "critical",
-      "rationale": "Update manual-post-queue with newest videos from 487+ ledger. Prioritize diversity (explainer, debate, vision, listicle). Include avatar videos. April 7 gate: 30 posts needed."
+      "rationale": "Refresh posting queue with best recent videos from sprints 748-751. Diversify formats. April 7 gate: 30 posts needed."
     },
     {
-      "sprint": 747,
-      "title": "GATE \u2014 Refresh April 7 gate tracker (492 videos, posting progress)",
-      "block": "GATE",
-      "status": "done",
-      "_note": "Done: gate refreshed — 492 videos, 81 real content, 17 days remaining.",
-      "priority": "high",
-      "rationale": "Update workspace/gates/april-7-gate.json with current stats: 487+ ledger entries, posting progress, days remaining. Surface via Telegram /gate command."
-    },
-    {
-      "sprint": 748,
-      "title": "CONTENT \u2014 Topic source expansion (add Reddit, Product Hunt feeds)",
+      "sprint": 753,
+      "title": "CONTENT — Batch 5: fresh videos (target 5+, 507+ ledger)",
       "block": "CONTENT",
-      "status": "done",
-      "_note": "Done: Reddit (15 topics/scan) + Product Hunt wired. Topic pool up 68% (22→37).",
-      "priority": "medium",
-      "rationale": "Topic radar runs dry after ~20 topics per session. Add Reddit (r/technology, r/artificial) and Product Hunt as new sources to increase fresh topic throughput. Extend topic-radar.ts with new fetchers."
+      "status": "pending",
+      "priority": "critical",
+      "rationale": "Keep content pipeline running. Target 507+ ledger."
     },
     {
-      "sprint": 749,
-      "title": "FIX \u2014 Auto-deliver: ensure new videos get delivered to Telegram",
-      "block": "FIX",
-      "status": "done",
-      "_note": "Done: auto-deliver working. Flushed 22 video backlog via --batch 10. Cron delivers 1/run (3x/day).",
+      "sprint": 754,
+      "title": "GATE — Refresh April 7 gate tracker (500+ videos, posting progress update)",
+      "block": "GATE",
+      "status": "pending",
       "priority": "high",
-      "rationale": "Verify auto-deliver PM2 cron picks up new videos from publish-ledger and sends to operator Telegram. Check auto-delivered.jsonl for gaps. Fix if delivery is stale."
+      "rationale": "Update gate tracker with current stats. 500+ ledger, check posting progress."
+    },
+    {
+      "sprint": 755,
+      "title": "FIX — Pipeline hardening: dedup check + error recovery in multiformat",
+      "block": "FIX",
+      "status": "pending",
+      "priority": "medium",
+      "rationale": "Add duplicate topic detection to multiformat pipeline. Improve error recovery on API failures."
+    },
+    {
+      "sprint": 756,
+      "title": "CONTENT — Batch 6: fresh videos (target 5+, 512+ ledger)",
+      "block": "CONTENT",
+      "status": "pending",
+      "priority": "critical",
+      "rationale": "Continue content production. Target 512+ ledger."
     }
   ]
 }
