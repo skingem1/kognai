@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-758",
+  "title": "CONTENT — Batch 8: fresh videos (OpenSquirrel, Vitalik, VLMs) 524 ledger",
+  "description": "Content batch with ledger dedup. New topics: OpenSquirrel, Akash, Vitalik Buterin crypto debate, VLMs research.",
+  "source": "queue-exhausted-brief-recommendation",
+  "tasks": [
+    {
+      "id": "758-01",
+      "title": "Run multiformat pipeline for 5+ fresh videos",
+      "type": "feature",
+      "task_type": "content",
+      "agent": "coder",
+      "status": "done",
+      "priority": "critical",
+      "sprint_id": "sprint-758"
+    }
+  ]
+}
