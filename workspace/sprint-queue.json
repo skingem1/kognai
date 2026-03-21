@@ -106,7 +106,7 @@
       "sprint": 713,
       "title": "GOV — Generate SOUL.md for 8 core kognai-agents (batch 1)",
       "block": "GOV-PHASE4",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "GOVERNANCE REMEDIATION Phase 4. Only 8/52 agents have SOUL.md. Create for: ceo, cto, cfo, cmo, supervisor, devops, security, achiri in kognai-agents/. Template: workspace/agents/harvey/SOUL.md pattern (Constitutional Mandate, identity, role, hard rules, events). ~60 lines each."
     },
