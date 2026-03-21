@@ -4,7 +4,7 @@
 
 ## Summary
 
-- **Total sprints shipped:** 483 (Sprint 059 → Sprint 626)
+- **Total sprints shipped:** 484 (Sprint 059 → Sprint 627)
 - **Total commits:** 1110
 - **Current phase:** Phase 1 Active (Mar 17 – Apr 11 2026)
 - **Pipeline:** 12 stages, 11 agents, closed feedback loop
@@ -1403,3 +1403,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm bypassed: yes (FP-007). Manual crystallise: done.
 - Issues: None. Pre-existing test failures (cmdRecord/cmdQueue/cmdReview not yet implemented) unrelated.
 - Timestamp: 2026-03-21T14:00:00Z
+
+## Sprint 627 — FIX
+- Status: PASS
+- Commit: 63ec10f
+- Files created: workspace/sprints/sprint-627.json
+- Files modified: scripts/scs001/validate-bot-commands.ts
+- Test: validate-bot-commands.ts — PASS (19/19, 0 failures)
+- Pipeline: Fixed 3 false test failures caused by Sprint 442-496 file split (cmdRecord/cmdQueue/cmdReview moved to cmd-content.ts)
+- Swarm used: no (single file fix)
+- Issues: None
+- Timestamp: 2026-03-21T14:10:00Z
