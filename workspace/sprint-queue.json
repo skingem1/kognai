@@ -26,7 +26,7 @@
       "sprint": 703,
       "title": "GOV — Dynamic trust score updater (post-sprint feedback loop)",
       "block": "GOV-PHASE1",
-      "status": "pending",
+      "status": "done",
       "priority": "critical",
       "rationale": "GOVERNANCE REMEDIATION Phase 1. acp/trust-scores.json is STATIC — scores never update from real outcomes. Create scripts/lib/trust-score-updater.ts (~80 lines): (1) Read acp/trust-scores.json, (2) For approved tasks with score>=80: accuracy +1. For rejected: accuracy -2. Safety adjusted on safety flags. (3) 5% daily decay toward 70 (mean) for inactive agents. (4) Write back with last_updated timestamp. Wire into orchestrate-agents-v2.ts at line ~2465 (approved) and ~2493 (rejected) — SURGICAL 5-line additions only."
     },
