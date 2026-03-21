@@ -1559,7 +1559,7 @@
       "sprint": 640,
       "title": "INFRA \u2014 Add Achiri test results to daily digest + /preflight",
       "block": "OPERATOR",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "Achiri readiness is 100% but test suite has 2 failures. Surface Achiri test pass rate in daily digest and /preflight so operator sees it alongside TikTok gate status."
     },
