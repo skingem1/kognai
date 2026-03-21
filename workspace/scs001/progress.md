@@ -1893,3 +1893,13 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (new script, wrote directly)
 - Issues: none
 - Timestamp: 2026-03-21T11:35:00Z
+
+## Sprint 678 — INFRA
+- Status: PASS
+- Commit: 2fdc66d
+- Files created: scripts/scs001/cross-platform-publish.ts, scripts/scs001/validate-crossplatform-output.ts, workspace/sprints/sprint-678.json
+- Test: scripts/scs001/validate-crossplatform-output.ts — 18/18 PASS
+- Pipeline: Cross-platform publisher wiring YouTube Shorts into posting pipeline (--status, --dry-run, --video-id, --all-pending)
+- Swarm used: no (new script, wrote directly)
+- Issues: YOUTUBE_REFRESH_TOKEN not set — YouTube upload blocked on human OAuth2 setup
+- Timestamp: 2026-03-21T11:45:00Z

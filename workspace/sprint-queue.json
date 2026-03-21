@@ -188,7 +188,7 @@
       "sprint": 678,
       "title": "INFRA — Cross-platform posting: YouTube Shorts upload support",
       "block": "INFRA",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "YouTube credentials are configured. Adding Shorts upload doubles content reach and accelerates view count for gate."
     }
