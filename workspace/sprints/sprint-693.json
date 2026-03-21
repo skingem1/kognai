@@ -1,0 +1,41 @@
+{
+  "sprint_id": "sprint-693",
+  "title": "AMD-17 — Build scs001-broadcast narrator agent (T1 qwen3:4b)",
+  "description": "AMD-17 broadcast narrator agent. Model: T1 qwen3:4b. Input: event stream from sprint commits + pipeline runs. Output: plain-language narration for Telegram broadcast channel. 60-second delay buffer. ACP filter. Factual, present tense, no marketing.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "693-01",
+      "title": "Create agents/scs001-broadcast/ agent config + prompt",
+      "type": "feature",
+      "task_type": "amd-17",
+      "task_target": "agents/scs001-broadcast/prompt.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-693"
+    },
+    {
+      "id": "693-02",
+      "title": "Create scripts/scs001/broadcast-narrator.ts — event narrator script",
+      "type": "feature",
+      "task_type": "amd-17",
+      "task_target": "scripts/scs001/broadcast-narrator.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-693"
+    },
+    {
+      "id": "693-03",
+      "title": "Validate broadcast narrator agent",
+      "type": "test",
+      "task_type": "test",
+      "task_target": "scripts/scs001/validate-broadcast-narrator.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-693"
+    }
+  ]
+}
