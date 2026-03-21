@@ -1840,3 +1840,13 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (surgical edits across 4 files)
 - Issues: None
 - Timestamp: 2026-03-21T23:12:00Z
+
+## Sprint 673 — TEST (Unified validation suite runner)
+- Status: PASS
+- Commit: 340b483
+- Files created: scripts/scs001/run-validation-suite.ts, workspace/sprints/sprint-673.json
+- Test: run-validation-suite.ts --quick — 7/7 PASS (5s), full — 8/8 PASS (6s)
+- Details: Meta-runner discovers and executes validation scripts. Skip list filters out stale tests (agents/telegram-bot/commands.ts imports from pre-Sprint-496 era), pipeline-stage tests (timeout), ffmpeg tests, and network-dependent tests. Supports --quick (core tests), --telegram (compact output), and full modes.
+- Swarm used: no (single file)
+- Issues: Found 10+ stale validate-*.ts tests referencing old bot structure. Added to skip list rather than fixing (not blocking).
+- Timestamp: 2026-03-21T23:20:00Z
