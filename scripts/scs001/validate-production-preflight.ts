@@ -7,6 +7,8 @@
 import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
 
+try { require('dotenv').config({ path: join(__dirname, '..', '..', '.env') }); } catch {}
+
 interface PreflightCheck {
   id:        string;
   name:      string;

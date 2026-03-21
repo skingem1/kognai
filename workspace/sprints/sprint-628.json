@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-628",
+  "title": "FIX — Production preflight validator loads .env + fix false failures",
+  "description": "validate-production-preflight.ts from Sprint 099 doesn't load .env via dotenv. Reports SUPABASE_URL, SUPABASE_SERVICE_KEY, SCS_EDITING_MODE as missing when they ARE set in .env. Add dotenv loading to fix 3+ false failures.",
+  "source": "test-reliability",
+  "tasks": [
+    {
+      "id": "628-01",
+      "title": "Add dotenv loading to validate-production-preflight.ts",
+      "type": "fix",
+      "task_type": "test",
+      "task_target": "scripts/scs001/validate-production-preflight.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-628"
+    }
+  ]
+}
