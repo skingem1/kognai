@@ -1978,3 +1978,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (cross-file analysis of 597 sprints, wrote directly)
 - Issues: none
 - Timestamp: 2026-03-21T23:55:00Z
+
+## Sprint 691 — AMD-15
+- Status: PASS
+- Commit: 077b5df
+- Files created: codebook/model-registry.json, scripts/model-registry.ts, scripts/scs001/validate-model-registry.ts, workspace/sprints/sprint-691.json
+- Files modified: scripts/telegram-bot.ts, scripts/telegram-commands/cmd-system.ts
+- Test: scripts/scs001/validate-model-registry.ts — 21/21 PASS
+- Pipeline: AMD-15 §3 model registry as constitutional artifact. Schema: base_model, adapter_id, corpus_sha256, sherlock_scores (4 dimensions), godman_approval. Management script (--list/--audit/--verify-corpus). /approveft Telegram command stub. Seed entry linked to corpus-r1 (282 entries, SHA verified).
+- Swarm used: no (multi-file, wrote directly)
+- Issues: none
+- Timestamp: 2026-03-22T00:05:00Z

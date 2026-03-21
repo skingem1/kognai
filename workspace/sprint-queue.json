@@ -17,7 +17,7 @@
       "sprint": 691,
       "title": "AMD-15 — Model registry as constitutional artifact (codebook/model-registry.json)",
       "block": "AMD-15",
-      "status": "pending",
+      "status": "done",
       "priority": "high",
       "rationale": "AMD-15 Section 3. Elevate codebook/model-registry.json to tracked constitutional artifact. Schema: base_model, adapter_id (naming: {base}-kognai-r{N}), corpus_sha256, sherlock_scores (4 dimensions), deploy_date, godman_approval_timestamp. Immutable after entry. Wire into Sherlock's audit. Create /approve-finetune Telegram command stub (Godman-only, triggers cycle when LoRA is ready)."
     },
