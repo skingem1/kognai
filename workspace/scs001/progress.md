@@ -1819,3 +1819,13 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (small feature addition)
 - Issues: None
 - Timestamp: 2026-03-21T12:48:00Z
+
+## Sprint 671 — TEST (Comprehensive Telegram bot command smoke test)
+- Status: PASS
+- Commit: bb3a2f1
+- Files created: scripts/scs001/validate-all-bot-commands.ts, workspace/sprints/sprint-671.json
+- Test: validate-all-bot-commands.ts — 81/81 PASS
+- Details: Smoke-tests all 81 sync bot commands. Covers cmd-system, cmd-gate, cmd-content, cmd-posting, cmd-management, cmd-help modules. Each function called with default args, verified non-empty string return.
+- Swarm used: no (single test file, wrote directly)
+- Issues: cmdSmoke is async — excluded from sync test suite
+- Timestamp: 2026-03-21T23:05:00Z
