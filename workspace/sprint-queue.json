@@ -61,7 +61,8 @@
       "sprint": 756,
       "title": "CONTENT — Batch 6: fresh videos (target 5+, 512+ ledger)",
       "block": "CONTENT",
-      "status": "pending",
+      "status": "done",
+      "_note": "Done: 5 fresh videos ($1.50), ledger at 514. First batch with ledger dedup — all new topics.",
       "priority": "critical",
       "rationale": "Continue content production. Target 512+ ledger."
     }
