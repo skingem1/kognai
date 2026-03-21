@@ -1733,3 +1733,15 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no
 - Issues: TIKTOK_ACCESS_TOKEN still missing. Manual posting is the only path to gate PASS.
 - Timestamp: 2026-03-21T12:00:00Z
+
+## Sprint 663 — RADAR (Consolidate topic radar into digest)
+- Status: PASS
+- Commit: 8577b94
+- Files created: scripts/scs001/consolidate-radar.ts, workspace/sprints/sprint-663.json
+- Files modified: scripts/daily-digest.ts
+- Test: DIGEST_DRY_RUN=1 npx ts-node scripts/daily-digest.ts — PASS
+- Details: New consolidation script merges radar-*.json into enriched viral-topics.json with real trending titles, sources, confidence scores. Daily digest now shows top 5 radar topics with source icons (HN/GH/ArXiv/CG) instead of generic keywords. Helps operator pick high-confidence topics for April 7 gate.
+- Swarm used: no (CTO rejected — queue empty, not in plan)
+- Swarm bypassed: yes (CTO gate rejection). Manual crystallise: done.
+- Issues: None
+- Timestamp: 2026-03-21T12:22:00Z
