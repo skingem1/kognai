@@ -52,7 +52,8 @@
       "sprint": 755,
       "title": "FIX — Pipeline hardening: dedup check + error recovery in multiformat",
       "block": "FIX",
-      "status": "pending",
+      "status": "done",
+      "_note": "Done: ledger dedup filters 6+ already-produced topics. Per-video try/catch prevents cascade failures.",
       "priority": "medium",
       "rationale": "Add duplicate topic detection to multiformat pipeline. Improve error recovery on API failures."
     },

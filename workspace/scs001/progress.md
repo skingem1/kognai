@@ -2632,3 +2632,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (simple JSON update)
 - Issues: None. Gate still FAIL on posting (0/30) and views (0/500).
 - Timestamp: 2026-03-21T15:15:00Z
+
+## Sprint 755 — FIX
+- Status: PASS
+- Commit: 6393244
+- Files created: workspace/sprints/sprint-755.json
+- Files modified: scripts/scs001/topic-radar.ts, scripts/scs001/run-multiformat-pipeline.ts
+- Test: Smoke test — ledger dedup filters 6 topics, 32 fresh remain, 5 selected. Per-video error recovery validated — PASS
+- Pipeline: Topic radar now deduplicates against publish-ledger.jsonl. Pipeline crash-safe per video.
+- Swarm used: no (code changes, wrote directly)
+- Issues: None
+- Timestamp: 2026-03-21T15:25:00Z
