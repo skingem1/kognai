@@ -1,0 +1,63 @@
+{
+  "sprint_id": "sprint-650",
+  "title": "ACP — Agent Capability Protocol v1 implementation",
+  "description": "Implement ACP (Agent Capability Protocol) v1. Define capability declarations for each agent — what they CAN and CANNOT do. Build agents/lib/acp.ts with capability schema. Register all kognai-agents + SCS-001 agents. Wire into CTO approval gate.",
+  "source": "sprint-queue",
+  "tasks": [
+    {
+      "id": "650-01",
+      "title": "Build agents/lib/acp.ts — capability schema + registry",
+      "type": "feature",
+      "task_type": "architecture",
+      "task_target": "agents/lib/acp.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-650"
+    },
+    {
+      "id": "650-02",
+      "title": "Register all 27 kognai-agents with capabilities",
+      "type": "feature",
+      "task_type": "architecture",
+      "task_target": "agents/lib/acp.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-650"
+    },
+    {
+      "id": "650-03",
+      "title": "Register all 13 SCS-001 agents with capabilities",
+      "type": "feature",
+      "task_type": "architecture",
+      "task_target": "agents/lib/acp.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-650"
+    },
+    {
+      "id": "650-04",
+      "title": "Wire ACP into CTO approval gate for capability checks",
+      "type": "feature",
+      "task_type": "integration",
+      "task_target": "scripts/lib/cto-approval-gate.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-650"
+    },
+    {
+      "id": "650-05",
+      "title": "Create validation script for ACP",
+      "type": "test",
+      "task_type": "validation",
+      "task_target": "scripts/scs001/validate-acp.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-650"
+    }
+  ]
+}

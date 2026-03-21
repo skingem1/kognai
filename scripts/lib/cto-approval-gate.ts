@@ -21,6 +21,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { routeCall, type ClawRouterV2Response } from './clawrouter-v2';
+import { checkCapability, getAgent, type Capability, type CapabilityCheckResult } from '../../agents/lib/acp';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -31,6 +32,8 @@ export interface SprintProposal {
   tasks: string[];
   estimated_complexity: string;
   source: 'autonomous_loop' | 'human' | 'cto_backlog';
+  /** Optional: map of agent_id → required capabilities for ACP pre-check */
+  agent_capabilities?: Array<{ agent: string; required_capabilities: Capability[] }>;
 }
 
 export interface CTOApprovalResult {
@@ -40,6 +43,7 @@ export interface CTOApprovalResult {
   plan_reference: string;    // which plan item this maps to (or "NOT_IN_PLAN")
   cto_confidence: number;    // 0-100
   timestamp: string;
+  acp_violations?: CapabilityCheckResult[];  // Sprint 650: ACP pre-check violations
 }
 
 // ── Plan Context Loader ───────────────────────────────────────────────────────
@@ -107,6 +111,29 @@ export async function requestCTOApproval(
       cto_confidence: 100,
       timestamp,
     };
+  }
+
+  // Sprint 650: ACP pre-check — reject if agents lack required capabilities
+  if (proposal.agent_capabilities && proposal.agent_capabilities.length > 0) {
+    const violations: CapabilityCheckResult[] = [];
+    for (const task of proposal.agent_capabilities) {
+      for (const cap of task.required_capabilities) {
+        const result = checkCapability(task.agent, cap);
+        if (!result.allowed) violations.push(result);
+      }
+    }
+    if (violations.length > 0) {
+      const violationSummary = violations.map(v => `${v.agent_id}: ${v.reason}`).join('; ');
+      return {
+        approved: false,
+        sprint_id: proposal.sprint_id,
+        reason: `ACP violation: ${violationSummary}`,
+        plan_reference: 'ACP_VIOLATION',
+        cto_confidence: 100,
+        timestamp,
+        acp_violations: violations,
+      };
+    }
   }
 
   const planContext = loadPlanContext(projectRoot);
