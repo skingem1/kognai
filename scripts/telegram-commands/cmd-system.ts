@@ -1006,3 +1006,53 @@ export async function cmdTestSuite(chatId: string): Promise<void> {
     await sendMessage(chatId, stdout || `❌ Validation suite error:\n\`${stderr}\``);
   }
 }
+
+// Sprint 691: /approve-finetune — Godman-only command to approve LoRA fine-tuning cycle
+export async function cmdApproveFinetune(chatId: string, args: string): Promise<void> {
+  const registryPath = path.join(ROOT, 'codebook', 'model-registry.json');
+  if (!fs.existsSync(registryPath)) {
+    await sendMessage(chatId, '❌ Model registry not found. Run Sprint 690 first.');
+    return;
+  }
+
+  const reg = JSON.parse(fs.readFileSync(registryPath, 'utf-8'));
+  const entries = reg.entries || [];
+
+  if (!args.trim()) {
+    // Show registry status
+    const lines = entries.map((e: any) =>
+      `• ${e.id} | ${e.base_model} | ${e.status} | corpus: ${e.corpus_entries} entries`
+    );
+    await sendMessage(chatId,
+      `🧬 *Model Registry* (${entries.length} entries)\n\n` +
+      lines.join('\n') +
+      '\n\nUsage: /approveft <entry-id> to approve for fine-tuning'
+    );
+    return;
+  }
+
+  const targetId = args.trim();
+  const entry = entries.find((e: any) => e.id === targetId);
+  if (!entry) {
+    await sendMessage(chatId, `❌ Entry "${targetId}" not found in registry.`);
+    return;
+  }
+
+  if (entry.godman_approval_timestamp) {
+    await sendMessage(chatId, `⚠️ Entry "${targetId}" already approved at ${entry.godman_approval_timestamp}`);
+    return;
+  }
+
+  // Stub: mark as approved but don't trigger actual fine-tuning yet
+  entry.godman_approval_timestamp = new Date().toISOString();
+  entry.status = 'approved';
+  fs.writeFileSync(registryPath, JSON.stringify(reg, null, 2) + '\n', 'utf-8');
+
+  await sendMessage(chatId,
+    `✅ Entry "${targetId}" approved by Godman.\n\n` +
+    `Base: ${entry.base_model}\n` +
+    `Corpus: ${entry.corpus_entries} entries\n` +
+    `SHA: ${entry.corpus_sha256?.slice(0, 16)}...\n\n` +
+    `⚠️ Fine-tuning not yet implemented (AMD-15 Phase 2+). Approval recorded.`
+  );
+}

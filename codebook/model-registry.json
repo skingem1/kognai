@@ -1,0 +1,28 @@
+{
+  "_schema": "kognai-model-registry-v1",
+  "_note": "Constitutional artifact (AMD-15 §3). Entries are IMMUTABLE after deploy. Godman approval required for new entries. Sherlock audits integrity.",
+  "_naming": "{base_model}-kognai-r{revision}",
+  "entries": [
+    {
+      "id": "registry-seed",
+      "base_model": "qwen3:14b",
+      "adapter_id": null,
+      "adapter_type": null,
+      "corpus_sha256": "38222f32ade55dbedbf666fb7909c081c7602753f213e40ce44fa4d6e3c4a12a",
+      "corpus_entries": 282,
+      "corpus_source": "vault/training/corpus-r1.jsonl",
+      "sherlock_scores": {
+        "constitutional_compliance": null,
+        "task_accuracy": null,
+        "safety_alignment": null,
+        "capability_retention": null
+      },
+      "status": "baseline",
+      "deploy_date": null,
+      "godman_approval_timestamp": null,
+      "created_at": "2026-03-21T23:55:00Z",
+      "created_by": "sprint-690",
+      "notes": "Seed entry — corpus extracted, no LoRA adapter trained yet. Baseline for comparison."
+    }
+  ]
+}

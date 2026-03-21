@@ -20,7 +20,7 @@ import {
 } from './telegram-commands/telegram-api';
 
 // Sprint 455: Import extracted command modules (Part 1: A-M)
-import { cmdPm2, cmdHealth, cmdTier, cmdSprint, cmdReport, cmdCrons, cmdTikTokAuth, cmdQuickStart, cmdEnvCheck, cmdStripeStatus, cmdReadiness, cmdGitStats, cmdBoot, cmdShutdown, cmdReload, cmdSwarmStats, cmdErrors, cmdTokenCheck, cmdLogs, cmdChangelog, cmdPreflight, cmdSmoke, cmdTestSuite } from './telegram-commands/cmd-system';
+import { cmdPm2, cmdHealth, cmdTier, cmdSprint, cmdReport, cmdCrons, cmdTikTokAuth, cmdQuickStart, cmdEnvCheck, cmdStripeStatus, cmdReadiness, cmdGitStats, cmdBoot, cmdShutdown, cmdReload, cmdSwarmStats, cmdErrors, cmdTokenCheck, cmdLogs, cmdChangelog, cmdPreflight, cmdSmoke, cmdTestSuite, cmdApproveFinetune } from './telegram-commands/cmd-system';
 import { cmdGate, cmdGoLive, cmdAudit, cmdStreak, cmdPace, cmdCalendar } from './telegram-commands/cmd-gate';
 import { cmdRecord, cmdQueue, cmdReview, cmdCaption, cmdPosted, cmdOnboard, cmdPipeline, cmdToday, cmdAnalytics, cmdDiversity, cmdThumbnail, cmdCompetitor, cmdStats, cmdQuality, cmdRadar, cmdBacktest, cmdFormatStats, cmdManifesto, cmdValErrors } from './telegram-commands/cmd-content';
 import { cmdMetrics, cmdPostPlan, cmdYouTube, cmdAutoPost, cmdLastRun, cmdViral, cmdDashboard, cmdDigest, cmdSchedule, cmdLeaderboard, cmdBestTime, cmdHookTest, cmdHookStats, cmdViralStats, cmdQueueOpt, cmdGateAnalytics, cmdRevenue, cmdBatch, cmdPostLog, cmdXPost, cmdCosts, cmdWeeklyDigest } from './telegram-commands/cmd-posting';
@@ -97,6 +97,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     '/inventory':    async () => { const r = cmdInventory(); await sendMessage(chatId, r); },
     '/batchdeliver': async () => { const r = await cmdBatchDeliver(chatId, cmdArgs); await sendMessage(chatId, r); },
     '/stockpile':    () => cmdStockpile(chatId, cmdArgs),
+    '/approveft':    () => cmdApproveFinetune(chatId, cmdArgs),
   };
 
   const asyncHandler = asyncHandlers[cmdName];

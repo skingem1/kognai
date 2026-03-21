@@ -1,0 +1,52 @@
+{
+  "sprint_id": "sprint-691",
+  "title": "AMD-15 — Model registry as constitutional artifact (codebook/model-registry.json)",
+  "description": "AMD-15 Section 3. Create codebook/model-registry.json as tracked constitutional artifact. Schema: base_model, adapter_id, corpus_sha256, sherlock_scores, deploy_date, godman_approval. Create registry management script + /approve-finetune Telegram command stub.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "691-01",
+      "title": "Create codebook/model-registry.json with schema + seed entry",
+      "type": "feature",
+      "task_type": "amd-15",
+      "task_target": "codebook/model-registry.json",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-691"
+    },
+    {
+      "id": "691-02",
+      "title": "Create model-registry management script + Sherlock audit hook",
+      "type": "feature",
+      "task_type": "amd-15",
+      "task_target": "scripts/model-registry.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-691"
+    },
+    {
+      "id": "691-03",
+      "title": "Add /approve-finetune command stub to Telegram bot",
+      "type": "feature",
+      "task_type": "telegram",
+      "task_target": "scripts/telegram-bot.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-691"
+    },
+    {
+      "id": "691-04",
+      "title": "Validate model registry + command stub",
+      "type": "test",
+      "task_type": "test",
+      "task_target": "scripts/scs001/validate-model-registry.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-691"
+    }
+  ]
+}
