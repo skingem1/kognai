@@ -1,0 +1,63 @@
+{
+  "generated_at": "2026-03-21T09:11:37.405Z",
+  "month": "2026-03",
+  "monthly_summary": {
+    "videos_generated": 436,
+    "videos_delivered": 137,
+    "tts_cost": 65.3999999999999,
+    "llm_local_calls": 1077,
+    "llm_cloud_cost": 0,
+    "total_cost": 65.3999999999999
+  },
+  "all_time": {
+    "total_videos": 436,
+    "total_cost": 65.3999999999999,
+    "cost_per_video": 0.14999999999999977
+  },
+  "daily": [
+    {
+      "date": "2026-03-16",
+      "videos_generated": 141,
+      "videos_delivered": 0,
+      "tts_cost": 21.149999999999977,
+      "llm_local_calls": 234,
+      "llm_cloud_calls": 0,
+      "llm_cloud_cost": 0,
+      "storage_cost": 0,
+      "total_cost": 21.149999999999977
+    },
+    {
+      "date": "2026-03-19",
+      "videos_generated": 191,
+      "videos_delivered": 0,
+      "tts_cost": 28.649999999999906,
+      "llm_local_calls": 573,
+      "llm_cloud_calls": 0,
+      "llm_cloud_cost": 0,
+      "storage_cost": 0,
+      "total_cost": 28.649999999999906
+    },
+    {
+      "date": "2026-03-20",
+      "videos_generated": 95,
+      "videos_delivered": 107,
+      "tts_cost": 14.250000000000023,
+      "llm_local_calls": 270,
+      "llm_cloud_calls": 0,
+      "llm_cloud_cost": 0,
+      "storage_cost": 0,
+      "total_cost": 14.250000000000023
+    },
+    {
+      "date": "2026-03-21",
+      "videos_generated": 9,
+      "videos_delivered": 30,
+      "tts_cost": 1.3499999999999999,
+      "llm_local_calls": 0,
+      "llm_cloud_calls": 0,
+      "llm_cloud_cost": 0,
+      "storage_cost": 0,
+      "total_cost": 1.3499999999999999
+    }
+  ]
+}

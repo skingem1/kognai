@@ -1133,9 +1133,40 @@ export function cmdXPost(args: string): string {
 
 // Sprint 596: /costs — daily/weekly cost breakdown from pipeline metrics
 export function cmdCosts(): string {
+  // Try new cost-log.json first (Sprint 661), fallback to pipeline-metrics
+  const costLogPath = path.join(ROOT, 'workspace', 'scs001', 'cost-log.json');
+  if (fs.existsSync(costLogPath)) {
+    try {
+      const costLog = JSON.parse(fs.readFileSync(costLogPath, 'utf-8'));
+      const m = costLog.monthly_summary || {};
+      const a = costLog.all_time || {};
+      const daily = (costLog.daily || []).slice(-7).reverse();
+
+      const output = [
+        '💰 *Pipeline Costs*',
+        '',
+        `*Month (${costLog.month}):*`,
+        `  Videos generated: ${m.videos_generated || 0}`,
+        `  Videos delivered: ${m.videos_delivered || 0}`,
+        `  TTS (ElevenLabs): $${(m.tts_cost || 0).toFixed(2)}`,
+        `  LLM local: ${m.llm_local_calls || 0} calls ($0.00)`,
+        `  LLM cloud: $${(m.llm_cloud_cost || 0).toFixed(2)}`,
+        `  *Monthly total: $${(m.total_cost || 0).toFixed(2)}*`,
+        '',
+        `*All-time:* ${a.total_videos || 0} videos, $${(a.total_cost || 0).toFixed(2)}`,
+        `*Cost/video:* $${(a.cost_per_video || 0).toFixed(2)}`,
+        '',
+        '*Last 7 days:*',
+        ...daily.map((d: any) => `  ${d.date}: ${d.videos_generated} vids, $${(d.total_cost || 0).toFixed(2)}`),
+      ];
+      return output.join('\n');
+    } catch { /* fall through */ }
+  }
+
+  // Fallback to pipeline-metrics
   const metricsPath = path.join(ROOT, 'logs', 'pipeline-metrics', 'metrics.jsonl');
   if (!fs.existsSync(metricsPath)) {
-    return '💰 *Costs* — no pipeline metrics found yet.';
+    return '💰 *Costs* — no cost data found. Run: npx ts-node scripts/scs001/cost-tracker.ts';
   }
 
   const lines = fs.readFileSync(metricsPath, 'utf-8').trim().split('\n').filter(Boolean);

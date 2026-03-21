@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-661",
+  "title": "PIPELINE — Pipeline cost tracking + monthly budget dashboard",
+  "description": "Track LLM costs (local=$0, cloud=$$), TTS costs (~$0.15/video), storage costs. Surface in daily digest + /costs Telegram command.",
+  "source": "sprint-queue",
+  "tasks": [
+    {
+      "id": "661-01",
+      "title": "Build cost tracker module + /costs command",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/scs001/cost-tracker.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-661"
+    }
+  ]
+}
