@@ -68,6 +68,41 @@ const API_BASE = `https://${RAPIDAPI_HOST}`;
 
 const DEFAULT_CLIPS_DIR = process.env.SCS_CLIPS_DIR ?? join(__dirname, "..", "..", "clips");
 
+// ── Sprint 681: Rate Limiter ──────────────────────────────────
+// Free tier: 500 req/month (~16/day). Rate limit: 2s between requests.
+// Exponential backoff on 429: 5s → 10s → 20s (max 3 retries).
+
+let lastRequestTime = 0;
+const MIN_INTERVAL_MS = 2000; // 2s between requests
+const MAX_RETRIES = 3;
+const INITIAL_BACKOFF_MS = 5000;
+
+async function rateLimitedFetch(url: string, options: RequestInit): Promise<Response> {
+  // Enforce minimum interval between requests
+  const now = Date.now();
+  const elapsed = now - lastRequestTime;
+  if (elapsed < MIN_INTERVAL_MS) {
+    await new Promise(r => setTimeout(r, MIN_INTERVAL_MS - elapsed));
+  }
+
+  for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+    lastRequestTime = Date.now();
+    const res = await fetch(url, options);
+
+    if (res.status === 429 && attempt < MAX_RETRIES) {
+      const backoff = INITIAL_BACKOFF_MS * Math.pow(2, attempt);
+      console.error(`[RapidAPI] 429 rate limited, retrying in ${backoff / 1000}s (attempt ${attempt + 1}/${MAX_RETRIES})`);
+      await new Promise(r => setTimeout(r, backoff));
+      continue;
+    }
+
+    return res;
+  }
+
+  // Should never reach here, but TypeScript needs it
+  throw new Error('RapidAPI: max retries exceeded');
+}
+
 // ── API Functions ──────────────────────────────────────
 
 /**
@@ -78,18 +113,18 @@ export async function getVideoInfo(tiktokUrl: string): Promise<TikTokVideoInfo> 
     throw new Error("RAPIDAPI_KEY not set — cannot download TikTok videos");
   }
 
-  const res = await fetch(`${API_BASE}/`, {
+  // Sprint 681: Use rate-limited fetch
+  const res = await rateLimitedFetch(`${API_BASE}/`, {
     method: "GET",
     headers: {
       "x-rapidapi-key": RAPIDAPI_KEY,
       "x-rapidapi-host": RAPIDAPI_HOST,
       "Content-Type": "application/json",
     },
-    // The API uses query params
   });
 
   // Try the POST endpoint which is more reliable
-  const postRes = await fetch(`${API_BASE}/`, {
+  const postRes = await rateLimitedFetch(`${API_BASE}/`, {
     method: "POST",
     headers: {
       "x-rapidapi-key": RAPIDAPI_KEY,
@@ -234,7 +269,8 @@ export async function searchByKeyword(
   url.searchParams.set("cursor", String(cursor));
   url.searchParams.set("region", region);
 
-  const res = await fetch(url.toString(), {
+  // Sprint 681: Use rate-limited fetch with backoff on 429
+  const res = await rateLimitedFetch(url.toString(), {
     method: "GET",
     headers: {
       "x-rapidapi-key": RAPIDAPI_KEY,
@@ -271,7 +307,8 @@ export async function getTrendingFeed(
   url.searchParams.set("region", region);
   url.searchParams.set("count", String(Math.min(count, 30)));
 
-  const res = await fetch(url.toString(), {
+  // Sprint 681: Use rate-limited fetch
+  const res = await rateLimitedFetch(url.toString(), {
     method: "GET",
     headers: {
       "x-rapidapi-key": RAPIDAPI_KEY,

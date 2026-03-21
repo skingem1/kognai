@@ -1,0 +1,41 @@
+{
+  "sprint_id": "sprint-681",
+  "title": "PIPELINE — Add rate limiting to RapidAPI TikTok client",
+  "description": "Pipeline hits RapidAPI 429 and YouTube 403 quota errors. Add rate limiter with exponential backoff to rapidapi-tiktok-client.ts to prevent quota exhaustion.",
+  "source": "error-log",
+  "tasks": [
+    {
+      "id": "681-01",
+      "title": "Add rate limiter + exponential backoff retry to searchByKeyword and getTrending",
+      "type": "bugfix",
+      "task_type": "pipeline",
+      "task_target": "scripts/scs001/rapidapi-tiktok-client.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-681"
+    },
+    {
+      "id": "681-02",
+      "title": "Fix drain-local-queue.ts MODULE_NOT_FOUND import error",
+      "type": "bugfix",
+      "task_type": "bugfix",
+      "task_target": "scripts/drain-local-queue.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-681"
+    },
+    {
+      "id": "681-03",
+      "title": "Create validate-ratelimit-output.ts",
+      "type": "test",
+      "task_type": "test",
+      "task_target": "scripts/scs001/validate-ratelimit-output.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-681"
+    }
+  ]
+}
