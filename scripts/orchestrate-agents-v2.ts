@@ -2066,7 +2066,11 @@ class Orchestrator {
     // Normalize deliverables: CEO planner may emit flat string[] instead of {code,tests,docs}
     for (const task of this.tasks) {
       const d = (task as any).deliverables;
-      if (Array.isArray(d)) {
+      if (!d) {
+        // Sprint JSON may omit deliverables — default from task_target
+        const target = (task as any).task_target;
+        task.deliverables = { code: target ? [target] : [], tests: [], docs: [] };
+      } else if (Array.isArray(d)) {
         task.deliverables = {
           code:  (d as string[]).filter((f: string) => f.indexOf("test") === -1 && f.indexOf("spec") === -1 && f.slice(-3) !== ".md"),
           tests: (d as string[]).filter((f: string) => f.indexOf("test") !== -1 || f.indexOf("spec") !== -1),

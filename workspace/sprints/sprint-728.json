@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-728",
+  "title": "FIX — Swarm crash: missing deliverables normalization in orchestrator",
+  "description": "Fix TypeError in CodingAgent.execute when sprint JSON tasks omit 'deliverables' field. Add default deliverables from task_target in loadTasks normalization. Also ran auto-deliver (1 video sent).",
+  "source": "auto-queue-empty",
+  "tasks": [
+    {
+      "id": "728-01",
+      "title": "Add missing deliverables default in loadTasks normalization",
+      "type": "fix",
+      "task_type": "infra",
+      "task_target": "scripts/orchestrate-agents-v2.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "critical",
+      "sprint_id": "sprint-728"
+    }
+  ]
+}
