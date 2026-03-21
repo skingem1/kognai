@@ -367,8 +367,12 @@ async function runPipeline(options: {
   writeFileSync(reportPath, JSON.stringify(runResult, null, 2));
 
   // Register successful videos in publish-ledger.jsonl for auto-deliver
+  // Sprint 777: Skip ledger registration in dry-run mode to prevent pollution
   const ledgerPath = join(WORKSPACE, 'publish-ledger.jsonl');
-  for (const r of results.filter(r => r.success)) {
+  if (dryRun) {
+    console.log(`📋 [DRY RUN] Skipping ledger registration (${results.filter(r => r.success).length} videos)`);
+  }
+  for (const r of results.filter(r => r.success && !dryRun)) {
     const ledgerEntry = {
       clip_id: `mf-${r.script_id}`,
       video_id: r.script_id,
@@ -386,7 +390,7 @@ async function runPipeline(options: {
     };
     appendFileSync(ledgerPath, JSON.stringify(ledgerEntry) + '\n');
   }
-  if (successCount > 0) {
+  if (successCount > 0 && !dryRun) {
     console.log(`📋 Registered ${successCount} videos in publish-ledger.jsonl`);
   }
 

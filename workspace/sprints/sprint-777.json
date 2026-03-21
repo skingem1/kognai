@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-777",
+  "title": "FIX — Dry-run pipeline no longer pollutes publish-ledger",
+  "description": "Fixed bug where dry-run mode wrote phantom entries to publish-ledger.jsonl, causing topic dedup to reject fresh topics on subsequent real runs.",
+  "source": "bug-found-session-28",
+  "tasks": [
+    {
+      "id": "777-01",
+      "title": "Guard ledger registration with dryRun check in run-multiformat-pipeline.ts",
+      "type": "fix",
+      "task_type": "pipeline",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-777"
+    }
+  ]
+}
