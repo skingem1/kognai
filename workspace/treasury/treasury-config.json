@@ -1,0 +1,59 @@
+{
+  "_version": "1.0",
+  "_status": "design",
+  "_note": "Treasury spending policies for MPCVault Agent Cards. Not yet enforced — waiting for waitlist approval (EVAL-006).",
+  "treasury_wallet": {
+    "provider": "mpcvault",
+    "currency": "USDC",
+    "min_balance_alert_usd": 100,
+    "auto_freeze_threshold_daily_usd": 80,
+    "human_cosign_threshold_usd": 20
+  },
+  "agent_cards": [
+    {
+      "agent_id": "satoshi",
+      "role": "CFO — infrastructure & general",
+      "daily_limit_usd": 50,
+      "per_txn_limit_usd": 25,
+      "mcc_whitelist": ["7372", "7379", "4816"],
+      "mcc_labels": ["cloud/hosting", "IT services", "domains"],
+      "requires_human_cosign_above_usd": 20,
+      "active_hours_utc": "00:00-23:59",
+      "enabled": true
+    },
+    {
+      "agent_id": "clawrouter",
+      "role": "Model API escalation (cloud tier)",
+      "daily_limit_usd": 20,
+      "per_txn_limit_usd": 5,
+      "mcc_whitelist": ["7372", "5734"],
+      "mcc_labels": ["API services", "software"],
+      "requires_human_cosign_above_usd": 10,
+      "active_hours_utc": "00:00-23:59",
+      "enabled": true
+    },
+    {
+      "agent_id": "scs001",
+      "role": "Content production (stock media, assets)",
+      "daily_limit_usd": 10,
+      "per_txn_limit_usd": 3,
+      "mcc_whitelist": ["5815", "7812", "5942"],
+      "mcc_labels": ["digital media", "video production", "stock footage"],
+      "requires_human_cosign_above_usd": 5,
+      "active_hours_utc": "06:00-22:00",
+      "enabled": true
+    }
+  ],
+  "kill_switches": {
+    "telegram_freeze_command": "/freeze-treasury",
+    "telegram_unfreeze_command": "/unfreeze-treasury",
+    "auto_freeze_on_daily_overspend": true,
+    "auto_freeze_on_revenue_deficit_days": 7
+  },
+  "logging": {
+    "supabase_table": "kognai_events",
+    "event_type": "treasury.transaction",
+    "local_ledger": "workspace/treasury/transactions.jsonl",
+    "include_in_daily_digest": true
+  }
+}

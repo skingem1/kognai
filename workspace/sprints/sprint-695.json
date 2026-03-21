@@ -1,0 +1,41 @@
+{
+  "sprint_id": "sprint-695",
+  "title": "EVAL-006 — MPCVault Agent Card waitlist + SCS treasury design",
+  "description": "Document MPCVault Agent Card waitlist status and design SCS treasury architecture around Agent Cards for autonomous agent-to-agent payments.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "695-01",
+      "title": "Create MPCVault Agent Card waitlist tracker",
+      "type": "feature",
+      "task_type": "eval",
+      "task_target": "workspace/evals/eval-006-mpcvault-waitlist.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-695"
+    },
+    {
+      "id": "695-02",
+      "title": "Design SCS treasury architecture document",
+      "type": "feature",
+      "task_type": "eval",
+      "task_target": "docs/scs-treasury-design.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-695"
+    },
+    {
+      "id": "695-03",
+      "title": "Create treasury config schema",
+      "type": "feature",
+      "task_type": "eval",
+      "task_target": "workspace/treasury/treasury-config.json",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-695"
+    }
+  ]
+}
