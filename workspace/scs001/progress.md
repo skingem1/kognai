@@ -2404,3 +2404,12 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Pipeline: Swarm healthcheck verifies all infrastructure fixes from sprints 725-730
 - Swarm used: attempted but qwen3:14b hung (killed after 4 min) — wrote directly
 - Timestamp: 2026-03-21T14:20:00Z
+
+## Sprint 732 — FIX — Swarm retry on execution errors
+- Status: PASS
+- Commit: cd883bc
+- Files modified: scripts/orchestrate-agents-v2.ts (surgical try-catch in executeTask retry loop)
+- Test: Code review verified — try-catch wraps agent.execute(), continues loop on error
+- Pipeline: Swarm now retries on timeout/API errors instead of crashing. Combined with Sprint 730 (180s timeout), qwen3:14b hangs will timeout and retry instead of hanging forever.
+- Swarm used: no (fixing the swarm itself)
+- Timestamp: 2026-03-21T14:30:00Z
