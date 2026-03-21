@@ -143,8 +143,8 @@ function classifyFormat(title: string, summary: string): VideoFormat {
   const visionScore = VISION_SIGNALS.filter(s => text.includes(s)).length;
   if (visionScore >= 1) return 'vision';  // Sprint 609: lowered from 2 to 1
 
-  // Sprint 613: Check for listicle signals (ranking/list topics)
-  const listicleScore = LISTICLE_SIGNALS.filter(s => text.includes(s)).length;
+  // Sprint 613+616: Check for listicle signals (word boundary to avoid false positives like "holistic")
+  const listicleScore = LISTICLE_SIGNALS.filter(s => new RegExp(`\\b${s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`).test(text)).length;
   if (listicleScore >= 1) return 'listicle';
 
   // Default: quick explainer
@@ -494,11 +494,12 @@ export class TopicRadar {
     for (const t of fresh) this.seen.add(t.topic_id);
     saveSeenTopics(this.seen);
 
-    // Sprint 609: Ensure format mix — force at least 1 of each type
+    // Sprint 609 + 616: Ensure format mix — force at least 1 of each type
     const byFormat = {
       explainer: fresh.filter(t => t.format === 'explainer'),
       debate: fresh.filter(t => t.format === 'debate'),
       vision: fresh.filter(t => t.format === 'vision'),
+      listicle: fresh.filter(t => t.format === 'listicle'),
     };
 
     // If a format has 0 topics, reclassify the highest-confidence explainer
@@ -516,12 +517,25 @@ export class TopicRadar {
       reclassified.format = 'vision';
       byFormat.vision.push(reclassified);
     }
+    // Sprint 616: Derive a listicle topic from explainer keywords if none found naturally
+    if (byFormat.listicle.length === 0 && byFormat.explainer.length >= 2) {
+      const source = byFormat.explainer.pop()!;
+      const derived: TopicBrief = {
+        ...source,
+        topic_id: source.topic_id + '-lst',
+        title: `Top 3 ${source.keywords.slice(0, 2).join(' ')} tools you need to know`,
+        format: 'listicle',
+        listicle_items: source.keywords.slice(0, 3).map(k => k.charAt(0).toUpperCase() + k.slice(1)),
+      };
+      byFormat.listicle.push(derived);
+    }
 
-    // Select top topics: 2 explainers, 2 debates, 1 vision (balanced mix)
+    // Select top topics: 2 explainers, 1 debate, 1 vision, 1 listicle (balanced 4-format mix)
     const selected: TopicBrief[] = [
       ...byFormat.explainer.slice(0, 2),
-      ...byFormat.debate.slice(0, 2),
+      ...byFormat.debate.slice(0, 1),
       ...byFormat.vision.slice(0, 1),
+      ...byFormat.listicle.slice(0, 1),
     ];
 
     // If we didn't get enough, fill from remaining
@@ -543,7 +557,7 @@ export class TopicRadar {
     const outPath = join(OUT_DIR, `${result.radar_id}.json`);
     writeFileSync(outPath, JSON.stringify(result, null, 2));
     console.log(`[TopicRadar] Scan complete: ${selected.length} topics selected (${fresh.length} fresh / ${allTopics.length} total)`);
-    console.log(`[TopicRadar] Formats: ${byFormat.explainer.length} explainer, ${byFormat.debate.length} debate, ${byFormat.vision.length} vision`);
+    console.log(`[TopicRadar] Formats: ${byFormat.explainer.length} explainer, ${byFormat.debate.length} debate, ${byFormat.vision.length} vision, ${byFormat.listicle.length} listicle`);
     console.log(`[TopicRadar] Saved: ${outPath}`);
 
     return result;

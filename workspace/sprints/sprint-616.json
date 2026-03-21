@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-616",
+  "title": "CONTENT — Listicle topic derivation + format mix balancing in topic radar",
+  "description": "Add listicle to topic radar format mix. Derive listicle topics from explainer keywords when none found naturally. Fix false positive in listicle classification ('holistic' → 'list' substring match) with word boundary regex.",
+  "source": "follow-up-sprint-613",
+  "tasks": [
+    {
+      "id": "616-01",
+      "title": "Add listicle to format mix logic in topic-radar.ts",
+      "type": "feature",
+      "task_type": "content",
+      "task_target": "scripts/scs001/topic-radar.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-616"
+    },
+    {
+      "id": "616-02",
+      "title": "Fix listicle classification false positive (word boundary regex)",
+      "type": "bugfix",
+      "task_type": "content",
+      "task_target": "scripts/scs001/topic-radar.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-616"
+    }
+  ]
+}
