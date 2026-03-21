@@ -516,6 +516,37 @@ export function cmdDigest(): string {
     out.push(`  Waitlist: ${achiriWaitlist} · Paid: ${achiriPaid}`);
   }
 
+  // Sprint 626: Viral topic trends
+  const viralTopicsPath = path.join(ROOT, 'workspace', 'scs001', 'viral-topics.json');
+  try {
+    if (fs.existsSync(viralTopicsPath)) {
+      const vt = JSON.parse(fs.readFileSync(viralTopicsPath, 'utf-8'));
+      const topics: string[] = (vt.topics ?? []).slice(0, 5);
+      if (topics.length > 0) {
+        out.push('');
+        out.push(`🔥 *Viral Topics:* ${topics.map(t => `#${t}`).join(' ')}`);
+        if (vt.updated_at) {
+          const age = Math.round((now.getTime() - new Date(vt.updated_at).getTime()) / 3_600_000);
+          out.push(`  Updated ${age}h ago${age > 24 ? ' ⚠️ stale — run /refresh' : ''}`);
+        }
+      }
+    }
+  } catch {}
+
+  // Sprint 626: Sprint velocity (last 5 from git log)
+  try {
+    const gitOut = execSync('git log --oneline -5 --grep="^Sprint" 2>/dev/null', { cwd: ROOT, encoding: 'utf-8', timeout: 5000 });
+    const sprintLines = gitOut.trim().split('\n').filter(l => l.includes('Sprint'));
+    if (sprintLines.length > 0) {
+      out.push('');
+      out.push(`🏃 *Velocity:* ${sprintLines.length} recent sprints`);
+      for (const sl of sprintLines.slice(0, 3)) {
+        const msg = sl.replace(/^[a-f0-9]+ /, '');
+        out.push(`  • ${msg}`);
+      }
+    }
+  } catch {}
+
   out.push('');
   out.push(`💳 *Stripe:* ${stripeReady ? '✅ Ready' : '❌ Not Ready'}`);
   out.push(`🎵 *TikTok API:* ${tiktokReady ? '✅ Token set' : '❌ No token'}`);

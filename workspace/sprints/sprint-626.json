@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-626",
+  "title": "DIGEST — Add viral topic trends + sprint velocity to daily digest",
+  "description": "Daily digest shows gate/queue/Achiri/Stripe but no content direction. Add viral topics section (top 5 from viral-topics.json) and sprint velocity (last 5 sprints from git log). Gives operator content + build momentum at a glance.",
+  "source": "operator-productivity",
+  "tasks": [
+    {
+      "id": "626-01",
+      "title": "Add viral topics section to cmdDigest in cmd-posting.ts",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/telegram-commands/cmd-posting.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-626"
+    },
+    {
+      "id": "626-02",
+      "title": "Add sprint velocity section to cmdDigest showing last 5 sprints",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/telegram-commands/cmd-posting.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-626"
+    }
+  ]
+}
