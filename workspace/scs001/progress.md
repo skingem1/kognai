@@ -1,10 +1,10 @@
 # SCS-001 TikTok Content Agent — Progress Log
 
-*Last updated: 2026-03-21 (Sprint 614)*
+*Last updated: 2026-03-21 (Sprint 615)*
 
 ## Summary
 
-- **Total sprints shipped:** 471 (Sprint 059 → Sprint 614)
+- **Total sprints shipped:** 472 (Sprint 059 → Sprint 615)
 - **Total commits:** 1110
 - **Current phase:** Phase 1 Active (Mar 17 – Apr 11 2026)
 - **Pipeline:** 12 stages, 11 agents, closed feedback loop
@@ -1270,3 +1270,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (multi-file pipeline wiring)
 - Issues: None
 - Timestamp: 2026-03-21T09:45:00Z
+
+## Sprint 615 — ANALYTICS
+- Status: PASS
+- Commit: 3a8e596
+- Files created: workspace/sprints/sprint-615.json
+- Files modified: scripts/telegram-commands/shared.ts, scripts/telegram-commands/cmd-content.ts, scripts/telegram-commands/cmd-help.ts, scripts/scs001/enrich-experiments.ts, scripts/telegram-bot.ts
+- Test: /formatstats command — PASS (359 experiments, 4 formats tracked)
+- Pipeline: Format tracking now flows through experiment → record → analytics
+- Swarm used: no (multi-file analytics wiring)
+- Issues: None
+- Timestamp: 2026-03-21T10:00:00Z
