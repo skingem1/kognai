@@ -1,0 +1,48 @@
+{
+  "sprint_id": "sprint-724",
+  "title": "INFRA — TikTok token validator + posting readiness gate",
+  "description": "Create token validation script for TIKTOK_ACCESS_TOKEN, add posting readiness check to daily digest, and enhance gate-urgency alerts with token status.",
+  "source": "auto-queue-empty",
+  "tasks": [
+    {
+      "id": "724-01",
+      "title": "Create TikTok token validator script",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/scs001/validate-tiktok-token.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-724"
+    },
+    {
+      "id": "724-02",
+      "title": "Add token status to daily digest Telegram report",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/daily-digest.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-724"
+    },
+    {
+      "id": "724-03",
+      "title": "Create posting readiness gate check script",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/scs001/posting-readiness-gate.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-724"
+    }
+  ],
+  "cto_gate": {
+    "approved": false,
+    "reason": "ACPEngine block: Agent 'coder' not found in trust scores",
+    "plan_reference": "ACP_TRUST_VIOLATION",
+    "confidence": 100,
+    "timestamp": "2026-03-21T12:41:48.727Z"
+  }
+}
