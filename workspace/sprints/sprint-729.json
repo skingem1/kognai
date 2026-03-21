@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-729",
+  "title": "INFRA — Add /tokencheck command alias and posting pace tracker",
+  "description": "Add a posting pace tracker that calculates average posts per day and estimates gate completion date based on current pace.",
+  "source": "auto-queue-empty",
+  "tasks": [
+    {
+      "id": "729-01",
+      "title": "Create posting pace tracker script",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/scs001/posting-pace.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-729"
+    }
+  ]
+}
