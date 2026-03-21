@@ -605,8 +605,10 @@ function sendVideoTelegram(chatId: string, videoPath: string, caption?: string):
   const parts: Buffer[] = [];
   parts.push(Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="chat_id"\r\n\r\n${chatId}\r\n`));
   if (caption) {
+    // Sprint 723: Don't use parse_mode for video captions — dynamic hashtags
+    // from viral-topics.json often contain underscores/special chars that break
+    // Telegram Markdown parsing (see error logs: "can't parse entities")
     parts.push(Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="caption"\r\n\r\n${caption}\r\n`));
-    parts.push(Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="parse_mode"\r\n\r\nMarkdown\r\n`));
   }
   parts.push(Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="video"; filename="${filename}"\r\nContent-Type: video/mp4\r\n\r\n`));
   parts.push(fileData);

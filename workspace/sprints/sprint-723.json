@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-723",
+  "title": "FIX — Daily digest video caption Markdown parse error",
+  "description": "Fix Telegram 'can't parse entities' error in daily-digest.ts sendVideoTelegram. Remove parse_mode from video captions since dynamic hashtags from viral-topics.json contain underscores that break Markdown.",
+  "source": "auto-queue-empty",
+  "tasks": [
+    {
+      "id": "723-01",
+      "title": "Remove parse_mode from sendVideoTelegram caption",
+      "type": "fix",
+      "task_type": "infra",
+      "task_target": "scripts/daily-digest.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-723"
+    }
+  ]
+}
