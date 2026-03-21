@@ -2876,3 +2876,15 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Issues: None
 - Cost: $3.00 (avatar generation)
 - Timestamp: 2026-03-21T18:30:00Z
+
+## Sprint 773 — POSTING
+- Status: PASS
+- Commit: 78a34e4
+- Files created: workspace/sprints/sprint-773.json
+- Files modified: workspace/scs001/manual-post-queue/post-manifest.json
+- Test: 25 videos curated, all paths verified — PASS
+- Pipeline: Post queue refreshed (18 → 25 videos), format mix: 9 exp, 7 dbt, 5 vis, 4 lst
+- Swarm used: no (data curation)
+- Issues: None
+- Cost: $0.00
+- Timestamp: 2026-03-21T18:35:00Z
