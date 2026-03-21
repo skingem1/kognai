@@ -1,0 +1,41 @@
+{
+  "sprint_id": "sprint-651",
+  "title": "BRAINX — Episodic Memory Module v1 (AMD-02 Addendum)",
+  "description": "Validate existing BrainX episodic memory implementation. Module already built in prior sprints. Create comprehensive validation script.",
+  "source": "sprint-queue",
+  "tasks": [
+    {
+      "id": "651-01",
+      "title": "Validate BrainX module loads and exports correctly",
+      "type": "test",
+      "task_type": "validation",
+      "task_target": "scripts/lib/brainx-client.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-651"
+    },
+    {
+      "id": "651-02",
+      "title": "Validate BrainX embed module with nomic-embed-text",
+      "type": "test",
+      "task_type": "validation",
+      "task_target": "scripts/lib/brainx-embed.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-651"
+    },
+    {
+      "id": "651-03",
+      "title": "Validate schema has all AMD-02 fields",
+      "type": "test",
+      "task_type": "validation",
+      "task_target": "scripts/lib/brainx-schema.sql",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-651"
+    }
+  ]
+}
