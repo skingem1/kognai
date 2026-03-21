@@ -130,7 +130,7 @@
       "sprint": 716,
       "title": "GOV — Generate SOUL.md for 16 SCS-001 agents",
       "block": "GOV-PHASE4",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "GOVERNANCE REMEDIATION Phase 4. Create SOUL.md for all SCS-001 agents in agents/: scs001-orchestrator, scs001-discovery, scs001-clip-detection, scs001-insight, scs001-script, scs001-editing, scs001-caption, scs001-qc, scs001-publishing, scs001-analytics, scs001-trend, scs001-flywheel, scs001-failure-library, scs001-experiment, scs001-scorer, scs001-script-validator. Shorter format."
     },
