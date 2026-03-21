@@ -2258,3 +2258,13 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (wrote directly)
 - Issues: none
 - Timestamp: 2026-03-21T14:35:00Z
+
+## Sprint 699 — AMD-15 — Sherlock LoRA evaluation gate
+- Status: PASS
+- Commit: 5165add
+- Files created: scripts/lib/lora-eval-gate.ts, vault/models/eval-fixtures.json, scripts/telegram-commands/cmd-lora-eval.ts, workspace/sprints/sprint-699.json
+- Files modified: scripts/telegram-bot.ts (wired /lora-eval command)
+- Pipeline: AMD-15 Rule 4 complete. 4-dimension eval harness (Accuracy>=80, Safety>=95, File Discipline>=85, Constitutional>=90). Base model baseline: 78/100. Handles qwen3 thinking-mode responses.
+- Swarm used: no (wrote directly)
+- Issues: qwen3:14b returns content in `thinking` field not `response` — fixed by reading both fields
+- Timestamp: 2026-03-21T14:50:00Z

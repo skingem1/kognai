@@ -210,7 +210,7 @@
       "sprint": 699,
       "title": "AMD-15 — Sherlock LoRA evaluation gate (4-dimension test harness)",
       "block": "AMD-15",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "AMD-15 Rule 4. scripts/lib/lora-eval-gate.ts: Accuracy, Safety, File Discipline, Constitutional Alignment."
     }
