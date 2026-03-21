@@ -4,7 +4,7 @@
 
 ## Summary
 
-- **Total sprints shipped:** 484 (Sprint 059 → Sprint 627)
+- **Total sprints shipped:** 485 (Sprint 059 → Sprint 628)
 - **Total commits:** 1110
 - **Current phase:** Phase 1 Active (Mar 17 – Apr 11 2026)
 - **Pipeline:** 12 stages, 11 agents, closed feedback loop
@@ -1414,3 +1414,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (single file fix)
 - Issues: None
 - Timestamp: 2026-03-21T14:10:00Z
+
+## Sprint 628 — FIX
+- Status: PASS
+- Commit: aa109fb
+- Files created: workspace/sprints/sprint-628.json
+- Files modified: scripts/scs001/validate-production-preflight.ts
+- Test: validate-production-preflight.ts — 5 failures → 2 failures (3 false positives fixed)
+- Pipeline: Preflight now loads .env via dotenv — SUPABASE_URL, SUPABASE_SERVICE_KEY, SCS_EDITING_MODE correctly detected. Remaining 2 failures are genuine (TIKTOK_ACCESS_TOKEN, SCS_MODE).
+- Swarm used: no (single line fix)
+- Issues: None
+- Timestamp: 2026-03-21T14:20:00Z
