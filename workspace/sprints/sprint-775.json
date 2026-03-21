@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-775",
+  "title": "OPS — Flush video backlog to Telegram auto-deliver",
+  "description": "Flush all undelivered videos to operator via Telegram auto-deliver. Ensures operator has access to all produced content.",
+  "source": "queue-exhausted-ops",
+  "tasks": [
+    {
+      "id": "775-01",
+      "title": "Run auto-deliver repeatedly until backlog is empty",
+      "type": "feature",
+      "task_type": "ops",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-775"
+    }
+  ]
+}
