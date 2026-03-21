@@ -177,8 +177,9 @@ function getQueueStats(): { ledgerCount: number; recordedCount: number; unposted
 function getSmokeTest(): string {
   const s = readJSON<any>(path.join(ROOT, 'reports', 'smoke-test-latest.json'));
   if (!s) return 'no report';
-  const ok = s.passed ? '✅' : '❌';
-  const stages = s.stage_count ?? 0;
+  // Sprint 669: Fix field names — JSON uses pass/fail/total, not passed/stage_count
+  const ok = (s.fail ?? 0) === 0 && (s.pass ?? s.total ?? 0) > 0 ? '✅' : '❌';
+  const stages = s.total ?? s.stage_count ?? 0;
   const ts = s.timestamp ? new Date(s.timestamp).toLocaleDateString('en-GB') : 'unknown';
   return `${ok} ${stages} stages — ${ts}`;
 }
