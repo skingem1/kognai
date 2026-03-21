@@ -122,7 +122,7 @@
       "sprint": 715,
       "title": "GOV — Generate SOUL.md for 9 remaining kognai-agents (batch 3)",
       "block": "GOV-PHASE4",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "GOVERNANCE REMEDIATION Phase 4. Create SOUL.md for: pipeline-health-monitor, skills, sprint-retrospective, telegram-support, test-failure-predictor, test-runner, test-utility-generator, x-admin, invoica-x-admin."
     },
