@@ -1,7 +1,7 @@
 {
   "created": "2026-03-21T18:35:00Z",
   "sprint": "sprint-773",
-  "total_videos": 25,
+  "total_videos": 27,
   "purpose": "Manual TikTok posting — April 7 gate requires 30 posts. 25 best videos from sessions 27-28.",
   "instructions": "Post 2-3 videos per day. Use the caption from the SRT file. Use suggested hashtags. Mix formats for variety. Start with the most viral-worthy topics first.",
   "videos": [
@@ -228,6 +228,24 @@
       "topic": "We asked 200 ChatGPT users their biggest frustration",
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T14-93xe/output/lst-cc2212c8_final.mp4",
       "suggested_hashtags": "#chatgpt #ai #top3 #tiktokviral #learnontiktok",
+      "posted": false
+    },
+    {
+      "order": 26,
+      "video_id": "dbt-49367b25",
+      "format": "debate",
+      "topic": "Almost two years ago, OpenAI scammed us with Advanced Voice",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T18-frr9/output/dbt-49367b25_final.mp4",
+      "suggested_hashtags": "#openai #ai #scam #debate #learnontiktok",
+      "posted": false
+    },
+    {
+      "order": 27,
+      "video_id": "lst-5a6e3d56",
+      "format": "listicle",
+      "topic": "Top 3 Claude's agentic tools you need to know",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T18-frr9/output/lst-5a6e3d56_final.mp4",
+      "suggested_hashtags": "#claude #ai #agent #top3 #tiktokviral",
       "posted": false
     }
   ]

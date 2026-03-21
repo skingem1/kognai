@@ -1,0 +1,28 @@
+{
+  "sprint_id": "sprint-782",
+  "title": "POSTING — Add 2 best Sprint 781 videos to post queue (25→27)",
+  "description": "Added OpenAI scam debate + Claude agentic tools listicle to curated post queue. Delivered 5 videos to Telegram.",
+  "source": "content-push-posting-refresh",
+  "tasks": [
+    {
+      "id": "782-01",
+      "title": "Update post-manifest.json with 2 best Sprint 781 videos",
+      "type": "feature",
+      "task_type": "posting",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-782"
+    },
+    {
+      "id": "782-02",
+      "title": "Auto-deliver 5 new videos to Telegram",
+      "type": "feature",
+      "task_type": "ops",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-782"
+    }
+  ]
+}
