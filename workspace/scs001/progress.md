@@ -2395,3 +2395,12 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Pipeline: Prevents swarm hanging on qwen3:14b stalls. Orchestrator retries on timeout.
 - Swarm used: no (1-line config change)
 - Timestamp: 2026-03-21T14:15:00Z
+
+## Sprint 731 — INFRA — Swarm healthcheck script
+- Status: PASS
+- Commit: 6a988a6
+- Files created: scripts/scs001/swarm-healthcheck.ts, workspace/sprints/sprint-731.json
+- Test: 6/6 checks pass (ACP, Ollama, orchestrator, CTO gate, ClawRouter, sprints)
+- Pipeline: Swarm healthcheck verifies all infrastructure fixes from sprints 725-730
+- Swarm used: attempted but qwen3:14b hung (killed after 4 min) — wrote directly
+- Timestamp: 2026-03-21T14:20:00Z
