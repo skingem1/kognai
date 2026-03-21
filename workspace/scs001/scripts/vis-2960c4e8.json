@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-2960c4e8",
+  "topic_id": "reddit-67fba5e31d64",
+  "format": "vision",
+  "title": "Britain’s bond panic is currently making the case for Bitcoin many people seem to have forgetten",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "What if Britain’s bond panic is the catalyst that finally forces the world to reconsider Bitcoin’s role in financial stability?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Bitcoin’s hash rate is now over 400 exahashes, and Layer 2 solutions like Lightning Network enable fast, low-cost transactions globally.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "But if Bitcoin becomes a refuge, it could exclude the unbanked and deepen global inequality, reinforcing existing power imbalances.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Builders are developing stablecoins and DeFi platforms that aim to bridge the gap between traditional finance and crypto accessibility.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "Imagine a future where Bitcoin is integrated into central bank systems, offering stability without sacrificing the innovation it represents.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The bond panic may be the wake-up call that forces institutions to see Bitcoin not as a threat, but as a necessary evolution.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of britain’s",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#britain’s",
+    "#bond",
+    "#panic"
+  ],
+  "video_cue": "A split-screen showing chaotic stock markets on one side and a calm, digital Bitcoin ledger on the other.",
+  "generated_at": "2026-03-21T15:31:58.725Z",
+  "llm_used": true
+}

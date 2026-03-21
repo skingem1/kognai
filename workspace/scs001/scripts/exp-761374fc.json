@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-761374fc",
+  "topic_id": "cg-615666dae9d3",
+  "format": "explainer",
+  "title": "Solana (SOL) 📈 0.8%",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Solana just surged 0.8% — and it’s not slowing down.",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "It’s trending on CoinGecko, ranked #4 right now.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Solana is a blockchain platform that processes thousands of transactions per second.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Its unique consensus mechanism, Proof of History, makes it super fast and efficient.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This affects DeFi users, NFT creators, and developers building on the chain.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The key takeaway? Solana is a game-changer for fast, scalable blockchain apps.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "What’s your take on Solana’s rise? Let me know in the comments.",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "Solana (SOL) 📈 0.8%",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#solana",
+    "#sol",
+    "#crypto"
+  ],
+  "generated_at": "2026-03-21T15:31:17.547Z",
+  "llm_used": true
+}

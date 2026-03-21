@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-762",
+  "title": "CONTENT — Batch 12: fresh videos (Bitcoin, Solana, Claude Code debate, bond panic) 544 ledger",
+  "description": "Content batch with ledger dedup. New topics: Bitcoin surge, Solana, Claude Code workspace trust, Britain bond panic.",
+  "source": "queue-exhausted-brief-recommendation",
+  "tasks": [
+    {
+      "id": "762-01",
+      "title": "Run multiformat pipeline for 5+ fresh videos",
+      "type": "feature",
+      "task_type": "content",
+      "agent": "coder",
+      "status": "done",
+      "priority": "critical",
+      "sprint_id": "sprint-762"
+    }
+  ]
+}
