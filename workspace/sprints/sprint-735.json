@@ -1,0 +1,48 @@
+{
+  "sprint_id": "sprint-735",
+  "title": "QUALITY-01 — Pipeline 1 live validation (Hailuo clips + TTS audio)",
+  "description": "Run one Pipeline 1 cycle in live mode, validate output quality (real clips, audio, 9:16 1080p), send to Telegram for review.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "735-01",
+      "title": "Create quality validation script for Pipeline 1 output",
+      "type": "feature",
+      "task_type": "content",
+      "task_target": "scripts/scs001/validate-quality01.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-735"
+    },
+    {
+      "id": "735-02",
+      "title": "Run Pipeline 1 in live mode",
+      "type": "test",
+      "task_type": "content",
+      "task_target": "agents/scs001-orchestrator/run-pipeline.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-735"
+    },
+    {
+      "id": "735-03",
+      "title": "Validate output and write quality01-validation.json",
+      "type": "test",
+      "task_type": "content",
+      "task_target": "workspace/scs001/quality01-validation.json",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-735"
+    }
+  ],
+  "cto_gate": {
+    "approved": false,
+    "reason": "The sprint introduces a new quality validation process for Pipeline 1, which is not explicitly referenced in the current execution plan or work plan, and the queue still has pending items.",
+    "plan_reference": "NOT_IN_PLAN",
+    "confidence": 75,
+    "timestamp": "2026-03-21T13:36:44.694Z"
+  }
+}

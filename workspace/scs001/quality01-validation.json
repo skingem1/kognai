@@ -1,0 +1,40 @@
+{
+  "validation_date": "2026-03-21T13:52:19.248Z",
+  "sprint": "sprint-735",
+  "pipeline": "Pipeline 1 (Hailuo)",
+  "report_id": "scs001-2026-03-20T20-00-01-573Z",
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "has_run_id",
+      "pass": true,
+      "detail": "run_id: scs001-2026-03-20T20-00-01-573Z"
+    },
+    {
+      "name": "editing_stage_ok",
+      "pass": true,
+      "detail": "status: ok, count: 1"
+    },
+    {
+      "name": "tts_audio_mix_ok",
+      "pass": true,
+      "detail": "status: ok, count: 1"
+    },
+    {
+      "name": "qc_stage_ok",
+      "pass": true,
+      "detail": "status: ok, count: 1"
+    },
+    {
+      "name": "publishing_ok",
+      "pass": true,
+      "detail": "status: ok, count: 1"
+    },
+    {
+      "name": "mp4_output_exists",
+      "pass": true,
+      "detail": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T12-xdmv/output/dbt-f97dc857_base.mp4: 1080x1920, 27.0s, audio: false"
+    }
+  ],
+  "summary": "ALL CHECKS PASS — Pipeline live output validated"
+}
