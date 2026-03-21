@@ -2344,3 +2344,12 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (can't run swarm to fix swarm blocker)
 - Issues: Root cause was trust-scores.json only had named agents (messi, sherlock, etc.) not functional agent IDs (coder, supervisor, scs001-*)
 - Timestamp: 2026-03-21T12:47:00Z
+
+## Sprint 726 — CONTENT — Batch produce 7 videos (inventory 23→24)
+- Status: PASS
+- Commit: 6085928
+- Files modified: reports/video-inventory.json, workspace/scs001/publish-ledger.jsonl
+- Files created: workspace/sprints/sprint-726.json
+- Pipeline: 2 batches (5+2), 7/7 composited, $2.20 cost. Topic dedup: 24 unique (was 23).
+- Swarm used: no (content production, not code)
+- Timestamp: 2026-03-21T12:55:00Z
