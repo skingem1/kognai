@@ -1,0 +1,41 @@
+{
+  "sprint_id": "sprint-699",
+  "title": "AMD-15 — Sherlock LoRA evaluation gate (4-dimension test harness)",
+  "description": "AMD-15 Rule 4. Create scripts/lib/lora-eval-gate.ts: evaluates LoRA adapters across 4 dimensions (Accuracy, Safety, File Discipline, Constitutional Alignment) against base model snapshots before any adapter can be deployed.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "699-01",
+      "title": "Create lora-eval-gate.ts with 4-dimension evaluation harness",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/lib/lora-eval-gate.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-699"
+    },
+    {
+      "id": "699-02",
+      "title": "Create eval test fixtures (sample prompts for each dimension)",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "vault/models/eval-fixtures.json",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-699"
+    },
+    {
+      "id": "699-03",
+      "title": "Wire /lora-eval Telegram command",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/telegram-commands/cmd-lora-eval.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-699"
+    }
+  ]
+}

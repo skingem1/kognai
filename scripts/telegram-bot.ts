@@ -32,6 +32,7 @@ import { cmdSession, cmdDone, cmdEndSession, cmdMenu } from './telegram-commands
 import { cmdDeliver, cmdPublish, cmdPostNow, cmdPickup, cmdTodayCaptions, cmdBroadcast, cmdRefresh, cmdProduce, cmdInstagram, cmdInventory, cmdBatchDeliver, cmdStockpile, cmdBroadcastPause, cmdBroadcastResume } from './telegram-commands/cmd-delivery';
 import { cmdCheckout, cmdSubscribers, cmdPortal, cmdFunnel, cmdAchiri, cmdTestStripe, cmdUsage, cmdAchiriData, cmdWaitlist } from './telegram-commands/cmd-stripe';
 import { cmdStart, cmdTrial, cmdPlans } from './telegram-commands/cmd-onboarding';
+import { cmdLoraEval } from './telegram-commands/cmd-lora-eval';
 
 // ─── Env validation ──────────────────────────────────────────────────
 
@@ -212,6 +213,8 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/waitlist':   response = cmdWaitlist(cmdArgs);      break;
     case '/brainxstatus': response = cmdBrainxStatus();       break;
     case '/swarmhealth': response = cmdSwarmHealth();        break;
+    case '/loraeval':    response = cmdLoraEval(cmdArgs);    break;
+    case '/lora-eval':   response = cmdLoraEval(cmdArgs);    break;
     case '/help':        response = cmdHelp();        break;
     default:
       response = `Unknown command: \`${cmdName}\`\n\n${cmdHelp()}`;
