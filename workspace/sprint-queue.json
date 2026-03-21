@@ -1571,6 +1571,14 @@
       "priority": "low",
       "rationale": "Sprint brief gets stale between sessions. Add PM2 cron that runs generate-sprint-brief.py every 2 hours so next session always has fresh data. Cost: $0 (qwen3:14b local).",
       "_note": "PM2 cron for brief regen already exists (kognai-brief-regen, 06:45 UTC daily). 2-hour frequency not worth the CPU cost."
+    },
+    {
+      "sprint": 642,
+      "title": "FIX — Achiri E2E test timeout + expand /preflight PM2 details",
+      "block": "FIX",
+      "status": "done",
+      "priority": "medium",
+      "rationale": "E2E Integration test timing out at 120s (needs 240s for Ollama calls). /preflight only showed PM2 count, not individual process names."
     }
   ]
 }
