@@ -1688,3 +1688,13 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (multi-file docs)
 - Issues: None. Ready for Docusaurus build when needed.
 - Timestamp: 2026-03-21T11:00:00Z
+
+## Sprint 659 — CHAIN (Founding Charter Base mainnet prep)
+- Status: PASS
+- Commit: 07be7c8
+- Files created: scripts/chain/prepare-charter-attestation.ts, workspace/chain/charter-attestation-prep.json, workspace/sprints/sprint-659.json
+- Test: npx ts-node scripts/chain/prepare-charter-attestation.ts — PASS
+- Details: SHA-256 charter digest computed (0xb6e8f7b9...421a8f93). EAS schema defined (bytes32 charterHash, string charterVersion, uint256 articleCount, uint256 immutableLawCount, uint256 timestamp, string ipfsHash). Genesis ceremony checklist: 6 steps (finalise, IPFS, register schema, attest, record UID, commit). Charter status: DRAFT (Genesis blocked until founder finalises).
+- Swarm used: no (chain script)
+- Issues: Charter still DRAFT — attestation blocked on human to finalise before Genesis.
+- Timestamp: 2026-03-21T11:15:00Z

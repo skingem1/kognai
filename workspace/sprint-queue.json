@@ -105,7 +105,7 @@
       "sprint": 659,
       "title": "CHAIN — Founding Charter commit to Base mainnet",
       "block": "CHAIN",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "From Founding Charter v1.0: 9 Articles, 5 Immutable Laws. Must be committed to Base at Genesis Ceremony (Month 10). Use existing EAS schemas (workspace/shared-context/EAS_SCHEMAS.json). Attest charter hash + full text. Cannot be amended — immutable on-chain."
     },
