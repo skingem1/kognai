@@ -1,0 +1,41 @@
+{
+  "sprint_id": "sprint-720",
+  "title": "CONTENT — Fresh topic scan + 6-video production batch",
+  "description": "Clear topic dedup cache, run fresh radar scan, produce new videos across all formats, deliver to Telegram. Critical for April 7 gate content readiness.",
+  "source": "auto-queue-empty",
+  "tasks": [
+    {
+      "id": "720-01",
+      "title": "Clear topic dedup and run fresh radar scan",
+      "type": "execution",
+      "task_type": "content",
+      "task_target": "workspace/scs001/topic-radar/seen-topics.json",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-720"
+    },
+    {
+      "id": "720-02",
+      "title": "Run multiformat pipeline with --force-refresh --max=6",
+      "type": "execution",
+      "task_type": "content",
+      "task_target": "workspace/scs001/multiformat-runs/",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-720"
+    },
+    {
+      "id": "720-03",
+      "title": "Auto-deliver new videos to Telegram",
+      "type": "execution",
+      "task_type": "content",
+      "task_target": "workspace/scs001/auto-delivered.jsonl",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-720"
+    }
+  ]
+}
