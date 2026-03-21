@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-631",
+  "title": "INFRA — Update gate tracker + replenish sprint queue",
+  "description": "Gate tracker still shows Phase 0→1 as pending (activated Mar 17). Update gate statuses to reflect reality. Also replenish sprint-queue.json with next batch of sprints since queue is empty.",
+  "source": "operator-productivity",
+  "tasks": [
+    {
+      "id": "631-01",
+      "title": "Update gate-tracker.md with current gate statuses",
+      "type": "fix",
+      "task_type": "docs",
+      "task_target": "docs/gate-tracker.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-631"
+    },
+    {
+      "id": "631-02",
+      "title": "Replenish sprint-queue.json with next 5 actionable sprints",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "workspace/sprint-queue.json",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-631"
+    }
+  ]
+}
