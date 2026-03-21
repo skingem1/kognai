@@ -1,0 +1,116 @@
+{
+  "radar_id": "radar-20260321T15-90931c",
+  "collected_at": "2026-03-21T15:26:25.343Z",
+  "topics": [
+    {
+      "topic_id": "cg-95edc7a409f6",
+      "title": "Akash Network (AKT) 📈 11.2%",
+      "summary": "Trending on CoinGecko — rank #1",
+      "format": "explainer",
+      "source": "coingecko",
+      "source_url": "https://www.coingecko.com/en/coins/akash-network",
+      "confidence": 61.1908470129594,
+      "keywords": [
+        "akash network",
+        "akt",
+        "crypto",
+        "defi"
+      ],
+      "collected_at": "2026-03-21T15:26:22.727Z"
+    },
+    {
+      "topic_id": "gh-dac7e44abbeb",
+      "title": "collaborator-ai/collab-public — Collaborator is a place to create with agents.",
+      "summary": "GitHub trending (614 ⭐, Shell)",
+      "format": "explainer",
+      "source": "github",
+      "source_url": "https://github.com/collaborator-ai/collab-public",
+      "confidence": 52,
+      "keywords": [
+        "collaborator",
+        "collab",
+        "public",
+        "collaborator",
+        "place",
+        "create"
+      ],
+      "collected_at": "2026-03-21T15:26:23.653Z"
+    },
+    {
+      "topic_id": "reddit-bba81b3cb9be",
+      "title": "[P] Vibecoded on a home PC: building a ~2700 Elo browser-playable neural chess engine with a Karpathy-inspired AI-assist",
+      "summary": "Reddit r/MachineLearning (1 pts, 5 comments)",
+      "format": "debate",
+      "source": "reddit",
+      "source_url": "https://www.reddit.com/r/MachineLearning/comments/1rzrs17/p_vibecoded_on_a_home_pc_building_a_2700_elo/",
+      "confidence": 40,
+      "keywords": [
+        "vibecoded",
+        "home",
+        "building",
+        "~2700",
+        "browser",
+        "playable"
+      ],
+      "debate_sides": {
+        "side_a": "play",
+        "side_b": "AI"
+      },
+      "collected_at": "2026-03-21T15:26:24.755Z"
+    },
+    {
+      "topic_id": "reddit-9e7107ac33b2",
+      "title": "[D]  Has \"AI research lab\" become completely meaningless as a term?",
+      "summary": "Reddit r/MachineLearning (53 pts, 49 comments)",
+      "format": "vision",
+      "source": "reddit",
+      "source_url": "https://www.reddit.com/r/MachineLearning/comments/1rz5met/d_has_ai_research_lab_become_completely/",
+      "confidence": 40,
+      "keywords": [
+        "research",
+        "lab\"",
+        "become",
+        "completely",
+        "meaningless",
+        "term?"
+      ],
+      "vision_angles": [
+        "Genuinely asking because I've been thinking about this a lot lately",
+        "Like, OpenAI calls itself a research lab",
+        "So does Google DeepMind"
+      ],
+      "collected_at": "2026-03-21T15:26:24.755Z"
+    },
+    {
+      "topic_id": "reddit-67fba5e31d64-lst",
+      "title": "Top 3 britain’s bond tools you need to know",
+      "summary": "Reddit r/cryptocurrency (35 pts, 10 comments)",
+      "format": "listicle",
+      "source": "reddit",
+      "source_url": "https://www.reddit.com/r/CryptoCurrency/comments/1rzlaki/britains_bond_panic_is_currently_making_the_case/",
+      "confidence": 40,
+      "keywords": [
+        "britain’s",
+        "bond",
+        "panic",
+        "currently",
+        "making",
+        "case"
+      ],
+      "listicle_items": [
+        "Britain’s",
+        "Bond",
+        "Panic"
+      ],
+      "collected_at": "2026-03-21T15:26:25.335Z"
+    }
+  ],
+  "sources_hit": [
+    "hacker_news",
+    "github",
+    "arxiv",
+    "coingecko",
+    "reddit"
+  ],
+  "errors": []
+}

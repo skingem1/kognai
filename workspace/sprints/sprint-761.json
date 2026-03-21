@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-761",
+  "title": "CONTENT — Batch 11: fresh videos (target 539+ ledger)",
+  "description": "Content batch with ledger dedup. Produce 5+ fresh multiformat videos. Ledger at 534, target 539+.",
+  "source": "queue-exhausted-brief-recommendation",
+  "tasks": [
+    {
+      "id": "761-01",
+      "title": "Run multiformat pipeline for 5+ fresh videos",
+      "type": "feature",
+      "task_type": "content",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-761"
+    }
+  ]
+}

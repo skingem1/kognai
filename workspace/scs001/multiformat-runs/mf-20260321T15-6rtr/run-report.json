@@ -1,0 +1,68 @@
+{
+  "run_id": "mf-20260321T15-6rtr",
+  "started_at": "2026-03-21T15:26:22.559Z",
+  "completed_at": "2026-03-21T15:29:54.715Z",
+  "topics_found": 5,
+  "scripts_generated": 5,
+  "videos_composited": 5,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "exp-f457d026",
+      "format": "explainer",
+      "title": "Akash Network (AKT) 📈 11.2%",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-6rtr/output/exp-f457d026_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-6rtr/output/exp-f457d026.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "exp-2669eb9b",
+      "format": "explainer",
+      "title": "collaborator-ai/collab-public — Collaborator is a place to create with agents.",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-6rtr/output/exp-2669eb9b_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-6rtr/output/exp-2669eb9b.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "dbt-d67c9fce",
+      "format": "debate",
+      "title": "[P] Vibecoded on a home PC: building a ~2700 Elo browser-playable neural chess engine with a Karpathy-inspired AI-assist",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-6rtr/output/dbt-d67c9fce_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-6rtr/output/dbt-d67c9fce.srt",
+      "duration_s": 27,
+      "success": true,
+      "avatar_cost": 0.25,
+      "llm_used": true
+    },
+    {
+      "script_id": "vis-a2c65eff",
+      "format": "vision",
+      "title": "[D]  Has \"AI research lab\" become completely meaningless as a term?",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-6rtr/output/vis-a2c65eff_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-6rtr/output/vis-a2c65eff.srt",
+      "duration_s": 33,
+      "success": true,
+      "avatar_cost": 0.30000000000000004,
+      "llm_used": true
+    },
+    {
+      "script_id": "lst-0a7e56bc",
+      "format": "listicle",
+      "title": "Top 3 britain’s bond tools you need to know",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-6rtr/output/lst-0a7e56bc_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-6rtr/output/lst-0a7e56bc.srt",
+      "duration_s": 20,
+      "success": true,
+      "avatar_cost": 0.25,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 1.5
+}
