@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-685",
+  "title": "INFRA — Pipeline output validator cron (verify captioned videos are playable)",
+  "description": "Verify captioned videos are playable using ffprobe. Check video stream exists, duration > 0, and no corruption. Run as PM2 cron or standalone.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "685-01",
+      "title": "Create pipeline-output-validator.ts — ffprobe validation for captioned videos",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/scs001/pipeline-output-validator.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-685"
+    },
+    {
+      "id": "685-02",
+      "title": "Create validate-pipeline-validator.ts",
+      "type": "test",
+      "task_type": "test",
+      "task_target": "scripts/scs001/validate-pipeline-validator.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-685"
+    }
+  ]
+}
