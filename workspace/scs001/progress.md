@@ -1829,3 +1829,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (single test file, wrote directly)
 - Issues: cmdSmoke is async — excluded from sync test suite
 - Timestamp: 2026-03-21T23:05:00Z
+
+## Sprint 672 — QUALITY (Script validation tolerance widening + /valerrors)
+- Status: PASS
+- Commit: 2487374
+- Files created: workspace/sprints/sprint-672.json
+- Files modified: agents/scs001-script-validator/index.ts, scripts/telegram-commands/cmd-content.ts, scripts/telegram-bot.ts, scripts/scs001/validate-all-bot-commands.ts
+- Test: validate-all-bot-commands.ts — 82/82 PASS
+- Details: Widened script validator thresholds (segments 4-7, duration 20-35s, interrupts 6+) to reduce false rejections for gate push. Added /valerrors Telegram command to surface recent validation errors. Updated smoke test to include new command.
+- Swarm used: no (surgical edits across 4 files)
+- Issues: None
+- Timestamp: 2026-03-21T23:12:00Z
