@@ -1369,3 +1369,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (multi-file command wiring)
 - Issues: None
 - Timestamp: 2026-03-21T12:45:00Z
+
+## Sprint 624 — ACHIRI
+- Status: PASS
+- Commit: 8da3687
+- Files created: workspace/sprints/sprint-624.json
+- Files modified: agents/achiri/telegram-bot.ts
+- Test: Compile check — PASS (clean exit with no token)
+- Pipeline: hasAccess() now reads alpha-whitelist.jsonl — /waitlist approve actually grants access
+- Swarm used: no (single file bugfix)
+- Issues: None (this was a critical bug from Sprint 623 — approve wrote to file but bot didn't read it)
+- Timestamp: 2026-03-21T13:00:00Z
