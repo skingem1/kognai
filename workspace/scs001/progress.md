@@ -1925,3 +1925,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (bugfix, wrote directly)
 - Issues: none
 - Timestamp: 2026-03-21T12:25:00Z
+
+## Sprint 681 — PIPELINE
+- Status: PASS
+- Commit: a4f8459
+- Files modified: scripts/scs001/rapidapi-tiktok-client.ts, scripts/drain-local-queue.ts
+- Files created: scripts/scs001/validate-ratelimit-output.ts, workspace/sprints/sprint-681.json
+- Test: scripts/scs001/validate-ratelimit-output.ts — 10/10 PASS
+- Pipeline: Added rate limiter (2s interval, 429 backoff 5s/10s/20s, max 3 retries) to all RapidAPI calls. Fixed drain-local-queue MODULE_NOT_FOUND.
+- Swarm used: no (bugfix, wrote directly)
+- Issues: none
+- Timestamp: 2026-03-21T12:35:00Z
