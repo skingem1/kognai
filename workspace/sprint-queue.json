@@ -33,7 +33,7 @@
       "sprint": 650,
       "title": "ACP — Agent Capability Protocol v1 implementation",
       "block": "CONSTITUTION",
-      "status": "pending",
+      "status": "done",
       "priority": "high",
       "rationale": "From sprint-plan-172-191 (Sprint 188-189), was skipped by swarm. ACP defines capability declarations for each agent — what they CAN and CANNOT do. Required for Constitution enforcement. Build: agents/lib/acp.ts with capability schema, register all 26 kognai-agents + 13 SCS-001 agents. Wire into orchestrator's CTO Approval Gate."
     },

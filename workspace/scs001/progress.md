@@ -1599,3 +1599,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (pipeline production run)
 - Issues: Topic radar returning same topics across runs (OpenCode, NemoClaw). Need --force-refresh or wait for new topics.
 - Timestamp: 2026-03-22T02:00:00Z
+
+## Sprint 650 — ACP (Agent Capability Protocol)
+- Status: PASS
+- Commit: 096e186
+- Files created: agents/lib/acp.ts, scripts/scs001/validate-acp.ts, workspace/sprints/sprint-650.json
+- Files modified: scripts/lib/cto-approval-gate.ts
+- Test: scripts/scs001/validate-acp.ts — PASS (30/30)
+- ACP: 45 agents registered (27 kognai + 18 SCS-001). 4-tier capability system. CTO gate pre-check wired.
+- Swarm used: no (FP-007 — complex architectural module, wrote directly)
+- Issues: None
+- Timestamp: 2026-03-22T03:00:00Z
