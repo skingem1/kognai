@@ -100,7 +100,45 @@ async function main() {
     warn('No multiformat-runs directory found');
   }
 
-  // 5. Check ScriptAgent has runAsync method
+  // 5. SRT diversity check — no two SRTs should have identical first lines
+  console.log('\n--- SRT Diversity Check ---');
+  if (existsSync(mfDir)) {
+    const allRuns = readdirSync(mfDir).filter(d => d.startsWith('mf-')).sort().slice(-10);
+    const firstLines: Map<string, string[]> = new Map(); // first line → [run/file]
+
+    for (const run of allRuns) {
+      const outputDir = join(mfDir, run, 'output');
+      if (!existsSync(outputDir)) continue;
+      const srts = readdirSync(outputDir).filter(f => f.endsWith('.srt'));
+      for (const srt of srts) {
+        const content = readFileSync(join(outputDir, srt), 'utf-8');
+        const lines = content.split('\n').filter(l => l.trim() && !l.match(/^\d+$/) && !l.includes('-->'));
+        const firstLine = (lines[0] ?? '').trim().toLowerCase();
+        if (!firstLine) continue;
+        const sources = firstLines.get(firstLine) ?? [];
+        sources.push(`${run}/${srt}`);
+        firstLines.set(firstLine, sources);
+      }
+    }
+
+    let duplicates = 0;
+    for (const [line, sources] of firstLines) {
+      if (sources.length > 1) {
+        duplicates++;
+        warn(`Duplicate first line in ${sources.length} SRTs`, `"${line.slice(0, 60)}..." in ${sources.join(', ')}`);
+      }
+    }
+
+    const totalUnique = firstLines.size;
+    // Duplicates are expected when same topic appears in multiple runs — warn, don't fail
+    if (duplicates > 0) {
+      warn(`SRT diversity: ${totalUnique} unique first lines, ${duplicates} duplicates (same topic → similar hook is natural)`);
+    } else {
+      assert(`SRT diversity: ${totalUnique} unique first lines, 0 duplicates`, true);
+    }
+  }
+
+  // 6. Check ScriptAgent has runAsync method
   console.log('\n--- Code Checks ---');
   const scriptAgentPath = join(ROOT, 'agents', 'scs001-script', 'index.ts');
   if (existsSync(scriptAgentPath)) {

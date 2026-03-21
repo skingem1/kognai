@@ -1,0 +1,68 @@
+{
+  "run_id": "mf-20260321T08-7x07",
+  "started_at": "2026-03-21T08:26:57.285Z",
+  "completed_at": "2026-03-21T08:30:11.294Z",
+  "topics_found": 5,
+  "scripts_generated": 5,
+  "videos_composited": 5,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "exp-7246ebc4",
+      "format": "explainer",
+      "title": "We rewrote our Rust WASM parser in TypeScript and it got faster",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T08-7x07/output/exp-7246ebc4_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T08-7x07/output/exp-7246ebc4.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "exp-15b81816",
+      "format": "explainer",
+      "title": "pippin (PIPPIN) 📈 12.0%",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T08-7x07/output/exp-15b81816_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T08-7x07/output/exp-15b81816.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "dbt-a8493ba3",
+      "format": "debate",
+      "title": "Solana (SOL) 📈 0.1%",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T08-7x07/output/dbt-a8493ba3_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T08-7x07/output/dbt-a8493ba3.srt",
+      "duration_s": 27,
+      "success": true,
+      "avatar_cost": 0.25,
+      "llm_used": true
+    },
+    {
+      "script_id": "vis-bfd05f35",
+      "format": "vision",
+      "title": "Artificial Superintelligence Alliance (FET) 📉 -1.2%",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T08-7x07/output/vis-bfd05f35_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T08-7x07/output/vis-bfd05f35.srt",
+      "duration_s": 33,
+      "success": true,
+      "avatar_cost": 0.30000000000000004,
+      "llm_used": true
+    },
+    {
+      "script_id": "lst-29825ebd",
+      "format": "listicle",
+      "title": "Top 3 ether.fi ethfi tools you need to know",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T08-7x07/output/lst-29825ebd_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T08-7x07/output/lst-29825ebd.srt",
+      "duration_s": 20,
+      "success": true,
+      "avatar_cost": 0.25,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 1.5
+}

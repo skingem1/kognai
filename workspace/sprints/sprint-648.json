@@ -1,0 +1,41 @@
+{
+  "sprint_id": "sprint-648",
+  "title": "CONTENT-FIX — Verify multiformat pipeline uses LLM-generated scripts",
+  "description": "Run multiformat pipeline 3 times and verify all SRTs contain unique LLM-generated content. No template fills. Check script diversity across runs.",
+  "source": "sprint-queue",
+  "tasks": [
+    {
+      "id": "648-01",
+      "title": "Run multiformat pipeline 3 times and collect SRT outputs",
+      "type": "test",
+      "task_type": "validation",
+      "task_target": "scripts/scs001/run-multiformat-pipeline.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-648"
+    },
+    {
+      "id": "648-02",
+      "title": "Validate SRT diversity — no duplicate content across runs",
+      "type": "test",
+      "task_type": "validation",
+      "task_target": "scripts/scs001/validate-content-quality.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-648"
+    },
+    {
+      "id": "648-03",
+      "title": "Add SRT diversity check to validate-content-quality.ts",
+      "type": "feature",
+      "task_type": "validation",
+      "task_target": "scripts/scs001/validate-content-quality.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-648"
+    }
+  ]
+}
