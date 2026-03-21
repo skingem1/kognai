@@ -2322,3 +2322,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Pipeline: Fixes "can't parse entities" Telegram error in daily video delivery
 - Swarm used: no (1-line edit)
 - Timestamp: 2026-03-21T15:55:00Z
+
+## Sprint 724 — INFRA — TikTok token validator + posting readiness gate
+- Status: PASS
+- Commit: e3a0cda
+- Files created: scripts/scs001/validate-tiktok-token.ts, scripts/scs001/posting-readiness-gate.ts
+- Files created: workspace/sprints/sprint-724.json
+- Test: validate-tiktok-token.ts — PASS (correctly identifies missing token), posting-readiness-gate.ts — PASS (4-dimension check)
+- Pipeline: Token validation + Phase 1.5 readiness gate complete
+- Swarm used: no (ACP trust violation — coder not in trust scores)
+- Swarm bypassed: yes (ACP_TRUST_VIOLATION). Manual crystallise: skipped (module not found).
+- Timestamp: 2026-03-21T12:43:00Z
