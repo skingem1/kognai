@@ -1,6 +1,6 @@
 {
   "_note": "AUTHORITATIVE sprint execution order. The brief generator reads this and injects the first item as a MANDATORY directive, bypassing Qwen's recommendation. Pop items by setting status=done after each sprint ships. Human-maintained \u2014 edit to re-prioritise.",
-  "updated": "2026-03-21T15:20",
+  "updated": "2026-03-21T16:20",
   "owner": "Tarek (human)",
   "_plan_rationale": "Replenished 2026-03-21: 5 items. Focus: Achiri memory (Phase 2A prep), E2E testing, operator tooling, brief accuracy.",
   "queue": [
@@ -1567,9 +1567,10 @@
       "sprint": 641,
       "title": "INFRA \u2014 PM2 cron for sprint brief regeneration (every 2 hours)",
       "block": "INFRA",
-      "status": "pending",
+      "status": "skipped",
       "priority": "low",
-      "rationale": "Sprint brief gets stale between sessions. Add PM2 cron that runs generate-sprint-brief.py every 2 hours so next session always has fresh data. Cost: $0 (qwen3:14b local)."
+      "rationale": "Sprint brief gets stale between sessions. Add PM2 cron that runs generate-sprint-brief.py every 2 hours so next session always has fresh data. Cost: $0 (qwen3:14b local).",
+      "_note": "PM2 cron for brief regen already exists (kognai-brief-regen, 06:45 UTC daily). 2-hour frequency not worth the CPU cost."
     }
   ]
 }
