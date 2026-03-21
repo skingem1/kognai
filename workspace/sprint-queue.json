@@ -1,6 +1,6 @@
 {
   "_note": "AUTHORITATIVE sprint execution order. The brief generator reads this and injects the first item as a MANDATORY directive, bypassing Qwen's recommendation. Pop items by setting status=done after each sprint ships. Human-maintained \u2014 edit to re-prioritise.",
-  "updated": "2026-03-21T14:45",
+  "updated": "2026-03-21T15:20",
   "owner": "Tarek (human)",
   "_plan_rationale": "Replenished 2026-03-21: 5 items. Focus: Achiri memory (Phase 2A prep), E2E testing, operator tooling, brief accuracy.",
   "queue": [
@@ -1528,6 +1528,46 @@
       "priority": "medium",
       "rationale": "Sprint brief shows Sprint 474 as last completed when actual is 630+. Brief generator reads progress.md which was recently updated. Regenerate and verify brief accuracy. Fix generate-sprint-brief.py if needed.",
       "_note": "Brief generator already handles git log override (line 477-490). Just needed re-run \u2014 triggered in this session, running now."
+    },
+    {
+      "sprint": 637,
+      "title": "OPERATOR \u2014 Wire /smoke to Telegram (runs validate-full-pipeline.ts)",
+      "block": "OPERATOR",
+      "status": "pending",
+      "priority": "medium",
+      "rationale": "E2E pipeline validator exists (Sprint 447) but only as CLI. Wire to /smoke Telegram command so operator can trigger pipeline smoke test from phone."
+    },
+    {
+      "sprint": 638,
+      "title": "ACHIRI \u2014 Fix Voice Handler + E2E Integration test failures",
+      "block": "ACHIRI-QUALITY",
+      "status": "pending",
+      "priority": "high",
+      "rationale": "Achiri test suite: 15/17 pass. Voice Handler and E2E Integration fail. Likely environment-dependent (Ollama model access, timeout). Diagnose and fix or add proper skip/mock fallback."
+    },
+    {
+      "sprint": 639,
+      "title": "CONTENT \u2014 Auto-generate 5 videos using /stockpile and validate quality",
+      "block": "CONTENT-GATE",
+      "status": "pending",
+      "priority": "high",
+      "rationale": "Gate requires 30 posts by Apr 7. Need content stockpile. Run /stockpile 5, validate QC scores, ensure videos are ready for manual posting. This is the content production sprint."
+    },
+    {
+      "sprint": 640,
+      "title": "INFRA \u2014 Add Achiri test results to daily digest + /preflight",
+      "block": "OPERATOR",
+      "status": "pending",
+      "priority": "medium",
+      "rationale": "Achiri readiness is 100% but test suite has 2 failures. Surface Achiri test pass rate in daily digest and /preflight so operator sees it alongside TikTok gate status."
+    },
+    {
+      "sprint": 641,
+      "title": "INFRA \u2014 PM2 cron for sprint brief regeneration (every 2 hours)",
+      "block": "INFRA",
+      "status": "pending",
+      "priority": "low",
+      "rationale": "Sprint brief gets stale between sessions. Add PM2 cron that runs generate-sprint-brief.py every 2 hours so next session always has fresh data. Cost: $0 (qwen3:14b local)."
     }
   ]
 }
