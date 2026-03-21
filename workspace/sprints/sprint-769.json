@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-769",
+  "title": "GATE — Refresh April 7 gate tracker (572 videos, posting queue refreshed)",
+  "description": "Update gate tracker with current stats after 4 content sprints this session. 572 ledger, 18 videos in post queue.",
+  "source": "queue-exhausted-topic-saturation-pivot",
+  "tasks": [
+    {
+      "id": "769-01",
+      "title": "Regenerate phase1-5-gate.json with current stats",
+      "type": "feature",
+      "task_type": "gate",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-769"
+    }
+  ]
+}
