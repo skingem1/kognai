@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-653",
+  "title": "EVAL-001 — OpenViking evaluation for Skill Bank",
+  "description": "Evaluate OpenViking (ByteDance context database) against 5 criteria for Skill Bank integration. CTO-level evaluation. 3 outcomes: ADOPT/PARTIAL/REJECT.",
+  "source": "sprint-queue",
+  "tasks": [
+    {
+      "id": "653-01",
+      "title": "Research OpenViking — capabilities, API, architecture",
+      "type": "research",
+      "task_type": "evaluation",
+      "task_target": "workspace/evaluations/eval-001-openviking.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-653"
+    },
+    {
+      "id": "653-02",
+      "title": "Evaluate against 5 criteria and produce recommendation",
+      "type": "feature",
+      "task_type": "evaluation",
+      "task_target": "workspace/evaluations/eval-001-openviking.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-653"
+    }
+  ]
+}
