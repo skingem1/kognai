@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-731",
+  "title": "INFRA — Add /swarmtest Telegram command to verify swarm health",
+  "description": "Create a Telegram /swarmtest command that runs a minimal swarm dry-run to verify CTO gate, agent loading, and task execution are working. Reports pass/fail status.",
+  "source": "auto-queue-empty",
+  "tasks": [
+    {
+      "id": "731-01",
+      "title": "Create swarm test command",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/scs001/swarm-healthcheck.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-731"
+    }
+  ]
+}
