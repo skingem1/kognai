@@ -1,0 +1,41 @@
+{
+  "sprint_id": "sprint-707",
+  "title": "GOV — Backfill initial agent memories from AAR logs",
+  "description": "Governance remediation Phase 2. Create scripts/backfill-brainx.ts to read AAR logs (Mar 15-19), group by agent, store as BrainX episode memories with importance=5.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "707-01",
+      "title": "Create scripts/backfill-brainx.ts — AAR to BrainX backfiller",
+      "type": "feature",
+      "task_type": "governance",
+      "task_target": "scripts/backfill-brainx.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-707"
+    },
+    {
+      "id": "707-02",
+      "title": "Fix Sprint 706 storeTaskMemory interface mismatch",
+      "type": "fix",
+      "task_type": "governance",
+      "task_target": "scripts/orchestrate-agents-v2.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-707"
+    },
+    {
+      "id": "707-03",
+      "title": "Dry-run backfill script",
+      "type": "test",
+      "task_type": "test",
+      "task_target": "scripts/backfill-brainx.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-707"
+    }
+  ]
+}
