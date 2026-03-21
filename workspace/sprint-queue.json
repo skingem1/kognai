@@ -42,7 +42,7 @@
       "sprint": 705,
       "title": "GOV — PostgreSQL + pgvector setup verification script",
       "block": "GOV-PHASE2",
-      "status": "pending",
+      "status": "done",
       "priority": "high",
       "rationale": "GOVERNANCE REMEDIATION Phase 2 (BrainX). Create scripts/verify-brainx-db.ts (~60 lines): check PostgreSQL running on localhost:5432, check kognai database exists, check vector extension loaded, check brainx_memories table exists, count rows, report status. If DB missing, print setup commands from scripts/lib/brainx-schema.sql. Add /brainx-status Telegram command. HUMAN GATE: user must run PostgreSQL setup if DB doesn't exist."
     },

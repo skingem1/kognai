@@ -2055,3 +2055,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm bypassed: yes (FP-007). Manual crystallise: skipped (module not found).
 - Issues: Pre-existing bug in getSwarmRuns() — was reading daily-*.json report object instead of swarm run files. Fixed.
 - Timestamp: 2026-03-21T12:15:00Z
+
+## Sprint 705 — GOV — PostgreSQL + pgvector setup verification script
+- Status: PASS
+- Commit: c926710
+- Files created: scripts/verify-brainx-db.ts, reports/brainx-status.json, workspace/sprints/sprint-705.json
+- Files modified: scripts/telegram-bot.ts, scripts/telegram-commands/cmd-system.ts
+- Test: npx ts-node scripts/verify-brainx-db.ts — READY (PG running, kognai DB, pgvector, 1 row)
+- Pipeline: GOV Phase 2 started. BrainX DB verification + /brainxstatus Telegram command.
+- Swarm used: no (multi-file work, wrote directly)
+- Issues: none
+- Timestamp: 2026-03-21T12:20:00Z
