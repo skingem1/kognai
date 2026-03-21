@@ -26,20 +26,22 @@ console.log('\n═════════════════════�
 console.log('  Sprint 265 — Bot Commands Validation');
 console.log('══════════════════════════════════════════════\n');
 
-// Test 1: telegram-bot.ts compiles (syntax check)
-console.log('Test 1: telegram-bot.ts syntax check');
+// Test 1: Bot router + command files (post-split structure: Sprint 442-496)
+console.log('Test 1: Bot router + command module checks');
 try {
   const botSrc = fs.readFileSync(path.join(ROOT, 'scripts', 'telegram-bot.ts'), 'utf-8');
-  assert('File exists and is readable', botSrc.length > 0);
-  assert('Contains cmdRecord function', botSrc.includes('function cmdRecord('));
-  assert('Contains cmdQueue function', botSrc.includes('function cmdQueue('));
-  assert('Contains cmdReview function', botSrc.includes('function cmdReview('));
+  const contentSrc = fs.readFileSync(path.join(ROOT, 'scripts', 'telegram-commands', 'cmd-content.ts'), 'utf-8');
+  assert('telegram-bot.ts exists and is readable', botSrc.length > 0);
+  assert('cmd-content.ts exists and is readable', contentSrc.length > 0);
+  assert('Contains cmdRecord function', contentSrc.includes('function cmdRecord('));
+  assert('Contains cmdQueue function', contentSrc.includes('function cmdQueue('));
+  assert('Contains cmdReview function', contentSrc.includes('function cmdReview('));
   assert('Router handles /record', botSrc.includes("case '/record':"));
   assert('Router handles /queue', botSrc.includes("case '/queue':"));
   assert('Router handles /review', botSrc.includes("case '/review':"));
-  assert('Help mentions /record', botSrc.includes('/record'));
-  assert('Help mentions /queue', botSrc.includes('/queue'));
-  assert('Help mentions /review', botSrc.includes('/review'));
+  assert('Help mentions /record', botSrc.includes('/record') || contentSrc.includes('/record'));
+  assert('Help mentions /queue', botSrc.includes('/queue') || contentSrc.includes('/queue'));
+  assert('Help mentions /review', botSrc.includes('/review') || contentSrc.includes('/review'));
 } catch (e: any) {
   assert('File read', false, e.message);
 }

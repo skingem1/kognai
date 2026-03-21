@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-627",
+  "title": "FIX — Update validate-bot-commands.ts for post-split file structure",
+  "description": "validate-bot-commands.ts checks telegram-bot.ts for 'function cmdRecord(' etc, but Sprint 442-496 split commands into cmd-content.ts. Test should check extracted files for definitions and router for imports/routing. Fix 3 false failures.",
+  "source": "test-reliability",
+  "tasks": [
+    {
+      "id": "627-01",
+      "title": "Update validate-bot-commands.ts to check cmd-content.ts for function defs and telegram-bot.ts for imports+routing",
+      "type": "fix",
+      "task_type": "test",
+      "task_target": "scripts/scs001/validate-bot-commands.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-627"
+    }
+  ]
+}
