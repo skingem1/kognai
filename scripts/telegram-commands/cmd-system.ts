@@ -852,6 +852,82 @@ export function cmdLogs(): string {
   return sections.join('\n');
 }
 
+// Sprint 629: /preflight — Production readiness check
+export function cmdPreflight(): string {
+  const checks: { name: string; pass: boolean; detail: string }[] = [];
+
+  // Env var checks
+  const envChecks = [
+    { key: 'TIKTOK_ACCESS_TOKEN', label: 'TikTok Token', required: true },
+    { key: 'SUPABASE_URL', label: 'Supabase URL', required: true },
+    { key: 'SUPABASE_SERVICE_KEY', label: 'Supabase Key', required: true },
+    { key: 'SCS_EDITING_MODE', label: 'Editing Mode', required: false },
+    { key: 'STRIPE_SECRET_KEY', label: 'Stripe Key', required: false },
+    { key: 'TELEGRAM_BOT_TOKEN', label: 'Telegram Bot', required: true },
+  ];
+  for (const e of envChecks) {
+    const val = process.env[e.key];
+    checks.push({
+      name: `${e.label}${e.required ? '' : ' (opt)'}`,
+      pass: Boolean(val),
+      detail: val ? '✅' : '❌ not set',
+    });
+  }
+
+  // Video queue
+  const ledgerPath = path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl');
+  const postedPath = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
+  let queueCount = 0;
+  let postCount = 0;
+  try {
+    if (fs.existsSync(ledgerPath)) {
+      const posted = new Set<string>();
+      if (fs.existsSync(postedPath)) {
+        for (const l of fs.readFileSync(postedPath, 'utf-8').split('\n').filter(l => l.trim())) {
+          try { posted.add(JSON.parse(l).video_id); } catch {}
+        }
+      }
+      postCount = posted.size;
+      const ledger = fs.readFileSync(ledgerPath, 'utf-8').split('\n').filter(l => l.trim());
+      for (const l of ledger) {
+        try { const e = JSON.parse(l); if (e.video_id && !posted.has(e.video_id)) queueCount++; } catch {}
+      }
+    }
+  } catch {}
+  checks.push({ name: 'Video Queue', pass: queueCount > 0, detail: queueCount > 0 ? `${queueCount} ready` : '❌ empty' });
+  checks.push({ name: 'Posts Recorded', pass: postCount > 0, detail: `${postCount}/30` });
+
+  // PM2
+  try {
+    const pm2Out = execSync('pm2 jlist 2>/dev/null', { timeout: 5000, encoding: 'utf-8' });
+    const procs = JSON.parse(pm2Out);
+    const online = procs.filter((p: any) => p.pm2_env?.status === 'online').length;
+    checks.push({ name: 'PM2 Processes', pass: online > 0, detail: `${online} online` });
+  } catch {
+    checks.push({ name: 'PM2 Processes', pass: false, detail: '❌ pm2 not running' });
+  }
+
+  // Build output
+  const passed = checks.filter(c => c.pass).length;
+  const total = checks.length;
+  const allPass = passed === total;
+
+  const lines: string[] = [
+    `🔧 *Preflight Check* — ${allPass ? '✅ READY' : `⚠️ ${total - passed} issue(s)`}`,
+    `${passed}/${total} checks passed`,
+    '',
+  ];
+  for (const c of checks) {
+    lines.push(`${c.pass ? '✅' : '❌'} ${c.name}: ${c.detail}`);
+  }
+
+  if (!allPass) {
+    lines.push('', '*Fix:* Set missing env vars in `.env`, run `/refresh` to fill queue');
+  }
+
+  return lines.join('\n');
+}
+
 // Sprint 619: /changelog — Recent sprints from git log
 export function cmdChangelog(count: number = 10): string {
   try {

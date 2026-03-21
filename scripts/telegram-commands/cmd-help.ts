@@ -23,6 +23,7 @@ export function cmdHelp(): string {
     `/reload    — Restart bot to pick up code changes\n` +
     `/crons     — All PM2 cron schedules\n` +
     `/health    — Health check summary\n` +
+    `/preflight — Production readiness checklist\n` +
     `/tier      — Current tier + MRR\n` +
     `/sprint    — Latest sprint progress\n` +
     `/gate      — Phase 1.5 gate countdown\n` +

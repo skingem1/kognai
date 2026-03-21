@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-629",
+  "title": "OPERATOR — Add /preflight Telegram command for production readiness check",
+  "description": "Operator has no quick way to check if pipeline is ready for live TikTok posting. Add /preflight command that checks env vars (TIKTOK_ACCESS_TOKEN, SUPABASE_URL, SUPABASE_SERVICE_KEY, SCS_MODE, SCS_EDITING_MODE), PM2 processes, and video queue state. Returns ✅/❌ checklist with fix hints.",
+  "source": "operator-productivity",
+  "tasks": [
+    {
+      "id": "629-01",
+      "title": "Add cmdPreflight function to cmd-system.ts",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-629"
+    },
+    {
+      "id": "629-02",
+      "title": "Wire /preflight into telegram-bot.ts router and help text",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/telegram-bot.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-629"
+    }
+  ]
+}
