@@ -1,0 +1,41 @@
+{
+  "generated_at": "2026-03-21T10:52:23.887Z",
+  "corpus_file": "corpus-r1.jsonl",
+  "total_entries": 282,
+  "total_tasks_scanned": 1194,
+  "filtered_out": 912,
+  "sha256": "38222f32ade55dbedbf666fb7909c081c7602753f213e40ce44fa4d6e3c4a12a",
+  "filter_reasons": {
+    "not-done": 877,
+    "excluded-content": 35
+  },
+  "type_distribution": {
+    "feature": 47,
+    "unknown": 4,
+    "bugfix": 2,
+    "chore": 1,
+    "content": 33,
+    "code": 82,
+    "fix": 4,
+    "docs": 2,
+    "verify": 3,
+    "validation": 6,
+    "ops": 3,
+    "config": 3,
+    "test": 4,
+    "analysis": 2,
+    "pipeline": 15,
+    "delivery": 1,
+    "infra": 32,
+    "quality": 12,
+    "telegram": 5,
+    "analytics": 6,
+    "gate-push": 8,
+    "e2e": 1,
+    "achiri": 3,
+    "content-production": 2,
+    "state": 1
+  },
+  "amd15_version": "r1",
+  "note": "Phase 1 — data pipeline only, no fine-tuning"
+}

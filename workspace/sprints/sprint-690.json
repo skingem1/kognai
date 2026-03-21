@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-690",
+  "title": "AMD-15 — LoRA training data pipeline (extract approved tasks → corpus JSONL)",
+  "description": "AMD-15 Phase 1. Extract approved tasks from 597 sprint JSONs into instruction-response corpus. Constitutional filter: status=done/complete, exclude credential/secret tasks, exclude failure library items, exclude sovereignty violations. Output: vault/training/corpus-r1.jsonl with SHA-256 hash.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "690-01",
+      "title": "Create lora-corpus-extract.ts — extract approved tasks into training JSONL",
+      "type": "feature",
+      "task_type": "amd-15",
+      "task_target": "scripts/lora-corpus-extract.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-690"
+    },
+    {
+      "id": "690-02",
+      "title": "Create validate-lora-corpus.ts — validate corpus output",
+      "type": "test",
+      "task_type": "test",
+      "task_target": "scripts/scs001/validate-lora-corpus.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-690"
+    }
+  ]
+}
