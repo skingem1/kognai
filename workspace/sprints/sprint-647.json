@@ -1,0 +1,41 @@
+{
+  "sprint_id": "sprint-647",
+  "title": "CONTENT-FIX — Enable LLM rewrite for real script content (not templates)",
+  "description": "Fix scs001-pipeline PM2 process missing LLM_REWRITE=1 and SCS_EDITING_MODE. Add validation script to detect template text in SRT outputs. Gate: new pipeline runs must produce unique LLM-generated content.",
+  "source": "sprint-queue",
+  "tasks": [
+    {
+      "id": "647-01",
+      "title": "Add LLM_REWRITE=1 and SCS_EDITING_MODE to scs001-pipeline PM2 config",
+      "type": "fix",
+      "task_type": "config",
+      "task_target": "ecosystem.config.js",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-647"
+    },
+    {
+      "id": "647-02",
+      "title": "Create validation script to detect template phrases in SRT files",
+      "type": "feature",
+      "task_type": "validation",
+      "task_target": "scripts/scs001/validate-content-quality.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-647"
+    },
+    {
+      "id": "647-03",
+      "title": "Run LLM rewrite dry-run test to verify pipeline chain works",
+      "type": "test",
+      "task_type": "validation",
+      "task_target": "agents/scs001-script/index.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-647"
+    }
+  ]
+}
