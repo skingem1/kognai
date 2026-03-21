@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-739",
+  "title": "FIX — Debug Pipeline 1 hang (add stage timeout to orchestrator)",
+  "description": "Pipeline 1 hangs with 0 output after 10min. Add per-stage timeout (180s default, 600s for clip-detection) to runStage(). Log which stage hangs. Also add overall pipeline timeout.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "739-01",
+      "title": "Add timeout to runStage with configurable per-stage limits",
+      "type": "fix",
+      "task_type": "infra",
+      "task_target": "agents/scs001-orchestrator/index.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-739"
+    },
+    {
+      "id": "739-02",
+      "title": "Add overall pipeline timeout (15min max)",
+      "type": "fix",
+      "task_type": "infra",
+      "task_target": "agents/scs001-orchestrator/index.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-739"
+    }
+  ]
+}

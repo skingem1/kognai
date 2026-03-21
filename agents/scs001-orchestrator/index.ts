@@ -105,7 +105,16 @@ export class SCS001Orchestrator {
     let flywheelOutputs: FlywheelOutput[] = [];
     let failureEntries: FailureEntry[] = [];
 
-    console.log('[Orchestrator] Starting SCS-001 pipeline (' + this.mode + ' mode)');
+    // Sprint 739: Overall pipeline timeout (15 minutes)
+    const PIPELINE_TIMEOUT_MS = 15 * 60 * 1000;
+    const checkPipelineTimeout = () => {
+      const elapsed = Date.now() - startedAt.getTime();
+      if (elapsed > PIPELINE_TIMEOUT_MS) {
+        throw new Error(`Pipeline timeout after ${Math.round(elapsed / 1000)}s (limit: ${PIPELINE_TIMEOUT_MS / 1000}s)`);
+      }
+    };
+
+    console.log('[Orchestrator] Starting SCS-001 pipeline (' + this.mode + ' mode, timeout: 15min)');
     console.log('');
 
     // Load viral topics from previous run for TrendAgent boost
@@ -617,14 +626,29 @@ export class SCS001Orchestrator {
     return transcriptCount > 0;
   }
 
+  // Sprint 739: Per-stage timeout to prevent pipeline hangs
+  private static STAGE_TIMEOUTS: Record<string, number> = {
+    '3-clip-detection': 600_000,  // 10min — clip detection is slow
+    '4-insight': 300_000,         // 5min — LLM calls
+    '5-script': 300_000,          // 5min — LLM calls
+    default: 180_000,             // 3min — all other stages
+  };
+
   private async runStage(
     stage: string,
     agent: string,
     fn: () => Promise<number>,
   ): Promise<StageResult> {
     const start = Date.now();
+    const timeoutMs = SCS001Orchestrator.STAGE_TIMEOUTS[stage]
+      ?? SCS001Orchestrator.STAGE_TIMEOUTS.default;
     try {
-      const count = await fn();
+      const count = await Promise.race([
+        fn(),
+        new Promise<never>((_, reject) =>
+          setTimeout(() => reject(new Error(`Stage timeout after ${timeoutMs / 1000}s`)), timeoutMs)
+        ),
+      ]);
       const elapsed = Date.now() - start;
       const status = count > 0 ? 'ok' : 'empty';
       console.log('[Orchestrator] ' + stage + ' (' + agent + '): ' + count + ' items (' + elapsed + 'ms) [' + status + ']');
