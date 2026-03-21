@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-658",
+  "title": "LAUNCH — Documentation site scaffold",
+  "description": "Create documentation site scaffold with architecture overview, agent catalog, API reference stubs, and getting started guide. Markdown-based, ready for Docusaurus or similar SSG.",
+  "source": "sprint-queue",
+  "tasks": [
+    {
+      "id": "658-01",
+      "title": "Create docs site scaffold with 4 main sections",
+      "type": "feature",
+      "task_type": "docs",
+      "task_target": "workspace/docs-site/",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-658"
+    }
+  ]
+}
