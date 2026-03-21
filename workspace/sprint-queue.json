@@ -138,7 +138,7 @@
       "sprint": 717,
       "title": "GOV — Create memory directories for all ACP-registered agents",
       "block": "GOV-PHASE4",
-      "status": "pending",
+      "status": "done",
       "priority": "low",
       "rationale": "GOVERNANCE REMEDIATION Phase 4. Create workspace/agents/{agent}/memory/ for 34 missing agents (42 ACP-registered minus 8 existing). Prepares BrainX per-agent memory."
     },

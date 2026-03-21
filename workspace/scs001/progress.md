@@ -2179,3 +2179,12 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (batch content creation)
 - Issues: none
 - Timestamp: 2026-03-21T13:30:00Z
+
+## Sprint 717 — GOV — Create memory directories for all ACP-registered agents
+- Status: PASS
+- Commit: da32458
+- Files created: 48 workspace/agents/*/memory/.gitkeep files
+- Pipeline: GOV Phase 4 COMPLETE (713-717). All agents have SOUL.md + memory dirs.
+- Swarm used: no (directory creation)
+- Issues: none
+- Timestamp: 2026-03-21T13:35:00Z
