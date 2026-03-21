@@ -1947,3 +1947,13 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (feature enhancement, wrote directly)
 - Issues: none
 - Timestamp: 2026-03-21T12:45:00Z
+
+## Sprint 685 — INFRA
+- Status: PASS
+- Commit: 1244699
+- Files created: scripts/scs001/pipeline-output-validator.ts, scripts/scs001/validate-pipeline-validator.ts, workspace/sprints/sprint-685.json, reports/video-validation.json
+- Test: scripts/scs001/validate-pipeline-validator.ts — 14/14 PASS
+- Pipeline: ffprobe video validator — scans run dirs + multiformat, checks stream/duration/size, writes JSON report, Telegram alerts. 97% pass rate.
+- Swarm used: no (new script, wrote directly)
+- Issues: none
+- Timestamp: 2026-03-21T13:00:00Z
