@@ -2586,3 +2586,15 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Reddit topics working in pipeline (listicle came from Reddit source)
 - Swarm used: no (pipeline execution)
 - Timestamp: 2026-03-21T18:00:00Z
+
+## Sprint 751 — CONTENT
+- Status: PASS
+- Commit: 186498a
+- Files created: workspace/sprints/sprint-751.json
+- Files modified: workspace/scs001/publish-ledger.jsonl, workspace/scs001/topic-radar/seen-topics.json, workspace/sprint-queue.json
+- Test: 5 final .mp4 files verified (580K-940K each) — PASS
+- Pipeline: 504 total ledger entries, 7 new videos this sprint (2 from run 1 + 5 from run 2)
+- Swarm used: no (content pipeline run directly, swarm not needed for content production)
+- Issues: Was clearing wrong seen-topics path (scs001/ vs scs001/topic-radar/). Fixed by clearing correct path.
+- Cost: $2.10 total ($0.60 + $1.50)
+- Timestamp: 2026-03-21T14:50:00Z

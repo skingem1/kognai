@@ -16,7 +16,8 @@
       "sprint": 751,
       "title": "CONTENT — Batch 4: fresh videos (target 5+, 502+ ledger)",
       "block": "CONTENT",
-      "status": "pending",
+      "status": "done",
+      "_note": "Done: 5+2 new videos ($1.50+$0.60), ledger at 504. Fixed seen-topics dedup path.",
       "priority": "critical",
       "rationale": "Continue content production for April 7 gate. Clear seen-topics, produce 5+ videos. Ledger at 497, target 502+."
     },
