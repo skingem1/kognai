@@ -2337,6 +2337,14 @@ ONLY output the JSON array. No markdown, no explanation.`;
       return;
     }
 
+    // Sprint 706: BrainX — inject memories before task execution
+    try {
+      if ((this as any)._brainxBridge) {
+        const injection = await (this as any)._brainxBridge.injectMemories(task.agent);
+        if (injection.memory_count > 0) log(c.gray, `  [BrainX] Injected ${injection.memory_count} memories for ${task.agent}`);
+      }
+    } catch { /* BrainX injection is non-blocking */ }
+
     const taskRunStart = Date.now();
     const taskRun: any = {
       task_id: task.id,
@@ -2466,6 +2474,8 @@ ONLY output the JSON array. No markdown, no explanation.`;
         publishTaskCompleted(task.agent, _sprintIdApproved, task.id, (task as any).title || task.id, 0).catch(() => {});
         AARMiddleware.generateAndLog({ agentId: task.agent, taskId: task.id, sprintId: _sprintIdApproved, skillId: (task as any).skill_id || task.type || 'code-generation', outcomeScore: review.score, actionSummary: ((task as any).title || task.id).substring(0, 140), status: 'success' }).catch(() => {});
         updateTrustScore(task.agent, 'approved', review.score); // Sprint 703: Dynamic trust update
+        // Sprint 706: BrainX — store success memory
+        try { if ((this as any)._brainxBridge) await (this as any)._brainxBridge.storeTaskMemory({ agent_id: task.agent, task_id: task.id, sprint_id: _sprintIdApproved, outcome: 'success', score: review.score, summary: ((task as any).title || task.id).substring(0, 200) }); } catch { /* non-blocking */ }
         crystalliseSkill({ agentId: task.agent, taskId: task.id, sprintId: _sprintIdApproved, taskTitle: (task as any).title || task.id, taskType: task.type || 'feature', model: (task as any).model || 'qwen3:14b', taskTarget: (task as any).task_target || 'local', score: review.score, approachSummary: ((task as any).title || task.id).substring(0, 200), keyPatterns: review.strengths || [], antiPatterns: [] });
         crystalliseCodeAsset({ agentId: task.agent, sprintId: _sprintIdApproved, taskId: task.id, taskTitle: (task as any).title || task.id, files: result.files, supervisorScore: review.score, origin: 'kognai-core' });
         MonotaskSM.complete(task.agent, task.id);
@@ -2498,6 +2508,8 @@ ONLY output the JSON array. No markdown, no explanation.`;
       const _sprintIdRejected = (process.argv[2] || 'sprints/current.json').replace(/.*\//, '').replace('.json', '');
       AARMiddleware.generateAndLog({ agentId: task.agent, taskId: task.id, sprintId: _sprintIdRejected, skillId: (task as any).skill_id || task.type || 'code-generation', outcomeScore: review?.score || 0, actionSummary: `REJECTED: ${((task as any).title || task.id).substring(0, 120)} (attempt ${attempt})`, status: 'rejected' }).catch(() => {});
       updateTrustScore(task.agent, 'rejected', review?.score || 0); // Sprint 703: Dynamic trust update
+      // Sprint 706: BrainX — store failure memory
+      try { if ((this as any)._brainxBridge) await (this as any)._brainxBridge.storeTaskMemory({ agent_id: task.agent, task_id: task.id, sprint_id: _sprintIdRejected, outcome: 'failure', score: review?.score || 0, summary: `REJECTED: ${((task as any).title || task.id).substring(0, 180)}` }); } catch { /* non-blocking */ }
       MonotaskSM.release(task.agent, task.id, `rejected attempt ${attempt}`);
 
       // CTO AUTO-DECOMPOSE: After N consecutive truncation rejections, split the task
@@ -2593,6 +2605,15 @@ ONLY output the JSON array. No markdown, no explanation.`;
     this.loadTasks();
     // 069-06: emit sprint started event
     const _evtSprintId = (process.argv[2] || 'sprints/current.json').replace(/.*\//, '').replace('.json', '');
+
+    // Sprint 706: BrainX swarm bridge — create at sprint start
+    let brainxBridge: BrainXSwarmBridge | null = null;
+    try {
+      const agentIds = Array.from(new Set(this.tasks.map(t => t.agent)));
+      brainxBridge = createSwarmBridge(`swarm-${Date.now()}`, _evtSprintId, agentIds);
+      (this as any)._brainxBridge = brainxBridge;
+      log(c.gray, `  [BrainX] Bridge created for ${agentIds.length} agents`);
+    } catch (e) { log(c.gray, `  [BrainX] Bridge creation skipped: ${(e as Error).message}`); }
     publishSprintStarted(_evtSprintId, this.tasks.filter(t => t.status === 'pending').length).catch(() => {});
     if (this.tasks.length === 0) {
       log(c.yellow, 'No tasks to execute');
@@ -2924,6 +2945,9 @@ ONLY output the JSON array. No markdown, no explanation.`;
     const sprintFile = process.argv[2] || 'sprints/current.json';
     writeFileSync(sprintFile, JSON.stringify({ tasks: this.tasks }, null, 2));
     log(c.green, `\nSprint state saved to ${sprintFile}`);
+    // Sprint 706: BrainX — close bridge at sprint end
+    try { if (brainxBridge) await brainxBridge.close(); log(c.gray, '  [BrainX] Bridge closed'); } catch { /* non-blocking */ }
+
     // 069-06: emit sprint completed event
     const completedCount = this.tasks.filter(t => t.status === 'done').length;
     publishSprintCompleted(_evtSprintId, this.tasks.length, completedCount).catch(() => {});

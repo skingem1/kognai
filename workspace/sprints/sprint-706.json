@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-706",
+  "title": "GOV — Wire BrainX swarm bridge into orchestrator execution loop",
+  "description": "Governance remediation Phase 2. Wire createSwarmBridge, injectMemories, storeTaskMemory, and close into orchestrate-agents-v2.ts at sprint start, before each task, on approval/rejection, and at sprint end.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "706-01",
+      "title": "Wire BrainX bridge into orchestrator (5 surgical edits)",
+      "type": "feature",
+      "task_type": "governance",
+      "task_target": "scripts/orchestrate-agents-v2.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-706"
+    },
+    {
+      "id": "706-02",
+      "title": "Validate TypeScript compilation",
+      "type": "test",
+      "task_type": "test",
+      "task_target": "scripts/orchestrate-agents-v2.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-706"
+    }
+  ]
+}
