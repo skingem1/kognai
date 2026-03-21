@@ -2000,3 +2000,13 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (constitutional doc edits, wrote directly)
 - Issues: none
 - Timestamp: 2026-03-22T00:15:00Z
+
+## Sprint 693 — AMD-17
+- Status: PASS
+- Commit: a4c46bd
+- Files created: agents/scs001-broadcast/prompt.md, scripts/scs001/broadcast-narrator.ts, scripts/scs001/validate-broadcast-narrator.ts, workspace/sprints/sprint-693.json
+- Test: scripts/scs001/validate-broadcast-narrator.ts — 21/21 PASS
+- Pipeline: AMD-17 broadcast narrator agent. T1 qwen3:4b. ACP filter strips file paths, hashes, internal agent names, API keys. 60s delay buffer. Reads git commits + pipeline stats + gate status. Dry-run mode. Telegram broadcast output.
+- Swarm used: no (new agent + script, wrote directly)
+- Issues: none
+- Timestamp: 2026-03-22T00:25:00Z

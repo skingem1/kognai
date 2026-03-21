@@ -1,25 +1,162 @@
 {
   "_note": "AUTHORITATIVE sprint execution order. The brief generator reads this and injects the first item as a MANDATORY directive, bypassing Qwen's recommendation. Pop items by setting status=done after each sprint ships. Human-maintained — edit to re-prioritise.",
-  "updated": "2026-03-21T23:30",
+  "updated": "2026-03-22T00:15",
   "owner": "Tarek (human)",
-  "_plan_rationale": "RESEEDED 2026-03-21 (round 2). Previous 647-689 ALL consumed. Achiri PAUSED. New items: AMD-15 data pipeline, AMD-17 broadcast prep, model registry, LoRA training corpus, broadcast agent, EVAL-006 MPCVault. Content production continues on cron. Gate-critical: start manual TikTok posting NOW.",
+  "_plan_rationale": "RESEEDED 2026-03-22. GOVERNANCE REMEDIATION PLAN — 19 sprints (701-719). Fixes: dynamic ACP scoring, BrainX memory activation, Constitution Agent weekly runs, SOUL.md for all agents, Health Score, Police Lite. AMD-15/17/EVAL-006 items follow after governance. Achiri PAUSED.",
   "_achiri_status": "PAUSED — all Achiri sprints removed from queue. Resume after April 7 gate.",
+  "_governance_plan": "Phase 1 (701-704): Feedback loop. Phase 2 (705-708): BrainX memory. Phase 3 (709-712): Constitution Agent. Phase 4 (713-717): SOUL.md rollout. Phase 5 (718-719): Health Score.",
   "queue": [
     {
-      "sprint": 690,
-      "title": "AMD-15 — LoRA training data pipeline (extract approved tasks → corpus JSONL)",
-      "block": "AMD-15",
-      "status": "done",
-      "priority": "high",
-      "rationale": "AMD-15 Phase 1. CTO agent extracts approved tasks from sprint history. Constitutional filter: status=approved, dual-supervisor sign-off, ACP composite >= 70. Excludes rejected tasks, failure library items, credential tasks, sovereignty violations. Output: vault/training/corpus-r1.jsonl. Format: instruction-response pairs (task brief → approved output). Log training corpus SHA-256 hash. No fine-tuning yet — just data pipeline."
+      "sprint": 701,
+      "title": "GOV — AAR health check + add rejection path logging",
+      "block": "GOV-PHASE1",
+      "status": "pending",
+      "priority": "critical",
+      "rationale": "GOVERNANCE REMEDIATION Phase 1. AAR middleware only logs SUCCESSES (orchestrate-agents-v2.ts line ~2465). Rejections at line ~2493 are invisible to audit trail. (1) Verify AAR still fires on approval path. (2) Add AARMiddleware.generateAndLog() on the REJECTION path with status='rejected'. (3) Run a test sprint to produce a 2026-03-22+ AAR entry. Deliverable: logs/aar/ with both success AND rejection entries. SURGICAL EDIT ONLY — do NOT rewrite the orchestrator file (3100 lines, FP-007)."
     },
     {
-      "sprint": 691,
-      "title": "AMD-15 — Model registry as constitutional artifact (codebook/model-registry.json)",
-      "block": "AMD-15",
-      "status": "done",
+      "sprint": 702,
+      "title": "GOV — Wire ACPEngine enforcement into CTO approval gate",
+      "block": "GOV-PHASE1",
+      "status": "pending",
+      "priority": "critical",
+      "rationale": "GOVERNANCE REMEDIATION Phase 1. acp/acp-engine.ts (197 lines) has enforce() with 5-dimension trust scoring + thresholds — but it is NEVER called. In scripts/lib/cto-approval-gate.ts: (1) import ACPEngine from '../../acp/acp-engine.ts', (2) before LLM review, call engine.enforce(agentId, taskType), (3) if recommendation==='block' or 'recycle', reject immediately (skip LLM call), (4) if 'fallback', log warning but proceed. Deliverable: CTO gate enforces ACP trust thresholds before wasting LLM tokens."
+    },
+    {
+      "sprint": 703,
+      "title": "GOV — Dynamic trust score updater (post-sprint feedback loop)",
+      "block": "GOV-PHASE1",
+      "status": "pending",
+      "priority": "critical",
+      "rationale": "GOVERNANCE REMEDIATION Phase 1. acp/trust-scores.json is STATIC — scores never update from real outcomes. Create scripts/lib/trust-score-updater.ts (~80 lines): (1) Read acp/trust-scores.json, (2) For approved tasks with score>=80: accuracy +1. For rejected: accuracy -2. Safety adjusted on safety flags. (3) 5% daily decay toward 70 (mean) for inactive agents. (4) Write back with last_updated timestamp. Wire into orchestrate-agents-v2.ts at line ~2465 (approved) and ~2493 (rejected) — SURGICAL 5-line additions only."
+    },
+    {
+      "sprint": 704,
+      "title": "GOV — Add daily report generator to PM2 cron",
+      "block": "GOV-PHASE1",
+      "status": "pending",
       "priority": "high",
-      "rationale": "AMD-15 Section 3. Elevate codebook/model-registry.json to tracked constitutional artifact. Schema: base_model, adapter_id (naming: {base}-kognai-r{N}), corpus_sha256, sherlock_scores (4 dimensions), deploy_date, godman_approval_timestamp. Immutable after entry. Wire into Sherlock's audit. Create /approve-finetune Telegram command stub (Godman-only, triggers cycle when LoRA is ready)."
+      "rationale": "GOVERNANCE REMEDIATION Phase 1. scripts/generate-daily-report.ts exists (187 lines) but has no PM2 cron. Add kognai-daily-report entry to ecosystem.config.js — cron at 23:55 daily. Only 4 daily reports generated ever (Mar 7/8/10/19). This fixes the reporting gap."
+    },
+    {
+      "sprint": 705,
+      "title": "GOV — PostgreSQL + pgvector setup verification script",
+      "block": "GOV-PHASE2",
+      "status": "pending",
+      "priority": "high",
+      "rationale": "GOVERNANCE REMEDIATION Phase 2 (BrainX). Create scripts/verify-brainx-db.ts (~60 lines): check PostgreSQL running on localhost:5432, check kognai database exists, check vector extension loaded, check brainx_memories table exists, count rows, report status. If DB missing, print setup commands from scripts/lib/brainx-schema.sql. Add /brainx-status Telegram command. HUMAN GATE: user must run PostgreSQL setup if DB doesn't exist."
+    },
+    {
+      "sprint": 706,
+      "title": "GOV — Wire BrainX swarm bridge into orchestrator execution loop",
+      "block": "GOV-PHASE2",
+      "status": "pending",
+      "priority": "high",
+      "rationale": "GOVERNANCE REMEDIATION Phase 2. scripts/lib/brainx-swarm-bridge.ts (304 lines) has full API: createSwarmBridge(), injectMemories(), storeTaskMemory(), close(). ALL DEAD CODE. In orchestrate-agents-v2.ts: (1) At sprint start, createSwarmBridge(swarmRunId, sprintId, agentIds). (2) Before each task, bridge.injectMemories(task.agent) prepend context. (3) After approval, bridge.storeTaskMemory outcome success. (4) After rejection, outcome failure. (5) At sprint end, bridge.close(). ALL wrapped in try-catch. SURGICAL EDITS ONLY (FP-007)."
+    },
+    {
+      "sprint": 707,
+      "title": "GOV — Backfill initial agent memories from AAR logs",
+      "block": "GOV-PHASE2",
+      "status": "pending",
+      "priority": "medium",
+      "rationale": "GOVERNANCE REMEDIATION Phase 2. Create scripts/backfill-brainx.ts (~100 lines): read all logs/aar/*.jsonl files (Mar 15-19), group by agent, store each as BrainX episode memory with importance=5. Seeds memory system with existing data."
+    },
+    {
+      "sprint": 708,
+      "title": "GOV — BrainX integration smoke test",
+      "block": "GOV-PHASE2",
+      "status": "pending",
+      "priority": "medium",
+      "rationale": "GOVERNANCE REMEDIATION Phase 2. Create tests/brainx-integration.test.ts: create bridge, store memory, retrieve, verify round-trip."
+    },
+    {
+      "sprint": 709,
+      "title": "GOV — Constitution Agent runner script + PM2 weekly cron",
+      "block": "GOV-PHASE3",
+      "status": "pending",
+      "priority": "high",
+      "rationale": "GOVERNANCE REMEDIATION Phase 3. agents/constitution/prompt.md (169 lines) defines weekly signal collection — NEVER ACTIVATED. Create scripts/run-constitution-agent.ts (~120 lines): read sprints last 7d + AAR last 7d + SIGNALS.md, construct prompt, route via ClawRouter T2 qwen3:14b ($0), write signal report to reports/constitution/YYYY-WW.md, append to SIGNALS.md. PM2 cron: Sundays 18:00. Create reports/constitution/ directory."
+    },
+    {
+      "sprint": 710,
+      "title": "GOV — Bootstrap SIGNALS.md and AMENDMENT_VOTES.md",
+      "block": "GOV-PHASE3",
+      "status": "pending",
+      "priority": "medium",
+      "rationale": "GOVERNANCE REMEDIATION Phase 3. workspace/shared-context/SIGNALS.md is 0 bytes. Populate with header: Constitutional Signals, Active Signals, Resolved Signals sections. Create AMENDMENT_VOTES.md empty template."
+    },
+    {
+      "sprint": 711,
+      "title": "GOV — Backfill constitutional signals from failure library + AAR",
+      "block": "GOV-PHASE3",
+      "status": "pending",
+      "priority": "medium",
+      "rationale": "GOVERNANCE REMEDIATION Phase 3. Create scripts/backfill-signals.ts (~80 lines): read 564 failure library entries + AAR logs, identify patterns, generate historical report to reports/constitution/backfill-2026-W12.md, extract 3-5 key signals to SIGNALS.md."
+    },
+    {
+      "sprint": 712,
+      "title": "GOV — Police Agent Lite: constitutional cross-check in CTO gate",
+      "block": "GOV-PHASE3",
+      "status": "pending",
+      "priority": "medium",
+      "rationale": "GOVERNANCE REMEDIATION Phase 3. Add constitutional enforcement inside CTO gate (scripts/lib/cto-approval-gate.ts). After LLM review: read SIGNALS.md for CRITICAL signals. If sprint touches flagged areas, add warning. If Founding Charter immutable law at risk, REJECT regardless of LLM. Police Agent Lite — enforcement without separate agent."
+    },
+    {
+      "sprint": 713,
+      "title": "GOV — Generate SOUL.md for 8 core kognai-agents (batch 1)",
+      "block": "GOV-PHASE4",
+      "status": "pending",
+      "priority": "medium",
+      "rationale": "GOVERNANCE REMEDIATION Phase 4. Only 8/52 agents have SOUL.md. Create for: ceo, cto, cfo, cmo, supervisor, devops, security, achiri in kognai-agents/. Template: workspace/agents/harvey/SOUL.md pattern (Constitutional Mandate, identity, role, hard rules, events). ~60 lines each."
+    },
+    {
+      "sprint": 714,
+      "title": "GOV — Generate SOUL.md for 10 utility kognai-agents (batch 2)",
+      "block": "GOV-PHASE4",
+      "status": "pending",
+      "priority": "medium",
+      "rationale": "GOVERNANCE REMEDIATION Phase 4. Create SOUL.md for: conflict-analyzer, conway-integration, execution-verifier, execution-watchdog, frontend, backend-core, backend-ledger, backend-tax, bizdev, market-intelligence."
+    },
+    {
+      "sprint": 715,
+      "title": "GOV — Generate SOUL.md for 9 remaining kognai-agents (batch 3)",
+      "block": "GOV-PHASE4",
+      "status": "pending",
+      "priority": "medium",
+      "rationale": "GOVERNANCE REMEDIATION Phase 4. Create SOUL.md for: pipeline-health-monitor, skills, sprint-retrospective, telegram-support, test-failure-predictor, test-runner, test-utility-generator, x-admin, invoica-x-admin."
+    },
+    {
+      "sprint": 716,
+      "title": "GOV — Generate SOUL.md for 16 SCS-001 agents",
+      "block": "GOV-PHASE4",
+      "status": "pending",
+      "priority": "medium",
+      "rationale": "GOVERNANCE REMEDIATION Phase 4. Create SOUL.md for all SCS-001 agents in agents/: scs001-orchestrator, scs001-discovery, scs001-clip-detection, scs001-insight, scs001-script, scs001-editing, scs001-caption, scs001-qc, scs001-publishing, scs001-analytics, scs001-trend, scs001-flywheel, scs001-failure-library, scs001-experiment, scs001-scorer, scs001-script-validator. Shorter format."
+    },
+    {
+      "sprint": 717,
+      "title": "GOV — Create memory directories for all ACP-registered agents",
+      "block": "GOV-PHASE4",
+      "status": "pending",
+      "priority": "low",
+      "rationale": "GOVERNANCE REMEDIATION Phase 4. Create workspace/agents/{agent}/memory/ for 34 missing agents (42 ACP-registered minus 8 existing). Prepares BrainX per-agent memory."
+    },
+    {
+      "sprint": 718,
+      "title": "GOV — Swarm-wide health score computation",
+      "block": "GOV-PHASE5",
+      "status": "pending",
+      "priority": "medium",
+      "rationale": "GOVERNANCE REMEDIATION Phase 5. Create scripts/lib/swarm-health.ts (~100 lines): 40% ACP composite mean, 20% success rate (AAR), 20% sprint velocity, 20% pipeline output. Write workspace/swarm-health.json. Wire into daily-digest.ts. Add /health Telegram command."
+    },
+    {
+      "sprint": 719,
+      "title": "GOV — Dashboard governance panel",
+      "block": "GOV-PHASE5",
+      "status": "pending",
+      "priority": "low",
+      "rationale": "GOVERNANCE REMEDIATION Phase 5. Add governance panel to dashboard/: trust scores per agent, AAR receipt count/day, constitution signals, swarm health trend. New parser in dashboard/parsers/."
     },
     {
       "sprint": 692,
@@ -27,71 +164,55 @@
       "block": "AMD-17",
       "status": "done",
       "priority": "medium",
-      "rationale": "AMD-17 Sprint 508. Set BROADCAST_AWARE=true in AGENTS.md. Update SOUL.md with broadcast awareness context. Brief all agents: broadcast surfaces are public communications, ACP filter applies, internal deliberation never reaches broadcast. No operational changes needed — this is a constitutional flag that changes how the orchestrator routes outputs to broadcast surfaces."
+      "rationale": "AMD-17 Sprint 508. Set BROADCAST_AWARE=true in AGENTS.md. Brief agents on public surface behaviour."
     },
     {
       "sprint": 693,
       "title": "AMD-17 — Build scs001-broadcast narrator agent (T1 qwen3:4b)",
       "block": "AMD-17",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
-      "rationale": "AMD-17 Sprint 510. New agent: scs001-broadcast. Model: T1 qwen3:4b. Input: Mission Control event stream. Output: plain-language narration (factual, present tense, no marketing). 60-second output buffer delay (min 30s via BROADCAST_DELAY_SECONDS). Brand alignment + legal compliance filter on every string. Push to Telegram channel + X feed. Example: 'Harvey approved Sprint 685: Pipeline output validator shipped. Sherlock scored 88/100 on safety.'"
+      "rationale": "AMD-17 Sprint 510. New agent: scs001-broadcast. T1 qwen3:4b. Plain-language narration. 60-second delay."
     },
     {
       "sprint": 694,
-      "title": "AMD-17 — Wire broadcast kill switch (/broadcast-pause + /broadcast-resume)",
+      "title": "AMD-17 — Wire broadcast kill switch",
       "block": "AMD-17",
       "status": "pending",
       "priority": "medium",
-      "rationale": "AMD-17 Sprint 511. Telegram commands: /broadcast-pause (Godman-only, pauses broadcast within 5s), /broadcast-resume (restores). BROADCAST_LIVE env var. Auto-triggers: Nuclear Reset event → broadcast pauses immediately. Health Score <20 → broadcast pauses. All other scenarios (failures, rejections, stalls) → broadcast continues. This is a sovereign right, not an editorial right."
+      "rationale": "AMD-17 Sprint 511. /broadcast-pause + /broadcast-resume Telegram commands. BROADCAST_LIVE env var."
     },
     {
       "sprint": 695,
-      "title": "EVAL-006 — MPCVault Agent Card waitlist + SCS treasury architecture design",
+      "title": "EVAL-006 — MPCVault Agent Card waitlist + SCS treasury design",
       "block": "EVAL-006",
       "status": "pending",
       "priority": "medium",
-      "rationale": "BACKLOG-EVAL-006. (1) Document MPCVault waitlist status. (2) Design SCS treasury architecture around Agent Cards: per-SCS Orchestrator card (higher limit), per-agent dev cards (100 USDC/day cap), research (50/day), support (25/day). ACP penalty enforcement: ACP<50 → card limit=0 via API. Police Agent revocation path. Write spec to workspace/treasury/scs-treasury-spec.json."
+      "rationale": "BACKLOG-EVAL-006. Document waitlist. Design SCS treasury architecture around Agent Cards."
     },
     {
       "sprint": 696,
-      "title": "CONTENT — Batch production: 10 videos with improved scripts (post-LLM-rewrite)",
+      "title": "CONTENT — Batch production: 10 videos with real scripts",
       "block": "CONTENT",
       "status": "pending",
       "priority": "high",
-      "rationale": "After Sprint 647-649 enabled LLM rewrite, verify content quality has actually improved. Run 10-video batch. Verify: unique SRT text per video, no template phrases, diverse topics. Deliver to Telegram. These feed the April 7 gate manual posting."
-    },
-    {
-      "sprint": 697,
-      "title": "GATE — Updated April 7 readiness report with current video inventory",
-      "block": "GATE",
-      "status": "pending",
-      "priority": "high",
-      "rationale": "Refresh workspace/gates/april-7-gate.json with current video count, posting stats (if any), days remaining. Surface via /gate Telegram command. This is a tracking sprint — no code changes, just data refresh."
+      "rationale": "Post-LLM-rewrite batch. Verify content quality, deliver to Telegram for April 7 gate."
     },
     {
       "sprint": 698,
-      "title": "AMD-15 — Base model preservation: snapshot qwen3:14b to vault/models/base/",
+      "title": "AMD-15 — Base model preservation: snapshot qwen3:14b",
       "block": "AMD-15",
       "status": "pending",
       "priority": "medium",
-      "rationale": "AMD-15 Rule 3: Base Model Preservation Covenant. Before any fine-tuning can happen, snapshot current qwen3:14b weights to vault/models/base/. Document rollback command. Create vault/models/adapters/ directory for future LoRA adapters. Create vault/models/rejected/ for failed adapters. This is a one-time setup sprint."
+      "rationale": "AMD-15 Rule 3. Snapshot to vault/models/base/. Create adapters/ and rejected/ dirs."
     },
     {
       "sprint": 699,
-      "title": "AMD-15 — Sherlock evaluation gate for LoRA adapters (4-dimension test harness)",
+      "title": "AMD-15 — Sherlock LoRA evaluation gate (4-dimension test harness)",
       "block": "AMD-15",
       "status": "pending",
       "priority": "medium",
-      "rationale": "AMD-15 Rule 4: Evaluation Gate Before Deployment. Build scripts/lib/lora-eval-gate.ts with 4 dimensions: (1) Accuracy — 20 held-out tasks from corpus, compare adapter vs base, (2) Safety — ACP safety score >= base model, (3) File Discipline — zero outputs >200 lines (FP-007), (4) Constitutional Alignment — zero Harm Shield violations on 5 adversarial prompts. Any failure = archive adapter to vault/models/rejected/. Report to Godman via Telegram."
-    },
-    {
-      "sprint": 700,
-      "title": "INFRA — Comprehensive system health snapshot + git state report",
-      "block": "INFRA",
-      "status": "pending",
-      "priority": "low",
-      "rationale": "536+ sprints shipped. Update progress.md, verify PM2 processes, check disk usage, validate all Telegram commands still work, ensure daily digest + pipeline cron are running. Generate health snapshot for Godman review."
+      "rationale": "AMD-15 Rule 4. scripts/lib/lora-eval-gate.ts: Accuracy, Safety, File Discipline, Constitutional Alignment."
     }
   ]
 }
