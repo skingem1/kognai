@@ -55,6 +55,7 @@ const TIER_MODELS = {
   T1_LOCAL: 'qwen3:4b',
   T2_POWER: 'qwen3:14b',
   T2_5_EXEC: 'google/gemini-2.5-flash',    // via OpenClaw gateway
+  T2_5_MIMO: 'mimo-v2-pro',               // A/B test candidate (CR-AMD-001)
   T3_APEX:  'anthropic/claude-sonnet-4-20250514', // via OpenClaw gateway
 } as const;
 
@@ -63,7 +64,7 @@ const TIER_MODELS = {
 export type TierClass = 'text' | 'creative';
 export type TextComplexity = 'nano' | 'local' | 'power' | 'exec' | 'apex';
 export type CreativeModality = 'image' | 'video' | 'speech' | 'music' | 'transcription' | 'visual_understanding';
-export type CreativeQuality = 'fast' | 'high';
+export type CreativeQuality = 'fast' | 'high' | 'emotional';
 
 export interface ClawRouterV2Request {
   task_type: string;            // e.g. "code_review", "insight_generation"
@@ -155,8 +156,14 @@ function resolveTextTier(req: ClawRouterV2Request): { tier: string; model: strin
       return { tier: 'T0', model: TIER_MODELS.T0_NANO, local: true };
     case 'local':
       return { tier: 'T1', model: TIER_MODELS.T1_LOCAL, local: true };
-    case 'exec':
-      return { tier: 'T2.5', model: TIER_MODELS.T2_5_EXEC, local: false };
+    case 'exec': {
+      // CR-AMD-001 A/B test: 50/50 MiMo-V2-Pro vs Gemini Flash when active
+      const abActive = process.env.MIMO_AB_TEST_ACTIVE === 'true';
+      const useMimo = abActive && Math.random() < 0.5;
+      const model = useMimo ? TIER_MODELS.T2_5_MIMO : TIER_MODELS.T2_5_EXEC;
+      if (abActive) logABTest(req.agent_id || 'unknown', model);
+      return { tier: 'T2.5', model, local: false };
+    }
     case 'apex':
       return { tier: 'T3', model: TIER_MODELS.T3_APEX, local: false };
     case 'power':
@@ -164,6 +171,15 @@ function resolveTextTier(req: ClawRouterV2Request): { tier: string; model: strin
       // Default unspecified complexity → T2 POWER (local)
       return { tier: 'T2', model: TIER_MODELS.T2_POWER, local: true };
   }
+}
+
+// CR-AMD-001: A/B test logging for MiMo-V2-Pro vs Gemini Flash
+const AB_LOG_PATH = require('path').join(__dirname, '../../logs/clawrouter/ab-test-mimo.jsonl');
+function logABTest(agentId: string, model: string): void {
+  try {
+    const entry = JSON.stringify({ timestamp: new Date().toISOString(), agent_id: agentId, model, tier: 'T2.5' });
+    fs.appendFileSync(AB_LOG_PATH, entry + '\n');
+  } catch { /* non-blocking */ }
 }
 
 function resolveCreativeTier(req: ClawRouterV2Request): { tier: string; model: string; local: boolean } {

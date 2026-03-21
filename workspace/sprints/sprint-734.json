@@ -1,0 +1,41 @@
+{
+  "sprint_id": "sprint-734",
+  "title": "MIMO-04 — Wire T2.5 A/B routing: MiMo-V2-Pro vs Gemini Flash (50/50)",
+  "description": "Add A/B split in ClawRouter resolveTextTier() for exec complexity. When MIMO_AB_TEST_ACTIVE=true, route 50% to MiMo-V2-Pro and 50% to Gemini Flash. Track results in logs/clawrouter/ab-test-mimo.jsonl.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "734-01",
+      "title": "Add MiMo-V2-Pro model to TIER_MODELS",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/lib/clawrouter-v2.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-734"
+    },
+    {
+      "id": "734-02",
+      "title": "Add A/B split logic in resolveTextTier exec case",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/lib/clawrouter-v2.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-734"
+    },
+    {
+      "id": "734-03",
+      "title": "Add A/B test logging to ab-test-mimo.jsonl",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/lib/clawrouter-v2.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-734"
+    }
+  ]
+}
