@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-665",
+  "title": "BUGFIX — Fix auto-deliver duplicate video sending",
+  "description": "Fix dedup bug where auto-deliver sends same video multiple times. Root cause: duplicate video_ids in ledger create duplicate candidates. Also change from today-only to all-time delivery dedup.",
+  "source": "queue-empty-bugfix",
+  "tasks": [
+    {
+      "id": "665-01",
+      "title": "Dedupe candidates by video_id + use all-time delivered set",
+      "type": "bugfix",
+      "task_type": "pipeline",
+      "task_target": "scripts/scs001/posting-auto-deliver.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-665"
+    }
+  ]
+}

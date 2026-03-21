@@ -189,11 +189,13 @@ async function main(): Promise<void> {
   const postsLeft = Math.max(0, GATE_TARGET - manualPosts.length);
   const dailyTarget = Math.ceil(postsLeft / daysLeft);
 
-  // Load already-delivered IDs (today only)
+  // Sprint 665: Load ALL delivered IDs (not just today) to prevent re-delivery
   const today = new Date().toISOString().slice(0, 10);
   const deliveredToday = new Set<string>();
+  const deliveredAll = new Set<string>();
   const deliveredLines = readJsonLines(DELIVERED_LOG);
   for (const d of deliveredLines) {
+    if (d.video_id) deliveredAll.add(d.video_id);
     if ((d.delivered_at ?? '').startsWith(today)) {
       deliveredToday.add(d.video_id);
     }
@@ -244,13 +246,16 @@ async function main(): Promise<void> {
   const consecutiveHook = recentHooks.filter(h => h === lastHook).length;
 
   // Find best unposted, un-delivered video with captioned mp4
+  // Sprint 665: Dedupe by video_id — ledger can have multiple entries per video
+  const seenVids = new Set<string>();
   const candidates = ledger
-    .filter((e: any) =>
-      e.video_id &&
-      !recordedIds.has(e.video_id) &&
-      !deliveredToday.has(e.video_id) &&
-      findCaptionedMp4(e.video_id) !== null
-    )
+    .filter((e: any) => {
+      if (!e.video_id || seenVids.has(e.video_id)) return false;
+      if (recordedIds.has(e.video_id) || deliveredAll.has(e.video_id)) return false;
+      if (!findCaptionedMp4(e.video_id)) return false;
+      seenVids.add(e.video_id);
+      return true;
+    })
     .sort((a: any, b: any) =>
       freshnessScore(b.video_id, viralScores.get(b.video_id) ?? 0) -
       freshnessScore(a.video_id, viralScores.get(a.video_id) ?? 0)
