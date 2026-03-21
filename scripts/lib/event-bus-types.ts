@@ -26,13 +26,31 @@ export type SystemEventType =
   | 'system.sprint.completed'
   | 'system.heartbeat';
 
+// Sprint 643: Achiri alpha monitoring events
+export type AchiriEventType =
+  | 'achiri.chat'
+  | 'achiri.voice'
+  | 'achiri.onboard';
+
+export interface AchiriEventPayload {
+  user_id: string;
+  tier: string;
+  model: string;
+  provider: string;
+  message_length: number;
+  response_time_ms: number;
+  turns_in_memory: number;
+  [key: string]: unknown;
+}
+
 // Union of all event types
 export type KognaiEventType =
   | TaskEventType
   | AgentEventType
   | DataEventType
   | InterruptEventType
-  | SystemEventType;
+  | SystemEventType
+  | AchiriEventType;
 
 // Payload interfaces — index signature required for Record<string,unknown> compatibility
 export interface TaskEventPayload {
@@ -94,13 +112,20 @@ export interface SystemEvent extends BaseEvent {
   payload: SprintEventPayload | Record<string, unknown>;
 }
 
+// Sprint 643: Achiri event
+export interface AchiriEvent extends BaseEvent {
+  event_type: AchiriEventType;
+  payload: AchiriEventPayload;
+}
+
 // Discriminated union of all event types
 export type KognaiEvent =
   | TaskEvent
   | AgentEvent
   | DataEvent
   | InterruptEvent
-  | SystemEvent;
+  | SystemEvent
+  | AchiriEvent;
 
 // Type guard functions
 export function isTaskEvent(e: KognaiEvent): e is TaskEvent {

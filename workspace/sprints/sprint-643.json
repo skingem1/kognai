@@ -1,0 +1,41 @@
+{
+  "sprint_id": "sprint-643",
+  "title": "ACHIRI — Add Supabase event logging for alpha monitoring",
+  "description": "Wire Achiri conversations into the kognai_events Supabase table. Log achiri.chat and achiri.voice events with userId, tier, model, response time. Critical for monitoring alpha launch (Apr 25) and validating memory gate (May 14).",
+  "source": "achiri-alpha-prep",
+  "tasks": [
+    {
+      "id": "643-01",
+      "title": "Add Achiri event types to event-bus-types.ts",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/lib/event-bus-types.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-643"
+    },
+    {
+      "id": "643-02",
+      "title": "Add publishAchiriChat helper to event-bus-publisher.ts",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/lib/event-bus-publisher.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-643"
+    },
+    {
+      "id": "643-03",
+      "title": "Wire event logging into Achiri HTTP server /chat route",
+      "type": "feature",
+      "task_type": "integration",
+      "task_target": "agents/achiri/server.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-643"
+    }
+  ]
+}

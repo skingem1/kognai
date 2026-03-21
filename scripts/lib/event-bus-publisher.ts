@@ -112,3 +112,54 @@ export function publishSprintCompleted(sprint: string, taskCount: number, comple
     payload: { sprint, taskCount, completedCount },
   });
 }
+
+// Sprint 643: Achiri alpha monitoring
+export function publishAchiriChat(opts: {
+  userId: string;
+  tier: string;
+  model: string;
+  provider: string;
+  messageLength: number;
+  responseTimeMs: number;
+  turnsInMemory: number;
+}): Promise<void> {
+  return publishEvent({
+    event_type: 'achiri.chat',
+    agent_id: 'achiri',
+    sprint: 'alpha',
+    timestamp: new Date().toISOString(),
+    payload: {
+      user_id: opts.userId,
+      tier: opts.tier,
+      model: opts.model,
+      provider: opts.provider,
+      message_length: opts.messageLength,
+      response_time_ms: opts.responseTimeMs,
+      turns_in_memory: opts.turnsInMemory,
+    },
+  });
+}
+
+export function publishAchiriVoice(opts: {
+  userId: string;
+  tier: string;
+  model: string;
+  provider: string;
+  responseTimeMs: number;
+}): Promise<void> {
+  return publishEvent({
+    event_type: 'achiri.voice',
+    agent_id: 'achiri',
+    sprint: 'alpha',
+    timestamp: new Date().toISOString(),
+    payload: {
+      user_id: opts.userId,
+      tier: opts.tier,
+      model: opts.model,
+      provider: opts.provider,
+      message_length: 0,
+      response_time_ms: opts.responseTimeMs,
+      turns_in_memory: 0,
+    },
+  });
+}

@@ -21,6 +21,7 @@ import { extractUserProfile } from './user-profile';
 import { loadSummary } from './conversation-summary';
 import { trackError, getErrorSummary } from './error-tracker';
 import { getFeedbackSummary } from './feedback-collector';
+import { publishAchiriChat } from '../../scripts/lib/event-bus-publisher';
 import { getUserTier, setUserTier, type AchiriTier } from './tier-store';
 
 const PORT = parseInt(process.env.ACHIRI_PORT ?? '3420', 10);
@@ -267,6 +268,7 @@ const server = http.createServer(async (req, res) => {
     }
 
     try {
+      const chatStart = Date.now();
       const handler = getHandler(tier, userId);
       const modelConfig = handler.getModelConfig();
       const reply = await handler.chat(message.trim());
@@ -296,7 +298,15 @@ const server = http.createServer(async (req, res) => {
       }
 
       const turns = memStore.loadHistory(userId).length;
-      console.log('[Achiri API] /chat userId=' + userId + ' tier=' + tier + ' turns_after=' + turns);
+      const responseTimeMs = Date.now() - chatStart;
+      console.log('[Achiri API] /chat userId=' + userId + ' tier=' + tier + ' turns_after=' + turns + ' ms=' + responseTimeMs);
+
+      // Sprint 643: log to Supabase event bus (non-blocking, fire-and-forget)
+      publishAchiriChat({
+        userId, tier, model: modelConfig.model, provider: modelConfig.provider,
+        messageLength: message.length, responseTimeMs, turnsInMemory: turns,
+      }).catch(() => {});
+
       return send(res, 200, {
         reply,
         turns_in_memory: turns,
