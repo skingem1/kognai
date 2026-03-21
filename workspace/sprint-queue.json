@@ -41,7 +41,7 @@
       "sprint": 651,
       "title": "BRAINX — Episodic Memory Module v1 (AMD-02 Addendum)",
       "block": "BRAINX",
-      "status": "pending",
+      "status": "done",
       "priority": "high",
       "rationale": "From sprint-plan-172-191 (Sprint 190-191), was skipped by swarm. Implement BrainX episodic memory per AMD-02 Addendum: skill_rental_gotcha + skill_rental_learning memory types, RENTAL_EXPIRED tier, nomic-embed-text local embeddings. Build: scripts/lib/brainx-memory.ts. No OpenAI dependency — all local."
     },
