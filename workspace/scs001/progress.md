@@ -2465,3 +2465,13 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - /gate Telegram command: already wired in dispatch, commands.ts missing (pre-existing)
 - Swarm used: no (gate data update)
 - Timestamp: 2026-03-21T15:45:00Z
+
+## Sprint 738 — INFRA System Health + Queue Replenish
+- Status: PASS
+- Commit: 2751574127f4d77598fc4179137ccd8d4a423276
+- Files created: workspace/scs001/system-health-snapshot.json, workspace/sprints/sprint-738.json
+- Files modified: workspace/sprint-queue.json (added sprints 739-743)
+- Health: 5 PM2 online, 17 stopped. 723GB free. Ollama 7 models. P2 operational, P1 hung.
+- Queue: added 5 new items (fix P1 hang, restore commands.ts, content batch, restart PM2, export videos)
+- Swarm used: no (health check + queue planning)
+- Timestamp: 2026-03-21T15:55:00Z
