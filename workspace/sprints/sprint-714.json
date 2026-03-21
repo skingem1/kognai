@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-714",
+  "title": "GOV — Generate SOUL.md for 10 utility kognai-agents (batch 2)",
+  "description": "Governance remediation Phase 4. Create SOUL.md for: conflict-analyzer, conway-integration, execution-verifier, execution-watchdog, frontend, backend-core, backend-ledger, backend-tax, bizdev, market-intelligence.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "714-01",
+      "title": "Create SOUL.md for 10 utility agents",
+      "type": "feature",
+      "task_type": "governance",
+      "task_target": "kognai-agents/*/SOUL.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-714"
+    }
+  ]
+}
