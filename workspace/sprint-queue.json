@@ -49,7 +49,7 @@
       "sprint": 652,
       "title": "BRAINX — Memory Governance + Swarm Integration",
       "block": "BRAINX",
-      "status": "pending",
+      "status": "done",
       "priority": "high",
       "rationale": "Wire BrainX memory into swarm orchestrator. Implement Rental Memory Governance Rule: propagate only within active swarm during rental period; on expiry originating agent retains WARM, copies → RENTAL_EXPIRED. Qwen3-4B for distillation. Test with 3-agent swarm."
     },
