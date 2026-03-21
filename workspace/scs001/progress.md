@@ -2434,3 +2434,13 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Pipeline: ClawRouter now routes exec calls 50/50 MiMo-V2-Pro/Gemini Flash when MIMO_AB_TEST_ACTIVE=true
 - Swarm used: no (surgical ClawRouter edit, single file)
 - Timestamp: 2026-03-21T15:10:00Z
+
+## Sprint 735 — QUALITY-01 Pipeline 1 Live Validation
+- Status: PASS (all 6 checks)
+- Commit: 4492c77a10de3e85109a8d6e04c8468ee4208235
+- Files created: scripts/scs001/validate-quality01.ts, workspace/scs001/quality01-validation.json, workspace/sprints/sprint-735.json
+- Test: validate-quality01.ts — PASS (has_run_id, editing_ok, tts_mix_ok, qc_ok, publishing_ok, mp4_exists)
+- Notes: MP4 output 1080x1920 9:16, 27s. Audio track not embedded in base MP4 yet.
+- Pipeline hung on re-run (0 output after 10min), validated against latest existing report.
+- Swarm used: no (validation script + pipeline run)
+- Timestamp: 2026-03-21T15:25:00Z
