@@ -1850,3 +1850,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (single file)
 - Issues: Found 10+ stale validate-*.ts tests referencing old bot structure. Added to skip list rather than fixing (not blocking).
 - Timestamp: 2026-03-21T23:20:00Z
+
+## Sprint 674 — TEST (/testsuite Telegram command)
+- Status: PASS
+- Commit: f19b205
+- Files created: workspace/sprints/sprint-674.json
+- Files modified: scripts/telegram-commands/cmd-system.ts, scripts/telegram-bot.ts
+- Test: validate-all-bot-commands.ts — 82/82 PASS
+- Details: New /testsuite async command runs validation suite --quick --telegram and sends results to Telegram. Operator can check system health on demand. Wired into async handler in bot router.
+- Swarm used: no (small feature)
+- Issues: None
+- Timestamp: 2026-03-21T23:28:00Z
