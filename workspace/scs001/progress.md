@@ -2770,3 +2770,15 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Gate: updated to reflect current stats (Sprint 754)
 - Queue: exhausted, needs replenishment at 761+
 - HANDOFF: next session starts at Sprint 761, read sprint-brief.md first
+
+## Sprint 765 — CONTENT
+- Status: PASS
+- Commit: 9768781
+- Files created: workspace/sprints/sprint-765.json, 6 script JSONs (3 debate, 2 explainer, 1 vision), 1 radar scan
+- Files modified: workspace/scs001/auto-delivered.jsonl, reports/stats-latest.json
+- Test: 6 final .mp4 files with fresh topics — PASS
+- Pipeline: 560 total ledger entries
+- Swarm used: no (pipeline run directly)
+- Issues: RapidAPI TikTok search 403 (not subscribed) — viral downloader skipped, non-blocking
+- Cost: ~$1.80
+- Timestamp: 2026-03-21T16:50:00Z
