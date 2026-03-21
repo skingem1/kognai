@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-673",
+  "title": "TEST — Unified validation suite runner for all 78 test scripts",
+  "description": "Build a meta-runner that executes key validation scripts and produces a consolidated pass/fail report. Covers bot commands, pipeline, content quality, and infrastructure.",
+  "source": "queue-empty-reliability",
+  "tasks": [
+    {
+      "id": "673-01",
+      "title": "Build unified validation runner for top validation scripts",
+      "type": "test",
+      "task_type": "test",
+      "task_target": "scripts/scs001/run-validation-suite.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-673"
+    }
+  ]
+}
