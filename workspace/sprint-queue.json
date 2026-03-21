@@ -1533,9 +1533,10 @@
       "sprint": 637,
       "title": "OPERATOR \u2014 Wire /smoke to Telegram (runs validate-full-pipeline.ts)",
       "block": "OPERATOR",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
-      "rationale": "E2E pipeline validator exists (Sprint 447) but only as CLI. Wire to /smoke Telegram command so operator can trigger pipeline smoke test from phone."
+      "rationale": "E2E pipeline validator exists (Sprint 447) but only as CLI. Wire to /smoke Telegram command so operator can trigger pipeline smoke test from phone.",
+      "_note": "Auto-skipped: sprint-637 already committed"
     },
     {
       "sprint": 638,
