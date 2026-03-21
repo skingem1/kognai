@@ -1380,3 +1380,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (single file bugfix)
 - Issues: None (this was a critical bug from Sprint 623 — approve wrote to file but bot didn't read it)
 - Timestamp: 2026-03-21T13:00:00Z
+
+## Sprint 625 — INFRA
+- Status: PASS
+- Commit: 0fd313b
+- Files created: workspace/sprints/sprint-625.json
+- Files modified: scripts/telegram-commands/cmd-posting.ts
+- Test: /digest command — PASS (shows 42 users, 12 DAU, 710 msg, waitlist 1, paid 0)
+- Pipeline: Daily digest now includes Achiri engagement metrics
+- Swarm used: no (single section addition)
+- Issues: None
+- Timestamp: 2026-03-21T13:15:00Z
