@@ -1809,3 +1809,13 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (one-line bugfix)
 - Issues: None
 - Timestamp: 2026-03-21T12:42:00Z
+
+## Sprint 670 — LAUNCH (/manifesto Telegram command)
+- Status: PASS
+- Commit: 1ec4c58
+- Files modified: scripts/telegram-bot.ts, scripts/telegram-commands/cmd-content.ts
+- Test: cmdManifesto() — PASS (shows all 15 posts with previews)
+- Details: New /manifesto command lets operator preview the full 15-post X thread from the Telegram bot. Each post shown with truncated preview. Status and source displayed. Ready for April 8-15 launch window.
+- Swarm used: no (small feature addition)
+- Issues: None
+- Timestamp: 2026-03-21T12:48:00Z
