@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-617",
+  "title": "ACHIRI — Ramadan context awareness in time-of-day hints",
+  "description": "Add Ramadan-aware context injection to Achiri's time-of-day system. During Ramadan (Feb 28 - Mar 30), injects fasting, iftar, and nighttime Ramadan context so Achiri responds with cultural sensitivity.",
+  "source": "cultural-relevance",
+  "tasks": [
+    {
+      "id": "617-01",
+      "title": "Add Ramadan context injection to index.ts chat handler",
+      "type": "feature",
+      "task_type": "achiri",
+      "task_target": "agents/achiri/index.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-617"
+    }
+  ]
+}

@@ -224,7 +224,7 @@ export class AchiriConversationHandler {
       console.log('[Achiri] topic_suggestion injected for stall message');
     }
 
-    // Sprint 343: Time-of-day context — Tunisian time zone greeting hints
+    // Sprint 343 + 617: Time-of-day + Ramadan context — Tunisian time zone
     const tunisiaHour = new Date(Date.now() + 3600_000).getUTCHours(); // CET = UTC+1
     let timeOfDayHint = '';
     if (tunisiaHour >= 5 && tunisiaHour < 12) {
@@ -235,6 +235,23 @@ export class AchiriConversationHandler {
       timeOfDayHint = '## Time Context\nIt is evening in Tunisia (مساء الخير — mesa el kheir). The user may be winding down. Be calm and supportive.';
     } else {
       timeOfDayHint = '## Time Context\nIt is nighttime in Tunisia (تصبح على خير — tosbah ala kheir). The user is up late. Be gentle and brief.';
+    }
+
+    // Sprint 617: Ramadan awareness — inject fasting/iftar context during Ramadan
+    // Ramadan 2026: ~Feb 28 to ~Mar 30 (approximate, varies by moon sighting)
+    const now = new Date();
+    const month = now.getMonth(); // 0-indexed
+    const day = now.getDate();
+    const isRamadan = (month === 1 && day >= 28) || (month === 2 && day <= 30); // Feb 28 - Mar 30
+    if (isRamadan) {
+      const ramadanDay = month === 1 ? (day - 27) : (day + 1); // approximate
+      if (tunisiaHour >= 5 && tunisiaHour < 18) {
+        timeOfDayHint += '\n\n## Ramadan Context\nIt is Ramadan in Tunisia (day ~' + ramadanDay + '/30). The user may be fasting (صايم — sayem). Be mindful: no food talk unless they bring it up. Be gentle about energy levels. Wish them "رمضان كريم" naturally if appropriate.';
+      } else if (tunisiaHour >= 18 && tunisiaHour < 21) {
+        timeOfDayHint += '\n\n## Ramadan Context\nIt is near iftar time in Tunisia (الفطور — el ftour). The user may be about to break their fast or just finished. This is a joyful moment — be warm and celebratory. "بالصحة و الراحة" (bil sa77a w ra7a) is appropriate.';
+      } else {
+        timeOfDayHint += '\n\n## Ramadan Context\nIt is nighttime during Ramadan. The user may be doing tarawih, having suhoor (سحور), or enjoying the festive Ramadan night atmosphere. Be warm and reference the special Ramadan evening energy.';
+      }
     }
 
     // Sprint 312: Feedback collection — inject rating request hint every N messages
