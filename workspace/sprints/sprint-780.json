@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-780",
+  "title": "OPS — Increase auto-deliver default batch to 3 videos/run",
+  "description": "Auto-deliver PM2 crons now send 3 videos per run (was 1). 3 runs/day = 9 videos/day delivered to operator. Faster backlog flushing.",
+  "source": "queue-exhausted-ops-improvement",
+  "tasks": [
+    {
+      "id": "780-01",
+      "title": "Change default batch size from 1 to 3 in posting-auto-deliver.ts",
+      "type": "feature",
+      "task_type": "ops",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-780"
+    }
+  ]
+}

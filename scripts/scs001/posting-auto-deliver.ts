@@ -221,8 +221,8 @@ async function sendVideoFile(videoPath: string, caption: string): Promise<void> 
 function parseBatchCount(): number {
   const args = process.argv.slice(2);
   const idx = args.indexOf('--batch');
-  if (idx >= 0 && args[idx + 1]) return Math.min(parseInt(args[idx + 1], 10) || 1, 20);
-  return 1;
+  if (idx >= 0 && args[idx + 1]) return Math.min(parseInt(args[idx + 1], 10) || 3, 20);
+  return 3; // Sprint 780: Default batch size 3 (was 1) — delivers 3 videos per PM2 cron run
 }
 
 async function main(): Promise<void> {
