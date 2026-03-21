@@ -1,10 +1,10 @@
 # SCS-001 TikTok Content Agent — Progress Log
 
-*Last updated: 2026-03-21 (Sprint 613)*
+*Last updated: 2026-03-21 (Sprint 614)*
 
 ## Summary
 
-- **Total sprints shipped:** 470 (Sprint 059 → Sprint 613)
+- **Total sprints shipped:** 471 (Sprint 059 → Sprint 614)
 - **Total commits:** 1110
 - **Current phase:** Phase 1 Active (Mar 17 – Apr 11 2026)
 - **Pipeline:** 12 stages, 11 agents, closed feedback loop
@@ -1259,3 +1259,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm bypassed: yes. Manual crystallise: skipped (skill-crystalliser not found).
 - Issues: None
 - Timestamp: 2026-03-21T09:30:00Z
+
+## Sprint 614 — CONTENT
+- Status: PASS
+- Commit: d955ad7
+- Files created: workspace/sprints/sprint-614.json
+- Files modified: scripts/scs001/run-multiformat-pipeline.ts, scripts/scs001/scan-video-inventory.ts, scripts/scs001/splitscreen-compositor.ts
+- Test: Import verification — PASS
+- Pipeline: listicle format fully wired into production pipeline (4 formats)
+- Swarm used: no (multi-file pipeline wiring)
+- Issues: None
+- Timestamp: 2026-03-21T09:45:00Z
