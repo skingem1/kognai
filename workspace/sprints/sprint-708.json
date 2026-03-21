@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-708",
+  "title": "GOV — BrainX integration smoke test",
+  "description": "Governance remediation Phase 2. Create tests/brainx-integration.test.ts: create bridge, store memory, retrieve, verify round-trip.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "708-01",
+      "title": "Create tests/brainx-integration.test.ts",
+      "type": "test",
+      "task_type": "test",
+      "task_target": "tests/brainx-integration.test.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-708"
+    }
+  ]
+}
