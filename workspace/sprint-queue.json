@@ -27,7 +27,8 @@
       "sprint": 746,
       "title": "POSTING \u2014 Refresh manual-post-queue with latest 10 best videos",
       "block": "POSTING",
-      "status": "pending",
+      "status": "done",
+      "_note": "Done: 10 videos refreshed from sprints 744-745 (4 explainer, 2 debate, 2 vision, 2 listicle).",
       "priority": "critical",
       "rationale": "Update manual-post-queue with newest videos from 487+ ledger. Prioritize diversity (explainer, debate, vision, listicle). Include avatar videos. April 7 gate: 30 posts needed."
     },

@@ -2539,3 +2539,12 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Topic sources exhausted after 1 batch (same 22 sources, need expansion — Sprint 748)
 - Swarm used: no (pipeline execution)
 - Timestamp: 2026-03-21T17:15:00Z
+
+## Sprint 746 — POSTING
+- Status: PASS
+- Commit: pending
+- Refreshed manual-post-queue with 10 latest videos (4 explainer, 2 debate, 2 vision, 2 listicle)
+- All from latest pipeline runs (sprints 744-745)
+- Unique topics: Akash Network, OpenCode, NemoClaw, NavTrust, Nemotron-Cascade 2, Solana
+- Swarm used: no (manifest update)
+- Timestamp: 2026-03-21T17:25:00Z

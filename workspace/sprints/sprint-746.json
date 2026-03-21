@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-746",
+  "title": "POSTING — Refresh manual-post-queue with latest 10 best videos",
+  "description": "Update manual-post-queue with newest videos from 492-entry ledger. Prioritize diversity (explainer, debate, vision, listicle). Include avatar videos. April 7 gate: 30 posts needed.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "746-01",
+      "title": "Refresh manual-post-queue with 10 latest diverse videos",
+      "type": "feature",
+      "task_type": "posting",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-746"
+    }
+  ]
+}
