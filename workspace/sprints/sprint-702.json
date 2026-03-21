@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-702",
+  "title": "GOV — Wire ACPEngine enforcement into CTO approval gate",
+  "description": "Governance remediation Phase 1. Wire ACPEngine.enforce() trust scoring into CTO approval gate. Reject tasks before LLM review if agent trust score is below threshold (block/recycle). Log warnings for fallback recommendations.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "702-01",
+      "title": "Wire ACPEngine into cto-approval-gate.ts",
+      "type": "feature",
+      "task_type": "governance",
+      "task_target": "scripts/lib/cto-approval-gate.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-702"
+    },
+    {
+      "id": "702-02",
+      "title": "Validate ACPEngine enforcement in CTO gate",
+      "type": "test",
+      "task_type": "test",
+      "task_target": "scripts/scs001/validate-acp-enforcement.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-702"
+    }
+  ]
+}

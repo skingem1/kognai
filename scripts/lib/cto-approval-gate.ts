@@ -22,6 +22,8 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { routeCall, type ClawRouterV2Response } from './clawrouter-v2';
 import { checkCapability, getAgent, type Capability, type CapabilityCheckResult } from '../../agents/lib/acp';
+// Sprint 702: ACPEngine trust scoring enforcement
+import { ACPEngine, type EnforcementResult } from '../../acp/acp-engine';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -134,6 +136,44 @@ export async function requestCTOApproval(
         acp_violations: violations,
       };
     }
+  }
+
+  // Sprint 702: ACPEngine trust enforcement — reject low-trust agents before wasting LLM tokens
+  try {
+    const acpEngine = new ACPEngine();
+    const taskTypes = proposal.tasks.map(t => typeof t === 'string' ? 'code-generation' : (t as any).task_type || 'code-generation');
+    const agentIds = proposal.agent_capabilities?.map(a => a.agent) || ['coder'];
+
+    for (const agentId of agentIds) {
+      for (const taskType of taskTypes) {
+        const enforcement = acpEngine.enforce(agentId, taskType);
+        if (enforcement.recommendation === 'block' || enforcement.recommendation === 'recycle') {
+          const violationStr = enforcement.violations.join('; ');
+          logCTODecision({
+            approved: false,
+            sprint_id: proposal.sprint_id,
+            reason: `ACPEngine ${enforcement.recommendation}: ${violationStr} (composite: ${enforcement.composite})`,
+            plan_reference: 'ACP_TRUST_VIOLATION',
+            cto_confidence: 100,
+            timestamp,
+          }, projectRoot, product);
+          return {
+            approved: false,
+            sprint_id: proposal.sprint_id,
+            reason: `ACPEngine ${enforcement.recommendation}: ${violationStr}`,
+            plan_reference: 'ACP_TRUST_VIOLATION',
+            cto_confidence: 100,
+            timestamp,
+          };
+        }
+        if (enforcement.recommendation === 'fallback') {
+          console.warn(`[CTO-GATE] ACPEngine fallback for ${agentId}/${taskType}: ${enforcement.violations.join('; ')} (composite: ${enforcement.composite})`);
+        }
+      }
+    }
+  } catch (err: any) {
+    // ACPEngine failure is non-fatal — proceed with LLM review
+    console.warn(`[CTO-GATE] ACPEngine check failed (non-fatal): ${err.message}`);
   }
 
   const planContext = loadPlanContext(projectRoot);
