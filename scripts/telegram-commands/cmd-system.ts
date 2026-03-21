@@ -990,3 +990,19 @@ export function cmdChangelog(count: number = 10): string {
     return '❌ Could not read git log.';
   }
 }
+
+// Sprint 674: /testsuite — Run validation suite and report results
+export async function cmdTestSuite(chatId: string): Promise<void> {
+  await sendMessage(chatId, '🧪 Running validation suite... (5-10s)');
+  try {
+    const output = execSync(
+      'npx ts-node --transpile-only scripts/scs001/run-validation-suite.ts --quick --telegram',
+      { cwd: ROOT, stdio: 'pipe', timeout: 30_000 }
+    ).toString();
+    await sendMessage(chatId, output || '✅ Validation suite completed.');
+  } catch (e: any) {
+    const stdout = e.stdout?.toString() || '';
+    const stderr = e.stderr?.toString()?.slice(-200) || '';
+    await sendMessage(chatId, stdout || `❌ Validation suite error:\n\`${stderr}\``);
+  }
+}

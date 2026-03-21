@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-674",
+  "title": "TEST — Wire /testsuite Telegram command to validation runner",
+  "description": "Add /testsuite command to Telegram bot that runs validation suite --quick --telegram and returns results. Operator can check system health on demand.",
+  "source": "queue-empty-reliability",
+  "tasks": [
+    {
+      "id": "674-01",
+      "title": "Add /testsuite Telegram command wired to run-validation-suite.ts",
+      "type": "feature",
+      "task_type": "test",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-674"
+    }
+  ]
+}
