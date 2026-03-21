@@ -1,0 +1,28 @@
+{
+  "sprint_id": "sprint-772",
+  "title": "CONTENT — Batch 9: 10 fresh videos from expanded sources ($3.00)",
+  "description": "Produce 10 fresh multiformat videos across 2 pipeline passes. Ledger: 596 → 606. Topics nearly exhausted for current scan cycle.",
+  "source": "queue-exhausted-content-push",
+  "tasks": [
+    {
+      "id": "772-01",
+      "title": "Run multiformat pipeline pass 1 (5 videos)",
+      "type": "feature",
+      "task_type": "content",
+      "agent": "coder",
+      "status": "done",
+      "priority": "critical",
+      "sprint_id": "sprint-772"
+    },
+    {
+      "id": "772-02",
+      "title": "Run multiformat pipeline pass 2 (5 videos)",
+      "type": "feature",
+      "task_type": "content",
+      "agent": "coder",
+      "status": "done",
+      "priority": "critical",
+      "sprint_id": "sprint-772"
+    }
+  ]
+}
