@@ -23,7 +23,7 @@
  */
 
 import { join } from 'path';
-import { mkdirSync, writeFileSync, existsSync } from 'fs';
+import { mkdirSync, writeFileSync, existsSync, appendFileSync } from 'fs';
 import { TopicRadar, type TopicBrief, type VideoFormat } from './topic-radar';
 import { generateScript, generateBatch, type VideoScript } from './multiformat-scriptgen';
 import { generateAvatarSegments, isAvatarAvailable, type AvatarConfig } from './avatar-presenter';
@@ -284,47 +284,64 @@ async function runPipeline(options: {
   for (const script of scripts) {
     console.log(`\n🎬 Processing: [${script.format.toUpperCase()}] ${script.title.slice(0, 50)}`);
 
-    // Stage 3: TTS
-    console.log('  🔊 Generating voiceovers...');
-    const ttsDir = join(runDir, 'tts', script.script_id);
-    const ttsSegments = await generateTTS(script, ttsDir);
-    const ttsCount = ttsSegments.filter(s => s.audio_path).length;
-    console.log(`     ${ttsCount}/${script.lines.length} audio segments generated`);
+    // Sprint 755: Wrap per-video pipeline in try/catch for error recovery
+    try {
+      // Stage 3: TTS
+      console.log('  🔊 Generating voiceovers...');
+      const ttsDir = join(runDir, 'tts', script.script_id);
+      const ttsSegments = await generateTTS(script, ttsDir);
+      const ttsCount = ttsSegments.filter(s => s.audio_path).length;
+      console.log(`     ${ttsCount}/${script.lines.length} audio segments generated`);
 
-    // Stage 4: Avatar Generation
-    console.log('  🤖 Generating avatar clips...');
-    const { clips, cost } = await generateAvatarsForScript(script, ttsSegments, dryRun);
-    totalCost += cost;
-    console.log(`     ${clips.size} avatar clips (cost: $${cost.toFixed(2)})`);
+      // Stage 4: Avatar Generation
+      console.log('  🤖 Generating avatar clips...');
+      const { clips, cost } = await generateAvatarsForScript(script, ttsSegments, dryRun);
+      totalCost += cost;
+      console.log(`     ${clips.size} avatar clips (cost: $${cost.toFixed(2)})`);
 
-    // Stage 5: Composition
-    console.log('  🎞️  Compositing final video...');
-    const compositorInput = {
-      script,
-      avatar_clips: clips,
-      tts_audio: ttsSegments.map(s => s.audio_path),
-      output_dir: join(runDir, 'output'),
-    };
-    const compResult = composite(compositorInput);
+      // Stage 5: Composition
+      console.log('  🎞️  Compositing final video...');
+      const compositorInput = {
+        script,
+        avatar_clips: clips,
+        tts_audio: ttsSegments.map(s => s.audio_path),
+        output_dir: join(runDir, 'output'),
+      };
+      const compResult = composite(compositorInput);
 
-    if (compResult.success) {
-      console.log(`  ✅ Output: ${compResult.output_path}`);
-    } else {
-      console.log(`  ❌ Failed: ${compResult.error}`);
+      if (compResult.success) {
+        console.log(`  ✅ Output: ${compResult.output_path}`);
+      } else {
+        console.log(`  ❌ Failed: ${compResult.error}`);
+      }
+
+      results.push({
+        script_id: script.script_id,
+        format: script.format,
+        title: script.title,
+        video_path: compResult.output_path,
+        srt_path: compResult.srt_path,
+        duration_s: compResult.duration_s,
+        success: compResult.success,
+        error: compResult.error,
+        avatar_cost: cost,
+        llm_used: script.llm_used,
+      });
+    } catch (videoErr) {
+      console.error(`  ❌ CRASH: ${(videoErr as Error).message} — skipping video, continuing pipeline`);
+      results.push({
+        script_id: script.script_id,
+        format: script.format,
+        title: script.title,
+        video_path: '',
+        srt_path: '',
+        duration_s: 0,
+        success: false,
+        error: `Pipeline crash: ${(videoErr as Error).message}`,
+        avatar_cost: 0,
+        llm_used: script.llm_used,
+      });
     }
-
-    results.push({
-      script_id: script.script_id,
-      format: script.format,
-      title: script.title,
-      video_path: compResult.output_path,
-      srt_path: compResult.srt_path,
-      duration_s: compResult.duration_s,
-      success: compResult.success,
-      error: compResult.error,
-      avatar_cost: cost,
-      llm_used: script.llm_used,
-    });
   }
 
   // ── Summary ──
@@ -348,6 +365,30 @@ async function runPipeline(options: {
   // Save run report
   const reportPath = join(runDir, 'run-report.json');
   writeFileSync(reportPath, JSON.stringify(runResult, null, 2));
+
+  // Register successful videos in publish-ledger.jsonl for auto-deliver
+  const ledgerPath = join(WORKSPACE, 'publish-ledger.jsonl');
+  for (const r of results.filter(r => r.success)) {
+    const ledgerEntry = {
+      clip_id: `mf-${r.script_id}`,
+      video_id: r.script_id,
+      published_at: completedAt,
+      run_id: runId,
+      hook_formula: r.format,
+      speaker: scripts.find(s => s.script_id === r.script_id)?.lines[0]?.speaker ?? 'Kognai',
+      topic: r.title,
+      source: 'multiformat',
+      format: r.format,
+      video_path: r.video_path,
+      srt_path: r.srt_path,
+      duration_s: r.duration_s,
+      llm_used: r.llm_used,
+    };
+    appendFileSync(ledgerPath, JSON.stringify(ledgerEntry) + '\n');
+  }
+  if (successCount > 0) {
+    console.log(`📋 Registered ${successCount} videos in publish-ledger.jsonl`);
+  }
 
   console.log(`\n${'='.repeat(60)}`);
   console.log('📊 Pipeline Summary');

@@ -53,6 +53,7 @@ export interface TopicRadarResult {
 const ROOT = join(__dirname, '..', '..');
 const OUT_DIR = join(ROOT, 'workspace', 'scs001', 'topic-radar');
 const DEDUP_PATH = join(OUT_DIR, 'seen-topics.json');
+const LEDGER_PATH = join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl');
 
 // AI/Tech/DeFi relevance keywords
 const RELEVANCE_KEYWORDS = [
@@ -119,6 +120,25 @@ function saveSeenTopics(seen: Set<string>): void {
 
 function topicHash(title: string): string {
   return createHash('sha256').update(title.toLowerCase().trim()).digest('hex').slice(0, 12);
+}
+
+// Sprint 755: Load topic titles from publish-ledger to prevent re-producing same topics
+function loadLedgerTopics(): Set<string> {
+  if (!existsSync(LEDGER_PATH)) return new Set();
+  try {
+    const lines = readFileSync(LEDGER_PATH, 'utf8').trim().split('\n');
+    const titles = new Set<string>();
+    for (const line of lines) {
+      try {
+        const entry = JSON.parse(line);
+        if (entry.topic) {
+          // Normalize: lowercase, trim, first 40 chars for fuzzy match
+          titles.add(entry.topic.toLowerCase().trim().slice(0, 40));
+        }
+      } catch {}
+    }
+    return titles;
+  } catch { return new Set(); }
 }
 
 // ── Relevance Scoring ──────────────────────────────────
@@ -584,8 +604,18 @@ export class TopicRadar {
       }
     }
 
+    // Sprint 755: Dedup against publish-ledger (prevents reproducing same topics across runs)
+    const ledgerTopics = loadLedgerTopics();
+    const afterLedgerDedup = allTopics.filter(t => {
+      const normalized = t.title?.toLowerCase().trim().slice(0, 40) || '';
+      return !ledgerTopics.has(normalized);
+    });
+    if (afterLedgerDedup.length < allTopics.length) {
+      console.log(`[TopicRadar] Ledger dedup: ${allTopics.length - afterLedgerDedup.length} topics already in ledger, ${afterLedgerDedup.length} remaining`);
+    }
+
     // Dedup against previously seen topics
-    const fresh = allTopics.filter(t => !this.seen.has(t.topic_id));
+    const fresh = afterLedgerDedup.filter(t => !this.seen.has(t.topic_id));
 
     // Sort by confidence (highest first)
     fresh.sort((a, b) => b.confidence - a.confidence);

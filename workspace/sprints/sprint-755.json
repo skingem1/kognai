@@ -1,0 +1,28 @@
+{
+  "sprint_id": "sprint-755",
+  "title": "FIX — Pipeline hardening: ledger dedup + per-video error recovery",
+  "description": "Added publish-ledger dedup to topic-radar (prevents reproducing same topics across runs). Added try/catch per-video in multiformat pipeline for crash recovery.",
+  "source": "queue-item-755",
+  "tasks": [
+    {
+      "id": "755-01",
+      "title": "Add ledger-based dedup to topic-radar.ts",
+      "type": "fix",
+      "task_type": "pipeline",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-755"
+    },
+    {
+      "id": "755-02",
+      "title": "Add per-video try/catch in run-multiformat-pipeline.ts",
+      "type": "fix",
+      "task_type": "pipeline",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-755"
+    }
+  ]
+}
