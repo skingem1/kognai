@@ -1651,3 +1651,9 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (research + evaluation)
 - Issues: skill-crystalliser module not found (skipped). MEMORY.md edit blocked by permissions.
 - Timestamp: 2026-03-21T10:00:00Z
+
+## Sprint 655 — AMD-14 (Architecture Amendment 14)
+- Status: SKIPPED
+- Reason: No AMD-14 spec exists in Master Documents. Amendments only go up to AMD-13. Blocked on human.
+- Swarm used: no
+- Timestamp: 2026-03-21T10:15:00Z

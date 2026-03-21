@@ -1,0 +1,9 @@
+{
+  "sprint_id": "sprint-655",
+  "title": "AMD-14 — Architecture Amendment 14 (pending spec)",
+  "description": "SKIPPED — No AMD-14 spec found in Master Documents. Amendments go up to AMD-13. Blocked on human to provide AMD-14 specification.",
+  "source": "sprint-queue",
+  "tasks": [],
+  "status": "skipped",
+  "skip_reason": "No AMD-14 spec exists in ~/Documents/Kognai/Master Documents/. Amendments only go up to kognai_architecture_amendment_13.docx. Blocked on human to define AMD-14."
+}

@@ -73,7 +73,7 @@
       "sprint": 655,
       "title": "AMD-14 — Architecture Amendment 14 (pending spec)",
       "block": "ARCHITECTURE",
-      "status": "pending",
+      "status": "skipped",
       "priority": "medium",
       "rationale": "AMD-14 was queued in sprint-plan but never executed. Read AMD-14 spec from Master Documents if it exists, implement accordingly. If no spec exists, skip and mark as blocked on human."
     },
