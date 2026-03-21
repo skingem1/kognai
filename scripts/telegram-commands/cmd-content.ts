@@ -957,3 +957,28 @@ export function cmdFormatStats(): string {
 
   return lines.join('\n');
 }
+
+// Sprint 670: /manifesto — preview X manifesto thread
+export function cmdManifesto(): string {
+  const threadPath = path.join(ROOT, 'workspace', 'launch', 'manifesto-thread.json');
+  if (!fs.existsSync(threadPath)) return '❌ *Manifesto Thread* — not built yet.';
+  try {
+    const data = JSON.parse(fs.readFileSync(threadPath, 'utf-8'));
+    const posts: Array<{ id: number; text: string }> = data.posts ?? [];
+    if (posts.length === 0) return '❌ *Manifesto Thread* — no posts found.';
+
+    const lines = [
+      `📜 *Kognai Manifesto No.1* — ${posts.length} posts`,
+      `Status: ${data.status ?? 'unknown'} | Source: ${data.source ?? 'unknown'}`,
+      '',
+    ];
+    for (const p of posts) {
+      const text = (p.text ?? '').replace(/[*_`]/g, '');
+      const preview = text.length > 120 ? text.slice(0, 117) + '...' : text;
+      lines.push(`*${p.id}/${posts.length}*  ${preview}`);
+    }
+    lines.push('');
+    lines.push('_Ready for April 8-15 launch window_');
+    return lines.join('\n');
+  } catch { return '❌ *Manifesto Thread* — parse error.'; }
+}
