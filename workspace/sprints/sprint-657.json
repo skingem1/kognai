@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-657",
+  "title": "LAUNCH — kognai.ai landing page build",
+  "description": "Build static landing page for kognai.ai: hero + manifesto excerpt + waitlist form. HTML/CSS/JS in workspace/landing-page/. Ready to deploy on Vercel when domain registered.",
+  "source": "sprint-queue",
+  "tasks": [
+    {
+      "id": "657-01",
+      "title": "Build landing page HTML/CSS/JS",
+      "type": "feature",
+      "task_type": "frontend",
+      "task_target": "workspace/landing-page/index.html",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-657"
+    }
+  ]
+}
