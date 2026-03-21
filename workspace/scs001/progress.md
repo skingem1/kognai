@@ -2088,3 +2088,13 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (multi-file work, wrote directly)
 - Issues: PGHOST not in env — backfill stores are no-ops until human sets up DB config
 - Timestamp: 2026-03-21T12:35:00Z
+
+## Sprint 708 — GOV — BrainX integration smoke test
+- Status: PASS
+- Commit: 1902aeb
+- Files created: tests/brainx-integration.test.ts, workspace/sprints/sprint-708.json
+- Test: npx ts-node tests/brainx-integration.test.ts — 6 tests, 2 PASS, 4 SKIP, 0 FAIL
+- Pipeline: GOV Phase 2 COMPLETE (705-708). BrainX: verify script, orchestrator wiring, backfill, smoke test all done.
+- Swarm used: no (test code, wrote directly)
+- Issues: DB tests skip until PGHOST set (human gate)
+- Timestamp: 2026-03-21T12:40:00Z
