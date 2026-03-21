@@ -24,6 +24,7 @@ export function cmdHelp(): string {
     `/crons     — All PM2 cron schedules\n` +
     `/health    — Health check summary\n` +
     `/preflight — Production readiness checklist\n` +
+    `/smoke     — Pipeline smoke test (1-3 min)\n` +
     `/tier      — Current tier + MRR\n` +
     `/sprint    — Latest sprint progress\n` +
     `/gate      — Phase 1.5 gate countdown\n` +

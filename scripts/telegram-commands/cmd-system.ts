@@ -825,6 +825,48 @@ export function cmdLogs(): string {
   return sections.join('\n');
 }
 
+// Sprint 637: /smoke — Pipeline smoke test (async, long-running)
+export async function cmdSmoke(chatId: string): Promise<void> {
+  await sendMessage(chatId, '🔥 Running pipeline smoke test... (this takes 1-3 min)');
+  try {
+    const { exec } = require('child_process');
+    const output: string = await new Promise((resolve, reject) => {
+      exec(
+        'npx ts-node --transpile-only scripts/scs001/validate-full-pipeline.ts',
+        { cwd: ROOT, timeout: 240000, encoding: 'utf-8', maxBuffer: 1024 * 1024 },
+        (err: any, stdout: string, stderr: string) => {
+          if (err && !stdout) reject(new Error(stderr || err.message));
+          else resolve(stdout || stderr);
+        }
+      );
+    });
+
+    // Parse results
+    const passMatch = output.match(/(\d+) passed/);
+    const failMatch = output.match(/(\d+) failed/);
+    const passed = passMatch ? parseInt(passMatch[1]) : 0;
+    const failed = failMatch ? parseInt(failMatch[1]) : 0;
+    const icon = failed === 0 ? '✅' : '❌';
+
+    const lines: string[] = [
+      `${icon} *Pipeline Smoke Test*`,
+      `${passed} passed, ${failed} failed`,
+      '',
+    ];
+
+    // Extract individual check results
+    for (const line of output.split('\n')) {
+      if (line.includes('✓') || line.includes('✗')) {
+        lines.push(line.trim());
+      }
+    }
+
+    await sendMessage(chatId, lines.join('\n'));
+  } catch (err: any) {
+    await sendMessage(chatId, `❌ Smoke test error: ${(err.message || '').slice(0, 300)}`);
+  }
+}
+
 // Sprint 629: /preflight — Production readiness check
 export function cmdPreflight(): string {
   const checks: { name: string; pass: boolean; detail: string }[] = [];

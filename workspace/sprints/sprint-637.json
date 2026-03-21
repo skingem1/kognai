@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-637",
+  "title": "OPERATOR — Wire /smoke to Telegram (runs pipeline smoke test)",
+  "description": "E2E pipeline validator exists (validate-full-pipeline.ts) but only as CLI. Add async /smoke Telegram command that runs it and reports results. Operator can verify pipeline health from phone.",
+  "source": "operator-productivity",
+  "tasks": [
+    {
+      "id": "637-01",
+      "title": "Add async cmdSmoke to cmd-system.ts + wire into router",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-637"
+    }
+  ]
+}
