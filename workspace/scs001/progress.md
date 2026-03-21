@@ -2936,8 +2936,20 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Cost: $0.00
 - Timestamp: 2026-03-21T18:45:00Z
 
-## Session 28 Final Summary (Sprints 770-776)
-- 7 sprints shipped
+## Sprint 777 — FIX
+- Status: PASS
+- Commit: 984c102
+- Files created: workspace/sprints/sprint-777.json
+- Files modified: scripts/scs001/run-multiformat-pipeline.ts
+- Test: dry-run ledger count unchanged (606 → 606) — PASS
+- Pipeline: Fixed dry-run ledger pollution bug
+- Swarm used: no (surgical fix)
+- Issues: None — this was root cause of topic saturation amplification
+- Cost: $0.00
+- Timestamp: 2026-03-21T18:55:00Z
+
+## Session 28 Final Summary (Sprints 770-777)
+- 8 sprints shipped
 - 20 new videos produced (~$7.50 total avatar cost)
 - Ledger: 572 → 606 (+34)
 - 3 new radar sources added (Dev.to, Lobsters, TechCrunch), Reddit expanded 4→8 subs
@@ -2946,5 +2958,6 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Auto-deliver: 272 total delivered to Telegram
 - Gate alert: enhanced with curated queue display
 - Gate: 606 videos, 1/30 posts, 17 days to April 7 (AT_RISK)
-- HANDOFF: next session starts at Sprint 777, read sprint-brief.md first
+- Bug fix: dry-run no longer pollutes publish-ledger (was amplifying topic saturation)
+- HANDOFF: next session starts at Sprint 778, read sprint-brief.md first
 - CRITICAL: Operator must start manual TikTok posting (29 posts needed in 17 days, 2/day pace)
