@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-717",
+  "title": "GOV — Create memory directories for all ACP-registered agents",
+  "description": "Governance remediation Phase 4. Create workspace/agents/{agent}/memory/ for all agents missing memory directories. Prepares BrainX per-agent memory.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "717-01",
+      "title": "Create memory directories for 48 agents",
+      "type": "feature",
+      "task_type": "governance",
+      "task_target": "workspace/agents/*/memory/",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-717"
+    }
+  ]
+}
