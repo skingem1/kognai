@@ -1,0 +1,48 @@
+{
+  "sprint_id": "sprint-726",
+  "title": "CONTENT — Batch produce 7 new videos to hit 30 inventory target",
+  "description": "Run multiformat pipeline to produce 7 more videos, bringing inventory from 23 to 30. Uses topic radar for fresh topics and existing pipeline infrastructure.",
+  "source": "auto-queue-empty",
+  "tasks": [
+    {
+      "id": "726-01",
+      "title": "Scan for 7 fresh topics using topic radar",
+      "type": "feature",
+      "task_type": "content",
+      "task_target": "scripts/scs001/run-multiformat-pipeline.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-726"
+    },
+    {
+      "id": "726-02",
+      "title": "Run multiformat pipeline batch for 7 videos",
+      "type": "feature",
+      "task_type": "content",
+      "task_target": "scripts/scs001/run-multiformat-pipeline.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-726"
+    },
+    {
+      "id": "726-03",
+      "title": "Validate produced videos and update inventory report",
+      "type": "feature",
+      "task_type": "content",
+      "task_target": "scripts/scs001/video-inventory.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-726"
+    }
+  ],
+  "cto_gate": {
+    "approved": false,
+    "reason": "The sprint is not in any plan and is not a critical fix; it involves producing new videos for inventory, which is not aligned with the current execution or work plans.",
+    "plan_reference": "NOT_IN_PLAN",
+    "confidence": 95,
+    "timestamp": "2026-03-21T12:46:30.524Z"
+  }
+}

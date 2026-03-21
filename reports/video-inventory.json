@@ -1,18 +1,26 @@
 {
-  "scanned_at": "2026-03-21T02:24:59.612Z",
-  "total_runs": 27,
-  "total_videos": 62,
-  "unique_topics": 18,
-  "already_registered": 16,
-  "newly_registered": 2,
+  "scanned_at": "2026-03-21T12:53:06.526Z",
+  "total_runs": 48,
+  "total_videos": 100,
+  "unique_topics": 24,
+  "already_registered": 24,
+  "newly_registered": 0,
   "already_posted": 0,
-  "ready_to_post": 18,
+  "ready_to_post": 24,
   "gate_status": {
-    "posted": 0,
+    "posted": 1,
     "target": 30,
-    "gap": 30
+    "gap": 29
   },
   "videos": [
+    {
+      "video_id": "vis-bfd05f35",
+      "format": "vision",
+      "title": "Artificial Superintelligence Alliance (FET) 📉 -1.2%",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T08-7x07/output/vis-bfd05f35_final.mp4"
+    },
     {
       "video_id": "vis-4725cdc9",
       "format": "vision",
@@ -20,6 +28,14 @@
       "duration_s": 33,
       "posted": false,
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260320T23-8xex/output/vis-4725cdc9_final.mp4"
+    },
+    {
+      "video_id": "dbt-a8493ba3",
+      "format": "debate",
+      "title": "Solana (SOL) 📈 0.1%",
+      "duration_s": 27,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T08-7x07/output/dbt-a8493ba3_final.mp4"
     },
     {
       "video_id": "dbt-20a69b48",
@@ -52,6 +68,38 @@
       "duration_s": 27,
       "posted": false,
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260320T21-kfes/output/dbt-b87db595_final.mp4"
+    },
+    {
+      "video_id": "exp-81a3eec7",
+      "format": "explainer",
+      "title": "Akash Network (AKT) 📈 10.2%",
+      "duration_s": 25,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T12-p7y7/output/exp-81a3eec7_final.mp4"
+    },
+    {
+      "video_id": "exp-697ebbf1",
+      "format": "explainer",
+      "title": "Ethereum (ETH) 📉 -0.0%",
+      "duration_s": 25,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T11-mv4s/output/exp-697ebbf1_final.mp4"
+    },
+    {
+      "video_id": "exp-7246ebc4",
+      "format": "explainer",
+      "title": "We rewrote our Rust WASM parser in TypeScript and it got faster",
+      "duration_s": 25,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T08-7x07/output/exp-7246ebc4_final.mp4"
+    },
+    {
+      "video_id": "exp-15b81816",
+      "format": "explainer",
+      "title": "pippin (PIPPIN) 📈 12.0%",
+      "duration_s": 25,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T08-7x07/output/exp-15b81816_final.mp4"
     },
     {
       "video_id": "exp-d4e52afd",
@@ -94,6 +142,22 @@
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260320T23-gd13/output/exp-45a95cc1_final.mp4"
     },
     {
+      "video_id": "lst-cabd1f02",
+      "format": "listicle",
+      "title": "Top 3 solana sol tools you need to know",
+      "duration_s": 20,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T08-7gle/output/lst-cabd1f02_final.mp4"
+    },
+    {
+      "video_id": "lst-29825ebd",
+      "format": "listicle",
+      "title": "Top 3 ether.fi ethfi tools you need to know",
+      "duration_s": 20,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T08-7x07/output/lst-29825ebd_final.mp4"
+    },
+    {
       "video_id": "lst-2cba4665",
       "format": "listicle",
       "title": "Top 3 bitcoin btc tools you need to know",
@@ -118,14 +182,6 @@
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T00-m8h5/output/lst-f8c0351d_final.mp4"
     },
     {
-      "video_id": "exp-bb8beedc",
-      "format": "explainer",
-      "title": "Ethereum (ETH) 📈 0.1%",
-      "duration_s": 12,
-      "posted": false,
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260320T23-kj0x/output/exp-bb8beedc_final.mp4"
-    },
-    {
       "video_id": "exp-560203b8",
       "format": "explainer",
       "title": "Katana (KAT) 📈 2.2%",
@@ -140,14 +196,6 @@
       "duration_s": 12,
       "posted": false,
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260320T22-pxzq/output/exp-72c42c90_final.mp4"
-    },
-    {
-      "video_id": "exp-4aec210d",
-      "format": "explainer",
-      "title": "Solana (SOL) 📈 1.1%",
-      "duration_s": 12,
-      "posted": false,
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260320T22-pxzq/output/exp-4aec210d_final.mp4"
     },
     {
       "video_id": "exp-16516b9d",
