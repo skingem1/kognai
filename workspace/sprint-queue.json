@@ -43,7 +43,8 @@
       "sprint": 754,
       "title": "GATE — Refresh April 7 gate tracker (500+ videos, posting progress update)",
       "block": "GATE",
-      "status": "pending",
+      "status": "done",
+      "_note": "Done: gate refreshed — 509 videos, 98 real content, 17 days remaining.",
       "priority": "high",
       "rationale": "Update gate tracker with current stats. 500+ ledger, check posting progress."
     },
