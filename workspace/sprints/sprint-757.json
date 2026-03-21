@@ -1,0 +1,28 @@
+{
+  "sprint_id": "sprint-757",
+  "title": "CONTENT+POSTING — 5 fresh videos + post queue refreshed to 15",
+  "description": "Content batch 7 with ledger dedup (new topics: zeroboot, OS-Themis, F2LLM-v2, NemoClaw, britain bond). Post manifest refreshed to 15 diverse videos.",
+  "source": "queue-exhausted-brief-recommendation",
+  "tasks": [
+    {
+      "id": "757-01",
+      "title": "Run multiformat pipeline for 5+ fresh videos",
+      "type": "feature",
+      "task_type": "content",
+      "agent": "coder",
+      "status": "done",
+      "priority": "critical",
+      "sprint_id": "sprint-757"
+    },
+    {
+      "id": "757-02",
+      "title": "Refresh post-manifest.json to 15 diverse videos",
+      "type": "feature",
+      "task_type": "posting",
+      "agent": "coder",
+      "status": "done",
+      "priority": "critical",
+      "sprint_id": "sprint-757"
+    }
+  ]
+}

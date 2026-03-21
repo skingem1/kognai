@@ -1,106 +1,142 @@
 {
-  "created": "2026-03-21T15:00:00Z",
-  "sprint": "sprint-752",
-  "total_videos": 11,
+  "created": "2026-03-21T15:35:00Z",
+  "sprint": "sprint-757",
+  "total_videos": 15,
   "purpose": "Manual TikTok posting \u2014 April 7 gate requires 30 posts",
   "instructions": "Post 2-3 videos per day. Use the caption from the SRT file. Use suggested hashtags. Mix formats for variety.",
   "videos": [
     {
       "order": 1,
-      "video_id": "lst-3edd6ea9",
-      "format": "listicle",
-      "topic": "Top 3 bitcoin btc tools you need to know",
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T14-f7io/output/lst-3edd6ea9_final.mp4",
-      "suggested_hashtags": "#tech #tools #top3 #tiktokviral #learnontiktok",
+      "video_id": "exp-37b9d8e3",
+      "format": "explainer",
+      "topic": "OpenCode \u2013 Open source AI coding agent",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T14-93xe/output/exp-37b9d8e3_final.mp4",
+      "suggested_hashtags": "#tech #ai #explained #learnontiktok #tiktokviral",
       "posted": false
     },
     {
       "order": 2,
-      "video_id": "exp-cc4bcfeb",
+      "video_id": "exp-7be255e6",
       "format": "explainer",
-      "topic": "Akash Network (AKT) \ud83d\udcc8 12.1%",
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T14-5nxf/output/exp-cc4bcfeb_final.mp4",
+      "topic": "NVIDIA/NemoClaw \u2014 Run OpenClaw securely inside NVIDIA OpenShell with managed inference",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T14-93xe/output/exp-7be255e6_final.mp4",
       "suggested_hashtags": "#tech #ai #explained #learnontiktok #tiktokviral",
       "posted": false
     },
     {
       "order": 3,
-      "video_id": "lst-82c831bf",
-      "format": "listicle",
-      "topic": "Top 3 sstklen trump tools you need to know",
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T14-2y0n/output/lst-82c831bf_final.mp4",
-      "suggested_hashtags": "#tech #tools #top3 #tiktokviral #learnontiktok",
-      "posted": false
-    },
-    {
-      "order": 4,
-      "video_id": "lst-da624ddf",
-      "format": "listicle",
-      "topic": "Top 3 solana sol tools you need to know",
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T14-yz1n/output/lst-da624ddf_final.mp4",
-      "suggested_hashtags": "#tech #tools #top3 #tiktokviral #learnontiktok",
-      "posted": false
-    },
-    {
-      "order": 5,
-      "video_id": "exp-1fbf40ad",
-      "format": "explainer",
-      "topic": "Virtuals Protocol (VIRTUAL) \ud83d\udcc9 -1.1%",
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T14-b8qv/output/exp-1fbf40ad_final.mp4",
-      "suggested_hashtags": "#tech #ai #explained #learnontiktok #tiktokviral",
-      "posted": false
-    },
-    {
-      "order": 6,
-      "video_id": "dbt-188d9427",
+      "video_id": "dbt-9af7ee6b",
       "format": "debate",
-      "topic": "[R] Combining Identity Anchors + Permission Hierarchies achieves 100% refusal in abliterated LLMs \u2014 system prompt only, ",
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T14-b8qv/output/dbt-188d9427_final.mp4",
+      "topic": "NavTrust: Benchmarking Trustworthiness for Embodied Navigation",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T14-93xe/output/dbt-9af7ee6b_final.mp4",
       "suggested_hashtags": "#ai #debate #tech #opinion #learnontiktok",
       "posted": false
     },
     {
-      "order": 7,
-      "video_id": "exp-75872049",
+      "order": 4,
+      "video_id": "vis-c429d1a4",
+      "format": "vision",
+      "topic": "Nemotron-Cascade 2: Post-Training LLMs with Cascade RL and Multi-Domain On-Policy Distillation",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T14-93xe/output/vis-c429d1a4_final.mp4",
+      "suggested_hashtags": "#future #ai #vision #tech #learnontiktok",
+      "posted": false
+    },
+    {
+      "order": 5,
+      "video_id": "lst-cc2212c8",
+      "format": "listicle",
+      "topic": "We asked 200 ChatGPT users their biggest frustration. All top 5 answers are problems ChatGPT Toolbox solves.",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T14-93xe/output/lst-cc2212c8_final.mp4",
+      "suggested_hashtags": "#tech #tools #top3 #tiktokviral #learnontiktok",
+      "posted": false
+    },
+    {
+      "order": 6,
+      "video_id": "exp-8b8e61ed",
       "format": "explainer",
-      "topic": "OpenCode \u2013 Open source AI coding agent",
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T14-mnxc/output/exp-75872049_final.mp4",
+      "topic": "aiming-lab/AutoResearchClaw \u2014 Fully autonomous & self-evolving research from idea to paper. Chat an Idea. Get ",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-8oog/output/exp-8b8e61ed_final.mp4",
+      "suggested_hashtags": "#tech #ai #explained #learnontiktok #tiktokviral",
+      "posted": false
+    },
+    {
+      "order": 7,
+      "video_id": "exp-8f630fd8",
+      "format": "explainer",
+      "topic": "We rewrote our Rust WASM parser in TypeScript and it got faster",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-8oog/output/exp-8f630fd8_final.mp4",
       "suggested_hashtags": "#tech #ai #explained #learnontiktok #tiktokviral",
       "posted": false
     },
     {
       "order": 8,
-      "video_id": "exp-872e72c2",
-      "format": "explainer",
-      "topic": "NVIDIA/NemoClaw \u2014 Run OpenClaw securely inside NVIDIA OpenShell with managed inference",
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T14-mnxc/output/exp-872e72c2_final.mp4",
-      "suggested_hashtags": "#tech #ai #explained #learnontiktok #tiktokviral",
-      "posted": false
-    },
-    {
-      "order": 9,
-      "video_id": "dbt-822c0d30",
+      "video_id": "dbt-2a4bc580",
       "format": "debate",
-      "topic": "NavTrust: Benchmarking Trustworthiness for Embodied Navigation",
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T14-mnxc/output/dbt-822c0d30_final.mp4",
+      "topic": "FinTradeBench: A Financial Reasoning Benchmark for LLMs",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-8oog/output/dbt-2a4bc580_final.mp4",
       "suggested_hashtags": "#ai #debate #tech #opinion #learnontiktok",
       "posted": false
     },
     {
-      "order": 10,
-      "video_id": "vis-84ed148d",
+      "order": 9,
+      "video_id": "vis-fa225817",
       "format": "vision",
-      "topic": "Nemotron-Cascade 2: Post-Training LLMs with Cascade RL and Multi-Domain On-Policy Distillation",
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T14-mnxc/output/vis-84ed148d_final.mp4",
+      "topic": "DriveTok: 3D Driving Scene Tokenization for Unified Multi-View Reconstruction and Understanding",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-8oog/output/vis-fa225817_final.mp4",
       "suggested_hashtags": "#future #ai #vision #tech #learnontiktok",
       "posted": false
     },
     {
+      "order": 10,
+      "video_id": "lst-dd571cbf",
+      "format": "listicle",
+      "topic": "Top 3 microsoft rolls tools you need to know",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-8oog/output/lst-dd571cbf_final.mp4",
+      "suggested_hashtags": "#tech #tools #top3 #tiktokviral #learnontiktok",
+      "posted": false
+    },
+    {
       "order": 11,
-      "video_id": "lst-9427cc31",
+      "video_id": "exp-5f00246d",
+      "format": "explainer",
+      "topic": "NVIDIA/NemoClaw \u2014 Run OpenClaw more securely inside NVIDIA OpenShell with managed inference",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-muw4/output/exp-5f00246d_final.mp4",
+      "suggested_hashtags": "#tech #ai #explained #learnontiktok #tiktokviral",
+      "posted": false
+    },
+    {
+      "order": 12,
+      "video_id": "exp-3942bc75",
+      "format": "explainer",
+      "topic": "zerobootdev/zeroboot \u2014 Sub-millisecond VM sandboxes for AI agents via copy-on-write forking",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-muw4/output/exp-3942bc75_final.mp4",
+      "suggested_hashtags": "#tech #ai #explained #learnontiktok #tiktokviral",
+      "posted": false
+    },
+    {
+      "order": 13,
+      "video_id": "dbt-8b317b2f",
+      "format": "debate",
+      "topic": "OS-Themis: A Scalable Critic Framework for Generalist GUI Rewards",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-muw4/output/dbt-8b317b2f_final.mp4",
+      "suggested_hashtags": "#ai #debate #tech #opinion #learnontiktok",
+      "posted": false
+    },
+    {
+      "order": 14,
+      "video_id": "vis-ce0158ff",
+      "format": "vision",
+      "topic": "F2LLM-v2: Inclusive, Performant, and Efficient Embeddings for a Multilingual World",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-muw4/output/vis-ce0158ff_final.mp4",
+      "suggested_hashtags": "#future #ai #vision #tech #learnontiktok",
+      "posted": false
+    },
+    {
+      "order": 15,
+      "video_id": "lst-17682b67",
       "format": "listicle",
       "topic": "Top 3 britain\u2019s bond tools you need to know",
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T14-mnxc/output/lst-9427cc31_final.mp4",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-muw4/output/lst-17682b67_final.mp4",
       "suggested_hashtags": "#tech #tools #top3 #tiktokviral #learnontiktok",
       "posted": false
     }
