@@ -1756,3 +1756,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (direct edit, single file change)
 - Issues: None
 - Timestamp: 2026-03-21T12:24:00Z
+
+## Sprint 665 — BUGFIX (Auto-deliver duplicate sending)
+- Status: PASS
+- Commit: 946e9f0
+- Files created: workspace/sprints/sprint-665.json
+- Files modified: scripts/scs001/posting-auto-deliver.ts
+- Test: Compile check + logic validation — PASS
+- Details: Fixed dedup bug in auto-deliver. Ledger had duplicate video_id entries creating duplicate candidates in batch loop. Added seenVids Set for candidate dedup. Changed delivery dedup from today-only to all-time (deliveredAll Set) to prevent cross-day re-sends. Explains why auto-delivered.jsonl had 137 entries with many duplicates.
+- Swarm used: no (bugfix, single file)
+- Issues: None
+- Timestamp: 2026-03-21T12:26:00Z
