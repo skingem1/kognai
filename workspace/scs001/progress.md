@@ -2364,3 +2364,15 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (fixing the swarm itself)
 - Issues: CTO LLM rejected sprints with source "auto-queue-empty" as NOT_IN_PLAN; PM2 cron processes incorrectly shown as stopped
 - Timestamp: 2026-03-21T13:00:00Z
+
+## Sprint 728 — FIX — Swarm crash: missing deliverables normalization
+- Status: PASS
+- Commit: 71295a6
+- Files modified: scripts/orchestrate-agents-v2.ts (surgical 4-line add in loadTasks)
+- Files created: workspace/sprints/sprint-728.json
+- Test: Logic verified via node -e simulation
+- Pipeline: Fixes CodingAgent TypeError when sprint JSON omits deliverables field
+- Swarm used: no (fixing the swarm itself)
+- Issues: Sprint JSON format doesn't include deliverables field but orchestrator assumed it existed
+- Also: ran auto-deliver (1 video sent to Telegram)
+- Timestamp: 2026-03-21T13:05:00Z
