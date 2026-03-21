@@ -2384,4 +2384,5 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Test: posting-pace.ts — PASS (465/30 gate target met, 77.5 posts/day avg)
 - Pipeline: Posting pace tracker with daily history and gate completion estimate
 - Swarm used: attempted but qwen3:14b hung after 4 minutes — killed and wrote directly
+- Known issue: qwen3:14b may hang during generation (vault connectivity or model issue)
 - Timestamp: 2026-03-21T14:05:00Z
