@@ -34,7 +34,8 @@
       "sprint": 753,
       "title": "CONTENT — Batch 5: fresh videos (target 5+, 507+ ledger)",
       "block": "CONTENT",
-      "status": "pending",
+      "status": "done",
+      "_note": "Done: 5 new videos ($1.50), ledger at 509.",
       "priority": "critical",
       "rationale": "Keep content pipeline running. Target 507+ ledger."
     },
