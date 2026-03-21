@@ -2288,3 +2288,12 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (pipeline execution)
 - Issues: none
 - Timestamp: 2026-03-21T15:20:00Z
+
+## Sprint 721 — CONTENT — Second production batch: 5 videos + 5 delivered
+- Status: PASS
+- Commit: d074299
+- Files created: workspace/sprints/sprint-721.json
+- Pipeline: Force-refresh radar, 5 new videos produced (2 explainer, 1 debate, 1 vision, 1 listicle). Cost: $1.50. 5 more delivered to Telegram. Session total: 20+ deliveries.
+- Swarm used: no (pipeline execution)
+- Issues: Topics exhaust after each run — need force-refresh each time since same 22 topics from 5 sources
+- Timestamp: 2026-03-21T15:35:00Z
