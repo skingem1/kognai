@@ -7,8 +7,15 @@ import { join } from 'path';
 import type { ConversationTurn } from './index';
 import { summarizeBeforeTrim } from './conversation-summary';
 
-const MAX_HISTORY_TURNS = 50;
+const DEFAULT_MAX_HISTORY_TURNS = 50;
 const DAILY_COUNTS_FILE = join('workspace', 'achiri', 'daily-counts.json');
+
+// Sprint 620: Tier-based history limits
+export const TIER_HISTORY_LIMITS: Record<string, number> = {
+  free: 50,
+  tnd_basic: 200,
+  tnd_premium: 500,
+};
 
 // Format: { "2026-03-16": { "userId": 3 } }
 type DailyCounts = Record<string, Record<string, number>>;
@@ -19,9 +26,11 @@ function todayKey(): string {
 
 export class AchiriMemoryStore {
   private storePath: string;
+  private maxTurns: number;
 
-  constructor(storePath: string = 'workspace/achiri/memory') {
+  constructor(storePath: string = 'workspace/achiri/memory', maxTurns: number = DEFAULT_MAX_HISTORY_TURNS) {
     this.storePath = storePath;
+    this.maxTurns = maxTurns;
     if (!existsSync(storePath)) mkdirSync(storePath, { recursive: true });
     // Ensure parent dir for daily-counts exists
     const countsDir = join('workspace', 'achiri');
@@ -40,13 +49,16 @@ export class AchiriMemoryStore {
     return lines.map(l => JSON.parse(l) as ConversationTurn);
   }
 
+  getMaxTurns(): number { return this.maxTurns; }
+
   saveHistory(userId: string, history: ConversationTurn[]): void {
     // Sprint 302: Before trimming, summarize turns that will be removed
-    if (history.length > MAX_HISTORY_TURNS) {
-      const turnsToRemove = history.slice(0, history.length - MAX_HISTORY_TURNS);
+    // Sprint 620: Use tier-based maxTurns instead of hardcoded constant
+    if (history.length > this.maxTurns) {
+      const turnsToRemove = history.slice(0, history.length - this.maxTurns);
       try { summarizeBeforeTrim(userId, turnsToRemove); } catch { /* non-fatal */ }
     }
-    const trimmed = history.slice(-MAX_HISTORY_TURNS);
+    const trimmed = history.slice(-this.maxTurns);
     writeFileSync(this.filePath(userId), trimmed.map(t => JSON.stringify(t)).join('\n') + '\n', 'utf8');
   }
 

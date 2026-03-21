@@ -12,7 +12,7 @@ export const ACHIRI_LIMIT_EXCEEDED = 'ACHIRI_LIMIT_EXCEEDED:';
 
 import { readFileSync } from 'fs';
 import { join } from 'path';
-import { AchiriMemoryStore } from './memory-store';
+import { AchiriMemoryStore, TIER_HISTORY_LIMITS } from './memory-store';
 import { safetyCheck } from './safety-filter';
 import { injectMemoryContext } from './memory-search';
 import { extractUserProfile, buildProfileContext } from './user-profile';
@@ -71,13 +71,21 @@ export class AchiriConversationHandler {
   private userId: string;
   private memory: AchiriMemoryStore | null;
 
+  // Sprint 620: Check if this tier has a specific feature
+  hasFeature(feature: string): boolean {
+    const tierConfig = this.config.tiers[this.tier] ?? this.config.tiers['free'];
+    return (tierConfig.features ?? []).includes(feature);
+  }
+
   constructor(tier: 'free' | 'tnd_basic' | 'tnd_premium' = 'free', userId: string = 'anonymous') {
     this.tier = tier;
     this.userId = userId;
     this.config = JSON.parse(readFileSync(join(AGENT_DIR, 'config.json'), 'utf8'));
     this.systemPromptRaw = readFileSync(join(AGENT_DIR, 'prompt.md'), 'utf8');
-    this.memory = this.config.memory_enabled ? new AchiriMemoryStore() : null;
-    console.log('[Achiri] Loaded — model: ' + this.getModelConfig().model + ', tier: ' + tier + ', memory: ' + (this.memory ? 'on' : 'off') + ', prompt: ' + this.systemPromptRaw.length + ' chars');
+    // Sprint 620: Tier-based history limits via extended_memory feature
+    const maxTurns = TIER_HISTORY_LIMITS[tier] ?? TIER_HISTORY_LIMITS['free'];
+    this.memory = this.config.memory_enabled ? new AchiriMemoryStore('workspace/achiri/memory', maxTurns) : null;
+    console.log('[Achiri] Loaded — model: ' + this.getModelConfig().model + ', tier: ' + tier + ', memory: ' + (this.memory ? 'on/' + maxTurns + 'turns' : 'off') + ', prompt: ' + this.systemPromptRaw.length + ' chars');
   }
 
   getModelConfig(): ModelConfig {
@@ -190,9 +198,10 @@ export class AchiriConversationHandler {
     const resolvedHistory: ConversationTurn[] = history ?? (this.memory ? this.memory.loadHistory(this.userId) : []);
 
     // --- Memory context injection (Sprint 128 — T3 skill: achiri-memory) ---
-    // Injects relevant past conversation context into the system prompt.
+    // Sprint 620: Deep memory search only for extended_memory tiers (tnd_basic/premium).
+    // Free tier still gets basic history but not semantic memory injection.
     let effectiveHistory = resolvedHistory;
-    if (this.memory && resolvedHistory.length > 2) {
+    if (this.memory && resolvedHistory.length > 2 && this.hasFeature('extended_memory')) {
       const memCtx = injectMemoryContext(this.userId, userMessage);
       if (memCtx) {
         // Prepend memory context as a system turn before the conversation history

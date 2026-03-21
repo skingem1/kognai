@@ -1,0 +1,52 @@
+{
+  "sprint_id": "sprint-620",
+  "title": "ACHIRI — Implement extended_memory tier gating",
+  "description": "The extended_memory feature is listed in Achiri config for tnd_basic and tnd_premium tiers but not implemented. All tiers currently get the same 50-turn history. This sprint implements tier-based memory: free=50 turns, tnd_basic=200, tnd_premium=500. Also gates memory search injection and profile extraction on extended_memory feature.",
+  "source": "achiri-phase2a",
+  "tasks": [
+    {
+      "id": "620-01",
+      "title": "Make AchiriMemoryStore accept configurable maxTurns",
+      "type": "feature",
+      "task_type": "achiri",
+      "task_target": "agents/achiri/memory-store.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-620"
+    },
+    {
+      "id": "620-02",
+      "title": "Pass tier-based maxTurns from AchiriConversationHandler to memory store",
+      "type": "feature",
+      "task_type": "achiri",
+      "task_target": "agents/achiri/index.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-620"
+    },
+    {
+      "id": "620-03",
+      "title": "Add hasFeature() tier helper and gate memory features",
+      "type": "feature",
+      "task_type": "achiri",
+      "task_target": "agents/achiri/index.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-620"
+    },
+    {
+      "id": "620-04",
+      "title": "Update validate-memory-persistence.ts to test tier-based limits",
+      "type": "test",
+      "task_type": "achiri",
+      "task_target": "scripts/achiri/validate-memory-persistence.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-620"
+    }
+  ]
+}

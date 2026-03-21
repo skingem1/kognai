@@ -7,7 +7,7 @@ import { existsSync, unlinkSync, mkdirSync } from 'fs';
 import { join } from 'path';
 
 // Import Achiri modules directly (no server, no LLM — unit test)
-import { AchiriMemoryStore } from '../../agents/achiri/memory-store';
+import { AchiriMemoryStore, TIER_HISTORY_LIMITS } from '../../agents/achiri/memory-store';
 import { summarizeBeforeTrim, loadSummary, buildSummaryContext, getUserName } from '../../agents/achiri/conversation-summary';
 import { extractUserProfile, buildProfileContext } from '../../agents/achiri/user-profile';
 import { injectMemoryContext } from '../../agents/achiri/memory-search';
@@ -127,6 +127,41 @@ async function main(): Promise<void> {
   const facts2Str = (summary2?.facts ?? []).join(' | ').toLowerCase();
   check('Previous facts preserved', facts2Str.includes('sami'), `facts: ${facts2Str}`);
   check('New fact added (work/startup)', facts2Str.includes('startup') || facts2Str.includes('work'), `facts: ${facts2Str}`);
+
+  // ── Sprint 620: Tier-based history limits ──────────────────────────
+  console.log('\nSprint 620: Tier-based history limits');
+
+  // Verify TIER_HISTORY_LIMITS exports
+  check('TIER_HISTORY_LIMITS.free = 50', TIER_HISTORY_LIMITS['free'] === 50);
+  check('TIER_HISTORY_LIMITS.tnd_basic = 200', TIER_HISTORY_LIMITS['tnd_basic'] === 200);
+  check('TIER_HISTORY_LIMITS.tnd_premium = 500', TIER_HISTORY_LIMITS['tnd_premium'] === 500);
+
+  // Test free tier store (50 turns)
+  const freeStore = new AchiriMemoryStore(MEMORY_DIR, TIER_HISTORY_LIMITS['free']);
+  check('Free tier maxTurns = 50', freeStore.getMaxTurns() === 50);
+
+  // Test tnd_basic store (200 turns)
+  const basicStore = new AchiriMemoryStore(MEMORY_DIR, TIER_HISTORY_LIMITS['tnd_basic']);
+  check('tnd_basic maxTurns = 200', basicStore.getMaxTurns() === 200);
+
+  // Test tnd_premium store (500 turns)
+  const premiumStore = new AchiriMemoryStore(MEMORY_DIR, TIER_HISTORY_LIMITS['tnd_premium']);
+  check('tnd_premium maxTurns = 500', premiumStore.getMaxTurns() === 500);
+
+  // Verify free tier trims at 50
+  const testTurns60: Array<{ role: 'user' | 'assistant'; content: string }> = [];
+  for (let i = 0; i < 60; i++) {
+    testTurns60.push({ role: i % 2 === 0 ? 'user' : 'assistant', content: `Turn ${i}` });
+  }
+  freeStore.saveHistory(TEST_USER_ID, testTurns60);
+  const loadedFree = freeStore.loadHistory(TEST_USER_ID);
+  check('Free tier trims to 50 turns', loadedFree.length === 50, `got ${loadedFree.length}`);
+  check('Free tier keeps latest turns', loadedFree[0]?.content === 'Turn 10', `first: ${loadedFree[0]?.content}`);
+
+  // Verify tnd_basic keeps more than 50
+  basicStore.saveHistory(TEST_USER_ID, testTurns60);
+  const loadedBasic = basicStore.loadHistory(TEST_USER_ID);
+  check('tnd_basic keeps all 60 turns (under 200 limit)', loadedBasic.length === 60, `got ${loadedBasic.length}`);
 
   // ── Cleanup ─────────────────────────────────────────────────────────
   cleanup();
