@@ -65,7 +65,7 @@
       "sprint": 654,
       "title": "EVAL-002 — Cognee evaluation for knowledge graph memory",
       "block": "EVAL",
-      "status": "pending",
+      "status": "done",
       "priority": "high",
       "rationale": "Phase 2A gate dependency. Evaluate Cognee (knowledge graph memory library) for BrainX integration. Test: graph construction from sprint reports, query latency, memory footprint on Mac Mini M4 Pro. Compare vs. raw JSONL + nomic-embed-text baseline."
     },

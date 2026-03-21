@@ -1641,3 +1641,13 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (research + evaluation)
 - Issues: None
 - Timestamp: 2026-03-22T04:30:00Z
+
+## Sprint 654 — EVAL-002 (Cognee)
+- Status: PASS
+- Commit: 98f0338
+- Files created: workspace/evaluations/eval-002-cognee.md, workspace/sprints/sprint-654.json
+- Test: Evaluation report complete. PARTIAL ADOPT (8.15/10).
+- Key finding: Cognee scores higher than OpenViking (8.15 vs 7.85). Knowledge graph construction provides +133% accuracy on multi-hop reasoning vs JSONL+vector baseline. Fully local with Ollama+nomic-embed-text ($0). Recommendation: use Cognee as storage/retrieval engine UNDER BrainX (BrainX=policy, Cognee=infrastructure). Use BOTH Cognee (knowledge graph) and OpenViking (skill bank).
+- Swarm used: no (research + evaluation)
+- Issues: skill-crystalliser module not found (skipped). MEMORY.md edit blocked by permissions.
+- Timestamp: 2026-03-21T10:00:00Z
