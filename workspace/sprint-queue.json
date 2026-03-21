@@ -172,7 +172,7 @@
       "sprint": 676,
       "title": "INFRA — PM2 process auto-healer — restart failed crons after 3 consecutive failures",
       "block": "INFRA",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "Cron processes may fail silently. Auto-healer detects 3+ failures and restarts with Telegram alert."
     },
