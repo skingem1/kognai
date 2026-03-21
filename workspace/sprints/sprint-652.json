@@ -1,0 +1,41 @@
+{
+  "sprint_id": "sprint-652",
+  "title": "BRAINX — Memory Governance + Swarm Integration",
+  "description": "Wire BrainX memory into swarm orchestrator. Implement Rental Memory Governance Rule. Build swarm memory bridge module.",
+  "source": "sprint-queue",
+  "tasks": [
+    {
+      "id": "652-01",
+      "title": "Build scripts/lib/brainx-swarm-bridge.ts — swarm memory integration",
+      "type": "feature",
+      "task_type": "architecture",
+      "task_target": "scripts/lib/brainx-swarm-bridge.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-652"
+    },
+    {
+      "id": "652-02",
+      "title": "Wire BrainX import into orchestrate-agents-v2.ts",
+      "type": "feature",
+      "task_type": "integration",
+      "task_target": "scripts/orchestrate-agents-v2.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-652"
+    },
+    {
+      "id": "652-03",
+      "title": "Create validation script for swarm memory bridge",
+      "type": "test",
+      "task_type": "validation",
+      "task_target": "scripts/scs001/validate-brainx-swarm.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-652"
+    }
+  ]
+}

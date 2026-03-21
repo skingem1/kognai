@@ -51,6 +51,8 @@ import { requestCTOApproval, type SprintProposal, type CTOApprovalResult } from 
 import { selectModel as selectCloudModel, classifyTask } from './lib/model-router';
 import { getWalletState, logWalletStatus } from './lib/wallet-state';
 import { brvQuery, brvCurate } from './lib/byterover-client';
+// Sprint 652: BrainX episodic memory — swarm integration
+import { createSwarmBridge, type BrainXSwarmBridge } from './lib/brainx-swarm-bridge';
 import { publishTaskStarted, publishTaskCompleted, publishTaskFailed, publishBudgetWarning, publishBudgetFreeze, publishSprintStarted, publishSprintCompleted } from './lib/event-bus-publisher';
 import { AARMiddleware } from './lib/aar-middleware';
 import { crystalliseSkill } from './lib/skill-crystalliser';
