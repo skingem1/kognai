@@ -89,7 +89,7 @@
       "sprint": 657,
       "title": "LAUNCH — kognai.ai landing page build",
       "block": "LAUNCH",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "From Launch Strategy v1.0. Static landing page at kognai.ai: hero + manifesto excerpt + waitlist form. BLOCKED on domain registration (human action). Build HTML/CSS/JS in workspace/landing-page/ so it's ready to deploy when domain is registered. Use Vercel for hosting."
     },

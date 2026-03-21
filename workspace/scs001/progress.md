@@ -1668,3 +1668,13 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (config edits)
 - Issues: None. prompt.md was already Kognai-specific (queue rationale was outdated).
 - Timestamp: 2026-03-21T10:30:00Z
+
+## Sprint 657 — LAUNCH (kognai.ai landing page)
+- Status: PASS
+- Commit: c6306dd
+- Files created: workspace/landing-page/index.html, workspace/landing-page/style.css, workspace/landing-page/main.js, workspace/sprints/sprint-657.json
+- Test: Static HTML — opens correctly in browser
+- Details: Dark theme, civilizational narrative, 5 sections (hero, manifesto, architecture, SCS-001, waitlist). Waitlist stores to localStorage until backend wired. Ready for Vercel deploy when domain registered.
+- Swarm used: no (multi-file frontend)
+- Issues: Domain registration pending (human action). Waitlist form is local-only until Supabase wired.
+- Timestamp: 2026-03-21T10:45:00Z
