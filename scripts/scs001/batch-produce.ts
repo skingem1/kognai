@@ -46,8 +46,11 @@ async function main(): Promise<void> {
 
     try {
       // Sprint 605: Use --force-refresh on first run to clear stale dedup cache
+      // Sprint 696: Rotate formats for variety (explainer, debate, vision, listicle)
+      const formats = ['explainer', 'debate', 'vision', 'listicle'];
+      const format = formats[(i - 1) % formats.length];
       const forceFlag = i === 1 ? ' --force-refresh' : '';
-      const cmd = `npx ts-node --transpile-only scripts/scs001/run-multiformat-pipeline.ts${dryRun ? ' --dry-run' : ''}${forceFlag}`;
+      const cmd = `npx ts-node --transpile-only scripts/scs001/run-multiformat-pipeline.ts --format=${format} --max=1${dryRun ? ' --dry-run' : ''}${forceFlag}`;
       const output = execSync(cmd, {
         cwd: ROOT,
         timeout: 120000, // 2 min per run

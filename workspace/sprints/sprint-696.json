@@ -1,0 +1,41 @@
+{
+  "sprint_id": "sprint-696",
+  "title": "CONTENT — Batch production: 10 videos with real scripts",
+  "description": "Run the multiformat pipeline to produce 10 videos across all 4 formats. Deliver to Telegram for human review. Critical for April 7 gate (30 posts needed).",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "696-01",
+      "title": "Create batch-produce.ts script for 10-video production run",
+      "type": "feature",
+      "task_type": "content",
+      "task_target": "scripts/scs001/batch-produce.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-696"
+    },
+    {
+      "id": "696-02",
+      "title": "Run batch production to generate 10 videos",
+      "type": "execution",
+      "task_type": "content",
+      "task_target": "workspace/scs001/multiformat-runs/",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-696"
+    },
+    {
+      "id": "696-03",
+      "title": "Validate output quality and deliver to Telegram",
+      "type": "validation",
+      "task_type": "content",
+      "task_target": "workspace/scs001/auto-delivered.jsonl",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-696"
+    }
+  ]
+}
