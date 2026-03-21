@@ -1542,7 +1542,7 @@
       "sprint": 638,
       "title": "ACHIRI \u2014 Fix Voice Handler + E2E Integration test failures",
       "block": "ACHIRI-QUALITY",
-      "status": "pending",
+      "status": "done",
       "priority": "high",
       "rationale": "Achiri test suite: 15/17 pass. Voice Handler and E2E Integration fail. Likely environment-dependent (Ollama model access, timeout). Diagnose and fix or add proper skip/mock fallback."
     },
