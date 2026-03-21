@@ -34,9 +34,10 @@
     },
     {
       "sprint": 747,
-      "title": "GATE \u2014 Refresh April 7 gate tracker (487+ videos, posting progress)",
+      "title": "GATE \u2014 Refresh April 7 gate tracker (492 videos, posting progress)",
       "block": "GATE",
-      "status": "pending",
+      "status": "done",
+      "_note": "Done: gate refreshed — 492 videos, 81 real content, 17 days remaining.",
       "priority": "high",
       "rationale": "Update workspace/gates/april-7-gate.json with current stats: 487+ ledger entries, posting progress, days remaining. Surface via Telegram /gate command."
     },

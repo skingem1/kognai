@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-747",
+  "title": "GATE — Refresh April 7 gate tracker (492+ videos, posting progress)",
+  "description": "Update workspace/gates/april-7-gate.json with current stats. 492+ ledger entries. 0/30 posts. 17 days remaining.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "747-01",
+      "title": "Update April 7 gate tracker with current pipeline stats",
+      "type": "feature",
+      "task_type": "gate",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-747"
+    }
+  ]
+}

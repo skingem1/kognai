@@ -2548,3 +2548,12 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Unique topics: Akash Network, OpenCode, NemoClaw, NavTrust, Nemotron-Cascade 2, Solana
 - Swarm used: no (manifest update)
 - Timestamp: 2026-03-21T17:25:00Z
+
+## Sprint 747 — GATE
+- Status: PASS
+- Gate: April 7 — 2/4 criteria pass (pipeline + Stripe), 2 fail (posting + views)
+- Pipeline: 492 total, 81 real content videos
+- Posting: 0/30 — manual posting must begin
+- Manual-post-queue: 20 videos exported
+- Days remaining: 17
+- Timestamp: 2026-03-21T17:30:00Z
