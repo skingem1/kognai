@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-745",
+  "title": "CONTENT — Batch 2: multiformat videos (clear seen-topics + produce 5+)",
+  "description": "Clear seen-topics to unblock topic radar, run multiformat pipeline, target 5+ new videos for April 7 gate. Ledger currently at 487.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "745-01",
+      "title": "Clear seen-topics and run multiformat pipeline batches",
+      "type": "feature",
+      "task_type": "content",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-745"
+    }
+  ]
+}

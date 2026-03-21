@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-37c8891e",
+  "topic_id": "arxiv-2383135ff20b",
+  "format": "vision",
+  "title": "Nemotron-Cascade 2: Post-Training LLMs with Cascade RL and Multi-Domain On-Policy Distillation",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "How might models like Nemotron-Cascade 2 reshape the future of AI reasoning and autonomous decision-making?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Cascade RL and multi-domain distillation enable precise, scalable training, making 30B MoE models more capable and efficient than ever.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "But with increased agentic capability comes risk—how do we ensure these systems align with human values and don’t act unpredictably?",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Builders are embedding safety checks, using on-policy distillation to align behavior with human feedback and ethical guidelines.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "Imagine a world where AI agents collaborate with humans in science, medicine, and governance—solving complex problems at unprecedented speed.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future hinges on balancing technical progress with ethical foresight, ensuring AI evolves as a force for good.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of nemotron",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#nemotron",
+    "#cascade",
+    "#post"
+  ],
+  "video_cue": "A dynamic visualization of Nemotron-Cascade 2's training process, showing data flow and agent behavior across multiple domains.",
+  "generated_at": "2026-03-21T14:26:43.473Z",
+  "llm_used": true
+}

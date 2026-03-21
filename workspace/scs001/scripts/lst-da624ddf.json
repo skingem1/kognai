@@ -1,0 +1,60 @@
+{
+  "script_id": "lst-da624ddf",
+  "topic_id": "cg-615666dae9d3-lst",
+  "format": "listicle",
+  "title": "Top 3 solana sol tools you need to know",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Top 3 Solana tools that will blow your mind — stick around for the #1 reveal.",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "3: Crypto is the foundation, but it’s slow and clunky compared to what’s coming.",
+      "start_s": 3,
+      "end_s": 7,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "2: Sol is fast, secure, and built for real-world apps — way better than #3.",
+      "start_s": 7,
+      "end_s": 11,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "1: Solana crushes it with 65,000 TPS and sub-second finality — the future of blockchain.",
+      "start_s": 11,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Follow for more game-changing Solana tools you can’t afford to miss.",
+      "start_s": 16,
+      "end_s": 20,
+      "emotion": "excited"
+    }
+  ],
+  "total_duration_s": 20,
+  "caption_text": "Top 3: Top 3 solana sol tools you need to know",
+  "hashtags": [
+    "#Top3",
+    "#Tech",
+    "#Ranking",
+    "#solana",
+    "#sol",
+    "#crypto"
+  ],
+  "generated_at": "2026-03-21T14:26:57.297Z",
+  "llm_used": true
+}
