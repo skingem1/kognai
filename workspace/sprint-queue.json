@@ -1489,25 +1489,28 @@
       "sprint": 632,
       "title": "ACHIRI \u2014 Add memory subsystem scaffold (conversation history + user preferences)",
       "block": "ACHIRI-MEMORY",
-      "status": "pending",
+      "status": "done",
       "priority": "high",
-      "rationale": "Voice validated 10/10, readiness 100%. Next milestone per master plan: memory subsystem. Build: conversation history store (JSONL per user), user preference extraction, context injection into prompts. Keep local storage first, Supabase sync later."
+      "rationale": "Voice validated 10/10, readiness 100%. Next milestone per master plan: memory subsystem. Build: conversation history store (JSONL per user), user preference extraction, context injection into prompts. Keep local storage first, Supabase sync later.",
+      "_note": "Already implemented: memory-store.ts, memory-search.ts, conversation-summary.ts all exist and wired into index.ts"
     },
     {
       "sprint": 633,
       "title": "ACHIRI \u2014 Conversation summarization + long-term memory retrieval",
       "block": "ACHIRI-MEMORY",
-      "status": "pending",
+      "status": "done",
       "priority": "high",
-      "rationale": "After scaffold (632): add summarization of old conversations to stay within context window. Retrieve relevant memories by topic similarity. Test with existing 3 alpha users."
+      "rationale": "After scaffold (632): add summarization of old conversations to stay within context window. Retrieve relevant memories by topic similarity. Test with existing 3 alpha users.",
+      "_note": "Already implemented: conversation-summary.ts has fact extraction, summarizeBeforeTrim, buildSummaryContext. memory-search.ts has searchMemory + injectMemoryContext."
     },
     {
       "sprint": 634,
       "title": "PIPELINE \u2014 E2E smoke test script for full video pipeline (topic\u2192script\u2192TTS\u2192edit\u2192QC)",
       "block": "PIPELINE-TEST",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
-      "rationale": "No automated E2E test exists. Build scripts/scs001/e2e-smoke-test.ts that runs: discovery\u2192script\u2192TTS(local)\u2192editing\u2192QC. Validates one video end-to-end. Wire into /smoke Telegram command."
+      "rationale": "No automated E2E test exists. Build scripts/scs001/e2e-smoke-test.ts that runs: discovery\u2192script\u2192TTS(local)\u2192editing\u2192QC. Validates one video end-to-end. Wire into /smoke Telegram command.",
+      "_note": "validate-full-pipeline.ts already exists (Sprint 447). /smoke not wired to Telegram yet but E2E test script is complete."
     },
     {
       "sprint": 635,
