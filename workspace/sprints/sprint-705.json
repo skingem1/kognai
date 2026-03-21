@@ -1,0 +1,41 @@
+{
+  "sprint_id": "sprint-705",
+  "title": "GOV — PostgreSQL + pgvector setup verification script",
+  "description": "Governance remediation Phase 2. Create verify-brainx-db.ts to check PostgreSQL/pgvector/brainx_memories status. Add /brainx-status Telegram command.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "705-01",
+      "title": "Create scripts/verify-brainx-db.ts — DB verification script",
+      "type": "feature",
+      "task_type": "governance",
+      "task_target": "scripts/verify-brainx-db.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-705"
+    },
+    {
+      "id": "705-02",
+      "title": "Add /brainx-status Telegram command",
+      "type": "feature",
+      "task_type": "governance",
+      "task_target": "scripts/telegram-bot.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-705"
+    },
+    {
+      "id": "705-03",
+      "title": "Dry-run verify-brainx-db.ts to validate output",
+      "type": "test",
+      "task_type": "test",
+      "task_target": "scripts/verify-brainx-db.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-705"
+    }
+  ]
+}

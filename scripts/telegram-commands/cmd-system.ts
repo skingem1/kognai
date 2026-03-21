@@ -1056,3 +1056,23 @@ export async function cmdApproveFinetune(chatId: string, args: string): Promise<
     `⚠️ Fine-tuning not yet implemented (AMD-15 Phase 2+). Approval recorded.`
   );
 }
+
+// Sprint 705: BrainX database status
+export function cmdBrainxStatus(): string {
+  const statusPath = path.join(ROOT, 'reports', 'brainx-status.json');
+  try {
+    const status = readJSON(statusPath);
+    if (!status) return '🧠 BrainX DB: Unknown\n\nRun: `npx ts-node scripts/verify-brainx-db.ts`';
+    const lines = [`🧠 *BrainX DB*: ${status.overall}`];
+    for (const c of status.checks || []) {
+      const icon = c.status === 'PASS' ? '✅' : c.status === 'WARN' ? '⚠️' : '❌';
+      lines.push(`${icon} ${c.check}: ${c.detail}`);
+    }
+    if (status.overall !== 'READY') {
+      lines.push('\n⚠️ Run `npx ts-node scripts/verify-brainx-db.ts` for setup commands');
+    }
+    return lines.join('\n');
+  } catch {
+    return '🧠 BrainX DB: Unknown\n\nRun: `npx ts-node scripts/verify-brainx-db.ts`';
+  }
+}

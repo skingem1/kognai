@@ -1,0 +1,36 @@
+{
+  "timestamp": "2026-03-21T11:13:51.109Z",
+  "overall": "READY",
+  "checks": [
+    {
+      "check": "Environment variables",
+      "status": "WARN",
+      "detail": "Missing: PGHOST, PGDATABASE, PGUSER. Using defaults (localhost/kognai)."
+    },
+    {
+      "check": "PostgreSQL running",
+      "status": "PASS",
+      "detail": "pg_isready: accepting connections"
+    },
+    {
+      "check": "Database 'kognai' exists",
+      "status": "PASS",
+      "detail": "Connected to kognai"
+    },
+    {
+      "check": "pgvector extension",
+      "status": "PASS",
+      "detail": "vector extension loaded"
+    },
+    {
+      "check": "uuid-ossp extension",
+      "status": "PASS",
+      "detail": "uuid-ossp extension loaded"
+    },
+    {
+      "check": "brainx_memories table",
+      "status": "PASS",
+      "detail": "Table exists, 1 rows"
+    }
+  ]
+}
