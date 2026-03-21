@@ -56,6 +56,8 @@ import { createSwarmBridge, type BrainXSwarmBridge } from './lib/brainx-swarm-br
 import { publishTaskStarted, publishTaskCompleted, publishTaskFailed, publishBudgetWarning, publishBudgetFreeze, publishSprintStarted, publishSprintCompleted } from './lib/event-bus-publisher';
 import { AARMiddleware } from './lib/aar-middleware';
 import { crystalliseSkill } from './lib/skill-crystalliser';
+// Sprint 703: Dynamic trust score updater
+import { updateTrustScore } from './lib/trust-score-updater';
 import { crystalliseCodeAsset } from './lib/code-asset-crystalliser';
 import { MonotaskSM } from './lib/monotask-state-machine';
 import { logCodeFailure } from './lib/code-failure-logger';
@@ -2463,6 +2465,7 @@ ONLY output the JSON array. No markdown, no explanation.`;
         const _sprintIdApproved = (process.argv[2] || 'sprints/current.json').replace(/.*\//, '').replace('.json', '');
         publishTaskCompleted(task.agent, _sprintIdApproved, task.id, (task as any).title || task.id, 0).catch(() => {});
         AARMiddleware.generateAndLog({ agentId: task.agent, taskId: task.id, sprintId: _sprintIdApproved, skillId: (task as any).skill_id || task.type || 'code-generation', outcomeScore: review.score, actionSummary: ((task as any).title || task.id).substring(0, 140), status: 'success' }).catch(() => {});
+        updateTrustScore(task.agent, 'approved', review.score); // Sprint 703: Dynamic trust update
         crystalliseSkill({ agentId: task.agent, taskId: task.id, sprintId: _sprintIdApproved, taskTitle: (task as any).title || task.id, taskType: task.type || 'feature', model: (task as any).model || 'qwen3:14b', taskTarget: (task as any).task_target || 'local', score: review.score, approachSummary: ((task as any).title || task.id).substring(0, 200), keyPatterns: review.strengths || [], antiPatterns: [] });
         crystalliseCodeAsset({ agentId: task.agent, sprintId: _sprintIdApproved, taskId: task.id, taskTitle: (task as any).title || task.id, files: result.files, supervisorScore: review.score, origin: 'kognai-core' });
         MonotaskSM.complete(task.agent, task.id);
@@ -2494,6 +2497,7 @@ ONLY output the JSON array. No markdown, no explanation.`;
       // Sprint 701: AAR logging on REJECTION path (governance remediation)
       const _sprintIdRejected = (process.argv[2] || 'sprints/current.json').replace(/.*\//, '').replace('.json', '');
       AARMiddleware.generateAndLog({ agentId: task.agent, taskId: task.id, sprintId: _sprintIdRejected, skillId: (task as any).skill_id || task.type || 'code-generation', outcomeScore: review?.score || 0, actionSummary: `REJECTED: ${((task as any).title || task.id).substring(0, 120)} (attempt ${attempt})`, status: 'rejected' }).catch(() => {});
+      updateTrustScore(task.agent, 'rejected', review?.score || 0); // Sprint 703: Dynamic trust update
       MonotaskSM.release(task.agent, task.id, `rejected attempt ${attempt}`);
 
       // CTO AUTO-DECOMPOSE: After N consecutive truncation rejections, split the task

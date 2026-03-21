@@ -1,0 +1,41 @@
+{
+  "sprint_id": "sprint-703",
+  "title": "GOV — Dynamic trust score updater (post-sprint feedback loop)",
+  "description": "Governance remediation Phase 1. Create trust-score-updater.ts that adjusts ACP trust scores based on real outcomes. Wire into orchestrator on both approval and rejection paths.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "703-01",
+      "title": "Create scripts/lib/trust-score-updater.ts",
+      "type": "feature",
+      "task_type": "governance",
+      "task_target": "scripts/lib/trust-score-updater.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-703"
+    },
+    {
+      "id": "703-02",
+      "title": "Wire updater into orchestrator (surgical edit)",
+      "type": "feature",
+      "task_type": "governance",
+      "task_target": "scripts/orchestrate-agents-v2.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-703"
+    },
+    {
+      "id": "703-03",
+      "title": "Validate trust score updater",
+      "type": "test",
+      "task_type": "test",
+      "task_target": "scripts/scs001/validate-trust-updater.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-703"
+    }
+  ]
+}
