@@ -2413,3 +2413,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Pipeline: Swarm now retries on timeout/API errors instead of crashing. Combined with Sprint 730 (180s timeout), qwen3:14b hangs will timeout and retry instead of hanging forever.
 - Swarm used: no (fixing the swarm itself)
 - Timestamp: 2026-03-21T14:30:00Z
+
+## Sprint 733 — CR-AMD-001 MiMo TTS Upgrade Decision
+- Status: PASS (decision made: KEEP_MACOS_SAY)
+- Commit: 3ae99dbc90a3f6b813b01c6e2154d59cc71845e2
+- Files created: scripts/scs001/test-mimo-tts.ts, workspace/scs001/mimo-tts-comparison.json, workspace/scs001/mimo-tts-decision.json, workspace/sprints/sprint-733.json
+- Files modified: scripts/lib/clawrouter-v2.ts (added quality:emotional → mimo-v2-tts routing)
+- Test: test-mimo-tts.ts ran — macOS say 3/3 OK, MiMo 0/3 (API 404)
+- Decision: MiMo score 0/10 < threshold 7. Keep macOS say as primary TTS.
+- ClawRouter C4 quality:emotional wired — ready for MiMo re-test when API confirmed
+- Swarm used: no (multi-file API integration + test)
+- Timestamp: 2026-03-21T15:00:00Z
