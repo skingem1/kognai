@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-719",
+  "title": "GOV — Dashboard governance panel",
+  "description": "Governance remediation Phase 5. Add governance panel to dashboard: trust scores per agent, AAR receipt summary, constitutional signals, swarm health. New parser + 5 API endpoints.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "719-01",
+      "title": "Create dashboard/parsers/governance.py",
+      "type": "feature",
+      "task_type": "governance",
+      "task_target": "dashboard/parsers/governance.py",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-719"
+    },
+    {
+      "id": "719-02",
+      "title": "Add governance API endpoints to server.py",
+      "type": "feature",
+      "task_type": "governance",
+      "task_target": "dashboard/server.py",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-719"
+    }
+  ]
+}

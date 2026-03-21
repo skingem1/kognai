@@ -49,6 +49,7 @@ from parsers.invoica_knowledge import (
 from parsers.sessions import get_sessions_live
 from parsers.achiri import parse_achiri_stats
 from parsers.swarm import get_swarm_metrics, get_sprint_quality_scores
+from parsers.governance import get_governance_summary, get_trust_scores, get_aar_summary, get_constitutional_signals, get_swarm_health
 
 
 class ToggleRequest(BaseModel):
@@ -902,3 +903,25 @@ async def pm2_status():
             counts["errored"] += 1
 
     return {"processes": result, "summary": counts}
+
+
+# Sprint 719: Governance panel API endpoints
+@app.get("/api/governance")
+async def api_governance():
+    return get_governance_summary()
+
+@app.get("/api/governance/trust-scores")
+async def api_trust_scores():
+    return get_trust_scores()
+
+@app.get("/api/governance/aar")
+async def api_aar():
+    return get_aar_summary()
+
+@app.get("/api/governance/signals")
+async def api_signals():
+    return get_constitutional_signals()
+
+@app.get("/api/governance/health")
+async def api_swarm_health():
+    return get_swarm_health()
