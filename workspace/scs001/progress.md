@@ -1678,3 +1678,13 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (multi-file frontend)
 - Issues: Domain registration pending (human action). Waitlist form is local-only until Supabase wired.
 - Timestamp: 2026-03-21T10:45:00Z
+
+## Sprint 658 — LAUNCH (Documentation site scaffold)
+- Status: PASS
+- Commit: 0e4656c
+- Files created: workspace/docs-site/docs/index.md, workspace/docs-site/docs/getting-started.md, workspace/docs-site/docs/architecture.md, workspace/docs-site/docs/agent-catalog.md, workspace/docs-site/docs/api-reference.md, workspace/sprints/sprint-658.json
+- Test: Markdown renders correctly, all cross-references valid
+- Details: 5 doc pages covering: index (overview + key concepts), getting started (prereqs, install, commands), architecture (9-layer, model router, orchestration), agent catalog (28+ agents, pipeline stages, skills), API reference (pipeline, Telegram, Achiri, Supabase, Stripe, router).
+- Swarm used: no (multi-file docs)
+- Issues: None. Ready for Docusaurus build when needed.
+- Timestamp: 2026-03-21T11:00:00Z

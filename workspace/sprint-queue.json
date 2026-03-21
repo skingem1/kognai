@@ -97,7 +97,7 @@
       "sprint": 658,
       "title": "LAUNCH — Documentation site scaffold",
       "block": "LAUNCH",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "From Launch Strategy v1.0. Docs site (Docusaurus or similar) with: architecture overview, agent catalog, API reference stubs, getting started guide. Build in workspace/docs-site/. Deploy to docs.kognai.ai when domain ready."
     },
