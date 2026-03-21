@@ -121,7 +121,7 @@
       "sprint": 661,
       "title": "PIPELINE — Pipeline cost tracking + monthly budget dashboard",
       "block": "INFRA",
-      "status": "pending",
+      "status": "done",
       "priority": "low",
       "rationale": "Track LLM costs (local = $0, ElevenLabs TTS ~$0.15/video), storage costs, API calls. Surface in daily digest + /costs command. Important for Phase 2A planning."
     },

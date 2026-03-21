@@ -1712,3 +1712,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (analytics script)
 - Issues: urgency and proof formulas under-sampled (n=2, n=3). Need more data.
 - Timestamp: 2026-03-21T11:30:00Z
+
+## Sprint 661 — PIPELINE (Cost tracking + /costs upgrade)
+- Status: PASS
+- Commit: 0c98a08
+- Files created: scripts/scs001/cost-tracker.ts, workspace/scs001/cost-log.json, workspace/sprints/sprint-661.json
+- Files modified: scripts/telegram-commands/cmd-posting.ts
+- Test: npx ts-node scripts/scs001/cost-tracker.ts — PASS
+- Details: Cost tracker analyzes publish-ledger + auto-delivered + experiments to compute daily/monthly costs. TTS=$0.15/video, all LLM local ($0). March 2026: 436 videos, $65.40 total, $0.15/video. /costs command updated to read cost-log.json first (new format with breakdown).
+- Swarm used: no
+- Issues: None
+- Timestamp: 2026-03-21T11:45:00Z
