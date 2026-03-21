@@ -154,7 +154,7 @@
       "sprint": 719,
       "title": "GOV — Dashboard governance panel",
       "block": "GOV-PHASE5",
-      "status": "pending",
+      "status": "done",
       "priority": "low",
       "rationale": "GOVERNANCE REMEDIATION Phase 5. Add governance panel to dashboard/: trust scores per agent, AAR receipt count/day, constitution signals, swarm health trend. New parser in dashboard/parsers/."
     },
