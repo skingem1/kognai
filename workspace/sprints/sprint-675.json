@@ -1,0 +1,52 @@
+{
+  "sprint_id": "sprint-675",
+  "title": "QUALITY — Content freshness decay — auto-archive stale queue items older than 7 days",
+  "description": "Extend auto-archive to cover viral-topics.json, content-calendar.json, and topic-radar/ files. Items older than 7 days get archived to keep content queue fresh.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "675-01",
+      "title": "Extend auto-archive-stale.ts to cover viral-topics.json and content-calendar.json",
+      "type": "feature",
+      "task_type": "quality",
+      "task_target": "scripts/scs001/auto-archive-stale.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-675"
+    },
+    {
+      "id": "675-02",
+      "title": "Add topic-radar cleanup — archive radar JSON files older than 7 days",
+      "type": "feature",
+      "task_type": "quality",
+      "task_target": "scripts/scs001/auto-archive-stale.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-675"
+    },
+    {
+      "id": "675-03",
+      "title": "Add --report flag for freshness summary without archiving",
+      "type": "feature",
+      "task_type": "quality",
+      "task_target": "scripts/scs001/auto-archive-stale.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-675"
+    },
+    {
+      "id": "675-04",
+      "title": "Create validate-freshness-output.ts validation script",
+      "type": "test",
+      "task_type": "test",
+      "task_target": "scripts/scs001/validate-freshness-output.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-675"
+    }
+  ]
+}
