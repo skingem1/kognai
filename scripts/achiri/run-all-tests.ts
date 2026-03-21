@@ -55,7 +55,7 @@ const TESTS: Array<{ name: string; script: string; slow?: boolean }> = [
   { name: 'Alpha Access', script: 'scripts/achiri/validate-alpha-access.ts' },
   { name: 'Onboarding', script: 'scripts/achiri/validate-onboarding.ts' },
   { name: 'PayMee', script: 'scripts/achiri/validate-paymee.ts' },
-  { name: 'Voice Handler', script: 'scripts/achiri/validate-voice-handler.ts' },
+  { name: 'Voice Handler', script: 'scripts/achiri/validate-voice-handler.ts', slow: true },
   { name: 'Eval Harness', script: 'scripts/achiri/validate-eval-harness.ts' },
   { name: 'Deploy Package', script: 'scripts/achiri/validate-deploy-package.ts' },
   { name: 'HTTP API', script: 'scripts/achiri/validate-http-api.ts', slow: true },
@@ -89,15 +89,19 @@ function runTest(test: { name: string; script: string; slow?: boolean }): TestRe
 
   const start = Date.now();
   try {
+    const timeout = test.slow ? 120000 : 30000; // Sprint 638: 120s for slow tests (Claude API calls)
     const output = execSync(`npx ts-node ${test.script} 2>&1`, {
       cwd: CWD,
-      timeout: 30000,
+      timeout,
       env: { ...process.env, TS_NODE_TRANSPILE_ONLY: 'true' },
     }).toString();
 
     const duration = Date.now() - start;
-    // Check for FAIL in output
-    const hasFail = /FAIL|ERROR|error|failed/i.test(output) && !/0 failed|PASS/.test(output);
+    // Sprint 638: Detect actual failures, not words like "tier_error" or "VoiceTierError"
+    // Look for standalone FAIL indicators, exclude "0 FAIL" / "0 failed" / test descriptions containing "error"
+    const summaryMatch = output.match(/(\d+)\s*(?:FAIL|failed)/i);
+    const failCount = summaryMatch ? parseInt(summaryMatch[1]) : 0;
+    const hasFail = failCount > 0 || (/^  (?:✗|FAIL|❌)/m.test(output) && !/0 fail/i.test(output));
     const hasPass = /PASS|passed|✅|All.*pass/i.test(output);
 
     return {

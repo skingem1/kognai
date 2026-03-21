@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-638",
+  "title": "FIX — Achiri test runner false-fail on '0 FAIL' + E2E timeout",
+  "description": "Voice Handler reports '13 PASS, 0 FAIL' but test runner marks it failed because regex exclusion for '0 failed' is case-sensitive (misses '0 FAIL'). E2E Integration times out at 30s. Fix: case-insensitive exclusion pattern, increase E2E timeout to 60s.",
+  "source": "test-reliability",
+  "tasks": [
+    {
+      "id": "638-01",
+      "title": "Fix hasFail regex to be case-insensitive for '0 FAIL/0 failed' exclusion + increase timeout",
+      "type": "fix",
+      "task_type": "test",
+      "task_target": "scripts/achiri/run-all-tests.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-638"
+    }
+  ]
+}
