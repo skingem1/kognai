@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-754",
+  "title": "GATE — Refresh April 7 gate tracker (509 videos, 98 real content)",
+  "description": "Update april-7-gate.json with current stats: 509 ledger, 98 multiformat, 17 days remaining.",
+  "source": "queue-item-754",
+  "tasks": [
+    {
+      "id": "754-01",
+      "title": "Update gate tracker with current pipeline and posting stats",
+      "type": "feature",
+      "task_type": "gate",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-754"
+    }
+  ]
+}
