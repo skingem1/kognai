@@ -1,0 +1,56 @@
+{
+  "snapshot_date": "2026-03-21T15:50:00Z",
+  "sprint": "sprint-738",
+  "pm2": {
+    "online": ["kognai-stripe-webhook", "achiri-api", "vault-dashboard", "clawrouter-gateway", "telegram-bot"],
+    "stopped": ["pending-local-drain", "kognai-pipeline-watchdog", "kognai-daily-digest", "kognai-gate-regen", "kognai-brief-regen", "kognai-post-noon", "kognai-post-evening", "kognai-gate-tracker-update", "kognai-auto-healer", "kognai-calendar-regen", "kognai-schedule-regen", "kognai-auto-deliver-morning", "kognai-auto-deliver-noon", "kognai-auto-deliver-evening", "kognai-view-tracker", "kognai-watchdog", "kognai-smoke-test"],
+    "online_count": 5,
+    "stopped_count": 17,
+    "critical_online": ["kognai-stripe-webhook", "telegram-bot", "clawrouter-gateway"],
+    "needs_restart": ["kognai-pipeline-watchdog", "kognai-auto-deliver-morning", "kognai-auto-deliver-noon", "kognai-auto-deliver-evening"]
+  },
+  "disk": {
+    "total": "926GB",
+    "used": "15GB",
+    "available": "723GB",
+    "usage_pct": "3%",
+    "workspace_scs001": "4.4GB"
+  },
+  "ollama": {
+    "status": "ONLINE",
+    "models": ["qwen3:0.6b", "qwen3:4b", "qwen3:14b", "qwen3:32b", "deepseek-r1:14b", "qwen2.5vl:7b", "nomic-embed-text"],
+    "total_size": "47.5GB"
+  },
+  "pipelines": {
+    "pipeline_1": {
+      "status": "HUNG",
+      "issue": "Hangs on execution, 0 output after 10min",
+      "last_success": "2026-03-20T20:15:53Z"
+    },
+    "pipeline_2": {
+      "status": "OPERATIONAL",
+      "last_run": "2026-03-21T13:35:00Z",
+      "videos_produced": 60
+    }
+  },
+  "gate": {
+    "april_7": {
+      "days_remaining": 17,
+      "criteria_passed": "2/4",
+      "critical_blocker": "0/30 TikTok posts — manual posting not started"
+    }
+  },
+  "sprints": {
+    "total_shipped": 584,
+    "latest": "sprint-737",
+    "queue_remaining": 1
+  },
+  "env": {
+    "anthropic_key": "SET",
+    "stripe": "SET",
+    "telegram": "SET",
+    "supabase": "SET",
+    "ollama": "SET",
+    "tiktok_access_token": "MISSING — posting blocked"
+  }
+}

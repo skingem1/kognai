@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-738",
+  "title": "INFRA — Comprehensive system health + queue replenish",
+  "description": "Health check: PM2, disk, ClawRouter, pipelines, Telegram, auto-deliver. Generate snapshot. Replenish queue with next 5 items.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "738-01",
+      "title": "Generate comprehensive system health snapshot",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "workspace/scs001/system-health-snapshot.json",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-738"
+    },
+    {
+      "id": "738-02",
+      "title": "Replenish sprint queue with next 5 items",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "workspace/sprint-queue.json",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-738"
+    }
+  ]
+}

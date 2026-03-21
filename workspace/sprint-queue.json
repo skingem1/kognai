@@ -72,9 +72,50 @@
       "sprint": 738,
       "title": "INFRA \u2014 Comprehensive system health + queue replenish",
       "block": "INFRA",
-      "status": "pending",
+      "status": "done",
+      "_note": "Done: health snapshot generated, queue replenished with 739-743.",
       "priority": "low",
       "rationale": "Post-integration health check. Verify: PM2 processes running, disk usage, ClawRouter metrics, both pipelines cron scheduled, auto-deliver working, Telegram commands responding. Generate health snapshot. Replenish sprint queue with next 5 items if needed."
+    },
+    {
+      "sprint": 739,
+      "title": "FIX \u2014 Debug Pipeline 1 hang (orchestrator timeout / LLM hang)",
+      "block": "FIX",
+      "status": "pending",
+      "priority": "critical",
+      "rationale": "Pipeline 1 hangs with 0 output after 10min. Likely qwen3:14b timeout on large agent files or orchestrator stuck in LLM call. Debug: add timeout to orchestrator.run(), check which stage hangs, add progress logging. Pipeline 1 produces color blocks anyway, but hang prevents any new Pipeline 1 content."
+    },
+    {
+      "sprint": 740,
+      "title": "FIX \u2014 Restore telegram-bot/commands.ts (50+ handlers missing)",
+      "block": "FIX",
+      "status": "pending",
+      "priority": "critical",
+      "rationale": "commands.ts is imported by telegram-bot/index.ts but the file doesn't exist. All 50+ Telegram command handlers are missing. Bot won't compile. Check git history for last known version, restore or recreate critical handlers (/gate, /status, /revenue, /metrics, /lastrun, /pipeline)."
+    },
+    {
+      "sprint": 741,
+      "title": "CONTENT \u2014 Daily multiformat batch (fresh 6 videos for posting queue)",
+      "block": "CONTENT",
+      "status": "pending",
+      "priority": "high",
+      "rationale": "Run multiformat pipeline with --force-refresh to produce 6 new videos. Verify publish-ledger updated. This keeps the content pipeline flowing for April 7 gate (need 30 posts)."
+    },
+    {
+      "sprint": 742,
+      "title": "INFRA \u2014 Restart stopped PM2 cron jobs (auto-deliver, watchdog, gate-regen)",
+      "block": "INFRA",
+      "status": "pending",
+      "priority": "high",
+      "rationale": "17 PM2 processes are stopped. Restart critical ones: auto-deliver (3x daily), pipeline-watchdog, gate-tracker-update, brief-regen. Verify they run without errors. Check PM2 logs for crash reasons."
+    },
+    {
+      "sprint": 743,
+      "title": "POSTING \u2014 Export top 10 videos for manual TikTok posting",
+      "block": "POSTING",
+      "status": "pending",
+      "priority": "critical",
+      "rationale": "April 7 gate requires 30 posts, currently at 0. Export 10 best videos from publish-ledger (by format diversity, topic freshness). Create workspace/scs001/manual-post-queue/ with videos + metadata for operator to post manually. Critical path to gate."
     }
   ]
 }
