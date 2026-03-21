@@ -98,7 +98,7 @@
       "sprint": 712,
       "title": "GOV — Police Agent Lite: constitutional cross-check in CTO gate",
       "block": "GOV-PHASE3",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "GOVERNANCE REMEDIATION Phase 3. Add constitutional enforcement inside CTO gate (scripts/lib/cto-approval-gate.ts). After LLM review: read SIGNALS.md for CRITICAL signals. If sprint touches flagged areas, add warning. If Founding Charter immutable law at risk, REJECT regardless of LLM. Police Agent Lite — enforcement without separate agent."
     },
