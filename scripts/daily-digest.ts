@@ -423,11 +423,14 @@ function getPipelineMetricsSummary(): string[] {
   }
 }
 
-// ── Sprint 594: Escape Telegram Markdown special chars in dynamic content ─────
+// ── Sprint 594/679: Escape Telegram Markdown special chars in dynamic content ──
 function escapeMd(text: string): string {
-  // Telegram Markdown v1: escape [ ] ( ) ~ ` > # + - = | { } . !
-  // But mostly < > cause parse failures. Also escape unmatched _ and *
-  return text.replace(/[<>]/g, '');
+  // Sprint 679: Telegram Markdown V1 formatting chars: _ * ` [ ]
+  // These cause "can't parse entities" when unmatched in dynamic content.
+  // Remove < > (never valid in Telegram), escape the rest.
+  return text
+    .replace(/[<>]/g, '')
+    .replace(/([_*`\[\]])/g, '\\$1');
 }
 
 // ── Format digest message ─────────────────────────────────────────────────────
@@ -636,6 +639,38 @@ function sendVideoTelegram(chatId: string, videoPath: string, caption?: string):
   });
 }
 
+// Sprint 679: Plain text fallback (no parse_mode) for Markdown failures
+function sendPlainText(chatId: string, text: string): Promise<void> {
+  // Strip Markdown formatting for readable plain text
+  const plain = text.replace(/\\/g, '').replace(/\*/g, '').replace(/_/g, '');
+  const payload = JSON.stringify({ chat_id: chatId, text: plain });
+  return new Promise((resolve, reject) => {
+    const req = https.request({
+      hostname: 'api.telegram.org',
+      path: `/bot${BOT_TOKEN}/sendMessage`,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(payload),
+      },
+    }, (res) => {
+      let data = '';
+      res.on('data', (c: string) => (data += c));
+      res.on('end', () => {
+        try {
+          const parsed = JSON.parse(data);
+          if (!parsed.ok) reject(new Error(`Telegram error: ${parsed.description ?? JSON.stringify(parsed)}`));
+          else resolve();
+        } catch { reject(new Error(`Telegram parse error: ${data.slice(0, 200)}`)); }
+      });
+    });
+    req.on('error', reject);
+    req.setTimeout(15000, () => { req.destroy(); reject(new Error('Telegram timeout')); });
+    req.write(payload);
+    req.end();
+  });
+}
+
 // ── Entry ─────────────────────────────────────────────────────────────────────
 
 async function main(): Promise<void> {
@@ -661,8 +696,20 @@ async function main(): Promise<void> {
     await sendTelegram(OWNER_ID, digest);
     process.stdout.write(`[daily-digest] Digest sent to ${OWNER_ID}\n`);
   } catch (err: any) {
-    process.stderr.write(`[daily-digest] Send failed: ${err.message}\n`);
-    process.exit(1);
+    // Sprint 679: Fallback — if Markdown parse fails, retry as plain text
+    if (err.message && err.message.includes("can't parse entities")) {
+      process.stderr.write(`[daily-digest] Markdown parse failed, retrying as plain text\n`);
+      try {
+        await sendPlainText(OWNER_ID, digest);
+        process.stdout.write(`[daily-digest] Digest sent as plain text to ${OWNER_ID}\n`);
+      } catch (err2: any) {
+        process.stderr.write(`[daily-digest] Plain text fallback also failed: ${err2.message}\n`);
+        process.exit(1);
+      }
+    } else {
+      process.stderr.write(`[daily-digest] Send failed: ${err.message}\n`);
+      process.exit(1);
+    }
   }
 
   // Sprint 230: Send top ready-to-post video with the morning digest

@@ -1,0 +1,41 @@
+{
+  "sprint_id": "sprint-679",
+  "title": "BUGFIX — Fix daily digest Telegram Markdown parsing error",
+  "description": "Daily digest fails since Mar 20 with 'can't parse entities' error. Root cause: escapeMd() only strips <> but doesn't escape *, _, `, [, ] in dynamic content. Fix escapeMd and add fallback to plain text on Markdown parse failure.",
+  "source": "error-log",
+  "tasks": [
+    {
+      "id": "679-01",
+      "title": "Fix escapeMd() to properly escape Telegram Markdown V1 special chars",
+      "type": "bugfix",
+      "task_type": "bugfix",
+      "task_target": "scripts/daily-digest.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-679"
+    },
+    {
+      "id": "679-02",
+      "title": "Add fallback: retry sendTelegram without parse_mode on Markdown failure",
+      "type": "bugfix",
+      "task_type": "bugfix",
+      "task_target": "scripts/daily-digest.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-679"
+    },
+    {
+      "id": "679-03",
+      "title": "Create validate-digest-markdown.ts to verify no parse errors",
+      "type": "test",
+      "task_type": "test",
+      "task_target": "scripts/scs001/validate-digest-markdown.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-679"
+    }
+  ]
+}
