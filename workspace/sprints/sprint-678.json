@@ -1,0 +1,41 @@
+{
+  "sprint_id": "sprint-678",
+  "title": "INFRA — Cross-platform posting: YouTube Shorts upload support",
+  "description": "Wire YouTube Shorts upload into the posting pipeline. Create cross-platform publisher that uploads captioned videos to YouTube after TikTok delivery.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "678-01",
+      "title": "Create cross-platform-publish.ts — unified publisher for TikTok + YouTube",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/scs001/cross-platform-publish.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-678"
+    },
+    {
+      "id": "678-02",
+      "title": "Add /youtube Telegram command for on-demand YouTube upload",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/scs001/cross-platform-publish.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-678"
+    },
+    {
+      "id": "678-03",
+      "title": "Create validate-crossplatform-output.ts",
+      "type": "test",
+      "task_type": "test",
+      "task_target": "scripts/scs001/validate-crossplatform-output.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-678"
+    }
+  ]
+}
