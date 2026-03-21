@@ -129,7 +129,7 @@
       "sprint": 662,
       "title": "GATE — April 7 final readiness report + Phase 2 planning",
       "block": "GATE",
-      "status": "pending",
+      "status": "done",
       "priority": "low",
       "rationale": "Run comprehensive gate assessment 2 days before April 7. Generate final readiness report with actual posting stats. If gate PASS: activate Phase 2 sprint seed. If gate FAIL: document what missed and why, plan remediation."
     }
