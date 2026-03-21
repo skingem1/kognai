@@ -17,11 +17,11 @@ const LEDGER_PATH = resolve('workspace/scs001/validation-errors.jsonl');
 
 // Validation thresholds
 const HOOK_MIN_LENGTH     = 10;
-const SEGMENTS_MIN        = 5;
-const SEGMENTS_MAX        = 6;
-const INTERRUPTS_MIN      = 8;
-const DURATION_MIN_S      = 24;
-const DURATION_MAX_S      = 28;
+const SEGMENTS_MIN        = 4;   // Sprint 672: widened from 5 (4-seg scripts are TikTok-viable)
+const SEGMENTS_MAX        = 7;   // Sprint 672: widened from 6 (allow longer scripts)
+const INTERRUPTS_MIN      = 6;   // Sprint 672: widened from 8 (proportional to shorter scripts)
+const DURATION_MIN_S      = 20;  // Sprint 672: widened from 24 (20s+ is viable for TikTok)
+const DURATION_MAX_S      = 35;  // Sprint 672: widened from 28 (allow up to 35s)
 
 export class ScriptValidator {
   validate(bundle: ScriptBundle): ValidationResult {

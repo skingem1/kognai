@@ -59,7 +59,7 @@ import {
   cmdRecord, cmdQueue, cmdReview, cmdCaption, cmdPosted, cmdOnboard,
   cmdPipeline, cmdToday, cmdAnalytics, cmdDiversity, cmdThumbnail,
   cmdCompetitor, cmdStats, cmdQuality, cmdRadar, cmdBacktest,
-  cmdFormatStats, cmdManifesto,
+  cmdFormatStats, cmdManifesto, cmdValErrors,
 } from '../telegram-commands/cmd-content';
 
 import {
@@ -131,6 +131,7 @@ test('radar',      () => cmdRadar());
 test('backtest',   () => cmdBacktest());
 test('formatstats',() => cmdFormatStats());
 test('manifesto',  () => cmdManifesto());
+test('valerrors',  () => cmdValErrors());
 
 // ── Posting commands ─────────────────────────────────────────────────────────
 

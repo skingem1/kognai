@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-672",
+  "title": "QUALITY — Widen script validation tolerances for gate push",
+  "description": "Widen SEGMENTS_MIN 5→4 and DURATION_MIN_S 24→20 in script validator to reduce false rejections. Current thresholds reject borderline-valid scripts (22s duration, 4 segments) that are still TikTok-viable.",
+  "source": "queue-empty-gate-push",
+  "tasks": [
+    {
+      "id": "672-01",
+      "title": "Widen script validation tolerances and add /valerrors command",
+      "type": "enhancement",
+      "task_type": "quality",
+      "task_target": "agents/scs001-script-validator/index.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-672"
+    }
+  ]
+}

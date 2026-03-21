@@ -982,3 +982,23 @@ export function cmdManifesto(): string {
     return lines.join('\n');
   } catch { return '❌ *Manifesto Thread* — parse error.'; }
 }
+
+// Sprint 672: /valerrors — show recent script validation errors
+export function cmdValErrors(): string {
+  const errPath = path.join(ROOT, 'workspace', 'scs001', 'validation-errors.jsonl');
+  if (!fs.existsSync(errPath)) return '✅ No validation errors recorded.';
+  const lines = fs.readFileSync(errPath, 'utf-8').split('\n').filter(l => l.trim());
+  if (lines.length === 0) return '✅ No validation errors recorded.';
+
+  const errors = lines.slice(-10).map(l => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
+  if (errors.length === 0) return '✅ No validation errors (parse failed).';
+
+  const out: string[] = ['📋 *Validation Errors* (last ' + errors.length + '/' + lines.length + ')'];
+  for (const e of errors) {
+    const ts = e.timestamp ? new Date(e.timestamp).toISOString().slice(5, 16).replace('T', ' ') : '?';
+    out.push(`\n*${e.clip_id ?? e.script_id ?? '?'}* (${ts})`);
+    for (const err of (e.errors ?? [])) out.push(`  • ${err}`);
+  }
+  out.push('\n_Thresholds: 4-7 segments, 20-35s, 6+ interrupts_');
+  return out.join('\n');
+}
