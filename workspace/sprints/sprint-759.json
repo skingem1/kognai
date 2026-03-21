@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-759",
+  "title": "CONTENT — Batch 9: fresh videos (Diffusion Noise, Metacog, DreamPartGen) 529 ledger",
+  "description": "Content batch with ledger dedup. New topics: Spectrally-Guided Diffusion, Metacog proprioception, DreamPartGen 3D.",
+  "source": "queue-exhausted-brief-recommendation",
+  "tasks": [
+    {
+      "id": "759-01",
+      "title": "Run multiformat pipeline for 5+ fresh videos",
+      "type": "feature",
+      "task_type": "content",
+      "agent": "coder",
+      "status": "done",
+      "priority": "critical",
+      "sprint_id": "sprint-759"
+    }
+  ]
+}
