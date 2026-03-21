@@ -1565,3 +1565,15 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Achiri alpha: readiness 100%, tests 17/17, event logging wired.
 - Swarm used: no
 - Timestamp: 2026-03-22T00:00:00Z
+
+## Sprint 647 — CONTENT-FIX
+- Status: PASS
+- Commit: 820e358
+- Files created: scripts/scs001/validate-content-quality.ts, workspace/sprints/sprint-647.json
+- Files modified: ecosystem.config.js
+- Test: scripts/scs001/validate-content-quality.ts — PASS (10/10), validate-llm-rewriter.ts — PASS (11/11)
+- Fix: scs001-pipeline PM2 process was missing LLM_REWRITE=1, SCS_EDITING_MODE, and API keys. Cron pipeline (4x/day) generated 389+ videos with template text because env vars only existed in scs001-live process.
+- Pipeline: LLM rewrite now enabled in both pipeline processes. Multiformat SRTs: 17/17 have unique content.
+- Swarm used: no (FP-007 — config fix + validation, wrote directly)
+- Issues: None
+- Timestamp: 2026-03-22T01:00:00Z
