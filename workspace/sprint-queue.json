@@ -1587,6 +1587,14 @@
       "status": "done",
       "priority": "medium",
       "rationale": "Wire Achiri conversations into kognai_events Supabase table for real-time alpha monitoring. Logs user_id, tier, model, response_time_ms per chat."
+    },
+    {
+      "sprint": 644,
+      "title": "TEST — Achiri test suite 17/17 pass (Sprint 642 timeout fix confirmed)",
+      "block": "TEST",
+      "status": "done",
+      "priority": "medium",
+      "rationale": "Validate Sprint 642 timeout fix. E2E Integration now passes at 89.9s (was timing out at 120s). Full suite: 17/17."
     }
   ]
 }
