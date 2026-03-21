@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-671",
+  "title": "TEST — Comprehensive Telegram bot command smoke test",
+  "description": "Build a smoke test that calls all ~90 sync command functions and verifies they return valid strings without throwing. Covers all cmd-*.ts modules.",
+  "source": "queue-empty-reliability",
+  "tasks": [
+    {
+      "id": "671-01",
+      "title": "Build comprehensive bot command smoke test calling all sync commands",
+      "type": "test",
+      "task_type": "test",
+      "task_target": "scripts/scs001/validate-all-bot-commands.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-671"
+    }
+  ]
+}
