@@ -89,7 +89,7 @@ function runTest(test: { name: string; script: string; slow?: boolean }): TestRe
 
   const start = Date.now();
   try {
-    const timeout = test.slow ? 120000 : 30000; // Sprint 638: 120s for slow tests (Claude API calls)
+    const timeout = test.slow ? 240000 : 30000; // Sprint 642: 240s for slow tests (E2E runs Ollama calls)
     const output = execSync(`npx ts-node ${test.script} 2>&1`, {
       cwd: CWD,
       timeout,

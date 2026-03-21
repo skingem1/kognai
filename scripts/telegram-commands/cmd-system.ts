@@ -912,12 +912,22 @@ export function cmdPreflight(): string {
   checks.push({ name: 'Video Queue', pass: queueCount > 0, detail: queueCount > 0 ? `${queueCount} ready` : '❌ empty' });
   checks.push({ name: 'Posts Recorded', pass: postCount > 0, detail: `${postCount}/30` });
 
-  // PM2
+  // PM2 — Sprint 642: show individual process statuses
   try {
     const pm2Out = execSync('pm2 jlist 2>/dev/null', { timeout: 5000, encoding: 'utf-8' });
-    const procs = JSON.parse(pm2Out);
-    const online = procs.filter((p: any) => p.pm2_env?.status === 'online').length;
-    checks.push({ name: 'PM2 Processes', pass: online > 0, detail: `${online} online` });
+    const procs = JSON.parse(pm2Out) as Array<{ name: string; pm2_env?: { status?: string } }>;
+    const online = procs.filter((p) => p.pm2_env?.status === 'online');
+    const stopped = procs.filter((p) => p.pm2_env?.status !== 'online');
+    checks.push({ name: 'PM2 Processes', pass: online.length > 0, detail: `${online.length}/${procs.length} online` });
+    if (online.length > 0) {
+      checks.push({ name: 'PM2 Online', pass: true, detail: online.map(p => p.name).join(', ') });
+    }
+    if (stopped.length > 0 && stopped.length <= 20) {
+      const critical = stopped.filter(p => ['telegram-bot', 'achiri-api', 'kognai-stripe-webhook', 'clawrouter-gateway'].includes(p.name));
+      if (critical.length > 0) {
+        checks.push({ name: 'PM2 Critical Stopped', pass: false, detail: critical.map(p => p.name).join(', ') });
+      }
+    }
   } catch {
     checks.push({ name: 'PM2 Processes', pass: false, detail: '❌ pm2 not running' });
   }

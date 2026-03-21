@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-642",
+  "title": "FIX — Achiri E2E test timeout + expand /preflight PM2 details",
+  "description": "Fix the 1 failing Achiri test (E2E Integration times out at 120s) by increasing slow test timeout to 240s. Expand /preflight PM2 section to show individual process names and statuses instead of just a count.",
+  "source": "test-reliability",
+  "tasks": [
+    {
+      "id": "642-01",
+      "title": "Increase slow test timeout from 120s to 240s in run-all-tests.ts",
+      "type": "fix",
+      "task_type": "test",
+      "task_target": "scripts/achiri/run-all-tests.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-642"
+    },
+    {
+      "id": "642-02",
+      "title": "Expand /preflight PM2 section to show individual process statuses",
+      "type": "feature",
+      "task_type": "operator-tooling",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-642"
+    }
+  ]
+}
