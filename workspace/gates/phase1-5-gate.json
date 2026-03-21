@@ -1,33 +1,56 @@
 {
   "gate": "phase1-5-tiktok-kill-switch",
   "date": "2026-03-21",
-  "generated_at": "2026-03-21T09:48:41.600Z",
+  "generated_at": "2026-03-21T18:40:00.000Z",
   "deadline": "2026-04-07",
   "days_remaining": 17,
-  "urgency": "ON_TRACK",
-  "urgency_signal": "Posting pace is sufficient",
+  "urgency": "AT_RISK",
+  "urgency_signal": "1/30 posts — need 2/day pace to hit target. 25 videos in post queue ready.",
   "pace_needed": 1.7,
   "criteria": [
     {
       "id": "post-count",
       "name": "Manual TikTok Posts (target: 30)",
       "pass": false,
-      "details": "1 posts recorded in manual-posts.jsonl"
+      "details": "1 posts recorded in manual-posts.jsonl. 25 videos queued and ready."
     },
     {
       "id": "total-views",
       "name": "Total Views Across Posts (target: 500)",
       "pass": false,
       "details": "0 total views | avg 0 views/post"
+    },
+    {
+      "id": "content-library",
+      "name": "Content Library Size",
+      "pass": true,
+      "details": "606 videos in ledger, 75+ unique topics, 10 radar sources active"
+    },
+    {
+      "id": "post-queue",
+      "name": "Post Queue Ready",
+      "pass": true,
+      "details": "25 videos curated in manual-post-queue (9 exp, 7 dbt, 5 vis, 4 lst)"
     }
   ],
   "overall_pass": false,
-  "recommendation": "ON TRACK — 1/30 posts, 17 days remaining. Keep posting at current pace.",
+  "recommendation": "AT RISK — 1/30 posts, 17 days. Post queue has 25 ready videos. Operator must start posting 2/day immediately.",
+  "session_28_stats": {
+    "sprints_shipped": 4,
+    "new_videos_produced": 20,
+    "new_radar_sources": 3,
+    "topics_before": 0,
+    "topics_after": 28,
+    "total_cost": "$7.50",
+    "ledger_growth": "572 → 606"
+  },
   "raw": {
     "posts_count": 1,
     "total_views": 0,
     "avg_views": 0,
     "posts_remaining": 29,
-    "views_remaining": 500
+    "views_remaining": 500,
+    "ledger_total": 606,
+    "queue_total": 25
   }
 }

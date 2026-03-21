@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-774",
+  "title": "GATE — Refresh April 7 gate (606 videos, 25 in queue, 1/30 posts)",
+  "description": "Update gate tracker with current stats after session 28. 4 sprints shipped, 20 new videos, 3 new radar sources.",
+  "source": "queue-exhausted-gate-refresh",
+  "tasks": [
+    {
+      "id": "774-01",
+      "title": "Update phase1-5-gate.json with session 28 stats",
+      "type": "feature",
+      "task_type": "gate",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-774"
+    }
+  ]
+}
