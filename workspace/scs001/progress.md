@@ -4,7 +4,7 @@
 
 ## Summary
 
-- **Total sprints shipped:** 487 (Sprint 059 → Sprint 630)
+- **Total sprints shipped:** 488 (Sprint 059 → Sprint 631)
 - **Total commits:** 1110
 - **Current phase:** Phase 1 Active (Mar 17 – Apr 11 2026)
 - **Pipeline:** 12 stages, 11 agents, closed feedback loop
@@ -1448,3 +1448,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (multi-file surgical fix)
 - Issues: None
 - Timestamp: 2026-03-21T14:40:00Z
+
+## Sprint 631 — INFRA
+- Status: PASS
+- Commit: 5753049
+- Files created: workspace/sprints/sprint-631.json
+- Files modified: docs/gate-tracker.md, workspace/sprint-queue.json
+- Test: N/A (docs + queue update)
+- Pipeline: Gate tracker updated (Phase 0→1 marked PASS). Sprint queue replenished with 5 items (632-636): Achiri memory x2, E2E smoke test, weekly digest, brief fix.
+- Swarm used: no (docs + JSON update)
+- Issues: None
+- Timestamp: 2026-03-21T14:50:00Z
