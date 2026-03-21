@@ -1516,7 +1516,7 @@
       "sprint": 635,
       "title": "OPERATOR \u2014 /weeklydigest command aggregating 7-day sprint velocity + content metrics",
       "block": "OPERATOR",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "Operator sees daily digest but no weekly trends. Add /weeklydigest: sprints shipped, videos produced, posts recorded, Achiri DAU trend, MRR change. Helps track momentum toward gates."
     },
