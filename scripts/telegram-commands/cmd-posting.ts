@@ -483,6 +483,39 @@ export function cmdDigest(): string {
     out.push(`📦 *Queue:* EMPTY — run /refresh to generate content`);
   }
 
+  // Sprint 625: Achiri stats section
+  const achiriCountsPath = path.join(ROOT, 'workspace', 'achiri', 'daily-counts.json');
+  const achiriWaitlistPath = path.join(ROOT, 'workspace', 'achiri', 'waitlist.jsonl');
+  const achiriTiersPath = path.join(ROOT, 'workspace', 'achiri', 'user-tiers.json');
+  let achiriDau = 0, achiriMsgToday = 0, achiriTotalUsers = 0, achiriWaitlist = 0, achiriPaid = 0;
+  try {
+    if (fs.existsSync(achiriCountsPath)) {
+      const counts = JSON.parse(fs.readFileSync(achiriCountsPath, 'utf-8')) as Record<string, Record<string, number>>;
+      const today = now.toISOString().slice(0, 10);
+      const todayCounts = counts[today] ?? {};
+      achiriDau = Object.keys(todayCounts).length;
+      achiriMsgToday = Object.values(todayCounts).reduce((s, n) => s + n, 0);
+      achiriTotalUsers = new Set(Object.values(counts).flatMap(d => Object.keys(d))).size;
+    }
+  } catch {}
+  try {
+    if (fs.existsSync(achiriWaitlistPath)) {
+      achiriWaitlist = fs.readFileSync(achiriWaitlistPath, 'utf-8').split('\n').filter(l => l.trim()).length;
+    }
+  } catch {}
+  try {
+    if (fs.existsSync(achiriTiersPath)) {
+      const tiers = JSON.parse(fs.readFileSync(achiriTiersPath, 'utf-8'));
+      achiriPaid = Object.values(tiers).filter((t: any) => t.tier !== 'free').length;
+    }
+  } catch {}
+
+  out.push('');
+  out.push(`🤖 *Achiri:* ${achiriTotalUsers} users · ${achiriDau} DAU · ${achiriMsgToday} msg today`);
+  if (achiriWaitlist > 0 || achiriPaid > 0) {
+    out.push(`  Waitlist: ${achiriWaitlist} · Paid: ${achiriPaid}`);
+  }
+
   out.push('');
   out.push(`💳 *Stripe:* ${stripeReady ? '✅ Ready' : '❌ Not Ready'}`);
   out.push(`🎵 *TikTok API:* ${tiktokReady ? '✅ Token set' : '❌ No token'}`);
