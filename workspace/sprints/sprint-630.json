@@ -1,0 +1,41 @@
+{
+  "sprint_id": "sprint-630",
+  "title": "FIX — Resolve duplicate cmdCleanup import + missing execSync in cmd-stripe",
+  "description": "Pre-existing compile errors: cmdCleanup exported from both cmd-system.ts and cmd-management.ts (duplicate identifier), and cmd-stripe.ts missing execSync import. Fix: remove duplicate from cmd-system, add execSync import to cmd-stripe, deduplicate router case.",
+  "source": "code-quality",
+  "tasks": [
+    {
+      "id": "630-01",
+      "title": "Remove cmdCleanup from cmd-system.ts (keep cmd-management.ts version)",
+      "type": "fix",
+      "task_type": "refactor",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-630"
+    },
+    {
+      "id": "630-02",
+      "title": "Add execSync import to cmd-stripe.ts",
+      "type": "fix",
+      "task_type": "refactor",
+      "task_target": "scripts/telegram-commands/cmd-stripe.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-630"
+    },
+    {
+      "id": "630-03",
+      "title": "Deduplicate /cleanup case in telegram-bot.ts router + fix import",
+      "type": "fix",
+      "task_type": "refactor",
+      "task_target": "scripts/telegram-bot.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-630"
+    }
+  ]
+}

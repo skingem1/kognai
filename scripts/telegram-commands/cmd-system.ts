@@ -734,34 +734,7 @@ export function cmdSwarmStats(): string {
   }
 }
 
-// Sprint 550: Disk cleanup command
-export function cmdCleanup(): string {
-  try {
-    const output = execSync('npx ts-node --transpile-only scripts/scs001/pipeline-cleanup.ts --keep 5', {
-      cwd: ROOT, timeout: 30000, encoding: 'utf-8',
-      env: { ...process.env, TS_NODE_TRANSPILE_ONLY: 'true' },
-    });
-
-    // Parse the JSON summary from the last line
-    const lines = output.trim().split('\n');
-    const lastLine = lines[lines.length - 1];
-    try {
-      const result = JSON.parse(lastLine);
-      return [
-        `🧹 *Disk Cleanup*\n`,
-        `Runs removed: ${result.removed}`,
-        `Runs kept: ${result.kept}`,
-        `Freed: ${result.freed_mb}MB`,
-        `Remaining: ${result.remaining_runs?.length || result.kept} runs`,
-      ].join('\n');
-    } catch {
-      // Fallback: show raw output
-      return `🧹 *Cleanup Output*\n\n\`\`\`\n${output.slice(-500)}\n\`\`\``;
-    }
-  } catch (err: any) {
-    return `❌ Cleanup error: ${err.message}`;
-  }
-}
+// Sprint 550: cmdCleanup moved to cmd-management.ts (Sprint 630 dedup)
 
 // Sprint 589: /errors — show recent pipeline validation errors
 export function cmdErrors(): string {

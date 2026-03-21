@@ -6,6 +6,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as https from 'https';
+import { execSync } from 'child_process';
 import { sendMessage } from './telegram-api';
 import { ROOT, readLines, findCaptionedMp4 } from './shared';
 
