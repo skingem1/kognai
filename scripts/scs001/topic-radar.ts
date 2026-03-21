@@ -23,7 +23,7 @@ import { join } from 'path';
 
 // ── Types ──────────────────────────────────────────────
 
-export type VideoFormat = 'explainer' | 'debate' | 'vision';
+export type VideoFormat = 'explainer' | 'debate' | 'vision' | 'listicle';
 
 export interface TopicBrief {
   topic_id:       string;
@@ -36,6 +36,7 @@ export interface TopicBrief {
   keywords:       string[];
   debate_sides?:  { side_a: string; side_b: string };  // For debate format
   vision_angles?: string[];     // For vision format — 3 discussion angles
+  listicle_items?: string[];    // For listicle format — 3 ranked items
   collected_at:   string;
 }
 
@@ -90,6 +91,16 @@ const VISION_SIGNALS = [
   'regulation', 'policy', 'ethics', 'safety', 'risk',
 ];
 
+// Keywords suggesting listicle/ranking topics (Sprint 613)
+const LISTICLE_SIGNALS = [
+  'top', 'best', 'worst', 'ranking', 'ranked', 'list',
+  'tools', 'apps', 'projects', 'frameworks', 'libraries',
+  'most popular', 'trending', 'hottest', 'fastest growing',
+  'must-know', 'essential', 'underrated', 'overlooked',
+  'biggest', 'newest', 'latest', 'alternatives',
+  'picks', 'favorites', 'recommendations', 'winners',
+];
+
 // ── Dedup ──────────────────────────────────────────────
 
 function loadSeenTopics(): Set<string> {
@@ -132,6 +143,10 @@ function classifyFormat(title: string, summary: string): VideoFormat {
   const visionScore = VISION_SIGNALS.filter(s => text.includes(s)).length;
   if (visionScore >= 1) return 'vision';  // Sprint 609: lowered from 2 to 1
 
+  // Sprint 613: Check for listicle signals (ranking/list topics)
+  const listicleScore = LISTICLE_SIGNALS.filter(s => text.includes(s)).length;
+  if (listicleScore >= 1) return 'listicle';
+
   // Default: quick explainer
   return 'explainer';
 }
@@ -147,6 +162,20 @@ function extractVisionAngles(summary: string): string[] {
   // Extract 3 potential discussion angles from the summary
   const sentences = summary.split(/[.!?]+/).filter(s => s.trim().length > 10);
   return sentences.slice(0, 3).map(s => s.trim());
+}
+
+// Sprint 613: Extract 3 list items from title/summary for listicle format
+function extractListicleItems(title: string, summary: string): string[] {
+  const text = title + ' ' + summary;
+  // Try to extract named items (e.g. "GPT-4, Claude, Gemini")
+  const commaList = text.match(/(?:top|best|biggest)\s+\d*\s*[:—–-]?\s*(.+)/i);
+  if (commaList) {
+    const items = commaList[1].split(/[,;]/).map(s => s.trim()).filter(s => s.length > 2 && s.length < 50);
+    if (items.length >= 3) return items.slice(0, 3);
+  }
+  // Fallback: use keywords from title
+  const words = title.split(/[\s,\-\/]+/).filter(w => w.length > 3);
+  return words.slice(0, 3).map(w => w.charAt(0).toUpperCase() + w.slice(1));
 }
 
 // ── Source Fetchers ────────────────────────────────────
@@ -189,6 +218,7 @@ async function fetchHackerNews(): Promise<TopicBrief[]> {
           confidence: Math.min(95, 50 + Math.floor(story.score / 10)),
           keywords: story.title.toLowerCase().split(/[\s,\-\/]+/).filter(w => w.length > 3).slice(0, 6),
           debate_sides: format === 'debate' ? extractDebateSides(story.title, '') : undefined,
+          listicle_items: format === 'listicle' ? extractListicleItems(story.title, '') : undefined,
           collected_at: new Date().toISOString(),
         });
       }

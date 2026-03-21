@@ -1,7 +1,7 @@
 /**
  * SCS-001 — Multi-Format Script Generator
  *
- * Generates scripts for 3 video format types:
+ * Generates scripts for 4 video format types:
  *
  *   Type 1 (EXPLAINER) — Mono avatar, ~25s
  *     Single presenter explains a new tech/protocol/tool.
@@ -15,6 +15,10 @@
  *     Three agents discuss the future of AI.
  *     Structure: Moderator intro (4s) → Agent A (8s) → Agent B (8s) → Agent C (8s) →
  *                Moderator synthesis (6s) → Vision clip cue (6s)
+ *
+ *   Type 4 (LISTICLE) — Mono avatar, ~20s countdown (Sprint 613)
+ *     Single presenter counts down "Top 3" in a category.
+ *     Structure: Hook (3s) → #3 (4s) → #2 (4s) → #1 (5s) → CTA (4s)
  *
  * Uses qwen3:14b via Ollama for creative script generation ($0 cost).
  * Falls back to deterministic templates when Ollama unavailable.
@@ -440,6 +444,82 @@ function buildFallbackVision(
   }));
 }
 
+// ── Format 4: Listicle (Solo Presenter, ~20s countdown) ── Sprint 613
+
+async function generateListicleScript(topic: TopicBrief): Promise<VideoScript> {
+  const avatar = AVATARS.NOVA;
+  const items = topic.listicle_items ?? topic.keywords.slice(0, 3).map(k => k.charAt(0).toUpperCase() + k.slice(1));
+  const item3 = items[2] ?? 'a surprising newcomer';
+  const item2 = items[1] ?? 'the rising contender';
+  const item1 = items[0] ?? 'the undisputed leader';
+
+  const prompt = `You are ${avatar.name}, an AI tech analyst creating a 20-second "Top 3" TikTok video.
+Topic: ${topic.title}
+Items to rank (3rd to 1st): ${item3}, ${item2}, ${item1}
+
+Write a punchy 5-line countdown script:
+1. HOOK (3 sec): "Top 3..." teaser that makes viewers stay to see #1
+2. NUMBER 3 (4 sec): Present ${item3} — one killer fact or feature
+3. NUMBER 2 (4 sec): Present ${item2} — why it beats #3
+4. NUMBER 1 (5 sec): Present ${item1} — the undeniable winner and why
+5. CTA (4 sec): Surprising insight or "follow for more" closer
+
+Rules:
+- Total: 20 seconds max
+- Each line under 20 words
+- Build suspense — save the best for #1
+- Be specific, cite real features or numbers
+- No emojis in script text
+
+Output ONLY the 5 lines, one per line, no labels or numbers.`;
+
+  const llmOutput = await callOllama(prompt, 400);
+  let lines: DialogueLine[];
+  let llmUsed = false;
+
+  const timings = [
+    { start_s: 0, end_s: 3, emotion: 'excited' as const },
+    { start_s: 3, end_s: 7, emotion: 'neutral' as const },
+    { start_s: 7, end_s: 11, emotion: 'thoughtful' as const },
+    { start_s: 11, end_s: 16, emotion: 'passionate' as const },
+    { start_s: 16, end_s: 20, emotion: 'excited' as const },
+  ];
+
+  if (llmOutput && llmOutput.split('\n').filter(l => l.trim()).length >= 4) {
+    const rawLines = llmOutput.split('\n').filter(l => l.trim()).slice(0, 5);
+    lines = rawLines.map((text, i) => ({
+      speaker: avatar.name,
+      avatar_id: avatar.id,
+      text: text.replace(/^\d+[.)]\s*/, '').replace(/^(HOOK|NUMBER|CTA|#\d)[:\s]*/i, '').trim(),
+      ...(timings[i] ?? { start_s: i * 4, end_s: (i + 1) * 4, emotion: 'neutral' as const }),
+    }));
+    llmUsed = true;
+  } else {
+    // Deterministic fallback
+    const topicShort = topic.title.slice(0, 40);
+    lines = [
+      { speaker: avatar.name, avatar_id: avatar.id, text: `Top 3 ${topicShort} you need to know about right now.`, start_s: 0, end_s: 3, emotion: 'excited' },
+      { speaker: avatar.name, avatar_id: avatar.id, text: `Number 3: ${item3}. Solid choice, but wait.`, start_s: 3, end_s: 7, emotion: 'neutral' },
+      { speaker: avatar.name, avatar_id: avatar.id, text: `Number 2: ${item2}. This one surprised everyone.`, start_s: 7, end_s: 11, emotion: 'thoughtful' },
+      { speaker: avatar.name, avatar_id: avatar.id, text: `Number 1: ${item1}. And it's not even close.`, start_s: 11, end_s: 16, emotion: 'passionate' },
+      { speaker: avatar.name, avatar_id: avatar.id, text: `Follow for daily tech rankings that actually matter.`, start_s: 16, end_s: 20, emotion: 'excited' },
+    ];
+  }
+
+  return {
+    script_id: 'lst-' + randomUUID().slice(0, 8),
+    topic_id: topic.topic_id,
+    format: 'listicle',
+    title: topic.title,
+    lines,
+    total_duration_s: 20,
+    caption_text: `Top 3: ${topic.title.slice(0, 50)}`,
+    hashtags: ['#Top3', '#Tech', '#Ranking', ...topic.keywords.slice(0, 3).map(k => '#' + k)],
+    generated_at: new Date().toISOString(),
+    llm_used: llmUsed,
+  };
+}
+
 // ── Public API ─────────────────────────────────────────
 
 export async function generateScript(topic: TopicBrief): Promise<VideoScript> {
@@ -456,6 +536,9 @@ export async function generateScript(topic: TopicBrief): Promise<VideoScript> {
       break;
     case 'vision':
       script = await generateVisionScript(topic);
+      break;
+    case 'listicle':
+      script = await generateListicleScript(topic);
       break;
     default:
       script = await generateExplainerScript(topic);

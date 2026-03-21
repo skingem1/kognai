@@ -1,0 +1,41 @@
+{
+  "sprint_id": "sprint-613",
+  "title": "CONTENT — Add listicle video format (Type 4) + fix Achiri prompt",
+  "description": "Add 'listicle' (Top 3 countdown) as 4th video format for TikTok content diversity. Fix Achiri prompt.md contradiction where line 95 says 'NOT persistent' despite memory being enabled.",
+  "source": "qwen-recommendation-adapted",
+  "tasks": [
+    {
+      "id": "613-01",
+      "title": "Add listicle to VideoFormat type and classifyFormat in topic-radar.ts",
+      "type": "feature",
+      "task_type": "content",
+      "task_target": "scripts/scs001/topic-radar.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-613"
+    },
+    {
+      "id": "613-02",
+      "title": "Add listicle script template to multiformat-scriptgen.ts",
+      "type": "feature",
+      "task_type": "content",
+      "task_target": "scripts/scs001/multiformat-scriptgen.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-613"
+    },
+    {
+      "id": "613-03",
+      "title": "Fix Achiri prompt.md line 95 — remove NOT persistent contradiction",
+      "type": "bugfix",
+      "task_type": "achiri",
+      "task_target": "kognai-agents/achiri/prompt.md",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-613"
+    }
+  ]
+}
