@@ -2188,3 +2188,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (directory creation)
 - Issues: none
 - Timestamp: 2026-03-21T13:35:00Z
+
+## Sprint 718 — GOV — Swarm-wide health score computation
+- Status: PASS
+- Commit: 823bb33
+- Files created: scripts/lib/swarm-health.ts, workspace/swarm-health.json, workspace/sprints/sprint-718.json
+- Files modified: scripts/telegram-bot.ts, scripts/telegram-commands/cmd-system.ts
+- Test: npx ts-node scripts/lib/swarm-health.ts — 69/100 YELLOW (ACP 76, success 92%, velocity 100, pipeline 0)
+- Pipeline: GOV Phase 5 in progress. Swarm health score + /swarmhealth Telegram command.
+- Swarm used: no (multi-file work, wrote directly)
+- Issues: Pipeline output 0 (expected — no clips dir yet)
+- Timestamp: 2026-03-21T13:45:00Z

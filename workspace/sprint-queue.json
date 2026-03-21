@@ -146,7 +146,7 @@
       "sprint": 718,
       "title": "GOV — Swarm-wide health score computation",
       "block": "GOV-PHASE5",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "GOVERNANCE REMEDIATION Phase 5. Create scripts/lib/swarm-health.ts (~100 lines): 40% ACP composite mean, 20% success rate (AAR), 20% sprint velocity, 20% pipeline output. Write workspace/swarm-health.json. Wire into daily-digest.ts. Add /health Telegram command."
     },
