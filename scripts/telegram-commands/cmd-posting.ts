@@ -1181,3 +1181,105 @@ export function cmdCosts(): string {
 
   return output.join('\n');
 }
+
+// Sprint 635: /weeklydigest — 7-day trend summary
+export function cmdWeeklyDigest(): string {
+  const now = new Date();
+  const weekAgo = new Date(now.getTime() - 7 * 86_400_000);
+  const weekAgoStr = weekAgo.toISOString().slice(0, 10);
+
+  // Sprints shipped (from git log)
+  let sprintCount = 0;
+  let sprintNames: string[] = [];
+  try {
+    const gitOut = execSync(
+      `git log --oneline --since="${weekAgoStr}" --grep="^Sprint" 2>/dev/null`,
+      { cwd: ROOT, encoding: 'utf-8', timeout: 5000 }
+    );
+    const lines = gitOut.trim().split('\n').filter(l => l.includes('Sprint') && !l.includes('state:'));
+    sprintCount = lines.length;
+    sprintNames = lines.slice(0, 5).map(l => l.replace(/^[a-f0-9]+ /, ''));
+  } catch {}
+
+  // Posts recorded this week
+  let postsThisWeek = 0;
+  let viewsThisWeek = 0;
+  const postsPath = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
+  if (fs.existsSync(postsPath)) {
+    for (const line of fs.readFileSync(postsPath, 'utf-8').split('\n').filter(l => l.trim())) {
+      try {
+        const e = JSON.parse(line);
+        const ts = (e.timestamp || e.created_at || '').slice(0, 10);
+        if (ts >= weekAgoStr) { postsThisWeek++; viewsThisWeek += e.views ?? 0; }
+      } catch {}
+    }
+  }
+
+  // Achiri DAU trend (from daily-counts.json)
+  const achiriCountsPath = path.join(ROOT, 'workspace', 'achiri', 'daily-counts.json');
+  const dauDays: { date: string; dau: number; msgs: number }[] = [];
+  try {
+    if (fs.existsSync(achiriCountsPath)) {
+      const counts = JSON.parse(fs.readFileSync(achiriCountsPath, 'utf-8')) as Record<string, Record<string, number>>;
+      for (const [date, users] of Object.entries(counts)) {
+        if (date >= weekAgoStr) {
+          dauDays.push({
+            date,
+            dau: Object.keys(users).length,
+            msgs: Object.values(users).reduce((s, n) => s + n, 0),
+          });
+        }
+      }
+      dauDays.sort((a, b) => a.date.localeCompare(b.date));
+    }
+  } catch {}
+
+  // Videos produced this week (from publish-ledger)
+  let videosProduced = 0;
+  const ledgerPath = path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl');
+  if (fs.existsSync(ledgerPath)) {
+    for (const line of fs.readFileSync(ledgerPath, 'utf-8').split('\n').filter(l => l.trim())) {
+      try {
+        const e = JSON.parse(line);
+        const ts = (e.timestamp || e.created_at || '').slice(0, 10);
+        if (ts >= weekAgoStr) videosProduced++;
+      } catch {}
+    }
+  }
+
+  // Build output
+  const out: string[] = [
+    `📊 *Weekly Digest* — ${weekAgoStr} to ${now.toISOString().slice(0, 10)}`,
+    '',
+    `🏃 *Sprints:* ${sprintCount} shipped`,
+  ];
+  for (const s of sprintNames) {
+    out.push(`  • ${s.slice(0, 60)}`);
+  }
+  if (sprintCount > 5) out.push(`  _...and ${sprintCount - 5} more_`);
+
+  out.push('');
+  out.push(`🎬 *Content:* ${videosProduced} videos produced · ${postsThisWeek} posted · ${viewsThisWeek} views`);
+
+  if (dauDays.length > 0) {
+    const totalMsgs = dauDays.reduce((s, d) => s + d.msgs, 0);
+    const avgDau = (dauDays.reduce((s, d) => s + d.dau, 0) / dauDays.length).toFixed(1);
+    out.push('');
+    out.push(`🤖 *Achiri:* avg ${avgDau} DAU · ${totalMsgs} msgs this week`);
+    for (const d of dauDays.slice(-5)) {
+      out.push(`  ${d.date}: ${d.dau} users, ${d.msgs} msgs`);
+    }
+  }
+
+  // Gate progress
+  const gateDate = new Date('2026-04-07');
+  const daysToGate = Math.max(0, Math.ceil((gateDate.getTime() - now.getTime()) / 86_400_000));
+  const totalPosts = (() => {
+    if (!fs.existsSync(postsPath)) return 0;
+    return fs.readFileSync(postsPath, 'utf-8').split('\n').filter(l => l.trim()).length;
+  })();
+  out.push('');
+  out.push(`🎯 *Gate:* ${totalPosts}/30 posts · ${daysToGate} days to Apr 7`);
+
+  return out.join('\n');
+}

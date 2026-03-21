@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-635",
+  "title": "OPERATOR — Add /weeklydigest Telegram command with 7-day trends",
+  "description": "Operator sees daily digest but no weekly trends. Add /weeklydigest: sprints shipped (from git log), videos produced, posts recorded, Achiri DAU trend, MRR. Helps track momentum toward gates.",
+  "source": "operator-productivity",
+  "tasks": [
+    {
+      "id": "635-01",
+      "title": "Add cmdWeeklyDigest to cmd-posting.ts",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/telegram-commands/cmd-posting.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-635"
+    },
+    {
+      "id": "635-02",
+      "title": "Wire /weeklydigest into telegram-bot.ts router and help text",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/telegram-bot.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-635"
+    }
+  ]
+}

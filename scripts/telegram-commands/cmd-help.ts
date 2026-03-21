@@ -56,6 +56,7 @@ export function cmdHelp(): string {
     `/achiridata — Achiri analytics dashboard data\n` +
     `/waitlist   — Achiri waitlist management\n` +
     `/digest     — Daily digest: gate + queue + Stripe\n` +
+    `/weeklydigest — 7-day trend: sprints + content + Achiri\n` +
     `/metrics    — Pipeline performance metrics\n` +
     `/pace       — Posting velocity & gate projection\n` +
     `/postnow    — Send best video for immediate posting\n` +
