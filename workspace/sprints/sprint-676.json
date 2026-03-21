@@ -1,0 +1,52 @@
+{
+  "sprint_id": "sprint-676",
+  "title": "INFRA — PM2 process auto-healer — restart failed crons after 3 consecutive failures",
+  "description": "Enhance pm2-auto-healer.ts to track consecutive failures in healer-failures.json. Only restart after 3+ failures. Telegram alert with failure counts.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "676-01",
+      "title": "Add consecutive failure tracking with JSON persistence",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/pm2-auto-healer.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-676"
+    },
+    {
+      "id": "676-02",
+      "title": "Only restart after 3+ consecutive failures (configurable via HEALER_THRESHOLD)",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/pm2-auto-healer.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-676"
+    },
+    {
+      "id": "676-03",
+      "title": "Enhanced Telegram alerts with failure counts and tracking status",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/pm2-auto-healer.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-676"
+    },
+    {
+      "id": "676-04",
+      "title": "Create validate-healer-output.ts validation script",
+      "type": "test",
+      "task_type": "test",
+      "task_target": "scripts/scs001/validate-healer-output.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-676"
+    }
+  ]
+}
