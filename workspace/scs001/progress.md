@@ -2307,3 +2307,18 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (1-line edit)
 - Issues: none
 - Timestamp: 2026-03-21T15:45:00Z
+
+## Sprint 722 — FIX — Pipeline cron force-refresh
+- Status: PASS
+- Commit: 740edeb
+- Files modified: scripts/scs001/pipeline-cron.ts (added --force-refresh)
+- Pipeline: PM2 cron now always clears dedup cache before topic scan
+- Swarm used: no (1-line edit)
+
+## Sprint 723 — FIX — Daily digest video caption Markdown parse error
+- Status: PASS
+- Commit: 0d97d27
+- Files modified: scripts/daily-digest.ts (removed parse_mode from video caption)
+- Pipeline: Fixes "can't parse entities" Telegram error in daily video delivery
+- Swarm used: no (1-line edit)
+- Timestamp: 2026-03-21T15:55:00Z
