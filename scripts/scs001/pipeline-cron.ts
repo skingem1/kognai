@@ -64,34 +64,13 @@ async function main() {
     120000 // 2min
   );
 
+  // Sprint 664: Use consolidate-radar.ts for enriched viral-topics.json (replaces keyword extract)
   if (radarOk) {
-    // Extract keywords from latest radar output and update viral-topics.json
-    try {
-      const { readdirSync, readFileSync: readF, writeFileSync: writeF } = require('fs');
-      const radarDir = join(ROOT, 'workspace', 'scs001', 'topic-radar');
-      const files = readdirSync(radarDir).filter((f: string) => f.startsWith('radar-') && f.endsWith('.json')).sort().reverse();
-      if (files.length > 0) {
-        const latest = JSON.parse(readF(join(radarDir, files[0]), 'utf-8'));
-        const allKeywords: string[] = [];
-        for (const topic of latest.topics || []) {
-          if (Array.isArray(topic.keywords)) allKeywords.push(...topic.keywords);
-        }
-        // Dedupe and take top 10
-        const unique = [...new Set(allKeywords)].slice(0, 10);
-        if (unique.length > 0) {
-          const viralPath = join(ROOT, 'workspace', 'scs001', 'viral-topics.json');
-          writeF(viralPath, JSON.stringify({
-            topics: unique,
-            updated_at: new Date().toISOString(),
-            run_id: `radar-${now}`,
-            source: 'topic-radar',
-          }, null, 2));
-          console.log(`[pipeline-cron] viral-topics.json updated with ${unique.length} radar keywords`);
-        }
-      }
-    } catch (e: any) {
-      console.log(`[pipeline-cron] Radar keyword extract failed (non-fatal): ${e.message}`);
-    }
+    run(
+      'npx ts-node scripts/scs001/consolidate-radar.ts',
+      'Radar consolidation',
+      30000
+    );
   } else {
     console.log('[pipeline-cron] Radar failed — using existing viral-topics.json');
   }

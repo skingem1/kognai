@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-664",
+  "title": "PIPELINE — Wire radar consolidation into pipeline cron",
+  "description": "Replace old keyword extraction in pipeline-cron.ts with new consolidate-radar.ts for enriched trending topics in every pipeline run.",
+  "source": "queue-empty-follow-up-663",
+  "tasks": [
+    {
+      "id": "664-01",
+      "title": "Replace pipeline-cron keyword extraction with consolidate-radar.ts call",
+      "type": "enhancement",
+      "task_type": "pipeline",
+      "task_target": "scripts/scs001/pipeline-cron.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-664"
+    }
+  ]
+}
