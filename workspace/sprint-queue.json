@@ -25,7 +25,7 @@
       "sprint": 692,
       "title": "AMD-17 — Add BROADCAST_AWARE=true to AGENTS.md + brief agents",
       "block": "AMD-17",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "AMD-17 Sprint 508. Set BROADCAST_AWARE=true in AGENTS.md. Update SOUL.md with broadcast awareness context. Brief all agents: broadcast surfaces are public communications, ACP filter applies, internal deliberation never reaches broadcast. No operational changes needed — this is a constitutional flag that changes how the orchestrator routes outputs to broadcast surfaces."
     },

@@ -1989,3 +1989,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (multi-file, wrote directly)
 - Issues: none
 - Timestamp: 2026-03-22T00:05:00Z
+
+## Sprint 692 — AMD-17
+- Status: PASS
+- Commit: 48d9ad8
+- Files modified: workspace/AGENTS.md, workspace/SOUL.md
+- Files created: scripts/scs001/validate-broadcast-awareness.ts, workspace/sprints/sprint-692.json
+- Test: scripts/scs001/validate-broadcast-awareness.ts — 16/16 PASS
+- Pipeline: AMD-17 broadcast awareness. BROADCAST_AWARE=true set in AGENTS.md + SOUL.md. ACP filter on broadcast surfaces, 60s delay buffer, Godman kill switch, no internal deliberation on broadcast. Prohibited actions updated.
+- Swarm used: no (constitutional doc edits, wrote directly)
+- Issues: none
+- Timestamp: 2026-03-22T00:15:00Z
