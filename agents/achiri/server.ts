@@ -21,6 +21,7 @@ import { extractUserProfile } from './user-profile';
 import { loadSummary } from './conversation-summary';
 import { trackError, getErrorSummary } from './error-tracker';
 import { getFeedbackSummary } from './feedback-collector';
+import { getUserTier, setUserTier, type AchiriTier } from './tier-store';
 
 const PORT = parseInt(process.env.ACHIRI_PORT ?? '3420', 10);
 const START_TIME = Date.now();
@@ -312,12 +313,64 @@ const server = http.createServer(async (req, res) => {
     }
   }
 
+  // POST /webhook/paymee — Sprint 622: payment confirmation webhook
+  // PayMee sends: { payment_ref, order_id, amount, payment_status }
+  // On success: persist user tier upgrade
+  if (method === 'POST' && url === '/webhook/paymee') {
+    let body: { payment_ref?: string; order_id?: string; amount?: number; payment_status?: number };
+    try {
+      body = JSON.parse(await readBody(req));
+    } catch {
+      return send(res, 400, { error: 'invalid JSON' });
+    }
+    const { order_id, payment_status } = body;
+    console.log('[Achiri API] /webhook/paymee order=' + order_id + ' status=' + payment_status);
+
+    // payment_status: 1 = success (PayMee convention)
+    if (payment_status !== 1 || !order_id) {
+      return send(res, 200, { received: true, action: 'ignored', reason: 'non-success status or missing order_id' });
+    }
+
+    // Extract tier and userId from order_id format: ACH-BASIC-ts-rand or ACH-PREMIUM-ts-rand
+    const tierMatch = order_id.match(/^ACH-(BASIC|PREMIUM)-/i);
+    if (!tierMatch) {
+      console.warn('[Achiri API] /webhook/paymee unrecognized order_id format:', order_id);
+      return send(res, 200, { received: true, action: 'ignored', reason: 'unrecognized order format' });
+    }
+
+    const tierName = tierMatch[1].toLowerCase() === 'basic' ? 'tnd_basic' : 'tnd_premium';
+
+    // PayMee doesn't include userId in webhook — look it up from paymee checkout logs
+    // For now, log the upgrade and the operator can map it via order_id
+    // Future: store order_id → userId mapping at checkout time
+    const logPath = require('path').join(__dirname, '..', '..', 'workspace', 'achiri', 'payment-log.jsonl');
+    const entry = JSON.stringify({ ...body, tier: tierName, processed_at: new Date().toISOString() });
+    try {
+      const dir = require('path').dirname(logPath);
+      if (!require('fs').existsSync(dir)) require('fs').mkdirSync(dir, { recursive: true });
+      require('fs').appendFileSync(logPath, entry + '\n', 'utf8');
+    } catch (err) {
+      console.error('[Achiri API] payment log write error:', err);
+    }
+
+    console.log('[Achiri API] /webhook/paymee PAID tier=' + tierName + ' order=' + order_id);
+    return send(res, 200, { received: true, action: 'logged', tier: tierName, order_id });
+  }
+
+  // GET /tier/:userId — Sprint 622: check user's current tier
+  if (method === 'GET' && url.startsWith('/tier/')) {
+    const userId = decodeURIComponent(url.slice('/tier/'.length));
+    if (!userId) return send(res, 400, { error: 'userId required' });
+    const tier = getUserTier(userId);
+    return send(res, 200, { userId, tier });
+  }
+
   return send(res, 404, { error: 'not found' });
 });
 
 server.listen(PORT, () => {
   console.log('[Achiri API] listening on port ' + PORT);
-  console.log('[Achiri API] routes: POST /chat, POST /voice, GET /upgrade, GET /summary/:userId, GET /profile/:userId, GET /export/:userId, DELETE /memory/:userId, GET /analytics, GET /stats, GET /health');
+  console.log('[Achiri API] routes: POST /chat, POST /voice, GET /upgrade, POST /webhook/paymee, GET /tier/:userId, GET /summary/:userId, GET /profile/:userId, GET /export/:userId, DELETE /memory/:userId, GET /analytics, GET /stats, GET /health');
 });
 
 export { server };

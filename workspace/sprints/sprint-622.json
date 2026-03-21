@@ -1,0 +1,41 @@
+{
+  "sprint_id": "sprint-622",
+  "title": "ACHIRI — User tier persistence + PayMee webhook handler",
+  "description": "Currently all Achiri users are always free tier. No tier persists after PayMee payment. Adds: user-tiers.json store, PayMee webhook in server.ts, Telegram bot reads persistent tier.",
+  "source": "achiri-phase2a",
+  "tasks": [
+    {
+      "id": "622-01",
+      "title": "Add user tier store functions (load/save/upgrade) to new tier-store.ts",
+      "type": "feature",
+      "task_type": "achiri",
+      "task_target": "agents/achiri/tier-store.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-622"
+    },
+    {
+      "id": "622-02",
+      "title": "Add PayMee webhook route (POST /webhook/paymee) to server.ts",
+      "type": "feature",
+      "task_type": "achiri",
+      "task_target": "agents/achiri/server.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-622"
+    },
+    {
+      "id": "622-03",
+      "title": "Update Telegram bot getHandler to read persistent tier",
+      "type": "feature",
+      "task_type": "achiri",
+      "task_target": "agents/achiri/telegram-bot.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-622"
+    }
+  ]
+}

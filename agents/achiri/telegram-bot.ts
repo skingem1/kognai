@@ -11,6 +11,7 @@ import { AchiriMemoryStore } from './memory-store';
 import { extractUserProfile } from './user-profile';
 import { loadSummary } from './conversation-summary';
 import { createCheckoutUrl } from './paymee';
+import { getUserTier } from './tier-store';
 
 const BOT_TOKEN = process.env.ACHIRI_TELEGRAM_BOT_TOKEN || '';
 if (!BOT_TOKEN) {
@@ -131,8 +132,9 @@ const handlers = new Map<string, AchiriConversationHandler>();
 
 function getHandler(chatId: string): AchiriConversationHandler {
   if (!handlers.has(chatId)) {
-    // Default: free tier. Premium tiers require upgrade via /upgrade.
-    handlers.set(chatId, new AchiriConversationHandler('free', chatId));
+    // Sprint 622: Read persistent tier from user-tiers.json (defaults to free)
+    const tier = getUserTier(chatId);
+    handlers.set(chatId, new AchiriConversationHandler(tier, chatId));
     // Evict oldest if cache too large
     if (handlers.size > 200) {
       const oldest = handlers.keys().next().value;
