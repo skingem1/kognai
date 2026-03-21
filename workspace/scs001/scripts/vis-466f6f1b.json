@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-466f6f1b",
+  "topic_id": "arxiv-2383135ff20b",
+  "format": "vision",
+  "title": "Nemotron-Cascade 2: Post-Training LLMs with Cascade RL and Multi-Domain On-Policy Distillation",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "How might post-training models like Nemotron-Cascade 2 reshape our expectations of AI's real-world impact?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Cascade RL and multi-domain distillation enable fine-tuned, domain-specific agents with unprecedented reasoning and autonomy.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "But with such power comes risk — could these models be exploited for misinformation or manipulative behavior at scale?",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Builders are embedding guardrails and using aligned reward models to ensure safe deployment across domains.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "Imagine a future where AI agents collaborate with humans in healthcare, law, and education, transparent and accountable.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future of AI lies in balancing innovation with ethical stewardship — a challenge we must tackle together.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of nemotron",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#nemotron",
+    "#cascade",
+    "#post"
+  ],
+  "video_cue": "A digital interface showing AI agents working collaboratively in a hospital, with real-time data and ethical oversight panels.",
+  "generated_at": "2026-03-21T14:21:31.929Z",
+  "llm_used": true
+}

@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-697ebbf1",
+  "topic_id": "cg-b60d7bdd334c",
+  "format": "explainer",
+  "title": "Ethereum (ETH) 📉 -0.0%",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Ethereum just dropped to a 3-month low — and it's ranked #8 on CoinGecko.",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This move could signal a major shift in the crypto market right now.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Ethereum is the second-largest blockchain platform after Bitcoin.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Its upgrade to Ethereum 2.0 aims to cut energy use by 99.95%.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Traders, developers, and institutional investors are watching closely.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The key takeaway: ETH's price dip might be a buying opportunity.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "What do you think — is this the bottom or just the beginning?",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "Ethereum (ETH) 📉 -0.0%",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#ethereum",
+    "#eth",
+    "#crypto"
+  ],
+  "generated_at": "2026-03-21T11:12:39.192Z",
+  "llm_used": true
+}

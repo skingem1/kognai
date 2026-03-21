@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-2b9384fc",
+  "topic_id": "arxiv-2383135ff20b",
+  "format": "vision",
+  "title": "Nemotron-Cascade 2: Post-Training LLMs with Cascade RL and Multi-Domain On-Policy Distillation",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "How might models like Nemotron-Cascade 2 redefine autonomy and reasoning in the next decade?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Cascade RL and on-policy distillation enable precise control, making 30B MoE models both powerful and efficient in real-world tasks.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "But with increased autonomy comes risk—what happens when these systems make decisions beyond human oversight?",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Builders are embedding guardrails, using alignment techniques and human-in-the-loop systems to ensure safe deployment.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "Imagine a future where AI agents collaborate with humans on complex challenges—climate modeling, healthcare, and more—with trust and transparency.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future hinges on balancing innovation with responsibility, ensuring progress serves all.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of nemotron",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#nemotron",
+    "#cascade",
+    "#post"
+  ],
+  "video_cue": "A dynamic visualization of a 30B MoE model processing data across multiple domains with cascading reinforcement learning steps.",
+  "generated_at": "2026-03-21T12:31:42.994Z",
+  "llm_used": true
+}

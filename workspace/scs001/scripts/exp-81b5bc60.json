@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-81b5bc60",
+  "topic_id": "hn-07e6c7e4cc6e",
+  "format": "explainer",
+  "title": "OpenCode – Open source AI coding agent",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Did you know AI can now write code faster than you can type?",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "OpenCode is breaking barriers on Hacker News with 890 points and 415 comments.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "It’s an open source AI coding agent that writes code for you in real time.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "It uses a unique multi-language model that understands Python, JavaScript, and more.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Developers and startups can automate coding tasks and save hours every day.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The key takeaway? OpenSource AI is here to change how we code — for good.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Have you tried using an AI coding tool yet?",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "OpenCode – Open source AI coding agent",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#opencode",
+    "#open",
+    "#source"
+  ],
+  "generated_at": "2026-03-21T12:30:56.609Z",
+  "llm_used": true
+}

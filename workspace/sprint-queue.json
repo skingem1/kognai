@@ -1,126 +1,58 @@
 {
   "_note": "AUTHORITATIVE sprint execution order. The brief generator reads this and injects the first item as a MANDATORY directive, bypassing Qwen's recommendation. Pop items by setting status=done after each sprint ships. Human-maintained \u2014 edit to re-prioritise.",
-  "updated": "2026-03-21T14:30",
+  "updated": "2026-03-21T15:30",
   "owner": "Tarek (human)",
-  "_plan_rationale": "RESEEDED 2026-03-21 (round 4). CR-AMD-001 MiMo integration (TIME-SENSITIVE \u2014 free API expires ~March 25). QUALITY-01 Rev.3 dual pipeline (Hailuo + Avatar). Governance 701-719 ALL DONE. Achiri PAUSED.",
+  "_plan_rationale": "RESEEDED 2026-03-21 (round 5). Queue exhausted after Sprint 743. Replenished 744-749: content batches, posting workflow, gate refresh, topic expansion, auto-deliver improvements.",
   "_achiri_status": "PAUSED \u2014 all Achiri sprints removed from queue. Resume after April 7 gate.",
   "queue": [
     {
-      "sprint": 731,
-      "title": "MIMO-01 \u2014 Add MIMO_API_KEY + env config + ClawRouter C4 TTS wiring",
-      "block": "CR-AMD-001",
-      "status": "skipped",
-      "priority": "critical",
-      "rationale": "CR-AMD-001 + HARVEY-002. TIME-SENSITIVE \u2014 free API window expires ~March 25. (1) Add to .env: MIMO_API_KEY (from Godman), MIMO_API_URL (default: platform.xiaomimimo.com API), MIMO_TTS_VOICE, MIMO_TTS_EMOTION, MIMO_AB_TEST_ACTIVE=true, MIMO_PRO_PROMOTED=false. (2) In scripts/lib/clawrouter-v2.ts resolveCreativeTier(), update case 'speech': add quality:'emotional' \u2192 {tier:'C4', model:'mimo-v2-tts', local:false}. Keep existing kokoro (local) and elevenlabs (quality:high). (3) Add .env.example entries. SURGICAL EDIT \u2014 max 15 lines in clawrouter-v2.ts.",
-      "_note": "Auto-skipped: sprint-731 already committed"
-    },
-    {
-      "sprint": 732,
-      "title": "MIMO-02 \u2014 TTS quality test: 3 voiceover scripts through MiMo-V2-TTS vs macOS say",
-      "block": "CR-AMD-001",
-      "status": "skipped",
-      "priority": "critical",
-      "rationale": "CR-AMD-001 HARVEY-002 Step 2. Create scripts/scs001/test-mimo-tts.ts (~80 lines): (1) Select 3 diverse scripts from workspace/scs001/scripts/ (one hook, one insight, one commentary), (2) Generate voiceover via MiMo-V2-TTS (ClawRouter C4 quality:emotional), (3) Generate same scripts via macOS say, (4) Compare: file size, duration accuracy, subjective quality log. Output: workspace/scs001/mimo-tts-comparison.json. Deadline: March 23 (TTS promotion decision).",
-      "_note": "Auto-skipped: sprint-732 already committed"
-    },
-    {
-      "sprint": 733,
-      "title": "MIMO-03 \u2014 QUALITY-01 Rev.3 TTS upgrade decision (MiMo wins \u2192 replace say)",
-      "block": "CR-AMD-001",
-      "status": "done",
-      "priority": "high",
-      "rationale": "CR-AMD-001 HARVEY-002 Step 3. Read workspace/scs001/mimo-tts-comparison.json from Sprint 732. If MiMo-V2-TTS score >= 7/10 AND better than macOS say: (1) Update both pipelines' TTS to use ClawRouter C4 quality:emotional by default, (2) Set MIMO_TTS_PROMOTED=true in .env. If MiMo-V2-TTS score < 7/10: keep macOS say as primary, log decision to workspace/scs001/mimo-tts-decision.json. Decision deadline: March 23.",
-      "_note": "Done: MiMo API 404 — decision: keep macOS say. ClawRouter wired for re-test."
-    },
-    {
-      "sprint": 734,
-      "title": "MIMO-04 \u2014 Wire T2.5 A/B routing: MiMo-V2-Pro vs Gemini Flash (50/50)",
-      "block": "CR-AMD-001",
-      "status": "done",
-      "priority": "high",
-      "rationale": "CR-AMD-001 Section 04. In scripts/lib/clawrouter-v2.ts resolveTextTier(): when complexity==='exec', add A/B split \u2014 if MIMO_AB_TEST_ACTIVE=true, route 50% to MiMo-V2-Pro (via MIMO_API_URL) and 50% to Gemini Flash (existing). Track: logs/clawrouter/ab-test-mimo.jsonl with {timestamp, agent_id, model, latency_ms, cost_usd, success}. Decision at March 30. SURGICAL EDIT \u2014 max 20 lines.",
-      "_note": "Done: A/B split + logging wired. Decision at March 30."
-    },
-    {
-      "sprint": 735,
-      "title": "QUALITY-01 \u2014 Pipeline 1 live validation (Hailuo clips + TTS audio)",
-      "block": "QUALITY-01",
-      "status": "done",
-      "_note": "Done: all 6 checks pass. MP4 1080x1920, audio pending embed.",
-      "priority": "high",
-      "rationale": "QUALITY-01 Rev.3 Task Q01-04. Run one complete Pipeline 1 cycle with SCS_MODE=live. Verify: (a) Hailuo clip generated via MiniMax API (or local clip used from /clips/), (b) non-silent audio (TTS voiceover mixed), (c) QC gate passes with has_real_clip:true + has_audio:true, (d) valid 9:16 1080p MP4. Send validated video to Godman Telegram for manual review. Log results to workspace/scs001/quality01-validation.json."
-    },
-    {
-      "sprint": 736,
-      "title": "CONTENT \u2014 Dual pipeline batch: produce 3 videos from each pipeline",
+      "sprint": 744,
+      "title": "CONTENT \u2014 Fresh multiformat batch + queue replenish for April 7 gate",
       "block": "CONTENT",
       "status": "done",
-      "_note": "Done: 6 new videos via Pipeline 2. Pipeline 1 hung (known issue).",
-      "priority": "high",
-      "rationale": "After QUALITY-01 validation, run both pipelines together. Pipeline 1 (Hailuo): 3 videos via run-pipeline.ts live. Pipeline 2 (Avatar): 3 videos via run-multiformat-pipeline.ts. Verify both write to publish-ledger.jsonl with distinct source fields. Auto-deliver sends from combined ledger. Gate: 6 new publishable videos for April 7 posting."
-    },
-    {
-      "sprint": 737,
-      "title": "GATE \u2014 Refresh April 7 gate tracker with dual pipeline stats",
-      "block": "GATE",
-      "status": "done",
-      "_note": "Done: gate refreshed — 471 videos, 60 real content, 17 days remaining.",
-      "priority": "medium",
-      "rationale": "Update workspace/gates/april-7-gate.json with: (1) total publishable videos (Pipeline 1 + Pipeline 2), (2) videos with real clips vs production mode, (3) videos with audio, (4) posting progress (manual TikTok), (5) days remaining. Surface via /gate Telegram command."
-    },
-    {
-      "sprint": 738,
-      "title": "INFRA \u2014 Comprehensive system health + queue replenish",
-      "block": "INFRA",
-      "status": "done",
-      "_note": "Done: health snapshot generated, queue replenished with 739-743.",
-      "priority": "low",
-      "rationale": "Post-integration health check. Verify: PM2 processes running, disk usage, ClawRouter metrics, both pipelines cron scheduled, auto-deliver working, Telegram commands responding. Generate health snapshot. Replenish sprint queue with next 5 items if needed."
-    },
-    {
-      "sprint": 739,
-      "title": "FIX \u2014 Debug Pipeline 1 hang (orchestrator timeout / LLM hang)",
-      "block": "FIX",
-      "status": "done",
-      "_note": "Done: per-stage timeout (3-10min) + 15min pipeline timeout.",
       "priority": "critical",
-      "rationale": "Pipeline 1 hangs with 0 output after 10min. Likely qwen3:14b timeout on large agent files or orchestrator stuck in LLM call. Debug: add timeout to orchestrator.run(), check which stage hangs, add progress logging. Pipeline 1 produces color blocks anyway, but hang prevents any new Pipeline 1 content."
+      "rationale": "Produce 6+ new multiformat videos. Clear seen-topics to unblock topic radar. Replenish sprint queue with 745-749. April 7 gate: 30 posts needed.",
+      "_note": "Done: 6 new videos ($1.85), ledger at 487. Queue replenished."
     },
     {
-      "sprint": 740,
-      "title": "FIX \u2014 Restore telegram-bot/commands.ts (50+ handlers missing)",
-      "block": "FIX",
-      "status": "skipped",
-      "_note": "SKIPPED: commands.ts was intentionally deleted in Sprint 496. Bot uses scripts/telegram-bot.ts now.",
-      "priority": "critical",
-      "rationale": "commands.ts is imported by telegram-bot/index.ts but the file doesn't exist. All 50+ Telegram command handlers are missing. Bot won't compile. Check git history for last known version, restore or recreate critical handlers (/gate, /status, /revenue, /metrics, /lastrun, /pipeline)."
-    },
-    {
-      "sprint": 741,
-      "title": "CONTENT \u2014 Daily multiformat batch (fresh 6 videos for posting queue)",
+      "sprint": 745,
+      "title": "CONTENT \u2014 Batch 2: multiformat videos (clear seen-topics + produce 5+)",
       "block": "CONTENT",
-      "status": "done",
-      "_note": "Done: 10 new videos (2 batches x 5). Total ledger: 481. Cost: $3.00.",
-      "priority": "high",
-      "rationale": "Run multiformat pipeline with --force-refresh to produce 6 new videos. Verify publish-ledger updated. This keeps the content pipeline flowing for April 7 gate (need 30 posts)."
+      "status": "pending",
+      "priority": "critical",
+      "rationale": "Continue content production for April 7 gate. Clear seen-topics, run pipeline, target 5+ new videos. Keep ledger growing."
     },
     {
-      "sprint": 742,
-      "title": "INFRA \u2014 Restart stopped PM2 cron jobs (auto-deliver, watchdog, gate-regen)",
-      "block": "INFRA",
-      "status": "done",
-      "_note": "Done: verified all cron jobs running correctly. Stopped status is normal between cron triggers.",
-      "priority": "high",
-      "rationale": "17 PM2 processes are stopped. Restart critical ones: auto-deliver (3x daily), pipeline-watchdog, gate-tracker-update, brief-regen. Verify they run without errors. Check PM2 logs for crash reasons."
-    },
-    {
-      "sprint": 743,
-      "title": "POSTING \u2014 Export top 10 videos for manual TikTok posting",
+      "sprint": 746,
+      "title": "POSTING \u2014 Refresh manual-post-queue with latest 10 best videos",
       "block": "POSTING",
-      "status": "done",
-      "_note": "Done: 10 videos exported to workspace/scs001/manual-post-queue/post-manifest.json.",
+      "status": "pending",
       "priority": "critical",
-      "rationale": "April 7 gate requires 30 posts, currently at 0. Export 10 best videos from publish-ledger (by format diversity, topic freshness). Create workspace/scs001/manual-post-queue/ with videos + metadata for operator to post manually. Critical path to gate."
+      "rationale": "Update manual-post-queue with newest videos from 487+ ledger. Prioritize diversity (explainer, debate, vision, listicle). Include avatar videos. April 7 gate: 30 posts needed."
+    },
+    {
+      "sprint": 747,
+      "title": "GATE \u2014 Refresh April 7 gate tracker (487+ videos, posting progress)",
+      "block": "GATE",
+      "status": "pending",
+      "priority": "high",
+      "rationale": "Update workspace/gates/april-7-gate.json with current stats: 487+ ledger entries, posting progress, days remaining. Surface via Telegram /gate command."
+    },
+    {
+      "sprint": 748,
+      "title": "CONTENT \u2014 Topic source expansion (add Reddit, Product Hunt feeds)",
+      "block": "CONTENT",
+      "status": "pending",
+      "priority": "medium",
+      "rationale": "Topic radar runs dry after ~20 topics per session. Add Reddit (r/technology, r/artificial) and Product Hunt as new sources to increase fresh topic throughput. Extend topic-radar.ts with new fetchers."
+    },
+    {
+      "sprint": 749,
+      "title": "FIX \u2014 Auto-deliver: ensure new videos get delivered to Telegram",
+      "block": "FIX",
+      "status": "pending",
+      "priority": "high",
+      "rationale": "Verify auto-deliver PM2 cron picks up new videos from publish-ledger and sends to operator Telegram. Check auto-delivered.jsonl for gaps. Fix if delivery is stale."
     }
   ]
 }

@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-bfd05f35",
+  "topic_id": "cg-195e81bccab8",
+  "format": "vision",
+  "title": "Artificial Superintelligence Alliance (FET) 📉 -1.2%",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "What might the rise of artificial superintelligence mean for the future of human-machine collaboration?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "We're seeing early AGI prototypes using neural architecture search and transformer-based models, but true ASI remains speculative.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "The risk of misaligned goals in unregulated AI systems could lead to unintended societal harm and power imbalances.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Builders are focusing on value alignment frameworks and transparency tools to ensure AI systems serve human interests.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "A future where AI acts as a global collaborator in climate science and medicine could redefine progress for all.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future of ASI depends on our ability to engineer with ethics, not just speed.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of artificial superintelligence alliance",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#artificial superintelligence alliance",
+    "#fet",
+    "#crypto"
+  ],
+  "video_cue": "A dynamic visualization showing neural networks merging with human brain models, symbolizing collaboration.",
+  "generated_at": "2026-03-21T08:28:04.119Z",
+  "llm_used": true
+}

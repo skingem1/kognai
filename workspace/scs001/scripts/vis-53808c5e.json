@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-53808c5e",
+  "topic_id": "arxiv-2383135ff20b",
+  "format": "vision",
+  "title": "Nemotron-Cascade 2: Post-Training LLMs with Cascade RL and Multi-Domain On-Policy Distillation",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "How might models like Nemotron-Cascade 2 redefine the balance between human oversight and autonomous decision-making?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Cascade RL and multi-domain distillation enable precise control, allowing models to adapt across tasks with minimal human intervention.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "But if these systems make critical decisions without transparency, how do we ensure accountability in high-stakes domains like healthcare or law?",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Builders are integrating explainability layers and open-sourcing training data to foster trust and enable third-party audits.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "Imagine a future where AI acts as a collaborative partner, enhancing human judgment rather than replacing it in complex systems.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future lies in models that are both powerful and responsible — shaped by ethics, engineered with care, and trusted by society.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of nemotron",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#nemotron",
+    "#cascade",
+    "#post"
+  ],
+  "video_cue": "A visualization of Nemotron-Cascade 2's architecture with cascading reinforcement learning modules interacting with real-world environments.",
+  "generated_at": "2026-03-21T12:27:18.417Z",
+  "llm_used": true
+}

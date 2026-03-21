@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-71075d7c",
+  "topic_id": "arxiv-2383135ff20b",
+  "format": "vision",
+  "title": "Nemotron-Cascade 2: Post-Training LLMs with Cascade RL and Multi-Domain On-Policy Distillation",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "How might post-training methods like cascade RL reshape AI’s role in complex, real-world systems?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Nemotron-Cascade 2 uses multi-domain on-policy distillation to enhance reasoning and agency with 3B active parameters in a 30B MoE model.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "What safeguards exist if such models are deployed without sufficient oversight in critical infrastructure or decision-making?",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Builders are integrating alignment checks and transparency layers to ensure safe deployment and mitigate unintended behaviors.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "Imagine a future where AI agents collaborate with humans in science, medicine, and governance with aligned values and accountability.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future hinges on balancing innovation with ethical foresight as models like Nemotron-Cascade 2 redefine AI capabilities.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of nemotron",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#nemotron",
+    "#cascade",
+    "#post"
+  ],
+  "video_cue": "A dynamic visualization of AI agents interacting with humans in a research lab, guided by ethical frameworks and real-time oversight systems.",
+  "generated_at": "2026-03-21T14:06:35.498Z",
+  "llm_used": true
+}

@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-30ae3134",
+  "topic_id": "hn-07e6c7e4cc6e",
+  "format": "explainer",
+  "title": "OpenCode – Open source AI coding agent",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Did you know AI can now write code faster than you can type?",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "OpenSource AI tools are blowing up on Hacker News with 868 points.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "OpenCode is an open-source AI that writes code for you — no training needed.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "It uses a new language model trained on 100 million lines of real code.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Developers and startups can now build apps 3x faster with zero setup.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This is the future of coding — collaborative, fast, and open.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Have you tried using AI to write code yet?",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "OpenCode – Open source AI coding agent",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#opencode",
+    "#open",
+    "#source"
+  ],
+  "generated_at": "2026-03-21T11:45:23.848Z",
+  "llm_used": true
+}

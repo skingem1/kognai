@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-8f1feae5",
+  "topic_id": "arxiv-2383135ff20b",
+  "format": "vision",
+  "title": "Nemotron-Cascade 2: Post-Training LLMs with Cascade RL and Multi-Domain On-Policy Distillation",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "How might post-training techniques like cascade RL redefine the boundaries of LLM capabilities?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Nemotron-Cascade 2 uses multi-domain on-policy distillation to boost reasoning and agentic behavior in a 30B MoE model.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "But such power raises risks—like over-reliance on AI in critical systems or amplification of biases in training data.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Builders are focusing on transparency, safety layers, and open-sourcing training pipelines to mitigate these risks.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "I see a future where AI like Nemotron-Cascade 2 supports global problem-solving, from climate modeling to personalized education.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future of AI lies in balancing innovation with responsibility—shaping a smarter, more ethical world.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of nemotron",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#nemotron",
+    "#cascade",
+    "#post"
+  ],
+  "video_cue": "A visual of AI agents collaborating across domains, from medical diagnostics to space exploration, with clear ethical guardrails in place.",
+  "generated_at": "2026-03-21T08:36:02.962Z",
+  "llm_used": true
+}

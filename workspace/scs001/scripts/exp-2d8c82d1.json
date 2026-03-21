@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-2d8c82d1",
+  "topic_id": "gh-695beb4d4c18",
+  "format": "explainer",
+  "title": "NVIDIA/NemoClaw — Run OpenClaw securely inside NVIDIA OpenShell with managed inference",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Did you know you can run OpenClaw securely inside NVIDIA OpenShell?",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This is a game-changer for developers using AI inference today.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "NVIDIA’s NemoClaw lets you manage OpenClaw inside OpenShell with full control.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "It uses containerized inference to isolate workloads and boost security.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This affects JavaScript developers on GitHub with 14,586 stars looking for safe AI tools.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The key takeaway: secure, managed AI inference is now accessible and scalable.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Want to see how this changes AI development? Follow for more deep dives.",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "NVIDIA/NemoClaw — Run OpenClaw securely inside NVIDIA OpenShell with managed inference",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#nvidia",
+    "#nemoclaw",
+    "#openclaw"
+  ],
+  "generated_at": "2026-03-21T12:31:09.821Z",
+  "llm_used": true
+}

@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-7246ebc4",
+  "topic_id": "hn-7e8727c97df5",
+  "format": "explainer",
+  "title": "We rewrote our Rust WASM parser in TypeScript and it got faster",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "We rewrote our Rust WASM parser in TypeScript — and it’s 3x faster than before.",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This matters because performance is the new standard for web apps.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "We built a parser that translates complex data into JavaScript objects.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "TypeScript’s compiler optimizations made the code run smoother and faster.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This affects developers using WASM in real-time apps like analytics and games.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The takeaway: Sometimes, rewriting in a different language can unlock massive speed gains.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Try it yourself — have you ever seen a JS parser outperform Rust?",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "We rewrote our Rust WASM parser in TypeScript and it got faster",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#rewrote",
+    "#rust",
+    "#wasm"
+  ],
+  "generated_at": "2026-03-21T08:27:17.094Z",
+  "llm_used": true
+}

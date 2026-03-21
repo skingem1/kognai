@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-a8493ba3",
+  "topic_id": "cg-615666dae9d3",
+  "format": "debate",
+  "title": "Solana (SOL) 📈 0.1%",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Solana's 50,000 TPS and 400ms finality make it the fastest blockchain for real-world applications.",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Sol is a token, not a blockchain. Solana's ecosystem depends on its native token for governance and staking.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Solana's unique proof-of-history mechanism reduces latency, giving it a clear edge in DeFi and NFT use cases.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Sol's value is speculative. Solana's success doesn't guarantee Sol's long-term viability or intrinsic worth.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Sol is a gamble, not a protocol. Solana's future doesn't rely on Sol's price — it relies on its technology.",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "solana vs sol",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#solana",
+    "#sol",
+    "#crypto"
+  ],
+  "generated_at": "2026-03-21T08:27:46.286Z",
+  "llm_used": true
+}

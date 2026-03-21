@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-311119d3",
+  "topic_id": "arxiv-2383135ff20b",
+  "format": "vision",
+  "title": "Nemotron-Cascade 2: Post-Training LLMs with Cascade RL and Multi-Domain On-Policy Distillation",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "What might cascade RL and multi-domain distillation mean for the next generation of autonomous systems?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Nemotron-Cascade 2 enables more nuanced reasoning and agentic behavior through its 30B MoE and on-policy distillation.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "But if these models become too autonomous, who ensures they align with human values and don’t reinforce existing biases?",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Builders are integrating value-aligned reward models and using human feedback loops during training to mitigate risks.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "Imagine a future where AI agents collaborate with humans in complex domains like healthcare and climate science.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future hinges on balancing innovation with ethical guardrails — and Nemotron-Cascade 2 may be our bridge.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of nemotron",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#nemotron",
+    "#cascade",
+    "#post"
+  ],
+  "video_cue": "A dynamic visualization of AI agents working in tandem with humans across various domains like medicine and environmental science.",
+  "generated_at": "2026-03-21T08:32:48.040Z",
+  "llm_used": true
+}

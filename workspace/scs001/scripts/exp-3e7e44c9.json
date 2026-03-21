@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-3e7e44c9",
+  "topic_id": "gh-695beb4d4c18",
+  "format": "explainer",
+  "title": "NVIDIA/NemoClaw — Run OpenClaw securely inside NVIDIA OpenShell with managed inference",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Did you know your AI tools could be hiding dangerous code?",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "NVIDIA’s OpenShell is now blocking malicious scripts in real time.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "NemoClaw runs OpenClaw securely inside OpenShell with managed inference.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "It blocks harmful code before it ever touches your data.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This affects developers using AI in high-stakes environments like finance and healthcare.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The key takeaway: secure AI isn’t a luxury — it’s a necessity.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Want to see how this changes AI safety? Follow for the breakdown.",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "NVIDIA/NemoClaw — Run OpenClaw securely inside NVIDIA OpenShell with managed inference",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#nvidia",
+    "#nemoclaw",
+    "#openclaw"
+  ],
+  "generated_at": "2026-03-21T08:35:28.820Z",
+  "llm_used": true
+}

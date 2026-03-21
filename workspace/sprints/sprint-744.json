@@ -1,0 +1,28 @@
+{
+  "sprint_id": "sprint-744",
+  "title": "CONTENT — Fresh multiformat batch + queue replenish for April 7 gate",
+  "description": "Produce 5+ new multiformat videos for posting queue. Replenish sprint-queue.json with next 5 sprints. April 7 gate: 30 posts needed, 0 posted, 17 days remaining.",
+  "source": "brief-recommendation",
+  "tasks": [
+    {
+      "id": "744-01",
+      "title": "Run multiformat pipeline batch (5 new videos)",
+      "type": "feature",
+      "task_type": "content",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-744"
+    },
+    {
+      "id": "744-02",
+      "title": "Replenish sprint-queue.json with sprints 745-749",
+      "type": "feature",
+      "task_type": "infra",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-744"
+    }
+  ]
+}

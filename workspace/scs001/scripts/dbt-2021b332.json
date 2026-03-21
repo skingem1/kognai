@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-2021b332",
+  "topic_id": "arxiv-c707e4677bf3",
+  "format": "debate",
+  "title": "NavTrust: Benchmarking Trustworthiness for Embodied Navigation",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "NavTrust provides a standardized, reproducible protocol for evaluating trust in embodied navigation systems.",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Benchmarking captures real-world variability, ensuring models are tested across diverse environments and failure scenarios.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "NavTrust integrates specific metrics like path fidelity and safety, offering a unified framework for comparing agent behavior.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Benchmarking evolves with new challenges, unlike static protocols that can become outdated as technology advances.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Without benchmarking, NavTrust is just a theoretical ideal—untested and disconnected from practical deployment needs.",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "navtrust: vs benchmarking",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#navtrust:",
+    "#benchmarking",
+    "#trustworthiness"
+  ],
+  "generated_at": "2026-03-21T11:47:29.954Z",
+  "llm_used": true
+}

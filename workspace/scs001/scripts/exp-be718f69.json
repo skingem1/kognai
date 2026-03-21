@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-be718f69",
+  "topic_id": "gh-695beb4d4c18",
+  "format": "explainer",
+  "title": "NVIDIA/NemoClaw — Run OpenClaw securely inside NVIDIA OpenShell with managed inference",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "[Hook] Imagine running AI securely — no code leaks, no data breaches — right on your own hardware.",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "[Context] With AI security breaches rising, developers need tools that protect both code and data in real time.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "[Explain] NemoClaw lets you run OpenClaw inside NVIDIA OpenShell with full control and security.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "[Detail] It uses NVIDIA’s managed inference to isolate AI processes, preventing unauthorized access or tampering.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "[Impact] This affects developers using AI in finance, healthcare, and defense — where data security is non-negotiable.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "[Takeaway] Secure AI isn’t just possible — it’s now a seamless part of your workflow with NemoClaw.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "[CTA] Ready to run AI safely? Check out NemoClaw on GitHub — 14,611 stars and counting.",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "NVIDIA/NemoClaw — Run OpenClaw securely inside NVIDIA OpenShell with managed inference",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#nvidia",
+    "#nemoclaw",
+    "#openclaw"
+  ],
+  "generated_at": "2026-03-21T13:54:43.794Z",
+  "llm_used": true
+}
