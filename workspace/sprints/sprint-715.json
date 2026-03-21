@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-715",
+  "title": "GOV — Generate SOUL.md for 9 remaining kognai-agents (batch 3)",
+  "description": "Governance remediation Phase 4. Create SOUL.md for: pipeline-health-monitor, skills, sprint-retrospective, telegram-support, test-failure-predictor, test-runner, test-utility-generator, x-admin, invoica-x-admin.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "715-01",
+      "title": "Create SOUL.md for 9 remaining agents",
+      "type": "feature",
+      "task_type": "governance",
+      "task_target": "kognai-agents/*/SOUL.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-715"
+    }
+  ]
+}
