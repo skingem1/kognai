@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-e1bbca6e",
+  "topic_id": "cg-999288f6f404",
+  "format": "explainer",
+  "title": "Venice Token (VVV) 📈 7.6%",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Venice Token just jumped 7.6% — and it's not slowing down.",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "It's trending on CoinGecko, ranked #10 right now.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Venice Token is a blockchain-based platform for digital art and NFTs.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "It uses a unique proof-of-ownership consensus mechanism.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This affects artists and collectors looking for secure, low-cost NFTs.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The key takeaway? VVV is gaining traction in the crypto art space.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Have you checked out Venice Token yet?",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "Venice Token (VVV) 📈 7.6%",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#venice token",
+    "#vvv",
+    "#crypto"
+  ],
+  "generated_at": "2026-03-21T15:35:10.684Z",
+  "llm_used": true
+}

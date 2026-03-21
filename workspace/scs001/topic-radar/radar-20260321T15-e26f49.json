@@ -1,0 +1,98 @@
+{
+  "radar_id": "radar-20260321T15-e26f49",
+  "collected_at": "2026-03-21T15:34:56.798Z",
+  "topics": [
+    {
+      "topic_id": "cg-999288f6f404",
+      "title": "Venice Token (VVV) 📈 7.6%",
+      "summary": "Trending on CoinGecko — rank #10",
+      "format": "explainer",
+      "source": "coingecko",
+      "source_url": "https://www.coingecko.com/en/coins/venice-token",
+      "confidence": 57.55989322774726,
+      "keywords": [
+        "venice token",
+        "vvv",
+        "crypto",
+        "defi"
+      ],
+      "collected_at": "2026-03-21T15:34:54.383Z"
+    },
+    {
+      "topic_id": "cg-6b88c087247a",
+      "title": "Bitcoin (BTC) 📈 1.1%",
+      "summary": "Trending on CoinGecko — rank #3",
+      "format": "explainer",
+      "source": "coingecko",
+      "source_url": "https://www.coingecko.com/en/coins/bitcoin",
+      "confidence": 51.05837502218424,
+      "keywords": [
+        "bitcoin",
+        "btc",
+        "crypto",
+        "defi"
+      ],
+      "collected_at": "2026-03-21T15:34:54.383Z"
+    },
+    {
+      "topic_id": "reddit-db86f117c86d",
+      "title": "[P] Interactive 2D and 3D Visualization of GPT-2",
+      "summary": "Reddit r/MachineLearning (46 pts, 2 comments)",
+      "format": "debate",
+      "source": "reddit",
+      "source_url": "https://www.reddit.com/r/MachineLearning/comments/1rz340w/p_interactive_2d_and_3d_visualization_of_gpt2/",
+      "confidence": 40,
+      "keywords": [
+        "interactive",
+        "visualization"
+      ],
+      "collected_at": "2026-03-21T15:34:56.269Z"
+    },
+    {
+      "topic_id": "reddit-67d14b7f66e4",
+      "title": "What measure do I use to compare nested models and non nested models in high dimensional survival analysis [D]",
+      "summary": "Reddit r/MachineLearning (0 pts, 2 comments)",
+      "format": "vision",
+      "source": "reddit",
+      "source_url": "https://www.reddit.com/r/MachineLearning/comments/1rzpyjc/what_measure_do_i_use_to_compare_nested_models/",
+      "confidence": 40,
+      "keywords": [
+        "what",
+        "measure",
+        "compare",
+        "nested",
+        "models",
+        "nested"
+      ],
+      "collected_at": "2026-03-21T15:34:56.270Z"
+    },
+    {
+      "topic_id": "reddit-431d6ad51af6-lst",
+      "title": "Top 3 theoretical justification tools you need to know",
+      "summary": "Reddit r/MachineLearning (31 pts, 11 comments)",
+      "format": "listicle",
+      "source": "reddit",
+      "source_url": "https://www.reddit.com/r/MachineLearning/comments/1rzkuxd/d_how_do_you_add_theoretical_justification_to_an/",
+      "confidence": 40,
+      "keywords": [
+        "theoretical",
+        "justification",
+        "paper?"
+      ],
+      "listicle_items": [
+        "Theoretical",
+        "Justification",
+        "Paper?"
+      ],
+      "collected_at": "2026-03-21T15:34:56.269Z"
+    }
+  ],
+  "sources_hit": [
+    "hacker_news",
+    "github",
+    "arxiv",
+    "coingecko",
+    "reddit"
+  ],
+  "errors": []
+}

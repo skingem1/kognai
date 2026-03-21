@@ -1,0 +1,60 @@
+{
+  "script_id": "lst-918efc48",
+  "topic_id": "reddit-431d6ad51af6-lst",
+  "format": "listicle",
+  "title": "Top 3 theoretical justification tools you need to know",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Top 3 theoretical justification tools that will change your research game — stick around for the ultimate #1.",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "3: Paper? — it’s just a draft, but with AI citation checks, it cuts errors by 60% before you even submit.",
+      "start_s": 3,
+      "end_s": 7,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "2: Justification — it’s not just support, it’s structured reasoning that boosts clarity and reduces rejections.",
+      "start_s": 7,
+      "end_s": 11,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "1: Theoretical — it maps your argument to existing frameworks, making your work 3x more publishable in top journals.",
+      "start_s": 11,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Follow for more hacks that turn your ideas into impactful research — you won’t believe what’s next.",
+      "start_s": 16,
+      "end_s": 20,
+      "emotion": "excited"
+    }
+  ],
+  "total_duration_s": 20,
+  "caption_text": "Top 3: Top 3 theoretical justification tools you need to ",
+  "hashtags": [
+    "#Top3",
+    "#Tech",
+    "#Ranking",
+    "#theoretical",
+    "#justification",
+    "#paper?"
+  ],
+  "generated_at": "2026-03-21T15:36:10.151Z",
+  "llm_used": true
+}
