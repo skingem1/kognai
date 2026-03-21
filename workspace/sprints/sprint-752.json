@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-752",
+  "title": "POSTING — Refresh manual-post-queue with latest 15 best videos",
+  "description": "Update post-manifest.json with 15 best recent videos from sprints 748-751. Ensure format diversity.",
+  "source": "queue-item-752",
+  "tasks": [
+    {
+      "id": "752-01",
+      "title": "Refresh post-manifest.json with 15 latest diverse videos",
+      "type": "feature",
+      "task_type": "posting",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-752"
+    }
+  ]
+}
