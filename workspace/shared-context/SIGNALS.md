@@ -33,3 +33,11 @@
 - **Renewal**: Learning, adaptation, skill development, innovation
 - **Safety**: Security, data protection, content safety, kill switches
 - **Governance**: Process integrity, trust scores, constitutional compliance
+
+## Backfill — 2026-03-21
+*Backfilled from historical AAR logs + validation errors*
+
+- **MEDIUM** [Governance]: Agent concentration: coder handles 92% of all tasks
+- **MEDIUM** [Renewal]: Low-quality approvals: 5 tasks approved with score < 60
+- **MEDIUM** [Safety]: 7 validation errors in pipeline
+- **LOW** [Solidarity]: Low agent diversity: only 2 unique agents in 13 tasks

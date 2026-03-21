@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-711",
+  "title": "GOV — Backfill constitutional signals from failure library + AAR",
+  "description": "Governance remediation Phase 3. Create scripts/backfill-signals.ts to analyze AAR + validation errors, identify patterns, generate historical report, extract signals to SIGNALS.md.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "711-01",
+      "title": "Create scripts/backfill-signals.ts — pattern analyzer",
+      "type": "feature",
+      "task_type": "governance",
+      "task_target": "scripts/backfill-signals.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-711"
+    },
+    {
+      "id": "711-02",
+      "title": "Run backfill and validate output",
+      "type": "test",
+      "task_type": "test",
+      "task_target": "scripts/backfill-signals.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-711"
+    }
+  ]
+}
