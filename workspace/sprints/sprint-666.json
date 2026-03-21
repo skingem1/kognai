@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-666",
+  "title": "CLEANUP — Deduplicate auto-delivered.jsonl + delivery stats fix",
+  "description": "Remove duplicate entries from auto-delivered.jsonl caused by Sprint 665 bug. Fix delivery count in daily digest to use unique video IDs.",
+  "source": "queue-empty-cleanup",
+  "tasks": [
+    {
+      "id": "666-01",
+      "title": "Build one-time dedup script for auto-delivered.jsonl",
+      "type": "bugfix",
+      "task_type": "pipeline",
+      "task_target": "scripts/scs001/dedup-delivered.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-666"
+    }
+  ]
+}
