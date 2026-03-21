@@ -2297,3 +2297,13 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (pipeline execution)
 - Issues: Topics exhaust after each run — need force-refresh each time since same 22 topics from 5 sources
 - Timestamp: 2026-03-21T15:35:00Z
+
+## Sprint 722 — FIX — Pipeline cron force-refresh
+- Status: PASS
+- Commit: 740edeb
+- Files created: workspace/sprints/sprint-722.json
+- Files modified: scripts/scs001/pipeline-cron.ts (added --force-refresh)
+- Pipeline: Fix ensures PM2 cron (4x/day) always clears dedup cache before scanning topics. Previously produced 0 videos on runs 2+.
+- Swarm used: no (1-line edit)
+- Issues: none
+- Timestamp: 2026-03-21T15:45:00Z
