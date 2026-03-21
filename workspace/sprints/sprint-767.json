@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-767",
+  "title": "CONTENT — Batch 17: fresh videos (target 5+, 570+ ledger)",
+  "description": "Content batch with ledger dedup. Continue producing multiformat videos for April 7 gate.",
+  "source": "queue-exhausted-brief-recommendation",
+  "tasks": [
+    {
+      "id": "767-01",
+      "title": "Run multiformat pipeline for 5+ fresh videos",
+      "type": "feature",
+      "task_type": "content",
+      "agent": "coder",
+      "status": "done",
+      "priority": "critical",
+      "sprint_id": "sprint-767"
+    }
+  ]
+}

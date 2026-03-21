@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-b2f92d90",
+  "topic_id": "cg-b60d7bdd334c",
+  "format": "explainer",
+  "title": "Ethereum (ETH) 📈 0.7%",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Ethereum just jumped 0.7% — and it’s not slowing down.",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "ETH is trending on CoinGecko, ranked #10 right now.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Ethereum is the second-largest blockchain, home to DeFi and NFTs.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Its upcoming upgrade, Cancun, could slash transaction costs by 50%.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Traders, developers, and everyday users are all paying attention.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This move could reshape how Ethereum competes with Solana and Cardano.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "What do you think — is Ethereum’s future brighter than ever?",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "Ethereum (ETH) 📈 0.7%",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#ethereum",
+    "#eth",
+    "#crypto"
+  ],
+  "generated_at": "2026-03-21T17:03:40.571Z",
+  "llm_used": true
+}

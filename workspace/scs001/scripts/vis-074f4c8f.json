@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-074f4c8f",
+  "topic_id": "cg-615666dae9d3",
+  "format": "vision",
+  "title": "Solana (SOL) 📈 0.7%",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "With Solana rising rapidly, what does its ascent mean for blockchain's future?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Solana's high throughput and low latency enable real-time DeFi and scalable Web3 apps, but sharding and cross-chain interoperability remain challenges.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "Widespread adoption could deepen financial inequality, as only those with access to high-speed infrastructure benefit.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Developers are prioritizing security audits, EVM compatibility, and layer-2 solutions to ensure scalability doesn’t compromise safety.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "A future where Solana powers seamless global payments and decentralized governance, accessible to all, not just the privileged few.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "Solana's rise is a testament to blockchain's potential—if built with both innovation and inclusivity in mind.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of solana",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#solana",
+    "#sol",
+    "#crypto"
+  ],
+  "video_cue": "A dynamic visualization of Solana's blockchain network with nodes lighting up globally as transactions flow in real time.",
+  "generated_at": "2026-03-21T17:26:53.539Z",
+  "llm_used": true
+}

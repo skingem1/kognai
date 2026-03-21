@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-8a4e65a4",
+  "topic_id": "reddit-d424b9a3631c",
+  "format": "debate",
+  "title": "I put two AI voice instances in a conversation with each other. Neither figured out they were talking to another AI for ",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "AI can detect anomalies in speech patterns, tone, and response latency—clear signs they’re not talking to a human. (3 sec)",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Realtime APIs often mask internal processing delays, making it hard for AIs to distinguish between human and machine input. (5 sec)",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Modern models use session metadata and API headers to verify endpoints—this allows for meta-awareness in structured environments. (5 sec)",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "If the API abstracts session management, the AI has no access to the underlying protocol—no way to know it’s in a loop. (5 sec)",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "The API’s design is the real barrier here. (4 sec)",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "are they technically capable of figuring it out vs is there something in how the realtime API handles sessions that prevents that kind of meta-awareness",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#voice",
+    "#instances",
+    "#conversation"
+  ],
+  "generated_at": "2026-03-21T17:03:57.103Z",
+  "llm_used": true
+}

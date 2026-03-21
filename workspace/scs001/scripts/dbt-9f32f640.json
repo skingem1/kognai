@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-9f32f640",
+  "topic_id": "cg-6b88c087247a",
+  "format": "debate",
+  "title": "Bitcoin (BTC) 📈 0.7%",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Bitcoin's decentralized protocol is the bedrock of true financial sovereignty—no single entity controls it.",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "BTC is just a speculative asset, not a protocol. Its value is driven by hype, not real-world utility or security.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Bitcoin's proof-of-work ensures censorship resistance and security—millions of nodes validate every transaction.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "BTC's scalability is a disaster. Lightning Network is a patch, not a solution—it's unreliable and complex for users.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "BTC’s future is uncertain. Regulation, competition, and technical limitations will eventually outpace its growth.",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "bitcoin vs btc",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#bitcoin",
+    "#btc",
+    "#crypto"
+  ],
+  "generated_at": "2026-03-21T17:26:30.418Z",
+  "llm_used": true
+}
