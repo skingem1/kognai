@@ -2416,7 +2416,18 @@ ONLY output the JSON array. No markdown, no explanation.`;
 
       // Execute with rejection feedback if retrying
       const tokensBefore = _globalTokensThisRun;
-      const result = await agent.execute(task, lastReview);
+      let result: { files: string[]; model: string };
+      try {
+        result = await agent.execute(task, lastReview);
+      } catch (execErr: any) {
+        log(c.red, `  ✗ Execution error: ${execErr.message?.substring(0, 200)}`);
+        MonotaskSM.release(task.agent, task.id, `exec error: ${execErr.message?.substring(0, 80)}`);
+        if (attempt < MAX_RETRIES) {
+          log(c.yellow, `  Retrying after execution error (attempt ${attempt}/${MAX_RETRIES})...`);
+          continue;
+        }
+        throw execErr; // exhausted retries
+      }
 
       // OMEL AMD-13: WipeWitness — compare after write, emit shrink alert if > 50% loss
       for (const f of result.files) {

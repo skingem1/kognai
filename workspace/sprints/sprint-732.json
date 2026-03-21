@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-732",
+  "title": "FIX — Swarm retry on execution errors (timeout, API failures)",
+  "description": "Orchestrator executeTask() had no catch around agent.execute() — timeout errors crashed the task instead of retrying. Added try-catch that continues the retry loop on execution errors.",
+  "source": "auto-queue-empty",
+  "tasks": [
+    {
+      "id": "732-01",
+      "title": "Add try-catch around agent.execute in retry loop",
+      "type": "fix",
+      "task_type": "infra",
+      "task_target": "scripts/orchestrate-agents-v2.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "critical",
+      "sprint_id": "sprint-732"
+    }
+  ]
+}
