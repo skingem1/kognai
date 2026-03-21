@@ -2840,3 +2840,15 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Topic sources: exhausted for today (ledger dedup filtering all candidates)
 - HANDOFF: next session starts at Sprint 770, read sprint-brief.md first
 - CRITICAL: Operator must start manual TikTok posting (29 posts needed in 17 days)
+
+## Sprint 770 — CONTENT
+- Status: PASS
+- Commit: c278a8d
+- Files modified: scripts/scs001/topic-radar.ts, workspace/scs001/publish-ledger.jsonl, reports/video-inventory.json
+- Files created: workspace/sprints/sprint-770.json
+- Test: dry-run pipeline — 28 fresh topics (up from 0), 5 videos produced PASS
+- Pipeline: 10 sources (added Dev.to, Lobsters, TechCrunch), Reddit expanded 4→8 subs
+- Swarm used: no (multi-file edit, wrote directly)
+- Issues: Topic saturation fixed — was 0 fresh, now 28 fresh per scan
+- Cost: $1.50 (avatar generation)
+- Timestamp: 2026-03-21T18:10:00Z
