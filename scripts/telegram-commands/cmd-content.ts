@@ -51,6 +51,7 @@ export function cmdRecord(args: string): string {
     hook_formula: expData.hook_formula !== 'unknown' ? expData.hook_formula : undefined,
     viral_score: expData.viral_score,
     topic: expData.topic,
+    format: expData.format,  // Sprint 615: track video format for A/B analysis
     posted_at: new Date().toISOString(),
     recorded_at: new Date().toISOString(),
   };
@@ -877,6 +878,82 @@ export function cmdBacktest(): string {
 
   lines.push('');
   lines.push(`_${entries.length} experiments | ${sorted.length} formulas_`);
+
+  return lines.join('\n');
+}
+
+// Sprint 615: /formatstats — Video format performance breakdown
+export function cmdFormatStats(): string {
+  const expPath = path.join(ROOT, 'workspace', 'scs001', 'experiments.jsonl');
+  const ledgerPath = path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl');
+  const manualPath = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
+
+  const formatStats: Record<string, { produced: number; published: number; posted: number; totalViews: number; totalViral: number; viralCount: number }> = {};
+  const knownFormats = ['explainer', 'debate', 'vision', 'listicle'];
+
+  for (const f of knownFormats) {
+    formatStats[f] = { produced: 0, published: 0, posted: 0, totalViews: 0, totalViral: 0, viralCount: 0 };
+  }
+
+  // Count from experiments (produced)
+  if (fs.existsSync(expPath)) {
+    for (const line of fs.readFileSync(expPath, 'utf-8').split('\n')) {
+      if (!line.trim()) continue;
+      try {
+        const e = JSON.parse(line);
+        const fmt = e.format || 'explainer';
+        if (!formatStats[fmt]) formatStats[fmt] = { produced: 0, published: 0, posted: 0, totalViews: 0, totalViral: 0, viralCount: 0 };
+        formatStats[fmt].produced++;
+        if (e.partial_viral_score != null) {
+          formatStats[fmt].totalViral += e.partial_viral_score;
+          formatStats[fmt].viralCount++;
+        }
+      } catch { /* skip */ }
+    }
+  }
+
+  // Count from ledger (published = ready)
+  if (fs.existsSync(ledgerPath)) {
+    for (const line of fs.readFileSync(ledgerPath, 'utf-8').split('\n')) {
+      if (!line.trim()) continue;
+      try {
+        const e = JSON.parse(line);
+        const exp = getExperimentData(e.video_id);
+        const fmt = exp.format || 'explainer';
+        if (formatStats[fmt]) formatStats[fmt].published++;
+      } catch { /* skip */ }
+    }
+  }
+
+  // Count from manual posts (posted + views)
+  if (fs.existsSync(manualPath)) {
+    for (const line of fs.readFileSync(manualPath, 'utf-8').split('\n')) {
+      if (!line.trim()) continue;
+      try {
+        const e = JSON.parse(line);
+        const fmt = e.format || 'explainer';
+        if (formatStats[fmt]) {
+          formatStats[fmt].posted++;
+          formatStats[fmt].totalViews += e.views ?? 0;
+        }
+      } catch { /* skip */ }
+    }
+  }
+
+  const lines: string[] = ['🎬 *Format Performance Stats*', ''];
+
+  for (const [fmt, s] of Object.entries(formatStats)) {
+    const avgViral = s.viralCount > 0 ? (s.totalViral / s.viralCount).toFixed(2) : '—';
+    const avgViews = s.posted > 0 ? Math.round(s.totalViews / s.posted) : '—';
+    const icon = fmt === 'explainer' ? '📝' : fmt === 'debate' ? '⚔️' : fmt === 'vision' ? '🔮' : '📋';
+    lines.push(`${icon} *${fmt.toUpperCase()}*`);
+    lines.push(`  Produced: ${s.produced} | Ready: ${s.published} | Posted: ${s.posted}`);
+    lines.push(`  Avg viral: ${avgViral} | Avg views: ${avgViews}`);
+    lines.push('');
+  }
+
+  const totalProduced = Object.values(formatStats).reduce((a, s) => a + s.produced, 0);
+  lines.push(`_Total: ${totalProduced} experiments across ${Object.keys(formatStats).length} formats_`);
 
   return lines.join('\n');
 }

@@ -110,9 +110,9 @@ export function findCaptionedMp4(videoId: string): string | null {
   return null;
 }
 
-export function getExperimentData(videoId: string): { speaker: string; hook_formula: string; viral_score: number | null; topic: string | null } {
+export function getExperimentData(videoId: string): { speaker: string; hook_formula: string; viral_score: number | null; topic: string | null; format: string | null } {
   const expPath = path.join(ROOT, 'workspace', 'scs001', 'experiments.jsonl');
-  const result = { speaker: 'unknown', hook_formula: 'unknown', viral_score: null as number | null, topic: null as string | null };
+  const result = { speaker: 'unknown', hook_formula: 'unknown', viral_score: null as number | null, topic: null as string | null, format: null as string | null };
   if (!fs.existsSync(expPath)) return result;
   try {
     for (const line of fs.readFileSync(expPath, 'utf-8').split('\n')) {
@@ -125,6 +125,7 @@ export function getExperimentData(videoId: string): { speaker: string; hook_form
           if (e.hook_formula) result.hook_formula = e.hook_formula;
           if (e.partial_viral_score != null) result.viral_score = e.partial_viral_score;
           if (e.topic) result.topic = e.topic;
+          if (e.format) result.format = e.format;
         }
       } catch { /* skip */ }
     }

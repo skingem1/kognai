@@ -38,6 +38,7 @@ interface ExperimentEntry {
 
 function findScriptJson(videoId: string): any | null {
   try {
+    // Check standard pipeline runs
     const runDirs = readdirSync(WORKSPACE).filter(d => d.startsWith('run-'));
     for (const dir of runDirs) {
       const scriptDir = join(WORKSPACE, dir, 'script');
@@ -45,6 +46,17 @@ function findScriptJson(videoId: string): any | null {
       const scriptFile = join(scriptDir, `${videoId}-script.json`);
       if (existsSync(scriptFile)) {
         return JSON.parse(readFileSync(scriptFile, 'utf-8'));
+      }
+    }
+    // Sprint 615: Check multiformat script files (exp-*, dbt-*, vis-*, lst-*)
+    const scriptsDir = join(WORKSPACE, 'scripts');
+    if (existsSync(scriptsDir)) {
+      const files = readdirSync(scriptsDir).filter(f => f.endsWith('.json'));
+      for (const f of files) {
+        try {
+          const data = JSON.parse(readFileSync(join(scriptsDir, f), 'utf-8'));
+          if (data.topic_id === videoId || data.script_id === videoId) return data;
+        } catch { /* skip */ }
       }
     }
   } catch { /* ignore */ }
@@ -81,6 +93,11 @@ function main(): void {
     const script = findScriptJson(entry.clip_id);
     const hookText = script?.hook || script?.title || script?.headline || entry.topic || entry.hook_formula || '';
     const speaker = entry.speaker || '';
+
+    // Sprint 615: Enrich format from script JSON or multiformat run
+    if (!entry.format && script?.format) {
+      entry.format = script.format;
+    }
 
     // Use hookQualityScore if we have real text, otherwise formula-based scoring
     let computedScore: number;

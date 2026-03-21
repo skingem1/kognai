@@ -1,0 +1,52 @@
+{
+  "sprint_id": "sprint-615",
+  "title": "ANALYTICS — Format tracking in experiments + /formatstats command",
+  "description": "Add video format field to experiment data flow: enrich-experiments extracts format from script JSONs, /record includes format in manual posts, new /formatstats command shows format performance breakdown.",
+  "source": "follow-up-sprint-614",
+  "tasks": [
+    {
+      "id": "615-01",
+      "title": "Add format field to getExperimentData in shared.ts",
+      "type": "enhancement",
+      "task_type": "analytics",
+      "task_target": "scripts/telegram-commands/shared.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-615"
+    },
+    {
+      "id": "615-02",
+      "title": "Add format enrichment to enrich-experiments.ts",
+      "type": "enhancement",
+      "task_type": "analytics",
+      "task_target": "scripts/scs001/enrich-experiments.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-615"
+    },
+    {
+      "id": "615-03",
+      "title": "Add format to /record command output in cmd-content.ts",
+      "type": "enhancement",
+      "task_type": "analytics",
+      "task_target": "scripts/telegram-commands/cmd-content.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-615"
+    },
+    {
+      "id": "615-04",
+      "title": "Add /formatstats command with format performance breakdown",
+      "type": "feature",
+      "task_type": "analytics",
+      "task_target": "scripts/telegram-commands/cmd-content.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-615"
+    }
+  ]
+}
