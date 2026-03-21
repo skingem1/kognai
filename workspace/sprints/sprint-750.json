@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-750",
+  "title": "CONTENT — Produce videos with expanded radar (Reddit + 7 sources)",
+  "description": "First content batch using expanded topic radar with Reddit. Clear seen-topics, produce 5+ videos.",
+  "source": "brief-recommendation",
+  "tasks": [
+    {
+      "id": "750-01",
+      "title": "Clear seen-topics and run multiformat pipeline with Reddit topics",
+      "type": "feature",
+      "task_type": "content",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-750"
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "script_id": "lst-f8b15645",
+  "topic_id": "reddit-67fba5e31d64-lst",
+  "format": "listicle",
+  "title": "Top 3 britain’s bond tools you need to know",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Top 3 Britain’s bond tools that’ll blow your mind — stay till the end for the ultimate surprise.",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "3: Panic — it’s the fastest way to freeze assets in a crisis, locking them down in seconds.",
+      "start_s": 3,
+      "end_s": 7,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "2: Bond — it outperforms Panic with real-time tracking and secure data sharing across all devices.",
+      "start_s": 7,
+      "end_s": 11,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "1: Britain’s — it’s the only tool with AI-driven fraud detection, stopping threats before they hit your account.",
+      "start_s": 11,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Follow for deep dives into the tech shaping financial security today.",
+      "start_s": 16,
+      "end_s": 20,
+      "emotion": "excited"
+    }
+  ],
+  "total_duration_s": 20,
+  "caption_text": "Top 3: Top 3 britain’s bond tools you need to know",
+  "hashtags": [
+    "#Top3",
+    "#Tech",
+    "#Ranking",
+    "#britain’s",
+    "#bond",
+    "#panic"
+  ],
+  "generated_at": "2026-03-21T14:37:11.862Z",
+  "llm_used": true
+}
