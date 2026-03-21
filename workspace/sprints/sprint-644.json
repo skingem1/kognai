@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-644",
+  "title": "TEST — Validate Achiri test suite 17/17 pass (Sprint 642 fix confirmed)",
+  "description": "Run full Achiri test suite to confirm E2E Integration timeout fix from Sprint 642. Result: 17/17 PASS (E2E Integration completed in 89.9s, within new 240s limit).",
+  "source": "test-validation",
+  "tasks": [
+    {
+      "id": "644-01",
+      "title": "Run Achiri test suite and verify 17/17 pass",
+      "type": "test",
+      "task_type": "validation",
+      "task_target": "scripts/achiri/run-all-tests.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-644"
+    }
+  ]
+}
