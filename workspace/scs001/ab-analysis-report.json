@@ -1,0 +1,318 @@
+{
+  "generated_at": "2026-03-21T09:10:18.347Z",
+  "total_experiments": 359,
+  "formula_rankings": [
+    {
+      "formula": "urgency",
+      "count": 2,
+      "avg_score": 0.57,
+      "max_score": 0.57,
+      "min_score": 0.57,
+      "stddev": 0,
+      "qc_pass_rate": 50,
+      "weight": 0.09,
+      "rank": 1
+    },
+    {
+      "formula": "contrarian",
+      "count": 51,
+      "avg_score": 0.545,
+      "max_score": 0.68,
+      "min_score": 0.15,
+      "stddev": 0.173,
+      "qc_pass_rate": 100,
+      "weight": 0.16,
+      "rank": 2
+    },
+    {
+      "formula": "curiosity_gap",
+      "count": 116,
+      "avg_score": 0.521,
+      "max_score": 0.71,
+      "min_score": 0.15,
+      "stddev": 0.191,
+      "qc_pass_rate": 96,
+      "weight": 0.16,
+      "rank": 3
+    },
+    {
+      "formula": "authority",
+      "count": 42,
+      "avg_score": 0.514,
+      "max_score": 0.64,
+      "min_score": 0.22,
+      "stddev": 0.149,
+      "qc_pass_rate": 100,
+      "weight": 0.15,
+      "rank": 4
+    },
+    {
+      "formula": "secret",
+      "count": 89,
+      "avg_score": 0.499,
+      "max_score": 0.61,
+      "min_score": 0.15,
+      "stddev": 0.137,
+      "qc_pass_rate": 94,
+      "weight": 0.15,
+      "rank": 5
+    },
+    {
+      "formula": "proof",
+      "count": 3,
+      "avg_score": 0.49,
+      "max_score": 0.54,
+      "min_score": 0.43,
+      "stddev": 0.056,
+      "qc_pass_rate": 100,
+      "weight": 0.15,
+      "rank": 6
+    },
+    {
+      "formula": "unknown",
+      "count": 56,
+      "avg_score": 0.39,
+      "max_score": 0.39,
+      "min_score": 0.39,
+      "stddev": 0,
+      "qc_pass_rate": 100,
+      "weight": 0.12,
+      "rank": 7
+    }
+  ],
+  "speaker_rankings": [
+    {
+      "speaker": "Popular Mechanics",
+      "count": 3,
+      "avg_score": 0.57,
+      "max_score": 0.71,
+      "qc_pass_rate": 100,
+      "rank": 1
+    },
+    {
+      "speaker": "INFO AI PRO",
+      "count": 12,
+      "avg_score": 0.562,
+      "max_score": 0.71,
+      "qc_pass_rate": 100,
+      "rank": 2
+    },
+    {
+      "speaker": "Sam Altman",
+      "count": 108,
+      "avg_score": 0.56,
+      "max_score": 0.71,
+      "qc_pass_rate": 100,
+      "rank": 3
+    },
+    {
+      "speaker": "Jesse Pollak",
+      "count": 37,
+      "avg_score": 0.559,
+      "max_score": 0.71,
+      "qc_pass_rate": 100,
+      "rank": 4
+    },
+    {
+      "speaker": "eVTOL Engineering",
+      "count": 3,
+      "avg_score": 0.54,
+      "max_score": 0.54,
+      "qc_pass_rate": 33,
+      "rank": 5
+    },
+    {
+      "speaker": "TED",
+      "count": 9,
+      "avg_score": 0.531,
+      "max_score": 0.71,
+      "qc_pass_rate": 100,
+      "rank": 6
+    },
+    {
+      "speaker": "Unknown Speaker",
+      "count": 9,
+      "avg_score": 0.504,
+      "max_score": 0.57,
+      "qc_pass_rate": 89,
+      "rank": 7
+    },
+    {
+      "speaker": "Margrethe Vestager",
+      "count": 24,
+      "avg_score": 0.496,
+      "max_score": 0.71,
+      "qc_pass_rate": 100,
+      "rank": 8
+    },
+    {
+      "speaker": "Alex Albert",
+      "count": 19,
+      "avg_score": 0.492,
+      "max_score": 0.71,
+      "qc_pass_rate": 100,
+      "rank": 9
+    },
+    {
+      "speaker": "Paul's Hardware",
+      "count": 3,
+      "avg_score": 0.47,
+      "max_score": 0.47,
+      "qc_pass_rate": 100,
+      "rank": 10
+    },
+    {
+      "speaker": "ThePrimeagen",
+      "count": 50,
+      "avg_score": 0.457,
+      "max_score": 0.71,
+      "qc_pass_rate": 100,
+      "rank": 11
+    },
+    {
+      "speaker": "unknown",
+      "count": 56,
+      "avg_score": 0.39,
+      "max_score": 0.39,
+      "qc_pass_rate": 100,
+      "rank": 12
+    }
+  ],
+  "cross_analysis": [
+    {
+      "speaker": "Jesse Pollak",
+      "formula": "contrarian",
+      "count": 3,
+      "avg_score": 0.68
+    },
+    {
+      "speaker": "Alex Albert",
+      "formula": "curiosity_gap",
+      "count": 6,
+      "avg_score": 0.628
+    },
+    {
+      "speaker": "Margrethe Vestager",
+      "formula": "contrarian",
+      "count": 5,
+      "avg_score": 0.608
+    },
+    {
+      "speaker": "INFO AI PRO",
+      "formula": "curiosity_gap",
+      "count": 3,
+      "avg_score": 0.603
+    },
+    {
+      "speaker": "Sam Altman",
+      "formula": "curiosity_gap",
+      "count": 27,
+      "avg_score": 0.578
+    },
+    {
+      "speaker": "Jesse Pollak",
+      "formula": "curiosity_gap",
+      "count": 18,
+      "avg_score": 0.568
+    },
+    {
+      "speaker": "Sam Altman",
+      "formula": "contrarian",
+      "count": 28,
+      "avg_score": 0.564
+    },
+    {
+      "speaker": "INFO AI PRO",
+      "formula": "contrarian",
+      "count": 3,
+      "avg_score": 0.56
+    },
+    {
+      "speaker": "Sam Altman",
+      "formula": "authority",
+      "count": 27,
+      "avg_score": 0.551
+    },
+    {
+      "speaker": "TED",
+      "formula": "secret",
+      "count": 3,
+      "avg_score": 0.55
+    },
+    {
+      "speaker": "INFO AI PRO",
+      "formula": "secret",
+      "count": 3,
+      "avg_score": 0.55
+    },
+    {
+      "speaker": "Sam Altman",
+      "formula": "secret",
+      "count": 26,
+      "avg_score": 0.546
+    },
+    {
+      "speaker": "Margrethe Vestager",
+      "formula": "curiosity_gap",
+      "count": 7,
+      "avg_score": 0.543
+    },
+    {
+      "speaker": "eVTOL Engineering",
+      "formula": "secret",
+      "count": 3,
+      "avg_score": 0.54
+    },
+    {
+      "speaker": "TED",
+      "formula": "curiosity_gap",
+      "count": 4,
+      "avg_score": 0.533
+    },
+    {
+      "speaker": "INFO AI PRO",
+      "formula": "authority",
+      "count": 3,
+      "avg_score": 0.533
+    },
+    {
+      "speaker": "Jesse Pollak",
+      "formula": "secret",
+      "count": 16,
+      "avg_score": 0.528
+    },
+    {
+      "speaker": "Unknown Speaker",
+      "formula": "proof",
+      "count": 3,
+      "avg_score": 0.49
+    },
+    {
+      "speaker": "ThePrimeagen",
+      "formula": "curiosity_gap",
+      "count": 28,
+      "avg_score": 0.474
+    },
+    {
+      "speaker": "Paul's Hardware",
+      "formula": "curiosity_gap",
+      "count": 3,
+      "avg_score": 0.47
+    }
+  ],
+  "recommended_weights": {
+    "urgency": 0.09,
+    "contrarian": 0.16,
+    "curiosity_gap": 0.16,
+    "authority": 0.15,
+    "secret": 0.15,
+    "proof": 0.15
+  },
+  "summary": {
+    "best_formula": "urgency",
+    "best_formula_score": 0.57,
+    "best_speaker": "Popular Mechanics",
+    "best_speaker_score": 0.57,
+    "best_combo": "Jesse Pollak + contrarian"
+  }
+}

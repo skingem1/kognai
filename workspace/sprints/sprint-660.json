@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-660",
+  "title": "QUALITY — Content A/B test analysis + hook formula tuning",
+  "description": "Run statistical analysis on 359 experiments to rank hook formulas and speakers by viral score. Update hook optimizer weights. Produce analysis report.",
+  "source": "sprint-queue",
+  "tasks": [
+    {
+      "id": "660-01",
+      "title": "Build analysis script and run against experiments.jsonl",
+      "type": "feature",
+      "task_type": "analytics",
+      "task_target": "scripts/scs001/run-ab-analysis.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-660"
+    }
+  ]
+}
