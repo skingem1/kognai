@@ -1,0 +1,50 @@
+{
+  "radar_id": "radar-20260321T02-03fe89",
+  "collected_at": "2026-03-21T02:05:49.308Z",
+  "topics": [
+    {
+      "topic_id": "hn-07e6c7e4cc6e",
+      "title": "OpenCode – Open source AI coding agent",
+      "summary": "Hacker News (440 pts, 201 comments)",
+      "format": "explainer",
+      "source": "hacker_news",
+      "source_url": "https://opencode.ai/",
+      "confidence": 94,
+      "keywords": [
+        "opencode",
+        "open",
+        "source",
+        "coding",
+        "agent"
+      ],
+      "collected_at": "2026-03-21T02:05:48.906Z"
+    },
+    {
+      "topic_id": "cg-4d449bcd14d3",
+      "title": "Pi Network (PI) 📈 11.2%",
+      "summary": "Trending on CoinGecko — rank #1",
+      "format": "debate",
+      "source": "coingecko",
+      "source_url": "https://www.coingecko.com/en/coins/pi-network",
+      "confidence": 61.21658339051096,
+      "keywords": [
+        "pi network",
+        "pi",
+        "crypto",
+        "defi"
+      ],
+      "debate_sides": {
+        "side_a": "pi network",
+        "side_b": "pi"
+      },
+      "collected_at": "2026-03-21T02:05:48.562Z"
+    }
+  ],
+  "sources_hit": [
+    "hacker_news",
+    "github",
+    "arxiv",
+    "coingecko"
+  ],
+  "errors": []
+}

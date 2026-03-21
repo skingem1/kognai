@@ -1,0 +1,52 @@
+{
+  "script_id": "exp-73262ef2",
+  "topic_id": "gh-4fb06aa1a3dd",
+  "format": "explainer",
+  "title": "aiming-lab/AutoResearchClaw — Fully autonomous & self-evolving research from idea to paper. Chat an Idea. Get ",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Imagine writing a research paper without lifting a finger.",
+      "start_s": 0,
+      "end_s": 2,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This AI writes, experiments, and publishes papers on its own — automatically evolving as it goes.",
+      "start_s": 2,
+      "end_s": 7,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "It’s like having a genius researcher in your pocket, working 24/7.",
+      "start_s": 7,
+      "end_s": 10,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Ever wondered what AI-powered science looks like?",
+      "start_s": 10,
+      "end_s": 12,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 12,
+  "caption_text": "aiming-lab/AutoResearchClaw — Fully autonomous & self-evolving research from idea to paper. Chat an Idea. Get ",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#aiming",
+    "#autoresearchclaw",
+    "#fully"
+  ],
+  "generated_at": "2026-03-20T22:59:27.677Z",
+  "llm_used": true
+}

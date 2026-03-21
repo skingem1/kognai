@@ -1,0 +1,52 @@
+{
+  "script_id": "exp-b752b443",
+  "topic_id": "gh-89a046bbca9a",
+  "format": "explainer",
+  "title": "jackwener/opencli — Make Any Website & Tool Your CLI. A universal CLI Hub and AI-native runtime. Tra",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Imagine using any website or tool like a command line — no more clicking.",
+      "start_s": 0,
+      "end_s": 2,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Jackwener/opencli turns the web into your CLI, powered by AI and TypeScript.",
+      "start_s": 2,
+      "end_s": 7,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This could change how we interact with online tools, making them faster and smarter.",
+      "start_s": 7,
+      "end_s": 10,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Have you tried using a website like a command line before?",
+      "start_s": 10,
+      "end_s": 12,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 12,
+  "caption_text": "jackwener/opencli — Make Any Website & Tool Your CLI. A universal CLI Hub and AI-native runtime. Tra",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#jackwener",
+    "#opencli",
+    "#make"
+  ],
+  "generated_at": "2026-03-20T22:59:35.734Z",
+  "llm_used": true
+}

@@ -1,0 +1,29 @@
+{
+  "radar_id": "radar-20260320T23-d0f425",
+  "collected_at": "2026-03-20T23:18:35.474Z",
+  "topics": [
+    {
+      "topic_id": "cg-b60d7bdd334c",
+      "title": "Ethereum (ETH) 📈 0.1%",
+      "summary": "Trending on CoinGecko — rank #8",
+      "format": "explainer",
+      "source": "coingecko",
+      "source_url": "https://www.coingecko.com/en/coins/ethereum",
+      "confidence": 50.110388228907375,
+      "keywords": [
+        "ethereum",
+        "eth",
+        "crypto",
+        "defi"
+      ],
+      "collected_at": "2026-03-20T23:18:34.573Z"
+    }
+  ],
+  "sources_hit": [
+    "hacker_news",
+    "github",
+    "arxiv",
+    "coingecko"
+  ],
+  "errors": []
+}

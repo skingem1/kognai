@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-1287f436",
+  "topic_id": "gh-4fb06aa1a3dd",
+  "format": "explainer",
+  "title": "aiming-lab/AutoResearchClaw — Fully autonomous & self-evolving research from idea to paper. Chat an Idea. Get ",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Ever imagined AI writing research papers on its own?",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This tool is blowing up on GitHub with 7,118 stars.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Aim Lab’s AutoResearchClaw turns ideas into full papers automatically.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "It uses self-evolving algorithms to refine its own research process.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Scientists, students, and coders can now publish faster and smarter.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The future of research is here — and it’s fully automated.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Have you tried using AI to write your next paper?",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "aiming-lab/AutoResearchClaw — Fully autonomous & self-evolving research from idea to paper. Chat an Idea. Get ",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#aiming",
+    "#autoresearchclaw",
+    "#fully"
+  ],
+  "generated_at": "2026-03-20T23:39:37.663Z",
+  "llm_used": true
+}

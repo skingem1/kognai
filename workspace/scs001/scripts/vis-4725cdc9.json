@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-4725cdc9",
+  "topic_id": "arxiv-2383135ff20b",
+  "format": "vision",
+  "title": "Nemotron-Cascade 2: Post-Training LLMs with Cascade RL and Multi-Domain On-Policy Distillation",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "How might models like Nemotron-Cascade 2 redefine the balance between human agency and AI autonomy in the coming years?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Nemotron-Cascade 2 uses Cascade RL and multi-domain distillation to boost reasoning and agentic capabilities, enabling complex, real-time decision-making.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "But as these models grow more autonomous, who ensures they align with human values and avoid unintended harm in high-stakes scenarios?",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Builders are embedding alignment checks, using human feedback loops, and deploying safety filters to guide behavior during training and deployment.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "In the future, such models could empower underserved communities by automating tasks like legal aid or medical diagnosis with high accuracy and fairness.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future will depend on how we balance innovation with responsibility, shaping AI that enhances—not replaces—human potential.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of nemotron",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#nemotron",
+    "#cascade",
+    "#post"
+  ],
+  "video_cue": "A researcher interacting with an AI interface that dynamically adapts to solve a complex scientific problem in real time.",
+  "generated_at": "2026-03-20T23:40:27.903Z",
+  "llm_used": true
+}

@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-7e69fe21",
+  "topic_id": "arxiv-2383135ff20b",
+  "format": "vision",
+  "title": "Nemotron-Cascade 2: Post-Training LLMs with Cascade RL and Multi-Domain On-Policy Distillation",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "How might models like Nemotron-Cascade 2 reshape our expectations of AI’s role in complex decision-making?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Cascade RL and multi-domain distillation enable 30B MoE models to reason and act with unprecedented coherence across tasks.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "But with such power comes risk—what happens when these models influence policy, healthcare, or finance without full transparency?",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Builders are embedding guardrails, using alignment training and red teaming to mitigate misuse and ensure safe deployment.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "Imagine a future where AI acts as a trusted co-pilot, enhancing human judgment without overstepping ethical boundaries.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future hinges on balancing innovation with responsibility—Nemotron-Cascade 2 may be the bridge.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of nemotron",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#nemotron",
+    "#cascade",
+    "#post"
+  ],
+  "video_cue": "A researcher interacting with a holographic AI interface, displaying cascading data streams and ethical oversight panels.",
+  "generated_at": "2026-03-21T02:22:49.476Z",
+  "llm_used": true
+}

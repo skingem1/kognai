@@ -1,0 +1,104 @@
+{
+  "radar_id": "radar-20260320T23-ceb9b0",
+  "collected_at": "2026-03-20T23:00:09.225Z",
+  "topics": [
+    {
+      "topic_id": "gh-695beb4d4c18",
+      "title": "NVIDIA/NemoClaw — Run OpenClaw securely inside NVIDIA OpenShell with managed inference",
+      "summary": "GitHub trending (14291 ⭐, JavaScript)",
+      "format": "explainer",
+      "source": "github",
+      "source_url": "https://github.com/NVIDIA/NemoClaw",
+      "confidence": 90,
+      "keywords": [
+        "nvidia",
+        "nemoclaw",
+        "openclaw",
+        "securely",
+        "inside",
+        "nvidia"
+      ],
+      "collected_at": "2026-03-20T23:00:09.223Z"
+    },
+    {
+      "topic_id": "gh-4fb06aa1a3dd",
+      "title": "aiming-lab/AutoResearchClaw — Fully autonomous & self-evolving research from idea to paper. Chat an Idea. Get ",
+      "summary": "GitHub trending (7112 ⭐, Python)",
+      "format": "explainer",
+      "source": "github",
+      "source_url": "https://github.com/aiming-lab/AutoResearchClaw",
+      "confidence": 90,
+      "keywords": [
+        "aiming",
+        "autoresearchclaw",
+        "fully",
+        "autonomous",
+        "self",
+        "evolving"
+      ],
+      "collected_at": "2026-03-20T23:00:09.223Z"
+    },
+    {
+      "topic_id": "gh-89a046bbca9a",
+      "title": "jackwener/opencli — Make Any Website & Tool Your CLI. A universal CLI Hub and AI-native runtime. Tra",
+      "summary": "GitHub trending (3056 ⭐, TypeScript)",
+      "format": "explainer",
+      "source": "github",
+      "source_url": "https://github.com/jackwener/opencli",
+      "confidence": 90,
+      "keywords": [
+        "jackwener",
+        "opencli",
+        "make",
+        "website",
+        "tool",
+        "your"
+      ],
+      "collected_at": "2026-03-20T23:00:09.223Z"
+    },
+    {
+      "topic_id": "cg-84f4d8d63c15",
+      "title": "Wiki Cat (WKC) 📈 24.8%",
+      "summary": "Trending on CoinGecko — rank #5",
+      "format": "debate",
+      "source": "coingecko",
+      "source_url": "https://www.coingecko.com/en/coins/wiki-cat",
+      "confidence": 74.75304316602904,
+      "keywords": [
+        "wiki cat",
+        "wkc",
+        "crypto",
+        "defi"
+      ],
+      "debate_sides": {
+        "side_a": "Wiki Cat is overvalued",
+        "side_b": "Wiki Cat rally is justified"
+      },
+      "collected_at": "2026-03-20T23:00:08.440Z"
+    },
+    {
+      "topic_id": "hn-ec2b07a2dcdb",
+      "title": "OpenCode – The open source AI coding agent",
+      "summary": "Hacker News (218 pts, 97 comments)",
+      "format": "explainer",
+      "source": "hacker_news",
+      "source_url": "https://opencode.ai/",
+      "confidence": 71,
+      "keywords": [
+        "opencode",
+        "open",
+        "source",
+        "coding",
+        "agent"
+      ],
+      "collected_at": "2026-03-20T23:00:08.823Z"
+    }
+  ],
+  "sources_hit": [
+    "hacker_news",
+    "github",
+    "arxiv",
+    "coingecko"
+  ],
+  "errors": []
+}

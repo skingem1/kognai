@@ -1,0 +1,108 @@
+{
+  "radar_id": "radar-20260321T02-05bafa",
+  "collected_at": "2026-03-21T02:21:42.999Z",
+  "topics": [
+    {
+      "topic_id": "hn-07e6c7e4cc6e",
+      "title": "OpenCode – Open source AI coding agent",
+      "summary": "Hacker News (455 pts, 206 comments)",
+      "format": "explainer",
+      "source": "hacker_news",
+      "source_url": "https://opencode.ai/",
+      "confidence": 95,
+      "keywords": [
+        "opencode",
+        "open",
+        "source",
+        "coding",
+        "agent"
+      ],
+      "collected_at": "2026-03-21T02:21:42.541Z"
+    },
+    {
+      "topic_id": "gh-695beb4d4c18",
+      "title": "NVIDIA/NemoClaw — Run OpenClaw securely inside NVIDIA OpenShell with managed inference",
+      "summary": "GitHub trending (14350 ⭐, JavaScript)",
+      "format": "explainer",
+      "source": "github",
+      "source_url": "https://github.com/NVIDIA/NemoClaw",
+      "confidence": 90,
+      "keywords": [
+        "nvidia",
+        "nemoclaw",
+        "openclaw",
+        "securely",
+        "inside",
+        "nvidia"
+      ],
+      "collected_at": "2026-03-21T02:21:42.869Z"
+    },
+    {
+      "topic_id": "arxiv-c707e4677bf3",
+      "title": "NavTrust: Benchmarking Trustworthiness for Embodied Navigation",
+      "summary": "There are two major categories of embodied navigation: Vision-Language Navigation (VLN), where agents navigate by following natural language instructi",
+      "format": "debate",
+      "source": "arxiv",
+      "source_url": "http://arxiv.org/abs/2603.19229v1",
+      "confidence": 60,
+      "keywords": [
+        "navtrust:",
+        "benchmarking",
+        "trustworthiness",
+        "embodied",
+        "navigation"
+      ],
+      "collected_at": "2026-03-21T02:21:41.978Z"
+    },
+    {
+      "topic_id": "arxiv-2383135ff20b",
+      "title": "Nemotron-Cascade 2: Post-Training LLMs with Cascade RL and Multi-Domain On-Policy Distillation",
+      "summary": "We introduce Nemotron-Cascade 2, an open 30B MoE model with 3B activated parameters that delivers best-in-class reasoning and strong agentic capabilit",
+      "format": "vision",
+      "source": "arxiv",
+      "source_url": "http://arxiv.org/abs/2603.19220v1",
+      "confidence": 65,
+      "keywords": [
+        "nemotron",
+        "cascade",
+        "post",
+        "training",
+        "llms",
+        "with"
+      ],
+      "vision_angles": [
+        "We introduce Nemotron-Cascade 2, an open 30B MoE model with 3B activated parameters that delivers best-in-class reasoning and strong agentic capabilities",
+        "Despite its compact size, its mathematical an"
+      ],
+      "collected_at": "2026-03-21T02:21:41.979Z"
+    },
+    {
+      "topic_id": "cg-6b88c087247a-lst",
+      "title": "Top 3 bitcoin btc tools you need to know",
+      "summary": "Trending on CoinGecko — rank #6",
+      "format": "listicle",
+      "source": "coingecko",
+      "source_url": "https://www.coingecko.com/en/coins/bitcoin",
+      "confidence": 50.243038659865626,
+      "keywords": [
+        "bitcoin",
+        "btc",
+        "crypto",
+        "defi"
+      ],
+      "collected_at": "2026-03-21T02:21:41.960Z",
+      "listicle_items": [
+        "Bitcoin",
+        "Btc",
+        "Crypto"
+      ]
+    }
+  ],
+  "sources_hit": [
+    "hacker_news",
+    "github",
+    "arxiv",
+    "coingecko"
+  ],
+  "errors": []
+}

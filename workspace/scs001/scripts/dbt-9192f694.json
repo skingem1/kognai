@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-9192f694",
+  "topic_id": "arxiv-c707e4677bf3",
+  "format": "debate",
+  "title": "NavTrust: Benchmarking Trustworthiness for Embodied Navigation",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "NavTrust isn't just a benchmark—it's a protocol that ensures safe, reliable navigation through verified environmental models and ethical AI behavior.",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Benchmarking is essential to evaluate performance across diverse scenarios, without bias—NavTrust’s protocol is too rigid for real-world unpredictability.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "NavTrust integrates real-world data from MIT and Stanford, ensuring models are tested on actual human behaviors and edge cases, not just simulated ones.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Benchmarking allows for transparency and comparison—NavTrust’s closed protocol limits innovation by locking researchers into a single framework.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "NavTrust may be secure, but without open benchmarking, we can’t measure progress or trust the claims of its developers.",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "navtrust: vs benchmarking",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#navtrust:",
+    "#benchmarking",
+    "#trustworthiness"
+  ],
+  "generated_at": "2026-03-21T02:22:29.863Z",
+  "llm_used": true
+}

@@ -1,12 +1,12 @@
 {
   "gate": "phase1-5-tiktok-kill-switch",
-  "date": "2026-03-20",
-  "generated_at": "2026-03-20T05:55:00.226Z",
+  "date": "2026-03-21",
+  "generated_at": "2026-03-21T05:55:00.144Z",
   "deadline": "2026-04-07",
-  "days_remaining": 18,
+  "days_remaining": 17,
   "urgency": "NOT_STARTED",
   "urgency_signal": "0 posts recorded. Start posting now.",
-  "pace_needed": 1.7,
+  "pace_needed": 1.8,
   "criteria": [
     {
       "id": "post-count",
@@ -22,7 +22,7 @@
     }
   ],
   "overall_pass": false,
-  "recommendation": "NOT STARTED — 0 posts with 18 days remaining. Begin posting today. Need 1.7 posts/day to meet gate.",
+  "recommendation": "NOT STARTED — 0 posts with 17 days remaining. Begin posting today. Need 1.8 posts/day to meet gate.",
   "raw": {
     "posts_count": 0,
     "total_views": 0,

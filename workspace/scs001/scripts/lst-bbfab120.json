@@ -1,0 +1,60 @@
+{
+  "script_id": "lst-bbfab120",
+  "topic_id": "cg-6b88c087247a-lst",
+  "format": "listicle",
+  "title": "Top 3 bitcoin btc tools you need to know",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Top 3 Bitcoin tools that could change your game — stay till the end for the real winner.",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "3: Crypto wallets like MetaMask secure your assets with military-grade encryption.",
+      "start_s": 3,
+      "end_s": 7,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "2: BTC's blockchain offers transparent, tamper-proof transaction records in real time.",
+      "start_s": 7,
+      "end_s": 11,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "1: Bitcoin itself — the only digital gold with over $1 trillion market cap and global adoption.",
+      "start_s": 11,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Follow for deep dives into the tools shaping the future of finance.",
+      "start_s": 16,
+      "end_s": 20,
+      "emotion": "excited"
+    }
+  ],
+  "total_duration_s": 20,
+  "caption_text": "Top 3: Top 3 bitcoin btc tools you need to know",
+  "hashtags": [
+    "#Top3",
+    "#Tech",
+    "#Ranking",
+    "#bitcoin",
+    "#btc",
+    "#crypto"
+  ],
+  "generated_at": "2026-03-21T02:12:24.512Z",
+  "llm_used": true
+}

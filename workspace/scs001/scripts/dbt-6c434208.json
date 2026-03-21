@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-6c434208",
+  "topic_id": "arxiv-52d29d949b43",
+  "format": "debate",
+  "title": "FinTradeBench: A Financial Reasoning Benchmark for LLMs",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "FinTradeBench sets a new standard with its structured, protocol-driven financial reasoning tasks, ensuring LLMs master real-world trading logic.",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Financial reasoning requires more than structured tasks—it demands adaptability to volatile markets and unstructured data, which FinTradeBench ignores.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "FinTradeBench includes real-world datasets from Bloomberg and SEC filings, giving models concrete context for decision-making unlike generic financial claims.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "No dataset can simulate the chaos of live trading. FinTradeBench’s rigid framework fails to capture the nuance of human judgment in unpredictable scenarios.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Financial reasoning is about intuition, not just data. FinTradeBench’s protocol misses the mark by reducing trading to a checklist.",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "fintradebench: vs financial",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#fintradebench:",
+    "#financial",
+    "#reasoning"
+  ],
+  "generated_at": "2026-03-20T23:40:06.759Z",
+  "llm_used": true
+}

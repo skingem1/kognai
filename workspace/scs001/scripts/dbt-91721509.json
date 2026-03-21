@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-91721509",
+  "topic_id": "cg-84f4d8d63c15",
+  "format": "debate",
+  "title": "Wiki Cat (WKC) 📈 24.8%",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Wiki Cat's valuation ignores the lack of real-world adoption and relies on hype, not tangible utility.",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "The recent protocol upgrades and cross-chain integrations are driving real demand and justifying the rally.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Those upgrades are speculative. Wiki Cat still lacks a scalable consensus mechanism and has poor transaction throughput.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Scalability is improving with the new sharding model, and DeFi use cases are now live on the mainnet.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "This rally is the result of actual technical progress, not just speculation — the future is here.",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "Wiki Cat is overvalued vs Wiki Cat rally is justified",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#wiki cat",
+    "#wkc",
+    "#crypto"
+  ],
+  "generated_at": "2026-03-20T23:00:23.241Z",
+  "llm_used": true
+}

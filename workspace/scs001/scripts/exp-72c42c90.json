@@ -1,0 +1,52 @@
+{
+  "script_id": "exp-72c42c90",
+  "topic_id": "cg-887270d0cbc5",
+  "format": "explainer",
+  "title": "Render (RENDER) 📈 1.9%",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Render’s price just spiked 1.9% — and it’s not slowing down.",
+      "start_s": 0,
+      "end_s": 2,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Render is a blockchain platform for creators, making NFTs and digital art easier than ever.",
+      "start_s": 2,
+      "end_s": 7,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Its rise could signal big changes for how art is bought, sold, and owned online.",
+      "start_s": 7,
+      "end_s": 10,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Have you checked out what’s happening with Render lately?",
+      "start_s": 10,
+      "end_s": 12,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 12,
+  "caption_text": "Render (RENDER) 📈 1.9%",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#render",
+    "#render",
+    "#crypto"
+  ],
+  "generated_at": "2026-03-20T22:43:18.409Z",
+  "llm_used": true
+}

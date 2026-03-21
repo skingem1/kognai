@@ -1,0 +1,74 @@
+{
+  "timestamp": "2026-03-20T22:56:51.144Z",
+  "total": 6,
+  "passed": 6,
+  "failed": 0,
+  "results": [
+    {
+      "video_id": "video-353e9a53",
+      "path": "/Users/tarekmnif/kognai/workspace/scs001/run-1774030727192/caption/video-353e9a53-captioned.mp4",
+      "file_size_mb": 3.68,
+      "duration_sec": 28,
+      "resolution": "1080x1920",
+      "has_video": true,
+      "has_audio": true,
+      "playable": true,
+      "error": null
+    },
+    {
+      "video_id": "video-0b084cc1",
+      "path": "/Users/tarekmnif/kognai/workspace/scs001/run-1774031541078/caption/video-0b084cc1-captioned.mp4",
+      "file_size_mb": 19.06,
+      "duration_sec": 24,
+      "resolution": "1080x1920",
+      "has_video": true,
+      "has_audio": true,
+      "playable": true,
+      "error": null
+    },
+    {
+      "video_id": "video-43e1923a",
+      "path": "/Users/tarekmnif/kognai/workspace/scs001/run-1774032233965/caption/video-43e1923a-captioned.mp4",
+      "file_size_mb": 23,
+      "duration_sec": 28,
+      "resolution": "1080x1920",
+      "has_video": true,
+      "has_audio": true,
+      "playable": true,
+      "error": null
+    },
+    {
+      "video_id": "video-f34fefb1",
+      "path": "/Users/tarekmnif/kognai/workspace/scs001/run-1774032233965/caption/video-f34fefb1-captioned.mp4",
+      "file_size_mb": 29.28,
+      "duration_sec": 24,
+      "resolution": "1080x1920",
+      "has_video": true,
+      "has_audio": true,
+      "playable": true,
+      "error": null
+    },
+    {
+      "video_id": "video-7cd0b6e8",
+      "path": "/Users/tarekmnif/kognai/workspace/scs001/run-1774032697222/caption/video-7cd0b6e8-captioned.mp4",
+      "file_size_mb": 35.04,
+      "duration_sec": 28,
+      "resolution": "1080x1920",
+      "has_video": true,
+      "has_audio": true,
+      "playable": true,
+      "error": null
+    },
+    {
+      "video_id": "video-c038e3d6",
+      "path": "/Users/tarekmnif/kognai/workspace/scs001/run-1774036801572/caption/video-c038e3d6-captioned.mp4",
+      "file_size_mb": 35.02,
+      "duration_sec": 28,
+      "resolution": "1080x1920",
+      "has_video": true,
+      "has_audio": true,
+      "playable": true,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-257f9861",
+  "topic_id": "hn-07e6c7e4cc6e",
+  "format": "explainer",
+  "title": "OpenCode – Open source AI coding agent",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "What if AI could write code faster than you can type?",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "OpenCode is breaking onto Hacker News with 452 points and 204 comments — and it’s changing how we code.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "OpenCode is an open-source AI coding agent that writes, debugs, and optimizes code in real time.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "It uses a unique dual-agent system — one for logic, one for creativity — to generate clean, efficient code.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Developers, startups, and indie hackers are already using it to speed up project timelines by 40%.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The key takeaway? OpenSource AI tools like OpenCode are democratizing high-level coding skills.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Have you tried using AI to write code yet?",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "OpenCode – Open source AI coding agent",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#opencode",
+    "#open",
+    "#source"
+  ],
+  "generated_at": "2026-03-21T02:18:29.439Z",
+  "llm_used": true
+}

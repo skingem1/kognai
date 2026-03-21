@@ -1,0 +1,16 @@
+{
+  "timestamp": "2026-03-20T22:46:40.787Z",
+  "has_client_keys": true,
+  "has_access_token": false,
+  "has_refresh_token": false,
+  "token_valid": null,
+  "expires_at": null,
+  "hours_until_expiry": null,
+  "refresh_expires_at": null,
+  "days_until_refresh_expiry": null,
+  "open_id": null,
+  "user_display_name": null,
+  "status": "MISSING",
+  "action": "Run: npx ts-node scripts/tiktok-oauth.ts (or /tiktokauth in Telegram)",
+  "error": null
+}

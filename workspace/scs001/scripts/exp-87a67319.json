@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-87a67319",
+  "topic_id": "gh-89a046bbca9a",
+  "format": "explainer",
+  "title": "jackwener/opencli — Make Any Website & Tool Your CLI. A universal CLI Hub and AI-native runtime. Tra",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "What if you could turn any website into a command-line tool?",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "AI and dev tools are exploding — but they’re still stuck in the browser.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "OpenCLI lets you run any web app or tool directly from your terminal.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "It’s built with TypeScript and handles AI-native runtimes seamlessly.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Developers, data scientists, and automation lovers — this changes your workflow.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "You don’t need to switch apps — just type, like you’re using a CLI.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Want to see how your favorite tools could work from the terminal?",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "jackwener/opencli — Make Any Website & Tool Your CLI. A universal CLI Hub and AI-native runtime. Tra",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#jackwener",
+    "#opencli",
+    "#make"
+  ],
+  "generated_at": "2026-03-20T23:24:26.108Z",
+  "llm_used": true
+}

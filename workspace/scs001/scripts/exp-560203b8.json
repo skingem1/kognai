@@ -1,0 +1,52 @@
+{
+  "script_id": "exp-560203b8",
+  "topic_id": "cg-e181b3dfcbf4",
+  "format": "explainer",
+  "title": "Katana (KAT) 📈 2.2%",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Did you see what’s blowing up on CoinGecko?",
+      "start_s": 0,
+      "end_s": 2,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Katana (KAT) just jumped 2.2% and is now ranked #9.",
+      "start_s": 2,
+      "end_s": 7,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This surge shows growing interest in blockchain innovation.",
+      "start_s": 7,
+      "end_s": 10,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Have you checked out what KAT is doing lately?",
+      "start_s": 10,
+      "end_s": 12,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 12,
+  "caption_text": "Katana (KAT) 📈 2.2%",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#katana",
+    "#kat",
+    "#crypto"
+  ],
+  "generated_at": "2026-03-20T22:43:10.041Z",
+  "llm_used": true
+}

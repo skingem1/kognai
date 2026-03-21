@@ -1,0 +1,52 @@
+{
+  "script_id": "exp-bb8beedc",
+  "topic_id": "cg-b60d7bdd334c",
+  "format": "explainer",
+  "title": "Ethereum (ETH) 📈 0.1%",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Ethereum just cracked the top 10 on CoinGecko.",
+      "start_s": 0,
+      "end_s": 2,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "It's the second-largest blockchain, powering smart contracts and DeFi.",
+      "start_s": 2,
+      "end_s": 7,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Its 0.1% rise hints at bigger momentum ahead.",
+      "start_s": 7,
+      "end_s": 10,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "What’s next for ETH? Follow for the breakdown.",
+      "start_s": 10,
+      "end_s": 12,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 12,
+  "caption_text": "Ethereum (ETH) 📈 0.1%",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#ethereum",
+    "#eth",
+    "#crypto"
+  ],
+  "generated_at": "2026-03-20T23:18:48.744Z",
+  "llm_used": true
+}

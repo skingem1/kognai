@@ -1,2 +1,16 @@
 {"role":"user","content":"كيفاش حالك؟"}
 {"role":"assistant","content":"صحتك! 😄\n\nألحمدلله، ماشي بالباهي — جاهز نتكلمو ونعاونك في كل حاجة تحب!\n\nأنت كيفاش؟ واش عندك في بالك اليوم؟ 🙂"}
+{"role":"user","content":"كيفاش حالك؟"}
+{"role":"assistant","content":"I don’t have access to the earlier attempt’s context, so I can’t continue just yet. Could you remind me what we were working on or share the relevant details/files so I can pick up where things left off?"}
+{"role":"user","content":"كيفاش حالك؟"}
+{"role":"assistant","content":"Could you remind me what we were working on before the previous attempt timed out? Once I have the topic and any relevant files, I can pick up from where we left off."}
+{"role":"user","content":"كيفاش حالك؟"}
+{"role":"assistant","content":"I’m ready to jump back in, but I don’t have any context from the last attempt—no memory files for today or yesterday, and there’s no MEMORY.md in this workspace either. Could you remind me what we were working on so I can continue where we left off?"}
+{"role":"user","content":"كيفاش حالك؟"}
+{"role":"assistant","content":"I’ve pulled together the workspace context (SOUL/USER/MEMORY/AGENTS guidance) and checked for any existing notes or files that describe what the previous attempt was, but it looks like there aren’t any daily memory files or task notes yet. Could you remind me what we were working on or point me at the files/issue that timed out so I can pick up where we left off?"}
+{"role":"user","content":"كيفاش حالك؟"}
+{"role":"assistant","content":"I don’t have any context about what we were working on before the previous attempt timed out—there aren’t any open branches, diffs, or notes in the workspace that point to the interrupted work. Could you remind me what task we should continue or point me to the relevant files?"}
+{"role":"user","content":"كيفاش حالك؟"}
+{"role":"assistant","content":"I don’t have the context from the previous run—I’m not sure what we were working on or what needs to be picked up. Could you remind me what we were doing, any files or commands involved, and where the last attempt stopped?"}
+{"role":"user","content":"كيفاش حالك؟"}
+{"role":"assistant","content":"I don’t have any record of what we were working on—the workspace and memory files look blank. Could you remind me what the previous attempt was aiming to do so I can pick up where it timed out?"}

@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-3a75170c",
+  "topic_id": "hn-07e6c7e4cc6e",
+  "format": "explainer",
+  "title": "OpenCode – Open source AI coding agent",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "What if your code could write itself?",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "OpenCode is breaking onto Hacker News with 450 points and 203 comments.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "It’s an open-source AI that actually writes working code for you.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Its unique ability to generate code from natural language is stunning.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Developers and startups are already testing it for real-world projects.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The key takeaway? This could change how we build software forever.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Have you tried using AI to write code yet?",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "OpenCode – Open source AI coding agent",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#opencode",
+    "#open",
+    "#source"
+  ],
+  "generated_at": "2026-03-21T02:14:55.644Z",
+  "llm_used": true
+}
