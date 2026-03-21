@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-713",
+  "title": "GOV — Generate SOUL.md for 8 core kognai-agents (batch 1)",
+  "description": "Governance remediation Phase 4. Create SOUL.md for: ceo, cto, cfo, cmo, supervisor, devops, security, achiri. Template follows Harvey pattern.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "713-01",
+      "title": "Create SOUL.md for 8 core agents (ceo, cto, cfo, cmo, supervisor, devops, security, achiri)",
+      "type": "feature",
+      "task_type": "governance",
+      "task_target": "kognai-agents/*/SOUL.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-713"
+    }
+  ]
+}
