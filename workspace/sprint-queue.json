@@ -202,7 +202,7 @@
       "sprint": 698,
       "title": "AMD-15 — Base model preservation: snapshot qwen3:14b",
       "block": "AMD-15",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "AMD-15 Rule 3. Snapshot to vault/models/base/. Create adapters/ and rejected/ dirs."
     },

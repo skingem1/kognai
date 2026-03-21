@@ -2248,3 +2248,13 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (pipeline execution + script edit)
 - Issues: Topic dedup blocked new production (all available topics already seen). Used existing backlog for delivery. Force-refresh produced 3 additional.
 - Timestamp: 2026-03-21T14:25:00Z
+
+## Sprint 698 — AMD-15 — Base model preservation: snapshot qwen3:14b
+- Status: PASS
+- Commit: 0096a6d
+- Files created: scripts/vault/snapshot-base-model.ts, vault/models/base/{qwen3-14b,qwen3-4b,qwen3-0.6b,deepseek-r1-14b}.json, vault/models/{adapters,rejected}/.gitkeep, workspace/sprints/sprint-698.json
+- Files modified: none
+- Pipeline: AMD-15 Rule 3 complete. 4 base models snapshotted with digests. Directory structure ready for LoRA adapters.
+- Swarm used: no (wrote directly)
+- Issues: none
+- Timestamp: 2026-03-21T14:35:00Z
