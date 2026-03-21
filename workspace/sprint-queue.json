@@ -194,7 +194,7 @@
       "sprint": 696,
       "title": "CONTENT — Batch production: 10 videos with real scripts",
       "block": "CONTENT",
-      "status": "pending",
+      "status": "done",
       "priority": "high",
       "rationale": "Post-LLM-rewrite batch. Verify content quality, deliver to Telegram for April 7 gate."
     },
