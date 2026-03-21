@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-730",
+  "title": "FIX — Reduce Ollama timeout from 10min to 3min to prevent swarm hangs",
+  "description": "ClawRouter OLLAMA_TIMEOUT_MS was 600000 (10 min) causing the swarm to hang when qwen3:14b stalls. Reduced to 180000 (3 min) to match CodingAgent timeout and allow retries.",
+  "source": "auto-queue-empty",
+  "tasks": [
+    {
+      "id": "730-01",
+      "title": "Reduce OLLAMA_TIMEOUT_MS from 600s to 180s",
+      "type": "fix",
+      "task_type": "infra",
+      "task_target": "scripts/lib/clawrouter-v2.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-730"
+    }
+  ]
+}

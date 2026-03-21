@@ -33,7 +33,7 @@ import { getWalletState, recordSpend } from './wallet-state';
 const _rawOllamaHost = process.env.OLLAMA_HOST || 'http://localhost:11434';
 const OLLAMA_BASE = _rawOllamaHost.startsWith('http') ? _rawOllamaHost : `http://${_rawOllamaHost}`;
 const CLAWROUTER_GATEWAY = process.env.CLAWROUTER_GATEWAY_URL || 'http://localhost:18789/v1';
-const OLLAMA_TIMEOUT_MS = 600_000;  // 10 min for local models
+const OLLAMA_TIMEOUT_MS = 180_000;  // 3 min for local models (was 10 min — caused hangs)
 const CLOUD_TIMEOUT_MS = 300_000;   // 5 min for cloud API calls
 const QCG_TOKEN_THRESHOLD = 5000;   // QCG pre-compression trigger
 
