@@ -1778,3 +1778,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (one-time cleanup script)
 - Issues: None
 - Timestamp: 2026-03-21T12:28:00Z
+
+## Sprint 667 — CONTENT (Engagement caption hashtag upgrade)
+- Status: PASS
+- Commit: 9194799
+- Files created: workspace/sprints/sprint-667.json
+- Files modified: scripts/scs001/engagement-caption.ts
+- Test: buildEngagementCaption test — PASS (produces #opencode #etherfi from radar)
+- Details: Updated loadTrendingHashtags() to prefer enriched `trending` titles from radar consolidation. Extracts product/project names (first meaningful word before title separator). Stop word filter. Falls back to legacy keyword topics if no trending data.
+- Swarm used: no (single file enhancement)
+- Issues: None
+- Timestamp: 2026-03-21T12:32:00Z
