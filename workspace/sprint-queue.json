@@ -90,7 +90,8 @@
       "sprint": 740,
       "title": "FIX \u2014 Restore telegram-bot/commands.ts (50+ handlers missing)",
       "block": "FIX",
-      "status": "pending",
+      "status": "skipped",
+      "_note": "SKIPPED: commands.ts was intentionally deleted in Sprint 496. Bot uses scripts/telegram-bot.ts now.",
       "priority": "critical",
       "rationale": "commands.ts is imported by telegram-bot/index.ts but the file doesn't exist. All 50+ Telegram command handlers are missing. Bot won't compile. Check git history for last known version, restore or recreate critical handlers (/gate, /status, /revenue, /metrics, /lastrun, /pipeline)."
     },

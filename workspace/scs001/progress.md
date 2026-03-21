@@ -2485,3 +2485,11 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Timeouts: default 3min, insight/script 5min, clip-detection 10min, pipeline 15min
 - Swarm used: no (surgical orchestrator fix)
 - Timestamp: 2026-03-21T16:00:00Z
+
+## Sprint 740 — FIX Restore telegram-bot/commands.ts — SKIPPED
+- Status: SKIPPED (not needed)
+- Reason: commands.ts was intentionally deleted in Sprint 496 (split into scripts/telegram-commands/)
+- PM2 runs scripts/telegram-bot.ts, not agents/telegram-bot/index.ts
+- All 50+ handlers exist in scripts/telegram-commands/ (cmd-gate.ts, cmd-delivery.ts, etc.)
+- agents/telegram-bot/index.ts is dead code — imports deleted module but isn't used
+- Timestamp: 2026-03-21T16:10:00Z

@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-740",
+  "title": "FIX — Restore telegram-bot/commands.ts (50+ handlers missing)",
+  "description": "SKIPPED: commands.ts was intentionally deleted in Sprint 496. Bot was split into modular files in scripts/telegram-commands/. The running bot (PM2) uses scripts/telegram-bot.ts, not agents/telegram-bot/index.ts. No restoration needed.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "740-01",
+      "title": "Investigate commands.ts deletion — found intentional (Sprint 496)",
+      "type": "investigation",
+      "task_type": "infra",
+      "task_target": "agents/telegram-bot/commands.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "critical",
+      "sprint_id": "sprint-740",
+      "result": "SKIPPED — commands.ts was dead code. Bot runs from scripts/telegram-bot.ts + scripts/telegram-commands/"
+    }
+  ]
+}
