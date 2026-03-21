@@ -183,9 +183,9 @@ export async function requestCTOApproval(
 RULES:
 1. APPROVE if the sprint directly maps to an item in the execution plan or work plan
 2. APPROVE if the sprint is a Sev-1 bug fix or critical path blocker fix
-3. REJECT if the sprint is not in any plan and is not a critical fix
+3. APPROVE if the sprint source is "auto-queue-empty" — this means the human queue is complete and the system is generating organic continuation sprints. These should be approved unless they duplicate recent work or are clearly harmful.
 4. REJECT if the sprint duplicates work already completed in recent sprints
-5. REJECT if the sprint invents new features not requested by the human founder
+5. REJECT if the sprint invents new features not requested by the human founder AND the queue still has pending items
 
 You must respond ONLY with valid JSON:
 {

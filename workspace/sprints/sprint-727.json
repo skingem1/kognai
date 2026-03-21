@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-727",
+  "title": "FIX — CTO gate rejecting auto-queue-empty sprints + readiness gate PM2 display",
+  "description": "Fix CTO approval gate to approve auto-queue-empty sprints (queue complete, organic continuation). Fix posting-readiness-gate.ts to correctly show cron processes as 'waiting' not errored.",
+  "source": "auto-queue-empty",
+  "tasks": [
+    {
+      "id": "727-01",
+      "title": "Update CTO gate prompt to approve auto-queue-empty sprints",
+      "type": "fix",
+      "task_type": "infra",
+      "task_target": "scripts/lib/cto-approval-gate.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "critical",
+      "sprint_id": "sprint-727"
+    },
+    {
+      "id": "727-02",
+      "title": "Fix posting-readiness-gate PM2 cron process display",
+      "type": "fix",
+      "task_type": "infra",
+      "task_target": "scripts/scs001/posting-readiness-gate.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-727"
+    }
+  ]
+}

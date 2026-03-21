@@ -134,8 +134,13 @@ function checkPipelineHealth(): Dimension {
     const processes = JSON.parse(pm2Output);
     const kognaiProcs = processes.filter((p: any) => p.name?.startsWith('scs001') || p.name?.startsWith('kognai'));
     pm2Running = kognaiProcs.length > 0;
-    for (const p of kognaiProcs) {
-      details.push(`${p.name}: ${p.pm2_env?.status ?? 'unknown'}`);
+    // cron_restart processes show as "stopped" between runs — this is normal
+    const online = kognaiProcs.filter((p: any) => p.pm2_env?.status === 'online');
+    const cronStopped = kognaiProcs.filter((p: any) => p.pm2_env?.status === 'stopped' && p.pm2_env?.cron_restart);
+    const errored = kognaiProcs.filter((p: any) => p.pm2_env?.status === 'errored');
+    details.push(`${online.length} online, ${cronStopped.length} cron (waiting), ${errored.length} errored`);
+    if (errored.length > 0) {
+      for (const p of errored) details.push(`  ERRORED: ${p.name}`);
     }
   } catch {
     details.push('PM2 not available or no processes');
