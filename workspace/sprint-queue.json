@@ -81,7 +81,8 @@
       "sprint": 739,
       "title": "FIX \u2014 Debug Pipeline 1 hang (orchestrator timeout / LLM hang)",
       "block": "FIX",
-      "status": "pending",
+      "status": "done",
+      "_note": "Done: per-stage timeout (3-10min) + 15min pipeline timeout.",
       "priority": "critical",
       "rationale": "Pipeline 1 hangs with 0 output after 10min. Likely qwen3:14b timeout on large agent files or orchestrator stuck in LLM call. Debug: add timeout to orchestrator.run(), check which stage hangs, add progress logging. Pipeline 1 produces color blocks anyway, but hang prevents any new Pipeline 1 content."
     },

@@ -2475,3 +2475,13 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Queue: added 5 new items (fix P1 hang, restore commands.ts, content batch, restart PM2, export videos)
 - Swarm used: no (health check + queue planning)
 - Timestamp: 2026-03-21T15:55:00Z
+
+## Sprint 739 — FIX Pipeline 1 Per-Stage Timeout
+- Status: PASS
+- Commit: 834db4a1ce5cbf069d2479823cf50d0ef0ccc6bf
+- Files modified: agents/scs001-orchestrator/index.ts (per-stage timeout + pipeline timeout)
+- Files created: workspace/sprints/sprint-739.json
+- Fix: runStage() now uses Promise.race with configurable timeout per stage
+- Timeouts: default 3min, insight/script 5min, clip-detection 10min, pipeline 15min
+- Swarm used: no (surgical orchestrator fix)
+- Timestamp: 2026-03-21T16:00:00Z
