@@ -1,0 +1,41 @@
+{
+  "sprint_id": "sprint-709",
+  "title": "GOV — Constitution Agent runner script + PM2 weekly cron",
+  "description": "Governance remediation Phase 3. Create run-constitution-agent.ts for weekly signal collection via qwen3:14b ($0). PM2 cron Sundays 18:00.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "709-01",
+      "title": "Create scripts/run-constitution-agent.ts",
+      "type": "feature",
+      "task_type": "governance",
+      "task_target": "scripts/run-constitution-agent.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-709"
+    },
+    {
+      "id": "709-02",
+      "title": "Add PM2 cron entry for constitution agent (Sundays 18:00)",
+      "type": "feature",
+      "task_type": "governance",
+      "task_target": "ecosystem.config.js",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-709"
+    },
+    {
+      "id": "709-03",
+      "title": "Create reports/constitution/ directory",
+      "type": "feature",
+      "task_type": "governance",
+      "task_target": "reports/constitution/",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-709"
+    }
+  ]
+}

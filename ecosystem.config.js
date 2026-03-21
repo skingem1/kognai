@@ -1209,5 +1209,26 @@ module.exports = {
       out_file: "/Users/tarekmnif/kognai/logs/daily-report-out.log",
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
+    {
+      // Sprint 709: Constitution Agent — weekly signal collection + governance report
+      // Collects AAR + sprint data, routes through qwen3:14b ($0), writes signal report.
+      // Fires Sundays 18:00. Outputs to reports/constitution/YYYY-WW.md.
+      // To start: pm2 start ecosystem.config.js --only kognai-constitution-agent
+      name: "kognai-constitution-agent",
+      script: "scripts/run-constitution-agent.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: false,
+      watch: false,
+      cron_restart: "0 18 * * 0",
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/constitution-agent-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/constitution-agent-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
   ]
 };
