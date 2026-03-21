@@ -74,7 +74,7 @@
       "sprint": 709,
       "title": "GOV — Constitution Agent runner script + PM2 weekly cron",
       "block": "GOV-PHASE3",
-      "status": "pending",
+      "status": "done",
       "priority": "high",
       "rationale": "GOVERNANCE REMEDIATION Phase 3. agents/constitution/prompt.md (169 lines) defines weekly signal collection — NEVER ACTIVATED. Create scripts/run-constitution-agent.ts (~120 lines): read sprints last 7d + AAR last 7d + SIGNALS.md, construct prompt, route via ClawRouter T2 qwen3:14b ($0), write signal report to reports/constitution/YYYY-WW.md, append to SIGNALS.md. PM2 cron: Sundays 18:00. Create reports/constitution/ directory."
     },

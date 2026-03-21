@@ -2098,3 +2098,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (test code, wrote directly)
 - Issues: DB tests skip until PGHOST set (human gate)
 - Timestamp: 2026-03-21T12:40:00Z
+
+## Sprint 709 — GOV — Constitution Agent runner script + PM2 weekly cron
+- Status: PASS
+- Commit: 4d08f78
+- Files created: scripts/run-constitution-agent.ts, workspace/sprints/sprint-709.json
+- Files modified: ecosystem.config.js
+- Test: tsc --noEmit — 0 errors. PM2 config validated.
+- Pipeline: GOV Phase 3 started. Constitution Agent runner + PM2 cron (Sundays 18:00). Routes through qwen3:14b ($0).
+- Swarm used: no (multi-file work, wrote directly)
+- Issues: none
+- Timestamp: 2026-03-21T12:50:00Z
