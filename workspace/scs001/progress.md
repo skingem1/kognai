@@ -2997,5 +2997,17 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - /queue command enhanced: curated manifest shown at top
 - YouTube OAuth helper built: scripts/youtube-oauth-setup.ts
 - Auto-deliver batch increased: 1 → 3 per run (9/day total)
-- HANDOFF: next session starts at Sprint 781, read sprint-brief.md first
+- HANDOFF: next session starts at Sprint 782, read sprint-brief.md first
 - CRITICAL: Operator must start manual TikTok posting (29 posts needed in 17 days, 2/day pace)
+
+## Sprint 781 — CONTENT
+- Status: PASS
+- Commit: effe1e6
+- Files created: workspace/sprints/sprint-781.json
+- Files modified: workspace/scs001/publish-ledger.jsonl
+- Test: 5/5 composited, dry-run fix confirmed — PASS
+- Pipeline: Ledger 606→611, topics nearly exhausted again
+- Swarm used: no (pipeline execution)
+- Issues: None
+- Cost: $1.50 (avatar generation)
+- Timestamp: 2026-03-21T19:20:00Z
