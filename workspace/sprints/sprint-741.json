@@ -1,0 +1,28 @@
+{
+  "sprint_id": "sprint-741",
+  "title": "CONTENT — Daily multiformat batch (10 fresh videos)",
+  "description": "Ran multiformat pipeline 2x with --force-refresh. Produced 10 new videos. Total ledger: 481.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "741-01",
+      "title": "Run multiformat pipeline batch 1 (5 videos)",
+      "type": "content",
+      "task_type": "content",
+      "agent": "coder",
+      "status": "done",
+      "priority": "critical",
+      "sprint_id": "sprint-741"
+    },
+    {
+      "id": "741-02",
+      "title": "Run multiformat pipeline batch 2 (5 videos)",
+      "type": "content",
+      "task_type": "content",
+      "agent": "coder",
+      "status": "done",
+      "priority": "critical",
+      "sprint_id": "sprint-741"
+    }
+  ]
+}

@@ -99,7 +99,8 @@
       "sprint": 741,
       "title": "CONTENT \u2014 Daily multiformat batch (fresh 6 videos for posting queue)",
       "block": "CONTENT",
-      "status": "pending",
+      "status": "done",
+      "_note": "Done: 10 new videos (2 batches x 5). Total ledger: 481. Cost: $3.00.",
       "priority": "high",
       "rationale": "Run multiformat pipeline with --force-refresh to produce 6 new videos. Verify publish-ledger updated. This keeps the content pipeline flowing for April 7 gate (need 30 posts)."
     },
