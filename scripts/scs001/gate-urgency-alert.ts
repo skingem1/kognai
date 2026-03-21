@@ -171,14 +171,32 @@ async function main(): Promise<void> {
     lines.push('', '🟠 *CRITICAL* — behind pace, increase posting frequency');
   }
 
-  // Sprint 356: Inline top-3 queue videos
-  const top3 = getTop3Queue();
-  if (top3.length > 0) {
-    lines.push('', '🎬 *Top 3 ready to post:*');
-    for (let i = 0; i < top3.length; i++) {
-      const v = top3[i];
-      const vs = v.viralScore != null ? ` 🧬${v.viralScore}` : '';
-      lines.push(`  ${i + 1}. \`${v.videoId}\`${vs}`);
+  // Sprint 776: Show next 3 videos from curated post queue manifest
+  const manifestPath = join(CWD, 'workspace', 'scs001', 'manual-post-queue', 'post-manifest.json');
+  if (existsSync(manifestPath)) {
+    try {
+      const manifest = JSON.parse(readFileSync(manifestPath, 'utf-8'));
+      const unposted = (manifest.videos ?? []).filter((v: any) => !v.posted);
+      if (unposted.length > 0) {
+        lines.push('', '🎬 *Next to post (curated queue):*');
+        for (const v of unposted.slice(0, 3)) {
+          const fmt = (v.format ?? '').toUpperCase();
+          const topic = (v.topic ?? '').slice(0, 50);
+          lines.push(`  ${v.order}. [${fmt}] ${topic}`);
+        }
+        lines.push(`  _(${unposted.length} total in queue)_`);
+      }
+    } catch { /* ignore */ }
+  } else {
+    // Fallback: Sprint 356 top-3 from ledger
+    const top3 = getTop3Queue();
+    if (top3.length > 0) {
+      lines.push('', '🎬 *Top 3 ready to post:*');
+      for (let i = 0; i < top3.length; i++) {
+        const v = top3[i];
+        const vs = v.viralScore != null ? ` 🧬${v.viralScore}` : '';
+        lines.push(`  ${i + 1}. \`${v.videoId}\`${vs}`);
+      }
     }
   }
 
