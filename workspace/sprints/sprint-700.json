@@ -1,0 +1,41 @@
+{
+  "sprint_id": "sprint-700",
+  "title": "GATE — Phase 1.5 readiness: content stockpile + posting checklist",
+  "description": "Prepare for April 7 gate. Generate a posting checklist script that shows content readiness, posts needed per day, and prioritises best videos. Update gate tracker.",
+  "source": "auto-queue-empty",
+  "tasks": [
+    {
+      "id": "700-01",
+      "title": "Create posting-checklist.ts — daily posting plan for April 7 gate",
+      "type": "feature",
+      "task_type": "content",
+      "task_target": "scripts/scs001/posting-checklist.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-700"
+    },
+    {
+      "id": "700-02",
+      "title": "Wire /checklist Telegram command",
+      "type": "feature",
+      "task_type": "content",
+      "task_target": "scripts/telegram-bot.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-700"
+    },
+    {
+      "id": "700-03",
+      "title": "Update gate-tracker.md with current content inventory",
+      "type": "feature",
+      "task_type": "docs",
+      "task_target": "docs/gate-tracker.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-700"
+    }
+  ]
+}

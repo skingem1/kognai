@@ -33,6 +33,7 @@ import { cmdDeliver, cmdPublish, cmdPostNow, cmdPickup, cmdTodayCaptions, cmdBro
 import { cmdCheckout, cmdSubscribers, cmdPortal, cmdFunnel, cmdAchiri, cmdTestStripe, cmdUsage, cmdAchiriData, cmdWaitlist } from './telegram-commands/cmd-stripe';
 import { cmdStart, cmdTrial, cmdPlans } from './telegram-commands/cmd-onboarding';
 import { cmdLoraEval } from './telegram-commands/cmd-lora-eval';
+import { generateChecklist } from './scs001/posting-checklist';
 
 // ─── Env validation ──────────────────────────────────────────────────
 
@@ -215,6 +216,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/swarmhealth': response = cmdSwarmHealth();        break;
     case '/loraeval':    response = cmdLoraEval(cmdArgs);    break;
     case '/lora-eval':   response = cmdLoraEval(cmdArgs);    break;
+    case '/checklist':   response = generateChecklist();     break;
     case '/help':        response = cmdHelp();        break;
     default:
       response = `Unknown command: \`${cmdName}\`\n\n${cmdHelp()}`;
