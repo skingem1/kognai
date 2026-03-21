@@ -1,0 +1,28 @@
+{
+  "sprint_id": "sprint-771",
+  "title": "CONTENT — Batch 8: fresh videos from new sources (target 5+, 591+ ledger)",
+  "description": "Produce fresh multiformat videos using expanded radar (10 sources). 586 ledger, 25+ fresh topics available. Gate: 1/30 posts, 17 days remaining.",
+  "source": "queue-exhausted-content-push",
+  "tasks": [
+    {
+      "id": "771-01",
+      "title": "Run multiformat pipeline with force-refresh to produce 5+ videos",
+      "type": "feature",
+      "task_type": "content",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-771"
+    },
+    {
+      "id": "771-02",
+      "title": "Run second pipeline pass to maximize fresh topic usage",
+      "type": "feature",
+      "task_type": "content",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-771"
+    }
+  ]
+}
