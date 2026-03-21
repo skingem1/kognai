@@ -186,7 +186,7 @@
       "sprint": 695,
       "title": "EVAL-006 — MPCVault Agent Card waitlist + SCS treasury design",
       "block": "EVAL-006",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "BACKLOG-EVAL-006. Document waitlist. Design SCS treasury architecture around Agent Cards."
     },

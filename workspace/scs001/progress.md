@@ -2228,3 +2228,13 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (wrote directly)
 - Issues: none
 - Timestamp: 2026-03-21T13:55:00Z
+
+## Sprint 695 — EVAL-006 — MPCVault Agent Card waitlist + SCS treasury design
+- Status: PASS
+- Commit: b902926
+- Files created: workspace/evals/eval-006-mpcvault-waitlist.md, docs/scs-treasury-design.md, workspace/treasury/treasury-config.json, workspace/sprints/sprint-695.json
+- Files modified: none
+- Pipeline: EVAL-006 block. Design/documentation sprint — MPCVault waitlist documented, SCS treasury architecture designed with per-agent cards, kill switches, and spending policies.
+- Swarm used: no (design/docs work, wrote directly)
+- Issues: none
+- Timestamp: 2026-03-21T14:10:00Z
