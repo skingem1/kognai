@@ -63,7 +63,8 @@
       "sprint": 737,
       "title": "GATE \u2014 Refresh April 7 gate tracker with dual pipeline stats",
       "block": "GATE",
-      "status": "pending",
+      "status": "done",
+      "_note": "Done: gate refreshed — 471 videos, 60 real content, 17 days remaining.",
       "priority": "medium",
       "rationale": "Update workspace/gates/april-7-gate.json with: (1) total publishable videos (Pipeline 1 + Pipeline 2), (2) videos with real clips vs production mode, (3) videos with audio, (4) posting progress (manual TikTok), (5) days remaining. Surface via /gate Telegram command."
     },

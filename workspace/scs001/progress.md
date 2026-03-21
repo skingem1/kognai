@@ -2455,3 +2455,13 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Cost: .85 for 6 videos
 - Swarm used: no (pipeline execution + status documentation)
 - Timestamp: 2026-03-21T15:35:00Z
+
+## Sprint 737 — GATE Refresh April 7 Gate Tracker
+- Status: PASS
+- Commit: eb188678c03387970718f4ce9685dd64a71e72e2
+- Files modified: workspace/gates/april-7-gate.json (dual pipeline stats, 471 videos, 60 real)
+- Files created: workspace/sprints/sprint-737.json
+- Gate status: 2/4 criteria pass (pipeline + Stripe). Posting + views: 0/30, 0/500.
+- /gate Telegram command: already wired in dispatch, commands.ts missing (pre-existing)
+- Swarm used: no (gate data update)
+- Timestamp: 2026-03-21T15:45:00Z
