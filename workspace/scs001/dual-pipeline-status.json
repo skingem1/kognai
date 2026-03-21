@@ -1,0 +1,35 @@
+{
+  "date": "2026-03-21T15:35:00Z",
+  "sprint": "sprint-736",
+  "pipeline_1": {
+    "name": "SCS-001 Original (Hailuo clips)",
+    "runner": "agents/scs001-orchestrator/run-pipeline.ts",
+    "status": "HUNG",
+    "issue": "Pipeline hangs on execution — 0 bytes output after 10min. Likely qwen3:14b timeout on large agent files. Latest successful run: 2026-03-20T20:00Z (live mode, all stages OK). Produces color-block videos, not real Hailuo clips.",
+    "source_field": "unknown (legacy entries)",
+    "videos_in_ledger": 411,
+    "real_clips": false,
+    "audio_embedded": false,
+    "action_needed": "Debug hang: likely orchestrator timeout or LLM hang. Consider reducing agent file sizes."
+  },
+  "pipeline_2": {
+    "name": "Multi-Format Pipeline (Avatar)",
+    "runner": "scripts/scs001/run-multiformat-pipeline.ts",
+    "status": "OPERATIONAL",
+    "formats": ["explainer", "debate", "vision", "listicle"],
+    "source_field": "multiformat / multiformat-pipeline",
+    "videos_in_ledger": 60,
+    "real_clips": true,
+    "audio_embedded": true,
+    "last_run": "mf-20260321T13-7pgw",
+    "last_run_videos": 5,
+    "cost_per_run": "$1.50 (5 videos)",
+    "total_new_videos_this_sprint": 6
+  },
+  "combined_stats": {
+    "total_ledger_entries": 471,
+    "publishable_videos_with_real_content": 60,
+    "april_7_gate_target": 30,
+    "status": "ON_TRACK"
+  }
+}

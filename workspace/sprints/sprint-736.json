@@ -1,0 +1,41 @@
+{
+  "sprint_id": "sprint-736",
+  "title": "CONTENT — Dual pipeline batch: produce 3 videos from each pipeline",
+  "description": "Run Pipeline 2 (multiformat) 3x to produce 3 new videos. Document Pipeline 1 status (hung on execution). Verify publish-ledger entries with distinct source fields.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "736-01",
+      "title": "Run multiformat pipeline 3 times for 3 new videos",
+      "type": "feature",
+      "task_type": "content",
+      "task_target": "scripts/scs001/run-multiformat-pipeline.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-736"
+    },
+    {
+      "id": "736-02",
+      "title": "Verify publish-ledger entries with distinct source fields",
+      "type": "test",
+      "task_type": "content",
+      "task_target": "workspace/scs001/publish-ledger.jsonl",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-736"
+    },
+    {
+      "id": "736-03",
+      "title": "Document Pipeline 1 hang and dual pipeline status",
+      "type": "doc",
+      "task_type": "content",
+      "task_target": "workspace/scs001/dual-pipeline-status.json",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-736"
+    }
+  ]
+}
