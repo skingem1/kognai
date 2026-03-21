@@ -176,6 +176,8 @@ function resolveCreativeTier(req: ClawRouterV2Request): { tier: string; model: s
     case 'video':
       return { tier: 'C3', model: 'wan2.1', local: true };
     case 'speech':
+      if (req.quality === 'emotional')
+        return { tier: 'C4', model: 'mimo-v2-tts', local: false };
       return req.quality === 'high'
         ? { tier: 'C4', model: 'elevenlabs', local: false }
         : { tier: 'C4', model: 'kokoro', local: true };

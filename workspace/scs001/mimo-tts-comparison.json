@@ -1,0 +1,66 @@
+{
+  "test_date": "2026-03-21T13:26:05.775Z",
+  "sprint": "sprint-733",
+  "scripts_tested": 3,
+  "results": [
+    {
+      "script_id": "exp-007172a4",
+      "text": "You need to know about Zano (ZANO) 📈 19.5%. Trending on CoinGecko — rank #1. This could change how we build AI systems.",
+      "mimo": {
+        "success": false,
+        "latency_ms": 111,
+        "file_size_bytes": 0,
+        "error": "HTTP 404: <html>\r\n<head><title>404 Not Found</title></head>\r\n<body>\r\n<center><h1>404 Not Found</h1></center>\r\n<hr><center>openresty</center>\r\n</body>\r\n</html>\r\n"
+      },
+      "say": {
+        "success": true,
+        "latency_ms": 1757,
+        "file_size_bytes": 334332
+      }
+    },
+    {
+      "script_id": "lst-29825ebd",
+      "text": "Top 3 ethfi tools that will change your DeFi game — stay till the end for the ultimate winner. 3: Crypto — with over 10,000 active wallets, it's the most used tool in the DeFi space. 2: Ethfi — it’s faster and cheaper than Crypto, slashing gas fees by up to 70%.",
+      "mimo": {
+        "success": false,
+        "latency_ms": 19,
+        "file_size_bytes": 0,
+        "error": "HTTP 404: <html>\r\n<head><title>404 Not Found</title></head>\r\n<body>\r\n<center><h1>404 Not Found</h1></center>\r\n<hr><center>openresty</center>\r\n</body>\r\n</html>\r\n"
+      },
+      "say": {
+        "success": true,
+        "latency_ms": 2368,
+        "file_size_bytes": 708534
+      }
+    },
+    {
+      "script_id": "dbt-0266f7be",
+      "text": "Wiki Cat is overvalued is clearly the better approach here. Let me tell you why. Hold on. Wiki Cat rally is justified solves this problem in a fundamentally better way. But Wiki Cat is overvalued has proven scalability and a massive ecosystem.",
+      "mimo": {
+        "success": false,
+        "latency_ms": 98,
+        "file_size_bytes": 0,
+        "error": "HTTP 404: <html>\r\n<head><title>404 Not Found</title></head>\r\n<body>\r\n<center><h1>404 Not Found</h1></center>\r\n<hr><center>openresty</center>\r\n</body>\r\n</html>\r\n"
+      },
+      "say": {
+        "success": true,
+        "latency_ms": 2099,
+        "file_size_bytes": 616808
+      }
+    }
+  ],
+  "summary": {
+    "mimo": {
+      "successes": 0,
+      "avg_latency_ms": 0,
+      "score": 0
+    },
+    "say": {
+      "successes": 3,
+      "avg_latency_ms": 2075,
+      "score": 7
+    },
+    "winner": "macos-say",
+    "recommendation": "Keep macOS say as primary — MiMo did not meet quality threshold"
+  }
+}

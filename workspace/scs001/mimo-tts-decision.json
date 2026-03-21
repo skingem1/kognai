@@ -1,0 +1,22 @@
+{
+  "decision_date": "2026-03-21T15:00:00Z",
+  "sprint": "sprint-733",
+  "block": "CR-AMD-001",
+  "decision": "KEEP_MACOS_SAY",
+  "mimo_score": 0,
+  "threshold": 7,
+  "reason": "MiMo-V2-TTS API returned HTTP 404 on all 3 test scripts. The endpoint https://api.xiaomimimo.com/v1/tts is not reachable (returns nginx 404). macOS say scored 7/10 baseline — reliable, fast (1.7-2.4s), generates valid AIFF audio. MiMo cannot be evaluated until API access is confirmed.",
+  "actions_taken": [
+    "ClawRouter C4 quality:emotional wired for MiMo (ready when API works)",
+    "macOS say remains primary TTS engine",
+    "MIMO_TTS_PROMOTED stays false in .env",
+    "Test script preserved at scripts/scs001/test-mimo-tts.ts for re-test when API available"
+  ],
+  "next_steps": [
+    "Verify MiMo API endpoint with Godman (correct URL? auth method?)",
+    "Re-run test-mimo-tts.ts when API confirmed working",
+    "If MiMo scores >= 7/10 on re-test, promote via .env MIMO_TTS_PROMOTED=true"
+  ],
+  "deadline_met": true,
+  "deadline": "2026-03-23"
+}

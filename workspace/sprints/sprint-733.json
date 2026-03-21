@@ -1,0 +1,52 @@
+{
+  "sprint_id": "sprint-733",
+  "title": "MIMO-03 — TTS upgrade decision (MiMo vs macOS say)",
+  "description": "Combined Sprint 731-733: Wire MiMo TTS into ClawRouter, test against macOS say, make upgrade decision. Prerequisites (731/732) were auto-skipped so this sprint covers the full chain.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "733-01",
+      "title": "Wire MiMo-V2-TTS into ClawRouter C4 quality:emotional",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/lib/clawrouter-v2.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-733"
+    },
+    {
+      "id": "733-02",
+      "title": "Create MiMo TTS test script — compare 3 scripts vs macOS say",
+      "type": "feature",
+      "task_type": "content",
+      "task_target": "scripts/scs001/test-mimo-tts.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-733"
+    },
+    {
+      "id": "733-03",
+      "title": "Run comparison and write mimo-tts-comparison.json",
+      "type": "test",
+      "task_type": "content",
+      "task_target": "workspace/scs001/mimo-tts-comparison.json",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-733"
+    },
+    {
+      "id": "733-04",
+      "title": "Make TTS upgrade decision and write decision file",
+      "type": "feature",
+      "task_type": "content",
+      "task_target": "workspace/scs001/mimo-tts-decision.json",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-733"
+    }
+  ]
+}
