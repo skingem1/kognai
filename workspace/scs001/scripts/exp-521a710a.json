@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-521a710a",
+  "topic_id": "reddit-bc7bdb6d8d7e",
+  "format": "explainer",
+  "title": "Solana Foundation president says crypto gaming is dead",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Crypto gaming is dead, says Solana Foundation president — really?",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This claim is sparking huge debate on Reddit with 157 points and 49 comments.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Solana’s president claims crypto gaming can’t sustain long-term value or user interest.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Solana’s blockchain is being used for high-speed transactions in gaming, but adoption is low.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This affects gamers and developers relying on blockchain for in-game economies.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The key issue? Scalability and real-world utility are still missing in most crypto games.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "What do you think — is crypto gaming really dead, or just evolving?",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "Solana Foundation president says crypto gaming is dead",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#solana",
+    "#foundation",
+    "#president"
+  ],
+  "generated_at": "2026-03-21T15:40:14.276Z",
+  "llm_used": true
+}

@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-2c861345",
+  "topic_id": "reddit-431d6ad51af6",
+  "format": "vision",
+  "title": "[D] How do you add theoretical justification to an AI/ML paper?",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "How do we ensure AI/ML papers are not just technically sound, but also theoretically justified?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Today, we use reproducibility, benchmarking, and frameworks like PyTorch to validate claims with empirical rigor.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "But without ethical alignment, even the most accurate models can reinforce biases or harm vulnerable groups.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Researchers are integrating fairness metrics and causal inference to ensure models are both accurate and just.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "A future where theory and ethics are inseparable could lead to AI that truly benefits society, not just performance.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The next frontier is merging technical depth with ethical clarity to guide responsible innovation.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of theoretical",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#theoretical",
+    "#justification",
+    "#paper?"
+  ],
+  "video_cue": "A researcher presenting a paper with graphs, equations, and ethical impact statements displayed side by side.",
+  "generated_at": "2026-03-21T15:39:45.808Z",
+  "llm_used": true
+}
