@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-712",
+  "title": "GOV — Police Agent Lite: constitutional cross-check in CTO gate",
+  "description": "Governance remediation Phase 3. Add constitutional enforcement in CTO gate: check SIGNALS.md for CRITICAL signals, cross-check with sprint area, reject if overlap. Founding Charter immutable law check.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "712-01",
+      "title": "Add Police Agent Lite cross-check to CTO approval gate",
+      "type": "feature",
+      "task_type": "governance",
+      "task_target": "scripts/lib/cto-approval-gate.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-712"
+    },
+    {
+      "id": "712-02",
+      "title": "Validate TypeScript compilation",
+      "type": "test",
+      "task_type": "test",
+      "task_target": "scripts/lib/cto-approval-gate.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-712"
+    }
+  ]
+}

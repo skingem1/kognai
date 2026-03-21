@@ -244,6 +244,49 @@ Should this sprint be approved or rejected? Respond with JSON only.`;
       timestamp,
     };
 
+    // Sprint 712: Police Agent Lite — constitutional cross-check
+    try {
+      const signalsPath = path.join(projectRoot, 'workspace', 'shared-context', 'SIGNALS.md');
+      if (fs.existsSync(signalsPath)) {
+        const signalsContent = fs.readFileSync(signalsPath, 'utf-8');
+        const criticalSignals = signalsContent.split('\n')
+          .filter(l => l.includes('**CRITICAL**'))
+          .map(l => l.replace(/^-\s*/, '').trim());
+
+        if (criticalSignals.length > 0 && result.approved) {
+          // Check if sprint touches flagged areas
+          const sprintText = `${proposal.sprint_id} ${proposal.tasks?.map((t: any) => t.title || t.id).join(' ') || ''}`.toLowerCase();
+          const flagged = criticalSignals.filter(s => {
+            const keywords = s.toLowerCase().match(/\b\w{4,}\b/g) || [];
+            return keywords.some(k => sprintText.includes(k));
+          });
+
+          if (flagged.length > 0) {
+            console.warn(`[CTO-GATE] 🚨 Police Lite: CRITICAL signal match — REJECTING`);
+            result.approved = false;
+            result.reason = `Police Agent Lite: CRITICAL constitutional signal(s) active — ${flagged[0].substring(0, 100)}. Sprint touches flagged area. ${result.reason}`;
+            result.plan_reference = 'POLICE_LITE_BLOCK';
+          } else {
+            console.log(`[CTO-GATE] Police Lite: ${criticalSignals.length} CRITICAL signal(s) active but no overlap with sprint`);
+          }
+        }
+
+        // Founding Charter immutable law check
+        const charterKeywords = ['five seed principles', 'summer yu', 'kill switch', 'human oversight', 'context compaction'];
+        const sprintLower = `${proposal.sprint_id} ${proposal.tasks?.map((t: any) => t.title || t.id).join(' ') || ''}`.toLowerCase();
+        const charterViolation = charterKeywords.find(k => sprintLower.includes('remove') && sprintLower.includes(k));
+        if (charterViolation) {
+          console.warn(`[CTO-GATE] 🚨 Police Lite: Founding Charter violation detected — REJECTING`);
+          result.approved = false;
+          result.reason = `Police Agent Lite: Founding Charter immutable law at risk (${charterViolation}). AUTOMATIC REJECT.`;
+          result.plan_reference = 'CHARTER_VIOLATION';
+        }
+      }
+    } catch (err: any) {
+      // Police Lite failure is non-fatal — proceed with LLM result
+      console.warn(`[CTO-GATE] Police Lite check failed (non-fatal): ${err.message}`);
+    }
+
     // Log the decision
     logCTODecision(result, projectRoot, product);
 
