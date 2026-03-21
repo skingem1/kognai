@@ -2567,3 +2567,12 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Tested: --force-refresh scan confirms 37 fresh topics
 - Swarm used: no (wrote directly — multi-file edit)
 - Timestamp: 2026-03-21T17:40:00Z
+
+## Sprint 749 — FIX (Auto-Deliver)
+- Status: PASS
+- Auto-deliver is operational (sends 1/run, 3 cron runs/day)
+- Flushed 22 video backlog via --batch 10 (2 runs)
+- Total delivered: 156 (was 134)
+- No code changes needed — delivery was just slow (1 per cron trigger)
+- Swarm used: no
+- Timestamp: 2026-03-21T17:50:00Z

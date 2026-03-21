@@ -54,7 +54,8 @@
       "sprint": 749,
       "title": "FIX \u2014 Auto-deliver: ensure new videos get delivered to Telegram",
       "block": "FIX",
-      "status": "pending",
+      "status": "done",
+      "_note": "Done: auto-deliver working. Flushed 22 video backlog via --batch 10. Cron delivers 1/run (3x/day).",
       "priority": "high",
       "rationale": "Verify auto-deliver PM2 cron picks up new videos from publish-ledger and sends to operator Telegram. Check auto-delivered.jsonl for gaps. Fix if delivery is stale."
     }

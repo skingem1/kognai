@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-749",
+  "title": "FIX — Auto-deliver: ensure new videos get delivered to Telegram",
+  "description": "Verify auto-deliver PM2 cron picks up new videos. Flush backlog. No code changes needed.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "749-01",
+      "title": "Verify auto-deliver and flush video backlog",
+      "type": "fix",
+      "task_type": "infra",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-749"
+    }
+  ]
+}
