@@ -1,0 +1,52 @@
+{
+  "sprint_id": "sprint-649",
+  "title": "GATE-PUSH — Produce 10 videos with real LLM-generated scripts",
+  "description": "Run multiformat pipeline 2x to produce 10+ fresh videos with real LLM content. Deliver to Telegram. Verify: no template phrases in SRT, diverse topics, real insights. These are first WATCHABLE videos for April 7 gate.",
+  "source": "sprint-queue",
+  "tasks": [
+    {
+      "id": "649-01",
+      "title": "Run multiformat pipeline batch 1 (5 videos)",
+      "type": "feature",
+      "task_type": "production",
+      "task_target": "scripts/scs001/run-multiformat-pipeline.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-649"
+    },
+    {
+      "id": "649-02",
+      "title": "Run multiformat pipeline batch 2 (5 videos)",
+      "type": "feature",
+      "task_type": "production",
+      "task_target": "scripts/scs001/run-multiformat-pipeline.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-649"
+    },
+    {
+      "id": "649-03",
+      "title": "Validate all new SRTs — no template text, diverse topics",
+      "type": "test",
+      "task_type": "validation",
+      "task_target": "scripts/scs001/validate-content-quality.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-649"
+    },
+    {
+      "id": "649-04",
+      "title": "Deliver video list to Telegram via bot",
+      "type": "feature",
+      "task_type": "delivery",
+      "task_target": "scripts/telegram-bot.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-649"
+    }
+  ]
+}
