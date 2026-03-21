@@ -2384,5 +2384,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Test: posting-pace.ts — PASS (465/30 gate target met, 77.5 posts/day avg)
 - Pipeline: Posting pace tracker with daily history and gate completion estimate
 - Swarm used: attempted but qwen3:14b hung after 4 minutes — killed and wrote directly
-- Known issue: qwen3:14b may hang during generation (vault connectivity or model issue)
+- Known issue: qwen3:14b may hang during generation (vault connectivity or model issue) — fixed in Sprint 730
 - Timestamp: 2026-03-21T14:05:00Z
+
+## Sprint 730 — FIX — Reduce Ollama timeout from 10min to 3min
+- Status: PASS
+- Commit: 9a2102a
+- Files modified: scripts/lib/clawrouter-v2.ts (OLLAMA_TIMEOUT_MS 600000→180000)
+- Test: Timeout verified in httpRequest — req.destroy() + reject on timeout
+- Pipeline: Prevents swarm hanging on qwen3:14b stalls. Orchestrator retries on timeout.
+- Swarm used: no (1-line config change)
+- Timestamp: 2026-03-21T14:15:00Z
