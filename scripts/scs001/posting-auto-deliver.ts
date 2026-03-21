@@ -97,6 +97,34 @@ function escapeTg(text: string): string {
   return text.replace(/[<>]/g, '').replace(/([_*`\[\]])/g, '\\$1');
 }
 
+// Sprint 686: Strip ALL markdown/entity chars for plain-text captions
+function stripEntities(text: string): string {
+  return text.replace(/[_*`\[\]()~>#+=|{}.!\\-]/g, ' ').replace(/\s{2,}/g, ' ').trim();
+}
+
+// Sprint 686: Load delivery failure counts to skip persistently-failing videos
+function loadFailureCounts(): Map<string, number> {
+  const counts = new Map<string, number>();
+  const failLog = join(ROOT, 'workspace', 'scs001', 'delivery-failures.jsonl');
+  if (!existsSync(failLog)) return counts;
+  try {
+    const lines = readFileSync(failLog, 'utf-8').split('\n').filter(l => l.trim());
+    for (const line of lines) {
+      try {
+        const e = JSON.parse(line);
+        if (e.video_id) counts.set(e.video_id, (counts.get(e.video_id) || 0) + 1);
+      } catch {}
+    }
+  } catch {}
+  return counts;
+}
+
+function recordFailure(videoId: string, error: string): void {
+  const failLog = join(ROOT, 'workspace', 'scs001', 'delivery-failures.jsonl');
+  const entry = JSON.stringify({ video_id: videoId, error, ts: new Date().toISOString() });
+  appendFileSync(failLog, entry + '\n');
+}
+
 function buildTikTokCaption(videoId: string): string {
   const exp = getExperimentData(videoId);
   let topicTags: string[] = [];
@@ -129,7 +157,8 @@ function sendMessage(text: string): Promise<void> {
   });
 }
 
-function sendVideoFile(videoPath: string, caption: string): Promise<void> {
+// Sprint 686: Core sendVideo with configurable caption
+function sendVideoRaw(videoPath: string, caption: string): Promise<void> {
   const boundary = '----TgBotBoundary' + Date.now().toString(16);
   const filename = basename(videoPath);
   const fileData = readFileSync(videoPath);
@@ -166,6 +195,20 @@ function sendVideoFile(videoPath: string, caption: string): Promise<void> {
     req.write(body);
     req.end();
   });
+}
+
+// Sprint 686: Retry with stripped caption on entity parse errors
+async function sendVideoFile(videoPath: string, caption: string): Promise<void> {
+  try {
+    await sendVideoRaw(videoPath, caption);
+  } catch (err: any) {
+    if (err.message?.includes("parse entities")) {
+      console.log('[auto-deliver] Retrying with stripped caption (entity parse error)');
+      await sendVideoRaw(videoPath, stripEntities(caption));
+    } else {
+      throw err;
+    }
+  }
 }
 
 // ─── Main ─────────────────────────────────────────────────────────────
@@ -250,6 +293,10 @@ async function main(): Promise<void> {
   const consecutiveSpeaker = recentSpeakers.filter(s => s === lastSpeaker).length;
   const consecutiveHook = recentHooks.filter(h => h === lastHook).length;
 
+  // Sprint 686: Skip videos that failed delivery 3+ times
+  const failureCounts = loadFailureCounts();
+  const MAX_DELIVERY_FAILURES = 3;
+
   // Find best unposted, un-delivered video with captioned mp4
   // Sprint 665: Dedupe by video_id — ledger can have multiple entries per video
   const seenVids = new Set<string>();
@@ -257,6 +304,7 @@ async function main(): Promise<void> {
     .filter((e: any) => {
       if (!e.video_id || seenVids.has(e.video_id)) return false;
       if (recordedIds.has(e.video_id) || deliveredAll.has(e.video_id)) return false;
+      if ((failureCounts.get(e.video_id) || 0) >= MAX_DELIVERY_FAILURES) return false;
       if (!findCaptionedMp4(e.video_id)) return false;
       seenVids.add(e.video_id);
       return true;
@@ -338,6 +386,7 @@ async function main(): Promise<void> {
       appendFileSync(DELIVERED_LOG, entry + '\n');
     } catch (err: any) {
       console.error(`[auto-deliver] ❌ Failed to send ${videoId}: ${err.message}`);
+      recordFailure(videoId, err.message);
     }
   }
 

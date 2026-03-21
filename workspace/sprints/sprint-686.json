@@ -1,0 +1,41 @@
+{
+  "sprint_id": "sprint-686",
+  "title": "BUGFIX — Fix Telegram entity parse errors in auto-deliver + drain function error",
+  "description": "Fix two active production bugs: (1) auto-deliver fails with Telegram 'can't parse entities' on video-219f5681 because caption markdown is not sanitized + same video retried indefinitely; (2) drain-local-queue.ts crashes every 5min because drainLocalQueue function doesn't exist in task-router.ts",
+  "source": "error-logs",
+  "tasks": [
+    {
+      "id": "686-01",
+      "title": "Fix auto-deliver caption sanitization + add failure skip logic",
+      "type": "bugfix",
+      "task_type": "pipeline",
+      "task_target": "scripts/scs001/posting-auto-deliver.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-686"
+    },
+    {
+      "id": "686-02",
+      "title": "Fix drain-local-queue.ts — implement drainLocalQueue or fix imports",
+      "type": "bugfix",
+      "task_type": "infra",
+      "task_target": "scripts/drain-local-queue.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-686"
+    },
+    {
+      "id": "686-03",
+      "title": "Validate both fixes compile and run without errors",
+      "type": "test",
+      "task_type": "test",
+      "task_target": "scripts/scs001/validate-bugfix-686.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-686"
+    }
+  ]
+}
