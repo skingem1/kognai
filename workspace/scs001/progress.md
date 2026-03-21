@@ -2376,3 +2376,12 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Issues: Sprint JSON format doesn't include deliverables field but orchestrator assumed it existed
 - Also: ran auto-deliver (1 video sent to Telegram)
 - Timestamp: 2026-03-21T13:05:00Z
+
+## Sprint 729 — INFRA — Posting pace tracker
+- Status: PASS
+- Commit: d233d2c
+- Files created: scripts/scs001/posting-pace.ts, workspace/sprints/sprint-729.json
+- Test: posting-pace.ts — PASS (465/30 gate target met, 77.5 posts/day avg)
+- Pipeline: Posting pace tracker with daily history and gate completion estimate
+- Swarm used: attempted but qwen3:14b hung after 4 minutes — killed and wrote directly
+- Timestamp: 2026-03-21T14:05:00Z
