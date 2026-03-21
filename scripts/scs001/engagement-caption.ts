@@ -103,14 +103,34 @@ function hashVideoId(videoId: string): number {
   return videoId.split('').reduce((a, c) => ((a << 5) - a) + c.charCodeAt(0), 0);
 }
 
-// Sprint 426: Load trending topics from viral-topics.json for hashtag injection
+// Sprint 426 + 667: Load trending topics from viral-topics.json for hashtag injection
+// Sprint 667: Prefer enriched `trending` titles from radar consolidation
 function loadTrendingHashtags(): string[] {
   try {
     const topicsPath = join(process.cwd(), 'workspace', 'scs001', 'viral-topics.json');
     if (!existsSync(topicsPath)) return [];
     const data = JSON.parse(readFileSync(topicsPath, 'utf-8'));
+
+    // Sprint 667: Extract hashtags from enriched trending titles (better signal)
+    if (Array.isArray(data.trending) && data.trending.length > 0) {
+      const stop = new Set(['the', 'and', 'for', 'you', 'with', 'that', 'this', 'from', 'your', 'make', 'any', 'how', 'why', 'what', 'top', 'need', 'know', 'tool', 'tools', 'open', 'source', 'runtime', 'universal']);
+      const tags: string[] = [];
+      for (const t of data.trending.slice(0, 5)) {
+        // Extract first meaningful word (product/project name)
+        const title = (t.title ?? '').split(/\s*[—–\-:\/]\s*/)[0].trim();
+        const words = title.toLowerCase()
+          .replace(/[^a-z\s]/g, '')
+          .split(/\s+/)
+          .filter((w: string) => w.length >= 3 && !stop.has(w));
+        if (words.length > 0) {
+          tags.push('#' + words[0]);
+        }
+      }
+      if (tags.length > 0) return [...new Set(tags)].filter(t => t.length > 3).slice(0, 5);
+    }
+
+    // Fallback: legacy keyword topics
     const topics: string[] = Array.isArray(data.topics) ? data.topics : [];
-    // Convert topic strings to hashtags (e.g. "AI regulation" -> "#airegulation")
     return topics
       .slice(0, 5)
       .map(t => '#' + t.toLowerCase().replace(/[^a-z0-9]/g, ''))

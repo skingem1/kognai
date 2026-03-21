@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-667",
+  "title": "CONTENT — Upgrade engagement captions with radar-sourced hashtags",
+  "description": "Engagement caption module now extracts project/product names from enriched trending titles for more relevant TikTok hashtags.",
+  "source": "queue-empty-content-quality",
+  "tasks": [
+    {
+      "id": "667-01",
+      "title": "Upgrade loadTrendingHashtags to use enriched trending titles",
+      "type": "enhancement",
+      "task_type": "pipeline",
+      "task_target": "scripts/scs001/engagement-caption.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-667"
+    }
+  ]
+}
