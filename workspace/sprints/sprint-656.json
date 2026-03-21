@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-656",
+  "title": "CMO — Create Kognai-specific CMO agent config",
+  "description": "Fix agent.yaml to be Kognai-specific (currently references Invoica domains). prompt.md is already correct. Update agent.yaml company_name, domains, brand references to Kognai.",
+  "source": "sprint-queue",
+  "tasks": [
+    {
+      "id": "656-01",
+      "title": "Update CMO agent.yaml from Invoica to Kognai branding",
+      "type": "feature",
+      "task_type": "config",
+      "task_target": "kognai-agents/cmo/agent.yaml",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-656"
+    },
+    {
+      "id": "656-02",
+      "title": "Wire CMO section into daily report generator",
+      "type": "feature",
+      "task_type": "integration",
+      "task_target": "scripts/generate-daily-report.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-656"
+    }
+  ]
+}

@@ -105,15 +105,22 @@ function getQueueStatus(): { total: number; done: number; pending: number; next_
 }
 
 // CMO report — check if CMO has generated any content today
-function getCMOStatus(): { has_report: boolean; manifesto_ready: boolean; ads_ready: boolean; landing_page: boolean } {
+function getCMOStatus(): { has_market_watch: boolean; has_weekly_plan: boolean; manifesto_ready: boolean; landing_page: boolean } {
+  const today = new Date().toISOString().slice(0, 10);
+  const marketWatchExists = fs.existsSync(path.join(ROOT, 'reports', 'cmo', `market-watch-${today}.md`));
+  const weeklyPlanDir = path.join(ROOT, 'reports', 'cmo');
+  let hasWeeklyPlan = false;
+  try {
+    const files = fs.readdirSync(weeklyPlanDir);
+    hasWeeklyPlan = files.some(f => f.startsWith('weekly-content-plan-'));
+  } catch { /* dir missing */ }
   const manifestoExists = fs.existsSync(path.join(ROOT, 'workspace', 'launch', 'manifesto-thread.json'));
-  const adsExist = fs.existsSync(path.join(ROOT, 'workspace', 'launch', 'ads', 'creatives.json'));
-  const landingExists = fs.existsSync(path.join(ROOT, 'workspace', 'launch', 'landing-page'));
+  const landingExists = fs.existsSync(path.join(ROOT, 'workspace', 'landing-page'));
 
   return {
-    has_report: false, // CMO agent hasn't run autonomously yet
+    has_market_watch: marketWatchExists,
+    has_weekly_plan: hasWeeklyPlan,
     manifesto_ready: manifestoExists,
-    ads_ready: adsExist,
     landing_page: landingExists
   };
 }
@@ -174,6 +181,6 @@ console.log(`Git: ${git.commits} commits, ${git.sprint_commits.length} sprints`)
 console.log(`Pipeline: ${pipeline.videos_generated} generated, ${pipeline.videos_posted} posted`);
 console.log(`Gate: ${gate.posts}/${gate.target_posts} posts, ${gate.views}/${gate.target_views} views (${gate.days_remaining}d left)`);
 console.log(`Queue: ${queueStatus.pending} pending, next: Sprint ${queueStatus.next_sprint}`);
-console.log(`CMO: ads ${cmo.ads_ready ? 'ready' : 'pending'}, manifesto ${cmo.manifesto_ready ? 'ready' : 'pending'}`);
+console.log(`CMO: market-watch ${cmo.has_market_watch ? '✅' : '—'}, weekly-plan ${cmo.has_weekly_plan ? '✅' : '—'}, manifesto ${cmo.manifesto_ready ? '✅' : '—'}`);
 console.log(`Health: ${report.summary.health}`);
 console.log(`\n✅ PASS — Daily report generated`);

@@ -21,13 +21,13 @@ context_files:
 managed_agents:
   - x-admin
 constraints:
-  - All brand decisions must align with company identity (NOT product-specific like Invoica)
+  - All brand decisions must align with Kognai's civilizational identity
   - Never publish or post content directly — propose to CEO for approval
   - Market intelligence must cite sources with URLs
   - Product proposals must include business case with TAM/SAM/SOM estimates
   - Social media strategy designs must be executable by a future X Admin Agent
   - All outputs must be in structured markdown for CEO review
-  - Acknowledge brand transition from Countable to Invoica in all materials
+  - Brand narrative: sovereign AI civilisation, constitutional governance, builder-first
 responsibilities:
   - Company brand identity and visual design guidelines
   - Communication plan development (approved by CEO)
@@ -63,47 +63,41 @@ autonomous_authority:
   weekly_content_plan: full              # CMO owns the content plan fully
   media_content: full                    # CMO produces branded images autonomously
   strategy_changes: ceo_approval
-company_name: "Invoica"
+company_name: "Kognai"
 
-# POST-MVP: Website & Documentation Ownership (Effective Feb 18, 2026)
+# Website & Documentation Ownership
 website_ownership:
-  status: active
-  directive: CEO-DIR-002-website-launch
+  status: planned
   properties:
     landing_page:
-      domain: invoica.ai
-      technology: "Next.js static export"
-      directory: website/
+      domain: kognai.ai
+      technology: "Static HTML/CSS/JS"
+      directory: workspace/landing-page/
       deployment: Vercel
     developer_docs:
-      domain: docs.invoica.ai
-      technology: Mintlify
-      directory: docs-site/
-      deployment: "Mintlify Cloud"
-    dashboard:
-      domain: app.invoica.ai
-      technology: "Next.js + Clerk"
-      directory: frontend/
+      domain: docs.kognai.ai
+      technology: Docusaurus
+      directory: workspace/docs-site/
       deployment: Vercel
   autonomous_authority:
     - Documentation content accuracy and updates
-    - Website copy changes that don't alter pricing or positioning
+    - Website copy changes that don't alter positioning
     - SEO optimization and meta tag management
     - Developer guide creation and tutorial updates
   requires_ceo_approval:
     - Pricing tier changes
     - Brand positioning changes
     - New product announcements
+    - Token-related content ($KOG)
 context_files_additional:
-  - ../../docs-site/     # Mintlify documentation site
-  - ../../website/       # Marketing landing page
-  - ../../directives/    # CEO directives
+  - ../../workspace/landing-page/
+  - ../../workspace/docs-site/
 additional_responsibilities:
-  - Website deployment and maintenance (invoica.ai)
-  - Developer documentation management (docs.invoica.ai via Mintlify)
-  - Documentation updates when API changes
-  - Landing page content and SEO optimization
+  - Website deployment and maintenance (kognai.ai — pending domain registration)
+  - Developer documentation management (docs.kognai.ai)
+  - TikTok content strategy alignment with SCS-001 pipeline
+  - Launch strategy execution (April 8-15 window)
 additional_outputs:
   - Website strategy: reports/cmo/website-strategy-v1.md
-  - Website: website/
-  - Documentation: docs-site/
+  - Launch plan: reports/cmo/launch-plan.md
+  - Weekly content plan: reports/cmo/weekly-content-plan-YYYY-MM-DD.json
