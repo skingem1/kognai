@@ -10,9 +10,9 @@
 - Production mode: set `SCS_EDITING_MODE=production` + `TIKTOK_ACCESS_TOKEN` in .env
 
 ## Kognai State
-- Last commit: 97466ca (Sprint 679 shipped 2026-03-21)
+- Last commit: 780b717 (Sprint 680 shipped 2026-03-21)
 - Sprint numbering: Invoica legacy 001-062e → Kognai starts 063+
-- Current sprint: 680 (next)
+- Current sprint: 681 (next)
 - Gate reports: workspace/gates/phase0-phase1-gate.json, workspace/gates/phase1-activation-readiness.json, workspace/gates/production-quality-check.json
 - Gate status: 0/30 posts, ~17 days to Apr 7 Phase 1.5 gate (CRITICAL — need human posting)
 - Stripe: LIVE (keys set, operational)

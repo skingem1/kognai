@@ -1914,3 +1914,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (CTO rejected NOT_IN_PLAN, wrote directly)
 - Issues: skill-crystalliser module not found — skipped crystallise
 - Timestamp: 2026-03-21T12:15:00Z
+
+## Sprint 680 — BUGFIX
+- Status: PASS
+- Commit: 780b717
+- Files modified: scripts/scs001/engagement-caption.ts, scripts/scs001/posting-auto-deliver.ts, scripts/posting-reminder.ts
+- Files created: scripts/scs001/validate-caption-markdown.ts, workspace/sprints/sprint-680.json
+- Test: scripts/scs001/validate-caption-markdown.ts — 10/10 PASS
+- Pipeline: Fixed Markdown escaping in shared engagement-caption module + added plain text fallback to delivery scripts
+- Swarm used: no (bugfix, wrote directly)
+- Issues: none
+- Timestamp: 2026-03-21T12:25:00Z
