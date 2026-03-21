@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-721",
+  "title": "CONTENT — Second production batch + delivery round",
+  "description": "Run a second production batch to deepen content stockpile. Produce 5+ more videos and deliver to Telegram. Radar topics still fresh from Sprint 720 reset.",
+  "source": "auto-queue-empty",
+  "tasks": [
+    {
+      "id": "721-01",
+      "title": "Run multiformat pipeline --max=5 for second batch",
+      "type": "execution",
+      "task_type": "content",
+      "task_target": "workspace/scs001/multiformat-runs/",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-721"
+    },
+    {
+      "id": "721-02",
+      "title": "Auto-deliver new videos to Telegram",
+      "type": "execution",
+      "task_type": "content",
+      "task_target": "workspace/scs001/auto-delivered.jsonl",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-721"
+    }
+  ]
+}
