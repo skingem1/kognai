@@ -1903,3 +1903,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (new script, wrote directly)
 - Issues: YOUTUBE_REFRESH_TOKEN not set — YouTube upload blocked on human OAuth2 setup
 - Timestamp: 2026-03-21T11:45:00Z
+
+## Sprint 679 — BUGFIX
+- Status: PASS
+- Commit: 97466ca
+- Files modified: scripts/daily-digest.ts
+- Files created: scripts/scs001/validate-digest-markdown.ts, workspace/sprints/sprint-679.json
+- Test: scripts/scs001/validate-digest-markdown.ts — 7/7 PASS
+- Pipeline: Fixed daily digest Telegram Markdown parsing errors (escapeMd + sendPlainText fallback)
+- Swarm used: no (CTO rejected NOT_IN_PLAN, wrote directly)
+- Issues: skill-crystalliser module not found — skipped crystallise
+- Timestamp: 2026-03-21T12:15:00Z
