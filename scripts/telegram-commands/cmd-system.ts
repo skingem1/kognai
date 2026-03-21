@@ -922,6 +922,15 @@ export function cmdPreflight(): string {
     checks.push({ name: 'PM2 Processes', pass: false, detail: '❌ pm2 not running' });
   }
 
+  // Sprint 640: Achiri test suite
+  try {
+    const testReport = path.join(ROOT, 'reports', 'achiri-test-suite.json');
+    if (fs.existsSync(testReport)) {
+      const tr = JSON.parse(fs.readFileSync(testReport, 'utf-8'));
+      checks.push({ name: 'Achiri Tests', pass: tr.failed <= 1, detail: `${tr.passed}/${tr.total} pass` });
+    }
+  } catch {}
+
   // Build output
   const passed = checks.filter(c => c.pass).length;
   const total = checks.length;

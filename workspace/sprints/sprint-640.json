@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-640",
+  "title": "INFRA — Add Achiri test results to daily digest + /preflight",
+  "description": "Achiri readiness is 100% but test suite has 1 failure. Surface Achiri test pass rate in /digest and /preflight so operator sees full system health at a glance.",
+  "source": "operator-productivity",
+  "tasks": [
+    {
+      "id": "640-01",
+      "title": "Add Achiri test pass rate to cmdDigest and cmdPreflight",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/telegram-commands/cmd-posting.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-640"
+    }
+  ]
+}

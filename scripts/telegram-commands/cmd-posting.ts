@@ -516,6 +516,16 @@ export function cmdDigest(): string {
     out.push(`  Waitlist: ${achiriWaitlist} · Paid: ${achiriPaid}`);
   }
 
+  // Sprint 640: Achiri test pass rate
+  const achiriTestPath = path.join(ROOT, 'reports', 'achiri-test-suite.json');
+  try {
+    if (fs.existsSync(achiriTestPath)) {
+      const tr = JSON.parse(fs.readFileSync(achiriTestPath, 'utf-8'));
+      const icon = tr.failed === 0 ? '✅' : tr.failed <= 2 ? '⚠️' : '❌';
+      out.push(`  ${icon} Tests: ${tr.passed}/${tr.total} pass`);
+    }
+  } catch {}
+
   // Sprint 626: Viral topic trends
   const viralTopicsPath = path.join(ROOT, 'workspace', 'scs001', 'viral-topics.json');
   try {

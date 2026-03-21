@@ -1550,9 +1550,10 @@
       "sprint": 639,
       "title": "CONTENT \u2014 Auto-generate 5 videos using /stockpile and validate quality",
       "block": "CONTENT-GATE",
-      "status": "pending",
+      "status": "skipped",
       "priority": "high",
-      "rationale": "Gate requires 30 posts by Apr 7. Need content stockpile. Run /stockpile 5, validate QC scores, ensure videos are ready for manual posting. This is the content production sprint."
+      "rationale": "Gate requires 30 posts by Apr 7. Need content stockpile. Run /stockpile 5, validate QC scores, ensure videos are ready for manual posting. This is the content production sprint.",
+      "_note": "Operational task (run pipeline), not code. Operator should run /stockpile 5 manually."
     },
     {
       "sprint": 640,
