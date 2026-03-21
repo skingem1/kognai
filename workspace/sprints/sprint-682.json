@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-682",
+  "title": "PIPELINE — YouTube API quota guard + search result caching",
+  "description": "YouTube search returns 403 (quota exceeded). Add daily request counter (max 80/day to leave buffer) and cache search results to avoid repeat queries for same topics.",
+  "source": "error-log",
+  "tasks": [
+    {
+      "id": "682-01",
+      "title": "Add quota guard + search result cache to YouTubeSearchProvider",
+      "type": "feature",
+      "task_type": "pipeline",
+      "task_target": "agents/scs001-discovery/youtube-search.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-682"
+    },
+    {
+      "id": "682-02",
+      "title": "Create validate-youtube-quota.ts",
+      "type": "test",
+      "task_type": "test",
+      "task_target": "scripts/scs001/validate-youtube-quota.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-682"
+    }
+  ]
+}
