@@ -178,7 +178,7 @@
       "sprint": 694,
       "title": "AMD-17 — Wire broadcast kill switch",
       "block": "AMD-17",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "AMD-17 Sprint 511. /broadcast-pause + /broadcast-resume Telegram commands. BROADCAST_LIVE env var."
     },

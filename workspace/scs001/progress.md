@@ -2218,3 +2218,13 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Phase 4 (713-717): SOUL.md rollout — 8 core + 10 utility + 19 SCS-001 agents + 48 memory directories
 - Phase 5 (718-719): Health Score — swarm health computation + dashboard governance panel
 - Total: 19 sprints, all PASS
+
+## Sprint 694 — AMD-17 — Wire broadcast kill switch
+- Status: PASS
+- Commit: 58519df
+- Files created: workspace/sprints/sprint-694.json
+- Files modified: scripts/telegram-commands/cmd-delivery.ts, scripts/telegram-bot.ts
+- Pipeline: AMD-17 block complete (692-694). Broadcast kill switch wired.
+- Swarm used: no (wrote directly)
+- Issues: none
+- Timestamp: 2026-03-21T13:55:00Z
