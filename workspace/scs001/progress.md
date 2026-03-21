@@ -1799,3 +1799,13 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (document extraction task)
 - Issues: None
 - Timestamp: 2026-03-21T12:38:00Z
+
+## Sprint 669 — BUGFIX (Smoke test digest field names)
+- Status: PASS
+- Commit: 51d4560
+- Files modified: scripts/daily-digest.ts
+- Test: DIGEST_DRY_RUN=1 — smoke test now shows ✅ 11 stages
+- Details: getSmokeTest() was reading s.passed and s.stage_count but JSON uses pass/fail/total. Fixed to use correct field names. Smoke test was actually passing all 11 stages but digest incorrectly showed ❌ 0.
+- Swarm used: no (one-line bugfix)
+- Issues: None
+- Timestamp: 2026-03-21T12:42:00Z
