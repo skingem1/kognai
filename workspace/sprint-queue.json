@@ -1603,6 +1603,14 @@
       "status": "done",
       "priority": "critical",
       "rationale": "Ran multiformat pipeline 6x. 62 total videos, 31 deliverable (was 14). ~$7.50 cost. Gate target of 30 content pieces met."
+    },
+    {
+      "sprint": 646,
+      "title": "STATE — Update gate tracker (31 videos ready, posting is only blocker)",
+      "block": "STATE",
+      "status": "done",
+      "priority": "medium",
+      "rationale": "Gate tracker updated: content production DONE (31 videos), blocker is now operator posting via /deliver."
     }
   ]
 }
