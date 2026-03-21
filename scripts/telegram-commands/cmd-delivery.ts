@@ -881,3 +881,47 @@ export async function cmdStockpile(chatId: string, args: string): Promise<void> 
     }
   });
 }
+
+// Sprint 694: Broadcast kill switch — AMD-17
+const BROADCAST_STATE_PATH = path.join(ROOT, 'workspace', 'broadcast-state.json');
+
+function getBroadcastState(): { live: boolean; paused_at?: string; paused_by?: string } {
+  try {
+    return JSON.parse(fs.readFileSync(BROADCAST_STATE_PATH, 'utf-8'));
+  } catch {
+    return { live: process.env.BROADCAST_LIVE === 'true' };
+  }
+}
+
+function setBroadcastState(live: boolean, by: string): void {
+  const state = {
+    live,
+    [live ? 'resumed_at' : 'paused_at']: new Date().toISOString(),
+    [live ? 'resumed_by' : 'paused_by']: by,
+  };
+  fs.writeFileSync(BROADCAST_STATE_PATH, JSON.stringify(state, null, 2));
+}
+
+export async function cmdBroadcastPause(chatId: string): Promise<void> {
+  const state = getBroadcastState();
+  if (!state.live) {
+    await sendMessage(chatId, '⏸️ Broadcast is already PAUSED.');
+    return;
+  }
+  setBroadcastState(false, chatId);
+  await sendMessage(chatId, '⏸️ *Broadcast PAUSED*\n\nNo broadcast messages will be sent until `/broadcast-resume` is called.\n\nBROADCAST_LIVE = false');
+}
+
+export async function cmdBroadcastResume(chatId: string): Promise<void> {
+  const state = getBroadcastState();
+  if (state.live) {
+    await sendMessage(chatId, '▶️ Broadcast is already LIVE.');
+    return;
+  }
+  setBroadcastState(true, chatId);
+  await sendMessage(chatId, '▶️ *Broadcast RESUMED*\n\nBroadcast messages are now LIVE.\n\nBROADCAST_LIVE = true');
+}
+
+export function isBroadcastLive(): boolean {
+  return getBroadcastState().live;
+}

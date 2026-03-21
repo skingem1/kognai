@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-694",
+  "title": "AMD-17 — Wire broadcast kill switch",
+  "description": "AMD-17 Sprint 511. Add /broadcast-pause and /broadcast-resume Telegram commands. BROADCAST_LIVE env var. State persisted to workspace/broadcast-state.json.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "694-01",
+      "title": "Add broadcast pause/resume commands + state file",
+      "type": "feature",
+      "task_type": "feature",
+      "task_target": "scripts/telegram-commands/cmd-delivery.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-694"
+    },
+    {
+      "id": "694-02",
+      "title": "Wire commands into telegram-bot.ts",
+      "type": "feature",
+      "task_type": "feature",
+      "task_target": "scripts/telegram-bot.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-694"
+    }
+  ]
+}

@@ -29,7 +29,7 @@ import { cmdHelp } from './telegram-commands/cmd-help';
 
 // Sprint 496: Import extracted command modules (Part 2: N-Z + interactive)
 import { cmdSession, cmdDone, cmdEndSession, cmdMenu } from './telegram-commands/cmd-session';
-import { cmdDeliver, cmdPublish, cmdPostNow, cmdPickup, cmdTodayCaptions, cmdBroadcast, cmdRefresh, cmdProduce, cmdInstagram, cmdInventory, cmdBatchDeliver, cmdStockpile } from './telegram-commands/cmd-delivery';
+import { cmdDeliver, cmdPublish, cmdPostNow, cmdPickup, cmdTodayCaptions, cmdBroadcast, cmdRefresh, cmdProduce, cmdInstagram, cmdInventory, cmdBatchDeliver, cmdStockpile, cmdBroadcastPause, cmdBroadcastResume } from './telegram-commands/cmd-delivery';
 import { cmdCheckout, cmdSubscribers, cmdPortal, cmdFunnel, cmdAchiri, cmdTestStripe, cmdUsage, cmdAchiriData, cmdWaitlist } from './telegram-commands/cmd-stripe';
 import { cmdStart, cmdTrial, cmdPlans } from './telegram-commands/cmd-onboarding';
 
@@ -74,6 +74,8 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     '/postnow':      () => cmdPostNow(chatId),
     '/todaycaptions': () => cmdTodayCaptions(chatId),
     '/broadcast':    () => cmdBroadcast(chatId, cmdArgs),
+    '/broadcast-pause': () => cmdBroadcastPause(chatId),
+    '/broadcast-resume': () => cmdBroadcastResume(chatId),
     '/menu':         () => cmdMenu(chatId),
     '/boot':         () => cmdBoot(chatId),
     '/reload':       () => cmdReload(chatId),
