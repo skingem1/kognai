@@ -1,0 +1,41 @@
+{
+  "sprint_id": "sprint-677",
+  "title": "PHASE2 — Achiri conversation analytics dashboard data export",
+  "description": "Create unified dashboard export merging DAU/retention from export-analytics.ts and topics from achiri-topic-analytics.ts into a single dashboard-ready JSON.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "677-01",
+      "title": "Create achiri-dashboard-export.ts — unified dashboard JSON",
+      "type": "feature",
+      "task_type": "phase2",
+      "task_target": "scripts/achiri/achiri-dashboard-export.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-677"
+    },
+    {
+      "id": "677-02",
+      "title": "Add engagement trends (7d rolling averages)",
+      "type": "feature",
+      "task_type": "phase2",
+      "task_target": "scripts/achiri/achiri-dashboard-export.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-677"
+    },
+    {
+      "id": "677-03",
+      "title": "Create validate-dashboard-output.ts",
+      "type": "test",
+      "task_type": "test",
+      "task_target": "scripts/scs001/validate-dashboard-output.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-677"
+    }
+  ]
+}
