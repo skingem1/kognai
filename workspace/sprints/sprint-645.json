@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-645",
+  "title": "GATE-PUSH — Produce 31 deliverable videos for Apr 7 gate (was 14)",
+  "description": "Ran multiformat pipeline 6 times to produce enough content for the 30-post gate. Result: 31 deliverable videos (was 14). 62 total videos across 27 runs, 18 unique topics. Total cost: ~$7.50. Operator needs to start posting via /deliver.",
+  "source": "gate-push",
+  "tasks": [
+    {
+      "id": "645-01",
+      "title": "Run multiformat pipeline 6x to produce content",
+      "type": "feature",
+      "task_type": "content-production",
+      "task_target": "scripts/scs001/run-multiformat-pipeline.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "critical",
+      "sprint_id": "sprint-645"
+    },
+    {
+      "id": "645-02",
+      "title": "Register all new videos via inventory scanner",
+      "type": "feature",
+      "task_type": "content-production",
+      "task_target": "scripts/scs001/scan-video-inventory.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "critical",
+      "sprint_id": "sprint-645"
+    }
+  ]
+}

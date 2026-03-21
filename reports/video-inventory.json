@@ -1,12 +1,12 @@
 {
-  "scanned_at": "2026-03-20T23:43:46.263Z",
-  "total_runs": 17,
-  "total_videos": 30,
-  "unique_topics": 13,
-  "already_registered": 6,
-  "newly_registered": 7,
+  "scanned_at": "2026-03-21T02:24:59.612Z",
+  "total_runs": 27,
+  "total_videos": 62,
+  "unique_topics": 18,
+  "already_registered": 16,
+  "newly_registered": 2,
   "already_posted": 0,
-  "ready_to_post": 13,
+  "ready_to_post": 18,
   "gate_status": {
     "posted": 0,
     "target": 30,
@@ -20,6 +20,14 @@
       "duration_s": 33,
       "posted": false,
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260320T23-8xex/output/vis-4725cdc9_final.mp4"
+    },
+    {
+      "video_id": "dbt-20a69b48",
+      "format": "debate",
+      "title": "Pi Network (PI) 📈 11.2%",
+      "duration_s": 27,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T02-ziln/output/dbt-20a69b48_final.mp4"
     },
     {
       "video_id": "dbt-5f62936f",
@@ -44,6 +52,14 @@
       "duration_s": 27,
       "posted": false,
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260320T21-kfes/output/dbt-b87db595_final.mp4"
+    },
+    {
+      "video_id": "exp-d4e52afd",
+      "format": "explainer",
+      "title": "OpenCode – Open source AI coding agent",
+      "duration_s": 25,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T02-4nnz/output/exp-d4e52afd_final.mp4"
     },
     {
       "video_id": "exp-651b4efa",
@@ -76,6 +92,30 @@
       "duration_s": 25,
       "posted": false,
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260320T23-gd13/output/exp-45a95cc1_final.mp4"
+    },
+    {
+      "video_id": "lst-2cba4665",
+      "format": "listicle",
+      "title": "Top 3 bitcoin btc tools you need to know",
+      "duration_s": 20,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T02-4nnz/output/lst-2cba4665_final.mp4"
+    },
+    {
+      "video_id": "lst-4a417a82",
+      "format": "listicle",
+      "title": "Top 3 sstklen trump tools you need to know",
+      "duration_s": 20,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T02-8idx/output/lst-4a417a82_final.mp4"
+    },
+    {
+      "video_id": "lst-f8c0351d",
+      "format": "listicle",
+      "title": "Top 3 ethereum eth tools you need to know",
+      "duration_s": 20,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T00-m8h5/output/lst-f8c0351d_final.mp4"
     },
     {
       "video_id": "exp-bb8beedc",
