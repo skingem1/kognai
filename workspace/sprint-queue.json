@@ -18,7 +18,7 @@
       "sprint": 702,
       "title": "GOV — Wire ACPEngine enforcement into CTO approval gate",
       "block": "GOV-PHASE1",
-      "status": "pending",
+      "status": "done",
       "priority": "critical",
       "rationale": "GOVERNANCE REMEDIATION Phase 1. acp/acp-engine.ts (197 lines) has enforce() with 5-dimension trust scoring + thresholds — but it is NEVER called. In scripts/lib/cto-approval-gate.ts: (1) import ACPEngine from '../../acp/acp-engine.ts', (2) before LLM review, call engine.enforce(agentId, taskType), (3) if recommendation==='block' or 'recycle', reject immediately (skip LLM call), (4) if 'fallback', log warning but proceed. Deliverable: CTO gate enforces ACP trust thresholds before wasting LLM tokens."
     },
