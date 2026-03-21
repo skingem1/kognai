@@ -1188,5 +1188,26 @@ module.exports = {
       out_file: "/Users/tarekmnif/kognai/logs/geo-monitor-out.log",
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
+    {
+      // Sprint 704: Daily Report Generator — aggregates git activity, pipeline output,
+      // sprint progress into reports/swarm-runs/daily-YYYY-MM-DD.json.
+      // Fires 23:55 daily. Only 4 reports ever generated (Mar 7/8/10/19) — this fixes the gap.
+      // To start: pm2 start ecosystem.config.js --only kognai-daily-report
+      name: "kognai-daily-report",
+      script: "scripts/generate-daily-report.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: false,
+      watch: false,
+      cron_restart: "55 23 * * *",
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/daily-report-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/daily-report-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
   ]
 };

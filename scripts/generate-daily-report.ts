@@ -89,9 +89,15 @@ function getGateProgress(): { posts: number; target_posts: number; views: number
 
 // Swarm runs today
 function getSwarmRuns(date: string): any[] {
-  const dailyPath = path.join(ROOT, 'reports', 'swarm-runs', `daily-${date}.json`);
-  try { return JSON.parse(fs.readFileSync(dailyPath, 'utf-8')); }
-  catch { return []; }
+  // Look for individual swarm run files matching this date
+  const dir = path.join(ROOT, 'reports', 'swarm-runs');
+  if (!fs.existsSync(dir)) return [];
+  try {
+    return fs.readdirSync(dir)
+      .filter(f => f.startsWith('swarm-') && f.includes(date) && f.endsWith('.json'))
+      .map(f => { try { return JSON.parse(fs.readFileSync(path.join(dir, f), 'utf-8')); } catch { return null; } })
+      .filter(Boolean);
+  } catch { return []; }
 }
 
 // Sprint queue status

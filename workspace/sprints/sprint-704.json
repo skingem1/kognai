@@ -1,0 +1,41 @@
+{
+  "sprint_id": "sprint-704",
+  "title": "GOV — Add daily report generator to PM2 cron",
+  "description": "Governance remediation Phase 1. Add kognai-daily-report PM2 cron entry to ecosystem.config.js — runs at 23:55 daily. Fixes reporting gap (only 4 reports generated ever).",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "704-01",
+      "title": "Add kognai-daily-report PM2 cron entry to ecosystem.config.js",
+      "type": "feature",
+      "task_type": "governance",
+      "task_target": "ecosystem.config.js",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-704"
+    },
+    {
+      "id": "704-02",
+      "title": "Create logs directory entry and validate script exists",
+      "type": "test",
+      "task_type": "test",
+      "task_target": "scripts/generate-daily-report.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-704"
+    },
+    {
+      "id": "704-03",
+      "title": "Dry-run daily report generator to verify it executes",
+      "type": "test",
+      "task_type": "test",
+      "task_target": "scripts/generate-daily-report.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-704"
+    }
+  ]
+}
