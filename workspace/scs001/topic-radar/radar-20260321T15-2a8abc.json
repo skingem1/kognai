@@ -1,0 +1,68 @@
+{
+  "radar_id": "radar-20260321T15-2a8abc",
+  "collected_at": "2026-03-21T15:47:51.720Z",
+  "topics": [
+    {
+      "topic_id": "cg-95edc7a409f6",
+      "title": "Akash Network (AKT) 📈 11.0%",
+      "summary": "Trending on CoinGecko — rank #1",
+      "format": "explainer",
+      "source": "coingecko",
+      "source_url": "https://www.coingecko.com/en/coins/akash-network",
+      "confidence": 61.005869370372906,
+      "keywords": [
+        "akash network",
+        "akt",
+        "crypto",
+        "defi"
+      ],
+      "collected_at": "2026-03-21T15:47:49.108Z"
+    },
+    {
+      "topic_id": "reddit-e6e90173f85f",
+      "title": "[P] I built an open-source benchmark to test if LLMs are actually as confident as they claim to be (Spoiler: They often ",
+      "summary": "Reddit r/MachineLearning (0 pts, 0 comments)",
+      "format": "debate",
+      "source": "reddit",
+      "source_url": "https://www.reddit.com/r/MachineLearning/comments/1rzuq8s/p_i_built_an_opensource_benchmark_to_test_if_llms/",
+      "confidence": 40,
+      "keywords": [
+        "built",
+        "open",
+        "source",
+        "benchmark",
+        "test",
+        "llms"
+      ],
+      "debate_sides": {
+        "side_a": "one of the biggest issues is that they can confidently hallucinate",
+        "side_b": "state an incorrect answer with a 95"
+      },
+      "collected_at": "2026-03-21T15:47:51.242Z"
+    },
+    {
+      "topic_id": "cg-615666dae9d3",
+      "title": "Solana (SOL) 📈 0.7%",
+      "summary": "Trending on CoinGecko — rank #5",
+      "format": "vision",
+      "source": "coingecko",
+      "source_url": "https://www.coingecko.com/en/coins/solana",
+      "confidence": 50.73502329314207,
+      "keywords": [
+        "solana",
+        "sol",
+        "crypto",
+        "defi"
+      ],
+      "collected_at": "2026-03-21T15:47:49.109Z"
+    }
+  ],
+  "sources_hit": [
+    "hacker_news",
+    "github",
+    "arxiv",
+    "coingecko",
+    "reddit"
+  ],
+  "errors": []
+}

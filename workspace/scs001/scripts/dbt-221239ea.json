@@ -1,0 +1,59 @@
+{
+  "script_id": "dbt-221239ea",
+  "topic_id": "reddit-4233612e2b62",
+  "format": "debate",
+  "title": "The End of Foundation Era Crypto",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Protocols must become unincorporated associations to avoid legal entanglements and ensure true decentralization. (3 sec)",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "A statutory association allows clear governance, dispute resolution, and compliance without sacrificing decentralization. (5 sec)",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Ethereum's transition to PoS shows that unincorporated models scale better, with no central point of failure. (5 sec)",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Statutory associations, like DAOs with legal entity status, provide enforceable rights and access to traditional finance. (5 sec)",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Legal clarity and institutional trust are non-negotiable for mass adoption. (4 sec)",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "protocols must transition to a unincorporated association vs a decentralized statutory association.\n\nReasons",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#foundation",
+    "#crypto"
+  ],
+  "generated_at": "2026-03-21T16:15:20.610Z",
+  "llm_used": true
+}

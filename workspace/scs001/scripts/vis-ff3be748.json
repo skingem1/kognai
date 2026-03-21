@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-ff3be748",
+  "topic_id": "cg-615666dae9d3",
+  "format": "vision",
+  "title": "Solana (SOL) 📈 1.0%",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "What could Solana's rise to rank #10 mean for the future of blockchain scalability and decentralized finance?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Solana's proof-of-history and high throughput enable fast, low-cost transactions, making it competitive with Ethereum for DeFi and NFTs.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "But increased adoption risks centralization, as validator concentration could undermine the very decentralization Solana aims to support.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Builders are experimenting with decentralized governance models and expanding validator pools to distribute power more evenly.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "A future where Solana's infrastructure fuels global financial inclusion, empowering underbanked populations with accessible, secure tools.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "Solana's trajectory could redefine blockchain's role in shaping a more equitable and scalable digital economy.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of solana",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#solana",
+    "#sol",
+    "#crypto"
+  ],
+  "video_cue": "A dynamic visualization of Solana's blockchain network expanding globally, with nodes connecting across continents.",
+  "generated_at": "2026-03-21T16:02:33.032Z",
+  "llm_used": true
+}

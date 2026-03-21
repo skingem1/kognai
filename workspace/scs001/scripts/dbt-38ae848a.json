@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-38ae848a",
+  "topic_id": "reddit-ea00d50d3559",
+  "format": "debate",
+  "title": "Daily Crypto Discussion - March 21, 2026 (GMT+0)",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Private keys are the only thing that matter—share them, and your crypto is gone forever. (3 sec)",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Wallet seeds are just a backup. Strong passwords and hardware wallets make them useless to attackers. (5 sec)",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Hardware wallets like Ledger use private keys stored offline—no internet, no theft. Seed phrases are recovery, not security. (5 sec)",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "A strong seed phrase with 24 words and a BIP39 implementation is unbreakable—no need for hardware if you protect it right. (5 sec)",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Strong seed, strong security—no need for hardware if you protect it right. (4 sec)",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "Do not share your private keys vs wallet seed. Use strong",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#daily",
+    "#crypto",
+    "#discussion"
+  ],
+  "generated_at": "2026-03-21T16:15:05.506Z",
+  "llm_used": true
+}

@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-fe7ea907",
+  "topic_id": "reddit-e6e90173f85f",
+  "format": "debate",
+  "title": "[P] I built an open-source benchmark to test if LLMs are actually as confident as they claim to be (Spoiler: They often ",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Open-source benchmarks show LLMs confidently fabricate facts, undermining trust in their outputs. (3 sec)",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "My model states incorrect answers with a 95% confidence interval, but it’s transparent about uncertainty. (5 sec)",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Your model still risks misdirection. My benchmark uses factual accuracy metrics to expose hallucinations. (5 sec)",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "My system includes probabilistic reasoning — it doesn’t just guess, it quantifies uncertainty in every response. (5 sec)",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Confidence without accuracy is noise; my approach prioritizes reliability over overconfidence. (4 sec)",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "one of the biggest issues is that they can confidently hallucinate vs state an incorrect answer with a 95",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#built",
+    "#open",
+    "#source"
+  ],
+  "generated_at": "2026-03-21T16:02:13.081Z",
+  "llm_used": true
+}
