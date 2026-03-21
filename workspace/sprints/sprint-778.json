@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-778",
+  "title": "OPS — /queue command now shows curated post manifest",
+  "description": "Enhanced /queue Telegram command to show curated post manifest at top (topic + format). Operator sees exactly what to post next.",
+  "source": "queue-exhausted-ops-improvement",
+  "tasks": [
+    {
+      "id": "778-01",
+      "title": "Add curated manifest section to cmdQueue in cmd-content.ts",
+      "type": "feature",
+      "task_type": "ops",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-778"
+    }
+  ]
+}

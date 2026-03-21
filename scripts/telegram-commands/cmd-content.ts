@@ -120,6 +120,25 @@ export function cmdQueue(): string {
     return false;
   }
 
+  // Sprint 778: Show curated post manifest at top (if exists)
+  const manifestPath = path.join(ROOT, 'workspace', 'scs001', 'manual-post-queue', 'post-manifest.json');
+  let manifestSection = '';
+  if (fs.existsSync(manifestPath)) {
+    try {
+      const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf-8'));
+      const unpostedManifest = (manifest.videos ?? []).filter((v: any) => !v.posted);
+      if (unpostedManifest.length > 0) {
+        const mLines = unpostedManifest.slice(0, 5).map((v: any) => {
+          const fmt = (v.format ?? '').toUpperCase().slice(0, 3);
+          const topic = (v.topic ?? '').slice(0, 45);
+          return `  ${v.order}. [${fmt}] ${topic}`;
+        });
+        manifestSection = `🎯 *Curated Post Queue* (${unpostedManifest.length} videos)\n` +
+          mLines.join('\n') + '\n\n';
+      }
+    } catch { /* ignore */ }
+  }
+
   // Sprint 392: Filter archived videos from queue
   const archivedIds = loadArchived();
   const unposted = (ledger as any[])
@@ -128,6 +147,7 @@ export function cmdQueue(): string {
 
   if (unposted.length === 0) {
     return (
+      manifestSection +
       `📋 *Posting Queue — Empty*\n\n` +
       `No unposted videos in the ledger.\n` +
       `Pipeline total: ${ledger.length} | Posted: ${recorded.length}` +
@@ -159,6 +179,7 @@ export function cmdQueue(): string {
   const uniqueSpeakers = new Set(unposted.map((e: any) => queueSpeakers.get(e.video_id) ?? 'unknown')).size;
 
   return (
+    manifestSection +
     `📋 *Posting Queue* — ${unposted.length} unposted (${readyCount} ready)\n` +
     `🎙️ ${uniqueSpeakers} speakers in queue\n\n` +
     lines.join('\n') +
