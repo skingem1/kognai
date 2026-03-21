@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-618",
+  "title": "QUALITY — Fix Achiri alpha access test for post-split codebase",
+  "description": "Update validate-alpha-access.ts to check agents/achiri/telegram-bot.ts instead of deleted agents/telegram-bot/commands.ts. Fixes test failure caused by Sprint 442/496 telegram-bot split.",
+  "source": "test-failure",
+  "tasks": [
+    {
+      "id": "618-01",
+      "title": "Rewrite validate-alpha-access.ts for post-split architecture",
+      "type": "bugfix",
+      "task_type": "quality",
+      "task_target": "scripts/achiri/validate-alpha-access.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-618"
+    }
+  ]
+}
