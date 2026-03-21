@@ -58,7 +58,7 @@
       "sprint": 707,
       "title": "GOV — Backfill initial agent memories from AAR logs",
       "block": "GOV-PHASE2",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "GOVERNANCE REMEDIATION Phase 2. Create scripts/backfill-brainx.ts (~100 lines): read all logs/aar/*.jsonl files (Mar 15-19), group by agent, store each as BrainX episode memory with importance=5. Seeds memory system with existing data."
     },
