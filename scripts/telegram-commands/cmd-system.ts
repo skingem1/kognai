@@ -1076,3 +1076,28 @@ export function cmdBrainxStatus(): string {
     return '🧠 BrainX DB: Unknown\n\nRun: `npx ts-node scripts/verify-brainx-db.ts`';
   }
 }
+
+// Sprint 718: Swarm health score
+export function cmdSwarmHealth(): string {
+  const healthPath = path.join(ROOT, 'workspace', 'swarm-health.json');
+  try {
+    const health = readJSON(healthPath);
+    if (!health) return '🏥 Swarm Health: Unknown\n\nRun: `npx ts-node scripts/lib/swarm-health.ts`';
+    const icon = health.overall_status === 'GREEN' ? '🟢' : health.overall_status === 'YELLOW' ? '🟡' : '🔴';
+    const c = health.components;
+    return [
+      `${icon} *Swarm Health*: ${health.overall_score}/100 (${health.overall_status})`,
+      ``,
+      `📊 *Components:*`,
+      `  ACP Trust (40%): ${c.acp_trust.score} — ${c.acp_trust.detail}`,
+      `  Success Rate (20%): ${c.success_rate.score} — ${c.success_rate.detail}`,
+      `  Sprint Velocity (20%): ${c.sprint_velocity.score} — ${c.sprint_velocity.detail}`,
+      `  Pipeline Output (20%): ${c.pipeline_output.score} — ${c.pipeline_output.detail}`,
+      ``,
+      `Agents: ${health.agent_count} registered`,
+      `Updated: ${health.timestamp?.slice(0, 19) || 'unknown'}`,
+    ].join('\n');
+  } catch {
+    return '🏥 Swarm Health: Unknown\n\nRun: `npx ts-node scripts/lib/swarm-health.ts`';
+  }
+}

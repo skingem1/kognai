@@ -1,0 +1,29 @@
+{
+  "timestamp": "2026-03-21T11:34:09.905Z",
+  "overall_score": 69,
+  "overall_status": "YELLOW",
+  "components": {
+    "acp_trust": {
+      "score": 76,
+      "weight": 0.4,
+      "detail": "8 agents, mean composite 76"
+    },
+    "success_rate": {
+      "score": 92,
+      "weight": 0.2,
+      "detail": "12/13 success (92%)"
+    },
+    "sprint_velocity": {
+      "score": 100,
+      "weight": 0.2,
+      "detail": "590 sprints in 7 days (84.3/day)"
+    },
+    "pipeline_output": {
+      "score": 0,
+      "weight": 0.2,
+      "detail": "No clips directory"
+    }
+  },
+  "agent_count": 8,
+  "active_agents": 8
+}

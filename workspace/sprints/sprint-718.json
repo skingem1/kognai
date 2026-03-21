@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-718",
+  "title": "GOV — Swarm-wide health score computation",
+  "description": "Governance remediation Phase 5. Create scripts/lib/swarm-health.ts: 40% ACP composite, 20% success rate, 20% sprint velocity, 20% pipeline output. Write workspace/swarm-health.json. Add /swarmhealth Telegram command.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "718-01",
+      "title": "Create scripts/lib/swarm-health.ts — health score computation",
+      "type": "feature",
+      "task_type": "governance",
+      "task_target": "scripts/lib/swarm-health.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-718"
+    },
+    {
+      "id": "718-02",
+      "title": "Add /swarmhealth Telegram command",
+      "type": "feature",
+      "task_type": "governance",
+      "task_target": "scripts/telegram-bot.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-718"
+    }
+  ]
+}
