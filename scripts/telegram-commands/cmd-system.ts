@@ -851,3 +851,32 @@ export function cmdLogs(): string {
   sections.push(`_Total: ${totalErrors} errors across ${logFiles.length} logs_`);
   return sections.join('\n');
 }
+
+// Sprint 619: /changelog — Recent sprints from git log
+export function cmdChangelog(count: number = 10): string {
+  try {
+    const raw = execSync(`git log --oneline -${count * 2} 2>/dev/null`, {
+      cwd: ROOT, timeout: 5000, encoding: 'utf-8',
+    });
+    const sprintLines = raw.split('\n')
+      .filter(l => l.includes('Sprint ') && !l.includes('state:'))
+      .slice(0, count);
+
+    if (sprintLines.length === 0) return '📋 No recent sprints found in git log.';
+
+    const lines: string[] = ['📋 *Recent Sprints*', ''];
+    for (const line of sprintLines) {
+      const match = line.match(/^([a-f0-9]+)\s+Sprint (\d+):\s*(.+)/);
+      if (match) {
+        lines.push(`*#${match[2]}* — ${match[3].slice(0, 60)}`);
+      } else {
+        lines.push(`  ${line.slice(0, 70)}`);
+      }
+    }
+    lines.push('');
+    lines.push(`_Showing ${sprintLines.length} sprints_`);
+    return lines.join('\n');
+  } catch {
+    return '❌ Could not read git log.';
+  }
+}

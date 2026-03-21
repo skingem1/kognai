@@ -75,6 +75,7 @@ export function cmdHelp(): string {
     `/funnel    — Content pipeline funnel + conversions\n` +
     `/hooktest  — Hook formula A/B test rankings\n` +
     `/formatstats — Video format performance breakdown\n` +
+    `/changelog — Recent sprints shipped\n` +
     `/besttime  — Optimal posting time analysis\n` +
     `/export    — Batch export manifest for posting\n` +
     `/weeklyreport — Weekly performance summary\n` +

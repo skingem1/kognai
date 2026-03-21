@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-619",
+  "title": "INFRA — Add /changelog Telegram command",
+  "description": "Add /changelog command that shows recent sprints from git log, formatted for Telegram. Helps operator track what the autonomous system has shipped.",
+  "source": "operator-productivity",
+  "tasks": [
+    {
+      "id": "619-01",
+      "title": "Add cmdChangelog to cmd-system.ts + wire into telegram-bot.ts",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-619"
+    }
+  ]
+}
