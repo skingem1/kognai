@@ -1767,3 +1767,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (bugfix, single file)
 - Issues: None
 - Timestamp: 2026-03-21T12:26:00Z
+
+## Sprint 666 — CLEANUP (Deduplicate auto-delivered.jsonl)
+- Status: PASS
+- Commit: 36c2d9b
+- Files created: scripts/scs001/dedup-delivered.ts, workspace/sprints/sprint-666.json
+- Files modified: workspace/scs001/auto-delivered.jsonl
+- Test: DIGEST_DRY_RUN=1 npx ts-node scripts/daily-digest.ts — PASS (94 unique deliveries)
+- Details: Removed 43 duplicate entries from auto-delivered.jsonl (137→94). Backup created at .bak-dedup. Digest now shows accurate delivery count. Root cause was pre-Sprint-665 dedup bug.
+- Swarm used: no (one-time cleanup script)
+- Issues: None
+- Timestamp: 2026-03-21T12:28:00Z
