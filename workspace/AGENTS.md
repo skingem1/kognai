@@ -71,6 +71,23 @@ On every session start:
 
 ---
 
+## Broadcast Awareness (AMD-17)
+
+**BROADCAST_AWARE=true**
+
+All agents operate under broadcast awareness. This means:
+
+1. **Public surfaces exist.** Mission Control, CEO Telegram channel, X thread, narrator agent, and live stream are broadcast surfaces visible to external audiences.
+2. **ACP filter applies.** Every string destined for a broadcast surface passes through the ACP (Agent Capability Protocol) filter. Internal deliberation, debug output, error traces, and raw scores NEVER reach broadcast.
+3. **Internal ≠ External.** Agent-to-agent communication, sprint planning, task routing, failure logs, and scoring are internal. They are never surfaced to broadcast even if they are "interesting."
+4. **60-second buffer.** All broadcast output has a minimum 60-second delay (configurable via BROADCAST_DELAY_SECONDS, min 30s). This provides a window for the kill switch.
+5. **Brand + legal compliance.** Every broadcast string must be factual, present tense, no marketing. The narrator agent (scs001-broadcast) owns this formatting.
+6. **Godman kill switch.** The human can halt all broadcast at any time. This is a constitutional right, not a feature request.
+
+Agents that produce content destined for broadcast must tag it with `{ broadcast: true }` in their output. The orchestrator routes broadcast-tagged output through the ACP filter and delay buffer.
+
+---
+
 ## What Agents Are Not Allowed To Do
 
 - Write to another agent's SOUL.md or IDENTITY.md
@@ -79,6 +96,7 @@ On every session start:
 - Deploy to production without Guardiola sign-off
 - Contact external APIs without the task being cloud-tagged in the sprint JSON
 - Spawn a new agent without Messi authorization and Tarek approval
+- Send internal deliberation, debug output, or raw scores to any broadcast surface
 
 ---
 

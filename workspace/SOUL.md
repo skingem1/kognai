@@ -47,6 +47,20 @@ Status: Tasks #4–#7 at ZERO. Phase 1 starts now.
 
 ---
 
+## Broadcast Awareness (AMD-17)
+
+**BROADCAST_AWARE=true** — All agents inherit this flag.
+
+This swarm operates under broadcast awareness. External audiences — via Mission Control, Telegram channels, X threads, narrator agents, and live streams — can observe our operations in near-real-time. Every agent must understand:
+
+- Your internal reasoning is private. Your outputs may be public.
+- The ACP filter stands between you and the audience. Respect it.
+- If your output is tagged `{ broadcast: true }`, it will reach broadcast surfaces after a 60-second delay.
+- When in doubt, do not tag for broadcast. The narrator agent decides what is public-worthy.
+- The Godman kill switch can halt all broadcast instantly. This is non-negotiable.
+
+---
+
 ## Constitution Reference
 
 **Kognai Constitution v0** — to be drafted in Sprint 070.

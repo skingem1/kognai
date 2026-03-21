@@ -1,0 +1,41 @@
+{
+  "sprint_id": "sprint-692",
+  "title": "AMD-17 — Add BROADCAST_AWARE=true to AGENTS.md + brief agents",
+  "description": "AMD-17 broadcast awareness flag. Set BROADCAST_AWARE=true in AGENTS.md. Update SOUL.md with broadcast awareness context. ACP filter applies to all broadcast surfaces. Internal deliberation never reaches broadcast.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "692-01",
+      "title": "Add BROADCAST_AWARE=true and broadcast rules to AGENTS.md",
+      "type": "feature",
+      "task_type": "constitution",
+      "task_target": "workspace/AGENTS.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-692"
+    },
+    {
+      "id": "692-02",
+      "title": "Update SOUL.md with broadcast awareness context",
+      "type": "feature",
+      "task_type": "constitution",
+      "task_target": "workspace/SOUL.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-692"
+    },
+    {
+      "id": "692-03",
+      "title": "Validate broadcast awareness in both files",
+      "type": "test",
+      "task_type": "test",
+      "task_target": "scripts/scs001/validate-broadcast-awareness.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-692"
+    }
+  ]
+}
