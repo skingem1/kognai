@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-624",
+  "title": "ACHIRI — Fix access control to read alpha-whitelist.jsonl",
+  "description": "hasAccess() only checks env ACHIRI_ALLOWED_CHAT_IDS. Sprint 623 added /waitlist approve writing to alpha-whitelist.jsonl, but the bot doesn't read it. Fix: hasAccess() also checks alpha-whitelist.jsonl.",
+  "source": "achiri-phase2a",
+  "tasks": [
+    {
+      "id": "624-01",
+      "title": "Update hasAccess to check alpha-whitelist.jsonl alongside env var",
+      "type": "bugfix",
+      "task_type": "achiri",
+      "task_target": "agents/achiri/telegram-bot.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-624"
+    }
+  ]
+}

@@ -120,10 +120,26 @@ function getReferralCount(chatId: string): number {
 
 // --- Access control ---
 
+const ALPHA_WHITELIST_PATH = path.join(__dirname, '..', '..', 'workspace', 'achiri', 'alpha-whitelist.jsonl');
+
+function loadAlphaWhitelist(): Set<string> {
+  if (!fs.existsSync(ALPHA_WHITELIST_PATH)) return new Set();
+  try {
+    return new Set(
+      fs.readFileSync(ALPHA_WHITELIST_PATH, 'utf-8')
+        .split('\n').filter(l => l.trim())
+        .map(l => { try { return JSON.parse(l).chatId; } catch { return null; } })
+        .filter(Boolean) as string[]
+    );
+  } catch { return new Set(); }
+}
+
 function hasAccess(chatId: string): boolean {
-  // If no whitelist configured, allow all (open alpha)
-  if (ALLOWED_IDS.length === 0) return true;
-  return ALLOWED_IDS.includes(chatId);
+  // If no whitelist configured (env + file both empty), allow all (open alpha)
+  const fileWhitelist = loadAlphaWhitelist();
+  if (ALLOWED_IDS.length === 0 && fileWhitelist.size === 0) return true;
+  // Sprint 624: Check both env-based and file-based whitelist
+  return ALLOWED_IDS.includes(chatId) || fileWhitelist.has(chatId);
 }
 
 // --- Handler cache ---
