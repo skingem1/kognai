@@ -1595,6 +1595,14 @@
       "status": "done",
       "priority": "medium",
       "rationale": "Validate Sprint 642 timeout fix. E2E Integration now passes at 89.9s (was timing out at 120s). Full suite: 17/17."
+    },
+    {
+      "sprint": 645,
+      "title": "GATE-PUSH — Produce 31 deliverable videos for Apr 7 gate",
+      "block": "GATE-PUSH",
+      "status": "done",
+      "priority": "critical",
+      "rationale": "Ran multiformat pipeline 6x. 62 total videos, 31 deliverable (was 14). ~$7.50 cost. Gate target of 30 content pieces met."
     }
   ]
 }
