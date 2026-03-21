@@ -1325,3 +1325,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (single command addition)
 - Issues: None
 - Timestamp: 2026-03-21T11:00:00Z
+
+## Sprint 620 — ACHIRI
+- Status: PASS
+- Commit: 26b0c14
+- Files created: workspace/sprints/sprint-620.json
+- Files modified: agents/achiri/memory-store.ts, agents/achiri/index.ts, scripts/achiri/validate-memory-persistence.ts
+- Test: scripts/achiri/validate-memory-persistence.ts — 27/27 PASS
+- Pipeline: Achiri extended_memory tier gating implemented (free=50, tnd_basic=200, tnd_premium=500)
+- Swarm used: no (multi-file change, wrote directly)
+- Issues: None
+- Timestamp: 2026-03-21T12:00:00Z
