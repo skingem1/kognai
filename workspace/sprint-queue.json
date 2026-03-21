@@ -17,7 +17,7 @@
       "sprint": 648,
       "title": "CONTENT-FIX — Verify multiformat pipeline uses LLM-generated scripts",
       "block": "GATE-CRITICAL",
-      "status": "pending",
+      "status": "done",
       "priority": "critical",
       "rationale": "After Sprint 647 enables LLM rewrite in main pipeline, verify the multiformat pipeline (run-multiformat-pipeline.ts) also produces real content. The multiformat scriptgen uses Ollama directly — confirm it generates unique scripts per topic, not template fills. Run 3 videos and verify SRT diversity."
     },
