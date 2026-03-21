@@ -1358,3 +1358,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (multi-file, tight integration)
 - Issues: None
 - Timestamp: 2026-03-21T12:30:00Z
+
+## Sprint 623 — INFRA
+- Status: PASS
+- Commit: 3802048
+- Files created: workspace/sprints/sprint-623.json, workspace/achiri/alpha-whitelist.jsonl
+- Files modified: scripts/telegram-commands/cmd-stripe.ts, scripts/telegram-commands/cmd-help.ts, scripts/telegram-bot.ts
+- Test: /waitlist command — PASS (shows 1 user, approve works, approve-all works)
+- Pipeline: Operator can now manage Achiri waitlist from Telegram
+- Swarm used: no (multi-file command wiring)
+- Issues: None
+- Timestamp: 2026-03-21T12:45:00Z
