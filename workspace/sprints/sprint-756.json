@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-756",
+  "title": "CONTENT — Batch 6: 5 fresh videos with ledger dedup (514 ledger)",
+  "description": "First content batch using ledger dedup — all 5 topics are genuinely new. AutoResearchClaw, Rust WASM, FinTradeBench, DriveTok, Microsoft tools.",
+  "source": "queue-item-756",
+  "tasks": [
+    {
+      "id": "756-01",
+      "title": "Run multiformat pipeline with ledger dedup for 5+ fresh videos",
+      "type": "feature",
+      "task_type": "content",
+      "agent": "coder",
+      "status": "done",
+      "priority": "critical",
+      "sprint_id": "sprint-756"
+    }
+  ]
+}
