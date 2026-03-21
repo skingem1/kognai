@@ -1698,3 +1698,17 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (chain script)
 - Issues: Charter still DRAFT — attestation blocked on human to finalise before Genesis.
 - Timestamp: 2026-03-21T11:15:00Z
+
+## Sprint 660 — QUALITY (A/B test analysis + hook formula tuning)
+- Status: PASS
+- Commit: d5c26ce
+- Files created: scripts/scs001/run-ab-analysis.ts, workspace/scs001/ab-analysis-report.json, workspace/scs001/hook-weights.json, workspace/sprints/sprint-660.json
+- Test: npx ts-node scripts/scs001/run-ab-analysis.ts — PASS
+- Analysis results (359 experiments):
+  - Best formula: contrarian (avg 0.545, 100% QC, n=51)
+  - Best speaker: Sam Altman (avg 0.560, n=108)
+  - Best combo: Jesse Pollak + contrarian (avg 0.680, n=3)
+  - Weights updated: contrarian 0.16, curiosity_gap 0.16, authority 0.15, secret 0.15
+- Swarm used: no (analytics script)
+- Issues: urgency and proof formulas under-sampled (n=2, n=3). Need more data.
+- Timestamp: 2026-03-21T11:30:00Z

@@ -113,7 +113,7 @@
       "sprint": 660,
       "title": "QUALITY — Content A/B test analysis + hook formula tuning",
       "block": "QUALITY",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "Sprint 469 built A/B framework but no analysis run yet. With 389+ videos in ledger, run statistical analysis: which hook formulas get highest QC scores? Which formats perform best? Feed results back into hook optimizer weights."
     },
