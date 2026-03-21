@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-710",
+  "title": "GOV — Bootstrap SIGNALS.md and AMENDMENT_VOTES.md",
+  "description": "Governance remediation Phase 3. Populate SIGNALS.md with header, sections, severity levels, themes. Create AMENDMENT_VOTES.md with voting process and immutable laws.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "710-01",
+      "title": "Populate workspace/shared-context/SIGNALS.md",
+      "type": "feature",
+      "task_type": "governance",
+      "task_target": "workspace/shared-context/SIGNALS.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-710"
+    },
+    {
+      "id": "710-02",
+      "title": "Create workspace/shared-context/AMENDMENT_VOTES.md",
+      "type": "feature",
+      "task_type": "governance",
+      "task_target": "workspace/shared-context/AMENDMENT_VOTES.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-710"
+    }
+  ]
+}
