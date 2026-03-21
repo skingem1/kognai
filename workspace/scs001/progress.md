@@ -2598,3 +2598,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Issues: Was clearing wrong seen-topics path (scs001/ vs scs001/topic-radar/). Fixed by clearing correct path.
 - Cost: $2.10 total ($0.60 + $1.50)
 - Timestamp: 2026-03-21T14:50:00Z
+
+## Sprint 752 — POSTING
+- Status: PASS
+- Commit: d2aa8e9
+- Files created: workspace/sprints/sprint-752.json
+- Files modified: workspace/scs001/manual-post-queue/post-manifest.json
+- Test: All 11 video files verified existing — PASS
+- Pipeline: 504 ledger, 11 videos in post queue (4 explainer, 2 debate, 1 vision, 4 listicle)
+- Swarm used: no (simple JSON generation, wrote directly)
+- Issues: Only 11 unique topics in last 30 entries (many duplicates across runs)
+- Timestamp: 2026-03-21T15:00:00Z

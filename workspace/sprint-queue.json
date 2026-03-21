@@ -25,7 +25,8 @@
       "sprint": 752,
       "title": "POSTING — Refresh manual-post-queue with latest 15 best videos",
       "block": "POSTING",
-      "status": "pending",
+      "status": "done",
+      "_note": "Done: 11 unique videos across 4 formats. All files verified OK.",
       "priority": "critical",
       "rationale": "Refresh posting queue with best recent videos from sprints 748-751. Diversify formats. April 7 gate: 30 posts needed."
     },
