@@ -82,7 +82,7 @@
       "sprint": 710,
       "title": "GOV — Bootstrap SIGNALS.md and AMENDMENT_VOTES.md",
       "block": "GOV-PHASE3",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "GOVERNANCE REMEDIATION Phase 3. workspace/shared-context/SIGNALS.md is 0 bytes. Populate with header: Constitutional Signals, Active Signals, Resolved Signals sections. Create AMENDMENT_VOTES.md empty template."
     },
