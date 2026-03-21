@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-716",
+  "title": "GOV — Generate SOUL.md for 16 SCS-001 agents",
+  "description": "Governance remediation Phase 4. Create SOUL.md for all 19 SCS-001 agents in agents/. Shorter format focused on pipeline rules.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "716-01",
+      "title": "Create SOUL.md for all SCS-001 pipeline agents",
+      "type": "feature",
+      "task_type": "governance",
+      "task_target": "agents/scs001-*/SOUL.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-716"
+    }
+  ]
+}
