@@ -2353,3 +2353,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Pipeline: 2 batches (5+2), 7/7 composited, $2.20 cost. Topic dedup: 24 unique (was 23).
 - Swarm used: no (content production, not code)
 - Timestamp: 2026-03-21T12:55:00Z
+
+## Sprint 727 — FIX — CTO gate auto-queue-empty approval + readiness gate PM2 display
+- Status: PASS
+- Commit: 98068ab
+- Files modified: scripts/lib/cto-approval-gate.ts, scripts/scs001/posting-readiness-gate.ts
+- Files created: workspace/sprints/sprint-727.json
+- Test: posting-readiness-gate.ts — PASS (PM2 shows "1 online, 16 cron (waiting), 0 errored")
+- Pipeline: CTO gate now approves auto-queue-empty sprints; readiness gate distinguishes cron vs errored
+- Swarm used: no (fixing the swarm itself)
+- Issues: CTO LLM rejected sprints with source "auto-queue-empty" as NOT_IN_PLAN; PM2 cron processes incorrectly shown as stopped
+- Timestamp: 2026-03-21T13:00:00Z
