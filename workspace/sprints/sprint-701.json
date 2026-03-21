@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-701",
+  "title": "GOV — AAR health check + add rejection path logging",
+  "description": "Governance remediation Phase 1. Add AARMiddleware.generateAndLog() on rejection path in orchestrator. Verify AAR fires on both approval and rejection. Surgical edit only.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "701-01",
+      "title": "Add AAR logging on rejection path in orchestrate-agents-v2.ts",
+      "type": "bugfix",
+      "task_type": "governance",
+      "task_target": "scripts/orchestrate-agents-v2.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-701"
+    },
+    {
+      "id": "701-02",
+      "title": "Validate AAR logs both success and rejection entries",
+      "type": "test",
+      "task_type": "test",
+      "task_target": "scripts/scs001/validate-aar-rejection.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-701"
+    }
+  ]
+}

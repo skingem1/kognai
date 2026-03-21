@@ -2491,6 +2491,9 @@ ONLY output the JSON array. No markdown, no explanation.`;
         log(c.gray, '  Reset skipped (nothing to reset)');
       }
       logCodeFailure({ taskId: task.id, sprintId: (process.argv[2] || '').replace(/.*\//, '').replace('.json', ''), agentId: task.agent, attemptNum: attempt, score: review?.score || 0, model: (task as any).model || 'unknown', rejectionReason: review?.summary || 'supervisor rejected', issues: review?.issues || [], failType: 'supervisor_rejected' });
+      // Sprint 701: AAR logging on REJECTION path (governance remediation)
+      const _sprintIdRejected = (process.argv[2] || 'sprints/current.json').replace(/.*\//, '').replace('.json', '');
+      AARMiddleware.generateAndLog({ agentId: task.agent, taskId: task.id, sprintId: _sprintIdRejected, skillId: (task as any).skill_id || task.type || 'code-generation', outcomeScore: review?.score || 0, actionSummary: `REJECTED: ${((task as any).title || task.id).substring(0, 120)} (attempt ${attempt})`, status: 'rejected' }).catch(() => {});
       MonotaskSM.release(task.agent, task.id, `rejected attempt ${attempt}`);
 
       // CTO AUTO-DECOMPOSE: After N consecutive truncation rejections, split the task
