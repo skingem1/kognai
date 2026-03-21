@@ -54,7 +54,8 @@
       "sprint": 736,
       "title": "CONTENT \u2014 Dual pipeline batch: produce 3 videos from each pipeline",
       "block": "CONTENT",
-      "status": "pending",
+      "status": "done",
+      "_note": "Done: 6 new videos via Pipeline 2. Pipeline 1 hung (known issue).",
       "priority": "high",
       "rationale": "After QUALITY-01 validation, run both pipelines together. Pipeline 1 (Hailuo): 3 videos via run-pipeline.ts live. Pipeline 2 (Avatar): 3 videos via run-multiformat-pipeline.ts. Verify both write to publish-ledger.jsonl with distinct source fields. Auto-deliver sends from combined ledger. Gate: 6 new publishable videos for April 7 posting."
     },

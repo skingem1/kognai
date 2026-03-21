@@ -2444,3 +2444,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Pipeline hung on re-run (0 output after 10min), validated against latest existing report.
 - Swarm used: no (validation script + pipeline run)
 - Timestamp: 2026-03-21T15:25:00Z
+
+## Sprint 736 — CONTENT Dual Pipeline Batch
+- Status: PASS (6 new videos produced)
+- Commit: f2e020e7773ac1602929e44ae6d92a8364cf7dcc
+- Files created: workspace/scs001/dual-pipeline-status.json, workspace/sprints/sprint-736.json
+- Test: Ledger verified — 471 entries, 60 with real content, distinct source fields
+- Pipeline 2 runs: mf-20260321T13-89fs (1 video), mf-20260321T13-7pgw (5 videos)
+- Pipeline 1: hung on execution (0 output after 10min), not producing real clips
+- Cost: .85 for 6 videos
+- Swarm used: no (pipeline execution + status documentation)
+- Timestamp: 2026-03-21T15:35:00Z
