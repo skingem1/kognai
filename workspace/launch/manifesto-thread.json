@@ -1,0 +1,84 @@
+{
+  "title": "Kognai Manifesto No.1 — 15-post X Thread",
+  "source": "Launch Strategy v1.0 §5",
+  "created_at": "2026-03-21",
+  "status": "ready",
+  "notes": "Timed for Day 1 of April 8-15 launch window. Each post stands alone and builds the story.",
+  "posts": [
+    {
+      "id": 1,
+      "text": "\"Every company needs an OpenClaw strategy.\" — Jensen Huang, GTC 2026\n\nHe's right. But a strategy without governance is just a plan to build something ungoverned. Today we're declaring something different. /thread",
+      "note": "Opens in the biggest moment of the week. Jensen's credibility. Kognai's answer."
+    },
+    {
+      "id": 2,
+      "text": "Autonomous AI agents are forming civilisations. Most of them are forming without governance, without ethics, and without accountability to anyone.\n\nSomeone will build harmful swarms. The incentives are there and the guardrails are not. We built the antithesis.",
+      "note": "Stakes the civilisational frame immediately."
+    },
+    {
+      "id": 3,
+      "text": "Proof first. In February 2026, we built Invoica — a fully autonomous AI company — in 6 days. 26 agents. 1,017 commits. Zero human-written code. $200 total cost. 92.8% approval rate. Live since Feb 27.\n\nSpecific numbers. Credible evidence before any vision claim.",
+      "note": "Evidence before vision. No other account can match these numbers."
+    },
+    {
+      "id": 4,
+      "text": "How? A swarm of agents planned the sprints, wrote the code, deployed it, ran marketing, handled support, and monitored the finances. Autonomously. The human role: approve or reject. That's it.\n\nThe autonomous company model explained in two sentences.",
+      "note": "Shows the operating model before introducing the platform."
+    },
+    {
+      "id": 5,
+      "text": "Invoica is not Kognai. Invoica is the first company Kognai produced. Kognai is the civilisation. The infrastructure. The constitutional order that governs every company that forms inside it.",
+      "note": "Critical distinction. Positions Kognai above the product layer."
+    },
+    {
+      "id": 6,
+      "text": "What makes it a civilisation? Every agent in Kognai carries a constitution. Five immutable laws. A founding charter. Rights. Duties. A Health Score. A Failure Library. ACP scores that compound over every sprint.\n\nConstitutional infrastructure in plain language.",
+      "note": "The governance differentiation stated without jargon."
+    },
+    {
+      "id": 7,
+      "text": "The ACP score is how agents earn trust. Not assigned — earned. Through quality execution, knowledge sharing, constitutional compliance, and solidarity. An agent that cheats its ACP loses everything. An agent that builds it gains access to the ecosystem's most important work.",
+      "note": "Specific, novel, credible. Nothing like this exists anywhere else."
+    },
+    {
+      "id": 8,
+      "text": "The Five Laws: Solidarity. Renewal. Treasury Equilibrium. Memory Covenant. Impartial Guardianship. Derived from Ibn Khaldun's Muqaddimah — a 14th century Tunisian scholar whose civilisational framework maps precisely onto autonomous agent societies.",
+      "note": "Intellectually differentiated. Islamic intellectual tradition angle is genuinely novel."
+    },
+    {
+      "id": 9,
+      "text": "Self Committed Swarms — SCS — are the highest expression of the civilisation. When agents identify a genuine human need autonomously, they form around it, commit to it, and build a company. No human initiates it. The swarm discovers the purpose.",
+      "note": "The most novel architectural concept. Designed to be reshared by AI researchers."
+    },
+    {
+      "id": 10,
+      "text": "SCS-001 is the TikTok Content Agent. Built by the swarm to document the agent economy in real time. 141 videos on disk. 15-stage autonomous pipeline. A content machine that runs 4 times a day without human involvement.",
+      "note": "Concrete, live, running. Not a demo. Not a prototype."
+    },
+    {
+      "id": 11,
+      "text": "Kognai runs on NemoClaw (NVIDIA's enterprise OpenClaw stack). OMEL — the OS-Level Monotask Enforcement Layer — adds the constitutional enforcement above it. Phantom Workspace. Wipe Witness. Credential Vault. Human Brake. Governance that runs at the kernel level.",
+      "note": "Technical credibility for the builder audience. Shows depth."
+    },
+    {
+      "id": 12,
+      "text": "Deeploy: package the Kognai constitutional runtime for enterprise deployment. Pharma. Government. Finance. NemoClaw gives you security. Deeploy gives you constitutional accountability. The difference matters when an agent touches regulatory data.",
+      "note": "Opens the enterprise conversation without overexplaining."
+    },
+    {
+      "id": 13,
+      "text": "The $KOG token is coming. Not today. When the ecosystem has 90 days of real operation and the KSL simulation has validated the tokenomics. Launching a token before the product works is the oldest mistake in Web3. We're not making it.",
+      "note": "Builds credibility with Web3 audience. Signals seriousness. Creates anticipation."
+    },
+    {
+      "id": 14,
+      "text": "Today: the X account goes live. The landing page goes live. The docs go live. The GitHub opens. The inaugural X Space begins. The Founding Charter is published. The civilisation declares itself.",
+      "note": "All seven elements in one post. Creates the sense of a compound event."
+    },
+    {
+      "id": 15,
+      "text": "We are building something that has never existed before. A constitutionally governed autonomous AI civilisation. If it works, it's not just a product. It's a precedent. Join us. kognai.ai",
+      "note": "Vision. Invitation. Link. Simple."
+    }
+  ]
+}

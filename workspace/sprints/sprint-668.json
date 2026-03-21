@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-668",
+  "title": "LAUNCH — Build manifesto thread JSON from Launch Strategy §5",
+  "description": "Create manifesto-thread.json with all 15 X thread posts from Launch Strategy v1.0. Ready for April 8-15 launch window.",
+  "source": "queue-empty-launch-prep",
+  "tasks": [
+    {
+      "id": "668-01",
+      "title": "Extract and structure 15-post manifesto thread from Launch Strategy v1.0",
+      "type": "feature",
+      "task_type": "launch",
+      "task_target": "workspace/launch/manifesto-thread.json",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-668"
+    }
+  ]
+}
