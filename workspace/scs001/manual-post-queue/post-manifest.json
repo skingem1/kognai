@@ -1,7 +1,7 @@
 {
-  "created": "2026-03-21T15:35:00Z",
-  "sprint": "sprint-757",
-  "total_videos": 15,
+  "created": "2026-03-21T17:40:00Z",
+  "sprint": "sprint-768",
+  "total_videos": 18,
   "purpose": "Manual TikTok posting \u2014 April 7 gate requires 30 posts",
   "instructions": "Post 2-3 videos per day. Use the caption from the SRT file. Use suggested hashtags. Mix formats for variety.",
   "videos": [
@@ -139,6 +139,33 @@
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-muw4/output/lst-17682b67_final.mp4",
       "suggested_hashtags": "#tech #tools #top3 #tiktokviral #learnontiktok",
       "posted": false
+    },
+    {
+      "video_id": "dbt-fe7ea907",
+      "format": "debate",
+      "topic": "I built an open-source benchmark to test if LLMs are actually as confident as they claim",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T16-6xmm/output/dbt-fe7ea907_final.mp4",
+      "suggested_hashtags": "#ai #debate #tech #llm #learnontiktok",
+      "posted": false,
+      "order": 16
+    },
+    {
+      "video_id": "exp-fc643147",
+      "format": "explainer",
+      "topic": "Venice Token (VVV) \u2014 Privacy-first AI meets crypto",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T17-2bek/output/exp-fc643147_final.mp4",
+      "suggested_hashtags": "#tech #ai #crypto #explained #learnontiktok",
+      "posted": false,
+      "order": 17
+    },
+    {
+      "video_id": "dbt-221239ea",
+      "format": "debate",
+      "topic": "The End of Foundation Era Crypto",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T16-608z/output/dbt-221239ea_final.mp4",
+      "suggested_hashtags": "#crypto #debate #tech #opinion #learnontiktok",
+      "posted": false,
+      "order": 18
     }
   ]
 }

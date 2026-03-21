@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-768",
+  "title": "POSTING — Refresh manual-post-queue with latest 15 best videos",
+  "description": "Topic sources exhausted for today. Pivot to refreshing posting queue with best recent videos from sprints 765-767.",
+  "source": "queue-exhausted-topic-saturation-pivot",
+  "tasks": [
+    {
+      "id": "768-01",
+      "title": "Refresh manual-post-queue with 15 best recent videos",
+      "type": "feature",
+      "task_type": "posting",
+      "agent": "coder",
+      "status": "done",
+      "priority": "critical",
+      "sprint_id": "sprint-768"
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-b95fd084",
+  "topic_id": "cg-615666dae9d3",
+  "format": "explainer",
+  "title": "Solana (SOL) 📈 1.2%",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Solana just surged 1.2% — and it’s not slowing down.",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "It’s trending on CoinGecko, ranked #5 right now.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Solana is a fast, secure blockchain built for real-world apps.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Its unique proof-of-history mechanism cuts transaction times to milliseconds.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Developers and DeFi users are flocking to Solana for speed and low fees.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This move shows growing confidence in Solana’s ability to scale.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "What do you think — is Solana the next big thing?",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "Solana (SOL) 📈 1.2%",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#solana",
+    "#sol",
+    "#crypto"
+  ],
+  "generated_at": "2026-03-21T17:49:57.750Z",
+  "llm_used": true
+}
