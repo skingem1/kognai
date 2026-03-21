@@ -81,7 +81,7 @@
       "sprint": 656,
       "title": "CMO — Create Kognai-specific CMO agent prompt",
       "block": "CMO",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "kognai-agents/cmo/prompt.md is 100% Invoica-focused (x402, invoica.ai, Stripe). CMO reports always empty in Kognai runs. Create Kognai CMO: TikTok launch strategy, manifesto thread (15 posts from Launch Strategy v1.0 §5), X Space, civilizational brand narrative. Wire into daily report generator."
     },

@@ -1657,3 +1657,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Reason: No AMD-14 spec exists in Master Documents. Amendments only go up to AMD-13. Blocked on human.
 - Swarm used: no
 - Timestamp: 2026-03-21T10:15:00Z
+
+## Sprint 656 — CMO (Kognai-specific CMO agent config)
+- Status: PASS
+- Commit: 107cef6
+- Files modified: kognai-agents/cmo/agent.yaml, scripts/generate-daily-report.ts
+- Files created: workspace/sprints/sprint-656.json
+- Test: npx ts-node scripts/generate-daily-report.ts — PASS
+- Changes: Updated agent.yaml company_name from "Invoica" to "Kognai", domains from invoica.ai to kognai.ai, website paths to workspace/landing-page/ and workspace/docs-site/. Updated getCMOStatus() in daily report to track market-watch and weekly-plan files instead of Invoica ads.
+- Swarm used: no (config edits)
+- Issues: None. prompt.md was already Kognai-specific (queue rationale was outdated).
+- Timestamp: 2026-03-21T10:30:00Z
