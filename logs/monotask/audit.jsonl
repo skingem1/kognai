@@ -29,3 +29,42 @@
 {"ts":"2026-03-19T08:47:25.742Z","agentId":"coder","taskId":"180-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"rejected attempt 4"}
 {"ts":"2026-03-19T08:47:25.742Z","agentId":"coder","taskId":"180-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
 {"ts":"2026-03-19T08:47:25.742Z","agentId":"coder","taskId":"180-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-21T12:56:44.144Z","agentId":"coder","taskId":"728-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-21T12:56:44.145Z","agentId":"coder","taskId":"728-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-21T12:58:54.344Z","agentId":"coder","taskId":"729-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-21T12:58:54.345Z","agentId":"coder","taskId":"729-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-21T13:13:04.840Z","agentId":"coder","taskId":"731-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-21T13:13:04.840Z","agentId":"coder","taskId":"731-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-21T13:38:11.590Z","agentId":"coder","taskId":"test-gov-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-21T13:38:11.590Z","agentId":"coder","taskId":"test-gov-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-21T13:41:35.025Z","agentId":"coder","taskId":"test-gov-01","transition":"ACTIVE→IDLE","from":"ACTIVE","to":"IDLE","depth":0}
+{"ts":"2026-03-21T14:12:59.518Z","agentId":"coder","taskId":"741-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-21T14:12:59.519Z","agentId":"coder","taskId":"741-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-21T14:12:59.536Z","agentId":"coder","taskId":"741-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"exec error: EISDIR: illegal operation on a directory, read"}
+{"ts":"2026-03-21T14:12:59.536Z","agentId":"coder","taskId":"741-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-21T14:12:59.536Z","agentId":"coder","taskId":"741-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-21T14:12:59.537Z","agentId":"coder","taskId":"741-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"exec error: EISDIR: illegal operation on a directory, read"}
+{"ts":"2026-03-21T14:12:59.537Z","agentId":"coder","taskId":"741-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-21T14:12:59.537Z","agentId":"coder","taskId":"741-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-21T14:12:59.537Z","agentId":"coder","taskId":"741-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"exec error: EISDIR: illegal operation on a directory, read"}
+{"ts":"2026-03-21T14:12:59.537Z","agentId":"coder","taskId":"741-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-21T14:12:59.537Z","agentId":"coder","taskId":"741-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-21T14:12:59.538Z","agentId":"coder","taskId":"741-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"exec error: EISDIR: illegal operation on a directory, read"}
+{"ts":"2026-03-21T14:12:59.538Z","agentId":"coder","taskId":"741-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-21T14:12:59.538Z","agentId":"coder","taskId":"741-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-21T14:12:59.538Z","agentId":"coder","taskId":"741-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"exec error: EISDIR: illegal operation on a directory, read"}
+{"ts":"2026-03-21T14:12:59.538Z","agentId":"coder","taskId":"741-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-21T14:12:59.539Z","agentId":"coder","taskId":"741-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-21T14:12:59.539Z","agentId":"coder","taskId":"741-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"exec error: EISDIR: illegal operation on a directory, read"}
+{"ts":"2026-03-21T14:12:59.539Z","agentId":"coder","taskId":"741-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-21T14:12:59.539Z","agentId":"coder","taskId":"741-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-21T14:12:59.539Z","agentId":"coder","taskId":"741-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"exec error: EISDIR: illegal operation on a directory, read"}
+{"ts":"2026-03-21T14:12:59.539Z","agentId":"coder","taskId":"741-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-21T14:12:59.539Z","agentId":"coder","taskId":"741-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-21T14:12:59.541Z","agentId":"coder","taskId":"741-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"exec error: EISDIR: illegal operation on a directory, read"}
+{"ts":"2026-03-21T14:12:59.541Z","agentId":"coder","taskId":"741-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-21T14:12:59.541Z","agentId":"coder","taskId":"741-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-21T14:12:59.541Z","agentId":"coder","taskId":"741-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"exec error: EISDIR: illegal operation on a directory, read"}
+{"ts":"2026-03-21T14:12:59.541Z","agentId":"coder","taskId":"741-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-21T14:12:59.541Z","agentId":"coder","taskId":"741-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-21T14:12:59.542Z","agentId":"coder","taskId":"741-01","transition":"ACTIVE→IDLE(release)","from":"ACTIVE","to":"IDLE","depth":0,"reason":"exec error: EISDIR: illegal operation on a directory, read"}

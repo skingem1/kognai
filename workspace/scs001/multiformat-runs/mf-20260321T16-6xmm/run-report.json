@@ -1,0 +1,46 @@
+{
+  "run_id": "mf-20260321T16-6xmm",
+  "started_at": "2026-03-21T16:01:43.088Z",
+  "completed_at": "2026-03-21T16:03:48.873Z",
+  "topics_found": 3,
+  "scripts_generated": 3,
+  "videos_composited": 3,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "exp-690727a1",
+      "format": "explainer",
+      "title": "Bitcoin (BTC) 📈 1.2%",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T16-6xmm/output/exp-690727a1_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T16-6xmm/output/exp-690727a1.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "dbt-fe7ea907",
+      "format": "debate",
+      "title": "[P] I built an open-source benchmark to test if LLMs are actually as confident as they claim to be (Spoiler: They often ",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T16-6xmm/output/dbt-fe7ea907_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T16-6xmm/output/dbt-fe7ea907.srt",
+      "duration_s": 27,
+      "success": true,
+      "avatar_cost": 0.25,
+      "llm_used": true
+    },
+    {
+      "script_id": "vis-ff3be748",
+      "format": "vision",
+      "title": "Solana (SOL) 📈 1.0%",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T16-6xmm/output/vis-ff3be748_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T16-6xmm/output/vis-ff3be748.srt",
+      "duration_s": 33,
+      "success": true,
+      "avatar_cost": 0.30000000000000004,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 0.9
+}

@@ -1,25 +1,53 @@
 {
-  "run_id": "bffc5c0e-1cb0-4bef-830d-cd056aa29e41",
+  "run_id": "407130b0-78a4-4ea9-a516-5d99be0c493f",
   "project": "kognai",
-  "sprint_file": "workspace/sprints/sprint-186.json",
-  "started_at": "2026-03-19T12:56:39.118Z",
-  "finished_at": "2026-03-19T13:00:20.342Z",
-  "duration_seconds": 221,
+  "sprint_file": "/tmp/test-governance-sprint.json",
+  "started_at": "2026-03-21T13:38:05.506Z",
+  "finished_at": "2026-03-21T13:43:02.705Z",
+  "duration_seconds": 297,
   "git_branch": "main",
-  "git_head_before": "4cf3d98",
-  "git_head_after": "4cf3d98",
-  "sovereign_mode": false,
+  "git_head_before": "1ee98f8",
+  "git_head_after": "7a6632b",
+  "sovereign_mode": true,
   "summary": {
-    "total_tasks": 3,
-    "done": 0,
+    "total_tasks": 1,
+    "done": 1,
     "rejected": 0,
     "skipped": 0,
-    "approval_rate": 0,
+    "approval_rate": 1,
     "total_tokens": 0,
     "supervisor_conflicts": 0,
     "ceo_escalations": 0
   },
-  "models_used": {},
+  "models_used": {
+    "qwen3:14b": {
+      "calls": 1,
+      "tokens": 0
+    }
+  },
   "total_cost_usd": 0,
-  "tasks": []
+  "tasks": [
+    {
+      "task_id": "test-gov-01",
+      "title": "Create workspace/governance-test.md with timestamp",
+      "type": "feature",
+      "task_target": "workspace/governance-test.md",
+      "status": "done",
+      "attempts": 1,
+      "model_used": "qwen3:14b",
+      "provider": "",
+      "tokens_total": 0,
+      "duration_seconds": 203,
+      "files_written": [
+        "workspace/governance-test.md"
+      ],
+      "review": {
+        "verdict": "APPROVED",
+        "score": 70,
+        "strengths": []
+      },
+      "error": null,
+      "rejection_reason": null
+    }
+  ]
 }

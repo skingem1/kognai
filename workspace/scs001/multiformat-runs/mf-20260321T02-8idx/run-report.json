@@ -1,0 +1,68 @@
+{
+  "run_id": "mf-20260321T02-8idx",
+  "started_at": "2026-03-21T02:07:48.665Z",
+  "completed_at": "2026-03-21T02:11:04.531Z",
+  "topics_found": 5,
+  "scripts_generated": 5,
+  "videos_composited": 5,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "exp-8c01b17c",
+      "format": "explainer",
+      "title": "OpenCode – Open source AI coding agent",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T02-8idx/output/exp-8c01b17c_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T02-8idx/output/exp-8c01b17c.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "exp-bafa8e4c",
+      "format": "explainer",
+      "title": "NVIDIA/NemoClaw — Run OpenClaw securely inside NVIDIA OpenShell with managed inference",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T02-8idx/output/exp-bafa8e4c_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T02-8idx/output/exp-bafa8e4c.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "dbt-7471d383",
+      "format": "debate",
+      "title": "NavTrust: Benchmarking Trustworthiness for Embodied Navigation",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T02-8idx/output/dbt-7471d383_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T02-8idx/output/dbt-7471d383.srt",
+      "duration_s": 27,
+      "success": true,
+      "avatar_cost": 0.25,
+      "llm_used": true
+    },
+    {
+      "script_id": "vis-698be39c",
+      "format": "vision",
+      "title": "Nemotron-Cascade 2: Post-Training LLMs with Cascade RL and Multi-Domain On-Policy Distillation",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T02-8idx/output/vis-698be39c_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T02-8idx/output/vis-698be39c.srt",
+      "duration_s": 33,
+      "success": true,
+      "avatar_cost": 0.30000000000000004,
+      "llm_used": true
+    },
+    {
+      "script_id": "lst-4a417a82",
+      "format": "listicle",
+      "title": "Top 3 sstklen trump tools you need to know",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T02-8idx/output/lst-4a417a82_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T02-8idx/output/lst-4a417a82.srt",
+      "duration_s": 20,
+      "success": true,
+      "avatar_cost": 0.25,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 1.5
+}

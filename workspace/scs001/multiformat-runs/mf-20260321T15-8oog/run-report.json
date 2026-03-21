@@ -1,0 +1,68 @@
+{
+  "run_id": "mf-20260321T15-8oog",
+  "started_at": "2026-03-21T15:00:43.345Z",
+  "completed_at": "2026-03-21T15:04:16.515Z",
+  "topics_found": 5,
+  "scripts_generated": 5,
+  "videos_composited": 5,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "exp-8b8e61ed",
+      "format": "explainer",
+      "title": "aiming-lab/AutoResearchClaw — Fully autonomous & self-evolving research from idea to paper. Chat an Idea. Get ",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-8oog/output/exp-8b8e61ed_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-8oog/output/exp-8b8e61ed.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "exp-8f630fd8",
+      "format": "explainer",
+      "title": "We rewrote our Rust WASM parser in TypeScript and it got faster",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-8oog/output/exp-8f630fd8_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-8oog/output/exp-8f630fd8.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "dbt-2a4bc580",
+      "format": "debate",
+      "title": "FinTradeBench: A Financial Reasoning Benchmark for LLMs",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-8oog/output/dbt-2a4bc580_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-8oog/output/dbt-2a4bc580.srt",
+      "duration_s": 27,
+      "success": true,
+      "avatar_cost": 0.25,
+      "llm_used": true
+    },
+    {
+      "script_id": "vis-fa225817",
+      "format": "vision",
+      "title": "DriveTok: 3D Driving Scene Tokenization for Unified Multi-View Reconstruction and Understanding",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-8oog/output/vis-fa225817_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-8oog/output/vis-fa225817.srt",
+      "duration_s": 33,
+      "success": true,
+      "avatar_cost": 0.30000000000000004,
+      "llm_used": true
+    },
+    {
+      "script_id": "lst-dd571cbf",
+      "format": "listicle",
+      "title": "Top 3 microsoft rolls tools you need to know",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-8oog/output/lst-dd571cbf_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-8oog/output/lst-dd571cbf.srt",
+      "duration_s": 20,
+      "success": true,
+      "avatar_cost": 0.25,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 1.5
+}

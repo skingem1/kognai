@@ -1,0 +1,46 @@
+{
+  "run_id": "mf-20260320T22-halx",
+  "started_at": "2026-03-20T22:59:12.408Z",
+  "completed_at": "2026-03-20T22:59:57.255Z",
+  "topics_found": 3,
+  "scripts_generated": 3,
+  "videos_composited": 3,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "exp-2c195763",
+      "format": "explainer",
+      "title": "NVIDIA/NemoClaw — Run OpenClaw securely inside NVIDIA OpenShell with managed inference",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260320T22-halx/output/exp-2c195763_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260320T22-halx/output/exp-2c195763.srt",
+      "duration_s": 12,
+      "success": true,
+      "avatar_cost": 0.2,
+      "llm_used": true
+    },
+    {
+      "script_id": "exp-73262ef2",
+      "format": "explainer",
+      "title": "aiming-lab/AutoResearchClaw — Fully autonomous & self-evolving research from idea to paper. Chat an Idea. Get ",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260320T22-halx/output/exp-73262ef2_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260320T22-halx/output/exp-73262ef2.srt",
+      "duration_s": 12,
+      "success": true,
+      "avatar_cost": 0.2,
+      "llm_used": true
+    },
+    {
+      "script_id": "exp-b752b443",
+      "format": "explainer",
+      "title": "jackwener/opencli — Make Any Website & Tool Your CLI. A universal CLI Hub and AI-native runtime. Tra",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260320T22-halx/output/exp-b752b443_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260320T22-halx/output/exp-b752b443.srt",
+      "duration_s": 12,
+      "success": true,
+      "avatar_cost": 0.2,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 0.6
+}

@@ -1,0 +1,68 @@
+{
+  "run_id": "mf-20260321T02-l22p",
+  "started_at": "2026-03-21T02:11:12.241Z",
+  "completed_at": "2026-03-21T02:14:18.350Z",
+  "topics_found": 5,
+  "scripts_generated": 5,
+  "videos_composited": 5,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "exp-e7658473",
+      "format": "explainer",
+      "title": "OpenCode – Open source AI coding agent",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T02-l22p/output/exp-e7658473_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T02-l22p/output/exp-e7658473.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "exp-8202d7b5",
+      "format": "explainer",
+      "title": "NVIDIA/NemoClaw — Run OpenClaw securely inside NVIDIA OpenShell with managed inference",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T02-l22p/output/exp-8202d7b5_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T02-l22p/output/exp-8202d7b5.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "dbt-8c1118ec",
+      "format": "debate",
+      "title": "NavTrust: Benchmarking Trustworthiness for Embodied Navigation",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T02-l22p/output/dbt-8c1118ec_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T02-l22p/output/dbt-8c1118ec.srt",
+      "duration_s": 27,
+      "success": true,
+      "avatar_cost": 0.25,
+      "llm_used": true
+    },
+    {
+      "script_id": "vis-0b2c091d",
+      "format": "vision",
+      "title": "Nemotron-Cascade 2: Post-Training LLMs with Cascade RL and Multi-Domain On-Policy Distillation",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T02-l22p/output/vis-0b2c091d_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T02-l22p/output/vis-0b2c091d.srt",
+      "duration_s": 33,
+      "success": true,
+      "avatar_cost": 0.30000000000000004,
+      "llm_used": true
+    },
+    {
+      "script_id": "lst-bbfab120",
+      "format": "listicle",
+      "title": "Top 3 bitcoin btc tools you need to know",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T02-l22p/output/lst-bbfab120_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T02-l22p/output/lst-bbfab120.srt",
+      "duration_s": 20,
+      "success": true,
+      "avatar_cost": 0.25,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 1.5
+}

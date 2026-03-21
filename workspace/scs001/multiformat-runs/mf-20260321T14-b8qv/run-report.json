@@ -1,0 +1,35 @@
+{
+  "run_id": "mf-20260321T14-b8qv",
+  "started_at": "2026-03-21T14:45:03.932Z",
+  "completed_at": "2026-03-21T14:46:27.668Z",
+  "topics_found": 2,
+  "scripts_generated": 2,
+  "videos_composited": 2,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "exp-1fbf40ad",
+      "format": "explainer",
+      "title": "Virtuals Protocol (VIRTUAL) 📉 -1.1%",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T14-b8qv/output/exp-1fbf40ad_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T14-b8qv/output/exp-1fbf40ad.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "dbt-188d9427",
+      "format": "debate",
+      "title": "[R] Combining Identity Anchors + Permission Hierarchies achieves 100% refusal in abliterated LLMs — system prompt only, ",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T14-b8qv/output/dbt-188d9427_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T14-b8qv/output/dbt-188d9427.srt",
+      "duration_s": 27,
+      "success": true,
+      "avatar_cost": 0.25,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 0.6
+}

@@ -1,18 +1,18 @@
 {
   "gate": "phase1-5-tiktok-kill-switch",
   "date": "2026-03-21",
-  "generated_at": "2026-03-21T05:55:00.144Z",
+  "generated_at": "2026-03-21T09:48:41.600Z",
   "deadline": "2026-04-07",
   "days_remaining": 17,
-  "urgency": "NOT_STARTED",
-  "urgency_signal": "0 posts recorded. Start posting now.",
-  "pace_needed": 1.8,
+  "urgency": "ON_TRACK",
+  "urgency_signal": "Posting pace is sufficient",
+  "pace_needed": 1.7,
   "criteria": [
     {
       "id": "post-count",
       "name": "Manual TikTok Posts (target: 30)",
       "pass": false,
-      "details": "0 posts recorded in manual-posts.jsonl"
+      "details": "1 posts recorded in manual-posts.jsonl"
     },
     {
       "id": "total-views",
@@ -22,12 +22,12 @@
     }
   ],
   "overall_pass": false,
-  "recommendation": "NOT STARTED — 0 posts with 17 days remaining. Begin posting today. Need 1.8 posts/day to meet gate.",
+  "recommendation": "ON TRACK — 1/30 posts, 17 days remaining. Keep posting at current pace.",
   "raw": {
-    "posts_count": 0,
+    "posts_count": 1,
     "total_views": 0,
     "avg_views": 0,
-    "posts_remaining": 30,
+    "posts_remaining": 29,
     "views_remaining": 500
   }
 }

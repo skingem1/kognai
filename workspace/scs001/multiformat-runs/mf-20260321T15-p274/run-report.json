@@ -1,0 +1,68 @@
+{
+  "run_id": "mf-20260321T15-p274",
+  "started_at": "2026-03-21T15:13:00.811Z",
+  "completed_at": "2026-03-21T15:16:10.572Z",
+  "topics_found": 5,
+  "scripts_generated": 5,
+  "videos_composited": 5,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "exp-0f8f0299",
+      "format": "explainer",
+      "title": "Akash Network (AKT) 📈 12.3%",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-p274/output/exp-0f8f0299_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-p274/output/exp-0f8f0299.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "exp-66520c30",
+      "format": "explainer",
+      "title": "Spectrally-Guided Diffusion Noise Schedules",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-p274/output/exp-66520c30_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-p274/output/exp-66520c30.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "dbt-b3178904",
+      "format": "debate",
+      "title": "Metacog: Proprioception, Not Yet Another Memory MCP: A Different Approach to Cross-Session Learning Reinforcement in AI ",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-p274/output/dbt-b3178904_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-p274/output/dbt-b3178904.srt",
+      "duration_s": 27,
+      "success": true,
+      "avatar_cost": 0.25,
+      "llm_used": true
+    },
+    {
+      "script_id": "vis-1204652b",
+      "format": "vision",
+      "title": "DreamPartGen: Semantically Grounded Part-Level 3D Generation via Collaborative Latent Denoising",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-p274/output/vis-1204652b_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-p274/output/vis-1204652b.srt",
+      "duration_s": 33,
+      "success": true,
+      "avatar_cost": 0.30000000000000004,
+      "llm_used": true
+    },
+    {
+      "script_id": "lst-f27c8188",
+      "format": "listicle",
+      "title": "Top 3 britain’s bond tools you need to know",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-p274/output/lst-f27c8188_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-p274/output/lst-f27c8188.srt",
+      "duration_s": 20,
+      "success": true,
+      "avatar_cost": 0.25,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 1.5
+}

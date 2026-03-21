@@ -7,8 +7,9 @@
 
 import { randomUUID, createHash } from 'crypto';
 import { execSync } from 'child_process';
-import { existsSync, mkdirSync, readdirSync } from 'fs';
+import { existsSync, mkdirSync, readdirSync, writeFileSync } from 'fs';
 import { join } from 'path';
+import * as https from 'https';
 import type { ScriptBundle, ScriptSegment } from '../scs001-script/index';
 
 export interface EditedVideo {
@@ -30,6 +31,8 @@ export interface EditedVideo {
   ffmpeg_processing_seconds: number;
   avatar_segments?:          string[];  // segment names that used avatar (Sprint 251)
   has_voiceover?:            boolean;   // true if TTS voiceover was mixed in (Sprint 250)
+  has_real_clip?:            boolean;   // true if real footage used (not mock/production color blocks)
+  clip_source?:              'local' | 'hailuo' | 'production' | 'mock';  // how the clip was sourced
 }
 
 const FFMPEG = process.env.FFMPEG_PATH ?? '/opt/homebrew/bin/ffmpeg';
@@ -265,6 +268,65 @@ export class EditingAgent {
     return videos;
   }
 
+  /** Generate a clip via MiniMax Hailuo 2.3 Video API. Returns local MP4 path or null. */
+  private generateHailuoClip(prompt: string, clipId: string, durationS: number): string | null {
+    const apiKey = process.env.MINIMAX_API_KEY;
+    if (!apiKey) return null;
+
+    const clipsDir = process.env.SCS_CLIPS_DIR ?? join(process.cwd(), 'clips');
+    mkdirSync(clipsDir, { recursive: true });
+    const outPath = join(clipsDir, clipId + '-hailuo.mp4');
+    if (existsSync(outPath)) return outPath; // cached
+
+    try {
+      // Step 1: Submit generation task
+      const taskBody = JSON.stringify({
+        prompt: prompt.slice(0, 500) + ' — cinematic TikTok vertical 9:16, dynamic camera, trending style',
+        model: 'MiniMax-Hailuo-2.3',
+        duration: Math.min(Math.max(durationS, 6), 10),
+        resolution: '1080P',
+      });
+      const submitResult = execSync(
+        `curl -s -X POST "https://api.minimax.io/v1/video_generation" ` +
+        `-H "Authorization: Bearer ${apiKey}" ` +
+        `-H "Content-Type: application/json" ` +
+        `-d '${taskBody.replace(/'/g, "'\\''")}'`,
+        { timeout: 30000, encoding: 'utf-8' }
+      );
+      const taskData = JSON.parse(submitResult);
+      const taskId = taskData.task_id;
+      if (!taskId) { console.warn('[EditingAgent] Hailuo: no task_id in response'); return null; }
+
+      // Step 2: Poll for completion (max 5 min)
+      console.log('[EditingAgent] Hailuo task ' + taskId + ' submitted, polling...');
+      for (let i = 0; i < 30; i++) {
+        execSync('sleep 10');
+        const statusResult = execSync(
+          `curl -s "https://api.minimax.io/v1/video_generation/${taskId}" ` +
+          `-H "Authorization: Bearer ${apiKey}"`,
+          { timeout: 15000, encoding: 'utf-8' }
+        );
+        const status = JSON.parse(statusResult);
+        if (status.status === 'completed' && status.video_url) {
+          // Step 3: Download video
+          execSync(`curl -s -L -o "${outPath}" "${status.video_url}"`, { timeout: 60000 });
+          if (existsSync(outPath)) {
+            console.log('[EditingAgent] Hailuo clip downloaded: ' + outPath);
+            return outPath;
+          }
+        } else if (status.status === 'failed') {
+          console.warn('[EditingAgent] Hailuo task failed: ' + (status.error ?? 'unknown'));
+          return null;
+        }
+      }
+      console.warn('[EditingAgent] Hailuo timeout after 5 min');
+      return null;
+    } catch (err) {
+      console.warn('[EditingAgent] Hailuo error: ' + (err as Error).message);
+      return null;
+    }
+  }
+
   private assembleVideo(bundle: ScriptBundle): EditedVideo {
     // Sprint 299: Deterministic video_id from bundle content hash — enables dedup
     const videoId = 'video-' + createHash('sha256').update(bundle.script_id + ':' + bundle.clip_id).digest('hex').slice(0, 8);
@@ -280,16 +342,31 @@ export class EditingAgent {
 
     let cmd: string;
     let modeLabel: string;
+    let clipSource: 'local' | 'hailuo' | 'production' | 'mock' = 'mock';
     if (clipFile) {
       cmd = buildRealFFmpegCommand(bundle, outputPath, clipFile);
       modeLabel = 'real (' + clipFile.split('/').pop() + ')';
+      clipSource = 'local';
     } else {
-      const wantsProduction = (process.env.SCS_EDITING_MODE ?? 'mock') === 'production';
-      const useProduction = wantsProduction && hasDrawtext();
-      cmd = useProduction
-        ? buildProductionFFmpegCommand(bundle, outputPath)
-        : buildMockFFmpegCommand(bundle, outputPath);
-      modeLabel = useProduction ? 'production' : (wantsProduction ? 'mock-fallback' : 'mock');
+      // Option B: Try Hailuo 2.3 via MiniMax API (EVAL-007 Rev.2 / QUALITY-01 Rev.3)
+      const insightTopic = bundle.segments.find(s => s.segment_name === 'insight')?.voiceover_text
+        ?? bundle.segments.find(s => s.segment_name === 'hook')?.voiceover_text ?? '';
+      const clipDuration = Math.round((bundle.segments.find(s => s.segment_name === 'clip')?.end_s ?? 12)
+        - (bundle.segments.find(s => s.segment_name === 'clip')?.start_s ?? 5));
+      const hailuoClip = this.generateHailuoClip(insightTopic, bundle.clip_id, clipDuration);
+      if (hailuoClip) {
+        cmd = buildRealFFmpegCommand(bundle, outputPath, hailuoClip);
+        modeLabel = 'hailuo (' + hailuoClip.split('/').pop() + ')';
+        clipSource = 'hailuo';
+      } else {
+        const wantsProduction = (process.env.SCS_EDITING_MODE ?? 'mock') === 'production';
+        const useProduction = wantsProduction && hasDrawtext();
+        cmd = useProduction
+          ? buildProductionFFmpegCommand(bundle, outputPath)
+          : buildMockFFmpegCommand(bundle, outputPath);
+        modeLabel = useProduction ? 'production' : (wantsProduction ? 'mock-fallback' : 'mock');
+        clipSource = useProduction ? 'production' : 'mock';
+      }
     }
     console.log('[EditingAgent] FFmpeg command length: ' + cmd.length + ' chars (mode: ' + modeLabel + ')');
 
@@ -322,6 +399,8 @@ export class EditingAgent {
       },
       pattern_interrupt_count: bundle.pattern_interrupts.length,
       ffmpeg_processing_seconds: renderSeconds,
+      has_real_clip: clipSource === 'local' || clipSource === 'hailuo',
+      clip_source: clipSource,
     };
   }
 }

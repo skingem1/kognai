@@ -48,8 +48,12 @@ function readJsonLines(filePath: string): any[] {
   } catch { return []; }
 }
 
-function findCaptionedMp4(videoId: string): string | null {
+function findCaptionedMp4(videoId: string, ledgerEntry?: any): string | null {
   try {
+    // If ledger entry has a direct video_path (multiformat pipeline), use it
+    if (ledgerEntry?.video_path && existsSync(ledgerEntry.video_path)) {
+      return ledgerEntry.video_path;
+    }
     const scsDir = join(ROOT, 'workspace', 'scs001');
     // Check legacy run-* dirs
     const runDirs = readdirSync(scsDir).filter(d => d.startsWith('run-'));
@@ -57,7 +61,7 @@ function findCaptionedMp4(videoId: string): string | null {
       const p = join(scsDir, dir, 'caption', `${videoId}-captioned.mp4`);
       if (existsSync(p)) return p;
     }
-    // Sprint 607: Check multiformat-runs output dirs
+    // Check multiformat-runs output dirs
     const mfDir = join(scsDir, 'multiformat-runs');
     if (existsSync(mfDir)) {
       const mfRuns = readdirSync(mfDir).filter(d => d.startsWith('mf-'));
@@ -305,7 +309,7 @@ async function main(): Promise<void> {
       if (!e.video_id || seenVids.has(e.video_id)) return false;
       if (recordedIds.has(e.video_id) || deliveredAll.has(e.video_id)) return false;
       if ((failureCounts.get(e.video_id) || 0) >= MAX_DELIVERY_FAILURES) return false;
-      if (!findCaptionedMp4(e.video_id)) return false;
+      if (!findCaptionedMp4(e.video_id, e)) return false;
       seenVids.add(e.video_id);
       return true;
     })
@@ -350,7 +354,7 @@ async function main(): Promise<void> {
     const pickIdx = candidates.indexOf(pick);
     if (pickIdx >= 0) candidates.splice(pickIdx, 1);
 
-    const mp4Path = findCaptionedMp4(videoId)!;
+    const mp4Path = findCaptionedMp4(videoId, pick)!;
     const caption = buildTikTokCaption(videoId);
     const vs = viralScores.get(videoId);
     const vsStr = vs != null ? `🧬 ${vs.toFixed(1)}` : '';

@@ -1,0 +1,24 @@
+{
+  "run_id": "mf-20260321T12-p7y7",
+  "started_at": "2026-03-21T12:47:14.844Z",
+  "completed_at": "2026-03-21T12:48:02.260Z",
+  "topics_found": 1,
+  "scripts_generated": 1,
+  "videos_composited": 1,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "exp-81a3eec7",
+      "format": "explainer",
+      "title": "Akash Network (AKT) 📈 10.2%",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T12-p7y7/output/exp-81a3eec7_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T12-p7y7/output/exp-81a3eec7.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 0.35
+}

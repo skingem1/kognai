@@ -1,0 +1,35 @@
+{
+  "run_id": "mf-20260321T12-vmpn",
+  "started_at": "2026-03-21T12:51:14.428Z",
+  "completed_at": "2026-03-21T12:52:40.390Z",
+  "topics_found": 2,
+  "scripts_generated": 2,
+  "videos_composited": 2,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "exp-a639435b",
+      "format": "explainer",
+      "title": "OpenCode – Open source AI coding agent",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T12-vmpn/output/exp-a639435b_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T12-vmpn/output/exp-a639435b.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "exp-87a051f5",
+      "format": "explainer",
+      "title": "NVIDIA/NemoClaw — Run OpenClaw securely inside NVIDIA OpenShell with managed inference",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T12-vmpn/output/exp-87a051f5_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T12-vmpn/output/exp-87a051f5.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 0.7
+}

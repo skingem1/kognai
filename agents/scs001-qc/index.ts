@@ -18,6 +18,8 @@ export interface QualityControlGate {
     audio_balance:           boolean;
     constitutional_filter:   boolean;
     clip_understandable:     boolean;
+    has_real_clip:           boolean;  // QUALITY-01 Rev.3: real footage (not mock/production)
+    has_audio:               boolean;  // QUALITY-01 Rev.3: TTS voiceover mixed in
   };
   overall_pass:          boolean;
   failure_reason:        string | null;
@@ -158,6 +160,20 @@ function checkClipUnderstandable(bundle: ScriptBundle): { pass: boolean; reason:
   return { pass: true, reason: '' };
 }
 
+// QUALITY-01 Rev.3: Real clip check — only enforced in live mode
+function checkHasRealClip(edited: EditedVideo): { pass: boolean; reason: string } {
+  if (process.env.SCS_MODE !== 'live') return { pass: true, reason: '' };
+  if (edited.has_real_clip) return { pass: true, reason: '' };
+  return { pass: false, reason: 'Video uses ' + (edited.clip_source ?? 'mock') + ' mode — not publishable (need real or Hailuo clip)' };
+}
+
+// QUALITY-01 Rev.3: Audio check — only enforced in live mode
+function checkHasAudio(edited: EditedVideo): { pass: boolean; reason: string } {
+  if (process.env.SCS_MODE !== 'live') return { pass: true, reason: '' };
+  if (edited.has_voiceover) return { pass: true, reason: '' };
+  return { pass: false, reason: 'Video has no voiceover audio — silent videos get 0 views on TikTok' };
+}
+
 export class QCAgent {
   run(
     captionedVideos: CaptionedVideo[],
@@ -207,6 +223,8 @@ export class QCAgent {
       audio_balance:         checkAudioBalance(),
       constitutional_filter: checkConstitutionalFilter(bundle),
       clip_understandable:   checkClipUnderstandable(bundle),
+      has_real_clip:         checkHasRealClip(edited),
+      has_audio:             checkHasAudio(edited),
     };
 
     const gate_items = {
@@ -217,6 +235,8 @@ export class QCAgent {
       audio_balance:         checks.audio_balance.pass,
       constitutional_filter: checks.constitutional_filter.pass,
       clip_understandable:   checks.clip_understandable.pass,
+      has_real_clip:         checks.has_real_clip.pass,
+      has_audio:             checks.has_audio.pass,
     };
 
     const overall_pass = Object.values(gate_items).every(v => v === true);
@@ -233,6 +253,8 @@ export class QCAgent {
       audio_balance:         5,  // → Editing Agent
       constitutional_filter: 4,  // → Insight Agent
       clip_understandable:   4,  // → Insight Agent
+      has_real_clip:         5,  // → Editing Agent (clip source issue)
+      has_audio:             5,  // → Editing Agent (TTS mix issue)
     };
 
     if (!overall_pass) {

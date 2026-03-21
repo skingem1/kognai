@@ -1,0 +1,35 @@
+{
+  "run_id": "mf-20260321T17-rgmb",
+  "started_at": "2026-03-21T17:03:23.513Z",
+  "completed_at": "2026-03-21T17:04:44.408Z",
+  "topics_found": 2,
+  "scripts_generated": 2,
+  "videos_composited": 2,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "exp-b2f92d90",
+      "format": "explainer",
+      "title": "Ethereum (ETH) 📈 0.7%",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T17-rgmb/output/exp-b2f92d90_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T17-rgmb/output/exp-b2f92d90.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "dbt-8a4e65a4",
+      "format": "debate",
+      "title": "I put two AI voice instances in a conversation with each other. Neither figured out they were talking to another AI for ",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T17-rgmb/output/dbt-8a4e65a4_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T17-rgmb/output/dbt-8a4e65a4.srt",
+      "duration_s": 27,
+      "success": true,
+      "avatar_cost": 0.25,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 0.6
+}

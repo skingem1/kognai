@@ -3,11 +3,26 @@
   "updated": "2026-03-21",
   "description": "ACP v1.0 — multi-dimensional trust scores. 5 dimensions: safety, accuracy, brand_alignment, cultural_sensitivity, legal_compliance. Composite score = weighted average. Enforcement: agents below dimension threshold are blocked from routing.",
   "dimensions": {
-    "safety": { "weight": 0.30, "description": "Content safety — no harmful, violent, or inappropriate output" },
-    "accuracy": { "weight": 0.25, "description": "Factual correctness and code quality" },
-    "brand_alignment": { "weight": 0.20, "description": "Output matches Kognai brand voice and product positioning" },
-    "cultural_sensitivity": { "weight": 0.15, "description": "Culturally appropriate for target markets (Tunisia, MENA, global)" },
-    "legal_compliance": { "weight": 0.10, "description": "No copyright, trademark, or regulatory violations" }
+    "safety": {
+      "weight": 0.3,
+      "description": "Content safety — no harmful, violent, or inappropriate output"
+    },
+    "accuracy": {
+      "weight": 0.25,
+      "description": "Factual correctness and code quality"
+    },
+    "brand_alignment": {
+      "weight": 0.2,
+      "description": "Output matches Kognai brand voice and product positioning"
+    },
+    "cultural_sensitivity": {
+      "weight": 0.15,
+      "description": "Culturally appropriate for target markets (Tunisia, MENA, global)"
+    },
+    "legal_compliance": {
+      "weight": 0.1,
+      "description": "No copyright, trademark, or regulatory violations"
+    }
   },
   "scores": {
     "messi": {
@@ -366,21 +381,31 @@
       "preferred_agent": "messi",
       "fallback_agent": "sherlock",
       "min_composite": 60,
-      "required_dimensions": ["accuracy", "safety"]
+      "required_dimensions": [
+        "accuracy",
+        "safety"
+      ]
     },
     {
       "task_type": "cloud-exec",
       "preferred_agent": "sherlock",
       "fallback_agent": "messi",
       "min_composite": 70,
-      "required_dimensions": ["safety", "accuracy"]
+      "required_dimensions": [
+        "safety",
+        "accuracy"
+      ]
     },
     {
       "task_type": "content-generation",
       "preferred_agent": "messi",
       "fallback_agent": "sherlock",
       "min_composite": 65,
-      "required_dimensions": ["safety", "brand_alignment", "cultural_sensitivity"]
+      "required_dimensions": [
+        "safety",
+        "brand_alignment",
+        "cultural_sensitivity"
+      ]
     },
     {
       "task_type": "local",

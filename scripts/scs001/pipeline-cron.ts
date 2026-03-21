@@ -75,12 +75,18 @@ async function main() {
     console.log('[pipeline-cron] Radar failed — using existing viral-topics.json');
   }
 
-  // Step 1: Legacy archive pipeline — DISABLED (2026-03-22)
-  // Legacy pipeline used Internet Archive clips with template captions.
-  // Replaced by multiformat pipeline which generates original content (LLM scripts + TTS + Pillow visuals).
-  // Failure logs and memory preserved in workspace/scs001/run-* directories.
-  const pipelineOk = true; // Skip legacy, treat as OK
-  console.log(`[pipeline-cron] Legacy pipeline DISABLED — using multiformat pipeline only`);
+  // Step 1: Pipeline 1 (Hailuo/Seedance) — re-enabled 2026-03-22 (QUALITY-01 Rev.3)
+  // Now runs in LIVE mode with Hailuo 2.3 clip generation + TTS audio.
+  // If MINIMAX_API_KEY is not set, falls back to local clips or production mode.
+  // Does NOT exit on failure — Pipeline 2 always runs regardless.
+  const pipelineOk = run(
+    `npx ts-node agents/scs001-orchestrator/run-pipeline.ts live`,
+    `Pipeline 1 — Hailuo (live mode)`,
+    600000 // 10min
+  );
+  if (!pipelineOk) {
+    console.log('[pipeline-cron] Pipeline 1 failed — continuing to Pipeline 2');
+  }
 
   // Step 1B: Run multiformat pipeline (primary pipeline — LLM scripts + TTS + original content)
   // Sprint 722: Always force-refresh to clear dedup cache — same 22 topics from 5 sources
@@ -146,10 +152,10 @@ async function main() {
     }
   } catch {}
 
-  const status = mfOk && deliverOk ? 'OK' : 'PARTIAL';
+  const status = (pipelineOk || mfOk) && deliverOk ? 'OK' : 'PARTIAL';
   await sendTelegram(
     `📊 *Pipeline Cron ${status}*\n` +
-    `Multiformat: ${mfOk ? '✅' : '❌'} · Deliver: ${deliverOk ? '✅' : '❌'}` +
+    `P1 Hailuo: ${pipelineOk ? '✅' : '❌'} · P2 Avatar: ${mfOk ? '✅' : '❌'} · Deliver: ${deliverOk ? '✅' : '❌'}` +
     inventoryInfo +
     `\nTime: ${now}`
   );

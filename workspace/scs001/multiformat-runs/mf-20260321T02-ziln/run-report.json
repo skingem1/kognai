@@ -1,0 +1,35 @@
+{
+  "run_id": "mf-20260321T02-ziln",
+  "started_at": "2026-03-21T02:05:48.349Z",
+  "completed_at": "2026-03-21T02:07:30.046Z",
+  "topics_found": 2,
+  "scripts_generated": 2,
+  "videos_composited": 2,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "exp-b0e1948e",
+      "format": "explainer",
+      "title": "OpenCode – Open source AI coding agent",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T02-ziln/output/exp-b0e1948e_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T02-ziln/output/exp-b0e1948e.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "dbt-20a69b48",
+      "format": "debate",
+      "title": "Pi Network (PI) 📈 11.2%",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T02-ziln/output/dbt-20a69b48_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T02-ziln/output/dbt-20a69b48.srt",
+      "duration_s": 27,
+      "success": true,
+      "avatar_cost": 0.25,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 0.6
+}

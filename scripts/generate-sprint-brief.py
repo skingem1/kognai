@@ -512,6 +512,36 @@ Be concise — bullet points only. No preamble.
         sprint_rationale_q = queue_item.get("rationale", "")
         print(f"[QUEUE] Sprint queue active — next: Sprint {sprint_num_q} ({sprint_title_q})")
         print("[Qwen 3/3] SKIPPED — sprint queue takes precedence over Qwen recommendation")
+
+        # PRE-GENERATE the sprint JSON directly from queue item.
+        # This prevents Qwen from reinterpreting/ignoring the queue directive.
+        # The orchestrator will find this file and skip its own sprint generation.
+        sprint_json_path = config["root"] / "workspace" / "sprints" / f"sprint-{sprint_num_q}.json"
+        if not sprint_json_path.exists():
+            sprint_json = {
+                "sprint_id": f"sprint-{sprint_num_q}",
+                "title": sprint_title_q,
+                "description": sprint_rationale_q,
+                "source": "queue-prescribed",
+                "tasks": [
+                    {
+                        "id": f"{sprint_num_q}-01",
+                        "title": sprint_title_q,
+                        "type": "feature",
+                        "task_type": sprint_block_q.lower().replace("-", "_") if sprint_block_q else "infra",
+                        "task_target": f"workspace/sprints/sprint-{sprint_num_q}-output.md",
+                        "agent": "coder",
+                        "status": "pending",
+                        "priority": queue_item.get("priority", "high"),
+                        "sprint_id": f"sprint-{sprint_num_q}",
+                    }
+                ],
+            }
+            sprint_json_path.parent.mkdir(parents=True, exist_ok=True)
+            sprint_json_path.write_text(json.dumps(sprint_json, indent=2))
+            print(f"[QUEUE] Pre-generated sprint JSON: {sprint_json_path}")
+        else:
+            print(f"[QUEUE] Sprint JSON already exists: {sprint_json_path}")
         next_sprint = f"""## ⚠️ MANDATORY — QUEUE-PRESCRIBED SPRINT
 
 **DO NOT deviate from this. The human has prescribed this sprint via workspace/sprint-queue.json.**

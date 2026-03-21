@@ -33,7 +33,7 @@ export interface SprintProposal {
   description: string;
   tasks: string[];
   estimated_complexity: string;
-  source: 'autonomous_loop' | 'human' | 'cto_backlog';
+  source: 'autonomous_loop' | 'human' | 'cto_backlog' | 'queue-prescribed' | 'auto-queue-empty';
   /** Optional: map of agent_id → required capabilities for ACP pre-check */
   agent_capabilities?: Array<{ agent: string; required_capabilities: Capability[] }>;
 }
@@ -110,6 +110,28 @@ export async function requestCTOApproval(
       sprint_id: proposal.sprint_id,
       reason: 'Human-submitted sprint — auto-approved per governance rules.',
       plan_reference: 'HUMAN_OVERRIDE',
+      cto_confidence: 100,
+      timestamp,
+    };
+  }
+
+  // Queue-prescribed sprints bypass CTO LLM review — the queue IS the plan.
+  // workspace/sprint-queue.json is human-maintained and authoritative.
+  // ACP capability checks + Police Lite still run (below), but the LLM won't reject these.
+  if (proposal.source === 'queue-prescribed') {
+    logCTODecision({
+      approved: true,
+      sprint_id: proposal.sprint_id,
+      reason: 'Queue-prescribed sprint — auto-approved. Sprint queue is human-maintained authoritative plan.',
+      plan_reference: 'QUEUE_PRESCRIBED',
+      cto_confidence: 100,
+      timestamp,
+    }, projectRoot, product);
+    return {
+      approved: true,
+      sprint_id: proposal.sprint_id,
+      reason: 'Queue-prescribed sprint — auto-approved. Sprint queue is human-maintained authoritative plan.',
+      plan_reference: 'QUEUE_PRESCRIBED',
       cto_confidence: 100,
       timestamp,
     };

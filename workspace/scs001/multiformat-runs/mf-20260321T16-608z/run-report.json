@@ -1,0 +1,46 @@
+{
+  "run_id": "mf-20260321T16-608z",
+  "started_at": "2026-03-21T16:14:34.511Z",
+  "completed_at": "2026-03-21T16:16:28.465Z",
+  "topics_found": 3,
+  "scripts_generated": 3,
+  "videos_composited": 3,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "exp-01d63921",
+      "format": "explainer",
+      "title": "Bitcoin (BTC) 📈 1.0%",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T16-608z/output/exp-01d63921_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T16-608z/output/exp-01d63921.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "dbt-38ae848a",
+      "format": "debate",
+      "title": "Daily Crypto Discussion - March 21, 2026 (GMT+0)",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T16-608z/output/dbt-38ae848a_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T16-608z/output/dbt-38ae848a.srt",
+      "duration_s": 27,
+      "success": true,
+      "avatar_cost": 0.25,
+      "llm_used": true
+    },
+    {
+      "script_id": "dbt-221239ea",
+      "format": "debate",
+      "title": "The End of Foundation Era Crypto",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T16-608z/output/dbt-221239ea_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T16-608z/output/dbt-221239ea.srt",
+      "duration_s": 27,
+      "success": true,
+      "avatar_cost": 0.25,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 0.85
+}

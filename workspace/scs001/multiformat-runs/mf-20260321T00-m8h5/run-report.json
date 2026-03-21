@@ -1,0 +1,68 @@
+{
+  "run_id": "mf-20260321T00-m8h5",
+  "started_at": "2026-03-21T00:24:59.731Z",
+  "completed_at": "2026-03-21T00:28:23.543Z",
+  "topics_found": 5,
+  "scripts_generated": 5,
+  "videos_composited": 5,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "exp-da91038c",
+      "format": "explainer",
+      "title": "NVIDIA/NemoClaw — Run OpenClaw securely inside NVIDIA OpenShell with managed inference",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T00-m8h5/output/exp-da91038c_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T00-m8h5/output/exp-da91038c.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.05,
+      "llm_used": true
+    },
+    {
+      "script_id": "exp-391b71d1",
+      "format": "explainer",
+      "title": "aiming-lab/AutoResearchClaw — Fully autonomous & self-evolving research from idea to paper. Chat an Idea. Get ",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T00-m8h5/output/exp-391b71d1_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T00-m8h5/output/exp-391b71d1.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.05,
+      "llm_used": true
+    },
+    {
+      "script_id": "dbt-12053d40",
+      "format": "debate",
+      "title": "NavTrust: Benchmarking Trustworthiness for Embodied Navigation",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T00-m8h5/output/dbt-12053d40_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T00-m8h5/output/dbt-12053d40.srt",
+      "duration_s": 27,
+      "success": true,
+      "avatar_cost": 0.1,
+      "llm_used": true
+    },
+    {
+      "script_id": "vis-967cedb6",
+      "format": "vision",
+      "title": "Nemotron-Cascade 2: Post-Training LLMs with Cascade RL and Multi-Domain On-Policy Distillation",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T00-m8h5/output/vis-967cedb6_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T00-m8h5/output/vis-967cedb6.srt",
+      "duration_s": 33,
+      "success": true,
+      "avatar_cost": 0.15000000000000002,
+      "llm_used": true
+    },
+    {
+      "script_id": "lst-f8c0351d",
+      "format": "listicle",
+      "title": "Top 3 ethereum eth tools you need to know",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T00-m8h5/output/lst-f8c0351d_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T00-m8h5/output/lst-f8c0351d.srt",
+      "duration_s": 20,
+      "success": true,
+      "avatar_cost": 0.05,
+      "llm_used": true
+    }
+  ],
+  "dry_run": true,
+  "total_cost_usd": 0.4
+}

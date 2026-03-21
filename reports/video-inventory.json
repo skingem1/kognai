@@ -1,18 +1,98 @@
 {
-  "scanned_at": "2026-03-21T12:53:06.526Z",
-  "total_runs": 48,
-  "total_videos": 100,
-  "unique_topics": 24,
-  "already_registered": 24,
+  "scanned_at": "2026-03-21T17:15:44.185Z",
+  "total_runs": 84,
+  "total_videos": 203,
+  "unique_topics": 65,
+  "already_registered": 65,
   "newly_registered": 0,
   "already_posted": 0,
-  "ready_to_post": 24,
+  "ready_to_post": 65,
   "gate_status": {
     "posted": 1,
     "target": 30,
     "gap": 29
   },
   "videos": [
+    {
+      "video_id": "vis-ff3be748",
+      "format": "vision",
+      "title": "Solana (SOL) 📈 1.0%",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T16-6xmm/output/vis-ff3be748_final.mp4"
+    },
+    {
+      "video_id": "vis-2c861345",
+      "format": "vision",
+      "title": "[D] How do you add theoretical justification to an AI/ML paper?",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-duws/output/vis-2c861345_final.mp4"
+    },
+    {
+      "video_id": "vis-0ca2e55e",
+      "format": "vision",
+      "title": "What measure do I use to compare nested models and non nested models in high dimensional survival analysis [D]",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-uncm/output/vis-0ca2e55e_final.mp4"
+    },
+    {
+      "video_id": "vis-2960c4e8",
+      "format": "vision",
+      "title": "Britain’s bond panic is currently making the case for Bitcoin many people seem to have forgetten",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-shi3/output/vis-2960c4e8_final.mp4"
+    },
+    {
+      "video_id": "vis-a2c65eff",
+      "format": "vision",
+      "title": "[D]  Has \"AI research lab\" become completely meaningless as a term?",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-6rtr/output/vis-a2c65eff_final.mp4"
+    },
+    {
+      "video_id": "vis-c699253c",
+      "format": "vision",
+      "title": "New AI model predicts record high dipole moments in unexpected molecules",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-1xv8/output/vis-c699253c_final.mp4"
+    },
+    {
+      "video_id": "vis-1204652b",
+      "format": "vision",
+      "title": "DreamPartGen: Semantically Grounded Part-Level 3D Generation via Collaborative Latent Denoising",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-p274/output/vis-1204652b_final.mp4"
+    },
+    {
+      "video_id": "vis-9eb513b3",
+      "format": "vision",
+      "title": "Do VLMs Need Vision Transformers? Evaluating State Space Models as Vision Encoders",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-ytxg/output/vis-9eb513b3_final.mp4"
+    },
+    {
+      "video_id": "vis-ce0158ff",
+      "format": "vision",
+      "title": "F2LLM-v2: Inclusive, Performant, and Efficient Embeddings for a Multilingual World",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-muw4/output/vis-ce0158ff_final.mp4"
+    },
+    {
+      "video_id": "vis-fa225817",
+      "format": "vision",
+      "title": "DriveTok: 3D Driving Scene Tokenization for Unified Multi-View Reconstruction and Understanding",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-8oog/output/vis-fa225817_final.mp4"
+    },
     {
       "video_id": "vis-bfd05f35",
       "format": "vision",
@@ -30,12 +110,124 @@
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260320T23-8xex/output/vis-4725cdc9_final.mp4"
     },
     {
-      "video_id": "dbt-a8493ba3",
+      "video_id": "dbt-8a4e65a4",
       "format": "debate",
-      "title": "Solana (SOL) 📈 0.1%",
+      "title": "I put two AI voice instances in a conversation with each other. Neither figured out they were talking to another AI for ",
       "duration_s": 27,
       "posted": false,
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T08-7x07/output/dbt-a8493ba3_final.mp4"
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T17-rgmb/output/dbt-8a4e65a4_final.mp4"
+    },
+    {
+      "video_id": "dbt-48827d56",
+      "format": "debate",
+      "title": "Bitcoin (BTC) 📈 0.9%",
+      "duration_s": 27,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T16-acy8/output/dbt-48827d56_final.mp4"
+    },
+    {
+      "video_id": "dbt-1a32f141",
+      "format": "debate",
+      "title": "Injective (INJ) 📈 1.6%",
+      "duration_s": 27,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T16-slqx/output/dbt-1a32f141_final.mp4"
+    },
+    {
+      "video_id": "dbt-38ae848a",
+      "format": "debate",
+      "title": "Daily Crypto Discussion - March 21, 2026 (GMT+0)",
+      "duration_s": 27,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T16-608z/output/dbt-38ae848a_final.mp4"
+    },
+    {
+      "video_id": "dbt-221239ea",
+      "format": "debate",
+      "title": "The End of Foundation Era Crypto",
+      "duration_s": 27,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T16-608z/output/dbt-221239ea_final.mp4"
+    },
+    {
+      "video_id": "dbt-fe7ea907",
+      "format": "debate",
+      "title": "[P] I built an open-source benchmark to test if LLMs are actually as confident as they claim to be (Spoiler: They often ",
+      "duration_s": 27,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T16-6xmm/output/dbt-fe7ea907_final.mp4"
+    },
+    {
+      "video_id": "dbt-0b1aa918",
+      "format": "debate",
+      "title": "[D] Seeking feedback: Safe autonomous agents for enterprise systems",
+      "duration_s": 27,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-duws/output/dbt-0b1aa918_final.mp4"
+    },
+    {
+      "video_id": "dbt-016bbd59",
+      "format": "debate",
+      "title": "[P] Interactive 2D and 3D Visualization of GPT-2",
+      "duration_s": 27,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-uncm/output/dbt-016bbd59_final.mp4"
+    },
+    {
+      "video_id": "dbt-4d1bfb74",
+      "format": "debate",
+      "title": "Anthropic's Claude Code had a workspace trust bypass (CVE-2026-33068). Not a prompt injection or AI attack. A configurat",
+      "duration_s": 27,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-shi3/output/dbt-4d1bfb74_final.mp4"
+    },
+    {
+      "video_id": "dbt-d67c9fce",
+      "format": "debate",
+      "title": "[P] Vibecoded on a home PC: building a ~2700 Elo browser-playable neural chess engine with a Karpathy-inspired AI-assist",
+      "duration_s": 27,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-6rtr/output/dbt-d67c9fce_final.mp4"
+    },
+    {
+      "video_id": "dbt-ea6c06f0",
+      "format": "debate",
+      "title": "Medical AI gets 66% worse when you use automated labels for training, and the benchmark hides it! [R][P]",
+      "duration_s": 27,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-1xv8/output/dbt-ea6c06f0_final.mp4"
+    },
+    {
+      "video_id": "dbt-b3178904",
+      "format": "debate",
+      "title": "Metacog: Proprioception, Not Yet Another Memory MCP: A Different Approach to Cross-Session Learning Reinforcement in AI ",
+      "duration_s": 27,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-p274/output/dbt-b3178904_final.mp4"
+    },
+    {
+      "video_id": "dbt-f5f6206a",
+      "format": "debate",
+      "title": "Vitalik Buterin Predicts Death of Crypto if Users Focus Only on Speculation",
+      "duration_s": 27,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-ytxg/output/dbt-f5f6206a_final.mp4"
+    },
+    {
+      "video_id": "dbt-8b317b2f",
+      "format": "debate",
+      "title": "OS-Themis: A Scalable Critic Framework for Generalist GUI Rewards",
+      "duration_s": 27,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-muw4/output/dbt-8b317b2f_final.mp4"
+    },
+    {
+      "video_id": "dbt-188d9427",
+      "format": "debate",
+      "title": "[R] Combining Identity Anchors + Permission Hierarchies achieves 100% refusal in abliterated LLMs — system prompt only, ",
+      "duration_s": 27,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T14-b8qv/output/dbt-188d9427_final.mp4"
     },
     {
       "video_id": "dbt-20a69b48",
@@ -68,6 +260,110 @@
       "duration_s": 27,
       "posted": false,
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260320T21-kfes/output/dbt-b87db595_final.mp4"
+    },
+    {
+      "video_id": "exp-32ca8a52",
+      "format": "explainer",
+      "title": "Katana (KAT) 📉 -3.5%",
+      "duration_s": 25,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T16-slqx/output/exp-32ca8a52_final.mp4"
+    },
+    {
+      "video_id": "exp-1bad905b",
+      "format": "explainer",
+      "title": "Microsoft rolls back some of its Copilot AI bloat on Windows",
+      "duration_s": 25,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-duws/output/exp-1bad905b_final.mp4"
+    },
+    {
+      "video_id": "exp-521a710a",
+      "format": "explainer",
+      "title": "Solana Foundation president says crypto gaming is dead",
+      "duration_s": 25,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-duws/output/exp-521a710a_final.mp4"
+    },
+    {
+      "video_id": "exp-e1bbca6e",
+      "format": "explainer",
+      "title": "Venice Token (VVV) 📈 7.6%",
+      "duration_s": 25,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-uncm/output/exp-e1bbca6e_final.mp4"
+    },
+    {
+      "video_id": "exp-2669eb9b",
+      "format": "explainer",
+      "title": "collaborator-ai/collab-public — Collaborator is a place to create with agents.",
+      "duration_s": 25,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-6rtr/output/exp-2669eb9b_final.mp4"
+    },
+    {
+      "video_id": "exp-bbd75704",
+      "format": "explainer",
+      "title": "How Auditory Knowledge in LLM Backbones Shapes Audio Language Models: A Holistic Evaluation",
+      "duration_s": 25,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-1xv8/output/exp-bbd75704_final.mp4"
+    },
+    {
+      "video_id": "exp-90634101",
+      "format": "explainer",
+      "title": "mattprusak/autoresearch-genealogy — Structured prompts, vault templates, and archive guides for AI-assisted genealog",
+      "duration_s": 25,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-1xv8/output/exp-90634101_final.mp4"
+    },
+    {
+      "video_id": "exp-66520c30",
+      "format": "explainer",
+      "title": "Spectrally-Guided Diffusion Noise Schedules",
+      "duration_s": 25,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-p274/output/exp-66520c30_final.mp4"
+    },
+    {
+      "video_id": "exp-92836288",
+      "format": "explainer",
+      "title": "Infatoshi/OpenSquirrel — For people who get distracted by agents. A native Rust/GPUI control plane for ru",
+      "duration_s": 25,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-ytxg/output/exp-92836288_final.mp4"
+    },
+    {
+      "video_id": "exp-5f00246d",
+      "format": "explainer",
+      "title": "NVIDIA/NemoClaw — Run OpenClaw more securely inside NVIDIA OpenShell with managed inference",
+      "duration_s": 25,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-muw4/output/exp-5f00246d_final.mp4"
+    },
+    {
+      "video_id": "exp-3942bc75",
+      "format": "explainer",
+      "title": "zerobootdev/zeroboot — Sub-millisecond VM sandboxes for AI agents via copy-on-write forking",
+      "duration_s": 25,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-muw4/output/exp-3942bc75_final.mp4"
+    },
+    {
+      "video_id": "exp-1fbf40ad",
+      "format": "explainer",
+      "title": "Virtuals Protocol (VIRTUAL) 📉 -1.1%",
+      "duration_s": 25,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T14-b8qv/output/exp-1fbf40ad_final.mp4"
+    },
+    {
+      "video_id": "exp-d2b1b36f",
+      "format": "explainer",
+      "title": "River (RIVER) 📈 11.6%",
+      "duration_s": 25,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T13-89fs/output/exp-d2b1b36f_final.mp4"
     },
     {
       "video_id": "exp-81a3eec7",
@@ -142,6 +438,46 @@
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260320T23-gd13/output/exp-45a95cc1_final.mp4"
     },
     {
+      "video_id": "lst-96b17ca9",
+      "format": "listicle",
+      "title": "Top 3 solana foundation tools you need to know",
+      "duration_s": 20,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-duws/output/lst-96b17ca9_final.mp4"
+    },
+    {
+      "video_id": "lst-59657981",
+      "format": "listicle",
+      "title": "Top 3 theoretical justification tools you need to know",
+      "duration_s": 20,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-shi3/output/lst-59657981_final.mp4"
+    },
+    {
+      "video_id": "lst-dd571cbf",
+      "format": "listicle",
+      "title": "Top 3 microsoft rolls tools you need to know",
+      "duration_s": 20,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T15-8oog/output/lst-dd571cbf_final.mp4"
+    },
+    {
+      "video_id": "lst-cc2212c8",
+      "format": "listicle",
+      "title": "We asked 200 ChatGPT users their biggest frustration. All top 5 answers are problems ChatGPT Toolbox solves.",
+      "duration_s": 20,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T14-93xe/output/lst-cc2212c8_final.mp4"
+    },
+    {
+      "video_id": "lst-9427cc31",
+      "format": "listicle",
+      "title": "Top 3 britain’s bond tools you need to know",
+      "duration_s": 20,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T14-mnxc/output/lst-9427cc31_final.mp4"
+    },
+    {
       "video_id": "lst-cabd1f02",
       "format": "listicle",
       "title": "Top 3 solana sol tools you need to know",
@@ -180,14 +516,6 @@
       "duration_s": 20,
       "posted": false,
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260321T00-m8h5/output/lst-f8c0351d_final.mp4"
-    },
-    {
-      "video_id": "exp-560203b8",
-      "format": "explainer",
-      "title": "Katana (KAT) 📈 2.2%",
-      "duration_s": 12,
-      "posted": false,
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260320T22-pxzq/output/exp-560203b8_final.mp4"
     },
     {
       "video_id": "exp-72c42c90",
