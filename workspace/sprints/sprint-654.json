@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-654",
+  "title": "EVAL-002 — Cognee evaluation for knowledge graph memory",
+  "description": "Evaluate Cognee (knowledge graph memory library) for BrainX integration. Test: graph construction, query latency, memory footprint on Mac Mini M4 Pro. Compare vs. raw JSONL + nomic-embed-text baseline.",
+  "source": "sprint-queue",
+  "tasks": [
+    {
+      "id": "654-01",
+      "title": "Research Cognee — capabilities, API, knowledge graph architecture",
+      "type": "research",
+      "task_type": "evaluation",
+      "task_target": "workspace/evaluations/eval-002-cognee.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-654"
+    },
+    {
+      "id": "654-02",
+      "title": "Evaluate against 5 criteria and produce recommendation",
+      "type": "feature",
+      "task_type": "evaluation",
+      "task_target": "workspace/evaluations/eval-002-cognee.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-654"
+    }
+  ]
+}
