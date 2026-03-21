@@ -2725,6 +2725,18 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Cost: $1.50
 - Timestamp: 2026-03-21T16:00:00Z
 
+## Sprint 764 — CONTENT
+- Status: PASS
+- Commit: 972d9f7
+- Files created: workspace/sprints/sprint-764.json, 5 script JSONs, radar scan, run report
+- Files modified: workspace/scs001/publish-ledger.jsonl, workspace/scs001/auto-delivered.jsonl
+- Test: 5 final .mp4 files with fresh topics — PASS
+- Pipeline: 554 total ledger entries
+- Swarm used: no (pipeline run directly)
+- Issues: Topic radar thinning — only 5 fresh topics found (32 deduped)
+- Cost: $1.50
+- Timestamp: 2026-03-21T16:30:00Z
+
 ## Sprint 763 — CONTENT
 - Status: PASS
 - Commit: 686cd45
