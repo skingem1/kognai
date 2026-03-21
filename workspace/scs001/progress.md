@@ -1745,3 +1745,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm bypassed: yes (CTO gate rejection). Manual crystallise: done.
 - Issues: None
 - Timestamp: 2026-03-21T12:22:00Z
+
+## Sprint 664 — PIPELINE (Wire radar consolidation into cron)
+- Status: PASS
+- Commit: 13a6be0
+- Files created: workspace/sprints/sprint-664.json
+- Files modified: scripts/scs001/pipeline-cron.ts
+- Test: Compile check + validation — PASS
+- Details: Replaced old keyword extraction in pipeline-cron.ts (lines 67-94) with single call to consolidate-radar.ts. Every pipeline cron run now produces enriched viral-topics.json with trending titles+sources. ~15 lines removed, 5 added.
+- Swarm used: no (direct edit, single file change)
+- Issues: None
+- Timestamp: 2026-03-21T12:24:00Z
