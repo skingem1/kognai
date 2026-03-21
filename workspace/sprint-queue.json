@@ -117,7 +117,8 @@
       "sprint": 743,
       "title": "POSTING \u2014 Export top 10 videos for manual TikTok posting",
       "block": "POSTING",
-      "status": "pending",
+      "status": "done",
+      "_note": "Done: 10 videos exported to workspace/scs001/manual-post-queue/post-manifest.json.",
       "priority": "critical",
       "rationale": "April 7 gate requires 30 posts, currently at 0. Export 10 best videos from publish-ledger (by format diversity, topic freshness). Create workspace/scs001/manual-post-queue/ with videos + metadata for operator to post manually. Critical path to gate."
     }

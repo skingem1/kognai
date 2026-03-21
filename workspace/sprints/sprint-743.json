@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-743",
+  "title": "POSTING — Export top 10 videos for manual TikTok posting",
+  "description": "Created manual-post-queue with 10 videos (diverse formats) + manifest. April 7 gate needs 30 posts, currently at 0.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "743-01",
+      "title": "Create manual-post-queue directory with post manifest",
+      "type": "feature",
+      "task_type": "content",
+      "agent": "coder",
+      "status": "done",
+      "priority": "critical",
+      "sprint_id": "sprint-743"
+    }
+  ]
+}

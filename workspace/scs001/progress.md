@@ -2509,3 +2509,11 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Today's logs confirm execution (auto-deliver sent videos, watchdog checked ledger)
 - No restart needed — stopped between cron runs is expected behavior
 - Timestamp: 2026-03-21T16:30:00Z
+
+## Sprint 743 — POSTING Export Top 10 Videos for Manual TikTok
+- Status: PASS
+- Files created: workspace/scs001/manual-post-queue/post-manifest.json, workspace/sprints/sprint-743.json
+- Exported: 10 videos (3 explainer, 3 listicle, 2 debate, 2 vision)
+- All videos verified to exist on disk
+- Gate urgency: 0/30 posts, 17 days to April 7
+- Timestamp: 2026-03-21T16:40:00Z
