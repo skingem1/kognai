@@ -18,9 +18,10 @@
       "sprint": 745,
       "title": "CONTENT \u2014 Batch 2: multiformat videos (clear seen-topics + produce 5+)",
       "block": "CONTENT",
-      "status": "pending",
+      "status": "done",
       "priority": "critical",
-      "rationale": "Continue content production for April 7 gate. Clear seen-topics, run pipeline, target 5+ new videos. Keep ledger growing."
+      "rationale": "Continue content production for April 7 gate. Clear seen-topics, run pipeline, target 5+ new videos. Keep ledger growing.",
+      "_note": "Done: 5 new videos ($1.50), ledger at 492."
     },
     {
       "sprint": 746,
