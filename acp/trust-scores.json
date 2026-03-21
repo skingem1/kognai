@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "updated": "2026-03-20",
+  "updated": "2026-03-21",
   "description": "ACP v1.0 — multi-dimensional trust scores. 5 dimensions: safety, accuracy, brand_alignment, cultural_sensitivity, legal_compliance. Composite score = weighted average. Enforcement: agents below dimension threshold are blocked from routing.",
   "dimensions": {
     "safety": { "weight": 0.30, "description": "Content safety — no harmful, violent, or inappropriate output" },
@@ -81,6 +81,276 @@
       "legal_compliance": 70,
       "composite": 71,
       "last_updated": "2026-03-20"
+    },
+    "coder": {
+      "safety": 80,
+      "accuracy": 72,
+      "brand_alignment": 70,
+      "cultural_sensitivity": 70,
+      "legal_compliance": 75,
+      "composite": 74,
+      "last_updated": "2026-03-21"
+    },
+    "supervisor": {
+      "safety": 90,
+      "accuracy": 85,
+      "brand_alignment": 80,
+      "cultural_sensitivity": 78,
+      "legal_compliance": 85,
+      "composite": 85,
+      "last_updated": "2026-03-21"
+    },
+    "constitution": {
+      "safety": 95,
+      "accuracy": 85,
+      "brand_alignment": 90,
+      "cultural_sensitivity": 85,
+      "legal_compliance": 92,
+      "composite": 90,
+      "last_updated": "2026-03-21"
+    },
+    "intelligence": {
+      "safety": 82,
+      "accuracy": 78,
+      "brand_alignment": 72,
+      "cultural_sensitivity": 70,
+      "legal_compliance": 75,
+      "composite": 77,
+      "last_updated": "2026-03-21"
+    },
+    "scs001-orchestrator": {
+      "safety": 85,
+      "accuracy": 80,
+      "brand_alignment": 75,
+      "cultural_sensitivity": 72,
+      "legal_compliance": 78,
+      "composite": 79,
+      "last_updated": "2026-03-21"
+    },
+    "scs001-analytics": {
+      "safety": 85,
+      "accuracy": 80,
+      "brand_alignment": 72,
+      "cultural_sensitivity": 70,
+      "legal_compliance": 78,
+      "composite": 78,
+      "last_updated": "2026-03-21"
+    },
+    "scs001-broadcast": {
+      "safety": 82,
+      "accuracy": 75,
+      "brand_alignment": 78,
+      "cultural_sensitivity": 75,
+      "legal_compliance": 80,
+      "composite": 78,
+      "last_updated": "2026-03-21"
+    },
+    "scs001-caption": {
+      "safety": 82,
+      "accuracy": 75,
+      "brand_alignment": 80,
+      "cultural_sensitivity": 78,
+      "legal_compliance": 78,
+      "composite": 79,
+      "last_updated": "2026-03-21"
+    },
+    "scs001-clip-detection": {
+      "safety": 80,
+      "accuracy": 78,
+      "brand_alignment": 70,
+      "cultural_sensitivity": 70,
+      "legal_compliance": 75,
+      "composite": 76,
+      "last_updated": "2026-03-21"
+    },
+    "scs001-discovery": {
+      "safety": 80,
+      "accuracy": 78,
+      "brand_alignment": 72,
+      "cultural_sensitivity": 72,
+      "legal_compliance": 75,
+      "composite": 76,
+      "last_updated": "2026-03-21"
+    },
+    "scs001-editing": {
+      "safety": 80,
+      "accuracy": 75,
+      "brand_alignment": 75,
+      "cultural_sensitivity": 72,
+      "legal_compliance": 75,
+      "composite": 76,
+      "last_updated": "2026-03-21"
+    },
+    "scs001-failure-library": {
+      "safety": 85,
+      "accuracy": 82,
+      "brand_alignment": 72,
+      "cultural_sensitivity": 70,
+      "legal_compliance": 78,
+      "composite": 79,
+      "last_updated": "2026-03-21"
+    },
+    "scs001-flywheel": {
+      "safety": 82,
+      "accuracy": 78,
+      "brand_alignment": 75,
+      "cultural_sensitivity": 72,
+      "legal_compliance": 78,
+      "composite": 78,
+      "last_updated": "2026-03-21"
+    },
+    "scs001-insight": {
+      "safety": 82,
+      "accuracy": 80,
+      "brand_alignment": 72,
+      "cultural_sensitivity": 70,
+      "legal_compliance": 75,
+      "composite": 77,
+      "last_updated": "2026-03-21"
+    },
+    "scs001-publishing": {
+      "safety": 85,
+      "accuracy": 78,
+      "brand_alignment": 80,
+      "cultural_sensitivity": 75,
+      "legal_compliance": 82,
+      "composite": 81,
+      "last_updated": "2026-03-21"
+    },
+    "scs001-qc": {
+      "safety": 90,
+      "accuracy": 85,
+      "brand_alignment": 80,
+      "cultural_sensitivity": 78,
+      "legal_compliance": 85,
+      "composite": 85,
+      "last_updated": "2026-03-21"
+    },
+    "scs001-scorer": {
+      "safety": 82,
+      "accuracy": 80,
+      "brand_alignment": 72,
+      "cultural_sensitivity": 70,
+      "legal_compliance": 75,
+      "composite": 77,
+      "last_updated": "2026-03-21"
+    },
+    "scs001-script": {
+      "safety": 82,
+      "accuracy": 75,
+      "brand_alignment": 78,
+      "cultural_sensitivity": 75,
+      "legal_compliance": 78,
+      "composite": 78,
+      "last_updated": "2026-03-21"
+    },
+    "scs001-script-validator": {
+      "safety": 88,
+      "accuracy": 85,
+      "brand_alignment": 78,
+      "cultural_sensitivity": 75,
+      "legal_compliance": 82,
+      "composite": 83,
+      "last_updated": "2026-03-21"
+    },
+    "scs001-trend": {
+      "safety": 80,
+      "accuracy": 78,
+      "brand_alignment": 75,
+      "cultural_sensitivity": 72,
+      "legal_compliance": 75,
+      "composite": 77,
+      "last_updated": "2026-03-21"
+    },
+    "scs001-experiment": {
+      "safety": 80,
+      "accuracy": 75,
+      "brand_alignment": 70,
+      "cultural_sensitivity": 70,
+      "legal_compliance": 75,
+      "composite": 75,
+      "last_updated": "2026-03-21"
+    },
+    "scs001-viral-downloader": {
+      "safety": 78,
+      "accuracy": 75,
+      "brand_alignment": 70,
+      "cultural_sensitivity": 70,
+      "legal_compliance": 72,
+      "composite": 74,
+      "last_updated": "2026-03-21"
+    },
+    "telegram-bot": {
+      "safety": 85,
+      "accuracy": 80,
+      "brand_alignment": 78,
+      "cultural_sensitivity": 75,
+      "legal_compliance": 80,
+      "composite": 81,
+      "last_updated": "2026-03-21"
+    },
+    "tiktok-client": {
+      "safety": 82,
+      "accuracy": 78,
+      "brand_alignment": 80,
+      "cultural_sensitivity": 75,
+      "legal_compliance": 82,
+      "composite": 80,
+      "last_updated": "2026-03-21"
+    },
+    "vision-scorer": {
+      "safety": 82,
+      "accuracy": 80,
+      "brand_alignment": 72,
+      "cultural_sensitivity": 70,
+      "legal_compliance": 75,
+      "composite": 77,
+      "last_updated": "2026-03-21"
+    },
+    "stripe": {
+      "safety": 90,
+      "accuracy": 85,
+      "brand_alignment": 78,
+      "cultural_sensitivity": 72,
+      "legal_compliance": 90,
+      "composite": 85,
+      "last_updated": "2026-03-21"
+    },
+    "achiri": {
+      "safety": 90,
+      "accuracy": 82,
+      "brand_alignment": 88,
+      "cultural_sensitivity": 90,
+      "legal_compliance": 85,
+      "composite": 87,
+      "last_updated": "2026-03-21"
+    },
+    "archive-scraper": {
+      "safety": 78,
+      "accuracy": 75,
+      "brand_alignment": 68,
+      "cultural_sensitivity": 70,
+      "legal_compliance": 72,
+      "composite": 73,
+      "last_updated": "2026-03-21"
+    },
+    "caption-generator": {
+      "safety": 82,
+      "accuracy": 75,
+      "brand_alignment": 80,
+      "cultural_sensitivity": 78,
+      "legal_compliance": 78,
+      "composite": 79,
+      "last_updated": "2026-03-21"
+    },
+    "ceo": {
+      "safety": 92,
+      "accuracy": 88,
+      "brand_alignment": 90,
+      "cultural_sensitivity": 85,
+      "legal_compliance": 90,
+      "composite": 90,
+      "last_updated": "2026-03-21"
     }
   },
   "thresholds": {

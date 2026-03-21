@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-725",
+  "title": "FIX — Add missing agent IDs to ACP trust-scores.json",
+  "description": "Add coder, supervisor, constitution, intelligence, and all scs001-* agents to trust-scores.json so the ACP engine stops blocking swarm execution with 'agent not found' errors.",
+  "source": "auto-queue-empty",
+  "tasks": [
+    {
+      "id": "725-01",
+      "title": "Add missing agent trust scores to acp/trust-scores.json",
+      "type": "fix",
+      "task_type": "infra",
+      "task_target": "acp/trust-scores.json",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-725"
+    }
+  ]
+}
