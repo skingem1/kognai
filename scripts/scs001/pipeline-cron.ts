@@ -75,37 +75,36 @@ async function main() {
     console.log('[pipeline-cron] Radar failed — using existing viral-topics.json');
   }
 
-  // Step 1: Run pipeline
-  const pipelineOk = run(
-    `npx ts-node scripts/scs001/run-full-pipeline.ts --mock --limit ${limit}`,
-    `Pipeline (${limit} videos)`,
-    600000 // 10min
+  // Step 1: Legacy archive pipeline — DISABLED (2026-03-22)
+  // Legacy pipeline used Internet Archive clips with template captions.
+  // Replaced by multiformat pipeline which generates original content (LLM scripts + TTS + Pillow visuals).
+  // Failure logs and memory preserved in workspace/scs001/run-* directories.
+  const pipelineOk = true; // Skip legacy, treat as OK
+  console.log(`[pipeline-cron] Legacy pipeline DISABLED — using multiformat pipeline only`);
+
+  // Step 1B: Run multiformat pipeline (primary pipeline — LLM scripts + TTS + original content)
+  // Sprint 722: Always force-refresh to clear dedup cache — same 22 topics from 5 sources
+  // rotate every run. Without this, pipeline produces 0 videos after first run.
+  const mfOk = run(
+    `npx ts-node --transpile-only scripts/scs001/run-multiformat-pipeline.ts --force-refresh --max=${limit}`,
+    `Multiformat pipeline (${limit} videos)`,
+    300000 // 5min
   );
 
-  if (!pipelineOk) {
-    // Sprint 570: Log pipeline failures
+  if (!mfOk) {
     try {
       const { appendFileSync } = require('fs');
       const errEntry = JSON.stringify({
         type: 'pipeline-cron-failure',
-        stage: 'pipeline',
+        stage: 'multiformat',
         timestamp: now,
         limit,
-        error: 'Pipeline process exited with non-zero or timed out',
+        error: 'Multiformat pipeline exited with non-zero or timed out',
       });
       appendFileSync(join(ROOT, 'workspace', 'scs001', 'validation-errors.jsonl'), errEntry + '\n');
     } catch {}
-    await sendTelegram(`🚨 *Pipeline Cron FAILED*\nTime: ${now}\nLimit: ${limit}`);
-    process.exit(1);
-    return;
+    await sendTelegram(`🚨 *Multiformat Pipeline FAILED*\nTime: ${now}\nLimit: ${limit}`);
   }
-
-  // Step 1B: Run multiformat pipeline (Sprint 606 — 25s explainers + debates)
-  const mfOk = run(
-    'npx ts-node --transpile-only scripts/scs001/run-multiformat-pipeline.ts',
-    'Multiformat pipeline',
-    180000 // 3min
-  );
 
   // Step 1C: Update video inventory (Sprint 606)
   run(
@@ -147,11 +146,10 @@ async function main() {
     }
   } catch {}
 
-  const status = pipelineOk && deliverOk ? 'OK' : 'PARTIAL';
+  const status = mfOk && deliverOk ? 'OK' : 'PARTIAL';
   await sendTelegram(
     `📊 *Pipeline Cron ${status}*\n` +
-    `Legacy: ${pipelineOk ? '✅' : '❌'} · Multiformat: ${mfOk ? '✅' : '❌'}\n` +
-    `Deliver: ${deliverOk ? '✅' : '❌'}` +
+    `Multiformat: ${mfOk ? '✅' : '❌'} · Deliver: ${deliverOk ? '✅' : '❌'}` +
     inventoryInfo +
     `\nTime: ${now}`
   );

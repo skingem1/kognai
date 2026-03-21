@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-722",
+  "title": "FIX — Pipeline cron force-refresh to prevent topic exhaustion",
+  "description": "Fix pipeline-cron.ts to always use --force-refresh flag. Without this, the PM2 cron produces 0 videos after the first run because all 22 topics from 5 sources are marked as seen.",
+  "source": "auto-queue-empty",
+  "tasks": [
+    {
+      "id": "722-01",
+      "title": "Add --force-refresh to pipeline-cron.ts multiformat invocation",
+      "type": "fix",
+      "task_type": "content",
+      "task_target": "scripts/scs001/pipeline-cron.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "critical",
+      "sprint_id": "sprint-722"
+    }
+  ]
+}
