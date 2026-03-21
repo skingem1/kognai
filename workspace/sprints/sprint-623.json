@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-623",
+  "title": "INFRA — Add /waitlist operator command for Achiri alpha management",
+  "description": "Operator needs to manage Achiri waitlist from Telegram. Adds /waitlist command showing waitlist users, recent signups, and /waitlist approve <chatId> to add to alpha-whitelist.jsonl.",
+  "source": "achiri-phase2a",
+  "tasks": [
+    {
+      "id": "623-01",
+      "title": "Add cmdWaitlist function to cmd-stripe.ts (Achiri section)",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/telegram-commands/cmd-stripe.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-623"
+    },
+    {
+      "id": "623-02",
+      "title": "Wire /waitlist command in telegram-bot.ts",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/telegram-bot.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-623"
+    }
+  ]
+}

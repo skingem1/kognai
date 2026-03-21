@@ -53,6 +53,7 @@ export function cmdHelp(): string {
     `/updateviews — Update view count for a posted video\n` +
     `/achiri     — Achiri alpha readiness status\n` +
     `/achiridata — Achiri analytics dashboard data\n` +
+    `/waitlist   — Achiri waitlist management\n` +
     `/digest     — Daily digest: gate + queue + Stripe\n` +
     `/metrics    — Pipeline performance metrics\n` +
     `/pace       — Posting velocity & gate projection\n` +

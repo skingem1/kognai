@@ -497,3 +497,113 @@ export function cmdAchiriData(): string {
     return `❌ Analytics export failed: ${(e.message ?? '').slice(0, 200)}`;
   }
 }
+
+// Sprint 623: /waitlist — Achiri alpha waitlist management
+const WAITLIST_PATH = path.join(ROOT, 'workspace', 'achiri', 'waitlist.jsonl');
+const ALPHA_WHITELIST_PATH = path.join(ROOT, 'workspace', 'achiri', 'alpha-whitelist.jsonl');
+
+interface WaitlistEntry {
+  chatId: string;
+  firstName: string;
+  username: string;
+  joinedAt: string;
+}
+
+function loadWaitlist(): WaitlistEntry[] {
+  if (!fs.existsSync(WAITLIST_PATH)) return [];
+  return fs.readFileSync(WAITLIST_PATH, 'utf-8')
+    .split('\n').filter(l => l.trim())
+    .map(l => { try { return JSON.parse(l); } catch { return null; } })
+    .filter(Boolean) as WaitlistEntry[];
+}
+
+function loadWhitelist(): Set<string> {
+  if (!fs.existsSync(ALPHA_WHITELIST_PATH)) return new Set();
+  return new Set(
+    fs.readFileSync(ALPHA_WHITELIST_PATH, 'utf-8')
+      .split('\n').filter(l => l.trim())
+      .map(l => { try { return JSON.parse(l).chatId; } catch { return null; } })
+      .filter(Boolean) as string[]
+  );
+}
+
+function approveUser(chatId: string): { ok: boolean; entry?: WaitlistEntry; error?: string } {
+  const waitlist = loadWaitlist();
+  const whitelist = loadWhitelist();
+
+  if (whitelist.has(chatId)) return { ok: false, error: 'Already approved' };
+
+  const entry = waitlist.find(w => w.chatId === chatId);
+  if (!entry) return { ok: false, error: 'Not found on waitlist' };
+
+  // Append to whitelist
+  const dir = path.dirname(ALPHA_WHITELIST_PATH);
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+  fs.appendFileSync(ALPHA_WHITELIST_PATH, JSON.stringify({
+    chatId: entry.chatId,
+    firstName: entry.firstName,
+    username: entry.username,
+    approvedAt: new Date().toISOString(),
+  }) + '\n', 'utf-8');
+
+  return { ok: true, entry };
+}
+
+export function cmdWaitlist(args: string): string {
+  const parts = args.trim().split(/\s+/);
+  const subCmd = parts[0]?.toLowerCase();
+
+  // /waitlist approve <chatId>
+  if (subCmd === 'approve' && parts[1]) {
+    const result = approveUser(parts[1]);
+    if (result.ok) {
+      return `✅ *Approved:* ${result.entry!.firstName} (@${result.entry!.username || 'n/a'})\nChat ID: \`${result.entry!.chatId}\`\n\n_User can now access Achiri._`;
+    }
+    return `❌ ${result.error} (${parts[1]})`;
+  }
+
+  // /waitlist approve-all
+  if (subCmd === 'approve-all') {
+    const waitlist = loadWaitlist();
+    const whitelist = loadWhitelist();
+    const toApprove = waitlist.filter(w => !whitelist.has(w.chatId));
+    if (toApprove.length === 0) return '✅ All waitlisted users are already approved.';
+
+    let approved = 0;
+    for (const entry of toApprove) {
+      const result = approveUser(entry.chatId);
+      if (result.ok) approved++;
+    }
+    return `✅ *Approved ${approved} users* from waitlist.\n\n_All waitlisted users now have alpha access._`;
+  }
+
+  // Default: show waitlist status
+  const waitlist = loadWaitlist();
+  const whitelist = loadWhitelist();
+  const pending = waitlist.filter(w => !whitelist.has(w.chatId));
+
+  const lines: string[] = [
+    '📋 *Achiri Waitlist*',
+    '',
+    `Total: *${waitlist.length}* | Approved: *${whitelist.size}* | Pending: *${pending.length}*`,
+    '',
+  ];
+
+  // Show last 10 pending
+  if (pending.length > 0) {
+    lines.push('*Recent pending:*');
+    const recent = pending.slice(-10).reverse();
+    for (const entry of recent) {
+      const date = entry.joinedAt ? new Date(entry.joinedAt).toISOString().slice(0, 10) : '?';
+      lines.push(`  • ${entry.firstName} (@${entry.username || 'n/a'}) — \`${entry.chatId}\` — ${date}`);
+    }
+    lines.push('');
+    lines.push('_Commands:_');
+    lines.push('/waitlist approve <chatId>');
+    lines.push('/waitlist approve-all');
+  } else {
+    lines.push('✅ No pending users — all approved!');
+  }
+
+  return lines.join('\n');
+}

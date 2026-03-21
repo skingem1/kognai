@@ -30,7 +30,7 @@ import { cmdHelp } from './telegram-commands/cmd-help';
 // Sprint 496: Import extracted command modules (Part 2: N-Z + interactive)
 import { cmdSession, cmdDone, cmdEndSession, cmdMenu } from './telegram-commands/cmd-session';
 import { cmdDeliver, cmdPublish, cmdPostNow, cmdPickup, cmdTodayCaptions, cmdBroadcast, cmdRefresh, cmdProduce, cmdInstagram, cmdInventory, cmdBatchDeliver, cmdStockpile } from './telegram-commands/cmd-delivery';
-import { cmdCheckout, cmdSubscribers, cmdPortal, cmdFunnel, cmdAchiri, cmdTestStripe, cmdUsage, cmdAchiriData } from './telegram-commands/cmd-stripe';
+import { cmdCheckout, cmdSubscribers, cmdPortal, cmdFunnel, cmdAchiri, cmdTestStripe, cmdUsage, cmdAchiriData, cmdWaitlist } from './telegram-commands/cmd-stripe';
 import { cmdStart, cmdTrial, cmdPlans } from './telegram-commands/cmd-onboarding';
 
 // ─── Env validation ──────────────────────────────────────────────────
@@ -201,6 +201,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/formatstats': response = cmdFormatStats();        break;
     case '/changelog': response = cmdChangelog(parseInt(cmdArgs) || 10); break;
     case '/achiridata': response = cmdAchiriData();          break;
+    case '/waitlist':   response = cmdWaitlist(cmdArgs);      break;
     case '/help':        response = cmdHelp();        break;
     default:
       response = `Unknown command: \`${cmdName}\`\n\n${cmdHelp()}`;
