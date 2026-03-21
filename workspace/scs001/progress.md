@@ -1968,3 +1968,13 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (multi-file bugfix, wrote directly)
 - Issues: none
 - Timestamp: 2026-03-21T23:45:00Z
+
+## Sprint 690 — AMD-15
+- Status: PASS
+- Commit: ffad370
+- Files created: scripts/lora-corpus-extract.ts, scripts/scs001/validate-lora-corpus.ts, vault/training/corpus-r1.jsonl, vault/training/corpus-r1-meta.json, workspace/sprints/sprint-690.json
+- Test: scripts/scs001/validate-lora-corpus.ts — 16/16 PASS
+- Pipeline: AMD-15 Phase 1 data pipeline. 282 approved tasks extracted from 597 sprint files (161 sprints, 25 task types). Constitutional filter: excludes credentials, failure library, sovereignty violations. SHA-256: 38222f32ade55dbedbf666fb7909c081c7602753f213e40ce44fa4d6e3c4a12a
+- Swarm used: no (cross-file analysis of 597 sprints, wrote directly)
+- Issues: none
+- Timestamp: 2026-03-21T23:55:00Z
