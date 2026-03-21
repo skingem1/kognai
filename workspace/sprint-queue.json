@@ -10,7 +10,7 @@
       "sprint": 701,
       "title": "GOV — AAR health check + add rejection path logging",
       "block": "GOV-PHASE1",
-      "status": "pending",
+      "status": "done",
       "priority": "critical",
       "rationale": "GOVERNANCE REMEDIATION Phase 1. AAR middleware only logs SUCCESSES (orchestrate-agents-v2.ts line ~2465). Rejections at line ~2493 are invisible to audit trail. (1) Verify AAR still fires on approval path. (2) Add AARMiddleware.generateAndLog() on the REJECTION path with status='rejected'. (3) Run a test sprint to produce a 2026-03-22+ AAR entry. Deliverable: logs/aar/ with both success AND rejection entries. SURGICAL EDIT ONLY — do NOT rewrite the orchestrator file (3100 lines, FP-007)."
     },
