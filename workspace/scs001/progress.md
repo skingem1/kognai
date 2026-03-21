@@ -2120,3 +2120,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (content creation, wrote directly)
 - Issues: none
 - Timestamp: 2026-03-21T12:55:00Z
+
+## Sprint 711 — GOV — Backfill constitutional signals from failure library + AAR
+- Status: PASS
+- Commit: e6ddc8d
+- Files created: scripts/backfill-signals.ts, reports/constitution/backfill-2026-W13.md, workspace/sprints/sprint-711.json
+- Files modified: workspace/shared-context/SIGNALS.md
+- Test: npx ts-node scripts/backfill-signals.ts — 4 signals identified from 13 AAR + 7 validation errors
+- Pipeline: GOV Phase 3 in progress. Backfill signals: coder 92% concentration, 5 low-score approvals, 7 val errors, low diversity.
+- Swarm used: no (analysis script, wrote directly)
+- Issues: none
+- Timestamp: 2026-03-21T13:00:00Z

@@ -90,7 +90,7 @@
       "sprint": 711,
       "title": "GOV — Backfill constitutional signals from failure library + AAR",
       "block": "GOV-PHASE3",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "GOVERNANCE REMEDIATION Phase 3. Create scripts/backfill-signals.ts (~80 lines): read 564 failure library entries + AAR logs, identify patterns, generate historical report to reports/constitution/backfill-2026-W12.md, extract 3-5 key signals to SIGNALS.md."
     },
