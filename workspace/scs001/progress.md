@@ -2971,8 +2971,20 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Cost: $0.00
 - Timestamp: 2026-03-21T19:05:00Z
 
-## Session 28 Final Summary (Sprints 770-779)
-- 10 sprints shipped
+## Sprint 780 — OPS
+- Status: PASS
+- Commit: d27db35
+- Files created: workspace/sprints/sprint-780.json
+- Files modified: scripts/scs001/posting-auto-deliver.ts
+- Test: batch size verified — PASS
+- Pipeline: Auto-deliver now 3/run × 3 runs/day = 9 videos/day
+- Swarm used: no (1-line change)
+- Issues: None
+- Cost: $0.00
+- Timestamp: 2026-03-21T19:10:00Z
+
+## Session 28 Final Summary (Sprints 770-780)
+- 11 sprints shipped
 - 20 new videos produced (~$7.50 total avatar cost)
 - Ledger: 572 → 606 (+34)
 - 3 new radar sources added (Dev.to, Lobsters, TechCrunch), Reddit expanded 4→8 subs
@@ -2984,5 +2996,6 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Bug fix: dry-run no longer pollutes publish-ledger (was amplifying topic saturation)
 - /queue command enhanced: curated manifest shown at top
 - YouTube OAuth helper built: scripts/youtube-oauth-setup.ts
-- HANDOFF: next session starts at Sprint 780, read sprint-brief.md first
+- Auto-deliver batch increased: 1 → 3 per run (9/day total)
+- HANDOFF: next session starts at Sprint 781, read sprint-brief.md first
 - CRITICAL: Operator must start manual TikTok posting (29 posts needed in 17 days, 2/day pace)
