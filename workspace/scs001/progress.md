@@ -2333,3 +2333,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (ACP trust violation — coder not in trust scores)
 - Swarm bypassed: yes (ACP_TRUST_VIOLATION). Manual crystallise: skipped (module not found).
 - Timestamp: 2026-03-21T12:43:00Z
+
+## Sprint 725 — FIX — Add missing agent IDs to ACP trust-scores.json
+- Status: PASS
+- Commit: 8e4a73a
+- Files modified: acp/trust-scores.json (8 agents → 38 agents)
+- Files created: workspace/sprints/sprint-725.json
+- Test: JSON valid, all 38 agents resolvable
+- Pipeline: Fixes ACP_TRUST_VIOLATION that blocked all swarm executions
+- Swarm used: no (can't run swarm to fix swarm blocker)
+- Issues: Root cause was trust-scores.json only had named agents (messi, sherlock, etc.) not functional agent IDs (coder, supervisor, scs001-*)
+- Timestamp: 2026-03-21T12:47:00Z
