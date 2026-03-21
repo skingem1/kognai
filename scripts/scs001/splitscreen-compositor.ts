@@ -559,6 +559,8 @@ export function composite(input: CompositorInput): CompositorResult {
       return compositeDebate(input);
     case 'vision':
       return compositeVision(input);
+    case 'listicle':
+      return compositeExplainer(input); // Same layout as explainer (full-screen vertical)
     default:
       return compositeExplainer(input);
   }

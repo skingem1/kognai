@@ -136,7 +136,7 @@ function main(): void {
   }
 
   // Deduplicate: keep the best video per topic (longest duration, prefer debate > explainer)
-  const formatPriority: Record<string, number> = { debate: 3, vision: 2, explainer: 1 };
+  const formatPriority: Record<string, number> = { debate: 3, vision: 2, listicle: 2, explainer: 1 };
   const byTopic = new Map<string, InventoryEntry>();
 
   for (const v of allVideos) {

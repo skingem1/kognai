@@ -1,10 +1,10 @@
 /**
  * SCS-001 — Multi-Format Video Pipeline Runner
  *
- * End-to-end pipeline for the 3-format video content system:
+ * End-to-end pipeline for the 4-format video content system:
  *
  *   1. Topic Radar   → Collect real-world topics from 5 sources
- *   2. Script Gen     → Generate format-specific scripts (explainer/debate/vision)
+ *   2. Script Gen     → Generate format-specific scripts (explainer/debate/vision/listicle)
  *   3. TTS            → Generate voiceovers per speaker (ElevenLabs / macOS say)
  *   4. Avatar Gen     → Generate AI avatar clips via Captions.ai
  *   5. Compositor     → FFmpeg split-screen composition
@@ -12,7 +12,7 @@
  *   7. Output         → Final videos ready for posting
  *
  * Usage:
- *   npx ts-node scripts/scs001/run-multiformat-pipeline.ts [--dry-run] [--force-refresh] [--format explainer|debate|vision]
+ *   npx ts-node scripts/scs001/run-multiformat-pipeline.ts [--dry-run] [--force-refresh] [--format explainer|debate|vision|listicle]
  *
  * Env vars:
  *   CAPTIONS_API_KEY   — Captions.ai API key (required for real avatars)
@@ -84,6 +84,13 @@ const AVATAR_CONFIGS: Record<string, AvatarConfig> = {
     background: 'transparent',
     resolution: '1080p',
     aspect_ratio: '1:1',
+  },
+  // Type 4 (Sprint 613): Full screen vertical, same as explainer
+  listicle: {
+    avatar_id: 'default',
+    background: 'studio',
+    resolution: '1080p',
+    aspect_ratio: '9:16',
   },
 };
 

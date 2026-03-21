@@ -1,0 +1,41 @@
+{
+  "sprint_id": "sprint-614",
+  "title": "CONTENT — Wire listicle format into multiformat pipeline + update docs",
+  "description": "Add listicle avatar config to run-multiformat-pipeline.ts, update pipeline CLI to accept --format listicle, update scan-video-inventory to report listicle format.",
+  "source": "follow-up-sprint-613",
+  "tasks": [
+    {
+      "id": "614-01",
+      "title": "Add listicle avatar config to run-multiformat-pipeline.ts",
+      "type": "enhancement",
+      "task_type": "content",
+      "task_target": "scripts/scs001/run-multiformat-pipeline.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-614"
+    },
+    {
+      "id": "614-02",
+      "title": "Update pipeline header and CLI help to mention listicle format",
+      "type": "enhancement",
+      "task_type": "content",
+      "task_target": "scripts/scs001/run-multiformat-pipeline.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-614"
+    },
+    {
+      "id": "614-03",
+      "title": "Update scan-video-inventory.ts to recognize listicle format",
+      "type": "enhancement",
+      "task_type": "content",
+      "task_target": "scripts/scs001/scan-video-inventory.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-614"
+    }
+  ]
+}
