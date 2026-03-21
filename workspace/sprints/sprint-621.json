@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-621",
+  "title": "ACHIRI — Wire /upgrade command to Telegram bot for TND tier upgrades",
+  "description": "PayMee integration exists but is not wired to the Achiri Telegram bot. Users have no way to upgrade from free to paid tiers. This sprint adds /upgrade command that shows tier comparison and generates PayMee checkout URLs.",
+  "source": "achiri-phase2a",
+  "tasks": [
+    {
+      "id": "621-01",
+      "title": "Add handleUpgrade function + wire /upgrade command in telegram-bot.ts",
+      "type": "feature",
+      "task_type": "achiri",
+      "task_target": "agents/achiri/telegram-bot.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-621"
+    },
+    {
+      "id": "621-02",
+      "title": "Add /upgrade to help menu",
+      "type": "feature",
+      "task_type": "achiri",
+      "task_target": "agents/achiri/telegram-bot.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-621"
+    }
+  ]
+}

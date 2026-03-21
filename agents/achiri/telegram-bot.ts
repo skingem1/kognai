@@ -10,6 +10,7 @@ import { AchiriConversationHandler, ACHIRI_LIMIT_EXCEEDED } from './index';
 import { AchiriMemoryStore } from './memory-store';
 import { extractUserProfile } from './user-profile';
 import { loadSummary } from './conversation-summary';
+import { createCheckoutUrl } from './paymee';
 
 const BOT_TOKEN = process.env.ACHIRI_TELEGRAM_BOT_TOKEN || '';
 if (!BOT_TOKEN) {
@@ -187,6 +188,7 @@ async function handleHelp(chatId: string): Promise<void> {
     `/translate — Darija/French/English translator\n` +
     `/memory — See what Achiri remembers about you\n` +
     `/invite — Share Achiri with friends\n` +
+    `/upgrade — Upgrade to paid tier\n` +
     `/feedback — Send us feedback\n` +
     `/about — About Achiri\n\n` +
     `Or just send me a message and we'll chat! 💬`
@@ -900,6 +902,57 @@ function handleTranslate(args: string): string {
   return lines.join('\n');
 }
 
+// Sprint 621: /upgrade — tier comparison + PayMee checkout
+async function handleUpgrade(chatId: string, args: string, firstName: string): Promise<void> {
+  const tier = args.toLowerCase().trim();
+
+  // No args: show tier comparison
+  if (!tier || (tier !== 'basic' && tier !== 'premium')) {
+    await sendMessage(chatId,
+      `✨ *Achiri Tiers*\n\n` +
+      `🆓 *Free* (current)\n` +
+      `• 50 messages/day\n` +
+      `• Basic conversation history (50 turns)\n` +
+      `• Cultural context\n\n` +
+      `💎 *Basic* — 9 TND/month\n` +
+      `• Unlimited messages\n` +
+      `• Extended memory (200 turns)\n` +
+      `• Semantic memory search\n` +
+      `• Claude Haiku model\n\n` +
+      `👑 *Premium* — 25 TND/month\n` +
+      `• Unlimited messages\n` +
+      `• Extended memory (500 turns)\n` +
+      `• Semantic memory search\n` +
+      `• Voice messages\n` +
+      `• Claude Sonnet model\n\n` +
+      `_To upgrade:_\n` +
+      `/upgrade basic — 9 TND/month\n` +
+      `/upgrade premium — 25 TND/month`
+    );
+    return;
+  }
+
+  const paymTier = tier === 'basic' ? 'tnd_basic' as const : 'tnd_premium' as const;
+
+  try {
+    const result = await createCheckoutUrl({
+      userId: chatId,
+      tier: paymTier,
+      firstName: firstName || undefined,
+    });
+    const mockNote = result.mock ? '\n\n⚠️ _Test mode — payment not charged_' : '';
+    await sendMessage(chatId,
+      `💳 *Upgrade to ${tier === 'basic' ? 'Basic' : 'Premium'}*\n\n` +
+      `Amount: *${result.amount_tnd} TND/month*\n` +
+      `Order: \`${result.order_id}\`\n\n` +
+      `[Pay with PayMee →](${result.checkout_url})${mockNote}`
+    );
+  } catch (err) {
+    console.error('[Achiri-TG] upgrade error:', err);
+    await sendMessage(chatId, '❌ Payment link generation failed. Please try again later.');
+  }
+}
+
 // --- Main message handler ---
 
 async function handleMessage(chatId: string, text: string, firstName: string, username: string): Promise<void> {
@@ -921,6 +974,7 @@ async function handleMessage(chatId: string, text: string, firstName: string, us
   if (cmd === '/learn') return handleLearn(chatId, args);
   if (cmd === '/translate') return sendMessage(chatId, handleTranslate(args));
   if (cmd === '/memory') return handleMemory(chatId, args);
+  if (cmd === '/upgrade') return handleUpgrade(chatId, args, firstName);
 
   // Access check
   if (!hasAccess(chatId)) {
