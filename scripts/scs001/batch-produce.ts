@@ -45,21 +45,21 @@ async function main(): Promise<void> {
     const startTime = Date.now();
 
     try {
-      // Sprint 605: Use --force-refresh on first run to clear stale dedup cache
       // Sprint 696: Rotate formats for variety (explainer, debate, vision, listicle)
+      // Sprint 798: force-refresh on first run only; dedup fix (Sprint 795) means subsequent runs find topics naturally
       const formats = ['explainer', 'debate', 'vision', 'listicle'];
       const format = formats[(i - 1) % formats.length];
       const forceFlag = i === 1 ? ' --force-refresh' : '';
       const cmd = `npx ts-node --transpile-only scripts/scs001/run-multiformat-pipeline.ts --format=${format} --max=1${dryRun ? ' --dry-run' : ''}${forceFlag}`;
       const output = execSync(cmd, {
         cwd: ROOT,
-        timeout: 120000, // 2 min per run
+        timeout: 180000, // 3 min per run (avatar gen needs time)
         stdio: 'pipe',
         encoding: 'utf-8',
       });
 
-      // Parse output for video count
-      const videoMatch = output.match(/videos_composited.*?(\d+)/);
+      // Parse output for video count (matches both old "videos_composited: N" and new "Composited: N")
+      const videoMatch = output.match(/(?:videos_composited|Composited)[:.\s]*(\d+)/);
       const videoCount = videoMatch ? parseInt(videoMatch[1]) : 0;
       const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
 
