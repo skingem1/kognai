@@ -1,70 +1,114 @@
 {
   "_note": "AUTHORITATIVE sprint execution order. The brief generator reads this and injects the first item as a MANDATORY directive, bypassing Qwen's recommendation. Pop items by setting status=done after each sprint ships. Human-maintained — edit to re-prioritise.",
-  "updated": "2026-03-21T16:00",
+  "updated": "2026-03-22T22:45",
   "owner": "Tarek (human)",
-  "_plan_rationale": "RESEEDED 2026-03-21 (round 6). Queue exhausted after Sprint 750. Replenished 751-756: content batches, posting refresh, gate update, pipeline hardening.",
-  "_achiri_status": "PAUSED — all Achiri sprints removed from queue. Resume after April 7 gate.",
+  "_plan_rationale": "RESEEDED 2026-03-22 (round 8). INTEL-002 insight: WARMUP-01 is P0 PRECONDITION before any posting. 10 new docs: AMD-19-23, PACT, Chomsky, INTEL-002, WARMUP-01, V2 implementation. Achiri PAUSED.",
+  "_achiri_status": "PAUSED — resume after April 7 gate.",
+  "_critical_path": "WARMUP-01 (human 3 days) → BROWSER-01 (install + wire) → SCS-001-V2 (5 sprints) → POSTING → GATE",
   "queue": [
-    { "sprint": 744, "title": "CONTENT — Fresh multiformat batch + queue replenish for April 7 gate", "block": "CONTENT", "status": "done", "priority": "critical", "rationale": "Produce 6+ new multiformat videos.", "_note": "Done: 6 new videos ($1.85), ledger at 487. Queue replenished." },
-    { "sprint": 745, "title": "CONTENT — Batch 2: multiformat videos (clear seen-topics + produce 5+)", "block": "CONTENT", "status": "done", "priority": "critical", "rationale": "Continue content production.", "_note": "Done: 5 new videos ($1.50), ledger at 492." },
-    { "sprint": 746, "title": "POSTING — Refresh manual-post-queue with latest 10 best videos", "block": "POSTING", "status": "done", "priority": "critical", "rationale": "Update manual-post-queue.", "_note": "Done: 10 videos refreshed." },
-    { "sprint": 747, "title": "GATE — Refresh April 7 gate tracker (492 videos, posting progress)", "block": "GATE", "status": "done", "priority": "high", "rationale": "Update gate tracker.", "_note": "Done: gate refreshed — 492 videos, 81 real content, 17 days remaining." },
-    { "sprint": 748, "title": "CONTENT — Topic source expansion (add Reddit, Product Hunt feeds)", "block": "CONTENT", "status": "done", "priority": "medium", "rationale": "Add Reddit + PH sources.", "_note": "Done: Reddit (15 topics/scan) + Product Hunt wired. +68%." },
-    { "sprint": 749, "title": "FIX — Auto-deliver: ensure new videos get delivered to Telegram", "block": "FIX", "status": "done", "priority": "high", "rationale": "Fix auto-deliver.", "_note": "Done: auto-deliver working. 22 video backlog flushed." },
-    { "sprint": 750, "title": "CONTENT — Produce videos with expanded radar (Reddit + 7 sources)", "block": "CONTENT", "status": "done", "priority": "critical", "rationale": "First batch with Reddit sources.", "_note": "Done: 5 new videos ($1.50), ledger at 497." },
     {
-      "sprint": 751,
-      "title": "CONTENT — Batch 4: fresh videos (target 5+, 502+ ledger)",
-      "block": "CONTENT",
+      "sprint": 783,
+      "title": "WARMUP-01 — TikTok algorithm warmup agent tasks (W01-02 + W01-03)",
+      "block": "WARMUP-01",
       "status": "done",
-      "_note": "Done: 5+2 new videos ($1.50+$0.60), ledger at 504. Fixed seen-topics dedup path.",
       "priority": "critical",
-      "rationale": "Continue content production for April 7 gate. Clear seen-topics, produce 5+ videos. Ledger at 497, target 502+."
+      "rationale": "INTEL-002 insight: Larry creator confirms fresh accounts posting AI content immediately get throttled. HUMAN PRECONDITION: Godman must do 3 days of manual TikTok scrolling/following/commenting FIRST (Task W01-01 — cannot be delegated). This sprint handles agent tasks: (1) W01-02: create scripts/scs001/verify-warmup-signal.ts — after /warmup-complete, check if algorithm is trained on AI/tech niche. (2) W01-03: wire Stripe/RevenueCat post-attribution for revenue tracking per video. (3) Add /warmup-complete Telegram command that unlocks posting pipeline."
     },
     {
-      "sprint": 752,
-      "title": "POSTING — Refresh manual-post-queue with latest 15 best videos",
-      "block": "POSTING",
-      "status": "done",
-      "_note": "Done: 11 unique videos across 4 formats. All files verified OK.",
+      "sprint": 784,
+      "title": "BROWSER-01 — Install Browser Use CLI + test TikTok upload",
+      "block": "EVAL-009",
+      "status": "pending",
       "priority": "critical",
-      "rationale": "Refresh posting queue with best recent videos from sprints 748-751. Diversify formats. April 7 gate: 30 posts needed."
+      "rationale": "P0 — UNBLOCKS GATE. BLOCKED on WARMUP-01 completion. Install Browser Use CLI. Test TikTok upload via Chrome Default profile. HUMAN PREREQUISITE: logged into TikTok + warmup complete."
     },
     {
-      "sprint": 753,
-      "title": "CONTENT — Batch 5: fresh videos (target 5+, 507+ ledger)",
-      "block": "CONTENT",
-      "status": "done",
-      "_note": "Done: 5 new videos ($1.50), ledger at 509.",
+      "sprint": 785,
+      "title": "BROWSER-01 — Create post-tiktok.sh helper + wire into scs001-publishing",
+      "block": "EVAL-009",
+      "status": "pending",
       "priority": "critical",
-      "rationale": "Keep content pipeline running. Target 507+ ledger."
+      "rationale": "Wire Browser Use CLI into publishing agent. post-tiktok.sh: MP4 + caption → navigate → upload → fill → post → screenshot. Add /post-browser Telegram command."
     },
     {
-      "sprint": 754,
-      "title": "GATE — Refresh April 7 gate tracker (500+ videos, posting progress update)",
-      "block": "GATE",
-      "status": "done",
-      "_note": "Done: gate refreshed — 509 videos, 98 real content, 17 days remaining.",
+      "sprint": 786,
+      "title": "SCS-001-V2-001 — Scorsese agent + ScenarioBundle contract",
+      "block": "SCS-001-V2",
+      "status": "pending",
       "priority": "high",
-      "rationale": "Update gate tracker with current stats. 500+ ledger, check posting progress."
+      "rationale": "SCS-001 v2 Sprint V2-001. (1) Create contracts/scs-001-v2/scenario-bundle-v1.ts with types. (2) Create agents/scs001-scorsese/index.ts (max 300 lines). T3 APEX Claude Sonnet. Receives TrendSignal → produces ScenarioBundle. Hook_test is constitutional: must prove 10M+ view format. Includes system prompt from spec."
     },
     {
-      "sprint": 755,
-      "title": "FIX — Pipeline hardening: dedup check + error recovery in multiformat",
-      "block": "FIX",
-      "status": "done",
-      "_note": "Done: ledger dedup filters 6+ already-produced topics. Per-video try/catch prevents cascade failures.",
+      "sprint": 787,
+      "title": "SCS-001-V2-002 — MovieEditor agent (FFmpeg + C4 TTS + C5 Music)",
+      "block": "SCS-001-V2",
+      "status": "pending",
+      "priority": "high",
+      "rationale": "SCS-001 v2 Sprint V2-002. Create agents/scs001-movie-editor/index.ts. Consumes ScenarioBundle scenes → assembles final video. FFmpeg composition + C4 TTS voiceover + C5 background music. Max 400 lines."
+    },
+    {
+      "sprint": 788,
+      "title": "SCS-001-V2-003 — ArtDirector quality gate agent",
+      "block": "SCS-001-V2",
+      "status": "pending",
+      "priority": "high",
+      "rationale": "SCS-001 v2 Sprint V2-003. Create agents/scs001-art-director/index.ts. T2.5 Haiku. Two questions: 'Does this serve the message?' + 'Would a human stop scrolling?' Replaces QC agent for v2 pipeline."
+    },
+    {
+      "sprint": 789,
+      "title": "SCS-001-V2-004 — Integration test + v2 pipeline runner",
+      "block": "SCS-001-V2",
+      "status": "pending",
+      "priority": "high",
+      "rationale": "SCS-001 v2 Sprint V2-004. Create scripts/scs001/run-v2-pipeline.ts. Wire: Scorsese → VideoGen → MovieEditor → ArtDirector → Publishing. End-to-end test: produce 1 video through full v2 pipeline."
+    },
+    {
+      "sprint": 790,
+      "title": "SCS-001-V2-005 — Browser Use publishing + first real post",
+      "block": "SCS-001-V2",
+      "status": "pending",
+      "priority": "high",
+      "rationale": "SCS-001 v2 Sprint V2-005. Wire Browser Use CLI into v2 publishing stage. Post first Art Director-approved video to TikTok. Godman reviews + approves for posting."
+    },
+    {
+      "sprint": 791,
+      "title": "AMD-18 — Add psychological_resilience ACP dimension + Sherlock tone audit",
+      "block": "AMD-18",
+      "status": "pending",
       "priority": "medium",
-      "rationale": "Add duplicate topic detection to multiformat pipeline. Improve error recovery on API failures."
+      "rationale": "AMD-18 Sprint 509. Add psychological_resilience (weight 0.05) to trust-scores.json. Update ACP weights. Sherlock Emotional Tone Audit function."
     },
     {
-      "sprint": 756,
-      "title": "CONTENT — Batch 6: fresh videos (target 5+, 512+ ledger)",
+      "sprint": 792,
+      "title": "CHOMSKY — Prompt Engineer agent scaffold + first audit",
+      "block": "CHOMSKY",
+      "status": "pending",
+      "priority": "medium",
+      "rationale": "Sprint 519. Create agents/chomsky/index.ts + prompt.md + SOUL.md. T1 qwen3:4b. 5 optimisation criteria. Harvey approval gate on every change. First audit: review 5 highest-cost agent prompts."
+    },
+    {
+      "sprint": 793,
+      "title": "AMD-19 — ERC-8004 identity token mint + Genesis prep",
+      "block": "AMD-19",
+      "status": "pending",
+      "priority": "medium",
+      "rationale": "Sprint 511. Mint ERC-721 identity token on Base. Token URI contains Founding Charter SHA-256 hash + swarm metadata. EAS attestation = Genesis Ceremony on-chain component. Use existing EAS schemas."
+    },
+    {
+      "sprint": 794,
+      "title": "GATE — April 7 readiness report with warmup + posting status",
+      "block": "GATE",
+      "status": "pending",
+      "priority": "medium",
+      "rationale": "Full gate assessment: warmup status, Browser Use CLI posting status, total publishable videos, manual posting progress, days remaining. Surface via /gate."
+    },
+    {
+      "sprint": 795,
+      "title": "CONTENT — Batch production: 5 videos via multiformat pipeline",
       "block": "CONTENT",
-      "status": "done",
-      "_note": "Done: 5 fresh videos ($1.50), ledger at 514. First batch with ledger dedup — all new topics.",
-      "priority": "critical",
-      "rationale": "Continue content production. Target 512+ ledger."
+      "status": "pending",
+      "priority": "medium",
+      "rationale": "Continue content production while v2 pipeline is being built. 5 videos via existing multiformat pipeline."
     }
   ]
 }

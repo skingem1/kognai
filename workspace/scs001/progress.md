@@ -3023,3 +3023,15 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Issues: None
 - Cost: $1.50 (avatar generation)
 - Timestamp: 2026-03-21T19:20:00Z
+
+## Sprint 783 — WARMUP-01
+- Status: PASS
+- Commit: bd05cd6b316dca1d8915276c9f48471204c56910
+- Files created: scripts/scs001/verify-warmup-signal.ts, scripts/telegram-commands/cmd-warmup.ts, workspace/sprints/sprint-783.json
+- Files modified: scripts/scs001/posting-preflight.ts, scripts/scs001/checkout-server.ts, scripts/telegram-bot.ts
+- Test: TypeScript compile clean, preflight warmup gate blocking, verify-warmup-signal.ts functional
+- Pipeline: Warmup gate active, Stripe post-attribution wired, 3 Telegram commands added
+- Swarm used: no (multi-file coordination, wrote directly)
+- Issues: None
+- Cost: $0.00
+- Timestamp: 2026-03-22T21:53:57Z
