@@ -82,7 +82,7 @@
       "sprint": 792,
       "title": "CHOMSKY \u2014 Prompt Engineer agent scaffold + first audit",
       "block": "CHOMSKY",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "Sprint 519. Create agents/chomsky/index.ts + prompt.md + SOUL.md. T1 qwen3:4b. 5 optimisation criteria. Harvey approval gate on every change. First audit: review 5 highest-cost agent prompts."
     },

@@ -3168,3 +3168,15 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Issues: None
 - Cost: $0.00
 - Timestamp: 2026-03-22T22:15:02Z
+
+## Sprint 792 — CHOMSKY
+- Status: PASS
+- Commit: bf26afa0c874b7002dc4afdc914b37fc61d467d2
+- Files created: agents/chomsky/index.ts, agents/chomsky/prompt.md, agents/chomsky/SOUL.md, workspace/sprints/sprint-792.json
+- Files modified: none
+- Test: TypeScript compile clean
+- Pipeline: Chomsky prompt engineer agent — T1 qwen3:4b, 5 criteria audit, Harvey gate
+- Swarm used: no (multi-file creative agent, wrote directly)
+- Issues: None
+- Cost: $0.00
+- Timestamp: 2026-03-22T22:16:53Z
