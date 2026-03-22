@@ -1,0 +1,38 @@
+{
+  "sprint_id": "sprint-802",
+  "title": "POSTING — Browser auto-post scheduler + /post-next ranking",
+  "description": "Create browser-based auto-posting scheduler (replaces API-dependent auto-post) and /post-next command for smart video ranking. Critical for hitting 30-post gate by Apr 7.",
+  "source": "gate-priority",
+  "tasks": [
+    {
+      "id": "802-01",
+      "title": "Create auto-post-browser.ts — picks best unposted video, posts via browser, records to manual-posts.jsonl",
+      "type": "feature",
+      "task_target": "scripts/scs001/auto-post-browser.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-802"
+    },
+    {
+      "id": "802-02",
+      "title": "Add cmdPostNext to cmd-posting.ts — shows top 5 unposted videos ranked by viral score",
+      "type": "feature",
+      "task_target": "scripts/telegram-commands/cmd-posting.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-802"
+    },
+    {
+      "id": "802-03",
+      "title": "Wire /post-next in telegram-bot.ts and add auto-post-browser to PM2 config",
+      "type": "feature",
+      "task_target": "scripts/telegram-bot.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-802"
+    }
+  ]
+}

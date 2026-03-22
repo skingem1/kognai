@@ -1324,3 +1324,82 @@ export function cmdWeeklyDigest(): string {
 
   return out.join('\n');
 }
+
+/**
+ * /post-next — Sprint 802: Show top 5 unposted videos ranked by viral score
+ * Helps operator pick the best video to post next.
+ */
+export function cmdPostNext(): string {
+  const ledgerPath = path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl');
+  const deliveredPath = path.join(ROOT, 'workspace', 'scs001', 'auto-delivered.jsonl');
+  const manualPath = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
+
+  // Load already-posted IDs
+  const postedIds = new Set<string>();
+  if (fs.existsSync(manualPath)) {
+    fs.readFileSync(manualPath, 'utf-8').split('\n').filter(l => l.trim()).forEach(l => {
+      try { const e = JSON.parse(l); if (e.video_id) postedIds.add(e.video_id); } catch {}
+    });
+  }
+
+  // Build candidate list with scores
+  const candidates: Array<{ video_id: string; viral_score: number; mp4: string; source: string }> = [];
+  const seen = new Set<string>();
+
+  // Auto-delivered entries (have viral_score + mp4_path)
+  if (fs.existsSync(deliveredPath)) {
+    fs.readFileSync(deliveredPath, 'utf-8').split('\n').filter(l => l.trim()).forEach(l => {
+      try {
+        const e = JSON.parse(l);
+        if (!e.video_id || postedIds.has(e.video_id) || seen.has(e.video_id)) return;
+        const mp4 = (e.mp4_path && fs.existsSync(e.mp4_path)) ? e.mp4_path : findCaptionedMp4(e.video_id);
+        if (mp4) {
+          seen.add(e.video_id);
+          candidates.push({ video_id: e.video_id, viral_score: e.viral_score ?? 0, mp4, source: 'delivered' });
+        }
+      } catch {}
+    });
+  }
+
+  // Ledger entries
+  if (fs.existsSync(ledgerPath)) {
+    fs.readFileSync(ledgerPath, 'utf-8').split('\n').filter(l => l.trim()).forEach(l => {
+      try {
+        const e = JSON.parse(l);
+        if (!e.video_id || postedIds.has(e.video_id) || seen.has(e.video_id)) return;
+        const mp4 = findCaptionedMp4(e.video_id);
+        if (mp4) {
+          seen.add(e.video_id);
+          candidates.push({ video_id: e.video_id, viral_score: 0, mp4, source: 'ledger' });
+        }
+      } catch {}
+    });
+  }
+
+  if (candidates.length === 0) {
+    return '⚠️ No unposted videos with MP4 files found.';
+  }
+
+  // Sort by viral score descending, show top 5
+  candidates.sort((a, b) => b.viral_score - a.viral_score);
+  const top = candidates.slice(0, 5);
+
+  const lines: string[] = [];
+  lines.push(`🎯 *Top ${top.length} videos to post next*`);
+  lines.push(`(${candidates.length} total unposted with files)`);
+  lines.push('');
+
+  for (let i = 0; i < top.length; i++) {
+    const v = top[i];
+    lines.push(`${i + 1}. \`${v.video_id}\``);
+    lines.push(`   Score: ${v.viral_score > 0 ? v.viral_score.toFixed(2) : 'n/a'} · ${v.source}`);
+    lines.push(`   → /post-browser ${v.video_id}`);
+  }
+
+  lines.push('');
+  const totalPosted = postedIds.size;
+  const remaining = Math.max(0, 30 - totalPosted);
+  lines.push(`📊 Gate: ${totalPosted}/30 posted · ${remaining} remaining`);
+
+  return lines.join('\n');
+}

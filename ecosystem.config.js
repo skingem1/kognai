@@ -869,6 +869,24 @@ module.exports = {
       out_file: "/Users/tarekmnif/kognai/logs/auto-post-out.log",
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
+    // ─── Sprint 802: Browser auto-post — 2x/day at 12:00 + 19:00 ─────────────
+    {
+      name: "kognai-auto-post-browser",
+      script: "scripts/scs001/auto-post-browser.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: "/Users/tarekmnif/kognai",
+      cron_restart: "0 12,19 * * *",
+      autorestart: false,
+      watch: false,
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/auto-post-browser-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/auto-post-browser-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
     // ─── Sprint 234: Token auto-refresh — daily at 03:00 ──────────────────────
     {
       name: "kognai-token-refresh",
