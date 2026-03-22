@@ -1,54 +1,54 @@
 {
-  "_note": "AUTHORITATIVE sprint execution order. The brief generator reads this and injects the first item as a MANDATORY directive, bypassing Qwen's recommendation. Pop items by setting status=done after each sprint ships. Human-maintained — edit to re-prioritise.",
+  "_note": "AUTHORITATIVE sprint execution order. The brief generator reads this and injects the first item as a MANDATORY directive, bypassing Qwen's recommendation. Pop items by setting status=done after each sprint ships. Human-maintained \u2014 edit to re-prioritise.",
   "updated": "2026-03-22T22:45",
   "owner": "Tarek (human)",
   "_plan_rationale": "RESEEDED 2026-03-22 (round 8). INTEL-002 insight: WARMUP-01 is P0 PRECONDITION before any posting. 10 new docs: AMD-19-23, PACT, Chomsky, INTEL-002, WARMUP-01, V2 implementation. Achiri PAUSED.",
-  "_achiri_status": "PAUSED — resume after April 7 gate.",
-  "_critical_path": "WARMUP-01 (human 3 days) → BROWSER-01 (install + wire) → SCS-001-V2 (5 sprints) → POSTING → GATE",
+  "_achiri_status": "PAUSED \u2014 resume after April 7 gate.",
+  "_critical_path": "WARMUP-01 (human 3 days) \u2192 BROWSER-01 (install + wire) \u2192 SCS-001-V2 (5 sprints) \u2192 POSTING \u2192 GATE",
   "queue": [
     {
       "sprint": 783,
-      "title": "WARMUP-01 — TikTok algorithm warmup agent tasks (W01-02 + W01-03)",
+      "title": "WARMUP-01 \u2014 TikTok algorithm warmup agent tasks (W01-02 + W01-03)",
       "block": "WARMUP-01",
       "status": "done",
       "priority": "critical",
-      "rationale": "INTEL-002 insight: Larry creator confirms fresh accounts posting AI content immediately get throttled. HUMAN PRECONDITION: Godman must do 3 days of manual TikTok scrolling/following/commenting FIRST (Task W01-01 — cannot be delegated). This sprint handles agent tasks: (1) W01-02: create scripts/scs001/verify-warmup-signal.ts — after /warmup-complete, check if algorithm is trained on AI/tech niche. (2) W01-03: wire Stripe/RevenueCat post-attribution for revenue tracking per video. (3) Add /warmup-complete Telegram command that unlocks posting pipeline."
+      "rationale": "INTEL-002 insight: Larry creator confirms fresh accounts posting AI content immediately get throttled. HUMAN PRECONDITION: Godman must do 3 days of manual TikTok scrolling/following/commenting FIRST (Task W01-01 \u2014 cannot be delegated). This sprint handles agent tasks: (1) W01-02: create scripts/scs001/verify-warmup-signal.ts \u2014 after /warmup-complete, check if algorithm is trained on AI/tech niche. (2) W01-03: wire Stripe/RevenueCat post-attribution for revenue tracking per video. (3) Add /warmup-complete Telegram command that unlocks posting pipeline."
     },
     {
       "sprint": 784,
-      "title": "BROWSER-01 — Install Browser Use CLI + test TikTok upload",
+      "title": "BROWSER-01 \u2014 Install Browser Use CLI + test TikTok upload",
       "block": "EVAL-009",
       "status": "done",
       "priority": "critical",
-      "rationale": "P0 — UNBLOCKS GATE. BLOCKED on WARMUP-01 completion. Install Browser Use CLI. Test TikTok upload via Chrome Default profile. HUMAN PREREQUISITE: logged into TikTok + warmup complete."
+      "rationale": "P0 \u2014 UNBLOCKS GATE. BLOCKED on WARMUP-01 completion. Install Browser Use CLI. Test TikTok upload via Chrome Default profile. HUMAN PREREQUISITE: logged into TikTok + warmup complete."
     },
     {
       "sprint": 785,
-      "title": "BROWSER-01 — Create post-tiktok.sh helper + wire into scs001-publishing",
+      "title": "BROWSER-01 \u2014 Create post-tiktok.sh helper + wire into scs001-publishing",
       "block": "EVAL-009",
-      "status": "pending",
+      "status": "done",
       "priority": "critical",
-      "rationale": "Wire Browser Use CLI into publishing agent. post-tiktok.sh: MP4 + caption → navigate → upload → fill → post → screenshot. Add /post-browser Telegram command."
+      "rationale": "Wire Browser Use CLI into publishing agent. post-tiktok.sh: MP4 + caption \u2192 navigate \u2192 upload \u2192 fill \u2192 post \u2192 screenshot. Add /post-browser Telegram command."
     },
     {
       "sprint": 786,
-      "title": "SCS-001-V2-001 — Scorsese agent + ScenarioBundle contract",
+      "title": "SCS-001-V2-001 \u2014 Scorsese agent + ScenarioBundle contract",
       "block": "SCS-001-V2",
       "status": "pending",
       "priority": "high",
-      "rationale": "SCS-001 v2 Sprint V2-001. (1) Create contracts/scs-001-v2/scenario-bundle-v1.ts with types. (2) Create agents/scs001-scorsese/index.ts (max 300 lines). T3 APEX Claude Sonnet. Receives TrendSignal → produces ScenarioBundle. Hook_test is constitutional: must prove 10M+ view format. Includes system prompt from spec."
+      "rationale": "SCS-001 v2 Sprint V2-001. (1) Create contracts/scs-001-v2/scenario-bundle-v1.ts with types. (2) Create agents/scs001-scorsese/index.ts (max 300 lines). T3 APEX Claude Sonnet. Receives TrendSignal \u2192 produces ScenarioBundle. Hook_test is constitutional: must prove 10M+ view format. Includes system prompt from spec."
     },
     {
       "sprint": 787,
-      "title": "SCS-001-V2-002 — MovieEditor agent (FFmpeg + C4 TTS + C5 Music)",
+      "title": "SCS-001-V2-002 \u2014 MovieEditor agent (FFmpeg + C4 TTS + C5 Music)",
       "block": "SCS-001-V2",
       "status": "pending",
       "priority": "high",
-      "rationale": "SCS-001 v2 Sprint V2-002. Create agents/scs001-movie-editor/index.ts. Consumes ScenarioBundle scenes → assembles final video. FFmpeg composition + C4 TTS voiceover + C5 background music. Max 400 lines."
+      "rationale": "SCS-001 v2 Sprint V2-002. Create agents/scs001-movie-editor/index.ts. Consumes ScenarioBundle scenes \u2192 assembles final video. FFmpeg composition + C4 TTS voiceover + C5 background music. Max 400 lines."
     },
     {
       "sprint": 788,
-      "title": "SCS-001-V2-003 — ArtDirector quality gate agent",
+      "title": "SCS-001-V2-003 \u2014 ArtDirector quality gate agent",
       "block": "SCS-001-V2",
       "status": "pending",
       "priority": "high",
@@ -56,15 +56,15 @@
     },
     {
       "sprint": 789,
-      "title": "SCS-001-V2-004 — Integration test + v2 pipeline runner",
+      "title": "SCS-001-V2-004 \u2014 Integration test + v2 pipeline runner",
       "block": "SCS-001-V2",
       "status": "pending",
       "priority": "high",
-      "rationale": "SCS-001 v2 Sprint V2-004. Create scripts/scs001/run-v2-pipeline.ts. Wire: Scorsese → VideoGen → MovieEditor → ArtDirector → Publishing. End-to-end test: produce 1 video through full v2 pipeline."
+      "rationale": "SCS-001 v2 Sprint V2-004. Create scripts/scs001/run-v2-pipeline.ts. Wire: Scorsese \u2192 VideoGen \u2192 MovieEditor \u2192 ArtDirector \u2192 Publishing. End-to-end test: produce 1 video through full v2 pipeline."
     },
     {
       "sprint": 790,
-      "title": "SCS-001-V2-005 — Browser Use publishing + first real post",
+      "title": "SCS-001-V2-005 \u2014 Browser Use publishing + first real post",
       "block": "SCS-001-V2",
       "status": "pending",
       "priority": "high",
@@ -72,7 +72,7 @@
     },
     {
       "sprint": 791,
-      "title": "AMD-18 — Add psychological_resilience ACP dimension + Sherlock tone audit",
+      "title": "AMD-18 \u2014 Add psychological_resilience ACP dimension + Sherlock tone audit",
       "block": "AMD-18",
       "status": "pending",
       "priority": "medium",
@@ -80,7 +80,7 @@
     },
     {
       "sprint": 792,
-      "title": "CHOMSKY — Prompt Engineer agent scaffold + first audit",
+      "title": "CHOMSKY \u2014 Prompt Engineer agent scaffold + first audit",
       "block": "CHOMSKY",
       "status": "pending",
       "priority": "medium",
@@ -88,7 +88,7 @@
     },
     {
       "sprint": 793,
-      "title": "AMD-19 — ERC-8004 identity token mint + Genesis prep",
+      "title": "AMD-19 \u2014 ERC-8004 identity token mint + Genesis prep",
       "block": "AMD-19",
       "status": "pending",
       "priority": "medium",
@@ -96,7 +96,7 @@
     },
     {
       "sprint": 794,
-      "title": "GATE — April 7 readiness report with warmup + posting status",
+      "title": "GATE \u2014 April 7 readiness report with warmup + posting status",
       "block": "GATE",
       "status": "pending",
       "priority": "medium",
@@ -104,7 +104,7 @@
     },
     {
       "sprint": 795,
-      "title": "CONTENT — Batch production: 5 videos via multiformat pipeline",
+      "title": "CONTENT \u2014 Batch production: 5 videos via multiformat pipeline",
       "block": "CONTENT",
       "status": "pending",
       "priority": "medium",

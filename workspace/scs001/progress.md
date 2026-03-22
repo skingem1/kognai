@@ -3047,3 +3047,15 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Issues: Python 3.9.6 too old for browser-use (needs 3.11+). Installer handles via Homebrew.
 - Cost: $0.00
 - Timestamp: 2026-03-22T21:57:53Z
+
+## Sprint 785 — BROWSER-01
+- Status: PASS
+- Commit: d65498fb849fd647e65404a7d443f5e26acb2e07
+- Files created: scripts/scs001/post-tiktok.py, scripts/scs001/post-tiktok.sh, workspace/sprints/sprint-785.json
+- Files modified: scripts/telegram-commands/cmd-delivery.ts, scripts/telegram-bot.ts, agents/scs001-publishing/index.ts
+- Test: TypeScript compile clean, Python syntax OK, Shell syntax OK
+- Pipeline: Browser Use publishing fully wired — /post-browser command, post-tiktok.sh, publishing agent fallback
+- Swarm used: no (multi-file + Python/shell scripts, wrote directly)
+- Issues: None
+- Cost: $0.00
+- Timestamp: 2026-03-22T22:02:30Z
