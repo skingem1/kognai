@@ -1,0 +1,28 @@
+{
+  "sprint_id": "sprint-808",
+  "title": "FIX — Implement missing /quickstart command (was in help but not wired)",
+  "description": "The /quickstart command was listed in help but had no implementation. Creates a 5-minute posting guide that sends the best video + caption directly to Telegram.",
+  "source": "bugfix",
+  "tasks": [
+    {
+      "id": "808-01",
+      "title": "Implement cmdQuickstart in cmd-delivery.ts — sends best video + caption + step-by-step guide",
+      "type": "bugfix",
+      "task_target": "scripts/telegram-commands/cmd-delivery.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-808"
+    },
+    {
+      "id": "808-02",
+      "title": "Wire /quickstart in telegram-bot.ts async handlers",
+      "type": "bugfix",
+      "task_target": "scripts/telegram-bot.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-808"
+    }
+  ]
+}

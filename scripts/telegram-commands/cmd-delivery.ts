@@ -1056,3 +1056,64 @@ export async function cmdPostAuto(chatId: string, args: string): Promise<void> {
     await sendMessage(chatId, `❌ Auto-post failed:\n\`${output}\``);
   }
 }
+
+/**
+ * /quickstart — Sprint 808: 5-minute posting guide
+ * Sends the operator a step-by-step guide + the best video + caption, ready to post.
+ */
+export async function cmdQuickstart(chatId: string): Promise<void> {
+  // Find best unposted video
+  const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
+  const delivered = readLines(path.join(ROOT, 'workspace', 'scs001', 'auto-delivered.jsonl'));
+  const recorded = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  const recordedIds = new Set((recorded as any[]).map((e: any) => e.video_id).filter(Boolean));
+
+  // Get best delivered video with file on disk
+  const candidates = (delivered as any[])
+    .filter((e: any) => e.video_id && !recordedIds.has(e.video_id))
+    .sort((a: any, b: any) => (b.viral_score ?? 0) - (a.viral_score ?? 0));
+
+  let bestVideo: any = null;
+  let mp4Path: string | null = null;
+  for (const c of candidates) {
+    const p = (c.mp4_path && fs.existsSync(c.mp4_path)) ? c.mp4_path : findCaptionedMp4(c.video_id);
+    if (p) {
+      bestVideo = c;
+      mp4Path = p;
+      break;
+    }
+  }
+
+  // Gate info
+  const gateDate = new Date('2026-04-07T00:00:00Z');
+  const daysLeft = Math.max(0, Math.ceil((gateDate.getTime() - Date.now()) / 86_400_000));
+  const postsLeft = Math.max(0, 30 - recordedIds.size);
+
+  await sendMessage(chatId, [
+    `🚀 *Quick Start: Post in 5 Minutes*`,
+    '',
+    `📊 Gate: ${recordedIds.size}/30 posts · ${postsLeft} remaining · ${daysLeft} days`,
+    '',
+    `*Step 1:* Open TikTok app on your phone`,
+    `*Step 2:* Tap the + button to create a new post`,
+    `*Step 3:* Upload the video I'm sending next`,
+    `*Step 4:* Paste the caption (sent after the video)`,
+    `*Step 5:* Post it!`,
+    `*Step 6:* Run \`/record ${bestVideo?.video_id || 'VIDEO_ID'} 0\` to log it`,
+    '',
+    `_That's it! Repeat 2x/day to hit the gate._`,
+  ].join('\n'));
+
+  if (bestVideo && mp4Path) {
+    const caption = buildTikTokCaption(bestVideo.video_id);
+    try {
+      await sendVideoFile(chatId, mp4Path, `🎬 Best video: \`${bestVideo.video_id}\`\nScore: ${bestVideo.viral_score ?? 'n/a'}`);
+    } catch {
+      await sendMessage(chatId, `🎬 Video: \`${bestVideo.video_id}\` (file too large for Telegram)`);
+    }
+    await sendMessage(chatId, `📋 *Caption (copy-paste):*\n\n\`\`\`\n${caption}\n\`\`\``);
+    await sendMessage(chatId, `_After posting: \`/record ${bestVideo.video_id} 0\`_`);
+  } else {
+    await sendMessage(chatId, `⚠️ No unposted videos found with files. Run /produce first.`);
+  }
+}
