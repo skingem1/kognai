@@ -1343,7 +1343,7 @@ export function cmdPostNext(): string {
   }
 
   // Build candidate list with scores
-  const candidates: Array<{ video_id: string; viral_score: number; mp4: string; source: string }> = [];
+  const candidates: Array<{ video_id: string; viral_score: number; mp4: string; source: string; topic?: string; format?: string }> = [];
   const seen = new Set<string>();
 
   // Auto-delivered entries (have viral_score + mp4_path)
@@ -1355,7 +1355,7 @@ export function cmdPostNext(): string {
         const mp4 = (e.mp4_path && fs.existsSync(e.mp4_path)) ? e.mp4_path : findCaptionedMp4(e.video_id);
         if (mp4) {
           seen.add(e.video_id);
-          candidates.push({ video_id: e.video_id, viral_score: e.viral_score ?? 0, mp4, source: 'delivered' });
+          candidates.push({ video_id: e.video_id, viral_score: e.viral_score ?? 0, mp4, source: 'delivered', topic: e.topic, format: e.format });
         }
       } catch {}
     });
@@ -1370,7 +1370,7 @@ export function cmdPostNext(): string {
         const mp4 = findCaptionedMp4(e.video_id);
         if (mp4) {
           seen.add(e.video_id);
-          candidates.push({ video_id: e.video_id, viral_score: 0, mp4, source: 'ledger' });
+          candidates.push({ video_id: e.video_id, viral_score: 0, mp4, source: 'ledger', topic: e.topic, format: e.format });
         }
       } catch {}
     });
@@ -1392,7 +1392,8 @@ export function cmdPostNext(): string {
   for (let i = 0; i < top.length; i++) {
     const v = top[i];
     lines.push(`${i + 1}. \`${v.video_id}\``);
-    lines.push(`   Score: ${v.viral_score > 0 ? v.viral_score.toFixed(2) : 'n/a'} · ${v.source}`);
+    if (v.topic) lines.push(`   📝 ${v.topic.slice(0, 60)}`);
+    lines.push(`   Score: ${v.viral_score > 0 ? v.viral_score.toFixed(2) : 'n/a'} · ${v.source}${v.format ? ` · ${v.format}` : ''}`);
     lines.push(`   → /post-browser ${v.video_id}`);
   }
 

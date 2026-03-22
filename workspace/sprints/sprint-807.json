@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-807",
+  "title": "UX — /post-next shows topic + format info for better video selection",
+  "description": "Enhance /post-next to display topic and format info alongside viral score, helping operator make better posting decisions.",
+  "source": "ux-improvement",
+  "tasks": [
+    {
+      "id": "807-01",
+      "title": "Add topic and format fields to cmdPostNext candidate display",
+      "type": "feature",
+      "task_target": "scripts/telegram-commands/cmd-posting.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-807"
+    }
+  ]
+}
