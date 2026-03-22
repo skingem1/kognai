@@ -106,7 +106,7 @@
       "sprint": 795,
       "title": "CONTENT \u2014 Batch production: 5 videos via multiformat pipeline",
       "block": "CONTENT",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "Continue content production while v2 pipeline is being built. 5 videos via existing multiformat pipeline."
     }

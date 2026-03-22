@@ -3204,3 +3204,15 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Issues: Gate status FAIL — 1/4 criteria met. 16 days remain. 324 videos ready to post. Warmup not started. Browser Use CLI not installed.
 - Cost: $0.00
 - Timestamp: 2026-03-22T23:25:00Z
+
+## Sprint 795 — CONTENT
+- Status: PASS
+- Commit: fbe17e8
+- Files created: 5 videos (exp-e0265f6f, dbt-bbbb7e01, vis-df831c14, lst-d08b20e0, exp-24866be3)
+- Files modified: scripts/scs001/topic-radar.ts (dedup fix — only mark selected topics as seen)
+- Test: All 5 pipeline runs completed successfully, videos composited
+- Pipeline: 620 total in ledger, ~329 ready to post
+- Swarm used: no (pipeline execution + bugfix, wrote directly)
+- Issues: Topic radar was marking ALL fresh topics as seen instead of only selected ones, causing subsequent runs to find 0 fresh topics. Fixed.
+- Cost: $1.50 (5x Captions.ai avatar generation)
+- Timestamp: 2026-03-22T23:40:00Z
