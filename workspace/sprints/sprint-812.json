@@ -1,0 +1,28 @@
+{
+  "sprint_id": "sprint-812",
+  "title": "CONTENT — Batch produce 5 runs + enrich ledger (3 new videos)",
+  "description": "Ran batch-produce 5 runs, got 3 new videos. Enriched ledger. Gate: 2/30 posts. 6 ready to post, 15 with files.",
+  "source": "content-production",
+  "tasks": [
+    {
+      "id": "812-01",
+      "title": "Run batch-produce.ts --runs 5 to stockpile content",
+      "type": "ops",
+      "task_target": "scripts/scs001/batch-produce.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-812"
+    },
+    {
+      "id": "812-02",
+      "title": "Run enrich-ledger.ts to backfill new entries",
+      "type": "ops",
+      "task_target": "scripts/scs001/enrich-ledger.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-812"
+    }
+  ]
+}

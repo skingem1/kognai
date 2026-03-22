@@ -1,24 +1,24 @@
 {
-  "batch_at": "2026-03-21T11:46:19.973Z",
-  "runs_planned": 10,
-  "runs_completed": 10,
-  "total_new_videos": 0,
+  "batch_at": "2026-03-22T23:58:12.028Z",
+  "runs_planned": 5,
+  "runs_completed": 5,
+  "total_new_videos": 3,
   "dry_run": false,
   "results": [
     {
       "run": 1,
       "success": true,
-      "videos": 0
+      "videos": 1
     },
     {
       "run": 2,
       "success": true,
-      "videos": 0
+      "videos": 1
     },
     {
       "run": 3,
       "success": true,
-      "videos": 0
+      "videos": 1
     },
     {
       "run": 4,
@@ -27,31 +27,6 @@
     },
     {
       "run": 5,
-      "success": true,
-      "videos": 0
-    },
-    {
-      "run": 6,
-      "success": true,
-      "videos": 0
-    },
-    {
-      "run": 7,
-      "success": true,
-      "videos": 0
-    },
-    {
-      "run": 8,
-      "success": true,
-      "videos": 0
-    },
-    {
-      "run": 9,
-      "success": true,
-      "videos": 0
-    },
-    {
-      "run": 10,
       "success": true,
       "videos": 0
     }
