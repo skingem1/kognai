@@ -3312,3 +3312,15 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Issues: RapidAPI subscription expired (403) — viral downloader failing. Human action needed.
 - Cost: $0.00
 - Timestamp: 2026-03-23T00:35:00Z
+
+## Sprint 805 — UX: /todaycaptions sends video files to Telegram
+- Status: PASS
+- Commit: b88e56d
+- Files created: workspace/sprints/sprint-805.json
+- Files modified: scripts/telegram-commands/cmd-delivery.ts
+- Test: Code review pass. sendVideoFile already tested in prior sprints.
+- Pipeline: 246 unposted videos with files. 2/30 posted.
+- Swarm used: no (simple edit, wrote directly)
+- Issues: None
+- Cost: $0.00
+- Timestamp: 2026-03-23T00:40:00Z
