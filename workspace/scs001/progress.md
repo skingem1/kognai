@@ -3360,3 +3360,15 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Issues: None
 - Cost: $0.00
 - Timestamp: 2026-03-23T00:55:00Z
+
+## Sprint 809 — OPS: Disk cleanup utility
+- Status: PASS
+- Commit: 9edc916
+- Files created: scripts/scs001/cleanup-old-runs.ts
+- Files modified: scripts/telegram-commands/cmd-management.ts
+- Test: dry-run + live run — PASS (freed ~1.2GB, workspace 5.1GB → 4.0GB)
+- Pipeline: 710 in ledger, disk usage back under 5GB threshold
+- Swarm used: no (simple utility, wrote directly)
+- Issues: None
+- Cost: $0.00
+- Timestamp: 2026-03-23T01:15:00Z
