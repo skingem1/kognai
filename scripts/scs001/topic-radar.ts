@@ -761,9 +761,9 @@ export class TopicRadar {
     // Sort by confidence (highest first)
     fresh.sort((a, b) => b.confidence - a.confidence);
 
-    // Mark as seen
-    for (const t of fresh) this.seen.add(t.topic_id);
-    saveSeenTopics(this.seen);
+    // Sprint 795: Only mark SELECTED topics as seen (not all fresh) — allows
+    // subsequent runs to pick from remaining fresh topics in the same session.
+    // Moved after selection below; see "Mark selected as seen" comment.
 
     // Sprint 609 + 616: Ensure format mix — force at least 1 of each type
     const byFormat = {
@@ -815,6 +815,10 @@ export class TopicRadar {
       const remaining = fresh.filter(t => !selectedIds.has(t.topic_id));
       selected.push(...remaining.slice(0, 5 - selected.length));
     }
+
+    // Sprint 795: Mark only selected topics as seen
+    for (const t of selected) this.seen.add(t.topic_id);
+    saveSeenTopics(this.seen);
 
     const result: TopicRadarResult = {
       radar_id: 'radar-' + new Date().toISOString().slice(0, 13).replace(/[:-]/g, '') + '-' + randomUUID().slice(0, 6),
