@@ -42,7 +42,7 @@
       "sprint": 787,
       "title": "SCS-001-V2-002 \u2014 MovieEditor agent (FFmpeg + C4 TTS + C5 Music)",
       "block": "SCS-001-V2",
-      "status": "pending",
+      "status": "done",
       "priority": "high",
       "rationale": "SCS-001 v2 Sprint V2-002. Create agents/scs001-movie-editor/index.ts. Consumes ScenarioBundle scenes \u2192 assembles final video. FFmpeg composition + C4 TTS voiceover + C5 background music. Max 400 lines."
     },
