@@ -3396,3 +3396,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Issues: heartbeat catch block re-read missing tier.json instead of using defaults
 - Cost: $0.00
 - Timestamp: 2026-03-23T01:55:00Z
+
+## Sprint 812 — CONTENT: Batch produce + enrich
+- Status: PASS
+- Commit: 1f4a375
+- Files modified: workspace/scs001/publish-ledger.jsonl, reports/batch-produce-latest.json, reports/video-inventory.json
+- Test: batch-produce 5 runs — 3 new videos produced
+- Pipeline: 714 in ledger, 15 with files, 6 ready to post, gate 2/30
+- Swarm used: no (ran existing scripts)
+- Issues: 2/5 runs produced 0 videos (topic dedup exhaustion on listicle format)
+- Cost: ~$0.50 (Anthropic API for script generation)
+- Timestamp: 2026-03-23T02:05:00Z
