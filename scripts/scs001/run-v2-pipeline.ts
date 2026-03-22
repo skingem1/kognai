@@ -6,12 +6,14 @@
  * End-to-end: TrendSignal → Scorsese → ArtDirector → MovieEditor → Output
  *
  * Usage:
- *   npx ts-node scripts/scs001/run-v2-pipeline.ts                    # test mode
+ *   npx ts-node scripts/scs001/run-v2-pipeline.ts                       # test mode
  *   npx ts-node scripts/scs001/run-v2-pipeline.ts --signal signal.json  # from file
- *   npx ts-node scripts/scs001/run-v2-pipeline.ts --dry-run            # skip video assembly
+ *   npx ts-node scripts/scs001/run-v2-pipeline.ts --dry-run             # skip video assembly
+ *   npx ts-node scripts/scs001/run-v2-pipeline.ts --publish             # assemble + publish via Browser Use
  */
 
 import { writeFileSync, readFileSync, existsSync, mkdirSync } from 'fs';
+import { execSync } from 'child_process';
 import { join } from 'path';
 import { ScorseseAgent } from '../../agents/scs001-scorsese/index';
 import { ArtDirectorAgent } from '../../agents/scs001-art-director/index';
@@ -28,6 +30,7 @@ const RUNS_DIR = join(ROOT, 'workspace', 'scs001', 'v2-runs');
 interface PipelineOptions {
   signalPath?: string;
   dryRun: boolean;
+  publish: boolean;
   maxRetries: number;
 }
 
@@ -35,6 +38,7 @@ function parseArgs(): PipelineOptions {
   const args = process.argv.slice(2);
   const opts: PipelineOptions = {
     dryRun: false,
+    publish: false,
     maxRetries: 1,
   };
 
@@ -43,6 +47,8 @@ function parseArgs(): PipelineOptions {
       opts.signalPath = args[++i];
     } else if (args[i] === '--dry-run') {
       opts.dryRun = true;
+    } else if (args[i] === '--publish') {
+      opts.publish = true;
     } else if (args[i] === '--retries' && args[i + 1]) {
       opts.maxRetries = parseInt(args[++i], 10) || 1;
     }
@@ -86,6 +92,7 @@ interface PipelineResult {
   video?: AssembledVideo;
   status: 'pass' | 'revise' | 'reject' | 'error';
   error?: string;
+  published: boolean;
   dry_run: boolean;
   retries_used: number;
   timestamps: {
@@ -93,6 +100,7 @@ interface PipelineResult {
     scorsese_done?: string;
     art_director_done?: string;
     movie_editor_done?: string;
+    published_at?: string;
     finished: string;
   };
 }
@@ -106,6 +114,7 @@ async function runPipeline(opts: PipelineOptions): Promise<PipelineResult> {
     run_id: runId,
     signal: opts.signalPath ? loadSignal(opts.signalPath) : getTestSignal(),
     status: 'error',
+    published: false,
     dry_run: opts.dryRun,
     retries_used: 0,
     timestamps: {
@@ -184,6 +193,37 @@ async function runPipeline(opts: PipelineOptions): Promise<PipelineResult> {
       result.status = 'pass';
 
       console.log(`  ✓ Video: ${result.video.video_id} (${result.video.duration_seconds}s, voiceover: ${result.video.has_voiceover})\n`);
+
+      // ── Stage 4: Publishing (Browser Use) ──────────────────────
+      if (opts.publish && result.video) {
+        console.log('▶ Stage 4: Publishing — Browser Use TikTok upload...');
+        const publishScript = join(ROOT, 'scripts', 'scs001', 'publish-v2-video.sh');
+
+        if (!existsSync(publishScript)) {
+          console.warn('  ⚠ publish-v2-video.sh not found — skipping publish');
+        } else {
+          try {
+            // Write result.json first so the publish script can read it
+            writeFileSync(join(runDir, 'result.json'), JSON.stringify(result, null, 2));
+
+            const publishOut = execSync(
+              `bash "${publishScript}" "${runDir}" --post`,
+              { stdio: 'pipe', timeout: 120000, cwd: ROOT }
+            ).toString();
+            console.log(publishOut);
+
+            result.published = true;
+            result.timestamps.published_at = new Date().toISOString();
+            console.log('  ✓ Published to TikTok via Browser Use\n');
+          } catch (pubErr) {
+            console.warn(`  ⚠ Publish failed: ${(pubErr as Error).message?.slice(0, 200)}`);
+            console.warn('  Video is ready — publish manually with:');
+            console.warn(`  bash scripts/scs001/publish-v2-video.sh "${runDir}" --post\n`);
+          }
+        }
+      } else if (opts.publish && !result.video) {
+        console.log('▶ Stage 4: Publishing — SKIPPED (no video produced)\n');
+      }
     }
 
   } catch (err) {
@@ -202,6 +242,7 @@ async function runPipeline(opts: PipelineOptions): Promise<PipelineResult> {
   if (result.scenario) console.log(`  Scenario: ${result.scenario.title}`);
   if (result.verdict) console.log(`  Verdict: ${result.verdict.verdict} (msg:${result.verdict.message_score}, scroll:${result.verdict.scroll_stop_score})`);
   if (result.video) console.log(`  Video: ${result.video.file_path}`);
+  console.log(`  Published: ${result.published}`);
   console.log(`  Retries: ${result.retries_used}`);
   console.log('═══════════════════════════════════════════════════════');
 

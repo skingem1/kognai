@@ -1,0 +1,41 @@
+{
+  "sprint_id": "sprint-790",
+  "title": "SCS-001-V2-005 — Browser Use publishing + first real post",
+  "description": "Wire Browser Use CLI into v2 publishing stage. Add --publish flag to run-v2-pipeline.ts. Create scripts/scs001/publish-v2-video.sh wrapper.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "790-01",
+      "title": "Create publish-v2-video.sh — v2 pipeline to Browser Use bridge",
+      "type": "feature",
+      "task_type": "scs_001_v2",
+      "task_target": "scripts/scs001/publish-v2-video.sh",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-790"
+    },
+    {
+      "id": "790-02",
+      "title": "Add --publish flag to run-v2-pipeline.ts",
+      "type": "feature",
+      "task_type": "scs_001_v2",
+      "task_target": "scripts/scs001/run-v2-pipeline.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-790"
+    },
+    {
+      "id": "790-03",
+      "title": "TypeScript + shell compile validation",
+      "type": "test",
+      "task_type": "validation",
+      "task_target": "scripts/scs001/run-v2-pipeline.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-790"
+    }
+  ]
+}
