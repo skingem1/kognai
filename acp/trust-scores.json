@@ -1,27 +1,31 @@
 {
-  "version": "1.0.0",
-  "updated": "2026-03-21",
-  "description": "ACP v1.0 — multi-dimensional trust scores. 5 dimensions: safety, accuracy, brand_alignment, cultural_sensitivity, legal_compliance. Composite score = weighted average. Enforcement: agents below dimension threshold are blocked from routing.",
+  "version": "1.1.0",
+  "updated": "2026-03-22",
+  "description": "ACP v1.1 \u2014 multi-dimensional trust scores. 6 dimensions: safety, accuracy, brand_alignment, cultural_sensitivity, legal_compliance, psychological_resilience. Composite score = weighted average. Enforcement: agents below dimension threshold are blocked from routing.",
   "dimensions": {
     "safety": {
-      "weight": 0.3,
-      "description": "Content safety — no harmful, violent, or inappropriate output"
+      "weight": 0.28,
+      "description": "Content safety \u2014 no harmful, violent, or inappropriate output"
     },
     "accuracy": {
-      "weight": 0.25,
+      "weight": 0.24,
       "description": "Factual correctness and code quality"
     },
     "brand_alignment": {
-      "weight": 0.2,
+      "weight": 0.19,
       "description": "Output matches Kognai brand voice and product positioning"
     },
     "cultural_sensitivity": {
-      "weight": 0.15,
+      "weight": 0.14,
       "description": "Culturally appropriate for target markets (Tunisia, MENA, global)"
     },
     "legal_compliance": {
       "weight": 0.1,
       "description": "No copyright, trademark, or regulatory violations"
+    },
+    "psychological_resilience": {
+      "weight": 0.05,
+      "description": "Emotional tone stability \u2014 avoids panic, catastrophizing, or manipulative framing"
     }
   },
   "scores": {
@@ -32,7 +36,8 @@
       "cultural_sensitivity": 72,
       "legal_compliance": 75,
       "composite": 73,
-      "last_updated": "2026-03-20"
+      "last_updated": "2026-03-22",
+      "psychological_resilience": 72
     },
     "sherlock": {
       "safety": 90,
@@ -41,7 +46,8 @@
       "cultural_sensitivity": 80,
       "legal_compliance": 85,
       "composite": 86,
-      "last_updated": "2026-03-20"
+      "last_updated": "2026-03-22",
+      "psychological_resilience": 90
     },
     "guardiola": {
       "safety": 75,
@@ -50,7 +56,8 @@
       "cultural_sensitivity": 68,
       "legal_compliance": 70,
       "composite": 70,
-      "last_updated": "2026-03-20"
+      "last_updated": "2026-03-22",
+      "psychological_resilience": 68
     },
     "harvey": {
       "safety": 92,
@@ -58,8 +65,9 @@
       "brand_alignment": 90,
       "cultural_sensitivity": 85,
       "legal_compliance": 90,
-      "composite": 90,
-      "last_updated": "2026-03-20"
+      "composite": 89,
+      "last_updated": "2026-03-22",
+      "psychological_resilience": 88
     },
     "bloomberg": {
       "safety": 85,
@@ -68,7 +76,8 @@
       "cultural_sensitivity": 75,
       "legal_compliance": 88,
       "composite": 82,
-      "last_updated": "2026-03-20"
+      "last_updated": "2026-03-22",
+      "psychological_resilience": 80
     },
     "macgyver": {
       "safety": 78,
@@ -77,7 +86,8 @@
       "cultural_sensitivity": 70,
       "legal_compliance": 72,
       "composite": 72,
-      "last_updated": "2026-03-20"
+      "last_updated": "2026-03-22",
+      "psychological_resilience": 70
     },
     "satoshi": {
       "safety": 82,
@@ -86,7 +96,8 @@
       "cultural_sensitivity": 72,
       "legal_compliance": 85,
       "composite": 79,
-      "last_updated": "2026-03-20"
+      "last_updated": "2026-03-22",
+      "psychological_resilience": 75
     },
     "elon": {
       "safety": 70,
@@ -95,7 +106,8 @@
       "cultural_sensitivity": 68,
       "legal_compliance": 70,
       "composite": 71,
-      "last_updated": "2026-03-20"
+      "last_updated": "2026-03-22",
+      "psychological_resilience": 65
     },
     "coder": {
       "safety": 80,
@@ -104,7 +116,8 @@
       "cultural_sensitivity": 70,
       "legal_compliance": 75,
       "composite": 74,
-      "last_updated": "2026-03-21"
+      "last_updated": "2026-03-22",
+      "psychological_resilience": 72
     },
     "supervisor": {
       "safety": 90,
@@ -113,7 +126,8 @@
       "cultural_sensitivity": 78,
       "legal_compliance": 85,
       "composite": 85,
-      "last_updated": "2026-03-21"
+      "last_updated": "2026-03-22",
+      "psychological_resilience": 88
     },
     "constitution": {
       "safety": 95,
@@ -122,7 +136,8 @@
       "cultural_sensitivity": 85,
       "legal_compliance": 92,
       "composite": 90,
-      "last_updated": "2026-03-21"
+      "last_updated": "2026-03-22",
+      "psychological_resilience": 92
     },
     "intelligence": {
       "safety": 82,
@@ -130,8 +145,9 @@
       "brand_alignment": 72,
       "cultural_sensitivity": 70,
       "legal_compliance": 75,
-      "composite": 77,
-      "last_updated": "2026-03-21"
+      "composite": 76,
+      "last_updated": "2026-03-22",
+      "psychological_resilience": 75
     },
     "scs001-orchestrator": {
       "safety": 85,
@@ -140,7 +156,8 @@
       "cultural_sensitivity": 72,
       "legal_compliance": 78,
       "composite": 79,
-      "last_updated": "2026-03-21"
+      "last_updated": "2026-03-22",
+      "psychological_resilience": 78
     },
     "scs001-analytics": {
       "safety": 85,
@@ -149,7 +166,8 @@
       "cultural_sensitivity": 70,
       "legal_compliance": 78,
       "composite": 78,
-      "last_updated": "2026-03-21"
+      "last_updated": "2026-03-22",
+      "psychological_resilience": 75
     },
     "scs001-broadcast": {
       "safety": 82,
@@ -158,7 +176,8 @@
       "cultural_sensitivity": 75,
       "legal_compliance": 80,
       "composite": 78,
-      "last_updated": "2026-03-21"
+      "last_updated": "2026-03-22",
+      "psychological_resilience": 75
     },
     "scs001-caption": {
       "safety": 82,
@@ -167,7 +186,8 @@
       "cultural_sensitivity": 78,
       "legal_compliance": 78,
       "composite": 79,
-      "last_updated": "2026-03-21"
+      "last_updated": "2026-03-22",
+      "psychological_resilience": 76
     },
     "scs001-clip-detection": {
       "safety": 80,
@@ -175,8 +195,9 @@
       "brand_alignment": 70,
       "cultural_sensitivity": 70,
       "legal_compliance": 75,
-      "composite": 76,
-      "last_updated": "2026-03-21"
+      "composite": 75,
+      "last_updated": "2026-03-22",
+      "psychological_resilience": 72
     },
     "scs001-discovery": {
       "safety": 80,
@@ -185,7 +206,8 @@
       "cultural_sensitivity": 72,
       "legal_compliance": 75,
       "composite": 76,
-      "last_updated": "2026-03-21"
+      "last_updated": "2026-03-22",
+      "psychological_resilience": 72
     },
     "scs001-editing": {
       "safety": 80,
@@ -194,7 +216,8 @@
       "cultural_sensitivity": 72,
       "legal_compliance": 75,
       "composite": 76,
-      "last_updated": "2026-03-21"
+      "last_updated": "2026-03-22",
+      "psychological_resilience": 72
     },
     "scs001-failure-library": {
       "safety": 85,
@@ -203,7 +226,8 @@
       "cultural_sensitivity": 70,
       "legal_compliance": 78,
       "composite": 79,
-      "last_updated": "2026-03-21"
+      "last_updated": "2026-03-22",
+      "psychological_resilience": 78
     },
     "scs001-flywheel": {
       "safety": 82,
@@ -212,7 +236,8 @@
       "cultural_sensitivity": 72,
       "legal_compliance": 78,
       "composite": 78,
-      "last_updated": "2026-03-21"
+      "last_updated": "2026-03-22",
+      "psychological_resilience": 75
     },
     "scs001-insight": {
       "safety": 82,
@@ -221,7 +246,8 @@
       "cultural_sensitivity": 70,
       "legal_compliance": 75,
       "composite": 77,
-      "last_updated": "2026-03-21"
+      "last_updated": "2026-03-22",
+      "psychological_resilience": 75
     },
     "scs001-publishing": {
       "safety": 85,
@@ -229,8 +255,9 @@
       "brand_alignment": 80,
       "cultural_sensitivity": 75,
       "legal_compliance": 82,
-      "composite": 81,
-      "last_updated": "2026-03-21"
+      "composite": 80,
+      "last_updated": "2026-03-22",
+      "psychological_resilience": 78
     },
     "scs001-qc": {
       "safety": 90,
@@ -238,8 +265,9 @@
       "brand_alignment": 80,
       "cultural_sensitivity": 78,
       "legal_compliance": 85,
-      "composite": 85,
-      "last_updated": "2026-03-21"
+      "composite": 84,
+      "last_updated": "2026-03-22",
+      "psychological_resilience": 82
     },
     "scs001-scorer": {
       "safety": 82,
@@ -248,7 +276,8 @@
       "cultural_sensitivity": 70,
       "legal_compliance": 75,
       "composite": 77,
-      "last_updated": "2026-03-21"
+      "last_updated": "2026-03-22",
+      "psychological_resilience": 74
     },
     "scs001-script": {
       "safety": 82,
@@ -257,7 +286,8 @@
       "cultural_sensitivity": 75,
       "legal_compliance": 78,
       "composite": 78,
-      "last_updated": "2026-03-21"
+      "last_updated": "2026-03-22",
+      "psychological_resilience": 75
     },
     "scs001-script-validator": {
       "safety": 88,
@@ -266,7 +296,8 @@
       "cultural_sensitivity": 75,
       "legal_compliance": 82,
       "composite": 83,
-      "last_updated": "2026-03-21"
+      "last_updated": "2026-03-22",
+      "psychological_resilience": 80
     },
     "scs001-trend": {
       "safety": 80,
@@ -275,7 +306,8 @@
       "cultural_sensitivity": 72,
       "legal_compliance": 75,
       "composite": 77,
-      "last_updated": "2026-03-21"
+      "last_updated": "2026-03-22",
+      "psychological_resilience": 72
     },
     "scs001-experiment": {
       "safety": 80,
@@ -283,8 +315,9 @@
       "brand_alignment": 70,
       "cultural_sensitivity": 70,
       "legal_compliance": 75,
-      "composite": 75,
-      "last_updated": "2026-03-21"
+      "composite": 74,
+      "last_updated": "2026-03-22",
+      "psychological_resilience": 70
     },
     "scs001-viral-downloader": {
       "safety": 78,
@@ -293,7 +326,8 @@
       "cultural_sensitivity": 70,
       "legal_compliance": 72,
       "composite": 74,
-      "last_updated": "2026-03-21"
+      "last_updated": "2026-03-22",
+      "psychological_resilience": 70
     },
     "telegram-bot": {
       "safety": 85,
@@ -301,8 +335,9 @@
       "brand_alignment": 78,
       "cultural_sensitivity": 75,
       "legal_compliance": 80,
-      "composite": 81,
-      "last_updated": "2026-03-21"
+      "composite": 80,
+      "last_updated": "2026-03-22",
+      "psychological_resilience": 78
     },
     "tiktok-client": {
       "safety": 82,
@@ -310,8 +345,9 @@
       "brand_alignment": 80,
       "cultural_sensitivity": 75,
       "legal_compliance": 82,
-      "composite": 80,
-      "last_updated": "2026-03-21"
+      "composite": 79,
+      "last_updated": "2026-03-22",
+      "psychological_resilience": 76
     },
     "vision-scorer": {
       "safety": 82,
@@ -320,7 +356,8 @@
       "cultural_sensitivity": 70,
       "legal_compliance": 75,
       "composite": 77,
-      "last_updated": "2026-03-21"
+      "last_updated": "2026-03-22",
+      "psychological_resilience": 74
     },
     "stripe": {
       "safety": 90,
@@ -328,8 +365,9 @@
       "brand_alignment": 78,
       "cultural_sensitivity": 72,
       "legal_compliance": 90,
-      "composite": 85,
-      "last_updated": "2026-03-21"
+      "composite": 84,
+      "last_updated": "2026-03-22",
+      "psychological_resilience": 82
     },
     "achiri": {
       "safety": 90,
@@ -338,7 +376,8 @@
       "cultural_sensitivity": 90,
       "legal_compliance": 85,
       "composite": 87,
-      "last_updated": "2026-03-21"
+      "last_updated": "2026-03-22",
+      "psychological_resilience": 85
     },
     "archive-scraper": {
       "safety": 78,
@@ -347,7 +386,8 @@
       "cultural_sensitivity": 70,
       "legal_compliance": 72,
       "composite": 73,
-      "last_updated": "2026-03-21"
+      "last_updated": "2026-03-22",
+      "psychological_resilience": 70
     },
     "caption-generator": {
       "safety": 82,
@@ -356,7 +396,8 @@
       "cultural_sensitivity": 78,
       "legal_compliance": 78,
       "composite": 79,
-      "last_updated": "2026-03-21"
+      "last_updated": "2026-03-22",
+      "psychological_resilience": 76
     },
     "ceo": {
       "safety": 92,
@@ -364,8 +405,9 @@
       "brand_alignment": 90,
       "cultural_sensitivity": 85,
       "legal_compliance": 90,
-      "composite": 90,
-      "last_updated": "2026-03-21"
+      "composite": 89,
+      "last_updated": "2026-03-22",
+      "psychological_resilience": 88
     }
   },
   "thresholds": {

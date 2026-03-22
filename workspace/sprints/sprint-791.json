@@ -1,0 +1,41 @@
+{
+  "sprint_id": "sprint-791",
+  "title": "AMD-18 — Add psychological_resilience ACP dimension + Sherlock tone audit",
+  "description": "Add psychological_resilience (weight 0.05) to trust-scores.json. Rebalance ACP weights. Add Sherlock Emotional Tone Audit function.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "791-01",
+      "title": "Add psychological_resilience dimension to trust-scores.json",
+      "type": "feature",
+      "task_type": "amd",
+      "task_target": "acp/trust-scores.json",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-791"
+    },
+    {
+      "id": "791-02",
+      "title": "Update AgentScores type in acp-engine.ts",
+      "type": "feature",
+      "task_type": "amd",
+      "task_target": "acp/acp-engine.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-791"
+    },
+    {
+      "id": "791-03",
+      "title": "Create Sherlock Emotional Tone Audit function",
+      "type": "feature",
+      "task_type": "amd",
+      "task_target": "scripts/lib/sherlock-tone-audit.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-791"
+    }
+  ]
+}

@@ -22,6 +22,7 @@ export interface AgentScores {
   brand_alignment: number;
   cultural_sensitivity: number;
   legal_compliance: number;
+  psychological_resilience: number;
   composite: number;
   last_updated: string;
 }
