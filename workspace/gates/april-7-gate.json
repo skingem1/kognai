@@ -2,7 +2,7 @@
   "report_id": "april-7-gate-v2",
   "gate_name": "Phase 1.5 Decision Gate",
   "gate_date": "2026-04-07",
-  "generated_at": "2026-03-22T22:24:17.886Z",
+  "generated_at": "2026-03-22T23:13:50.045Z",
   "is_gate_day": false,
   "days_until_gate": 16,
   "overall_status": "FAIL",
@@ -30,7 +30,7 @@
       "id": "pipeline-operational",
       "name": "Pipeline Producing Videos",
       "target": "10+ in ledger",
-      "actual": 615,
+      "actual": 650,
       "pass": true
     },
     {
@@ -51,8 +51,8 @@
     "posting_ready": false
   },
   "pipeline": {
-    "total_videos_generated": 615,
-    "ready_to_post": 324,
+    "total_videos_generated": 650,
+    "ready_to_post": 359,
     "already_posted": 291,
     "avg_viral_score": 0.498,
     "v2_pipeline_exists": true
@@ -68,7 +68,7 @@
   "actions": [
     "Complete 3 days of TikTok scrolling/following (manual warmup)",
     "Install browser-use: pip3 install browser-use",
-    "Post from queue: 324 videos ready (/deliver)",
+    "Post from queue: 359 videos ready (/deliver)",
     "Complete Stripe key configuration"
   ]
 }
