@@ -925,3 +925,90 @@ export async function cmdBroadcastResume(chatId: string): Promise<void> {
 export function isBroadcastLive(): boolean {
   return getBroadcastState().live;
 }
+
+/**
+ * /post-browser — Sprint 785: Post video to TikTok via Browser Use
+ * Usage: /post-browser [video_id]
+ * If no video_id, picks highest-scored unposted video.
+ */
+export async function cmdPostBrowser(chatId: string, args: string): Promise<void> {
+  const venvPath = path.join(ROOT, '.venv-browser-use');
+  if (!fs.existsSync(venvPath)) {
+    await sendMessage(chatId, '❌ Browser Use not installed.\n\nRun: `bash scripts/scs001/install-browser-use.sh`');
+    return;
+  }
+
+  // Check warmup
+  const warmupPath = path.join(ROOT, 'workspace', 'scs001', 'warmup-status.json');
+  if (fs.existsSync(warmupPath)) {
+    try {
+      const ws = JSON.parse(fs.readFileSync(warmupPath, 'utf-8'));
+      if (!ws.verified) {
+        await sendMessage(chatId, '❌ Warmup not verified. Complete warmup first.\n\n/warmup-status');
+        return;
+      }
+    } catch {}
+  } else {
+    await sendMessage(chatId, '❌ Warmup not started. Run /warmup-start first.');
+    return;
+  }
+
+  // Find video
+  let videoId = args.trim();
+  if (!videoId) {
+    const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
+    const recorded = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+    const recordedIds = new Set((recorded as any[]).map((e: any) => e.video_id).filter(Boolean));
+    const unposted = (ledger as any[])
+      .filter((e: any) => !recordedIds.has(e.video_id) && e.video_id && findCaptionedMp4(e.video_id))
+      .slice(0, 1);
+    if (unposted.length === 0) {
+      await sendMessage(chatId, '📡 No ready-to-post videos found. Run /refresh first.');
+      return;
+    }
+    videoId = unposted[0].video_id;
+  }
+
+  // Find video file
+  const mp4Path = findCaptionedMp4(videoId);
+  if (!mp4Path) {
+    await sendMessage(chatId, `❌ No MP4 found for ${videoId}`);
+    return;
+  }
+
+  // Build caption
+  const caption = buildTikTokCaption(videoId);
+
+  await sendMessage(chatId, [
+    '🌐 *Browser Upload Preparing...*',
+    '',
+    `Video: \`${videoId}\``,
+    `File: \`${path.basename(mp4Path)}\``,
+    `Caption: ${caption.slice(0, 100)}...`,
+    '',
+    'Launching Browser Use agent...',
+    '(This opens Chrome — do not interact with the browser window)',
+  ].join('\n'));
+
+  try {
+    const { execSync } = require('child_process');
+    const result = execSync(
+      `source "${venvPath}/bin/activate" && python "${path.join(ROOT, 'scripts', 'scs001', 'post-tiktok.py')}" --video "${mp4Path}" --caption "${caption.replace(/"/g, '\\"')}" --video-id "${videoId}"`,
+      { cwd: ROOT, timeout: 120_000, stdio: 'pipe', shell: '/bin/bash' }
+    ).toString();
+
+    await sendMessage(chatId, [
+      '📋 *Upload Prepared*',
+      '',
+      `Video: \`${videoId}\``,
+      '',
+      'Review in browser, then:',
+      '• Click Post in browser to publish',
+      `• Then run: /record ${videoId} 0`,
+      '',
+      '_Or re-run with --post: `bash scripts/scs001/post-tiktok.sh "${mp4Path}" "${caption}" --post`_',
+    ].join('\n'));
+  } catch (err: any) {
+    await sendMessage(chatId, `❌ Browser upload failed:\n\`${err.message?.slice(0, 300)}\``);
+  }
+}

@@ -23,7 +23,7 @@ export interface PublishedVideo {
   scheduled_post_time:  string;
   caption_text:         string;
   hashtags:             string[];
-  publish_method:       'blotato' | 'tiktok-direct';  // Which path was used
+  publish_method:       'blotato' | 'tiktok-direct' | 'browser-use';  // Which path was used
   platform_results?:    BlotatoPlatformResult[];       // Per-platform status from Blotato
 }
 
@@ -267,6 +267,63 @@ export class PublishingAgent {
       caption_text:        captionText,
       hashtags,
       publish_method:      'tiktok-direct',
+    };
+  }
+
+  /**
+   * Sprint 785: Browser Use publishing path.
+   * Uses Browser Use CLI to upload via Chrome Default profile.
+   * Fallback when neither Blotato nor TikTok API are configured.
+   * Requires: .venv-browser-use, warmup verified, OPENAI_API_KEY.
+   */
+  static isBrowserConfigured(): boolean {
+    const { existsSync } = require('fs');
+    const { join } = require('path');
+    const venvPath = join(process.cwd(), '.venv-browser-use');
+    const warmupPath = join(process.cwd(), 'workspace', 'scs001', 'warmup-status.json');
+    if (!existsSync(venvPath)) return false;
+    if (!existsSync(warmupPath)) return false;
+    try {
+      const status = JSON.parse(require('fs').readFileSync(warmupPath, 'utf-8'));
+      return status.verified === true;
+    } catch {
+      return false;
+    }
+  }
+
+  async publishViaBrowser(
+    videoId: string,
+    captionText: string,
+    filePath: string,
+    hashtags: string[],
+    slot: PublishedVideo['posting_slot'],
+    scheduledPostTime: string,
+  ): Promise<PublishedVideo> {
+    const { execSync } = require('child_process');
+    const postScript = require('path').join(process.cwd(), 'scripts', 'scs001', 'post-tiktok.sh');
+    const fullCaption = captionText + ' ' + hashtags.map(h => '#' + h).join(' ');
+
+    try {
+      execSync(
+        `bash "${postScript}" "${filePath}" "${fullCaption.replace(/"/g, '\\"')}"`,
+        { cwd: process.cwd(), timeout: 120_000, stdio: 'pipe' }
+      );
+      console.log(`[PublishingAgent] Browser upload prepared for ${videoId}`);
+    } catch (err) {
+      console.error(`[PublishingAgent] Browser upload failed: ${(err as Error).message}`);
+    }
+
+    return {
+      publish_id:          'browser-' + randomUUID().substring(0, 8),
+      video_id:            videoId,
+      platform:            'tiktok',
+      post_url:            'browser-upload-pending',
+      posted_at:           new Date().toISOString(),
+      posting_slot:        slot,
+      scheduled_post_time: scheduledPostTime,
+      caption_text:        fullCaption,
+      hashtags,
+      publish_method:      'browser-use',
     };
   }
 }

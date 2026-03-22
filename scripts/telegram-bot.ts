@@ -29,7 +29,7 @@ import { cmdHelp } from './telegram-commands/cmd-help';
 
 // Sprint 496: Import extracted command modules (Part 2: N-Z + interactive)
 import { cmdSession, cmdDone, cmdEndSession, cmdMenu } from './telegram-commands/cmd-session';
-import { cmdDeliver, cmdPublish, cmdPostNow, cmdPickup, cmdTodayCaptions, cmdBroadcast, cmdRefresh, cmdProduce, cmdInstagram, cmdInventory, cmdBatchDeliver, cmdStockpile, cmdBroadcastPause, cmdBroadcastResume } from './telegram-commands/cmd-delivery';
+import { cmdDeliver, cmdPublish, cmdPostNow, cmdPickup, cmdTodayCaptions, cmdBroadcast, cmdRefresh, cmdProduce, cmdInstagram, cmdInventory, cmdBatchDeliver, cmdStockpile, cmdBroadcastPause, cmdBroadcastResume, cmdPostBrowser } from './telegram-commands/cmd-delivery';
 import { cmdCheckout, cmdSubscribers, cmdPortal, cmdFunnel, cmdAchiri, cmdTestStripe, cmdUsage, cmdAchiriData, cmdWaitlist } from './telegram-commands/cmd-stripe';
 import { cmdStart, cmdTrial, cmdPlans } from './telegram-commands/cmd-onboarding';
 import { cmdLoraEval } from './telegram-commands/cmd-lora-eval';
@@ -105,6 +105,8 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     '/approveft':    () => cmdApproveFinetune(chatId, cmdArgs),
     '/warmup-complete': () => cmdWarmupComplete(chatId, cmdArgs),
     '/warmupcomplete':  () => cmdWarmupComplete(chatId, cmdArgs),
+    '/post-browser':    () => cmdPostBrowser(chatId, cmdArgs),
+    '/postbrowser':     () => cmdPostBrowser(chatId, cmdArgs),
   };
 
   const asyncHandler = asyncHandlers[cmdName];

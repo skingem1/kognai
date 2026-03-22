@@ -1,0 +1,48 @@
+{
+  "sprint_id": "sprint-785",
+  "title": "BROWSER-01 — Create post-tiktok.sh helper + wire into scs001-publishing",
+  "description": "Production post-tiktok.sh: MP4 + caption → Browser Use upload → screenshot proof. /post-browser Telegram command. Wire into publishing agent as browser path.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "785-01",
+      "title": "Create post-tiktok.py — Browser Use agent for full TikTok upload flow",
+      "type": "feature",
+      "task_type": "publishing",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-785"
+    },
+    {
+      "id": "785-02",
+      "title": "Create post-tiktok.sh — shell wrapper for pipeline integration",
+      "type": "feature",
+      "task_type": "publishing",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-785"
+    },
+    {
+      "id": "785-03",
+      "title": "Add /post-browser Telegram command — upload video via Browser Use",
+      "type": "feature",
+      "task_type": "telegram",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-785"
+    },
+    {
+      "id": "785-04",
+      "title": "Wire browser publish path into scs001-publishing agent as fallback",
+      "type": "feature",
+      "task_type": "publishing",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-785"
+    }
+  ]
+}
