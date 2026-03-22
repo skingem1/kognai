@@ -3276,3 +3276,15 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Issues: Topic sources exhaust after ~30 unique topics per daily cycle. Need daily runs.
 - Cost: $0.00 (code change only, video production was Sprint 800)
 - Timestamp: 2026-03-23T00:20:00Z
+
+## Sprint 802 — POSTING: Browser auto-post scheduler + /post-next ranking
+- Status: PASS
+- Commit: 7f319f8
+- Files created: scripts/scs001/auto-post-browser.ts, workspace/sprints/sprint-802.json
+- Files modified: scripts/telegram-commands/cmd-posting.ts, scripts/telegram-bot.ts, ecosystem.config.js
+- Test: cmdPostNext() returns 244 unposted videos. auto-post-browser dry-run PASS.
+- Pipeline: Browser-based auto-posting (no TIKTOK_ACCESS_TOKEN needed). PM2 cron 2x/day.
+- Swarm used: no (multi-file work, wrote directly)
+- Issues: None
+- Cost: $0.00
+- Timestamp: 2026-03-23T00:24:00Z
