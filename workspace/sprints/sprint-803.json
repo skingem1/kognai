@@ -1,0 +1,38 @@
+{
+  "sprint_id": "sprint-803",
+  "title": "OPS — /post-auto Telegram trigger + topic seed refresh",
+  "description": "Add /post-auto command to trigger browser auto-poster from Telegram. Clear seen-topics to unlock fresh topic discovery for content production.",
+  "source": "gate-priority",
+  "tasks": [
+    {
+      "id": "803-01",
+      "title": "Add cmdPostAuto to cmd-delivery.ts — triggers auto-post-browser.ts and returns result",
+      "type": "feature",
+      "task_target": "scripts/telegram-commands/cmd-delivery.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-803"
+    },
+    {
+      "id": "803-02",
+      "title": "Wire /post-auto in telegram-bot.ts",
+      "type": "feature",
+      "task_target": "scripts/telegram-bot.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-803"
+    },
+    {
+      "id": "803-03",
+      "title": "Reset seen-topics.json to enable fresh topic discovery",
+      "type": "ops",
+      "task_target": "workspace/scs001/topic-radar/seen-topics.json",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-803"
+    }
+  ]
+}

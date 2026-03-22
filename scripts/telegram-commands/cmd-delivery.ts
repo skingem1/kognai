@@ -1021,3 +1021,27 @@ export async function cmdPostBrowser(chatId: string, args: string): Promise<void
     await sendMessage(chatId, `❌ Browser upload failed:\n\`${err.message?.slice(0, 300)}\``);
   }
 }
+
+/**
+ * /post-auto — Sprint 803: Trigger browser auto-poster from Telegram
+ * Runs auto-post-browser.ts (picks best unposted video, posts via browser)
+ * Usage: /post-auto [count]
+ */
+export async function cmdPostAuto(chatId: string, args: string): Promise<void> {
+  const count = Math.min(Math.max(parseInt(args.trim()) || 1, 1), 5);
+  await sendMessage(chatId, `🤖 Starting browser auto-post (${count} video${count > 1 ? 's' : ''})...`);
+
+  try {
+    const result = execSync(
+      `AUTO_POST_MAX=${count} npx ts-node --transpile-only scripts/scs001/auto-post-browser.ts`,
+      { cwd: ROOT, timeout: 180_000, stdio: 'pipe', env: { ...process.env, AUTO_POST_MAX: String(count) } }
+    ).toString();
+
+    const lines = result.split('\n').filter(l => l.includes('[auto-post-browser]'));
+    const summary = lines.slice(-3).join('\n') || result.slice(-300);
+    await sendMessage(chatId, `✅ Auto-post complete:\n\n\`\`\`\n${summary}\n\`\`\``);
+  } catch (err: any) {
+    const output = err.stdout?.toString()?.slice(-300) || err.message?.slice(0, 300);
+    await sendMessage(chatId, `❌ Auto-post failed:\n\`${output}\``);
+  }
+}
