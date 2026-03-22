@@ -3156,3 +3156,15 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Issues: Publish requires: Python 3.11+, browser-use installed, warmup verified
 - Cost: $0.00
 - Timestamp: 2026-03-22T22:13:07Z
+
+## Sprint 791 — AMD-18
+- Status: PASS
+- Commit: 9187f2dabea2b69baf496c7f182baa6961530454
+- Files created: scripts/lib/sherlock-tone-audit.ts, workspace/sprints/sprint-791.json
+- Files modified: acp/trust-scores.json (v1.1, 6 dimensions, 38 agents), acp/acp-engine.ts (AgentScores type)
+- Test: TypeScript compile clean
+- Pipeline: ACP v1.1 with psychological_resilience + Sherlock tone audit
+- Swarm used: no (multi-file ACP changes, wrote directly)
+- Issues: None
+- Cost: $0.00
+- Timestamp: 2026-03-22T22:15:02Z

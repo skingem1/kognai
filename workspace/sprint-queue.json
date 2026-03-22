@@ -74,7 +74,7 @@
       "sprint": 791,
       "title": "AMD-18 \u2014 Add psychological_resilience ACP dimension + Sherlock tone audit",
       "block": "AMD-18",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "AMD-18 Sprint 509. Add psychological_resilience (weight 0.05) to trust-scores.json. Update ACP weights. Sherlock Emotional Tone Audit function."
     },
