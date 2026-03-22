@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-789",
+  "title": "SCS-001-V2-004 — Integration test + v2 pipeline runner",
+  "description": "Create scripts/scs001/run-v2-pipeline.ts. Wire: Scorsese → ArtDirector → MovieEditor → Output. End-to-end test with a test TrendSignal.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "789-01",
+      "title": "Create v2 pipeline runner script",
+      "type": "feature",
+      "task_type": "scs_001_v2",
+      "task_target": "scripts/scs001/run-v2-pipeline.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-789"
+    },
+    {
+      "id": "789-02",
+      "title": "TypeScript compile validation",
+      "type": "test",
+      "task_type": "validation",
+      "task_target": "scripts/scs001/run-v2-pipeline.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-789"
+    }
+  ]
+}
