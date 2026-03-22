@@ -3180,3 +3180,15 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Issues: None
 - Cost: $0.00
 - Timestamp: 2026-03-22T22:16:53Z
+
+## Sprint 793 — AMD-19
+- Status: PASS
+- Commit: 04a49bef8fdbbda880589953f6334e68eeeffc00
+- Files created: scripts/chain/prepare-identity-token.ts, workspace/sprints/sprint-793.json
+- Files modified: none
+- Test: TypeScript compile clean
+- Pipeline: ERC-8004 identity token prep — Charter hash, swarm metadata, EAS link, Genesis checklist
+- Swarm used: no (on-chain prep script, wrote directly)
+- Issues: None. Blockers listed: charter must be FINAL, EAS attestation needed.
+- Cost: $0.00
+- Timestamp: 2026-03-22T22:18:35Z

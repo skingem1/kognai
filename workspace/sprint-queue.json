@@ -90,7 +90,7 @@
       "sprint": 793,
       "title": "AMD-19 \u2014 ERC-8004 identity token mint + Genesis prep",
       "block": "AMD-19",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "Sprint 511. Mint ERC-721 identity token on Base. Token URI contains Founding Charter SHA-256 hash + swarm metadata. EAS attestation = Genesis Ceremony on-chain component. Use existing EAS schemas."
     },
