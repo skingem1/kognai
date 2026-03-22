@@ -496,7 +496,18 @@ export async function cmdTodayCaptions(chatId: string): Promise<void> {
       `📊 Viral: ${score}% | Hook: ${slot.hook ?? '?'}`,
     ].filter(Boolean).join('\n'));
 
-    await sendMessage(chatId, '```\n' + caption + '\n```');
+    // Sprint 805: Send video file directly for easy forwarding
+    const mp4Path = findCaptionedMp4(slot.video_id);
+    if (mp4Path && fs.existsSync(mp4Path)) {
+      try {
+        await sendVideoFile(chatId, mp4Path, caption.slice(0, 1024));
+      } catch {
+        await sendMessage(chatId, '```\n' + caption + '\n```');
+      }
+    } else {
+      await sendMessage(chatId, '```\n' + caption + '\n```');
+    }
+
     await sendMessage(chatId, `_After posting: \`/record ${slot.video_id} 0\`_`);
   }
 }
