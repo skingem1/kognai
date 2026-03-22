@@ -3144,3 +3144,15 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Issues: None. Full v2 pipeline end-to-end wired. SCS-001-V2 block COMPLETE.
 - Cost: $0.00
 - Timestamp: 2026-03-22T22:12:45Z
+
+## Sprint 790 — SCS-001-V2-005
+- Status: PASS
+- Commit: 1a1fd0c146b254e13447f769584b939b6e94f411
+- Files created: none (publish stage added to existing run-v2-pipeline.ts)
+- Files modified: scripts/scs001/run-v2-pipeline.ts, workspace/sprints/sprint-790.json
+- Test: TypeScript compile clean
+- Pipeline: v2 pipeline complete — Scorsese → ArtDirector → MovieEditor → Browser Use publishing
+- Swarm used: no (wired publishing into existing pipeline runner)
+- Issues: Publish requires: Python 3.11+, browser-use installed, warmup verified
+- Cost: $0.00
+- Timestamp: 2026-03-22T22:13:07Z
