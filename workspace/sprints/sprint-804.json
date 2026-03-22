@@ -1,0 +1,38 @@
+{
+  "sprint_id": "sprint-804",
+  "title": "FIX — Ollama timeout increase + help menu update + content batch",
+  "description": "Increase Ollama timeout from 120s to 180s to reduce pipeline failures. Update help menu with new commands. Produce more content.",
+  "source": "bugfix",
+  "tasks": [
+    {
+      "id": "804-01",
+      "title": "Increase multiformat-scriptgen Ollama timeout from 120s to 180s",
+      "type": "bugfix",
+      "task_target": "scripts/scs001/multiformat-scriptgen.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-804"
+    },
+    {
+      "id": "804-02",
+      "title": "Add /postnext and /postauto to help menu",
+      "type": "feature",
+      "task_target": "scripts/telegram-commands/cmd-help.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-804"
+    },
+    {
+      "id": "804-03",
+      "title": "Produce 5 videos via batch-produce (content acceleration)",
+      "type": "content",
+      "task_target": "scripts/scs001/batch-produce.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-804"
+    }
+  ]
+}

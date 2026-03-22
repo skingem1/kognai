@@ -94,7 +94,7 @@ async function callOllama(prompt: string, maxTokens: number = 800): Promise<stri
         options: { num_predict: maxTokens, temperature: 0.8 },
         think: false,
       }),
-      signal: AbortSignal.timeout(120000),
+      signal: AbortSignal.timeout(180000),
     });
 
     if (!res.ok) return null;

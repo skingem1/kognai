@@ -105,6 +105,8 @@ export function cmdHelp(): string {
     `/stale     — Show/archive stale content (>7 days)\n` +
     `/purge     — Quality filter: archive low-scoring clips\n` +
     `/cleanup   — Archive old pipeline runs, free disk space\n` +
+    `/postnext  — Top 5 unposted videos by viral score\n` +
+    `/postauto  — Trigger browser auto-poster (1-5 videos)\n` +
     `/help      — This message`
   );
 }
