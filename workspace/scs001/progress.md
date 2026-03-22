@@ -3300,3 +3300,15 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Issues: None
 - Cost: $0.00
 - Timestamp: 2026-03-23T00:28:00Z
+
+## Sprint 804 — FIX: Ollama timeout + help menu + content batch
+- Status: PASS
+- Commit: ca4a50c
+- Files created: workspace/sprints/sprint-804.json
+- Files modified: scripts/scs001/multiformat-scriptgen.ts (timeout 120→180s), scripts/telegram-commands/cmd-help.ts
+- Test: Batch produce ran: 3 new videos. Ollama timeout fix reduces pipeline failures.
+- Pipeline: 653 total videos. RapidAPI 403 is external (subscription expired).
+- Swarm used: no (simple edits, wrote directly)
+- Issues: RapidAPI subscription expired (403) — viral downloader failing. Human action needed.
+- Cost: $0.00
+- Timestamp: 2026-03-23T00:35:00Z
