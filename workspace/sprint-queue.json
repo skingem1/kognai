@@ -18,7 +18,7 @@
       "sprint": 784,
       "title": "BROWSER-01 — Install Browser Use CLI + test TikTok upload",
       "block": "EVAL-009",
-      "status": "pending",
+      "status": "done",
       "priority": "critical",
       "rationale": "P0 — UNBLOCKS GATE. BLOCKED on WARMUP-01 completion. Install Browser Use CLI. Test TikTok upload via Chrome Default profile. HUMAN PREREQUISITE: logged into TikTok + warmup complete."
     },

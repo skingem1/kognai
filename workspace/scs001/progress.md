@@ -3035,3 +3035,15 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Issues: None
 - Cost: $0.00
 - Timestamp: 2026-03-22T21:53:57Z
+
+## Sprint 784 — BROWSER-01
+- Status: PASS
+- Commit: 87337f0e33c8c7a7bf3562dc4923bcc69b3190ec
+- Files created: scripts/scs001/install-browser-use.sh, scripts/scs001/browser-upload-test.py, scripts/scs001/post-tiktok-browser.sh, workspace/sprints/sprint-784.json
+- Files modified: scripts/telegram-commands/cmd-system.ts, scripts/telegram-bot.ts
+- Test: TypeScript compile clean, Python syntax OK, shell syntax OK
+- Pipeline: Browser Use scripts ready, /browser-test command added
+- Swarm used: no (multi-file + shell scripts, wrote directly)
+- Issues: Python 3.9.6 too old for browser-use (needs 3.11+). Installer handles via Homebrew.
+- Cost: $0.00
+- Timestamp: 2026-03-22T21:57:53Z
