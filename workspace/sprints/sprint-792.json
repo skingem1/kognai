@@ -1,0 +1,38 @@
+{
+  "sprint_id": "sprint-792",
+  "title": "CHOMSKY — Prompt Engineer agent scaffold + first audit",
+  "description": "Create agents/chomsky/index.ts + prompt.md + SOUL.md. T1 qwen3:4b. 5 optimisation criteria. Harvey approval gate on every change. First audit: review 5 highest-cost agent prompts.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "792-01",
+      "title": "Create Chomsky SOUL.md + prompt.md",
+      "type": "feature",
+      "task_target": "agents/chomsky/SOUL.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-792"
+    },
+    {
+      "id": "792-02",
+      "title": "Create Chomsky agent index.ts with 5 criteria + Harvey gate",
+      "type": "feature",
+      "task_target": "agents/chomsky/index.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-792"
+    },
+    {
+      "id": "792-03",
+      "title": "TypeScript compile validation",
+      "type": "test",
+      "task_target": "agents/chomsky/index.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-792"
+    }
+  ]
+}
