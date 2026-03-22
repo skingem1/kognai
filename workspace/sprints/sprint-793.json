@@ -1,0 +1,28 @@
+{
+  "sprint_id": "sprint-793",
+  "title": "AMD-19 — ERC-8004 identity token mint + Genesis prep",
+  "description": "Create scripts/chain/prepare-identity-token.ts. Generates ERC-721 metadata with Founding Charter SHA-256 hash + swarm metadata. Outputs ready-to-mint JSON for Base network.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "793-01",
+      "title": "Create identity token preparation script",
+      "type": "feature",
+      "task_target": "scripts/chain/prepare-identity-token.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-793"
+    },
+    {
+      "id": "793-02",
+      "title": "TypeScript compile validation",
+      "type": "test",
+      "task_target": "scripts/chain/prepare-identity-token.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-793"
+    }
+  ]
+}
