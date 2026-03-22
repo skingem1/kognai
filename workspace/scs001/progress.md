@@ -3384,3 +3384,15 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Issues: None
 - Cost: $0.00
 - Timestamp: 2026-03-23T01:30:00Z
+
+## Sprint 811 — OPS: Fix heartbeat crash + restart PM2 crons
+- Status: PASS
+- Commit: 8b61269
+- Files modified: scripts/heartbeat-daemon.ts
+- Files created: workspace/sprints/sprint-811.json
+- Test: heartbeat-daemon runs successfully, health.json generated, /health works
+- Pipeline: PM2 crons restarted (posting noon+evening, daily digest, watchdog)
+- Swarm used: no (bugfix, wrote directly)
+- Issues: heartbeat catch block re-read missing tier.json instead of using defaults
+- Cost: $0.00
+- Timestamp: 2026-03-23T01:55:00Z
