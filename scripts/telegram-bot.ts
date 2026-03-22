@@ -33,6 +33,7 @@ import { cmdDeliver, cmdPublish, cmdPostNow, cmdPickup, cmdTodayCaptions, cmdBro
 import { cmdCheckout, cmdSubscribers, cmdPortal, cmdFunnel, cmdAchiri, cmdTestStripe, cmdUsage, cmdAchiriData, cmdWaitlist } from './telegram-commands/cmd-stripe';
 import { cmdStart, cmdTrial, cmdPlans } from './telegram-commands/cmd-onboarding';
 import { cmdLoraEval } from './telegram-commands/cmd-lora-eval';
+import { cmdWarmupStart, cmdWarmupComplete, cmdWarmupStatus } from './telegram-commands/cmd-warmup';
 import { generateChecklist } from './scs001/posting-checklist';
 
 // ─── Env validation ──────────────────────────────────────────────────
@@ -102,6 +103,8 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     '/batchdeliver': async () => { const r = await cmdBatchDeliver(chatId, cmdArgs); await sendMessage(chatId, r); },
     '/stockpile':    () => cmdStockpile(chatId, cmdArgs),
     '/approveft':    () => cmdApproveFinetune(chatId, cmdArgs),
+    '/warmup-complete': () => cmdWarmupComplete(chatId, cmdArgs),
+    '/warmupcomplete':  () => cmdWarmupComplete(chatId, cmdArgs),
   };
 
   const asyncHandler = asyncHandlers[cmdName];
@@ -217,6 +220,11 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/loraeval':    response = cmdLoraEval(cmdArgs);    break;
     case '/lora-eval':   response = cmdLoraEval(cmdArgs);    break;
     case '/checklist':   response = generateChecklist();     break;
+    case '/warmup-start':  response = cmdWarmupStart();      break;
+    case '/warmupstart':   response = cmdWarmupStart();      break;
+    case '/warmup-status': response = cmdWarmupStatus();     break;
+    case '/warmupstatus':  response = cmdWarmupStatus();     break;
+    case '/warmup':        response = cmdWarmupStatus();     break;
     case '/help':        response = cmdHelp();        break;
     default:
       response = `Unknown command: \`${cmdName}\`\n\n${cmdHelp()}`;
@@ -301,6 +309,7 @@ async function registerBotCommands(): Promise<void> {
     { command: 'boot', description: 'Start all essential PM2 crons' },
     { command: 'publish', description: 'One-tap publish to TikTok+IG+YouTube' },
     { command: 'cleanup', description: 'Archive old runs, free disk space' },
+    { command: 'warmup', description: 'TikTok warmup status' },
     { command: 'help', description: 'List all commands' },
   ];
   try {

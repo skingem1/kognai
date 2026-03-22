@@ -16,6 +16,7 @@
 import { readFileSync, existsSync } from 'fs';
 import { join } from 'path';
 import * as dotenv from 'dotenv';
+import { isWarmupComplete, loadWarmupStatus } from './verify-warmup-signal';
 
 dotenv.config({ path: join(process.cwd(), '.env') });
 
@@ -38,6 +39,18 @@ function countJsonlLines(path: string): number {
 
 function runChecks(): Check[] {
   const checks: Check[] = [];
+
+  // Warmup gate (Sprint 783) — must complete before any posting
+  const warmupDone = isWarmupComplete();
+  const warmupStatus = loadWarmupStatus();
+  checks.push({
+    name: 'TikTok warmup',
+    pass: warmupDone,
+    detail: warmupDone
+      ? `Verified ${warmupStatus?.verified_at?.slice(0, 10)} (${warmupStatus?.days_active}d, alignment ${warmupStatus?.niche_alignment}/10)`
+      : 'NOT COMPLETE — run /warmup-start then /warmup-complete after 3 days of scrolling',
+    blocker: !warmupDone,
+  });
 
   // Env var checks
   const envChecks: Array<{ name: string; key: string; blocker: boolean }> = [

@@ -66,7 +66,7 @@ const PLANS: Record<string, { name: string; price_env: string; amount: string; f
 // Sprint 441: Free trial duration (days) — set 0 to disable
 const FREE_TRIAL_DAYS = parseInt(process.env.STRIPE_TRIAL_DAYS || '3', 10);
 
-function createCheckoutSession(priceId: string, plan: string): Promise<{ url: string }> {
+function createCheckoutSession(priceId: string, plan: string, refVideoId?: string): Promise<{ url: string }> {
   return new Promise((resolve, reject) => {
     const params = new URLSearchParams({
       mode: 'subscription',
@@ -77,6 +77,11 @@ function createCheckoutSession(priceId: string, plan: string): Promise<{ url: st
       'metadata[plan]': plan,
       'metadata[source]': 'tiktok-bio',
     });
+    // Sprint 783: Post-attribution — track which video drove this checkout
+    if (refVideoId) {
+      params.set('metadata[ref_video_id]', refVideoId);
+      params.set('client_reference_id', refVideoId);
+    }
     // Sprint 441: Add free trial if configured
     if (FREE_TRIAL_DAYS > 0) {
       params.set('subscription_data[trial_period_days]', String(FREE_TRIAL_DAYS));
@@ -355,8 +360,11 @@ function handleWebhookEvent(body: string): { status: number; message: string } {
       const plan = obj.metadata?.plan ?? 'unknown';
       const amount = obj.amount_total ? (obj.amount_total / 100).toFixed(2) : '?';
       const currency = (obj.currency ?? 'usd').toUpperCase();
-      logSubscriberEvent({ type, email, plan, amount, currency, stripe_customer: obj.customer, subscription: obj.subscription });
-      notifyOperator(`💰 *New Subscriber!*\n\nEmail: ${email}\nPlan: *${plan}*\nAmount: ${amount} ${currency}\n\n_Checkout completed via Stripe_`);
+      // Sprint 783: Post-attribution — track which video drove this conversion
+      const refVideoId = obj.metadata?.ref_video_id ?? obj.client_reference_id ?? null;
+      logSubscriberEvent({ type, email, plan, amount, currency, stripe_customer: obj.customer, subscription: obj.subscription, ref_video_id: refVideoId });
+      const attrLine = refVideoId ? `\nAttribution: video \`${refVideoId}\`` : '';
+      notifyOperator(`💰 *New Subscriber!*\n\nEmail: ${email}\nPlan: *${plan}*\nAmount: ${amount} ${currency}${attrLine}\n\n_Checkout completed via Stripe_`);
       break;
     }
     case 'invoice.paid': {
@@ -528,12 +536,15 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
-  // /checkout/growth or /checkout/premium
-  const checkoutMatch = url.match(/^\/checkout\/(growth|premium)$/);
+  // /checkout/growth or /checkout/premium (Sprint 783: accepts ?ref=<video_id> for attribution)
+  const checkoutMatch = url.match(/^\/checkout\/(growth|premium)(\?.*)?$/);
   if (checkoutMatch && req.method === 'GET') {
     const plan = checkoutMatch[1];
     const priceEnv = PLANS[plan]?.price_env;
     const priceId = priceEnv ? process.env[priceEnv] : '';
+    // Sprint 783: Extract ref video ID from query string
+    const urlObj = new URL(req.url || '/', `http://localhost:${PORT}`);
+    const refVideoId = urlObj.searchParams.get('ref') || undefined;
 
     if (!STRIPE_KEY) {
       res.writeHead(503, { 'Content-Type': 'text/plain' });
@@ -547,7 +558,7 @@ const server = http.createServer(async (req, res) => {
     }
 
     try {
-      const session = await createCheckoutSession(priceId, plan);
+      const session = await createCheckoutSession(priceId, plan, refVideoId);
       res.writeHead(303, { 'Location': session.url });
       res.end();
       console.log(`[checkout] Redirected to Stripe Checkout: plan=${plan}`);

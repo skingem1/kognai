@@ -1,0 +1,48 @@
+{
+  "sprint_id": "sprint-783",
+  "title": "WARMUP-01 — TikTok algorithm warmup agent tasks (W01-02 + W01-03)",
+  "description": "Warmup verification script, revenue post-attribution, /warmup-complete Telegram command, and warmup gate in posting preflight.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "783-01",
+      "title": "Create verify-warmup-signal.ts — check algorithm trained on AI/tech niche",
+      "type": "feature",
+      "task_type": "warmup",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-783"
+    },
+    {
+      "id": "783-02",
+      "title": "Add /warmup-complete Telegram command that sets warmup flag and unlocks posting",
+      "type": "feature",
+      "task_type": "warmup",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-783"
+    },
+    {
+      "id": "783-03",
+      "title": "Wire warmup gate into posting preflight — block posting until warmup complete",
+      "type": "feature",
+      "task_type": "warmup",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-783"
+    },
+    {
+      "id": "783-04",
+      "title": "Wire Stripe post-attribution — track revenue per video via checkout metadata",
+      "type": "feature",
+      "task_type": "revenue",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-783"
+    }
+  ]
+}
