@@ -1,18 +1,18 @@
 {
   "gate": "phase1-5-tiktok-kill-switch",
-  "date": "2026-03-21",
-  "generated_at": "2026-03-21T18:42:30.757Z",
+  "date": "2026-03-22",
+  "generated_at": "2026-03-22T23:32:47.664Z",
   "deadline": "2026-04-07",
-  "days_remaining": 17,
+  "days_remaining": 16,
   "urgency": "ON_TRACK",
   "urgency_signal": "Posting pace is sufficient",
-  "pace_needed": 1.7,
+  "pace_needed": 1.8,
   "criteria": [
     {
       "id": "post-count",
       "name": "Manual TikTok Posts (target: 30)",
       "pass": false,
-      "details": "1 posts recorded in manual-posts.jsonl"
+      "details": "2 posts recorded in manual-posts.jsonl"
     },
     {
       "id": "total-views",
@@ -22,12 +22,12 @@
     }
   ],
   "overall_pass": false,
-  "recommendation": "ON TRACK — 1/30 posts, 17 days remaining. Keep posting at current pace.",
+  "recommendation": "ON TRACK — 2/30 posts, 16 days remaining. Keep posting at current pace.",
   "raw": {
-    "posts_count": 1,
+    "posts_count": 2,
     "total_views": 0,
     "avg_views": 0,
-    "posts_remaining": 29,
+    "posts_remaining": 28,
     "views_remaining": 500
   }
 }

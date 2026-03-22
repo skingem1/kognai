@@ -1,0 +1,28 @@
+{
+  "sprint_id": "sprint-806",
+  "title": "OPS — Add missing multiformat videos to publish ledger + auto-deliver",
+  "description": "55 multiformat videos have _final.mp4 but aren't in the publish ledger. Add them to unlock more posting options.",
+  "source": "gap-fix",
+  "tasks": [
+    {
+      "id": "806-01",
+      "title": "Create backfill script to add missing multiformat videos to publish-ledger.jsonl",
+      "type": "ops",
+      "task_target": "scripts/scs001/backfill-multiformat-ledger.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-806"
+    },
+    {
+      "id": "806-02",
+      "title": "Run the backfill and regenerate inventory",
+      "type": "ops",
+      "task_target": "workspace/scs001/publish-ledger.jsonl",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-806"
+    }
+  ]
+}
