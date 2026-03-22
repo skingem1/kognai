@@ -1,0 +1,38 @@
+{
+  "sprint_id": "sprint-794",
+  "title": "GATE — April 7 readiness report with warmup + posting status",
+  "description": "Upgrade /gate Telegram command to comprehensive April 7 gate readiness report. Includes warmup status, Browser Use CLI posting status, publishable video count, manual posting progress, pipeline health, and days remaining. Also creates standalone JSON report generator.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "794-01",
+      "title": "Upgrade cmdGate to comprehensive April 7 readiness report",
+      "type": "feature",
+      "task_target": "scripts/telegram-commands/cmd-gate.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-794"
+    },
+    {
+      "id": "794-02",
+      "title": "Create standalone gate report generator (JSON output)",
+      "type": "feature",
+      "task_target": "scripts/scs001/generate-april7-gate.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-794"
+    },
+    {
+      "id": "794-03",
+      "title": "TypeScript compile validation",
+      "type": "test",
+      "task_target": "scripts/telegram-commands/cmd-gate.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-794"
+    }
+  ]
+}

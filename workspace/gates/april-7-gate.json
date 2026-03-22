@@ -1,19 +1,21 @@
 {
-  "report_id": "phase-1.5-gate-report",
+  "report_id": "april-7-gate-v2",
   "gate_name": "Phase 1.5 Decision Gate",
   "gate_date": "2026-04-07",
-  "generated_at": "2026-03-21T17:53:20.438Z",
+  "generated_at": "2026-03-22T22:24:17.886Z",
   "is_gate_day": false,
-  "days_until_gate": 17,
+  "days_until_gate": 16,
   "overall_status": "FAIL",
-  "criteria_passed": "2/4",
+  "criteria_passed": "1/4",
   "criteria": [
     {
       "id": "post-count",
       "name": "30 TikTok Posts",
       "target": 30,
       "actual": 1,
-      "pass": false
+      "pass": false,
+      "gap": 29,
+      "pace_needed": 1.8
     },
     {
       "id": "total-views",
@@ -21,42 +23,52 @@
       "target": 500,
       "actual": 0,
       "pass": false,
+      "gap": 500,
       "avg_per_post": 0
     },
     {
       "id": "pipeline-operational",
       "name": "Pipeline Producing Videos",
       "target": "10+ in ledger",
-      "actual": 572,
+      "actual": 615,
       "pass": true
     },
     {
       "id": "monetization-ready",
       "name": "Stripe Configured",
-      "target": "STRIPE_SECRET_KEY set",
-      "actual": "SET",
-      "pass": true
+      "target": "4/4 keys",
+      "actual": "0/4",
+      "pass": false
     }
   ],
-  "kill_switch": "NOT TRIGGERED",
-  "system_health": {
-    "smoke_test": "11/11 pass",
-    "commits": 1428,
-    "pipeline_videos": 572,
-    "agents": 44,
-    "sprints_shipped": "487+"
+  "warmup": {
+    "status": "not_started",
+    "verified": false
   },
-  "decision": "HOLD — 2 criteria not met. 17 days remaining to remediate.",
-  "next_actions": [
-    "Review remediation plan (workspace/gates/remediation-plan.json)",
-    "Prioritize posting",
-    "Re-run this report daily until gate day"
+  "browser_use": {
+    "cli_installed": false,
+    "post_script_exists": true,
+    "posting_ready": false
+  },
+  "pipeline": {
+    "total_videos_generated": 615,
+    "ready_to_post": 324,
+    "already_posted": 291,
+    "avg_viral_score": 0.498,
+    "v2_pipeline_exists": true
+  },
+  "stripe": {
+    "keys_configured": "0/4",
+    "ready": false
+  },
+  "blockers": [
+    "Warmup not started — TikTok may throttle fresh account",
+    "browser-use CLI not installed — automated posting unavailable"
   ],
-  "top_performers": [
-    {
-      "video_id": "exp-4aaca82f",
-      "views": 0,
-      "posted_at": "2026-03-21T09:41:33.187Z"
-    }
+  "actions": [
+    "Complete 3 days of TikTok scrolling/following (manual warmup)",
+    "Install browser-use: pip3 install browser-use",
+    "Post from queue: 324 videos ready (/deliver)",
+    "Complete Stripe key configuration"
   ]
 }

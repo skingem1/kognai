@@ -14,9 +14,18 @@ import {
 
 export function cmdGate(): string {
   const manualPostsPath = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
+  const ledgerPath = path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl');
+  const warmupPath = path.join(ROOT, 'workspace', 'scs001', 'warmup-status.json');
+  const postTiktokPath = path.join(ROOT, 'scripts', 'scs001', 'post-tiktok.sh');
+  const autoDeliveredPath = path.join(ROOT, 'workspace', 'scs001', 'auto-delivered.jsonl');
+
+  const gateDate = new Date('2026-04-07T00:00:00Z');
+  const now = new Date();
+  const daysLeft = Math.max(0, Math.ceil((gateDate.getTime() - now.getTime()) / 86_400_000));
+
+  // --- Posts & Views ---
   let postCount = 0;
   let totalViews = 0;
-
   if (fs.existsSync(manualPostsPath)) {
     const lines = fs.readFileSync(manualPostsPath, 'utf-8').split('\n').filter(l => l.trim());
     postCount = lines.length;
@@ -24,26 +33,103 @@ export function cmdGate(): string {
       try { totalViews += JSON.parse(line).views ?? 0; } catch {}
     }
   }
-
-  const gateDate = new Date('2026-04-07T00:00:00Z');
-  const now = new Date();
-  const daysLeft = Math.max(0, Math.ceil((gateDate.getTime() - now.getTime()) / 86_400_000));
   const postsNeeded = Math.max(0, 30 - postCount);
   const postsPerDay = daysLeft > 0 ? (postsNeeded / daysLeft).toFixed(1) : '∞';
   const viewsNeeded = Math.max(0, 500 - totalViews);
 
+  // --- Publishable Videos ---
+  let ledgerCount = 0;
+  const postedIds = new Set<string>();
+  if (fs.existsSync(manualPostsPath)) {
+    for (const l of fs.readFileSync(manualPostsPath, 'utf-8').split('\n').filter(l => l.trim())) {
+      try { const p = JSON.parse(l); if (p.video_id) postedIds.add(p.video_id); } catch {}
+    }
+  }
+  if (fs.existsSync(autoDeliveredPath)) {
+    for (const l of fs.readFileSync(autoDeliveredPath, 'utf-8').split('\n').filter(l => l.trim())) {
+      try { const p = JSON.parse(l); if (p.video_id) postedIds.add(p.video_id); } catch {}
+    }
+  }
+  let readyToPost = 0;
+  if (fs.existsSync(ledgerPath)) {
+    const lines = fs.readFileSync(ledgerPath, 'utf-8').split('\n').filter(l => l.trim());
+    ledgerCount = lines.length;
+    for (const l of lines) {
+      try { const e = JSON.parse(l); if (e.video_id && !postedIds.has(e.video_id)) readyToPost++; } catch {}
+    }
+  }
+
+  // --- Warmup Status ---
+  let warmupStatus = '❌ Not started';
+  if (fs.existsSync(warmupPath)) {
+    try {
+      const ws = JSON.parse(fs.readFileSync(warmupPath, 'utf-8'));
+      if (ws.verified) warmupStatus = `✅ Verified (${ws.days_active}d, alignment ${ws.niche_alignment}/10)`;
+      else if (ws.warmup_complete) warmupStatus = `⚠️ Complete but unverified`;
+      else warmupStatus = `⏳ In progress (${ws.days_active ?? 0}d)`;
+    } catch {}
+  }
+
+  // --- Browser Use CLI ---
+  let browserUseStatus = '❌ Not installed';
+  try {
+    execSync('which browser-use 2>/dev/null || pip3 show browser-use 2>/dev/null', { timeout: 5000 });
+    browserUseStatus = '✅ Installed';
+  } catch {}
+  const postScriptExists = fs.existsSync(postTiktokPath);
+  const browserPosting = postScriptExists ? (browserUseStatus.startsWith('✅') ? '✅ Ready' : '⚠️ Script exists, CLI missing') : '❌ Not wired';
+
+  // --- Pipeline Health ---
+  let pipelineStatus = '❌ No videos';
+  if (ledgerCount > 0) {
+    pipelineStatus = `✅ ${ledgerCount} total, ${readyToPost} ready to post`;
+  }
+
+  // --- Stripe ---
+  const stripeReady = !!process.env.STRIPE_SECRET_KEY && !!process.env.STRIPE_WEBHOOK_SECRET;
+
+  // --- Urgency ---
+  const urgency = daysLeft <= 3 ? '💀 KILL SWITCH IMMINENT'
+    : daysLeft <= 7 ? '🔴 URGENT'
+    : daysLeft <= 14 ? '🟡 WARNING'
+    : '🟢 ON TRACK';
+
   const postIcon = postCount >= 30 ? '✅' : '⏳';
   const viewIcon = totalViews >= 500 ? '✅' : '⏳';
-  const urgency = daysLeft <= 7 ? '🔴 URGENT' : daysLeft <= 14 ? '🟡 WARNING' : '🟢 ON TRACK';
 
-  return (
-    `*Phase 1.5 Gate — TikTok Kill Switch*\n` +
-    `📅 Apr 7 · ${daysLeft} days remaining · ${urgency}\n\n` +
-    `${postIcon} Posts: ${postCount}/30 (need ${postsNeeded} more)\n` +
-    `${viewIcon} Views: ${totalViews}/500 (need ${viewsNeeded} more)\n` +
-    `📊 Pace needed: ${postsPerDay} posts/day\n\n` +
-    `_Record a post: npx ts-node scripts/scs001/record-manual-post.ts --video-id <id> --views <n>_`
-  );
+  // --- Criteria Summary ---
+  const criteria = [
+    { pass: postCount >= 30, label: 'Posts 30+' },
+    { pass: totalViews >= 500, label: 'Views 500+' },
+    { pass: ledgerCount >= 10, label: 'Pipeline operational' },
+    { pass: stripeReady, label: 'Stripe configured' },
+  ];
+  const passed = criteria.filter(c => c.pass).length;
+
+  return [
+    `*📊 Phase 1.5 Gate — April 7 Readiness*`,
+    `📅 ${daysLeft} days remaining · ${urgency}`,
+    `✅ *${passed}/4 criteria met*`,
+    ``,
+    `*── Posting ──*`,
+    `${postIcon} Posts: ${postCount}/30 (need ${postsNeeded} more)`,
+    `${viewIcon} Views: ${totalViews}/500 (need ${viewsNeeded} more)`,
+    `📊 Pace needed: ${postsPerDay} posts/day`,
+    ``,
+    `*── Infrastructure ──*`,
+    `🔥 Warmup: ${warmupStatus}`,
+    `🌐 Browser Use: ${browserPosting}`,
+    `🎬 Pipeline: ${pipelineStatus}`,
+    `💳 Stripe: ${stripeReady ? '✅ Ready' : '⚠️ Incomplete'}`,
+    ``,
+    `*── Action Items ──*`,
+    ...(postCount === 0 ? ['⚠️ START POSTING NOW — 0 posts recorded'] : []),
+    ...(warmupStatus.startsWith('❌') ? ['⚠️ Complete TikTok warmup (3 days scrolling)'] : []),
+    ...(browserPosting.includes('missing') ? ['⚠️ Install browser-use: pip3 install browser-use'] : []),
+    ...(readyToPost > 0 ? [`📦 ${readyToPost} videos queued — use /deliver to post`] : []),
+    ``,
+    `_Full report: npx ts-node scripts/scs001/generate-april7-gate.ts_`,
+  ].join('\n');
 }
 
 export function cmdGoLive(): string {
