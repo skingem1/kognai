@@ -618,14 +618,13 @@ export async function cmdRefresh(chatId: string): Promise<void> {
 }
 
 export async function cmdProduce(chatId: string, args?: string): Promise<void> {
-  // Sprint 534: Accept /produce N (default 1, max 10)
-  const count = Math.min(10, Math.max(1, parseInt(args?.trim() || '1', 10) || 1));
-  const deliver = count > 1;
+  // Sprint 801: Rewired to use multiformat pipeline (batch-produce.ts) instead of old run-full-pipeline.ts
+  const count = Math.min(10, Math.max(1, parseInt(args?.trim() || '3', 10) || 3));
 
-  await sendMessage(chatId, `🎬 *Producing ${count} video${count > 1 ? 's' : ''}...*\n\nUsing local TTS + FFmpeg captions ($0.00).\nThis takes ${count * 2}-${count * 3} minutes.${deliver ? '\nWill auto-deliver to Telegram when done.' : ''}`);
+  await sendMessage(chatId, `🎬 *Producing ${count} video${count > 1 ? 's' : ''}...*\n\nMultiformat pipeline: topic radar → script → TTS → avatar → composite → captions.\nEst. ${count * 1}-${count * 2} minutes. Cost: ~$0.30/video.`);
   const { spawn } = require('child_process');
-  const pipelineScript = path.join(ROOT, 'scripts', 'scs001', 'run-full-pipeline.ts');
-  const child = spawn('npx', ['ts-node', '--transpile-only', pipelineScript, '--mock', '--local', '--limit', String(count)], {
+  const batchScript = path.join(ROOT, 'scripts', 'scs001', 'batch-produce.ts');
+  const child = spawn('npx', ['ts-node', '--transpile-only', batchScript, '--runs', String(count)], {
     cwd: ROOT,
     env: { ...process.env, TS_NODE_TRANSPILE_ONLY: 'true' },
     stdio: ['ignore', 'pipe', 'pipe'],
@@ -637,28 +636,38 @@ export async function cmdProduce(chatId: string, args?: string): Promise<void> {
   child.on('close', async (code: number) => {
     try {
       if (code === 0) {
-        const runsDir = path.join(ROOT, 'workspace', 'scs001', 'pipeline-runs');
-        const reports = fs.existsSync(runsDir) ? fs.readdirSync(runsDir).filter((f: string) => f.startsWith('pipeline-') && f.endsWith('.json')).sort() : [];
-        let reportSummary = '';
-        if (reports.length > 0) {
+        // Parse batch summary from stdout
+        const newMatch = stdout.match(/New videos:\s*(\d+)/);
+        const newVideos = newMatch ? parseInt(newMatch[1]) : 0;
+        const runsMatch = stdout.match(/Runs:\s*(\d+)\/(\d+)/);
+        const successRuns = runsMatch ? parseInt(runsMatch[1]) : 0;
+
+        let msg = `✅ *${newVideos} video${newVideos !== 1 ? 's' : ''} produced!* (${successRuns}/${count} runs)`;
+
+        // Read latest report for gate status
+        const reportPath = path.join(ROOT, 'reports', 'batch-produce-latest.json');
+        if (fs.existsSync(reportPath)) {
           try {
-            const report = JSON.parse(fs.readFileSync(path.join(runsDir, reports[reports.length - 1]), 'utf-8'));
-            reportSummary = `\n\n📊 ${report.summary}`;
-          } catch { /* skip */ }
+            const report = JSON.parse(fs.readFileSync(reportPath, 'utf-8'));
+            if (report.total_new_videos != null) {
+              msg += `\n\n📊 New: ${report.total_new_videos} videos`;
+            }
+          } catch {}
         }
 
-        // Auto-deliver if count > 1
-        if (deliver) {
+        // Auto-deliver if produced > 0
+        if (newVideos > 0) {
           try {
             const { execSync } = require('child_process');
-            execSync(`npx ts-node --transpile-only scripts/scs001/posting-auto-deliver.ts --batch ${count}`, {
+            execSync(`npx ts-node --transpile-only scripts/scs001/posting-auto-deliver.ts --batch ${Math.min(newVideos, 5)}`, {
               cwd: ROOT, timeout: 120000, env: { ...process.env, TS_NODE_TRANSPILE_ONLY: 'true' },
             });
-            reportSummary += `\n\n📬 Auto-delivered ${count} videos.`;
-          } catch { reportSummary += '\n\n⚠️ Auto-deliver failed. Use /postnow manually.'; }
+            msg += `\n\n📬 Auto-delivered ${Math.min(newVideos, 5)} videos to Telegram.`;
+          } catch { msg += '\n\n⚠️ Auto-deliver failed. Use /deliver manually.'; }
         }
 
-        await sendMessage(chatId, `✅ *${count} video${count > 1 ? 's' : ''} produced!*${reportSummary}\n\nUse /postnow to get ${count > 1 ? 'videos' : 'the video'}.`);
+        msg += '\n\nUse /deliver to get videos for posting.';
+        await sendMessage(chatId, msg);
       } else {
         const lastLines = stdout.split('\n').filter((l: string) => l.trim()).slice(-5).join('\n');
         await sendMessage(chatId, `❌ *Pipeline failed* (exit ${code})\n\n\`\`\`\n${lastLines.slice(0, 500)}\n\`\`\``);
