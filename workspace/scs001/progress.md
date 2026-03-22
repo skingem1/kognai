@@ -3288,3 +3288,15 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Issues: None
 - Cost: $0.00
 - Timestamp: 2026-03-23T00:24:00Z
+
+## Sprint 803 — OPS: /post-auto Telegram trigger + topic seed refresh
+- Status: PASS
+- Commit: 2348b56
+- Files created: workspace/sprints/sprint-803.json
+- Files modified: scripts/telegram-commands/cmd-delivery.ts, scripts/telegram-bot.ts, workspace/scs001/topic-radar/seen-topics.json
+- Test: cmdPostAuto loads correctly. seen-topics reset to empty array.
+- Pipeline: /post-auto triggers browser auto-poster. Topics refreshed for diversity.
+- Swarm used: no (multi-file work, wrote directly)
+- Issues: None
+- Cost: $0.00
+- Timestamp: 2026-03-23T00:28:00Z
