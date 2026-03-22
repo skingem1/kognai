@@ -3372,3 +3372,15 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Issues: None
 - Cost: $0.00
 - Timestamp: 2026-03-23T01:15:00Z
+
+## Sprint 810 — OPS: Ledger enrichment
+- Status: PASS
+- Commit: 3be5f07
+- Files created: scripts/scs001/enrich-ledger.ts
+- Files modified: scripts/telegram-commands/cmd-management.ts, scripts/telegram-bot.ts, workspace/scs001/publish-ledger.jsonl
+- Test: dry-run + live run — PASS (711 entries, 348 scores, 6 durations, 12 files found)
+- Pipeline: 711 in ledger, 12 with files on disk (699 cleaned), 348 with viral scores
+- Swarm used: no (simple utility, wrote directly)
+- Issues: None
+- Cost: $0.00
+- Timestamp: 2026-03-23T01:30:00Z
