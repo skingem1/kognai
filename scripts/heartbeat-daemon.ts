@@ -447,7 +447,18 @@ async function heartbeat(): Promise<void> {
     currentTier = readJSON<TierState>(TIER_FILE);
   } catch {
     console.error('[Heartbeat] Failed to read tier.json — using defaults');
-    currentTier = readJSON<TierState>(TIER_FILE);
+    currentTier = {
+      current_tier: 'seed',
+      mrr: 0,
+      mrr_currency: 'EUR',
+      last_updated: new Date().toISOString(),
+      beta_start_date: '2026-03-17',
+      billing_activation_date: '2026-04-07',
+      day_number: 0,
+      tiers: {},
+      history: [],
+    };
+    writeJSON(TIER_FILE, currentTier);
   }
 
   // 2. Run health checks

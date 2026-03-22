@@ -1,0 +1,28 @@
+{
+  "sprint_id": "sprint-811",
+  "title": "OPS — Generate health.json + restart posting reminder PM2 crons",
+  "description": "health.json missing (causing /health to fail). Posting reminder crons stopped (noon+evening nudges not firing). Pipeline watchdog stopped. Fix: regenerate health.json, restart key crons.",
+  "source": "bug-fix",
+  "tasks": [
+    {
+      "id": "811-01",
+      "title": "Run pipeline-watchdog.ts to regenerate health.json and watchdog-latest.json",
+      "type": "bugfix",
+      "task_target": "scripts/pipeline-watchdog.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-811"
+    },
+    {
+      "id": "811-02",
+      "title": "Restart posting reminder PM2 crons (noon + evening) and daily digest",
+      "type": "ops",
+      "task_target": "ecosystem.config.js",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-811"
+    }
+  ]
+}
