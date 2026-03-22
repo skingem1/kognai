@@ -3324,3 +3324,15 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Issues: None
 - Cost: $0.00
 - Timestamp: 2026-03-23T00:40:00Z
+
+## Sprint 806 — OPS: Backfill 55 missing multiformat videos to ledger
+- Status: PASS
+- Commit: 72b6105
+- Files created: scripts/scs001/backfill-multiformat-ledger.ts, workspace/sprints/sprint-806.json
+- Files modified: workspace/scs001/publish-ledger.jsonl (+55), workspace/scs001/auto-delivered.jsonl (+93)
+- Test: /post-next shows 301 unposted videos (was 246). Ledger now 708 total.
+- Pipeline: 708 in ledger, 384 delivered, 301 with files, 2 posted.
+- Swarm used: no (wrote directly)
+- Issues: None
+- Cost: $0.00
+- Timestamp: 2026-03-23T00:45:00Z
