@@ -3228,3 +3228,15 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Issues: None. Topic radar dedup fix from Sprint 795 working well — consecutive runs find fresh topics.
 - Cost: $1.40 (5x Captions.ai avatar generation)
 - Timestamp: 2026-03-22T23:50:00Z
+
+## Sprint 798 — CONTENT
+- Status: PASS
+- Commit: bbbefb2
+- Files created: 5 more videos via batch-produce
+- Files modified: scripts/scs001/batch-produce.ts (regex fix + timeout bump)
+- Test: batch-produce --runs 5 → 5/5 successful, 5 new videos
+- Pipeline: ~630 total in ledger, 15 new videos this session
+- Swarm used: no (pipeline fix + execution)
+- Issues: batch-produce video count regex didn't match multiformat output ("Composited: N" vs "videos_composited: N"). Fixed.
+- Cost: $1.40
+- Timestamp: 2026-03-23T00:00:00Z
