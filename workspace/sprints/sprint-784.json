@@ -1,0 +1,48 @@
+{
+  "sprint_id": "sprint-784",
+  "title": "BROWSER-01 — Install Browser Use CLI + test TikTok upload",
+  "description": "Create Browser Use installation script, TikTok upload test script, and browser post wrapper. BLOCKER: Python 3.11+ required (system has 3.9.6).",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "784-01",
+      "title": "Create install-browser-use.sh — install Python 3.11+ via Homebrew + browser-use + playwright",
+      "type": "feature",
+      "task_type": "infra",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-784"
+    },
+    {
+      "id": "784-02",
+      "title": "Create browser-upload-test.py — test TikTok upload via Chrome Default profile",
+      "type": "feature",
+      "task_type": "testing",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-784"
+    },
+    {
+      "id": "784-03",
+      "title": "Create post-tiktok-browser.sh — wrapper for browser-based TikTok upload",
+      "type": "feature",
+      "task_type": "publishing",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-784"
+    },
+    {
+      "id": "784-04",
+      "title": "Add /browser-test Telegram command to trigger upload test",
+      "type": "feature",
+      "task_type": "telegram",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-784"
+    }
+  ]
+}

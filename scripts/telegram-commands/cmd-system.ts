@@ -1101,3 +1101,42 @@ export function cmdSwarmHealth(): string {
     return '🏥 Swarm Health: Unknown\n\nRun: `npx ts-node scripts/lib/swarm-health.ts`';
   }
 }
+
+/**
+ * /browser-test — Sprint 784: Check Browser Use installation status
+ */
+export function cmdBrowserTest(): string {
+  const venvPath = path.join(ROOT, '.venv-browser-use');
+  const venvExists = fs.existsSync(venvPath);
+  const scriptExists = fs.existsSync(path.join(ROOT, 'scripts', 'scs001', 'browser-upload-test.py'));
+
+  const lines = ['🌐 *Browser Use Status*', ''];
+
+  if (!venvExists) {
+    lines.push('❌ Not installed');
+    lines.push('');
+    lines.push('Run: `bash scripts/scs001/install-browser-use.sh`');
+    lines.push('');
+    lines.push('Requirements:');
+    lines.push('• Python 3.11+ (Homebrew)');
+    lines.push('• Logged into TikTok in Chrome');
+    lines.push('• Warmup complete (/warmup-status)');
+    return lines.join('\n');
+  }
+
+  lines.push('✅ Virtual environment: installed');
+  lines.push(`✅ Upload test script: ${scriptExists ? 'ready' : 'missing'}`);
+  lines.push('');
+  lines.push('To test (dry run):');
+  lines.push('```');
+  lines.push('source .venv-browser-use/bin/activate');
+  lines.push('python scripts/scs001/browser-upload-test.py --dry-run');
+  lines.push('```');
+  lines.push('');
+  lines.push('To upload:');
+  lines.push('```');
+  lines.push('bash scripts/scs001/post-tiktok-browser.sh /path/to/video.mp4 "caption"');
+  lines.push('```');
+
+  return lines.join('\n');
+}
