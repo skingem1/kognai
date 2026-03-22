@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-786",
+  "title": "SCS-001-V2-001 \u2014 Scorsese agent + ScenarioBundle contract",
+  "description": "SCS-001 v2 Sprint V2-001. (1) Create contracts/scs-001-v2/scenario-bundle-v1.ts with types. (2) Create agents/scs001-scorsese/index.ts (max 300 lines). T3 APEX Claude Sonnet. Receives TrendSignal \u2192 produces ScenarioBundle. Hook_test is constitutional: must prove 10M+ view format. Includes system prompt from spec.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "786-01",
+      "title": "SCS-001-V2-001 \u2014 Scorsese agent + ScenarioBundle contract",
+      "type": "feature",
+      "task_type": "scs_001_v2",
+      "task_target": "workspace/sprints/sprint-786-output.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-786"
+    }
+  ]
+}
