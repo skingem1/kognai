@@ -1,0 +1,41 @@
+{
+  "sprint_id": "sprint-788",
+  "title": "SCS-001-V2-003 — ArtDirector quality gate agent",
+  "description": "Create agents/scs001-art-director/index.ts + prompt.md. T2.5 Haiku. Two questions: 'Does this serve the message?' + 'Would a human stop scrolling?' Replaces QC agent for v2 pipeline.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "788-01",
+      "title": "Create ArtDirector prompt.md with two-question framework",
+      "type": "feature",
+      "task_type": "scs_001_v2",
+      "task_target": "agents/scs001-art-director/prompt.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-788"
+    },
+    {
+      "id": "788-02",
+      "title": "Create ArtDirector agent index.ts — Haiku quality gate",
+      "type": "feature",
+      "task_type": "scs_001_v2",
+      "task_target": "agents/scs001-art-director/index.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-788"
+    },
+    {
+      "id": "788-03",
+      "title": "TypeScript compile validation",
+      "type": "test",
+      "task_type": "validation",
+      "task_target": "agents/scs001-art-director/index.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-788"
+    }
+  ]
+}
