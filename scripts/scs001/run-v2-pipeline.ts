@@ -194,31 +194,36 @@ async function runPipeline(opts: PipelineOptions): Promise<PipelineResult> {
 
       console.log(`  ✓ Video: ${result.video.video_id} (${result.video.duration_seconds}s, voiceover: ${result.video.has_voiceover})\n`);
 
-      // ── Stage 4: Publishing (Browser Use) ──────────────────────
-      if (opts.publish && result.video) {
+      // ── Stage 4: Publishing via Browser Use (Sprint 790) ──────
+      if (opts.publish && result.video && verdict!.verdict === 'PASS') {
         console.log('▶ Stage 4: Publishing — Browser Use TikTok upload...');
-        const publishScript = join(ROOT, 'scripts', 'scs001', 'publish-v2-video.sh');
+        const postScript = join(ROOT, 'scripts', 'scs001', 'post-tiktok.sh');
+        const venvPath = join(ROOT, '.venv-browser-use');
+        const warmupPath = join(ROOT, 'workspace', 'scs001', 'warmup-status.json');
 
-        if (!existsSync(publishScript)) {
-          console.warn('  ⚠ publish-v2-video.sh not found — skipping publish');
+        if (!existsSync(venvPath)) {
+          console.log('  ⚠ Browser Use not installed — run: bash scripts/scs001/install-browser-use.sh');
+        } else if (!existsSync(warmupPath)) {
+          console.log('  ⚠ Warmup not started — run /warmup-start first');
         } else {
           try {
-            // Write result.json first so the publish script can read it
-            writeFileSync(join(runDir, 'result.json'), JSON.stringify(result, null, 2));
-
-            const publishOut = execSync(
-              `bash "${publishScript}" "${runDir}" --post`,
-              { stdio: 'pipe', timeout: 120000, cwd: ROOT }
-            ).toString();
-            console.log(publishOut);
-
-            result.published = true;
-            result.timestamps.published_at = new Date().toISOString();
-            console.log('  ✓ Published to TikTok via Browser Use\n');
+            const warmup = JSON.parse(readFileSync(warmupPath, 'utf-8'));
+            if (!warmup.verified) {
+              console.log('  ⚠ Warmup not verified — complete warmup first');
+            } else {
+              const caption = currentScenario.title + ' ' + currentScenario.hashtags.map((h: string) => '#' + h).join(' ');
+              execSync(
+                `bash "${postScript}" "${result.video.file_path}" "${caption.replace(/"/g, '\\"')}"`,
+                { cwd: ROOT, timeout: 120_000, stdio: 'inherit' }
+              );
+              result.published = true;
+              result.timestamps.published_at = new Date().toISOString();
+              console.log('  ✓ Upload prepared via Browser Use. Review in browser and click Post.\n');
+            }
           } catch (pubErr) {
-            console.warn(`  ⚠ Publish failed: ${(pubErr as Error).message?.slice(0, 200)}`);
-            console.warn('  Video is ready — publish manually with:');
-            console.warn(`  bash scripts/scs001/publish-v2-video.sh "${runDir}" --post\n`);
+            console.warn(`  ⚠ Publishing failed: ${(pubErr as Error).message?.slice(0, 200)}`);
+            console.warn(`  Video ready at: ${result.video.file_path}`);
+            console.warn(`  Post manually: bash scripts/scs001/post-tiktok.sh "${result.video.file_path}" "caption" --post\n`);
           }
         }
       } else if (opts.publish && !result.video) {
