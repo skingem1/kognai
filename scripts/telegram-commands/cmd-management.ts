@@ -1646,3 +1646,13 @@ export function cmdReplenish(): string {
     return `❌ Replenish failed: ${(e.message ?? '').slice(0, 200)}`;
   }
 }
+
+export function cmdEnrich(): string {
+  try {
+    const { runEnrich, formatEnrichResult } = require('../scs001/enrich-ledger');
+    const result = runEnrich();
+    return formatEnrichResult(result);
+  } catch (err: any) {
+    return `❌ Enrich error: ${err.message}`;
+  }
+}

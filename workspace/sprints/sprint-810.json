@@ -1,0 +1,28 @@
+{
+  "sprint_id": "sprint-810",
+  "title": "OPS — Ledger enrichment: backfill video durations from MP4 files",
+  "description": "Most ledger entries lack duration/score. Create backfill script that scans MP4 files, extracts duration via ffprobe, and enriches ledger entries. Better data = better /post-next ranking.",
+  "source": "quality-improvement",
+  "tasks": [
+    {
+      "id": "810-01",
+      "title": "Create scripts/scs001/enrich-ledger.ts — backfill duration + file_exists from MP4 files",
+      "type": "feature",
+      "task_target": "scripts/scs001/enrich-ledger.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-810"
+    },
+    {
+      "id": "810-02",
+      "title": "Wire /enrich command in telegram-bot.ts",
+      "type": "feature",
+      "task_target": "scripts/telegram-bot.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-810"
+    }
+  ]
+}
