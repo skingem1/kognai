@@ -3264,3 +3264,15 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Issues: Topic sources exhausted after ~30 unique topics per day. Need daily runs for fresh content.
 - Cost: $1.50 (6x Captions.ai avatar generation)
 - Timestamp: 2026-03-23T00:15:00Z
+
+## Sprint 801 — PIPE
+- Status: PASS
+- Commit: b6e0f0e
+- Files created: 6 more videos (Sprint 800, topics exhausted after 6/10)
+- Files modified: scripts/telegram-commands/cmd-delivery.ts (/produce rewired to multiformat pipeline)
+- Test: TypeScript compile clean. Gate report: 650 total, 359 ready to post.
+- Pipeline: /produce now uses batch-produce.ts (multiformat). Default 3 videos. Auto-delivers.
+- Swarm used: no (command rewiring, wrote directly)
+- Issues: Topic sources exhaust after ~30 unique topics per daily cycle. Need daily runs.
+- Cost: $0.00 (code change only, video production was Sprint 800)
+- Timestamp: 2026-03-23T00:20:00Z
