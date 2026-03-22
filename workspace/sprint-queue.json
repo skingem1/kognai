@@ -58,7 +58,7 @@
       "sprint": 789,
       "title": "SCS-001-V2-004 \u2014 Integration test + v2 pipeline runner",
       "block": "SCS-001-V2",
-      "status": "pending",
+      "status": "done",
       "priority": "high",
       "rationale": "SCS-001 v2 Sprint V2-004. Create scripts/scs001/run-v2-pipeline.ts. Wire: Scorsese \u2192 VideoGen \u2192 MovieEditor \u2192 ArtDirector \u2192 Publishing. End-to-end test: produce 1 video through full v2 pipeline."
     },
