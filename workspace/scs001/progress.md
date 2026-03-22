@@ -3336,3 +3336,15 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Issues: None
 - Cost: $0.00
 - Timestamp: 2026-03-23T00:45:00Z
+
+## Sprint 807 — UX: /post-next shows topic + format info
+- Status: PASS
+- Commit: 22ff153
+- Files created: workspace/sprints/sprint-807.json
+- Files modified: scripts/telegram-commands/cmd-posting.ts
+- Test: cmdPostNext loads with topic/format fields. Old entries lack topic (expected).
+- Pipeline: 708 in ledger, 301 unposted with files.
+- Swarm used: no (simple edit)
+- Issues: None
+- Cost: $0.00
+- Timestamp: 2026-03-23T00:50:00Z
