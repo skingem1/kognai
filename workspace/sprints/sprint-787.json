@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-787",
+  "title": "SCS-001-V2-002 — MovieEditor agent (FFmpeg + C4 TTS + C5 Music)",
+  "description": "MovieEditor agent: ScenarioBundle scenes → TTS (macOS say $0) → FFmpeg color-block composition → music mix → AssembledVideo output.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "787-01",
+      "title": "Create agents/scs001-movie-editor/index.ts with FFmpeg + TTS + music pipeline",
+      "type": "feature",
+      "task_type": "v2-pipeline",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-787"
+    }
+  ]
+}
