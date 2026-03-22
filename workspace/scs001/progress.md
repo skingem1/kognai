@@ -3216,3 +3216,15 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Issues: Topic radar was marking ALL fresh topics as seen instead of only selected ones, causing subsequent runs to find 0 fresh topics. Fixed.
 - Cost: $1.50 (5x Captions.ai avatar generation)
 - Timestamp: 2026-03-22T23:40:00Z
+
+## Sprint 797 — CONTENT
+- Status: PASS
+- Commit: d8ae8df
+- Files created: 5 more videos (dbt-458233dd, vis-e1687e4f, lst-472cc86d, exp-33d51145, dbt-c3c2845d)
+- Files modified: workspace/sprints/sprint-797.json
+- Test: All 5 pipeline runs completed successfully
+- Pipeline: ~625 total in ledger, 10 new videos this session
+- Swarm used: no (pipeline execution)
+- Issues: None. Topic radar dedup fix from Sprint 795 working well — consecutive runs find fresh topics.
+- Cost: $1.40 (5x Captions.ai avatar generation)
+- Timestamp: 2026-03-22T23:50:00Z
