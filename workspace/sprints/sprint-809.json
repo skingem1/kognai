@@ -1,0 +1,28 @@
+{
+  "sprint_id": "sprint-809",
+  "title": "OPS — Disk cleanup utility for old multiformat runs + ephemeral files",
+  "description": "Watchdog warns disk at 5.1GB (5GB threshold). 167 multiformat-run dirs (1.3GB), 185 topic-radar files, 309 script files. Create cleanup utility + /cleanup Telegram command.",
+  "source": "watchdog-alert",
+  "tasks": [
+    {
+      "id": "809-01",
+      "title": "Create scripts/scs001/cleanup-old-runs.ts — purge multiformat runs older than 48h, keep latest 10",
+      "type": "feature",
+      "task_target": "scripts/scs001/cleanup-old-runs.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-809"
+    },
+    {
+      "id": "809-02",
+      "title": "Wire /cleanup command in telegram-bot.ts",
+      "type": "feature",
+      "task_target": "scripts/telegram-bot.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-809"
+    }
+  ]
+}

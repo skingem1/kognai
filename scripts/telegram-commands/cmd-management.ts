@@ -1191,45 +1191,10 @@ export function cmdProgress(): string {
 }
 
 export function cmdCleanup(): string {
-  const scsDir = path.join(ROOT, 'workspace', 'scs001');
-  const KEEP = 5;
   try {
-    const runDirs = fs.readdirSync(scsDir)
-      .filter((d: string) => d.startsWith('run-'))
-      .sort()
-      .reverse(); // newest first
-
-    if (runDirs.length <= KEEP) {
-      return `🧹 *Cleanup* — ${runDirs.length} run dirs, all within keep limit (${KEEP}). Nothing to clean.`;
-    }
-
-    const toRemove = runDirs.slice(KEEP);
-    let freedMB = 0;
-    let removed = 0;
-
-    for (const dir of toRemove) {
-      const dirPath = path.join(scsDir, dir);
-      try {
-        // Estimate size by counting mp4 files
-        const files = fs.readdirSync(dirPath, { recursive: true }) as string[];
-        let dirSize = 0;
-        for (const f of files) {
-          try { dirSize += fs.statSync(path.join(dirPath, f as string)).size; } catch {}
-        }
-        freedMB += dirSize / (1024 * 1024);
-        fs.rmSync(dirPath, { recursive: true, force: true });
-        removed++;
-      } catch { /* skip */ }
-    }
-
-    return [
-      `🧹 *Cleanup Complete*`,
-      ``,
-      `📁 Run dirs: ${runDirs.length} → ${runDirs.length - removed}`,
-      `🗑️ Removed: ${removed} old runs`,
-      `💾 Freed: ~${Math.round(freedMB)} MB`,
-      `✅ Kept: ${KEEP} most recent runs`,
-    ].join('\n');
+    const { runCleanup, formatCleanupResult } = require('../scs001/cleanup-old-runs');
+    const result = runCleanup();
+    return formatCleanupResult(result);
   } catch (err: any) {
     return `❌ Cleanup error: ${err.message}`;
   }
