@@ -34,7 +34,7 @@
       "sprint": 786,
       "title": "SCS-001-V2-001 \u2014 Scorsese agent + ScenarioBundle contract",
       "block": "SCS-001-V2",
-      "status": "pending",
+      "status": "done",
       "priority": "high",
       "rationale": "SCS-001 v2 Sprint V2-001. (1) Create contracts/scs-001-v2/scenario-bundle-v1.ts with types. (2) Create agents/scs001-scorsese/index.ts (max 300 lines). T3 APEX Claude Sonnet. Receives TrendSignal \u2192 produces ScenarioBundle. Hook_test is constitutional: must prove 10M+ view format. Includes system prompt from spec."
     },
