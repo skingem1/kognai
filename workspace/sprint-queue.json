@@ -98,7 +98,7 @@
       "sprint": 794,
       "title": "GATE \u2014 April 7 readiness report with warmup + posting status",
       "block": "GATE",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "Full gate assessment: warmup status, Browser Use CLI posting status, total publishable videos, manual posting progress, days remaining. Surface via /gate."
     },
