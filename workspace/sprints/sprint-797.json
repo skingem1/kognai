@@ -1,0 +1,38 @@
+{
+  "sprint_id": "sprint-797",
+  "title": "CONTENT — /batch Telegram command + 5 more videos",
+  "description": "Add /batch command to Telegram bot for easy content production. Runs multiformat pipeline with force-refresh. Then produce 5 more videos to stockpile content for gate.",
+  "source": "gate-priority",
+  "tasks": [
+    {
+      "id": "797-01",
+      "title": "Add cmdBatch to telegram commands — triggers batch-produce with force-refresh",
+      "type": "feature",
+      "task_target": "scripts/telegram-commands/cmd-content.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-797"
+    },
+    {
+      "id": "797-02",
+      "title": "Wire /batch command in telegram-bot.ts",
+      "type": "feature",
+      "task_target": "scripts/telegram-bot.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-797"
+    },
+    {
+      "id": "797-03",
+      "title": "Produce 5 more videos via pipeline",
+      "type": "content",
+      "task_target": "scripts/scs001/run-multiformat-pipeline.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-797"
+    }
+  ]
+}
