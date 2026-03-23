@@ -1,0 +1,75 @@
+{
+  "demo_id": "demo-mn3ssxm4",
+  "title": "Binary to Decimal in Python",
+  "language": "python",
+  "total_duration_s": 26,
+  "steps": [
+    {
+      "step_id": "s1",
+      "title": "Step 1: Define Functions",
+      "code_lines": [
+        "def binary_converter(decimal):",
+        "    return bin(decimal)[2:]",
+        "",
+        "def decimal_converter(binary):",
+        "    return int(binary, 2)"
+      ],
+      "language": "python",
+      "explanation": "We define two functions: one to convert decimal to binary, and another to convert binary back to decimal.",
+      "duration_s": 8,
+      "highlight_lines": [
+        0,
+        1,
+        3,
+        4
+      ]
+    },
+    {
+      "step_id": "s2",
+      "title": "Step 2: Test Binary Conversion",
+      "code_lines": [
+        "print(\"Binary of 10:\", binary_converter(10))"
+      ],
+      "language": "python",
+      "explanation": "Now we test the binary converter with the number 10, which should output '1010'.",
+      "duration_s": 6,
+      "highlight_lines": [
+        0
+      ]
+    },
+    {
+      "step_id": "s3",
+      "title": "Step 3: Test Decimal Conversion",
+      "code_lines": [
+        "print(\"Decimal of 1010:\", decimal_converter(\"1010\"))"
+      ],
+      "language": "python",
+      "explanation": "Finally, we test the decimal converter with the binary string '1010', which should return 10.",
+      "duration_s": 6,
+      "highlight_lines": [
+        0
+      ]
+    },
+    {
+      "step_id": "s4",
+      "title": "Step 4: Try It Yourself",
+      "code_lines": [
+        "# Try different numbers and see the magic happen!"
+      ],
+      "language": "python",
+      "explanation": "Try changing the input values and see how the conversions work in real time.",
+      "duration_s": 6,
+      "highlight_lines": [
+        0
+      ]
+    }
+  ],
+  "hashtags": [
+    "#coding",
+    "#python",
+    "#tutorial"
+  ],
+  "intro_hook": "Ever wondered how to convert numbers between binary and decimal?",
+  "source": "user",
+  "topic_source": "user-prompt"
+}
