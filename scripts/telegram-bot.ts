@@ -23,7 +23,7 @@ import {
 import { cmdPm2, cmdHealth, cmdTier, cmdSprint, cmdReport, cmdCrons, cmdTikTokAuth, cmdQuickStart, cmdEnvCheck, cmdStripeStatus, cmdReadiness, cmdGitStats, cmdBoot, cmdShutdown, cmdReload, cmdSwarmStats, cmdErrors, cmdTokenCheck, cmdLogs, cmdChangelog, cmdPreflight, cmdSmoke, cmdTestSuite, cmdApproveFinetune, cmdBrainxStatus, cmdSwarmHealth, cmdBrowserTest } from './telegram-commands/cmd-system';
 import { cmdGate, cmdGoLive, cmdAudit, cmdStreak, cmdPace, cmdCalendar } from './telegram-commands/cmd-gate';
 import { cmdRecord, cmdQueue, cmdReview, cmdCaption, cmdPosted, cmdOnboard, cmdPipeline, cmdToday, cmdAnalytics, cmdDiversity, cmdThumbnail, cmdCompetitor, cmdStats, cmdQuality, cmdRadar, cmdBacktest, cmdFormatStats, cmdManifesto, cmdValErrors } from './telegram-commands/cmd-content';
-import { cmdMetrics, cmdPostPlan, cmdYouTube, cmdAutoPost, cmdLastRun, cmdViral, cmdDashboard, cmdDigest, cmdSchedule, cmdLeaderboard, cmdBestTime, cmdHookTest, cmdHookStats, cmdViralStats, cmdQueueOpt, cmdGateAnalytics, cmdRevenue, cmdBatch, cmdPostLog, cmdXPost, cmdCosts, cmdWeeklyDigest, cmdPostNext, cmdPostingHealth } from './telegram-commands/cmd-posting';
+import { cmdMetrics, cmdPostPlan, cmdYouTube, cmdAutoPost, cmdLastRun, cmdViral, cmdDashboard, cmdDigest, cmdSchedule, cmdLeaderboard, cmdBestTime, cmdHookTest, cmdHookStats, cmdViralStats, cmdQueueOpt, cmdGateAnalytics, cmdRevenue, cmdBatch, cmdPostLog, cmdXPost, cmdCosts, cmdWeeklyDigest, cmdPostNext, cmdPostingHealth, cmdBulkCaptions } from './telegram-commands/cmd-posting';
 import { cmdHistory, cmdArchive, cmdUnarchive, cmdStale, cmdPurge, cmdNote, cmdUpdateViews, cmdExport, cmdWeeklyReport, cmdSpeakerTest, cmdFilmKit, cmdContentPlan, cmdSuggest, cmdCompare, cmdScorecard, cmdProgress, cmdCleanup, cmdDedup, cmdTop30, cmdAbResults, cmdStatus, cmdReplenish, cmdEnrich } from './telegram-commands/cmd-management';
 import { cmdHelp } from './telegram-commands/cmd-help';
 
@@ -155,6 +155,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/quickstart':  response = cmdQuickStart();  break;
     case '/schedule':    response = cmdSchedule();    break;
     case '/posting-health': response = cmdPostingHealth(); break;
+    case '/bulk-captions': response = cmdBulkCaptions(); break;
     case '/leaderboard': response = cmdLeaderboard(); break;
     case '/updateviews': response = cmdUpdateViews(cmdArgs); break;
     case '/achiri':      response = cmdAchiri();             break;

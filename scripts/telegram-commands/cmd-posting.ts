@@ -1448,3 +1448,50 @@ export function cmdPostingHealth(): string {
     return `❌ Error reading health report: ${e.message}`;
   }
 }
+
+// Sprint 839: /bulk-captions — export all ready videos with TikTok captions
+export function cmdBulkCaptions(): string {
+  // Auto-regenerate report
+  try {
+    execSync('npx ts-node --transpile-only scripts/scs001/bulk-captions.ts', {
+      cwd: ROOT, timeout: 60000, stdio: 'pipe',
+    });
+  } catch { /* try existing */ }
+
+  const reportPath = path.join(ROOT, 'reports', 'bulk-captions.json');
+  if (!fs.existsSync(reportPath)) {
+    return '❌ No bulk captions report. Run `npx ts-node scripts/scs001/bulk-captions.ts`';
+  }
+
+  try {
+    const r = JSON.parse(fs.readFileSync(reportPath, 'utf-8'));
+    const lines: string[] = [
+      `📋 *Bulk Captions Export*`,
+      '',
+      `📦 Ready: ${r.total_ready ?? 0} videos`,
+      `✅ Posted: ${r.posted ?? 0}`,
+      `🎯 Gate: ${r.gate?.posted ?? 0}/${r.gate?.target ?? 30} (${r.gate?.gap ?? '?'} to go)`,
+      '',
+    ];
+
+    // Show top 5 with captions
+    const vids = (r.videos || []).slice(0, 5);
+    for (const v of vids) {
+      const topicLine = v.topic ? ` — ${v.topic.slice(0, 50)}` : '';
+      lines.push(`🎬 \`${v.video_id}\`${topicLine}`);
+      // Show first line of caption only
+      const firstLine = (v.caption || '').split('\n').find((l: string) => l.trim()) || '';
+      lines.push(`  💬 ${firstLine}`);
+      lines.push(`  → /post-browser ${v.video_id}`);
+      lines.push('');
+    }
+
+    if ((r.videos || []).length > 5) {
+      lines.push(`_... and ${r.videos.length - 5} more in reports/bulk-captions.json_`);
+    }
+
+    return lines.join('\n');
+  } catch (e: any) {
+    return `❌ Error: ${e.message}`;
+  }
+}

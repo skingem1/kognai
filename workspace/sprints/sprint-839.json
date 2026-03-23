@@ -1,0 +1,28 @@
+{
+  "sprint_id": "sprint-839",
+  "title": "OPS — trigger auto-deliver for new videos + bulk caption export",
+  "description": "Run auto-deliver to send newly produced videos to operator. Create bulk-captions.ts to export all ready videos with TikTok-ready captions to a single file.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "839-01",
+      "title": "Trigger auto-deliver for new videos",
+      "type": "ops",
+      "task_target": "scripts/scs001/posting-auto-deliver.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-839"
+    },
+    {
+      "id": "839-02",
+      "title": "Create bulk-captions.ts — export all ready videos with TikTok captions",
+      "type": "feature",
+      "task_target": "scripts/scs001/bulk-captions.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-839"
+    }
+  ]
+}
