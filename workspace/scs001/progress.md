@@ -3751,3 +3751,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (content production run)
 - Cost: ~$0.50
 - Timestamp: 2026-03-23T06:15:00Z
+
+## Sprint 846 — OPS: regenerate posting schedule + deliver batch
+- Status: PASS
+- Commit: e903858
+- Schedule: regenerated with 69-video inventory, 26 slots (2/day through Apr 7), all assigned
+- Auto-deliver: 3 videos sent to operator (dbt-b9dbda5d, dbt-a56a7a8c, dbt-51de879f)
+- Total delivered this session: 12 videos
+- Gate: 4/30 posted, 26 remaining
+- Swarm used: no (ops run)
+- Cost: $0.00
+- Timestamp: 2026-03-23T06:30:00Z
