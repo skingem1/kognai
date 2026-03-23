@@ -1,0 +1,21 @@
+{
+  "title": "OpenAI CEO on Job Disappearance",
+  "full_monologue": "**OpenAI's CEO Just Predicted When Jobs Will Disappear**. Sam Altman recently hinted that repetitive, routine jobs could vanish within the next decade. But creative and human-centric roles may thrive. The future of work is evolving fast. Automation is accelerating, but so is innovation. What skills will matter most? Let me know in the comments.",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 6,
+      "duration_s": 6,
+      "visual_prompt": "hands typing on a keyboard (no screen visible), no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 18,
+      "duration_s": 6,
+      "visual_prompt": "crowds of people collaborating in a modern office space, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

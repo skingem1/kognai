@@ -1,0 +1,87 @@
+{
+  "demo_id": "demo-mn3r7xva",
+  "title": "Python Color Picker in 3 Steps",
+  "language": "python",
+  "total_duration_s": 29,
+  "steps": [
+    {
+      "step_id": "s1",
+      "title": "Step 1: Setup",
+      "code_lines": [
+        "import tkinter as tk",
+        "from tkinter import colorchooser",
+        "",
+        "root = tk.Tk()",
+        "root.title(\"Color Picker\")",
+        "root.geometry(\"300x200\")"
+      ],
+      "language": "python",
+      "explanation": "We start by importing tkinter and setting up the main window with a title and size.",
+      "duration_s": 7,
+      "highlight_lines": [
+        0,
+        3
+      ]
+    },
+    {
+      "step_id": "s2",
+      "title": "Step 2: Create UI Elements",
+      "code_lines": [
+        "label = tk.Label(root, text=\"Click to pick color\", width=20, height=5)",
+        "label.pack(pady=20)",
+        "",
+        "button = tk.Button(root, text=\"Pick Color\", command=pick_color)",
+        "button.pack()"
+      ],
+      "language": "python",
+      "explanation": "Next, we add a label and a button to the window. The button will trigger the color picker.",
+      "duration_s": 7,
+      "highlight_lines": [
+        0,
+        3
+      ]
+    },
+    {
+      "step_id": "s3",
+      "title": "Step 3: Handle Color Selection",
+      "code_lines": [
+        "def pick_color():",
+        "    color = colorchooser.askcolor()",
+        "    if color[1]:",
+        "        label.config(bg=color[1])",
+        "",
+        "root.mainloop()"
+      ],
+      "language": "python",
+      "explanation": "We define a function to open the color picker and update the label's background color.",
+      "duration_s": 8,
+      "highlight_lines": [
+        0,
+        3
+      ]
+    },
+    {
+      "step_id": "s4",
+      "title": "Step 4: Run the App",
+      "code_lines": [
+        "root.mainloop()"
+      ],
+      "language": "python",
+      "explanation": "Finally, we start the application with the main loop. Try it yourself and pick your favorite color!",
+      "duration_s": 7,
+      "highlight_lines": [
+        0
+      ]
+    }
+  ],
+  "hashtags": [
+    "#coding",
+    "#python",
+    "#tkinter",
+    "#tutorial",
+    "#colorpicker"
+  ],
+  "intro_hook": "Ever wanted to pick colors in Python? Let's build a simple app!",
+  "source": "user",
+  "topic_source": "user-prompt"
+}

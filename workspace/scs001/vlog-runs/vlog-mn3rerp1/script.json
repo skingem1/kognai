@@ -1,0 +1,21 @@
+{
+  "title": "AI Hack for Straight A's?",
+  "full_monologue": "**Did you know students are using AI to get straight A's?** It’s not cheating—it’s smart studying. I’ve tested it myself. AI helps summarize textbooks, write essays, and even solve complex math problems in seconds. But here’s the catch: it only works if you know how to ask the right questions. Want to see how it’s done? Stay tuned. What’s your go-to study hack?",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 6,
+      "duration_s": 6,
+      "visual_prompt": "a student rapidly typing on a laptop, surrounded by books and notes, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 18,
+      "duration_s": 6,
+      "visual_prompt": "a group of students laughing and high-fiving in a classroom, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

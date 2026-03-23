@@ -1,0 +1,13 @@
+{
+  "sprint_id": "sprint-944",
+  "title": "MULTI-PIPELINE — 3 code demos + 2 TTS vlogs (TTS mode)",
+  "description": "3 code demos + 2 TTS-mode vlogs. Content stockpile 398+.",
+  "source": "ops",
+  "tasks": [
+    {"id": "944-01", "title": "Code demo: Build a Color Picker GUI in Python", "type": "ops", "task_target": "scripts/scs001/pipelines/code-demo.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-944", "output": "demo-mn3r7xv9"},
+    {"id": "944-02", "title": "Code demo: Create a WiFi Scanner in Python", "type": "ops", "task_target": "scripts/scs001/pipelines/code-demo.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-944", "output": "demo-mn3r9ofg"},
+    {"id": "944-03", "title": "Code demo: Build a Contact Book in Python", "type": "ops", "task_target": "scripts/scs001/pipelines/code-demo.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-944", "output": "demo-mn3rb0zp"},
+    {"id": "944-04", "title": "V2 video (TTS): OpenAI's CEO Just Predicted When Jobs Will Disappear", "type": "ops", "task_target": "scripts/scs001/produce-vlog.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-944", "output": "vlog-mn3rd22f", "mode": "tts"},
+    {"id": "944-05", "title": "V2 video (TTS): The AI Trick Students Use to Get Straight A's", "type": "ops", "task_target": "scripts/scs001/produce-vlog.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-944", "output": "vlog-mn3rerp1", "mode": "tts"}
+  ]
+}

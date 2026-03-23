@@ -1,0 +1,86 @@
+{
+  "demo_id": "demo-mn3rb0zp",
+  "title": "Python Contact Manager in 3 Steps",
+  "language": "python",
+  "total_duration_s": 27,
+  "steps": [
+    {
+      "step_id": "s1",
+      "title": "Step 1: Save Contacts",
+      "code_lines": [
+        "import pickle",
+        "def save_contacts(contacts, filename=\"contacts.pkl\"):",
+        "    with open(filename, \"wb\") as f:",
+        "        pickle.dump(contacts, f)"
+      ],
+      "language": "python",
+      "explanation": "We use pickle to save our contacts dictionary to a file.",
+      "duration_s": 6,
+      "highlight_lines": [
+        1
+      ]
+    },
+    {
+      "step_id": "s2",
+      "title": "Step 2: Load Contacts",
+      "code_lines": [
+        "def load_contacts(filename=\"contacts.pkl\"):",
+        "    try:",
+        "        with open(filename, \"rb\") as f:",
+        "            return pickle.load(f)",
+        "    except FileNotFoundError:",
+        "        return {}"
+      ],
+      "language": "python",
+      "explanation": "We load contacts from the file or return an empty dict if it's missing.",
+      "duration_s": 7,
+      "highlight_lines": [
+        1
+      ]
+    },
+    {
+      "step_id": "s3",
+      "title": "Step 3: Add & Print Contacts",
+      "code_lines": [
+        "def add_contact(contacts, name, phone):",
+        "    contacts[name] = phone",
+        "    save_contacts(contacts)",
+        "def main():",
+        "    contacts = load_contacts()",
+        "    add_contact(contacts, \"Alice\", \"123-456-7890\")",
+        "    add_contact(contacts, \"Bob\", \"987-654-3210\")",
+        "    print(contacts)"
+      ],
+      "language": "python",
+      "explanation": "We add Alice and Bob to our contacts and print the result.",
+      "duration_s": 8,
+      "highlight_lines": [
+        5,
+        6,
+        7
+      ]
+    },
+    {
+      "step_id": "s4",
+      "title": "Step 4: Run the Code",
+      "code_lines": [
+        "if __name__ == \"__main__\":",
+        "    main()"
+      ],
+      "language": "python",
+      "explanation": "Finally, we run the main function to see everything in action.",
+      "duration_s": 6,
+      "highlight_lines": [
+        1
+      ]
+    }
+  ],
+  "hashtags": [
+    "#coding",
+    "#python",
+    "#tutorial"
+  ],
+  "intro_hook": "Want to save contacts with Python? Let's see how it works!",
+  "source": "user",
+  "topic_source": "user-prompt"
+}
