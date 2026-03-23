@@ -4995,3 +4995,11 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Pipeline: 31 v2 + 95 TTS vlogs + 132 code demos + 5 entertainment = 431+ total content
 - Cost: $0.00
 - Timestamp: 2026-03-24T14:30:00Z
+
+## Sprint 952 — CODE-DEMO-ONLY — 5 code demos
+- Status: PASS (5/5)
+- Commit: 337f06ec
+- Code demos: "Webcam Booth" (demo-mn3tkj8n), "Fibonacci" (demo-mn3tm89h), "Typing Animation" (demo-mn3tnjj5), "Text to PDF" (demo-mn3tov60), "Website Status" (demo-mn3tqphp)
+- Pipeline: 31 v2 + 95 TTS vlogs + 137 code demos + 5 entertainment = 436+ total content
+- Cost: $0.00
+- Timestamp: 2026-03-24T15:00:00Z
