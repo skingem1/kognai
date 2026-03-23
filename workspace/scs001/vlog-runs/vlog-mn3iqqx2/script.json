@@ -1,0 +1,21 @@
+{
+  "title": "Google Just Made Every Programmer Obsolete",
+  "full_monologue": "**Google Just Made Every Programmer Obsolete**. Google's new AI tool can write, debug, and optimize code faster than any human. It’s not just smart—it’s revolutionary. No more long hours staring at screens. No more frustration with bugs. This is the future of coding. But what does this mean for the industry? Are we looking at a world where programmers are replaced by AI? Let me know your thoughts in the comments.",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 6,
+      "duration_s": 6,
+      "visual_prompt": "hands typing rapidly on a keyboard, but the screen is blurred, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 18,
+      "duration_s": 6,
+      "visual_prompt": "a group of people looking at a glowing AI in a futuristic room, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

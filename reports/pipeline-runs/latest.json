@@ -1,50 +1,50 @@
 {
-  "run_id": "scs001-2026-03-23T06-00-01-200Z",
+  "run_id": "scs001-2026-03-23T17-00-01-408Z",
   "mode": "live",
-  "started_at": "2026-03-23T06:00:01.200Z",
-  "completed_at": "2026-03-23T06:19:49.882Z",
-  "total_elapsed_ms": 1188682,
+  "started_at": "2026-03-23T17:00:01.408Z",
+  "completed_at": "2026-03-23T17:19:58.876Z",
+  "total_elapsed_ms": 1197468,
   "stages": [
     {
       "stage": "1-trend",
       "agent": "TrendAgent",
-      "count": 9,
-      "elapsed_ms": 569,
+      "count": 8,
+      "elapsed_ms": 477,
       "status": "ok"
     },
     {
       "stage": "2-discovery",
       "agent": "DiscoveryAgent",
-      "count": 14,
-      "elapsed_ms": 5,
+      "count": 12,
+      "elapsed_ms": 2,
       "status": "ok"
     },
     {
       "stage": "2.5-viral-tiktok",
       "agent": "ViralTikTokDownloader",
       "count": 0,
-      "elapsed_ms": 30317,
+      "elapsed_ms": 30390,
       "status": "empty"
     },
     {
       "stage": "3-clip-detection",
       "agent": "ClipDetectionAgent",
-      "count": 46,
-      "elapsed_ms": 557770,
+      "count": 40,
+      "elapsed_ms": 566575,
       "status": "ok"
     },
     {
       "stage": "4-insight",
       "agent": "InsightAgent (live)",
       "count": 0,
-      "elapsed_ms": 300004,
+      "elapsed_ms": 300007,
       "status": "error",
       "error": "Stage timeout after 300s"
     },
     {
       "stage": "4-insight",
       "agent": "InsightAgent (fallback-mock)",
-      "count": 13,
+      "count": 11,
       "elapsed_ms": 1,
       "status": "ok"
     },
@@ -52,16 +52,16 @@
       "stage": "5-script",
       "agent": "ScriptAgent",
       "count": 0,
-      "elapsed_ms": 300004,
+      "elapsed_ms": 300006,
       "status": "error",
       "error": "Stage timeout after 300s"
     }
   ],
   "summary": {
-    "topics_found": 9,
-    "clips_discovered": 14,
-    "clips_qualified": 13,
-    "insights_generated": 13,
+    "topics_found": 8,
+    "clips_discovered": 12,
+    "clips_qualified": 11,
+    "insights_generated": 11,
     "scripts_produced": 0,
     "scripts_scored": 0,
     "scripts_filtered": 0,

@@ -1,0 +1,76 @@
+{
+  "demo_id": "demo-mn3ipemo",
+  "title": "Scrape Links with Python in 3 Steps",
+  "language": "python",
+  "total_duration_s": 27,
+  "steps": [
+    {
+      "step_id": "s1",
+      "title": "Step 1: Import Libraries",
+      "code_lines": [
+        "import requests",
+        "from bs4 import BeautifulSoup"
+      ],
+      "language": "python",
+      "explanation": "We need requests to fetch the webpage and BeautifulSoup to parse the HTML.",
+      "duration_s": 6,
+      "highlight_lines": [
+        1,
+        2
+      ]
+    },
+    {
+      "step_id": "s2",
+      "title": "Step 2: Fetch and Parse HTML",
+      "code_lines": [
+        "url = 'https://example.com'",
+        "response = requests.get(url)",
+        "soup = BeautifulSoup(response.text, 'html.parser')"
+      ],
+      "language": "python",
+      "explanation": "We fetch the webpage and convert the HTML into a parseable format.",
+      "duration_s": 8,
+      "highlight_lines": [
+        2,
+        3
+      ]
+    },
+    {
+      "step_id": "s3",
+      "title": "Step 3: Extract and Print Links",
+      "code_lines": [
+        "for link in soup.find_all('a'):",
+        "    print(link.get('href'))"
+      ],
+      "language": "python",
+      "explanation": "Now we loop through all anchor tags and print the href attributes.",
+      "duration_s": 7,
+      "highlight_lines": [
+        1,
+        2
+      ]
+    },
+    {
+      "step_id": "s4",
+      "title": "Step 4: Try It Yourself",
+      "code_lines": [
+        "# Try changing the URL to any website!"
+      ],
+      "language": "python",
+      "explanation": "Try it yourself and see what links you can scrape!",
+      "duration_s": 6,
+      "highlight_lines": [
+        1
+      ]
+    }
+  ],
+  "hashtags": [
+    "#coding",
+    "#python",
+    "#webscraping",
+    "#tutorial"
+  ],
+  "intro_hook": "Want to scrape links from a website? Let's do it fast!",
+  "source": "user",
+  "topic_source": "user-prompt"
+}
