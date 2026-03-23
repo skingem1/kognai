@@ -1,0 +1,46 @@
+{
+  "run_id": "mf-20260323T05-pejt",
+  "started_at": "2026-03-23T05:10:11.427Z",
+  "completed_at": "2026-03-23T05:12:46.667Z",
+  "topics_found": 3,
+  "scripts_generated": 3,
+  "videos_composited": 3,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "exp-8deb2db9",
+      "format": "explainer",
+      "title": "Katana (KAT) 📈 16.2%",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-pejt/output/exp-8deb2db9_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-pejt/output/exp-8deb2db9.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "exp-839a14d0",
+      "format": "explainer",
+      "title": "River (RIVER) 📈 10.6%",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-pejt/output/exp-839a14d0_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-pejt/output/exp-839a14d0.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "dbt-b1f9a3e5",
+      "format": "debate",
+      "title": "Siren (SIREN) 📈 140.7%",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-pejt/output/dbt-b1f9a3e5_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-pejt/output/dbt-b1f9a3e5.srt",
+      "duration_s": 27,
+      "success": true,
+      "avatar_cost": 0.25,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 0.95
+}

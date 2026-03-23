@@ -1,18 +1,42 @@
 {
-  "scanned_at": "2026-03-23T05:09:40.876Z",
-  "total_runs": 137,
-  "total_videos": 228,
-  "unique_topics": 96,
-  "already_registered": 96,
+  "scanned_at": "2026-03-23T05:17:40.965Z",
+  "total_runs": 147,
+  "total_videos": 240,
+  "unique_topics": 100,
+  "already_registered": 100,
   "newly_registered": 0,
   "already_posted": 0,
-  "ready_to_post": 96,
+  "ready_to_post": 100,
   "gate_status": {
     "posted": 4,
     "target": 30,
     "gap": 26
   },
   "videos": [
+    {
+      "video_id": "vis-ceb741c3",
+      "format": "vision",
+      "title": "The 3 biggest tech layoffs of 2026 and what they mean for developers",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-apr2/output/vis-ceb741c3_final.mp4"
+    },
+    {
+      "video_id": "vis-b6029b47",
+      "format": "vision",
+      "title": "I built a SaaS in 48 hours using only AI — here's what happened",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-jsmb/output/vis-b6029b47_final.mp4"
+    },
+    {
+      "video_id": "vis-05847401",
+      "format": "vision",
+      "title": "Nvidia just announced something INSANE about AI chips",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-9c4g/output/vis-05847401_final.mp4"
+    },
     {
       "video_id": "vis-a5b344a8",
       "format": "vision",
@@ -508,6 +532,14 @@
       "duration_s": 27,
       "posted": false,
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-b3vb/output/dbt-c9820a9b_final.mp4"
+    },
+    {
+      "video_id": "exp-8deb2db9",
+      "format": "explainer",
+      "title": "Katana (KAT) 📈 16.2%",
+      "duration_s": 25,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-pejt/output/exp-8deb2db9_final.mp4"
     },
     {
       "video_id": "exp-9c699560",

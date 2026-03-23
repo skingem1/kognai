@@ -1,0 +1,24 @@
+{
+  "run_id": "mf-20260323T05-apr2",
+  "started_at": "2026-03-23T05:16:51.805Z",
+  "completed_at": "2026-03-23T05:17:40.542Z",
+  "topics_found": 1,
+  "scripts_generated": 1,
+  "videos_composited": 1,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "vis-ceb741c3",
+      "format": "vision",
+      "title": "The 3 biggest tech layoffs of 2026 and what they mean for developers",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-apr2/output/vis-ceb741c3_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-apr2/output/vis-ceb741c3.srt",
+      "duration_s": 33,
+      "success": true,
+      "avatar_cost": 0.30000000000000004,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 0.3
+}
