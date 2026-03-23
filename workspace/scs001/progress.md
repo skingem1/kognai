@@ -3453,3 +3453,12 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no
 - Cost: ~$0.30
 - Timestamp: 2026-03-23T03:15:00Z
+
+## Sprint 818 — FIX: Cleanup keep 30 dirs + 1 video
+- Status: PASS
+- Commit: 88b00f2
+- Files modified: scripts/scs001/cleanup-old-runs.ts (keep 10→30)
+- Pipeline: 739 in ledger, 40 with files, 11 ready in inventory
+- Issues: Topic sources exhausted (1/5 yield) — need to wait for fresh trending data
+- Cost: ~$0.10
+- Timestamp: 2026-03-23T03:25:00Z
