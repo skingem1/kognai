@@ -3728,3 +3728,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (content production run)
 - Cost: ~$0.50
 - Timestamp: 2026-03-23T05:40:00Z
+
+## Sprint 844 — OPS: disk cleanup (reclaimed 3.5GB)
+- Status: PASS
+- Commit: bdcd3f1
+- Removed: analytics-test-* dirs (537MB), editing-outputs video-*.mp4 (2.9GB), test-* dirs
+- Before: 4.8GB in workspace/scs001/
+- After: 1.3GB in workspace/scs001/
+- Preserved: all multiformat-runs (production videos), all run-* dirs with ledger refs
+- Swarm used: no (ops cleanup)
+- Cost: $0.00
+- Timestamp: 2026-03-23T05:55:00Z
