@@ -1,0 +1,28 @@
+{
+  "sprint_id": "sprint-851",
+  "title": "OPS — batch production + regenerate briefs",
+  "description": "Produced 3 new videos (77 unique total). Regenerated daily brief + sprint brief.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "851-01",
+      "title": "Run batch content production",
+      "type": "ops",
+      "task_target": "scripts/scs001/batch-produce.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-851"
+    },
+    {
+      "id": "851-02",
+      "title": "Regenerate daily brief + sprint brief",
+      "type": "ops",
+      "task_target": "scripts/generate-daily-brief.py",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-851"
+    }
+  ]
+}

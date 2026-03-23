@@ -1,15 +1,15 @@
 # GATE TRACKER
-*Updated: 2026-03-22 23:36 (auto by scripts/update-gate-tracker.ts)*
+*Updated: 2026-03-23*
 
 # GATE TRACKER
 # ═══════════════════════════════════════════════
 
 | Gate | Target Date | Status | Result | Notes |
 |---|---|---|---|---|
-| Phase 0 → Phase 1 | Mar 13 | [x] PASS | PROCEED | Pipeline operational · 710 videos generated |
-| Phase 1.5 Decision | Apr 7 | [ ] Pending |  | 2/30 posts · 0/500 views · 16d remaining |
-| Phase 1 → Phase 2A | Apr 11 | [ ] Pending | | 20d remaining |
-| Achiri Lite Alpha Launch | Apr 25 | [ ] Pending | | Waitlist: 1 · 34d remaining |
+| Phase 0 → Phase 1 | Mar 13 | [ ] Pending | | |
+| Phase 1.5 Decision | Apr 7 | [ ] Pending | | |
+| Phase 1 → Phase 2A | Apr 11 | [ ] Pending | | |
+| Achiri Lite Alpha Launch | Apr 25 | [ ] Pending | | |
 | Lite Alpha Gate (voice works?) | May 1 | [ ] Pending | | |
 | Full Alpha Gate (memory works?) | May 14 | [ ] Pending | | |
 | Phase 2A → Phase 2B | May 30 | [ ] Pending | | |
