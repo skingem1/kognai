@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-2d360eb7",
+  "topic_id": "custom-mn2vxpwp-1",
+  "format": "debate",
+  "title": "Why TypeScript is eating JavaScript alive in 2026",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "JavaScript's flexibility is its death knell—TypeScript brings safety and structure where it's needed most.",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "TypeScript's type system prevents runtime errors, saving hours of debugging—JavaScript can't compete.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "JS still dominates in dynamic environments like Node.js and frontend frameworks—TypeScript is just a layer.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "TypeScript integrates seamlessly with JS, offering tooling like JSDoc and strict type-checking without sacrificing compatibility.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "TypeScript is the future—JavaScript is a relic without its type system and modern tooling.",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "why vs typescript",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#why",
+    "#typescript",
+    "#is"
+  ],
+  "generated_at": "2026-03-23T07:50:05.174Z",
+  "llm_used": true
+}

@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-be8f5f7d",
+  "topic_id": "custom-mn2vva8y-0",
+  "format": "explainer",
+  "title": "The EU AI Act just changed everything for tech companies",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The EU AI Act just forced big tech to slow down — and it’s already shaking up the industry.",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This law is shaping the future of AI in Europe, and it’s here now.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "It’s a new rule requiring high-risk AI systems to be transparent and safe.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "One key detail: companies must label AI-generated content in ads and social media.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Big tech, startups, and even influencers are now under strict new scrutiny.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The takeaway? AI isn’t just innovation — it’s now regulated like medicine.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Want to know how this will change the tech world? Hit follow for the breakdown.",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "The EU AI Act just changed everything for tech companies",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#the",
+    "#eu",
+    "#ai"
+  ],
+  "generated_at": "2026-03-23T07:47:58.886Z",
+  "llm_used": true
+}

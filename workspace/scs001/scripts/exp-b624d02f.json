@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-b624d02f",
+  "topic_id": "custom-mn2vva8y-1",
+  "format": "explainer",
+  "title": "Why TypeScript is eating JavaScript alive in 2026",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "JavaScript’s got a problem — and it’s growing fast.",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "TypeScript is now used in 82% of large-scale frontend apps.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "It’s JavaScript with built-in error checking and type safety.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Its biggest feature? Optional types that catch bugs before runtime.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Every major framework now supports it — React, Angular, Vue.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "You’re not just writing code — you’re writing safer, smarter code.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Ready to join the 2 million devs who switched to TypeScript?",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "Why TypeScript is eating JavaScript alive in 2026",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#why",
+    "#typescript",
+    "#is"
+  ],
+  "generated_at": "2026-03-23T07:48:10.018Z",
+  "llm_used": true
+}
