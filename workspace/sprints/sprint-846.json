@@ -1,0 +1,28 @@
+{
+  "sprint_id": "sprint-846",
+  "title": "OPS — regenerate posting schedule with 69-video inventory + deliver batch",
+  "description": "Regenerated posting schedule (26 slots, 2/day through Apr 7, all assigned). Triggered auto-deliver (3 videos sent to operator).",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "846-01",
+      "title": "Regenerate posting schedule with updated inventory",
+      "type": "ops",
+      "task_target": "reports/posting-schedule.json",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-846"
+    },
+    {
+      "id": "846-02",
+      "title": "Trigger auto-deliver batch",
+      "type": "ops",
+      "task_target": "scripts/scs001/posting-auto-deliver.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-846"
+    }
+  ]
+}
