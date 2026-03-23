@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-4a9398f3",
+  "topic_id": "custom-mn2vmovx-1",
+  "format": "explainer",
+  "title": "The 3 programming paradigms that AI cannot replace",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "What if I told you AI can't replace these 3 programming styles?",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "We're seeing a surge in systems that demand human-level logic and creativity.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Functional programming is all about pure functions and immutability.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "It’s used in mission-critical systems like NASA’s flight software.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Developers need to think deeply about data flow and state.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Remember: AI can’t handle the complexity of functional design.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "What’s one paradigm you’d never want an AI to touch?",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "The 3 programming paradigms that AI cannot replace",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#the",
+    "#3",
+    "#programming"
+  ],
+  "generated_at": "2026-03-23T07:41:29.077Z",
+  "llm_used": true
+}

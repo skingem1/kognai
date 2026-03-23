@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-1c0066c0",
+  "topic_id": "custom-mn2vp642-1",
+  "format": "debate",
+  "title": "The 3 programming paradigms that AI cannot replace",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "The \"the\" is clear—AI can't replace the paradigm of formal logic, which underpins all rigorous software verification. (3 sec)",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "But AI can model and optimize protocols, like TCP/IP, which require adaptive decision-making beyond rigid rules. (5 sec)",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Formal logic isn't rigid—it's the foundation of Z3 and Coq, tools that AI can't replicate for proving correctness in code. (5 sec)",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "AI excels in pattern recognition, essential for dynamic protocols like blockchain consensus, which evolve with usage. (5 sec)",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "The future is adaptive, not static—AI defines the 3 paradigms that will shape tomorrow’s tech. (4 sec)",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "the vs 3",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#the",
+    "#3",
+    "#programming"
+  ],
+  "generated_at": "2026-03-23T07:43:31.290Z",
+  "llm_used": true
+}

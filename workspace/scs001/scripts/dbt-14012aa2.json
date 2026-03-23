@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-14012aa2",
+  "topic_id": "custom-mn2vp642-2",
+  "format": "debate",
+  "title": "How to retire early using compound interest and AI investing",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "The \"how\" is clear—compound interest and AI investing can retire you in 10 years with smart protocols and automated compounding.",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "The \"to\" is critical—without the right tools, even the best strategies fail. AI investing needs precise targeting, not just automation.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "My strategy uses real-time AI rebalancing and tax-loss harvesting via protocols like Alpaca and QuantConnect to maximize returns.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Even the best tools can't outperform a well-defined \"to\"—without a clear path, you’re just chasing noise in the market.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "You can't compound on nothing. The \"to\" defines purpose, strategy, and risk—without it, the \"how\" is just random noise.",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "how vs to",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#how",
+    "#to",
+    "#retire"
+  ],
+  "generated_at": "2026-03-23T07:43:47.352Z",
+  "llm_used": true
+}

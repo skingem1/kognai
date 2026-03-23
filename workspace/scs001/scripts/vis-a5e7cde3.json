@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-a5e7cde3",
+  "topic_id": "custom-mn2vroag-0",
+  "format": "vision",
+  "title": "Why every startup is pivoting to AI agents in 2026",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "Why are so many startups in 2026 pivoting to AI agents, and what does that say about our technological trajectory?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Advances in LLMs, multimodal models, and edge computing make AI agents more capable, efficient, and deployable than ever before.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "But this shift risks deepening inequality, job displacement, and the erosion of human agency if not carefully managed.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "We’re embedding transparency, explainability, and human-in-the-loop systems to ensure accountability and alignment with user needs.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "I see a future where AI agents empower people—enhancing creativity, education, and healthcare with thoughtful, inclusive design.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future belongs to startups that balance innovation with responsibility, shaping AI that elevates rather than replaces.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of why",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#why",
+    "#every",
+    "#startup"
+  ],
+  "video_cue": "A diverse group of people collaborating with AI agents in a modern office, seamlessly integrating technology into daily workflows.",
+  "generated_at": "2026-03-23T07:45:16.643Z",
+  "llm_used": true
+}

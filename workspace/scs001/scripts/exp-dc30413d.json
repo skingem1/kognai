@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-dc30413d",
+  "topic_id": "custom-mn2vmovx-0",
+  "format": "explainer",
+  "title": "Why every startup is pivoting to AI agents in 2026",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "What if your startup could triple its efficiency overnight?",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "In 2026, AI agents are no longer a luxury — they're a survival tool.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "An AI agent is a self-learning system that automates complex tasks in real time.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "They use predictive algorithms from Google’s latest DeepMind models to anticipate user needs.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Every industry — from healthcare to retail — is racing to integrate these agents.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The key takeaway? Startups that ignore AI agents will be left behind.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Ready to see how AI agents could change your business?",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "Why every startup is pivoting to AI agents in 2026",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#why",
+    "#every",
+    "#startup"
+  ],
+  "generated_at": "2026-03-23T07:41:17.508Z",
+  "llm_used": true
+}
