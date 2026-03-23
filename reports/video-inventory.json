@@ -1,18 +1,42 @@
 {
-  "scanned_at": "2026-03-23T08:33:43.214Z",
-  "total_runs": 224,
-  "total_videos": 434,
-  "unique_topics": 162,
-  "already_registered": 162,
+  "scanned_at": "2026-03-23T08:40:06.559Z",
+  "total_runs": 227,
+  "total_videos": 443,
+  "unique_topics": 165,
+  "already_registered": 165,
   "newly_registered": 0,
   "already_posted": 0,
-  "ready_to_post": 162,
+  "ready_to_post": 165,
   "gate_status": {
     "posted": 4,
     "target": 30,
     "gap": 26
   },
   "videos": [
+    {
+      "video_id": "vis-63e4be9b",
+      "format": "vision",
+      "title": "How Claude Code is redefining what one developer can build alone",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T08-qeh1/output/vis-63e4be9b_final.mp4"
+    },
+    {
+      "video_id": "vis-ba3a3d59",
+      "format": "vision",
+      "title": "The 3 AI breakthroughs that happened this week that nobody covered",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T08-qeh1/output/vis-ba3a3d59_final.mp4"
+    },
+    {
+      "video_id": "vis-b567c64e",
+      "format": "vision",
+      "title": "Why Africa will lead the next wave of tech innovation",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T08-qeh1/output/vis-b567c64e_final.mp4"
+    },
     {
       "video_id": "vis-11c32367",
       "format": "vision",
