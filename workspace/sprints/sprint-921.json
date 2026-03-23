@@ -1,0 +1,63 @@
+{
+  "sprint_id": "sprint-921",
+  "title": "MULTI-PIPELINE — 3 code demos + 2 TTS vlogs (batch 5)",
+  "description": "Produce 3 code demo videos and 2 TTS vlog videos. Continuing content stockpile.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "921-01",
+      "title": "Code demo: Build a QR Code Generator in Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-921",
+      "output": "demo-mn3jeg3h"
+    },
+    {
+      "id": "921-02",
+      "title": "Code demo: Create a Countdown Timer in Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-921",
+      "output": "demo-mn3jbii5"
+    },
+    {
+      "id": "921-03",
+      "title": "Code demo: Build a Text-to-Speech App in Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-921",
+      "output": "demo-mn3jd0oo"
+    },
+    {
+      "id": "921-04",
+      "title": "V2 video: Apple's Secret AI Project Just Leaked",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-921",
+      "output": "vlog-mn3jecg9"
+    },
+    {
+      "id": "921-05",
+      "title": "V2 video: Why Every Company Is Firing Managers and Hiring AI",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-921",
+      "output": "vlog-mn3jecgg"
+    }
+  ]
+}

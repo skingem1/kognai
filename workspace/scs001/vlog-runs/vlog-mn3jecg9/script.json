@@ -1,0 +1,21 @@
+{
+  "title": "Apple's Secret AI Project Just Leaked",
+  "full_monologue": "**Apple's Secret AI Project Just Leaked**. Rumors are swirling after an anonymous source claims to have uncovered Apple’s most advanced AI initiative. This isn’t just another Siri update—this is a fully autonomous system designed to revolutionize how we interact with technology. The leaks suggest it's already being tested in private, with features that could outperform any competitor. If true, this could change everything we know about AI on the consumer market. What do you think Apple should do next? Comment below.",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 6,
+      "duration_s": 6,
+      "visual_prompt": "A close-up of hands typing rapidly on a keyboard, symbolizing the development of AI, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 18,
+      "duration_s": 6,
+      "visual_prompt": "A futuristic cityscape with glowing lights and advanced tech infrastructure, hinting at the future of AI, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

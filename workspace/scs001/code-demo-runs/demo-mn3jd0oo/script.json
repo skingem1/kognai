@@ -1,0 +1,76 @@
+{
+  "demo_id": "demo-mn3jd0oq",
+  "title": "Python Text to Speech in 3 Steps!",
+  "language": "python",
+  "total_duration_s": 24,
+  "steps": [
+    {
+      "step_id": "s1",
+      "title": "Step 1: Setup",
+      "code_lines": [
+        "import pyttsx3",
+        "",
+        "engine = pyttsx3.init()"
+      ],
+      "language": "python",
+      "explanation": "We start by importing the pyttsx3 library and initializing the text-to-speech engine.",
+      "duration_s": 6,
+      "highlight_lines": [
+        0,
+        2
+      ]
+    },
+    {
+      "step_id": "s2",
+      "title": "Step 2: Customize Settings",
+      "code_lines": [
+        "engine.setProperty('rate', 150)",
+        "engine.setProperty('volume', 1.0)"
+      ],
+      "language": "python",
+      "explanation": "We adjust the speech rate and volume to make the output sound natural and clear.",
+      "duration_s": 6,
+      "highlight_lines": [
+        0,
+        1
+      ]
+    },
+    {
+      "step_id": "s3",
+      "title": "Step 3: Speak Your Text",
+      "code_lines": [
+        "engine.say(\"Hello, this is a text to speech application.\")",
+        "engine.runAndWait()"
+      ],
+      "language": "python",
+      "explanation": "Finally, we tell the engine what to say and wait for it to finish speaking.",
+      "duration_s": 6,
+      "highlight_lines": [
+        0,
+        1
+      ]
+    },
+    {
+      "step_id": "s4",
+      "title": "Try It Yourself!",
+      "code_lines": [
+        "# Try changing the text or settings!"
+      ],
+      "language": "python",
+      "explanation": "Now it's your turn — try changing the text or settings and see what happens!",
+      "duration_s": 6,
+      "highlight_lines": [
+        0
+      ]
+    }
+  ],
+  "hashtags": [
+    "#coding",
+    "#python",
+    "#texttospeech",
+    "#tutorial"
+  ],
+  "intro_hook": "Turn text into speech with Python — let's code it!",
+  "source": "user",
+  "topic_source": "user-prompt"
+}
