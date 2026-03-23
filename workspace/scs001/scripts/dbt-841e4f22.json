@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-841e4f22",
+  "topic_id": "custom-mn2rrtlj-0",
+  "format": "debate",
+  "title": "MCP protocol: the USB-C of AI that connects every LLM to every tool",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "MCP is the universal protocol that unifies all AI and tools, just like USB-C unifies devices—no more fragmented ecosystems.",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "But MCP isn’t standardized. Real protocols like HTTP and TCP/IP work because they’re open, well-documented, and widely adopted.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "MCP already supports real-time inference, secure API tunnels, and dynamic model swapping—features no other protocol offers.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "That’s marketing. Real AI systems rely on open, versioned APIs, not proprietary black boxes that lock developers into closed ecosystems.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Open protocols drive innovation. MCP is a cage, not a bridge.",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "mcp vs protocol:",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#mcp",
+    "#protocol:",
+    "#the"
+  ],
+  "generated_at": "2026-03-23T05:53:18.600Z",
+  "llm_used": true
+}
