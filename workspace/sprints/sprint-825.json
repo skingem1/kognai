@@ -1,0 +1,38 @@
+{
+  "sprint_id": "sprint-825",
+  "title": "CONTENT — 9 more custom topic videos (vision+listicle balance) + rebuild to 30 ready",
+  "description": "Produced 9 custom topic videos: 3 vision, 2 listicle, 4 mixed. Cleanup had removed older runs so rebuilt inventory back to 30 ready. 770 ledger.",
+  "source": "content",
+  "tasks": [
+    {
+      "id": "825-01",
+      "title": "3 vision videos: AI coding, quantum computing, cloud computing",
+      "type": "content",
+      "task_target": "scripts/scs001/run-multiformat-pipeline.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-825"
+    },
+    {
+      "id": "825-02",
+      "title": "2 listicles: AI side hustles, programming languages",
+      "type": "content",
+      "task_target": "scripts/scs001/run-multiformat-pipeline.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-825"
+    },
+    {
+      "id": "825-03",
+      "title": "4 mixed videos: TikTok ban, AI healthcare, Bitcoin energy, AI comparison",
+      "type": "content",
+      "task_target": "scripts/scs001/run-multiformat-pipeline.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-825"
+    }
+  ]
+}

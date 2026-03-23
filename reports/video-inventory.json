@@ -1,7 +1,7 @@
 {
-  "scanned_at": "2026-03-23T00:57:05.274Z",
-  "total_runs": 47,
-  "total_videos": 36,
+  "scanned_at": "2026-03-23T01:06:06.761Z",
+  "total_runs": 39,
+  "total_videos": 31,
   "unique_topics": 30,
   "already_registered": 30,
   "newly_registered": 0,
@@ -14,28 +14,36 @@
   },
   "videos": [
     {
+      "video_id": "vis-de98d24b",
+      "format": "vision",
+      "title": "The hidden cost of cloud computing nobody talks about",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T01-olzc/output/vis-de98d24b_final.mp4"
+    },
+    {
+      "video_id": "vis-2f1fa6e5",
+      "format": "vision",
+      "title": "3 reasons quantum computing will change everything",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T01-hcvc/output/vis-2f1fa6e5_final.mp4"
+    },
+    {
+      "video_id": "vis-aa213a29",
+      "format": "vision",
+      "title": "What happens when AI writes better code than humans?",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-ijkc/output/vis-aa213a29_final.mp4"
+    },
+    {
       "video_id": "vis-c2d17e5f",
       "format": "vision",
       "title": "Why every developer needs to learn prompt engineering",
       "duration_s": 33,
       "posted": false,
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-nxhh/output/vis-c2d17e5f_final.mp4"
-    },
-    {
-      "video_id": "vis-0359b89c",
-      "format": "vision",
-      "title": "Building MEV-Resistant DeFi: A Practitioner's Guide to Protecting Protocols and Users From Value Extraction",
-      "duration_s": 33,
-      "posted": false,
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-crxe/output/vis-0359b89c_final.mp4"
-    },
-    {
-      "video_id": "vis-1772d7e3",
-      "format": "vision",
-      "title": "What is WebMCP? Chrome's browser-native API for AI agents",
-      "duration_s": 33,
-      "posted": false,
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-2yxr/output/vis-1772d7e3_final.mp4"
     },
     {
       "video_id": "dbt-51de879f",
@@ -110,6 +118,38 @@
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-b3vb/output/dbt-c9820a9b_final.mp4"
     },
     {
+      "video_id": "exp-acd650d4",
+      "format": "explainer",
+      "title": "Claude vs GPT vs Gemini: the ultimate AI comparison",
+      "duration_s": 25,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T01-iqv5/output/exp-acd650d4_final.mp4"
+    },
+    {
+      "video_id": "exp-085525f5",
+      "format": "explainer",
+      "title": "The truth about Bitcoin energy consumption",
+      "duration_s": 25,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T01-ij2w/output/exp-085525f5_final.mp4"
+    },
+    {
+      "video_id": "exp-210ccb10",
+      "format": "explainer",
+      "title": "How AI is revolutionizing healthcare",
+      "duration_s": 25,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T01-fufg/output/exp-210ccb10_final.mp4"
+    },
+    {
+      "video_id": "exp-2109e821",
+      "format": "explainer",
+      "title": "Why TikTok might get banned again in 2026",
+      "duration_s": 25,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T01-y5h6/output/exp-2109e821_final.mp4"
+    },
+    {
       "video_id": "exp-e48a5a5e",
       "format": "explainer",
       "title": "Top 5 free AI tools you are not using yet",
@@ -182,44 +222,20 @@
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-n61z/output/exp-f93e8070_final.mp4"
     },
     {
-      "video_id": "exp-b29356a7",
-      "format": "explainer",
-      "title": "Point at UI bugs instead of describing them to Claude Code",
-      "duration_s": 25,
+      "video_id": "lst-5c297d20",
+      "format": "listicle",
+      "title": "Top 3 underrated programming languages for 2026",
+      "duration_s": 20,
       "posted": false,
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-arx1/output/exp-b29356a7_final.mp4"
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T01-pkbr/output/lst-5c297d20_final.mp4"
     },
     {
-      "video_id": "exp-4bac36c5",
-      "format": "explainer",
-      "title": "Bitcoin (BTC) 📉 -1.5%",
-      "duration_s": 25,
+      "video_id": "lst-25acee7c",
+      "format": "listicle",
+      "title": "4 AI side hustles making people over 10k per month",
+      "duration_s": 20,
       "posted": false,
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-a5k7/output/exp-4bac36c5_final.mp4"
-    },
-    {
-      "video_id": "exp-b9c9d5b4",
-      "format": "explainer",
-      "title": "Solana (SOL) 📉 -0.8%",
-      "duration_s": 25,
-      "posted": false,
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-cfjl/output/exp-b9c9d5b4_final.mp4"
-    },
-    {
-      "video_id": "exp-4b35be55",
-      "format": "explainer",
-      "title": "lightningpixel/modly — Desktop app to generate 3D models from images using local AI — runs entirely on ",
-      "duration_s": 25,
-      "posted": false,
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-x0nr/output/exp-4b35be55_final.mp4"
-    },
-    {
-      "video_id": "exp-4cfce417",
-      "format": "explainer",
-      "title": "wangziqi06/724-office — 7/24 Office — Self-evolving AI Agent system. 26 tools, 3500 lines pure Python, M",
-      "duration_s": 25,
-      "posted": false,
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-rrc5/output/exp-4cfce417_final.mp4"
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T01-sqgq/output/lst-25acee7c_final.mp4"
     },
     {
       "video_id": "lst-dfbf7d6a",
@@ -236,22 +252,6 @@
       "duration_s": 20,
       "posted": false,
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-nqjg/output/lst-8dd0a6d1_final.mp4"
-    },
-    {
-      "video_id": "lst-c4530456",
-      "format": "listicle",
-      "title": "I Built 3 Tools to Stop My AI from Being a Yes-Man (and forgetting everything)",
-      "duration_s": 20,
-      "posted": false,
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-dfar/output/lst-c4530456_final.mp4"
-    },
-    {
-      "video_id": "lst-201e1473",
-      "format": "listicle",
-      "title": "How to Secure MCP Tool Calls in n8n Workflows",
-      "duration_s": 20,
-      "posted": false,
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-gg3e/output/lst-201e1473_final.mp4"
     }
   ]
 }
