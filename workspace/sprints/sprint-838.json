@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-838",
+  "title": "CONTENT — 5 custom topic videos (trending crypto + AI topics)",
+  "description": "Produce 5 more videos with crypto and AI trending topics to grow inventory beyond 50 unique.",
+  "source": "content",
+  "tasks": [
+    {
+      "id": "838-01",
+      "title": "Batch produce 5 videos with trending crypto + AI topics",
+      "type": "content",
+      "task_target": "scripts/scs001/batch-produce.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-838"
+    }
+  ]
+}

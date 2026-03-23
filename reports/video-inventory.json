@@ -1,18 +1,58 @@
 {
-  "scanned_at": "2026-03-23T02:19:06.876Z",
-  "total_runs": 54,
-  "total_videos": 70,
-  "unique_topics": 49,
-  "already_registered": 49,
+  "scanned_at": "2026-03-23T02:35:49.605Z",
+  "total_runs": 59,
+  "total_videos": 95,
+  "unique_topics": 54,
+  "already_registered": 54,
   "newly_registered": 0,
   "already_posted": 0,
-  "ready_to_post": 49,
+  "ready_to_post": 54,
   "gate_status": {
     "posted": 4,
     "target": 30,
     "gap": 26
   },
   "videos": [
+    {
+      "video_id": "vis-0c6ca446",
+      "format": "vision",
+      "title": "Ethereum just hit a new all-time high and nobody noticed",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T02-7vgy/output/vis-0c6ca446_final.mp4"
+    },
+    {
+      "video_id": "vis-54d56a1d",
+      "format": "vision",
+      "title": "The AI app that makes you  a day while you sleep",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T02-7vgy/output/vis-54d56a1d_final.mp4"
+    },
+    {
+      "video_id": "vis-bae0d95e",
+      "format": "vision",
+      "title": "Why Mark Zuckerberg is secretly building AGI",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T02-7vgy/output/vis-bae0d95e_final.mp4"
+    },
+    {
+      "video_id": "vis-32db1401",
+      "format": "vision",
+      "title": "3 programming languages that will die by 2028",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T02-7vgy/output/vis-32db1401_final.mp4"
+    },
+    {
+      "video_id": "vis-3acb0b30",
+      "format": "vision",
+      "title": "How to use ChatGPT to negotiate your salary",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T02-7vgy/output/vis-3acb0b30_final.mp4"
+    },
     {
       "video_id": "vis-badfa838",
       "format": "vision",
