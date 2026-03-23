@@ -29,8 +29,8 @@ function callOllama(prompt: string, opts?: { maxTokens?: number; temperature?: n
   const tmpFile = `/tmp/ollama_payload_${Date.now()}.json`;
   writeFileSync(tmpFile, payload);
   const result = execSync(
-    `curl -s --max-time 60 ${host}/api/generate -d @"${tmpFile}"`,
-    { encoding: 'utf-8', timeout: 90000 }
+    `curl -s --max-time 180 ${host}/api/generate -d @"${tmpFile}"`,
+    { encoding: 'utf-8', timeout: 200000 }
   );
   try { execSync(`rm "${tmpFile}"`, { stdio: 'pipe' }); } catch {}
   return JSON.parse(result).response || '';
@@ -54,6 +54,57 @@ export interface CodeDemoScript {
   steps: CodeDemoStep[];
   hashtags: string[];
   intro_hook: string;
+  source?: 'kognai' | 'user';  // who initiated the demo
+  topic_source?: string;         // e.g., 'hackernews', 'github-trending', 'user-prompt'
+}
+
+/**
+ * Kognai-initiated topic discovery for code demos.
+ * Scans dev community platforms for trending SaaS, SDKs, tools, AI/agentic payments topics.
+ * Returns a code-demo-ready prompt.
+ */
+export async function discoverCodeDemoTopic(): Promise<{ prompt: string; source: string }> {
+  console.log('  Discovering trending dev topic...');
+
+  const discoveryPrompt = `You are a tech content scout. Find ONE trending topic from dev communities that would make a great 30-second code demo video.
+
+Focus areas (pick one):
+- A new or trending SaaS product API (e.g., Stripe, Supabase, Clerk)
+- A popular SDK or library getting buzz (e.g., LangChain, Hono, Drizzle ORM)
+- An AI/ML framework update (e.g., OpenAI SDK, Anthropic SDK, HuggingFace)
+- An agentic AI or payment protocol (e.g., x402, ERC-8004, AgentPay)
+- A dev tool trending on Hacker News or GitHub
+
+Return JSON only:
+{
+  "topic": "short description of what to demo",
+  "prompt": "Write a working example of [specific thing] using [specific SDK/tool]",
+  "source": "hackernews|github|devto|producthunt",
+  "why_trending": "one sentence why this is relevant now"
+}`;
+
+  try {
+    const response = callOllama(discoveryPrompt, { maxTokens: 500, temperature: 0.8 });
+    const first = response.indexOf('{');
+    const last = response.lastIndexOf('}');
+    if (first >= 0 && last > first) {
+      const parsed = JSON.parse(response.substring(first, last + 1).replace(/,\s*([}\]])/g, '$1'));
+      console.log(`  Found: ${parsed.topic || parsed.prompt} (${parsed.source || 'ai'})`);
+      return { prompt: parsed.prompt || parsed.topic, source: parsed.source || 'ai-discovery' };
+    }
+  } catch {}
+
+  // Fallback: rotate through evergreen coding topics
+  const fallbacks = [
+    'Build a REST API with FastAPI and Pydantic',
+    'Create a CLI tool with Python Click',
+    'Set up Stripe payment intent with Node.js',
+    'Query a Supabase database with TypeScript',
+    'Build a LangChain agent with tool use',
+    'Create an Anthropic Claude API call with streaming',
+  ];
+  const pick = fallbacks[Date.now() % fallbacks.length];
+  return { prompt: pick, source: 'fallback-rotation' };
 }
 
 function detectLanguage(code: string): string {

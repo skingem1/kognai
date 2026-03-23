@@ -1,0 +1,74 @@
+{
+  "sprint_id": "sprint-913",
+  "title": "MULTI-PIPELINE \u2014 3 code demos + 3 vlogs",
+  "description": "Produce 3 code demo videos and 3 avatar vlog videos for content variety.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "913-01",
+      "title": "Code demo: Build a CLI Tool with Node.js in 5 Minutes",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-913",
+      "output": "demo-mn3glqpz"
+    },
+    {
+      "id": "913-02",
+      "title": "Code demo: Web Scraping with Python Beautiful Soup",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-913",
+      "output": "demo-mn3gntls"
+    },
+    {
+      "id": "913-03",
+      "title": "Code demo: Build a REST API with Express in 3 Minutes",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-913",
+      "output": "demo-mn3gq20c"
+    },
+    {
+      "id": "913-04",
+      "title": "V2 video: Apple Is Building an AI That Knows Everything About You",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-913",
+      "output": "vlog-mn3gsozj"
+    },
+    {
+      "id": "913-05",
+      "title": "V2 video: Why AI Startups Are Dying Faster Than Ever",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-913",
+      "output": "vlog-mn3gu2qh"
+    },
+    {
+      "id": "913-06",
+      "title": "V2 video: The AI Job That Pays $300K and Nobody Knows About",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-913",
+      "output": "vlog-mn3gvn5b"
+    }
+  ]
+}

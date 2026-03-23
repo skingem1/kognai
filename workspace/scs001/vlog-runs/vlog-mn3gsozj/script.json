@@ -1,0 +1,21 @@
+{
+  "title": "Apple's AI Knows Everything About You",
+  "full_monologue": "**Apple is building an AI that knows everything about you.** Imagine an AI that learns your habits, preferences, and even your moods without you ever typing a word. This AI could predict what you need before you ask, personalize your experience across all Apple devices, and make your life smoother than ever. But with this power comes questions about privacy and control. What happens when your data is that valuable? Let me know your thoughts below.",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 6,
+      "duration_s": 6,
+      "visual_prompt": "A person walking through a city, surrounded by people and technology, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 18,
+      "duration_s": 6,
+      "visual_prompt": "A close-up of hands interacting with a sleek, futuristic device, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

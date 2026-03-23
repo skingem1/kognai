@@ -1,0 +1,21 @@
+{
+  "title": "Why AI Startups Are Dying Faster Than Ever",
+  "full_monologue": "**AI startups are collapsing faster than you can say 'neural network.'** Why? Burn rate, hype, and a lack of real-world applications. Investors are tired of flashy demos that never scale. Meanwhile, the market is flooded with clones, and talent is scarce. The ones surviving are the ones solving actual problems, not just chasing buzzwords. So, what’s the next big thing in AI? Let me know in the comments.",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 6,
+      "duration_s": 6,
+      "visual_prompt": "A crowded tech conference with people walking past abstract glowing tech sculptures, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 18,
+      "duration_s": 6,
+      "visual_prompt": "A lone person sitting at a desk with a laptop, surrounded by empty chairs and scattered papers, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

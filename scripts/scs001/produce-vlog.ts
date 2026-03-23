@@ -125,35 +125,42 @@ async function writeScript(topic: string): Promise<VlogScript> {
 
 Rules:
 - One presenter speaking directly to camera (like a podcast host)
-- Full monologue must be UNDER 750 characters (Captions.ai limit)
+- Full monologue must be UNDER 750 characters
 - Bold hook in first sentence. No "hey guys."
-- 2-3 moments where we cut to B-roll (visual examples of what presenter is saying)
-- B-roll timestamps must be at least 6 seconds apart
+- Video structure: Avatar shows for 6s (hook) → B-roll for 6s → Avatar for 6s (middle) → B-roll for 6s → Avatar for 6s (closing/CTA) → outro
+- Total: ~30 seconds. Avatar visible for 18s, B-roll for 12s
+- Exactly 2 B-roll cutaways: first at timestamp 6s (duration 6s), second at 18s (duration 6s)
+- B-roll visual_prompt MUST be directly relevant to the topic being discussed at that moment
+- CRITICAL: AI video generators CANNOT render readable text. NEVER include screens, signs, documents, UI, code, charts, phones, laptops, whiteboards. Instead: people, nature, cityscapes, objects, abstract motion, hands, crowds, architecture, technology hardware (no screens).
 - End with a question to drive comments
-- CRITICAL for B-roll visual_prompt: AI video generators CANNOT render readable text. NEVER include screens, signs, documents, UI, code, charts with labels, phones, laptops showing content, whiteboards, or anything with text. Instead describe visual scenes: people working, cityscapes, nature, objects, abstract motion, hands typing (no screen visible), walking, crowds, buildings, technology hardware (no screens).
 
 Return JSON only:
 {
   "title": "catchy title under 60 chars",
   "full_monologue": "everything the presenter says, under 750 chars, one paragraph, no newlines",
   "broll_cutaways": [
-    {"timestamp_s": 5, "duration_s": 3, "visual_prompt": "what to show visually"},
-    {"timestamp_s": 15, "duration_s": 3, "visual_prompt": "what to show visually"}
+    {"timestamp_s": 6, "duration_s": 6, "visual_prompt": "visual directly related to what is being said at this moment"},
+    {"timestamp_s": 18, "duration_s": 6, "visual_prompt": "visual directly related to what is being said at this moment"}
   ],
   "hashtags": ["#ai", "#tech", "#coding"]
 }`;
 
-  const host = process.env.OLLAMA_HOST || 'http://localhost:11434';
+  let host = process.env.OLLAMA_HOST || 'http://localhost:11434';
+  if (!host.startsWith('http')) host = `http://${host}`;
+  // Write payload to file to avoid shell escaping issues with quotes in the prompt
+  const payloadFile = `/tmp/vlog_ollama_${Date.now()}.json`;
+  writeFileSync(payloadFile, JSON.stringify({
+    model: 'qwen3:14b',
+    prompt,
+    stream: false,
+    think: false,
+    options: { num_predict: 1000, temperature: 0.7 },
+  }));
   const result = execSync(
-    `curl -s --max-time 60 ${host}/api/generate -d '${JSON.stringify({
-      model: 'qwen3:14b',
-      prompt,
-      stream: false,
-      think: false,
-      options: { num_predict: 1000, temperature: 0.7 },
-    }).replace(/'/g, "'\\''")}'`,
-    { encoding: 'utf-8', timeout: 90000 }
+    `curl -s --max-time 180 ${host}/api/generate -d @"${payloadFile}"`,
+    { encoding: 'utf-8', timeout: 200000 }
   );
+  try { execSync(`rm -f "${payloadFile}"`, { stdio: 'pipe' }); } catch {}
 
   const llmResponse = JSON.parse(result).response || '';
   const first = llmResponse.indexOf('{');
@@ -172,7 +179,7 @@ Return JSON only:
   if (script.broll_cutaways) {
     script.broll_cutaways.sort((a, b) => a.timestamp_s - b.timestamp_s);
     for (const cut of script.broll_cutaways) {
-      cut.duration_s = Math.max(2, Math.min(cut.duration_s, 4));
+      cut.duration_s = Math.max(3, Math.min(cut.duration_s, 8));
       // Sanitize: strip text-producing elements from visual prompts
       // AI video generators hallucinate gibberish text on screens/signs
       cut.visual_prompt = sanitizeBrollPrompt(cut.visual_prompt);
@@ -186,36 +193,96 @@ Return JSON only:
   return script;
 }
 
-// ── Step 2: Generate avatar video (Captions.ai) ──────
+// ── Step 2: Generate avatar video (HeyGen API) ─────
+//
+// HeyGen: text script + avatar ID + voice ID → lip-synced avatar video
+// ~3.5 min per video, 1287 avatars, built-in TTS
+// API: https://api.heygen.com/v2/video/generate
+// Env: HEYGEN_API_KEY
+
+// HeyGen avatars — portrait expressive + dark brand background (#1a2332)
+// Rotated via .creator-rotation.json — different avatar each run
+const HEYGEN_AVATAR_POOL: Array<{ avatarId: string; voiceId: string; gender: string; name: string }> = [
+  { name: 'Abigail', avatarId: 'Abigail_expressive_2024112501', voiceId: 'M2WosQ2Ju3f2b7jdddsj', gender: 'female' },
+  { name: 'Adriana BizTalk', avatarId: 'Adriana_BizTalk_Front_public', voiceId: 'M2WosQ2Ju3f2b7jdddsj', gender: 'female' },
+  { name: 'Adriana Business', avatarId: 'Adriana_Business_Front_2_public', voiceId: 'M2WosQ2Ju3f2b7jdddsj', gender: 'female' },
+  { name: 'Aditya Blazer', avatarId: 'Aditya_public_4', voiceId: 'a50b2b18a4bf49109caf46a3a6c6a08a', gender: 'male' },
+  { name: 'Adrian Blue', avatarId: 'Adrian_public_3_20240312', voiceId: '2eca0d3dd5ec4a1ea6efa6194b19eb78', gender: 'male' },
+  { name: 'Adrian Suit', avatarId: 'Adrian_public_2_20240312', voiceId: 'a50b2b18a4bf49109caf46a3a6c6a08a', gender: 'male' },
+  { name: 'Ann Business', avatarId: 'Ann_Business_Sitting_public', voiceId: 'M2WosQ2Ju3f2b7jdddsj', gender: 'female' },
+  { name: 'Aditya Tshirt', avatarId: 'Aditya_public_2', voiceId: '3ae75279043648ce8f96310333c9288f', gender: 'male' },
+];
 
 async function generateAvatar(monologue: string, outPath: string, creator: string): Promise<void> {
-  console.log(`🎤 Generating avatar (Captions.ai, creator: ${creator})...`);
+  const apiKey = process.env.HEYGEN_API_KEY || '';
+  if (!apiKey) throw new Error('HEYGEN_API_KEY not set in .env');
 
-  const { generateAvatarVideo } = await import('./avatar-presenter');
-  await generateAvatarVideo(monologue, outPath, creator, 300000);
-
-  // Validate: reject black/empty avatar videos (Captions.ai returns black when credits depleted)
-  const checkFrame = '/tmp/avatar_check.png';
+  // Rotate through avatar pool using the creator rotation index
+  let poolIdx = 0;
   try {
-    execSync(`${FFMPEG} -y -i "${outPath}" -ss 3 -frames:v 1 "${checkFrame}"`, { stdio: 'pipe', timeout: 10000 });
-    const brightness = execSync(
-      `python3 -c "from PIL import Image; import numpy as np; im=Image.open('${checkFrame}'); print(f'{np.array(im).mean():.1f}')"`,
-      { encoding: 'utf-8', timeout: 5000 }
-    ).trim();
-    const avgPixel = parseFloat(brightness);
-    if (avgPixel < 20) {
-      throw new Error(`Avatar is black/empty (avg pixel: ${avgPixel}). Captions.ai credits likely depleted. Top up at captions.ai/pricing`);
-    }
-    console.log(`  Avatar brightness check: ${avgPixel.toFixed(0)} (OK)`);
-  } catch (err: any) {
-    if (err.message?.includes('Avatar is black')) throw err;
-    console.warn(`  ⚠️ Could not validate avatar: ${err.message?.slice(0, 60)}`);
-  }
-  try { execSync(`rm -f "${checkFrame}"`, { stdio: 'pipe' }); } catch {}
+    const state = JSON.parse(readFileSync(CREATOR_STATE_PATH, 'utf-8'));
+    poolIdx = (state.lastIndex ?? 0) % HEYGEN_AVATAR_POOL.length;
+  } catch {}
+  const avatarInfo = HEYGEN_AVATAR_POOL[poolIdx];
+  console.log(`🎤 Generating avatar (HeyGen, ${creator} → ${avatarInfo.avatarId}, ${avatarInfo.gender} voice)...`);
 
+  // 1. Submit to HeyGen (dark Kognai brand background)
+  const payload = JSON.stringify({
+    video_inputs: [{
+      character: { type: 'avatar', avatar_id: avatarInfo.avatarId, avatar_style: 'normal' },
+      voice: { type: 'text', input_text: monologue, voice_id: avatarInfo.voiceId },
+      background: { type: 'color', value: '#1a2332' },
+    }],
+    dimension: { width: 1080, height: 1920 },
+  });
+  const tmpPayload = '/tmp/heygen_payload.json';
+  writeFileSync(tmpPayload, payload);
+
+  const submitResult = execSync(
+    `curl -s -X POST "https://api.heygen.com/v2/video/generate" ` +
+    `-H "x-api-key: ${apiKey}" -H "Content-Type: application/json" -d @"${tmpPayload}"`,
+    { encoding: 'utf-8', timeout: 30000 }
+  );
+  const submitData = JSON.parse(submitResult);
+  const videoId = submitData.data?.video_id;
+  if (!videoId) throw new Error(`HeyGen submit failed: ${JSON.stringify(submitData).slice(0, 200)}`);
+  console.log(`  Job ${videoId} submitted`);
+
+  // 2. Poll until completed (max 15 minutes)
+  const maxWait = 900000;
+  const startPoll = Date.now();
+  while (Date.now() - startPoll < maxWait) {
+    await new Promise(r => setTimeout(r, 5000));
+    const pollResult = execSync(
+      `curl -s "https://api.heygen.com/v1/video_status.get?video_id=${videoId}" -H "x-api-key: ${apiKey}"`,
+      { encoding: 'utf-8', timeout: 15000 }
+    );
+    const pollData = JSON.parse(pollResult);
+    const status = pollData.data?.status;
+
+    if (status === 'completed') {
+      const videoUrl = pollData.data?.video_url;
+      if (!videoUrl) throw new Error('HeyGen: no video_url in completed response');
+      console.log('  Downloading video...');
+      execSync(`curl -sL "${videoUrl}" -o "${outPath}"`, { timeout: 60000 });
+      break;
+    }
+    if (status === 'failed') {
+      throw new Error(`HeyGen job FAILED: ${JSON.stringify(pollData.data?.error || 'unknown').slice(0, 200)}`);
+    }
+    console.log(`  [HeyGen] ${status}...`);
+  }
+
+  if (!existsSync(outPath)) throw new Error('HeyGen: video download failed or timed out');
+
+  // 3. Normalize to 1080x1920
   const scaled = outPath.replace('.mp4', '_scaled.mp4');
   normalizeVideo(outPath, scaled);
   execSync(`mv "${scaled}" "${outPath}"`, { stdio: 'pipe' });
+
+  // Cleanup
+  try { execSync(`rm -f "${tmpPayload}"`, { stdio: 'pipe' }); } catch {}
+
   console.log(`  ✅ Avatar: ${outPath}`);
 }
 
@@ -266,27 +333,62 @@ async function generateTTSBackbone(monologue: string, outPath: string): Promise<
   try { execSync(`rm -f "${audioPath}"`, { stdio: 'pipe' }); } catch {}
 }
 
-// ── Step 3: Generate B-roll clips (fal.ai Kling) ─────
+// ── Step 3: Generate B-roll (FLUX images + Ken Burns zoom) ────
+//
+// Uses FLUX/schnell on fal.ai ($0.03/image) instead of Kling ($0.42/5s video).
+// Each image gets a slow Ken Burns zoompan effect via FFmpeg to create motion.
+// Cost: ~$0.06 for 2 B-roll clips (93% cheaper than video).
 
 async function generateBroll(
   cutaways: VlogScript['broll_cutaways'],
   outDir: string,
 ): Promise<Array<{ path: string; timestamp_s: number; duration_s: number }>> {
-  console.log(`🎬 Generating ${cutaways.length} B-roll cutaways...`);
+  console.log(`🎬 Generating ${cutaways.length} B-roll images (FLUX + Ken Burns)...`);
 
-  const { generateBrollVideo } = await import('./fal-video-client');
   const results: Array<{ path: string; timestamp_s: number; duration_s: number }> = [];
 
   for (let i = 0; i < cutaways.length; i++) {
     const cut = cutaways[i];
+    const imgPath = join(outDir, `broll_${i}.png`);
     const outPath = join(outDir, `broll_${i}.mp4`);
-    try {
-      await generateBrollVideo(cut.visual_prompt, cut.duration_s, outPath, 'kling');
 
-      // Normalize to match avatar format exactly (no audio — avatar audio continues)
-      const norm = outPath.replace('.mp4', '_norm.mp4');
-      normalizeVideo(outPath, norm, { noAudio: true, duration: cut.duration_s });
-      execSync(`mv "${norm}" "${outPath}"`, { stdio: 'pipe' });
+    try {
+      // 1. Generate image with FLUX/schnell
+      const falKey = process.env.FAL_KEY || '';
+      const pyScript = `/tmp/flux_broll_${Date.now()}.py`;
+      writeFileSync(pyScript, `
+import fal_client, os, json, subprocess
+os.environ["FAL_KEY"] = ${JSON.stringify(falKey)}
+result = fal_client.subscribe("fal-ai/flux/schnell", arguments={
+    "prompt": ${JSON.stringify(cut.visual_prompt + ', cinematic lighting, photorealistic, vertical 9:16, no text or writing visible')},
+    "image_size": {"width": 1080, "height": 1920},
+    "num_images": 1,
+})
+url = result.get("images", [{}])[0].get("url", "")
+if url:
+    subprocess.run(["curl", "-sL", url, "-o", ${JSON.stringify(imgPath)}], capture_output=True)
+    print("OK")
+else:
+    print("FAIL")
+`);
+      const fluxResult = execSync(`python3 "${pyScript}"`, { encoding: 'utf-8', timeout: 60000 });
+      try { execSync(`rm -f "${pyScript}"`, { stdio: 'pipe' }); } catch {}
+
+      if (!fluxResult.includes('OK') || !existsSync(imgPath)) {
+        console.warn(`  ❌ B-roll ${i} FLUX failed`);
+        continue;
+      }
+
+      // 2. Convert image to video with Ken Burns zoompan effect
+      // Slow zoom in from 100% to 115% over the clip duration
+      execSync(
+        `${FFMPEG} -y -loop 1 -i "${imgPath}" ` +
+        `-vf "zoompan=z='min(zoom+0.0005,1.15)':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=${cut.duration_s * 30}:s=1080x1920:fps=30" ` +
+        `-c:v libx264 -preset fast -crf 20 -pix_fmt yuv420p -an -t ${cut.duration_s} "${outPath}"`,
+        { stdio: 'pipe', timeout: 30000 }
+      );
+
+      // No need to normalize — already 1080x1920 from zoompan
 
       results.push({ path: outPath, timestamp_s: cut.timestamp_s, duration_s: cut.duration_s });
       console.log(`  ✅ B-roll ${i}: ${cut.visual_prompt.slice(0, 40)}... (${cut.duration_s}s at ${cut.timestamp_s}s)`);
@@ -462,7 +564,15 @@ highlight_set = {'fail','hype','scale','roi','investors','vaporware','customers'
     'solutions','buzzwords','talent','companies','problems','startups','ai',
     'real','data','users','money','replace','replacing','never','always',
     'secret','truth','shocking','exposed','biggest','worst','best','future',
-    'agents','developers','machines','race','build','solve','million','billion'}
+    'agents','developers','machines','race','build','solve','million','billion',
+    'free','every','tools','deploy','click','generate','automate','save',
+    'hours','percent','jobs','startup','founder','saas','product','products',
+    'code','coding','api','sdk','software','engineer','engineers',
+    'learn','fast','faster','powerful','dangerous','broken','dead',
+    'game','changer','revolution','disruption','eliminate','destroy',
+    'growth','revenue','cost','profit','efficient','productivity',
+    'today','tomorrow','now','instantly','guaranteed','proven',
+    'behind','ahead','winning','losing','wrong','right','stop','start'}
 
 # ── 5. Build frame→chunk map and render ──
 frame_map = {}
