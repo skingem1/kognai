@@ -4060,3 +4060,13 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (OPS sprint, ran batch-produce directly)
 - Issues: none
 - Timestamp: 2026-03-23T08:02:00Z
+
+## Sprint 875 — OPS — custom topic content production (9 videos)
+- Status: PASS
+- Commit: 420b67d1
+- Files created: workspace/sprints/sprint-875.json, 9 new scripts
+- Test: batch-produce.ts --topic — 3 injected topics, 9 new videos, 132 unique total
+- Pipeline: 132 unique videos ready, 4/30 posted toward gate
+- Swarm used: no (OPS sprint, ran batch-produce directly)
+- Issues: none
+- Timestamp: 2026-03-23T08:10:00Z
