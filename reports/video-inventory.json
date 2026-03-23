@@ -1,7 +1,7 @@
 {
-  "scanned_at": "2026-03-23T00:25:04.450Z",
-  "total_runs": 15,
-  "total_videos": 13,
+  "scanned_at": "2026-03-23T00:27:28.601Z",
+  "total_runs": 20,
+  "total_videos": 14,
   "unique_topics": 11,
   "already_registered": 11,
   "newly_registered": 0,
@@ -30,12 +30,12 @@
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-2yxr/output/vis-1772d7e3_final.mp4"
     },
     {
-      "video_id": "dbt-932c93bf",
+      "video_id": "dbt-a49e29cf",
       "format": "debate",
-      "title": "Resolv USR (USR) 📉 -64.1%",
+      "title": "Resolv USR (USR) 📉 -64.3%",
       "duration_s": 27,
       "posted": false,
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-waug/output/dbt-932c93bf_final.mp4"
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-v9gl/output/dbt-a49e29cf_final.mp4"
     },
     {
       "video_id": "dbt-4c88667f",

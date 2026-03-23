@@ -100,8 +100,8 @@ function run(): CleanupResult {
   const radarDir = path.join(ROOT, 'workspace', 'scs001', 'topic-radar');
   const scriptsDir = path.join(ROOT, 'workspace', 'scs001', 'scripts');
 
-  // Multiformat runs: keep latest 10 dirs
-  const mf = cleanDir(mfDir, 'mf-', 10, true);
+  // Multiformat runs: keep latest 30 dirs (enough for all postable videos)
+  const mf = cleanDir(mfDir, 'mf-', 30, true);
 
   // Topic radar: keep latest 20 files
   const radar = cleanDir(radarDir, 'radar-', 20, false);
