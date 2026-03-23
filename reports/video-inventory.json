@@ -1,18 +1,26 @@
 {
-  "scanned_at": "2026-03-23T00:12:05.460Z",
-  "total_runs": 30,
-  "total_videos": 20,
-  "unique_topics": 13,
-  "already_registered": 13,
+  "scanned_at": "2026-03-23T00:16:43.419Z",
+  "total_runs": 35,
+  "total_videos": 25,
+  "unique_topics": 16,
+  "already_registered": 16,
   "newly_registered": 0,
   "already_posted": 0,
-  "ready_to_post": 13,
+  "ready_to_post": 16,
   "gate_status": {
     "posted": 2,
     "target": 30,
     "gap": 28
   },
   "videos": [
+    {
+      "video_id": "vis-1772d7e3",
+      "format": "vision",
+      "title": "What is WebMCP? Chrome's browser-native API for AI agents",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-2yxr/output/vis-1772d7e3_final.mp4"
+    },
     {
       "video_id": "vis-f4b4f358",
       "format": "vision",
@@ -86,6 +94,14 @@
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260322T23-30sf/output/dbt-7e52df9f_final.mp4"
     },
     {
+      "video_id": "exp-4cfce417",
+      "format": "explainer",
+      "title": "wangziqi06/724-office — 7/24 Office — Self-evolving AI Agent system. 26 tools, 3500 lines pure Python, M",
+      "duration_s": 25,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-rrc5/output/exp-4cfce417_final.mp4"
+    },
+    {
       "video_id": "exp-f9ac111f",
       "format": "explainer",
       "title": "leo-lilinxiao/codex-autoresearch — Codex Autoresearch Skill — A self-directed iterative system for Codex that conti",
@@ -108,6 +124,14 @@
       "duration_s": 25,
       "posted": false,
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260322T23-ctjq/output/exp-fcc19374_final.mp4"
+    },
+    {
+      "video_id": "lst-201e1473",
+      "format": "listicle",
+      "title": "How to Secure MCP Tool Calls in n8n Workflows",
+      "duration_s": 20,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-gg3e/output/lst-201e1473_final.mp4"
     },
     {
       "video_id": "lst-75fa0d32",
