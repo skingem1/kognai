@@ -1,0 +1,78 @@
+{
+  "demo_id": "demo-mn3iabrv",
+  "title": "Python Weather App in 3 Steps!",
+  "language": "python",
+  "total_duration_s": 30,
+  "steps": [
+    {
+      "step_id": "s1",
+      "title": "Step 1: Setup",
+      "code_lines": [
+        "import requests",
+        "def get_weather(city, api_key):"
+      ],
+      "language": "python",
+      "explanation": "We start by importing the requests library and defining our function.",
+      "duration_s": 6,
+      "highlight_lines": [
+        1
+      ]
+    },
+    {
+      "step_id": "s2",
+      "title": "Step 2: Fetch Data",
+      "code_lines": [
+        "url = f\"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}&units=metric\"",
+        "response = requests.get(url)",
+        "data = response.json()"
+      ],
+      "language": "python",
+      "explanation": "We build the API URL and fetch weather data from OpenWeatherMap.",
+      "duration_s": 8,
+      "highlight_lines": [
+        1
+      ]
+    },
+    {
+      "step_id": "s3",
+      "title": "Step 3: Display Weather",
+      "code_lines": [
+        "if data.get(\"cod\") != 200:",
+        "    return \"Error fetching weather data.\"",
+        "return f\"{city}: {data['main']['temp']}°C, {data['weather'][0]['description']}\","
+      ],
+      "language": "python",
+      "explanation": "We check for errors and format the output to show temperature and weather description.",
+      "duration_s": 8,
+      "highlight_lines": [
+        3
+      ]
+    },
+    {
+      "step_id": "s4",
+      "title": "Step 4: Run the App",
+      "code_lines": [
+        "if __name__ == \"__main__\":",
+        "    api_key = \"your_api_key_here\"",
+        "    city = input(\"Enter city: \")",
+        "    print(get_weather(city, api_key))"
+      ],
+      "language": "python",
+      "explanation": "Finally, we run the app and prompt the user for a city to display the weather.",
+      "duration_s": 8,
+      "highlight_lines": [
+        4
+      ]
+    }
+  ],
+  "hashtags": [
+    "#coding",
+    "#python",
+    "#tutorial",
+    "#weatherapp",
+    "#code"
+  ],
+  "intro_hook": "Want to check the weather with Python? Let's code it!",
+  "source": "user",
+  "topic_source": "user-prompt"
+}

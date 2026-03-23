@@ -1,0 +1,63 @@
+{
+  "sprint_id": "sprint-919",
+  "title": "MULTI-PIPELINE \u2014 3 code demos + 2 TTS vlogs",
+  "description": "Produce 3 code demo videos and 2 TTS vlog videos for content variety.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "919-01",
+      "title": "Code demo: Send Emails with Python in 3 Lines",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-919",
+      "output": "demo-mn3i6kno"
+    },
+    {
+      "id": "919-02",
+      "title": "Code demo: Build a URL Shortener with Flask",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-919",
+      "output": "demo-mn3i7zil"
+    },
+    {
+      "id": "919-03",
+      "title": "Code demo: Create a Weather App with Python Requests",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-919",
+      "output": "demo-mn3iabru"
+    },
+    {
+      "id": "919-04",
+      "title": "V2 video: Amazon's New AI Can Shop For You While You Sleep",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-919",
+      "output": "vlog-mn3ic7ln"
+    },
+    {
+      "id": "919-05",
+      "title": "V2 video: The AI Resume Trick That Gets You Hired Instantly",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-919",
+      "output": "vlog-mn3idi6x"
+    }
+  ]
+}

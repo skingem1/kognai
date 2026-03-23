@@ -1,0 +1,21 @@
+{
+  "title": "Amazon's AI Shops While You Sleep",
+  "full_monologue": "**Amazon's new AI can shop for you while you sleep.** Imagine waking up to a fully stocked fridge, all because an AI analyzed your habits overnight. It’s not sci-fi—it’s real. Amazon’s latest tech uses machine learning to predict what you need, and it places orders automatically. No more running to the store. Just sit back, relax, and let the AI do the work. But here’s the catch: is it really saving you time, or is it just another way for big companies to track you? What do you think? Comment below.",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 6,
+      "duration_s": 6,
+      "visual_prompt": "a person sleeping comfortably in a bed, soft lighting, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 18,
+      "duration_s": 6,
+      "visual_prompt": "a fridge with various groceries neatly arranged, a shopping bag being placed beside it, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

@@ -1,0 +1,109 @@
+{
+  "demo_id": "demo-mn3i7zil",
+  "title": "Build a URL Shortener in Python",
+  "language": "python",
+  "total_duration_s": 37,
+  "steps": [
+    {
+      "step_id": "s1",
+      "title": "Step 1: Setup",
+      "code_lines": [
+        "from flask import Flask, request, redirect",
+        "import random",
+        "import string"
+      ],
+      "language": "python",
+      "explanation": "We import Flask for the web app and random for generating short IDs.",
+      "duration_s": 6,
+      "highlight_lines": [
+        1
+      ]
+    },
+    {
+      "step_id": "s2",
+      "title": "Step 2: Generate Short ID",
+      "code_lines": [
+        "def generate_short_id():",
+        "    return ''.join(random.choices(string.ascii_letters + string.digits, k=6))"
+      ],
+      "language": "python",
+      "explanation": "This function creates a random 6-character ID for each short URL.",
+      "duration_s": 6,
+      "highlight_lines": [
+        1
+      ]
+    },
+    {
+      "step_id": "s3",
+      "title": "Step 3: Handle Shortening",
+      "code_lines": [
+        "@app.route('/', methods=['POST'])",
+        "def shorten():",
+        "    url = request.form['url']",
+        "    short_id = generate_short_id()",
+        "    urls[short_id] = url",
+        "    return f\"Short URL: http://localhost:5000/{short_id}\""
+      ],
+      "language": "python",
+      "explanation": "When a user submits a URL, we generate a short ID and store the mapping.",
+      "duration_s": 8,
+      "highlight_lines": [
+        1,
+        3,
+        4
+      ]
+    },
+    {
+      "step_id": "s4",
+      "title": "Step 4: Redirect to Original URL",
+      "code_lines": [
+        "@app.route('/<short_id>')",
+        "def redirect_url(short_id):",
+        "    return redirect(urls.get(short_id, \"URL not found\"), code=302)"
+      ],
+      "language": "python",
+      "explanation": "When someone clicks the short link, they're redirected to the original URL.",
+      "duration_s": 6,
+      "highlight_lines": [
+        1
+      ]
+    },
+    {
+      "step_id": "s5",
+      "title": "Step 5: Run the App",
+      "code_lines": [
+        "if __name__ == '__main__':",
+        "    app.run(debug=True)"
+      ],
+      "language": "python",
+      "explanation": "Finally, we start the Flask app so our URL shortener is live and ready to use.",
+      "duration_s": 6,
+      "highlight_lines": [
+        1
+      ]
+    },
+    {
+      "step_id": "s6",
+      "title": "Try It Yourself!",
+      "code_lines": [
+        "# Try it yourself! Paste a URL and see it get shortened!"
+      ],
+      "language": "python",
+      "explanation": "Now you can test it out — try it yourself and share your own short links!",
+      "duration_s": 5,
+      "highlight_lines": [
+        1
+      ]
+    }
+  ],
+  "hashtags": [
+    "#coding",
+    "#python",
+    "#tutorial",
+    "#flask",
+    "#urlshortener"
+  ],
+  "intro_hook": "Want to create your own URL shortener? Let's code it in 30 seconds!",
+  "source": "user",
+  "topic_source": "user-prompt"
+}
