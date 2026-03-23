@@ -1,18 +1,34 @@
 {
-  "scanned_at": "2026-03-22T23:58:12.021Z",
-  "total_runs": 15,
-  "total_videos": 9,
-  "unique_topics": 6,
-  "already_registered": 6,
+  "scanned_at": "2026-03-23T00:05:49.732Z",
+  "total_runs": 25,
+  "total_videos": 15,
+  "unique_topics": 9,
+  "already_registered": 9,
   "newly_registered": 0,
   "already_posted": 0,
-  "ready_to_post": 6,
+  "ready_to_post": 9,
   "gate_status": {
     "posted": 2,
     "target": 30,
     "gap": 28
   },
   "videos": [
+    {
+      "video_id": "vis-6f8a7ed0",
+      "format": "vision",
+      "title": "Bitcoin mining difficulty drops 7.8% as miner exodus accelerates amid AI pivot",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-wdby/output/vis-6f8a7ed0_final.mp4"
+    },
+    {
+      "video_id": "vis-a344c35b",
+      "format": "vision",
+      "title": "OpenAI to double workforce as business push intensifies",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-27i0/output/vis-a344c35b_final.mp4"
+    },
     {
       "video_id": "vis-83edb790",
       "format": "vision",
@@ -38,6 +54,14 @@
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260322T23-cixb/output/vis-145f4820_final.mp4"
     },
     {
+      "video_id": "dbt-ec702de5",
+      "format": "debate",
+      "title": "Bedrock (BR) 📈 77.7%",
+      "duration_s": 27,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-fgyc/output/dbt-ec702de5_final.mp4"
+    },
+    {
       "video_id": "dbt-7e52df9f",
       "format": "debate",
       "title": "Resolv USR (USR) 📉 -67.0%",
@@ -46,20 +70,20 @@
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260322T23-30sf/output/dbt-7e52df9f_final.mp4"
     },
     {
+      "video_id": "exp-4c2b03f1",
+      "format": "explainer",
+      "title": "Bitcoin (BTC) 📉 -2.3%",
+      "duration_s": 25,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260322T23-5q62/output/exp-4c2b03f1_final.mp4"
+    },
+    {
       "video_id": "exp-fcc19374",
       "format": "explainer",
       "title": "Solana (SOL) 📉 -3.2%",
       "duration_s": 25,
       "posted": false,
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260322T23-ctjq/output/exp-fcc19374_final.mp4"
-    },
-    {
-      "video_id": "exp-5a673185",
-      "format": "explainer",
-      "title": "Bitcoin (BTC) 📉 -2.9%",
-      "duration_s": 25,
-      "posted": false,
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260322T23-pidk/output/exp-5a673185_final.mp4"
     }
   ]
 }

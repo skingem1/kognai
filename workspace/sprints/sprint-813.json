@@ -1,0 +1,28 @@
+{
+  "sprint_id": "sprint-813",
+  "title": "CONTENT — Batch produce 5 runs + fix topic dedup yield",
+  "description": "Ran batch-produce 5 more runs: 3 new videos (8 total ready). Runs 4-5 yield 0 due to format-specific dedup. Need to reset seen-topics for formats with exhausted pools.",
+  "source": "content-production",
+  "tasks": [
+    {
+      "id": "813-01",
+      "title": "Run batch-produce.ts --runs 5 to stockpile more content",
+      "type": "ops",
+      "task_target": "scripts/scs001/batch-produce.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-813"
+    },
+    {
+      "id": "813-02",
+      "title": "Clear seen-topics.json to allow fresh topic discovery in next batch",
+      "type": "ops",
+      "task_target": "workspace/scs001/topic-radar/seen-topics.json",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-813"
+    }
+  ]
+}
