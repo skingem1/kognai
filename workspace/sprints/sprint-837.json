@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-837",
+  "title": "CONTENT — 5 custom topic videos targeting viral engagement",
+  "description": "Produce 5 videos with hand-picked viral topics across all 4 formats. Topics chosen for maximum TikTok engagement potential.",
+  "source": "content",
+  "tasks": [
+    {
+      "id": "837-01",
+      "title": "Batch produce 5 videos with custom viral topics",
+      "type": "content",
+      "task_target": "scripts/scs001/batch-produce.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-837"
+    }
+  ]
+}
