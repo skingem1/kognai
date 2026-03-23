@@ -1,0 +1,46 @@
+{
+  "sprint_id": "sprint-830",
+  "title": "OPS — batch posting script + posting schedule generator",
+  "description": "Create batch-post.ts that queues N videos for sequential Browser Use posting with configurable delay. Create posting-schedule.ts that generates optimal 2/day posting schedule through Apr 7. Wire /batch-post Telegram command.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "830-01",
+      "title": "Create batch-post.ts — sequential Browser Use posting with delay",
+      "type": "feature",
+      "task_target": "scripts/scs001/batch-browser-post.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-830"
+    },
+    {
+      "id": "830-02",
+      "title": "Create posting-schedule.ts — generate 2/day schedule through gate deadline",
+      "type": "feature",
+      "task_target": "scripts/scs001/posting-schedule.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-830"
+    },
+    {
+      "id": "830-03",
+      "title": "Wire /batch-post and /schedule Telegram commands",
+      "type": "feature",
+      "task_target": "scripts/telegram-commands/cmd-posting.ts",
+      "agent": "coder",
+      "status": "done",
+      "notes": "Already wired: cmdSchedule + cmdBatch exist in cmd-posting.ts",
+      "priority": "medium",
+      "sprint_id": "sprint-830"
+    }
+  ],
+  "cto_gate": {
+    "approved": false,
+    "reason": "The sprint introduces new functionality (batch posting and scheduling) not requested by the human founder and does not map to any item in the execution plan or work plan.",
+    "plan_reference": "NOT_IN_PLAN",
+    "confidence": 90,
+    "timestamp": "2026-03-23T01:25:08.369Z"
+  }
+}
