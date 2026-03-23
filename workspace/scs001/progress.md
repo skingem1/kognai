@@ -3418,3 +3418,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Issues: Runs 4-5 produce 0 (ledger dedup + seen-topics saturation for listicle/explainer)
 - Cost: ~$1.00 (Anthropic API for script generation)
 - Timestamp: 2026-03-23T02:20:00Z
+
+## Sprint 814 — FIX: Batch produce 5/5 yield
+- Status: PASS
+- Commit: b21544d
+- Files modified: scripts/scs001/batch-produce.ts, publish-ledger.jsonl, video-inventory.json
+- Test: batch-produce --runs 5 → 5/5 videos produced (was 3/5)
+- Pipeline: 725 in ledger, 26 with files, 13 ready to post, gate 2/30
+- Swarm used: no (bugfix, wrote directly)
+- Issues: Runs 4-5 were yielding 0 due to seen-topics cache. Fixed with force-refresh on all runs.
+- Cost: ~$0.50 (Anthropic API)
+- Timestamp: 2026-03-23T02:40:00Z
