@@ -1,0 +1,21 @@
+{
+  "title": "Silicon Valley's Open Source Fear",
+  "full_monologue": "**Silicon Valley is terrified of open source AI**. Why? Because it's democratizing power. When code is open, anyone can build, innovate, and compete. No more gatekeeping. No more monopolies. But for companies that rely on proprietary models, that’s a threat. Open source AI means innovation can’t be locked behind paywalls. It’s a paradigm shift. And that’s why the big players are watching closely. What do you think? Is open source the future or a risk?",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 5,
+      "duration_s": 3,
+      "visual_prompt": "A group of diverse people collaborating in a modern office space, hands moving across keyboards without showing screens, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 15,
+      "duration_s": 3,
+      "visual_prompt": "A bustling city skyline at sunset, symbolizing the fast-paced tech industry, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

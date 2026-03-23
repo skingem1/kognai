@@ -1,0 +1,21 @@
+{
+  "title": "The AI-Driven Programming Language Trend",
+  "full_monologue": "Bold: AI is pushing everyone to learn a new programming language. It’s not just developers anymore—marketers, teachers, even artists are getting dragged into code. Why? Because AI tools now require basic scripting to customize outputs. We’re seeing a surge in demand for Python, JavaScript, and even no-code platforms. It’s reshaping how we interact with technology. But is this a skill everyone should learn? Let me know in the comments.",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 5,
+      "duration_s": 3,
+      "visual_prompt": "a person typing on a keyboard with glowing keys in a dimly lit room, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 15,
+      "duration_s": 3,
+      "visual_prompt": "a group of diverse people in a co-working space, looking focused and engaged, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

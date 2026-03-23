@@ -1,0 +1,58 @@
+{
+  "sprint_id": "sprint-911",
+  "title": "V2-CONTENT — 5 TTS-mode videos on viral AI topics",
+  "description": "Produce 5 TTS vlog videos on high-engagement AI/tech topics.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "911-01",
+      "title": "V2 video: Sam Altman Just Admitted AGI Is Here",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-911"
+    },
+    {
+      "id": "911-02",
+      "title": "V2 video: The AI Side Hustle Making People $10K a Month",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-911"
+    },
+    {
+      "id": "911-03",
+      "title": "V2 video: Why Silicon Valley Is Terrified of Open Source AI",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-911"
+    },
+    {
+      "id": "911-04",
+      "title": "V2 video: I Replaced My Team of 5 With AI Agents",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-911"
+    },
+    {
+      "id": "911-05",
+      "title": "V2 video: The Programming Language AI Is Forcing Everyone to Learn",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-911"
+    }
+  ]
+}

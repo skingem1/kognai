@@ -1,0 +1,21 @@
+{
+  "title": "AI Took Over My Team",
+  "full_monologue": "**I replaced my team of 5 with AI agents and it changed everything.** I used AI to automate tasks like project management, client communication, and data analysis. It’s faster, cheaper, and more accurate than humans. The AI agents work 24/7 without breaks or errors. I’m not saying humans are obsolete, but AI is a game-changer. What do you think? Can AI replace your team?",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 5,
+      "duration_s": 3,
+      "visual_prompt": "a person typing on a keyboard with hands in frame, no screen visible, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 15,
+      "duration_s": 3,
+      "visual_prompt": "a group of people walking in a modern office space, looking focused and busy, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

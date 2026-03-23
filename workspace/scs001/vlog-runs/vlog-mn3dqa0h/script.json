@@ -1,0 +1,21 @@
+{
+  "title": "Sam Altman Just Admitted AGI Is Here",
+  "full_monologue": "**Sam Altman just admitted AGI is here.** This changes everything. In a recent interview, he hinted that we’re no longer just dreaming about artificial general intelligence—we’re living it. The implications are staggering. From self-driving cars to AI doctors, the future is unfolding faster than we expected. But what does this mean for jobs, creativity, and humanity’s role in this new era? Let me know your thoughts in the comments.",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 5,
+      "duration_s": 3,
+      "visual_prompt": "A futuristic cityscape with autonomous vehicles gliding silently through the streets, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 15,
+      "duration_s": 3,
+      "visual_prompt": "A person typing on a keyboard with glowing lights reflecting off their hands and face, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}
