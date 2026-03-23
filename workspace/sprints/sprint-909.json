@@ -1,0 +1,58 @@
+{
+  "sprint_id": "sprint-909",
+  "title": "V2-CONTENT — 5 TTS-mode videos on fresh AI topics",
+  "description": "Produce 5 educational TTS-mode vlog videos on trending AI/tech topics.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "909-01",
+      "title": "V2 video: OpenAI Just Made GPT Free — Here's the Catch",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-909"
+    },
+    {
+      "id": "909-02",
+      "title": "V2 video: The 3 AI Skills That Will Make You Unfireable",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-909"
+    },
+    {
+      "id": "909-03",
+      "title": "V2 video: I Automated My Entire Workflow With AI in One Weekend",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-909"
+    },
+    {
+      "id": "909-04",
+      "title": "V2 video: Claude vs ChatGPT vs Gemini — The Real Winner in 2026",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-909"
+    },
+    {
+      "id": "909-05",
+      "title": "V2 video: This AI Framework Just Killed React",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-909"
+    }
+  ]
+}

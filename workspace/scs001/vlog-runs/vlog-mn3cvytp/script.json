@@ -1,0 +1,21 @@
+{
+  "title": "React's New Rival Just Arrived",
+  "full_monologue": "**This AI framework just killed React.** Imagine a tool that writes code as fast as you think, adapts to your style, and scales effortlessly. It’s not just faster—it’s smarter. We’re talking about AI that doesn’t just follow commands, it anticipates them. And the best part? It’s open source. No more bloated libraries or complex setups. Just pure, intuitive development. The future of coding is here, and it’s rewriting the rules. What do you think? Is React really finished?",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 5,
+      "duration_s": 3,
+      "visual_prompt": "A person typing on a keyboard with glowing keys, hands moving rapidly without showing the screen, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 15,
+      "duration_s": 3,
+      "visual_prompt": "A group of people in a modern office, collaborating and looking focused, surrounded by abstract tech-themed art, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "title": "AI Skills That Make You Unfireable",
+  "full_monologue": "The 3 AI skills that will make you unfireable are prompt engineering, ethical AI, and AI collaboration. Prompt engineering lets you communicate with AI like a pro, turning vague ideas into clear results. Ethical AI ensures you understand bias and fairness, making you a trusted professional. AI collaboration means working with AI as a teammate, not a replacement. These skills are in high demand, and they’re here to stay. What AI skill are you mastering right now? Comment below.",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 5,
+      "duration_s": 3,
+      "visual_prompt": "a person typing on a keyboard with hands in frame, no screen visible, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 15,
+      "duration_s": 3,
+      "visual_prompt": "a group of people collaborating in a modern office, focused and engaged, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

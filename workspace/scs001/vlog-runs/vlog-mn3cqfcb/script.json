@@ -1,0 +1,21 @@
+{
+  "title": "Claude vs ChatGPT vs Gemini Showdown",
+  "full_monologue": "Boldly, 2026 reveals the AI supremacy. Claude excels in deep reasoning, ChatGPT leads in creativity, and Gemini shines in multilingual tasks. Let’s break it down. First, Claude’s calm logic in complex problem-solving. Then, ChatGPT’s wild imagination in storytelling. Finally, Gemini’s smooth transitions between languages. Which one rules your world? Comment below!",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 5,
+      "duration_s": 3,
+      "visual_prompt": "A person sitting at a desk, hands typing on a keyboard with no screen visible, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 15,
+      "duration_s": 3,
+      "visual_prompt": "A group of people in a city walking with confident, focused expressions, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

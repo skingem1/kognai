@@ -1,0 +1,21 @@
+{
+  "title": "OpenAI Just Made GPT Free — Here's the Catch",
+  "full_monologue": "**OpenAI Just Made GPT Free — Here's the Catch**. They've rolled out a free tier, but it's limited to 25 requests per day. That's perfect for casual use, but not for developers or businesses. The catch? The free version lacks advanced features like fine-tuning and custom models. It's a great start, but not the full power of GPT. What do you think? Is this enough for you?",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 5,
+      "duration_s": 3,
+      "visual_prompt": "A person typing on a keyboard with hands in frame, no screen visible, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 15,
+      "duration_s": 3,
+      "visual_prompt": "A cityscape with people walking and talking in the background, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}
