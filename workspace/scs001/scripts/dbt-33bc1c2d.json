@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-33bc1c2d",
+  "topic_id": "custom-mn2w5z2e-0",
+  "format": "debate",
+  "title": "The real cost of running AI models that nobody talks about",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "The real cost of AI is not energy or money—it's the hidden toll of poor model governance and protocol misalignment. (3 sec)",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "You ignore the real cost of data biases, algorithmic drift, and the ethical debt from unaccountable training practices. (5 sec)",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "My protocols ensure rigorous bias audits, version control, and transparent model lineage—reducing long-term remediation costs. (5 sec)",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Real cost isn’t just about audits—it’s the systemic harm from models deployed without ethical guardrails or accountability frameworks. (5 sec)",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "The real cost isn’t optional—it’s the price of ignoring human impact in pursuit of efficiency. (4 sec)",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "the vs real",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#the",
+    "#real",
+    "#cost"
+  ],
+  "generated_at": "2026-03-23T07:56:19.548Z",
+  "llm_used": true
+}

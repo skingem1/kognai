@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-f782f5a8",
+  "topic_id": "custom-mn2w8gzo-2",
+  "format": "vision",
+  "title": "Why Web3 gaming is quietly making a comeback",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "What might explain Web3 gaming's resurgence, despite past skepticism and failed projects?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Blockchain scalability improvements and layer-2 solutions now enable smoother, faster in-game transactions and ownership.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "But tokenized assets risk fueling speculative bubbles and displacing traditional game developers with little technical expertise.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Builders are focusing on interoperability and play-to-earn models that prioritize player retention over short-term hype.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "Imagine a future where gamers truly own and trade assets across platforms, with fair value and transparent governance.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "Web3 gaming’s return may hinge on balancing innovation with inclusivity, shaping a more equitable digital landscape.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of why",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#why",
+    "#web3",
+    "#gaming"
+  ],
+  "video_cue": "A vibrant multiplayer game interface where players trade NFTs and collaborate in a shared, evolving virtual world.",
+  "generated_at": "2026-03-23T07:58:54.010Z",
+  "llm_used": true
+}

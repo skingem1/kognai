@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-ddc6081b",
+  "topic_id": "custom-mn2w3j14-1",
+  "format": "explainer",
+  "title": "How to use Cursor AI to 10x your coding speed",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Did you know you can code 10 times faster with just one tool?",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "AI is changing how developers work — and fast.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Cursor AI is a code editor that writes code for you in real time.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "It uses advanced AI to predict and auto-complete your entire lines.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Front-end and back-end devs save hours every week with this tool.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The key is letting AI handle repetitive tasks so you focus on logic.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Try Cursor AI — are you ready to code smarter, not harder?",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "How to use Cursor AI to 10x your coding speed",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#how",
+    "#to",
+    "#use"
+  ],
+  "generated_at": "2026-03-23T07:54:34.581Z",
+  "llm_used": true
+}

@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-25fd2066",
+  "topic_id": "custom-mn2w8gzo-0",
+  "format": "vision",
+  "title": "The real cost of running AI models that nobody talks about",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "What hidden costs accompany the energy and environmental toll of running large AI models?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Current models use massive GPUs and require cooling, often in energy-intensive data centers.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "This strains global electricity grids and increases carbon footprints, especially in developing regions.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Builders are exploring energy-efficient chips and renewable-powered data centers to reduce impact.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "A future where AI is powered by green energy and designed with sustainability in mind is within reach.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future of AI depends not just on innovation, but on the systems that support it.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of the",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#the",
+    "#real",
+    "#cost"
+  ],
+  "video_cue": "A data center powered by solar panels with AI models running in the background.",
+  "generated_at": "2026-03-23T07:58:16.243Z",
+  "llm_used": true
+}
