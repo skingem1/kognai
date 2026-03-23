@@ -3795,3 +3795,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (queue empty, direct execution)
 - Issues: none
 - Timestamp: 2026-03-23T05:00:00Z
+
+## Sprint 850 — OPS — batch production + smoke test results
+- Status: PASS
+- Commit: 0a80a89
+- Files created: workspace/sprints/sprint-850.json
+- Files modified: workspace/scs001/auto-delivered.jsonl
+- Test: batch-produce.ts — 3/3 runs, smoke test 16 stages (1 known timeout)
+- Pipeline: 74 unique videos ready, 4/30 posted toward gate
+- Swarm used: no (queue empty, direct execution)
+- Issues: clip-detection timeout (known, non-blocking)
+- Timestamp: 2026-03-23T05:10:00Z
