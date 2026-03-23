@@ -3905,3 +3905,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (bypassed)
 - Issues: Topic pool saturation — diminishing returns on batch production. Need fresh topics or topic refresh.
 - Timestamp: 2026-03-23T07:15:00Z
+
+## Sprint 860 — OPS — custom topic content production (3 videos)
+- Status: PASS
+- Commit: b7574a4
+- Files created: workspace/sprints/sprint-860.json
+- Files modified: reports/video-inventory.json
+- Test: batch-produce.ts with --topic flag — 3 custom topics, 90 unique total
+- Pipeline: 90 unique videos ready, 4/30 posted toward gate
+- Swarm used: no (bypassed)
+- Issues: Topic pool exhausted (0 fresh from radar). Used --topic flag for custom topics. Custom topics work well.
+- Timestamp: 2026-03-23T07:30:00Z
