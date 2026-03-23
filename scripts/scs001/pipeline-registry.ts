@@ -36,6 +36,7 @@ export interface PipelineInput {
     withVoiceover?: boolean;
     withMusic?: boolean;
     dryRun?: boolean;
+    mode?: 'avatar' | 'tts';
   };
 }
 

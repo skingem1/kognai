@@ -26,8 +26,9 @@ export const educationalRunner: PipelineRunner = {
   async run(input: PipelineInput): Promise<PipelineRunResult> {
     const topic = input.topic || 'AI agents are transforming software development';
 
+    const mode = input.options?.mode || 'avatar';
     const { produceVlog } = await import('../produce-vlog');
-    const videoPath = await produceVlog(topic);
+    const videoPath = await produceVlog(topic, mode);
 
     // Read meta.json from the run directory
     const runDir = dirname(videoPath);

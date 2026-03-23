@@ -1,0 +1,21 @@
+{
+  "title": "AI Feature That Makes ChatGPT Look Old",
+  "full_monologue": "The AI feature that makes ChatGPT look outdated is real-time code execution. While ChatGPT can generate code, this new tool actually runs it. Let me show you. **(Cut to B-roll)** See how it compiles and debugs on the fly? That’s a game-changer. **(Cut to B-roll)** Plus, it learns from errors instantly—no more trial and error. What’s your favorite AI tool?",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 5,
+      "duration_s": 3,
+      "visual_prompt": "AI tool running code in real-time with a terminal screen showing output"
+    },
+    {
+      "timestamp_s": 15,
+      "duration_s": 3,
+      "visual_prompt": "AI interface highlighting error corrections and learning process"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

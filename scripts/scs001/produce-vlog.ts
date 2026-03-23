@@ -173,6 +173,53 @@ async function generateAvatar(monologue: string, outPath: string, creator: strin
   console.log(`  ✅ Avatar: ${outPath}`);
 }
 
+// ── Step 2b: TTS fallback (ElevenLabs voiceover + dark background) ──
+
+async function generateTTSBackbone(monologue: string, outPath: string): Promise<void> {
+  console.log(`🎤 Generating TTS backbone (ElevenLabs + gradient bg)...`);
+
+  const apiKey = process.env.ELEVENLABS_API_KEY;
+  if (!apiKey) throw new Error('ELEVENLABS_API_KEY not set');
+
+  const voiceId = process.env.TTS_VOICE_ID || 'EXAVITQu4vr4xnSDxMaL'; // Sarah
+  const modelId = process.env.TTS_MODEL_ID || 'eleven_flash_v2_5';
+
+  // 1. Generate voiceover audio
+  const audioPath = outPath.replace('.mp4', '_tts.mp3');
+  const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
+    method: 'POST',
+    headers: { 'xi-api-key': apiKey, 'Content-Type': 'application/json', Accept: 'audio/mpeg' },
+    body: JSON.stringify({
+      text: monologue,
+      model_id: modelId,
+      voice_settings: { stability: 0.5, similarity_boost: 0.75, style: 0.0, use_speaker_boost: true },
+    }),
+  });
+  if (!res.ok) throw new Error(`ElevenLabs ${res.status}: ${await res.text()}`);
+  writeFileSync(audioPath, Buffer.from(await res.arrayBuffer()));
+
+  // 2. Get audio duration
+  const duration = parseFloat(
+    execSync(`${FFPROBE} -v quiet -show_entries format=duration -of csv=p=0 "${audioPath}"`, { encoding: 'utf-8' }).trim()
+  ) || 30;
+
+  // 3. Generate dark gradient background video matching audio length
+  execSync(
+    `${FFMPEG} -y -f lavfi -i "color=c=0x0a0a1a:s=1080x1920:d=${duration + 1},format=yuv420p,fps=30" ` +
+    `-i "${audioPath}" ` +
+    `-c:v libx264 -preset fast -crf 20 -pix_fmt yuv420p ` +
+    `-c:a aac -b:a 128k -ar 44100 -ac 2 ` +
+    `-shortest "${outPath}"`,
+    { stdio: 'pipe', timeout: 60000 }
+  );
+
+  const finalDur = getVideoDuration(outPath);
+  console.log(`  ✅ TTS backbone: ${finalDur.toFixed(1)}s (ElevenLabs + dark bg)`);
+
+  // Cleanup temp audio
+  try { execSync(`rm -f "${audioPath}"`, { stdio: 'pipe' }); } catch {}
+}
+
 // ── Step 3: Generate B-roll clips (fal.ai Kling) ─────
 
 async function generateBroll(
@@ -569,17 +616,17 @@ function addOutro(videoPath: string, outputPath: string): void {
 
 // ── Main ─────────────────────────────────────────────
 
-async function produceVlog(topic: string): Promise<string> {
+async function produceVlog(topic: string, mode: 'avatar' | 'tts' = 'avatar'): Promise<string> {
   const runId = `vlog-${Date.now().toString(36)}`;
   const runDir = join(WORKSPACE, 'vlog-runs', runId);
   mkdirSync(join(runDir, 'broll'), { recursive: true });
 
-  const creator = getNextCreator();
+  const creator = mode === 'avatar' ? getNextCreator() : 'TTS';
 
   console.log(`\n${'='.repeat(50)}`);
   console.log(`Vlog Producer — ${runId}`);
   console.log(`Topic: ${topic}`);
-  console.log(`Avatar: ${creator}`);
+  console.log(`Mode: ${mode}${mode === 'avatar' ? ` (Avatar: ${creator})` : ' (ElevenLabs)'}`);
   console.log(`${'='.repeat(50)}\n`);
 
   const startTime = Date.now();
@@ -588,9 +635,13 @@ async function produceVlog(topic: string): Promise<string> {
   const script = await writeScript(topic);
   writeFileSync(join(runDir, 'script.json'), JSON.stringify(script, null, 2));
 
-  // 2. Generate avatar (backbone — continuous audio + video)
+  // 2. Generate backbone video (avatar or TTS fallback)
   const avatarPath = join(runDir, 'avatar.mp4');
-  await generateAvatar(script.full_monologue, avatarPath, creator);
+  if (mode === 'tts') {
+    await generateTTSBackbone(script.full_monologue, avatarPath);
+  } else {
+    await generateAvatar(script.full_monologue, avatarPath, creator);
+  }
 
   // 3. Generate B-roll cutaways
   const brollClips = await generateBroll(script.broll_cutaways || [], join(runDir, 'broll'));
@@ -618,7 +669,7 @@ async function produceVlog(topic: string): Promise<string> {
   console.log(`${'='.repeat(50)}\n`);
 
   writeFileSync(join(runDir, 'meta.json'), JSON.stringify({
-    runId, topic, creator,
+    runId, topic, creator, mode,
     title: script.title,
     hashtags: script.hashtags,
     broll_count: brollClips.length,
@@ -640,14 +691,17 @@ async function produceVlog(topic: string): Promise<string> {
 if (require.main === module) {
   const args = process.argv.slice(2);
   let topic = 'AI agents are replacing junior developers';
+  let mode: 'avatar' | 'tts' = 'avatar';
 
   for (let i = 0; i < args.length; i++) {
     if (args[i] === '--topic' && args[i + 1]) topic = args[++i];
     else if (args[i].startsWith('--topic=')) topic = args[i].split('=').slice(1).join('=');
+    else if (args[i] === '--mode' && args[i + 1]) mode = args[++i] as any;
+    else if (args[i].startsWith('--mode=')) mode = args[i].split('=')[1] as any;
     else if (!args[i].startsWith('--')) topic = args[i];
   }
 
-  produceVlog(topic).then(path => {
+  produceVlog(topic, mode).then(path => {
     console.log(`Output: ${path}`);
     try { execSync(`open "${path}"`); } catch {}
   }).catch(err => {

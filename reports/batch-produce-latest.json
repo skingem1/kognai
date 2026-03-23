@@ -1,24 +1,21 @@
 {
-  "batch_at": "2026-03-23T08:46:49.858Z",
+  "batch_at": "2026-03-23T11:52:43.449Z",
+  "pipeline_filter": "educational",
   "runs_planned": 3,
-  "runs_completed": 3,
-  "total_new_videos": 9,
-  "dry_run": false,
-  "results": [
+  "runs_completed": 0,
+  "results": [],
+  "errors": [
     {
       "run": 1,
-      "success": true,
-      "videos": 3
+      "error": "Captions.ai submit 400: {\"detail\":\"Insufficient credits to call the AI Creator API. A minimum of 60 credits is required.\"}"
     },
     {
       "run": 2,
-      "success": true,
-      "videos": 3
+      "error": "Captions.ai submit 400: {\"detail\":\"Insufficient credits to call the AI Creator API. A minimum of 60 credits is required.\"}"
     },
     {
       "run": 3,
-      "success": true,
-      "videos": 3
+      "error": "Captions.ai submit 400: {\"detail\":\"Insufficient credits to call the AI Creator API. A minimum of 60 credits is required.\"}"
     }
   ]
 }

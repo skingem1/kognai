@@ -31,6 +31,7 @@ function parseArgs(): {
   code: string | undefined;
   withVoiceover: boolean;
   withMusic: boolean;
+  mode: 'avatar' | 'tts';
 } {
   let pipeline: PipelineName | 'all' = 'educational';
   let runs = 3;
@@ -39,6 +40,7 @@ function parseArgs(): {
   let code: string | undefined;
   let withVoiceover = true;
   let withMusic = false;
+  let mode: 'avatar' | 'tts' = 'avatar';
 
   for (let i = 2; i < process.argv.length; i++) {
     const arg = process.argv[i];
@@ -58,22 +60,27 @@ function parseArgs(): {
       withVoiceover = false;
     } else if (arg === '--music') {
       withMusic = true;
+    } else if (arg === '--mode' && process.argv[i + 1]) {
+      mode = process.argv[++i] as 'avatar' | 'tts';
+    } else if (arg.startsWith('--mode=')) {
+      mode = arg.split('=')[1] as 'avatar' | 'tts';
     }
   }
 
-  return { pipeline, runs, dryRun, topics, code, withVoiceover, withMusic };
+  return { pipeline, runs, dryRun, topics, code, withVoiceover, withMusic, mode };
 }
 
 async function main(): Promise<void> {
   await initRegistry();
-  const { pipeline, runs, dryRun, topics, code, withVoiceover, withMusic } = parseArgs();
+  const { pipeline, runs, dryRun, topics, code, withVoiceover, withMusic, mode } = parseArgs();
 
   const available = listPipelines();
   console.log(`\n=== SCS-001 Batch Production (v2) ===`);
   console.log(`Pipeline: ${pipeline}`);
   console.log(`Runs: ${runs}`);
+  console.log(`Mode: ${mode}`);
   console.log(`Available: ${available.map(p => p.name).join(', ')}`);
-  if (dryRun) console.log('Mode: DRY RUN');
+  if (dryRun) console.log('DRY RUN');
   console.log('');
 
   const results: PipelineRunResult[] = [];
@@ -95,7 +102,7 @@ async function main(): Promise<void> {
       pipeline: pName,
       topic: topics[i % Math.max(topics.length, 1)] || undefined,
       code: pName === 'code-demo' ? code : undefined,
-      options: { withVoiceover, withMusic, dryRun },
+      options: { withVoiceover, withMusic, dryRun, mode },
     };
 
     try {

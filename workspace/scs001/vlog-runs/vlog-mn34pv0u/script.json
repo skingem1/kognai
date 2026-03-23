@@ -1,0 +1,21 @@
+{
+  "title": "Google Gemini 2.5 Shocks the AI World",
+  "full_monologue": "**Google Gemini 2.5 Just Destroyed Every AI Benchmark**. This thing is a monster. It’s not just beating the competition—it’s leaving them in the dust. We’re talking massive improvements in reasoning, coding, and natural language understanding. And the best part? It’s available to developers now. Let me show you what I mean. (cut to B-roll) Look at that—Gemini 2.5 solving complex math problems in seconds. (cut to B-roll) And here it is, writing clean, efficient code on the fly. This is the future of AI, and it’s here. What do you think? Is this the end of the road for other AI models?",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 5,
+      "duration_s": 3,
+      "visual_prompt": "AI solving complex math problems on screen"
+    },
+    {
+      "timestamp_s": 15,
+      "duration_s": 3,
+      "visual_prompt": "AI writing code in a text editor"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}
