@@ -1,0 +1,21 @@
+{
+  "title": "OpenAI Employees Are Quitting And Here's Why",
+  "full_monologue": "**OpenAI employees are leaving in droves, and here's why.** Reports suggest internal conflicts, ethical concerns, and pressure from rapid AI development are driving this exodus. Many feel the company is prioritizing speed over safety, leading to a loss of trust among key team members. Some are walking away to pursue more transparent and responsible AI projects. As the race to innovate accelerates, are we losing the human side of technology? What do you think is the real reason behind this mass departure?",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 5,
+      "duration_s": 3,
+      "visual_prompt": "A group of people walking quickly through a busy city street, looking stressed and focused, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 15,
+      "duration_s": 3,
+      "visual_prompt": "A person sitting at a desk, hands typing on a keyboard, surrounded by abstract motion and glowing lights, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

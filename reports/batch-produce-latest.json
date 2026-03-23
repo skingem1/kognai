@@ -1,39 +1,38 @@
 {
-  "batch_at": "2026-03-23T13:49:40.870Z",
+  "batch_at": "2026-03-23T14:09:02.917Z",
   "pipeline_filter": "educational",
   "runs_planned": 5,
-  "runs_completed": 5,
+  "runs_completed": 4,
   "results": [
     {
       "pipeline": "educational",
-      "runId": "vlog-mn37ykf6",
-      "title": "AI Startup Raises $1B Without A Product?",
+      "runId": "vlog-mn38vjjy",
+      "title": "AI Code Genius Shocks Engineers",
       "cost": 0.26
     },
     {
       "pipeline": "educational",
-      "runId": "vlog-mn3856yg",
-      "title": "Why Self Driving Cars Keep Crashing",
+      "runId": "vlog-mn390xmu",
+      "title": "Perplexity AI vs Google Search",
       "cost": 0.26
     },
     {
       "pipeline": "educational",
-      "runId": "vlog-mn38b1sd",
-      "title": "GitHub Copilot Just Got 10x Better Overnight",
+      "runId": "vlog-mn396dnp",
+      "title": "OpenAI Employees Are Quitting And Here's Why",
       "cost": 0.26
     },
     {
       "pipeline": "educational",
-      "runId": "vlog-mn38hpa2",
-      "title": "The Hidden Cost Of Free AI Tools",
-      "cost": 0.26
-    },
-    {
-      "pipeline": "educational",
-      "runId": "vlog-mn38n6cy",
-      "title": "19-Year-Old Builds $1M AI Biz",
+      "runId": "vlog-mn39c6te",
+      "title": "Why Tech Layoffs Aren't Going Away",
       "cost": 0.26
     }
   ],
-  "errors": []
+  "errors": [
+    {
+      "run": 1,
+      "error": "Command failed: curl -s --max-time 60 http://localhost:11434/api/generate -d '{\"model\":\"qwen3:14b\",\"prompt\":\"Write a 30-second TikTok vlog script about: \\\"Tesla Bot Just Learned To Walk And Its Terrif"
+    }
+  ]
 }

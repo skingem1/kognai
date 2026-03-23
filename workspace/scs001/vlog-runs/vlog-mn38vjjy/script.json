@@ -1,0 +1,21 @@
+{
+  "title": "AI Code Genius Shocks Engineers",
+  "full_monologue": "**AI writes code better than senior engineers?** Imagine an AI that not only understands complex algorithms but outperforms humans in speed and accuracy. It's rewriting the rules of software development. We're seeing AI generate clean, efficient code in seconds—no bugs, no delays. And the best part? It's learning faster than any human team. What does this mean for the future of coding? Let me know in the comments.",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 5,
+      "duration_s": 3,
+      "visual_prompt": "a person typing rapidly on a keyboard with hands in close-up, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 15,
+      "duration_s": 3,
+      "visual_prompt": "a group of engineers in a high-tech office, focused and collaborative, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

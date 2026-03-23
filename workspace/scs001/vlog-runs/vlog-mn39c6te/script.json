@@ -1,0 +1,21 @@
+{
+  "title": "Why Tech Layoffs Aren't Going Away",
+  "full_monologue": "**Tech layoffs aren’t just about money.** They’re about misaligned priorities. Companies are chasing AI hype and short-term gains, not long-term value. When innovation outpaces execution, cuts follow. Then there’s the global economy—uncertainty makes hiring risky. And let’s be real: not every startup can scale. So when the bubble pops, the real reason becomes clear: survival, not growth, is the goal. What do you think is the biggest driver of layoffs in tech? Comment below.",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 5,
+      "duration_s": 3,
+      "visual_prompt": "A group of people in a modern office, looking focused but tense, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 15,
+      "duration_s": 3,
+      "visual_prompt": "A city skyline at dusk with fast-moving car lights and blurred motion, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}
