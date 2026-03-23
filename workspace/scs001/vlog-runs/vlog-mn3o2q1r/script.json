@@ -1,0 +1,21 @@
+{
+  "title": "Zuckerberg and AI's Content Creator Takeover",
+  "full_monologue": "**Mark Zuckerberg says AI will replace all content creators.** But is he right? Let’s break it down. AI is advancing fast, but creativity isn’t just about speed—it’s about emotion, storytelling, and human connection. While AI can mimic styles, it can’t replicate the raw passion behind a creator’s work. However, it’s clear that AI will reshape the industry. Will it replace us? Or will it just make us better? What do you think? Comment below.",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 6,
+      "duration_s": 6,
+      "visual_prompt": "a person typing on a keyboard with glowing keys, surrounded by abstract motion and light, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 18,
+      "duration_s": 6,
+      "visual_prompt": "a diverse group of people collaborating in a futuristic cityscape, hands interacting with floating holographic elements, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

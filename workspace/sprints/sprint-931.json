@@ -1,0 +1,65 @@
+{
+  "sprint_id": "sprint-931",
+  "title": "MULTI-PIPELINE — 3 code demos + 2 TTS vlogs (TTS mode, no HeyGen)",
+  "description": "3 code demos + 2 TTS-mode vlogs (ElevenLabs). HeyGen credits exhausted, using TTS fallback.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "931-01",
+      "title": "Code demo: Build a Sudoku Solver in Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-931",
+      "output": "demo-mn3nvut3"
+    },
+    {
+      "id": "931-02",
+      "title": "Code demo: Create a Clipboard Manager in Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-931",
+      "output": "demo-mn3nxx6m"
+    },
+    {
+      "id": "931-03",
+      "title": "Code demo: Build a News Scraper with Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-931",
+      "output": "demo-mn3nzglo"
+    },
+    {
+      "id": "931-04",
+      "title": "V2 video (TTS): Mark Zuckerberg Says AI Will Replace All Content Creators",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-931",
+      "output": "vlog-mn3o2q1r",
+      "mode": "tts"
+    },
+    {
+      "id": "931-05",
+      "title": "V2 video (TTS): The Free AI Tool That Does What ChatGPT Can't",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-931",
+      "output": "vlog-mn3o0sd1",
+      "mode": "tts"
+    }
+  ]
+}
