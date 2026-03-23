@@ -1,18 +1,26 @@
 {
-  "scanned_at": "2026-03-23T00:47:10.144Z",
-  "total_runs": 34,
-  "total_videos": 23,
-  "unique_topics": 17,
-  "already_registered": 16,
-  "newly_registered": 1,
+  "scanned_at": "2026-03-23T00:51:11.975Z",
+  "total_runs": 39,
+  "total_videos": 28,
+  "unique_topics": 22,
+  "already_registered": 22,
+  "newly_registered": 0,
   "already_posted": 0,
-  "ready_to_post": 17,
+  "ready_to_post": 22,
   "gate_status": {
     "posted": 2,
     "target": 30,
     "gap": 28
   },
   "videos": [
+    {
+      "video_id": "vis-c2d17e5f",
+      "format": "vision",
+      "title": "Why every developer needs to learn prompt engineering",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-nxhh/output/vis-c2d17e5f_final.mp4"
+    },
     {
       "video_id": "vis-0359b89c",
       "format": "vision",
@@ -28,6 +36,22 @@
       "duration_s": 33,
       "posted": false,
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-2yxr/output/vis-1772d7e3_final.mp4"
+    },
+    {
+      "video_id": "dbt-0f42f382",
+      "format": "debate",
+      "title": "Apple Intelligence vs Google Gemini: which AI ecosystem wins?",
+      "duration_s": 27,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-4rbh/output/dbt-0f42f382_final.mp4"
+    },
+    {
+      "video_id": "dbt-84757ced",
+      "format": "debate",
+      "title": "Elon Musk vs Sam Altman: who will control AGI?",
+      "duration_s": 27,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-d66c/output/dbt-84757ced_final.mp4"
     },
     {
       "video_id": "dbt-674cf50f",
@@ -52,6 +76,14 @@
       "duration_s": 27,
       "posted": false,
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-b3vb/output/dbt-c9820a9b_final.mp4"
+    },
+    {
+      "video_id": "exp-04610cf7",
+      "format": "explainer",
+      "title": "How to build your first AI agent in 10 minutes",
+      "duration_s": 25,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-93sd/output/exp-04610cf7_final.mp4"
     },
     {
       "video_id": "exp-3f25cd45",
@@ -124,6 +156,14 @@
       "duration_s": 25,
       "posted": false,
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-rrc5/output/exp-4cfce417_final.mp4"
+    },
+    {
+      "video_id": "lst-dfbf7d6a",
+      "format": "listicle",
+      "title": "3 crypto projects that could 100x in 2026",
+      "duration_s": 20,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-9ktg/output/lst-dfbf7d6a_final.mp4"
     },
     {
       "video_id": "lst-8dd0a6d1",

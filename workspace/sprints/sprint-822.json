@@ -1,0 +1,58 @@
+{
+  "sprint_id": "sprint-822",
+  "title": "CONTENT — 5 custom topic videos (Musk/Altman, AI agents, prompt eng, crypto, Apple/Google)",
+  "description": "Produced 5 more custom topic videos across all 4 formats. Inventory now at 22 unique ready to post. 752 ledger.",
+  "source": "content",
+  "tasks": [
+    {
+      "id": "822-01",
+      "title": "Debate: Elon Musk vs Sam Altman AGI control",
+      "type": "content",
+      "task_target": "scripts/scs001/run-multiformat-pipeline.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-822"
+    },
+    {
+      "id": "822-02",
+      "title": "Explainer: Build your first AI agent in 10 minutes",
+      "type": "content",
+      "task_target": "scripts/scs001/run-multiformat-pipeline.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-822"
+    },
+    {
+      "id": "822-03",
+      "title": "Vision: Why every developer needs prompt engineering",
+      "type": "content",
+      "task_target": "scripts/scs001/run-multiformat-pipeline.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-822"
+    },
+    {
+      "id": "822-04",
+      "title": "Listicle: 3 crypto projects that could 100x in 2026",
+      "type": "content",
+      "task_target": "scripts/scs001/run-multiformat-pipeline.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-822"
+    },
+    {
+      "id": "822-05",
+      "title": "Debate: Apple Intelligence vs Google Gemini",
+      "type": "content",
+      "task_target": "scripts/scs001/run-multiformat-pipeline.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-822"
+    }
+  ]
+}
