@@ -1,0 +1,81 @@
+{
+  "demo_id": "demo-mn360goz",
+  "title": "Organize Downloads with Python",
+  "language": "python",
+  "total_duration_s": 30,
+  "steps": [
+    {
+      "step_id": "s1",
+      "title": "Step 1: Setup",
+      "code_lines": [
+        "import os",
+        "import shutil",
+        "downloads = os.path.expanduser(\"~/Downloads\")"
+      ],
+      "language": "python",
+      "explanation": "We start by importing necessary modules and setting the downloads path.",
+      "duration_s": 6,
+      "highlight_lines": [
+        1
+      ]
+    },
+    {
+      "step_id": "s2",
+      "title": "Step 2: Define File Types",
+      "code_lines": [
+        "types = {",
+        "    \"Images\": [\".jpg\", \".jpeg\", \".png\", \".gif\"],",
+        "    \"Documents\": [\".pdf\", \".docx\", \".txt\", \".xlsx\"]",
+        "}"
+      ],
+      "language": "python",
+      "explanation": "We define categories and their associated file extensions.",
+      "duration_s": 7,
+      "highlight_lines": [
+        1
+      ]
+    },
+    {
+      "step_id": "s3",
+      "title": "Step 3: Create Folders & Move Files",
+      "code_lines": [
+        "for folder, exts in types.items():",
+        "    path = os.path.join(downloads, folder)",
+        "    os.makedirs(path, exist_ok=True)",
+        "    for file in os.listdir(downloads):",
+        "        if os.path.isfile(os.path.join(downloads, file)):",
+        "            for ext in exts:",
+        "                if file.endswith(ext):",
+        "                    shutil.move(os.path.join(downloads, file), path)",
+        "                    break"
+      ],
+      "language": "python",
+      "explanation": "We loop through each file and move it to the correct folder based on its type.",
+      "duration_s": 10,
+      "highlight_lines": [
+        1,
+        4,
+        8
+      ]
+    },
+    {
+      "step_id": "s4",
+      "title": "Step 4: Try It Yourself!",
+      "code_lines": [
+        "# Try it yourself!"
+      ],
+      "language": "python",
+      "explanation": "Now you can run this script and watch your downloads get organized automatically.",
+      "duration_s": 7,
+      "highlight_lines": [
+        1
+      ]
+    }
+  ],
+  "hashtags": [
+    "#coding",
+    "#python",
+    "#automation"
+  ],
+  "intro_hook": "Automate your downloads in seconds!"
+}

@@ -1,0 +1,38 @@
+{
+  "sprint_id": "sprint-902",
+  "title": "CODE-DEMO-BATCH — 3 more code demo videos ($0 cost)",
+  "description": "Batch produce 3 more Pipeline 2 code demo videos on popular coding topics. All local, $0 cost.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "902-01",
+      "title": "Code demo: Automate your boring tasks with Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-902"
+    },
+    {
+      "id": "902-02",
+      "title": "Code demo: Build a file organizer in Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-902"
+    },
+    {
+      "id": "902-03",
+      "title": "Code demo: Weather app CLI in Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-902"
+    }
+  ]
+}
