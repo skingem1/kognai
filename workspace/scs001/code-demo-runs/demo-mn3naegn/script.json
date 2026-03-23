@@ -1,0 +1,81 @@
+{
+  "demo_id": "demo-mn3naegn",
+  "title": "Python Weather App in 3 Steps!",
+  "language": "python",
+  "total_duration_s": 30,
+  "steps": [
+    {
+      "step_id": "s1",
+      "title": "Step 1: Import Libraries",
+      "code_lines": [
+        "import requests"
+      ],
+      "language": "python",
+      "explanation": "We start by importing the requests library to fetch weather data from the internet.",
+      "duration_s": 5,
+      "highlight_lines": [
+        0
+      ]
+    },
+    {
+      "step_id": "s2",
+      "title": "Step 2: Get Weather Data",
+      "code_lines": [
+        "def get_weather(city):",
+        "    url = f\"https://api.openweathermap.org/data/2.5/weather?q={city}&appid=YOUR_API_KEY&units=metric\"",
+        "    response = requests.get(url)",
+        "    data = response.json()",
+        "    return data['main']['temp'], data['weather'][0]['description']"
+      ],
+      "language": "python",
+      "explanation": "This function sends a request to the weather API and returns temperature and weather description.",
+      "duration_s": 10,
+      "highlight_lines": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "step_id": "s3",
+      "title": "Step 3: Run and Display",
+      "code_lines": [
+        "city = input(\"Enter city: \")",
+        "temp, desc = get_weather(city)",
+        "print(f\"Weather in {city}: {temp}°C, {desc}\")"
+      ],
+      "language": "python",
+      "explanation": "We get user input, call the function, and print the weather results in a friendly format.",
+      "duration_s": 10,
+      "highlight_lines": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "step_id": "s4",
+      "title": "Try It Yourself!",
+      "code_lines": [
+        "# Replace YOUR_API_KEY with your actual OpenWeather API key"
+      ],
+      "language": "python",
+      "explanation": "Don't forget to replace the API key and test it out! Try it yourself and share your results.",
+      "duration_s": 5,
+      "highlight_lines": [
+        0
+      ]
+    }
+  ],
+  "hashtags": [
+    "#coding",
+    "#python",
+    "#weatherapp",
+    "#tutorial"
+  ],
+  "intro_hook": "Want to check the weather with Python? Let's code it!",
+  "source": "user",
+  "topic_source": "user-prompt"
+}

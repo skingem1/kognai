@@ -1,0 +1,63 @@
+{
+  "sprint_id": "sprint-929",
+  "title": "MULTI-PIPELINE — 3 code demos + 2 TTS vlogs (batch 13)",
+  "description": "Produce 3 code demo videos and 2 TTS vlog videos. Content stockpile 325+.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "929-01",
+      "title": "Code demo: Build a Weather Dashboard in Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-929",
+      "output": "demo-mn3naegn"
+    },
+    {
+      "id": "929-02",
+      "title": "Code demo: Create a Habit Tracker CLI in Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-929",
+      "output": "demo-mn3nd3f2"
+    },
+    {
+      "id": "929-03",
+      "title": "Code demo: Build a Color Palette Generator in Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-929",
+      "output": "demo-mn3nf3fc"
+    },
+    {
+      "id": "929-04",
+      "title": "V2 video: Mark Zuckerberg Says AI Will Replace All Content Creators",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "failed",
+      "priority": "high",
+      "sprint_id": "sprint-929",
+      "output": "HeyGen insufficient credits"
+    },
+    {
+      "id": "929-05",
+      "title": "V2 video: The Free AI Tool That Does What ChatGPT Can't",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "failed",
+      "priority": "high",
+      "sprint_id": "sprint-929",
+      "output": "HeyGen insufficient credits"
+    }
+  ]
+}

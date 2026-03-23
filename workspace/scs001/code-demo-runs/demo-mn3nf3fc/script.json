@@ -1,0 +1,91 @@
+{
+  "demo_id": "demo-mn3nf3fc",
+  "title": "Generate Color Palettes in Python",
+  "language": "python",
+  "total_duration_s": 32,
+  "steps": [
+    {
+      "step_id": "s1",
+      "title": "Step 1: Setup",
+      "code_lines": [
+        "import colorsys",
+        "import random",
+        "def generate_palette(base_color):"
+      ],
+      "language": "python",
+      "explanation": "We start by importing the colorsys and random modules, and define a function to generate a palette.",
+      "duration_s": 6,
+      "highlight_lines": [
+        0,
+        1
+      ]
+    },
+    {
+      "step_id": "s2",
+      "title": "Step 2: Convert Color",
+      "code_lines": [
+        "    h, s, v = colorsys.rgb_to_hsv(*tuple(int(c)/255 for c in base_color))"
+      ],
+      "language": "python",
+      "explanation": "We convert the base color from RGB to HSV to make it easier to generate related colors.",
+      "duration_s": 6,
+      "highlight_lines": [
+        0
+      ]
+    },
+    {
+      "step_id": "s3",
+      "title": "Step 3: Generate Palette",
+      "code_lines": [
+        "    palette = []",
+        "    for i in range(5):",
+        "        hue = (h + (i * 0.15)) % 1",
+        "        rgb = colorsys.hsv_to_rgb(hue, s, v)",
+        "        palette.append(tuple(int(c * 255) for c in rgb))"
+      ],
+      "language": "python",
+      "explanation": "We loop through to generate 5 related colors by adjusting the hue slightly each time.",
+      "duration_s": 8,
+      "highlight_lines": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "step_id": "s4",
+      "title": "Step 4: Use It!",
+      "code_lines": [
+        "base = (random.randint(0,255), random.randint(0,255), random.randint(0,255))",
+        "print(generate_palette(base))"
+      ],
+      "language": "python",
+      "explanation": "We generate a random base color and print out the resulting color palette.",
+      "duration_s": 7,
+      "highlight_lines": [
+        0,
+        1
+      ]
+    },
+    {
+      "step_id": "s5",
+      "title": "Step 5: Try It Yourself!",
+      "code_lines": [],
+      "language": "python",
+      "explanation": "Try it yourself and see what beautiful palettes you can create!",
+      "duration_s": 5,
+      "highlight_lines": []
+    }
+  ],
+  "hashtags": [
+    "#coding",
+    "#python",
+    "#colorpalette",
+    "#tutorial"
+  ],
+  "intro_hook": "Ever wanted to make cool color palettes with Python?",
+  "source": "user",
+  "topic_source": "user-prompt"
+}
