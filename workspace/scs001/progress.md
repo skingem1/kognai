@@ -4000,3 +4000,13 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (OPS sprint, ran batch-produce directly)
 - Issues: Previous sprint showed topic saturation from auto-discovery. Injecting custom topics breaks through — 9/9 produced successfully.
 - Timestamp: 2026-03-23T06:35:00Z
+
+## Sprint 869 — OPS — custom topic content production (9 videos)
+- Status: PASS
+- Commit: 2a363d4a
+- Files created: workspace/sprints/sprint-869.json, 9 new scripts
+- Test: batch-produce.ts --topic — 3 injected topics, 9 new videos, 109 unique total
+- Pipeline: 109 unique videos ready, 4/30 posted toward gate
+- Swarm used: no (OPS sprint, ran batch-produce directly)
+- Issues: none — injected topics continue to produce well
+- Timestamp: 2026-03-23T06:39:00Z
