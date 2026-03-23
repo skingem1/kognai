@@ -1,0 +1,63 @@
+{
+  "demo_id": "demo-mn3sf4if",
+  "title": "Draw with Python in 3 Steps!",
+  "language": "python",
+  "total_duration_s": 20,
+  "steps": [
+    {
+      "step_id": "s1",
+      "title": "Step 1: Setup",
+      "code_lines": [
+        "import tkinter as tk",
+        "root = tk.Tk()",
+        "canvas = tk.Canvas(root, bg='white', width=400, height=400)",
+        "canvas.pack()"
+      ],
+      "language": "python",
+      "explanation": "We start by importing tkinter and setting up a window with a canvas for drawing.",
+      "duration_s": 6,
+      "highlight_lines": [
+        0
+      ]
+    },
+    {
+      "step_id": "s2",
+      "title": "Step 2: Track Mouse Movement",
+      "code_lines": [
+        "last_x, last_y = 0, 0",
+        "def draw(event):",
+        "    global last_x, last_y",
+        "    canvas.create_line(last_x, last_y, event.x, event.y, fill='black')",
+        "    last_x, last_y = event.x, event.y"
+      ],
+      "language": "python",
+      "explanation": "We track the mouse position and draw lines as the mouse moves across the canvas.",
+      "duration_s": 8,
+      "highlight_lines": [
+        1
+      ]
+    },
+    {
+      "step_id": "s3",
+      "title": "Step 3: Bind and Run",
+      "code_lines": [
+        "canvas.bind('<B1-Motion>', draw)",
+        "root.mainloop()"
+      ],
+      "language": "python",
+      "explanation": "Finally, we bind the draw function to mouse motion and start the application loop.",
+      "duration_s": 6,
+      "highlight_lines": [
+        0
+      ]
+    }
+  ],
+  "hashtags": [
+    "#coding",
+    "#python",
+    "#tutorial"
+  ],
+  "intro_hook": "Want to draw with Python? Let's see how it works!",
+  "source": "user",
+  "topic_source": "user-prompt"
+}

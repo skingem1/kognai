@@ -1,0 +1,86 @@
+{
+  "demo_id": "demo-mn3saj6t",
+  "title": "Find Your IP in Python",
+  "language": "python",
+  "total_duration_s": 29,
+  "steps": [
+    {
+      "step_id": "s1",
+      "title": "Step 1: Import Module",
+      "code_lines": [
+        "import socket"
+      ],
+      "language": "python",
+      "explanation": "We start by importing the socket module to handle network information.",
+      "duration_s": 5,
+      "highlight_lines": [
+        1
+      ]
+    },
+    {
+      "step_id": "s2",
+      "title": "Step 2: Define Function",
+      "code_lines": [
+        "def track_ip():",
+        "    try:",
+        "        hostname = socket.gethostname()",
+        "        ip_address = socket.gethostbyname(hostname)"
+      ],
+      "language": "python",
+      "explanation": "We define a function to get the hostname and IP address using socket functions.",
+      "duration_s": 7,
+      "highlight_lines": [
+        1,
+        3,
+        4
+      ]
+    },
+    {
+      "step_id": "s3",
+      "title": "Step 3: Print Results",
+      "code_lines": [
+        "        print(f\"Hostname: {hostname}\")",
+        "        print(f\"IP Address: {ip_address}\")"
+      ],
+      "language": "python",
+      "explanation": "We print the hostname and IP address to the console for easy viewing.",
+      "duration_s": 6,
+      "highlight_lines": [
+        1,
+        2
+      ]
+    },
+    {
+      "step_id": "s4",
+      "title": "Step 4: Run the Code",
+      "code_lines": [
+        "if __name__ == \"__main__\":",
+        "    track_ip()"
+      ],
+      "language": "python",
+      "explanation": "This ensures the function runs when the script is executed directly.",
+      "duration_s": 6,
+      "highlight_lines": [
+        1,
+        2
+      ]
+    },
+    {
+      "step_id": "s5",
+      "title": "Step 5: Try It Yourself",
+      "code_lines": [],
+      "language": "python",
+      "explanation": "Try it yourself and see your IP address in action!",
+      "duration_s": 5,
+      "highlight_lines": []
+    }
+  ],
+  "hashtags": [
+    "#coding",
+    "#python",
+    "#tutorial"
+  ],
+  "intro_hook": "Want to find your IP address? Let's code it!",
+  "source": "user",
+  "topic_source": "user-prompt"
+}

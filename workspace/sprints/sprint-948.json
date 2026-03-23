@@ -1,0 +1,13 @@
+{
+  "sprint_id": "sprint-948",
+  "title": "CODE-DEMO-ONLY — 5 code demos",
+  "description": "5 code demo videos. All voice services exhausted.",
+  "source": "ops",
+  "tasks": [
+    {"id": "948-01", "title": "Code demo: Build a Maze Solver in Python", "type": "ops", "task_target": "scripts/scs001/pipelines/code-demo.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-948", "output": "demo-mn3s7zil"},
+    {"id": "948-02", "title": "Code demo: Create an IP Address Tracker in Python", "type": "ops", "task_target": "scripts/scs001/pipelines/code-demo.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-948", "output": "demo-mn3saj6s"},
+    {"id": "948-03", "title": "Code demo: Build a Dice Roller App in Python", "type": "ops", "task_target": "scripts/scs001/pipelines/code-demo.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-948", "output": "demo-mn3sc3cq"},
+    {"id": "948-04", "title": "Code demo: Create a Sentiment Analyzer in Python", "type": "ops", "task_target": "scripts/scs001/pipelines/code-demo.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-948", "output": "demo-mn3sdrk8"},
+    {"id": "948-05", "title": "Code demo: Build a Drawing App in Python", "type": "ops", "task_target": "scripts/scs001/pipelines/code-demo.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-948", "output": "demo-mn3sf4if"}
+  ]
+}
