@@ -3407,3 +3407,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Issues: 2/5 runs produced 0 videos (topic dedup exhaustion on listicle format)
 - Cost: ~$0.50 (Anthropic API for script generation)
 - Timestamp: 2026-03-23T02:05:00Z
+
+## Sprint 813 — CONTENT: 6 new videos + seen-topics cleared
+- Status: PASS
+- Commit: 3fcf46a
+- Files modified: publish-ledger.jsonl, seen-topics.json, batch-produce-latest.json, video-inventory.json
+- Test: batch-produce 2x5 runs — 6 new videos total
+- Pipeline: 720 in ledger, 21 with files, 9 ready to post, gate 2/30
+- Swarm used: no (ran existing scripts)
+- Issues: Runs 4-5 produce 0 (ledger dedup + seen-topics saturation for listicle/explainer)
+- Cost: ~$1.00 (Anthropic API for script generation)
+- Timestamp: 2026-03-23T02:20:00Z
