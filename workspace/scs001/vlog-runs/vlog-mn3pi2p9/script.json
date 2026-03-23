@@ -1,0 +1,21 @@
+{
+  "title": "Ace Your Interview with AI",
+  "full_monologue": "**AI can help you nail every job interview.** Use it to practice answers, analyze body language, and simulate tough questions. Start by recording yourself answering common prompts, then let AI give feedback on tone and clarity. Next, use AI to generate personalized responses tailored to the company’s values. Finally, rehearse with AI-powered mock interviews to build confidence. Ready to level up your game? What’s your biggest interview fear?",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 6,
+      "duration_s": 6,
+      "visual_prompt": "Person practicing a speech in front of a mirror, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 18,
+      "duration_s": 6,
+      "visual_prompt": "Person confidently walking into a building with a smile, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

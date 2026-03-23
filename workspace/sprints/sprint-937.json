@@ -1,0 +1,13 @@
+{
+  "sprint_id": "sprint-937",
+  "title": "MULTI-PIPELINE — 3 code demos + 2 TTS vlogs (TTS mode)",
+  "description": "3 code demos + 2 TTS-mode vlogs. Content stockpile 363+.",
+  "source": "ops",
+  "tasks": [
+    {"id": "937-01", "title": "Code demo: Build a Port Scanner in Python", "type": "ops", "task_target": "scripts/scs001/pipelines/code-demo.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-937", "output": "demo-mn3pd4ne"},
+    {"id": "937-02", "title": "Code demo: Create a Text Encryption Tool in Python", "type": "ops", "task_target": "scripts/scs001/pipelines/code-demo.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-937", "output": "demo-mn3peo9w"},
+    {"id": "937-03", "title": "Code demo: Build a Rock Paper Scissors Game in Python", "type": "ops", "task_target": "scripts/scs001/pipelines/code-demo.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-937", "output": "demo-mn3pg44w"},
+    {"id": "937-04", "title": "V2 video (TTS): How to Use AI to Ace Every Job Interview", "type": "ops", "task_target": "scripts/scs001/produce-vlog.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-937", "output": "vlog-mn3pi2p9", "mode": "tts"},
+    {"id": "937-05", "title": "V2 video (TTS): The AI Robot That Can Cook Better Than a Chef", "type": "ops", "task_target": "scripts/scs001/produce-vlog.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-937", "output": "vlog-mn3pj8sh", "mode": "tts"}
+  ]
+}

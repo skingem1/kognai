@@ -1,0 +1,65 @@
+{
+  "demo_id": "demo-mn3peo9w",
+  "title": "Python Encryption in 3 Steps",
+  "language": "python",
+  "total_duration_s": 23,
+  "steps": [
+    {
+      "step_id": "s1",
+      "title": "Step 1: Import Base64",
+      "code_lines": [
+        "import base64"
+      ],
+      "language": "python",
+      "explanation": "We start by importing the base64 module for encoding and decoding.",
+      "duration_s": 5,
+      "highlight_lines": [
+        1
+      ]
+    },
+    {
+      "step_id": "s2",
+      "title": "Step 2: Encrypt & Decrypt Functions",
+      "code_lines": [
+        "def encrypt_text(text, key):",
+        "    encrypted_bytes = text.encode() + key.encode()",
+        "    return base64.b64encode(encrypted_bytes).decode()",
+        "",
+        "def decrypt_text(encrypted_text, key):",
+        "    encrypted_bytes = base64.b64decode(encrypted_text)",
+        "    return encrypted_bytes[:-len(key)].decode()"
+      ],
+      "language": "python",
+      "explanation": "We define functions to encrypt and decrypt text using a secret key.",
+      "duration_s": 10,
+      "highlight_lines": [
+        1,
+        4
+      ]
+    },
+    {
+      "step_id": "s3",
+      "title": "Step 3: Try It Yourself!",
+      "code_lines": [
+        "encrypted = encrypt_text(\"Hello\", \"secret\")",
+        "decrypted = decrypt_text(encrypted, \"secret\")"
+      ],
+      "language": "python",
+      "explanation": "Now you can encrypt and decrypt your own messages. Try it yourself!",
+      "duration_s": 8,
+      "highlight_lines": [
+        1,
+        2
+      ]
+    }
+  ],
+  "hashtags": [
+    "#coding",
+    "#python",
+    "#encryption",
+    "#tutorial"
+  ],
+  "intro_hook": "Ever wanted to hide your secrets? Let's code it!",
+  "source": "user",
+  "topic_source": "user-prompt"
+}
