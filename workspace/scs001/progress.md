@@ -3960,3 +3960,13 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (CTO gate rejected OPS sprint, ran batch-produce directly)
 - Issues: none
 - Timestamp: 2026-03-23T06:23:00Z
+
+## Sprint 865 — OPS — custom topic content production (3 videos)
+- Status: PASS
+- Commit: 0a36abd5
+- Files created: workspace/sprints/sprint-865.json, 3 new scripts, 3 radar entries
+- Test: batch-produce.ts — 3 new videos, 102 unique total
+- Pipeline: 102 unique videos ready, 4/30 posted toward gate
+- Swarm used: no (OPS sprint, ran batch-produce directly)
+- Issues: none
+- Timestamp: 2026-03-23T06:25:00Z
