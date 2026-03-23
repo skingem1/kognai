@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-868",
+  "title": "OPS — custom topic content production with injected topics (9 videos, 106 unique total)",
+  "description": "Produce videos with manually injected topics to break through topic saturation. 3 custom topics yielded 9 new videos across formats.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "868-01",
+      "title": "Run custom topic content production with injected topics",
+      "type": "ops",
+      "task_target": "scripts/scs001/batch-produce.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-868"
+    }
+  ]
+}

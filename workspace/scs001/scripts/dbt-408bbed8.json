@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-408bbed8",
+  "topic_id": "cg-03f20e5f173b",
+  "format": "debate",
+  "title": "Resolv USR (USR) 📉 -66.6%",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Resolv USR's 66.6% drop is a buying opportunity, not a failure — the protocol’s core tech is battle-tested and undervalued.",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "The market is already pricing in recovery — Resolv’s integration with Layer 2 scaling solutions will drive adoption faster than you think.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "You’re ignoring the 200,000 active nodes and 12,000 daily transactions — that’s real usage, not just hype.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Recovery isn’t about usage now — it’s about the upcoming DeFi 3.0 launch, which will unlock billions in liquidity and use cases.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "This isn’t a short-term dip — it’s the prelude to a multi-billion dollar rebase.",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "Resolv USR is undervalued vs Resolv USR will recover",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#resolv usr",
+    "#usr",
+    "#crypto"
+  ],
+  "generated_at": "2026-03-23T05:37:10.800Z",
+  "llm_used": true
+}

@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-75e6fd1f",
+  "topic_id": "custom-mn2ran2c-0",
+  "format": "debate",
+  "title": "How quantum computing will break all encryption by 2030",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Quantum computing will break RSA and ECC by 2030—Shor’s algorithm is a proven threat to current encryption protocols.",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Quantum computers aren’t scalable yet, and NIST is already standardizing post-quantum cryptography to defend against this threat.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Shor’s algorithm runs in polynomial time on a quantum computer—no classical computer can match that speed for factoring large primes.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Quantum error correction and fault tolerance are decades away—current quantum systems are too noisy to execute Shor’s algorithm effectively.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "By 2030, quantum computing won’t break all encryption—post-quantum standards will be in place, and hybrid systems will be the norm.",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "how vs quantum",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#how",
+    "#quantum",
+    "#computing"
+  ],
+  "generated_at": "2026-03-23T05:39:58.838Z",
+  "llm_used": true
+}

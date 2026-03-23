@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-a3e5f5f8",
+  "topic_id": "custom-mn2r88hx-2",
+  "format": "explainer",
+  "title": "5 AI startups that will be worth billions in 2027",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "What if I told you AI startups are about to blow up?",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This is the year AI goes mainstream — and these companies are leading the charge.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Perplexity is building an AI that writes code faster than any developer.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Their language model can generate full apps in minutes, not hours.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This changes how startups and tech giants build software — right now.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The key takeaway? AI is no longer a tool — it’s the new co-founder.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Have you heard of Perplexity? Let me know in the comments.",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "5 AI startups that will be worth billions in 2027",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#5",
+    "#ai",
+    "#startups"
+  ],
+  "generated_at": "2026-03-23T05:38:27.427Z",
+  "llm_used": true
+}
