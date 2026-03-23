@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-852",
+  "title": "OPS — batch content production (3 videos)",
+  "description": "Produced 3 new videos (79 unique total, 4/30 posted toward gate).",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "852-01",
+      "title": "Run batch content production",
+      "type": "ops",
+      "task_target": "scripts/scs001/batch-produce.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-852"
+    }
+  ]
+}
