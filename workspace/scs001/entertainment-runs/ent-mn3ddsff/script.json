@@ -1,0 +1,55 @@
+{
+  "script_id": "ent-mn3ddsfh",
+  "topic": "The 100 Billion Dollar AI Chip War Explained",
+  "title": "The 100 Billion Dollar AI Chip War",
+  "scenes": [
+    {
+      "scene_id": "s1",
+      "visual_prompt": "cinematic aerial shot of a futuristic city at sunset, golden light reflecting off glass buildings, flying vehicles in the distance, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 5,
+      "voiceover_text": "The future is closer than you think",
+      "caption_text": "THE FUTURE IS CLOSER THAN YOU THINK",
+      "transition": "fade"
+    },
+    {
+      "scene_id": "s2",
+      "visual_prompt": "close-up of hands assembling a sleek, futuristic microchip on a high-tech workstation, glowing blue light emanating from the chip, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 6,
+      "voiceover_text": "Billions are being spent to build the most powerful AI chips on Earth",
+      "caption_text": "BILLIONS IN THE CHIP WAR",
+      "transition": "fade"
+    },
+    {
+      "scene_id": "s3",
+      "visual_prompt": "abstract motion of glowing circuits and data streams in mid-air, morphing into a massive, pulsating data center with neon lights, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 7,
+      "voiceover_text": "Tech giants are racing to control the next frontier of artificial intelligence",
+      "caption_text": "TECH GIANTS COLLIDE",
+      "transition": "fade"
+    },
+    {
+      "scene_id": "s4",
+      "visual_prompt": "a dramatic cut to a crowd of people in a futuristic conference hall, faces lit by the glow of holographic displays and intense energy, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 6,
+      "voiceover_text": "The stakes are higher than ever—control the chip, control the future",
+      "caption_text": "CONTROL THE FUTURE",
+      "transition": "cut"
+    },
+    {
+      "scene_id": "s5",
+      "visual_prompt": "a massive, glowing AI brain hovering above a city skyline, with light beams connecting it to various tech hubs around the world, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 6,
+      "voiceover_text": "This is the 100 billion dollar AI chip war—coming soon",
+      "caption_text": "COMING SOON",
+      "transition": "fade"
+    }
+  ],
+  "total_duration_s": 30,
+  "with_voiceover": true,
+  "with_music": false,
+  "hashtags": [
+    "#ai",
+    "#chipwar",
+    "#techbattle"
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "demo_id": "demo-mn3d49om",
+  "title": "Automate Screenshots with Playwright in 3 Steps",
+  "language": "typescript",
+  "total_duration_s": 32,
+  "steps": [
+    {
+      "step_id": "s1",
+      "title": "Step 1: Setup",
+      "code_lines": [
+        "const { chromium } = require('playwright');"
+      ],
+      "language": "typescript",
+      "explanation": "We start by importing Playwright's Chromium browser.",
+      "duration_s": 6,
+      "highlight_lines": [
+        1
+      ]
+    },
+    {
+      "step_id": "s2",
+      "title": "Step 2: Launch Browser",
+      "code_lines": [
+        "const browser = await chromium.launch();",
+        "const page = await browser.newPage();"
+      ],
+      "language": "typescript",
+      "explanation": "Next, we launch the browser and open a new page.",
+      "duration_s": 7,
+      "highlight_lines": [
+        1,
+        2
+      ]
+    },
+    {
+      "step_id": "s3",
+      "title": "Step 3: Take Screenshot",
+      "code_lines": [
+        "await page.goto('https://example.com');",
+        "await page.screenshot({ path: 'example.png' });"
+      ],
+      "language": "typescript",
+      "explanation": "We navigate to a website and take a screenshot automatically.",
+      "duration_s": 7,
+      "highlight_lines": [
+        1,
+        2
+      ]
+    },
+    {
+      "step_id": "s4",
+      "title": "Step 4: Clean Up",
+      "code_lines": [
+        "await browser.close();"
+      ],
+      "language": "typescript",
+      "explanation": "Finally, we close the browser to clean up resources.",
+      "duration_s": 6,
+      "highlight_lines": [
+        1
+      ]
+    },
+    {
+      "step_id": "s5",
+      "title": "Step 5: Try It Yourself!",
+      "code_lines": [
+        "(async () => {",
+        "...",
+        "})();"
+      ],
+      "language": "typescript",
+      "explanation": "Try running this code yourself and see it in action!",
+      "duration_s": 6,
+      "highlight_lines": [
+        1,
+        3
+      ]
+    }
+  ],
+  "hashtags": [
+    "#coding",
+    "#typescript",
+    "#playwright",
+    "#automation",
+    "#tutorial"
+  ],
+  "intro_hook": "Ever wanted to take screenshots automatically? Let's do it with Playwright!",
+  "source": "user",
+  "topic_source": "user-prompt"
+}

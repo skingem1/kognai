@@ -1,0 +1,56 @@
+{
+  "script_id": "ent-mn3d7vph",
+  "topic": "The 100 Billion Dollar AI Chip War Explained",
+  "title": "The 100 Billion Dollar AI Chip War",
+  "scenes": [
+    {
+      "scene_id": "s1",
+      "visual_prompt": "cinematic aerial shot of a futuristic city at sunset, golden light reflecting off glass buildings, flying vehicles in the distance, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 5,
+      "voiceover_text": "The future is closer than you think",
+      "caption_text": "THE FUTURE IS CLOSER THAN YOU THINK",
+      "transition": "fade"
+    },
+    {
+      "scene_id": "s2",
+      "visual_prompt": "close-up of hands assembling a sleek, glowing microchip on a transparent table, surrounded by abstract light patterns, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 6,
+      "voiceover_text": "A global race is underway for the most powerful AI chips in history",
+      "caption_text": "A GLOBAL RACE FOR AI CHIPS",
+      "transition": "fade"
+    },
+    {
+      "scene_id": "s3",
+      "visual_prompt": "dramatic wide shot of a crowded tech conference hall, people in suits gesturing passionately, with abstract data streams in the air, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 6,
+      "voiceover_text": "Billions are being spent to control the next technological revolution",
+      "caption_text": "BILLIONS IN THE STAKES",
+      "transition": "cut"
+    },
+    {
+      "scene_id": "s4",
+      "visual_prompt": "abstract motion of glowing circuits and neural networks forming a massive, pulsing brain in the sky, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 6,
+      "voiceover_text": "This is the 100 billion dollar AI chip war",
+      "caption_text": "THE 100 BILLION DOLLAR WAR",
+      "transition": "fade"
+    },
+    {
+      "scene_id": "s5",
+      "visual_prompt": "wide shot of a futuristic research lab with scientists in white coats, surrounded by glowing tech and holographic projections, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 7,
+      "voiceover_text": "Who will win the race for the future?",
+      "caption_text": "WHO WILL WIN THE FUTURE?",
+      "transition": "fade"
+    }
+  ],
+  "total_duration_s": 30,
+  "with_voiceover": true,
+  "with_music": false,
+  "hashtags": [
+    "#ai",
+    "#techwar",
+    "#futuretech",
+    "#chipwar"
+  ]
+}

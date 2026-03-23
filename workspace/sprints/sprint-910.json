@@ -1,0 +1,68 @@
+{
+  "sprint_id": "sprint-910",
+  "title": "MULTI-PIPELINE — 3 code demos + 3 entertainment videos",
+  "description": "Continue content diversification with code-demo and entertainment pipelines.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "910-01",
+      "title": "Code demo: Automate browser testing with Playwright in 5 lines",
+      "type": "ops",
+      "task_target": "scripts/scs001/batch-produce.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-910"
+    },
+    {
+      "id": "910-02",
+      "title": "Code demo: Build a CLI tool with Node.js in 30 seconds",
+      "type": "ops",
+      "task_target": "scripts/scs001/batch-produce.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-910"
+    },
+    {
+      "id": "910-03",
+      "title": "Code demo: Create a real-time dashboard with WebSockets",
+      "type": "ops",
+      "task_target": "scripts/scs001/batch-produce.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-910"
+    },
+    {
+      "id": "910-04",
+      "title": "Entertainment: The $100B AI Chip War Explained in 60 Seconds",
+      "type": "ops",
+      "task_target": "scripts/scs001/batch-produce.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-910"
+    },
+    {
+      "id": "910-05",
+      "title": "Entertainment: What Your AI Assistant Knows About You",
+      "type": "ops",
+      "task_target": "scripts/scs001/batch-produce.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-910"
+    },
+    {
+      "id": "910-06",
+      "title": "Entertainment: The Day AI Agents Started Making Money on Their Own",
+      "type": "ops",
+      "task_target": "scripts/scs001/batch-produce.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-910"
+    }
+  ]
+}

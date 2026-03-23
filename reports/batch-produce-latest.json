@@ -1,20 +1,26 @@
 {
-  "batch_at": "2026-03-23T15:25:50.399Z",
+  "batch_at": "2026-03-23T16:06:46.770Z",
   "pipeline_filter": "entertainment",
-  "runs_planned": 2,
-  "runs_completed": 2,
+  "runs_planned": 3,
+  "runs_completed": 3,
   "results": [
     {
       "pipeline": "entertainment",
-      "runId": "ent-mn3bvwa4",
-      "title": "The AI War Nobody Is Talking About",
-      "cost": 2.1
+      "runId": "ent-mn3d7vpg",
+      "title": "The 100 Billion Dollar AI Chip War",
+      "cost": 1.7500000000000002
     },
     {
       "pipeline": "entertainment",
-      "runId": "ent-mn3c22ky",
-      "title": "The AI War Nobody Is Talking About",
-      "cost": 2.1
+      "runId": "ent-mn3ddsff",
+      "title": "The 100 Billion Dollar AI Chip War",
+      "cost": 1.7500000000000002
+    },
+    {
+      "pipeline": "entertainment",
+      "runId": "ent-mn3djfd9",
+      "title": "The 100 Billion Dollar AI Chip War",
+      "cost": 1.7500000000000002
     }
   ],
   "errors": []
