@@ -1,0 +1,21 @@
+{
+  "title": "Why AI Agents Are the New Apps",
+  "full_monologue": "**AI agents are the new apps**—think of them as smart, self-contained helpers that learn and adapt. Unlike traditional apps, they don’t just do one task—they evolve with you. Imagine an agent that manages your schedule, learns your preferences, and even helps you brainstorm ideas. They’re not just tools; they’re companions. As AI gets smarter, these agents will replace many apps we use today. Ready to see what’s next? Comment below with your thoughts!",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 6,
+      "duration_s": 6,
+      "visual_prompt": "a person interacting with a smart assistant in a modern office space, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 18,
+      "duration_s": 6,
+      "visual_prompt": "abstract motion visuals representing AI learning and adapting, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

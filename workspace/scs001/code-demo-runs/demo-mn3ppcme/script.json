@@ -1,0 +1,92 @@
+{
+  "demo_id": "demo-mn3ppcmf",
+  "title": "Whois Lookup in Python",
+  "language": "python",
+  "total_duration_s": 29,
+  "steps": [
+    {
+      "step_id": "s1",
+      "title": "Step 1: Setup",
+      "code_lines": [
+        "import whois"
+      ],
+      "language": "python",
+      "explanation": "We start by importing the 'whois' library to handle domain lookups.",
+      "duration_s": 5,
+      "highlight_lines": [
+        1
+      ]
+    },
+    {
+      "step_id": "s2",
+      "title": "Step 2: Create Function",
+      "code_lines": [
+        "def whois_lookup(domain):",
+        "    try:",
+        "        info = whois.whois(domain)",
+        "        print(f\"Domain: {info.domain}\")"
+      ],
+      "language": "python",
+      "explanation": "We define a function that takes a domain and fetches its information.",
+      "duration_s": 7,
+      "highlight_lines": [
+        1,
+        3,
+        4
+      ]
+    },
+    {
+      "step_id": "s3",
+      "title": "Step 3: Handle Errors",
+      "code_lines": [
+        "    except Exception as e:",
+        "        print(f\"Error: {e}\")"
+      ],
+      "language": "python",
+      "explanation": "We add error handling in case the lookup fails or data is missing.",
+      "duration_s": 6,
+      "highlight_lines": [
+        1,
+        2
+      ]
+    },
+    {
+      "step_id": "s4",
+      "title": "Step 4: Run the Code",
+      "code_lines": [
+        "if __name__ == \"__main__\":",
+        "    domain = input(\"Enter domain to lookup: \")",
+        "    whois_lookup(domain)"
+      ],
+      "language": "python",
+      "explanation": "Finally, we run the lookup using user input for the domain.",
+      "duration_s": 6,
+      "highlight_lines": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "step_id": "s5",
+      "title": "Try It Yourself!",
+      "code_lines": [
+        "# Try it yourself with any domain!"
+      ],
+      "language": "python",
+      "explanation": "Try it yourself with any domain! Just run the code and enter a domain name.",
+      "duration_s": 5,
+      "highlight_lines": [
+        1
+      ]
+    }
+  ],
+  "hashtags": [
+    "#coding",
+    "#python",
+    "#tutorial"
+  ],
+  "intro_hook": "Want to find domain info? Let's code it!",
+  "source": "user",
+  "topic_source": "user-prompt"
+}

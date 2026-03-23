@@ -1,0 +1,82 @@
+{
+  "demo_id": "demo-mn3plc5a",
+  "title": "Add Watermarks in Python!",
+  "language": "python",
+  "total_duration_s": 30,
+  "steps": [
+    {
+      "step_id": "s1",
+      "title": "Step 1: Import Libraries",
+      "code_lines": [
+        "from PIL import Image, ImageDraw, ImageFont"
+      ],
+      "language": "python",
+      "explanation": "We start by importing the necessary libraries from PIL for image manipulation.",
+      "duration_s": 6,
+      "highlight_lines": [
+        0
+      ]
+    },
+    {
+      "step_id": "s2",
+      "title": "Step 2: Open Image",
+      "code_lines": [
+        "img = Image.open(input_path).convert(\"RGBA\")"
+      ],
+      "language": "python",
+      "explanation": "We open the image and convert it to RGBA format to support transparency.",
+      "duration_s": 6,
+      "highlight_lines": [
+        0
+      ]
+    },
+    {
+      "step_id": "s3",
+      "title": "Step 3: Add Watermark Text",
+      "code_lines": [
+        "draw.text(((width - text_width) / 2, (height - text_height) / 2), text, font=font, fill=(255, 255, 255, 128))"
+      ],
+      "language": "python",
+      "explanation": "We add the watermark text in the center with semi-transparent white color.",
+      "duration_s": 7,
+      "highlight_lines": [
+        0
+      ]
+    },
+    {
+      "step_id": "s4",
+      "title": "Step 4: Save the Result",
+      "code_lines": [
+        "img.save(output_path)"
+      ],
+      "language": "python",
+      "explanation": "Finally, we save the image with the watermark to the specified output path.",
+      "duration_s": 6,
+      "highlight_lines": [
+        0
+      ]
+    },
+    {
+      "step_id": "s5",
+      "title": "Step 5: Try it Yourself!",
+      "code_lines": [
+        "# Try it yourself with your own image and text!"
+      ],
+      "language": "python",
+      "explanation": "Now you can add watermarks to your images like a pro. Try it yourself!",
+      "duration_s": 5,
+      "highlight_lines": [
+        0
+      ]
+    }
+  ],
+  "hashtags": [
+    "#coding",
+    "#python",
+    "#imageprocessing",
+    "#tutorial"
+  ],
+  "intro_hook": "Want to add a watermark to your image? Let's code it!",
+  "source": "user",
+  "topic_source": "user-prompt"
+}

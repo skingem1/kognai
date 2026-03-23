@@ -1,0 +1,21 @@
+{
+  "title": "AI Made Degrees Obsolete?",
+  "full_monologue": "**The college degree AI just made worthless.** Imagine spending years and thousands of dollars only to find out an AI can do your job faster, cheaper, and with no sleep. We’re talking about AI that writes essays, codes software, and even passes medical exams. It’s not science fiction — it’s happening now. And if you’re thinking, ‘But I already have a degree,’ ask yourself: will your skills keep up with the pace of AI? The future is here, and it’s time to rethink what matters. What will you do to stay relevant?",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 6,
+      "duration_s": 6,
+      "visual_prompt": "A person typing furiously on a laptop, surrounded by books and papers, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 18,
+      "duration_s": 6,
+      "visual_prompt": "A futuristic cityscape with glowing AI-related technology in the background, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

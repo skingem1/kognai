@@ -1,0 +1,13 @@
+{
+  "sprint_id": "sprint-938",
+  "title": "MULTI-PIPELINE — 3 code demos + 2 TTS vlogs (TTS mode)",
+  "description": "3 code demos + 2 TTS-mode vlogs. Content stockpile 368+.",
+  "source": "ops",
+  "tasks": [
+    {"id": "938-01", "title": "Code demo: Build a Watermark Adder in Python", "type": "ops", "task_target": "scripts/scs001/pipelines/code-demo.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-938", "output": "demo-mn3plc5a"},
+    {"id": "938-02", "title": "Code demo: Create a Pomodoro App with Tkinter", "type": "ops", "task_target": "scripts/scs001/pipelines/code-demo.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-938", "output": "demo-mn3pn2q3"},
+    {"id": "938-03", "title": "Code demo: Build a Whois Lookup Tool in Python", "type": "ops", "task_target": "scripts/scs001/pipelines/code-demo.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-938", "output": "demo-mn3ppcme"},
+    {"id": "938-04", "title": "V2 video (TTS): Why AI Agents Are the New Apps", "type": "ops", "task_target": "scripts/scs001/produce-vlog.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-938", "output": "vlog-mn3pr7bh", "mode": "tts"},
+    {"id": "938-05", "title": "V2 video (TTS): The College Degree AI Just Made Worthless", "type": "ops", "task_target": "scripts/scs001/produce-vlog.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-938", "output": "vlog-mn3psghi", "mode": "tts"}
+  ]
+}

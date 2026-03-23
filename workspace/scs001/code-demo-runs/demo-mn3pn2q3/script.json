@@ -1,0 +1,109 @@
+{
+  "demo_id": "demo-mn3pn2q3",
+  "title": "Build a Pomodoro Timer in Python",
+  "language": "python",
+  "total_duration_s": 32,
+  "steps": [
+    {
+      "step_id": "s1",
+      "title": "Step 1: Setup",
+      "code_lines": [
+        "import tkinter as tk",
+        "from tkinter import messagebox",
+        "import time",
+        "class Pomodoro:",
+        "    def __init__(self, root):"
+      ],
+      "language": "python",
+      "explanation": "We start by importing necessary modules and defining our Pomodoro class.",
+      "duration_s": 6,
+      "highlight_lines": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "step_id": "s2",
+      "title": "Step 2: UI Setup",
+      "code_lines": [
+        "        self.root = root",
+        "        self.time_left = 25 * 60",
+        "        self.timer = tk.Label(root, font=('Helvetica', 48), fg='green')",
+        "        self.timer.pack()"
+      ],
+      "language": "python",
+      "explanation": "We set up the timer label and the start button inside the GUI window.",
+      "duration_s": 7,
+      "highlight_lines": [
+        2,
+        3
+      ]
+    },
+    {
+      "step_id": "s3",
+      "title": "Step 3: Timer Logic",
+      "code_lines": [
+        "    def start_timer(self):",
+        "        if self.time_left <= 0:",
+        "            messagebox.showinfo(\"Pomodoro\", \"Time's up!\")",
+        "            return",
+        "        self.time_left -= 1",
+        "        self.update_clock()",
+        "        self.root.after(1000, self.start_timer)"
+      ],
+      "language": "python",
+      "explanation": "This function decreases the time and updates the clock every second until it reaches zero.",
+      "duration_s": 8,
+      "highlight_lines": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    },
+    {
+      "step_id": "s4",
+      "title": "Step 4: Run the App",
+      "code_lines": [
+        "root = tk.Tk()",
+        "app = Pomodoro(root)",
+        "root.mainloop()"
+      ],
+      "language": "python",
+      "explanation": "Finally, we create the main window and start the application loop.",
+      "duration_s": 6,
+      "highlight_lines": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "step_id": "s5",
+      "title": "Step 5: Try it yourself!",
+      "code_lines": [
+        "# Try it yourself!"
+      ],
+      "language": "python",
+      "explanation": "Now you can run the code and start your Pomodoro sessions!",
+      "duration_s": 5,
+      "highlight_lines": [
+        0
+      ]
+    }
+  ],
+  "hashtags": [
+    "#coding",
+    "#python",
+    "#tutorial"
+  ],
+  "intro_hook": "Let’s build a Pomodoro Timer in under a minute!",
+  "source": "user",
+  "topic_source": "user-prompt"
+}
