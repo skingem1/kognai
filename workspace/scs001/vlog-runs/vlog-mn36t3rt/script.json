@@ -1,0 +1,21 @@
+{
+  "title": "Why China Is Winning The AI Race",
+  "full_monologue": "**China is winning the AI race and nobody talks about it.** With massive government investment, a surge in AI talent, and a focus on long-term innovation, they're outpacing the West. While we debate ethics and regulations, China is deploying AI in healthcare, logistics, and defense at an unprecedented scale. They're not just building tools—they're reshaping entire industries. And yet, this story rarely makes headlines. What does this mean for global tech leadership? Let me know in the comments.",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 5,
+      "duration_s": 3,
+      "visual_prompt": "crowds of people walking through a futuristic cityscape, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 15,
+      "duration_s": 3,
+      "visual_prompt": "engineers working in a high-tech lab with abstract motion and glowing hardware, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

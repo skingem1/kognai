@@ -1,0 +1,21 @@
+{
+  "title": "The Programming Language That AI Cannot Replace",
+  "full_monologue": "The programming language that AI cannot replace is human intuition. While AI can write code, it lacks the creativity, context, and emotional intelligence that humans bring. It's not about syntax—it's about solving real-world problems with empathy. AI follows rules; humans break them to innovate. So, what makes you unique as a programmer? Comment below.",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 5,
+      "duration_s": 3,
+      "visual_prompt": "A programmer typing on a keyboard with hands in frame, no screen visible, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 15,
+      "duration_s": 3,
+      "visual_prompt": "A group of diverse people collaborating in a modern office space, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

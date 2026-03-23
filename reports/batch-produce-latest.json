@@ -1,38 +1,39 @@
 {
-  "batch_at": "2026-03-23T12:36:48.746Z",
+  "batch_at": "2026-03-23T13:03:23.333Z",
   "pipeline_filter": "educational",
   "runs_planned": 5,
-  "runs_completed": 4,
+  "runs_completed": 5,
   "results": [
     {
       "pipeline": "educational",
-      "runId": "vlog-mn35hnus",
-      "title": "Apple's Secret AI Inside Your Phone",
+      "runId": "vlog-mn3684q6",
+      "title": "AGI Coming This Year? Here's What You Need to Know",
       "cost": 0.26
     },
     {
       "pipeline": "educational",
-      "runId": "vlog-mn35ng4s",
-      "title": "Open Source AI Surpasses GPT-4",
+      "runId": "vlog-mn36g86p",
+      "title": "Nvidia Stock Surpasses 200!",
       "cost": 0.26
     },
     {
       "pipeline": "educational",
-      "runId": "vlog-mn35t4il",
-      "title": "Europe Bans AI in Hiring? Here's Why",
+      "runId": "vlog-mn36nitq",
+      "title": "AI Voice Clone in 3 Seconds!",
       "cost": 0.26
     },
     {
       "pipeline": "educational",
-      "runId": "vlog-mn35ysd3",
-      "title": "This Robot Can Do Your Laundry Better Than You",
+      "runId": "vlog-mn36t3rt",
+      "title": "Why China Is Winning The AI Race",
+      "cost": 0.26
+    },
+    {
+      "pipeline": "educational",
+      "runId": "vlog-mn36z8jc",
+      "title": "The Programming Language That AI Cannot Replace",
       "cost": 0.26
     }
   ],
-  "errors": [
-    {
-      "run": 1,
-      "error": "Command failed: curl -s --max-time 60 http://localhost:11434/api/generate -d '{\"model\":\"qwen3:14b\",\"prompt\":\"Write a 30-second TikTok vlog script about: \\\"OpenAI Just Made GPT-5 Free For Everyone\\\"\\n\\"
-    }
-  ]
+  "errors": []
 }
