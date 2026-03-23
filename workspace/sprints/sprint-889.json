@@ -1,0 +1,28 @@
+{
+  "sprint_id": "sprint-889",
+  "title": "V2-PROD — First v2 production run + fix fal.ai shell escaping",
+  "description": "Run the v2 pipeline end-to-end to produce actual videos (validating Sprint 888 fix). Fix fal.ai shell escaping bug: commit the temp-file Python approach that avoids python3 -c quote corruption.",
+  "source": "pipeline",
+  "tasks": [
+    {
+      "id": "889-01",
+      "title": "Run full v2 pipeline with real video assembly",
+      "type": "ops",
+      "task_target": "scripts/scs001/run-v2-pipeline.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-889"
+    },
+    {
+      "id": "889-02",
+      "title": "Commit fal-video-client.ts temp-file fix for shell escaping",
+      "type": "bugfix",
+      "task_target": "scripts/scs001/fal-video-client.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-889"
+    }
+  ]
+}

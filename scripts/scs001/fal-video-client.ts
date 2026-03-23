@@ -9,12 +9,11 @@
  */
 
 import { execSync } from 'child_process';
-import { existsSync, mkdirSync } from 'fs';
+import { existsSync, mkdirSync, writeFileSync, unlinkSync } from 'fs';
 import { join, dirname } from 'path';
 
 const ROOT = join(__dirname, '..', '..');
 
-// Load FAL_KEY from .env
 function loadFalKey(): string {
   if (process.env.FAL_KEY) return process.env.FAL_KEY;
   try {
@@ -66,38 +65,45 @@ export async function generateBrollVideo(
     try {
       console.log(`  [fal.ai] Generating ${model} video: "${prompt.slice(0, 50)}..."`);
 
+      const fullPrompt = prompt.replace(/['"]/g, '') + ' cinematic vertical 9:16, high quality, trending style';
+
       const args: Record<string, unknown> = {
-        prompt: prompt + ' cinematic vertical 9:16, high quality, trending style',
+        prompt: fullPrompt,
         aspect_ratio: '9:16',
       };
 
       if (model === 'kling') {
         args.duration = String(Math.min(Math.max(durationS, 5), 10));
       } else {
-        args.num_frames = Math.min(Math.max(durationS * 16, 49), 161); // LTX uses frames
+        args.num_frames = Math.min(Math.max(durationS * 16, 49), 161);
         args.resolution = '1080p';
       }
 
-      // Use Python subprocess for fal_client (it's a Python package)
-      const script = `
-import fal_client, os, json
-os.environ['FAL_KEY'] = '${falKey}'
-result = fal_client.subscribe(
-    "${MODEL_SLUGS[model]}",
-    arguments=${JSON.stringify(args).replace(/"/g, "'")},
-)
-url = result.get('video', {}).get('url', '')
-print(json.dumps({"url": url}))
-`;
-      const result = execSync(`python3 -c ${JSON.stringify(script)}`, {
-        timeout: 300000, // 5 min max
+      // Write Python script to temp file to avoid shell escaping issues
+      const tmpScript = join('/tmp', `fal_gen_${Date.now()}.py`);
+      const pyCode = [
+        'import fal_client, os, json',
+        `os.environ["FAL_KEY"] = ${JSON.stringify(falKey)}`,
+        `result = fal_client.subscribe(`,
+        `    ${JSON.stringify(MODEL_SLUGS[model])},`,
+        `    arguments=${JSON.stringify(args)},`,
+        `)`,
+        `url = result.get("video", {}).get("url", "")`,
+        `print(json.dumps({"url": url}))`,
+      ].join('\n');
+
+      writeFileSync(tmpScript, pyCode);
+
+      const result = execSync(`python3 "${tmpScript}"`, {
+        timeout: 300000,
         encoding: 'utf-8',
       });
+
+      try { unlinkSync(tmpScript); } catch {}
 
       const { url } = JSON.parse(result.trim());
       if (!url) throw new Error(`${model}: no video URL in response`);
 
-      // Download video
       execSync(`curl -s -L -o "${outPath}" "${url}"`, { timeout: 60000 });
 
       if (!existsSync(outPath)) throw new Error(`${model}: download failed`);
@@ -110,11 +116,10 @@ print(json.dumps({"url": url}))
       return { path: outPath, source: model, cost_usd: cost, duration_s: durationS };
 
     } catch (err: any) {
-      console.warn(`  [fal.ai] ❌ ${model} failed: ${err.message}`);
+      console.warn(`  [fal.ai] ❌ ${model} failed: ${err.message?.slice(0, 200)}`);
       if (model === models[models.length - 1]) {
-        throw new Error(`All fal.ai models failed. Last error: ${err.message}`);
+        throw new Error(`All fal.ai models failed. Last error: ${err.message?.slice(0, 200)}`);
       }
-      // Try next model
     }
   }
 
