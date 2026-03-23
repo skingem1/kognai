@@ -1,0 +1,21 @@
+{
+  "title": "The Hidden Cost of Free AI Tools",
+  "full_monologue": "**Did you know free AI tools might cost you more than you think?** They’re great for quick wins, but here’s the catch: data privacy, poor accuracy, and hidden subscription traps. When you use free tools, your data is often harvested and sold—without your consent. Plus, free versions usually have limits, forcing you to upgrade later. And don’t forget the time you waste troubleshooting errors. It’s not just money—it’s your time and security on the line. So, what are you willing to sacrifice for free AI?",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 5,
+      "duration_s": 3,
+      "visual_prompt": "A phone screen showing a privacy policy pop-up with 'data collection' highlighted"
+    },
+    {
+      "timestamp_s": 15,
+      "duration_s": 3,
+      "visual_prompt": "A person frustrated at a computer screen with an error message and a 'Upgrade Now' button"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

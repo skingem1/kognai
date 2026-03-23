@@ -1,0 +1,68 @@
+{
+  "sprint_id": "sprint-900",
+  "title": "TTS-VLOG — 3 ElevenLabs TTS-mode vlog videos + 3 V2 content videos",
+  "description": "Produced 3 v2 pipeline videos on trending AI topics + 3 TTS-mode vlog videos using ElevenLabs voiceover (Captions.ai credits exhausted). Total: 6 new videos.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "900-01",
+      "title": "V2 video: Google Gemini 2.5 Just Destroyed Every AI Benchmark",
+      "type": "ops",
+      "task_target": "scripts/scs001/run-v2-pipeline.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-900"
+    },
+    {
+      "id": "900-02",
+      "title": "V2 video: Why Every Tech Company Is Secretly Building AI Agents",
+      "type": "ops",
+      "task_target": "scripts/scs001/run-v2-pipeline.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-900"
+    },
+    {
+      "id": "900-03",
+      "title": "V2 video: Elon Just Built an AI That Thinks Like You Do",
+      "type": "ops",
+      "task_target": "scripts/scs001/run-v2-pipeline.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-900"
+    },
+    {
+      "id": "900-04",
+      "title": "TTS vlog: Why AI Agents Will Replace 90% of SaaS Products",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-900"
+    },
+    {
+      "id": "900-05",
+      "title": "TTS vlog: The Hidden Cost of Free AI Tools Nobody Talks About",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-900"
+    },
+    {
+      "id": "900-06",
+      "title": "TTS vlog: OpenAI vs Anthropic Which AI Company Will Win 2026",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-900"
+    }
+  ]
+}
