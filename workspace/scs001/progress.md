@@ -4508,3 +4508,15 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no — production runs
 - Issues: 1 timeout on "AI Revolution Nobody Is Prepared For" topic, replaced
 - Timestamp: 2026-03-23T16:18:00Z
+
+## Sprint 907 — V2-CONTENT — 5 TTS-mode videos
+- Status: PASS
+- Commit: 990a572d
+- Files created: workspace/sprints/sprint-907.json, 5 TTS vlog videos
+- Videos: "AI Limbic System" (vlog-mn3aprhn), "Local AI vs Cloud" (vlog-mn3aw8uo), "AI Accessibility Testing" (vlog-mn3b27o6), "Google's Hidden AI Secret" (vlog-mn3ba6uy), "AI Code Review 2026" (vlog-mn3bhn1d)
+- Pipeline: 31 v2 + 8 TTS vlogs + 6 code demos = 213+ total content
+- Cost: ~$2.10 (ElevenLabs TTS + fal.ai B-roll)
+- Swarm used: no — production runs
+- Fix: restored TTS mode in produce-vlog.ts (was incorrectly removed)
+- Issues: ts-node cache invalidation caused TS compile error mid-batch, fixed by restoring mode param
+- Timestamp: 2026-03-23T16:45:00Z
