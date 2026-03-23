@@ -1,75 +1,35 @@
 {
-  "timestamp": "2026-03-21T17:00:02.883Z",
-  "pass": 11,
-  "fail": 0,
-  "skip": 0,
-  "total": 11,
-  "results": [
-    {
-      "name": "1. Ollama (local models)",
-      "status": "PASS",
-      "detail": "7 models: nomic-embed-text:latest, qwen2.5vl:7b, deepseek-r1:14b, qwen3:14b, qwen3:32b, qwen3:4b, qwen3:0.6b",
-      "duration_ms": 12
-    },
-    {
-      "name": "2. ClawRouter Gateway",
-      "status": "PASS",
-      "detail": "ClawRouter gateway healthy",
-      "duration_ms": 28
-    },
-    {
-      "name": "3. Telegram Bot",
-      "status": "PASS",
-      "detail": "Bot: @MessiKognai_Bot",
-      "duration_ms": 249
-    },
-    {
-      "name": "4. Dashboard",
-      "status": "PASS",
-      "detail": "Dashboard responding on :11436",
-      "duration_ms": 15
-    },
-    {
-      "name": "5. Stripe",
-      "status": "PASS",
-      "detail": "Stripe API key set (reachable)",
-      "duration_ms": 100
-    },
-    {
-      "name": "6. YouTube API",
-      "status": "PASS",
-      "detail": "YouTube API key configured",
-      "duration_ms": 0
-    },
-    {
-      "name": "7. TikTok API",
-      "status": "PASS",
-      "detail": "TikTok client credentials configured (token may need refresh)",
-      "duration_ms": 0
-    },
-    {
-      "name": "8. Pipeline Data Files",
-      "status": "PASS",
-      "detail": "All 4 pipeline data files present",
-      "duration_ms": 1
-    },
-    {
-      "name": "9. Git Health",
-      "status": "PASS",
-      "detail": "1423 commits, 160 uncommitted changes",
-      "duration_ms": 276
-    },
-    {
-      "name": "10. Critical Env Vars",
-      "status": "PASS",
-      "detail": "All 4 critical env vars set",
-      "duration_ms": 0
-    },
-    {
-      "name": "11. Supabase",
-      "status": "PASS",
-      "detail": "Supabase reachable",
-      "duration_ms": 184
-    }
+  "passed": false,
+  "timestamp": "2026-03-23T03:46:39.634Z",
+  "stage_count": 16,
+  "error_count": 1,
+  "zero_counters": 0,
+  "viral_scored_count": 6,
+  "viral_warning": false,
+  "summary": {
+    "topics_found": 30,
+    "clips_discovered": 35,
+    "clips_qualified": 0,
+    "insights_generated": 5,
+    "scripts_produced": 5,
+    "scripts_scored": 5,
+    "scripts_filtered": 1,
+    "scripts_validation_skipped": 0,
+    "videos_edited": 4,
+    "videos_captioned": 4,
+    "qc_passed": 2,
+    "qc_failed": 2,
+    "published": 18,
+    "viral": 6,
+    "performing": 6,
+    "failure_library": 6,
+    "flywheel_derivatives": 24,
+    "failure_entries": 6,
+    "clips_deduplicated": 0,
+    "platforms_targeted": 9,
+    "publish_method": "blotato"
+  },
+  "errors": [
+    "3-clip-detection: Stage timeout after 600s"
   ]
 }

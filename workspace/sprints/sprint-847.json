@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-847",
+  "title": "OPS — full pipeline smoke test + schedule regen",
+  "description": "Ran full 16-stage pipeline smoke test. 1 known issue (clip-detection timeout). Schedule regenerated with 26 slots. 3 more videos delivered.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "847-01",
+      "title": "Run full pipeline smoke test",
+      "type": "ops",
+      "task_target": "scripts/smoke-test-pipeline.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-847"
+    }
+  ]
+}
