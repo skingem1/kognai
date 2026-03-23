@@ -3970,3 +3970,13 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (OPS sprint, ran batch-produce directly)
 - Issues: none
 - Timestamp: 2026-03-23T06:25:00Z
+
+## Sprint 866 — OPS — custom topic content production (2 new videos)
+- Status: PASS
+- Commit: efbb74a4
+- Files created: workspace/sprints/sprint-866.json, 2 new scripts, 3 radar entries
+- Test: batch-produce.ts — 2 new videos (1 deduped), 103 unique total
+- Pipeline: 103 unique videos ready, 4/30 posted toward gate
+- Swarm used: no (OPS sprint, ran batch-produce directly)
+- Issues: 1 video deduped (topic already produced)
+- Timestamp: 2026-03-23T06:28:00Z
