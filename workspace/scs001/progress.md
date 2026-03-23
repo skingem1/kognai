@@ -4955,3 +4955,11 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Pipeline: 31 v2 + 95 TTS vlogs + 107 code demos + 5 entertainment = 406+ total content
 - Timestamp: 2026-03-24T12:00:00Z
 - BLOCKER: Both HeyGen AND ElevenLabs credits exhausted. Only code demos ($0) remain viable. All vlog production halted until credits are refilled.
+
+## Sprint 947 — CODE-DEMO-ONLY — 5 code demos (voice services down)
+- Status: PASS (5/5)
+- Commit: 5a9d63b8
+- Code demos: "Reddit Scraper" (demo-mn3rx1rh), "Hash Generator" (demo-mn3rygyv), "Ping Pong" (demo-mn3rzwrr), "Progress Bar" (demo-mn3s34dd), "Text Summarizer" (demo-mn3s4pi3)
+- Pipeline: 31 v2 + 95 TTS vlogs + 112 code demos + 5 entertainment = 411+ total content
+- Cost: $0.00
+- Timestamp: 2026-03-24T12:30:00Z
