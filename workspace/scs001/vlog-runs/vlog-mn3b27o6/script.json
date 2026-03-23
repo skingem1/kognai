@@ -1,0 +1,21 @@
+{
+  "title": "AI Revolutionizes Accessibility Testing",
+  "full_monologue": "**AI made accessibility testing 10x faster overnight.** Imagine scanning an entire website in seconds, not hours. AI tools now automatically detect contrast issues, screen reader compatibility, and navigation errors—without needing a human to manually test each element. It’s like having a 24/7 accessibility expert on your team. And the best part? It scales effortlessly. No more endless QA cycles. Just instant feedback. What’s your biggest challenge in testing? Let me know below.",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 5,
+      "duration_s": 3,
+      "visual_prompt": "A person typing on a keyboard with glowing keys, hands moving quickly, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 15,
+      "duration_s": 3,
+      "visual_prompt": "A group of people in a modern office, collaborating with tablets in hand, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

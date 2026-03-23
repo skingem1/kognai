@@ -1,39 +1,14 @@
 {
-  "batch_at": "2026-03-23T14:31:47.001Z",
-  "pipeline_filter": "educational",
+  "batch_at": "2026-03-23T15:10:00.000Z",
+  "pipeline_filter": "educational-tts",
   "runs_planned": 5,
   "runs_completed": 5,
   "results": [
-    {
-      "pipeline": "educational",
-      "runId": "vlog-mn39jg15",
-      "title": "DeepSeek R1: The Most Dangerous AI Model?",
-      "cost": 0.26
-    },
-    {
-      "pipeline": "educational",
-      "runId": "vlog-mn39osmf",
-      "title": "Cursor IDE vs VS Code: Why AI Devs Switch",
-      "cost": 0.26
-    },
-    {
-      "pipeline": "educational",
-      "runId": "vlog-mn39uh4d",
-      "title": "AI Music & Copyright: What You Need to Know",
-      "cost": 0.26
-    },
-    {
-      "pipeline": "educational",
-      "runId": "vlog-mn3a03vk",
-      "title": "Build an AI Agent in 10 Minutes",
-      "cost": 0.26
-    },
-    {
-      "pipeline": "educational",
-      "runId": "vlog-mn3a5eli",
-      "title": "Claude 4 Revolutionizes AI Safety",
-      "cost": 0.26
-    }
+    {"runId": "vlog-mn3aprhn", "title": "AI Limbic System: Emotion & Memory as MCP Servers", "status": "pass", "elapsed_s": 295},
+    {"runId": "vlog-mn3aw8uo", "title": "Local AI vs Cloud: Why Your Hardware Matters", "status": "pass", "elapsed_s": 278},
+    {"runId": "vlog-mn3b27o6", "title": "AI Revolutionizes Accessibility Testing", "status": "pass", "elapsed_s": 267},
+    {"runId": "vlog-mn3ba6uy", "title": "Google's Hidden AI Secret Revealed", "status": "pass", "elapsed_s": 303},
+    {"runId": "vlog-mn3bhn1d", "title": "AI Code Review in 2026: Why It's a Must", "status": "pass", "elapsed_s": 262}
   ],
   "errors": []
 }

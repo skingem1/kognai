@@ -93,6 +93,29 @@ function normalizeVideo(input: string, output: string, opts?: { noAudio?: boolea
   );
 }
 
+/** Strip text-producing elements from B-roll prompts. AI video models hallucinate gibberish text. */
+function sanitizeBrollPrompt(prompt: string): string {
+  // Remove phrases that would produce unreadable text
+  const textPatterns = [
+    /\b(showing|displaying|with)\s+(text|words|title|headline|caption|label|sign|banner|subtitle)/gi,
+    /\b(screen|monitor|laptop|phone|tablet|display)\s+(showing|with|displaying)/gi,
+    /\b(whiteboard|chalkboard|document|paper|book|newspaper|article)\s+(with|showing|reading)/gi,
+    /\b(graph|chart|dashboard)\s+(showing|with|labeled|displaying)/gi,
+    /\bcode\s+(on|showing|displayed)/gi,
+    /\b(stock|price|ticker)\s+(graph|chart|showing)/gi,
+    /\bUI\b|\binterface\b/gi,
+  ];
+  let cleaned = prompt;
+  for (const pat of textPatterns) {
+    cleaned = cleaned.replace(pat, '');
+  }
+  // Append a no-text instruction for the video model
+  if (!cleaned.includes('no text')) {
+    cleaned = cleaned.trim() + ', no text or writing visible, photorealistic, cinematic';
+  }
+  return cleaned.replace(/\s+/g, ' ').trim();
+}
+
 // ── Step 1: Write the script with LLM ────────────────
 
 async function writeScript(topic: string): Promise<VlogScript> {
@@ -107,6 +130,7 @@ Rules:
 - 2-3 moments where we cut to B-roll (visual examples of what presenter is saying)
 - B-roll timestamps must be at least 6 seconds apart
 - End with a question to drive comments
+- CRITICAL for B-roll visual_prompt: AI video generators CANNOT render readable text. NEVER include screens, signs, documents, UI, code, charts with labels, phones, laptops showing content, whiteboards, or anything with text. Instead describe visual scenes: people working, cityscapes, nature, objects, abstract motion, hands typing (no screen visible), walking, crowds, buildings, technology hardware (no screens).
 
 Return JSON only:
 {
@@ -149,6 +173,9 @@ Return JSON only:
     script.broll_cutaways.sort((a, b) => a.timestamp_s - b.timestamp_s);
     for (const cut of script.broll_cutaways) {
       cut.duration_s = Math.max(2, Math.min(cut.duration_s, 4));
+      // Sanitize: strip text-producing elements from visual prompts
+      // AI video generators hallucinate gibberish text on screens/signs
+      cut.visual_prompt = sanitizeBrollPrompt(cut.visual_prompt);
     }
   }
 
@@ -166,6 +193,25 @@ async function generateAvatar(monologue: string, outPath: string, creator: strin
 
   const { generateAvatarVideo } = await import('./avatar-presenter');
   await generateAvatarVideo(monologue, outPath, creator, 300000);
+
+  // Validate: reject black/empty avatar videos (Captions.ai returns black when credits depleted)
+  const checkFrame = '/tmp/avatar_check.png';
+  try {
+    execSync(`${FFMPEG} -y -i "${outPath}" -ss 3 -frames:v 1 "${checkFrame}"`, { stdio: 'pipe', timeout: 10000 });
+    const brightness = execSync(
+      `python3 -c "from PIL import Image; import numpy as np; im=Image.open('${checkFrame}'); print(f'{np.array(im).mean():.1f}')"`,
+      { encoding: 'utf-8', timeout: 5000 }
+    ).trim();
+    const avgPixel = parseFloat(brightness);
+    if (avgPixel < 20) {
+      throw new Error(`Avatar is black/empty (avg pixel: ${avgPixel}). Captions.ai credits likely depleted. Top up at captions.ai/pricing`);
+    }
+    console.log(`  Avatar brightness check: ${avgPixel.toFixed(0)} (OK)`);
+  } catch (err: any) {
+    if (err.message?.includes('Avatar is black')) throw err;
+    console.warn(`  ⚠️ Could not validate avatar: ${err.message?.slice(0, 60)}`);
+  }
+  try { execSync(`rm -f "${checkFrame}"`, { stdio: 'pipe' }); } catch {}
 
   const scaled = outPath.replace('.mp4', '_scaled.mp4');
   normalizeVideo(outPath, scaled);
@@ -635,7 +681,7 @@ async function produceVlog(topic: string, mode: 'avatar' | 'tts' = 'avatar'): Pr
   const script = await writeScript(topic);
   writeFileSync(join(runDir, 'script.json'), JSON.stringify(script, null, 2));
 
-  // 2. Generate backbone video (avatar or TTS fallback)
+  // 2. Generate backbone video (avatar or TTS)
   const avatarPath = join(runDir, 'avatar.mp4');
   if (mode === 'tts') {
     await generateTTSBackbone(script.full_monologue, avatarPath);

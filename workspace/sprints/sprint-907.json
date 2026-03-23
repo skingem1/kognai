@@ -1,0 +1,58 @@
+{
+  "sprint_id": "sprint-907",
+  "title": "V2-CONTENT — 5 TTS-mode videos on trending AI/tech topics",
+  "description": "Produce 5 v2 pipeline videos on fresh trending AI/tech topics using TTS mode.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "907-01",
+      "title": "V2 video: I Built an AI Limbic System — Emotion and Memory as MCP Servers",
+      "type": "ops",
+      "task_target": "scripts/scs001/run-v2-pipeline.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-907"
+    },
+    {
+      "id": "907-02",
+      "title": "V2 video: Is Local AI the Future — Why Running Models on Your Own Hardware Wins",
+      "type": "ops",
+      "task_target": "scripts/scs001/run-v2-pipeline.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-907"
+    },
+    {
+      "id": "907-03",
+      "title": "V2 video: How AI Made Accessibility Testing 10x Faster Overnight",
+      "type": "ops",
+      "task_target": "scripts/scs001/run-v2-pipeline.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-907"
+    },
+    {
+      "id": "907-04",
+      "title": "V2 video: The Secret AI Feature Google Just Dropped That Nobody Noticed",
+      "type": "ops",
+      "task_target": "scripts/scs001/run-v2-pipeline.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-907"
+    },
+    {
+      "id": "907-05",
+      "title": "V2 video: Why Every Developer Needs an AI Code Review Agent in 2026",
+      "type": "ops",
+      "task_target": "scripts/scs001/run-v2-pipeline.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-907"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Google's Hidden AI Secret Revealed",
+  "full_monologue": "Google just rolled out a game-changing AI feature, and no one’s talking about it. It’s embedded in their latest update, allowing voice commands to adapt in real-time based on context—think of it as AI that learns as you speak. It’s not just smarter, it’s more intuitive. And it’s already improving everything from smart home devices to voice assistants. But here’s the kicker: it’s completely silent, so you won’t even know it’s there. What do you think Google is hiding next? Let me know below.",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 5,
+      "duration_s": 3,
+      "visual_prompt": "A person speaking into a microphone while a glowing light pulses in sync with their voice, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 15,
+      "duration_s": 3,
+      "visual_prompt": "A person walking through a city, surrounded by people using voice-activated devices, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

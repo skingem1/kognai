@@ -1,0 +1,21 @@
+{
+  "title": "AI Limbic System: Emotion & Memory as MCP Servers",
+  "full_monologue": "**I built an AI limbic system where emotion and memory run like MCP servers.** Imagine neural networks that don’t just process data, but *feel* it. I designed a framework where emotional responses are stored and retrieved like database queries, and memories are indexed like files in a server. It’s not just AI—it’s a new kind of intelligence. Think of it as a brain with a backup plan. What if your AI could remember your mood from yesterday and adapt accordingly? What would that look like in real life?",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 5,
+      "duration_s": 3,
+      "visual_prompt": "A person typing on a keyboard with glowing keys, surrounded by abstract glowing shapes, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 15,
+      "duration_s": 3,
+      "visual_prompt": "A close-up of hands moving through the air as if manipulating invisible data streams, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

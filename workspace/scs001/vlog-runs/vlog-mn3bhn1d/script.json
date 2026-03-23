@@ -1,0 +1,21 @@
+{
+  "title": "AI Code Review in 2026: Why It's a Must",
+  "full_monologue": "**By 2026, every developer needs an AI code review agent.** Why? They catch bugs faster, improve performance, and keep your code clean—without burning out. Imagine an AI that learns your style, suggests optimizations, and even helps with documentation. It’s like having a 24/7 coding mentor. And with AI handling the routine, you can focus on the big picture. Ready to level up your workflow? Let me know in the comments!",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 5,
+      "duration_s": 3,
+      "visual_prompt": "A developer typing on a keyboard with glowing keys, hands moving rapidly, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 15,
+      "duration_s": 3,
+      "visual_prompt": "A futuristic office with glowing holograms and abstract motion in the background, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

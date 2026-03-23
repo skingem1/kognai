@@ -1,0 +1,21 @@
+{
+  "title": "Local AI vs Cloud: Why Your Hardware Matters",
+  "full_monologue": "**Local AI is the future.** Running models on your own hardware gives you control, speed, and privacy. No more waiting for cloud responses or worrying about data leaks. Think faster processing, lower costs, and full customization. It’s not just about power — it’s about ownership. And with hardware advancing so fast, it’s easier than ever to run complex models locally. So, what do you think — is local AI the way to go?",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 5,
+      "duration_s": 3,
+      "visual_prompt": "A person typing on a keyboard with glowing keys in a dimly lit room, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 15,
+      "duration_s": 3,
+      "visual_prompt": "A close-up of a sleek computer tower with LED lights pulsing rhythmically, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}
