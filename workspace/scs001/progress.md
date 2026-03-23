@@ -4436,3 +4436,17 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no — production runs
 - Issues: fal.ai kling intermittent timeouts (falls back to ltx), Captions.ai still exhausted
 - Timestamp: 2026-03-23T15:20:00Z
+
+## Sprint 904 — V2-CONTENT + BUGFIX — Fix wan VideoModel type + 3 v2 videos
+- Status: PASS
+- Commit: 46ae2a0d
+- Files modified: scripts/scs001/video-segment-generator.ts (add 'wan' to source type union)
+- Files created: workspace/sprints/sprint-904.json, 3 v2 videos (v2-cee99e8c, v2-e3bd4c40, v2-8955235f)
+- V2 videos: "AI Startup That Raised $1B Without a Product" (94/91), "Build Your First AI App in Under 10 Minutes" (92/94), "Why Every Developer Needs to Learn Prompt Engineering Now" (95/92)
+- Pipeline: 25 v2 + 3 TTS vlogs + 6 code demos = 202+ total content
+- Cost: ~$3.29 (fal.ai)
+- Bug fixed: VideoModel type in video-segment-generator.ts missing 'wan' — caused TypeScript compile error and fallback to all color blocks
+- ArtDirector quality: 2 topics REJECTED (Microsoft acquisition conspiracy, misinformation)
+- Swarm used: no — direct production + bugfix
+- Issues: Ollama qwen3:14b very slow/timing out — code demos blocked this sprint
+- Timestamp: 2026-03-23T15:25:00Z
