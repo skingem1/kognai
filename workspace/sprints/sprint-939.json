@@ -1,0 +1,13 @@
+{
+  "sprint_id": "sprint-939",
+  "title": "MULTI-PIPELINE — 3 code demos + 2 TTS vlogs (TTS mode)",
+  "description": "3 code demos + 2 TTS-mode vlogs. Content stockpile 373+.",
+  "source": "ops",
+  "tasks": [
+    {"id": "939-01", "title": "Code demo: Build a Hangman Game in Python", "type": "ops", "task_target": "scripts/scs001/pipelines/code-demo.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-939", "output": "demo-mn3puy1w"},
+    {"id": "939-02", "title": "Code demo: Create a File Compressor in Python", "type": "ops", "task_target": "scripts/scs001/pipelines/code-demo.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-939", "output": "demo-mn3pwx17"},
+    {"id": "939-03", "title": "Code demo: Build a Login System in Python", "type": "ops", "task_target": "scripts/scs001/pipelines/code-demo.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-939", "output": "demo-mn3pykdu"},
+    {"id": "939-04", "title": "V2 video (TTS): Tesla's Self Driving AI Just Passed the Human Test", "type": "ops", "task_target": "scripts/scs001/produce-vlog.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-939", "output": "vlog-mn3q08h1", "mode": "tts"},
+    {"id": "939-05", "title": "V2 video (TTS): How to Build an AI Startup With Zero Funding", "type": "ops", "task_target": "scripts/scs001/produce-vlog.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-939", "output": "vlog-mn3q1ilc", "mode": "tts"}
+  ]
+}

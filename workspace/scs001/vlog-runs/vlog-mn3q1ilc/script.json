@@ -1,0 +1,21 @@
+{
+  "title": "Build an AI Startup with Zero Funding",
+  "full_monologue": "Start with a clear problem and a bold idea. Focus on building a prototype with free tools and open-source frameworks. Leverage online communities for feedback and collaboration. Use your network to gain early adopters and build momentum. Stay lean, iterate fast, and keep your vision sharp. Now, what’s your AI startup idea?",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 6,
+      "duration_s": 6,
+      "visual_prompt": "A person typing on a laptop in a bright, modern workspace, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 18,
+      "duration_s": 6,
+      "visual_prompt": "A group of diverse people brainstorming and collaborating in a co-working space, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

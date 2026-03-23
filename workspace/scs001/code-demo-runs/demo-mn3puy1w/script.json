@@ -1,0 +1,93 @@
+{
+  "demo_id": "demo-mn3puy1y",
+  "title": "Python Hangman in 30 Seconds!",
+  "language": "python",
+  "total_duration_s": 32,
+  "steps": [
+    {
+      "step_id": "s1",
+      "title": "Step 1: Setup",
+      "code_lines": [
+        "import random",
+        "words = ['python', 'hangman', 'challenge', 'programming', 'game']",
+        "word = random.choice(words)"
+      ],
+      "language": "python",
+      "explanation": "We import random and pick a random word from our list.",
+      "duration_s": 6,
+      "highlight_lines": [
+        1
+      ]
+    },
+    {
+      "step_id": "s2",
+      "title": "Step 2: Game Loop",
+      "code_lines": [
+        "guessed = set()",
+        "tries = 6",
+        "while tries > 0:",
+        "    print(' '.join(letter if letter in guessed else '_' for letter in word))"
+      ],
+      "language": "python",
+      "explanation": "We track guessed letters and display the word with blanks for unguessed letters.",
+      "duration_s": 7,
+      "highlight_lines": [
+        3
+      ]
+    },
+    {
+      "step_id": "s3",
+      "title": "Step 3: Handle Guesses",
+      "code_lines": [
+        "guess = input('Guess a letter: ').lower()",
+        "if guess in guessed:",
+        "    print('Already guessed!')",
+        "guessed.add(guess)"
+      ],
+      "language": "python",
+      "explanation": "We take a guess and check if it's already been used.",
+      "duration_s": 6,
+      "highlight_lines": [
+        1
+      ]
+    },
+    {
+      "step_id": "s4",
+      "title": "Step 4: Win or Lose",
+      "code_lines": [
+        "if all(letter in guessed for letter in word):",
+        "    print('You win!')",
+        "else:",
+        "    print(f'You lose! The word was {word}.')"
+      ],
+      "language": "python",
+      "explanation": "We check if the player won or lost and display the result.",
+      "duration_s": 7,
+      "highlight_lines": [
+        1
+      ]
+    },
+    {
+      "step_id": "s5",
+      "title": "Try It Yourself!",
+      "code_lines": [
+        "# Try it yourself and see if you can guess the word!"
+      ],
+      "language": "python",
+      "explanation": "Try it yourself and see if you can guess the word!",
+      "duration_s": 6,
+      "highlight_lines": [
+        0
+      ]
+    }
+  ],
+  "hashtags": [
+    "#coding",
+    "#python",
+    "#hangman",
+    "#tutorial"
+  ],
+  "intro_hook": "Let's code a fun Hangman game in Python!",
+  "source": "user",
+  "topic_source": "user-prompt"
+}

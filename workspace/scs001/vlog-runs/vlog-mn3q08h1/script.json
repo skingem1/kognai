@@ -1,0 +1,21 @@
+{
+  "title": "Tesla's AI Just Passed the Human Test",
+  "full_monologue": "**Tesla's Self Driving AI Just Passed the Human Test**. Recent tests show Tesla's Autopilot can now handle complex driving scenarios as well as, if not better than, human drivers. Think sudden lane changes, unpredictable pedestrians, and chaotic city traffic — all mastered by AI. This isn’t just a leap forward for autonomous vehicles; it’s a game-changer for road safety and transportation. The implications are huge, and we’re only scratching the surface. What do you think? Is this the future of driving?",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 6,
+      "duration_s": 6,
+      "visual_prompt": "a car smoothly navigating through a busy city street with pedestrians and other vehicles, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 18,
+      "duration_s": 6,
+      "visual_prompt": "a close-up of a car’s sensors and cameras reacting to the environment in real time, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}
