@@ -3670,3 +3670,16 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (content production run)
 - Cost: ~$0.50
 - Timestamp: 2026-03-23T04:10:00Z
+
+## Sprint 839 — OPS: bulk caption export + /bulk-captions command
+- Status: PASS
+- Commit: 6a04e68
+- Files created: scripts/scs001/bulk-captions.ts, reports/bulk-captions.json, workspace/sprints/sprint-839.json
+- Files modified: scripts/telegram-commands/cmd-posting.ts, scripts/telegram-bot.ts
+- New command: /bulk-captions — generates and shows all ready videos with TikTok captions
+- Auto-deliver triggered: 3 new videos sent to operator
+- Export: 98 ready videos with captions in reports/bulk-captions.json
+- Gate: 4/30 posted, 26 remaining, 54 unique in inventory
+- Swarm used: no (multi-file wiring)
+- Cost: ~$0.15
+- Timestamp: 2026-03-23T04:30:00Z
