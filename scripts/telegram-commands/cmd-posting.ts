@@ -1410,3 +1410,41 @@ export function cmdPostNext(): string {
 
   return lines.join('\n');
 }
+
+// Sprint 835: /posting-health — posting infrastructure health check
+export function cmdPostingHealth(): string {
+  const reportPath = path.join(ROOT, 'reports', 'posting-health.json');
+
+  // Auto-regenerate report
+  try {
+    execSync('npx ts-node --transpile-only scripts/scs001/posting-health.ts', {
+      cwd: ROOT, timeout: 60000, stdio: 'pipe',
+    });
+  } catch { /* try to read existing */ }
+
+  if (!fs.existsSync(reportPath)) {
+    return '❌ No posting health report. Run `npx ts-node scripts/scs001/posting-health.ts`';
+  }
+
+  try {
+    const r = JSON.parse(fs.readFileSync(reportPath, 'utf-8'));
+    const lines: string[] = [
+      `🏥 *Posting Health ${r.all_pass ? '✅' : '⚠️'}*`,
+      '',
+    ];
+
+    for (const c of (r.checks || [])) {
+      lines.push(`${c.pass ? '✅' : '❌'} ${c.name}: ${c.detail}`);
+    }
+
+    const g = r.gate || {};
+    lines.push('');
+    lines.push(`📊 Gate: ${g.posted ?? 0}/${g.target ?? 30} · ${g.remaining ?? '?'} to go · ${g.days_left ?? '?'}d left`);
+    lines.push(`📦 Inventory: ${r.inventory?.videos_with_files ?? '?'} videos with files`);
+    lines.push(`_Generated: ${r.generated_at ? r.generated_at.split('T')[0] : '?'}_`);
+
+    return lines.join('\n');
+  } catch (e: any) {
+    return `❌ Error reading health report: ${e.message}`;
+  }
+}
