@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-8083ce91",
+  "topic_id": "custom-mn2v1v41-2",
+  "format": "vision",
+  "title": "Why the next trillion dollar company will be built by one person",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "What if the next trillion-dollar company isn’t built by a team — but one person using AI and blockchain?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Today, a single developer can create apps using AI coding tools and deploy them on global blockchains in minutes.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "But if one person controls a company worth a trillion dollars, how do we ensure transparency, fairness, and accountability?",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Open-source AI frameworks and decentralized governance models are being built to let communities shape and monitor these systems.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "Imagine a solo entrepreneur using AI to solve climate change — their impact could be massive, and their success truly global.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future may belong to the individual who can harness technology, ethics, and vision in perfect balance.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of why",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#why",
+    "#the",
+    "#next"
+  ],
+  "video_cue": "A lone figure at a computer, surrounded by holographic data streams and AI-generated blueprints for a sustainable city.",
+  "generated_at": "2026-03-23T07:25:48.904Z",
+  "llm_used": true
+}

@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-2e8b32ea",
+  "topic_id": "custom-mn2uzg1z-2",
+  "format": "debate",
+  "title": "Why the next trillion dollar company will be built by one person",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "The next trillion-dollar company will be built by one person—because blockchain and smart contracts enable solo execution at scale.",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "That's naive. Modern startups require teams for AI training, infrastructure, and user acquisition—no single person can do it all.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Look at Ethereum’s founder. He created a protocol that now powers millions of apps—alone, with open-source collaboration.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Protocols aren’t companies. They’re infrastructure. The real value comes from apps built on top, which need teams to monetize and scale.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "One person can launch a protocol, and others will build on it—just like Bitcoin, created by one, now worth trillions.",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "why vs the",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#why",
+    "#the",
+    "#next"
+  ],
+  "generated_at": "2026-03-23T07:23:45.073Z",
+  "llm_used": true
+}

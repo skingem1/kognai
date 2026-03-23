@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-82f4f410",
+  "topic_id": "custom-mn2uwx1r-0",
+  "format": "explainer",
+  "title": "The scariest AI deepfake you have ever seen",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Did you ever see a video of your own face saying things you never said?",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This AI deepfake is so realistic, it’s being used to spread misinformation faster than ever.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "It’s a deepfake of a real CEO saying a company is bankrupt — made in just 15 minutes.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The AI uses voice cloning and facial mapping from just 30 seconds of video.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Lawmakers, journalists, and even family members are falling for it.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The key takeaway? You can’t trust what you see online without verification.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Have you seen a deepfake that scared you? Let me know in the comments.",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "The scariest AI deepfake you have ever seen",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#the",
+    "#scariest",
+    "#ai"
+  ],
+  "generated_at": "2026-03-23T07:21:15.619Z",
+  "llm_used": true
+}

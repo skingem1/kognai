@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-914d788b",
+  "topic_id": "custom-mn2uwx1r-2",
+  "format": "explainer",
+  "title": "Why the next trillion dollar company will be built by one person",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Did you know the next trillion-dollar company might be built by just one person?",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "We’re in a new era where solo founders can scale faster than ever before.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "It’s about AI tools that let one person build a global business from their laptop.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "No-code platforms and AI co-pilots are making this possible, like with tools from Zapier or Figma.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This changes everything for entrepreneurs, especially in tech and SaaS.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The key is speed — one person can now move faster than a whole team used to.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "What if you’re the next one?",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "Why the next trillion dollar company will be built by one person",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#why",
+    "#the",
+    "#next"
+  ],
+  "generated_at": "2026-03-23T07:21:42.135Z",
+  "llm_used": true
+}

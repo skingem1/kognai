@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-abc6eb8d",
+  "topic_id": "custom-mn2v1v41-0",
+  "format": "vision",
+  "title": "The scariest AI deepfake you have ever seen",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "What’s the most unsettling AI deepfake you’ve encountered, and why does it haunt you?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "High-fidelity voice cloning can mimic loved ones, tricking people into sending money or sensitive info — it’s already been used in scams.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "The real danger lies in political manipulation — deepfakes of leaders making false statements could incite violence or destabilize nations.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "We’re developing watermarking and detection tools using neural hashes and metadata to flag AI-generated media at scale.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "With global standards on AI ethics and transparency, we could build a future where deepfakes are clearly marked and used responsibly.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future hinges on balancing innovation with accountability — shaping AI’s role in truth and trust.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of the",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#the",
+    "#scariest",
+    "#ai"
+  ],
+  "video_cue": "A split-screen showing a deepfake video on the left and a detection tool highlighting its artificial nature on the right.",
+  "generated_at": "2026-03-23T07:25:11.764Z",
+  "llm_used": true
+}
