@@ -4791,3 +4791,15 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no — executed directly
 - Issues: HeyGen credits exhausted — avatar vlogs blocked until credits refilled
 - Timestamp: 2026-03-24T04:00:00Z
+
+## Sprint 931 — MULTI-PIPELINE — 3 code demos + 2 TTS vlogs (TTS fallback)
+- Status: PASS (5/5)
+- Commit: a80be193
+- Files created: workspace/sprints/sprint-931.json, 3 code demo runs, 2 TTS vlog runs
+- Code demos: "Sudoku Solver" (demo-mn3nvut3), "Clipboard Manager" (demo-mn3nxx6m), "News Scraper" (demo-mn3nzglo)
+- Vlogs (TTS mode): "Zuckerberg AI Creators" (vlog-mn3o2q1r), "Free AI Tool" (vlog-mn3o0sd1)
+- Pipeline: 31 v2 + 67 TTS vlogs + 62 code demos + 5 entertainment = 333+ total content
+- Cost: ~$0.05 (ElevenLabs TTS only, code demos $0.00)
+- Swarm used: no — executed directly
+- Issues: TTS mode confirmed working as HeyGen fallback. Much faster (~55s vs ~500s). Don't run 2 TTS vlogs in parallel — run IDs can collide.
+- Timestamp: 2026-03-24T04:30:00Z
