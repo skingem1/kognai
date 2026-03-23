@@ -1,0 +1,12 @@
+{
+  "scenario_id": "scn-ai7x92",
+  "verdict": "PASS",
+  "message_score": 94,
+  "scroll_stop_score": 96,
+  "message_analysis": "Crystal clear single message: ChatGPT Memory is a hidden, high-impact feature most users don't know about, and enabling it saves significant time. Every scene reinforces this — no filler. The angle is genuinely original (focuses on Memory, not prompting). Hook promises 'one feature that changes everything' and delivers concrete proof. The identity threat ('99% are missing this') creates shareability — viewers want to prove they're in the 1%.",
+  "scroll_stop_analysis": "Exceptional. First 5 seconds hit hard: bold 'YOU'RE USING AI WRONG' + blinking cursor creates immediate curiosity and slight anxiety. Pattern interrupts are consistent (2-3 per scene). Pacing is tight — no dead air, each scene accelerates tension. Emotion arc builds perfectly: curiosity → shock (AI forgets you) → revelation (Memory exists) → proof (it works) → urgency (everyone else is behind) → satisfaction (you now know). Visuals are native TikTok: text overlays, screen recordings, kinetic cuts. This would stop a scroller cold.",
+  "fixes": [],
+  "confidence": 97,
+  "model_used": "claude-haiku-4-5-20251001",
+  "reviewed_at": "2026-03-23T09:45:22.732Z"
+}

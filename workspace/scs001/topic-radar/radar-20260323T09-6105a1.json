@@ -1,0 +1,107 @@
+{
+  "radar_id": "radar-20260323T09-6105a1",
+  "collected_at": "2026-03-23T09:00:11.544Z",
+  "topics": [
+    {
+      "topic_id": "gtrend-7d3194f79e64",
+      "title": "openai",
+      "summary": "Google Trends #4 (US)",
+      "format": "explainer",
+      "source": "google_trends",
+      "source_url": "https://trends.google.com/trending?geo=US",
+      "confidence": 90,
+      "keywords": [
+        "openai"
+      ],
+      "collected_at": "2026-03-23T09:00:01.180Z"
+    },
+    {
+      "topic_id": "cg-b60d7bdd334c",
+      "title": "Ethereum (ETH) 📉 -1.6%",
+      "summary": "Trending on CoinGecko — rank #9",
+      "format": "explainer",
+      "source": "coingecko",
+      "source_url": "https://www.coingecko.com/en/coins/ethereum",
+      "confidence": 51.62151070806618,
+      "keywords": [
+        "ethereum",
+        "eth",
+        "crypto",
+        "defi"
+      ],
+      "collected_at": "2026-03-23T09:00:00.789Z"
+    },
+    {
+      "topic_id": "cg-dae735d95742",
+      "title": "Siren (SIREN) 📈 94.1%",
+      "summary": "Trending on CoinGecko — rank #1",
+      "format": "debate",
+      "source": "coingecko",
+      "source_url": "https://www.coingecko.com/en/coins/siren-2",
+      "confidence": 80,
+      "keywords": [
+        "siren",
+        "siren",
+        "crypto",
+        "defi"
+      ],
+      "debate_sides": {
+        "side_a": "Siren is overvalued",
+        "side_b": "Siren rally is justified"
+      },
+      "collected_at": "2026-03-23T09:00:00.789Z"
+    },
+    {
+      "topic_id": "reddit-1f53fbbe945c",
+      "title": "Andrej Karpathy's autonomous AI research agent ran 700 experiments in 2 days and gave a glimpse of where AI is heading",
+      "summary": "Reddit r/artificial (7 pts, 1 comments)",
+      "format": "vision",
+      "source": "reddit",
+      "source_url": "https://www.reddit.com/r/artificial/comments/1s1b1zm/andrej_karpathys_autonomous_ai_research_agent_ran/",
+      "confidence": 40,
+      "keywords": [
+        "andrej",
+        "karpathy's",
+        "autonomous",
+        "research",
+        "agent",
+        "experiments"
+      ],
+      "collected_at": "2026-03-23T09:00:02.265Z"
+    },
+    {
+      "topic_id": "devto-4cba84f55c78",
+      "title": "I Built 26 AI Career Tools for Claude Code — Here's What I Learned",
+      "summary": "Dev.to (1 reactions, 0 comments)",
+      "format": "listicle",
+      "source": "dev_to",
+      "source_url": "https://dev.to/ajitsingh25/i-built-26-ai-career-tools-for-claude-code-heres-what-i-learned-489k",
+      "confidence": 45,
+      "keywords": [
+        "built",
+        "career",
+        "tools",
+        "claude",
+        "code",
+        "here's"
+      ],
+      "listicle_items": [
+        "Built",
+        "Career",
+        "Tools"
+      ],
+      "collected_at": "2026-03-23T09:00:01.315Z"
+    }
+  ],
+  "sources_hit": [
+    "github",
+    "arxiv",
+    "coingecko",
+    "google_trends",
+    "reddit",
+    "dev_to",
+    "lobsters",
+    "techcrunch"
+  ],
+  "errors": []
+}

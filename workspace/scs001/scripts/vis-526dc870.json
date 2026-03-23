@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-526dc870",
+  "topic_id": "custom-mn2x5nfe-2",
+  "format": "vision",
+  "title": "Why quantum computing will break cryptocurrency by 2030",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "If quantum computing breaks crypto by 2030, what will that mean for trust in digital systems?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Shor’s algorithm can crack RSA and ECC encryption, which underpin most cryptocurrencies, within a few years as quantum hardware advances.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "Centralized control over digital wealth could erode financial privacy and empower authoritarian regimes to track and manipulate transactions.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Post-quantum cryptography and lattice-based algorithms are being standardized now to future-proof blockchain protocols.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "A quantum-safe crypto world could foster more equitable access to financial systems and protect individual freedoms globally.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The race is on—between quantum threats and quantum defenses, shaping the next era of digital trust.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of why",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#why",
+    "#quantum",
+    "#computing"
+  ],
+  "video_cue": "A split screen showing quantum computers on one side and secure blockchain networks on the other, with data flowing between them.",
+  "generated_at": "2026-03-23T08:24:39.809Z",
+  "llm_used": true
+}

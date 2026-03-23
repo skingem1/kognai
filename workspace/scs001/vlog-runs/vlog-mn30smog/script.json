@@ -1,0 +1,21 @@
+{
+  "title": "Prompt Engineering: The New Dev Skill",
+  "full_monologue": "**Prompt engineering is the future of coding in 2026.** As AI becomes more integrated into software development, knowing how to craft precise prompts can make or break your project. Whether you're fine-tuning models or automating workflows, this skill is non-negotiable. Developers who master it will lead the charge in innovation. Don’t get left behind—start learning today. What’s your first step in mastering prompt engineering?",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 5,
+      "duration_s": 3,
+      "visual_prompt": "A developer typing code on a laptop with an AI assistant open on the screen"
+    },
+    {
+      "timestamp_s": 15,
+      "duration_s": 3,
+      "visual_prompt": "A split-screen showing a prompt input on the left and a generated output on the right"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

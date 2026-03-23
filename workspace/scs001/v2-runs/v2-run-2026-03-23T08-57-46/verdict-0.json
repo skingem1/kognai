@@ -1,0 +1,12 @@
+{
+  "scenario_id": "scs-001-v2-ai-devs-001",
+  "verdict": "PASS",
+  "message_score": 92,
+  "scroll_stop_score": 94,
+  "message_analysis": "Crystal clear single message: AI agents are replacing junior developers NOW, but those who master specific AI skills will survive and advance. Every scene reinforces this thesis without filler. The angle is original — not 'AI is coming,' but 'it already happened, here's proof, here's how to survive.' The hook promises concrete proof and delivers it in Scene 2 with real GitHub data. The emotional journey from shock→dread→empathy→empowerment→unresolved tension is designed to compel reshares and rewatches. A junior dev will absolutely stop scrolling AND share this because it hits their identity threat directly while offering a survival path.",
+  "scroll_stop_analysis": "First 4 seconds nail it: '18 devs replaced for $49/month' + visual of fired Slack message + empty office is a genuine pattern interrupt. The viewer's brain stops because identity threat. Pacing is tight: 6 scenes in 50s means ~8s per scene average with rapid cuts, text punches, and visual transitions every 1.5-2s. No dead air. Scene 2's split-screen real AI agent code + merged PRs is proof, not fluff. Scene 3's kinetic typography explosion ('COPILOT,' 'DEVIN,' 'CURSOR' hitting like punches) + '95% filtered out' is peak scroll-stopper. The emotion arc peaks at existential dread (Scene 3) then pivots to hope (Scene 5) without losing tension. Scene 6's loop callback to Scene 1 with the new AI notification twist is native TikTok — creates curiosity for rewatch. This feels like a confession, not a lecture.",
+  "fixes": [],
+  "confidence": 96,
+  "model_used": "claude-haiku-4-5-20251001",
+  "reviewed_at": "2026-03-23T08:59:12.937Z"
+}

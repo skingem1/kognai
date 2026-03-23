@@ -1,0 +1,74 @@
+{
+  "script_id": "exp-e71b5361",
+  "topic_id": "gtrend-7d3194f79e64",
+  "format": "explainer",
+  "title": "openai",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "OpenAI just cracked a major AI breakthrough — and it’s changing everything.",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This surge in interest means AI is no longer a distant future, it's here.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "OpenAI is the company behind GPT-4, the same tech powering ChatGPT and Copilot.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Their latest update lets AI write code in seconds — faster than any human.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This affects developers, businesses, and even schools relying on AI tools.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The key takeaway? OpenAI is leading the AI race — and it's accelerating fast.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "What do you think AI will be able to do next? Let me know in the comments.",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "openai",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#openai"
+  ],
+  "generated_at": "2026-03-23T09:10:34.276Z",
+  "llm_used": true
+}

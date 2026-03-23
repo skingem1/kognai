@@ -1,0 +1,21 @@
+{
+  "title": "AI Agents Taking Over Junior Dev Jobs?",
+  "full_monologue": "**AI agents are about to replace most junior developers**. With tools like GitHub Copilot and AI code generators, writing basic code is becoming automated. Junior devs are now expected to solve complex problems, not just write boilerplate. We see this in startups using AI to build entire apps with minimal human input. So, what skills will junior developers need to stay relevant? Comment below.",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 5,
+      "duration_s": 3,
+      "visual_prompt": "AI code generator interface with lines of code being written automatically"
+    },
+    {
+      "timestamp_s": 15,
+      "duration_s": 3,
+      "visual_prompt": "junior developer at a desk, looking focused, with a laptop showing complex code"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

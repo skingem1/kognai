@@ -1,0 +1,38 @@
+{
+  "sprint_id": "sprint-896",
+  "title": "V2-CONTENT — Batch produce 3 v2 videos on fresh AI topics",
+  "description": "Produce 3 high-quality v2 videos with fresh, diverse topics. Tests improved Captions.ai reliability (Sprint 895).",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "896-01",
+      "title": "V2 video: 'Elon Musk Just Admitted AI Will Replace 80% of Jobs'",
+      "type": "ops",
+      "task_target": "scripts/scs001/run-v2-pipeline.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-896"
+    },
+    {
+      "id": "896-02",
+      "title": "V2 video: 'This Free AI Tool Does What ChatGPT Cant'",
+      "type": "ops",
+      "task_target": "scripts/scs001/run-v2-pipeline.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-896"
+    },
+    {
+      "id": "896-03",
+      "title": "V2 video: 'Google Just Killed Its Own AI Product and Nobody Noticed'",
+      "type": "ops",
+      "task_target": "scripts/scs001/run-v2-pipeline.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-896"
+    }
+  ]
+}

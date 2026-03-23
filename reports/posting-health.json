@@ -1,0 +1,46 @@
+{
+  "generated_at": "2026-03-23T01:47:15.477Z",
+  "all_pass": true,
+  "checks": [
+    {
+      "name": "Schedule file",
+      "pass": true,
+      "detail": "posting-schedule.json exists"
+    },
+    {
+      "name": "Schedule freshness",
+      "pass": true,
+      "detail": "0.0h old"
+    },
+    {
+      "name": "Gate progress",
+      "pass": true,
+      "detail": "4/30 posted · 26 remaining · 15d left · 1.7/day needed"
+    },
+    {
+      "name": "Video inventory",
+      "pass": true,
+      "detail": "39 unposted videos with MP4 files (need 26)"
+    },
+    {
+      "name": "Scheduled video files",
+      "pass": true,
+      "detail": "All 26 scheduled slots have MP4 files"
+    },
+    {
+      "name": "Today's slots",
+      "pass": true,
+      "detail": "2 videos scheduled for today (Mon)"
+    }
+  ],
+  "gate": {
+    "posted": 4,
+    "target": 30,
+    "remaining": 26,
+    "days_left": 15,
+    "pace_needed": 1.7
+  },
+  "inventory": {
+    "videos_with_files": 39
+  }
+}

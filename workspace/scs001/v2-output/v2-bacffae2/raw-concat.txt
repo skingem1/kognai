@@ -1,0 +1,6 @@
+file '/Users/tarekmnif/kognai/workspace/scs001/v2-output/v2-bacffae2/segments/scene_0_The Shock Hook.mp4'
+file '/Users/tarekmnif/kognai/workspace/scs001/v2-output/v2-bacffae2/segments/scene_1_The Proof Drop.mp4'
+file '/Users/tarekmnif/kognai/workspace/scs001/v2-output/v2-bacffae2/segments/scene_2_The Escalation.mp4'
+file '/Users/tarekmnif/kognai/workspace/scs001/v2-output/v2-bacffae2/segments/scene_3_The Human Cost.mp4'
+file '/Users/tarekmnif/kognai/workspace/scs001/v2-output/v2-bacffae2/segments/scene_4_The Pivot — The Survival Map.mp4'
+file '/Users/tarekmnif/kognai/workspace/scs001/v2-output/v2-bacffae2/segments/scene_5_The Loop Close.mp4'

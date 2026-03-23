@@ -1,0 +1,12 @@
+{
+  "scenario_id": "scn-ox7k29",
+  "verdict": "PASS",
+  "message_score": 92,
+  "scroll_stop_score": 88,
+  "message_analysis": "Crystal clear single message: OpenAI's $90B valuation is threatened by free open-source AI, forcing them into desperate regulatory lobbying. Every scene reinforces this thesis without filler. The angle is original — framing a tech power shift as a suppressed corporate truth that viewers 'shouldn't know' triggers both curiosity and shareability. Hook promises a hidden motive behind OpenAI's behavior; payoff delivers regulatory lobby evidence. This hits the algorithmic sweet spot of 'big company exposed.'",
+  "scroll_stop_analysis": "First 1.5 seconds are devastating: '$90 BILLION' + 'TERRIFIED OF FREE SOFTWARE?' with kinetic red pulse creates immediate cognitive dissonance and pattern break. Scene 2 sustains with rapid visual cuts (GitHub stars, benchmarks, downloads) — no dead air. Pacing is tight at 35s. Emotion arc executes cleanly: shock hook → intrigue (free models catching up) → revelation (leaked memo) → urgency (pricing collision) → shock (regulatory capture) → loop payoff. This feels native TikTok, not preachy — it's corporate conspiracy framed as insider knowledge.",
+  "fixes": [],
+  "confidence": 94,
+  "model_used": "claude-haiku-4-5-20251001",
+  "reviewed_at": "2026-03-23T09:33:49.315Z"
+}

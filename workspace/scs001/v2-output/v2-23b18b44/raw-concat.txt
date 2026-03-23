@@ -1,0 +1,6 @@
+file '/Users/tarekmnif/kognai/workspace/scs001/v2-output/v2-23b18b44/segments/scene_0_The Gut Punch Hook.mp4'
+file '/Users/tarekmnif/kognai/workspace/scs001/v2-output/v2-23b18b44/segments/scene_1_The Evidence Drop.mp4'
+file '/Users/tarekmnif/kognai/workspace/scs001/v2-output/v2-23b18b44/segments/scene_2_The Numbers That Hurt.mp4'
+file '/Users/tarekmnif/kognai/workspace/scs001/v2-output/v2-23b18b44/segments/scene_3_The Reveal Nobody Talks About.mp4'
+file '/Users/tarekmnif/kognai/workspace/scs001/v2-output/v2-23b18b44/segments/scene_4_The Survival Play.mp4'
+file '/Users/tarekmnif/kognai/workspace/scs001/v2-output/v2-23b18b44/segments/scene_5_The Loop Closer.mp4'

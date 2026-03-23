@@ -1,0 +1,111 @@
+{
+  "scenario_id": "scn-ox7k29",
+  "trend_signal_id": "custom-v2-1774258398021",
+  "title": "Why OpenAI Is Secretly Terrified of Open Source AI",
+  "angle": "OpenAI built its moat on secrecy — but open source just made that moat irrelevant, and insiders know it.",
+  "scenes": [
+    {
+      "scene_id": "s1",
+      "scene_name": "The Shock Hook",
+      "duration_s": 5,
+      "voiceover": "OpenAI has a $90 billion valuation. And they are absolutely terrified of free software.",
+      "visual_style": "kinetic_text",
+      "visual_description": "Bold white text slams onto black screen: '$90 BILLION' then cuts hard to 'TERRIFIED OF... FREE SOFTWARE?' Red pulse effect on cut.",
+      "caption_overlay": "Why is the world's most powerful AI company scared of FREE code?",
+      "emotion": "shock",
+      "music_cue": "impact_hit",
+      "pattern_interrupts": 3
+    },
+    {
+      "scene_id": "s2",
+      "scene_name": "The Dirty Secret",
+      "duration_s": 6,
+      "voiceover": "Meta's Llama. Mistral. DeepSeek. All free. All catching up to GPT-4 faster than anyone predicted.",
+      "visual_style": "b_roll_montage",
+      "visual_description": "Rapid cuts: GitHub star counts exploding, download bars filling, model benchmark charts with open-source closing the gap on OpenAI scores.",
+      "caption_overlay": "Open source models are matching GPT-4... for $0",
+      "emotion": "intrigue",
+      "music_cue": "tension_build",
+      "pattern_interrupts": 3
+    },
+    {
+      "scene_id": "s3",
+      "scene_name": "The Leaked Memo",
+      "duration_s": 6,
+      "voiceover": "A leaked Google memo said it directly: 'We have no moat. Neither does OpenAI.' That was 2023. It got worse.",
+      "visual_style": "screen_recording",
+      "visual_description": "Zoomed-in screen of the leaked Google memo doc, key phrase highlighted in yellow: 'We have no moat.' Camera slowly pushes in. Then hard cut to 2024 benchmark data.",
+      "caption_overlay": "\"We have no moat. Neither does OpenAI.\" — leaked Google memo",
+      "emotion": "revelation",
+      "music_cue": "silence",
+      "pattern_interrupts": 2
+    },
+    {
+      "scene_id": "s4",
+      "scene_name": "OpenAI's Real Business Problem",
+      "duration_s": 6,
+      "voiceover": "OpenAI's entire model charges you to use AI. If you can run the same thing locally for free... why would you pay?",
+      "visual_style": "kinetic_text",
+      "visual_description": "Split screen: left side shows OpenAI pricing tiers stacking up in red. Right side shows open-source logos dropping to a giant '$0'. They collide center screen.",
+      "caption_overlay": "Their whole business model depends on you NOT knowing this",
+      "emotion": "urgency",
+      "music_cue": "tension_build",
+      "pattern_interrupts": 2
+    },
+    {
+      "scene_id": "s5",
+      "scene_name": "The Desperate Moves",
+      "duration_s": 6,
+      "voiceover": "So they lobbied governments to regulate open source. They called it dangerous. Coincidence? Absolutely not.",
+      "visual_style": "documentary",
+      "visual_description": "Quick cuts: Sam Altman testifying in Senate, news headlines about AI regulation, then slow zoom on OpenAI logo with sinister low-angle lighting.",
+      "caption_overlay": "They're trying to use the government to kill the competition",
+      "emotion": "shock",
+      "music_cue": "impact_hit",
+      "pattern_interrupts": 3
+    },
+    {
+      "scene_id": "s6",
+      "scene_name": "The Loop Payoff",
+      "duration_s": 6,
+      "voiceover": "A $90 billion company. Scared of free software. Because when anyone can build what you sell... the game is already over.",
+      "visual_style": "kinetic_text",
+      "visual_description": "Text builds: '$90 BILLION' fades back in from scene 1, then cracks apart pixel by pixel as open-source logos fill the screen. Loop point: last frame mirrors the opening black screen.",
+      "caption_overlay": "The $90B company vs. free code. Who wins?",
+      "emotion": "loop",
+      "music_cue": "impact_hit",
+      "pattern_interrupts": 2
+    }
+  ],
+  "hook_test": {
+    "format_reference": "The Real Reason X Happened",
+    "viral_proof": "Videos using the 'hidden motive behind powerful institution' frame consistently clear 10M+ views. Examples: 'The real reason Apple killed the headphone jack' (14M+), 'Why banks don't want you to know this' (22M+). Conspiracy-adjacent corporate exposure is one of TikTok's highest-retention formats.",
+    "why_it_works": "It fuses financial stakes ($90B), a power imbalance (giant vs. free), and a suppressed truth narrative — triggering algorithmic curiosity loops. Viewers feel smart for watching and angry enough to share.",
+    "estimated_hook_rate": 42
+  },
+  "total_duration_s": 35,
+  "target_emotion_arc": [
+    "shock",
+    "intrigue",
+    "revelation",
+    "urgency",
+    "shock",
+    "loop"
+  ],
+  "speaker_name": "Kognai",
+  "tts_voice": "default",
+  "hashtags": [
+    "#openai",
+    "#opensourceai",
+    "#llama",
+    "#airegulation",
+    "#techexposed",
+    "#deepseek",
+    "#artificialintelligence",
+    "#techtok",
+    "#bigtech",
+    "#AIwar"
+  ],
+  "created_at": "2026-03-23T09:33:44.735Z",
+  "model_used": "claude-sonnet-4-6"
+}

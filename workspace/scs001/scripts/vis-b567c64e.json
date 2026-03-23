@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-b567c64e",
+  "topic_id": "custom-mn2xnt94-2",
+  "format": "vision",
+  "title": "Why Africa will lead the next wave of tech innovation",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "What if Africa's challenges are the catalysts for the next big tech breakthroughs?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Now, mobile-first tech, solar microgrids, and AI-driven agriculture are scaling rapidly across the continent.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "But without inclusive policies, these innovations risk deepening inequality and eroding local cultures.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Builders are partnering with communities to co-design solutions that prioritize accessibility and sustainability.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "Imagine a future where African-led tech empowers rural economies and redefines global innovation standards.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "Africa’s unique problems may just be the blueprint for tomorrow’s most impactful technologies.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of why",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#why",
+    "#africa",
+    "#will"
+  ],
+  "video_cue": "A vibrant African village with solar-powered kiosks, drones delivering medical supplies, and children using tablets for education.",
+  "generated_at": "2026-03-23T08:38:44.933Z",
+  "llm_used": true
+}

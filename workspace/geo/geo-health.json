@@ -1,0 +1,74 @@
+{
+  "scan_date": "2026-03-23T07:00:00.392384+00:00",
+  "target_url": "https://kognai.ai",
+  "geo_score": 20,
+  "checks": [
+    {
+      "check": "robots_txt",
+      "status": "error",
+      "details": {},
+      "message": "Cannot fetch robots.txt: <urlopen error [Errno 8] nodename nor servname provided, or not known>"
+    },
+    {
+      "check": "llms_txt",
+      "status": "error",
+      "message": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+    },
+    {
+      "check": "jsonld",
+      "status": "error",
+      "message": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
+    },
+    {
+      "check": "citable_blocks",
+      "status": "warn",
+      "blocks": [
+        {
+          "id": "what-is-kognai",
+          "word_count": 133,
+          "valid": false
+        },
+        {
+          "id": "scs-001-pipeline",
+          "word_count": 136,
+          "valid": true
+        },
+        {
+          "id": "clawrouter-model-routing",
+          "word_count": 130,
+          "valid": false
+        },
+        {
+          "id": "achiri-companion",
+          "word_count": 130,
+          "valid": false
+        },
+        {
+          "id": "x402-payments",
+          "word_count": 125,
+          "valid": false
+        },
+        {
+          "id": "openclaw-skills",
+          "word_count": 136,
+          "valid": true
+        },
+        {
+          "id": "agent-swarm",
+          "word_count": 133,
+          "valid": false
+        }
+      ],
+      "total_blocks": 7,
+      "message": "Some blocks outside 134-167 word range"
+    },
+    {
+      "check": "brand_baseline",
+      "status": "pass",
+      "next_scan_due": "2026-03-27T00:00:00Z",
+      "overdue": false
+    }
+  ],
+  "previous_score": 20,
+  "score_delta": 0
+}

@@ -1,0 +1,12 @@
+{
+  "scenario_id": "scn-kgn7x2",
+  "verdict": "PASS",
+  "message_score": 92,
+  "scroll_stop_score": 88,
+  "message_analysis": "Crystal clear single message: junior dev roles are being replaced by AI agents, and survival requires skill pivots (from coding to directing AI). Every scene reinforces this without filler. The angle is original—not 'AI is taking jobs' (saturated) but 'companies stopped hiring, not firing' (fresher narrative). Hook promises 'where did jobs go?' and delivers proof + survival path. Highly shareable as a warning signal within the target community.",
+  "scroll_stop_analysis": "First 1.5s nails it: '40% vanished' stat + kinetic text slam creates identity threat for junior devs. Pattern interrupts consistently present (Scene 1: 3, Scene 4: 3, Scene 2-3-5-6: 2 each—all ≥2). Pacing is tight at 34s with no dead air. Emotion arc executes cleanly: shock → intrigue → revelation → urgency → survival satisfaction → loop rewatch. Feels native to TikTok—urgent, stat-driven, speaks directly to audience without lecture tone. The loop ending (counter resetting to '0') forces rewatches.",
+  "fixes": [],
+  "confidence": 94,
+  "model_used": "claude-haiku-4-5-20251001",
+  "reviewed_at": "2026-03-23T09:33:27.797Z"
+}

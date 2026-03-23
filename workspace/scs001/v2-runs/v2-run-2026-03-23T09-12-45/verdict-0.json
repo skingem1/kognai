@@ -1,0 +1,12 @@
+{
+  "scenario_id": "scn-kx7291",
+  "verdict": "PASS",
+  "message_score": 92,
+  "scroll_stop_score": 94,
+  "message_analysis": "Crystal clear single message: AI has already replaced junior developers, and senior devs are next—unless they pivot to orchestration roles. Every scene reinforces this thesis without filler. The angle is original (not 'AI is coming,' but 'AI already arrived and rewired the job market'). Hook promises proof of replacement; scenes 2-3 deliver evidence. The revelation in Scene 4 (seniors are next) escalates the stakes. Scene 5 offers survival path. This will resonate with developers and non-developers alike because it's genuinely urgent, not manufactured. High retweet/share potential.",
+  "scroll_stop_analysis": "Hook is lethal: REPLACED lands like a threat in 1.5s, exploiting threat-detection and confirmation bias. Scene 1 has 3 pattern interrupts (text slam + voiceover + caption sync). Scene 2 splits attention (dual screens, speed ramps). Scene 4 is a power move—dead stare, silence, zoom on NEXT—creates genuine tension. Scene 5 pivots to hope (survival instinct kicks in). Scene 6 loops back to hook, priming rewatches. Pacing is tight; no dead air. Emotion arc (shock→intrigue→urgency→revelation→urgency→loop) is deliberate and pays off. This feels native to TikTok, not like a lecture. The 30s duration is optimal.",
+  "fixes": [],
+  "confidence": 94,
+  "model_used": "claude-haiku-4-5-20251001",
+  "reviewed_at": "2026-03-23T09:13:21.388Z"
+}

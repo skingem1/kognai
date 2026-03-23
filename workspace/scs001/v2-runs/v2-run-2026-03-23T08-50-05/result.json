@@ -1,0 +1,80 @@
+{
+  "run_id": "v2-run-2026-03-23T08-50-05",
+  "signal": {
+    "topic_id": "test-v2-1774255805959",
+    "topic_name": "AI Agents Are Replacing Junior Developers",
+    "confidence_score": 85,
+    "keyword_cluster": [
+      "AI agents",
+      "coding",
+      "developers",
+      "automation",
+      "jobs"
+    ],
+    "domain_tags": [
+      "tech",
+      "AI",
+      "careers"
+    ],
+    "top_speakers": [
+      {
+        "name": "Andrej Karpathy",
+        "handle": "@karpathy",
+        "authority_score": 95
+      },
+      {
+        "name": "Devin AI",
+        "handle": "@cognition_labs",
+        "authority_score": 80
+      }
+    ],
+    "viral_examples": [
+      "https://tiktok.com/@techbro/video/viral-ai-agents-example"
+    ],
+    "provenance_source": "test-pipeline-v2"
+  },
+  "status": "reject",
+  "published": false,
+  "dry_run": false,
+  "retries_used": 0,
+  "timestamps": {
+    "started": "2026-03-23T08:50:05.959Z",
+    "finished": "2026-03-23T08:51:02.758Z",
+    "scorsese_done": "2026-03-23T08:51:02.757Z",
+    "art_director_done": "2026-03-23T08:51:02.758Z"
+  },
+  "scenario": {
+    "scenario_id": "scn-b69efa63",
+    "trend_signal_id": "test-v2-1774255805959",
+    "title": "AI Agents Are Replacing Junior Developers",
+    "angle": "",
+    "scenes": [],
+    "hook_test": {
+      "format_reference": "",
+      "viral_proof": "",
+      "why_it_works": "",
+      "estimated_hook_rate": 0
+    },
+    "total_duration_s": 0,
+    "target_emotion_arc": [],
+    "speaker_name": "Kognai",
+    "tts_voice": "default",
+    "hashtags": [],
+    "created_at": "2026-03-23T08:51:02.757Z",
+    "model_used": "claude-sonnet-4-6"
+  },
+  "verdict": {
+    "scenario_id": "scn-b69efa63",
+    "verdict": "REJECT",
+    "message_score": 0,
+    "scroll_stop_score": 0,
+    "message_analysis": "Failed structural validation before LLM review.",
+    "scroll_stop_analysis": "Validation errors: Missing angle",
+    "fixes": [
+      "Missing angle"
+    ],
+    "confidence": 100,
+    "model_used": "preflight",
+    "reviewed_at": "2026-03-23T08:51:02.758Z"
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "scenario_id": "scn-em8k2x",
+  "title": "Elon Just Admitted What They've Been Hiding About AI and Jobs",
+  "angle": "Reframe Musk's admission not as a warning but as a leaked truth that exposes which jobs survive — and how the 20% who keep working will hold all the power",
+  "speaker_name": "Kognai",
+  "scenes": [
+    {
+      "scene_id": "s1",
+      "scene_name": "The Admission",
+      "duration_s": 5,
+      "voiceover": "Elon Musk just said 80% of jobs will disappear. But nobody's talking about what he said NEXT.",
+      "visual_style": "kinetic_text",
+      "visual_description": "Bold white text slams onto black background. '80%' explodes in red. Hard cut to Musk clip thumbnail freeze-frame.",
+      "caption_overlay": "He admitted it. 80% of jobs. Gone.",
+      "emotion": "shock",
+      "music_cue": "impact_hit",
+      "pattern_interrupts": 3
+    },
+    {
+      "scene_id": "s2",
+      "scene_name": "The Hidden Part",
+      "duration_s": 6,
+      "voiceover": "He said AI replaces tasks, not people WHO KNOW HOW TO USE IT. That's the part they clipped out.",
+      "visual_style": "b_roll_montage",
+      "visual_description": "Split screen: robots replacing workers LEFT, one person commanding multiple AI tools RIGHT. Zoom punch on the right side.",
+      "caption_overlay": "The part nobody clipped ⬇️",
+      "emotion": "intrigue",
+      "music_cue": "tension_build",
+      "pattern_interrupts": 2
+    },
+    {
+      "scene_id": "s3",
+      "scene_name": "The Three Survivor Jobs",
+      "duration_s": 7,
+      "voiceover": "Three job types survive every AI wave. Creators. Coders who prompt AI. And the ones who OWN the output.",
+      "visual_style": "kinetic_text",
+      "visual_description": "Numbered list drops in with glitch effect: 1. Creators 2. AI Prompters 3. Output Owners. Each line hits like a punch.",
+      "caption_overlay": "Save this. Seriously.",
+      "emotion": "revelation",
+      "music_cue": "tension_build",
+      "pattern_interrupts": 3
+    },
+    {
+      "scene_id": "s4",
+      "scene_name": "The Real Threat",
+      "duration_s": 5,
+      "voiceover": "Your job isn't being replaced by AI. It's being replaced by a PERSON using AI who does your job in 10 minutes.",
+      "visual_style": "react_cam",
+      "visual_description": "Tight face shot, deadpan delivery, one eyebrow raise. Slow zoom in. Text pops over face: '10 MINUTES.'",
+      "caption_overlay": "Not AI. A person with AI. Big difference.",
+      "emotion": "urgency",
+      "music_cue": "silence",
+      "pattern_interrupts": 2
+    },
+    {
+      "scene_id": "s5",
+      "scene_name": "The Power Move",
+      "duration_s": 5,
+      "voiceover": "The 20% who stay employed will earn what the 80% used to make combined. Position NOW or explain it later.",
+      "visual_style": "kinetic_text",
+      "visual_description": "Wealth redistribution bar animates: tiny 20% slice glows gold while 80% grays out. Counter spins upward on the gold side.",
+      "caption_overlay": "20% will earn everything. Which side are you on?",
+      "emotion": "urgency",
+      "music_cue": "impact_hit",
+      "pattern_interrupts": 2
+    },
+    {
+      "scene_id": "s6",
+      "scene_name": "Loop Back",
+      "duration_s": 4,
+      "voiceover": "So when Elon says 80% of jobs disappear — now you know he's also telling you exactly how to be the other 20%.",
+      "visual_style": "react_cam",
+      "visual_description": "Same freeze-frame from Scene 1 returns — but now a green checkmark overlays it. Camera pulls back revealing the full picture.",
+      "caption_overlay": "Watch again. You'll catch more. 🔁",
+      "emotion": "loop",
+      "music_cue": "ambient",
+      "pattern_interrupts": 2
+    }
+  ],
+  "hook_test": {
+    "format_reference": "The real reason X happened",
+    "viral_proof": "Videos using 'what they didn't show you' framing on Musk clips routinely hit 10M-40M views on TikTok. Example anchor: @financialtimes AI job fear content, 2023-2024 cycle, multiple videos 15M+ using hidden-admission angle.",
+    "why_it_works": "Combines authority figure (Musk) + fear trigger (job loss) + secret knowledge gap ('the part they clipped') — three of the strongest engagement levers on TikTok simultaneously. Viewer feels they are getting insider access denied by mainstream media.",
+    "estimated_hook_rate": 42
+  },
+  "hashtags": [
+    "#AIJobs",
+    "#ElonMuskAI",
+    "#FutureOfWork",
+    "#AITakeover",
+    "#JobsIn2025",
+    "#AISkills",
+    "#TechTruth",
+    "#viral",
+    "#fyp",
+    "#learnontiktok"
+  ]
+}

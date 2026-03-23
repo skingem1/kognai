@@ -1,0 +1,46 @@
+{
+  "run_id": "mf-20260323T08-jijr",
+  "started_at": "2026-03-23T08:31:21.133Z",
+  "completed_at": "2026-03-23T08:33:42.764Z",
+  "topics_found": 3,
+  "scripts_generated": 3,
+  "videos_composited": 3,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "vis-11c32367",
+      "format": "vision",
+      "title": "How OpenAI o3 reasoning model changes software development forever",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T08-jijr/output/vis-11c32367_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T08-jijr/output/vis-11c32367.srt",
+      "duration_s": 33,
+      "success": true,
+      "avatar_cost": 0.30000000000000004,
+      "llm_used": true
+    },
+    {
+      "script_id": "vis-d2f4daf9",
+      "format": "vision",
+      "title": "The 5 biggest cybersecurity threats of 2026 that nobody is prepared for",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T08-jijr/output/vis-d2f4daf9_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T08-jijr/output/vis-d2f4daf9.srt",
+      "duration_s": 33,
+      "success": true,
+      "avatar_cost": 0.30000000000000004,
+      "llm_used": true
+    },
+    {
+      "script_id": "vis-cf65502b",
+      "format": "vision",
+      "title": "Why sovereign AI is the next trillion dollar opportunity",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T08-jijr/output/vis-cf65502b_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T08-jijr/output/vis-cf65502b.srt",
+      "duration_s": 33,
+      "success": true,
+      "avatar_cost": 0.30000000000000004,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 0.9
+}

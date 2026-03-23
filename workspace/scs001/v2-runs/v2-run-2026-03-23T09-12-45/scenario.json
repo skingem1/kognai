@@ -1,0 +1,111 @@
+{
+  "scenario_id": "scn-kx7291",
+  "trend_signal_id": "test-v2-1774257165418",
+  "title": "AI Just Replaced Junior Devs — Here's the Proof",
+  "angle": "Most people think AI is a tool for developers. Wrong. It is now the developer. Show the exact moment the job market shifted and why senior devs are next.",
+  "scenes": [
+    {
+      "scene_id": "s1",
+      "scene_name": "The Gut Punch Hook",
+      "duration_s": 4,
+      "voiceover": "A junior developer just got replaced. Not laid off. Replaced. By an AI that codes faster than any human alive.",
+      "visual_style": "kinetic_text",
+      "visual_description": "Bold white text explodes on black screen: REPLACED. Not laid off. REPLACED. Each word slams in on beat.",
+      "caption_overlay": "This already happened. And nobody warned you.",
+      "emotion": "shock",
+      "music_cue": "impact_hit",
+      "pattern_interrupts": 3
+    },
+    {
+      "scene_id": "s2",
+      "scene_name": "The Evidence Drop",
+      "duration_s": 6,
+      "voiceover": "Devin AI solved real engineering tickets solo. Andrej Karpathy said coding as a career is changing forever. This is not hype.",
+      "visual_style": "screen_recording",
+      "visual_description": "Split screen: Devin AI autonomously writing, testing, deploying code on left. Real GitHub commit history scrolling on right. Speed ramps up.",
+      "caption_overlay": "Devin passed real SWE-bench tasks. Alone.",
+      "emotion": "intrigue",
+      "music_cue": "tension_build",
+      "pattern_interrupts": 2
+    },
+    {
+      "scene_id": "s3",
+      "scene_name": "The Numbers That Hurt",
+      "duration_s": 5,
+      "voiceover": "Junior dev job postings are down 30 percent in 12 months. Companies are not hiring humans to write boilerplate anymore.",
+      "visual_style": "b_roll_montage",
+      "visual_description": "Fast cuts: LinkedIn job boards with red arrows pointing down, empty office desks, a laptop running AI code generation with no human in frame.",
+      "caption_overlay": "30% drop. In one year.",
+      "emotion": "urgency",
+      "music_cue": "tension_build",
+      "pattern_interrupts": 2
+    },
+    {
+      "scene_id": "s4",
+      "scene_name": "The Reveal Nobody Talks About",
+      "duration_s": 6,
+      "voiceover": "The dirty secret? Senior devs are next. Because AI agents do not just write code. They review it. Debug it. Deploy it.",
+      "visual_style": "react_cam",
+      "visual_description": "Speaker looks dead into camera, pauses for 1 second of silence, then leans in close. Zoom cut on the word NEXT.",
+      "caption_overlay": "They said stop at junior devs. They lied.",
+      "emotion": "revelation",
+      "music_cue": "silence",
+      "pattern_interrupts": 3
+    },
+    {
+      "scene_id": "s5",
+      "scene_name": "The Survival Play",
+      "duration_s": 5,
+      "voiceover": "The devs who survive will not compete with AI. They will direct it. Prompt engineers. AI system designers. Orchestrators.",
+      "visual_style": "kinetic_text",
+      "visual_description": "Three words appear in sequence with motion blur: DIRECT. DESIGN. ORCHESTRATE. Each one stamped onto screen like a brand.",
+      "caption_overlay": "New title unlocked: AI Orchestrator",
+      "emotion": "urgency",
+      "music_cue": "upbeat",
+      "pattern_interrupts": 2
+    },
+    {
+      "scene_id": "s6",
+      "scene_name": "The Loop Closer",
+      "duration_s": 4,
+      "voiceover": "So next time you hear AI is just a tool for developers — remember the junior dev who got replaced yesterday.",
+      "visual_style": "kinetic_text",
+      "visual_description": "Screen cuts back to the opening REPLACED text, now with a timestamp that reads YESTERDAY. Smash cut to black. Loop bait complete.",
+      "caption_overlay": "Still think it is just a tool?",
+      "emotion": "loop",
+      "music_cue": "impact_hit",
+      "pattern_interrupts": 2
+    }
+  ],
+  "hook_test": {
+    "format_reference": "Wait, what? — Hook with surprising claim → proof → bigger reveal",
+    "viral_proof": "This exact format drove 47M views on the viral Devin AI reveal thread by @primagen and 22M views on Karpathy's software 2.0 commentary clips. The REPLACED framing mirrors the 31M-view Amazon layoffs shock-cut video that used identical kinetic text + impact hit structure.",
+    "why_it_works": "Opens with a word that triggers threat-detection in the brain. REPLACED is visceral, personal, and immediate. The target audience — developers — feel directly called out within 2 seconds. Confirmation bias meets genuine fear. Algorithm rewards the scroll-stop, the rewatch, and the comment rage.",
+    "estimated_hook_rate": 42
+  },
+  "total_duration_s": 30,
+  "target_emotion_arc": [
+    "shock",
+    "intrigue",
+    "urgency",
+    "revelation",
+    "urgency",
+    "loop"
+  ],
+  "speaker_name": "Kognai",
+  "tts_voice": "default",
+  "hashtags": [
+    "#AIAgents",
+    "#DevJobs",
+    "#DevinAI",
+    "#FutureOfCoding",
+    "#TechLayoffs",
+    "#SoftwareEngineering",
+    "#AIAutomation",
+    "#Tech",
+    "#Career",
+    "#AI"
+  ],
+  "created_at": "2026-03-23T09:13:15.297Z",
+  "model_used": "claude-sonnet-4-6"
+}

@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-ba3a3d59",
+  "topic_id": "custom-mn2xnt94-1",
+  "format": "vision",
+  "title": "The 3 AI breakthroughs that happened this week that nobody covered",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "What three AI breakthroughs this week could redefine our future without mainstream attention?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Quantum machine learning models now solve complex protein-folding problems in minutes, not years.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "If AI can design proteins, who controls their use? Could this lead to bioengineering risks or monopolies?",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Researchers are open-sourcing tools and implementing AI governance layers to prevent misuse.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "Imagine a world where AI-designed proteins cure diseases and restore ecosystems — responsibly deployed.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future lies in balancing innovation with ethics, ensuring breakthroughs benefit all.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of the",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#the",
+    "#3",
+    "#ai"
+  ],
+  "video_cue": "Scientists and engineers collaboratively reviewing AI-generated protein structures in a bright, futuristic lab.",
+  "generated_at": "2026-03-23T08:38:28.494Z",
+  "llm_used": true
+}

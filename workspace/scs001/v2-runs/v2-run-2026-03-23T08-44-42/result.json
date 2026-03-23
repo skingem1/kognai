@@ -1,0 +1,45 @@
+{
+  "run_id": "v2-run-2026-03-23T08-44-42",
+  "signal": {
+    "topic_id": "test-v2-1774255482771",
+    "topic_name": "AI Agents Are Replacing Junior Developers",
+    "confidence_score": 85,
+    "keyword_cluster": [
+      "AI agents",
+      "coding",
+      "developers",
+      "automation",
+      "jobs"
+    ],
+    "domain_tags": [
+      "tech",
+      "AI",
+      "careers"
+    ],
+    "top_speakers": [
+      {
+        "name": "Andrej Karpathy",
+        "handle": "@karpathy",
+        "authority_score": 95
+      },
+      {
+        "name": "Devin AI",
+        "handle": "@cognition_labs",
+        "authority_score": 80
+      }
+    ],
+    "viral_examples": [
+      "https://tiktok.com/@techbro/video/viral-ai-agents-example"
+    ],
+    "provenance_source": "test-pipeline-v2"
+  },
+  "status": "error",
+  "published": false,
+  "dry_run": false,
+  "retries_used": 0,
+  "timestamps": {
+    "started": "2026-03-23T08:44:42.771Z",
+    "finished": "2026-03-23T08:44:42.772Z"
+  },
+  "error": "ANTHROPIC_API_KEY not set — Scorsese requires cloud LLM"
+}

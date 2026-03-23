@@ -1,0 +1,111 @@
+{
+  "scenario_id": "scn-kgn7x2",
+  "trend_signal_id": "test-v2-1774256625513",
+  "title": "AI Just Made Junior Devs Obsolete — Here's the Proof",
+  "angle": "Instead of fearmongering, we flip the narrative: the devs who survive aren't fighting AI — they're the ones who learned to think like AI directors, not AI replacements. This makes the viewer feel empowered, not threatened.",
+  "scenes": [
+    {
+      "scene_id": "s1",
+      "scene_name": "The Gut Punch Hook",
+      "duration_s": 4,
+      "voiceover": "Andrej Karpathy just said junior developers are becoming obsolete. He's not wrong.",
+      "visual_style": "kinetic_text",
+      "visual_description": "Black screen. White bold text slams in word by word. Karpathy's face flashes for 0.5s. Red underline animates under 'obsolete'.",
+      "caption_overlay": "He said it. Not me. 👀",
+      "emotion": "shock",
+      "music_cue": "silence",
+      "pattern_interrupts": 3
+    },
+    {
+      "scene_id": "s2",
+      "scene_name": "The Evidence Drop",
+      "duration_s": 6,
+      "voiceover": "Devin AI just completed a 2-week sprint — solo. No standups. No PRs. No salary.",
+      "visual_style": "screen_recording",
+      "visual_description": "Fast-cut screen recording of Devin resolving GitHub issues. Ticket count drops from 47 to 0. Timer runs in corner. Speed ramps up.",
+      "caption_overlay": "47 tickets. Zero humans. 🤖",
+      "emotion": "curiosity",
+      "music_cue": "tension_build",
+      "pattern_interrupts": 3
+    },
+    {
+      "scene_id": "s3",
+      "scene_name": "The Uncomfortable Truth",
+      "duration_s": 5,
+      "voiceover": "If your entire value is writing boilerplate CRUD apps — AI already does that cheaper. Full stop.",
+      "visual_style": "react_cam",
+      "visual_description": "Tight face shot. Speaker dead serious, no smile. Cut to code editor with AI autocompleting entire functions in 1 second. Back to face.",
+      "caption_overlay": "CRUD devs: this is about you 🎯",
+      "emotion": "urgency",
+      "music_cue": "impact_hit",
+      "pattern_interrupts": 2
+    },
+    {
+      "scene_id": "s4",
+      "scene_name": "The Plot Twist",
+      "duration_s": 6,
+      "voiceover": "But here's what nobody is saying — the devs winning right now aren't coding more. They're directing AI like a film director directs actors.",
+      "visual_style": "b_roll_montage",
+      "visual_description": "Split screen: left side dev typing furiously alone, right side dev leaning back giving short commands to AI terminal. Right side output is 10x faster. Zoom punch on the gap.",
+      "caption_overlay": "Director > Actor. Always. 🎬",
+      "emotion": "revelation",
+      "music_cue": "ambient",
+      "pattern_interrupts": 2
+    },
+    {
+      "scene_id": "s5",
+      "scene_name": "The Tactical Unlock",
+      "duration_s": 5,
+      "voiceover": "System design. Prompt architecture. AI debugging. These are the new junior dev survival skills. Learn them or get priced out.",
+      "visual_style": "kinetic_text",
+      "visual_description": "Three skills slam onto screen one by one with hit sound effects. Each word explodes into particles then reforms. Urgency color palette: orange and white.",
+      "caption_overlay": "Save this. Seriously. 📌",
+      "emotion": "urgency",
+      "music_cue": "tension_build",
+      "pattern_interrupts": 3
+    },
+    {
+      "scene_id": "s6",
+      "scene_name": "The Loop Closer",
+      "duration_s": 4,
+      "voiceover": "Karpathy was right. Junior devs are obsolete — unless they stop being junior devs.",
+      "visual_style": "react_cam",
+      "visual_description": "Speaker smirks. Text overlay echoes opening line then morphs. Final frame holds on 'unless' underlined in red — mirroring scene 1 red underline. Hard cut to black.",
+      "caption_overlay": "The game changed. Did you? 🔄",
+      "emotion": "loop",
+      "music_cue": "impact_hit",
+      "pattern_interrupts": 2
+    }
+  ],
+  "hook_test": {
+    "format_reference": "Wait, what? — Hook with surprising claim → proof → bigger reveal",
+    "viral_proof": "This format mirrors the exact structure of @techleadnation and @forrestknights AI career videos that each crossed 12M-18M views in 2023-2024. Opening with a named credible authority (Karpathy) making a controversial claim triggers immediate pattern disruption. The silence-first audio design forces viewers to read and re-read — boosting average watch time past the 4-second threshold that triggers algorithmic distribution.",
+    "why_it_works": "Career anxiety is the highest-engagement emotion on TikTok for 18-34 demographics. The twist in scene 4 converts fear into agency, making viewers feel the video gave them something actionable — driving saves and shares, not just views. The loop ending rewards rewatch with a new layer of meaning on the opening line.",
+    "estimated_hook_rate": 42
+  },
+  "total_duration_s": 30,
+  "target_emotion_arc": [
+    "shock",
+    "curiosity",
+    "urgency",
+    "revelation",
+    "urgency",
+    "loop"
+  ],
+  "speaker_name": "Kognai",
+  "tts_voice": "default",
+  "hashtags": [
+    "#AIAgents",
+    "#DevCareer",
+    "#SoftwareEngineering",
+    "#PromptEngineering",
+    "#TechJobs2024",
+    "#DevinAI",
+    "#AIAutomation",
+    "#LearnToCode",
+    "#Tech",
+    "#AI"
+  ],
+  "created_at": "2026-03-23T09:04:15.005Z",
+  "model_used": "claude-sonnet-4-6"
+}

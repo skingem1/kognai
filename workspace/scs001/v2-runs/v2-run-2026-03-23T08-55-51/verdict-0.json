@@ -1,0 +1,14 @@
+{
+  "scenario_id": "scn-f1b78167",
+  "verdict": "REJECT",
+  "message_score": 0,
+  "scroll_stop_score": 0,
+  "message_analysis": "Failed structural validation before LLM review.",
+  "scroll_stop_analysis": "Validation errors: Missing angle",
+  "fixes": [
+    "Missing angle"
+  ],
+  "confidence": 100,
+  "model_used": "preflight",
+  "reviewed_at": "2026-03-23T08:56:16.266Z"
+}

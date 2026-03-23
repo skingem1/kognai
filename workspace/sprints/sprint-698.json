@@ -1,0 +1,41 @@
+{
+  "sprint_id": "sprint-698",
+  "title": "AMD-15 — Base model preservation: snapshot qwen3:14b",
+  "description": "AMD-15 Rule 3. Create vault/models/base/ directory structure. Snapshot qwen3:14b model metadata and hash. Create adapters/ and rejected/ dirs for future LoRA management.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "698-01",
+      "title": "Create vault/models directory structure (base, adapters, rejected)",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "vault/models/",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-698"
+    },
+    {
+      "id": "698-02",
+      "title": "Create model snapshot script (scripts/vault/snapshot-base-model.ts)",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/vault/snapshot-base-model.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-698"
+    },
+    {
+      "id": "698-03",
+      "title": "Run snapshot to capture qwen3:14b base model metadata",
+      "type": "execution",
+      "task_type": "infra",
+      "task_target": "vault/models/base/qwen3-14b.json",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-698"
+    }
+  ]
+}

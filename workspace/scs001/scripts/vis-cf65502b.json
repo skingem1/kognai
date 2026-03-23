@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-cf65502b",
+  "topic_id": "custom-mn2xfdpr-2",
+  "format": "vision",
+  "title": "Why sovereign AI is the next trillion dollar opportunity",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "What if sovereign AI could redefine global power dynamics and economic value in ways we're only beginning to understand?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Today, sovereign AI systems leverage quantum machine learning and edge computing to process data securely and locally, reducing reliance on centralized clouds.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "But without strict governance, sovereign AI risks enabling authoritarian surveillance and deepening societal divides through algorithmic bias and information control.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Builders are integrating blockchain for transparency and federated learning to ensure data stays private while still enabling collaborative AI training.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "Imagine a world where sovereign AI empowers local communities, protects privacy, and drives equitable innovation across regions and cultures.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future of sovereign AI isn’t just about technology—it’s about redefining trust, autonomy, and value in the digital age.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of why",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#why",
+    "#sovereign",
+    "#ai"
+  ],
+  "video_cue": "A global network of interconnected, secure AI nodes glowing with data flow, symbolizing decentralized intelligence.",
+  "generated_at": "2026-03-23T08:32:18.116Z",
+  "llm_used": true
+}

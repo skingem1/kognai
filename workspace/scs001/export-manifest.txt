@@ -1,0 +1,155 @@
+# TikTok Posting Manifest
+# Generated: 2026-03-21T09:55:37.989Z
+# Videos: 10 (sorted by viral score)
+
+--- Video 1 of 10 ---
+ID: video-0b084cc1
+File: /Users/tarekmnif/kognai/workspace/scs001/run-1774031541078/caption/video-0b084cc1-captioned.mp4
+Score: 57%
+Speaker: Unknown Speaker
+Hook: urgency
+Caption:
+In 5 years you'll wish you saw this today
+
+What Unknown Speaker just said changes everything
+
+Tag someone who needs to see this
+
+#artificialintelligence #machinelearning #deeplearning #jackwener #opencode #wiki #network #etherfi #opencli #make #fyp #viral
+After posting: /record video-0b084cc1 0
+
+--- Video 2 of 10 ---
+ID: video-c038e3d6
+File: /Users/tarekmnif/kognai/workspace/scs001/run-1774036801572/caption/video-c038e3d6-captioned.mp4
+Score: 54%
+Speaker: Unknown Speaker
+Hook: proof
+Caption:
+The numbers don't lie — look at this
+
+Unknown Speaker just dropped this
+
+Follow for more mind-blowing tech
+
+#artificialintelligence #machinelearning #deeplearning #jackwener #opencode #wiki #network #etherfi #opencli #make #fyp #viral
+After posting: /record video-c038e3d6 0
+
+--- Video 3 of 10 ---
+ID: video-353e9a53
+File: /Users/tarekmnif/kognai/workspace/scs001/run-1774030727192/caption/video-353e9a53-captioned.mp4
+Score: 50%
+Speaker: Unknown Speaker
+Hook: secret
+Caption:
+This wasn't supposed to get out
+
+Unknown Speaker breaks it down in 60 seconds
+
+Save this for later
+
+#artificialintelligence #machinelearning #deeplearning #jackwener #opencode #wiki #network #etherfi #opencli #make #fyp #viral
+After posting: /record video-353e9a53 0
+
+--- Video 4 of 10 ---
+ID: video-43e1923a
+File: /Users/tarekmnif/kognai/workspace/scs001/run-1774032233965/caption/video-43e1923a-captioned.mp4
+Score: 50%
+Speaker: Unknown Speaker
+Hook: proof
+Caption:
+This one fact changes the entire game
+
+What Unknown Speaker just said changes everything
+
+Follow for daily tech insights
+
+#artificialintelligence #machinelearning #deeplearning #jackwener #opencode #wiki #network #etherfi #opencli #make #fyp #viral
+After posting: /record video-43e1923a 0
+
+--- Video 5 of 10 ---
+ID: video-f34fefb1
+File: /Users/tarekmnif/kognai/workspace/scs001/run-1774032233965/caption/video-f34fefb1-captioned.mp4
+Score: 43%
+Speaker: Unknown Speaker
+Hook: contrarian
+Caption:
+This might be controversial but...
+
+Unknown Speaker with a hot take
+
+Bookmark this before it disappears
+
+#artificialintelligence #machinelearning #deeplearning #jackwener #opencode #wiki #network #etherfi #opencli #make #fyp #viral
+After posting: /record video-f34fefb1 0
+
+--- Video 6 of 10 ---
+ID: video-7cd0b6e8
+File: /Users/tarekmnif/kognai/workspace/scs001/run-1774032697222/caption/video-7cd0b6e8-captioned.mp4
+Score: 43%
+Speaker: Unknown Speaker
+Hook: proof
+Caption:
+Here's proof that everything is about to change
+
+Unknown Speaker — this is a must-watch
+
+Follow for more mind-blowing tech
+
+#artificialintelligence #machinelearning #deeplearning #jackwener #opencode #wiki #network #etherfi #opencli #make #fyp #viral
+After posting: /record video-7cd0b6e8 0
+
+--- Video 7 of 10 ---
+ID: dbt-b87db595
+File: /Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260320T21-kfes/output/dbt-b87db595_final.mp4
+Score: -100%
+Speaker: unknown
+Hook: unknown
+Caption:
+Nobody is talking about this yet
+
+Tag someone who needs to see this
+
+#artificialintelligence #machinelearning #deeplearning #jackwener #opencode #wiki #network #etherfi #opencli #make #fyp #viral
+After posting: /record dbt-b87db595 0
+
+--- Video 8 of 10 ---
+ID: exp-560203b8
+File: /Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260320T22-pxzq/output/exp-560203b8_final.mp4
+Score: -100%
+Speaker: unknown
+Hook: unknown
+Caption:
+I wasn't ready for this
+
+Double tap if this blew your mind
+
+#artificialintelligence #machinelearning #deeplearning #jackwener #opencode #wiki #network #etherfi #opencli #make #fyp #viral
+After posting: /record exp-560203b8 0
+
+--- Video 9 of 10 ---
+ID: exp-72c42c90
+File: /Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260320T22-pxzq/output/exp-72c42c90_final.mp4
+Score: -100%
+Speaker: unknown
+Hook: unknown
+Caption:
+Watch till the end, trust me
+
+Bookmark this before it disappears
+
+#artificialintelligence #machinelearning #deeplearning #jackwener #opencode #wiki #network #etherfi #opencli #make #fyp #viral
+After posting: /record exp-72c42c90 0
+
+--- Video 10 of 10 ---
+ID: exp-4aec210d
+File: /Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260320T22-pxzq/output/exp-4aec210d_final.mp4
+Score: -100%
+Speaker: unknown
+Hook: unknown
+Caption:
+I wasn't ready for this
+
+Share this with someone who needs it
+
+#artificialintelligence #machinelearning #deeplearning #jackwener #opencode #wiki #network #etherfi #opencli #make #fyp #viral
+After posting: /record exp-4aec210d 0

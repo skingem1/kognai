@@ -1,0 +1,183 @@
+{
+  "run_id": "v2-run-2026-03-23T09-18-08",
+  "signal": {
+    "topic_id": "test-v2-1774257488619",
+    "topic_name": "AI Agents Are Replacing Junior Developers",
+    "confidence_score": 85,
+    "keyword_cluster": [
+      "AI agents",
+      "coding",
+      "developers",
+      "automation",
+      "jobs"
+    ],
+    "domain_tags": [
+      "tech",
+      "AI",
+      "careers"
+    ],
+    "top_speakers": [
+      {
+        "name": "Andrej Karpathy",
+        "handle": "@karpathy",
+        "authority_score": 95
+      },
+      {
+        "name": "Devin AI",
+        "handle": "@cognition_labs",
+        "authority_score": 80
+      }
+    ],
+    "viral_examples": [
+      "https://tiktok.com/@techbro/video/viral-ai-agents-example"
+    ],
+    "provenance_source": "test-pipeline-v2"
+  },
+  "status": "pass",
+  "published": false,
+  "dry_run": false,
+  "retries_used": 0,
+  "timestamps": {
+    "started": "2026-03-23T09:18:08.619Z",
+    "finished": "2026-03-23T09:30:06.597Z",
+    "scorsese_done": "2026-03-23T09:18:37.718Z",
+    "art_director_done": "2026-03-23T09:18:43.270Z",
+    "movie_editor_done": "2026-03-23T09:30:06.597Z"
+  },
+  "scenario": {
+    "scenario_id": "scn-k7x92m",
+    "trend_signal_id": "test-v2-1774257488619",
+    "title": "AI Just Fired Junior Devs. Here's the Receipts.",
+    "angle": "Instead of fear-mongering, we flip the script: the junior devs who thrive will be the ones who learn to manage AI agents — making this a skill gap story, not a job loss story.",
+    "scenes": [
+      {
+        "scene_id": "s01",
+        "scene_name": "The Hook Drop",
+        "duration_s": 4,
+        "voiceover": "Andrej Karpathy just said junior devs are being replaced. He's not wrong. But here's what nobody's telling you.",
+        "visual_style": "kinetic_text",
+        "visual_description": "Black screen. White bold text slams in word by word. Karpathy's face thumbnail flashes for 0.5s then cuts to blinking cursor on a terminal.",
+        "caption_overlay": "⚠️ Junior Devs Are Being Replaced",
+        "emotion": "shock",
+        "music_cue": "impact_hit",
+        "pattern_interrupts": 3
+      },
+      {
+        "scene_id": "s02",
+        "scene_name": "The Proof Drop",
+        "duration_s": 6,
+        "voiceover": "Devin AI just completed a 2-week sprint in 45 minutes. Real ticket. Real codebase. No Stack Overflow.",
+        "visual_style": "screen_recording",
+        "visual_description": "Split screen: left shows Devin AI's interface auto-writing code, right shows a Jira ticket timer melting from 14 days to 45 minutes.",
+        "caption_overlay": "14-day sprint → 45 minutes 🤯",
+        "emotion": "shock",
+        "music_cue": "tension_build",
+        "pattern_interrupts": 3
+      },
+      {
+        "scene_id": "s03",
+        "scene_name": "The Reframe",
+        "duration_s": 6,
+        "voiceover": "But wait — someone has to tell Devin what to build, catch its mistakes, and ship it. That's not a bot. That's you.",
+        "visual_style": "react_cam",
+        "visual_description": "Developer at desk looks alarmed, then slowly grins. Camera slowly zooms in on the moment the smile appears. Subtle glow effect on face.",
+        "caption_overlay": "The job didn't disappear. It upgraded. 🔺",
+        "emotion": "intrigue",
+        "music_cue": "tension_build",
+        "pattern_interrupts": 2
+      },
+      {
+        "scene_id": "s04",
+        "scene_name": "The New Skill Stack",
+        "duration_s": 7,
+        "voiceover": "The devs winning right now know prompt engineering, agent orchestration, and how to QA AI output. Three skills. Learn them.",
+        "visual_style": "kinetic_text",
+        "visual_description": "Three skills fly in one by one with neon color pops: PROMPT ENGINEERING, AGENT ORCHESTRATION, AI QA. Each word hits on a beat.",
+        "caption_overlay": "3 skills between you and obsolescence",
+        "emotion": "urgency",
+        "music_cue": "impact_hit",
+        "pattern_interrupts": 4
+      },
+      {
+        "scene_id": "s05",
+        "scene_name": "The Proof of Concept",
+        "duration_s": 5,
+        "voiceover": "One dev in Austin now manages 4 AI agents. His output? 10x a senior engineer. His salary? Up 40 percent.",
+        "visual_style": "b_roll_montage",
+        "visual_description": "Fast cuts: laptop with multiple agent dashboards, Slack notifications flooding in with completed tasks, a pay stub blurred with an upward arrow.",
+        "caption_overlay": "1 human. 4 agents. 10x output. 💰",
+        "emotion": "revelation",
+        "music_cue": "upbeat",
+        "pattern_interrupts": 3
+      },
+      {
+        "scene_id": "s06",
+        "scene_name": "The Loop Close",
+        "duration_s": 5,
+        "voiceover": "So yeah — junior devs ARE being replaced. The ones who don't adapt. Are you going to be one of them?",
+        "visual_style": "kinetic_text",
+        "visual_description": "Screen returns to the opening blinking cursor. Text types itself: 'Are you the dev... or the one being replaced?' Cursor blinks. Hard cut to black.",
+        "caption_overlay": "⚠️ Junior Devs Are Being Replaced — which side are you on?",
+        "emotion": "loop",
+        "music_cue": "silence",
+        "pattern_interrupts": 2
+      }
+    ],
+    "hook_test": {
+      "format_reference": "Wait, what? — Hook with surprising claim → proof → bigger reveal",
+      "viral_proof": "This format mirrors the 'They're shutting down your career' cold-open style used by @techbro and @levelsio-style creators, consistently hitting 10M–40M views. Karpathy name-drop in second 1 triggers authority bias. The reframe in scene 3 is the classic 'BUT WAIT' pivot that drives shares and saves.",
+      "why_it_works": "Opens with a credible threatening claim (shock), immediately validates it with data (proof), then delivers an unexpected power-shift reframe (relief + hope). The emotional arc — fear → confirmation → empowerment — is the exact dopamine loop that drives completion rate above 80% and mass shares in career-anxious tech audiences.",
+      "estimated_hook_rate": 42
+    },
+    "total_duration_s": 33,
+    "target_emotion_arc": [
+      "shock",
+      "shock",
+      "intrigue",
+      "urgency",
+      "revelation",
+      "loop"
+    ],
+    "speaker_name": "Kognai",
+    "tts_voice": "default",
+    "hashtags": [
+      "#AIAgents",
+      "#CodingCareers",
+      "#DevinAI",
+      "#PromptEngineering",
+      "#TechJobs2024",
+      "#AIAutomation",
+      "#SoftwareEngineering",
+      "#LearnToCode",
+      "#Tech",
+      "#AI"
+    ],
+    "created_at": "2026-03-23T09:18:37.718Z",
+    "model_used": "claude-sonnet-4-6"
+  },
+  "verdict": {
+    "scenario_id": "scn-k7x92m",
+    "verdict": "PASS",
+    "message_score": 92,
+    "scroll_stop_score": 88,
+    "message_analysis": "The message is crystal clear and original: junior devs aren't being eliminated, they're being *upgraded* — those who master AI agent management will thrive. Every scene serves this thesis. Scene 1 sets up the fear (shock), Scene 2 validates it (proof), Scene 3 flips it (reframe), Scenes 4-5 deliver the solution (skill stack + proof of concept), and Scene 6 closes the loop with urgency. No filler. The angle cuts against fear-mongering and instead positions the viewer as the agent of their own survival — highly shareable because it's empowering, not panic-inducing.",
+    "scroll_stop_analysis": "The hook is devastating. 'Andrej Karpathy just said junior devs are being replaced' + Karpathy thumbnail + cursor blink in 4 seconds hits all three dopamine triggers: authority (Karpathy), social proof (threat), and pattern interrupt (kinetic text + impact music). Scene 2 sustains with the 14-day → 45-minute visual (jaw-drop moment). Scene 3's reframe + slow zoom on the grin is the emotional pivot that converts scroll-stoppers into savers. Pacing is tight throughout. Pattern interrupts are consistent (2-4 per scene). The silence at the end (Scene 6) is gutsy and works—it forces the viewer to sit with the question. This would absolutely feel native on TikTok, not preachy.",
+    "fixes": [],
+    "confidence": 94,
+    "model_used": "claude-haiku-4-5-20251001",
+    "reviewed_at": "2026-03-23T09:18:43.270Z"
+  },
+  "video": {
+    "video_id": "v2-d3f15c2b",
+    "scenario_id": "scn-k7x92m",
+    "file_path": "/Users/tarekmnif/kognai/workspace/scs001/v2-output/v2-d3f15c2b/v2-d3f15c2b.mp4",
+    "duration_seconds": 33,
+    "aspect_ratio": "9:16",
+    "scene_count": 6,
+    "has_voiceover": true,
+    "has_music": false,
+    "tts_method": "mimo",
+    "assembly_seconds": 683.326,
+    "created_at": "2026-03-23T09:30:06.597Z"
+  }
+}

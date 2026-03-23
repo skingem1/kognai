@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-b722b594",
+  "topic_id": "custom-mn2x3cbv-2",
+  "format": "debate",
+  "title": "Why quantum computing will break cryptocurrency by 2030",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Quantum computing will break elliptic curve cryptography by 2030, rendering most cryptocurrencies insecure. (3 sec)",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Shor's algorithm can factor large primes in polynomial time, directly breaking RSA and ECDSA used in blockchain. (5 sec)",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Post-quantum cryptography like lattice-based schemes are already being standardized by NIST and integrated into protocols. (5 sec)",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Adoption is slow—only 1% of blockchain networks use quantum-resistant algorithms, leaving the majority exposed. (5 sec)",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Quantum resistance is inevitable—cryptocurrencies that adapt will survive; those that don’t will collapse. (4 sec)",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "why vs quantum",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#why",
+    "#quantum",
+    "#computing"
+  ],
+  "generated_at": "2026-03-23T08:22:44.349Z",
+  "llm_used": true
+}

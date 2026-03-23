@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-260d39cc",
+  "topic_id": "custom-mn2xw4vx-0",
+  "format": "vision",
+  "title": "How to build a personal AI assistant that actually understands you",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "What if your AI assistant truly understood your values, habits, and even your unspoken needs? How would we build that?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "We're using large language models, emotion recognition, and behavioral analytics to create context-aware AI that learns from your interactions and environment.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "But this raises concerns about data privacy, manipulation, and the erosion of human autonomy if AI becomes too predictive or prescriptive.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Engineers are building in transparency, user control, and explainable AI to ensure assistants remain tools, not overbearing influences.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "Imagine an AI that helps you make decisions aligned with your deepest values, acting as a moral compass in a complex world.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future of personal AI lies in balancing deep understanding with ethical responsibility — a partnership, not a replacement.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of how",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#how",
+    "#to",
+    "#build"
+  ],
+  "video_cue": "A person interacting with a holographic assistant that responds with empathy and precision, reflecting their mood and needs in real time.",
+  "generated_at": "2026-03-23T08:44:44.729Z",
+  "llm_used": true
+}

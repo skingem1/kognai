@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-11c32367",
+  "topic_id": "custom-mn2xfdpr-0",
+  "format": "vision",
+  "title": "How OpenAI o3 reasoning model changes software development forever",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "How might OpenAI's o3 reasoning model redefine the core of software development in the next decade?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "o3 enables self-correcting code generation, real-time debugging, and adaptive UIs, making complex systems more maintainable and scalable.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "But such power risks widening the gap between those who control these tools and those who don’t, potentially centralizing innovation and decision-making.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Open-source frameworks and community-driven tooling are emerging to democratize access and ensure transparency in model training and deployment.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "Imagine a future where developers collaborate globally in real time, solving problems with AI as a co-creator, not just a tool.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future of software lies not in automation alone, but in the ethical and inclusive integration of reasoning models like o3.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of how",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#how",
+    "#openai",
+    "#o3"
+  ],
+  "video_cue": "A developer's screen showing an AI co-writing code in real time, with global collaborators appearing as avatars around the interface.",
+  "generated_at": "2026-03-23T08:31:42.482Z",
+  "llm_used": true
+}

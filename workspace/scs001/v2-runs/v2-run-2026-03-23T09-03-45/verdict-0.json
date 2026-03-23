@@ -1,0 +1,12 @@
+{
+  "scenario_id": "scn-kgn7x2",
+  "verdict": "PASS",
+  "message_score": 92,
+  "scroll_stop_score": 88,
+  "message_analysis": "Crystal clear single message: junior devs survive by becoming AI directors, not by fighting obsolescence. Every scene reinforces this pivot from fear to agency. The angle is original—flipping the narrative from threat to empowerment is exactly what cuts through career anxiety content saturation. Hook promises 'proof of obsolescence' and delivers it in Scene 2, then subverts with the revelation in Scene 4. The loop ending ('unless they stop being junior devs') circles back and rewards rewatch. This will resonate and drive shares because it gives viewers something actionable, not just doomscrolling.",
+  "scroll_stop_analysis": "Scene 1 is a true pattern interrupt: silence, kinetic text slam, Karpathy's face flash, red underline. The 'Wait, what?' format hits in under 1.5s. Scene 2 maintains momentum with screen recording speedup and live ticket count drop (visual proof). Scene 3 tightens tension with dead-serious face shot and instant AI function completion. Scene 4's split-screen 'director vs. actor' comparison is visceral and novel. Pacing is tight—no dead air, no filler. The emotion arc (shock → curiosity → urgency → revelation → urgency → loop) builds and pays off. This feels native TikTok, not an ad or lecture. The silence-first audio design in Scene 1 forces re-reads, boosting watch time. Pattern interrupt counts are solid (3, 3, 2, 2, 3, 2).",
+  "fixes": [],
+  "confidence": 94,
+  "model_used": "claude-haiku-4-5-20251001",
+  "reviewed_at": "2026-03-23T09:04:20.469Z"
+}

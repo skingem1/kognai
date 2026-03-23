@@ -1,0 +1,20 @@
+{
+  "scenario_id": "scn-f1b78167",
+  "trend_signal_id": "test-v2-1774256151099",
+  "title": "AI Agents Are Replacing Junior Developers",
+  "angle": "",
+  "scenes": [],
+  "hook_test": {
+    "format_reference": "",
+    "viral_proof": "",
+    "why_it_works": "",
+    "estimated_hook_rate": 0
+  },
+  "total_duration_s": 0,
+  "target_emotion_arc": [],
+  "speaker_name": "Kognai",
+  "tts_voice": "default",
+  "hashtags": [],
+  "created_at": "2026-03-23T08:56:16.263Z",
+  "model_used": "claude-sonnet-4-6"
+}

@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-974326b7",
+  "topic_id": "custom-mn2xd2nr-0",
+  "format": "debate",
+  "title": "How OpenAI o3 reasoning model changes software development forever",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "OpenAI o3 makes software dev faster by automating code generation and debugging with advanced reasoning. (3 sec)",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "OpenAI o3 is just a research model—no real deployment tools or integration with existing protocols like REST or GraphQL. (5 sec)",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "o3's reasoning reduces manual coding by 70% and cuts bugs by 50% in real-world apps like Azure and GitHub Copilot. (5 sec)",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "OpenAI isn’t open—its models are closed-source, limiting transparency and stifling innovation outside their ecosystem. (5 sec)",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Open source wins—true progress happens when everyone can build on it, not just a few. (4 sec)",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "how vs openai",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#how",
+    "#openai",
+    "#o3"
+  ],
+  "generated_at": "2026-03-23T08:29:49.783Z",
+  "llm_used": true
+}

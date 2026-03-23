@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-70a0f204",
+  "topic_id": "custom-mn2xlg2r-1",
+  "format": "debate",
+  "title": "The 3 AI breakthroughs that happened this week that nobody covered",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "The \"the\" in \"the 3 AI breakthroughs\" is essential—it defines specificity and context, which matters in technical discourse.",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "\"3\" is the breakthrough itself—quantifiable, measurable, and central to understanding impact, not just a grammatical placeholder.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "\"The\" anchors the statement to real-world relevance, like how \"the\" in \"the Transformer architecture\" defines its significance.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Without \"3,\" we lose precision. How many breakthroughs? One? Two? Three? The number is the innovation.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "\"3\" isn’t just a number—it’s the catalyst for focused progress, unlike vague, indefinite language.",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "the vs 3",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#the",
+    "#3",
+    "#ai"
+  ],
+  "generated_at": "2026-03-23T08:36:33.973Z",
+  "llm_used": true
+}

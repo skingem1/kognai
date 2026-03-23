@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-aab07d5a",
+  "topic_id": "custom-mn2xtn9a-2",
+  "format": "debate",
+  "title": "Why decentralized identity will replace passwords forever",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Passwords are obsolete. Decentralized identity offers self-sovereign control via protocols like DID and blockchain. (3 sec)",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Decentralized systems are too fragmented. No single standard exists, making adoption slow and interoperability a nightmare. (5 sec)",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "W3C’s DID specs enable cross-platform identity. Users own keys, avoid password reset hell, and prevent data breaches. (5 sec)",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Centralized identity solutions like Microsoft’s Passkeys already offer secure, passwordless login without the overhead of decentralization. (5 sec)",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Decentralized identity is a solution in search of a problem—centralized systems are evolving fast. (4 sec)",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "why vs decentralized",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#why",
+    "#decentralized",
+    "#identity"
+  ],
+  "generated_at": "2026-03-23T08:43:14.396Z",
+  "llm_used": true
+}

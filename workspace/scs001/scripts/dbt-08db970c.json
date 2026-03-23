@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-08db970c",
+  "topic_id": "custom-mn2xtn9a-0",
+  "format": "debate",
+  "title": "How to build a personal AI assistant that actually understands you",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "The \"how\" is clear—use open protocols like WebDAV and REST to build a flexible, interoperable AI assistant that truly learns from you.",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "\"To\" build understanding, you need neural embeddings and real-time NLP—protocols don’t capture the nuance of human language.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Open protocols allow third-party tools and integrations, giving you full control and enabling continuous learning through APIs like GraphQL.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Without a \"to\" focused on training models on personal data, your AI will never grasp your unique context or intent.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Understanding comes from training, not just protocols—without \"to,\" you’re just building a hollow shell.",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "how vs to",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#how",
+    "#to",
+    "#build"
+  ],
+  "generated_at": "2026-03-23T08:42:42.781Z",
+  "llm_used": true
+}

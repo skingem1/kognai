@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-aa434626",
+  "topic_id": "custom-mn2xamaq-1",
+  "format": "explainer",
+  "title": "The 5 biggest cybersecurity threats of 2026 that nobody is prepared for",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Did you know AI-driven phishing attacks will hit 80% of companies by 2026?",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Cybercriminals are using AI to mimic CEOs and trick employees into sending money.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "It’s when AI generates ultra-realistic fake emails, videos, and voice calls.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "These attacks use deepfake tech that can fool even the most trained eyes.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Small businesses and mid-sized firms are hit hardest—no budget for advanced AI defense.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The key takeaway? AI isn’t just a tool—it’s now a weapon in the hands of hackers.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Want to know how to protect yourself? Tap for the full breakdown.",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "The 5 biggest cybersecurity threats of 2026 that nobody is prepared for",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#the",
+    "#5",
+    "#biggest"
+  ],
+  "generated_at": "2026-03-23T08:28:04.349Z",
+  "llm_used": true
+}

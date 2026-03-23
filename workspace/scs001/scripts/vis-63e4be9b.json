@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-63e4be9b",
+  "topic_id": "custom-mn2xnt94-0",
+  "format": "vision",
+  "title": "How Claude Code is redefining what one developer can build alone",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "What if one developer could now build entire systems alone, thanks to tools like Claude Code?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Claude Code enables end-to-end coding, from design to deployment, using natural language and AI-driven synthesis.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "But this risks eroding collaborative skills and deepening inequality if access to such tools is uneven.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Open-source integration and community-driven training help ensure broader participation and shared knowledge.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "Imagine a future where solo developers democratize innovation, bridging gaps in tech access and expertise.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future isn’t just about what we can build—it’s about who gets to build it.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of how",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#how",
+    "#claude",
+    "#code"
+  ],
+  "video_cue": "A single developer typing on a keyboard, with lines of code forming into a fully functional app interface in real time.",
+  "generated_at": "2026-03-23T08:38:13.098Z",
+  "llm_used": true
+}

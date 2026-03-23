@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-643cb8cb",
+  "topic_id": "custom-mn2xtn9a-1",
+  "format": "debate",
+  "title": "The real reason Nvidia stock keeps breaking records in 2026",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "The real reason Nvidia's stock soars is the dominance of its Tensor Core protocol in AI acceleration. (3 sec)",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "But the real reason is the explosion of demand for real-time ray tracing in gaming and metaverse applications. (5 sec)",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "My protocol's support for CUDA 16 and DPX 3.0 gives Nvidia a technical edge in AI and HPC markets. (5 sec)",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "The real reason is the integration of AI and graphics in Omniverse, driving enterprise adoption at scale. (5 sec)",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "The real reason is the unstoppable rise of AI-driven rendering, not just a protocol. (4 sec)",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "the vs real",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#the",
+    "#real",
+    "#reason"
+  ],
+  "generated_at": "2026-03-23T08:42:58.635Z",
+  "llm_used": true
+}

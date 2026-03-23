@@ -1,0 +1,6 @@
+file '/Users/tarekmnif/kognai/workspace/scs001/v2-output/v2-d3f15c2b/segments/scene_0_The Hook Drop.mp4'
+file '/Users/tarekmnif/kognai/workspace/scs001/v2-output/v2-d3f15c2b/segments/scene_1_The Proof Drop.mp4'
+file '/Users/tarekmnif/kognai/workspace/scs001/v2-output/v2-d3f15c2b/segments/scene_2_The Reframe.mp4'
+file '/Users/tarekmnif/kognai/workspace/scs001/v2-output/v2-d3f15c2b/segments/scene_3_The New Skill Stack.mp4'
+file '/Users/tarekmnif/kognai/workspace/scs001/v2-output/v2-d3f15c2b/segments/scene_4_The Proof of Concept.mp4'
+file '/Users/tarekmnif/kognai/workspace/scs001/v2-output/v2-d3f15c2b/segments/scene_5_The Loop Close.mp4'

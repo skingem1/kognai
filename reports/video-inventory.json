@@ -1,12 +1,12 @@
 {
-  "scanned_at": "2026-03-23T08:46:49.850Z",
-  "total_runs": 230,
-  "total_videos": 452,
-  "unique_topics": 168,
-  "already_registered": 168,
+  "scanned_at": "2026-03-23T09:12:18.339Z",
+  "total_runs": 231,
+  "total_videos": 455,
+  "unique_topics": 169,
+  "already_registered": 169,
   "newly_registered": 0,
   "already_posted": 0,
-  "ready_to_post": 168,
+  "ready_to_post": 169,
   "gate_status": {
     "posted": 4,
     "target": 30,
@@ -1076,6 +1076,14 @@
       "duration_s": 27,
       "posted": false,
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-b3vb/output/dbt-c9820a9b_final.mp4"
+    },
+    {
+      "video_id": "exp-e71b5361",
+      "format": "explainer",
+      "title": "openai",
+      "duration_s": 25,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T09-5lw6/output/exp-e71b5361_final.mp4"
     },
     {
       "video_id": "exp-8deb2db9",

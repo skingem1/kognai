@@ -1,0 +1,46 @@
+{
+  "run_id": "mf-20260323T08-0a8r",
+  "started_at": "2026-03-23T08:34:10.034Z",
+  "completed_at": "2026-03-23T08:36:01.455Z",
+  "topics_found": 3,
+  "scripts_generated": 3,
+  "videos_composited": 3,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "exp-9eddbdea",
+      "format": "explainer",
+      "title": "How Claude Code is redefining what one developer can build alone",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T08-0a8r/output/exp-9eddbdea_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T08-0a8r/output/exp-9eddbdea.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "exp-939cb6a9",
+      "format": "explainer",
+      "title": "The 3 AI breakthroughs that happened this week that nobody covered",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T08-0a8r/output/exp-939cb6a9_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T08-0a8r/output/exp-939cb6a9.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "exp-9b561a8c",
+      "format": "explainer",
+      "title": "Why Africa will lead the next wave of tech innovation",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T08-0a8r/output/exp-9b561a8c_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T08-0a8r/output/exp-9b561a8c.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 1.05
+}

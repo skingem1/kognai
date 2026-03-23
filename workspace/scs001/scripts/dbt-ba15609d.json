@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-ba15609d",
+  "topic_id": "custom-mn2x3cbv-0",
+  "format": "debate",
+  "title": "How AI agents negotiate prices autonomously",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Autonomous price negotiation via AI is faster, fairer, and eliminates human bias — the \"how\" is a clear win.",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "AI lacks context — it can't grasp market sentiment, cultural nuances, or sudden demand spikes. It's just code.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Real-time data feeds and ML models adjust instantly — like Amazon's dynamic pricing, but with ethical guardrails.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "No algorithm can replicate human negotiation tactics — empathy, persuasion, and strategic concessions matter.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "The future isn't human or AI — it's protocol-driven AI that scales, learns, and negotiates better than any human ever could.",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "how vs ai",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#how",
+    "#ai",
+    "#agents"
+  ],
+  "generated_at": "2026-03-23T08:22:13.964Z",
+  "llm_used": true
+}

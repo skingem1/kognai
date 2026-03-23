@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-8554942c",
+  "topic_id": "custom-mn2xw4vx-2",
+  "format": "vision",
+  "title": "Why decentralized identity will replace passwords forever",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "What if the password — the cornerstone of digital security — is about to become obsolete? Why?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Decentralized identity, using blockchain and self-sovereign ID, already lets users control their own digital identities without centralized login systems.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "But who ensures these systems are inclusive? Marginalized groups may lack the digital literacy or access to benefit from them, risking further exclusion.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Builders are creating open-source tools and user-friendly interfaces to lower barriers, and partnering with NGOs to ensure equitable access.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "Imagine a world where identity is portable, secure, and respected — where no one is locked out of their own life due to a forgotten password.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future is not just about security, but about reclaiming control — one decentralized identity at a time.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of why",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#why",
+    "#decentralized",
+    "#identity"
+  ],
+  "video_cue": "A person securely logging into a service using a smartphone and a biometric scan, with their identity verified on a decentralized network.",
+  "generated_at": "2026-03-23T08:45:24.299Z",
+  "llm_used": true
+}
