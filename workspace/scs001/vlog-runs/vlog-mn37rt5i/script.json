@@ -1,0 +1,21 @@
+{
+  "title": "Zuckerberg's AI Mega Investment",
+  "full_monologue": "**Mark Zuckerberg spent $65 billion on AI infrastructure.** That’s more than the GDP of some countries. Why? To power the next generation of AI tools. We’re talking about massive data centers, cutting-edge hardware, and global networks. This isn’t just about Meta—it’s about reshaping the future of AI. Imagine what this could mean for innovation. What do you think he’s building? Comment below.",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 5,
+      "duration_s": 3,
+      "visual_prompt": "People working in a high-tech data center with glowing lights and servers, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 15,
+      "duration_s": 3,
+      "visual_prompt": "Abstract motion of digital data flowing through the air like light trails, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

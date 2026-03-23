@@ -1,0 +1,21 @@
+{
+  "title": "Why Developers Should Learn Rust Now",
+  "full_monologue": "**Rust is changing the game for developers everywhere.** With memory safety, blazing-fast performance, and a growing ecosystem, it’s no wonder companies like Microsoft and Amazon are adopting it. Rust’s ownership model eliminates common bugs without sacrificing speed—perfect for systems programming. And with its focus on safety and concurrency, it’s a must-learn for any developer serious about the future. So, what are you waiting for? Dive into Rust today and stay ahead of the curve.",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 5,
+      "duration_s": 3,
+      "visual_prompt": "Hands typing on a keyboard with glowing keys in a dimly lit room, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 15,
+      "duration_s": 3,
+      "visual_prompt": "A group of engineers collaborating in a modern tech office with abstract motion graphics in the background, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

@@ -1,39 +1,38 @@
 {
-  "batch_at": "2026-03-23T13:03:23.333Z",
+  "batch_at": "2026-03-23T13:25:35.657Z",
   "pipeline_filter": "educational",
   "runs_planned": 5,
-  "runs_completed": 5,
+  "runs_completed": 4,
   "results": [
     {
       "pipeline": "educational",
-      "runId": "vlog-mn3684q6",
-      "title": "AGI Coming This Year? Here's What You Need to Know",
+      "runId": "vlog-mn377a2d",
+      "title": "Why Developers Should Learn Rust Now",
       "cost": 0.26
     },
     {
       "pipeline": "educational",
-      "runId": "vlog-mn36g86p",
-      "title": "Nvidia Stock Surpasses 200!",
+      "runId": "vlog-mn37dmk4",
+      "title": "AI Tool Replaces Photoshop for $10",
       "cost": 0.26
     },
     {
       "pipeline": "educational",
-      "runId": "vlog-mn36nitq",
-      "title": "AI Voice Clone in 3 Seconds!",
+      "runId": "vlog-mn37mbdt",
+      "title": "AI and the Future of Medicine",
       "cost": 0.26
     },
     {
       "pipeline": "educational",
-      "runId": "vlog-mn36t3rt",
-      "title": "Why China Is Winning The AI Race",
-      "cost": 0.26
-    },
-    {
-      "pipeline": "educational",
-      "runId": "vlog-mn36z8jc",
-      "title": "The Programming Language That AI Cannot Replace",
+      "runId": "vlog-mn37rt5i",
+      "title": "Zuckerberg's AI Mega Investment",
       "cost": 0.26
     }
   ],
-  "errors": []
+  "errors": [
+    {
+      "run": 1,
+      "error": "Command failed: curl -s --max-time 60 http://localhost:11434/api/generate -d '{\"model\":\"qwen3:14b\",\"prompt\":\"Write a 30-second TikTok vlog script about: \\\"Elon Musk Just Open Sourced Grok 3 And Its In"
+    }
+  ]
 }

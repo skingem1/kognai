@@ -1,0 +1,21 @@
+{
+  "title": "AI Tool Replaces Photoshop for $10",
+  "full_monologue": "This $10 AI tool is changing how we edit photos. No more expensive software, no steep learning curve. It does everything from removing blemishes to background replacements. Let me show you. (cut to B-roll) Watch as it transforms a dull image into something stunning in seconds. (cut to B-roll) The results are so clean, you’d think it was done by a pro. Have you tried any AI tools for editing? Let me know in the comments.",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 5,
+      "duration_s": 3,
+      "visual_prompt": "a person holding a a blurred background, walking through a cityscape, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 15,
+      "duration_s": 3,
+      "visual_prompt": "a hand adjusting a camera lens, followed by a smooth transition of a landscape changing from dull to vibrant, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}
