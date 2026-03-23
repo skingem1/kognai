@@ -4361,3 +4361,16 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no — production runs
 - Issues: 1 v2 video failed on "ChatGPT Look Outdated" topic (fal.ai download error), replaced with Elon topic
 - Timestamp: 2026-03-23T13:57:00Z
+
+## Sprint 901 — CODE-DEMO — Fix compositor audio bug + 3 code demo videos
+- Status: PASS
+- Commit: 78378092
+- Files modified: scripts/scs001/code-demo-compositor.ts (narration.mp3 → narration.m4a fix)
+- Files created: workspace/sprints/sprint-901.json, 3 code demo videos
+- Code demos: "Build a Chatbot in 3 Steps!" (27s, Python), "Extract Links from Any Website in Python" (29s, Python), "Build a Simple API in 30 Seconds" (33s, TypeScript)
+- Pipeline: 19 v2 + 3 TTS vlogs + 3 code demos = 193+ total content
+- Cost: $0.00 (all local: Ollama + Pillow + FFmpeg + macOS say)
+- Bug fixed: code-demo-compositor.ts tried to write AAC audio to .mp3 container, changed to .m4a
+- Swarm used: no — wrote fix directly + production runs
+- Issues: none
+- Timestamp: 2026-03-23T14:35:00Z
