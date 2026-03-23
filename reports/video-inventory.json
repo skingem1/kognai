@@ -1,12 +1,12 @@
 {
-  "scanned_at": "2026-03-23T00:37:03.101Z",
-  "total_runs": 25,
-  "total_videos": 16,
-  "unique_topics": 12,
-  "already_registered": 12,
-  "newly_registered": 0,
+  "scanned_at": "2026-03-23T00:47:10.144Z",
+  "total_runs": 34,
+  "total_videos": 23,
+  "unique_topics": 17,
+  "already_registered": 16,
+  "newly_registered": 1,
   "already_posted": 0,
-  "ready_to_post": 12,
+  "ready_to_post": 17,
   "gate_status": {
     "posted": 2,
     "target": 30,
@@ -30,20 +30,52 @@
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-2yxr/output/vis-1772d7e3_final.mp4"
     },
     {
-      "video_id": "dbt-a49e29cf",
+      "video_id": "dbt-674cf50f",
       "format": "debate",
-      "title": "Resolv USR (USR) 📉 -64.3%",
+      "title": "Is OpenAI losing the AI race to open source?",
       "duration_s": 27,
       "posted": false,
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-v9gl/output/dbt-a49e29cf_final.mp4"
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-ix0v/output/dbt-674cf50f_final.mp4"
     },
     {
-      "video_id": "dbt-4c88667f",
+      "video_id": "dbt-064e1def",
       "format": "debate",
-      "title": "Siren (SIREN) 📈 142.9%",
+      "title": "Siren (SIREN) 📈 134.1%",
       "duration_s": 27,
       "posted": false,
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-lism/output/dbt-4c88667f_final.mp4"
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-9oh0/output/dbt-064e1def_final.mp4"
+    },
+    {
+      "video_id": "dbt-c9820a9b",
+      "format": "debate",
+      "title": "Resolv USR (USR) 📉 -64.2%",
+      "duration_s": 27,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-b3vb/output/dbt-c9820a9b_final.mp4"
+    },
+    {
+      "video_id": "exp-3f25cd45",
+      "format": "explainer",
+      "title": "The future of coding with AI pair programming",
+      "duration_s": 25,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-q7hv/output/exp-3f25cd45_final.mp4"
+    },
+    {
+      "video_id": "exp-2f873880",
+      "format": "explainer",
+      "title": "Why AI agents will replace apps in 2026",
+      "duration_s": 25,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-ln4c/output/exp-2f873880_final.mp4"
+    },
+    {
+      "video_id": "exp-ca0c4bfe",
+      "format": "explainer",
+      "title": "River (RIVER) 📈 18.8%",
+      "duration_s": 25,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-ii6u/output/exp-ca0c4bfe_final.mp4"
     },
     {
       "video_id": "exp-f93e8070",
@@ -92,6 +124,14 @@
       "duration_s": 25,
       "posted": false,
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-rrc5/output/exp-4cfce417_final.mp4"
+    },
+    {
+      "video_id": "lst-8dd0a6d1",
+      "format": "listicle",
+      "title": "5 AI tools that will make you 10x more productive",
+      "duration_s": 20,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-nqjg/output/lst-8dd0a6d1_final.mp4"
     },
     {
       "video_id": "lst-c4530456",

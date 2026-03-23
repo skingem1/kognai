@@ -1,14 +1,14 @@
 {
-  "batch_at": "2026-03-23T00:37:03.108Z",
-  "runs_planned": 5,
-  "runs_completed": 5,
-  "total_new_videos": 2,
+  "batch_at": "2026-03-23T00:39:08.489Z",
+  "runs_planned": 3,
+  "runs_completed": 3,
+  "total_new_videos": 1,
   "dry_run": false,
   "results": [
     {
       "run": 1,
       "success": true,
-      "videos": 1
+      "videos": 0
     },
     {
       "run": 2,
@@ -17,16 +17,6 @@
     },
     {
       "run": 3,
-      "success": true,
-      "videos": 0
-    },
-    {
-      "run": 4,
-      "success": true,
-      "videos": 0
-    },
-    {
-      "run": 5,
       "success": true,
       "videos": 0
     }

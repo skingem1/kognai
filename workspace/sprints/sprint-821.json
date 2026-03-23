@@ -1,0 +1,38 @@
+{
+  "sprint_id": "sprint-821",
+  "title": "CONTENT — custom topic batch: 3 diverse AI videos produced",
+  "description": "Using new --topic flag from Sprint 820, produced 3 custom topic videos to diversify inventory: listicle (AI tools), debate (OpenAI vs open source), explainer (AI pair programming). 744 ledger, 15 ready.",
+  "source": "content",
+  "tasks": [
+    {
+      "id": "821-01",
+      "title": "Produce listicle: 5 AI tools that will make you 10x more productive",
+      "type": "content",
+      "task_target": "scripts/scs001/run-multiformat-pipeline.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-821"
+    },
+    {
+      "id": "821-02",
+      "title": "Produce debate: Is OpenAI losing the AI race to open source?",
+      "type": "content",
+      "task_target": "scripts/scs001/run-multiformat-pipeline.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-821"
+    },
+    {
+      "id": "821-03",
+      "title": "Produce explainer: The future of coding with AI pair programming",
+      "type": "content",
+      "task_target": "scripts/scs001/run-multiformat-pipeline.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-821"
+    }
+  ]
+}
