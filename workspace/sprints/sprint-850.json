@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-850",
+  "title": "OPS — batch content production + smoke test check",
+  "description": "Produced 3 new videos (3/3 runs). 74 unique videos ready. Smoke test: 16 stages, 1 known timeout (clip-detection).",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "850-01",
+      "title": "Run batch content production",
+      "type": "ops",
+      "task_target": "scripts/scs001/batch-produce.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-850"
+    }
+  ]
+}
