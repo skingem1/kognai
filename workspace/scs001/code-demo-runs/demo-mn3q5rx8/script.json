@@ -1,0 +1,70 @@
+{
+  "demo_id": "demo-mn3q5rx9",
+  "title": "Speed Test in Python!",
+  "language": "python",
+  "total_duration_s": 25,
+  "steps": [
+    {
+      "step_id": "s1",
+      "title": "Step 1: Import the library",
+      "code_lines": [
+        "import speedtest",
+        "st = speedtest.Speedtest()"
+      ],
+      "language": "python",
+      "explanation": "We start by importing the speedtest library and initializing the test object.",
+      "duration_s": 6,
+      "highlight_lines": [
+        1
+      ]
+    },
+    {
+      "step_id": "s2",
+      "title": "Step 2: Run the tests",
+      "code_lines": [
+        "st.download()",
+        "st.upload()"
+      ],
+      "language": "python",
+      "explanation": "Now we run the download and upload speed tests.",
+      "duration_s": 6,
+      "highlight_lines": [
+        1,
+        2
+      ]
+    },
+    {
+      "step_id": "s3",
+      "title": "Step 3: Print the results",
+      "code_lines": [
+        "print(f\"Download: {st.results.download / 1024**2:.2f} Mbps\")",
+        "print(f\"Upload: {st.results.upload / 1024**2:.2f} Mbps\")"
+      ],
+      "language": "python",
+      "explanation": "Finally, we format and print the results in Mbps for easy reading.",
+      "duration_s": 8,
+      "highlight_lines": [
+        1,
+        2
+      ]
+    },
+    {
+      "step_id": "s4",
+      "title": "Step 4: Try it yourself!",
+      "code_lines": [],
+      "language": "python",
+      "explanation": "Try it yourself and see how fast your internet really is!",
+      "duration_s": 5,
+      "highlight_lines": []
+    }
+  ],
+  "hashtags": [
+    "#coding",
+    "#python",
+    "#speedtest",
+    "#tutorial"
+  ],
+  "intro_hook": "Want to check your internet speed? Let's code it!",
+  "source": "user",
+  "topic_source": "user-prompt"
+}

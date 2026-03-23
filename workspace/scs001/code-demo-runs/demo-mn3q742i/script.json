@@ -1,0 +1,89 @@
+{
+  "demo_id": "demo-mn3q742i",
+  "title": "SQLite Todo App in Python",
+  "language": "python",
+  "total_duration_s": 31,
+  "steps": [
+    {
+      "step_id": "s1",
+      "title": "Step 1: Setup",
+      "code_lines": [
+        "import sqlite3",
+        "conn = sqlite3.connect('todo.db')",
+        "c = conn.cursor()",
+        "c.execute(\"CREATE TABLE IF NOT EXISTS tasks (id INTEGER PRIMARY KEY, task TEXT)\")",
+        "conn.commit()"
+      ],
+      "language": "python",
+      "explanation": "We connect to a SQLite database and create a tasks table.",
+      "duration_s": 7,
+      "highlight_lines": [
+        0,
+        3
+      ]
+    },
+    {
+      "step_id": "s2",
+      "title": "Step 2: Add a Task",
+      "code_lines": [
+        "def add_task(task):",
+        "    c.execute(\"INSERT INTO tasks (task) VALUES (?)\", (task,))",
+        "    conn.commit()"
+      ],
+      "language": "python",
+      "explanation": "We define a function to add a new task to our database.",
+      "duration_s": 6,
+      "highlight_lines": [
+        0
+      ]
+    },
+    {
+      "step_id": "s3",
+      "title": "Step 3: List Tasks",
+      "code_lines": [
+        "def list_tasks():",
+        "    c.execute(\"SELECT * FROM tasks\")",
+        "    return c.fetchall()"
+      ],
+      "language": "python",
+      "explanation": "This function fetches all tasks from the database.",
+      "duration_s": 6,
+      "highlight_lines": [
+        0
+      ]
+    },
+    {
+      "step_id": "s4",
+      "title": "Step 4: Run It",
+      "code_lines": [
+        "add_task(\"Sample task\")",
+        "print(list_tasks())",
+        "conn.close()"
+      ],
+      "language": "python",
+      "explanation": "We add a sample task and print the list of tasks before closing the connection.",
+      "duration_s": 7,
+      "highlight_lines": [
+        0
+      ]
+    },
+    {
+      "step_id": "s5",
+      "title": "Step 5: Try It Yourself!",
+      "code_lines": [],
+      "language": "python",
+      "explanation": "Try it yourself and build your own todo app!",
+      "duration_s": 5,
+      "highlight_lines": []
+    }
+  ],
+  "hashtags": [
+    "#coding",
+    "#python",
+    "#sqlite",
+    "#tutorial"
+  ],
+  "intro_hook": "Let's build a todo app with Python and SQLite in seconds!",
+  "source": "user",
+  "topic_source": "user-prompt"
+}

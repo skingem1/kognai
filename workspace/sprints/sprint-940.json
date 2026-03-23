@@ -1,0 +1,13 @@
+{
+  "sprint_id": "sprint-940",
+  "title": "MULTI-PIPELINE — 3 code demos + 2 TTS vlogs (TTS mode)",
+  "description": "3 code demos + 2 TTS-mode vlogs. Content stockpile 378+.",
+  "source": "ops",
+  "tasks": [
+    {"id": "940-01", "title": "Code demo: Build a Pixel Art Generator in Python", "type": "ops", "task_target": "scripts/scs001/pipelines/code-demo.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-940", "output": "demo-mn3q3iy4"},
+    {"id": "940-02", "title": "Code demo: Create a Network Speed Tester in Python", "type": "ops", "task_target": "scripts/scs001/pipelines/code-demo.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-940", "output": "demo-mn3q5rx8"},
+    {"id": "940-03", "title": "Code demo: Build a Todo App with SQLite in Python", "type": "ops", "task_target": "scripts/scs001/pipelines/code-demo.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-940", "output": "demo-mn3q742i"},
+    {"id": "940-04", "title": "V2 video (TTS): Amazon Just Launched an AI That Shops for You", "type": "ops", "task_target": "scripts/scs001/produce-vlog.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-940", "output": "vlog-mn3q8y3s", "mode": "tts"},
+    {"id": "940-05", "title": "V2 video (TTS): The Python Script That Earns Money While You Sleep", "type": "ops", "task_target": "scripts/scs001/produce-vlog.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-940", "output": "vlog-mn3qa4b4", "mode": "tts"}
+  ]
+}
