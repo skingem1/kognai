@@ -53,6 +53,18 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 | 2026-02 | 248-270 | VIDEO-QUALITY, Telegram commands explosion |
 | 2026-03 | 435-496 | Posting workflow, safety split, Stripe, YouTube |
 
+## Sprint 820 — PIPELINE
+- Status: PASS
+- Commit: 071dfd5
+- Files modified: scripts/scs001/run-multiformat-pipeline.ts, scripts/scs001/batch-produce.ts, scripts/telegram-commands/cmd-delivery.ts, scripts/telegram-bot.ts
+- Files created: workspace/sprints/sprint-820.json
+- Feature: --topic flag for custom topic injection (bypasses TopicRadar API saturation)
+- New commands: /produce-topic, /producetopic (Telegram)
+- Test: dry-run with custom topic "Why AI agents will replace apps in 2026" — 1 video composited, PASS
+- Swarm used: no (multi-file feature, direct implementation)
+- Issues: none
+- Timestamp: 2026-03-23T02:15:00Z
+
 ## Sprint 819 — OPS
 - Status: PASS
 - Commit: b92dfab
