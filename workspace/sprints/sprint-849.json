@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-849",
+  "title": "OPS — batch content production (5 runs) + deliver videos",
+  "description": "Produced 3 new videos (3/3 runs successful). 72 unique videos ready to post, 4/30 toward gate.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "849-01",
+      "title": "Run batch content production (5 runs)",
+      "type": "ops",
+      "task_target": "scripts/scs001/batch-produce.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-849"
+    }
+  ]
+}
