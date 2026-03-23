@@ -1,0 +1,111 @@
+{
+  "scenario_id": "scn-x7k291",
+  "trend_signal_id": "custom-v2-1774270569542",
+  "title": "The AI Startup That Raised $1 Billion Without a Product",
+  "angle": "The funding came BEFORE the product — exposing how AI hype has completely broken startup logic and what it means for your money",
+  "scenes": [
+    {
+      "scene_id": "s1",
+      "scene_name": "The Impossible Hook",
+      "duration_s": 5,
+      "voiceover": "A startup just raised ONE BILLION dollars. They have zero products. Zero revenue. This is real.",
+      "visual_style": "kinetic_text",
+      "visual_description": "Bold white text slams onto black screen: '$1,000,000,000' — then a red X over a blank product page",
+      "caption_overlay": "Wait... they raised $1B with NOTHING?",
+      "emotion": "shock",
+      "music_cue": "impact_hit",
+      "pattern_interrupts": 3
+    },
+    {
+      "scene_id": "s2",
+      "scene_name": "The Setup — Who Are These People",
+      "duration_s": 5,
+      "voiceover": "No app. No demo. Just a pitch deck and two ex-OpenAI engineers. That's it. That's the whole company.",
+      "visual_style": "b_roll_montage",
+      "visual_description": "Fast cuts: empty office, a PDF icon, two headshots, a handshake — all labeled with stark text overlays",
+      "caption_overlay": "2 people. 1 deck. $1,000,000,000.",
+      "emotion": "curiosity",
+      "music_cue": "tension_build",
+      "pattern_interrupts": 3
+    },
+    {
+      "scene_id": "s3",
+      "scene_name": "The Real Reason It Worked",
+      "duration_s": 6,
+      "voiceover": "Investors aren't betting on the product. They're betting on the PEOPLE — because in AI, talent is the moat.",
+      "visual_style": "kinetic_text",
+      "visual_description": "Split screen: left side 'Product' crossed out, right side 'People' circled in green — zoom punch on the word MOAT",
+      "caption_overlay": "The product doesn't matter. THIS does.",
+      "emotion": "revelation",
+      "music_cue": "tension_build",
+      "pattern_interrupts": 2
+    },
+    {
+      "scene_id": "s4",
+      "scene_name": "The Scary Implication",
+      "duration_s": 6,
+      "voiceover": "But here's the problem — if hype funds billions before products exist, what happens when the hype dies?",
+      "visual_style": "documentary",
+      "visual_description": "Archive-style footage of dot-com crash headlines, then cuts to AI logos — slow zoom into a ticking clock graphic",
+      "caption_overlay": "We've seen this before. 2001 called.",
+      "emotion": "urgency",
+      "music_cue": "tension_build",
+      "pattern_interrupts": 2
+    },
+    {
+      "scene_id": "s5",
+      "scene_name": "The Twist Reveal",
+      "duration_s": 5,
+      "voiceover": "The wildest part? Three of their investors already wrote off similar bets — and they STILL wired the money.",
+      "visual_style": "screen_recording",
+      "visual_description": "Fake wire transfer screen flashes $1B sent — then cut to investor quote text on crumpled paper texture",
+      "caption_overlay": "They KNEW the risk and paid anyway.",
+      "emotion": "intrigue",
+      "music_cue": "impact_hit",
+      "pattern_interrupts": 3
+    },
+    {
+      "scene_id": "s6",
+      "scene_name": "The Loop Closer",
+      "duration_s": 5,
+      "voiceover": "So next time you think your idea needs to be perfect before you pitch — remember: someone got a billion for nothing.",
+      "visual_style": "kinetic_text",
+      "visual_description": "Text builds: 'Your idea.' pause. 'Their idea.' pause. '$0 vs $1,000,000,000' — final frame echoes opening black screen",
+      "caption_overlay": "Wait... so what's YOUR excuse?",
+      "emotion": "loop",
+      "music_cue": "impact_hit",
+      "pattern_interrupts": 2
+    }
+  ],
+  "hook_test": {
+    "format_reference": "Wait, what? — Hook with surprising claim → proof → bigger reveal",
+    "viral_proof": "This exact format powered MrBeast's '$1 vs $1,000,000 vacation' and multiple FinTok exposé videos exceeding 15M views. Shocking dollar figures in the first frame consistently achieve 8-12% swipe-up stop rates.",
+    "why_it_works": "The cognitive dissonance of '$1B + no product' forces the brain to resolve the contradiction — viewers can't scroll until they understand how it's possible. Combines financial anxiety with AI hype for maximum relevance.",
+    "estimated_hook_rate": 42
+  },
+  "total_duration_s": 32,
+  "target_emotion_arc": [
+    "shock",
+    "curiosity",
+    "revelation",
+    "urgency",
+    "intrigue",
+    "loop"
+  ],
+  "speaker_name": "Kognai",
+  "tts_voice": "default",
+  "hashtags": [
+    "#AIStartup",
+    "#VentureCapital",
+    "#StartupCulture",
+    "#AIBubble",
+    "#TechMoney",
+    "#FounderLife",
+    "#AINews",
+    "#tech",
+    "#money",
+    "#viral"
+  ],
+  "created_at": "2026-03-23T12:56:35.764Z",
+  "model_used": "claude-sonnet-4-6"
+}

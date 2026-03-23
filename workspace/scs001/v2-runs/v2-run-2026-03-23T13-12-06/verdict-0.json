@@ -1,0 +1,12 @@
+{
+  "scenario_id": "scn-ai7x29",
+  "verdict": "PASS",
+  "message_score": 92,
+  "scroll_stop_score": 94,
+  "message_analysis": "The message is crystalline: AI app building is accessible to anyone, fast, and happening now. Every scene reinforces this—no scene is filler. The hook promises 'build in 7 minutes' and Scene 3-4 deliver proof. The angle (myth-busting speed claim) is original enough to cut through a feed saturated with 'learn AI' content. The emotional arc is tight and purposeful: shock hooks you, curiosity holds you through setup, intrigue during the build, revelation when it works, urgency from competition, and loop closes the narrative circle. Someone would share this because it demolishes their own limiting belief.",
+  "scroll_stop_analysis": "The first 1.5 seconds (Scene 1) are brutally effective: close-up shock face + timer + all-caps caption = involuntary pause. Pattern interrupts are strong across all 6 scenes (avg 2.67/scene), with Scene 3 hitting 4 (UI snaps, neon lighting, fast cuts, output animation). Pacing is tight—no dead air, no dragging. The split-screen reveal (Scene 4) and kinetic text slam (Scene 5) break monotony. Feels native TikTok: conversational tone, visual motion, direct eye contact close-ups, zero lecture vibe. This would perform.",
+  "fixes": [],
+  "confidence": 96,
+  "model_used": "claude-haiku-4-5-20251001",
+  "reviewed_at": "2026-03-23T13:12:38.329Z"
+}

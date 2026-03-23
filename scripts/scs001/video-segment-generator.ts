@@ -18,7 +18,7 @@ const ROOT = join(__dirname, '..', '..');
 
 export interface SegmentVideoResult {
   path: string;
-  source: 'captions' | 'kling' | 'ltx' | 'pillow' | 'color-fallback';
+  source: 'captions' | 'kling' | 'ltx' | 'wan' | 'pillow' | 'color-fallback';
   cost_usd: number;
   duration_s: number;
 }

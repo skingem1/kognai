@@ -1,0 +1,12 @@
+{
+  "scenario_id": "scn-ai7x92",
+  "verdict": "PASS",
+  "message_score": 92,
+  "scroll_stop_score": 94,
+  "message_analysis": "The message is crystalline: beginners can build working AI apps in minutes using no-code tools. Every scene reinforces this — the hook promises it, scenes 2-4 prove it step-by-step, scene 5 validates it's real and shareable, and scene 6 triggers action. The angle (impossible time claim) is original enough to cut through feed noise. The emotion arc hits every beat. A viewer will leave with one takeaway: 'I can do this right now.' Strong conviction here.",
+  "scroll_stop_analysis": "Scene 1 is a masterclass hook — extreme close-up eyes + disbelief + live timer = irresistible tension. The 42% hook rate is grounded in proven psychology (countdown paradox, impossibility trigger). Pacing is tight: 32 seconds, no dead air, visual patterns (cursor highlight, code cascade, split-screen flash, kinetic text explosions, zoom loops) land every 3-6 seconds. The reveal in scene 4 (summary actually appears) is the emotional payoff that justifies the setup. Scene 6 closes the loop and creates urgency without feeling preachy. This would feel native on TikTok — it's proof, not lecture. High confidence someone stops scrolling at scene 1 and stays through scene 6.",
+  "fixes": [],
+  "confidence": 94,
+  "model_used": "claude-haiku-4-5-20251001",
+  "reviewed_at": "2026-03-23T13:14:08.376Z"
+}

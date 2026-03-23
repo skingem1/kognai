@@ -1,0 +1,12 @@
+{
+  "scenario_id": "scn-dev8472",
+  "verdict": "PASS",
+  "message_score": 95,
+  "scroll_stop_score": 92,
+  "message_analysis": "The message is laser-focused and delivered with zero filler: prompt engineering is a developer skill gap that determines output quality and job relevance. Every scene builds on this single thesis. Scene 1 frames the threat (junior outpaced you), Scene 2-3 explain why (structured prompting), Scene 4 proves it works (11 vs 1), Scene 5 stakes it (job market reality), Scene 6 closes the loop back to ego threat. The angle is original—positioning prompt engineering as 'new bash scripting' for developers, not a soft skill for non-technical people. This reframes the entire conversation and makes it unmissable for the target audience. Message delivery is relentless.",
+  "scroll_stop_analysis": "The hook is brutally effective. 'Your junior dev just outpaced you' in the first 1.5s triggers immediate ego threat—the strongest scroll-stopper in tech content, as the bundle correctly identifies. The proof is airtight: Fireship/TechLead precedent + proven 10M+ format + psychological mechanism (identity threat → relief arc) = high confidence in 42% hook rate estimate. Pattern interrupts are strong across all scenes (2–5 per scene, average 3.5), with kinetic text, split-screen proof, time-lapse comparison, and rapid job listing montage maintaining velocity. Pacing is tight—34s with no dead air. Emotion arc (shock → curiosity → intrigue → revelation → urgency → loop) tracks cleanly and resolves with a callback to Scene 1, creating the dopamine loop needed for saves/shares. This feels native to TikTok, not like an ad or lecture—it's peer-to-peer urgency.",
+  "fixes": [],
+  "confidence": 94,
+  "model_used": "claude-haiku-4-5-20251001",
+  "reviewed_at": "2026-03-23T13:17:33.826Z"
+}

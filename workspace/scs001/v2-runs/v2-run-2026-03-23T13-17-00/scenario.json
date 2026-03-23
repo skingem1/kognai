@@ -1,0 +1,110 @@
+{
+  "scenario_id": "scn-dev8472",
+  "trend_signal_id": "custom-v2-1774271820546",
+  "title": "Why Every Developer Needs to Learn Prompt Engineering Now",
+  "angle": "Prompt engineering is not a soft skill for non-coders — it is the new bash scripting, and developers who ignore it are writing slower, dumber code right now.",
+  "scenes": [
+    {
+      "scene_id": "s1",
+      "scene_name": "The Gut Punch Hook",
+      "duration_s": 5,
+      "voiceover": "Your junior dev using ChatGPT just outpaced you. Not because they're smarter. Because they know this.",
+      "visual_style": "kinetic_text",
+      "visual_description": "Bold white text explodes onto black screen word by word. Final word 'THIS' flashes red three times.",
+      "caption_overlay": "Your junior just lapped you 👀",
+      "emotion": "shock",
+      "music_cue": "impact_hit",
+      "pattern_interrupts": 4
+    },
+    {
+      "scene_id": "s2",
+      "scene_name": "The Brutal Truth",
+      "duration_s": 6,
+      "voiceover": "Prompt engineering is not ChatGPT tricks. It is how you turn an LLM into a compiler for your ideas.",
+      "visual_style": "screen_recording",
+      "visual_description": "Split screen: left shows a vague prompt with mediocre output, right shows a structured prompt producing clean production-ready code instantly.",
+      "caption_overlay": "Same AI. Completely different results.",
+      "emotion": "curiosity",
+      "music_cue": "tension_build",
+      "pattern_interrupts": 3
+    },
+    {
+      "scene_id": "s3",
+      "scene_name": "The Framework Drop",
+      "duration_s": 6,
+      "voiceover": "Role. Context. Constraints. Output format. Four inputs. That is the entire framework. Most devs skip three of them.",
+      "visual_style": "kinetic_text",
+      "visual_description": "Each word of the framework slams onto screen like a terminal command being typed. Wrong-answer X marks flash for each skipped step.",
+      "caption_overlay": "4 inputs. Most devs use 1.",
+      "emotion": "intrigue",
+      "music_cue": "tension_build",
+      "pattern_interrupts": 5
+    },
+    {
+      "scene_id": "s4",
+      "scene_name": "Live Proof",
+      "duration_s": 7,
+      "voiceover": "Watch. Same task. Bad prompt takes 11 back-and-forths. Structured prompt nails it in one shot. Every time.",
+      "visual_style": "screen_recording",
+      "visual_description": "Time-lapse of a messy multi-message thread vs a single perfectly-answered prompt. Counter ticks up to 11 on the left. Counter shows 1 on the right, highlighted in green.",
+      "caption_overlay": "11 messages vs 1. You choose.",
+      "emotion": "revelation",
+      "music_cue": "impact_hit",
+      "pattern_interrupts": 3
+    },
+    {
+      "scene_id": "s5",
+      "scene_name": "The Stakes Escalation",
+      "duration_s": 5,
+      "voiceover": "By 2026 job listings already say prompt engineering required. This is not optional anymore. It is table stakes.",
+      "visual_style": "b_roll_montage",
+      "visual_description": "Rapid cuts of real job listing screenshots with prompt engineering highlighted in yellow. Final cut zooms into the word REQUIRED in bold.",
+      "caption_overlay": "It is already in job listings.",
+      "emotion": "urgency",
+      "music_cue": "tension_build",
+      "pattern_interrupts": 4
+    },
+    {
+      "scene_id": "s6",
+      "scene_name": "The Loop Close",
+      "duration_s": 5,
+      "voiceover": "Your junior is not smarter. They just learned this first. The question is — are you going to let them stay ahead?",
+      "visual_style": "kinetic_text",
+      "visual_description": "Text fades in slow: 'Still think it is just a ChatGPT trick?' Final frame mirrors the opening black screen with the same red flash on the word 'trick'.",
+      "caption_overlay": "Still think this is optional? 👀",
+      "emotion": "loop",
+      "music_cue": "silence",
+      "pattern_interrupts": 2
+    }
+  ],
+  "hook_test": {
+    "format_reference": "Wait, what? — Hook with surprising claim → proof → bigger reveal",
+    "viral_proof": "The 'someone less experienced is beating you because of one skill' hook is a proven 10M+ format. Channels like Fireship and TechLead have used subordinate-surpassing-senior framing to drive 15M-40M views. The asymmetry triggers immediate ego threat response, which is the strongest scroll-stopper in tech content.",
+    "why_it_works": "Developers have strong professional identity. Threatening that identity in second one with a peer comparison forces a defensive stop-scroll. The video then resolves the threat by offering the skill gap explanation and a learnable fix, converting ego threat into actionable relief — the dopamine loop that drives saves and shares.",
+    "estimated_hook_rate": 42
+  },
+  "total_duration_s": 34,
+  "target_emotion_arc": [
+    "shock",
+    "curiosity",
+    "intrigue",
+    "revelation",
+    "urgency",
+    "loop"
+  ],
+  "speaker_name": "Kognai",
+  "tts_voice": "default",
+  "hashtags": [
+    "#promptengineering",
+    "#developertools",
+    "#aifordevelopers",
+    "#llmtips",
+    "#codingwithai",
+    "#softwareengineering2025",
+    "#tech",
+    "#ai",
+    "#coding"
+  ],
+  "created_at": "2026-03-23T13:17:27.862Z",
+  "model_used": "claude-sonnet-4-6"
+}

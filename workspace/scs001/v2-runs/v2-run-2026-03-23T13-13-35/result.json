@@ -1,0 +1,167 @@
+{
+  "run_id": "v2-run-2026-03-23T13-13-35",
+  "signal": {
+    "topic_id": "custom-v2-1774271615315",
+    "topic_name": "How to Build Your First AI App in Under 10 Minutes",
+    "confidence_score": 80,
+    "keyword_cluster": [
+      "build",
+      "your",
+      "first",
+      "under",
+      "minutes"
+    ],
+    "domain_tags": [
+      "tech",
+      "AI"
+    ],
+    "provenance_source": "custom-topic-v2"
+  },
+  "status": "pass",
+  "published": false,
+  "dry_run": false,
+  "retries_used": 0,
+  "timestamps": {
+    "started": "2026-03-23T13:13:35.315Z",
+    "finished": "2026-03-23T13:16:55.177Z",
+    "scorsese_done": "2026-03-23T13:14:03.249Z",
+    "art_director_done": "2026-03-23T13:14:08.376Z",
+    "movie_editor_done": "2026-03-23T13:16:55.177Z"
+  },
+  "scenario": {
+    "scenario_id": "scn-ai7x92",
+    "trend_signal_id": "custom-v2-1774271615315",
+    "title": "Build Your First AI App in Under 10 Minutes",
+    "angle": "Most devs think AI apps take weeks — this video proves a complete beginner can ship a working AI product before their coffee gets cold.",
+    "scenes": [
+      {
+        "scene_id": "s1",
+        "scene_name": "The Impossible Claim",
+        "duration_s": 5,
+        "voiceover": "I built a fully working AI app in 8 minutes. No coding degree. No prior experience. Watch.",
+        "visual_style": "react_cam",
+        "visual_description": "Extreme close-up on wide, disbelieving eyes. Quick zoom out to reveal a live timer running on screen beside a blank code editor.",
+        "caption_overlay": "8 MINUTES. REAL APP. NO BS.",
+        "emotion": "shock",
+        "music_cue": "impact_hit",
+        "pattern_interrupts": 3
+      },
+      {
+        "scene_id": "s2",
+        "scene_name": "The Setup — Anyone Can Do This",
+        "duration_s": 5,
+        "voiceover": "All you need is a browser. No installs. No credit card. Just go to Replit and open a blank project.",
+        "visual_style": "screen_recording",
+        "visual_description": "Fast cursor movement opening a browser, navigating to Replit. Bright highlight circles pulse around each click. Timer still ticking in corner.",
+        "caption_overlay": "Step 1: Open browser ✅",
+        "emotion": "curiosity",
+        "music_cue": "tension_build",
+        "pattern_interrupts": 2
+      },
+      {
+        "scene_id": "s3",
+        "scene_name": "The Secret Weapon",
+        "duration_s": 6,
+        "voiceover": "Type one prompt into Replit AI: 'Build me a web app that summarizes any text using OpenAI.' Hit enter. Watch it code itself.",
+        "visual_style": "screen_recording",
+        "visual_description": "Screen fills with AI-generated code appearing line by line at 3x speed. Neon green text cascades. Timer hits 3:00. Dramatic zoom into the blinking cursor.",
+        "caption_overlay": "The AI is writing your app RIGHT NOW 🤯",
+        "emotion": "intrigue",
+        "music_cue": "tension_build",
+        "pattern_interrupts": 3
+      },
+      {
+        "scene_id": "s4",
+        "scene_name": "It Actually Works",
+        "duration_s": 6,
+        "voiceover": "Paste in a 500-word article. Hit summarize. In two seconds — boom. A perfect three-sentence summary. Your AI just worked.",
+        "visual_style": "screen_recording",
+        "visual_description": "Split screen: raw article on left, clean AI summary appearing on right with a flash effect. Timer reads 7:42. Rapid cut to react cam showing jaw drop.",
+        "caption_overlay": "WAIT — it actually works?! 😱",
+        "emotion": "revelation",
+        "music_cue": "impact_hit",
+        "pattern_interrupts": 3
+      },
+      {
+        "scene_id": "s5",
+        "scene_name": "The Bigger Truth",
+        "duration_s": 5,
+        "voiceover": "This isn't a toy. This is a real deployed app with a live URL. You can share it right now. Timer stopped at 8 minutes 11 seconds.",
+        "visual_style": "kinetic_text",
+        "visual_description": "Bold white text explodes onto black background: REAL. DEPLOYED. SHAREABLE. Each word hits on a beat. URL bar shown with a live link.",
+        "caption_overlay": "You just became an AI developer.",
+        "emotion": "urgency",
+        "music_cue": "upbeat",
+        "pattern_interrupts": 2
+      },
+      {
+        "scene_id": "s6",
+        "scene_name": "The Loop — Your Turn",
+        "duration_s": 5,
+        "voiceover": "Most people will scroll past this and stay stuck. Or you open a browser right now and build yours. Timer starts when you close this app.",
+        "visual_style": "react_cam",
+        "visual_description": "Direct eye contact into camera. Slow zoom in on face. Final frame freezes on the same extreme close-up eyes from scene one — loop complete.",
+        "caption_overlay": "Your timer starts NOW. ⏱️",
+        "emotion": "loop",
+        "music_cue": "silence",
+        "pattern_interrupts": 2
+      }
+    ],
+    "hook_test": {
+      "format_reference": "Wait, what? — Hook with surprising claim → proof → bigger reveal",
+      "viral_proof": "Fireship's '100 seconds of code' series and similarly structured 'I built X in Y minutes' videos consistently hit 10M–50M views on TikTok and YouTube Shorts by leading with an impossible-sounding time claim that forces viewers to stay and verify.",
+      "why_it_works": "The ticking timer creates irresistible tension — viewers psychologically cannot leave an unresolved countdown. The impossibility of the claim ('AI app in 8 minutes') triggers disbelief that converts directly to watch-time as users stay to prove it wrong.",
+      "estimated_hook_rate": 42
+    },
+    "total_duration_s": 32,
+    "target_emotion_arc": [
+      "shock",
+      "curiosity",
+      "intrigue",
+      "revelation",
+      "urgency",
+      "loop"
+    ],
+    "speaker_name": "Kognai",
+    "tts_voice": "default",
+    "hashtags": [
+      "#AIApp",
+      "#BuildWithAI",
+      "#ReplitAI",
+      "#LearnToCode",
+      "#AIForBeginners",
+      "#NoCode",
+      "#TechTok",
+      "#AI",
+      "#Coding",
+      "#Tech"
+    ],
+    "created_at": "2026-03-23T13:14:03.249Z",
+    "model_used": "claude-sonnet-4-6"
+  },
+  "verdict": {
+    "scenario_id": "scn-ai7x92",
+    "verdict": "PASS",
+    "message_score": 92,
+    "scroll_stop_score": 94,
+    "message_analysis": "The message is crystalline: beginners can build working AI apps in minutes using no-code tools. Every scene reinforces this — the hook promises it, scenes 2-4 prove it step-by-step, scene 5 validates it's real and shareable, and scene 6 triggers action. The angle (impossible time claim) is original enough to cut through feed noise. The emotion arc hits every beat. A viewer will leave with one takeaway: 'I can do this right now.' Strong conviction here.",
+    "scroll_stop_analysis": "Scene 1 is a masterclass hook — extreme close-up eyes + disbelief + live timer = irresistible tension. The 42% hook rate is grounded in proven psychology (countdown paradox, impossibility trigger). Pacing is tight: 32 seconds, no dead air, visual patterns (cursor highlight, code cascade, split-screen flash, kinetic text explosions, zoom loops) land every 3-6 seconds. The reveal in scene 4 (summary actually appears) is the emotional payoff that justifies the setup. Scene 6 closes the loop and creates urgency without feeling preachy. This would feel native on TikTok — it's proof, not lecture. High confidence someone stops scrolling at scene 1 and stays through scene 6.",
+    "fixes": [],
+    "confidence": 94,
+    "model_used": "claude-haiku-4-5-20251001",
+    "reviewed_at": "2026-03-23T13:14:08.376Z"
+  },
+  "video": {
+    "video_id": "v2-e3bd4c40",
+    "scenario_id": "scn-ai7x92",
+    "file_path": "/Users/tarekmnif/kognai/workspace/scs001/v2-output/v2-e3bd4c40/v2-e3bd4c40.mp4",
+    "duration_seconds": 32,
+    "aspect_ratio": "9:16",
+    "scene_count": 6,
+    "has_voiceover": true,
+    "has_music": false,
+    "tts_method": "mimo",
+    "assembly_seconds": 166.8,
+    "created_at": "2026-03-23T13:16:55.177Z"
+  }
+}

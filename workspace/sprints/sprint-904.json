@@ -1,0 +1,48 @@
+{
+  "sprint_id": "sprint-904",
+  "title": "V2-CONTENT + BUGFIX — Fix VideoModel type + 3 v2 videos",
+  "description": "Fix 'wan' VideoModel type in video-segment-generator.ts (was causing fallback to color blocks). Produce 3 more v2 videos on safe, factual AI topics.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "904-01",
+      "title": "Fix VideoModel type to include 'wan' in video-segment-generator.ts",
+      "type": "bugfix",
+      "task_target": "scripts/scs001/video-segment-generator.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-904"
+    },
+    {
+      "id": "904-02",
+      "title": "V2 video: The AI Startup That Raised 1 Billion Without a Product",
+      "type": "ops",
+      "task_target": "scripts/scs001/run-v2-pipeline.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-904"
+    },
+    {
+      "id": "904-03",
+      "title": "V2 video: How to Build Your First AI App in Under 10 Minutes",
+      "type": "ops",
+      "task_target": "scripts/scs001/run-v2-pipeline.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-904"
+    },
+    {
+      "id": "904-04",
+      "title": "V2 video: Why Every Developer Needs to Learn Prompt Engineering Now",
+      "type": "ops",
+      "task_target": "scripts/scs001/run-v2-pipeline.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-904"
+    }
+  ]
+}

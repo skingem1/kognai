@@ -1,0 +1,12 @@
+{
+  "scenario_id": "scn-x7k291",
+  "verdict": "PASS",
+  "message_score": 94,
+  "scroll_stop_score": 91,
+  "message_analysis": "Crystal clear single message: AI hype has inverted startup logic — talent/hype now funds before product, creating bubble risk. Every scene reinforces this thesis without filler. Hook promises 'how is this possible' and delivers the answer (people > product) plus the scary implication (bubble). The angle is sharp and original — not 'startup raised money' but 'startup raised money WITH NOTHING and here's why that's broken.' Strong narrative arc from shock to revelation to warning to intrigue. Viewer will absolutely walk away understanding the core insight and feeling the urgency.",
+  "scroll_stop_analysis": "First 1.5 seconds are lethal: '$1,000,000,000' + 'zero products' creates instant cognitive dissonance that forces resolution. Pattern interrupts are aggressive and consistent (3, 3, 2, 2, 3, 2 across scenes) with kinetic text, fast cuts, and music hits. Pacing is tight — zero dead air, every scene advances the narrative. Emotion arc builds perfectly: shock → curiosity (who?) → revelation (why) → fear (bubble) → intrigue (twist) → reflection (call to action). Feels native to FinTok/TechTok — documentary style with attitude, not a lecture. The loop closer reframes the opening, making it rewatchable. This stops the scroll.",
+  "fixes": [],
+  "confidence": 96,
+  "model_used": "claude-haiku-4-5-20251001",
+  "reviewed_at": "2026-03-23T12:56:41.587Z"
+}
