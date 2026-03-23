@@ -1,0 +1,21 @@
+{
+  "title": "Microsoft Fires 10K, Hires AI Instead",
+  "full_monologue": "**Microsoft Just Fired 10,000 People and Hired AI Instead**. This isn’t science fiction—it’s happening now. Companies are racing to automate, and Microsoft is leading the charge. But what does this mean for the future of work? While some jobs disappear, new ones emerge. The question is: are we ready for an AI-driven economy? Let me know your thoughts in the comments.",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 6,
+      "duration_s": 6,
+      "visual_prompt": "a group of people walking through a modern office building, showing transition and change, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 18,
+      "duration_s": 6,
+      "visual_prompt": "abstract motion graphics representing technology and artificial intelligence, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

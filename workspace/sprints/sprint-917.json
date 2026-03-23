@@ -1,0 +1,63 @@
+{
+  "sprint_id": "sprint-917",
+  "title": "MULTI-PIPELINE \u2014 3 code demos + 2 TTS vlogs",
+  "description": "Produce 3 code demo videos and 2 TTS vlog videos for content variety.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "917-01",
+      "title": "Code demo: Create a Password Generator in Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-917",
+      "output": "demo-mn3hr80l"
+    },
+    {
+      "id": "917-02",
+      "title": "Code demo: Build a Todo App with React in 5 Minutes",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-917",
+      "output": "demo-mn3hsmul"
+    },
+    {
+      "id": "917-03",
+      "title": "Code demo: Automate Excel with Python OpenPyXL",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-917",
+      "output": "demo-mn3huof3"
+    },
+    {
+      "id": "917-04",
+      "title": "V2 video: Microsoft Just Fired 10,000 People and Hired AI Instead",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-917",
+      "output": "vlog-mn3hvzzz"
+    },
+    {
+      "id": "917-05",
+      "title": "V2 video: The Free AI Tool That Does Everything ChatGPT Can't",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-917",
+      "output": "vlog-mn3hx77v"
+    }
+  ]
+}

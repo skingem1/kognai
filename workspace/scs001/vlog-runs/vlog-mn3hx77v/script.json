@@ -1,0 +1,21 @@
+{
+  "title": "AI Tool That Outsmarts ChatGPT",
+  "full_monologue": "**This AI tool does everything ChatGPT can't.** Meet the new powerhouse in the AI world—no coding, no limits. It handles complex tasks, creates stunning visuals, and even writes code. Unlike ChatGPT, it’s built for speed and precision. Watch how it transforms ideas into reality in seconds. Want to see it in action? Stay tuned. What’s your favorite AI feature? Comment below!",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 6,
+      "duration_s": 6,
+      "visual_prompt": "A person rapidly typing on a keyboard with glowing keys, surrounded by floating abstract shapes, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 18,
+      "duration_s": 6,
+      "visual_prompt": "A futuristic cityscape with neon lights and smooth motion transitions between buildings, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}
