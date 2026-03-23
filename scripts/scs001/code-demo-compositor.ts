@@ -98,7 +98,7 @@ export function assembleCodeDemo(
       const audioList = join(runDir, 'audio_concat.txt');
       writeFileSync(audioList, voiceovers.map(v => `file '${v.audioPath}'`).join('\n'));
 
-      const fullAudio = join(runDir, 'narration.mp3');
+      const fullAudio = join(runDir, 'narration.m4a');
       execSync(
         `${FFMPEG} -y -f concat -safe 0 -i "${audioList}" -c:a aac -b:a 128k "${fullAudio}"`,
         { stdio: 'pipe', timeout: 15000 }
@@ -110,9 +110,10 @@ export function assembleCodeDemo(
       const withAudio = join(runDir, 'with_audio.mp4');
 
       if (existsSync(musicPath)) {
+        // Mix voice + music: -stream_loop loops the 60s track, -shortest stops at video end
         execSync(
-          `${FFMPEG} -y -i "${currentPath}" -i "${fullAudio}" -i "${musicPath}" ` +
-          `-filter_complex "[1:a]apad[voice];[2:a]volume=0.12,aloop=loop=-1:size=2e+09[music];[voice][music]amix=inputs=2:duration=shortest[aout]" ` +
+          `${FFMPEG} -y -i "${currentPath}" -i "${fullAudio}" -stream_loop -1 -i "${musicPath}" ` +
+          `-filter_complex "[1:a]apad[voice];[2:a]volume=0.12[music];[voice][music]amix=inputs=2:duration=first[aout]" ` +
           `-map 0:v -map "[aout]" -c:v copy -c:a aac -b:a 128k -shortest "${withAudio}"`,
           { stdio: 'pipe', timeout: 30000 }
         );
@@ -135,10 +136,10 @@ export function assembleCodeDemo(
     if (existsSync(musicPath)) {
       const withMusic = join(runDir, 'with_music.mp4');
       execSync(
-        `${FFMPEG} -y -i "${currentPath}" -i "${musicPath}" ` +
-        `-filter_complex "[1:a]volume=0.15,aloop=loop=-1:size=2e+09[music]" ` +
+        `${FFMPEG} -y -i "${currentPath}" -stream_loop -1 -i "${musicPath}" ` +
+        `-filter_complex "[1:a]volume=0.18[music]" ` +
         `-map 0:v -map "[music]" -c:v copy -c:a aac -b:a 128k -shortest "${withMusic}"`,
-        { stdio: 'pipe', timeout: 15000 }
+        { stdio: 'pipe', timeout: 30000 }
       );
       currentPath = withMusic;
       console.log('    Background music added (no voiceover)');

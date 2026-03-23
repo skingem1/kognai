@@ -1,0 +1,80 @@
+{
+  "demo_id": "demo-mn35hzf8",
+  "title": "Build a Chatbot in 3 Steps!",
+  "language": "python",
+  "total_duration_s": 24,
+  "steps": [
+    {
+      "step_id": "s1",
+      "title": "Step 1: Setup",
+      "code_lines": [
+        "import nltk",
+        "from nltk.chat.util import Chat, reflections"
+      ],
+      "language": "python",
+      "explanation": "We start by importing the necessary libraries from NLTK to build our chatbot.",
+      "duration_s": 6,
+      "highlight_lines": [
+        0,
+        1
+      ]
+    },
+    {
+      "step_id": "s2",
+      "title": "Step 2: Define Responses",
+      "code_lines": [
+        "pairs = [",
+        "    [\"hi\", [\"Hello!\", \"Hi there!\"]],",
+        "    [\"how are you\", [\"I'm just a bot, but I'm here to help!\", \"I'm doing well, thanks!\"]],",
+        "    [\"bye\", [\"Goodbye!\", \"Take care!\"]]]",
+        "]"
+      ],
+      "language": "python",
+      "explanation": "We define a list of possible user inputs and matching bot responses.",
+      "duration_s": 8,
+      "highlight_lines": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "step_id": "s3",
+      "title": "Step 3: Run the Chatbot",
+      "code_lines": [
+        "chatbot = Chat(pairs, reflections)",
+        "print(\"Chatbot: Hello! Type 'bye' to exit.\")",
+        "while True:",
+        "    user_input = input(\"You: \")",
+        "    if user_input.lower() == \"bye\":",
+        "        print(\"Chatbot: Goodbye!\")",
+        "        break",
+        "    response = chatbot.respond(user_input)",
+        "    print(\"Chatbot:\", response)"
+      ],
+      "language": "python",
+      "explanation": "Finally, we create the chatbot and loop to handle user input and respond dynamically.",
+      "duration_s": 10,
+      "highlight_lines": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ]
+    }
+  ],
+  "hashtags": [
+    "#coding",
+    "#python",
+    "#chatbot",
+    "#tutorial"
+  ],
+  "intro_hook": "Want to build a chatbot? Let's do it in 3 easy steps!"
+}

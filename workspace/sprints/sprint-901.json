@@ -1,0 +1,48 @@
+{
+  "sprint_id": "sprint-901",
+  "title": "CODE-DEMO — Fix compositor audio bug + produce 3 code demo videos",
+  "description": "Fix code-demo-compositor.ts AAC-to-MP3 container bug (narration.mp3 → narration.m4a). Produce 3 code demo videos at $0.00 cost via Pipeline 2.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "901-01",
+      "title": "Fix code-demo-compositor.ts narration.mp3 → narration.m4a (AAC container fix)",
+      "type": "bugfix",
+      "task_target": "scripts/scs001/code-demo-compositor.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-901"
+    },
+    {
+      "id": "901-02",
+      "title": "Code demo: Build an AI chatbot in Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-901"
+    },
+    {
+      "id": "901-03",
+      "title": "Code demo: Web scraper in Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-901"
+    },
+    {
+      "id": "901-04",
+      "title": "Code demo: REST API in Node.js with Express",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-901"
+    }
+  ]
+}
