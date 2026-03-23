@@ -1,0 +1,38 @@
+{
+  "sprint_id": "sprint-906",
+  "title": "V2-CONTENT — 3 more v2 videos on trending AI topics",
+  "description": "Produce 3 more v2 pipeline videos on trending AI/tech topics.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "906-01",
+      "title": "V2 video: The AI Tool That Replaced My Entire Marketing Team",
+      "type": "ops",
+      "task_target": "scripts/scs001/run-v2-pipeline.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-906"
+    },
+    {
+      "id": "906-02",
+      "title": "V2 video: Stop Using ChatGPT Wrong The Prompting Trick Nobody Teaches",
+      "type": "ops",
+      "task_target": "scripts/scs001/run-v2-pipeline.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-906"
+    },
+    {
+      "id": "906-03",
+      "title": "V2 video: Why Your Next Coworker Will Be an AI Agent",
+      "type": "ops",
+      "task_target": "scripts/scs001/run-v2-pipeline.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-906"
+    }
+  ]
+}

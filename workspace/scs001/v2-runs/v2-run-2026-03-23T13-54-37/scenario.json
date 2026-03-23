@@ -1,0 +1,111 @@
+{
+  "scenario_id": "scn-kgn7x2",
+  "trend_signal_id": "custom-v2-1774274077646",
+  "title": "Stop Using ChatGPT Wrong: The Prompting Trick Nobody Teaches",
+  "angle": "Most people treat ChatGPT like a search engine. The real trick is treating it like a method actor — give it a role, a constraint, and a format, and it transforms completely.",
+  "scenes": [
+    {
+      "scene_id": "s1",
+      "scene_name": "The Hook — You've Been Doing It Wrong",
+      "duration_s": 5,
+      "voiceover": "If you're typing plain questions into ChatGPT, you're getting maybe 10% of what it can do.",
+      "visual_style": "kinetic_text",
+      "visual_description": "Bold red text slams onto black screen: '10%'. Camera shakes. Text shatters and reforms as '100%' in gold.",
+      "caption_overlay": "You're using ChatGPT at 10% power 😬",
+      "emotion": "shock",
+      "music_cue": "impact_hit",
+      "pattern_interrupts": 3
+    },
+    {
+      "scene_id": "s2",
+      "scene_name": "The Problem — Generic In, Generic Out",
+      "duration_s": 6,
+      "voiceover": "Ask it a plain question, you get a plain answer. Boring. Useless. Everyone's getting the same output.",
+      "visual_style": "screen_recording",
+      "visual_description": "Screen shows a bland ChatGPT response to 'write me an email'. Red X stamps over it. Cut to another bland reply. Another X. Rapid-fire.",
+      "caption_overlay": "Garbage in. Garbage out. 🗑️",
+      "emotion": "curiosity",
+      "music_cue": "tension_build",
+      "pattern_interrupts": 3
+    },
+    {
+      "scene_id": "s3",
+      "scene_name": "The Reveal — The R-C-F Method",
+      "duration_s": 7,
+      "voiceover": "Here's the trick: Role. Constraint. Format. Three words that unlock elite-level outputs every single time.",
+      "visual_style": "kinetic_text",
+      "visual_description": "Three words fly in one by one — ROLE (blue), CONSTRAINT (orange), FORMAT (green) — each hitting the screen with a punch sound. They stack and lock together like puzzle pieces.",
+      "caption_overlay": "R.C.F — the only prompt framework you need 🔑",
+      "emotion": "revelation",
+      "music_cue": "impact_hit",
+      "pattern_interrupts": 4
+    },
+    {
+      "scene_id": "s4",
+      "scene_name": "The Proof — Side-by-Side Demo",
+      "duration_s": 8,
+      "voiceover": "Watch. Same task. Without RCF vs with RCF. The difference is embarrassing.",
+      "visual_style": "screen_recording",
+      "visual_description": "Split screen. Left: plain prompt, mediocre output highlighted in red. Right: RCF prompt fires in, elite detailed output floods the screen highlighted in green. Zoom punch on the right side.",
+      "caption_overlay": "Same task. Completely different result. 🤯",
+      "emotion": "intrigue",
+      "music_cue": "tension_build",
+      "pattern_interrupts": 3
+    },
+    {
+      "scene_id": "s5",
+      "scene_name": "The Escalation — Real-World Use Cases",
+      "duration_s": 6,
+      "voiceover": "Marketing copy, code reviews, job applications, business plans — RCF works on literally everything.",
+      "visual_style": "b_roll_montage",
+      "visual_description": "Rapid-cut montage: glowing laptop screens, someone pumping fist at a response, calendar filling with wins, cash emoji graphics exploding. Each cut lands on a beat.",
+      "caption_overlay": "Works for EVERYTHING. No exceptions. ⚡",
+      "emotion": "urgency",
+      "music_cue": "upbeat",
+      "pattern_interrupts": 4
+    },
+    {
+      "scene_id": "s6",
+      "scene_name": "The Loop — Back to the 10%",
+      "duration_s": 5,
+      "voiceover": "Still typing plain questions? You're still at 10%. Use RCF. The gap between you and everyone else just became massive.",
+      "visual_style": "kinetic_text",
+      "visual_description": "'10%' reappears in red — then explodes into '100%' in gold, mirroring scene 1. Final frame: 'R.C.F.' burns into the screen. Hard cut to black.",
+      "caption_overlay": "Don't go back to 10% 🔥 Save this.",
+      "emotion": "loop",
+      "music_cue": "impact_hit",
+      "pattern_interrupts": 2
+    }
+  ],
+  "hook_test": {
+    "format_reference": "Stop Scrolling if you X — direct call-out format",
+    "viral_proof": "Variants like 'Stop using Google — use THIS instead' and 'You're using [tool] wrong' have repeatedly cracked 10M–50M views on TikTok and Reels (e.g., @techwithtim, @ai_explained style videos). The shame-hook + immediate fix structure is a proven retention driver.",
+    "why_it_works": "It opens with an accusation the viewer secretly fears is true (they're doing it wrong), then immediately promises a fix. This creates a curiosity-shame loop that prevents scrolling — viewers must stay to resolve the tension.",
+    "estimated_hook_rate": 42
+  },
+  "total_duration_s": 37,
+  "target_emotion_arc": [
+    "shock",
+    "curiosity",
+    "revelation",
+    "intrigue",
+    "urgency",
+    "loop"
+  ],
+  "speaker_name": "Kognai",
+  "tts_voice": "default",
+  "hashtags": [
+    "#chatgptprompts",
+    "#promptengineering",
+    "#chatgpttips",
+    "#aitricks",
+    "#chatgpthacks",
+    "#aiproductivity",
+    "#artificialintelligence",
+    "#chatgpt",
+    "#techtok",
+    "#learnontiktok"
+  ],
+  "created_at": "2026-03-23T13:55:07.741Z",
+  "model_used": "claude-sonnet-4-6"
+}

@@ -1,0 +1,12 @@
+{
+  "scenario_id": "scn-kgn7x2",
+  "verdict": "PASS",
+  "message_score": 94,
+  "scroll_stop_score": 92,
+  "message_analysis": "Crystal clear single message: ChatGPT users are underutilizing the tool by asking plain questions; the R.C.F. method (Role, Constraint, Format) unlocks elite outputs. Every scene reinforces this without filler. Hook promises a trick, Scene 3 delivers it, Scene 4 proves it, Scene 5 scales it. The angle is fresh — framing ChatGPT prompting as 'method acting' is original and memorable. Shame-hook + immediate fix is proven TikTok structure. Viewers will share because it resolves a real pain point (mediocre ChatGPT outputs) with a memorable, actionable framework.",
+  "scroll_stop_analysis": "First 1.5 seconds nail the curiosity-shame loop: '10%' accusation + visual impact (shattering text, camera shake) creates immediate tension. Scene 2 doubles down with rapid red-X stamps—pattern interrupts maintain momentum. Scene 4's split-screen comparison is a powerful retention driver (plain vs. elite side-by-side). Pacing is tight at 37s with no dead air. Emotion arc builds naturally: shock → curiosity → revelation → intrigue → urgency → satisfying loop-back. Feels native to TikTok (kinetic text, rapid cuts, visual metaphors) not like a lecture. The 10%→100% bookend is psychologically satisfying. Would absolutely stop scrolls.",
+  "fixes": [],
+  "confidence": 96,
+  "model_used": "claude-haiku-4-5-20251001",
+  "reviewed_at": "2026-03-23T13:55:12.973Z"
+}

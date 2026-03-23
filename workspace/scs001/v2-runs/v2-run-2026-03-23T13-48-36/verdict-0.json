@@ -1,0 +1,12 @@
+{
+  "scenario_id": "scn-mk7x92",
+  "verdict": "PASS",
+  "message_score": 92,
+  "scroll_stop_score": 89,
+  "message_analysis": "Crystal clear single message: AI automation can replace traditional marketing teams while improving results, but the ethical complexity (team built their own replacement) adds nuance that prevents it from feeling like pure hype. Every scene reinforces the arc from shock → proof → moral tension → call-to-thought. The angle is original in execution—the 'they built it themselves' twist differentiates from generic 'AI replaced my job' content. Hook promises team replacement; rest delivers proof + ethical interrogation. High shareability due to controversy + founder credibility.",
+  "scroll_stop_analysis": "First 5 seconds are lethal: 'I fired my entire marketing team... revenue went UP.' Cognitive dissonance is immediate. Scene 2 intensifies with salary figures. Pattern interrupts are strong throughout (dead stare zoom, text flashes, speed-ramped screen recording, animated graphs, dimmed lighting shift, text-on-black finale). Pacing is tight—no dead air, each scene has purpose. Emotion arc is earned: shock lands, intrigue sustains, revelation pays off, ethical twist creates loop. Feels native to TikTok (founder confessional + data porn + moral question). Would absolutely stop a scroller.",
+  "fixes": [],
+  "confidence": 94,
+  "model_used": "claude-haiku-4-5-20251001",
+  "reviewed_at": "2026-03-23T13:49:08.884Z"
+}

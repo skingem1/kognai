@@ -1,0 +1,167 @@
+{
+  "run_id": "v2-run-2026-03-23T14-10-25",
+  "signal": {
+    "topic_id": "custom-v2-1774275025814",
+    "topic_name": "Why Your Next Coworker Will Be an AI Agent",
+    "confidence_score": 80,
+    "keyword_cluster": [
+      "your",
+      "next",
+      "coworker",
+      "will",
+      "agent"
+    ],
+    "domain_tags": [
+      "tech",
+      "AI"
+    ],
+    "provenance_source": "custom-topic-v2"
+  },
+  "status": "pass",
+  "published": false,
+  "dry_run": false,
+  "retries_used": 0,
+  "timestamps": {
+    "started": "2026-03-23T14:10:25.814Z",
+    "finished": "2026-03-23T14:18:21.042Z",
+    "scorsese_done": "2026-03-23T14:10:55.058Z",
+    "art_director_done": "2026-03-23T14:11:01.241Z",
+    "movie_editor_done": "2026-03-23T14:18:21.041Z"
+  },
+  "scenario": {
+    "scenario_id": "scn-kgn7x2",
+    "trend_signal_id": "custom-v2-1774275025814",
+    "title": "Why Your Next Coworker Will Be an AI Agent",
+    "angle": "Your employer isn't replacing you with AI — they're hiring an AI to work beside you, and that changes everything about your job security and your paycheck.",
+    "scenes": [
+      {
+        "scene_id": "s1",
+        "scene_name": "The Shocking Hire",
+        "duration_s": 5,
+        "voiceover": "Your company just posted a job listing. The candidate? An AI agent. And it already accepted the offer.",
+        "visual_style": "kinetic_text",
+        "visual_description": "Bold white text slams onto black background: 'NEW HIRE: AI Agent — Start Date: Today.' Red stamp effect hits the word TODAY.",
+        "caption_overlay": "Your new coworker just clocked in 👀",
+        "emotion": "shock",
+        "music_cue": "impact_hit",
+        "pattern_interrupts": 3
+      },
+      {
+        "scene_id": "s2",
+        "scene_name": "What It Actually Does",
+        "duration_s": 6,
+        "voiceover": "It answers emails, writes reports, joins meetings, and never asks for a raise. Ever.",
+        "visual_style": "screen_recording",
+        "visual_description": "Split screen: left shows AI agent completing tasks at hyperspeed, right shows a human worker doing the same tasks slowly. Speedometer graphic overlays.",
+        "caption_overlay": "No sick days. No vacation. No salary negotiation.",
+        "emotion": "intrigue",
+        "music_cue": "tension_build",
+        "pattern_interrupts": 2
+      },
+      {
+        "scene_id": "s3",
+        "scene_name": "The Companies Already Doing It",
+        "duration_s": 6,
+        "voiceover": "Klarna replaced 700 workers with one AI. Duolingo cut contractors. This isn't coming — it's here.",
+        "visual_style": "b_roll_montage",
+        "visual_description": "Rapid cuts: Klarna logo, Duolingo logo, LinkedIn job listings with AI tags, office floor with empty desks. Each cut under 1.5 seconds.",
+        "caption_overlay": "700 jobs. One AI. One quarter.",
+        "emotion": "urgency",
+        "music_cue": "tension_build",
+        "pattern_interrupts": 4
+      },
+      {
+        "scene_id": "s4",
+        "scene_name": "The Plot Twist",
+        "duration_s": 6,
+        "voiceover": "But the workers who survived? They got promoted. Because someone has to manage the AI agents.",
+        "visual_style": "react_cam",
+        "visual_description": "Speaker reacts with genuine surprise expression, leans into camera. Text pops on screen: 'THE SURVIVORS GOT RAISES.' Arrow graphic points up sharply.",
+        "caption_overlay": "Wait — the humans who stayed got PROMOTED? 👀",
+        "emotion": "revelation",
+        "music_cue": "impact_hit",
+        "pattern_interrupts": 3
+      },
+      {
+        "scene_id": "s5",
+        "scene_name": "The Skill That Saves You",
+        "duration_s": 5,
+        "voiceover": "The most valuable skill in 2025 is knowing how to direct AI agents. Not code. Not degrees. Just this.",
+        "visual_style": "kinetic_text",
+        "visual_description": "Words flash rapidly: 'Coding? Nope. MBA? Nope. THIS? YES.' Final frame freezes on 'AI Agent Management' in gold text with a crown icon.",
+        "caption_overlay": "The $100K skill nobody is teaching you",
+        "emotion": "urgency",
+        "music_cue": "upbeat",
+        "pattern_interrupts": 3
+      },
+      {
+        "scene_id": "s6",
+        "scene_name": "The Loop Back",
+        "duration_s": 5,
+        "voiceover": "So the next time you see a new hire at your company — check if they need a desk. Your answer might shock you.",
+        "visual_style": "kinetic_text",
+        "visual_description": "Same black background and white bold text as scene 1 returns: 'NEW HIRE: AI Agent — Start Date: Today.' Screen glitches and resets to the opening frame.",
+        "caption_overlay": "Watch this again. It hits different the second time. 🔄",
+        "emotion": "loop",
+        "music_cue": "silence",
+        "pattern_interrupts": 2
+      }
+    ],
+    "hook_test": {
+      "format_reference": "Wait, what?",
+      "viral_proof": "The 'Wait, what?' format — surprising claim followed by proof and bigger reveal — has driven multiple 10M+ view videos including @hankgreen1's science shock reels and @explainithank AI disruption clips averaging 12-18M views. The cold-open job listing visual is a proven scroll-stopper used in viral LinkedIn and TikTok workforce content.",
+      "why_it_works": "Opens with a false-familiar scenario (job listing) then subverts expectation (the candidate is AI). This triggers cognitive dissonance in 2 seconds, forcing the viewer to stay for resolution. The emotional arc moves shock → intrigue → urgency → revelation → urgency → loop, which mirrors the highest-retention TikTok structures.",
+      "estimated_hook_rate": 42
+    },
+    "total_duration_s": 33,
+    "target_emotion_arc": [
+      "shock",
+      "intrigue",
+      "urgency",
+      "revelation",
+      "urgency",
+      "loop"
+    ],
+    "speaker_name": "Kognai",
+    "tts_voice": "default",
+    "hashtags": [
+      "#AIagents",
+      "#futureofwork",
+      "#AIcoworker",
+      "#WorkplaceAI",
+      "#AIjobs",
+      "#techcareers",
+      "#AIautomation",
+      "#technology",
+      "#careertips",
+      "#AI"
+    ],
+    "created_at": "2026-03-23T14:10:55.058Z",
+    "model_used": "claude-sonnet-4-6"
+  },
+  "verdict": {
+    "scenario_id": "scn-kgn7x2",
+    "verdict": "PASS",
+    "message_score": 92,
+    "scroll_stop_score": 88,
+    "message_analysis": "Single, clear message: AI coworkers are arriving now, and your survival depends on managing them, not competing with them. Every scene reinforces this—shock of hiring → proof it's happening → revelation of the path forward → skill that matters. The angle is original (not 'AI will replace you' but 'AI will promote you if you adapt'). Hook delivers on its promise. This message resonates because it reframes fear into opportunity, highly shareable.",
+    "scroll_stop_analysis": "Scene 1 executes the hook perfectly: false-familiar (job listing) subverted in 2 seconds (it's AI). The red TODAY stamp and kinetic text create immediate visual friction. Scene 3's rapid-cut montage (4 interrupts) sustains momentum mid-video. Scene 4's reaction cam and 'PROMOTED' reveal is an emotional payoff that feels genuine. Pacing is tight—33s with no dead air. The glitch-reset loop at the end gives rewatchability cue. Feels native TikTok, not lecture. Would stop scroll.",
+    "fixes": [],
+    "confidence": 94,
+    "model_used": "claude-haiku-4-5-20251001",
+    "reviewed_at": "2026-03-23T14:11:01.241Z"
+  },
+  "video": {
+    "video_id": "v2-a6511e70",
+    "scenario_id": "scn-kgn7x2",
+    "file_path": "/Users/tarekmnif/kognai/workspace/scs001/v2-output/v2-a6511e70/v2-a6511e70.mp4",
+    "duration_seconds": 33,
+    "aspect_ratio": "9:16",
+    "scene_count": 6,
+    "has_voiceover": true,
+    "has_music": false,
+    "tts_method": "mimo",
+    "assembly_seconds": 439.798,
+    "created_at": "2026-03-23T14:18:21.040Z"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "scenario_id": "scn-kgn7x2",
+  "verdict": "PASS",
+  "message_score": 92,
+  "scroll_stop_score": 88,
+  "message_analysis": "Single, clear message: AI coworkers are arriving now, and your survival depends on managing them, not competing with them. Every scene reinforces this—shock of hiring → proof it's happening → revelation of the path forward → skill that matters. The angle is original (not 'AI will replace you' but 'AI will promote you if you adapt'). Hook delivers on its promise. This message resonates because it reframes fear into opportunity, highly shareable.",
+  "scroll_stop_analysis": "Scene 1 executes the hook perfectly: false-familiar (job listing) subverted in 2 seconds (it's AI). The red TODAY stamp and kinetic text create immediate visual friction. Scene 3's rapid-cut montage (4 interrupts) sustains momentum mid-video. Scene 4's reaction cam and 'PROMOTED' reveal is an emotional payoff that feels genuine. Pacing is tight—33s with no dead air. The glitch-reset loop at the end gives rewatchability cue. Feels native TikTok, not lecture. Would stop scroll.",
+  "fixes": [],
+  "confidence": 94,
+  "model_used": "claude-haiku-4-5-20251001",
+  "reviewed_at": "2026-03-23T14:11:01.241Z"
+}
