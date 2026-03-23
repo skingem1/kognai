@@ -4202,3 +4202,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm bypassed: yes (FP-007). Manual crystallise: skipped (no crystalliser available).
 - Issues: Claude returns non-standard emotion values ("Shock and disbelief") — fixed with normalizer
 - Timestamp: 2026-03-23T10:01:00Z
+
+## Sprint 889 — V2-PROD — First v2 production run + fix fal.ai shell escaping
+- Status: PASS
+- Commit: 0aff9b60
+- Files modified: scripts/scs001/fal-video-client.ts
+- Files created: workspace/sprints/sprint-889.json, workspace/scs001/v2-output/v2-0e5d27f6/
+- Test: run-v2-pipeline.ts (full mode) — PASS, video produced
+- Pipeline: v2 pipeline now fully operational with real APIs (Captions.ai + fal.ai fix)
+- Swarm used: no — production run + bugfix
+- Issues: fal.ai shell escaping was never committed (temp-file fix existed on disk but old python3 -c version was in git). Now fixed.
+- Timestamp: 2026-03-23T10:10:00Z
