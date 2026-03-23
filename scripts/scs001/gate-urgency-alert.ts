@@ -210,9 +210,18 @@ async function main(): Promise<void> {
       try { const e = JSON.parse(l); if (e.video_id && !postedIds.has(e.video_id)) queueCount++; } catch {}
     }
   }
-  lines.push(`📦 *Queue:* ${queueCount} videos ready`);
-  if (queueCount === 0) {
-    lines.push('⚠️ *Queue EMPTY* — run pipeline to generate content');
+  // Sprint 824: Show unique ready-to-post count from inventory
+  const invPath = join(CWD, 'reports', 'video-inventory.json');
+  let readyToPost = 0;
+  if (existsSync(invPath)) {
+    try { readyToPost = JSON.parse(readFileSync(invPath, 'utf-8')).ready_to_post ?? 0; } catch {}
+  }
+  lines.push(`📦 *Inventory:* ${readyToPost} unique videos ready to post`);
+  if (readyToPost >= POSTS_TARGET && postsLeft > 0) {
+    lines.push(`✅ *Content ready for full gate* — post ${postsLeft} more to pass`);
+  }
+  if (readyToPost === 0) {
+    lines.push('⚠️ *No content* — run /produce or /produce-topic to generate');
   }
 
   if (gateVerdict) lines.push(gateVerdict);
