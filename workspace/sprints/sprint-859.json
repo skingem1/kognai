@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-859",
+  "title": "OPS — batch content production (3 videos)",
+  "description": "Produce 3 new videos via multiformat pipeline, continuing content stockpile toward Phase 1.5 gate.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "859-01",
+      "title": "Run batch content production",
+      "type": "ops",
+      "task_target": "scripts/scs001/batch-produce.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-859"
+    }
+  ]
+}
