@@ -6,8 +6,9 @@
  * End-to-end: TrendSignal → Scorsese → ArtDirector → MovieEditor → Output
  *
  * Usage:
- *   npx ts-node scripts/scs001/run-v2-pipeline.ts                       # test mode
- *   npx ts-node scripts/scs001/run-v2-pipeline.ts --signal signal.json  # from file
+ *   npx ts-node scripts/scs001/run-v2-pipeline.ts                         # test mode (default topic)
+ *   npx ts-node scripts/scs001/run-v2-pipeline.ts --topic "Topic here"  # custom topic
+ *   npx ts-node scripts/scs001/run-v2-pipeline.ts --signal signal.json  # from JSON file
  *   npx ts-node scripts/scs001/run-v2-pipeline.ts --dry-run             # skip video assembly
  *   npx ts-node scripts/scs001/run-v2-pipeline.ts --publish             # assemble + publish via Browser Use
  */
@@ -29,6 +30,7 @@ const RUNS_DIR = join(ROOT, 'workspace', 'scs001', 'v2-runs');
 
 interface PipelineOptions {
   signalPath?: string;
+  topic?: string;
   dryRun: boolean;
   publish: boolean;
   maxRetries: number;
@@ -45,6 +47,8 @@ function parseArgs(): PipelineOptions {
   for (let i = 0; i < args.length; i++) {
     if (args[i] === '--signal' && args[i + 1]) {
       opts.signalPath = args[++i];
+    } else if (args[i] === '--topic' && args[i + 1]) {
+      opts.topic = args[++i];
     } else if (args[i] === '--dry-run') {
       opts.dryRun = true;
     } else if (args[i] === '--publish') {
@@ -82,6 +86,22 @@ function loadSignal(path: string): TrendSignal {
   return JSON.parse(raw) as TrendSignal;
 }
 
+function topicToSignal(topic: string): TrendSignal {
+  // Extract keywords from the topic string
+  const words = topic.toLowerCase().split(/\s+/).filter(w => w.length > 3);
+  const keywords = words.slice(0, 5);
+  const domains = ['tech', 'AI'];
+
+  return {
+    topic_id: `custom-v2-${Date.now()}`,
+    topic_name: topic,
+    confidence_score: 80,
+    keyword_cluster: keywords.length > 0 ? keywords : [topic.toLowerCase()],
+    domain_tags: domains,
+    provenance_source: 'custom-topic-v2',
+  };
+}
+
 // ─── Pipeline Run ───────────────────────────────────────────────────
 
 interface PipelineResult {
@@ -112,7 +132,7 @@ async function runPipeline(opts: PipelineOptions): Promise<PipelineResult> {
 
   const result: PipelineResult = {
     run_id: runId,
-    signal: opts.signalPath ? loadSignal(opts.signalPath) : getTestSignal(),
+    signal: opts.signalPath ? loadSignal(opts.signalPath) : opts.topic ? topicToSignal(opts.topic) : getTestSignal(),
     status: 'error',
     published: false,
     dry_run: opts.dryRun,
