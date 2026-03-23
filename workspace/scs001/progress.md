@@ -4225,3 +4225,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no — production run
 - Issues: Kling only accepts duration '5' or '10' — fixed. Captions.ai timeout on 1 scene.
 - Timestamp: 2026-03-23T10:30:00Z
+
+## Sprint 891 — V2-FEATURE — Add --topic flag to v2 pipeline runner
+- Status: PASS
+- Commit: cda1315e
+- Files modified: scripts/scs001/run-v2-pipeline.ts
+- Files created: workspace/sprints/sprint-891.json
+- Test: run-v2-pipeline.ts --topic "Claude 4..." --dry-run — PASS (92/94)
+- Pipeline: v2 pipeline now supports custom topics via --topic flag
+- Swarm used: no — simple feature, wrote directly
+- Issues: none
+- Timestamp: 2026-03-23T10:35:00Z
