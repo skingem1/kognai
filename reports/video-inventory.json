@@ -1,18 +1,42 @@
 {
-  "scanned_at": "2026-03-23T05:00:56.673Z",
-  "total_runs": 128,
-  "total_videos": 219,
-  "unique_topics": 93,
-  "already_registered": 93,
+  "scanned_at": "2026-03-23T05:09:40.876Z",
+  "total_runs": 137,
+  "total_videos": 228,
+  "unique_topics": 96,
+  "already_registered": 96,
   "newly_registered": 0,
   "already_posted": 0,
-  "ready_to_post": 93,
+  "ready_to_post": 96,
   "gate_status": {
     "posted": 4,
     "target": 30,
     "gap": 26
   },
   "videos": [
+    {
+      "video_id": "vis-a5b344a8",
+      "format": "vision",
+      "title": "Apple Vision Pro 2 leaks: what changed and is it worth it?",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-ngkd/output/vis-a5b344a8_final.mp4"
+    },
+    {
+      "video_id": "vis-61634bf2",
+      "format": "vision",
+      "title": "Web3 is dead? Why crypto developers are pivoting to AI",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-r6kc/output/vis-61634bf2_final.mp4"
+    },
+    {
+      "video_id": "vis-7e9c953c",
+      "format": "vision",
+      "title": "The  race to build AGI: who's winning in 2026?",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-qqm9/output/vis-7e9c953c_final.mp4"
+    },
     {
       "video_id": "vis-0ff51fea",
       "format": "vision",

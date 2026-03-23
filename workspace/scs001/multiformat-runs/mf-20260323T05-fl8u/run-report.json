@@ -1,0 +1,24 @@
+{
+  "run_id": "mf-20260323T05-fl8u",
+  "started_at": "2026-03-23T05:04:23.563Z",
+  "completed_at": "2026-03-23T05:05:10.100Z",
+  "topics_found": 1,
+  "scripts_generated": 1,
+  "videos_composited": 1,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "exp-71fddc18",
+      "format": "explainer",
+      "title": "Web3 is dead? Why crypto developers are pivoting to AI",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-fl8u/output/exp-71fddc18_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-fl8u/output/exp-71fddc18.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 0.35
+}
