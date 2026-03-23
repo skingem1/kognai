@@ -1,0 +1,63 @@
+{
+  "sprint_id": "sprint-927",
+  "title": "MULTI-PIPELINE — 3 code demos + 2 TTS vlogs (batch 11)",
+  "description": "Produce 3 code demo videos and 2 TTS vlog videos. Content stockpile 315+.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "927-01",
+      "title": "Code demo: Build a Stock Price Tracker in Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-927",
+      "output": "demo-mn3lwh37"
+    },
+    {
+      "id": "927-02",
+      "title": "Code demo: Create a Voice Assistant in Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-927",
+      "output": "demo-mn3lxvwr"
+    },
+    {
+      "id": "927-03",
+      "title": "Code demo: Build a Snake Game in Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-927",
+      "output": "demo-mn3lzlp4"
+    },
+    {
+      "id": "927-04",
+      "title": "V2 video: Netflix Is Using AI to Read Your Mind",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-927",
+      "output": "vlog-mn3m21j2"
+    },
+    {
+      "id": "927-05",
+      "title": "V2 video: The AI Job Nobody Is Talking About That Pays 200K",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-927",
+      "output": "vlog-mn3m21jh"
+    }
+  ]
+}

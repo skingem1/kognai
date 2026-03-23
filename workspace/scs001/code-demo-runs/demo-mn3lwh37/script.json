@@ -1,0 +1,74 @@
+{
+  "demo_id": "demo-mn3lwh37",
+  "title": "Get Stock Price in Python",
+  "language": "python",
+  "total_duration_s": 28,
+  "steps": [
+    {
+      "step_id": "s1",
+      "title": "Step 1: Import Library",
+      "code_lines": [
+        "import yfinance as yf"
+      ],
+      "language": "python",
+      "explanation": "We start by importing the yfinance library to fetch stock data.",
+      "duration_s": 6,
+      "highlight_lines": [
+        1
+      ]
+    },
+    {
+      "step_id": "s2",
+      "title": "Step 2: Define Function",
+      "code_lines": [
+        "def get_stock_price(symbol):",
+        "    stock = yf.Ticker(symbol)",
+        "    price = stock.info['regularMarketPrice']",
+        "    return price"
+      ],
+      "language": "python",
+      "explanation": "This function takes a stock symbol and returns its current price.",
+      "duration_s": 8,
+      "highlight_lines": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "step_id": "s3",
+      "title": "Step 3: Get and Print Price",
+      "code_lines": [
+        "symbol = input('Enter stock symbol: ')",
+        "price = get_stock_price(symbol)",
+        "print(f'The current price of {symbol} is ${price:.2f}')"
+      ],
+      "language": "python",
+      "explanation": "We get user input, fetch the price, and print the result.",
+      "duration_s": 8,
+      "highlight_lines": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "step_id": "s4",
+      "title": "Try It Yourself!",
+      "code_lines": [],
+      "language": "python",
+      "explanation": "Try running this code with your favorite stock symbol!",
+      "duration_s": 6,
+      "highlight_lines": []
+    }
+  ],
+  "hashtags": [
+    "#coding",
+    "#python",
+    "#stockprice",
+    "#tutorial"
+  ],
+  "intro_hook": "Want to check stock prices with Python? Let's see how!",
+  "source": "user",
+  "topic_source": "user-prompt"
+}

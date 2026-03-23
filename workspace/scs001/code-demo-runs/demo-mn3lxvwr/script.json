@@ -1,0 +1,87 @@
+{
+  "demo_id": "demo-mn3lxvws",
+  "title": "Voice to Text in Python",
+  "language": "python",
+  "total_duration_s": 32,
+  "steps": [
+    {
+      "step_id": "s1",
+      "title": "Step 1: Setup",
+      "code_lines": [
+        "import speech_recognition as sr",
+        "import pyttsx3"
+      ],
+      "language": "python",
+      "explanation": "We start by importing the necessary libraries for speech recognition and text-to-speech.",
+      "duration_s": 6,
+      "highlight_lines": [
+        1
+      ]
+    },
+    {
+      "step_id": "s2",
+      "title": "Step 2: Initialize Tools",
+      "code_lines": [
+        "r = sr.Recognizer()",
+        "engine = pyttsx3.init()"
+      ],
+      "language": "python",
+      "explanation": "Next, we initialize the speech recognizer and the text-to-speech engine.",
+      "duration_s": 6,
+      "highlight_lines": [
+        1
+      ]
+    },
+    {
+      "step_id": "s3",
+      "title": "Step 3: Capture Audio",
+      "code_lines": [
+        "with sr.Microphone() as source:",
+        "    print(\"Say something!\")",
+        "    audio = r.listen(source)"
+      ],
+      "language": "python",
+      "explanation": "We use the microphone to capture audio input from the user.",
+      "duration_s": 7,
+      "highlight_lines": [
+        3
+      ]
+    },
+    {
+      "step_id": "s4",
+      "title": "Step 4: Process and Speak",
+      "code_lines": [
+        "engine.say(\"You said: \" + text)",
+        "engine.runAndWait()"
+      ],
+      "language": "python",
+      "explanation": "Finally, the program converts the audio to text and speaks it back to the user.",
+      "duration_s": 7,
+      "highlight_lines": [
+        1
+      ]
+    },
+    {
+      "step_id": "s5",
+      "title": "Step 5: Try It Yourself",
+      "code_lines": [
+        "# Try it yourself!"
+      ],
+      "language": "python",
+      "explanation": "Now it's your turn—try running this code and speak into your microphone!",
+      "duration_s": 6,
+      "highlight_lines": [
+        1
+      ]
+    }
+  ],
+  "hashtags": [
+    "#coding",
+    "#python",
+    "#voiceassistant",
+    "#tutorial"
+  ],
+  "intro_hook": "Turn voice into text with Python!",
+  "source": "user",
+  "topic_source": "user-prompt"
+}
