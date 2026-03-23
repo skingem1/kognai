@@ -1,0 +1,35 @@
+{
+  "sprint_id": "sprint-848",
+  "title": "OPS — batch content production (5 videos) + pipeline smoke test",
+  "description": "Produced 3 new videos via multiformat pipeline (3 runs). Smoke test running. 71 unique videos ready to post, 4/30 posted toward gate.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "848-01",
+      "title": "Run batch content production (5 videos)",
+      "type": "ops",
+      "task_target": "scripts/scs001/batch-produce.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-848"
+    },
+    {
+      "id": "848-02",
+      "title": "Run pipeline smoke test",
+      "type": "ops",
+      "task_target": "scripts/smoke-test-pipeline.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-848"
+    }
+  ],
+  "cto_gate": {
+    "approved": false,
+    "reason": "The sprint does not directly map to an item in the execution plan or work plan, and it is not a Sev-1 bug fix or critical path blocker fix. Additionally, the source is 'ops', which does not meet the criteria for automatic approval.",
+    "plan_reference": "NOT_IN_PLAN",
+    "confidence": 85,
+    "timestamp": "2026-03-23T03:53:23.820Z"
+  }
+}
