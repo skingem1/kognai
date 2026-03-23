@@ -4756,3 +4756,15 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no — executed directly
 - Issues: none — all 5 first attempt success
 - Timestamp: 2026-03-24T02:30:00Z
+
+## Sprint 928 — MULTI-PIPELINE — 3 code demos + 2 TTS vlogs (batch 12)
+- Status: PASS
+- Commit: a85441f6
+- Files created: workspace/sprints/sprint-928.json, 3 code demo runs, 2 TTS vlog runs
+- Code demos: "Calculator GUI" (demo-mn3n3zfv), "Typing Speed Test" (demo-mn3n5tfz), "Spotify Analyzer" (demo-mn3n7lar)
+- Vlogs: "OpenAI App Writer" (vlog-mn3msz2k), "Tech AI Lie" (vlog-mn3msz2o)
+- Pipeline: 31 v2 + 65 TTS vlogs + 51 code demos + 5 entertainment = 320+ total content
+- Cost: ~$0.20 (ElevenLabs TTS + Pexels B-roll), code demos $0.00
+- Swarm used: no — executed directly
+- Issues: Ollama timeouts when vlogs + code demos run simultaneously (GPU contention). Fixed by running vlogs first, then code demos.
+- Timestamp: 2026-03-24T03:00:00Z
