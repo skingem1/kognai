@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-57c7e89c",
+  "topic_id": "custom-mn2tbdf3-2",
+  "format": "debate",
+  "title": "5 biggest mistakes beginners make with AI tools",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "The number five is precise—it covers the most critical errors: overreliance, poor prompts, data bias, lack of validation, and ignoring ethics. (3 sec)",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "\"Biggest\" matters more. If a beginner misuses AI in healthcare or finance, the consequences are catastrophic, not just ranked fifth. (5 sec)",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "But without focusing on the top five, users miss structured learning. OpenAI's API documentation highlights these exact pitfalls as top concerns. (5 sec)",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "You can’t rank mistakes without knowing their impact. A single error in legal AI could lead to malpractice, not just a \"biggest\" list item. (5 sec)",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Impact defines importance, not position on a list. (4 sec)",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "5 vs biggest",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#5",
+    "#biggest",
+    "#mistakes"
+  ],
+  "generated_at": "2026-03-23T06:42:49.591Z",
+  "llm_used": true
+}

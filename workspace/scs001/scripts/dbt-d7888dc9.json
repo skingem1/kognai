@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-d7888dc9",
+  "topic_id": "custom-mn2sy6pz-2",
+  "format": "debate",
+  "title": "The 5 biggest mistakes beginner programmers make with AI tools",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "The biggest mistake is relying on vague prompts — \"the\" is too ambiguous for AI to deliver precise code. (3 sec)",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "\"5\" mistakes are concrete — they help beginners focus on specific errors, not abstract concepts like \"the.\" (5 sec)",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "\"The\" allows for context-rich prompts, like \"the Python function for sorting a list,\" which yields accurate, reusable code. (5 sec)",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Focusing on \"5\" mistakes helps beginners avoid overwhelm — listing them makes learning manageable and goal-oriented. (5 sec)",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Clarity beats ambiguity — \"5\" mistakes are actionable, while \"the\" mistake is just a vague excuse. (4 sec)",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "the vs 5",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#the",
+    "#5",
+    "#biggest"
+  ],
+  "generated_at": "2026-03-23T06:32:44.250Z",
+  "llm_used": true
+}

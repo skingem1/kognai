@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-b87a2fa7",
+  "topic_id": "custom-mn2t8i93-2",
+  "format": "vision",
+  "title": "The 5 biggest mistakes beginner programmers make with AI tools",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "What are the most dangerous missteps beginners take when learning to use AI tools in programming?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Overreliance on auto-generated code without understanding the underlying logic or debugging.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "Blind trust in AI can lead to biased algorithms, security flaws, and ethical blind spots in real-world systems.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Builders are now embedding explainability features and rigorous testing frameworks into AI-assisted tools.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "A future where AI is a transparent collaborator, helping coders make better decisions without replacing their judgment.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future belongs to those who use AI tools with both skill and responsibility.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of the",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#the",
+    "#5",
+    "#biggest"
+  ],
+  "video_cue": "A split-screen showing a beginner programmer using AI-generated code on the left and a more experienced developer reviewing and refining it on the right.",
+  "generated_at": "2026-03-23T06:40:17.772Z",
+  "llm_used": true
+}

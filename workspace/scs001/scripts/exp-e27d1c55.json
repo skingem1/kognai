@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-e27d1c55",
+  "topic_id": "custom-mn2s87nh-0",
+  "format": "explainer",
+  "title": "Sam Altman just revealed AGI is 2 years away — here is what that means",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Sam Altman just said AGI is coming in 2 years — and it's changing everything.",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This isn’t just hype — major tech companies are already racing to get there.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "AGI is artificial general intelligence — a machine that can think and learn like a human.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The key breakthrough is using massive language models that can adapt to any task.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This will transform jobs, healthcare, and even how we interact with technology.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The biggest takeaway? We’re entering a future where AI isn’t just smart — it’s everywhere.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "What do you think we’ll be able to do in just 2 years?",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "Sam Altman just revealed AGI is 2 years away — here is what that means",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#sam",
+    "#altman",
+    "#just"
+  ],
+  "generated_at": "2026-03-23T06:06:35.756Z",
+  "llm_used": true
+}

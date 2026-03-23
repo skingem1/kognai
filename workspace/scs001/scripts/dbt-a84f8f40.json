@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-a84f8f40",
+  "topic_id": "custom-mn2sy6pz-0",
+  "format": "debate",
+  "title": "Sam Altman just revealed AGI is 2 years away — here is what that means",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "AGI in two years is not just possible—it’s inevitable with the right protocols and aligned incentives in place.",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Altman’s timeline ignores the massive computational and ethical hurdles that even top labs haven’t solved yet.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "The OpenAI collaboration with Microsoft and access to Azure’s supercomputing resources is a concrete step toward AGI.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Altman’s optimism lacks accountability—no real roadmap for alignment or safety beyond vague, aspirational goals.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "AGI in two years is a dangerous illusion without verifiable progress on alignment and scalable, safe training methods.",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "sam vs altman",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#sam",
+    "#altman",
+    "#just"
+  ],
+  "generated_at": "2026-03-23T06:27:45.002Z",
+  "llm_used": true
+}

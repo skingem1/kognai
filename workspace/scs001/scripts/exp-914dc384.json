@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-914dc384",
+  "topic_id": "custom-mn2tl2ro-1",
+  "format": "explainer",
+  "title": "Why Linux is making a desktop comeback",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Did you know Linux is now on 3.5% of desktops worldwide?",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "It’s rising fast thanks to new user-friendly distributions.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Linux is an open-source operating system that runs on your PC.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "New versions like Pop OS and Elementary OS make it easy to use.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Developers, designers, and even regular users are switching.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The key takeaway? Linux is becoming a real desktop contender.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Try it out—what’s your favorite OS right now?",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "Why Linux is making a desktop comeback",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#why",
+    "#linux",
+    "#is"
+  ],
+  "generated_at": "2026-03-23T06:46:43.325Z",
+  "llm_used": true
+}

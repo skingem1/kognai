@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-52552328",
+  "topic_id": "custom-mn2tw86e-1",
+  "format": "vision",
+  "title": "Why Linux is making a desktop comeback",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "Why is Linux, once a niche server OS, now gaining traction on the desktop? What’s driving this shift?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Modern distros like Fedora and Pop!_OS offer polished UIs, Wayland for security, and snaps for universal app packaging.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "But adoption faces barriers—lack of mainstream apps, user unfamiliarity, and corporate inertia that favors Windows and macOS.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Developers are creating better drivers, improving hardware support, and platforms like Flatpak are expanding software availability.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "A future where Linux becomes the default desktop OS could democratize computing and reduce vendor lock-in.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "Linux’s resurgence signals a shift toward open, customizable, and inclusive desktop ecosystems.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of why",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#why",
+    "#linux",
+    "#is"
+  ],
+  "video_cue": "A split-screen showing a Linux desktop running creative tools alongside a Windows and macOS interface.",
+  "generated_at": "2026-03-23T06:53:41.970Z",
+  "llm_used": true
+}

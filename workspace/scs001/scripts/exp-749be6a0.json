@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-749be6a0",
+  "topic_id": "custom-mn2tl2ro-2",
+  "format": "explainer",
+  "title": "5 mistakes beginners make with AI tools",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Did you know 70% of AI tools fail because of these beginner mistakes?",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "AI is changing jobs, marketing, and even healthcare — fast.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Using AI without understanding basics leads to bad results.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Most beginners ignore training data — it shapes your AI's personality.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Marketers who skip this end up with biased or irrelevant content.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Always check where your AI's knowledge comes from — it's critical.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "What’s the first mistake you’ve made with AI? Let me know.",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "5 mistakes beginners make with AI tools",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#5",
+    "#mistakes",
+    "#beginners"
+  ],
+  "generated_at": "2026-03-23T06:48:22.608Z",
+  "llm_used": true
+}

@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-77617341",
+  "topic_id": "custom-mn2sd2ir-2",
+  "format": "debate",
+  "title": "The 5 biggest mistakes beginner programmers make with AI tools",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "The biggest mistake is assuming \"the\" AI tool fits all — one-size-fits-all thinking leads to poor code and wasted time.",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "\"5\" mistakes are concrete, actionable — listing them helps beginners avoid pitfalls like ignoring version control or misusing APIs.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "\"The\" approach is more flexible — using the right tool for the job avoids rigid frameworks that stifle innovation.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "But without listing the 5, beginners don't know where to start — clarity from specific mistakes is critical for learning.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "The 5 biggest mistakes are the 5 most common — focusing on them saves time and prevents recurring errors.",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "the vs 5",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#the",
+    "#5",
+    "#biggest"
+  ],
+  "generated_at": "2026-03-23T06:13:01.633Z",
+  "llm_used": true
+}

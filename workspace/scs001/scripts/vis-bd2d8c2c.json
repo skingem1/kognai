@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-bd2d8c2c",
+  "topic_id": "custom-mn2t8i93-0",
+  "format": "vision",
+  "title": "Sam Altman just revealed AGI is 2 years away — here is what that means",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "If AGI arrives in two years, what must we prepare for — and what can't we control?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Current models lack common sense and long-term planning, but progress in transformers and reinforcement learning is accelerating.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "Societal trust could erode if AGI decisions are opaque, leading to misuse in governance or warfare.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Researchers are prioritizing alignment frameworks and open-source oversight to ensure safe development.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "A world where AGI aids in curing diseases and solving climate change is within reach if we align values with technology.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The next two years will define whether AGI becomes our greatest ally or our most dangerous experiment.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of sam",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#sam",
+    "#altman",
+    "#just"
+  ],
+  "video_cue": "Rapidly evolving neural network visuals merging with human and robot figures collaborating on a global challenge.",
+  "generated_at": "2026-03-23T06:35:19.174Z",
+  "llm_used": true
+}

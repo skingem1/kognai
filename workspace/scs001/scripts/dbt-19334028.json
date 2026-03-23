@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-19334028",
+  "topic_id": "custom-mn2sy6pz-1",
+  "format": "debate",
+  "title": "Why Linux is making a comeback on desktop in 2026",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Linux is reclaiming the desktop because it's the only OS that doesn't lock users out of their own systems. (3 sec)",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "You're ignoring the reality that Linux now supports full GPU acceleration via Vulkan and Wayland, making it competitive with Windows. (5 sec)",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "With Flatpak and Snap, Linux now has universal app packaging—something Windows still struggles with across different versions. (5 sec)",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Major companies like Red Hat and Canonical are investing billions in desktop Linux, proving it's no longer a niche choice. (5 sec)",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Linux is the future of the desktop—open, secure, and built for developers and power users. (4 sec)",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "why vs linux",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#why",
+    "#linux",
+    "#is"
+  ],
+  "generated_at": "2026-03-23T06:30:01.757Z",
+  "llm_used": true
+}
