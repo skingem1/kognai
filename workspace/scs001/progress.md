@@ -3595,3 +3595,13 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no
 - Cost: ~$0.05
 - Timestamp: 2026-03-23T01:35:00Z
+
+## Sprint 832 — OPS: schedule-based posting reminder with video delivery
+- Status: PASS
+- Commit: a4005e4
+- Files created: scripts/scs001/posting-reminder.ts, workspace/sprints/sprint-832.json
+- Test: ts-node posting-reminder.ts — PASS (clean exit, no slots due)
+- Pipeline: 39 MP4s available, gate 3/30, 15 days remaining
+- Swarm used: no (queue empty, wrote directly)
+- Cost: ~$0.15
+- Timestamp: 2026-03-23T01:40:00Z
