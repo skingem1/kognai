@@ -4946,3 +4946,12 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Pipeline: 31 v2 + 95 TTS vlogs + 104 code demos + 5 entertainment = 403+ total content
 - Timestamp: 2026-03-24T11:30:00Z
 - MILESTONE: 400+ total content reached!
+
+## Sprint 946 — CODE-DEMO-ONLY — 3 code demos (HeyGen + ElevenLabs exhausted)
+- Status: PARTIAL PASS (3/5)
+- Commit: dcaf6571
+- Code demos: "Image Filter" (demo-mn3rqdqb), "Batch Renamer" (demo-mn3rs2pl), "YT Thumbnail" (demo-mn3rti0x)
+- Vlogs: FAILED — ElevenLabs quota_exceeded (0 credits remaining)
+- Pipeline: 31 v2 + 95 TTS vlogs + 107 code demos + 5 entertainment = 406+ total content
+- Timestamp: 2026-03-24T12:00:00Z
+- BLOCKER: Both HeyGen AND ElevenLabs credits exhausted. Only code demos ($0) remain viable. All vlog production halted until credits are refilled.
