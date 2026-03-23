@@ -1,0 +1,13 @@
+{
+  "sprint_id": "sprint-941",
+  "title": "MULTI-PIPELINE — 3 code demos + 2 TTS vlogs (TTS mode)",
+  "description": "3 code demos + 2 TTS-mode vlogs. Content stockpile 383+.",
+  "source": "ops",
+  "tasks": [
+    {"id": "941-01", "title": "Code demo: Build a Markdown Editor in Python", "type": "ops", "task_target": "scripts/scs001/pipelines/code-demo.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-941", "output": "demo-mn3qd26f"},
+    {"id": "941-02", "title": "Code demo: Create a PDF to Image Converter in Python", "type": "ops", "task_target": "scripts/scs001/pipelines/code-demo.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-941", "output": "demo-mn3qfc69"},
+    {"id": "941-03", "title": "Code demo: Build a Memory Game in Python", "type": "ops", "task_target": "scripts/scs001/pipelines/code-demo.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-941", "output": "demo-mn3qgq2o"},
+    {"id": "941-04", "title": "V2 video (TTS): The AI Deepfake Crisis No One Is Ready For", "type": "ops", "task_target": "scripts/scs001/produce-vlog.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-941", "output": "vlog-mn3qio8x", "mode": "tts"},
+    {"id": "941-05", "title": "V2 video (TTS): How Claude AI Is Quietly Beating ChatGPT", "type": "ops", "task_target": "scripts/scs001/produce-vlog.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-941", "output": "vlog-mn3qjzw1", "mode": "tts"}
+  ]
+}

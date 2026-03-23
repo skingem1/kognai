@@ -1,0 +1,72 @@
+{
+  "demo_id": "demo-mn3qfc69",
+  "title": "Convert PDF to Images in Python",
+  "language": "python",
+  "total_duration_s": 25,
+  "steps": [
+    {
+      "step_id": "s1",
+      "title": "Step 1: Import the Library",
+      "code_lines": [
+        "from pdf2image import convert_from_path"
+      ],
+      "language": "python",
+      "explanation": "We start by importing the pdf2image library to handle PDF conversion.",
+      "duration_s": 5,
+      "highlight_lines": [
+        0
+      ]
+    },
+    {
+      "step_id": "s2",
+      "title": "Step 2: Define the Function",
+      "code_lines": [
+        "def pdf_to_images(pdf_path, output_folder):"
+      ],
+      "language": "python",
+      "explanation": "We create a function that takes a PDF path and an output folder as inputs.",
+      "duration_s": 5,
+      "highlight_lines": [
+        0
+      ]
+    },
+    {
+      "step_id": "s3",
+      "title": "Step 3: Convert and Save Images",
+      "code_lines": [
+        "images = convert_from_path(pdf_path)",
+        "for i, image in enumerate(images):",
+        "    image.save(f\"{output_folder}/page_{i+1}.png\", \"PNG\")"
+      ],
+      "language": "python",
+      "explanation": "We convert the PDF to images and save each page as a PNG file.",
+      "duration_s": 10,
+      "highlight_lines": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "step_id": "s4",
+      "title": "Step 4: Try it Yourself!",
+      "code_lines": [
+        "pdf_to_images('document.pdf', 'output_images')"
+      ],
+      "language": "python",
+      "explanation": "Call the function with your PDF and output folder — and watch the magic happen!",
+      "duration_s": 5,
+      "highlight_lines": [
+        0
+      ]
+    }
+  ],
+  "hashtags": [
+    "#coding",
+    "#python",
+    "#tutorial"
+  ],
+  "intro_hook": "Want to turn PDFs into images? Let's code it!",
+  "source": "user",
+  "topic_source": "user-prompt"
+}
