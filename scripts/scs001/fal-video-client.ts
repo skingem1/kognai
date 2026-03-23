@@ -73,7 +73,7 @@ export async function generateBrollVideo(
       };
 
       if (model === 'kling') {
-        args.duration = String(Math.min(Math.max(durationS, 5), 10));
+        args.duration = String(durationS >= 8 ? 10 : 5); // Kling only accepts '5' or '10'
       } else {
         args.num_frames = Math.min(Math.max(durationS * 16, 49), 161);
         args.resolution = '1080p';
