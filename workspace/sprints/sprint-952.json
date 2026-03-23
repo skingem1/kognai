@@ -1,0 +1,13 @@
+{
+  "sprint_id": "sprint-952",
+  "title": "CODE-DEMO-ONLY — 5 code demos",
+  "description": "5 code demo videos. Voice services exhausted.",
+  "source": "ops",
+  "tasks": [
+    {"id": "952-01", "title": "Code demo: Build a Webcam Photo Booth in Python", "type": "ops", "task_target": "scripts/scs001/pipelines/code-demo.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-952", "output": "demo-mn3tkj8n"},
+    {"id": "952-02", "title": "Code demo: Create a Fibonacci Generator in Python", "type": "ops", "task_target": "scripts/scs001/pipelines/code-demo.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-952", "output": "demo-mn3tm89h"},
+    {"id": "952-03", "title": "Code demo: Build a Typing Animation in Python", "type": "ops", "task_target": "scripts/scs001/pipelines/code-demo.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-952", "output": "demo-mn3tnjj5"},
+    {"id": "952-04", "title": "Code demo: Create a Text to PDF Converter in Python", "type": "ops", "task_target": "scripts/scs001/pipelines/code-demo.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-952", "output": "demo-mn3tov60"},
+    {"id": "952-05", "title": "Code demo: Build a Website Status Checker in Python", "type": "ops", "task_target": "scripts/scs001/pipelines/code-demo.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-952", "output": "demo-mn3tqphp"}
+  ]
+}
