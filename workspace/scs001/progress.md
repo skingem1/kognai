@@ -4269,3 +4269,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no — wrote directly
 - Issues: none
 - Timestamp: 2026-03-23T11:25:00Z
+
+## Sprint 895 — V2-RELIABILITY — Captions.ai timeout + retry
+- Status: PASS
+- Commit: e2d49e2b
+- Files modified: scripts/scs001/avatar-presenter.ts, scripts/scs001/video-segment-generator.ts
+- Files created: workspace/sprints/sprint-895.json
+- Test: TypeScript compile — clean
+- Pipeline: Captions.ai timeout 300s→600s, retry on timeout added
+- Swarm used: no — wrote directly
+- Issues: none
+- Timestamp: 2026-03-23T11:35:00Z
