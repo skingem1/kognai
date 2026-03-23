@@ -4291,3 +4291,15 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no — production runs
 - Issues: none
 - Timestamp: 2026-03-23T12:00:00Z
+
+## Sprint 897 — V2-CONTENT — 3 videos + ArtDirector fix + PM2 restart
+- Status: PASS
+- Commit: 1827c853
+- Files modified: agents/scs001-art-director/index.ts (JSON parsing fix)
+- Files created: workspace/sprints/sprint-897.json, 3 v2 videos
+- Test: 3 full v2 runs — all PASS (1 initial REJECT on speculative topic, replaced)
+- Pipeline: 13 v2 videos total, 181+ total content
+- Cost: ~$3.71 (fal.ai)
+- Note: Captions.ai credits exhausted — avatars now fall back to color blocks
+- PM2: telegram-bot restarted, /v2 command live
+- Timestamp: 2026-03-23T12:15:00Z
