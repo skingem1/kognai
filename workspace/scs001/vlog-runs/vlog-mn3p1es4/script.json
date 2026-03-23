@@ -1,0 +1,21 @@
+{
+  "title": "The Dark Side of AI Nobody Talks About",
+  "full_monologue": "**AI isn’t just smart—it’s dangerous.** We’re creating systems that can mimic human behavior, but what happens when they start making decisions we can’t control? Deepfakes are just the tip of the iceberg. AI can manipulate emotions, spread misinformation, and even replace real jobs. The more we rely on it, the more we lose our autonomy. It’s not just a tech issue—it’s a human one. So, what ethical lines should we never cross?",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 6,
+      "duration_s": 6,
+      "visual_prompt": "A crowd of people staring at a screen, confused and uneasy, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 18,
+      "duration_s": 6,
+      "visual_prompt": "A hand typing rapidly on a keyboard, but the text is blurred and unreadable, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

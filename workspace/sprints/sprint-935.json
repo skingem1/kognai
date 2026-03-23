@@ -1,0 +1,65 @@
+{
+  "sprint_id": "sprint-935",
+  "title": "MULTI-PIPELINE — 3 code demos + 2 TTS vlogs (350 milestone)",
+  "description": "3 code demos + 2 TTS-mode vlogs. Hitting 350+ total content milestone.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "935-01",
+      "title": "Code demo: Build a System Monitor in Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-935",
+      "output": "demo-mn3ov0ws"
+    },
+    {
+      "id": "935-02",
+      "title": "Code demo: Create a Barcode Scanner in Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-935",
+      "output": "demo-mn3owggx"
+    },
+    {
+      "id": "935-03",
+      "title": "Code demo: Build a Netflix Clone CLI in Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-935",
+      "output": "demo-mn3oy5h8"
+    },
+    {
+      "id": "935-04",
+      "title": "V2 video (TTS): Why Your Next Boss Will Be an AI Agent",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-935",
+      "output": "vlog-mn3p07w5",
+      "mode": "tts"
+    },
+    {
+      "id": "935-05",
+      "title": "V2 video (TTS): The Dark Side of AI Nobody Talks About",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-935",
+      "output": "vlog-mn3p1es4",
+      "mode": "tts"
+    }
+  ]
+}
