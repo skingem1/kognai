@@ -1,0 +1,21 @@
+{
+  "title": "How AI Built a Million Dollar App",
+  "full_monologue": "**Imagine building a million-dollar app with just AI.** It started with a simple idea and a powerful tool. This developer used AI to generate features, automate testing, and even write code. The result? A fully functional app in weeks, not months. The app solved a real problem and scaled fast. Now, it’s a million-dollar success. Want to know how you can do the same? Let me know in the comments.",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 6,
+      "duration_s": 6,
+      "visual_prompt": "a person typing on a keyboard with glowing keys, surrounded by abstract digital patterns, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 18,
+      "duration_s": 6,
+      "visual_prompt": "a city skyline with lights reflecting on water, symbolizing success and growth, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

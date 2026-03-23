@@ -1,0 +1,63 @@
+{
+  "sprint_id": "sprint-926",
+  "title": "MULTI-PIPELINE — 3 code demos + 2 TTS vlogs (batch 10)",
+  "description": "Produce 3 code demo videos and 2 TTS vlog videos. 310+ content stockpile.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "926-01",
+      "title": "Code demo: Build a Face Detection App in Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-926",
+      "output": "demo-mn3lkm6o"
+    },
+    {
+      "id": "926-02",
+      "title": "Code demo: Create a Pomodoro Timer in Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-926",
+      "output": "demo-mn3lmm88"
+    },
+    {
+      "id": "926-03",
+      "title": "Code demo: Build a Flashcard App in Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-926",
+      "output": "demo-mn3lo5tf"
+    },
+    {
+      "id": "926-04",
+      "title": "V2 video: The AI Bubble Is About to Burst and Nobody's Ready",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-926",
+      "output": "vlog-mn3lppfa"
+    },
+    {
+      "id": "926-05",
+      "title": "V2 video: How One Developer Used AI to Build a Million Dollar App",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-926",
+      "output": "vlog-mn3lppf1"
+    }
+  ]
+}

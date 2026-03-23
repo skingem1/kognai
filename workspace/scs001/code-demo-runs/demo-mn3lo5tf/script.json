@@ -1,0 +1,79 @@
+{
+  "demo_id": "demo-mn3lo5tf",
+  "title": "Flashcards with Python in 30s",
+  "language": "python",
+  "total_duration_s": 20,
+  "steps": [
+    {
+      "step_id": "s1",
+      "title": "Step 1: Setup",
+      "code_lines": [
+        "import random",
+        "",
+        "flashcards = {",
+        "    \"Python\": \"A high-level programming language.\",",
+        "    \"AI\": \"Artificial Intelligence.\",",
+        "    \"ML\": \"Machine Learning.\"",
+        "}"
+      ],
+      "language": "python",
+      "explanation": "We import random and create a dictionary of flashcard terms and definitions.",
+      "duration_s": 7,
+      "highlight_lines": [
+        0,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "step_id": "s2",
+      "title": "Step 2: Study Function",
+      "code_lines": [
+        "def study():",
+        "    while True:",
+        "        term = random.choice(list(flashcards.keys()))",
+        "        print(f\"Term: {term}\")",
+        "        input(\"Press Enter to see definition...\")",
+        "        print(f\"Definition: {flashcards[term]}\")",
+        "        if input(\"Continue? (y/n): \").lower() != 'y':",
+        "            break"
+      ],
+      "language": "python",
+      "explanation": "This function randomly picks a term, waits for input, then shows the definition and asks to continue.",
+      "duration_s": 8,
+      "highlight_lines": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ]
+    },
+    {
+      "step_id": "s3",
+      "title": "Step 3: Run the Study",
+      "code_lines": [
+        "study()"
+      ],
+      "language": "python",
+      "explanation": "Finally, we call the study function to start learning with flashcards!",
+      "duration_s": 5,
+      "highlight_lines": [
+        0
+      ]
+    }
+  ],
+  "hashtags": [
+    "#coding",
+    "#python",
+    "#tutorial"
+  ],
+  "intro_hook": "Want to learn with flashcards? Let's code it!",
+  "source": "user",
+  "topic_source": "user-prompt"
+}

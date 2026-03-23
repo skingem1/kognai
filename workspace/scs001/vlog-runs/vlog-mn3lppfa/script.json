@@ -1,0 +1,21 @@
+{
+  "title": "The AI Bubble Is About to Burst",
+  "full_monologue": "**The AI Bubble Is About to Burst and Nobody's Ready.** We’ve all seen the hype—self-driving cars, AI doctors, robots in every home. But here’s the truth: most of this tech is still years from being reliable. Companies are pouring billions into AI startups, but when the funding dries up, the crash will be brutal. We’re not prepared for the fallout. So what happens when the bubble bursts? Will we be ready for the next wave of innovation, or will we be left scrambling? Let me know in the comments.",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 6,
+      "duration_s": 6,
+      "visual_prompt": "crowds of people walking through a futuristic cityscape, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 18,
+      "duration_s": 6,
+      "visual_prompt": "abstract motion of glowing particles forming and breaking apart, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}
