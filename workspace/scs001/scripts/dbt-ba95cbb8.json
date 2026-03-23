@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-ba95cbb8",
+  "topic_id": "custom-mn2uqk31-2",
+  "format": "debate",
+  "title": "Why your data is worth more than your salary",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Your data predicts markets, behaviors, and trends—far more accurately than any salary ever could. (3 sec)",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Your salary is a fixed number, but your data is a dynamic asset that evolves with every click, search, and interaction. (5 sec)",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Companies use your data to optimize products, personalize ads, and even influence policy—tools no salary can match. (5 sec)",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Your salary funds your life, but your data is leveraged to shape the future—without your consent or compensation. (5 sec)",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Your data isn’t just valuable—it’s the new currency, and you’re not getting paid for it. (4 sec)",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "why vs your",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#why",
+    "#your",
+    "#data"
+  ],
+  "generated_at": "2026-03-23T07:16:52.558Z",
+  "llm_used": true
+}

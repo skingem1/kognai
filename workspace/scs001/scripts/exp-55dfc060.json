@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-55dfc060",
+  "topic_id": "custom-mn2uo27i-0",
+  "format": "explainer",
+  "title": "GitHub Copilot Workspace just made junior devs obsolete",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "GitHub Copilot Workspace just made junior devs obsolete — here's how.",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This tool is changing the game for software teams everywhere right now.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "It’s AI that writes code in real-time as you type, like a co-pilot in your editor.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The most impressive feature? It integrates directly with your IDE and understands your project context.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Junior developers are being replaced by this AI in entry-level coding tasks.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The key takeaway: This isn’t just a tool — it’s a productivity revolution.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Have you tried GitHub Copilot Workspace yet?",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "GitHub Copilot Workspace just made junior devs obsolete",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#github",
+    "#copilot",
+    "#workspace"
+  ],
+  "generated_at": "2026-03-23T07:14:21.011Z",
+  "llm_used": true
+}

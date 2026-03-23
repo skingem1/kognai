@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-d843bcc1",
+  "topic_id": "custom-mn2uo27j-2",
+  "format": "explainer",
+  "title": "Why your data is worth more than your salary",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Your data is being sold every time you scroll — and it's worth way more than your paycheck.",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Right now, companies are using your habits, preferences, and even your location to make billions.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Your personal data is the most valuable asset in the tech industry today.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Big tech firms like Meta and Google collect and sell your data to advertisers for millions of dollars.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This affects everyone — from the apps you use to the ads you see and even your job opportunities.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The key takeaway? Your data is more valuable than you realize, and it's being used constantly.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "So, what are you going to do about it?",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "Why your data is worth more than your salary",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#why",
+    "#your",
+    "#data"
+  ],
+  "generated_at": "2026-03-23T07:14:46.719Z",
+  "llm_used": true
+}

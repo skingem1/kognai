@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-9198d477",
+  "topic_id": "custom-mn2ut19t-0",
+  "format": "vision",
+  "title": "GitHub Copilot Workspace just made junior devs obsolete",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "If GitHub Copilot Workspace removes the need for junior developers, what does that mean for the future of software engineering?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "It automates coding tasks, suggesting full functions and debugging, allowing experienced devs to focus on architecture and strategy.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "This risks devaluing entry-level roles, potentially displacing thousands and widening the gap between skilled and unskilled workers.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Builders are integrating Copilot with mentorship tools, pairing AI suggestions with human feedback to train new developers.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "In five years, we might see AI-assisted apprenticeships, where juniors learn through guided collaboration, not replacement.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future isn’t replacement—it’s redefinition, where AI and humans co-create, each amplifying the other’s potential.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of github",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#github",
+    "#copilot",
+    "#workspace"
+  ],
+  "video_cue": "A split-screen showing a junior developer working alongside an AI interface, with code suggestions and real-time feedback appearing on the screen.",
+  "generated_at": "2026-03-23T07:18:20.663Z",
+  "llm_used": true
+}

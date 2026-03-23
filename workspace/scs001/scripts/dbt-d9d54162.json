@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-d9d54162",
+  "topic_id": "custom-mn2uqk31-1",
+  "format": "debate",
+  "title": "The 3 crypto narratives that will dominate 2026",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "By 2026, the narrative will be singular: blockchain as the backbone of global finance, not a fragmented \"3\" of speculative hype.",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Three distinct narratives will dominate—DeFi 3.0, AI-integrated blockchains, and tokenized real-world assets—each reshaping the industry uniquely.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "DeFi 3.0 isn’t a standalone narrative—it’s a layer within the unified protocol stack, built on Ethereum’s modular upgrades and rollups.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Ethereum’s upgrades don’t erase the rise of Solana, Cardano, and Cosmos—each offering tailored solutions that won’t be overshadowed by a single narrative.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "The future is plural—three narratives will coexist, each driving innovation in different corners of the crypto ecosystem.",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "the vs 3",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#the",
+    "#3",
+    "#crypto"
+  ],
+  "generated_at": "2026-03-23T07:16:37.363Z",
+  "llm_used": true
+}

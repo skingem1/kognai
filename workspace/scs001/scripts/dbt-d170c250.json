@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-d170c250",
+  "topic_id": "custom-mn2uqk31-0",
+  "format": "debate",
+  "title": "GitHub Copilot Workspace just made junior devs obsolete",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "GitHub Copilot Workspace replaces junior devs by automating code, eroding learning and growth in the development community. (3 sec)",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Copilot accelerates development with real-time suggestions, reducing errors and allowing juniors to focus on logic, not syntax. (5 sec)",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "GitHub's vast repository and collaborative tools provide juniors with mentorship, feedback, and real-world project experience. (5 sec)",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Copilot integrates seamlessly with VS Code and GitHub, offering context-aware completions that outperform traditional learning curves. (5 sec)",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Copilot isn't a replacement—it's a tool that empowers juniors to build faster, learn more, and innovate smarter. (4 sec)",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "github vs copilot",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#github",
+    "#copilot",
+    "#workspace"
+  ],
+  "generated_at": "2026-03-23T07:16:20.467Z",
+  "llm_used": true
+}
