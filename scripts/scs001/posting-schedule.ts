@@ -77,26 +77,30 @@ function getUnpostedVideos(): Array<{ video_id: string; viral_score: number; top
   const seen = new Set<string>();
   const videos: Array<{ video_id: string; viral_score: number; topic?: string }> = [];
 
-  // Delivered first
+  // Delivered first — only include if MP4 exists
   for (const e of readJsonLines(DELIVERED_LOG)) {
     if (!e.video_id || postedIds.has(e.video_id) || seen.has(e.video_id)) continue;
-    seen.add(e.video_id);
-    videos.push({
-      video_id: e.video_id,
-      viral_score: e.viral_score ?? viralScores.get(e.video_id) ?? 0,
-      topic: e.topic,
-    });
+    if (e.mp4_path && existsSync(e.mp4_path)) {
+      seen.add(e.video_id);
+      videos.push({
+        video_id: e.video_id,
+        viral_score: e.viral_score ?? viralScores.get(e.video_id) ?? 0,
+        topic: e.topic,
+      });
+    }
   }
 
-  // Ledger
+  // Ledger — only include if video_path exists
   for (const e of readJsonLines(LEDGER_PATH)) {
     if (!e.video_id || postedIds.has(e.video_id) || seen.has(e.video_id)) continue;
-    seen.add(e.video_id);
-    videos.push({
-      video_id: e.video_id,
-      viral_score: viralScores.get(e.video_id) ?? 0,
-      topic: e.topic,
-    });
+    if (e.video_path && existsSync(e.video_path)) {
+      seen.add(e.video_id);
+      videos.push({
+        video_id: e.video_id,
+        viral_score: viralScores.get(e.video_id) ?? 0,
+        topic: e.topic,
+      });
+    }
   }
 
   // Sort by viral score descending
