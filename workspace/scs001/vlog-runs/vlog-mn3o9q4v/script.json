@@ -1,0 +1,21 @@
+{
+  "title": "Nvidia CEO Says Coding Is Dead",
+  "full_monologue": "**Nvidia CEO Says Coding Is Dead Learn This Instead**. According to Jensen Huang, the future of tech isn’t just about writing code—it’s about AI and automation. Coding won’t disappear, but the way we approach it will change. Think about AI tools that write code for us, or systems that self-optimize. The real skill? Understanding how these systems work. So, if you’re thinking about your career, focus on AI, machine learning, and how to work with intelligent systems. The future is here, and it’s time to adapt. What do you think? Are you ready for this shift?",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 6,
+      "duration_s": 6,
+      "visual_prompt": "hands interacting with abstract digital motion and glowing tech elements, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 18,
+      "duration_s": 6,
+      "visual_prompt": "people working in a futuristic tech lab with AI-generated visuals in the background, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

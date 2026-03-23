@@ -1,0 +1,59 @@
+{
+  "demo_id": "demo-mn3o593v",
+  "title": "Create a Meme in Python in 3 Steps!",
+  "language": "python",
+  "total_duration_s": 19,
+  "steps": [
+    {
+      "step_id": "s1",
+      "title": "Step 1: Load Image",
+      "code_lines": [
+        "img = Image.open(image_path)",
+        "draw = ImageDraw.Draw(img)"
+      ],
+      "language": "python",
+      "explanation": "We start by opening the image and preparing to draw on it.",
+      "duration_s": 6,
+      "highlight_lines": [
+        1
+      ]
+    },
+    {
+      "step_id": "s2",
+      "title": "Step 2: Add Text",
+      "code_lines": [
+        "draw.text((10, 10), text_top, font=font, fill=\"white\")",
+        "draw.text((10, img.height - 50), text_bottom, font=font, fill=\"white\")"
+      ],
+      "language": "python",
+      "explanation": "Now we add the top and bottom text to make it look like a real meme.",
+      "duration_s": 7,
+      "highlight_lines": [
+        1,
+        2
+      ]
+    },
+    {
+      "step_id": "s3",
+      "title": "Step 3: Show the Meme",
+      "code_lines": [
+        "img.show()"
+      ],
+      "language": "python",
+      "explanation": "Finally, we display the image with our new meme text!",
+      "duration_s": 6,
+      "highlight_lines": [
+        1
+      ]
+    }
+  ],
+  "hashtags": [
+    "#coding",
+    "#python",
+    "#meme",
+    "#tutorial"
+  ],
+  "intro_hook": "Want to make a meme with Python? Let's do it fast!",
+  "source": "user",
+  "topic_source": "user-prompt"
+}

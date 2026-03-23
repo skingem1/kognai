@@ -1,0 +1,65 @@
+{
+  "sprint_id": "sprint-932",
+  "title": "MULTI-PIPELINE — 3 code demos + 2 TTS vlogs (TTS mode)",
+  "description": "3 code demos + 2 TTS-mode vlogs. HeyGen down, TTS fallback.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "932-01",
+      "title": "Code demo: Build a Meme Generator in Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-932",
+      "output": "demo-mn3o593v"
+    },
+    {
+      "id": "932-02",
+      "title": "Code demo: Create a Regex Tester in Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-932",
+      "output": "demo-mn3o6hzr"
+    },
+    {
+      "id": "932-03",
+      "title": "Code demo: Build a Git Commit Analyzer in Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-932",
+      "output": "demo-mn3o81vx"
+    },
+    {
+      "id": "932-04",
+      "title": "V2 video (TTS): Nvidia CEO Says Coding Is Dead Learn This Instead",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-932",
+      "output": "vlog-mn3o9q4v",
+      "mode": "tts"
+    },
+    {
+      "id": "932-05",
+      "title": "V2 video (TTS): The AI Trick That Makes You 10x More Productive",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-932",
+      "output": "vlog-mn3ob387",
+      "mode": "tts"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "title": "AI Trick That Boosts Productivity 10x",
+  "full_monologue": "**This AI trick will change how you work.** I use it daily to automate repetitive tasks and focus on what matters. It’s not about replacing your brain—it’s about enhancing it. Imagine delegating routine work to AI while you strategize and create. It’s like having a 24/7 assistant. The best part? It’s free and easy to use. Want to know what it is? Comment below and I’ll show you how.",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 6,
+      "duration_s": 6,
+      "visual_prompt": "hands typing on a keyboard with a glowing AI logo in the background, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 18,
+      "duration_s": 6,
+      "visual_prompt": "a person smiling while reviewing a completed task list, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}
