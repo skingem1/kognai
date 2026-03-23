@@ -1,0 +1,63 @@
+{
+  "sprint_id": "sprint-928",
+  "title": "MULTI-PIPELINE — 3 code demos + 2 TTS vlogs (batch 12)",
+  "description": "Produce 3 code demo videos and 2 TTS vlog videos. Content stockpile 320+.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "928-01",
+      "title": "Code demo: Build a Calculator GUI in Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-928",
+      "output": "demo-mn3n3zfv"
+    },
+    {
+      "id": "928-02",
+      "title": "Code demo: Create a Typing Speed Test in Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-928",
+      "output": "demo-mn3n5tfz"
+    },
+    {
+      "id": "928-03",
+      "title": "Code demo: Build a Spotify Playlist Analyzer in Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-928",
+      "output": "demo-mn3n7lar"
+    },
+    {
+      "id": "928-04",
+      "title": "V2 video: OpenAI Just Released a Tool That Writes Entire Apps",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-928",
+      "output": "vlog-mn3msz2k"
+    },
+    {
+      "id": "928-05",
+      "title": "V2 video: The Biggest Lie Tech Companies Tell About AI",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-928",
+      "output": "vlog-mn3msz2o"
+    }
+  ]
+}

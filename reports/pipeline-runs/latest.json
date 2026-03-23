@@ -1,15 +1,15 @@
 {
-  "run_id": "scs001-2026-03-23T17-00-01-408Z",
+  "run_id": "scs001-2026-03-23T20-00-01-066Z",
   "mode": "live",
-  "started_at": "2026-03-23T17:00:01.408Z",
-  "completed_at": "2026-03-23T17:19:58.876Z",
-  "total_elapsed_ms": 1197468,
+  "started_at": "2026-03-23T20:00:01.066Z",
+  "completed_at": "2026-03-23T20:17:30.135Z",
+  "total_elapsed_ms": 1049069,
   "stages": [
     {
       "stage": "1-trend",
       "agent": "TrendAgent",
       "count": 8,
-      "elapsed_ms": 477,
+      "elapsed_ms": 441,
       "status": "ok"
     },
     {
@@ -23,21 +23,21 @@
       "stage": "2.5-viral-tiktok",
       "agent": "ViralTikTokDownloader",
       "count": 0,
-      "elapsed_ms": 30390,
+      "elapsed_ms": 30514,
       "status": "empty"
     },
     {
       "stage": "3-clip-detection",
       "agent": "ClipDetectionAgent",
       "count": 40,
-      "elapsed_ms": 566575,
+      "elapsed_ms": 418090,
       "status": "ok"
     },
     {
       "stage": "4-insight",
       "agent": "InsightAgent (live)",
       "count": 0,
-      "elapsed_ms": 300007,
+      "elapsed_ms": 300004,
       "status": "error",
       "error": "Stage timeout after 300s"
     },
@@ -52,7 +52,7 @@
       "stage": "5-script",
       "agent": "ScriptAgent",
       "count": 0,
-      "elapsed_ms": 300006,
+      "elapsed_ms": 300005,
       "status": "error",
       "error": "Stage timeout after 300s"
     }

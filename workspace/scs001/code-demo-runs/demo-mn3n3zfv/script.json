@@ -1,0 +1,97 @@
+{
+  "demo_id": "demo-mn3n3zfv",
+  "title": "Build a Simple Python Calculator",
+  "language": "python",
+  "total_duration_s": 29,
+  "steps": [
+    {
+      "step_id": "s1",
+      "title": "Step 1: Setup",
+      "code_lines": [
+        "import tkinter as tk",
+        "",
+        "def calculate():",
+        "    try:",
+        "        result = eval(entry.get())",
+        "        result_label.config(text=f\"Result: {result}\")",
+        "    except:",
+        "        result_label.config(text=\"Error\")"
+      ],
+      "language": "python",
+      "explanation": "We start by importing tkinter and defining the calculate function to handle the math.",
+      "duration_s": 7,
+      "highlight_lines": [
+        0,
+        2
+      ]
+    },
+    {
+      "step_id": "s2",
+      "title": "Step 2: Create Window",
+      "code_lines": [
+        "root = tk.Tk()",
+        "root.title(\"Calculator\")",
+        "",
+        "entry = tk.Entry(root, width=30)",
+        "entry.pack(pady=10)"
+      ],
+      "language": "python",
+      "explanation": "Next, we create the main window and add an entry box for user input.",
+      "duration_s": 6,
+      "highlight_lines": [
+        0,
+        3
+      ]
+    },
+    {
+      "step_id": "s3",
+      "title": "Step 3: Add Button & Label",
+      "code_lines": [
+        "calculate_btn = tk.Button(root, text=\"Calculate\", command=calculate)",
+        "calculate_btn.pack()",
+        "",
+        "result_label = tk.Label(root, text=\"Result: \")",
+        "result_label.pack()"
+      ],
+      "language": "python",
+      "explanation": "We add a button to trigger the calculation and a label to show the result.",
+      "duration_s": 6,
+      "highlight_lines": [
+        0,
+        3
+      ]
+    },
+    {
+      "step_id": "s4",
+      "title": "Step 4: Run the App",
+      "code_lines": [
+        "root.mainloop()"
+      ],
+      "language": "python",
+      "explanation": "Finally, we start the app with mainloop() and see it in action!",
+      "duration_s": 5,
+      "highlight_lines": [
+        0
+      ]
+    },
+    {
+      "step_id": "s5",
+      "title": "Step 5: Try it Yourself!",
+      "code_lines": [],
+      "language": "python",
+      "explanation": "Try it yourself and see the magic happen!",
+      "duration_s": 5,
+      "highlight_lines": []
+    }
+  ],
+  "hashtags": [
+    "#coding",
+    "#python",
+    "#tkinter",
+    "#calculator",
+    "#tutorial"
+  ],
+  "intro_hook": "Let’s build a calculator in 30 seconds!",
+  "source": "user",
+  "topic_source": "user-prompt"
+}

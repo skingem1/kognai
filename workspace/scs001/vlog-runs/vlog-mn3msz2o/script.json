@@ -1,0 +1,21 @@
+{
+  "title": "The Biggest Lie Tech Companies Tell About AI",
+  "full_monologue": "**They say AI is unbiased.** But algorithms learn from flawed data, amplifying human prejudices. They claim AI will replace jobs, but it's actually creating new roles we can't even imagine yet. The truth? Tech companies are selling a future that's both scary and exciting — and they're not telling us the whole story. What's the biggest lie you've heard about AI? Comment below.",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 6,
+      "duration_s": 6,
+      "visual_prompt": "Hands typing rapidly on a keyboard, close-up, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 18,
+      "duration_s": 6,
+      "visual_prompt": "A crowd of diverse people looking at a glowing screen in a futuristic city, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}
