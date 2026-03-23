@@ -1,0 +1,93 @@
+{
+  "demo_id": "demo-mn3qpa12",
+  "title": "Python Stopwatch in 30 Seconds",
+  "language": "python",
+  "total_duration_s": 33,
+  "steps": [
+    {
+      "step_id": "s1",
+      "title": "Step 1: Create the Stopwatch Class",
+      "code_lines": [
+        "import time",
+        "class Stopwatch:",
+        "    def __init__(self):",
+        "        self.start_time = None",
+        "        self.elapsed_time = 0"
+      ],
+      "language": "python",
+      "explanation": "We start by importing the time module and defining a Stopwatch class with start and elapsed time attributes.",
+      "duration_s": 6,
+      "highlight_lines": [
+        1
+      ]
+    },
+    {
+      "step_id": "s2",
+      "title": "Step 2: Add Start and Stop Methods",
+      "code_lines": [
+        "    def start(self):",
+        "        self.start_time = time.time()",
+        "    def stop(self):",
+        "        if self.start_time is not None:",
+        "            self.elapsed_time += time.time() - self.start_time",
+        "            self.start_time = None"
+      ],
+      "language": "python",
+      "explanation": "We add start and stop methods to track time and calculate the elapsed time when stopping.",
+      "duration_s": 8,
+      "highlight_lines": [
+        1,
+        3
+      ]
+    },
+    {
+      "step_id": "s3",
+      "title": "Step 3: Use the Stopwatch",
+      "code_lines": [
+        "sw = Stopwatch()",
+        "sw.start()",
+        "time.sleep(2)",
+        "sw.stop()",
+        "print(f\"Elapsed time: {sw.get_time():.2f} seconds\")"
+      ],
+      "language": "python",
+      "explanation": "Now we create an instance, start it, pause for 2 seconds, stop it, and print the elapsed time.",
+      "duration_s": 8,
+      "highlight_lines": [
+        1,
+        2,
+        4
+      ]
+    },
+    {
+      "step_id": "s4",
+      "title": "Step 4: See It in Action",
+      "code_lines": [
+        "# Output: Elapsed time: 2.00 seconds"
+      ],
+      "language": "python",
+      "explanation": "The code runs and shows the time it took — just like a real stopwatch!",
+      "duration_s": 6,
+      "highlight_lines": [
+        1
+      ]
+    },
+    {
+      "step_id": "s5",
+      "title": "Try It Yourself!",
+      "code_lines": [],
+      "language": "python",
+      "explanation": "Try modifying the sleep time or adding more features — the possibilities are endless!",
+      "duration_s": 5,
+      "highlight_lines": []
+    }
+  ],
+  "hashtags": [
+    "#coding",
+    "#python",
+    "#tutorial"
+  ],
+  "intro_hook": "Ever wanted to time how long your code runs? Let's build a stopwatch!",
+  "source": "user",
+  "topic_source": "user-prompt"
+}

@@ -1,0 +1,67 @@
+{
+  "demo_id": "demo-mn3qnj78",
+  "title": "Python Morse Code Translator in 3 Steps",
+  "language": "python",
+  "total_duration_s": 21,
+  "steps": [
+    {
+      "step_id": "s1",
+      "title": "Step 1: Setup",
+      "code_lines": [
+        "import tkinter as tk",
+        "morse_dict = { ... }"
+      ],
+      "language": "python",
+      "explanation": "We start by importing tkinter for the GUI and defining the Morse code dictionary.",
+      "duration_s": 6,
+      "highlight_lines": [
+        1
+      ]
+    },
+    {
+      "step_id": "s2",
+      "title": "Step 2: Translate Function",
+      "code_lines": [
+        "def translate():",
+        "    text = entry.get().upper()",
+        "    morse = ''",
+        "    for char in text:",
+        "        if char in morse_dict:",
+        "            morse += morse_dict[char] + ' '"
+      ],
+      "language": "python",
+      "explanation": "This function converts user input to uppercase and translates each letter to Morse code.",
+      "duration_s": 8,
+      "highlight_lines": [
+        1,
+        4
+      ]
+    },
+    {
+      "step_id": "s3",
+      "title": "Step 3: GUI Elements",
+      "code_lines": [
+        "root = tk.Tk()",
+        "entry = tk.Entry(root)",
+        "tk.Button(root, text='Translate', command=translate).pack()",
+        "result = tk.Text(root)",
+        "root.mainloop()"
+      ],
+      "language": "python",
+      "explanation": "We create the window, input field, button, and result display, then start the application.",
+      "duration_s": 7,
+      "highlight_lines": [
+        1,
+        5
+      ]
+    }
+  ],
+  "hashtags": [
+    "#coding",
+    "#python",
+    "#tutorial"
+  ],
+  "intro_hook": "Watch how we build a Morse Code translator in Python!",
+  "source": "user",
+  "topic_source": "user-prompt"
+}

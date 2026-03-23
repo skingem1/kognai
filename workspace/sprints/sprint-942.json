@@ -1,0 +1,13 @@
+{
+  "sprint_id": "sprint-942",
+  "title": "MULTI-PIPELINE — 3 code demos + 2 TTS vlogs (TTS mode)",
+  "description": "3 code demos + 2 TTS-mode vlogs. Content stockpile 388+.",
+  "source": "ops",
+  "tasks": [
+    {"id": "942-01", "title": "Code demo: Build an API Rate Limiter in Python", "type": "ops", "task_target": "scripts/scs001/pipelines/code-demo.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-942", "output": "demo-mn3qstou"},
+    {"id": "942-02", "title": "Code demo: Create a Morse Code Translator in Python", "type": "ops", "task_target": "scripts/scs001/pipelines/code-demo.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-942", "output": "demo-mn3qnj77"},
+    {"id": "942-03", "title": "Code demo: Build a Stopwatch in Python", "type": "ops", "task_target": "scripts/scs001/pipelines/code-demo.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-942", "output": "demo-mn3qpa11"},
+    {"id": "942-04", "title": "V2 video (TTS): Why Every Freelancer Needs to Learn AI Right Now", "type": "ops", "task_target": "scripts/scs001/produce-vlog.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-942", "output": "vlog-mn3qv22g", "mode": "tts"},
+    {"id": "942-05", "title": "V2 video (TTS): The AI Hack That Doubled My Productivity Overnight", "type": "ops", "task_target": "scripts/scs001/produce-vlog.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-942", "output": "vlog-mn3qw9rp", "mode": "tts"}
+  ]
+}
