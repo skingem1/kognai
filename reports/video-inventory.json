@@ -1,12 +1,12 @@
 {
-  "scanned_at": "2026-03-23T04:42:37.795Z",
-  "total_runs": 104,
-  "total_videos": 198,
-  "unique_topics": 86,
-  "already_registered": 86,
+  "scanned_at": "2026-03-23T04:44:39.997Z",
+  "total_runs": 107,
+  "total_videos": 200,
+  "unique_topics": 87,
+  "already_registered": 87,
   "newly_registered": 0,
   "already_posted": 0,
-  "ready_to_post": 86,
+  "ready_to_post": 87,
   "gate_status": {
     "posted": 4,
     "target": 30,
@@ -436,6 +436,14 @@
       "duration_s": 27,
       "posted": false,
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-b3vb/output/dbt-c9820a9b_final.mp4"
+    },
+    {
+      "video_id": "exp-9c699560",
+      "format": "explainer",
+      "title": "Chainlink (LINK) 📉 -2.2%",
+      "duration_s": 25,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T04-1cy7/output/exp-9c699560_final.mp4"
     },
     {
       "video_id": "exp-19865761",
