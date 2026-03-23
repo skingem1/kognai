@@ -1,0 +1,24 @@
+{
+  "run_id": "mf-20260323T01-iqv5",
+  "started_at": "2026-03-23T01:05:27.102Z",
+  "completed_at": "2026-03-23T01:06:03.629Z",
+  "topics_found": 1,
+  "scripts_generated": 1,
+  "videos_composited": 1,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "exp-acd650d4",
+      "format": "explainer",
+      "title": "Claude vs GPT vs Gemini: the ultimate AI comparison",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T01-iqv5/output/exp-acd650d4_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T01-iqv5/output/exp-acd650d4.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 0.35
+}

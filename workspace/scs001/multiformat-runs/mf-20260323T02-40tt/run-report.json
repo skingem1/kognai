@@ -1,0 +1,68 @@
+{
+  "run_id": "mf-20260323T02-40tt",
+  "started_at": "2026-03-23T02:30:19.061Z",
+  "completed_at": "2026-03-23T02:32:41.620Z",
+  "topics_found": 5,
+  "scripts_generated": 5,
+  "videos_composited": 5,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "lst-40973f89",
+      "format": "listicle",
+      "title": "Ethereum just hit a new all-time high and nobody noticed",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T02-40tt/output/lst-40973f89_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T02-40tt/output/lst-40973f89.srt",
+      "duration_s": 20,
+      "success": true,
+      "avatar_cost": 0.25,
+      "llm_used": true
+    },
+    {
+      "script_id": "lst-3f891bf7",
+      "format": "listicle",
+      "title": "The AI app that makes you  a day while you sleep",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T02-40tt/output/lst-3f891bf7_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T02-40tt/output/lst-3f891bf7.srt",
+      "duration_s": 20,
+      "success": true,
+      "avatar_cost": 0.25,
+      "llm_used": true
+    },
+    {
+      "script_id": "lst-c29308ec",
+      "format": "listicle",
+      "title": "Why Mark Zuckerberg is secretly building AGI",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T02-40tt/output/lst-c29308ec_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T02-40tt/output/lst-c29308ec.srt",
+      "duration_s": 20,
+      "success": true,
+      "avatar_cost": 0.25,
+      "llm_used": true
+    },
+    {
+      "script_id": "lst-b1cb4af0",
+      "format": "listicle",
+      "title": "3 programming languages that will die by 2028",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T02-40tt/output/lst-b1cb4af0_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T02-40tt/output/lst-b1cb4af0.srt",
+      "duration_s": 20,
+      "success": true,
+      "avatar_cost": 0.25,
+      "llm_used": true
+    },
+    {
+      "script_id": "lst-90b373b4",
+      "format": "listicle",
+      "title": "How to use ChatGPT to negotiate your salary",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T02-40tt/output/lst-90b373b4_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T02-40tt/output/lst-90b373b4.srt",
+      "duration_s": 20,
+      "success": true,
+      "avatar_cost": 0.25,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 1.25
+}

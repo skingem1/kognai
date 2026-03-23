@@ -1,0 +1,24 @@
+{
+  "run_id": "mf-20260323T03-0vg2",
+  "started_at": "2026-03-23T03:54:49.355Z",
+  "completed_at": "2026-03-23T03:55:31.793Z",
+  "topics_found": 1,
+  "scripts_generated": 1,
+  "videos_composited": 1,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "dbt-31725ef8",
+      "format": "debate",
+      "title": "Resolv USR (USR) 📉 -61.0%",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T03-0vg2/output/dbt-31725ef8_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T03-0vg2/output/dbt-31725ef8.srt",
+      "duration_s": 27,
+      "success": true,
+      "avatar_cost": 0.25,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 0.25
+}

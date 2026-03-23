@@ -1,0 +1,24 @@
+{
+  "run_id": "mf-20260323T01-xn9d",
+  "started_at": "2026-03-23T01:11:35.160Z",
+  "completed_at": "2026-03-23T01:12:23.069Z",
+  "topics_found": 1,
+  "scripts_generated": 1,
+  "videos_composited": 1,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "vis-c987651a",
+      "format": "vision",
+      "title": "Self-driving cars just got approved everywhere",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T01-xn9d/output/vis-c987651a_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T01-xn9d/output/vis-c987651a.srt",
+      "duration_s": 33,
+      "success": true,
+      "avatar_cost": 0.30000000000000004,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 0.3
+}

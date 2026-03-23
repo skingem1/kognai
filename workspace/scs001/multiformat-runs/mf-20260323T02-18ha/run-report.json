@@ -1,0 +1,24 @@
+{
+  "run_id": "mf-20260323T02-18ha",
+  "started_at": "2026-03-23T02:00:17.209Z",
+  "completed_at": "2026-03-23T02:01:13.569Z",
+  "topics_found": 1,
+  "scripts_generated": 1,
+  "videos_composited": 1,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "vis-963612f9",
+      "format": "vision",
+      "title": "Welp. Time to execute the buy high sell low protocol",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T02-18ha/output/vis-963612f9_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T02-18ha/output/vis-963612f9.srt",
+      "duration_s": 33,
+      "success": true,
+      "avatar_cost": 0.30000000000000004,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 0.3
+}

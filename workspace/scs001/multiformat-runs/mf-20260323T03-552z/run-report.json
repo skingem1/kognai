@@ -1,0 +1,68 @@
+{
+  "run_id": "mf-20260323T03-552z",
+  "started_at": "2026-03-23T03:05:19.716Z",
+  "completed_at": "2026-03-23T03:09:07.216Z",
+  "topics_found": 5,
+  "scripts_generated": 5,
+  "videos_composited": 5,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "vis-51435aa2",
+      "format": "vision",
+      "title": "The gaming PC that costs less than your phone",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T03-552z/output/vis-51435aa2_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T03-552z/output/vis-51435aa2.srt",
+      "duration_s": 33,
+      "success": true,
+      "avatar_cost": 0.30000000000000004,
+      "llm_used": true
+    },
+    {
+      "script_id": "vis-d41a1497",
+      "format": "vision",
+      "title": "Why VR is finally ready to replace your monitor",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T03-552z/output/vis-d41a1497_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T03-552z/output/vis-d41a1497.srt",
+      "duration_s": 33,
+      "success": true,
+      "avatar_cost": 0.30000000000000004,
+      "llm_used": true
+    },
+    {
+      "script_id": "vis-9245a6b1",
+      "format": "vision",
+      "title": "5 AI tools gamers are using to get unfair advantages",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T03-552z/output/vis-9245a6b1_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T03-552z/output/vis-9245a6b1.srt",
+      "duration_s": 33,
+      "success": true,
+      "avatar_cost": 0.30000000000000004,
+      "llm_used": true
+    },
+    {
+      "script_id": "vis-6de4d0a1",
+      "format": "vision",
+      "title": "How quantum computers will break all encryption by 2030",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T03-552z/output/vis-6de4d0a1_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T03-552z/output/vis-6de4d0a1.srt",
+      "duration_s": 33,
+      "success": true,
+      "avatar_cost": 0.30000000000000004,
+      "llm_used": true
+    },
+    {
+      "script_id": "vis-1365a597",
+      "format": "vision",
+      "title": "The robot that can do your entire job better than you",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T03-552z/output/vis-1365a597_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T03-552z/output/vis-1365a597.srt",
+      "duration_s": 33,
+      "success": true,
+      "avatar_cost": 0.30000000000000004,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 1.5
+}

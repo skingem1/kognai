@@ -1,0 +1,68 @@
+{
+  "run_id": "mf-20260323T03-mt8s",
+  "started_at": "2026-03-23T03:30:21.841Z",
+  "completed_at": "2026-03-23T03:33:24.163Z",
+  "topics_found": 5,
+  "scripts_generated": 5,
+  "videos_composited": 5,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "exp-46de3a96",
+      "format": "explainer",
+      "title": "Why college degrees are becoming worthless in 2026",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T03-mt8s/output/exp-46de3a96_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T03-mt8s/output/exp-46de3a96.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "exp-150194df",
+      "format": "explainer",
+      "title": "The free online course that got me a 6 figure job",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T03-mt8s/output/exp-150194df_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T03-mt8s/output/exp-150194df.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "exp-6718be45",
+      "format": "explainer",
+      "title": "How to learn any skill in 30 days using AI",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T03-mt8s/output/exp-6718be45_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T03-mt8s/output/exp-6718be45.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "exp-f5ddc88f",
+      "format": "explainer",
+      "title": "5 high paying tech jobs that don't require coding",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T03-mt8s/output/exp-f5ddc88f_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T03-mt8s/output/exp-f5ddc88f.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "exp-43bc8a84",
+      "format": "explainer",
+      "title": "The interview hack that works every single time",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T03-mt8s/output/exp-43bc8a84_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T03-mt8s/output/exp-43bc8a84.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 1.75
+}

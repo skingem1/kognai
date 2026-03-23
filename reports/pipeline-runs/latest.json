@@ -1,158 +1,83 @@
 {
-  "run_id": "scs001-2026-03-20T20-00-01-573Z",
+  "run_id": "scs001-2026-03-22T21-57-19-559Z",
   "mode": "live",
-  "started_at": "2026-03-20T20:00:01.573Z",
-  "completed_at": "2026-03-20T20:15:53.499Z",
-  "total_elapsed_ms": 951926,
+  "started_at": "2026-03-22T21:57:19.559Z",
+  "completed_at": "2026-03-22T22:16:57.038Z",
+  "total_elapsed_ms": 1177479,
   "stages": [
     {
       "stage": "1-trend",
       "agent": "TrendAgent",
-      "count": 9,
-      "elapsed_ms": 1394,
+      "count": 8,
+      "elapsed_ms": 1860,
       "status": "ok"
     },
     {
       "stage": "2-discovery",
       "agent": "DiscoveryAgent",
-      "count": 9,
-      "elapsed_ms": 364,
+      "count": 12,
+      "elapsed_ms": 265,
       "status": "ok"
     },
     {
       "stage": "2.5-viral-tiktok",
       "agent": "ViralTikTokDownloader",
       "count": 0,
-      "elapsed_ms": 1501,
+      "elapsed_ms": 40382,
       "status": "empty"
     },
     {
       "stage": "3-clip-detection",
       "agent": "ClipDetectionAgent",
-      "count": 27,
-      "elapsed_ms": 428368,
+      "count": 39,
+      "elapsed_ms": 534953,
       "status": "ok"
     },
     {
       "stage": "4-insight",
       "agent": "InsightAgent (live)",
-      "count": 3,
-      "elapsed_ms": 105909,
+      "count": 0,
+      "elapsed_ms": 299995,
+      "status": "error",
+      "error": "Stage timeout after 300s"
+    },
+    {
+      "stage": "4-insight",
+      "agent": "InsightAgent (fallback-mock)",
+      "count": 13,
+      "elapsed_ms": 3,
       "status": "ok"
     },
     {
       "stage": "5-script",
       "agent": "ScriptAgent",
-      "count": 3,
-      "elapsed_ms": 405994,
-      "status": "ok"
-    },
-    {
-      "stage": "5.5-score",
-      "agent": "ScriptScorer",
-      "count": 1,
-      "elapsed_ms": 2,
-      "status": "ok"
-    },
-    {
-      "stage": "6-validate",
-      "agent": "ScriptValidator",
-      "count": 1,
-      "elapsed_ms": 1,
-      "status": "ok"
-    },
-    {
-      "stage": "6-editing",
-      "agent": "EditingAgent",
-      "count": 1,
-      "elapsed_ms": 1723,
-      "status": "ok"
-    },
-    {
-      "stage": "6.5-avatar",
-      "agent": "AvatarPresenter",
       "count": 0,
-      "elapsed_ms": 1466,
-      "status": "empty"
-    },
-    {
-      "stage": "6.8-tts-mix",
-      "agent": "TTS+AudioMix",
-      "count": 1,
-      "elapsed_ms": 1991,
-      "status": "ok"
-    },
-    {
-      "stage": "7-caption",
-      "agent": "CaptionAgent",
-      "count": 1,
-      "elapsed_ms": 45,
-      "status": "ok"
-    },
-    {
-      "stage": "7.5-animated-captions",
-      "agent": "JSON2Video",
-      "count": 0,
-      "elapsed_ms": 1845,
-      "status": "empty"
-    },
-    {
-      "stage": "8-qc",
-      "agent": "QCAgent",
-      "count": 1,
-      "elapsed_ms": 2,
-      "status": "ok"
-    },
-    {
-      "stage": "9-experiment",
-      "agent": "ExperimentTracker",
-      "count": 1,
-      "elapsed_ms": 0,
-      "status": "ok"
-    },
-    {
-      "stage": "9-publishing",
-      "agent": "PublishingAgent",
-      "count": 1,
-      "elapsed_ms": 1313,
-      "status": "ok"
-    },
-    {
-      "stage": "10-analytics",
-      "agent": "AnalyticsAgent",
-      "count": 1,
-      "elapsed_ms": 2,
-      "status": "ok"
-    },
-    {
-      "stage": "11-flywheel",
-      "agent": "ContentFlywheelAgent",
-      "count": 4,
-      "elapsed_ms": 2,
-      "status": "ok"
+      "elapsed_ms": 300007,
+      "status": "error",
+      "error": "Stage timeout after 300s"
     }
   ],
   "summary": {
-    "topics_found": 9,
-    "clips_discovered": 9,
-    "clips_qualified": 3,
-    "insights_generated": 3,
-    "scripts_produced": 3,
-    "scripts_scored": 3,
-    "scripts_filtered": 2,
+    "topics_found": 8,
+    "clips_discovered": 12,
+    "clips_qualified": 13,
+    "insights_generated": 13,
+    "scripts_produced": 0,
+    "scripts_scored": 0,
+    "scripts_filtered": 0,
     "scripts_validation_skipped": 0,
-    "videos_edited": 1,
-    "videos_captioned": 1,
-    "qc_passed": 1,
+    "videos_edited": 0,
+    "videos_captioned": 0,
+    "qc_passed": 0,
     "qc_failed": 0,
-    "published": 1,
-    "viral": 1,
+    "published": 0,
+    "viral": 0,
     "performing": 0,
     "failure_library": 0,
-    "flywheel_derivatives": 4,
+    "flywheel_derivatives": 0,
     "failure_entries": 0,
     "clips_deduplicated": 0,
-    "platforms_targeted": 9,
-    "publish_method": "tiktok-direct"
+    "platforms_targeted": 0,
+    "publish_method": "none"
   }
 }

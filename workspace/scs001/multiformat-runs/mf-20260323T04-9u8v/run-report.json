@@ -1,0 +1,24 @@
+{
+  "run_id": "mf-20260323T04-9u8v",
+  "started_at": "2026-03-23T04:35:15.439Z",
+  "completed_at": "2026-03-23T04:35:58.383Z",
+  "topics_found": 1,
+  "scripts_generated": 1,
+  "videos_composited": 1,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "dbt-907f243e",
+      "format": "debate",
+      "title": "Siren (SIREN) 📈 144.5%",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T04-9u8v/output/dbt-907f243e_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T04-9u8v/output/dbt-907f243e.srt",
+      "duration_s": 27,
+      "success": true,
+      "avatar_cost": 0.25,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 0.25
+}

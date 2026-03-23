@@ -1,0 +1,68 @@
+{
+  "run_id": "mf-20260323T02-cbpx",
+  "started_at": "2026-03-23T02:45:45.642Z",
+  "completed_at": "2026-03-23T02:49:37.013Z",
+  "topics_found": 5,
+  "scripts_generated": 5,
+  "videos_composited": 5,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "vis-4faa50f8",
+      "format": "vision",
+      "title": "Why remote work is dying and nobody wants to admit it",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T02-cbpx/output/vis-4faa50f8_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T02-cbpx/output/vis-4faa50f8.srt",
+      "duration_s": 33,
+      "success": true,
+      "avatar_cost": 0.30000000000000004,
+      "llm_used": true
+    },
+    {
+      "script_id": "vis-29ebca7d",
+      "format": "vision",
+      "title": "The side hustle that replaced my 9 to 5 in 30 days",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T02-cbpx/output/vis-29ebca7d_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T02-cbpx/output/vis-29ebca7d.srt",
+      "duration_s": 33,
+      "success": true,
+      "avatar_cost": 0.30000000000000004,
+      "llm_used": true
+    },
+    {
+      "script_id": "vis-091108d3",
+      "format": "vision",
+      "title": "5 money habits that keep you poor without realizing",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T02-cbpx/output/vis-091108d3_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T02-cbpx/output/vis-091108d3.srt",
+      "duration_s": 33,
+      "success": true,
+      "avatar_cost": 0.30000000000000004,
+      "llm_used": true
+    },
+    {
+      "script_id": "vis-2c78fbd3",
+      "format": "vision",
+      "title": "How a 22 year old built a million dollar app with AI",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T02-cbpx/output/vis-2c78fbd3_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T02-cbpx/output/vis-2c78fbd3.srt",
+      "duration_s": 33,
+      "success": true,
+      "avatar_cost": 0.30000000000000004,
+      "llm_used": true
+    },
+    {
+      "script_id": "vis-9d558ad0",
+      "format": "vision",
+      "title": "The productivity hack that Silicon Valley keeps secret",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T02-cbpx/output/vis-9d558ad0_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T02-cbpx/output/vis-9d558ad0.srt",
+      "duration_s": 33,
+      "success": true,
+      "avatar_cost": 0.30000000000000004,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 1.5
+}

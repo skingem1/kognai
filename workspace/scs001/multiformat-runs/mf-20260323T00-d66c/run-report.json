@@ -1,0 +1,24 @@
+{
+  "run_id": "mf-20260323T00-d66c",
+  "started_at": "2026-03-23T00:47:39.755Z",
+  "completed_at": "2026-03-23T00:48:17.910Z",
+  "topics_found": 1,
+  "scripts_generated": 1,
+  "videos_composited": 1,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "dbt-84757ced",
+      "format": "debate",
+      "title": "Elon Musk vs Sam Altman: who will control AGI?",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-d66c/output/dbt-84757ced_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-d66c/output/dbt-84757ced.srt",
+      "duration_s": 27,
+      "success": true,
+      "avatar_cost": 0.25,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 0.25
+}

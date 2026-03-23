@@ -1,0 +1,68 @@
+{
+  "run_id": "mf-20260323T02-nsdq",
+  "started_at": "2026-03-23T02:03:41.688Z",
+  "completed_at": "2026-03-23T02:06:44.251Z",
+  "topics_found": 5,
+  "scripts_generated": 5,
+  "videos_composited": 5,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "exp-a2fa1ce6",
+      "format": "explainer",
+      "title": "GPT-5 just leaked and it's terrifying",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T02-nsdq/output/exp-a2fa1ce6_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T02-nsdq/output/exp-a2fa1ce6.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "exp-0424d9c3",
+      "format": "explainer",
+      "title": "I asked AI to predict the next crypto to 100x",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T02-nsdq/output/exp-0424d9c3_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T02-nsdq/output/exp-0424d9c3.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "exp-fc2115a5",
+      "format": "explainer",
+      "title": "The 1 AI skill that will make you irreplaceable",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T02-nsdq/output/exp-fc2115a5_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T02-nsdq/output/exp-fc2115a5.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "exp-28175ee9",
+      "format": "explainer",
+      "title": "Why Apple just killed the iPhone",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T02-nsdq/output/exp-28175ee9_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T02-nsdq/output/exp-28175ee9.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "exp-fac3e343",
+      "format": "explainer",
+      "title": "This free AI tool replaced my /month subscription",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T02-nsdq/output/exp-fac3e343_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T02-nsdq/output/exp-fac3e343.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 1.75
+}

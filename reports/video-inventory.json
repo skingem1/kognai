@@ -1,18 +1,66 @@
 {
-  "scanned_at": "2026-03-23T03:33:24.589Z",
-  "total_runs": 74,
-  "total_videos": 170,
-  "unique_topics": 69,
-  "already_registered": 69,
+  "scanned_at": "2026-03-23T04:36:54.635Z",
+  "total_runs": 98,
+  "total_videos": 194,
+  "unique_topics": 83,
+  "already_registered": 83,
   "newly_registered": 0,
   "already_posted": 0,
-  "ready_to_post": 69,
+  "ready_to_post": 83,
   "gate_status": {
     "posted": 4,
     "target": 30,
     "gap": 26
   },
   "videos": [
+    {
+      "video_id": "vis-a885800b",
+      "format": "vision",
+      "title": "Ethereum (ETH) 📉 -3.1%",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T04-5f7l/output/vis-a885800b_final.mp4"
+    },
+    {
+      "video_id": "vis-3930c744",
+      "format": "vision",
+      "title": "Solana (SOL) 📉 -2.7%",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T04-osmf/output/vis-3930c744_final.mp4"
+    },
+    {
+      "video_id": "vis-c41a6a9d",
+      "format": "vision",
+      "title": "louislva/claude-peers-mcp — Allow all your Claude Codes to message each other ad-hoc!",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T04-261m/output/vis-c41a6a9d_final.mp4"
+    },
+    {
+      "video_id": "vis-e9d5fdaf",
+      "format": "vision",
+      "title": "Bitcoin (BTC) 📉 -1.9%",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T04-t7m0/output/vis-e9d5fdaf_final.mp4"
+    },
+    {
+      "video_id": "vis-37e9939f",
+      "format": "vision",
+      "title": "ofw - fractional work for the AI era",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T04-9tkh/output/vis-37e9939f_final.mp4"
+    },
+    {
+      "video_id": "vis-1122b5f5",
+      "format": "vision",
+      "title": "Evaluating Evidence Grounding Under User Pressure in Instruction-Tuned Language Models",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T03-pofx/output/vis-1122b5f5_final.mp4"
+    },
     {
       "video_id": "vis-d03a84da",
       "format": "vision",
@@ -294,6 +342,14 @@
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-nxhh/output/vis-c2d17e5f_final.mp4"
     },
     {
+      "video_id": "dbt-69726c04",
+      "format": "debate",
+      "title": "Semantic Token Clustering for Efficient Uncertainty Quantification in Large Language Models",
+      "duration_s": 27,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T04-d02h/output/dbt-69726c04_final.mp4"
+    },
+    {
       "video_id": "dbt-51de879f",
       "format": "debate",
       "title": "The AI bubble: are we headed for a crash?",
@@ -364,6 +420,62 @@
       "duration_s": 27,
       "posted": false,
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-b3vb/output/dbt-c9820a9b_final.mp4"
+    },
+    {
+      "video_id": "exp-1112d888",
+      "format": "explainer",
+      "title": "Beyond Single Tokens: Distilling Discrete Diffusion Models via Discrete MMD",
+      "duration_s": 25,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T04-9r8w/output/exp-1112d888_final.mp4"
+    },
+    {
+      "video_id": "exp-f166d0f2",
+      "format": "explainer",
+      "title": "Measuring Faithfulness Depends on How You Measure: Classifier Sensitivity in LLM Chain-of-Thought Evaluation",
+      "duration_s": 25,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T04-2xtl/output/exp-f166d0f2_final.mp4"
+    },
+    {
+      "video_id": "exp-aeaad17f",
+      "format": "explainer",
+      "title": "VideoSeek: Long-Horizon Video Agent with Tool-Guided Seeking",
+      "duration_s": 25,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T04-6bkh/output/exp-aeaad17f_final.mp4"
+    },
+    {
+      "video_id": "exp-68734768",
+      "format": "explainer",
+      "title": "LumosX: Relate Any Identities with Their Attributes for Personalized Video Generation",
+      "duration_s": 25,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T04-54tg/output/exp-68734768_final.mp4"
+    },
+    {
+      "video_id": "exp-da44dd27",
+      "format": "explainer",
+      "title": "Learning Dynamic Belief Graphs for Theory-of-mind Reasoning",
+      "duration_s": 25,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T04-qyac/output/exp-da44dd27_final.mp4"
+    },
+    {
+      "video_id": "exp-80ca6abe",
+      "format": "explainer",
+      "title": "AI Agents Can Already Autonomously Perform Experimental High Energy Physics",
+      "duration_s": 25,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T04-44ra/output/exp-80ca6abe_final.mp4"
+    },
+    {
+      "video_id": "exp-99c64287",
+      "format": "explainer",
+      "title": "Adaptive Greedy Frame Selection for Long Video Understanding",
+      "duration_s": 25,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T03-o61a/output/exp-99c64287_final.mp4"
     },
     {
       "video_id": "exp-beccd355",

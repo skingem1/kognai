@@ -1,0 +1,24 @@
+{
+  "run_id": "mf-20260323T01-p95s",
+  "started_at": "2026-03-23T01:16:13.164Z",
+  "completed_at": "2026-03-23T01:16:52.629Z",
+  "topics_found": 1,
+  "scripts_generated": 1,
+  "videos_composited": 1,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "exp-6ddc058a",
+      "format": "explainer",
+      "title": "3 jobs that will disappear by 2027 because of AI",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T01-p95s/output/exp-6ddc058a_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T01-p95s/output/exp-6ddc058a.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 0.35
+}

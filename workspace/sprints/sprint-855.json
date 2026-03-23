@@ -1,0 +1,36 @@
+{
+  "tasks": [
+    {
+      "id": "855-01",
+      "title": "Run batch content production",
+      "type": "ops",
+      "task_target": "scripts/scs001/batch-produce.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-855",
+      "deliverables": {
+        "code": [
+          "scripts/scs001/batch-produce.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "context": "855-01: Run batch content production",
+      "output": {
+        "files": [
+          "scripts/scs001/batch-produce.ts"
+        ],
+        "commit": "",
+        "model": "claude-sonnet-4-6",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 70,
+          "summary": "Dual-approved: Claude (70/100) + Codex (70/100)",
+          "issues": [],
+          "strengths": []
+        }
+      }
+    }
+  ]
+}

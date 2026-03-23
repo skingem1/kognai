@@ -1,0 +1,24 @@
+{
+  "run_id": "mf-20260323T01-k2l5",
+  "started_at": "2026-03-23T01:09:58.417Z",
+  "completed_at": "2026-03-23T01:10:44.968Z",
+  "topics_found": 1,
+  "scripts_generated": 1,
+  "videos_composited": 1,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "vis-2d14c19a",
+      "format": "vision",
+      "title": "What nobody tells you about working at Google in 2026",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T01-k2l5/output/vis-2d14c19a_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T01-k2l5/output/vis-2d14c19a.srt",
+      "duration_s": 33,
+      "success": true,
+      "avatar_cost": 0.30000000000000004,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 0.3
+}

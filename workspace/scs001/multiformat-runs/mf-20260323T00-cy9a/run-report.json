@@ -1,0 +1,24 @@
+{
+  "run_id": "mf-20260323T00-cy9a",
+  "started_at": "2026-03-23T00:51:52.496Z",
+  "completed_at": "2026-03-23T00:52:29.873Z",
+  "topics_found": 1,
+  "scripts_generated": 1,
+  "videos_composited": 1,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "exp-2317a50b",
+      "format": "explainer",
+      "title": "Why Anthropic Claude is beating ChatGPT at coding",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-cy9a/output/exp-2317a50b_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-cy9a/output/exp-2317a50b.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 0.35
+}
