@@ -53,6 +53,19 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 | 2026-02 | 248-270 | VIDEO-QUALITY, Telegram commands explosion |
 | 2026-03 | 435-496 | Posting workflow, safety split, Stripe, YouTube |
 
+## Sprint 821 — CONTENT
+- Status: PASS
+- Commit: af8f35e
+- Files created: workspace/sprints/sprint-821.json
+- Content: 3 custom topic videos produced using new --topic flag
+  - Listicle: "5 AI tools that will make you 10x more productive" (lst-8dd0a6d1)
+  - Debate: "Is OpenAI losing the AI race to open source?" (dbt-674cf50f)
+  - Explainer: "The future of coding with AI pair programming" (exp-3f25cd45)
+- Ledger: 747, Ready: 17, Gate: 2/30
+- Swarm used: no (content production, direct execution)
+- Issues: none — custom topics working perfectly
+- Timestamp: 2026-03-23T02:30:00Z
+
 ## Sprint 820 — PIPELINE
 - Status: PASS
 - Commit: 071dfd5
