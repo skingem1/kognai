@@ -1,139 +1,146 @@
 /**
- * SCS-001 — Batch Video Production
+ * SCS-001 — Batch Video Production (v2 — Pipeline Registry)
  *
- * Runs the multiformat pipeline multiple times to stockpile content
- * for manual TikTok posting. Tracks unique topics across runs and
- * refreshes inventory after completion.
+ * Produces videos through the pipeline registry. Supports all 3 pipelines:
+ *   --pipeline educational   (P1: avatar + B-roll)
+ *   --pipeline code-demo     (P2: syntax-highlighted code walkthrough)
+ *   --pipeline entertainment (P3: AI-generated trending video)
+ *   --pipeline all           (round-robin across all registered pipelines)
  *
  * Usage:
- *   npx ts-node scripts/scs001/batch-produce.ts [--runs N] [--dry-run]
+ *   npx ts-node scripts/scs001/batch-produce.ts --pipeline educational --runs 3
+ *   npx ts-node scripts/scs001/batch-produce.ts --pipeline all --runs 6
+ *   npx ts-node scripts/scs001/batch-produce.ts --pipeline code-demo --code "print('hello')"
+ *   npx ts-node scripts/scs001/batch-produce.ts --pipeline entertainment --topic "AI agents"
  *
- * Sprint 604 — GATE-PUSH content acceleration
+ * Sprint 899 — Pipeline restructuring
  */
 
 import { join } from 'path';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
-import { execSync } from 'child_process';
+import { initRegistry, runPipeline, listPipelines } from './pipeline-registry';
+import type { PipelineName, PipelineInput, PipelineRunResult } from './pipeline-registry';
 
 const ROOT = join(__dirname, '..', '..');
 
-function parseArgs(): { runs: number; dryRun: boolean; topics: string[] } {
+function parseArgs(): {
+  pipeline: PipelineName | 'all';
+  runs: number;
+  dryRun: boolean;
+  topics: string[];
+  code: string | undefined;
+  withVoiceover: boolean;
+  withMusic: boolean;
+} {
+  let pipeline: PipelineName | 'all' = 'educational';
   let runs = 3;
   let dryRun = false;
   const topics: string[] = [];
+  let code: string | undefined;
+  let withVoiceover = true;
+  let withMusic = false;
+
   for (let i = 2; i < process.argv.length; i++) {
-    if (process.argv[i] === '--runs' && process.argv[i + 1]) {
-      runs = Math.min(Math.max(parseInt(process.argv[i + 1]) || 3, 1), 20);
-      i++;
-    }
-    if (process.argv[i] === '--dry-run') dryRun = true;
-    if (process.argv[i] === '--topic' && process.argv[i + 1] && !process.argv[i + 1].startsWith('--')) {
+    const arg = process.argv[i];
+    if (arg === '--pipeline' && process.argv[i + 1]) {
+      pipeline = process.argv[++i] as PipelineName | 'all';
+    } else if (arg === '--runs' && process.argv[i + 1]) {
+      runs = Math.min(Math.max(parseInt(process.argv[++i]) || 3, 1), 20);
+    } else if (arg === '--dry-run') {
+      dryRun = true;
+    } else if (arg === '--topic' && process.argv[i + 1]) {
       topics.push(process.argv[++i]);
-    } else if (process.argv[i].startsWith('--topic=')) {
-      topics.push(process.argv[i].split('=').slice(1).join('='));
+    } else if (arg.startsWith('--topic=')) {
+      topics.push(arg.split('=').slice(1).join('='));
+    } else if (arg === '--code' && process.argv[i + 1]) {
+      code = process.argv[++i];
+    } else if (arg === '--no-voice') {
+      withVoiceover = false;
+    } else if (arg === '--music') {
+      withMusic = true;
     }
   }
-  return { runs, dryRun, topics };
+
+  return { pipeline, runs, dryRun, topics, code, withVoiceover, withMusic };
 }
 
 async function main(): Promise<void> {
-  const { runs, dryRun, topics } = parseArgs();
+  await initRegistry();
+  const { pipeline, runs, dryRun, topics, code, withVoiceover, withMusic } = parseArgs();
 
-  console.log(`=== Batch Video Production ===`);
-  console.log(`Runs planned: ${runs}`);
-  console.log(`Dry run: ${dryRun}`);
-  if (topics.length > 0) console.log(`Custom topics: ${topics.join(', ')}`);
+  const available = listPipelines();
+  console.log(`\n=== SCS-001 Batch Production (v2) ===`);
+  console.log(`Pipeline: ${pipeline}`);
+  console.log(`Runs: ${runs}`);
+  console.log(`Available: ${available.map(p => p.name).join(', ')}`);
+  if (dryRun) console.log('Mode: DRY RUN');
   console.log('');
 
-  const results: Array<{ run: number; success: boolean; videos: number; error?: string }> = [];
+  const results: PipelineRunResult[] = [];
+  const errors: Array<{ run: number; error: string }> = [];
 
-  for (let i = 1; i <= runs; i++) {
-    console.log(`--- Run ${i}/${runs} ---`);
+  // Build pipeline rotation
+  const pipelineNames: PipelineName[] = pipeline === 'all'
+    ? available.map(p => p.name)
+    : [pipeline as PipelineName];
+
+  for (let i = 0; i < runs; i++) {
+    const pName = pipelineNames[i % pipelineNames.length];
+    const runNum = i + 1;
+
+    console.log(`--- Run ${runNum}/${runs} (${pName}) ---`);
     const startTime = Date.now();
 
+    const input: PipelineInput = {
+      pipeline: pName,
+      topic: topics[i % Math.max(topics.length, 1)] || undefined,
+      code: pName === 'code-demo' ? code : undefined,
+      options: { withVoiceover, withMusic, dryRun },
+    };
+
     try {
-      // Sprint 696: Rotate formats for variety (explainer, debate, vision, listicle)
-      // Sprint 814: force-refresh on EVERY run — seen-topics was causing 0-yield on runs 4-5.
-      // Ledger dedup (Sprint 755) still prevents actual duplicate videos.
-      const formats = ['explainer', 'debate', 'vision', 'listicle'];
-      const format = formats[(i - 1) % formats.length];
-      const topicArgs = topics.length > 0
-        ? topics.map(t => ` --topic "${t.replace(/"/g, '\\"')}"`).join('')
-        : '';
-      const cmd = `npx ts-node --transpile-only scripts/scs001/run-multiformat-pipeline.ts --format=${format} --max=1${dryRun ? ' --dry-run' : ''} --force-refresh${topicArgs}`;
-      const output = execSync(cmd, {
-        cwd: ROOT,
-        timeout: 600000, // 10 min per run (multiformat pipeline can be slow)
-        stdio: 'pipe',
-        encoding: 'utf-8',
-      });
+      if (dryRun) {
+        console.log(`  [DRY RUN] Would run ${pName} with input: ${JSON.stringify(input).slice(0, 100)}`);
+        continue;
+      }
 
-      // Parse output for video count (matches both old "videos_composited: N" and new "Composited: N")
-      const videoMatch = output.match(/(?:videos_composited|Composited)[:.\s]*(\d+)/);
-      const videoCount = videoMatch ? parseInt(videoMatch[1]) : 0;
+      const result = await runPipeline(input);
+      results.push(result);
+
       const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
-
-      console.log(`  Completed in ${elapsed}s — ${videoCount} videos`);
-      results.push({ run: i, success: true, videos: videoCount });
-
+      console.log(`  Completed in ${elapsed}s — ${result.title}`);
     } catch (err: any) {
       const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
-      const msg = err.message?.slice(0, 200) ?? 'unknown error';
-      console.log(`  Failed in ${elapsed}s: ${msg}`);
-      results.push({ run: i, success: false, videos: 0, error: msg });
+      const msg = err.message?.slice(0, 200) ?? 'unknown';
+      console.warn(`  Failed in ${elapsed}s: ${msg}`);
+      errors.push({ run: runNum, error: msg });
 
-      // If 3 consecutive failures, abort
-      const recentFailures = results.slice(-3).filter(r => !r.success).length;
-      if (recentFailures >= 3) {
+      // 3 consecutive failures → abort
+      if (errors.length >= 3 && errors.slice(-3).every((_, j) => j >= errors.length - 3)) {
         console.log('\n3 consecutive failures — aborting batch.');
         break;
       }
     }
 
-    // Brief pause between runs to avoid API rate limits
-    if (i < runs) {
-      await new Promise(resolve => setTimeout(resolve, 2000));
-    }
-  }
-
-  // Refresh inventory
-  console.log('\n--- Refreshing video inventory ---');
-  try {
-    const inventoryOutput = execSync(
-      'npx ts-node --transpile-only scripts/scs001/scan-video-inventory.ts',
-      { cwd: ROOT, timeout: 30000, stdio: 'pipe', encoding: 'utf-8' }
-    );
-    console.log(inventoryOutput);
-  } catch (err: any) {
-    console.log(`Inventory scan failed: ${err.message?.slice(0, 200)}`);
+    if (i < runs - 1) await new Promise(r => setTimeout(r, 2000));
   }
 
   // Summary
-  const totalVideos = results.reduce((sum, r) => sum + r.videos, 0);
-  const successRuns = results.filter(r => r.success).length;
-
   console.log('\n=== Batch Summary ===');
-  console.log(`Runs: ${successRuns}/${runs} successful`);
-  console.log(`New videos: ${totalVideos}`);
-
-  // Read updated inventory for gate status
-  const invPath = join(ROOT, 'reports', 'video-inventory.json');
-  if (existsSync(invPath)) {
-    try {
-      const inv = JSON.parse(readFileSync(invPath, 'utf-8'));
-      console.log(`Total unique videos: ${inv.unique_topics ?? '?'}`);
-      console.log(`Gate: ${inv.gate_status?.posted ?? 0}/30 posts (${inv.gate_status?.gap ?? '?'} to go)`);
-    } catch { /* skip */ }
+  console.log(`Runs: ${results.length}/${runs} successful, ${errors.length} failed`);
+  console.log(`Total cost: $${results.reduce((s, r) => s + r.cost_usd, 0).toFixed(2)}`);
+  for (const r of results) {
+    console.log(`  [${r.pipeline}] ${r.title} — ${r.videoPath}`);
   }
 
-  // Save batch report
+  // Save report
   const report = {
     batch_at: new Date().toISOString(),
+    pipeline_filter: pipeline,
     runs_planned: runs,
-    runs_completed: successRuns,
-    total_new_videos: totalVideos,
-    dry_run: dryRun,
-    results,
+    runs_completed: results.length,
+    results: results.map(r => ({ pipeline: r.pipeline, runId: r.runId, title: r.title, cost: r.cost_usd })),
+    errors,
   };
   const reportPath = join(ROOT, 'reports', 'batch-produce-latest.json');
   writeFileSync(reportPath, JSON.stringify(report, null, 2));

@@ -1,0 +1,58 @@
+{
+  "sprint_id": "sprint-899",
+  "title": "SCS-001 Pipeline Restructuring — Cleanup + Registry + P1 Registration",
+  "description": "Restructure SCS-001 into 3 named pipelines. Phase 1: purge 4GB deprecated content, create pipeline-registry.ts, register Pipeline 1 (Educational AI Avatar Style), rewrite batch-produce.ts to route through registry. Stubs for Pipeline 2 (Code Demo) and Pipeline 3 (Entertainment).",
+  "source": "human",
+  "tasks": [
+    {
+      "id": "899-01",
+      "title": "Purge deprecated content: multiformat-runs, legacy run dirs, old vlog runs, empty dirs (4GB freed)",
+      "type": "cleanup",
+      "task_target": "scripts/scs001/purge-deprecated-content.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-899"
+    },
+    {
+      "id": "899-02",
+      "title": "Create pipeline-registry.ts with PipelineRunner interface, registerPipeline(), runPipeline(), metrics logging",
+      "type": "feature",
+      "task_target": "scripts/scs001/pipeline-registry.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-899"
+    },
+    {
+      "id": "899-03",
+      "title": "Register Pipeline 1 (Educational AI Avatar Style) wrapping produce-vlog.ts",
+      "type": "feature",
+      "task_target": "scripts/scs001/pipelines/educational.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-899"
+    },
+    {
+      "id": "899-04",
+      "title": "Create Pipeline 2 (Code Demo) and Pipeline 3 (Entertainment) stubs",
+      "type": "feature",
+      "task_target": "scripts/scs001/pipelines/",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-899"
+    },
+    {
+      "id": "899-05",
+      "title": "Rewrite batch-produce.ts to route through pipeline-registry with --pipeline flag",
+      "type": "refactor",
+      "task_target": "scripts/scs001/batch-produce.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-899"
+    }
+  ]
+}
