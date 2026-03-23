@@ -1,0 +1,63 @@
+{
+  "sprint_id": "sprint-914",
+  "title": "V2-CONTENT \u2014 5 TTS-mode vlogs on viral AI topics",
+  "description": "Produce 5 TTS vlog videos on high-engagement AI/tech topics.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "914-01",
+      "title": "V2 video: Mark Zuckerberg Is Building the Metaverse With AI Now",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-914",
+      "output": "vlog-mn3gyjnh"
+    },
+    {
+      "id": "914-02",
+      "title": "V2 video: The AI Feature in Your Phone You're Not Using",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-914",
+      "output": "vlog-mn3gzzm6"
+    },
+    {
+      "id": "914-03",
+      "title": "V2 video: How I Made an AI Clone of Myself That Works 24/7",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-914",
+      "output": "vlog-mn3h16xm"
+    },
+    {
+      "id": "914-04",
+      "title": "V2 video: OpenAI Just Released Something That Changes Everything",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-914",
+      "output": "vlog-mn3h2iob"
+    },
+    {
+      "id": "914-05",
+      "title": "V2 video: The 3 AI Skills That Will Make You Irreplaceable",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-914",
+      "output": "vlog-mn3h3sas"
+    }
+  ]
+}

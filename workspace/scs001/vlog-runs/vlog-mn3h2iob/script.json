@@ -1,0 +1,21 @@
+{
+  "title": "OpenAI Just Released Something That Changes Everything",
+  "full_monologue": "OpenAI Just Released Something That Changes Everything. Imagine AI that not only understands language but creates, innovates, and learns on its own. This new model is a game-changer, capable of tasks we thought impossible. Think of the impact on industries, education, and creativity. It’s not just smarter—it’s transformative. Now, picture the future it could unlock. What do you think this means for the world? Comment below.",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 6,
+      "duration_s": 6,
+      "visual_prompt": "abstract motion with glowing circuits and particles forming shapes, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 18,
+      "duration_s": 6,
+      "visual_prompt": "crowd of people looking in awe at a glowing sphere in the sky, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

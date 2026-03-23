@@ -1,0 +1,21 @@
+{
+  "title": "The AI Feature You're Missing",
+  "full_monologue": "Did you know your phone has an AI feature that can change your life? It’s not just for selfies or voice notes. It’s in your camera, your voice assistant, and even your keyboard. Think about how much easier tasks could be if you used it. You’re not alone—millions aren’t tapping into this power. Ready to unlock it? Let me show you how. What’s one AI feature you wish you used more?",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 6,
+      "duration_s": 6,
+      "visual_prompt": "hands typing on a keyboard with glowing keys, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 18,
+      "duration_s": 6,
+      "visual_prompt": "a person walking confidently with a smartphone in hand, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

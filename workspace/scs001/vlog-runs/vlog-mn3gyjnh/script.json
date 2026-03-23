@@ -1,0 +1,21 @@
+{
+  "title": "Zuckerberg's Metaverse AI Revolution",
+  "full_monologue": "**Mark Zuckerberg is building the metaverse with AI now.** Facebook’s parent company, Meta, is investing billions into AI-driven virtual worlds. Think immersive environments where AI creates realistic interactions, virtual spaces, and even digital avatars. This isn’t just sci-fi—it’s happening right now. With AI handling everything from language translation to object rendering, the metaverse is becoming more accessible and dynamic. But what does this mean for the future of work, play, and connection? Let me know your thoughts below.",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 6,
+      "duration_s": 6,
+      "visual_prompt": "A group of people interacting in a futuristic virtual environment with glowing, abstract digital elements, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 18,
+      "duration_s": 6,
+      "visual_prompt": "A person wearing a VR headset, surrounded by a cityscape that shifts and evolves in real time, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

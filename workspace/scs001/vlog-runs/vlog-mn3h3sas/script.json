@@ -1,0 +1,21 @@
+{
+  "title": "3 AI Skills to Stay Irreplaceable",
+  "full_monologue": "**Master these 3 AI skills and you’ll stay ahead of the curve.** First, prompt engineering—knowing how to communicate with AI effectively. Second, ethical AI—understanding bias and fairness in algorithms. Third, AI collaboration—working alongside AI to boost productivity. These skills aren’t just trendy; they’re essential. Want to know how to start learning them? Comment below and let’s grow together.",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 6,
+      "duration_s": 6,
+      "visual_prompt": "A person typing on a keyboard with glowing keys, surrounded by abstract digital particles, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 18,
+      "duration_s": 6,
+      "visual_prompt": "A group of people collaborating in a futuristic office with AI-powered holographic displays, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

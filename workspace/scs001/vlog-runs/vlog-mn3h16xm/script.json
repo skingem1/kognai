@@ -1,0 +1,21 @@
+{
+  "title": "AI Clone That Works 24/7",
+  "full_monologue": "**I built an AI clone of myself that never sleeps.** It’s like having a 24/7 version of me answering questions, creating content, and even brainstorming ideas. I used a voice cloning tool and trained it on my own speech patterns. The hardest part was making it sound natural. Now, it handles my social media, responds to messages, and even helps me with work. It’s wild how much it can do. Want to see how I did it? Comment below and I’ll show you the process.",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 6,
+      "duration_s": 6,
+      "visual_prompt": "a person speaking into a microphone in a quiet room, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 18,
+      "duration_s": 6,
+      "visual_prompt": "a glowing computer abstract motion and light patterns, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}
