@@ -214,6 +214,31 @@ async function runPipeline(opts: PipelineOptions): Promise<PipelineResult> {
 
       console.log(`  ✓ Video: ${result.video.video_id} (${result.video.duration_seconds}s, voiceover: ${result.video.has_voiceover})\n`);
 
+      // ── Auto-register in publish ledger (Sprint 893) ──────────
+      try {
+        const ledgerPath = join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl');
+        const { appendFileSync } = require('fs');
+        const entry = {
+          clip_id: result.video.video_id,
+          video_id: result.video.video_id,
+          published_at: new Date().toISOString(),
+          run_id: result.run_id,
+          hook_formula: 'v2-scorsese',
+          speaker: currentScenario.speaker_name || 'Kognai',
+          topic: currentScenario.title,
+          source: 'v2-pipeline',
+          format: 'v2-cinematic',
+          video_path: result.video.file_path,
+          srt_path: '',
+          duration_s: result.video.duration_seconds,
+          llm_used: true,
+        };
+        appendFileSync(ledgerPath, JSON.stringify(entry) + '\n');
+        console.log(`  ✓ Registered in publish ledger: ${result.video.video_id}\n`);
+      } catch (ledgerErr) {
+        console.warn(`  ⚠ Ledger registration failed: ${(ledgerErr as Error).message}`);
+      }
+
       // ── Stage 4: Publishing via Browser Use (Sprint 790) ──────
       if (opts.publish && result.video && verdict!.verdict === 'PASS') {
         console.log('▶ Stage 4: Publishing — Browser Use TikTok upload...');

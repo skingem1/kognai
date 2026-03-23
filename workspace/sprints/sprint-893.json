@@ -1,0 +1,28 @@
+{
+  "sprint_id": "sprint-893",
+  "title": "V2-LEDGER — Register v2 videos in publish ledger for /pickup",
+  "description": "V2 pipeline videos were invisible to /pickup because they weren't in the publish ledger. Created register-v2-to-ledger.ts for backfill and wired auto-registration into run-v2-pipeline.ts for future videos.",
+  "source": "pipeline",
+  "tasks": [
+    {
+      "id": "893-01",
+      "title": "Create register-v2-to-ledger.ts to backfill existing v2 videos",
+      "type": "feature",
+      "task_target": "scripts/scs001/register-v2-to-ledger.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-893"
+    },
+    {
+      "id": "893-02",
+      "title": "Wire auto-registration into v2 pipeline runner",
+      "type": "feature",
+      "task_target": "scripts/scs001/run-v2-pipeline.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-893"
+    }
+  ]
+}
