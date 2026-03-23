@@ -16,7 +16,7 @@
 import { randomUUID } from 'crypto';
 import { execSync } from 'child_process';
 import { existsSync, mkdirSync, writeFileSync, readFileSync } from 'fs';
-import { join } from 'path';
+import { join, dirname } from 'path';
 import type {
   ScenarioBundle,
   Scene,
@@ -217,8 +217,39 @@ export class MovieEditorAgent {
       return;
     }
 
+    // Step 1: Normalize ALL segments to the same codec/format before concat.
+    // Different sources (Kling, Captions.ai, Pillow) output different codecs.
+    // Re-encode each to H.264 1080x1920 30fps with silent audio track.
+    const normalizedPaths: string[] = [];
+    const normDir = join(dirname(outputPath), 'normalized');
+    mkdirSync(normDir, { recursive: true });
+
+    for (let i = 0; i < scenePaths.length; i++) {
+      const normPath = join(normDir, `norm_${i}.mp4`);
+      try {
+        execSync(
+          `${FFMPEG} -y -i "${scenePaths[i]}" ` +
+          `-f lavfi -i anullsrc=channel_layout=stereo:sample_rate=44100 ` +
+          `-vf "scale=1080:1920:force_original_aspect_ratio=decrease,pad=1080:1920:(ow-iw)/2:(oh-ih)/2,setsar=1,fps=30" ` +
+          `-c:v libx264 -preset fast -crf 23 -pix_fmt yuv420p ` +
+          `-c:a aac -b:a 128k -shortest ` +
+          `"${normPath}"`,
+          { stdio: 'pipe', timeout: 60000 }
+        );
+        normalizedPaths.push(normPath);
+      } catch (err) {
+        console.warn(`[MovieEditor] Normalize scene ${i} failed: ${(err as Error).message?.slice(0, 80)}`);
+      }
+    }
+
+    if (normalizedPaths.length === 0) {
+      console.warn('[MovieEditor] No normalized scenes — concat aborted');
+      return;
+    }
+
+    // Step 2: Concat normalized segments (now all same codec — -c copy is safe)
     const listPath = outputPath.replace('.mp4', '-concat.txt');
-    const listContent = scenePaths.map(p => `file '${p}'`).join('\n');
+    const listContent = normalizedPaths.map(p => `file '${p}'`).join('\n');
     writeFileSync(listPath, listContent);
 
     try {
@@ -226,39 +257,55 @@ export class MovieEditorAgent {
         `${FFMPEG} -y -f concat -safe 0 -i "${listPath}" -c copy "${outputPath}"`,
         { stdio: 'pipe', timeout: 60000 }
       );
-      console.log(`[MovieEditor] Concatenated ${scenePaths.length} scenes`);
+      console.log(`[MovieEditor] Concatenated ${normalizedPaths.length} scenes (all normalized to H.264 1080x1920 30fps)`);
     } catch (err) {
       console.warn(`[MovieEditor] Concat failed: ${(err as Error).message?.slice(0, 100)}`);
     }
   }
 
   private mixTTSAudio(videoPath: string, ttsResults: TTSResult[], outputPath: string): void {
-    // Merge all TTS segments into one audio track using concat
     const validTTS = ttsResults.filter(t => t.success && t.audio_path);
     if (validTTS.length === 0) return;
 
+    // Build per-scene TTS audio with correct timing using adelay + amix
+    // Each TTS segment plays at the right scene offset
     try {
-      // Simple approach: overlay first TTS segment as demo (full mix in v2-003+)
-      const firstAudio = validTTS[0].audio_path;
+      // Calculate scene start offsets
+      let offset = 0;
+      const inputs: string[] = ['-i', `"${videoPath}"`];
+      const delays: string[] = [];
+
+      for (let i = 0; i < validTTS.length; i++) {
+        const tts = validTTS[i];
+        inputs.push('-i', `"${tts.audio_path}"`);
+        const delayMs = Math.round(offset * 1000);
+        delays.push(`[${i + 1}:a]adelay=${delayMs}|${delayMs},aformat=sample_fmts=fltp:sample_rates=44100:channel_layouts=stereo[a${i}]`);
+        offset += tts.duration_s;
+      }
+
+      // Mix all delayed audio tracks together
+      const mixInputs = validTTS.map((_, i) => `[a${i}]`).join('');
+      const filterComplex = delays.join('; ') + `; ${mixInputs}amix=inputs=${validTTS.length}:duration=longest:dropout_transition=0[mixed]`;
+
       execSync(
-        `${FFMPEG} -y -i "${videoPath}" -i "${firstAudio}" ` +
-        `-filter_complex "[1:a]aformat=sample_fmts=fltp:sample_rates=44100:channel_layouts=stereo[a];[0:a][a]amix=inputs=2:duration=first[out]" ` +
-        `-map 0:v -map "[out]" -c:v copy -c:a aac -shortest "${outputPath}"`,
-        { stdio: 'pipe', timeout: 60000 }
+        `${FFMPEG} -y ${inputs.join(' ')} ` +
+        `-filter_complex "${filterComplex}" ` +
+        `-map 0:v -map "[mixed]" -c:v copy -c:a aac -b:a 128k "${outputPath}"`,
+        { stdio: 'pipe', timeout: 120000 }
       );
-      console.log('[MovieEditor] TTS audio mixed');
-    } catch {
-      // If video has no audio stream, add TTS as sole audio
+      console.log(`[MovieEditor] TTS mixed: ${validTTS.length} segments with per-scene timing`);
+    } catch (err) {
+      console.warn(`[MovieEditor] Per-scene TTS mix failed: ${(err as Error).message?.slice(0, 80)}`);
+      // Fallback: just overlay first TTS segment
       try {
-        const firstAudio = validTTS[0].audio_path;
         execSync(
-          `${FFMPEG} -y -i "${videoPath}" -i "${firstAudio}" ` +
+          `${FFMPEG} -y -i "${videoPath}" -i "${validTTS[0].audio_path}" ` +
           `-map 0:v -map 1:a -c:v copy -c:a aac -shortest "${outputPath}"`,
           { stdio: 'pipe', timeout: 60000 }
         );
-        console.log('[MovieEditor] TTS audio added (no existing audio stream)');
-      } catch (err) {
-        console.warn(`[MovieEditor] Audio mix failed: ${(err as Error).message?.slice(0, 100)}`);
+        console.log('[MovieEditor] TTS fallback: first segment only');
+      } catch (err2) {
+        console.warn(`[MovieEditor] Audio mix failed entirely: ${(err2 as Error).message?.slice(0, 80)}`);
       }
     }
   }

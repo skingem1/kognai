@@ -42,3 +42,8 @@ Produce a ScenarioBundle JSON with:
 - Would a human stop scrolling in the first 2 seconds? If no, rewrite the hook.
 - Does the emotional arc build to a satisfying payoff? If flat, add a twist.
 - Is every scene earning its seconds? Cut anything that doesn't serve the story.
+
+## CRITICAL OUTPUT RULE
+Respond with ONLY a valid JSON object. No markdown fences. No explanation text before or after.
+No ```json blocks. Just the raw { ... } JSON. Every string value must have properly escaped
+quotes and newlines. The JSON must parse with JSON.parse() on the first attempt.
