@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-21783deb",
+  "topic_id": "custom-mn2u6yb0-1",
+  "format": "explainer",
+  "title": "Why every company is building their own AI model in 2026",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Every company is building their own AI model in 2026 — and it’s changing everything.",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This isn’t just hype — it’s a competitive necessity for survival.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "It’s when custom AI models became faster, cheaper, and more accurate than ever before.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "They’re using open-source frameworks like Llama 3 to build models tailored to their data.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This affects everyone from healthcare to retail, making services smarter and more personal.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The key takeaway? AI is no longer a luxury — it’s a must-have for innovation.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Want to know how your company can stay ahead? Drop a comment below.",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "Why every company is building their own AI model in 2026",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#why",
+    "#every",
+    "#company"
+  ],
+  "generated_at": "2026-03-23T07:01:16.919Z",
+  "llm_used": true
+}

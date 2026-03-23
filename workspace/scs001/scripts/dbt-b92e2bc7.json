@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-b92e2bc7",
+  "topic_id": "custom-mn2u9e4z-2",
+  "format": "debate",
+  "title": "The developer tools that will define the next decade",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "The next decade will be defined by \"the\" — specifically, the rise of standardized, open protocols that enable seamless integration across platforms.",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "\"Developer\" tools will define the decade because they drive innovation — tools like Rust, WebAssembly, and AI-assisted coding are already changing how software is built.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Open protocols like gRPC and GraphQL provide the backbone for scalable, interoperable systems — that’s the foundation of the future, not just a trend.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Without developer-centric tools, even the best protocols remain inaccessible. GitHub Copilot and VS Code extensions are what make development fast, efficient, and inclusive.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "The future is written by developers — tools that empower them will shape the next decade, not abstract protocols.",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "the vs developer",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#the",
+    "#developer",
+    "#tools"
+  ],
+  "generated_at": "2026-03-23T07:03:31.933Z",
+  "llm_used": true
+}

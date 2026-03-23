@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-500f0556",
+  "topic_id": "custom-mn2u6yb0-2",
+  "format": "explainer",
+  "title": "The developer tools that will define the next decade",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "What if I told you the next big leap in coding is already here?",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "AI-powered dev tools are changing how we build software — and fast.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "They’re platforms like GitHub Copilot, but even smarter and faster.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "These tools can write full functions from natural language prompts.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Developers across all industries are adopting them at record speeds.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This isn’t just efficiency — it’s a revolution in how we create tech.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Want to know what’s next? Follow me for the inside scoop.",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "The developer tools that will define the next decade",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#the",
+    "#developer",
+    "#tools"
+  ],
+  "generated_at": "2026-03-23T07:01:28.413Z",
+  "llm_used": true
+}
