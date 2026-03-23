@@ -4247,3 +4247,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no — production runs
 - Issues: none (all Scorsese PASS on first attempt, fal.ai Kling working)
 - Timestamp: 2026-03-23T11:05:00Z
+
+## Sprint 893 — V2-LEDGER — Register v2 videos in publish ledger
+- Status: PASS
+- Commit: b78a4e3a
+- Files created: scripts/scs001/register-v2-to-ledger.ts, workspace/sprints/sprint-893.json
+- Files modified: scripts/scs001/run-v2-pipeline.ts, workspace/scs001/publish-ledger.jsonl
+- Test: register-v2-to-ledger.ts — 7 videos registered
+- Pipeline: v2 videos now discoverable by /pickup, future runs auto-register
+- Swarm used: no — wrote directly
+- Issues: none
+- Timestamp: 2026-03-23T11:15:00Z
