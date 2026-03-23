@@ -1,0 +1,28 @@
+{
+  "sprint_id": "sprint-819",
+  "title": "OPS — disk cleanup + batch produce 5 more videos",
+  "description": "Watchdog alerts: disk at 5.1GB (threshold 5GB), pipeline stale 51h. Run cleanup to free space, then batch produce 5 fresh videos.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "819-01",
+      "title": "Run disk cleanup to get below 5GB threshold",
+      "type": "ops",
+      "task_target": "scripts/scs001/cleanup-old-runs.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-819"
+    },
+    {
+      "id": "819-02",
+      "title": "Batch produce 5 videos via multiformat pipeline",
+      "type": "content",
+      "task_target": "scripts/scs001/batch-produce.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-819"
+    }
+  ]
+}

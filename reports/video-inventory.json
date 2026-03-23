@@ -1,12 +1,12 @@
 {
-  "scanned_at": "2026-03-23T00:27:28.601Z",
-  "total_runs": 20,
-  "total_videos": 14,
-  "unique_topics": 11,
-  "already_registered": 11,
+  "scanned_at": "2026-03-23T00:37:03.101Z",
+  "total_runs": 25,
+  "total_videos": 16,
+  "unique_topics": 12,
+  "already_registered": 12,
   "newly_registered": 0,
   "already_posted": 0,
-  "ready_to_post": 11,
+  "ready_to_post": 12,
   "gate_status": {
     "posted": 2,
     "target": 30,
@@ -44,6 +44,14 @@
       "duration_s": 27,
       "posted": false,
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-lism/output/dbt-4c88667f_final.mp4"
+    },
+    {
+      "video_id": "exp-f93e8070",
+      "format": "explainer",
+      "title": "Resolv Liquidity Provider Token (RLP) 📉 -17.5%",
+      "duration_s": 25,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-n61z/output/exp-f93e8070_final.mp4"
     },
     {
       "video_id": "exp-b29356a7",
