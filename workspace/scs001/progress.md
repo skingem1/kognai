@@ -4010,3 +4010,13 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (OPS sprint, ran batch-produce directly)
 - Issues: none — injected topics continue to produce well
 - Timestamp: 2026-03-23T06:39:00Z
+
+## Sprint 870 — OPS — custom topic content production (9 videos)
+- Status: PASS
+- Commit: 93f11c1d
+- Files created: workspace/sprints/sprint-870.json, 9 new scripts
+- Test: batch-produce.ts --topic — 3 injected topics, 9 new videos, 112 unique total
+- Pipeline: 112 unique videos ready, 4/30 posted toward gate
+- Swarm used: no (OPS sprint, ran batch-produce directly)
+- Issues: none
+- Timestamp: 2026-03-23T06:43:00Z
