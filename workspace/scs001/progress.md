@@ -53,6 +53,15 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 | 2026-02 | 248-270 | VIDEO-QUALITY, Telegram commands explosion |
 | 2026-03 | 435-496 | Posting workflow, safety split, Stripe, YouTube |
 
+## Sprint 824 — OPS
+- Status: PASS
+- Commit: 9f7dd37
+- Files modified: scripts/scs001/gate-urgency-alert.ts
+- Feature: Gate alert now shows unique ready-to-post count from inventory + "content ready for full gate" message
+- Ops: Restarted telegram bot with /produce-topic command. Auto-delivered 5 videos to operator via Telegram.
+- Swarm used: no
+- Timestamp: 2026-03-23T03:20:00Z
+
 ## Sprint 823 — CONTENT
 - Status: PASS
 - Commit: 63126c8
