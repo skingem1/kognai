@@ -1,0 +1,63 @@
+{
+  "sprint_id": "sprint-924",
+  "title": "MULTI-PIPELINE — 3 code demos + 2 TTS vlogs (batch 8)",
+  "description": "Produce 3 code demo videos and 2 TTS vlog videos. Pushing past 300 total content.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "924-01",
+      "title": "Code demo: Build a Telegram Bot in Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-924",
+      "output": "demo-mn3kf3mb"
+    },
+    {
+      "id": "924-02",
+      "title": "Code demo: Create a JSON to CSV Converter in Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-924",
+      "output": "demo-mn3kg9po"
+    },
+    {
+      "id": "924-03",
+      "title": "Code demo: Build a Screenshot Tool in Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-924",
+      "output": "demo-mn3kht9w"
+    },
+    {
+      "id": "924-04",
+      "title": "V2 video: Elon Musk's Grok 3 Just Changed Everything About AI",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-924",
+      "output": "vlog-mn3kjfmn"
+    },
+    {
+      "id": "924-05",
+      "title": "V2 video: The 5 AI Tools That Will Make You Rich in 2026",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-924",
+      "output": "vlog-mn3kjfmf"
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "demo_id": "demo-mn3kf3mb",
+  "title": "Make a Telegram Bot in 3 Steps!",
+  "language": "python",
+  "total_duration_s": 19,
+  "steps": [
+    {
+      "step_id": "s1",
+      "title": "Step 1: Setup",
+      "code_lines": [
+        "import telebot",
+        "bot = telebot.TeleBot('YOUR_API_TOKEN')"
+      ],
+      "language": "python",
+      "explanation": "We start by importing the telebot library and initializing the bot with your API token.",
+      "duration_s": 6,
+      "highlight_lines": [
+        1
+      ]
+    },
+    {
+      "step_id": "s2",
+      "title": "Step 2: Handle Messages",
+      "code_lines": [
+        "@bot.message_handler()",
+        "def echo(message):",
+        "    bot.reply_to(message, \"You said: \" + message.text)"
+      ],
+      "language": "python",
+      "explanation": "This function listens for messages and replies with what the user said.",
+      "duration_s": 7,
+      "highlight_lines": [
+        2
+      ]
+    },
+    {
+      "step_id": "s3",
+      "title": "Step 3: Run the Bot",
+      "code_lines": [
+        "bot.polling()"
+      ],
+      "language": "python",
+      "explanation": "Finally, we start the bot so it can listen for messages from Telegram.",
+      "duration_s": 6,
+      "highlight_lines": [
+        1
+      ]
+    }
+  ],
+  "hashtags": [
+    "#coding",
+    "#python",
+    "#bot",
+    "#tutorial"
+  ],
+  "intro_hook": "Want to make a bot? Let's code it fast!",
+  "source": "user",
+  "topic_source": "user-prompt"
+}
