@@ -587,22 +587,27 @@ export function cmdSchedule(): string {
   try {
     const data = JSON.parse(fs.readFileSync(schedulePath, 'utf-8'));
     const today = new Date().toISOString().slice(0, 10);
-    const slots: Array<{ date: string; time: string; video_id: string; speaker: string; viral_score: number; slot_label: string }> = data.slots ?? [];
-
-    const todaySlots = slots.filter(s => s.date === today);
-    const upcomingSlots = slots.filter(s => s.date > today).slice(0, 6);
 
     const lines: string[] = [
       `📅 *Posting Schedule*`,
-      `Gate: ${data.posts_done ?? 0}/30 posts · ${data.days_to_gate ?? '?'}d left · ${data.pace_needed ?? '?'}/day needed`,
+      `Gate: ${data.posted ?? 0}/30 posts · ${data.days_left ?? '?'}d left · ${data.pace_needed ?? '?'}/day needed`,
+      `Coverage: ${data.coverage ?? '?'} (${data.videos_assigned ?? 0} slots assigned)`,
       '',
     ];
 
-    if (todaySlots.length > 0) {
-      lines.push(`*Today (${today}):*`);
-      for (const s of todaySlots) {
-        lines.push(`  ${s.slot_label} — \`${s.video_id}\``);
-        lines.push(`    🎙️ ${s.speaker} · 🧬 ${Math.round((s.viral_score ?? 0) * 100)}%`);
+    const schedule: Array<{ date: string; day: string; slots: Array<{ time: string; video_id: string | null; viral_score: number; topic?: string }> }> = data.schedule ?? [];
+
+    const todayEntry = schedule.find(s => s.date === today);
+    if (todayEntry) {
+      lines.push(`*Today (${today} ${todayEntry.day}):*`);
+      for (const slot of todayEntry.slots) {
+        if (slot.video_id) {
+          const score = slot.viral_score > 0 ? ` 🧬 ${slot.viral_score.toFixed(2)}` : '';
+          const topic = slot.topic ? ` — ${slot.topic.slice(0, 40)}` : '';
+          lines.push(`  ${slot.time}: \`${slot.video_id}\`${score}${topic}`);
+        } else {
+          lines.push(`  ${slot.time}: _(need more videos)_`);
+        }
       }
       lines.push('');
     } else {
@@ -610,16 +615,17 @@ export function cmdSchedule(): string {
       lines.push('');
     }
 
-    if (upcomingSlots.length > 0) {
+    const upcoming = schedule.filter(s => s.date > today).slice(0, 3);
+    if (upcoming.length > 0) {
       lines.push('*Upcoming:*');
-      for (const s of upcomingSlots) {
-        lines.push(`  ${s.date} ${s.time} — \`${s.video_id}\` 🎙️ ${s.speaker}`);
+      for (const day of upcoming) {
+        const vids = day.slots.filter(s => s.video_id).map(s => `\`${s.video_id}\``).join(', ');
+        lines.push(`  ${day.date} (${day.day}): ${vids || '(empty)'}`);
       }
       lines.push('');
     }
 
-    lines.push(`_Schedule: ${data.posts_per_day ?? '?'}/day · ${data.queue_remaining ?? '?'} in queue_`);
-    lines.push(`_Generated: ${data.generated_at ? data.generated_at.split('T')[0] : 'unknown'}_`);
+    lines.push(`_Available: ${data.videos_available ?? '?'} videos · Generated: ${data.generated_at ? data.generated_at.split('T')[0] : '?'}_`);
 
     return lines.join('\n');
   } catch (e: any) {
