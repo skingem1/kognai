@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-ee6defd4",
+  "topic_id": "custom-mn2vgliq-1",
+  "format": "debate",
+  "title": "The dark side of AI generated influencers",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "AI influencers democratize content creation and offer diverse representation at scale.",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "They exploit human psychology, spread misinformation, and erode authenticity in media.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "With strict content moderation protocols, platforms like Meta's Oversight Board can curb harmful outputs.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Deepfakes and synthetic media bypass verification, enabling manipulation and deepfake fraud on a global scale.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "The dark side isn't just real—it's already reshaping trust in digital identity and media.",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "the vs dark",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#the",
+    "#dark",
+    "#side"
+  ],
+  "generated_at": "2026-03-23T07:36:46.566Z",
+  "llm_used": true
+}

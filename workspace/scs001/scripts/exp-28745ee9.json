@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-28745ee9",
+  "topic_id": "custom-mn2ve3fd-1",
+  "format": "explainer",
+  "title": "The dark side of AI generated influencers",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Look at this hyper-realistic AI influencer — she’s not human, but she’s selling millions of dollars in products.",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This trend is exploding — over 500 AI influencers are now active on social media.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "They’re generated using deepfake tech that mimics real people’s expressions and voices.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "One company even created an AI clone of a famous model — without her permission.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Brand deals and followers are pouring in, but the real people are getting left out.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The key issue? These AI influencers can’t be held accountable for false claims.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Have you ever seen an AI influencer — and what did you think?",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "The dark side of AI generated influencers",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#the",
+    "#dark",
+    "#side"
+  ],
+  "generated_at": "2026-03-23T07:34:51.999Z",
+  "llm_used": true
+}

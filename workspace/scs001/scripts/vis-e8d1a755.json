@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-e8d1a755",
+  "topic_id": "custom-mn2vixy4-2",
+  "format": "vision",
+  "title": "How blockchain is quietly revolutionizing supply chains",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "What if blockchain's most profound impact isn't in finance, but in making supply chains transparent and ethical?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Today, blockchain enables real-time tracking of goods using IoT sensors and smart contracts on platforms like Hyperledger.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "But without proper governance, data on the chain could be manipulated or used to exploit workers in opaque global networks.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Builders are integrating AI audits and zero-knowledge proofs to verify data integrity without exposing sensitive information.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "In five years, we may see fully transparent, fair-trade supply chains where consumers trace a product's journey from farm to shelf.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future of supply chains lies in blockchain’s ability to merge trust, transparency, and accountability in real time.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of how",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#how",
+    "#blockchain",
+    "#is"
+  ],
+  "video_cue": "A transparent, digital ledger displayed alongside a global map showing the real-time movement of goods through supply chains.",
+  "generated_at": "2026-03-23T07:39:01.555Z",
+  "llm_used": true
+}

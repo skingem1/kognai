@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-5afa5124",
+  "topic_id": "custom-mn2vgliq-2",
+  "format": "debate",
+  "title": "How blockchain is quietly revolutionizing supply chains",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Blockchain isn't just a buzzword—it's transforming supply chains through transparency, traceability, and real-time data sharing. (3 sec)",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "You’re ignoring the limitations—blockchain’s energy use and slow transaction speeds make it impractical for high-volume supply chains. (5 sec)",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Smart contracts on Ethereum automate payments and compliance, cutting delays and fraud by up to 40% in pilot programs. (5 sec)",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Even with layer-2 solutions, blockchain’s immutability can lock in errors—unlike traditional systems that allow for quick corrections. (5 sec)",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Blockchain’s promise outpaces its performance—real change needs more than just a ledger. (4 sec)",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "how vs blockchain",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#how",
+    "#blockchain",
+    "#is"
+  ],
+  "generated_at": "2026-03-23T07:37:02.463Z",
+  "llm_used": true
+}
