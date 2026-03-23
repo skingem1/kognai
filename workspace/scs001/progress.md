@@ -53,6 +53,15 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 | 2026-02 | 248-270 | VIDEO-QUALITY, Telegram commands explosion |
 | 2026-03 | 435-496 | Posting workflow, safety split, Stripe, YouTube |
 
+## Sprint 900 — Pipeline 2 Code Demo
+- Status: PASS
+- Commit: 7577e209
+- Files modified: code-demo-compositor.ts (TTS shell escaping fix, step audio mixing), code-demo-scriptgen.ts (improved prompt)
+- Pipeline: P2 Code Demo registered and functional
+- Swarm used: no (pre-built by previous session, validated + fixed)
+- Issues: qwen3:14b times out on code-demo script gen (needs shorter prompts or faster model)
+- Timestamp: 2026-03-23T15:00:00Z
+
 ## Sprint 899 — SCS-001 Pipeline Restructuring
 - Status: PASS
 - Commit: 45061ea6
