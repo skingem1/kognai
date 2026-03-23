@@ -1,0 +1,38 @@
+{
+  "sprint_id": "sprint-892",
+  "title": "V2-CONTENT — Batch produce 3 high-quality v2 videos",
+  "description": "Use the v2 pipeline with --topic flag to produce 3 videos on diverse topics, building content stockpile with AI-generated segments.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "892-01",
+      "title": "Produce v2 video: 'Why OpenAI Is Secretly Terrified of Open Source AI'",
+      "type": "ops",
+      "task_target": "scripts/scs001/run-v2-pipeline.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-892"
+    },
+    {
+      "id": "892-02",
+      "title": "Produce v2 video: 'The AI Feature That Nobody Is Talking About'",
+      "type": "ops",
+      "task_target": "scripts/scs001/run-v2-pipeline.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-892"
+    },
+    {
+      "id": "892-03",
+      "title": "Produce v2 video: 'How One AI Prompt Made $47K in 24 Hours'",
+      "type": "ops",
+      "task_target": "scripts/scs001/run-v2-pipeline.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-892"
+    }
+  ]
+}
