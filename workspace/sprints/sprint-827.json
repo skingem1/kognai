@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-827",
+  "title": "CONTENT — 5 viral-potential videos (vision + listicle formats, 35 ready)",
+  "description": "Produced 5 custom topic videos focusing on underrepresented formats (vision + listicle) with viral-potential topics. 776 ledger, 35 unique ready.",
+  "source": "content",
+  "tasks": [
+    {
+      "id": "827-01",
+      "title": "5 vision/listicle videos: Google 2026, Chrome extensions, self-driving, Neuralink, AI app builder",
+      "type": "content",
+      "task_target": "scripts/scs001/run-multiformat-pipeline.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-827"
+    }
+  ]
+}

@@ -1,18 +1,58 @@
 {
-  "scanned_at": "2026-03-23T01:08:12.572Z",
-  "total_runs": 31,
-  "total_videos": 30,
-  "unique_topics": 30,
-  "already_registered": 30,
+  "scanned_at": "2026-03-23T01:14:09.716Z",
+  "total_runs": 36,
+  "total_videos": 35,
+  "unique_topics": 35,
+  "already_registered": 35,
   "newly_registered": 0,
   "already_posted": 0,
-  "ready_to_post": 30,
+  "ready_to_post": 35,
   "gate_status": {
-    "posted": 2,
+    "posted": 3,
     "target": 30,
-    "gap": 28
+    "gap": 27
   },
   "videos": [
+    {
+      "video_id": "vis-fb8889a0",
+      "format": "vision",
+      "title": "The AI tool that writes entire apps in seconds",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T01-upvw/output/vis-fb8889a0_final.mp4"
+    },
+    {
+      "video_id": "vis-2e9e1a59",
+      "format": "vision",
+      "title": "How Neuralink will change gaming forever",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T01-mm6g/output/vis-2e9e1a59_final.mp4"
+    },
+    {
+      "video_id": "vis-c987651a",
+      "format": "vision",
+      "title": "Self-driving cars just got approved everywhere",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T01-xn9d/output/vis-c987651a_final.mp4"
+    },
+    {
+      "video_id": "vis-22a6b3b3",
+      "format": "vision",
+      "title": "5 Chrome extensions that replace expensive SaaS tools",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T01-qk7y/output/vis-22a6b3b3_final.mp4"
+    },
+    {
+      "video_id": "vis-2d14c19a",
+      "format": "vision",
+      "title": "What nobody tells you about working at Google in 2026",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T01-k2l5/output/vis-2d14c19a_final.mp4"
+    },
     {
       "video_id": "vis-de98d24b",
       "format": "vision",
