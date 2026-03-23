@@ -3625,3 +3625,12 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no
 - Cost: ~$0.15
 - Timestamp: 2026-03-23T02:00:00Z
+
+## Sprint 835 — OPS: wire /posting-health Telegram command
+- Status: PASS
+- Commit: ea339aa
+- Files modified: scripts/telegram-commands/cmd-posting.ts, scripts/telegram-bot.ts
+- New command: /posting-health — auto-runs health check, shows all 6 checks + gate status
+- Swarm used: no
+- Cost: ~$0.10
+- Timestamp: 2026-03-23T02:10:00Z
