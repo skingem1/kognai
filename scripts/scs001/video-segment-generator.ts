@@ -66,11 +66,26 @@ async function generateAvatarSegment(scene: Scene, outPath: string): Promise<Seg
 
   console.log(`  [SegGen] 🎤 Avatar for "${scene.scene_name}" (${scene.duration_s}s)...`);
 
-  const result = await generateAvatarVideo(
-    scene.voiceover,
-    outPath,
-    process.env.CAPTIONS_CREATOR ?? 'Jason',
-  );
+  // Retry once on timeout (Captions.ai can be slow)
+  let result: { path: string; cost_credits: number };
+  try {
+    result = await generateAvatarVideo(
+      scene.voiceover,
+      outPath,
+      process.env.CAPTIONS_CREATOR ?? 'Jason',
+    );
+  } catch (err: any) {
+    if (err.message?.includes('timeout')) {
+      console.log(`  [SegGen] ⏱️ Avatar timeout — retrying once...`);
+      result = await generateAvatarVideo(
+        scene.voiceover,
+        outPath,
+        process.env.CAPTIONS_CREATOR ?? 'Jason',
+      );
+    } else {
+      throw err;
+    }
+  }
 
   // Captions.ai outputs high-res, scale to 1080x1920 for consistency
   const scaledPath = outPath.replace('.mp4', '_scaled.mp4');

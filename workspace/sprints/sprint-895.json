@@ -1,0 +1,28 @@
+{
+  "sprint_id": "sprint-895",
+  "title": "V2-RELIABILITY — Captions.ai timeout increase + avatar retry",
+  "description": "Captions.ai avatars were timing out at 300s in ~20% of runs. Increased timeout to 600s and added retry-on-timeout in video-segment-generator.",
+  "source": "pipeline",
+  "tasks": [
+    {
+      "id": "895-01",
+      "title": "Increase Captions.ai default timeout from 300s to 600s",
+      "type": "bugfix",
+      "task_target": "scripts/scs001/avatar-presenter.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-895"
+    },
+    {
+      "id": "895-02",
+      "title": "Add retry-on-timeout for avatar segments in video-segment-generator",
+      "type": "feature",
+      "task_target": "scripts/scs001/video-segment-generator.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-895"
+    }
+  ]
+}

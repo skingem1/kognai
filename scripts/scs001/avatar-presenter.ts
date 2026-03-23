@@ -90,7 +90,7 @@ export async function generateAvatarVideo(
   script: string,
   outPath: string,
   creatorName: string = DEFAULT_CREATOR,
-  maxWaitMs: number = 300000,
+  maxWaitMs: number = 600000, // 10 min (was 5 min — Captions.ai can be slow)
 ): Promise<{ path: string; cost_credits: number }> {
   if (!CAPTIONS_API_KEY) throw new Error("CAPTIONS_API_KEY not set");
 
