@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-75758858",
+  "topic_id": "custom-mn2rjc4v-2",
+  "format": "debate",
+  "title": "How to use AI to learn any skill 10x faster",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "The \"how\" of AI learning is about protocols—specific, repeatable steps that scale across any skill. (3 sec)",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "But without a \"to,\" you're just following steps without purpose. Real mastery comes from targeted goals. (5 sec)",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "AI adapts to your goals through reinforcement learning—tailoring paths in real time with LLM feedback loops. (5 sec)",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Without a clear \"to,\" AI becomes a generic tool. Mastery needs direction—like a curriculum, not just a protocol. (5 sec)",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Skill without purpose is just noise. The \"to\" gives AI a target. (4 sec)",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "how vs to",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#how",
+    "#to",
+    "#use"
+  ],
+  "generated_at": "2026-03-23T05:47:13.426Z",
+  "llm_used": true
+}

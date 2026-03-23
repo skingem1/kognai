@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-2b70de55",
+  "topic_id": "custom-mn2rlpvw-2",
+  "format": "vision",
+  "title": "How to use AI to learn any skill 10x faster",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "If AI could make us learn any skill 10x faster, where would that take us—and what might we lose in the process?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Current AI tools like generative models and adaptive learning platforms already personalize education, but mastery still requires deliberate practice and feedback loops.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "Accelerating skill acquisition risks creating inequality—only those with access to advanced AI tools will thrive, while others are left behind.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Builders are developing open-source AI learning platforms and integrating them with low-cost VR/AR to democratize access and ensure broader participation.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "Imagine a future where AI tutors are as common as textbooks, helping everyone from rural students to lifelong learners reach their full potential.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future isn’t just about speed—it’s about who gets to learn, grow, and lead in an AI-enhanced world.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of how",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#how",
+    "#to",
+    "#use"
+  ],
+  "video_cue": "A person using an AI-powered VR headset to instantly master a musical instrument through immersive, real-time feedback.",
+  "generated_at": "2026-03-23T05:49:16.750Z",
+  "llm_used": true
+}

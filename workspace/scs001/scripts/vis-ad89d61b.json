@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-ad89d61b",
+  "topic_id": "custom-mn2rlpvw-1",
+  "format": "vision",
+  "title": "The hidden psychology behind viral TikTok videos",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "What psychological triggers make TikTok videos go viral, and how might they shape human behavior in the future?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Algorithms use micro-expressions, music sync, and rapid cuts to hijack attention, often leveraging dopamine-driven reward loops in the brain.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "This risks normalizing shallow engagement, eroding empathy, and reinforcing echo chambers that distort reality and manipulate emotions.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Builders are testing AI-driven content moderation and ethical design frameworks to balance virality with mental well-being and diverse perspectives.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "In the future, we may see TikTok evolve into a platform that encourages deep, meaningful interactions alongside viral content.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future of TikTok will hinge on whether we prioritize human connection over algorithmic dominance.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of the",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#the",
+    "#hidden",
+    "#psychology"
+  ],
+  "video_cue": "A split-screen showing a TikTok video on the left and a brain scan highlighting neural activity in response to the content.",
+  "generated_at": "2026-03-23T05:48:56.516Z",
+  "llm_used": true
+}
