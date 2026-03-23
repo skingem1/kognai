@@ -1,0 +1,21 @@
+{
+  "title": "AI Clones Your Voice in 3 Seconds!",
+  "full_monologue": "What if I told you AI can clone your voice in 3 seconds? I tested it myself, and it’s insane. Just record a short clip, and the AI generates a perfect replica. Think about the possibilities—deepfakes, virtual assistants, even audiobooks. But with power comes responsibility. How do we ensure it’s used ethically? Let me know your thoughts below.",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 6,
+      "duration_s": 6,
+      "visual_prompt": "a person speaking into a microphone with a glowing light reflecting off their face, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 18,
+      "duration_s": 6,
+      "visual_prompt": "a futuristic soundwave animation morphing into a human voice waveform, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

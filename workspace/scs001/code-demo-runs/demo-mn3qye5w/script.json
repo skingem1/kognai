@@ -1,0 +1,95 @@
+{
+  "demo_id": "demo-mn3qye5x",
+  "title": "Build a Blockchain in 30 Seconds",
+  "language": "python",
+  "total_duration_s": 30,
+  "steps": [
+    {
+      "step_id": "s1",
+      "title": "Step 1: Define the Block",
+      "code_lines": [
+        "class Block:",
+        "    def __init__(self, index, timestamp, data, previous_hash):",
+        "        self.index = index",
+        "        self.timestamp = timestamp",
+        "        self.data = data",
+        "        self.previous_hash = previous_hash",
+        "        self.hash = self.calculate_hash()",
+        "    def calculate_hash(self):",
+        "        return hashlib.sha256(f\"{self.index}{self.timestamp}{self.data}{self.previous_hash}\".encode()).hexdigest()"
+      ],
+      "language": "python",
+      "explanation": "We define a Block class with index, timestamp, data, and a hash based on previous block.",
+      "duration_s": 8,
+      "highlight_lines": [
+        0,
+        1,
+        8
+      ]
+    },
+    {
+      "step_id": "s2",
+      "title": "Step 2: Create the Blockchain",
+      "code_lines": [
+        "class Blockchain:",
+        "    def __init__(self):",
+        "        self.chain = [self.create_genesis_block()]",
+        "    def create_genesis_block(self):",
+        "        return Block(0, time.time(), \"Genesis Block\", \"0\")",
+        "    def get_last_block(self):",
+        "        return self.chain[-1]",
+        "    def add_block(self, data):",
+        "        new_block = Block(len(self.chain), time.time(), data, self.get_last_block().hash)",
+        "        self.chain.append(new_block)"
+      ],
+      "language": "python",
+      "explanation": "Now we create a Blockchain class with methods to add new blocks and track the chain.",
+      "duration_s": 8,
+      "highlight_lines": [
+        0,
+        3,
+        8
+      ]
+    },
+    {
+      "step_id": "s3",
+      "title": "Step 3: Add Blocks and Print Hashes",
+      "code_lines": [
+        "blockchain = Blockchain()",
+        "blockchain.add_block(\"Transaction 1\")",
+        "blockchain.add_block(\"Transaction 2\")",
+        "for block in blockchain.chain:",
+        "    print(block.hash)"
+      ],
+      "language": "python",
+      "explanation": "Finally, we add some transactions and print the hashes of each block in the chain.",
+      "duration_s": 8,
+      "highlight_lines": [
+        0,
+        3
+      ]
+    },
+    {
+      "step_id": "s4",
+      "title": "Try it yourself!",
+      "code_lines": [
+        "# Try adding more blocks and see the hashes change!"
+      ],
+      "language": "python",
+      "explanation": "Try it yourself and see how blockchain works in action!",
+      "duration_s": 6,
+      "highlight_lines": [
+        0
+      ]
+    }
+  ],
+  "hashtags": [
+    "#blockchain",
+    "#python",
+    "#tutorial",
+    "#coding"
+  ],
+  "intro_hook": "Let’s build a blockchain from scratch!",
+  "source": "user",
+  "topic_source": "user-prompt"
+}

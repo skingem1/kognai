@@ -1,0 +1,13 @@
+{
+  "sprint_id": "sprint-943",
+  "title": "MULTI-PIPELINE — 3 code demos + 2 TTS vlogs (TTS mode)",
+  "description": "3 code demos + 2 TTS-mode vlogs. Pushing toward 400 milestone.",
+  "source": "ops",
+  "tasks": [
+    {"id": "943-01", "title": "Code demo: Build a Blockchain in Python", "type": "ops", "task_target": "scripts/scs001/pipelines/code-demo.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-943", "output": "demo-mn3qye5w"},
+    {"id": "943-02", "title": "Code demo: Create an AI Chatbot in Python", "type": "ops", "task_target": "scripts/scs001/pipelines/code-demo.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-943", "output": "demo-mn3r0q37"},
+    {"id": "943-03", "title": "Code demo: Build a Task Scheduler in Python", "type": "ops", "task_target": "scripts/scs001/pipelines/code-demo.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-943", "output": "demo-mn3r2iva"},
+    {"id": "943-04", "title": "V2 video (TTS): The AI That Can Clone Your Voice in 3 Seconds", "type": "ops", "task_target": "scripts/scs001/produce-vlog.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-943", "output": "vlog-mn3r4f8d", "mode": "tts"},
+    {"id": "943-05", "title": "V2 video (TTS): Why Developers Who Ignore AI Will Be Unemployed by 2027", "type": "ops", "task_target": "scripts/scs001/produce-vlog.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-943", "output": "vlog-mn3r5he1", "mode": "tts"}
+  ]
+}
