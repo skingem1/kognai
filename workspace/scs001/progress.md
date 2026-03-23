@@ -3587,3 +3587,11 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (CTO rejected — queue empty, not in plan). Manual crystallise: skipped (module missing).
 - Cost: ~$0.20
 - Timestamp: 2026-03-23T01:30:00Z
+
+## Sprint 831 — FIX: /schedule command reads new posting-schedule.json format
+- Status: PASS
+- Commit: ca74e62
+- Files modified: scripts/telegram-commands/cmd-posting.ts
+- Swarm used: no
+- Cost: ~$0.05
+- Timestamp: 2026-03-23T01:35:00Z
