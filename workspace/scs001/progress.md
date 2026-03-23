@@ -4520,3 +4520,15 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Fix: restored TTS mode in produce-vlog.ts (was incorrectly removed)
 - Issues: ts-node cache invalidation caused TS compile error mid-batch, fixed by restoring mode param
 - Timestamp: 2026-03-23T16:45:00Z
+
+## Sprint 908 — MULTI-PIPELINE — 3 code demos + 2 entertainment videos
+- Status: PASS
+- Commit: d9132b5f
+- Files created: workspace/sprints/sprint-908.json, 3 code-demo runs, 2 entertainment runs
+- Code demos: "Build a Hono API" (demo-mn3bqp4q), "Build a Fast API" (demo-mn3bsfby), "Build a Hono API" (demo-mn3bu7pp)
+- Entertainment: "The AI War Nobody Is Talking About" (ent-mn3bvwa4, ent-mn3c22ky)
+- Pipeline: 31 v2 + 8 TTS vlogs + 9 code demos + 2 entertainment = 218+ total content
+- Cost: ~$4.20 (fal.ai entertainment B-roll), code demos $0.00
+- Swarm used: no — production runs
+- Issues: none
+- Timestamp: 2026-03-23T17:30:00Z
