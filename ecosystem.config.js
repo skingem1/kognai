@@ -631,11 +631,11 @@ module.exports = {
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
     {
-      // Sprint 353: Posting schedule regen — daily at 06:52 (after calendar regen at 06:50)
-      // Regenerates reports/posting-schedule.json with time-slotted videos.
+      // Sprint 832: Posting schedule regen — daily at 06:52 (after calendar regen at 06:50)
+      // Regenerates reports/posting-schedule.json with 2/day slots through gate deadline.
       // To start: pm2 start ecosystem.config.js --only kognai-schedule-regen
       name: "kognai-schedule-regen",
-      script: "scripts/scs001/generate-posting-schedule.ts",
+      script: "scripts/scs001/posting-schedule.ts",
       interpreter: "node",
       interpreter_args: "-r ts-node/register",
       cwd: "/Users/tarekmnif/kognai",
@@ -671,11 +671,11 @@ module.exports = {
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
     {
-      // Sprint 155: Posting time reminder — noon (12:00)
-      // Sends owner a Telegram nudge with next video to post + file path + /record shortcut.
-      // Silent if gate already met (30 posts). To start: pm2 start ecosystem.config.js --only kognai-post-noon
+      // Sprint 832: Posting time reminder — noon (12:00)
+      // Schedule-aware: reads posting-schedule.json, sends video + caption 30 min before slot.
+      // To start: pm2 start ecosystem.config.js --only kognai-post-noon
       name: "kognai-post-noon",
-      script: "scripts/posting-reminder.ts",
+      script: "scripts/scs001/posting-reminder.ts",
       interpreter: "node",
       interpreter_args: "-r ts-node/register",
       cwd: "/Users/tarekmnif/kognai",
@@ -693,10 +693,11 @@ module.exports = {
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
     {
-      // Sprint 155: Posting time reminder — evening (18:00)
-      // Same nudge pattern as noon but fires at 18:00. To start: pm2 start ecosystem.config.js --only kognai-post-evening
+      // Sprint 832: Posting time reminder — evening (18:00)
+      // Schedule-aware: reads posting-schedule.json, sends video + caption 30 min before slot.
+      // To start: pm2 start ecosystem.config.js --only kognai-post-evening
       name: "kognai-post-evening",
-      script: "scripts/posting-reminder.ts",
+      script: "scripts/scs001/posting-reminder.ts",
       interpreter: "node",
       interpreter_args: "-r ts-node/register",
       cwd: "/Users/tarekmnif/kognai",
