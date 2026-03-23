@@ -1,0 +1,63 @@
+{
+  "sprint_id": "sprint-930",
+  "title": "CODE-DEMO-ONLY — 5 code demos (HeyGen down)",
+  "description": "5 code demo videos. Avatar vlogs paused — HeyGen credits exhausted.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "930-01",
+      "title": "Code demo: Build a Tic-Tac-Toe Game in Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-930",
+      "output": "demo-mn3nkwxy"
+    },
+    {
+      "id": "930-02",
+      "title": "Code demo: Create a Crypto Price Alert in Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-930",
+      "output": "demo-mn3nn5rp"
+    },
+    {
+      "id": "930-03",
+      "title": "Code demo: Build a REST API with FastAPI",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-930",
+      "output": "demo-mn3nownm"
+    },
+    {
+      "id": "930-04",
+      "title": "Code demo: Create a WiFi Password Finder in Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-930",
+      "output": "demo-mn3nqh5i"
+    },
+    {
+      "id": "930-05",
+      "title": "Code demo: Build an Instagram Bot in Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-930",
+      "output": "demo-mn3nsenl"
+    }
+  ]
+}

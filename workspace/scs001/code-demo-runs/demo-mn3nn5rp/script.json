@@ -1,0 +1,78 @@
+{
+  "demo_id": "demo-mn3nn5rq",
+  "title": "Price Alert with Python in 3 Steps",
+  "language": "python",
+  "total_duration_s": 28,
+  "steps": [
+    {
+      "step_id": "s1",
+      "title": "Step 1: Setup",
+      "code_lines": [
+        "import requests",
+        "def check_price_alert(coin, target_price):"
+      ],
+      "language": "python",
+      "explanation": "We import the requests library and define our function to check prices.",
+      "duration_s": 6,
+      "highlight_lines": [
+        1
+      ]
+    },
+    {
+      "step_id": "s2",
+      "title": "Step 2: Fetch Data",
+      "code_lines": [
+        "url = f\"https://api.coingecko.com/api/v3/simple/price?ids={coin}&vs_currencies=usd\"",
+        "response = requests.get(url).json()",
+        "current_price = response[coin][\"usd\"]"
+      ],
+      "language": "python",
+      "explanation": "We fetch the current price of the coin using the CoinGecko API.",
+      "duration_s": 8,
+      "highlight_lines": [
+        1,
+        2
+      ]
+    },
+    {
+      "step_id": "s3",
+      "title": "Step 3: Check Alert",
+      "code_lines": [
+        "if current_price >= target_price:",
+        "    print(f\"Alert: {coin} has reached or exceeded ${target_price} (${current_price})\")",
+        "else:",
+        "    print(f\"{coin} is below target: ${current_price}\")"
+      ],
+      "language": "python",
+      "explanation": "We compare the current price to the target and print an alert if it's met.",
+      "duration_s": 8,
+      "highlight_lines": [
+        1,
+        3
+      ]
+    },
+    {
+      "step_id": "s4",
+      "title": "Step 4: Run It",
+      "code_lines": [
+        "check_price_alert(\"bitcoin\", 60000)"
+      ],
+      "language": "python",
+      "explanation": "Finally, we run the function with Bitcoin and a target price of $60,000.",
+      "duration_s": 6,
+      "highlight_lines": [
+        1
+      ]
+    }
+  ],
+  "hashtags": [
+    "#coding",
+    "#python",
+    "#crypto",
+    "#tutorial",
+    "#pricealert"
+  ],
+  "intro_hook": "Ever wanted to track crypto prices? Let's build a price alert!",
+  "source": "user",
+  "topic_source": "user-prompt"
+}
