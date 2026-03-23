@@ -1,18 +1,58 @@
 {
-  "scanned_at": "2026-03-23T02:55:18.971Z",
-  "total_runs": 64,
-  "total_videos": 120,
-  "unique_topics": 59,
-  "already_registered": 59,
+  "scanned_at": "2026-03-23T03:14:41.101Z",
+  "total_runs": 69,
+  "total_videos": 145,
+  "unique_topics": 64,
+  "already_registered": 64,
   "newly_registered": 0,
   "already_posted": 0,
-  "ready_to_post": 59,
+  "ready_to_post": 64,
   "gate_status": {
     "posted": 4,
     "target": 30,
     "gap": 26
   },
   "videos": [
+    {
+      "video_id": "vis-51435aa2",
+      "format": "vision",
+      "title": "The gaming PC that costs less than your phone",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T03-552z/output/vis-51435aa2_final.mp4"
+    },
+    {
+      "video_id": "vis-d41a1497",
+      "format": "vision",
+      "title": "Why VR is finally ready to replace your monitor",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T03-552z/output/vis-d41a1497_final.mp4"
+    },
+    {
+      "video_id": "vis-9245a6b1",
+      "format": "vision",
+      "title": "5 AI tools gamers are using to get unfair advantages",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T03-552z/output/vis-9245a6b1_final.mp4"
+    },
+    {
+      "video_id": "vis-6de4d0a1",
+      "format": "vision",
+      "title": "How quantum computers will break all encryption by 2030",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T03-552z/output/vis-6de4d0a1_final.mp4"
+    },
+    {
+      "video_id": "vis-1365a597",
+      "format": "vision",
+      "title": "The robot that can do your entire job better than you",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T03-552z/output/vis-1365a597_final.mp4"
+    },
     {
       "video_id": "vis-4faa50f8",
       "format": "vision",

@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-843",
+  "title": "CONTENT — 5 custom topic videos (gaming + future tech)",
+  "description": "Produce 5 videos with gaming and future tech topics to further diversify content mix.",
+  "source": "content",
+  "tasks": [
+    {
+      "id": "843-01",
+      "title": "Batch produce 5 videos with gaming + future tech topics",
+      "type": "content",
+      "task_target": "scripts/scs001/batch-produce.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-843"
+    }
+  ]
+}
