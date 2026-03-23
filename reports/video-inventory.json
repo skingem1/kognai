@@ -1,18 +1,42 @@
 {
-  "scanned_at": "2026-03-23T04:46:04.093Z",
-  "total_runs": 110,
-  "total_videos": 201,
-  "unique_topics": 87,
-  "already_registered": 87,
+  "scanned_at": "2026-03-23T04:53:38.273Z",
+  "total_runs": 119,
+  "total_videos": 210,
+  "unique_topics": 90,
+  "already_registered": 90,
   "newly_registered": 0,
   "already_posted": 0,
-  "ready_to_post": 87,
+  "ready_to_post": 90,
   "gate_status": {
     "posted": 4,
     "target": 30,
     "gap": 26
   },
   "videos": [
+    {
+      "video_id": "vis-d48b9269",
+      "format": "vision",
+      "title": "Why every developer needs to learn about AI agents right now",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T04-2emo/output/vis-d48b9269_final.mp4"
+    },
+    {
+      "video_id": "vis-a66f7284",
+      "format": "vision",
+      "title": "Claude Code vs Cursor vs Windsurf: which AI coding tool wins in 2026?",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T04-a2h1/output/vis-a66f7284_final.mp4"
+    },
+    {
+      "video_id": "vis-49daf6d6",
+      "format": "vision",
+      "title": "MCP protocol: how AI agents connect to any tool in 2026",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T04-diov/output/vis-49daf6d6_final.mp4"
+    },
     {
       "video_id": "vis-294649d6",
       "format": "vision",

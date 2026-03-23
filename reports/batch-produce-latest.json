@@ -1,14 +1,14 @@
 {
-  "batch_at": "2026-03-23T04:46:04.101Z",
+  "batch_at": "2026-03-23T04:53:38.281Z",
   "runs_planned": 3,
   "runs_completed": 3,
-  "total_new_videos": 1,
+  "total_new_videos": 3,
   "dry_run": false,
   "results": [
     {
       "run": 1,
       "success": true,
-      "videos": 0
+      "videos": 1
     },
     {
       "run": 2,
@@ -18,7 +18,7 @@
     {
       "run": 3,
       "success": true,
-      "videos": 0
+      "videos": 1
     }
   ]
 }
