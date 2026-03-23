@@ -1,0 +1,28 @@
+{
+  "sprint_id": "sprint-829",
+  "title": "OPS — auto-deliver 5 videos + gate urgency alert to operator",
+  "description": "Delivered 5 best videos to operator via Telegram. Sent gate urgency alert showing 40 ready, 3/30 posted, 15 days left, 1.8 posts/day pace needed.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "829-01",
+      "title": "Auto-deliver 5 best unposted videos to Telegram",
+      "type": "ops",
+      "task_target": "scripts/scs001/posting-auto-deliver.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-829"
+    },
+    {
+      "id": "829-02",
+      "title": "Send gate urgency alert with inventory status",
+      "type": "ops",
+      "task_target": "scripts/scs001/gate-urgency-alert.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-829"
+    }
+  ]
+}
