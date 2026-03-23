@@ -1,0 +1,12 @@
+{
+  "scenario_id": "scn-mz7k29",
+  "verdict": "PASS",
+  "message_score": 92,
+  "scroll_stop_score": 88,
+  "message_analysis": "Crystal clear single message: Meta's free AI is a calculated business strategy to dominate the AI market by leveraging user data at scale, not an act of generosity. Every scene reinforces this thesis without filler. Scene 1 hooks with the shock value, Scene 2 proves the offer is real, Scene 3 reveals the mechanism (data harvesting), Scene 4 frames the competitive kill shot, Scene 5 delivers the personal stakes, and Scene 6 loops back with recontextualized irony. The angle is sharp and original — not 'Meta released AI' but 'this is a predatory move wrapped in free access.' High shareability on the conspiracy-adjacent + tech-savvy audience overlap.",
+  "scroll_stop_analysis": "Hook is elite-tier. 'Zuckerberg just made Meta AI completely free. Forever. And it should terrify every other AI company.' combines three scroll-stoppers: (1) free resource self-interest, (2) celebrity name (Zuckerberg), (3) fear/urgency (terrify). The kinetic text + red pulsing FREE + smirk zoom creates visual pattern interrupts immediately. Pacing is relentless — no dead air, each scene averages 5.3s with strong emotion transitions. The loop back reframes the opening smirk with new context, forcing mental rewatch. Tone feels native TikTok (conspiracy + education hybrid), not lecture-y or overly corporate. Pattern interrupt distribution is strong throughout (3-3-2-2-2-2), maintaining momentum even in revelation/urgency sections.",
+  "fixes": [],
+  "confidence": 91,
+  "model_used": "claude-haiku-4-5-20251001",
+  "reviewed_at": "2026-03-23T12:35:51.121Z"
+}

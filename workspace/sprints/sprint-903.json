@@ -1,0 +1,38 @@
+{
+  "sprint_id": "sprint-903",
+  "title": "V2-CONTENT — 3 more v2 videos on trending AI topics",
+  "description": "Produce 3 more v2 pipeline videos. ArtDirector rejected 2 topics (misinformation/misleading), replaced with factual alternatives.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "903-01",
+      "title": "V2 video: Mark Zuckerberg Just Made Meta AI Free Forever",
+      "type": "ops",
+      "task_target": "scripts/scs001/run-v2-pipeline.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-903"
+    },
+    {
+      "id": "903-02",
+      "title": "V2 video: This AI Tool Writes Better Code Than Senior Developers",
+      "type": "ops",
+      "task_target": "scripts/scs001/run-v2-pipeline.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-903"
+    },
+    {
+      "id": "903-03",
+      "title": "V2 video: 5 AI Tools That Will Save You 10 Hours Every Week",
+      "type": "ops",
+      "task_target": "scripts/scs001/run-v2-pipeline.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-903"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "scenario_id": "scn-kx7m92",
+  "verdict": "PASS",
+  "message_score": 92,
+  "scroll_stop_score": 89,
+  "message_analysis": "Single, crystalline message: 'AI coding tools are now competitive with senior developers—if you're not using them, you're falling behind.' Every scene reinforces this without filler. The angle is original (credibility threat via peer admission, not hype). The hook promises a senior dev's reckoning and delivers proof three times over (code comparison, peer validation, competitive urgency). A developer would absolutely share this because it reframes their relationship to AI from dismissal to necessity. The emotional payload is real.",
+  "scroll_stop_analysis": "Hook is lethal. First 5 seconds combine jaw-drop reaction + audacious claim + visual proof on screen reflection (micro-detail that reads as authentic). Pattern interrupts are consistent (3-4 per scene except scene 6 at 2, which is acceptable for loop close). Pacing is surgical: no dead air, each scene has a hard cut or visual rhythm change. The split-screen code comparison (Scene 3) is the emotional peak—it's visceral proof, not abstract. Emotion arc lands: shock→intrigue→revelation→urgency (scenes 5-6) creates forward momentum. Feels native: confessional tone + screen recordings + peer testimonial = TikTok native. Would stop scroll in feed.",
+  "fixes": [],
+  "confidence": 94,
+  "model_used": "claude-haiku-4-5-20251001",
+  "reviewed_at": "2026-03-23T12:43:39.308Z"
+}

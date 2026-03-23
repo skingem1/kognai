@@ -1,0 +1,111 @@
+{
+  "scenario_id": "scn-cls4x9",
+  "trend_signal_id": "custom-v2-1774270122655",
+  "title": "Claude 4 Just Broke the Rules of AI Safety",
+  "angle": "AI safety was always framed as a cage — Claude 4 proves it can be a compass instead, and that changes everything about who controls the future of AI.",
+  "scenes": [
+    {
+      "scene_id": "s1",
+      "scene_name": "The Hook — Safety Was a Lie",
+      "duration_s": 5,
+      "voiceover": "Every AI company said safety slows you down. Claude 4 just proved them all wrong.",
+      "visual_style": "kinetic_text",
+      "visual_description": "Bold white text explodes onto black background. Words SAFETY and SPEED clash on screen then merge.",
+      "caption_overlay": "They said you had to choose. Claude 4 didn't.",
+      "emotion": "shock",
+      "music_cue": "impact_hit",
+      "pattern_interrupts": 3
+    },
+    {
+      "scene_id": "s2",
+      "scene_name": "The Old World — AI Safety As Prison",
+      "duration_s": 5,
+      "voiceover": "For years, guardrails meant dumb refusals. Ask anything edgy and the AI would panic and shut down.",
+      "visual_style": "b_roll_montage",
+      "visual_description": "Rapid cuts of AI chatbot error screens, red warning symbols, frustrated users staring at blocked responses.",
+      "caption_overlay": "AI safety = useless AI. Until now.",
+      "emotion": "curiosity",
+      "music_cue": "tension_build",
+      "pattern_interrupts": 2
+    },
+    {
+      "scene_id": "s3",
+      "scene_name": "The Shift — What Claude 4 Actually Did",
+      "duration_s": 6,
+      "voiceover": "Claude 4 doesn't refuse. It reasons. It tells you WHY something is risky and helps you anyway.",
+      "visual_style": "screen_recording",
+      "visual_description": "Live screen capture of Claude 4 handling a complex ethical prompt — showing nuanced reasoning, not a refusal wall.",
+      "caption_overlay": "This is what real AI safety looks like.",
+      "emotion": "revelation",
+      "music_cue": "ambient",
+      "pattern_interrupts": 2
+    },
+    {
+      "scene_id": "s4",
+      "scene_name": "The Implication — Who Controls AI Now",
+      "duration_s": 6,
+      "voiceover": "If safety no longer slows capability, every excuse Big Tech used to lock down AI just collapsed.",
+      "visual_style": "kinetic_text",
+      "visual_description": "Text dominoes fall spelling out GOOGLE, OPENAI, META — each toppling into a question mark. Camera shake on impact.",
+      "caption_overlay": "The control argument is dead.",
+      "emotion": "urgency",
+      "music_cue": "tension_build",
+      "pattern_interrupts": 3
+    },
+    {
+      "scene_id": "s5",
+      "scene_name": "The Proof — Real World Stakes",
+      "duration_s": 5,
+      "voiceover": "Doctors, lawyers, researchers — they needed AI that could go deep without breaking. Claude 4 just unlocked that.",
+      "visual_style": "b_roll_montage",
+      "visual_description": "Fast cuts: surgeon reviewing AI analysis, lawyer scanning AI-drafted brief, scientist reading AI research summary.",
+      "caption_overlay": "The people who needed this most finally have it.",
+      "emotion": "intrigue",
+      "music_cue": "upbeat",
+      "pattern_interrupts": 2
+    },
+    {
+      "scene_id": "s6",
+      "scene_name": "The Loop — Back to the Question",
+      "duration_s": 5,
+      "voiceover": "So the real question was never can AI be safe. It was — who benefits when we pretend it can't?",
+      "visual_style": "kinetic_text",
+      "visual_description": "Screen fades to black. Single question mark pulses white. Then the opening SAFETY vs SPEED clash replays at half speed.",
+      "caption_overlay": "Watch again. You'll see it differently.",
+      "emotion": "loop",
+      "music_cue": "silence",
+      "pattern_interrupts": 2
+    }
+  ],
+  "hook_test": {
+    "format_reference": "This changes everything",
+    "viral_proof": "The 'this changes everything' format drove 10M+ views on videos covering GPT-4 launch reactions and the Sam Altman OpenAI firing — both used a false-dilemma collapse as the hook, identical structural move used here.",
+    "why_it_works": "It weaponizes a belief the audience already holds (safety = restriction) and immediately invalidates it, creating cognitive dissonance that demands resolution. The viewer cannot scroll without feeling they missed something.",
+    "estimated_hook_rate": 42
+  },
+  "total_duration_s": 32,
+  "target_emotion_arc": [
+    "shock",
+    "curiosity",
+    "revelation",
+    "urgency",
+    "intrigue",
+    "loop"
+  ],
+  "speaker_name": "Kognai",
+  "tts_voice": "default",
+  "hashtags": [
+    "#claude4",
+    "#aisafety",
+    "#anthropic",
+    "#aibreakthrough",
+    "#llm",
+    "#futureofai",
+    "#artificialintelligence",
+    "#tecknews",
+    "#ai",
+    "#tech"
+  ],
+  "created_at": "2026-03-23T12:49:06.548Z",
+  "model_used": "claude-sonnet-4-6"
+}

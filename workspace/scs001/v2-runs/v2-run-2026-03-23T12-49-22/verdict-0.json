@@ -1,0 +1,12 @@
+{
+  "scenario_id": "scn-k7x291",
+  "verdict": "PASS",
+  "message_score": 92,
+  "scroll_stop_score": 88,
+  "message_analysis": "Crystal clear single message: AI tools can reclaim 10 hours weekly that you're currently wasting. Every scene reinforces this — hook establishes the loss, scenes 2-5 prove the solution exists, loop closes the circle. The angle (competitors using these while you sleep) adds original tension. The hook promises time savings; the tool reveals deliver proof. Highly shareable because the message triggers loss aversion + FOMO + actionable value.",
+  "scroll_stop_analysis": "First 1.5 seconds are visceral — melting clock + red counter + loss-framed voiceover create immediate shock and curiosity. Pattern interrupts are strong throughout (3-4 per scene in early scenes, dips to 2 in scenes 5-6 but still acceptable). Pacing is tight — 31 seconds with zero dead air, each scene moves purpose-driven. Emotion arc is well-engineered: shock → curiosity → revelation → intrigue → urgency → loop creates a satisfying climb. Feels native to TikTok (listicle structure is proven high-performer in tech niche). The whisper moment in scene 5 and clock reversal in scene 6 are pattern interrupts that push viewers to rewatch.",
+  "fixes": [],
+  "confidence": 89,
+  "model_used": "claude-haiku-4-5-20251001",
+  "reviewed_at": "2026-03-23T12:49:52.606Z"
+}

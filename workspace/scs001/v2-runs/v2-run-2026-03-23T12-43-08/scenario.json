@@ -1,0 +1,111 @@
+{
+  "scenario_id": "scn-kx7m92",
+  "trend_signal_id": "custom-v2-1774269788048",
+  "title": "This AI Tool Writes Better Code Than Senior Developers",
+  "angle": "A senior dev watches AI rewrite their own production code in real-time — and admits it's better. Not a promo. A reckoning.",
+  "scenes": [
+    {
+      "scene_id": "s1",
+      "scene_name": "The Provocation",
+      "duration_s": 5,
+      "voiceover": "I gave an AI my best code. It rewrote it. And I couldn't argue with a single line.",
+      "visual_style": "react_cam",
+      "visual_description": "Senior dev staring at screen, jaw slightly dropped. Screen reflection visible in glasses. Hard cut zoom on face.",
+      "caption_overlay": "MY OWN CODE... ROASTED BY AI",
+      "emotion": "shock",
+      "music_cue": "silence",
+      "pattern_interrupts": 3
+    },
+    {
+      "scene_id": "s2",
+      "scene_name": "The Setup",
+      "duration_s": 5,
+      "voiceover": "This isn't ChatGPT. This tool was trained specifically on production-grade codebases. Watch what it does.",
+      "visual_style": "screen_recording",
+      "visual_description": "Screen recording: paste in messy 40-line function. Tool UI loads. Cursor blinks. Tension holds for 1 second.",
+      "caption_overlay": "Not ChatGPT. Something different.",
+      "emotion": "intrigue",
+      "music_cue": "tension_build",
+      "pattern_interrupts": 2
+    },
+    {
+      "scene_id": "s3",
+      "scene_name": "The Rewrite",
+      "duration_s": 7,
+      "voiceover": "It cut 40 lines to 11. Eliminated three edge-case bugs I didn't even know existed. Faster. Cleaner. Documented.",
+      "visual_style": "screen_recording",
+      "visual_description": "Split screen: original bloated code left, AI output right. Red highlights on removed lines. Green on optimized logic. Fast scroll.",
+      "caption_overlay": "40 lines → 11 lines. Zero bugs.",
+      "emotion": "revelation",
+      "music_cue": "impact_hit",
+      "pattern_interrupts": 4
+    },
+    {
+      "scene_id": "s4",
+      "scene_name": "The Expert Reaction",
+      "duration_s": 6,
+      "voiceover": "I sent it to two senior engineers. Neither could find a flaw. One asked if I wrote it myself. I said no.",
+      "visual_style": "react_cam",
+      "visual_description": "Cut between two reaction clips: engineer one leans in, engineer two shakes head slowly in disbelief. Text message screenshot flashes.",
+      "caption_overlay": "\"Who wrote this?\" — 10yr senior dev",
+      "emotion": "urgency",
+      "music_cue": "tension_build",
+      "pattern_interrupts": 3
+    },
+    {
+      "scene_id": "s5",
+      "scene_name": "The Implication",
+      "duration_s": 5,
+      "voiceover": "This isn't replacing devs yet. But if you're not using this, someone else is. And they're shipping faster than you.",
+      "visual_style": "kinetic_text",
+      "visual_description": "Bold white text slams onto black background word by word. Each phrase cuts hard. Final word FASTER pulses red.",
+      "caption_overlay": "They're already using it. Are you?",
+      "emotion": "urgency",
+      "music_cue": "impact_hit",
+      "pattern_interrupts": 3
+    },
+    {
+      "scene_id": "s6",
+      "scene_name": "The Loop",
+      "duration_s": 4,
+      "voiceover": "I gave an AI my best code. It rewrote it. And honestly? I'm not going back.",
+      "visual_style": "react_cam",
+      "visual_description": "Same opening shot of dev at screen — but now he smirks, nods slowly. Loops perfectly back to scene one for rewatch.",
+      "caption_overlay": "The game changed. Did you miss it?",
+      "emotion": "loop",
+      "music_cue": "ambient",
+      "pattern_interrupts": 2
+    }
+  ],
+  "hook_test": {
+    "format_reference": "Wait, what? — Hook with surprising claim → proof → bigger reveal",
+    "viral_proof": "Corridor Crew's 'VFX Artists React' format and Theo Von-style confessional hooks using this exact structure have driven 10M-40M views. The 'I tried X and couldn't argue with the result' personal-stake confession is a proven scroll-stopper in tech commentary content.",
+    "why_it_works": "It weaponizes credibility threat. Developers are a proud tribe. Watching a senior dev admit AI beat them triggers identity-level curiosity. The viewer must see how. Completion rate spikes because the payoff is personal — every dev watching wonders if it would beat THEIR code.",
+    "estimated_hook_rate": 42
+  },
+  "total_duration_s": 32,
+  "target_emotion_arc": [
+    "shock",
+    "intrigue",
+    "revelation",
+    "urgency",
+    "urgency",
+    "loop"
+  ],
+  "speaker_name": "Kognai",
+  "tts_voice": "default",
+  "hashtags": [
+    "#AIcoding",
+    "#softwaredeveloper",
+    "#codingtools",
+    "#AItools2024",
+    "#programminglife",
+    "#devtok",
+    "#techreview",
+    "#coding",
+    "#AI",
+    "#tech"
+  ],
+  "created_at": "2026-03-23T12:43:33.976Z",
+  "model_used": "claude-sonnet-4-6"
+}

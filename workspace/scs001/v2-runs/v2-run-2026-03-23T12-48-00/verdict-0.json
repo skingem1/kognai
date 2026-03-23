@@ -1,0 +1,12 @@
+{
+  "scenario_id": "scn-alt7x92",
+  "verdict": "REJECT",
+  "message_score": 45,
+  "scroll_stop_score": 78,
+  "message_analysis": "The scenario constructs a false narrative as fact. The actual 2023 OpenAI board firing of Altman was publicly resolved: he was rehired within days, the board restructured, and no credible reporting supports the 'secret equity deal' claim presented here. This crosses from 'conspiracy-adjacent' into deliberate misinformation. The message is not 'original angle on a known event' — it's 'invented false history.' TikTok's own policies prohibit spreading false information about real people and companies, and Kognai's brand cannot afford the liability or reputation damage when this is fact-checked (which it will be, immediately). The message does not serve; it deceives.",
+  "scroll_stop_analysis": "The hook is extremely strong (42% estimate is credible), the pacing is tight, pattern interrupts land well, and the emotion arc executes perfectly. Scene 5's camera pivot and Scene 1's kinetic shock would absolutely stop scrolls. This is technically excellent TikTok craft. The fatal flaw is not in stopping scrolls — it's in what the scroll-stopped viewer receives being false.",
+  "fixes": [],
+  "confidence": 95,
+  "model_used": "claude-haiku-4-5-20251001",
+  "reviewed_at": "2026-03-23T12:48:35.225Z"
+}

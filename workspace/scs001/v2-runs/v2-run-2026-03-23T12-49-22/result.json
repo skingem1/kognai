@@ -1,0 +1,166 @@
+{
+  "run_id": "v2-run-2026-03-23T12-49-22",
+  "signal": {
+    "topic_id": "custom-v2-1774270162732",
+    "topic_name": "5 AI Tools That Will Save You 10 Hours Every Week",
+    "confidence_score": 80,
+    "keyword_cluster": [
+      "tools",
+      "that",
+      "will",
+      "save",
+      "hours"
+    ],
+    "domain_tags": [
+      "tech",
+      "AI"
+    ],
+    "provenance_source": "custom-topic-v2"
+  },
+  "status": "pass",
+  "published": false,
+  "dry_run": false,
+  "retries_used": 0,
+  "timestamps": {
+    "started": "2026-03-23T12:49:22.732Z",
+    "finished": "2026-03-23T12:55:06.034Z",
+    "scorsese_done": "2026-03-23T12:49:47.726Z",
+    "art_director_done": "2026-03-23T12:49:52.606Z",
+    "movie_editor_done": "2026-03-23T12:55:06.032Z"
+  },
+  "scenario": {
+    "scenario_id": "scn-k7x291",
+    "trend_signal_id": "custom-v2-1774270162732",
+    "title": "5 AI Tools That Will Save You 10 Hours Every Week",
+    "angle": "Most people waste 10 hours weekly on tasks AI already solved — here are the 5 tools your competitors are quietly using while you sleep",
+    "scenes": [
+      {
+        "scene_id": "s1",
+        "scene_name": "The Hook — Time Is Bleeding",
+        "duration_s": 5,
+        "voiceover": "You're losing 10 hours every single week. And you don't even know it.",
+        "visual_style": "kinetic_text",
+        "visual_description": "Clock melting into a drain. Bold red counter ticking upward. Hard cut to black.",
+        "caption_overlay": "10 HOURS. EVERY WEEK. GONE.",
+        "emotion": "shock",
+        "music_cue": "tension_build",
+        "pattern_interrupts": 3
+      },
+      {
+        "scene_id": "s2",
+        "scene_name": "The Pain — What You're Actually Doing",
+        "duration_s": 5,
+        "voiceover": "Writing emails. Editing videos. Taking notes. Scheduling. All tasks AI does in seconds.",
+        "visual_style": "b_roll_montage",
+        "visual_description": "Rapid cuts: person typing slowly, staring at blank doc, scrolling calendar, rubbing eyes at 2am.",
+        "caption_overlay": "Still doing this manually?",
+        "emotion": "curiosity",
+        "music_cue": "tension_build",
+        "pattern_interrupts": 4
+      },
+      {
+        "scene_id": "s3",
+        "scene_name": "Tool Drop 1-2 — The Fast Wins",
+        "duration_s": 6,
+        "voiceover": "Tool 1: Notion AI — turns messy notes into full reports. Tool 2: Otter.ai — transcribes every meeting instantly.",
+        "visual_style": "screen_recording",
+        "visual_description": "Split screen: Notion AI generating a report in 4 seconds. Otter live transcript appearing in real time.",
+        "caption_overlay": "#1 NOTION AI  |  #2 OTTER.AI",
+        "emotion": "revelation",
+        "music_cue": "impact_hit",
+        "pattern_interrupts": 3
+      },
+      {
+        "scene_id": "s4",
+        "scene_name": "Tool Drop 3-4 — The Power Moves",
+        "duration_s": 6,
+        "voiceover": "Tool 3: Runway — edit a full video in 60 seconds. Tool 4: Superhuman — reads and drafts your emails for you.",
+        "visual_style": "screen_recording",
+        "visual_description": "Runway cutting a clip with one click. Superhuman auto-drafting a reply. Both on screen simultaneously.",
+        "caption_overlay": "#3 RUNWAY  |  #4 SUPERHUMAN",
+        "emotion": "intrigue",
+        "music_cue": "upbeat",
+        "pattern_interrupts": 3
+      },
+      {
+        "scene_id": "s5",
+        "scene_name": "Tool Drop 5 — The Secret Weapon",
+        "duration_s": 5,
+        "voiceover": "Tool 5 is the one nobody talks about. Perplexity AI — it replaces 2 hours of research with one question.",
+        "visual_style": "react_cam",
+        "visual_description": "Presenter leans in close to camera, whispers, then snaps back as Perplexity demo flashes on screen.",
+        "caption_overlay": "This one is DIFFERENT. 👀",
+        "emotion": "urgency",
+        "music_cue": "impact_hit",
+        "pattern_interrupts": 2
+      },
+      {
+        "scene_id": "s6",
+        "scene_name": "The Loop Close — Clock Resets",
+        "duration_s": 4,
+        "voiceover": "10 hours back in your week. Every week. Or keep doing it the hard way — your choice.",
+        "visual_style": "kinetic_text",
+        "visual_description": "Same melting clock from scene 1 — but now it reverses, filling back up. Bold white text on black.",
+        "caption_overlay": "Your 10 hours start NOW.",
+        "emotion": "loop",
+        "music_cue": "silence",
+        "pattern_interrupts": 2
+      }
+    ],
+    "hook_test": {
+      "format_reference": "X things you didn't know about Y",
+      "viral_proof": "Listicle AI tool formats by creators like Liam Ottley and Matt Wolfe have repeatedly hit 10M-50M views on TikTok and Reels — the productivity-loss hook combined with a numbered tool reveal is the highest-performing structure in the tech niche as of 2024.",
+      "why_it_works": "The opening reframes time as something actively being stolen, triggering loss aversion. Viewers stay to find out if they are the person losing the time. The numbered structure creates completion compulsion — viewers cannot leave before hearing all 5 tools. The loop ending forces a rewatch to verify the clock reversal.",
+      "estimated_hook_rate": 42
+    },
+    "total_duration_s": 31,
+    "target_emotion_arc": [
+      "shock",
+      "curiosity",
+      "revelation",
+      "intrigue",
+      "urgency",
+      "loop"
+    ],
+    "speaker_name": "Kognai",
+    "tts_voice": "default",
+    "hashtags": [
+      "#AIProductivity",
+      "#AIToolsForWork",
+      "#NotionAI",
+      "#PerplexityAI",
+      "#WorkSmarter",
+      "#ProductivityHacks",
+      "#AI",
+      "#Tech",
+      "#SaveTime"
+    ],
+    "created_at": "2026-03-23T12:49:47.725Z",
+    "model_used": "claude-sonnet-4-6"
+  },
+  "verdict": {
+    "scenario_id": "scn-k7x291",
+    "verdict": "PASS",
+    "message_score": 92,
+    "scroll_stop_score": 88,
+    "message_analysis": "Crystal clear single message: AI tools can reclaim 10 hours weekly that you're currently wasting. Every scene reinforces this — hook establishes the loss, scenes 2-5 prove the solution exists, loop closes the circle. The angle (competitors using these while you sleep) adds original tension. The hook promises time savings; the tool reveals deliver proof. Highly shareable because the message triggers loss aversion + FOMO + actionable value.",
+    "scroll_stop_analysis": "First 1.5 seconds are visceral — melting clock + red counter + loss-framed voiceover create immediate shock and curiosity. Pattern interrupts are strong throughout (3-4 per scene in early scenes, dips to 2 in scenes 5-6 but still acceptable). Pacing is tight — 31 seconds with zero dead air, each scene moves purpose-driven. Emotion arc is well-engineered: shock → curiosity → revelation → intrigue → urgency → loop creates a satisfying climb. Feels native to TikTok (listicle structure is proven high-performer in tech niche). The whisper moment in scene 5 and clock reversal in scene 6 are pattern interrupts that push viewers to rewatch.",
+    "fixes": [],
+    "confidence": 89,
+    "model_used": "claude-haiku-4-5-20251001",
+    "reviewed_at": "2026-03-23T12:49:52.606Z"
+  },
+  "video": {
+    "video_id": "v2-9907a992",
+    "scenario_id": "scn-k7x291",
+    "file_path": "/Users/tarekmnif/kognai/workspace/scs001/v2-output/v2-9907a992/v2-9907a992.mp4",
+    "duration_seconds": 31,
+    "aspect_ratio": "9:16",
+    "scene_count": 6,
+    "has_voiceover": true,
+    "has_music": false,
+    "tts_method": "mimo",
+    "assembly_seconds": 313.424,
+    "created_at": "2026-03-23T12:55:06.032Z"
+  }
+}

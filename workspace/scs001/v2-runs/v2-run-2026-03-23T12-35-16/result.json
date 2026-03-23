@@ -1,0 +1,167 @@
+{
+  "run_id": "v2-run-2026-03-23T12-35-16",
+  "signal": {
+    "topic_id": "custom-v2-1774269316010",
+    "topic_name": "Mark Zuckerberg Just Made Meta AI Free Forever",
+    "confidence_score": 80,
+    "keyword_cluster": [
+      "mark",
+      "zuckerberg",
+      "just",
+      "made",
+      "meta"
+    ],
+    "domain_tags": [
+      "tech",
+      "AI"
+    ],
+    "provenance_source": "custom-topic-v2"
+  },
+  "status": "pass",
+  "published": false,
+  "dry_run": false,
+  "retries_used": 0,
+  "timestamps": {
+    "started": "2026-03-23T12:35:16.010Z",
+    "finished": "2026-03-23T12:43:02.455Z",
+    "scorsese_done": "2026-03-23T12:35:43.755Z",
+    "art_director_done": "2026-03-23T12:35:51.121Z",
+    "movie_editor_done": "2026-03-23T12:43:02.453Z"
+  },
+  "scenario": {
+    "scenario_id": "scn-mz7k29",
+    "trend_signal_id": "custom-v2-1774269316010",
+    "title": "Zuckerberg Just Broke the AI Industry",
+    "angle": "Meta making AI free forever isn't charity — it's a calculated kill shot aimed directly at OpenAI and Google's billion-dollar business models.",
+    "scenes": [
+      {
+        "scene_id": "s1",
+        "scene_name": "The Hook Drop",
+        "duration_s": 5,
+        "voiceover": "Zuckerberg just made Meta AI completely free. Forever. And it should terrify every other AI company.",
+        "visual_style": "kinetic_text",
+        "visual_description": "Bold white text slams onto black background one word at a time. Final word FREE pulses red. Quick zoom on Zuckerberg's face mid-smirk.",
+        "caption_overlay": "FREE. FOREVER. 😳",
+        "emotion": "shock",
+        "music_cue": "impact_hit",
+        "pattern_interrupts": 3
+      },
+      {
+        "scene_id": "s2",
+        "scene_name": "What You Actually Get",
+        "duration_s": 6,
+        "voiceover": "No subscription. No paywall. Full AI access — image gen, coding help, real-time search. All of it. Zero dollars.",
+        "visual_style": "screen_recording",
+        "visual_description": "Fast cuts of Meta AI interface in action — generating images, answering questions, writing code. Each feature flashes with a green checkmark.",
+        "caption_overlay": "GPT-4 charges $20/month for this 👀",
+        "emotion": "intrigue",
+        "music_cue": "tension_build",
+        "pattern_interrupts": 3
+      },
+      {
+        "scene_id": "s3",
+        "scene_name": "The Real Play",
+        "duration_s": 6,
+        "voiceover": "This isn't generosity. Meta has 3.2 billion users. Every AI conversation trains their model. You're not the customer — you're the product.",
+        "visual_style": "documentary",
+        "visual_description": "Split screen: happy user chatting with AI on left, data flowing into Meta servers visualized on right. Ominous slow zoom on Meta logo.",
+        "caption_overlay": "3,200,000,000 free trainers 🧠",
+        "emotion": "revelation",
+        "music_cue": "tension_build",
+        "pattern_interrupts": 2
+      },
+      {
+        "scene_id": "s4",
+        "scene_name": "The Kill Shot",
+        "duration_s": 6,
+        "voiceover": "OpenAI made $1.6 billion last year selling what Meta now gives away. How do you compete with free?",
+        "visual_style": "kinetic_text",
+        "visual_description": "Dollar signs raining down then dissolving. OpenAI and Google logos shown shrinking while Meta logo grows. Hard cut to silence.",
+        "caption_overlay": "You can't. 💀",
+        "emotion": "urgency",
+        "music_cue": "silence",
+        "pattern_interrupts": 2
+      },
+      {
+        "scene_id": "s5",
+        "scene_name": "What This Means For You",
+        "duration_s": 5,
+        "voiceover": "Free AI is your new superpower. But the company collecting everything you type just became the most powerful AI player on Earth.",
+        "visual_style": "react_cam",
+        "visual_description": "Tight shot of speaker's face shifting from excited to serious. Points directly at camera. Quick cut to phone screen showing Meta AI open.",
+        "caption_overlay": "Use it. But know the trade. 🔑",
+        "emotion": "satisfaction",
+        "music_cue": "ambient",
+        "pattern_interrupts": 2
+      },
+      {
+        "scene_id": "s6",
+        "scene_name": "The Loop Back",
+        "duration_s": 4,
+        "voiceover": "Zuckerberg made it free forever. The question was never how. It was always why.",
+        "visual_style": "kinetic_text",
+        "visual_description": "Text fades back to the opening shot of Zuckerberg's smirk. The word FREE reappears — now with a question mark. Hard cut to black.",
+        "caption_overlay": "Nothing is ever really free. 👁️",
+        "emotion": "loop",
+        "music_cue": "impact_hit",
+        "pattern_interrupts": 2
+      }
+    ],
+    "hook_test": {
+      "format_reference": "This changes everything",
+      "viral_proof": "MrBeast's 'I Gave Away $1,000,000 For Free' and similar free-resource revelation videos consistently hit 20M-80M views. Tech explainers using 'This changes everything' framing — including Marques Brownlee's iPhone reveals and AI breakdowns — regularly clear 10M+. The combination of FREE + corporate conspiracy angle mirrors viral hits like 'Why Everything Is Sold Out' (22M views) and 'The Real Reason Gas Prices Are High' (15M views).",
+      "why_it_works": "Free triggers immediate self-interest — viewers stop to ask 'can I use this?' The corporate angle adds conspiracy-adjacent tension that compels sharing. The loop ending forces rewatch as viewers reconsider the opening smirk with new context. Dual payoff: practical value plus sinister reveal.",
+      "estimated_hook_rate": 42
+    },
+    "total_duration_s": 32,
+    "target_emotion_arc": [
+      "shock",
+      "intrigue",
+      "revelation",
+      "urgency",
+      "satisfaction",
+      "loop"
+    ],
+    "speaker_name": "Kognai",
+    "tts_voice": "default",
+    "hashtags": [
+      "#MetaAI",
+      "#ZuckerbergAI",
+      "#FreeAI",
+      "#AINews2024",
+      "#OpenAIvsGoogle",
+      "#AITakeover",
+      "#TechExplained",
+      "#ArtificialIntelligence",
+      "#Tech",
+      "#FYP"
+    ],
+    "created_at": "2026-03-23T12:35:43.755Z",
+    "model_used": "claude-sonnet-4-6"
+  },
+  "verdict": {
+    "scenario_id": "scn-mz7k29",
+    "verdict": "PASS",
+    "message_score": 92,
+    "scroll_stop_score": 88,
+    "message_analysis": "Crystal clear single message: Meta's free AI is a calculated business strategy to dominate the AI market by leveraging user data at scale, not an act of generosity. Every scene reinforces this thesis without filler. Scene 1 hooks with the shock value, Scene 2 proves the offer is real, Scene 3 reveals the mechanism (data harvesting), Scene 4 frames the competitive kill shot, Scene 5 delivers the personal stakes, and Scene 6 loops back with recontextualized irony. The angle is sharp and original — not 'Meta released AI' but 'this is a predatory move wrapped in free access.' High shareability on the conspiracy-adjacent + tech-savvy audience overlap.",
+    "scroll_stop_analysis": "Hook is elite-tier. 'Zuckerberg just made Meta AI completely free. Forever. And it should terrify every other AI company.' combines three scroll-stoppers: (1) free resource self-interest, (2) celebrity name (Zuckerberg), (3) fear/urgency (terrify). The kinetic text + red pulsing FREE + smirk zoom creates visual pattern interrupts immediately. Pacing is relentless — no dead air, each scene averages 5.3s with strong emotion transitions. The loop back reframes the opening smirk with new context, forcing mental rewatch. Tone feels native TikTok (conspiracy + education hybrid), not lecture-y or overly corporate. Pattern interrupt distribution is strong throughout (3-3-2-2-2-2), maintaining momentum even in revelation/urgency sections.",
+    "fixes": [],
+    "confidence": 91,
+    "model_used": "claude-haiku-4-5-20251001",
+    "reviewed_at": "2026-03-23T12:35:51.121Z"
+  },
+  "video": {
+    "video_id": "v2-d1ede3ef",
+    "scenario_id": "scn-mz7k29",
+    "file_path": "/Users/tarekmnif/kognai/workspace/scs001/v2-output/v2-d1ede3ef/v2-d1ede3ef.mp4",
+    "duration_seconds": 32,
+    "aspect_ratio": "9:16",
+    "scene_count": 6,
+    "has_voiceover": true,
+    "has_music": false,
+    "tts_method": "mimo",
+    "assembly_seconds": 431.331,
+    "created_at": "2026-03-23T12:43:02.453Z"
+  }
+}
