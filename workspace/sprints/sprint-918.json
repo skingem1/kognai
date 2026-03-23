@@ -1,0 +1,63 @@
+{
+  "sprint_id": "sprint-918",
+  "title": "V2-CONTENT \u2014 5 TTS-mode vlogs on viral AI topics",
+  "description": "Produce 5 TTS vlog videos on high-engagement AI/tech topics.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "918-01",
+      "title": "V2 video: The AI Startup That Just Raised $6 Billion in One Day",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-918",
+      "output": "vlog-mn3hzk9s"
+    },
+    {
+      "id": "918-02",
+      "title": "V2 video: Why AI Developers Are Quitting Big Tech for Solo Projects",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-918",
+      "output": "vlog-mn3i0ppb"
+    },
+    {
+      "id": "918-03",
+      "title": "V2 video: The AI Wearable That Reads Your Mind Is Here",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-918",
+      "output": "vlog-mn3i1vr6"
+    },
+    {
+      "id": "918-04",
+      "title": "V2 video: How AI Is Secretly Rewriting Your Search Results",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-918",
+      "output": "vlog-mn3i357v"
+    },
+    {
+      "id": "918-05",
+      "title": "V2 video: The 5 Minute AI Workflow That Saves Me 4 Hours a Day",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-918",
+      "output": "vlog-mn3i4c59"
+    }
+  ]
+}

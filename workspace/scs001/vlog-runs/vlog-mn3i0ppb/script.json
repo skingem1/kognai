@@ -1,0 +1,21 @@
+{
+  "title": "AI Developers Leaving Big Tech",
+  "full_monologue": "**AI developers are ditching Big Tech for solo projects.** Why? Burnout, lack of autonomy, and the desire to innovate freely. Big companies are slow, bureaucratic, and stifling creativity. Solo projects offer flexibility, faster iteration, and the freedom to build what truly matters. More developers are choosing passion over paychecks. What do you think? Are you ready to go solo?",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 6,
+      "duration_s": 6,
+      "visual_prompt": "a person typing on a keyboard in a quiet, minimalist workspace, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 18,
+      "duration_s": 6,
+      "visual_prompt": "a lone developer standing in front of a city skyline, looking determined, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

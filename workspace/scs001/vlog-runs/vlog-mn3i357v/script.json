@@ -1,0 +1,21 @@
+{
+  "title": "AI Manipulating Your Search Results?",
+  "full_monologue": "**Did you know AI is rewriting your search results in real time?** Every time you type a query, algorithms are reshaping what you see, often without your knowledge. They’re not just sorting results—they’re personalizing, predicting, and even nudging your behavior. And the more you search, the more they learn. It’s a silent shift in how information is power. What if your next big idea comes from a result that’s already been filtered? Think about it—what’s really guiding your online journey?",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 6,
+      "duration_s": 6,
+      "visual_prompt": "A person typing on a keyboard, with abstract digital waves forming around them, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 18,
+      "duration_s": 6,
+      "visual_prompt": "A crowd of people walking in different directions, symbolizing diverging paths of information, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

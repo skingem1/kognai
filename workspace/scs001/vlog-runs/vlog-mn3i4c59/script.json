@@ -1,0 +1,21 @@
+{
+  "title": "5-Minute AI Workflow That Saves 4 Hours",
+  "full_monologue": "**This AI workflow saves me 4 hours daily.** I start by outlining my tasks, then let the AI handle the heavy lifting. Next, I review and refine—no more endless meetings. Finally, I automate repetitive actions. It’s streamlined, efficient, and honestly, life-changing. Want to know how I do it? Comment below and I’ll show you step-by-step.",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 6,
+      "duration_s": 6,
+      "visual_prompt": "A person typing on a keyboard with hands moving rapidly across the keys, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 18,
+      "duration_s": 6,
+      "visual_prompt": "A person standing in front of a smart speaker, saying a command, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

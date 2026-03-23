@@ -1,0 +1,21 @@
+{
+  "title": "AI Wearable That Reads Your Mind",
+  "full_monologue": "**The AI wearable that reads your mind is here.** Imagine a device that translates your thoughts into action—no typing, no speaking. This tech uses advanced neural sensors to interpret brainwaves in real time. It’s not science fiction anymore. Think about controlling your smart home, composing music, or even communicating with others just by thinking. The future of human-computer interaction is here, and it’s more intuitive than ever. What would you do with a device that reads your mind? Let me know in the comments.",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 6,
+      "duration_s": 6,
+      "visual_prompt": "A person wearing a sleek, futuristic headband with glowing lights, standing in a modern lab, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 18,
+      "duration_s": 6,
+      "visual_prompt": "Hands moving through the air as a holographic responds to their gestures, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}
