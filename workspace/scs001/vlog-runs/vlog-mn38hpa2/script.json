@@ -1,0 +1,21 @@
+{
+  "title": "The Hidden Cost Of Free AI Tools",
+  "full_monologue": "**Free AI tools sound great—but there’s a catch.** They collect your data, sell it, and train bigger models on your expense. You think you’re getting a free service? Think again. Your privacy? Gone. Your creativity? Trapped in someone else’s algorithm. And when you hit a limit? You’re stuck. Pay up or lose access. It’s not just money—it’s your digital soul. What’s your biggest regret about free AI tools?",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 5,
+      "duration_s": 3,
+      "visual_prompt": "A person typing on a keyboard with blurred screen in the background, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 15,
+      "duration_s": 3,
+      "visual_prompt": "A crowded cityscape with people walking past glowing tech billboards, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

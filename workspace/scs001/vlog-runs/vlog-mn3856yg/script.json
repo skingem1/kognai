@@ -1,0 +1,21 @@
+{
+  "title": "Why Self Driving Cars Keep Crashing",
+  "full_monologue": "Bold: Self-driving cars are supposed to be safer, but they keep crashing. Why? It’s not just about sensors—it’s about how AI interprets the world. These systems rely on massive datasets, but they often fail in edge cases: construction zones, unpredictable pedestrians, or even a rogue shopping cart. When AI can’t recognize something, it freezes or makes a bad decision. This isn’t just a tech problem—it’s a trust problem. If we can’t rely on AI to make split-second decisions, how far can we go? What does this mean for the future of autonomous vehicles?",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 5,
+      "duration_s": 3,
+      "visual_prompt": "A self-driving car abruptly stopping on a busy street while pedestrians walk nearby, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 15,
+      "duration_s": 3,
+      "visual_prompt": "A group of engineers in a lab working with robotic arms and hardware components, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

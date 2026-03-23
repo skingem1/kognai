@@ -1,0 +1,21 @@
+{
+  "title": "GitHub Copilot Just Got 10x Better Overnight",
+  "full_monologue": "**GitHub Copilot Just Got 10x Better Overnight**. Imagine having a coding partner that understands your style and finishes your lines. That’s what’s happening now. Developers are raving about the new features—smarter suggestions, faster responses, and deeper context understanding. It’s like having a co-pilot who’s been in the trenches with you. I’ve been testing it, and the difference is night and day. This is a game-changer for coders everywhere. What do you think? Is this the future of coding?",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 5,
+      "duration_s": 3,
+      "visual_prompt": "A person typing furiously on a keyboard, hands moving quickly without showing the screen, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 15,
+      "duration_s": 3,
+      "visual_prompt": "A group of developers in a modern office, collaborating and smiling, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

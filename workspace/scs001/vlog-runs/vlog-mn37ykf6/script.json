@@ -1,0 +1,21 @@
+{
+  "title": "AI Startup Raises $1B Without A Product?",
+  "full_monologue": "**An AI startup raised $1 billion without a product.** How? By selling hype, not innovation. They pitched investors on futuristic AI visions, not working tech. They used buzzwords, not code. And somehow, they got billions. Let’s break it down. First, they sold the dream — not the demo. [Cut to B-roll: people in a high-tech office, hands typing on keyboards, no screens visible]. Then, they focused on traction — not actual users. [Cut to B-roll: a crowded cityscape, people walking, abstract motion in the background]. Finally, they raised money before building anything. [Cut to B-roll: a group of people in a meeting room, discussing, no text visible]. What does this say about the AI industry? Comment below.",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 5,
+      "duration_s": 3,
+      "visual_prompt": "people in a high-tech office, hands typing on keyboards, no screens visible, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 15,
+      "duration_s": 3,
+      "visual_prompt": "a crowded cityscape, people walking, abstract motion in the background, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}
