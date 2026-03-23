@@ -1,0 +1,13 @@
+{
+  "sprint_id": "sprint-946",
+  "title": "CODE-DEMO-ONLY — 3 code demos (HeyGen + ElevenLabs exhausted)",
+  "description": "3 code demos only. Both HeyGen and ElevenLabs credits exhausted.",
+  "source": "ops",
+  "tasks": [
+    {"id": "946-01", "title": "Code demo: Build an Image Filter App in Python", "type": "ops", "task_target": "scripts/scs001/pipelines/code-demo.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-946", "output": "demo-mn3rqdqb"},
+    {"id": "946-02", "title": "Code demo: Create a Batch File Renamer in Python", "type": "ops", "task_target": "scripts/scs001/pipelines/code-demo.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-946", "output": "demo-mn3rs2pl"},
+    {"id": "946-03", "title": "Code demo: Build a YouTube Thumbnail Downloader in Python", "type": "ops", "task_target": "scripts/scs001/pipelines/code-demo.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-946", "output": "demo-mn3rti0x"},
+    {"id": "946-04", "title": "V2 video (TTS): The AI That Reads 1000 Books a Day", "type": "ops", "task_target": "scripts/scs001/produce-vlog.ts", "agent": "coder", "status": "failed", "priority": "high", "sprint_id": "sprint-946", "output": "ElevenLabs quota_exceeded"},
+    {"id": "946-05", "title": "V2 video (TTS): Why Your Doctor Will Be Replaced by AI Before 2030", "type": "ops", "task_target": "scripts/scs001/produce-vlog.ts", "agent": "coder", "status": "skipped", "priority": "high", "sprint_id": "sprint-946", "output": "Skipped — ElevenLabs credits exhausted"}
+  ]
+}
