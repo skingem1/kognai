@@ -1,0 +1,63 @@
+{
+  "sprint_id": "sprint-923",
+  "title": "MULTI-PIPELINE — 3 code demos + 2 TTS vlogs (batch 7)",
+  "description": "Produce 3 code demo videos and 2 TTS vlog videos. Pushing toward 300 total content.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "923-01",
+      "title": "Code demo: Build a Chat App with Python Sockets",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-923",
+      "output": "demo-mn3jzyey"
+    },
+    {
+      "id": "923-02",
+      "title": "Code demo: Create a Markdown to HTML Converter in Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-923",
+      "output": "demo-mn3k55sr"
+    },
+    {
+      "id": "923-03",
+      "title": "Code demo: Build a YouTube Video Downloader in Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-923",
+      "output": "demo-mn3k3fn4"
+    },
+    {
+      "id": "923-04",
+      "title": "V2 video: China's New AI Just Destroyed GPT-5 in Every Benchmark",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-923",
+      "output": "vlog-mn3k52iq"
+    },
+    {
+      "id": "923-05",
+      "title": "V2 video: How I Built a $10K Side Hustle Using Only AI Tools",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-923",
+      "output": "vlog-mn3k52iy"
+    }
+  ]
+}

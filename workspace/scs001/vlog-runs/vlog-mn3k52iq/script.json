@@ -1,0 +1,21 @@
+{
+  "title": "China's AI Just Beat GPT-5",
+  "full_monologue": "**China's new AI just destroyed GPT-5 in every benchmark.** This isn't just another update—it's a game-changer. The model outperforms GPT-5 in language understanding, code generation, and reasoning. Experts are stunned. But how did China pull this off? The implications are huge for global tech. What does this mean for the future of AI? Let me know in the comments.",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 6,
+      "duration_s": 6,
+      "visual_prompt": "A group of scientists in a high-tech lab discussing a glowing holographic, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 18,
+      "duration_s": 6,
+      "visual_prompt": "A futuristic city skyline with glowing AI-themed neon signs, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}
