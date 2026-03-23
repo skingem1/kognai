@@ -1,0 +1,21 @@
+{
+  "title": "Open Source AI Surpasses GPT-4",
+  "full_monologue": "Boldly breaking the mold, an open source AI model recently outperformed GPT-4 in key benchmarks. It’s not just about power—it’s about accessibility. This model is freely available to developers worldwide, democratizing cutting-edge AI. And the community is already building incredible tools around it. Imagine what we can create together. What do you think this means for the future of AI? Comment below.",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 5,
+      "duration_s": 3,
+      "visual_prompt": "A group of diverse developers collaborating in a modern co-working space, focused and engaged, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 15,
+      "duration_s": 3,
+      "visual_prompt": "A person typing on a laptop keyboard with glowing keys, surrounded by abstract digital motion, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

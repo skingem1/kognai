@@ -1,21 +1,38 @@
 {
-  "batch_at": "2026-03-23T11:52:43.449Z",
+  "batch_at": "2026-03-23T12:36:48.746Z",
   "pipeline_filter": "educational",
-  "runs_planned": 3,
-  "runs_completed": 0,
-  "results": [],
+  "runs_planned": 5,
+  "runs_completed": 4,
+  "results": [
+    {
+      "pipeline": "educational",
+      "runId": "vlog-mn35hnus",
+      "title": "Apple's Secret AI Inside Your Phone",
+      "cost": 0.26
+    },
+    {
+      "pipeline": "educational",
+      "runId": "vlog-mn35ng4s",
+      "title": "Open Source AI Surpasses GPT-4",
+      "cost": 0.26
+    },
+    {
+      "pipeline": "educational",
+      "runId": "vlog-mn35t4il",
+      "title": "Europe Bans AI in Hiring? Here's Why",
+      "cost": 0.26
+    },
+    {
+      "pipeline": "educational",
+      "runId": "vlog-mn35ysd3",
+      "title": "This Robot Can Do Your Laundry Better Than You",
+      "cost": 0.26
+    }
+  ],
   "errors": [
     {
       "run": 1,
-      "error": "Captions.ai submit 400: {\"detail\":\"Insufficient credits to call the AI Creator API. A minimum of 60 credits is required.\"}"
-    },
-    {
-      "run": 2,
-      "error": "Captions.ai submit 400: {\"detail\":\"Insufficient credits to call the AI Creator API. A minimum of 60 credits is required.\"}"
-    },
-    {
-      "run": 3,
-      "error": "Captions.ai submit 400: {\"detail\":\"Insufficient credits to call the AI Creator API. A minimum of 60 credits is required.\"}"
+      "error": "Command failed: curl -s --max-time 60 http://localhost:11434/api/generate -d '{\"model\":\"qwen3:14b\",\"prompt\":\"Write a 30-second TikTok vlog script about: \\\"OpenAI Just Made GPT-5 Free For Everyone\\\"\\n\\"
     }
   ]
 }

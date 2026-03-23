@@ -1,0 +1,21 @@
+{
+  "title": "Apple's Secret AI Inside Your Phone",
+  "full_monologue": "Apple is building an AI that runs entirely on your iPhone. No cloud, no servers—just your device. Imagine your phone learning your habits, predicting your needs, and getting smarter over time. This AI could revolutionize how we use our phones, making them more personal and powerful than ever before. It's all happening right under our noses. What do you think about AI living inside your phone? Let me know below.",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 5,
+      "duration_s": 3,
+      "visual_prompt": "a person's hands typing on a keyboard, no screen visible, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 15,
+      "duration_s": 3,
+      "visual_prompt": "a cityscape with people walking through a bustling street, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}
