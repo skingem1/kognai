@@ -3575,3 +3575,15 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Issues: Topic sources exhausted (1/5 yield) — need to wait for fresh trending data
 - Cost: ~$0.10
 - Timestamp: 2026-03-23T03:25:00Z
+
+## Sprint 830 — OPS: batch browser posting + posting schedule generator
+- Status: PASS
+- Commit: 7c15ea4
+- Files created: scripts/scs001/batch-browser-post.ts, scripts/scs001/posting-schedule.ts
+- Files created: workspace/sprints/sprint-830.json
+- Test: posting-schedule.ts — PASS (27 slots, full coverage, 778 videos available)
+- Test: batch-browser-post.ts --dry-run — PASS (found MP4s, logged correctly)
+- Pipeline: 778 in ledger, gate 3/30, 15 days remaining
+- Swarm used: no (CTO rejected — queue empty, not in plan). Manual crystallise: skipped (module missing).
+- Cost: ~$0.20
+- Timestamp: 2026-03-23T01:30:00Z
