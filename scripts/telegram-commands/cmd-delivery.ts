@@ -12,6 +12,7 @@ import {
   loadSpeakerMap, diversifyBySpeaker, loadHookMap, diversifyByHook,
   freshnessScore, loadArchived, loadTopicMap, diversifyByTopic,
 } from './shared';
+import { buildEngagementCaption } from '../scs001/engagement-caption';
 
 export async function cmdDeliver(chatId: string, args: string): Promise<string> {
   const count = Math.min(Math.max(parseInt(args) || 3, 1), 10);
@@ -844,7 +845,12 @@ export async function cmdBatchDeliver(chatId: string, args: string): Promise<str
       continue;
     }
 
-    const caption = `📹 *${v.title}*\nFormat: ${v.format} · ${v.duration_s}s\nID: \`${v.video_id}\`\n\nPost to TikTok, then run:\n/done ${v.video_id}`;
+    // Sprint 841: Use engagement caption for copy-paste-ready TikTok posting
+    const engCaption = buildEngagementCaption({
+      videoId: v.video_id,
+      topic: v.title,
+    });
+    const caption = `📹 *${v.title}*\n${v.format} · ${v.duration_s}s · \`${v.video_id}\`\n\n📋 *TikTok Caption (copy-paste):*\n${engCaption}\n\n✅ After posting: /done ${v.video_id}`;
 
     try {
       await sendVideoFile(chatId, videoPath, caption);
