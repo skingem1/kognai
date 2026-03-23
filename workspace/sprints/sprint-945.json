@@ -1,0 +1,13 @@
+{
+  "sprint_id": "sprint-945",
+  "title": "MULTI-PIPELINE — 3 code demos + 2 TTS vlogs (400+ MILESTONE)",
+  "description": "3 code demos + 2 TTS-mode vlogs. Crossing 400 total content milestone.",
+  "source": "ops",
+  "tasks": [
+    {"id": "945-01", "title": "Code demo: Build a Speech Recognition App in Python", "type": "ops", "task_target": "scripts/scs001/pipelines/code-demo.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-945", "output": "demo-mn3rh7k1"},
+    {"id": "945-02", "title": "Code demo: Create a Data Visualizer in Python", "type": "ops", "task_target": "scripts/scs001/pipelines/code-demo.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-945", "output": "demo-mn3rit48"},
+    {"id": "945-03", "title": "Code demo: Build a Wordle Clone in Python", "type": "ops", "task_target": "scripts/scs001/pipelines/code-demo.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-945", "output": "demo-mn3rk5yj"},
+    {"id": "945-04", "title": "V2 video (TTS): Google's New AI Can Write Code Better Than Senior Engineers", "type": "ops", "task_target": "scripts/scs001/produce-vlog.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-945", "output": "vlog-mn3rmpsu", "mode": "tts"},
+    {"id": "945-05", "title": "V2 video (TTS): The 1 AI Skill That Replaced My Entire Team", "type": "ops", "task_target": "scripts/scs001/produce-vlog.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-945", "output": "vlog-mn3ro03z", "mode": "tts"}
+  ]
+}

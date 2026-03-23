@@ -1,0 +1,21 @@
+{
+  "title": "Google AI Code Masterclass",
+  "full_monologue": "**Google's new AI can write code better than senior engineers.** Imagine an AI that doesn’t just assist, but outperforms humans in coding. It’s learning from millions of lines of code, adapting in real-time, and producing clean, efficient solutions faster than any developer. This isn’t just a tool—it’s a game-changer for the future of software development. But what does this mean for programmers? Will AI replace us, or will it elevate our work? Let me know in the comments.",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 6,
+      "duration_s": 6,
+      "visual_prompt": "A close-up of hands typing rapidly on a keyboard, with abstract digital lines flowing around them, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 18,
+      "duration_s": 6,
+      "visual_prompt": "A futuristic cityscape with glowing, interconnected tech infrastructure, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}
