@@ -1,0 +1,28 @@
+{
+  "sprint_id": "sprint-844",
+  "title": "OPS — disk cleanup (old test runs + stale editing outputs)",
+  "description": "4.8GB in scs001. Remove old analytics-test dirs (537MB), old run-* dirs (400MB+), and stale editing outputs to reclaim ~3GB.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "844-01",
+      "title": "Remove old analytics-test and run-* directories",
+      "type": "ops",
+      "task_target": "workspace/scs001/",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-844"
+    },
+    {
+      "id": "844-02",
+      "title": "Clean stale editing-outputs preserving recent files",
+      "type": "ops",
+      "task_target": "workspace/scs001/editing-outputs/",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-844"
+    }
+  ]
+}
