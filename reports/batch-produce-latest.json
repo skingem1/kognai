@@ -1,38 +1,39 @@
 {
-  "batch_at": "2026-03-23T14:09:02.917Z",
+  "batch_at": "2026-03-23T14:31:47.001Z",
   "pipeline_filter": "educational",
   "runs_planned": 5,
-  "runs_completed": 4,
+  "runs_completed": 5,
   "results": [
     {
       "pipeline": "educational",
-      "runId": "vlog-mn38vjjy",
-      "title": "AI Code Genius Shocks Engineers",
+      "runId": "vlog-mn39jg15",
+      "title": "DeepSeek R1: The Most Dangerous AI Model?",
       "cost": 0.26
     },
     {
       "pipeline": "educational",
-      "runId": "vlog-mn390xmu",
-      "title": "Perplexity AI vs Google Search",
+      "runId": "vlog-mn39osmf",
+      "title": "Cursor IDE vs VS Code: Why AI Devs Switch",
       "cost": 0.26
     },
     {
       "pipeline": "educational",
-      "runId": "vlog-mn396dnp",
-      "title": "OpenAI Employees Are Quitting And Here's Why",
+      "runId": "vlog-mn39uh4d",
+      "title": "AI Music & Copyright: What You Need to Know",
       "cost": 0.26
     },
     {
       "pipeline": "educational",
-      "runId": "vlog-mn39c6te",
-      "title": "Why Tech Layoffs Aren't Going Away",
+      "runId": "vlog-mn3a03vk",
+      "title": "Build an AI Agent in 10 Minutes",
+      "cost": 0.26
+    },
+    {
+      "pipeline": "educational",
+      "runId": "vlog-mn3a5eli",
+      "title": "Claude 4 Revolutionizes AI Safety",
       "cost": 0.26
     }
   ],
-  "errors": [
-    {
-      "run": 1,
-      "error": "Command failed: curl -s --max-time 60 http://localhost:11434/api/generate -d '{\"model\":\"qwen3:14b\",\"prompt\":\"Write a 30-second TikTok vlog script about: \\\"Tesla Bot Just Learned To Walk And Its Terrif"
-    }
-  ]
+  "errors": []
 }

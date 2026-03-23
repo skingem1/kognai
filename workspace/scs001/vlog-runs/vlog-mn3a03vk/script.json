@@ -1,0 +1,21 @@
+{
+  "title": "Build an AI Agent in 10 Minutes",
+  "full_monologue": "Bold: Build an AI agent in 10 minutes—no code required. Start by defining its purpose, like a personal assistant or game bot. Next, use a no-code platform to set up the core functions. Then, train it with simple commands and examples. Finally, test and tweak until it works smoothly. It’s easier than you think. Ready to jump in? Let me know in the comments!",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 5,
+      "duration_s": 3,
+      "visual_prompt": "hands typing on a keyboard with no screen visible, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 15,
+      "duration_s": 3,
+      "visual_prompt": "a person walking through a futuristic cityscape, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

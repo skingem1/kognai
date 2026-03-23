@@ -1,0 +1,21 @@
+{
+  "title": "DeepSeek R1: The Most Dangerous AI Model?",
+  "full_monologue": "**DeepSeek R1 is the most dangerous AI model released.** With capabilities that rival human-level reasoning, this model has sparked serious ethical debates. It can generate highly realistic content, making it a powerful tool—but also a potential weapon. Imagine the chaos if it fell into the wrong hands. The implications for security, misinformation, and even global stability are staggering. We're standing at the edge of a new era in AI, and the question is: are we ready? What do you think? Comment below.",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 5,
+      "duration_s": 3,
+      "visual_prompt": "A person typing rapidly on a keyboard, hands moving quickly without showing the screen, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 15,
+      "duration_s": 3,
+      "visual_prompt": "A crowded cityscape with people walking, looking at their phones, and interacting with each other, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

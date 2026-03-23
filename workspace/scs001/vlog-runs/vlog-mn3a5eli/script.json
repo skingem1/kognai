@@ -1,0 +1,21 @@
+{
+  "title": "Claude 4 Revolutionizes AI Safety",
+  "full_monologue": "**Anthropic Claude 4 Just Changed Everything About AI Safety**. This update introduces groundbreaking safeguards that make AI more reliable, transparent, and ethical than ever before. We’re talking smarter alignment with human values, reduced bias, and safer interactions. It’s not just an upgrade—it’s a leap forward in responsible AI. Imagine a world where AI doesn’t just work better, but does the right thing. That’s what Claude 4 is bringing us. What do you think? Are we finally seeing the future of safe AI?",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 5,
+      "duration_s": 3,
+      "visual_prompt": "A person typing on a keyboard with glowing keys, hands in motion, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 15,
+      "duration_s": 3,
+      "visual_prompt": "A futuristic cityscape with smooth, flowing lights and motion, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

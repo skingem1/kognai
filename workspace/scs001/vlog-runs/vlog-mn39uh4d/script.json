@@ -1,0 +1,21 @@
+{
+  "title": "AI Music & Copyright: What You Need to Know",
+  "full_monologue": "**AI-generated music is shaking up the industry, but here's the catch.** Many AI tools use copyrighted material to train their models, which means the music they produce can sometimes infringe on existing rights. This has sparked major legal debates and confusion for artists. Some platforms now offer royalty-free AI music, but it's still a minefield. If you're using AI in your projects, be sure to check the licensing terms. The line between innovation and infringement is thin—and it's getting thinner by the day. What do you think? Should AI music be regulated?",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 5,
+      "duration_s": 3,
+      "visual_prompt": "A person typing on a keyboard with glowing keys in a dimly lit room, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 15,
+      "duration_s": 3,
+      "visual_prompt": "A group of musicians playing instruments in a modern studio, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#music"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Cursor IDE vs VS Code: Why AI Devs Switch",
+  "full_monologue": "Bold: Cursor IDE is replacing VS Code for AI developers. Why? It’s built for AI-first workflows, with smart autocompletion and AI-powered debugging. It’s faster, lighter, and integrates seamlessly with LLMs. Plus, it’s tailored for modern AI projects, making development smoother. I’ve been using it full-time and haven’t looked back. Are you ready to upgrade your coding tools?",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 5,
+      "duration_s": 3,
+      "visual_prompt": "Close-up of hands typing on a keyboard, no screen visible, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 15,
+      "duration_s": 3,
+      "visual_prompt": "Abstract motion graphics with glowing lines and shapes, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}
