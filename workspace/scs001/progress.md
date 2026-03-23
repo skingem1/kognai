@@ -4190,3 +4190,15 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (OPS sprint, ran batch-produce directly)
 - Issues: none
 - Timestamp: 2026-03-23T09:48:00Z
+
+## Sprint 888 — V2-FIX — Fix Scorsese agent empty scenario parsing
+- Status: PASS
+- Commit: 6620b5fa
+- Files modified: agents/scs001-scorsese/index.ts
+- Files created: workspace/sprints/sprint-888.json
+- Test: scripts/scs001/run-v2-pipeline.ts --dry-run — 3 runs, all PASS (95/92 scores)
+- Pipeline: v2 pipeline now operational (was broken — 0 scenes on every run)
+- Swarm used: no — complex parsing logic, wrote directly
+- Swarm bypassed: yes (FP-007). Manual crystallise: skipped (no crystalliser available).
+- Issues: Claude returns non-standard emotion values ("Shock and disbelief") — fixed with normalizer
+- Timestamp: 2026-03-23T10:01:00Z
