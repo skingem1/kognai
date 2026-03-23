@@ -154,8 +154,8 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/audit':      response = cmdAudit();      break;
     case '/quickstart':  response = cmdQuickStart();  break;
     case '/schedule':    response = cmdSchedule();    break;
-    case '/posting-health': response = cmdPostingHealth(); break;
-    case '/bulk-captions': response = cmdBulkCaptions(); break;
+    case '/posting-health': case '/postinghealth': response = cmdPostingHealth(); break;
+    case '/bulk-captions': case '/bulkcaptions': response = cmdBulkCaptions(); break;
     case '/leaderboard': response = cmdLeaderboard(); break;
     case '/updateviews': response = cmdUpdateViews(cmdArgs); break;
     case '/achiri':      response = cmdAchiri();             break;

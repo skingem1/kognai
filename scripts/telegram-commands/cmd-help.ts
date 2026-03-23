@@ -107,6 +107,13 @@ export function cmdHelp(): string {
     `/cleanup   — Archive old pipeline runs, free disk space\n` +
     `/postnext  — Top 5 unposted videos by viral score\n` +
     `/postauto  — Trigger browser auto-poster (1-5 videos)\n` +
+    `/postinghealth — Posting infrastructure health check\n` +
+    `/bulkcaptions — Export all ready videos with TikTok captions\n` +
+    `/batch     — Batch operations summary\n` +
+    `/postlog   — Recent posting activity log\n` +
+    `/costs     — API cost breakdown\n` +
+    `/replenish — Auto-replenish content pipeline\n` +
+    `/postbrowser — Post via browser automation\n` +
     `/help      — This message`
   );
 }

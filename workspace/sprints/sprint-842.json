@@ -1,0 +1,28 @@
+{
+  "sprint_id": "sprint-842",
+  "title": "OPS — update /help with new commands + command aliases",
+  "description": "Add missing commands to /help (posting-health, bulk-captions, batch, postlog, costs, replenish, post-browser). Add non-hyphenated aliases for recent commands.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "842-01",
+      "title": "Update /help with missing commands",
+      "type": "fix",
+      "task_target": "scripts/telegram-commands/cmd-help.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-842"
+    },
+    {
+      "id": "842-02",
+      "title": "Add non-hyphenated command aliases in telegram-bot.ts",
+      "type": "fix",
+      "task_target": "scripts/telegram-bot.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-842"
+    }
+  ]
+}
