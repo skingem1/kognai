@@ -4780,3 +4780,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no — executed directly
 - Issues: **BLOCKER — HeyGen avatar credits exhausted.** All future avatar vlogs will fail until credits are replenished. Code demos are unaffected ($0). Next sprints should be CODE-DEMO ONLY until HeyGen credits are topped up.
 - Timestamp: 2026-03-24T03:30:00Z
+
+## Sprint 930 — CODE-DEMO-ONLY — 5 code demos (HeyGen down)
+- Status: PASS (5/5)
+- Commit: 9ae818b8
+- Files created: workspace/sprints/sprint-930.json, 5 code demo runs
+- Code demos: "Tic-Tac-Toe" (demo-mn3nkwxy), "Crypto Price Alert" (demo-mn3nn5rp), "FastAPI" (demo-mn3nownm), "WiFi Finder" (demo-mn3nqh5i), "Instagram Bot" (demo-mn3nsenl)
+- Pipeline: 31 v2 + 65 TTS vlogs + 59 code demos + 5 entertainment = 328+ total content
+- Cost: $0.00 (code demos are free — local Ollama + FFmpeg)
+- Swarm used: no — executed directly
+- Issues: HeyGen credits exhausted — avatar vlogs blocked until credits refilled
+- Timestamp: 2026-03-24T04:00:00Z
