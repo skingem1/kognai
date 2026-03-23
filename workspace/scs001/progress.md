@@ -3695,3 +3695,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (content production run)
 - Cost: ~$0.50
 - Timestamp: 2026-03-23T04:50:00Z
+
+## Sprint 841 — FIX: upgrade batch-deliver with engagement captions
+- Status: PASS
+- Commit: c17871f
+- Files modified: scripts/telegram-commands/cmd-delivery.ts
+- Fix: /batch-deliver now uses buildEngagementCaption() for copy-paste-ready TikTok captions
+- Previously: sent plain metadata (format, duration, ID)
+- Now: sends hook line + CTA + trending hashtags + clear posting instructions
+- Swarm used: no (surgical edit)
+- Cost: ~$0.05
+- Timestamp: 2026-03-23T05:00:00Z
