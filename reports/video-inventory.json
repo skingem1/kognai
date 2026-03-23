@@ -1,18 +1,42 @@
 {
-  "scanned_at": "2026-03-23T08:40:06.559Z",
-  "total_runs": 227,
-  "total_videos": 443,
-  "unique_topics": 165,
-  "already_registered": 165,
+  "scanned_at": "2026-03-23T08:46:49.850Z",
+  "total_runs": 230,
+  "total_videos": 452,
+  "unique_topics": 168,
+  "already_registered": 168,
   "newly_registered": 0,
   "already_posted": 0,
-  "ready_to_post": 165,
+  "ready_to_post": 168,
   "gate_status": {
     "posted": 4,
     "target": 30,
     "gap": 26
   },
   "videos": [
+    {
+      "video_id": "vis-260d39cc",
+      "format": "vision",
+      "title": "How to build a personal AI assistant that actually understands you",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T08-43wa/output/vis-260d39cc_final.mp4"
+    },
+    {
+      "video_id": "vis-a56ee7e0",
+      "format": "vision",
+      "title": "The real reason Nvidia stock keeps breaking records in 2026",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T08-43wa/output/vis-a56ee7e0_final.mp4"
+    },
+    {
+      "video_id": "vis-8554942c",
+      "format": "vision",
+      "title": "Why decentralized identity will replace passwords forever",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T08-43wa/output/vis-8554942c_final.mp4"
+    },
     {
       "video_id": "vis-63e4be9b",
       "format": "vision",
