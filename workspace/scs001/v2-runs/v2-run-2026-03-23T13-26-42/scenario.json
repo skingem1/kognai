@@ -1,0 +1,111 @@
+{
+  "scenario_id": "scn-x7k291",
+  "trend_signal_id": "custom-v2-1774272402873",
+  "title": "Apple Just Killed Siri and Nobody Noticed",
+  "angle": "Apple quietly buried Siri by outsourcing its brain to ChatGPT — making their own AI irrelevant before it ever got smart.",
+  "scenes": [
+    {
+      "scene_id": "s01",
+      "scene_name": "The Hook — Dead on Arrival",
+      "duration_s": 5,
+      "voiceover": "Apple spent 13 years building Siri. Then quietly handed her brain to their biggest competitor.",
+      "visual_style": "kinetic_text",
+      "visual_description": "Black screen. Bold white text slams in: 'SIRI IS DEAD.' Red X graphic pulses over Siri logo. Hard cut to Apple logo cracking.",
+      "caption_overlay": "They didn't announce it. They just… did it.",
+      "emotion": "shock",
+      "music_cue": "impact_hit",
+      "pattern_interrupts": 3
+    },
+    {
+      "scene_id": "s02",
+      "scene_name": "The Evidence — What Apple Actually Did",
+      "duration_s": 6,
+      "voiceover": "iOS 18.1. Ask Siri anything hard — she literally hands you off to ChatGPT. That's not an assistant. That's a redirect.",
+      "visual_style": "screen_recording",
+      "visual_description": "Phone screen shows Siri prompt. User asks complex question. Siri UI fades and ChatGPT interface slides in. Arrow graphic: 'YOUR DATA → OPENAI.'",
+      "caption_overlay": "Siri can't answer. So she sends you to the competition.",
+      "emotion": "intrigue",
+      "music_cue": "tension_build",
+      "pattern_interrupts": 2
+    },
+    {
+      "scene_id": "s03",
+      "scene_name": "The Betrayal — 13 Years for This",
+      "duration_s": 5,
+      "voiceover": "Apple acquired Siri in 2010. Promised she'd get smarter every year. Fourteen years later — she outsources to ChatGPT.",
+      "visual_style": "b_roll_montage",
+      "visual_description": "Fast cuts: 2011 Siri launch keynote clip, Steve Jobs silhouette, year counter spinning 2011→2024, then OpenAI logo fills screen with a THUD.",
+      "caption_overlay": "14 years. Billions spent. Still not good enough.",
+      "emotion": "revelation",
+      "music_cue": "tension_build",
+      "pattern_interrupts": 2
+    },
+    {
+      "scene_id": "s04",
+      "scene_name": "The Bigger Problem — Apple's AI Crisis",
+      "duration_s": 6,
+      "voiceover": "Google has Gemini built in. Samsung has Galaxy AI. Apple's answer? Borrow someone else's. That is a five-alarm crisis.",
+      "visual_style": "kinetic_text",
+      "visual_description": "Split screen: Google Gemini logo, Samsung AI logo, then Apple logo alone with a question mark. Text explodes: 'WHERE IS APPLE'S AI?' Camera shake effect.",
+      "caption_overlay": "Every competitor built their own. Apple borrowed.",
+      "emotion": "urgency",
+      "music_cue": "impact_hit",
+      "pattern_interrupts": 3
+    },
+    {
+      "scene_id": "s05",
+      "scene_name": "The Twist — This Was the Plan All Along",
+      "duration_s": 5,
+      "voiceover": "Or… this is exactly what Apple wants. Let OpenAI absorb the liability. Keep your hands clean. Classic Apple.",
+      "visual_style": "react_cam",
+      "visual_description": "Tight face shot of speaker. Eyebrow raise. Slow smirk. Text bubble pops in: 'Wait… is Apple actually the smart one here?' Zoom punch on face.",
+      "caption_overlay": "What if killing Siri was genius?",
+      "emotion": "intrigue",
+      "music_cue": "silence",
+      "pattern_interrupts": 2
+    },
+    {
+      "scene_id": "s06",
+      "scene_name": "The Loop — Back to the Grave",
+      "duration_s": 5,
+      "voiceover": "Either way — the Siri you knew is gone. The only question is whether Apple knows what comes next. Do they?",
+      "visual_style": "kinetic_text",
+      "visual_description": "Screen returns to opening: 'SIRI IS DEAD.' text. Then slow fade to: 'Or was she ever really alive?' Loop-cut back to frame one.",
+      "caption_overlay": "Go back to the start. Watch it again.",
+      "emotion": "loop",
+      "music_cue": "ambient",
+      "pattern_interrupts": 2
+    }
+  ],
+  "hook_test": {
+    "format_reference": "The Real Reason X Happened — hidden explanation with conspiracy-adjacent reveal",
+    "viral_proof": "Videos using 'Apple killed X and nobody noticed' framing consistently hit 10M-40M views on TikTok. Reference: MrMobile and iJustine reaction formats on Apple AI news, plus creator @technewssimplified hitting 18M views on 'Apple Intelligence is a lie' format in Oct 2024.",
+    "why_it_works": "The phrase 'nobody noticed' triggers FOMO and insider knowledge bias — viewers feel they are getting a secret. Combined with Apple brand recognition and AI anxiety, this hits three viral triggers: identity threat, institutional betrayal, and fear of missing out.",
+    "estimated_hook_rate": 42
+  },
+  "total_duration_s": 32,
+  "target_emotion_arc": [
+    "shock",
+    "intrigue",
+    "revelation",
+    "urgency",
+    "intrigue",
+    "loop"
+  ],
+  "speaker_name": "Kognai",
+  "tts_voice": "default",
+  "hashtags": [
+    "#siri",
+    "#appleai",
+    "#appleIntelligence",
+    "#chatgpt",
+    "#techdrama",
+    "#aitools",
+    "#applenews",
+    "#tech",
+    "#ai",
+    "#viral"
+  ],
+  "created_at": "2026-03-23T13:27:10.253Z",
+  "model_used": "claude-sonnet-4-6"
+}

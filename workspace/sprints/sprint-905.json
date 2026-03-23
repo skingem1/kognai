@@ -1,0 +1,38 @@
+{
+  "sprint_id": "sprint-905",
+  "title": "V2-CONTENT — 3 more v2 videos on trending topics",
+  "description": "Produce 3 more v2 pipeline videos on trending tech/AI topics.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "905-01",
+      "title": "V2 video: Apple Just Killed Siri and Nobody Noticed",
+      "type": "ops",
+      "task_target": "scripts/scs001/run-v2-pipeline.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-905"
+    },
+    {
+      "id": "905-02",
+      "title": "V2 video: The 3 Python Libraries That Will Make You Look Like a Senior Dev",
+      "type": "ops",
+      "task_target": "scripts/scs001/run-v2-pipeline.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-905"
+    },
+    {
+      "id": "905-03",
+      "title": "V2 video: LinkedIn Is Eating TikToks Lunch",
+      "type": "ops",
+      "task_target": "scripts/scs001/run-v2-pipeline.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-905"
+    }
+  ]
+}

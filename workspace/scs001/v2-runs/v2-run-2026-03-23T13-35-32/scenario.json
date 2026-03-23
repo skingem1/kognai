@@ -1,0 +1,111 @@
+{
+  "scenario_id": "scn-py7x92",
+  "trend_signal_id": "custom-v2-1774272932374",
+  "title": "The 3 Python Libraries That Will Make You Look Like a Senior Dev",
+  "angle": "Most devs spend years learning what seniors know in weeks — these 3 libraries are the shortcut nobody talks about openly.",
+  "scenes": [
+    {
+      "scene_id": "s1",
+      "scene_name": "The Hook — Stop Scrolling",
+      "duration_s": 5,
+      "voiceover": "Junior devs write 200 lines. Seniors write 10. The difference? These 3 Python libraries.",
+      "visual_style": "kinetic_text",
+      "visual_description": "Bold white text explodes onto black screen. Counter animates: 200 lines crossed out, replaced by 10. Red underline pulses.",
+      "caption_overlay": "Seniors don't code more. They code SMARTER. 🐍",
+      "emotion": "shock",
+      "music_cue": "impact_hit",
+      "pattern_interrupts": 3
+    },
+    {
+      "scene_id": "s2",
+      "scene_name": "Library #1 — Rich",
+      "duration_s": 6,
+      "voiceover": "Rich. Turn your ugly terminal output into something that actually looks professional. One import.",
+      "visual_style": "screen_recording",
+      "visual_description": "Split screen: bare print statements vs Rich tables and colored logs. Cursor moves fast. Zoom punch on the output transformation.",
+      "caption_overlay": "Rich — terminal output that doesn't embarrass you 🎨",
+      "emotion": "revelation",
+      "music_cue": "tension_build",
+      "pattern_interrupts": 2
+    },
+    {
+      "scene_id": "s3",
+      "scene_name": "Library #2 — Pydantic",
+      "duration_s": 6,
+      "voiceover": "Pydantic. Stop writing if-else validation forever. Seniors validate data in 3 lines. Here's how.",
+      "visual_style": "screen_recording",
+      "visual_description": "Code editor zooms in on a messy validation block, then cuts hard to a clean Pydantic model. Green checkmark animates. Text flashes: BULLETPROOF.",
+      "caption_overlay": "Pydantic — validation that won't let you ship bugs 🔒",
+      "emotion": "intrigue",
+      "music_cue": "tension_build",
+      "pattern_interrupts": 2
+    },
+    {
+      "scene_id": "s4",
+      "scene_name": "Library #3 — Loguru",
+      "duration_s": 6,
+      "voiceover": "Loguru. Forget Python's logging module. This replaces 50 lines of config with one line. Seniors swear by it.",
+      "visual_style": "screen_recording",
+      "visual_description": "Screen shows the infamous Python logging boilerplate. Red X slashes through it. Cut to Loguru single-line import. Terminal fills with beautiful colored logs.",
+      "caption_overlay": "Loguru — logging that actually makes sense ⚡",
+      "emotion": "revelation",
+      "music_cue": "upbeat",
+      "pattern_interrupts": 3
+    },
+    {
+      "scene_id": "s5",
+      "scene_name": "The Real Talk — Why This Matters",
+      "duration_s": 5,
+      "voiceover": "Knowing these isn't cheating. It's what separates a dev who ships from one who struggles in code review.",
+      "visual_style": "react_cam",
+      "visual_description": "Speaker close-up, direct eye contact, slightly leaning forward. Cut to GitHub PR comment: 'Nice, clean code.' Reaction smile. Fast zoom out.",
+      "caption_overlay": "Code review hits different when seniors nod 👊",
+      "emotion": "urgency",
+      "music_cue": "impact_hit",
+      "pattern_interrupts": 2
+    },
+    {
+      "scene_id": "s6",
+      "scene_name": "Loop Payoff — Back to the Hook",
+      "duration_s": 5,
+      "voiceover": "Rich, Pydantic, Loguru. 3 libraries. That's the gap between 200 lines and 10. Now you know.",
+      "visual_style": "kinetic_text",
+      "visual_description": "Text animates back in: 200 lines vs 10. Library names punch in one by one. Final frame freezes on: 'You just leveled up.' Screen flickers to black.",
+      "caption_overlay": "Watch again — you'll catch what you missed 🔁",
+      "emotion": "loop",
+      "music_cue": "silence",
+      "pattern_interrupts": 2
+    }
+  ],
+  "hook_test": {
+    "format_reference": "X things you didn't know about Y",
+    "viral_proof": "List-reveal Python content by Tech With Tim and Fireship routinely clears 10M+ views. '5 Python tricks seniors use' format peaked at 14M on TikTok in 2023. Numbered library reveals with before/after code cuts are proven stop-scroll triggers in dev communities.",
+    "why_it_works": "Dev audiences are aspirational — they want seniority signals fast. The '200 lines vs 10' contrast triggers identity threat and FOMO simultaneously, forcing the watch-through. The loop ending rewards rewatch with new details each time.",
+    "estimated_hook_rate": 42
+  },
+  "total_duration_s": 33,
+  "target_emotion_arc": [
+    "shock",
+    "revelation",
+    "intrigue",
+    "revelation",
+    "urgency",
+    "loop"
+  ],
+  "speaker_name": "Kognai",
+  "tts_voice": "default",
+  "hashtags": [
+    "#pythonlibraries",
+    "#pythontips",
+    "#learnpython",
+    "#softwaredeveloper",
+    "#codingshortcuts",
+    "#devtok",
+    "#python",
+    "#programming",
+    "#tech",
+    "#coding"
+  ],
+  "created_at": "2026-03-23T13:35:58.751Z",
+  "model_used": "claude-sonnet-4-6"
+}

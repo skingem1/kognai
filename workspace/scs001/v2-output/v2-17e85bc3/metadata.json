@@ -1,0 +1,13 @@
+{
+  "video_id": "v2-17e85bc3",
+  "scenario_id": "scn-lnk7x92",
+  "file_path": "/Users/tarekmnif/kognai/workspace/scs001/v2-output/v2-17e85bc3/v2-17e85bc3.mp4",
+  "duration_seconds": 33,
+  "aspect_ratio": "9:16",
+  "scene_count": 6,
+  "has_voiceover": true,
+  "has_music": false,
+  "tts_method": "mimo",
+  "assembly_seconds": 442.752,
+  "created_at": "2026-03-23T13:48:01.235Z"
+}

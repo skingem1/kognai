@@ -1,0 +1,12 @@
+{
+  "scenario_id": "scn-py7x92",
+  "verdict": "PASS",
+  "message_score": 92,
+  "scroll_stop_score": 88,
+  "message_analysis": "Crystal clear single message: these 3 libraries are the shortcut to senior-level coding efficiency. Every scene reinforces the 200-lines-to-10-lines contrast or the identity signal ('code review hits different'). The angle is fresh—not 'learn these libraries' but 'this is what separates juniors from seniors.' Hook promises a seniority shortcut and delivers exactly that. The FOMO is real: viewers will share because it answers 'what am I missing?' High confidence this resonates with dev aspirations.",
+  "scroll_stop_analysis": "Scene 1 is a textbook stop-scroll trigger: bold kinetic text, numeric contrast (200 vs 10), emotional hook ('Seniors don't code more. They code SMARTER'). First 1.5s nails curiosity—the red pulse and counter animation are designed to interrupt the scroll. Pattern interrupts are consistent (2–3 per scene). Pacing is tight at 33s with no dead air. Emotion arc builds naturally from shock → revelation → urgency → payoff loop. The GitHub PR comment in Scene 5 grounds the aspiration in real-world validation. Feels native to dev TikTok—educational without lecturing, fast without feeling chaotic. Would stop a developer mid-scroll.",
+  "fixes": [],
+  "confidence": 91,
+  "model_used": "claude-haiku-4-5-20251001",
+  "reviewed_at": "2026-03-23T13:36:03.717Z"
+}

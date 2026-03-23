@@ -1,0 +1,12 @@
+{
+  "scenario_id": "scn-x7k291",
+  "verdict": "PASS",
+  "message_score": 92,
+  "scroll_stop_score": 88,
+  "message_analysis": "Crystal clear single message: Apple abandoned Siri by outsourcing to ChatGPT, revealing a broader AI crisis or strategic genius. Every scene reinforces this thesis without filler. The angle is original — reframes a product decision as institutional betrayal or dark strategy, which is fresh in the AI discourse. Hook promises 'nobody noticed' a quiet kill, and the narrative delivers exactly that reveal. The message lands hard enough to share because it triggers both frustration (Apple failed) and admiration (Apple played 4D chess). Message serves the moment: Apple Intelligence backlash + AI anxiety = perfect timing.",
+  "scroll_stop_analysis": "First 1.5 seconds are devastating: 'SIRI IS DEAD' + logo crack + voiceover about handing brain to competitor. That hits all three viral triggers (identity threat, institutional betrayal, FOMO). Pattern interrupts are consistent: kinetic text slams, screen recordings, split-screen comparisons, reaction cam, loop structure. Pacing is tight — 32s with no dead air. Emotion arc builds naturally (shock → revelation → urgency → intrigue twist → loop). The Scene 5 reversal ('What if Apple is actually smart?') is a pattern interrupt that resets engagement before the close. Feels native to TikTok's conspiracy-adjacent, tech-drama format. Would absolutely stop scroll.",
+  "fixes": [],
+  "confidence": 94,
+  "model_used": "claude-haiku-4-5-20251001",
+  "reviewed_at": "2026-03-23T13:27:16.123Z"
+}

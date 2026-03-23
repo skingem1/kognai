@@ -1,0 +1,12 @@
+{
+  "scenario_id": "scn-lnk7x92",
+  "verdict": "PASS",
+  "message_score": 92,
+  "scroll_stop_score": 88,
+  "message_analysis": "Crystal clear single message: LinkedIn is a blue-ocean opportunity for AI content creators right now, with algorithmic advantages and untapped audience. Every scene reinforces this—no filler. The angle is sharp (platform arbitrage + AI + timing) and original enough to stand out. Hook promises 'LinkedIn beating TikTok' and delivers proof + algorithm reveal + urgency. High confidence viewers walk away knowing they should test LinkedIn AI content today.",
+  "scroll_stop_analysis": "Scene 1 is a brutal hook—'10M views, no followers, no ad spend' creates immediate friction and curiosity. Counter animation is a pattern interrupt. Pacing is tight: 33s with 6 scenes means no dead air. Pattern interrupts consistently hit 2-3 per scene. Emotion arc builds methodically (shock → proof → revelation → dual urgency). The loop close brings viewers back to Scene 1 with a personalization twist ('your turn'), which is native TikTok/Reels behavior. Feels like insider knowledge shared by a peer, not a lecture or ad.",
+  "fixes": [],
+  "confidence": 94,
+  "model_used": "claude-haiku-4-5-20251001",
+  "reviewed_at": "2026-03-23T13:40:38.482Z"
+}
