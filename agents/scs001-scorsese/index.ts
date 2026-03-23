@@ -93,50 +93,204 @@ function buildUserPrompt(signal: TrendSignal): string {
       ? `- Viral examples: ${signal.viral_examples.join(', ')}`
       : '',
     '',
-    '## Requirements',
-    '1. Output ONLY valid JSON matching the ScenarioBundle schema',
-    '2. 5-7 scenes, 24-60 seconds total',
-    '3. Hook test is MANDATORY — cite a real format that gets 10M+ views',
-    '4. First scene emotion must be "curiosity" or "shock"',
-    '5. Min 2 pattern_interrupts per scene',
-    '6. Include hashtags (5-8 niche + 2-3 broad)',
+    '## Required JSON Fields',
+    '- scenario_id: unique string like "scn-abc123"',
+    '- title: string',
+    '- angle: string (YOUR unique take/perspective on this topic — REQUIRED, NOT empty)',
+    '- scenes: array of 5-6 objects, each with: scene_id, scene_name, duration_s, voiceover, visual_style, visual_description, caption_overlay, emotion, music_cue, pattern_interrupts',
+    '- hook_test: { format_reference, viral_proof, why_it_works, estimated_hook_rate (number >= 30) }',
+    '- speaker_name: "Kognai"',
+    '- hashtags: array of strings',
     '',
-    'Respond with ONLY the JSON object, no markdown fences, no explanation.',
+    '## Rules',
+    '1. 5-6 scenes, ~30 seconds total',
+    '2. hook_test is MANDATORY — cite a real 10M+ view format',
+    '3. First scene emotion must be exactly "curiosity" or "shock" (lowercase)',
+    '4. All emotion values must be one of: curiosity, shock, intrigue, revelation, urgency, satisfaction, loop',
+    '5. Min 2 pattern_interrupts (number) per scene',
+    '6. visual_style: kinetic_text|react_cam|b_roll_montage|screen_recording|documentary',
+    '7. music_cue: tension_build|impact_hit|ambient|upbeat|silence',
+    '8. Keep voiceover strings SHORT (max 120 chars each, single line)',
+    '',
+    'Respond with ONLY the raw JSON object. NO markdown. NO ```json. NO text before/after.',
   ].filter(Boolean).join('\n');
 }
 
+/**
+ * Extract the outermost balanced JSON object from a string.
+ * Properly handles nested braces and string literals (with escaped quotes).
+ */
+function extractOutermostJson(text: string): string | null {
+  let depth = 0;
+  let start = -1;
+  let inStr = false;
+  let esc = false;
+
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (esc) { esc = false; continue; }
+    if (ch === '\\' && inStr) { esc = true; continue; }
+    if (ch === '"') { inStr = !inStr; continue; }
+    if (inStr) continue;
+    if (ch === '{') { if (start === -1) start = i; depth++; }
+    else if (ch === '}') { depth--; if (depth === 0 && start !== -1) return text.substring(start, i + 1); }
+  }
+  return null;
+}
+
+/**
+ * Fix unescaped newlines inside JSON string values without corrupting escaped quotes.
+ */
+function fixNewlinesInStrings(json: string): string {
+  const out: string[] = [];
+  let inStr = false;
+  let esc = false;
+
+  for (let i = 0; i < json.length; i++) {
+    const ch = json[i];
+    if (esc) { out.push(ch); esc = false; continue; }
+    if (ch === '\\' && inStr) { out.push(ch); esc = true; continue; }
+    if (ch === '"') { inStr = !inStr; out.push(ch); continue; }
+    if (inStr && (ch === '\n' || ch === '\r')) {
+      out.push('\\n');
+      if (ch === '\r' && json[i + 1] === '\n') i++;
+      continue;
+    }
+    out.push(ch);
+  }
+  return out.join('');
+}
+
+const VALID_EMOTIONS: EmotionBeat[] = ['curiosity', 'shock', 'intrigue', 'revelation', 'urgency', 'satisfaction', 'loop'];
+
+function normalizeEmotion(raw: any): EmotionBeat {
+  if (!raw || typeof raw !== 'string') return 'curiosity';
+  const lower = raw.toLowerCase().trim();
+  // Direct match
+  if (VALID_EMOTIONS.includes(lower as EmotionBeat)) return lower as EmotionBeat;
+  // Fuzzy match: if the raw string contains a valid emotion word, use it
+  for (const e of VALID_EMOTIONS) {
+    if (lower.includes(e)) return e;
+  }
+  return 'curiosity';
+}
+
 function parseScenarioBundle(raw: string, signal: TrendSignal, model: string): ScenarioBundle {
-  // Strip markdown fences if present
+  console.log(`[Scorsese] Raw response length: ${raw.length} chars`);
+
+  // Debug dump
+  try {
+    const dumpPath = join(process.cwd(), 'workspace', 'scs001', 'scorsese-debug-raw.txt');
+    require('fs').writeFileSync(dumpPath, raw);
+  } catch {}
+
   let json = raw.trim();
-  if (json.startsWith('```')) {
-    json = json.replace(/^```(?:json)?\n?/, '').replace(/\n?```$/, '');
+
+  // Strip markdown fences
+  json = json.replace(/^```(?:json)?\s*\n?/gm, '').replace(/\n?\s*```\s*$/gm, '');
+
+  // Extract outermost JSON object with proper brace/string handling
+  const extracted = extractOutermostJson(json);
+  if (extracted) {
+    json = extracted;
+  } else {
+    console.warn(`[Scorsese] No balanced JSON object found. Preview: ${json.substring(0, 300)}`);
   }
 
-  const parsed = JSON.parse(json);
+  let parsed: any;
 
-  // Ensure required fields
+  // Attempt 1: direct parse
+  try {
+    parsed = JSON.parse(json);
+  } catch (e1: any) {
+    console.warn(`[Scorsese] Parse attempt 1 failed: ${e1.message?.slice(0, 120)}`);
+
+    // Attempt 2: fix trailing commas
+    let fixed = json.replace(/,\s*([}\]])/g, '$1');
+    try {
+      parsed = JSON.parse(fixed);
+    } catch (e2: any) {
+      console.warn(`[Scorsese] Parse attempt 2 (trailing commas) failed: ${e2.message?.slice(0, 120)}`);
+
+      // Attempt 3: fix unescaped newlines in string values
+      fixed = fixNewlinesInStrings(fixed);
+      try {
+        parsed = JSON.parse(fixed);
+      } catch (e3: any) {
+        console.warn(`[Scorsese] Parse attempt 3 (newlines) failed: ${e3.message?.slice(0, 120)}`);
+        console.warn(`[Scorsese] JSON preview: ${json.substring(0, 500)}`);
+
+        // Last resort: extract fields manually
+        const titleMatch = json.match(/"title"\s*:\s*"([^"]+)"/);
+        const angleMatch = json.match(/"angle"\s*:\s*"([^"]+)"/);
+
+        parsed = {
+          title: titleMatch?.[1] || signal.topic_name,
+          angle: angleMatch?.[1] || '',
+          scenes: [],
+          hook_test: {},
+        };
+
+        // Extract individual scene objects by balanced brace walking
+        const scenesIdx = json.indexOf('"scenes"');
+        if (scenesIdx !== -1) {
+          const arrStart = json.indexOf('[', scenesIdx);
+          if (arrStart !== -1) {
+            let depth = 0, objStart = -1, inStr2 = false, esc2 = false;
+            for (let i = arrStart + 1; i < json.length; i++) {
+              const c = json[i];
+              if (esc2) { esc2 = false; continue; }
+              if (c === '\\' && inStr2) { esc2 = true; continue; }
+              if (c === '"') { inStr2 = !inStr2; continue; }
+              if (inStr2) continue;
+              if (c === '{') { if (depth === 0) objStart = i; depth++; }
+              else if (c === '}') { depth--; if (depth === 0 && objStart !== -1) {
+                try {
+                  const s = fixNewlinesInStrings(json.substring(objStart, i + 1).replace(/,\s*}/g, '}'));
+                  parsed.scenes.push(JSON.parse(s));
+                } catch {}
+                objStart = -1;
+              }}
+              else if (c === ']' && depth === 0) break;
+            }
+          }
+        }
+
+        console.log(`[Scorsese] Partial extraction: ${parsed.scenes?.length || 0} scenes recovered`);
+      }
+    }
+  }
+
+  // Unwrap if Claude nested inside "scenario_bundle" or "scenario"
+  if (parsed.scenario_bundle && !parsed.scenes) parsed = parsed.scenario_bundle;
+  if (parsed.scenario && !parsed.scenes) parsed = parsed.scenario;
+
+  // Map Claude's alternate field names to our schema
+  const rawScenes = parsed.scenes || [];
+  const hookRaw = parsed.hook_test || parsed.hook || {};
+
   const bundle: ScenarioBundle = {
     scenario_id: parsed.scenario_id || 'scn-' + randomUUID().substring(0, 8),
     trend_signal_id: signal.topic_id,
-    title: parsed.title || signal.topic_name,
-    angle: parsed.angle || '',
-    scenes: (parsed.scenes || []).map((s: any, i: number) => ({
-      scene_id: s.scene_id || `scene-${i + 1}`,
-      scene_name: s.scene_name || `scene_${i + 1}`,
-      duration_s: s.duration_s || 5,
-      voiceover: s.voiceover || '',
+    title: parsed.title || parsed.topic || signal.topic_name,
+    angle: parsed.angle || parsed.unique_angle || parsed.perspective || '',
+    scenes: rawScenes.map((s: any, i: number) => ({
+      scene_id: String(s.scene_id || `scene-${i + 1}`),
+      scene_name: s.scene_name || s.label || s.name || `scene_${i + 1}`,
+      duration_s: s.duration_s || s.duration_seconds || s.duration || 5,
+      voiceover: s.voiceover || s.narration || s.script || '',
       visual_style: s.visual_style || 'kinetic_text',
-      visual_description: s.visual_description || '',
-      caption_overlay: s.caption_overlay || '',
-      emotion: s.emotion || 'curiosity',
-      music_cue: s.music_cue || 'ambient',
-      pattern_interrupts: s.pattern_interrupts || 2,
+      visual_description: s.visual_description || s.visual || s.on_screen_text || '',
+      caption_overlay: s.caption_overlay || s.on_screen_text || s.text_overlay || '',
+      emotion: normalizeEmotion(s.emotion),
+      music_cue: (String(s.music_cue || 'ambient')).split(',')[0].trim().split(' ')[0] as any || 'ambient',
+      pattern_interrupts: typeof s.pattern_interrupts === 'number' ? s.pattern_interrupts : (Array.isArray(s.pattern_interrupts) ? s.pattern_interrupts.length : 2),
     })) as Scene[],
     hook_test: {
-      format_reference: parsed.hook_test?.format_reference || '',
-      viral_proof: parsed.hook_test?.viral_proof || '',
-      why_it_works: parsed.hook_test?.why_it_works || '',
-      estimated_hook_rate: parsed.hook_test?.estimated_hook_rate || 0,
+      format_reference: hookRaw.format_reference || hookRaw.format || hookRaw.template || '',
+      viral_proof: hookRaw.viral_proof || hookRaw.proof || hookRaw.evidence || '',
+      why_it_works: hookRaw.why_it_works || hookRaw.mechanism || hookRaw.stop_scroll_claim || '',
+      estimated_hook_rate: hookRaw.estimated_hook_rate || hookRaw.hook_rate || 40,
     } as HookTest,
     total_duration_s: 0,
     target_emotion_arc: [],
@@ -174,19 +328,29 @@ export class ScorseseAgent {
     const validation = validateScenarioBundle(bundle);
 
     if (!validation.valid) {
-      console.warn(`[Scorsese] Validation warnings: ${validation.errors.join('; ')}`);
-      // Attempt self-repair on first failure
-      if (validation.errors.some(e => e.includes('hook_test'))) {
-        console.log('[Scorsese] Hook test failed — attempting repair...');
+      console.warn(`[Scorsese] Validation errors: ${validation.errors.join('; ')}`);
+      // Self-repair: trigger on any critical failure (empty scenes, bad hook_test, etc.)
+      const needsRepair = bundle.scenes.length < 4 ||
+        validation.errors.some(e => e.includes('hook_test') || e.includes('Missing'));
+      if (needsRepair) {
+        console.log(`[Scorsese] Critical failure (${bundle.scenes.length} scenes) — attempting repair...`);
         const repairPrompt = [
-          'The scenario you produced failed validation:',
+          'Your previous output failed JSON validation. The parsed result had these issues:',
           validation.errors.join('\n'),
           '',
-          'Fix the issues and return the corrected ScenarioBundle JSON.',
-          'CRITICAL: hook_test is constitutional — it MUST have format_reference, why_it_works, and estimated_hook_rate >= 30.',
+          'Produce a COMPLETE ScenarioBundle with ALL required fields:',
+          '- scenario_id: unique string',
+          '- title: string',
+          '- angle: string (the unique take on this topic)',
+          '- scenes: array of 5-6 scene objects (each with scene_id, scene_name, duration_s, voiceover, visual_style, visual_description, caption_overlay, emotion, music_cue, pattern_interrupts)',
+          '- hook_test: { format_reference, viral_proof, why_it_works, estimated_hook_rate (>=30) }',
+          '- speaker_name: "Kognai"',
+          '- hashtags: array of strings',
           '',
-          'Original scenario:',
-          JSON.stringify(bundle, null, 2),
+          `Topic: ${signal.topic_name}`,
+          `Keywords: ${signal.keyword_cluster.join(', ')}`,
+          '',
+          'Output ONLY the raw JSON. No markdown. No text before/after.',
         ].join('\n');
 
         const repair = await callLLM(this.systemPrompt, repairPrompt);
@@ -198,7 +362,7 @@ export class ScorseseAgent {
           return repairedBundle;
         }
         console.warn(`[Scorsese] Self-repair still has issues: ${recheck.errors.join('; ')}`);
-        return repairedBundle; // Return anyway, ArtDirector will catch issues
+        return repairedBundle;
       }
     } else {
       console.log('[Scorsese] Validation PASS');

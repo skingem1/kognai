@@ -1,0 +1,48 @@
+{
+  "sprint_id": "sprint-888",
+  "title": "V2-FIX — Fix Scorsese agent JSON parsing (empty scenes bug)",
+  "description": "All v2 pipeline runs produce 0 scenes because parseScenarioBundle corrupts JSON with a regex that breaks on escaped quotes. Fix: proper brace-balanced JSON extraction, safe newline fixer, wider self-repair trigger.",
+  "source": "pipeline",
+  "tasks": [
+    {
+      "id": "888-01",
+      "title": "Replace regex JSON extractor with balanced-brace walker in Scorsese agent",
+      "type": "bugfix",
+      "task_target": "agents/scs001-scorsese/index.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "critical",
+      "sprint_id": "sprint-888"
+    },
+    {
+      "id": "888-02",
+      "title": "Replace dangerous newline-in-string regex with character-by-character fixer",
+      "type": "bugfix",
+      "task_target": "agents/scs001-scorsese/index.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "critical",
+      "sprint_id": "sprint-888"
+    },
+    {
+      "id": "888-03",
+      "title": "Widen self-repair trigger to fire on empty scenes (not just hook_test)",
+      "type": "bugfix",
+      "task_target": "agents/scs001-scorsese/index.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-888"
+    },
+    {
+      "id": "888-04",
+      "title": "Run v2 pipeline dry-run to validate scenario generation",
+      "type": "validation",
+      "task_target": "scripts/scs001/run-v2-pipeline.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-888"
+    }
+  ]
+}
