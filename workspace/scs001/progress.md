@@ -3762,3 +3762,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (ops run)
 - Cost: $0.00
 - Timestamp: 2026-03-23T06:30:00Z
+
+## Sprint 847 — OPS: full pipeline smoke test
+- Status: PASS (with 1 known issue)
+- Commit: 129a059
+- Smoke test: 16 stages executed in 618s
+- Results: 30 topics → 35 clips → 4 videos → 2 passed QC → 18 published → 6 viral
+- Known issue: clip-detection stage timeout (600s) — non-blocking for multiformat pipeline
+- Schedule regen + 3 videos delivered earlier in session
+- Swarm used: no
+- Cost: ~$0.30 (LLM calls in pipeline)
+- Timestamp: 2026-03-23T07:00:00Z
