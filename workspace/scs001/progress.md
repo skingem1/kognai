@@ -3806,3 +3806,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (queue empty, direct execution)
 - Issues: clip-detection timeout (known, non-blocking)
 - Timestamp: 2026-03-23T05:10:00Z
+
+## Sprint 851 — OPS — batch production + regenerate briefs
+- Status: PASS
+- Commit: fd53786
+- Files created: workspace/sprints/sprint-851.json
+- Files modified: workspace/scs001/auto-delivered.jsonl, docs/daily-brief.md, docs/gate-tracker.md, workspace/sprint-brief.md
+- Test: batch-produce.ts — 3/3 runs
+- Pipeline: 77 unique videos ready, 4/30 posted toward gate
+- Swarm used: no (queue empty, direct execution)
+- Issues: none
+- Timestamp: 2026-03-23T05:25:00Z
