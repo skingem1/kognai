@@ -1,0 +1,24 @@
+{
+  "run_id": "mf-20260323T04-twy8",
+  "started_at": "2026-03-23T04:57:13.146Z",
+  "completed_at": "2026-03-23T04:57:49.145Z",
+  "topics_found": 1,
+  "scripts_generated": 1,
+  "videos_composited": 1,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "dbt-901695d4",
+      "format": "debate",
+      "title": "How to earn passive income with AI in 2026: 5 proven methods",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T04-twy8/output/dbt-901695d4_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T04-twy8/output/dbt-901695d4.srt",
+      "duration_s": 27,
+      "success": true,
+      "avatar_cost": 0.25,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 0.25
+}

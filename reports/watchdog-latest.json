@@ -1,22 +1,12 @@
 {
-  "timestamp": "2026-03-22T23:00:00.916Z",
+  "timestamp": "2026-03-23T05:00:00.854Z",
   "alerts": [
-    {
-      "severity": "warning",
-      "title": "Pipeline stale",
-      "detail": "Last run: 51h ago (threshold: 24h). Consider running the pipeline."
-    },
-    {
-      "severity": "warning",
-      "title": "Disk usage high",
-      "detail": "workspace/scs001/ is 5.1GB (threshold: 5GB)."
-    },
     {
       "severity": "info",
       "title": "Captioned videos",
-      "detail": "6 videos ready"
+      "detail": "13 videos ready"
     }
   ],
   "critical_count": 0,
-  "warning_count": 2
+  "warning_count": 0
 }

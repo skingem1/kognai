@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-861",
+  "title": "OPS — custom topic content production (3 videos)",
+  "description": "Produce 3 new videos with custom topics to continue stockpile toward 100+ videos.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "861-01",
+      "title": "Run custom topic content production",
+      "type": "ops",
+      "task_target": "scripts/scs001/batch-produce.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-861"
+    }
+  ]
+}

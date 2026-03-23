@@ -1,0 +1,24 @@
+{
+  "run_id": "mf-20260323T04-d1sy",
+  "started_at": "2026-03-23T04:58:43.701Z",
+  "completed_at": "2026-03-23T04:59:23.325Z",
+  "topics_found": 1,
+  "scripts_generated": 1,
+  "videos_composited": 1,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "exp-b68c5334",
+      "format": "explainer",
+      "title": "GPT-5 leaked details: what we know about OpenAI's next model",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T04-d1sy/output/exp-b68c5334_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T04-d1sy/output/exp-b68c5334.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 0.35
+}

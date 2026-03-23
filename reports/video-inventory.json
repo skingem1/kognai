@@ -1,18 +1,42 @@
 {
-  "scanned_at": "2026-03-23T04:53:38.273Z",
-  "total_runs": 119,
-  "total_videos": 210,
-  "unique_topics": 90,
-  "already_registered": 90,
+  "scanned_at": "2026-03-23T05:00:56.673Z",
+  "total_runs": 128,
+  "total_videos": 219,
+  "unique_topics": 93,
+  "already_registered": 93,
   "newly_registered": 0,
   "already_posted": 0,
-  "ready_to_post": 90,
+  "ready_to_post": 93,
   "gate_status": {
     "posted": 4,
     "target": 30,
     "gap": 26
   },
   "videos": [
+    {
+      "video_id": "vis-0ff51fea",
+      "format": "vision",
+      "title": "GPT-5 leaked details: what we know about OpenAI's next model",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-jdl6/output/vis-0ff51fea_final.mp4"
+    },
+    {
+      "video_id": "vis-39d2c68e",
+      "format": "vision",
+      "title": "How to earn passive income with AI in 2026: 5 proven methods",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T04-vgk3/output/vis-39d2c68e_final.mp4"
+    },
+    {
+      "video_id": "vis-132a0ec3",
+      "format": "vision",
+      "title": "Devin AI: is the first AI software engineer worth the hype?",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T04-lx8m/output/vis-132a0ec3_final.mp4"
+    },
     {
       "video_id": "vis-d48b9269",
       "format": "vision",
