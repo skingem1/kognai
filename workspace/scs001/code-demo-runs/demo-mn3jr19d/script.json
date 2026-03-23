@@ -1,0 +1,88 @@
+{
+  "demo_id": "demo-mn3jr19d",
+  "title": "Make a Discord Bot in 3 Steps!",
+  "language": "python",
+  "total_duration_s": 29,
+  "steps": [
+    {
+      "step_id": "s1",
+      "title": "Step 1: Setup",
+      "code_lines": [
+        "import discord",
+        "from discord.ext import commands",
+        "bot = commands.Bot(command_prefix='!')"
+      ],
+      "language": "python",
+      "explanation": "We start by importing Discord and setting up our bot with a command prefix.",
+      "duration_s": 6,
+      "highlight_lines": [
+        1
+      ]
+    },
+    {
+      "step_id": "s2",
+      "title": "Step 2: Add an Event",
+      "code_lines": [
+        "@bot.event",
+        "async def on_ready():",
+        "    print(f'Logged in as {bot.user.name}')"
+      ],
+      "language": "python",
+      "explanation": "This event triggers when the bot logs in, letting us know it's connected.",
+      "duration_s": 6,
+      "highlight_lines": [
+        1
+      ]
+    },
+    {
+      "step_id": "s3",
+      "title": "Step 3: Add a Command",
+      "code_lines": [
+        "@bot.command()",
+        "async def hello(ctx):",
+        "    await ctx.send('Hello!')"
+      ],
+      "language": "python",
+      "explanation": "Now we add a command so users can say 'hello' and get a response.",
+      "duration_s": 6,
+      "highlight_lines": [
+        1
+      ]
+    },
+    {
+      "step_id": "s4",
+      "title": "Step 4: Run the Bot",
+      "code_lines": [
+        "bot.run('YOUR_BOT_TOKEN')"
+      ],
+      "language": "python",
+      "explanation": "Finally, we run the bot with your token to connect it to Discord.",
+      "duration_s": 6,
+      "highlight_lines": [
+        1
+      ]
+    },
+    {
+      "step_id": "s5",
+      "title": "Try it Yourself!",
+      "code_lines": [
+        "# Try it yourself!"
+      ],
+      "language": "python",
+      "explanation": "Now you can make your own Discord bot! Try it yourself.",
+      "duration_s": 5,
+      "highlight_lines": [
+        1
+      ]
+    }
+  ],
+  "hashtags": [
+    "#coding",
+    "#python",
+    "#discordbot",
+    "#tutorial"
+  ],
+  "intro_hook": "Want to make a Discord bot? Let's do it fast!",
+  "source": "user",
+  "topic_source": "user-prompt"
+}

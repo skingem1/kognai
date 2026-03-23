@@ -1,0 +1,63 @@
+{
+  "sprint_id": "sprint-922",
+  "title": "MULTI-PIPELINE — 3 code demos + 2 TTS vlogs (batch 6)",
+  "description": "Produce 3 code demo videos and 2 TTS vlog videos. Content stockpile approaching 300.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "922-01",
+      "title": "Code demo: Build a PDF Merger in Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-922",
+      "output": "demo-mn3joalg"
+    },
+    {
+      "id": "922-02",
+      "title": "Code demo: Create an Image Resizer in Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-922",
+      "output": "demo-mn3jpo4m"
+    },
+    {
+      "id": "922-03",
+      "title": "Code demo: Build a Discord Bot in Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-922",
+      "output": "demo-mn3jr19d"
+    },
+    {
+      "id": "922-04",
+      "title": "V2 video: Sam Altman Just Admitted AGI Is 2 Years Away",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-922",
+      "output": "vlog-mn3jslca"
+    },
+    {
+      "id": "922-05",
+      "title": "V2 video: The AI Skill That Will Replace 80% of Office Jobs",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-922",
+      "output": "vlog-mn3jslc7"
+    }
+  ]
+}

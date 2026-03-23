@@ -1,0 +1,62 @@
+{
+  "demo_id": "demo-mn3joalg",
+  "title": "Merge PDFs in Python in 3 Steps!",
+  "language": "python",
+  "total_duration_s": 20,
+  "steps": [
+    {
+      "step_id": "s1",
+      "title": "Step 1: Import the Library",
+      "code_lines": [
+        "from PyPDF2 import PdfMerger"
+      ],
+      "language": "python",
+      "explanation": "We start by importing the PdfMerger class from PyPDF2.",
+      "duration_s": 5,
+      "highlight_lines": [
+        1
+      ]
+    },
+    {
+      "step_id": "s2",
+      "title": "Step 2: Define the Merge Function",
+      "code_lines": [
+        "def merge_pdfs(output_path, *input_paths):",
+        "    merger = PdfMerger()",
+        "    for path in input_paths:",
+        "        merger.append(path)"
+      ],
+      "language": "python",
+      "explanation": "We define a function that takes an output path and multiple input PDFs, then appends them to a merger object.",
+      "duration_s": 8,
+      "highlight_lines": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "step_id": "s3",
+      "title": "Step 3: Run the Merge",
+      "code_lines": [
+        "merger.write(output_path)",
+        "merger.close()",
+        "merge_pdfs(\"merged.pdf\", \"file1.pdf\", \"file2.pdf\")"
+      ],
+      "language": "python",
+      "explanation": "Finally, we write the merged PDF to a file and close the merger. Let’s run the function with two example files.",
+      "duration_s": 7,
+      "highlight_lines": [
+        3
+      ]
+    }
+  ],
+  "hashtags": [
+    "#coding",
+    "#python",
+    "#tutorial"
+  ],
+  "intro_hook": "Want to merge PDFs with Python? Let’s see how it’s done!",
+  "source": "user",
+  "topic_source": "user-prompt"
+}
