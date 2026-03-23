@@ -4258,3 +4258,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no — wrote directly
 - Issues: none
 - Timestamp: 2026-03-23T11:15:00Z
+
+## Sprint 894 — TELEGRAM — /v2 command for v2 pipeline production
+- Status: PASS
+- Commit: bec0f6a6
+- Files modified: scripts/telegram-commands/cmd-delivery.ts, scripts/telegram-bot.ts, scripts/telegram-commands/cmd-help.ts
+- Files created: workspace/sprints/sprint-894.json
+- Test: TypeScript compile — clean (pre-existing cmd-system.ts errors only)
+- Pipeline: operator can now produce v2 videos from Telegram via /v2 command
+- Swarm used: no — wrote directly
+- Issues: none
+- Timestamp: 2026-03-23T11:25:00Z
