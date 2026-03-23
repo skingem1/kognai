@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-832",
+  "title": "OPS — schedule-based posting reminder with video delivery",
+  "description": "Create posting-reminder.ts PM2 cron that reads posting-schedule.json, finds the next slot, and sends the video file + caption to operator via Telegram 30 min before posting time.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "832-01",
+      "title": "Create posting-reminder.ts — schedule-aware video delivery cron",
+      "type": "feature",
+      "task_target": "scripts/scs001/posting-reminder.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-832"
+    }
+  ]
+}
