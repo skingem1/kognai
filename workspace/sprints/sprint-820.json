@@ -1,0 +1,38 @@
+{
+  "sprint_id": "sprint-820",
+  "title": "PIPELINE — add --topic flag for custom topic video production",
+  "description": "Topic APIs are saturated (same topics returned). Add --topic flag to run-multiformat-pipeline.ts and batch-produce.ts so operator can produce videos on any custom topic, breaking the content plateau.",
+  "source": "feature",
+  "tasks": [
+    {
+      "id": "820-01",
+      "title": "Add --topic flag to run-multiformat-pipeline.ts",
+      "type": "feature",
+      "task_target": "scripts/scs001/run-multiformat-pipeline.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-820"
+    },
+    {
+      "id": "820-02",
+      "title": "Add --topic flag to batch-produce.ts",
+      "type": "feature",
+      "task_target": "scripts/scs001/batch-produce.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-820"
+    },
+    {
+      "id": "820-03",
+      "title": "Add /produce-topic Telegram command",
+      "type": "feature",
+      "task_target": "scripts/telegram-commands/cmd-delivery.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-820"
+    }
+  ]
+}

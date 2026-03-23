@@ -1117,3 +1117,44 @@ export async function cmdQuickstart(chatId: string): Promise<void> {
     await sendMessage(chatId, `⚠️ No unposted videos found with files. Run /produce first.`);
   }
 }
+
+// Sprint 820: Produce video on a custom topic
+export async function cmdProduceTopic(chatId: string, args?: string): Promise<void> {
+  const topic = args?.trim();
+  if (!topic) {
+    await sendMessage(chatId, '❌ Usage: `/produce-topic Your Topic Here`\n\nExample: `/produce-topic How GPT-5 changes coding forever`');
+    return;
+  }
+
+  await sendMessage(chatId, `🎬 *Producing video on custom topic:*\n_${topic}_\n\nRunning multiformat pipeline...`);
+
+  const { spawn } = require('child_process');
+  const pipelineScript = path.join(ROOT, 'scripts', 'scs001', 'run-multiformat-pipeline.ts');
+  const child = spawn('npx', ['ts-node', '--transpile-only', pipelineScript, '--topic', topic, '--max=1'], {
+    cwd: ROOT,
+    env: { ...process.env, TS_NODE_TRANSPILE_ONLY: 'true' },
+    stdio: ['ignore', 'pipe', 'pipe'],
+    detached: false,
+  });
+
+  let stdout = '';
+  child.stdout.on('data', (d: Buffer) => { stdout += d.toString(); });
+  child.stderr.on('data', (d: Buffer) => { /* ignore */ });
+  child.on('close', async (code: number) => {
+    try {
+      if (code === 0) {
+        const videoMatch = stdout.match(/(?:videos_composited|Composited)[:.\s]*(\d+)/);
+        const videoCount = videoMatch ? parseInt(videoMatch[1]) : 0;
+        if (videoCount > 0) {
+          await sendMessage(chatId, `✅ *${videoCount} video produced on:*\n_${topic}_\n\nUse /deliver to get it for posting.`);
+        } else {
+          await sendMessage(chatId, `⚠️ Pipeline ran but produced 0 videos for:\n_${topic}_\n\nTry a different topic.`);
+        }
+      } else {
+        await sendMessage(chatId, `❌ Pipeline failed (exit ${code}) for topic:\n_${topic}_`);
+      }
+    } catch (err: any) {
+      await sendMessage(chatId, `❌ Error: ${err.message?.slice(0, 200)}`);
+    }
+  });
+}

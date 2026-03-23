@@ -237,8 +237,9 @@ async function runPipeline(options: {
   formatFilter?: VideoFormat;
   maxVideos?: number;
   forceRefresh?: boolean;
+  customTopics?: string[];
 }): Promise<PipelineRunResult> {
-  const { dryRun = false, formatFilter, maxVideos = 6, forceRefresh = false } = options;
+  const { dryRun = false, formatFilter, maxVideos = 6, forceRefresh = false, customTopics } = options;
   const startedAt = new Date().toISOString();
   const runId = `mf-${new Date().toISOString().slice(0, 13).replace(/[:-]/g, '')}-${Math.random().toString(36).slice(2, 6)}`;
 
@@ -250,18 +251,36 @@ async function runPipeline(options: {
   console.log(`Mode: ${dryRun ? 'DRY RUN' : 'LIVE'} | Format: ${formatFilter ?? 'ALL'} | Max: ${maxVideos}`);
   console.log(`${'='.repeat(60)}\n`);
 
-  // ── Stage 1: Topic Radar ──
-  console.log('📡 Stage 1: Topic Radar — scanning real-world sources...');
-  const radar = new TopicRadar({ forceRefresh });
-  const radarResult = await radar.scan();
-  let topics = radarResult.topics;
+  // ── Stage 1: Topic Radar (or custom topic injection) ──
+  let topics: TopicBrief[];
 
-  if (formatFilter) {
-    topics = topics.filter(t => t.format === formatFilter);
+  if (customTopics && customTopics.length > 0) {
+    console.log(`📡 Stage 1: Custom Topics — injecting ${customTopics.length} operator-supplied topics...`);
+    const formats: VideoFormat[] = ['explainer', 'debate', 'vision', 'listicle'];
+    topics = customTopics.map((title, i) => ({
+      topic_id: `custom-${Date.now().toString(36)}-${i}`,
+      title,
+      summary: title,
+      format: formatFilter ?? formats[i % formats.length],
+      source: 'operator',
+      source_url: '',
+      confidence: 90,
+      keywords: title.toLowerCase().split(/\s+/).slice(0, 5),
+    }));
+    console.log(`   Injected ${topics.length} custom topics\n`);
+  } else {
+    console.log('📡 Stage 1: Topic Radar — scanning real-world sources...');
+    const radar = new TopicRadar({ forceRefresh });
+    const radarResult = await radar.scan();
+    topics = radarResult.topics;
+
+    if (formatFilter) {
+      topics = topics.filter(t => t.format === formatFilter);
+    }
+    topics = topics.slice(0, maxVideos);
+
+    console.log(`   Found ${radarResult.topics.length} topics, using ${topics.length} after filter\n`);
   }
-  topics = topics.slice(0, maxVideos);
-
-  console.log(`   Found ${radarResult.topics.length} topics, using ${topics.length} after filter\n`);
 
   if (topics.length === 0) {
     console.log('⚠️  No topics found. Try again later or broaden the filter.');
@@ -427,11 +446,22 @@ if (require.main === module) {
   const formatArg = args.find(a => a.startsWith('--format='))?.split('=')[1] as VideoFormat | undefined;
   const maxArg = args.find(a => a.startsWith('--max='))?.split('=')[1];
 
+  // --topic "Topic 1" --topic "Topic 2" or --topic="Topic 1"
+  const customTopics: string[] = [];
+  for (let i = 0; i < args.length; i++) {
+    if (args[i] === '--topic' && args[i + 1] && !args[i + 1].startsWith('--')) {
+      customTopics.push(args[++i]);
+    } else if (args[i].startsWith('--topic=')) {
+      customTopics.push(args[i].split('=').slice(1).join('='));
+    }
+  }
+
   runPipeline({
     dryRun,
     forceRefresh,
     formatFilter: formatArg,
     maxVideos: maxArg ? parseInt(maxArg) : 6,
+    customTopics: customTopics.length > 0 ? customTopics : undefined,
   }).then(result => {
     process.exit(result.videos_failed > 0 && result.videos_composited === 0 ? 1 : 0);
   }).catch(err => {

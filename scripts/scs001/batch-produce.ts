@@ -17,25 +17,32 @@ import { execSync } from 'child_process';
 
 const ROOT = join(__dirname, '..', '..');
 
-function parseArgs(): { runs: number; dryRun: boolean } {
+function parseArgs(): { runs: number; dryRun: boolean; topics: string[] } {
   let runs = 3;
   let dryRun = false;
+  const topics: string[] = [];
   for (let i = 2; i < process.argv.length; i++) {
     if (process.argv[i] === '--runs' && process.argv[i + 1]) {
       runs = Math.min(Math.max(parseInt(process.argv[i + 1]) || 3, 1), 20);
       i++;
     }
     if (process.argv[i] === '--dry-run') dryRun = true;
+    if (process.argv[i] === '--topic' && process.argv[i + 1] && !process.argv[i + 1].startsWith('--')) {
+      topics.push(process.argv[++i]);
+    } else if (process.argv[i].startsWith('--topic=')) {
+      topics.push(process.argv[i].split('=').slice(1).join('='));
+    }
   }
-  return { runs, dryRun };
+  return { runs, dryRun, topics };
 }
 
 async function main(): Promise<void> {
-  const { runs, dryRun } = parseArgs();
+  const { runs, dryRun, topics } = parseArgs();
 
   console.log(`=== Batch Video Production ===`);
   console.log(`Runs planned: ${runs}`);
   console.log(`Dry run: ${dryRun}`);
+  if (topics.length > 0) console.log(`Custom topics: ${topics.join(', ')}`);
   console.log('');
 
   const results: Array<{ run: number; success: boolean; videos: number; error?: string }> = [];
@@ -50,7 +57,10 @@ async function main(): Promise<void> {
       // Ledger dedup (Sprint 755) still prevents actual duplicate videos.
       const formats = ['explainer', 'debate', 'vision', 'listicle'];
       const format = formats[(i - 1) % formats.length];
-      const cmd = `npx ts-node --transpile-only scripts/scs001/run-multiformat-pipeline.ts --format=${format} --max=1${dryRun ? ' --dry-run' : ''} --force-refresh`;
+      const topicArgs = topics.length > 0
+        ? topics.map(t => ` --topic "${t.replace(/"/g, '\\"')}"`).join('')
+        : '';
+      const cmd = `npx ts-node --transpile-only scripts/scs001/run-multiformat-pipeline.ts --format=${format} --max=1${dryRun ? ' --dry-run' : ''} --force-refresh${topicArgs}`;
       const output = execSync(cmd, {
         cwd: ROOT,
         timeout: 180000, // 3 min per run (avatar gen needs time)
