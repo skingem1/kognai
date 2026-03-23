@@ -1,0 +1,124 @@
+{
+  "demo_id": "demo-mn3rzwrs",
+  "title": "Pong Game in Python - 30s Demo",
+  "language": "python",
+  "total_duration_s": 30,
+  "steps": [
+    {
+      "step_id": "s1",
+      "title": "Step 1: Setup",
+      "code_lines": [
+        "import pygame, sys",
+        "pygame.init()",
+        "screen = pygame.display.set_mode((800, 600))",
+        "clock = pygame.time.Clock()",
+        "ball = pygame.Rect(400, 300, 20, 20)",
+        "paddle1 = pygame.Rect(10, 250, 10, 100)",
+        "paddle2 = pygame.Rect(780, 250, 10, 100)",
+        "ball_speed = [5, 5]"
+      ],
+      "language": "python",
+      "explanation": "We initialize Pygame, set up the screen, and create the ball and paddles using Rect objects.",
+      "duration_s": 8,
+      "highlight_lines": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ]
+    },
+    {
+      "step_id": "s2",
+      "title": "Step 2: Controls and Movement",
+      "code_lines": [
+        "while True:",
+        "    for event in pygame.event.get():",
+        "        if event.type == pygame.QUIT:",
+        "            pygame.quit()",
+        "            sys.exit()",
+        "    keys = pygame.key.get_pressed()",
+        "    if keys[pygame.K_w]: paddle1.y -= 5",
+        "    if keys[pygame.K_s]: paddle1.y += 5",
+        "    if keys[pygame.K_UP]: paddle2.y -= 5",
+        "    if keys[pygame.K_DOWN]: paddle2.y += 5"
+      ],
+      "language": "python",
+      "explanation": "We handle user input for paddle movement and check for the quit event to close the window.",
+      "duration_s": 8,
+      "highlight_lines": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ]
+    },
+    {
+      "step_id": "s3",
+      "title": "Step 3: Ball Movement and Collision",
+      "code_lines": [
+        "    ball.x += ball_speed[0]",
+        "    ball.y += ball_speed[1]",
+        "    if ball.top <= 0 or ball.bottom >= 600:",
+        "        ball_speed[1] *= -1",
+        "    if ball.colliderect(paddle1) or ball.colliderect(paddle2):",
+        "        ball_speed[0] *= -1",
+        "    screen.fill((0, 0, 0))",
+        "    pygame.draw.rect(screen, (255, 255, 255), paddle1)",
+        "    pygame.draw.rect(screen, (255, 255, 255), paddle2)",
+        "    pygame.draw.ellipse(screen, (255, 255, 255), ball)",
+        "    pygame.display.flip()",
+        "    clock.tick(60)"
+      ],
+      "language": "python",
+      "explanation": "The ball moves and bounces off the top/bottom and paddles. We draw everything and keep the game running at 60 FPS.",
+      "duration_s": 9,
+      "highlight_lines": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ]
+    },
+    {
+      "step_id": "s4",
+      "title": "Step 4: Try It Yourself!",
+      "code_lines": [
+        "# Run the code and play Pong with W/S and UP/DOWN arrows!"
+      ],
+      "language": "python",
+      "explanation": "Try it yourself! Run the code and play Pong with W/S and UP/DOWN arrows!",
+      "duration_s": 5,
+      "highlight_lines": [
+        0
+      ]
+    }
+  ],
+  "hashtags": [
+    "#coding",
+    "#python",
+    "#game",
+    "#tutorial",
+    "#pygame"
+  ],
+  "intro_hook": "Let's build a Pong game in just 30 seconds!",
+  "source": "user",
+  "topic_source": "user-prompt"
+}

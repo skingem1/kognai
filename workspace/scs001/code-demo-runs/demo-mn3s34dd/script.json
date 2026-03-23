@@ -1,0 +1,75 @@
+{
+  "demo_id": "demo-mn3s34de",
+  "title": "Python Progress Bar in 3 Steps!",
+  "language": "python",
+  "total_duration_s": 27,
+  "steps": [
+    {
+      "step_id": "s1",
+      "title": "Step 1: Define the Function",
+      "code_lines": [
+        "def progress_bar(iterable, length=50):",
+        "    total = len(iterable)"
+      ],
+      "language": "python",
+      "explanation": "We start by defining a function that takes an iterable and a bar length.",
+      "duration_s": 6,
+      "highlight_lines": [
+        1
+      ]
+    },
+    {
+      "step_id": "s2",
+      "title": "Step 2: Build the Bar",
+      "code_lines": [
+        "    for i, item in enumerate(iterable, 1):",
+        "        percent = i / total",
+        "        filled = int(length * percent)",
+        "        bar = '█' * filled + '-' * (length - filled)"
+      ],
+      "language": "python",
+      "explanation": "We calculate the progress and build the bar using filled and empty characters.",
+      "duration_s": 8,
+      "highlight_lines": [
+        3
+      ]
+    },
+    {
+      "step_id": "s3",
+      "title": "Step 3: Print and Update",
+      "code_lines": [
+        "        print(f\"\\r|{bar}| {int(percent * 100)}%\", end='')",
+        "        time.sleep(0.1)",
+        "    print()",
+        "progress_bar(range(100))"
+      ],
+      "language": "python",
+      "explanation": "We print the progress bar and update it in real-time with a small delay.",
+      "duration_s": 7,
+      "highlight_lines": [
+        4
+      ]
+    },
+    {
+      "step_id": "s4",
+      "title": "Step 4: Run the Demo",
+      "code_lines": [
+        "progress_bar(range(100))"
+      ],
+      "language": "python",
+      "explanation": "Finally, we call the function with a range to see the progress bar in action!",
+      "duration_s": 6,
+      "highlight_lines": [
+        1
+      ]
+    }
+  ],
+  "hashtags": [
+    "#coding",
+    "#python",
+    "#tutorial"
+  ],
+  "intro_hook": "Watch how we make a cool progress bar in Python!",
+  "source": "user",
+  "topic_source": "user-prompt"
+}
