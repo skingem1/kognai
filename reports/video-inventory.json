@@ -1,18 +1,26 @@
 {
-  "scanned_at": "2026-03-23T00:05:49.732Z",
-  "total_runs": 25,
-  "total_videos": 15,
-  "unique_topics": 9,
-  "already_registered": 9,
+  "scanned_at": "2026-03-23T00:12:05.460Z",
+  "total_runs": 30,
+  "total_videos": 20,
+  "unique_topics": 13,
+  "already_registered": 13,
   "newly_registered": 0,
   "already_posted": 0,
-  "ready_to_post": 9,
+  "ready_to_post": 13,
   "gate_status": {
     "posted": 2,
     "target": 30,
     "gap": 28
   },
   "videos": [
+    {
+      "video_id": "vis-f4b4f358",
+      "format": "vision",
+      "title": "Manyana: A Coherent Vision For The Future Of Version Control",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-40e4/output/vis-f4b4f358_final.mp4"
+    },
     {
       "video_id": "vis-6f8a7ed0",
       "format": "vision",
@@ -54,6 +62,14 @@
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260322T23-cixb/output/vis-145f4820_final.mp4"
     },
     {
+      "video_id": "dbt-6f169958",
+      "format": "debate",
+      "title": "Siren (SIREN) 📈 143.8%",
+      "duration_s": 27,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-3ujh/output/dbt-6f169958_final.mp4"
+    },
+    {
       "video_id": "dbt-ec702de5",
       "format": "debate",
       "title": "Bedrock (BR) 📈 77.7%",
@@ -70,6 +86,14 @@
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260322T23-30sf/output/dbt-7e52df9f_final.mp4"
     },
     {
+      "video_id": "exp-f9ac111f",
+      "format": "explainer",
+      "title": "leo-lilinxiao/codex-autoresearch — Codex Autoresearch Skill — A self-directed iterative system for Codex that conti",
+      "duration_s": 25,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-jtn3/output/exp-f9ac111f_final.mp4"
+    },
+    {
       "video_id": "exp-4c2b03f1",
       "format": "explainer",
       "title": "Bitcoin (BTC) 📉 -2.3%",
@@ -84,6 +108,14 @@
       "duration_s": 25,
       "posted": false,
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260322T23-ctjq/output/exp-fcc19374_final.mp4"
+    },
+    {
+      "video_id": "lst-75fa0d32",
+      "format": "listicle",
+      "title": "Cursor admits its new coding model was built on top of Moonshot AI’s Kimi",
+      "duration_s": 20,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-6uko/output/lst-75fa0d32_final.mp4"
     }
   ]
 }

@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-814",
+  "title": "FIX — Batch produce force-refresh on all runs (5/5 yield, was 3/5)",
+  "description": "Batch produce runs 4-5 always yielded 0 videos because seen-topics blocked repeat API results. Fix: force-refresh on every run. Ledger dedup still prevents duplicates. Result: 5/5 yield, 13 videos ready to post.",
+  "source": "bugfix",
+  "tasks": [
+    {
+      "id": "814-01",
+      "title": "Change batch-produce.ts to pass --force-refresh on all runs, not just run 1",
+      "type": "bugfix",
+      "task_target": "scripts/scs001/batch-produce.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-814"
+    }
+  ]
+}
