@@ -1,0 +1,21 @@
+{
+  "title": "The AI Feature Hidden in Your iPhone",
+  "full_monologue": "Did you know your iPhone has an AI feature that can change your life? It’s called Shortcuts, and it learns from your habits. Watch as it automates your day. It’s more powerful than you think. Let me show you how it works. Imagine your phone predicting your needs before you even ask. Are you ready to unlock this hidden power?",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 6,
+      "duration_s": 6,
+      "visual_prompt": "a person effortlessly walking through a city with a confident expression, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 18,
+      "duration_s": 6,
+      "visual_prompt": "a hand swiping through the air with abstract digital motion effects, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

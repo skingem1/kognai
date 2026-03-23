@@ -1,0 +1,65 @@
+{
+  "sprint_id": "sprint-934",
+  "title": "MULTI-PIPELINE — 3 code demos + 2 TTS vlogs (TTS mode)",
+  "description": "3 code demos + 2 TTS-mode vlogs. Pushing toward 350 total content.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "934-01",
+      "title": "Code demo: Build a Keylogger Detector in Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-934",
+      "output": "demo-mn3omlkw"
+    },
+    {
+      "id": "934-02",
+      "title": "Code demo: Create a DNS Lookup Tool in Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-934",
+      "output": "demo-mn3ooav7"
+    },
+    {
+      "id": "934-03",
+      "title": "Code demo: Build a Random Quote Generator in Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-934",
+      "output": "demo-mn3opp85"
+    },
+    {
+      "id": "934-04",
+      "title": "V2 video (TTS): Why Every Student Should Learn Prompt Engineering Now",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-934",
+      "output": "vlog-mn3ord6s",
+      "mode": "tts"
+    },
+    {
+      "id": "934-05",
+      "title": "V2 video (TTS): The AI Feature Hidden in Your iPhone You Never Knew About",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-934",
+      "output": "vlog-mn3ost63",
+      "mode": "tts"
+    }
+  ]
+}

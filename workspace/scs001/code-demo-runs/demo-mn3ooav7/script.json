@@ -1,0 +1,74 @@
+{
+  "demo_id": "demo-mn3ooav7",
+  "title": "DNS Lookup in Python",
+  "language": "python",
+  "total_duration_s": 25,
+  "steps": [
+    {
+      "step_id": "s1",
+      "title": "Step 1: Import Module",
+      "code_lines": [
+        "import socket"
+      ],
+      "language": "python",
+      "explanation": "We start by importing the socket module to handle network tasks.",
+      "duration_s": 5,
+      "highlight_lines": [
+        1
+      ]
+    },
+    {
+      "step_id": "s2",
+      "title": "Step 2: Define Function",
+      "code_lines": [
+        "def dns_lookup(domain):",
+        "    try:",
+        "        ip = socket.gethostbyname(domain)",
+        "        print(f\"IP Address: {ip}\")",
+        "    except socket.gaierror as e:",
+        "        print(f\"Error: {e}\")"
+      ],
+      "language": "python",
+      "explanation": "This function performs a DNS lookup and handles any errors that may occur.",
+      "duration_s": 8,
+      "highlight_lines": [
+        1,
+        3,
+        5
+      ]
+    },
+    {
+      "step_id": "s3",
+      "title": "Step 3: Run the Code",
+      "code_lines": [
+        "if __name__ == \"__main__\":",
+        "    domain = input(\"Enter domain: \")",
+        "    dns_lookup(domain)"
+      ],
+      "language": "python",
+      "explanation": "Finally, we prompt the user for a domain and run the lookup.",
+      "duration_s": 7,
+      "highlight_lines": [
+        1,
+        2
+      ]
+    },
+    {
+      "step_id": "s4",
+      "title": "Try It Yourself!",
+      "code_lines": [],
+      "language": "python",
+      "explanation": "Try it yourself and see how domains resolve to IP addresses!",
+      "duration_s": 5,
+      "highlight_lines": []
+    }
+  ],
+  "hashtags": [
+    "#coding",
+    "#python",
+    "#tutorial"
+  ],
+  "intro_hook": "Ever wonder how domains turn into IP addresses?",
+  "source": "user",
+  "topic_source": "user-prompt"
+}
