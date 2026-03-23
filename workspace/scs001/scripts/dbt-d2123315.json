@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-d2123315",
+  "topic_id": "custom-mn2lo4w7-0",
+  "format": "debate",
+  "title": "The gaming PC that costs less than your phone",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "A gaming PC under $500 is possible—just look at AMD's Ryzen 5 and NVIDIA's GTX 1660 Super. Your phone can't run modern games at 4K.",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Gaming isn't just about specs—it's about immersion. High refresh rate monitors, mechanical keyboards, and precise mice aren't in your phone's ecosystem.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "True, but gaming PCs use standardized protocols like USB 3.2 and HDMI 2.1. Phones are locked in with proprietary connectors and limited upgradability.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "You can't upgrade a phone's GPU or add a discrete graphics card. Gaming PCs are built for performance longevity and modularity—phones are disposable.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Your point is valid, but a phone costs less. Gaming PCs offer more value over time with upgradable components and open standards.",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "the vs gaming",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#the",
+    "#gaming",
+    "#pc"
+  ],
+  "generated_at": "2026-03-23T03:02:33.313Z",
+  "llm_used": true
+}

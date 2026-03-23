@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-e0d84f82",
+  "topic_id": "custom-mn2k66rp-0",
+  "format": "explainer",
+  "title": "Ethereum just hit a new all-time high and nobody noticed",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Ethereum just broke its all-time high — and no one's talking about it.",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This could be the moment crypto finally goes mainstream.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Ethereum hit $4,500, its highest price since 2022.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Its energy use dropped 90% thanks to the Merge upgrade.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This affects investors, developers, and everyday users alike.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The key takeaway? Ethereum is now more efficient and valuable than ever.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "What do you think will happen next?",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "Ethereum just hit a new all-time high and nobody noticed",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#ethereum",
+    "#just",
+    "#hit"
+  ],
+  "generated_at": "2026-03-23T02:20:29.775Z",
+  "llm_used": true
+}

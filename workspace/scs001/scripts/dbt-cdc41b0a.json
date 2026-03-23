@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-cdc41b0a",
+  "topic_id": "custom-mn2mc8q1-4",
+  "format": "debate",
+  "title": "The interview hack that works every single time",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "\"The 'the' is the universal anchor — it's the only word that can't be missed, no matter the language or context.\"",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "\"But 'interview' is the foundation — it's the structure that gives meaning to every question, every answer, every interaction.\"",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "\"The 'the' is supported by every major language protocol. It's the only word with universal grammatical function.\"",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "\"Without 'interview,' you have no context. It's the framework that turns randomness into purposeful conversation.\"",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "\"The 'the' wins — it's the silent force that makes communication work, every single time.\"",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "the vs interview",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#the",
+    "#interview",
+    "#hack"
+  ],
+  "generated_at": "2026-03-23T03:22:14.187Z",
+  "llm_used": true
+}

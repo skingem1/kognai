@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-04610cf7",
+  "topic_id": "custom-mn2gvzel-0",
+  "format": "explainer",
+  "title": "How to build your first AI agent in 10 minutes",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "What if I told you you could build an AI agent in 10 minutes?",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "AI agents are changing how we work — and they’re here to stay.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "An AI agent is a program that can do tasks automatically, like booking meetings.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "With tools like Microsoft’s Power Automate, you can build one without coding.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This affects millions of workers who waste hours on repetitive tasks daily.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The key takeaway? AI agents are powerful — and easy to use.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Want to see how? Hit follow and I’ll show you step by step.",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "How to build your first AI agent in 10 minutes",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#how",
+    "#to",
+    "#build"
+  ],
+  "generated_at": "2026-03-23T00:48:36.025Z",
+  "llm_used": true
+}

@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-c3594b86",
+  "topic_id": "custom-mn2ka5zb-4",
+  "format": "debate",
+  "title": "How to use ChatGPT to negotiate your salary",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "ChatGPT can craft precise, data-driven salary negotiation scripts tailored to your industry and experience. (3 sec)",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "But negotiating is about human nuance, not templates. ChatGPT can’t read the room or adapt to real-time feedback. (5 sec)",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "It can analyze market data from PayScale and Glassdoor, giving you leverage with concrete numbers. (5 sec)",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "You’re relying on AI to interpret human emotions and power dynamics — that’s not how real negotiations work. (5 sec)",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Use ChatGPT to research, not to negotiate. The human touch is irreplaceable. (4 sec)",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "how vs to",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#how",
+    "#to",
+    "#use"
+  ],
+  "generated_at": "2026-03-23T02:24:38.518Z",
+  "llm_used": true
+}

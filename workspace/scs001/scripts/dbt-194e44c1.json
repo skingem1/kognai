@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-194e44c1",
+  "topic_id": "cg-dae735d95742",
+  "format": "debate",
+  "title": "Siren (SIREN) 📈 135.8%",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Siren's price is a bubble—no real-world use case or protocol adoption to back its 135.8% surge.",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Siren's decentralized identity layer is solving real problems in Web3—adoption is rising, not just speculation.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Their tokenomics are flawed—high inflation rates and no clear utility mean value is unsustainable.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Siren's zero-knowledge proofs and privacy-first design are attracting enterprise interest—actual demand is here.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "This rally is justified—Siren’s tech is foundational, and the market is finally recognizing its potential.",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "Siren is overvalued vs Siren rally is justified",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#siren",
+    "#siren",
+    "#crypto"
+  ],
+  "generated_at": "2026-03-23T00:36:17.617Z",
+  "llm_used": true
+}

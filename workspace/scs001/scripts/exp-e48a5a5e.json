@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-e48a5a5e",
+  "topic_id": "custom-mn2h2yrs-0",
+  "format": "explainer",
+  "title": "Top 5 free AI tools you are not using yet",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Did you know your workflow is missing these game-changing AI tools?",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "AI is reshaping every industry — and you’re still using outdated methods.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Lumen5 turns your text into stunning videos in seconds.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "It uses natural language processing to auto-generate visuals and motion.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Marketers, educators, and content creators are saving hours daily.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The key takeaway? Automate the boring stuff and focus on creativity.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "What’s one AI tool you’ll try next?",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "Top 5 free AI tools you are not using yet",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#top",
+    "#5",
+    "#free"
+  ],
+  "generated_at": "2026-03-23T00:54:00.045Z",
+  "llm_used": true
+}

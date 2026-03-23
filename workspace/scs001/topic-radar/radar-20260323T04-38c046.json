@@ -1,0 +1,111 @@
+{
+  "radar_id": "radar-20260323T04-38c046",
+  "collected_at": "2026-03-23T04:34:33.228Z",
+  "topics": [
+    {
+      "topic_id": "arxiv-82e32dca8ea8",
+      "title": "Beyond Single Tokens: Distilling Discrete Diffusion Models via Discrete MMD",
+      "summary": "It is currently difficult to distill discrete diffusion models. In contrast, continuous diffusion literature has many distillation approaches methods ",
+      "format": "explainer",
+      "source": "arxiv",
+      "source_url": "http://arxiv.org/abs/2603.20155v1",
+      "confidence": 57.5,
+      "keywords": [
+        "beyond",
+        "single",
+        "tokens:",
+        "distilling",
+        "discrete",
+        "diffusion"
+      ],
+      "collected_at": "2026-03-23T04:34:27.462Z"
+    },
+    {
+      "topic_id": "cg-dae735d95742",
+      "title": "Siren (SIREN) 📈 144.5%",
+      "summary": "Trending on CoinGecko — rank #1",
+      "format": "debate",
+      "source": "coingecko",
+      "source_url": "https://www.coingecko.com/en/coins/siren-2",
+      "confidence": 80,
+      "keywords": [
+        "siren",
+        "siren",
+        "crypto",
+        "defi"
+      ],
+      "debate_sides": {
+        "side_a": "Siren is overvalued",
+        "side_b": "Siren rally is justified"
+      },
+      "collected_at": "2026-03-23T04:34:27.428Z"
+    },
+    {
+      "topic_id": "cg-b60d7bdd334c",
+      "title": "Ethereum (ETH) 📉 -2.7%",
+      "summary": "Trending on CoinGecko — rank #9",
+      "format": "vision",
+      "source": "coingecko",
+      "source_url": "https://www.coingecko.com/en/coins/ethereum",
+      "confidence": 52.65119455025503,
+      "keywords": [
+        "ethereum",
+        "eth",
+        "crypto",
+        "defi"
+      ],
+      "collected_at": "2026-03-23T04:34:27.428Z"
+    },
+    {
+      "topic_id": "arxiv-c338e62e54c0-lst",
+      "title": "Top 3 improving generalization tools you need to know",
+      "summary": "The use of ML in cybersecurity has long been impaired by generalization issues: Models that work well in controlled scenarios fail to maintain perform",
+      "format": "listicle",
+      "source": "arxiv",
+      "source_url": "http://arxiv.org/abs/2603.20181v1",
+      "confidence": 55,
+      "keywords": [
+        "improving",
+        "generalization",
+        "cybersecurity",
+        "tasks",
+        "with",
+        "multi"
+      ],
+      "collected_at": "2026-03-23T04:34:27.462Z",
+      "listicle_items": [
+        "Improving",
+        "Generalization",
+        "Cybersecurity"
+      ]
+    },
+    {
+      "topic_id": "arxiv-c338e62e54c0",
+      "title": "Improving Generalization on Cybersecurity Tasks with Multi-Modal Contrastive Learning",
+      "summary": "The use of ML in cybersecurity has long been impaired by generalization issues: Models that work well in controlled scenarios fail to maintain perform",
+      "format": "explainer",
+      "source": "arxiv",
+      "source_url": "http://arxiv.org/abs/2603.20181v1",
+      "confidence": 55,
+      "keywords": [
+        "improving",
+        "generalization",
+        "cybersecurity",
+        "tasks",
+        "with",
+        "multi"
+      ],
+      "collected_at": "2026-03-23T04:34:27.462Z"
+    }
+  ],
+  "sources_hit": [
+    "github",
+    "arxiv",
+    "coingecko",
+    "reddit",
+    "dev_to",
+    "lobsters",
+    "techcrunch"
+  ],
+  "errors": []
+}

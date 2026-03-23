@@ -1,0 +1,110 @@
+{
+  "radar_id": "radar-20260323T00-5a5554",
+  "collected_at": "2026-03-23T00:22:37.489Z",
+  "topics": [
+    {
+      "topic_id": "cg-6b88c087247a",
+      "title": "Bitcoin (BTC) 📉 -1.5%",
+      "summary": "Trending on CoinGecko — rank #4",
+      "format": "explainer",
+      "source": "coingecko",
+      "source_url": "https://www.coingecko.com/en/coins/bitcoin",
+      "confidence": 51.52476383701634,
+      "keywords": [
+        "bitcoin",
+        "btc",
+        "crypto",
+        "defi"
+      ],
+      "collected_at": "2026-03-23T00:22:31.555Z"
+    },
+    {
+      "topic_id": "cg-dae735d95742",
+      "title": "Siren (SIREN) 📈 140.5%",
+      "summary": "Trending on CoinGecko — rank #1",
+      "format": "debate",
+      "source": "coingecko",
+      "source_url": "https://www.coingecko.com/en/coins/siren-2",
+      "confidence": 80,
+      "keywords": [
+        "siren",
+        "siren",
+        "crypto",
+        "defi"
+      ],
+      "debate_sides": {
+        "side_a": "Siren is overvalued",
+        "side_b": "Siren rally is justified"
+      },
+      "collected_at": "2026-03-23T00:22:31.555Z"
+    },
+    {
+      "topic_id": "devto-470cd4c183dc",
+      "title": "Point at UI bugs instead of describing them to Claude Code",
+      "summary": "Dev.to (0 reactions, 0 comments)",
+      "format": "vision",
+      "source": "dev_to",
+      "source_url": "https://dev.to/lokeshgrootan/point-at-ui-bugs-instead-of-describing-them-to-claude-code-48bm",
+      "confidence": 45,
+      "keywords": [
+        "point",
+        "bugs",
+        "instead",
+        "describing",
+        "them",
+        "claude"
+      ],
+      "collected_at": "2026-03-23T00:22:31.652Z"
+    },
+    {
+      "topic_id": "cg-03f20e5f173b",
+      "title": "Resolv USR (USR) 📉 -64.3%",
+      "summary": "Trending on CoinGecko — rank #2",
+      "format": "debate",
+      "source": "coingecko",
+      "source_url": "https://www.coingecko.com/en/coins/resolv-usr",
+      "confidence": 80,
+      "keywords": [
+        "resolv usr",
+        "usr",
+        "crypto",
+        "defi"
+      ],
+      "debate_sides": {
+        "side_a": "Resolv USR is undervalued",
+        "side_b": "Resolv USR will recover"
+      },
+      "collected_at": "2026-03-23T00:22:31.555Z"
+    },
+    {
+      "topic_id": "cg-2d7f45d7b98b",
+      "title": "Bedrock (BR) 📈 60.8%",
+      "summary": "Trending on CoinGecko — rank #9",
+      "format": "debate",
+      "source": "coingecko",
+      "source_url": "https://www.coingecko.com/en/coins/bedrock-token",
+      "confidence": 80,
+      "keywords": [
+        "bedrock",
+        "br",
+        "crypto",
+        "defi"
+      ],
+      "debate_sides": {
+        "side_a": "Bedrock is overvalued",
+        "side_b": "Bedrock rally is justified"
+      },
+      "collected_at": "2026-03-23T00:22:31.555Z"
+    }
+  ],
+  "sources_hit": [
+    "github",
+    "arxiv",
+    "coingecko",
+    "reddit",
+    "dev_to",
+    "lobsters",
+    "techcrunch"
+  ],
+  "errors": []
+}

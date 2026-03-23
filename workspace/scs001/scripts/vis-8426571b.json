@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-8426571b",
+  "topic_id": "custom-mn2jspl4-1",
+  "format": "vision",
+  "title": "I asked AI to predict the next crypto to 100x",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "What if the next 100x crypto isn't built on hype, but on real-world utility and breakthrough tech?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Smart contracts on Layer 2s and zero-knowledge proofs are enabling privacy and scalability we’ve never seen before.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "But if we prioritize profit over people, we risk deepening inequality and enabling financial crime at scale.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Builders are focusing on regulation-compliant frameworks and transparent governance models to mitigate those risks.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "Imagine a world where blockchain empowers the unbanked and fuels global innovation, not just speculation.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future of crypto lies in balancing innovation with responsibility — the next 100x may come from that balance.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of i",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#i",
+    "#asked",
+    "#ai"
+  ],
+  "video_cue": "A montage of diverse people using blockchain-based apps for education, healthcare, and small business growth.",
+  "generated_at": "2026-03-23T02:10:26.180Z",
+  "llm_used": true
+}

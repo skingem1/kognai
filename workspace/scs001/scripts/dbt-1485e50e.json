@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-1485e50e",
+  "topic_id": "custom-mn2kyy4g-2",
+  "format": "debate",
+  "title": "5 money habits that keep you poor without realizing",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "The \"5 money habits\" myth ignores real protocols that build long-term wealth, like compounding and budgeting. (3 sec)",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Money isn't just numbers—it's a system. Ignoring tech like blockchain or automated investing limits growth. (5 sec)",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Compounding works on any scale, even with small amounts. It's a mathematically proven wealth builder. (5 sec)",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Tech like robo-advisors and AI-driven portfolios outperform human decisions in 85% of cases. (5 sec)",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Money evolves with tech—stick to outdated habits, and you’ll stay stuck. (4 sec)",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "5 vs money",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#5",
+    "#money",
+    "#habits"
+  ],
+  "generated_at": "2026-03-23T02:43:25.490Z",
+  "llm_used": true
+}

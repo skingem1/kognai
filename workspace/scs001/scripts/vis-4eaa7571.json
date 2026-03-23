@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-4eaa7571",
+  "topic_id": "custom-mn2jspl4-2",
+  "format": "vision",
+  "title": "The 1 AI skill that will make you irreplaceable",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "What one AI skill will make humans irreplaceable in a world where machines can do almost anything?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Mastery of interpretative reasoning — AI can now code, but understanding human intent in ambiguous contexts remains elusive.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "If AI lacks empathy and ethical judgment, it may make decisions that are technically sound but morally harmful.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Builders are integrating explainable AI and value alignment frameworks to ensure systems reflect human values.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "Imagine AI that not only solves problems but does so with fairness, compassion, and cultural awareness.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future belongs to those who can guide AI with wisdom, not just power.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of the",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#the",
+    "#1",
+    "#ai"
+  ],
+  "video_cue": "A human and AI collaborator working side by side in a futuristic lab, solving a complex ethical dilemma.",
+  "generated_at": "2026-03-23T02:10:43.363Z",
+  "llm_used": true
+}

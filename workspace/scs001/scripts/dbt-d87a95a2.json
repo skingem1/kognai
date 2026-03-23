@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-d87a95a2",
+  "topic_id": "custom-mn2kyy4g-0",
+  "format": "debate",
+  "title": "Why remote work is dying and nobody wants to admit it",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Remote work is dying because it breaks collaboration, delays decision-making, and ignores human needs — all in the name of flexibility.",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Flexibility isn't dying — it's evolving. Tools like Slack, Zoom, and GitHub let teams stay connected without being in the same room.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "But those tools can't replace in-person brainstorming. 53% of managers say remote teams struggle with innovation and trust.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Innovation thrives when people have autonomy. Distributed teams use async workflows and asynchronous communication to be more productive.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Remote work isn’t dying — it’s adapting. The future is hybrid, not rigid office hours or outdated protocols.",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "why vs remote",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#why",
+    "#remote",
+    "#work"
+  ],
+  "generated_at": "2026-03-23T02:42:54.751Z",
+  "llm_used": true
+}

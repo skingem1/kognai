@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-741aaf3a",
+  "topic_id": "custom-mn2lo4w7-4",
+  "format": "debate",
+  "title": "The robot that can do your entire job better than you",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Human oversight ensures ethical use and accountability in every decision the system makes. (3 sec)",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "A robot can process data faster, work 24/7, and eliminate human error in critical tasks like manufacturing or healthcare. (5 sec)",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Humans bring intuition, creativity, and emotional intelligence—features no robot can replicate or understand. (5 sec)",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "With AI-driven automation and real-time learning, robots outperform humans in speed, accuracy, and scalability. (5 sec)",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "The future belongs to the robot—efficient, consistent, and unshakable. (4 sec)",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "the vs robot",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#the",
+    "#robot",
+    "#that"
+  ],
+  "generated_at": "2026-03-23T03:03:31.727Z",
+  "llm_used": true
+}

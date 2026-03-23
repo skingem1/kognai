@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-c8d272d8",
+  "topic_id": "custom-mn2mc8q1-2",
+  "format": "debate",
+  "title": "How to learn any skill in 30 days using AI",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Master any skill in 30 days by using AI-driven protocols that simulate real-world scenarios with precision and speed.",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "But how can you learn without understanding the *why*? AI can guide, but real skill comes from deliberate practice and context.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "My protocol uses adaptive learning algorithms, like those in Duolingo or Coursera, to tailor your progress in real time—no guesswork.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "You're missing the human element. AI can show you *how*, but it can't replace the mentorship and feedback that make learning stick.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "In 30 days, AI can get you to competency—no need for years of trial and error. The *how* is the future of learning.",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "how vs to",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#how",
+    "#to",
+    "#learn"
+  ],
+  "generated_at": "2026-03-23T03:21:46.259Z",
+  "llm_used": true
+}

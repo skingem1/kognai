@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-e1ada644",
+  "topic_id": "custom-mn2hxfnc-0",
+  "format": "explainer",
+  "title": "I replaced my entire team with AI for one week",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "I replaced my entire team with AI for one week — and it worked better than I ever imagined.",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This is the future of work, and it's happening right now.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "I used AI to handle project management, client calls, and even coding.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The AI tool I used had real-time language translation and auto-generated reports.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "My clients didn’t notice a difference — and my productivity doubled.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The key takeaway? AI isn’t replacing humans — it’s supercharging them.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Have you tried using AI to boost your workflow? Let me know in the comments.",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "I replaced my entire team with AI for one week",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#i",
+    "#replaced",
+    "#my"
+  ],
+  "generated_at": "2026-03-23T01:17:43.697Z",
+  "llm_used": true
+}

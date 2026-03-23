@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-c987651a",
+  "topic_id": "custom-mn2hpu61-0",
+  "format": "vision",
+  "title": "Self-driving cars just got approved everywhere",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "What does universal approval of self-driving cars mean for our cities, ethics, and daily lives?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Current tech uses lidar, neural networks, and real-time mapping — safe in most conditions, but not all.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "Job loss in driving sectors, privacy risks from constant data collection, and moral dilemmas in crash scenarios.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Companies are testing fallback systems and partnering with policymakers to ensure transparency and safety.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "In 10 years, we may see seamless mobility, reduced accidents, and new opportunities in urban planning and work.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The road ahead is paved with innovation, but only if we steer with ethics and foresight.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of self-driving",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#self-driving",
+    "#cars",
+    "#just"
+  ],
+  "video_cue": "A quiet suburban street with autonomous vehicles gliding smoothly, pedestrians and cyclists safely crossing.",
+  "generated_at": "2026-03-23T01:11:53.912Z",
+  "llm_used": true
+}

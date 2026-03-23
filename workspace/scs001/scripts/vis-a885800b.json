@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-a885800b",
+  "topic_id": "cg-b60d7bdd334c",
+  "format": "vision",
+  "title": "Ethereum (ETH) 📉 -3.1%",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "What does Ethereum's recent dip signal for its future as a platform for decentralized innovation?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Ethereum's layer-2 scaling solutions like Optimism and Arbitrum are making transactions faster and cheaper, but adoption still lags.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "If Ethereum becomes too centralized through merge and upgrades, it risks losing the trust and transparency that made it revolutionary.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Developers are pushing for modular design and rollups to keep Ethereum decentralized while improving performance and scalability.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "A future where Ethereum powers global DeFi and DAOs with robust governance could democratize financial systems worldwide.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future of Ethereum depends on balancing innovation with the values that first made it a beacon of decentralization.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of ethereum",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#ethereum",
+    "#eth",
+    "#crypto"
+  ],
+  "video_cue": "A digital ledger expanding into a vibrant network of interconnected nodes and smart contracts.",
+  "generated_at": "2026-03-23T04:21:50.271Z",
+  "llm_used": true
+}

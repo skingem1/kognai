@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-32db1401",
+  "topic_id": "custom-mn2ke33e-3",
+  "format": "vision",
+  "title": "3 programming languages that will die by 2028",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "Which programming languages might become obsolete by 2028, and why?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Legacy languages like COBOL and Perl are declining as modern tools like Rust and Python dominate enterprise and AI development.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "Losing older languages risks erasing decades of institutional knowledge and displacing workers untrained in newer systems.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Communities are archiving COBOL code and training new developers to ensure continuity in critical sectors like finance and government.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "A future where language evolution is guided by inclusivity and preservation of expertise, not just technological momentum.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future of programming balances innovation with responsibility, ensuring progress doesn’t leave people behind.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of 3",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#3",
+    "#programming",
+    "#languages"
+  ],
+  "video_cue": "A split-screen showing lines of COBOL code fading into modern AI-driven development environments.",
+  "generated_at": "2026-03-23T02:27:41.814Z",
+  "llm_used": true
+}

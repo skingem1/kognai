@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-7e9c953c",
+  "topic_id": "custom-mn2pztxa-0",
+  "format": "vision",
+  "title": "The  race to build AGI: who's winning in 2026?",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "In 2026, who's closest to achieving AGI — and what does that mean for our world?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Large language models and neural architecture search are advancing fast, but AGI remains speculative.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "The rise of AGI could widen inequality and erode human agency if not governed responsibly.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Researchers are building alignment frameworks and using reinforcement learning from human feedback.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "With global collaboration, AGI could revolutionize healthcare and education by solving complex challenges.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The race to AGI isn’t just about speed — it’s about shaping a future we all can trust.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of the",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#the",
+    "#race",
+    "#to"
+  ],
+  "video_cue": "A global network of AI research labs connected by glowing data streams, symbolizing collaboration and progress.",
+  "generated_at": "2026-03-23T05:03:48.984Z",
+  "llm_used": true
+}

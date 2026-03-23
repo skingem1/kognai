@@ -1,0 +1,60 @@
+{
+  "script_id": "lst-75168824",
+  "topic_id": "reddit-ad3fec77673d-lst",
+  "format": "listicle",
+  "title": "Top 3 qwen models tools you need to know",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Top 3 Qwen tools that will blow your mind — stick around for the #1 reveal.",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "3: Open — it's fully customizable, letting you tweak models for any use case.",
+      "start_s": 3,
+      "end_s": 7,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "2: Models — with over 100 specialized versions, it's the most versatile tool here.",
+      "start_s": 7,
+      "end_s": 11,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "1: Qwen — the AI powerhouse with 10 trillion parameters, crushing all competition.",
+      "start_s": 11,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Follow for deep dives into the tech shaping tomorrow — you won't want to miss this.",
+      "start_s": 16,
+      "end_s": 20,
+      "emotion": "excited"
+    }
+  ],
+  "total_duration_s": 20,
+  "caption_text": "Top 3: Top 3 qwen models tools you need to know",
+  "hashtags": [
+    "#Top3",
+    "#Tech",
+    "#Ranking",
+    "#qwen",
+    "#models",
+    "#open"
+  ],
+  "generated_at": "2026-03-22T23:02:11.352Z",
+  "llm_used": true
+}

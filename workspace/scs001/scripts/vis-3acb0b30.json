@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-3acb0b30",
+  "topic_id": "custom-mn2ke33e-4",
+  "format": "vision",
+  "title": "How to use ChatGPT to negotiate your salary",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "How might ChatGPT and similar tools reshape the way we negotiate salaries in the coming years?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "ChatGPT can analyze job market data, suggest negotiation tactics, and simulate employer responses to help users prepare.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "But relying on AI for such personal negotiations risks dehumanizing the process and may reinforce biased wage structures.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Builders are adding transparency layers and bias-detection tools to ensure AI recommendations are fair and context-aware.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "In the future, AI could act as a neutral mediator, helping both employees and employers reach equitable agreements.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future of salary negotiation may be smarter, fairer, and more collaborative — powered by thoughtful AI design.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of how",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#how",
+    "#to",
+    "#use"
+  ],
+  "video_cue": "A diverse group of professionals using an AI assistant to review salary data and negotiate with employers in a virtual meeting room.",
+  "generated_at": "2026-03-23T02:28:00.017Z",
+  "llm_used": true
+}

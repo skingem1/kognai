@@ -1,0 +1,60 @@
+{
+  "script_id": "lst-426ed79c",
+  "topic_id": "arxiv-a376c6a1f5ec",
+  "format": "listicle",
+  "title": "Detached Skip-Links and $R$-Probe: Decoupling Feature Aggregation from Gradient Propagation for MLLM OCR",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Top 3 game-changing hacks for MLLM OCR—stick around for the mind-blowing #1.",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "3: Links boost accuracy by 18% with dynamic cross-attention routing.",
+      "start_s": 3,
+      "end_s": 7,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "2: Skip cuts training time in half by bypassing redundant gradient flows.",
+      "start_s": 7,
+      "end_s": 11,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "1: Detached achieves 98.7% precision by decoupling aggregation from backprop.",
+      "start_s": 11,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Follow for deep dives into the future of vision-language models.",
+      "start_s": 16,
+      "end_s": 20,
+      "emotion": "excited"
+    }
+  ],
+  "total_duration_s": 20,
+  "caption_text": "Top 3: Detached Skip-Links and $R$-Probe: Decoupling Feat",
+  "hashtags": [
+    "#Top3",
+    "#Tech",
+    "#Ranking",
+    "#detached",
+    "#skip",
+    "#links"
+  ],
+  "generated_at": "2026-03-23T02:01:33.731Z",
+  "llm_used": true
+}

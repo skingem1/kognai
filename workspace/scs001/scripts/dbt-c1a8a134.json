@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-c1a8a134",
+  "topic_id": "custom-mn2jotfh-3",
+  "format": "debate",
+  "title": "Why Apple just killed the iPhone",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "The iPhone is dead because Apple killed it with its own obsession—closed ecosystems and outdated protocols. (3 sec)",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Wrong. Apple’s commitment to security and privacy, like Face ID and end-to-end encryption, keeps the iPhone alive and trusted. (5 sec)",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "But look at the rise of open-source alternatives. Android’s fragmentation and lack of control don’t kill innovation—they fuel it. (5 sec)",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Apple’s hardware-software integration, from M1 chips to seamless app performance, is unmatched and keeps users loyal. (5 sec)",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "The iPhone isn’t dying—it’s evolving, and Apple is leading the charge. (4 sec)",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "why vs apple",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#why",
+    "#apple",
+    "#just"
+  ],
+  "generated_at": "2026-03-23T02:07:45.880Z",
+  "llm_used": true
+}

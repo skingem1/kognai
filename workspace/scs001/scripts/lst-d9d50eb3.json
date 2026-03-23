@@ -1,0 +1,60 @@
+{
+  "script_id": "lst-d9d50eb3",
+  "topic_id": "custom-mn2lx1ij-3",
+  "format": "listicle",
+  "title": "How quantum computers will break all encryption by 2030",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Top 3 things you didn’t know about quantum computers breaking encryption—stick around for the mind-blowing #1.",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "3: Classical computers use RSA encryption, which is secure... for now.",
+      "start_s": 3,
+      "end_s": 7,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "2: Quantum computers use Shor’s algorithm, cracking RSA in minutes, not millions of years.",
+      "start_s": 7,
+      "end_s": 11,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "1: How quantum entanglement and superposition enable brute-force decryption at unprecedented speed.",
+      "start_s": 11,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Follow for the shocking timeline—encryption could collapse by 2030 if we don’t act.",
+      "start_s": 16,
+      "end_s": 20,
+      "emotion": "excited"
+    }
+  ],
+  "total_duration_s": 20,
+  "caption_text": "Top 3: How quantum computers will break all encryption by",
+  "hashtags": [
+    "#Top3",
+    "#Tech",
+    "#Ranking",
+    "#how",
+    "#quantum",
+    "#computers"
+  ],
+  "generated_at": "2026-03-23T03:10:00.807Z",
+  "llm_used": true
+}

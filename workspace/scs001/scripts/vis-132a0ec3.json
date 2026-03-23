@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-132a0ec3",
+  "topic_id": "custom-mn2ppyu2-0",
+  "format": "vision",
+  "title": "Devin AI: is the first AI software engineer worth the hype?",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "Is Devin AI the real deal—or just another overhyped tool in the AI arms race?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Devin can write code, debug, and deploy apps, but it still lacks deep domain-specific knowledge and contextual judgment.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "If Devin replaces human engineers, we risk devaluing expertise and widening the gap between tech and non-tech workers.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Builders are integrating human-in-the-loop systems to ensure oversight and maintain ethical and practical boundaries.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "In five years, Devin could enable faster innovation, democratizing software development for small teams and startups.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future hinges on balancing AI’s potential with human values, ensuring progress doesn’t come at the cost of equity.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of devin",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#devin",
+    "#ai:",
+    "#is"
+  ],
+  "video_cue": "A split-screen showing a developer working with Devin AI on one side and a diverse team of engineers collaborating on the other.",
+  "generated_at": "2026-03-23T04:55:57.846Z",
+  "llm_used": true
+}

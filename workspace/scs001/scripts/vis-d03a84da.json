@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-d03a84da",
+  "topic_id": "custom-mn2mg5b7-0",
+  "format": "vision",
+  "title": "Why college degrees are becoming worthless in 2026",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "In 2026, will college degrees still signal competence, or will they be outdated by AI and new learning models?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "AI tutors and nanodegree platforms now offer hyper-personalized skills training in weeks, outpacing traditional four-year programs.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "This risks deepening inequality — those who can’t afford or access these tools may be left behind in an automated economy.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Builders are creating open-source learning networks and micro-credentialing systems to democratize access and validate skills.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "A future where learning is lifelong, collaborative, and driven by real-world impact, not just degrees.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future belongs to those who adapt — learning must evolve as fast as the world itself.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of why",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#why",
+    "#college",
+    "#degrees"
+  ],
+  "video_cue": "A classroom with AI avatars guiding students through holographic simulations of real-world problem-solving scenarios.",
+  "generated_at": "2026-03-23T03:24:21.656Z",
+  "llm_used": true
+}

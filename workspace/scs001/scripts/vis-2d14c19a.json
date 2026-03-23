@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-2d14c19a",
+  "topic_id": "custom-mn2hnrir-0",
+  "format": "vision",
+  "title": "What nobody tells you about working at Google in 2026",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "What hidden challenges will Google employees face in 2026 that aren't in the job descriptions?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Quantum computing and AI alignment are pushing boundaries, but tools like Qiskit and TensorFlow are still in early stages.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "Employees may face pressure to prioritize profit over privacy, as AI-driven surveillance becomes more integrated into internal systems.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Teams are experimenting with federated learning to protect data while still training robust models across departments.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "A future where AI ethics are baked into workflows, with real-time bias detection tools used in every project.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future at Google will be shaped by those who balance innovation with responsibility.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of what",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#what",
+    "#nobody",
+    "#tells"
+  ],
+  "video_cue": "A montage of Google engineers and ethicists collaborating in a futuristic office with holographic displays and AI dashboards.",
+  "generated_at": "2026-03-23T01:10:17.450Z",
+  "llm_used": true
+}

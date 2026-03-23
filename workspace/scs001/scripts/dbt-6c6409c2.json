@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-6c6409c2",
+  "topic_id": "custom-mn2pil6m-0",
+  "format": "debate",
+  "title": "Claude Code vs Cursor vs Windsurf: which AI coding tool wins in 2026?",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Claude Code dominates 2026 with seamless integration of multi-modal reasoning and real-time code synthesis.",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Cursor’s AI-powered autocomplete and deep integration with VS Code make it faster and more intuitive for developers.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Claude’s protocol-based approach ensures compatibility with enterprise systems and secure code generation at scale.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Code’s self-hosted architecture and open-source plugins give developers full control and unmatched customization.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Cursor wins in 2026—speed, control, and precision define the future of coding tools.",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "claude vs code",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#claude",
+    "#code",
+    "#vs"
+  ],
+  "generated_at": "2026-03-23T04:50:07.278Z",
+  "llm_used": true
+}

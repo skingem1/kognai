@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-a5b344a8",
+  "topic_id": "custom-mn2q6r8v-0",
+  "format": "vision",
+  "title": "Apple Vision Pro 2 leaks: what changed and is it worth it?",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "What if the Vision Pro 2 isn’t just a device, but a step toward a new kind of human-computer symbiosis?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "The new retina display and eye-tracking tech make for seamless AR experiences, but the real leap is in neural interface compatibility with third-party apps.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "Increased immersion risks blurring reality, especially for vulnerable users—could lead to addiction or psychological dissonance.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Developers are integrating ethical guardrails, like usage timers and reality-check prompts, to mitigate overuse and maintain mental well-being.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "If designed responsibly, this could revolutionize education, enabling immersive, personalized learning that adapts in real time.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The Vision Pro 2 may redefine how we interact with the world—if we build it with both ambition and accountability.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of apple",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#apple",
+    "#vision",
+    "#pro"
+  ],
+  "video_cue": "A person wearing the Vision Pro 2 interacting with a holographic interface in a sleek, futuristic office.",
+  "generated_at": "2026-03-23T05:09:11.225Z",
+  "llm_used": true
+}

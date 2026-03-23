@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-54d56a1d",
+  "topic_id": "custom-mn2ke33e-1",
+  "format": "vision",
+  "title": "The AI app that makes you  a day while you sleep",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "If an AI app could let you live a full day while you sleep, what would that mean for our time, our work, and our humanity?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Current sleep tech can track brain waves, but creating a full simulated day would need VR, neural interfaces, and real-time AI-generated experiences.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "This could deepen isolation, blur reality, and erode social bonds if people opt out of real-life interactions for synthetic ones.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Engineers are prioritizing safety protocols, user control, and integration with real-world responsibilities to prevent over-reliance.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "In the future, such apps might help people experience diverse cultures or careers without leaving their homes, enriching empathy and learning.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future of sleep may redefine how we experience life — not as a replacement, but as an expansion of our human potential.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of the",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#the",
+    "#ai",
+    "#app"
+  ],
+  "video_cue": "A person wearing a neural interface headset, surrounded by holographic environments that shift as they sleep.",
+  "generated_at": "2026-03-23T02:27:05.242Z",
+  "llm_used": true
+}

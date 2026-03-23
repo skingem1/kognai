@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-9c699560",
+  "topic_id": "cg-b4bfe090fdd6",
+  "format": "explainer",
+  "title": "Chainlink (LINK) 📉 -2.2%",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "LINK is down 2.2% — and it’s trending on CoinGecko at #9.",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This matters because Chainlink is a key player in DeFi and smart contracts.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Chainlink is a decentralized oracle network that connects blockchains to real-world data.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Its unique feature is using tamper-proof data feeds from trusted external sources.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This affects developers and users relying on accurate data for critical financial apps.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Remember: Chainlink’s reliability is crucial for the growth of blockchain-based systems.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Follow me for updates on crypto trends that move the market.",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "Chainlink (LINK) 📉 -2.2%",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#chainlink",
+    "#link",
+    "#crypto"
+  ],
+  "generated_at": "2026-03-23T04:43:22.193Z",
+  "llm_used": true
+}

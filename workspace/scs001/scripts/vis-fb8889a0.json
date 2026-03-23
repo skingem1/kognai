@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-fb8889a0",
+  "topic_id": "custom-mn2hs052-0",
+  "format": "vision",
+  "title": "The AI tool that writes entire apps in seconds",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "What if an AI could write a full app in seconds—what does that mean for developers, users, and society?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Current tools like GitHub Copilot and Code Llama can generate code, but full apps require integration, testing, and user interface design.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "Rapid app generation risks job displacement and could lead to a flood of low-quality, insecure software with little oversight.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Builders are focusing on AI-assisted development, not replacement—emphasizing security, collaboration, and human oversight.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "In five years, AI might co-create apps with humans, democratizing tech and enabling faster, more inclusive innovation.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future will balance AI's speed with human values, shaping a world where technology serves people, not the other way around.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of the",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#the",
+    "#ai",
+    "#tool"
+  ],
+  "video_cue": "A developer using an AI interface to rapidly build and test a mobile app in a sleek, futuristic workspace.",
+  "generated_at": "2026-03-23T01:13:36.838Z",
+  "llm_used": true
+}

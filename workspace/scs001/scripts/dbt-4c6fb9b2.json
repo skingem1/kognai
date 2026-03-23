@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-4c6fb9b2",
+  "topic_id": "custom-mn2q2a3t-0",
+  "format": "debate",
+  "title": "Web3 is dead? Why crypto developers are pivoting to AI",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Web3 isn't dead—it's evolving, with blockchain enabling decentralized AI governance and trustless collaboration.",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Crypto's hype cycle collapsed. AI offers real utility, while blockchain remains speculative, with no killer app.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Ethereum's Layer 2s and ZK-Rollups are scaling Web3, enabling decentralized AI training and data marketplaces.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Developers are leaving blockchain for AI because it delivers measurable impact, not just token inflation and hype.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Web3 is a dead-end; AI is the future, with tangible applications in healthcare, finance, and autonomous systems.",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "web3 vs is",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#web3",
+    "#is",
+    "#dead?"
+  ],
+  "generated_at": "2026-03-23T05:05:37.390Z",
+  "llm_used": true
+}

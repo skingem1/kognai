@@ -1,0 +1,25 @@
+{
+  "sprint_id": "sprint-864",
+  "title": "OPS — custom topic content production (3 videos, 103 unique total)",
+  "description": "Produce 3 new videos with custom topics. Continue building content inventory for posting phase.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "864-01",
+      "title": "Run custom topic content production",
+      "type": "ops",
+      "task_target": "scripts/scs001/batch-produce.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-864"
+    }
+  ],
+  "cto_gate": {
+    "approved": false,
+    "reason": "The sprint proposes producing custom topic videos, which is not directly aligned with the execution plan or work plan and does not address a critical bug or blocker.",
+    "plan_reference": "NOT_IN_PLAN",
+    "confidence": 85,
+    "timestamp": "2026-03-23T05:23:08.408Z"
+  }
+}

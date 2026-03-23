@@ -1,0 +1,60 @@
+{
+  "script_id": "lst-8bd1869b",
+  "topic_id": "custom-mn2jxmc6-3",
+  "format": "listicle",
+  "title": "Why Apple just killed the iPhone",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Top 3 reasons why Apple just killed the iPhone—stick around for the shocker at #1.",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "3: Just’s modular design lets you swap cameras and batteries in seconds.",
+      "start_s": 3,
+      "end_s": 7,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "2: Apple’s A17 Pro chip delivers 2x faster AI performance than any competitor.",
+      "start_s": 7,
+      "end_s": 11,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "1: Why’s ultra-thin 2mm form factor and 48-hour battery dominate the market.",
+      "start_s": 11,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Follow for the next tech showdown you won’t want to miss.",
+      "start_s": 16,
+      "end_s": 20,
+      "emotion": "excited"
+    }
+  ],
+  "total_duration_s": 20,
+  "caption_text": "Top 3: Why Apple just killed the iPhone",
+  "hashtags": [
+    "#Top3",
+    "#Tech",
+    "#Ranking",
+    "#why",
+    "#apple",
+    "#just"
+  ],
+  "generated_at": "2026-03-23T02:14:25.859Z",
+  "llm_used": true
+}

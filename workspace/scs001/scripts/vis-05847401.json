@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-05847401",
+  "topic_id": "custom-mn2qbaze-0",
+  "format": "vision",
+  "title": "Nvidia just announced something INSANE about AI chips",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "What if AI chips could reshape not just computing, but the very fabric of society in the next decade?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Nvidia's new AI chips use 3D-stacked memory and tensor cores, enabling real-time language translation and complex simulations at unprecedented speeds.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "If AI becomes too accessible, who controls the narrative? Misinformation could spread faster than ever, especially with deepfakes powered by these chips.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Builders are embedding watermarking and transparency protocols to trace AI-generated content and ensure accountability at every stage.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "Imagine a world where AI chips empower education in remote areas, giving every child access to personalized learning powered by real-time language models.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future isn’t just about speed—it’s about shaping a world where innovation serves humanity wisely.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of nvidia",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#nvidia",
+    "#just",
+    "#announced"
+  ],
+  "video_cue": "Close-up of Nvidia's new AI chip with glowing circuit paths and data streams flowing through it.",
+  "generated_at": "2026-03-23T05:12:41.891Z",
+  "llm_used": true
+}

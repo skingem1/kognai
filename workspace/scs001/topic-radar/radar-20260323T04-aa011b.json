@@ -1,0 +1,105 @@
+{
+  "radar_id": "radar-20260323T04-aa011b",
+  "collected_at": "2026-03-23T04:03:21.152Z",
+  "topics": [
+    {
+      "topic_id": "cg-5f5a8ed8f139",
+      "title": "River (RIVER) 📈 11.1%",
+      "summary": "Trending on CoinGecko — rank #6",
+      "format": "explainer",
+      "source": "coingecko",
+      "source_url": "https://www.coingecko.com/en/coins/river",
+      "confidence": 61.08753363665356,
+      "keywords": [
+        "river",
+        "river",
+        "crypto",
+        "defi"
+      ],
+      "collected_at": "2026-03-23T04:03:15.953Z"
+    },
+    {
+      "topic_id": "arxiv-68bd354cd001",
+      "title": "AI Agents Can Already Autonomously Perform Experimental High Energy Physics",
+      "summary": "Large language model-based AI agents are now able to autonomously execute substantial portions of a high energy physics (HEP) analysis pipeline with m",
+      "format": "explainer",
+      "source": "arxiv",
+      "source_url": "http://arxiv.org/abs/2603.20179v1",
+      "confidence": 60,
+      "keywords": [
+        "agents",
+        "already",
+        "autonomously",
+        "perform",
+        "experimental",
+        "high"
+      ],
+      "collected_at": "2026-03-23T04:03:15.985Z"
+    },
+    {
+      "topic_id": "cg-dae735d95742",
+      "title": "Siren (SIREN) 📈 136.9%",
+      "summary": "Trending on CoinGecko — rank #1",
+      "format": "debate",
+      "source": "coingecko",
+      "source_url": "https://www.coingecko.com/en/coins/siren-2",
+      "confidence": 80,
+      "keywords": [
+        "siren",
+        "siren",
+        "crypto",
+        "defi"
+      ],
+      "debate_sides": {
+        "side_a": "Siren is overvalued",
+        "side_b": "Siren rally is justified"
+      },
+      "collected_at": "2026-03-23T04:03:15.953Z"
+    },
+    {
+      "topic_id": "lobsters-c5ac443332b8",
+      "title": "ofw - fractional work for the AI era",
+      "summary": "Lobste.rs (0 pts, 0 comments, tags: ai privacy vibecoding)",
+      "format": "vision",
+      "source": "lobsters",
+      "source_url": "https://ourfractionalwork.com",
+      "confidence": 45,
+      "keywords": [
+        "fractional",
+        "work"
+      ],
+      "collected_at": "2026-03-23T04:03:16.223Z"
+    },
+    {
+      "topic_id": "cg-6b88c087247a-lst",
+      "title": "Top 3 bitcoin btc tools you need to know",
+      "summary": "Trending on CoinGecko — rank #5",
+      "format": "listicle",
+      "source": "coingecko",
+      "source_url": "https://www.coingecko.com/en/coins/bitcoin",
+      "confidence": 51.91529574075979,
+      "keywords": [
+        "bitcoin",
+        "btc",
+        "crypto",
+        "defi"
+      ],
+      "collected_at": "2026-03-23T04:03:15.953Z",
+      "listicle_items": [
+        "Bitcoin",
+        "Btc",
+        "Crypto"
+      ]
+    }
+  ],
+  "sources_hit": [
+    "github",
+    "arxiv",
+    "coingecko",
+    "reddit",
+    "dev_to",
+    "lobsters",
+    "techcrunch"
+  ],
+  "errors": []
+}

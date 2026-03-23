@@ -1,0 +1,60 @@
+{
+  "script_id": "lst-567c7bb7",
+  "topic_id": "custom-mn2ml57t-2",
+  "format": "listicle",
+  "title": "How to learn any skill in 30 days using AI",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Top 3 ways AI can help you master any skill in just 30 days—stick around for the game-changer.",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "3: Learn from AI tutors that adapt in real time, offering personalized feedback on every step.",
+      "start_s": 3,
+      "end_s": 7,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "2: To practice effectively, AI tracks your progress with 95% accuracy, identifying weak spots instantly.",
+      "start_s": 7,
+      "end_s": 11,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "1: How? Use AI-generated drills that simulate real-world scenarios, helping you master skills in half the time.",
+      "start_s": 11,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Follow for AI tools that turn 30 days into a breakthrough—your future self will thank you.",
+      "start_s": 16,
+      "end_s": 20,
+      "emotion": "excited"
+    }
+  ],
+  "total_duration_s": 20,
+  "caption_text": "Top 3: How to learn any skill in 30 days using AI",
+  "hashtags": [
+    "#Top3",
+    "#Tech",
+    "#Ranking",
+    "#how",
+    "#to",
+    "#learn"
+  ],
+  "generated_at": "2026-03-23T03:28:32.323Z",
+  "llm_used": true
+}

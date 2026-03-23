@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-a2fa1ce6",
+  "topic_id": "custom-mn2jkum1-0",
+  "format": "explainer",
+  "title": "GPT-5 just leaked and it's terrifying",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Did you hear? GPT-5 just leaked—and it’s way more powerful than anyone expected.",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This isn’t just another AI update; it’s a game-changer for the entire tech industry.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "GPT-5 is the next major version of OpenAI’s language model, capable of near-human reasoning.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "It uses a new neural architecture that allows it to process 10 times more data in real time.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Everyone from content creators to cybersecurity experts is now at risk of being outpaced.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The takeaway? This leak could shift the balance of power in AI for years to come.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "What do you think? Should we be worried or excited about this leak?",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "GPT-5 just leaked and it's terrifying",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#gpt-5",
+    "#just",
+    "#leaked"
+  ],
+  "generated_at": "2026-03-23T02:03:57.850Z",
+  "llm_used": true
+}

@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-2f1fa6e5",
+  "topic_id": "custom-mn2hbq3j-0",
+  "format": "vision",
+  "title": "3 reasons quantum computing will change everything",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "What if quantum computing could solve problems we've never imagined—within our lifetime?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Today, we have 128-qubit processors. They're cracking encryption and optimizing supply chains at unprecedented speeds.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "But this could break global security systems and widen the gap between those who control quantum tech and those who don't.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "We're developing post-quantum cryptography and open-source tools to ensure secure transitions for all nations.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "Imagine a world where quantum simulations cure diseases and make clean energy affordable for everyone.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future isn’t just faster—it’s smarter, fairer, and more inclusive, if we build it right.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of 3",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#3",
+    "#reasons",
+    "#quantum"
+  ],
+  "video_cue": "A scientist and engineer collaborating at a quantum lab, surrounded by glowing circuits and holographic data streams.",
+  "generated_at": "2026-03-23T01:00:55.328Z",
+  "llm_used": true
+}

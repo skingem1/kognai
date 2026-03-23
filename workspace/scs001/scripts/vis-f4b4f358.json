@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-f4b4f358",
+  "topic_id": "lobsters-9e353b2350ec",
+  "format": "vision",
+  "title": "Manyana: A Coherent Vision For The Future Of Version Control",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "What if version control became a shared, decentralized infrastructure for all knowledge creation?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Modern tools like Git, Merkle trees, and DAGs already enable robust, distributed version control at scale.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "But who controls the data? Centralized platforms risk monopolizing intellectual history and silencing marginalized voices.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Open-source communities and protocols like IPFS are decentralizing storage and access, giving creators more agency.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "Imagine a future where knowledge is collaboratively built and preserved, accessible to all without gatekeepers.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future of version control lies in balancing innovation with equity — a shared foundation for human progress.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of manyana:",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#manyana:",
+    "#coherent",
+    "#vision"
+  ],
+  "video_cue": "A digital forest where trees represent code repositories, branching and merging as developers collaborate globally.",
+  "generated_at": "2026-03-23T00:10:15.238Z",
+  "llm_used": true
+}

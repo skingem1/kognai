@@ -41,3 +41,9 @@
 - **MEDIUM** [Renewal]: Low-quality approvals: 5 tasks approved with score < 60
 - **MEDIUM** [Safety]: 7 validation errors in pipeline
 - **LOW** [Solidarity]: Low agent diversity: only 2 unique agents in 13 tasks
+
+## 2026-W13
+- Generated: 2026-03-22T21:31:57.585Z
+- AAR entries: 14
+- Sprint activity: 659
+- Report: reports/constitution/2026-W13.md

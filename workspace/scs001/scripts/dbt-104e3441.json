@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-104e3441",
+  "topic_id": "custom-mn2ka5zb-1",
+  "format": "debate",
+  "title": "The AI app that makes you  a day while you sleep",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "\"The AI app that learns your habits and builds your day while you sleep is the future of productivity.\"",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "\"AI isn't just about convenience—it's about personalization. The app would need real user data to function, which raises serious privacy concerns.\"",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "\"The app uses federated learning, keeping your data on your device. It's secure, efficient, and adapts to your unique schedule without compromising your privacy.\"",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "\"Even with federated learning, AI systems are prone to bias. If the app isn't transparent about its training data, it could reinforce harmful patterns in your daily routine.\"",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "\"AI without accountability is a risk. The real issue isn't the tech—it's who controls it and how it's used.\"",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "the vs ai",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#the",
+    "#ai",
+    "#app"
+  ],
+  "generated_at": "2026-03-23T02:23:53.090Z",
+  "llm_used": true
+}

@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-51de879f",
+  "topic_id": "custom-mn2h6b9h-0",
+  "format": "debate",
+  "title": "The AI bubble: are we headed for a crash?",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "The AI bubble is real — built on hype, not substance. Real innovation is slow, and most \"AI\" is just marketing. (3 sec)",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "You're wrong. AI is already embedded in critical systems — from healthcare to finance. It's not a bubble; it's a revolution. (5 sec)",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "But most \"AI\" lacks real protocols. Without standardization, it's a fragmented, unsustainable mess. (5 sec)",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Protocols evolve. Look at Kubernetes — once niche, now foundational. AI will follow the same path. (5 sec)",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "This isn't a bubble — it's the future. (4 sec)",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "the vs ai",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#the",
+    "#ai",
+    "#bubble:"
+  ],
+  "generated_at": "2026-03-23T00:56:39.994Z",
+  "llm_used": true
+}

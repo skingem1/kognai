@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-085525f5",
+  "topic_id": "custom-mn2hh533-0",
+  "format": "explainer",
+  "title": "The truth about Bitcoin energy consumption",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Did you know Bitcoin uses more energy than some countries?",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Bitcoin’s energy use is a hot topic as it grows faster than ever.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Bitcoin mining uses energy equivalent to a small country’s total consumption.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "It relies on proof-of-work, which requires massive computational power.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This affects miners, energy prices, and the environment in big ways.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The key takeaway? Bitcoin’s energy use is real, but solutions are emerging.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Want to know how Bitcoin could become greener? Follow for the breakdown.",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "The truth about Bitcoin energy consumption",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#the",
+    "#truth",
+    "#about"
+  ],
+  "generated_at": "2026-03-23T01:05:01.714Z",
+  "llm_used": true
+}

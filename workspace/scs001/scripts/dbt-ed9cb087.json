@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-ed9cb087",
+  "topic_id": "custom-mn2ka5zb-0",
+  "format": "debate",
+  "title": "Ethereum just hit a new all-time high and nobody noticed",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Ethereum's all-time high shows its protocol is stronger than ever — the future is on-chain.",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Nobody noticed because most people are still using legacy systems, not Ethereum's complex smart contracts.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Ethereum's Layer 2 scaling solutions and EIP-1559 have made it more efficient — the network is evolving.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Even with upgrades, Ethereum's high gas fees and slow transaction times keep it from mainstream adoption.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "The rise is real — the protocol's resilience and DeFi growth prove Ethereum is the standard, not the exception.",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "ethereum vs just",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#ethereum",
+    "#just",
+    "#hit"
+  ],
+  "generated_at": "2026-03-23T02:23:36.588Z",
+  "llm_used": true
+}

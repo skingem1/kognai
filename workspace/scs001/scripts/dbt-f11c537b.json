@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-f11c537b",
+  "topic_id": "custom-mn2in5gb-1",
+  "format": "debate",
+  "title": "The AI tool that replaced 100 employees overnight",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "The AI tool didn't replace 100 employees—it optimized processes, reducing errors by 90% and boosting productivity.",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "But at what cost? AI lacks human judgment, leading to biased decisions and eroded trust in critical systems.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Human oversight is built into the protocol—every AI action is logged, audited, and reversible via fail-safe triggers.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "That’s just a band-aid. Real AI evolves beyond human control, creating risks we can’t predict or contain.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "AI isn’t just a tool—it’s a replacement, and we’re already seeing the cost in lost jobs and societal instability.",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "the vs ai",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#the",
+    "#ai",
+    "#tool"
+  ],
+  "generated_at": "2026-03-23T01:38:00.559Z",
+  "llm_used": true
+}

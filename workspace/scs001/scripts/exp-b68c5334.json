@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-b68c5334",
+  "topic_id": "custom-mn2pty0m-0",
+  "format": "explainer",
+  "title": "GPT-5 leaked details: what we know about OpenAI's next model",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Did you hear? GPT-5 details just leaked — and they’re mind-blowing.",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This could change how AI works in the next 12 months.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "GPT-5 is OpenAI’s next-gen model, rumored to have 100 trillion parameters.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "It uses a new training method called “multi-modal reasoning” for better context.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Doctors, coders, and content creators will rely on it daily for complex tasks.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The takeaway? GPT-5 might be the last AI we’ll ever need.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Want the full breakdown? Tap to follow for the latest leaks.",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "GPT-5 leaked details: what we know about OpenAI's next model",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#gpt-5",
+    "#leaked",
+    "#details:"
+  ],
+  "generated_at": "2026-03-23T04:58:58.847Z",
+  "llm_used": true
+}

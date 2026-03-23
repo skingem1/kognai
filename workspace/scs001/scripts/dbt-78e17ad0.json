@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-78e17ad0",
+  "topic_id": "custom-mn2qgg9c-0",
+  "format": "debate",
+  "title": "The 3 biggest tech layoffs of 2026 and what they mean for developers",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "The 3 biggest tech layoffs of 2026 were all driven by flawed AI protocols, not just numbers.",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "You’re ignoring the scale—each was over 10,000 jobs. Numbers matter when developers lose work.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Scale alone doesn’t define impact. The 3 layoffs targeted outdated tech, not just size.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "But developers don’t care about outdated tech—they care about job security and real-world impact.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "The 3 layoffs reshaped the industry, proving that numbers define the future, not just protocols.",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "the vs 3",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#the",
+    "#3",
+    "#biggest"
+  ],
+  "generated_at": "2026-03-23T05:16:27.664Z",
+  "llm_used": true
+}

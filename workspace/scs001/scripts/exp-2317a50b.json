@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-2317a50b",
+  "topic_id": "custom-mn2h0hma-0",
+  "format": "explainer",
+  "title": "Why Anthropic Claude is beating ChatGPT at coding",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Did you know Claude just outperformed ChatGPT in real coding challenges?",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This could change how developers use AI tools in the next few months.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Claude now writes clean, working code faster than any other AI.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "It uses a new reasoning method called \"logical inference\" to debug as it goes.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This affects software teams needing reliable AI for complex projects.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The takeaway? Claude’s smarter coding could save developers hours daily.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Try it yourself—what AI tool do you use for coding?",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "Why Anthropic Claude is beating ChatGPT at coding",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#why",
+    "#anthropic",
+    "#claude"
+  ],
+  "generated_at": "2026-03-23T00:52:05.733Z",
+  "llm_used": true
+}

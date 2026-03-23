@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-acd650d4",
+  "topic_id": "custom-mn2hhy67-0",
+  "format": "explainer",
+  "title": "Claude vs GPT vs Gemini: the ultimate AI comparison",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Hey, what if I told you AI just got a lot more powerful?",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Claude, GPT, and Gemini are reshaping the future of tech.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "They’re the top AI models competing for dominance in 2024.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Gemini handles complex tasks with multi-modal reasoning.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Businesses, developers, and everyday users are already feeling the shift.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Remember: the best AI isn’t just smart—it’s practical and fast.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Which one will change your world first? Follow for the breakdown.",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "Claude vs GPT vs Gemini: the ultimate AI comparison",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#claude",
+    "#vs",
+    "#gpt"
+  ],
+  "generated_at": "2026-03-23T01:05:39.827Z",
+  "llm_used": true
+}

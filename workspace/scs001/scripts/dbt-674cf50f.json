@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-674cf50f",
+  "topic_id": "custom-mn2gsfw2-0",
+  "format": "debate",
+  "title": "Is OpenAI losing the AI race to open source?",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "OpenAI's proprietary models can't compete with open-source frameworks like LLaMA and Mistral. (3 sec)",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "OpenAI leads in innovation with GPT-5, while open-source lacks the training data and infrastructure to match. (5 sec)",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Open-source projects like Meta’s Llama 3 are rapidly iterating, with community contributions outpacing OpenAI’s updates. (5 sec)",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "OpenAI’s API access and enterprise tools give them a real-world edge open-source can’t replicate. (5 sec)",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "OpenAI’s lead is undeniable — they’re the gold standard in AI performance and deployment. (4 sec)",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "is vs openai",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#is",
+    "#openai",
+    "#losing"
+  ],
+  "generated_at": "2026-03-23T00:45:52.711Z",
+  "llm_used": true
+}

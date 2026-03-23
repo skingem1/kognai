@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-901695d4",
+  "topic_id": "custom-mn2ps057-0",
+  "format": "debate",
+  "title": "How to earn passive income with AI in 2026: 5 proven methods",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "By 2026, AI protocols like AutoML will automate income streams—no coding needed. This is how it’s done.",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "But \"how\" misses the point. Real passive income comes from owning AI tech, not just using it.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "AutoML and no-code tools already let non-experts deploy AI models. It’s scalable, fast, and accessible.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Ownership matters. If you don’t control the AI, you’re just a user. Real value is in training and licensing models.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "You can license models via protocols like ONNX—true ownership and passive income in one.",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "how vs to",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#how",
+    "#to",
+    "#earn"
+  ],
+  "generated_at": "2026-03-23T04:57:28.114Z",
+  "llm_used": true
+}

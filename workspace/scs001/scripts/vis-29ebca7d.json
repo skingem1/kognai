@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-29ebca7d",
+  "topic_id": "custom-mn2l2y3w-1",
+  "format": "vision",
+  "title": "The side hustle that replaced my 9 to 5 in 30 days",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "What if a side hustle, powered by AI, could replace your 9-to-5 in just 30 days?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "AI tools like automated content creation and smart contract platforms now generate income with minimal input.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "But this risks job displacement, inequality, and the erosion of traditional career paths and social safety nets.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Builders are developing platforms that upskill users, ensuring they remain valuable in an AI-driven economy.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "Imagine a future where AI handles routine tasks, freeing humans for creative and strategic work.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future isn’t just about replacement—it’s about redefining value, purpose, and work itself.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of the",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#the",
+    "#side",
+    "#hustle"
+  ],
+  "video_cue": "A person working on a laptop with AI-generated reports and income graphs appearing on the screen.",
+  "generated_at": "2026-03-23T02:46:22.852Z",
+  "llm_used": true
+}

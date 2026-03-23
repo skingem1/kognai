@@ -1,0 +1,60 @@
+{
+  "script_id": "lst-4bd94cca",
+  "topic_id": "custom-mn2lx1ij-0",
+  "format": "listicle",
+  "title": "The gaming PC that costs less than your phone",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Top 3 gaming PCs under your phone's price — and one surprises you.",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "3: The PC — built with 12th Gen Intel and 16GB RAM for smooth multitasking.",
+      "start_s": 3,
+      "end_s": 7,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "2: Gaming — this PC runs the latest titles at 1080p with 60 FPS for under $500.",
+      "start_s": 7,
+      "end_s": 11,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "1: The — Alienware Aurora R15, $999 with RTX 4070 and 360Hz monitor for true immersion.",
+      "start_s": 11,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Follow for more insane tech deals that’ll blow your mind.",
+      "start_s": 16,
+      "end_s": 20,
+      "emotion": "excited"
+    }
+  ],
+  "total_duration_s": 20,
+  "caption_text": "Top 3: The gaming PC that costs less than your phone",
+  "hashtags": [
+    "#Top3",
+    "#Tech",
+    "#Ranking",
+    "#the",
+    "#gaming",
+    "#pc"
+  ],
+  "generated_at": "2026-03-23T03:09:24.459Z",
+  "llm_used": true
+}

@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-46de3a96",
+  "topic_id": "custom-mn2mob2r-0",
+  "format": "explainer",
+  "title": "Why college degrees are becoming worthless in 2026",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Did you know 60% of employers now ignore college degrees?",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "AI and automation are changing the job market faster than ever.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "A college degree no longer guarantees a job in tech, healthcare, or finance.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Companies like Google and IBM now hire based on skills, not degrees.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Millions of graduates are struggling to find work in their fields.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The real value is in certifications, coding bootcamps, and hands-on experience.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "What’s one skill you can learn today that could replace a degree?",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "Why college degrees are becoming worthless in 2026",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#why",
+    "#college",
+    "#degrees"
+  ],
+  "generated_at": "2026-03-23T03:30:34.966Z",
+  "llm_used": true
+}

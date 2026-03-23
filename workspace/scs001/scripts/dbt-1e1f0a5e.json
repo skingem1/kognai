@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-1e1f0a5e",
+  "topic_id": "custom-mn2mc8q1-3",
+  "format": "debate",
+  "title": "5 high paying tech jobs that don't require coding",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Five high-paying tech roles—like data architect or AI ethics officer—exist without coding, and they’re growing fast.",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "High-paying? Sure, but without coding skills, you’re stuck in entry-level roles with limited career mobility.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Data scientists and AI ethicists earn six figures without coding, and demand is rising due to regulations and AI ethics protocols.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "High salaries require expertise. You can’t negotiate a six-figure deal without technical depth or specialized certifications.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "High-paying roles demand more than titles—they require mastery of tools, frameworks, and systems that coding enables.",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "5 vs high",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#5",
+    "#high",
+    "#paying"
+  ],
+  "generated_at": "2026-03-23T03:21:59.734Z",
+  "llm_used": true
+}

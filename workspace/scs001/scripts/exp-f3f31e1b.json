@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-f3f31e1b",
+  "topic_id": "custom-mn2h1ati-0",
+  "format": "explainer",
+  "title": "The dark side of AI-generated deepfakes",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "What if your voice could be used to steal millions?",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Deepfakes are already being weaponized in financial fraud.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "It’s AI that can clone someone’s voice in seconds, fooling even experts.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The tool, called “Synthesia,” can create realistic videos with just a text prompt.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Victims lose money, and trust in institutions is shattered.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Remember: AI can mimic, but it can’t replace real human connection.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Have you seen a deepfake that changed your opinion?",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "The dark side of AI-generated deepfakes",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#the",
+    "#dark",
+    "#side"
+  ],
+  "generated_at": "2026-03-23T00:52:43.027Z",
+  "llm_used": true
+}

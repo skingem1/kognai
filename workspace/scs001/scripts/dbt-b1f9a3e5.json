@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-b1f9a3e5",
+  "topic_id": "cg-dae735d95742",
+  "format": "debate",
+  "title": "Siren (SIREN) 📈 140.7%",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Siren's price surge ignores its lack of real-world use cases and weak on-chain metrics. (3 sec)",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Siren's protocol is built on zero-knowledge proofs, enabling private, scalable transactions that outperform legacy systems. (5 sec)",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Even with ZK tech, Siren lacks major DeFi integration or enterprise adoption—just hype without substance. (5 sec)",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "The recent Layer 2 scaling upgrade reduced gas fees by 70%, making it viable for mass adoption and justifying the rally. (5 sec)",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "This isn't a bubble—it's a fundamental shift in how blockchain handles privacy and throughput. (4 sec)",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "Siren is overvalued vs Siren rally is justified",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#siren",
+    "#siren",
+    "#crypto"
+  ],
+  "generated_at": "2026-03-23T05:11:18.384Z",
+  "llm_used": true
+}

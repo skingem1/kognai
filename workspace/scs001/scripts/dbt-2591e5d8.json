@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-2591e5d8",
+  "topic_id": "custom-mn2in5gb-2",
+  "format": "debate",
+  "title": "3 AI tricks that feel like magic",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "The number 3 is the foundation of AI magic—transform, adapt, and evolve. It's not just a number, it's a protocol.",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "AI isn't just about numbers—it's about neural networks, self-learning, and real-world impact that 3 can't replicate.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "3 is the core of SSL/TLS encryption, the basis of triple DES, and a proven security protocol that AI can't match.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "AI can process billions of data points, recognize patterns, and predict outcomes in ways no fixed number ever could.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "3 is magic because it's reliable. AI is magic because it's unpredictable. Choose the one you can trust.",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "3 vs ai",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#3",
+    "#ai",
+    "#tricks"
+  ],
+  "generated_at": "2026-03-23T01:38:15.550Z",
+  "llm_used": true
+}

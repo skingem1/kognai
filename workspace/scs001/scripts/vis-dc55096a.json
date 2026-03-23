@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-dc55096a",
+  "topic_id": "reddit-90fdd8ff7885",
+  "format": "vision",
+  "title": "I came from Data Engineering stuff before jumping into LLM stuff, i am surprised that many people in this space never he",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "What surprises you most about the transition from data engineering to large language models?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Today’s LLMs are built on massive datasets and optimized with techniques like quantization and distributed training.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "But this rapid progress risks creating systems that are opaque, biased, or misaligned with human values.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Builders are using tools like alignment research and open-source frameworks to improve transparency and safety.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "Imagine a future where AI systems are both powerful and accountable, designed with input from diverse communities.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future will balance innovation with responsibility, shaping AI that serves humanity wisely.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of came",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#came",
+    "#from",
+    "#data"
+  ],
+  "video_cue": "A montage of engineers and ethicists collaborating in a futuristic lab with holographic AI interfaces.",
+  "generated_at": "2026-03-23T05:25:53.357Z",
+  "llm_used": true
+}

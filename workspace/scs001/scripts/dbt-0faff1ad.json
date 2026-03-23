@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-0faff1ad",
+  "topic_id": "devto-5816e41716e6",
+  "format": "debate",
+  "title": "Arlo - I Built an AI Companion That Gives Blind Users the Same 3-Second Superpower Sighted People Have",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Arlo gives blind users the same 3-second visual buffer sighted people take for granted — a game-changer for navigation and safety.",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "But \"built\" implies a one-size-fits-all solution. Arlo doesn't adapt to user behavior or environmental changes in real time.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Arlo uses real-time LiDAR and haptic feedback loops, updating every 0.5 seconds — far more responsive than any visual system.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "\"Built\" is vague. Arlo's success depends on third-party hardware, making it unreliable in low-resource or rural areas.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Arlo's open API allows integration with any device — that's not a weakness, that's flexibility.",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "arlo vs built",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#arlo",
+    "#built",
+    "#companion"
+  ],
+  "generated_at": "2026-03-23T04:39:58.756Z",
+  "llm_used": true
+}

@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-e9969907",
+  "topic_id": "custom-mn2mc8q1-0",
+  "format": "debate",
+  "title": "Why college degrees are becoming worthless in 2026",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "College degrees are obsolete—AI now outperforms humans in 80% of jobs requiring a bachelor’s. (3 sec)",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "You’re wrong. Degrees still signal discipline, effort, and critical thinking—AI can’t replicate that. (5 sec)",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Over 300,000 AI certifications exist—employers trust those more than outdated degrees. (5 sec)",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Certifications don’t replace a degree’s depth. Real-world employers value structured learning. (5 sec)",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "College builds networks, research skills, and resilience—AI can’t teach that. (4 sec)",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "why vs college",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#why",
+    "#college",
+    "#degrees"
+  ],
+  "generated_at": "2026-03-23T03:21:14.037Z",
+  "llm_used": true
+}

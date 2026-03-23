@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-bcc6ae77",
+  "topic_id": "custom-mn2qcolg-0",
+  "format": "explainer",
+  "title": "I built a SaaS in 48 hours using only AI — here's what happened",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "What if I told you I built a working SaaS in 48 hours using only AI?",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This is the future of startups — fast, cheap, and accessible to everyone.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "I created a tool that automates content creation for social media managers.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "It uses AI to generate, edit, and schedule posts across multiple platforms.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This affects every marketer, freelancer, and small business owner — saving them hours daily.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The key takeaway? AI isn’t just a tool — it’s a game-changer for productivity.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Want to see how I did it? Drop a comment below and I’ll show you step by step.",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "I built a SaaS in 48 hours using only AI — here's what happened",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#i",
+    "#built",
+    "#a"
+  ],
+  "generated_at": "2026-03-23T05:13:32.719Z",
+  "llm_used": true
+}

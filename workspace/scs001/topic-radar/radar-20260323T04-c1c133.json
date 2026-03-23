@@ -1,0 +1,109 @@
+{
+  "radar_id": "radar-20260323T04-c1c133",
+  "collected_at": "2026-03-23T04:11:41.348Z",
+  "topics": [
+    {
+      "topic_id": "arxiv-2b28c95206c3",
+      "title": "LumosX: Relate Any Identities with Their Attributes for Personalized Video Generation",
+      "summary": "Recent advances in diffusion models have significantly improved text-to-video generation, enabling personalized content creation with fine-grained con",
+      "format": "explainer",
+      "source": "arxiv",
+      "source_url": "http://arxiv.org/abs/2603.20192v1",
+      "confidence": 57.5,
+      "keywords": [
+        "lumosx:",
+        "relate",
+        "identities",
+        "with",
+        "their",
+        "attributes"
+      ],
+      "collected_at": "2026-03-23T04:11:36.035Z"
+    },
+    {
+      "topic_id": "arxiv-0b024901bd7f",
+      "title": "VideoSeek: Long-Horizon Video Agent with Tool-Guided Seeking",
+      "summary": "Video agentic models have advanced challenging video-language tasks. However, most agentic approaches still heavily rely on greedy parsing over densel",
+      "format": "explainer",
+      "source": "arxiv",
+      "source_url": "http://arxiv.org/abs/2603.20185v1",
+      "confidence": 57.5,
+      "keywords": [
+        "videoseek:",
+        "long",
+        "horizon",
+        "video",
+        "agent",
+        "with"
+      ],
+      "collected_at": "2026-03-23T04:11:36.035Z"
+    },
+    {
+      "topic_id": "devto-5816e41716e6",
+      "title": "Arlo - I Built an AI Companion That Gives Blind Users the Same 3-Second Superpower Sighted People Have",
+      "summary": "Dev.to (9 reactions, 2 comments)",
+      "format": "debate",
+      "source": "dev_to",
+      "source_url": "https://dev.to/zeshama/arlo-i-built-an-ai-companion-that-gives-blind-users-the-same-3-second-superpower-sighted-people-55co",
+      "confidence": 45,
+      "keywords": [
+        "arlo",
+        "built",
+        "companion",
+        "that",
+        "gives",
+        "blind"
+      ],
+      "collected_at": "2026-03-23T04:11:36.029Z"
+    },
+    {
+      "topic_id": "gh-70cfc439df84",
+      "title": "louislva/claude-peers-mcp — Allow all your Claude Codes to message each other ad-hoc!",
+      "summary": "GitHub trending (651 ⭐, TypeScript)",
+      "format": "vision",
+      "source": "github",
+      "source_url": "https://github.com/louislva/claude-peers-mcp",
+      "confidence": 53,
+      "keywords": [
+        "louislva",
+        "claude",
+        "peers",
+        "allow",
+        "your",
+        "claude"
+      ],
+      "collected_at": "2026-03-23T04:11:36.841Z"
+    },
+    {
+      "topic_id": "cg-b60d7bdd334c-lst",
+      "title": "Top 3 ethereum eth tools you need to know",
+      "summary": "Trending on CoinGecko — rank #9",
+      "format": "listicle",
+      "source": "coingecko",
+      "source_url": "https://www.coingecko.com/en/coins/ethereum",
+      "confidence": 53.073401914395625,
+      "keywords": [
+        "ethereum",
+        "eth",
+        "crypto",
+        "defi"
+      ],
+      "collected_at": "2026-03-23T04:11:36.027Z",
+      "listicle_items": [
+        "Ethereum",
+        "Eth",
+        "Crypto"
+      ]
+    }
+  ],
+  "sources_hit": [
+    "github",
+    "arxiv",
+    "coingecko",
+    "reddit",
+    "dev_to",
+    "lobsters",
+    "techcrunch"
+  ],
+  "errors": []
+}

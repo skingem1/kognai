@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-1c49af38",
+  "topic_id": "custom-mn2kussf-4",
+  "format": "explainer",
+  "title": "The productivity hack that Silicon Valley keeps secret",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "You ever wonder why top Silicon Valley CEOs work 20-hour days?",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This hack is changing how tech giants manage their time — and it’s here for everyone.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "It’s called \"Time Blocking 2.0\" — a hyper-specific scheduling method used by Apple and Google teams.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The key? Using AI to auto-prioritize tasks based on your energy levels and deadlines.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "It’s boosting productivity by 40% in early adopter companies like Tesla and Meta.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The takeaway? Your time is your most valuable asset — treat it like code.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Want to learn how to implement this in your own life? Drop a comment below.",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "The productivity hack that Silicon Valley keeps secret",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#the",
+    "#productivity",
+    "#hack"
+  ],
+  "generated_at": "2026-03-23T02:40:37.532Z",
+  "llm_used": true
+}

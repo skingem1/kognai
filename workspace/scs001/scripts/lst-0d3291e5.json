@@ -1,0 +1,60 @@
+{
+  "script_id": "lst-0d3291e5",
+  "topic_id": "custom-mn2jxmc6-4",
+  "format": "listicle",
+  "title": "This free AI tool replaced my /month subscription",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Top 3 AI tools that changed my workflow — and my wallet — forever.",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "3: Ai tool with 100+ custom prompts, but still needs a subscription.",
+      "start_s": 3,
+      "end_s": 7,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "2: Free tool that does everything Ai does — no cost, no compromise.",
+      "start_s": 7,
+      "end_s": 11,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "1: This tool replaces my $20/month subscription with zero ads and full access.",
+      "start_s": 11,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Follow for more free AI tools that save you time and money every day.",
+      "start_s": 16,
+      "end_s": 20,
+      "emotion": "excited"
+    }
+  ],
+  "total_duration_s": 20,
+  "caption_text": "Top 3: This free AI tool replaced my /month subscription",
+  "hashtags": [
+    "#Top3",
+    "#Tech",
+    "#Ranking",
+    "#this",
+    "#free",
+    "#ai"
+  ],
+  "generated_at": "2026-03-23T02:14:36.401Z",
+  "llm_used": true
+}

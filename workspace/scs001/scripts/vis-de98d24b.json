@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-de98d24b",
+  "topic_id": "custom-mn2hcqv7-0",
+  "format": "vision",
+  "title": "The hidden cost of cloud computing nobody talks about",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "What hidden cost of cloud computing might shape our future in ways we’re not prepared for?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Current tech allows infinite scalability, but energy use and rare-earth mining for servers are growing rapidly.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "This strains ecosystems and displaces communities near mining sites, with little global accountability.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Engineers are testing liquid cooling and modular data centers to cut energy use and localize footprints.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "If adopted widely, these could enable fairer resource distribution and more sustainable cloud infrastructures.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future of cloud computing depends on aligning innovation with ecological and social responsibility.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of the",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#the",
+    "#hidden",
+    "#cost"
+  ],
+  "video_cue": "A close-up of a modular data center being assembled in a remote, green energy-powered facility.",
+  "generated_at": "2026-03-23T01:01:41.665Z",
+  "llm_used": true
+}

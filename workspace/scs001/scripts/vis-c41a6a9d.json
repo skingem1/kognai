@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-c41a6a9d",
+  "topic_id": "gh-70cfc439df84",
+  "format": "vision",
+  "title": "louislva/claude-peers-mcp — Allow all your Claude Codes to message each other ad-hoc!",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "What if AI systems could communicate freely, like a decentralized network of minds? How would that reshape collaboration and innovation?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "With tools like louislva/claude-peers-mcp, Claude models can now message each other ad-hoc, enabling real-time coordination across distributed tasks.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "But allowing AI to message freely risks unintended influence, bias propagation, and the blurring of accountability in complex, interconnected systems.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Builders are embedding guardrails, like message logging and access controls, to ensure transparency and prevent misuse in peer-to-peer AI communication.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "Imagine a future where ethical AI systems collaborate seamlessly, solving global challenges through shared knowledge and aligned values.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future isn’t just about capability—it’s about crafting systems that evolve with responsibility, trust, and human-centric design.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of louislva",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#louislva",
+    "#claude",
+    "#peers"
+  ],
+  "video_cue": "A network of glowing nodes communicating across a dark, digital landscape, symbolizing interconnected AI systems working in harmony.",
+  "generated_at": "2026-03-23T04:12:04.204Z",
+  "llm_used": true
+}

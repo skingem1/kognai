@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-c9820a9b",
+  "topic_id": "cg-03f20e5f173b",
+  "format": "debate",
+  "title": "Resolv USR (USR) 📉 -64.2%",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Resolv USR's drop is a buying opportunity, not a failure — its protocol is unmatched in scalability and privacy.",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "The tech is solid, but without adoption and partnerships, even the best protocol can't recover from this kind of crash.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Its zero-knowledge proofs and cross-chain interoperability are already being adopted by major DeFi platforms — demand is coming.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Demand alone won’t fix liquidity — without institutional backing, this token is a ghost in the machine.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "This isn’t a bounce — it’s a death spiral without real-world use cases.",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "Resolv USR is undervalued vs Resolv USR will recover",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#resolv usr",
+    "#usr",
+    "#crypto"
+  ],
+  "generated_at": "2026-03-23T00:38:38.843Z",
+  "llm_used": true
+}

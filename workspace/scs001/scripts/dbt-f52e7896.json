@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-f52e7896",
+  "topic_id": "custom-mn2lo4w7-2",
+  "format": "debate",
+  "title": "5 AI tools gamers are using to get unfair advantages",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Five AI tools are game-changers—cheating is just a label for innovation. (3 sec)",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "AI isn’t just tools—it’s a systemic threat, rewriting game balance with algorithms no human can track. (5 sec)",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Aimbot AI, cheat detection bypassers, and AI-generated macros—each has real, measurable impact on competitive play. (5 sec)",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "You’re defending a loophole, not a feature. AI enables cheating at scale, breaking every game’s core integrity. (5 sec)",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "This isn’t progress—it’s a backdoor for exploitation. (4 sec)",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "5 vs ai",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#5",
+    "#ai",
+    "#tools"
+  ],
+  "generated_at": "2026-03-23T03:03:03.369Z",
+  "llm_used": true
+}

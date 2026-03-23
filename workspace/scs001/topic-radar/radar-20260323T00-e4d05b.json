@@ -1,0 +1,106 @@
+{
+  "radar_id": "radar-20260323T00-e4d05b",
+  "collected_at": "2026-03-23T00:43:52.747Z",
+  "topics": [
+    {
+      "topic_id": "cg-6b88c087247a",
+      "title": "Bitcoin (BTC) 📉 -1.7%",
+      "summary": "Trending on CoinGecko — rank #4",
+      "format": "explainer",
+      "source": "coingecko",
+      "source_url": "https://www.coingecko.com/en/coins/bitcoin",
+      "confidence": 51.72621812044289,
+      "keywords": [
+        "bitcoin",
+        "btc",
+        "crypto",
+        "defi"
+      ],
+      "collected_at": "2026-03-23T00:43:46.810Z"
+    },
+    {
+      "topic_id": "cg-dae735d95742",
+      "title": "Siren (SIREN) 📈 134.1%",
+      "summary": "Trending on CoinGecko — rank #1",
+      "format": "debate",
+      "source": "coingecko",
+      "source_url": "https://www.coingecko.com/en/coins/siren-2",
+      "confidence": 80,
+      "keywords": [
+        "siren",
+        "siren",
+        "crypto",
+        "defi"
+      ],
+      "debate_sides": {
+        "side_a": "Siren is overvalued",
+        "side_b": "Siren rally is justified"
+      },
+      "collected_at": "2026-03-23T00:43:46.810Z"
+    },
+    {
+      "topic_id": "cg-615666dae9d3",
+      "title": "Solana (SOL) 📉 -1.4%",
+      "summary": "Trending on CoinGecko — rank #9",
+      "format": "vision",
+      "source": "coingecko",
+      "source_url": "https://www.coingecko.com/en/coins/solana",
+      "confidence": 51.405875074301555,
+      "keywords": [
+        "solana",
+        "sol",
+        "crypto",
+        "defi"
+      ],
+      "collected_at": "2026-03-23T00:43:46.810Z"
+    },
+    {
+      "topic_id": "devto-5816e41716e6",
+      "title": "Arlo - I Built an AI Companion That Gives Blind Users the Same 3-Second Superpower Sighted People Have",
+      "summary": "Dev.to (9 reactions, 2 comments)",
+      "format": "debate",
+      "source": "dev_to",
+      "source_url": "https://dev.to/zeshama/arlo-i-built-an-ai-companion-that-gives-blind-users-the-same-3-second-superpower-sighted-people-55co",
+      "confidence": 45,
+      "keywords": [
+        "arlo",
+        "built",
+        "companion",
+        "that",
+        "gives",
+        "blind"
+      ],
+      "collected_at": "2026-03-23T00:43:46.809Z"
+    },
+    {
+      "topic_id": "reddit-40edf0c44458",
+      "title": "[R] Designing AI Chip Software and Hardware",
+      "summary": "Reddit r/MachineLearning (15 pts, 0 comments)",
+      "format": "debate",
+      "source": "reddit",
+      "source_url": "https://www.reddit.com/r/MachineLearning/comments/1s0y008/r_designing_ai_chip_software_and_hardware/",
+      "confidence": 40,
+      "keywords": [
+        "designing",
+        "chip",
+        "software",
+        "hardware"
+      ],
+      "debate_sides": {
+        "side_a": "though the design I suggest is not the same as TPUs",
+        "side_b": "GPUs.\n\nI also included many anecdotes from my career in Silicon Valley."
+      },
+      "collected_at": "2026-03-23T00:43:48.594Z"
+    }
+  ],
+  "sources_hit": [
+    "github",
+    "arxiv",
+    "coingecko",
+    "reddit",
+    "dev_to",
+    "lobsters",
+    "techcrunch"
+  ],
+  "errors": []
+}

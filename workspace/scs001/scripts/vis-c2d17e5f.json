@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-c2d17e5f",
+  "topic_id": "custom-mn2gwxd8-0",
+  "format": "vision",
+  "title": "Why every developer needs to learn prompt engineering",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "What if the next big breakthrough in software comes not from code, but from how we ask AI to act?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Today, tools like LangChain and AutoGPT let developers build apps by crafting precise prompts, not just writing code.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "But if everyone uses prompts without understanding bias, we risk amplifying harmful stereotypes in AI outputs.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Engineers are building guardrails, bias detectors, and alignment layers to make prompt engineering safer and more transparent.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "Imagine a world where developers shape AI's behavior with ethical intent, creating fairer and more inclusive systems.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future belongs to those who master both the power and the responsibility of prompt engineering.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of why",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#why",
+    "#every",
+    "#developer"
+  ],
+  "video_cue": "A developer typing a prompt, with AI-generated code and ethical guidelines appearing on screen simultaneously.",
+  "generated_at": "2026-03-23T00:49:24.979Z",
+  "llm_used": true
+}

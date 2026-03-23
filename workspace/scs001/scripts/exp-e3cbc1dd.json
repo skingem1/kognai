@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-e3cbc1dd",
+  "topic_id": "custom-mn2m8526-2",
+  "format": "explainer",
+  "title": "How to learn any skill in 30 days using AI",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "What if you could master any skill in just 30 days?",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "AI is changing how we learn faster than ever before.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "It’s a system that personalizes your learning in real time.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "It uses advanced algorithms from companies like Duolingo and Coursera.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This affects anyone wanting to upskill quickly in today’s job market.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The key is consistency and using AI to track your progress daily.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Ready to learn something new? Let me know what you want to master.",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "How to learn any skill in 30 days using AI",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#how",
+    "#to",
+    "#learn"
+  ],
+  "generated_at": "2026-03-23T03:18:30.717Z",
+  "llm_used": true
+}

@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-d9b46d3d",
+  "topic_id": "custom-mn2lo4w7-1",
+  "format": "debate",
+  "title": "Why VR is finally ready to replace your monitor",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "VR finally offers immersive, full-screen interaction without the clutter of multiple monitors or desk space. (3 sec)",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "But VR still suffers from latency, motion sickness, and lacks the precision of a high-resolution monitor for detailed work. (5 sec)",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Modern VR headsets like the Meta Quest 3 use foveated rendering and 120Hz refresh rates, making them viable for professional use. (5 sec)",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Even with that, VR can't match the ergonomics and multi-tasking capabilities of a dual-monitor setup for developers and designers. (5 sec)",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "VR is the future—once the tech matures, it will replace monitors as the primary interface for work and creativity. (4 sec)",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "why vs vr",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#why",
+    "#vr",
+    "#is"
+  ],
+  "generated_at": "2026-03-23T03:02:49.451Z",
+  "llm_used": true
+}

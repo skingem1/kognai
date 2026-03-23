@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-0b592328",
+  "topic_id": "custom-mn2pkj6j-0",
+  "format": "explainer",
+  "title": "Why every developer needs to learn about AI agents right now",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Your next job will be powered by AI agents — not just tools, but smart, autonomous systems that make decisions.",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Right now, companies are racing to integrate AI agents into everything from coding to customer service.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "An AI agent is a system that can plan, act, and learn on its own — like a digital employee.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "One key feature? They can handle complex tasks using large language models and real-time data.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Developers who ignore AI agents will be left behind as industries like healthcare and finance adopt them.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The takeaway? AI agents aren’t just coming — they’re already reshaping how we build and use tech.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Want to stay ahead? Follow me for the latest on AI agents and how to master them.",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "Why every developer needs to learn about AI agents right now",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#why",
+    "#every",
+    "#developer"
+  ],
+  "generated_at": "2026-03-23T04:51:41.499Z",
+  "llm_used": true
+}

@@ -1,0 +1,60 @@
+{
+  "script_id": "lst-aaeb52b4",
+  "topic_id": "custom-mn2lx1ij-4",
+  "format": "listicle",
+  "title": "The robot that can do your entire job better than you",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Top 3 robots that could take your job — and then some.",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "3: That — it can code, design, and write reports in seconds.",
+      "start_s": 3,
+      "end_s": 7,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "2: Robot — it learns from your mistakes and works 24/7 without breaks.",
+      "start_s": 7,
+      "end_s": 11,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "1: The — it’s not just efficient, it’s self-improving with AI that upgrades daily.",
+      "start_s": 11,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Follow for the shocking truth about how fast robots are replacing humans.",
+      "start_s": 16,
+      "end_s": 20,
+      "emotion": "excited"
+    }
+  ],
+  "total_duration_s": 20,
+  "caption_text": "Top 3: The robot that can do your entire job better than ",
+  "hashtags": [
+    "#Top3",
+    "#Tech",
+    "#Ranking",
+    "#the",
+    "#robot",
+    "#that"
+  ],
+  "generated_at": "2026-03-23T03:10:11.282Z",
+  "llm_used": true
+}

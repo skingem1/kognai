@@ -1,0 +1,60 @@
+{
+  "script_id": "lst-31c35201",
+  "topic_id": "reddit-c68320d7ded9-lst",
+  "format": "listicle",
+  "title": "Top 3 chatgpt great tools you need to know",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Top 3 chatbot tools that’ll change how you work — and #1 will shock you.",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "3: Love — it’s not a tool, but it’s the reason people keep coming back for emotional support.",
+      "start_s": 3,
+      "end_s": 7,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "2: Great — it outperforms #3 with real-time language translation in 100+ languages.",
+      "start_s": 7,
+      "end_s": 11,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "1: Chatgpt — it’s the only one with 175 billion parameters, making it unmatched in complex tasks.",
+      "start_s": 11,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Follow for the full breakdown — you won’t believe what #1 can do.",
+      "start_s": 16,
+      "end_s": 20,
+      "emotion": "excited"
+    }
+  ],
+  "total_duration_s": 20,
+  "caption_text": "Top 3: Top 3 chatgpt great tools you need to know",
+  "hashtags": [
+    "#Top3",
+    "#Tech",
+    "#Ranking",
+    "#chatgpt",
+    "#great",
+    "#love"
+  ],
+  "generated_at": "2026-03-22T23:11:18.792Z",
+  "llm_used": true
+}

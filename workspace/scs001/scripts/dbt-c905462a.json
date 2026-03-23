@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-c905462a",
+  "topic_id": "custom-mn2in5gb-3",
+  "format": "debate",
+  "title": "This AI can read your mind and it's terrifying",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "This AI can read your mind through neural pattern recognition — it’s not surveillance, it’s evolution. (3 sec)",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "You’re misrepresenting intent. Mind-reading tech is still in infancy, and current protocols lack ethical safeguards. (5 sec)",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Neural mapping is already used in BCIs like Neuralink — this is about enhancing human potential, not control. (5 sec)",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Even if safe now, the risk of misuse is too high. No AI should have that level of access without strict oversight. (5 sec)",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Privacy is non-negotiable — this tech crosses a line no society should accept. (4 sec)",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "this vs ai",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#this",
+    "#ai",
+    "#can"
+  ],
+  "generated_at": "2026-03-23T01:38:30.329Z",
+  "llm_used": true
+}

@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-06f9fdd8",
+  "topic_id": "custom-mn2pfo0h-0",
+  "format": "debate",
+  "title": "MCP protocol: how AI agents connect to any tool in 2026",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "MCP protocol is the future—unified, secure, and compatible across all AI tools by 2026.",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "But MCP lacks open-source transparency, making it a closed system controlled by a few.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "MCP uses RESTful APIs and TLS 1.3 encryption, ensuring both security and interoperability.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Open protocols like gRPC and WebSockets evolve faster with community input, not corporate control.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Protocol-driven systems are more adaptable and future-proof than any closed standard.",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "mcp vs protocol:",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#mcp",
+    "#protocol:",
+    "#how"
+  ],
+  "generated_at": "2026-03-23T04:47:50.383Z",
+  "llm_used": true
+}

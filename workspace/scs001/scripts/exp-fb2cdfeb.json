@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-fb2cdfeb",
+  "topic_id": "custom-mn2m8526-1",
+  "format": "explainer",
+  "title": "The free online course that got me a 6 figure job",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Did you know a free online course landed me a six-figure job in tech?",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "With AI and automation taking over, upskilling isn’t optional — it’s urgent.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "It’s a 12-week bootcamp called \"Data Science for Everyone\" on Coursera.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The course includes hands-on projects with real-world data from IBM.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "It helped me land a role at a top startup — no degree required.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The key? Applying what you learn to solve real problems, fast.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "What’s one skill you could learn today that pays off big?",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "The free online course that got me a 6 figure job",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#the",
+    "#free",
+    "#online"
+  ],
+  "generated_at": "2026-03-23T03:18:19.322Z",
+  "llm_used": true
+}

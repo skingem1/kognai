@@ -1,0 +1,60 @@
+{
+  "script_id": "lst-6cab6c9a",
+  "topic_id": "custom-mn2jxmc6-0",
+  "format": "listicle",
+  "title": "GPT-5 just leaked and it's terrifying",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Top 3 mind-blowing leaks about GPT-5—stay till the end for the biggest shocker.",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "3: The leak happened on a hacker forum, exposing raw code with no security checks.",
+      "start_s": 3,
+      "end_s": 7,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "2: The word \"just\" appears in every major update—hinting at a major shift in AI ethics.",
+      "start_s": 7,
+      "end_s": 11,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "1: GPT-5 can write code in 17 languages, generate 3D models, and pass the Turing test with 98% accuracy.",
+      "start_s": 11,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Follow for the full breakdown—this is just the beginning of the AI revolution.",
+      "start_s": 16,
+      "end_s": 20,
+      "emotion": "excited"
+    }
+  ],
+  "total_duration_s": 20,
+  "caption_text": "Top 3: GPT-5 just leaked and it's terrifying",
+  "hashtags": [
+    "#Top3",
+    "#Tech",
+    "#Ranking",
+    "#gpt-5",
+    "#just",
+    "#leaked"
+  ],
+  "generated_at": "2026-03-23T02:13:52.245Z",
+  "llm_used": true
+}

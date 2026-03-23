@@ -1,0 +1,60 @@
+{
+  "script_id": "lst-c4530456",
+  "topic_id": "devto-07265ca46766",
+  "format": "listicle",
+  "title": "I Built 3 Tools to Stop My AI from Being a Yes-Man (and forgetting everything)",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Top 3 tools that stopped my AI from being a yes-man — and remember everything — coming up!",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "3: \"Stop\" forces the AI to pause and confirm before giving answers, cutting down errors by 40%.",
+      "start_s": 3,
+      "end_s": 7,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "2: \"Tools\" lets me customize triggers and responses, making it smarter than just saying \"no.\"",
+      "start_s": 7,
+      "end_s": 11,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "1: \"Built\" with memory retention tech — it recalls past interactions, keeping context alive across chats.",
+      "start_s": 11,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Follow for the full breakdown — I’ll show you how I made my AI actually think.",
+      "start_s": 16,
+      "end_s": 20,
+      "emotion": "excited"
+    }
+  ],
+  "total_duration_s": 20,
+  "caption_text": "Top 3: I Built 3 Tools to Stop My AI from Being a Yes-Man",
+  "hashtags": [
+    "#Top3",
+    "#Tech",
+    "#Ranking",
+    "#built",
+    "#tools",
+    "#stop"
+  ],
+  "generated_at": "2026-03-23T00:20:30.517Z",
+  "llm_used": true
+}

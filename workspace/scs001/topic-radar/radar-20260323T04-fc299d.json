@@ -1,0 +1,110 @@
+{
+  "radar_id": "radar-20260323T04-fc299d",
+  "collected_at": "2026-03-23T04:36:06.982Z",
+  "topics": [
+    {
+      "topic_id": "arxiv-c338e62e54c0",
+      "title": "Improving Generalization on Cybersecurity Tasks with Multi-Modal Contrastive Learning",
+      "summary": "The use of ML in cybersecurity has long been impaired by generalization issues: Models that work well in controlled scenarios fail to maintain perform",
+      "format": "explainer",
+      "source": "arxiv",
+      "source_url": "http://arxiv.org/abs/2603.20181v1",
+      "confidence": 55,
+      "keywords": [
+        "improving",
+        "generalization",
+        "cybersecurity",
+        "tasks",
+        "with",
+        "multi"
+      ],
+      "collected_at": "2026-03-23T04:36:01.051Z"
+    },
+    {
+      "topic_id": "devto-5816e41716e6",
+      "title": "Arlo - I Built an AI Companion That Gives Blind Users the Same 3-Second Superpower Sighted People Have",
+      "summary": "Dev.to (9 reactions, 2 comments)",
+      "format": "debate",
+      "source": "dev_to",
+      "source_url": "https://dev.to/zeshama/arlo-i-built-an-ai-companion-that-gives-blind-users-the-same-3-second-superpower-sighted-people-55co",
+      "confidence": 45,
+      "keywords": [
+        "arlo",
+        "built",
+        "companion",
+        "that",
+        "gives",
+        "blind"
+      ],
+      "collected_at": "2026-03-23T04:36:01.046Z"
+    },
+    {
+      "topic_id": "cg-b60d7bdd334c",
+      "title": "Ethereum (ETH) 📉 -2.7%",
+      "summary": "Trending on CoinGecko — rank #9",
+      "format": "vision",
+      "source": "coingecko",
+      "source_url": "https://www.coingecko.com/en/coins/ethereum",
+      "confidence": 52.65119455025503,
+      "keywords": [
+        "ethereum",
+        "eth",
+        "crypto",
+        "defi"
+      ],
+      "collected_at": "2026-03-23T04:36:01.039Z"
+    },
+    {
+      "topic_id": "reddit-40edf0c44458",
+      "title": "[R] Designing AI Chip Software and Hardware",
+      "summary": "Reddit r/MachineLearning (18 pts, 0 comments)",
+      "format": "debate",
+      "source": "reddit",
+      "source_url": "https://www.reddit.com/r/MachineLearning/comments/1s0y008/r_designing_ai_chip_software_and_hardware/",
+      "confidence": 40,
+      "keywords": [
+        "designing",
+        "chip",
+        "software",
+        "hardware"
+      ],
+      "debate_sides": {
+        "side_a": "though the design I suggest is not the same as TPUs",
+        "side_b": "GPUs.\n\nI also included many anecdotes from my career in Silicon Valley."
+      },
+      "collected_at": "2026-03-23T04:36:03.340Z"
+    },
+    {
+      "topic_id": "reddit-aad30ee18052",
+      "title": "Daily Crypto Discussion - March 23, 2026 (GMT+0)",
+      "summary": "Reddit r/cryptocurrency (1 pts, 9 comments)",
+      "format": "debate",
+      "source": "reddit",
+      "source_url": "https://www.reddit.com/r/CryptoCurrency/comments/1s12vyh/daily_crypto_discussion_march_23_2026_gmt0/",
+      "confidence": 40,
+      "keywords": [
+        "daily",
+        "crypto",
+        "discussion",
+        "march",
+        "2026",
+        "(gmt+0)"
+      ],
+      "debate_sides": {
+        "side_a": "Do not share your private keys",
+        "side_b": "wallet seed. Use strong"
+      },
+      "collected_at": "2026-03-23T04:36:04.037Z"
+    }
+  ],
+  "sources_hit": [
+    "github",
+    "arxiv",
+    "coingecko",
+    "reddit",
+    "dev_to",
+    "lobsters",
+    "techcrunch"
+  ],
+  "errors": []
+}

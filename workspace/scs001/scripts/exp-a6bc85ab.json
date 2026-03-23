@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-a6bc85ab",
+  "topic_id": "custom-mn2k0qb4-0",
+  "format": "explainer",
+  "title": "GPT-5 just leaked and it's terrifying",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Did you hear? GPT-5 just leaked — and it’s way more powerful than we imagined.",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This isn’t just another AI update — it’s a game-changer for everyone.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "GPT-5 is the next-gen language model with 10x more parameters than GPT-4.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "It can write code, create art, and even mimic human voices perfectly.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This affects businesses, educators, and creators — some will be left behind.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The key takeaway? AI is evolving faster than we can keep up.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "What do you think — are we ready for this kind of power?",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "GPT-5 just leaked and it's terrifying",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#gpt-5",
+    "#just",
+    "#leaked"
+  ],
+  "generated_at": "2026-03-23T02:16:17.418Z",
+  "llm_used": true
+}

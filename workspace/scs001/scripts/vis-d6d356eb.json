@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-d6d356eb",
+  "topic_id": "custom-mn2ir1v5-0",
+  "format": "vision",
+  "title": "Why your phone is secretly an AI supercomputer",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "What if your phone is already more powerful than the supercomputers of just a few years ago?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Modern phones use AI chips like Apple’s Neural Engine and Qualcomm’s Snapdragon, running complex models locally.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "But this power raises questions about surveillance, data control, and the erosion of digital privacy.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Builders are embedding on-device AI, encrypting data, and using federated learning to minimize data exposure.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "In the future, phones could be ethical AI hubs, empowering users while protecting their autonomy.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future isn’t just about power—it’s about who controls it and how it’s used.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of why",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#why",
+    "#your",
+    "#phone"
+  ],
+  "video_cue": "A sleek smartphone interface displaying real-time AI-driven personal assistant, privacy settings, and ethical AI usage metrics.",
+  "generated_at": "2026-03-23T01:40:50.577Z",
+  "llm_used": true
+}

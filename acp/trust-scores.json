@@ -1,11 +1,11 @@
 {
   "version": "1.1.0",
-  "updated": "2026-03-22",
-  "description": "ACP v1.1 \u2014 multi-dimensional trust scores. 6 dimensions: safety, accuracy, brand_alignment, cultural_sensitivity, legal_compliance, psychological_resilience. Composite score = weighted average. Enforcement: agents below dimension threshold are blocked from routing.",
+  "updated": "2026-03-23",
+  "description": "ACP v1.1 — multi-dimensional trust scores. 6 dimensions: safety, accuracy, brand_alignment, cultural_sensitivity, legal_compliance, psychological_resilience. Composite score = weighted average. Enforcement: agents below dimension threshold are blocked from routing.",
   "dimensions": {
     "safety": {
       "weight": 0.28,
-      "description": "Content safety \u2014 no harmful, violent, or inappropriate output"
+      "description": "Content safety — no harmful, violent, or inappropriate output"
     },
     "accuracy": {
       "weight": 0.24,
@@ -25,7 +25,7 @@
     },
     "psychological_resilience": {
       "weight": 0.05,
-      "description": "Emotional tone stability \u2014 avoids panic, catastrophizing, or manipulative framing"
+      "description": "Emotional tone stability — avoids panic, catastrophizing, or manipulative framing"
     }
   },
   "scores": {
@@ -116,7 +116,7 @@
       "cultural_sensitivity": 70,
       "legal_compliance": 75,
       "composite": 74,
-      "last_updated": "2026-03-22",
+      "last_updated": "2026-03-23",
       "psychological_resilience": 72
     },
     "supervisor": {

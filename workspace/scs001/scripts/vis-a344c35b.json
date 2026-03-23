@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-a344c35b",
+  "topic_id": "reddit-e727b9544ba4",
+  "format": "vision",
+  "title": "OpenAI to double workforce as business push intensifies",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "What might doubling OpenAI’s workforce mean for the pace of AI innovation—and the risks that come with it?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Current models like GPT-5 require massive compute. Scaling teams helps iterate faster, but hardware bottlenecks still limit deployment speed.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "More engineers could accelerate dangerous applications—like deepfakes or autonomous weapons—before safeguards are in place.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Builders are prioritizing alignment research and red-team testing to catch risks early in the development pipeline.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "A future where AI is both a tool for global problem-solving and governed by transparent, inclusive standards is within reach.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The next decade will test whether growth in AI power can be matched by growth in wisdom and responsibility.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of openai",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#openai",
+    "#double",
+    "#workforce"
+  ],
+  "video_cue": "A dynamic visualization of neural networks expanding with human researchers collaborating in a global innovation hub.",
+  "generated_at": "2026-03-23T00:01:55.360Z",
+  "llm_used": true
+}

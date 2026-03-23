@@ -1,0 +1,60 @@
+{
+  "script_id": "lst-3f891bf7",
+  "topic_id": "custom-mn2kj35i-1",
+  "format": "listicle",
+  "title": "The AI app that makes you  a day while you sleep",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Top 3 AI apps that make you money while you sleep — which one will blow your mind?",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "3: App — it automates tasks with 95% accuracy using voice commands",
+      "start_s": 3,
+      "end_s": 7,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "2: Ai — it learns your habits and generates income ideas in real time",
+      "start_s": 7,
+      "end_s": 11,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "1: The — it earns $200 a day by selling your unused data to companies",
+      "start_s": 11,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Follow for the shocking truth about AI and your privacy — you won’t believe it",
+      "start_s": 16,
+      "end_s": 20,
+      "emotion": "excited"
+    }
+  ],
+  "total_duration_s": 20,
+  "caption_text": "Top 3: The AI app that makes you  a day while you sleep",
+  "hashtags": [
+    "#Top3",
+    "#Tech",
+    "#Ranking",
+    "#the",
+    "#ai",
+    "#app"
+  ],
+  "generated_at": "2026-03-23T02:30:43.516Z",
+  "llm_used": true
+}

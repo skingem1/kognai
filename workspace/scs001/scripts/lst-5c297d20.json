@@ -1,0 +1,60 @@
+{
+  "script_id": "lst-5c297d20",
+  "topic_id": "custom-mn2hehdl-0",
+  "format": "listicle",
+  "title": "Top 3 underrated programming languages for 2026",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Top 3 underrated programming languages for 2026 — and #1 will shock you.",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "3: Underrated — Kotlin’s seamless Android integration and 50% fewer lines of code.",
+      "start_s": 3,
+      "end_s": 7,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "2: 3 — Rust’s memory safety and 2x performance in systems programming.",
+      "start_s": 7,
+      "end_s": 11,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "1: Top — Julia’s 100x faster scientific computing with built-in parallelism and ease of use.",
+      "start_s": 11,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Follow for more insights you won’t find anywhere else.",
+      "start_s": 16,
+      "end_s": 20,
+      "emotion": "excited"
+    }
+  ],
+  "total_duration_s": 20,
+  "caption_text": "Top 3: Top 3 underrated programming languages for 2026",
+  "hashtags": [
+    "#Top3",
+    "#Tech",
+    "#Ranking",
+    "#top",
+    "#3",
+    "#underrated"
+  ],
+  "generated_at": "2026-03-23T01:02:58.110Z",
+  "llm_used": true
+}

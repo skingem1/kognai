@@ -1,0 +1,60 @@
+{
+  "script_id": "lst-b1cb4af0",
+  "topic_id": "custom-mn2kj35i-3",
+  "format": "listicle",
+  "title": "3 programming languages that will die by 2028",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Top 3 programming languages that will vanish by 2028 — and why they’re falling fast.",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "3: COBOL — still powers 40% of global financial systems, but demand is fading fast.",
+      "start_s": 3,
+      "end_s": 7,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "2: Perl — once a scripting powerhouse, now overshadowed by Python and JavaScript.",
+      "start_s": 7,
+      "end_s": 11,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "1: Visual Basic — Microsoft’s decline in desktop support seals its fate by 2028.",
+      "start_s": 11,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Follow for more insights on tech’s next big collapse.",
+      "start_s": 16,
+      "end_s": 20,
+      "emotion": "excited"
+    }
+  ],
+  "total_duration_s": 20,
+  "caption_text": "Top 3: 3 programming languages that will die by 2028",
+  "hashtags": [
+    "#Top3",
+    "#Tech",
+    "#Ranking",
+    "#3",
+    "#programming",
+    "#languages"
+  ],
+  "generated_at": "2026-03-23T02:31:08.016Z",
+  "llm_used": true
+}

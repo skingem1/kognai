@@ -1,0 +1,60 @@
+{
+  "script_id": "lst-b53f6ab2",
+  "topic_id": "custom-mn2ml57t-0",
+  "format": "listicle",
+  "title": "Why college degrees are becoming worthless in 2026",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Top 3 reasons college degrees are losing value in 2026 — and it’s not what you think.",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "3: Degrees — over 40% of employers now consider them optional for entry-level roles.",
+      "start_s": 3,
+      "end_s": 7,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "2: College — costs have tripled since 2000, but salaries haven’t kept up with inflation.",
+      "start_s": 7,
+      "end_s": 11,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "1: Why — AI and automation are replacing degree-based jobs faster than ever before.",
+      "start_s": 11,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Follow for breakdowns on how to thrive in a degree-less future.",
+      "start_s": 16,
+      "end_s": 20,
+      "emotion": "excited"
+    }
+  ],
+  "total_duration_s": 20,
+  "caption_text": "Top 3: Why college degrees are becoming worthless in 2026",
+  "hashtags": [
+    "#Top3",
+    "#Tech",
+    "#Ranking",
+    "#why",
+    "#college",
+    "#degrees"
+  ],
+  "generated_at": "2026-03-23T03:28:07.443Z",
+  "llm_used": true
+}

@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-693e6566",
+  "topic_id": "custom-mn2ij8tg-0",
+  "format": "explainer",
+  "title": "Why your phone is secretly an AI supercomputer",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Your phone isn’t just a device — it’s a pocket-sized AI supercomputer.",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Right now, AI is changing how we live, work, and interact with tech.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "It’s running advanced AI models like Google’s Gemini and Apple’s Neural Engine.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Your phone uses on-device AI to process data without sending it to the cloud.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This affects your privacy, security, and even how fast your apps run.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The key takeaway? Your phone is smarter than you think — and it’s getting smarter fast.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Want to know how AI is reshaping your daily life? Tap to follow and stay ahead.",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "Why your phone is secretly an AI supercomputer",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#why",
+    "#your",
+    "#phone"
+  ],
+  "generated_at": "2026-03-23T01:34:47.429Z",
+  "llm_used": true
+}

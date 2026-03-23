@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-e9d5fdaf",
+  "topic_id": "cg-6b88c087247a",
+  "format": "vision",
+  "title": "Bitcoin (BTC) 📉 -1.9%",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "What might Bitcoin's future look like if its current decline signals a broader shift in trust or technology?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Scalability solutions like Lightning Network and Layer 2 are enabling faster, cheaper transactions, but adoption remains uneven.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "Centralization risks emerge as mining power consolidates — undermining Bitcoin's original decentralized vision.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Open-source tools and community-driven nodes are helping distribute power more equitably across the network.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "If governance evolves toward more inclusive models, Bitcoin could become a truly global, decentralized financial standard.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The path ahead will test Bitcoin’s ability to balance innovation with the values that first made it revolutionary.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of bitcoin",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#bitcoin",
+    "#btc",
+    "#crypto"
+  ],
+  "video_cue": "A split-screen showing blockchain nodes globally pulsing with data, transitioning to a decentralized financial dashboard.",
+  "generated_at": "2026-03-23T04:08:50.576Z",
+  "llm_used": true
+}

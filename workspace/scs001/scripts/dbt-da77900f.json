@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-da77900f",
+  "topic_id": "cg-dae735d95742",
+  "format": "debate",
+  "title": "Siren (SIREN) 📈 142.6%",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Siren's valuation ignores real-world adoption and lacks the technical depth to justify a 142.6% surge.",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Siren's decentralized identity protocol is unmatched—enterprise adoption and privacy features drive this rally.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "The protocol is still in beta, with inconsistent node performance and no enterprise contracts signed yet.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Major financial institutions are testing Siren’s zero-knowledge proofs—this isn’t hype, it’s infrastructure.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "This rally is justified—Siren is the first self-sovereign identity network with quantum-resistant encryption.",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "Siren is overvalued vs Siren rally is justified",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#siren",
+    "#siren",
+    "#crypto"
+  ],
+  "generated_at": "2026-03-23T04:24:15.610Z",
+  "llm_used": true
+}

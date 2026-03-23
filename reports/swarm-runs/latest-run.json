@@ -1,14 +1,14 @@
 {
-  "run_id": "407130b0-78a4-4ea9-a516-5d99be0c493f",
+  "run_id": "fb070876-7c26-4815-8f0f-1b2a4305c1f7",
   "project": "kognai",
-  "sprint_file": "/tmp/test-governance-sprint.json",
-  "started_at": "2026-03-21T13:38:05.506Z",
-  "finished_at": "2026-03-21T13:43:02.705Z",
-  "duration_seconds": 297,
+  "sprint_file": "workspace/sprints/sprint-855.json",
+  "started_at": "2026-03-23T04:30:39.465Z",
+  "finished_at": "2026-03-23T04:33:49.008Z",
+  "duration_seconds": 190,
   "git_branch": "main",
-  "git_head_before": "1ee98f8",
-  "git_head_after": "7a6632b",
-  "sovereign_mode": true,
+  "git_head_before": "eae644d",
+  "git_head_after": "d0d947d",
+  "sovereign_mode": false,
   "summary": {
     "total_tasks": 1,
     "done": 1,
@@ -20,7 +20,7 @@
     "ceo_escalations": 0
   },
   "models_used": {
-    "qwen3:14b": {
+    "claude-sonnet-4-6": {
       "calls": 1,
       "tokens": 0
     }
@@ -28,18 +28,18 @@
   "total_cost_usd": 0,
   "tasks": [
     {
-      "task_id": "test-gov-01",
-      "title": "Create workspace/governance-test.md with timestamp",
-      "type": "feature",
-      "task_target": "workspace/governance-test.md",
+      "task_id": "855-01",
+      "title": "Run batch content production",
+      "type": "ops",
+      "task_target": "scripts/scs001/batch-produce.ts",
       "status": "done",
       "attempts": 1,
-      "model_used": "qwen3:14b",
+      "model_used": "claude-sonnet-4-6",
       "provider": "",
       "tokens_total": 0,
-      "duration_seconds": 203,
+      "duration_seconds": 32,
       "files_written": [
-        "workspace/governance-test.md"
+        "scripts/scs001/batch-produce.ts"
       ],
       "review": {
         "verdict": "APPROVED",

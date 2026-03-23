@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-b8605c6f",
+  "topic_id": "custom-mn2puuj4-0",
+  "format": "debate",
+  "title": "GPT-5 leaked details: what we know about OpenAI's next model",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "GPT-5 isn't just an upgrade—it's a leap in reasoning, code generation, and multilingual fluency. OpenAI’s roadmap is clear and rigorous.",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Leaked details show major security flaws and training data biases—OpenAI isn’t being transparent about real risks.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "The leaks are incomplete and misinterpreted. GPT-5 uses red-teaming protocols and safer alignment techniques than any prior model.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "If OpenAI isn’t disclosing these flaws, how can we trust their safety measures or the model’s real-world impact?",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Leaked info is the only way to hold them accountable—no model is perfect, but secrecy isn’t a solution.",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "gpt-5 vs leaked",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#gpt-5",
+    "#leaked",
+    "#details:"
+  ],
+  "generated_at": "2026-03-23T04:59:42.148Z",
+  "llm_used": true
+}

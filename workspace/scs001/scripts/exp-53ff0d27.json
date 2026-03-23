@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-53ff0d27",
+  "topic_id": "custom-mn2k66rp-1",
+  "format": "explainer",
+  "title": "The AI app that makes you  a day while you sleep",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "What if you could earn a day’s wage while you sleep?",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This tech is changing how we work—and who gets paid.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "An AI app called DreamWork uses your sleep data to generate income.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "It analyzes your brainwaves to predict market trends in real time.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Freelancers and students are using it to boost earnings by 30%.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The future of work isn’t just remote—it’s sleep-powered.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Want to know how you can start earning while you rest?",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "The AI app that makes you  a day while you sleep",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#the",
+    "#ai",
+    "#app"
+  ],
+  "generated_at": "2026-03-23T02:20:41.018Z",
+  "llm_used": true
+}

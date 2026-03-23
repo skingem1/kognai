@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-49daf6d6",
+  "topic_id": "custom-mn2pggta-0",
+  "format": "vision",
+  "title": "MCP protocol: how AI agents connect to any tool in 2026",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "In 2026, how might the MCP protocol redefine how AI agents interact with the physical and digital world?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "The MCP protocol uses standardized APIs and lightweight containers, enabling AI to connect with IoT devices, cloud services, and legacy systems seamlessly.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "But with such broad access, who controls the data, and what happens when AI agents make decisions beyond human oversight?",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Builders are implementing strict access controls, audit trails, and human-in-the-loop verification for high-risk interactions.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "Imagine a future where AI agents collaborate with humans in real-time, enhancing productivity without compromising safety or ethics.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The MCP protocol may not just connect tools—it could redefine trust between AI and society itself.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of mcp",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#mcp",
+    "#protocol:",
+    "#how"
+  ],
+  "video_cue": "A holographic interface displaying AI agents seamlessly linking to various tools and systems in a smart city environment.",
+  "generated_at": "2026-03-23T04:48:35.144Z",
+  "llm_used": true
+}

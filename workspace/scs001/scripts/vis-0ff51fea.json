@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-0ff51fea",
+  "topic_id": "custom-mn2pvqlw-0",
+  "format": "vision",
+  "title": "GPT-5 leaked details: what we know about OpenAI's next model",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "What might GPT-5's leaked details reveal about the trajectory of AI research and its societal impact?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Current models suggest GPT-5 could have 10x more parameters, better reasoning, and multilingual fine-tuning capabilities.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "But such power risks deepfakes, misinformation, and algorithmic bias if not transparently governed and regulated.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Builders are prioritizing alignment training, red-teaming, and open-source verification tools to mitigate these risks.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "A future where AI is trusted, explainable, and used to solve global challenges like climate modeling and disease prediction.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future of AI depends on balancing innovation with accountability, ensuring progress benefits all of humanity.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of gpt-5",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#gpt-5",
+    "#leaked",
+    "#details:"
+  ],
+  "video_cue": "A glowing neural network interface with ethical guidelines and safety checks appearing around it.",
+  "generated_at": "2026-03-23T05:00:26.674Z",
+  "llm_used": true
+}

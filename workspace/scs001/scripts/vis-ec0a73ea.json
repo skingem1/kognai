@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-ec0a73ea",
+  "topic_id": "custom-mn2ir1v5-2",
+  "format": "vision",
+  "title": "3 AI tricks that feel like magic",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "What if AI could turn raw data into seamless, human-like interactions — and we barely noticed it happening?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Generative AI now creates realistic text, speech, and images — like deepfakes and AI voice cloning that feel eerily human.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "But this blurs truth and fiction, risking deepfake disinformation and eroding trust in media and communication.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Builders are developing watermarking and authentication tools to flag AI-generated content and maintain transparency.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "Imagine a world where AI helps verify facts in real time, restoring trust in digital communication and journalism.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future will balance innovation with integrity, shaping a world where AI feels like magic — but stays in our control.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of 3",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#3",
+    "#ai",
+    "#tricks"
+  ],
+  "video_cue": "A person interacting with an AI assistant that seamlessly integrates into a smart home, adjusting lights and music with natural voice commands.",
+  "generated_at": "2026-03-23T01:41:26.795Z",
+  "llm_used": true
+}

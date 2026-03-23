@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-8deb2db9",
+  "topic_id": "cg-e181b3dfcbf4",
+  "format": "explainer",
+  "title": "Katana (KAT) 📈 16.2%",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Cryptocurrency just broke a major trend — and it's not Bitcoin.",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Katana (KAT) is surging 16.2% on CoinGecko, now ranked #7.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "It’s a blockchain platform building tools for decentralized apps — fast and secure.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Its new Layer 2 scaling solution slashes transaction fees by 80%.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Developers and DeFi users are the big winners — faster, cheaper apps.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This isn’t just hype — it’s a real shift in how blockchains work.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "What’s next for KAT? Follow me for the latest updates.",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "Katana (KAT) 📈 16.2%",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#katana",
+    "#kat",
+    "#crypto"
+  ],
+  "generated_at": "2026-03-23T05:10:30.806Z",
+  "llm_used": true
+}

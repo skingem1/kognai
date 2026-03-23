@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-918588de",
+  "topic_id": "custom-mn2lk3k6-3",
+  "format": "explainer",
+  "title": "How quantum computers will break all encryption by 2030",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Did you know your online security could vanish in a decade?",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Hackers could crack your passwords in minutes by 2030.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Quantum computers use qubits to break encryption faster than any supercomputer.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "They’ll target RSA-2048, the encryption used by banks and governments.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This could expose private data, crash financial systems, and compromise national security.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The key takeaway? We need quantum-safe encryption now, not later.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Follow me for the latest on how tech is reshaping our world.",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "How quantum computers will break all encryption by 2030",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#how",
+    "#quantum",
+    "#computers"
+  ],
+  "generated_at": "2026-03-23T02:59:59.268Z",
+  "llm_used": true
+}

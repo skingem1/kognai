@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-69726c04",
+  "topic_id": "arxiv-9019c4229d62",
+  "format": "debate",
+  "title": "Semantic Token Clustering for Efficient Uncertainty Quantification in Large Language Models",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Semantic clustering captures meaning, not just form — it's the key to accurate uncertainty quantification in real-world LLMs.",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Token clustering is faster, more scalable, and aligns with how models are trained — it avoids overfitting to ambiguous semantics.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Semantic grouping improves calibration — studies show it reduces miscalibration by 18% in complex reasoning tasks like code generation.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Token-level methods integrate seamlessly with existing frameworks like LoRA and are essential for real-time inference and model distillation.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Token clustering is the only viable path to efficient, deployable uncertainty quantification at scale.",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "semantic vs token",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#semantic",
+    "#token",
+    "#clustering"
+  ],
+  "generated_at": "2026-03-23T04:11:12.195Z",
+  "llm_used": true
+}

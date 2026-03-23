@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-1365a597",
+  "topic_id": "custom-mn2ls411-4",
+  "format": "vision",
+  "title": "The robot that can do your entire job better than you",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "If a robot could do your job better, what happens to your role in society—and how do we prepare for that future?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Current AI and robotics can automate repetitive tasks, but full job replacement requires advanced vision, dexterity, and contextual reasoning—still in early development.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "Mass unemployment and loss of identity could follow if we don't ensure equitable access to new opportunities and retraining programs.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Engineers are designing systems with human collaboration in mind, like AI-assisted decision-making tools that enhance rather than replace human work.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "Imagine a future where AI handles routine work, freeing humans to focus on creativity, ethics, and complex problem-solving.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future isn’t about replacement—it’s about redefining work, responsibility, and the human-AI partnership.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of the",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#the",
+    "#robot",
+    "#that"
+  ],
+  "video_cue": "A human and a robot working side by side in a modern office, collaborating on a complex project.",
+  "generated_at": "2026-03-23T03:06:51.627Z",
+  "llm_used": true
+}

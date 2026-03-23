@@ -1,0 +1,109 @@
+{
+  "radar_id": "radar-20260323T04-bfc471",
+  "collected_at": "2026-03-23T04:21:31.670Z",
+  "topics": [
+    {
+      "topic_id": "arxiv-fcdf7be27daa",
+      "title": "Measuring Faithfulness Depends on How You Measure: Classifier Sensitivity in LLM Chain-of-Thought Evaluation",
+      "summary": "Recent work on chain-of-thought (CoT) faithfulness reports single aggregate numbers (e.g., DeepSeek-R1 acknowledges hints 39% of the time), implying t",
+      "format": "explainer",
+      "source": "arxiv",
+      "source_url": "http://arxiv.org/abs/2603.20172v1",
+      "confidence": 57.5,
+      "keywords": [
+        "measuring",
+        "faithfulness",
+        "depends",
+        "measure:",
+        "classifier",
+        "sensitivity"
+      ],
+      "collected_at": "2026-03-23T04:21:26.232Z"
+    },
+    {
+      "topic_id": "arxiv-82e32dca8ea8",
+      "title": "Beyond Single Tokens: Distilling Discrete Diffusion Models via Discrete MMD",
+      "summary": "It is currently difficult to distill discrete diffusion models. In contrast, continuous diffusion literature has many distillation approaches methods ",
+      "format": "explainer",
+      "source": "arxiv",
+      "source_url": "http://arxiv.org/abs/2603.20155v1",
+      "confidence": 57.5,
+      "keywords": [
+        "beyond",
+        "single",
+        "tokens:",
+        "distilling",
+        "discrete",
+        "diffusion"
+      ],
+      "collected_at": "2026-03-23T04:21:26.232Z"
+    },
+    {
+      "topic_id": "devto-5816e41716e6",
+      "title": "Arlo - I Built an AI Companion That Gives Blind Users the Same 3-Second Superpower Sighted People Have",
+      "summary": "Dev.to (9 reactions, 2 comments)",
+      "format": "debate",
+      "source": "dev_to",
+      "source_url": "https://dev.to/zeshama/arlo-i-built-an-ai-companion-that-gives-blind-users-the-same-3-second-superpower-sighted-people-55co",
+      "confidence": 45,
+      "keywords": [
+        "arlo",
+        "built",
+        "companion",
+        "that",
+        "gives",
+        "blind"
+      ],
+      "collected_at": "2026-03-23T04:21:26.226Z"
+    },
+    {
+      "topic_id": "cg-b60d7bdd334c",
+      "title": "Ethereum (ETH) 📉 -3.1%",
+      "summary": "Trending on CoinGecko — rank #10",
+      "format": "vision",
+      "source": "coingecko",
+      "source_url": "https://www.coingecko.com/en/coins/ethereum",
+      "confidence": 53.14202295241844,
+      "keywords": [
+        "ethereum",
+        "eth",
+        "crypto",
+        "defi"
+      ],
+      "collected_at": "2026-03-23T04:21:26.223Z"
+    },
+    {
+      "topic_id": "reddit-d0a6189a57e5",
+      "title": "[D] Help in deciding between offers - PhD New Grad (ML)",
+      "summary": "Reddit r/MachineLearning (1 pts, 0 comments)",
+      "format": "listicle",
+      "source": "reddit",
+      "source_url": "https://www.reddit.com/r/MachineLearning/comments/1s173g7/d_help_in_deciding_between_offers_phd_new_grad_ml/",
+      "confidence": 40,
+      "keywords": [
+        "help",
+        "deciding",
+        "between",
+        "offers",
+        "grad",
+        "(ml)"
+      ],
+      "listicle_items": [
+        "Help",
+        "Deciding",
+        "Between"
+      ],
+      "collected_at": "2026-03-23T04:21:28.145Z"
+    }
+  ],
+  "sources_hit": [
+    "github",
+    "arxiv",
+    "coingecko",
+    "reddit",
+    "dev_to",
+    "lobsters",
+    "techcrunch"
+  ],
+  "errors": []
+}

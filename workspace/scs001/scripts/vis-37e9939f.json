@@ -1,0 +1,68 @@
+{
+  "script_id": "vis-37e9939f",
+  "topic_id": "lobsters-c5ac443332b8",
+  "format": "vision",
+  "title": "ofw - fractional work for the AI era",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "What if AI enables fractional work — where skills are rented like code? How might that reshape labor in the AI era?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Today, microservices and cloud functions let developers rent compute power. AI models can now be modular, trained once, used anywhere — like a plug-and-play tool.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "But this risks eroding worker agency. If AI handles routine tasks, who defines value? Will people become interchangeable parts in an algorithmic economy?",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Builders are experimenting with tokenized skill-sharing and DAOs to ensure fair compensation and transparency in AI-assisted labor markets.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "Imagine a future where people earn income through AI-augmented micro-tasks, with earnings tracked on decentralized ledgers and reinvested in personal upskilling.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future of work may be fluid — powered by AI, but guided by human purpose and ethical design.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of fractional",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#fractional",
+    "#work"
+  ],
+  "video_cue": "A montage of diverse workers using AI tools on laptops, with glowing data streams and collaborative digital interfaces.",
+  "generated_at": "2026-03-23T04:05:47.105Z",
+  "llm_used": true
+}

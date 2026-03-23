@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-df19c2e8",
+  "topic_id": "custom-mn2kyy4g-3",
+  "format": "debate",
+  "title": "How a 22 year old built a million dollar app with AI",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "The \"how\" is clear—AI tools like AutoML and no-code platforms let anyone build apps fast, bypassing years of traditional development.",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "But the \"a\" matters—without a unique angle or user need, even the best tech can't create value. A million-dollar app isn’t just about tools.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Look at apps like Jasper and Copy.ai—they leveraged AI protocols to scale instantly, proving the \"how\" is what drives real success.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "You can have the best tech, but without a specific audience or problem, you're just building a toy. The \"a\" defines impact.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "The \"how\" delivers the \"a\"—AI makes the impossible possible, turning ideas into scalable, profitable apps in record time.",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "how vs a",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#how",
+    "#a",
+    "#22"
+  ],
+  "generated_at": "2026-03-23T02:43:41.923Z",
+  "llm_used": true
+}

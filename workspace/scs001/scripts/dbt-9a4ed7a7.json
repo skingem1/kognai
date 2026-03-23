@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-9a4ed7a7",
+  "topic_id": "cg-03f20e5f173b",
+  "format": "debate",
+  "title": "Resolv USR (USR) 📉 -56.4%",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Resolv USR is undervalued because its blockchain protocol is unmatched in scalability and security.",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "The token's recovery hinges on upcoming DeFi integrations and increased adoption on Layer 2 networks.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Their on-chain dispute resolution system is already processing 10x more cases than any competitor — that’s real utility.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Without major institutional backing, even strong tech won’t drive the price recovery needed for long-term success.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "This isn’t just about tech — it’s about trust and capital inflow, which Resolv lacks right now.",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "Resolv USR is undervalued vs Resolv USR will recover",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#resolv usr",
+    "#usr",
+    "#crypto"
+  ],
+  "generated_at": "2026-03-23T04:21:01.569Z",
+  "llm_used": true
+}

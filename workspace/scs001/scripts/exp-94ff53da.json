@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-94ff53da",
+  "topic_id": "custom-mn2km731-2",
+  "format": "explainer",
+  "title": "Why Mark Zuckerberg is secretly building AGI",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Did you know Mark Zuckerberg is quietly racing to build AGI?",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This could change the future of tech — and your job — in the next 5 years.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "AGI is artificial general intelligence, a machine that thinks like a human.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Meta's latest project uses a new type of neural network called \"Pathways.\"",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "If successful, it could revolutionize everything from healthcare to social media.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The real game-changer? It could outperform humans in complex decision-making.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Want to know what comes next? Follow for the biggest tech secrets.",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "Why Mark Zuckerberg is secretly building AGI",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#why",
+    "#mark",
+    "#zuckerberg"
+  ],
+  "generated_at": "2026-03-23T02:33:23.117Z",
+  "llm_used": true
+}

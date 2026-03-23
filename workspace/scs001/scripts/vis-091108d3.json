@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-091108d3",
+  "topic_id": "custom-mn2l2y3w-2",
+  "format": "vision",
+  "title": "5 money habits that keep you poor without realizing",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "What if the habits we think are harmless are actually sabotaging our financial future?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Algorithms now track spending patterns, but many apps prioritize engagement over empowerment, using nudges to encourage overspending.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "This creates a cycle where users are manipulated into debt without realizing it, deepening inequality and eroding financial autonomy.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Builders are developing transparent fintech tools that use blockchain for auditability and AI for honest, goal-oriented budgeting.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "A future where financial apps act as trusted advisors, helping people build wealth through clarity and ethical design is within reach.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future of finance will be shaped by those who build with transparency and those who demand it.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of 5",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#5",
+    "#money",
+    "#habits"
+  ],
+  "video_cue": "A person using a transparent financial app that displays real-time budget insights and ethical spending alerts.",
+  "generated_at": "2026-03-23T02:46:40.930Z",
+  "llm_used": true
+}

@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-ecbf037b",
+  "topic_id": "custom-mn2ir1v5-4",
+  "format": "vision",
+  "title": "How to use ChatGPT to make  per day",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "How might ChatGPT and similar models reshape daily life and productivity in the coming years?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Currently, ChatGPT can automate tasks like writing emails, coding, and content creation—boosting efficiency by hours daily.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "But overreliance risks devaluing human skills and deepening inequality if access is uneven.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Builders are integrating guardrails, bias detection, and transparency tools to ensure responsible use.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "A future where AI aids creativity, not replaces it—with equitable access and clear ethical boundaries.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future will balance innovation with responsibility, shaping a smarter, more inclusive world.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of how",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#how",
+    "#to",
+    "#use"
+  ],
+  "video_cue": "A montage of people using AI tools for creative and productive tasks, with ethical guidelines displayed on-screen.",
+  "generated_at": "2026-03-23T01:42:02.411Z",
+  "llm_used": true
+}

@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-ea1e9610",
+  "topic_id": "custom-mn2qdkon-0",
+  "format": "debate",
+  "title": "I built a SaaS in 48 hours using only AI — here's what happened",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "I built a functional SaaS in 48 hours using only AI — no code, no delays, just speed and scalability.",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "You didn’t build it — you generated a prototype. Real SaaS requires backend infrastructure, APIs, and security protocols.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "I used AI to auto-generate RESTful APIs, deploy on AWS with Terraform, and integrate with Stripe — all in one go.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "That’s a demo, not a product. Real users demand reliability, which AI can’t guarantee without rigorous testing and maintenance.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "The real world doesn’t run on hallucinations — your SaaS may look good, but it’s not built to last.",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "i vs built",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#i",
+    "#built",
+    "#a"
+  ],
+  "generated_at": "2026-03-23T05:14:15.534Z",
+  "llm_used": true
+}

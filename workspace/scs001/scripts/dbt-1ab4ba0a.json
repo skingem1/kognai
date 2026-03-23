@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-1ab4ba0a",
+  "topic_id": "custom-mn2ka5zb-3",
+  "format": "debate",
+  "title": "3 programming languages that will die by 2028",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "By 2028, COBOL, Fortran, and Lisp will be extinct — outdated, unsupported, and irrelevant in modern tech stacks.",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Programming isn't dying — it's evolving. Python, Rust, and JavaScript dominate because they adapt to new paradigms and hardware.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "COBOL still powers 80% of global banking systems. Fortran remains in scientific computing. Lisp's macro system is unmatched for AI research.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Legacy systems can't sustain growth. Modern languages offer concurrency, memory safety, and ecosystem support — essential for AI and quantum computing.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Programming thrives because it's the foundation of innovation — not a relic of the past.",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "3 vs programming",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#3",
+    "#programming",
+    "#languages"
+  ],
+  "generated_at": "2026-03-23T02:24:23.979Z",
+  "llm_used": true
+}

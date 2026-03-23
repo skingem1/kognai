@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-1772d7e3",
+  "topic_id": "devto-7956f49a295f",
+  "format": "vision",
+  "title": "What is WebMCP? Chrome's browser-native API for AI agents",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "What if your browser could run AI agents natively, like apps—without plugins or servers?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "WebMCP lets AI agents run directly in Chrome, using WebAssembly and secure sandboxing for performance and safety.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "But who controls these agents? Could they collect data, manipulate users, or become invasive without consent?",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Builders are using strict permission models and transparency tools to ensure user control and data minimization.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "Imagine a future where AI agents help with tasks ethically, respecting privacy and user intent.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "WebMCP may redefine how we interact with AI—responsibly, efficiently, and deeply integrated into our daily lives.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of what",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#what",
+    "#webmcp?",
+    "#chrome's"
+  ],
+  "video_cue": "A browser window with AI agents performing tasks like scheduling meetings and coding, all within a secure, transparent interface.",
+  "generated_at": "2026-03-23T00:14:51.547Z",
+  "llm_used": true
+}

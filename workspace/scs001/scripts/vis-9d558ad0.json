@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-9d558ad0",
+  "topic_id": "custom-mn2l2y3w-4",
+  "format": "vision",
+  "title": "The productivity hack that Silicon Valley keeps secret",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "What if the biggest productivity hack isn’t a tool, but a shift in how we interact with AI?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "We’re seeing real-time AI collaboration tools, like code co-pilots and automated task orchestration, already in use at top tech firms.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "But this risks deepening inequality — only those with access to these tools will thrive, while others are left behind.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Open-source AI frameworks and cloud-based platforms are making these tools more accessible to smaller teams and startups.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "Imagine a future where AI distributes productivity gains broadly, not just to the elite, through shared infrastructure and education.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future isn’t just about smarter tools — it’s about building systems that lift everyone up.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of the",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#the",
+    "#productivity",
+    "#hack"
+  ],
+  "video_cue": "A diverse group of people working together with AI assistants in a collaborative, modern workspace.",
+  "generated_at": "2026-03-23T02:47:20.332Z",
+  "llm_used": true
+}

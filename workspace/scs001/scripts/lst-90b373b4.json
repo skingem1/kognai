@@ -1,0 +1,60 @@
+{
+  "script_id": "lst-90b373b4",
+  "topic_id": "custom-mn2kj35i-4",
+  "format": "listicle",
+  "title": "How to use ChatGPT to negotiate your salary",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Top 3 ways ChatGPT can help you negotiate a better salary — and #1 will shock you.",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "3: Use ChatGPT to draft salary negotiation emails with professional tone and clear language.",
+      "start_s": 3,
+      "end_s": 7,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "2: To personalize your approach, ChatGPT can tailor scripts based on your industry and experience.",
+      "start_s": 7,
+      "end_s": 11,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "1: How? Use the \"salary negotiation\" feature to get real-world data on average pay ranges for your role.",
+      "start_s": 11,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Follow for more AI hacks that actually work in the real world.",
+      "start_s": 16,
+      "end_s": 20,
+      "emotion": "excited"
+    }
+  ],
+  "total_duration_s": 20,
+  "caption_text": "Top 3: How to use ChatGPT to negotiate your salary",
+  "hashtags": [
+    "#Top3",
+    "#Tech",
+    "#Ranking",
+    "#how",
+    "#to",
+    "#use"
+  ],
+  "generated_at": "2026-03-23T02:31:19.670Z",
+  "llm_used": true
+}

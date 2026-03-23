@@ -1,0 +1,111 @@
+{
+  "radar_id": "radar-20260323T04-5d347f",
+  "collected_at": "2026-03-23T04:24:46.114Z",
+  "topics": [
+    {
+      "topic_id": "arxiv-82e32dca8ea8",
+      "title": "Beyond Single Tokens: Distilling Discrete Diffusion Models via Discrete MMD",
+      "summary": "It is currently difficult to distill discrete diffusion models. In contrast, continuous diffusion literature has many distillation approaches methods ",
+      "format": "explainer",
+      "source": "arxiv",
+      "source_url": "http://arxiv.org/abs/2603.20155v1",
+      "confidence": 57.5,
+      "keywords": [
+        "beyond",
+        "single",
+        "tokens:",
+        "distilling",
+        "discrete",
+        "diffusion"
+      ],
+      "collected_at": "2026-03-23T04:24:41.004Z"
+    },
+    {
+      "topic_id": "cg-03f20e5f173b",
+      "title": "Resolv USR (USR) 📉 -57.8%",
+      "summary": "Trending on CoinGecko — rank #6",
+      "format": "debate",
+      "source": "coingecko",
+      "source_url": "https://www.coingecko.com/en/coins/resolv-usr",
+      "confidence": 80,
+      "keywords": [
+        "resolv usr",
+        "usr",
+        "crypto",
+        "defi"
+      ],
+      "debate_sides": {
+        "side_a": "Resolv USR is undervalued",
+        "side_b": "Resolv USR will recover"
+      },
+      "collected_at": "2026-03-23T04:24:40.995Z"
+    },
+    {
+      "topic_id": "cg-6b88c087247a",
+      "title": "Bitcoin (BTC) 📉 -1.8%",
+      "summary": "Trending on CoinGecko — rank #4",
+      "format": "vision",
+      "source": "coingecko",
+      "source_url": "https://www.coingecko.com/en/coins/bitcoin",
+      "confidence": 51.82349076436572,
+      "keywords": [
+        "bitcoin",
+        "btc",
+        "crypto",
+        "defi"
+      ],
+      "collected_at": "2026-03-23T04:24:40.995Z"
+    },
+    {
+      "topic_id": "arxiv-c338e62e54c0-lst",
+      "title": "Top 3 improving generalization tools you need to know",
+      "summary": "The use of ML in cybersecurity has long been impaired by generalization issues: Models that work well in controlled scenarios fail to maintain perform",
+      "format": "listicle",
+      "source": "arxiv",
+      "source_url": "http://arxiv.org/abs/2603.20181v1",
+      "confidence": 55,
+      "keywords": [
+        "improving",
+        "generalization",
+        "cybersecurity",
+        "tasks",
+        "with",
+        "multi"
+      ],
+      "collected_at": "2026-03-23T04:24:41.003Z",
+      "listicle_items": [
+        "Improving",
+        "Generalization",
+        "Cybersecurity"
+      ]
+    },
+    {
+      "topic_id": "arxiv-c338e62e54c0",
+      "title": "Improving Generalization on Cybersecurity Tasks with Multi-Modal Contrastive Learning",
+      "summary": "The use of ML in cybersecurity has long been impaired by generalization issues: Models that work well in controlled scenarios fail to maintain perform",
+      "format": "explainer",
+      "source": "arxiv",
+      "source_url": "http://arxiv.org/abs/2603.20181v1",
+      "confidence": 55,
+      "keywords": [
+        "improving",
+        "generalization",
+        "cybersecurity",
+        "tasks",
+        "with",
+        "multi"
+      ],
+      "collected_at": "2026-03-23T04:24:41.003Z"
+    }
+  ],
+  "sources_hit": [
+    "github",
+    "arxiv",
+    "coingecko",
+    "reddit",
+    "dev_to",
+    "lobsters",
+    "techcrunch"
+  ],
+  "errors": []
+}

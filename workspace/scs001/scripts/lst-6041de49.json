@@ -1,0 +1,60 @@
+{
+  "script_id": "lst-6041de49",
+  "topic_id": "custom-mn2ml57t-3",
+  "format": "listicle",
+  "title": "5 high paying tech jobs that don't require coding",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Top 3 high-paying tech jobs that don’t require coding — and #1 will shock you.",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "3: Paying — data analysts earn up to $120k with just a bachelor’s and no coding.",
+      "start_s": 3,
+      "end_s": 7,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "2: High — tech project managers make even more, up to $135k, with strong leadership skills.",
+      "start_s": 7,
+      "end_s": 11,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "1: 5 — AI ethics officers earn over $150k, shaping the future without writing a single line of code.",
+      "start_s": 11,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Follow for more surprising tech careers that pay well — and don’t need coding.",
+      "start_s": 16,
+      "end_s": 20,
+      "emotion": "excited"
+    }
+  ],
+  "total_duration_s": 20,
+  "caption_text": "Top 3: 5 high paying tech jobs that don't require coding",
+  "hashtags": [
+    "#Top3",
+    "#Tech",
+    "#Ranking",
+    "#5",
+    "#high",
+    "#paying"
+  ],
+  "generated_at": "2026-03-23T03:28:45.225Z",
+  "llm_used": true
+}

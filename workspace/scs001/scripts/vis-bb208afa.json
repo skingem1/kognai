@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-bb208afa",
+  "topic_id": "custom-mn2mg5b7-1",
+  "format": "vision",
+  "title": "The free online course that got me a 6 figure job",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "What if a free online course could replace traditional education in shaping tomorrow's workforce?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Nanodegree programs and MOOCs now offer AI-driven skill certifications, validated by industry leaders and blockchain credentials.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "But access isn't equal — digital divides and algorithmic bias may exclude marginalized groups from these opportunities.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Open-source platforms and AI tutors are being developed to personalize learning and reduce barriers for underrepresented communities.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "Imagine a future where AI-curated learning paths empower anyone, anywhere, to acquire high-demand skills and secure well-paying jobs.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future of work may be shaped not by degrees, but by the right online learning tools and the ethics that guide their use.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of the",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#the",
+    "#free",
+    "#online"
+  ],
+  "video_cue": "A person using a smartphone to access a free online course, with a visualization of their career trajectory rising into a high-paying job.",
+  "generated_at": "2026-03-23T03:24:40.365Z",
+  "llm_used": true
+}

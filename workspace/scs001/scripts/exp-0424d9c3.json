@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-0424d9c3",
+  "topic_id": "custom-mn2jkum1-1",
+  "format": "explainer",
+  "title": "I asked AI to predict the next crypto to 100x",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Hey, did you know AI just called this crypto the next 100x play?",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "We're in a bull run, and investors are desperate for the next big move.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "It's a blockchain project called Solace, built on Ethereum.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "They’re using zero-knowledge proofs to make transactions completely private.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This could disrupt DeFi by making it safer and more anonymous.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The key takeaway? Privacy is the next big frontier in crypto.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Have you checked out Solace yet?",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "I asked AI to predict the next crypto to 100x",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#i",
+    "#asked",
+    "#ai"
+  ],
+  "generated_at": "2026-03-23T02:04:09.647Z",
+  "llm_used": true
+}
