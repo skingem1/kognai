@@ -4213,3 +4213,15 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no — production run + bugfix
 - Issues: fal.ai shell escaping was never committed (temp-file fix existed on disk but old python3 -c version was in git). Now fixed.
 - Timestamp: 2026-03-23T10:10:00Z
+
+## Sprint 890 — V2-PROD — Full v2 pipeline with real fal.ai + Captions.ai
+- Status: PASS
+- Commit: 4b6ae2f2
+- Files modified: scripts/scs001/fal-video-client.ts (Kling duration fix)
+- Files created: workspace/sprints/sprint-890.json, workspace/scs001/v2-output/v2-d3f15c2b/
+- Test: run-v2-pipeline.ts (full mode) — PASS, 4/6 real AI segments
+- Pipeline: v2 pipeline producing real AI video content (Kling + LTX + Captions.ai)
+- Cost: ~$1.26 per video (fal.ai) + 1 Captions.ai credit
+- Swarm used: no — production run
+- Issues: Kling only accepts duration '5' or '10' — fixed. Captions.ai timeout on 1 scene.
+- Timestamp: 2026-03-23T10:30:00Z
