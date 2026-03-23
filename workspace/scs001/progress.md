@@ -53,6 +53,30 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 | 2026-02 | 248-270 | VIDEO-QUALITY, Telegram commands explosion |
 | 2026-03 | 435-496 | Posting workflow, safety split, Stripe, YouTube |
 
+## Sprint 899 — SCS-001 Pipeline Restructuring
+- Status: PASS
+- Commit: 45061ea6
+- Files created: pipeline-registry.ts, pipelines/educational.ts, pipelines/code-demo.ts, pipelines/entertainment.ts, purge-deprecated-content.ts, code-demo-compositor.ts, code-demo-scriptgen.ts, code-render-frames.py, code-renderer.ts
+- Files modified: batch-produce.ts (rewritten for registry), produce-vlog.ts (refactored)
+- Purged: multiformat-runs (4GB freed, 7000+ files removed)
+- Pipeline: 3 pipelines registered (educational, code-demo, entertainment)
+- Swarm used: no (code pre-written by previous session, validated and committed)
+- Issues: none
+- Timestamp: 2026-03-23T14:00:00Z
+
+## Sprint 898 — TTS-FALLBACK
+- Status: PASS
+- Commit: 49340123
+- Files modified: produce-vlog.ts (--mode tts), batch-produce.ts (--mode flag), pipeline-registry.ts (mode option), pipelines/educational.ts (mode forwarding)
+- Videos produced (TTS mode):
+  - "Google Gemini 2.5 Shocks the AI World" (44s)
+  - "Why AI Agents Are Everywhere" (38s)
+  - "AI Feature That Makes ChatGPT Look Old" (30.6s)
+- Swarm used: no (wrote directly — Captions.ai out of credits, needed TTS fallback)
+- Manual crystallise: done
+- Issues: Captions.ai credits exhausted — TTS fallback created as workaround
+- Timestamp: 2026-03-23T14:30:00Z
+
 ## Sprint 829 — OPS
 - Status: PASS
 - Commit: a970691
