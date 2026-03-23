@@ -3980,3 +3980,13 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (OPS sprint, ran batch-produce directly)
 - Issues: 1 video deduped (topic already produced)
 - Timestamp: 2026-03-23T06:28:00Z
+
+## Sprint 867 — OPS — content production (topics saturating)
+- Status: PASS
+- Commit: e644c5fc
+- Files created: workspace/sprints/sprint-867.json, 2 new scripts, 3 radar entries
+- Test: batch-produce.ts — 2 new videos but all deduped, 103 unique total (unchanged)
+- Pipeline: 103 unique videos ready, 4/30 posted toward gate
+- Swarm used: no (OPS sprint, ran batch-produce directly)
+- Issues: Topic pool saturating — new productions mostly dedup against existing. Need fresh topic sources or manual topics.
+- Timestamp: 2026-03-23T06:31:00Z
