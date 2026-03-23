@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-c8e011c5",
+  "topic_id": "custom-mn2s04wz-1",
+  "format": "debate",
+  "title": "How to build a million dollar one-person business with AI",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "The \"how\" is clear—AI automates tasks, scales fast, and cuts costs with protocols like LangChain and AutoGPT. (3 sec)",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "\"To\" is about execution—without the right tools, like fine-tuning models on Hugging Face or using API keys, you'll fail. (5 sec)",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "My method uses real-world data pipelines and integrates with Zapier for instant automation—no need for a team. (5 sec)",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "But without a clear \"to\"—a strategy, a niche, a product—your AI is just a toy, not a business. (5 sec)",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Build the right thing, not just the right way. (4 sec)",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "how vs to",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#how",
+    "#to",
+    "#build"
+  ],
+  "generated_at": "2026-03-23T06:00:03.183Z",
+  "llm_used": true
+}
