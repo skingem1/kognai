@@ -3706,3 +3706,13 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (surgical edit)
 - Cost: ~$0.05
 - Timestamp: 2026-03-23T05:00:00Z
+
+## Sprint 842 — OPS: update /help + command aliases
+- Status: PASS
+- Commit: 79cdeee
+- Files modified: scripts/telegram-commands/cmd-help.ts, scripts/telegram-bot.ts
+- Added to /help: /postinghealth, /bulkcaptions, /batch, /postlog, /costs, /replenish, /postbrowser
+- Added non-hyphenated aliases: /postinghealth, /bulkcaptions (map to hyphenated versions)
+- Swarm used: no (surgical edit)
+- Cost: ~$0.05
+- Timestamp: 2026-03-23T05:15:00Z
