@@ -1,0 +1,77 @@
+{
+  "demo_id": "demo-mn3l3hnz",
+  "title": "Validate Emails in Python",
+  "language": "python",
+  "total_duration_s": 25,
+  "steps": [
+    {
+      "step_id": "s1",
+      "title": "Step 1: Setup",
+      "code_lines": [
+        "import re",
+        "",
+        "def is_valid_email(email):",
+        "    pattern = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$'",
+        "    return re.match(pattern, email) is not None"
+      ],
+      "language": "python",
+      "explanation": "We import the re module and define a function to check email validity using a regex pattern.",
+      "duration_s": 7,
+      "highlight_lines": [
+        0,
+        3
+      ]
+    },
+    {
+      "step_id": "s2",
+      "title": "Step 2: Get Input",
+      "code_lines": [
+        "email = input(\"Enter email: \")"
+      ],
+      "language": "python",
+      "explanation": "We prompt the user to enter an email address for validation.",
+      "duration_s": 5,
+      "highlight_lines": [
+        0
+      ]
+    },
+    {
+      "step_id": "s3",
+      "title": "Step 3: Check and Output",
+      "code_lines": [
+        "if is_valid_email(email):",
+        "    print(\"Valid email\")",
+        "else:",
+        "    print(\"Invalid email\")"
+      ],
+      "language": "python",
+      "explanation": "We use the function to check the email and print the result.",
+      "duration_s": 7,
+      "highlight_lines": [
+        0,
+        3
+      ]
+    },
+    {
+      "step_id": "s4",
+      "title": "Try It Yourself!",
+      "code_lines": [
+        "# Try it yourself with different email addresses!"
+      ],
+      "language": "python",
+      "explanation": "Now you can test it with any email — try it yourself!",
+      "duration_s": 6,
+      "highlight_lines": [
+        0
+      ]
+    }
+  ],
+  "hashtags": [
+    "#coding",
+    "#python",
+    "#tutorial"
+  ],
+  "intro_hook": "Want to check if an email is real? Let's code it!",
+  "source": "user",
+  "topic_source": "user-prompt"
+}

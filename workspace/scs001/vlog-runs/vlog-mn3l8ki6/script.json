@@ -1,0 +1,21 @@
+{
+  "title": "Why Coding in 2026 Is a Waste of Time",
+  "full_monologue": "**Coding in 2026 is a waste of time.** Why? Because AI will do the coding for you. Companies are already automating software development, and the demand for manual coders is dropping fast. Tools like AI-driven platforms can write, debug, and optimize code in seconds. If you’re spending hours learning syntax, you’re falling behind. The future belongs to those who understand how AI works, not those who write lines of code. So, what should you be learning instead? Comment below.",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 6,
+      "duration_s": 6,
+      "visual_prompt": "A person typing on a keyboard with AI-generated text appearing above their hands, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 18,
+      "duration_s": 6,
+      "visual_prompt": "A futuristic cityscape with glowing AI-powered drones and automated vehicles, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Meta's AI Writes Better Than Humans?",
+  "full_monologue": "**Meta just released an AI that writes better than humans.** This isn't just another chatbot — it's crafting essays, scripts, and even poetry that rival human creativity. Imagine having a writer that never gets tired, never makes mistakes, and delivers perfection every time. But is this a breakthrough or a threat? Let’s see what this AI can really do. The implications are huge — from content creation to education. What do you think? Are we entering a new era of AI-powered creativity?",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 6,
+      "duration_s": 6,
+      "visual_prompt": "A person typing on a keyboard with glowing keys, surrounded by abstract light patterns, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 18,
+      "duration_s": 6,
+      "visual_prompt": "A crowd of people looking at a large screen , with hands waving in the air, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "sprint_id": "sprint-925",
+  "title": "MULTI-PIPELINE — 3 code demos + 2 TTS vlogs (batch 9)",
+  "description": "Produce 3 code demo videos and 2 TTS vlog videos. 300+ content stockpile growing.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "925-01",
+      "title": "Code demo: Build an Email Validator in Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-925",
+      "output": "demo-mn3l3hnx"
+    },
+    {
+      "id": "925-02",
+      "title": "Code demo: Create a Currency Converter in Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-925",
+      "output": "demo-mn3l549o"
+    },
+    {
+      "id": "925-03",
+      "title": "Code demo: Build a URL Shortener with Flask",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-925",
+      "output": "demo-mn3l6iou"
+    },
+    {
+      "id": "925-04",
+      "title": "V2 video: Meta Just Released an AI That Writes Better Than Humans",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-925",
+      "output": "vlog-mn3l8kia"
+    },
+    {
+      "id": "925-05",
+      "title": "V2 video: Why Learning to Code in 2026 Is a Waste of Time",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-925",
+      "output": "vlog-mn3l8ki6"
+    }
+  ]
+}
