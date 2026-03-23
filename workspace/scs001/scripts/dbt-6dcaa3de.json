@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-6dcaa3de",
+  "topic_id": "cg-03f20e5f173b",
+  "format": "debate",
+  "title": "Resolv USR (USR) 📉 -64.7%",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Resolv USR is undervalued because it’s the only protocol with decentralized dispute resolution baked into its core architecture.",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Its recovery hinges on Layer 2 scaling—without it, transaction costs will cripple adoption, and the token will never rebound.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "But their recent integration with zkRollups slashes fees by 90%, making mass adoption not just possible, but imminent.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Even with that, the lack of institutional backing means no major DeFi projects will adopt it, leaving the token stranded without real demand.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "This isn’t just a dip—it’s a death spiral without outside investment.",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "Resolv USR is undervalued vs Resolv USR will recover",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#resolv usr",
+    "#usr",
+    "#crypto"
+  ],
+  "generated_at": "2026-03-23T05:28:28.682Z",
+  "llm_used": true
+}
