@@ -4768,3 +4768,15 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no — executed directly
 - Issues: Ollama timeouts when vlogs + code demos run simultaneously (GPU contention). Fixed by running vlogs first, then code demos.
 - Timestamp: 2026-03-24T03:00:00Z
+
+## Sprint 929 — MULTI-PIPELINE — 3 code demos (3/5, HeyGen credits exhausted)
+- Status: PARTIAL PASS (3/5)
+- Commit: 12e85855
+- Files created: workspace/sprints/sprint-929.json, 3 code demo runs
+- Code demos: "Weather Dashboard" (demo-mn3naegn), "Habit Tracker CLI" (demo-mn3nd3f2), "Color Palette Generator" (demo-mn3nf3fc)
+- Vlogs: FAILED — HeyGen "Insufficient credit" (MOVIO_PAYMENT_INSUFFICIENT_CREDIT)
+- Pipeline: 31 v2 + 65 TTS vlogs + 54 code demos + 5 entertainment = 323+ total content
+- Cost: $0.00 (code demos only)
+- Swarm used: no — executed directly
+- Issues: **BLOCKER — HeyGen avatar credits exhausted.** All future avatar vlogs will fail until credits are replenished. Code demos are unaffected ($0). Next sprints should be CODE-DEMO ONLY until HeyGen credits are topped up.
+- Timestamp: 2026-03-24T03:30:00Z
