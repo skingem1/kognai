@@ -1,12 +1,12 @@
 {
-  "scanned_at": "2026-03-23T04:36:54.635Z",
-  "total_runs": 98,
-  "total_videos": 194,
-  "unique_topics": 83,
-  "already_registered": 83,
+  "scanned_at": "2026-03-23T04:40:28.419Z",
+  "total_runs": 101,
+  "total_videos": 196,
+  "unique_topics": 85,
+  "already_registered": 85,
   "newly_registered": 0,
   "already_posted": 0,
-  "ready_to_post": 83,
+  "ready_to_post": 85,
   "gate_status": {
     "posted": 4,
     "target": 30,
@@ -342,6 +342,14 @@
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-nxhh/output/vis-c2d17e5f_final.mp4"
     },
     {
+      "video_id": "dbt-0faff1ad",
+      "format": "debate",
+      "title": "Arlo - I Built an AI Companion That Gives Blind Users the Same 3-Second Superpower Sighted People Have",
+      "duration_s": 27,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T04-c532/output/dbt-0faff1ad_final.mp4"
+    },
+    {
       "video_id": "dbt-69726c04",
       "format": "debate",
       "title": "Semantic Token Clustering for Efficient Uncertainty Quantification in Large Language Models",
@@ -420,6 +428,14 @@
       "duration_s": 27,
       "posted": false,
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-b3vb/output/dbt-c9820a9b_final.mp4"
+    },
+    {
+      "video_id": "exp-19865761",
+      "format": "explainer",
+      "title": "Improving Generalization on Cybersecurity Tasks with Multi-Modal Contrastive Learning",
+      "duration_s": 25,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T04-jbkk/output/exp-19865761_final.mp4"
     },
     {
       "video_id": "exp-1112d888",
