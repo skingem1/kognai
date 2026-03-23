@@ -1,18 +1,26 @@
 {
-  "scanned_at": "2026-03-23T00:16:43.419Z",
-  "total_runs": 35,
-  "total_videos": 25,
-  "unique_topics": 16,
-  "already_registered": 16,
+  "scanned_at": "2026-03-23T00:21:34.577Z",
+  "total_runs": 40,
+  "total_videos": 30,
+  "unique_topics": 19,
+  "already_registered": 19,
   "newly_registered": 0,
   "already_posted": 0,
-  "ready_to_post": 16,
+  "ready_to_post": 19,
   "gate_status": {
     "posted": 2,
     "target": 30,
     "gap": 28
   },
   "videos": [
+    {
+      "video_id": "vis-0359b89c",
+      "format": "vision",
+      "title": "Building MEV-Resistant DeFi: A Practitioner's Guide to Protecting Protocols and Users From Value Extraction",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-crxe/output/vis-0359b89c_final.mp4"
+    },
     {
       "video_id": "vis-1772d7e3",
       "format": "vision",
@@ -94,6 +102,14 @@
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260322T23-30sf/output/dbt-7e52df9f_final.mp4"
     },
     {
+      "video_id": "exp-4b35be55",
+      "format": "explainer",
+      "title": "lightningpixel/modly — Desktop app to generate 3D models from images using local AI — runs entirely on ",
+      "duration_s": 25,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-x0nr/output/exp-4b35be55_final.mp4"
+    },
+    {
       "video_id": "exp-4cfce417",
       "format": "explainer",
       "title": "wangziqi06/724-office — 7/24 Office — Self-evolving AI Agent system. 26 tools, 3500 lines pure Python, M",
@@ -124,6 +140,14 @@
       "duration_s": 25,
       "posted": false,
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260322T23-ctjq/output/exp-fcc19374_final.mp4"
+    },
+    {
+      "video_id": "lst-c4530456",
+      "format": "listicle",
+      "title": "I Built 3 Tools to Stop My AI from Being a Yes-Man (and forgetting everything)",
+      "duration_s": 20,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-dfar/output/lst-c4530456_final.mp4"
     },
     {
       "video_id": "lst-201e1473",
