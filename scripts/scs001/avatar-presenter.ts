@@ -13,6 +13,7 @@
  */
 
 import { writeFileSync, mkdirSync, existsSync, readFileSync } from "fs";
+import { dirname } from "path";
 import { join } from "path";
 import type { ScriptBundle, ScriptSegment } from "../../agents/scs001-script/index";
 import type { VoiceoverResult } from "./tts-voiceover";
@@ -76,6 +77,85 @@ interface CaptionsJobResponse {
   video_url?: string;
   error?: string;
 }
+
+// Default avatar creator — available: Jason, Kate, Jake, Kira, Luke, Selene, Ethan, Liam
+const DEFAULT_CREATOR = process.env.CAPTIONS_CREATOR ?? "Jason";
+
+/**
+ * Generate a standalone avatar video from text using Captions.ai.
+ * Uses the correct /submit + /poll endpoints (confirmed working 2026-03-23).
+ * Returns the downloaded MP4 path.
+ */
+export async function generateAvatarVideo(
+  script: string,
+  outPath: string,
+  creatorName: string = DEFAULT_CREATOR,
+  maxWaitMs: number = 300000,
+): Promise<{ path: string; cost_credits: number }> {
+  if (!CAPTIONS_API_KEY) throw new Error("CAPTIONS_API_KEY not set");
+
+  // Captions.ai limit: 800 chars per script
+  const truncated = script.slice(0, 800);
+  mkdirSync(dirname(outPath), { recursive: true });
+
+  // Step 1: Submit
+  const submitRes = await fetch(`${CAPTIONS_API_BASE}/submit`, {
+    method: "POST",
+    headers: {
+      "x-api-key": CAPTIONS_API_KEY,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ creatorName, script: truncated }),
+  });
+  if (!submitRes.ok) {
+    const err = await submitRes.text();
+    throw new Error(`Captions.ai submit ${submitRes.status}: ${err}`);
+  }
+  const { operationId } = (await submitRes.json()) as { operationId: string };
+  if (!operationId) throw new Error("Captions.ai: no operationId in response");
+
+  console.log(`  [Captions.ai] Job ${operationId} submitted (creator: ${creatorName})`);
+
+  // Step 2: Poll until COMPLETE
+  const start = Date.now();
+  while (Date.now() - start < maxWaitMs) {
+    await new Promise((r) => setTimeout(r, 10000)); // 10s intervals
+
+    const pollRes = await fetch(`${CAPTIONS_API_BASE}/poll`, {
+      method: "POST",
+      headers: {
+        "x-api-key": CAPTIONS_API_KEY,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ operationId }),
+    });
+    if (!pollRes.ok) throw new Error(`Captions.ai poll ${pollRes.status}`);
+
+    const pollData = (await pollRes.json()) as { state: string; url?: string; progress?: number };
+
+    if (pollData.state === "COMPLETE" && pollData.url) {
+      // Step 3: Download
+      const dlRes = await fetch(pollData.url);
+      if (!dlRes.ok) throw new Error(`Download failed: ${dlRes.status}`);
+      const buffer = Buffer.from(await dlRes.arrayBuffer());
+      writeFileSync(outPath, buffer);
+
+      // Estimate credits: ~1 credit per second of video
+      const costCredits = Math.ceil(truncated.length / 130); // rough: 130 chars ≈ 1s
+      console.log(`  [Captions.ai] ✅ Avatar downloaded: ${outPath} (~${costCredits} credits)`);
+      return { path: outPath, cost_credits: costCredits };
+    }
+
+    if (pollData.state === "FAILED") {
+      throw new Error("Captions.ai job FAILED");
+    }
+
+    console.log(`  [Captions.ai] ${pollData.state} (${pollData.progress ?? '?'}%)...`);
+  }
+
+  throw new Error(`Captions.ai timeout after ${maxWaitMs / 1000}s`);
+}
+
 
 async function createAvatarJob(
   text: string,

@@ -81,8 +81,8 @@ export class MovieEditorAgent {
     const ttsResults = await this.generateTTS(bundle, join(runDir, 'tts'));
     const hasVoiceover = ttsResults.some(t => t.success);
 
-    // Step 2: Build scene video segments (color blocks + optional drawtext)
-    const scenePaths = this.buildSceneSegments(bundle.scenes, runDir);
+    // Step 2: Build scene video segments (Captions.ai avatar + fal.ai B-roll + fallback)
+    const scenePaths = await this.buildSceneSegments(bundle.scenes, runDir);
 
     // Step 3: Concatenate scenes into single video
     const rawVideoPath = join(runDir, 'raw.mp4');
@@ -169,24 +169,42 @@ export class MovieEditorAgent {
     return results;
   }
 
-  private buildSceneSegments(scenes: Scene[], runDir: string): string[] {
+  private async buildSceneSegments(scenes: Scene[], runDir: string): Promise<string[]> {
     const paths: string[] = [];
 
-    for (let i = 0; i < scenes.length; i++) {
-      const scene = scenes[i];
-      const segPath = join(runDir, `scene_${i}.mp4`);
-      const color = STYLE_COLORS[scene.visual_style] || '0x1A1A2E';
+    try {
+      // Use real video generation (Captions.ai avatar + fal.ai B-roll + Pillow terminal)
+      const { generateAllSegments } = await import('../../scripts/scs001/video-segment-generator');
+      const segDir = join(runDir, 'segments');
 
-      // Color block video for each scene (9:16 portrait)
-      try {
-        execSync(
-          `${FFMPEG} -y -f lavfi -i "color=c=${color}:s=1080x1920:d=${scene.duration_s}:r=30" ` +
-          `-c:v libx264 -pix_fmt yuv420p -t ${scene.duration_s} "${segPath}"`,
-          { stdio: 'pipe', timeout: 30000 }
-        );
-        paths.push(segPath);
-      } catch (err) {
-        console.warn(`[MovieEditor] Scene ${i} build failed: ${(err as Error).message?.slice(0, 100)}`);
+      console.log(`[MovieEditor] Generating ${scenes.length} REAL video segments...`);
+      const results = await generateAllSegments(scenes, segDir);
+
+      for (const result of results) {
+        if (existsSync(result.path)) {
+          paths.push(result.path);
+        }
+      }
+
+      const sources = results.map(r => r.source);
+      const totalCost = results.reduce((sum, r) => sum + r.cost_usd, 0);
+      console.log(`[MovieEditor] ${paths.length}/${scenes.length} segments ready (sources: ${[...new Set(sources)].join(',')} | cost: $${totalCost.toFixed(2)})`);
+
+    } catch (err: any) {
+      // Fallback: generate color blocks if real video generation fails entirely
+      console.warn(`[MovieEditor] Real video gen failed (${err.message}), falling back to color blocks`);
+      for (let i = 0; i < scenes.length; i++) {
+        const scene = scenes[i];
+        const segPath = join(runDir, `scene_${i}.mp4`);
+        const color = STYLE_COLORS[scene.visual_style] || '0x1A1A2E';
+        try {
+          execSync(
+            `${FFMPEG} -y -f lavfi -i "color=c=${color}:s=1080x1920:d=${scene.duration_s}:r=30" ` +
+            `-c:v libx264 -pix_fmt yuv420p -t ${scene.duration_s} "${segPath}"`,
+            { stdio: 'pipe', timeout: 30000 }
+          );
+          paths.push(segPath);
+        } catch {}
       }
     }
 

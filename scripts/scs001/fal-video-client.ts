@@ -1,0 +1,122 @@
+/**
+ * fal-video-client.ts — B-roll video generation via fal.ai
+ *
+ * Wraps fal_client.subscribe() for Kling 2.5 Turbo and LTX-2.3.
+ * Used by video-segment-generator.ts for VISUAL scenes.
+ *
+ * Env: FAL_KEY (from .env)
+ * Cost: Kling ~$0.07/sec (~$0.35/5s), LTX ~$0.04/sec (~$0.24/6s)
+ */
+
+import { execSync } from 'child_process';
+import { existsSync, mkdirSync } from 'fs';
+import { join, dirname } from 'path';
+
+const ROOT = join(__dirname, '..', '..');
+
+// Load FAL_KEY from .env
+function loadFalKey(): string {
+  if (process.env.FAL_KEY) return process.env.FAL_KEY;
+  try {
+    const envFile = join(ROOT, '.env');
+    const lines = require('fs').readFileSync(envFile, 'utf-8').split('\n');
+    for (const line of lines) {
+      if (line.startsWith('FAL_KEY=')) {
+        const key = line.split('=').slice(1).join('=').trim();
+        process.env.FAL_KEY = key;
+        return key;
+      }
+    }
+  } catch {}
+  return '';
+}
+
+export interface BrollResult {
+  path: string;
+  source: 'kling' | 'ltx';
+  cost_usd: number;
+  duration_s: number;
+}
+
+const MODEL_SLUGS = {
+  kling: 'fal-ai/kling-video/v2.5-turbo/pro/text-to-video',
+  ltx: 'fal-ai/ltx-2.3/text-to-video',
+} as const;
+
+/**
+ * Generate a B-roll video clip via fal.ai.
+ * Tries Kling first, falls back to LTX if Kling fails.
+ */
+export async function generateBrollVideo(
+  prompt: string,
+  durationS: number = 5,
+  outPath: string,
+  preferredModel: 'kling' | 'ltx' = 'kling',
+): Promise<BrollResult> {
+  const falKey = loadFalKey();
+  if (!falKey) throw new Error('FAL_KEY not set in .env');
+
+  mkdirSync(dirname(outPath), { recursive: true });
+
+  const models: Array<'kling' | 'ltx'> = preferredModel === 'kling'
+    ? ['kling', 'ltx']
+    : ['ltx', 'kling'];
+
+  for (const model of models) {
+    try {
+      console.log(`  [fal.ai] Generating ${model} video: "${prompt.slice(0, 50)}..."`);
+
+      const args: Record<string, unknown> = {
+        prompt: prompt + ' cinematic vertical 9:16, high quality, trending style',
+        aspect_ratio: '9:16',
+      };
+
+      if (model === 'kling') {
+        args.duration = String(Math.min(Math.max(durationS, 5), 10));
+      } else {
+        args.num_frames = Math.min(Math.max(durationS * 16, 49), 161); // LTX uses frames
+        args.resolution = '1080p';
+      }
+
+      // Use Python subprocess for fal_client (it's a Python package)
+      const script = `
+import fal_client, os, json
+os.environ['FAL_KEY'] = '${falKey}'
+result = fal_client.subscribe(
+    "${MODEL_SLUGS[model]}",
+    arguments=${JSON.stringify(args).replace(/"/g, "'")},
+)
+url = result.get('video', {}).get('url', '')
+print(json.dumps({"url": url}))
+`;
+      const result = execSync(`python3 -c ${JSON.stringify(script)}`, {
+        timeout: 300000, // 5 min max
+        encoding: 'utf-8',
+      });
+
+      const { url } = JSON.parse(result.trim());
+      if (!url) throw new Error(`${model}: no video URL in response`);
+
+      // Download video
+      execSync(`curl -s -L -o "${outPath}" "${url}"`, { timeout: 60000 });
+
+      if (!existsSync(outPath)) throw new Error(`${model}: download failed`);
+
+      const costPerSec = model === 'kling' ? 0.07 : 0.04;
+      const cost = costPerSec * durationS;
+
+      console.log(`  [fal.ai] ✅ ${model} video saved: ${outPath} (~$${cost.toFixed(2)})`);
+
+      return { path: outPath, source: model, cost_usd: cost, duration_s: durationS };
+
+    } catch (err: any) {
+      console.warn(`  [fal.ai] ❌ ${model} failed: ${err.message}`);
+      if (model === models[models.length - 1]) {
+        throw new Error(`All fal.ai models failed. Last error: ${err.message}`);
+      }
+      // Try next model
+    }
+  }
+
+  throw new Error('fal.ai: unreachable');
+}
