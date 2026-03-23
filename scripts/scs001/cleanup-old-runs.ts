@@ -95,13 +95,99 @@ function cleanDir(
   return { deleted: remove.length, kept: keep.length, freedBytes };
 }
 
+// Sprint 826: Build set of run IDs that contain ready-to-post videos
+function getProtectedRunIds(): Set<string> {
+  const protected_ = new Set<string>();
+
+  // Read publish ledger for run_id mappings
+  const ledgerPath = path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl');
+  const manualPath = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
+
+  // Get posted video IDs
+  const postedIds = new Set<string>();
+  if (fs.existsSync(manualPath)) {
+    for (const line of fs.readFileSync(manualPath, 'utf-8').split('\n')) {
+      if (!line.trim()) continue;
+      try { const e = JSON.parse(line); if (e.video_id) postedIds.add(e.video_id); } catch {}
+    }
+  }
+
+  // Protect runs that have unposted videos with existing files
+  if (fs.existsSync(ledgerPath)) {
+    for (const line of fs.readFileSync(ledgerPath, 'utf-8').split('\n')) {
+      if (!line.trim()) continue;
+      try {
+        const e = JSON.parse(line);
+        if (e.run_id && e.video_id && !postedIds.has(e.video_id)) {
+          // Check if the video file still exists
+          const videoPath = e.video_path || e.file_path;
+          if (videoPath && fs.existsSync(videoPath)) {
+            protected_.add(e.run_id);
+          }
+        }
+      } catch {}
+    }
+  }
+
+  return protected_;
+}
+
+function cleanDirProtected(
+  parentDir: string,
+  prefix: string,
+  keepCount: number,
+  isDir: boolean,
+  protectedNames?: Set<string>
+): { deleted: number; kept: number; freedBytes: number } {
+  if (!fs.existsSync(parentDir)) return { deleted: 0, kept: 0, freedBytes: 0 };
+
+  const entries = fs.readdirSync(parentDir)
+    .filter(name => name.startsWith(prefix))
+    .map(name => {
+      const full = path.join(parentDir, name);
+      try {
+        const stat = fs.statSync(full);
+        return { name, full, mtime: stat.mtimeMs, isDir: stat.isDirectory() };
+      } catch { return null; }
+    })
+    .filter((e): e is NonNullable<typeof e> => e !== null && e.isDir === isDir)
+    .sort((a, b) => b.mtime - a.mtime);
+
+  // Protected entries are never deleted (they contain ready-to-post videos)
+  const protectedEntries = protectedNames
+    ? entries.filter(e => protectedNames.has(e.name))
+    : [];
+  const unprotected = protectedNames
+    ? entries.filter(e => !protectedNames.has(e.name))
+    : entries;
+
+  // From unprotected, keep latest keepCount
+  const keepUnprotected = unprotected.slice(0, Math.max(0, keepCount - protectedEntries.length));
+  const remove = unprotected.slice(Math.max(0, keepCount - protectedEntries.length));
+
+  let freedBytes = 0;
+  for (const entry of remove) {
+    if (isDir) {
+      freedBytes += dirSizeMB(entry.full) * 1024 * 1024;
+    } else {
+      freedBytes += fileSizeKB(entry.full) * 1024;
+    }
+    if (!DRY_RUN) {
+      rmRecursive(entry.full);
+    }
+  }
+
+  return { deleted: remove.length, kept: protectedEntries.length + keepUnprotected.length, freedBytes };
+}
+
 function run(): CleanupResult {
   const mfDir = path.join(ROOT, 'workspace', 'scs001', 'multiformat-runs');
   const radarDir = path.join(ROOT, 'workspace', 'scs001', 'topic-radar');
   const scriptsDir = path.join(ROOT, 'workspace', 'scs001', 'scripts');
 
-  // Multiformat runs: keep latest 30 dirs (enough for all postable videos)
-  const mf = cleanDir(mfDir, 'mf-', 30, true);
+  // Sprint 826: Protect run dirs that contain ready-to-post videos
+  const protectedRuns = getProtectedRunIds();
+  const mf = cleanDirProtected(mfDir, 'mf-', 30, true, protectedRuns);
 
   // Topic radar: keep latest 20 files
   const radar = cleanDir(radarDir, 'radar-', 20, false);

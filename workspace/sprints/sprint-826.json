@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-826",
+  "title": "FIX — cleanup protects runs with ready-to-post videos (ledger-based)",
+  "description": "Cleanup was deleting multiformat runs that still had ready-to-post videos. Fixed by reading publish-ledger.jsonl to identify protected run IDs. Runs with unposted videos + existing files are never deleted.",
+  "source": "bugfix",
+  "tasks": [
+    {
+      "id": "826-01",
+      "title": "Add ledger-based run protection to cleanup-old-runs.ts",
+      "type": "bugfix",
+      "task_target": "scripts/scs001/cleanup-old-runs.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-826"
+    }
+  ]
+}

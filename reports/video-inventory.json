@@ -1,7 +1,7 @@
 {
-  "scanned_at": "2026-03-23T01:06:06.761Z",
-  "total_runs": 39,
-  "total_videos": 31,
+  "scanned_at": "2026-03-23T01:08:12.572Z",
+  "total_runs": 31,
+  "total_videos": 30,
   "unique_topics": 30,
   "already_registered": 30,
   "newly_registered": 0,
@@ -118,6 +118,14 @@
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-b3vb/output/dbt-c9820a9b_final.mp4"
     },
     {
+      "video_id": "exp-c275c294",
+      "format": "explainer",
+      "title": "Why Rust is the future of systems programming",
+      "duration_s": 25,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T01-juf4/output/exp-c275c294_final.mp4"
+    },
+    {
       "video_id": "exp-acd650d4",
       "format": "explainer",
       "title": "Claude vs GPT vs Gemini: the ultimate AI comparison",
@@ -212,14 +220,6 @@
       "duration_s": 25,
       "posted": false,
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-ii6u/output/exp-ca0c4bfe_final.mp4"
-    },
-    {
-      "video_id": "exp-f93e8070",
-      "format": "explainer",
-      "title": "Resolv Liquidity Provider Token (RLP) 📉 -17.5%",
-      "duration_s": 25,
-      "posted": false,
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-n61z/output/exp-f93e8070_final.mp4"
     },
     {
       "video_id": "lst-5c297d20",
