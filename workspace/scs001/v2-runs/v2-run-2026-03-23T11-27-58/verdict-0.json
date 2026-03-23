@@ -1,0 +1,12 @@
+{
+  "scenario_id": "scn-x7k291",
+  "verdict": "PASS",
+  "message_score": 92,
+  "scroll_stop_score": 94,
+  "message_analysis": "The message is razor-sharp and singular: Big Tech is quietly replacing human workers with AI agents for profit, and this shift threatens knowledge workers now. Every scene reinforces this—from the hook's 'secretly building' tension through the proof (real product launches), the motive (labor cost savings), the threat (job titles crossed out), and the call-to-action loop (you need to learn this first). The angle is original because it reframes AI adoption as a coordinated corporate strategy rather than inevitable progress. The narrative arc from shock → curiosity → intrigue → revelation → urgency → loop is textbook TikTok storytelling. No filler. High shareability because viewers will feel they've uncovered forbidden knowledge.",
+  "scroll_stop_analysis": "The hook ('Every major tech company is secretly building the same thing — and they're terrified you'll find out') hits all three dopamine triggers: conspiracy framing, institutional distrust, and insider-reveal language. The word 'secretly' alone activates pattern interruption. Scene 1 (5s) delivers immediately with kinetic text slams, subliminal logo flashes, and a hard cut to red-tinted newsroom footage—pure visual chaos that stops scrolls. Pattern interrupts are distributed throughout (3-4 per scene except Scene 4 which justifiably drops to 2 for gravity). Pacing is tight: 33s total, no dead air, each scene adds new visual information. The emotion payoff is structural—by Scene 4, viewers have been primed for 'the why,' and the empty office chairs + $4.2B counter delivers visceral impact. Scene 6 loops back to Scene 1's visual language, creating algorithmic completion. This feels native TikTok: fast-cut educational content with conspiracy undertones, not an ad or lecture.",
+  "fixes": [],
+  "confidence": 96,
+  "model_used": "claude-haiku-4-5-20251001",
+  "reviewed_at": "2026-03-23T11:28:32.883Z"
+}

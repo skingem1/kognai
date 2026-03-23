@@ -1,0 +1,38 @@
+{
+  "sprint_id": "sprint-898",
+  "title": "TTS-FALLBACK — ElevenLabs voiceover mode when Captions.ai credits exhausted",
+  "description": "Add --mode tts flag to produce-vlog.ts. When Captions.ai is out of credits, use ElevenLabs TTS for voiceover + B-roll clips as backbone video. Produces same quality output without avatar dependency.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "898-01",
+      "title": "Add TTS fallback mode to produce-vlog.ts: ElevenLabs voiceover + color-bg + B-roll backbone",
+      "type": "feature",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-898"
+    },
+    {
+      "id": "898-02",
+      "title": "Update batch-produce.ts to pass --mode tts flag through to pipeline",
+      "type": "feature",
+      "task_target": "scripts/scs001/batch-produce.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-898"
+    },
+    {
+      "id": "898-03",
+      "title": "Produce 3 TTS-mode videos on trending AI topics",
+      "type": "ops",
+      "task_target": "scripts/scs001/batch-produce.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-898"
+    }
+  ]
+}

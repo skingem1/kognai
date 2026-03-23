@@ -1,0 +1,12 @@
+{
+  "scenario_id": "scn-gm25x9k",
+  "verdict": "PASS",
+  "message_score": 92,
+  "scroll_stop_score": 94,
+  "message_analysis": "Crystal clear single message: Google's Gemini 2.5 has dethroned all competitors across every benchmark through superior reasoning capability. Every scene reinforces this—no filler. The angle is fresh (not 'new AI drops,' but 'scoreboard rewritten overnight'), and the hook delivers exactly what it promises: proof of benchmark dominance + hidden reasoning weapon. The message would resonate with tech enthusiasts and professionals facing workflow disruption. Highly shareable tribal value (OpenAI vs Google).",
+  "scroll_stop_analysis": "Hook is devastating: 'Every benchmark. Broken.' in 5 seconds with kinetic red bar explosion creates immediate shock and curiosity gap (why? how?). Pattern interrupts are consistent (3-2-2-3-2-2 per scene, strong density). Pacing is relentless—no dead air, fast cuts, music builds tension perfectly. Emotion arc executes flawlessly: shock → proof → revelation → urgency → perspective → loop. The chain-of-thought visual (Scene 3) is a genuine pattern interrupt that resets curiosity mid-video. Loop hook (Scene 6) explicitly invites rewatch. This *feels* native—urgent, competitive, visual-first, zero lecture tone.",
+  "fixes": [],
+  "confidence": 96,
+  "model_used": "claude-haiku-4-5-20251001",
+  "reviewed_at": "2026-03-23T11:20:42.454Z"
+}

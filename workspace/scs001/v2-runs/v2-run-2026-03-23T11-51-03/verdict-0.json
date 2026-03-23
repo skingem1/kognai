@@ -1,0 +1,12 @@
+{
+  "scenario_id": "scn-xm7k92",
+  "verdict": "PASS",
+  "message_score": 92,
+  "scroll_stop_score": 88,
+  "message_analysis": "The message is laser-focused: reasoning AI is fundamentally different from prediction AI, and it threatens every knowledge worker. Every scene reinforces this—from the hook's paradigm-breaking claim, through the technical proof, to the personal relevance escalation in Scene 4, ending with a philosophical loop that makes viewers question their own irreplaceability. The angle is original (not another 'AI is scary' take, but 'AI reasoning changes the game'). Scene 4's job-disruption escalation is the scroll-stopper; it lands personal relevance before the viewer can tap away. The hook delivers on its promise: paradigm shift + proof + stakes.",
+  "scroll_stop_analysis": "Hook grabs in under 3 seconds with kinetic text + Musk flash + color pulse (red THINKS). Pattern interrupts are strong: Scene 1 has 3, Scene 2 has 4, Scene 4 has 5—these are the heavy hitters. Pacing is tight: 32 seconds across 6 scenes = ~5.3s per scene, no dead air. Scene 3 uses real-time screen recording (novelty), Scene 4 uses rapid-fire burning text (motion arrest). Emotion arc executes cleanly: shock→curiosity→intrigue→urgency→revelation→loop. Scene 6's recursive callback to the hook is a native TikTok move—makes rewatching feel inevitable. Would feel like a genuine tech revelation, not an ad.",
+  "fixes": [],
+  "confidence": 91,
+  "model_used": "claude-haiku-4-5-20251001",
+  "reviewed_at": "2026-03-23T11:51:36.753Z"
+}

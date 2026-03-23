@@ -1,0 +1,111 @@
+{
+  "scenario_id": "scn-gm25x9k",
+  "trend_signal_id": "custom-v2-1774264810153",
+  "title": "Google Gemini 2.5 Just Broke AI Forever",
+  "angle": "Every AI company spent billions chasing GPT-4 — then Google dropped Gemini 2.5 and rewrote the scoreboard overnight. Here's what nobody's talking about.",
+  "scenes": [
+    {
+      "scene_id": "s1",
+      "scene_name": "The Scoreboard Drop",
+      "duration_s": 5,
+      "voiceover": "Google just released an AI that topped EVERY benchmark. Not one. Every single one.",
+      "visual_style": "kinetic_text",
+      "visual_description": "Red benchmark chart fills screen, bars explode past competitors one by one in rapid fire. Gemini 2.5 bar crashes through the top.",
+      "caption_overlay": "EVERY AI BENCHMARK. BROKEN.",
+      "emotion": "shock",
+      "music_cue": "impact_hit",
+      "pattern_interrupts": 3
+    },
+    {
+      "scene_id": "s2",
+      "scene_name": "The Proof",
+      "duration_s": 6,
+      "voiceover": "MMLU, HumanEval, MATH — Gemini 2.5 scored higher than GPT-4o, Claude 3.5, and Grok. All of them.",
+      "visual_style": "screen_recording",
+      "visual_description": "Live benchmark leaderboard scrolling — each competitor name grays out as Gemini 2.5 highlights gold at the top. Fast zoom cuts between rows.",
+      "caption_overlay": "GPT-4o ❌ Claude 3.5 ❌ Grok ❌ Gemini 2.5 ✅",
+      "emotion": "intrigue",
+      "music_cue": "tension_build",
+      "pattern_interrupts": 2
+    },
+    {
+      "scene_id": "s3",
+      "scene_name": "The Hidden Weapon",
+      "duration_s": 6,
+      "voiceover": "But here's what they didn't put in the press release — it reasons. Like actually thinks before it answers.",
+      "visual_style": "b_roll_montage",
+      "visual_description": "Split screen: old AI typing instant wrong answer vs Gemini 2.5 showing visible chain-of-thought reasoning steps before a correct answer. Slow zoom on the difference.",
+      "caption_overlay": "This is NOT the same AI you used last year.",
+      "emotion": "revelation",
+      "music_cue": "tension_build",
+      "pattern_interrupts": 2
+    },
+    {
+      "scene_id": "s4",
+      "scene_name": "What This Means For You",
+      "duration_s": 6,
+      "voiceover": "Coders, writers, researchers — your workflow is about to change whether you're ready or not.",
+      "visual_style": "kinetic_text",
+      "visual_description": "Fast-cut icons: code editor, document, microscope — each one gets a Gemini badge stamped on it. Clock ticking in corner. Text pulses on beat.",
+      "caption_overlay": "Ready or not. It's here.",
+      "emotion": "urgency",
+      "music_cue": "impact_hit",
+      "pattern_interrupts": 3
+    },
+    {
+      "scene_id": "s5",
+      "scene_name": "The Bigger Picture",
+      "duration_s": 4,
+      "voiceover": "OpenAI had a 2-year head start. Google just erased it in one release.",
+      "visual_style": "documentary",
+      "visual_description": "Timeline graphic — OpenAI launch 2022, race to present. Then a single Gemini logo wipes the entire timeline clean. Dramatic slow push-in.",
+      "caption_overlay": "2 years. Gone in one drop.",
+      "emotion": "revelation",
+      "music_cue": "silence",
+      "pattern_interrupts": 2
+    },
+    {
+      "scene_id": "s6",
+      "scene_name": "The Loop Hook",
+      "duration_s": 5,
+      "voiceover": "Every benchmark. Broken. And we're just getting started — go back and look at those numbers again.",
+      "visual_style": "kinetic_text",
+      "visual_description": "Same red benchmark chart from scene 1 reappears — but now viewer sees it differently. Gemini bar pulses. Text: 'You missed something.' Loop cue triggers.",
+      "caption_overlay": "Watch it again. You missed something.",
+      "emotion": "loop",
+      "music_cue": "impact_hit",
+      "pattern_interrupts": 2
+    }
+  ],
+  "hook_test": {
+    "format_reference": "This changes everything",
+    "viral_proof": "The 'This Changes Everything' format has driven 10M+ views repeatedly — most notably MrBeast tech reaction videos, Marques Brownlee AI reveal videos (avg 12M views), and Fireship's GPT-4 launch video (18M views). Sudden capability leap + competitive scoreboard = proven viral trigger in tech.",
+    "why_it_works": "Benchmark destruction triggers tribal tech loyalty (OpenAI vs Google fans), the scoreboard visual is instantly legible, and the reasoning reveal creates a second surprise that resets curiosity mid-video — driving full completion and rewatch.",
+    "estimated_hook_rate": 42
+  },
+  "total_duration_s": 32,
+  "target_emotion_arc": [
+    "shock",
+    "intrigue",
+    "revelation",
+    "urgency",
+    "revelation",
+    "loop"
+  ],
+  "speaker_name": "Kognai",
+  "tts_voice": "default",
+  "hashtags": [
+    "#Gemini25",
+    "#GoogleAI",
+    "#AIBenchmark",
+    "#GeminiVsGPT4",
+    "#AINews2025",
+    "#MachineLearning",
+    "#TechDrop",
+    "#FutureOfAI",
+    "#OpenAI",
+    "#Tech"
+  ],
+  "created_at": "2026-03-23T11:20:37.505Z",
+  "model_used": "claude-sonnet-4-6"
+}
