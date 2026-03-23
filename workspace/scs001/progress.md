@@ -4374,3 +4374,15 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no — wrote fix directly + production runs
 - Issues: none
 - Timestamp: 2026-03-23T14:35:00Z
+
+## Sprint 902 — CODE-DEMO-BATCH — 3 more code demo videos
+- Status: PASS
+- Commit: 99c52ff0
+- Files created: workspace/sprints/sprint-902.json, 3 code demo videos
+- Code demos: "Python Automation in 30 Seconds" (30s), "Organize Downloads with Python" (36s), "Get Weather in Python in 3 Steps" (31s)
+- Pipeline: 19 v2 + 3 TTS vlogs + 6 code demos = 196+ total content
+- Cost: $0.00 (all local)
+- Note: voiceover generation not triggering on modified code-demo.ts (title card feature added externally). Background music plays instead. Non-blocking.
+- Swarm used: no — production runs
+- Issues: Ollama intermittent timeout on qwen3:14b (needs warmup after idle), 1 JSON parse error on JS prompt (retried with different topic)
+- Timestamp: 2026-03-23T14:55:00Z
