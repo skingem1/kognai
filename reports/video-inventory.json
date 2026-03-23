@@ -1,18 +1,58 @@
 {
-  "scanned_at": "2026-03-23T03:14:41.101Z",
-  "total_runs": 69,
-  "total_videos": 145,
-  "unique_topics": 64,
-  "already_registered": 64,
+  "scanned_at": "2026-03-23T03:33:24.589Z",
+  "total_runs": 74,
+  "total_videos": 170,
+  "unique_topics": 69,
+  "already_registered": 69,
   "newly_registered": 0,
   "already_posted": 0,
-  "ready_to_post": 64,
+  "ready_to_post": 69,
   "gate_status": {
     "posted": 4,
     "target": 30,
     "gap": 26
   },
   "videos": [
+    {
+      "video_id": "vis-d03a84da",
+      "format": "vision",
+      "title": "Why college degrees are becoming worthless in 2026",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T03-wn0h/output/vis-d03a84da_final.mp4"
+    },
+    {
+      "video_id": "vis-bb208afa",
+      "format": "vision",
+      "title": "The free online course that got me a 6 figure job",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T03-wn0h/output/vis-bb208afa_final.mp4"
+    },
+    {
+      "video_id": "vis-37680dba",
+      "format": "vision",
+      "title": "How to learn any skill in 30 days using AI",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T03-wn0h/output/vis-37680dba_final.mp4"
+    },
+    {
+      "video_id": "vis-786d0a1f",
+      "format": "vision",
+      "title": "5 high paying tech jobs that don't require coding",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T03-wn0h/output/vis-786d0a1f_final.mp4"
+    },
+    {
+      "video_id": "vis-19cd15e1",
+      "format": "vision",
+      "title": "The interview hack that works every single time",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T03-wn0h/output/vis-19cd15e1_final.mp4"
+    },
     {
       "video_id": "vis-51435aa2",
       "format": "vision",

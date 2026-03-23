@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-845",
+  "title": "CONTENT — 5 custom topic videos (education + career)",
+  "description": "Produce 5 videos with education and career topics. Auto-deliver triggered for new videos.",
+  "source": "content",
+  "tasks": [
+    {
+      "id": "845-01",
+      "title": "Batch produce 5 videos + trigger auto-deliver",
+      "type": "content",
+      "task_target": "scripts/scs001/batch-produce.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-845"
+    }
+  ]
+}
