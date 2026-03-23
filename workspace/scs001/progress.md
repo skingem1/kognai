@@ -3605,3 +3605,12 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (queue empty, wrote directly)
 - Cost: ~$0.15
 - Timestamp: 2026-03-23T01:40:00Z
+
+## Sprint 833 — OPS: update PM2 config for new schedule + reminder scripts
+- Status: PASS
+- Commit: 6c612eb
+- Files modified: ecosystem.config.js
+- PM2 updates: kognai-schedule-regen → posting-schedule.ts, kognai-post-noon/evening → posting-reminder.ts
+- Swarm used: no
+- Cost: ~$0.05
+- Timestamp: 2026-03-23T01:50:00Z
