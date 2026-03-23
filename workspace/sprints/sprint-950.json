@@ -1,0 +1,13 @@
+{
+  "sprint_id": "sprint-950",
+  "title": "CODE-DEMO-ONLY — 5 code demos",
+  "description": "5 code demo videos. Voice services exhausted.",
+  "source": "ops",
+  "tasks": [
+    {"id": "950-01", "title": "Code demo: Build a Number Guessing Game in Python", "type": "ops", "task_target": "scripts/scs001/pipelines/code-demo.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-950", "output": "demo-mn3svfqj"},
+    {"id": "950-02", "title": "Code demo: Create an Alarm Clock in Python", "type": "ops", "task_target": "scripts/scs001/pipelines/code-demo.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-950", "output": "demo-mn3sx4lf"},
+    {"id": "950-03", "title": "Code demo: Build a JSON Formatter in Python", "type": "ops", "task_target": "scripts/scs001/pipelines/code-demo.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-950", "output": "demo-mn3syjji"},
+    {"id": "950-04", "title": "Code demo: Create a Screen Recorder in Python", "type": "ops", "task_target": "scripts/scs001/pipelines/code-demo.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-950", "output": "demo-mn3t0102"},
+    {"id": "950-05", "title": "Code demo: Build a GitHub Stats Fetcher in Python", "type": "ops", "task_target": "scripts/scs001/pipelines/code-demo.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-950", "output": "demo-mn3t1z45"}
+  ]
+}

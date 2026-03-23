@@ -1,0 +1,66 @@
+{
+  "demo_id": "demo-mn3sx4lg",
+  "title": "Python Alarm Clock in 3 Steps!",
+  "language": "python",
+  "total_duration_s": 21,
+  "steps": [
+    {
+      "step_id": "s1",
+      "title": "Step 1: Import Libraries",
+      "code_lines": [
+        "import time",
+        "import winsound"
+      ],
+      "language": "python",
+      "explanation": "We need time for the clock and winsound to play the alarm.",
+      "duration_s": 6,
+      "highlight_lines": [
+        1
+      ]
+    },
+    {
+      "step_id": "s2",
+      "title": "Step 2: Set the Alarm",
+      "code_lines": [
+        "def set_alarm(alarm_time):",
+        "    while True:",
+        "        current_time = time.strftime(\"%H:%M:%S\")",
+        "        if current_time == alarm_time:",
+        "            print(\"Alarm ringing!\")",
+        "            winsound.Beep(1000, 1000)",
+        "            break",
+        "        time.sleep(1)"
+      ],
+      "language": "python",
+      "explanation": "This loop checks the time every second and rings the alarm when it matches.",
+      "duration_s": 8,
+      "highlight_lines": [
+        3,
+        5
+      ]
+    },
+    {
+      "step_id": "s3",
+      "title": "Step 3: Run the Alarm",
+      "code_lines": [
+        "if __name__ == \"__main__\":",
+        "    alarm_time = input(\"Enter alarm time (HH:MM:SS): \")",
+        "    set_alarm(alarm_time)"
+      ],
+      "language": "python",
+      "explanation": "Finally, we take user input and start the alarm clock.",
+      "duration_s": 7,
+      "highlight_lines": [
+        2
+      ]
+    }
+  ],
+  "hashtags": [
+    "#coding",
+    "#python",
+    "#tutorial"
+  ],
+  "intro_hook": "Want to build an alarm clock? Let's code it fast!",
+  "source": "user",
+  "topic_source": "user-prompt"
+}

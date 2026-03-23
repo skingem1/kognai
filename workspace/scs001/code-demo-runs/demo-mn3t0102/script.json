@@ -1,0 +1,101 @@
+{
+  "demo_id": "demo-mn3t0102",
+  "title": "Python Screen Recorder in 10 Seconds",
+  "language": "python",
+  "total_duration_s": 35,
+  "steps": [
+    {
+      "step_id": "s1",
+      "title": "Step 1: Setup",
+      "code_lines": [
+        "import pyautogui",
+        "import time",
+        "import cv2",
+        "import numpy as np"
+      ],
+      "language": "python",
+      "explanation": "We start by importing the necessary libraries for screen capture and image processing.",
+      "duration_s": 6,
+      "highlight_lines": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "step_id": "s2",
+      "title": "Step 2: Define Function",
+      "code_lines": [
+        "def record_screen(duration):",
+        "    start_time = time.time()",
+        "    while time.time() - start_time < duration:"
+      ],
+      "language": "python",
+      "explanation": "We define a function that records the screen for a given number of seconds.",
+      "duration_s": 7,
+      "highlight_lines": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "step_id": "s3",
+      "title": "Step 3: Capture and Display",
+      "code_lines": [
+        "        img = pyautogui.screenshot()",
+        "        frame = np.array(img)",
+        "        frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)",
+        "        cv2.imshow(\"Screen Recorder\", frame)"
+      ],
+      "language": "python",
+      "explanation": "This part captures the screen, converts it to OpenCV format, and displays it in a window.",
+      "duration_s": 8,
+      "highlight_lines": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "step_id": "s4",
+      "title": "Step 4: Clean Up and Run",
+      "code_lines": [
+        "    if cv2.waitKey(1) == 27:",
+        "        break",
+        "cv2.destroyAllWindows()",
+        "record_screen(10)"
+      ],
+      "language": "python",
+      "explanation": "We handle the exit condition and clean up after recording is done. Finally, we call the function to record for 10 seconds.",
+      "duration_s": 8,
+      "highlight_lines": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "step_id": "s5",
+      "title": "Step 5: Try It Yourself!",
+      "code_lines": [],
+      "language": "python",
+      "explanation": "Now you can run this code and see your screen being recorded in real time! Try it yourself!",
+      "duration_s": 6,
+      "highlight_lines": []
+    }
+  ],
+  "hashtags": [
+    "#coding",
+    "#python",
+    "#tutorial",
+    "#screenrecorder",
+    "#automation"
+  ],
+  "intro_hook": "Want to record your screen with Python? Let's do it fast!",
+  "source": "user",
+  "topic_source": "user-prompt"
+}
