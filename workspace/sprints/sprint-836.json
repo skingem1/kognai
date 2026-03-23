@@ -1,0 +1,28 @@
+{
+  "sprint_id": "sprint-836",
+  "title": "OPS — fix batch-produce timeout + produce 5 new videos",
+  "description": "Batch produce fails with ETIMEDOUT at 180s. Increase timeout to 600s. Then produce 5 new videos to grow inventory beyond 40.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "836-01",
+      "title": "Fix batch-produce timeout — increase from 180s to 600s",
+      "type": "fix",
+      "task_target": "scripts/scs001/batch-produce.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-836"
+    },
+    {
+      "id": "836-02",
+      "title": "Run batch-produce to create 5 new videos",
+      "type": "ops",
+      "task_target": "scripts/scs001/batch-produce.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-836"
+    }
+  ]
+}

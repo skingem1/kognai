@@ -63,7 +63,7 @@ async function main(): Promise<void> {
       const cmd = `npx ts-node --transpile-only scripts/scs001/run-multiformat-pipeline.ts --format=${format} --max=1${dryRun ? ' --dry-run' : ''} --force-refresh${topicArgs}`;
       const output = execSync(cmd, {
         cwd: ROOT,
-        timeout: 180000, // 3 min per run (avatar gen needs time)
+        timeout: 600000, // 10 min per run (multiformat pipeline can be slow)
         stdio: 'pipe',
         encoding: 'utf-8',
       });

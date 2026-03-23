@@ -1,18 +1,26 @@
 {
-  "scanned_at": "2026-03-23T01:18:13.390Z",
-  "total_runs": 41,
-  "total_videos": 40,
-  "unique_topics": 40,
-  "already_registered": 40,
+  "scanned_at": "2026-03-23T02:02:35.747Z",
+  "total_runs": 49,
+  "total_videos": 45,
+  "unique_topics": 44,
+  "already_registered": 44,
   "newly_registered": 0,
   "already_posted": 0,
-  "ready_to_post": 40,
+  "ready_to_post": 44,
   "gate_status": {
-    "posted": 3,
+    "posted": 4,
     "target": 30,
-    "gap": 27
+    "gap": 26
   },
   "videos": [
+    {
+      "video_id": "vis-963612f9",
+      "format": "vision",
+      "title": "Welp. Time to execute the buy high sell low protocol",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T02-18ha/output/vis-963612f9_final.mp4"
+    },
     {
       "video_id": "vis-fb8889a0",
       "format": "vision",
@@ -158,6 +166,22 @@
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-b3vb/output/dbt-c9820a9b_final.mp4"
     },
     {
+      "video_id": "exp-beccd355",
+      "format": "explainer",
+      "title": "LoASR-Bench: Evaluating Large Speech Language Models on Low-Resource Automatic Speech Recognition Across Language Famili",
+      "duration_s": 25,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T02-t9i6/output/exp-beccd355_final.mp4"
+    },
+    {
+      "video_id": "exp-5942b2ac",
+      "format": "explainer",
+      "title": "AgenticRS-EnsNAS: Ensemble-Decoupled Self-Evolving Architecture Search",
+      "duration_s": 25,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T01-fzhq/output/exp-5942b2ac_final.mp4"
+    },
+    {
       "video_id": "exp-e1ada644",
       "format": "explainer",
       "title": "I replaced my entire team with AI for one week",
@@ -300,6 +324,14 @@
       "duration_s": 25,
       "posted": false,
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-ii6u/output/exp-ca0c4bfe_final.mp4"
+    },
+    {
+      "video_id": "lst-426ed79c",
+      "format": "listicle",
+      "title": "Detached Skip-Links and $R$-Probe: Decoupling Feature Aggregation from Gradient Propagation for MLLM OCR",
+      "duration_s": 20,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T02-n4sn/output/lst-426ed79c_final.mp4"
     },
     {
       "video_id": "lst-5c297d20",
