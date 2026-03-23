@@ -1,18 +1,26 @@
 {
-  "scanned_at": "2026-03-23T04:40:28.419Z",
-  "total_runs": 101,
-  "total_videos": 196,
-  "unique_topics": 85,
-  "already_registered": 85,
+  "scanned_at": "2026-03-23T04:42:37.795Z",
+  "total_runs": 104,
+  "total_videos": 198,
+  "unique_topics": 86,
+  "already_registered": 86,
   "newly_registered": 0,
   "already_posted": 0,
-  "ready_to_post": 85,
+  "ready_to_post": 86,
   "gate_status": {
     "posted": 4,
     "target": 30,
     "gap": 26
   },
   "videos": [
+    {
+      "video_id": "vis-294649d6",
+      "format": "vision",
+      "title": "Bitcoin (BTC) 📉 -1.4%",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T04-2xqb/output/vis-294649d6_final.mp4"
+    },
     {
       "video_id": "vis-a885800b",
       "format": "vision",
@@ -36,14 +44,6 @@
       "duration_s": 33,
       "posted": false,
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T04-261m/output/vis-c41a6a9d_final.mp4"
-    },
-    {
-      "video_id": "vis-e9d5fdaf",
-      "format": "vision",
-      "title": "Bitcoin (BTC) 📉 -1.9%",
-      "duration_s": 33,
-      "posted": false,
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T04-t7m0/output/vis-e9d5fdaf_final.mp4"
     },
     {
       "video_id": "vis-37e9939f",
@@ -340,6 +340,14 @@
       "duration_s": 33,
       "posted": false,
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-nxhh/output/vis-c2d17e5f_final.mp4"
+    },
+    {
+      "video_id": "dbt-c4b017b0",
+      "format": "debate",
+      "title": "[R] Designing AI Chip Software and Hardware",
+      "duration_s": 27,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T04-b8v5/output/dbt-c4b017b0_final.mp4"
     },
     {
       "video_id": "dbt-0faff1ad",
