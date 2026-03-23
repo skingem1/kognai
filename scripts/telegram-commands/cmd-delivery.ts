@@ -1164,3 +1164,69 @@ export async function cmdProduceTopic(chatId: string, args?: string): Promise<vo
     }
   });
 }
+
+/**
+ * /v2 — Sprint 894: Produce a video via the v2 pipeline (Scorsese + fal.ai + Captions.ai)
+ * Usage: /v2 Your Topic Here
+ * Usage: /v2 (no topic = default test topic)
+ */
+export async function cmdV2Produce(chatId: string, args?: string): Promise<void> {
+  const topic = args?.trim();
+  const topicDisplay = topic || 'AI Agents Are Replacing Junior Developers (default)';
+
+  await sendMessage(chatId, `🎬 *V2 Pipeline — producing video:*\n_${topicDisplay}_\n\n⏱️ Takes ~5-10 min (Scorsese → ArtDirector → MovieEditor)`);
+
+  const { spawn } = require('child_process');
+  const pipelineScript = path.join(ROOT, 'scripts', 'scs001', 'run-v2-pipeline.ts');
+  const spawnArgs = ['ts-node', '--transpile-only', pipelineScript];
+  if (topic) spawnArgs.push('--topic', topic);
+
+  const child = spawn('npx', spawnArgs, {
+    cwd: ROOT,
+    env: { ...process.env, TS_NODE_TRANSPILE_ONLY: 'true' },
+    stdio: ['ignore', 'pipe', 'pipe'],
+    detached: false,
+  });
+
+  let stdout = '';
+  child.stdout.on('data', (d: Buffer) => { stdout += d.toString(); });
+  child.stderr.on('data', (d: Buffer) => { /* ignore */ });
+  child.on('close', async (code: number) => {
+    try {
+      if (code === 0) {
+        const scenarioMatch = stdout.match(/Scenario: (.+)/);
+        const verdictMatch = stdout.match(/Verdict: (\w+) \(msg:(\d+), scroll:(\d+)\)/);
+        const videoMatch = stdout.match(/Video: (.+\.mp4)/);
+        const resultMatch = stdout.match(/Result: (\w+)/);
+
+        const status = resultMatch?.[1] || 'unknown';
+        const scenario = scenarioMatch?.[1] || topicDisplay;
+        const msg = verdictMatch?.[2] || '?';
+        const scroll = verdictMatch?.[3] || '?';
+        const videoPath = videoMatch?.[1] || '';
+
+        if (status === 'PASS' && videoPath) {
+          const lines = [
+            `✅ *V2 Video Produced!*`,
+            '',
+            `📽️ _${scenario}_`,
+            `🎯 Score: msg:${msg}/100 scroll:${scroll}/100`,
+            `📁 \`${videoPath.split('/').pop()}\``,
+            '',
+            `Use /pickup to post it.`,
+          ];
+          await sendMessage(chatId, lines.join('\n'));
+        } else if (status === 'REJECT') {
+          await sendMessage(chatId, `⚠️ *V2 Scenario Rejected by ArtDirector*\n_${scenario}_\n\nTry a different topic.`);
+        } else {
+          await sendMessage(chatId, `⚠️ V2 pipeline completed with status: ${status}\n_${scenario}_`);
+        }
+      } else {
+        const errLines = stdout.split('\n').filter((l: string) => l.includes('error') || l.includes('Error')).slice(0, 3);
+        await sendMessage(chatId, `❌ V2 pipeline failed (exit ${code})\n${errLines.join('\n') || 'Check logs'}`);
+      }
+    } catch (err: any) {
+      await sendMessage(chatId, `❌ Error: ${err.message?.slice(0, 200)}`);
+    }
+  });
+}

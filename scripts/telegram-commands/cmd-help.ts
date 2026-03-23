@@ -40,6 +40,7 @@ export function cmdHelp(): string {
     `/onboard   — First-time posting walkthrough\n` +
     `/pipeline  — Content pipeline inventory & health\n` +
     `/produce   — Produce video with local TTS ($0.00)\n` +
+    `/v2        — V2 pipeline: AI video (fal.ai + Captions.ai)\n` +
     `/stockpile — Batch-produce N videos (multiformat pipeline)\n` +
     `/inventory — Video inventory: unique topics + gate status\n` +
     `/batchdeliver — Send N unposted videos to Telegram\n` +

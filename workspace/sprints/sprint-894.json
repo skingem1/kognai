@@ -1,0 +1,38 @@
+{
+  "sprint_id": "sprint-894",
+  "title": "TELEGRAM — /v2 command for v2 pipeline production from phone",
+  "description": "Add /v2 Telegram command that triggers the v2 pipeline (Scorsese + fal.ai + Captions.ai) from a custom topic. Operator can produce high-quality AI videos from their phone.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "894-01",
+      "title": "Add cmdV2Produce to cmd-delivery.ts",
+      "type": "feature",
+      "task_target": "scripts/telegram-commands/cmd-delivery.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-894"
+    },
+    {
+      "id": "894-02",
+      "title": "Wire /v2 and /v2produce routes in telegram-bot.ts",
+      "type": "feature",
+      "task_target": "scripts/telegram-bot.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-894"
+    },
+    {
+      "id": "894-03",
+      "title": "Add /v2 to help menu",
+      "type": "feature",
+      "task_target": "scripts/telegram-commands/cmd-help.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-894"
+    }
+  ]
+}
