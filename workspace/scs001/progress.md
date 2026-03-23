@@ -3429,3 +3429,11 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Issues: Runs 4-5 were yielding 0 due to seen-topics cache. Fixed with force-refresh on all runs.
 - Cost: ~$0.50 (Anthropic API)
 - Timestamp: 2026-03-23T02:40:00Z
+
+## Sprint 815 — CONTENT: 5 more videos (16 ready)
+- Status: PASS
+- Commit: acd8e61
+- Pipeline: 730 in ledger, 31 with files, 16 ready to post, gate 2/30
+- Swarm used: no
+- Cost: ~$0.50
+- Timestamp: 2026-03-23T02:50:00Z
