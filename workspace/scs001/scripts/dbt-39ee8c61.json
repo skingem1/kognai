@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-39ee8c61",
+  "topic_id": "custom-mn2ui1qg-0",
+  "format": "debate",
+  "title": "Apple just killed the App Store as we know it",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Apple didn’t kill the App Store—they modernized it with App Tracking Transparency and stricter security protocols.",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "But they’re locking developers out with App Store Connect’s opaque review process and unfair revenue splits.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "They still give 70% of revenue to developers, and their encryption standards protect user data better than any competitor.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "That’s not enough when they’re forcing all apps to use their in-app purchase system, stifling innovation.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "The App Store as we know it is dead—Apple’s control is too absolute for real competition to thrive.",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "apple vs just",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#apple",
+    "#just",
+    "#killed"
+  ],
+  "generated_at": "2026-03-23T07:09:40.811Z",
+  "llm_used": true
+}

@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-95bfa25c",
+  "topic_id": "custom-mn2ui1qg-2",
+  "format": "debate",
+  "title": "The truth about AI replacing radiologists",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "AI can replace radiologists in routine tasks, improving speed and consistency with standardized protocols. (3 sec)",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Radiologists bring context, intuition, and nuanced judgment—AI can’t diagnose cancer from a blurry image or interpret ambiguous findings. (5 sec)",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "AI systems like DeepMind and Lunit use vast datasets and ML to detect lesions with accuracy rivaling human experts in specific cases. (5 sec)",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "No AI can replace the human touch in complex cases, ethical decisions, or when a patient’s history contradicts the scan. (5 sec)",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "The truth is, AI enhances radiology—it doesn’t replace it. (4 sec)",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "the vs truth",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#the",
+    "#truth",
+    "#about"
+  ],
+  "generated_at": "2026-03-23T07:10:10.605Z",
+  "llm_used": true
+}

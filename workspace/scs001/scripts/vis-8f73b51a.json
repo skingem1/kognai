@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-8f73b51a",
+  "topic_id": "custom-mn2ukei5-2",
+  "format": "vision",
+  "title": "The truth about AI replacing radiologists",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "Will AI replace radiologists, or will it redefine their role in healthcare?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "AI now assists with image analysis, like detecting tumors in CT scans, but lacks clinical judgment and patient context.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "Over-reliance on AI could erode diagnostic skills and create ethical risks if errors go undetected in underserved regions.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Builders are integrating explainable AI and hybrid systems that let radiologists review and override AI decisions in real time.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "In the future, AI could handle routine imaging, freeing radiologists for complex cases and patient-centered care.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future isn’t replacement—it’s collaboration, with AI enhancing human expertise in medicine.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of the",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#the",
+    "#truth",
+    "#about"
+  ],
+  "video_cue": "A radiologist reviewing an AI-assisted scan, with holographic data overlay in a modern hospital.",
+  "generated_at": "2026-03-23T07:12:11.810Z",
+  "llm_used": true
+}

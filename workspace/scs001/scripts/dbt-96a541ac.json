@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-96a541ac",
+  "topic_id": "custom-mn2ui1qg-1",
+  "format": "debate",
+  "title": "How to mass-apply for jobs using AI agents",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "AI can auto-generate and submit thousands of tailored applications in seconds using protocols like OAuth and REST APIs.",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "But how does that ensure quality? AI lacks human judgment, leading to generic, unconvincing applications that get filtered out by ATS.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "We use NLP models trained on real job descriptions to personalize each application—boosting relevance and pass rates by up to 40%.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Even with that, how do you avoid being flagged as spam? Mass submissions without IP diversity or behavioral patterns trigger bot detection.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "With rate-limiting and proxy rotation, we mimic human behavior—making scale and authenticity possible, not just theoretical.",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "how vs to",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#how",
+    "#to",
+    "#mass-apply"
+  ],
+  "generated_at": "2026-03-23T07:09:55.685Z",
+  "llm_used": true
+}

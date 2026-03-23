@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-b2ec5648",
+  "topic_id": "custom-mn2ukei5-1",
+  "format": "vision",
+  "title": "How to mass-apply for jobs using AI agents",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "What if AI could help people apply for hundreds of jobs in minutes — but at what cost to human labor?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Today, AI can auto-generate resumes, tailor cover letters, and scrape job boards using NLP and scraping bots.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "But mass-applying could devalue human skills, flood markets, and lead to AI-generated resumes replacing real candidates.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Builders are integrating filters to ensure AI only applies to roles where the human can meaningfully contribute.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "In the future, AI might act as a co-pilot, helping people apply smarter, not faster, while preserving human agency.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future lies in AI that empowers, not replaces — balancing speed with integrity in the job market.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of how",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#how",
+    "#to",
+    "#mass-apply"
+  ],
+  "video_cue": "A person reviewing AI-generated job applications on a screen, with a side view of a human recruiter nodding in approval.",
+  "generated_at": "2026-03-23T07:11:54.173Z",
+  "llm_used": true
+}
