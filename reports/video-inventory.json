@@ -1,12 +1,12 @@
 {
-  "scanned_at": "2026-03-23T00:21:34.577Z",
-  "total_runs": 40,
-  "total_videos": 30,
-  "unique_topics": 19,
-  "already_registered": 19,
+  "scanned_at": "2026-03-23T00:25:04.450Z",
+  "total_runs": 15,
+  "total_videos": 13,
+  "unique_topics": 11,
+  "already_registered": 11,
   "newly_registered": 0,
   "already_posted": 0,
-  "ready_to_post": 19,
+  "ready_to_post": 11,
   "gate_status": {
     "posted": 2,
     "target": 30,
@@ -30,76 +30,44 @@
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-2yxr/output/vis-1772d7e3_final.mp4"
     },
     {
-      "video_id": "vis-f4b4f358",
-      "format": "vision",
-      "title": "Manyana: A Coherent Vision For The Future Of Version Control",
-      "duration_s": 33,
-      "posted": false,
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-40e4/output/vis-f4b4f358_final.mp4"
-    },
-    {
-      "video_id": "vis-6f8a7ed0",
-      "format": "vision",
-      "title": "Bitcoin mining difficulty drops 7.8% as miner exodus accelerates amid AI pivot",
-      "duration_s": 33,
-      "posted": false,
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-wdby/output/vis-6f8a7ed0_final.mp4"
-    },
-    {
-      "video_id": "vis-a344c35b",
-      "format": "vision",
-      "title": "OpenAI to double workforce as business push intensifies",
-      "duration_s": 33,
-      "posted": false,
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-27i0/output/vis-a344c35b_final.mp4"
-    },
-    {
-      "video_id": "vis-83edb790",
-      "format": "vision",
-      "title": "Palantir and NVIDIA Team to Deliver Sovereign AI Operating System Reference Architecture",
-      "duration_s": 33,
-      "posted": false,
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260322T23-z3bw/output/vis-83edb790_final.mp4"
-    },
-    {
-      "video_id": "vis-304ff105",
-      "format": "vision",
-      "title": "ChatGPT is great but all the love for Claude is not bot hype",
-      "duration_s": 33,
-      "posted": false,
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260322T23-ftjq/output/vis-304ff105_final.mp4"
-    },
-    {
-      "video_id": "vis-145f4820",
-      "format": "vision",
-      "title": "Adding a modular ai-driven neuronal brain (Bibites inspired) to F.R.A.N.K so he can share his personal personal feelings",
-      "duration_s": 33,
-      "posted": false,
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260322T23-cixb/output/vis-145f4820_final.mp4"
-    },
-    {
-      "video_id": "dbt-6f169958",
+      "video_id": "dbt-932c93bf",
       "format": "debate",
-      "title": "Siren (SIREN) 📈 143.8%",
+      "title": "Resolv USR (USR) 📉 -64.1%",
       "duration_s": 27,
       "posted": false,
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-3ujh/output/dbt-6f169958_final.mp4"
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-waug/output/dbt-932c93bf_final.mp4"
     },
     {
-      "video_id": "dbt-ec702de5",
+      "video_id": "dbt-4c88667f",
       "format": "debate",
-      "title": "Bedrock (BR) 📈 77.7%",
+      "title": "Siren (SIREN) 📈 142.9%",
       "duration_s": 27,
       "posted": false,
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-fgyc/output/dbt-ec702de5_final.mp4"
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-lism/output/dbt-4c88667f_final.mp4"
     },
     {
-      "video_id": "dbt-7e52df9f",
-      "format": "debate",
-      "title": "Resolv USR (USR) 📉 -67.0%",
-      "duration_s": 27,
+      "video_id": "exp-b29356a7",
+      "format": "explainer",
+      "title": "Point at UI bugs instead of describing them to Claude Code",
+      "duration_s": 25,
       "posted": false,
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260322T23-30sf/output/dbt-7e52df9f_final.mp4"
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-arx1/output/exp-b29356a7_final.mp4"
+    },
+    {
+      "video_id": "exp-4bac36c5",
+      "format": "explainer",
+      "title": "Bitcoin (BTC) 📉 -1.5%",
+      "duration_s": 25,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-a5k7/output/exp-4bac36c5_final.mp4"
+    },
+    {
+      "video_id": "exp-b9c9d5b4",
+      "format": "explainer",
+      "title": "Solana (SOL) 📉 -0.8%",
+      "duration_s": 25,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-cfjl/output/exp-b9c9d5b4_final.mp4"
     },
     {
       "video_id": "exp-4b35be55",
@@ -118,30 +86,6 @@
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-rrc5/output/exp-4cfce417_final.mp4"
     },
     {
-      "video_id": "exp-f9ac111f",
-      "format": "explainer",
-      "title": "leo-lilinxiao/codex-autoresearch — Codex Autoresearch Skill — A self-directed iterative system for Codex that conti",
-      "duration_s": 25,
-      "posted": false,
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-jtn3/output/exp-f9ac111f_final.mp4"
-    },
-    {
-      "video_id": "exp-4c2b03f1",
-      "format": "explainer",
-      "title": "Bitcoin (BTC) 📉 -2.3%",
-      "duration_s": 25,
-      "posted": false,
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260322T23-5q62/output/exp-4c2b03f1_final.mp4"
-    },
-    {
-      "video_id": "exp-fcc19374",
-      "format": "explainer",
-      "title": "Solana (SOL) 📉 -3.2%",
-      "duration_s": 25,
-      "posted": false,
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260322T23-ctjq/output/exp-fcc19374_final.mp4"
-    },
-    {
       "video_id": "lst-c4530456",
       "format": "listicle",
       "title": "I Built 3 Tools to Stop My AI from Being a Yes-Man (and forgetting everything)",
@@ -156,14 +100,6 @@
       "duration_s": 20,
       "posted": false,
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-gg3e/output/lst-201e1473_final.mp4"
-    },
-    {
-      "video_id": "lst-75fa0d32",
-      "format": "listicle",
-      "title": "Cursor admits its new coding model was built on top of Moonshot AI’s Kimi",
-      "duration_s": 20,
-      "posted": false,
-      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-6uko/output/lst-75fa0d32_final.mp4"
     }
   ]
 }
