@@ -53,6 +53,24 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 | 2026-02 | 248-270 | VIDEO-QUALITY, Telegram commands explosion |
 | 2026-03 | 435-496 | Posting workflow, safety split, Stripe, YouTube |
 
+## Sprint 826 — FIX
+- Status: PASS
+- Commit: 6d325e8
+- Files modified: scripts/scs001/cleanup-old-runs.ts
+- Fix: Cleanup now reads publish-ledger.jsonl to identify protected run dirs. Runs with unposted videos and existing files are never deleted.
+- Root cause: cleanup-old-runs.ts only kept latest 30 dirs by mtime, didn't check if older dirs had ready-to-post videos
+- Also: produced 10 more custom topic videos across Sprint 825 (vision, listicle, mixed) to rebuild inventory
+- Ledger: 771, Ready: 30, Gate: 2/30
+- Timestamp: 2026-03-23T03:40:00Z
+
+## Sprint 825 — CONTENT
+- Status: PASS
+- Commit: cbf7715
+- Content: 9 custom topic videos (3 vision, 2 listicle, 4 mixed)
+- Issue: Cleanup had removed runs with ready videos — rebuilt inventory
+- Ledger: 770, Ready: 30
+- Timestamp: 2026-03-23T03:30:00Z
+
 ## Sprint 824 — OPS
 - Status: PASS
 - Commit: 9f7dd37
