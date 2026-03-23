@@ -1,0 +1,21 @@
+{
+  "title": "Top 3 Python Libraries in 2026",
+  "full_monologue": "**In 2026, every developer must master these three Python libraries.** First, NumPy — the backbone of scientific computing. Next, FastAPI — for building high-performance APIs. Finally, Transformers — essential for cutting-edge AI and NLP. These tools will define your success. Want to know how to get started? Comment below and let’s build the future together.",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 6,
+      "duration_s": 6,
+      "visual_prompt": "A person typing on a keyboard with glowing keys, surrounded by abstract tech visuals, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 18,
+      "duration_s": 6,
+      "visual_prompt": "A futuristic cityscape with glowing lines and data flowing through the air, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

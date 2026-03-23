@@ -1,0 +1,21 @@
+{
+  "title": "Microsoft's Big AI Bet Explained",
+  "full_monologue": "**Microsoft Just Spent 80 Billion on AI and Here's Why**. This move isn’t just about flashy tech—it’s about dominating the future. By investing heavily in AI, Microsoft aims to lead in cloud computing, enterprise tools, and cutting-edge research. This could reshape how businesses operate globally. But what does this mean for consumers? Will AI innovation finally become accessible to all? Let me know your thoughts below.",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 6,
+      "duration_s": 6,
+      "visual_prompt": "abstract motion of glowing lines and digital particles forming a neural network, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 18,
+      "duration_s": 6,
+      "visual_prompt": "people working in a modern office with AI-related hardware in the background, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

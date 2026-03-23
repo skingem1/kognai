@@ -1,0 +1,65 @@
+{
+  "sprint_id": "sprint-933",
+  "title": "MULTI-PIPELINE — 3 code demos + 2 TTS vlogs (TTS mode)",
+  "description": "3 code demos + 2 TTS-mode vlogs. Continuing content stockpile toward 350.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "933-01",
+      "title": "Code demo: Build a Twitter Bot in Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-933",
+      "output": "demo-mn3odkly"
+    },
+    {
+      "id": "933-02",
+      "title": "Code demo: Create a Database Manager in Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-933",
+      "output": "demo-mn3of6gn"
+    },
+    {
+      "id": "933-03",
+      "title": "Code demo: Build a Unit Converter in Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-933",
+      "output": "demo-mn3ogkx5"
+    },
+    {
+      "id": "933-04",
+      "title": "V2 video (TTS): Microsoft Just Spent 80 Billion on AI and Here's Why",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-933",
+      "output": "vlog-mn3oi2hk",
+      "mode": "tts"
+    },
+    {
+      "id": "933-05",
+      "title": "V2 video (TTS): The 3 Python Libraries Every Developer Needs in 2026",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-933",
+      "output": "vlog-mn3ojb32",
+      "mode": "tts"
+    }
+  ]
+}
