@@ -3634,3 +3634,15 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no
 - Cost: ~$0.10
 - Timestamp: 2026-03-23T02:10:00Z
+
+## Sprint 836 — OPS: fix batch-produce timeout + produce 5 new videos
+- Status: PASS
+- Commit: 2d1d73a
+- Files modified: scripts/scs001/batch-produce.ts
+- Files created: workspace/sprints/sprint-836.json
+- Fix: batch-produce timeout increased from 180s to 600s (was causing ETIMEDOUT)
+- Content: 5/5 runs successful, 5 new videos produced (44 total ready to post)
+- Gate: 4/30 posted, 26 remaining, 44 videos in inventory
+- Swarm used: no (single-file fix + ops run)
+- Cost: ~$0.10
+- Timestamp: 2026-03-23T03:30:00Z
