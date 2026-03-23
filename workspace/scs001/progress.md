@@ -4987,3 +4987,11 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Pipeline: 31 v2 + 95 TTS vlogs + 127 code demos + 5 entertainment = 426+ total content
 - Cost: $0.00
 - Timestamp: 2026-03-24T14:00:00Z
+
+## Sprint 951 — CODE-DEMO-ONLY — 5 code demos
+- Status: PASS (5/5)
+- Commit: 3b4e1eb5
+- Code demos: "Matrix Rain" (demo-mn3t4oo7), "Duplicate Finder" (demo-mn3t6m4b), "Voice Recorder" (demo-mn3t8ii6), "Math Quiz" (demo-mn3ta71k), "Expense Tracker" (demo-mn3tbxtn)
+- Pipeline: 31 v2 + 95 TTS vlogs + 132 code demos + 5 entertainment = 431+ total content
+- Cost: $0.00
+- Timestamp: 2026-03-24T14:30:00Z
