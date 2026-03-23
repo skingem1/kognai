@@ -1,0 +1,63 @@
+{
+  "sprint_id": "sprint-916",
+  "title": "V2-CONTENT \u2014 5 TTS-mode vlogs on viral AI topics",
+  "description": "Produce 5 TTS vlog videos on high-engagement AI/tech topics.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "916-01",
+      "title": "V2 video: NVIDIA Just Made Every GPU Obsolete Overnight",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-916",
+      "output": "vlog-mn3hfurh"
+    },
+    {
+      "id": "916-02",
+      "title": "V2 video: The AI Hack That Made a College Student a Millionaire",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-916",
+      "output": "vlog-mn3hik15"
+    },
+    {
+      "id": "916-03",
+      "title": "V2 video: Why Your Boss Will Be an AI by 2028",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-916",
+      "output": "vlog-mn3hk8t9"
+    },
+    {
+      "id": "916-04",
+      "title": "V2 video: The Dark Side of AI Nobody Wants to Talk About",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-916",
+      "output": "vlog-mn3hm3jo"
+    },
+    {
+      "id": "916-05",
+      "title": "V2 video: How to Build Your Own AI Agent in 10 Minutes",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-916",
+      "output": "vlog-mn3hoplk"
+    }
+  ]
+}

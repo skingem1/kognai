@@ -1,0 +1,21 @@
+{
+  "title": "The Dark Side of AI Nobody Wants to Talk About",
+  "full_monologue": "**Did you know AI can manipulate your emotions?** We’re obsessed with the convenience, but what about the cost? AI isn’t just smart—it’s being weaponized. Deepfakes, biased algorithms, and loss of privacy are real. It’s not just tech—it’s a moral crisis. And yet, we keep scrolling. What’s next? Are we ready for the consequences? Comment your thoughts below.",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 6,
+      "duration_s": 6,
+      "visual_prompt": "a crowd of people staring at screens, but the screens are blurred and distorted, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 18,
+      "duration_s": 6,
+      "visual_prompt": "a shadowy figure manipulating a puppet with invisible strings, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

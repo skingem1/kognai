@@ -1,0 +1,21 @@
+{
+  "title": "Why Your Boss Will Be an AI by 2028",
+  "full_monologue": "**By 2028, your boss might just be an AI.** Think about it—AI is already handling tasks like scheduling, data analysis, and even customer service. As technology evolves, AI will become more intuitive, more human-like, and more capable of leading teams. Companies will prioritize efficiency, and AI won’t just assist—AI will decide. It’s not sci-fi; it’s the future. So, what will your job look like when AI is calling the shots? Comment below.",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 6,
+      "duration_s": 6,
+      "visual_prompt": "A humanoid robot interacting with a group of people in a futuristic office, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 18,
+      "duration_s": 6,
+      "visual_prompt": "A person typing on a keyboard with glowing lines of light forming around their hands, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}
