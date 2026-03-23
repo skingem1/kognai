@@ -1,0 +1,70 @@
+{
+  "sprint_id": "sprint-912",
+  "title": "V2-CONTENT — 5 TTS-mode videos on viral AI topics",
+  "description": "Produce 5 TTS vlog videos on high-engagement AI/tech topics.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "912-01",
+      "title": "V2 video: Google Just Killed ChatGPT With This Update",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-912",
+      "output": "vlog-mn3eoc3l"
+    },
+    {
+      "id": "912-02",
+      "title": "V2 video: The AI Tool That Writes Better Code Than Senior Devs",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-912",
+      "output": "vlog-mn3euywy"
+    },
+    {
+      "id": "912-03",
+      "title": "V2 video: Why Every Company Is Firing Managers and Hiring AI",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-912",
+      "output": "vlog-mn3f1gq5"
+    },
+    {
+      "id": "912-04",
+      "title": "V2 video: Elon Musk's Secret AI Project Nobody Is Talking About",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-912",
+      "output": "vlog-mn3f81kj"
+    },
+    {
+      "id": "912-05",
+      "title": "V2 video: The $0 AI Stack That Replaced My $500/Month Tools",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-912",
+      "output": "vlog-mn3fekkl"
+    }
+  ],
+  "cto_gate": {
+    "approved": false,
+    "reason": "The sprint proposes producing TTS-mode videos on AI topics, which is not aligned with the current execution plan or work plan focused on building a TikTok content agent and securing infrastructure.",
+    "plan_reference": "NOT_IN_PLAN",
+    "confidence": 95,
+    "timestamp": "2026-03-23T16:33:31.231Z"
+  }
+}
