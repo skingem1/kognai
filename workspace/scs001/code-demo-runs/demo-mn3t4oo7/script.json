@@ -1,0 +1,99 @@
+{
+  "demo_id": "demo-mn3t4oo8",
+  "title": "Python ASCII Art Magic",
+  "language": "python",
+  "total_duration_s": 30,
+  "steps": [
+    {
+      "step_id": "s1",
+      "title": "Step 1: Setup",
+      "code_lines": [
+        "import random",
+        "import time",
+        "import os"
+      ],
+      "language": "python",
+      "explanation": "We start by importing the libraries that will help us generate random numbers and control the screen.",
+      "duration_s": 5,
+      "highlight_lines": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "step_id": "s2",
+      "title": "Step 2: Infinite Loop",
+      "code_lines": [
+        "try:\n    while True:",
+        "        os.system('cls' if os.name == 'nt' else 'clear')"
+      ],
+      "language": "python",
+      "explanation": "We use an infinite loop to keep the animation running and clear the screen for each frame.",
+      "duration_s": 6,
+      "highlight_lines": [
+        0,
+        1
+      ]
+    },
+    {
+      "step_id": "s3",
+      "title": "Step 3: Random Art",
+      "code_lines": [
+        "            for _ in range(20):",
+        "                x = random.randint(0, 79)",
+        "                y = random.randint(0, 24)",
+        "                print(f\"\\033[{y};{x}H{''.join(random.choices('01', k=random.randint(1, 5)))}\")"
+      ],
+      "language": "python",
+      "explanation": "This loop randomly places strings of 0s and 1s on the screen, creating a dynamic ASCII art effect.",
+      "duration_s": 8,
+      "highlight_lines": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "step_id": "s4",
+      "title": "Step 4: Control Flow",
+      "code_lines": [
+        "            time.sleep(0.1)",
+        "except KeyboardInterrupt:",
+        "    pass"
+      ],
+      "language": "python",
+      "explanation": "We add a short delay between frames and handle the exit command gracefully with a try-except block.",
+      "duration_s": 6,
+      "highlight_lines": [
+        0,
+        1,
+        2
+      ]
+    },
+    {
+      "step_id": "s5",
+      "title": "Step 5: Try It Yourself!",
+      "code_lines": [
+        "# Run this code and watch the magic happen!"
+      ],
+      "language": "python",
+      "explanation": "Try running this code yourself and see the random ASCII art come to life on your screen!",
+      "duration_s": 5,
+      "highlight_lines": [
+        0
+      ]
+    }
+  ],
+  "hashtags": [
+    "#coding",
+    "#python",
+    "#tutorial",
+    "#asciiart",
+    "#codeart"
+  ],
+  "intro_hook": "Watch this code bring random numbers to life!",
+  "source": "user",
+  "topic_source": "user-prompt"
+}

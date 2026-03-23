@@ -1,0 +1,13 @@
+{
+  "sprint_id": "sprint-951",
+  "title": "CODE-DEMO-ONLY — 5 code demos",
+  "description": "5 code demo videos. Voice services exhausted.",
+  "source": "ops",
+  "tasks": [
+    {"id": "951-01", "title": "Code demo: Build a Matrix Rain Effect in Python", "type": "ops", "task_target": "scripts/scs001/pipelines/code-demo.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-951", "output": "demo-mn3t4oo7"},
+    {"id": "951-02", "title": "Code demo: Create a Duplicate File Finder in Python", "type": "ops", "task_target": "scripts/scs001/pipelines/code-demo.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-951", "output": "demo-mn3t6m4b"},
+    {"id": "951-03", "title": "Code demo: Build a Voice Recorder in Python", "type": "ops", "task_target": "scripts/scs001/pipelines/code-demo.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-951", "output": "demo-mn3t8ii6"},
+    {"id": "951-04", "title": "Code demo: Create a Math Quiz App in Python", "type": "ops", "task_target": "scripts/scs001/pipelines/code-demo.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-951", "output": "demo-mn3ta71k"},
+    {"id": "951-05", "title": "Code demo: Build an Expense Tracker in Python", "type": "ops", "task_target": "scripts/scs001/pipelines/code-demo.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-951", "output": "demo-mn3tbxtn"}
+  ]
+}
