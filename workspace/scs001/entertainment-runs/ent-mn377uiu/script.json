@@ -1,0 +1,64 @@
+{
+  "script_id": "ent-mn377uiv",
+  "topic": "The hidden world of deep sea creatures",
+  "title": "Hidden Depths of the Deep",
+  "scenes": [
+    {
+      "scene_id": "s1",
+      "visual_prompt": "dramatic underwater shot of glowing jellyfish drifting through dark, mysterious ocean depths with bioluminescent trails, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 6,
+      "voiceover_text": "Beneath the waves lies a world most never see.",
+      "caption_text": "BEYOND THE SURFACE",
+      "transition": "fade"
+    },
+    {
+      "scene_id": "s2",
+      "visual_prompt": "close-up of a giant squid's eye glowing in the abyss, surrounded by faintly glowing plankton and shadowy shapes, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 5,
+      "voiceover_text": "Creatures that have never felt the sun’s warmth.",
+      "caption_text": "CREATURES OF THE DARK",
+      "transition": "fade"
+    },
+    {
+      "scene_id": "s3",
+      "visual_prompt": "slow-motion shot of a group of anglerfish swimming in eerie silence, their glowing lures attracting unseen prey, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 5,
+      "voiceover_text": "Survival here depends on cunning and light.",
+      "caption_text": "SURVIVAL IN THE DARK",
+      "transition": "fade"
+    },
+    {
+      "scene_id": "s4",
+      "visual_prompt": "wide-angle shot of a deep-sea trench with strange, alien-like creatures moving in the distance, illuminated by distant lights, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 6,
+      "voiceover_text": "This is the hidden world of the deep.",
+      "caption_text": "THE HIDDEN WORLD",
+      "transition": "fade"
+    },
+    {
+      "scene_id": "s5",
+      "visual_prompt": "slow zoom into a deep-sea creature with translucent skin and glowing veins, surrounded by dark, swirling water, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 5,
+      "voiceover_text": "A world waiting to be discovered.",
+      "caption_text": "WAITING TO BE FOUND",
+      "transition": "fade"
+    },
+    {
+      "scene_id": "s6",
+      "visual_prompt": "a glowing submarine descending into the deep ocean, lights illuminating strange and beautiful life forms, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 4,
+      "voiceover_text": "Explore the unknown with us.",
+      "caption_text": "EXPLORE THE UNKNOWN",
+      "transition": "fade"
+    }
+  ],
+  "total_duration_s": 31,
+  "with_voiceover": true,
+  "with_music": true,
+  "hashtags": [
+    "#deepsea",
+    "#ai",
+    "#nature",
+    "#discover"
+  ]
+}

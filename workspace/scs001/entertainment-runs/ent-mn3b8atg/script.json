@@ -1,0 +1,65 @@
+{
+  "script_id": "ent-mn3b8ath",
+  "topic": "Why quantum computing will break all encryption by 2030",
+  "title": "Quantum Computing Breaks Encryption by 2030",
+  "scenes": [
+    {
+      "scene_id": "s1",
+      "visual_prompt": "cinematic aerial shot of a futuristic city at sunset, golden light reflecting off glass buildings, flying vehicles in the distance, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 5,
+      "voiceover_text": "The future is closer than you think",
+      "caption_text": "THE FUTURE IS CLOSER THAN YOU THINK",
+      "transition": "fade"
+    },
+    {
+      "scene_id": "s2",
+      "visual_prompt": "abstract glowing particles swirling in a complex pattern, resembling quantum entanglement, with a faint blue hue, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 6,
+      "voiceover_text": "Quantum computing is changing the rules of the game",
+      "caption_text": "QUANTUM COMPUTING IS CHANGING THE RULES",
+      "transition": "fade"
+    },
+    {
+      "scene_id": "s3",
+      "visual_prompt": "a close-up of hands manipulating a glowing sphere of light, representing data being processed at unimaginable speeds, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 6,
+      "voiceover_text": "It can crack encryption in seconds, not years",
+      "caption_text": "IT CAN CRACK ENCRYPTION IN SECONDS",
+      "transition": "fade"
+    },
+    {
+      "scene_id": "s4",
+      "visual_prompt": "a dark, stormy sky with lightning bolts illuminating a distant tower, symbolizing the threat to global security, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 7,
+      "voiceover_text": "By 2030, current encryption methods could be obsolete",
+      "caption_text": "ENCRYPTION COULD BE OBSOLETE BY 2030",
+      "transition": "fade"
+    },
+    {
+      "scene_id": "s5",
+      "visual_prompt": "a high-speed montage of people working in a tech lab, abstract data streams, and a glowing quantum computer core, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 6,
+      "voiceover_text": "The race to stay ahead has already begun",
+      "caption_text": "THE RACE TO STAY AHEAD HAS BEGUN",
+      "transition": "cut"
+    },
+    {
+      "scene_id": "s6",
+      "visual_prompt": "a glowing eye opening in the sky, surrounded by stars, symbolizing the dawn of a new technological era, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 5,
+      "voiceover_text": "Are you ready for the quantum revolution?",
+      "caption_text": "ARE YOU READY FOR THE QUANTUM REVOLUTION?",
+      "transition": "fade"
+    }
+  ],
+  "total_duration_s": 35,
+  "with_voiceover": true,
+  "with_music": true,
+  "hashtags": [
+    "#quantumcomputing",
+    "#encryption",
+    "#techrevolution",
+    "#ai",
+    "#futuretech"
+  ]
+}

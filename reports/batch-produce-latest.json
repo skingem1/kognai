@@ -1,14 +1,21 @@
 {
-  "batch_at": "2026-03-23T15:10:00.000Z",
-  "pipeline_filter": "educational-tts",
-  "runs_planned": 5,
-  "runs_completed": 5,
+  "batch_at": "2026-03-23T15:25:50.399Z",
+  "pipeline_filter": "entertainment",
+  "runs_planned": 2,
+  "runs_completed": 2,
   "results": [
-    {"runId": "vlog-mn3aprhn", "title": "AI Limbic System: Emotion & Memory as MCP Servers", "status": "pass", "elapsed_s": 295},
-    {"runId": "vlog-mn3aw8uo", "title": "Local AI vs Cloud: Why Your Hardware Matters", "status": "pass", "elapsed_s": 278},
-    {"runId": "vlog-mn3b27o6", "title": "AI Revolutionizes Accessibility Testing", "status": "pass", "elapsed_s": 267},
-    {"runId": "vlog-mn3ba6uy", "title": "Google's Hidden AI Secret Revealed", "status": "pass", "elapsed_s": 303},
-    {"runId": "vlog-mn3bhn1d", "title": "AI Code Review in 2026: Why It's a Must", "status": "pass", "elapsed_s": 262}
+    {
+      "pipeline": "entertainment",
+      "runId": "ent-mn3bvwa4",
+      "title": "The AI War Nobody Is Talking About",
+      "cost": 2.1
+    },
+    {
+      "pipeline": "entertainment",
+      "runId": "ent-mn3c22ky",
+      "title": "The AI War Nobody Is Talking About",
+      "cost": 2.1
+    }
   ],
   "errors": []
 }

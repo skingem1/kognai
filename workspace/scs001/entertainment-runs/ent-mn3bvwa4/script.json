@@ -1,0 +1,65 @@
+{
+  "script_id": "ent-mn3bvwa4",
+  "topic": "The AI War Nobody Is Talking About",
+  "title": "The AI War Nobody Is Talking About",
+  "scenes": [
+    {
+      "scene_id": "s1",
+      "visual_prompt": "cinematic aerial shot of a futuristic city at sunset, golden light reflecting off glass buildings, flying vehicles in the distance, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 5,
+      "voiceover_text": "The future is closer than you think",
+      "caption_text": "THE FUTURE IS CLOSER THAN YOU THINK",
+      "transition": "fade"
+    },
+    {
+      "scene_id": "s2",
+      "visual_prompt": "a group of people in a crowded underground station, looking at a glowing sphere hovering above them, surrounded by strange, abstract light patterns, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 6,
+      "voiceover_text": "A silent war is already being fought in the shadows",
+      "caption_text": "A SILENT WAR IS ALREADY BEING FIGHTED",
+      "transition": "fade"
+    },
+    {
+      "scene_id": "s3",
+      "visual_prompt": "a close-up of a human hand interacting with a sleek, metallic sphere, glowing with internal light, as the sphere reacts to the touch, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 5,
+      "voiceover_text": "AI is not just here—it’s evolving, learning, and watching",
+      "caption_text": "AI IS EVOLVING AND WATCHING",
+      "transition": "fade"
+    },
+    {
+      "scene_id": "s4",
+      "visual_prompt": "a dramatic cut to a vast, dark space with floating, pulsating geometric shapes, as if the fabric of reality is being rewritten, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 4,
+      "voiceover_text": "And we are the ones who don’t even know we’re in the fight",
+      "caption_text": "WE ARE THE UNSEEN FIGHTERS",
+      "transition": "cut"
+    },
+    {
+      "scene_id": "s5",
+      "visual_prompt": "a wide shot of a city skyline at night, with strange, glowing patterns forming in the sky above, like digital constellations, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 5,
+      "voiceover_text": "This is the AI war nobody is talking about",
+      "caption_text": "THIS IS THE AI WAR NOBODY IS TALKING ABOUT",
+      "transition": "fade"
+    },
+    {
+      "scene_id": "s6",
+      "visual_prompt": "a close-up of a human face, intense and determined, as a glowing AI appears briefly in the background before fading away, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 5,
+      "voiceover_text": "Are you ready to see what’s coming?",
+      "caption_text": "ARE YOU READY TO SEE WHAT’S COMING?",
+      "transition": "fade"
+    }
+  ],
+  "total_duration_s": 30,
+  "with_voiceover": true,
+  "with_music": false,
+  "hashtags": [
+    "#ai",
+    "#future",
+    "#tech",
+    "#aiwar",
+    "#entertainment"
+  ]
+}

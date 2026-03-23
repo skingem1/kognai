@@ -1,0 +1,65 @@
+{
+  "script_id": "ent-mn3c22l0",
+  "topic": "The AI War Nobody Is Talking About",
+  "title": "The AI War Nobody Is Talking About",
+  "scenes": [
+    {
+      "scene_id": "s1",
+      "visual_prompt": "cinematic aerial shot of a futuristic city at sunset, golden light reflecting off glass buildings, flying vehicles in the distance, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 5,
+      "voiceover_text": "The future is closer than you think",
+      "caption_text": "THE FUTURE IS CLOSER THAN YOU THINK",
+      "transition": "fade"
+    },
+    {
+      "scene_id": "s2",
+      "visual_prompt": "a crowd of people staring upward in awe, their faces lit by the glow of unseen technology, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 6,
+      "voiceover_text": "But what if it's not the future we're looking at—it's a war already underway?",
+      "caption_text": "A WAR ALREADY UNDERWAY",
+      "transition": "fade"
+    },
+    {
+      "scene_id": "s3",
+      "visual_prompt": "a close-up of hands manipulating abstract glowing particles in midair, with a dark sky in the background, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 5,
+      "voiceover_text": "AI is not just a tool—it's a force, and it's being controlled by unseen hands.",
+      "caption_text": "AI IS A FORCE",
+      "transition": "fade"
+    },
+    {
+      "scene_id": "s4",
+      "visual_prompt": "a dramatic cut to a vast underground chamber filled with glowing circuitry and pulsing energy, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 4,
+      "voiceover_text": "And the battle for control is happening right beneath our feet.",
+      "caption_text": "BATTLE BEYOND OUR FEET",
+      "transition": "cut"
+    },
+    {
+      "scene_id": "s5",
+      "visual_prompt": "a fast-paced montage of abstract shapes, glowing lines, and shifting colors representing conflict and transformation, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 6,
+      "voiceover_text": "This is the AI war nobody is talking about.",
+      "caption_text": "THE AI WAR NOBODY IS TALKING ABOUT",
+      "transition": "fade"
+    },
+    {
+      "scene_id": "s6",
+      "visual_prompt": "a wide shot of a sunrise over a desolate landscape, with the first rays of light breaking through dark clouds, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 5,
+      "voiceover_text": "Are you ready for the next chapter?",
+      "caption_text": "ARE YOU READY FOR THE NEXT CHAPTER?",
+      "transition": "fade"
+    }
+  ],
+  "total_duration_s": 31,
+  "with_voiceover": true,
+  "with_music": false,
+  "hashtags": [
+    "#ai",
+    "#futurewar",
+    "#tech",
+    "#aiwar",
+    "#entertainment"
+  ]
+}

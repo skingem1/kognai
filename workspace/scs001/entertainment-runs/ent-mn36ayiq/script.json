@@ -1,0 +1,50 @@
+{
+  "script_id": "ent-mn36ayir",
+  "topic": "AI robots replacing factory workers",
+  "title": "AI Robots Take Over the Factory",
+  "scenes": [
+    {
+      "scene_id": "s1",
+      "visual_prompt": "cinematic aerial shot of a futuristic city at sunset, golden light reflecting off glass buildings, flying vehicles in the distance, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 5,
+      "caption_text": "THE FUTURE IS CLOSER THAN YOU THINK",
+      "transition": "fade"
+    },
+    {
+      "scene_id": "s2",
+      "visual_prompt": "close-up of mechanical arms in a factory, moving with precision, assembling parts without human intervention, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 6,
+      "caption_text": "PRECISION MEETS POWER",
+      "transition": "fade"
+    },
+    {
+      "scene_id": "s3",
+      "visual_prompt": "wide shot of a factory floor with no humans in sight, only rows of AI robots working in unison, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 7,
+      "caption_text": "NO HUMANS, JUST MACHINES",
+      "transition": "fade"
+    },
+    {
+      "scene_id": "s4",
+      "visual_prompt": "dramatic cut to a human worker standing alone in a darkened factory, looking at the robots with a mix of awe and uncertainty, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 6,
+      "caption_text": "WHAT COMES NEXT?",
+      "transition": "cut"
+    },
+    {
+      "scene_id": "s5",
+      "visual_prompt": "abstract motion of data streams and glowing circuits, merging into a futuristic with no text",
+      "duration_s": 5,
+      "caption_text": "AI IS HERE TO STAY",
+      "transition": "fade"
+    }
+  ],
+  "total_duration_s": 29,
+  "with_voiceover": false,
+  "with_music": true,
+  "hashtags": [
+    "#ai",
+    "#future",
+    "#tech"
+  ]
+}

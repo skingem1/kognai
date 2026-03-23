@@ -1,0 +1,65 @@
+{
+  "script_id": "ent-mn37wo3z",
+  "topic": "Why robots will take over manufacturing by 2030",
+  "title": "Robots Taking Over by 2030",
+  "scenes": [
+    {
+      "scene_id": "s1",
+      "visual_prompt": "cinematic aerial shot of a futuristic city at sunset, golden light reflecting off glass buildings, flying vehicles in the distance, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 5,
+      "voiceover_text": "The future is closer than you think",
+      "caption_text": "THE FUTURE IS CLOSER THAN YOU THINK",
+      "transition": "fade"
+    },
+    {
+      "scene_id": "s2",
+      "visual_prompt": "close-up of robotic arms in a factory, smoothly assembling parts with precision, glowing blue lights on their joints, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 6,
+      "voiceover_text": "Robots are already revolutionizing manufacturing",
+      "caption_text": "ROBOTS ARE REVOLUTIONIZING MANUFACTURING",
+      "transition": "fade"
+    },
+    {
+      "scene_id": "s3",
+      "visual_prompt": "wide shot of a factory floor with no humans, only rows of autonomous robots moving in synchronized motion, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 6,
+      "voiceover_text": "With AI and automation, efficiency is unmatched",
+      "caption_text": "EFFICIENCY IS UNMATCHED",
+      "transition": "fade"
+    },
+    {
+      "scene_id": "s4",
+      "visual_prompt": "dramatic slow-motion of a robotic arm replacing a human worker in a production line, no humans visible, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 5,
+      "voiceover_text": "By 2030, robots could dominate the workforce",
+      "caption_text": "ROBOTS COULD DOMINATE THE WORKFORCE",
+      "transition": "cut"
+    },
+    {
+      "scene_id": "s5",
+      "visual_prompt": "abstract motion of glowing circuits and data streams flowing through a mechanical brain, merging with a human silhouette that fades away, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 6,
+      "voiceover_text": "The shift is coming faster than we expect",
+      "caption_text": "THE SHIFT IS COMING SOON",
+      "transition": "fade"
+    },
+    {
+      "scene_id": "s6",
+      "visual_prompt": "wide shot of a futuristic factory with a single human standing at the edge, looking at a line of robots moving in perfect unison, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 4,
+      "voiceover_text": "Are you ready for the robot revolution?",
+      "caption_text": "ARE YOU READY FOR THE REVOLUTION?",
+      "transition": "fade"
+    }
+  ],
+  "total_duration_s": 32,
+  "with_voiceover": true,
+  "with_music": true,
+  "hashtags": [
+    "#ai",
+    "#future",
+    "#robotics",
+    "#manufacturing",
+    "#2030"
+  ]
+}

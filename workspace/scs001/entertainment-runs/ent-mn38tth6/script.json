@@ -1,0 +1,63 @@
+{
+  "script_id": "ent-mn38tth6",
+  "topic": "How AI agents are changing the future of work",
+  "title": "AI Agents: The Work Revolution",
+  "scenes": [
+    {
+      "scene_id": "s1",
+      "visual_prompt": "cinematic aerial shot of a futuristic city at sunset, golden light reflecting off glass buildings, flying vehicles in the distance, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 5,
+      "voiceover_text": "The future is closer than you think",
+      "caption_text": "THE FUTURE IS CLOSER THAN YOU THINK",
+      "transition": "fade"
+    },
+    {
+      "scene_id": "s2",
+      "visual_prompt": "a crowd of diverse people working together in a high-tech office, with robotic arms assisting them, no screens or text visible, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 6,
+      "voiceover_text": "AI agents are already reshaping how we work",
+      "caption_text": "AI AGENTS ARE REDEFINING WORK",
+      "transition": "fade"
+    },
+    {
+      "scene_id": "s3",
+      "visual_prompt": "a close-up of hands interacting with abstract glowing motion patterns, symbolizing AI automation and human collaboration, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 5,
+      "voiceover_text": "They're not replacing us—they're empowering us",
+      "caption_text": "NOT REPLACING, EMPOWERING",
+      "transition": "fade"
+    },
+    {
+      "scene_id": "s4",
+      "visual_prompt": "a vast underground data center with glowing blue lights and moving mechanical parts, no text or screens visible",
+      "duration_s": 6,
+      "voiceover_text": "From AI-driven logistics to creative collaboration",
+      "caption_text": "FROM LOGISTICS TO CREATIVE COLLAB",
+      "transition": "fade"
+    },
+    {
+      "scene_id": "s5",
+      "visual_prompt": "a group of people standing on a futuristic bridge overlooking a city, faces lit by the glow of the horizon, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 5,
+      "voiceover_text": "The future of work is here—and it's human",
+      "caption_text": "THE FUTURE IS HUMAN",
+      "transition": "fade"
+    },
+    {
+      "scene_id": "s6",
+      "visual_prompt": "a dramatic cut to a glowing orb of light hovering above a city, symbolizing AI's growing influence, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 4,
+      "voiceover_text": "Stay tuned for the next revolution",
+      "caption_text": "STAY TUNED FOR THE NEXT REVOLUTION",
+      "transition": "cut"
+    }
+  ],
+  "total_duration_s": 31,
+  "with_voiceover": true,
+  "with_music": true,
+  "hashtags": [
+    "#ai",
+    "#futureofwork",
+    "#techrevolution"
+  ]
+}

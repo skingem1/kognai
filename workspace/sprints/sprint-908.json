@@ -1,0 +1,58 @@
+{
+  "sprint_id": "sprint-908",
+  "title": "MULTI-PIPELINE — 3 code demos + 2 entertainment videos",
+  "description": "Diversify content inventory using code-demo (P2) and entertainment (P3) pipelines.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "908-01",
+      "title": "Code demo: Build a REST API in 60 seconds with Hono.js",
+      "type": "ops",
+      "task_target": "scripts/scs001/batch-produce.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-908"
+    },
+    {
+      "id": "908-02",
+      "title": "Code demo: Python one-liner that scrapes any website",
+      "type": "ops",
+      "task_target": "scripts/scs001/batch-produce.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-908"
+    },
+    {
+      "id": "908-03",
+      "title": "Code demo: Deploy an AI chatbot with 10 lines of TypeScript",
+      "type": "ops",
+      "task_target": "scripts/scs001/batch-produce.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-908"
+    },
+    {
+      "id": "908-04",
+      "title": "Entertainment: The AI War Nobody Is Talking About",
+      "type": "ops",
+      "task_target": "scripts/scs001/batch-produce.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-908"
+    },
+    {
+      "id": "908-05",
+      "title": "Entertainment: What Happens When AI Agents Start Hiring Each Other",
+      "type": "ops",
+      "task_target": "scripts/scs001/batch-produce.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-908"
+    }
+  ]
+}
