@@ -1,18 +1,466 @@
 {
-  "scanned_at": "2026-03-23T05:17:40.965Z",
-  "total_runs": 147,
-  "total_videos": 240,
-  "unique_topics": 100,
-  "already_registered": 100,
+  "scanned_at": "2026-03-23T08:26:02.319Z",
+  "total_runs": 221,
+  "total_videos": 425,
+  "unique_topics": 159,
+  "already_registered": 159,
   "newly_registered": 0,
   "already_posted": 0,
-  "ready_to_post": 100,
+  "ready_to_post": 159,
   "gate_status": {
     "posted": 4,
     "target": 30,
     "gap": 26
   },
   "videos": [
+    {
+      "video_id": "vis-8e29e5b1",
+      "format": "vision",
+      "title": "How AI agents negotiate prices autonomously",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T08-6t79/output/vis-8e29e5b1_final.mp4"
+    },
+    {
+      "video_id": "vis-c5cc828a",
+      "format": "vision",
+      "title": "The hidden psychology behind viral TikTok sounds",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T08-6t79/output/vis-c5cc828a_final.mp4"
+    },
+    {
+      "video_id": "vis-526dc870",
+      "format": "vision",
+      "title": "Why quantum computing will break cryptocurrency by 2030",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T08-6t79/output/vis-526dc870_final.mp4"
+    },
+    {
+      "video_id": "vis-0a4185f4",
+      "format": "vision",
+      "title": "Why Perplexity AI is the Google killer nobody expected",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T08-cxo2/output/vis-0a4185f4_final.mp4"
+    },
+    {
+      "video_id": "vis-6d14bc8c",
+      "format": "vision",
+      "title": "The 3 AI tools that replaced my entire marketing team",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T08-cxo2/output/vis-6d14bc8c_final.mp4"
+    },
+    {
+      "video_id": "vis-39ac0023",
+      "format": "vision",
+      "title": "How decentralized AI networks are challenging Big Tech",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T08-cxo2/output/vis-39ac0023_final.mp4"
+    },
+    {
+      "video_id": "vis-11177aa9",
+      "format": "vision",
+      "title": "Anthropic just raised 10 billion and here is their plan",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T08-6vy8/output/vis-11177aa9_final.mp4"
+    },
+    {
+      "video_id": "vis-ac8ac3dd",
+      "format": "vision",
+      "title": "The 5 most overhyped tech trends of 2026",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T08-6vy8/output/vis-ac8ac3dd_final.mp4"
+    },
+    {
+      "video_id": "vis-32ed91a8",
+      "format": "vision",
+      "title": "How to get a tech job without a CS degree using AI",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T08-6vy8/output/vis-32ed91a8_final.mp4"
+    },
+    {
+      "video_id": "vis-25fd2066",
+      "format": "vision",
+      "title": "The real cost of running AI models that nobody talks about",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-ruz2/output/vis-25fd2066_final.mp4"
+    },
+    {
+      "video_id": "vis-bc2f8db7",
+      "format": "vision",
+      "title": "How to use Cursor AI to 10x your coding speed",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-ruz2/output/vis-bc2f8db7_final.mp4"
+    },
+    {
+      "video_id": "vis-f782f5a8",
+      "format": "vision",
+      "title": "Why Web3 gaming is quietly making a comeback",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-ruz2/output/vis-f782f5a8_final.mp4"
+    },
+    {
+      "video_id": "vis-4bd49607",
+      "format": "vision",
+      "title": "The EU AI Act just changed everything for tech companies",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-gzdo/output/vis-4bd49607_final.mp4"
+    },
+    {
+      "video_id": "vis-6bd5f9b8",
+      "format": "vision",
+      "title": "Why TypeScript is eating JavaScript alive in 2026",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-gzdo/output/vis-6bd5f9b8_final.mp4"
+    },
+    {
+      "video_id": "vis-63c918ad",
+      "format": "vision",
+      "title": "How to build an AI clone of yourself that works 24/7",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-gzdo/output/vis-63c918ad_final.mp4"
+    },
+    {
+      "video_id": "vis-a5e7cde3",
+      "format": "vision",
+      "title": "Why every startup is pivoting to AI agents in 2026",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-8zld/output/vis-a5e7cde3_final.mp4"
+    },
+    {
+      "video_id": "vis-7748d997",
+      "format": "vision",
+      "title": "The 3 programming paradigms that AI cannot replace",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-8zld/output/vis-7748d997_final.mp4"
+    },
+    {
+      "video_id": "vis-c3744885",
+      "format": "vision",
+      "title": "How to retire early using compound interest and AI investing",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-8zld/output/vis-c3744885_final.mp4"
+    },
+    {
+      "video_id": "vis-2dc06c68",
+      "format": "vision",
+      "title": "Elon Musk xAI Grok 3 vs Claude 4: which AI wins",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-v0rr/output/vis-2dc06c68_final.mp4"
+    },
+    {
+      "video_id": "vis-88088b30",
+      "format": "vision",
+      "title": "The dark side of AI generated influencers",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-v0rr/output/vis-88088b30_final.mp4"
+    },
+    {
+      "video_id": "vis-e8d1a755",
+      "format": "vision",
+      "title": "How blockchain is quietly revolutionizing supply chains",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-v0rr/output/vis-e8d1a755_final.mp4"
+    },
+    {
+      "video_id": "vis-4c80f313",
+      "format": "vision",
+      "title": "China just banned all Western AI models — what happens next",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-1rcz/output/vis-4c80f313_final.mp4"
+    },
+    {
+      "video_id": "vis-4b1fd778",
+      "format": "vision",
+      "title": "The 5 best free alternatives to ChatGPT Plus",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-1rcz/output/vis-4b1fd778_final.mp4"
+    },
+    {
+      "video_id": "vis-7e9d655d",
+      "format": "vision",
+      "title": "How AI is making music producers obsolete",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-1rcz/output/vis-7e9d655d_final.mp4"
+    },
+    {
+      "video_id": "vis-abc6eb8d",
+      "format": "vision",
+      "title": "The scariest AI deepfake you have ever seen",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-rklg/output/vis-abc6eb8d_final.mp4"
+    },
+    {
+      "video_id": "vis-86362336",
+      "format": "vision",
+      "title": "How to automate your entire business with no-code AI",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-rklg/output/vis-86362336_final.mp4"
+    },
+    {
+      "video_id": "vis-8083ce91",
+      "format": "vision",
+      "title": "Why the next trillion dollar company will be built by one person",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-rklg/output/vis-8083ce91_final.mp4"
+    },
+    {
+      "video_id": "vis-9198d477",
+      "format": "vision",
+      "title": "GitHub Copilot Workspace just made junior devs obsolete",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-2mhn/output/vis-9198d477_final.mp4"
+    },
+    {
+      "video_id": "vis-8c8b6bcf",
+      "format": "vision",
+      "title": "The 3 crypto narratives that will dominate 2026",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-2mhn/output/vis-8c8b6bcf_final.mp4"
+    },
+    {
+      "video_id": "vis-3122a6a2",
+      "format": "vision",
+      "title": "Why your data is worth more than your salary",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-2mhn/output/vis-3122a6a2_final.mp4"
+    },
+    {
+      "video_id": "vis-0512868c",
+      "format": "vision",
+      "title": "Apple just killed the App Store as we know it",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-k8fq/output/vis-0512868c_final.mp4"
+    },
+    {
+      "video_id": "vis-b2ec5648",
+      "format": "vision",
+      "title": "How to mass-apply for jobs using AI agents",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-k8fq/output/vis-b2ec5648_final.mp4"
+    },
+    {
+      "video_id": "vis-8f73b51a",
+      "format": "vision",
+      "title": "The truth about AI replacing radiologists",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-k8fq/output/vis-8f73b51a_final.mp4"
+    },
+    {
+      "video_id": "vis-f7723fe9",
+      "format": "vision",
+      "title": "Tesla Optimus robot is now doing real factory work",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-p4nb/output/vis-f7723fe9_final.mp4"
+    },
+    {
+      "video_id": "vis-5047b898",
+      "format": "vision",
+      "title": "Why every company is building their own AI model in 2026",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-p4nb/output/vis-5047b898_final.mp4"
+    },
+    {
+      "video_id": "vis-6a35981a",
+      "format": "vision",
+      "title": "The developer tools that will define the next decade",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-p4nb/output/vis-6a35981a_final.mp4"
+    },
+    {
+      "video_id": "vis-f6c5e87b",
+      "format": "vision",
+      "title": "Sam Altman revealed AGI is 2 years away",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T06-ntth/output/vis-f6c5e87b_final.mp4"
+    },
+    {
+      "video_id": "vis-52552328",
+      "format": "vision",
+      "title": "Why Linux is making a desktop comeback",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T06-ntth/output/vis-52552328_final.mp4"
+    },
+    {
+      "video_id": "vis-ee640790",
+      "format": "vision",
+      "title": "5 mistakes beginners make with AI tools",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T06-ntth/output/vis-ee640790_final.mp4"
+    },
+    {
+      "video_id": "vis-bd2d8c2c",
+      "format": "vision",
+      "title": "Sam Altman just revealed AGI is 2 years away — here is what that means",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T06-8ym8/output/vis-bd2d8c2c_final.mp4"
+    },
+    {
+      "video_id": "vis-9f0c1160",
+      "format": "vision",
+      "title": "Why Linux is making a comeback on desktop in 2026",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T06-8ym8/output/vis-9f0c1160_final.mp4"
+    },
+    {
+      "video_id": "vis-b87a2fa7",
+      "format": "vision",
+      "title": "The 5 biggest mistakes beginner programmers make with AI tools",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T06-8ym8/output/vis-b87a2fa7_final.mp4"
+    },
+    {
+      "video_id": "vis-74e8dfd3",
+      "format": "vision",
+      "title": "OpenAI just open-sourced GPT-4 and nobody is talking about it",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T06-dloq/output/vis-74e8dfd3_final.mp4"
+    },
+    {
+      "video_id": "vis-675bbc33",
+      "format": "vision",
+      "title": "How to build a million dollar one-person business with AI",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T06-dloq/output/vis-675bbc33_final.mp4"
+    },
+    {
+      "video_id": "vis-aa8fe4f7",
+      "format": "vision",
+      "title": "The metaverse is dead but spatial computing is just getting started",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T06-dloq/output/vis-aa8fe4f7_final.mp4"
+    },
+    {
+      "video_id": "vis-7dba7491",
+      "format": "vision",
+      "title": "MCP protocol: the USB-C of AI that connects every LLM to every tool",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-k4kf/output/vis-7dba7491_final.mp4"
+    },
+    {
+      "video_id": "vis-07654438",
+      "format": "vision",
+      "title": "Why every developer should learn Rust in 2026",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-k4kf/output/vis-07654438_final.mp4"
+    },
+    {
+      "video_id": "vis-5a7be5d1",
+      "format": "vision",
+      "title": "The 100 billion dollar race to build humanoid robots",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-k4kf/output/vis-5a7be5d1_final.mp4"
+    },
+    {
+      "video_id": "vis-22c276c2",
+      "format": "vision",
+      "title": "Why Google Gemini 2.5 changes everything for developers",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-70dl/output/vis-22c276c2_final.mp4"
+    },
+    {
+      "video_id": "vis-ad89d61b",
+      "format": "vision",
+      "title": "The hidden psychology behind viral TikTok videos",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-70dl/output/vis-ad89d61b_final.mp4"
+    },
+    {
+      "video_id": "vis-2b70de55",
+      "format": "vision",
+      "title": "How to use AI to learn any skill 10x faster",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-70dl/output/vis-2b70de55_final.mp4"
+    },
+    {
+      "video_id": "vis-ac06f190",
+      "format": "vision",
+      "title": "How quantum computing will break all encryption by 2030",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-rz8f/output/vis-ac06f190_final.mp4"
+    },
+    {
+      "video_id": "vis-299d02d0",
+      "format": "vision",
+      "title": "The real reason tech companies are firing engineers",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-rz8f/output/vis-299d02d0_final.mp4"
+    },
+    {
+      "video_id": "vis-7b210d60",
+      "format": "vision",
+      "title": "5 AI startups that will be worth billions in 2027",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-rz8f/output/vis-7b210d60_final.mp4"
+    },
+    {
+      "video_id": "vis-15e262f0",
+      "format": "vision",
+      "title": "Over a dozen chatbot harm &amp; suicide cases in California against OpenAI / ChatGPT have been consolidated into one big",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-9e0k/output/vis-15e262f0_final.mp4"
+    },
+    {
+      "video_id": "vis-dc55096a",
+      "format": "vision",
+      "title": "I came from Data Engineering stuff before jumping into LLM stuff, i am surprised that many people in this space never he",
+      "duration_s": 33,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-beda/output/vis-dc55096a_final.mp4"
+    },
     {
       "video_id": "vis-ceb741c3",
       "format": "vision",
@@ -436,6 +884,30 @@
       "duration_s": 33,
       "posted": false,
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-nxhh/output/vis-c2d17e5f_final.mp4"
+    },
+    {
+      "video_id": "dbt-a8a22ff5",
+      "format": "debate",
+      "title": "Why Linux is making a comeback on desktop",
+      "duration_s": 27,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T06-ui04/output/dbt-a8a22ff5_final.mp4"
+    },
+    {
+      "video_id": "dbt-57c7e89c",
+      "format": "debate",
+      "title": "5 biggest mistakes beginners make with AI tools",
+      "duration_s": 27,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T06-ui04/output/dbt-57c7e89c_final.mp4"
+    },
+    {
+      "video_id": "dbt-3079dfc9",
+      "format": "debate",
+      "title": "Daily Crypto Discussion - March 23, 2026 (GMT+0)",
+      "duration_s": 27,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-vzm3/output/dbt-3079dfc9_final.mp4"
     },
     {
       "video_id": "dbt-c4b017b0",

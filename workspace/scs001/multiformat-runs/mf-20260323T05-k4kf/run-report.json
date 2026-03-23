@@ -1,0 +1,46 @@
+{
+  "run_id": "mf-20260323T05-k4kf",
+  "started_at": "2026-03-23T05:54:54.653Z",
+  "completed_at": "2026-03-23T05:57:11.237Z",
+  "topics_found": 3,
+  "scripts_generated": 3,
+  "videos_composited": 3,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "vis-7dba7491",
+      "format": "vision",
+      "title": "MCP protocol: the USB-C of AI that connects every LLM to every tool",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-k4kf/output/vis-7dba7491_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-k4kf/output/vis-7dba7491.srt",
+      "duration_s": 33,
+      "success": true,
+      "avatar_cost": 0.30000000000000004,
+      "llm_used": true
+    },
+    {
+      "script_id": "vis-07654438",
+      "format": "vision",
+      "title": "Why every developer should learn Rust in 2026",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-k4kf/output/vis-07654438_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-k4kf/output/vis-07654438.srt",
+      "duration_s": 33,
+      "success": true,
+      "avatar_cost": 0.30000000000000004,
+      "llm_used": true
+    },
+    {
+      "script_id": "vis-5a7be5d1",
+      "format": "vision",
+      "title": "The 100 billion dollar race to build humanoid robots",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-k4kf/output/vis-5a7be5d1_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-k4kf/output/vis-5a7be5d1.srt",
+      "duration_s": 33,
+      "success": true,
+      "avatar_cost": 0.30000000000000004,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 0.9
+}

@@ -1,0 +1,46 @@
+{
+  "run_id": "mf-20260323T07-k8fq",
+  "started_at": "2026-03-23T07:11:16.588Z",
+  "completed_at": "2026-03-23T07:13:34.276Z",
+  "topics_found": 3,
+  "scripts_generated": 3,
+  "videos_composited": 3,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "vis-0512868c",
+      "format": "vision",
+      "title": "Apple just killed the App Store as we know it",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-k8fq/output/vis-0512868c_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-k8fq/output/vis-0512868c.srt",
+      "duration_s": 33,
+      "success": true,
+      "avatar_cost": 0.30000000000000004,
+      "llm_used": true
+    },
+    {
+      "script_id": "vis-b2ec5648",
+      "format": "vision",
+      "title": "How to mass-apply for jobs using AI agents",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-k8fq/output/vis-b2ec5648_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-k8fq/output/vis-b2ec5648.srt",
+      "duration_s": 33,
+      "success": true,
+      "avatar_cost": 0.30000000000000004,
+      "llm_used": true
+    },
+    {
+      "script_id": "vis-8f73b51a",
+      "format": "vision",
+      "title": "The truth about AI replacing radiologists",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-k8fq/output/vis-8f73b51a_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-k8fq/output/vis-8f73b51a.srt",
+      "duration_s": 33,
+      "success": true,
+      "avatar_cost": 0.30000000000000004,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 0.9
+}

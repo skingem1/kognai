@@ -1,0 +1,46 @@
+{
+  "run_id": "mf-20260323T06-ui04",
+  "started_at": "2026-03-23T06:36:15.661Z",
+  "completed_at": "2026-03-23T06:43:59.571Z",
+  "topics_found": 3,
+  "scripts_generated": 3,
+  "videos_composited": 3,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "dbt-3d883f69",
+      "format": "debate",
+      "title": "Sam Altman revealed AGI is 2 years away",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T06-ui04/output/dbt-3d883f69_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T06-ui04/output/dbt-3d883f69.srt",
+      "duration_s": 27,
+      "success": true,
+      "avatar_cost": 0.25,
+      "llm_used": true
+    },
+    {
+      "script_id": "dbt-a8a22ff5",
+      "format": "debate",
+      "title": "Why Linux is making a comeback on desktop",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T06-ui04/output/dbt-a8a22ff5_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T06-ui04/output/dbt-a8a22ff5.srt",
+      "duration_s": 27,
+      "success": true,
+      "avatar_cost": 0.25,
+      "llm_used": true
+    },
+    {
+      "script_id": "dbt-57c7e89c",
+      "format": "debate",
+      "title": "5 biggest mistakes beginners make with AI tools",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T06-ui04/output/dbt-57c7e89c_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T06-ui04/output/dbt-57c7e89c.srt",
+      "duration_s": 27,
+      "success": true,
+      "avatar_cost": 0.25,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 0.75
+}

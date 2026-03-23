@@ -1,0 +1,46 @@
+{
+  "run_id": "mf-20260323T07-qktu",
+  "started_at": "2026-03-23T07:16:03.756Z",
+  "completed_at": "2026-03-23T07:17:56.818Z",
+  "topics_found": 3,
+  "scripts_generated": 3,
+  "videos_composited": 3,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "dbt-d170c250",
+      "format": "debate",
+      "title": "GitHub Copilot Workspace just made junior devs obsolete",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-qktu/output/dbt-d170c250_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-qktu/output/dbt-d170c250.srt",
+      "duration_s": 27,
+      "success": true,
+      "avatar_cost": 0.25,
+      "llm_used": true
+    },
+    {
+      "script_id": "dbt-d9d54162",
+      "format": "debate",
+      "title": "The 3 crypto narratives that will dominate 2026",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-qktu/output/dbt-d9d54162_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-qktu/output/dbt-d9d54162.srt",
+      "duration_s": 27,
+      "success": true,
+      "avatar_cost": 0.25,
+      "llm_used": true
+    },
+    {
+      "script_id": "dbt-ba95cbb8",
+      "format": "debate",
+      "title": "Why your data is worth more than your salary",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-qktu/output/dbt-ba95cbb8_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-qktu/output/dbt-ba95cbb8.srt",
+      "duration_s": 27,
+      "success": true,
+      "avatar_cost": 0.25,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 0.75
+}

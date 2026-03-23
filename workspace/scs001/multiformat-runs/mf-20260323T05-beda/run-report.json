@@ -1,0 +1,24 @@
+{
+  "run_id": "mf-20260323T05-beda",
+  "started_at": "2026-03-23T05:25:29.491Z",
+  "completed_at": "2026-03-23T05:26:24.133Z",
+  "topics_found": 1,
+  "scripts_generated": 1,
+  "videos_composited": 1,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "vis-dc55096a",
+      "format": "vision",
+      "title": "I came from Data Engineering stuff before jumping into LLM stuff, i am surprised that many people in this space never he",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-beda/output/vis-dc55096a_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-beda/output/vis-dc55096a.srt",
+      "duration_s": 33,
+      "success": true,
+      "avatar_cost": 0.30000000000000004,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 0.3
+}

@@ -1,0 +1,46 @@
+{
+  "run_id": "mf-20260323T05-eqqh",
+  "started_at": "2026-03-23T05:57:39.306Z",
+  "completed_at": "2026-03-23T05:59:29.298Z",
+  "topics_found": 3,
+  "scripts_generated": 3,
+  "videos_composited": 3,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "exp-7727176b",
+      "format": "explainer",
+      "title": "OpenAI just open-sourced GPT-4 and nobody is talking about it",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-eqqh/output/exp-7727176b_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-eqqh/output/exp-7727176b.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "exp-710657f1",
+      "format": "explainer",
+      "title": "How to build a million dollar one-person business with AI",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-eqqh/output/exp-710657f1_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-eqqh/output/exp-710657f1.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "exp-d4a2b627",
+      "format": "explainer",
+      "title": "The metaverse is dead but spatial computing is just getting started",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-eqqh/output/exp-d4a2b627_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-eqqh/output/exp-d4a2b627.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 1.05
+}

@@ -1,0 +1,46 @@
+{
+  "run_id": "mf-20260323T08-4fco",
+  "started_at": "2026-03-23T08:00:57.996Z",
+  "completed_at": "2026-03-23T08:02:52.709Z",
+  "topics_found": 3,
+  "scripts_generated": 3,
+  "videos_composited": 3,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "exp-5408627a",
+      "format": "explainer",
+      "title": "Anthropic just raised 10 billion and here is their plan",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T08-4fco/output/exp-5408627a_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T08-4fco/output/exp-5408627a.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "exp-b0c7b640",
+      "format": "explainer",
+      "title": "The 5 most overhyped tech trends of 2026",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T08-4fco/output/exp-b0c7b640_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T08-4fco/output/exp-b0c7b640.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "exp-6d807703",
+      "format": "explainer",
+      "title": "How to get a tech job without a CS degree using AI",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T08-4fco/output/exp-6d807703_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T08-4fco/output/exp-6d807703.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 1.05
+}

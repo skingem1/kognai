@@ -1,0 +1,46 @@
+{
+  "run_id": "mf-20260323T05-rz8f",
+  "started_at": "2026-03-23T05:41:37.025Z",
+  "completed_at": "2026-03-23T05:43:59.870Z",
+  "topics_found": 3,
+  "scripts_generated": 3,
+  "videos_composited": 3,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "vis-ac06f190",
+      "format": "vision",
+      "title": "How quantum computing will break all encryption by 2030",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-rz8f/output/vis-ac06f190_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-rz8f/output/vis-ac06f190.srt",
+      "duration_s": 33,
+      "success": true,
+      "avatar_cost": 0.30000000000000004,
+      "llm_used": true
+    },
+    {
+      "script_id": "vis-299d02d0",
+      "format": "vision",
+      "title": "The real reason tech companies are firing engineers",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-rz8f/output/vis-299d02d0_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-rz8f/output/vis-299d02d0.srt",
+      "duration_s": 33,
+      "success": true,
+      "avatar_cost": 0.30000000000000004,
+      "llm_used": true
+    },
+    {
+      "script_id": "vis-7b210d60",
+      "format": "vision",
+      "title": "5 AI startups that will be worth billions in 2027",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-rz8f/output/vis-7b210d60_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-rz8f/output/vis-7b210d60.srt",
+      "duration_s": 33,
+      "success": true,
+      "avatar_cost": 0.30000000000000004,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 0.9
+}

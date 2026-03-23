@@ -1,0 +1,46 @@
+{
+  "run_id": "mf-20260323T07-ksuv",
+  "started_at": "2026-03-23T07:00:49.066Z",
+  "completed_at": "2026-03-23T07:02:40.350Z",
+  "topics_found": 3,
+  "scripts_generated": 3,
+  "videos_composited": 3,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "exp-bb987d39",
+      "format": "explainer",
+      "title": "Tesla Optimus robot is now doing real factory work",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-ksuv/output/exp-bb987d39_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-ksuv/output/exp-bb987d39.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "exp-21783deb",
+      "format": "explainer",
+      "title": "Why every company is building their own AI model in 2026",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-ksuv/output/exp-21783deb_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-ksuv/output/exp-21783deb.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "exp-500f0556",
+      "format": "explainer",
+      "title": "The developer tools that will define the next decade",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-ksuv/output/exp-500f0556_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-ksuv/output/exp-500f0556.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 1.05
+}

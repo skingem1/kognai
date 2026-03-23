@@ -1,0 +1,46 @@
+{
+  "run_id": "mf-20260323T07-v0rr",
+  "started_at": "2026-03-23T07:38:08.091Z",
+  "completed_at": "2026-03-23T07:40:25.241Z",
+  "topics_found": 3,
+  "scripts_generated": 3,
+  "videos_composited": 3,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "vis-2dc06c68",
+      "format": "vision",
+      "title": "Elon Musk xAI Grok 3 vs Claude 4: which AI wins",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-v0rr/output/vis-2dc06c68_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-v0rr/output/vis-2dc06c68.srt",
+      "duration_s": 33,
+      "success": true,
+      "avatar_cost": 0.30000000000000004,
+      "llm_used": true
+    },
+    {
+      "script_id": "vis-88088b30",
+      "format": "vision",
+      "title": "The dark side of AI generated influencers",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-v0rr/output/vis-88088b30_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-v0rr/output/vis-88088b30.srt",
+      "duration_s": 33,
+      "success": true,
+      "avatar_cost": 0.30000000000000004,
+      "llm_used": true
+    },
+    {
+      "script_id": "vis-e8d1a755",
+      "format": "vision",
+      "title": "How blockchain is quietly revolutionizing supply chains",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-v0rr/output/vis-e8d1a755_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-v0rr/output/vis-e8d1a755.srt",
+      "duration_s": 33,
+      "success": true,
+      "avatar_cost": 0.30000000000000004,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 0.9
+}

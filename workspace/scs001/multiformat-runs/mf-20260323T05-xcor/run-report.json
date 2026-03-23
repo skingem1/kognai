@@ -1,0 +1,46 @@
+{
+  "run_id": "mf-20260323T05-xcor",
+  "started_at": "2026-03-23T05:44:33.563Z",
+  "completed_at": "2026-03-23T05:46:25.477Z",
+  "topics_found": 3,
+  "scripts_generated": 3,
+  "videos_composited": 3,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "exp-3e354259",
+      "format": "explainer",
+      "title": "Why Google Gemini 2.5 changes everything for developers",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-xcor/output/exp-3e354259_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-xcor/output/exp-3e354259.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "exp-bcb29364",
+      "format": "explainer",
+      "title": "The hidden psychology behind viral TikTok videos",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-xcor/output/exp-bcb29364_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-xcor/output/exp-bcb29364.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "exp-ebbc738f",
+      "format": "explainer",
+      "title": "How to use AI to learn any skill 10x faster",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-xcor/output/exp-ebbc738f_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T05-xcor/output/exp-ebbc738f.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 1.05
+}

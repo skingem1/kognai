@@ -1,0 +1,46 @@
+{
+  "run_id": "mf-20260323T08-6oxs",
+  "started_at": "2026-03-23T08:10:17.658Z",
+  "completed_at": "2026-03-23T08:12:13.338Z",
+  "topics_found": 3,
+  "scripts_generated": 3,
+  "videos_composited": 3,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "dbt-1b31d5b3",
+      "format": "debate",
+      "title": "Why Perplexity AI is the Google killer nobody expected",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T08-6oxs/output/dbt-1b31d5b3_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T08-6oxs/output/dbt-1b31d5b3.srt",
+      "duration_s": 27,
+      "success": true,
+      "avatar_cost": 0.25,
+      "llm_used": true
+    },
+    {
+      "script_id": "dbt-c6fd9c2e",
+      "format": "debate",
+      "title": "The 3 AI tools that replaced my entire marketing team",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T08-6oxs/output/dbt-c6fd9c2e_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T08-6oxs/output/dbt-c6fd9c2e.srt",
+      "duration_s": 27,
+      "success": true,
+      "avatar_cost": 0.25,
+      "llm_used": true
+    },
+    {
+      "script_id": "dbt-db9d73f0",
+      "format": "debate",
+      "title": "How decentralized AI networks are challenging Big Tech",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T08-6oxs/output/dbt-db9d73f0_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T08-6oxs/output/dbt-db9d73f0.srt",
+      "duration_s": 27,
+      "success": true,
+      "avatar_cost": 0.25,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 0.75
+}

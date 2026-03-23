@@ -1,0 +1,46 @@
+{
+  "run_id": "mf-20260323T07-55ix",
+  "started_at": "2026-03-23T07:41:02.972Z",
+  "completed_at": "2026-03-23T07:42:56.044Z",
+  "topics_found": 3,
+  "scripts_generated": 3,
+  "videos_composited": 3,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "exp-dc30413d",
+      "format": "explainer",
+      "title": "Why every startup is pivoting to AI agents in 2026",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-55ix/output/exp-dc30413d_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-55ix/output/exp-dc30413d.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "exp-4a9398f3",
+      "format": "explainer",
+      "title": "The 3 programming paradigms that AI cannot replace",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-55ix/output/exp-4a9398f3_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-55ix/output/exp-4a9398f3.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "exp-10622e32",
+      "format": "explainer",
+      "title": "How to retire early using compound interest and AI investing",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-55ix/output/exp-10622e32_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-55ix/output/exp-10622e32.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 1.05
+}

@@ -1,0 +1,46 @@
+{
+  "run_id": "mf-20260323T07-ub21",
+  "started_at": "2026-03-23T07:47:43.905Z",
+  "completed_at": "2026-03-23T07:49:34.992Z",
+  "topics_found": 3,
+  "scripts_generated": 3,
+  "videos_composited": 3,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "exp-be8f5f7d",
+      "format": "explainer",
+      "title": "The EU AI Act just changed everything for tech companies",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-ub21/output/exp-be8f5f7d_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-ub21/output/exp-be8f5f7d.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "exp-b624d02f",
+      "format": "explainer",
+      "title": "Why TypeScript is eating JavaScript alive in 2026",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-ub21/output/exp-b624d02f_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-ub21/output/exp-b624d02f.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "exp-3e06e51f",
+      "format": "explainer",
+      "title": "How to build an AI clone of yourself that works 24/7",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-ub21/output/exp-3e06e51f_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-ub21/output/exp-3e06e51f.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 1.05
+}

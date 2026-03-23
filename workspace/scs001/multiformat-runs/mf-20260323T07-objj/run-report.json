@@ -1,0 +1,46 @@
+{
+  "run_id": "mf-20260323T07-objj",
+  "started_at": "2026-03-23T07:27:38.752Z",
+  "completed_at": "2026-03-23T07:29:32.004Z",
+  "topics_found": 3,
+  "scripts_generated": 3,
+  "videos_composited": 3,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "exp-6ddc5c75",
+      "format": "explainer",
+      "title": "China just banned all Western AI models — what happens next",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-objj/output/exp-6ddc5c75_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-objj/output/exp-6ddc5c75.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "exp-ec8e9904",
+      "format": "explainer",
+      "title": "The 5 best free alternatives to ChatGPT Plus",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-objj/output/exp-ec8e9904_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-objj/output/exp-ec8e9904.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "exp-c35d5c01",
+      "format": "explainer",
+      "title": "How AI is making music producers obsolete",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-objj/output/exp-c35d5c01_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T07-objj/output/exp-c35d5c01.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 1.05
+}
