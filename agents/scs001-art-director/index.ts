@@ -125,9 +125,24 @@ function buildReviewPrompt(bundle: ScenarioBundle): string {
 
 function parseVerdict(raw: string, scenarioId: string, model: string): ArtDirectorVerdict {
   let json = raw.trim();
-  if (json.startsWith('```')) {
-    json = json.replace(/^```(?:json)?\n?/, '').replace(/\n?```$/, '');
+
+  // Strip markdown fences
+  json = json.replace(/^```(?:json)?\s*\n?/gm, '').replace(/\n?\s*```\s*$/gm, '');
+
+  // Extract outermost JSON object (handles extra text after JSON)
+  let depth = 0, start = -1, inStr = false, esc = false;
+  for (let i = 0; i < json.length; i++) {
+    const ch = json[i];
+    if (esc) { esc = false; continue; }
+    if (ch === '\\' && inStr) { esc = true; continue; }
+    if (ch === '"') { inStr = !inStr; continue; }
+    if (inStr) continue;
+    if (ch === '{') { if (start === -1) start = i; depth++; }
+    else if (ch === '}') { depth--; if (depth === 0 && start !== -1) { json = json.substring(start, i + 1); break; } }
   }
+
+  // Fix trailing commas
+  json = json.replace(/,\s*([}\]])/g, '$1');
 
   const parsed = JSON.parse(json);
 

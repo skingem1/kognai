@@ -1,0 +1,48 @@
+{
+  "sprint_id": "sprint-897",
+  "title": "V2-CONTENT — 3 more v2 videos + PM2 bot restart for /v2",
+  "description": "Restart Telegram bot to activate /v2 command, then produce 3 more v2 videos on trending AI topics.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "897-01",
+      "title": "Restart Telegram bot PM2 to load /v2 command",
+      "type": "ops",
+      "task_target": "ecosystem.config.js",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-897"
+    },
+    {
+      "id": "897-02",
+      "title": "V2 video: 'Sam Altman Just Revealed OpenAIs Secret AGI Timeline'",
+      "type": "ops",
+      "task_target": "scripts/scs001/run-v2-pipeline.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-897"
+    },
+    {
+      "id": "897-03",
+      "title": "V2 video: 'Apple Intelligence Is a Lie and Heres Proof'",
+      "type": "ops",
+      "task_target": "scripts/scs001/run-v2-pipeline.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-897"
+    },
+    {
+      "id": "897-04",
+      "title": "V2 video: 'The AI Startup That Just Made Every Developer Panic'",
+      "type": "ops",
+      "task_target": "scripts/scs001/run-v2-pipeline.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-897"
+    }
+  ]
+}
