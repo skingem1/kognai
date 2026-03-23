@@ -1,0 +1,65 @@
+{
+  "sprint_id": "sprint-936",
+  "title": "MULTI-PIPELINE — 3 code demos + 2 TTS vlogs (TTS mode)",
+  "description": "3 code demos + 2 TTS-mode vlogs. Content stockpile 358+.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "936-01",
+      "title": "Code demo: Build a Plagiarism Checker in Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-936",
+      "output": "demo-mn3p3wlh"
+    },
+    {
+      "id": "936-02",
+      "title": "Code demo: Create an Auto Clicker in Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-936",
+      "output": "demo-mn3p5iko"
+    },
+    {
+      "id": "936-03",
+      "title": "Code demo: Build a Music Player in Python",
+      "type": "ops",
+      "task_target": "scripts/scs001/pipelines/code-demo.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-936",
+      "output": "demo-mn3p7i0m"
+    },
+    {
+      "id": "936-04",
+      "title": "V2 video (TTS): How AI Is Quietly Taking Over the Music Industry",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-936",
+      "output": "vlog-mn3p9gg9",
+      "mode": "tts"
+    },
+    {
+      "id": "936-05",
+      "title": "V2 video (TTS): The Startup That Built a Billion Dollar AI in 6 Months",
+      "type": "ops",
+      "task_target": "scripts/scs001/produce-vlog.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-936",
+      "output": "vlog-mn3patxo",
+      "mode": "tts"
+    }
+  ]
+}

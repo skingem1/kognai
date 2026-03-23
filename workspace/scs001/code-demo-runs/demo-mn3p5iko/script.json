@@ -1,0 +1,114 @@
+{
+  "demo_id": "demo-mn3p5ikp",
+  "title": "Auto Clicker in Python!",
+  "language": "python",
+  "total_duration_s": 33,
+  "steps": [
+    {
+      "step_id": "s1",
+      "title": "Step 1: Setup",
+      "code_lines": [
+        "import pyautogui",
+        "import time",
+        "import threading",
+        "import keyboard"
+      ],
+      "language": "python",
+      "explanation": "We start by importing the necessary libraries for mouse control, timing, threading, and hotkey detection.",
+      "duration_s": 6,
+      "highlight_lines": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "step_id": "s2",
+      "title": "Step 2: Define the Clicker",
+      "code_lines": [
+        "running = False",
+        "",
+        "def clicker():",
+        "    global running",
+        "    while running:",
+        "        pyautogui.click()",
+        "        time.sleep(0.1)"
+      ],
+      "language": "python",
+      "explanation": "This function runs in a loop, clicking the mouse every 0.1 seconds as long as it's active.",
+      "duration_s": 7,
+      "highlight_lines": [
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    },
+    {
+      "step_id": "s3",
+      "title": "Step 3: Toggle with Hotkey",
+      "code_lines": [
+        "def start_stop():",
+        "    global running",
+        "    running = not running",
+        "    print(\"Auto clicker toggled\")",
+        "",
+        "keyboard.add_hotkey('space', start_stop)"
+      ],
+      "language": "python",
+      "explanation": "Pressing the spacebar toggles the clicker on and off, using a simple hotkey function.",
+      "duration_s": 7,
+      "highlight_lines": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "step_id": "s4",
+      "title": "Step 4: Run the Thread",
+      "code_lines": [
+        "thread = threading.Thread(target=clicker)",
+        "thread.start()",
+        "",
+        "while True:",
+        "    time.sleep(1)"
+      ],
+      "language": "python",
+      "explanation": "We start the clicker in a separate thread so it runs in the background while the main loop waits.",
+      "duration_s": 7,
+      "highlight_lines": [
+        0,
+        1,
+        3
+      ]
+    },
+    {
+      "step_id": "s5",
+      "title": "Step 5: Try It Out!",
+      "code_lines": [
+        "# Press space to toggle auto clicker",
+        "## Works in most apps!"
+      ],
+      "language": "python",
+      "explanation": "Now you can press space to start or stop the auto clicker — try it yourself!",
+      "duration_s": 6,
+      "highlight_lines": [
+        0,
+        1
+      ]
+    }
+  ],
+  "hashtags": [
+    "#coding",
+    "#python",
+    "#automation",
+    "#tutorial"
+  ],
+  "intro_hook": "Ever wanted to automate clicks? Let's build a simple auto clicker!",
+  "source": "user",
+  "topic_source": "user-prompt"
+}
