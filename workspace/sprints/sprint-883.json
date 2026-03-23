@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-883",
+  "title": "OPS — custom topic content production with injected topics (batch 16)",
+  "description": "Continue producing videos with manually injected topics.",
+  "source": "ops",
+  "tasks": [
+    {
+      "id": "883-01",
+      "title": "Run custom topic content production with 3 new injected topics",
+      "type": "ops",
+      "task_target": "scripts/scs001/batch-produce.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-883"
+    }
+  ]
+}

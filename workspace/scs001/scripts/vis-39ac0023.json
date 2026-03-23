@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-39ac0023",
+  "topic_id": "custom-mn2wqu12-2",
+  "format": "vision",
+  "title": "How decentralized AI networks are challenging Big Tech",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "What if decentralized AI networks could finally break Big Tech’s stranglehold on innovation and data?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Federated learning and blockchain-based models now let users train AI without centralized cloud dependency.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "But data privacy risks persist—decentralized systems can still be exploited if not designed with transparency and consent.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Builders are using zero-knowledge proofs and open-source frameworks to ensure user control and auditability.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "A future where AI is a public good, developed collaboratively and governed by communities, not corporations.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future may belong to networks where power shifts from giants to the many, one algorithm at a time.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of how",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#how",
+    "#decentralized",
+    "#ai"
+  ],
+  "video_cue": "A decentralized network of nodes glowing with data streams, evolving into a shared AI model across a global map.",
+  "generated_at": "2026-03-23T08:13:17.135Z",
+  "llm_used": true
+}

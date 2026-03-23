@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-0a4185f4",
+  "topic_id": "custom-mn2wqu12-0",
+  "format": "vision",
+  "title": "Why Perplexity AI is the Google killer nobody expected",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "What if an AI search engine, built on cutting-edge language models, could outperform Google without the same biases or data dependence?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Perplexity AI uses open-source models and real-time processing, enabling faster, more accurate answers with less reliance on historical web data.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "But if it lacks oversight, it could spread misinformation faster, especially since it's trained on unfiltered, up-to-the-minute content.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "We're integrating real-time fact-checking and alignment layers to ensure responses remain truthful and contextually appropriate.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "Imagine a world where search is transparent, explainable, and designed to empower users rather than manipulate them.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future may belong to AI that's both powerful and principled — reshaping how we access and trust information.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of why",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#why",
+    "#perplexity",
+    "#ai"
+  ],
+  "video_cue": "A split-screen showing a user interacting with Perplexity AI on the left and a traditional search engine on the right, with data streams flowing between them.",
+  "generated_at": "2026-03-23T08:12:38.856Z",
+  "llm_used": true
+}

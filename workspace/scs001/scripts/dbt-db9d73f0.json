@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-db9d73f0",
+  "topic_id": "custom-mn2woat8-2",
+  "format": "debate",
+  "title": "How decentralized AI networks are challenging Big Tech",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Decentralized AI networks are dismantling Big Tech's monopoly by distributing control and data across peer-to-peer protocols.",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Centralized AI hoards power — think Meta and Google — while decentralized models like O(1) and Filecoin ensure transparency and user sovereignty.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Decentralized systems use blockchain and IPFS to prevent single points of failure, making AI more resilient and less prone to censorship.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Big Tech can't innovate freely when they're locked out of decentralized networks — real-world impact is blocked by walled gardens.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "The future belongs to open-source, community-driven AI — not to corporate gatekeepers.",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "how vs decentralized",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#how",
+    "#decentralized",
+    "#ai"
+  ],
+  "generated_at": "2026-03-23T08:11:09.440Z",
+  "llm_used": true
+}

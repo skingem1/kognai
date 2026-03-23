@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-1b31d5b3",
+  "topic_id": "custom-mn2woat8-0",
+  "format": "debate",
+  "title": "Why Perplexity AI is the Google killer nobody expected",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Perplexity AI isn’t just a Google killer—it’s a paradigm shift with its open API and real-time reasoning. (3 sec)",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Google’s closed ecosystem limits innovation. Perplexity’s open-source foundation lets developers build on it freely. (5 sec)",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "But Perplexity lacks the infrastructure and scale Google has, with billions of queries processed daily. (5 sec)",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Perplexity’s real-time reasoning and support for 100+ languages outpace Google’s rigid, monolithic approach. (5 sec)",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Perplexity is the future—open, fast, and truly global. (4 sec)",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "why vs perplexity",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#why",
+    "#perplexity",
+    "#ai"
+  ],
+  "generated_at": "2026-03-23T08:10:38.496Z",
+  "llm_used": true
+}
