@@ -1,0 +1,21 @@
+{
+  "title": "China's AI Stuns Pentagon",
+  "full_monologue": "**China Just Built an AI That Scared the Pentagon**. Reports say this AI can predict military moves with uncanny accuracy, leaving the Pentagon scrambling. The system uses advanced machine learning and real-time data analysis, making it a game-changer in global defense tech. Experts are buzzing, and questions are rising about how this could reshape future conflicts. What do you think? Are we entering a new era of AI-driven warfare?",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 6,
+      "duration_s": 6,
+      "visual_prompt": "Aerial view of a high-tech research facility with glowing lights and drones flying around, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 18,
+      "duration_s": 6,
+      "visual_prompt": "Close-up of a futuristic control room with operators monitoring advanced defense systems, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

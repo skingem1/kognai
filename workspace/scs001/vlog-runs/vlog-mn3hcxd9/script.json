@@ -1,0 +1,21 @@
+{
+  "title": "The AI Bubble Is About to Pop",
+  "full_monologue": "**The AI Bubble Is About to Pop and Nobody Cares**. We’re seeing AI startups valued at billions with no real product, and investors are still throwing money at them. It’s a bubble, and it’s getting bigger. But here’s the thing—most people aren’t paying attention. They’re too busy chasing the next big thing. When the bubble pops, it won’t be a crash, it’ll be a slow burn. And by then, it’ll be too late. So what do you think? Are we already in the bubble, or is it still coming?",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 6,
+      "duration_s": 6,
+      "visual_prompt": "a crowd of people walking past glowing digital billboards in a futuristic city, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 18,
+      "duration_s": 6,
+      "visual_prompt": "a close-up of hands manipulating abstract motion and light in a dark room, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}
