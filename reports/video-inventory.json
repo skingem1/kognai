@@ -1,12 +1,12 @@
 {
-  "scanned_at": "2026-03-23T00:51:11.975Z",
-  "total_runs": 39,
-  "total_videos": 28,
-  "unique_topics": 22,
-  "already_registered": 22,
+  "scanned_at": "2026-03-23T00:57:05.274Z",
+  "total_runs": 47,
+  "total_videos": 36,
+  "unique_topics": 30,
+  "already_registered": 30,
   "newly_registered": 0,
   "already_posted": 0,
-  "ready_to_post": 22,
+  "ready_to_post": 30,
   "gate_status": {
     "posted": 2,
     "target": 30,
@@ -36,6 +36,38 @@
       "duration_s": 33,
       "posted": false,
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-2yxr/output/vis-1772d7e3_final.mp4"
+    },
+    {
+      "video_id": "dbt-51de879f",
+      "format": "debate",
+      "title": "The AI bubble: are we headed for a crash?",
+      "duration_s": 27,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-1fi1/output/dbt-51de879f_final.mp4"
+    },
+    {
+      "video_id": "dbt-a56a7a8c",
+      "format": "debate",
+      "title": "How to make money with AI in 2026",
+      "duration_s": 27,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-bepi/output/dbt-a56a7a8c_final.mp4"
+    },
+    {
+      "video_id": "dbt-b9dbda5d",
+      "format": "debate",
+      "title": "Is Solana the Ethereum killer? 2026 update",
+      "duration_s": 27,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-2aaa/output/dbt-b9dbda5d_final.mp4"
+    },
+    {
+      "video_id": "dbt-344ef0c9",
+      "format": "debate",
+      "title": "MCP servers explained: the protocol connecting AI to everything",
+      "duration_s": 27,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-2abp/output/dbt-344ef0c9_final.mp4"
     },
     {
       "video_id": "dbt-0f42f382",
@@ -76,6 +108,38 @@
       "duration_s": 27,
       "posted": false,
       "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-b3vb/output/dbt-c9820a9b_final.mp4"
+    },
+    {
+      "video_id": "exp-e48a5a5e",
+      "format": "explainer",
+      "title": "Top 5 free AI tools you are not using yet",
+      "duration_s": 25,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-mwrc/output/exp-e48a5a5e_final.mp4"
+    },
+    {
+      "video_id": "exp-27db7ed5",
+      "format": "explainer",
+      "title": "Will robots take your job? The truth about AI automation",
+      "duration_s": 25,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-s9nl/output/exp-27db7ed5_final.mp4"
+    },
+    {
+      "video_id": "exp-f3f31e1b",
+      "format": "explainer",
+      "title": "The dark side of AI-generated deepfakes",
+      "duration_s": 25,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-1vab/output/exp-f3f31e1b_final.mp4"
+    },
+    {
+      "video_id": "exp-2317a50b",
+      "format": "explainer",
+      "title": "Why Anthropic Claude is beating ChatGPT at coding",
+      "duration_s": 25,
+      "posted": false,
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T00-cy9a/output/exp-2317a50b_final.mp4"
     },
     {
       "video_id": "exp-04610cf7",

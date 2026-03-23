@@ -1,0 +1,28 @@
+{
+  "sprint_id": "sprint-823",
+  "title": "CONTENT — 8 more custom topic videos (30 ready = full gate coverage)",
+  "description": "Produced 8 custom topic videos. Inventory now at 30 unique ready to post — full coverage for April 7 gate (30 posts). 760 ledger.",
+  "source": "content",
+  "tasks": [
+    {
+      "id": "823-01",
+      "title": "4 explainers: Claude vs ChatGPT, deepfakes, AI jobs, free AI tools",
+      "type": "content",
+      "task_target": "scripts/scs001/run-multiformat-pipeline.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-823"
+    },
+    {
+      "id": "823-02",
+      "title": "4 debates: MCP servers, Solana vs ETH, AI money, AI bubble",
+      "type": "content",
+      "task_target": "scripts/scs001/run-multiformat-pipeline.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-823"
+    }
+  ]
+}
