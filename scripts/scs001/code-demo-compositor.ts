@@ -37,18 +37,17 @@ function generateStepVoiceovers(
   for (const step of script.steps) {
     if (!step.explanation) continue;
     const aiffPath = join(outDir, `${step.step_id}.aiff`);
-    const mp3Path = join(outDir, `${step.step_id}.mp3`);
+    const m4aPath = join(outDir, `${step.step_id}.m4a`);
 
     try {
-      // macOS say → AIFF → MP3 via ffmpeg
-      // Write text to file to avoid shell escaping issues
+      // macOS say → AIFF → M4A (AAC) via ffmpeg
       const txtPath = join(outDir, `${step.step_id}.txt`);
       writeFileSync(txtPath, step.explanation);
       execSync(`say -v Samantha -o "${aiffPath}" -f "${txtPath}"`, { stdio: 'pipe', timeout: 15000 });
-      execSync(`${FFMPEG} -y -i "${aiffPath}" -c:a aac -b:a 128k "${mp3Path}"`, { stdio: 'pipe', timeout: 10000 });
-      results.push({ stepId: step.step_id, audioPath: mp3Path });
-    } catch {
-      console.warn(`    TTS failed for ${step.step_id}`);
+      execSync(`${FFMPEG} -y -i "${aiffPath}" -c:a aac -b:a 128k "${m4aPath}"`, { stdio: 'pipe', timeout: 10000 });
+      results.push({ stepId: step.step_id, audioPath: m4aPath });
+    } catch (err: any) {
+      console.warn(`    TTS failed for ${step.step_id}: ${err.message?.slice(0, 100)}`);
     }
   }
 
@@ -105,27 +104,53 @@ export function assembleCodeDemo(
         { stdio: 'pipe', timeout: 15000 }
       );
 
-      // Mix narration with video (replace silent video audio)
-      const withVoice = join(runDir, 'with_voice.mp4');
-      execSync(
-        `${FFMPEG} -y -i "${currentPath}" -i "${fullAudio}" ` +
-        `-c:v copy -c:a aac -b:a 128k -shortest "${withVoice}"`,
-        { stdio: 'pipe', timeout: 30000 }
-      );
-      currentPath = withVoice;
-      console.log(`    Voiceover: ${voiceovers.length} clips mixed`);
+      // Mix narration + background music with video
+      // Background music at -18dB (0.12 volume) under voiceover
+      const musicPath = join(ROOT, 'workspace', 'scs001', 'music', 'tech-ambient.mp3');
+      const withAudio = join(runDir, 'with_audio.mp4');
+
+      if (existsSync(musicPath)) {
+        execSync(
+          `${FFMPEG} -y -i "${currentPath}" -i "${fullAudio}" -i "${musicPath}" ` +
+          `-filter_complex "[1:a]apad[voice];[2:a]volume=0.12,aloop=loop=-1:size=2e+09[music];[voice][music]amix=inputs=2:duration=shortest[aout]" ` +
+          `-map 0:v -map "[aout]" -c:v copy -c:a aac -b:a 128k -shortest "${withAudio}"`,
+          { stdio: 'pipe', timeout: 30000 }
+        );
+        console.log(`    Voiceover + music: ${voiceovers.length} clips mixed`);
+      } else {
+        execSync(
+          `${FFMPEG} -y -i "${currentPath}" -i "${fullAudio}" ` +
+          `-c:v copy -c:a aac -b:a 128k -shortest "${withAudio}"`,
+          { stdio: 'pipe', timeout: 30000 }
+        );
+        console.log(`    Voiceover: ${voiceovers.length} clips (no music found)`);
+      }
+      currentPath = withAudio;
     }
   }
 
-  // Step 3: Add silent audio track if no voiceover (needed for outro concat)
-  if (!opts.withVoiceover || !existsSync(join(runDir, 'with_voice.mp4'))) {
-    const withSilence = join(runDir, 'with_silence.mp4');
-    execSync(
-      `${FFMPEG} -y -i "${currentPath}" -f lavfi -i anullsrc=channel_layout=stereo:sample_rate=44100 ` +
-      `-c:v copy -c:a aac -b:a 128k -shortest "${withSilence}"`,
-      { stdio: 'pipe', timeout: 15000 }
-    );
-    currentPath = withSilence;
+  // Step 3: Add background music only (no voiceover) or silent audio
+  if (!opts.withVoiceover || !existsSync(join(runDir, 'with_audio.mp4'))) {
+    const musicPath = join(ROOT, 'workspace', 'scs001', 'music', 'tech-ambient.mp3');
+    if (existsSync(musicPath)) {
+      const withMusic = join(runDir, 'with_music.mp4');
+      execSync(
+        `${FFMPEG} -y -i "${currentPath}" -i "${musicPath}" ` +
+        `-filter_complex "[1:a]volume=0.15,aloop=loop=-1:size=2e+09[music]" ` +
+        `-map 0:v -map "[music]" -c:v copy -c:a aac -b:a 128k -shortest "${withMusic}"`,
+        { stdio: 'pipe', timeout: 15000 }
+      );
+      currentPath = withMusic;
+      console.log('    Background music added (no voiceover)');
+    } else {
+      const withSilence = join(runDir, 'with_silence.mp4');
+      execSync(
+        `${FFMPEG} -y -i "${currentPath}" -f lavfi -i anullsrc=channel_layout=stereo:sample_rate=44100 ` +
+        `-c:v copy -c:a aac -b:a 128k -shortest "${withSilence}"`,
+        { stdio: 'pipe', timeout: 15000 }
+      );
+      currentPath = withSilence;
+    }
   }
 
   // Step 4: Add Kognai outro

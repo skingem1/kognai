@@ -10,9 +10,31 @@
  */
 
 import { execSync } from 'child_process';
+import { writeFileSync } from 'fs';
 import { join } from 'path';
 
 const ROOT = join(__dirname, '..', '..');
+
+/** Call Ollama safely — writes payload to temp file to avoid shell escaping issues */
+function callOllama(prompt: string, opts?: { maxTokens?: number; temperature?: number }): string {
+  let host = process.env.OLLAMA_HOST || 'http://localhost:11434';
+  if (!host.startsWith('http')) host = `http://${host}`;
+  const payload = JSON.stringify({
+    model: 'qwen3:14b',
+    prompt,
+    stream: false,
+    think: false,
+    options: { num_predict: opts?.maxTokens || 1000, temperature: opts?.temperature || 0.5 },
+  });
+  const tmpFile = `/tmp/ollama_payload_${Date.now()}.json`;
+  writeFileSync(tmpFile, payload);
+  const result = execSync(
+    `curl -s --max-time 60 ${host}/api/generate -d @"${tmpFile}"`,
+    { encoding: 'utf-8', timeout: 90000 }
+  );
+  try { execSync(`rm "${tmpFile}"`, { stdio: 'pipe' }); } catch {}
+  return JSON.parse(result).response || '';
+}
 
 export interface CodeDemoStep {
   step_id: string;
@@ -46,8 +68,6 @@ function detectLanguage(code: string): string {
 
 export async function generateCodeDemoScript(input: { code?: string; prompt?: string }): Promise<CodeDemoScript> {
   const demoId = `demo-${Date.now().toString(36)}`;
-  const host = process.env.OLLAMA_HOST || 'http://localhost:11434';
-
   let codeToExplain = input.code || '';
   let language = '';
 
@@ -57,15 +77,7 @@ export async function generateCodeDemoScript(input: { code?: string; prompt?: st
     const genPrompt = `Write clean, working code for: "${input.prompt}"
 Return ONLY the code, no markdown fences, no explanation. Keep it under 30 lines.`;
 
-    const genResult = execSync(
-      `curl -s --max-time 45 ${host}/api/generate -d '${JSON.stringify({
-        model: 'qwen3:14b', prompt: genPrompt, stream: false, think: false,
-        options: { num_predict: 800, temperature: 0.3 },
-      }).replace(/'/g, "'\\''")}'`,
-      { encoding: 'utf-8', timeout: 60000 }
-    );
-
-    codeToExplain = (JSON.parse(genResult).response || '').trim();
+    codeToExplain = callOllama(genPrompt, { maxTokens: 800, temperature: 0.3 }).trim();
     // Strip markdown fences if present
     codeToExplain = codeToExplain.replace(/^```\w*\n?/, '').replace(/\n?```$/, '').trim();
   }
@@ -108,15 +120,7 @@ Return JSON only:
   "hashtags": ["#coding", "#${language}", "#tutorial"]
 }`;
 
-  const result = execSync(
-    `curl -s --max-time 60 ${host}/api/generate -d '${JSON.stringify({
-      model: 'qwen3:14b', prompt: scriptPrompt, stream: false, think: false,
-      options: { num_predict: 1500, temperature: 0.5 },
-    }).replace(/'/g, "'\\''")}'`,
-    { encoding: 'utf-8', timeout: 90000 }
-  );
-
-  const llmResponse = JSON.parse(result).response || '';
+  const llmResponse = callOllama(scriptPrompt, { maxTokens: 1500, temperature: 0.5 });
   const first = llmResponse.indexOf('{');
   const last = llmResponse.lastIndexOf('}');
   if (first < 0 || last <= first) throw new Error('No JSON in LLM response');
