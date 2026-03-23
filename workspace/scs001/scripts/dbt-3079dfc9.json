@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-3079dfc9",
+  "topic_id": "reddit-aad30ee18052",
+  "format": "debate",
+  "title": "Daily Crypto Discussion - March 23, 2026 (GMT+0)",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Sharing private keys is like handing over your life savings to a thief — no exceptions, no compromises.",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Wallet seeds are encrypted, recoverable, and far more secure than relying on someone else's infrastructure.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Private keys are single points of failure; seed phrases are backed by BIP-39 and used in 97% of hardware wallets today.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Seed phrases can be brute-forced, but private keys are mathematically unguessable if stored properly.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Trust no one — your private key is your only line of defense.",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "Do not share your private keys vs wallet seed. Use strong",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#daily",
+    "#crypto",
+    "#discussion"
+  ],
+  "generated_at": "2026-03-23T05:31:31.972Z",
+  "llm_used": true
+}
