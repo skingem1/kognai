@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-4c80f313",
+  "topic_id": "custom-mn2vadmy-0",
+  "format": "vision",
+  "title": "China just banned all Western AI models — what happens next",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "If China bans Western AI models, how will it reshape global innovation and trust in AI systems?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "China can develop its own models, but training them requires data, compute power, and time—resources not easily replicated overnight.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "This could deepen the digital divide, limiting access to advanced AI tools for global researchers and smaller economies.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Builders are focusing on open-source models and federated learning to ensure broader access and compliance with local regulations.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "A future where AI is more inclusive, with diverse models coexisting and learning from one another across borders.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The ban may accelerate innovation, but only if collaboration and ethical frameworks keep pace with technological advances.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of china",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#china",
+    "#just",
+    "#banned"
+  ],
+  "video_cue": "A split-screen showing Chinese engineers training AI models alongside international researchers in a collaborative virtual environment.",
+  "generated_at": "2026-03-23T07:31:47.514Z",
+  "llm_used": true
+}

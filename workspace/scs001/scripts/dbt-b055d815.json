@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-b055d815",
+  "topic_id": "custom-mn2v7xok-1",
+  "format": "debate",
+  "title": "The 5 best free alternatives to ChatGPT Plus",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "The best free alternatives to ChatGPT Plus are not defined by quantity, but by quality and protocol adherence. (3 sec)",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "But without the \"5,\" you're just listing options — not helping users choose the most effective tools for their needs. (5 sec)",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "My point is about protocol compatibility — models like LLaMA and Falcon support open-source frameworks better than any \"top 5\" list. (5 sec)",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "The \"5\" gives structure and clarity — users can't compare or evaluate without a defined number of options to consider. (5 sec)",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "The \"5\" isn't arbitrary — it's a proven framework for decision-making in tech. (4 sec)",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "the vs 5",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#the",
+    "#5",
+    "#best"
+  ],
+  "generated_at": "2026-03-23T07:30:08.376Z",
+  "llm_used": true
+}

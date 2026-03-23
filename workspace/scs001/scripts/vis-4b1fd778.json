@@ -1,0 +1,69 @@
+{
+  "script_id": "vis-4b1fd778",
+  "topic_id": "custom-mn2vadmy-1",
+  "format": "vision",
+  "title": "The 5 best free alternatives to ChatGPT Plus",
+  "lines": [
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "What if we could harness the power of advanced AI without the cost of ChatGPT Plus? What free alternatives are on the horizon?",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "LLaMA from Meta, Falcon from Techtonica, and Starcoder offer strong open-source models, with ongoing improvements in reasoning and coding capabilities.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "But open-source models risk misuse — from deepfakes to biased outputs — raising concerns about who controls these powerful tools.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Flux",
+      "avatar_id": "flux",
+      "text": "Builders are implementing guardrails, watermarking, and community moderation to ensure responsible use and transparency in model outputs.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Prism",
+      "avatar_id": "prism",
+      "text": "Imagine a world where ethical AI frameworks guide development — ensuring fairness, safety, and accessibility for all.",
+      "start_s": 22,
+      "end_s": 28,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Sage",
+      "avatar_id": "sage",
+      "text": "The future of AI lies not in exclusivity, but in shared innovation, where ethical and technical progress go hand in hand.",
+      "start_s": 28,
+      "end_s": 33,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 33,
+  "caption_text": "The Future of the",
+  "hashtags": [
+    "#AIFuture",
+    "#Vision",
+    "#Roundtable",
+    "#the",
+    "#5",
+    "#best"
+  ],
+  "video_cue": "A group of diverse engineers and ethicists collaborating in a digital workspace with open-source AI tools on display.",
+  "generated_at": "2026-03-23T07:32:09.307Z",
+  "llm_used": true
+}
