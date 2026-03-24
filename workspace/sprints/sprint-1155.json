@@ -1,0 +1,41 @@
+{
+  "sprint_id": "sprint-1155",
+  "title": "OPS — Telegram operator UX wave 34: warmup status, A/B top formula, production quality check in /health",
+  "description": "Add 3 compact /health signals: (1) workspace/scs001/warmup-status.json warmup_complete + days_active, (2) workspace/scs001/ab-analysis-report.json total_experiments + top formula, (3) workspace/gates/production-quality-check.json all_critical_pass + date.",
+  "source": "queue-empty-auto",
+  "tasks": [
+    {
+      "id": "1155-01",
+      "title": "Add warmup-status.json warmup complete + days active to /health",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1155"
+    },
+    {
+      "id": "1155-02",
+      "title": "Add ab-analysis-report.json top formula + experiments count to /health",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1155"
+    },
+    {
+      "id": "1155-03",
+      "title": "Add production-quality-check.json all_critical_pass status to /health",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1155"
+    }
+  ]
+}

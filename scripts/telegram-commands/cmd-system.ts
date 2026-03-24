@@ -817,7 +817,54 @@ export function cmdHealth(): string {
     }
   } catch { /* skip */ }
 
-  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${botUptimeSection}${ollamaSection}${memWarnSection}${memTableSection}${supabaseSection}${supabaseSyncSection}${diskSection}${watchdogSection}${runtimeSection}${tailscaleSection}${hetznerSection}${anthropicSection}${ioSection}${morningBriefSection}${digestSection}${staleCronsSection}${supabaseDomainSection}${anthropicBudgetSection}${pipelineValidationSection}${worktreeSection}${botMemSection}${gateDaysSection}${backupSection}${postingHealthSection}${exportFilesSection}${tokenHealthSection}${statsSection}${inventorySection}${gateAuditSection}${autoDeliverSection}${bulkCaptionsSection}${playbackSection}${qcSection}${smokeSection}${achiriDauSection}${achiriE2eSection}${videoValidSection}${pipelineMetricsSection}${achiriSafetySection}${leaderboardSection}${brainxSection}${achiriLaunchSection}${postingScheduleSection}${phase15GateSection}${batchProduceSection}${revenueSummarySection}${contentDiversitySection}${costLogSection}`;
+  // Sprint 1155 (wave 34): warmup-status.json warmup complete + days active
+  let warmupSection = '';
+  try {
+    const wuPath = path.join(ROOT, 'workspace', 'scs001', 'warmup-status.json');
+    if (fs.existsSync(wuPath)) {
+      const wu = JSON.parse(fs.readFileSync(wuPath, 'utf-8'));
+      const wuComplete = wu.warmup_complete ?? false;
+      const wuDays = wu.days_active ?? 0;
+      const wuVerified = wu.verified ?? false;
+      const wuIcon = wuComplete && wuVerified ? '✅' : wuComplete ? '🟡' : wuDays > 0 ? '🔄' : '⏳';
+      const wuStatus = wuComplete ? 'complete' : `${wuDays}d active`;
+      const wuVerStr = wuVerified ? ' · verified' : '';
+      warmupSection = `\n\n${wuIcon} *Warmup:* ${wuStatus}${wuVerStr}`;
+    }
+  } catch { /* skip */ }
+
+  // Sprint 1155 (wave 34): ab-analysis-report.json top formula + experiments count
+  let abAnalysisSection = '';
+  try {
+    const abPath = path.join(ROOT, 'workspace', 'scs001', 'ab-analysis-report.json');
+    if (fs.existsSync(abPath)) {
+      const ab = JSON.parse(fs.readFileSync(abPath, 'utf-8'));
+      const totalExp = ab.total_experiments ?? 0;
+      const rankings: any[] = ab.formula_rankings ?? [];
+      const top = rankings.find((r: any) => r.rank === 1) ?? rankings[0];
+      const abIcon = totalExp > 0 ? '🧪' : '⚪';
+      const topStr = top ? ` · top: ${top.formula} (${(top.avg_score * 100).toFixed(0)}% avg)` : '';
+      abAnalysisSection = `\n\n${abIcon} *A/B:* ${totalExp} experiments${topStr}`;
+    }
+  } catch { /* skip */ }
+
+  // Sprint 1155 (wave 34): production-quality-check.json all_critical_pass + date
+  let prodQualitySection = '';
+  try {
+    const pqPath = path.join(ROOT, 'workspace', 'gates', 'production-quality-check.json');
+    if (fs.existsSync(pqPath)) {
+      const pq = JSON.parse(fs.readFileSync(pqPath, 'utf-8'));
+      const allPass = pq.all_critical_pass ?? false;
+      const pqDate = pq.date ?? 'unknown';
+      const checks: any[] = pq.checks ?? [];
+      const passCount = checks.filter((c: any) => c.pass).length;
+      const totalChecks = checks.length;
+      const pqIcon = allPass ? '✅' : '⚠️';
+      prodQualitySection = `\n\n${pqIcon} *Prod quality:* ${passCount}/${totalChecks} checks · ${pqDate}`;
+    }
+  } catch { /* skip */ }
+
+  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${botUptimeSection}${ollamaSection}${memWarnSection}${memTableSection}${supabaseSection}${supabaseSyncSection}${diskSection}${watchdogSection}${runtimeSection}${tailscaleSection}${hetznerSection}${anthropicSection}${ioSection}${morningBriefSection}${digestSection}${staleCronsSection}${supabaseDomainSection}${anthropicBudgetSection}${pipelineValidationSection}${worktreeSection}${botMemSection}${gateDaysSection}${backupSection}${postingHealthSection}${exportFilesSection}${tokenHealthSection}${statsSection}${inventorySection}${gateAuditSection}${autoDeliverSection}${bulkCaptionsSection}${playbackSection}${qcSection}${smokeSection}${achiriDauSection}${achiriE2eSection}${videoValidSection}${pipelineMetricsSection}${achiriSafetySection}${leaderboardSection}${brainxSection}${achiriLaunchSection}${postingScheduleSection}${phase15GateSection}${batchProduceSection}${revenueSummarySection}${contentDiversitySection}${costLogSection}${warmupSection}${abAnalysisSection}${prodQualitySection}`;
 }
 
 export function cmdTier(): string {
