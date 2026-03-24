@@ -1,0 +1,21 @@
+{
+  "sprint_id": "sprint-1171",
+  "title": "OPS — /status: show days since last pipeline run",
+  "description": "Extend the existing pipelineValidationSection in cmdStatus() to display 'pipeline: Xd ago — consider running' when the last run is >3 days old. Currently it shows hours; extend to also compute days and add the nudge.",
+  "source": "queue-prescribed",
+  "block": "OPS",
+  "tasks": [
+    {
+      "id": "1171-01",
+      "title": "Add days-ago + consider-running nudge to pipelineValidationSection when >3d",
+      "type": "feature",
+      "task_type": "ux",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1171",
+      "notes": "File >3000 lines — swarm bypassed. Small surgical edit to pipelineValidationSection."
+    }
+  ]
+}

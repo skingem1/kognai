@@ -402,10 +402,12 @@ export function cmdHealth(): string {
       const runTs = runData.completed_at ?? runData.started_at ?? runData.timestamp;
       if (runTs) {
         const ageH = (Date.now() - new Date(runTs).getTime()) / 3600000;
-        const ageStr = ageH < 1 ? `${Math.round(ageH * 60)}m ago` : `${Math.round(ageH)}h ago`;
+        const ageD = ageH / 24;
+        const ageStr = ageH < 1 ? `${Math.round(ageH * 60)}m ago` : ageH < 48 ? `${Math.round(ageH)}h ago` : `${Math.floor(ageD)}d ago`; // Sprint 1171
         const runIcon = ageH <= 24 ? '✅' : '⚠️';
         const statusStr = runData.status ?? (runData.passed >= 0 ? (runData.failed === 0 ? 'pass' : 'fail') : 'unknown');
-        pipelineValidationSection = `\n\n*Pipeline validation:* ${runIcon} last run ${ageStr}${ageH > 24 ? ' — overdue!' : ''} · ${statusStr}`;
+        const nudge = ageD > 3 ? ' — consider running' : (ageH > 24 ? ' — overdue!' : ''); // Sprint 1171
+        pipelineValidationSection = `\n\n*Pipeline validation:* ${runIcon} last run ${ageStr}${nudge} · ${statusStr}`;
       }
     } else {
       pipelineValidationSection = `\n\n*Pipeline validation:* ⚠️ no run record found`;
