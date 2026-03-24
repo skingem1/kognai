@@ -1,11 +1,11 @@
 {
   "gate": "phase1-5-tiktok-kill-switch",
   "date": "2026-03-24",
-  "generated_at": "2026-03-24T09:55:20.405Z",
+  "generated_at": "2026-03-24T10:22:17.234Z",
   "deadline": "2026-04-07",
   "days_remaining": 14,
-  "urgency": "ON_TRACK",
-  "urgency_signal": "Posting pace is sufficient",
+  "urgency": "WARNING",
+  "urgency_signal": "Behind pace — 28 posts in 14d",
   "pace_needed": 2,
   "criteria": [
     {
@@ -22,7 +22,7 @@
     }
   ],
   "overall_pass": false,
-  "recommendation": "ON TRACK — 2/30 posts, 14 days remaining. Keep posting at current pace.",
+  "recommendation": "WARNING — Behind pace. Need 28 posts in 14 days (2/day). Increase posting frequency.",
   "raw": {
     "posts_count": 2,
     "total_views": 0,

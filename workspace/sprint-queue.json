@@ -311,46 +311,47 @@
       "priority": "high",
       "rationale": "April 14 launch in 21 days. Operator needs a single /godman-launch command that shows: npm login status, smoke test results for all 7 protocols, publish status (checking npm registry), X thread file location, ClaWHub listing file location. Makes the launch day simple.",
       "created_at": "2026-03-24",
-      "_note": "Shipped 2026-03-24 — commit 7bffffab. Enhanced existing /godman in cmd-system.ts with npm login check + demo video status. Swarm bypassed (direct edit)."
+      "_note": "Shipped 2026-03-24 \u2014 commit 7bffffab. Enhanced existing /godman in cmd-system.ts with npm login check + demo video status. Swarm bypassed (direct edit)."
     },
     {
       "sprint": 1014,
-      "title": "GODMAN-LAUNCH — /godman: npm registry versions + X thread count",
+      "title": "GODMAN-LAUNCH \u2014 /godman: npm registry versions + X thread count",
       "block": "GODMAN-PROTOCOLS",
       "status": "done",
       "priority": "high",
       "rationale": "Complete the /godman launch dashboard with npm registry version checks and X thread file count.",
       "created_at": "2026-03-24",
-      "_note": "Shipped 2026-03-24 — commit 8f99a449. npm view for 7 protocols + x-replies count added to cmdGodman(). Swarm bypassed (direct edit)."
+      "_note": "Shipped 2026-03-24 \u2014 commit 8f99a449. npm view for 7 protocols + x-replies count added to cmdGodman(). Swarm bypassed (direct edit)."
     },
     {
       "sprint": 1015,
-      "title": "GODMAN-LAUNCH — smoke-test runner: npx ts-node scripts/godman-smoke.ts (all 7)",
+      "title": "GODMAN-LAUNCH \u2014 smoke-test runner: npx ts-node scripts/godman-smoke.ts (all 7)",
       "block": "GODMAN-PROTOCOLS",
       "status": "done",
       "priority": "high",
       "rationale": "Pre-publish smoke validation. Create scripts/godman-smoke.ts that cd into each of 7 protocol dirs and runs npm run test. Shows pass/fail per protocol. Exit code 0 if all pass. Called by godman-launch-day.sh and /godman-smoke Telegram command.",
       "created_at": "2026-03-24",
-      "_note": "Shipped 2026-03-24 — commit a095c922. scripts/godman-smoke.ts + /godman-smoke Telegram command. All 7 protocols pass."
+      "_note": "Shipped 2026-03-24 \u2014 commit a095c922. scripts/godman-smoke.ts + /godman-smoke Telegram command. All 7 protocols pass."
     },
     {
       "sprint": 1016,
-      "title": "OPS — /caption-next: auto-pick top unposted video + caption",
+      "title": "OPS \u2014 /caption-next: auto-pick top unposted video + caption",
       "block": "OPS",
       "status": "done",
       "priority": "high",
-      "rationale": "Gate urgency: 2/30 posts. /caption-next removes friction — picks top unposted video automatically.",
+      "rationale": "Gate urgency: 2/30 posts. /caption-next removes friction \u2014 picks top unposted video automatically.",
       "created_at": "2026-03-24",
-      "_note": "Shipped 2026-03-24 — commit bbe341e9. cmdCaptionNext() in cmd-content.ts. 20 unposted candidates found."
+      "_note": "Shipped 2026-03-24 \u2014 commit bbe341e9. cmdCaptionNext() in cmd-content.ts. 20 unposted candidates found."
     },
     {
       "sprint": 1017,
-      "title": "OPS — /deliver-next: send top unposted video mp4 to Telegram as file",
+      "title": "OPS \u2014 /deliver-next: send top unposted video mp4 to Telegram as file",
       "block": "OPS",
-      "status": "pending",
+      "status": "skipped",
       "priority": "high",
       "rationale": "Gate urgency: 2/30 posts. Currently operator must find the mp4 file path and upload manually. /deliver-next sends the actual mp4 file as a Telegram document so operator can save to camera roll and post to TikTok directly from phone.",
-      "created_at": "2026-03-24"
+      "created_at": "2026-03-24",
+      "_note": "Auto-skipped: sprint-1017 already committed"
     }
   ]
 }

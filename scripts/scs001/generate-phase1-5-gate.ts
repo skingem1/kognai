@@ -51,7 +51,7 @@ function getUrgencyLevel(postsLeft: number, daysLeft: number, totalViews: number
   if (postsLeft > 0 && postsLeft === POSTS_TARGET)  return { level: 'NOT_STARTED', signal: '0 posts recorded. Start posting now.' };
   if (daysLeft <= 3 && postsLeft > 0)               return { level: 'FAILED', signal: 'Kill switch trigger — deadline imminent' };
   if (daysLeft <= 7 && postsLeft > daysLeft * 3)     return { level: 'CRITICAL', signal: `${postsLeft} posts needed in ${daysLeft}d — kill risk` };
-  if (daysLeft <= 14 && postsLeft > daysLeft * 2)    return { level: 'WARNING', signal: `Behind pace — ${postsLeft} posts in ${daysLeft}d` };
+  if (daysLeft <= 14 && postsLeft >= daysLeft * 2)   return { level: 'WARNING', signal: `Behind pace — ${postsLeft} posts in ${daysLeft}d` };
   return { level: 'ON_TRACK', signal: 'Posting pace is sufficient' };
 }
 

@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-1019",
+  "title": "OPS-BUGFIX — gate urgency off-by-one: 2/30 shows ON_TRACK instead of WARNING",
+  "description": "With 28 posts left in 14 days, getUrgencyLevel() returns ON_TRACK because postsLeft > daysLeft*2 is 28>28=false. Fix: change > to >= so 2 posts/day needed shows WARNING, not ON_TRACK. Regenerate gate. Also update update-gate-tracker.ts and generate-gate-report.ts with same fix.",
+  "block": "OPS",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1019-01",
+      "title": "Fix urgency condition in generate-phase1-5-gate.ts",
+      "type": "bug",
+      "task_target": "scripts/scs001/generate-phase1-5-gate.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1019",
+      "description": "Change: if (daysLeft <= 14 && postsLeft > daysLeft * 2) to: if (daysLeft <= 14 && postsLeft >= daysLeft * 2). Re-run gate generator. Verify urgency shows WARNING."
+    }
+  ]
+}
