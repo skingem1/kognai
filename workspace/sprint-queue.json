@@ -779,9 +779,10 @@
       "sprint": 1082,
       "title": "PHASE2 — Achiri: /alpha readiness: verify all 5 pre-alpha checks pass",
       "block": "PHASE2",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
-      "rationale": "Achiri alpha launches 32d from now. Run scripts/achiri/achiri-readiness.ts and verify all critical checks pass. Fix any that don't."
+      "rationale": "Achiri alpha launches 32d from now. Run scripts/achiri/achiri-readiness.ts and verify all critical checks pass. Fix any that don't.",
+      "_note": "Shipped 2026-03-24 — commit f5db4326. All 9 checks pass at 100%."
     },
     {
       "sprint": 1083,
