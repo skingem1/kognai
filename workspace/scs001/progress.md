@@ -6062,3 +6062,22 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Sprint 1076: /health already shows heartbeat age + stale warning >10min
 - Sprint 1077: /today already shows Today: X/Y posted ON TRACK/NEEDS POSTS
 - Timestamp: 2026-03-24T17:10Z
+
+## Sprint 1146 — Telegram operator UX wave 26
+- Status: PASS
+- Commit: a3216518
+- Files modified: scripts/telegram-commands/cmd-system.ts, cmd-management.ts, cmd-stripe.ts
+- Signals added (10 total):
+  - /health: gate days until Phase 1.5 (Sprint 1137 wave 26)
+  - /health: backup timestamp from backup-status.json or backup.log (Sprint 1145 wave 26)
+  - /health: posting-health.json gate summary (Sprint 1146 wave 26)
+  - /health: export-files.txt count of videos ready to post (Sprint 1146 wave 26)
+  - /health: token-health.json TikTok token status (Sprint 1146 wave 26)
+  - /report: Godman npm publish status per package (Sprint 1143 wave 26)
+  - /errors: all-clear process list (Sprint 1139 wave 26)
+  - /status: Achiri waitlist pending count (Sprint 1136 wave 26)
+  - /status: bot message backlog (Sprint 1144 wave 26)
+  - /achiri: Derja profiler cached pass rate (Sprint 1138 wave 26)
+- Swarm used: no (direct write — known pattern, 3 new signals + 7 pre-committed)
+- AAR: swarm bypassed; direct Sonnet implementation of established cmd-system.ts pattern
+- Timestamp: 2026-03-24T18:00Z
