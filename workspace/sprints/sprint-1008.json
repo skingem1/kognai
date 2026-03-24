@@ -1,0 +1,31 @@
+{
+  "sprint_id": "sprint-1008",
+  "title": "OPS — Gate post count audit: reconcile manual-posts.jsonl + publish-ledger + view-tracker",
+  "description": "Queue replenisher noted gate_state=4/30 posts but daily brief shows 0/30. One of these is wrong. Audit all posting data sources: manual-posts.jsonl, publish-ledger.jsonl, view-tracker (acp/trust-scores.json), and reports/video-inventory.json. Reconcile the count. Add /gate-audit Telegram command showing reconciled breakdown so operator has one source of truth for gate progress.",
+  "block": "OPS",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1008-01",
+      "title": "Write scripts/scs001/audit-gate-count.ts — reconcile all posting data sources",
+      "type": "feature",
+      "task_target": "scripts/scs001/audit-gate-count.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1008",
+      "description": "Create scripts/scs001/audit-gate-count.ts (max 120 lines). Read: workspace/scs001/manual-posts.jsonl, workspace/scs001/publish-ledger.jsonl, acp/trust-scores.json (has posted field), reports/video-inventory.json. For each source: count unique video_ids that are marked as posted/delivered. Print a reconciliation table: {source, count, video_ids[]}. Write result to reports/gate-audit.json: {audited_at, sources: {manual_posts, publish_ledger, trust_scores, inventory}, reconciled_count, discrepancy, recommended_count}. Use only fs, path (stdlib)."
+    },
+    {
+      "id": "1008-02",
+      "title": "Add cmdGateAudit() to scripts/telegram-commands/cmd-gate.ts",
+      "type": "feature",
+      "task_target": "scripts/telegram-commands/cmd-gate.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1008",
+      "description": "Add cmdGateAudit() function at the end of cmd-gate.ts. Reads reports/gate-audit.json if it exists, else runs audit-gate-count.ts via execSync. Displays: each source with its count, the reconciled_count, and discrepancy note. Returns string. Max 50 lines added. Also register in telegram-bot.ts: case '/gate-audit': response = cmdGateAudit(); break;"
+    }
+  ]
+}

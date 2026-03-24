@@ -1,0 +1,35 @@
+{
+  "audited_at": "2026-03-24T09:52:41.010Z",
+  "sources": {
+    "manual_posts": {
+      "total": 5,
+      "real": 2,
+      "dry_runs": 3,
+      "real_ids": [
+        "exp-4aaca82f",
+        "v2-a6511e70"
+      ],
+      "dry_ids": [
+        "video-0b084cc1",
+        "video-c038e3d6",
+        "video-353e9a53"
+      ]
+    },
+    "publish_ledger": {
+      "total": 1256,
+      "with_post_id": 0
+    },
+    "gate_report": {
+      "file": "workspace/gates/phase1-5-gate.json",
+      "gate_count": 4,
+      "date": "2026-03-24",
+      "urgency": "ON_TRACK"
+    }
+  },
+  "reconciled_count": 2,
+  "discrepancy": 2,
+  "discrepancy_note": "Gate file shows 4 posts but manual-posts.jsonl has 2 real (non-dry) posts.",
+  "recommended_count": 2,
+  "gate_target": 30,
+  "gate_remaining": 28
+}

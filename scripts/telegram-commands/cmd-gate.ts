@@ -528,3 +528,62 @@ export function cmdCalendar(): string {
     return `❌ Error reading calendar: ${e.message}`;
   }
 }
+
+// Sprint 1008: /gate-audit — reconcile all posting data sources
+export function cmdGateAudit(): string {
+  const auditPath = path.join(ROOT, 'reports', 'gate-audit.json');
+
+  // Regenerate if missing or stale (>1h)
+  const needsRegen = !fs.existsSync(auditPath) ||
+    (Date.now() - fs.statSync(auditPath).mtimeMs > 3600000);
+
+  if (needsRegen) {
+    try {
+      execSync('npx ts-node --transpile-only scripts/scs001/audit-gate-count.ts', {
+        cwd: ROOT, timeout: 20000, stdio: 'pipe'
+      });
+    } catch (e: any) {
+      return `❌ Audit failed: ${e.message?.slice(0, 200)}`;
+    }
+  }
+
+  if (!fs.existsSync(auditPath)) return '❌ No gate audit report found.';
+
+  let a: any;
+  try { a = JSON.parse(fs.readFileSync(auditPath, 'utf-8')); } catch {
+    return '❌ Could not parse gate-audit.json';
+  }
+
+  const lines: string[] = [];
+  lines.push('🔍 *Gate Count Audit*');
+  lines.push('');
+
+  const mp = a.sources?.manual_posts ?? {};
+  lines.push('*manual-posts.jsonl*');
+  lines.push(`• Total entries: ${mp.total ?? 0}`);
+  lines.push(`• ✅ Real posts: ${mp.real ?? 0}`);
+  lines.push(`• 🔧 Dry runs: ${mp.dry_runs ?? 0}`);
+  lines.push('');
+
+  const pl = a.sources?.publish_ledger ?? {};
+  lines.push('*publish-ledger.jsonl*');
+  lines.push(`• Total entries: ${pl.total ?? 0}`);
+  lines.push(`• With TikTok post ID: ${pl.with_post_id ?? 0}`);
+  lines.push('');
+
+  const gr = a.sources?.gate_report ?? {};
+  lines.push('*Gate report*');
+  lines.push(`• Stored count: ${gr.gate_count ?? 'N/A'} (${gr.date ?? '?'})`);
+  lines.push(`• Urgency: ${gr.urgency ?? 'N/A'}`);
+  lines.push('');
+
+  lines.push(`📊 *Reconciled: ${a.reconciled_count ?? 0}/30* (${a.gate_remaining ?? 30} remaining)`);
+  if (a.discrepancy_note && a.discrepancy_note !== 'Sources agree.') {
+    lines.push(`⚠️ ${a.discrepancy_note}`);
+  } else {
+    lines.push('✅ Sources agree.');
+  }
+  lines.push(`_Audited: ${a.audited_at ? a.audited_at.replace('T', ' ').slice(0, 16) : '?'}_`);
+
+  return lines.join('\n');
+}
