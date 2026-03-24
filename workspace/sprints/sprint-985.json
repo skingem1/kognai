@@ -1,11 +1,10 @@
 {
   "sprint_id": "sprint-985",
-  "title": "ACHIRI-ALPHA-OPS — /alpha Telegram command + weekly PM2 cron for alpha report",
-  "description": "Wire Sprint 984's alpha-report.ts into operator workflow: add /alpha Telegram command for on-demand reports and PM2 weekly cron that sends alpha status every Monday at 9am.",
-  "block": "ACHIRI",
-  "source": "queue-exhausted-alpha-ops",
+  "title": "GODMAN-SDK-CI-FIX — Revert SDK deps to file:../ to fix CI regression from Sprint 983",
+  "description": "Sprint 983 changed SDK package.json deps from file:../ to ^0.2.0 which broke CI (packages not on npm yet). Revert to file:../ refs. PUBLISH-CHECKLIST.md documents what to change at publish time.",
+  "block": "GODMAN-PROTOCOLS",
+  "source": "regression-fix",
   "tasks": [
-    { "id": "985-01", "title": "Add /alpha Telegram command to telegram-bot.ts", "type": "feature", "task_target": "scripts/telegram-bot.ts", "agent": "coder", "status": "pending", "priority": "high", "sprint_id": "sprint-985" },
-    { "id": "985-02", "title": "Add achiri-alpha-weekly PM2 cron to ecosystem.config.js", "type": "feature", "task_target": "ecosystem.config.js", "agent": "coder", "status": "pending", "priority": "high", "sprint_id": "sprint-985" }
+    { "id": "985-01", "title": "Revert SDK package.json deps to file:../", "type": "fix", "task_target": "workspace/godman-protocols/sdk/package.json", "agent": "coder", "status": "done", "priority": "critical", "sprint_id": "sprint-985" }
   ]
 }
