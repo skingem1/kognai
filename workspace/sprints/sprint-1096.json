@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1096",
+  "title": "INFRA — /health: highlight if PM2 process has >100 restarts",
+  "description": "Already implemented at lines 83-91 — shows excessive restart warning. No changes needed.",
+  "block": "INFRA",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1096-01",
+      "title": "Verify restart warning already present in cmdHealth",
+      "type": "validation",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1096"
+    }
+  ]
+}
