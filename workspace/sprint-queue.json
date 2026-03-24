@@ -2846,7 +2846,7 @@
       "sprint": 1184,
       "title": "OPS — /status: show last YouTube video posted + days since",
       "block": "OPS",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "Add a YouTube last-posted signal to /status showing the most recent cross-platform YouTube post title and days since, from crossplatform-publish.jsonl."
     },
