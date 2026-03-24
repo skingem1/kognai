@@ -127,6 +127,19 @@ export function cmdGate(): string {
     // Sprint 1138 (wave 13): views needed per remaining day
     ...(viewsNeeded > 0 && daysLeft > 0 ? [`👁️ Views/day needed: *${(viewsNeeded / daysLeft).toFixed(1)}/day* to hit 500`] : []),
     `📊 Pace needed: ${postsPerDay} posts/day`,
+    // Sprint 1132 (wave 14): posts/day over last 7 days
+    (() => {
+      if (!fs.existsSync(manualPostsPath)) return '';
+      try {
+        const sevenDaysAgo = new Date(Date.now() - 7 * 86_400_000).toISOString().slice(0, 10);
+        const lines7d = fs.readFileSync(manualPostsPath, 'utf-8').split('\n').filter(l => l.trim());
+        const last7 = lines7d.filter(l => {
+          try { const p = JSON.parse(l); return (p.posted_at ?? p.recorded_at ?? '').slice(0, 10) >= sevenDaysAgo; } catch { return false; }
+        });
+        const rate7d = (last7.length / 7).toFixed(1);
+        return `📅 Last 7d: *${last7.length} posts* (${rate7d}/day)`;
+      } catch { return ''; }
+    })(),
     ``,
     `*── Infrastructure ──*`,
     `🔥 Warmup: ${warmupStatus}`,
@@ -653,4 +666,59 @@ export function cmdGateRefresh(): string {
 
   // Return the refreshed gate summary
   return '♻️ *Gate Refreshed*\n\n' + cmdGate();
+}
+
+// Sprint 1131: /gate-sim — posting pace simulator
+export function cmdGateSim(): string {
+  const posts = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'))
+    .filter((p: any) => p.video_id);
+  const totalPosts = posts.length;
+  const totalViews = posts.reduce((s: number, p: any) => s + (p.views ?? 0), 0);
+  const now = new Date();
+  const GATE_DATE = new Date('2026-04-07T00:00:00Z');
+  const daysLeft = Math.max(0, Math.ceil((GATE_DATE.getTime() - now.getTime()) / 86_400_000));
+  const postsNeeded = Math.max(0, 30 - totalPosts);
+
+  if (postsNeeded === 0) {
+    return '✅ *Gate Simulator* — Post target already met! 30/30 posts recorded.';
+  }
+
+  const scenarios = [1, 2, 3, 4, 5];
+  const lines: string[] = [
+    '🧮 *Gate Pace Simulator*',
+    '',
+    `📊 Current: *${totalPosts}/30* posts · *${totalViews}/500* views · *${daysLeft}d* left`,
+    `📦 Need: *${postsNeeded}* more posts`,
+    '',
+    '*Scenario Analysis:*',
+  ];
+
+  for (const pace of scenarios) {
+    const daysToComplete = Math.ceil(postsNeeded / pace);
+    const completionDate = new Date(now.getTime() + daysToComplete * 86_400_000);
+    const dateStr = completionDate.toISOString().slice(5, 10); // MM-DD
+    const onTime = completionDate <= GATE_DATE;
+    const margin = Math.round((GATE_DATE.getTime() - completionDate.getTime()) / 86_400_000);
+
+    let effort = '';
+    if (pace === 1) effort = '(easy — 5 min/day)';
+    else if (pace === 2) effort = '(moderate — 10 min/day)';
+    else if (pace === 3) effort = '(focused — 15 min/day)';
+    else effort = '(sprint — 20+ min/day)';
+
+    const status = onTime
+      ? `✅ ${dateStr} (+${margin}d margin)`
+      : `❌ ${dateStr} (${Math.abs(margin)}d late)`;
+
+    lines.push(`  *${pace}/day* → ${daysToComplete}d → ${status} ${effort}`);
+  }
+
+  const minPace = Math.ceil(postsNeeded / Math.max(1, daysLeft));
+  lines.push('');
+  lines.push(`⚡ *Minimum pace for on-time:* ${minPace}/day`);
+  lines.push(`💡 *Recommended:* ${Math.min(minPace + 1, 5)}/day (buffer for missed days)`);
+  lines.push('');
+  lines.push('_Tap /pickup to start posting now_');
+
+  return lines.join('\n');
 }

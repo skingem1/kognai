@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1131",
+  "title": "GATE — /gate-sim: posting pace simulator for Phase 1.5 gate",
+  "description": "Show what happens at 1/day, 2/day, 3/day posting pace: when gate is met, is it before Apr 7, and required effort level.",
+  "block": "GATE",
+  "source": "gap-analysis",
+  "tasks": [
+    {
+      "id": "1131-01",
+      "title": "Create /gate-sim command with pace simulation table",
+      "type": "feature",
+      "task_target": "scripts/telegram-commands/cmd-gate.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1131"
+    }
+  ]
+}
