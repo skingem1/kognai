@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1094",
+  "title": "OPS — /morning-brief: add Godman countdown to brief when ≤14d to launch",
+  "description": "Already implemented — daily-digest.ts line 531 shows Godman countdown. No separate /morning-brief command exists; the daily digest serves this purpose.",
+  "block": "OPS",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1094-01",
+      "title": "Verify Godman countdown in daily digest",
+      "type": "validation",
+      "task_target": "scripts/daily-digest.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1094"
+    }
+  ]
+}
