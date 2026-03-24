@@ -1,7 +1,7 @@
 {
   "name": "@godman-protocols/score",
   "version": "0.2.0",
-  "description": "Scoring and Reputation for Agent Outputs — weighted rubric evaluation and reputation tracking for AI agents",
+  "description": "Scoring and Reputation for Agent Outputs \u2014 weighted rubric evaluation and reputation tracking for AI agents",
   "type": "module",
   "main": "dist/index.js",
   "exports": "./dist/index.js",
@@ -17,7 +17,11 @@
     "typecheck": "tsc --noEmit"
   },
   "keywords": [
-    "scoring","reputation","evaluation","agent-quality","audit",
+    "scoring",
+    "reputation",
+    "evaluation",
+    "agent-quality",
+    "audit",
     "godman-protocols",
     "multi-agent"
   ],
@@ -38,5 +42,9 @@
     "typescript": "^5.4.0",
     "tsx": "^4.7.0"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "homepage": "https://github.com/skingem1/godman-protocols/tree/main/score#readme",
+  "bugs": {
+    "url": "https://github.com/skingem1/godman-protocols/issues"
+  }
 }

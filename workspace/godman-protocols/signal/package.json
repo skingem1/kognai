@@ -1,7 +1,7 @@
 {
   "name": "@godman-protocols/signal",
   "version": "0.2.0",
-  "description": "Event Bus and Pub/Sub for Agent Swarms — typed events, topic-glob routing, idempotent delivery, delivery receipts",
+  "description": "Event Bus and Pub/Sub for Agent Swarms \u2014 typed events, topic-glob routing, idempotent delivery, delivery receipts",
   "type": "module",
   "main": "dist/index.js",
   "exports": "./dist/index.js",
@@ -17,7 +17,11 @@
     "typecheck": "tsc --noEmit"
   },
   "keywords": [
-    "event-bus","pub-sub","messaging","agent-communication","idempotent",
+    "event-bus",
+    "pub-sub",
+    "messaging",
+    "agent-communication",
+    "idempotent",
     "godman-protocols",
     "multi-agent"
   ],
@@ -38,5 +42,9 @@
     "typescript": "^5.4.0",
     "tsx": "^4.7.0"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "homepage": "https://github.com/skingem1/godman-protocols/tree/main/signal#readme",
+  "bugs": {
+    "url": "https://github.com/skingem1/godman-protocols/issues"
+  }
 }

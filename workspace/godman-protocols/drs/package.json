@@ -1,7 +1,7 @@
 {
   "name": "@godman-protocols/drs",
   "version": "0.2.0",
-  "description": "Dynamic Resource Scheduling — allocate, preempt, and expire compute resources across AI agent swarms",
+  "description": "Dynamic Resource Scheduling \u2014 allocate, preempt, and expire compute resources across AI agent swarms",
   "type": "module",
   "main": "dist/index.js",
   "exports": "./dist/index.js",
@@ -17,7 +17,11 @@
     "typecheck": "tsc --noEmit"
   },
   "keywords": [
-    "resource-scheduling","allocation","preemption","capacity","cost-control",
+    "resource-scheduling",
+    "allocation",
+    "preemption",
+    "capacity",
+    "cost-control",
     "godman-protocols",
     "multi-agent"
   ],
@@ -38,5 +42,9 @@
     "typescript": "^5.4.0",
     "tsx": "^4.7.0"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "homepage": "https://github.com/skingem1/godman-protocols/tree/main/drs#readme",
+  "bugs": {
+    "url": "https://github.com/skingem1/godman-protocols/issues"
+  }
 }

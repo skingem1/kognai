@@ -1,7 +1,7 @@
 {
   "name": "@godman-protocols/amf",
   "version": "0.2.0",
-  "description": "Agent Message Format — signed, typed envelope format for inter-agent communication, transport-agnostic",
+  "description": "Agent Message Format \u2014 signed, typed envelope format for inter-agent communication, transport-agnostic",
   "type": "module",
   "main": "dist/index.js",
   "exports": "./dist/index.js",
@@ -17,7 +17,11 @@
     "typecheck": "tsc --noEmit"
   },
   "keywords": [
-    "message-format","envelope","signing","hmac","inter-agent",
+    "message-format",
+    "envelope",
+    "signing",
+    "hmac",
+    "inter-agent",
     "godman-protocols",
     "multi-agent"
   ],
@@ -38,5 +42,9 @@
     "typescript": "^5.4.0",
     "tsx": "^4.7.0"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "homepage": "https://github.com/skingem1/godman-protocols/tree/main/amf#readme",
+  "bugs": {
+    "url": "https://github.com/skingem1/godman-protocols/issues"
+  }
 }

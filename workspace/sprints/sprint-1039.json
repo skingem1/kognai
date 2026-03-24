@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1039",
+  "title": "GODMAN-LAUNCH — Add homepage + bugs fields to all 7 protocol + SDK package.json",
+  "description": "All 7 godman protocol package.json files were missing homepage and bugs fields. Added to all 7 + SDK for professional npm registry listing on April 14.",
+  "block": "GODMAN-PROTOCOLS",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1039-01",
+      "title": "Add homepage + bugs fields to 8 package.json files (7 protocols + SDK)",
+      "type": "fix",
+      "task_target": "workspace/godman-protocols/*/package.json",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1039"
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 {
   "name": "@godman-protocols/soul",
   "version": "0.2.0",
-  "description": "Constitutional Constraints and Safety — signed constitutions, kill switches, default-deny evaluation, audit trail",
+  "description": "Constitutional Constraints and Safety \u2014 signed constitutions, kill switches, default-deny evaluation, audit trail",
   "type": "module",
   "main": "dist/index.js",
   "exports": "./dist/index.js",
@@ -17,7 +17,11 @@
     "typecheck": "tsc --noEmit"
   },
   "keywords": [
-    "safety","constitutional-ai","kill-switches","constraints","audit-trail",
+    "safety",
+    "constitutional-ai",
+    "kill-switches",
+    "constraints",
+    "audit-trail",
     "godman-protocols",
     "multi-agent"
   ],
@@ -38,5 +42,9 @@
     "typescript": "^5.4.0",
     "tsx": "^4.7.0"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "homepage": "https://github.com/skingem1/godman-protocols/tree/main/soul#readme",
+  "bugs": {
+    "url": "https://github.com/skingem1/godman-protocols/issues"
+  }
 }

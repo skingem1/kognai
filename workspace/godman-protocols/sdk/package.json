@@ -1,7 +1,7 @@
 {
   "name": "@godman-protocols/sdk",
   "version": "0.2.0",
-  "description": "Unified SDK for all 7 Godman Protocols — PACT, LAX, SCORE, SIGNAL, SOUL, AMF, DRS",
+  "description": "Unified SDK for all 7 Godman Protocols \u2014 PACT, LAX, SCORE, SIGNAL, SOUL, AMF, DRS",
   "type": "module",
   "main": "dist/index.js",
   "exports": "./dist/index.js",
@@ -39,7 +39,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/godman-protocols/sdk.git"
+    "url": "git+https://github.com/skingem1/godman-protocols.git",
+    "directory": "sdk"
   },
   "engines": {
     "node": ">=20.0.0"
@@ -53,9 +54,13 @@
     "@godman-protocols/amf": "file:../amf",
     "@godman-protocols/drs": "file:../drs"
   },
-  "_publishNote": "Before npm publish: change file:../ deps to ^0.2.0 — see PUBLISH-CHECKLIST.md",
+  "_publishNote": "Before npm publish: change file:../ deps to ^0.2.0 \u2014 see PUBLISH-CHECKLIST.md",
   "devDependencies": {
     "typescript": "^5.4.0",
     "tsx": "^4.7.0"
+  },
+  "homepage": "https://github.com/skingem1/godman-protocols#readme",
+  "bugs": {
+    "url": "https://github.com/skingem1/godman-protocols/issues"
   }
 }
