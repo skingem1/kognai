@@ -5425,3 +5425,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (test augmentation, direct write)
 - Issues: 3 API fixes needed (revokeMandate return value, SLA function signatures, error field name)
 - Timestamp: 2026-03-24T23:30:00Z
+
+## Sprint 985 — ACHIRI-ALPHA-OPS
+- Status: PASS
+- Commit: 96a8a723
+- Files created: workspace/sprints/sprint-985.json
+- Files modified: scripts/telegram-bot.ts, scripts/telegram-commands/cmd-stripe.ts, scripts/telegram-commands/cmd-help.ts, ecosystem.config.js
+- Test: cmdAlpha() function — PASS (correct output, AT-RISK verdict)
+- Pipeline: N/A (Achiri block)
+- Swarm used: no (multi-file, direct write)
+- Issues: none
+- Timestamp: 2026-03-24T08:35:00Z
