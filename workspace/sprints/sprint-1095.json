@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1095",
+  "title": "QUALITY — /smoke: show last run timestamp in output",
+  "description": "Already implemented at lines 964-978 — shows previous run timestamp. No changes needed.",
+  "block": "QUALITY",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1095-01",
+      "title": "Verify last-run timestamp already present in cmdSmoke",
+      "type": "validation",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1095"
+    }
+  ]
+}
