@@ -6439,3 +6439,12 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (telegram-bot.ts 2800+ lines, cmd-help.ts — files too large for swarm)
 - AAR: aar-middleware module not found — noted
 - Timestamp: 2026-03-24T23:00:00Z
+
+## Sprint 1195 — GODMAN-LAUNCH
+- Status: PASS
+- Commit: eea5b69f
+- Files modified: scripts/godman-tag-all.sh, workspace/sprints/sprint-1195.json
+- Fix: tag format was 'godman-protocols/pact@v0.2.0' (wrong), changed to 'pact-v0.2.0' (matches cmdGodman + cmdGodmanPreflight check at lines 3069 + 3489 in cmd-system.ts)
+- Test: dry-run shows 8/8 correct tags (pact-v0.2.0, lax-v0.2.0, etc.)
+- Swarm used: no (single-line shell script fix)
+- Timestamp: 2026-03-24T23:10:00Z
