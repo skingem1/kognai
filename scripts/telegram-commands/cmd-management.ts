@@ -1636,6 +1636,26 @@ export function cmdStatus(): string {
   const godmanLine = `🚀 Godman launch: *${godmanDays}d* — /godman`;
   const achiriLine = `🤖 Achiri alpha: *${achiriDays}d* — /achiri`;
 
+  // Sprint 1060: Watchdog alerts
+  let watchdogLine = '';
+  try {
+    const wdPath = path.join(ROOT, 'reports', 'watchdog-latest.json');
+    if (fs.existsSync(wdPath)) {
+      const wd = JSON.parse(fs.readFileSync(wdPath, 'utf-8'));
+      const critical = wd.critical_count ?? 0;
+      const warning = wd.warning_count ?? 0;
+      if (critical > 0) {
+        const critAlerts = (wd.alerts ?? []).filter((a: any) => a.severity === 'critical').slice(0, 2)
+          .map((a: any) => a.title).join(', ');
+        watchdogLine = `🚨 Watchdog: *${critical}* critical — ${critAlerts} · /health`;
+      } else if (warning > 0) {
+        watchdogLine = `⚠️ Watchdog: *${warning}* warning(s) · /health for details`;
+      } else {
+        watchdogLine = `🔭 Watchdog: all clear`;
+      }
+    }
+  } catch { /* skip */ }
+
   // Sprint 1057: Trust score health check
   const TRUST_THRESHOLD = 60; // scores are 0-100; flag below 60
   let trustLine = '';
@@ -1667,6 +1687,7 @@ export function cmdStatus(): string {
     `🔥 Streak: *${streak}* days`,
     `📦 Queue: *${readyCount}* ready · ${unposted.length} total`,
     cronLine,
+    watchdogLine,
     trustLine,
     '',
     `🎬 Next: ${nextLine}`,
