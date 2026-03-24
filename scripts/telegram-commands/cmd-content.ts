@@ -531,7 +531,12 @@ export function cmdToday(): string {
     } else {
       lines.push(`👁️ *Views:* ${totalViews}/500 ✅`);
     }
-    lines.push(`📅 *Today:* ${todayPosts}/${dailyTarget} posted ${goalMet ? '✅ ON TRACK' : '⏳ NEEDS POSTS'}\n`);
+    // Sprint 1110: bold warning when obligation unmet
+    if (!goalMet && dailyTarget > 0) {
+      lines.push(`📅 *Today:* ${todayPosts}/${dailyTarget} posted — ⚠️ *OBLIGATION UNMET — post ${dailyTarget - todayPosts} more*\n`);
+    } else {
+      lines.push(`📅 *Today:* ${todayPosts}/${dailyTarget} posted ✅ ON TRACK\n`);
+    }
   }
 
   // Recommended videos
