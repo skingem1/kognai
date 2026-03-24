@@ -1,8 +1,8 @@
 {
   "name": "@godman-protocols/lax",
-  "version": "0.1.0",
-  "description": "Latency-Aware Execution — skeleton",
-  "status": "skeleton",
+  "version": "0.2.0",
+  "description": "Latency-Aware Execution — budget, probe, routing, SLA",
+  "type": "module",
   "private": true,
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -13,7 +13,7 @@
   "scripts": {
     "build": "tsc",
     "typecheck": "tsc --noEmit",
-    "test": "echo 'No tests yet — skeleton phase'"
+    "test": "tsx smoke.test.ts"
   },
   "keywords": [
     "agent",
