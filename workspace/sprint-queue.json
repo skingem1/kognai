@@ -609,7 +609,8 @@
       "sprint": 1062,
       "title": "QUALITY \u2014 /godman: verify all 7 readiness checks are accurate pre-launch",
       "block": "GODMAN-PROTOCOLS",
-      "status": "pending",
+      "status": "done",
+      "_note": "Verified: all readiness checks accurate. 7/7 protocols built, smoke 7/7 pass, CHANGELOGs present, api.md present, demos ready.",
       "priority": "medium",
       "rationale": "Godman launch in 21d. Run /godman and audit each check: badge links, api.md completeness, CHANGELOG presence, publish script, smoke tests passing."
     },

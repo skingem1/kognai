@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1062",
+  "title": "QUALITY — /godman: verify all 7 readiness checks are accurate pre-launch",
+  "description": "Audit /godman command readiness checks. All checks pass: 7 protocols built, integration test ready, launch script ready, CHANGELOGs present, api.md present, demos ready, megathread ready, smoke tests 7/7 pass.",
+  "block": "GODMAN-PROTOCOLS",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1062-01",
+      "title": "Run /godman and verify all readiness checks are accurate",
+      "type": "audit",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1062"
+    }
+  ]
+}
