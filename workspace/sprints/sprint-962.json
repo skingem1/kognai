@@ -1,0 +1,38 @@
+{
+  "sprint_id": "sprint-962",
+  "title": "CLAWCARD-EVAL — Evaluate Clawcard phone for TikTok autonomous verification",
+  "description": "From INTEL-009. Install @clawcard/cli. Test phone number acquisition. Document findings for TikTok verification blocker (Sprint 508-BROWSER-01).",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "962-01",
+      "title": "Install @clawcard/cli and verify setup",
+      "type": "setup",
+      "task_target": "system",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-962"
+    },
+    {
+      "id": "962-02",
+      "title": "Test Clawcard phone/email provisioning capabilities",
+      "type": "evaluation",
+      "task_target": "workspace/intel/clawcard-eval.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-962"
+    },
+    {
+      "id": "962-03",
+      "title": "Document findings and TikTok verification feasibility",
+      "type": "documentation",
+      "task_target": "workspace/intel/clawcard-eval.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-962"
+    }
+  ]
+}
