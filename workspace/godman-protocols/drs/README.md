@@ -1,5 +1,10 @@
 # DRS — Dynamic Resource Scheduling
 
+
+[![npm version](https://img.shields.io/npm/v/@godman-protocols/drs.svg)](https://www.npmjs.com/package/@godman-protocols/drs)
+[![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Node: >=20](https://img.shields.io/badge/node-%3E%3D20-brightgreen.svg)](https://nodejs.org)
+
 > **v0.2.0** · Apache 2.0 · `@godman-protocols/drs` · Node 20+ / Deno 1.40+
 
 DRS is an open protocol for allocating compute, memory, and model capacity across AI agent workloads — with resource pools, constraint-aware allocation, priority preemption, and automatic expiry.

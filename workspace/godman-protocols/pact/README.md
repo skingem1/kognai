@@ -1,5 +1,10 @@
 # PACT — Protocol for Agent Coordination and Trust
 
+
+[![npm version](https://img.shields.io/npm/v/@godman-protocols/pact.svg)](https://www.npmjs.com/package/@godman-protocols/pact)
+[![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Node: >=20](https://img.shields.io/badge/node-%3E%3D20-brightgreen.svg)](https://nodejs.org)
+
 > **v0.2.0** · Apache 2.0 · `@godman-protocols/pact` · Node 20+ / Deno 1.40+
 
 PACT is an open protocol for autonomous AI agents to establish **verifiable cooperation agreements**, delegate authority with scoped mandates, and coordinate safely across heterogeneous runtimes — without a human in the loop.

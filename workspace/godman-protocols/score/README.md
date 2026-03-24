@@ -1,5 +1,10 @@
 # SCORE — Scoring and Reputation for Agent Outputs
 
+
+[![npm version](https://img.shields.io/npm/v/@godman-protocols/score.svg)](https://www.npmjs.com/package/@godman-protocols/score)
+[![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Node: >=20](https://img.shields.io/badge/node-%3E%3D20-brightgreen.svg)](https://nodejs.org)
+
 > **v0.2.0** · Apache 2.0 · `@godman-protocols/score` · Node 20+ / Deno 1.40+
 
 SCORE is an open protocol for evaluating AI agent outputs against weighted rubrics, calculating time-decayed reputation, and maintaining a signed audit trail — so multi-agent systems can objectively measure who does good work.

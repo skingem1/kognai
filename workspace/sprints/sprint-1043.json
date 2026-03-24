@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1043",
+  "title": "GODMAN-LAUNCH — Add npm version + license + node badges to all 8 READMEs",
+  "description": "All 7 protocol READMEs + SDK README were missing npm version badges. Added npm version, Apache-2.0 license, and Node >=20 shields.io badges for professional launch presentation on April 14.",
+  "block": "GODMAN-PROTOCOLS",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1043-01",
+      "title": "Add shields.io badges to all 8 godman protocol READMEs",
+      "type": "feature",
+      "task_target": "workspace/godman-protocols/*/README.md",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1043"
+    }
+  ]
+}

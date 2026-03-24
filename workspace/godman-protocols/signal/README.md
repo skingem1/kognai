@@ -1,5 +1,10 @@
 # SIGNAL — Event Bus and Pub/Sub for Agent Swarms
 
+
+[![npm version](https://img.shields.io/npm/v/@godman-protocols/signal.svg)](https://www.npmjs.com/package/@godman-protocols/signal)
+[![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Node: >=20](https://img.shields.io/badge/node-%3E%3D20-brightgreen.svg)](https://nodejs.org)
+
 > **v0.2.0** · Apache 2.0 · `@godman-protocols/signal` · Node 20+ / Deno 1.40+
 
 SIGNAL is an open protocol for real-time event delivery between AI agents — with glob-based topic matching, idempotency deduplication, and delivery receipts, so your swarm stays coordinated without polling.

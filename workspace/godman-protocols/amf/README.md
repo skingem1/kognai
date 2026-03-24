@@ -1,5 +1,10 @@
 # AMF — Agent Message Format
 
+
+[![npm version](https://img.shields.io/npm/v/@godman-protocols/amf.svg)](https://www.npmjs.com/package/@godman-protocols/amf)
+[![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Node: >=20](https://img.shields.io/badge/node-%3E%3D20-brightgreen.svg)](https://nodejs.org)
+
 > **v0.2.0** · Apache 2.0 · `@godman-protocols/amf` · Node 20+ / Deno 1.40+
 
 AMF is an open protocol for structured agent-to-agent messaging — a signed envelope format with typed payloads, so every message between agents is verifiable, routable, and machine-readable.
