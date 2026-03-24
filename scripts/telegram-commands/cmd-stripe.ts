@@ -433,6 +433,21 @@ export function cmdAchiri(): string {
         const totalUsers = allUserKeys.size;
         const premiumUsers = paidUserKeys.size;
         const convPct = totalUsers > 0 ? Math.round((premiumUsers / totalUsers) * 100) : 0;
+        // Sprint 1138 (wave 15): top 3 most active users (anonymized)
+        const userMsgCounts = new Map<string, number>();
+        for (const dayData of Object.values(counts)) {
+          for (const [k, v] of Object.entries(dayData)) {
+            if (k.startsWith('validate') || k.startsWith('e2e') || k.endsWith('-limit') || k.endsWith('-paid') || k.endsWith('-bypass')) continue;
+            userMsgCounts.set(k, (userMsgCounts.get(k) ?? 0) + (v as number));
+          }
+        }
+        const topUsers = Array.from(userMsgCounts.entries())
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 3)
+          .map(([uid, cnt], i) => `${['🥇','🥈','🥉'][i]} user_${uid.slice(-4)}: ${cnt} msgs`);
+        if (topUsers.length > 0) {
+          lines.push(`👤 *Top users:* ${topUsers.join(' · ')}`);
+        }
         // Sprint 1135 (wave 14): conversion funnel: waitlist → active → premium
         const funnelWaitlist = waitlistCount;
         const funnelActive = totalUsers;

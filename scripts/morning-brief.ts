@@ -186,6 +186,14 @@ function main(): void {
     const daysSinceLaunch = Math.floor(Math.abs(godmanMs) / 86_400_000);
     lines.push('');
     lines.push(`🚀 *Godman launched* ${daysSinceLaunch}d ago — /godman to check status`);
+  } else if (godmanDays <= 3) {
+    // Sprint 1142 (wave 15): detailed checklist when <3d to launch
+    lines.push('');
+    lines.push(`🚀 *Godman T-${godmanDays}d checklist:*`);
+    lines.push(`  1. npm login (verify with \`npm whoami\`)`);
+    lines.push(`  2. git tag v1.0.0 for each protocol`);
+    lines.push(`  3. npm publish --dry-run per protocol`);
+    lines.push(`  _Run /godman for status_`);
   } else if (godmanDays <= 14) {
     lines.push('');
     lines.push(`🚀 *Godman launch in ${godmanDays}d* — /godman · npm login before Apr 14`);

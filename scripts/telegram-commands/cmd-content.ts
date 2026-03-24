@@ -604,6 +604,14 @@ export function cmdToday(): string {
   lines.push('• 12:00 PM — lunch break');
   lines.push('• 7:00 PM — evening scroll');
 
+  // Sprint 1141 (wave 15): Telegram bot env check
+  const botToken = process.env.TELEGRAM_BOT_TOKEN;
+  const chatId = process.env.OWNER_TELEGRAM_CHAT_ID;
+  if (!botToken || !chatId) {
+    const missing = [!botToken && 'TELEGRAM_BOT_TOKEN', !chatId && 'OWNER_TELEGRAM_CHAT_ID'].filter(Boolean);
+    lines.push(`\n⚠️ *Bot config missing:* ${missing.join(', ')} not set — Telegram commands may not work`);
+  }
+
   return lines.join('\n');
 }
 

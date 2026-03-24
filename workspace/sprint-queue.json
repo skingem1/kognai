@@ -1690,73 +1690,82 @@
       "sprint": 1134,
       "title": "OPS — /status: add Phase 2 readiness line after gate is met",
       "block": "OPS",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
-      "rationale": "Once Phase 1.5 gate is met, /status should pivot to show Phase 2 readiness checklist (Achiri alpha, Godman launch). Currently shows Phase 1.5 data even after gate met."
+      "rationale": "Once Phase 1.5 gate is met, /status should pivot to show Phase 2 readiness checklist (Achiri alpha, Godman launch). Currently shows Phase 1.5 data even after gate met.",
+      "_note": "Phase 2 readiness block in /status when gate met"
     },
     {
       "sprint": 1135,
       "title": "GATE — /gate: show hours since last post (not just days)",
       "block": "GATE",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
-      "rationale": "When posting daily, /gate shows \"X days left\" but the last post could be 20h ago. Show \"last post: Xh ago\" to nudge posting rhythm intraday."
+      "rationale": "When posting daily, /gate shows \"X days left\" but the last post could be 20h ago. Show \"last post: Xh ago\" to nudge posting rhythm intraday.",
+      "_note": "hours since last post in /gate"
     },
     {
       "sprint": 1136,
       "title": "OPS — /health: show PM2 restart rate (restarts per hour)",
       "block": "OPS",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
-      "rationale": "/health shows total restarts but not rate. A process with 50 restarts in 1h is a crisis; 50 restarts in 30d is normal. Show restarts/hour for high-restart processes."
+      "rationale": "/health shows total restarts but not rate. A process with 50 restarts in 1h is a crisis; 50 restarts in 30d is normal. Show restarts/hour for high-restart processes.",
+      "_note": "PM2 restart rate (restarts/hour) in /health"
     },
     {
       "sprint": 1137,
       "title": "QUALITY — /bottest: add /record smoke test with dummy data",
       "block": "QUALITY",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
-      "rationale": "/bottest validates bot commands but not /record write path. Add a dry-run check that /record parses args correctly and returns expected format without writing."
+      "rationale": "/bottest validates bot commands but not /record write path. Add a dry-run check that /record parses args correctly and returns expected format without writing.",
+      "_note": "/record arg-parse smoke tests in /bottest"
     },
     {
       "sprint": 1138,
       "title": "ACHIRI — /achiri: show top 3 most active users (message count)",
       "block": "ACHIRI",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
-      "rationale": "Achiri shows DAU and total users but not who the power users are. Showing top 3 (anonymized as user_abc) reveals if engagement is spread or concentrated."
+      "rationale": "Achiri shows DAU and total users but not who the power users are. Showing top 3 (anonymized as user_abc) reveals if engagement is spread or concentrated.",
+      "_note": "top 3 active users (anonymized) in /achiri"
     },
     {
       "sprint": 1139,
       "title": "OPS — /weekly-report: show average posting time of day",
       "block": "OPS",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
-      "rationale": "/weekly-report shows total posts but not when they are posted. Show \"avg post time: 7pm\" to help operator align with best posting windows."
+      "rationale": "/weekly-report shows total posts but not when they are posted. Show \"avg post time: 7pm\" to help operator align with best posting windows.",
+      "_note": "avg posting time of day in /weekly-report"
     },
     {
       "sprint": 1140,
       "title": "OPS — /errors: show error log file sizes to identify noisy processes",
       "block": "OPS",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
-      "rationale": "/errors shows recent errors but not which processes have the largest error logs. Show top 3 log files by size to identify runaway loggers."
+      "rationale": "/errors shows recent errors but not which processes have the largest error logs. Show top 3 log files by size to identify runaway loggers.",
+      "_note": "largest error log files in /errors"
     },
     {
       "sprint": 1141,
       "title": "GATE — /today: show if Telegram bot is responsive (quick ping)",
       "block": "GATE",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
-      "rationale": "/today is the daily action command. If the Telegram bot token is invalid, none of these commands work. Add a quick env check to warn the operator."
+      "rationale": "/today is the daily action command. If the Telegram bot token is invalid, none of these commands work. Add a quick env check to warn the operator.",
+      "_note": "Telegram bot env check in /today"
     },
     {
       "sprint": 1142,
       "title": "OPS — /morning-brief: include Godman launch checklist when <3d away",
       "block": "OPS",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
-      "rationale": "Morning brief shows Godman countdown but not specific actions needed. When <3d to launch, include checklist: npm login, git tag, publish dry-run."
+      "rationale": "Morning brief shows Godman countdown but not specific actions needed. When <3d to launch, include checklist: npm login, git tag, publish dry-run.",
+      "_note": "Godman launch checklist in morning-brief when <3d"
     }
   ]
 }

@@ -122,6 +122,22 @@ export function cmdGate(): string {
     `✅ *${passed}/4 criteria met*`,
     ``,
     `*── Posting ──*`,
+    // Sprint 1135 (wave 15): hours since last post
+    (() => {
+      if (!fs.existsSync(manualPostsPath)) return '';
+      try {
+        const postLines = fs.readFileSync(manualPostsPath, 'utf-8').split('\n').filter((l: string) => l.trim());
+        const lastTs = postLines
+          .map((l: string) => { try { const p = JSON.parse(l); return new Date(p.posted_at ?? p.recorded_at).getTime(); } catch { return 0; } })
+          .filter((t: number) => t > 0)
+          .sort((a: number, b: number) => b - a)[0];
+        if (!lastTs) return '';
+        const ageH = (Date.now() - lastTs) / 3600000;
+        const ageStr = ageH < 1 ? `${Math.round(ageH * 60)}m ago` : `${Math.round(ageH)}h ago`;
+        const icon = ageH > 24 ? '⚠️' : '⏱';
+        return `${icon} Last post: *${ageStr}*`;
+      } catch { return ''; }
+    })(),
     `${postIcon} Posts: ${postCount}/30 (need ${postsNeeded} more)`,
     `${viewIcon} Views: ${totalViews}/500 (need ${viewsNeeded} more)`,
     // Sprint 1138 (wave 13): views needed per remaining day

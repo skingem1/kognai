@@ -90,6 +90,20 @@ export function cmdHealth(): string {
       warnLines.push(`⚠️ *Excessive restarts (>${RESTART_WARN}):*`);
       for (const p of highRestarts) warnLines.push(`  🔁 \`${p.name}\` — ${p.restarts} restarts`);
     }
+    // Sprint 1136 (wave 15): restart rate (restarts/hour) for high-restart procs
+    const highRestartRate = procs.filter(p => {
+      if (p.restarts < 5) return false;
+      const uptimeH = p.uptimeMs > 0 ? p.uptimeMs / 3600000 : 1;
+      return p.restarts / Math.max(1, uptimeH) >= 1; // ≥1 restart/hour is notable
+    });
+    if (highRestartRate.length > 0) {
+      warnLines.push(`⚠️ *High restart rate (≥1/hr):*`);
+      for (const p of highRestartRate) {
+        const uptimeH = p.uptimeMs > 0 ? p.uptimeMs / 3600000 : 1;
+        const rate = (p.restarts / Math.max(1, uptimeH)).toFixed(1);
+        warnLines.push(`  🔁 \`${p.name}\` — ${rate}/hr (${p.restarts} total)`);
+      }
+    }
     if (warnLines.length > 0) memWarnSection = '\n\n' + warnLines.join('\n');
   } catch { /* skip */ }
 
@@ -1122,6 +1136,21 @@ export function cmdErrors(filterProcess?: string): string {
       }
     } catch { /* skip */ }
   }
+
+  // Sprint 1140 (wave 15): top 3 log files by size
+  try {
+    const logFiles = fs.readdirSync(logDir).filter((f: string) => f.endsWith('-error.log'));
+    const withSizes = logFiles.map((f: string) => {
+      try { return { name: f, size: fs.statSync(path.join(logDir, f)).size }; } catch { return { name: f, size: 0 }; }
+    }).sort((a, b) => b.size - a.size).slice(0, 3).filter(f => f.size > 1024);
+    if (withSizes.length > 0) {
+      const sizeLines = withSizes.map(f => {
+        const kb = Math.round(f.size / 1024);
+        return `  \`${f.name.replace('-error.log', '')}\` ${kb}KB`;
+      }).join('\n');
+      output.push(`\n*Largest error logs:*\n${sizeLines}`);
+    }
+  } catch { /* skip */ }
 
   // Sprint 1137 (wave 14): weekly error count delta vs last week
   try {

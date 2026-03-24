@@ -1077,6 +1077,67 @@ function generateItems(startSprint: number, existingTitles: Set<string> = new Se
     rationale: 'Once gate is met (30 posts + 500 views), the morning brief is noise. Send a celebratory message once then skip until Phase 2 starts.',
   });
 
+  // Wave 15 templates — post-gate Phase 2 readiness + hardening
+  infraItems.push({
+    title: 'OPS — /status: add Phase 2 readiness line after gate is met',
+    block: 'OPS',
+    rationale: 'Once Phase 1.5 gate is met, /status should pivot to show Phase 2 readiness checklist (Achiri alpha, Godman launch). Currently shows Phase 1.5 data even after gate met.',
+  });
+
+  infraItems.push({
+    title: 'GATE — /gate: show hours since last post (not just days)',
+    block: 'GATE',
+    rationale: 'When posting daily, /gate shows "X days left" but the last post could be 20h ago. Show "last post: Xh ago" to nudge posting rhythm intraday.',
+  });
+
+  infraItems.push({
+    title: 'OPS — /health: show PM2 restart rate (restarts per hour)',
+    block: 'OPS',
+    rationale: '/health shows total restarts but not rate. A process with 50 restarts in 1h is a crisis; 50 restarts in 30d is normal. Show restarts/hour for high-restart processes.',
+  });
+
+  infraItems.push({
+    title: 'QUALITY — /bottest: add /record smoke test with dummy data',
+    block: 'QUALITY',
+    rationale: '/bottest validates bot commands but not /record write path. Add a dry-run check that /record parses args correctly and returns expected format without writing.',
+  });
+
+  infraItems.push({
+    title: 'ACHIRI — /achiri: show top 3 most active users (message count)',
+    block: 'ACHIRI',
+    rationale: 'Achiri shows DAU and total users but not who the power users are. Showing top 3 (anonymized as user_abc) reveals if engagement is spread or concentrated.',
+  });
+
+  infraItems.push({
+    title: 'GODMAN-LAUNCH — /godman: show days since each protocol last committed',
+    block: 'GODMAN-LAUNCH',
+    rationale: '/godman shows test status but not code freshness. A protocol not committed in 7d before launch is a risk. Show "last commit: Xd ago" per protocol.',
+  });
+
+  infraItems.push({
+    title: 'OPS — /weekly-report: show average posting time of day',
+    block: 'OPS',
+    rationale: '/weekly-report shows total posts but not when they are posted. Show "avg post time: 7pm" to help operator align with best posting windows.',
+  });
+
+  infraItems.push({
+    title: 'OPS — /errors: show error log file sizes to identify noisy processes',
+    block: 'OPS',
+    rationale: '/errors shows recent errors but not which processes have the largest error logs. Show top 3 log files by size to identify runaway loggers.',
+  });
+
+  infraItems.push({
+    title: 'GATE — /today: show if Telegram bot is responsive (quick ping)',
+    block: 'GATE',
+    rationale: '/today is the daily action command. If the Telegram bot token is invalid, none of these commands work. Add a quick env check to warn the operator.',
+  });
+
+  infraItems.push({
+    title: 'OPS — /morning-brief: include Godman launch checklist when <3d away',
+    block: 'OPS',
+    rationale: 'Morning brief shows Godman countdown but not specific actions needed. When <3d to launch, include checklist: npm login, git tag, publish dry-run.',
+  });
+
   // Fill remaining slots (skip duplicates of already-completed items)
   for (const item of infraItems) {
     if (items.length >= 10) break;

@@ -588,6 +588,18 @@ export function cmdWeeklyReport(): string {
       const weekAvgViews = thisWeekPosts.length > 0 ? Math.round(weekViews / thisWeekPosts.length) : 0;
       return `• All time: ${totalPosts}/30 posts · ${totalViews} total views · *${avgViews} views/post avg* · (this week: ${weekAvgViews}/post)`;
     })(),
+    // Sprint 1139 (wave 15): average posting time of day
+    (() => {
+      if (thisWeekPosts.length === 0) return '';
+      const hours = thisWeekPosts
+        .map((p: any) => { try { return new Date(p.posted_at ?? p.recorded_at).getHours(); } catch { return -1; } })
+        .filter((h: number) => h >= 0);
+      if (hours.length === 0) return '';
+      const avgHour = Math.round(hours.reduce((a: number, b: number) => a + b, 0) / hours.length);
+      const period = avgHour < 12 ? 'AM' : 'PM';
+      const hour12 = avgHour % 12 || 12;
+      return `• Avg post time this week: *${hour12}${period}*`;
+    })(),
     `• Gate: ${daysLeft}d left · ${paceNeeded} posts/day needed`,
     // Sprint 1109: gate velocity — this week vs last week
     (() => {
@@ -1830,7 +1842,15 @@ export function cmdStatus(): string {
     godmanLine,
     achiriLine,
     '',
-    `_Tap /pickup to post · /blockers for action items_`,
+    // Sprint 1134 (wave 15): Phase 2 readiness when gate is met
+    ...(postsNeeded === 0 && totalViews >= 500 ? [
+      '',
+      '🎉 *Phase 1.5 gate MET!* Transitioning to Phase 2:',
+      `  ${godmanDays === 0 ? '✅' : '⏳'} Godman launch: *${godmanDays}d* — /godman`,
+      `  ${achiriDays === 0 ? '✅' : '⏳'} Achiri alpha: *${achiriDays}d* — /achiri`,
+    ] : [
+      `_Tap /pickup to post · /blockers for action items_`,
+    ]),
   ];
 
   // Sprint 1121: compact mode — filter consecutive empty lines
@@ -2044,6 +2064,32 @@ export function cmdBotTest(): string {
     }
   } catch (err: any) {
     results.push(`❌ /gate: error — ${(err.message || '').slice(0, 60)}`);
+    totalFail++;
+  }
+
+  // Sprint 1137 (wave 15): /record arg-parse smoke test
+  try {
+    const { cmdRecord } = require('./cmd-content');
+    // Test 1: missing args
+    const helpOut: string = cmdRecord('');
+    if (helpOut.includes('Usage:')) {
+      results.push(`✅ /record: returns usage when no args`);
+      totalPass++;
+    } else {
+      results.push(`❌ /record: expected usage message, got: ${helpOut.slice(0, 60)}`);
+      totalFail++;
+    }
+    // Test 2: invalid views
+    const invalidOut: string = cmdRecord('clip_test abc');
+    if (invalidOut.includes('Invalid views')) {
+      results.push(`✅ /record: rejects non-numeric views`);
+      totalPass++;
+    } else {
+      results.push(`❌ /record: did not reject non-numeric views`);
+      totalFail++;
+    }
+  } catch (err: any) {
+    results.push(`❌ /record: error — ${(err.message || '').slice(0, 60)}`);
     totalFail++;
   }
 
