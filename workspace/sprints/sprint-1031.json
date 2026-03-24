@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-1031",
+  "title": "GODMAN-LAUNCH — godman-launch-day.sh: operator playbook for April 14 npm publish",
+  "description": "Create scripts/godman-launch-day.sh — a single shell script the operator runs on April 14 to: (1) verify npm login, (2) run smoke tests for all 7 protocols, (3) npm publish each protocol in order (pact, lax, score, signal, soul, amf, drs), (4) print success/fail per protocol + total published count. Exit non-zero if any publish fails.",
+  "block": "GODMAN-PROTOCOLS",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1031-01",
+      "title": "Create scripts/godman-launch-day.sh",
+      "type": "feature",
+      "task_target": "scripts/godman-launch-day.sh",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1031",
+      "description": "Shell script: check npm whoami, run npm test in each of 7 protocol dirs, then npm publish --access public. Color-coded output (green=ok, red=fail). Final summary line. Make executable (chmod +x). Also add to /godman command output: 'Run: bash scripts/godman-launch-day.sh on April 14'."
+    }
+  ]
+}

@@ -1182,11 +1182,15 @@ export function cmdGodman(): string {
   const hasLaunch = fs.existsSync(launchScript);
   lines.push(`🚀 Launch script: ${hasLaunch ? 'ready' : 'missing'}`);
 
-  // X thread
-  const xThreadDir = path.join(ROOT, 'workspace', 'social', 'x-replies');
-  let hasXThread = false;
-  try { hasXThread = fs.existsSync(xThreadDir) && fs.readdirSync(xThreadDir).length > 0; } catch {}
-  lines.push(`📣 X launch thread: ${hasXThread ? 'ready' : 'not found'}`);
+  // X megathread (suite launch)
+  const megathreadPath = path.join(ROOT, 'workspace', 'social', 'suite-launch', 'x-megathread.md');
+  let tweetCount = 0;
+  try {
+    if (fs.existsSync(megathreadPath)) {
+      tweetCount = (fs.readFileSync(megathreadPath, 'utf-8').match(/^## Tweet \d/gm) || []).length;
+    }
+  } catch {}
+  lines.push(`📣 X megathread: ${tweetCount > 0 ? `✅ ready (${tweetCount} tweets) — /godman-thread to preview` : '❌ not found'}`);
 
   // Sprint 1013: Demo videos + npm status
   const demoBase = path.join(ROOT, 'workspace', 'scs001', 'code-demo-runs');
@@ -1205,14 +1209,14 @@ export function cmdGodman(): string {
     lines.push(`  ${ver ? `✅ @godman-protocols/${proto} v${ver}` : `❌ @godman-protocols/${proto} — NOT PUBLISHED`}`);
   }
 
-  // Sprint 1014: X thread file count
+  // X engagement replies (intel reply drafts)
   const xRepliesDir = path.join(ROOT, 'workspace', 'social', 'x-replies');
   let xCount = 0;
   try {
     xCount = fs.readdirSync(xRepliesDir).filter(f => f.endsWith('.md') || f.endsWith('.txt')).length;
   } catch {}
   lines.push('');
-  lines.push(`📣 X thread drafts: ${xCount > 0 ? `✅ ${xCount} file(s) in workspace/social/x-replies/` : '❌ none found'}`);
+  lines.push(`💬 X engagement replies: ${xCount > 0 ? `✅ ${xCount} drafts ready` : '❌ none found'}`);
 
   // npm login
   let npmWhoami = '';

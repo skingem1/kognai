@@ -435,7 +435,58 @@
       "status": "done",
       "priority": "high",
       "rationale": "Replenisher generated 5 duplicate items (1023-1027 = copies of 1001-1005). Hardcoded infra items at lines 187-215 never check existing queue. Add dedup filter before appending.",
-      "created_at": "2026-03-24"
+      "created_at": "2026-03-24",
+      "_note": "Shipped 2026-03-24 — dedup logic added to replenish-sprint-queue.ts."
+    },
+    {
+      "sprint": 1021,
+      "title": "OPS-BUGFIX — /status cron health: stopped=healthy for one-shot crons (PM2 autorestart:false)",
+      "block": "OPS",
+      "status": "done",
+      "priority": "high",
+      "rationale": "cmdStatus() showed 4/5 crons as down because it only accepted status=online. PM2 one-shot crons are stopped between runs.",
+      "created_at": "2026-03-24",
+      "_note": "Shipped 2026-03-24. Fixed in cmd-management.ts: registered=healthy for crons, online only required for telegram-bot."
+    },
+    {
+      "sprint": 1022,
+      "title": "OPS-BUGFIX — daily-digest: dry-run filter + urgency >= fix",
+      "block": "OPS",
+      "status": "done",
+      "priority": "high",
+      "rationale": "daily-digest.ts getGateProgress() was counting dry-runs. Also fixed urgency threshold from > to >=.",
+      "created_at": "2026-03-24",
+      "_note": "Shipped 2026-03-24. Fixed in scripts/daily-digest.ts."
+    },
+    {
+      "sprint": "1023-real",
+      "title": "OPS — /record: fix gate count + store TikTok URL for view tracking",
+      "block": "OPS",
+      "status": "done",
+      "priority": "high",
+      "rationale": "cmdRecord() postCount included dry-runs. Added dry-run filter. Also accept optional TikTok URL as 3rd arg for future oEmbed view tracking.",
+      "created_at": "2026-03-24",
+      "_note": "Shipped 2026-03-24 — sprint-1023.json. Fixed in cmd-content.ts cmdRecord()."
+    },
+    {
+      "sprint": 1029,
+      "title": "GODMAN-LAUNCH — /godman-thread: show X megathread for launch day copy-paste",
+      "block": "GODMAN-PROTOCOLS",
+      "status": "done",
+      "priority": "medium",
+      "rationale": "April 14 launch: operator needs /godman-thread to show the X megathread from x-megathread.md as numbered Telegram blocks.",
+      "created_at": "2026-03-24",
+      "_note": "Shipped 2026-03-24 — cmdGodmanThread() added to cmd-system.ts + registered in telegram-bot.ts."
+    },
+    {
+      "sprint": 1030,
+      "title": "OPS — /help: add new commands from Sprints 1015-1029",
+      "block": "OPS",
+      "status": "done",
+      "priority": "medium",
+      "rationale": "Update cmdHelp() to list /caption-next, /deliver-next, /godman-smoke, /godman-thread. Update /record description.",
+      "created_at": "2026-03-24",
+      "_note": "Shipped 2026-03-24 — commit 0d9fb92e. cmd-help.ts updated with 4 new commands."
     }
   ]
 }
