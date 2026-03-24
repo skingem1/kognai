@@ -1,49 +1,12 @@
 {
   "sprint_id": "sprint-995",
-  "title": "GODMAN-SUITE-LAUNCH-CONTENT — Master X megathread + SDK social + PACT ClaWHub fix",
-  "description": "Create master suite launch X megathread (all 7 protocols + SDK), SDK X thread, SDK ClaWHub listing, and PACT ClaWHub listing (was missing). All April 14 social content will then be complete.",
+  "title": "GODMAN-TELEGRAM — /godman Telegram command for launch readiness",
+  "description": "Add /godman command to Telegram bot showing protocol build status, SDK version, integration test, launch script, X thread status, and April 14 countdown.",
   "block": "GODMAN-PROTOCOLS",
   "source": "queue-exhausted-launch-prep",
   "tasks": [
-    {
-      "id": "995-01",
-      "title": "Write suite master X megathread (all 7 protocols + SDK)",
-      "type": "content",
-      "task_target": "workspace/social/suite-launch/x-megathread.md",
-      "agent": "coder",
-      "status": "pending",
-      "priority": "high",
-      "sprint_id": "sprint-995"
-    },
-    {
-      "id": "995-02",
-      "title": "Write SDK X launch thread (5-6 tweets)",
-      "type": "content",
-      "task_target": "workspace/social/sdk-launch/x-thread.md",
-      "agent": "coder",
-      "status": "pending",
-      "priority": "high",
-      "sprint_id": "sprint-995"
-    },
-    {
-      "id": "995-03",
-      "title": "Write SDK ClaWHub marketplace listing",
-      "type": "content",
-      "task_target": "workspace/social/sdk-launch/clawhub-listing.md",
-      "agent": "coder",
-      "status": "pending",
-      "priority": "high",
-      "sprint_id": "sprint-995"
-    },
-    {
-      "id": "995-04",
-      "title": "Write PACT ClaWHub listing (was missing — only had clawcard)",
-      "type": "content",
-      "task_target": "workspace/social/pact-launch/clawhub-listing.md",
-      "agent": "coder",
-      "status": "pending",
-      "priority": "medium",
-      "sprint_id": "sprint-995"
-    }
+    { "id": "995-01", "title": "Add cmdGodman function to cmd-system.ts", "type": "feature", "task_target": "scripts/telegram-commands/cmd-system.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-995" },
+    { "id": "995-02", "title": "Register /godman route in telegram-bot.ts", "type": "feature", "task_target": "scripts/telegram-bot.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-995" },
+    { "id": "995-03", "title": "Add to help text", "type": "feature", "task_target": "scripts/telegram-commands/cmd-help.ts", "agent": "coder", "status": "done", "priority": "medium", "sprint_id": "sprint-995" }
   ]
 }

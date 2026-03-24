@@ -1140,3 +1140,69 @@ export function cmdBrowserTest(): string {
 
   return lines.join('\n');
 }
+
+/**
+ * Sprint 995: /godman — Godman Protocols launch readiness dashboard
+ * Shows build status, test counts, launch countdown, and checklist.
+ */
+export function cmdGodman(): string {
+  const PROTOCOLS = ['pact', 'lax', 'score', 'signal', 'soul', 'amf', 'drs'];
+  const BASE = path.join(ROOT, 'workspace', 'godman-protocols');
+  const lines: string[] = ['*Godman Protocols — Launch Dashboard*\n'];
+
+  // Countdown
+  const LAUNCH = new Date('2026-04-14T00:00:00Z');
+  const now = new Date();
+  const daysLeft = Math.max(0, Math.ceil((LAUNCH.getTime() - now.getTime()) / 86_400_000));
+  lines.push(`📅 *Launch: April 14* — ${daysLeft} days remaining\n`);
+
+  // Protocol status
+  let allOk = true;
+  for (const proto of PROTOCOLS) {
+    const pkgPath = path.join(BASE, proto, 'package.json');
+    const distPath = path.join(BASE, proto, 'dist');
+    let version = '?';
+    let hasDist = false;
+    try {
+      const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'));
+      version = pkg.version || '?';
+    } catch { /* skip */ }
+    try { hasDist = fs.existsSync(distPath) && fs.readdirSync(distPath).length > 0; } catch {}
+    const icon = hasDist ? '✅' : '⚠️';
+    if (!hasDist) allOk = false;
+    lines.push(`${icon} \`@godman-protocols/${proto}\` v${version}${hasDist ? ' — built' : ' — needs build'}`);
+  }
+
+  // SDK
+  const sdkPkg = path.join(BASE, 'sdk', 'package.json');
+  let sdkVersion = '?';
+  try { sdkVersion = JSON.parse(fs.readFileSync(sdkPkg, 'utf-8')).version || '?'; } catch {}
+  lines.push(`📦 \`@godman-protocols/sdk\` v${sdkVersion}`);
+
+  // Integration test
+  const integPath = path.join(BASE, 'integration.test.ts');
+  const hasInteg = fs.existsSync(integPath);
+  lines.push(`\n🧪 Integration test: ${hasInteg ? 'ready' : 'missing'}`);
+
+  // Launch script
+  const launchScript = path.join(ROOT, 'scripts', 'godman-launch-day.sh');
+  const hasLaunch = fs.existsSync(launchScript);
+  lines.push(`🚀 Launch script: ${hasLaunch ? 'ready' : 'missing'}`);
+
+  // X thread
+  const xThreadDir = path.join(ROOT, 'workspace', 'social', 'x-replies');
+  let hasXThread = false;
+  try { hasXThread = fs.existsSync(xThreadDir) && fs.readdirSync(xThreadDir).length > 0; } catch {}
+  lines.push(`📣 X launch thread: ${hasXThread ? 'ready' : 'not found'}`);
+
+  // Overall
+  lines.push('');
+  if (allOk && hasLaunch) {
+    lines.push(`✅ *LAUNCH READY* — run dry-run to verify:`);
+    lines.push('`./scripts/godman-launch-day.sh --dry-run`');
+  } else {
+    lines.push(`⚠️ *Not fully ready* — run \`tsc\` in each protocol dir`);
+  }
+
+  return lines.join('\n');
+}
