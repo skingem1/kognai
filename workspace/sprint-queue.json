@@ -706,7 +706,8 @@
       "sprint": 1074,
       "title": "PHASE2 — Achiri /reengage: surface daily re-engagement count in /achiri",
       "block": "PHASE2",
-      "status": "pending",
+      "status": "done",
+      "_note": "Shipped 2026-03-24. cmdAchiri() now shows today vs yesterday re-engagement count from reengage-log.jsonl.",
       "priority": "medium",
       "rationale": "workspace/achiri/reengage-log.jsonl tracks re-engagement events. Add a line to /achiri showing how many users were re-engaged today vs yesterday."
     },

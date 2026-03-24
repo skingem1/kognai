@@ -406,6 +406,26 @@ export function cmdAchiri(): string {
       lines.push(`  ❌ Runner failed: ${String(e.message ?? e).slice(0, 80)}`);
     }
 
+    // Sprint 1074: Re-engagement count today vs yesterday
+    lines.push('');
+    lines.push('*Re-engagement:*');
+    try {
+      const reengagePath = path.join(ROOT, 'workspace', 'achiri', 'reengage-log.jsonl');
+      if (fs.existsSync(reengagePath)) {
+        const today = new Date().toISOString().slice(0, 10);
+        const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+        const entries = fs.readFileSync(reengagePath, 'utf-8').trim().split('\n')
+          .filter(Boolean).map((l: string) => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
+        const todayCount = entries.filter((e: any) => (e.sentAt ?? '').startsWith(today)).length;
+        const yesterdayCount = entries.filter((e: any) => (e.sentAt ?? '').startsWith(yesterday)).length;
+        lines.push(`  📤 Today: *${todayCount}* · Yesterday: ${yesterdayCount}`);
+      } else {
+        lines.push(`  _reengage-log.jsonl not found_`);
+      }
+    } catch {
+      lines.push(`  _could not read reengage log_`);
+    }
+
     return lines.join('\n');
   } catch (e: any) {
     return `❌ Error reading Achiri readiness: ${e.message}`;
