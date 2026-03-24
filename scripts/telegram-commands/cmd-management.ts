@@ -1627,6 +1627,14 @@ export function cmdStatus(): string {
     cronLine = '⚠️ Crons: PM2 not available';
   }
 
+  // Sprint 1036: Launch countdowns
+  const godmanDate = new Date('2026-04-14T00:00:00Z');
+  const achiriDate = new Date('2026-04-25T00:00:00Z'); // alpha launch target
+  const godmanDays = Math.max(0, Math.ceil((godmanDate.getTime() - now.getTime()) / 86_400_000));
+  const achiriDays = Math.max(0, Math.ceil((achiriDate.getTime() - now.getTime()) / 86_400_000));
+  const godmanLine = `🚀 Godman launch: *${godmanDays}d* — /godman`;
+  const achiriLine = `🤖 Achiri alpha: *${achiriDays}d* — /achiri`;
+
   const lines = [
     '📊 *Kognai Status Dashboard*',
     '',
@@ -1641,7 +1649,10 @@ export function cmdStatus(): string {
     '',
     `🎬 Next: ${nextLine}`,
     '',
-    `_Tap /pickup to post next video_`,
+    godmanLine,
+    achiriLine,
+    '',
+    `_Tap /pickup to post · /blockers for action items_`,
   ];
 
   return lines.join('\n');

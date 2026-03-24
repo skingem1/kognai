@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1036",
+  "title": "OPS — /status: add Godman + Achiri launch countdowns",
+  "description": "Add launch countdown lines to /status so operator sees all active tracks at a glance: Godman (21d), Achiri alpha (32d). Also update footer to mention /blockers.",
+  "block": "OPS",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1036-01",
+      "title": "Add launch countdown lines to cmdStatus()",
+      "type": "feature",
+      "task_target": "scripts/telegram-commands/cmd-management.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1036"
+    }
+  ]
+}
