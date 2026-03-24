@@ -2973,10 +2973,18 @@ export function cmdGodman(): string {
   const protocols = ['pact', 'lax', 'score', 'signal', 'soul', 'amf', 'drs'];
   lines.push('');
   lines.push('*npm registry:*');
+  let publishedCount = 0; // Sprint 1166: track publish status
   for (const proto of protocols) {
     let ver = '';
     try { ver = execSync(`npm view @godman-protocols/${proto} version 2>/dev/null`, { encoding: 'utf-8', timeout: 8000, stdio: ['pipe','pipe','pipe'] }).trim(); } catch {}
+    if (ver) publishedCount++; // Sprint 1166
     lines.push(`  ${ver ? `✅ @godman-protocols/${proto} v${ver}` : `❌ @godman-protocols/${proto} — NOT PUBLISHED`}`);
+  }
+  // Sprint 1166: publish status summary badge
+  if (publishedCount === protocols.length) {
+    lines.push(`📦 *npm publish: ✅ All ${protocols.length} published — LAUNCH READY*`);
+  } else {
+    lines.push(`📦 *npm publish: ${publishedCount}/${protocols.length} published*${publishedCount === 0 ? ' — run npm publish before launch' : ''}`);
   }
 
   // Sprint 1105: npm run build clean check for all 8 packages

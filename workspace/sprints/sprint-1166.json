@@ -1,0 +1,21 @@
+{
+  "sprint_id": "sprint-1166",
+  "title": "GODMAN-LAUNCH — /godman: show publish status badge (published to npm / not yet)",
+  "description": "Extend the existing npm registry loop to track published count and append a summary badge: '📦 npm publish: X/7 published' (or '✅ All 7 published — LAUNCH READY'). Gives operator instant publish state at a glance without reading the full per-protocol list.",
+  "source": "queue-prescribed",
+  "block": "GODMAN-PROTOCOLS",
+  "tasks": [
+    {
+      "id": "1166-01",
+      "title": "Add publish count summary badge after npm registry loop in cmdGodman()",
+      "type": "feature",
+      "task_type": "ux",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1166",
+      "notes": "File >3000 lines — swarm bypassed. Track publishedCount in existing loop, push summary badge after."
+    }
+  ]
+}
