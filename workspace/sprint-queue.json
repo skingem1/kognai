@@ -2890,9 +2890,10 @@
       "sprint": 1190,
       "title": "GODMAN-LAUNCH — /godman: show npm publish dry-run output for one protocol",
       "block": "GODMAN-LAUNCH",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
-      "rationale": "/godman shows version status but not whether publish would succeed. Run npm publish --dry-run for the first publishable protocol and show truncated output."
+      "rationale": "/godman shows version status but not whether publish would succeed. Run npm publish --dry-run for the first publishable protocol and show truncated output.",
+      "_note": "Shipped 2026-03-24 — commit 11556626. npm dry-run section in cmdGodman(). pact dry-run OK."
     },
     {
       "sprint": 1191,
