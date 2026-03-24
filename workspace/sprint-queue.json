@@ -58,7 +58,7 @@
       "status": "done",
       "priority": "medium",
       "rationale": "From ARCH-001 tasks 01-04. Create tmux named session kognai-amd21 with 4 windows (orchestrator + 3 observers). Write heartbeat.sh (max 60 lines, adaptive intervals 30s/120s/300s). Write observer agent prompt template (max 400 words, AMF schema). Write _orchestrator/ directory structure + worker status JSON schema.",
-      "_note": "Shipped 2026-03-24 — commit e56655e7. 8 files. heartbeat --once: PASS. All scripts syntax OK."
+      "_note": "Shipped 2026-03-24 — commit bece95f3. tmux setup + heartbeat (52 lines) + observer template + _orchestrator/ schema."
     },
     {
       "sprint": 959,
