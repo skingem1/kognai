@@ -1688,6 +1688,22 @@ export function cmdStatus(): string {
     }
   } catch { /* skip if unreadable */ }
 
+  // Sprint 1081: Smoke test status line
+  let smokeLine = '';
+  try {
+    const smokePath = path.join(ROOT, 'reports', 'smoke-test-latest.json');
+    if (fs.existsSync(smokePath)) {
+      const smoke = JSON.parse(fs.readFileSync(smokePath, 'utf-8'));
+      const pass = smoke.passed ?? smoke.pass ?? smoke.status === 'pass';
+      const fail = smoke.failed ?? smoke.fail ?? smoke.failures?.length ?? 0;
+      if (pass && fail === 0) {
+        smokeLine = `🧪 Smoke: ✅ clean`;
+      } else {
+        smokeLine = `🧪 Smoke: ❌ ${fail} failing · /smoke`;
+      }
+    }
+  } catch { /* skip */ }
+
   const lines = [
     '📊 *Kognai Status Dashboard*',
     '',
@@ -1701,6 +1717,7 @@ export function cmdStatus(): string {
     cronLine,
     watchdogLine,
     trustLine,
+    smokeLine,
     '',
     `🎬 Next: ${nextLine}`,
     '',
