@@ -1,0 +1,21 @@
+{
+  "sprint_id": "sprint-1168",
+  "title": "GODMAN-LAUNCH — /godman: show total published package count (N/8 including SDK)",
+  "description": "Extend the npm registry section to also check SDK publish status and update the summary badge to show N/8 (7 protocols + SDK). Replace the 7-only count with an 8-package count.",
+  "source": "queue-prescribed",
+  "block": "GODMAN-LAUNCH",
+  "tasks": [
+    {
+      "id": "1168-01",
+      "title": "Add SDK to npm publish count in cmdGodman() — badge shows N/8",
+      "type": "feature",
+      "task_type": "ux",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1168",
+      "notes": "File >3000 lines — swarm bypassed, written directly."
+    }
+  ]
+}

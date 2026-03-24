@@ -2971,20 +2971,26 @@ export function cmdGodman(): string {
 
   // Sprint 1014: npm registry versions
   const protocols = ['pact', 'lax', 'score', 'signal', 'soul', 'amf', 'drs'];
+  const allPkgs = [...protocols, 'sdk']; // Sprint 1168: include SDK in total count
   lines.push('');
   lines.push('*npm registry:*');
-  let publishedCount = 0; // Sprint 1166: track publish status
+  let publishedCount = 0; // Sprint 1166/1168: track publish status
   for (const proto of protocols) {
     let ver = '';
     try { ver = execSync(`npm view @godman-protocols/${proto} version 2>/dev/null`, { encoding: 'utf-8', timeout: 8000, stdio: ['pipe','pipe','pipe'] }).trim(); } catch {}
-    if (ver) publishedCount++; // Sprint 1166
+    if (ver) publishedCount++;
     lines.push(`  ${ver ? `✅ @godman-protocols/${proto} v${ver}` : `❌ @godman-protocols/${proto} — NOT PUBLISHED`}`);
   }
-  // Sprint 1166: publish status summary badge
-  if (publishedCount === protocols.length) {
-    lines.push(`📦 *npm publish: ✅ All ${protocols.length} published — LAUNCH READY*`);
+  // Sprint 1168: also check SDK
+  let sdkPubVer = '';
+  try { sdkPubVer = execSync('npm view @godman-protocols/sdk version 2>/dev/null', { encoding: 'utf-8', timeout: 8000, stdio: ['pipe','pipe','pipe'] }).trim(); } catch {}
+  if (sdkPubVer) publishedCount++;
+  lines.push(`  ${sdkPubVer ? `✅ @godman-protocols/sdk v${sdkPubVer}` : '❌ @godman-protocols/sdk — NOT PUBLISHED'}`);
+  // Sprint 1166/1168: publish status summary badge (N/8)
+  if (publishedCount === allPkgs.length) {
+    lines.push(`📦 *npm publish: ✅ All ${allPkgs.length}/8 published — LAUNCH READY*`);
   } else {
-    lines.push(`📦 *npm publish: ${publishedCount}/${protocols.length} published*${publishedCount === 0 ? ' — run npm publish before launch' : ''}`);
+    lines.push(`📦 *npm publish: ${publishedCount}/${allPkgs.length} published*${publishedCount === 0 ? ' — run npm publish before launch' : ''}`);
   }
 
   // Sprint 1105: npm run build clean check for all 8 packages
