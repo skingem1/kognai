@@ -1,0 +1,31 @@
+{
+  "sprint_id": "sprint-1013",
+  "title": "GODMAN-LAUNCH — /godman-launch Telegram command: April 14 readiness checklist",
+  "description": "21 days to April 14 Godman launch. Add /godman-launch Telegram command that checks: npm login (npm whoami), smoke tests (run for each protocol), npm registry versions (npm view @godman-protocols/pact version), X thread draft exists, demo videos exist. Single view of what's done vs what needs human action.",
+  "block": "GODMAN-PROTOCOLS",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1013-01",
+      "title": "Add cmdGodmanLaunch() to a new scripts/telegram-commands/cmd-godman.ts",
+      "type": "feature",
+      "task_target": "scripts/telegram-commands/cmd-godman.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1013",
+      "description": "Create scripts/telegram-commands/cmd-godman.ts (max 120 lines). cmdGodmanLaunch(): (1) npm whoami check via execSync — show logged in / NOT LOGGED IN. (2) For each of 7 protocols: check npm view @godman-protocols/<name> version (execSync, catch = not published). (3) Check workspace/social/x-replies/ dir exists + count files. (4) Check if demo mp4 files exist in code-demo-runs/. Return formatted Telegram markdown string with ✅/❌ for each check."
+    },
+    {
+      "id": "1013-02",
+      "title": "Register /godman-launch in telegram-bot.ts",
+      "type": "feature",
+      "task_target": "scripts/telegram-bot.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1013",
+      "description": "In telegram-bot.ts: import cmdGodmanLaunch from cmd-godman.ts. Add case '/godman-launch': response = cmdGodmanLaunch(); break; in the sync commands section."
+    }
+  ]
+}

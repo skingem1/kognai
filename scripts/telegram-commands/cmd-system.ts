@@ -1195,6 +1195,18 @@ export function cmdGodman(): string {
   try { hasXThread = fs.existsSync(xThreadDir) && fs.readdirSync(xThreadDir).length > 0; } catch {}
   lines.push(`📣 X launch thread: ${hasXThread ? 'ready' : 'not found'}`);
 
+  // Sprint 1013: Demo videos + npm status
+  const demoBase = path.join(ROOT, 'workspace', 'scs001', 'code-demo-runs');
+  const hasPactDemo = fs.existsSync(path.join(demoBase, 'pact-demo-v1/pact-demo-v1.mp4'));
+  const hasIntegDemo = fs.existsSync(path.join(demoBase, 'godman-integration-v1/godman-integration-v1.mp4'));
+  lines.push(`🎬 PACT demo mp4: ${hasPactDemo ? 'ready' : 'run Spielberg'}`);
+  lines.push(`🎬 Integration demo mp4: ${hasIntegDemo ? 'ready (all-7)' : 'run Spielberg'}`);
+
+  // npm login
+  let npmWhoami = '';
+  try { npmWhoami = execSync('npm whoami', { encoding: 'utf-8', timeout: 5000, stdio: ['pipe','pipe','pipe'] }).trim(); } catch {}
+  lines.push(`🔑 npm login: ${npmWhoami ? `✅ ${npmWhoami}` : '❌ run: npm login'}`);
+
   // Overall
   lines.push('');
   if (allOk && hasLaunch) {
