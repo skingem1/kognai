@@ -31,7 +31,7 @@ import { cmdHelp } from './telegram-commands/cmd-help';
 // Sprint 496: Import extracted command modules (Part 2: N-Z + interactive)
 import { cmdSession, cmdDone, cmdEndSession, cmdMenu } from './telegram-commands/cmd-session';
 import { cmdDeliver, cmdPublish, cmdPostNow, cmdPickup, cmdTodayCaptions, cmdBroadcast, cmdRefresh, cmdProduce, cmdProduceTopic, cmdInstagram, cmdInventory, cmdBatchDeliver, cmdStockpile, cmdBroadcastPause, cmdBroadcastResume, cmdPostBrowser, cmdPostAuto, cmdQuickstart, cmdV2Produce, cmdDeliverNext } from './telegram-commands/cmd-delivery';
-import { cmdCheckout, cmdSubscribers, cmdPortal, cmdFunnel, cmdAchiri, cmdAlpha, cmdTestStripe, cmdUsage, cmdAchiriData, cmdWaitlist } from './telegram-commands/cmd-stripe';
+import { cmdCheckout, cmdSubscribers, cmdPortal, cmdFunnel, cmdAchiri, cmdAlpha, cmdTestStripe, cmdUsage, cmdAchiriData, cmdWaitlist, cmdStripe } from './telegram-commands/cmd-stripe';
 import { cmdStart, cmdTrial, cmdPlans } from './telegram-commands/cmd-onboarding';
 import { cmdLoraEval } from './telegram-commands/cmd-lora-eval';
 import { cmdWarmupStart, cmdWarmupComplete, cmdWarmupStatus } from './telegram-commands/cmd-warmup';
@@ -98,6 +98,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     '/checkout':     () => cmdCheckout(chatId, cmdArgs),
     '/subscribers':  () => cmdSubscribers(chatId),
     '/stripestatus': async () => { const r = await cmdStripeStatus(); await sendMessage(chatId, r); },
+    '/stripe':       async () => { const r = await cmdStripe(); await sendMessage(chatId, r); },
     '/test-stripe':  () => cmdTestStripe(chatId),
     '/teststripe':   () => cmdTestStripe(chatId),
     '/testsuite':    () => cmdTestSuite(chatId),
@@ -117,6 +118,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     '/postauto':        () => cmdPostAuto(chatId, cmdArgs),
     '/quickstart':      () => cmdQuickstart(chatId),
     '/revenue':          async () => { const r = await cmdRevenue(); await sendMessage(chatId, r); },
+    '/stripe':           async () => { const r = await cmdStripe(); await sendMessage(chatId, r); },
   };
 
   const asyncHandler = asyncHandlers[cmdName];

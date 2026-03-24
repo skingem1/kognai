@@ -618,7 +618,8 @@
       "sprint": 1063,
       "title": "INFRA \u2014 Stripe webhook event log: /stripe command shows last 5 webhook events",
       "block": "INFRA",
-      "status": "pending",
+      "status": "done",
+      "_note": "Shipped 2026-03-24. cmdStripe() added to cmd-system.ts + /stripe route in telegram-bot.ts. Filters for event keywords, falls back to last 5 lines.",
       "priority": "medium",
       "rationale": "No visibility into Stripe webhook delivery. Add /stripe command that tails stripe-webhook-out.log last 5 lines \u2014 shows subscription.created, payment_intent.succeeded events."
     },
