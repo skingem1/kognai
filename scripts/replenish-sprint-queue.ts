@@ -1138,6 +1138,119 @@ function generateItems(startSprint: number, existingTitles: Set<string> = new Se
     rationale: 'Morning brief shows Godman countdown but not specific actions needed. When <3d to launch, include checklist: npm login, git tag, publish dry-run.',
   });
 
+  // Wave 16 templates — content quality, Godman publish, Achiri data
+  infraItems.push({
+    title: 'QUALITY — /smoke: save last smoke result to reports/smoke-test-latest.json',
+    block: 'QUALITY',
+    rationale: '/smoke runs tests but only shows output in Telegram. Save the result to reports/smoke-test-latest.json so /status can show the latest smoke result without re-running.',
+  });
+
+  infraItems.push({
+    title: 'OPS — /status: show days since last pipeline run',
+    block: 'OPS',
+    rationale: '/status shows pipeline last run time but only if very recent. Add "pipeline: Xd ago — consider running" when >3 days to nudge production.',
+  });
+
+  infraItems.push({
+    title: 'GODMAN-LAUNCH — /godman: show which protocols are semver-versioned (has package.json version)',
+    block: 'GODMAN-LAUNCH',
+    rationale: 'Before publishing to npm, each protocol package.json must have a valid semver version field. Show which ones are missing or have 0.0.1 placeholder.',
+  });
+
+  infraItems.push({
+    title: 'GATE — /pace: show time-boxed daily posting schedule (morning/noon/evening)',
+    block: 'GATE',
+    rationale: '/pace shows daily obligation as a number but not a time plan. Show "7am · 12pm · 7pm" posting slots to make the obligation actionable.',
+  });
+
+  infraItems.push({
+    title: 'ACHIRI — /achiri: show last 7 days message trend as sparkline',
+    block: 'ACHIRI',
+    rationale: 'Achiri daily-counts.json has per-day message totals. Show a 7-day sparkline (▁▂▅▇▆▄▃) to visualize engagement trend at a glance.',
+  });
+
+  infraItems.push({
+    title: 'OPS — /health: show total PM2 memory footprint',
+    block: 'OPS',
+    rationale: '/health shows per-process warnings but not the total. Show "Total PM2 memory: X MB" to monitor overall server memory pressure.',
+  });
+
+  infraItems.push({
+    title: 'QUALITY — /errors: auto-suggest /boot if critical crons are missing from PM2',
+    block: 'QUALITY',
+    rationale: '/errors shows error logs but not missing processes. When telegram-bot or other critical processes are not in PM2, suggest /boot to re-register.',
+  });
+
+  infraItems.push({
+    title: 'OPS — /daily-digest: show Phase 1.5 gate bar chart (posts + views %)',
+    block: 'OPS',
+    rationale: 'Daily digest reports gate stats as numbers. Show a visual progress bar for both posts and views to make progress visceral.',
+  });
+
+  infraItems.push({
+    title: 'GATE — /today: show how many videos in queue are ready vs captioned',
+    block: 'GATE',
+    rationale: '/today shows top videos but not queue health. Add "Queue: N ready, M need captions, K need pipeline" to show what operator needs to unblock.',
+  });
+
+  infraItems.push({
+    title: 'OPS — /blockers: auto-scan for blockers from errors + watchdog + smoke + gate',
+    block: 'OPS',
+    rationale: '/blockers requires manual entry. Auto-scan error logs, watchdog alerts, smoke failures, and gate progress to generate a live blockers list automatically.',
+  });
+
+  // Wave 17 — UX polish + gate + Godman final prep
+  infraItems.push({
+    title: 'OPS — /status: show active sprint number from sprint-queue.json',
+    block: 'OPS',
+    rationale: '/status shows gate and queue but not which sprint is active. Pull the latest sprint number from sprint-queue.json and show it in the header.',
+  });
+  infraItems.push({
+    title: 'GATE — /gate: show cumulative posts-per-weekday bar (Mon-Sun)',
+    block: 'GATE',
+    rationale: 'Gate tracker shows total posts but not posting cadence by day of week. Show a mini bar per weekday so operator can see which days they under-post.',
+  });
+  infraItems.push({
+    title: 'ACHIRI — /achiri: show re-engagement success rate (sent vs replied)',
+    block: 'ACHIRI',
+    rationale: 'reengage-log.jsonl tracks sent re-engagements but not replies. Cross-reference with daily-counts to compute reply rate and show in /achiri.',
+  });
+  infraItems.push({
+    title: 'OPS — /health: show uptime of telegram-bot process',
+    block: 'OPS',
+    rationale: '/health shows PM2 memory but not uptime. Show uptime for telegram-bot specifically since it is the primary user-facing process.',
+  });
+  infraItems.push({
+    title: 'GATE — /pace: show estimated gate completion date at current pace',
+    block: 'GATE',
+    rationale: '/pace shows daily obligation but not ETA. Show \"At this pace, gate completes: 2026-03-XX\" so operator can see if they are on schedule.',
+  });
+  infraItems.push({
+    title: 'QUALITY — /smoke: add check that morning-brief PM2 cron exists',
+    block: 'QUALITY',
+    rationale: 'Smoke test checks bot and pipeline but not the morning-brief cron. Add it as a check since it is critical for daily operator flow.',
+  });
+  infraItems.push({
+    title: 'OPS — /errors: show number of unique processes with errors today',
+    block: 'OPS',
+    rationale: '/errors shows total error count but the unique process count tells you blast radius. Add \"X processes affected\" to the header line.',
+  });
+  infraItems.push({
+    title: 'GODMAN-LAUNCH — /godman: show npm publish dry-run output for one protocol',
+    block: 'GODMAN-LAUNCH',
+    rationale: '/godman shows version status but not whether publish would succeed. Run npm publish --dry-run for the first publishable protocol and show truncated output.',
+  });
+  infraItems.push({
+    title: 'OPS — /report: show days since last git commit',
+    block: 'OPS',
+    rationale: '/report shows sprint and gate but not commit cadence. Show \"Last commit: Xh ago\" as a dev-health signal.',
+  });
+  infraItems.push({
+    title: 'GATE — /today: show next posting slot (morning/noon/evening) countdown',
+    block: 'GATE',
+    rationale: '/today shows what to post but not when. Show \"Next slot: 7pm in 2h 15m\" based on current time to nudge the operator to post.',
+  });
+
   // Fill remaining slots (skip duplicates of already-completed items)
   for (const item of infraItems) {
     if (items.length >= 10) break;

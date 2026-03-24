@@ -576,6 +576,11 @@ export function cmdToday(): string {
     }
   }
 
+  // Sprint 1142 (wave 16): ready vs captioned breakdown
+  const captionedCount = ready.length;
+  const uncaptionedCount = unposted.length - captionedCount;
+  lines.push(`📦 *Queue:* ${captionedCount} ready (captioned) · ${uncaptionedCount} uncaptioned · ${unposted.length} total unposted`);
+
   // Recommended videos
   const topN = Math.min(3, ready.length);
   if (topN > 0) {

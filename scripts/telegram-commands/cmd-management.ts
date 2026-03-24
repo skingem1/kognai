@@ -1967,6 +1967,69 @@ export function cmdBlockers(): string {
   }
   lines.push('');
 
+  // ── Sprint 1143 (wave 16): Auto-scan blockers from errors + watchdog + smoke + gate ──
+  lines.push('*🔍 Auto-scan:*');
+  let autoFound = 0;
+
+  // Check smoke test
+  try {
+    const smokePath = path.join(ROOT, 'reports', 'smoke-test-latest.json');
+    if (fs.existsSync(smokePath)) {
+      const smoke = JSON.parse(fs.readFileSync(smokePath, 'utf-8'));
+      const ageH = smoke.timestamp ? (Date.now() - new Date(smoke.timestamp).getTime()) / 3600000 : 999;
+      if (smoke.pass === false || smoke.status === 'fail') {
+        lines.push(`  ❌ Smoke test failing (${smoke.failed ?? '?'} failed) — run /smoke`);
+        autoFound++;
+      } else if (ageH > 24) {
+        lines.push(`  ⚠️ Smoke test stale (${Math.round(ageH)}h ago) — run /smoke`);
+        autoFound++;
+      } else {
+        lines.push(`  ✅ Smoke: pass (${Math.round(ageH)}h ago)`);
+      }
+    } else {
+      lines.push(`  ⚠️ No smoke test found — run /smoke`);
+      autoFound++;
+    }
+  } catch { /* skip */ }
+
+  // Check watchdog
+  try {
+    const wdPath = path.join(ROOT, 'reports', 'watchdog-latest.json');
+    if (fs.existsSync(wdPath)) {
+      const wd = JSON.parse(fs.readFileSync(wdPath, 'utf-8'));
+      const ts = wd.timestamp ?? wd.generated_at;
+      const ageH = ts ? (Date.now() - new Date(ts).getTime()) / 3600000 : 999;
+      if (ageH > 25) {
+        lines.push(`  ⚠️ Watchdog stale (${Math.round(ageH)}h) — check PM2 watchdog cron`);
+        autoFound++;
+      } else {
+        lines.push(`  ✅ Watchdog: ${Math.round(ageH)}h ago`);
+      }
+    } else {
+      lines.push(`  ⚠️ No watchdog report — run pm2 start scs001-watchdog`);
+      autoFound++;
+    }
+  } catch { /* skip */ }
+
+  // Check recent errors (any in last 1h)
+  try {
+    const logDir = path.join(ROOT, 'logs');
+    const cutoff = Date.now() - 3600000;
+    const errorFiles = fs.readdirSync(logDir).filter((f: string) => f.endsWith('-error.log'));
+    const recentErrors = errorFiles.filter((f: string) => {
+      try { return fs.statSync(path.join(logDir, f)).mtimeMs > cutoff; } catch { return false; }
+    });
+    if (recentErrors.length > 0) {
+      lines.push(`  ⚠️ Recent errors (${recentErrors.length} logs updated in last 1h) — /errors to inspect`);
+      autoFound++;
+    } else {
+      lines.push(`  ✅ No recent errors (last 1h)`);
+    }
+  } catch { /* skip */ }
+
+  lines.push('');
+  if (autoFound > 0) totalBlocked += autoFound;
+
   // ── Summary ───────────────────────────────────────────────────────────────
   if (totalBlocked === 0) {
     lines.push('✅ *No blockers* — all human actions complete!');

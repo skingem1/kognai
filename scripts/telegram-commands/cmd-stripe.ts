@@ -418,6 +418,22 @@ export function cmdAchiri(): string {
           }
         } catch { /* skip */ }
         lines.push(`💬 *Messages:* ${totalMsgs} total · ${avgPerDay}/day avg · *${last24hMsgs} last 24h*${lastActiveLine}`);
+        // Sprint 1138 (wave 16): last 7 days message trend sparkline
+        try {
+          const sparkChars = ['▁','▂','▃','▄','▅','▆','▇','█'];
+          const last7: number[] = [];
+          for (let i = 6; i >= 0; i--) {
+            const d = new Date(Date.now() - i * 86_400_000).toISOString().slice(0, 10);
+            const dayData = counts[d];
+            const n = dayData ? Object.entries(dayData)
+              .filter(([k]) => !k.startsWith('validate') && !k.startsWith('e2e') && !k.endsWith('-limit') && !k.endsWith('-paid') && !k.endsWith('-bypass'))
+              .reduce((s, [, v]) => s + (v as number), 0) : 0;
+            last7.push(n);
+          }
+          const maxVal = Math.max(...last7, 1);
+          const spark = last7.map(n => sparkChars[Math.min(7, Math.floor((n / maxVal) * 7))]).join('');
+          lines.push(`📈 *7d trend:* \`${spark}\` (${last7[last7.length - 1]} today)`);
+        } catch { /* skip */ }
 
         // Sprint 1120: premium conversion rate
         const allUserKeys = new Set<string>();

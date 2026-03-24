@@ -108,6 +108,7 @@ export function cmdHealth(): string {
   } catch { /* skip */ }
 
   // Sprint 1133 (wave 13): top 5 processes by memory usage
+  // Sprint 1139 (wave 16): total PM2 memory footprint
   let memTableSection = '';
   try {
     const procs = getPm2List();
@@ -115,9 +116,14 @@ export function cmdHealth(): string {
       .filter(p => p.memory > 0)
       .sort((a, b) => b.memory - a.memory)
       .slice(0, 5);
+    const totalMemBytes = procs.reduce((s, p) => s + p.memory, 0);
+    const totalMemStr = fmtMem(totalMemBytes);
+    const footprintIcon = totalMemBytes > 1024 * 1024 * 1024 ? '⚠️' : '✅';
     if (top5.length > 0) {
       const rows = top5.map(p => `  \`${p.name.slice(0, 20).padEnd(20)}\` ${fmtMem(p.memory)}`).join('\n');
-      memTableSection = `\n\n*Memory (top 5):*\n${rows}`;
+      memTableSection = `\n\n*Memory (top 5 / total ${footprintIcon} ${totalMemStr}):*\n${rows}`;
+    } else {
+      memTableSection = `\n\n*Memory footprint:* ${footprintIcon} ${totalMemStr} across ${procs.length} processes`;
     }
   } catch { /* skip */ }
 
@@ -1152,6 +1158,17 @@ export function cmdErrors(filterProcess?: string): string {
     }
   } catch { /* skip */ }
 
+  // Sprint 1140 (wave 16): auto-suggest /boot if critical crons are missing from PM2
+  try {
+    const criticalCrons = ['scs001-morning-brief', 'scs001-watchdog', 'scs001-pipeline'];
+    const procs = getPm2List();
+    const pm2Names = procs.map(p => p.name);
+    const missingCrons = criticalCrons.filter(c => !pm2Names.some(n => n.includes(c)));
+    if (missingCrons.length > 0) {
+      output.push(`\n⚠️ *Critical crons missing from PM2:* ${missingCrons.map(c => `\`${c}\``).join(', ')}\n_Run /boot to restore them_`);
+    }
+  } catch { /* skip */ }
+
   // Sprint 1137 (wave 14): weekly error count delta vs last week
   try {
     const logFiles = fs.readdirSync(logDir).filter((f: string) => f.endsWith('-error.log'));
@@ -1317,6 +1334,18 @@ export async function cmdSmoke(chatId: string): Promise<void> {
           : `❌ Pipeline validator: ${errCount} errors — /errors for details`);
       } catch {}
     }
+
+    // Sprint 1136 (wave 16): save smoke result to reports/smoke-test-latest.json
+    try {
+      const smokeResult = {
+        timestamp: new Date().toISOString(),
+        passed: passed,
+        failed: failed,
+        status: failed === 0 ? 'pass' : 'fail',
+        pass: failed === 0,
+      };
+      fs.writeFileSync(path.join(ROOT, 'reports', 'smoke-test-latest.json'), JSON.stringify(smokeResult, null, 2));
+    } catch { /* skip — non-critical */ }
 
     // Sprint 1134 (wave 14): Telegram bot ping check
     try {

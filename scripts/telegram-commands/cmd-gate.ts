@@ -540,6 +540,14 @@ export function cmdPace(): string {
     }
   }
 
+  // Sprint 1137 (wave 16): time-boxed daily posting schedule
+  if (postsNeeded > 0 && todayObligation > 0) {
+    const slots = ['🌅 7:00 AM', '☀️ 12:00 PM', '🌆 7:00 PM'];
+    const slotsToUse = slots.slice(0, Math.min(todayObligation, 3));
+    lines.push('');
+    lines.push(`*📅 Today's posting slots:* ${slotsToUse.join(' · ')}`);
+  }
+
   lines.push('');
   lines.push('_Use /postnow to get your next video, /posted after posting._');
 

@@ -635,6 +635,17 @@ export function cmdDigest(): string {
     }
   } catch {}
 
+  // Sprint 1141 (wave 16): Phase 1.5 gate bar chart (posts + views %)
+  try {
+    const postPct = Math.min(100, Math.round((postCount / 30) * 100));
+    const viewPct = Math.min(100, Math.round((totalViews / 500) * 100));
+    const mkBar = (pct: number) => { const f = Math.round(pct / 5); return '█'.repeat(f) + '░'.repeat(20 - f); };
+    out.push('');
+    out.push(`*📊 Phase 1.5 Gate Progress:*`);
+    out.push(`Posts: \`[${mkBar(postPct)}]\` ${postPct}% (${postCount}/30)`);
+    out.push(`Views: \`[${mkBar(viewPct)}]\` ${viewPct}% (${totalViews}/500)`);
+  } catch { /* skip */ }
+
   return out.join('\n');
 }
 
