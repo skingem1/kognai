@@ -6092,3 +6092,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
   - /report: cost efficiency line (total cost + avg per video from stats-latest.json)
 - Swarm used: no (direct write — established pattern)
 - Timestamp: 2026-03-24T18:10Z
+
+## Sprint 1148 — Telegram operator UX wave 27+
+- Status: PASS
+- Commit: ca705989
+- Files modified: scripts/telegram-commands/cmd-system.ts, cmd-management.ts
+- Signals added (3):
+  - /status: Achiri analytics compact (total users, DAU, retention%, errors/7d)
+  - /health: gate-audit.json real vs dry_run signal
+  - /health: auto-deliver PM2 cron health (morning/noon/evening)
+- Swarm used: no (direct write — established pattern)
+- Timestamp: 2026-03-24T18:20Z
