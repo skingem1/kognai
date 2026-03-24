@@ -6081,3 +6081,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (direct write — known pattern, 3 new signals + 7 pre-committed)
 - AAR: swarm bypassed; direct Sonnet implementation of established cmd-system.ts pattern
 - Timestamp: 2026-03-24T18:00Z
+
+## Sprint 1147 — Telegram operator UX wave 27
+- Status: PASS
+- Commit: d47609c2
+- Files modified: scripts/telegram-commands/cmd-system.ts
+- Signals added (3):
+  - /health: stats-latest.json production summary (total videos, week, today, pipeline runs)
+  - /health: video-inventory.json gate snapshot (posted/target, gap, ready_to_post)
+  - /report: cost efficiency line (total cost + avg per video from stats-latest.json)
+- Swarm used: no (direct write — established pattern)
+- Timestamp: 2026-03-24T18:10Z
