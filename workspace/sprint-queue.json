@@ -791,7 +791,7 @@
       "status": "done",
       "priority": "medium",
       "rationale": "Gate pace check — show \"Need X/day · Currently posting Y/day (streak: Zd)\" to quickly assess if operator is on track. Read from manual-posts.jsonl last 7d.",
-      "_note": "Shipped 2026-03-24 — /pace streak already implemented"
+      "_note": "Shipped 2026-03-24 — commit 2be39497. Streak line added to /pace."
     },
     {
       "sprint": 1084,
