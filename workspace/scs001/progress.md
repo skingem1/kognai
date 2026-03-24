@@ -5458,3 +5458,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (single file, direct write)
 - Issues: none
 - Timestamp: 2026-03-24T08:42:00Z
+
+## Sprint 987 — BOND-IMPL-01
+- Status: PASS
+- Commit: 8631c6a9
+- Files created: workspace/bond/bond-runtime.ts, workspace/sprints/sprint-987.json
+- Files modified: workspace/bond/bond-schema.ts (stubs replaced with real implementations)
+- Test: smoke test — 25/25 PASS (tier resolution, mandate CRUD, headers, budget, revoke, enforcement)
+- Pipeline: N/A (BOND block)
+- Swarm used: no (multi-file, direct write)
+- Issues: none
+- Timestamp: 2026-03-24T08:50:00Z
