@@ -237,10 +237,11 @@
       "sprint": 1004,
       "title": "PHASE2 \u2014 Achiri conversation analytics dashboard data export",
       "block": "PHASE2",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "Achiri is at 100% readiness. Export conversation analytics (DAU, retention, topics) as JSON for future web dashboard.",
-      "created_at": "2026-03-24"
+      "created_at": "2026-03-24",
+      "_note": "Shipped 2026-03-24 \u2014 commit d6e5b656. achiri-dashboard-export.ts (Sprint 677) already covers all goals. Validated: 3 users, 67% retention, 6 sessions, topic analytics."
     },
     {
       "sprint": 1005,
