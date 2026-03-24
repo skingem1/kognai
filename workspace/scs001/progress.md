@@ -5524,3 +5524,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - AAR: aar-middleware module missing — noted
 - Issues: none
 - Timestamp: 2026-03-24T10:15:00Z
+
+## Sprint 991 — KOGNAI-STATUS-CLI
+- Status: PASS
+- Commit: d2e02c64
+- Files created: scripts/status.ts, workspace/sprints/sprint-991.json
+- Files modified: none
+- Test: npx ts-node scripts/status.ts — all 4 sections rendered correctly
+- Output: TikTok gate (4/30 ON TRACK) | Achiri (100/100) | Godman (7/7) | Action items
+- Swarm used: no (single TS <150 lines, direct write)
+- Issues: ANTHROPIC_API_KEY shows as missing (not in .env — uses ANTHROPIC_API_KEY from Claude context, normal)
+- Timestamp: 2026-03-24T10:30:00Z
