@@ -373,7 +373,7 @@ function main(): void {
   }
 
   // Check if there are pending items
-  const pending = existing.queue.filter(i => i.status !== 'done' && i.status !== 'skipped');
+  const pending = existing.queue.filter(i => !['done', 'skipped', 'skip'].includes(i.status));
   if (pending.length > 0) {
     console.log(`[replenish] Queue has ${pending.length} pending items. No replenishment needed.`);
     return;
