@@ -1250,6 +1250,46 @@ module.exports = {
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
     {
+      // Sprint 1006: Noon posting reminder — gate urgency alert if posts_remaining > 0
+      name: "scs001-remind-noon",
+      script: "./scripts/remind-post.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: false,
+      watch: false,
+      cron_restart: "0 12 * * *",
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
+        TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN || "",
+        OWNER_TELEGRAM_CHAT_ID: process.env.OWNER_TELEGRAM_CHAT_ID || "",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/remind-noon-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/remind-noon-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
+    {
+      // Sprint 1006: Evening posting reminder — gate urgency alert at 7pm
+      name: "scs001-remind-evening",
+      script: "./scripts/remind-post.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: false,
+      watch: false,
+      cron_restart: "0 19 * * *",
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
+        TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN || "",
+        OWNER_TELEGRAM_CHAT_ID: process.env.OWNER_TELEGRAM_CHAT_ID || "",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/remind-evening-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/remind-evening-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
+    {
       // Sprint 1005: YouTube Shorts auto-upload — uploads pending delivered videos daily at 7:30am
       // No-op until YOUTUBE_REFRESH_TOKEN is set in .env. Run youtube-oauth-setup.ts to get token.
       // To start: pm2 start ecosystem.config.js --only scs001-youtube-upload

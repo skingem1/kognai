@@ -1,0 +1,31 @@
+{
+  "sprint_id": "sprint-1006",
+  "title": "OPERATOR-UX — Posting time reminders (noon + evening Telegram crons)",
+  "description": "Gate urgency: 0/30 posts, 22 days to Apr 7. Add two PM2 crons that send Telegram reminders to post a video — once at noon, once at 7pm. Each message includes how many posts remain to hit the gate. Creates scripts/remind-post.ts.",
+  "block": "OPERATOR-UX",
+  "source": "queue-exhausted-gate-urgency",
+  "tasks": [
+    {
+      "id": "1006-01",
+      "title": "Create scripts/remind-post.ts — posting reminder with gate status",
+      "type": "feature",
+      "task_target": "scripts/remind-post.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1006",
+      "description": "Read workspace/gates/phase1-5-gate.json (current_posts, target_posts, deadline). Compute posts_remaining = target - current. If current >= target, skip silently (gate met). Send Telegram message: '⏰ Posting reminder — N videos needed by DEADLINE. Post one now!' Use https.request (TELEGRAM_BOT_TOKEN + OWNER_TELEGRAM_CHAT_ID). Max 60 lines."
+    },
+    {
+      "id": "1006-02",
+      "title": "Add two PM2 cron entries: noon + 7pm reminder",
+      "type": "config",
+      "task_target": "ecosystem.config.js",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1006",
+      "description": "Add scs001-remind-noon (cron: '0 12 * * *') and scs001-remind-evening (cron: '0 19 * * *'). Both run scripts/remind-post.ts. autorestart: false, watch: false."
+    }
+  ]
+}
