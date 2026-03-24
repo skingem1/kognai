@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-1172",
+  "title": "GODMAN-LAUNCH — create scripts/godman-tag-all.sh to git-tag all 8 protocols",
+  "description": "Create scripts/godman-tag-all.sh that reads package.json version for each of the 8 godman packages (7 protocols + SDK) and creates git tags in format 'godman-protocols/{name}@v{version}'. Supports --dry-run. This is needed before npm publish on April 14.",
+  "source": "queue-empty-strategic",
+  "block": "GODMAN-LAUNCH",
+  "tasks": [
+    {
+      "id": "1172-01",
+      "title": "Create scripts/godman-tag-all.sh — git tag all 8 godman packages at current version",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/godman-tag-all.sh",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-1172"
+    }
+  ]
+}
