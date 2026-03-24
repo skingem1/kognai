@@ -1713,10 +1713,16 @@ export function cmdStatus(): string {
     }
   } catch { /* skip */ }
 
+  // Sprint 1101: views progress bar
+  const viewPct = Math.min(100, Math.round((totalViews / 500) * 100));
+  const viewFilled = Math.round(viewPct / 5);
+  const viewBar = '█'.repeat(viewFilled) + '░'.repeat(20 - viewFilled);
+
   const lines = [
     '📊 *Kognai Status Dashboard*',
     '',
-    `\`[${bar}]\` ${pct}%`,
+    `\`[${bar}]\` ${pct}% posts`,
+    `\`[${viewBar}]\` ${viewPct}% views`,
     `*${totalPosts}/${target}* posts · *${totalViews}/500* views · *${daysLeft}d* left`,
     `${urgency}`,
     '',
