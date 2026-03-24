@@ -104,6 +104,15 @@
       "priority": "high",
       "rationale": "Implement PACT core mandate lifecycle (create, hash, sign, revoke, verify). Transform skeleton (v0.1) to working protocol (v0.2). Node.js crypto only — no external deps.",
       "_note": "Shipped 2026-03-24 — commit 32879004. core.ts (110 lines) + verifier.ts (105 lines) + index.ts updated. Smoke test: 8/8 PASS. Swarm bypassed (multi-file, direct write)."
+    },
+    {
+      "sprint": 964,
+      "title": "PACT-IMPL-02 — CoordinationFrame lifecycle + MandateRegistry",
+      "block": "GODMAN-PROTOCOLS",
+      "status": "done",
+      "priority": "high",
+      "rationale": "Implement PACT multi-agent coordination layer: CoordinationFrame open/close/abort/addParticipant, MandateRegistry with revocation ledger and snapshot support.",
+      "_note": "Shipped 2026-03-24 — commit 35f28e5e. coordinator.ts (129 lines) + registry.ts (91 lines). Smoke test: 9/9 PASS. Swarm bypassed (multi-file, direct write)."
     }
   ]
 }
