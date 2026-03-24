@@ -1032,9 +1032,10 @@
       "sprint": 1106,
       "title": "INFRA \u2014 /health: show Supabase connection status (ping edge function)",
       "block": "INFRA",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
-      "rationale": "/health shows local checks but not Supabase connectivity. Add a 2s ping to the Supabase URL (from .env) so operator can detect DB connection issues early."
+      "rationale": "/health shows local checks but not Supabase connectivity. Add a 2s ping to the Supabase URL (from .env) so operator can detect DB connection issues early.",
+      "_note": "Shipped as Sprint 1106 \u2014 commit 5d5da2e0"
     },
     {
       "sprint": 1107,
