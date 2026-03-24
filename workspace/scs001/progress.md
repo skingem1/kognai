@@ -5255,3 +5255,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (multi-file docs task, direct write)
 - Issues: none
 - Timestamp: 2026-03-24T21:45:00Z
+
+## Sprint 974 — GODMAN-DOCS-02
+- Status: PASS
+- Commit: f5b2c4c6
+- Files created: amf/docs/api.md, drs/docs/api.md, soul/docs/api.md, sprint-974.json
+- Files modified: amf/README.md (170→173L), drs/README.md (67→188L), soul/README.md (67→228L)
+- Test: N/A (documentation sprint)
+- Pipeline: ALL 7 Godman Protocols now have complete launch documentation (README + API docs). AMF/DRS/SOUL join PACT/LAX/SCORE/SIGNAL.
+- Swarm used: no (multi-file docs task, direct write)
+- Issues: sprint-973 state update was missing from git — included in this state commit
+- Timestamp: 2026-03-24T22:00:00Z
