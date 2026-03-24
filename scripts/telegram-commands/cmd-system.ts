@@ -548,7 +548,50 @@ export function cmdHealth(): string {
     autoDeliverSection = `\n\n${allOnline ? '✅' : '⚠️'} *Auto-deliver:* ${adStatus.join(' · ')}`;
   } catch { /* skip */ }
 
-  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${botUptimeSection}${ollamaSection}${memWarnSection}${memTableSection}${supabaseSection}${supabaseSyncSection}${diskSection}${watchdogSection}${runtimeSection}${tailscaleSection}${hetznerSection}${anthropicSection}${ioSection}${morningBriefSection}${digestSection}${staleCronsSection}${supabaseDomainSection}${anthropicBudgetSection}${pipelineValidationSection}${worktreeSection}${botMemSection}${gateDaysSection}${backupSection}${postingHealthSection}${exportFilesSection}${tokenHealthSection}${statsSection}${inventorySection}${gateAuditSection}${autoDeliverSection}`;
+  // Sprint 1149 (wave 28): bulk-captions.json total_ready vs posted
+  let bulkCaptionsSection = '';
+  try {
+    const bcPath = path.join(ROOT, 'reports', 'bulk-captions.json');
+    if (fs.existsSync(bcPath)) {
+      const bc = JSON.parse(fs.readFileSync(bcPath, 'utf-8'));
+      const totalReady = bc.total_ready ?? 0;
+      const bcPosted = bc.posted ?? 0;
+      const bcIcon = totalReady >= 10 ? '✅' : totalReady > 0 ? '⚠️' : '❌';
+      bulkCaptionsSection = `\n\n${bcIcon} *Captioned & ready:* ${totalReady} videos · ${bcPosted} posted`;
+    }
+  } catch { /* skip */ }
+
+  // Sprint 1149 (wave 28): video-playback-audit passed/failed
+  let playbackSection = '';
+  try {
+    const paPath = path.join(ROOT, 'reports', 'video-playback-audit.json');
+    if (fs.existsSync(paPath)) {
+      const pa = JSON.parse(fs.readFileSync(paPath, 'utf-8'));
+      const passed = pa.passed ?? 0;
+      const failed = pa.failed ?? 0;
+      const total = pa.total ?? (passed + failed);
+      const paIcon = failed === 0 ? '✅' : failed <= 2 ? '⚠️' : '❌';
+      const paAgeH = pa.timestamp ? (Date.now() - new Date(pa.timestamp).getTime()) / 3600000 : null;
+      const paAgeStr = paAgeH != null && paAgeH < 48 ? ` _(${Math.round(paAgeH)}h ago)_` : '';
+      playbackSection = `\n\n${paIcon} *Playback audit:* ${passed}/${total} pass${failed > 0 ? ` · ${failed} fail` : ''}${paAgeStr}`;
+    }
+  } catch { /* skip */ }
+
+  // Sprint 1149 (wave 28): quality01-validation.json QC status
+  let qcSection = '';
+  try {
+    const qcPath = path.join(ROOT, 'workspace', 'scs001', 'quality01-validation.json');
+    if (fs.existsSync(qcPath)) {
+      const qc = JSON.parse(fs.readFileSync(qcPath, 'utf-8'));
+      const qcStatus = qc.status ?? 'UNKNOWN';
+      const qcIcon = qcStatus === 'PASS' ? '✅' : qcStatus === 'FAIL' ? '❌' : '⚠️';
+      const failedChecks = (qc.checks ?? []).filter((c: any) => !c.pass).length;
+      const failStr = failedChecks > 0 ? ` · ${failedChecks} checks failed` : '';
+      qcSection = `\n\n${qcIcon} *QC validation:* ${qcStatus}${failStr}`;
+    }
+  } catch { /* skip */ }
+
+  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${botUptimeSection}${ollamaSection}${memWarnSection}${memTableSection}${supabaseSection}${supabaseSyncSection}${diskSection}${watchdogSection}${runtimeSection}${tailscaleSection}${hetznerSection}${anthropicSection}${ioSection}${morningBriefSection}${digestSection}${staleCronsSection}${supabaseDomainSection}${anthropicBudgetSection}${pipelineValidationSection}${worktreeSection}${botMemSection}${gateDaysSection}${backupSection}${postingHealthSection}${exportFilesSection}${tokenHealthSection}${statsSection}${inventorySection}${gateAuditSection}${autoDeliverSection}${bulkCaptionsSection}${playbackSection}${qcSection}`;
 }
 
 export function cmdTier(): string {

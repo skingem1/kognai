@@ -1,0 +1,41 @@
+{
+  "sprint_id": "sprint-1149",
+  "title": "OPS — Telegram operator UX wave 28: bulk-captions count, playback audit result, quality01 QC status in /health",
+  "description": "Add 3 compact /health signals from existing report JSON files: (1) bulk-captions.json total_ready count vs gate, (2) video-playback-audit.json passed/failed/total, (3) quality01-validation.json PASS/FAIL status from latest QC run.",
+  "source": "queue-empty-auto",
+  "tasks": [
+    {
+      "id": "1149-01",
+      "title": "Add bulk-captions summary to /health",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1149"
+    },
+    {
+      "id": "1149-02",
+      "title": "Add video-playback-audit result to /health",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1149"
+    },
+    {
+      "id": "1149-03",
+      "title": "Add quality01-validation QC status to /health",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1149"
+    }
+  ]
+}
