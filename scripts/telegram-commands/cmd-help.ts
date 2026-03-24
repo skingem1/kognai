@@ -85,6 +85,7 @@ export function cmdHelp(): string {
     `/bottest  — Run smoke tests on all bot commands + posting flow\n` +
     `/gate-refresh — Regenerate gate data + show updated status\n` +
     `/pm2errors — Last 5 error log lines per critical PM2 process\n` +
+    `/sprint-next — Show next planned sprint from queue\n` +
     `/godman   — Godman Protocols launch readiness\n` +
     `/godman-smoke — Run smoke tests on all 7 Godman protocols\n` +
     `/godman-thread — Show X launch megathread (10 tweets, copy-paste)\n` +

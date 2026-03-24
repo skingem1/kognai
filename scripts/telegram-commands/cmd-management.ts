@@ -1836,3 +1836,43 @@ export function cmdBotTest(): string {
 
   return results.join('\n');
 }
+
+// Sprint 1056: /sprint-next — show next planned sprint from queue
+export function cmdSprintNext(): string {
+  const queuePath = path.join(ROOT, 'workspace', 'sprint-queue.json');
+  if (!fs.existsSync(queuePath)) return '❌ sprint-queue.json not found.';
+
+  let q: any;
+  try { q = JSON.parse(fs.readFileSync(queuePath, 'utf-8')); } catch {
+    return '❌ Could not parse sprint-queue.json';
+  }
+
+  const pending = (q.queue || []).filter((i: any) => i.status === 'pending');
+  if (pending.length === 0) {
+    return '📭 *Sprint queue is empty*\n\nNo pending items. Run /replenish to generate new sprint ideas.';
+  }
+
+  const next = pending[0];
+  const lines = [
+    '🎯 *Next Planned Sprint*',
+    '',
+    `*Sprint ${next.sprint}*`,
+    `📌 ${next.title}`,
+    `🏷 Block: ${next.block || 'untagged'}`,
+    `⚡️ Priority: ${next.priority || 'medium'}`,
+    '',
+    next.rationale ? `📝 ${next.rationale}` : '',
+    '',
+    `📦 *${pending.length}* sprints in queue`,
+  ].filter(Boolean);
+
+  if (pending.length > 1) {
+    lines.push('');
+    lines.push('*Up next:*');
+    for (const item of pending.slice(1, 4)) {
+      lines.push(`  ${item.sprint} — ${item.title}`);
+    }
+  }
+
+  return lines.join('\n');
+}

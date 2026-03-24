@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1056",
+  "title": "INFRA — /sprint-next: show next planned sprint from queue",
+  "description": "New command showing the next pending sprint from sprint-queue.json, including title, rationale, and block.",
+  "block": "INFRA",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1056-01",
+      "title": "Add cmdSprintNext to cmd-management.ts + register in telegram-bot.ts",
+      "type": "feature",
+      "task_target": "scripts/telegram-commands/cmd-management.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1056"
+    }
+  ]
+}

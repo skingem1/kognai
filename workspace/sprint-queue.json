@@ -568,9 +568,10 @@
       "sprint": 1056,
       "title": "INFRA — /sprint-next: show next planned sprint title + rationale from queue",
       "block": "INFRA",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
-      "rationale": "When queue is empty, operator has no visibility into what Claude Code will work on next. /sprint-next shows top pending item or \"queue empty — run /replenish\"."
+      "rationale": "When queue is empty, operator has no visibility into what Claude Code will work on next. /sprint-next shows top pending item or \"queue empty — run /replenish\".",
+      "_note": "Shipped. /sprint-next shows next pending queue item + rationale."
     }
   ]
 }
