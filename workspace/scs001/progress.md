@@ -6023,3 +6023,21 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Status: PASS (already implemented — digest shows posting obligation as first action item)
 - Commit: (no code changes needed)
 - Timestamp: 2026-03-24T16:45Z
+
+## Sprint 1070 — QUALITY (audit)
+- Status: PASS (already implemented — /godman-smoke shows per-protocol failure output)
+- Timestamp: 2026-03-24T16:50Z
+
+## Sprint 1071 — GATE
+- Status: PASS
+- Commit: 430520b7
+- Files modified: cmd-content.ts (cmdRecord: video_id validation against ledger)
+- Test: 115/115 PASS
+- Timestamp: 2026-03-24T16:50Z
+
+## Sprint 1072 — INFRA
+- Status: PASS
+- Commit: (pending)
+- Files modified: cmd-system.ts (cmdCrons: staleness detection from PM2 restart_time)
+- Test: 115/115 PASS
+- Timestamp: 2026-03-24T16:55Z

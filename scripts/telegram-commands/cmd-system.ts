@@ -181,11 +181,18 @@ export function cmdCrons(): string {
 
     const crons = list
       .filter((p: any) => p.pm2_env?.cron_restart)
-      .map((p: any) => ({
-        name: p.name as string,
-        cron: p.pm2_env.cron_restart as string,
-        status: (p.pm2_env?.status ?? 'unknown') as string,
-      }))
+      .map((p: any) => {
+        // Sprint 1072: track last restart for staleness detection
+        const restartTime = p.pm2_env?.pm_uptime ?? p.pm2_env?.restart_time ?? 0;
+        const ageHours = restartTime > 0 ? (Date.now() - restartTime) / 3600000 : -1;
+        return {
+          name: p.name as string,
+          cron: p.pm2_env.cron_restart as string,
+          status: (p.pm2_env?.status ?? 'unknown') as string,
+          ageHours,
+          stale: ageHours > 25,
+        };
+      })
       .sort((a, b) => a.name.localeCompare(b.name));
 
     if (crons.length === 0) {
@@ -205,13 +212,16 @@ export function cmdCrons(): string {
       categories[cat].push(c);
     }
 
-    const lines: string[] = [`⏰ *Cron Schedules* (${crons.length} jobs)\n`];
+    const staleCount = crons.filter(c => c.stale).length;
+    const lines: string[] = [`⏰ *Cron Schedules* (${crons.length} jobs${staleCount > 0 ? ` · ⚠️ ${staleCount} stale` : ''})\n`];
 
     for (const [cat, items] of Object.entries(categories)) {
       lines.push(`*${cat}:*`);
       for (const c of items) {
-        const icon = c.status === 'online' ? '🟢' : c.status === 'stopped' ? '⏸️' : '🔴';
-        lines.push(`${icon} \`${c.cron}\` ${c.name}`);
+        const icon = c.status === 'online' ? (c.stale ? '⚠️' : '🟢') : c.status === 'stopped' ? '⏸️' : '🔴';
+        const age = c.ageHours >= 0 ? ` (${Math.round(c.ageHours)}h ago)` : '';
+        const staleTag = c.stale ? ' *STALE*' : '';
+        lines.push(`${icon} \`${c.cron}\` ${c.name}${age}${staleTag}`);
       }
       lines.push('');
     }

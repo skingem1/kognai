@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1072",
+  "title": "INFRA — /crons: flag crons that have not fired in >25h",
+  "description": "Enhanced /crons to track last restart time from PM2 and flag stale crons (>25h since last fire) with warning icon and STALE tag.",
+  "block": "INFRA",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1072-01",
+      "title": "Add staleness detection to cmdCrons based on PM2 restart_time",
+      "type": "feature",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1072"
+    }
+  ]
+}

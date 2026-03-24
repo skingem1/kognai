@@ -689,7 +689,7 @@
       "sprint": 1072,
       "title": "INFRA — /crons: flag crons that have not fired in >25h",
       "block": "INFRA",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "PM2 crons can silently stop firing after server restart. /crons shows process status but not last-fire time. Add staleness check: if cron has been online >25h without output, flag it."
     },
