@@ -1250,6 +1250,29 @@ module.exports = {
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
     {
+      // Sprint 1003: PM2 auto-healer — restarts errored/unstable processes, Telegram alert
+      // Detects status=errored or unstable_restarts>=3, restarts, logs to logs/healer-state.json
+      // To start: pm2 start ecosystem.config.js --only scs001-healer
+      name: "scs001-healer",
+      script: "./scripts/scs001/pm2-auto-healer.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: false,
+      watch: false,
+      cron_restart: "*/5 * * * *",
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
+        HEALER_UNSTABLE_THRESHOLD: "3",
+        TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN || "",
+        OWNER_TELEGRAM_CHAT_ID: process.env.OWNER_TELEGRAM_CHAT_ID || "",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/healer-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/healer-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
+    {
       // Sprint 1002: Content freshness decay archiver — auto-archives stale pending queue items (7d)
       // Stamps new pending items with created_at, archives expired items to archived-queue.jsonl
       // To start: pm2 start ecosystem.config.js --only scs001-queue-archiver

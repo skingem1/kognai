@@ -1,0 +1,31 @@
+{
+  "sprint_id": "sprint-1003",
+  "title": "INFRA — PM2 process auto-healer — restart failed crons after 3 consecutive failures",
+  "description": "Cron processes may fail silently. Auto-healer script runs every 5 min via PM2. It reads pm2 list --json, identifies processes with status=errored or unstable_restarts>=3 (within 10 min window), restarts them via pm2 restart, and sends Telegram alert with process name and restart count. Writes state to logs/healer-state.json.",
+  "block": "INFRA",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1003-01",
+      "title": "Create scripts/scs001/pm2-auto-healer.ts — PM2 failure detector + restarter",
+      "type": "feature",
+      "task_target": "scripts/scs001/pm2-auto-healer.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1003",
+      "description": "execSync('pm2 jlist') to get JSON list. For each process: if status=errored OR unstable_restarts>=3: add to failing list. For each failing: execSync('pm2 restart NAME'). Send Telegram alert listing restarted processes. Write {timestamp, checked, restarted:[]} to logs/healer-state.json. Max 120 lines. No external deps."
+    },
+    {
+      "id": "1003-02",
+      "title": "Add PM2 entry to ecosystem.config.js for scs001-healer cron every 5 min",
+      "type": "config",
+      "task_target": "ecosystem.config.js",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "low",
+      "sprint_id": "sprint-1003",
+      "description": "Add scs001-healer PM2 entry with cron_restart: '*/5 * * * *'. autorestart: false, watch: false."
+    }
+  ]
+}
