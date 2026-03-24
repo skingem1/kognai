@@ -2854,17 +2854,19 @@
       "sprint": 1185,
       "title": "ACHIRI — create scripts/achiri/memory-test.ts to validate memory subsystem schema",
       "block": "ACHIRI",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
-      "rationale": "Achiri memory subsystem is next after voice validation. Create a test script that validates the memory JSONL schema and reports entry count, recency, and structure."
+      "rationale": "Achiri memory subsystem is next after voice validation. Create a test script that validates the memory JSONL schema and reports entry count, recency, and structure.",
+      "_note": "Shipped 2026-03-24 — commit 20ed13df. 35 memory files, 110 entries, all valid. PASS."
     },
     {
       "sprint": 1186,
       "title": "GODMAN-LAUNCH — /godman-tag add /godman-status-page that summarizes all launch signals as markdown",
       "block": "GODMAN-LAUNCH",
-      "status": "pending",
+      "status": "done",
       "priority": "low",
-      "rationale": "Generate a workspace/godman-protocols/LAUNCH-STATUS.md file from the /godman checks so there is a persistent launch status record."
+      "rationale": "Generate a workspace/godman-protocols/LAUNCH-STATUS.md file from the /godman checks so there is a persistent launch status record.",
+      "_note": "Shipped 2026-03-24 — commit f1eb9e80. /godman-status-page command + LAUNCH-STATUS.md generated. Queue item was erroneously skipped."
     }
   ]
 }
