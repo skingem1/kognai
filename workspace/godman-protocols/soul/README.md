@@ -1,66 +1,227 @@
 # SOUL — Constitutional Constraints and Safety
 
-> **Status:** Skeleton — not published. Part of the Godman Protocols portfolio.
+> **v0.2.0** · Apache 2.0 · `@godman-protocols/soul` · Node 20+ / Deno 1.40+
 
-SOUL is an open protocol that provides Protocol for constitutional constraints and safety — encoding non-negotiable behavioural boundaries that agents must respect.
+SOUL is the **lowest protocol layer** of the Godman stack — a constitutional engine that encodes an operator's safety constraints and kill switches into a signed, verifiable document that every agent in the swarm evaluates before taking any action.
 
-## Overview
+```bash
+npx skills add https://github.com/godman-protocols/soul
+# or
+npm install @godman-protocols/soul
+```
 
-| Property | Value |
-|----------|-------|
-| Version | 0.1.0-skeleton |
-| License | Apache 2.0 |
-| Namespace | `@godman-protocols/soul` |
-| Runtime target | Node 20+ / Deno 1.40+ / Edge |
+---
+
+## The Problem
+
+AI agent safety constraints are usually implemented as system prompt instructions — text that can be lost during context compaction, overridden by a jailbreak, or simply forgotten after a session restart.
+
+This creates two critical failure modes:
+- **Constraint drift** — after enough context, agents stop honouring the rules they were given
+- **No auditability** — there is no verifiable record of which constraints were in force when an action was taken
+
+SOUL solves both problems by encoding constraints as a signed, immutable constitutional document that survives context compaction (because it lives in code, not chat) and produces an append-only audit trail for every evaluation.
+
+---
 
 ## Core Concepts
 
-- **Constitution** —the root document defining immutable safety rules for an agent or swarm
-- **Constraint** —a single enforceable rule within a Constitution (permit, deny, or require)
-- **ComplianceCheck** —the result of evaluating an agent action against applicable Constraints
-- **SafetyBreach** —a logged violation when an agent action fails a ComplianceCheck
-- **ConstitutionChain** —a hierarchy of Constitutions (org → team → agent) with inheritance rules
+| Concept | What it is |
+|---------|-----------|
+| **Constitution** | The root document — operator identity, constraints, kill switches, HMAC signature |
+| **Constraint** | A named allow/deny/require rule scoped to a resource or action pattern |
+| **KillSwitch** | A non-negotiable halt trigger — fires when a runtime metric crosses a threshold |
+| **EvaluationResult** | The outcome of evaluating an action against the constitution |
+| **AuditEntry** | An append-only record of every evaluation (who, what, allowed/denied, why) |
+| **EnforcementLevel** | `hard` (abort), `soft` (warn + log), or `advisory` (log only) |
 
-## Repository Structure
+---
 
+## Quickstart
+
+```typescript
+import {
+  createConstitution, signConstitution,
+  evaluateAction, checkKillSwitches, createAudit,
+} from '@godman-protocols/soul';
+
+const OPERATOR_SECRET = 'operator-hmac-secret';
+
+// 1. Define the constitution
+const draft = createConstitution(
+  'did:kognai:tarek',   // operator
+  [
+    {
+      name: 'Allow SCS-001 workspace access',
+      description: 'Agents may read and write the SCS-001 workspace',
+      action: 'allow',
+      enforcementLevel: 'hard',
+      scope: 'write:workspace/scs001/*',
+      bootstrapped: true,
+    },
+    {
+      name: 'Block production database writes',
+      description: 'No agent may write to the production database directly',
+      action: 'deny',
+      enforcementLevel: 'hard',
+      scope: 'write:db/prod/*',
+      bootstrapped: true,
+    },
+  ],
+  [
+    {
+      name: 'Low-engagement kill switch',
+      triggerCondition: 'views_per_30_posts < 500',
+      action: 'halt',
+    },
+    {
+      name: 'Memory ceiling',
+      triggerCondition: 'memory_gb > 22',
+      action: 'halt',
+    },
+  ]
+);
+
+// 2. Sign it (prevents tampering)
+const constitution = signConstitution(draft, OPERATOR_SECRET);
+
+// 3. Evaluate every action before execution
+const result = evaluateAction(constitution, 'did:kognai:messi', 'write:workspace/scs001/script.json');
+console.log(result.allowed);  // true
+console.log(result.reason);   // "Allowed by constraint 'Allow SCS-001 workspace access'"
+
+// 4. Audit every evaluation
+const audit = createAudit('did:kognai:messi', 'write:workspace/scs001/script.json', result);
+// → append to your audit store
+
+// 5. Check kill switches on each monitoring cycle
+const triggered = checkKillSwitches(constitution, {
+  views_per_30_posts: 320,  // below threshold
+  memory_gb: 14.5,
+});
+if (triggered) {
+  console.error(`KILL SWITCH: ${triggered.name}`);
+  process.exit(1);
+}
 ```
-soul/
-├── README.md
-├── LICENSE
-├── package.json
-├── src/
-│   ├── index.ts          # Public API surface
-│   └── types.ts          # Core type definitions
-├── .claude-plugin        # Claude Code integration (INTEL-005)
-├── .cursor-plugin        # Cursor IDE integration (INTEL-005)
-├── .codex               # Codex integration (INTEL-005)
-└── .openclaw            # ClaWHub / OpenClaw integration (INTEL-005)
+
+---
+
+## Evaluation Order
+
+`evaluateAction` uses a strict constitutional precedence:
+
+1. **Deny constraints first** — a matching `deny` rule wins regardless of any `allow` rules
+2. **Allow constraints** — the first matching `allow` rule grants access
+3. **Default deny** — if no rule matches, the action is denied (constitutional principle)
+
+This means: to permit an action, there must be an explicit `allow` constraint. The absence of a rule is a denial.
+
+---
+
+## Kill Switches
+
+Kill switches are **non-negotiable** — they cannot be delegated away or overridden by any other protocol:
+
+```typescript
+const switched = checkKillSwitches(constitution, {
+  views_per_30_posts: 280,  // < 500 → triggers halt
+  memory_gb: 18,
+  daily_oversight_hours: 7, // > 6 → triggers halt
+});
+
+if (switched) {
+  // switched.action === 'halt' | 'pause' | 'alert'
+  // Immediately stop the agent — no protocol override is valid
+}
 ```
+
+**Supported operators in `triggerCondition`:** `>` · `<` · `>=` · `<=` · `==` · `!=`
+
+**Format:** `"metric_name operator threshold"` — e.g. `"memory_gb > 22"`, `"retention_pct < 20"`
+
+---
+
+## Scope Patterns
+
+Constraint scopes support wildcard matching:
+
+| Pattern | Matches |
+|---------|---------|
+| `*` | Any action |
+| `write:*` | Any write action |
+| `write:workspace/*` | Any write to workspace |
+| `write:workspace/scs001/*` | Any write to scs001 workspace |
+| `write:workspace/scs001/script.json` | Exact match only |
+
+---
+
+## Summer Yu Rule
+
+SOUL implements the "Summer Yu Rule" from the Kognai safety specification: **safety constraints must live in bootstrap files (SOUL constitutions, AGENTS.md, SOUL.md), never in chat context alone.** A constitution's `bootstrapped: true` flag marks constraints that must survive context compaction.
+
+---
+
+## Integration with Godman Protocols
+
+SOUL is **always the first check** in any protocol chain:
+
+| Layer | Check |
+|-------|-------|
+| **SOUL** (this) | Is the action constitutionally permitted? Are kill switches triggered? |
+| **PACT** | Does the requesting agent have a valid mandate for this action? |
+| **AMF** | Wrap the request in a verifiable envelope |
+| **LAX** | Route to the best runtime |
+| **DRS** | Allocate compute resources |
+| **SIGNAL** | Emit domain events |
+| **SCORE** | Evaluate outcome and update reputation |
+
+No other protocol overrides SOUL.
+
+---
+
+## API Reference
+
+See [`docs/api.md`](./docs/api.md) for the full API reference.
+
+---
+
+## Compatibility
+
+| Runtime | Status |
+|---------|--------|
+| Node.js 20+ | ✅ Tested |
+| Deno 1.40+ | ✅ Compatible |
+| Bun 1.0+ | ✅ Compatible |
+| Browser (ESM) | ⚠️ Requires `node:crypto` polyfill for HMAC |
+| OpenClaw v2026.3+ | ✅ ClaWHub listed |
+| Claude Code plugin | ✅ `.claude-plugin` included |
+
+---
+
+## Security Model
+
+- Constitution signing uses **HMAC-SHA256** over a canonical subset of fields — it proves the document was issued by the operator and has not been tampered with.
+- **Signature does not authenticate actions** — SOUL evaluates constitutions, not individual messages. Use AMF for message-level authentication.
+- Kill switches are evaluated in-process. For guaranteed enforcement in adversarial settings, run SOUL evaluations in a separate trusted process or use the kill switch `action: 'halt'` to trigger a hard process exit.
+
+---
 
 ## Roadmap
 
-- [ ] Core type definitions
-- [ ] Reference implementation stubs
-- [ ] TypeScript SDK (this repo)
+- [x] Core types and protocol spec
+- [x] Reference implementation (TypeScript)
+- [x] Constitutional evaluation (deny > allow > default-deny)
+- [x] Kill switch engine (numeric threshold operators)
+- [x] Audit log creation
+- [x] Smoke tests (11/11 PASS)
 - [ ] Python SDK
-- [ ] Integration tests with PACT mandates
-- [ ] x402 payment-gated operations
+- [ ] Constitution persistence (Supabase backend)
+- [ ] Multi-operator constitution merging
+- [ ] Kill switch webhook delivery
+- [ ] ClaWHub marketplace listing
 
-## Related Protocols
-
-| Protocol | Purpose |
-|----------|---------|
-| PACT | Agent coordination and trust |
-| LAX | Latency-aware execution scheduling |
-| SCORE | Scoring and reputation for agent outputs |
-| AMF | Agent Message Format |
-| DRS | Dynamic Resource Scheduling |
-| SOUL | Constitutional constraints and safety |
-| SIGNAL | Event bus and pub/sub for agent swarms |
-
-## Contributing
-
-Not open for contributions yet. Skeleton phase — internal design only.
+---
 
 ## License
 

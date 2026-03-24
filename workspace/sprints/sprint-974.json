@@ -1,0 +1,69 @@
+{
+  "sprint_id": "sprint-974",
+  "title": "GODMAN-DOCS-02 — Full README + API docs for SOUL, AMF, DRS",
+  "description": "Write full launch-quality README.md and docs/api.md for SOUL, AMF, and DRS protocols. Follow PACT documentation pattern. Completes all 7 protocol launch docs for April 14.",
+  "block": "GODMAN-PROTOCOLS",
+  "source": "queue-exhausted-continuation",
+  "tasks": [
+    {
+      "id": "974-01",
+      "title": "SOUL README.md — full launch-quality documentation",
+      "type": "docs",
+      "task_target": "workspace/godman-protocols/soul/README.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-974"
+    },
+    {
+      "id": "974-02",
+      "title": "SOUL docs/api.md — full API reference",
+      "type": "docs",
+      "task_target": "workspace/godman-protocols/soul/docs/api.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-974"
+    },
+    {
+      "id": "974-03",
+      "title": "AMF README.md — full launch-quality documentation",
+      "type": "docs",
+      "task_target": "workspace/godman-protocols/amf/README.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-974"
+    },
+    {
+      "id": "974-04",
+      "title": "AMF docs/api.md — full API reference",
+      "type": "docs",
+      "task_target": "workspace/godman-protocols/amf/docs/api.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-974"
+    },
+    {
+      "id": "974-05",
+      "title": "DRS README.md — full launch-quality documentation",
+      "type": "docs",
+      "task_target": "workspace/godman-protocols/drs/README.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-974"
+    },
+    {
+      "id": "974-06",
+      "title": "DRS docs/api.md — full API reference",
+      "type": "docs",
+      "task_target": "workspace/godman-protocols/drs/docs/api.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-974"
+    }
+  ]
+}
