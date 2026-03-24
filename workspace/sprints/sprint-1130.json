@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1130",
+  "title": "OPS — /launches: unified 3-launch countdown + action matrix",
+  "description": "Single command showing Phase 1.5 gate (Apr 7), Godman (Apr 14), and Achiri alpha (Apr 25) with per-launch status, blockers, and next actions.",
+  "block": "OPS",
+  "source": "gap-analysis",
+  "tasks": [
+    {
+      "id": "1130-01",
+      "title": "Create /launches command with unified launch countdown matrix",
+      "type": "feature",
+      "task_target": "scripts/telegram-commands/cmd-management.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1130"
+    }
+  ]
+}

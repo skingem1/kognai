@@ -1746,10 +1746,18 @@ export function cmdStatus(): string {
       const smoke = JSON.parse(fs.readFileSync(smokePath, 'utf-8'));
       const pass = smoke.passed ?? smoke.pass ?? smoke.status === 'pass';
       const fail = smoke.failed ?? smoke.fail ?? smoke.failures?.length ?? 0;
+      // Sprint 1131 (wave 14): show smoke test age
+      let ageStr = '';
+      const smokeTs = smoke.timestamp ? new Date(smoke.timestamp).getTime() : 0;
+      if (smokeTs > 0) {
+        const ageH = (Date.now() - smokeTs) / 3600000;
+        ageStr = ` · ${ageH < 1 ? `${Math.round(ageH * 60)}m ago` : `${Math.round(ageH)}h ago`}`;
+        if (ageH > 24) ageStr += ' ⚠️ stale';
+      }
       if (pass && fail === 0) {
-        smokeLine = `🧪 Smoke: ✅ clean`;
+        smokeLine = `🧪 Smoke: ✅ clean${ageStr}`;
       } else {
-        smokeLine = `🧪 Smoke: ❌ ${fail} failing · /smoke`;
+        smokeLine = `🧪 Smoke: ❌ ${fail} failing${ageStr} · /smoke`;
       }
     }
   } catch { /* skip */ }
@@ -2178,7 +2186,7 @@ export function cmdLaunches(): string {
   // Godman Protocols checks
   let npmLoggedIn = false;
   try { npmLoggedIn = !!execSync('npm whoami 2>/dev/null', { encoding: 'utf-8', timeout: 3000 }).trim(); } catch {}
-  const protocolsPath = path.join(ROOT, '..', 'godman-protocols');
+  const protocolsPath = path.join(ROOT, 'workspace', 'godman-protocols');
   const protocolsExist = ['pact', 'lax', 'score', 'signal', 'soul', 'amf', 'drs'].map(p => {
     const corePath = path.join(protocolsPath, p, 'src');
     return { name: p, exists: fs.existsSync(corePath) };
