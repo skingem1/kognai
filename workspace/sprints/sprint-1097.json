@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1097",
+  "title": "OPS — /blockers: sort by severity (CRITICAL → HIGH → MEDIUM)",
+  "description": "Reordered /blockers output: Gate (CRITICAL, Apr 7) → Godman (HIGH, Apr 14) → Achiri (MEDIUM, Apr 25). Added severity color indicators.",
+  "block": "OPS",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1097-01",
+      "title": "Reorder cmdBlockers sections by deadline severity",
+      "type": "feature",
+      "task_target": "scripts/telegram-commands/cmd-management.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1097"
+    }
+  ]
+}

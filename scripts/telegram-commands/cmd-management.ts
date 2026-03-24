@@ -1776,11 +1776,30 @@ export function cmdEnrich(): string {
 
 // Sprint 1035: /blockers — all pending human-action items across active tracks
 export function cmdBlockers(): string {
+  // Sprint 1097: Sort by severity — CRITICAL (gate) → HIGH (godman) → MEDIUM (achiri)
   const lines: string[] = ['*🚧 Human-Action Blockers*\n'];
   let totalBlocked = 0;
 
-  // ── GODMAN-LAUNCH (April 14) ─────────────────────────────────────────────
-  lines.push('*🚀 GODMAN-LAUNCH — April 14*');
+  // ── GATE: PHASE 1.5 (CRITICAL — earliest deadline) ───────────────────────
+  lines.push('*🔴 GATE: Phase 1.5 (April 7)*');
+  const gate = readJSON<any>(path.join(ROOT, 'workspace', 'gates', 'phase1-5-gate.json'));
+  if (gate) {
+    const postsRemaining = gate.raw?.posts_remaining ?? gate.posts_remaining ?? '?';
+    const urgency = gate.urgency ?? 'UNKNOWN';
+    const daysLeft = gate.days_remaining ?? '?';
+    const urgencyIcon = urgency === 'WARNING' ? '⚠️' : urgency === 'ON_TRACK' ? '✅' : '🔴';
+    lines.push(`  ${urgencyIcon} ${urgency}: ${postsRemaining} posts needed in ${daysLeft} days`);
+    if (urgency !== 'DONE') {
+      lines.push(`  ❌ Manual TikTok posting required (2/day pace)`);
+      totalBlocked++;
+    }
+  } else {
+    lines.push(`  ❓ Gate file not found`);
+  }
+  lines.push('');
+
+  // ── GODMAN-LAUNCH (HIGH — Apr 14) ────────────────────────────────────────
+  lines.push('*🟠 GODMAN-LAUNCH — April 14*');
   let npmWhoami = '';
   try { npmWhoami = execSync('npm whoami', { encoding: 'utf-8', timeout: 5000, stdio: ['pipe','pipe','pipe'] }).trim(); } catch {}
   if (npmWhoami) {
@@ -1793,8 +1812,8 @@ export function cmdBlockers(): string {
   lines.push(`  ℹ️  Launch day: \`bash scripts/godman-launch-day.sh\``);
   lines.push('');
 
-  // ── ACHIRI-ALPHA ─────────────────────────────────────────────────────────
-  lines.push('*🤖 ACHIRI-ALPHA*');
+  // ── ACHIRI-ALPHA (MEDIUM — Apr 25) ───────────────────────────────────────
+  lines.push('*🟡 ACHIRI-ALPHA — April 25*');
   const envPath = path.join(ROOT, '.env');
   let envContent = '';
   try { envContent = fs.readFileSync(envPath, 'utf-8'); } catch {}
@@ -1820,24 +1839,6 @@ export function cmdBlockers(): string {
     lines.push(`  ℹ️  Deploy: \`pm2 start ecosystem.config.js --only achiri-telegram\``);
   } else {
     lines.push(`  ℹ️  After setting token, run: \`pm2 start ecosystem.config.js --only achiri-telegram\``);
-  }
-  lines.push('');
-
-  // ── GATE: PHASE 1.5 ──────────────────────────────────────────────────────
-  lines.push('*📊 GATE: Phase 1.5 (April 7)*');
-  const gate = readJSON<any>(path.join(ROOT, 'workspace', 'gates', 'phase1-5-gate.json'));
-  if (gate) {
-    const postsRemaining = gate.raw?.posts_remaining ?? gate.posts_remaining ?? '?';
-    const urgency = gate.urgency ?? 'UNKNOWN';
-    const daysLeft = gate.days_remaining ?? '?';
-    const urgencyIcon = urgency === 'WARNING' ? '⚠️' : urgency === 'ON_TRACK' ? '✅' : '🔴';
-    lines.push(`  ${urgencyIcon} ${urgency}: ${postsRemaining} posts needed in ${daysLeft} days`);
-    if (urgency !== 'DONE') {
-      lines.push(`  ❌ Manual TikTok posting required (2/day pace)`);
-      totalBlocked++;
-    }
-  } else {
-    lines.push(`  ❓ Gate file not found`);
   }
   lines.push('');
 

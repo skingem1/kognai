@@ -905,9 +905,10 @@
       "sprint": 1097,
       "title": "OPS — /blockers: sort by severity (CRITICAL → HIGH → MEDIUM)",
       "block": "OPS",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
-      "rationale": "/blockers shows items but not sorted by severity. When there are multiple blockers, show CRITICAL items first so operator addresses most impactful items first."
+      "rationale": "/blockers shows items but not sorted by severity. When there are multiple blockers, show CRITICAL items first so operator addresses most impactful items first.",
+      "_note": "Shipped 2026-03-24. Sections reordered by deadline severity."
     },
     {
       "sprint": 1098,
