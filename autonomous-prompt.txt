@@ -78,6 +78,41 @@ STEP 2 — WRITE SPRINT FILE (you, Sonnet):
   where NNN is the sprint number FROM THE QUEUE (not from git log).
   Use the exact format from existing sprint files.
 
+STEP 2B — CTO GATE (MANDATORY — even when bypassing swarm):
+  Before ANY code execution or writing, run the CTO approval gate:
+    cd ~/kognai && node -e "
+      const {requestCTOApproval}=require('./scripts/lib/cto-approval-gate');
+      requestCTOApproval({
+        sprint_id:'sprint-NNN',
+        title:'SPRINT_TITLE',
+        description:'SPRINT_DESC',
+        tasks:['task1','task2'],
+        estimated_complexity:'medium',
+        source:'queue-prescribed'
+      }, process.cwd(), 'kognai').then(r => {
+        console.log(JSON.stringify(r));
+        if(!r.approved) { console.error('CTO REJECTED — DO NOT PROCEED'); process.exit(1); }
+      });
+    "
+  Replace NNN, SPRINT_TITLE, SPRINT_DESC, tasks with actual values.
+  If the CTO REJECTS:
+    - Log the rejection reason in the sprint JSON (status: "cto-rejected")
+    - Do NOT write any code. Do NOT commit. Skip to STEP 7.
+    - If the queue prescribed this sprint, the CTO will auto-approve (queue = human plan).
+  If the CTO APPROVES: proceed to Step 3.
+  If the node command fails (module not found, etc): WARN but proceed — do NOT block on tooling errors.
+
+STEP 2C — SCS-001 VIDEO PRODUCTION HARD BLOCK:
+  CHECK: Does this sprint involve ANY of these files?
+    - scripts/scs001/produce-vlog.ts
+    - scripts/scs001/batch-produce.ts
+    - scripts/scs001/pipelines/entertainment.ts
+    - scripts/scs001/pipelines/code-demo.ts
+    - scripts/scs001/pipelines/educational.ts
+  Also check: Does the sprint-queue.json contain "_scs001_status": "PAUSED"?
+  If YES to BOTH: SKIP this sprint. Set status to "paused-scs001" in queue. Move to next.
+  Video production resumes ONLY when _scs001_status is removed or changed to "ACTIVE".
+
 STEP 3 — RUN SWARM (you, Sonnet):
   Execute: cd ~/kognai && ./scripts/run-swarm.sh workspace/sprints/sprint-NNN.json
   Wait for it to complete. Read the output.
@@ -97,14 +132,35 @@ STEP 5 — FIX IF NEEDED (you, Sonnet):
   - Repeat until PASS
   If the swarm completely botched a file or didn't run, write the code directly.
 
-STEP 5B — CRYSTALLISE IF YOU WROTE CODE DIRECTLY (mandatory when swarm was bypassed):
-  If in Step 3 or Step 5 you wrote code directly (swarm failed/killed/FP-007):
-  Run this to crystallise the skill:
-    node -e "const {crystalliseSkill}=require('./scripts/lib/skill-crystalliser'); crystalliseSkill({agentId:'coder',taskId:'TASK_ID',sprintId:'sprint-NNN',taskTitle:'TITLE',taskType:'feature',model:'manual-sonnet',taskTarget:'manual',score:80,approachSummary:'Written directly — swarm bypassed (FP-007)',keyPatterns:['manual write'],antiPatterns:['FP-007 file too large for swarm']});"
-  Replace TASK_ID, sprint-NNN, TITLE with actual values from this sprint.
-  Also append to workspace/scs001/progress.md under this sprint entry:
-    - Swarm bypassed: yes (FP-007). Manual crystallise: done.
-  If crystalliseSkill call fails, skip and note in progress.md — do not block shipping.
+STEP 5B — QUALITY GATES WHEN SWARM BYPASSED (MANDATORY — every direct write):
+  If in Step 3 or Step 5 you wrote code directly (swarm failed/killed/FP-007/multi-file):
+
+  A) AAR LOGGING (MANDATORY — do NOT use flat score=75):
+    For EACH task/file you wrote, log a real AAR entry:
+      cd ~/kognai && node -e "
+        const {AARMiddleware}=require('./scripts/lib/aar-middleware');
+        AARMiddleware.generateAndLog({
+          agentId:'coder', taskId:'TASK_ID', sprintId:'sprint-NNN',
+          skillId:'SKILL_TYPE', outcomeScore:REAL_SCORE,
+          actionSummary:'WHAT_YOU_DID (swarm bypassed)',
+          status:'success'
+        }).catch(e => console.error('AAR failed:', e.message));
+      "
+    REAL_SCORE must reflect actual quality:
+      - 90+: Clean implementation, tests pass, follows patterns
+      - 75-89: Works but untested or missing edge cases
+      - 60-74: Partial implementation, needs follow-up
+      - <60: Placeholder/scaffold only
+    DO NOT default to 75 for everything. Be honest.
+
+  B) SKILL CRYSTALLISATION:
+    node -e "const {crystalliseSkill}=require('./scripts/lib/skill-crystalliser'); crystalliseSkill({agentId:'coder',taskId:'TASK_ID',sprintId:'sprint-NNN',taskTitle:'TITLE',taskType:'feature',model:'manual-sonnet',taskTarget:'manual',score:REAL_SCORE,approachSummary:'Written directly — swarm bypassed',keyPatterns:['manual write'],antiPatterns:['swarm bypassed: REASON']});"
+
+  C) LOG IN PROGRESS:
+    Append to workspace/scs001/progress.md:
+      - Swarm bypassed: yes (REASON). AAR logged: yes. Crystallise: done.
+
+  If any node command fails, note it in progress.md but DO NOT block shipping.
 
 STEP 6 — SHIP:
   git add the new/modified files (be specific, not git add -A)
