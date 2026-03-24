@@ -259,6 +259,133 @@ def _build_live_focus(repo_root: Path) -> str:
     return "\n".join(lines)
 
 
+def _build_dynamic_tasks(repo_root: Path, target_date: datetime, has_midday: bool) -> str:
+    """Build a dynamic TODAY'S TASKS section from live system state.
+
+    Sprint 1055: replaces stale KOGNAI_DAILY_TIMELINE.md task blocks with actionable
+    items derived from gate JSON, sprint queue, blockers, and launch countdown.
+    """
+    import json as _json
+    from datetime import date as _date
+
+    today = _date.today()
+    lines = []
+
+    # Determine AM/PM blocks + optional midday
+    blocks = [("AM", "07:00–09:30")]
+    if has_midday:
+        blocks.append(("MID", "12:00–14:00"))
+    blocks.append(("PM", "18:00–19:30"))
+
+    # --- Gather live data ---
+    gate_data: dict = {}
+    gate_path = repo_root / "workspace" / "gates" / "phase1-5-gate.json"
+    if gate_path.exists():
+        try:
+            gate_data = _json.loads(gate_path.read_text())
+        except Exception:
+            pass
+
+    posts_done = gate_data.get("raw", {}).get("posts_count", 0)
+    posts_remaining = gate_data.get("raw", {}).get("posts_remaining", 28)
+    days_left = gate_data.get("days_remaining", 14)
+    daily_obligation = max(1, -(-posts_remaining // max(1, days_left)))  # ceil div
+    urgency = gate_data.get("urgency", "")
+
+    godman_days = ((_date(2026, 4, 14)) - today).days
+    achiri_days = ((_date(2026, 4, 25)) - today).days
+
+    # Check blockers
+    env_path = repo_root / ".env"
+    has_achiri_token = False
+    if env_path.exists():
+        env_text = env_path.read_text()
+        has_achiri_token = bool(
+            __import__("re").search(r"^ACHIRI_TELEGRAM_BOT_TOKEN=.+", env_text, __import__("re").MULTILINE)
+        )
+
+    # Next sprint from queue
+    next_sprint_title = ""
+    queue_path = repo_root / "workspace" / "sprint-queue.json"
+    if queue_path.exists():
+        try:
+            queue = _json.loads(queue_path.read_text())
+            pending = [i for i in queue.get("queue", []) if i.get("status") == "pending"]
+            if pending:
+                nxt = pending[0]
+                t = nxt['title']
+                next_sprint_title = f"Sprint {nxt['sprint']}: {t[:70]}{'…' if len(t) > 70 else ''}"
+        except Exception:
+            pass
+
+    # --- Build task blocks ---
+    day_name = DAY_NAMES[target_date.weekday()]
+    lines.append(f"### {day_name}, {target_date.strftime('%B')} {target_date.day}")
+
+    # AM block: gate + sprint
+    am_tasks = []
+
+    if urgency not in ("DONE", ""):
+        gate_emoji = "🔴" if urgency == "CRITICAL" else ("🟠" if urgency == "BEHIND" else "⚠️")
+        am_tasks.append(
+            f"- [ ] {gate_emoji} **Post {daily_obligation} TikTok video(s) today** "
+            f"({posts_done}/30 · {days_left}d left · /today for top picks)"
+        )
+    elif posts_done >= 30:
+        am_tasks.append("- [x] ✅ Phase 1.5 gate target reached (30/30 posts)")
+
+    if next_sprint_title:
+        am_tasks.append(f"- [ ] 🛠️ **{next_sprint_title}** — /sprint to view queue")
+    else:
+        am_tasks.append("- [ ] 🔄 Queue empty — run /replenish to generate next sprint")
+
+    am_tasks.append("- [ ] /errors — check for overnight process errors")
+    am_tasks.append("- [ ] /status — confirm gate pace and cron health")
+
+    lines.append(f"\n**AM 07:00–09:30**")
+    lines.extend(am_tasks)
+
+    # MID block (Mon/Wed/Fri only)
+    if has_midday:
+        mid_tasks = []
+        if posts_done < 30:
+            mid_tasks.append(
+                f"- [ ] 📱 **[YOU] Post today's video(s)** — /pickup then /caption-next for text"
+            )
+        if godman_days <= 21:
+            mid_tasks.append(
+                f"- [ ] 🚀 Godman: {godman_days}d to launch — /godman for readiness checklist"
+            )
+            if godman_days <= 14:
+                mid_tasks.append("- [ ] npm login check — /blockers shows npm whoami status")
+        if not has_achiri_token:
+            mid_tasks.append(
+                "- [ ] 🤖 Achiri: set ACHIRI_TELEGRAM_BOT_TOKEN in .env → ./scripts/achiri/start-bot.sh"
+            )
+        if not mid_tasks:
+            mid_tasks.append("- [ ] Review sprint output from AM block")
+        lines.append(f"\n**MID 12:00–14:00**")
+        lines.extend(mid_tasks)
+
+    # PM block: review + log
+    pm_tasks = []
+    pm_tasks.append("- [ ] Review AM sprint output — /changelog to see what shipped")
+    if posts_done < 30:
+        pm_tasks.append(
+            f"- [ ] Check today's post count: /gate (need {daily_obligation}/day to stay on track)"
+        )
+    if achiri_days <= 32:
+        pm_tasks.append(
+            f"- [ ] Achiri: {achiri_days}d to alpha — /achiri for readiness summary"
+        )
+    pm_tasks.append("- [ ] Write session log to workspace/agents/memory/")
+
+    lines.append(f"\n**PM 18:00–19:30**")
+    lines.extend(pm_tasks)
+
+    return "\n".join(lines)
+
+
 def generate_brief(target_date: datetime, week_mode: bool = False, force_strategic: bool = False):
     """Generate the daily brief file."""
     content = load_timeline()
@@ -283,7 +410,7 @@ Swarm is idle. Rest.
         print(f"Weekend brief written to {BRIEF_OUTPUT}")
         return
 
-    # Get today's section
+    # Get today's section from timeline (may be stale)
     today_section = find_today_section(content, target_date)
     week_section = find_week_section(content, target_date) if week_mode else None
     active_sprint = extract_active_sprint(content, target_date)
@@ -291,11 +418,18 @@ Swarm is idle. Rest.
     # Determine time blocks
     has_midday = target_date.weekday() in [0, 2, 4]  # Mon, Wed, Fri
     hours_today = "6h" if has_midday else "4h"
+
     midday_status = "YES (12:00-14:00)" if has_midday else "NO (Tuesday/Thursday)"
 
     # Inject live gate and sprint queue status
     repo_root = Path(__file__).parent.parent
     live_focus = _build_live_focus(repo_root)
+
+    # Sprint 1055: always use dynamic task generator — KOGNAI_DAILY_TIMELINE.md is months
+    # old and its task blocks are stale (reference sprint-067, subscription-bot, etc.).
+    # Dynamic tasks are derived from live gate state, sprint queue, and launch countdowns.
+    # The timeline section is kept only as optional WEEK CONTEXT in --week mode.
+    today_section = _build_dynamic_tasks(repo_root, target_date, has_midday)
 
     # Build brief
     brief = f"""# KOGNAI DAILY BRIEF — {date_str}

@@ -1,17 +1,17 @@
 # KOGNAI DAILY BRIEF — 2026-03-24
 ## Tuesday, March 24, 2026
 
-**Generated:** 2026-03-24 11:53
-**Active Sprint:** sprint-1039
+**Generated:** 2026-03-24 12:10
+**Active Sprint:** sprint-1056
 **Hours Today:** 4h
 **Midday Block:** NO (Tuesday/Thursday)
 
 ---
 
 ## LIVE STATUS (auto-generated)
-**Gate:** ⚠️ WARNING — 2/30 posts · 28 needed · 14d to Apr 7
+**Gate:** 🟢 ON_TRACK — 4/30 posts · 26 needed · 14d to Apr 7
 **Godman launch:** 21d — April 14  |  **Achiri alpha:** 32d — April 25
-**Next sprint:** queue empty — run /replenish or pick manually
+**Next queued sprint:** Sprint 1048 — GODMAN-LAUNCH — CHANGELOG.md for each protocol package (v0.2.0 initial release)
 
 ---
 
@@ -27,24 +27,19 @@
 
 ## TODAY'S TASKS
 
-### Monday, March 24
-**AM 07:00–09:30**
-- [ ] Read weekend sprint-067 output
-- [ ] Review `scripts/content/subscription-bot.ts` — all commands working?
-- [ ] Review `scripts/content/payment-webhook.ts` — LemonSqueezy webhooks?
-- [ ] Test /subscribe flow end-to-end: Telegram → checkout → webhook → user activated
+### Tuesday, March 24
 
-**MID 12:00–14:00**
-- [ ] [YOU] Test subscription bot personally — is UX smooth?
-- [ ] [YOU] Share TikTok account + subscription link with 3 creator friends
-- [ ] Review subscriber pipeline: does content queue generate per-subscriber?
-- [ ] Check revenue tracking in Supabase: `revenue` table populated?
+**AM 07:00–09:30**
+- [ ] ⚠️ **Post 2 TikTok video(s) today** (4/30 · 14d left · /today for top picks)
+- [ ] 🛠️ **Sprint 1055: OPS — Daily brief task generator: replace stale timeline tasks with li…** — /sprint to view queue
+- [ ] /errors — check for overnight process errors
+- [ ] /status — confirm gate pace and cron health
 
 **PM 18:00–19:30**
-- [ ] Sprint-067 task review
-- [ ] Check if friends subscribed or gave feedback
-- [ ] Monitor daily content pipeline — still running autonomously?
-- [ ] Write session log
+- [ ] Review AM sprint output — /changelog to see what shipped
+- [ ] Check today's post count: /gate (need 2/day to stay on track)
+- [ ] Achiri: 32d to alpha — /achiri for readiness summary
+- [ ] Write session log to workspace/agents/memory/
 
 ---
 
