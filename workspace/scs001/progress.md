@@ -6340,3 +6340,13 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (new function appended, wrote directly)
 - Issues: none
 - Timestamp: 2026-03-24T21:40:00Z
+
+## Sprint 1174 — GODMAN-LAUNCH
+- Status: PASS
+- Commit: 01a024ae
+- Files created: workspace/sprints/sprint-1174.json
+- Files modified: scripts/telegram-commands/cmd-system.ts
+- Change: Added cmdGodmanPublish() — /godman-publish (dry-run) and /godman-publish confirm (live)
+- Swarm used: no (new function prepended before cmdGodmanTag, wrote directly)
+- Issues: none — dry-run shows all protocols skipping correctly
+- Timestamp: 2026-03-24T21:50:00Z
