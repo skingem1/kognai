@@ -1636,6 +1636,26 @@ export function cmdStatus(): string {
   const godmanLine = `🚀 Godman launch: *${godmanDays}d* — /godman`;
   const achiriLine = `🤖 Achiri alpha: *${achiriDays}d* — /achiri`;
 
+  // Sprint 1057: Trust score health check
+  const TRUST_THRESHOLD = 60; // scores are 0-100; flag below 60
+  let trustLine = '';
+  try {
+    const trustPath = path.join(ROOT, 'acp', 'trust-scores.json');
+    if (fs.existsSync(trustPath)) {
+      const trustData = JSON.parse(fs.readFileSync(trustPath, 'utf-8'));
+      const scores: Record<string, any> = trustData.scores ?? {};
+      const lowTrust = Object.entries(scores)
+        .filter(([, s]: [string, any]) => typeof s.composite === 'number' && s.composite < TRUST_THRESHOLD)
+        .map(([name, s]: [string, any]) => `${name}(${s.composite})`);
+      if (lowTrust.length === 0) {
+        const agentCount = Object.keys(scores).length;
+        trustLine = `🛡 Trust: *${agentCount}/${agentCount}* agents ≥${TRUST_THRESHOLD} — healthy`;
+      } else {
+        trustLine = `⚠️ Trust: *${lowTrust.length}* agent${lowTrust.length > 1 ? 's' : ''} below ${TRUST_THRESHOLD}: ${lowTrust.slice(0, 3).join(', ')}`;
+      }
+    }
+  } catch { /* skip if unreadable */ }
+
   const lines = [
     '📊 *Kognai Status Dashboard*',
     '',
@@ -1647,6 +1667,7 @@ export function cmdStatus(): string {
     `🔥 Streak: *${streak}* days`,
     `📦 Queue: *${readyCount}* ready · ${unposted.length} total`,
     cronLine,
+    trustLine,
     '',
     `🎬 Next: ${nextLine}`,
     '',
@@ -1654,7 +1675,7 @@ export function cmdStatus(): string {
     achiriLine,
     '',
     `_Tap /pickup to post · /blockers for action items_`,
-  ];
+  ].filter(l => l !== undefined && l !== null);
 
   return lines.join('\n');
 }
