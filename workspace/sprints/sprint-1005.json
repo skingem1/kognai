@@ -1,0 +1,31 @@
+{
+  "sprint_id": "sprint-1005",
+  "title": "INFRA — Cross-platform posting: YouTube Shorts upload support",
+  "description": "Core YouTube Shorts upload already built (Sprint 678: cross-platform-publish.ts + youtube-shorts.ts). Sprint 1005 adds: PM2 cron for daily automated uploads (fires when YOUTUBE_REFRESH_TOKEN is set), and validates the end-to-end dry-run flow. Human action required: run youtube-oauth-setup.ts to get YOUTUBE_REFRESH_TOKEN.",
+  "block": "INFRA",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1005-01",
+      "title": "Add PM2 cron for daily YouTube Shorts upload to ecosystem.config.js",
+      "type": "config",
+      "task_target": "ecosystem.config.js",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1005",
+      "description": "Add scs001-youtube-upload PM2 entry with cron_restart: '30 7 * * *' (7:30am daily). Runs cross-platform-publish.ts --all-pending. autorestart: false, watch: false. Will be a no-op until YOUTUBE_REFRESH_TOKEN is set."
+    },
+    {
+      "id": "1005-02",
+      "title": "Validate dry-run end-to-end: cross-platform-publish.ts --dry-run --all-pending",
+      "type": "validation",
+      "task_target": "scripts/scs001/cross-platform-publish.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1005",
+      "description": "Run YOUTUBE_DRY_RUN=1 with --all-pending flag. Confirm it reads delivered videos, would upload them (dry-run), and writes crossplatform-publish.jsonl entries. Report pass/fail."
+    }
+  ]
+}

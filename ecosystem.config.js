@@ -1250,6 +1250,28 @@ module.exports = {
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
     {
+      // Sprint 1005: YouTube Shorts auto-upload — uploads pending delivered videos daily at 7:30am
+      // No-op until YOUTUBE_REFRESH_TOKEN is set in .env. Run youtube-oauth-setup.ts to get token.
+      // To start: pm2 start ecosystem.config.js --only scs001-youtube-upload
+      name: "scs001-youtube-upload",
+      script: "./scripts/scs001/cross-platform-publish.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: false,
+      watch: false,
+      cron_restart: "30 7 * * *",
+      args: "--all-pending",
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
+        YOUTUBE_DRY_RUN: process.env.YOUTUBE_REFRESH_TOKEN ? "0" : "1",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/youtube-upload-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/youtube-upload-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
+    {
       // Sprint 1003: PM2 auto-healer — restarts errored/unstable processes, Telegram alert
       // Detects status=errored or unstable_restarts>=3, restarts, logs to logs/healer-state.json
       // To start: pm2 start ecosystem.config.js --only scs001-healer
