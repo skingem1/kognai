@@ -1,0 +1,39 @@
+{
+  "sprint_id": "sprint-968",
+  "title": "SIGNAL-IMPL-01 — In-memory event bus (publish, subscribe, deliver, receipts)",
+  "description": "Implement SIGNAL core: in-memory EventBus with publish, subscribe, unsubscribe, topic-glob matching, delivery receipts, idempotency dedup. Node.js crypto only.",
+  "block": "GODMAN-PROTOCOLS",
+  "source": "qwen-recommendation",
+  "tasks": [
+    {
+      "id": "968-01",
+      "title": "SIGNAL src/bus.ts — EventBus class with pub/sub and delivery",
+      "type": "feature",
+      "task_target": "workspace/godman-protocols/signal/src/bus.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-968"
+    },
+    {
+      "id": "968-02",
+      "title": "SIGNAL src/index.ts — update exports to real implementations",
+      "type": "feature",
+      "task_target": "workspace/godman-protocols/signal/src/index.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-968"
+    },
+    {
+      "id": "968-03",
+      "title": "SIGNAL smoke.test.ts — smoke test covering pub/sub, glob, dedup, receipts",
+      "type": "test",
+      "task_target": "workspace/godman-protocols/signal/smoke.test.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-968"
+    }
+  ]
+}
