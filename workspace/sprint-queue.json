@@ -2764,7 +2764,7 @@
       "sprint": 1169,
       "title": "GODMAN-LAUNCH — /godman: check npm publish dry-run per protocol",
       "block": "GODMAN-LAUNCH",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "/godman checks tests and git tags but not if each package is publishable. Run \"npm publish --dry-run\" per protocol and show which ones are blocked."
     },

@@ -6291,3 +6291,13 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (file >3000 lines, wrote directly)
 - Issues: none
 - Timestamp: 2026-03-24T20:50:00Z
+
+## Sprint 1169 — GODMAN-LAUNCH
+- Status: PASS
+- Commit: c228b131
+- Files created: workspace/sprints/sprint-1169.json
+- Files modified: scripts/telegram-commands/cmd-system.ts
+- Change: Added npm publish --dry-run section for all 8 packages; shows ✅/❌ per pkg + summary badge
+- Swarm used: no (file >3000 lines, wrote directly)
+- Issues: none — 8/8 publishable confirmed
+- Timestamp: 2026-03-24T21:00:00Z
