@@ -5697,3 +5697,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (direct write — simple new file)
 - Issues: None
 - Timestamp: 2026-03-24T23:15:00Z
+
+## Sprint 1003 — INFRA PM2 Auto-Healer
+- Status: PASS
+- Commit: 70106286
+- Files created: scripts/scs001/pm2-auto-healer.ts, workspace/sprints/sprint-1003.json
+- Files modified: ecosystem.config.js, workspace/sprint-queue.json
+- Test: npx ts-node scripts/scs001/pm2-auto-healer.ts — 42 checked, achiri-telegram (errored) restarted, Telegram sent
+- Pipeline: scs001-healer PM2 cron (*/5 * * * *), threshold=3 unstable restarts
+- Swarm used: no (direct write)
+- Issues: TS strict typing fix on pm2_env (made optional fields)
+- Timestamp: 2026-03-24T23:25:00Z
