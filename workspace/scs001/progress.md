@@ -5785,3 +5785,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (direct write — swarm consistently failing to load agents)
 - Issues: AAR/crystalliser modules not found — noted, not blocking
 - Timestamp: 2026-03-24T11:10:00Z
+
+## Sprint 1010 — OPS Posting Reminder Video Recommendation
+- Status: PASS
+- Commit: e64b4d20
+- Files created: workspace/sprints/sprint-1010.json
+- Files modified: scripts/remind-post.ts
+- Test: npx ts-node scripts/remind-post.ts — sent, 17 candidates available
+- Pipeline: Reminder now includes top unposted video ID + topic + /deliver hint
+- Swarm used: no (direct write)
+- Issues: None
+- Timestamp: 2026-03-24T11:20:00Z
