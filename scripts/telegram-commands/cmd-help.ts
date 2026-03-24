@@ -81,6 +81,7 @@ export function cmdHelp(): string {
     `/funnel    — Content pipeline funnel + conversions\n` +
     `/hooktest  — Hook formula A/B test rankings\n` +
     `/formatstats — Video format performance breakdown\n` +
+    `/blockers — All pending human-action items across active tracks\n` +
     `/godman   — Godman Protocols launch readiness\n` +
     `/godman-smoke — Run smoke tests on all 7 Godman protocols\n` +
     `/godman-thread — Show X launch megathread (10 tweets, copy-paste)\n` +

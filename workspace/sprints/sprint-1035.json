@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-1035",
+  "title": "OPS — /blockers: show all pending human-action items across active tracks",
+  "description": "Single Telegram command showing what the operator must do manually: npm login (Godman April 14), ACHIRI_TELEGRAM_BOT_TOKEN + ACHIRI_BASE_URL (Achiri alpha launch), TikTok posts remaining for Phase 1.5 gate.",
+  "block": "OPS",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1035-01",
+      "title": "Add cmdBlockers() to cmd-management.ts + register /blockers in telegram-bot.ts",
+      "type": "feature",
+      "task_target": "scripts/telegram-commands/cmd-management.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1035",
+      "description": "cmdBlockers(): check npm login (execSync npm whoami), check .env for ACHIRI_TELEGRAM_BOT_TOKEN and ACHIRI_BASE_URL, read gate for posts remaining. Return formatted Telegram message grouping blockers by track: GODMAN-LAUNCH, ACHIRI-ALPHA, GATE."
+    }
+  ]
+}

@@ -1681,3 +1681,75 @@ export function cmdEnrich(): string {
     return `❌ Enrich error: ${err.message}`;
   }
 }
+
+// Sprint 1035: /blockers — all pending human-action items across active tracks
+export function cmdBlockers(): string {
+  const lines: string[] = ['*🚧 Human-Action Blockers*\n'];
+  let totalBlocked = 0;
+
+  // ── GODMAN-LAUNCH (April 14) ─────────────────────────────────────────────
+  lines.push('*🚀 GODMAN-LAUNCH — April 14*');
+  let npmWhoami = '';
+  try { npmWhoami = execSync('npm whoami', { encoding: 'utf-8', timeout: 5000, stdio: ['pipe','pipe','pipe'] }).trim(); } catch {}
+  if (npmWhoami) {
+    lines.push(`  ✅ npm login: ${npmWhoami}`);
+  } else {
+    lines.push(`  ❌ npm login: run \`npm login\` on launch machine`);
+    totalBlocked++;
+  }
+  lines.push(`  ℹ️  Then: \`bash scripts/godman-launch-day.sh --dry-run\``);
+  lines.push(`  ℹ️  Launch day: \`bash scripts/godman-launch-day.sh\``);
+  lines.push('');
+
+  // ── ACHIRI-ALPHA ─────────────────────────────────────────────────────────
+  lines.push('*🤖 ACHIRI-ALPHA*');
+  const envPath = path.join(ROOT, '.env');
+  let envContent = '';
+  try { envContent = fs.readFileSync(envPath, 'utf-8'); } catch {}
+
+  const hasAchiriToken = envContent.includes('ACHIRI_TELEGRAM_BOT_TOKEN=') &&
+    !envContent.match(/ACHIRI_TELEGRAM_BOT_TOKEN=\s*$/m);
+  const hasAchiriUrl = envContent.includes('ACHIRI_BASE_URL=') &&
+    !envContent.match(/ACHIRI_BASE_URL=\s*$/m);
+
+  if (hasAchiriToken) {
+    lines.push(`  ✅ ACHIRI_TELEGRAM_BOT_TOKEN: set`);
+  } else {
+    lines.push(`  ❌ ACHIRI_TELEGRAM_BOT_TOKEN: not set in .env`);
+    totalBlocked++;
+  }
+  if (hasAchiriUrl) {
+    lines.push(`  ✅ ACHIRI_BASE_URL: set`);
+  } else {
+    lines.push(`  ❌ ACHIRI_BASE_URL: not set in .env`);
+    totalBlocked++;
+  }
+  lines.push('');
+
+  // ── GATE: PHASE 1.5 ──────────────────────────────────────────────────────
+  lines.push('*📊 GATE: Phase 1.5 (April 7)*');
+  const gate = readJSON<any>(path.join(ROOT, 'workspace', 'gates', 'phase1-5-gate.json'));
+  if (gate) {
+    const postsRemaining = gate.raw?.posts_remaining ?? gate.posts_remaining ?? '?';
+    const urgency = gate.urgency ?? 'UNKNOWN';
+    const daysLeft = gate.days_remaining ?? '?';
+    const urgencyIcon = urgency === 'WARNING' ? '⚠️' : urgency === 'ON_TRACK' ? '✅' : '🔴';
+    lines.push(`  ${urgencyIcon} ${urgency}: ${postsRemaining} posts needed in ${daysLeft} days`);
+    if (urgency !== 'DONE') {
+      lines.push(`  ❌ Manual TikTok posting required (2/day pace)`);
+      totalBlocked++;
+    }
+  } else {
+    lines.push(`  ❓ Gate file not found`);
+  }
+  lines.push('');
+
+  // ── Summary ───────────────────────────────────────────────────────────────
+  if (totalBlocked === 0) {
+    lines.push('✅ *No blockers* — all human actions complete!');
+  } else {
+    lines.push(`🔴 *${totalBlocked} blocker${totalBlocked > 1 ? 's' : ''} need your attention*`);
+  }
+
+  return lines.join('\n');
+}
