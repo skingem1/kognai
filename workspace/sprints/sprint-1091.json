@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1091",
+  "title": "INFRA — /errors: add timestamp of earliest and latest error in 24h window",
+  "description": "Added time window display (earliest → latest) to /errors header. firstMtime tracked per dedup entry.",
+  "block": "INFRA",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1091-01",
+      "title": "Add firstMtime tracking and time window display to cmdErrors",
+      "type": "feature",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1091"
+    }
+  ]
+}
