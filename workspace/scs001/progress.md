@@ -5607,3 +5607,13 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Notes: KnowledgeStore with keyword search, domain/tag/age filtering, capacity enforcement.
 - Swarm used: no (direct write)
 - Timestamp: 2026-03-24T22:45:00Z
+
+## Sprint 997 — TELEGRAM-PATH-FIX
+- Status: PASS
+- Commit: 02cf8697
+- Files modified: scripts/telegram-commands/cmd-posting.ts
+- Test: All 4 commands verified (/gateanalytics, /youtube, /hooktest, /queueopt)
+- Pipeline: 4 broken Telegram bot commands fixed
+- Swarm used: no (1-line fix, replace_all)
+- Issues: None. Bug was require('./scs001/') instead of require('../scs001/').
+- Timestamp: 2026-03-24T22:30:00Z
