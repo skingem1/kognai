@@ -490,6 +490,10 @@ export function cmdAchiri(): string {
         const powerUsers = Array.from(userMsgCounts.values()).filter(n => n > 5).length;
         const powerPct = totalUsers > 0 ? Math.round((powerUsers / totalUsers) * 100) : 0;
         if (totalUsers > 0) lines.push(`🔥 *Engaged cohort:* ${powerUsers}/${totalUsers} users (${powerPct}%) sent >5 messages`);
+        // Sprint 1138 (wave 22): bounce rate (users who sent exactly 1 message)
+        const bounceUsers = Array.from(userMsgCounts.values()).filter(n => n === 1).length;
+        const bouncePct = totalUsers > 0 ? Math.round((bounceUsers / totalUsers) * 100) : 0;
+        if (totalUsers > 0) lines.push(`📤 *Bounce rate:* ${bounceUsers}/${totalUsers} users (${bouncePct}%) sent only 1 message`);
         // Sprint 1143 (wave 20): peak hour of user messages
         try {
           const hourCounts: number[] = new Array(24).fill(0);

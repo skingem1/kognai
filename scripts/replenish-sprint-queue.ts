@@ -1459,6 +1459,58 @@ function generateItems(startSprint: number, existingTitles: Set<string> = new Se
     rationale: '/gate shows total views but they may be stale. Show "Views last updated: 6h ago" from manual-posts.jsonl latest entry to prompt operator to refresh stats.',
   });
 
+  // Wave 22 templates
+  infraItems.push({
+    title: 'OPS — /status: show video queue viral score distribution (high/med/low)',
+    block: 'OPS',
+    rationale: '/status shows queue count but not quality breakdown. Show "Queue: 12 ready — H:4 M:6 L:2" to help operator pick the best video to post next.',
+  });
+  infraItems.push({
+    title: 'OPS — /health: show whether morning-brief cron fired today',
+    block: 'OPS',
+    rationale: '/health shows cron processes but not if today\'s morning-brief actually sent. Read morning-brief log mtime and show "Brief: sent 7:05am" or "Brief: not sent today ⚠️".',
+  });
+  infraItems.push({
+    title: 'ACHIRI — /achiri: show bounce rate (users who sent only 1 message)',
+    block: 'ACHIRI',
+    rationale: 'Single-message users represent failed onboarding. Show "Bounce: X users (Y%) sent only 1 msg" to track onboarding effectiveness before alpha.',
+  });
+  infraItems.push({
+    title: 'OPS — /errors: show error count delta since last /errors call',
+    block: 'OPS',
+    rationale: '/errors shows current count but not if errors are new since last check. Save last-seen count to a state file and show "+N new errors since Xh ago" for active monitoring.',
+  });
+  infraItems.push({
+    title: 'GATE — /pace: show gate pass probability % at current pace',
+    block: 'GATE',
+    rationale: '/pace shows ETA but not confidence. Compute simple probability: if posts/day >= needed/day for remaining days, show "Gate probability: 94%" to give operator a forecast.',
+  });
+  infraItems.push({
+    title: 'GATE — /gate: show if current week is on track (posts this week vs weekly target)',
+    block: 'GATE',
+    rationale: '/gate shows total progress but not weekly tracking. Show "Week: 4/7 posts (on track ✅)" or "Week: 1/7 posts (behind ❌)" for rhythm feedback.',
+  });
+  infraItems.push({
+    title: 'QUALITY — /smoke: add TikTok token validity check (ping getCreatorInfo)',
+    block: 'QUALITY',
+    rationale: 'TikTok token expiry is the top posting blocker. Add a smoke check that calls the TikTok API and reports "TikTok token: valid / expired / missing" to catch it early.',
+  });
+  infraItems.push({
+    title: 'OPS — /report: show last 3 sprint titles shipped (dev cadence)',
+    block: 'OPS',
+    rationale: '/report shows sprint number but not recent sprint titles. Pull last 3 sprint commit messages and list them to show recent dev activity at a glance.',
+  });
+  infraItems.push({
+    title: 'OPS — /status: show Achiri readiness score from achiri-readiness.json',
+    block: 'OPS',
+    rationale: '/status shows Achiri alpha countdown but not the readiness score. Read reports/achiri-readiness.json and show "Achiri: 94% ready (Nd to alpha)" in the status block.',
+  });
+  infraItems.push({
+    title: 'OPS — /health: show whether kognai-daily-digest cron ran today',
+    block: 'OPS',
+    rationale: 'Daily digest is a critical monitoring cron. /health shows process status but not last execution. Add "Digest: ran 07:00 today ✅" or "Digest: not run today ⚠️" from logs.',
+  });
+
   // Fill remaining slots (skip duplicates of already-completed items)
   for (const item of infraItems) {
     if (items.length >= 10) break;

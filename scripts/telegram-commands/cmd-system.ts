@@ -277,7 +277,33 @@ export function cmdHealth(): string {
     }
   } catch { /* skip — iostat may not be available */ }
 
-  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${botUptimeSection}${ollamaSection}${memWarnSection}${memTableSection}${supabaseSection}${supabaseSyncSection}${diskSection}${watchdogSection}${runtimeSection}${tailscaleSection}${hetznerSection}${anthropicSection}${ioSection}`;
+  // Sprint 1137 (wave 22): check if morning-brief cron fired today
+  let morningBriefSection = '';
+  try {
+    const mbLogPath = path.join(ROOT, 'logs', 'scs001-morning-brief-out.log');
+    const todayMidnight = new Date(new Date().toISOString().slice(0, 10) + 'T00:00:00Z').getTime();
+    if (fs.existsSync(mbLogPath)) {
+      const stat = fs.statSync(mbLogPath);
+      const lastModToday = stat.mtimeMs >= todayMidnight;
+      const timeStr = new Date(stat.mtimeMs).toISOString().slice(11, 16) + ' UTC';
+      morningBriefSection = `\n\n*Morning brief:* ${lastModToday ? `✅ sent ${timeStr}` : '⚠️ not sent today'}`;
+    }
+  } catch { /* skip */ }
+
+  // Sprint 1145 (wave 22): check if kognai-daily-digest cron ran today
+  let digestSection = '';
+  try {
+    const digestLogPath = path.join(ROOT, 'logs', 'kognai-daily-digest-out.log');
+    const todayMidnight2 = new Date(new Date().toISOString().slice(0, 10) + 'T00:00:00Z').getTime();
+    if (fs.existsSync(digestLogPath)) {
+      const stat = fs.statSync(digestLogPath);
+      const lastModToday = stat.mtimeMs >= todayMidnight2;
+      const timeStr = new Date(stat.mtimeMs).toISOString().slice(11, 16) + ' UTC';
+      digestSection = `\n\n*Daily digest:* ${lastModToday ? `✅ ran ${timeStr}` : '⚠️ not run today'}`;
+    }
+  } catch { /* skip */ }
+
+  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${botUptimeSection}${ollamaSection}${memWarnSection}${memTableSection}${supabaseSection}${supabaseSyncSection}${diskSection}${watchdogSection}${runtimeSection}${tailscaleSection}${hetznerSection}${anthropicSection}${ioSection}${morningBriefSection}${digestSection}`;
 }
 
 export function cmdTier(): string {
@@ -412,6 +438,19 @@ export function cmdReport(): string {
     if (totalCommits) totalCommitsLine = `\n*All-time commits:* ${totalCommits}`;
   } catch { /* skip */ }
 
+  // Sprint 1143 (wave 22): last 3 sprint titles shipped from git log
+  let lastSprintsLine = '';
+  try {
+    const recentLog = execSync('git log --oneline -20 2>/dev/null', { cwd: ROOT, encoding: 'utf-8', timeout: 5000 });
+    const sprintTitles = recentLog.split('\n')
+      .filter((l: string) => l.includes('Sprint '))
+      .slice(0, 3)
+      .map((l: string) => l.replace(/^[a-f0-9]+ /, '').slice(0, 60));
+    if (sprintTitles.length > 0) {
+      lastSprintsLine = `\n*Recent sprints:*\n${sprintTitles.map((s: string) => `  • ${s}`).join('\n')}`;
+    }
+  } catch { /* skip */ }
+
   // Sprint 1144 (wave 21): PM2 processes offline for >1h
   let offlineLine = '';
   try {
@@ -446,7 +485,7 @@ export function cmdReport(): string {
     `Last heartbeat: ${lastBeat} UTC\n\n` +
     `*Beta:* agents_onboarded=${beta.agents_onboarded ?? 0}, companies=${beta.companies_onboarded ?? 0}, txns=${beta.transactions_monitored ?? 0}\n` +
     `*Financials:* MRR $${mrr} | Tier: ${tier} | Billing activation: ${billingDate}\n\n` +
-    `*Gate:* ${gateLine}${achiriTestLine}${commitLine}${totalCommitsLine}${valErrorsLine}${offlineLine}\n` +
+    `*Gate:* ${gateLine}${achiriTestLine}${commitLine}${totalCommitsLine}${valErrorsLine}${offlineLine}${lastSprintsLine}\n` +
     `*Sprint:* ${sprintLine}`
   );
 }
@@ -1356,6 +1395,27 @@ export function cmdErrors(filterProcess?: string): string {
     }
   } catch { /* skip */ }
 
+  // Sprint 1139 (wave 22): error count delta since last /errors call
+  try {
+    const deltaPath = path.join(ROOT, 'workspace', 'errors-last-count.json');
+    const currentCount = errored.reduce((s, e) => s + (e.count ?? 1), 0);
+    const nowMs = Date.now();
+    if (fs.existsSync(deltaPath)) {
+      const prev = JSON.parse(fs.readFileSync(deltaPath, 'utf-8'));
+      const prevCount = prev.count ?? 0;
+      const prevTs = prev.timestamp ?? 0;
+      const ageH = (nowMs - prevTs) / 3600000;
+      const ageStr = ageH < 1 ? `${Math.round(ageH * 60)}m ago` : `${Math.round(ageH)}h ago`;
+      const delta = currentCount - prevCount;
+      if (delta !== 0) {
+        const deltaIcon = delta > 0 ? '📈' : '📉';
+        const deltaStr = delta > 0 ? `+${delta}` : String(delta);
+        output.push(`\n${deltaIcon} *Delta since last check (${ageStr}):* ${deltaStr} errors`);
+      }
+    }
+    fs.writeFileSync(deltaPath, JSON.stringify({ count: currentCount, timestamp: nowMs }));
+  } catch { /* skip */ }
+
   return output.join('\n');
 }
 
@@ -1573,6 +1633,21 @@ export async function cmdSmoke(chatId: string): Promise<void> {
       lines.push('');
       lines.push(`⏱ *Slowest check:* \`${slowest.name}\` — ${slowSec}s`);
     }
+
+    // Sprint 1142 (wave 22): TikTok token validity check
+    try {
+      const tiktokToken = process.env.TIKTOK_ACCESS_TOKEN;
+      const tiktokKey = process.env.TIKTOK_CLIENT_KEY;
+      lines.push('');
+      if (!tiktokToken) {
+        lines.push(`❌ *TikTok token:* TIKTOK_ACCESS_TOKEN not set — posting blocked`);
+      } else {
+        const isPlausible = tiktokToken.length >= 16;
+        lines.push(isPlausible
+          ? `✅ *TikTok token:* set (\`${tiktokToken.slice(0, 8)}...\`)${tiktokKey ? '' : ' · CLIENT_KEY missing'}`
+          : `⚠️ *TikTok token:* set but suspiciously short (${tiktokToken.length} chars) — may be invalid`);
+      }
+    } catch { /* skip */ }
 
     // Sprint 1142 (wave 21): show total elapsed time
     const totalElapsedSec = ((Date.now() - t0) / 1000).toFixed(1);

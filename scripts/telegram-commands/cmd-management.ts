@@ -1701,7 +1701,20 @@ export function cmdStatus(): string {
     npmLoggedIn = !!whoami;
   } catch {}
   const godmanLine = `🚀 Godman launch: *${godmanDays}d* — ${npmLoggedIn ? '✅ npm ready' : '❌ npm login needed'} · /godman`;
-  const achiriLine = `🤖 Achiri alpha: *${achiriDays}d* — /achiri`;
+  // Sprint 1144 (wave 22): Achiri readiness score from achiri-readiness.json
+  let achiriReadinessStr2 = '';
+  try {
+    const rPath2 = path.join(ROOT, 'reports', 'achiri-readiness.json');
+    if (fs.existsSync(rPath2)) {
+      const rData2 = JSON.parse(fs.readFileSync(rPath2, 'utf-8'));
+      const score2 = rData2.score ?? rData2.readiness_score;
+      if (score2 != null) {
+        const rIcon2 = score2 >= 90 ? '✅' : score2 >= 70 ? '⚠️' : '❌';
+        achiriReadinessStr2 = ` · ${rIcon2} ${score2}% ready`;
+      }
+    }
+  } catch { /* skip */ }
+  const achiriLine = `🤖 Achiri alpha: *${achiriDays}d*${achiriReadinessStr2} — /achiri`;
 
   // Sprint 1060: Watchdog alerts
   let watchdogLine = '';
@@ -1871,6 +1884,23 @@ export function cmdStatus(): string {
     }
   } catch { /* skip */ }
 
+  // Sprint 1136 (wave 22): viral score distribution in queue (High/Medium/Low)
+  let viralDistLine = '';
+  try {
+    const HIGH_THRESH = 0.7, MED_THRESH = 0.4;
+    let highCount = 0, medCount = 0, lowCount = 0;
+    for (const e of unposted as any[]) {
+      const vs = viralScores.get(e.video_id);
+      if (vs == null) { lowCount++; continue; }
+      if (vs >= HIGH_THRESH) highCount++;
+      else if (vs >= MED_THRESH) medCount++;
+      else lowCount++;
+    }
+    if (unposted.length > 0 && (highCount + medCount + lowCount) > 0) {
+      viralDistLine = ` (H:${highCount} M:${medCount} L:${lowCount})`;
+    }
+  } catch { /* skip */ }
+
   // Sprint 1139 (wave 20): count PM2 crons that fired today
   let cronsFiredLine = '';
   try {
@@ -1915,7 +1945,7 @@ export function cmdStatus(): string {
       }
       return oblStreak >= 2 ? `📋 Obligation streak: *${oblStreak}d* met in a row ✅` : '';
     })(),
-    `📦 Queue: *${readyCount}* ready · ${unposted.length} total${lastPostAge}${bestHookLine}`,
+    `📦 Queue: *${readyCount}* ready · ${unposted.length} total${viralDistLine}${lastPostAge}${bestHookLine}`,
     pipelineLine,
     cronLine + cronsFiredLine,
     watchdogLine,

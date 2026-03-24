@@ -220,6 +220,24 @@ export function cmdGate(): string {
       const perWeek = Math.ceil(postsNeeded / weeksLeft);
       return [`📋 *Weekly target:* ${perWeek} posts/week (${weeksLeft} week${weeksLeft !== 1 ? 's' : ''} left)`];
     })(),
+    // Sprint 1141 (wave 22): is current week on track vs weekly target
+    ...(() => {
+      if (postsNeeded <= 0 || daysLeft <= 0) return [];
+      try {
+        if (!fs.existsSync(manualPostsPath)) return [];
+        const todayDow = now.getDay(); // 0=Sun
+        const weekStartOffset = (todayDow === 0 ? 6 : todayDow - 1) * 86_400_000; // Mon=0
+        const weekStartDate = new Date(now.getTime() - weekStartOffset).toISOString().slice(0, 10);
+        const thisWeekPosts = fs.readFileSync(manualPostsPath, 'utf-8').split('\n').filter((l: string) => {
+          if (!l.trim()) return false;
+          try { const p = JSON.parse(l); return (p.posted_at ?? p.recorded_at ?? '').slice(0, 10) >= weekStartDate; } catch { return false; }
+        }).length;
+        const weeksLeft2 = Math.max(1, Math.ceil(daysLeft / 7));
+        const weekTarget = Math.ceil(postsNeeded / weeksLeft2);
+        const weekIcon = thisWeekPosts >= weekTarget ? '✅' : thisWeekPosts >= Math.ceil(weekTarget / 2) ? '⚠️' : '❌';
+        return [`${weekIcon} *This week:* ${thisWeekPosts}/${weekTarget} posts (${weekTarget - thisWeekPosts > 0 ? `${weekTarget - thisWeekPosts} more needed` : 'on track'})`];
+      } catch { return []; }
+    })(),
     ``,
     `*── Infrastructure ──*`,
     // Sprint 1145 (wave 20): TikTok account age in days from warmup-status.json
@@ -707,6 +725,22 @@ export function cmdPace(): string {
     if (weekdaysLeft > 0) {
       lines.push('');
       lines.push(`📆 *Weekdays left:* ${weekdaysLeft} (Mon–Fri) until gate`);
+    }
+  } catch { /* skip */ }
+
+  // Sprint 1140 (wave 22): gate pass probability at current pace
+  try {
+    if (postsNeeded > 0 && daysLeft > 0 && pacePerDay > 0) {
+      const projectedTotal = postCount + Math.floor(pacePerDay * daysLeft);
+      const postProb = Math.min(100, Math.round((projectedTotal / GATE_TARGET) * 100));
+      const totalViews3 = posts.reduce((s: number, p: any) => s + (p.views ?? 0), 0);
+      const viewsPerPost = postCount > 0 ? totalViews3 / postCount : 0;
+      const projectedViews = totalViews3 + Math.floor(pacePerDay * daysLeft * viewsPerPost);
+      const viewProb = Math.min(100, Math.round((projectedViews / 500) * 100));
+      const combined = Math.min(postProb, viewProb);
+      const probIcon = combined >= 80 ? '✅' : combined >= 50 ? '⚠️' : '❌';
+      lines.push('');
+      lines.push(`${probIcon} *Gate probability:* ${combined}% (posts: ${postProb}% · views: ${viewProb}%)`);
     }
   } catch { /* skip */ }
 
