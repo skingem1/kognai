@@ -5493,3 +5493,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - AAR: aar-middleware module missing — noted
 - Issues: none
 - Timestamp: 2026-03-24T10:00:00Z
+
+## Sprint 989 — GODMAN-CLI-DEMO
+- Status: PASS
+- Commit: 1b6ddc70
+- Files created: workspace/godman-protocols/sdk/bin/demo.ts
+- Files modified: none
+- Test: npx tsx bin/demo.ts — PASS (all 7 protocols exercised, colorful output)
+- Pipeline: N/A (Godman block)
+- Swarm used: no (single file, direct write — required multiple iterations to match all 7 protocol APIs)
+- Issues: API surface varies across protocols; took 4 iterations to get all field names correct
+- Timestamp: 2026-03-24T09:10:00Z
