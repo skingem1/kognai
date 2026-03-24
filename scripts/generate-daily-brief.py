@@ -133,10 +133,34 @@ def find_current_phase(content: str, target_date: datetime) -> str:
 
 
 def extract_active_sprint(content: str, target_date: datetime) -> str:
-    """Find the active sprint number from today's content."""
+    """Find the active sprint from git log (most recent Sprint N commit)."""
+    import subprocess, os
+    repo_root = Path(__file__).parent.parent
+    try:
+        result = subprocess.run(
+            ["git", "log", "--oneline", "-20"],
+            cwd=repo_root, capture_output=True, text=True, timeout=5
+        )
+        for line in result.stdout.splitlines():
+            m = re.search(r"Sprint (\d{3,4})", line)
+            if m:
+                return f"sprint-{m.group(1)}"
+    except Exception:
+        pass
+    # Fallback: scan workspace/sprints/ for highest sprint number
+    sprints_dir = repo_root / "workspace" / "sprints"
+    if sprints_dir.exists():
+        nums = []
+        for f in sprints_dir.glob("sprint-*.json"):
+            m = re.search(r"sprint-(\d+)", f.name)
+            if m:
+                nums.append(int(m.group(1)))
+        if nums:
+            return f"sprint-{max(nums)}"
+    # Legacy fallback: parse timeline document
     today_section = find_today_section(content, target_date)
     if today_section:
-        sprint_match = re.search(r"[Ss]print[ -]?(\d{3})", today_section)
+        sprint_match = re.search(r"[Ss]print[ -]?(\d{3,4})", today_section)
         if sprint_match:
             return sprint_match.group(0)
     return "Unknown"

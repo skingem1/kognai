@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1040",
+  "title": "OPS — generate-daily-brief.py: fix sprint detection for 4-digit sprint numbers",
+  "description": "extract_active_sprint() used regex \\d{3} which can't match sprint-1039+. Fixed to read from git log (most recent Sprint N commit). Fallback: scan workspace/sprints/ for highest number.",
+  "block": "OPS",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1040-01",
+      "title": "Fix extract_active_sprint() in generate-daily-brief.py",
+      "type": "fix",
+      "task_target": "scripts/generate-daily-brief.py",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1040"
+    }
+  ]
+}
