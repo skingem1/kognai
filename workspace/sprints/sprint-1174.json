@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-1174",
+  "title": "GODMAN-LAUNCH — add /godman-publish Telegram command (runs godman-launch-day.sh)",
+  "description": "Add cmdGodmanPublish() to cmd-system.ts that runs scripts/godman-launch-day.sh --dry-run by default. /godman-publish confirm triggers actual npm publish. Shows summary output from the script.",
+  "source": "queue-empty-strategic",
+  "block": "GODMAN-LAUNCH",
+  "tasks": [
+    {
+      "id": "1174-01",
+      "title": "Add cmdGodmanPublish() to cmd-system.ts",
+      "type": "feature",
+      "task_type": "ux",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-1174"
+    }
+  ]
+}

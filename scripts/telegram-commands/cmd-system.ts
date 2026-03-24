@@ -3277,6 +3277,30 @@ export function cmdPm2Errors(): string {
 }
 
 /**
+ * Sprint 1174: /godman-publish — run godman-launch-day.sh (dry-run by default)
+ * Usage: /godman-publish (dry-run) | /godman-publish confirm (live publish)
+ */
+export function cmdGodmanPublish(args?: string): string {
+  const confirm = (args ?? '').trim().toLowerCase() === 'confirm';
+  const scriptPath = path.join(ROOT, 'scripts', 'godman-launch-day.sh');
+  if (!fs.existsSync(scriptPath)) {
+    return '❌ scripts/godman-launch-day.sh not found';
+  }
+  const flags = confirm ? '' : '--dry-run';
+  const label = confirm ? '🚀 LIVE PUBLISH — this publishes to npm!' : 'DRY-RUN — no publish';
+  try {
+    const out = execSync(`bash "${scriptPath}" ${flags} 2>&1`, { encoding: 'utf-8', timeout: 120000, cwd: ROOT, stdio: ['pipe','pipe','pipe'] });
+    const lines = out.split('\n').filter(l => l.trim());
+    // Show last 10 lines as summary
+    const summary = lines.slice(-10).join('\n').slice(0, 800);
+    return `*Godman Publish* (${label})\n\`\`\`\n${summary}\n\`\`\`\n${confirm ? '✅ Publish complete — check /godman for registry status.' : 'Run /godman-publish confirm to actually publish.'}`;
+  } catch (e: any) {
+    const err = ((e.stdout ?? e.stderr ?? e.message ?? '') as string).trim().slice(0, 400);
+    return `❌ godman-launch-day.sh failed:\n\`\`\`\n${err}\n\`\`\``;
+  }
+}
+
+/**
  * Sprint 1173: /godman-tag — create git tags for all 8 godman packages
  * Usage: /godman-tag (dry-run preview) | /godman-tag confirm (actually tag)
  */
