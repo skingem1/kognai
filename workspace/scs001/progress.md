@@ -6405,3 +6405,12 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Test: dry-run validation — all 8 packages 0.2.0→0.3.0 detected correctly
 - Swarm used: no (new file, wrote directly)
 - Timestamp: 2026-03-24T22:25:00Z
+
+## Sprint 1182 — OPS
+- Status: PASS
+- Commit: eee56d6e
+- Files modified: scripts/telegram-commands/cmd-system.ts
+- Change: Added godman countdown inline in /health header: '🚀 Godman: 21d (Apr 14)'. Red icon when ≤7d, TODAY + preflight link on launch day.
+- Test: runtime validation — header shows "💀 *Health* — `dead` · 🚀 *Godman: 21d* (Apr 14)"
+- Swarm used: no (3400+ lines)
+- Timestamp: 2026-03-24T22:35:00Z

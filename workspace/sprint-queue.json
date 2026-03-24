@@ -2829,7 +2829,7 @@
       "sprint": 1182,
       "title": "OPS — /health: add godman launch countdown to health report header",
       "block": "OPS",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "Add a compact godman launch countdown (e.g. 🚀 Godman: 18d) to the /health output header so operator always sees it."
     },
