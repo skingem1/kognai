@@ -654,7 +654,8 @@
       "sprint": 1067,
       "title": "PHASE2 \u2014 Achiri: validate-derja-profiler test coverage report via /achiri",
       "block": "PHASE2",
-      "status": "pending",
+      "status": "done",
+      "_note": "Shipped 2026-03-24. cmdAchiri() now runs validate-derja-profiler.ts inline, shows pass/fail count. 5/5 tests currently passing.",
       "priority": "medium",
       "rationale": "Achiri derja profiler was added in Sprint 133. Run scripts/achiri/validate-derja-profiler.ts and surface pass/fail in /achiri readiness section."
     },

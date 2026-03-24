@@ -384,6 +384,28 @@ export function cmdAchiri(): string {
     lines.push('');
     lines.push(`_Report: ${data.generated_at ? data.generated_at.split('T')[0] : 'unknown'}_`);
 
+    // Sprint 1067: Derja profiler test coverage
+    lines.push('');
+    lines.push('*Derja Profiler:*');
+    try {
+      const { execSync } = require('child_process');
+      const out = execSync(
+        `npx ts-node --transpile-only ${path.join(ROOT, 'scripts/achiri/validate-derja-profiler.ts')}`,
+        { encoding: 'utf-8', timeout: 15000, cwd: ROOT }
+      );
+      const summaryLine = out.split('\n').find((l: string) => l.includes('ALL TESTS') || l.includes('FAIL'));
+      if (summaryLine && summaryLine.includes('ALL TESTS PASSED')) {
+        const match = summaryLine.match(/(\d+)\/(\d+)/);
+        lines.push(`  ✅ ${match ? `${match[1]}/${match[2]} tests pass` : 'All tests pass'}`);
+      } else if (summaryLine) {
+        lines.push(`  ❌ ${summaryLine.trim().slice(0, 80)}`);
+      } else {
+        lines.push(`  ⚠️ Could not parse output`);
+      }
+    } catch (e: any) {
+      lines.push(`  ❌ Runner failed: ${String(e.message ?? e).slice(0, 80)}`);
+    }
+
     return lines.join('\n');
   } catch (e: any) {
     return `❌ Error reading Achiri readiness: ${e.message}`;
