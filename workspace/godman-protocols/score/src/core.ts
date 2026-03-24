@@ -69,7 +69,7 @@ export function evaluate(
     if (!(criterion.id in scores)) {
       throw new Error(`Missing score for criterion '${criterion.name}' (${criterion.id})`);
     }
-    const s = scores[criterion.id];
+    const s = scores[criterion.id]!;
     if (s < 0 || s > 1) {
       throw new Error(`Score for '${criterion.name}' must be 0.0–1.0, got ${s}`);
     }
@@ -77,7 +77,7 @@ export function evaluate(
 
   // Weighted composite
   const compositeScore = rubric.criteria.reduce(
-    (sum, c) => sum + scores[c.id] * c.weight,
+    (sum, c) => sum + (scores[c.id] ?? 0) * c.weight,
     0
   );
 

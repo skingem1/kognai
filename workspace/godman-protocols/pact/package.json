@@ -1,9 +1,7 @@
 {
   "name": "@godman-protocols/pact",
-  "version": "0.1.0",
-  "description": "Protocol for Agent Coordination and Trust — skeleton",
-  "status": "v0.2.0",
-  "private": true,
+  "version": "0.2.0",
+  "description": "Protocol for Agent Coordination and Trust — the missing coordination layer for autonomous AI agents",
   "type": "module",
   "main": "dist/index.js",
   "exports": "./dist/index.js",
@@ -14,28 +12,36 @@
   ],
   "scripts": {
     "build": "tsc",
-    "typecheck": "tsc --noEmit",
-    "test": "echo 'No tests yet — skeleton phase'"
+    "prepublishOnly": "npm run build",
+    "test": "npx tsx smoke.test.ts",
+    "typecheck": "tsc --noEmit"
   },
   "keywords": [
     "agent",
     "coordination",
     "trust",
+    "mandate",
     "protocol",
     "x402",
-    "godman-protocols"
+    "godman-protocols",
+    "multi-agent"
   ],
   "author": "skingem1",
   "license": "Apache-2.0",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/skingem1/pact.git"
+    "url": "https://github.com/godman-protocols/pact.git"
   },
   "engines": {
     "node": ">=20.0.0"
   },
   "devDependencies": {
-    "typescript": "^5.4.0"
+    "typescript": "^5.4.0",
+    "tsx": "^4.7.0"
   },
   "dependencies": {}
 }

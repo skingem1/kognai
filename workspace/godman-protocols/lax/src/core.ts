@@ -108,7 +108,7 @@ export function routeTask(
         Math.abs(a.measuredLatencyMs - budget.targetLatencyMs) -
         Math.abs(b.measuredLatencyMs - budget.targetLatencyMs)
     );
-    selected = withinBudget[0];
+    selected = withinBudget[0]!;
     reason =
       selected.measuredLatencyMs <= budget.targetLatencyMs
         ? 'within_target'
@@ -116,7 +116,7 @@ export function routeTask(
   } else {
     // Best effort — pick lowest latency even though it exceeds budget
     available.sort((a, b) => a.measuredLatencyMs - b.measuredLatencyMs);
-    selected = available[0];
+    selected = available[0]!;
     reason = 'best_effort';
   }
 

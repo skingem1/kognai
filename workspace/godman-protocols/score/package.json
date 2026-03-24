@@ -1,10 +1,10 @@
 {
   "name": "@godman-protocols/score",
   "version": "0.2.0",
-  "description": "Scoring and Reputation — rubric, evaluate, reputation, audit",
+  "description": "Scoring and Reputation for Agent Outputs — weighted rubric evaluation and reputation tracking for AI agents",
   "type": "module",
-  "private": true,
   "main": "dist/index.js",
+  "exports": "./dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist",
@@ -12,27 +12,31 @@
   ],
   "scripts": {
     "build": "tsc",
-    "typecheck": "tsc --noEmit",
-    "test": "tsx smoke.test.ts"
+    "prepublishOnly": "npm run build",
+    "test": "npx tsx smoke.test.ts",
+    "typecheck": "tsc --noEmit"
   },
   "keywords": [
-    "agent",
-    "score",
-    "protocol",
-    "x402",
-    "godman-protocols"
+    "scoring","reputation","evaluation","agent-quality","audit",
+    "godman-protocols",
+    "multi-agent"
   ],
   "author": "skingem1",
   "license": "Apache-2.0",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/skingem1/score.git"
+    "url": "https://github.com/godman-protocols/score.git"
   },
   "engines": {
     "node": ">=20.0.0"
   },
   "devDependencies": {
-    "typescript": "^5.4.0"
+    "typescript": "^5.4.0",
+    "tsx": "^4.7.0"
   },
   "dependencies": {}
 }

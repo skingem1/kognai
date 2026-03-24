@@ -1,39 +1,12 @@
 {
   "sprint_id": "sprint-976",
-  "title": "GODMAN-LAUNCH-02 — X threads + ClaWHub listings for SOUL, AMF, DRS",
-  "description": "Create X launch threads and ClaWHub marketplace listings for SOUL, AMF, and DRS protocols. Completes all 7 protocol launch materials for April 14.",
+  "title": "GODMAN-NPM-PUBLISH — package.json publish config + tsc build for all 7 protocols",
+  "description": "Prepare all 7 Godman Protocols for npm publish. Remove private: true, bump version to 0.2.0, add publishConfig + test script, run tsc build to generate dist/ in each protocol. Verify all builds pass. Required before April 14 PACT launch.",
   "block": "GODMAN-PROTOCOLS",
   "source": "queue-exhausted-continuation",
   "tasks": [
-    {
-      "id": "976-01",
-      "title": "SOUL X thread + ClaWHub listing",
-      "type": "content",
-      "task_target": "workspace/social/soul-launch/",
-      "agent": "coder",
-      "status": "pending",
-      "priority": "high",
-      "sprint_id": "sprint-976"
-    },
-    {
-      "id": "976-02",
-      "title": "AMF X thread + ClaWHub listing",
-      "type": "content",
-      "task_target": "workspace/social/amf-launch/",
-      "agent": "coder",
-      "status": "pending",
-      "priority": "high",
-      "sprint_id": "sprint-976"
-    },
-    {
-      "id": "976-03",
-      "title": "DRS X thread + ClaWHub listing",
-      "type": "content",
-      "task_target": "workspace/social/drs-launch/",
-      "agent": "coder",
-      "status": "pending",
-      "priority": "high",
-      "sprint_id": "sprint-976"
-    }
+    { "id": "976-01", "title": "Update package.json for all 7 protocols (remove private, bump to 0.2.0, add publishConfig)", "type": "config", "task_target": "workspace/godman-protocols/*/package.json", "agent": "coder", "status": "pending", "priority": "high", "sprint_id": "sprint-976" },
+    { "id": "976-02", "title": "Run npm install + tsc build in all 7 protocol dirs", "type": "build", "task_target": "workspace/godman-protocols/*/dist/", "agent": "coder", "status": "pending", "priority": "high", "sprint_id": "sprint-976" },
+    { "id": "976-03", "title": "Verify all builds: dist/index.js + dist/index.d.ts exist and exports work", "type": "test", "task_target": "workspace/godman-protocols/*/dist/", "agent": "coder", "status": "pending", "priority": "high", "sprint_id": "sprint-976" }
   ]
 }

@@ -168,7 +168,7 @@ export function checkKillSwitches(
   for (const ks of constitution.killSwitches) {
     const parts = ks.triggerCondition.split(/\s+/);
     if (parts.length !== 3) continue;
-    const [key, op, rawVal] = parts;
+    const [key, op, rawVal] = parts as [string, string, string];
     if (!(key in context)) continue;
     const actual = Number(context[key]);
     const threshold = Number(rawVal);

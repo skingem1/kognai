@@ -1,10 +1,10 @@
 {
   "name": "@godman-protocols/drs",
   "version": "0.2.0",
-  "description": "Dynamic Resource Scheduling — pools, allocate, release, preempt",
+  "description": "Dynamic Resource Scheduling — allocate, preempt, and expire compute resources across AI agent swarms",
   "type": "module",
-  "private": true,
   "main": "dist/index.js",
+  "exports": "./dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist",
@@ -12,27 +12,31 @@
   ],
   "scripts": {
     "build": "tsc",
-    "typecheck": "tsc --noEmit",
-    "test": "tsx smoke.test.ts"
+    "prepublishOnly": "npm run build",
+    "test": "npx tsx smoke.test.ts",
+    "typecheck": "tsc --noEmit"
   },
   "keywords": [
-    "agent",
-    "drs",
-    "protocol",
-    "x402",
-    "godman-protocols"
+    "resource-scheduling","allocation","preemption","capacity","cost-control",
+    "godman-protocols",
+    "multi-agent"
   ],
   "author": "skingem1",
   "license": "Apache-2.0",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/skingem1/drs.git"
+    "url": "https://github.com/godman-protocols/drs.git"
   },
   "engines": {
     "node": ">=20.0.0"
   },
   "devDependencies": {
-    "typescript": "^5.4.0"
+    "typescript": "^5.4.0",
+    "tsx": "^4.7.0"
   },
   "dependencies": {}
 }
