@@ -290,9 +290,9 @@ function getDaysUntil(isoDate: string): number {
 
 // ── Sprint 282: Posting streak ────────────────────────────────────────────────
 
-function getPostingStreak(): { current: number; best: number; todayPosts: number } {
+function getPostingStreak(): { current: number; best: number; todayPosts: number; yesterdayPosts: number } {
   const posts = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
-  if (posts.length === 0) return { current: 0, best: 0, todayPosts: 0 };
+  if (posts.length === 0) return { current: 0, best: 0, todayPosts: 0, yesterdayPosts: 0 };
 
   const daySet: Record<string, number> = {};
   for (const p of posts as any[]) {
@@ -323,7 +323,7 @@ function getPostingStreak(): { current: number; best: number; todayPosts: number
   }
   bestStreak = Math.max(bestStreak, streak);
 
-  return { current: currentStreak, best: bestStreak, todayPosts: daySet[today] || 0 };
+  return { current: currentStreak, best: bestStreak, todayPosts: daySet[today] || 0, yesterdayPosts: daySet[yesterday] || 0 };
 }
 
 // ── Sprint 425: Auto-post readiness ──────────────────────────────────────────
@@ -499,7 +499,8 @@ function buildDigest(): string {
     '',
     obligationLine,
     '',
-    `${streakEmoji} Streak: *${streak.current}d* (best: ${streak.best}d) | Yesterday: ${streak.todayPosts > 0 ? `${streak.todayPosts} posted` : 'none'}`,
+    // Sprint 1107: yesterday post count vs daily target
+    `${streakEmoji} Streak: *${streak.current}d* (best: ${streak.best}d) | Yesterday: ${streak.yesterdayPosts >= todayObligation && todayObligation > 0 ? `✅ ${streak.yesterdayPosts}/${todayObligation}` : streak.yesterdayPosts > 0 ? `⚠️ ${streak.yesterdayPosts}/${todayObligation}` : 'none'}`,
     '',
     `📊 *Phase 1.5 Gate* — ${daysPhase}d until Apr 7`,
     `${postIcon}  Posts:  *${gate.count}/30* ${postsLeft > 0 ? `(${postsLeft} more) ${postsPerDay}` : ''}`,
