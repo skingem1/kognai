@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1090",
+  "title": "OPS — /status: show days since last post in header if streak is 0",
+  "description": "Already implemented — line 1724 shows 'last post Xd ago' when streak is 0. No changes needed.",
+  "block": "OPS",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1090-01",
+      "title": "Verify days-since-last-post already present in cmdStatus when streak=0",
+      "type": "validation",
+      "task_target": "scripts/telegram-commands/cmd-management.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1090"
+    }
+  ]
+}

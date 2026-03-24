@@ -842,9 +842,10 @@
       "sprint": 1090,
       "title": "OPS — /status: show days since last post in header if streak is 0",
       "block": "OPS",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
-      "rationale": "When streak is 0, /status should show how many days since the last post (e.g. \"Last post: 3d ago\") to give the operator urgency context."
+      "rationale": "When streak is 0, /status should show how many days since the last post (e.g. \"Last post: 3d ago\") to give the operator urgency context.",
+      "_note": "Already implemented at line 1724. Validated 2026-03-24."
     },
     {
       "sprint": 1091,
