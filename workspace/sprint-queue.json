@@ -2772,7 +2772,7 @@
       "sprint": 1170,
       "title": "GODMAN-LAUNCH — /godman: show days since each protocol last committed",
       "block": "GODMAN-LAUNCH",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "/godman shows test status but not code freshness. A protocol not committed in 7d before launch is a risk. Show \"last commit: Xd ago\" per protocol."
     },
