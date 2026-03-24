@@ -1,0 +1,49 @@
+{
+  "sprint_id": "sprint-961",
+  "title": "INTEL-REPLIES — Draft X reply content for Atenov, Spisak, Clawcard, OpenClaw Masterclass",
+  "description": "From INTEL-004, INTEL-008, INTEL-009, INTEL-010. Draft 4 X reply threads from @invoica_ai. Each max 280 chars. Save to workspace/social/x-replies/. Swarm bypassed — content work, direct write.",
+  "block": "INTEL-ACTIONS",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "961-01",
+      "title": "Draft X reply to @Atenov_D (INTEL-004 — AMD-24 sovereign vault)",
+      "type": "content",
+      "task_target": "workspace/social/x-replies/reply-atenov.md",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-961"
+    },
+    {
+      "id": "961-02",
+      "title": "Draft X reply to @NickSpisak_ (INTEL-008 — constitutional constraints)",
+      "type": "content",
+      "task_target": "workspace/social/x-replies/reply-spisak.md",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-961"
+    },
+    {
+      "id": "961-03",
+      "title": "Draft X reply to @cblovescode (INTEL-009 — Clawcard composability)",
+      "type": "content",
+      "task_target": "workspace/social/x-replies/reply-clawcard.md",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-961"
+    },
+    {
+      "id": "961-04",
+      "title": "Draft X reply re OpenClaw Masterclass (INTEL-010 — upgrade path)",
+      "type": "content",
+      "task_target": "workspace/social/x-replies/reply-openclaw-masterclass.md",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-961"
+    }
+  ]
+}
