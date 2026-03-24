@@ -1,14 +1,14 @@
 {
-  "_note": "AUTHORITATIVE sprint execution order. The brief generator reads this and injects the first item as a MANDATORY directive, bypassing Qwen's recommendation. Pop items by setting status=done after each sprint ships. Human-maintained \u2014 edit to re-prioritise.",
+  "_note": "AUTHORITATIVE sprint execution order. The brief generator reads this and injects the first item as a MANDATORY directive, bypassing Qwen's recommendation. Pop items by setting status=done after each sprint ships. Human-maintained — edit to re-prioritise.",
   "updated": "2026-03-24T21:30",
   "owner": "Tarek (human)",
-  "_plan_rationale": "RESEEDED 2026-03-24 (round 9). 15 new docs analyzed (BOND, AMD-25, ARCH-001, EVAL-011, INTEL-004-011, Godman Protocols, Spielberg). SCS-001 VIDEO PRODUCTION PAUSED \u2014 infrastructure/architecture sprint block only. No produce-vlog, no batch-produce, no entertainment. Resume video production only after Godman reviews all generated videos.",
-  "_scs001_status": "PAUSED \u2014 no video generation. Swarm must NOT run any produce-vlog.ts, batch-produce.ts, entertainment.ts, or code-demo.ts tasks.",
-  "_critical_path": "EVAL-011 env migration \u2192 Godman Protocols repo setup \u2192 ARCH-001 tmux layer \u2192 AMD-25 design \u2192 Spielberg scaffold",
+  "_plan_rationale": "RESEEDED 2026-03-24 (round 9). 15 new docs analyzed (BOND, AMD-25, ARCH-001, EVAL-011, INTEL-004-011, Godman Protocols, Spielberg). SCS-001 VIDEO PRODUCTION PAUSED — infrastructure/architecture sprint block only. No produce-vlog, no batch-produce, no entertainment. Resume video production only after Godman reviews all generated videos.",
+  "_scs001_status": "PAUSED — no video generation. Swarm must NOT run any produce-vlog.ts, batch-produce.ts, entertainment.ts, or code-demo.ts tasks.",
+  "_critical_path": "EVAL-011 env migration → Godman Protocols repo setup → ARCH-001 tmux layer → AMD-25 design → Spielberg scaffold",
   "queue": [
     {
       "sprint": 953,
-      "title": "EVAL-011-01 \u2014 OpenClaw env var migration (CLAWDBOT_*/MOLTBOT_* \u2192 OPENCLAW_*)",
+      "title": "EVAL-011-01 — OpenClaw env var migration (CLAWDBOT_*/MOLTBOT_* → OPENCLAW_*)",
       "block": "EVAL-011",
       "status": "skipped",
       "priority": "critical",
@@ -17,24 +17,25 @@
     },
     {
       "sprint": 954,
-      "title": "GODMAN-REPO-01 \u2014 Create godman-protocols GitHub org + PACT repo skeleton",
+      "title": "GODMAN-REPO-01 — Create godman-protocols GitHub org + PACT repo skeleton",
       "block": "GODMAN-PROTOCOLS",
       "status": "done",
       "priority": "high",
-      "rationale": "From Godman Protocols Portfolio Strategy. Create the GitHub org structure under skingem1. PACT repo with: README.md, LICENSE (Apache 2.0), package.json, src/ skeleton, .claude-plugin, .cursor-plugin, .codex, .openclaw configs (INTEL-005 four-target pattern + .openclaw for ClaWHub). Do NOT publish yet \u2014 skeleton only.",
+      "rationale": "From Godman Protocols Portfolio Strategy. Create the GitHub org structure under skingem1. PACT repo with: README.md, LICENSE (Apache 2.0), package.json, src/ skeleton, .claude-plugin, .cursor-plugin, .codex, .openclaw configs (INTEL-005 four-target pattern + .openclaw for ClaWHub). Do NOT publish yet — skeleton only.",
       "_note": "Shipped 2026-03-24 — commit 38bb60f6. 10 files created. Swarm bypassed (direct write)."
     },
     {
       "sprint": 955,
-      "title": "GODMAN-REPO-02 \u2014 Create remaining 6 protocol repo skeletons (LAX, SCORE, AMF, DRS, SOUL, SIGNAL)",
+      "title": "GODMAN-REPO-02 — Create remaining 6 protocol repo skeletons (LAX, SCORE, AMF, DRS, SOUL, SIGNAL)",
       "block": "GODMAN-PROTOCOLS",
-      "status": "pending",
+      "status": "done",
       "priority": "high",
-      "rationale": "From Godman Protocols Portfolio Strategy + 7-Week Calendar. Create 6 repos following same structure as PACT. Each with README, Apache 2.0, package.json, src/, all 5 plugin config dirs. Use consistent template. Skeleton only \u2014 no implementation code."
+      "rationale": "From Godman Protocols Portfolio Strategy + 7-Week Calendar. Create 6 repos following same structure as PACT. Each with README, Apache 2.0, package.json, src/, all 5 plugin config dirs. Use consistent template. Skeleton only — no implementation code.",
+      "_note": "Shipped 2026-03-24 — commit ac7db635. 61 files (6 protocols x 10 files + sprint JSON). Swarm bypassed (multi-file, direct write)."
     },
     {
       "sprint": 956,
-      "title": "SPIELBERG-01 \u2014 Demo recording agent scaffold + demo script JSON schema",
+      "title": "SPIELBERG-01 — Demo recording agent scaffold + demo script JSON schema",
       "block": "SPIELBERG",
       "status": "pending",
       "priority": "high",
@@ -42,7 +43,7 @@
     },
     {
       "sprint": 957,
-      "title": "SPIELBERG-02 \u2014 asciinema recording mode + post-production pipeline",
+      "title": "SPIELBERG-02 — asciinema recording mode + post-production pipeline",
       "block": "SPIELBERG",
       "status": "pending",
       "priority": "high",
@@ -50,7 +51,7 @@
     },
     {
       "sprint": 958,
-      "title": "ARCH-001-PREP \u2014 tmux session setup + adaptive heartbeat + observer agent prompt template",
+      "title": "ARCH-001-PREP — tmux session setup + adaptive heartbeat + observer agent prompt template",
       "block": "ARCH-001",
       "status": "pending",
       "priority": "medium",
@@ -58,23 +59,23 @@
     },
     {
       "sprint": 959,
-      "title": "AMD-25-DESIGN \u2014 Domain Knowledge Architecture schema + Curator agent spec",
+      "title": "AMD-25-DESIGN — Domain Knowledge Architecture schema + Curator agent spec",
       "block": "AMD-25",
       "status": "pending",
       "priority": "medium",
-      "rationale": "From AMD-25 Sprint 560. Design DKA schema with AMF-extended vector format. Define 5 domain knowledge stores (Trading, BizDev, Research, Content, Regulatory). Write Curator agent spec template. Define knowledge boundary rules and constitutional retrieval filter spec. Design only \u2014 no implementation."
+      "rationale": "From AMD-25 Sprint 560. Design DKA schema with AMF-extended vector format. Define 5 domain knowledge stores (Trading, BizDev, Research, Content, Regulatory). Write Curator agent spec template. Define knowledge boundary rules and constitutional retrieval filter spec. Design only — no implementation."
     },
     {
       "sprint": 960,
-      "title": "BOND-DESIGN \u2014 Mandate schema validation + PayAI executor interface",
+      "title": "BOND-DESIGN — Mandate schema validation + PayAI executor interface",
       "block": "BOND",
       "status": "pending",
       "priority": "medium",
-      "rationale": "From BOND Protocol v0.1 spec. Validate recurring mandate EIP-712 schema. Define PayAI mandate executor TypeScript interface. Define the three X-Mandate headers. Draft default model enforcement paths. Design only \u2014 no on-chain deployment."
+      "rationale": "From BOND Protocol v0.1 spec. Validate recurring mandate EIP-712 schema. Define PayAI mandate executor TypeScript interface. Define the three X-Mandate headers. Draft default model enforcement paths. Design only — no on-chain deployment."
     },
     {
       "sprint": 961,
-      "title": "INTEL-REPLIES \u2014 Draft X reply content for Atenov, Spisak, Clawcard, OpenClaw Masterclass",
+      "title": "INTEL-REPLIES — Draft X reply content for Atenov, Spisak, Clawcard, OpenClaw Masterclass",
       "block": "INTEL-ACTIONS",
       "status": "pending",
       "priority": "medium",
@@ -82,11 +83,11 @@
     },
     {
       "sprint": 962,
-      "title": "CLAWCARD-EVAL \u2014 Evaluate Clawcard phone for TikTok autonomous verification",
+      "title": "CLAWCARD-EVAL — Evaluate Clawcard phone for TikTok autonomous verification",
       "block": "INTEL-009",
       "status": "pending",
       "priority": "medium",
-      "rationale": "From INTEL-009. Clawcard provides agent email + phone \u2014 could solve Sprint 508-BROWSER-01 TikTok phone verification blocker. Install @clawcard/cli (npm). Test phone number acquisition. Verify if number can receive SMS for TikTok verification. Document findings."
+      "rationale": "From INTEL-009. Clawcard provides agent email + phone — could solve Sprint 508-BROWSER-01 TikTok phone verification blocker. Install @clawcard/cli (npm). Test phone number acquisition. Verify if number can receive SMS for TikTok verification. Document findings."
     }
   ]
 }
