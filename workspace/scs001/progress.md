@@ -6350,3 +6350,13 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (new function prepended before cmdGodmanTag, wrote directly)
 - Issues: none — dry-run shows all protocols skipping correctly
 - Timestamp: 2026-03-24T21:50:00Z
+
+## Sprint 1175 — GODMAN-LAUNCH
+- Status: PASS
+- Commit: f6caab5b
+- Files created: workspace/sprints/sprint-1175.json
+- Files modified: scripts/telegram-bot.ts
+- Change: Wired /godman-tag + /godmantag + /godman-publish + /godmanpublish into switch router; pass cmdArgs
+- Swarm used: no (surgical edit, wrote directly)
+- Issues: pre-existing TS1117 unrelated to this sprint
+- Timestamp: 2026-03-24T22:00:00Z
