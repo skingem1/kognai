@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1111",
+  "title": "OPS — /errors: group by error type and show top 3 most frequent",
+  "description": "Adds error type classification (timeout, file-not-found, parse, connection, etc) and top-3 summary to /errors output.",
+  "block": "OPS",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1111-01",
+      "title": "Add error type grouping to cmdErrors",
+      "type": "enhancement",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1111"
+    }
+  ]
+}
