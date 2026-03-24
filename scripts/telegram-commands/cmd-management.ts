@@ -2104,7 +2104,22 @@ export function cmdStatus(): string {
     `🎬 Next: ${nextLine}`,
     '',
     godmanLine,
-    achiriLine + waitlistCountLine + unreadBotLine,
+    achiriLine + waitlistCountLine + unreadBotLine + (() => {
+      // Sprint 1148 (wave 27+): Achiri analytics compact from reports/achiri-analytics.json
+      try {
+        const aaPath = require('path').join(ROOT, 'reports', 'achiri-analytics.json');
+        if (require('fs').existsSync(aaPath)) {
+          const aa = JSON.parse(require('fs').readFileSync(aaPath, 'utf-8'));
+          const totalUsers = aa.overview?.total_users ?? 0;
+          const dau = aa.today?.dau ?? 0;
+          const retention = aa.overview?.retention_pct ?? 0;
+          const errors7d = aa.overview?.errors_7d ?? 0;
+          const errStr = errors7d > 0 ? ` · ⚠️ ${errors7d} err/7d` : '';
+          return `\n👥 *Achiri users:* ${totalUsers} total · DAU ${dau} · ${retention}% retention${errStr}`;
+        }
+      } catch {}
+      return '';
+    })(),
     '',
     // Sprint 1134 (wave 15): Phase 2 readiness when gate is met
     ...(postsNeeded === 0 && totalViews >= 500 ? [

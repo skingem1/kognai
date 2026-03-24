@@ -1,0 +1,41 @@
+{
+  "sprint_id": "sprint-1148",
+  "title": "OPS — Telegram operator UX wave 27+: Achiri analytics in /status, gate audit + auto-deliver health in /health",
+  "description": "Add 3 operator signals: (1) /status: Achiri analytics compact line from reports/achiri-analytics.json (total users, DAU today, retention%, errors 7d), (2) /health: gate-audit.json compact signal (real posts vs dry_runs, posts confirmed real), (3) /health: auto-deliver PM2 process health check (are auto-deliver-morning/noon/evening crons online?).",
+  "source": "queue-empty-auto",
+  "tasks": [
+    {
+      "id": "1148-01",
+      "title": "Add Achiri analytics compact line to /status",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-commands/cmd-management.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1148"
+    },
+    {
+      "id": "1148-02",
+      "title": "Add gate-audit.json real vs dry_run signal to /health",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1148"
+    },
+    {
+      "id": "1148-03",
+      "title": "Add auto-deliver PM2 cron health check to /health",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1148"
+    }
+  ]
+}

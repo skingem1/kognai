@@ -520,7 +520,35 @@ export function cmdHealth(): string {
     }
   } catch { /* skip */ }
 
-  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${botUptimeSection}${ollamaSection}${memWarnSection}${memTableSection}${supabaseSection}${supabaseSyncSection}${diskSection}${watchdogSection}${runtimeSection}${tailscaleSection}${hetznerSection}${anthropicSection}${ioSection}${morningBriefSection}${digestSection}${staleCronsSection}${supabaseDomainSection}${anthropicBudgetSection}${pipelineValidationSection}${worktreeSection}${botMemSection}${gateDaysSection}${backupSection}${postingHealthSection}${exportFilesSection}${tokenHealthSection}${statsSection}${inventorySection}`;
+  // Sprint 1148 (wave 27+): gate-audit.json real vs dry_run signal
+  let gateAuditSection = '';
+  try {
+    const gaPath = path.join(ROOT, 'reports', 'gate-audit.json');
+    if (fs.existsSync(gaPath)) {
+      const ga = JSON.parse(fs.readFileSync(gaPath, 'utf-8'));
+      const real = ga.sources?.manual_posts?.real ?? 0;
+      const dryRuns = ga.sources?.manual_posts?.dry_runs ?? 0;
+      const total = ga.sources?.manual_posts?.total ?? 0;
+      const gaIcon = dryRuns > 0 ? '⚠️' : '✅';
+      const dryStr = dryRuns > 0 ? ` · ${dryRuns} dry-run (not counted)` : '';
+      gateAuditSection = `\n\n${gaIcon} *Gate audit:* ${real}/${total} real posts confirmed${dryStr}`;
+    }
+  } catch { /* skip */ }
+
+  // Sprint 1148 (wave 27+): auto-deliver PM2 cron health check
+  let autoDeliverSection = '';
+  try {
+    const procs = getPm2List();
+    const autoDeliverNames = ['auto-deliver-morning', 'auto-deliver-noon', 'auto-deliver-evening'];
+    const adStatus = autoDeliverNames.map(n => {
+      const p = procs.find((pr: any) => (pr.name ?? '').includes(n.replace('auto-deliver-', '')));
+      return p ? (p.status === 'online' ? `✅ ${n.split('-').pop()}` : `❌ ${n.split('-').pop()}`) : `⚠️ ${n.split('-').pop()}`;
+    });
+    const allOnline = adStatus.every(s => s.startsWith('✅'));
+    autoDeliverSection = `\n\n${allOnline ? '✅' : '⚠️'} *Auto-deliver:* ${adStatus.join(' · ')}`;
+  } catch { /* skip */ }
+
+  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${botUptimeSection}${ollamaSection}${memWarnSection}${memTableSection}${supabaseSection}${supabaseSyncSection}${diskSection}${watchdogSection}${runtimeSection}${tailscaleSection}${hetznerSection}${anthropicSection}${ioSection}${morningBriefSection}${digestSection}${staleCronsSection}${supabaseDomainSection}${anthropicBudgetSection}${pipelineValidationSection}${worktreeSection}${botMemSection}${gateDaysSection}${backupSection}${postingHealthSection}${exportFilesSection}${tokenHealthSection}${statsSection}${inventorySection}${gateAuditSection}${autoDeliverSection}`;
 }
 
 export function cmdTier(): string {
