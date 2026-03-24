@@ -645,7 +645,8 @@
       "sprint": 1066,
       "title": "INFRA \u2014 /health: add Ollama model availability check to health dashboard",
       "block": "INFRA",
-      "status": "pending",
+      "status": "done",
+      "_note": "Shipped 2026-03-24. cmdHealth() now pings localhost:11434/api/tags; shows qwen3:0.6b/4b + deepseek-r1:14b status. Falls back gracefully if Ollama unreachable.",
       "priority": "medium",
       "rationale": "/health shows PM2 procs but not Ollama model status. Add check: ping localhost:11434/api/tags and show which models are loaded (qwen3:0.6b, qwen3:4b, deepseek-r1:14b)."
     },

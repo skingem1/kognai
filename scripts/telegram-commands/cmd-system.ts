@@ -44,7 +44,25 @@ export function cmdHealth(): string {
   const pm2 = h.pm2 ? `\n*PM2 (from last heartbeat)*: ${h.pm2.online}/${h.pm2.total} online` : '';
   const critDown = h.pm2?.critical_down?.length ? `\n⚠️ Critical down: ${h.pm2.critical_down.join(', ')}` : '';
 
-  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}`;
+  // Sprint 1066: Ollama model availability check
+  const OLLAMA_MODELS = ['qwen3:0.6b', 'qwen3:4b', 'deepseek-r1:14b'];
+  let ollamaSection = '';
+  try {
+    const raw = execSync('curl -sf --max-time 3 http://localhost:11434/api/tags', { encoding: 'utf-8' });
+    const tags = JSON.parse(raw);
+    const loaded: string[] = (tags.models ?? []).map((m: any) => m.name as string);
+    const modelLines = OLLAMA_MODELS.map(m => {
+      const present = loaded.some(l => l.startsWith(m.split(':')[0]) && l.includes(m.split(':')[1]));
+      return `  ${present ? '✅' : '❌'} ${m}`;
+    });
+    const extra = loaded.filter(l => !OLLAMA_MODELS.some(m => l.startsWith(m.split(':')[0]))).length;
+    const extraNote = extra > 0 ? ` (+${extra} other)` : '';
+    ollamaSection = `\n\n*Ollama models:*\n${modelLines.join('\n')}${extraNote ? `\n  _${extraNote}_` : ''}`;
+  } catch {
+    ollamaSection = '\n\n*Ollama:* ❌ unreachable (localhost:11434)';
+  }
+
+  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${ollamaSection}`;
 }
 
 export function cmdTier(): string {
@@ -1235,6 +1253,17 @@ export function cmdGodman(): string {
     }
   } catch {}
   lines.push(`📣 X megathread: ${tweetCount > 0 ? `✅ ready (${tweetCount} tweets) — /godman-thread to preview` : '❌ not found'}`);
+
+  // Sprint 1062: CHANGELOG.md presence check
+  const allHaveChangelog = PROTOCOLS.concat(['sdk']).every(p =>
+    fs.existsSync(path.join(BASE, p, 'CHANGELOG.md'))
+  );
+  lines.push(`📋 CHANGELOGs: ${allHaveChangelog ? '✅ all 8 present' : '❌ some missing'}`);
+
+  // Sprint 1062: SDK api.md presence check
+  const apiMdPath = path.join(BASE, 'sdk', 'docs', 'api.md');
+  const hasApiMd = fs.existsSync(apiMdPath);
+  lines.push(`📖 SDK docs/api.md: ${hasApiMd ? '✅ present' : '❌ missing'}`);
 
   // Sprint 1013: Demo videos + npm status
   const demoBase = path.join(ROOT, 'workspace', 'scs001', 'code-demo-runs');
