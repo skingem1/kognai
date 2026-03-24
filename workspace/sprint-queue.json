@@ -1044,15 +1044,16 @@
       "status": "done",
       "priority": "medium",
       "rationale": "Daily digest starts with gate math but not what actually happened yesterday. Add \"Yesterday: N posts posted\" as the second line so operator can see recent activity.",
-      "_note": "Shipped as Sprint 1107 \u2014 commit fcfec3df"
+      "_note": "Shipped 2026-03-24 \u2014 yesterday vs target in digest header"
     },
     {
       "sprint": 1108,
       "title": "GATE \u2014 /gate: add urgency emoji escalation based on days remaining",
       "block": "GATE",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
-      "rationale": "/gate shows days remaining but urgency is text-only. Add escalating emoji: \ud83d\udfe2 \u226514d, \ud83d\udfe1 7-13d, \ud83d\udfe0 3-6d, \ud83d\udd34 <3d for quick visual triage."
+      "rationale": "/gate shows days remaining but urgency is text-only. Add escalating emoji: \ud83d\udfe2 \u226514d, \ud83d\udfe1 7-13d, \ud83d\udfe0 3-6d, \ud83d\udd34 <3d for quick visual triage.",
+      "_note": "Shipped as Sprint 1108 \u2014 commit eadbd259"
     }
   ]
 }
