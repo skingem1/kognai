@@ -491,7 +491,36 @@ export function cmdHealth(): string {
     }
   } catch { /* skip */ }
 
-  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${botUptimeSection}${ollamaSection}${memWarnSection}${memTableSection}${supabaseSection}${supabaseSyncSection}${diskSection}${watchdogSection}${runtimeSection}${tailscaleSection}${hetznerSection}${anthropicSection}${ioSection}${morningBriefSection}${digestSection}${staleCronsSection}${supabaseDomainSection}${anthropicBudgetSection}${pipelineValidationSection}${worktreeSection}${botMemSection}${gateDaysSection}${backupSection}${postingHealthSection}${exportFilesSection}${tokenHealthSection}`;
+  // Sprint 1147 (wave 27): stats-latest.json production summary
+  let statsSection = '';
+  try {
+    const statsPath = path.join(ROOT, 'reports', 'stats-latest.json');
+    if (fs.existsSync(statsPath)) {
+      const st = JSON.parse(fs.readFileSync(statsPath, 'utf-8'));
+      const totalVid = st.production?.total_videos ?? 0;
+      const todayVid = st.production?.videos_today ?? 0;
+      const weekVid = st.production?.videos_this_week ?? 0;
+      const runsToday = st.production?.pipeline_runs_today ?? 0;
+      statsSection = `\n\n📊 *Production:* ${totalVid} total · ${weekVid} this week · ${todayVid} today · ${runsToday} runs today`;
+    }
+  } catch { /* skip */ }
+
+  // Sprint 1147 (wave 27): video-inventory.json gate snapshot
+  let inventorySection = '';
+  try {
+    const invPath = path.join(ROOT, 'reports', 'video-inventory.json');
+    if (fs.existsSync(invPath)) {
+      const inv = JSON.parse(fs.readFileSync(invPath, 'utf-8'));
+      const posted = inv.gate_status?.posted ?? inv.already_posted ?? 0;
+      const target = inv.gate_status?.target ?? 30;
+      const gap = inv.gate_status?.gap ?? (target - posted);
+      const ready = inv.ready_to_post ?? 0;
+      const invIcon = posted >= target ? '✅' : gap <= 5 ? '🟠' : '📋';
+      inventorySection = `\n\n${invIcon} *Video inventory:* ${posted}/${target} posted · ${gap} gap · ${ready} ready`;
+    }
+  } catch { /* skip */ }
+
+  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${botUptimeSection}${ollamaSection}${memWarnSection}${memTableSection}${supabaseSection}${supabaseSyncSection}${diskSection}${watchdogSection}${runtimeSection}${tailscaleSection}${hetznerSection}${anthropicSection}${ioSection}${morningBriefSection}${digestSection}${staleCronsSection}${supabaseDomainSection}${anthropicBudgetSection}${pipelineValidationSection}${worktreeSection}${botMemSection}${gateDaysSection}${backupSection}${postingHealthSection}${exportFilesSection}${tokenHealthSection}${statsSection}${inventorySection}`;
 }
 
 export function cmdTier(): string {
@@ -734,6 +763,21 @@ export function cmdReport(): string {
     godmanNpmReportLine = `\n*Godman npm (${pubCount}/${godmanPkgs26.length}):* ${pkgResults.join(' · ')}`;
   } catch { /* skip */ }
 
+  // Sprint 1147 (wave 27): cost efficiency from stats-latest.json
+  let costEfficiencyLine = '';
+  try {
+    const statsPath27 = path.join(ROOT, 'reports', 'stats-latest.json');
+    if (fs.existsSync(statsPath27)) {
+      const st27 = JSON.parse(fs.readFileSync(statsPath27, 'utf-8'));
+      const totalCost = st27.costs?.total_usd;
+      const avgCost = st27.costs?.avg_per_video_usd;
+      if (totalCost != null) {
+        const avgStr = avgCost != null ? ` · $${avgCost.toFixed(4)}/video` : '';
+        costEfficiencyLine = `\n*Cost:* $${totalCost.toFixed(2)} total${avgStr}`;
+      }
+    }
+  } catch { /* skip */ }
+
   return (
     `${statusIcon} *Kognai System Report*\n${now}\n${alertBlock}\n` +
     `*PM2* (${online}/${procs.length} live):\n${pm2Lines || '  (no data)'}\n\n` +
@@ -742,7 +786,7 @@ export function cmdReport(): string {
     `*Beta:* agents_onboarded=${beta.agents_onboarded ?? 0}, companies=${beta.companies_onboarded ?? 0}, txns=${beta.transactions_monitored ?? 0}\n` +
     `*Financials:* MRR $${mrr} | Tier: ${tier} | Billing activation: ${billingDate}\n\n` +
     `*Gate:* ${gateLine}${achiriTestLine}${achiriReadinessReport}${dailyBriefLine}${restartDeltaLine}${commitLine}${totalCommitsLine}${valErrorsLine}${offlineLine}${lastSprintsLine}\n` +
-    `*Sprint:* ${sprintLine}${godmanNpmReportLine}`
+    `*Sprint:* ${sprintLine}${godmanNpmReportLine}${costEfficiencyLine}`
   );
 }
 

@@ -1,0 +1,41 @@
+{
+  "sprint_id": "sprint-1147",
+  "title": "OPS — Telegram operator UX wave 27: stats-latest production summary, video-inventory gate snapshot, cost efficiency in /report",
+  "description": "Add 3 operator signals not yet exposed in compact form: (1) /health: stats-latest.json production summary (total videos, pipeline runs today, videos this week), (2) /health: video-inventory.json gate snapshot (posted/target, gap, ready_to_post count), (3) /report: cost efficiency line (total cost to date + avg cost per video). All direct reads from existing JSON report files.",
+  "source": "queue-empty-auto",
+  "tasks": [
+    {
+      "id": "1147-01",
+      "title": "Add stats-latest.json production summary to /health",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1147"
+    },
+    {
+      "id": "1147-02",
+      "title": "Add video-inventory.json gate snapshot to /health",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1147"
+    },
+    {
+      "id": "1147-03",
+      "title": "Add cost efficiency line to /report (total cost + avg per video)",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1147"
+    }
+  ]
+}
