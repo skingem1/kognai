@@ -93,6 +93,20 @@ export function cmdHealth(): string {
     if (warnLines.length > 0) memWarnSection = '\n\n' + warnLines.join('\n');
   } catch { /* skip */ }
 
+  // Sprint 1133 (wave 13): top 5 processes by memory usage
+  let memTableSection = '';
+  try {
+    const procs = getPm2List();
+    const top5 = procs
+      .filter(p => p.memory > 0)
+      .sort((a, b) => b.memory - a.memory)
+      .slice(0, 5);
+    if (top5.length > 0) {
+      const rows = top5.map(p => `  \`${p.name.slice(0, 20).padEnd(20)}\` ${fmtMem(p.memory)}`).join('\n');
+      memTableSection = `\n\n*Memory (top 5):*\n${rows}`;
+    }
+  } catch { /* skip */ }
+
   // Sprint 1106: Supabase connection status
   let supabaseSection = '';
   try {
@@ -168,7 +182,7 @@ export function cmdHealth(): string {
     tailscaleSection = '\n\n*Tailscale:* ℹ️ not installed or not running';
   }
 
-  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${ollamaSection}${memWarnSection}${supabaseSection}${diskSection}${watchdogSection}${runtimeSection}${tailscaleSection}`;
+  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${ollamaSection}${memWarnSection}${memTableSection}${supabaseSection}${diskSection}${watchdogSection}${runtimeSection}${tailscaleSection}`;
 }
 
 export function cmdTier(): string {
@@ -947,6 +961,7 @@ export function cmdSwarmStats(): string {
 export function cmdErrors(filterProcess?: string): string {
   const logDir = path.join(ROOT, 'logs');
   const cutoff = Date.now() - 86_400_000; // 24h ago
+  const yesterdayCutoff = Date.now() - 172_800_000; // 48h ago (for trend)
 
   // Sprint 1080 + 1091: Deduplicate repeated error lines — show "×N" + time window
   interface DedupError { name: string; line: string; count: number; mtime: number; firstMtime: number; }
@@ -1007,7 +1022,34 @@ export function cmdErrors(filterProcess?: string): string {
     // Sprint 1122: show total occurrence count alongside unique count
     const totalOccurrences = errored.reduce((s, e) => s + (e.count ?? 1), 0);
     const countStr = totalOccurrences > errored.length ? `${totalOccurrences} total, ${errored.length} unique` : `${errored.length} unique`;
-    output.push(`⚠️ *PM2 Errors (last 24h)* — ${countStr} · _${windowStr}_\n`);
+
+    // Sprint 1134 (wave 13): error trend vs yesterday
+    let trendStr = '';
+    try {
+      const logFiles = fs.readdirSync(logDir).filter((f: string) => f.endsWith('-error.log'));
+      let yesterdayCount = 0;
+      for (const file of logFiles) {
+        const fullPath = path.join(logDir, file);
+        try {
+          const stat = fs.statSync(fullPath);
+          if (stat.size === 0 || stat.mtimeMs < yesterdayCutoff) continue;
+          const content = fs.readFileSync(fullPath, 'utf-8').trim();
+          if (!content) continue;
+          const lines24h = content.split('\n').filter((l: string) => l.trim() &&
+            (l.toLowerCase().includes('error') || l.toLowerCase().includes('fatal') ||
+             l.toLowerCase().includes('exception') || l.toLowerCase().includes('fail')));
+          yesterdayCount += lines24h.length;
+        } catch { /* skip */ }
+      }
+      const todayCount = totalOccurrences;
+      const diff = todayCount - Math.max(1, yesterdayCount / 2); // compare yesterday's 24h slice
+      if (Math.abs(diff) > 2) {
+        const trendIcon = diff > 0 ? '📈' : '📉';
+        trendStr = ` · ${trendIcon} ${diff > 0 ? '+' : ''}${Math.round(diff)} vs yesterday`;
+      }
+    } catch { /* skip */ }
+
+    output.push(`⚠️ *PM2 Errors (last 24h)* — ${countStr}${trendStr} · _${windowStr}_\n`);
 
     // Sprint 1111: group by error type, show top 3
     const typeCounts = new Map<string, number>();

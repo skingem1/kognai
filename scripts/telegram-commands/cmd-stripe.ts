@@ -406,7 +406,18 @@ export function cmdAchiri(): string {
             .filter(([k]) => !k.startsWith('validate') && !k.startsWith('e2e') && !k.endsWith('-limit') && !k.endsWith('-paid') && !k.endsWith('-bypass'))
             .reduce((sum, [, v]) => sum + (v as number), 0);
         }, 0);
-        lines.push(`💬 *Messages:* ${totalMsgs} total · ${avgPerDay}/day avg · *${last24hMsgs} last 24h*`);
+        // Sprint 1136 (wave 13): last active user timestamp
+        let lastActiveLine = '';
+        try {
+          const allDays = Object.keys(counts).sort();
+          const latestDay = allDays[allDays.length - 1];
+          if (latestDay) {
+            const ageH = (Date.now() - new Date(latestDay).getTime()) / 3600000;
+            const ageStr = ageH < 1 ? `${Math.round(ageH * 60)}m ago` : ageH < 24 ? `${Math.round(ageH)}h ago` : `${Math.round(ageH / 24)}d ago`;
+            lastActiveLine = ` · last active: *${ageStr}*`;
+          }
+        } catch { /* skip */ }
+        lines.push(`💬 *Messages:* ${totalMsgs} total · ${avgPerDay}/day avg · *${last24hMsgs} last 24h*${lastActiveLine}`);
 
         // Sprint 1120: premium conversion rate
         const allUserKeys = new Set<string>();

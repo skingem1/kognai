@@ -178,6 +178,15 @@ function main(): void {
     lines.push(`🚀 *Godman launch in ${godmanDays}d* — /godman · npm login before Apr 14`);
   }
 
+  // Sprint 1139 (wave 13): Achiri alpha reminder when <7d away
+  const achiriMs = new Date('2026-04-25T00:00:00Z').getTime() - Date.now();
+  const achiriDays = Math.max(0, Math.ceil(achiriMs / 86_400_000));
+  if (achiriMs > 0 && achiriDays <= 7) {
+    lines.push('');
+    const aIcon = achiriDays <= 3 ? '🔴' : '🟠';
+    lines.push(`${aIcon} *Achiri alpha in ${achiriDays}d* — run /achiri to check readiness`);
+  }
+
   lines.push('');
   lines.push('_/status · /errors · /blockers · /today_');
 

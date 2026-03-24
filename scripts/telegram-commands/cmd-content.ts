@@ -547,6 +547,21 @@ export function cmdToday(): string {
     } else {
       lines.push(`👁️ *Views:* ${totalViews}/500 ✅ · Yesterday: ${yesterdayViews} views`);
     }
+    // Sprint 1132 (wave 13): pace comparison (actual posts/day vs needed/day)
+    const DRY_METHODS_PACE = ['browser-post-dry', 'batch-browser-dry', 'dry'];
+    const allPostsForPace = posts.filter((p: any) => !DRY_METHODS_PACE.some((d: string) => String(p.method || '').includes(d)));
+    if (allPostsForPace.length > 1) {
+      const firstTs = allPostsForPace
+        .map((p: any) => new Date(p.posted_at ?? p.recorded_at).getTime())
+        .filter((t: number) => !isNaN(t))
+        .sort((a: number, b: number) => a - b)[0];
+      if (firstTs) {
+        const daysSinceFirst = Math.max(1, (Date.now() - firstTs) / 86_400_000);
+        const actualPace = allPostsForPace.length / daysSinceFirst;
+        const paceIcon = actualPace >= dailyTarget ? '✅' : actualPace >= dailyTarget * 0.75 ? '⚠️' : '❌';
+        lines.push(`${paceIcon} *Pace:* ${actualPace.toFixed(1)}/day actual vs *${dailyTarget}/day* needed`);
+      }
+    }
     // Sprint 1110: bold warning when obligation unmet
     if (!goalMet && dailyTarget > 0) {
       lines.push(`📅 *Today:* ${todayPosts}/${dailyTarget} posted — ⚠️ *OBLIGATION UNMET — post ${dailyTarget - todayPosts} more*\n`);

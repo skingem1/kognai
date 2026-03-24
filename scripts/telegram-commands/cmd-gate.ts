@@ -124,6 +124,8 @@ export function cmdGate(): string {
     `*── Posting ──*`,
     `${postIcon} Posts: ${postCount}/30 (need ${postsNeeded} more)`,
     `${viewIcon} Views: ${totalViews}/500 (need ${viewsNeeded} more)`,
+    // Sprint 1138 (wave 13): views needed per remaining day
+    ...(viewsNeeded > 0 && daysLeft > 0 ? [`👁️ Views/day needed: *${(viewsNeeded / daysLeft).toFixed(1)}/day* to hit 500`] : []),
     `📊 Pace needed: ${postsPerDay} posts/day`,
     ``,
     `*── Infrastructure ──*`,

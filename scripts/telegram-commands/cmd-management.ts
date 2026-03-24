@@ -582,7 +582,12 @@ export function cmdWeeklyReport(): string {
       const viewsPerDayNeeded = daysLeft > 0 ? (viewsNeeded / daysLeft).toFixed(1) : '0';
       return `• This week: ${thisWeekPosts.length} posts · ${weekViews} views (${weekViewsPerDay}/day · need ${viewsPerDayNeeded}/day for gate)`;
     })(),
-    `• All time: ${totalPosts}/30 posts · ${totalViews} total views`,
+    // Sprint 1135 (wave 13): views per post average
+    (() => {
+      const avgViews = totalPosts > 0 ? Math.round(totalViews / totalPosts) : 0;
+      const weekAvgViews = thisWeekPosts.length > 0 ? Math.round(weekViews / thisWeekPosts.length) : 0;
+      return `• All time: ${totalPosts}/30 posts · ${totalViews} total views · *${avgViews} views/post avg* · (this week: ${weekAvgViews}/post)`;
+    })(),
     `• Gate: ${daysLeft}d left · ${paceNeeded} posts/day needed`,
     // Sprint 1109: gate velocity — this week vs last week
     (() => {
@@ -1797,6 +1802,8 @@ export function cmdStatus(): string {
     `\`[${viewBar}]\` ${viewPct}% views`,
     `*${totalPosts}/${target}* posts · *${totalViews}/500* views · *${daysLeft}d* left${gateEtaStr}`,
     `${urgency}`,
+    // Sprint 1131 (wave 13): Achiri alpha countdown in header
+    (() => { const aIcon = achiriDays <= 3 ? '🔴' : achiriDays <= 7 ? '🟠' : achiriDays <= 14 ? '🟡' : ''; return aIcon ? `${aIcon} Achiri alpha: *${achiriDays}d*` : ''; })(),
     '',
     // Sprint 1119: bold obligation status line
     todayPosts >= dailyObligation
@@ -2132,4 +2139,94 @@ export function cmdLog(): string {
     template,
     '```',
   ].join('\n');
+}
+
+// Sprint 1130: /launches — unified 3-launch countdown + action matrix
+export function cmdLaunches(): string {
+  const now = new Date();
+  const launches = [
+    {
+      name: 'Phase 1.5 Gate',
+      date: new Date('2026-04-07T00:00:00Z'),
+      icon: '🎯',
+      checks: [] as Array<{ label: string; pass: boolean; detail: string }>,
+    },
+    {
+      name: 'Godman Protocols',
+      date: new Date('2026-04-14T00:00:00Z'),
+      icon: '🚀',
+      checks: [] as Array<{ label: string; pass: boolean; detail: string }>,
+    },
+    {
+      name: 'Achiri Alpha',
+      date: new Date('2026-04-25T00:00:00Z'),
+      icon: '🤖',
+      checks: [] as Array<{ label: string; pass: boolean; detail: string }>,
+    },
+  ];
+
+  // Phase 1.5 Gate checks
+  const posts = readRealPosts();
+  const totalPosts = posts.length;
+  const totalViews = posts.reduce((s: number, p: any) => s + (p.views ?? 0), 0);
+  launches[0].checks.push(
+    { label: 'Posts', pass: totalPosts >= 30, detail: `${totalPosts}/30` },
+    { label: 'Views', pass: totalViews >= 500, detail: `${totalViews}/500` },
+    { label: 'TikTok token', pass: !!process.env.TIKTOK_ACCESS_TOKEN, detail: process.env.TIKTOK_ACCESS_TOKEN ? 'SET' : 'MISSING' },
+  );
+
+  // Godman Protocols checks
+  let npmLoggedIn = false;
+  try { npmLoggedIn = !!execSync('npm whoami 2>/dev/null', { encoding: 'utf-8', timeout: 3000 }).trim(); } catch {}
+  const protocolsPath = path.join(ROOT, '..', 'godman-protocols');
+  const protocolsExist = ['pact', 'lax', 'score', 'signal', 'soul', 'amf', 'drs'].map(p => {
+    const corePath = path.join(protocolsPath, p, 'src');
+    return { name: p, exists: fs.existsSync(corePath) };
+  });
+  const allProtocols = protocolsExist.every(p => p.exists);
+  launches[1].checks.push(
+    { label: 'npm login', pass: npmLoggedIn, detail: npmLoggedIn ? 'ready' : 'run `npm login`' },
+    { label: '7 protocols', pass: allProtocols, detail: `${protocolsExist.filter(p => p.exists).length}/7 repos` },
+    { label: 'Launch script', pass: fs.existsSync(path.join(ROOT, 'scripts', 'godman-launch-day.sh')), detail: 'godman-launch-day.sh' },
+  );
+
+  // Achiri Alpha checks
+  const wlPath = path.join(ROOT, 'workspace', 'achiri', 'alpha-whitelist.jsonl');
+  const wlCount = fs.existsSync(wlPath) ? fs.readFileSync(wlPath, 'utf-8').split('\n').filter(l => l.trim()).length : 0;
+  const readinessPath = path.join(ROOT, 'reports', 'achiri-readiness.json');
+  let readinessScore = 0;
+  if (fs.existsSync(readinessPath)) {
+    try { readinessScore = JSON.parse(fs.readFileSync(readinessPath, 'utf-8')).score ?? 0; } catch {}
+  }
+  const envContent = (() => { try { return fs.readFileSync(path.join(ROOT, '.env'), 'utf-8'); } catch { return ''; } })();
+  const hasAchiriToken = envContent.includes('ACHIRI_TELEGRAM_BOT_TOKEN=') && !envContent.match(/ACHIRI_TELEGRAM_BOT_TOKEN=\s*$/m);
+  launches[2].checks.push(
+    { label: 'Readiness', pass: readinessScore >= 70, detail: `${readinessScore}%` },
+    { label: 'Whitelist', pass: wlCount > 0, detail: `${wlCount} users` },
+    { label: 'Bot token', pass: hasAchiriToken, detail: hasAchiriToken ? 'SET' : 'MISSING' },
+  );
+
+  const lines: string[] = ['🗓 *Launch Calendar*\n'];
+
+  for (const launch of launches) {
+    const daysLeft = Math.max(0, Math.ceil((launch.date.getTime() - now.getTime()) / 86_400_000));
+    const passCount = launch.checks.filter(c => c.pass).length;
+    const allPass = passCount === launch.checks.length;
+    const urgency = daysLeft <= 3 ? '🔴' : daysLeft <= 7 ? '🟠' : daysLeft <= 14 ? '🟡' : '🟢';
+
+    lines.push(`${launch.icon} *${launch.name}* — ${urgency} *${daysLeft}d* (${launch.date.toISOString().slice(0, 10)})`);
+    for (const c of launch.checks) {
+      lines.push(`  ${c.pass ? '✅' : '❌'} ${c.label}: ${c.detail}`);
+    }
+    if (allPass) {
+      lines.push(`  ✅ *Ready to launch*`);
+    }
+    lines.push('');
+  }
+
+  const totalChecks = launches.reduce((s, l) => s + l.checks.length, 0);
+  const totalPass = launches.reduce((s, l) => s + l.checks.filter(c => c.pass).length, 0);
+  lines.push(`_${totalPass}/${totalChecks} checks pass · /blockers for action items_`);
+
+  return lines.join('\n');
 }

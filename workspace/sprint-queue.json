@@ -1528,73 +1528,82 @@
       "sprint": 1131,
       "title": "OPS — /status: show Achiri alpha countdown in header",
       "block": "OPS",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
-      "rationale": "/status shows Godman and Achiri lines but Achiri days are buried. Show Achiri alpha countdown with urgency icon in the header section for visibility."
+      "rationale": "/status shows Godman and Achiri lines but Achiri days are buried. Show Achiri alpha countdown with urgency icon in the header section for visibility.",
+      "_note": "Achiri alpha countdown in /status header with urgency icon"
     },
     {
       "sprint": 1132,
       "title": "GATE — /today: show pace comparison (posts/day vs needed/day)",
       "block": "GATE",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
-      "rationale": "/today shows gate stats but not pace vs target. Adding \"X/day actual vs Y/day needed\" makes the gap immediately actionable."
+      "rationale": "/today shows gate stats but not pace vs target. Adding \"X/day actual vs Y/day needed\" makes the gap immediately actionable.",
+      "_note": "pace comparison in /today (actual vs needed/day)"
     },
     {
       "sprint": 1133,
       "title": "OPS — /health: show memory usage per PM2 process in table",
       "block": "OPS",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
-      "rationale": "/health shows total memory but not per-process breakdown. Show top 5 processes by memory to identify leaks early."
+      "rationale": "/health shows total memory but not per-process breakdown. Show top 5 processes by memory to identify leaks early.",
+      "_note": "top 5 memory table in /health"
     },
     {
       "sprint": 1134,
       "title": "QUALITY — /errors: show error trend (up/flat/down vs yesterday)",
       "block": "QUALITY",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
-      "rationale": "/errors shows current errors but not trend. Adding \"vs yesterday: +N / -N errors\" shows if things are improving or degrading."
+      "rationale": "/errors shows current errors but not trend. Adding \"vs yesterday: +N / -N errors\" shows if things are improving or degrading.",
+      "_note": "error trend vs yesterday in /errors"
     },
     {
       "sprint": 1135,
       "title": "OPS — /weekly-report: show views per post average",
       "block": "OPS",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
-      "rationale": "/weekly-report shows total views but not efficiency. Add \"avg views/post: N\" so operator can see if content quality is improving."
+      "rationale": "/weekly-report shows total views but not efficiency. Add \"avg views/post: N\" so operator can see if content quality is improving.",
+      "_note": "views/post average in /weekly-report"
     },
     {
       "sprint": 1136,
       "title": "ACHIRI — /achiri: show last active user timestamp",
       "block": "ACHIRI",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
-      "rationale": "/achiri shows total messages but not when the last real user interaction happened. Add \"last active: Xh ago\" to show engagement recency."
+      "rationale": "/achiri shows total messages but not when the last real user interaction happened. Add \"last active: Xh ago\" to show engagement recency.",
+      "_note": "last active user timestamp in /achiri"
     },
     {
       "sprint": 1137,
       "title": "OPS — /crons: show expected next fire time for each cron",
       "block": "OPS",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
-      "rationale": "/crons shows cron status but not when each will next fire. Adding next-fire time helps operator know when to expect results."
+      "rationale": "/crons shows cron status but not when each will next fire. Adding next-fire time helps operator know when to expect results.",
+      "_note": "already implemented by Sprint 1100 (nextCronFire)"
     },
     {
       "sprint": 1138,
       "title": "GATE — /gate: show views needed per remaining day",
       "block": "GATE",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
-      "rationale": "/gate shows total views needed but not the daily view rate required. Add \"need X views/day\" to make the target concrete."
+      "rationale": "/gate shows total views needed but not the daily view rate required. Add \"need X views/day\" to make the target concrete.",
+      "_note": "views/day needed in /gate"
     },
     {
       "sprint": 1139,
       "title": "OPS — /morning-brief: add Achiri status line when alpha <7d away",
       "block": "OPS",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
-      "rationale": "Morning brief focuses on TikTok gate but ignores Achiri alpha deadline. When <7d to alpha, add a line prompting /achiri check."
+      "rationale": "Morning brief focuses on TikTok gate but ignores Achiri alpha deadline. When <7d to alpha, add a line prompting /achiri check.",
+      "_note": "Achiri alpha reminder in morning-brief when <7d"
     }
   ]
 }
