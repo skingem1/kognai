@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1065",
+  "title": "QUALITY — /stale: video expiry checker shows queue items older than 14 days",
+  "description": "Verified /stale already shows items >14d old with per-item age, bulk archive via /stale archive. STALE_DAYS=14 already set.",
+  "block": "QUALITY",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1065-01",
+      "title": "Verify /stale shows age per item and suggests archive for >14d items",
+      "type": "audit",
+      "task_target": "scripts/telegram-commands/cmd-management.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1065"
+    }
+  ]
+}
