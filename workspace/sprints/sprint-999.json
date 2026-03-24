@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-999",
+  "title": "AMD-25-CURATOR — Curator agent implementation (ingest, report, prune)",
+  "description": "Implement AMD-25 Curator agent: handles CuratorTask (ingest/report/prune) using the KnowledgeStore from Sprint 997. Persists store to disk (JSONL). CLI mode for testing. Max 150 lines, no external deps.",
+  "block": "AMD-25",
+  "source": "queue-exhausted-architecture",
+  "tasks": [
+    {
+      "id": "999-01",
+      "title": "Write workspace/amd25/curator.ts — ingest/report/prune + disk persistence",
+      "type": "feature",
+      "task_target": "workspace/amd25/curator.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-999"
+    }
+  ]
+}
