@@ -73,7 +73,19 @@ export function cmdHealth(): string {
     ollamaSection = '\n\n*Ollama:* ❌ unreachable (localhost:11434)';
   }
 
-  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${ollamaSection}`;
+  // Sprint 1085: PM2 memory warning if any process >500MB
+  const MEM_WARN_MB = 500;
+  let memWarnSection = '';
+  try {
+    const procs = getPm2List();
+    const highMem = procs.filter(p => p.memory > MEM_WARN_MB * 1024 * 1024);
+    if (highMem.length > 0) {
+      const lines = highMem.map(p => `  ⚠️ \`${p.name}\` — ${fmtMem(p.memory)}`).join('\n');
+      memWarnSection = `\n\n⚠️ *High memory (>${MEM_WARN_MB}MB):*\n${lines}`;
+    }
+  } catch { /* skip */ }
+
+  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${ollamaSection}${memWarnSection}`;
 }
 
 export function cmdTier(): string {
