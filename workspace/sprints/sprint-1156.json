@@ -1,0 +1,41 @@
+{
+  "sprint_id": "sprint-1156",
+  "title": "OPS — Telegram operator UX wave 35: hook weights, content calendar, Achiri dashboard in /health",
+  "description": "Add 3 compact /health signals: (1) workspace/scs001/hook-weights.json top 2 hook formulas by weight, (2) workspace/scs001/content-calendar.json days left + videos assigned to gate, (3) reports/achiri-dashboard.json overview: total users + retention + today DAU.",
+  "source": "queue-empty-auto",
+  "tasks": [
+    {
+      "id": "1156-01",
+      "title": "Add hook-weights.json top 2 formulas to /health",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1156"
+    },
+    {
+      "id": "1156-02",
+      "title": "Add content-calendar.json days + videos assigned to /health",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1156"
+    },
+    {
+      "id": "1156-03",
+      "title": "Add achiri-dashboard.json total users + retention + DAU to /health",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1156"
+    }
+  ]
+}

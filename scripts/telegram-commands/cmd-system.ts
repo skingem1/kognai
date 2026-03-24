@@ -864,7 +864,53 @@ export function cmdHealth(): string {
     }
   } catch { /* skip */ }
 
-  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${botUptimeSection}${ollamaSection}${memWarnSection}${memTableSection}${supabaseSection}${supabaseSyncSection}${diskSection}${watchdogSection}${runtimeSection}${tailscaleSection}${hetznerSection}${anthropicSection}${ioSection}${morningBriefSection}${digestSection}${staleCronsSection}${supabaseDomainSection}${anthropicBudgetSection}${pipelineValidationSection}${worktreeSection}${botMemSection}${gateDaysSection}${backupSection}${postingHealthSection}${exportFilesSection}${tokenHealthSection}${statsSection}${inventorySection}${gateAuditSection}${autoDeliverSection}${bulkCaptionsSection}${playbackSection}${qcSection}${smokeSection}${achiriDauSection}${achiriE2eSection}${videoValidSection}${pipelineMetricsSection}${achiriSafetySection}${leaderboardSection}${brainxSection}${achiriLaunchSection}${postingScheduleSection}${phase15GateSection}${batchProduceSection}${revenueSummarySection}${contentDiversitySection}${costLogSection}${warmupSection}${abAnalysisSection}${prodQualitySection}`;
+  // Sprint 1156 (wave 35): hook-weights.json top 2 formulas by weight
+  let hookWeightsSection = '';
+  try {
+    const hwPath = path.join(ROOT, 'workspace', 'scs001', 'hook-weights.json');
+    if (fs.existsSync(hwPath)) {
+      const hw = JSON.parse(fs.readFileSync(hwPath, 'utf-8'));
+      const weights: Record<string, number> = hw.weights ?? {};
+      const sorted = Object.entries(weights).sort(([, a], [, b]) => b - a).slice(0, 2);
+      if (sorted.length > 0) {
+        const top2 = sorted.map(([k, v]) => `${k} ${(v * 100).toFixed(0)}%`).join(' · ');
+        hookWeightsSection = `\n\n🎣 *Hook weights:* ${top2}`;
+      }
+    }
+  } catch { /* skip */ }
+
+  // Sprint 1156 (wave 35): content-calendar.json days left + videos assigned
+  let contentCalendarSection = '';
+  try {
+    const ccPath = path.join(ROOT, 'workspace', 'scs001', 'content-calendar.json');
+    if (fs.existsSync(ccPath)) {
+      const cc = JSON.parse(fs.readFileSync(ccPath, 'utf-8'));
+      const totalDays = cc.total_days ?? 0;
+      const totalVideos = cc.total_videos_assigned ?? 0;
+      const gateDate = cc.gate_date ? cc.gate_date.slice(0, 10) : 'unknown';
+      const daysLeft = cc.gate_date ? Math.max(0, Math.ceil((new Date(cc.gate_date).getTime() - Date.now()) / 86400000)) : totalDays;
+      const ccIcon = daysLeft <= 3 ? '🔴' : daysLeft <= 7 ? '🟡' : '📅';
+      contentCalendarSection = `\n\n${ccIcon} *Content calendar:* ${totalVideos} vids assigned · ${daysLeft}d to gate (${gateDate})`;
+    }
+  } catch { /* skip */ }
+
+  // Sprint 1156 (wave 35): achiri-dashboard.json total users + retention + today DAU
+  let achiriDashboardSection = '';
+  try {
+    const adPath = path.join(ROOT, 'reports', 'achiri-dashboard.json');
+    if (fs.existsSync(adPath)) {
+      const ad = JSON.parse(fs.readFileSync(adPath, 'utf-8'));
+      const overview = ad.overview ?? {};
+      const totalUsers = overview.total_users ?? 0;
+      const retention = overview.retention_pct ?? 0;
+      const today = ad.today ?? {};
+      const dau = today.dau ?? 0;
+      const adIcon = retention >= 60 ? '✅' : retention >= 40 ? '🟡' : '⚠️';
+      achiriDashboardSection = `\n\n${adIcon} *Achiri users:* ${totalUsers} total · ${retention}% retention · ${dau} DAU`;
+    }
+  } catch { /* skip */ }
+
+  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${botUptimeSection}${ollamaSection}${memWarnSection}${memTableSection}${supabaseSection}${supabaseSyncSection}${diskSection}${watchdogSection}${runtimeSection}${tailscaleSection}${hetznerSection}${anthropicSection}${ioSection}${morningBriefSection}${digestSection}${staleCronsSection}${supabaseDomainSection}${anthropicBudgetSection}${pipelineValidationSection}${worktreeSection}${botMemSection}${gateDaysSection}${backupSection}${postingHealthSection}${exportFilesSection}${tokenHealthSection}${statsSection}${inventorySection}${gateAuditSection}${autoDeliverSection}${bulkCaptionsSection}${playbackSection}${qcSection}${smokeSection}${achiriDauSection}${achiriE2eSection}${videoValidSection}${pipelineMetricsSection}${achiriSafetySection}${leaderboardSection}${brainxSection}${achiriLaunchSection}${postingScheduleSection}${phase15GateSection}${batchProduceSection}${revenueSummarySection}${contentDiversitySection}${costLogSection}${warmupSection}${abAnalysisSection}${prodQualitySection}${hookWeightsSection}${contentCalendarSection}${achiriDashboardSection}`;
 }
 
 export function cmdTier(): string {
