@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1044",
+  "title": "GODMAN-LAUNCH — SDK docs/api.md: full API reference for all 7 protocols",
+  "description": "The SDK docs/ directory was empty. Created docs/api.md with complete API reference for all 7 Godman Protocols via the unified SDK — import styles, function signatures, code examples, version constants.",
+  "block": "GODMAN-PROTOCOLS",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1044-01",
+      "title": "Create workspace/godman-protocols/sdk/docs/api.md",
+      "type": "feature",
+      "task_target": "workspace/godman-protocols/sdk/docs/api.md",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1044"
+    }
+  ]
+}
