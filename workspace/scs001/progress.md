@@ -6041,3 +6041,10 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Files modified: cmd-system.ts (cmdCrons: staleness detection from PM2 restart_time)
 - Test: 115/115 PASS
 - Timestamp: 2026-03-24T16:55Z
+
+## Sprint 1073 — QUALITY
+- Status: PASS
+- Commit: (pending)
+- Files modified: daily-digest.ts (getSmokeTest: staleness detection >24h)
+- Test: 115/115 PASS
+- Timestamp: 2026-03-24T17:00Z

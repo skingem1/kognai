@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1073",
+  "title": "QUALITY — Smoke test gate: flag stale smoke test (>24h) in morning digest",
+  "description": "Enhanced getSmokeTest() in daily-digest.ts to check timestamp age and add STALE warning with hours-ago count when last smoke is >24h old.",
+  "block": "QUALITY",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1073-01",
+      "title": "Add staleness detection to getSmokeTest in daily-digest.ts",
+      "type": "feature",
+      "task_target": "scripts/daily-digest.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1073"
+    }
+  ]
+}

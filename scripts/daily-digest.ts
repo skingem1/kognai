@@ -181,12 +181,15 @@ function getQueueStats(): { ledgerCount: number; recordedCount: number; unposted
 
 function getSmokeTest(): string {
   const s = readJSON<any>(path.join(ROOT, 'reports', 'smoke-test-latest.json'));
-  if (!s) return 'no report';
+  if (!s) return '⚠️ no report — run /smoke';
   // Sprint 669: Fix field names — JSON uses pass/fail/total, not passed/stage_count
   const ok = (s.fail ?? 0) === 0 && (s.pass ?? s.total ?? 0) > 0 ? '✅' : '❌';
   const stages = s.total ?? s.stage_count ?? 0;
   const ts = s.timestamp ? new Date(s.timestamp).toLocaleDateString('en-GB') : 'unknown';
-  return `${ok} ${stages} stages — ${ts}`;
+  // Sprint 1073: flag if smoke test is >24h old
+  const ageHours = s.timestamp ? (Date.now() - new Date(s.timestamp).getTime()) / 3600000 : 999;
+  const staleWarn = ageHours > 24 ? ` ⚠️ *STALE* (${Math.round(ageHours)}h ago — run /smoke)` : '';
+  return `${ok} ${stages} stages — ${ts}${staleWarn}`;
 }
 
 // ── Achiri alpha stats (Sprint 168) ──────────────────────────────────────────
