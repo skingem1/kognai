@@ -568,9 +568,9 @@
       "sprint": 1056,
       "title": "INFRA \u2014 /sprint-next: show next planned sprint title + rationale from queue",
       "block": "INFRA",
-      "status": "done",
+      "status": "skip",
       "priority": "medium",
-      "rationale": "When queue is empty, operator has no visibility into what Claude Code will work on next. /sprint-next shows top pending item or \"queue empty \u2014 run /replenish\".",
+      "rationale": "Already implemented: cmdSprintNext() in cmd-management.ts:1841, /sprint-next and /sprintnext both mapped in telegram-bot.ts",
       "_note": "Shipped. /sprint-next shows next pending queue item + rationale."
     }
   ]
