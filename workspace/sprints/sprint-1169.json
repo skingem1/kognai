@@ -1,0 +1,21 @@
+{
+  "sprint_id": "sprint-1169",
+  "title": "GODMAN-LAUNCH — /godman: check npm publish dry-run per protocol",
+  "description": "Add an npm publish --dry-run check to cmdGodman() for each of the 8 packages (7 protocols + SDK). Show ✅ publishable / ❌ blocked with first error line. Timeout per package: 15s.",
+  "source": "queue-prescribed",
+  "block": "GODMAN-LAUNCH",
+  "tasks": [
+    {
+      "id": "1169-01",
+      "title": "Add npm publish --dry-run section to cmdGodman() per protocol + SDK",
+      "type": "feature",
+      "task_type": "ux",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1169",
+      "notes": "File >3000 lines — swarm bypassed, written directly. Insert before Overall section."
+    }
+  ]
+}

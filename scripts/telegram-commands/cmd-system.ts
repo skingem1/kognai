@@ -3128,6 +3128,28 @@ export function cmdGodman(): string {
     }
   } catch { /* skip */ }
 
+  // Sprint 1169: npm publish --dry-run per protocol
+  lines.push('');
+  lines.push('*Publish dry-run:*');
+  let dryRunPass = 0;
+  for (const proto of PROTOCOLS.concat(['sdk'])) {
+    const protoDir = path.join(BASE, proto);
+    if (!fs.existsSync(path.join(protoDir, 'package.json'))) {
+      lines.push(`  ⚠️ ${proto} — no package.json`);
+      continue;
+    }
+    try {
+      execSync('npm publish --dry-run 2>&1', { cwd: protoDir, encoding: 'utf-8', timeout: 15000, stdio: ['pipe','pipe','pipe'] });
+      dryRunPass++;
+      lines.push(`  ✅ ${proto} — publishable`);
+    } catch (e: any) {
+      const out = ((e.stdout ?? e.stderr ?? e.message ?? '') as string);
+      const firstErr = out.split('\n').find(l => l.toLowerCase().includes('error') || l.includes('npm ERR!')) ?? 'dry-run failed';
+      lines.push(`  ❌ ${proto} — ${firstErr.trim().slice(0, 80)}`);
+    }
+  }
+  lines.push(`📤 *Dry-run: ${dryRunPass}/${PROTOCOLS.length + 1} publishable*`);
+
   // Overall
   lines.push('');
   if (allOk && hasLaunch) {
