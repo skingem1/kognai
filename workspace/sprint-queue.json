@@ -185,6 +185,15 @@
       "priority": "high",
       "rationale": "Implement DRS core: ResourceScheduler with pool management, allocation, release, preemption, expiry. Last of 7 Godman Protocols.",
       "_note": "Shipped 2026-03-24 — commit 0ba02db8. scheduler.ts (179 lines) + smoke test 12/12 PASS. ALL 7 PROTOCOLS NOW AT v0.2."
+    },
+    {
+      "sprint": 972,
+      "title": "GODMAN-INTEGRATION — Cross-protocol integration test (all 7 protocols)",
+      "block": "GODMAN-PROTOCOLS",
+      "status": "done",
+      "priority": "high",
+      "rationale": "E2E integration test: SOUL→PACT→AMF→DRS→LAX→SIGNAL→SCORE. All 7 protocols working together.",
+      "_note": "Shipped 2026-03-24 — commit b6c4bbe4. integration.test.ts 15/15 assertions PASS. Full agent workflow proven."
     }
   ]
 }
