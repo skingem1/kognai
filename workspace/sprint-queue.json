@@ -2748,7 +2748,7 @@
       "sprint": 1167,
       "title": "GODMAN-LAUNCH — /godman: check git tag matches package.json version per protocol",
       "block": "GODMAN-PROTOCOLS",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "On launch day, git tags and package.json versions should match for all protocols. Add a version consistency check to catch drift before publishing."
     },
@@ -2756,7 +2756,7 @@
       "sprint": 1168,
       "title": "GODMAN-LAUNCH — /godman: show total published package count",
       "block": "GODMAN-LAUNCH",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "/godman shows per-protocol test status but not how many packages are published to npm. Add total count: \"N/8 packages published\"."
     },

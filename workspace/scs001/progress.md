@@ -6271,3 +6271,23 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (file >3000 lines, wrote directly)
 - Issues: none
 - Timestamp: 2026-03-24T20:30:00Z
+
+## Sprint 1167 — GODMAN-LAUNCH
+- Status: PASS
+- Commit: d0718e4e
+- Files created: workspace/sprints/sprint-1167.json
+- Files modified: scripts/telegram-commands/cmd-system.ts
+- Change: Git tags section now compares tag to pkg version — ✅ match / ⚠️ drifted / ❌ no tag
+- Swarm used: no (file >3000 lines, wrote directly)
+- Issues: none — all 8 protocols show ❌ no tag yet (correct pre-launch state)
+- Timestamp: 2026-03-24T20:40:00Z
+
+## Sprint 1168 — GODMAN-LAUNCH
+- Status: PASS
+- Commit: 1916e826
+- Files created: workspace/sprints/sprint-1168.json
+- Files modified: scripts/telegram-commands/cmd-system.ts
+- Change: SDK added to publish count loop; badge now shows N/8 (0/8 published pre-launch)
+- Swarm used: no (file >3000 lines, wrote directly)
+- Issues: none
+- Timestamp: 2026-03-24T20:50:00Z
