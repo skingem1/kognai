@@ -5403,3 +5403,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (JSON/docs, direct write)
 - Issues: none (all 7 publishConfig already correct, only SDK deps updated)
 - Timestamp: 2026-03-24T23:00:00Z
+
+## Sprint 984 — ACHIRI-ALPHA-REPORT
+- Status: PASS
+- Commit: 8db7cd2b
+- Files created: scripts/achiri/alpha-report.ts, reports/achiri-alpha-report.json
+- Files modified: none
+- Test: direct execution — PASS (AT-RISK verdict, 9/9 readiness, bot online)
+- Pipeline: N/A (Achiri block)
+- Swarm used: no (single file, direct write)
+- Issues: AAR/CTO modules not found (noted, not blocking)
+- Timestamp: 2026-03-24T08:30:00Z
