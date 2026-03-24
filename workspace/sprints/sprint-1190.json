@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1190",
+  "title": "GODMAN-LAUNCH — /godman: show npm publish dry-run output for one protocol",
+  "description": "Add npm publish --dry-run section to cmdGodman(). Runs dry-run for first unpublished protocol and shows truncated output. pact dry-run: OK.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1190-01",
+      "title": "GODMAN-LAUNCH — /godman: show npm publish dry-run output for one protocol",
+      "type": "feature",
+      "task_type": "godman_launch",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1190"
+    }
+  ]
+}

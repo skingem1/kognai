@@ -3030,6 +3030,31 @@ export function cmdGodman(): string {
     lines.push(`📦 *npm publish: ${publishedCount}/${allPkgs.length} published*${publishedCount === 0 ? ' — run npm publish before launch' : ''}`);
   }
 
+  // Sprint 1190: npm publish --dry-run for first unpublished protocol
+  {
+    const firstUnpublished = PROTOCOLS.find(p => {
+      const pkgFile = path.join(BASE, p, 'package.json');
+      if (!fs.existsSync(pkgFile)) return false;
+      try { return !execSync(`npm view @godman-protocols/${p} version 2>/dev/null`, { encoding: 'utf-8', timeout: 5000, stdio: ['pipe','pipe','pipe'] }).trim(); } catch { return true; }
+    });
+    lines.push('');
+    lines.push('*npm dry-run:*');
+    if (!firstUnpublished) {
+      lines.push('  ✅ All protocols already published — no dry-run needed');
+    } else {
+      const protoDir = path.join(BASE, firstUnpublished);
+      try {
+        const out = execSync('npm publish --dry-run 2>&1', { cwd: protoDir, encoding: 'utf-8', timeout: 20000, stdio: ['pipe','pipe','pipe'] });
+        const summary = out.split('\n').filter(l => l.includes('npm notice') || l.includes('tarball') || l.includes('package size') || l.includes('total files') || l.includes('Tarball')).slice(0, 5).join('\n');
+        lines.push(`  ✅ \`@godman-protocols/${firstUnpublished}\` dry-run OK`);
+        if (summary) lines.push(`\`\`\`\n${summary.trim().slice(0, 300)}\n\`\`\``);
+      } catch (e: any) {
+        const errMsg = ((e.stdout ?? e.stderr ?? e.message ?? '') as string).trim().split('\n').slice(0, 3).join(' | ').slice(0, 200);
+        lines.push(`  ❌ \`@godman-protocols/${firstUnpublished}\` dry-run FAILED: ${errMsg}`);
+      }
+    }
+  }
+
   // Sprint 1105: npm run build clean check for all 8 packages
   lines.push('');
   lines.push('*Build clean check:*');
