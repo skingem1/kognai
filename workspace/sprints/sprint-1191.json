@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1191",
+  "title": "GODMAN-LAUNCH — /godman: show git tag status for each protocol (tagged vs untagged)",
+  "description": "Add git tag status section to cmdGodman(). Shows per-protocol tagged/untagged status with version. All 8 currently untagged — hints to run /godman-tag confirm.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1191-01",
+      "title": "GODMAN-LAUNCH — /godman: show git tag status per protocol",
+      "type": "feature",
+      "task_type": "godman_launch",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1191"
+    }
+  ]
+}

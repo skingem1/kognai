@@ -3055,6 +3055,29 @@ export function cmdGodman(): string {
     }
   }
 
+  // Sprint 1191: git tag status per protocol
+  {
+    const allPkgsForTags = [...PROTOCOLS, 'sdk'];
+    let taggedCount = 0;
+    const tagLines: string[] = [];
+    for (const proto of allPkgsForTags) {
+      const pkgFile = path.join(BASE, proto, 'package.json');
+      let ver = '?';
+      try { ver = JSON.parse(fs.readFileSync(pkgFile, 'utf-8')).version || '?'; } catch {}
+      let tagged = false;
+      try {
+        const tagOut = execSync(`git tag --list "${proto}-v${ver}" 2>/dev/null`, { encoding: 'utf-8', cwd: ROOT, timeout: 5000, stdio: ['pipe','pipe','pipe'] }).trim();
+        tagged = tagOut.length > 0;
+      } catch {}
+      if (tagged) taggedCount++;
+      tagLines.push(`  ${tagged ? '✅' : '❌'} ${proto} v${ver}${tagged ? '' : ' — untagged'}`);
+    }
+    lines.push('');
+    lines.push(`*Git tags (${taggedCount}/${allPkgsForTags.length}):*`);
+    tagLines.forEach(l => lines.push(l));
+    if (taggedCount < allPkgsForTags.length) lines.push(`  ⚠️ Run /godman-tag confirm to tag all packages`);
+  }
+
   // Sprint 1105: npm run build clean check for all 8 packages
   lines.push('');
   lines.push('*Build clean check:*');
