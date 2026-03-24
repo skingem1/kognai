@@ -25,7 +25,7 @@ import { cmdHistory, cmdArchive, cmdUnarchive, cmdStale, cmdPurge, cmdNote, cmdU
 import { cmdInventory } from './telegram-commands/cmd-delivery';
 
 // Sync commands from cmd-stripe.ts
-import { cmdPortal, cmdFunnel, cmdAchiri, cmdAlpha, cmdUsage, cmdAchiriData, cmdWaitlist } from './telegram-commands/cmd-stripe';
+import { cmdPortal, cmdFunnel, cmdAchiri, cmdAlpha, cmdUsage, cmdAchiriData, cmdWaitlist, cmdStripe } from './telegram-commands/cmd-stripe';
 
 // Sync commands from cmd-warmup.ts
 import { cmdWarmupStart, cmdWarmupStatus } from './telegram-commands/cmd-warmup';
@@ -166,6 +166,7 @@ const tests: TestCase[] = [
   { name: 'cmdUsage', fn: () => cmdUsage() },
   { name: 'cmdAchiriData', fn: () => cmdAchiriData() },
   { name: 'cmdWaitlist', fn: () => cmdWaitlist('') },
+  { name: 'cmdStripe', fn: () => cmdStripe() },
 
   // cmd-warmup.ts
   { name: 'cmdWarmupStart', fn: () => cmdWarmupStart() },

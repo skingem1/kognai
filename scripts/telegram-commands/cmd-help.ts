@@ -78,6 +78,7 @@ export function cmdHelp(): string {
     `/viralstats — Viral score summary + top 3\n` +
     `/checkout  — Generate Stripe checkout link\n` +
     `/subscribers — Active Stripe subscribers + MRR\n` +
+    `/stripe    — Last 5 Stripe events + webhook health\n` +
     `/funnel    — Content pipeline funnel + conversions\n` +
     `/hooktest  — Hook formula A/B test rankings\n` +
     `/formatstats — Video format performance breakdown\n` +

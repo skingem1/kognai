@@ -1,0 +1,39 @@
+{
+  "sprint_id": "sprint-1063",
+  "title": "INFRA — /stripe: show last 5 Stripe webhook events + webhook health",
+  "description": "New /stripe command that queries Stripe API for recent events and shows webhook endpoint health. Replaces manual log tailing.",
+  "block": "INFRA",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1063-01",
+      "title": "Add cmdStripe to cmd-stripe.ts — queries Stripe events API for last 5 events + webhook status",
+      "type": "feature",
+      "task_target": "scripts/telegram-commands/cmd-stripe.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1063"
+    },
+    {
+      "id": "1063-02",
+      "title": "Register /stripe in telegram-bot.ts async handlers + update cmd-help.ts",
+      "type": "feature",
+      "task_target": "scripts/telegram-bot.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1063"
+    },
+    {
+      "id": "1063-03",
+      "title": "Add cmdStripe to test-telegram-commands.ts",
+      "type": "test",
+      "task_target": "scripts/test-telegram-commands.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1063"
+    }
+  ]
+}

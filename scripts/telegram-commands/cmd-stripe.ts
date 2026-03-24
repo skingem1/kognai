@@ -662,3 +662,76 @@ export function cmdWaitlist(args: string): string {
 
   return lines.join('\n');
 }
+
+// Sprint 1063: /stripe — last 5 Stripe events + webhook health
+export async function cmdStripe(): Promise<string> {
+  const stripeKey = process.env.STRIPE_SECRET_KEY || '';
+  if (!stripeKey) {
+    return '💳 *Stripe Events*\n\n⚠️ `STRIPE_SECRET_KEY` not set.\n\n' + stripeLogFallback();
+  }
+
+  const mode = stripeKey.startsWith('sk_live_') ? '🟢 LIVE' : '🟡 TEST';
+
+  try {
+    // Fetch last 5 events from Stripe API
+    const eventsResult = await new Promise<any>((resolve, reject) => {
+      const req = https.request({
+        hostname: 'api.stripe.com',
+        path: '/v1/events?limit=5',
+        method: 'GET',
+        headers: { 'Authorization': `Bearer ${stripeKey}` },
+      }, (res) => {
+        let data = '';
+        res.on('data', (c: Buffer) => (data += c.toString()));
+        res.on('end', () => { try { resolve(JSON.parse(data)); } catch { reject(new Error('parse error')); } });
+      });
+      req.on('error', reject);
+      req.setTimeout(15000, () => { req.destroy(); reject(new Error('timeout')); });
+      req.end();
+    });
+
+    if (eventsResult.error) {
+      return `💳 *Stripe Events* ${mode}\n\n❌ ${eventsResult.error.message ?? 'API error'}\n\n` + stripeLogFallback();
+    }
+
+    const events: any[] = eventsResult.data ?? [];
+    const lines: string[] = [`💳 *Stripe Events* ${mode}`, ''];
+
+    if (events.length === 0) {
+      lines.push('_No recent events._');
+    } else {
+      lines.push('*Last 5 events:*');
+      for (const ev of events) {
+        const time = new Date(ev.created * 1000).toISOString().replace('T', ' ').slice(0, 16);
+        const type = ev.type ?? 'unknown';
+        const icon = type.includes('succeeded') || type.includes('completed') ? '✅'
+          : type.includes('failed') || type.includes('deleted') ? '❌'
+          : type.includes('created') ? '🆕'
+          : type.includes('updated') ? '🔄'
+          : '📋';
+        lines.push(`${icon} \`${time}\` — ${type}`);
+      }
+    }
+
+    // Webhook log tail
+    lines.push('');
+    lines.push(stripeLogFallback());
+
+    return lines.join('\n');
+  } catch (err: any) {
+    return `💳 *Stripe Events*\n\n❌ Fetch failed: ${(err.message ?? '').slice(0, 200)}\n\n` + stripeLogFallback();
+  }
+}
+
+function stripeLogFallback(): string {
+  const logPath = path.join(ROOT, 'logs', 'stripe-webhook-out.log');
+  if (!fs.existsSync(logPath)) return '_Webhook log: not found_';
+  try {
+    const content = fs.readFileSync(logPath, 'utf-8');
+    const lines = content.split('\n').filter(l => l.trim());
+    const last5 = lines.slice(-5);
+    const stat = fs.statSync(logPath);
+    const age = Math.round((Date.now() - stat.mtimeMs) / 3600000);
+    return `*Webhook log* (last update: ${age}h ago):\n` + last5.map(l => `\`${l.slice(0, 80)}\``).join('\n');
+  } catch { return '_Webhook log: unreadable_'; }
+}
