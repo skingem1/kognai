@@ -2100,6 +2100,27 @@ export function cmdStatus(): string {
     }
   } catch { /* skip */ }
 
+  // Sprint 1184: Last YouTube post from crossplatform-publish.jsonl
+  let ytLastPostedLine = '';
+  try {
+    const cpPath = path.join(ROOT, 'workspace', 'scs001', 'crossplatform-publish.jsonl');
+    if (fs.existsSync(cpPath)) {
+      const cpLines = fs.readFileSync(cpPath, 'utf-8').trim().split('\n').filter(Boolean);
+      const ytPosts = cpLines
+        .map(l => { try { return JSON.parse(l); } catch { return null; } })
+        .filter((p): p is any => p !== null && p.platform === 'youtube' && p.success);
+      if (ytPosts.length > 0) {
+        const last = ytPosts[ytPosts.length - 1];
+        const ageH = last.timestamp ? (Date.now() - new Date(last.timestamp).getTime()) / 3600000 : null;
+        const ageStr = ageH == null ? ''
+          : ageH < 1 ? `${Math.round(ageH * 60)}m ago`
+          : ageH < 24 ? `${Math.round(ageH)}h ago`
+          : `${Math.round(ageH / 24)}d ago`;
+        ytLastPostedLine = `\n📺 *YouTube:* ${ytPosts.length} total · last: \`${last.video_id}\` ${ageStr}`;
+      }
+    }
+  } catch { /* skip */ }
+
   const lines = [
     `📊 *Kognai Status Dashboard*${activeSprintStr}${envAlertStr}`,
     '',
@@ -2152,7 +2173,7 @@ export function cmdStatus(): string {
         }
       } catch {}
       return '';
-    })() + achiriGrowthLine,
+    })() + achiriGrowthLine + ytLastPostedLine,
     '',
     // Sprint 1134 (wave 15): Phase 2 readiness when gate is met
     ...(postsNeeded === 0 && totalViews >= 500 ? [

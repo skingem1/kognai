@@ -1,0 +1,22 @@
+{
+  "sprint_id": "sprint-1184",
+  "title": "OPS — /status: show last YouTube video posted + days since",
+  "description": "Add ytLastPostedLine to cmdStatus() in cmd-management.ts. Reads workspace/scs001/crossplatform-publish.jsonl for YouTube posts, shows total count and last video_id with age.",
+  "source": "queue-prescribed",
+  "block": "OPS",
+  "swarm_bypassed": true,
+  "swarm_bypass_reason": "cmd-management.ts 2000+ lines.",
+  "tasks": [
+    {
+      "id": "1184-01",
+      "title": "Add YouTube last-posted line to cmdStatus() in cmd-management.ts",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/telegram-commands/cmd-management.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1184"
+    }
+  ]
+}
