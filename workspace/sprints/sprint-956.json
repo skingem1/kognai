@@ -1,0 +1,46 @@
+{
+  "sprint_id": "sprint-956",
+  "title": "SPIELBERG-01 — Demo recording agent scaffold + demo script JSON schema",
+  "block": "SPIELBERG",
+  "description": "From Spielberg Agent Spec (Sprint 545). Tasks 545-01 to 545-03: asciinema + agg verified installed, create demo script JSON schema (TypeScript types), create agents/spielberg/ agent config, create scripts/spielberg/index.ts orchestrator (max 250 lines).",
+  "source": "queue-prescribed",
+  "scs001_note": "SCS-001 VIDEO PRODUCTION PAUSED.",
+  "tasks": [
+    {
+      "id": "956-01",
+      "title": "Verify asciinema + agg installed",
+      "type": "setup",
+      "status": "done",
+      "agent": "coder",
+      "sprint_id": "sprint-956",
+      "notes": "asciinema 3.2.0 confirmed. agg confirmed via brew."
+    },
+    {
+      "id": "956-02",
+      "title": "Create demo script JSON schema — scripts/spielberg/types.ts",
+      "type": "feature",
+      "status": "done",
+      "agent": "coder",
+      "task_target": "scripts/spielberg/types.ts",
+      "sprint_id": "sprint-956"
+    },
+    {
+      "id": "956-03",
+      "title": "Create kognai-agents/spielberg/ agent config (agent.yaml + prompt.md)",
+      "type": "feature",
+      "status": "done",
+      "agent": "coder",
+      "task_target": "kognai-agents/spielberg/agent.yaml",
+      "sprint_id": "sprint-956"
+    },
+    {
+      "id": "956-04",
+      "title": "Create scripts/spielberg/index.ts orchestrator (max 250 lines)",
+      "type": "feature",
+      "status": "done",
+      "agent": "coder",
+      "task_target": "scripts/spielberg/index.ts",
+      "sprint_id": "sprint-956"
+    }
+  ]
+}
