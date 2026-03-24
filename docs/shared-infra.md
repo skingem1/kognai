@@ -1,6 +1,6 @@
 # SHARED INFRASTRUCTURE CONTEXT
 *Applies to: Invoica + Kognai*
-*Updated: 2026-03-08*
+*Updated: 2026-03-24*
 
 This file is the single source of truth for infrastructure shared between the Invoica and Kognai projects. Both projects' CLAUDE.md files reference this doc. When shared infra changes, update HERE — both sessions will pick it up.
 
@@ -61,11 +61,11 @@ This file is the single source of truth for infrastructure shared between the In
 | x-admin-post | Invoica | every 30 min | X posting |
 | cmo-daily-watch | Shared | daily 08:00 | Market watch |
 | cmo-weekly-content-plan | Invoica | Sunday 06:00 | Content generation |
-| tax-watchdog-us | Invoica | scheduled | US tax compliance |
-| tax-watchdog-eu-japan | Invoica | scheduled | EU/JP tax compliance |
+| tax-watchdog-us | Invoica | Monday 07:00 | US tax compliance |
+| tax-watchdog-eu-japan | Invoica | Monday 08:00 | EU/JP tax compliance |
 | ceo-review | Shared | every 2 hours | CEO decision pipeline |
 | cfo-weekly | Invoica | Monday 07:00 | Financial reporting |
-| ceo-ai-bot | Shared | always-on | Telegram bot |
+| ceo-ai-bot | Shared | always-on | Telegram bot (shared ops) |
 | git-autodeploy | Invoica | every 5 min | Auto-deployment |
 | bizdev-weekly | Shared | Sunday 06:00 | Business development |
 | sprint-runner | Kognai | every 30 min | Orchestrator executor |
@@ -74,6 +74,28 @@ This file is the single source of truth for infrastructure shared between the In
 | docs-generator | Invoica | daily 04:00 | Changelog + API ref |
 | kognai-router | Kognai | always-on (port 11435) | FastAPI model router |
 | pending-local-drain | Kognai | every 5 min | Queue drainage |
+| telegram-bot | Kognai | always-on | Operator Telegram bot (/status, /blockers, /godman, etc.) |
+| kognai-stripe-webhook | Kognai | always-on | Stripe webhook handler |
+| kognai-checkout | Kognai | always-on | Checkout server (TikTok Agent subscriptions) |
+| kognai-smoke-test | Kognai | every 6 hours | Pipeline smoke tests |
+| kognai-pipeline-auto | Kognai | 06:00/10:00/14:00/18:00 | SCS-001 TikTok pipeline automation |
+| kognai-pipeline-watchdog | Kognai | every 30 min | Pipeline health watchdog |
+| kognai-daily-digest | Kognai | daily 07:00 | Daily digest generation |
+| kognai-weekly-report | Kognai | Sunday 20:00 | Weekly performance report |
+| kognai-gate-regen | Kognai | daily 06:55 | Phase 1.5 gate JSON regeneration |
+| achiri-daily-engage | Kognai | daily 08:00 | Achiri user engagement |
+| achiri-reengage | Kognai | daily 15:00 | Achiri re-engagement nudges |
+| achiri-alpha-weekly | Kognai | Monday 09:00 | Achiri alpha test report |
+| kognai-pipeline-cleanup | Kognai | Sunday 03:00 | Pipeline artifact cleanup |
+| kognai-geo-monitor | Kognai | Monday 08:00 | Geo audience monitoring |
+| kognai-daily-report | Kognai | daily 23:55 | Daily performance report |
+| kognai-constitution-agent | Kognai | Sunday 18:00 | Constitutional safety review |
+| scs001-remind-noon | Kognai | daily 12:00 | TikTok posting reminder (noon) |
+| scs001-remind-evening | Kognai | daily 19:00 | TikTok posting reminder (evening) |
+| scs001-youtube-upload | Kognai | daily 07:30 | YouTube Shorts cross-platform publish |
+| scs001-healer | Kognai | every 5 min | PM2 auto-healer for SCS-001 |
+| scs001-queue-archiver | Kognai | daily 00:05 | Archive stale pipeline queue items |
+| scs001-validator | Kognai | daily 06:00 | Validate pipeline output quality |
 
 ## X402 PAYMENT PROTOCOL
 
@@ -123,6 +145,7 @@ Code that exists in both projects or was built in one and is reusable by the oth
 | TypeScript SDK | `~/Documents/Invoica/sdk/` | Both | Kognai fork at `~/kognai/sdk/typescript/` (50 modules) |
 | PM2 ecosystem | `~/kognai/ecosystem.config.js` | Both | Single file manages all processes |
 | Supabase migrations | `~/Documents/Invoica/supabase/` | Invoica | Kognai uses raw SQL in `backend/` |
+| Godman Protocols | `~/kognai/workspace/godman-protocols/` | Kognai | 7 protocols + SDK at v0.2.0 (PACT, LAX, SCORE, SIGNAL, SOUL, AMF, DRS). npm publish planned April 14. |
 
 **Rules for shared code:**
 1. **New shared utility?** Add it here with the canonical path
