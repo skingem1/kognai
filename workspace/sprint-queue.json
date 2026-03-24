@@ -917,7 +917,7 @@
       "status": "done",
       "priority": "medium",
       "rationale": "Before npm publish on Apr 14, each protocol should pass `npm pack --dry-run`. Add a check to /godman that runs pack dry-run and shows which protocols are publish-ready.",
-      "_note": "Shipped 2026-03-24. npm pack --dry-run check added to /godman."
+      "_note": "Shipped 2026-03-24 — /godman npm pack dry-run per protocol (linter)"
     }
   ]
 }
