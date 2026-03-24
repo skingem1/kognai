@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-1018",
+  "title": "OPS — remind-post: auto-send mp4 file with posting reminder",
+  "description": "Gate urgency: 2/30 posts, 14 days. The noon/evening reminders send a text with the video_id. Enhance remind-post.ts to also send the actual mp4 file as a Telegram video. Operator gets video in phone → taps 'forward to TikTok'. Zero friction posting.",
+  "block": "OPS",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1018-01",
+      "title": "Add video file send to remind-post.ts after text reminder",
+      "type": "feature",
+      "task_target": "scripts/remind-post.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1018",
+      "description": "In remind-post.ts: (1) Update pickNextVideo() to also return mp4_path. (2) Add sendVideoRaw(videoPath, caption) using same multipart/form-data pattern as posting-auto-deliver.ts. (3) After sendTelegram(msg), call sendVideoRaw with the mp4 and a short caption: '/record <video_id> 0 after posting'. Wrap in try/catch — reminder still works if video send fails."
+    }
+  ]
+}

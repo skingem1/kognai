@@ -23,16 +23,54 @@ function readJsonLines(filePath: string): any[] {
 }
 
 // Sprint 1010: pick the top-scored unposted video for the reminder
-function pickNextVideo(): { video_id: string; topic: string } | null {
-  const postedIds = new Set<string>(
-    readJsonLines(MANUAL_POSTS_PATH).map((e: any) => e.video_id).filter(Boolean)
-  );
+const DRY_METHODS = ['browser-post-dry', 'batch-browser-dry', 'dry'];
+function pickNextVideo(): { video_id: string; topic: string; mp4_path: string } | null {
+  const postedIds = new Set<string>();
+  readJsonLines(MANUAL_POSTS_PATH).forEach((e: any) => {
+    if (!e.video_id) return;
+    if (e.method && DRY_METHODS.some(d => String(e.method).includes(d))) return;
+    postedIds.add(e.video_id);
+  });
   const candidates = readJsonLines(DELIVERED_PATH)
     .filter((e: any) => e.video_id && !postedIds.has(e.video_id) && e.mp4_path && fs.existsSync(e.mp4_path))
     .sort((a: any, b: any) => (b.viral_score ?? 0) - (a.viral_score ?? 0));
   if (!candidates.length) return null;
   const top = candidates[0];
-  return { video_id: top.video_id, topic: (top.topic ?? top.hook_formula ?? '') };
+  return { video_id: top.video_id, topic: (top.topic ?? top.hook_formula ?? ''), mp4_path: top.mp4_path };
+}
+
+// Sprint 1018: send mp4 file to Telegram
+function sendVideoFile(videoPath: string, caption: string): Promise<void> {
+  const token = process.env.TELEGRAM_BOT_TOKEN;
+  const chatId = process.env.OWNER_TELEGRAM_CHAT_ID;
+  if (!token || !chatId) return Promise.resolve();
+  const boundary = '----RmdBoundary' + Date.now().toString(16);
+  const fileData = fs.readFileSync(videoPath);
+  const filename = path.basename(videoPath);
+  const parts: Buffer[] = [
+    Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="chat_id"\r\n\r\n${chatId}\r\n`),
+    Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="caption"\r\n\r\n${caption}\r\n`),
+    Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="video"; filename="${filename}"\r\nContent-Type: video/mp4\r\n\r\n`),
+    fileData,
+    Buffer.from(`\r\n--${boundary}--\r\n`),
+  ];
+  const body = Buffer.concat(parts);
+  return new Promise((resolve) => {
+    const req = https.request(
+      {
+        hostname: 'api.telegram.org',
+        path: `/bot${token}/sendVideo`,
+        method: 'POST',
+        headers: { 'Content-Type': `multipart/form-data; boundary=${boundary}`, 'Content-Length': body.length },
+        timeout: 120_000,
+      },
+      (res) => { res.resume(); resolve(); }
+    );
+    req.on('error', (e) => { console.error('[remind] video send error:', e.message); resolve(); });
+    req.on('timeout', () => { req.destroy(); resolve(); });
+    req.write(body);
+    req.end();
+  });
 }
 
 function sendTelegram(text: string): void {
@@ -83,11 +121,17 @@ function main(): void {
   const urgency = daysRemaining <= 3 ? '🚨' : daysRemaining <= 7 ? '⚠️' : '⏰';
   const next = pickNextVideo();
   const nextLine = next
-    ? `\n\n*Next up:* \`${next.video_id}\`${next.topic ? `\n📝 ${next.topic.slice(0, 60)}` : ''}\n→ /deliver ${next.video_id}`
+    ? `\n\n*Next up:* \`${next.video_id}\`${next.topic ? `\n📝 ${next.topic.slice(0, 60)}` : ''}\n_Video below ↓ — after posting: \`/record ${next.video_id} 0\`_`
     : '\n\n_No unposted video found — run /postnext to check_';
   const msg = `${urgency} *Posting Reminder* — ${postsRemaining} videos still needed by ${deadline} (${daysRemaining}d left)\n\nDone so far: ${postsDone}/30${nextLine}`;
 
   sendTelegram(msg);
+
+  // Sprint 1018: also send the mp4 file so operator can post directly from phone
+  if (next?.mp4_path) {
+    sendVideoFile(next.mp4_path, `/record ${next.video_id} 0`).catch(() => {});
+  }
+
   console.log(`[remind] sent — ${postsRemaining} remaining, ${daysRemaining}d left`);
 }
 
