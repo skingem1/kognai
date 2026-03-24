@@ -797,9 +797,10 @@
       "sprint": 1084,
       "title": "OPS — /digest: add Godman + Achiri launch countdown to bottom of digest",
       "block": "OPS",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
-      "rationale": "kognai-daily-digest has gate countdown but not Godman/Achiri launch dates. Add \"Godman: Nd · Achiri: Nd\" footer to keep upcoming launches visible daily."
+      "rationale": "kognai-daily-digest has gate countdown but not Godman/Achiri launch dates. Add \"Godman: Nd · Achiri: Nd\" footer to keep upcoming launches visible daily.",
+      "_note": "Shipped 2026-03-24 — commit 528b034e. Already implemented at lines 531-532."
     },
     {
       "sprint": 1085,
