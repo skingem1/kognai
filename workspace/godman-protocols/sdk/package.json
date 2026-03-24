@@ -6,12 +6,17 @@
   "main": "dist/index.js",
   "exports": "./dist/index.js",
   "types": "dist/index.d.ts",
+  "bin": {
+    "godman-demo": "dist/bin/demo.js"
+  },
   "files": [
     "dist",
-    "src"
+    "src",
+    "bin"
   ],
   "scripts": {
     "build": "tsc",
+    "demo": "tsx bin/demo.ts",
     "prepublishOnly": "npm run build",
     "test": "npx tsx smoke.test.ts",
     "typecheck": "tsc --noEmit"

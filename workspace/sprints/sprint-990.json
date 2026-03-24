@@ -1,0 +1,10 @@
+{
+  "sprint_id": "sprint-990",
+  "title": "GODMAN-SDK-BIN — Add bin entry + npm run demo for April 14 launch",
+  "description": "Add godman-demo bin entry to SDK package.json, include bin/ in tsconfig, add npm run demo script.",
+  "block": "GODMAN-PROTOCOLS",
+  "source": "queue-exhausted-launch-prep",
+  "tasks": [
+    { "id": "990-01", "title": "Add bin entry and demo script to SDK package.json + tsconfig", "type": "feature", "task_target": "workspace/godman-protocols/sdk/package.json", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-990" }
+  ]
+}
