@@ -468,6 +468,14 @@ export function cmdPace(): string {
     lines.push(`${gapIcon} *Gap:* ${gapStr} posts/day`);
     lines.push('');
     lines.push(`*Projection at current pace:* ${projectedAtGate} posts by Apr 7`);
+    // Sprint 1112: projected gate completion date
+    if (pacePerDay > 0 && postsNeeded > 0) {
+      const daysToComplete = Math.ceil(postsNeeded / pacePerDay);
+      const etaDate = new Date(now.getTime() + daysToComplete * 86_400_000);
+      const etaStr = etaDate.toISOString().slice(0, 10);
+      const etaIcon = etaDate <= GATE_DATE ? '✅' : '⚠️';
+      lines.push(`${etaIcon} *ETA to 30 posts:* ${etaStr} (${daysToComplete}d from now)`);
+    }
     if (willPass) {
       lines.push('✅ *On track* — keep it up!');
     } else {

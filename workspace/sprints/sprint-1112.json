@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1112",
+  "title": "GATE — /pace: add projected gate completion date based on current velocity",
+  "description": "Shows ETA date for reaching 30 posts at current pace, with icon indicating if before/after gate deadline.",
+  "block": "GATE",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1112-01",
+      "title": "Add ETA date calculation to cmdPace",
+      "type": "feature",
+      "task_target": "scripts/telegram-commands/cmd-gate.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-1112"
+    }
+  ]
+}
