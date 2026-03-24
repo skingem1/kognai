@@ -2921,6 +2921,29 @@ export function cmdGodman(): string {
   try { sdkVersion = JSON.parse(fs.readFileSync(sdkPkg, 'utf-8')).version || '?'; } catch {}
   lines.push(`📦 \`@godman-protocols/sdk\` v${sdkVersion}`);
 
+  // Sprint 1189: semver version validation — flag placeholder/missing versions
+  {
+    const SEMVER_RE = /^\d+\.\d+\.\d+$/;
+    const PLACEHOLDER_RE = /^0\.(0|1)\.\d+$/; // 0.0.x or 0.1.x = placeholder
+    const allPkgsList = [...PROTOCOLS, 'sdk'];
+    const semverIssues: string[] = [];
+    const semverOk: string[] = [];
+    for (const proto of allPkgsList) {
+      const pkgFile = path.join(BASE, proto, 'package.json');
+      let ver = '?';
+      try { ver = JSON.parse(fs.readFileSync(pkgFile, 'utf-8')).version || '?'; } catch {}
+      if (!SEMVER_RE.test(ver)) semverIssues.push(`${proto}: missing/invalid (${ver})`);
+      else if (PLACEHOLDER_RE.test(ver)) semverIssues.push(`${proto}: placeholder v${ver}`);
+      else semverOk.push(`${proto} v${ver}`);
+    }
+    if (semverIssues.length === 0) {
+      lines.push(`\n✅ *Semver:* all ${allPkgsList.length} packages have valid non-placeholder versions`);
+    } else {
+      lines.push(`\n⚠️ *Semver issues (${semverIssues.length}):* ${semverIssues.join(', ')}`);
+      lines.push(`✅ OK: ${semverOk.join(', ')}`);
+    }
+  }
+
   // Integration test
   const integPath = path.join(BASE, 'integration.test.ts');
   const hasInteg = fs.existsSync(integPath);

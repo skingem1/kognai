@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1189",
+  "title": "GODMAN-LAUNCH — /godman: show which protocols are semver-versioned (has package.json version)",
+  "description": "Add semver validation section to cmdGodman(). Flags protocols with missing or placeholder (0.0.x/0.1.x) versions. All 8 currently at v0.2.0 — shows green.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1189-01",
+      "title": "GODMAN-LAUNCH — /godman: show semver validation for all 8 packages",
+      "type": "feature",
+      "task_type": "godman_launch",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1189"
+    }
+  ]
+}
