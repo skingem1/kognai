@@ -6018,3 +6018,8 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Status: PASS (already implemented — /achiri shows derja profiler test results)
 - Commit: (no code changes needed)
 - Timestamp: 2026-03-24T16:40Z
+
+## Sprint 1068 — OPS (audit)
+- Status: PASS (already implemented — digest shows posting obligation as first action item)
+- Commit: (no code changes needed)
+- Timestamp: 2026-03-24T16:45Z

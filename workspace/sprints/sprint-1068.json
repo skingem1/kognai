@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1068",
+  "title": "OPS — Daily digest: add gate posting obligation to 07:00 digest output",
+  "description": "Verified: daily-digest.ts already shows posting obligation as first action item after title. todayObligation calculated from postsLeft/daysLeft.",
+  "block": "OPS",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1068-01",
+      "title": "Verify daily digest shows posting obligation as first action item",
+      "type": "audit",
+      "task_target": "scripts/daily-digest.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1068"
+    }
+  ]
+}
