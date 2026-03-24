@@ -602,6 +602,22 @@ export function cmdDigest(): string {
     out.push('', '*Action items:*', ...actions);
   }
 
+  // Sprint 1117: Achiri alpha countdown in footer
+  try {
+    const readinessPath = path.join(ROOT, 'reports', 'achiri-readiness.json');
+    if (fs.existsSync(readinessPath)) {
+      const data = JSON.parse(fs.readFileSync(readinessPath, 'utf-8'));
+      if (data.alpha_date) {
+        const alphaMs = new Date(data.alpha_date).getTime() - now.getTime();
+        const alphaDays = Math.max(0, Math.ceil(alphaMs / 86_400_000));
+        if (alphaDays <= 30) {
+          out.push('');
+          out.push(`🤖 *Achiri Alpha:* ${alphaDays}d to launch (${data.alpha_date})`);
+        }
+      }
+    }
+  } catch {}
+
   return out.join('\n');
 }
 

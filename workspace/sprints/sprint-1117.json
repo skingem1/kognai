@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1117",
+  "title": "OPS — /digest: add Achiri alpha countdown to digest footer",
+  "description": "Shows Achiri alpha launch countdown in digest footer when ≤30d away.",
+  "block": "OPS",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1117-01",
+      "title": "Add Achiri alpha countdown to cmdDigest footer",
+      "type": "feature",
+      "task_target": "scripts/telegram-commands/cmd-posting.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1117"
+    }
+  ]
+}
