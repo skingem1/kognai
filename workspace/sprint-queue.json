@@ -2788,7 +2788,7 @@
       "sprint": 1177,
       "title": "GODMAN-LAUNCH — /godman-preflight: full launch day checklist in one command",
       "block": "GODMAN-LAUNCH",
-      "status": "pending",
+      "status": "done",
       "priority": "high",
       "rationale": "Operator needs a single /godman-preflight command that runs all checks before launch: npm login, registry reachable, dry-run, tags, test pass, dist built. Shows GO / NO-GO at the end."
     },
