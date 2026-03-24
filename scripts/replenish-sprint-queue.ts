@@ -1251,6 +1251,58 @@ function generateItems(startSprint: number, existingTitles: Set<string> = new Se
     rationale: '/today shows what to post but not when. Show \"Next slot: 7pm in 2h 15m\" based on current time to nudge the operator to post.',
   });
 
+  // Wave 18 — Godman final + Achiri launch + operator quality-of-life
+  infraItems.push({
+    title: 'GODMAN-LAUNCH — /godman: show git tag status for each protocol (tagged vs untagged)',
+    block: 'GODMAN-LAUNCH',
+    rationale: '/godman shows version numbers but not whether each protocol has a git tag. Show tagged/untagged status so operator can see what still needs tagging before launch.',
+  });
+  infraItems.push({
+    title: 'OPS — /status: show whether .env file was modified today',
+    block: 'OPS',
+    rationale: '.env changes often go untracked and can break the pipeline silently. Show "env modified Xh ago" if .env mtime is recent as a change-alert.',
+  });
+  infraItems.push({
+    title: 'ACHIRI — /achiri: show total messages sent via re-engagement (vs organic)',
+    block: 'ACHIRI',
+    rationale: 'Achiri sends re-engagement messages but we do not track what fraction of daily messages are operator-triggered vs organic. Show breakdown to gauge true DAU health.',
+  });
+  infraItems.push({
+    title: 'GATE — /gate: show average views per post (all-time)',
+    block: 'GATE',
+    rationale: '/gate shows total views but not per-post average. "Avg views/post: 18" tells operator if quality or quantity is the bottleneck to hitting 500 views.',
+  });
+  infraItems.push({
+    title: 'OPS — /health: show count of PM2 processes with 0 restarts (stability score)',
+    block: 'OPS',
+    rationale: 'High-restart processes are flagged but stable processes go unnoticed. Show "X/N processes: 0 restarts" as a stability score to celebrate when things are running clean.',
+  });
+  infraItems.push({
+    title: 'QUALITY — /bottest: add test for /pace command output completeness',
+    block: 'QUALITY',
+    rationale: '/bottest covers /record and command smoke but not /pace. Add a test that checks /pace returns the time-boxed slots and ETA line.',
+  });
+  infraItems.push({
+    title: 'OPS — /errors: show which error log files were created today vs older',
+    block: 'OPS',
+    rationale: '/errors shows stale vs active logs but not creation date. Show "new today" badge on error logs that appeared since midnight.',
+  });
+  infraItems.push({
+    title: 'GATE — /today: show if any video in queue has been sitting unposted for >48h',
+    block: 'GATE',
+    rationale: 'Unposted videos that are >48h old may be stale (trending topics expire). Warn operator if top ready video is older than 2 days.',
+  });
+  infraItems.push({
+    title: 'OPS — /weekly-report: show number of sprints shipped this week',
+    block: 'OPS',
+    rationale: '/weekly-report shows content and Achiri stats but not dev velocity. Add sprint count from git log for the past 7 days to show development cadence.',
+  });
+  infraItems.push({
+    title: 'ACHIRI — /achiri: show current server time and timezone for operator awareness',
+    block: 'ACHIRI',
+    rationale: 'Operator is in Tunisia (UTC+1) but server runs UTC. Show server time so operator can calibrate re-engagement timing.',
+  });
+
   // Fill remaining slots (skip duplicates of already-completed items)
   for (const item of infraItems) {
     if (items.length >= 10) break;

@@ -142,6 +142,8 @@ export function cmdGate(): string {
     `${viewIcon} Views: ${totalViews}/500 (need ${viewsNeeded} more)`,
     // Sprint 1138 (wave 13): views needed per remaining day
     ...(viewsNeeded > 0 && daysLeft > 0 ? [`👁️ Views/day needed: *${(viewsNeeded / daysLeft).toFixed(1)}/day* to hit 500`] : []),
+    // Sprint 1139 (wave 18): average views per post
+    ...(postCount > 0 ? [`📈 Avg views/post: *${(totalViews / postCount).toFixed(1)}*${totalViews / postCount < 10 ? ' — boost quality' : ''}`] : []),
     `📊 Pace needed: ${postsPerDay} posts/day`,
     // Sprint 1132 (wave 14): posts/day over last 7 days
     (() => {

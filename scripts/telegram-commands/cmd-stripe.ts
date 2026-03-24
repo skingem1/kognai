@@ -495,12 +495,47 @@ export function cmdAchiri(): string {
       }
       const replyPct = reLines.length > 0 ? Math.round((repliedCount / reLines.length) * 100) : 0;
       const replyStr = reLines.length > 0 ? ` · *${replyPct}%* reply rate (${repliedCount}/${reLines.length})` : '';
-      lines.push(`*Re-engagement:* ${todayCount} today / ${reLines.length} total${replyStr}`);
+      // Sprint 1138 (wave 18): re-engagement vs organic message breakdown
+      let organicVsReStr = '';
+      try {
+        const countsPath2 = path.join(ROOT, 'workspace', 'achiri', 'daily-counts.json');
+        if (fs.existsSync(countsPath2)) {
+          const counts2 = JSON.parse(fs.readFileSync(countsPath2, 'utf-8')) as Record<string, Record<string, number>>;
+          let allMsgs2 = 0;
+          for (const dayData of Object.values(counts2)) {
+            for (const [k, v] of Object.entries(dayData)) {
+              if (k.startsWith('validate') || k.startsWith('e2e') || k.endsWith('-limit') || k.endsWith('-paid') || k.endsWith('-bypass')) continue;
+              allMsgs2 += v as number;
+            }
+          }
+          // Estimate re-engagement msgs = msgs from re-engaged UIDs on the day they were re-engaged
+          let reengagedMsgs2 = 0;
+          for (const l of reLines) {
+            try {
+              const re = JSON.parse(l);
+              if (!re.uid || !re.sentAt) continue;
+              const d = re.sentAt.slice(0, 10);
+              const dayData = counts2[d];
+              if (dayData) reengagedMsgs2 += dayData[re.uid] ?? 0;
+            } catch {}
+          }
+          if (allMsgs2 > 0) {
+            const orgPct = Math.round(Math.max(0, allMsgs2 - reengagedMsgs2) / allMsgs2 * 100);
+            organicVsReStr = ` · organic: *${orgPct}%*`;
+          }
+        }
+      } catch { /* skip */ }
+      lines.push(`*Re-engagement:* ${todayCount} today / ${reLines.length} total${replyStr}${organicVsReStr}`);
       lines.push('');
     }
 
     const tgToken = process.env.ACHIRI_TELEGRAM_BOT_TOKEN ? 'SET' : 'NOT SET';
     lines.push(`*Telegram Bot:* ${tgToken === 'SET' ? '✅' : '⚠️'} Token: ${tgToken}`);
+
+    // Sprint 1144 (wave 18): server time and timezone
+    const serverNow = new Date();
+    const serverTZ = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    lines.push(`🕐 *Server time:* ${serverNow.toISOString().replace('T', ' ').slice(0, 19)} UTC (${serverTZ})`);
 
     lines.push('');
     lines.push(`_Report: ${data.generated_at ? data.generated_at.split('T')[0] : 'unknown'}_`);

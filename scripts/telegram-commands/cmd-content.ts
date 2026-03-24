@@ -581,6 +581,21 @@ export function cmdToday(): string {
   const uncaptionedCount = unposted.length - captionedCount;
   lines.push(`📦 *Queue:* ${captionedCount} ready (captioned) · ${uncaptionedCount} uncaptioned · ${unposted.length} total unposted`);
 
+  // Sprint 1142 (wave 18): warn if top ready video is >48h old (stale trend topic)
+  try {
+    if (ready.length > 0) {
+      const topId = ready[0].video_id;
+      const topEntry = (ledger as any[]).find((e: any) => e.video_id === topId);
+      const topTs = topEntry?.delivered_at ?? topEntry?.created_at ?? topEntry?.timestamp;
+      if (topTs) {
+        const ageH = (Date.now() - new Date(topTs).getTime()) / 3600000;
+        if (ageH > 48) {
+          lines.push(`⚠️ *Top video is ${Math.round(ageH / 24)}d old* (\`${topId}\`) — trending topics may have expired`);
+        }
+      }
+    }
+  } catch { /* skip */ }
+
   // Recommended videos
   const topN = Math.min(3, ready.length);
   if (topN > 0) {

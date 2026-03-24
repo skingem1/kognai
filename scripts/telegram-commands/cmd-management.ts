@@ -630,6 +630,15 @@ export function cmdWeeklyReport(): string {
     `• Post ${Math.min(postsNeeded, 14)} videos (2/day)`,
     `• Run /postnow daily`,
     `• Track views with /updateviews`,
+    // Sprint 1143 (wave 18): sprints shipped this week
+    (() => {
+      try {
+        const gitOut = execSync(`git log --oneline --since="${weekAgoStr}" --grep="^Sprint" 2>/dev/null`, { cwd: ROOT, encoding: 'utf-8', timeout: 5000 });
+        const sprintLines = gitOut.trim().split('\n').filter(l => l.includes('Sprint'));
+        if (sprintLines.length > 0) return `\n*🏃 Dev velocity:* ${sprintLines.length} sprint${sprintLines.length !== 1 ? 's' : ''} shipped this week`;
+        return '';
+      } catch { return ''; }
+    })(),
   ].filter(Boolean);
 
   return lines.join('\n');
@@ -1828,8 +1837,21 @@ export function cmdStatus(): string {
     }
   } catch { /* skip */ }
 
+  // Sprint 1137 (wave 18): .env modified today alert
+  let envAlertStr = '';
+  try {
+    const envPath = path.join(ROOT, '.env');
+    if (fs.existsSync(envPath)) {
+      const stat = fs.statSync(envPath);
+      const ageH = (Date.now() - stat.mtimeMs) / 3600000;
+      if (ageH < 24) {
+        envAlertStr = ` · ⚠️ .env modified ${ageH < 1 ? `${Math.round(ageH * 60)}m` : `${Math.round(ageH)}h`} ago`;
+      }
+    }
+  } catch { /* skip */ }
+
   const lines = [
-    `📊 *Kognai Status Dashboard*${activeSprintStr}`,
+    `📊 *Kognai Status Dashboard*${activeSprintStr}${envAlertStr}`,
     '',
     `\`[${bar}]\` ${pct}% posts`,
     `\`[${viewBar}]\` ${viewPct}% views`,
@@ -2166,6 +2188,25 @@ export function cmdBotTest(): string {
     }
   } catch (err: any) {
     results.push(`❌ /record: error — ${(err.message || '').slice(0, 60)}`);
+    totalFail++;
+  }
+
+  // Sprint 1140 (wave 18): /pace output completeness test
+  try {
+    const { cmdPace } = require('./cmd-gate');
+    const paceOut: string = cmdPace();
+    const hasSlots = paceOut.includes('7:00') || paceOut.includes('posting slots');
+    const hasEta = paceOut.includes('ETA') || paceOut.includes('on track') || paceOut.includes('behind');
+    if (hasSlots && hasEta) {
+      results.push(`✅ /pace: contains time slots and gate ETA`);
+      totalPass++;
+    } else {
+      const missing = [!hasSlots && 'slots', !hasEta && 'ETA'].filter(Boolean).join(', ');
+      results.push(`❌ /pace: missing ${missing}`);
+      totalFail++;
+    }
+  } catch (err: any) {
+    results.push(`❌ /pace: error — ${(err.message || '').slice(0, 60)}`);
     totalFail++;
   }
 

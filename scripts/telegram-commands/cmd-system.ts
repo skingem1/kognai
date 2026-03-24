@@ -216,6 +216,7 @@ export function cmdHealth(): string {
   }
 
   // Sprint 1139 (wave 17): telegram-bot process uptime
+  // Sprint 1139 (wave 18): PM2 stability score (processes with 0 restarts)
   let botUptimeSection = '';
   try {
     const procs = getPm2List();
@@ -225,6 +226,10 @@ export function cmdHealth(): string {
       const icon = botProc.status === 'online' ? '✅' : '❌';
       botUptimeSection = `\n\n*Telegram Bot:* ${icon} ${botProc.status} · uptime ${uptimeStr}`;
     }
+    const stableProcs = procs.filter(p => p.restarts === 0 && p.status === 'online').length;
+    const totalProcs = procs.length;
+    const stabIcon = stableProcs === totalProcs ? '✅' : stableProcs >= totalProcs * 0.8 ? '⚠️' : '❌';
+    botUptimeSection += `\n*Stability:* ${stabIcon} ${stableProcs}/${totalProcs} processes with 0 restarts`;
   } catch { /* skip */ }
 
   return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${botUptimeSection}${ollamaSection}${memWarnSection}${memTableSection}${supabaseSection}${diskSection}${watchdogSection}${runtimeSection}${tailscaleSection}${hetznerSection}`;
@@ -1197,6 +1202,18 @@ export function cmdErrors(filterProcess?: string): string {
     }
   } catch { /* skip */ }
 
+  // Sprint 1141 (wave 18): "new today" badge on error logs created since midnight
+  try {
+    const midnightMs = new Date(new Date().toISOString().slice(0, 10) + 'T00:00:00Z').getTime();
+    const logFiles2 = fs.readdirSync(logDir).filter((f: string) => f.endsWith('-error.log'));
+    const newToday = logFiles2.filter((f: string) => {
+      try { const stat = fs.statSync(path.join(logDir, f)); return stat.birthtimeMs >= midnightMs || stat.ctimeMs >= midnightMs; } catch { return false; }
+    });
+    if (newToday.length > 0) {
+      output.push(`\n🆕 *New today:* ${newToday.map((f: string) => `\`${f.replace('-error.log', '')}\``).join(', ')}`);
+    }
+  } catch { /* skip */ }
+
   // Sprint 1137 (wave 14): weekly error count delta vs last week
   try {
     const logFiles = fs.readdirSync(logDir).filter((f: string) => f.endsWith('-error.log'));
@@ -1899,6 +1916,18 @@ export function cmdGodman(): string {
   let npmWhoami = '';
   try { npmWhoami = execSync('npm whoami', { encoding: 'utf-8', timeout: 5000, stdio: ['pipe','pipe','pipe'] }).trim(); } catch {}
   lines.push(`🔑 npm login: ${npmWhoami ? `✅ ${npmWhoami}` : '❌ run: npm login'}`);
+
+  // Sprint 1136 (wave 18): git tag status per protocol
+  try {
+    const tags = execSync('git tag 2>/dev/null', { cwd: ROOT, encoding: 'utf-8', timeout: 5000, stdio: ['pipe','pipe','pipe'] }).trim().split('\n').filter(Boolean);
+    const taggedProtos = new Set(PROTOCOLS.filter(p => tags.some(t => t.includes(p))));
+    lines.push('');
+    lines.push('*Git tags:*');
+    for (const proto of PROTOCOLS.concat(['sdk'])) {
+      const tagged = taggedProtos.has(proto) || tags.some(t => t.includes(proto));
+      lines.push(`  ${tagged ? '✅' : '❌'} ${proto} — ${tagged ? 'tagged' : 'no tag yet'}`);
+    }
+  } catch { /* skip */ }
 
   // Overall
   lines.push('');
