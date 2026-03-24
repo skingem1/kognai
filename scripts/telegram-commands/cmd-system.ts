@@ -145,6 +145,15 @@ export function cmdHealth(): string {
     }
   } catch {}
 
+  // Sprint 1123: Node.js and npm versions
+  let runtimeSection = '';
+  try {
+    const nodeVer = process.version ?? 'unknown';
+    let npmVer = 'unknown';
+    try { npmVer = execSync('npm --version 2>/dev/null', { encoding: 'utf-8', timeout: 3000 }).trim(); } catch {}
+    runtimeSection = `\n\n*Runtime:* Node ${nodeVer} · npm ${npmVer}`;
+  } catch {}
+
   // Sprint 1123: Tailscale VPN status
   let tailscaleSection = '';
   try {
@@ -159,7 +168,7 @@ export function cmdHealth(): string {
     tailscaleSection = '\n\n*Tailscale:* ℹ️ not installed or not running';
   }
 
-  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${ollamaSection}${memWarnSection}${supabaseSection}${diskSection}${watchdogSection}${tailscaleSection}`;
+  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${ollamaSection}${memWarnSection}${supabaseSection}${diskSection}${watchdogSection}${runtimeSection}${tailscaleSection}`;
 }
 
 export function cmdTier(): string {
@@ -372,8 +381,16 @@ export function cmdCrons(): string {
     if (stuck.length > 0) {
       lines.push(`🔴 *Stuck (>48h):*`);
       for (const c of stuck) {
-        // Sprint 1124: add restart hint
-        lines.push(`  🔴 \`${c.name}\` — ${Math.round(c.ageHours)}h since last restart · restart: \`pm2 restart ${c.name}\``);
+        lines.push(`  🔴 \`${c.name}\` — ${Math.round(c.ageHours)}h since last restart · \`pm2 restart ${c.name}\``);
+        // Sprint 1124: last log snippet from stuck cron
+        try {
+          const logPath = path.join(ROOT, 'logs', `${c.name}-error.log`);
+          if (fs.existsSync(logPath)) {
+            const logLines = fs.readFileSync(logPath, 'utf-8').trim().split('\n').filter(l => l.trim());
+            const lastLine = logLines[logLines.length - 1] ?? '';
+            if (lastLine) lines.push(`    _"${lastLine.slice(0, 80)}"_`);
+          }
+        } catch {}
       }
       lines.push('');
     }
@@ -988,6 +1005,14 @@ export function cmdErrors(): string {
       output.push(`*Top types:* ${topTypes.map(([t, c]) => `${t} (${c})`).join(' · ')}\n`);
     }
 
+    // Sprint 1122: top error source by process name
+    const processCounts = new Map<string, number>();
+    for (const e of errored) processCounts.set(e.name, (processCounts.get(e.name) ?? 0) + e.count);
+    const topProcess = Array.from(processCounts.entries()).sort((a, b) => b[1] - a[1])[0];
+    if (topProcess) {
+      output.push(`*Top source:* \`${topProcess[0]}\` (${topProcess[1]} error${topProcess[1] > 1 ? 's' : ''})\n`);
+    }
+
     for (const e of errored.slice(0, MAX_ENTRIES)) {
       const ago = Math.round((Date.now() - e.mtime) / 60_000);
       const timeStr = ago < 60 ? `${ago}m ago` : `${Math.round(ago / 60)}h ago`;
@@ -1131,11 +1156,21 @@ export async function cmdSmoke(chatId: string): Promise<void> {
       '',
     ];
 
-    // Extract individual check results
+    // Sprint 1126: list failed tests by name, then passing summary
+    const failLines: string[] = [];
+    const passLines: string[] = [];
     for (const line of output.split('\n')) {
-      if (line.includes('✓') || line.includes('✗')) {
-        lines.push(line.trim());
-      }
+      const t = line.trim();
+      if (t.includes('✗') || t.match(/^\s*(FAIL|✗|×|\d+\))/)) failLines.push(t.slice(0, 80));
+      else if (t.includes('✓') || t.match(/^\s*(PASS|✓|passing)/)) passLines.push(t.slice(0, 80));
+    }
+    if (failLines.length > 0) {
+      lines.push('*Failed:*');
+      for (const l of failLines.slice(0, 5)) lines.push(`  ${l}`);
+    }
+    if (passLines.length > 0) {
+      lines.push('*Passed:*');
+      for (const l of passLines.slice(0, 5)) lines.push(`  ${l}`);
     }
 
     // Sprint 1122: pipeline validator check

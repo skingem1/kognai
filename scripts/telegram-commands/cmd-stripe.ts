@@ -353,10 +353,13 @@ export function cmdAchiri(): string {
     const critFails = checks.filter(c => !c.pass && c.critical);
 
     const statusIcon = data.overall_ready ? '✅' : '⚠️';
+    // Sprint 1120: days to alpha prominently in header
+    const daysToAlpha = data.days_to_alpha ?? Math.max(0, Math.ceil((new Date('2026-04-25T00:00:00Z').getTime() - Date.now()) / 86_400_000));
+    const alphaUrgency = daysToAlpha <= 3 ? '🔴' : daysToAlpha <= 7 ? '🟠' : daysToAlpha <= 14 ? '🟡' : '🟢';
     const lines: string[] = [
       `🤖 *Achiri Alpha Status* ${statusIcon}`,
+      `${alphaUrgency} *${daysToAlpha}d to alpha launch* (${data.alpha_date ?? 'Apr 25'})`,
       '',
-      `📅 Alpha launch: ${data.alpha_date ?? '?'} (${data.days_to_alpha ?? '?'}d)`,
       `📊 Readiness: *${data.score ?? '?'}%* (${passCount}/${checks.length} checks pass)`,
       `📋 Waitlist: *${waitlistCount}* users`,
       '',

@@ -833,6 +833,67 @@ function generateItems(startSprint: number, existingTitles: Set<string> = new Se
     rationale: '/pace shows overall pace and needed pace but not "you need to post X videos today". Add a "Post X more today" action line based on posts done today vs daily obligation.',
   });
 
+  // Wave 11 templates — post-launch + phase 2 readiness
+  infraItems.push({
+    title: 'GODMAN-LAUNCH — /godman: show publish status badge (published to npm / not yet)',
+    block: 'GODMAN-PROTOCOLS',
+    rationale: 'After npm publish, /godman should show a published badge per protocol. Check npm registry for latest version to distinguish pre-launch from post-launch state.',
+  });
+
+  infraItems.push({
+    title: 'OPS — /status: add gate ETA to posts section (projects date posts will hit 30)',
+    block: 'OPS',
+    rationale: '/status shows posts/30 but not ETA. At current pace, it should project the date when posts will reach 30, e.g. "ETA: Apr 5" or "ETA: missed" if gate date has passed.',
+  });
+
+  infraItems.push({
+    title: 'ACHIRI — /achiri: show days to alpha countdown prominently in header',
+    block: 'ACHIRI',
+    rationale: '/achiri shows days buried in the status line. Move "Nd to alpha launch" to be the second line after the status icon so it is the first thing operator sees.',
+  });
+
+  infraItems.push({
+    title: 'GATE — /weekly-report: show views per day this week vs target',
+    block: 'GATE',
+    rationale: '/weekly-report shows post count but not views velocity. Add views/day for the week and compare to what is needed to hit 500 total.',
+  });
+
+  infraItems.push({
+    title: 'OPS — /errors: show which PM2 process has the most errors in summary',
+    block: 'OPS',
+    rationale: '/errors groups by type but not by process. Show "Top error source: <process-name> (N errors)" so operator knows where to focus first.',
+  });
+
+  infraItems.push({
+    title: 'INFRA — /health: show Node.js and npm versions',
+    block: 'INFRA',
+    rationale: '/health shows process info but not runtime versions. Node.js version mismatches can cause silent failures. Add "Node: vX.Y.Z · npm: X.Y.Z" to the health report.',
+  });
+
+  infraItems.push({
+    title: 'OPS — /crons: show last output snippet from stuck cron log',
+    block: 'OPS',
+    rationale: 'When /crons shows a stuck cron, operator has no hint why it is stuck. Show last 1-2 lines from the cron process error log alongside the restart hint.',
+  });
+
+  infraItems.push({
+    title: 'GATE — /record: warn if views is unusually high (>10k) — possible typo',
+    block: 'GATE',
+    rationale: 'Operators sometimes enter view counts with extra zeros (e.g. 10000 instead of 100). Add a warning when views > 5000 to confirm before recording.',
+  });
+
+  infraItems.push({
+    title: 'QUALITY — /smoke: show which tests passed/failed by name not just count',
+    block: 'QUALITY',
+    rationale: '/smoke shows "X passed, Y failed" but not which tests failed. Extract test names from output and list the failed ones for faster debugging.',
+  });
+
+  infraItems.push({
+    title: 'OPS — /morning-brief: add gate ETA (projected date to hit 30 posts)',
+    block: 'OPS',
+    rationale: 'Morning brief shows posts done and days left but not the projected date when gate will be met at current pace. Add ETA to help operator visualize trajectory.',
+  });
+
   // Fill remaining slots (skip duplicates of already-completed items)
   for (const item of infraItems) {
     if (items.length >= 10) break;

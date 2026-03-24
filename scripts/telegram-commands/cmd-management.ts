@@ -575,7 +575,13 @@ export function cmdWeeklyReport(): string {
     `📊 *Weekly Report* (${weekAgoStr} → ${todayStr})`,
     '',
     '*📱 Posting:*',
-    `• This week: ${thisWeekPosts.length} posts · ${weekViews} views`,
+    // Sprint 1121: views per day this week vs target
+    (() => {
+      const weekViewsPerDay = (weekViews / 7).toFixed(1);
+      const viewsNeeded = Math.max(0, 500 - totalViews);
+      const viewsPerDayNeeded = daysLeft > 0 ? (viewsNeeded / daysLeft).toFixed(1) : '0';
+      return `• This week: ${thisWeekPosts.length} posts · ${weekViews} views (${weekViewsPerDay}/day · need ${viewsPerDayNeeded}/day for gate)`;
+    })(),
     `• All time: ${totalPosts}/30 posts · ${totalViews} total views`,
     `• Gate: ${daysLeft}d left · ${paceNeeded} posts/day needed`,
     // Sprint 1109: gate velocity — this week vs last week
@@ -1743,6 +1749,25 @@ export function cmdStatus(): string {
     }
   } catch { /* skip */ }
 
+  // Sprint 1119: gate ETA — project date when posts will hit 30 at current pace
+  let gateEtaStr = '';
+  if (postsNeeded > 0 && posts.length > 1) {
+    const dates = posts
+      .map((p: any) => new Date(p.posted_at ?? p.recorded_at))
+      .filter((d: Date) => !isNaN(d.getTime()))
+      .sort((a: Date, b: Date) => a.getTime() - b.getTime());
+    if (dates.length > 1) {
+      const daysSinceFirst = Math.max(1, (now.getTime() - dates[0].getTime()) / 86_400_000);
+      const actualPace = posts.length / daysSinceFirst;
+      if (actualPace > 0) {
+        const daysToComplete = Math.ceil(postsNeeded / actualPace);
+        const etaDate = new Date(now.getTime() + daysToComplete * 86_400_000);
+        const missed = etaDate > GATE_DATE;
+        gateEtaStr = ` · ETA: ${missed ? '⚠️' : ''}${etaDate.toISOString().slice(0, 10)}`;
+      }
+    }
+  }
+
   // Sprint 1101: views progress bar
   const viewPct = Math.min(100, Math.round((totalViews / 500) * 100));
   const viewFilled = Math.round(viewPct / 5);
@@ -1753,7 +1778,7 @@ export function cmdStatus(): string {
     '',
     `\`[${bar}]\` ${pct}% posts`,
     `\`[${viewBar}]\` ${viewPct}% views`,
-    `*${totalPosts}/${target}* posts · *${totalViews}/500* views · *${daysLeft}d* left`,
+    `*${totalPosts}/${target}* posts · *${totalViews}/500* views · *${daysLeft}d* left${gateEtaStr}`,
     `${urgency}`,
     '',
     // Sprint 1119: bold obligation status line

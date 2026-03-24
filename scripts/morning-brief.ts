@@ -92,11 +92,35 @@ function main(): void {
     .filter((p: any) => !DRY_METHODS.some(d => String(p.method || '').includes(d)))
     .reduce((s: number, p: any) => s + (p.views ?? 0), 0);
 
+  // Sprint 1127: gate ETA from manual-posts history
+  let gateEtaLine = '';
+  if (postsNeeded > 0) {
+    try {
+      const allPosts = fs.readFileSync(path.join(ROOT, 'workspace/scs001/manual-posts.jsonl'), 'utf-8')
+        .split('\n').filter(l => l.trim()).map(l => JSON.parse(l));
+      if (allPosts.length > 1) {
+        const dates = allPosts
+          .map((p: any) => new Date(p.posted_at ?? p.recorded_at))
+          .filter((d: Date) => !isNaN(d.getTime()))
+          .sort((a: Date, b: Date) => a.getTime() - b.getTime());
+        const daysSinceFirst = Math.max(1, (Date.now() - dates[0].getTime()) / 86_400_000);
+        const pacePerDay = allPosts.length / daysSinceFirst;
+        if (pacePerDay > 0) {
+          const daysToGate = Math.ceil(postsNeeded / pacePerDay);
+          const etaDate = new Date(Date.now() + daysToGate * 86_400_000).toISOString().slice(0, 10);
+          const missedGate = new Date(etaDate) > new Date('2026-04-07T00:00:00Z');
+          gateEtaLine = missedGate ? `⚠️ ETA: ${etaDate} — behind gate!` : `📈 ETA: ${etaDate} — on track`;
+        }
+      }
+    } catch {}
+  }
+
   const lines = [
     `${urgencyIcon} *Good morning — ${today}*`,
     '',
     `📊 Gate: *${postsDone}/30* · ${daysLeft}d to ${deadline}`,
     `${paceIcon} Today: *${todayPosts}/${dailyObligation}* posted`,
+    ...(gateEtaLine ? [gateEtaLine] : []),
     ...(totalViews < 100 ? [`👁️ Views: ${totalViews}/500 — engagement lag, boost with CTAs`] : []),
     '',
   ];
