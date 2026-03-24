@@ -3128,6 +3128,26 @@ export function cmdGodman(): string {
     }
   } catch { /* skip */ }
 
+  // Sprint 1170: code freshness — days since last commit per protocol
+  lines.push('');
+  lines.push('*Code freshness (last commit):*');
+  const nowMs = Date.now();
+  for (const proto of PROTOCOLS.concat(['sdk'])) {
+    const protoDir = path.join(BASE, proto);
+    let daysAgo = -1;
+    try {
+      const ts = execSync(`git log -1 --format=%ct -- "${protoDir}" 2>/dev/null`, { cwd: ROOT, encoding: 'utf-8', timeout: 5000, stdio: ['pipe','pipe','pipe'] }).trim();
+      if (ts) daysAgo = Math.floor((nowMs - parseInt(ts, 10) * 1000) / 86_400_000);
+    } catch {}
+    if (daysAgo < 0) {
+      lines.push(`  ⚠️ ${proto} — no commits found`);
+    } else if (daysAgo > 7) {
+      lines.push(`  ⚠️ ${proto} — last commit ${daysAgo}d ago (stale — risk before launch)`);
+    } else {
+      lines.push(`  ✅ ${proto} — last commit ${daysAgo}d ago`);
+    }
+  }
+
   // Sprint 1169: npm publish --dry-run per protocol
   lines.push('');
   lines.push('*Publish dry-run:*');

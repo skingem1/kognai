@@ -1,0 +1,21 @@
+{
+  "sprint_id": "sprint-1170",
+  "title": "GODMAN-LAUNCH — /godman: show days since each protocol last committed",
+  "description": "Add a 'code freshness' section to cmdGodman() showing 'last commit: Xd ago' per protocol using git log. Warn if any protocol has not been committed in >7 days (risk before launch).",
+  "source": "queue-prescribed",
+  "block": "GODMAN-LAUNCH",
+  "tasks": [
+    {
+      "id": "1170-01",
+      "title": "Add code freshness section to cmdGodman() — git log last commit date per protocol",
+      "type": "feature",
+      "task_type": "ux",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1170",
+      "notes": "File >3000 lines — swarm bypassed, written directly."
+    }
+  ]
+}
