@@ -1609,16 +1609,23 @@ export function cmdStatus(): string {
   }
 
   // Sprint 998: Critical cron health check
+  // Sprint 1021: count stopped/launching as healthy — cron jobs are stopped between runs
   const CRITICAL_CRONS = ['telegram-bot', 'kognai-daily-digest', 'kognai-gate-tracker-update', 'kognai-post-noon', 'kognai-post-evening'];
+  const PERSISTENT_PROCS = new Set(['telegram-bot']); // must be 'online'; crons are ok if 'stopped'
   let cronLine = '';
   try {
     const procs = getPm2List();
+    const registeredNames = new Set(procs.map(p => p.name));
     const onlineNames = new Set(procs.filter(p => p.status === 'online').map(p => p.name));
-    const downCrons = CRITICAL_CRONS.filter(n => !onlineNames.has(n));
+    const downCrons = CRITICAL_CRONS.filter(n => {
+      if (!registeredNames.has(n)) return true; // not in PM2 at all
+      if (PERSISTENT_PROCS.has(n)) return !onlineNames.has(n); // persistent must be online
+      return false; // cron jobs: registered = healthy
+    });
     if (downCrons.length === 0) {
-      cronLine = `⚙️ Crons: *${CRITICAL_CRONS.length}/${CRITICAL_CRONS.length}* critical online`;
+      cronLine = `⚙️ Crons: *${CRITICAL_CRONS.length}/${CRITICAL_CRONS.length}* critical registered`;
     } else {
-      cronLine = `⚠️ Crons: *${CRITICAL_CRONS.length - downCrons.length}/${CRITICAL_CRONS.length}* — down: ${downCrons.join(', ')}\n_Run /boot to start_`;
+      cronLine = `⚠️ Crons: *${CRITICAL_CRONS.length - downCrons.length}/${CRITICAL_CRONS.length}* — missing: ${downCrons.join(', ')}\n_Run /boot to register_`;
     }
   } catch {
     cronLine = '⚠️ Crons: PM2 not available';

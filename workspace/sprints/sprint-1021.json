@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-1021",
+  "title": "OPS-BUGFIX — cron health check: 'stopped' is healthy for cron processes",
+  "description": "cmdStatus() shows 4/5 crons 'down' but they're actually registered PM2 processes that are 'stopped' between runs (autorestart:false, one-shot cron jobs). Fix: count a cron as healthy if it's registered in PM2 (status: online OR stopped OR launching). Only flag as down if not in PM2 at all. Same fix needed in cmd-system.ts cronSection().",
+  "block": "OPS",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1021-01",
+      "title": "Fix cron health check in cmd-management.ts and cmd-system.ts",
+      "type": "bug",
+      "task_target": "scripts/telegram-commands/cmd-management.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1021",
+      "description": "In cmdStatus(): change cron health check from checking status==='online' to checking if process name exists in PM2 list regardless of status. In cmd-system.ts cronSection(): same fix."
+    }
+  ]
+}
