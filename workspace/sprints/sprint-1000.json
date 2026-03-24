@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1000",
+  "title": "STATUS-ARCH-SYSTEMS — Add AMD-25 DKA + ARCH-001 observer section to status CLI",
+  "description": "Add architectureSystems section to scripts/status.ts: AMD-25 DKA vectorCount per domain (read .data/dka-entries.jsonl), ARCH-001 heartbeat age and recent escalations count. Sprint 1000 milestone.",
+  "block": "OPS",
+  "source": "queue-exhausted-ops",
+  "tasks": [
+    {
+      "id": "1000-01",
+      "title": "Add architectureSystems() to scripts/status.ts",
+      "type": "feature",
+      "task_target": "scripts/status.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1000"
+    }
+  ]
+}

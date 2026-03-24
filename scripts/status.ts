@@ -120,6 +120,51 @@ function envSection(): void {
   }
 }
 
+// ── Architecture Systems ──────────────────────────────────────────────────────
+function architectureSection(): void {
+  console.log(heading('\n[Architecture Systems]'));
+
+  // AMD-25 DKA Store
+  const dkaFile = join(ROOT, 'workspace/amd25/.data/dka-entries.jsonl');
+  if (existsSync(dkaFile)) {
+    const lines = readFileSync(dkaFile, 'utf8').trim().split('\n').filter(Boolean);
+    const domains: Record<string, number> = {};
+    for (const line of lines) {
+      try { const e = JSON.parse(line) as { domain: string }; domains[e.domain] = (domains[e.domain] ?? 0) + 1; } catch {/* skip */}
+    }
+    const total = Object.values(domains).reduce((a, b) => a + b, 0);
+    const summary = Object.entries(domains).map(([d, n]) => `${d}:${n}`).join(' ');
+    console.log(`  DKA Store: ${ok(`${total} entries`)} ${summary ? `(${summary})` : ''}`);
+  } else {
+    console.log(`  DKA Store: ${warn('empty — run: npx tsx workspace/amd25/curator.ts ingest ...')}`);
+  }
+
+  // ARCH-001 Observer / Heartbeat
+  const hbFile = join(ROOT, 'workspace/arch001/_orchestrator/heartbeat.json');
+  if (existsSync(hbFile)) {
+    try {
+      const hb = JSON.parse(readFileSync(hbFile, 'utf8')) as { ts: string; phase?: string };
+      const ageMin = Math.round((Date.now() - new Date(hb.ts).getTime()) / 60_000);
+      const status = ageMin < 10 ? ok(`heartbeat ${ageMin}m ago`) : warn(`heartbeat ${ageMin}m ago (stale if >10m)`);
+      console.log(`  Observer:  ${status}  phase=${hb.phase ?? 'unknown'}`);
+    } catch { console.log(`  Observer:  ${warn('heartbeat.json unreadable')}`); }
+  } else {
+    console.log(`  Observer:  ${warn('not running — run: bash scripts/arch001/heartbeat.sh')}`);
+  }
+
+  // Escalations
+  const escalDir = join(ROOT, 'workspace/arch001/_orchestrator/escalations');
+  const escals = existsSync(escalDir)
+    ? readLines(join(ROOT, 'workspace/arch001/_orchestrator/escalations')).length
+    : 0;
+  // count files instead
+  try {
+    const { readdirSync } = require('fs') as typeof import('fs');
+    const files = readdirSync(escalDir).filter((f: string) => f.endsWith('.json'));
+    console.log(`  Escalations: ${files.length > 0 ? warn(`${files.length} escalation(s) — check workspace/arch001/_orchestrator/escalations/`) : ok('none')}`);
+  } catch { console.log(`  Escalations: ${warn('dir unreadable')}`); }
+}
+
 // ── Action Items ─────────────────────────────────────────────────────────────
 function actionItems(): void {
   const gate = readJSON<{ raw: { posts_count: number }; urgency: string }>('workspace/gates/phase1-5-gate.json');
@@ -145,6 +190,7 @@ function main(): void {
   tikTokSection();
   achiriSection();
   godmanSection();
+  architectureSection();
   envSection();
   actionItems();
 
