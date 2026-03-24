@@ -823,11 +823,18 @@ export function cmdErrors(): string {
       const valLines = fs.readFileSync(errPath, 'utf-8').trim().split('\n').filter(Boolean)
         .map((l: string) => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
       if (valLines.length > 0) {
-        const recent = valLines.slice(-3);
-        output.push('\n*Pipeline validation errors (last 3):*');
-        for (const e of recent) {
-          const err = ((e as any).error ?? (e as any).message ?? 'unknown') as string;
-          output.push(`• ${err.slice(0, 100)}`);
+        // Sprint 1080: deduplicate repeated error lines — show count instead
+        const counts = new Map<string, number>();
+        for (const e of valLines) {
+          const raw = ((e as any).error ?? (e as any).message ?? 'unknown') as string;
+          const key = raw.slice(0, 100);
+          counts.set(key, (counts.get(key) ?? 0) + 1);
+        }
+        const dedupedErrors = Array.from(counts.entries()).sort((a, b) => b[1] - a[1]).slice(0, 5);
+        output.push(`\n*Pipeline validation errors (${valLines.length} total, ${counts.size} unique):*`);
+        for (const [msg, count] of dedupedErrors) {
+          const countStr = count > 1 ? ` ×${count}` : '';
+          output.push(`• ${msg}${countStr}`);
         }
       }
     } catch { /* skip */ }
