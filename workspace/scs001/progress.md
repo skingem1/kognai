@@ -5128,3 +5128,14 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (content drafting, direct write)
 - Issues: none
 - Timestamp: 2026-03-24T23:45:00Z
+
+## Sprint 962 — CLAWCARD-EVAL
+- Status: PASS
+- Commit: e1408afe
+- Files created: workspace/intel/clawcard-eval.md
+- Tools installed: @clawcard/cli v3.3.0 (npm global)
+- Test: CLI installed and help verified; live test blocked (requires browser login)
+- Block: INTEL-009
+- Swarm used: no (evaluation task, direct write)
+- Issues: clawcard login requires browser — human action needed for live test
+- Timestamp: 2026-03-25T00:00:00Z
