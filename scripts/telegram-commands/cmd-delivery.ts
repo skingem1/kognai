@@ -100,7 +100,10 @@ export async function cmdDeliver(chatId: string, args: string): Promise<string> 
     }
   }
 
-  const gate = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl')).length;
+  const DRY_METHODS_DL = ['browser-post-dry', 'batch-browser-dry', 'dry'];
+  const gate = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'))
+    .filter((e: any) => e.video_id && !(e.method && DRY_METHODS_DL.some((d: string) => String(e.method).includes(d))))
+    .length;
   const remaining = Math.max(0, 30 - gate);
 
   return (
