@@ -114,7 +114,22 @@ export function cmdHealth(): string {
     supabaseSection = '\n\n*Supabase:* ❌ unreachable';
   }
 
-  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${ollamaSection}${memWarnSection}${supabaseSection}`;
+  // Sprint 1113: Mac Mini disk space (vault)
+  let diskSection = '';
+  try {
+    const dfOut = execSync('df -h / 2>&1', { encoding: 'utf-8', timeout: 5000 }).trim();
+    const dfLine = dfOut.split('\n')[1] ?? '';
+    const parts = dfLine.trim().split(/\s+/);
+    // Columns: Filesystem  Size  Used  Avail  Use%  Mounted
+    if (parts.length >= 5) {
+      const used = parts[2] ?? '?', avail = parts[3] ?? '?', pct = parts[4] ?? '?';
+      const pctNum = parseInt(pct);
+      const diskIcon = pctNum >= 90 ? '🔴' : pctNum >= 75 ? '🟠' : '✅';
+      diskSection = `\n\n*Disk (vault):* ${diskIcon} ${used} used · ${avail} free · ${pct} full`;
+    }
+  } catch {}
+
+  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${ollamaSection}${memWarnSection}${supabaseSection}${diskSection}`;
 }
 
 export function cmdTier(): string {
@@ -910,6 +925,25 @@ export function cmdErrors(): string {
     const fmtTime = (ms: number) => { const ago = Math.round((Date.now() - ms) / 60_000); return ago < 60 ? `${ago}m ago` : `${Math.round(ago / 60)}h ago`; };
     const windowStr = windowStart === windowEnd ? fmtTime(windowStart) : `${fmtTime(windowStart)} → ${fmtTime(windowEnd)}`;
     output.push(`⚠️ *PM2 Errors (last 24h)* — ${errored.length} unique · _${windowStr}_\n`);
+
+    // Sprint 1111: group by error type, show top 3
+    const typeCounts = new Map<string, number>();
+    for (const e of errored) {
+      const lower = e.line.toLowerCase();
+      let etype = 'other';
+      if (lower.includes('timeout') || lower.includes('timed out') || lower.includes('etimedout')) etype = 'timeout';
+      else if (lower.includes('enoent') || lower.includes('not found') || lower.includes('no such file')) etype = 'file-not-found';
+      else if (lower.includes('parse') || lower.includes('json') || lower.includes('syntax')) etype = 'parse-error';
+      else if (lower.includes('econnrefused') || lower.includes('econnreset') || lower.includes('socket')) etype = 'connection';
+      else if (lower.includes('permission') || lower.includes('eacces')) etype = 'permission';
+      else if (lower.includes('memory') || lower.includes('heap') || lower.includes('oom')) etype = 'memory';
+      typeCounts.set(etype, (typeCounts.get(etype) ?? 0) + e.count);
+    }
+    const topTypes = Array.from(typeCounts.entries()).sort((a, b) => b[1] - a[1]).slice(0, 3);
+    if (topTypes.length > 0) {
+      output.push(`*Top types:* ${topTypes.map(([t, c]) => `${t} (${c})`).join(' · ')}\n`);
+    }
+
     for (const e of errored.slice(0, MAX_ENTRIES)) {
       const ago = Math.round((Date.now() - e.mtime) / 60_000);
       const timeStr = ago < 60 ? `${ago}m ago` : `${Math.round(ago / 60)}h ago`;

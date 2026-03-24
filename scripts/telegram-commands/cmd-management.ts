@@ -1711,6 +1711,22 @@ export function cmdStatus(): string {
     }
   } catch { /* skip if unreadable */ }
 
+  // Sprint 1114: last pipeline run timestamp
+  let pipelineLine = '';
+  try {
+    const pRunPath = path.join(ROOT, 'reports', 'pipeline-runs', 'latest.json');
+    if (fs.existsSync(pRunPath)) {
+      const pRun = JSON.parse(fs.readFileSync(pRunPath, 'utf-8'));
+      const ts = pRun.completed_at ?? pRun.started_at;
+      if (ts) {
+        const ageH = (Date.now() - new Date(ts).getTime()) / 3600000;
+        const ageStr = ageH < 1 ? `${Math.round(ageH * 60)}m ago` : `${Math.round(ageH)}h ago`;
+        const stale = ageH > 25 ? ' ⚠️ stale' : '';
+        pipelineLine = `🎬 Pipeline: last run *${ageStr}*${stale}`;
+      }
+    }
+  } catch { /* skip */ }
+
   // Sprint 1081: Smoke test status line
   let smokeLine = '';
   try {
@@ -1743,6 +1759,7 @@ export function cmdStatus(): string {
     `📅 Today: *${todayPosts}/${dailyObligation}* ${todayPosts >= dailyObligation ? '✅ done' : '⏳ post now'} · ${paceNeeded.toFixed(1)}/day needed`,
     streak > 0 ? `🔥 Streak: *${streak}* days` : (daysSinceLastPost > 0 ? `💤 Streak: 0 — last post *${daysSinceLastPost}d ago*` : `💤 Streak: 0 — no posts yet`),
     `📦 Queue: *${readyCount}* ready · ${unposted.length} total`,
+    pipelineLine,
     cronLine,
     watchdogLine,
     trustLine,
