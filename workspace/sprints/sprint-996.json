@@ -1,0 +1,17 @@
+{
+  "sprint_id": "sprint-996",
+  "title": "GODMAN-CHANGELOGS — CHANGELOG.md for all 7 protocols + SDK",
+  "description": "Create CHANGELOG.md (Keep a Changelog format) for each of the 7 Godman Protocols and the SDK. Required for npm best practices and GitHub professionalism. v0.1.0 (skeleton) + v0.2.0 (implementation, April 14 2026 release).",
+  "block": "GODMAN-PROTOCOLS",
+  "source": "queue-exhausted-launch-prep",
+  "tasks": [
+    { "id": "996-01", "title": "PACT CHANGELOG.md", "type": "content", "task_target": "workspace/godman-protocols/pact/CHANGELOG.md", "agent": "coder", "status": "pending", "priority": "high", "sprint_id": "sprint-996" },
+    { "id": "996-02", "title": "LAX CHANGELOG.md", "type": "content", "task_target": "workspace/godman-protocols/lax/CHANGELOG.md", "agent": "coder", "status": "pending", "priority": "high", "sprint_id": "sprint-996" },
+    { "id": "996-03", "title": "SCORE CHANGELOG.md", "type": "content", "task_target": "workspace/godman-protocols/score/CHANGELOG.md", "agent": "coder", "status": "pending", "priority": "high", "sprint_id": "sprint-996" },
+    { "id": "996-04", "title": "SIGNAL CHANGELOG.md", "type": "content", "task_target": "workspace/godman-protocols/signal/CHANGELOG.md", "agent": "coder", "status": "pending", "priority": "high", "sprint_id": "sprint-996" },
+    { "id": "996-05", "title": "SOUL CHANGELOG.md", "type": "content", "task_target": "workspace/godman-protocols/soul/CHANGELOG.md", "agent": "coder", "status": "pending", "priority": "high", "sprint_id": "sprint-996" },
+    { "id": "996-06", "title": "AMF CHANGELOG.md", "type": "content", "task_target": "workspace/godman-protocols/amf/CHANGELOG.md", "agent": "coder", "status": "pending", "priority": "high", "sprint_id": "sprint-996" },
+    { "id": "996-07", "title": "DRS CHANGELOG.md", "type": "content", "task_target": "workspace/godman-protocols/drs/CHANGELOG.md", "agent": "coder", "status": "pending", "priority": "high", "sprint_id": "sprint-996" },
+    { "id": "996-08", "title": "SDK CHANGELOG.md", "type": "content", "task_target": "workspace/godman-protocols/sdk/CHANGELOG.md", "agent": "coder", "status": "pending", "priority": "high", "sprint_id": "sprint-996" }
+  ]
+}
