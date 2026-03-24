@@ -6330,3 +6330,13 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (new file, wrote directly)
 - Issues: none — dry-run shows 8/8 tags ready (godman-protocols/{name}@v0.2.0)
 - Timestamp: 2026-03-24T21:30:00Z
+
+## Sprint 1173 — GODMAN-LAUNCH
+- Status: PASS
+- Commit: 28d05547
+- Files created: workspace/sprints/sprint-1173.json
+- Files modified: scripts/telegram-commands/cmd-system.ts
+- Change: Added cmdGodmanTag() — /godman-tag (dry-run) and /godman-tag confirm (live tag + push)
+- Swarm used: no (new function appended, wrote directly)
+- Issues: none
+- Timestamp: 2026-03-24T21:40:00Z
