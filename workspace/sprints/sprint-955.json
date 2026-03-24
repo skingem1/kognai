@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-955",
+  "title": "GODMAN-REPO-02 \u2014 Create remaining 6 protocol repo skeletons (LAX, SCORE, AMF, DRS, SOUL, SIGNAL)",
+  "description": "From Godman Protocols Portfolio Strategy + 7-Week Calendar. Create 6 repos following same structure as PACT. Each with README, Apache 2.0, package.json, src/, all 5 plugin config dirs. Use consistent template. Skeleton only \u2014 no implementation code.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "955-01",
+      "title": "GODMAN-REPO-02 \u2014 Create remaining 6 protocol repo skeletons (LAX, SCORE, AMF, DRS, SOUL, SIGNAL)",
+      "type": "feature",
+      "task_type": "godman_protocols",
+      "task_target": "workspace/sprints/sprint-955-output.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-955"
+    }
+  ]
+}

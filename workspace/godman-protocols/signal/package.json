@@ -1,0 +1,38 @@
+{
+  "name": "@godman-protocols/signal",
+  "version": "0.1.0",
+  "description": "Event Bus and Pub/Sub — skeleton",
+  "status": "skeleton",
+  "private": true,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "test": "echo 'No tests yet — skeleton phase'"
+  },
+  "keywords": [
+    "agent",
+    "signal",
+    "protocol",
+    "x402",
+    "godman-protocols"
+  ],
+  "author": "skingem1",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/skingem1/signal.git"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0"
+  },
+  "dependencies": {}
+}
