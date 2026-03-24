@@ -2715,7 +2715,7 @@
       "sprint": 1163,
       "title": "GODMAN-LAUNCH — /godman: warn if any protocol has no tests (missing test script)",
       "block": "GODMAN-PROTOCOLS",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "Some godman protocols may not have a test script. /godman should flag protocols missing npm test so they get coverage before launch."
     },
