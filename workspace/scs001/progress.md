@@ -5796,3 +5796,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (direct write)
 - Issues: None
 - Timestamp: 2026-03-24T11:20:00Z
+
+## Sprint 1011 — SPIELBERG PACT Demo Recording
+- Status: PASS
+- Commit: 00f19945
+- Files created: scripts/spielberg/pact-demo.json, workspace/sprints/sprint-1011.json, workspace/scs001/code-demo-runs/pact-demo-v1/
+- Files modified: none
+- Test: Spielberg E2E — pact-demo-v1.cast + pact-demo-v1.gif (443KB) + pact-demo-v1.mp4 (1.2MB)
+- Pipeline: asciinema → GIF render → FFmpeg post-production. Title card + content + closing card concat.
+- Swarm used: no (direct write + Spielberg run)
+- Issues: None. Full E2E in ~60s.
+- Timestamp: 2026-03-24T11:45:00Z
