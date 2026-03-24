@@ -140,6 +140,15 @@
       "priority": "high",
       "rationale": "Implement LAX core: createBudget, createProbe, routeTask, registerSLA, checkSLACompliance. Node.js crypto only.",
       "_note": "Shipped 2026-03-24 — commit d6b1bb99. core.ts (186 lines) + index.ts updated + smoke test 14/14 PASS. Sprint number conflict with parallel session (966=PACT-LAUNCH-PREP). Committed as 'Sprint 966: LAX-IMPL-01'."
+    },
+    {
+      "sprint": 967,
+      "title": "SCORE-IMPL-01 — Scoring and reputation (rubric, evaluate, reputation, audit)",
+      "block": "GODMAN-PROTOCOLS",
+      "status": "done",
+      "priority": "high",
+      "rationale": "Implement SCORE core: createRubric, evaluate, calculateReputation, createAuditEntry. Node.js crypto only.",
+      "_note": "Shipped 2026-03-24 — commit 977576fb. core.ts (181 lines) + index.ts updated + smoke test 10/10 PASS. Swarm bypassed (multi-file, direct write)."
     }
   ]
 }
