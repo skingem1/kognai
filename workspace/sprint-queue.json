@@ -863,7 +863,7 @@
       "status": "done",
       "priority": "medium",
       "rationale": "/achiri shows reengage count but not how many failed. reengage-log.jsonl has status field. Show sent/failed ratio so operator knows if bot is having delivery issues.",
-      "_note": "Shipped 2026-03-24 — /achiri reengage failure rate from error log"
+      "_note": "Already implemented at lines 439-453 of cmd-stripe.ts. Validated 2026-03-24."
     },
     {
       "sprint": 1093,

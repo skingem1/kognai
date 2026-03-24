@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1092",
+  "title": "PHASE2 — /achiri: show reengage failure rate (failed vs sent)",
+  "description": "Already implemented — lines 439-453 of cmd-stripe.ts show sent/failed counts for today and yesterday. No changes needed.",
+  "block": "ACHIRI",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1092-01",
+      "title": "Verify reengage failure rate already present in /achiri output",
+      "type": "validation",
+      "task_target": "scripts/telegram-commands/cmd-stripe.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1092"
+    }
+  ]
+}
