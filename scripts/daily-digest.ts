@@ -512,6 +512,7 @@ function buildDigest(): string {
     '',
     `📅 *Upcoming gates*`,
     `• Apr 7  — Phase 1.5 decision (${daysPhase}d)`,
+    `• Apr 14 — Godman Protocols npm launch (${Math.max(0, Math.ceil((new Date('2026-04-14T00:00:00Z').getTime() - Date.now()) / 86_400_000))}d)`,
     `• Apr 25 — Achiri alpha launch (${daysAchiri}d)`,
     '',
     `🤝 *Achiri Alpha:* (Apr 25, ${daysAchiri}d)`,

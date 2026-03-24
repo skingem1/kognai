@@ -1,31 +1,10 @@
 {
   "sprint_id": "sprint-1001",
-  "title": "INFRA — Pipeline output validator cron (verify captioned videos are playable)",
-  "description": "Add ffprobe-based validation cron that scans all pipeline output directories for video files and verifies they are playable. Writes a JSON report to reports/pipeline-validator-latest.json and sends Telegram alert on failures. Runs daily via PM2 cron.",
-  "block": "INFRA",
-  "source": "queue-prescribed",
+  "title": "DIGEST-GODMAN — Add Godman launch countdown to daily digest",
+  "description": "Add April 14 Godman Protocols npm launch to the 'Upcoming gates' section of the daily digest. Operator now sees all 3 key dates: Phase 1.5 (Apr 7), Godman (Apr 14), Achiri (Apr 25).",
+  "block": "OPERATOR-TOOLS",
+  "source": "queue-exhausted-operator-ux",
   "tasks": [
-    {
-      "id": "1001-01",
-      "title": "Create scripts/scs001/validate-pipeline-output.ts — ffprobe validator + Telegram alert",
-      "type": "feature",
-      "task_target": "scripts/scs001/validate-pipeline-output.ts",
-      "agent": "coder",
-      "status": "pending",
-      "priority": "high",
-      "sprint_id": "sprint-1001",
-      "description": "Scan workspace/scs001/pipeline-runs/ and workspace/scs001/v2-output/ for .mp4/.mov files. Run ffprobe on each to verify duration>0 and no codec errors. Write JSON report to reports/pipeline-validator-latest.json with {checked, passed, failed, errors[]}. If any fail, POST Telegram alert using TELEGRAM_BOT_TOKEN + OWNER_TELEGRAM_CHAT_ID (https.request, no external deps). Max 150 lines."
-    },
-    {
-      "id": "1001-02",
-      "title": "Add PM2 cron entry to ecosystem.config.js for daily validation",
-      "type": "config",
-      "task_target": "ecosystem.config.js",
-      "agent": "coder",
-      "status": "pending",
-      "priority": "medium",
-      "sprint_id": "sprint-1001",
-      "description": "Add a new PM2 app entry 'scs001-validator' with cron_restart: '0 6 * * *' (6am daily) that runs scripts/scs001/validate-pipeline-output.ts via ts-node. autorestart: false, watch: false."
-    }
+    { "id": "1001-01", "title": "Add Godman launch to daily-digest.ts upcoming gates", "type": "feature", "task_target": "scripts/daily-digest.ts", "agent": "coder", "status": "done", "priority": "medium", "sprint_id": "sprint-1001" }
   ]
 }
