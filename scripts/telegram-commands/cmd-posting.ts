@@ -4,6 +4,7 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
+import * as https from 'https';
 import { execSync } from 'child_process';
 import {
   ROOT, readJSON, readLines, getPm2List, fmtUptime, fmtMem, latestSprintFile,
@@ -905,71 +906,122 @@ export function cmdGateAnalytics(): string {
   }
 }
 
-export function cmdRevenue(): string {
-  // Sprint 1058: fixed path (data/telegram-subscribers.json) and nested structure
-  const dbPath = path.join(ROOT, 'data', 'telegram-subscribers.json');
-  let totalUsers = 0;
-  let paidUsers = 0;
-  let mrr = 0;
-  let newThisWeek = 0;
-  const planCounts: Record<string, number> = { growth: 0, premium: 0, free: 0 };
-  const PRICES: Record<string, number> = { growth: 19, premium: 49 };
-  const weekAgo = Date.now() - 7 * 86_400_000;
+function stripeGet(reqPath: string, stripeKey: string): Promise<any> {
+  return new Promise((resolve, reject) => {
+    const req = https.request({
+      hostname: 'api.stripe.com', path: reqPath, method: 'GET',
+      headers: { 'Authorization': `Bearer ${stripeKey}` },
+    }, (res) => {
+      let data = '';
+      res.on('data', (c: Buffer) => (data += c.toString()));
+      res.on('end', () => { try { resolve(JSON.parse(data)); } catch { reject(new Error('Stripe parse error')); } });
+    });
+    req.on('error', reject);
+    req.setTimeout(15000, () => { req.destroy(); reject(new Error('Stripe timeout')); });
+    req.end();
+  });
+}
 
+export async function cmdRevenue(): Promise<string> {
+  const stripeKey = process.env.STRIPE_SECRET_KEY || '';
+  if (!stripeKey) {
+    return '💰 *Revenue Dashboard*\n\n⚠️ Stripe not configured. Set `STRIPE_SECRET_KEY` in .env\n\n' + cmdRevenueFallback();
+  }
+
+  try {
+    const mode = stripeKey.startsWith('sk_live_') ? '🟢 LIVE' : '🟡 TEST';
+
+    // Fetch active + canceled subscriptions in parallel
+    const [activeResult, canceledResult] = await Promise.all([
+      stripeGet('/v1/subscriptions?status=active&limit=100', stripeKey),
+      stripeGet('/v1/subscriptions?status=canceled&limit=100', stripeKey),
+    ]);
+
+    if (activeResult.error) return `💰 *Revenue Dashboard*\n\n❌ Stripe error: ${activeResult.error.message ?? 'unknown'}`;
+
+    const activeSubs: any[] = activeResult.data ?? [];
+    const canceledSubs: any[] = canceledResult.data ?? [];
+
+    let mrrCents = 0;
+    const planCounts: Record<string, number> = {};
+    let newThisWeek = 0;
+    const oneWeekAgo = Math.floor(Date.now() / 1000) - 7 * 86400;
+
+    for (const sub of activeSubs) {
+      const item = sub.items?.data?.[0];
+      const amount = item?.price?.unit_amount ?? 0;
+      const interval = item?.price?.recurring?.interval ?? 'month';
+      const monthlyAmount = interval === 'year' ? Math.round(amount / 12) : amount;
+      mrrCents += monthlyAmount;
+
+      const planName = item?.price?.nickname ?? item?.price?.product ?? 'unknown';
+      const label = planName.length > 20 ? planName.slice(0, 20) : planName;
+      planCounts[label] = (planCounts[label] ?? 0) + 1;
+
+      if (sub.created >= oneWeekAgo) newThisWeek++;
+    }
+
+    // Churn: canceled in last 30 days vs total base
+    const thirtyDaysAgo = Math.floor(Date.now() / 1000) - 30 * 86400;
+    const recentCancels = canceledSubs.filter((s: any) => (s.canceled_at ?? s.ended_at ?? 0) >= thirtyDaysAgo).length;
+    const totalBase = activeSubs.length + recentCancels;
+    const churnRate = totalBase > 0 ? ((recentCancels / totalBase) * 100).toFixed(1) : '0.0';
+
+    const mrr = (mrrCents / 100).toFixed(2);
+    const arr = ((mrrCents * 12) / 100).toFixed(0);
+    const mrrNum = mrrCents / 100;
+
+    const lines: string[] = [];
+    lines.push(`💰 *Revenue Dashboard* ${mode}`);
+    lines.push('');
+    lines.push('*Subscribers:*');
+    lines.push(`• Active: *${activeSubs.length}*`);
+    const plans = Object.entries(planCounts).map(([n, c]) => `${n}: ${c}`).join(' · ');
+    if (plans) lines.push(`• Plans: ${plans}`);
+    lines.push(`• New this week: *${newThisWeek}*`);
+    lines.push(`• Churn (30d): *${churnRate}%* (${recentCancels} canceled)`);
+    lines.push('');
+    lines.push('*Revenue:*');
+    lines.push(`• MRR: *€${mrr}* · ARR: €${arr}`);
+    lines.push('');
+
+    const gates = [
+      { name: 'Phase 1.5 — TikTok live', target: 0, label: 'posts+views' },
+      { name: 'Phase 2A — Achiri alpha', target: 0, label: 'waitlist' },
+      { name: 'Phase 2B — 10 subs', target: 190, label: '€190 MRR' },
+      { name: 'Phase 3 — Autonomy', target: 500, label: '€500 MRR' },
+      { name: 'Phase 4 — x402', target: 1000, label: '€1000 MRR' },
+    ];
+
+    lines.push('*Financial Gates:*');
+    for (const g of gates) {
+      const met = mrrNum >= g.target;
+      const icon = met ? '✅' : '⏳';
+      const pct = g.target > 0 ? Math.round((mrrNum / g.target) * 100) : 100;
+      lines.push(`${icon} ${g.name} — ${g.label} (${Math.min(pct, 100)}%)`);
+    }
+
+    return lines.join('\n');
+  } catch (err: any) {
+    return `💰 *Revenue Dashboard*\n\n❌ Stripe fetch failed: ${(err.message ?? '').slice(0, 200)}\n\n` + cmdRevenueFallback();
+  }
+}
+
+function cmdRevenueFallback(): string {
+  const dbPath = path.join(ROOT, 'data', 'telegram-db.json');
+  let totalUsers = 0; let paidUsers = 0; let mrr = 0;
+  const PRICES: Record<string, number> = { growth: 19, premium: 49 };
   if (fs.existsSync(dbPath)) {
     try {
-      const raw = JSON.parse(fs.readFileSync(dbPath, 'utf-8'));
-      // Handle both flat {chatId: {...}} and nested {subscribers: {chatId: {...}}}
-      const subsMap: Record<string, any> = raw.subscribers ?? raw;
-      for (const [_, entry] of Object.entries(subsMap) as [string, any][]) {
+      const db = JSON.parse(fs.readFileSync(dbPath, 'utf-8'));
+      for (const [_, entry] of Object.entries(db) as [string, any][]) {
         totalUsers++;
-        const tier = entry.tier ?? 'free';
-        planCounts[tier] = (planCounts[tier] ?? 0) + 1;
-        if (tier !== 'free' && entry.active !== false) {
-          paidUsers++;
-          mrr += PRICES[tier] ?? 0;
-        }
-        const regAt = entry.registeredAt ?? entry.created_at ?? '';
-        if (regAt && new Date(regAt).getTime() > weekAgo) newThisWeek++;
+        const tier = (entry as any).tier ?? 'free';
+        if (tier !== 'free' && (entry as any).active !== false) { paidUsers++; mrr += PRICES[tier] ?? 0; }
       }
     } catch { /* skip */ }
   }
-
-  const arr = mrr * 12;
-  const freeUsers = totalUsers - paidUsers;
-
-  const lines: string[] = [];
-  lines.push('💰 *Revenue Dashboard*');
-  lines.push('');
-  lines.push('*Subscribers:*');
-  lines.push(`• Total: ${totalUsers} | Free: ${freeUsers} | Growth: ${planCounts.growth} | Premium: ${planCounts.premium}`);
-  lines.push(`• Active paid: ${paidUsers} · New this week: *${newThisWeek}*`);
-  lines.push('');
-  lines.push('*Revenue:*');
-  lines.push(`• MRR: *$${mrr}* · ARR: $${arr}`);
-  lines.push('');
-
-  const gates = [
-    { name: 'Phase 1.5 — TikTok live', target: 0, label: 'posts+views' },
-    { name: 'Phase 2A — Achiri alpha', target: 0, label: 'waitlist' },
-    { name: 'Phase 2B — 10 subs', target: 190, label: '$190 MRR' },
-    { name: 'Phase 3 — Autonomy', target: 500, label: '$500 MRR' },
-    { name: 'Phase 4 — x402', target: 1000, label: '$1000 MRR' },
-  ];
-
-  lines.push('*Financial Gates:*');
-  for (const g of gates) {
-    const met = mrr >= g.target;
-    const icon = met ? '✅' : '⏳';
-    const pct = g.target > 0 ? Math.round((mrr / g.target) * 100) : 100;
-    lines.push(`${icon} ${g.name} — ${g.label} (${Math.min(pct, 100)}%)`);
-  }
-
-  lines.push('');
-  const stripeKey = process.env.STRIPE_SECRET_KEY;
-  lines.push(stripeKey ? '💳 Stripe: 🟢 CONFIGURED' : '💳 Stripe: 🔴 NOT CONFIGURED');
-
-  return lines.join('\n');
+  return `_Local DB fallback: ${totalUsers} users, ${paidUsers} paid, MRR ~$${mrr}_`;
 }
 
 // Sprint 459: /batch [N] — prepare N videos with captions for batch posting

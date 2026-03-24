@@ -63,7 +63,7 @@ export function cmdHelp(): string {
     `/metrics    — Pipeline performance metrics\n` +
     `/pace       — Posting velocity & gate projection\n` +
     `/postnow    — Send best video for immediate posting\n` +
-    `/revenue    — Revenue dashboard + financial gates\n` +
+    `/revenue    — Live Stripe MRR, new subs, churn + gates\n` +
     `/autopost   — Auto-post readiness + token status\n` +
     `/lastrun    — Latest pipeline run details\n` +
     `/viral      — Trending topics for content\n` +

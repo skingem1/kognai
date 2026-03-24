@@ -1,0 +1,49 @@
+{
+  "sprint_id": "sprint-1058",
+  "title": "INFRA — /revenue: live Stripe MRR, new subs this week, churn rate",
+  "description": "Upgrade cmdRevenue to query Stripe API for live subscription data instead of local telegram-db.json. Add new subs this week and churn rate metrics.",
+  "block": "INFRA",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1058-01",
+      "title": "Rewrite cmdRevenue in cmd-posting.ts to query Stripe subscriptions API for live MRR, new subs this week, and churn rate",
+      "type": "feature",
+      "task_target": "scripts/telegram-commands/cmd-posting.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1058"
+    },
+    {
+      "id": "1058-02",
+      "title": "Update cmd-help.ts /revenue description to reflect new live Stripe data",
+      "type": "docs",
+      "task_target": "scripts/telegram-commands/cmd-help.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "low",
+      "sprint_id": "sprint-1058"
+    },
+    {
+      "id": "1058-03",
+      "title": "Update telegram-bot.ts to make /revenue async (now calls Stripe API)",
+      "type": "feature",
+      "task_target": "scripts/telegram-bot.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1058"
+    },
+    {
+      "id": "1058-04",
+      "title": "Update test-telegram-commands.ts to handle async cmdRevenue",
+      "type": "test",
+      "task_target": "scripts/test-telegram-commands.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1058"
+    }
+  ]
+}

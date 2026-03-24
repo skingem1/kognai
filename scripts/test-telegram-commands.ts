@@ -40,7 +40,7 @@ import { cmdLoraEval } from './telegram-commands/cmd-lora-eval';
 
 interface TestCase {
   name: string;
-  fn: () => string;
+  fn: () => string | Promise<string>;
 }
 
 const tests: TestCase[] = [
@@ -184,30 +184,38 @@ let pass = 0;
 let fail = 0;
 const failures: { name: string; error: string }[] = [];
 
-for (const t of tests) {
-  try {
-    const result = t.fn();
-    if (typeof result !== 'string') {
-      throw new Error(`Expected string, got ${typeof result}`);
+async function runTests() {
+  for (const t of tests) {
+    try {
+      let result = t.fn();
+      // Support async commands (e.g. cmdRevenue queries Stripe API)
+      if (result && typeof (result as any).then === 'function') {
+        result = await (result as any);
+      }
+      if (typeof result !== 'string') {
+        throw new Error(`Expected string, got ${typeof result}`);
+      }
+      pass++;
+      process.stdout.write(`  PASS  ${t.name}\n`);
+    } catch (err: any) {
+      fail++;
+      const msg = err?.message || String(err);
+      failures.push({ name: t.name, error: msg.slice(0, 120) });
+      process.stdout.write(`  FAIL  ${t.name}: ${msg.slice(0, 80)}\n`);
     }
-    pass++;
-    process.stdout.write(`  PASS  ${t.name}\n`);
-  } catch (err: any) {
-    fail++;
-    const msg = err?.message || String(err);
-    failures.push({ name: t.name, error: msg.slice(0, 120) });
-    process.stdout.write(`  FAIL  ${t.name}: ${msg.slice(0, 80)}\n`);
   }
+
+  console.log(`\n${'='.repeat(50)}`);
+  console.log(`Results: ${pass} PASS / ${fail} FAIL / ${tests.length} total`);
+
+  if (failures.length > 0) {
+    console.log(`\nFailures:`);
+    for (const f of failures) {
+      console.log(`  - ${f.name}: ${f.error}`);
+    }
+  }
+
+  process.exit(fail > 0 ? 1 : 0);
 }
 
-console.log(`\n${'='.repeat(50)}`);
-console.log(`Results: ${pass} PASS / ${fail} FAIL / ${tests.length} total`);
-
-if (failures.length > 0) {
-  console.log(`\nFailures:`);
-  for (const f of failures) {
-    console.log(`  - ${f.name}: ${f.error}`);
-  }
-}
-
-process.exit(fail > 0 ? 1 : 0);
+runTests();

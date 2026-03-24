@@ -116,6 +116,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     '/post-auto':       () => cmdPostAuto(chatId, cmdArgs),
     '/postauto':        () => cmdPostAuto(chatId, cmdArgs),
     '/quickstart':      () => cmdQuickstart(chatId),
+    '/revenue':          async () => { const r = await cmdRevenue(); await sendMessage(chatId, r); },
   };
 
   const asyncHandler = asyncHandlers[cmdName];
@@ -170,7 +171,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/weeklydigest': response = cmdWeeklyDigest();      break;
     case '/metrics':     response = cmdMetrics();            break;
     case '/pace':        response = cmdPace();               break;
-    case '/revenue':     response = cmdRevenue();            break;
+    // /revenue moved to async handlers (Sprint 1058 — live Stripe API)
     case '/autopost':    response = cmdAutoPost();           break;
     case '/lastrun':     response = cmdLastRun();            break;
     case '/viral':       response = cmdViral();              break;
