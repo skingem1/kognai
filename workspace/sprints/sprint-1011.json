@@ -1,0 +1,31 @@
+{
+  "sprint_id": "sprint-1011",
+  "title": "SPIELBERG — PACT protocol demo script + recording for April 14 launch",
+  "description": "April 14 Godman launch needs a 60-second terminal demo showing PACT protocol: mandate creation, signing, and verification. Spielberg scaffold (scripts/spielberg/) is production-ready from Sprint 957. Create scripts/spielberg/pact-demo.json and run the orchestrator to produce workspace/scs001/code-demo-runs/pact-demo/ with recording + post-produced mp4.",
+  "block": "SPIELBERG",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1011-01",
+      "title": "Create scripts/spielberg/pact-demo.json — 6-scene PACT demo",
+      "type": "feature",
+      "task_target": "scripts/spielberg/pact-demo.json",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1011",
+      "description": "Create scripts/spielberg/pact-demo.json. Scenes: (1) clear + title banner 'PACT Protocol — Mandate Lifecycle Demo', (2) 'npm install @godman-protocols/pact', (3) 'node -e require code to createMandate', (4) output showing mandate hash, (5) 'verifyMandate' call showing VERIFIED, (6) success banner. Use theme=monokai, cols=80, rows=24. Total duration ~60s. Caption each scene for post-production overlay."
+    },
+    {
+      "id": "1011-02",
+      "title": "Run Spielberg orchestrator on pact-demo.json",
+      "type": "validation",
+      "task_target": "workspace/scs001/code-demo-runs/pact-demo",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1011",
+      "description": "Run: npx ts-node scripts/spielberg/index.ts scripts/spielberg/pact-demo.json. Verify output in workspace/scs001/code-demo-runs/pact-demo/: recording.cast + demo.mp4. Report file sizes and duration. If asciinema not installed, note it and skip."
+    }
+  ]
+}
