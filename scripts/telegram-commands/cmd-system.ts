@@ -591,7 +591,54 @@ export function cmdHealth(): string {
     }
   } catch { /* skip */ }
 
-  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${botUptimeSection}${ollamaSection}${memWarnSection}${memTableSection}${supabaseSection}${supabaseSyncSection}${diskSection}${watchdogSection}${runtimeSection}${tailscaleSection}${hetznerSection}${anthropicSection}${ioSection}${morningBriefSection}${digestSection}${staleCronsSection}${supabaseDomainSection}${anthropicBudgetSection}${pipelineValidationSection}${worktreeSection}${botMemSection}${gateDaysSection}${backupSection}${postingHealthSection}${exportFilesSection}${tokenHealthSection}${statsSection}${inventorySection}${gateAuditSection}${autoDeliverSection}${bulkCaptionsSection}${playbackSection}${qcSection}`;
+  // Sprint 1150 (wave 29): smoke-test-latest.json pass/fail summary
+  let smokeSection = '';
+  try {
+    const smokePath = path.join(ROOT, 'reports', 'smoke-test-latest.json');
+    if (fs.existsSync(smokePath)) {
+      const sm = JSON.parse(fs.readFileSync(smokePath, 'utf-8'));
+      const smPass = sm.pass ?? sm.passed ?? 0;
+      const smFail = sm.fail ?? sm.failed ?? 0;
+      const smTotal = sm.total ?? (smPass + smFail);
+      const smIcon = smFail === 0 ? '✅' : smFail <= 2 ? '⚠️' : '❌';
+      const smAgeH = sm.timestamp ? (Date.now() - new Date(sm.timestamp).getTime()) / 3600000 : null;
+      const smAgeStr = smAgeH != null && smAgeH < 48 ? ` _(${Math.round(smAgeH)}h ago)_` : '';
+      smokeSection = `\n\n${smIcon} *Smoke test:* ${smPass}/${smTotal} pass${smFail > 0 ? ` · ${smFail} fail` : ''}${smAgeStr}`;
+    }
+  } catch { /* skip */ }
+
+  // Sprint 1150 (wave 29): achiri-analytics.json DAU + retention summary
+  let achiriDauSection = '';
+  try {
+    const aaPath = path.join(ROOT, 'reports', 'achiri-analytics.json');
+    if (fs.existsSync(aaPath)) {
+      const aa = JSON.parse(fs.readFileSync(aaPath, 'utf-8'));
+      const dau = aa.today?.dau ?? 0;
+      const totalUsers = aa.overview?.total_users ?? 0;
+      const retention = aa.overview?.retention_pct ?? 0;
+      const msgs = aa.today?.msgs ?? 0;
+      const aaIcon = dau > 0 ? '📱' : '💤';
+      achiriDauSection = `\n\n${aaIcon} *Achiri:* ${dau} DAU · ${totalUsers} users · ${retention}% retention${msgs > 0 ? ` · ${msgs} msgs today` : ''}`;
+    }
+  } catch { /* skip */ }
+
+  // Sprint 1150 (wave 29): achiri-e2e-latest.json passed/total
+  let achiriE2eSection = '';
+  try {
+    const e2ePath = path.join(ROOT, 'reports', 'achiri-e2e-latest.json');
+    if (fs.existsSync(e2ePath)) {
+      const e2e = JSON.parse(fs.readFileSync(e2ePath, 'utf-8'));
+      const e2ePassed = e2e.passed ?? 0;
+      const e2eFailed = e2e.failed ?? 0;
+      const e2eTotal = e2e.total ?? (e2ePassed + e2eFailed);
+      const e2eIcon = e2eFailed === 0 ? '✅' : e2eFailed <= 3 ? '⚠️' : '❌';
+      const e2eAgeH = e2e.timestamp ? (Date.now() - new Date(e2e.timestamp).getTime()) / 3600000 : null;
+      const e2eAgeStr = e2eAgeH != null && e2eAgeH < 48 ? ` _(${Math.round(e2eAgeH)}h ago)_` : '';
+      achiriE2eSection = `\n\n${e2eIcon} *Achiri E2E:* ${e2ePassed}/${e2eTotal} pass${e2eFailed > 0 ? ` · ${e2eFailed} fail` : ''}${e2eAgeStr}`;
+    }
+  } catch { /* skip */ }
+
+  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${botUptimeSection}${ollamaSection}${memWarnSection}${memTableSection}${supabaseSection}${supabaseSyncSection}${diskSection}${watchdogSection}${runtimeSection}${tailscaleSection}${hetznerSection}${anthropicSection}${ioSection}${morningBriefSection}${digestSection}${staleCronsSection}${supabaseDomainSection}${anthropicBudgetSection}${pipelineValidationSection}${worktreeSection}${botMemSection}${gateDaysSection}${backupSection}${postingHealthSection}${exportFilesSection}${tokenHealthSection}${statsSection}${inventorySection}${gateAuditSection}${autoDeliverSection}${bulkCaptionsSection}${playbackSection}${qcSection}${smokeSection}${achiriDauSection}${achiriE2eSection}`;
 }
 
 export function cmdTier(): string {
