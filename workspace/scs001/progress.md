@@ -5635,3 +5635,12 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Notes: AMD-25 stack complete: dka-schema + dka-store + curator. JSONL persistence.
 - Swarm used: no (direct write)
 - Timestamp: 2026-03-24T23:15:00Z
+
+## Sprint 1000 — STATUS-ARCH-SYSTEMS
+- Status: PASS
+- Commit: 5e8a75f1
+- Files modified: scripts/status.ts (+architectureSection)
+- Test: DKA 2 entries (research:1 content:1), observer heartbeat 128m (stale), 1 escalation shown ✓
+- Notes: Fixed readLines() ROOT prepend bug; used readFileSync for absolute paths
+- Swarm used: no (surgical edit)
+- Timestamp: 2026-03-24T23:30:00Z
