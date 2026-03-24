@@ -5370,3 +5370,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (CI config, direct write)
 - Issues: none
 - Timestamp: 2026-03-24T22:20:00Z
+
+## Sprint 981 — GODMAN-EXAMPLES
+- Status: PASS
+- Commit: 09b9903a
+- Files created: workspace/godman-protocols/sdk/examples/agent-workflow.ts, workspace/sprints/sprint-981.json
+- Files modified: none
+- Test: npx tsx agent-workflow.ts — all 7 steps clean, Score: 90.5%, Frame: closed
+- Pipeline: Godman SDK now has runnable E2E demo for April 14 launch
+- Swarm used: no (bug-fix task, direct write)
+- Issues: 3 bugs fixed (weightedScore→compositeScore, totalEvaluations→evaluationCount, closeFrame return value)
+- Timestamp: 2026-03-24T22:30:00Z
