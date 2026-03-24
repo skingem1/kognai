@@ -1,0 +1,10 @@
+{
+  "sprint_id": "sprint-992",
+  "title": "GODMAN-LAUNCH-DAY — April 14 launch automation script",
+  "description": "Write scripts/godman-launch-day.sh — the single script the operator runs on April 14. Runs smoke tests for all 7 protocols, publishes in correct order (pact→lax→score→signal→soul→amf→drs→sdk), checks npm publish success, outputs launch status. Dry-run mode for rehearsal. <80 lines.",
+  "block": "GODMAN-PROTOCOLS",
+  "source": "queue-exhausted-launch-prep",
+  "tasks": [
+    { "id": "992-01", "title": "Write scripts/godman-launch-day.sh", "type": "feature", "task_target": "scripts/godman-launch-day.sh", "agent": "coder", "status": "pending", "priority": "high", "sprint_id": "sprint-992" }
+  ]
+}
