@@ -6103,3 +6103,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
   - /health: auto-deliver PM2 cron health (morning/noon/evening)
 - Swarm used: no (direct write — established pattern)
 - Timestamp: 2026-03-24T18:20Z
+
+## Sprint 1149 — Telegram operator UX wave 28
+- Status: PASS
+- Commit: d1cb6a07
+- Files modified: scripts/telegram-commands/cmd-system.ts
+- Signals added (3):
+  - /health: bulk-captions.json total_ready + posted count
+  - /health: video-playback-audit.json passed/failed/total
+  - /health: quality01-validation.json QC PASS/FAIL status
+- Swarm used: no (direct write — established pattern)
+- Timestamp: 2026-03-24T18:30Z
