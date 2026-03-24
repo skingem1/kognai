@@ -1,0 +1,43 @@
+{
+  "generated": "2026-03-24T08:29:27.720Z",
+  "launchDate": "Apr 25 2026",
+  "daysToLaunch": 32,
+  "verdict": "AT-RISK",
+  "gates": [
+    {
+      "name": "Phase 0 → Phase 1",
+      "targetDate": "Mar 13",
+      "daysRemaining": -11,
+      "status": "pass",
+      "notes": "Pipeline operational · 1235 videos generated"
+    },
+    {
+      "name": "Phase 1.5 Decision",
+      "targetDate": "Apr 7",
+      "daysRemaining": 14,
+      "status": "pending",
+      "notes": ""
+    },
+    {
+      "name": "Phase 1 → Phase 2A",
+      "targetDate": "Apr 11",
+      "daysRemaining": 18,
+      "status": "pending",
+      "notes": ""
+    },
+    {
+      "name": "Achiri Lite Alpha Launch",
+      "targetDate": "Apr 25",
+      "daysRemaining": 32,
+      "status": "pending",
+      "notes": ""
+    }
+  ],
+  "waitlistCount": 1,
+  "whitelistCount": 1,
+  "botHealthy": true,
+  "readinessPassRate": "9/9",
+  "blockers": [
+    "Waitlist too small (1) — target: 10+ for alpha"
+  ]
+}

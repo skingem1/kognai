@@ -1,0 +1,10 @@
+{
+  "sprint_id": "sprint-984",
+  "title": "ACHIRI-ALPHA-REPORT — CLI alpha readiness report for April 25 launch",
+  "description": "Create scripts/achiri/alpha-report.ts that reads live data and produces a go/no-go readiness report: user count, waitlist, bot health, gate dates, blockers. Operator runs this weekly to track April 25 progress.",
+  "block": "ACHIRI",
+  "source": "queue-exhausted-alpha-prep",
+  "tasks": [
+    { "id": "984-01", "title": "Create alpha-report.ts readiness checker", "type": "feature", "task_target": "scripts/achiri/alpha-report.ts", "agent": "coder", "status": "pending", "priority": "high", "sprint_id": "sprint-984" }
+  ]
+}
