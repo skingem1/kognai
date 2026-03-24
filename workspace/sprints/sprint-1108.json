@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1108",
+  "title": "GATE — /gate: add urgency emoji escalation based on days remaining",
+  "description": "Update /gate urgency to 4-tier emoji: 🟢 ≥14d, 🟡 7-13d, 🟠 3-6d, 🔴 <3d.",
+  "block": "GATE",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1108-01",
+      "title": "Update urgency emoji tiers in cmdGate",
+      "type": "enhancement",
+      "task_target": "scripts/telegram-commands/cmd-gate.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1108"
+    }
+  ]
+}

@@ -88,10 +88,10 @@ export function cmdGate(): string {
   // --- Stripe ---
   const stripeReady = !!process.env.STRIPE_SECRET_KEY && !!process.env.STRIPE_WEBHOOK_SECRET;
 
-  // --- Urgency ---
-  const urgency = daysLeft <= 3 ? '💀 KILL SWITCH IMMINENT'
-    : daysLeft <= 7 ? '🔴 URGENT'
-    : daysLeft <= 14 ? '🟡 WARNING'
+  // Sprint 1108: urgency emoji escalation based on days remaining
+  const urgency = daysLeft < 3 ? '🔴 CRITICAL — post NOW'
+    : daysLeft <= 6 ? '🟠 URGENT'
+    : daysLeft <= 13 ? '🟡 WARNING'
     : '🟢 ON TRACK';
 
   const postIcon = postCount >= 30 ? '✅' : '⏳';
