@@ -585,7 +585,7 @@
       "sprint": 1058,
       "title": "INFRA \u2014 Revenue tracker: /revenue shows TikTok Agent subscription MRR from Stripe",
       "block": "INFRA",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "/revenue command exists but may not show live Stripe data. Verify it reads from Stripe webhook events and shows MRR, new subs this week, churn rate."
     }

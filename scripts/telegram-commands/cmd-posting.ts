@@ -906,17 +906,22 @@ export function cmdGateAnalytics(): string {
 }
 
 export function cmdRevenue(): string {
-  const dbPath = path.join(ROOT, 'data', 'telegram-db.json');
+  // Sprint 1058: fixed path (data/telegram-subscribers.json) and nested structure
+  const dbPath = path.join(ROOT, 'data', 'telegram-subscribers.json');
   let totalUsers = 0;
   let paidUsers = 0;
   let mrr = 0;
+  let newThisWeek = 0;
   const planCounts: Record<string, number> = { growth: 0, premium: 0, free: 0 };
   const PRICES: Record<string, number> = { growth: 19, premium: 49 };
+  const weekAgo = Date.now() - 7 * 86_400_000;
 
   if (fs.existsSync(dbPath)) {
     try {
-      const db = JSON.parse(fs.readFileSync(dbPath, 'utf-8'));
-      for (const [_, entry] of Object.entries(db) as [string, any][]) {
+      const raw = JSON.parse(fs.readFileSync(dbPath, 'utf-8'));
+      // Handle both flat {chatId: {...}} and nested {subscribers: {chatId: {...}}}
+      const subsMap: Record<string, any> = raw.subscribers ?? raw;
+      for (const [_, entry] of Object.entries(subsMap) as [string, any][]) {
         totalUsers++;
         const tier = entry.tier ?? 'free';
         planCounts[tier] = (planCounts[tier] ?? 0) + 1;
@@ -924,6 +929,8 @@ export function cmdRevenue(): string {
           paidUsers++;
           mrr += PRICES[tier] ?? 0;
         }
+        const regAt = entry.registeredAt ?? entry.created_at ?? '';
+        if (regAt && new Date(regAt).getTime() > weekAgo) newThisWeek++;
       }
     } catch { /* skip */ }
   }
@@ -936,7 +943,7 @@ export function cmdRevenue(): string {
   lines.push('');
   lines.push('*Subscribers:*');
   lines.push(`• Total: ${totalUsers} | Free: ${freeUsers} | Growth: ${planCounts.growth} | Premium: ${planCounts.premium}`);
-  lines.push(`• Active paid: ${paidUsers}`);
+  lines.push(`• Active paid: ${paidUsers} · New this week: *${newThisWeek}*`);
   lines.push('');
   lines.push('*Revenue:*');
   lines.push(`• MRR: *$${mrr}* · ARR: $${arr}`);
