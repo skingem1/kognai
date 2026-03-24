@@ -730,27 +730,71 @@ export function cmdSwarmStats(): string {
 // Sprint 550: cmdCleanup moved to cmd-management.ts (Sprint 630 dedup)
 
 // Sprint 589: /errors — show recent pipeline validation errors
+// Sprint 1054: /errors — scan all PM2 error logs for recent activity (last 24h)
 export function cmdErrors(): string {
+  const logDir = path.join(ROOT, 'logs');
+  const cutoff = Date.now() - 86_400_000; // 24h ago
+
+  interface ProcessError { name: string; lastLine: string; mtime: number; }
+  const errored: ProcessError[] = [];
+
+  try {
+    const logFiles = fs.readdirSync(logDir).filter((f: string) => f.endsWith('-error.log'));
+    for (const file of logFiles) {
+      const fullPath = path.join(logDir, file);
+      try {
+        const stat = fs.statSync(fullPath);
+        if (stat.size === 0 || stat.mtimeMs < cutoff) continue;
+        const content = fs.readFileSync(fullPath, 'utf-8').trim();
+        if (!content) continue;
+        const lines = content.split('\n').filter((l: string) => l.trim());
+        if (lines.length === 0) continue;
+        const lastLine = lines[lines.length - 1];
+        const lower = lastLine.toLowerCase();
+        if (lower.includes('error') || lower.includes('fatal') ||
+            lower.includes('exception') || lower.includes('fail')) {
+          const processName = file.replace(/-error\.log$/, '');
+          errored.push({ name: processName, lastLine: lastLine.slice(0, 120), mtime: stat.mtimeMs });
+        }
+      } catch { /* skip unreadable */ }
+    }
+  } catch {
+    return '❌ Could not read logs directory.';
+  }
+
+  errored.sort((a, b) => b.mtime - a.mtime);
+  const output: string[] = [];
+
+  if (errored.length === 0) {
+    output.push('✅ *No PM2 process errors* in the last 24h — all clean.');
+  } else {
+    output.push(`⚠️ *PM2 Errors (last 24h)* — ${errored.length} process${errored.length === 1 ? '' : 'es'} with errors\n`);
+    for (const e of errored.slice(0, 10)) {
+      const ago = Math.round((Date.now() - e.mtime) / 60_000);
+      const timeStr = ago < 60 ? `${ago}m ago` : `${Math.round(ago / 60)}h ago`;
+      output.push(`*${e.name}* _(${timeStr})_\n  \`${e.lastLine}\``);
+    }
+    if (errored.length > 10) output.push(`\n_…and ${errored.length - 10} more. Check logs/ directly._`);
+  }
+
+  // Append pipeline validation errors if any
   const errPath = path.join(ROOT, 'workspace', 'scs001', 'validation-errors.jsonl');
-  if (!fs.existsSync(errPath)) return '✅ *No validation errors file found* — pipeline is clean.';
+  if (fs.existsSync(errPath)) {
+    try {
+      const valLines = fs.readFileSync(errPath, 'utf-8').trim().split('\n').filter(Boolean)
+        .map((l: string) => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
+      if (valLines.length > 0) {
+        const recent = valLines.slice(-3);
+        output.push('\n*Pipeline validation errors (last 3):*');
+        for (const e of recent) {
+          const err = ((e as any).error ?? (e as any).message ?? 'unknown') as string;
+          output.push(`• ${err.slice(0, 100)}`);
+        }
+      }
+    } catch { /* skip */ }
+  }
 
-  const lines = readLines(errPath);
-  if (lines.length === 0) return '✅ *No validation errors* — pipeline is clean.';
-
-  const recent = lines.slice(-10).reverse();
-  const formatted = recent.map((e: any, i: number) => {
-    const ts = e.timestamp ? new Date(e.timestamp).toLocaleString('en-GB', { timeZone: 'UTC' }) : 'unknown';
-    const type = e.type || 'unknown';
-    const stage = e.stage || '';
-    const err = e.error || e.message || 'no details';
-    return `${i + 1}. *${type}*${stage ? ` (${stage})` : ''}\n   ${err}\n   _${ts}_`;
-  });
-
-  return [
-    `⚠️ *Pipeline Errors* — last ${recent.length} of ${lines.length} total`,
-    '',
-    ...formatted,
-  ].join('\n');
+  return output.join('\n');
 }
 
 // Sprint 593: /tokencheck — validate TikTok access token health
@@ -1279,4 +1323,48 @@ export function cmdGodmanThread(): string {
   }
 
   return out.join('\n');
+}
+
+// Sprint 1054: /pm2errors — last 5 error log lines per critical PM2 process
+export function cmdPm2Errors(): string {
+  const CRITICAL = ['telegram-bot', 'achiri-telegram', 'achiri-api', 'kognai-stripe-webhook'];
+  const logDir = path.join(ROOT, 'logs');
+  const lines: string[] = ['*🔴 PM2 Error Logs*\n'];
+  let hasErrors = false;
+
+  for (const proc of CRITICAL) {
+    const logFile = path.join(logDir, `${proc.replace('kognai-', '')}-error.log`);
+    const altFile = path.join(logDir, `${proc}-error.log`);
+    const file = fs.existsSync(logFile) ? logFile : fs.existsSync(altFile) ? altFile : null;
+
+    if (!file) {
+      lines.push(`*${proc}*: _no error log_`);
+      continue;
+    }
+
+    try {
+      const content = fs.readFileSync(file, 'utf-8');
+      const allLines = content.split('\n').filter(l => l.trim()).slice(-5);
+      if (allLines.length === 0) {
+        lines.push(`*${proc}*: ✅ clean`);
+      } else {
+        hasErrors = true;
+        lines.push(`*${proc}*:`);
+        lines.push('```');
+        for (const l of allLines) {
+          lines.push(l.slice(0, 100));
+        }
+        lines.push('```');
+      }
+    } catch {
+      lines.push(`*${proc}*: _could not read log_`);
+    }
+    lines.push('');
+  }
+
+  if (!hasErrors) {
+    lines.push('✅ All critical process error logs are clean.');
+  }
+
+  return lines.join('\n');
 }
