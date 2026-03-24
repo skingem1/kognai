@@ -116,6 +116,7 @@ workspace/scs001/pipeline-runs/pipeline-*.json
 # Achiri runtime memory/logs
 workspace/achiri/memory/e2e-*.jsonl
 workspace/achiri/daily-engage-log.jsonl
+workspace/achiri/reengage-log.jsonl
 
 # SCS-001 pipeline output directories
 workspace/scs001/avatar-segments/
@@ -138,3 +139,9 @@ credentials*.json
 
 # Telegram bot state
 data/telegram-bot-offset.txt
+
+# Godman protocols — npm install artifacts (not committed for libraries)
+workspace/godman-protocols/**/package-lock.json
+
+# SCS-001 runtime state files
+workspace/scs001/.creator-rotation.json

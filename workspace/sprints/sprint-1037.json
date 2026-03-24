@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1037",
+  "title": "INFRA — .gitignore: ignore godman package-lock.json + achiri/scs001 runtime files",
+  "description": "Add workspace/godman-protocols/**/package-lock.json, workspace/achiri/reengage-log.jsonl, workspace/scs001/.creator-rotation.json to .gitignore to clean up untracked files.",
+  "block": "INFRA",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1037-01",
+      "title": "Update .gitignore with runtime/library files",
+      "type": "fix",
+      "task_target": ".gitignore",
+      "agent": "coder",
+      "status": "done",
+      "priority": "low",
+      "sprint_id": "sprint-1037"
+    }
+  ]
+}
