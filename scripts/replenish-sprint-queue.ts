@@ -112,13 +112,23 @@ function getExistingCommands(): Set<string> {
   return cmds;
 }
 
-function generateItems(startSprint: number): QueueItem[] {
+function generateItems(startSprint: number, existingTitles: Set<string> = new Set()): QueueItem[] {
   const items: QueueItem[] = [];
   let sprint = startSprint;
   const gate = getGateState();
   const alerts = getWatchdogAlerts();
   const errors = getPipelineErrors();
   const existingCmds = getExistingCommands();
+
+  // Helper: check if a title already exists in the queue (fuzzy match on first 40 chars)
+  const existingTitleArray = Array.from(existingTitles);
+  function isDuplicate(title: string): boolean {
+    const normalised = title.toLowerCase().slice(0, 40);
+    for (let i = 0; i < existingTitleArray.length; i++) {
+      if (existingTitleArray[i].toLowerCase().slice(0, 40) === normalised) return true;
+    }
+    return false;
+  }
 
   // Priority 1: Gate-critical items
   if (gate.postsDelivered === 0 && gate.daysLeft <= 20) {
@@ -214,9 +224,10 @@ function generateItems(startSprint: number): QueueItem[] {
     rationale: 'YouTube credentials are configured. Adding Shorts upload doubles content reach and accelerates view count for gate.',
   });
 
-  // Fill remaining slots
+  // Fill remaining slots (skip duplicates of already-completed items)
   for (const item of infraItems) {
     if (items.length >= 10) break;
+    if (isDuplicate(item.title)) continue;
     items.push({
       sprint: sprint++,
       title: item.title,
@@ -249,7 +260,8 @@ function main(): void {
 
   const lastSprint = getLastSprintNumber();
   const startSprint = lastSprint + 2; // +2 because current sprint is lastSprint+1
-  const newItems = generateItems(startSprint);
+  const existingTitles = new Set(existing.queue.map(i => i.title));
+  const newItems = generateItems(startSprint, existingTitles);
 
   console.log(`\n=== Sprint Queue Replenisher ===`);
   console.log(`Last shipped: Sprint ${lastSprint}`);

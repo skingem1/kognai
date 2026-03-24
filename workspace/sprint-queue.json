@@ -429,12 +429,12 @@
       "_note": "Duplicate of Sprint 1005 (already shipped commit f089cf65). Skipped."
     },
     {
-      "sprint": 1021,
-      "title": "ACHIRI — Memory subsystem foundation: conversation history store + retrieval",
-      "block": "PHASE2",
+      "sprint": 1028,
+      "title": "INFRA-BUGFIX — replenish-sprint-queue dedup: skip items already done/skipped in queue",
+      "block": "INFRA",
       "status": "pending",
       "priority": "high",
-      "rationale": "Achiri voice validated 10/10. Memory subsystem is the next milestone for April 25 alpha launch. Build conversation history persistence (JSONL per user) and retrieval (last N messages + topic search). Foundation for personalized responses.",
+      "rationale": "Replenisher generated 5 duplicate items (1023-1027 = copies of 1001-1005). Hardcoded infra items at lines 187-215 never check existing queue. Add dedup filter before appending.",
       "created_at": "2026-03-24"
     }
   ]
