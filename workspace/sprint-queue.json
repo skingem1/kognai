@@ -2707,7 +2707,7 @@
       "sprint": 1162,
       "title": "GODMAN-LAUNCH — /godman: show days until launch in header (e.g. \"21d to launch\")",
       "block": "GODMAN-PROTOCOLS",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "/godman readiness report has no header countdown. Add \"🚀 Launch in Nd (Apr 14)\" as the first line so operator always sees urgency at a glance."
     },
