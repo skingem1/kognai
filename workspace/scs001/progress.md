@@ -5318,3 +5318,13 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (multi-file, direct write)
 - Issues: sprint-977.json overwritten by parallel session (DEPLOY-UNBLOCK), no conflict on code
 - Timestamp: 2026-03-24T22:00:00Z
+
+## Sprint 977 — DEPLOY-UNBLOCK
+- Status: PASS
+- Commit: 9c625463
+- Files modified: cmd-delivery.ts (execSync require), cmd-system.ts (as any), run-full-pipeline.ts (bundle cast), run-multiformat-pipeline.ts (collected_at)
+- Test: pre-deploy check — ✅ All checks passed
+- Pipeline: Achiri Hetzner deployment unblocked. Run: ./scripts/deploy-achiri.sh to deploy.
+- Swarm used: no (4 surgical fixes, direct edit)
+- Issues: none
+- Timestamp: 2026-03-24T23:00:00Z
