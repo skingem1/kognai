@@ -5617,3 +5617,12 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (1-line fix, replace_all)
 - Issues: None. Bug was require('./scs001/') instead of require('../scs001/').
 - Timestamp: 2026-03-24T22:30:00Z
+
+## Sprint 998 — ARCH-001-OBSERVER
+- Status: PASS
+- Commit: 407c22df
+- Files created: workspace/arch001/observer.ts (150 lines)
+- Test: 3s live run — detected stale heartbeat, emitted AMF escalation JSON ✓
+- Swarm used: no (direct write)
+- Issues: import.meta.dirname undefined in CJS tsx mode, fixed to __dirname
+- Timestamp: 2026-03-24T23:00:00Z
