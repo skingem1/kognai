@@ -1584,6 +1584,7 @@ export function cmdStatus(): string {
 
   // Pace
   const paceNeeded = daysLeft > 0 ? postsNeeded / daysLeft : postsNeeded;
+  const dailyObligation = Math.ceil(paceNeeded);
 
   // Urgency indicator
   let urgency: string;
@@ -1640,9 +1641,9 @@ export function cmdStatus(): string {
     '',
     `\`[${bar}]\` ${pct}%`,
     `*${totalPosts}/${target}* posts · *${totalViews}/500* views · *${daysLeft}d* left`,
-    `${urgency} · Pace needed: *${paceNeeded.toFixed(1)}/day*`,
+    `${urgency}`,
     '',
-    `📅 Today: *${todayPosts}* posted`,
+    `📅 Today: *${todayPosts}/${dailyObligation}* ${todayPosts >= dailyObligation ? '✅ done' : '⏳ post now'} · ${paceNeeded.toFixed(1)}/day needed`,
     `🔥 Streak: *${streak}* days`,
     `📦 Queue: *${readyCount}* ready · ${unposted.length} total`,
     cronLine,
