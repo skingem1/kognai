@@ -1918,3 +1918,105 @@ export function cmdSprintNext(): string {
 
   return lines.join('\n');
 }
+
+// Sprint 1064: /log — pre-filled session log template
+export function cmdLog(): string {
+  const now = new Date();
+  const dateStr = now.toISOString().slice(0, 10);
+  const timeStr = now.toISOString().slice(11, 16);
+
+  // Latest sprint from git log
+  let latestSprint = 'unknown';
+  try {
+    const log = execSync('git log --oneline -10', { cwd: ROOT, encoding: 'utf-8', timeout: 5000, stdio: ['pipe','pipe','pipe'] });
+    const match = log.match(/Sprint (\d+):/);
+    if (match) latestSprint = match[1];
+  } catch {}
+
+  // Gate status
+  let gatePosts = 0;
+  let gateViews = 0;
+  const mpPath = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
+  if (fs.existsSync(mpPath)) {
+    try {
+      const posts = fs.readFileSync(mpPath, 'utf-8').split('\n').filter(l => l.trim());
+      gatePosts = posts.length;
+      for (const l of posts) { try { gateViews += JSON.parse(l).views ?? 0; } catch {} }
+    } catch {}
+  }
+
+  const lines = [
+    `## Session Log — ${dateStr}`,
+    '',
+    `**Time:** ${timeStr} UTC`,
+    `**Latest Sprint:** ${latestSprint}`,
+    `**Gate:** ${gatePosts}/30 posts, ${gateViews}/500 views`,
+    '',
+    '**What was done:**',
+    '- ',
+    '',
+    '**Blockers:**',
+    '- None',
+    '',
+    '**Next session:**',
+    '- ',
+    '',
+    `_Save to: workspace/agents/memory/session-${dateStr}.md_`,
+  ];
+
+  return lines.join('\n');
+}
+
+// Sprint 1064: /log — pre-filled session log template
+export function cmdLog(): string {
+  const today = new Date().toISOString().slice(0, 10);
+  const timeUtc = new Date().toISOString().slice(11, 16);
+
+  // Latest sprint
+  let latestSprint = '???';
+  let nextSprint = '???';
+  try {
+    const q = JSON.parse(fs.readFileSync(path.join(ROOT, 'workspace/sprint-queue.json'), 'utf-8'));
+    const done = (q.queue as any[]).filter((i: any) => i.status === 'done');
+    if (done.length > 0) latestSprint = String(done[done.length - 1].sprint);
+    const pending = (q.queue as any[]).filter((i: any) => !['done', 'skipped', 'skip'].includes(i.status));
+    if (pending.length > 0) nextSprint = String(pending[0].sprint);
+  } catch {}
+
+  // Gate state
+  let postsDone = 0, postsNeeded = 30, daysLeft = 14, deadline = 'Apr 7';
+  try {
+    const gate = JSON.parse(fs.readFileSync(path.join(ROOT, 'workspace/gates/phase1-5-gate.json'), 'utf-8'));
+    postsDone = gate.raw?.posts_count ?? 0;
+    postsNeeded = gate.raw?.posts_target ?? 30;
+    daysLeft = gate.days_remaining ?? 14;
+    deadline = gate.deadline ?? 'Apr 7';
+  } catch {}
+
+  const template = [
+    `${today} ${timeUtc} CET - Session log`,
+    ``,
+    `## Sprints shipped`,
+    `- Sprint ${latestSprint}: [TITLE] — [brief outcome]`,
+    ``,
+    `## Gate`,
+    `- Posts: ${postsDone}/${postsNeeded} · ${daysLeft}d to ${deadline}`,
+    `- Today: [N] posted`,
+    ``,
+    `## Blockers / notes`,
+    `- [none]`,
+    ``,
+    `## Next session`,
+    `- Sprint ${nextSprint} · [focus]`,
+  ].join('\n');
+
+  return [
+    '📝 *Session Log Template*',
+    '',
+    '_Copy and paste into_ `workspace/agents/memory/' + today + '.md`_:_',
+    '',
+    '```',
+    template,
+    '```',
+  ].join('\n');
+}

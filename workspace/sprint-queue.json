@@ -627,7 +627,8 @@
       "sprint": 1064,
       "title": "OPS \u2014 Session log auto-template: /log command creates pre-filled session log entry",
       "block": "OPS",
-      "status": "pending",
+      "status": "done",
+      "_note": "Shipped 2026-03-24. cmdLog() in cmd-management.ts — reads gate + sprint queue, outputs pre-filled markdown template.",
       "priority": "medium",
       "rationale": "Session logs are required at end of each PM block but must be typed manually. /log command outputs a pre-filled template with today date, latest sprint, and gate status to paste into workspace/agents/memory/."
     },
