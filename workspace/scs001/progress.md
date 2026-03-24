@@ -6321,3 +6321,12 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (file >3000 lines, wrote directly)
 - Issues: none
 - Timestamp: 2026-03-24T21:20:00Z
+
+## Sprint 1172 — GODMAN-LAUNCH
+- Status: PASS
+- Commit: d2c13839
+- Files created: scripts/godman-tag-all.sh, workspace/sprints/sprint-1172.json
+- Change: Script to git tag all 8 godman packages at current package.json version; supports --dry-run
+- Swarm used: no (new file, wrote directly)
+- Issues: none — dry-run shows 8/8 tags ready (godman-protocols/{name}@v0.2.0)
+- Timestamp: 2026-03-24T21:30:00Z
