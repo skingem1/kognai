@@ -1,0 +1,10 @@
+{
+  "sprint_id": "sprint-991",
+  "title": "KOGNAI-STATUS-CLI — daily operator dashboard showing all system states",
+  "description": "Build scripts/status.ts — a CLI dashboard the operator runs daily. Shows: TikTok gate progress (posts/30, days remaining, pace), Achiri alpha countdown (days to Apr 25, readiness score), Godman launch countdown (days to Apr 14, publish checklist), env vars status, action items. Single file, <150 lines.",
+  "block": "OPS",
+  "source": "queue-exhausted-ops",
+  "tasks": [
+    { "id": "991-01", "title": "Write scripts/status.ts — operator daily dashboard", "type": "feature", "task_target": "scripts/status.ts", "agent": "coder", "status": "pending", "priority": "medium", "sprint_id": "sprint-991" }
+  ]
+}
