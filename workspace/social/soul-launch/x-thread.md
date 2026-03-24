@@ -1,39 +1,35 @@
 # SOUL — X Launch Thread
-**Account:** @invoica_ai  
-**Date:** April 2026 (week 7 after PACT launch)  
-**Format:** 6-tweet thread  
+**Account:** @invoica_ai
+**Date:** April 14, 2026
+**Format:** 6-tweet thread
 
 ---
 
 ## Tweet 1 — Hook
 
-AI agent safety constraints are usually written in a system prompt.
+Your AI agent's safety rules live in the system prompt. After enough context, it forgets them.
 
-System prompts get compressed. Context windows fill. The rules disappear.
+We just open-sourced the fix.
 
-We built the layer that makes safety constraints survive.
-
-SOUL — Constitutional Constraints and Safety. 🧵
+SOUL — Constitutional Constraints for AI Agents. Thread:
 
 ---
 
 ## Tweet 2 — The problem
 
-Two failure modes when agents enforce safety via chat context:
+Safety constraints in prompts get lost during context compaction. There's no verifiable record of what rules were active when an agent acted.
 
-→ Constraint drift: after enough context compaction, agents forget the rules
-→ No auditability: nothing verifiable records which constraints were active when an action was taken
+Two failure modes: constraint drift (agent forgets rules) and zero auditability (you can't prove what happened).
 
 ---
 
 ## Tweet 3 — What SOUL does
 
-SOUL encodes constraints as a signed constitutional document that lives in code, not chat.
+SOUL is a signed constitutional document with deny/allow constraints and kill switches.
 
-- Allow/deny rules with scope patterns
-- Non-negotiable kill switches (halt on metric breach)
-- Append-only audit trail for every evaluation
-- Default-deny: no explicit allow = denied
+Deny beats allow. Default is deny. Kill switches are non-negotiable — they cannot be delegated away.
+
+Every evaluation is recorded in an append-only audit trail.
 
 ---
 
@@ -41,41 +37,40 @@ SOUL encodes constraints as a signed constitutional document that lives in code,
 
 ```typescript
 const constitution = signConstitution(
-  createConstitution('did:operator', constraints, killSwitches), SECRET);
-
-const result = evaluateAction(constitution, 'did:messi', 'write:db/prod/*');
-// → { allowed: false, reason: "Denied by constraint 'Block production DB writes'" }
+  createConstitution(operator, [
+    { name: 'Allow reads', action: 'allow', scope: 'read:*' },
+    { name: 'Block .env', action: 'deny', scope: 'read:.env*' },
+  ], [
+    { name: 'Memory', triggerCondition: 'memory_gb > 22', action: 'halt' },
+  ]),
+  SECRET
+);
+evaluateAction(constitution, agent, 'read:.env');
+// → { allowed: false }
 ```
 
 ---
 
 ## Tweet 5 — Kill switches
 
-Kill switches are non-negotiable. No delegation, no override:
+SOUL kill switches fire when runtime metrics cross thresholds:
 
-```typescript
-const triggered = checkKillSwitches(constitution, {
-  views_per_30_posts: 320,  // below 500 threshold → HALT
-  memory_gb: 14.5,
-});
-if (triggered) process.exit(1); // unconditional
-```
+→ views_per_30_posts < 500 → halt
+→ memory_gb > 22 → halt
+→ oversight_hours > 6 → alert
 
-The operator sets them. The protocol enforces them.
+Non-negotiable. Can't be overridden by any other protocol. Can't be delegated away via PACT mandates.
 
 ---
 
 ## Tweet 6 — CTA
 
-SOUL is the lowest layer — no other protocol overrides it.
+SOUL is protocol 6 of 7 from Godman Protocols — and the lowest layer. No protocol overrides it.
 
-SOUL → PACT → AMF → LAX → DRS → SIGNAL → SCORE
-
-Every safe AI agent stack needs a constitutional layer.
+Deny-first. Signed. Auditable. Non-negotiable kill switches.
 
 GitHub: github.com/godman-protocols/soul
-ClaWHub: [ClaWHub link]
-Install: npx skills add https://github.com/godman-protocols/soul
+All 7 ship April 14.
 
 ---
 
@@ -83,9 +78,13 @@ Install: npx skills add https://github.com/godman-protocols/soul
 
 | Tweet | Chars | Status |
 |-------|-------|--------|
-| 1 | 220 | ✓ |
+| 1 | 179 | ✓ |
 | 2 | 230 | ✓ |
-| 3 | 231 | ✓ |
-| 4 | 210 | ✓ |
-| 5 | 215 | ✓ |
-| 6 | 235 | ✓ |
+| 3 | 236 | ✓ |
+| 4 | 268 | ✓ |
+| 5 | 237 | ✓ |
+| 6 | 208 | ✓ |
+
+## Notes
+- Tweet 4 code is long — consider posting as image.
+- Post April 14, staggered with other threads.

@@ -1,0 +1,39 @@
+{
+  "sprint_id": "sprint-976",
+  "title": "GODMAN-LAUNCH-02 — X threads + ClaWHub listings for SOUL, AMF, DRS",
+  "description": "Create X launch threads and ClaWHub marketplace listings for SOUL, AMF, and DRS protocols. Completes all 7 protocol launch materials for April 14.",
+  "block": "GODMAN-PROTOCOLS",
+  "source": "queue-exhausted-continuation",
+  "tasks": [
+    {
+      "id": "976-01",
+      "title": "SOUL X thread + ClaWHub listing",
+      "type": "content",
+      "task_target": "workspace/social/soul-launch/",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-976"
+    },
+    {
+      "id": "976-02",
+      "title": "AMF X thread + ClaWHub listing",
+      "type": "content",
+      "task_target": "workspace/social/amf-launch/",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-976"
+    },
+    {
+      "id": "976-03",
+      "title": "DRS X thread + ClaWHub listing",
+      "type": "content",
+      "task_target": "workspace/social/drs-launch/",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-976"
+    }
+  ]
+}

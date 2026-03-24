@@ -1,69 +1,64 @@
 # DRS — X Launch Thread
-**Account:** @invoica_ai  
-**Date:** April 2026 (week 6 after PACT launch)  
-**Format:** 6-tweet thread  
+**Account:** @invoica_ai
+**Date:** April 14, 2026
+**Format:** 6-tweet thread
 
 ---
 
 ## Tweet 1 — Hook
 
-Three AI agents. One Mac Mini M4. All trying to use the local model at once.
+Your AI agents fight over GPUs. Low-priority tasks starve critical ones. Allocated resources never get released.
 
-Who gets the inference slot? Who waits? Who gets preempted when something critical fires?
+We just open-sourced the missing resource layer.
 
-We just open-sourced the scheduler that decides.
-
-DRS — Dynamic Resource Scheduling. 🧵
+DRS — Dynamic Resource Scheduling. Thread:
 
 ---
 
 ## Tweet 2 — The problem
 
-Multi-agent systems compete for limited compute:
+Multi-agent systems compete for compute, model slots, and memory.
 
-→ No capacity tracking — agents allocate blindly until OOM
-→ No cost ceilings — a runaway agent burns your API budget overnight
-→ No preemption — a stuck low-priority job blocks critical-path tasks forever
+Without a scheduler: resource starvation (low-priority agents hog capacity), no cost control, and no reclamation (stale allocations drift forever).
 
 ---
 
 ## Tweet 3 — What DRS does
 
-DRS gives agents a standard way to request, hold, and release compute:
+DRS manages resource pools with three allocation constraints:
 
-- Register pools (local model, cloud API, GPU)
-- Allocate with constraints: latency, cost, priority
-- Auto-expiry prevents capacity leaks
-- Priority preemption: CRITICAL beats MEDIUM, always
+→ Capacity: enough units available?
+→ Latency: pool fast enough?
+→ Cost: within USDC budget?
+
+Plus priority-based preemption and automatic expiry.
 
 ---
 
 ## Tweet 4 — The code
 
 ```typescript
-const alloc = scheduler.allocate({
-  requestingAgent: 'did:kognai:messi',
-  poolId: qwenPool.id,
-  unitsRequested: 2,
-  priority: 'medium',
-  maxLatencyMs: 200, maxCostUsdc: 0,
-  requestedAt: new Date().toISOString(),
+const scheduler = new ResourceScheduler();
+const pool = scheduler.addPool({
+  name: 'GPU', resourceType: 'gpu-m4',
+  totalCapacity: 10, availableCapacity: 10,
+  costPerUnit: 0.01, latencyMs: 45,
 });
-// null if constraints can't be met
+const alloc = scheduler.allocate(request, 60_000);
+scheduler.release(alloc.id);
 ```
 
 ---
 
 ## Tweet 5 — Preemption
 
-When Harvey fires a CRITICAL task while Guardiola holds all the slots:
+Critical tasks can preempt lower-priority allocations:
 
-```typescript
-scheduler.preempt(guardiolaAlloc.id, { priority: 'critical', ... });
-// Guardiola → 'preempted', Harvey → 'active', capacity reclaimed
-```
+→ critical (rank 4) can preempt anything
+→ high (rank 3) can preempt medium/low
+→ medium/low cannot preempt
 
-Priority wins. The scheduler is honest about why.
+Target allocation → preempted. Capacity returns. New allocation granted.
 
 ---
 
@@ -71,11 +66,12 @@ Priority wins. The scheduler is honest about why.
 
 DRS is protocol 5 of 7 from Godman Protocols.
 
-Compute scheduling for agent swarms — the missing infrastructure primitive.
+Pools. Allocations. Preemption. Auto-expiry. Cost-aware.
 
 GitHub: github.com/godman-protocols/drs
 ClaWHub: [ClaWHub link]
-Install: npx skills add https://github.com/godman-protocols/drs
+
+All 7 protocols ship April 14.
 
 ---
 
@@ -83,9 +79,13 @@ Install: npx skills add https://github.com/godman-protocols/drs
 
 | Tweet | Chars | Status |
 |-------|-------|--------|
-| 1 | 233 | ✓ |
-| 2 | 213 | ✓ |
-| 3 | 230 | ✓ |
-| 4 | 212 | ✓ |
-| 5 | 196 | ✓ |
-| 6 | 195 | ✓ |
+| 1 | 201 | ✓ |
+| 2 | 209 | ✓ |
+| 3 | 210 | ✓ |
+| 4 | 231 | ✓ |
+| 5 | 216 | ✓ |
+| 6 | 175 | ✓ |
+
+## Notes
+- Tweet 4 code — consider image.
+- Post April 14, staggered with other threads.

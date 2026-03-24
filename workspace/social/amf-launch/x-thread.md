@@ -1,66 +1,67 @@
 # AMF — X Launch Thread
-**Account:** @invoica_ai  
-**Date:** April 2026 (week 5 after PACT launch)  
-**Format:** 6-tweet thread  
+**Account:** @invoica_ai
+**Date:** April 14, 2026
+**Format:** 6-tweet thread
 
 ---
 
 ## Tweet 1 — Hook
 
-Every multi-agent system eventually needs agents to talk to each other.
+Your AI agents talk to each other in unstructured JSON. You can't prove who sent what.
 
-And every team invents a different JSON format, auth header, and RPC convention.
+We just open-sourced the missing wire format.
 
-We just open-sourced a standard that ends this.
-
-AMF — Agent Message Format. 🧵
+AMF — Agent Message Format. Thread:
 
 ---
 
 ## Tweet 2 — The problem
 
-Without a standard message format:
+Agent-to-agent messages are ad-hoc. Every agent parses differently. There's no sender verification. Broadcast-only, no addressing.
 
-→ Any agent can forge a message from another (no verifiability)
-→ Consumers can't distinguish a task from a heartbeat without parsing heuristics
-→ Integrating a new agent means learning a new wire format
+You're building critical infrastructure on post-it notes.
 
 ---
 
 ## Tweet 3 — What AMF does
 
-AMF defines a single, typed envelope that any agent can produce and verify.
+AMF is a signed envelope with 5 typed payloads:
 
-One format. Five payload types. HMAC-SHA256 signed.
+→ task-request: delegate work
+→ task-result: report outcomes
+→ event: notify state changes
+→ heartbeat: health monitoring
+→ error: report failures
 
-Works over HTTP, WebSocket, queues, stdin — any transport.
+Two-layer signature: SHA-256 hash + HMAC-SHA256.
 
 ---
 
 ## Tweet 4 — The code
 
 ```typescript
-const msg = createEnvelope('harvey', 'messi',
-  taskRequest('t-001', 'Render vlog', { vlogId: 'abc' }), SECRET);
+const envelope = createEnvelope(
+  'harvey', 'messi',
+  taskRequest('task-1', 'Write validator', input),
+  SECRET
+);
+const valid = verifyEnvelope(envelope, SECRET);
+// → true
 
-const valid = verifyEnvelope(msg, SECRET); // true
-// Payload types: task-request, task-result, event, heartbeat, error
+// Broadcast to all agents
+createEnvelope('messi', null, heartbeat('alive', 0.3), SECRET);
 ```
-
-5 payload builders. Signed. Typed. One import.
 
 ---
 
 ## Tweet 5 — Composability
 
-AMF is the transport layer of the Godman stack:
+AMF is the wire format for the entire Godman stack:
 
-→ PACT mandate grants travel as AMF task-request envelopes
-→ SOUL audit entries serialise as AMF event payloads
-→ LAX routing decisions return as AMF task-result envelopes
-→ DRS allocation requests wrap in AMF task-request payloads
-
-Every protocol speaks AMF.
+→ PACT mandates travel as AMF task-request payloads
+→ SIGNAL events wrap in AMF envelopes for cross-runtime delivery
+→ LAX routing decisions embedded as envelope metadata
+→ SOUL evaluations logged with AMF audit envelopes
 
 ---
 
@@ -68,11 +69,12 @@ Every protocol speaks AMF.
 
 AMF is protocol 4 of 7 from Godman Protocols.
 
-The message format every agent infrastructure needs.
+5 payload types. Two-layer signing. Broadcast + unicast.
 
 GitHub: github.com/godman-protocols/amf
 ClaWHub: [ClaWHub link]
-Install: npx skills add https://github.com/godman-protocols/amf
+
+All 7 protocols ship April 14.
 
 ---
 
@@ -80,9 +82,13 @@ Install: npx skills add https://github.com/godman-protocols/amf
 
 | Tweet | Chars | Status |
 |-------|-------|--------|
-| 1 | 215 | ✓ |
-| 2 | 196 | ✓ |
-| 3 | 196 | ✓ |
-| 4 | 206 | ✓ |
-| 5 | 238 | ✓ |
-| 6 | 175 | ✓ |
+| 1 | 178 | ✓ |
+| 2 | 176 | ✓ |
+| 3 | 239 | ✓ |
+| 4 | 228 | ✓ |
+| 5 | 244 | ✓ |
+| 6 | 171 | ✓ |
+
+## Notes
+- Tweet 4 code — consider image.
+- Post April 14, staggered with other threads.
