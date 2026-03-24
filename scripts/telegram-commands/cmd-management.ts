@@ -1523,9 +1523,14 @@ export function cmdAbResults(): string {
 }
 
 export function cmdStatus(): string {
-  const posts = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  const DRY_METHODS_CS = ['browser-post-dry', 'batch-browser-dry', 'dry'];
+  const allPosts = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  // Sprint 1020: exclude dry-run posts from gate count
+  const posts = (allPosts as any[]).filter((e: any) =>
+    e.video_id && !(e.method && DRY_METHODS_CS.some((d: string) => String(e.method).includes(d)))
+  );
   const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
-  const recordedIds = new Set(posts.map((e: any) => e.video_id).filter(Boolean));
+  const recordedIds = new Set(allPosts.map((e: any) => e.video_id).filter(Boolean));
   const archivedIds = loadArchived();
 
   // Gate stats

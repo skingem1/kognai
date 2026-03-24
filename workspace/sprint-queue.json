@@ -351,7 +351,36 @@
       "priority": "high",
       "rationale": "Gate urgency: 2/30 posts. Currently operator must find the mp4 file path and upload manually. /deliver-next sends the actual mp4 file as a Telegram document so operator can save to camera roll and post to TikTok directly from phone.",
       "created_at": "2026-03-24",
-      "_note": "Auto-skipped: sprint-1017 already committed"
+      "_note": "Shipped 2026-03-24 — commit 84d10992. cmdDeliverNext() in cmd-delivery.ts + /deliver-next in telegram-bot.ts."
+    },
+    {
+      "sprint": 1018,
+      "title": "OPS — remind-post: auto-send mp4 file with posting reminder",
+      "block": "OPS",
+      "status": "done",
+      "priority": "high",
+      "rationale": "Gate urgency: 2/30 posts. Noon/evening reminders now send the actual mp4 video file so operator can post directly from phone.",
+      "created_at": "2026-03-24",
+      "_note": "Shipped 2026-03-24 — commit 5c0e995b. sendVideoFile() added to remind-post.ts. Dry-run filter also added to pickNextVideo()."
+    },
+    {
+      "sprint": 1019,
+      "title": "OPS-BUGFIX — gate urgency off-by-one: 28>28 showed ON_TRACK",
+      "block": "OPS",
+      "status": "done",
+      "priority": "high",
+      "rationale": "postsLeft > daysLeft*2 was false when exactly at pace. Fixed to >= so WARNING shows correctly.",
+      "created_at": "2026-03-24",
+      "_note": "Shipped 2026-03-24 — commit d72aff66. Single char fix in generate-phase1-5-gate.ts. Gate now shows WARNING."
+    },
+    {
+      "sprint": 1020,
+      "title": "OPS — /status: add gate urgency + days-remaining to status output",
+      "block": "OPS",
+      "status": "pending",
+      "priority": "medium",
+      "rationale": "The /status command shows system health but not gate urgency. Add a gate summary line: X/30 posts · Y days · URGENCY_LEVEL so operator sees gate state without running /gate.",
+      "created_at": "2026-03-24"
     }
   ]
 }

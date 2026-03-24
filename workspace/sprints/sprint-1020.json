@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-1020",
+  "title": "OPS-BUGFIX — cmdStatus: filter dry-run posts from gate count",
+  "description": "cmdStatus() in cmd-management.ts uses posts.length which includes dry-run posts (5 entries) instead of real posts (2). Apply DRY_METHODS filter so /status shows 2/30 instead of 5/30. Same pattern as gate generator fix.",
+  "block": "OPS",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1020-01",
+      "title": "Add dry-run filter to cmdStatus() gate calculation",
+      "type": "bug",
+      "task_target": "scripts/telegram-commands/cmd-management.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1020",
+      "description": "In cmdStatus(): after loading posts from manual-posts.jsonl, filter out dry-runs using DRY_METHODS=['browser-post-dry','batch-browser-dry','dry']. Use filtered list for totalPosts, paceNeeded, urgency calculations."
+    }
+  ]
+}
