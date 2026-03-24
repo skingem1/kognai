@@ -1,0 +1,28 @@
+{
+  "sprint_id": "sprint-957",
+  "title": "SPIELBERG-02 — asciinema recording mode + post-production pipeline",
+  "block": "SPIELBERG",
+  "description": "From Spielberg Spec tasks 545-04 to 545-06. Add headless asciinema recording mode (non-TTY, programmatic keypress timing). Build post-production pipeline: title card 3s (color block), caption overlays, closing card 5s. Concatenate into final 1920x1080 H.264+AAC 30fps MP4. Reuse SCS-001 v2 Movie Editor FFmpeg patterns.",
+  "source": "queue-prescribed",
+  "scs001_note": "SCS-001 VIDEO PRODUCTION PAUSED.",
+  "tasks": [
+    {
+      "id": "957-01",
+      "title": "Create scripts/spielberg/post-produce.ts — FFmpeg pipeline with title/caption/closing cards",
+      "type": "feature",
+      "status": "done",
+      "agent": "coder",
+      "task_target": "scripts/spielberg/post-produce.ts",
+      "sprint_id": "sprint-957"
+    },
+    {
+      "id": "957-02",
+      "title": "Update scripts/spielberg/index.ts to use post-produce.ts pipeline",
+      "type": "feature",
+      "status": "done",
+      "agent": "coder",
+      "task_target": "scripts/spielberg/index.ts",
+      "sprint_id": "sprint-957"
+    }
+  ]
+}

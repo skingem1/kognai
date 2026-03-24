@@ -11,7 +11,8 @@
 import { execSync, spawnSync } from 'child_process';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
 import { basename, resolve } from 'path';
-import type { DemoScript, RecordingResult, Scene } from './types.js';
+import type { DemoScript, RecordingResult, Scene } from './types';
+import { postProduce, headlessRecord } from './post-produce';
 
 const REPO_ROOT = resolve(__dirname, '../..');
 const OUTPUT_BASE = resolve(REPO_ROOT, 'workspace/scs001/code-demo-runs');
@@ -81,11 +82,7 @@ function record(script: DemoScript, outDir: string): string {
   const runnerPath = buildSceneRunner(script, outDir);
   const { cols, rows } = script.terminal;
   log(`recording → ${basename(castPath)}`);
-  execSync(
-    `asciinema rec --cols ${cols} --rows ${rows} --overwrite "${castPath}" -- bash "${runnerPath}"`,
-    { cwd: REPO_ROOT, stdio: 'inherit' }
-  );
-  return castPath;
+  return headlessRecord({ runnerScript: runnerPath, castPath, cols, rows });
 }
 
 function renderGif(script: DemoScript, castPath: string, outDir: string): string {
@@ -99,17 +96,14 @@ function renderGif(script: DemoScript, castPath: string, outDir: string): string
   return gifPath;
 }
 
-function postProduce(script: DemoScript, gifPath: string, outDir: string): string {
-  const mp4Path = resolve(outDir, `${script.id}.mp4`);
-  const { resolution, fps } = script.postProduction;
-  const [w, h] = resolution.split('x').map(Number);
-  const scaleFilter = `scale=${w}:${h}:force_original_aspect_ratio=decrease,pad=${w}:${h}:(ow-iw)/2:(oh-ih)/2:black`;
-  log(`post-producing MP4 → ${basename(mp4Path)}`);
-  execSync(
-    `ffmpeg -y -i "${gifPath}" -vf "${scaleFilter}" -c:v libx264 -preset medium -crf 23 -pix_fmt yuv420p -r ${fps} "${mp4Path}"`,
-    { cwd: REPO_ROOT, stdio: 'inherit' }
-  );
-  return mp4Path;
+function runPostProduce(script: DemoScript, gifPath: string, outDir: string): string {
+  log(`post-producing with title/closing cards → ${script.id}.mp4`);
+  return postProduce({
+    contentPath: gifPath,
+    outDir,
+    scriptId: script.id,
+    config: script.postProduction,
+  });
 }
 
 // ── Main ──────────────────────────────────────────────────────────────────────
@@ -156,7 +150,7 @@ async function main(): Promise<void> {
     try { gifPath = renderGif(script, castPath, outDir); } catch (e) { error = String(e); status = 'partial'; }
   }
   if (gifPath && !error) {
-    try { mp4Path = postProduce(script, gifPath, outDir); } catch (e) { error = String(e); status = 'partial'; }
+    try { mp4Path = runPostProduce(script, gifPath, outDir); } catch (e) { error = String(e); status = 'partial'; }
   }
 
   const result: RecordingResult = {
