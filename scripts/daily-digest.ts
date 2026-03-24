@@ -205,15 +205,16 @@ function getAchiriAlphaStats(): { waitlist: number; invited: number } {
 // ── Achiri engagement metrics (Sprint 318) ──────────────────────────────────
 
 function getAchiriEngagement(): {
-  dau_today: number; msgs_today: number; total_users: number;
+  dau_today: number; msgs_today: number; msgs_yesterday: number; total_users: number;
   returning_users: number; retention_pct: number;
   error_count_24h: number; quality_avg: number | null;
 } {
   const countsPath = path.join(ROOT, 'workspace', 'achiri', 'daily-counts.json');
   const errorPath = path.join(ROOT, 'workspace', 'achiri', 'error-log.jsonl');
 
-  let dau_today = 0, msgs_today = 0, total_users = 0, returning_users = 0, retention_pct = 0;
+  let dau_today = 0, msgs_today = 0, msgs_yesterday = 0, total_users = 0, returning_users = 0, retention_pct = 0;
   const today = new Date().toISOString().slice(0, 10);
+  const yesterday = new Date(Date.now() - 86_400_000).toISOString().slice(0, 10);
 
   // Filter out test users
   const isReal = (id: string) =>
@@ -232,6 +233,9 @@ function getAchiriEngagement(): {
           if (day === today) {
             dau_today++;
             msgs_today += count;
+          }
+          if (day === yesterday) {
+            msgs_yesterday += count;
           }
         }
       }
@@ -252,7 +256,7 @@ function getAchiriEngagement(): {
     } catch { /* ignore */ }
   }
 
-  return { dau_today, msgs_today, total_users, returning_users, retention_pct, error_count_24h, quality_avg: null };
+  return { dau_today, msgs_today, msgs_yesterday, total_users, returning_users, retention_pct, error_count_24h, quality_avg: null };
 }
 
 // ── Content calendar (Sprint 193) ─────────────────────────────────────────────
@@ -552,7 +556,12 @@ function buildDigest(): string {
     '',
     `🤝 *Achiri Alpha:* (Apr 25, ${daysAchiri}d)`,
     `  • Waitlist: ${achiri.waitlist} | Invited: ${achiri.invited}`,
-    `  • DAU today: ${achiriEng.dau_today} (${achiriEng.msgs_today} msgs)`,
+    // Sprint 1133 (wave 14): show msgs delta vs yesterday
+    (() => {
+      const delta = achiriEng.msgs_today - achiriEng.msgs_yesterday;
+      const deltaStr = delta > 0 ? ` ↑+${delta}` : delta < 0 ? ` ↓${delta}` : '';
+      return `  • DAU today: ${achiriEng.dau_today} (${achiriEng.msgs_today} msgs${deltaStr} vs yesterday)`;
+    })(),
     `  • Total users: ${achiriEng.total_users} | Returning: ${achiriEng.returning_users} (${achiriEng.retention_pct}%)`,
     ...(achiriEng.error_count_24h > 0 ? [`  • ⚠️ Errors (24h): ${achiriEng.error_count_24h}`] : [`  • ✅ No errors (24h)`]),
     '',

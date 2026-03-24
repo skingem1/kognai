@@ -73,9 +73,22 @@ function main(): void {
   // Daily obligation
   const dailyObligation = daysLeft > 0 ? Math.ceil(postsNeeded / daysLeft) : postsNeeded;
 
-  if (postsNeeded <= 0) {
-    console.log('[morning-brief] Gate met — no brief needed');
+  // Sprint 1139 (wave 14): suppress brief when gate is fully met (posts + views)
+  const totalViewsCurrent = manualPosts
+    .filter((p: any) => !DRY_METHODS.some(d => String(p.method || '').includes(d)))
+    .reduce((s: number, p: any) => s + (p.views ?? 0), 0);
+  if (postsNeeded <= 0 && totalViewsCurrent >= 500) {
+    const flagPath = path.join(ROOT, 'workspace/scs001/gate-celebration-sent.txt');
+    if (!fs.existsSync(flagPath)) {
+      sendTelegram(`🎉 *Phase 1.5 gate met!* 30 posts · 500+ views — great work! Morning briefs paused until Phase 2 begins.`);
+      fs.writeFileSync(flagPath, new Date().toISOString(), 'utf-8');
+    }
+    console.log('[morning-brief] Gate fully met — no brief needed');
     return;
+  }
+
+  if (postsNeeded <= 0) {
+    console.log('[morning-brief] Posts done but views pending — sending brief');
   }
 
   // Top unposted video + queue depth

@@ -1016,6 +1016,67 @@ function generateItems(startSprint: number, existingTitles: Set<string> = new Se
     rationale: 'Morning brief focuses on TikTok gate but ignores Achiri alpha deadline. When <7d to alpha, add a line prompting /achiri check.',
   });
 
+  // Wave 14 templates — post-launch monitoring + Godman + Achiri hardening
+  infraItems.push({
+    title: 'OPS — /status: show smoke test age in the status block',
+    block: 'OPS',
+    rationale: '/status shows smoke status (pass/fail) but not how old the last run is. Add "last: Xh ago" to make staleness visible without opening /smoke.',
+  });
+
+  infraItems.push({
+    title: 'GATE — /gate: show posts-per-day over the last 7 days',
+    block: 'GATE',
+    rationale: '/gate shows total pace but not recent posting rhythm. Adding "last 7d: X posts/day" gives a real-world view of current momentum.',
+  });
+
+  infraItems.push({
+    title: 'GODMAN-LAUNCH — /godman: check npm publish dry-run per protocol',
+    block: 'GODMAN-LAUNCH',
+    rationale: '/godman checks tests and git tags but not if each package is publishable. Run "npm publish --dry-run" per protocol and show which ones are blocked.',
+  });
+
+  infraItems.push({
+    title: 'OPS — /daily-digest: add Achiri message count delta vs previous day',
+    block: 'OPS',
+    rationale: 'Daily digest shows today\'s stats but not growth. Adding "Achiri: +N msgs vs yesterday" shows if engagement is growing.',
+  });
+
+  infraItems.push({
+    title: 'QUALITY — /smoke: add Telegram bot ping check',
+    block: 'QUALITY',
+    rationale: '/smoke tests pipeline components but not the Telegram bot itself. Add a check that verifies the bot token is valid by calling getMe API.',
+  });
+
+  infraItems.push({
+    title: 'ACHIRI — /achiri: show waitlist count and conversion funnel',
+    block: 'ACHIRI',
+    rationale: '/achiri shows premium conversion but not waitlist size. Add "waitlist: N" and a simple funnel: waitlist → active → premium.',
+  });
+
+  infraItems.push({
+    title: 'OPS — /health: show whether Hetzner VPS is reachable via Tailscale',
+    block: 'OPS',
+    rationale: '/health shows Tailscale status but not if the Hetzner VPS IP is reachable. Add a ping check to the VPS Tailscale IP.',
+  });
+
+  infraItems.push({
+    title: 'OPS — /errors: show total error count delta over last 7 days',
+    block: 'OPS',
+    rationale: '/errors shows 24h errors but not weekly trend. Add "this week: N errors vs last week: M" to catch gradual degradation.',
+  });
+
+  infraItems.push({
+    title: 'GATE — /record: show cumulative views progress bar after recording',
+    block: 'GATE',
+    rationale: 'After recording a post, operator has no visual on overall progress. Show a mini progress bar: [██░░░] 40% views toward gate.',
+  });
+
+  infraItems.push({
+    title: 'OPS — /morning-brief: suppress brief when gate is already met',
+    block: 'OPS',
+    rationale: 'Once gate is met (30 posts + 500 views), the morning brief is noise. Send a celebratory message once then skip until Phase 2 starts.',
+  });
+
   // Fill remaining slots (skip duplicates of already-completed items)
   for (const item of infraItems) {
     if (items.length >= 10) break;

@@ -182,7 +182,20 @@ export function cmdHealth(): string {
     tailscaleSection = '\n\n*Tailscale:* ℹ️ not installed or not running';
   }
 
-  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${ollamaSection}${memWarnSection}${memTableSection}${supabaseSection}${diskSection}${watchdogSection}${runtimeSection}${tailscaleSection}`;
+  // Sprint 1136 (wave 14): ping Hetzner VPS via Tailscale IP from shared-infra
+  let hetznerSection = '';
+  try {
+    const hetznerIp = process.env.HETZNER_TAILSCALE_IP ?? '';
+    if (hetznerIp) {
+      const pingOut = execSync(`ping -c 1 -W 2 ${hetznerIp} 2>&1`, { encoding: 'utf-8', timeout: 5000 }).trim();
+      const reachable = pingOut.includes('1 packets received') || pingOut.includes('1 received');
+      hetznerSection = `\n\n*Hetzner VPS:* ${reachable ? '✅ reachable' : '❌ unreachable'} (${hetznerIp})`;
+    }
+  } catch {
+    hetznerSection = '\n\n*Hetzner VPS:* ⚠️ HETZNER_TAILSCALE_IP not set or ping failed';
+  }
+
+  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${ollamaSection}${memWarnSection}${memTableSection}${supabaseSection}${diskSection}${watchdogSection}${runtimeSection}${tailscaleSection}${hetznerSection}`;
 }
 
 export function cmdTier(): string {
@@ -1110,6 +1123,32 @@ export function cmdErrors(filterProcess?: string): string {
     } catch { /* skip */ }
   }
 
+  // Sprint 1137 (wave 14): weekly error count delta vs last week
+  try {
+    const logFiles = fs.readdirSync(logDir).filter((f: string) => f.endsWith('-error.log'));
+    const weekCutoff = Date.now() - 7 * 86_400_000;
+    const twoWeekCutoff = Date.now() - 14 * 86_400_000;
+    let thisWeekErrors = 0, lastWeekErrors = 0;
+    for (const file of logFiles) {
+      const fullPath = path.join(logDir, file);
+      try {
+        const stat = fs.statSync(fullPath);
+        if (stat.mtimeMs < twoWeekCutoff) continue;
+        const lines = fs.readFileSync(fullPath, 'utf-8').split('\n');
+        for (const l of lines) {
+          const lower = l.toLowerCase();
+          if (!(lower.includes('error') || lower.includes('fatal') || lower.includes('exception') || lower.includes('fail'))) continue;
+          if (stat.mtimeMs >= weekCutoff) thisWeekErrors++;
+          else lastWeekErrors++;
+        }
+      } catch { /* skip */ }
+    }
+    const delta = thisWeekErrors - lastWeekErrors;
+    const trendIcon = delta > 5 ? '📈 worse' : delta < -5 ? '📉 better' : '➡️ stable';
+    const deltaStr = delta > 0 ? `+${delta}` : String(delta);
+    output.push(`\n*Weekly:* ${thisWeekErrors} this week vs ${lastWeekErrors} last week (${deltaStr} · ${trendIcon})`);
+  } catch { /* skip */ }
+
   return output.join('\n');
 }
 
@@ -1249,6 +1288,29 @@ export async function cmdSmoke(chatId: string): Promise<void> {
           : `❌ Pipeline validator: ${errCount} errors — /errors for details`);
       } catch {}
     }
+
+    // Sprint 1134 (wave 14): Telegram bot ping check
+    try {
+      const token = process.env.TELEGRAM_BOT_TOKEN;
+      if (token) {
+        const getMeUrl = `https://api.telegram.org/bot${token}/getMe`;
+        const res = await new Promise<{ ok: boolean; username?: string }>((resolve) => {
+          const https = require('https');
+          https.get(getMeUrl, (r: any) => {
+            let body = '';
+            r.on('data', (d: any) => { body += d; });
+            r.on('end', () => {
+              try { const j = JSON.parse(body); resolve({ ok: j.ok, username: j.result?.username }); } catch { resolve({ ok: false }); }
+            });
+          }).on('error', () => resolve({ ok: false }));
+        });
+        lines.push('');
+        lines.push(res.ok ? `✅ Telegram bot: @${res.username ?? '?'} reachable` : `❌ Telegram bot: token invalid or unreachable`);
+      } else {
+        lines.push('');
+        lines.push(`⚠️ Telegram bot: TELEGRAM_BOT_TOKEN not set`);
+      }
+    } catch { /* skip */ }
 
     await sendMessage(chatId, lines.join('\n'));
   } catch (err: any) {

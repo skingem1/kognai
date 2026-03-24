@@ -433,7 +433,14 @@ export function cmdAchiri(): string {
         const totalUsers = allUserKeys.size;
         const premiumUsers = paidUserKeys.size;
         const convPct = totalUsers > 0 ? Math.round((premiumUsers / totalUsers) * 100) : 0;
+        // Sprint 1135 (wave 14): conversion funnel: waitlist → active → premium
+        const funnelWaitlist = waitlistCount;
+        const funnelActive = totalUsers;
+        const funnelPremium = premiumUsers;
+        const w2a = funnelWaitlist > 0 ? Math.round((funnelActive / funnelWaitlist) * 100) : 0;
+        const a2p = funnelActive > 0 ? Math.round((funnelPremium / funnelActive) * 100) : 0;
         lines.push(`💎 *Premium:* ${premiumUsers}/${totalUsers} users = ${convPct}% conversion`);
+        lines.push(`📊 *Funnel:* waitlist ${funnelWaitlist} → active ${funnelActive} (${w2a}%) → premium ${funnelPremium} (${a2p}%)`);
         lines.push('');
       }
     } catch { /* skip */ }

@@ -95,11 +95,17 @@ export function cmdRecord(args: string): string {
 
   const unknownWarn = !knownVideo ? `\n⚠️ _Video ID not found in ledger — recording anyway_` : '';
 
+  // Sprint 1138 (wave 14): views progress bar
+  const viewPct = Math.min(100, Math.round((totalViews / 500) * 100));
+  const viewFilled = Math.round(viewPct / 5);
+  const viewBar = '█'.repeat(viewFilled) + '░'.repeat(20 - viewFilled);
+
   return (
     `✅ *Post recorded!*\n\n` +
     `Video: \`${videoId}\`\n` +
     `Views: ${views}${title ? `\nTitle: ${title}` : ''}${tiktokUrl ? `\n🔗 TikTok URL saved (views will update automatically)` : ''}${unknownWarn}\n\n` +
     `📊 *Gate progress:* ${postCount}/30 posts · ${totalViews}/500 views\n` +
+    `\`[${viewBar}]\` ${viewPct}% views toward gate\n` +
     `${postsLeft > 0 ? `⏳ ${postsLeft} more posts needed · ${daysLeft}d to Apr 7` : '✅ Post target met!'}` +
     // Sprint 1129: suggest view-update if URL was saved
     (tiktokUrl ? `\n\n💡 _To update views later: \`/updateviews ${videoId}\`_` : '')
