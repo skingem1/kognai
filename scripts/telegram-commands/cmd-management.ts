@@ -1727,13 +1727,20 @@ export function cmdBlockers(): string {
     lines.push(`  ✅ ACHIRI_TELEGRAM_BOT_TOKEN: set`);
   } else {
     lines.push(`  ❌ ACHIRI_TELEGRAM_BOT_TOKEN: not set in .env`);
+    lines.push(`  ℹ️  Add: ACHIRI_TELEGRAM_BOT_TOKEN=<bot_token> to .env`);
     totalBlocked++;
   }
   if (hasAchiriUrl) {
     lines.push(`  ✅ ACHIRI_BASE_URL: set`);
   } else {
     lines.push(`  ❌ ACHIRI_BASE_URL: not set in .env`);
+    lines.push(`  ℹ️  Add: ACHIRI_BASE_URL=http://localhost:3001 (or deployed URL)`);
     totalBlocked++;
+  }
+  if (hasAchiriToken && hasAchiriUrl) {
+    lines.push(`  ℹ️  Deploy: \`pm2 start ecosystem.config.js --only achiri-telegram\``);
+  } else {
+    lines.push(`  ℹ️  After setting both, run: \`pm2 start ecosystem.config.js --only achiri-telegram\``);
   }
   lines.push('');
 

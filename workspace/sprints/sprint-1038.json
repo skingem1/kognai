@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1038",
+  "title": "OPS — /blockers: add Achiri deployment instructions after missing env var items",
+  "description": "Update cmdBlockers() to show exact .env variable names and pm2 command to deploy achiri-telegram after setting the tokens.",
+  "block": "OPS",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1038-01",
+      "title": "Add deployment instructions to /blockers Achiri section",
+      "type": "feature",
+      "task_target": "scripts/telegram-commands/cmd-management.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1038"
+    }
+  ]
+}
