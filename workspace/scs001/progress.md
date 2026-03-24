@@ -5546,3 +5546,13 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (shell script <80 lines, direct write)
 - Issues: ((FAIL++)) bash set-e edge case fixed; npm login dry-run warn not fail
 - Timestamp: 2026-03-24T10:45:00Z
+
+## Sprint 993 — GODMAN-SDK-FIX
+- Status: PASS
+- Commit: bfcd51b2
+- Files modified: workspace/godman-protocols/sdk/bin/demo.ts
+- Test: SDK build ✓, npm pack ✓, 36/36 smoke + 20/20 integration = 56/56 PASS
+- Pipeline: All 7 Godman Protocols build-ready for April 14 npm publish
+- Swarm used: no (surgical 3-line fix, direct edit)
+- Issues: CTO gate module not found (warned, not blocked). dist/ gitignored (correct).
+- Timestamp: 2026-03-24T22:00:00Z
