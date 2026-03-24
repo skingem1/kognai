@@ -106,8 +106,18 @@ export function cmdGate(): string {
   ];
   const passed = criteria.filter(c => c.pass).length;
 
+  // Sprint 1121: PASS/FAIL/AT RISK verdict
+  const gateVerdict = postCount >= 30 && totalViews >= 500
+    ? '✅ *GATE: PASS*'
+    : daysLeft <= 3 && (postsNeeded > 0 || viewsNeeded > 0)
+      ? '🔴 *GATE: FAIL RISK — act now*'
+      : daysLeft <= 7 && postsNeeded > daysLeft * 2
+        ? '🟠 *GATE: AT RISK*'
+        : '🟡 *GATE: IN PROGRESS*';
+
   return [
     `*📊 Phase 1.5 Gate — April 7 Readiness*`,
+    gateVerdict,
     `📅 ${daysLeft} days remaining · ${urgency}`,
     `✅ *${passed}/4 criteria met*`,
     ``,
@@ -482,6 +492,20 @@ export function cmdPace(): string {
       const deficit = GATE_TARGET - projectedAtGate;
       lines.push(`❌ *Off track* — ${deficit} posts short`);
       lines.push(`📌 Increase to *${paceNeeded.toFixed(1)} posts/day* (${perWeek}/week)`);
+    }
+  }
+
+  // Sprint 1126: today's posting obligation action line
+  const todayStr = now.toISOString().slice(0, 10);
+  const todayPostedCount = Object.entries(dailyCounts).reduce((s, [d, n]) => d === todayStr ? s + n : s, 0);
+  const todayObligation = daysLeft > 0 ? Math.ceil(postsNeeded / daysLeft) : 0;
+  const todayRemaining = Math.max(0, todayObligation - todayPostedCount);
+  if (postsNeeded > 0) {
+    lines.push('');
+    if (todayRemaining === 0) {
+      lines.push(`✅ *Today's target met!* ${todayPostedCount}/${todayObligation} posted today`);
+    } else {
+      lines.push(`🎯 *Post ${todayRemaining} more today* (${todayPostedCount}/${todayObligation} done)`);
     }
   }
 

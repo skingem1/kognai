@@ -404,6 +404,22 @@ export function cmdAchiri(): string {
             .reduce((sum, [, v]) => sum + (v as number), 0);
         }, 0);
         lines.push(`💬 *Messages:* ${totalMsgs} total · ${avgPerDay}/day avg · *${last24hMsgs} last 24h*`);
+
+        // Sprint 1120: premium conversion rate
+        const allUserKeys = new Set<string>();
+        const paidUserKeys = new Set<string>();
+        for (const dayData of Object.values(counts)) {
+          for (const k of Object.keys(dayData)) {
+            if (k.startsWith('validate') || k.startsWith('e2e')) continue;
+            if (k.endsWith('-limit') || k.endsWith('-bypass')) continue;
+            if (k.endsWith('-paid')) { paidUserKeys.add(k.replace('-paid', '')); continue; }
+            allUserKeys.add(k);
+          }
+        }
+        const totalUsers = allUserKeys.size;
+        const premiumUsers = paidUserKeys.size;
+        const convPct = totalUsers > 0 ? Math.round((premiumUsers / totalUsers) * 100) : 0;
+        lines.push(`💎 *Premium:* ${premiumUsers}/${totalUsers} users = ${convPct}% conversion`);
         lines.push('');
       }
     } catch { /* skip */ }

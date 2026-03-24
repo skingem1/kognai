@@ -129,6 +129,22 @@ export function cmdHealth(): string {
     }
   } catch {}
 
+  // Sprint 1123: last watchdog run timestamp
+  let watchdogSection = '';
+  try {
+    const wdPath = path.join(ROOT, 'reports', 'watchdog-latest.json');
+    if (fs.existsSync(wdPath)) {
+      const wd = JSON.parse(fs.readFileSync(wdPath, 'utf-8'));
+      const ts = wd.timestamp ?? wd.generated_at;
+      if (ts) {
+        const ageH = (Date.now() - new Date(ts).getTime()) / 3600000;
+        const ageStr = ageH < 1 ? `${Math.round(ageH * 60)}m ago` : `${Math.round(ageH)}h ago`;
+        const wdIcon = ageH > 25 ? '⚠️' : '✅';
+        watchdogSection = `\n\n*Watchdog:* ${wdIcon} last run ${ageStr}`;
+      }
+    }
+  } catch {}
+
   // Sprint 1123: Tailscale VPN status
   let tailscaleSection = '';
   try {
@@ -143,7 +159,7 @@ export function cmdHealth(): string {
     tailscaleSection = '\n\n*Tailscale:* ℹ️ not installed or not running';
   }
 
-  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${ollamaSection}${memWarnSection}${supabaseSection}${diskSection}${tailscaleSection}`;
+  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${ollamaSection}${memWarnSection}${supabaseSection}${diskSection}${watchdogSection}${tailscaleSection}`;
 }
 
 export function cmdTier(): string {
@@ -949,7 +965,10 @@ export function cmdErrors(): string {
     const windowEnd = Math.max(...allMtimes);
     const fmtTime = (ms: number) => { const ago = Math.round((Date.now() - ms) / 60_000); return ago < 60 ? `${ago}m ago` : `${Math.round(ago / 60)}h ago`; };
     const windowStr = windowStart === windowEnd ? fmtTime(windowStart) : `${fmtTime(windowStart)} → ${fmtTime(windowEnd)}`;
-    output.push(`⚠️ *PM2 Errors (last 24h)* — ${errored.length} unique · _${windowStr}_\n`);
+    // Sprint 1122: show total occurrence count alongside unique count
+    const totalOccurrences = errored.reduce((s, e) => s + (e.count ?? 1), 0);
+    const countStr = totalOccurrences > errored.length ? `${totalOccurrences} total, ${errored.length} unique` : `${errored.length} unique`;
+    output.push(`⚠️ *PM2 Errors (last 24h)* — ${countStr} · _${windowStr}_\n`);
 
     // Sprint 1111: group by error type, show top 3
     const typeCounts = new Map<string, number>();

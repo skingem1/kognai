@@ -139,10 +139,15 @@ function main(): void {
     }
   } catch {}
 
-  // Sprint 1094: Godman countdown when ≤14d to launch
+  // Sprint 1094+1124: Godman countdown when ≤14d to launch; skip if already launched
   const godmanMs = new Date('2026-04-14T00:00:00Z').getTime() - Date.now();
   const godmanDays = Math.max(0, Math.ceil(godmanMs / 86_400_000));
-  if (godmanDays <= 14) {
+  if (godmanMs < 0) {
+    // Already launched — show brief "launched" note instead of countdown
+    const daysSinceLaunch = Math.floor(Math.abs(godmanMs) / 86_400_000);
+    lines.push('');
+    lines.push(`🚀 *Godman launched* ${daysSinceLaunch}d ago — /godman to check status`);
+  } else if (godmanDays <= 14) {
     lines.push('');
     lines.push(`🚀 *Godman launch in ${godmanDays}d* — /godman · npm login before Apr 14`);
   }

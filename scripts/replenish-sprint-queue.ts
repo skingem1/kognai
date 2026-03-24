@@ -772,6 +772,67 @@ function generateItems(startSprint: number, existingTitles: Set<string> = new Se
     rationale: 'Before launch day, /godman should verify npmjs.com is reachable with a quick curl check so operator knows publish will work before attempting it.',
   });
 
+  // Wave 10 templates — final launch polish + Achiri + observability
+  infraItems.push({
+    title: 'GODMAN-LAUNCH — /godman: show npmjs.com registry reachability check',
+    block: 'GODMAN-PROTOCOLS',
+    rationale: 'On launch day, npm publish will fail silently if npmjs.com is unreachable. Add a curl check to verify registry is reachable before /godman shows green.',
+  });
+
+  infraItems.push({
+    title: 'OPS — /status: show today obligation met/unmet in a single bold line',
+    block: 'OPS',
+    rationale: '/status shows today posts but the obligation status is not prominent enough. Replace the today line with a bold OBLIGATION MET or OBLIGATION UNMET banner.',
+  });
+
+  infraItems.push({
+    title: 'ACHIRI — /achiri: show premium conversion rate (premium users / total users)',
+    block: 'ACHIRI',
+    rationale: '/achiri shows user counts but not premium conversion %. Add "Conversion: X/Y = Z%" to make business metrics visible before alpha launch.',
+  });
+
+  infraItems.push({
+    title: 'GATE — /gate: show gate status as PASS/FAIL/AT RISK in header',
+    block: 'GATE',
+    rationale: '/gate shows numbers but not a single PASS/FAIL/AT RISK status. Add a clear status banner at the top so operator gets instant verdict.',
+  });
+
+  infraItems.push({
+    title: 'OPS — /errors: show total error count in header with time window',
+    block: 'OPS',
+    rationale: '/errors shows a list but the total count and time window are not prominent. Add "X errors in last 24h" as the first line for quick scanning.',
+  });
+
+  infraItems.push({
+    title: 'INFRA — /health: show last watchdog run timestamp',
+    block: 'INFRA',
+    rationale: '/health shows PM2 and disk but not when watchdog last ran. Add "Watchdog: last run Xh ago" to catch cases where the watchdog cron is silently failing.',
+  });
+
+  infraItems.push({
+    title: 'OPS — /morning-brief: skip brief and log reason if Godman already launched',
+    block: 'OPS',
+    rationale: 'After Apr 14, morning-brief still counts down to a passed date. Skip the Godman section (or show "launched") when the date has passed.',
+  });
+
+  infraItems.push({
+    title: 'QUALITY — /bottest: add /gate command smoke test',
+    block: 'QUALITY',
+    rationale: '/bottest doesnt cover /gate. Add a smoke test that calls cmdGate() and checks that the response contains "Phase 1.5 Gate".',
+  });
+
+  infraItems.push({
+    title: 'OPS — /weekly-report: add views per day average for the week',
+    block: 'OPS',
+    rationale: '/weekly-report shows posts per week but not views velocity. Add "Views this week: N total · X/day avg" to track engagement trend.',
+  });
+
+  infraItems.push({
+    title: 'GATE — /pace: show daily post target for today (not just overall pace)',
+    block: 'GATE',
+    rationale: '/pace shows overall pace and needed pace but not "you need to post X videos today". Add a "Post X more today" action line based on posts done today vs daily obligation.',
+  });
+
   // Fill remaining slots (skip duplicates of already-completed items)
   for (const item of infraItems) {
     if (items.length >= 10) break;

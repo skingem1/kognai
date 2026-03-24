@@ -1756,7 +1756,10 @@ export function cmdStatus(): string {
     `*${totalPosts}/${target}* posts · *${totalViews}/500* views · *${daysLeft}d* left`,
     `${urgency}`,
     '',
-    `📅 Today: *${todayPosts}/${dailyObligation}* ${todayPosts >= dailyObligation ? '✅ done' : '⏳ post now'} · ${paceNeeded.toFixed(1)}/day needed`,
+    // Sprint 1119: bold obligation status line
+    todayPosts >= dailyObligation
+      ? `✅ *OBLIGATION MET* — ${todayPosts}/${dailyObligation} today · ${paceNeeded.toFixed(1)}/day needed`
+      : `⚠️ *OBLIGATION UNMET* — ${todayPosts}/${dailyObligation} today · post *${dailyObligation - todayPosts} more now*`,
     streak > 0 ? `🔥 Streak: *${streak}* days` : (daysSinceLastPost > 0 ? `💤 Streak: 0 — last post *${daysSinceLastPost}d ago*` : `💤 Streak: 0 — no posts yet`),
     `📦 Queue: *${readyCount}* ready · ${unposted.length} total`,
     pipelineLine,
@@ -1968,6 +1971,22 @@ export function cmdBotTest(): string {
     totalPass++;
   } else {
     results.push(`❌ Env vars: ${missingEnvs.length} missing — ${missingEnvs.map(e => e.label).join(', ')}`);
+    totalFail++;
+  }
+
+  // Sprint 1125: /gate command smoke test
+  try {
+    const { cmdGate } = require('./cmd-gate');
+    const gateOut: string = cmdGate();
+    if (gateOut.includes('Phase 1.5 Gate')) {
+      results.push(`✅ /gate: responds with gate status`);
+      totalPass++;
+    } else {
+      results.push(`❌ /gate: unexpected output — missing "Phase 1.5 Gate"`);
+      totalFail++;
+    }
+  } catch (err: any) {
+    results.push(`❌ /gate: error — ${(err.message || '').slice(0, 60)}`);
     totalFail++;
   }
 
