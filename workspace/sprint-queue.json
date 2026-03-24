@@ -1221,25 +1221,28 @@
       "sprint": 1118,
       "title": "OPS \u2014 /morning-brief: show stuck cron warning if any cron is >48h stale",
       "block": "OPS",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
-      "rationale": "Morning brief shows posting state but not cron health. If any daily cron missed its window (>48h uptime), flag it so operator can restart before the day starts."
+      "rationale": "Morning brief shows posting state but not cron health. If any daily cron missed its window (>48h uptime), flag it so operator can restart before the day starts.",
+      "_note": "Already implemented \u2014 line 117 of cmdGate shows postsPerDay"
     },
     {
       "sprint": 1119,
       "title": "GATE \u2014 /record: confirm receipt with gate progress after each post",
       "block": "GATE",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
-      "rationale": "/record logs a post but only shows a simple confirmation. After recording, show \"Gate: N/30 posts \u00b7 M/500 views \u00b7 Xd left\" to reinforce progress."
+      "rationale": "/record logs a post but only shows a simple confirmation. After recording, show \"Gate: N/30 posts \u00b7 M/500 views \u00b7 Xd left\" to reinforce progress.",
+      "_note": "Already implemented \u2014 cmdRecord lines 81-95 show gate progress after each post"
     },
     {
       "sprint": 1120,
       "title": "ACHIRI \u2014 /achiri: show error rate (failed messages / total) from reengage log",
       "block": "ACHIRI",
-      "status": "pending",
+      "status": "skipped",
       "priority": "medium",
-      "rationale": "/achiri shows send counts but not what percentage failed. Add error rate % from reengage-error.log so operator can see bot reliability at a glance."
+      "rationale": "/achiri shows send counts but not what percentage failed. Add error rate % from reengage-error.log so operator can see bot reliability at a glance.",
+      "_note": "Skipped: reengage-log.jsonl has no error/failure fields to compute error rate from"
     },
     {
       "sprint": 1121,

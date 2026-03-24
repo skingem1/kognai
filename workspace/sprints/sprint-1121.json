@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1121",
+  "title": "OPS — /status: filter empty lines from output (compact mode)",
+  "description": "Remove consecutive empty lines from /status output for cleaner Telegram display.",
+  "block": "OPS",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1121-01",
+      "title": "Add compact mode to cmdStatus output",
+      "type": "enhancement",
+      "task_target": "scripts/telegram-commands/cmd-management.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1121"
+    }
+  ]
+}

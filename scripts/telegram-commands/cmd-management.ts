@@ -1771,9 +1771,17 @@ export function cmdStatus(): string {
     achiriLine,
     '',
     `_Tap /pickup to post · /blockers for action items_`,
-  ].filter(l => l !== undefined && l !== null);
+  ];
 
-  return lines.join('\n');
+  // Sprint 1121: compact mode — filter consecutive empty lines
+  const compact: string[] = [];
+  for (const l of lines) {
+    if (l === undefined || l === null) continue;
+    if (l === '' && compact.length > 0 && compact[compact.length - 1] === '') continue;
+    compact.push(l);
+  }
+
+  return compact.join('\n');
 }
 
 // Sprint 591: /replenish — auto-generate sprint queue items when queue is empty
