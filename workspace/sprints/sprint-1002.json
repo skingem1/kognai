@@ -1,0 +1,31 @@
+{
+  "sprint_id": "sprint-1002",
+  "title": "QUALITY — Content freshness decay — auto-archive stale queue items older than 7 days",
+  "description": "Prevent stale trending-topic queue items from being acted upon weeks after they were added. Script stamps pending items with created_at on first run. On subsequent runs, archives items older than 7 days to workspace/scs001/archived-queue.jsonl and marks them stale-archived in sprint-queue.json. PM2 cron daily at midnight.",
+  "block": "QUALITY",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1002-01",
+      "title": "Create scripts/scs001/archive-stale-queue.ts — content freshness decay archiver",
+      "type": "feature",
+      "task_target": "scripts/scs001/archive-stale-queue.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1002",
+      "description": "Read workspace/sprint-queue.json. For each pending item without created_at: add created_at=today. For each pending item with created_at older than 7 days: mark status=stale-archived, append to workspace/scs001/archived-queue.jsonl. Write updated queue back. Log count. Max 100 lines. No external deps."
+    },
+    {
+      "id": "1002-02",
+      "title": "Add PM2 cron entry to ecosystem.config.js for daily archival at midnight",
+      "type": "config",
+      "task_target": "ecosystem.config.js",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "low",
+      "sprint_id": "sprint-1002",
+      "description": "Add scs001-queue-archiver PM2 entry with cron_restart: '5 0 * * *' (12:05am daily). autorestart: false, watch: false."
+    }
+  ]
+}

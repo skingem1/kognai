@@ -1250,6 +1250,27 @@ module.exports = {
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
     {
+      // Sprint 1002: Content freshness decay archiver — auto-archives stale pending queue items (7d)
+      // Stamps new pending items with created_at, archives expired items to archived-queue.jsonl
+      // To start: pm2 start ecosystem.config.js --only scs001-queue-archiver
+      name: "scs001-queue-archiver",
+      script: "./scripts/scs001/archive-stale-queue.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: false,
+      watch: false,
+      cron_restart: "5 0 * * *",
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
+        STALE_DAYS: "7",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/queue-archiver-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/queue-archiver-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
+    {
       // Sprint 1001: Pipeline output validator — runs ffprobe on all produced videos daily at 6am
       // Writes report to reports/pipeline-validator-latest.json, Telegram alert on failures.
       // To start: pm2 start ecosystem.config.js --only scs001-validator
