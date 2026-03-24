@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1064",
+  "title": "OPS — /log: pre-filled session log template with sprint + gate context",
+  "description": "New /log command outputs a copy-paste session log template pre-filled with today's date, latest sprint, next sprint, and gate progress.",
+  "block": "OPS",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1064-01",
+      "title": "Add cmdLog to cmd-management.ts + register in telegram-bot.ts + help + tests",
+      "type": "feature",
+      "task_target": "scripts/telegram-commands/cmd-management.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1064"
+    }
+  ]
+}

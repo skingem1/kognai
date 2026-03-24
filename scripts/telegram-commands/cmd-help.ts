@@ -87,6 +87,7 @@ export function cmdHelp(): string {
     `/gate-refresh — Regenerate gate data + show updated status\n` +
     `/pm2errors — Last 5 error log lines per critical PM2 process\n` +
     `/sprint-next — Show next planned sprint from queue\n` +
+    `/log       — Pre-filled session log template\n` +
     `/godman   — Godman Protocols launch readiness\n` +
     `/godman-smoke — Run smoke tests on all 7 Godman protocols\n` +
     `/godman-thread — Show X launch megathread (10 tweets, copy-paste)\n` +

@@ -1927,54 +1927,6 @@ export function cmdSprintNext(): string {
 
 // Sprint 1064: /log — pre-filled session log template
 export function cmdLog(): string {
-  const now = new Date();
-  const dateStr = now.toISOString().slice(0, 10);
-  const timeStr = now.toISOString().slice(11, 16);
-
-  // Latest sprint from git log
-  let latestSprint = 'unknown';
-  try {
-    const log = execSync('git log --oneline -10', { cwd: ROOT, encoding: 'utf-8', timeout: 5000, stdio: ['pipe','pipe','pipe'] });
-    const match = log.match(/Sprint (\d+):/);
-    if (match) latestSprint = match[1];
-  } catch {}
-
-  // Gate status
-  let gatePosts = 0;
-  let gateViews = 0;
-  const mpPath = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
-  if (fs.existsSync(mpPath)) {
-    try {
-      const posts = fs.readFileSync(mpPath, 'utf-8').split('\n').filter(l => l.trim());
-      gatePosts = posts.length;
-      for (const l of posts) { try { gateViews += JSON.parse(l).views ?? 0; } catch {} }
-    } catch {}
-  }
-
-  const lines = [
-    `## Session Log — ${dateStr}`,
-    '',
-    `**Time:** ${timeStr} UTC`,
-    `**Latest Sprint:** ${latestSprint}`,
-    `**Gate:** ${gatePosts}/30 posts, ${gateViews}/500 views`,
-    '',
-    '**What was done:**',
-    '- ',
-    '',
-    '**Blockers:**',
-    '- None',
-    '',
-    '**Next session:**',
-    '- ',
-    '',
-    `_Save to: workspace/agents/memory/session-${dateStr}.md_`,
-  ];
-
-  return lines.join('\n');
-}
-
-// Sprint 1064: /log — pre-filled session log template
-export function cmdLog(): string {
   const today = new Date().toISOString().slice(0, 10);
   const timeUtc = new Date().toISOString().slice(11, 16);
 

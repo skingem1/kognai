@@ -258,6 +258,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/godman':        response = cmdGodman();       break;
     case '/godman-smoke':  response = runGodmanSmoke();  break;
     case '/godman-thread': response = cmdGodmanThread(); break;
+    case '/log':         response = cmdLog();         break;
     case '/help':        response = cmdHelp();        break;
     default:
       response = `Unknown command: \`${cmdName}\`\n\n${cmdHelp()}`;
