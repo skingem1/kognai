@@ -303,7 +303,40 @@ export function cmdHealth(): string {
     }
   } catch { /* skip */ }
 
-  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${botUptimeSection}${ollamaSection}${memWarnSection}${memTableSection}${supabaseSection}${supabaseSyncSection}${diskSection}${watchdogSection}${runtimeSection}${tailscaleSection}${hetznerSection}${anthropicSection}${ioSection}${morningBriefSection}${digestSection}`;
+  // Sprint 1137 (wave 23): check if any PM2 cron has not fired in over 2 days
+  let staleCronsSection = '';
+  try {
+    const pm2CronOut = execSync('pm2 jlist', { timeout: 8000, stdio: 'pipe' }).toString();
+    const pm2AllCrons: any[] = JSON.parse(pm2CronOut);
+    const TWO_DAYS_MS = 2 * 86_400_000;
+    const nowMs = Date.now();
+    const staleCrons = pm2AllCrons.filter((p: any) => {
+      if (!p.pm2_env?.cron_restart) return false;
+      const lastFire = p.pm2_env?.pm_uptime ?? 0;
+      return lastFire > 0 && (nowMs - lastFire) > TWO_DAYS_MS;
+    });
+    if (staleCrons.length > 0) {
+      const staleList = staleCrons.map((p: any) => {
+        const ageD = ((nowMs - (p.pm2_env.pm_uptime ?? 0)) / 86_400_000).toFixed(1);
+        return `\`${p.name}\` (${ageD}d)`;
+      }).join(', ');
+      staleCronsSection = `\n\n⚠️ *Crons not fired in >2d:* ${staleList}`;
+    }
+  } catch { /* skip */ }
+
+  // Sprint 1145 (wave 23): show SUPABASE_URL domain (sanity check not using wrong DB)
+  let supabaseDomainSection = '';
+  try {
+    const sbUrlRaw = process.env.SUPABASE_URL;
+    if (sbUrlRaw) {
+      const domain = new URL(sbUrlRaw).hostname;
+      supabaseDomainSection = `\n\n*Supabase DB:* 🌐 \`${domain}\``;
+    } else {
+      supabaseDomainSection = `\n\n*Supabase DB:* ⚠️ SUPABASE_URL not set`;
+    }
+  } catch { /* skip */ }
+
+  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${botUptimeSection}${ollamaSection}${memWarnSection}${memTableSection}${supabaseSection}${supabaseSyncSection}${diskSection}${watchdogSection}${runtimeSection}${tailscaleSection}${hetznerSection}${anthropicSection}${ioSection}${morningBriefSection}${digestSection}${staleCronsSection}${supabaseDomainSection}`;
 }
 
 export function cmdTier(): string {
@@ -478,6 +511,21 @@ export function cmdReport(): string {
     }
   } catch { /* skip */ }
 
+  // Sprint 1143 (wave 23): Achiri alpha readiness alongside gate in system report
+  let achiriReadinessReport = '';
+  try {
+    const arPath = path.join(ROOT, 'reports', 'achiri-readiness.json');
+    if (fs.existsSync(arPath)) {
+      const arData = JSON.parse(fs.readFileSync(arPath, 'utf-8'));
+      const arScore = arData.score ?? arData.readiness_score;
+      const arDays = arData.days_to_alpha ?? Math.max(0, Math.ceil((new Date('2026-04-25T00:00:00Z').getTime() - Date.now()) / 86_400_000));
+      if (arScore != null) {
+        const arIcon = arScore >= 90 ? '✅' : arScore >= 70 ? '⚠️' : '❌';
+        achiriReadinessReport = `\n*Achiri:* ${arIcon} ${arScore}% ready · ${arDays}d to alpha`;
+      }
+    }
+  } catch { /* skip */ }
+
   return (
     `${statusIcon} *Kognai System Report*\n${now}\n${alertBlock}\n` +
     `*PM2* (${online}/${procs.length} live):\n${pm2Lines || '  (no data)'}\n\n` +
@@ -485,7 +533,7 @@ export function cmdReport(): string {
     `Last heartbeat: ${lastBeat} UTC\n\n` +
     `*Beta:* agents_onboarded=${beta.agents_onboarded ?? 0}, companies=${beta.companies_onboarded ?? 0}, txns=${beta.transactions_monitored ?? 0}\n` +
     `*Financials:* MRR $${mrr} | Tier: ${tier} | Billing activation: ${billingDate}\n\n` +
-    `*Gate:* ${gateLine}${achiriTestLine}${commitLine}${totalCommitsLine}${valErrorsLine}${offlineLine}${lastSprintsLine}\n` +
+    `*Gate:* ${gateLine}${achiriTestLine}${achiriReadinessReport}${commitLine}${totalCommitsLine}${valErrorsLine}${offlineLine}${lastSprintsLine}\n` +
     `*Sprint:* ${sprintLine}`
   );
 }
@@ -1416,6 +1464,21 @@ export function cmdErrors(filterProcess?: string): string {
     fs.writeFileSync(deltaPath, JSON.stringify({ count: currentCount, timestamp: nowMs }));
   } catch { /* skip */ }
 
+  // Sprint 1139 (wave 23): show if error rate is accelerating (hourly rate > daily avg)
+  try {
+    const totalOccurrences2 = errored.reduce((s, e) => s + (e.count ?? 1), 0);
+    if (totalOccurrences2 > 0) {
+      const dailyAvgPerHour = totalOccurrences2 / 24;
+      // Recent errors: look for errors in the last hour (mtime within last hour)
+      const oneHourAgo = Date.now() - 3_600_000;
+      const recentErrors = errored.filter(e => e.mtime >= oneHourAgo);
+      const recentCount = recentErrors.reduce((s, e) => s + (e.count ?? 1), 0);
+      if (recentCount > dailyAvgPerHour * 1.5 && recentCount >= 3) {
+        output.push(`\n🚨 *Rate accelerating:* ${recentCount} errors in last hour vs ${dailyAvgPerHour.toFixed(1)}/hr daily avg`);
+      }
+    }
+  } catch { /* skip */ }
+
   return output.join('\n');
 }
 
@@ -1647,6 +1710,22 @@ export async function cmdSmoke(chatId: string): Promise<void> {
           ? `✅ *TikTok token:* set (\`${tiktokToken.slice(0, 8)}...\`)${tiktokKey ? '' : ' · CLIENT_KEY missing'}`
           : `⚠️ *TikTok token:* set but suspiciously short (${tiktokToken.length} chars) — may be invalid`);
       }
+    } catch { /* skip */ }
+
+    // Sprint 1142 (wave 23): env var completeness score (N/M required vars set)
+    try {
+      const requiredEnvVars = [
+        'ANTHROPIC_API_KEY', 'TELEGRAM_BOT_TOKEN', 'SUPABASE_URL', 'SUPABASE_ANON_KEY',
+        'STRIPE_SECRET_KEY', 'STRIPE_WEBHOOK_SECRET',
+        'TIKTOK_ACCESS_TOKEN', 'TIKTOK_CLIENT_KEY', 'TIKTOK_CLIENT_SECRET',
+      ];
+      const setCount = requiredEnvVars.filter(k => !!process.env[k]).length;
+      const total = requiredEnvVars.length;
+      const envPct = Math.round((setCount / total) * 100);
+      const envIcon = setCount === total ? '✅' : setCount >= Math.ceil(total * 0.7) ? '⚠️' : '❌';
+      const missingVars = requiredEnvVars.filter(k => !process.env[k]);
+      lines.push('');
+      lines.push(`${envIcon} *Env vars:* ${setCount}/${total} set (${envPct}%)${missingVars.length > 0 ? ` · missing: ${missingVars.map(v => `\`${v}\``).join(', ')}` : ''}`);
     } catch { /* skip */ }
 
     // Sprint 1142 (wave 21): show total elapsed time

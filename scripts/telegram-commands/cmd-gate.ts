@@ -238,6 +238,21 @@ export function cmdGate(): string {
         return [`${weekIcon} *This week:* ${thisWeekPosts}/${weekTarget} posts (${weekTarget - thisWeekPosts > 0 ? `${weekTarget - thisWeekPosts} more needed` : 'on track'})`];
       } catch { return []; }
     })(),
+    // Sprint 1141 (wave 23): top performing post (highest views) as proof of quality
+    ...(() => {
+      if (!fs.existsSync(manualPostsPath)) return [];
+      try {
+        const postLines = fs.readFileSync(manualPostsPath, 'utf-8').split('\n').filter((l: string) => l.trim());
+        const parsed = postLines.map((l: string) => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
+        if (parsed.length === 0) return [];
+        const best = parsed.reduce((best: any, p: any) => (p.views ?? 0) > (best.views ?? 0) ? p : best, parsed[0]);
+        const bestViews = best.views ?? 0;
+        if (bestViews === 0) return [];
+        const bestId = best.video_id ?? best.id ?? 'unknown';
+        const bestDate = (best.posted_at ?? best.recorded_at ?? '').slice(0, 10);
+        return [`🏆 *Best post:* \`${bestId}\` — *${bestViews} views*${bestDate ? ` (${bestDate})` : ''}`];
+      } catch { return []; }
+    })(),
     ``,
     `*── Infrastructure ──*`,
     // Sprint 1145 (wave 20): TikTok account age in days from warmup-status.json
@@ -741,6 +756,30 @@ export function cmdPace(): string {
       const probIcon = combined >= 80 ? '✅' : combined >= 50 ? '⚠️' : '❌';
       lines.push('');
       lines.push(`${probIcon} *Gate probability:* ${combined}% (posts: ${postProb}% · views: ${viewProb}%)`);
+    }
+  } catch { /* skip */ }
+
+  // Sprint 1140 (wave 23): show how many posts are needed this week specifically
+  try {
+    if (postsNeeded > 0 && daysLeft > 0) {
+      const todayDow = now.getDay(); // 0=Sun
+      const daysUntilWeekEnd = todayDow === 0 ? 0 : 7 - todayDow; // days until Sunday
+      const daysInWeek = Math.min(daysUntilWeekEnd + 1, daysLeft); // remaining days in current week
+      const weeksLeft = Math.ceil(daysLeft / 7);
+      const postsPerWeek = weeksLeft > 0 ? Math.ceil(postsNeeded / weeksLeft) : postsNeeded;
+      // Posts already posted this week
+      const weekStart = new Date(now.getTime() - (todayDow === 0 ? 6 : todayDow - 1) * 86_400_000).toISOString().slice(0, 10);
+      let thisWeekCount = 0;
+      try {
+        const mpLinesW = fs.readFileSync(manualPostsPath, 'utf-8').split('\n').filter(l => l.trim());
+        thisWeekCount = mpLinesW.filter(l => {
+          try { const p = JSON.parse(l); return (p.posted_at ?? p.recorded_at ?? '').slice(0, 10) >= weekStart; } catch { return false; }
+        }).length;
+      } catch { /* skip */ }
+      const thisWeekNeeded = Math.max(0, postsPerWeek - thisWeekCount);
+      const weekIcon = thisWeekNeeded === 0 ? '✅' : thisWeekNeeded <= 2 ? '⚠️' : '❌';
+      lines.push('');
+      lines.push(`${weekIcon} *This week:* ${thisWeekNeeded} posts still needed (${thisWeekCount}/${postsPerWeek} target · ${daysInWeek}d left in week)`);
     }
   } catch { /* skip */ }
 

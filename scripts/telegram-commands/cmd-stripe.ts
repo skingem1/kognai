@@ -494,6 +494,13 @@ export function cmdAchiri(): string {
         const bounceUsers = Array.from(userMsgCounts.values()).filter(n => n === 1).length;
         const bouncePct = totalUsers > 0 ? Math.round((bounceUsers / totalUsers) * 100) : 0;
         if (totalUsers > 0) lines.push(`📤 *Bounce rate:* ${bounceUsers}/${totalUsers} users (${bouncePct}%) sent only 1 message`);
+        // Sprint 1138 (wave 23): messages per active user (depth of engagement)
+        if (totalUsers > 0) {
+          const totalMsgCount = Array.from(userMsgCounts.values()).reduce((s, v) => s + v, 0);
+          const msgsPerUser = (totalMsgCount / totalUsers).toFixed(1);
+          const depthIcon = parseFloat(msgsPerUser) >= 10 ? '🔥' : parseFloat(msgsPerUser) >= 5 ? '💬' : '📊';
+          lines.push(`${depthIcon} *Depth:* ${msgsPerUser} msgs/active user (${totalMsgCount} total ÷ ${totalUsers} users)`);
+        }
         // Sprint 1143 (wave 20): peak hour of user messages
         try {
           const hourCounts: number[] = new Array(24).fill(0);
