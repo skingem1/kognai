@@ -896,9 +896,10 @@
       "sprint": 1096,
       "title": "INFRA — /health: highlight if PM2 process has >100 restarts",
       "block": "INFRA",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
-      "rationale": "Processes with >100 restarts are unstable. /health shows heartbeat state but not per-process restart count. Add a warning line for any process with excessive restarts."
+      "rationale": "Processes with >100 restarts are unstable. /health shows heartbeat state but not per-process restart count. Add a warning line for any process with excessive restarts.",
+      "_note": "Shipped 2026-03-24 — /health restart warning >100"
     },
     {
       "sprint": 1097,

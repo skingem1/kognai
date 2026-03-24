@@ -73,16 +73,24 @@ export function cmdHealth(): string {
     ollamaSection = '\n\n*Ollama:* ❌ unreachable (localhost:11434)';
   }
 
-  // Sprint 1085: PM2 memory warning if any process >500MB
+  // Sprint 1085 + 1096: PM2 memory warning (>500MB) + restart warning (>100)
   const MEM_WARN_MB = 500;
+  const RESTART_WARN = 100;
   let memWarnSection = '';
   try {
     const procs = getPm2List();
     const highMem = procs.filter(p => p.memory > MEM_WARN_MB * 1024 * 1024);
+    const highRestarts = procs.filter(p => p.restarts > RESTART_WARN);
+    const warnLines: string[] = [];
     if (highMem.length > 0) {
-      const lines = highMem.map(p => `  ⚠️ \`${p.name}\` — ${fmtMem(p.memory)}`).join('\n');
-      memWarnSection = `\n\n⚠️ *High memory (>${MEM_WARN_MB}MB):*\n${lines}`;
+      warnLines.push(`⚠️ *High memory (>${MEM_WARN_MB}MB):*`);
+      for (const p of highMem) warnLines.push(`  ⚠️ \`${p.name}\` — ${fmtMem(p.memory)}`);
     }
+    if (highRestarts.length > 0) {
+      warnLines.push(`⚠️ *Excessive restarts (>${RESTART_WARN}):*`);
+      for (const p of highRestarts) warnLines.push(`  🔁 \`${p.name}\` — ${p.restarts} restarts`);
+    }
+    if (warnLines.length > 0) memWarnSection = '\n\n' + warnLines.join('\n');
   } catch { /* skip */ }
 
   return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${ollamaSection}${memWarnSection}`;
