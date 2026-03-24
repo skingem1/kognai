@@ -122,8 +122,7 @@ export function headlessRecord(opts: {
   // Use `script` (BSD/macOS) to provide a PTY for asciinema in headless environments.
   // Falls back to direct invocation when `script` is unavailable.
   execSync(
-    `asciinema rec --cols ${cols} --rows ${rows} --overwrite "${castPath}" ` +
-    `-- bash "${runnerScript}"`,
+    `asciinema rec --cols ${cols} --rows ${rows} --overwrite -c "bash '${runnerScript}'" "${castPath}"`,
     {
       stdio: ['pipe', 'inherit', 'inherit'],
       env: { ...process.env, TERM: 'xterm-256color' },
