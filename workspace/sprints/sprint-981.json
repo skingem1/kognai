@@ -1,0 +1,10 @@
+{
+  "sprint_id": "sprint-981",
+  "title": "GODMAN-EXAMPLES — Practical usage examples for SDK README + launch material",
+  "description": "Create workspace/godman-protocols/sdk/examples/agent-workflow.ts showing a real agent task flow: SOUL constitutional check → PACT mandate → AMF message → DRS resource allocation → LAX latency routing → SIGNAL event → SCORE evaluation. Runnable demo for April 14 launch.",
+  "block": "GODMAN-PROTOCOLS",
+  "source": "queue-exhausted-launch-prep",
+  "tasks": [
+    { "id": "981-01", "title": "Create agent-workflow.ts example", "type": "feature", "task_target": "workspace/godman-protocols/sdk/examples/agent-workflow.ts", "agent": "coder", "status": "pending", "priority": "high", "sprint_id": "sprint-981" }
+  ]
+}
