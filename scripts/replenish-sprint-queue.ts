@@ -345,6 +345,67 @@ function generateItems(startSprint: number, existingTitles: Set<string> = new Se
     rationale: '/revenue command exists but may not show live Stripe data. Verify it reads from Stripe webhook events and shows MRR, new subs this week, churn rate.',
   });
 
+  // --- Phase 3: Post-launch maintenance sprints (added Sprint 1059) ---
+  infraItems.push({
+    title: 'OPS — Watchdog alerts in /status: show critical alerts if any',
+    block: 'INFRA',
+    rationale: 'reports/watchdog-latest.json has alerts array. If any critical alerts exist, surface them in /status so operator sees them immediately without running /health.',
+  });
+
+  infraItems.push({
+    title: 'GATE — /today morning auto-send: PM2 cron pushes /today brief to Telegram at 07:05',
+    block: 'GATE',
+    rationale: 'Operator must manually type /today each morning. Add PM2 cron (scs001-morning-brief) that auto-sends /today output to operator chat at 07:05 to start each day with context.',
+  });
+
+  infraItems.push({
+    title: 'QUALITY — /godman: verify all 7 readiness checks are accurate pre-launch',
+    block: 'GODMAN-PROTOCOLS',
+    rationale: `Godman launch in ${daysUntil('2026-04-14')}d. Run /godman and audit each check: badge links, api.md completeness, CHANGELOG presence, publish script, smoke tests passing.`,
+  });
+
+  infraItems.push({
+    title: 'INFRA — Stripe webhook event log: /stripe command shows last 5 webhook events',
+    block: 'INFRA',
+    rationale: 'No visibility into Stripe webhook delivery. Add /stripe command that tails stripe-webhook-out.log last 5 lines — shows subscription.created, payment_intent.succeeded events.',
+  });
+
+  infraItems.push({
+    title: 'OPS — Session log auto-template: /log command creates pre-filled session log entry',
+    block: 'OPS',
+    rationale: 'Session logs are required at end of each PM block but must be typed manually. /log command outputs a pre-filled template with today date, latest sprint, and gate status to paste into workspace/agents/memory/.',
+  });
+
+  infraItems.push({
+    title: 'QUALITY — Video expiry checker: /stale shows queue items older than 14 days',
+    block: 'QUALITY',
+    rationale: 'Video topics become stale after ~2 weeks. /stale command exists but may not show age. Verify it shows days-old for each item and auto-suggests /archive for items > 14d.',
+  });
+
+  infraItems.push({
+    title: 'INFRA — /health: add Ollama model availability check to health dashboard',
+    block: 'INFRA',
+    rationale: '/health shows PM2 procs but not Ollama model status. Add check: ping localhost:11434/api/tags and show which models are loaded (qwen3:0.6b, qwen3:4b, deepseek-r1:14b).',
+  });
+
+  infraItems.push({
+    title: 'GODMAN-LAUNCH — /godman-smoke: detailed failure output when a protocol test fails',
+    block: 'GODMAN-PROTOCOLS',
+    rationale: '/godman-smoke runs smoke tests but output is terse on failure. Add per-protocol test output showing which assertion failed so operator can debug before launch day.',
+  });
+
+  infraItems.push({
+    title: 'PHASE2 — Achiri: validate-derja-profiler test coverage report via /achiri',
+    block: 'PHASE2',
+    rationale: 'Achiri derja profiler was added in Sprint 133. Run scripts/achiri/validate-derja-profiler.ts and surface pass/fail in /achiri readiness section.',
+  });
+
+  infraItems.push({
+    title: 'OPS — Daily digest: add gate posting obligation to 07:00 digest output',
+    block: 'OPS',
+    rationale: 'kognai-daily-digest runs at 07:00 but may not surface the posting obligation. Ensure digest includes "Post N videos today (X/30 gate)" as the first action item.',
+  });
+
   // Fill remaining slots (skip duplicates of already-completed items)
   for (const item of infraItems) {
     if (items.length >= 10) break;
