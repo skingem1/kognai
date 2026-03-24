@@ -682,7 +682,51 @@ export function cmdHealth(): string {
     }
   } catch { /* skip */ }
 
-  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${botUptimeSection}${ollamaSection}${memWarnSection}${memTableSection}${supabaseSection}${supabaseSyncSection}${diskSection}${watchdogSection}${runtimeSection}${tailscaleSection}${hetznerSection}${anthropicSection}${ioSection}${morningBriefSection}${digestSection}${staleCronsSection}${supabaseDomainSection}${anthropicBudgetSection}${pipelineValidationSection}${worktreeSection}${botMemSection}${gateDaysSection}${backupSection}${postingHealthSection}${exportFilesSection}${tokenHealthSection}${statsSection}${inventorySection}${gateAuditSection}${autoDeliverSection}${bulkCaptionsSection}${playbackSection}${qcSection}${smokeSection}${achiriDauSection}${achiriE2eSection}${videoValidSection}${pipelineMetricsSection}${achiriSafetySection}`;
+  // Sprint 1152 (wave 31): content-leaderboard.json top speaker summary
+  let leaderboardSection = '';
+  try {
+    const lbPath = path.join(ROOT, 'reports', 'content-leaderboard.json');
+    if (fs.existsSync(lbPath)) {
+      const lb = JSON.parse(fs.readFileSync(lbPath, 'utf-8'));
+      const speakers: any[] = lb.speakers ?? [];
+      if (speakers.length > 0) {
+        const top = speakers.reduce((a: any, b: any) => (b.count > a.count ? b : a), speakers[0]);
+        const totalExp = lb.total_experiments ?? 0;
+        leaderboardSection = `\n\n🏆 *Leaderboard:* ${top.name} leads · ${top.count} vids · ${top.avg_score?.toFixed(2)} avg${totalExp > 0 ? ` · ${totalExp} total` : ''}`;
+      }
+    }
+  } catch { /* skip */ }
+
+  // Sprint 1152 (wave 31): brainx-status.json overall READY/WARN status
+  let brainxSection = '';
+  try {
+    const bxPath = path.join(ROOT, 'reports', 'brainx-status.json');
+    if (fs.existsSync(bxPath)) {
+      const bx = JSON.parse(fs.readFileSync(bxPath, 'utf-8'));
+      const bxOverall = bx.overall ?? 'UNKNOWN';
+      const bxIcon = bxOverall === 'READY' ? '🧠' : bxOverall === 'WARN' ? '⚠️' : '❌';
+      const warns = (bx.checks ?? []).filter((c: any) => c.status === 'WARN').length;
+      const warnStr = warns > 0 ? ` · ${warns} warnings` : '';
+      brainxSection = `\n\n${bxIcon} *BrainX:* ${bxOverall}${warnStr}`;
+    }
+  } catch { /* skip */ }
+
+  // Sprint 1152 (wave 31): achiri-alpha-report.json launch verdict + days to alpha
+  let achiriLaunchSection = '';
+  try {
+    const arPath = path.join(ROOT, 'reports', 'achiri-alpha-report.json');
+    if (fs.existsSync(arPath)) {
+      const ar = JSON.parse(fs.readFileSync(arPath, 'utf-8'));
+      const arVerdict = ar.verdict ?? 'UNKNOWN';
+      const arDays = ar.daysToLaunch ?? 0;
+      const arIcon = arVerdict === 'READY' ? '✅' : arVerdict === 'AT-RISK' ? '⚠️' : '❌';
+      const pendingGates = (ar.gates ?? []).filter((g: any) => g.status === 'pending').length;
+      const gateStr = pendingGates > 0 ? ` · ${pendingGates} gates pending` : '';
+      achiriLaunchSection = `\n\n${arIcon} *Achiri launch:* ${arVerdict} · ${arDays}d to alpha${gateStr}`;
+    }
+  } catch { /* skip */ }
+
+  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${botUptimeSection}${ollamaSection}${memWarnSection}${memTableSection}${supabaseSection}${supabaseSyncSection}${diskSection}${watchdogSection}${runtimeSection}${tailscaleSection}${hetznerSection}${anthropicSection}${ioSection}${morningBriefSection}${digestSection}${staleCronsSection}${supabaseDomainSection}${anthropicBudgetSection}${pipelineValidationSection}${worktreeSection}${botMemSection}${gateDaysSection}${backupSection}${postingHealthSection}${exportFilesSection}${tokenHealthSection}${statsSection}${inventorySection}${gateAuditSection}${autoDeliverSection}${bulkCaptionsSection}${playbackSection}${qcSection}${smokeSection}${achiriDauSection}${achiriE2eSection}${videoValidSection}${pipelineMetricsSection}${achiriSafetySection}${leaderboardSection}${brainxSection}${achiriLaunchSection}`;
 }
 
 export function cmdTier(): string {
