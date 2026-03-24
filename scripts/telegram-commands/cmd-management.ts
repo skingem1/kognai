@@ -1603,6 +1603,22 @@ export function cmdStatus(): string {
     nextLine = `\`${nextReady.video_id}\`${vsStr}`;
   }
 
+  // Sprint 998: Critical cron health check
+  const CRITICAL_CRONS = ['telegram-bot', 'kognai-daily-digest', 'kognai-gate-tracker-update', 'kognai-post-noon', 'kognai-post-evening'];
+  let cronLine = '';
+  try {
+    const procs = getPm2List();
+    const onlineNames = new Set(procs.filter(p => p.status === 'online').map(p => p.name));
+    const downCrons = CRITICAL_CRONS.filter(n => !onlineNames.has(n));
+    if (downCrons.length === 0) {
+      cronLine = `⚙️ Crons: *${CRITICAL_CRONS.length}/${CRITICAL_CRONS.length}* critical online`;
+    } else {
+      cronLine = `⚠️ Crons: *${CRITICAL_CRONS.length - downCrons.length}/${CRITICAL_CRONS.length}* — down: ${downCrons.join(', ')}\n_Run /boot to start_`;
+    }
+  } catch {
+    cronLine = '⚠️ Crons: PM2 not available';
+  }
+
   const lines = [
     '📊 *Kognai Status Dashboard*',
     '',
@@ -1613,6 +1629,7 @@ export function cmdStatus(): string {
     `📅 Today: *${todayPosts}* posted`,
     `🔥 Streak: *${streak}* days`,
     `📦 Queue: *${readyCount}* ready · ${unposted.length} total`,
+    cronLine,
     '',
     `🎬 Next: ${nextLine}`,
     '',
