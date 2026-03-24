@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-1029",
+  "title": "GODMAN-LAUNCH — /godman-thread: show X megathread for launch day copy-paste",
+  "description": "April 14 launch needs operator to post the X megathread. Add /godman-thread command that reads workspace/social/suite-launch/x-megathread.md and sends it as a formatted Telegram message. Each tweet is shown as a numbered block.",
+  "block": "GODMAN-PROTOCOLS",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1029-01",
+      "title": "Add cmdGodmanThread() to cmd-system.ts + register /godman-thread",
+      "type": "feature",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1029",
+      "description": "Add cmdGodmanThread(): reads workspace/social/suite-launch/x-megathread.md. Extracts tweet sections (## Tweet N header → next ## header). Returns each tweet as a numbered Telegram message block. Register /godman-thread in telegram-bot.ts sync case section."
+    }
+  ]
+}

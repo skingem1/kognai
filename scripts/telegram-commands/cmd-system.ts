@@ -1237,3 +1237,49 @@ export function cmdGodman(): string {
 
   return lines.join('\n');
 }
+
+// Sprint 1029: /godman-thread — X megathread for launch day copy-paste
+export function cmdGodmanThread(): string {
+  const threadPath = path.join(ROOT, 'workspace', 'social', 'suite-launch', 'x-megathread.md');
+  if (!fs.existsSync(threadPath)) return '❌ X megathread not found: workspace/social/suite-launch/x-megathread.md';
+
+  const content = fs.readFileSync(threadPath, 'utf-8');
+  const lines = content.split('\n');
+
+  // Extract tweet sections
+  const tweets: Array<{ title: string; body: string }> = [];
+  let current: { title: string; lines: string[] } | null = null;
+
+  for (const line of lines) {
+    if (line.startsWith('## Tweet')) {
+      if (current) tweets.push({ title: current.title, body: current.lines.join('\n').trim() });
+      current = { title: line.replace('## ', ''), lines: [] };
+    } else if (current && line !== '---') {
+      current.lines.push(line);
+    }
+  }
+  if (current) tweets.push({ title: current.title, body: current.lines.join('\n').trim() });
+
+  if (tweets.length === 0) return '❌ No tweets found in megathread file.';
+
+  const out: string[] = [
+    `📢 *Godman X Launch Thread* — ${tweets.length} tweets`,
+    `_April 14, 2026 · @invoica\\_ai_`,
+    `_Copy each tweet in order:_`,
+    '',
+  ];
+
+  for (let i = 0; i < tweets.length; i++) {
+    const t = tweets[i];
+    // Truncate body to 280 chars for X
+    const body = t.body.replace(/\*\*/g, '').replace(/\*/g, '');
+    const preview = body.length > 280 ? body.slice(0, 277) + '...' : body;
+    out.push(`*${t.title}*`);
+    out.push('```');
+    out.push(preview);
+    out.push('```');
+    out.push('');
+  }
+
+  return out.join('\n');
+}
