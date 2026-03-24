@@ -1639,7 +1639,13 @@ export function cmdStatus(): string {
   const achiriDate = new Date('2026-04-25T00:00:00Z'); // alpha launch target
   const godmanDays = Math.max(0, Math.ceil((godmanDate.getTime() - now.getTime()) / 86_400_000));
   const achiriDays = Math.max(0, Math.ceil((achiriDate.getTime() - now.getTime()) / 86_400_000));
-  const godmanLine = `🚀 Godman launch: *${godmanDays}d* — /godman`;
+  // Sprint 1079: Add npm login status to Godman countdown
+  let npmLoggedIn = false;
+  try {
+    const whoami = execSync('npm whoami 2>/dev/null', { encoding: 'utf-8', timeout: 3000, stdio: ['pipe','pipe','pipe'] }).trim();
+    npmLoggedIn = !!whoami;
+  } catch {}
+  const godmanLine = `🚀 Godman launch: *${godmanDays}d* — ${npmLoggedIn ? '✅ npm ready' : '❌ npm login needed'} · /godman`;
   const achiriLine = `🤖 Achiri alpha: *${achiriDays}d* — /achiri`;
 
   // Sprint 1060: Watchdog alerts

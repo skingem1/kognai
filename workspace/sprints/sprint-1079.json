@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1079",
+  "title": "OPS — /status: Godman 21d countdown with npm login check",
+  "description": "Add npm login status to the Godman countdown line in /status. Shows npm ready or npm login needed.",
+  "block": "GODMAN-PROTOCOLS",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1079-01",
+      "title": "Add npm whoami check and status to Godman countdown line in cmdStatus",
+      "type": "feature",
+      "task_target": "scripts/telegram-commands/cmd-management.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1079"
+    }
+  ]
+}
