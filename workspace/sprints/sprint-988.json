@@ -1,0 +1,11 @@
+{
+  "sprint_id": "sprint-988",
+  "title": "SPIELBERG-GODMAN-DEMO — PACT + SOUL terminal demo scripts for April 14 launch",
+  "description": "Write two Spielberg demo scripts: pact-demo.json (mandate lifecycle: create → execute → verify → revoke) and soul-demo.json (constitutional engine: create → sign → evaluate → kill-switch). Output: polished terminal videos for the Godman Protocols April 14 launch. JSON-only, no video generation triggered by this sprint.",
+  "block": "SPIELBERG",
+  "source": "queue-exhausted-launch-prep",
+  "tasks": [
+    { "id": "988-01", "title": "Write PACT demo script (mandate lifecycle)", "type": "feature", "task_target": "workspace/spielberg-scripts/pact-demo.json", "agent": "coder", "status": "pending", "priority": "high", "sprint_id": "sprint-988" },
+    { "id": "988-02", "title": "Write SOUL demo script (constitutional engine)", "type": "feature", "task_target": "workspace/spielberg-scripts/soul-demo.json", "agent": "coder", "status": "pending", "priority": "high", "sprint_id": "sprint-988" }
+  ]
+}
