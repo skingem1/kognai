@@ -1,0 +1,39 @@
+{
+  "sprint_id": "sprint-975",
+  "title": "GODMAN-LAUNCH-01 — X threads + ClaWHub listings for LAX, SCORE, SIGNAL",
+  "description": "Create X launch threads and ClaWHub marketplace listings for LAX, SCORE, and SIGNAL protocols. Follow PACT launch pattern from Sprint 966.",
+  "block": "GODMAN-PROTOCOLS",
+  "source": "queue-exhausted-continuation",
+  "tasks": [
+    {
+      "id": "975-01",
+      "title": "LAX X thread + ClaWHub listing",
+      "type": "content",
+      "task_target": "workspace/social/lax-launch/",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-975"
+    },
+    {
+      "id": "975-02",
+      "title": "SCORE X thread + ClaWHub listing",
+      "type": "content",
+      "task_target": "workspace/social/score-launch/",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-975"
+    },
+    {
+      "id": "975-03",
+      "title": "SIGNAL X thread + ClaWHub listing",
+      "type": "content",
+      "task_target": "workspace/social/signal-launch/",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-975"
+    }
+  ]
+}
