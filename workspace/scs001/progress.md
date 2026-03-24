@@ -5930,3 +5930,13 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (single-line config change)
 - Issues: none
 - Timestamp: 2026-03-24T15:10Z
+
+## Sprint 1046 — OPS
+- Status: PASS
+- Commit: 92253e9a
+- Files modified: cmd-gate.ts (+cmdGateRefresh), telegram-bot.ts, cmd-help.ts, test-telegram-commands.ts
+- Test: test-telegram-commands 111/111 PASS
+- Pipeline: /gate-refresh available. Gate staleness problem solved (2h cron + on-demand).
+- Swarm used: no (multi-file, direct write)
+- Issues: none
+- Timestamp: 2026-03-24T15:20Z
