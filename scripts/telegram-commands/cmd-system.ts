@@ -205,6 +205,47 @@ export function cmdReport(): string {
   );
 }
 
+// Sprint 1100: compute next cron fire time (simple 5-field cron, no DST)
+function nextCronFire(expr: string): string {
+  try {
+    const parts = expr.trim().split(/\s+/);
+    if (parts.length !== 5) return '';
+    const [minP, hourP] = parts;
+    const now = new Date();
+    const candidate = new Date(now);
+    // Advance by 1 minute to avoid matching "now"
+    candidate.setSeconds(0, 0);
+    candidate.setMinutes(candidate.getMinutes() + 1);
+
+    const parseField = (f: string, min: number, max: number): number[] => {
+      if (f === '*') return Array.from({ length: max - min + 1 }, (_, i) => i + min);
+      if (f.startsWith('*/')) { const s = parseInt(f.slice(2)); return Array.from({ length: max - min + 1 }, (_, i) => i + min).filter(v => (v - min) % s === 0); }
+      return f.split(',').flatMap(p => {
+        if (p.includes('-')) { const [a, b] = p.split('-').map(Number); return Array.from({ length: b - a + 1 }, (_, i) => i + a); }
+        return [parseInt(p)];
+      }).filter(v => v >= min && v <= max);
+    };
+
+    const minutes = parseField(minP, 0, 59);
+    const hours = parseField(hourP, 0, 23);
+    for (let d = 0; d < 2; d++) {
+      for (const h of hours) {
+        for (const m of minutes) {
+          const t = new Date(candidate);
+          t.setDate(candidate.getDate() + d);
+          t.setHours(h, m, 0, 0);
+          if (t >= candidate) {
+            const diffMin = Math.round((t.getTime() - now.getTime()) / 60000);
+            if (diffMin < 60) return `${diffMin}m`;
+            return `${Math.round(diffMin / 60)}h ${diffMin % 60}m`;
+          }
+        }
+      }
+    }
+    return '';
+  } catch { return ''; }
+}
+
 export function cmdCrons(): string {
   try {
     const out = execSync('pm2 jlist', { timeout: 8000, stdio: 'pipe' }).toString();
@@ -250,9 +291,12 @@ export function cmdCrons(): string {
       lines.push(`*${cat}:*`);
       for (const c of items) {
         const icon = c.status === 'online' ? (c.stale ? '⚠️' : '🟢') : c.status === 'stopped' ? '⏸️' : '🔴';
-        const age = c.ageHours >= 0 ? ` (${Math.round(c.ageHours)}h ago)` : '';
+        const age = c.ageHours >= 0 ? ` (last: ${Math.round(c.ageHours)}h ago)` : '';
         const staleTag = c.stale ? ' *STALE*' : '';
-        lines.push(`${icon} \`${c.cron}\` ${c.name}${age}${staleTag}`);
+        // Sprint 1100: next fire time
+        const nextFire = nextCronFire(c.cron);
+        const nextStr = nextFire ? ` · next: ${nextFire}` : '';
+        lines.push(`${icon} \`${c.cron}\` ${c.name}${age}${nextStr}${staleTag}`);
       }
       lines.push('');
     }
