@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1186",
+  "title": "GODMAN-LAUNCH \u2014 /godman-tag add /godman-status-page that summarizes all launch signals as markdown",
+  "description": "Generate a workspace/godman-protocols/LAUNCH-STATUS.md file from the /godman checks so there is a persistent launch status record.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1186-01",
+      "title": "GODMAN-LAUNCH \u2014 /godman-tag add /godman-status-page that summarizes all launch signals as markdown",
+      "type": "feature",
+      "task_type": "godman_launch",
+      "task_target": "workspace/sprints/sprint-1186-output.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "low",
+      "sprint_id": "sprint-1186"
+    }
+  ]
+}

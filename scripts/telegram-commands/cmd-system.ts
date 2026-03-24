@@ -3427,3 +3427,73 @@ export function cmdGodmanPreflight(): string {
 
   return lines.join('\n');
 }
+
+/**
+ * Sprint 1186: /godman-status-page — generate workspace/godman-protocols/LAUNCH-STATUS.md
+ * Captures all launch signals as a persistent markdown record.
+ */
+export function cmdGodmanStatusPage(): string {
+  const PROTOCOLS = ['pact', 'lax', 'score', 'signal', 'soul', 'amf', 'drs'];
+  const BASE = path.join(ROOT, 'workspace', 'godman-protocols');
+  const LAUNCH = new Date('2026-04-14T00:00:00Z');
+  const daysLeft = Math.max(0, Math.ceil((LAUNCH.getTime() - Date.now()) / 86_400_000));
+  const now = new Date().toISOString();
+
+  const md: string[] = [
+    `# Godman Protocols — Launch Status`,
+    `*Generated: ${now} | ${daysLeft}d until April 14 launch*`,
+    '',
+    '## Protocol Versions',
+  ];
+
+  let allBuilt = true;
+  for (const proto of PROTOCOLS) {
+    const pkgPath = path.join(BASE, proto, 'package.json');
+    const distPath = path.join(BASE, proto, 'dist');
+    let version = '?';
+    let built = false;
+    try { version = JSON.parse(fs.readFileSync(pkgPath, 'utf-8')).version || '?'; } catch {}
+    try { built = fs.existsSync(distPath) && fs.readdirSync(distPath).length > 0; } catch {}
+    if (!built) allBuilt = false;
+    md.push(`- ${built ? '✅' : '⚠️'} \`@godman-protocols/${proto}\` v${version}${built ? '' : ' — needs build'}`);
+  }
+  const sdkPkg = path.join(BASE, 'sdk', 'package.json');
+  let sdkVer = '?';
+  try { sdkVer = JSON.parse(fs.readFileSync(sdkPkg, 'utf-8')).version || '?'; } catch {}
+  md.push(`- 📦 \`@godman-protocols/sdk\` v${sdkVer}`);
+
+  md.push('', '## npm Registry');
+  let publishedCount = 0;
+  for (const proto of [...PROTOCOLS, 'sdk']) {
+    let ver = '';
+    try { ver = execSync(`npm view @godman-protocols/${proto} version 2>/dev/null`, { encoding: 'utf-8', timeout: 8000, stdio: ['pipe','pipe','pipe'] }).trim(); } catch {}
+    if (ver) publishedCount++;
+    md.push(`- ${ver ? `✅ \`@godman-protocols/${proto}\` v${ver}` : `❌ \`@godman-protocols/${proto}\` — NOT PUBLISHED`}`);
+  }
+  md.push(`\n**Publish status: ${publishedCount}/8 packages published**`);
+
+  md.push('', '## Launch Assets');
+  const demoBase = path.join(ROOT, 'workspace', 'scs001', 'code-demo-runs');
+  const hasPactDemo = fs.existsSync(path.join(demoBase, 'pact-demo-v1/pact-demo-v1.mp4'));
+  const hasIntegDemo = fs.existsSync(path.join(demoBase, 'godman-integration-v1/godman-integration-v1.mp4'));
+  md.push(`- ${hasPactDemo ? '✅' : '❌'} PACT demo mp4`);
+  md.push(`- ${hasIntegDemo ? '✅' : '❌'} Integration demo mp4`);
+  const megathreadPath = path.join(ROOT, 'workspace', 'social', 'suite-launch', 'x-megathread.md');
+  let tweetCount = 0;
+  try { if (fs.existsSync(megathreadPath)) tweetCount = (fs.readFileSync(megathreadPath, 'utf-8').match(/^## Tweet \d/gm) || []).length; } catch {}
+  md.push(`- ${tweetCount > 0 ? `✅ X megathread (${tweetCount} tweets)` : '❌ X megathread — missing'}`);
+  const launchScript = path.join(ROOT, 'scripts', 'godman-launch-day.sh');
+  md.push(`- ${fs.existsSync(launchScript) ? '✅' : '❌'} godman-launch-day.sh`);
+
+  md.push('', '## Overall Status');
+  const ready = allBuilt && publishedCount === 8;
+  md.push(ready ? '🟢 **LAUNCH READY**' : `🔴 **NOT READY** — ${publishedCount}/8 published, builds ${allBuilt ? 'ok' : 'incomplete'}`);
+
+  const outputPath = path.join(BASE, 'LAUNCH-STATUS.md');
+  try {
+    fs.writeFileSync(outputPath, md.join('\n') + '\n');
+    return `✅ LAUNCH-STATUS.md written\n📅 ${daysLeft}d to April 14\n📦 ${publishedCount}/8 published\n\`workspace/godman-protocols/LAUNCH-STATUS.md\``;
+  } catch (e: any) {
+    return `❌ Failed to write LAUNCH-STATUS.md: ${e.message}`;
+  }
+}
