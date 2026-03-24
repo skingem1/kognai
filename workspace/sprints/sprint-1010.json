@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-1010",
+  "title": "OPS — Enhance posting reminder with specific video recommendation",
+  "description": "remind-post.ts sends a generic 'post X more videos' message. Enhance to pick the top-scored unposted video from auto-delivered.jsonl and include: video_id + topic snippet + /deliver <id> hint. Operator goes from 'I need to post' to 'here's exactly what to post' in one notification. Single file change, stdlib only.",
+  "block": "OPS",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1010-01",
+      "title": "Enhance scripts/remind-post.ts to include top video recommendation",
+      "type": "feature",
+      "task_target": "scripts/remind-post.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1010",
+      "description": "In remind-post.ts, after calculating postsRemaining, add: function pickNextVideo(): {video_id:string, topic:string} | null that reads workspace/scs001/auto-delivered.jsonl and workspace/scs001/manual-posts.jsonl. Filter out posted IDs. Sort by viral_score desc. Return top entry with existing mp4_path. In the reminder message, if a video is found, append: 'Next up: `<video_id>` — <topic slice 60 chars>\\n→ /deliver <video_id>'. Keep file under 90 lines."
+    }
+  ]
+}
