@@ -5118,3 +5118,13 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (design docs, direct write)
 - Issues: none
 - Timestamp: 2026-03-24T23:30:00Z
+
+## Sprint 961 — INTEL-REPLIES
+- Status: PASS
+- Commit: 254f32e9
+- Files created: workspace/social/x-replies/intel-004-atenov.md, intel-008-spisak.md, intel-009-clawcard.md, intel-010-openclaw-masterclass.md
+- Test: all replies under 280 chars
+- Block: INTEL-ACTIONS
+- Swarm used: no (content drafting, direct write)
+- Issues: none
+- Timestamp: 2026-03-24T23:45:00Z

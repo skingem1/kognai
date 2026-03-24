@@ -82,9 +82,10 @@
       "sprint": 961,
       "title": "INTEL-REPLIES — Draft X reply content for Atenov, Spisak, Clawcard, OpenClaw Masterclass",
       "block": "INTEL-ACTIONS",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
-      "rationale": "From INTEL-004 (Atenov AMD-24 validation), INTEL-008 (Spisak constitutional constraints), INTEL-009 (Clawcard composability), INTEL-010 (OpenClaw masterclass). Draft 4 X reply threads from @invoica_ai. Each max 280 chars. Save to workspace/social/x-replies/."
+      "rationale": "From INTEL-004 (Atenov AMD-24 validation), INTEL-008 (Spisak constitutional constraints), INTEL-009 (Clawcard composability), INTEL-010 (OpenClaw masterclass). Draft 4 X reply threads from @invoica_ai. Each max 280 chars. Save to workspace/social/x-replies/.",
+      "_note": "Shipped 2026-03-24 — commit 254f32e9. 4 X reply drafts (244-268 chars each)."
     },
     {
       "sprint": 962,
