@@ -5910,3 +5910,13 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (test infrastructure, direct write)
 - Issues: phase1-5-gate.json was stale (hadn't re-run after 3rd post recorded)
 - Timestamp: 2026-03-24T14:45Z
+
+## Sprint 1044 — OPS
+- Status: PASS
+- Commit: aa27ed71
+- Files modified: cmd-management.ts (+cmdBotTest), cmd-help.ts, telegram-bot.ts, test-posting-flow.ts
+- Test: test-telegram-commands 110/110, test-posting-flow 25/25 PASS
+- Pipeline: /bottest command available. Gate regenerated (4 real posts now).
+- Swarm used: no (multi-file, direct write)
+- Issues: Gate keeps going stale between auto-deliver events — cron may need more frequent runs
+- Timestamp: 2026-03-24T15:00Z
