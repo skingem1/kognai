@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1116",
+  "title": "OPS — /digest: add Stripe webhook health (last event age)",
+  "description": "Shows last Stripe webhook activity age in /digest so operator knows if payment flow is alive.",
+  "block": "OPS",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1116-01",
+      "title": "Add Stripe webhook log age to cmdDigest",
+      "type": "feature",
+      "task_target": "scripts/telegram-commands/cmd-posting.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1116"
+    }
+  ]
+}

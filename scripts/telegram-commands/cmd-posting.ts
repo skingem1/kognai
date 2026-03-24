@@ -576,6 +576,16 @@ export function cmdDigest(): string {
 
   out.push('');
   out.push(`💳 *Stripe:* ${stripeReady ? '✅ Ready' : '❌ Not Ready'}`);
+  // Sprint 1116: Stripe webhook health — last event age
+  try {
+    const whLogPath = path.join(ROOT, 'logs', 'stripe-webhook-out.log');
+    if (fs.existsSync(whLogPath)) {
+      const stat = fs.statSync(whLogPath);
+      const ageH = Math.round((Date.now() - stat.mtimeMs) / 3_600_000);
+      const whIcon = ageH > 72 ? '⚠️' : '✅';
+      out.push(`  ${whIcon} Webhook: last activity ${ageH}h ago`);
+    }
+  } catch {}
   out.push(`🎵 *TikTok API:* ${tiktokReady ? '✅ Token set' : '❌ No token'}`);
 
   // Action items
