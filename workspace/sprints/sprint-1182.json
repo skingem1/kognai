@@ -1,0 +1,22 @@
+{
+  "sprint_id": "sprint-1182",
+  "title": "OPS — /health: add godman launch countdown to health report header",
+  "description": "Add godmanCountdownSection to cmdHealth() in cmd-system.ts. Appears inline in the first header line as '🚀 Godman: Nd (Apr 14)'. Shows TODAY and links to /godman-preflight when launch day arrives.",
+  "source": "queue-prescribed",
+  "block": "OPS",
+  "swarm_bypassed": true,
+  "swarm_bypass_reason": "cmd-system.ts 3400+ lines — exceeds swarm file size limit.",
+  "tasks": [
+    {
+      "id": "1182-01",
+      "title": "Add godman countdown to cmdHealth() header in cmd-system.ts",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1182"
+    }
+  ]
+}

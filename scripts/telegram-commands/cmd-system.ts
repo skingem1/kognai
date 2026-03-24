@@ -1040,7 +1040,19 @@ export function cmdHealth(): string {
     }
   } catch { /* skip */ }
 
-  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${botUptimeSection}${ollamaSection}${memWarnSection}${memTableSection}${supabaseSection}${supabaseSyncSection}${diskSection}${watchdogSection}${runtimeSection}${tailscaleSection}${hetznerSection}${anthropicSection}${ioSection}${morningBriefSection}${digestSection}${staleCronsSection}${supabaseDomainSection}${anthropicBudgetSection}${pipelineValidationSection}${worktreeSection}${botMemSection}${gateDaysSection}${backupSection}${postingHealthSection}${exportFilesSection}${tokenHealthSection}${statsSection}${inventorySection}${gateAuditSection}${autoDeliverSection}${bulkCaptionsSection}${playbackSection}${qcSection}${smokeSection}${achiriDauSection}${achiriE2eSection}${videoValidSection}${pipelineMetricsSection}${achiriSafetySection}${leaderboardSection}${brainxSection}${achiriLaunchSection}${postingScheduleSection}${phase15GateSection}${batchProduceSection}${revenueSummarySection}${contentDiversitySection}${costLogSection}${warmupSection}${abAnalysisSection}${prodQualitySection}${hookWeightsSection}${contentCalendarSection}${achiriDashboardSection}${achiriReadinessSection}${viralTopicsSection}${archivedVideosSection}${manualPostsTodaySection}${achiriTestSuiteSection}${crossplatformSection}${autoDeliveredTodaySection}${validationErrorsSection}${telegramSentSection}`;
+  // Sprint 1182: Godman launch countdown in health header
+  const godmanCountdownSection = (() => {
+    try {
+      const godmanDate = new Date('2026-04-14T00:00:00Z');
+      const daysLeft = Math.max(0, Math.ceil((godmanDate.getTime() - Date.now()) / 86_400_000));
+      const icon = daysLeft === 0 ? '🚀' : daysLeft <= 7 ? '🔴' : daysLeft <= 14 ? '🟡' : '🚀';
+      return daysLeft === 0
+        ? ` · ${icon} *Godman: TODAY* — /godman-preflight`
+        : ` · ${icon} *Godman: ${daysLeft}d* (Apr 14)`;
+    } catch { return ''; }
+  })();
+
+  return `${statusIcon} *Health* — \`${h.status}\`${godmanCountdownSection}\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${botUptimeSection}${ollamaSection}${memWarnSection}${memTableSection}${supabaseSection}${supabaseSyncSection}${diskSection}${watchdogSection}${runtimeSection}${tailscaleSection}${hetznerSection}${anthropicSection}${ioSection}${morningBriefSection}${digestSection}${staleCronsSection}${supabaseDomainSection}${anthropicBudgetSection}${pipelineValidationSection}${worktreeSection}${botMemSection}${gateDaysSection}${backupSection}${postingHealthSection}${exportFilesSection}${tokenHealthSection}${statsSection}${inventorySection}${gateAuditSection}${autoDeliverSection}${bulkCaptionsSection}${playbackSection}${qcSection}${smokeSection}${achiriDauSection}${achiriE2eSection}${videoValidSection}${pipelineMetricsSection}${achiriSafetySection}${leaderboardSection}${brainxSection}${achiriLaunchSection}${postingScheduleSection}${phase15GateSection}${batchProduceSection}${revenueSummarySection}${contentDiversitySection}${costLogSection}${warmupSection}${abAnalysisSection}${prodQualitySection}${hookWeightsSection}${contentCalendarSection}${achiriDashboardSection}${achiriReadinessSection}${viralTopicsSection}${archivedVideosSection}${manualPostsTodaySection}${achiriTestSuiteSection}${crossplatformSection}${autoDeliveredTodaySection}${validationErrorsSection}${telegramSentSection}`;
 }
 
 export function cmdTier(): string {
