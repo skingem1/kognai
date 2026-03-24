@@ -6216,3 +6216,13 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (file >3000 lines, wrote directly)
 - Issues: none
 - Timestamp: 2026-03-24T19:15:00Z
+
+## Sprint 1160 — ACHIRI-DEPLOY Hetzner deploy prep
+- Status: PASS
+- Commit: 2286e627
+- Files created: scripts/achiri/deploy-hetzner.sh, nginx-achiri.conf, pre-deploy-check.ts, workspace/sprints/sprint-1160.json
+- Files modified: none
+- Pre-deploy check: 12 PASS, 3 WARN (paymee, health 404, low mem), 1 FAIL (ANTHROPIC_API_KEY in ts-node ctx — ok in prod)
+- Swarm used: no (multi-file, direct write)
+- Issues: none
+- Timestamp: 2026-03-24T19:30:00Z
