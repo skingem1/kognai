@@ -467,6 +467,67 @@ function generateItems(startSprint: number, existingTitles: Set<string> = new Se
     rationale: `With ${daysUntil('2026-04-14')}d to launch, run npm run build in all 7 protocol dirs + SDK and confirm zero TypeScript errors. Add to /godman output as build-clean check.`,
   });
 
+  // --- Phase 5: Pre-gate polish + Godman pre-launch (added Sprint 1078) ---
+  infraItems.push({
+    title: 'GODMAN-LAUNCH — Pre-launch build verify: npm run build clean for all 8 packages',
+    block: 'GODMAN-PROTOCOLS',
+    rationale: `${daysUntil('2026-04-14')}d to Godman launch. Run npm run build in all 7 protocol dirs + SDK to confirm zero TypeScript errors. Surface build status in /godman output.`,
+  });
+
+  infraItems.push({
+    title: 'GATE — /blockers: show top 3 actionable unblocks with sprint IDs',
+    block: 'GATE',
+    rationale: '/blockers exists but may show stale items. Refresh to show only items that have no open code fix (non-code blockers only): missing tokens, manual posting needed, gate math.',
+  });
+
+  infraItems.push({
+    title: 'OPS — /status: Godman 21d countdown line in launch section',
+    block: 'GODMAN-PROTOCOLS',
+    rationale: `Godman npm launch in ${daysUntil('2026-04-14')}d. /status shows TikTok gate but not Godman. Add a "Godman: Nd to launch · npm login needed" line to the ops section.`,
+  });
+
+  infraItems.push({
+    title: 'INFRA — /errors: deduplicate repeated error lines (show count instead)',
+    block: 'INFRA',
+    rationale: '/errors can show the same error repeated many times if a process looped. Add dedup: show "Error X (×N)" instead of N identical lines. Cap output at 8 entries.',
+  });
+
+  infraItems.push({
+    title: 'QUALITY — /smoke: surface in /status as "Smoke: ✅ clean / ❌ failing"',
+    block: 'QUALITY',
+    rationale: 'Smoke test result is in reports/smoke-test-latest.json but /status only shows PM2 and gate. Add one-line smoke status to /status header section.',
+  });
+
+  infraItems.push({
+    title: 'PHASE2 — Achiri: /alpha readiness: verify all 5 pre-alpha checks pass',
+    block: 'PHASE2',
+    rationale: `Achiri alpha launches ${daysUntil('2026-04-25')}d from now. Run scripts/achiri/achiri-readiness.ts and verify all critical checks pass. Fix any that don't.`,
+  });
+
+  infraItems.push({
+    title: 'GATE — /pace: show required daily post rate vs current streak',
+    block: 'GATE',
+    rationale: 'Gate pace check — show "Need X/day · Currently posting Y/day (streak: Zd)" to quickly assess if operator is on track. Read from manual-posts.jsonl last 7d.',
+  });
+
+  infraItems.push({
+    title: 'OPS — /digest: add Godman + Achiri launch countdown to bottom of digest',
+    block: 'OPS',
+    rationale: 'kognai-daily-digest has gate countdown but not Godman/Achiri launch dates. Add "Godman: Nd · Achiri: Nd" footer to keep upcoming launches visible daily.',
+  });
+
+  infraItems.push({
+    title: 'INFRA — /health: show PM2 memory usage warning if any process >500MB',
+    block: 'INFRA',
+    rationale: 'PM2 processes can leak memory. /health shows PM2 status but not per-process memory. Add warning if any process exceeds 500MB RSS.',
+  });
+
+  infraItems.push({
+    title: 'QUALITY — /queue: show viral score next to each item + age in days',
+    block: 'QUALITY',
+    rationale: '/queue shows video IDs and ready count but not viral score or how old each item is. Add score + age so operator can prioritize what to post first.',
+  });
+
   // Fill remaining slots (skip duplicates of already-completed items)
   for (const item of infraItems) {
     if (items.length >= 10) break;
