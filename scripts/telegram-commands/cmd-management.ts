@@ -168,52 +168,58 @@ export function cmdUnarchive(args: string): string {
 }
 
 export function cmdStale(args: string): string {
-  const STALE_DAYS = 7;
+  const STALE_DAYS = 14; // Sprint 1065: threshold raised to 14d (topic shelf-life)
   const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
   const recorded = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
   const recordedIds = new Set(recorded.map((e: any) => e.video_id).filter(Boolean));
   const archivedIds = loadArchived();
   const now = Date.now();
 
-  const stale = (ledger as any[]).filter((e: any) => {
-    if (!e.video_id || recordedIds.has(e.video_id) || archivedIds.has(e.video_id)) return false;
-    if (!e.published_at) return false;
-    const ageDays = (now - new Date(e.published_at).getTime()) / 86_400_000;
-    return ageDays > STALE_DAYS;
-  });
+  const withAge = (ledger as any[])
+    .filter((e: any) => {
+      if (!e.video_id || recordedIds.has(e.video_id) || archivedIds.has(e.video_id)) return false;
+      if (!e.published_at) return false;
+      return true;
+    })
+    .map((e: any) => ({
+      ...e,
+      ageDays: Math.floor((now - new Date(e.published_at).getTime()) / 86_400_000),
+    }))
+    .filter((e: any) => e.ageDays > STALE_DAYS)
+    .sort((a: any, b: any) => b.ageDays - a.ageDays);
 
-  if (stale.length === 0) {
+  if (withAge.length === 0) {
     return `✅ *No stale content* — all queued videos are <${STALE_DAYS} days old.`;
   }
 
   if (args.trim() === 'archive') {
     const archived = loadArchived();
-    for (const e of stale) archived.add(e.video_id);
+    for (const e of withAge) archived.add(e.video_id);
     saveArchived(archived);
     return (
-      `📁 *Bulk archived ${stale.length} stale videos* (>${STALE_DAYS} days old)\n\n` +
+      `📁 *Bulk archived ${withAge.length} stale videos* (>${STALE_DAYS} days old)\n\n` +
       `Queue is now focused on fresh content.\n` +
       `Restore any with \`/unarchive <video_id>\``
     );
   }
 
-  // Show stale summary grouped by age
-  const byAge: Record<string, number> = {};
-  for (const e of stale) {
-    const ageDays = Math.round((now - new Date(e.published_at).getTime()) / 86_400_000);
-    const bucket = ageDays <= 10 ? '7-10d' : ageDays <= 14 ? '11-14d' : '15d+';
-    byAge[bucket] = (byAge[bucket] ?? 0) + 1;
-  }
-
+  // Show per-item age (up to 10), oldest first
   const lines = [
-    `🕰 *Stale Content* — ${stale.length} videos >${STALE_DAYS} days old`,
+    `🕰 *Stale Content* — ${withAge.length} video(s) >${STALE_DAYS} days old`,
     '',
   ];
-  for (const [bucket, count] of Object.entries(byAge)) {
-    lines.push(`• ${bucket}: ${count} videos`);
+  const shown = withAge.slice(0, 10);
+  for (const e of shown) {
+    const topic = e.topic ? String(e.topic).slice(0, 45) : e.video_id;
+    const archiveTag = e.ageDays >= STALE_DAYS ? ' ⚠️' : '';
+    lines.push(`• \`${e.video_id}\` — *${e.ageDays}d* old${archiveTag}`);
+    lines.push(`  _${topic}_`);
+  }
+  if (withAge.length > 10) {
+    lines.push(`_…and ${withAge.length - 10} more_`);
   }
   lines.push('');
-  lines.push(`Run \`/stale archive\` to bulk-archive all ${stale.length} stale videos.`);
+  lines.push(`Run \`/stale archive\` to bulk-archive all ${withAge.length} stale videos.`);
   lines.push(`_Archived videos can be restored with /unarchive_`);
 
   return lines.join('\n');

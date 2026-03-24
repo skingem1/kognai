@@ -636,7 +636,8 @@
       "sprint": 1065,
       "title": "QUALITY \u2014 Video expiry checker: /stale shows queue items older than 14 days",
       "block": "QUALITY",
-      "status": "pending",
+      "status": "done",
+      "_note": "Shipped 2026-03-24. Raised STALE_DAYS 7→14, now shows per-item age sorted oldest-first with /archive suggestion.",
       "priority": "medium",
       "rationale": "Video topics become stale after ~2 weeks. /stale command exists but may not show age. Verify it shows days-old for each item and auto-suggests /archive for items > 14d."
     },
