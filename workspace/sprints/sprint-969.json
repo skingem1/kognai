@@ -1,0 +1,39 @@
+{
+  "sprint_id": "sprint-969",
+  "title": "SOUL-IMPL-01 — Constitutional engine (create, evaluate, kill switches, audit)",
+  "description": "Implement SOUL core: createConstitution, signConstitution, evaluateAction (constraint matching), checkKillSwitches, createAudit. Node.js crypto only.",
+  "block": "GODMAN-PROTOCOLS",
+  "source": "qwen-recommendation",
+  "tasks": [
+    {
+      "id": "969-01",
+      "title": "SOUL src/engine.ts — constitution creation, evaluation, kill switch check",
+      "type": "feature",
+      "task_target": "workspace/godman-protocols/soul/src/engine.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-969"
+    },
+    {
+      "id": "969-02",
+      "title": "SOUL src/index.ts — update exports to real implementations",
+      "type": "feature",
+      "task_target": "workspace/godman-protocols/soul/src/index.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-969"
+    },
+    {
+      "id": "969-03",
+      "title": "SOUL smoke.test.ts — smoke test covering constitution, evaluation, kill switches",
+      "type": "test",
+      "task_target": "workspace/godman-protocols/soul/smoke.test.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-969"
+    }
+  ]
+}
