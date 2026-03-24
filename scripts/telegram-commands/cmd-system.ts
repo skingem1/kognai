@@ -774,8 +774,9 @@ export function cmdErrors(): string {
   const logDir = path.join(ROOT, 'logs');
   const cutoff = Date.now() - 86_400_000; // 24h ago
 
-  interface ProcessError { name: string; lastLine: string; mtime: number; }
-  const errored: ProcessError[] = [];
+  // Sprint 1080: Deduplicate repeated error lines — show "×N" instead of repeats
+  interface DedupError { name: string; line: string; count: number; mtime: number; }
+  const dedupMap = new Map<string, DedupError>();
 
   try {
     const logFiles = fs.readdirSync(logDir).filter((f: string) => f.endsWith('-error.log'));
@@ -788,12 +789,20 @@ export function cmdErrors(): string {
         if (!content) continue;
         const lines = content.split('\n').filter((l: string) => l.trim());
         if (lines.length === 0) continue;
-        const lastLine = lines[lines.length - 1];
-        const lower = lastLine.toLowerCase();
-        if (lower.includes('error') || lower.includes('fatal') ||
-            lower.includes('exception') || lower.includes('fail')) {
-          const processName = file.replace(/-error\.log$/, '');
-          errored.push({ name: processName, lastLine: lastLine.slice(0, 120), mtime: stat.mtimeMs });
+        const processName = file.replace(/-error\.log$/, '');
+        for (const raw of lines) {
+          const lower = raw.toLowerCase();
+          if (!(lower.includes('error') || lower.includes('fatal') ||
+                lower.includes('exception') || lower.includes('fail'))) continue;
+          const trimmed = raw.slice(0, 120);
+          const key = `${processName}::${trimmed}`;
+          const existing = dedupMap.get(key);
+          if (existing) {
+            existing.count++;
+            existing.mtime = Math.max(existing.mtime, stat.mtimeMs);
+          } else {
+            dedupMap.set(key, { name: processName, line: trimmed, count: 1, mtime: stat.mtimeMs });
+          }
         }
       } catch { /* skip unreadable */ }
     }
@@ -801,19 +810,21 @@ export function cmdErrors(): string {
     return '❌ Could not read logs directory.';
   }
 
-  errored.sort((a, b) => b.mtime - a.mtime);
+  const errored = Array.from(dedupMap.values()).sort((a, b) => b.mtime - a.mtime);
   const output: string[] = [];
+  const MAX_ENTRIES = 8;
 
   if (errored.length === 0) {
     output.push('✅ *No PM2 process errors* in the last 24h — all clean.');
   } else {
-    output.push(`⚠️ *PM2 Errors (last 24h)* — ${errored.length} process${errored.length === 1 ? '' : 'es'} with errors\n`);
-    for (const e of errored.slice(0, 10)) {
+    output.push(`⚠️ *PM2 Errors (last 24h)* — ${errored.length} unique error${errored.length === 1 ? '' : 's'}\n`);
+    for (const e of errored.slice(0, MAX_ENTRIES)) {
       const ago = Math.round((Date.now() - e.mtime) / 60_000);
       const timeStr = ago < 60 ? `${ago}m ago` : `${Math.round(ago / 60)}h ago`;
-      output.push(`*${e.name}* _(${timeStr})_\n  \`${e.lastLine}\``);
+      const countStr = e.count > 1 ? ` ×${e.count}` : '';
+      output.push(`*${e.name}* _(${timeStr}${countStr})_\n  \`${e.line}\``);
     }
-    if (errored.length > 10) output.push(`\n_…and ${errored.length - 10} more. Check logs/ directly._`);
+    if (errored.length > MAX_ENTRIES) output.push(`\n_…and ${errored.length - MAX_ENTRIES} more. Check logs/ directly._`);
   }
 
   // Append pipeline validation errors if any

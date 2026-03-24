@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1080",
+  "title": "INFRA — /errors: deduplicate repeated error lines (show count instead)",
+  "description": "Group identical error lines per process and show 'Error (×N)' instead of N identical lines. Cap output at 8 entries.",
+  "block": "INFRA",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1080-01",
+      "title": "Deduplicate error lines in cmdErrors: group by lastLine, show count, cap at 8",
+      "type": "feature",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1080"
+    }
+  ]
+}
