@@ -1,0 +1,24 @@
+{
+  "validated_at": "2026-03-24T13:05Z",
+  "launch_date": "2026-04-25",
+  "days_until_launch": 32,
+  "test_suite": { "passed": 17, "failed": 0, "skipped": 0, "duration_s": 111.3 },
+  "users": 87,
+  "messages": 4343,
+  "waitlist": 1,
+  "readiness_checks": {
+    "voice": "PASS (validated 10/10)",
+    "memory": "PASS (5 user files, search + persistence)",
+    "safety_filter": "PASS (4 categories)",
+    "onboarding": "PASS",
+    "alpha_access_gate": "PASS",
+    "deploy_package": "PASS",
+    "http_api": "PASS",
+    "e2e_integration": "PASS"
+  },
+  "blockers": [
+    "ACHIRI_TELEGRAM_BOT_TOKEN not set (human action — create @AchiriBuddyBot)",
+    "ACHIRI_BASE_URL not set (local mode only, needs deployment for remote)"
+  ],
+  "status": "READY_PENDING_TOKEN"
+}
