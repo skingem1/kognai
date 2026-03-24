@@ -6135,3 +6135,13 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (file >2000 lines, wrote directly)
 - Issues: none
 - Timestamp: 2026-03-24T00:00:00Z
+
+## Sprint 1152 — OPS Telegram wave 31
+- Status: PASS
+- Commit: 6a7dd0ce
+- Files modified: scripts/telegram-commands/cmd-system.ts
+- Files created: workspace/sprints/sprint-1152.json
+- Signals added: leaderboardSection (content-leaderboard.json), brainxSection (brainx-status.json), achiriLaunchSection (achiri-alpha-report.json AT-RISK verdict)
+- Swarm used: no (file >2000 lines, wrote directly)
+- Issues: none
+- Timestamp: 2026-03-24T00:00:00Z
