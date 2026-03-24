@@ -1,0 +1,41 @@
+{
+  "sprint_id": "sprint-1151",
+  "title": "OPS — Telegram operator UX wave 30: video validation, pipeline metrics, Achiri safety in /health",
+  "description": "Add 3 compact /health signals from existing report JSON files: (1) video-validation.json valid/total pass rate, (2) pipeline-metrics.json runs/published/error summary, (3) achiri-safety-audit.json overall verdict.",
+  "source": "queue-empty-auto",
+  "tasks": [
+    {
+      "id": "1151-01",
+      "title": "Add video-validation.json result to /health",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1151"
+    },
+    {
+      "id": "1151-02",
+      "title": "Add pipeline-metrics.json production summary to /health",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1151"
+    },
+    {
+      "id": "1151-03",
+      "title": "Add achiri-safety-audit.json verdict to /health",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "low",
+      "sprint_id": "sprint-1151"
+    }
+  ]
+}

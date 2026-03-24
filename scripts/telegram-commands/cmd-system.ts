@@ -638,7 +638,51 @@ export function cmdHealth(): string {
     }
   } catch { /* skip */ }
 
-  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${botUptimeSection}${ollamaSection}${memWarnSection}${memTableSection}${supabaseSection}${supabaseSyncSection}${diskSection}${watchdogSection}${runtimeSection}${tailscaleSection}${hetznerSection}${anthropicSection}${ioSection}${morningBriefSection}${digestSection}${staleCronsSection}${supabaseDomainSection}${anthropicBudgetSection}${pipelineValidationSection}${worktreeSection}${botMemSection}${gateDaysSection}${backupSection}${postingHealthSection}${exportFilesSection}${tokenHealthSection}${statsSection}${inventorySection}${gateAuditSection}${autoDeliverSection}${bulkCaptionsSection}${playbackSection}${qcSection}${smokeSection}${achiriDauSection}${achiriE2eSection}`;
+  // Sprint 1151 (wave 30): video-validation.json valid/total pass rate
+  let videoValidSection = '';
+  try {
+    const vvPath = path.join(ROOT, 'reports', 'video-validation.json');
+    if (fs.existsSync(vvPath)) {
+      const vv = JSON.parse(fs.readFileSync(vvPath, 'utf-8'));
+      const vvValid = vv.valid ?? 0;
+      const vvTotal = vv.total ?? 0;
+      const vvInvalid = vv.invalid ?? 0;
+      const vvPassRate = vv.pass_rate ?? (vvTotal > 0 ? Math.round((vvValid / vvTotal) * 100) : 0);
+      const vvIcon = vvInvalid === 0 ? '✅' : vvInvalid <= 3 ? '⚠️' : '❌';
+      const vvAvgDur = vv.avg_duration != null ? ` · ${vv.avg_duration}s avg` : '';
+      videoValidSection = `\n\n${vvIcon} *Video validation:* ${vvValid}/${vvTotal} valid · ${vvPassRate}% pass${vvAvgDur}`;
+    }
+  } catch { /* skip */ }
+
+  // Sprint 1151 (wave 30): pipeline-metrics.json production summary
+  let pipelineMetricsSection = '';
+  try {
+    const pmPath = path.join(ROOT, 'reports', 'pipeline-metrics.json');
+    if (fs.existsSync(pmPath)) {
+      const pm = JSON.parse(fs.readFileSync(pmPath, 'utf-8'));
+      const pmRuns = pm.total_runs ?? 0;
+      const pmErrors = pm.error_runs ?? 0;
+      const pmPublished = pm.cumulative?.published ?? 0;
+      const pmQcRate = pm.cumulative?.qc_pass_rate_pct ?? 0;
+      const pmIcon = pmErrors === 0 ? '✅' : pmErrors <= 2 ? '⚠️' : '❌';
+      pipelineMetricsSection = `\n\n${pmIcon} *Pipeline metrics:* ${pmRuns} runs · ${pmPublished} published · ${pmQcRate}% QC pass${pmErrors > 0 ? ` · ${pmErrors} errors` : ''}`;
+    }
+  } catch { /* skip */ }
+
+  // Sprint 1151 (wave 30): achiri-safety-audit.json overall verdict
+  let achiriSafetySection = '';
+  try {
+    const saPath = path.join(ROOT, 'reports', 'achiri-safety-audit.json');
+    if (fs.existsSync(saPath)) {
+      const sa = JSON.parse(fs.readFileSync(saPath, 'utf-8'));
+      const saVerdict = sa.overall_verdict ?? 'UNKNOWN';
+      const saScore = sa.score ?? 0;
+      const saIcon = saVerdict === 'PASS' ? '🛡️' : '❌';
+      achiriSafetySection = `\n\n${saIcon} *Achiri safety:* ${saVerdict} · ${saScore}/100`;
+    }
+  } catch { /* skip */ }
+
+  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${botUptimeSection}${ollamaSection}${memWarnSection}${memTableSection}${supabaseSection}${supabaseSyncSection}${diskSection}${watchdogSection}${runtimeSection}${tailscaleSection}${hetznerSection}${anthropicSection}${ioSection}${morningBriefSection}${digestSection}${staleCronsSection}${supabaseDomainSection}${anthropicBudgetSection}${pipelineValidationSection}${worktreeSection}${botMemSection}${gateDaysSection}${backupSection}${postingHealthSection}${exportFilesSection}${tokenHealthSection}${statsSection}${inventorySection}${gateAuditSection}${autoDeliverSection}${bulkCaptionsSection}${playbackSection}${qcSection}${smokeSection}${achiriDauSection}${achiriE2eSection}${videoValidSection}${pipelineMetricsSection}${achiriSafetySection}`;
 }
 
 export function cmdTier(): string {
