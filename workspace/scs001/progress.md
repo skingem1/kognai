@@ -5807,3 +5807,13 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (direct write + Spielberg run)
 - Issues: None. Full E2E in ~60s.
 - Timestamp: 2026-03-24T11:45:00Z
+
+## Sprint 1012 — SPIELBERG Godman Integration Demo
+- Status: PASS
+- Commit: 0bb3383b
+- Files created: scripts/spielberg/godman-integration-demo.json, workspace/sprints/sprint-1012.json, workspace/scs001/code-demo-runs/godman-integration-v1/ (all 7 files)
+- Test: Spielberg E2E — godman-integration-v1.mp4 (985KB), .gif (340KB), 23s duration
+- Pipeline: All 7 protocols (SOUL→PACT→AMF→SIGNAL→SCORE→LAX→DRS) in one workflow
+- Swarm used: no (direct write + Spielberg run)
+- Issues: SOUL createConstitution positional args (not object) — fixed in demo script
+- Timestamp: 2026-03-24T12:00:00Z
