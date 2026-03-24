@@ -432,12 +432,26 @@ export function cmdPace(): string {
   // Total views
   const totalViews = posts.reduce((s: number, p: any) => s + (p.views ?? 0), 0);
 
+  // Sprint 1083: Add current streak to /pace output
+  let streak = 0;
+  const dailyCounts: Record<string, number> = {};
+  for (const p of posts) {
+    const d = ((p as any).posted_at ?? (p as any).recorded_at ?? '').slice(0, 10);
+    if (d) dailyCounts[d] = (dailyCounts[d] ?? 0) + 1;
+  }
+  for (let i = 0; i < 30; i++) {
+    const d = new Date(now.getTime() - i * 86_400_000).toISOString().slice(0, 10);
+    if ((dailyCounts[d] ?? 0) > 0) streak++;
+    else break;
+  }
+
   const lines: string[] = [];
   lines.push('🏃 *Posting Pace — Gate Countdown*');
   lines.push('');
   lines.push(`📅 Gate: Apr 7 · *${daysLeft}d remaining*`);
   lines.push(`📊 Posts: *${postCount}/${GATE_TARGET}* · ${postsNeeded} to go`);
   lines.push(`👁️ Views: ${totalViews}/500`);
+  lines.push(`🔥 Streak: *${streak}d* consecutive`);
   lines.push('');
 
   if (postCount === 0) {

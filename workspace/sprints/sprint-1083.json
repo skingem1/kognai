@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1083",
+  "title": "GATE — /pace: show required daily post rate vs current streak",
+  "description": "Added streak count (consecutive posting days) to /pace output so operator can see pace + streak in one view.",
+  "block": "GATE",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1083-01",
+      "title": "Add streak calculation and display to cmdPace",
+      "type": "feature",
+      "task_target": "scripts/telegram-commands/cmd-gate.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1083"
+    }
+  ]
+}
