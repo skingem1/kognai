@@ -5719,3 +5719,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (validated existing script)
 - Issues: Sprint 1004 requirement was already met by Sprint 677 — noted
 - Timestamp: 2026-03-24T23:35:00Z
+
+## Sprint 1005 — INFRA YouTube Shorts Upload
+- Status: PASS
+- Commit: f089cf65
+- Files created: workspace/sprints/sprint-1005.json
+- Files modified: ecosystem.config.js
+- Test: YOUTUBE_DRY_RUN=1 --dry-run --all-pending — 545 pending detected, upload flow works
+- Pipeline: scs001-youtube-upload PM2 cron (30 7 daily), auto dry-run until YOUTUBE_REFRESH_TOKEN set
+- Swarm used: no (config + validated existing script)
+- Issues: YOUTUBE_REFRESH_TOKEN not set — human action needed (run youtube-oauth-setup.ts)
+- Timestamp: 2026-03-24T23:45:00Z

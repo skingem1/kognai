@@ -247,10 +247,11 @@
       "sprint": 1005,
       "title": "INFRA \u2014 Cross-platform posting: YouTube Shorts upload support",
       "block": "INFRA",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "YouTube credentials are configured. Adding Shorts upload doubles content reach and accelerates view count for gate.",
-      "created_at": "2026-03-24"
+      "created_at": "2026-03-24",
+      "_note": "Shipped 2026-03-24 \u2014 commit f089cf65. PM2 cron scs001-youtube-upload (30 7 daily). cross-platform-publish.ts (Sprint 678) is the core. Dry-run: 545 pending. Human action: YOUTUBE_REFRESH_TOKEN via oauth setup."
     }
   ]
 }
