@@ -337,6 +337,16 @@ export function cmdCrons(): string {
       lines.push('');
     }
 
+    // Sprint 1114: highlight stuck jobs (>48h since last fire)
+    const stuck = crons.filter(c => c.ageHours > 48 && c.status === 'online');
+    if (stuck.length > 0) {
+      lines.push(`🔴 *Stuck (>48h):*`);
+      for (const c of stuck) {
+        lines.push(`  🔴 \`${c.name}\` — ${Math.round(c.ageHours)}h since last restart`);
+      }
+      lines.push('');
+    }
+
     return lines.join('\n');
   } catch (e: any) {
     return `❌ Failed to read PM2 cron list: ${e.message}`;

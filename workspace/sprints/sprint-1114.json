@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1114",
+  "title": "OPS — /crons: highlight stuck PM2 cron jobs (>48h since last fire)",
+  "description": "Adds dedicated 'Stuck' section to /crons for jobs that haven't restarted in >48h.",
+  "block": "OPS",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1114-01",
+      "title": "Add stuck jobs section to cmdCrons",
+      "type": "enhancement",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1114"
+    }
+  ]
+}
