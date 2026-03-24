@@ -406,6 +406,67 @@ function generateItems(startSprint: number, existingTitles: Set<string> = new Se
     rationale: 'kognai-daily-digest runs at 07:00 but may not surface the posting obligation. Ensure digest includes "Post N videos today (X/30 gate)" as the first action item.',
   });
 
+  // --- Phase 4: Post-1068 maintenance + pre-gate hardening (added Sprint 1069) ---
+  infraItems.push({
+    title: 'QUALITY — /godman-smoke: show per-protocol test output on failure',
+    block: 'GODMAN-PROTOCOLS',
+    rationale: `/godman-smoke runs smoke tests but output is terse on failure. Add per-protocol assertion detail so operator can debug before launch day (${daysUntil('2026-04-14')}d).`,
+  });
+
+  infraItems.push({
+    title: 'GATE — /record: validate video_id exists in auto-delivered before recording',
+    block: 'GATE',
+    rationale: 'Operator sometimes mistypes /record IDs. Add a check that the video_id exists in auto-delivered.jsonl before writing to manual-posts.jsonl, with a warning if not found.',
+  });
+
+  infraItems.push({
+    title: 'OPS — /status: add Godman launch countdown to ops section',
+    block: 'GODMAN-PROTOCOLS',
+    rationale: `Godman launches ${daysUntil('2026-04-14')}d from now. Add a single line to /status showing "Godman: Nd to launch · npm login required" so it's never out of sight.`,
+  });
+
+  infraItems.push({
+    title: 'INFRA — /crons: flag crons that have not fired in >25h',
+    block: 'INFRA',
+    rationale: 'PM2 crons can silently stop firing after server restart. /crons shows process status but not last-fire time. Add staleness check: if cron has been online >25h without output, flag it.',
+  });
+
+  infraItems.push({
+    title: 'QUALITY — Smoke test gate: add to morning brief if last smoke was >24h ago',
+    block: 'QUALITY',
+    rationale: 'morning-brief sends gate + video pick but not smoke test status. If reports/smoke-test-latest.json is >24h old, add a warning line so operator knows to re-run smoke.',
+  });
+
+  infraItems.push({
+    title: 'PHASE2 — Achiri /reengage: surface daily re-engagement count in /achiri',
+    block: 'PHASE2',
+    rationale: 'workspace/achiri/reengage-log.jsonl tracks re-engagement events. Add a line to /achiri showing how many users were re-engaged today vs yesterday.',
+  });
+
+  infraItems.push({
+    title: 'OPS — /costs: add Ollama inference cost estimate (tokens * model rate)',
+    block: 'OPS',
+    rationale: '/costs shows cloud API costs but not local Ollama. Add estimate: read inference logs if available, else show "0.00 (local)" to make the $0 local cost explicit.',
+  });
+
+  infraItems.push({
+    title: 'INFRA — /health: add last heartbeat age warning if >10 min stale',
+    block: 'INFRA',
+    rationale: 'health.json heartbeat can be stale without anyone noticing. Add a warning line to /health if last_heartbeat is >10 min old: "⚠️ Stale heartbeat: Nm ago".',
+  });
+
+  infraItems.push({
+    title: 'GATE — /today: show daily obligation met vs pending with count breakdown',
+    block: 'GATE',
+    rationale: '/today shows gate progress but not whether today\'s obligation is met. Add "Today: X/Y posted (obligation met ✅)" to /today output next to gate progress line.',
+  });
+
+  infraItems.push({
+    title: 'GODMAN-LAUNCH — Pre-launch smoke: verify all 7 protocol packages build clean',
+    block: 'GODMAN-PROTOCOLS',
+    rationale: `With ${daysUntil('2026-04-14')}d to launch, run npm run build in all 7 protocol dirs + SDK and confirm zero TypeScript errors. Add to /godman output as build-clean check.`,
+  });
+
   // Fill remaining slots (skip duplicates of already-completed items)
   for (const item of infraItems) {
     if (items.length >= 10) break;
