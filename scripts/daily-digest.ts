@@ -569,6 +569,9 @@ function buildDigest(): string {
       }
       return [];
     })()),
+    // Sprint 1084: Godman + Achiri launch countdown footer
+    ``,
+    `⏳ *Countdown* — Godman: *${Math.max(0, Math.ceil((new Date('2026-04-14T00:00:00Z').getTime() - Date.now()) / 86_400_000))}d* · Achiri: *${daysAchiri}d*`,
     ledger.total > 0
       ? `💡 _Telegram: /queue to see unposted, /review for latest, /record {id} {views} to track_`
       : `⚠️ _No pipeline output yet — check PM2: \`pm2 status\` | /queue when ready_`,
