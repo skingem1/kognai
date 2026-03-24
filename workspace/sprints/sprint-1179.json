@@ -1,0 +1,22 @@
+{
+  "sprint_id": "sprint-1179",
+  "title": "OPS — /status: show Achiri user count and DAU from achiri daily-counts.json",
+  "description": "Add Achiri user growth section to /status in cmdStatus() showing registered users (distinct real user IDs), DAU (today's real users), and 7-day trend derived from workspace/achiri/daily-counts.json. Real users are non-test IDs (exclude validate-, smoke-, e2e-, tarek-test).",
+  "source": "queue-prescribed",
+  "block": "OPS",
+  "swarm_bypassed": true,
+  "swarm_bypass_reason": "cmd-management.ts is 2000+ lines — exceeds swarm file size limit. Written directly.",
+  "tasks": [
+    {
+      "id": "1179-01",
+      "title": "Add achiriGrowthLine to cmdStatus() in cmd-management.ts using workspace/achiri/daily-counts.json",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/telegram-commands/cmd-management.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1179"
+    }
+  ]
+}

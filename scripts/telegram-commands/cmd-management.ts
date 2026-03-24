@@ -2067,6 +2067,39 @@ export function cmdStatus(): string {
     }
   } catch { /* skip */ }
 
+  // Sprint 1179: Achiri user growth from workspace/achiri/daily-counts.json
+  let achiriGrowthLine = '';
+  try {
+    const dcPath = path.join(ROOT, 'workspace', 'achiri', 'daily-counts.json');
+    if (fs.existsSync(dcPath)) {
+      const dc: Record<string, Record<string, number>> = JSON.parse(fs.readFileSync(dcPath, 'utf-8'));
+      const isTestId = (id: string) =>
+        id.startsWith('validate-') || id.startsWith('smoke-') ||
+        id.startsWith('e2e-') || id === 'tarek-test';
+      // Distinct real users ever seen
+      const allRealUsers = new Set<string>();
+      const todayStr = now.toISOString().slice(0, 10);
+      let todayDau = 0;
+      // Build 7-day trend
+      const trendDays: { date: string; dau: number }[] = [];
+      for (let i = 6; i >= 0; i--) {
+        const d = new Date(now.getTime() - i * 86_400_000).toISOString().slice(0, 10);
+        const entries = dc[d] ?? {};
+        const realUsers = Object.keys(entries).filter(k => !isTestId(k));
+        realUsers.forEach(u => allRealUsers.add(u));
+        trendDays.push({ date: d, dau: realUsers.length });
+        if (d === todayStr) todayDau = realUsers.length;
+      }
+      // Also count users from older dates for total
+      for (const [d, entries] of Object.entries(dc)) {
+        Object.keys(entries).filter(k => !isTestId(k)).forEach(u => allRealUsers.add(u));
+      }
+      const totalUsers = allRealUsers.size;
+      const trend7 = trendDays.map(t => t.dau).join('→');
+      achiriGrowthLine = `\n👤 *Achiri users:* ${totalUsers} total · DAU ${todayDau} · 7d: ${trend7}`;
+    }
+  } catch { /* skip */ }
+
   const lines = [
     `📊 *Kognai Status Dashboard*${activeSprintStr}${envAlertStr}`,
     '',
@@ -2119,7 +2152,7 @@ export function cmdStatus(): string {
         }
       } catch {}
       return '';
-    })(),
+    })() + achiriGrowthLine,
     '',
     // Sprint 1134 (wave 15): Phase 2 readiness when gate is met
     ...(postsNeeded === 0 && totalViews >= 500 ? [
