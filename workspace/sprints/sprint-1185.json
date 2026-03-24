@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1185",
+  "title": "ACHIRI \u2014 create scripts/achiri/memory-test.ts to validate memory subsystem schema",
+  "description": "Achiri memory subsystem is next after voice validation. Create a test script that validates the memory JSONL schema and reports entry count, recency, and structure.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1185-01",
+      "title": "ACHIRI \u2014 create scripts/achiri/memory-test.ts to validate memory subsystem schema",
+      "type": "feature",
+      "task_type": "achiri",
+      "task_target": "workspace/sprints/sprint-1185-output.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1185"
+    }
+  ]
+}
