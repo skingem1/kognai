@@ -1,0 +1,33 @@
+{
+  "sprint_id": "sprint-1177",
+  "title": "GODMAN-LAUNCH — /godman-preflight: full launch day checklist in one command",
+  "description": "Add cmdGodmanPreflight() to cmd-system.ts that runs all pre-launch checks: npm login, registry reachable, dist built for each protocol, tests pass, git tags present, dry-run. Shows GO / NO-GO summary. Wire /godman-preflight into telegram-bot.ts router.",
+  "source": "queue-prescribed",
+  "block": "GODMAN-LAUNCH",
+  "swarm_bypassed": true,
+  "swarm_bypass_reason": "cmd-system.ts is 3300+ lines and telegram-bot.ts is 2800+ lines — both exceed swarm file size limit. Written directly.",
+  "tasks": [
+    {
+      "id": "1177-01",
+      "title": "Add cmdGodmanPreflight() export to cmd-system.ts",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-1177"
+    },
+    {
+      "id": "1177-02",
+      "title": "Wire /godman-preflight and /godmanpreflight in telegram-bot.ts router",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/telegram-bot.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-1177"
+    }
+  ]
+}

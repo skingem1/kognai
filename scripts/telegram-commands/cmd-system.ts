@@ -3321,3 +3321,97 @@ export function cmdGodmanTag(args?: string): string {
     return `❌ godman-tag-all.sh failed:\n\`\`\`\n${err}\n\`\`\``;
   }
 }
+
+/**
+ * Sprint 1177: /godman-preflight — full launch day checklist in one command
+ * Checks: npm login, registry reachable, dist built, tests pass, git tags, dry-run
+ * Shows GO / NO-GO at the end.
+ */
+export function cmdGodmanPreflight(): string {
+  const PROTOCOLS = ['pact', 'lax', 'score', 'signal', 'soul', 'amf', 'drs'];
+  const lines: string[] = ['*Godman Pre-Flight Checklist*', ''];
+  const checks: { label: string; pass: boolean; detail?: string }[] = [];
+
+  // 1. npm login
+  let npmUser = '';
+  try {
+    npmUser = execSync('npm whoami 2>/dev/null', { encoding: 'utf-8', timeout: 8000, stdio: ['pipe','pipe','pipe'] }).trim();
+  } catch {}
+  checks.push({ label: 'npm login', pass: npmUser.length > 0, detail: npmUser || 'run: npm login' });
+
+  // 2. Registry reachable
+  let registryOk = false;
+  try {
+    const r = execSync('npm ping --registry https://registry.npmjs.org 2>&1', { encoding: 'utf-8', timeout: 10000, stdio: ['pipe','pipe','pipe'] });
+    registryOk = r.toLowerCase().includes('pong') || r.toLowerCase().includes('ok');
+  } catch {}
+  checks.push({ label: 'registry reachable', pass: registryOk, detail: registryOk ? 'registry.npmjs.org OK' : 'npm ping failed' });
+
+  // 3. dist built for each protocol
+  let distCount = 0;
+  for (const proto of PROTOCOLS) {
+    const distDir = path.join(ROOT, 'workspace', 'godman-protocols', proto, 'dist');
+    if (fs.existsSync(distDir)) distCount++;
+  }
+  checks.push({ label: `dist built (${distCount}/${PROTOCOLS.length})`, pass: distCount === PROTOCOLS.length, detail: distCount < PROTOCOLS.length ? `missing dist in some protocols` : undefined });
+
+  // 4. Tests pass — run godman smoke
+  let smokePass = false;
+  let smokeSummary = '';
+  try {
+    const { runGodmanSmoke } = require('../godman-smoke');
+    smokeSummary = runGodmanSmoke();
+    smokePass = smokeSummary.includes('All 7 protocols pass');
+  } catch (e: any) {
+    smokeSummary = e.message ?? 'smoke import failed';
+  }
+  checks.push({ label: 'smoke tests', pass: smokePass, detail: smokePass ? undefined : 'run /godman-smoke for details' });
+
+  // 5. Git tags present for all protocols + SDK
+  let tagCount = 0;
+  const allPkgs = [...PROTOCOLS, 'sdk'];
+  for (const pkg of allPkgs) {
+    try {
+      const pkgFile = path.join(ROOT, 'workspace', 'godman-protocols', pkg, 'package.json');
+      if (!fs.existsSync(pkgFile)) continue;
+      const { version } = JSON.parse(fs.readFileSync(pkgFile, 'utf-8'));
+      const tagOut = execSync(`git tag --list "${pkg}-v${version}" 2>/dev/null`, { encoding: 'utf-8', cwd: ROOT, timeout: 5000, stdio: ['pipe','pipe','pipe'] }).trim();
+      if (tagOut.length > 0) tagCount++;
+    } catch {}
+  }
+  checks.push({ label: `git tags (${tagCount}/${allPkgs.length})`, pass: tagCount === allPkgs.length, detail: tagCount < allPkgs.length ? 'run /godman-tag confirm' : undefined });
+
+  // 6. Dry-run publish check
+  const scriptPath = path.join(ROOT, 'scripts', 'godman-launch-day.sh');
+  let dryRunPass = false;
+  let dryRunDetail = '';
+  if (!fs.existsSync(scriptPath)) {
+    dryRunDetail = 'godman-launch-day.sh not found';
+  } else {
+    try {
+      execSync(`bash "${scriptPath}" --dry-run 2>&1`, { encoding: 'utf-8', timeout: 60000, cwd: ROOT, stdio: ['pipe','pipe','pipe'] });
+      dryRunPass = true;
+    } catch (e: any) {
+      const out = ((e.stdout ?? e.stderr ?? e.message ?? '') as string).trim();
+      dryRunDetail = out.split('\n').filter((l: string) => l.includes('✗') || l.includes('FAIL') || l.includes('Error')).slice(0, 3).join(' | ') || out.slice(0, 150);
+    }
+  }
+  checks.push({ label: 'dry-run', pass: dryRunPass, detail: dryRunDetail || undefined });
+
+  // Build output
+  let goCount = 0;
+  for (const c of checks) {
+    const icon = c.pass ? '✅' : '❌';
+    lines.push(`${icon} ${c.label}${c.detail ? ` — \`${c.detail}\`` : ''}`);
+    if (c.pass) goCount++;
+  }
+
+  const allGo = goCount === checks.length;
+  lines.push('');
+  lines.push(allGo
+    ? '🟢 *GO* — all checks pass. Run /godman-publish confirm when ready.'
+    : `🔴 *NO-GO* — ${checks.length - goCount}/${checks.length} check(s) failed. Fix above before launch.`
+  );
+
+  return lines.join('\n');
+}
