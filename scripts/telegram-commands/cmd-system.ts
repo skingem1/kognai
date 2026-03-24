@@ -1202,6 +1202,25 @@ export function cmdGodman(): string {
   lines.push(`🎬 PACT demo mp4: ${hasPactDemo ? 'ready' : 'run Spielberg'}`);
   lines.push(`🎬 Integration demo mp4: ${hasIntegDemo ? 'ready (all-7)' : 'run Spielberg'}`);
 
+  // Sprint 1014: npm registry versions
+  const protocols = ['pact', 'lax', 'score', 'signal', 'soul', 'amf', 'drs'];
+  lines.push('');
+  lines.push('*npm registry:*');
+  for (const proto of protocols) {
+    let ver = '';
+    try { ver = execSync(`npm view @godman-protocols/${proto} version 2>/dev/null`, { encoding: 'utf-8', timeout: 8000, stdio: ['pipe','pipe','pipe'] }).trim(); } catch {}
+    lines.push(`  ${ver ? `✅ @godman-protocols/${proto} v${ver}` : `❌ @godman-protocols/${proto} — NOT PUBLISHED`}`);
+  }
+
+  // Sprint 1014: X thread file count
+  const xRepliesDir = path.join(ROOT, 'workspace', 'social', 'x-replies');
+  let xCount = 0;
+  try {
+    xCount = fs.readdirSync(xRepliesDir).filter(f => f.endsWith('.md') || f.endsWith('.txt')).length;
+  } catch {}
+  lines.push('');
+  lines.push(`📣 X thread drafts: ${xCount > 0 ? `✅ ${xCount} file(s) in workspace/social/x-replies/` : '❌ none found'}`);
+
   // npm login
   let npmWhoami = '';
   try { npmWhoami = execSync('npm whoami', { encoding: 'utf-8', timeout: 5000, stdio: ['pipe','pipe','pipe'] }).trim(); } catch {}

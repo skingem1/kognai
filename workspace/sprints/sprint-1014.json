@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-1014",
+  "title": "GODMAN-LAUNCH — /godman: npm registry version + X thread file count",
+  "description": "Complete the /godman launch dashboard. Two checks still missing from sprint-1013 spec: (1) npm view @godman-protocols/<name> version for each of 7 protocols — shows published version or NOT PUBLISHED. (2) Count of files in workspace/social/x-replies/ dir. Adds these to the existing cmdGodman() in cmd-system.ts.",
+  "block": "GODMAN-PROTOCOLS",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1014-01",
+      "title": "Add npm registry version checks + x-replies count to cmdGodman()",
+      "type": "feature",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1014",
+      "description": "In cmdGodman() (scripts/telegram-commands/cmd-system.ts): (1) For each of 7 protocols run execSync('npm view @godman-protocols/<name> version 2>/dev/null', catch=not published). Show ✅ v0.2.0 or ❌ NOT PUBLISHED. (2) Check workspace/social/x-replies/ dir, count .md/.txt files. Show count. Insert both sections between the existing demo mp4 lines and the npm login line."
+    }
+  ]
+}
