@@ -697,7 +697,8 @@
       "sprint": 1073,
       "title": "QUALITY — Smoke test gate: add to morning brief if last smoke was >24h ago",
       "block": "QUALITY",
-      "status": "pending",
+      "status": "done",
+      "_note": "Shipped 2026-03-24. morning-brief.ts now checks smoke-test-latest.json timestamp and warns if >24h stale.",
       "priority": "medium",
       "rationale": "morning-brief sends gate + video pick but not smoke test status. If reports/smoke-test-latest.json is >24h old, add a warning line so operator knows to re-run smoke."
     },

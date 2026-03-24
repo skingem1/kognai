@@ -103,6 +103,20 @@ function main(): void {
     lines.push('_No unposted videos — run /refresh to check pipeline_');
   }
 
+  // Sprint 1073: warn if smoke test is stale (>24h)
+  try {
+    const smokePath = path.join(ROOT, 'reports/smoke-test-latest.json');
+    if (fs.existsSync(smokePath)) {
+      const smoke = JSON.parse(fs.readFileSync(smokePath, 'utf-8'));
+      const smokeTs = smoke.timestamp ? new Date(smoke.timestamp).getTime() : 0;
+      const smokeAgeH = smokeTs > 0 ? (Date.now() - smokeTs) / 3600000 : 999;
+      if (smokeAgeH > 24) {
+        lines.push('');
+        lines.push(`⚠️ *Smoke test stale* — last run ${Math.round(smokeAgeH)}h ago · run /smoke`);
+      }
+    }
+  } catch {}
+
   lines.push('');
   lines.push('_/status · /errors · /blockers · /today_');
 
