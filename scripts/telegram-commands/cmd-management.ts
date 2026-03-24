@@ -1947,6 +1947,22 @@ export function cmdBotTest(): string {
     }
   }
 
+  // Sprint 1116: env var smoke check
+  const REQUIRED_ENVS = [
+    { key: 'TELEGRAM_BOT_TOKEN', label: 'Telegram bot token' },
+    { key: 'OWNER_TELEGRAM_CHAT_ID', label: 'Owner chat ID' },
+    { key: 'ANTHROPIC_API_KEY', label: 'Anthropic API key' },
+    { key: 'SUPABASE_URL', label: 'Supabase URL' },
+  ];
+  const missingEnvs = REQUIRED_ENVS.filter(e => !process.env[e.key]);
+  if (missingEnvs.length === 0) {
+    results.push(`✅ Env vars: all ${REQUIRED_ENVS.length} required vars set`);
+    totalPass++;
+  } else {
+    results.push(`❌ Env vars: ${missingEnvs.length} missing — ${missingEnvs.map(e => e.label).join(', ')}`);
+    totalFail++;
+  }
+
   results.push('');
   results.push(totalFail === 0
     ? `✅ *All ${totalPass} tests PASS*`

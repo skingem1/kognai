@@ -393,7 +393,17 @@ export function cmdAchiri(): string {
           if (dayMsgs > 0) { totalMsgs += dayMsgs; activeDays++; }
         }
         const avgPerDay = activeDays > 0 ? Math.round(totalMsgs / activeDays) : 0;
-        lines.push(`💬 *Messages:* ${totalMsgs} total · ${avgPerDay}/day avg (${activeDays} active days)`);
+        // Sprint 1115: last 24h message count
+        const today = new Date().toISOString().slice(0, 10);
+        const yesterday = new Date(Date.now() - 86_400_000).toISOString().slice(0, 10);
+        const last24hMsgs = [today, yesterday].reduce((s, d) => {
+          const dayData = counts[d];
+          if (!dayData) return s;
+          return s + Object.entries(dayData)
+            .filter(([k]) => !k.startsWith('validate') && !k.startsWith('e2e') && !k.endsWith('-limit') && !k.endsWith('-paid') && !k.endsWith('-bypass'))
+            .reduce((sum, [, v]) => sum + (v as number), 0);
+        }, 0);
+        lines.push(`💬 *Messages:* ${totalMsgs} total · ${avgPerDay}/day avg · *${last24hMsgs} last 24h*`);
         lines.push('');
       }
     } catch { /* skip */ }

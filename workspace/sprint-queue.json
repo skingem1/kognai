@@ -1113,17 +1113,19 @@
       "sprint": 1115,
       "title": "ACHIRI \u2014 /achiri: show last 24h message count separately",
       "block": "ACHIRI",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
-      "rationale": "/achiri shows total and daily avg but not activity in the last 24h. A \"Last 24h: N messages\" line shows whether the bot is being used right now vs historically."
+      "rationale": "/achiri shows total and daily avg but not activity in the last 24h. A \"Last 24h: N messages\" line shows whether the bot is being used right now vs historically.",
+      "_note": "Shipped 2026-03-24"
     },
     {
       "sprint": 1116,
       "title": "QUALITY \u2014 /bottest: check required env vars are set as smoke test",
       "block": "QUALITY",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
-      "rationale": "/bottest tests command output but not env var prerequisites. Add env var check (TELEGRAM_BOT_TOKEN, OWNER_TELEGRAM_CHAT_ID, etc.) so missing vars surface in bottest."
+      "rationale": "/bottest tests command output but not env var prerequisites. Add env var check (TELEGRAM_BOT_TOKEN, OWNER_TELEGRAM_CHAT_ID, etc.) so missing vars surface in bottest.",
+      "_note": "Shipped 2026-03-24"
     },
     {
       "sprint": 1117,
@@ -1172,9 +1174,10 @@
       "sprint": 1112,
       "title": "GATE \u2014 /pace: add projected gate completion date based on current velocity",
       "block": "GATE",
-      "status": "pending",
+      "status": "done",
       "priority": "high",
-      "rationale": "Operator needs to know if current pace will hit gate by Apr 7. Show ETA based on posts/day trend."
+      "rationale": "Operator needs to know if current pace will hit gate by Apr 7. Show ETA based on posts/day trend.",
+      "_note": "Shipped as Sprint 1112 \u2014 commit 45ad8c06"
     },
     {
       "sprint": 1113,
