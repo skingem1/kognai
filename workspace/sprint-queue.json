@@ -1041,9 +1041,10 @@
       "sprint": 1107,
       "title": "OPS \u2014 /digest: show yesterday post count vs target in header",
       "block": "OPS",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
-      "rationale": "Daily digest starts with gate math but not what actually happened yesterday. Add \"Yesterday: N posts posted\" as the second line so operator can see recent activity."
+      "rationale": "Daily digest starts with gate math but not what actually happened yesterday. Add \"Yesterday: N posts posted\" as the second line so operator can see recent activity.",
+      "_note": "Shipped as Sprint 1107 \u2014 commit fcfec3df"
     },
     {
       "sprint": 1108,
