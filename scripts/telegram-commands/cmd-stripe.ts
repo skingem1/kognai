@@ -419,22 +419,38 @@ export function cmdAchiri(): string {
       lines.push(`  ❌ Runner failed: ${String(e.message ?? e).slice(0, 80)}`);
     }
 
-    // Sprint 1074: Re-engagement count today vs yesterday
+    // Sprint 1074 + 1092: Re-engagement count + failure rate today vs yesterday
     lines.push('');
     lines.push('*Re-engagement:*');
     try {
       const reengagePath = path.join(ROOT, 'workspace', 'achiri', 'reengage-log.jsonl');
+      const reengageErrPath = path.join(ROOT, 'logs', 'achiri-reengage-error.log');
+      const today = new Date().toISOString().slice(0, 10);
+      const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+
+      let todayCount = 0, yesterdayCount = 0;
       if (fs.existsSync(reengagePath)) {
-        const today = new Date().toISOString().slice(0, 10);
-        const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
         const entries = fs.readFileSync(reengagePath, 'utf-8').trim().split('\n')
           .filter(Boolean).map((l: string) => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
-        const todayCount = entries.filter((e: any) => (e.sentAt ?? '').startsWith(today)).length;
-        const yesterdayCount = entries.filter((e: any) => (e.sentAt ?? '').startsWith(yesterday)).length;
-        lines.push(`  📤 Today: *${todayCount}* · Yesterday: ${yesterdayCount}`);
-      } else {
-        lines.push(`  _reengage-log.jsonl not found_`);
+        todayCount = entries.filter((e: any) => (e.sentAt ?? '').startsWith(today)).length;
+        yesterdayCount = entries.filter((e: any) => (e.sentAt ?? '').startsWith(yesterday)).length;
       }
+
+      // Sprint 1092: count failures from reengage error log
+      let todayFail = 0, yesterdayFail = 0;
+      if (fs.existsSync(reengageErrPath)) {
+        const errContent = fs.readFileSync(reengageErrPath, 'utf-8');
+        for (const line of errContent.split('\n')) {
+          if (line.includes('Telegram error') || line.includes('error')) {
+            if (line.startsWith(today)) todayFail++;
+            else if (line.startsWith(yesterday)) yesterdayFail++;
+          }
+        }
+      }
+
+      const todayStr = todayFail > 0 ? `*${todayCount}* sent · ❌${todayFail} failed` : `*${todayCount}* sent`;
+      const ydStr = yesterdayFail > 0 ? `${yesterdayCount} sent · ${yesterdayFail} failed` : `${yesterdayCount} sent`;
+      lines.push(`  📤 Today: ${todayStr} · Yesterday: ${ydStr}`);
     } catch {
       lines.push(`  _could not read reengage log_`);
     }
