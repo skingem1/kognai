@@ -605,8 +605,13 @@ export function cmdDigest(): string {
   if (!tiktokReady) actions.push('• Set `TIKTOK\\_ACCESS\\_TOKEN` in .env');
   if (!stripeReady) actions.push('• Configure missing Stripe env vars');
   if (postsNeeded > 0) {
-    actions.push(`• Post ${Math.min(postsNeeded, 3)} videos today`);
-    actions.push('• Use `/record` after each manual post');
+    const dailyTarget = daysLeft > 0 ? Math.ceil(postsNeeded / daysLeft) : postsNeeded;
+    actions.push(`• Post *${dailyTarget}* videos today — /pickup to start`);
+    actions.push('• After each post: `/record <id> <views> <tiktok_url>`');
+    // Sprint 1134: urgent posting CTA when behind pace
+    if (dailyTarget >= 3) {
+      actions.push('⚡ *URGENT:* /gate-sim shows you need ' + dailyTarget + '/day to make the gate');
+    }
   }
   if (queueCount === 0) actions.push('• Run `/refresh` to fill the queue');
 
