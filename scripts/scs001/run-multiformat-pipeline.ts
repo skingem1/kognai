@@ -266,6 +266,7 @@ async function runPipeline(options: {
       source_url: '',
       confidence: 90,
       keywords: title.toLowerCase().split(/\s+/).slice(0, 5),
+      collected_at: new Date().toISOString(),
     }));
     console.log(`   Injected ${topics.length} custom topics\n`);
   } else {

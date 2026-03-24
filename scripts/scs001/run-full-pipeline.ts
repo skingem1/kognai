@@ -338,7 +338,8 @@ async function main(): Promise<void> {
     const qcViolations: string[] = [];
     // Check rewritten scripts (text content)
     for (const bundle of rewrittenBundles) {
-      const scriptText = [bundle.hook_text, bundle.pre_clip_commentary, bundle.post_clip_commentary, bundle.insight_statement].filter(Boolean).join(" ");
+      const b = bundle as any;
+      const scriptText = [b.hook_text, b.pre_clip_commentary, b.post_clip_commentary, b.insight_statement].filter(Boolean).join(" ");
       const result = checkScript(scriptText);
       if (result.pass) qcPassed++; else { qcFailed++; qcViolations.push(...result.violations); }
     }

@@ -1049,6 +1049,7 @@ export async function cmdPostAuto(chatId: string, args: string): Promise<void> {
   await sendMessage(chatId, `🤖 Starting browser auto-post (${count} video${count > 1 ? 's' : ''})...`);
 
   try {
+    const { execSync } = require('child_process');
     const result = execSync(
       `AUTO_POST_MAX=${count} npx ts-node --transpile-only scripts/scs001/auto-post-browser.ts`,
       { cwd: ROOT, timeout: 180_000, stdio: 'pipe', env: { ...process.env, AUTO_POST_MAX: String(count) } }

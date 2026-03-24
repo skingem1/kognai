@@ -1061,7 +1061,7 @@ export async function cmdApproveFinetune(chatId: string, args: string): Promise<
 export function cmdBrainxStatus(): string {
   const statusPath = path.join(ROOT, 'reports', 'brainx-status.json');
   try {
-    const status = readJSON(statusPath);
+    const status = readJSON(statusPath) as any;
     if (!status) return '🧠 BrainX DB: Unknown\n\nRun: `npx ts-node scripts/verify-brainx-db.ts`';
     const lines = [`🧠 *BrainX DB*: ${status.overall}`];
     for (const c of status.checks || []) {
@@ -1081,7 +1081,7 @@ export function cmdBrainxStatus(): string {
 export function cmdSwarmHealth(): string {
   const healthPath = path.join(ROOT, 'workspace', 'swarm-health.json');
   try {
-    const health = readJSON(healthPath);
+    const health = readJSON(healthPath) as any;
     if (!health) return '🏥 Swarm Health: Unknown\n\nRun: `npx ts-node scripts/lib/swarm-health.ts`';
     const icon = health.overall_status === 'GREEN' ? '🟢' : health.overall_status === 'YELLOW' ? '🟡' : '🔴';
     const c = health.components;
