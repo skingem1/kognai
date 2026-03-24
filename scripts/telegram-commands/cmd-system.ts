@@ -3081,6 +3081,14 @@ export function cmdGodman(): string {
   try { npmWhoami = execSync('npm whoami', { encoding: 'utf-8', timeout: 5000, stdio: ['pipe','pipe','pipe'] }).trim(); } catch {}
   lines.push(`🔑 npm login: ${npmWhoami ? `✅ ${npmWhoami}` : '❌ run: npm login'}`);
 
+  // Sprint 1164: npm registry reachability check
+  let npmRegistryOk = false;
+  try {
+    const httpCode = execSync('curl -s -o /dev/null -w "%{http_code}" https://registry.npmjs.com/ --connect-timeout 5 --max-time 8', { encoding: 'utf-8', timeout: 10000, stdio: ['pipe','pipe','pipe'] }).trim();
+    npmRegistryOk = httpCode.startsWith('2') || httpCode.startsWith('3');
+  } catch { /* unreachable */ }
+  lines.push(`🌐 npmjs.com: ${npmRegistryOk ? '✅ reachable' : '❌ unreachable — check network before publish'}`);
+
   // Sprint 1136 (wave 18): git tag status per protocol
   try {
     const tags = execSync('git tag 2>/dev/null', { cwd: ROOT, encoding: 'utf-8', timeout: 5000, stdio: ['pipe','pipe','pipe'] }).trim().split('\n').filter(Boolean);

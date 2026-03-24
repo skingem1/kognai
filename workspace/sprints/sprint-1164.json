@@ -1,0 +1,21 @@
+{
+  "sprint_id": "sprint-1164",
+  "title": "GODMAN-LAUNCH — /godman: show npm registry status (npmjs.com reachable)",
+  "description": "Add a curl reachability check to registry.npmjs.com in cmdGodman(). Show '✅ npmjs.com reachable' or '❌ npmjs.com unreachable — check network' so operator knows publish will work before launch day.",
+  "source": "queue-prescribed",
+  "block": "GODMAN-PROTOCOLS",
+  "tasks": [
+    {
+      "id": "1164-01",
+      "title": "Add curl check for registry.npmjs.com reachability in cmdGodman()",
+      "type": "feature",
+      "task_type": "ux",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1164",
+      "notes": "File >3000 lines — swarm bypassed, written directly. Inserted after npm whoami check."
+    }
+  ]
+}
