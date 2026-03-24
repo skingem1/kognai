@@ -724,7 +724,8 @@
       "sprint": 1076,
       "title": "INFRA — /health: add last heartbeat age warning if >10 min stale",
       "block": "INFRA",
-      "status": "pending",
+      "status": "done",
+      "_note": "Shipped 2026-03-24. cmdHealth() now shows age next to last beat timestamp and adds stale warning if >10 min.",
       "priority": "medium",
       "rationale": "health.json heartbeat can be stale without anyone noticing. Add a warning line to /health if last_heartbeat is >10 min old: \"⚠️ Stale heartbeat: Nm ago\"."
     },

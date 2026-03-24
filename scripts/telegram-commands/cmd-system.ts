@@ -35,7 +35,18 @@ export function cmdHealth(): string {
   if (!h) return '❌ *Health* — health.json not found';
 
   const statusIcon = { healthy: '✅', degraded: '⚠️', critical: '🔴', dead: '💀' }[h.status as string] ?? '❓';
-  const beat = h.last_heartbeat ? `Last beat: ${h.last_heartbeat.replace('T', ' ').slice(0, 19)} UTC` : '';
+
+  // Sprint 1076: stale heartbeat warning
+  let beatStaleWarning = '';
+  let beat = h.last_heartbeat ? `Last beat: ${h.last_heartbeat.replace('T', ' ').slice(0, 19)} UTC` : '';
+  if (h.last_heartbeat) {
+    const beatAgeMin = (Date.now() - new Date(h.last_heartbeat).getTime()) / 60000;
+    if (beatAgeMin > 10) {
+      beatStaleWarning = `\n⚠️ *Stale heartbeat: ${Math.round(beatAgeMin)}m ago* — health monitor may be down`;
+    }
+    beat += ` (${beatAgeMin < 60 ? `${Math.round(beatAgeMin)}m ago` : `${Math.floor(beatAgeMin / 60)}h ago`})`;
+  }
+
   const checks = Object.entries(h.checks || {}).map(([k, v]) => {
     const icon = v === 'operational' ? '✅' : '🔴';
     return `  ${icon} ${k.replace(/_/g, ' ')}: ${v}`;
@@ -62,7 +73,7 @@ export function cmdHealth(): string {
     ollamaSection = '\n\n*Ollama:* ❌ unreachable (localhost:11434)';
   }
 
-  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${ollamaSection}`;
+  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${ollamaSection}`;
 }
 
 export function cmdTier(): string {
