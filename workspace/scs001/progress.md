@@ -6311,3 +6311,13 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (file >3000 lines, wrote directly)
 - Issues: none — all 8 show ✅ 0d ago (committed today)
 - Timestamp: 2026-03-24T21:10:00Z
+
+## Sprint 1171 — OPS
+- Status: PASS
+- Commit: 77ad6841
+- Files created: workspace/sprints/sprint-1171.json
+- Files modified: scripts/telegram-commands/cmd-system.ts
+- Change: pipelineValidationSection shows Xd ago when >48h, adds "consider running" nudge when >3d
+- Swarm used: no (file >3000 lines, wrote directly)
+- Issues: none
+- Timestamp: 2026-03-24T21:20:00Z

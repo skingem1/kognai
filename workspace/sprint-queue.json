@@ -2780,7 +2780,7 @@
       "sprint": 1171,
       "title": "OPS — /status: show days since last pipeline run",
       "block": "OPS",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "/status shows pipeline last run time but only if very recent. Add \"pipeline: Xd ago — consider running\" when >3 days to nudge production."
     }
