@@ -1584,6 +1584,15 @@ export function cmdStatus(): string {
     else break;
   }
 
+  // Sprint 1090: days since last post when streak = 0
+  let daysSinceLastPost = 0;
+  if (streak === 0 && posts.length > 0) {
+    const lastDate = Object.keys(dailyCounts).sort().slice(-1)[0];
+    if (lastDate) {
+      daysSinceLastPost = Math.round((now.getTime() - new Date(lastDate).getTime()) / 86_400_000);
+    }
+  }
+
   // Today's posts
   const today = now.toISOString().slice(0, 10);
   const todayPosts = dailyCounts[today] ?? 0;
@@ -1712,7 +1721,7 @@ export function cmdStatus(): string {
     `${urgency}`,
     '',
     `📅 Today: *${todayPosts}/${dailyObligation}* ${todayPosts >= dailyObligation ? '✅ done' : '⏳ post now'} · ${paceNeeded.toFixed(1)}/day needed`,
-    `🔥 Streak: *${streak}* days`,
+    streak > 0 ? `🔥 Streak: *${streak}* days` : (daysSinceLastPost > 0 ? `💤 Streak: 0 — last post *${daysSinceLastPost}d ago*` : `💤 Streak: 0 — no posts yet`),
     `📦 Queue: *${readyCount}* ready · ${unposted.length} total`,
     cronLine,
     watchdogLine,
