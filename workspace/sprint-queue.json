@@ -46,9 +46,10 @@
       "sprint": 957,
       "title": "SPIELBERG-02 — asciinema recording mode + post-production pipeline",
       "block": "SPIELBERG",
-      "status": "pending",
+      "status": "done",
       "priority": "high",
-      "rationale": "From Spielberg Spec tasks 545-04 to 545-06. Build asciinema recording mode (headless, programmatic keypress timing). Build post-production pipeline (reuse SCS-001 v2 Movie Editor FFmpeg patterns: title card 3s, caption overlays, closing card 5s). Output: 1920x1080, H.264+AAC, 30fps."
+      "rationale": "From Spielberg Spec tasks 545-04 to 545-06. Build asciinema recording mode (headless, programmatic keypress timing). Build post-production pipeline (reuse SCS-001 v2 Movie Editor FFmpeg patterns: title card 3s, caption overlays, closing card 5s). Output: 1920x1080, H.264+AAC, 30fps.",
+      "_note": "Shipped 2026-03-24 — commit 4ecf5478. post-produce.ts (133 lines), index.ts updated. --verify PASS."
     },
     {
       "sprint": 958,

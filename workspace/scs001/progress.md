@@ -5057,3 +5057,13 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (direct write — governance hook competed with writes, fixed TypeScript type mismatches manually)
 - Issues: Governance hook intercepted types.ts and auto-committed alternative schema twice. Fixed by aligning index.ts to match current types.ts. Compile validated with npx ts-node --verify: PASS.
 - Timestamp: 2026-03-24T23:00:00Z
+
+## Sprint 957 — SPIELBERG-02
+- Status: PASS (--verify: PASS)
+- Commit: 4ecf5478
+- Files created: scripts/spielberg/post-produce.ts (133 lines — FFmpeg title/closing card pipeline + headlessRecord)
+- Files modified: scripts/spielberg/index.ts (postProduce → runPostProduce delegate, headlessRecord integration), workspace/sprints/sprint-957.json
+- Block: SPIELBERG
+- Swarm used: no (direct write)
+- Issues: import extension .js → no extension (ts-node CJS mode). Fixed.
+- Timestamp: 2026-03-24T23:30:00Z
