@@ -115,10 +115,16 @@ export function cmdGate(): string {
         ? '🟠 *GATE: AT RISK*'
         : '🟡 *GATE: IN PROGRESS*';
 
+  // Sprint 1137 (wave 19): time-to-deadline progress ring
+  const GATE_TOTAL_DAYS = 14;
+  const daysUsed = GATE_TOTAL_DAYS - daysLeft;
+  const ringFilled = Math.min(GATE_TOTAL_DAYS, Math.round(daysUsed));
+  const ringBar = '█'.repeat(ringFilled) + '░'.repeat(GATE_TOTAL_DAYS - ringFilled);
+
   return [
     `*📊 Phase 1.5 Gate — April 7 Readiness*`,
     gateVerdict,
-    `📅 ${daysLeft} days remaining · ${urgency}`,
+    `📅 \`[${ringBar}]\` ${daysLeft}/${GATE_TOTAL_DAYS}d left · ${urgency}`,
     `✅ *${passed}/4 criteria met*`,
     ``,
     `*── Posting ──*`,
@@ -593,6 +599,23 @@ export function cmdPace(): string {
     lines.push('');
     lines.push(`*📅 Today's posting slots:* ${slotsToUse.join(' · ')}`);
   }
+
+  // Sprint 1141 (wave 19): weekdays remaining until gate (Mon-Fri only)
+  try {
+    let weekdaysLeft = 0;
+    const gateD = new Date('2026-04-07T00:00:00Z');
+    const cur = new Date(now.getTime());
+    cur.setHours(0, 0, 0, 0);
+    while (cur < gateD) {
+      cur.setDate(cur.getDate() + 1);
+      const dow = cur.getDay();
+      if (dow !== 0 && dow !== 6) weekdaysLeft++;
+    }
+    if (weekdaysLeft > 0) {
+      lines.push('');
+      lines.push(`📆 *Weekdays left:* ${weekdaysLeft} (Mon–Fri) until gate`);
+    }
+  } catch { /* skip */ }
 
   lines.push('');
   lines.push('_Use /postnow to get your next video, /posted after posting._');

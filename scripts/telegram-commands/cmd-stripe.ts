@@ -470,6 +470,20 @@ export function cmdAchiri(): string {
         const funnelPremium = premiumUsers;
         const w2a = funnelWaitlist > 0 ? Math.round((funnelActive / funnelWaitlist) * 100) : 0;
         const a2p = funnelActive > 0 ? Math.round((funnelPremium / funnelActive) * 100) : 0;
+        // Sprint 1136 (wave 19): cold leads — waitlist users who never messaged
+        try {
+          const wlLines = fs.readFileSync(path.join(ROOT, 'workspace', 'achiri', 'waitlist.jsonl'), 'utf-8').split('\n').filter(l => l.trim());
+          const msgUsers = new Set<string>(Array.from(allUserKeys));
+          let coldLeads = 0;
+          for (const l of wlLines) {
+            try {
+              const w = JSON.parse(l);
+              const uid = w.uid ?? w.telegram_id ?? w.id;
+              if (uid && !msgUsers.has(String(uid))) coldLeads++;
+            } catch {}
+          }
+          if (coldLeads > 0) lines.push(`❄️ *Cold leads:* ${coldLeads} waitlist users never messaged — ideal for re-engagement`);
+        } catch { /* skip */ }
         lines.push(`💎 *Premium:* ${premiumUsers}/${totalUsers} users = ${convPct}% conversion`);
         lines.push(`📊 *Funnel:* waitlist ${funnelWaitlist} → active ${funnelActive} (${w2a}%) → premium ${funnelPremium} (${a2p}%)`);
         lines.push('');
@@ -531,6 +545,31 @@ export function cmdAchiri(): string {
 
     const tgToken = process.env.ACHIRI_TELEGRAM_BOT_TOKEN ? 'SET' : 'NOT SET';
     lines.push(`*Telegram Bot:* ${tgToken === 'SET' ? '✅' : '⚠️'} Token: ${tgToken}`);
+
+    // Sprint 1142 (wave 19): last message received from any user (recency signal)
+    try {
+      const countsPath3 = path.join(ROOT, 'workspace', 'achiri', 'daily-counts.json');
+      if (fs.existsSync(countsPath3)) {
+        const counts3 = JSON.parse(fs.readFileSync(countsPath3, 'utf-8')) as Record<string, Record<string, number>>;
+        const dates3 = Object.keys(counts3).sort().reverse();
+        let lastActiveDate = '';
+        for (const d of dates3) {
+          const dayData = counts3[d];
+          const hasMsg = Object.entries(dayData).some(([k, v]) =>
+            !k.startsWith('validate') && !k.startsWith('e2e') &&
+            !k.endsWith('-limit') && !k.endsWith('-paid') && !k.endsWith('-bypass') &&
+            (v as number) > 0
+          );
+          if (hasMsg) { lastActiveDate = d; break; }
+        }
+        if (lastActiveDate) {
+          const daysAgo = Math.round((Date.now() - new Date(lastActiveDate).getTime()) / 86_400_000);
+          const recencyIcon = daysAgo === 0 ? '🟢' : daysAgo <= 1 ? '🟡' : '🔴';
+          const ageStr = daysAgo === 0 ? 'today' : daysAgo === 1 ? 'yesterday' : `${daysAgo}d ago`;
+          lines.push(`${recencyIcon} *Last user message:* ${ageStr}`);
+        }
+      }
+    } catch { /* skip */ }
 
     // Sprint 1144 (wave 18): server time and timezone
     const serverNow = new Date();

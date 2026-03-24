@@ -232,7 +232,19 @@ export function cmdHealth(): string {
     botUptimeSection += `\n*Stability:* ${stabIcon} ${stableProcs}/${totalProcs} processes with 0 restarts`;
   } catch { /* skip */ }
 
-  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${botUptimeSection}${ollamaSection}${memWarnSection}${memTableSection}${supabaseSection}${diskSection}${watchdogSection}${runtimeSection}${tailscaleSection}${hetznerSection}`;
+  // Sprint 1140 (wave 19): ANTHROPIC_API_KEY presence + truncated preview
+  let anthropicSection = '';
+  try {
+    const anthropicKey = process.env.ANTHROPIC_API_KEY;
+    if (anthropicKey) {
+      const preview = anthropicKey.length > 14 ? `${anthropicKey.slice(0, 10)}...${anthropicKey.slice(-4)}` : '(set)';
+      anthropicSection = `\n\n*Claude API key:* ✅ set — \`${preview}\``;
+    } else {
+      anthropicSection = `\n\n*Claude API key:* ❌ ANTHROPIC_API_KEY not set`;
+    }
+  } catch { /* skip */ }
+
+  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${botUptimeSection}${ollamaSection}${memWarnSection}${memTableSection}${supabaseSection}${diskSection}${watchdogSection}${runtimeSection}${tailscaleSection}${hetznerSection}${anthropicSection}`;
 }
 
 export function cmdTier(): string {
@@ -360,6 +372,13 @@ export function cmdReport(): string {
     }
   } catch { /* skip */ }
 
+  // Sprint 1144 (wave 19): total all-time commit count
+  let totalCommitsLine = '';
+  try {
+    const totalCommits = execSync('git rev-list --count HEAD 2>/dev/null', { cwd: ROOT, encoding: 'utf-8', timeout: 5000 }).trim();
+    if (totalCommits) totalCommitsLine = `\n*All-time commits:* ${totalCommits}`;
+  } catch { /* skip */ }
+
   return (
     `${statusIcon} *Kognai System Report*\n${now}\n${alertBlock}\n` +
     `*PM2* (${online}/${procs.length} live):\n${pm2Lines || '  (no data)'}\n\n` +
@@ -367,7 +386,7 @@ export function cmdReport(): string {
     `Last heartbeat: ${lastBeat} UTC\n\n` +
     `*Beta:* agents_onboarded=${beta.agents_onboarded ?? 0}, companies=${beta.companies_onboarded ?? 0}, txns=${beta.transactions_monitored ?? 0}\n` +
     `*Financials:* MRR $${mrr} | Tier: ${tier} | Billing activation: ${billingDate}\n\n` +
-    `*Gate:* ${gateLine}${achiriTestLine}${commitLine}\n` +
+    `*Gate:* ${gateLine}${achiriTestLine}${commitLine}${totalCommitsLine}\n` +
     `*Sprint:* ${sprintLine}`
   );
 }
@@ -1143,6 +1162,12 @@ export function cmdErrors(filterProcess?: string): string {
       output.push(`*Top source:* \`${topProcess[0]}\` (${topProcess[1]} error${topProcess[1] > 1 ? 's' : ''})\n`);
     }
 
+    // Sprint 1143 (wave 19): most common error string (top recurring line)
+    const topByCount = [...errored].sort((a, b) => b.count - a.count);
+    if (topByCount.length > 0 && topByCount[0].count > 1) {
+      output.push(`*Top recurring:* \`${topByCount[0].line.slice(0, 80)}\` ×${topByCount[0].count}\n`);
+    }
+
     for (const e of errored.slice(0, MAX_ENTRIES)) {
       const ago = Math.round((Date.now() - e.mtime) / 60_000);
       const timeStr = ago < 60 ? `${ago}m ago` : `${Math.round(ago / 60)}h ago`;
@@ -1380,7 +1405,15 @@ export async function cmdSmoke(chatId: string): Promise<void> {
       } catch {}
     }
 
-    // Sprint 1136 (wave 16): save smoke result to reports/smoke-test-latest.json
+    // Sprint 1136 (wave 16): save smoke result + Sprint 1139 (wave 19): rolling 7-run history
+    let smokeHistory: Array<{pass: boolean; timestamp: string}> = [];
+    try {
+      const smokePath = path.join(ROOT, 'reports', 'smoke-test-latest.json');
+      if (fs.existsSync(smokePath)) {
+        const prev = JSON.parse(fs.readFileSync(smokePath, 'utf-8'));
+        if (Array.isArray(prev.history)) smokeHistory = prev.history;
+      }
+    } catch { /* skip */ }
     try {
       const smokeResult = {
         timestamp: new Date().toISOString(),
@@ -1388,9 +1421,20 @@ export async function cmdSmoke(chatId: string): Promise<void> {
         failed: failed,
         status: failed === 0 ? 'pass' : 'fail',
         pass: failed === 0,
+        history: [...smokeHistory, { pass: failed === 0, timestamp: new Date().toISOString() }].slice(-7),
       };
       fs.writeFileSync(path.join(ROOT, 'reports', 'smoke-test-latest.json'), JSON.stringify(smokeResult, null, 2));
     } catch { /* skip — non-critical */ }
+    // Sprint 1139 (wave 19): show 7-run pass rate
+    const updatedHistory = [...smokeHistory, { pass: failed === 0 }];
+    const last7Smoke = updatedHistory.slice(-7);
+    if (last7Smoke.length >= 2) {
+      const passCount7 = last7Smoke.filter((h: any) => h.pass).length;
+      const rate7 = Math.round((passCount7 / last7Smoke.length) * 100);
+      const rateIcon = rate7 >= 80 ? '✅' : rate7 >= 50 ? '⚠️' : '❌';
+      lines.push('');
+      lines.push(`${rateIcon} *7-run pass rate:* ${rate7}% (${passCount7}/${last7Smoke.length})`);
+    }
 
     // Sprint 1134 (wave 14): Telegram bot ping check
     try {
