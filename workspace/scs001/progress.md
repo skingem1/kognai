@@ -5626,3 +5626,12 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (direct write)
 - Issues: import.meta.dirname undefined in CJS tsx mode, fixed to __dirname
 - Timestamp: 2026-03-24T23:00:00Z
+
+## Sprint 999 — AMD-25-CURATOR
+- Status: PASS
+- Commit: 4a5afebd
+- Files created: workspace/amd25/curator.ts (148 lines), workspace/amd25/.gitignore
+- Test: ingest×2 → report → prune — all correct
+- Notes: AMD-25 stack complete: dka-schema + dka-store + curator. JSONL persistence.
+- Swarm used: no (direct write)
+- Timestamp: 2026-03-24T23:15:00Z
