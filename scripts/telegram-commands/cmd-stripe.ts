@@ -574,6 +574,21 @@ export function cmdAchiri(): string {
     const tgToken = process.env.ACHIRI_TELEGRAM_BOT_TOKEN ? 'SET' : 'NOT SET';
     lines.push(`*Telegram Bot:* ${tgToken === 'SET' ? '✅' : '⚠️'} Token: ${tgToken}`);
 
+    // Sprint 1138 (wave 21): whitelist vs waitlist ratio
+    try {
+      const whitelistPath = path.join(ROOT, 'workspace', 'achiri', 'alpha-whitelist.jsonl');
+      const waitlistPath2 = path.join(ROOT, 'workspace', 'achiri', 'waitlist.jsonl');
+      const whitelistCount = fs.existsSync(whitelistPath)
+        ? fs.readFileSync(whitelistPath, 'utf-8').split('\n').filter(l => l.trim()).length : 0;
+      const waitlistTotal = fs.existsSync(waitlistPath2)
+        ? fs.readFileSync(waitlistPath2, 'utf-8').split('\n').filter(l => l.trim()).length : 0;
+      if (waitlistTotal > 0) {
+        const approvedPct = Math.round((whitelistCount / waitlistTotal) * 100);
+        const icon = approvedPct >= 80 ? '✅' : approvedPct >= 50 ? '⚠️' : '🔴';
+        lines.push(`${icon} *Alpha access:* ${whitelistCount} whitelist / ${waitlistTotal} waitlist (${approvedPct}% approved)`);
+      }
+    } catch { /* skip */ }
+
     // Sprint 1142 (wave 19): last message received from any user (recency signal)
     try {
       const countsPath3 = path.join(ROOT, 'workspace', 'achiri', 'daily-counts.json');
@@ -595,6 +610,21 @@ export function cmdAchiri(): string {
           const recencyIcon = daysAgo === 0 ? '🟢' : daysAgo <= 1 ? '🟡' : '🔴';
           const ageStr = daysAgo === 0 ? 'today' : daysAgo === 1 ? 'yesterday' : `${daysAgo}d ago`;
           lines.push(`${recencyIcon} *Last user message:* ${ageStr}`);
+        }
+      }
+    } catch { /* skip */ }
+
+    // Sprint 1143 (wave 21): response latency avg from achiri-telegram-out.log
+    try {
+      const achiriOutLog = path.join(ROOT, 'logs', 'achiri-telegram-out.log');
+      if (fs.existsSync(achiriOutLog)) {
+        const logContent = fs.readFileSync(achiriOutLog, 'utf-8');
+        const latencyMatches = Array.from(logContent.matchAll(/response.*?(\d+)\s*ms/gi));
+        if (latencyMatches.length >= 3) {
+          const recent10 = latencyMatches.slice(-10).map(m => parseInt(m[1]));
+          const avgMs = Math.round(recent10.reduce((s, v) => s + v, 0) / recent10.length);
+          const latIcon = avgMs < 500 ? '✅' : avgMs < 2000 ? '⚠️' : '🔴';
+          lines.push(`${latIcon} *Avg response:* ${avgMs}ms (last ${recent10.length} interactions)`);
         }
       }
     } catch { /* skip */ }

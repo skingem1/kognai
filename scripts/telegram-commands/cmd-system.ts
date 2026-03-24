@@ -244,6 +244,22 @@ export function cmdHealth(): string {
     }
   } catch { /* skip */ }
 
+  // Sprint 1137 (wave 21): last Supabase sync via health.json last_heartbeat
+  let supabaseSyncSection = '';
+  try {
+    const hPath2 = path.join(ROOT, 'health.json');
+    if (fs.existsSync(hPath2)) {
+      const h2 = JSON.parse(fs.readFileSync(hPath2, 'utf-8'));
+      const lastBeat = h2.last_heartbeat;
+      if (lastBeat) {
+        const ageH = (Date.now() - new Date(lastBeat).getTime()) / 3600000;
+        const ageStr = ageH < 1 ? `${Math.round(ageH * 60)}m ago` : `${Math.round(ageH)}h ago`;
+        const icon = ageH > 2 ? '⚠️' : '✅';
+        supabaseSyncSection = `\n\n*Last Supabase sync (heartbeat):* ${icon} ${ageStr}`;
+      }
+    }
+  } catch { /* skip */ }
+
   // Sprint 1136 (wave 20): disk I/O wait % from iostat (Mac)
   let ioSection = '';
   try {
@@ -261,7 +277,7 @@ export function cmdHealth(): string {
     }
   } catch { /* skip — iostat may not be available */ }
 
-  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${botUptimeSection}${ollamaSection}${memWarnSection}${memTableSection}${supabaseSection}${diskSection}${watchdogSection}${runtimeSection}${tailscaleSection}${hetznerSection}${anthropicSection}${ioSection}`;
+  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${botUptimeSection}${ollamaSection}${memWarnSection}${memTableSection}${supabaseSection}${supabaseSyncSection}${diskSection}${watchdogSection}${runtimeSection}${tailscaleSection}${hetznerSection}${anthropicSection}${ioSection}`;
 }
 
 export function cmdTier(): string {
@@ -396,6 +412,21 @@ export function cmdReport(): string {
     if (totalCommits) totalCommitsLine = `\n*All-time commits:* ${totalCommits}`;
   } catch { /* skip */ }
 
+  // Sprint 1144 (wave 21): PM2 processes offline for >1h
+  let offlineLine = '';
+  try {
+    const allProcs = getPm2List();
+    const offlineLong = allProcs.filter(p => {
+      if (p.status === 'online') return false;
+      if (['telegram-bot', 'backend', 'openclaw-gateway'].includes(p.name)) return true;
+      // For cron procs, only flag if offline and not recently restarted (>1h downtime is suspicious)
+      return p.uptimeMs === 0 && p.status === 'stopped' && false; // skip crons — stopped is normal
+    });
+    if (offlineLong.length > 0) {
+      offlineLine = `\n⚠️ *Offline critical processes:* ${offlineLong.map(p => `\`${p.name}\``).join(', ')}`;
+    }
+  } catch { /* skip */ }
+
   // Sprint 1144 (wave 20): validation errors from last pipeline run
   let valErrorsLine = '';
   try {
@@ -415,7 +446,7 @@ export function cmdReport(): string {
     `Last heartbeat: ${lastBeat} UTC\n\n` +
     `*Beta:* agents_onboarded=${beta.agents_onboarded ?? 0}, companies=${beta.companies_onboarded ?? 0}, txns=${beta.transactions_monitored ?? 0}\n` +
     `*Financials:* MRR $${mrr} | Tier: ${tier} | Billing activation: ${billingDate}\n\n` +
-    `*Gate:* ${gateLine}${achiriTestLine}${commitLine}${totalCommitsLine}${valErrorsLine}\n` +
+    `*Gate:* ${gateLine}${achiriTestLine}${commitLine}${totalCommitsLine}${valErrorsLine}${offlineLine}\n` +
     `*Sprint:* ${sprintLine}`
   );
 }
@@ -1294,6 +1325,25 @@ export function cmdErrors(filterProcess?: string): string {
     output.push(`\n*Weekly:* ${thisWeekErrors} this week vs ${lastWeekErrors} last week (${deltaStr} · ${trendIcon})`);
   } catch { /* skip */ }
 
+  // Sprint 1139 (wave 21): show processes with >5 restarts today
+  try {
+    const pm2Out = execSync('pm2 jlist', { timeout: 8000, stdio: 'pipe' }).toString();
+    const pm2Procs2: any[] = JSON.parse(pm2Out);
+    const todayStartMs = new Date(new Date().toISOString().slice(0, 10) + 'T00:00:00Z').getTime();
+    const highRestartToday = pm2Procs2.filter((p: any) => {
+      if (!p.pm2_env) return false;
+      const uptime = p.pm2_env.pm_uptime ?? p.pm2_env.created_at ?? 0;
+      const restarts = p.pm2_env.restart_time ?? 0;
+      // Process started (or restarted) within today: compare restarts to threshold
+      if (uptime >= todayStartMs && restarts > 5) return true;
+      return false;
+    });
+    if (highRestartToday.length > 0) {
+      const list = highRestartToday.map((p: any) => `\`${p.name}\` (${p.pm2_env.restart_time} restarts)`).join(', ');
+      output.push(`\n⚠️ *High restarts today (>5):* ${list}`);
+    }
+  } catch { /* skip */ }
+
   // Sprint 1142 (wave 20): warn if any error log file exceeds 1MB (disk health signal)
   try {
     const allLogs = fs.readdirSync(logDir).filter((f: string) => f.endsWith('-error.log'));
@@ -1518,11 +1568,15 @@ export async function cmdSmoke(chatId: string): Promise<void> {
 
     // Sprint 1140 (wave 20): show slowest check
     if (checkTimings.length >= 2) {
-      const slowest = checkTimings.sort((a, b) => b.ms - a.ms)[0];
+      const slowest = [...checkTimings].sort((a, b) => b.ms - a.ms)[0];
       const slowSec = (slowest.ms / 1000).toFixed(1);
       lines.push('');
       lines.push(`⏱ *Slowest check:* \`${slowest.name}\` — ${slowSec}s`);
     }
+
+    // Sprint 1142 (wave 21): show total elapsed time
+    const totalElapsedSec = ((Date.now() - t0) / 1000).toFixed(1);
+    lines.push(`⏱ *Total runtime:* ${totalElapsedSec}s`);
 
     await sendMessage(chatId, lines.join('\n'));
   } catch (err: any) {

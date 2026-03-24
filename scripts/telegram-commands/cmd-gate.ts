@@ -146,6 +146,25 @@ export function cmdGate(): string {
     })(),
     `${postIcon} Posts: ${postCount}/30 (need ${postsNeeded} more)`,
     `${viewIcon} Views: ${totalViews}/500 (need ${viewsNeeded} more)`,
+    // Sprint 1145 (wave 21): stale views warning
+    ...(() => {
+      if (!fs.existsSync(manualPostsPath)) return [];
+      try {
+        const lines = fs.readFileSync(manualPostsPath, 'utf-8').split('\n').filter((l: string) => l.trim());
+        const lastTs = lines
+          .map((l: string) => { try { const p = JSON.parse(l); return new Date(p.updated_at ?? p.posted_at ?? p.recorded_at).getTime(); } catch { return 0; } })
+          .filter((t: number) => t > 0 && !isNaN(t))
+          .sort((a: number, b: number) => b - a)[0];
+        if (lastTs) {
+          const ageH = (Date.now() - lastTs) / 3600000;
+          if (ageH > 12) {
+            const ageStr = ageH < 24 ? `${Math.round(ageH)}h` : `${Math.round(ageH / 24)}d`;
+            return [`⏳ *Views last updated: ${ageStr} ago* — run /record to refresh stats`];
+          }
+        }
+      } catch {}
+      return [];
+    })(),
     // Sprint 1138 (wave 13): views needed per remaining day
     ...(viewsNeeded > 0 && daysLeft > 0 ? [`👁️ Views/day needed: *${(viewsNeeded / daysLeft).toFixed(1)}/day* to hit 500`] : []),
     // Sprint 1139 (wave 18): average views per post
@@ -185,6 +204,14 @@ export function cmdGate(): string {
         const bars = counts.map((n,i) => `${dayLabels[i]}${sparkChars[Math.min(7,Math.floor(n/maxC*7))]}`).join(' ');
         return `📊 Weekday: \`${bars}\``;
       } catch { return ''; }
+    })(),
+      // Sprint 1136 (wave 21): weekend day nudge
+    ...(() => {
+      const dow = now.getDay(); // 0=Sun, 6=Sat
+      if (dow === 0 || dow === 6) {
+        return [`⚠️ *Today is ${dow === 6 ? 'Saturday' : 'Sunday'}* — lower engagement expected. Consider scheduling for a weekday.`];
+      }
+      return [];
     })(),
     // Sprint 1137 (wave 20): posts-per-week target to stay on track
     ...(() => {
@@ -620,6 +647,28 @@ export function cmdPace(): string {
     lines.push('');
     lines.push(`*📅 Today's posting slots:* ${slotsToUse.join(' · ')}`);
   }
+
+  // Sprint 1140 (wave 21): cumulative views trend (last 7d vs prior 7d)
+  try {
+    const sevenDaysAgo = new Date(Date.now() - 7 * 86_400_000).toISOString().slice(0, 10);
+    const fourteenDaysAgo = new Date(Date.now() - 14 * 86_400_000).toISOString().slice(0, 10);
+    const allPosts = readLines(manualPostsPath);
+    const last7Views = (allPosts as any[]).filter((p: any) => {
+      const d = (p.posted_at ?? p.recorded_at ?? '').slice(0, 10);
+      return d >= sevenDaysAgo;
+    }).reduce((s: number, p: any) => s + (p.views ?? 0), 0);
+    const prior7Views = (allPosts as any[]).filter((p: any) => {
+      const d = (p.posted_at ?? p.recorded_at ?? '').slice(0, 10);
+      return d >= fourteenDaysAgo && d < sevenDaysAgo;
+    }).reduce((s: number, p: any) => s + (p.views ?? 0), 0);
+    if (last7Views > 0 || prior7Views > 0) {
+      const delta = last7Views - prior7Views;
+      const trendIcon = delta > 10 ? '📈' : delta < -10 ? '📉' : '➡️';
+      const deltaStr = delta >= 0 ? `+${delta}` : String(delta);
+      lines.push('');
+      lines.push(`${trendIcon} *Views trend:* last 7d *+${last7Views}* vs prior 7d *+${prior7Views}* (${deltaStr})`);
+    }
+  } catch { /* skip */ }
 
   // Sprint 1141 (wave 20): queue size vs obligation buffer
   try {

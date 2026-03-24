@@ -1850,6 +1850,27 @@ export function cmdStatus(): string {
     }
   } catch { /* skip */ }
 
+  // Sprint 1141 (wave 21): best hook type by avg views
+  let bestHookLine = '';
+  try {
+    const hookViews = new Map<string, { total: number; count: number }>();
+    for (const p of posts as any[]) {
+      const hook = p.hook_formula ?? p.hook_type;
+      if (!hook) continue;
+      const v = p.views ?? 0;
+      const cur = hookViews.get(hook) ?? { total: 0, count: 0 };
+      hookViews.set(hook, { total: cur.total + v, count: cur.count + 1 });
+    }
+    const ranked = Array.from(hookViews.entries())
+      .filter(([, d]) => d.count >= 2)
+      .map(([hook, d]) => ({ hook, avg: d.total / d.count, count: d.count }))
+      .sort((a, b) => b.avg - a.avg);
+    if (ranked.length > 0) {
+      const best = ranked[0];
+      bestHookLine = `\n🎯 *Best hook:* \`${best.hook}\` — avg ${best.avg.toFixed(0)} views (${best.count} posts)`;
+    }
+  } catch { /* skip */ }
+
   // Sprint 1139 (wave 20): count PM2 crons that fired today
   let cronsFiredLine = '';
   try {
@@ -1894,7 +1915,7 @@ export function cmdStatus(): string {
       }
       return oblStreak >= 2 ? `📋 Obligation streak: *${oblStreak}d* met in a row ✅` : '';
     })(),
-    `📦 Queue: *${readyCount}* ready · ${unposted.length} total${lastPostAge}`,
+    `📦 Queue: *${readyCount}* ready · ${unposted.length} total${lastPostAge}${bestHookLine}`,
     pipelineLine,
     cronLine + cronsFiredLine,
     watchdogLine,

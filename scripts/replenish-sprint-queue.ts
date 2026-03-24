@@ -1407,6 +1407,58 @@ function generateItems(startSprint: number, existingTitles: Set<string> = new Se
     rationale: 'TikTok warmup quality depends on account age. Show "Account age: 12 days" from warmup-status.json so operator knows when trust builds.',
   });
 
+  // Wave 21 templates
+  infraItems.push({
+    title: 'GATE — /gate: show if today is a weekend day (no-post warning)',
+    block: 'GATE',
+    rationale: 'Posting on weekends may have lower engagement. Show a nudge "Today is Saturday — consider weekday scheduling" to help operator maximize reach.',
+  });
+  infraItems.push({
+    title: 'OPS — /health: show how long since last successful Supabase sync',
+    block: 'OPS',
+    rationale: 'Supabase connectivity check passes but last sync time could be stale. Show "Last Supabase write: 2h ago" from event-bus log to detect silent write failures.',
+  });
+  infraItems.push({
+    title: 'ACHIRI — /achiri: show how many users are on alpha whitelist vs waitlist',
+    block: 'ACHIRI',
+    rationale: '/achiri shows waitlist count but not whitelist vs waitlist ratio. Show "Whitelist: 8 / Waitlist: 23 (35% approved)" as alpha launch readiness signal.',
+  });
+  infraItems.push({
+    title: 'OPS — /errors: show if any process has restarted more than 5 times today',
+    block: 'OPS',
+    rationale: 'Restart counts in /health are cumulative. Show "telegram-bot: 7 restarts today" using PM2 pm_uptime delta to catch today-specific instability.',
+  });
+  infraItems.push({
+    title: 'GATE — /pace: show cumulative views trend (are views accelerating?)',
+    block: 'GATE',
+    rationale: '/pace shows total views but not if they are accelerating. Show "Views last 7d: +120 vs prior 7d: +45" as a virality signal.',
+  });
+  infraItems.push({
+    title: 'OPS — /status: show which video hook type has best avg views',
+    block: 'OPS',
+    rationale: 'Different hook formulas yield different engagement. Show "Best hook: controversy — avg 42 views" from manual-posts.jsonl + experiments.jsonl.',
+  });
+  infraItems.push({
+    title: 'QUALITY — /smoke: show total elapsed time for full smoke run',
+    block: 'QUALITY',
+    rationale: 'Smoke run duration creep can block other CI tasks. Show "Total runtime: 45s" so operator can track if smoke is getting slower over time.',
+  });
+  infraItems.push({
+    title: 'ACHIRI — /achiri: show response latency avg (ms) from last 10 interactions',
+    block: 'ACHIRI',
+    rationale: 'Bot response time affects user experience. Show "Avg response: 320ms" from achiri interaction logs to detect slowdowns before users notice.',
+  });
+  infraItems.push({
+    title: 'OPS — /report: show if any PM2 process has been offline for >1h',
+    block: 'OPS',
+    rationale: '/report shows current PM2 state but not sustained outages. Show "telegram-bot: offline 3h" if any critical process has been down for an extended period.',
+  });
+  infraItems.push({
+    title: 'GATE — /gate: show time since last views update (stale data warning)',
+    block: 'GATE',
+    rationale: '/gate shows total views but they may be stale. Show "Views last updated: 6h ago" from manual-posts.jsonl latest entry to prompt operator to refresh stats.',
+  });
+
   // Fill remaining slots (skip duplicates of already-completed items)
   for (const item of infraItems) {
     if (items.length >= 10) break;
