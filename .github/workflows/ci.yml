@@ -125,3 +125,20 @@ jobs:
       - name: Run integration test
         working-directory: workspace/godman-protocols
         run: npx tsx integration.test.ts
+
+  achiri-smoke:
+    name: Achiri — HTTP API Smoke Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install --ignore-scripts
+
+      - name: Run Achiri smoke test
+        run: npx tsx agents/achiri/smoke.test.ts

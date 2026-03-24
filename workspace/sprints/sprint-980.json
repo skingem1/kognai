@@ -1,0 +1,10 @@
+{
+  "sprint_id": "sprint-980",
+  "title": "ACHIRI-CI — Add Achiri smoke test to GitHub Actions CI",
+  "description": "Add achiri-smoke job to .github/workflows/ci.yml. Runs agents/achiri/smoke.test.ts on every push. Validates all HTTP endpoints work before deployment.",
+  "block": "ACHIRI",
+  "source": "queue-exhausted-alpha-prep",
+  "tasks": [
+    { "id": "980-01", "title": "Add achiri-smoke job to ci.yml", "type": "config", "task_target": ".github/workflows/ci.yml", "agent": "coder", "status": "pending", "priority": "high", "sprint_id": "sprint-980" }
+  ]
+}
