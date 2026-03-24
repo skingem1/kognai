@@ -2821,7 +2821,7 @@
       "sprint": 1181,
       "title": "GODMAN-LAUNCH — scripts/godman-version-bump.sh to bump all 8 packages to same version",
       "block": "GODMAN-LAUNCH",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "Before launch, all 8 packages should be at the same version. Create a script that bumps all package.json versions to a specified version string."
     },
