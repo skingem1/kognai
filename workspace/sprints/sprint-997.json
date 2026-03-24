@@ -1,29 +1,10 @@
 {
   "sprint_id": "sprint-997",
-  "title": "AMD-25-STORE — DKA in-memory keyword store implementation",
-  "description": "Implement AMD-25 Domain Knowledge Architecture: KnowledgeStore class with add/search(keyword)/getByDomain/getById. No embeddings, no external deps. Uses dka-schema.ts types from Sprint 959. Max 150 lines + smoke test.",
-  "block": "AMD-25",
-  "source": "queue-exhausted-architecture",
+  "title": "TELEGRAM-PATH-FIX — Fix 4 broken require paths in cmd-posting.ts",
+  "description": "Fix require('./scs001/...') → require('../scs001/...') for posting-analytics, youtube-shorts, hook-optimizer, queue-optimizer. All 4 commands (/gateanalytics, /youtube, /hooktest, /queueopt) were returning errors.",
+  "block": "OPERATOR-TOOLS",
+  "source": "queue-exhausted-bug-fix",
   "tasks": [
-    {
-      "id": "997-01",
-      "title": "Write workspace/amd25/dka-store.ts — KnowledgeStore class",
-      "type": "feature",
-      "task_target": "workspace/amd25/dka-store.ts",
-      "agent": "coder",
-      "status": "pending",
-      "priority": "high",
-      "sprint_id": "sprint-997"
-    },
-    {
-      "id": "997-02",
-      "title": "Write workspace/amd25/smoke.test.ts — 10+ assertions",
-      "type": "test",
-      "task_target": "workspace/amd25/smoke.test.ts",
-      "agent": "coder",
-      "status": "pending",
-      "priority": "high",
-      "sprint_id": "sprint-997"
-    }
+    { "id": "997-01", "title": "Fix 4 broken require paths in cmd-posting.ts", "type": "fix", "task_target": "scripts/telegram-commands/cmd-posting.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-997" }
   ]
 }

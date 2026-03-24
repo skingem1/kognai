@@ -122,7 +122,7 @@ export function cmdPostPlan(): string {
 
 export function cmdYouTube(): string {
   try {
-    const { formatYouTubeStatus } = require('./scs001/youtube-shorts');
+    const { formatYouTubeStatus } = require('../scs001/youtube-shorts');
     return formatYouTubeStatus();
   } catch (e: any) {
     return `❌ YouTube status error: ${e.message}`;
@@ -820,7 +820,7 @@ export function cmdHookTest(): string {
 
 export function cmdHookStats(): string {
   try {
-    const { formatRankings } = require('./scs001/hook-optimizer');
+    const { formatRankings } = require('../scs001/hook-optimizer');
     return formatRankings();
   } catch (e: any) {
     return `❌ Hook optimizer error: ${e.message}`;
@@ -889,7 +889,7 @@ export function cmdViralStats(): string {
 
 export function cmdQueueOpt(): string {
   try {
-    const { formatOptimizedQueue } = require('./scs001/queue-optimizer');
+    const { formatOptimizedQueue } = require('../scs001/queue-optimizer');
     return formatOptimizedQueue(10);
   } catch (e: any) {
     return `❌ Queue optimizer error: ${e.message}`;
@@ -898,7 +898,7 @@ export function cmdQueueOpt(): string {
 
 export function cmdGateAnalytics(): string {
   try {
-    const { formatGateAnalytics } = require('./scs001/posting-analytics');
+    const { formatGateAnalytics } = require('../scs001/posting-analytics');
     return formatGateAnalytics();
   } catch (e: any) {
     return `❌ Analytics error: ${e.message}`;
