@@ -378,6 +378,26 @@ export function cmdAchiri(): string {
     }
     lines.push('');
 
+    // Sprint 1103: total messages + daily avg from daily-counts.json
+    try {
+      const countsPath = path.join(ROOT, 'workspace', 'achiri', 'daily-counts.json');
+      if (fs.existsSync(countsPath)) {
+        const counts = JSON.parse(fs.readFileSync(countsPath, 'utf-8')) as Record<string, Record<string, number>>;
+        const days = Object.keys(counts).filter(d => !d.startsWith('validate') && !d.startsWith('e2e'));
+        let totalMsgs = 0;
+        let activeDays = 0;
+        for (const [day, users] of Object.entries(counts)) {
+          const dayMsgs = Object.entries(users)
+            .filter(([k]) => !k.startsWith('validate') && !k.startsWith('e2e') && !k.endsWith('-limit') && !k.endsWith('-paid') && !k.endsWith('-bypass'))
+            .reduce((s, [, v]) => s + (v as number), 0);
+          if (dayMsgs > 0) { totalMsgs += dayMsgs; activeDays++; }
+        }
+        const avgPerDay = activeDays > 0 ? Math.round(totalMsgs / activeDays) : 0;
+        lines.push(`💬 *Messages:* ${totalMsgs} total · ${avgPerDay}/day avg (${activeDays} active days)`);
+        lines.push('');
+      }
+    } catch { /* skip */ }
+
     // Sprint 1074: Re-engagement stats
     const reengagePath = path.join(ROOT, 'workspace', 'achiri', 'reengage-log.jsonl');
     if (fs.existsSync(reengagePath)) {
