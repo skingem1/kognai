@@ -2706,3 +2706,62 @@ export function cmdLaunches(): string {
 
   return lines.join('\n');
 }
+
+/**
+ * Sprint 1193: /post-pulse — 24h posting velocity snapshot
+ * Shows: posts today, views gained, last post time, on-track status, next action.
+ */
+export function cmdPostPulse(): string {
+  const now = new Date();
+  const oneDayAgo = new Date(now.getTime() - 24 * 3_600_000);
+  const oneDayAgoStr = oneDayAgo.toISOString();
+  const todayStr = now.toISOString().slice(0, 10);
+
+  // Load posts (excluding dry runs)
+  const postsPath = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
+  const allPosts: any[] = fs.existsSync(postsPath)
+    ? fs.readFileSync(postsPath, 'utf-8').split('\n').filter(l => l.trim()).map(l => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean)
+    : [];
+
+  const realPosts = allPosts.filter(p => !['browser-post-dry', 'batch-browser-dry'].includes(p.method ?? ''));
+  const postsLast24h = realPosts.filter(p => (p.posted_at ?? p.recorded_at ?? '') >= oneDayAgoStr);
+  const viewsLast24h = postsLast24h.reduce((sum, p) => sum + (p.views ?? 0), 0);
+  const totalPosts = realPosts.length;
+  const totalViews = realPosts.reduce((sum, p) => sum + (p.views ?? 0), 0);
+
+  // Last post time
+  const sorted = [...realPosts].sort((a, b) => (b.posted_at ?? b.recorded_at ?? '').localeCompare(a.posted_at ?? a.recorded_at ?? ''));
+  const lastPost = sorted[0];
+  let lastPostLine = 'No posts recorded';
+  if (lastPost) {
+    const ts = lastPost.posted_at ?? lastPost.recorded_at ?? '';
+    const diffH = Math.round((now.getTime() - new Date(ts).getTime()) / 3_600_000);
+    lastPostLine = `${diffH}h ago — \`${lastPost.video_id ?? 'unknown'}\``;
+  }
+
+  // Gate math
+  const GATE_DATE = new Date('2026-04-07T00:00:00Z');
+  const daysLeft = Math.max(0, Math.ceil((GATE_DATE.getTime() - now.getTime()) / 86_400_000));
+  const postsNeeded = Math.max(0, 30 - totalPosts);
+  const paceNeeded = daysLeft > 0 ? (postsNeeded / daysLeft).toFixed(1) : '0';
+  const onTrack = postsLast24h.length >= 1; // minimum 1 post/day to be moving
+
+  // Next action
+  const urgency = daysLeft <= 7 ? '🔴' : daysLeft <= 14 ? '🟡' : '🟢';
+  const statusLine = onTrack
+    ? `✅ On track — ${postsLast24h.length} post${postsLast24h.length !== 1 ? 's' : ''} in 24h`
+    : `⚠️ Behind — 0 posts in 24h (need ${paceNeeded}/day)`;
+
+  return [
+    `📊 *Post Pulse* — ${todayStr}`,
+    '',
+    `*Last 24h:* ${postsLast24h.length} posts · ${viewsLast24h} views`,
+    `*Last post:* ${lastPostLine}`,
+    `*All time:* ${totalPosts}/30 posts · ${totalViews} views`,
+    '',
+    `*Gate:* ${urgency} ${postsNeeded} posts needed · ${daysLeft}d left · ${paceNeeded}/day pace`,
+    statusLine,
+    '',
+    `_Next: /caption-next to get video + caption · /deliver-next to send mp4_`,
+  ].join('\n');
+}

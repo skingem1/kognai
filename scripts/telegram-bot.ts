@@ -25,7 +25,7 @@ import { cmdGate, cmdGoLive, cmdAudit, cmdStreak, cmdPace, cmdCalendar, cmdGateA
 import { runGodmanSmoke } from './godman-smoke';
 import { cmdRecord, cmdQueue, cmdReview, cmdCaption, cmdPosted, cmdOnboard, cmdPipeline, cmdToday, cmdAnalytics, cmdDiversity, cmdThumbnail, cmdCompetitor, cmdStats, cmdQuality, cmdRadar, cmdBacktest, cmdFormatStats, cmdManifesto, cmdValErrors, cmdCaptionNext } from './telegram-commands/cmd-content';
 import { cmdMetrics, cmdPostPlan, cmdYouTube, cmdAutoPost, cmdLastRun, cmdViral, cmdDashboard, cmdDigest, cmdSchedule, cmdLeaderboard, cmdBestTime, cmdHookTest, cmdHookStats, cmdViralStats, cmdQueueOpt, cmdGateAnalytics, cmdRevenue, cmdBatch, cmdPostLog, cmdXPost, cmdCosts, cmdWeeklyDigest, cmdPostNext, cmdPostingHealth, cmdBulkCaptions } from './telegram-commands/cmd-posting';
-import { cmdHistory, cmdArchive, cmdUnarchive, cmdStale, cmdPurge, cmdNote, cmdUpdateViews, cmdExport, cmdWeeklyReport, cmdSpeakerTest, cmdFilmKit, cmdContentPlan, cmdSuggest, cmdCompare, cmdScorecard, cmdProgress, cmdCleanup, cmdDedup, cmdTop30, cmdAbResults, cmdStatus, cmdReplenish, cmdEnrich, cmdBlockers, cmdBotTest, cmdSprintNext, cmdLog, cmdLaunches } from './telegram-commands/cmd-management';
+import { cmdHistory, cmdArchive, cmdUnarchive, cmdStale, cmdPurge, cmdNote, cmdUpdateViews, cmdExport, cmdWeeklyReport, cmdSpeakerTest, cmdFilmKit, cmdContentPlan, cmdSuggest, cmdCompare, cmdScorecard, cmdProgress, cmdCleanup, cmdDedup, cmdTop30, cmdAbResults, cmdStatus, cmdReplenish, cmdEnrich, cmdBlockers, cmdBotTest, cmdSprintNext, cmdLog, cmdLaunches, cmdPostPulse } from './telegram-commands/cmd-management';
 import { cmdHelp } from './telegram-commands/cmd-help';
 
 // Sprint 496: Import extracted command modules (Part 2: N-Z + interactive)
@@ -209,6 +209,8 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/purge':       response = cmdPurge(cmdArgs);       break;
     case '/note':        response = cmdNote(cmdArgs);        break;
     case '/status':      response = cmdStatus();             break;
+    case '/post-pulse':  response = cmdPostPulse();          break; // Sprint 1193
+    case '/postpulse':   response = cmdPostPulse();          break; // Sprint 1193
     case '/dedup':       response = cmdDedup();              break;
     case '/top30':       response = cmdTop30();              break;
     case '/abresults':   response = cmdAbResults();          break;

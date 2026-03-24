@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1193",
+  "title": "OPS — /post-pulse: 24h posting velocity snapshot (posts, views, gate pace)",
+  "description": "New /post-pulse command showing: posts in last 24h, views gained, last post time, gate math (posts needed, days left, pace/day), on-track status, next action hints.",
+  "source": "queue-empty-sonnet",
+  "tasks": [
+    {
+      "id": "1193-01",
+      "title": "OPS — /post-pulse command in cmd-management.ts + telegram-bot.ts registration",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-commands/cmd-management.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-1193"
+    }
+  ]
+}
