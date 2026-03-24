@@ -453,9 +453,27 @@ function buildDigest(): string {
   const achiri   = getAchiriAlphaStats();
   const achiriEng = getAchiriEngagement();
   const calendarItems = getCalendarToday();
-  const stripeStatus = process.env.STRIPE_SECRET_KEY
+  // Sprint 1116: Stripe webhook health — show last event age
+  let stripeStatus = process.env.STRIPE_SECRET_KEY
     ? '💳 Stripe: 🟢 LIVE'
     : '💳 Stripe: 🔴 NOT LIVE (set STRIPE_SECRET_KEY in .env)';
+  if (process.env.STRIPE_SECRET_KEY) {
+    try {
+      const stripeLogPath = path.join(ROOT, 'logs', 'stripe-webhook-out.log');
+      if (fs.existsSync(stripeLogPath)) {
+        const lines = fs.readFileSync(stripeLogPath, 'utf-8').trim().split('\n').filter(l => l.trim());
+        const lastLine = lines[lines.length - 1] ?? '';
+        const tsMatch = lastLine.match(/^(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})/);
+        if (tsMatch) {
+          const lastTs = new Date(tsMatch[1]).getTime();
+          const ageH = (Date.now() - lastTs) / 3600000;
+          const ageStr = ageH < 1 ? `${Math.round(ageH * 60)}m ago` : `${Math.round(ageH)}h ago`;
+          const whIcon = ageH > 48 ? '⚠️' : '✅';
+          stripeStatus = `💳 Stripe: 🟢 LIVE · webhook ${whIcon} (last event: ${ageStr})`;
+        }
+      }
+    } catch {}
+  }
   const autoPost = getAutoPostReadiness();
 
   const postsLeft  = Math.max(0, 30 - gate.count);
