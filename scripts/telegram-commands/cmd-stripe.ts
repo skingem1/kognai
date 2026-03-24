@@ -492,6 +492,23 @@ export function cmdAlpha(): string {
       lines.push('');
     }
 
+    // Sprint 1082: inline pre-alpha readiness checks from achiri-readiness.json
+    try {
+      const readinessPath = path.join(ROOT, 'reports', 'achiri-readiness.json');
+      if (fs.existsSync(readinessPath)) {
+        const rd = JSON.parse(fs.readFileSync(readinessPath, 'utf-8'));
+        const checks: any[] = rd.checks ?? [];
+        const passing = checks.filter((c: any) => c.pass).length;
+        lines.push(`*🔍 Pre-Alpha Checks (${passing}/${checks.length} pass):*`);
+        for (const c of checks) {
+          const icon = c.pass ? '✅' : '❌';
+          const crit = c.critical ? ' ⭐' : '';
+          lines.push(`  ${icon}${crit} ${c.name} — ${(c.detail ?? '').slice(0, 60)}`);
+        }
+        lines.push('');
+      }
+    } catch { /* skip */ }
+
     lines.push(`_Generated: ${data.generated?.split('T')[0] ?? 'unknown'}_`);
     return lines.join('\n');
   } catch (e: any) {
