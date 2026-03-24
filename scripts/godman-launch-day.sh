@@ -67,8 +67,8 @@ for PROTO in $PROTOCOLS; do
     VERSION=$(node -p "require('$DIR/package.json').version" 2>/dev/null || echo "?")
     ok "$PROTO@$VERSION — skipped (dry-run)"
   else
-    if npm publish --access public --prefix "$DIR" &>/dev/null; then
-      ok "@godman-protocols/$PROTO published"
+    if npm publish --access public --provenance --prefix "$DIR" &>/dev/null; then
+      ok "@godman-protocols/$PROTO published (with provenance)"
     else
       warn "@godman-protocols/$PROTO — already published or error (check manually)"
     fi
@@ -94,8 +94,8 @@ if $DRY_RUN; then
   ok "@godman-protocols/sdk — skipped (dry-run)"
 else
   npm install --prefix "$SDK_DIR" &>/dev/null || true
-  if npm publish --access public --prefix "$SDK_DIR" &>/dev/null; then
-    ok "@godman-protocols/sdk published"
+  if npm publish --access public --provenance --prefix "$SDK_DIR" &>/dev/null; then
+    ok "@godman-protocols/sdk published (with provenance)"
   else
     warn "@godman-protocols/sdk — already published or error"
   fi
@@ -120,7 +120,7 @@ echo -e "\n${CYAN}── Summary ───────────────�
 echo -e "  PASS: ${GREEN}$PASS${NC}   FAIL: ${RED}$FAIL${NC}"
 if [[ $FAIL -eq 0 ]]; then
   echo -e "\n  ${GREEN}🚀 Launch complete! Post the X thread now.${NC}"
-  echo    "     workspace/social/x-replies/ — check PACT launch thread"
+  echo    "     workspace/social/suite-launch/x-megathread.md — 10-tweet thread ready"
 else
   echo -e "\n  ${RED}Fix failures above before publishing.${NC}"
   exit 1
