@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1195",
+  "title": "GODMAN-LAUNCH — Fix godman-tag-all.sh tag format mismatch (pact-v0.2.0)",
+  "description": "Bug: godman-tag-all.sh creates tags as 'godman-protocols/pact@v0.2.0' but cmdGodman() and cmdGodmanPreflight() check for 'pact-v0.2.0'. This means /godman-tag confirm never fixes the 0/8 tagged status shown in /godman and /godman-preflight. Fix: change TAG variable in godman-tag-all.sh to use format '${proto}-v${VERSION}' to match both check sites.",
+  "source": "queue-empty-sonnet-bug",
+  "tasks": [
+    {
+      "id": "1195-01",
+      "title": "Fix scripts/godman-tag-all.sh: change TAG format from 'godman-protocols/pact@v0.2.0' to 'pact-v0.2.0'",
+      "type": "bugfix",
+      "task_type": "ops",
+      "task_target": "scripts/godman-tag-all.sh",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1195"
+    }
+  ]
+}

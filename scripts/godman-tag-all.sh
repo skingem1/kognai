@@ -6,8 +6,8 @@
 #   ./scripts/godman-tag-all.sh           # Create and push tags
 #   ./scripts/godman-tag-all.sh --dry-run # Preview tags, no git ops
 #
-# Tags created: godman-protocols/{name}@v{version}
-# e.g. godman-protocols/pact@v0.2.0
+# Tags created: {name}-v{version}  (matches cmdGodman + cmdGodmanPreflight check format)
+# e.g. pact-v0.2.0
 
 set -e
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -43,7 +43,7 @@ for proto in $PROTOCOLS; do
     continue
   fi
 
-  TAG="godman-protocols/${proto}@v${VERSION}"
+  TAG="${proto}-v${VERSION}"  # Sprint 1195: fix format to match preflight check
 
   # Check if tag already exists
   if git -C "$REPO_ROOT" tag 2>/dev/null | grep -qF "$TAG"; then
