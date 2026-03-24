@@ -500,15 +500,15 @@
       "sprint": 1048,
       "title": "GODMAN-LAUNCH \u2014 CHANGELOG.md for each protocol package (v0.2.0 initial release)",
       "block": "GODMAN-PROTOCOLS",
-      "status": "pending",
+      "status": "skip",
       "priority": "medium",
-      "rationale": "npm shows CHANGELOG if present. Add CHANGELOG.md to all 8 packages documenting v0.2.0 feature set for first-time visitors."
+      "rationale": "Already done \u2014 all 8 CHANGELOG.md files exist from prior sprint"
     },
     {
       "sprint": 1049,
       "title": "ACHIRI-ALPHA \u2014 Bot startup health check script + pm2 start instructions",
       "block": "PHASE2",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "Once ACHIRI_TELEGRAM_BOT_TOKEN is set, operator needs one command to start achiri-telegram. Add scripts/achiri/start-bot.sh with health check and pm2 ecosystem entry."
     },
