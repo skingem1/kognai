@@ -149,6 +149,15 @@
       "priority": "high",
       "rationale": "Implement SCORE core: createRubric, evaluate, calculateReputation, createAuditEntry. Node.js crypto only.",
       "_note": "Shipped 2026-03-24 — commit 977576fb. core.ts (181 lines) + index.ts updated + smoke test 10/10 PASS. Swarm bypassed (multi-file, direct write)."
+    },
+    {
+      "sprint": 968,
+      "title": "SIGNAL-IMPL-01 — In-memory event bus (publish, subscribe, deliver, receipts)",
+      "block": "GODMAN-PROTOCOLS",
+      "status": "done",
+      "priority": "high",
+      "rationale": "Implement SIGNAL core: EventBus with pub/sub, topic-glob matching, idempotency dedup, delivery receipts. Node.js crypto only.",
+      "_note": "Shipped 2026-03-24 — commit 30c79a53. bus.ts (180 lines) + index.ts updated + smoke test 12/12 PASS. Swarm bypassed (multi-file, direct write)."
     }
   ]
 }
