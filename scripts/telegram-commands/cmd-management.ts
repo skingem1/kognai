@@ -1837,6 +1837,19 @@ export function cmdStatus(): string {
   const viewFilled = Math.round(viewPct / 5);
   const viewBar = '█'.repeat(viewFilled) + '░'.repeat(20 - viewFilled);
 
+  // Sprint 1144 (wave 23): sprint queue empty warning (declared here — used in activeSprintStr below)
+  let queueEmptyWarning = '';
+  try {
+    const qPathEW = path.join(ROOT, 'workspace', 'sprint-queue.json');
+    if (fs.existsSync(qPathEW)) {
+      const qEW = JSON.parse(fs.readFileSync(qPathEW, 'utf-8'));
+      const pendingCountEW = (qEW.queue ?? []).filter((i: any) => i.status === 'pending').length;
+      if (pendingCountEW === 0) {
+        queueEmptyWarning = ` ⚠️ queue empty — /replenish`;
+      }
+    }
+  } catch { /* skip */ }
+
   // Sprint 1136 (wave 17): active sprint number from sprint-queue.json
   let activeSprintStr = '';
   try {
@@ -1846,7 +1859,7 @@ export function cmdStatus(): string {
       const pending = (q.queue ?? []).filter((i: any) => i.status === 'pending');
       const lastDone = (q.queue ?? []).filter((i: any) => i.status === 'done').slice(-1)[0];
       const nextSprint = pending[0]?.sprint ?? lastDone?.sprint;
-      if (nextSprint) activeSprintStr = ` · Sprint *#${nextSprint}*`;
+      if (nextSprint) activeSprintStr = ` · Sprint *#${nextSprint}*${queueEmptyWarning}`;
     }
   } catch { /* skip */ }
 
@@ -1881,6 +1894,57 @@ export function cmdStatus(): string {
     if (ranked.length > 0) {
       const best = ranked[0];
       bestHookLine = `\n🎯 *Best hook:* \`${best.hook}\` — avg ${best.avg.toFixed(0)} views (${best.count} posts)`;
+    }
+  } catch { /* skip */ }
+
+  // Sprint 1136 (wave 23): views-per-post trend (last 5 vs prior 5)
+  let viewsTrendLine = '';
+  try {
+    if (posts.length >= 4) {
+      const sortedPosts = [...posts as any[]].sort((a: any, b: any) =>
+        new Date(b.posted_at ?? b.recorded_at).getTime() - new Date(a.posted_at ?? a.recorded_at).getTime()
+      );
+      const last5 = sortedPosts.slice(0, 5);
+      const prior5 = sortedPosts.slice(5, 10);
+      const last5Avg = last5.reduce((s: number, p: any) => s + (p.views ?? 0), 0) / last5.length;
+      if (prior5.length >= 2) {
+        const prior5Avg = prior5.reduce((s: number, p: any) => s + (p.views ?? 0), 0) / prior5.length;
+        const trendIcon = last5Avg > prior5Avg * 1.1 ? '📈' : last5Avg < prior5Avg * 0.9 ? '📉' : '➡️';
+        viewsTrendLine = `\n${trendIcon} *Views/post:* last 5 = ${last5Avg.toFixed(0)} · prior 5 = ${prior5Avg.toFixed(0)}`;
+      } else {
+        viewsTrendLine = `\n📊 *Views/post:* ${last5Avg.toFixed(0)} avg (last 5 posts)`;
+      }
+    }
+  } catch { /* skip */ }
+
+  // Sprint 1136 (wave 24): show whether today is a posting obligation day
+  let todayObligationLine = '';
+  try {
+    if (daysLeft > 0 && postsNeeded > 0) {
+      const obligationToday = Math.ceil(postsNeeded / daysLeft);
+      const remaining = Math.max(0, obligationToday - todayPosts);
+      if (remaining > 0) {
+        todayObligationLine = `\n📅 *Today:* post *${remaining} more* (${todayPosts}/${obligationToday} done)`;
+      } else {
+        todayObligationLine = `\n📅 *Today's target met* — ${todayPosts}/${obligationToday} ✅`;
+      }
+    } else if (postsNeeded === 0) {
+      todayObligationLine = `\n📅 *Gate complete* — no posting obligation`;
+    }
+  } catch { /* skip */ }
+
+  // Sprint 1143 (wave 24): TikTok warmup score from warmup-status.json
+  let warmupScoreLine = '';
+  try {
+    const warmupPath = path.join(ROOT, 'workspace', 'scs001', 'warmup-status.json');
+    if (fs.existsSync(warmupPath)) {
+      const ws = JSON.parse(fs.readFileSync(warmupPath, 'utf-8'));
+      const days = ws.days_active ?? 0;
+      const alignment = ws.niche_alignment;
+      const verified = ws.verified;
+      const warmupIcon = verified ? '✅' : days >= 3 ? '⚠️' : '🔴';
+      const alignStr = alignment != null ? ` · align ${alignment}/10` : '';
+      warmupScoreLine = `\n🎯 *TikTok warmup:* ${warmupIcon} ${days}d active${alignStr}${verified ? ' — verified' : ''}`;
     }
   } catch { /* skip */ }
 
@@ -1945,7 +2009,7 @@ export function cmdStatus(): string {
       }
       return oblStreak >= 2 ? `📋 Obligation streak: *${oblStreak}d* met in a row ✅` : '';
     })(),
-    `📦 Queue: *${readyCount}* ready · ${unposted.length} total${viralDistLine}${lastPostAge}${bestHookLine}`,
+    `📦 Queue: *${readyCount}* ready · ${unposted.length} total${viralDistLine}${lastPostAge}${bestHookLine}${viewsTrendLine}${todayObligationLine}${warmupScoreLine}`,
     pipelineLine,
     cronLine + cronsFiredLine,
     watchdogLine,

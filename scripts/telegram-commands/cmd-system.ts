@@ -336,7 +336,58 @@ export function cmdHealth(): string {
     }
   } catch { /* skip */ }
 
-  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${botUptimeSection}${ollamaSection}${memWarnSection}${memTableSection}${supabaseSection}${supabaseSyncSection}${diskSection}${watchdogSection}${runtimeSection}${tailscaleSection}${hetznerSection}${anthropicSection}${ioSection}${morningBriefSection}${digestSection}${staleCronsSection}${supabaseDomainSection}`;
+  // Sprint 1137 (wave 24): show Anthropic API token budget estimate for today
+  let anthropicBudgetSection = '';
+  try {
+    const apiLogPath = path.join(ROOT, 'logs', 'openclaw-gateway-out.log');
+    const anthropicLogPath = path.join(ROOT, 'logs', 'anthropic-usage.jsonl');
+    if (fs.existsSync(anthropicLogPath)) {
+      const todayStr = new Date().toISOString().slice(0, 10);
+      const usageLines = fs.readFileSync(anthropicLogPath, 'utf-8').split('\n').filter(l => l.trim());
+      let todayTokens = 0;
+      for (const l of usageLines) {
+        try {
+          const entry = JSON.parse(l);
+          if ((entry.ts ?? entry.timestamp ?? '').startsWith(todayStr)) {
+            todayTokens += (entry.input_tokens ?? 0) + (entry.output_tokens ?? 0);
+          }
+        } catch {}
+      }
+      if (todayTokens > 0) {
+        const costEstimate = (todayTokens / 1_000_000 * 3.0).toFixed(4); // ~$3/M tokens (Sonnet)
+        const tokenIcon = todayTokens > 500_000 ? '⚠️' : '✅';
+        anthropicBudgetSection = `\n\n*Claude API today:* ${tokenIcon} ${(todayTokens / 1000).toFixed(0)}K tokens · ~$${costEstimate}`;
+      }
+    } else if (fs.existsSync(apiLogPath)) {
+      // Fallback: count "tokens" mentions in gateway log for today
+      const todayMidnightMs = new Date(new Date().toISOString().slice(0, 10) + 'T00:00:00Z').getTime();
+      const stat = fs.statSync(apiLogPath);
+      if (stat.mtimeMs >= todayMidnightMs) {
+        anthropicBudgetSection = `\n\n*Claude API:* ✅ gateway active today`;
+      }
+    }
+  } catch { /* skip */ }
+
+  // Sprint 1144 (wave 24): show whether validate-full-pipeline cron ran in last 24h
+  let pipelineValidationSection = '';
+  try {
+    const latestRunPath = path.join(ROOT, 'reports', 'pipeline-runs', 'latest.json');
+    if (fs.existsSync(latestRunPath)) {
+      const runData = JSON.parse(fs.readFileSync(latestRunPath, 'utf-8'));
+      const runTs = runData.completed_at ?? runData.started_at ?? runData.timestamp;
+      if (runTs) {
+        const ageH = (Date.now() - new Date(runTs).getTime()) / 3600000;
+        const ageStr = ageH < 1 ? `${Math.round(ageH * 60)}m ago` : `${Math.round(ageH)}h ago`;
+        const runIcon = ageH <= 24 ? '✅' : '⚠️';
+        const statusStr = runData.status ?? (runData.passed >= 0 ? (runData.failed === 0 ? 'pass' : 'fail') : 'unknown');
+        pipelineValidationSection = `\n\n*Pipeline validation:* ${runIcon} last run ${ageStr}${ageH > 24 ? ' — overdue!' : ''} · ${statusStr}`;
+      }
+    } else {
+      pipelineValidationSection = `\n\n*Pipeline validation:* ⚠️ no run record found`;
+    }
+  } catch { /* skip */ }
+
+  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${botUptimeSection}${ollamaSection}${memWarnSection}${memTableSection}${supabaseSection}${supabaseSyncSection}${diskSection}${watchdogSection}${runtimeSection}${tailscaleSection}${hetznerSection}${anthropicSection}${ioSection}${morningBriefSection}${digestSection}${staleCronsSection}${supabaseDomainSection}${anthropicBudgetSection}${pipelineValidationSection}`;
 }
 
 export function cmdTier(): string {
@@ -511,6 +562,19 @@ export function cmdReport(): string {
     }
   } catch { /* skip */ }
 
+  // Sprint 1142 (wave 24): daily brief freshness (age of daily-brief.md)
+  let dailyBriefLine = '';
+  try {
+    const briefPath = path.join(ROOT, 'docs', 'daily-brief.md');
+    if (fs.existsSync(briefPath)) {
+      const stat = fs.statSync(briefPath);
+      const ageH = (Date.now() - stat.mtimeMs) / 3600000;
+      const ageStr = ageH < 1 ? `${Math.round(ageH * 60)}m ago` : ageH < 24 ? `${Math.round(ageH)}h ago` : `${Math.round(ageH / 24)}d ago`;
+      const briefIcon = ageH <= 25 ? '✅' : '⚠️';
+      dailyBriefLine = `\n*Daily brief:* ${briefIcon} updated ${ageStr}${ageH > 25 ? ' — stale, regenerate!' : ''}`;
+    }
+  } catch { /* skip */ }
+
   // Sprint 1143 (wave 23): Achiri alpha readiness alongside gate in system report
   let achiriReadinessReport = '';
   try {
@@ -533,7 +597,7 @@ export function cmdReport(): string {
     `Last heartbeat: ${lastBeat} UTC\n\n` +
     `*Beta:* agents_onboarded=${beta.agents_onboarded ?? 0}, companies=${beta.companies_onboarded ?? 0}, txns=${beta.transactions_monitored ?? 0}\n` +
     `*Financials:* MRR $${mrr} | Tier: ${tier} | Billing activation: ${billingDate}\n\n` +
-    `*Gate:* ${gateLine}${achiriTestLine}${achiriReadinessReport}${commitLine}${totalCommitsLine}${valErrorsLine}${offlineLine}${lastSprintsLine}\n` +
+    `*Gate:* ${gateLine}${achiriTestLine}${achiriReadinessReport}${dailyBriefLine}${commitLine}${totalCommitsLine}${valErrorsLine}${offlineLine}${lastSprintsLine}\n` +
     `*Sprint:* ${sprintLine}`
   );
 }
@@ -1709,6 +1773,23 @@ export async function cmdSmoke(chatId: string): Promise<void> {
         lines.push(isPlausible
           ? `✅ *TikTok token:* set (\`${tiktokToken.slice(0, 8)}...\`)${tiktokKey ? '' : ' · CLIENT_KEY missing'}`
           : `⚠️ *TikTok token:* set but suspiciously short (${tiktokToken.length} chars) — may be invalid`);
+      }
+    } catch { /* skip */ }
+
+    // Sprint 1141 (wave 24): show last pipeline run timestamp and status inline
+    try {
+      const latestRunPath2 = path.join(ROOT, 'reports', 'pipeline-runs', 'latest.json');
+      if (fs.existsSync(latestRunPath2)) {
+        const runData2 = JSON.parse(fs.readFileSync(latestRunPath2, 'utf-8'));
+        const runTs2 = runData2.completed_at ?? runData2.started_at ?? runData2.timestamp;
+        if (runTs2) {
+          const ageH2 = (Date.now() - new Date(runTs2).getTime()) / 3600000;
+          const ageStr2 = ageH2 < 1 ? `${Math.round(ageH2 * 60)}m ago` : `${Math.round(ageH2)}h ago`;
+          const runStatus2 = runData2.status ?? (runData2.failed === 0 ? 'pass' : 'fail');
+          const runIcon2 = runStatus2 === 'pass' && ageH2 <= 24 ? '✅' : ageH2 > 24 ? '⚠️' : '❌';
+          lines.push('');
+          lines.push(`${runIcon2} *Last pipeline run:* ${ageStr2} · ${runStatus2}${ageH2 > 24 ? ' — stale!' : ''}`);
+        }
       }
     } catch { /* skip */ }
 

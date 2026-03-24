@@ -1511,6 +1511,110 @@ function generateItems(startSprint: number, existingTitles: Set<string> = new Se
     rationale: 'Daily digest is a critical monitoring cron. /health shows process status but not last execution. Add "Digest: ran 07:00 today ✅" or "Digest: not run today ⚠️" from logs.',
   });
 
+  // Wave 23 templates
+  infraItems.push({
+    title: 'OPS — /status: show views-per-post trend (last 5 vs prior 5 posts)',
+    block: 'OPS',
+    rationale: '/status shows total views but not if engagement per post is improving. Show "Avg views/post: last 5 = 32 vs prior 5 = 18 (📈)" to track quality progression.',
+  });
+  infraItems.push({
+    title: 'OPS — /health: show if any PM2 cron has not fired in over 2 days',
+    block: 'OPS',
+    rationale: '/health now shows morning-brief but not all crons. Scan all PM2 cron log mtimes and flag any that are >48h stale as potential silent failures.',
+  });
+  infraItems.push({
+    title: 'ACHIRI — /achiri: show messages per active user (depth of engagement)',
+    block: 'ACHIRI',
+    rationale: 'Bounce rate shows 1-message users; depth shows the other end. Show "Active users avg: 7.2 msgs/user" to gauge conversation quality.',
+  });
+  infraItems.push({
+    title: 'OPS — /errors: show if error rate is accelerating (hourly rate > daily avg)',
+    block: 'OPS',
+    rationale: 'A burst of errors in the last hour may not show as a trend in daily data. Compare last-hour error rate to daily average to catch emerging incidents early.',
+  });
+  infraItems.push({
+    title: 'GATE — /pace: show how many posts are needed this week specifically',
+    block: 'GATE',
+    rationale: '/pace shows daily obligation but operators think in weekly batches. Show "This week: need X more posts (Y posted so far this week)" for concrete planning.',
+  });
+  infraItems.push({
+    title: 'GATE — /gate: show top performing post (highest views) as proof of quality',
+    block: 'GATE',
+    rationale: 'Gate shows totals but not proof of quality. Show "🏆 Best post: <id> with N views" to encourage high-effort content and show what works.',
+  });
+  infraItems.push({
+    title: 'QUALITY — /smoke: show env var completeness score (N/M required vars set)',
+    block: 'QUALITY',
+    rationale: 'Smoke checks pipeline but not env var completeness. Add a check that counts how many required env vars are set vs total and shows as "Env: 8/10 required".',
+  });
+  infraItems.push({
+    title: 'OPS — /report: show Achiri alpha readiness alongside gate in system report',
+    block: 'OPS',
+    rationale: '/report shows gate and sprint but Achiri readiness is separate. Add a one-line Achiri status to /report so operator gets full launch picture in one view.',
+  });
+  infraItems.push({
+    title: 'OPS — /status: show whether sprint queue is empty (needs replenishment)',
+    block: 'OPS',
+    rationale: '/status shows active sprint number but not if the queue is empty. Show "Queue: 0 pending — run /replenish" warning when no more sprints are queued.',
+  });
+  infraItems.push({
+    title: 'OPS — /health: show SUPABASE_URL domain (sanity check not using wrong DB)',
+    block: 'OPS',
+    rationale: 'Supabase connects but operator may not see which project is connected. Show "Supabase: <domain>" truncated so operator can confirm it is the right project.',
+  });
+
+  // Wave 24 templates
+  infraItems.push({
+    title: 'OPS — /status: show whether today is a posting obligation day (gate pace)',
+    block: 'OPS',
+    rationale: '/status shows queue and sprint but not a clear daily posting obligation. Show "Today: post X videos" based on gate pace so operator knows the daily target at a glance.',
+  });
+  infraItems.push({
+    title: 'OPS — /health: show Anthropic API token budget used today (API calls estimate)',
+    block: 'OPS',
+    rationale: 'Anthropic API costs real money. Show today\'s estimated token spend based on recent API call logs or usage file so operator can spot runaway agents early.',
+  });
+  infraItems.push({
+    title: 'ACHIRI — /achiri: show avg time between first and second message (stickiness)',
+    block: 'ACHIRI',
+    rationale: 'Bounce rate tells us who left after 1 message; stickiness tells us how quickly users come back. Short return window = strong hook. Compute from daily-counts timestamps.',
+  });
+  infraItems.push({
+    title: 'OPS — /errors: show which error log files were cleared/rotated today',
+    block: 'OPS',
+    rationale: 'Operators sometimes rotate logs manually. Show if any error log file is newer than its previous snapshot, indicating a rotation that may have cleared errors from view.',
+  });
+  infraItems.push({
+    title: 'GATE — /pace: show % of gate views target met per post (efficiency metric)',
+    block: 'GATE',
+    rationale: 'Not all posts contribute equally to the 500-view gate target. Show views earned per post as a % of target so operator sees which posts are carrying the weight.',
+  });
+  infraItems.push({
+    title: 'GATE — /gate: show days since last post was recorded (posting cadence gap)',
+    block: 'GATE',
+    rationale: '/gate shows total posts and views but not recency. Show "Last post: Xh ago" as a cadence gap signal — operator should see if posting has gone cold.',
+  });
+  infraItems.push({
+    title: 'QUALITY — /smoke: show last pipeline run timestamp and status inline',
+    block: 'QUALITY',
+    rationale: '/smoke runs a live test but the last pipeline run result (from pipeline-runs/latest.json) is only in /report. Show last pipeline run timestamp + pass/fail inline in /smoke for instant context.',
+  });
+  infraItems.push({
+    title: 'OPS — /report: show daily brief freshness (age of daily-brief.md)',
+    block: 'OPS',
+    rationale: 'daily-brief.md is auto-generated daily. If it\'s stale (>25h old), the operator may be running on outdated context. Show age of daily-brief.md in /report as a freshness check.',
+  });
+  infraItems.push({
+    title: 'OPS — /status: show TikTok account warmup score from warmup-status.json',
+    block: 'OPS',
+    rationale: '/status shows queue and sprint but not TikTok account trust level. Show warmup score/days so operator can quickly see if the account is in good standing for posting.',
+  });
+  infraItems.push({
+    title: 'OPS — /health: show whether validate-full-pipeline cron ran in last 24h',
+    block: 'OPS',
+    rationale: 'validate-full-pipeline is the core quality gate. If it hasn\'t run in >24h, content quality is unverified. Check the pipeline-runs/latest.json timestamp and warn if stale.',
+  });
+
   // Fill remaining slots (skip duplicates of already-completed items)
   for (const item of infraItems) {
     if (items.length >= 10) break;

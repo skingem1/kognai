@@ -220,6 +220,23 @@ export function cmdGate(): string {
       const perWeek = Math.ceil(postsNeeded / weeksLeft);
       return [`📋 *Weekly target:* ${perWeek} posts/week (${weeksLeft} week${weeksLeft !== 1 ? 's' : ''} left)`];
     })(),
+    // Sprint 1140 (wave 24): days since last post was recorded (cadence gap)
+    ...(() => {
+      if (!fs.existsSync(manualPostsPath)) return [];
+      try {
+        const postLines2 = fs.readFileSync(manualPostsPath, 'utf-8').split('\n').filter((l: string) => l.trim());
+        if (postLines2.length === 0) return [];
+        const lastTs2 = postLines2
+          .map((l: string) => { try { const p = JSON.parse(l); return new Date(p.posted_at ?? p.recorded_at).getTime(); } catch { return 0; } })
+          .filter((t: number) => t > 0)
+          .sort((a: number, b: number) => b - a)[0];
+        if (!lastTs2) return [];
+        const ageH2 = (Date.now() - lastTs2) / 3600000;
+        const ageStr2 = ageH2 < 1 ? `${Math.round(ageH2 * 60)}m ago` : ageH2 < 24 ? `${Math.round(ageH2)}h ago` : `${Math.round(ageH2 / 24)}d ago`;
+        const icon2 = ageH2 > 48 ? '🔴' : ageH2 > 24 ? '⚠️' : '✅';
+        return [`${icon2} *Last post:* ${ageStr2}${ageH2 > 48 ? ' — cadence gap!' : ''}`];
+      } catch { return []; }
+    })(),
     // Sprint 1141 (wave 22): is current week on track vs weekly target
     ...(() => {
       if (postsNeeded <= 0 || daysLeft <= 0) return [];
@@ -756,6 +773,20 @@ export function cmdPace(): string {
       const probIcon = combined >= 80 ? '✅' : combined >= 50 ? '⚠️' : '❌';
       lines.push('');
       lines.push(`${probIcon} *Gate probability:* ${combined}% (posts: ${postProb}% · views: ${viewProb}%)`);
+    }
+  } catch { /* skip */ }
+
+  // Sprint 1139 (wave 24): views per post as % of gate views target (efficiency metric)
+  try {
+    const totalViews4 = posts.reduce((s: number, p: any) => s + (p.views ?? 0), 0);
+    const GATE_VIEWS = 500;
+    if (postCount > 0 && totalViews4 > 0) {
+      const viewsPerPost4 = totalViews4 / postCount;
+      const pctOfTarget = (viewsPerPost4 / GATE_VIEWS * 100).toFixed(1);
+      const effIcon = parseFloat(pctOfTarget) >= 5 ? '✅' : parseFloat(pctOfTarget) >= 2 ? '⚠️' : '❌';
+      const viewsNeededPerPost = GATE_VIEWS / Math.max(1, postsNeeded + postCount);
+      lines.push('');
+      lines.push(`${effIcon} *Views efficiency:* ${viewsPerPost4.toFixed(0)} views/post = ${pctOfTarget}% of target per post (need ${viewsNeededPerPost.toFixed(0)} avg to pass)`);
     }
   } catch { /* skip */ }
 

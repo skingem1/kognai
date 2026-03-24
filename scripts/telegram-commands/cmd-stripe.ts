@@ -501,6 +501,41 @@ export function cmdAchiri(): string {
           const depthIcon = parseFloat(msgsPerUser) >= 10 ? '🔥' : parseFloat(msgsPerUser) >= 5 ? '💬' : '📊';
           lines.push(`${depthIcon} *Depth:* ${msgsPerUser} msgs/active user (${totalMsgCount} total ÷ ${totalUsers} users)`);
         }
+        // Sprint 1138 (wave 24): avg time between first and second message (stickiness)
+        try {
+          const userPremiumPath2 = path.join(ROOT, 'workspace', 'achiri', 'memory', 'user-premium.jsonl');
+          if (fs.existsSync(userPremiumPath2)) {
+            const upLines2 = fs.readFileSync(userPremiumPath2, 'utf-8').split('\n').filter(l => l.trim());
+            const userFirstTs = new Map<string, number>();
+            const userSecondTs = new Map<string, number>();
+            for (const l of upLines2) {
+              try {
+                const entry = JSON.parse(l);
+                const uid = entry.uid ?? entry.user_id ?? entry.telegram_id;
+                const ts = entry.ts ?? entry.timestamp ?? entry.created_at;
+                if (!uid || !ts) continue;
+                const t = new Date(ts).getTime();
+                if (!userFirstTs.has(String(uid))) {
+                  userFirstTs.set(String(uid), t);
+                } else if (!userSecondTs.has(String(uid))) {
+                  const first = userFirstTs.get(String(uid))!;
+                  if (t > first) userSecondTs.set(String(uid), t);
+                }
+              } catch {}
+            }
+            if (userSecondTs.size >= 3) {
+              const gaps: number[] = [];
+              for (const [uid, t2] of Array.from(userSecondTs.entries())) {
+                const t1 = userFirstTs.get(uid);
+                if (t1) gaps.push((t2 - t1) / 3600000); // hours
+              }
+              const avgGapH = gaps.reduce((s, v) => s + v, 0) / gaps.length;
+              const stickyIcon = avgGapH < 1 ? '🔥' : avgGapH < 6 ? '💬' : '❄️';
+              const gapStr = avgGapH < 1 ? `${Math.round(avgGapH * 60)}m` : `${Math.round(avgGapH)}h`;
+              lines.push(`${stickyIcon} *Stickiness:* avg ${gapStr} between 1st→2nd msg (${userSecondTs.size} users)`);
+            }
+          }
+        } catch { /* skip */ }
         // Sprint 1143 (wave 20): peak hour of user messages
         try {
           const hourCounts: number[] = new Array(24).fill(0);
