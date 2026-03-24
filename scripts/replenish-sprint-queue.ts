@@ -260,6 +260,91 @@ function generateItems(startSprint: number, existingTitles: Set<string> = new Se
     });
   }
 
+  // --- Phase 2: Launch window sprint templates (added Sprint 1046) ---
+  // Godman post-publish items
+  if (godmanDays > 0 && godmanDays <= 30) {
+    infraItems.push({
+      title: 'GODMAN-LAUNCH — npm provenance + publish checklist script for all 8 packages',
+      block: 'GODMAN-PROTOCOLS',
+      rationale: `Godman launch in ${godmanDays}d. Build a publish-all.sh that runs npm publish in correct order (protocols first, then SDK). Add --provenance flag for npm trust scores.`,
+    });
+    infraItems.push({
+      title: 'GODMAN-LAUNCH — CHANGELOG.md for each protocol package (v0.2.0 initial release)',
+      block: 'GODMAN-PROTOCOLS',
+      rationale: `npm shows CHANGELOG if present. Add CHANGELOG.md to all 8 packages documenting v0.2.0 feature set for first-time visitors.`,
+    });
+    infraItems.push({
+      title: 'GODMAN-LAUNCH — /godman-thread: add copy-paste instructions to Telegram output',
+      block: 'GODMAN-PROTOCOLS',
+      rationale: `Make /godman-thread output include "tap each tweet to copy" tip and thread summary line count. Reduce friction for X launch day.`,
+    });
+  }
+
+  if (achiriDays > 0 && achiriDays <= 40) {
+    infraItems.push({
+      title: 'ACHIRI-ALPHA — Bot startup health check script + pm2 start instructions',
+      block: 'PHASE2',
+      rationale: `Once ACHIRI_TELEGRAM_BOT_TOKEN is set, operator needs one command to start achiri-telegram. Add scripts/achiri/start-bot.sh with health check and pm2 ecosystem entry.`,
+    });
+    infraItems.push({
+      title: 'ACHIRI-ALPHA — Onboarding message A/B test: cultural vs. universal tone',
+      block: 'PHASE2',
+      rationale: `Achiri has 10/10 voice validation. Before alpha, A/B test two onboarding message variants (Tunisian cultural greetings vs. universal) to maximise retention.`,
+    });
+  }
+
+  // Gate pace items
+  const postsDelivered = gate.postsDelivered;
+  if (postsDelivered < 30 && gate.daysLeft <= 14) {
+    infraItems.push({
+      title: 'GATE — Daily posting obligation badge in /status: posts today vs target',
+      block: 'GATE',
+      rationale: `Gate pace is critical (${postsDelivered}/30 with ${gate.daysLeft}d left). Add today's posted count vs daily target to /status header so operator sees it every check-in.`,
+    });
+    infraItems.push({
+      title: 'GATE — Auto-caption batch: pre-generate captions for top 5 unposted videos',
+      block: 'GATE',
+      rationale: `Reduce friction for manual posting. Run /bulk-captions automatically and save to workspace/scs001/ready-captions.json so /caption-next shows pre-written text instantly.`,
+    });
+  }
+
+  // SCS-001 pipeline quality
+  infraItems.push({
+    title: 'QUALITY — Entertainment pipeline integration: register assembler + scriptgen in PM2',
+    block: 'SCS001',
+    rationale: 'entertainment-assembler.ts and entertainment-scriptgen.ts are untracked. Add as PM2 process or scheduled job to unlock entertainment content format alongside code-demo.',
+  });
+
+  infraItems.push({
+    title: 'QUALITY — /errors command: show last 5 PM2 error log lines per process',
+    block: 'INFRA',
+    rationale: 'Operator has /logs but it tails generic logs. Add /errors to show last error line from each PM2 process that logged an error in last 24h. Much faster triage.',
+  });
+
+  infraItems.push({
+    title: 'OPS — Daily brief task generator: replace stale timeline tasks with live system state',
+    block: 'OPS',
+    rationale: 'generate-daily-brief.py pulls TODAY tasks from KOGNAI_DAILY_TIMELINE.md which is months old. Replace with dynamic task list derived from gate state, blockers, and launch countdown.',
+  });
+
+  infraItems.push({
+    title: 'INFRA — /sprint-next: show next planned sprint title + rationale from queue',
+    block: 'INFRA',
+    rationale: 'When queue is empty, operator has no visibility into what Claude Code will work on next. /sprint-next shows top pending item or "queue empty — run /replenish".',
+  });
+
+  infraItems.push({
+    title: 'QUALITY — Trust score auditor: flag agents with score < 0.6 in /status health',
+    block: 'QUALITY',
+    rationale: 'acp/trust-scores.json tracks agent trust. No alerting exists when an agent drops below acceptable threshold. Add check to daily digest + /status.',
+  });
+
+  infraItems.push({
+    title: 'INFRA — Revenue tracker: /revenue shows TikTok Agent subscription MRR from Stripe',
+    block: 'INFRA',
+    rationale: '/revenue command exists but may not show live Stripe data. Verify it reads from Stripe webhook events and shows MRR, new subs this week, churn rate.',
+  });
+
   // Fill remaining slots (skip duplicates of already-completed items)
   for (const item of infraItems) {
     if (items.length >= 10) break;
