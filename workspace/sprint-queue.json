@@ -37,9 +37,10 @@
       "sprint": 956,
       "title": "SPIELBERG-01 — Demo recording agent scaffold + demo script JSON schema",
       "block": "SPIELBERG",
-      "status": "pending",
+      "status": "done",
       "priority": "high",
-      "rationale": "From Spielberg Agent Spec (Sprint 545). Tasks 545-01 to 545-03: Install asciinema + agg, create demo script JSON schema (TypeScript types), create agents/spielberg/index.ts orchestrator (max 250 lines). Verify asciinema recording works. T1 qwen3:4b."
+      "rationale": "From Spielberg Agent Spec (Sprint 545). Tasks 545-01 to 545-03: Install asciinema + agg, create demo script JSON schema (TypeScript types), create agents/spielberg/index.ts orchestrator (max 250 lines). Verify asciinema recording works. T1 qwen3:4b.",
+      "_note": "Shipped 2026-03-24 — commit 38188125. asciinema+agg installed, types.ts+index.ts+agent config created. Swarm bypassed (direct write)."
     },
     {
       "sprint": 957,
