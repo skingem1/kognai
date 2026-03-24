@@ -550,8 +550,8 @@ module.exports = {
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
     {
-      // Gate Regen — regenerates workspace/gates/phase1-5-gate.json daily at 06:55
-      // Runs 5 min before daily digest (07:00) so digest always has fresh gate data.
+      // Gate Regen — regenerates workspace/gates/phase1-5-gate.json every 2 hours
+      // Sprint 1045: increased from daily 06:55 to every 2h — gate was going stale during the day
       // To start: pm2 start ecosystem.config.js --only kognai-gate-regen
       name: "kognai-gate-regen",
       script: "scripts/scs001/generate-phase1-5-gate.ts",
@@ -560,7 +560,7 @@ module.exports = {
       cwd: "/Users/tarekmnif/kognai",
       autorestart: false,
       watch: false,
-      cron_restart: "55 6 * * *",
+      cron_restart: "0 */2 * * *",
       env: {
         TS_NODE_TRANSPILE_ONLY: "true",
         TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",

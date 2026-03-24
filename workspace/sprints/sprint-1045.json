@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1045",
+  "title": "INFRA — Gate regen cron: increase frequency to every 2 hours",
+  "description": "Gate file goes stale when posts are recorded during the day. Change cron from once-daily (06:55) to every 2 hours.",
+  "block": "INFRA",
+  "source": "queue-empty-auto",
+  "tasks": [
+    {
+      "id": "1045-01",
+      "title": "Update ecosystem.config.js gate-regen cron to */120 schedule",
+      "type": "fix",
+      "task_target": "ecosystem.config.js",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1045"
+    }
+  ]
+}
