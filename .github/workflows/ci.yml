@@ -63,3 +63,65 @@ jobs:
             }
             console.log('✅ All ' + config.apps.length + ' ecosystem scripts found');
           "
+
+  godman-protocols:
+    name: Godman Protocols — Smoke Tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        protocol: [pact, lax, score, signal, soul, amf, drs]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install and test ${{ matrix.protocol }}
+        working-directory: workspace/godman-protocols/${{ matrix.protocol }}
+        run: |
+          npm install --ignore-scripts
+          npm test
+
+  godman-sdk:
+    name: Godman SDK — Unified Import Test
+    runs-on: ubuntu-latest
+    needs: godman-protocols
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install all protocols (local refs)
+        working-directory: workspace/godman-protocols/sdk
+        run: npm install --ignore-scripts
+
+      - name: Run SDK smoke test
+        working-directory: workspace/godman-protocols/sdk
+        run: npm test
+
+  godman-integration:
+    name: Godman Protocols — Integration Test
+    runs-on: ubuntu-latest
+    needs: godman-protocols
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install protocol dependencies
+        run: |
+          for dir in pact lax score signal soul amf drs; do
+            (cd workspace/godman-protocols/$dir && npm install --ignore-scripts)
+          done
+
+      - name: Run integration test
+        working-directory: workspace/godman-protocols
+        run: npx tsx integration.test.ts

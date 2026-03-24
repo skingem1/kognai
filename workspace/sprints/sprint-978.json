@@ -1,0 +1,11 @@
+{
+  "sprint_id": "sprint-978",
+  "title": "GODMAN-CI — GitHub Actions workflow for all 7 protocol smoke tests + SDK",
+  "description": "Add godman-protocols CI job to .github/workflows/ci.yml. Runs smoke tests for all 7 protocols + SDK + integration test. Ensures launch quality for April 14.",
+  "block": "GODMAN-PROTOCOLS",
+  "source": "queue-exhausted-continuation",
+  "tasks": [
+    { "id": "978-01", "title": "Add godman-protocols job to ci.yml with matrix strategy", "type": "feature", "task_target": ".github/workflows/ci.yml", "agent": "coder", "status": "pending", "priority": "high", "sprint_id": "sprint-978" },
+    { "id": "978-02", "title": "Add local npm test script to each protocol + SDK for CI runner", "type": "config", "task_target": "workspace/godman-protocols/*/package.json", "agent": "coder", "status": "pending", "priority": "high", "sprint_id": "sprint-978" }
+  ]
+}
