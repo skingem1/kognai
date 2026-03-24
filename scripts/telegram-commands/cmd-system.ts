@@ -952,7 +952,52 @@ export function cmdHealth(): string {
     }
   } catch { /* skip */ }
 
-  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${botUptimeSection}${ollamaSection}${memWarnSection}${memTableSection}${supabaseSection}${supabaseSyncSection}${diskSection}${watchdogSection}${runtimeSection}${tailscaleSection}${hetznerSection}${anthropicSection}${ioSection}${morningBriefSection}${digestSection}${staleCronsSection}${supabaseDomainSection}${anthropicBudgetSection}${pipelineValidationSection}${worktreeSection}${botMemSection}${gateDaysSection}${backupSection}${postingHealthSection}${exportFilesSection}${tokenHealthSection}${statsSection}${inventorySection}${gateAuditSection}${autoDeliverSection}${bulkCaptionsSection}${playbackSection}${qcSection}${smokeSection}${achiriDauSection}${achiriE2eSection}${videoValidSection}${pipelineMetricsSection}${achiriSafetySection}${leaderboardSection}${brainxSection}${achiriLaunchSection}${postingScheduleSection}${phase15GateSection}${batchProduceSection}${revenueSummarySection}${contentDiversitySection}${costLogSection}${warmupSection}${abAnalysisSection}${prodQualitySection}${hookWeightsSection}${contentCalendarSection}${achiriDashboardSection}${achiriReadinessSection}${viralTopicsSection}${archivedVideosSection}`;
+  // Sprint 1158 (wave 37): manual-posts.jsonl posts today + last post time
+  let manualPostsTodaySection = '';
+  try {
+    const mpPath = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
+    if (fs.existsSync(mpPath)) {
+      const today = new Date().toISOString().slice(0, 10);
+      const lines = fs.readFileSync(mpPath, 'utf-8').split('\n').filter(l => l.trim());
+      const posts = lines.map(l => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
+      const todayPosts = posts.filter((p: any) => (p.posted_at ?? '').startsWith(today));
+      const lastPost = posts.length > 0 ? posts[posts.length - 1] : null;
+      const lastTime = lastPost?.posted_at ? lastPost.posted_at.replace('T', ' ').slice(0, 16) + ' UTC' : 'never';
+      const mpIcon = todayPosts.length >= 2 ? '✅' : todayPosts.length === 1 ? '🟡' : '🔴';
+      manualPostsTodaySection = `\n\n${mpIcon} *Posts today:* ${todayPosts.length} · Last: ${lastTime}`;
+    }
+  } catch { /* skip */ }
+
+  // Sprint 1158 (wave 37): achiri-test-suite.json pass rate
+  let achiriTestSuiteSection = '';
+  try {
+    const atsPath = path.join(ROOT, 'reports', 'achiri-test-suite.json');
+    if (fs.existsSync(atsPath)) {
+      const ats = JSON.parse(fs.readFileSync(atsPath, 'utf-8'));
+      const passed = ats.passed ?? 0;
+      const total = ats.total ?? 0;
+      const failed = ats.failed ?? 0;
+      const pct = total > 0 ? Math.round((passed / total) * 100) : 0;
+      const atsIcon = pct === 100 ? '✅' : pct >= 80 ? '🟡' : '🔴';
+      achiriTestSuiteSection = `\n\n${atsIcon} *Achiri tests:* ${passed}/${total} pass (${pct}%)${failed > 0 ? ` · ${failed} failed` : ''}`;
+    }
+  } catch { /* skip */ }
+
+  // Sprint 1158 (wave 37): crossplatform-publish.jsonl YouTube count today + total
+  let crossplatformSection = '';
+  try {
+    const cpPath = path.join(ROOT, 'workspace', 'scs001', 'crossplatform-publish.jsonl');
+    if (fs.existsSync(cpPath)) {
+      const today = new Date().toISOString().slice(0, 10);
+      const cpLines = fs.readFileSync(cpPath, 'utf-8').split('\n').filter(l => l.trim());
+      const cpPosts = cpLines.map(l => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
+      const ytPosts = cpPosts.filter((p: any) => p.platform === 'youtube' && p.success);
+      const ytToday = ytPosts.filter((p: any) => (p.timestamp ?? '').startsWith(today));
+      crossplatformSection = `\n\n📺 *YouTube Shorts:* ${ytToday.length} today · ${ytPosts.length} total`;
+    }
+  } catch { /* skip */ }
+
+  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${botUptimeSection}${ollamaSection}${memWarnSection}${memTableSection}${supabaseSection}${supabaseSyncSection}${diskSection}${watchdogSection}${runtimeSection}${tailscaleSection}${hetznerSection}${anthropicSection}${ioSection}${morningBriefSection}${digestSection}${staleCronsSection}${supabaseDomainSection}${anthropicBudgetSection}${pipelineValidationSection}${worktreeSection}${botMemSection}${gateDaysSection}${backupSection}${postingHealthSection}${exportFilesSection}${tokenHealthSection}${statsSection}${inventorySection}${gateAuditSection}${autoDeliverSection}${bulkCaptionsSection}${playbackSection}${qcSection}${smokeSection}${achiriDauSection}${achiriE2eSection}${videoValidSection}${pipelineMetricsSection}${achiriSafetySection}${leaderboardSection}${brainxSection}${achiriLaunchSection}${postingScheduleSection}${phase15GateSection}${batchProduceSection}${revenueSummarySection}${contentDiversitySection}${costLogSection}${warmupSection}${abAnalysisSection}${prodQualitySection}${hookWeightsSection}${contentCalendarSection}${achiriDashboardSection}${achiriReadinessSection}${viralTopicsSection}${archivedVideosSection}${manualPostsTodaySection}${achiriTestSuiteSection}${crossplatformSection}`;
 }
 
 export function cmdTier(): string {
