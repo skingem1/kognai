@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1086",
+  "title": "QUALITY — /queue: show viral score next to each item + age in days",
+  "description": "Already implemented in Sprint 434 — cmdQueue shows viral score (🧬) and age (⏱) for each item. No changes needed.",
+  "block": "QUALITY",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1086-01",
+      "title": "Verify viral score and age already present in /queue output",
+      "type": "validation",
+      "task_target": "scripts/telegram-commands/cmd-content.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1086"
+    }
+  ]
+}
