@@ -733,7 +733,8 @@
       "sprint": 1077,
       "title": "GATE — /today: show daily obligation met vs pending with count breakdown",
       "block": "GATE",
-      "status": "pending",
+      "status": "done",
+      "_note": "Already implemented — line 525 shows Today: X/Y posted ON TRACK/NEEDS POSTS.",
       "priority": "medium",
       "rationale": "/today shows gate progress but not whether today's obligation is met. Add \"Today: X/Y posted (obligation met ✅)\" to /today output next to gate progress line."
     }

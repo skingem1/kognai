@@ -6055,3 +6055,10 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Files modified: cmd-stripe.ts (cmdAchiri: re-engagement stats from reengage-log.jsonl)
 - Test: 115/115 PASS
 - Timestamp: 2026-03-24T17:05Z
+
+## Sprints 1075-1077 — audit batch
+- Status: PASS (all already implemented by hooks)
+- Sprint 1075: /costs already shows Ollama $0.00 inference line
+- Sprint 1076: /health already shows heartbeat age + stale warning >10min
+- Sprint 1077: /today already shows Today: X/Y posted ON TRACK/NEEDS POSTS
+- Timestamp: 2026-03-24T17:10Z
