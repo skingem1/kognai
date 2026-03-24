@@ -2796,15 +2796,16 @@
       "sprint": 1178,
       "title": "GODMAN-LAUNCH — add /godman-preflight to bot router",
       "block": "GODMAN-LAUNCH",
-      "status": "pending",
+      "status": "done",
       "priority": "high",
-      "rationale": "Wire cmdGodmanPreflight() into telegram-bot.ts router so /godman-preflight is callable from Telegram."
+      "rationale": "Wire cmdGodmanPreflight() into telegram-bot.ts router so /godman-preflight is callable from Telegram.",
+      "note": "Completed in Sprint 1177 — router wiring done alongside cmdGodmanPreflight implementation"
     },
     {
       "sprint": 1179,
       "title": "OPS — /status: show Achiri user count and DAU from achiri daily-counts.json",
       "block": "OPS",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "Add Achiri user growth section to /status showing registered users, DAU, and 7-day trend from workspace/achiri/daily-counts.json"
     },

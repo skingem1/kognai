@@ -6372,3 +6372,17 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - AAR: aar-middleware module not found — noted
 - Issues: pre-existing TS1117 error in telegram-bot.ts (unrelated), pre-existing TS2802 in engagement-caption.ts (unrelated)
 - Timestamp: 2026-03-24T22:05:00Z
+
+## Sprint 1178 — GODMAN-LAUNCH (completed in 1177)
+- Status: PASS (no-op — router wiring done in Sprint 1177)
+- Queue: marked done, note added
+
+## Sprint 1179 — OPS
+- Status: PASS
+- Commit: ca5d9ea8
+- Files modified: scripts/telegram-commands/cmd-management.ts
+- Change: Added achiriGrowthLine to cmdStatus() — reads workspace/achiri/daily-counts.json, computes total users (distinct real IDs), today DAU, 7-day trend. Excludes test IDs (validate-, smoke-, e2e-, tarek-test). Output: 👤 Achiri users: N total · DAU N · 7d: 0→1→1→...
+- Test: runtime validation — output correct (2 total, DAU 1, 7d trend shown)
+- Swarm used: no (cmd-management.ts 2000+ lines)
+- AAR: aar-middleware module not found — noted
+- Timestamp: 2026-03-24T22:15:00Z
