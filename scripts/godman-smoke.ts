@@ -25,7 +25,9 @@ function runSmoke(): ProtoResult[] {
     });
     const combined = ((r.stdout ?? '') + (r.stderr ?? '')).trim();
     const pass = r.status === 0 && r.error == null;
-    results.push({ proto, pass, output: combined.slice(0, 300) });
+    // Sprint 1087: capture more output for detailed failure diagnosis
+    const exitInfo = r.status != null ? ` (exit ${r.status})` : (r.error ? ` (${r.error.message})` : '');
+    results.push({ proto, pass, output: combined.slice(0, 1500) + exitInfo });
   }
   return results;
 }
@@ -38,15 +40,16 @@ export function runGodmanSmoke(): string {
     lines.push(`${pass ? '✅' : '❌'} @godman-protocols/${proto}`);
     if (!pass) {
       allPass = false;
-      // Sprint 1070: show up to 4 lines of relevant failure output
+      // Sprint 1070 + 1087: show up to 6 lines of relevant failure output with assertion detail
       const outputLines = output.split('\n').filter(l => l.trim());
       const relevantLines = outputLines.filter(l =>
         l.includes('Error') || l.includes('FAIL') || l.includes('assert') ||
-        l.includes('expect') || l.includes('throw') || l.includes('×') || l.includes('✗')
-      ).slice(0, 4);
-      const showLines = relevantLines.length > 0 ? relevantLines : outputLines.slice(0, 4);
+        l.includes('expect') || l.includes('Expected') || l.includes('Received') ||
+        l.includes('throw') || l.includes('×') || l.includes('✗') || l.includes('●')
+      ).slice(0, 6);
+      const showLines = relevantLines.length > 0 ? relevantLines : outputLines.slice(0, 6);
       lines.push('```');
-      for (const l of showLines) lines.push(l.trim().slice(0, 100));
+      for (const l of showLines) lines.push(l.trim().slice(0, 120));
       lines.push('```');
     }
   }

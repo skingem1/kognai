@@ -528,6 +528,67 @@ function generateItems(startSprint: number, existingTitles: Set<string> = new Se
     rationale: '/queue shows video IDs and ready count but not viral score or how old each item is. Add score + age so operator can prioritize what to post first.',
   });
 
+  // Wave 6 templates — pre-launch polish + Achiri + gate
+  infraItems.push({
+    title: 'GODMAN-LAUNCH — /godman: verify changelog is present (CHANGELOG.md in each protocol)',
+    block: 'GODMAN-PROTOCOLS',
+    rationale: 'Each protocol repo needs a CHANGELOG.md before npm publish. /godman readiness should check all 7 repos have CHANGELOG.md and show pass/fail per protocol.',
+  });
+
+  infraItems.push({
+    title: 'OPS — /status: show days since last post in header if streak is 0',
+    block: 'OPS',
+    rationale: 'When streak is 0, /status should show how many days since the last post (e.g. "Last post: 3d ago") to give the operator urgency context.',
+  });
+
+  infraItems.push({
+    title: 'INFRA — /errors: add timestamp of earliest and latest error in 24h window',
+    block: 'INFRA',
+    rationale: '/errors shows the most recent error per process but not the time range. Adding "first seen / last seen" timestamps helps triage whether errors are recurring or one-off.',
+  });
+
+  infraItems.push({
+    title: 'PHASE2 — /achiri: show reengage failure rate (failed vs sent)',
+    block: 'ACHIRI',
+    rationale: '/achiri shows reengage count but not how many failed. reengage-log.jsonl has status field. Show sent/failed ratio so operator knows if bot is having delivery issues.',
+  });
+
+  infraItems.push({
+    title: 'GATE — /today: add views-needed line when gate is not met',
+    block: 'GATE',
+    rationale: '/today shows post obligation but not how many views are still needed. When views < 500, add a line: "Views still needed: X / 500" to remind operator to track engagement.',
+  });
+
+  infraItems.push({
+    title: 'OPS — /morning-brief: add Godman countdown to brief when ≤14d to launch',
+    block: 'OPS',
+    rationale: 'Morning brief covers TikTok gate but not Godman launch. When Godman launch is ≤14d away, inject a countdown line so operator stays aware.',
+  });
+
+  infraItems.push({
+    title: 'QUALITY — /smoke: show last run timestamp in output',
+    block: 'QUALITY',
+    rationale: '/smoke shows pass/fail but not when it last ran. Add "Last run: Xh ago" to the output so operator knows if the smoke test data is fresh.',
+  });
+
+  infraItems.push({
+    title: 'INFRA — /health: highlight if PM2 process has >100 restarts',
+    block: 'INFRA',
+    rationale: 'Processes with >100 restarts are unstable. /health shows heartbeat state but not per-process restart count. Add a warning line for any process with excessive restarts.',
+  });
+
+  infraItems.push({
+    title: 'OPS — /blockers: sort by severity (CRITICAL → HIGH → MEDIUM)',
+    block: 'OPS',
+    rationale: '/blockers shows items but not sorted by severity. When there are multiple blockers, show CRITICAL items first so operator addresses most impactful items first.',
+  });
+
+  infraItems.push({
+    title: 'GODMAN-LAUNCH — /godman: check npm pack --dry-run passes for each protocol',
+    block: 'GODMAN-PROTOCOLS',
+    rationale: 'Before npm publish on Apr 14, each protocol should pass `npm pack --dry-run`. Add a check to /godman that runs pack dry-run and shows which protocols are publish-ready.',
+  });
+
   // Fill remaining slots (skip duplicates of already-completed items)
   for (const item of infraItems) {
     if (items.length >= 10) break;
