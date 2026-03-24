@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1054",
+  "title": "QUALITY — /pm2errors: show last 5 PM2 error log lines per critical process",
+  "description": "New command /pm2errors that reads the last 5 lines from each critical PM2 process error log. Different from /errors which shows pipeline validation errors.",
+  "block": "QUALITY",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1054-01",
+      "title": "Add cmdPm2Errors to cmd-system.ts + register /pm2errors in telegram-bot.ts",
+      "type": "feature",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1054"
+    }
+  ]
+}

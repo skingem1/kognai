@@ -7,7 +7,7 @@
  */
 
 // Sync commands from cmd-system.ts
-import { cmdPm2, cmdHealth, cmdTier, cmdSprint, cmdReport, cmdCrons, cmdTikTokAuth, cmdQuickStart, cmdEnvCheck, cmdReadiness, cmdGitStats, cmdSwarmStats, cmdErrors, cmdTokenCheck, cmdLogs, cmdPreflight, cmdChangelog, cmdBrainxStatus, cmdSwarmHealth, cmdBrowserTest, cmdGodman, cmdGodmanThread } from './telegram-commands/cmd-system';
+import { cmdPm2, cmdHealth, cmdTier, cmdSprint, cmdReport, cmdCrons, cmdTikTokAuth, cmdQuickStart, cmdEnvCheck, cmdReadiness, cmdGitStats, cmdSwarmStats, cmdErrors, cmdTokenCheck, cmdLogs, cmdPreflight, cmdChangelog, cmdBrainxStatus, cmdSwarmHealth, cmdBrowserTest, cmdGodman, cmdGodmanThread, cmdPm2Errors } from './telegram-commands/cmd-system';
 
 // Sync commands from cmd-gate.ts
 import { cmdGate, cmdGoLive, cmdAudit, cmdStreak, cmdPace, cmdCalendar, cmdGateAudit, cmdGateRefresh } from './telegram-commands/cmd-gate';
@@ -67,6 +67,7 @@ const tests: TestCase[] = [
   { name: 'cmdBrowserTest', fn: () => cmdBrowserTest() },
   { name: 'cmdGodman', fn: () => cmdGodman() },
   { name: 'cmdGodmanThread', fn: () => cmdGodmanThread() },
+  { name: 'cmdPm2Errors', fn: () => cmdPm2Errors() },
 
   // cmd-gate.ts
   { name: 'cmdGate', fn: () => cmdGate() },
