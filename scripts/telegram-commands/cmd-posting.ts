@@ -1223,6 +1223,10 @@ export function cmdCosts(): string {
         '',
         '*Last 7 days:*',
         ...daily.map((d: any) => `  ${d.date}: ${d.videos_generated} vids, $${(d.total_cost || 0).toFixed(2)}`),
+        // Sprint 1075: Ollama local inference cost (always $0.00)
+        '',
+        `🖥 *Ollama (local):* $0.00 · ${m.llm_local_calls || 0} inference calls this month`,
+        `  _qwen3:0.6b · qwen3:4b · deepseek-r1:14b — free (Mac Mini M4)_`,
       ];
       return output.join('\n');
     } catch { /* fall through */ }
@@ -1283,6 +1287,10 @@ export function cmdCosts(): string {
     '',
     '*Last 7 days:*',
     ...dailyBreakdown,
+    // Sprint 1075: Ollama local inference cost
+    '',
+    `🖥 *Ollama (local):* $0.00 — free inference (Mac Mini M4)`,
+    `  _qwen3:0.6b · qwen3:4b · deepseek-r1:14b_`,
   ];
 
   return output.join('\n');

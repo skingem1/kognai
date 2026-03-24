@@ -715,7 +715,8 @@
       "sprint": 1075,
       "title": "OPS — /costs: add Ollama inference cost estimate (tokens * model rate)",
       "block": "OPS",
-      "status": "pending",
+      "status": "done",
+      "_note": "Shipped 2026-03-24. Added Ollama $0.00 section to both cost paths in cmdCosts() — shows call count and free model list.",
       "priority": "medium",
       "rationale": "/costs shows cloud API costs but not local Ollama. Add estimate: read inference logs if available, else show \"0.00 (local)\" to make the $0 local cost explicit."
     },
