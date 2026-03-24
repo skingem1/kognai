@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-954",
+  "title": "GODMAN-REPO-01 \u2014 Create godman-protocols GitHub org + PACT repo skeleton",
+  "description": "From Godman Protocols Portfolio Strategy. Create the GitHub org structure under skingem1. PACT repo with: README.md, LICENSE (Apache 2.0), package.json, src/ skeleton, .claude-plugin, .cursor-plugin, .codex, .openclaw configs (INTEL-005 four-target pattern + .openclaw for ClaWHub). Do NOT publish yet \u2014 skeleton only.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "954-01",
+      "title": "GODMAN-REPO-01 \u2014 Create godman-protocols GitHub org + PACT repo skeleton",
+      "type": "feature",
+      "task_type": "godman_protocols",
+      "task_target": "workspace/sprints/sprint-954-output.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-954"
+    }
+  ]
+}
