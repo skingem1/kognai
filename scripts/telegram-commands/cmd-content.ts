@@ -518,10 +518,19 @@ export function cmdToday(): string {
 
   lines.push(`${icon} *Today's Posting Brief* — ${today}\n`);
 
-  if (posts.length >= 30) {
-    lines.push('🎉 *Phase 1.5 post target reached!* Keep posting to build momentum.\n');
+  // Sprint 1093: views-needed line when gate is not met
+  const totalViews = posts.reduce((s: number, p: any) => s + (p.views ?? 0), 0);
+  const viewsNeeded = Math.max(0, 500 - totalViews);
+
+  if (posts.length >= 30 && totalViews >= 500) {
+    lines.push('🎉 *Phase 1.5 gate met!* Posts: 30/30 · Views: 500/500 — proceed to Phase 2.\n');
   } else {
     lines.push(`📊 *Gate:* ${posts.length}/30 posts · ${daysLeft}d left · ${dailyTarget}/day needed`);
+    if (viewsNeeded > 0) {
+      lines.push(`👁️ *Views:* ${totalViews}/500 — *${viewsNeeded} more views needed*`);
+    } else {
+      lines.push(`👁️ *Views:* ${totalViews}/500 ✅`);
+    }
     lines.push(`📅 *Today:* ${todayPosts}/${dailyTarget} posted ${goalMet ? '✅ ON TRACK' : '⏳ NEEDS POSTS'}\n`);
   }
 
