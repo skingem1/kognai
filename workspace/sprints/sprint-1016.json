@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-1016",
+  "title": "OPS — /caption-next: auto-pick top unposted video + show caption",
+  "description": "Gate urgency: 2/30 posts, 14 days. The posting flow requires operator to know a video_id before they can run /caption. Add /caption-next command that auto-picks the highest viral_score unposted video and shows its caption + file path + post-record command in one message. Zero friction.",
+  "block": "OPS",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1016-01",
+      "title": "Add cmdCaptionNext() to cmd-content.ts",
+      "type": "feature",
+      "task_target": "scripts/telegram-commands/cmd-content.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1016",
+      "description": "Add cmdCaptionNext() to cmd-content.ts. Reads auto-delivered.jsonl, filters out already-posted IDs from manual-posts.jsonl (DRY_METHODS excluded), picks top by viral_score. Calls buildTikTokCaption(videoId). Returns: video_id, caption block, mp4 file path, viral_score, /record command. Register /caption-next in telegram-bot.ts."
+    }
+  ]
+}

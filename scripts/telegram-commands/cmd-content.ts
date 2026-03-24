@@ -1023,3 +1023,64 @@ export function cmdValErrors(): string {
   out.push('\n_Thresholds: 4-7 segments, 20-35s, 6+ interrupts_');
   return out.join('\n');
 }
+
+// Sprint 1016: /caption-next — auto-pick top unposted video and show caption
+const DRY_METHODS_CN = ['browser-post-dry', 'batch-browser-dry', 'dry'];
+export function cmdCaptionNext(): string {
+  const deliveredPath = path.join(ROOT, 'workspace', 'scs001', 'auto-delivered.jsonl');
+  const manualPath    = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
+
+  if (!fs.existsSync(deliveredPath)) return '⚠️ No auto-delivered.jsonl found. Generate videos first.';
+
+  // Load posted IDs (excluding dry runs)
+  const postedIds = new Set<string>();
+  if (fs.existsSync(manualPath)) {
+    fs.readFileSync(manualPath, 'utf-8').split('\n').filter(l => l.trim()).forEach(l => {
+      try {
+        const e = JSON.parse(l);
+        if (!e.video_id) return;
+        if (e.method && DRY_METHODS_CN.some(d => String(e.method).includes(d))) return;
+        postedIds.add(e.video_id);
+      } catch {}
+    });
+  }
+
+  // Find top unposted candidate with an mp4
+  const candidates: Array<{ video_id: string; viral_score: number; mp4: string; topic?: string }> = [];
+  fs.readFileSync(deliveredPath, 'utf-8').split('\n').filter(l => l.trim()).forEach(l => {
+    try {
+      const e = JSON.parse(l);
+      if (!e.video_id || postedIds.has(e.video_id)) return;
+      const mp4 = e.mp4_path && fs.existsSync(e.mp4_path) ? e.mp4_path : findCaptionedMp4(e.video_id);
+      if (mp4) candidates.push({ video_id: e.video_id, viral_score: e.viral_score ?? 0, mp4, topic: e.topic });
+    } catch {}
+  });
+
+  if (candidates.length === 0) return '⚠️ No unposted videos with mp4 found. Check /postnext.';
+
+  candidates.sort((a, b) => b.viral_score - a.viral_score);
+  const top = candidates[0];
+  const caption = buildTikTokCaption(top.video_id);
+  const exp = getExperimentData(top.video_id);
+
+  const lines: string[] = [
+    `🎯 *Next video to post*`,
+    `\`${top.video_id}\` · score: ${top.viral_score.toFixed(2)}`,
+    '',
+    top.topic ? `📝 ${top.topic.slice(0, 70)}` : '',
+    '',
+    `*Caption (copy & paste into TikTok):*`,
+    `\`\`\``,
+    caption,
+    `\`\`\``,
+    '',
+    `📁 File: \`${top.mp4}\``,
+    '',
+    `_After posting, record it:_`,
+    `\`/record ${top.video_id} 0\``,
+    '',
+    `(${candidates.length - 1} more unposted · ${postedIds.size}/30 gate posts)`,
+  ].filter(l => l !== undefined);
+
+  return lines.join('\n');
+}
