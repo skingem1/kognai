@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-1030",
+  "title": "OPS — /help: add new commands from Sprints 1015-1029",
+  "description": "Update cmdHelp() to list /caption-next, /deliver-next, /godman-smoke, /godman-thread, and update /record description to mention TikTok URL support.",
+  "block": "OPS",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1030-01",
+      "title": "Add new commands to cmdHelp() in cmd-help.ts",
+      "type": "feature",
+      "task_target": "scripts/telegram-commands/cmd-help.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1030",
+      "description": "Add /caption-next, /deliver-next, /godman-smoke, /godman-thread after /godman line. Update /record to note TikTok URL support."
+    }
+  ]
+}

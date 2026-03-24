@@ -30,7 +30,7 @@ export function cmdHelp(): string {
     `/gate      — Phase 1.5 gate countdown\n` +
     `/queue     — Unposted videos ranked by viral score\n` +
     `/review    — Latest generated video details\n` +
-    `/record    — Record a manual TikTok post\n` +
+    `/record    — Record a manual TikTok post (usage: /record <id> <views> [tiktok_url])\n` +
     `/posted    — Mark last auto-delivered video as posted\n` +
     `/deliver   — Batch-send ready videos with captions\n` +
     `/publish   — One-tap publish to TikTok + IG + YouTube via Blotato\n` +
@@ -82,6 +82,10 @@ export function cmdHelp(): string {
     `/hooktest  — Hook formula A/B test rankings\n` +
     `/formatstats — Video format performance breakdown\n` +
     `/godman   — Godman Protocols launch readiness\n` +
+    `/godman-smoke — Run smoke tests on all 7 Godman protocols\n` +
+    `/godman-thread — Show X launch megathread (10 tweets, copy-paste)\n` +
+    `/caption-next — Auto-pick top unposted video + show TikTok caption\n` +
+    `/deliver-next — Send top unposted video mp4 file to Telegram\n` +
     `/changelog — Recent sprints shipped\n` +
     `/besttime  — Optimal posting time analysis\n` +
     `/export    — Batch export manifest for posting\n` +
