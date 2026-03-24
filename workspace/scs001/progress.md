@@ -6125,3 +6125,13 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - AAR/Crystallise: lib modules not found, noted
 - Issues: none
 - Timestamp: 2026-03-24T00:00:00Z
+
+## Sprint 1151 — OPS Telegram wave 30
+- Status: PASS
+- Commit: c7d5f702
+- Files modified: scripts/telegram-commands/cmd-system.ts
+- Files created: workspace/sprints/sprint-1151.json
+- Signals added: videoValidSection (video-validation.json), pipelineMetricsSection (pipeline-metrics.json), achiriSafetySection (achiri-safety-audit.json)
+- Swarm used: no (file >2000 lines, wrote directly)
+- Issues: none
+- Timestamp: 2026-03-24T00:00:00Z
