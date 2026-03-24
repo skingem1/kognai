@@ -1,0 +1,10 @@
+{
+  "sprint_id": "sprint-979",
+  "title": "ACHIRI-SMOKE-TEST — HTTP API smoke test for all endpoints",
+  "description": "Create agents/achiri/smoke.test.ts that starts the Achiri server, hits all endpoints (health, chat, stats, profile, export, memory delete), and verifies responses. Critical for April 25 alpha launch confidence.",
+  "block": "ACHIRI",
+  "source": "queue-exhausted-alpha-prep",
+  "tasks": [
+    { "id": "979-01", "title": "Create smoke.test.ts with all endpoint tests", "type": "test", "task_target": "agents/achiri/smoke.test.ts", "agent": "coder", "status": "pending", "priority": "high", "sprint_id": "sprint-979" }
+  ]
+}
