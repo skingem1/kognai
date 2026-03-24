@@ -6048,3 +6048,10 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Files modified: daily-digest.ts (getSmokeTest: staleness detection >24h)
 - Test: 115/115 PASS
 - Timestamp: 2026-03-24T17:00Z
+
+## Sprint 1074 — PHASE2
+- Status: PASS
+- Commit: (pending)
+- Files modified: cmd-stripe.ts (cmdAchiri: re-engagement stats from reengage-log.jsonl)
+- Test: 115/115 PASS
+- Timestamp: 2026-03-24T17:05Z

@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1074",
+  "title": "PHASE2 — Achiri /reengage: surface daily re-engagement count in /achiri",
+  "description": "Added re-engagement stats (today count + total) to /achiri output by reading reengage-log.jsonl.",
+  "block": "PHASE2",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1074-01",
+      "title": "Add re-engagement stats to cmdAchiri from reengage-log.jsonl",
+      "type": "feature",
+      "task_target": "scripts/telegram-commands/cmd-stripe.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1074"
+    }
+  ]
+}

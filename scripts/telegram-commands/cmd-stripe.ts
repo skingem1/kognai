@@ -378,6 +378,19 @@ export function cmdAchiri(): string {
     }
     lines.push('');
 
+    // Sprint 1074: Re-engagement stats
+    const reengagePath = path.join(ROOT, 'workspace', 'achiri', 'reengage-log.jsonl');
+    if (fs.existsSync(reengagePath)) {
+      const reLines = fs.readFileSync(reengagePath, 'utf-8').split('\n').filter(l => l.trim());
+      const today = new Date().toISOString().slice(0, 10);
+      let todayCount = 0;
+      for (const l of reLines) {
+        try { if (JSON.parse(l).sentAt?.startsWith(today)) todayCount++; } catch {}
+      }
+      lines.push(`*Re-engagement:* ${todayCount} today / ${reLines.length} total`);
+      lines.push('');
+    }
+
     const tgToken = process.env.ACHIRI_TELEGRAM_BOT_TOKEN ? 'SET' : 'NOT SET';
     lines.push(`*Telegram Bot:* ${tgToken === 'SET' ? '✅' : '⚠️'} Token: ${tgToken}`);
 
