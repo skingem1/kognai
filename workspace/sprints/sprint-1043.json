@@ -1,18 +1,18 @@
 {
   "sprint_id": "sprint-1043",
-  "title": "GODMAN-LAUNCH — Add npm version + license + node badges to all 8 READMEs",
-  "description": "All 7 protocol READMEs + SDK README were missing npm version badges. Added npm version, Apache-2.0 license, and Node >=20 shields.io badges for professional launch presentation on April 14.",
-  "block": "GODMAN-PROTOCOLS",
-  "source": "queue-prescribed",
+  "title": "QUALITY — E2E posting flow test: deliver → caption → record → gate validation",
+  "description": "Test the critical posting workflow end-to-end without actual TikTok API calls. Validates video selection, caption generation, post recording, and gate count accuracy.",
+  "block": "QUALITY",
+  "source": "queue-empty-auto",
   "tasks": [
     {
       "id": "1043-01",
-      "title": "Add shields.io badges to all 8 godman protocol READMEs",
+      "title": "Create scripts/test-posting-flow.ts E2E test",
       "type": "feature",
-      "task_target": "workspace/godman-protocols/*/README.md",
+      "task_target": "scripts/test-posting-flow.ts",
       "agent": "coder",
-      "status": "done",
-      "priority": "medium",
+      "status": "pending",
+      "priority": "high",
       "sprint_id": "sprint-1043"
     }
   ]
