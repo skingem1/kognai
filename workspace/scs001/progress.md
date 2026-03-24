@@ -6427,3 +6427,15 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Test: runtime validation — output: "📺 *YouTube:* 18 total · last: `v2-a6511e70` 8h ago"
 - Swarm used: no
 - Timestamp: 2026-03-24T22:45:00Z
+
+## Sprint 1194 — SPIELBERG
+- Status: PASS
+- Commit: 98083ae2
+- Files created: scripts/telegram-commands/cmd-spielberg.ts, workspace/sprints/sprint-1194.json
+- Files modified: scripts/telegram-bot.ts, scripts/telegram-commands/cmd-help.ts
+- Function: cmdDemos() — shows recording status for 7 Godman protocol demos (AMF/DRS/LAX/PACT/SCORE/SIGNAL/SOUL). Checks code-demo-runs/<id>/<id>.mp4, shows file size+age for recorded, trigger commands for unrecorded. Registered as /demos command.
+- Test: runtime validation — output correct (0/7 recorded, trigger commands shown, last batch info)
+- Pipeline: Spielberg scaffold (956) + post-production (957) + demo scripts (989) + status command (1194)
+- Swarm used: no (telegram-bot.ts 2800+ lines, cmd-help.ts — files too large for swarm)
+- AAR: aar-middleware module not found — noted
+- Timestamp: 2026-03-24T23:00:00Z
