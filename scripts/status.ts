@@ -9,6 +9,7 @@
 
 import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
+import { execSync } from 'child_process';
 import * as dotenv from 'dotenv';
 
 dotenv.config({ path: join(process.cwd(), '.env') });
@@ -165,6 +166,34 @@ function architectureSection(): void {
   } catch { console.log(`  Escalations: ${warn('dir unreadable')}`); }
 }
 
+// ── Cron Health ──────────────────────────────────────────────────────────────
+function cronSection(): void {
+  console.log(heading('\n[Cron Health]'));
+  const CRONS = [
+    { name: 'scs001-validator',     label: 'Pipeline validator (6am)' },
+    { name: 'scs001-healer',        label: 'PM2 auto-healer (*/5m)' },
+    { name: 'scs001-queue-archiver',label: 'Queue archiver (midnight)' },
+    { name: 'scs001-remind-noon',   label: 'Posting reminder noon' },
+    { name: 'scs001-remind-evening',label: 'Posting reminder 7pm' },
+    { name: 'scs001-youtube-upload',label: 'YouTube upload (7:30am)' },
+  ];
+  let pm2List: Array<{ name: string; pm2_env?: { status?: string } }> = [];
+  try {
+    pm2List = JSON.parse(execSync('pm2 jlist', { timeout: 5000, encoding: 'utf8' }));
+  } catch { /* pm2 not running */ }
+  const pm2Map = new Map(pm2List.map(p => [p.name, p.pm2_env?.status ?? 'unknown']));
+  for (const cron of CRONS) {
+    if (pm2Map.has(cron.name)) {
+      const status = pm2Map.get(cron.name)!;
+      const line = status === 'errored' ? fail(`${cron.name} — ${cron.label} [${status}]`)
+        : ok(`${cron.name} — ${cron.label}`);
+      console.log(`  ${line}`);
+    } else {
+      console.log(`  ${warn(`${cron.name} — NOT in PM2 (run: pm2 start ecosystem.config.js --only ${cron.name})`)}`);
+    }
+  }
+}
+
 // ── Action Items ─────────────────────────────────────────────────────────────
 function actionItems(): void {
   const gate = readJSON<{ raw: { posts_count: number }; urgency: string }>('workspace/gates/phase1-5-gate.json');
@@ -191,6 +220,7 @@ function main(): void {
   achiriSection();
   godmanSection();
   architectureSection();
+  cronSection();
   envSection();
   actionItems();
 

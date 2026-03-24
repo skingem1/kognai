@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-1007",
+  "title": "OPS — Add cron health section to /status showing new PM2 crons",
+  "description": "The 6 new PM2 crons added in sprints 1001-1006 (scs001-validator, scs001-healer, scs001-queue-archiver, scs001-remind-noon, scs001-remind-evening, scs001-youtube-upload) are invisible to the operator. Add a compact cronSection() to scripts/status.ts that calls pm2 jlist and shows each cron: registered/missing + last status.",
+  "block": "OPS",
+  "source": "queue-exhausted-ops",
+  "tasks": [
+    {
+      "id": "1007-01",
+      "title": "Add cronSection() to scripts/status.ts",
+      "type": "feature",
+      "task_target": "scripts/status.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1007",
+      "description": "Add cronSection() that calls execSync('pm2 jlist') and checks for 6 named processes: scs001-validator, scs001-healer, scs001-queue-archiver, scs001-remind-noon, scs001-remind-evening, scs001-youtube-upload. For each: show ok (registered) or warn (missing from PM2). Call cronSection() in main(). Keep file under 230 lines."
+    }
+  ]
+}
