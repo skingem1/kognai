@@ -5848,3 +5848,13 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (multi-file refactor, direct write)
 - Issues: none
 - Timestamp: 2026-03-24T12:42Z
+
+## Sprint 1031 — INFRA
+- Status: PASS
+- Commit: a1314435
+- Files modified: ecosystem.config.js
+- Test: visual (config change, PM2 will use on next restart)
+- Pipeline: achiri-telegram crash loop stopped (max_restarts:3)
+- Swarm used: no (single-line config)
+- Issues: ACHIRI_TELEGRAM_BOT_TOKEN not set (human action needed)
+- Timestamp: 2026-03-24T12:50Z
