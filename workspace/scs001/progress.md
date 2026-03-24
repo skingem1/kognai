@@ -5067,3 +5067,15 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (direct write)
 - Issues: import extension .js → no extension (ts-node CJS mode). Fixed.
 - Timestamp: 2026-03-24T23:30:00Z
+
+## Sprint 957 — SPIELBERG-02
+- Status: PASS
+- Commit: 65a2e494
+- Files created: scripts/spielberg/post-produce.ts, scripts/spielberg/test-demo.json
+- Files modified: scripts/spielberg/index.ts (wired post-production), scripts/spielberg/types.ts (aligned schema)
+- Test: End-to-end pipeline test — SUCCESS in 7.5s (cast → gif → mp4 with title/closing cards)
+- Output: workspace/scs001/code-demo-runs/test-hello-world/ (cast + gif + mp4 + meta.json)
+- Block: SPIELBERG
+- Swarm used: no (multi-file, pipeline integration)
+- Issues: asciinema v3 changed syntax (-- → -c flag), fixed in headlessRecord()
+- Timestamp: 2026-03-24T22:45:00Z

@@ -49,7 +49,7 @@
       "status": "done",
       "priority": "high",
       "rationale": "From Spielberg Spec tasks 545-04 to 545-06. Build asciinema recording mode (headless, programmatic keypress timing). Build post-production pipeline (reuse SCS-001 v2 Movie Editor FFmpeg patterns: title card 3s, caption overlays, closing card 5s). Output: 1920x1080, H.264+AAC, 30fps.",
-      "_note": "Shipped 2026-03-24 — commit 4ecf5478. post-produce.ts (133 lines), index.ts updated. --verify PASS."
+      "_note": "Shipped 2026-03-24 — commit 65a2e494. post-produce.ts + test-demo.json + headless recording fixed. E2E test: success in 7.5s."
     },
     {
       "sprint": 958,
