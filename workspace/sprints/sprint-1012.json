@@ -1,0 +1,31 @@
+{
+  "sprint_id": "sprint-1012",
+  "title": "SPIELBERG — Godman all-7 integration demo recording",
+  "description": "April 14 launch needs a marquee asset. Create a 90-second terminal demo showing all 7 Godman protocols working together: SOUL (constitution) → PACT (mandate) → AMF (message) → SIGNAL (event) → SCORE (evaluate) → LAX (budget) → DRS (allocate). Run Spielberg to produce the final mp4.",
+  "block": "SPIELBERG",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1012-01",
+      "title": "Create scripts/spielberg/godman-integration-demo.json — 7-protocol walkthrough",
+      "type": "feature",
+      "task_target": "scripts/spielberg/godman-integration-demo.json",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1012",
+      "description": "Create Spielberg demo script showing all 7 protocols in a real workflow: SOUL creates constitution, PACT creates mandate, AMF wraps in envelope, SIGNAL publishes event, SCORE evaluates the run, LAX checks budget, DRS allocates resource. Use require from workspace/godman-protocols/<proto>/dist/index.js for each. Show clear output at each step. Target 90s total. Caption each scene."
+    },
+    {
+      "id": "1012-02",
+      "title": "Run Spielberg on godman-integration-demo.json",
+      "type": "validation",
+      "task_target": "workspace/scs001/code-demo-runs/godman-integration-v1",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1012",
+      "description": "Run: npx ts-node scripts/spielberg/index.ts scripts/spielberg/godman-integration-demo.json. Verify mp4 produced. Report file size."
+    }
+  ]
+}
