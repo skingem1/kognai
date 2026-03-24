@@ -961,8 +961,21 @@ export async function cmdSmoke(chatId: string): Promise<void> {
     const failed = failMatch ? parseInt(failMatch[1]) : 0;
     const icon = failed === 0 ? '✅' : '❌';
 
+    // Sprint 1095: show last run timestamp
+    let lastRunStr = '';
+    try {
+      const smokePath = path.join(ROOT, 'reports', 'smoke-test-latest.json');
+      if (fs.existsSync(smokePath)) {
+        const prevSmoke = JSON.parse(fs.readFileSync(smokePath, 'utf-8'));
+        if (prevSmoke.timestamp) {
+          const ageH = (Date.now() - new Date(prevSmoke.timestamp).getTime()) / 3600000;
+          lastRunStr = ` · _prev: ${ageH < 1 ? `${Math.round(ageH * 60)}m ago` : `${Math.round(ageH)}h ago`}_`;
+        }
+      }
+    } catch {}
+
     const lines: string[] = [
-      `${icon} *Pipeline Smoke Test*`,
+      `${icon} *Pipeline Smoke Test*${lastRunStr}`,
       `${passed} passed, ${failed} failed`,
       '',
     ];
