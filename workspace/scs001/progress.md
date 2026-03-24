@@ -5436,3 +5436,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (multi-file, direct write)
 - Issues: none
 - Timestamp: 2026-03-24T08:35:00Z
+
+## Sprint 985 — GODMAN-SDK-CI-FIX
+- Status: PASS
+- Commit: 0c043346
+- Files created: workspace/sprints/sprint-985.json
+- Files modified: workspace/godman-protocols/sdk/package.json
+- Test: package.json reverted to file:../ refs; PUBLISH-CHECKLIST.md documents publish-time changes
+- Pipeline: CI regression fixed (Sprint 983 introduced ^0.2.0 which would fail in CI before npm publish)
+- Swarm used: no (config fix, direct write)
+- Issues: Sprint 983 prematurely changed deps; correct approach: change at publish time per checklist
+- Timestamp: 2026-03-24T23:45:00Z
