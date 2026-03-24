@@ -5108,3 +5108,13 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (design docs, direct write)
 - Issues: none
 - Timestamp: 2026-03-24T23:15:00Z
+
+## Sprint 960 — BOND-DESIGN
+- Status: PASS
+- Commit: b2b891cf
+- Files created: workspace/bond/bond-schema.ts, workspace/bond/enforcement-paths.md
+- Test: TypeScript typecheck — PASS
+- Block: BOND
+- Swarm used: no (design docs, direct write)
+- Issues: none
+- Timestamp: 2026-03-24T23:30:00Z
