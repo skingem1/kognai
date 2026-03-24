@@ -30,7 +30,7 @@ import { cmdHelp } from './telegram-commands/cmd-help';
 // Sprint 496: Import extracted command modules (Part 2: N-Z + interactive)
 import { cmdSession, cmdDone, cmdEndSession, cmdMenu } from './telegram-commands/cmd-session';
 import { cmdDeliver, cmdPublish, cmdPostNow, cmdPickup, cmdTodayCaptions, cmdBroadcast, cmdRefresh, cmdProduce, cmdProduceTopic, cmdInstagram, cmdInventory, cmdBatchDeliver, cmdStockpile, cmdBroadcastPause, cmdBroadcastResume, cmdPostBrowser, cmdPostAuto, cmdQuickstart, cmdV2Produce } from './telegram-commands/cmd-delivery';
-import { cmdCheckout, cmdSubscribers, cmdPortal, cmdFunnel, cmdAchiri, cmdTestStripe, cmdUsage, cmdAchiriData, cmdWaitlist } from './telegram-commands/cmd-stripe';
+import { cmdCheckout, cmdSubscribers, cmdPortal, cmdFunnel, cmdAchiri, cmdAlpha, cmdTestStripe, cmdUsage, cmdAchiriData, cmdWaitlist } from './telegram-commands/cmd-stripe';
 import { cmdStart, cmdTrial, cmdPlans } from './telegram-commands/cmd-onboarding';
 import { cmdLoraEval } from './telegram-commands/cmd-lora-eval';
 import { cmdWarmupStart, cmdWarmupComplete, cmdWarmupStatus } from './telegram-commands/cmd-warmup';
@@ -228,6 +228,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/valerrors':   response = cmdValErrors();          break;
     case '/changelog': response = cmdChangelog(parseInt(cmdArgs) || 10); break;
     case '/achiridata': response = cmdAchiriData();          break;
+    case '/alpha':      response = cmdAlpha();               break;
     case '/waitlist':   response = cmdWaitlist(cmdArgs);      break;
     case '/brainxstatus': response = cmdBrainxStatus();       break;
     case '/swarmhealth': response = cmdSwarmHealth();        break;

@@ -1249,5 +1249,26 @@ module.exports = {
       out_file: "/Users/tarekmnif/kognai/logs/constitution-agent-out.log",
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
+    {
+      // Sprint 985: Weekly Achiri alpha readiness report — sends to Telegram every Monday 9am
+      name: "achiri-alpha-weekly",
+      script: "./scripts/achiri/alpha-report.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: false,
+      watch: false,
+      cron_restart: "0 9 * * 1",
+      args: "--telegram",
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
+        TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN || "",
+        OWNER_TELEGRAM_CHAT_ID: process.env.OWNER_TELEGRAM_CHAT_ID || "",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/achiri-alpha-weekly-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/achiri-alpha-weekly-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
   ]
 };

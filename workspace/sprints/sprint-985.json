@@ -1,0 +1,11 @@
+{
+  "sprint_id": "sprint-985",
+  "title": "ACHIRI-ALPHA-OPS — /alpha Telegram command + weekly PM2 cron for alpha report",
+  "description": "Wire Sprint 984's alpha-report.ts into operator workflow: add /alpha Telegram command for on-demand reports and PM2 weekly cron that sends alpha status every Monday at 9am.",
+  "block": "ACHIRI",
+  "source": "queue-exhausted-alpha-ops",
+  "tasks": [
+    { "id": "985-01", "title": "Add /alpha Telegram command to telegram-bot.ts", "type": "feature", "task_target": "scripts/telegram-bot.ts", "agent": "coder", "status": "pending", "priority": "high", "sprint_id": "sprint-985" },
+    { "id": "985-02", "title": "Add achiri-alpha-weekly PM2 cron to ecosystem.config.js", "type": "feature", "task_target": "ecosystem.config.js", "agent": "coder", "status": "pending", "priority": "high", "sprint_id": "sprint-985" }
+  ]
+}

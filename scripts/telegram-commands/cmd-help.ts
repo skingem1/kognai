@@ -55,6 +55,7 @@ export function cmdHelp(): string {
     `/leaderboard — Speaker performance rankings\n` +
     `/updateviews — Update view count for a posted video\n` +
     `/achiri     — Achiri alpha readiness status\n` +
+    `/alpha      — Alpha launch report: gates, countdowns, verdict\n` +
     `/achiridata — Achiri analytics dashboard data\n` +
     `/waitlist   — Achiri waitlist management\n` +
     `/digest     — Daily digest: gate + queue + Stripe\n` +
