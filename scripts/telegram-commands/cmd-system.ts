@@ -786,8 +786,8 @@ export function cmdErrors(): string {
   const logDir = path.join(ROOT, 'logs');
   const cutoff = Date.now() - 86_400_000; // 24h ago
 
-  // Sprint 1080: Deduplicate repeated error lines — show "×N" instead of repeats
-  interface DedupError { name: string; line: string; count: number; mtime: number; }
+  // Sprint 1080 + 1091: Deduplicate repeated error lines — show "×N" + time window
+  interface DedupError { name: string; line: string; count: number; mtime: number; firstMtime: number; }
   const dedupMap = new Map<string, DedupError>();
 
   try {
@@ -812,8 +812,9 @@ export function cmdErrors(): string {
           if (existing) {
             existing.count++;
             existing.mtime = Math.max(existing.mtime, stat.mtimeMs);
+            existing.firstMtime = Math.min(existing.firstMtime, stat.mtimeMs);
           } else {
-            dedupMap.set(key, { name: processName, line: trimmed, count: 1, mtime: stat.mtimeMs });
+            dedupMap.set(key, { name: processName, line: trimmed, count: 1, mtime: stat.mtimeMs, firstMtime: stat.mtimeMs });
           }
         }
       } catch { /* skip unreadable */ }
@@ -829,7 +830,13 @@ export function cmdErrors(): string {
   if (errored.length === 0) {
     output.push('✅ *No PM2 process errors* in the last 24h — all clean.');
   } else {
-    output.push(`⚠️ *PM2 Errors (last 24h)* — ${errored.length} unique error${errored.length === 1 ? '' : 's'}\n`);
+    // Sprint 1091: show time window (earliest to latest error)
+    const allMtimes = errored.map(e => e.firstMtime).concat(errored.map(e => e.mtime));
+    const windowStart = Math.min(...allMtimes);
+    const windowEnd = Math.max(...allMtimes);
+    const fmtTime = (ms: number) => { const ago = Math.round((Date.now() - ms) / 60_000); return ago < 60 ? `${ago}m ago` : `${Math.round(ago / 60)}h ago`; };
+    const windowStr = windowStart === windowEnd ? fmtTime(windowStart) : `${fmtTime(windowStart)} → ${fmtTime(windowEnd)}`;
+    output.push(`⚠️ *PM2 Errors (last 24h)* — ${errored.length} unique · _${windowStr}_\n`);
     for (const e of errored.slice(0, MAX_ENTRIES)) {
       const ago = Math.round((Date.now() - e.mtime) / 60_000);
       const timeStr = ago < 60 ? `${ago}m ago` : `${Math.round(ago / 60)}h ago`;
