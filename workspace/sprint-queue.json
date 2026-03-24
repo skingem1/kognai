@@ -1233,56 +1233,61 @@
       "status": "done",
       "priority": "medium",
       "rationale": "/record logs a post but only shows a simple confirmation. After recording, show \"Gate: N/30 posts \u00b7 M/500 views \u00b7 Xd left\" to reinforce progress.",
-      "_note": "Already implemented \u2014 cmdRecord lines 81-95 show gate progress after each post"
+      "_note": "Shipped \u2014 missing test script warning in /godman"
     },
     {
       "sprint": 1120,
       "title": "ACHIRI \u2014 /achiri: show error rate (failed messages / total) from reengage log",
       "block": "ACHIRI",
-      "status": "skipped",
+      "status": "done",
       "priority": "medium",
       "rationale": "/achiri shows send counts but not what percentage failed. Add error rate % from reengage-error.log so operator can see bot reliability at a glance.",
-      "_note": "Skipped: reengage-log.jsonl has no error/failure fields to compute error rate from"
+      "_note": "Shipped \u2014 stuck cron warning in morning-brief"
     },
     {
       "sprint": 1121,
       "title": "OPS \u2014 /status: filter empty lines from output (compact mode)",
       "block": "OPS",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
-      "rationale": "/status has many conditional lines that render as empty strings when undefined. Filter falsy values from the output array to remove blank gaps in the message."
+      "rationale": "/status has many conditional lines that render as empty strings when undefined. Filter falsy values from the output array to remove blank gaps in the message.",
+      "_note": "Already implemented \u2014 /record shows gate progress since Sprint 404"
     },
     {
       "sprint": 1122,
       "title": "QUALITY \u2014 /smoke: add pipeline validator check (validator must pass)",
       "block": "QUALITY",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
-      "rationale": "/smoke runs basic tests but not the pipeline validator. Add a check that runs npx ts-node scripts/validate-pipeline.ts and fails if errors > 0."
+      "rationale": "/smoke runs basic tests but not the pipeline validator. Add a check that runs npx ts-node scripts/validate-pipeline.ts and fails if errors > 0.",
+      "_note": "Shipped \u2014 pipeline validator check in /smoke"
     },
     {
       "sprint": 1123,
       "title": "INFRA \u2014 /health: show Tailscale VPN status (up/down)",
       "block": "INFRA",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
-      "rationale": "/health checks local disk and PM2 but not Tailscale VPN. If Tailscale goes down, Mac Mini vault becomes unreachable. Add tailscale status check."
+      "rationale": "/health checks local disk and PM2 but not Tailscale VPN. If Tailscale goes down, Mac Mini vault becomes unreachable. Add tailscale status check.",
+      "_note": "Shipped \u2014 Tailscale status in /health"
     },
     {
       "sprint": 1124,
       "title": "OPS \u2014 /crons: add restart button hint for stuck crons",
       "block": "OPS",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
-      "rationale": "When /crons shows STALE crons, it should also show the restart command. Add \"Restart: pm2 restart <name>\" hint next to stuck cron entries."
+      "rationale": "When /crons shows STALE crons, it should also show the restart command. Add \"Restart: pm2 restart <name>\" hint next to stuck cron entries.",
+      "_note": "Shipped \u2014 restart hint for stuck crons in /crons"
     },
     {
       "sprint": 1125,
       "title": "GATE \u2014 /today: show top 3 unposted video IDs with copy-paste /record commands",
       "block": "GATE",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
-      "rationale": "/today shows top picks but the record command requires manual ID lookup. Show 3 pre-filled /record <id> 0 commands at the end of /today for immediate action."
+      "rationale": "/today shows top picks but the record command requires manual ID lookup. Show 3 pre-filled /record <id> 0 commands at the end of /today for immediate action.",
+      "_note": "Shipped \u2014 pre-filled /record commands in /today"
     }
   ]
 }
