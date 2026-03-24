@@ -3097,15 +3097,28 @@ export function cmdGodman(): string {
   } catch { /* unreachable */ }
   lines.push(`🌐 npmjs.com: ${npmRegistryOk ? '✅ reachable' : '❌ unreachable — check network before publish'}`);
 
-  // Sprint 1136 (wave 18): git tag status per protocol
+  // Sprint 1136 (wave 18) + Sprint 1167: git tag version consistency check
   try {
     const tags = execSync('git tag 2>/dev/null', { cwd: ROOT, encoding: 'utf-8', timeout: 5000, stdio: ['pipe','pipe','pipe'] }).trim().split('\n').filter(Boolean);
-    const taggedProtos = new Set(PROTOCOLS.filter(p => tags.some(t => t.includes(p))));
     lines.push('');
-    lines.push('*Git tags:*');
+    lines.push('*Git tags vs package.json:*');
     for (const proto of PROTOCOLS.concat(['sdk'])) {
-      const tagged = taggedProtos.has(proto) || tags.some(t => t.includes(proto));
-      lines.push(`  ${tagged ? '✅' : '❌'} ${proto} — ${tagged ? 'tagged' : 'no tag yet'}`);
+      // Read package.json version
+      let pkgVer = '';
+      try { pkgVer = JSON.parse(fs.readFileSync(path.join(BASE, proto, 'package.json'), 'utf-8')).version || ''; } catch {}
+      // Find tag that references this protocol
+      const protoTags = tags.filter(t => t.includes(proto));
+      if (protoTags.length === 0) {
+        lines.push(`  ❌ ${proto} — no tag yet${pkgVer ? ` (pkg v${pkgVer})` : ''}`);
+      } else {
+        // Check if any tag contains the package version
+        const versionMatch = pkgVer && protoTags.some(t => t.includes(pkgVer));
+        if (versionMatch) {
+          lines.push(`  ✅ ${proto} — tag matches v${pkgVer}`);
+        } else {
+          lines.push(`  ⚠️ ${proto} — tag exists but version drifted${pkgVer ? ` (pkg v${pkgVer}, tags: ${protoTags.join(', ')})` : ''}`);
+        }
+      }
     }
   } catch { /* skip */ }
 

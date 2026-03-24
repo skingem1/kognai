@@ -1,0 +1,21 @@
+{
+  "sprint_id": "sprint-1167",
+  "title": "GODMAN-LAUNCH — /godman: check git tag matches package.json version per protocol",
+  "description": "Extend the git tags section in cmdGodman() to compare each protocol's git tag version against its package.json version. Show ✅ if matching, ⚠️ if tag exists but version drifted, ❌ if no tag yet.",
+  "source": "queue-prescribed",
+  "block": "GODMAN-PROTOCOLS",
+  "tasks": [
+    {
+      "id": "1167-01",
+      "title": "Replace simple tag-present check with version-consistency check in git tags section",
+      "type": "feature",
+      "task_type": "ux",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1167",
+      "notes": "File >3000 lines — swarm bypassed, written directly."
+    }
+  ]
+}
