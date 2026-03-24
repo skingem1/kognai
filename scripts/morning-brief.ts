@@ -78,10 +78,11 @@ function main(): void {
     return;
   }
 
-  // Top unposted video
+  // Top unposted video + queue depth
   const deliveries = readJsonLines(path.join(ROOT, 'workspace/scs001/auto-delivered.jsonl'));
-  const top = deliveries
-    .filter((e: any) => e.video_id && !postedIds.has(e.video_id))
+  const unpostedDeliveries = deliveries.filter((e: any) => e.video_id && !postedIds.has(e.video_id));
+  const queueDepth = unpostedDeliveries.length;
+  const top = unpostedDeliveries
     .sort((a: any, b: any) => (b.viral_score ?? 0) - (a.viral_score ?? 0))[0];
 
   const paceIcon = todayPosts >= dailyObligation ? '✅' : '🎯';
@@ -122,6 +123,7 @@ function main(): void {
     `${paceIcon} Today: *${todayPosts}/${dailyObligation}* posted`,
     ...(gateEtaLine ? [gateEtaLine] : []),
     ...(totalViews < 100 ? [`👁️ Views: ${totalViews}/500 — engagement lag, boost with CTAs`] : []),
+    `📦 Queue: *${queueDepth}* unposted video${queueDepth !== 1 ? 's' : ''} ready`,
     '',
   ];
 

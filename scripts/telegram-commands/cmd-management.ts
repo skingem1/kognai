@@ -1768,6 +1768,23 @@ export function cmdStatus(): string {
     }
   }
 
+  // Sprint 1119 (wave 12): time since last post for queue line
+  let lastPostAge = '';
+  if (posts.length > 0) {
+    const lastTs = posts
+      .map((p: any) => new Date(p.posted_at ?? p.recorded_at).getTime())
+      .filter((t: number) => !isNaN(t))
+      .reduce((a: number, b: number) => Math.max(a, b), 0);
+    if (lastTs > 0) {
+      const ageH = (now.getTime() - lastTs) / 3600000;
+      lastPostAge = ageH < 1
+        ? ` · last: ${Math.round(ageH * 60)}m ago`
+        : ageH < 24
+          ? ` · last: ${Math.round(ageH)}h ago`
+          : ` · last: ${Math.round(ageH / 24)}d ago`;
+    }
+  }
+
   // Sprint 1101: views progress bar
   const viewPct = Math.min(100, Math.round((totalViews / 500) * 100));
   const viewFilled = Math.round(viewPct / 5);
@@ -1786,7 +1803,7 @@ export function cmdStatus(): string {
       ? `✅ *OBLIGATION MET* — ${todayPosts}/${dailyObligation} today · ${paceNeeded.toFixed(1)}/day needed`
       : `⚠️ *OBLIGATION UNMET* — ${todayPosts}/${dailyObligation} today · post *${dailyObligation - todayPosts} more now*`,
     streak > 0 ? `🔥 Streak: *${streak}* days` : (daysSinceLastPost > 0 ? `💤 Streak: 0 — last post *${daysSinceLastPost}d ago*` : `💤 Streak: 0 — no posts yet`),
-    `📦 Queue: *${readyCount}* ready · ${unposted.length} total`,
+    `📦 Queue: *${readyCount}* ready · ${unposted.length} total${lastPostAge}`,
     pipelineLine,
     cronLine,
     watchdogLine,

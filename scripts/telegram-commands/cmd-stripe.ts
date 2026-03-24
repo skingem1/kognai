@@ -504,6 +504,21 @@ export function cmdAchiri(): string {
       lines.push(`  _could not read reengage log_`);
     }
 
+    // Sprint 1121 (wave 12): test suite pass rate from achiri-test-suite.json
+    try {
+      const testSuitePath = path.join(ROOT, 'reports', 'achiri-test-suite.json');
+      if (fs.existsSync(testSuitePath)) {
+        const ts = JSON.parse(fs.readFileSync(testSuitePath, 'utf-8'));
+        const totalTests = ts.total ?? ts.tests?.length ?? 0;
+        const passed = ts.passed ?? ts.pass ?? ts.tests?.filter((t: any) => t.pass || t.status === 'pass').length ?? 0;
+        const failed = totalTests - passed;
+        const pct = totalTests > 0 ? Math.round((passed / totalTests) * 100) : 0;
+        const icon = failed === 0 ? '✅' : failed <= 2 ? '⚠️' : '❌';
+        lines.push('');
+        lines.push(`🧪 *Test Suite:* ${icon} ${passed}/${totalTests} pass (${pct}%)${failed > 0 ? ` · ${failed} failing` : ''}`);
+      }
+    } catch { /* skip */ }
+
     return lines.join('\n');
   } catch (e: any) {
     return `❌ Error reading Achiri readiness: ${e.message}`;

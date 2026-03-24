@@ -894,6 +894,128 @@ function generateItems(startSprint: number, existingTitles: Set<string> = new Se
     rationale: 'Morning brief shows posts done and days left but not the projected date when gate will be met at current pace. Add ETA to help operator visualize trajectory.',
   });
 
+  // Wave 12 templates — mature operations + Achiri prep
+  infraItems.push({
+    title: 'OPS — /status: show time since last post in the queue section',
+    block: 'OPS',
+    rationale: '/status shows streak but not how long ago the last post was when streak is 0. Add "Last post: Xh ago" or "Last post: today" near the queue section for quick ops check.',
+  });
+
+  infraItems.push({
+    title: 'GATE — /today: show yesterday views total alongside today gate stats',
+    block: 'GATE',
+    rationale: '/today shows cumulative views but not yesterday specifically. Adding "Yesterday: N views" helps operator see if a post is gaining traction day-over-day.',
+  });
+
+  infraItems.push({
+    title: 'ACHIRI — /achiri: show test suite pass rate from achiri-test-suite.json',
+    block: 'ACHIRI',
+    rationale: '/achiri shows readiness % but not test suite results. Adding test pass rate from reports/achiri-test-suite.json makes quality visible before alpha.',
+  });
+
+  infraItems.push({
+    title: 'INFRA — /report: add Achiri test suite status to system report',
+    block: 'INFRA',
+    rationale: '/report shows gate progress but not Achiri test quality. Adding test pass/fail from achiri-test-suite.json gives full picture of system health.',
+  });
+
+  infraItems.push({
+    title: 'OPS — /morning-brief: show unposted video count (queue depth)',
+    block: 'OPS',
+    rationale: 'Morning brief shows posts done but not how many unposted videos are ready. Adding "Queue: N videos ready to post" motivates operator to use pipeline output.',
+  });
+
+  infraItems.push({
+    title: 'QUALITY — /smoke: add memory check (warn if PM2 processes exceed 512MB)',
+    block: 'QUALITY',
+    rationale: '/smoke tests pipeline but not memory health. Add a check that flags PM2 processes using >512MB heap so memory leaks are caught early.',
+  });
+
+  infraItems.push({
+    title: 'GODMAN-LAUNCH — /godman: check git tag matches package.json version per protocol',
+    block: 'GODMAN-PROTOCOLS',
+    rationale: 'On launch day, git tags and package.json versions should match for all protocols. Add a version consistency check to catch drift before publishing.',
+  });
+
+  infraItems.push({
+    title: 'OPS — /errors: add filter by process name (/errors <process>)',
+    block: 'OPS',
+    rationale: '/errors shows all process errors. When debugging a specific process, operator must scroll past others. Add optional filter: /errors achiri shows only achiri errors.',
+  });
+
+  infraItems.push({
+    title: 'GATE — /record: auto-suggest next /view-update command after recording',
+    block: 'GATE',
+    rationale: 'After recording a post, operator should schedule a view update in 24-48h. Add "Run /view-update <id> tomorrow to track views" to the confirmation message.',
+  });
+
+  infraItems.push({
+    title: 'OPS — /weekly-report: compare this week vs last week post count',
+    block: 'OPS',
+    rationale: '/weekly-report shows this week total but not growth. Add "vs last week: +N / -N posts" to show if posting is accelerating or slowing down.',
+  });
+
+  // Wave 13 templates — advanced ops + launch prep
+  infraItems.push({
+    title: 'OPS — /status: show Achiri alpha countdown in header',
+    block: 'OPS',
+    rationale: '/status shows Godman and Achiri lines but Achiri days are buried. Show Achiri alpha countdown with urgency icon in the header section for visibility.',
+  });
+
+  infraItems.push({
+    title: 'GATE — /today: show pace comparison (posts/day vs needed/day)',
+    block: 'GATE',
+    rationale: '/today shows gate stats but not pace vs target. Adding "X/day actual vs Y/day needed" makes the gap immediately actionable.',
+  });
+
+  infraItems.push({
+    title: 'GODMAN-LAUNCH — /godman: show total published package count',
+    block: 'GODMAN-LAUNCH',
+    rationale: '/godman shows per-protocol test status but not how many packages are published to npm. Add total count: "N/8 packages published".',
+  });
+
+  infraItems.push({
+    title: 'OPS — /health: show memory usage per PM2 process in table',
+    block: 'OPS',
+    rationale: '/health shows total memory but not per-process breakdown. Show top 5 processes by memory to identify leaks early.',
+  });
+
+  infraItems.push({
+    title: 'QUALITY — /errors: show error trend (up/flat/down vs yesterday)',
+    block: 'QUALITY',
+    rationale: '/errors shows current errors but not trend. Adding "vs yesterday: +N / -N errors" shows if things are improving or degrading.',
+  });
+
+  infraItems.push({
+    title: 'OPS — /weekly-report: show views per post average',
+    block: 'OPS',
+    rationale: '/weekly-report shows total views but not efficiency. Add "avg views/post: N" so operator can see if content quality is improving.',
+  });
+
+  infraItems.push({
+    title: 'ACHIRI — /achiri: show last active user timestamp',
+    block: 'ACHIRI',
+    rationale: '/achiri shows total messages but not when the last real user interaction happened. Add "last active: Xh ago" to show engagement recency.',
+  });
+
+  infraItems.push({
+    title: 'OPS — /crons: show expected next fire time for each cron',
+    block: 'OPS',
+    rationale: '/crons shows cron status but not when each will next fire. Adding next-fire time helps operator know when to expect results.',
+  });
+
+  infraItems.push({
+    title: 'GATE — /gate: show views needed per remaining day',
+    block: 'GATE',
+    rationale: '/gate shows total views needed but not the daily view rate required. Add "need X views/day" to make the target concrete.',
+  });
+
+  infraItems.push({
+    title: 'OPS — /morning-brief: add Achiri status line when alpha <7d away',
+    block: 'OPS',
+    rationale: 'Morning brief focuses on TikTok gate but ignores Achiri alpha deadline. When <7d to alpha, add a line prompting /achiri check.',
+  });
+
   // Fill remaining slots (skip duplicates of already-completed items)
   for (const item of infraItems) {
     if (items.length >= 10) break;
