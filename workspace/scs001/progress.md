@@ -6206,3 +6206,13 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - AAR: module not found — skipped
 - Issues: CTO gate module not found — warned, proceeded
 - Timestamp: 2026-03-24T19:00:00Z
+
+## Sprint 1159 — OPS Telegram wave 38
+- Status: PASS
+- Commit: 4274ff1d
+- Files created: workspace/sprints/sprint-1159.json
+- Files modified: scripts/telegram-commands/cmd-system.ts
+- Signals added: autoDeliveredTodaySection (📬 18 today · 554 total), validationErrorsSection (⚠️ 26 errors), telegramSentSection (📱 1 today · 15 total)
+- Swarm used: no (file >3000 lines, wrote directly)
+- Issues: none
+- Timestamp: 2026-03-24T19:15:00Z
