@@ -589,6 +589,67 @@ function generateItems(startSprint: number, existingTitles: Set<string> = new Se
     rationale: 'Before npm publish on Apr 14, each protocol should pass `npm pack --dry-run`. Add a check to /godman that runs pack dry-run and shows which protocols are publish-ready.',
   });
 
+  // Wave 7 templates — final pre-launch + Achiri polish
+  infraItems.push({
+    title: 'OPS — /crons: show next fire time for each PM2 cron job',
+    block: 'OPS',
+    rationale: '/crons shows cron expressions but not when each job fires next. Add "next: Xh Ym" column so operator knows if daily jobs will run on schedule.',
+  });
+
+  infraItems.push({
+    title: 'GATE — /status: show views/500 progress bar like posts progress bar',
+    block: 'GATE',
+    rationale: '/status has a post count progress bar but not a views progress bar. Add a compact views bar: [███░░░] 0/500 to make views tracking visual.',
+  });
+
+  infraItems.push({
+    title: 'GODMAN-LAUNCH — /godman: show days until launch in header (e.g. "21d to launch")',
+    block: 'GODMAN-PROTOCOLS',
+    rationale: '/godman readiness report has no header countdown. Add "🚀 Launch in Nd (Apr 14)" as the first line so operator always sees urgency at a glance.',
+  });
+
+  infraItems.push({
+    title: 'INFRA — /report: add gate progress (posts + views) to system report',
+    block: 'INFRA',
+    rationale: '/report shows PM2, health, sprint but not the Phase 1.5 gate progress. Adding posts/30 + views/500 gives operator a full picture without switching to /status.',
+  });
+
+  infraItems.push({
+    title: 'PHASE2 — /achiri: show total messages handled + daily avg',
+    block: 'ACHIRI',
+    rationale: '/achiri shows DAU and users but not total lifetime messages or daily average message volume. Adding these metrics helps assess conversation quality before alpha.',
+  });
+
+  infraItems.push({
+    title: 'OPS — /morning-brief: add views progress to brief if views <100',
+    block: 'OPS',
+    rationale: 'Morning brief focuses on posts but not views. When views < 100 (far from 500 gate), add a line "Views: X/500 — engagement lag" to flag this early.',
+  });
+
+  infraItems.push({
+    title: 'QUALITY — /bottest: add /pace and /today command smoke tests',
+    block: 'QUALITY',
+    rationale: '/bottest tests core commands but not /pace or /today which were recently added. Add these to the smoke test suite to catch regressions.',
+  });
+
+  infraItems.push({
+    title: 'INFRA — /health: show Supabase connection status (ping edge function)',
+    block: 'INFRA',
+    rationale: '/health shows local checks but not Supabase connectivity. Add a 2s ping to the Supabase URL (from .env) so operator can detect DB connection issues early.',
+  });
+
+  infraItems.push({
+    title: 'OPS — /digest: show yesterday post count vs target in header',
+    block: 'OPS',
+    rationale: 'Daily digest starts with gate math but not what actually happened yesterday. Add "Yesterday: N posts posted" as the second line so operator can see recent activity.',
+  });
+
+  infraItems.push({
+    title: 'GATE — /gate: add urgency emoji escalation based on days remaining',
+    block: 'GATE',
+    rationale: '/gate shows days remaining but urgency is text-only. Add escalating emoji: 🟢 ≥14d, 🟡 7-13d, 🟠 3-6d, 🔴 <3d for quick visual triage.',
+  });
+
   // Fill remaining slots (skip duplicates of already-completed items)
   for (const item of infraItems) {
     if (items.length >= 10) break;
