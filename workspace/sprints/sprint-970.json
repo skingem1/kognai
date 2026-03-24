@@ -1,0 +1,29 @@
+{
+  "sprint_id": "sprint-970",
+  "title": "AMF-IMPL-01 — Agent Message Format (envelope, sign, verify, helpers)",
+  "description": "Implement AMF core: createEnvelope, signEnvelope, verifyEnvelope, payload builder helpers (taskRequest, taskResult, event, heartbeat, error). Node.js crypto only.",
+  "block": "GODMAN-PROTOCOLS",
+  "source": "qwen-recommendation",
+  "tasks": [
+    {
+      "id": "970-01",
+      "title": "AMF src/core.ts — envelope creation, signing, verification, payload helpers",
+      "type": "feature",
+      "task_target": "workspace/godman-protocols/amf/src/core.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-970"
+    },
+    {
+      "id": "970-02",
+      "title": "AMF src/index.ts — update exports + smoke.test.ts",
+      "type": "feature",
+      "task_target": "workspace/godman-protocols/amf/src/index.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-970"
+    }
+  ]
+}
