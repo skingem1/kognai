@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1082",
+  "title": "PHASE2 — Achiri: /alpha readiness: verify all pre-alpha checks pass",
+  "description": "Ran achiri-readiness.ts and verified all 9 checks pass at 100%. E2E 33/33, safety filter present, no errors, 92 users active, deploy script ready.",
+  "block": "PHASE2",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1082-01",
+      "title": "Run achiri-readiness.ts and verify all checks pass",
+      "type": "validation",
+      "task_target": "scripts/achiri/achiri-readiness.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1082"
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-03-21T00:21:10.975Z",
+  "generated_at": "2026-03-24T11:42:49.493Z",
   "alpha_date": "2026-04-25",
-  "days_to_alpha": 35,
+  "days_to_alpha": 32,
   "overall_ready": true,
   "score": 100,
   "checks": [
@@ -37,7 +37,7 @@
       "name": "User Activity",
       "category": "Engagement",
       "pass": true,
-      "detail": "36 users, 1143 messages over 4 days",
+      "detail": "92 users, 4698 messages over 5 days",
       "critical": false
     },
     {
@@ -51,7 +51,7 @@
       "name": "Alpha Access Gate",
       "category": "Access Control",
       "pass": true,
-      "detail": "0 invited, ACHIRI_ALPHA_ONLY=false (open)",
+      "detail": "1 invited, ACHIRI_ALPHA_ONLY=false (open)",
       "critical": false
     },
     {
