@@ -910,7 +910,49 @@ export function cmdHealth(): string {
     }
   } catch { /* skip */ }
 
-  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${botUptimeSection}${ollamaSection}${memWarnSection}${memTableSection}${supabaseSection}${supabaseSyncSection}${diskSection}${watchdogSection}${runtimeSection}${tailscaleSection}${hetznerSection}${anthropicSection}${ioSection}${morningBriefSection}${digestSection}${staleCronsSection}${supabaseDomainSection}${anthropicBudgetSection}${pipelineValidationSection}${worktreeSection}${botMemSection}${gateDaysSection}${backupSection}${postingHealthSection}${exportFilesSection}${tokenHealthSection}${statsSection}${inventorySection}${gateAuditSection}${autoDeliverSection}${bulkCaptionsSection}${playbackSection}${qcSection}${smokeSection}${achiriDauSection}${achiriE2eSection}${videoValidSection}${pipelineMetricsSection}${achiriSafetySection}${leaderboardSection}${brainxSection}${achiriLaunchSection}${postingScheduleSection}${phase15GateSection}${batchProduceSection}${revenueSummarySection}${contentDiversitySection}${costLogSection}${warmupSection}${abAnalysisSection}${prodQualitySection}${hookWeightsSection}${contentCalendarSection}${achiriDashboardSection}`;
+  // Sprint 1157 (wave 36): achiri-readiness.json score + days to alpha
+  let achiriReadinessSection = '';
+  try {
+    const arPath = path.join(ROOT, 'reports', 'achiri-readiness.json');
+    if (fs.existsSync(arPath)) {
+      const ar = JSON.parse(fs.readFileSync(arPath, 'utf-8'));
+      const arScore = ar.score ?? 0;
+      const arDays = ar.days_to_alpha ?? 0;
+      const checks: any[] = ar.checks ?? [];
+      const passCount = checks.filter((c: any) => c.pass).length;
+      const arIcon = arScore >= 80 ? '✅' : arScore >= 60 ? '🟡' : '⚠️';
+      achiriReadinessSection = `\n\n${arIcon} *Achiri readiness:* ${arScore}/100 · ${passCount}/${checks.length} checks · ${arDays}d to alpha`;
+    }
+  } catch { /* skip */ }
+
+  // Sprint 1157 (wave 36): viral-topics.json topics + trending count
+  let viralTopicsSection = '';
+  try {
+    const vtPath = path.join(ROOT, 'workspace', 'scs001', 'viral-topics.json');
+    if (fs.existsSync(vtPath)) {
+      const vt = JSON.parse(fs.readFileSync(vtPath, 'utf-8'));
+      const topicsCount = (vt.topics ?? []).length;
+      const trendingCount = (vt.trending ?? []).length;
+      const vtAge = vt.updated_at ? (Date.now() - new Date(vt.updated_at).getTime()) / 3600000 : null;
+      const vtAgeStr = vtAge != null && vtAge < 48 ? ` _(${Math.round(vtAge)}h ago)_` : '';
+      const vtIcon = topicsCount >= 5 ? '🔥' : topicsCount > 0 ? '📡' : '⚪';
+      viralTopicsSection = `\n\n${vtIcon} *Viral topics:* ${topicsCount} topics · ${trendingCount} trending${vtAgeStr}`;
+    }
+  } catch { /* skip */ }
+
+  // Sprint 1157 (wave 36): archived-videos.json count
+  let archivedVideosSection = '';
+  try {
+    const avPath = path.join(ROOT, 'workspace', 'scs001', 'archived-videos.json');
+    if (fs.existsSync(avPath)) {
+      const av = JSON.parse(fs.readFileSync(avPath, 'utf-8'));
+      const avCount = av.count ?? (av.ids ?? []).length;
+      const avIcon = avCount > 50 ? '🗄️' : avCount > 10 ? '📦' : '✅';
+      archivedVideosSection = `\n\n${avIcon} *Archived:* ${avCount} videos`;
+    }
+  } catch { /* skip */ }
+
+  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${botUptimeSection}${ollamaSection}${memWarnSection}${memTableSection}${supabaseSection}${supabaseSyncSection}${diskSection}${watchdogSection}${runtimeSection}${tailscaleSection}${hetznerSection}${anthropicSection}${ioSection}${morningBriefSection}${digestSection}${staleCronsSection}${supabaseDomainSection}${anthropicBudgetSection}${pipelineValidationSection}${worktreeSection}${botMemSection}${gateDaysSection}${backupSection}${postingHealthSection}${exportFilesSection}${tokenHealthSection}${statsSection}${inventorySection}${gateAuditSection}${autoDeliverSection}${bulkCaptionsSection}${playbackSection}${qcSection}${smokeSection}${achiriDauSection}${achiriE2eSection}${videoValidSection}${pipelineMetricsSection}${achiriSafetySection}${leaderboardSection}${brainxSection}${achiriLaunchSection}${postingScheduleSection}${phase15GateSection}${batchProduceSection}${revenueSummarySection}${contentDiversitySection}${costLogSection}${warmupSection}${abAnalysisSection}${prodQualitySection}${hookWeightsSection}${contentCalendarSection}${achiriDashboardSection}${achiriReadinessSection}${viralTopicsSection}${archivedVideosSection}`;
 }
 
 export function cmdTier(): string {
