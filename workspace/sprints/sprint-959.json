@@ -1,0 +1,38 @@
+{
+  "sprint_id": "sprint-959",
+  "title": "AMD-25-DESIGN — Domain Knowledge Architecture schema + Curator agent spec",
+  "description": "Design DKA schema with AMF-extended vector format. Define 5 domain knowledge stores. Write Curator agent spec template. Define knowledge boundary rules and constitutional retrieval filter spec. Design only — no implementation.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "959-01",
+      "title": "DKA schema — 5 domain stores + AMF-extended vector format",
+      "type": "design",
+      "task_target": "workspace/amd25/dka-schema.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-959"
+    },
+    {
+      "id": "959-02",
+      "title": "Curator agent spec template",
+      "type": "design",
+      "task_target": "workspace/amd25/curator-spec.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-959"
+    },
+    {
+      "id": "959-03",
+      "title": "Knowledge boundary rules + constitutional retrieval filter",
+      "type": "design",
+      "task_target": "workspace/amd25/boundary-rules.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-959"
+    }
+  ]
+}
