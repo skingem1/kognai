@@ -268,6 +268,21 @@ export function cmdReport(): string {
   const gateIcon = gatePostCount >= 30 && gateTotalViews >= 500 ? '✅' : '⏳';
   const gateLine = `${gateIcon} Phase 1.5 gate: ${gatePostCount}/30 posts · ${gateTotalViews}/500 views · ${gateDaysLeft}d left`;
 
+  // Sprint 1122 (wave 12): Achiri test suite status
+  let achiriTestLine = '';
+  try {
+    const testSuitePath = path.join(ROOT, 'reports', 'achiri-test-suite.json');
+    if (fs.existsSync(testSuitePath)) {
+      const ts = JSON.parse(fs.readFileSync(testSuitePath, 'utf-8'));
+      const totalTests = ts.total ?? ts.tests?.length ?? 0;
+      const passed = ts.passed ?? ts.pass ?? ts.tests?.filter((t: any) => t.pass || t.status === 'pass').length ?? 0;
+      const failed = totalTests - passed;
+      const pct = totalTests > 0 ? Math.round((passed / totalTests) * 100) : 0;
+      const icon = failed === 0 ? '✅' : failed <= 2 ? '⚠️' : '❌';
+      achiriTestLine = `\n*Achiri Tests:* ${icon} ${passed}/${totalTests} pass (${pct}%)${failed > 0 ? ` · ${failed} failing` : ''}`;
+    }
+  } catch { /* skip */ }
+
   return (
     `${statusIcon} *Kognai System Report*\n${now}\n${alertBlock}\n` +
     `*PM2* (${online}/${procs.length} live):\n${pm2Lines || '  (no data)'}\n\n` +
@@ -275,7 +290,7 @@ export function cmdReport(): string {
     `Last heartbeat: ${lastBeat} UTC\n\n` +
     `*Beta:* agents_onboarded=${beta.agents_onboarded ?? 0}, companies=${beta.companies_onboarded ?? 0}, txns=${beta.transactions_monitored ?? 0}\n` +
     `*Financials:* MRR $${mrr} | Tier: ${tier} | Billing activation: ${billingDate}\n\n` +
-    `*Gate:* ${gateLine}\n` +
+    `*Gate:* ${gateLine}${achiriTestLine}\n` +
     `*Sprint:* ${sprintLine}`
   );
 }
@@ -928,7 +943,8 @@ export function cmdSwarmStats(): string {
 
 // Sprint 589: /errors — show recent pipeline validation errors
 // Sprint 1054: /errors — scan all PM2 error logs for recent activity (last 24h)
-export function cmdErrors(): string {
+// Sprint 1129: added optional filterProcess arg
+export function cmdErrors(filterProcess?: string): string {
   const logDir = path.join(ROOT, 'logs');
   const cutoff = Date.now() - 86_400_000; // 24h ago
 
@@ -969,8 +985,14 @@ export function cmdErrors(): string {
     return '❌ Could not read logs directory.';
   }
 
-  const errored = Array.from(dedupMap.values()).sort((a, b) => b.mtime - a.mtime);
+  // Sprint 1129: filter by process name if provided
+  const allErrors = Array.from(dedupMap.values());
+  const errored = (filterProcess
+    ? allErrors.filter(e => e.name.toLowerCase().includes(filterProcess.toLowerCase()))
+    : allErrors
+  ).sort((a, b) => b.mtime - a.mtime);
   const output: string[] = [];
+  if (filterProcess) output.push(`🔍 *Filtered by:* \`${filterProcess}\`\n`);
   const MAX_ENTRIES = 8;
 
   if (errored.length === 0) {

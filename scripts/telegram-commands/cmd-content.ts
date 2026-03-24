@@ -100,7 +100,9 @@ export function cmdRecord(args: string): string {
     `Video: \`${videoId}\`\n` +
     `Views: ${views}${title ? `\nTitle: ${title}` : ''}${tiktokUrl ? `\n🔗 TikTok URL saved (views will update automatically)` : ''}${unknownWarn}\n\n` +
     `📊 *Gate progress:* ${postCount}/30 posts · ${totalViews}/500 views\n` +
-    `${postsLeft > 0 ? `⏳ ${postsLeft} more posts needed · ${daysLeft}d to Apr 7` : '✅ Post target met!'}`
+    `${postsLeft > 0 ? `⏳ ${postsLeft} more posts needed · ${daysLeft}d to Apr 7` : '✅ Post target met!'}` +
+    // Sprint 1129: suggest view-update if URL was saved
+    (tiktokUrl ? `\n\n💡 _To update views later: \`/updateviews ${videoId}\`_` : '')
   );
 }
 
@@ -530,14 +532,20 @@ export function cmdToday(): string {
   const totalViews = posts.reduce((s: number, p: any) => s + (p.views ?? 0), 0);
   const viewsNeeded = Math.max(0, 500 - totalViews);
 
+  // Sprint 1120 (wave 12): yesterday views
+  const yesterday = new Date(Date.now() - 86_400_000).toISOString().slice(0, 10);
+  const yesterdayViews = posts
+    .filter((p: any) => (p.posted_at ?? p.recorded_at ?? '').startsWith(yesterday))
+    .reduce((s: number, p: any) => s + (p.views ?? 0), 0);
+
   if (posts.length >= 30 && totalViews >= 500) {
     lines.push('🎉 *Phase 1.5 gate met!* Posts: 30/30 · Views: 500/500 — proceed to Phase 2.\n');
   } else {
     lines.push(`📊 *Gate:* ${posts.length}/30 posts · ${daysLeft}d left · ${dailyTarget}/day needed`);
     if (viewsNeeded > 0) {
-      lines.push(`👁️ *Views:* ${totalViews}/500 — *${viewsNeeded} more views needed*`);
+      lines.push(`👁️ *Views:* ${totalViews}/500 — *${viewsNeeded} more views needed* · Yesterday: ${yesterdayViews} views`);
     } else {
-      lines.push(`👁️ *Views:* ${totalViews}/500 ✅`);
+      lines.push(`👁️ *Views:* ${totalViews}/500 ✅ · Yesterday: ${yesterdayViews} views`);
     }
     // Sprint 1110: bold warning when obligation unmet
     if (!goalMet && dailyTarget > 0) {

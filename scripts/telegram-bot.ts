@@ -222,7 +222,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/stats':       response = cmdStats();              break;
     case '/competitor':  response = cmdCompetitor(cmdArgs);  break;
     case '/swarmstats': response = cmdSwarmStats();          break;
-    case '/errors':     response = cmdErrors();              break;
+    case '/errors':     response = cmdErrors(cmdArgs || undefined); break;
     case '/pm2errors':  response = cmdPm2Errors();           break;
     case '/radar':      response = cmdRadar();               break;
     case '/quality':    response = cmdQuality();             break;

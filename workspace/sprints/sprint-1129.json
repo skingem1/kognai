@@ -1,0 +1,59 @@
+{
+  "sprint_id": "sprint-1129",
+  "title": "OPS batch — 5 Telegram command enhancements",
+  "description": "Batch implementation of queue items 1119-1126: status last post time, yesterday views, achiri test suite, errors filter, record view-update suggest.",
+  "block": "OPS",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1129-01",
+      "title": "/status: show time since last post in queue section",
+      "type": "enhancement",
+      "task_target": "scripts/telegram-commands/cmd-management.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1129"
+    },
+    {
+      "id": "1129-02",
+      "title": "/today: show yesterday views total",
+      "type": "enhancement",
+      "task_target": "scripts/telegram-commands/cmd-gate.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1129"
+    },
+    {
+      "id": "1129-03",
+      "title": "/achiri: show test suite pass rate",
+      "type": "enhancement",
+      "task_target": "scripts/telegram-commands/cmd-stripe.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1129"
+    },
+    {
+      "id": "1129-04",
+      "title": "/errors: add filter by process name",
+      "type": "enhancement",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1129"
+    },
+    {
+      "id": "1129-05",
+      "title": "/record: auto-suggest /view-update after recording",
+      "type": "enhancement",
+      "task_target": "scripts/telegram-commands/cmd-content.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1129"
+    }
+  ]
+}
