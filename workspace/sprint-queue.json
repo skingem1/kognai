@@ -1068,9 +1068,10 @@
       "sprint": 1110,
       "title": "GATE — /today: bold warning when daily obligation not yet met",
       "block": "GATE",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
-      "rationale": "/today shows posts done today but does not visually flag when the daily obligation is unmet. Add \"⚠️ OBLIGATION UNMET\" banner when todayPosts < dailyObligation."
+      "rationale": "/today shows posts done today but does not visually flag when the daily obligation is unmet. Add \"⚠️ OBLIGATION UNMET\" banner when todayPosts < dailyObligation.",
+      "_note": "Shipped 2026-03-24 — obligation unmet banner in /today"
     },
     {
       "sprint": 1111,

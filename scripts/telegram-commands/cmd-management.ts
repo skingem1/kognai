@@ -578,6 +578,20 @@ export function cmdWeeklyReport(): string {
     `• This week: ${thisWeekPosts.length} posts · ${weekViews} views`,
     `• All time: ${totalPosts}/30 posts · ${totalViews} total views`,
     `• Gate: ${daysLeft}d left · ${paceNeeded} posts/day needed`,
+    // Sprint 1109: gate velocity — this week vs last week
+    (() => {
+      const twoWeeksAgo = new Date(now.getTime() - 14 * 86_400_000);
+      const twoWeeksAgoStr = twoWeeksAgo.toISOString().slice(0, 10);
+      const lastWeekPosts = posts.filter((p: any) => {
+        const d = (p.posted_at ?? p.recorded_at ?? '').slice(0, 10);
+        return d >= twoWeeksAgoStr && d < weekAgoStr;
+      });
+      const thisRate = (thisWeekPosts.length / 7).toFixed(1);
+      const lastRate = (lastWeekPosts.length / 7).toFixed(1);
+      const delta = thisWeekPosts.length - lastWeekPosts.length;
+      const arrow = delta > 0 ? '📈' : delta < 0 ? '📉' : '➡️';
+      return `${arrow} Velocity: ${thisRate}/day this week vs ${lastRate}/day last week`;
+    })(),
     '',
     '*🔬 Pipeline:*',
     `• New experiments: ${weekExperiments.length}`,

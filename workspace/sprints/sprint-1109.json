@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1109",
+  "title": "OPS — /weekly-report: add gate velocity (posts/day this week vs last)",
+  "description": "Add velocity comparison (this week vs last week posts/day) to weekly report for trend visibility.",
+  "block": "OPS",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1109-01",
+      "title": "Add gate velocity line to cmdWeeklyReport",
+      "type": "feature",
+      "task_target": "scripts/telegram-commands/cmd-management.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1109"
+    }
+  ]
+}
