@@ -1,0 +1,39 @@
+{
+  "sprint_id": "sprint-966",
+  "title": "LAX-IMPL-01 — Core latency-aware execution (budget, probe, route, SLA)",
+  "description": "Implement LAX core: createBudget, probeRuntime, routeTask (lowest-latency selection), registerSLA. Transform skeleton stubs into working protocol v0.2. Node.js only, no external deps.",
+  "block": "GODMAN-PROTOCOLS",
+  "source": "qwen-recommendation",
+  "tasks": [
+    {
+      "id": "966-01",
+      "title": "LAX src/core.ts — createBudget, probeRuntime, routeTask, registerSLA",
+      "type": "feature",
+      "task_target": "workspace/godman-protocols/lax/src/core.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-966"
+    },
+    {
+      "id": "966-02",
+      "title": "LAX src/index.ts — update exports from stubs to real implementations",
+      "type": "feature",
+      "task_target": "workspace/godman-protocols/lax/src/index.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-966"
+    },
+    {
+      "id": "966-03",
+      "title": "LAX smoke.test.ts — smoke test covering budget, routing, SLA",
+      "type": "test",
+      "task_target": "workspace/godman-protocols/lax/smoke.test.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-966"
+    }
+  ]
+}
