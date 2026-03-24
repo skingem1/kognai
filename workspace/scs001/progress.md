@@ -5741,3 +5741,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (direct write)
 - Issues: None
 - Timestamp: 2026-03-24T23:55:00Z
+
+## Sprint 1007 — OPS Cron Health in /status
+- Status: PASS
+- Commit: 1e458c18
+- Files created: workspace/sprints/sprint-1007.json
+- Files modified: scripts/status.ts (added cronSection() + import execSync)
+- Test: npx ts-node scripts/status.ts — [Cron Health] section shows all 6 crons, warns NOT in PM2 with start instructions
+- Pipeline: status.ts now tracks all infrastructure crons from sprints 1001-1006
+- Swarm used: no (surgical edit, direct)
+- Issues: None
+- Timestamp: 2026-03-25T00:05:00Z
