@@ -1,0 +1,29 @@
+{
+  "sprint_id": "sprint-997",
+  "title": "AMD-25-STORE — DKA in-memory keyword store implementation",
+  "description": "Implement AMD-25 Domain Knowledge Architecture: KnowledgeStore class with add/search(keyword)/getByDomain/getById. No embeddings, no external deps. Uses dka-schema.ts types from Sprint 959. Max 150 lines + smoke test.",
+  "block": "AMD-25",
+  "source": "queue-exhausted-architecture",
+  "tasks": [
+    {
+      "id": "997-01",
+      "title": "Write workspace/amd25/dka-store.ts — KnowledgeStore class",
+      "type": "feature",
+      "task_target": "workspace/amd25/dka-store.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-997"
+    },
+    {
+      "id": "997-02",
+      "title": "Write workspace/amd25/smoke.test.ts — 10+ assertions",
+      "type": "test",
+      "task_target": "workspace/amd25/smoke.test.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-997"
+    }
+  ]
+}
