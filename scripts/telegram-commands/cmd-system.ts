@@ -244,7 +244,24 @@ export function cmdHealth(): string {
     }
   } catch { /* skip */ }
 
-  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${botUptimeSection}${ollamaSection}${memWarnSection}${memTableSection}${supabaseSection}${diskSection}${watchdogSection}${runtimeSection}${tailscaleSection}${hetznerSection}${anthropicSection}`;
+  // Sprint 1136 (wave 20): disk I/O wait % from iostat (Mac)
+  let ioSection = '';
+  try {
+    const ioOut = execSync('iostat -c 2 -w 1 2>/dev/null | tail -1', { encoding: 'utf-8', timeout: 5000 }).trim();
+    if (ioOut) {
+      const parts = ioOut.trim().split(/\s+/);
+      // iostat columns on macOS: cpu us sy id  disk0 KB/t tps MB/s  ...
+      // The "id" (idle) column is typically index 2 in the cpu section
+      const idlePct = parseFloat(parts[2]);
+      if (!isNaN(idlePct)) {
+        const ioPct = Math.max(0, 100 - idlePct);
+        const ioIcon = ioPct > 50 ? '🔴' : ioPct > 25 ? '⚠️' : '✅';
+        ioSection = `\n\n*Disk I/O wait:* ${ioIcon} ${ioPct.toFixed(0)}% (CPU idle: ${idlePct.toFixed(0)}%)`;
+      }
+    }
+  } catch { /* skip — iostat may not be available */ }
+
+  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${botUptimeSection}${ollamaSection}${memWarnSection}${memTableSection}${supabaseSection}${diskSection}${watchdogSection}${runtimeSection}${tailscaleSection}${hetznerSection}${anthropicSection}${ioSection}`;
 }
 
 export function cmdTier(): string {
@@ -379,6 +396,18 @@ export function cmdReport(): string {
     if (totalCommits) totalCommitsLine = `\n*All-time commits:* ${totalCommits}`;
   } catch { /* skip */ }
 
+  // Sprint 1144 (wave 20): validation errors from last pipeline run
+  let valErrorsLine = '';
+  try {
+    const latestRunPath2 = path.join(ROOT, 'reports', 'pipeline-runs', 'latest.json');
+    if (fs.existsSync(latestRunPath2)) {
+      const run2 = JSON.parse(fs.readFileSync(latestRunPath2, 'utf-8'));
+      const errCount2 = run2.validation_errors ?? run2.error_count ?? run2.errors?.length ?? 0;
+      const icon2 = errCount2 === 0 ? '✅' : errCount2 <= 3 ? '⚠️' : '❌';
+      valErrorsLine = `\n*Last run validation errors:* ${icon2} ${errCount2}`;
+    }
+  } catch { /* skip */ }
+
   return (
     `${statusIcon} *Kognai System Report*\n${now}\n${alertBlock}\n` +
     `*PM2* (${online}/${procs.length} live):\n${pm2Lines || '  (no data)'}\n\n` +
@@ -386,7 +415,7 @@ export function cmdReport(): string {
     `Last heartbeat: ${lastBeat} UTC\n\n` +
     `*Beta:* agents_onboarded=${beta.agents_onboarded ?? 0}, companies=${beta.companies_onboarded ?? 0}, txns=${beta.transactions_monitored ?? 0}\n` +
     `*Financials:* MRR $${mrr} | Tier: ${tier} | Billing activation: ${billingDate}\n\n` +
-    `*Gate:* ${gateLine}${achiriTestLine}${commitLine}${totalCommitsLine}\n` +
+    `*Gate:* ${gateLine}${achiriTestLine}${commitLine}${totalCommitsLine}${valErrorsLine}\n` +
     `*Sprint:* ${sprintLine}`
   );
 }
@@ -1265,6 +1294,18 @@ export function cmdErrors(filterProcess?: string): string {
     output.push(`\n*Weekly:* ${thisWeekErrors} this week vs ${lastWeekErrors} last week (${deltaStr} · ${trendIcon})`);
   } catch { /* skip */ }
 
+  // Sprint 1142 (wave 20): warn if any error log file exceeds 1MB (disk health signal)
+  try {
+    const allLogs = fs.readdirSync(logDir).filter((f: string) => f.endsWith('-error.log'));
+    const largeLogs = allLogs.map((f: string) => {
+      try { const s = fs.statSync(path.join(logDir, f)); return { name: f, size: s.size }; } catch { return { name: f, size: 0 }; }
+    }).filter(l => l.size >= 1024 * 1024).sort((a, b) => b.size - a.size);
+    if (largeLogs.length > 0) {
+      const logList = largeLogs.map(l => `\`${l.name.replace('-error.log', '')}\` ${(l.size / (1024 * 1024)).toFixed(1)}MB`).join(', ');
+      output.push(`\n⚠️ *Large error logs (≥1MB):* ${logList} — consider rotating`);
+    }
+  } catch { /* skip */ }
+
   return output.join('\n');
 }
 
@@ -1338,11 +1379,15 @@ export async function cmdSmoke(chatId: string): Promise<void> {
   await sendMessage(chatId, '🔥 Running pipeline smoke test... (this takes 1-3 min)');
   try {
     const { exec } = require('child_process');
+    // Sprint 1140 (wave 20): track timing per check
+    const checkTimings: Array<{name: string; ms: number}> = [];
+    const t0 = Date.now();
     const output: string = await new Promise((resolve, reject) => {
       exec(
         'npx ts-node --transpile-only scripts/scs001/validate-full-pipeline.ts',
         { cwd: ROOT, timeout: 240000, encoding: 'utf-8', maxBuffer: 1024 * 1024 },
         (err: any, stdout: string, stderr: string) => {
+          checkTimings.push({ name: 'validate-pipeline', ms: Date.now() - t0 });
           if (err && !stdout) reject(new Error(stderr || err.message));
           else resolve(stdout || stderr);
         }
@@ -1438,6 +1483,7 @@ export async function cmdSmoke(chatId: string): Promise<void> {
 
     // Sprint 1134 (wave 14): Telegram bot ping check
     try {
+      const tgPingStart = Date.now();
       const token = process.env.TELEGRAM_BOT_TOKEN;
       if (token) {
         const getMeUrl = `https://api.telegram.org/bot${token}/getMe`;
@@ -1451,6 +1497,7 @@ export async function cmdSmoke(chatId: string): Promise<void> {
             });
           }).on('error', () => resolve({ ok: false }));
         });
+        checkTimings.push({ name: 'tg-ping', ms: Date.now() - tgPingStart });
         lines.push('');
         lines.push(res.ok ? `✅ Telegram bot: @${res.username ?? '?'} reachable` : `❌ Telegram bot: token invalid or unreachable`);
       } else {
@@ -1468,6 +1515,14 @@ export async function cmdSmoke(chatId: string): Promise<void> {
         ? `✅ Morning brief cron: registered in PM2`
         : `⚠️ Morning brief cron: *missing from PM2* — run \`pm2 start ecosystem.config.js --only scs001-morning-brief\``);
     } catch { /* skip */ }
+
+    // Sprint 1140 (wave 20): show slowest check
+    if (checkTimings.length >= 2) {
+      const slowest = checkTimings.sort((a, b) => b.ms - a.ms)[0];
+      const slowSec = (slowest.ms / 1000).toFixed(1);
+      lines.push('');
+      lines.push(`⏱ *Slowest check:* \`${slowest.name}\` — ${slowSec}s`);
+    }
 
     await sendMessage(chatId, lines.join('\n'));
   } catch (err: any) {

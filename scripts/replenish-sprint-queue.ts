@@ -1303,6 +1303,110 @@ function generateItems(startSprint: number, existingTitles: Set<string> = new Se
     rationale: 'Operator is in Tunisia (UTC+1) but server runs UTC. Show server time so operator can calibrate re-engagement timing.',
   });
 
+  // Wave 19 — Achiri launch + gate closure + Godman post-launch
+  infraItems.push({
+    title: 'ACHIRI — /achiri: show how many waitlist users have never messaged (cold leads)',
+    block: 'ACHIRI',
+    rationale: 'Waitlist may have users who signed up but never sent a message. Cross-reference waitlist.jsonl with daily-counts to find cold leads for targeted re-engagement.',
+  });
+  infraItems.push({
+    title: 'GATE — /gate: show time to deadline as progress ring (days remaining / 14)',
+    block: 'GATE',
+    rationale: '/gate shows days left numerically but a visual bar would be more alarming near deadline. Show "📅 Deadline: [████░░░░░░] 8/14d" for urgency.',
+  });
+  infraItems.push({
+    title: 'OPS — /status: show daily obligation met/unmet with streak count',
+    block: 'OPS',
+    rationale: '/status shows today\'s posts but not the obligation streak. Show "🔥 Obligation streak: 3 days met" to reinforce consistent posting behavior.',
+  });
+  infraItems.push({
+    title: 'GODMAN-LAUNCH — /godman: show semver bump type needed (patch/minor/major)',
+    block: 'GODMAN-LAUNCH',
+    rationale: 'After launch, protocols will need updates. Show what semver bump each protocol needs based on its CHANGELOG.md entries (feat=minor, fix=patch).',
+  });
+  infraItems.push({
+    title: 'QUALITY — /smoke: show total smoke test pass rate over last 7 runs',
+    block: 'QUALITY',
+    rationale: 'Single smoke result shows current state but not stability. Show "7-run pass rate: 85%" using smoke result history to flag flaky infrastructure.',
+  });
+  infraItems.push({
+    title: 'OPS — /health: show whether ANTHROPIC_API_KEY is set and truncated preview',
+    block: 'OPS',
+    rationale: '/health checks infra but not API credentials. Show ANTHROPIC_API_KEY presence and first/last 4 chars as a quick credential sanity check.',
+  });
+  infraItems.push({
+    title: 'GATE — /pace: show number of posting days remaining until gate (weekdays only)',
+    block: 'GATE',
+    rationale: '/pace shows calendar days but posting is more realistic on weekdays. Show "posting days left: 8 (weekdays)" to help operator plan realistically.',
+  });
+  infraItems.push({
+    title: 'ACHIRI — /achiri: show last message received from any user (recency signal)',
+    block: 'ACHIRI',
+    rationale: 'last-active shows the most recent active day but not the actual message timestamp. Show "Last user message: 3h ago" from daily-counts for real-time sense of engagement.',
+  });
+  infraItems.push({
+    title: 'OPS — /errors: show most common error message (top recurring string)',
+    block: 'OPS',
+    rationale: '/errors shows top process by count but not the top recurring error message across all processes. Show "Most common: ECONNREFUSED ×47" to target root-cause fixes.',
+  });
+  infraItems.push({
+    title: 'OPS — /report: show how many total commits in the repo (all-time)',
+    block: 'OPS',
+    rationale: 'git log can show total commit count as a project maturity signal. Show "Total commits: 1,247" in /report for operator context.',
+  });
+
+  // Wave 20 templates
+  infraItems.push({
+    title: 'OPS — /health: show disk I/O wait % from iostat (Mac)',
+    block: 'OPS',
+    rationale: 'Disk saturation can cause pipeline slowdowns silently. Show disk I/O wait % from iostat so operator can detect vault bottlenecks early.',
+  });
+  infraItems.push({
+    title: 'GATE — /gate: show posts-per-week target to hit gate on time',
+    block: 'GATE',
+    rationale: '/gate shows daily pace but weekly targets are easier to plan around. Show "Need X posts this week to stay on track" based on gate date and posts remaining.',
+  });
+  infraItems.push({
+    title: 'ACHIRI — /achiri: show % of users who sent more than 5 messages (engaged cohort)',
+    block: 'ACHIRI',
+    rationale: 'Total users undercount engagement depth. Show "X% power users (5+ messages)" as a retention signal to gauge how sticky Achiri is.',
+  });
+  infraItems.push({
+    title: 'OPS — /status: show how many PM2 crons fired today (from logs)',
+    block: 'OPS',
+    rationale: '/status shows process state but not cron execution count. Show "crons fired today: 12" from PM2 restart logs to confirm automation is running.',
+  });
+  infraItems.push({
+    title: 'QUALITY — /smoke: show which smoke check took longest (slowest step)',
+    block: 'QUALITY',
+    rationale: 'Smoke runs can silently bloat if one check hangs. Show "slowest check: TTS (42s)" to identify performance regressions before they become timeouts.',
+  });
+  infraItems.push({
+    title: 'GATE — /pace: show how many videos are queued relative to obligation',
+    block: 'GATE',
+    rationale: '/pace shows posting pace but not if the queue can sustain it. Show "queue: 8 videos (4d buffer)" so operator knows when to trigger a pipeline run.',
+  });
+  infraItems.push({
+    title: 'OPS — /errors: show if any error log exceeds 1MB (disk health signal)',
+    block: 'OPS',
+    rationale: 'Large error logs indicate a runaway process. Show "⚠️ telegram-bot-error.log: 3.2MB" as a disk + stability warning.',
+  });
+  infraItems.push({
+    title: 'ACHIRI — /achiri: show which hour of day has most user messages (peak hour)',
+    block: 'ACHIRI',
+    rationale: 'Knowing peak engagement hour helps schedule re-engagement blasts. Show "Peak hour: 9pm (32 msgs)" from daily-counts for optimal timing.',
+  });
+  infraItems.push({
+    title: 'OPS — /report: show number of validation errors in last pipeline run',
+    block: 'OPS',
+    rationale: '/report shows gate and sprint but not pipeline quality. Show "Last run: 3 validation errors" from reports/pipeline-runs/latest.json as a quality signal.',
+  });
+  infraItems.push({
+    title: 'GATE — /gate: show TikTok account age in days (warmup maturity)',
+    block: 'GATE',
+    rationale: 'TikTok warmup quality depends on account age. Show "Account age: 12 days" from warmup-status.json so operator knows when trust builds.',
+  });
+
   // Fill remaining slots (skip duplicates of already-completed items)
   for (const item of infraItems) {
     if (items.length >= 10) break;

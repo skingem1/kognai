@@ -186,8 +186,29 @@ export function cmdGate(): string {
         return `📊 Weekday: \`${bars}\``;
       } catch { return ''; }
     })(),
+    // Sprint 1137 (wave 20): posts-per-week target to stay on track
+    ...(() => {
+      if (postsNeeded <= 0 || daysLeft <= 0) return [];
+      const weeksLeft = Math.ceil(daysLeft / 7);
+      const perWeek = Math.ceil(postsNeeded / weeksLeft);
+      return [`📋 *Weekly target:* ${perWeek} posts/week (${weeksLeft} week${weeksLeft !== 1 ? 's' : ''} left)`];
+    })(),
     ``,
     `*── Infrastructure ──*`,
+    // Sprint 1145 (wave 20): TikTok account age in days from warmup-status.json
+    ...(() => {
+      if (!fs.existsSync(warmupPath)) return [];
+      try {
+        const ws = JSON.parse(fs.readFileSync(warmupPath, 'utf-8'));
+        const createdAt = ws.created_at ?? ws.account_created ?? ws.start_date;
+        if (createdAt) {
+          const ageDays = Math.floor((Date.now() - new Date(createdAt).getTime()) / 86_400_000);
+          const ageIcon = ageDays >= 30 ? '✅' : ageDays >= 14 ? '⚠️' : '🔴';
+          return [`${ageIcon} Account age: *${ageDays}d* (${ageDays >= 30 ? 'mature' : ageDays >= 14 ? 'warming' : 'new — low trust'})`];
+        }
+      } catch {}
+      return [];
+    })(),
     `🔥 Warmup: ${warmupStatus}`,
     `🌐 Browser Use: ${browserPosting}`,
     `🎬 Pipeline: ${pipelineStatus}`,
@@ -599,6 +620,29 @@ export function cmdPace(): string {
     lines.push('');
     lines.push(`*📅 Today's posting slots:* ${slotsToUse.join(' · ')}`);
   }
+
+  // Sprint 1141 (wave 20): queue size vs obligation buffer
+  try {
+    const ledgerPath = path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl');
+    const manualPath2 = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
+    if (fs.existsSync(ledgerPath)) {
+      const postedIds2 = new Set<string>();
+      if (fs.existsSync(manualPath2)) {
+        for (const l of fs.readFileSync(manualPath2, 'utf-8').split('\n').filter(l => l.trim())) {
+          try { const p = JSON.parse(l); if (p.video_id) postedIds2.add(p.video_id); } catch {}
+        }
+      }
+      let qCount = 0;
+      for (const l of fs.readFileSync(ledgerPath, 'utf-8').split('\n').filter(l => l.trim())) {
+        try { const e = JSON.parse(l); if (e.video_id && !postedIds2.has(e.video_id)) qCount++; } catch {}
+      }
+      const dailyObligation = daysLeft > 0 ? Math.ceil(postsNeeded / daysLeft) : 0;
+      const bufferDays = dailyObligation > 0 ? Math.floor(qCount / dailyObligation) : qCount;
+      const bufIcon = bufferDays >= 3 ? '✅' : bufferDays >= 1 ? '⚠️' : '❌';
+      lines.push('');
+      lines.push(`${bufIcon} *Queue:* ${qCount} videos (${bufferDays}d buffer at ${dailyObligation}/day obligation)`);
+    }
+  } catch { /* skip */ }
 
   // Sprint 1141 (wave 19): weekdays remaining until gate (Mon-Fri only)
   try {

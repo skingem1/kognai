@@ -1850,6 +1850,23 @@ export function cmdStatus(): string {
     }
   } catch { /* skip */ }
 
+  // Sprint 1139 (wave 20): count PM2 crons that fired today
+  let cronsFiredLine = '';
+  try {
+    const out = execSync('pm2 jlist', { timeout: 8000, stdio: 'pipe' }).toString();
+    const pm2List: any[] = JSON.parse(out);
+    const todayStart = new Date(now.toISOString().slice(0, 10) + 'T00:00:00Z').getTime();
+    const cronsFired = pm2List.filter((p: any) => {
+      if (!p.pm2_env?.cron_restart) return false;
+      const lastRestart = p.pm2_env?.pm_uptime ?? p.pm2_env?.created_at ?? 0;
+      return lastRestart >= todayStart;
+    }).length;
+    const totalCrons = pm2List.filter((p: any) => !!p.pm2_env?.cron_restart).length;
+    if (totalCrons > 0) {
+      cronsFiredLine = `\n⚙️ *Crons fired today:* ${cronsFired}/${totalCrons}`;
+    }
+  } catch { /* skip */ }
+
   const lines = [
     `📊 *Kognai Status Dashboard*${activeSprintStr}${envAlertStr}`,
     '',
@@ -1865,9 +1882,21 @@ export function cmdStatus(): string {
       ? `✅ *OBLIGATION MET* — ${todayPosts}/${dailyObligation} today · ${paceNeeded.toFixed(1)}/day needed`
       : `⚠️ *OBLIGATION UNMET* — ${todayPosts}/${dailyObligation} today · post *${dailyObligation - todayPosts} more now*`,
     streak > 0 ? `🔥 Streak: *${streak}* days` : (daysSinceLastPost > 0 ? `💤 Streak: 0 — last post *${daysSinceLastPost}d ago*` : `💤 Streak: 0 — no posts yet`),
+    // Sprint 1138 (wave 19): obligation met streak
+    (() => {
+      let oblStreak = 0;
+      for (let i = 0; i < 14; i++) {
+        const d = new Date(now.getTime() - i * 86_400_000).toISOString().slice(0, 10);
+        const obligationForDay = daysLeft > 0 ? Math.ceil(postsNeeded / daysLeft) : 0;
+        const postedThatDay = dailyCounts[d] ?? 0;
+        if (postedThatDay >= obligationForDay && obligationForDay > 0) oblStreak++;
+        else break;
+      }
+      return oblStreak >= 2 ? `📋 Obligation streak: *${oblStreak}d* met in a row ✅` : '';
+    })(),
     `📦 Queue: *${readyCount}* ready · ${unposted.length} total${lastPostAge}`,
     pipelineLine,
-    cronLine,
+    cronLine + cronsFiredLine,
     watchdogLine,
     trustLine,
     smokeLine,

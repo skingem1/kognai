@@ -486,6 +486,34 @@ export function cmdAchiri(): string {
         } catch { /* skip */ }
         lines.push(`💎 *Premium:* ${premiumUsers}/${totalUsers} users = ${convPct}% conversion`);
         lines.push(`📊 *Funnel:* waitlist ${funnelWaitlist} → active ${funnelActive} (${w2a}%) → premium ${funnelPremium} (${a2p}%)`);
+        // Sprint 1138 (wave 20): engaged cohort (users with >5 messages)
+        const powerUsers = Array.from(userMsgCounts.values()).filter(n => n > 5).length;
+        const powerPct = totalUsers > 0 ? Math.round((powerUsers / totalUsers) * 100) : 0;
+        if (totalUsers > 0) lines.push(`🔥 *Engaged cohort:* ${powerUsers}/${totalUsers} users (${powerPct}%) sent >5 messages`);
+        // Sprint 1143 (wave 20): peak hour of user messages
+        try {
+          const hourCounts: number[] = new Array(24).fill(0);
+          const userPremiumPath = path.join(ROOT, 'workspace', 'achiri', 'memory', 'user-premium.jsonl');
+          if (fs.existsSync(userPremiumPath)) {
+            const upLines = fs.readFileSync(userPremiumPath, 'utf-8').split('\n').filter(l => l.trim());
+            for (const l of upLines) {
+              try {
+                const entry = JSON.parse(l);
+                const ts = entry.ts ?? entry.timestamp ?? entry.created_at;
+                if (ts) {
+                  const h = new Date(ts).getHours();
+                  if (h >= 0 && h < 24) hourCounts[h]++;
+                }
+              } catch {}
+            }
+          }
+          const maxHourCount = Math.max(...hourCounts);
+          if (maxHourCount > 0) {
+            const peakHour = hourCounts.indexOf(maxHourCount);
+            const peakStr = peakHour < 12 ? `${peakHour === 0 ? 12 : peakHour}am` : peakHour === 12 ? '12pm' : `${peakHour - 12}pm`;
+            lines.push(`⏰ *Peak hour:* ${peakStr} (${maxHourCount} events)`);
+          }
+        } catch { /* skip */ }
         lines.push('');
       }
     } catch { /* skip */ }
