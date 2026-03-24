@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-998",
+  "title": "ARCH-001-OBSERVER — Observer agent polling loop implementation",
+  "description": "Implement the ARCH-001 observer loop: reads workers.json every N seconds, detects anomalies (stalled workers, failed agents), emits AMF observation reports to workspace/arch001/_orchestrator/escalations/. Max 150 lines, no external deps.",
+  "block": "ARCH-001",
+  "source": "queue-exhausted-architecture",
+  "tasks": [
+    {
+      "id": "998-01",
+      "title": "Write workspace/arch001/observer.ts — observer polling loop",
+      "type": "feature",
+      "task_target": "workspace/arch001/observer.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-998"
+    }
+  ]
+}

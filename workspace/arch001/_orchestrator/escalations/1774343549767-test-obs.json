@@ -1,0 +1,24 @@
+{
+  "amf": "0.1",
+  "id": "ac6fdb32-59a5-4b60-bd63-025990480c1d",
+  "sender": "test-obs",
+  "recipient": "orchestrator",
+  "sentAt": "2026-03-24T09:12:29.766Z",
+  "payload": {
+    "type": "event",
+    "topic": "observer.report",
+    "data": {
+      "cycle": 1,
+      "sessionId": "kognai-amd21",
+      "observedWorkers": "all",
+      "anomalies": [
+        {
+          "type": "heartbeat_stale",
+          "detail": "Heartbeat is 7476s old (max 180s)",
+          "severity": "critical"
+        }
+      ],
+      "summary": "1 critical, 0 warning"
+    }
+  }
+}
