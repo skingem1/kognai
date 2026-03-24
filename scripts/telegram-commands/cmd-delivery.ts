@@ -1231,3 +1231,62 @@ export async function cmdV2Produce(chatId: string, args?: string): Promise<void>
     }
   });
 }
+
+// Sprint 1017: /deliver-next — send top unposted video mp4 as Telegram file
+const DRY_METHODS_DN = ['browser-post-dry', 'batch-browser-dry', 'dry'];
+export async function cmdDeliverNext(chatId: string): Promise<void> {
+  const deliveredPath = path.join(ROOT, 'workspace', 'scs001', 'auto-delivered.jsonl');
+  const manualPath    = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
+
+  if (!fs.existsSync(deliveredPath)) {
+    await sendMessage(chatId, '⚠️ No auto-delivered.jsonl found.');
+    return;
+  }
+
+  const postedIds = new Set<string>();
+  if (fs.existsSync(manualPath)) {
+    fs.readFileSync(manualPath, 'utf-8').split('\n').filter(l => l.trim()).forEach(l => {
+      try {
+        const e = JSON.parse(l);
+        if (!e.video_id) return;
+        if (e.method && DRY_METHODS_DN.some(d => String(e.method).includes(d))) return;
+        postedIds.add(e.video_id);
+      } catch {}
+    });
+  }
+
+  const candidates: Array<{ video_id: string; viral_score: number; mp4: string; topic?: string }> = [];
+  fs.readFileSync(deliveredPath, 'utf-8').split('\n').filter(l => l.trim()).forEach(l => {
+    try {
+      const e = JSON.parse(l);
+      if (!e.video_id || postedIds.has(e.video_id)) return;
+      const mp4 = e.mp4_path && fs.existsSync(e.mp4_path) ? e.mp4_path : findCaptionedMp4(e.video_id);
+      if (mp4) candidates.push({ video_id: e.video_id, viral_score: e.viral_score ?? 0, mp4, topic: e.topic });
+    } catch {}
+  });
+
+  if (candidates.length === 0) {
+    await sendMessage(chatId, '⚠️ No unposted videos with mp4 found. Run /postnext to check.');
+    return;
+  }
+
+  candidates.sort((a, b) => b.viral_score - a.viral_score);
+  const top = candidates[0];
+  const caption = buildTikTokCaption(top.video_id);
+
+  await sendMessage(chatId, [
+    `🎯 *Sending video for posting* — \`${top.video_id}\``,
+    top.topic ? `📝 ${top.topic.slice(0, 70)}` : '',
+    `Score: ${top.viral_score.toFixed(2)} · ${candidates.length - 1} more unposted`,
+    '',
+    `_Caption:_\n\`\`\`\n${caption}\n\`\`\``,
+    '',
+    `_After posting: \`/record ${top.video_id} 0\`_`,
+  ].filter(Boolean).join('\n'));
+
+  try {
+    await sendVideoFile(chatId, top.mp4, `${top.video_id} · /record ${top.video_id} 0`);
+  } catch (err: any) {
+    await sendMessage(chatId, `⚠️ Could not send video file: ${err.message?.slice(0, 100)}\n📁 Path: \`${top.mp4}\``);
+  }
+}

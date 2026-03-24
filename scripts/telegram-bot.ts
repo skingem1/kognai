@@ -30,7 +30,7 @@ import { cmdHelp } from './telegram-commands/cmd-help';
 
 // Sprint 496: Import extracted command modules (Part 2: N-Z + interactive)
 import { cmdSession, cmdDone, cmdEndSession, cmdMenu } from './telegram-commands/cmd-session';
-import { cmdDeliver, cmdPublish, cmdPostNow, cmdPickup, cmdTodayCaptions, cmdBroadcast, cmdRefresh, cmdProduce, cmdProduceTopic, cmdInstagram, cmdInventory, cmdBatchDeliver, cmdStockpile, cmdBroadcastPause, cmdBroadcastResume, cmdPostBrowser, cmdPostAuto, cmdQuickstart, cmdV2Produce } from './telegram-commands/cmd-delivery';
+import { cmdDeliver, cmdPublish, cmdPostNow, cmdPickup, cmdTodayCaptions, cmdBroadcast, cmdRefresh, cmdProduce, cmdProduceTopic, cmdInstagram, cmdInventory, cmdBatchDeliver, cmdStockpile, cmdBroadcastPause, cmdBroadcastResume, cmdPostBrowser, cmdPostAuto, cmdQuickstart, cmdV2Produce, cmdDeliverNext } from './telegram-commands/cmd-delivery';
 import { cmdCheckout, cmdSubscribers, cmdPortal, cmdFunnel, cmdAchiri, cmdAlpha, cmdTestStripe, cmdUsage, cmdAchiriData, cmdWaitlist } from './telegram-commands/cmd-stripe';
 import { cmdStart, cmdTrial, cmdPlans } from './telegram-commands/cmd-onboarding';
 import { cmdLoraEval } from './telegram-commands/cmd-lora-eval';
@@ -93,7 +93,8 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     '/done':         () => cmdDone(chatId),
     '/endsession':   () => cmdEndSession(chatId),
     '/publish':      () => cmdPublish(chatId, cmdArgs),
-    '/deliver':      async () => { const r = await cmdDeliver(chatId, cmdArgs); await sendMessage(chatId, r); },
+    '/deliver':       async () => { const r = await cmdDeliver(chatId, cmdArgs); await sendMessage(chatId, r); },
+    '/deliver-next':  async () => { await cmdDeliverNext(chatId); },
     '/checkout':     () => cmdCheckout(chatId, cmdArgs),
     '/subscribers':  () => cmdSubscribers(chatId),
     '/stripestatus': async () => { const r = await cmdStripeStatus(); await sendMessage(chatId, r); },

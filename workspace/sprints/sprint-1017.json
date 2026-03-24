@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-1017",
+  "title": "OPS — /deliver-next: send top unposted video mp4 as Telegram file",
+  "description": "Gate urgency: 2/30 posts. /deliver-next sends the actual mp4 file to Telegram chat so operator can save to camera roll and post to TikTok directly from phone. No need to find file path manually.",
+  "block": "OPS",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1017-01",
+      "title": "Add cmdDeliverNext() to cmd-delivery.ts + register /deliver-next in telegram-bot.ts",
+      "type": "feature",
+      "task_target": "scripts/telegram-commands/cmd-delivery.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-1017",
+      "description": "cmdDeliverNext(chatId): picks top unposted video (by viral_score from auto-delivered.jsonl, excluding dry-run posts), sends caption text message + sendVideoFile() to Telegram. Registered as /deliver-next in async dispatch section."
+    }
+  ]
+}
