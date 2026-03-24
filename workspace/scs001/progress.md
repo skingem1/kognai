@@ -5588,3 +5588,13 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (multi-file content task, direct write)
 - Issues: None
 - Timestamp: 2026-03-24T22:30:00Z
+
+## Sprint 995 — GODMAN-TELEGRAM
+- Status: PASS
+- Commit: d63db412
+- Files modified: scripts/telegram-commands/cmd-system.ts, scripts/telegram-bot.ts, scripts/telegram-commands/cmd-help.ts
+- Test: cmdGodman() output verified — 7/7 protocols built, LAUNCH READY
+- Pipeline: Operator can now check Godman launch status from Telegram
+- Swarm used: no (3-file feature, direct write)
+- Issues: None.
+- Timestamp: 2026-03-24T22:20:00Z
