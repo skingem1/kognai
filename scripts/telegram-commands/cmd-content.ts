@@ -6,7 +6,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { execSync } from 'child_process';
 import {
-  ROOT, readJSON, readLines, getPm2List, fmtUptime, fmtMem, latestSprintFile,
+  ROOT, readJSON, readLines, readRealPosts, getPm2List, fmtUptime, fmtMem, latestSprintFile,
   findCaptionedMp4, getExperimentData, buildTikTokCaption,
   loadSpeakerMap, diversifyBySpeaker, loadHookMap, diversifyByHook,
   freshnessScore, loadArchived, saveArchived, ARCHIVE_PATH,
@@ -62,11 +62,7 @@ export function cmdRecord(args: string): string {
   };
   fs.appendFileSync(manualPostsPath, JSON.stringify(entry) + '\n', 'utf-8');
 
-  // Sprint 1023: Compute updated gate stats excluding dry-runs
-  const DRY_METHODS_R = ['browser-post-dry', 'batch-browser-dry', 'dry'];
-  const updated = (readLines(manualPostsPath) as any[]).filter((e: any) =>
-    e.video_id && !(e.method && DRY_METHODS_R.some((d: string) => String(e.method).includes(d)))
-  );
+  const updated = readRealPosts();
   const postCount = updated.length;
   const totalViews = updated.reduce((s: number, p: any) => s + (p.views ?? 0), 0);
   const postsLeft = Math.max(0, 30 - postCount);
@@ -1033,25 +1029,13 @@ export function cmdValErrors(): string {
 }
 
 // Sprint 1016: /caption-next — auto-pick top unposted video and show caption
-const DRY_METHODS_CN = ['browser-post-dry', 'batch-browser-dry', 'dry'];
 export function cmdCaptionNext(): string {
   const deliveredPath = path.join(ROOT, 'workspace', 'scs001', 'auto-delivered.jsonl');
-  const manualPath    = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
 
   if (!fs.existsSync(deliveredPath)) return '⚠️ No auto-delivered.jsonl found. Generate videos first.';
 
   // Load posted IDs (excluding dry runs)
-  const postedIds = new Set<string>();
-  if (fs.existsSync(manualPath)) {
-    fs.readFileSync(manualPath, 'utf-8').split('\n').filter(l => l.trim()).forEach(l => {
-      try {
-        const e = JSON.parse(l);
-        if (!e.video_id) return;
-        if (e.method && DRY_METHODS_CN.some(d => String(e.method).includes(d))) return;
-        postedIds.add(e.video_id);
-      } catch {}
-    });
-  }
+  const postedIds = new Set<string>(readRealPosts().map((e: any) => e.video_id).filter(Boolean));
 
   // Find top unposted candidate with an mp4
   const candidates: Array<{ video_id: string; viral_score: number; mp4: string; topic?: string }> = [];

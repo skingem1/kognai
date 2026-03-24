@@ -1233,27 +1233,15 @@ export async function cmdV2Produce(chatId: string, args?: string): Promise<void>
 }
 
 // Sprint 1017: /deliver-next — send top unposted video mp4 as Telegram file
-const DRY_METHODS_DN = ['browser-post-dry', 'batch-browser-dry', 'dry'];
 export async function cmdDeliverNext(chatId: string): Promise<void> {
   const deliveredPath = path.join(ROOT, 'workspace', 'scs001', 'auto-delivered.jsonl');
-  const manualPath    = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
 
   if (!fs.existsSync(deliveredPath)) {
     await sendMessage(chatId, '⚠️ No auto-delivered.jsonl found.');
     return;
   }
 
-  const postedIds = new Set<string>();
-  if (fs.existsSync(manualPath)) {
-    fs.readFileSync(manualPath, 'utf-8').split('\n').filter(l => l.trim()).forEach(l => {
-      try {
-        const e = JSON.parse(l);
-        if (!e.video_id) return;
-        if (e.method && DRY_METHODS_DN.some(d => String(e.method).includes(d))) return;
-        postedIds.add(e.video_id);
-      } catch {}
-    });
-  }
+  const postedIds = new Set<string>(readRealPosts().map((e: any) => e.video_id).filter(Boolean));
 
   const candidates: Array<{ video_id: string; viral_score: number; mp4: string; topic?: string }> = [];
   fs.readFileSync(deliveredPath, 'utf-8').split('\n').filter(l => l.trim()).forEach(l => {
