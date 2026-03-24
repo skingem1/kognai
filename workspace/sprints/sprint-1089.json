@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1089",
+  "title": "GODMAN-LAUNCH — /godman: verify changelog is present (CHANGELOG.md in each protocol)",
+  "description": "Already implemented at lines 1308-1321 of cmd-system.ts — checks all 8 protocols + SDK for CHANGELOG.md. No changes needed.",
+  "block": "GODMAN-PROTOCOLS",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1089-01",
+      "title": "Verify CHANGELOG.md check already present in cmdGodman",
+      "type": "validation",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1089"
+    }
+  ]
+}

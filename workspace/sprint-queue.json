@@ -836,7 +836,7 @@
       "status": "done",
       "priority": "medium",
       "rationale": "Each protocol repo needs a CHANGELOG.md before npm publish. /godman readiness should check all 7 repos have CHANGELOG.md and show pass/fail per protocol.",
-      "_note": "Shipped 2026-03-24 — per-protocol CHANGELOG check in /godman"
+      "_note": "Already implemented at lines 1308-1321. Validated 2026-03-24."
     },
     {
       "sprint": 1090,
