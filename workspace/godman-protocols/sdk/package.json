@@ -1,0 +1,55 @@
+{
+  "name": "@godman-protocols/sdk",
+  "version": "0.2.0",
+  "description": "Unified SDK for all 7 Godman Protocols — PACT, LAX, SCORE, SIGNAL, SOUL, AMF, DRS",
+  "type": "module",
+  "main": "dist/index.js",
+  "exports": "./dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build",
+    "test": "npx tsx smoke.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "agent",
+    "protocol",
+    "coordination",
+    "trust",
+    "multi-agent",
+    "x402",
+    "godman-protocols",
+    "sdk"
+  ],
+  "author": "skingem1",
+  "license": "Apache-2.0",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/godman-protocols/sdk.git"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "@godman-protocols/pact": "file:../pact",
+    "@godman-protocols/lax": "file:../lax",
+    "@godman-protocols/score": "file:../score",
+    "@godman-protocols/signal": "file:../signal",
+    "@godman-protocols/soul": "file:../soul",
+    "@godman-protocols/amf": "file:../amf",
+    "@godman-protocols/drs": "file:../drs"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "tsx": "^4.7.0"
+  }
+}

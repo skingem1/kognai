@@ -1,0 +1,13 @@
+{
+  "sprint_id": "sprint-977",
+  "title": "DEPLOY-UNBLOCK — Fix TypeScript errors blocking pre-deploy check",
+  "description": "Fix 4 TypeScript strict-mode errors in scripts/ that cause pre-deploy check to fail. Unblocks Achiri Hetzner deployment (Phase 2A gate April 11). Surgical 1-line fixes: add execSync import in cmd-delivery.ts, add type assertions in cmd-system.ts, cast bundle in run-full-pipeline.ts, add collected_at in run-multiformat-pipeline.ts.",
+  "block": "ACHIRI-DEPLOY",
+  "source": "queue-exhausted-gate-blocker",
+  "tasks": [
+    { "id": "977-01", "title": "Fix cmd-delivery.ts: add execSync require inside cmdPostAuto", "type": "fix", "task_target": "scripts/telegram-commands/cmd-delivery.ts", "agent": "coder", "status": "pending", "priority": "critical", "sprint_id": "sprint-977" },
+    { "id": "977-02", "title": "Fix cmd-system.ts: add 'as any' for status/health unknown types", "type": "fix", "task_target": "scripts/telegram-commands/cmd-system.ts", "agent": "coder", "status": "pending", "priority": "critical", "sprint_id": "sprint-977" },
+    { "id": "977-03", "title": "Fix run-full-pipeline.ts: cast bundle as any for ScriptBundle missing fields", "type": "fix", "task_target": "scripts/scs001/run-full-pipeline.ts", "agent": "coder", "status": "pending", "priority": "high", "sprint_id": "sprint-977" },
+    { "id": "977-04", "title": "Fix run-multiformat-pipeline.ts: add collected_at to TopicBrief custom mapping", "type": "fix", "task_target": "scripts/scs001/run-multiformat-pipeline.ts", "agent": "coder", "status": "pending", "priority": "high", "sprint_id": "sprint-977" }
+  ]
+}
