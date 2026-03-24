@@ -95,6 +95,15 @@
       "priority": "medium",
       "rationale": "From INTEL-009. Clawcard provides agent email + phone — could solve Sprint 508-BROWSER-01 TikTok phone verification blocker. Install @clawcard/cli (npm). Test phone number acquisition. Verify if number can receive SMS for TikTok verification. Document findings.",
       "_note": "Shipped 2026-03-24 — commit e1408afe. CLI installed, evaluation documented. Requires human login for live test."
+    },
+    {
+      "sprint": 963,
+      "title": "PACT-IMPL-01 — Core mandate lifecycle implementation",
+      "block": "GODMAN-PROTOCOLS",
+      "status": "done",
+      "priority": "high",
+      "rationale": "Implement PACT core mandate lifecycle (create, hash, sign, revoke, verify). Transform skeleton (v0.1) to working protocol (v0.2). Node.js crypto only — no external deps.",
+      "_note": "Shipped 2026-03-24 — commit 32879004. core.ts (110 lines) + verifier.ts (105 lines) + index.ts updated. Smoke test: 8/8 PASS. Swarm bypassed (multi-file, direct write)."
     }
   ]
 }
