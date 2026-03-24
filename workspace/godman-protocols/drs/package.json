@@ -1,8 +1,8 @@
 {
   "name": "@godman-protocols/drs",
-  "version": "0.1.0",
-  "description": "Dynamic Resource Scheduling — skeleton",
-  "status": "skeleton",
+  "version": "0.2.0",
+  "description": "Dynamic Resource Scheduling — pools, allocate, release, preempt",
+  "type": "module",
   "private": true,
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -13,7 +13,7 @@
   "scripts": {
     "build": "tsc",
     "typecheck": "tsc --noEmit",
-    "test": "echo 'No tests yet — skeleton phase'"
+    "test": "tsx smoke.test.ts"
   },
   "keywords": [
     "agent",

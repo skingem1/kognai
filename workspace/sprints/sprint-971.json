@@ -1,0 +1,29 @@
+{
+  "sprint_id": "sprint-971",
+  "title": "DRS-IMPL-01 — Dynamic Resource Scheduling (pools, allocate, release, preempt)",
+  "description": "Implement DRS core: ResourceScheduler class with pool management, allocation, release, preemption, expiry. Node.js crypto only. Last of 7 Godman Protocols.",
+  "block": "GODMAN-PROTOCOLS",
+  "source": "qwen-recommendation",
+  "tasks": [
+    {
+      "id": "971-01",
+      "title": "DRS src/scheduler.ts — ResourceScheduler with pool/alloc/release/preempt",
+      "type": "feature",
+      "task_target": "workspace/godman-protocols/drs/src/scheduler.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-971"
+    },
+    {
+      "id": "971-02",
+      "title": "DRS src/index.ts + smoke.test.ts + package.json update",
+      "type": "feature",
+      "task_target": "workspace/godman-protocols/drs/src/index.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-971"
+    }
+  ]
+}
