@@ -1,0 +1,10 @@
+{
+  "sprint_id": "sprint-986",
+  "title": "GODMAN-LANDING — GitHub Pages landing page for April 14 launch",
+  "description": "Create a static landing page (index.html) for Godman Protocols at workspace/godman-protocols/docs/index.html. Shows all 7 protocols, SDK, install instructions, and links to GitHub repos. Deploy-ready for GitHub Pages.",
+  "block": "GODMAN-PROTOCOLS",
+  "source": "queue-exhausted-launch-prep",
+  "tasks": [
+    { "id": "986-01", "title": "Create Godman landing page index.html", "type": "feature", "task_target": "workspace/godman-protocols/docs/index.html", "agent": "coder", "status": "pending", "priority": "high", "sprint_id": "sprint-986" }
+  ]
+}
