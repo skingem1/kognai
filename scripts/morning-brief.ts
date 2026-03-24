@@ -87,11 +87,17 @@ function main(): void {
   const paceIcon = todayPosts >= dailyObligation ? '✅' : '🎯';
   const urgencyIcon = daysLeft <= 3 ? '🚨' : daysLeft <= 7 ? '⚠️' : '☀️';
 
+  // Sprint 1104: views progress when views < 100
+  const totalViews = manualPosts
+    .filter((p: any) => !DRY_METHODS.some(d => String(p.method || '').includes(d)))
+    .reduce((s: number, p: any) => s + (p.views ?? 0), 0);
+
   const lines = [
     `${urgencyIcon} *Good morning — ${today}*`,
     '',
     `📊 Gate: *${postsDone}/30* · ${daysLeft}d to ${deadline}`,
     `${paceIcon} Today: *${todayPosts}/${dailyObligation}* posted`,
+    ...(totalViews < 100 ? [`👁️ Views: ${totalViews}/500 — engagement lag, boost with CTAs`] : []),
     '',
   ];
 
