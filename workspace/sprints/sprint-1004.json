@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-1004",
+  "title": "PHASE2 — Achiri conversation analytics dashboard data export",
+  "description": "Export Achiri conversation analytics as structured JSON for a future web dashboard. Aggregates: DAU from daily-counts.json, engagement from daily-engage-log.jsonl, session count from session-logs/, user tiers from user-tiers.json, waitlist size from waitlist.jsonl. Writes to reports/achiri-analytics-export.json.",
+  "block": "PHASE2",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1004-01",
+      "title": "Create scripts/achiri/export-analytics.ts — dashboard data aggregator",
+      "type": "feature",
+      "task_target": "scripts/achiri/export-analytics.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1004",
+      "description": "Read workspace/achiri/daily-counts.json (DAU per day), daily-engage-log.jsonl (engagement events), session-logs/ (session count + avg messages), user-tiers.json (tier breakdown), waitlist.jsonl (waitlist size). Compute: total_sessions, unique_users (from engage log), dau_7d avg, top_days, tier_breakdown. Write to reports/achiri-analytics-export.json. Max 120 lines."
+    }
+  ]
+}

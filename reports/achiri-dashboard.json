@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-21T10:04:27.217Z",
+  "generated_at": "2026-03-24T09:28:37.622Z",
   "version": "2.0",
   "overview": {
     "total_users": 3,
@@ -11,9 +11,9 @@
     "errors_7d": 0
   },
   "today": {
-    "date": "2026-03-21",
+    "date": "2026-03-24",
     "dau": 1,
-    "msgs": 7,
+    "msgs": 1,
     "new_users": 0
   },
   "daily": [
@@ -40,6 +40,12 @@
       "dau": 1,
       "msgs": 7,
       "new_users": 0
+    },
+    {
+      "date": "2026-03-24",
+      "dau": 1,
+      "msgs": 1,
+      "new_users": 0
     }
   ],
   "trends_7d": [
@@ -62,11 +68,16 @@
       "date": "2026-03-21",
       "dau_7d": 1.3,
       "msgs_7d": 3.8
+    },
+    {
+      "date": "2026-03-24",
+      "dau_7d": 1.2,
+      "msgs_7d": 3.2
     }
   ],
   "topics": {
-    "total_analyzed": 53,
-    "uncategorized": 38,
+    "total_analyzed": 54,
+    "uncategorized": 39,
     "distribution": [
       {
         "topic": "culture",
@@ -118,10 +129,10 @@
   "top_users": [
     {
       "user_id": "user-premium",
-      "total_msgs": 8,
-      "days_active": 2,
+      "total_msgs": 9,
+      "days_active": 3,
       "first_seen": "2026-03-16",
-      "last_seen": "2026-03-21"
+      "last_seen": "2026-03-24"
     },
     {
       "user_id": "6001921477",
