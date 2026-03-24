@@ -711,6 +711,67 @@ function generateItems(startSprint: number, existingTitles: Set<string> = new Se
     rationale: '/gate shows total posts needed but not the daily rate. Add "Need X posts/day for remaining Yd" so operator can immediately assess posting intensity required.',
   });
 
+  // Wave 9 templates — Godman pre-launch + engagement hardening
+  infraItems.push({
+    title: 'GODMAN-LAUNCH — /godman: warn if any protocol has no tests (missing test script)',
+    block: 'GODMAN-PROTOCOLS',
+    rationale: 'Some godman protocols may not have a test script. /godman should flag protocols missing npm test so they get coverage before launch.',
+  });
+
+  infraItems.push({
+    title: 'OPS — /morning-brief: show stuck cron warning if any cron is >48h stale',
+    block: 'OPS',
+    rationale: 'Morning brief shows posting state but not cron health. If any daily cron missed its window (>48h uptime), flag it so operator can restart before the day starts.',
+  });
+
+  infraItems.push({
+    title: 'GATE — /record: confirm receipt with gate progress after each post',
+    block: 'GATE',
+    rationale: '/record logs a post but only shows a simple confirmation. After recording, show "Gate: N/30 posts · M/500 views · Xd left" to reinforce progress.',
+  });
+
+  infraItems.push({
+    title: 'ACHIRI — /achiri: show error rate (failed messages / total) from reengage log',
+    block: 'ACHIRI',
+    rationale: '/achiri shows send counts but not what percentage failed. Add error rate % from reengage-error.log so operator can see bot reliability at a glance.',
+  });
+
+  infraItems.push({
+    title: 'OPS — /status: filter empty lines from output (compact mode)',
+    block: 'OPS',
+    rationale: '/status has many conditional lines that render as empty strings when undefined. Filter falsy values from the output array to remove blank gaps in the message.',
+  });
+
+  infraItems.push({
+    title: 'QUALITY — /smoke: add pipeline validator check (validator must pass)',
+    block: 'QUALITY',
+    rationale: '/smoke runs basic tests but not the pipeline validator. Add a check that runs npx ts-node scripts/validate-pipeline.ts and fails if errors > 0.',
+  });
+
+  infraItems.push({
+    title: 'INFRA — /health: show Tailscale VPN status (up/down)',
+    block: 'INFRA',
+    rationale: '/health checks local disk and PM2 but not Tailscale VPN. If Tailscale goes down, Mac Mini vault becomes unreachable. Add tailscale status check.',
+  });
+
+  infraItems.push({
+    title: 'OPS — /crons: add restart button hint for stuck crons',
+    block: 'OPS',
+    rationale: 'When /crons shows STALE crons, it should also show the restart command. Add "Restart: pm2 restart <name>" hint next to stuck cron entries.',
+  });
+
+  infraItems.push({
+    title: 'GATE — /today: show top 3 unposted video IDs with copy-paste /record commands',
+    block: 'GATE',
+    rationale: '/today shows top picks but the record command requires manual ID lookup. Show 3 pre-filled /record <id> 0 commands at the end of /today for immediate action.',
+  });
+
+  infraItems.push({
+    title: 'GODMAN-LAUNCH — /godman: show npm registry status (npmjs.com reachable)',
+    block: 'GODMAN-PROTOCOLS',
+    rationale: 'Before launch day, /godman should verify npmjs.com is reachable with a quick curl check so operator knows publish will work before attempting it.',
+  });
+
   // Fill remaining slots (skip duplicates of already-completed items)
   for (const item of infraItems) {
     if (items.length >= 10) break;

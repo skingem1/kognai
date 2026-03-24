@@ -129,7 +129,21 @@ export function cmdHealth(): string {
     }
   } catch {}
 
-  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${ollamaSection}${memWarnSection}${supabaseSection}${diskSection}`;
+  // Sprint 1123: Tailscale VPN status
+  let tailscaleSection = '';
+  try {
+    const tsOut = execSync('tailscale status --json 2>/dev/null', { encoding: 'utf-8', timeout: 5000 }).trim();
+    const tsData = JSON.parse(tsOut);
+    const backendState = tsData.BackendState ?? 'Unknown';
+    const self = tsData.Self;
+    const ip = self?.TailscaleIPs?.[0] ?? '';
+    const tsIcon = backendState === 'Running' ? '✅' : '⚠️';
+    tailscaleSection = `\n\n*Tailscale:* ${tsIcon} ${backendState}${ip ? ` · ${ip}` : ''}`;
+  } catch {
+    tailscaleSection = '\n\n*Tailscale:* ℹ️ not installed or not running';
+  }
+
+  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${ollamaSection}${memWarnSection}${supabaseSection}${diskSection}${tailscaleSection}`;
 }
 
 export function cmdTier(): string {
@@ -342,7 +356,8 @@ export function cmdCrons(): string {
     if (stuck.length > 0) {
       lines.push(`🔴 *Stuck (>48h):*`);
       for (const c of stuck) {
-        lines.push(`  🔴 \`${c.name}\` — ${Math.round(c.ageHours)}h since last restart`);
+        // Sprint 1124: add restart hint
+        lines.push(`  🔴 \`${c.name}\` — ${Math.round(c.ageHours)}h since last restart · restart: \`pm2 restart ${c.name}\``);
       }
       lines.push('');
     }
@@ -1104,6 +1119,19 @@ export async function cmdSmoke(chatId: string): Promise<void> {
       }
     }
 
+    // Sprint 1122: pipeline validator check
+    const validatorPath = path.join(ROOT, 'reports', 'pipeline-validator-latest.json');
+    if (fs.existsSync(validatorPath)) {
+      try {
+        const vr = JSON.parse(fs.readFileSync(validatorPath, 'utf-8'));
+        const errCount = vr.errors?.length ?? vr.error_count ?? 0;
+        lines.push('');
+        lines.push(errCount === 0
+          ? `✅ Pipeline validator: 0 errors`
+          : `❌ Pipeline validator: ${errCount} errors — /errors for details`);
+      } catch {}
+    }
+
     await sendMessage(chatId, lines.join('\n'));
   } catch (err: any) {
     await sendMessage(chatId, `❌ Smoke test error: ${(err.message || '').slice(0, 300)}`);
@@ -1455,6 +1483,21 @@ export function cmdGodman(): string {
     for (const r of changelogResults) {
       lines.push(`  ${r.ok ? '✅' : '❌'} ${r.name}`);
     }
+  }
+
+  // Sprint 1119: warn if any protocol is missing test script
+  const missingTests = PROTOCOLS.concat(['sdk']).filter(p => {
+    const pkgPath = path.join(BASE, p, 'package.json');
+    if (!fs.existsSync(pkgPath)) return true;
+    try {
+      const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'));
+      return !pkg.scripts?.test;
+    } catch { return true; }
+  });
+  if (missingTests.length === 0) {
+    lines.push(`🧪 Tests: ✅ all 8 packages have test scripts`);
+  } else {
+    lines.push(`🧪 Tests: ⚠️ missing test script in: ${missingTests.join(', ')}`);
   }
 
   // Sprint 1062: SDK api.md presence check

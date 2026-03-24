@@ -550,6 +550,12 @@ export function cmdToday(): string {
       lines.push(`${i + 1}. \`${v.video_id}\`${vsStr}`);
     }
     lines.push('');
+    // Sprint 1125: pre-filled /record commands for top videos
+    lines.push('*📋 After posting, record each one:*');
+    for (let i = 0; i < topN; i++) {
+      lines.push(`\`/record ${ready[i].video_id} 0\``);
+    }
+    lines.push('');
     lines.push(`💡 Send \`/deliver ${topN}\` to get ${topN === 1 ? 'this video' : 'these videos'} now.`);
   } else {
     lines.push('⚠️ No captioned videos ready to post. Run the pipeline first.');

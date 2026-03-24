@@ -123,6 +123,22 @@ function main(): void {
     }
   } catch {}
 
+  // Sprint 1120: warn if any PM2 cron is stuck (>48h uptime without restart)
+  try {
+    const { execSync } = require('child_process');
+    const pm2Out = execSync('pm2 jlist', { timeout: 5000, stdio: 'pipe' }).toString();
+    const pm2List: any[] = JSON.parse(pm2Out);
+    const stuckCrons = pm2List.filter((p: any) => {
+      if (!p.pm2_env?.cron_restart) return false;
+      const uptime = p.pm2_env?.pm_uptime ?? 0;
+      return uptime > 0 && (Date.now() - uptime) / 3600000 > 48 && p.pm2_env?.status === 'online';
+    });
+    if (stuckCrons.length > 0) {
+      lines.push('');
+      lines.push(`🔴 *Stuck crons (>48h):* ${stuckCrons.map((p: any) => p.name).join(', ')} — run /crons`);
+    }
+  } catch {}
+
   // Sprint 1094: Godman countdown when ≤14d to launch
   const godmanMs = new Date('2026-04-14T00:00:00Z').getTime() - Date.now();
   const godmanDays = Math.max(0, Math.ceil(godmanMs / 86_400_000));
