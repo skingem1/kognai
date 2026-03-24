@@ -1,0 +1,12 @@
+{
+  "sprint_id": "sprint-989",
+  "title": "SPIELBERG-BATCH — batch runner + SIGNAL + LAX demo scripts for April 14 launch",
+  "description": "Build scripts/spielberg/batch-run.ts (runs all demos in sequence, produces manifest). Write SIGNAL demo (EventBus pub/sub) and LAX demo (latency-aware routing). Completes 4/7 protocol demo set for Godman April 14 launch.",
+  "block": "SPIELBERG",
+  "source": "queue-exhausted-launch-prep",
+  "tasks": [
+    { "id": "989-01", "title": "Write batch-run.ts — runs all spielberg-scripts/*.json in sequence", "type": "feature", "task_target": "scripts/spielberg/batch-run.ts", "agent": "coder", "status": "pending", "priority": "high", "sprint_id": "sprint-989" },
+    { "id": "989-02", "title": "Write SIGNAL demo script (EventBus pub/sub)", "type": "feature", "task_target": "workspace/spielberg-scripts/signal-demo.json", "agent": "coder", "status": "pending", "priority": "high", "sprint_id": "sprint-989" },
+    { "id": "989-03", "title": "Write LAX demo script (latency-aware task routing)", "type": "feature", "task_target": "workspace/spielberg-scripts/lax-demo.json", "agent": "coder", "status": "pending", "priority": "high", "sprint_id": "sprint-989" }
+  ]
+}
