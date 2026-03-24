@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1084",
+  "title": "OPS — /digest: add Godman + Achiri launch countdown to bottom of digest",
+  "description": "Already implemented — lines 531-532 of daily-digest.ts show Godman (Apr 14) and Achiri (Apr 25) countdowns in the upcoming gates section. No code changes needed.",
+  "block": "OPS",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1084-01",
+      "title": "Verify Godman + Achiri countdowns already present in daily-digest.ts",
+      "type": "validation",
+      "task_target": "scripts/daily-digest.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1084"
+    }
+  ]
+}
