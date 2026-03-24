@@ -5960,3 +5960,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (multi-file, direct write)
 - Issues: none
 - Timestamp: 2026-03-24T15:55Z
+
+## Sprint 1058 — INFRA
+- Status: PASS
+- Commit: 8154c0cd
+- Files modified: cmd-posting.ts (cmdRevenue rewrite → async Stripe API), telegram-bot.ts (/revenue → async handler), cmd-help.ts, test-telegram-commands.ts (async support)
+- Files created: workspace/sprints/sprint-1058.json
+- Test: test-telegram-commands 113/113 PASS
+- Pipeline: /revenue now queries live Stripe API for MRR, new subs/week, churn rate. Falls back to local DB.
+- Swarm used: no (multi-file, direct write)
+- Issues: none
+- Timestamp: 2026-03-24T16:10Z
