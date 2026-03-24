@@ -6257,3 +6257,17 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (file >3000 lines, wrote directly)
 - Issues: none — npmjs.com reachable confirmed
 - Timestamp: 2026-03-24T20:20:00Z
+
+## Sprint 1165 — GODMAN-LAUNCH (SKIPPED — duplicate of 1164)
+- Status: SKIPPED
+- Reason: npmjs.com registry check already implemented in Sprint 1164
+
+## Sprint 1166 — GODMAN-LAUNCH
+- Status: PASS
+- Commit: 9d0b7ec1
+- Files created: workspace/sprints/sprint-1166.json
+- Files modified: scripts/telegram-commands/cmd-system.ts
+- Change: Added publishedCount tracking in npm registry loop + summary badge "📦 npm publish: X/7 published"
+- Swarm used: no (file >3000 lines, wrote directly)
+- Issues: none
+- Timestamp: 2026-03-24T20:30:00Z

@@ -2731,15 +2731,16 @@
       "sprint": 1165,
       "title": "GODMAN-LAUNCH — /godman: show npmjs.com registry reachability check",
       "block": "GODMAN-PROTOCOLS",
-      "status": "pending",
+      "status": "skipped",
       "priority": "medium",
-      "rationale": "On launch day, npm publish will fail silently if npmjs.com is unreachable. Add a curl check to verify registry is reachable before /godman shows green."
+      "rationale": "On launch day, npm publish will fail silently if npmjs.com is unreachable. Add a curl check to verify registry is reachable before /godman shows green.",
+      "skip_reason": "Duplicate of Sprint 1164 — npmjs.com registry check already implemented"
     },
     {
       "sprint": 1166,
       "title": "GODMAN-LAUNCH — /godman: show publish status badge (published to npm / not yet)",
       "block": "GODMAN-PROTOCOLS",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "After npm publish, /godman should show a published badge per protocol. Check npm registry for latest version to distinguish pre-launch from post-launch state."
     },
