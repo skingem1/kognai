@@ -650,6 +650,67 @@ function generateItems(startSprint: number, existingTitles: Set<string> = new Se
     rationale: '/gate shows days remaining but urgency is text-only. Add escalating emoji: 🟢 ≥14d, 🟡 7-13d, 🟠 3-6d, 🔴 <3d for quick visual triage.',
   });
 
+  // Wave 8 templates — operational polish + pre-launch hardening
+  infraItems.push({
+    title: 'OPS — /pace: show gap between obligation and actual posts/day',
+    block: 'OPS',
+    rationale: '/pace shows current posts/day but not how far above/below the daily obligation it is. Add a delta line "Need: X/day · Actual: Y/day · Gap: +/-Z" for quick triage.',
+  });
+
+  infraItems.push({
+    title: 'GATE — /today: bold warning when daily obligation not yet met',
+    block: 'GATE',
+    rationale: '/today shows posts done today but does not visually flag when the daily obligation is unmet. Add "⚠️ OBLIGATION UNMET" banner when todayPosts < dailyObligation.',
+  });
+
+  infraItems.push({
+    title: 'OPS — /status: add Achiri alpha countdown to ops section',
+    block: 'OPS',
+    rationale: '/status shows Godman launch countdown but not Achiri alpha (Apr 25). Add "Achiri: Nd to alpha" line alongside Godman to keep both dates visible.',
+  });
+
+  infraItems.push({
+    title: 'QUALITY — /godman: show per-protocol test pass count in readiness list',
+    block: 'GODMAN-PROTOCOLS',
+    rationale: '/godman shows build status per protocol but not test counts. Add "X/Y tests pass" per protocol when test output is available to surface regressions.',
+  });
+
+  infraItems.push({
+    title: 'INFRA — /health: show Mac Mini disk space (vault) in system health',
+    block: 'INFRA',
+    rationale: '/health checks PM2 and Supabase but not local disk. TTS/video generation fills disk fast. Add df -h check so operator sees vault disk usage before it causes failures.',
+  });
+
+  infraItems.push({
+    title: 'OPS — /status: show last pipeline run timestamp',
+    block: 'OPS',
+    rationale: '/status shows video counts but not when the pipeline last ran. Adding "Pipeline: last run Xh ago" catches stalled cron jobs before they become posting blockers.',
+  });
+
+  infraItems.push({
+    title: 'ACHIRI — /achiri: show last 24h message count separately',
+    block: 'ACHIRI',
+    rationale: '/achiri shows total and daily avg but not activity in the last 24h. A "Last 24h: N messages" line shows whether the bot is being used right now vs historically.',
+  });
+
+  infraItems.push({
+    title: 'QUALITY — /bottest: check required env vars are set as smoke test',
+    block: 'QUALITY',
+    rationale: '/bottest tests command output but not env var prerequisites. Add env var check (TELEGRAM_BOT_TOKEN, OWNER_TELEGRAM_CHAT_ID, etc.) so missing vars surface in bottest.',
+  });
+
+  infraItems.push({
+    title: 'OPS — /digest: add Achiri alpha countdown to digest footer',
+    block: 'OPS',
+    rationale: 'Daily digest already shows Godman countdown in footer but not Achiri alpha (Apr 25). Add "Achiri: Nd to alpha" alongside Godman so both deadlines are visible each morning.',
+  });
+
+  infraItems.push({
+    title: 'GATE — /gate: show posts needed per day for rest of window',
+    block: 'GATE',
+    rationale: '/gate shows total posts needed but not the daily rate. Add "Need X posts/day for remaining Yd" so operator can immediately assess posting intensity required.',
+  });
+
   // Fill remaining slots (skip duplicates of already-completed items)
   for (const item of infraItems) {
     if (items.length >= 10) break;

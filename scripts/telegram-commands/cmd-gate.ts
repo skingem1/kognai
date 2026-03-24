@@ -459,8 +459,13 @@ export function cmdPace(): string {
     lines.push(`📌 Required pace: *${paceNeeded.toFixed(1)} posts/day*`);
     lines.push(`📌 That's *${perWeek} posts/week*`);
   } else {
+    // Sprint 1109: show pace gap (obligation vs actual)
+    const gap = pacePerDay - paceNeeded;
+    const gapStr = gap >= 0 ? `+${gap.toFixed(1)}` : gap.toFixed(1);
+    const gapIcon = gap >= 0 ? '✅' : gap >= -0.5 ? '⚠️' : '❌';
     lines.push(`*Current pace:* ${pacePerDay.toFixed(1)} posts/day`);
     lines.push(`*Needed pace:* ${paceNeeded.toFixed(1)} posts/day`);
+    lines.push(`${gapIcon} *Gap:* ${gapStr} posts/day`);
     lines.push('');
     lines.push(`*Projection at current pace:* ${projectedAtGate} posts by Apr 7`);
     if (willPass) {
