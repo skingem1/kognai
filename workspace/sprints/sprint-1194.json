@@ -1,0 +1,41 @@
+{
+  "sprint_id": "sprint-1194",
+  "title": "SPIELBERG-04 — /demos: Godman demo recording status + trigger hints",
+  "description": "New /demos Telegram command. Scans workspace/scs001/code-demo-runs/ for MP4 outputs from the 7 Godman protocol demo scripts. Shows: RECORDED ✅ / NOT RECORDED ❌ for each protocol, file size + date for recorded ones, trigger command for unrecorded ones.",
+  "source": "queue-empty-sonnet",
+  "tasks": [
+    {
+      "id": "1194-01",
+      "title": "Create scripts/telegram-commands/cmd-spielberg.ts with cmdDemos() function",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-commands/cmd-spielberg.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1194"
+    },
+    {
+      "id": "1194-02",
+      "title": "Register /demos command in scripts/telegram-bot.ts (surgical: 3-line edit)",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-bot.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1194"
+    },
+    {
+      "id": "1194-03",
+      "title": "Add /demos to scripts/telegram-commands/cmd-help.ts (surgical: 1-line edit)",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-commands/cmd-help.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1194"
+    }
+  ]
+}
