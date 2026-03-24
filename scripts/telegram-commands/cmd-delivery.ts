@@ -8,7 +8,7 @@ import * as path from 'path';
 import * as https from 'https';
 import { sendMessage, sendMessageWithButtons, sendVideoFile, sendVideoWithButtons } from './telegram-api';
 import {
-  ROOT, readLines, findCaptionedMp4, getExperimentData, buildTikTokCaption,
+  ROOT, readLines, readRealPosts, findCaptionedMp4, getExperimentData, buildTikTokCaption,
   loadSpeakerMap, diversifyBySpeaker, loadHookMap, diversifyByHook,
   freshnessScore, loadArchived, loadTopicMap, diversifyByTopic,
 } from './shared';
@@ -100,10 +100,7 @@ export async function cmdDeliver(chatId: string, args: string): Promise<string> 
     }
   }
 
-  const DRY_METHODS_DL = ['browser-post-dry', 'batch-browser-dry', 'dry'];
-  const gate = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'))
-    .filter((e: any) => e.video_id && !(e.method && DRY_METHODS_DL.some((d: string) => String(e.method).includes(d))))
-    .length;
+  const gate = readRealPosts().length;
   const remaining = Math.max(0, 30 - gate);
 
   return (
@@ -428,7 +425,7 @@ export async function cmdPickup(chatId: string): Promise<void> {
   const ageStr = ageDays > 0 ? ` · ${ageDays}d` : '';
   const hook = hookMap.get(videoId);
   const hookStr = hook ? ` · 🎣 ${hook}` : '';
-  const gate = recorded.length;
+  const gate = readRealPosts().length;
   const remaining = Math.max(0, 30 - gate);
   const gateDate = new Date('2026-04-07T00:00:00Z');
   const daysLeft = Math.max(0, Math.ceil((gateDate.getTime() - Date.now()) / 86_400_000));

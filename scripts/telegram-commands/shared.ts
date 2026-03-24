@@ -55,6 +55,16 @@ export function readLines(filePath: string): any[] {
   } catch { return []; }
 }
 
+const DRY_RUN_METHODS = ['browser-post-dry', 'batch-browser-dry', 'dry'];
+const MANUAL_POSTS_PATH = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
+
+/** Read manual-posts.jsonl, filtering out dry-run entries. Returns only real posts. */
+export function readRealPosts(): any[] {
+  return readLines(MANUAL_POSTS_PATH).filter(
+    (e: any) => e.video_id && !(e.method && DRY_RUN_METHODS.some((d: string) => String(e.method).includes(d)))
+  );
+}
+
 export function fmtUptime(ms: number | null): string {
   if (!ms || ms < 0) return 'stopped';
   const s = Math.floor(ms / 1000);

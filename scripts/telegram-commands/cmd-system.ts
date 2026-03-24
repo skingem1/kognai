@@ -6,7 +6,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { execSync } from 'child_process';
 import {
-  ROOT, readJSON, readLines, getPm2List, fmtUptime, fmtMem, latestSprintFile,
+  ROOT, readJSON, readLines, readRealPosts, getPm2List, fmtUptime, fmtMem, latestSprintFile,
   findCaptionedMp4, getExperimentData, buildTikTokCaption,
   loadSpeakerMap, diversifyBySpeaker, loadHookMap, diversifyByHook,
   freshnessScore, loadArchived, saveArchived, ARCHIVE_PATH,
@@ -136,17 +136,10 @@ export function cmdReport(): string {
   if (downInfra.length) alerts.push(`⚠️ Infra issues: ${downInfra.join(', ')}`);
   const alertBlock = alerts.length ? `\n${alerts.join('\n')}\n` : '';
 
-  // 8. Gate countdown
-  const manualPostsPath = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
-  let gatePostCount = 0;
-  let gateTotalViews = 0;
-  if (fs.existsSync(manualPostsPath)) {
-    const lines = fs.readFileSync(manualPostsPath, 'utf-8').split('\n').filter(l => l.trim());
-    gatePostCount = lines.length;
-    for (const line of lines) {
-      try { gateTotalViews += JSON.parse(line).views ?? 0; } catch {}
-    }
-  }
+  // 8. Gate countdown (excludes dry-run posts)
+  const realPosts = readRealPosts();
+  const gatePostCount = realPosts.length;
+  const gateTotalViews = realPosts.reduce((sum: number, p: any) => sum + (p.views ?? 0), 0);
   const gateDaysLeft = Math.max(0, Math.ceil((new Date('2026-04-07').getTime() - Date.now()) / 86_400_000));
   const gateIcon = gatePostCount >= 30 && gateTotalViews >= 500 ? '✅' : '⏳';
   const gateLine = `${gateIcon} Phase 1.5 gate: ${gatePostCount}/30 posts · ${gateTotalViews}/500 views · ${gateDaysLeft}d left`;

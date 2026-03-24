@@ -6,7 +6,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { execSync } from 'child_process';
 import {
-  ROOT, readJSON, readLines, getPm2List, fmtUptime, fmtMem, latestSprintFile,
+  ROOT, readJSON, readLines, readRealPosts, getPm2List, fmtUptime, fmtMem, latestSprintFile,
   findCaptionedMp4, getExperimentData, buildTikTokCaption,
   loadSpeakerMap, diversifyBySpeaker, loadHookMap, diversifyByHook,
   freshnessScore, loadArchived, saveArchived, ARCHIVE_PATH,
@@ -739,7 +739,7 @@ export function cmdFilmKit(): string {
 
 export function cmdContentPlan(): string {
   const experiments = readLines(path.join(ROOT, 'workspace', 'scs001', 'experiments.jsonl'));
-  const posts = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  const posts = readRealPosts();
   const schedulePath = path.join(ROOT, 'reports', 'posting-schedule.json');
 
   const now = new Date();
@@ -1523,12 +1523,8 @@ export function cmdAbResults(): string {
 }
 
 export function cmdStatus(): string {
-  const DRY_METHODS_CS = ['browser-post-dry', 'batch-browser-dry', 'dry'];
   const allPosts = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
-  // Sprint 1020: exclude dry-run posts from gate count
-  const posts = (allPosts as any[]).filter((e: any) =>
-    e.video_id && !(e.method && DRY_METHODS_CS.some((d: string) => String(e.method).includes(d)))
-  );
+  const posts = readRealPosts();
   const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
   const recordedIds = new Set(allPosts.map((e: any) => e.video_id).filter(Boolean));
   const archivedIds = loadArchived();
