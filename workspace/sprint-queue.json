@@ -2908,9 +2908,10 @@
       "sprint": 1192,
       "title": "GODMAN-LAUNCH — /godman: show semver bump type needed (patch/minor/major)",
       "block": "GODMAN-LAUNCH",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
-      "rationale": "After launch, protocols will need updates. Show what semver bump each protocol needs based on its CHANGELOG.md entries (feat=minor, fix=patch)."
+      "rationale": "After launch, protocols will need updates. Show what semver bump each protocol needs based on its CHANGELOG.md entries (feat=minor, fix=patch).",
+      "_note": "Shipped 2026-03-24 — commit 5cf69b2b. Semver bump type section in cmdGodman(). All 8 protocols: no unreleased changes."
     }
   ]
 }
