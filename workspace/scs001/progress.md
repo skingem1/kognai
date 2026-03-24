@@ -5556,3 +5556,13 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (surgical 3-line fix, direct edit)
 - Issues: CTO gate module not found (warned, not blocked). dist/ gitignored (correct).
 - Timestamp: 2026-03-24T22:00:00Z
+
+## Sprint 994 — GODMAN-LAUNCH-FIX
+- Status: PASS
+- Commit: 6dda5ddb
+- Files modified: scripts/godman-launch-day.sh
+- Test: ./scripts/godman-launch-day.sh --dry-run — 17/17 PASS
+- Pipeline: Godman launch script now correctly swaps file:// deps before SDK publish
+- Swarm used: no (single file fix, direct edit)
+- Issues: None. SDK deps restore verified (file:../ intact after dry-run).
+- Timestamp: 2026-03-24T22:10:00Z
