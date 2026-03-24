@@ -93,7 +93,28 @@ export function cmdHealth(): string {
     if (warnLines.length > 0) memWarnSection = '\n\n' + warnLines.join('\n');
   } catch { /* skip */ }
 
-  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${ollamaSection}${memWarnSection}`;
+  // Sprint 1106: Supabase connection status
+  let supabaseSection = '';
+  try {
+    const sbUrl = process.env.SUPABASE_URL;
+    const sbKey = process.env.SUPABASE_ANON_KEY;
+    if (sbUrl && sbKey) {
+      const out = execSync(
+        `curl -sf --max-time 5 -H "apikey: ${sbKey}" -H "Authorization: Bearer ${sbKey}" "${sbUrl}/rest/v1/" -o /dev/null -w "%{http_code}"`,
+        { encoding: 'utf-8', timeout: 8000 }
+      ).trim();
+      const code = parseInt(out);
+      supabaseSection = code >= 200 && code < 400
+        ? '\n\n*Supabase:* ✅ connected'
+        : `\n\n*Supabase:* ⚠️ HTTP ${code}`;
+    } else {
+      supabaseSection = '\n\n*Supabase:* ⚠️ URL/key not set';
+    }
+  } catch {
+    supabaseSection = '\n\n*Supabase:* ❌ unreachable';
+  }
+
+  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${ollamaSection}${memWarnSection}${supabaseSection}`;
 }
 
 export function cmdTier(): string {

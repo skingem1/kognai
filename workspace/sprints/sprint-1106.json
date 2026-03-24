@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1106",
+  "title": "INFRA — /health: show Supabase connection status",
+  "description": "Add Supabase connection check to cmdHealth — ping Supabase REST endpoint and show status in /health output.",
+  "block": "INFRA",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1106-01",
+      "title": "Add Supabase ping to cmdHealth in cmd-system.ts",
+      "type": "feature",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1106"
+    }
+  ]
+}
