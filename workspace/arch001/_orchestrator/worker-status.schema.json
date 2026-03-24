@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://kognai.io/schemas/arch001/worker-status.json",
+  "title": "WorkerStatusFile",
+  "description": "ARCH-001 worker status registry — written by orchestrator, read by observers",
+  "type": "object",
+  "required": ["version", "sessionId", "updatedAt", "workers"],
+  "properties": {
+    "version": { "type": "string", "const": "1.0" },
+    "sessionId": { "type": "string", "description": "tmux session name, e.g. kognai-amd21" },
+    "updatedAt": { "type": "string", "format": "date-time" },
+    "workers": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/Worker" }
+    }
+  },
+  "definitions": {
+    "Worker": {
+      "type": "object",
+      "required": ["id", "agentId", "status", "startedAt"],
+      "properties": {
+        "id": { "type": "string", "description": "Unique worker instance ID (UUID)" },
+        "agentId": { "type": "string", "description": "Agent config name, e.g. coder, spielberg" },
+        "taskId": { "type": "string", "description": "Sprint task ID, e.g. 958-01" },
+        "status": {
+          "type": "string",
+          "enum": ["queued", "running", "done", "failed", "halted"]
+        },
+        "model": { "type": "string", "description": "Model used, e.g. qwen3:14b" },
+        "startedAt": { "type": "string", "format": "date-time" },
+        "completedAt": { "type": ["string", "null"], "format": "date-time" },
+        "costUsdc": { "type": "number", "minimum": 0, "description": "Accumulated cost in USDC" },
+        "observerId": { "type": ["string", "null"], "description": "Assigned observer agent, e.g. observer-1" },
+        "lastHeartbeat": { "type": ["string", "null"], "format": "date-time" },
+        "soulFlags": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "SOUL constraint violations detected"
+        },
+        "outputPath": { "type": ["string", "null"], "description": "Path to task output file" },
+        "error": { "type": ["string", "null"] }
+      }
+    }
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "sprint_id": "sprint-958",
+  "title": "ARCH-001-PREP — tmux session setup + adaptive heartbeat + observer agent prompt template",
+  "block": "ARCH-001",
+  "description": "From ARCH-001 tasks 01-04. Create tmux named session kognai-amd21 with 4 windows. Write heartbeat.sh (max 60 lines). Write observer agent prompt template (max 400 words, AMF schema). Write _orchestrator/ directory + worker status JSON schema.",
+  "source": "queue-prescribed",
+  "scs001_note": "SCS-001 VIDEO PRODUCTION PAUSED.",
+  "tasks": [
+    {
+      "id": "958-01",
+      "title": "Create scripts/arch001/start-session.sh — tmux session setup (kognai-amd21, 4 windows)",
+      "type": "feature",
+      "status": "done",
+      "agent": "coder",
+      "task_target": "scripts/arch001/start-session.sh",
+      "sprint_id": "sprint-958"
+    },
+    {
+      "id": "958-02",
+      "title": "Create scripts/arch001/heartbeat.sh — adaptive heartbeat (max 60 lines)",
+      "type": "feature",
+      "status": "done",
+      "agent": "coder",
+      "task_target": "scripts/arch001/heartbeat.sh",
+      "sprint_id": "sprint-958"
+    },
+    {
+      "id": "958-03",
+      "title": "Create workspace/arch001/observer-prompt-template.md — observer agent prompt (max 400 words)",
+      "type": "feature",
+      "status": "done",
+      "agent": "coder",
+      "task_target": "workspace/arch001/observer-prompt-template.md",
+      "sprint_id": "sprint-958"
+    },
+    {
+      "id": "958-04",
+      "title": "Create workspace/arch001/_orchestrator/ structure + worker-status.schema.json",
+      "type": "feature",
+      "status": "done",
+      "agent": "coder",
+      "task_target": "workspace/arch001/_orchestrator/worker-status.schema.json",
+      "sprint_id": "sprint-958"
+    }
+  ]
+}
