@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1192",
+  "title": "GODMAN-LAUNCH — /godman: show semver bump type needed (patch/minor/major)",
+  "description": "Add semver bump type section to cmdGodman(). Reads CHANGELOG.md [Unreleased] sections to determine feat=minor, fix=patch, breaking=major. All 8 currently show no unreleased changes.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1192-01",
+      "title": "GODMAN-LAUNCH — /godman: show semver bump type needed per protocol",
+      "type": "feature",
+      "task_type": "godman_launch",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1192"
+    }
+  ]
+}

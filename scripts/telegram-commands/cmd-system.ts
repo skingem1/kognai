@@ -3078,6 +3078,34 @@ export function cmdGodman(): string {
     if (taggedCount < allPkgsForTags.length) lines.push(`  ⚠️ Run /godman-tag confirm to tag all packages`);
   }
 
+  // Sprint 1192: semver bump type needed per protocol (based on CHANGELOG.md)
+  {
+    const bumpLines: string[] = [];
+    let anyUnreleased = false;
+    for (const proto of [...PROTOCOLS, 'sdk']) {
+      const changelogPath = path.join(BASE, proto, 'CHANGELOG.md');
+      if (!fs.existsSync(changelogPath)) { bumpLines.push(`  ⚠️ ${proto} — no CHANGELOG`); continue; }
+      const content = fs.readFileSync(changelogPath, 'utf-8');
+      // Find [Unreleased] section
+      const unreleasedMatch = content.match(/##\s+\[Unreleased\]([\s\S]*?)(?=##\s+\[|\Z)/);
+      if (!unreleasedMatch) { bumpLines.push(`  ✅ ${proto} — no unreleased changes`); continue; }
+      anyUnreleased = true;
+      const section = unreleasedMatch[1];
+      const hasBreaking = /###\s+Removed|BREAKING/i.test(section);
+      const hasAdded = /###\s+(Added|Changed)/i.test(section);
+      const hasFix = /###\s+Fixed/i.test(section);
+      let bump = 'none';
+      if (hasBreaking) bump = 'major';
+      else if (hasAdded) bump = 'minor';
+      else if (hasFix) bump = 'patch';
+      const icon = bump === 'major' ? '🔴' : bump === 'minor' ? '🟡' : bump === 'patch' ? '🟢' : '⚪';
+      bumpLines.push(`  ${icon} ${proto} — needs \`${bump}\` bump`);
+    }
+    lines.push('');
+    lines.push(`*Semver bumps needed:*${anyUnreleased ? '' : ' none (no [Unreleased] sections)'}`);
+    bumpLines.forEach(l => lines.push(l));
+  }
+
   // Sprint 1105: npm run build clean check for all 8 packages
   lines.push('');
   lines.push('*Build clean check:*');
