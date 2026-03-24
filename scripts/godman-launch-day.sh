@@ -75,9 +75,21 @@ for PROTO in $PROTOCOLS; do
   fi
 done
 
-# 4. SDK publish
+# 4. SDK publish — swap file:// deps to registry versions first
 head "[4] Publish SDK${DRY_RUN:+ (dry-run)}"
 SDK_DIR="$REPO_ROOT/workspace/godman-protocols/sdk"
+SDK_PKG="$SDK_DIR/package.json"
+
+# Swap file:../ deps to ^0.2.0 for npm publish
+cp "$SDK_PKG" "$SDK_PKG.bak"
+for PROTO in $PROTOCOLS; do
+  if command -v sed &>/dev/null; then
+    sed -i.tmp "s|\"file:../$PROTO\"|\"^0.2.0\"|g" "$SDK_PKG"
+    rm -f "$SDK_PKG.tmp"
+  fi
+done
+ok "SDK deps swapped: file:../ → ^0.2.0"
+
 if $DRY_RUN; then
   ok "@godman-protocols/sdk — skipped (dry-run)"
 else
@@ -88,6 +100,10 @@ else
     warn "@godman-protocols/sdk — already published or error"
   fi
 fi
+
+# Restore original file:../ deps for local development
+mv "$SDK_PKG.bak" "$SDK_PKG"
+ok "SDK deps restored to file:../ for local dev"
 
 # 5. Verify (skip in dry-run)
 if ! $DRY_RUN; then

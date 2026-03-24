@@ -1,0 +1,11 @@
+{
+  "sprint_id": "sprint-994",
+  "title": "GODMAN-LAUNCH-FIX — Fix SDK file:// deps swap in launch script + dry-run test",
+  "description": "The launch-day.sh script publishes SDK with file:../ dependencies which break on npm. Add dep-swap step before SDK publish (file:../ → ^0.2.0) and restore after. Run dry-run to verify.",
+  "block": "GODMAN-PROTOCOLS",
+  "source": "queue-exhausted-launch-prep",
+  "tasks": [
+    { "id": "994-01", "title": "Add SDK dep-swap step to godman-launch-day.sh", "type": "fix", "task_target": "scripts/godman-launch-day.sh", "agent": "coder", "status": "pending", "priority": "critical", "sprint_id": "sprint-994" },
+    { "id": "994-02", "title": "Dry-run test of launch script", "type": "test", "task_target": "scripts/godman-launch-day.sh", "agent": "coder", "status": "pending", "priority": "high", "sprint_id": "sprint-994" }
+  ]
+}
