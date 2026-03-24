@@ -1,0 +1,28 @@
+{
+  "sprint_id": "sprint-960",
+  "title": "BOND-DESIGN — Mandate schema validation + PayAI executor interface",
+  "description": "From BOND Protocol v0.1 spec. Validate recurring mandate EIP-712 schema. Define PayAI mandate executor TypeScript interface. Define the three X-Mandate headers. Draft default model enforcement paths. Design only — no on-chain deployment.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "960-01",
+      "title": "EIP-712 mandate schema + PayAI executor interface + X-Mandate headers",
+      "type": "design",
+      "task_target": "workspace/bond/bond-schema.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-960"
+    },
+    {
+      "id": "960-02",
+      "title": "Model enforcement paths design doc",
+      "type": "design",
+      "task_target": "workspace/bond/enforcement-paths.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-960"
+    }
+  ]
+}
