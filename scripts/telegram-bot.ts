@@ -20,7 +20,7 @@ import {
 } from './telegram-commands/telegram-api';
 
 // Sprint 455: Import extracted command modules (Part 1: A-M)
-import { cmdPm2, cmdHealth, cmdTier, cmdSprint, cmdReport, cmdCrons, cmdTikTokAuth, cmdQuickStart, cmdEnvCheck, cmdStripeStatus, cmdReadiness, cmdGitStats, cmdBoot, cmdShutdown, cmdReload, cmdSwarmStats, cmdErrors, cmdTokenCheck, cmdLogs, cmdChangelog, cmdPreflight, cmdSmoke, cmdTestSuite, cmdApproveFinetune, cmdBrainxStatus, cmdSwarmHealth, cmdBrowserTest, cmdGodman, cmdGodmanThread, cmdPm2Errors } from './telegram-commands/cmd-system';
+import { cmdPm2, cmdHealth, cmdTier, cmdSprint, cmdReport, cmdCrons, cmdTikTokAuth, cmdQuickStart, cmdEnvCheck, cmdStripeStatus, cmdReadiness, cmdGitStats, cmdBoot, cmdShutdown, cmdReload, cmdSwarmStats, cmdErrors, cmdTokenCheck, cmdLogs, cmdChangelog, cmdPreflight, cmdSmoke, cmdTestSuite, cmdApproveFinetune, cmdBrainxStatus, cmdSwarmHealth, cmdBrowserTest, cmdGodman, cmdGodmanThread, cmdGodmanTag, cmdGodmanPublish, cmdPm2Errors } from './telegram-commands/cmd-system'; // Sprint 1175: added cmdGodmanTag, cmdGodmanPublish
 import { cmdGate, cmdGoLive, cmdAudit, cmdStreak, cmdPace, cmdCalendar, cmdGateAudit, cmdGateRefresh, cmdGateSim } from './telegram-commands/cmd-gate';
 import { runGodmanSmoke } from './godman-smoke';
 import { cmdRecord, cmdQueue, cmdReview, cmdCaption, cmdPosted, cmdOnboard, cmdPipeline, cmdToday, cmdAnalytics, cmdDiversity, cmdThumbnail, cmdCompetitor, cmdStats, cmdQuality, cmdRadar, cmdBacktest, cmdFormatStats, cmdManifesto, cmdValErrors, cmdCaptionNext } from './telegram-commands/cmd-content';
@@ -259,9 +259,13 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/warmup':        response = cmdWarmupStatus();     break;
     case '/browser-test':  response = cmdBrowserTest();      break;
     case '/browsertest':   response = cmdBrowserTest();      break;
-    case '/godman':        response = cmdGodman();       break;
-    case '/godman-smoke':  response = runGodmanSmoke();  break;
-    case '/godman-thread': response = cmdGodmanThread(); break;
+    case '/godman':        response = cmdGodman();                   break;
+    case '/godman-smoke':  response = runGodmanSmoke();              break;
+    case '/godman-thread': response = cmdGodmanThread();             break;
+    case '/godman-tag':    response = cmdGodmanTag(cmdArgs);         break; // Sprint 1175
+    case '/godmantag':     response = cmdGodmanTag(cmdArgs);         break; // Sprint 1175
+    case '/godman-publish': response = cmdGodmanPublish(cmdArgs);    break; // Sprint 1175
+    case '/godmanpublish': response = cmdGodmanPublish(cmdArgs);     break; // Sprint 1175
     case '/log':         response = cmdLog();         break;
     case '/help':        response = cmdHelp();        break;
     default:

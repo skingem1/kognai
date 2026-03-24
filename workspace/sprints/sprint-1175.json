@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-1175",
+  "title": "GODMAN-LAUNCH — wire /godman-tag and /godman-publish into telegram-bot.ts router",
+  "description": "Add case statements for /godman-tag and /godman-publish to telegram-bot.ts switch. Import cmdGodmanTag and cmdGodmanPublish from cmd-system. Passes cmdArgs (rest of message after command) to support 'confirm' flag.",
+  "source": "queue-empty-strategic",
+  "block": "GODMAN-LAUNCH",
+  "tasks": [
+    {
+      "id": "1175-01",
+      "title": "Wire /godman-tag and /godman-publish in telegram-bot.ts",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/telegram-bot.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-1175"
+    }
+  ]
+}
