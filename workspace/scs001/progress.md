@@ -5686,3 +5686,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (small addition, direct edit)
 - Issues: None.
 - Timestamp: 2026-03-24T23:00:00Z
+
+## Sprint 1002 — QUALITY Content Freshness Decay Archiver
+- Status: PASS
+- Commit: 243082d5
+- Files created: scripts/scs001/archive-stale-queue.ts, workspace/sprints/sprint-1002.json
+- Files modified: ecosystem.config.js, workspace/sprint-queue.json
+- Test: npx ts-node scripts/scs001/archive-stale-queue.ts — 4 items stamped, 0 archived (all fresh)
+- Pipeline: scs001-queue-archiver PM2 cron (5 0 daily), STALE_DAYS=7
+- Swarm used: no (direct write — simple new file)
+- Issues: None
+- Timestamp: 2026-03-24T23:15:00Z
