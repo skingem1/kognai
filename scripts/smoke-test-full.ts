@@ -166,13 +166,43 @@ async function testEnvVars(): Promise<{ status: 'PASS' | 'FAIL' | 'SKIP'; detail
 
 async function testSupabase(): Promise<{ status: 'PASS' | 'FAIL' | 'SKIP'; detail: string }> {
   const url = process.env.SUPABASE_URL;
-  const key = process.env.SUPABASE_ANON_KEY;
+  const key = process.env.SUPABASE_SERVICE_KEY ?? process.env.SUPABASE_ANON_KEY;
   if (!url || !key) return { status: 'SKIP', detail: 'Supabase credentials not set' };
   try {
-    const res = await httpGet(`${url}/rest/v1/`, 5000);
-    return { status: 'PASS', detail: 'Supabase reachable' };
-  } catch {
-    return { status: 'FAIL', detail: 'Supabase not reachable' };
+    // Sprint 1110: write test — insert + delete a smoke test row in kognai_events
+    const testId = `smoke-${Date.now()}`;
+    const payload = JSON.stringify({ event_type: 'smoke_test', payload: { id: testId }, created_at: new Date().toISOString() });
+    const insertOut = execSync(
+      `curl -sf --max-time 5 -X POST "${url}/rest/v1/kognai_events" ` +
+      `-H "apikey: ${key}" -H "Authorization: Bearer ${key}" ` +
+      `-H "Content-Type: application/json" -H "Prefer: return=representation" ` +
+      `-d '${payload.replace(/'/g, "'\\''")}' -w "\\n%{http_code}"`,
+      { encoding: 'utf-8', timeout: 10000 }
+    ).trim();
+    const insertLines = insertOut.split('\n');
+    const insertCode = parseInt(insertLines[insertLines.length - 1]);
+    if (insertCode >= 200 && insertCode < 300) {
+      // Clean up: delete the smoke test row
+      try {
+        execSync(
+          `curl -sf --max-time 5 -X DELETE "${url}/rest/v1/kognai_events?event_type=eq.smoke_test&payload->>id=eq.${testId}" ` +
+          `-H "apikey: ${key}" -H "Authorization: Bearer ${key}"`,
+          { encoding: 'utf-8', timeout: 8000 }
+        );
+      } catch { /* cleanup best-effort */ }
+      return { status: 'PASS', detail: 'Supabase read+write OK' };
+    }
+    // Fallback: read-only test
+    await httpGet(`${url}/rest/v1/`, 5000);
+    return { status: 'PASS', detail: 'Supabase reachable (read-only, write returned ' + insertCode + ')' };
+  } catch (e: any) {
+    // Fallback: try read-only
+    try {
+      await httpGet(`${url}/rest/v1/`, 5000);
+      return { status: 'PASS', detail: 'Supabase reachable (read-only, write failed)' };
+    } catch {
+      return { status: 'FAIL', detail: 'Supabase not reachable' };
+    }
   }
 }
 

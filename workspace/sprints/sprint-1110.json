@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1110",
+  "title": "QUALITY — /smoke: add Supabase write test (insert + delete test row)",
+  "description": "Enhanced Supabase smoke test to insert+delete a row in kognai_events, confirming write access works.",
+  "block": "QUALITY",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1110-01",
+      "title": "Add Supabase write test to smoke-test-full.ts",
+      "type": "enhancement",
+      "task_target": "scripts/smoke-test-full.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1110"
+    }
+  ]
+}
