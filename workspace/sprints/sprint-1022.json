@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-1022",
+  "title": "OPS-BUGFIX — daily-digest: filter dry-run posts + fix urgency threshold",
+  "description": "daily-digest.ts getGateProgress() uses entries.length which includes 3 dry-run posts (shows 5/30 instead of 2/30). Also has same off-by-one: postsRemaining > days*2 should be >=. Fix both.",
+  "block": "OPS",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1022-01",
+      "title": "Fix getGateProgress() and urgency threshold in daily-digest.ts",
+      "type": "bug",
+      "task_target": "scripts/daily-digest.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1022",
+      "description": "In getGateProgress(): add DRY_METHODS filter before counting entries. In getUrgencySignal(): change 'postsRemaining > days * 2' to 'postsRemaining >= days * 2'."
+    }
+  ]
+}

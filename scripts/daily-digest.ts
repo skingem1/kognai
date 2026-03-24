@@ -57,7 +57,12 @@ function readJSON<T>(filePath: string): T | null {
 // ── Gate progress (manual-posts.jsonl) ───────────────────────────────────────
 
 function getGateProgress(): { count: number; totalViews: number; avgViews: number } {
-  const entries = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  const DRY_METHODS_DG = ['browser-post-dry', 'batch-browser-dry', 'dry'];
+  const all = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  // Sprint 1022: exclude dry-run posts from gate count
+  const entries = (all as any[]).filter((e: any) =>
+    e.video_id && !(e.method && DRY_METHODS_DG.some((d: string) => String(e.method).includes(d)))
+  );
   const count = entries.length;
   const totalViews = entries.reduce((s: number, e: any) => s + (e.views ?? 0), 0);
   const avgViews = count > 0 ? Math.round(totalViews / count) : 0;
@@ -464,7 +469,7 @@ function buildDigest(): string {
     if (postsRemaining > 0 && gate.count === 0) return '⚠️ WARNING — 0 posts recorded. Start posting now.';
     if (days <= 3 && postsRemaining > 0) return '💀 GATE FAILED — kill switch trigger';
     if (days <= 7 && postsRemaining > days * 3) return `🚨 KILL RISK — ${postsRemaining} posts needed in ${days}d`;
-    if (days <= 14 && postsRemaining > days * 2) return `⚠️ WARNING — behind pace (${postsRemaining} posts in ${days}d)`;
+    if (days <= 14 && postsRemaining >= days * 2) return `⚠️ WARNING — behind pace (${postsRemaining} posts in ${days}d)`;
     return `⏳ IN PROGRESS — on track`;
   }
   const urgency = getUrgencySignal(postsLeft, daysPhase);
