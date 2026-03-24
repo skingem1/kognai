@@ -2899,9 +2899,10 @@
       "sprint": 1191,
       "title": "GODMAN-LAUNCH — /godman: show git tag status for each protocol (tagged vs untagged)",
       "block": "GODMAN-LAUNCH",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
-      "rationale": "/godman shows version numbers but not whether each protocol has a git tag. Show tagged/untagged status so operator can see what still needs tagging before launch."
+      "rationale": "/godman shows version numbers but not whether each protocol has a git tag. Show tagged/untagged status so operator can see what still needs tagging before launch.",
+      "_note": "Shipped 2026-03-24 — commit f9554957. Git tag status section in cmdGodman(). All 8 untagged (0/8)."
     },
     {
       "sprint": 1192,
