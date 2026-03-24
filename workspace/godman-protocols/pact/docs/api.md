@@ -1,38 +1,71 @@
 # PACT API Reference
 
-Full reference for all exported functions and types in `@godman-protocols/pact` v0.2.
+> **v0.2.0** · Full API surface for `@godman-protocols/pact`
 
 ---
 
-## Types (`src/types.ts`)
+## Types
 
 ### `AgentId`
 ```typescript
 type AgentId = string;
 ```
-A unique agent identifier. Recommended formats: DID (`did:kognai:harvey`), x402 wallet address (`0x...`), or scoped handle (`@invoica_ai`).
+A unique agent identifier — DID, x402 wallet address, or scoped handle.
 
-### `Mandate`
+### `Timestamp`
 ```typescript
-interface Mandate {
-  version: '0.1';
-  id: string;           // UUID v4
-  grantor: AgentId;
-  grantee: AgentId;
-  scope: MandateScope;
-  issuedAt: Timestamp;  // ISO 8601
-  expiresAt: Timestamp | null;
-  signature: Signature; // hex-encoded HMAC-SHA256
-}
+type Timestamp = string;
 ```
+ISO 8601 timestamp string.
+
+### `Signature`
+```typescript
+type Signature = string;
+```
+Hex-encoded HMAC-SHA256 signature.
 
 ### `MandateScope`
 ```typescript
 interface MandateScope {
   description: string;
-  actions: string[];         // e.g. ['read', 'write', 'execute', 'pay']
-  resources: string[];       // URI patterns, '*' = wildcard
-  maxPaymentUsdc: number | null; // null = no payment allowed
+  actions: string[];
+  resources: string[];
+  maxPaymentUsdc: number | null;
+}
+```
+Defines what a grantee may do: permitted actions, resources (glob patterns), and max payment in USDC.
+
+### `Mandate`
+```typescript
+interface Mandate {
+  version: string;
+  id: string;
+  grantor: AgentId;
+  grantee: AgentId;
+  scope: MandateScope;
+  issuedAt: Timestamp;
+  expiresAt: Timestamp | null;
+  signature: Signature;
+}
+```
+
+### `RevocationEntry`
+```typescript
+interface RevocationEntry {
+  mandateId: string;
+  revokedBy: AgentId;
+  revokedAt: Timestamp;
+  reason?: string;
+  signature: Signature;
+}
+```
+
+### `TrustAnchor`
+```typescript
+interface TrustAnchor {
+  type: 'did' | 'x402' | 'org-key';
+  value: string;
+  label?: string;
 }
 ```
 
@@ -49,195 +82,139 @@ interface CoordinationFrame {
 }
 ```
 
-### `RevocationEntry`
-```typescript
-interface RevocationEntry {
-  mandateId: string;
-  revokedBy: AgentId;
-  revokedAt: Timestamp;
-  reason?: string;
-  signature: Signature;
-}
-```
-
----
-
-## Core — `src/core.ts`
-
-### `createMandate`
-```typescript
-function createMandate(
-  grantor: AgentId,
-  grantee: AgentId,
-  scope: MandateScope,
-  options?: {
-    expiresAt?: Timestamp | null;
-    id?: string;
-    issuedAt?: Timestamp;
-  }
-): Mandate
-```
-Creates an **unsigned** mandate skeleton. The `signature` field is set to `''`. Call `signMandate` to attach a signature.
-
-### `hashMandate`
-```typescript
-function hashMandate(mandate: Omit<Mandate, 'signature'>): string
-```
-Produces a deterministic SHA-256 hash over the mandate's signable fields. Scope `actions` and `resources` are sorted before hashing to ensure order-stability. Returns a 64-char hex string.
-
-### `signMandate`
-```typescript
-function signMandate(mandate: Mandate, grantorSecret: string): Mandate
-```
-Returns a new `Mandate` with the `signature` field set to `HMAC-SHA256(grantorSecret, hashMandate(mandate))`. Does not mutate the input mandate.
-
-**Production note:** Replace with Ed25519 or EIP-712 for asymmetric, verifiable signing.
-
-### `revokeMandate`
-```typescript
-function revokeMandate(
-  mandateId: string,
-  revokedBy: AgentId,
-  revokerSecret: string,
-  reason?: string
-): RevocationEntry
-```
-Creates a `RevocationEntry`. Append this to your revocation ledger (via `MandateRegistry.addRevocation`) to invalidate the mandate. The entry is signed with `HMAC-SHA256(revokerSecret, "${mandateId}:${revokedBy}:${revokedAt}")`.
-
----
-
-## Verifier — `src/verifier.ts`
-
-### `verifyMandate`
+### `VerifyResult`
 ```typescript
 type VerifyResult =
   | { valid: true }
-  | { valid: false; reason: 'invalid_signature' | 'expired' | 'revoked' };
-
-function verifyMandate(
-  mandate: Mandate,
-  grantorSecret: string,
-  revocationLedger?: RevocationEntry[],
-  asOf?: string
-): VerifyResult
+  | { valid: false; reason: string };
 ```
-Verifies three conditions in order:
-1. **Signature** — recomputes HMAC and compares. Returns `{ valid: false, reason: 'invalid_signature' }` on mismatch.
-2. **Expiry** — checks `expiresAt` against `asOf` (default: `new Date()`). Returns `{ valid: false, reason: 'expired' }` if past.
-3. **Revocation** — checks `revocationLedger` for the mandate's ID. Returns `{ valid: false, reason: 'revoked' }` if found.
-
-Returns `{ valid: true }` if all three pass.
-
-### `scopeCovers`
-```typescript
-function scopeCovers(
-  mandate: Mandate,
-  action: string,
-  resource: string
-): boolean
-```
-Returns `true` if the mandate's scope covers `action` on `resource`.
-
-- **Actions:** `'*'` matches any action; otherwise exact string match.
-- **Resources:** `'*'` matches any resource; prefix wildcards (`'workspace/*'`) are supported (trailing `*` stripped and `startsWith` applied); otherwise exact match.
-
-### `paymentAllowed`
-```typescript
-function paymentAllowed(mandate: Mandate, amountUsdc: number): boolean
-```
-Returns `true` if `mandate.scope.maxPaymentUsdc !== null && amountUsdc <= maxPaymentUsdc`. Returns `false` if `maxPaymentUsdc` is `null` (no payments authorised).
 
 ---
 
-## Coordinator — `src/coordinator.ts`
+## Core Mandate Lifecycle (`src/core.ts`)
 
-### `openFrame`
-```typescript
-function openFrame(
-  initiator: AgentId,
-  initialMandateIds?: string[],
-  options?: { id?: string; openedAt?: Timestamp }
-): CoordinationFrame
-```
-Creates a new `CoordinationFrame` with `status: 'open'`. The initiator is automatically added to `participants`. Frames are immutable value objects — all mutating functions return new frame objects.
+### `createMandate(grantor, grantee, scope, options?)`
 
-### `closeFrame`
-```typescript
-function closeFrame(frame: CoordinationFrame, closedAt?: Timestamp): CoordinationFrame
-```
-Returns a new frame with `status: 'closed'` and `closedAt` set. Throws `CoordinationError` (`code: 'FRAME_NOT_OPEN'`) if the frame is not open.
+Create an unsigned mandate skeleton.
 
-### `abortFrame`
-```typescript
-function abortFrame(frame: CoordinationFrame, closedAt?: Timestamp): CoordinationFrame
-```
-Returns a new frame with `status: 'aborted'`. Use when a constitutional violation or unrecoverable error occurs. Throws `CoordinationError` if the frame is not open.
+| Param | Type | Description |
+|-------|------|-------------|
+| `grantor` | `AgentId` | Agent granting authority |
+| `grantee` | `AgentId` | Agent receiving authority |
+| `scope` | `MandateScope` | What the grantee may do |
+| `options.expiresAt` | `Timestamp \| null` | Expiry (default: `null`) |
+| `options.id` | `string` | Override auto-generated UUID |
+| `options.issuedAt` | `Timestamp` | Override auto-generated timestamp |
 
-### `addParticipant`
-```typescript
-function addParticipant(frame: CoordinationFrame, participant: AgentId): CoordinationFrame
-```
-Returns a new frame with `participant` appended to `participants`. Idempotent — returns the same frame if the participant is already listed. Throws `CoordinationError` if the frame is not open.
+**Returns:** `Mandate` (unsigned — `signature` is empty string)
 
-### `addMandateToFrame`
-```typescript
-function addMandateToFrame(frame: CoordinationFrame, mandateId: string): CoordinationFrame
-```
-Returns a new frame with `mandateId` appended to `mandateIds`. Idempotent. Throws `CoordinationError` if the frame is not open.
+### `hashMandate(mandate)`
+
+SHA-256 hash over signable fields. Signature excluded. Arrays sorted for determinism.
+
+**Returns:** `string` (hex-encoded SHA-256)
+
+### `signMandate(mandate, grantorSecret)`
+
+HMAC-SHA256 sign. Returns new Mandate with signature populated.
+
+**Returns:** `Mandate`
+
+### `revokeMandate(mandateId, revokedBy, revokerSecret, reason?)`
+
+Create a `RevocationEntry`. Append to revocation ledger.
+
+**Returns:** `RevocationEntry`
+
+---
+
+## Verification (`src/verifier.ts`)
+
+### `verifyMandate(mandate, grantorSecret, revocationLedger?, asOf?)`
+
+Verify signature (HMAC-SHA256), expiry, and revocation status.
+
+| Param | Type | Default |
+|-------|------|---------|
+| `mandate` | `Mandate` | — |
+| `grantorSecret` | `string` | — |
+| `revocationLedger` | `RevocationEntry[]` | `[]` |
+| `asOf` | `string` | now |
+
+**Returns:** `VerifyResult`
+
+### `scopeCovers(mandate, action, resource)`
+
+Check if scope permits action on resource. Supports `*` wildcard and glob-prefix matching.
+
+**Returns:** `boolean`
+
+### `paymentAllowed(mandate, amountUsdc)`
+
+Returns `true` if payment within `maxPaymentUsdc`. `false` if `maxPaymentUsdc` is `null`.
+
+**Returns:** `boolean`
+
+---
+
+## Coordination Frames (`src/coordinator.ts`)
+
+### `openFrame(initiator, initialMandateIds?, options?)`
+
+Open a new frame. Initiator auto-added as first participant.
+
+**Returns:** `CoordinationFrame` (status: `'open'`)
+
+### `closeFrame(frame, closedAt?)`
+
+Close successfully. Throws `CoordinationError` if not open.
+
+### `abortFrame(frame, closedAt?)`
+
+Abort (error/violation). Throws `CoordinationError` if not open.
+
+### `addParticipant(frame, participant)`
+
+Add participant (idempotent).
+
+### `addMandateToFrame(frame, mandateId)`
+
+Add mandate to frame (idempotent).
 
 ### `CoordinationError`
 ```typescript
 class CoordinationError extends Error {
-  code: string;  // e.g. 'FRAME_NOT_OPEN'
+  readonly code: string; // e.g. 'FRAME_NOT_OPEN'
 }
 ```
 
 ---
 
-## Registry — `src/registry.ts`
+## Registry (`src/registry.ts`)
 
-### `MandateRegistry`
-```typescript
-class MandateRegistry {
-  store(mandate: Mandate): void
-  get(mandateId: string): Mandate | undefined
-  has(mandateId: string): boolean
-  delete(mandateId: string): boolean
-  list(filter?: { grantor?: string; grantee?: string }): Mandate[]
+### `class MandateRegistry`
 
-  addRevocation(entry: RevocationEntry): void
-  isRevoked(mandateId: string): boolean
-  get revocationLedger(): readonly RevocationEntry[]
+In-memory mandate + revocation store.
 
-  loadSnapshot(mandates: Mandate[], revocations: RevocationEntry[]): void
-  snapshot(): { mandates: Mandate[]; revocations: RevocationEntry[] }
-  get size(): number
-}
-```
+| Method | Description |
+|--------|-------------|
+| `store(mandate)` | Store mandate. Throws if ID exists. |
+| `get(id)` | Get by ID or `undefined`. |
+| `list()` | All stored mandates. |
+| `addRevocation(entry)` | Add revocation entry. |
+| `isRevoked(mandateId)` | Check revocation status. |
+| `snapshot()` | Read-only `{ mandates, revocations }`. |
 
-**`store(mandate)`** — Stores a mandate. Overwrites if the same ID exists.
-
-**`get(mandateId)`** — Returns the mandate or `undefined`.
-
-**`list(filter?)`** — Returns all mandates, optionally filtered by `grantor` or `grantee`.
-
-**`addRevocation(entry)`** — Appends to the internal revocation ledger. Pass `registry.revocationLedger` to `verifyMandate`.
-
-**`isRevoked(mandateId)`** — Checks revocation ledger.
-
-**`snapshot()`** / **`loadSnapshot()`** — Serialise and restore registry state for persistence.
+**Property:** `revocationLedger: RevocationEntry[]` (read-only copy)
 
 ### `defaultRegistry`
-```typescript
-const defaultRegistry: MandateRegistry;
-```
-Singleton instance for single-process use. Import and use directly if you don't need multiple isolated registries.
+
+Singleton `MandateRegistry` for single-process use.
 
 ---
 
-## Protocol Version
+## Constants
 
 ```typescript
-import { PACT_VERSION } from '@godman-protocols/pact';
-// PACT_VERSION === '0.2'
+const PACT_VERSION: '0.2';
 ```
