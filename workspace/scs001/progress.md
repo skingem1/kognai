@@ -5598,3 +5598,12 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (3-file feature, direct write)
 - Issues: None.
 - Timestamp: 2026-03-24T22:20:00Z
+
+## Sprint 997 — AMD-25-STORE
+- Status: PASS
+- Commit: a4e654ce
+- Files created: workspace/amd25/dka-store.ts (140 lines), workspace/amd25/smoke.test.ts
+- Test: 16/16 PASS
+- Notes: KnowledgeStore with keyword search, domain/tag/age filtering, capacity enforcement.
+- Swarm used: no (direct write)
+- Timestamp: 2026-03-24T22:45:00Z
