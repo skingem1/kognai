@@ -5079,3 +5079,12 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (multi-file, pipeline integration)
 - Issues: asciinema v3 changed syntax (-- → -c flag), fixed in headlessRecord()
 - Timestamp: 2026-03-24T22:45:00Z
+
+## Sprint 958 — ARCH-001-PREP
+- Status: PASS (heartbeat --once: PASS, syntax checks: PASS, JSON schema: valid)
+- Commit: e56655e7
+- Files created: scripts/arch001/start-session.sh (35L), scripts/arch001/heartbeat.sh (52L), workspace/arch001/observer-prompt-template.md (286w), workspace/arch001/_orchestrator/worker-status.schema.json, workers.json, escalations/.gitkeep, workspace/sprints/sprint-958.json
+- Block: ARCH-001
+- Swarm used: no (direct write)
+- Issues: none
+- Timestamp: 2026-03-25T00:00:00Z
