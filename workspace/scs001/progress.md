@@ -5858,3 +5858,13 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (single-line config)
 - Issues: ACHIRI_TELEGRAM_BOT_TOKEN not set (human action needed)
 - Timestamp: 2026-03-24T12:50Z
+
+## Sprint 1032 — INFRA
+- Status: PASS
+- Commit: 2be7cb91
+- Files modified: scripts/replenish-sprint-queue.ts
+- Test: REPLENISH_DRY_RUN=1 — only 2 items (was 5 duplicates before), both launch-aware
+- Pipeline: replenisher now git-log aware + launch countdown items
+- Swarm used: no (single-file enhancement, direct write)
+- Issues: none
+- Timestamp: 2026-03-24T12:55Z
