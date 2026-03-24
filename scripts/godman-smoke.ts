@@ -38,8 +38,16 @@ export function runGodmanSmoke(): string {
     lines.push(`${pass ? '✅' : '❌'} @godman-protocols/${proto}`);
     if (!pass) {
       allPass = false;
-      const errLine = output.split('\n').find(l => l.includes('FAIL') || l.includes('Error')) ?? '';
-      if (errLine) lines.push(`   ↳ \`${errLine.trim().slice(0, 80)}\``);
+      // Sprint 1070: show up to 4 lines of relevant failure output
+      const outputLines = output.split('\n').filter(l => l.trim());
+      const relevantLines = outputLines.filter(l =>
+        l.includes('Error') || l.includes('FAIL') || l.includes('assert') ||
+        l.includes('expect') || l.includes('throw') || l.includes('×') || l.includes('✗')
+      ).slice(0, 4);
+      const showLines = relevantLines.length > 0 ? relevantLines : outputLines.slice(0, 4);
+      lines.push('```');
+      for (const l of showLines) lines.push(l.trim().slice(0, 100));
+      lines.push('```');
     }
   }
   lines.push('');
