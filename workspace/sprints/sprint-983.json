@@ -1,0 +1,11 @@
+{
+  "sprint_id": "sprint-983",
+  "title": "GODMAN-SDK-PUBLISH-PREP — Update SDK deps from file:../ to ^0.2.0 for npm publish",
+  "description": "Replace file:../pact etc. with ^0.2.0 semver refs in SDK package.json. Also verify all 7 protocol package.json have correct publishConfig (registry, access). Required for April 14 npm publish.",
+  "block": "GODMAN-PROTOCOLS",
+  "source": "queue-exhausted-launch-prep",
+  "tasks": [
+    { "id": "983-01", "title": "Update SDK package.json deps to semver", "type": "config", "task_target": "workspace/godman-protocols/sdk/package.json", "agent": "coder", "status": "pending", "priority": "high", "sprint_id": "sprint-983" },
+    { "id": "983-02", "title": "Verify all 7 protocol publishConfig settings", "type": "config", "task_target": "workspace/godman-protocols/*/package.json", "agent": "coder", "status": "pending", "priority": "high", "sprint_id": "sprint-983" }
+  ]
+}

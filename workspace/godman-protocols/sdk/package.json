@@ -40,13 +40,13 @@
     "node": ">=20.0.0"
   },
   "dependencies": {
-    "@godman-protocols/pact": "file:../pact",
-    "@godman-protocols/lax": "file:../lax",
-    "@godman-protocols/score": "file:../score",
-    "@godman-protocols/signal": "file:../signal",
-    "@godman-protocols/soul": "file:../soul",
-    "@godman-protocols/amf": "file:../amf",
-    "@godman-protocols/drs": "file:../drs"
+    "@godman-protocols/pact": "^0.2.0",
+    "@godman-protocols/lax": "^0.2.0",
+    "@godman-protocols/score": "^0.2.0",
+    "@godman-protocols/signal": "^0.2.0",
+    "@godman-protocols/soul": "^0.2.0",
+    "@godman-protocols/amf": "^0.2.0",
+    "@godman-protocols/drs": "^0.2.0"
   },
   "devDependencies": {
     "typescript": "^5.4.0",
