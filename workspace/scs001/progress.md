@@ -5774,3 +5774,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - AAR: modules not found (note only, not blocking).
 - Issues: Gate file was counting dry-run posts (browser-post-dry, batch-browser-dry). Fixed.
 - Timestamp: 2026-03-24T10:56:00Z
+
+## Sprint 1009 — OPS Gate Generator Dry-Run Fix
+- Status: PASS
+- Commit: 41e3111c
+- Files created: workspace/sprints/sprint-1009.json
+- Files modified: scripts/scs001/generate-phase1-5-gate.ts, scripts/update-gate-tracker.ts, scripts/generate-gate-report.ts, workspace/gates/phase1-5-gate.json
+- Test: npx ts-node generate-phase1-5-gate.ts — shows 2/30 (corrected from 4)
+- Pipeline: Gate file now shows accurate real post count (excludes dry-run methods)
+- Swarm used: no (direct write — swarm consistently failing to load agents)
+- Issues: AAR/crystalliser modules not found — noted, not blocking
+- Timestamp: 2026-03-24T11:10:00Z
