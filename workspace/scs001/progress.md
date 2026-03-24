@@ -5359,3 +5359,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (test file, direct write)
 - Issues: none
 - Timestamp: 2026-03-24T22:15:00Z
+
+## Sprint 980 — ACHIRI-CI
+- Status: PASS
+- Commit: 6ed43b5d
+- Files created: workspace/sprints/sprint-980.json
+- Files modified: .github/workflows/ci.yml
+- Test: YAML valid, smoke test verified locally (Sprint 979)
+- Pipeline: Achiri smoke test now in CI — runs on every push
+- Swarm used: no (CI config, direct write)
+- Issues: none
+- Timestamp: 2026-03-24T22:20:00Z
