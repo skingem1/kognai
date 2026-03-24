@@ -1,0 +1,41 @@
+{
+  "sprint_id": "sprint-1160",
+  "title": "ACHIRI-DEPLOY — Hetzner deployment script + nginx config + pre-deploy check for April 25 alpha",
+  "description": "Create deployment artifacts for Achiri API on Hetzner VPS (65.108.90.178). Three files: deploy-hetzner.sh (git pull + pm2 restart), nginx-achiri.conf (reverse proxy HTTPS), pre-deploy-check.ts (env + port + health preflight).",
+  "source": "queue-empty-auto",
+  "tasks": [
+    {
+      "id": "1160-01",
+      "title": "Create scripts/achiri/deploy-hetzner.sh — Hetzner deployment script",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/achiri/deploy-hetzner.sh",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1160"
+    },
+    {
+      "id": "1160-02",
+      "title": "Create scripts/achiri/nginx-achiri.conf — nginx reverse proxy config",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/achiri/nginx-achiri.conf",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1160"
+    },
+    {
+      "id": "1160-03",
+      "title": "Create scripts/achiri/pre-deploy-check.ts — pre-flight validation",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/achiri/pre-deploy-check.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1160"
+    }
+  ]
+}
