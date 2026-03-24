@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1127",
+  "title": "OPS — /status: add gate ETA to posts section",
+  "description": "Add projected date posts will reach 30 at current pace. Helps operator visualize trajectory.",
+  "block": "OPS",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1127-01",
+      "title": "Add gate ETA date calculation and display in /status",
+      "type": "enhancement",
+      "task_target": "scripts/telegram-commands/cmd-management.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1127"
+    }
+  ]
+}

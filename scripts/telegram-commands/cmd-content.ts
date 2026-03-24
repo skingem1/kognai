@@ -32,6 +32,14 @@ export function cmdRecord(args: string): string {
     return `❌ Invalid views count: \`${parts[1]}\` — must be a non-negative number.`;
   }
   const rest = parts.slice(2).join(' ') || undefined;
+  // Sprint 1125: warn if views unusually high (possible typo)
+  if (views > 5000 && !args.includes('--confirm')) {
+    return (
+      `⚠️ *Unusually high view count: ${views.toLocaleString()}*\n\n` +
+      `This seems high — are you sure? If correct, add \`--confirm\` to record:\n` +
+      `\`/record ${videoId} ${views}${rest ? ' ' + rest : ''} --confirm\``
+    );
+  }
   const tiktokUrl = rest?.startsWith('https://') ? rest : undefined;
   const title = !tiktokUrl ? rest : undefined;
 
