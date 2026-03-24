@@ -29,15 +29,20 @@ function daysUntil(isoDate: string): number {
 // ── read current gate state ───────────────────────────────────────────────────
 
 const gateData = readJSON<any>(GATE_JSON);
-const postCount = countLines(MANUAL_POSTS);
-const totalViews = (() => {
-  if (!fs.existsSync(MANUAL_POSTS)) return 0;
-  return fs.readFileSync(MANUAL_POSTS, 'utf-8').split('\n')
+
+// Sprint 1009: exclude dry-run posts from gate count
+const DRY_METHODS = ['browser-post-dry', 'batch-browser-dry', 'dry'];
+function readRealPosts(p: string): any[] {
+  if (!fs.existsSync(p)) return [];
+  return fs.readFileSync(p, 'utf-8').split('\n')
     .filter(l => l.trim())
-    .reduce((sum, l) => {
-      try { return sum + (JSON.parse(l).views ?? 0); } catch { return sum; }
-    }, 0);
-})();
+    .map(l => { try { return JSON.parse(l); } catch { return null; } })
+    .filter((e): e is any => e && e.video_id &&
+      !(e.method && DRY_METHODS.some(d => String(e.method).includes(d))));
+}
+const realPosts = readRealPosts(MANUAL_POSTS);
+const postCount = realPosts.length;
+const totalViews = realPosts.reduce((sum: number, e: any) => sum + (e.views ?? 0), 0);
 
 // Phase 0→1: PASSED if pipeline has generated any videos (publish-ledger.jsonl exists)
 const ledgerPath    = path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl');

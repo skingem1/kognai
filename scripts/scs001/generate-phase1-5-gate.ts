@@ -25,6 +25,9 @@ interface ManualPost {
   posted_at: string;
 }
 
+// Sprint 1009: exclude dry-run posts (browser-post-dry, batch-browser-dry, etc.)
+const DRY_METHODS = ['browser-post-dry', 'batch-browser-dry', 'dry'];
+
 function loadPosts(): ManualPost[] {
   if (!existsSync(MANUAL_POSTS_PATH)) return [];
   const lines = readFileSync(MANUAL_POSTS_PATH, 'utf-8').split('\n');
@@ -32,7 +35,13 @@ function loadPosts(): ManualPost[] {
   for (const line of lines) {
     const t = line.trim();
     if (!t) continue;
-    try { posts.push(JSON.parse(t)); } catch { /* skip corrupt */ }
+    try {
+      const e = JSON.parse(t);
+      if (!e.video_id) continue;
+      // Skip dry runs
+      if (e.method && DRY_METHODS.some(d => String(e.method).includes(d))) continue;
+      posts.push(e);
+    } catch { /* skip corrupt */ }
   }
   return posts;
 }

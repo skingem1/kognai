@@ -1,0 +1,31 @@
+{
+  "sprint_id": "sprint-1009",
+  "title": "OPS — Fix gate generators to exclude dry-run posts from post count",
+  "description": "Sprint 1008 audit revealed gate files count dry-run posts (method=browser-post-dry, batch-browser-dry). Both scripts/update-gate-tracker.ts and scripts/generate-gate-report.ts use raw countLines/posts.length without filtering. Fix both to exclude dry runs. Re-generate phase1-5-gate.json with correct count (2 real, not 4).",
+  "block": "OPS",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1009-01",
+      "title": "Fix update-gate-tracker.ts to filter dry-run posts",
+      "type": "bugfix",
+      "task_target": "scripts/update-gate-tracker.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1009",
+      "description": "In update-gate-tracker.ts, replace the countLines(MANUAL_POSTS) call with a real-posts-only count. Add a helper: function countRealPosts(p: string): number that reads jsonlines, parses each, and filters out entries where method contains 'dry'. Use this for the postCount variable. Keep the totalViews calc consistent (only sum real posts). Keep file under 150 lines."
+    },
+    {
+      "id": "1009-02",
+      "title": "Fix generate-gate-report.ts to filter dry-run posts",
+      "type": "bugfix",
+      "task_target": "scripts/generate-gate-report.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1009",
+      "description": "In generate-gate-report.ts line 32: const postCount = posts.length; → change to filter out dry posts. Add: const DRY_METHODS = ['browser-post-dry', 'batch-browser-dry', 'dry']; const realPosts = posts.filter((e: any) => !e.method || !DRY_METHODS.some(d => String(e.method).includes(d))); const postCount = realPosts.length; Update the totalViews and avgViews to use realPosts. Keep rest of file unchanged."
+    }
+  ]
+}

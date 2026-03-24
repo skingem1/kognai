@@ -27,14 +27,17 @@ function readLines(filePath: string): any[] {
 
 // ── Criteria Assessment ──────────────────────────────────────────────────────
 
-// 1. Post count
+// 1. Post count — Sprint 1009: exclude dry-run posts
+const DRY_METHODS = ['browser-post-dry', 'batch-browser-dry', 'dry'];
 const posts = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
-const postCount = posts.length;
+const realPosts = posts.filter((e: any) =>
+  e.video_id && !(e.method && DRY_METHODS.some(d => String(e.method).includes(d))));
+const postCount = realPosts.length;
 const postTarget = 30;
 const postPass = postCount >= postTarget;
 
 // 2. View count
-const totalViews = posts.reduce((s: number, e: any) => s + (e.views ?? 0), 0);
+const totalViews = realPosts.reduce((s: number, e: any) => s + (e.views ?? 0), 0);
 const viewTarget = 500;
 const viewPass = totalViews >= viewTarget;
 const avgViews = postCount > 0 ? Math.round(totalViews / postCount) : 0;
