@@ -86,7 +86,7 @@ async function demo() {
   scheduler.addPool({
     name: 'GPU Compute', resourceType: 'gpu-a100',
     totalCapacity: 4, availableCapacity: 4,
-    latencyMs: 5, costPerUnitUsdc: 0, tags: [],
+    latencyMs: 5, costPerUnit: 0,
   });
   const pools = scheduler.listPools();
   const gpuPool = pools[0];
@@ -108,8 +108,8 @@ async function demo() {
   const sla = registerSLA(coder, 'mac-mini-m4', 10000, 5);
   ok(`SLA: ${sla.id.slice(0, 12)}... (max ${sla.maxLatencyMs}ms)`);
   const route = routeTask('task-001', coder, budget, [
-    { id: 'local', runtimeId: 'mac-mini-m4', measuredLatencyMs: 3000, available: true },
-    { id: 'cloud', runtimeId: 'hetzner-vps', measuredLatencyMs: 1000, available: true },
+    { id: 'local', runtimeId: 'mac-mini-m4', measuredLatencyMs: 3000, available: true, lastProbeAt: new Date().toISOString() },
+    { id: 'cloud', runtimeId: 'hetzner-vps', measuredLatencyMs: 1000, available: true, lastProbeAt: new Date().toISOString() },
   ]);
   ok(`Route: ${C.g}${route.selectedRuntimeId}${C.r} (${route.estimatedLatencyMs}ms)`);
 

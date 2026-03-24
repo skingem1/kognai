@@ -1,0 +1,12 @@
+{
+  "sprint_id": "sprint-993",
+  "title": "GODMAN-SDK-FIX — Fix SDK type errors for April 14 npm publish",
+  "description": "Fix 3 TypeScript type errors in SDK demo script (costPerUnitUsdc→costPerUnit, remove stale tags field, add lastProbeAt to ExecutionSlot). All 7 protocols + SDK now build, pack, and pass 56/56 tests.",
+  "block": "GODMAN-PROTOCOLS",
+  "source": "queue-exhausted-launch-prep",
+  "tasks": [
+    { "id": "993-01", "title": "Fix DRS type mismatch in demo (costPerUnitUsdc→costPerUnit, remove tags)", "type": "fix", "task_target": "workspace/godman-protocols/sdk/bin/demo.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-993" },
+    { "id": "993-02", "title": "Fix LAX ExecutionSlot missing lastProbeAt in demo", "type": "fix", "task_target": "workspace/godman-protocols/sdk/bin/demo.ts", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-993" },
+    { "id": "993-03", "title": "Verify all 7 protocols build + pack + 56/56 tests pass", "type": "test", "task_target": "workspace/godman-protocols/", "agent": "coder", "status": "done", "priority": "high", "sprint_id": "sprint-993" }
+  ]
+}
