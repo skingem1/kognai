@@ -1295,3 +1295,96 @@ export function cmdInviteAchiri(args: string): string {
     `📋 Total whitelist: *${total}* users`
   );
 }
+
+/**
+ * Sprint 1180: /achiri-stats — DAU, retention, premium count, top users
+ * Reads from reports/achiri-analytics.json and workspace/achiri/daily-counts.json
+ */
+export function cmdAchiriStats(): string {
+  const lines: string[] = ['📊 *Achiri Stats*', ''];
+
+  // Analytics report
+  try {
+    const aaPath = path.join(ROOT, 'reports', 'achiri-analytics.json');
+    if (fs.existsSync(aaPath)) {
+      const aa = JSON.parse(fs.readFileSync(aaPath, 'utf-8'));
+      const ov = aa.overview ?? {};
+      const today = aa.today ?? {};
+      lines.push(`👥 *Total users:* ${ov.total_users ?? 0}`);
+      lines.push(`📅 *DAU (today):* ${today.dau ?? 0} · ${today.msgs ?? 0} msgs`);
+      lines.push(`🔁 *7d retention:* ${ov.retention_pct ?? 0}%`);
+      lines.push(`📋 *Waitlist:* ${ov.waitlist_count ?? 0} pending · ${ov.invited_count ?? 0} invited`);
+      if ((ov.errors_7d ?? 0) > 0) lines.push(`⚠️ *Errors (7d):* ${ov.errors_7d}`);
+    } else {
+      lines.push('⚠️ achiri-analytics.json not found — run /achiridata to generate');
+    }
+  } catch (e: any) {
+    lines.push(`❌ Analytics read failed: ${(e.message ?? '').slice(0, 100)}`);
+  }
+
+  // 7-day DAU trend from daily-counts.json
+  try {
+    const dcPath = path.join(ROOT, 'workspace', 'achiri', 'daily-counts.json');
+    if (fs.existsSync(dcPath)) {
+      const dc: Record<string, Record<string, number>> = JSON.parse(fs.readFileSync(dcPath, 'utf-8'));
+      const isTestId = (id: string) =>
+        id.startsWith('validate-') || id.startsWith('smoke-') ||
+        id.startsWith('e2e-') || id === 'tarek-test';
+      const now = new Date();
+      const trend: string[] = [];
+      for (let i = 6; i >= 0; i--) {
+        const d = new Date(now.getTime() - i * 86_400_000).toISOString().slice(0, 10);
+        const entries = dc[d] ?? {};
+        const dau = Object.keys(entries).filter(k => !isTestId(k)).length;
+        trend.push(`${d.slice(5)}: ${dau}`);
+      }
+      lines.push('');
+      lines.push('*7d DAU trend:*');
+      lines.push('`' + trend.join(' | ') + '`');
+    }
+  } catch { /* skip */ }
+
+  // Premium users
+  try {
+    const premPath = path.join(ROOT, 'workspace', 'achiri', 'memory', 'user-premium.jsonl');
+    if (fs.existsSync(premPath)) {
+      const premLines = fs.readFileSync(premPath, 'utf-8').trim().split('\n').filter(Boolean);
+      const premUsers = new Set<string>();
+      for (const l of premLines) {
+        try { const e = JSON.parse(l); if (e.user_id ?? e.userId) premUsers.add(e.user_id ?? e.userId); } catch {}
+      }
+      lines.push('');
+      lines.push(`💎 *Premium users:* ${premUsers.size}`);
+    }
+  } catch { /* skip */ }
+
+  // Top users
+  try {
+    const aaPath = path.join(ROOT, 'reports', 'achiri-analytics.json');
+    if (fs.existsSync(aaPath)) {
+      const aa = JSON.parse(fs.readFileSync(aaPath, 'utf-8'));
+      const topUsers: any[] = (aa.top_users ?? []).slice(0, 5);
+      if (topUsers.length > 0) {
+        lines.push('');
+        lines.push('*Top users:*');
+        for (const u of topUsers) {
+          lines.push(`  \`${u.user_id}\` — ${u.total_msgs} msgs · ${u.days_active}d active`);
+        }
+      }
+    }
+  } catch { /* skip */ }
+
+  const genAt = (() => {
+    try {
+      const aaPath = path.join(ROOT, 'reports', 'achiri-analytics.json');
+      if (fs.existsSync(aaPath)) {
+        const gen = JSON.parse(fs.readFileSync(aaPath, 'utf-8')).generated_at;
+        if (gen) return new Date(gen).toISOString().slice(0, 16).replace('T', ' ') + 'Z';
+      }
+    } catch {}
+    return '';
+  })();
+  if (genAt) { lines.push(''); lines.push(`_Report generated: ${genAt}_`); }
+
+  return lines.join('\n');
+}

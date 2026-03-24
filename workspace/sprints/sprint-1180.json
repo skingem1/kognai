@@ -1,0 +1,33 @@
+{
+  "sprint_id": "sprint-1180",
+  "title": "ACHIRI — add /achiri-stats Telegram command showing DAU, retention, top users",
+  "description": "Create cmdAchiriStats() in cmd-stripe.ts: reads achiri-analytics.json for DAU/retention/waitlist/top-users, reads daily-counts.json for 7-day trend. Wire /achiri-stats and /achiristats into telegram-bot.ts.",
+  "source": "queue-prescribed",
+  "block": "ACHIRI",
+  "swarm_bypassed": true,
+  "swarm_bypass_reason": "cmd-stripe.ts 1297 lines, telegram-bot.ts 2800+ lines — written directly.",
+  "tasks": [
+    {
+      "id": "1180-01",
+      "title": "Add cmdAchiriStats() export to cmd-stripe.ts",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/telegram-commands/cmd-stripe.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1180"
+    },
+    {
+      "id": "1180-02",
+      "title": "Wire /achiri-stats and /achiristats in telegram-bot.ts",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/telegram-bot.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1180"
+    }
+  ]
+}
