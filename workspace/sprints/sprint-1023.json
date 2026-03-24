@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-1023",
+  "title": "OPS — /record: fix gate count + store TikTok URL for view tracking",
+  "description": "Two fixes in cmdRecord(): (1) postCount = updated.length includes dry-runs — apply DRY_METHODS filter. (2) Accept optional TikTok URL as 3rd arg (detected by https:// prefix) to store in entry for future oEmbed view tracking. Usage: /record <video_id> <views> [tiktok_url]",
+  "block": "OPS",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1023-01",
+      "title": "Fix gate count + add TikTok URL storage in cmdRecord()",
+      "type": "feature",
+      "task_target": "scripts/telegram-commands/cmd-content.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1023",
+      "description": "In cmdRecord(): (1) After reading updated, filter dry-runs for postCount and totalViews. (2) If parts[2] starts with 'https://', store as tiktok_url field in entry (enables view tracking). Update usage text."
+    }
+  ]
+}

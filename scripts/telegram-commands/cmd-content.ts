@@ -14,11 +14,13 @@ import {
 } from './shared';
 
 export function cmdRecord(args: string): string {
-  // Usage: /record <video_id> <views> [title...]
+  // Usage: /record <video_id> <views> [tiktok_url | title...]
+  // Sprint 1023: 3rd arg starting with https:// is stored as tiktok_url for view tracking
   const parts = args.trim().split(/\s+/);
   if (parts.length < 2) {
     return (
-      `*Usage:* \`/record <video_id> <views> [title]\`\n\n` +
+      `*Usage:* \`/record <video_id> <views> [tiktok_url | title]\`\n\n` +
+      `Example: \`/record clip_abc123 0 https://tiktok.com/@you/video/123\`\n` +
       `Example: \`/record clip_abc123 0 My first TikTok\`\n\n` +
       `Records a manually-posted TikTok video for gate tracking.`
     );
@@ -29,7 +31,9 @@ export function cmdRecord(args: string): string {
   if (isNaN(views) || views < 0) {
     return `❌ Invalid views count: \`${parts[1]}\` — must be a non-negative number.`;
   }
-  const title = parts.slice(2).join(' ') || undefined;
+  const rest = parts.slice(2).join(' ') || undefined;
+  const tiktokUrl = rest?.startsWith('https://') ? rest : undefined;
+  const title = !tiktokUrl ? rest : undefined;
 
   const manualPostsPath = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
   const dir = path.dirname(manualPostsPath);
@@ -43,10 +47,11 @@ export function cmdRecord(args: string): string {
 
   // Sprint 404: Enrich with experiment metadata for A/B analysis
   const expData = getExperimentData(videoId);
-  const entry = {
+  const entry: Record<string, unknown> = {
     video_id: videoId,
     views,
     title,
+    tiktok_url: tiktokUrl, // Sprint 1023: store for future oEmbed view tracking
     speaker: expData.speaker !== 'unknown' ? expData.speaker : undefined,
     hook_formula: expData.hook_formula !== 'unknown' ? expData.hook_formula : undefined,
     viral_score: expData.viral_score,
@@ -57,8 +62,11 @@ export function cmdRecord(args: string): string {
   };
   fs.appendFileSync(manualPostsPath, JSON.stringify(entry) + '\n', 'utf-8');
 
-  // Compute updated gate stats
-  const updated = readLines(manualPostsPath);
+  // Sprint 1023: Compute updated gate stats excluding dry-runs
+  const DRY_METHODS_R = ['browser-post-dry', 'batch-browser-dry', 'dry'];
+  const updated = (readLines(manualPostsPath) as any[]).filter((e: any) =>
+    e.video_id && !(e.method && DRY_METHODS_R.some((d: string) => String(e.method).includes(d)))
+  );
   const postCount = updated.length;
   const totalViews = updated.reduce((s: number, p: any) => s + (p.views ?? 0), 0);
   const postsLeft = Math.max(0, 30 - postCount);
@@ -68,7 +76,7 @@ export function cmdRecord(args: string): string {
   return (
     `✅ *Post recorded!*\n\n` +
     `Video: \`${videoId}\`\n` +
-    `Views: ${views}${title ? `\nTitle: ${title}` : ''}\n\n` +
+    `Views: ${views}${title ? `\nTitle: ${title}` : ''}${tiktokUrl ? `\n🔗 TikTok URL saved (views will update automatically)` : ''}\n\n` +
     `📊 *Gate progress:* ${postCount}/30 posts · ${totalViews}/500 views\n` +
     `${postsLeft > 0 ? `⏳ ${postsLeft} more posts needed · ${daysLeft}d to Apr 7` : '✅ Post target met!'}`
   );
