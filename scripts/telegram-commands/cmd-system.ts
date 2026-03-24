@@ -726,7 +726,55 @@ export function cmdHealth(): string {
     }
   } catch { /* skip */ }
 
-  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${botUptimeSection}${ollamaSection}${memWarnSection}${memTableSection}${supabaseSection}${supabaseSyncSection}${diskSection}${watchdogSection}${runtimeSection}${tailscaleSection}${hetznerSection}${anthropicSection}${ioSection}${morningBriefSection}${digestSection}${staleCronsSection}${supabaseDomainSection}${anthropicBudgetSection}${pipelineValidationSection}${worktreeSection}${botMemSection}${gateDaysSection}${backupSection}${postingHealthSection}${exportFilesSection}${tokenHealthSection}${statsSection}${inventorySection}${gateAuditSection}${autoDeliverSection}${bulkCaptionsSection}${playbackSection}${qcSection}${smokeSection}${achiriDauSection}${achiriE2eSection}${videoValidSection}${pipelineMetricsSection}${achiriSafetySection}${leaderboardSection}${brainxSection}${achiriLaunchSection}`;
+  // Sprint 1153 (wave 32): posting-schedule.json next slot + pace needed
+  let postingScheduleSection = '';
+  try {
+    const psPath = path.join(ROOT, 'reports', 'posting-schedule.json');
+    if (fs.existsSync(psPath)) {
+      const ps = JSON.parse(fs.readFileSync(psPath, 'utf-8'));
+      const psDone = ps.posts_done ?? 0;
+      const psTarget = ps.gate_target ?? 30;
+      const psPace = ps.pace_needed ?? 0;
+      const slots: any[] = ps.slots ?? [];
+      const today = new Date().toISOString().slice(0, 10);
+      const nextSlot = slots.find((s: any) => s.date >= today);
+      const nextStr = nextSlot ? ` · next: ${nextSlot.date} ${nextSlot.time} (${nextSlot.speaker ?? 'unknown'})` : '';
+      const psIcon = psDone >= psTarget ? '✅' : psPace > 3 ? '🔴' : psPace > 2 ? '⚠️' : '📅';
+      postingScheduleSection = `\n\n${psIcon} *Post schedule:* ${psDone}/${psTarget} done · ${psPace}/day needed${nextStr}`;
+    }
+  } catch { /* skip */ }
+
+  // Sprint 1153 (wave 32): phase1-5-gate.json urgency signal
+  let phase15GateSection = '';
+  try {
+    const p15Path = path.join(ROOT, 'workspace', 'gates', 'phase1-5-gate.json');
+    if (fs.existsSync(p15Path)) {
+      const p15 = JSON.parse(fs.readFileSync(p15Path, 'utf-8'));
+      const urgency = p15.urgency ?? 'UNKNOWN';
+      const daysLeft = p15.days_remaining ?? 0;
+      const paceNeeded = p15.pace_needed ?? 0;
+      const p15Icon = urgency === 'ON_TRACK' ? '🟢' : urgency === 'AT_RISK' ? '🟡' : urgency === 'CRITICAL' ? '🔴' : '⚠️';
+      phase15GateSection = `\n\n${p15Icon} *Gate 1.5:* ${urgency} · ${daysLeft}d left · ${paceNeeded}/day pace`;
+    }
+  } catch { /* skip */ }
+
+  // Sprint 1153 (wave 32): batch-produce-latest.json runs completed
+  let batchProduceSection = '';
+  try {
+    const bpPath = path.join(ROOT, 'reports', 'batch-produce-latest.json');
+    if (fs.existsSync(bpPath)) {
+      const bp = JSON.parse(fs.readFileSync(bpPath, 'utf-8'));
+      const bpCompleted = bp.runs_completed ?? 0;
+      const bpPlanned = bp.runs_planned ?? 0;
+      const bpPipeline = bp.pipeline_filter ?? 'unknown';
+      const bpIcon = bpCompleted === bpPlanned ? '✅' : '⚠️';
+      const bpAgeH = bp.batch_at ? (Date.now() - new Date(bp.batch_at).getTime()) / 3600000 : null;
+      const bpAgeStr = bpAgeH != null && bpAgeH < 48 ? ` _(${Math.round(bpAgeH)}h ago)_` : '';
+      batchProduceSection = `\n\n${bpIcon} *Batch produce:* ${bpCompleted}/${bpPlanned} ${bpPipeline} runs${bpAgeStr}`;
+    }
+  } catch { /* skip */ }
+
+  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${botUptimeSection}${ollamaSection}${memWarnSection}${memTableSection}${supabaseSection}${supabaseSyncSection}${diskSection}${watchdogSection}${runtimeSection}${tailscaleSection}${hetznerSection}${anthropicSection}${ioSection}${morningBriefSection}${digestSection}${staleCronsSection}${supabaseDomainSection}${anthropicBudgetSection}${pipelineValidationSection}${worktreeSection}${botMemSection}${gateDaysSection}${backupSection}${postingHealthSection}${exportFilesSection}${tokenHealthSection}${statsSection}${inventorySection}${gateAuditSection}${autoDeliverSection}${bulkCaptionsSection}${playbackSection}${qcSection}${smokeSection}${achiriDauSection}${achiriE2eSection}${videoValidSection}${pipelineMetricsSection}${achiriSafetySection}${leaderboardSection}${brainxSection}${achiriLaunchSection}${postingScheduleSection}${phase15GateSection}${batchProduceSection}`;
 }
 
 export function cmdTier(): string {

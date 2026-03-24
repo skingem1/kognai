@@ -1,0 +1,41 @@
+{
+  "sprint_id": "sprint-1153",
+  "title": "OPS — Telegram operator UX wave 32: next post slot, gate urgency, batch production in /health",
+  "description": "Add 3 compact /health signals: (1) posting-schedule.json next scheduled slot + pace needed, (2) workspace/gates/phase1-5-gate.json urgency signal, (3) reports/batch-produce-latest.json runs completed.",
+  "source": "queue-empty-auto",
+  "tasks": [
+    {
+      "id": "1153-01",
+      "title": "Add posting-schedule next slot to /health",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1153"
+    },
+    {
+      "id": "1153-02",
+      "title": "Add phase1-5-gate urgency signal to /health",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1153"
+    },
+    {
+      "id": "1153-03",
+      "title": "Add batch-produce-latest results to /health",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1153"
+    }
+  ]
+}
