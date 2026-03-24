@@ -299,7 +299,7 @@ export function cmdFunnel(): string {
   const maxWidth = 20;
   const maxVal = Math.max(totalExp, 1);
   const bar = (val: number) => {
-    const len = Math.max(1, Math.round((val / maxVal) * maxWidth));
+    const len = Math.min(maxWidth, Math.max(1, Math.round((val / maxVal) * maxWidth)));
     return '█'.repeat(len) + '░'.repeat(maxWidth - len);
   };
 
