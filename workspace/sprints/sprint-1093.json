@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1093",
+  "title": "GATE — /today: add views-needed line when gate is not met",
+  "description": "Already implemented at lines 521-533 of cmd-content.ts — shows views X/500 and 'N more views needed' when below gate. No changes needed.",
+  "block": "GATE",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1093-01",
+      "title": "Verify views-needed line already present in cmdToday",
+      "type": "validation",
+      "task_target": "scripts/telegram-commands/cmd-content.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1093"
+    }
+  ]
+}
