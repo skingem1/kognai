@@ -112,6 +112,17 @@ function getExistingCommands(): Set<string> {
   return cmds;
 }
 
+function getGitLogTitles(): string[] {
+  try {
+    const log = execSync('git log --oneline -100', { cwd: ROOT, encoding: 'utf-8' });
+    return log.split('\n').filter(Boolean).map(l => l.replace(/^[a-f0-9]+ /, ''));
+  } catch { return []; }
+}
+
+function daysUntil(dateStr: string): number {
+  return Math.max(0, Math.ceil((new Date(dateStr).getTime() - Date.now()) / 86_400_000));
+}
+
 function generateItems(startSprint: number, existingTitles: Set<string> = new Set()): QueueItem[] {
   const items: QueueItem[] = [];
   let sprint = startSprint;
@@ -120,12 +131,17 @@ function generateItems(startSprint: number, existingTitles: Set<string> = new Se
   const errors = getPipelineErrors();
   const existingCmds = getExistingCommands();
 
-  // Helper: check if a title already exists in the queue (fuzzy match on first 40 chars)
+  // Dedup: check queue titles AND git log for already-shipped work
   const existingTitleArray = Array.from(existingTitles);
+  const gitTitles = getGitLogTitles();
   function isDuplicate(title: string): boolean {
     const normalised = title.toLowerCase().slice(0, 40);
     for (let i = 0; i < existingTitleArray.length; i++) {
       if (existingTitleArray[i].toLowerCase().slice(0, 40) === normalised) return true;
+    }
+    // Also check git log for shipped sprints with similar titles
+    for (const gt of gitTitles) {
+      if (gt.toLowerCase().includes(normalised.slice(0, 25))) return true;
     }
     return false;
   }
@@ -223,6 +239,26 @@ function generateItems(startSprint: number, existingTitles: Set<string> = new Se
     block: 'INFRA',
     rationale: 'YouTube credentials are configured. Adding Shorts upload doubles content reach and accelerates view count for gate.',
   });
+
+  // Launch-aware items based on upcoming dates
+  const godmanDays = daysUntil('2026-04-14');
+  const achiriDays = daysUntil('2026-04-25');
+
+  if (godmanDays > 0 && godmanDays <= 25) {
+    infraItems.push({
+      title: 'GODMAN-LAUNCH — Pre-launch checklist validation + npm publish dry-run',
+      block: 'GODMAN-PROTOCOLS',
+      rationale: `Godman launch in ${godmanDays}d (Apr 14). Validate all 7 protocols build clean, run npm publish --dry-run, verify X thread assets.`,
+    });
+  }
+
+  if (achiriDays > 0 && achiriDays <= 35) {
+    infraItems.push({
+      title: 'ACHIRI-ALPHA — Pre-launch smoke test + waitlist notification prep',
+      block: 'PHASE2',
+      rationale: `Achiri alpha launch in ${achiriDays}d (Apr 25). Run full E2E test suite, verify waitlist users can be notified, test onboarding flow.`,
+    });
+  }
 
   // Fill remaining slots (skip duplicates of already-completed items)
   for (const item of infraItems) {
