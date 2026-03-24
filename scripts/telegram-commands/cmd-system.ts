@@ -1370,6 +1370,24 @@ export function cmdGodman(): string {
     lines.push(`  ${ver ? `✅ @godman-protocols/${proto} v${ver}` : `❌ @godman-protocols/${proto} — NOT PUBLISHED`}`);
   }
 
+  // Sprint 1105: npm run build clean check for all 8 packages
+  lines.push('');
+  lines.push('*Build clean check:*');
+  for (const proto of PROTOCOLS.concat(['sdk'])) {
+    const protoDir = path.join(BASE, proto);
+    if (!fs.existsSync(path.join(protoDir, 'package.json'))) {
+      lines.push(`  ⚠️ ${proto} — no package.json`);
+      continue;
+    }
+    try {
+      execSync('npm run build 2>&1', { cwd: protoDir, encoding: 'utf-8', timeout: 30000, stdio: ['pipe','pipe','pipe'] });
+      lines.push(`  ✅ ${proto} — build ok`);
+    } catch (e: any) {
+      const firstErr = ((e.stderr ?? e.stdout ?? e.message ?? '') as string).split('\n').find(l => l.includes('error TS') || l.includes('Error')) ?? 'build error';
+      lines.push(`  ❌ ${proto} — ${firstErr.trim().slice(0, 80)}`);
+    }
+  }
+
   // Sprint 1098: npm pack --dry-run check per protocol
   lines.push('');
   lines.push('*npm pack (dry-run):*');
@@ -1385,6 +1403,23 @@ export function cmdGodman(): string {
     } catch (e: any) {
       const msg = (e.stderr || e.message || '').split('\n')[0].slice(0, 60);
       lines.push(`  ❌ ${proto} — ${msg}`);
+    }
+  }
+
+  // Sprint 1100: npm publish --dry-run (only when npm is logged in)
+  const isNpmLoggedIn = (() => { try { return !!execSync('npm whoami 2>/dev/null', { encoding: 'utf-8', timeout: 3000, stdio: ['pipe','pipe','pipe'] }).trim(); } catch { return false; } })();
+  if (isNpmLoggedIn) {
+    lines.push('');
+    lines.push('*npm publish dry-run:*');
+    for (const proto of protocols) {
+      const protoDir = path.join(BASE, proto);
+      try {
+        execSync('npm publish --dry-run 2>&1', { cwd: protoDir, encoding: 'utf-8', timeout: 15000, stdio: ['pipe','pipe','pipe'] });
+        lines.push(`  ✅ ${proto} — publish dry-run ok`);
+      } catch (e: any) {
+        const firstLine = ((e.stderr ?? e.stdout ?? e.message ?? '') as string).split('\n').find(l => l.trim() && !l.includes('npm notice')) ?? 'error';
+        lines.push(`  ❌ ${proto} — ${firstLine.trim().slice(0, 80)}`);
+      }
     }
   }
 
@@ -1438,10 +1473,12 @@ export function cmdGodmanThread(): string {
 
   if (tweets.length === 0) return '❌ No tweets found in megathread file.';
 
+  // Sprint 1102: add copy-paste tip + total lines count
+  const totalLines = tweets.reduce((s, t) => s + t.body.split('\n').filter(l => l.trim()).length, 0);
   const out: string[] = [
-    `📢 *Godman X Launch Thread* — ${tweets.length} tweets`,
+    `📢 *Godman X Launch Thread* — ${tweets.length} tweets · ${totalLines} lines`,
     `_April 14, 2026 · @invoica\\_ai_`,
-    `_Copy each tweet in order:_`,
+    `_Tap each code block → copy → paste to X. Post in order._`,
     '',
   ];
 
