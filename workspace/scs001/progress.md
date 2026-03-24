@@ -5654,3 +5654,13 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (single function addition, direct write)
 - Issues: None.
 - Timestamp: 2026-03-24T22:40:00Z
+
+## Sprint 1001 — DIGEST-GODMAN
+- Status: PASS
+- Commit: 6af21234
+- Files modified: scripts/daily-digest.ts
+- Test: DIGEST_DRY_RUN=1 — Godman Apr 14 (21d) appears in Upcoming gates
+- Pipeline: Daily digest now shows all 3 key launch dates
+- Swarm used: no (1-line addition, direct edit)
+- Issues: TypeScript type mismatch (now was string, used Date.now() instead).
+- Timestamp: 2026-03-24T22:50:00Z
