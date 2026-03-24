@@ -997,7 +997,48 @@ export function cmdHealth(): string {
     }
   } catch { /* skip */ }
 
-  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${botUptimeSection}${ollamaSection}${memWarnSection}${memTableSection}${supabaseSection}${supabaseSyncSection}${diskSection}${watchdogSection}${runtimeSection}${tailscaleSection}${hetznerSection}${anthropicSection}${ioSection}${morningBriefSection}${digestSection}${staleCronsSection}${supabaseDomainSection}${anthropicBudgetSection}${pipelineValidationSection}${worktreeSection}${botMemSection}${gateDaysSection}${backupSection}${postingHealthSection}${exportFilesSection}${tokenHealthSection}${statsSection}${inventorySection}${gateAuditSection}${autoDeliverSection}${bulkCaptionsSection}${playbackSection}${qcSection}${smokeSection}${achiriDauSection}${achiriE2eSection}${videoValidSection}${pipelineMetricsSection}${achiriSafetySection}${leaderboardSection}${brainxSection}${achiriLaunchSection}${postingScheduleSection}${phase15GateSection}${batchProduceSection}${revenueSummarySection}${contentDiversitySection}${costLogSection}${warmupSection}${abAnalysisSection}${prodQualitySection}${hookWeightsSection}${contentCalendarSection}${achiriDashboardSection}${achiriReadinessSection}${viralTopicsSection}${archivedVideosSection}${manualPostsTodaySection}${achiriTestSuiteSection}${crossplatformSection}`;
+  // Sprint 1159 (wave 38): auto-delivered.jsonl delivered today + total
+  let autoDeliveredTodaySection = '';
+  try {
+    const adPath = path.join(ROOT, 'workspace', 'scs001', 'auto-delivered.jsonl');
+    if (fs.existsSync(adPath)) {
+      const today = new Date().toISOString().slice(0, 10);
+      const adLines = fs.readFileSync(adPath, 'utf-8').split('\n').filter(l => l.trim());
+      const adPosts = adLines.map(l => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
+      const adToday = adPosts.filter((p: any) => (p.delivered_at ?? '').startsWith(today));
+      const adIcon = adToday.length > 0 ? '📬' : '📭';
+      autoDeliveredTodaySection = `\n\n${adIcon} *Auto-delivered:* ${adToday.length} today · ${adPosts.length} total`;
+    }
+  } catch { /* skip */ }
+
+  // Sprint 1159 (wave 38): validation-errors.jsonl recent error count
+  let validationErrorsSection = '';
+  try {
+    const vePath = path.join(ROOT, 'workspace', 'scs001', 'validation-errors.jsonl');
+    if (fs.existsSync(vePath)) {
+      const veLines = fs.readFileSync(vePath, 'utf-8').split('\n').filter(l => l.trim());
+      const veTotal = veLines.length;
+      const lastVe = veLines.length > 0 ? (() => { try { return JSON.parse(veLines[veLines.length - 1]); } catch { return null; } })() : null;
+      const lastErrStr = lastVe?.errors?.[0] ? ` · last: ${String(lastVe.errors[0]).slice(0, 40)}` : '';
+      const veIcon = veTotal === 0 ? '✅' : veTotal < 5 ? '🟡' : '⚠️';
+      validationErrorsSection = `\n\n${veIcon} *Val errors:* ${veTotal}${lastErrStr}`;
+    }
+  } catch { /* skip */ }
+
+  // Sprint 1159 (wave 38): telegram-sent.jsonl notifications today + total
+  let telegramSentSection = '';
+  try {
+    const tsPath = path.join(ROOT, 'workspace', 'scs001', 'telegram-sent.jsonl');
+    if (fs.existsSync(tsPath)) {
+      const today = new Date().toISOString().slice(0, 10);
+      const tsLines = fs.readFileSync(tsPath, 'utf-8').split('\n').filter(l => l.trim());
+      const tsPosts = tsLines.map(l => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
+      const tsToday = tsPosts.filter((p: any) => (p.sent_at ?? '').startsWith(today));
+      telegramSentSection = `\n\n📱 *TG notifs:* ${tsToday.length} today · ${tsPosts.length} total`;
+    }
+  } catch { /* skip */ }
+
+  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${botUptimeSection}${ollamaSection}${memWarnSection}${memTableSection}${supabaseSection}${supabaseSyncSection}${diskSection}${watchdogSection}${runtimeSection}${tailscaleSection}${hetznerSection}${anthropicSection}${ioSection}${morningBriefSection}${digestSection}${staleCronsSection}${supabaseDomainSection}${anthropicBudgetSection}${pipelineValidationSection}${worktreeSection}${botMemSection}${gateDaysSection}${backupSection}${postingHealthSection}${exportFilesSection}${tokenHealthSection}${statsSection}${inventorySection}${gateAuditSection}${autoDeliverSection}${bulkCaptionsSection}${playbackSection}${qcSection}${smokeSection}${achiriDauSection}${achiriE2eSection}${videoValidSection}${pipelineMetricsSection}${achiriSafetySection}${leaderboardSection}${brainxSection}${achiriLaunchSection}${postingScheduleSection}${phase15GateSection}${batchProduceSection}${revenueSummarySection}${contentDiversitySection}${costLogSection}${warmupSection}${abAnalysisSection}${prodQualitySection}${hookWeightsSection}${contentCalendarSection}${achiriDashboardSection}${achiriReadinessSection}${viralTopicsSection}${archivedVideosSection}${manualPostsTodaySection}${achiriTestSuiteSection}${crossplatformSection}${autoDeliveredTodaySection}${validationErrorsSection}${telegramSentSection}`;
 }
 
 export function cmdTier(): string {
