@@ -83,6 +83,7 @@ export function cmdHelp(): string {
     `/formatstats — Video format performance breakdown\n` +
     `/blockers — All pending human-action items across active tracks\n` +
     `/bottest  — Run smoke tests on all bot commands + posting flow\n` +
+    `/gate-refresh — Regenerate gate data + show updated status\n` +
     `/godman   — Godman Protocols launch readiness\n` +
     `/godman-smoke — Run smoke tests on all 7 Godman protocols\n` +
     `/godman-thread — Show X launch megathread (10 tweets, copy-paste)\n` +

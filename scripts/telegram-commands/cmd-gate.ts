@@ -587,3 +587,17 @@ export function cmdGateAudit(): string {
 
   return lines.join('\n');
 }
+
+// Sprint 1046: /gate-refresh — regenerate gate + show updated status
+export function cmdGateRefresh(): string {
+  try {
+    execSync('npx ts-node --transpile-only scripts/scs001/generate-phase1-5-gate.ts', {
+      cwd: ROOT, timeout: 30000, stdio: 'pipe',
+    });
+  } catch (e: any) {
+    return `❌ Gate regen failed: ${e.message?.slice(0, 120)}`;
+  }
+
+  // Return the refreshed gate summary
+  return '♻️ *Gate Refreshed*\n\n' + cmdGate();
+}

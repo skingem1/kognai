@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1046",
+  "title": "OPS — /gate-refresh: trigger gate regen + show updated gate from Telegram",
+  "description": "Operator can refresh gate data on-demand after recording a post, instead of waiting for 2h cron.",
+  "block": "OPS",
+  "source": "queue-empty-auto",
+  "tasks": [
+    {
+      "id": "1046-01",
+      "title": "Add cmdGateRefresh to cmd-gate.ts + register in telegram-bot.ts",
+      "type": "feature",
+      "task_target": "scripts/telegram-commands/cmd-gate.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1046"
+    }
+  ]
+}

@@ -10,7 +10,7 @@
 import { cmdPm2, cmdHealth, cmdTier, cmdSprint, cmdReport, cmdCrons, cmdTikTokAuth, cmdQuickStart, cmdEnvCheck, cmdReadiness, cmdGitStats, cmdSwarmStats, cmdErrors, cmdTokenCheck, cmdLogs, cmdPreflight, cmdChangelog, cmdBrainxStatus, cmdSwarmHealth, cmdBrowserTest, cmdGodman, cmdGodmanThread } from './telegram-commands/cmd-system';
 
 // Sync commands from cmd-gate.ts
-import { cmdGate, cmdGoLive, cmdAudit, cmdStreak, cmdPace, cmdCalendar, cmdGateAudit } from './telegram-commands/cmd-gate';
+import { cmdGate, cmdGoLive, cmdAudit, cmdStreak, cmdPace, cmdCalendar, cmdGateAudit, cmdGateRefresh } from './telegram-commands/cmd-gate';
 
 // Sync commands from cmd-content.ts
 import { cmdRecord, cmdQueue, cmdReview, cmdCaption, cmdPosted, cmdOnboard, cmdPipeline, cmdToday, cmdAnalytics, cmdDiversity, cmdThumbnail, cmdCompetitor, cmdStats, cmdQuality, cmdRadar, cmdBacktest, cmdFormatStats, cmdManifesto, cmdValErrors, cmdCaptionNext } from './telegram-commands/cmd-content';
@@ -76,6 +76,7 @@ const tests: TestCase[] = [
   { name: 'cmdPace', fn: () => cmdPace() },
   { name: 'cmdCalendar', fn: () => cmdCalendar() },
   { name: 'cmdGateAudit', fn: () => cmdGateAudit() },
+  { name: 'cmdGateRefresh', fn: () => cmdGateRefresh() },
 
   // cmd-content.ts
   { name: 'cmdRecord', fn: () => cmdRecord('') },
