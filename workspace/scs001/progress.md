@@ -5644,3 +5644,13 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Notes: Fixed readLines() ROOT prepend bug; used readFileSync for absolute paths
 - Swarm used: no (surgical edit)
 - Timestamp: 2026-03-24T23:30:00Z
+
+## Sprint 998 — STATUS-CRONS
+- Status: PASS
+- Commit: de0fe9b7
+- Files modified: scripts/telegram-commands/cmd-management.ts
+- Test: /status now shows cron health — 1/5 critical online, 4 down, prompts /boot
+- Pipeline: Operator status dashboard now includes infrastructure health
+- Swarm used: no (single function addition, direct write)
+- Issues: None.
+- Timestamp: 2026-03-24T22:40:00Z
