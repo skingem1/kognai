@@ -2881,9 +2881,10 @@
       "sprint": 1189,
       "title": "GODMAN-LAUNCH — /godman: show which protocols are semver-versioned (has package.json version)",
       "block": "GODMAN-LAUNCH",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
-      "rationale": "Before publishing to npm, each protocol package.json must have a valid semver version field. Show which ones are missing or have 0.0.1 placeholder."
+      "rationale": "Before publishing to npm, each protocol package.json must have a valid semver version field. Show which ones are missing or have 0.0.1 placeholder.",
+      "_note": "Shipped 2026-03-24 — commit c3f7e14b. Semver validation section in cmdGodman(). All 8 at v0.2.0 = green."
     },
     {
       "sprint": 1190,
