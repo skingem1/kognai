@@ -501,6 +501,21 @@ export function cmdAchiri(): string {
           const depthIcon = parseFloat(msgsPerUser) >= 10 ? '🔥' : parseFloat(msgsPerUser) >= 5 ? '💬' : '📊';
           lines.push(`${depthIcon} *Depth:* ${msgsPerUser} msgs/active user (${totalMsgCount} total ÷ ${totalUsers} users)`);
         }
+        // Sprint 1138 (wave 25): % of users who reached message limit (monetization signal)
+        try {
+          const limitUsers = new Set<string>();
+          for (const dayData of Object.values(counts)) {
+            for (const k of Object.keys(dayData)) {
+              if (k.endsWith('-limit')) limitUsers.add(k.replace('-limit', ''));
+            }
+          }
+          const limitCount = limitUsers.size;
+          if (totalUsers > 0) {
+            const limitPct = Math.round((limitCount / totalUsers) * 100);
+            const limitIcon = limitPct >= 30 ? '🔥' : limitPct >= 10 ? '⚠️' : '💤';
+            lines.push(`${limitIcon} *Paywall pressure:* ${limitCount}/${totalUsers} users (${limitPct}%) hit message limit`);
+          }
+        } catch { /* skip */ }
         // Sprint 1138 (wave 24): avg time between first and second message (stickiness)
         try {
           const userPremiumPath2 = path.join(ROOT, 'workspace', 'achiri', 'memory', 'user-premium.jsonl');

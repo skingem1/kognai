@@ -336,6 +336,31 @@ export function cmdHealth(): string {
     }
   } catch { /* skip */ }
 
+  // Sprint 1137 (wave 25): show git worktree count (detect accidental open worktrees)
+  let worktreeSection = '';
+  try {
+    const wtOut = execSync('git worktree list 2>/dev/null', { cwd: ROOT, encoding: 'utf-8', timeout: 5000 }).trim();
+    const wtCount = wtOut.split('\n').filter(l => l.trim()).length;
+    const wtIcon = wtCount > 2 ? '⚠️' : '✅';
+    worktreeSection = `\n\n*Git worktrees:* ${wtIcon} ${wtCount} active${wtCount > 2 ? ` — check for leaks` : ''}`;
+  } catch { /* skip */ }
+
+  // Sprint 1145 (wave 25): show Node.js memory usage of telegram-bot process
+  let botMemSection = '';
+  try {
+    const pm2OutBotMem = execSync('pm2 jlist', { timeout: 8000, stdio: 'pipe' }).toString();
+    const pm2BotList: any[] = JSON.parse(pm2OutBotMem);
+    const botProc = pm2BotList.find((p: any) => p.name === 'telegram-bot' || p.name === 'kognai-telegram-bot');
+    if (botProc) {
+      const rss = botProc.monit?.memory ?? botProc.pm2_env?.axm_monitor?.['Heap Size']?.value ?? 0;
+      if (rss > 0) {
+        const rssMB = (rss / 1024 / 1024).toFixed(0);
+        const memIcon = rss > 400 * 1024 * 1024 ? '⚠️' : '✅';
+        botMemSection = `\n\n*Telegram-bot memory:* ${memIcon} ${rssMB}MB RSS`;
+      }
+    }
+  } catch { /* skip */ }
+
   // Sprint 1137 (wave 24): show Anthropic API token budget estimate for today
   let anthropicBudgetSection = '';
   try {
@@ -387,7 +412,7 @@ export function cmdHealth(): string {
     }
   } catch { /* skip */ }
 
-  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${botUptimeSection}${ollamaSection}${memWarnSection}${memTableSection}${supabaseSection}${supabaseSyncSection}${diskSection}${watchdogSection}${runtimeSection}${tailscaleSection}${hetznerSection}${anthropicSection}${ioSection}${morningBriefSection}${digestSection}${staleCronsSection}${supabaseDomainSection}${anthropicBudgetSection}${pipelineValidationSection}`;
+  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${botUptimeSection}${ollamaSection}${memWarnSection}${memTableSection}${supabaseSection}${supabaseSyncSection}${diskSection}${watchdogSection}${runtimeSection}${tailscaleSection}${hetznerSection}${anthropicSection}${ioSection}${morningBriefSection}${digestSection}${staleCronsSection}${supabaseDomainSection}${anthropicBudgetSection}${pipelineValidationSection}${worktreeSection}${botMemSection}`;
 }
 
 export function cmdTier(): string {
@@ -562,6 +587,29 @@ export function cmdReport(): string {
     }
   } catch { /* skip */ }
 
+  // Sprint 1143 (wave 25): PM2 total restart count delta since last /report call
+  let restartDeltaLine = '';
+  try {
+    const restartStatePath = path.join(ROOT, 'workspace', 'report-restart-count.json');
+    const currentProcs = getPm2List();
+    const currentRestarts = currentProcs.reduce((s, p) => s + p.restarts, 0);
+    const nowMs25 = Date.now();
+    if (fs.existsSync(restartStatePath)) {
+      const prev25 = JSON.parse(fs.readFileSync(restartStatePath, 'utf-8'));
+      const prevRestarts = prev25.count ?? 0;
+      const prevTs25 = prev25.timestamp ?? 0;
+      const ageH25 = (nowMs25 - prevTs25) / 3600000;
+      const ageStr25 = ageH25 < 1 ? `${Math.round(ageH25 * 60)}m ago` : `${Math.round(ageH25)}h ago`;
+      const delta25 = currentRestarts - prevRestarts;
+      if (delta25 > 0) {
+        restartDeltaLine = `\n⚠️ *PM2 restarts since last /report (${ageStr25}):* +${delta25}`;
+      } else if (delta25 === 0) {
+        restartDeltaLine = `\n✅ *PM2 restarts since last /report (${ageStr25}):* none`;
+      }
+    }
+    fs.writeFileSync(restartStatePath, JSON.stringify({ count: currentRestarts, timestamp: nowMs25 }));
+  } catch { /* skip */ }
+
   // Sprint 1142 (wave 24): daily brief freshness (age of daily-brief.md)
   let dailyBriefLine = '';
   try {
@@ -597,7 +645,7 @@ export function cmdReport(): string {
     `Last heartbeat: ${lastBeat} UTC\n\n` +
     `*Beta:* agents_onboarded=${beta.agents_onboarded ?? 0}, companies=${beta.companies_onboarded ?? 0}, txns=${beta.transactions_monitored ?? 0}\n` +
     `*Financials:* MRR $${mrr} | Tier: ${tier} | Billing activation: ${billingDate}\n\n` +
-    `*Gate:* ${gateLine}${achiriTestLine}${achiriReadinessReport}${dailyBriefLine}${commitLine}${totalCommitsLine}${valErrorsLine}${offlineLine}${lastSprintsLine}\n` +
+    `*Gate:* ${gateLine}${achiriTestLine}${achiriReadinessReport}${dailyBriefLine}${restartDeltaLine}${commitLine}${totalCommitsLine}${valErrorsLine}${offlineLine}${lastSprintsLine}\n` +
     `*Sprint:* ${sprintLine}`
   );
 }
@@ -1528,6 +1576,17 @@ export function cmdErrors(filterProcess?: string): string {
     fs.writeFileSync(deltaPath, JSON.stringify({ count: currentCount, timestamp: nowMs }));
   } catch { /* skip */ }
 
+  // Sprint 1139 (wave 25): show top 3 error lines by occurrence count (most spammy)
+  try {
+    const topByCount25 = [...errored].sort((a, b) => b.count - a.count).slice(0, 3).filter(e => e.count >= 3);
+    if (topByCount25.length > 0) {
+      output.push(`\n*Most repeated errors:*`);
+      for (const e of topByCount25) {
+        output.push(`  ×${e.count} \`${e.line.slice(0, 70)}\` (${e.name})`);
+      }
+    }
+  } catch { /* skip */ }
+
   // Sprint 1139 (wave 23): show if error rate is accelerating (hourly rate > daily avg)
   try {
     const totalOccurrences2 = errored.reduce((s, e) => s + (e.count ?? 1), 0);
@@ -1774,6 +1833,24 @@ export async function cmdSmoke(chatId: string): Promise<void> {
           ? `✅ *TikTok token:* set (\`${tiktokToken.slice(0, 8)}...\`)${tiktokKey ? '' : ' · CLIENT_KEY missing'}`
           : `⚠️ *TikTok token:* set but suspiciously short (${tiktokToken.length} chars) — may be invalid`);
       }
+    } catch { /* skip */ }
+
+    // Sprint 1142 (wave 25): show number of captioned MP4s ready for posting
+    try {
+      const scsDir = path.join(ROOT, 'workspace', 'scs001');
+      let captionedCount = 0;
+      if (fs.existsSync(scsDir)) {
+        const runDirs = fs.readdirSync(scsDir).filter((d: string) => d.startsWith('run-'));
+        for (const dir of runDirs) {
+          const captionDir = path.join(scsDir, dir, 'caption');
+          if (fs.existsSync(captionDir)) {
+            captionedCount += fs.readdirSync(captionDir).filter((f: string) => f.endsWith('-captioned.mp4')).length;
+          }
+        }
+      }
+      const capIcon = captionedCount > 5 ? '✅' : captionedCount > 0 ? '⚠️' : '❌';
+      lines.push('');
+      lines.push(`${capIcon} *Captioned MP4s ready:* ${captionedCount}`);
     } catch { /* skip */ }
 
     // Sprint 1141 (wave 24): show last pipeline run timestamp and status inline

@@ -1615,6 +1615,58 @@ function generateItems(startSprint: number, existingTitles: Set<string> = new Se
     rationale: 'validate-full-pipeline is the core quality gate. If it hasn\'t run in >24h, content quality is unverified. Check the pipeline-runs/latest.json timestamp and warn if stale.',
   });
 
+  // Wave 25 templates
+  infraItems.push({
+    title: 'OPS — /status: show last 3 error log filenames that spiked today',
+    block: 'OPS',
+    rationale: '/status is the operator\'s first stop. Show which error logs spiked today (by file mtime and line count) so operator can spot active issues without opening /errors.',
+  });
+  infraItems.push({
+    title: 'OPS — /health: show git worktree count (detect accidental open worktrees)',
+    block: 'OPS',
+    rationale: 'Developers sometimes forget open git worktrees that consume disk. Show count of active worktrees from "git worktree list" to catch leaks early.',
+  });
+  infraItems.push({
+    title: 'ACHIRI — /achiri: show % of users who reached message limit (monetization signal)',
+    block: 'ACHIRI',
+    rationale: 'Users hitting the free-tier message limit are the highest-intent upgrade candidates. Show what % of active users hit the limit today/total as a paywall pressure metric.',
+  });
+  infraItems.push({
+    title: 'OPS — /errors: show top 3 error lines by occurrence count (most spammy errors)',
+    block: 'OPS',
+    rationale: '/errors already shows unique errors, but the most-repeated lines (e.g. polling errors) may dominate without being actionable. Show top 3 by count separately.',
+  });
+  infraItems.push({
+    title: 'GATE — /pace: show break-even post count (posts needed to cover API costs)',
+    block: 'GATE',
+    rationale: 'Each video generation has an API cost. Show how many posts are needed to cover the cost of the pipeline run (break-even) so operator sees the ROI threshold.',
+  });
+  infraItems.push({
+    title: 'GATE — /gate: show latest E2E test result from achiri-e2e-latest.json',
+    block: 'GATE',
+    rationale: '/gate shows content pipeline but not Achiri E2E health. Add the latest E2E test pass/fail status so operator gets a one-stop Phase 2 launch readiness view.',
+  });
+  infraItems.push({
+    title: 'QUALITY — /smoke: show number of captioned MP4s ready for posting',
+    block: 'QUALITY',
+    rationale: '/smoke validates the pipeline but doesn\'t show how many finished, caption-ready videos exist. Add a count of captioned MP4s so operator sees the posting buffer.',
+  });
+  infraItems.push({
+    title: 'OPS — /report: show PM2 total restart count delta since last /report call',
+    block: 'OPS',
+    rationale: 'Total restarts creep up silently. Show restart delta since last /report to surface restart storms that don\'t show as "errors" but indicate instability.',
+  });
+  infraItems.push({
+    title: 'OPS — /status: show if Godman Protocols npm packages are published',
+    block: 'OPS',
+    rationale: '/status shows Godman days to launch but not package publish status. Show which Godman npm packages have been published so operator knows real launch readiness.',
+  });
+  infraItems.push({
+    title: 'OPS — /health: show Node.js memory usage (RSS + heap) of telegram-bot process',
+    block: 'OPS',
+    rationale: 'telegram-bot is the operator\'s primary interface. Show its RSS and heap usage so operator can detect memory leaks before they cause crashes.',
+  });
+
   // Fill remaining slots (skip duplicates of already-completed items)
   for (const item of infraItems) {
     if (items.length >= 10) break;

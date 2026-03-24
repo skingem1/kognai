@@ -237,6 +237,20 @@ export function cmdGate(): string {
         return [`${icon2} *Last post:* ${ageStr2}${ageH2 > 48 ? ' — cadence gap!' : ''}`];
       } catch { return []; }
     })(),
+    // Sprint 1141 (wave 25): show latest E2E test result from achiri-e2e-latest.json
+    ...(() => {
+      try {
+        const e2ePath = path.join(ROOT, 'reports', 'achiri-e2e-latest.json');
+        if (!fs.existsSync(e2ePath)) return [];
+        const e2e = JSON.parse(fs.readFileSync(e2ePath, 'utf-8'));
+        const e2ePass = e2e.passed ?? e2e.pass ?? e2e.status === 'pass';
+        const e2eFail = e2e.failed ?? e2e.failures?.length ?? 0;
+        const e2eTs = e2e.timestamp ?? e2e.generated_at;
+        const e2eAge = e2eTs ? ` (${Math.round((Date.now() - new Date(e2eTs).getTime()) / 3600000)}h ago)` : '';
+        const e2eIcon = e2ePass && e2eFail === 0 ? '✅' : '❌';
+        return [`${e2eIcon} *Achiri E2E:* ${e2ePass && e2eFail === 0 ? 'all pass' : `${e2eFail} failing`}${e2eAge}`];
+      } catch { return []; }
+    })(),
     // Sprint 1141 (wave 22): is current week on track vs weekly target
     ...(() => {
       if (postsNeeded <= 0 || daysLeft <= 0) return [];
@@ -773,6 +787,22 @@ export function cmdPace(): string {
       const probIcon = combined >= 80 ? '✅' : combined >= 50 ? '⚠️' : '❌';
       lines.push('');
       lines.push(`${probIcon} *Gate probability:* ${combined}% (posts: ${postProb}% · views: ${viewProb}%)`);
+    }
+  } catch { /* skip */ }
+
+  // Sprint 1140 (wave 25): break-even post count (posts needed to cover pipeline API costs)
+  try {
+    const statsPath = path.join(ROOT, 'reports', 'stats-latest.json');
+    if (fs.existsSync(statsPath)) {
+      const stats = JSON.parse(fs.readFileSync(statsPath, 'utf-8'));
+      const costPerVideo = stats.avg_cost_per_video ?? stats.cost_per_video ?? stats.api_cost_avg;
+      const revenuePerSub = 9; // €9/mo subscription
+      if (costPerVideo && costPerVideo > 0) {
+        const breakEvenPosts = Math.ceil(revenuePerSub / costPerVideo);
+        const beIcon = postCount >= breakEvenPosts ? '✅' : '⚠️';
+        lines.push('');
+        lines.push(`${beIcon} *Break-even:* ${breakEvenPosts} posts cover 1 month sub at €${costPerVideo.toFixed(3)}/video (${postCount >= breakEvenPosts ? 'covered' : `${breakEvenPosts - postCount} more needed`})`);
+      }
     }
   } catch { /* skip */ }
 

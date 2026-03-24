@@ -1700,7 +1700,20 @@ export function cmdStatus(): string {
     const whoami = execSync('npm whoami 2>/dev/null', { encoding: 'utf-8', timeout: 3000, stdio: ['pipe','pipe','pipe'] }).trim();
     npmLoggedIn = !!whoami;
   } catch {}
-  const godmanLine = `🚀 Godman launch: *${godmanDays}d* — ${npmLoggedIn ? '✅ npm ready' : '❌ npm login needed'} · /godman`;
+  // Sprint 1144 (wave 25): show if Godman Protocols npm packages are published (declared here — used in godmanLine)
+  let godmanNpmLine = '';
+  try {
+    const godmanPkgs = ['@godman/pact', '@godman/amf', '@godman/signal', '@godman/soul', '@godman/score', '@godman/lax', '@godman/drs', '@godman/sdk'];
+    let publishedCount = 0;
+    for (const pkg of godmanPkgs) {
+      try {
+        execSync(`npm view ${pkg} version 2>/dev/null`, { timeout: 5000, encoding: 'utf-8', stdio: ['pipe','pipe','pipe'] });
+        publishedCount++;
+      } catch { /* not published */ }
+    }
+    godmanNpmLine = ` · 📦 ${publishedCount}/${godmanPkgs.length} pkgs published`;
+  } catch { /* skip */ }
+  const godmanLine = `🚀 Godman launch: *${godmanDays}d* — ${npmLoggedIn ? '✅ npm ready' : '❌ npm login needed'} · /godman${godmanNpmLine}`;
   // Sprint 1144 (wave 22): Achiri readiness score from achiri-readiness.json
   let achiriReadinessStr2 = '';
   try {
@@ -1917,6 +1930,33 @@ export function cmdStatus(): string {
     }
   } catch { /* skip */ }
 
+  // Sprint 1136 (wave 25): show last 3 error log filenames that spiked today
+  let errorSpikeLine = '';
+  try {
+    const logDir = path.join(ROOT, 'logs');
+    const todayMidnightMs2 = new Date(new Date().toISOString().slice(0, 10) + 'T00:00:00Z').getTime();
+    const logFiles = fs.existsSync(logDir) ? fs.readdirSync(logDir).filter((f: string) => f.endsWith('-error.log')) : [];
+    const spiked = logFiles
+      .map((f: string) => {
+        try {
+          const stat = fs.statSync(path.join(logDir, f));
+          if (stat.mtimeMs < todayMidnightMs2) return null;
+          const content = fs.readFileSync(path.join(logDir, f), 'utf-8').trim();
+          const count = content.split('\n').filter((l: string) => {
+            const lower = l.toLowerCase();
+            return lower.includes('error') || lower.includes('fatal') || lower.includes('fail');
+          }).length;
+          return { name: f.replace('-error.log', ''), count };
+        } catch { return null; }
+      })
+      .filter((x): x is {name: string; count: number} => x !== null && x.count > 0)
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 3);
+    if (spiked.length > 0) {
+      errorSpikeLine = `\n⚠️ *Errors today:* ${spiked.map(s => `\`${s.name}\`(${s.count})`).join(' · ')}`;
+    }
+  } catch { /* skip */ }
+
   // Sprint 1136 (wave 24): show whether today is a posting obligation day
   let todayObligationLine = '';
   try {
@@ -2009,7 +2049,7 @@ export function cmdStatus(): string {
       }
       return oblStreak >= 2 ? `📋 Obligation streak: *${oblStreak}d* met in a row ✅` : '';
     })(),
-    `📦 Queue: *${readyCount}* ready · ${unposted.length} total${viralDistLine}${lastPostAge}${bestHookLine}${viewsTrendLine}${todayObligationLine}${warmupScoreLine}`,
+    `📦 Queue: *${readyCount}* ready · ${unposted.length} total${viralDistLine}${lastPostAge}${bestHookLine}${viewsTrendLine}${todayObligationLine}${warmupScoreLine}${errorSpikeLine}`,
     pipelineLine,
     cronLine + cronsFiredLine,
     watchdogLine,
