@@ -1183,17 +1183,19 @@
       "sprint": 1113,
       "title": "INFRA \u2014 /health: add disk usage check (warn if >85%)",
       "block": "INFRA",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
-      "rationale": "Video pipeline generates large files. Warn operator before disk fills up."
+      "rationale": "Video pipeline generates large files. Warn operator before disk fills up.",
+      "_note": "Already implemented in cmd-system.ts:117 (disk check added by hook)"
     },
     {
       "sprint": 1114,
       "title": "OPS \u2014 /stale: show stale PM2 cron jobs that havent fired in >48h",
       "block": "OPS",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
-      "rationale": "/crons shows next fire but not if jobs are silently stuck. Show jobs with uptime >48h that should restart daily."
+      "rationale": "/crons shows next fire but not if jobs are silently stuck. Show jobs with uptime >48h that should restart daily.",
+      "_note": "Shipped as Sprint 1114 \u2014 commit a2420316"
     },
     {
       "sprint": 1115,
