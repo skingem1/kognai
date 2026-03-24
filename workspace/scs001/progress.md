@@ -5191,3 +5191,56 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - 966: PACT-LAUNCH-PREP — X thread + ClaWHub listing
 - All sprints: swarm bypassed (multi-file/content), direct write
 - All sprints: 4 pushes to origin/main
+
+## Sprint 967 — SCORE-IMPL-01
+- Status: PASS
+- Commit: 977576fb
+- Files created: workspace/godman-protocols/score/src/core.ts, workspace/godman-protocols/score/smoke.test.ts
+- Files modified: workspace/godman-protocols/score/src/index.ts
+- Test: smoke.test.ts — 10/10 PASS
+- Pipeline: SCORE v0.2 complete — createRubric, evaluate, calculateReputation, createAuditEntry
+- Swarm used: no — multi-file, direct write
+- Issues: none
+- Timestamp: 2026-03-24T09:00:00Z
+
+## Sprint 968 — SIGNAL-IMPL-01
+- Status: PASS
+- Commit: 30c79a53
+- Files created: workspace/godman-protocols/signal/src/bus.ts, workspace/godman-protocols/signal/smoke.test.ts
+- Files modified: workspace/godman-protocols/signal/src/index.ts
+- Test: smoke.test.ts — 12/12 PASS
+- Pipeline: SIGNAL v0.2 complete — EventBus, createEvent, topicMatches (glob), idempotency dedup, delivery receipts
+- Swarm used: no — multi-file, direct write
+- Issues: none
+- Timestamp: 2026-03-24T09:15:00Z
+
+## Sprint 969 — SOUL-IMPL-01
+- Status: PASS
+- Commit: 398ce6ac
+- Files created: workspace/godman-protocols/soul/src/engine.ts, workspace/godman-protocols/soul/smoke.test.ts
+- Files modified: workspace/godman-protocols/soul/src/index.ts, workspace/godman-protocols/soul/package.json
+- Test: smoke.test.ts — 11/11 PASS
+- Pipeline: SOUL v0.2 complete — createConstitution, signConstitution, evaluateAction (deny>allow>default-deny), checkKillSwitches, createAudit
+- Swarm used: no — multi-file, direct write
+- Issues: none
+- Timestamp: 2026-03-24T09:30:00Z
+
+## Sprint 970 — AMF-IMPL-01
+- Status: PASS
+- Commit: 4b9bdcef
+- Files created: workspace/godman-protocols/amf/src/core.ts, workspace/godman-protocols/amf/smoke.test.ts
+- Files modified: workspace/godman-protocols/amf/src/index.ts, workspace/godman-protocols/amf/package.json
+- Test: smoke.test.ts — 11/11 PASS
+- Pipeline: AMF v0.2 complete — createEnvelope (HMAC-SHA256), verifyEnvelope, payload builders (taskRequest, taskResult, event, heartbeat, error)
+- Swarm used: no — multi-file, direct write
+- Issues: none
+- Timestamp: 2026-03-24T09:45:00Z
+
+## Session summary (2026-03-24, Sprints 967-970)
+- 967: SCORE-IMPL-01 — scoring/reputation protocol, 10/10 PASS
+- 968: SIGNAL-IMPL-01 — event bus pub/sub protocol, 12/12 PASS
+- 969: SOUL-IMPL-01 — constitutional constraints protocol, 11/11 PASS
+- 970: AMF-IMPL-01 — agent message format protocol, 11/11 PASS
+- All sprints: swarm bypassed (multi-file), direct write
+- 6 of 7 Godman Protocols complete (DRS remaining)
+- All sprints: pushed to origin/main
