@@ -824,9 +824,10 @@
       "sprint": 1087,
       "title": "GODMAN-LAUNCH — /godman-smoke: detailed failure output when a protocol test fails",
       "block": "GODMAN-PROTOCOLS",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
-      "rationale": "/godman-smoke runs smoke tests but output is terse on failure. Add per-protocol test output showing which assertion failed so operator can debug before launch day."
+      "rationale": "/godman-smoke runs smoke tests but output is terse on failure. Add per-protocol test output showing which assertion failed so operator can debug before launch day.",
+      "_note": "Shipped 2026-03-24 — commit f40ce0be. Already implemented in Sprint 1070."
     }
   ]
 }
