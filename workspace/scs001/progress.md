@@ -5381,3 +5381,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (bug-fix task, direct write)
 - Issues: 3 bugs fixed (weightedScore→compositeScore, totalEvaluations→evaluationCount, closeFrame return value)
 - Timestamp: 2026-03-24T22:30:00Z
+
+## Sprint 982 — GODMAN-SDK-DOCS-FINAL
+- Status: PASS
+- Commit: c0351384
+- Files created: workspace/sprints/sprint-982.json
+- Files modified: workspace/godman-protocols/sdk/README.md
+- Test: README renders correctly with example + expected output
+- Pipeline: SDK README launch-ready for April 14
+- Swarm used: no (docs task, direct write)
+- Issues: none
+- Timestamp: 2026-03-24T22:45:00Z
