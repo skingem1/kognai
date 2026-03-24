@@ -5664,3 +5664,15 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (1-line addition, direct edit)
 - Issues: TypeScript type mismatch (now was string, used Date.now() instead).
 - Timestamp: 2026-03-24T22:50:00Z
+
+## Sprint 1001 — INFRA Pipeline Output Validator
+- Status: PASS
+- Commit: 8f39c845
+- Files created: scripts/scs001/validate-pipeline-output.ts, reports/pipeline-validator-latest.json
+- Files modified: ecosystem.config.js, workspace/sprints/sprint-1001.json
+- Test: npx ts-node scripts/scs001/validate-pipeline-output.ts — 1148 checked, 1145 PASS, 3 FAIL (real corrupt files in code-demo-runs)
+- Pipeline: ffprobe scanner live, PM2 cron scs001-validator (0 6 daily), Telegram alert on failures
+- Swarm used: no (direct write — straightforward new file)
+- AAR: modules not found (scripts/lib/aar-middleware missing) — noted
+- Issues: 3 corrupt with_music.mp4 in old code-demo-runs (demo-mn34spxy, mn359efo, mn35bt0m) — expected, pre-existing
+- Timestamp: 2026-03-24T23:05:00Z
