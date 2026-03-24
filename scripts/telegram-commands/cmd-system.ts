@@ -2867,12 +2867,13 @@ export function cmdBrowserTest(): string {
 export function cmdGodman(): string {
   const PROTOCOLS = ['pact', 'lax', 'score', 'signal', 'soul', 'amf', 'drs'];
   const BASE = path.join(ROOT, 'workspace', 'godman-protocols');
-  const lines: string[] = ['*Godman Protocols — Launch Dashboard*\n'];
 
-  // Countdown
+  // Sprint 1162: compute countdown before header so it appears in the title line
   const LAUNCH = new Date('2026-04-14T00:00:00Z');
   const now = new Date();
   const daysLeft = Math.max(0, Math.ceil((LAUNCH.getTime() - now.getTime()) / 86_400_000));
+  const lines: string[] = [`*Godman Protocols — 🚀 ${daysLeft}d to launch (Apr 14)*\n`];
+
   lines.push(`📅 *Launch: April 14* — ${daysLeft} days remaining\n`);
 
   // Protocol status

@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1162",
+  "title": "GODMAN-LAUNCH \u2014 /godman: show days until launch in header (e.g. \"21d to launch\")",
+  "description": "/godman readiness report has no header countdown. Add \"\ud83d\ude80 Launch in Nd (Apr 14)\" as the first line so operator always sees urgency at a glance.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1162-01",
+      "title": "GODMAN-LAUNCH \u2014 /godman: show days until launch in header (e.g. \"21d to launch\")",
+      "type": "feature",
+      "task_type": "godman_protocols",
+      "task_target": "workspace/sprints/sprint-1162-output.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1162"
+    }
+  ]
+}
