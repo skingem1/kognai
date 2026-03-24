@@ -78,8 +78,20 @@ export function cmdMetrics(): string {
 
 export function cmdPostPlan(): string {
   const schedulePath = path.join(ROOT, 'reports', 'posting-schedule.json');
+
+  // Sprint 1133: auto-generate schedule if missing or stale (>12h)
+  const shouldGenerate = !fs.existsSync(schedulePath) || (() => {
+    try { return Date.now() - fs.statSync(schedulePath).mtimeMs > 12 * 3600000; } catch { return true; }
+  })();
+  if (shouldGenerate) {
+    try {
+      const { generateSchedule } = require('../scs001/generate-posting-schedule');
+      generateSchedule();
+    } catch { /* fall through to read attempt */ }
+  }
+
   if (!fs.existsSync(schedulePath)) {
-    return '⚠️ No posting schedule found. Run the pipeline first.';
+    return '⚠️ No posting schedule found and auto-generation failed. Check /queue for available videos.';
   }
 
   let sched: any;

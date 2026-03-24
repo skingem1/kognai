@@ -1,0 +1,29 @@
+{
+  "sprint_id": "sprint-1133",
+  "title": "GATE — Auto-generate posting-schedule.json for /postplan",
+  "description": "Generate a 7-day posting schedule from queue, optimized for gate pace. Feeds /postplan command with real data.",
+  "block": "GATE",
+  "source": "gap-analysis",
+  "tasks": [
+    {
+      "id": "1133-01",
+      "title": "Create generate-posting-schedule.ts that produces posting-schedule.json",
+      "type": "feature",
+      "task_target": "scripts/scs001/generate-posting-schedule.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1133"
+    },
+    {
+      "id": "1133-02",
+      "title": "Wire /postplan to auto-generate schedule if stale",
+      "type": "enhancement",
+      "task_target": "scripts/telegram-commands/cmd-posting.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1133"
+    }
+  ]
+}
