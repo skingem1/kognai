@@ -11,7 +11,7 @@
 import { execSync, spawnSync } from 'child_process';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
 import { basename, resolve } from 'path';
-import type { DemoScript, DemoStep, RecordingResult } from './types.js';
+import type { DemoScript, RecordingResult, Scene } from './types.js';
 
 const REPO_ROOT = resolve(__dirname, '../..');
 const OUTPUT_BASE = resolve(REPO_ROOT, 'workspace/scs001/code-demo-runs');
@@ -26,8 +26,8 @@ function requireTool(name: string): void {
 
 function loadScript(path: string): DemoScript {
   const script = JSON.parse(readFileSync(path, 'utf-8')) as DemoScript;
-  if (!script.id) throw new Error('DemoScript missing required field: id');
-  if (!script.steps?.length) throw new Error('DemoScript missing required field: steps');
+  if (!script.id) throw new Error('DemoScript missing field: id');
+  if (!script.scenes?.length) throw new Error('DemoScript missing field: scenes');
   return script;
 }
 
@@ -37,38 +37,36 @@ function ensureOutputDir(scriptId: string): string {
   return dir;
 }
 
-// ── Scene runner script ───────────────────────────────────────────────────────
+// ── Scene runner ──────────────────────────────────────────────────────────────
 
 function buildSceneRunner(script: DemoScript, outDir: string): string {
   const runnerPath = resolve(outDir, `${script.id}-runner.sh`);
   const lines: string[] = ['#!/bin/bash'];
 
-  const term = script.terminal ?? {};
-  if (term.cwd) lines.push(`cd "${term.cwd}"`);
-  if (term.env) {
-    for (const [k, v] of Object.entries(term.env)) lines.push(`export ${k}="${v}"`);
-  }
-
-  for (const step of script.steps) {
-    const delayMs = step.typingSpeedMs ?? 50;
-    const pauseMs = step.pauseAfterMs ?? 500;
-
-    if (step.type === 'wait') {
-      lines.push(`sleep ${((step.waitMs ?? 1000) / 1000).toFixed(2)}`);
-    } else if (step.type === 'command' && step.command) {
-      for (const char of step.command) {
-        lines.push(`printf '%s' '${char.replace(/'/g, "'\\''")}'`);
-        lines.push(`sleep ${(delayMs / 1000).toFixed(3)}`);
+  for (const scene of script.scenes) {
+    switch (scene.type) {
+      case 'comment': break;
+      case 'clear':
+        lines.push('clear');
+        break;
+      case 'pause':
+        lines.push(`sleep ${(scene.durationMs / 1000).toFixed(2)}`);
+        break;
+      case 'output': {
+        const escaped = scene.text.replace(/'/g, "'\\''");
+        lines.push(`printf '%s\\n' '${escaped}'`);
+        break;
       }
-      if (step.autoEnter !== false) lines.push("printf '\\n'");
-      lines.push(`sleep ${(pauseMs / 1000).toFixed(2)}`);
-    } else if (step.type === 'narration') {
-      // narration is a post-production overlay, not a terminal action
-      lines.push(`# narration: ${step.narration ?? ''}`);
-    }
-
-    for (const ke of step.keyEvents ?? []) {
-      if (ke.type === 'pause') lines.push(`sleep ${(ke.durationMs / 1000).toFixed(2)}`);
+      case 'type': {
+        const delay = (scene.keystrokeDelayMs ?? 80) / 1000;
+        for (const char of scene.text) {
+          lines.push(`printf '%s' '${char.replace(/'/g, "'\\''")}'`);
+          lines.push(`sleep ${delay.toFixed(3)}`);
+        }
+        lines.push("printf '\\n'");
+        lines.push('sleep 0.5');
+        break;
+      }
     }
   }
 
@@ -81,8 +79,7 @@ function buildSceneRunner(script: DemoScript, outDir: string): string {
 function record(script: DemoScript, outDir: string): string {
   const castPath = resolve(outDir, `${script.id}.cast`);
   const runnerPath = buildSceneRunner(script, outDir);
-  const cols = script.terminal?.cols ?? 120;
-  const rows = script.terminal?.rows ?? 35;
+  const { cols, rows } = script.terminal;
   log(`recording → ${basename(castPath)}`);
   execSync(
     `asciinema rec --cols ${cols} --rows ${rows} --overwrite "${castPath}" -- bash "${runnerPath}"`,
@@ -93,29 +90,26 @@ function record(script: DemoScript, outDir: string): string {
 
 function renderGif(script: DemoScript, castPath: string, outDir: string): string {
   const gifPath = resolve(outDir, `${script.id}.gif`);
-  const cols = script.terminal?.cols ?? 120;
-  const rows = script.terminal?.rows ?? 35;
+  const { cols, rows, fontSize, theme } = script.terminal;
   log(`rendering GIF → ${basename(gifPath)}`);
   execSync(
-    `agg --cols ${cols} --rows ${rows} --font-size 14 "${castPath}" "${gifPath}"`,
+    `agg --cols ${cols} --rows ${rows} --font-size ${fontSize} --theme ${theme} "${castPath}" "${gifPath}"`,
     { cwd: REPO_ROOT, stdio: 'inherit' }
   );
   return gifPath;
 }
 
 function postProduce(script: DemoScript, gifPath: string, outDir: string): string {
-  const videoPath = resolve(outDir, `${script.id}.mp4`);
-  const pp = script.postProduction ?? {};
-  const w = pp.resolution?.width ?? 1920;
-  const h = pp.resolution?.height ?? 1080;
-  const fps = pp.fps ?? 30;
+  const mp4Path = resolve(outDir, `${script.id}.mp4`);
+  const { resolution, fps } = script.postProduction;
+  const [w, h] = resolution.split('x').map(Number);
   const scaleFilter = `scale=${w}:${h}:force_original_aspect_ratio=decrease,pad=${w}:${h}:(ow-iw)/2:(oh-ih)/2:black`;
-  log(`post-producing MP4 → ${basename(videoPath)}`);
+  log(`post-producing MP4 → ${basename(mp4Path)}`);
   execSync(
-    `ffmpeg -y -i "${gifPath}" -vf "${scaleFilter}" -c:v libx264 -preset medium -crf 23 -pix_fmt yuv420p -r ${fps} "${videoPath}"`,
+    `ffmpeg -y -i "${gifPath}" -vf "${scaleFilter}" -c:v libx264 -preset medium -crf 23 -pix_fmt yuv420p -r ${fps} "${mp4Path}"`,
     { cwd: REPO_ROOT, stdio: 'inherit' }
   );
-  return videoPath;
+  return mp4Path;
 }
 
 // ── Main ──────────────────────────────────────────────────────────────────────
@@ -136,7 +130,10 @@ async function main(): Promise<void> {
     return;
   }
 
-  if (!args[0]) { console.error('Usage: npx ts-node scripts/spielberg/index.ts <demo-script.json>'); process.exit(1); }
+  if (!args[0]) {
+    console.error('Usage: npx ts-node scripts/spielberg/index.ts <demo-script.json>');
+    process.exit(1);
+  }
 
   requireTool('asciinema'); requireTool('agg'); requireTool('ffmpeg');
 
@@ -147,33 +144,34 @@ async function main(): Promise<void> {
   log(`loaded: ${script.id} — "${script.title}"`);
   const outDir = ensureOutputDir(script.id);
   const t0 = Date.now();
-  const errors: string[] = [];
 
-  let castFile = '';
-  let gifFile: string | undefined;
-  let videoFile: string | undefined;
+  let castPath = '';
+  let gifPath: string | null = null;
+  let mp4Path: string | null = null;
+  let error: string | undefined;
+  let status: RecordingResult['status'] = 'success';
 
-  try { castFile = record(script, outDir); } catch (e) { errors.push(`record: ${e}`); }
-  if (castFile && !errors.length) {
-    try { gifFile = renderGif(script, castFile, outDir); } catch (e) { errors.push(`gif: ${e}`); }
+  try { castPath = record(script, outDir); } catch (e) { error = String(e); status = 'failed'; }
+  if (castPath && !error) {
+    try { gifPath = renderGif(script, castPath, outDir); } catch (e) { error = String(e); status = 'partial'; }
   }
-  if (gifFile && !errors.length) {
-    try { videoFile = postProduce(script, gifFile, outDir); } catch (e) { errors.push(`mp4: ${e}`); }
+  if (gifPath && !error) {
+    try { mp4Path = postProduce(script, gifPath, outDir); } catch (e) { error = String(e); status = 'partial'; }
   }
 
   const result: RecordingResult = {
     scriptId: script.id,
-    castFile,
-    gifFile,
-    videoFile,
+    castPath,
+    gifPath,
+    mp4Path,
     durationSec: (Date.now() - t0) / 1000,
-    postProcessed: !!videoFile,
-    errors,
-    completedAt: new Date().toISOString(),
+    recordedAt: new Date().toISOString(),
+    status,
+    ...(error ? { error } : {}),
   };
 
   writeFileSync(resolve(outDir, 'meta.json'), JSON.stringify({ script, result }, null, 2));
-  log(`done: ${errors.length ? 'PARTIAL/FAIL' : 'OK'} (${result.durationSec.toFixed(1)}s)`);
+  log(`done: ${status} (${result.durationSec.toFixed(1)}s)`);
   console.log(JSON.stringify(result, null, 2));
 }
 
