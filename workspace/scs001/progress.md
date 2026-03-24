@@ -5504,3 +5504,11 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (single file, direct write — required multiple iterations to match all 7 protocol APIs)
 - Issues: API surface varies across protocols; took 4 iterations to get all field names correct
 - Timestamp: 2026-03-24T09:10:00Z
+
+## Sprint 990 — GODMAN-SDK-BIN
+- Status: PASS
+- Commit: 4a0586de
+- Files modified: workspace/godman-protocols/sdk/package.json, workspace/godman-protocols/sdk/tsconfig.json
+- Test: npm run demo — PASS (all 7 protocols)
+- Swarm used: no (config change, direct write)
+- Timestamp: 2026-03-24T09:15:00Z
