@@ -5730,3 +5730,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (config + validated existing script)
 - Issues: YOUTUBE_REFRESH_TOKEN not set — human action needed (run youtube-oauth-setup.ts)
 - Timestamp: 2026-03-24T23:45:00Z
+
+## Sprint 1006 — OPERATOR-UX Posting Time Reminders
+- Status: PASS
+- Commit: 66bb3424
+- Files created: scripts/remind-post.ts, workspace/sprints/sprint-1006.json
+- Files modified: ecosystem.config.js
+- Test: npx ts-node scripts/remind-post.ts — 26 remaining, 14d left, Telegram sent
+- Pipeline: scs001-remind-noon (0 12) + scs001-remind-evening (0 19), gate-aware (silent when met)
+- Swarm used: no (direct write)
+- Issues: None
+- Timestamp: 2026-03-24T23:55:00Z
