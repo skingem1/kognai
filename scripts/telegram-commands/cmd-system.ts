@@ -412,7 +412,86 @@ export function cmdHealth(): string {
     }
   } catch { /* skip */ }
 
-  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${botUptimeSection}${ollamaSection}${memWarnSection}${memTableSection}${supabaseSection}${supabaseSyncSection}${diskSection}${watchdogSection}${runtimeSection}${tailscaleSection}${hetznerSection}${anthropicSection}${ioSection}${morningBriefSection}${digestSection}${staleCronsSection}${supabaseDomainSection}${anthropicBudgetSection}${pipelineValidationSection}${worktreeSection}${botMemSection}`;
+  // Sprint 1137 (wave 26): show days until Phase 1.5 gate deadline
+  let gateDaysSection = '';
+  try {
+    const GATE_DEADLINE = new Date('2026-04-07T00:00:00Z');
+    const daysToGate = Math.ceil((GATE_DEADLINE.getTime() - Date.now()) / 86_400_000);
+    const gateIcon = daysToGate <= 0 ? '🚨' : daysToGate <= 7 ? '🔴' : daysToGate <= 14 ? '⚠️' : '📅';
+    if (daysToGate <= 0) {
+      gateDaysSection = `\n\n${gateIcon} *Phase 1.5 gate:* DEADLINE PASSED ${Math.abs(daysToGate)}d ago`;
+    } else {
+      gateDaysSection = `\n\n${gateIcon} *Phase 1.5 gate:* ${daysToGate}d remaining (Apr 7)`;
+    }
+  } catch { /* skip */ }
+
+  // Sprint 1145 (wave 26): show last backup timestamp from backup log if available
+  let backupSection = '';
+  try {
+    const backupLogPath = path.join(ROOT, 'logs', 'backup.log');
+    const backupStatusPath = path.join(ROOT, 'workspace', 'backup-status.json');
+    if (fs.existsSync(backupStatusPath)) {
+      const bStatus = JSON.parse(fs.readFileSync(backupStatusPath, 'utf-8'));
+      const bTs = bStatus.last_backup ?? bStatus.timestamp ?? bStatus.completed_at;
+      if (bTs) {
+        const ageH = (Date.now() - new Date(bTs).getTime()) / 3600000;
+        const ageStr = ageH < 1 ? `${Math.round(ageH * 60)}m ago` : ageH < 24 ? `${Math.round(ageH)}h ago` : `${Math.round(ageH / 24)}d ago`;
+        const bIcon = ageH <= 25 ? '✅' : ageH <= 72 ? '⚠️' : '❌';
+        backupSection = `\n\n${bIcon} *Last backup:* ${ageStr}`;
+      }
+    } else if (fs.existsSync(backupLogPath)) {
+      const stat = fs.statSync(backupLogPath);
+      const ageH = (Date.now() - stat.mtimeMs) / 3600000;
+      const ageStr = ageH < 1 ? `${Math.round(ageH * 60)}m ago` : ageH < 24 ? `${Math.round(ageH)}h ago` : `${Math.round(ageH / 24)}d ago`;
+      const bIcon = ageH <= 25 ? '✅' : ageH <= 72 ? '⚠️' : '❌';
+      backupSection = `\n\n${bIcon} *Last backup log:* ${ageStr}`;
+    } else {
+      backupSection = `\n\n⚠️ *Backup:* no backup log found`;
+    }
+  } catch { /* skip */ }
+
+  // Sprint 1146 (wave 26): posting-health.json gate summary
+  let postingHealthSection = '';
+  try {
+    const phPath = path.join(ROOT, 'reports', 'posting-health.json');
+    if (fs.existsSync(phPath)) {
+      const ph = JSON.parse(fs.readFileSync(phPath, 'utf-8'));
+      const phIcon = ph.all_pass ? '✅' : '⚠️';
+      const gateCheck = (ph.checks ?? []).find((c: any) => c.name === 'Gate progress');
+      const gateDetail = gateCheck?.detail ?? '';
+      const phAgeH = ph.generated_at ? (Date.now() - new Date(ph.generated_at).getTime()) / 3600000 : null;
+      const phAgeStr = phAgeH != null ? (phAgeH < 1 ? `${Math.round(phAgeH * 60)}m ago` : `${Math.round(phAgeH)}h ago`) : '';
+      postingHealthSection = `\n\n${phIcon} *Posting health:* ${ph.all_pass ? 'all checks pass' : 'issues detected'}${gateDetail ? ` · ${gateDetail}` : ''}${phAgeStr ? ` _(${phAgeStr})_` : ''}`;
+    }
+  } catch { /* skip */ }
+
+  // Sprint 1146 (wave 26): export-files.txt count (videos ready to post)
+  let exportFilesSection = '';
+  try {
+    const efPath = path.join(ROOT, 'workspace', 'scs001', 'export-files.txt');
+    if (fs.existsSync(efPath)) {
+      const efLines = fs.readFileSync(efPath, 'utf-8').trim().split('\n').filter(Boolean);
+      const efCount = efLines.length;
+      const efIcon = efCount >= 5 ? '✅' : efCount > 0 ? '⚠️' : '❌';
+      exportFilesSection = `\n\n${efIcon} *Export queue:* ${efCount} video${efCount !== 1 ? 's' : ''} ready to post`;
+    }
+  } catch { /* skip */ }
+
+  // Sprint 1146 (wave 26): token-health.json TikTok token status
+  let tokenHealthSection = '';
+  try {
+    const thPath = path.join(ROOT, 'reports', 'token-health.json');
+    if (fs.existsSync(thPath)) {
+      const th = JSON.parse(fs.readFileSync(thPath, 'utf-8'));
+      const thStatus = th.status ?? 'UNKNOWN';
+      const thIcon = thStatus === 'VALID' ? '✅' : thStatus === 'MISSING' ? '❌' : '⚠️';
+      const expiry = th.hours_until_expiry != null ? ` · expires ${Math.round(th.hours_until_expiry)}h` : '';
+      const action = thStatus !== 'VALID' && th.action ? ` — ${th.action.slice(0, 60)}` : '';
+      tokenHealthSection = `\n\n${thIcon} *TikTok token:* ${thStatus}${expiry}${action}`;
+    }
+  } catch { /* skip */ }
+
+  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${botUptimeSection}${ollamaSection}${memWarnSection}${memTableSection}${supabaseSection}${supabaseSyncSection}${diskSection}${watchdogSection}${runtimeSection}${tailscaleSection}${hetznerSection}${anthropicSection}${ioSection}${morningBriefSection}${digestSection}${staleCronsSection}${supabaseDomainSection}${anthropicBudgetSection}${pipelineValidationSection}${worktreeSection}${botMemSection}${gateDaysSection}${backupSection}${postingHealthSection}${exportFilesSection}${tokenHealthSection}`;
 }
 
 export function cmdTier(): string {
@@ -638,6 +717,23 @@ export function cmdReport(): string {
     }
   } catch { /* skip */ }
 
+  // Sprint 1143 (wave 26): show Godman npm publish status per package in /report
+  let godmanNpmReportLine = '';
+  try {
+    const godmanPkgs26 = ['@godman/pact', '@godman/amf', '@godman/signal', '@godman/soul', '@godman/score', '@godman/lax', '@godman/drs', '@godman/sdk'];
+    const pkgResults: string[] = [];
+    for (const pkg of godmanPkgs26) {
+      try {
+        const ver = execSync(`npm view ${pkg} version 2>/dev/null`, { timeout: 5000, encoding: 'utf-8', stdio: ['pipe','pipe','pipe'] }).trim();
+        pkgResults.push(`✅ \`${pkg.replace('@godman/', '')}\`@${ver}`);
+      } catch {
+        pkgResults.push(`❌ \`${pkg.replace('@godman/', '')}\``);
+      }
+    }
+    const pubCount = pkgResults.filter(r => r.startsWith('✅')).length;
+    godmanNpmReportLine = `\n*Godman npm (${pubCount}/${godmanPkgs26.length}):* ${pkgResults.join(' · ')}`;
+  } catch { /* skip */ }
+
   return (
     `${statusIcon} *Kognai System Report*\n${now}\n${alertBlock}\n` +
     `*PM2* (${online}/${procs.length} live):\n${pm2Lines || '  (no data)'}\n\n` +
@@ -646,7 +742,7 @@ export function cmdReport(): string {
     `*Beta:* agents_onboarded=${beta.agents_onboarded ?? 0}, companies=${beta.companies_onboarded ?? 0}, txns=${beta.transactions_monitored ?? 0}\n` +
     `*Financials:* MRR $${mrr} | Tier: ${tier} | Billing activation: ${billingDate}\n\n` +
     `*Gate:* ${gateLine}${achiriTestLine}${achiriReadinessReport}${dailyBriefLine}${restartDeltaLine}${commitLine}${totalCommitsLine}${valErrorsLine}${offlineLine}${lastSprintsLine}\n` +
-    `*Sprint:* ${sprintLine}`
+    `*Sprint:* ${sprintLine}${godmanNpmReportLine}`
   );
 }
 
@@ -1602,6 +1698,19 @@ export function cmdErrors(filterProcess?: string): string {
     }
   } catch { /* skip */ }
 
+  // Sprint 1139 (wave 26): show processes with zero errors today (all-clear list)
+  try {
+    const pm2Procs26 = getPm2List();
+    const erroredNames = new Set(errored.map((e: any) => (e.file ?? '').replace('-error.log', '').replace('-out.log', '')));
+    const clearProcs = pm2Procs26
+      .filter((p: any) => p.status === 'online')
+      .filter((p: any) => !Array.from(erroredNames).some((n: string) => (p.name ?? '').includes(n) || n.includes(p.name ?? '')))
+      .map((p: any) => `\`${p.name}\``);
+    if (clearProcs.length > 0) {
+      output.push(`\n✅ *All-clear:* ${clearProcs.slice(0, 6).join(', ')}${clearProcs.length > 6 ? ` +${clearProcs.length - 6} more` : ''}`);
+    }
+  } catch { /* skip */ }
+
   return output.join('\n');
 }
 
@@ -1884,6 +1993,25 @@ export async function cmdSmoke(chatId: string): Promise<void> {
       const missingVars = requiredEnvVars.filter(k => !process.env[k]);
       lines.push('');
       lines.push(`${envIcon} *Env vars:* ${setCount}/${total} set (${envPct}%)${missingVars.length > 0 ? ` · missing: ${missingVars.map(v => `\`${v}\``).join(', ')}` : ''}`);
+    } catch { /* skip */ }
+
+    // Sprint 1142 (wave 26): compare runtime with previous smoke run (performance trend)
+    try {
+      const smokeRuntimePath = path.join(ROOT, 'workspace', 'smoke-runtime-prev.json');
+      const currentMs = Date.now() - t0;
+      if (fs.existsSync(smokeRuntimePath)) {
+        const prevRun = JSON.parse(fs.readFileSync(smokeRuntimePath, 'utf-8'));
+        const prevMs = prevRun.ms ?? 0;
+        if (prevMs > 0) {
+          const delta = currentMs - prevMs;
+          const pctChange = ((delta / prevMs) * 100).toFixed(0);
+          const trendIcon = delta > 5000 ? '🔴' : delta > 2000 ? '⚠️' : delta < -2000 ? '✅' : '🟢';
+          const trendStr = delta > 0 ? `+${(delta / 1000).toFixed(1)}s (+${pctChange}%)` : `${(delta / 1000).toFixed(1)}s (${pctChange}%)`;
+          lines.push('');
+          lines.push(`${trendIcon} *Runtime vs prev:* ${trendStr} (prev: ${(prevMs / 1000).toFixed(1)}s)`);
+        }
+      }
+      fs.writeFileSync(smokeRuntimePath, JSON.stringify({ ms: currentMs, timestamp: new Date().toISOString() }));
     } catch { /* skip */ }
 
     // Sprint 1142 (wave 21): show total elapsed time

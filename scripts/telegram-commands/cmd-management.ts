@@ -1729,6 +1729,51 @@ export function cmdStatus(): string {
   } catch { /* skip */ }
   const achiriLine = `🤖 Achiri alpha: *${achiriDays}d*${achiriReadinessStr2} — /achiri`;
 
+  // Sprint 1136 (wave 26): show pending Achiri waitlist request count
+  let waitlistCountLine = '';
+  try {
+    const waitlistPath = path.join(ROOT, 'workspace', 'achiri', 'waitlist.jsonl');
+    const whitelistPath = path.join(ROOT, 'workspace', 'achiri', 'user-premium.jsonl');
+    if (fs.existsSync(waitlistPath)) {
+      const waitlistEntries = fs.readFileSync(waitlistPath, 'utf-8').trim().split('\n').filter(Boolean);
+      let whitelistedIds = new Set<string>();
+      if (fs.existsSync(whitelistPath)) {
+        for (const l of fs.readFileSync(whitelistPath, 'utf-8').trim().split('\n').filter(Boolean)) {
+          try { const e = JSON.parse(l); if (e.user_id ?? e.userId ?? e.id) whitelistedIds.add(String(e.user_id ?? e.userId ?? e.id)); } catch {}
+        }
+      }
+      const pendingWaitlist = waitlistEntries.filter(l => {
+        try { const e = JSON.parse(l); const uid = String(e.user_id ?? e.userId ?? e.id ?? ''); return uid && !whitelistedIds.has(uid); } catch { return false; }
+      });
+      if (pendingWaitlist.length > 0) {
+        const wlIcon = pendingWaitlist.length >= 10 ? '🔥' : pendingWaitlist.length >= 5 ? '📋' : '👤';
+        waitlistCountLine = `\n${wlIcon} *Achiri waitlist:* ${pendingWaitlist.length} pending approval`;
+      }
+    }
+  } catch { /* skip */ }
+
+  // Sprint 1144 (wave 26): show count of unread Telegram bot messages (backlog)
+  let unreadBotLine = '';
+  try {
+    const offsetPath = path.join(ROOT, 'data', 'telegram-bot-offset.txt');
+    const botOutLogPath = path.join(ROOT, 'logs', 'telegram-bot-out.log');
+    // Check if there's a queue of unprocessed messages by looking at offset vs latest update
+    if (fs.existsSync(botOutLogPath)) {
+      const logStat = fs.statSync(botOutLogPath);
+      const logAgeMin = (Date.now() - logStat.mtimeMs) / 60000;
+      const logLines = fs.readFileSync(botOutLogPath, 'utf-8').split('\n').filter(Boolean);
+      const recentQueueLines = logLines.filter(l => l.toLowerCase().includes('queued') || l.toLowerCase().includes('pending') || l.toLowerCase().includes('backlog'));
+      if (recentQueueLines.length > 0) {
+        const numMatch = recentQueueLines[recentQueueLines.length - 1].match(/\d+/);
+        const count = numMatch ? parseInt(numMatch[0]) : recentQueueLines.length;
+        const qIcon = count >= 10 ? '🔴' : count >= 3 ? '⚠️' : '📨';
+        unreadBotLine = `\n${qIcon} *Bot backlog:* ${count} messages queued`;
+      } else if (logAgeMin > 60) {
+        unreadBotLine = `\n⚠️ *Bot log:* last activity ${Math.round(logAgeMin)}m ago`;
+      }
+    }
+  } catch { /* skip */ }
+
   // Sprint 1060: Watchdog alerts
   let watchdogLine = '';
   try {
@@ -2059,7 +2104,7 @@ export function cmdStatus(): string {
     `🎬 Next: ${nextLine}`,
     '',
     godmanLine,
-    achiriLine,
+    achiriLine + waitlistCountLine + unreadBotLine,
     '',
     // Sprint 1134 (wave 15): Phase 2 readiness when gate is met
     ...(postsNeeded === 0 && totalViews >= 500 ? [

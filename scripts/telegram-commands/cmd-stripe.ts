@@ -720,6 +720,26 @@ export function cmdAchiri(): string {
       lines.push(`  ❌ Runner failed: ${String(e.message ?? e).slice(0, 80)}`);
     }
 
+    // Sprint 1138 (wave 26): show Derja profiler pass rate from latest cached run
+    try {
+      const derjaLatestPath = path.join(ROOT, 'reports', 'derja-profiler-latest.json');
+      const derjaLatestPath2 = path.join(ROOT, 'workspace', 'achiri', 'derja-profiler-latest.json');
+      const dpPath = fs.existsSync(derjaLatestPath) ? derjaLatestPath : fs.existsSync(derjaLatestPath2) ? derjaLatestPath2 : null;
+      if (dpPath) {
+        const dp = JSON.parse(fs.readFileSync(dpPath, 'utf-8'));
+        const passed = dp.passed ?? dp.pass ?? 0;
+        const total = dp.total ?? dp.total_tests ?? (passed + (dp.failed ?? 0));
+        const dpTs = dp.timestamp ?? dp.generated_at ?? dp.run_at;
+        const dpAgeH = dpTs ? (Date.now() - new Date(dpTs).getTime()) / 3600000 : null;
+        const dpAgeStr = dpAgeH != null ? (dpAgeH < 1 ? `${Math.round(dpAgeH * 60)}m ago` : `${Math.round(dpAgeH)}h ago`) : '';
+        if (total > 0) {
+          const dpPct = Math.round((passed / total) * 100);
+          const dpIcon = dpPct === 100 ? '✅' : dpPct >= 80 ? '⚠️' : '❌';
+          lines.push(`  ${dpIcon} *Cached pass rate:* ${passed}/${total} (${dpPct}%)${dpAgeStr ? ` · ${dpAgeStr}` : ''}`);
+        }
+      }
+    } catch { /* skip */ }
+
     // Sprint 1074 + 1092: Re-engagement count + failure rate today vs yesterday
     lines.push('');
     lines.push('*Re-engagement:*');

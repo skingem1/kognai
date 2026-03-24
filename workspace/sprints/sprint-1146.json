@@ -1,0 +1,41 @@
+{
+  "sprint_id": "sprint-1146",
+  "title": "OPS — Telegram operator UX wave 26: posting-health, export-files count, token-health signals in /health",
+  "description": "Add 3 new /health signals: (1) posting-health.json gate summary (all_pass + gate progress string), (2) export-files.txt video count (how many exported videos ready to post), (3) token-health.json TikTok token status reading from JSON (expiry, status field). These complete wave 26 of the operator UX sprint series (10 signals total when combined with 7 already uncommitted). All signals are added to cmdHealth() in cmd-system.ts.",
+  "source": "queue-empty-auto",
+  "tasks": [
+    {
+      "id": "1146-01",
+      "title": "Add posting-health.json gate summary to /health",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1146"
+    },
+    {
+      "id": "1146-02",
+      "title": "Add export-files.txt video count to /health",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1146"
+    },
+    {
+      "id": "1146-03",
+      "title": "Add token-health.json TikTok token status to /health",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1146"
+    }
+  ]
+}
