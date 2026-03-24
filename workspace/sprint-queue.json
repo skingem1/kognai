@@ -878,9 +878,10 @@
       "sprint": 1094,
       "title": "OPS — /morning-brief: add Godman countdown to brief when ≤14d to launch",
       "block": "OPS",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
-      "rationale": "Morning brief covers TikTok gate but not Godman launch. When Godman launch is ≤14d away, inject a countdown line so operator stays aware."
+      "rationale": "Morning brief covers TikTok gate but not Godman launch. When Godman launch is ≤14d away, inject a countdown line so operator stays aware.",
+      "_note": "Already implemented — daily-digest.ts line 531 shows Godman countdown. No /morning-brief command exists; digest serves this purpose."
     },
     {
       "sprint": 1095,
