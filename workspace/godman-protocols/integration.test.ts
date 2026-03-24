@@ -219,6 +219,69 @@ passed++;
 console.log('✓ DRS: Compute released, capacity restored');
 
 // =========================================================================
+// EDGE CASE 1: SOUL — Constitutional rejection (forbidden action)
+// =========================================================================
+const forbiddenCheck = evaluateAction(constitution, 'did:kognai:messi', 'read:.env.production');
+assert.equal(forbiddenCheck.allowed, false);
+passed++;
+console.log('✓ EDGE: SOUL rejects .env.production access');
+
+// =========================================================================
+// EDGE CASE 2: SOUL — Kill switch fires when views are below threshold
+// =========================================================================
+const killFired = checkKillSwitches(constitution, { views_per_30_posts: 200 });
+assert.ok(killFired !== null);
+assert.equal(killFired!.action, 'halt');
+passed++;
+console.log(`✓ EDGE: SOUL kill switch fires — action: ${killFired!.action}`);
+
+// =========================================================================
+// EDGE CASE 3: PACT — Revoked mandate is rejected
+// =========================================================================
+import { revokeMandate } from './pact/src/index.js';
+const tempMandate = signMandate(
+  createMandate('did:kognai:harvey', 'did:kognai:guardiola', {
+    description: 'Temp deploy mandate', actions: ['deploy'], resources: ['prod/*'], maxPaymentUsdc: 1.00,
+  }, { expiresAt: new Date(Date.now() + 3600_000).toISOString() }),
+  HARVEY_SECRET,
+);
+const revokeRegistry = new MandateRegistry();
+revokeRegistry.store(tempMandate);
+const revokeEntry = revokeMandate(tempMandate.id, 'did:kognai:harvey', HARVEY_SECRET, 'Revoked: security review');
+revokeRegistry.addRevocation(revokeEntry);
+const revokeCheck = verifyMandate(tempMandate, HARVEY_SECRET, revokeRegistry.revocationLedger);
+assert.equal(revokeCheck.valid, false);
+assert.equal((revokeCheck as any).reason, 'revoked');
+passed++;
+console.log('✓ EDGE: PACT rejects revoked mandate');
+
+// =========================================================================
+// EDGE CASE 4: DRS — Resource pool exhaustion guard
+// =========================================================================
+const tinyScheduler = new ResourceScheduler();
+tinyScheduler.addPool({ id: 'tiny-pool', name: 'Tiny Pool', resourceType: 'nano', totalCapacity: 1, availableCapacity: 1, costPerUnit: 0.001, latencyMs: 10 });
+const firstAlloc = tinyScheduler.allocate({ id: 'a1', requestingAgent: 'did:kognai:messi', poolId: 'tiny-pool', unitsRequested: 1, priority: 'high', maxLatencyMs: 100, maxCostUsdc: 1.00, requestedAt: new Date().toISOString() });
+assert.ok(firstAlloc);
+const secondAlloc = tinyScheduler.allocate({ id: 'a2', requestingAgent: 'did:kognai:harvey', poolId: 'tiny-pool', unitsRequested: 1, priority: 'high', maxLatencyMs: 100, maxCostUsdc: 1.00, requestedAt: new Date().toISOString() });
+assert.equal(secondAlloc, null); // pool exhausted
+passed++;
+console.log('✓ EDGE: DRS guards against pool exhaustion (second alloc returns null)');
+
+// =========================================================================
+// EDGE CASE 5: LAX — SLA breach detected when latency exceeds budget
+// =========================================================================
+// SLA already imported at top of file; createProbe also imported
+const tightSLA = registerSLA('did:kognai:messi', 'mac-mini', 500, 10);
+// Simulate probe showing 800ms latency — exceeds 500ms SLA
+const slowProbe = createProbe('mac-mini', 800, true);
+const slaResult = checkSLACompliance(tightSLA, slowProbe);
+assert.equal(slaResult.compliant, false);
+assert.ok(slaResult.reason.includes('latency_exceeded'));
+passed++;
+console.log(`✓ EDGE: LAX detects SLA breach (800ms > 500ms)`);
+
+// =========================================================================
 console.log(`\n✅ All ${passed} integration assertions passed`);
 console.log('=== All 7 Godman Protocols working together ===');
 console.log('   SOUL → PACT → AMF → DRS → LAX → SIGNAL → SCORE');
+console.log('   + 5 edge cases: rejection, kill switch, revoke, exhaustion, SLA breach');

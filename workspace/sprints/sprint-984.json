@@ -1,10 +1,10 @@
 {
   "sprint_id": "sprint-984",
-  "title": "ACHIRI-ALPHA-REPORT — CLI alpha readiness report for April 25 launch",
-  "description": "Create scripts/achiri/alpha-report.ts that reads live data and produces a go/no-go readiness report: user count, waitlist, bot health, gate dates, blockers. Operator runs this weekly to track April 25 progress.",
-  "block": "ACHIRI",
-  "source": "queue-exhausted-alpha-prep",
+  "title": "GODMAN-INTEGRATION-V2 — Add 5 edge case scenarios to integration test",
+  "description": "Extend workspace/godman-protocols/integration.test.ts with edge cases: constitutional rejection, revoked mandate rejection, SLA breach detection, resource exhaustion guard, reputation decay. From 15 to 25+ assertions.",
+  "block": "GODMAN-PROTOCOLS",
+  "source": "queue-exhausted-launch-prep",
   "tasks": [
-    { "id": "984-01", "title": "Create alpha-report.ts readiness checker", "type": "feature", "task_target": "scripts/achiri/alpha-report.ts", "agent": "coder", "status": "pending", "priority": "high", "sprint_id": "sprint-984" }
+    { "id": "984-01", "title": "Add 5 edge case scenarios to integration.test.ts", "type": "test", "task_target": "workspace/godman-protocols/integration.test.ts", "agent": "coder", "status": "pending", "priority": "high", "sprint_id": "sprint-984" }
   ]
 }
