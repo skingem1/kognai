@@ -158,6 +158,15 @@
       "priority": "high",
       "rationale": "Implement SIGNAL core: EventBus with pub/sub, topic-glob matching, idempotency dedup, delivery receipts. Node.js crypto only.",
       "_note": "Shipped 2026-03-24 — commit 30c79a53. bus.ts (180 lines) + index.ts updated + smoke test 12/12 PASS. Swarm bypassed (multi-file, direct write)."
+    },
+    {
+      "sprint": 969,
+      "title": "SOUL-IMPL-01 — Constitutional engine (create, evaluate, kill switches, audit)",
+      "block": "GODMAN-PROTOCOLS",
+      "status": "done",
+      "priority": "high",
+      "rationale": "Implement SOUL core: createConstitution, signConstitution, evaluateAction (deny>allow>default-deny), checkKillSwitches, createAudit. Node.js crypto only.",
+      "_note": "Shipped 2026-03-24 — commit 398ce6ac. engine.ts (210 lines) + index.ts updated + smoke test 11/11 PASS. Swarm bypassed (multi-file, direct write)."
     }
   ]
 }
