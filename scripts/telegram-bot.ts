@@ -31,7 +31,7 @@ import { cmdHelp } from './telegram-commands/cmd-help';
 // Sprint 496: Import extracted command modules (Part 2: N-Z + interactive)
 import { cmdSession, cmdDone, cmdEndSession, cmdMenu } from './telegram-commands/cmd-session';
 import { cmdDeliver, cmdPublish, cmdPostNow, cmdPickup, cmdTodayCaptions, cmdBroadcast, cmdRefresh, cmdProduce, cmdProduceTopic, cmdInstagram, cmdInventory, cmdBatchDeliver, cmdStockpile, cmdBroadcastPause, cmdBroadcastResume, cmdPostBrowser, cmdPostAuto, cmdQuickstart, cmdV2Produce, cmdDeliverNext } from './telegram-commands/cmd-delivery';
-import { cmdCheckout, cmdSubscribers, cmdPortal, cmdFunnel, cmdAchiri, cmdAlpha, cmdTestStripe, cmdUsage, cmdAchiriData, cmdWaitlist, cmdStripe } from './telegram-commands/cmd-stripe';
+import { cmdCheckout, cmdSubscribers, cmdPortal, cmdFunnel, cmdAchiri, cmdAlpha, cmdTestStripe, cmdUsage, cmdAchiriData, cmdWaitlist, cmdStripe, cmdDeployStatus, cmdInviteAchiri } from './telegram-commands/cmd-stripe';
 import { cmdStart, cmdTrial, cmdPlans } from './telegram-commands/cmd-onboarding';
 import { cmdLoraEval } from './telegram-commands/cmd-lora-eval';
 import { cmdWarmupStart, cmdWarmupComplete, cmdWarmupStatus } from './telegram-commands/cmd-warmup';
@@ -169,6 +169,8 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/leaderboard': response = cmdLeaderboard(); break;
     case '/updateviews': response = cmdUpdateViews(cmdArgs); break;
     case '/achiri':      response = cmdAchiri();             break;
+    case '/deploy-status': case '/deploystatus': response = cmdDeployStatus(); break;
+    case '/invite-achiri': case '/inviteachiri': response = cmdInviteAchiri(cmdArgs); break;
     case '/digest':      response = cmdDigest();             break;
     case '/weeklydigest': response = cmdWeeklyDigest();      break;
     case '/metrics':     response = cmdMetrics();            break;

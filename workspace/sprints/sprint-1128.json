@@ -1,0 +1,39 @@
+{
+  "sprint_id": "sprint-1128",
+  "title": "ACHIRI — /deploy-status checklist + /invite-achiri whitelist system",
+  "description": "Achiri alpha launch needs a deploy checklist command and invite/whitelist system for controlled rollout.",
+  "block": "ACHIRI",
+  "source": "brief-recommendation",
+  "tasks": [
+    {
+      "id": "1128-01",
+      "title": "Create /deploy-status command showing Achiri alpha deploy checklist",
+      "type": "feature",
+      "task_target": "scripts/telegram-commands/cmd-stripe.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1128"
+    },
+    {
+      "id": "1128-02",
+      "title": "Create /invite-achiri command with file-based whitelist",
+      "type": "feature",
+      "task_target": "scripts/telegram-commands/cmd-stripe.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1128"
+    },
+    {
+      "id": "1128-03",
+      "title": "Create whitelist.json file and integrate with Achiri runtime",
+      "type": "feature",
+      "task_target": "workspace/achiri/whitelist.json",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1128"
+    }
+  ]
+}

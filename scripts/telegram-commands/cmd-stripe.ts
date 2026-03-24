@@ -872,3 +872,139 @@ function stripeLogFallback(): string {
     return `*Webhook log* (last update: ${age}h ago):\n` + last5.map(l => `\`${l.slice(0, 80)}\``).join('\n');
   } catch { return '_Webhook log: unreadable_'; }
 }
+
+// Sprint 1128: /deploy-status — Achiri alpha deploy checklist
+export function cmdDeployStatus(): string {
+  const checks: Array<{ name: string; pass: boolean; detail: string }> = [];
+
+  // 1. Supabase connection
+  checks.push({
+    name: 'Supabase URL',
+    pass: !!(process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_KEY),
+    detail: process.env.SUPABASE_URL ? 'SET' : 'MISSING',
+  });
+
+  // 2. Telegram bot running
+  const botRunning = (() => {
+    try {
+      const procs = JSON.parse(execSync('pm2 jlist 2>/dev/null', { encoding: 'utf-8', timeout: 5000 }));
+      return procs.some((p: any) => p.name === 'telegram-bot' && p.pm2_env?.status === 'online');
+    } catch { return false; }
+  })();
+  checks.push({ name: 'Telegram bot', pass: botRunning, detail: botRunning ? 'online' : 'offline' });
+
+  // 3. Achiri readiness report
+  const readinessPath = path.join(ROOT, 'reports', 'achiri-readiness.json');
+  const hasReadiness = fs.existsSync(readinessPath);
+  let readinessScore = 0;
+  if (hasReadiness) {
+    try { readinessScore = JSON.parse(fs.readFileSync(readinessPath, 'utf-8')).score ?? 0; } catch {}
+  }
+  checks.push({ name: 'Readiness report', pass: hasReadiness && readinessScore >= 70, detail: hasReadiness ? `${readinessScore}%` : 'not generated' });
+
+  // 4. Whitelist exists and has entries
+  const wlPath = path.join(ROOT, 'workspace', 'achiri', 'alpha-whitelist.jsonl');
+  let wlCount = 0;
+  if (fs.existsSync(wlPath)) {
+    wlCount = fs.readFileSync(wlPath, 'utf-8').split('\n').filter(l => l.trim()).length;
+  }
+  checks.push({ name: 'Alpha whitelist', pass: wlCount > 0, detail: `${wlCount} users` });
+
+  // 5. Waitlist exists
+  const waitPath = path.join(ROOT, 'workspace', 'achiri', 'waitlist.jsonl');
+  let waitCount = 0;
+  if (fs.existsSync(waitPath)) {
+    waitCount = fs.readFileSync(waitPath, 'utf-8').split('\n').filter(l => l.trim()).length;
+  }
+  checks.push({ name: 'Waitlist', pass: waitCount > 0, detail: `${waitCount} users` });
+
+  // 6. Voice validation
+  const voicePath = path.join(ROOT, 'workspace', 'achiri', 'voice-validation-checklist.md');
+  checks.push({ name: 'Voice validation', pass: fs.existsSync(voicePath), detail: fs.existsSync(voicePath) ? 'done' : 'missing' });
+
+  // 7. Daily counts tracking
+  const countsPath = path.join(ROOT, 'workspace', 'achiri', 'daily-counts.json');
+  checks.push({ name: 'Usage tracking', pass: fs.existsSync(countsPath), detail: fs.existsSync(countsPath) ? 'active' : 'not set up' });
+
+  // 8. ELEVENLABS for TTS
+  checks.push({ name: 'ElevenLabs TTS', pass: !!process.env.ELEVENLABS_API_KEY, detail: process.env.ELEVENLABS_API_KEY ? 'SET' : 'MISSING' });
+
+  const passCount = checks.filter(c => c.pass).length;
+  const allPass = passCount === checks.length;
+  const daysToAlpha = Math.max(0, Math.ceil((new Date('2026-04-25T00:00:00Z').getTime() - Date.now()) / 86_400_000));
+
+  const lines = [
+    `🚀 *Achiri Alpha Deploy Status* ${allPass ? '✅' : '⚠️'}`,
+    `📅 *${daysToAlpha}d* to launch (Apr 25) · ${passCount}/${checks.length} checks pass`,
+    '',
+  ];
+
+  for (const c of checks) {
+    lines.push(`${c.pass ? '✅' : '❌'} ${c.name}: ${c.detail}`);
+  }
+
+  if (!allPass) {
+    lines.push('');
+    lines.push('_Fix ❌ items before launch. Run /achiri for full status._');
+  } else {
+    lines.push('');
+    lines.push('✅ *All checks pass — ready to launch!*');
+  }
+
+  return lines.join('\n');
+}
+
+// Sprint 1128: /invite-achiri — add user to alpha whitelist
+export function cmdInviteAchiri(args: string): string {
+  const parts = args.trim().split(/\s+/);
+  if (parts.length < 1 || !parts[0]) {
+    return (
+      `*Usage:* \`/invite-achiri <chat_id> [name] [username]\`\n\n` +
+      `Adds a user to the Achiri alpha whitelist.\n` +
+      `Example: \`/invite-achiri 123456789 Ahmed @ahmed\`\n\n` +
+      `Current whitelist: /deploy-status`
+    );
+  }
+
+  const chatId = parts[0];
+  if (!/^\d+$/.test(chatId)) {
+    return `❌ Invalid chat ID: \`${chatId}\` — must be numeric.`;
+  }
+
+  const firstName = parts[1] || 'Unknown';
+  const username = parts[2] || '';
+
+  const wlPath = path.join(ROOT, 'workspace', 'achiri', 'alpha-whitelist.jsonl');
+
+  // Check for duplicate
+  if (fs.existsSync(wlPath)) {
+    const existing = fs.readFileSync(wlPath, 'utf-8').split('\n').filter(l => l.trim());
+    for (const line of existing) {
+      try {
+        const entry = JSON.parse(line);
+        if (entry.chatId === chatId) {
+          return `⚠️ User \`${chatId}\` (${entry.firstName || 'unknown'}) is already on the whitelist.`;
+        }
+      } catch {}
+    }
+  }
+
+  const entry = {
+    chatId,
+    firstName,
+    username: username.replace(/^@/, ''),
+    approvedAt: new Date().toISOString(),
+  };
+
+  fs.appendFileSync(wlPath, JSON.stringify(entry) + '\n');
+
+  // Count total
+  const total = fs.readFileSync(wlPath, 'utf-8').split('\n').filter(l => l.trim()).length;
+
+  return (
+    `✅ *Invited to Achiri Alpha*\n\n` +
+    `👤 ${firstName}${username ? ` (@${username.replace(/^@/, '')})` : ''}\n` +
+    `🆔 Chat ID: \`${chatId}\`\n` +
+    `📋 Total whitelist: *${total}* users`
+  );
+}
