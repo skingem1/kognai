@@ -485,8 +485,16 @@ function buildDigest(): string {
 
   const now = new Date().toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
 
+  // Sprint 1068: posting obligation as first action item
+  const todayObligation = daysPhase > 0 && postsLeft > 0 ? Math.ceil(postsLeft / daysPhase) : 0;
+  const obligationLine = postsLeft <= 0
+    ? `🎯 *Gate met!* All ${gate.count} posts done — proceed to Phase 2`
+    : `🎯 *Today: post ${todayObligation} video${todayObligation !== 1 ? 's'  : ''}* (${gate.count}/30 gate · ${daysPhase}d left)`;
+
   const lines = [
     `🌅 *Kognai Morning Digest — ${now}*`,
+    '',
+    obligationLine,
     '',
     `${streakEmoji} Streak: *${streak.current}d* (best: ${streak.best}d) | Yesterday: ${streak.todayPosts > 0 ? `${streak.todayPosts} posted` : 'none'}`,
     '',
