@@ -5920,3 +5920,13 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (multi-file, direct write)
 - Issues: Gate keeps going stale between auto-deliver events — cron may need more frequent runs
 - Timestamp: 2026-03-24T15:00Z
+
+## Sprint 1045 — INFRA
+- Status: PASS
+- Commit: 510c18a9
+- Files modified: ecosystem.config.js (gate-regen cron: daily → every 2h)
+- Test: config change (PM2 will pick up on next restart)
+- Pipeline: Gate data stays fresh throughout the day
+- Swarm used: no (single-line config change)
+- Issues: none
+- Timestamp: 2026-03-24T15:10Z
