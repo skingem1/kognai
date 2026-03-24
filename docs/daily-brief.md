@@ -1,10 +1,17 @@
-# KOGNAI DAILY BRIEF — 2026-03-23
-## Monday, March 23, 2026
+# KOGNAI DAILY BRIEF — 2026-03-24
+## Tuesday, March 24, 2026
 
-**Generated:** 2026-03-23 06:45
-**Active Sprint:** Unknown
-**Hours Today:** 6h
-**Midday Block:** YES (12:00-14:00)
+**Generated:** 2026-03-24 11:53
+**Active Sprint:** sprint-1039
+**Hours Today:** 4h
+**Midday Block:** NO (Tuesday/Thursday)
+
+---
+
+## LIVE STATUS (auto-generated)
+**Gate:** ⚠️ WARNING — 2/30 posts · 28 needed · 14d to Apr 7
+**Godman launch:** 21d — April 14  |  **Achiri alpha:** 32d — April 25
+**Next sprint:** queue empty — run /replenish or pick manually
 
 ---
 
@@ -13,18 +20,12 @@
 | Block | Time | Available |
 |-------|------|-----------|
 | AM | 07:00–09:30 | YES |
-| MID | 12:00–14:00 | YES |
+| MID | 12:00–14:00 | NO |
 | PM | 18:00–19:30 | YES |
 
 ---
 
 ## TODAY'S TASKS
-
-*No specific daily tasks found for 2026-03-23. Check weekly schedule below.*
-
----
-
-## TOMORROW PREVIEW
 
 ### Monday, March 24
 **AM 07:00–09:30**
@@ -34,6 +35,29 @@
 - [ ] Test /subscribe flow end-to-end: Telegram → checkout → webhook → user activated
 
 **MID 12:00–14:00**
+- [ ] [YOU] Test subscription bot personally — is UX smooth?
+- [ ] [YOU] Share TikTok account + subscription link with 3 creator friends
+- [ ] Review subscriber pipeline: does content queue generate per-subscriber?
+- [ ] Check revenue tracking in Supabase: `revenue` table populated?
+
+**PM 18:00–19:30**
+- [ ] Sprint-067 task review
+- [ ] Check if friends subscribed or gave feedback
+- [ ] Monitor daily content pipeline — still running autonomously?
+- [ ] Write session log
+
+---
+
+## TOMORROW PREVIEW
+
+### Tuesday, March 25
+**AM 07:00–09:30**
+- [ ] Review overnight content generation — 3 new posts queued?
+- [ ] Post daily content batch
+- [ ] Check 72h engagement on earliest posts — first full cycle complete?
+- [ ] Review subscriber count: any paying subscribers yet?
+
+**NO MIDDAY BLOCK**
 
 ---
 

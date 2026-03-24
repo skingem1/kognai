@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1042",
+  "title": "OPS — generate-daily-brief.py: inject live gate + launch countdown section",
+  "description": "Add LIVE STATUS section to daily brief showing real gate state, Godman/Achiri launch countdowns, and next queued sprint. Brief now shows current production state regardless of stale timeline document.",
+  "block": "OPS",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1042-01",
+      "title": "Add _build_live_focus() to generate-daily-brief.py",
+      "type": "feature",
+      "task_target": "scripts/generate-daily-brief.py",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-1042"
+    }
+  ]
+}

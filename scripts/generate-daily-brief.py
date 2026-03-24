@@ -214,6 +214,51 @@ def extract_strategic_summary(dev_plan_content: str) -> str:
     return "\n".join(summary_lines[:100])
 
 
+def _build_live_focus(repo_root: Path) -> str:
+    """Build a live focus section from gate JSON and sprint queue."""
+    import json as _json
+    lines = ["## LIVE STATUS (auto-generated)"]
+
+    # Gate status
+    gate_path = repo_root / "workspace" / "gates" / "phase1-5-gate.json"
+    if gate_path.exists():
+        try:
+            gate = _json.loads(gate_path.read_text())
+            urgency = gate.get("urgency", "?")
+            days = gate.get("days_remaining", "?")
+            posts_remaining = gate.get("raw", {}).get("posts_remaining", "?")
+            posts_done = gate.get("raw", {}).get("posts_count", "?")
+            urgency_icon = "✅" if urgency == "DONE" else ("⚠️" if urgency == "WARNING" else "🟢")
+            lines.append(f"**Gate:** {urgency_icon} {urgency} — {posts_done}/30 posts · {posts_remaining} needed · {days}d to Apr 7")
+        except Exception:
+            lines.append("**Gate:** could not read phase1-5-gate.json")
+    else:
+        lines.append("**Gate:** phase1-5-gate.json not found — run /gate to regenerate")
+
+    # Godman + Achiri countdowns
+    from datetime import date as _date
+    today = _date.today()
+    godman_days = ((_date(2026, 4, 14)) - today).days
+    achiri_days = ((_date(2026, 4, 25)) - today).days
+    lines.append(f"**Godman launch:** {godman_days}d — April 14  |  **Achiri alpha:** {achiri_days}d — April 25")
+
+    # Next sprint from queue (first pending item)
+    queue_path = repo_root / "workspace" / "sprint-queue.json"
+    if queue_path.exists():
+        try:
+            queue = _json.loads(queue_path.read_text())
+            pending = [i for i in queue.get("queue", []) if i.get("status") not in ("done", "skipped")]
+            if pending:
+                nxt = pending[0]
+                lines.append(f"**Next queued sprint:** Sprint {nxt['sprint']} — {nxt['title'][:80]}")
+            else:
+                lines.append("**Next sprint:** queue empty — run /replenish or pick manually")
+        except Exception:
+            pass
+
+    return "\n".join(lines)
+
+
 def generate_brief(target_date: datetime, week_mode: bool = False, force_strategic: bool = False):
     """Generate the daily brief file."""
     content = load_timeline()
@@ -248,6 +293,10 @@ Swarm is idle. Rest.
     hours_today = "6h" if has_midday else "4h"
     midday_status = "YES (12:00-14:00)" if has_midday else "NO (Tuesday/Thursday)"
 
+    # Inject live gate and sprint queue status
+    repo_root = Path(__file__).parent.parent
+    live_focus = _build_live_focus(repo_root)
+
     # Build brief
     brief = f"""# KOGNAI DAILY BRIEF — {date_str}
 ## {day_name}, {month_name} {target_date.day}, {target_date.year}
@@ -256,6 +305,10 @@ Swarm is idle. Rest.
 **Active Sprint:** {active_sprint}
 **Hours Today:** {hours_today}
 **Midday Block:** {midday_status}
+
+---
+
+{live_focus}
 
 ---
 
