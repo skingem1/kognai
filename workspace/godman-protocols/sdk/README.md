@@ -43,6 +43,57 @@ const result = soul.evaluateAction(constitution, 'deploy');
 | **SCORE** | Scoring & reputation | `createRubric`, `evaluate`, `calculateReputation` |
 | **DRS** | Dynamic resource scheduling | `ResourceScheduler`, `defaultScheduler` |
 
+## Complete Example
+
+See [`examples/agent-workflow.ts`](examples/agent-workflow.ts) for a full agent task flow using all 7 protocols:
+SOUL → PACT → AMF → DRS → LAX → SIGNAL → SCORE.
+
+Run it locally:
+
+```bash
+npx tsx examples/agent-workflow.ts
+```
+
+Expected output:
+
+```
+=== Godman Protocols — Agent Workflow Demo ===
+
+1. SOUL: Constitutional safety check
+   Constitution signed: agent:orchestrator
+   Action "generate_code": ALLOWED — Allowed by constraint 'Allow code gen'
+   Kill switches: clear
+
+2. PACT: Mandate and coordination
+   Frame opened: d108cc39-e42... (3 participants)
+   Mandate: b868ee87-143... verified=true
+
+3. AMF: Agent messaging
+   Envelope: b38c2364-7af... from=agent:orchestrator verified=true
+
+4. DRS: Resource allocation
+   GPU allocated: fd278fd5-2c9...
+   Model slot allocated: 077aee49-c0d...
+
+5. LAX: Latency-aware routing
+   SLA registered: bffa6ff3-972... (max 10000ms)
+   Routed to: mac-mini-m4 (3000ms) — within_target
+
+6. SIGNAL: Event broadcasting
+   Events delivered: task.started, task.completed
+
+7. SCORE: Result evaluation
+   Score: 90.5%
+   Reputation: 90.5% (1 eval)
+
+=== Workflow Complete ===
+Frame: closed
+Resources: released
+Score: 90.5%
+Events: 2 delivered
+Result: a98650a4-798...
+```
+
 ## Requirements
 
 - Node.js >= 20.0.0

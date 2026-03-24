@@ -1,0 +1,10 @@
+{
+  "sprint_id": "sprint-982",
+  "title": "GODMAN-SDK-DOCS-FINAL — Complete SDK README with E2E example + expected output",
+  "description": "Update workspace/godman-protocols/sdk/README.md to add a Complete Example section linking to examples/agent-workflow.ts with expected output. Makes SDK launch-ready for April 14.",
+  "block": "GODMAN-PROTOCOLS",
+  "source": "queue-exhausted-launch-prep",
+  "tasks": [
+    { "id": "982-01", "title": "Add Complete Example section to SDK README", "type": "docs", "task_target": "workspace/godman-protocols/sdk/README.md", "agent": "coder", "status": "pending", "priority": "high", "sprint_id": "sprint-982" }
+  ]
+}
