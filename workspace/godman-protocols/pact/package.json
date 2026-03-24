@@ -2,9 +2,11 @@
   "name": "@godman-protocols/pact",
   "version": "0.1.0",
   "description": "Protocol for Agent Coordination and Trust — skeleton",
-  "status": "skeleton",
+  "status": "v0.2.0",
   "private": true,
+  "type": "module",
   "main": "dist/index.js",
+  "exports": "./dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist",
