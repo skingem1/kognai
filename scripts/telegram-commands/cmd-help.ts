@@ -128,6 +128,11 @@ export function cmdHelp(): string {
     `/costs     — API cost breakdown\n` +
     `/replenish — Auto-replenish content pipeline\n` +
     `/postbrowser — Post via browser automation\n` +
+    `/deploy-status — Achiri alpha deploy checklist\n` +
+    `/invite-achiri — Add user to Achiri alpha whitelist\n` +
+    `/launches  — Unified 3-launch countdown (Gate + Godman + Achiri)\n` +
+    `/gate-sim  — Posting pace simulator for Phase 1.5 gate\n` +
+    `/errors <process> — PM2 error log viewer (optional filter)\n` +
     `/help      — This message`
   );
 }
