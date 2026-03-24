@@ -5837,3 +5837,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (single-line fix)
 - Issues: none
 - Timestamp: 2026-03-24T12:35Z
+
+## Sprint 1030 — OPS
+- Status: PASS
+- Commit: 5ff28656
+- Files created: none (utility added to existing shared.ts)
+- Files modified: shared.ts, cmd-system.ts, cmd-management.ts, cmd-delivery.ts
+- Test: tsc --noEmit PASS (all 4 files)
+- Pipeline: readRealPosts() shared utility replaces 4 inline DRY_METHODS arrays
+- Swarm used: no (multi-file refactor, direct write)
+- Issues: none
+- Timestamp: 2026-03-24T12:42Z
