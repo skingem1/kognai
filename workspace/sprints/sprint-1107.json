@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1107",
+  "title": "OPS — /digest: show yesterday post count vs target in header",
+  "description": "Add yesterday's post count as second line in /digest header so operator sees recent activity.",
+  "block": "OPS",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1107-01",
+      "title": "Add yesterday post count to cmdDigest header",
+      "type": "feature",
+      "task_target": "scripts/telegram-commands/cmd-posting.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1107"
+    }
+  ]
+}

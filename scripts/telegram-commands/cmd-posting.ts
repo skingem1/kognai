@@ -457,9 +457,25 @@ export function cmdDigest(): string {
   // TikTok token
   const tiktokReady = Boolean(process.env.TIKTOK_ACCESS_TOKEN);
 
+  // Sprint 1107: yesterday's post count
+  const yesterday = new Date(now);
+  yesterday.setDate(yesterday.getDate() - 1);
+  const yesterdayStr = yesterday.toISOString().slice(0, 10);
+  let yesterdayPosts = 0;
+  if (fs.existsSync(manualPostsPath)) {
+    const allLines = fs.readFileSync(manualPostsPath, 'utf-8').split('\n').filter(l => l.trim());
+    for (const line of allLines) {
+      try {
+        const e = JSON.parse(line);
+        if ((e.posted_at ?? e.recorded_at ?? '').startsWith(yesterdayStr)) yesterdayPosts++;
+      } catch {}
+    }
+  }
+
   // Build message
   const out: string[] = [
     `📋 *Daily Digest* — ${now.toISOString().slice(0, 10)}`,
+    `📌 Yesterday: *${yesterdayPosts}* posts`,
     '',
     `*Gate:* ${urgency}`,
     `📅 Apr 7 · ${daysLeft} days left`,
