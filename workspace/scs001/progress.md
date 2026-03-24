@@ -5414,3 +5414,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (single file, direct write)
 - Issues: AAR/CTO modules not found (noted, not blocking)
 - Timestamp: 2026-03-24T08:30:00Z
+
+## Sprint 984 — GODMAN-INTEGRATION-V2
+- Status: PASS
+- Commit: c9b46c4a
+- Files created: workspace/sprints/sprint-984.json
+- Files modified: workspace/godman-protocols/integration.test.ts
+- Test: npx tsx integration.test.ts — 20/20 assertions PASS (was 15/15)
+- Pipeline: Integration test now covers 5 edge cases (rejection, kill switch, revoke, exhaustion, SLA breach)
+- Swarm used: no (test augmentation, direct write)
+- Issues: 3 API fixes needed (revokeMandate return value, SLA function signatures, error field name)
+- Timestamp: 2026-03-24T23:30:00Z
