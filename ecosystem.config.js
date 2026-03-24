@@ -1252,6 +1252,26 @@ module.exports = {
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
     {
+      // Sprint 1061: Morning brief — auto-send /today gate + top pick to Telegram at 07:05
+      name: "scs001-morning-brief",
+      script: "./scripts/morning-brief.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: false,
+      watch: false,
+      cron_restart: "5 7 * * *",
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
+        TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN || "",
+        OWNER_TELEGRAM_CHAT_ID: process.env.OWNER_TELEGRAM_CHAT_ID || "",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/morning-brief-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/morning-brief-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
+    {
       // Sprint 1006: Noon posting reminder — gate urgency alert if posts_remaining > 0
       name: "scs001-remind-noon",
       script: "./scripts/remind-post.ts",

@@ -601,7 +601,7 @@
       "sprint": 1061,
       "title": "GATE \u2014 /today morning auto-send: PM2 cron pushes /today brief to Telegram at 07:05",
       "block": "GATE",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "Operator must manually type /today each morning. Add PM2 cron (scs001-morning-brief) that auto-sends /today output to operator chat at 07:05 to start each day with context."
     },
