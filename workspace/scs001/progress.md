@@ -5888,3 +5888,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (validation run + report, direct write)
 - Issues: ACHIRI_TELEGRAM_BOT_TOKEN + ACHIRI_BASE_URL not set (human action)
 - Timestamp: 2026-03-24T13:08Z
+
+## Sprint 1039 — QUALITY
+- Status: PASS
+- Commit: 6b2c3eea
+- Files created: scripts/test-telegram-commands.ts
+- Files modified: scripts/telegram-commands/cmd-stripe.ts (cmdFunnel bar chart fix)
+- Test: test-telegram-commands.ts — 110/110 PASS
+- Pipeline: All 110 sync Telegram command handlers validated
+- Swarm used: no (test infrastructure, direct write)
+- Issues: cmdFunnel had repeat(-50) crash when downstream count > totalExp — fixed
+- Timestamp: 2026-03-24T14:30Z
