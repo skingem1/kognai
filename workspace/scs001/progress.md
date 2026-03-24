@@ -6386,3 +6386,13 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (cmd-management.ts 2000+ lines)
 - AAR: aar-middleware module not found — noted
 - Timestamp: 2026-03-24T22:15:00Z
+
+## Sprint 1180 — ACHIRI
+- Status: PASS
+- Commit: 888dfb15
+- Files created: workspace/sprints/sprint-1180.json
+- Files modified: scripts/telegram-commands/cmd-stripe.ts, scripts/telegram-bot.ts
+- Function: cmdAchiriStats() — shows total users, DAU, 7d retention %, waitlist, 7d DAU trend, premium count, top 5 users
+- Test: runtime validation — output clean (3 users, DAU 1, retention 67%, trend shown)
+- Swarm used: no (files too large)
+- Timestamp: 2026-03-24T22:20:00Z

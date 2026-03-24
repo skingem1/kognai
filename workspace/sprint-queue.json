@@ -2813,7 +2813,7 @@
       "sprint": 1180,
       "title": "ACHIRI — add /achiri-stats Telegram command showing DAU, retention, top users",
       "block": "ACHIRI",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "Create a dedicated /achiri-stats command that reads achiri analytics and shows DAU, 7d retention %, premium count, and top users."
     },
