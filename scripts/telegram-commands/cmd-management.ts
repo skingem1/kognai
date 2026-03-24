@@ -613,7 +613,14 @@ export function cmdWeeklyReport(): string {
       const lastRate = (lastWeekPosts.length / 7).toFixed(1);
       const delta = thisWeekPosts.length - lastWeekPosts.length;
       const arrow = delta > 0 ? '📈' : delta < 0 ? '📉' : '➡️';
-      return `${arrow} Velocity: ${thisRate}/day this week vs ${lastRate}/day last week`;
+      const lastWeekViews = lastWeekPosts.reduce((sum: number, p: any) => sum + (p.views ?? 0), 0);
+      const lastWeekViewsPerDay = (lastWeekViews / 7).toFixed(1);
+      const viewsDelta = weekViews - lastWeekViews;
+      const viewsArrow = viewsDelta > 0 ? '📈' : viewsDelta < 0 ? '📉' : '➡️';
+      return [
+        `${arrow} Post velocity: ${thisRate}/day this week vs ${lastRate}/day last week`,
+        `${viewsArrow} Views velocity: ${(weekViews / 7).toFixed(1)}/day this week vs ${lastWeekViewsPerDay}/day last week`,
+      ].join('\n');
     })(),
     '',
     '*🔬 Pipeline:*',

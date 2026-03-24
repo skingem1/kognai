@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1188",
+  "title": "OPS — /weekly-report: add views per day average for the week",
+  "description": "Add views velocity comparison (this week vs last week views/day) to /weekly-report command. Mirrors existing post velocity trend arrow.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1188-01",
+      "title": "OPS — /weekly-report: add views per day average for the week",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-commands/cmd-management.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1188"
+    }
+  ]
+}
