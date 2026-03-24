@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1041",
+  "title": "OPS-BUGFIX — /blockers: ACHIRI_BASE_URL is optional (defaults to localhost:3420)",
+  "description": "ACHIRI_BASE_URL was shown as a blocker but it's optional — the Achiri Telegram bot only needs ACHIRI_TELEGRAM_BOT_TOKEN. ACHIRI_BASE_URL defaults to localhost:3420 for local mode. Fixed to show as info, not blocker. Reduces blocker count from 4 to 3.",
+  "block": "OPS",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1041-01",
+      "title": "Fix ACHIRI_BASE_URL blocker classification in cmdBlockers()",
+      "type": "fix",
+      "task_target": "scripts/telegram-commands/cmd-management.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1041"
+    }
+  ]
+}

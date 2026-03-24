@@ -1733,14 +1733,12 @@ export function cmdBlockers(): string {
   if (hasAchiriUrl) {
     lines.push(`  ✅ ACHIRI_BASE_URL: set`);
   } else {
-    lines.push(`  ❌ ACHIRI_BASE_URL: not set in .env`);
-    lines.push(`  ℹ️  Add: ACHIRI_BASE_URL=http://localhost:3001 (or deployed URL)`);
-    totalBlocked++;
+    lines.push(`  ℹ️  ACHIRI_BASE_URL: not set (defaults to localhost:3420 — ok for local mode)`);
   }
-  if (hasAchiriToken && hasAchiriUrl) {
+  if (hasAchiriToken) {
     lines.push(`  ℹ️  Deploy: \`pm2 start ecosystem.config.js --only achiri-telegram\``);
   } else {
-    lines.push(`  ℹ️  After setting both, run: \`pm2 start ecosystem.config.js --only achiri-telegram\``);
+    lines.push(`  ℹ️  After setting token, run: \`pm2 start ecosystem.config.js --only achiri-telegram\``);
   }
   lines.push('');
 
