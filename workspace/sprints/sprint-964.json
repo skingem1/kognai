@@ -1,0 +1,39 @@
+{
+  "sprint_id": "sprint-964",
+  "title": "PACT-IMPL-02 — CoordinationFrame lifecycle + in-memory registry",
+  "description": "Implement PACT multi-agent coordination layer: CoordinationFrame open/close/abort/addParticipant, and an in-memory MandateRegistry for frame validation. Complete the PACT v0.2 surface area. No external deps. Max 150 lines per file.",
+  "block": "GODMAN-PROTOCOLS",
+  "source": "qwen-recommendation",
+  "tasks": [
+    {
+      "id": "964-01",
+      "title": "PACT src/coordinator.ts — openFrame, closeFrame, abortFrame, addParticipant",
+      "type": "feature",
+      "task_target": "workspace/godman-protocols/pact/src/coordinator.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-964"
+    },
+    {
+      "id": "964-02",
+      "title": "PACT src/registry.ts — in-memory MandateRegistry (store, get, revoke, list)",
+      "type": "feature",
+      "task_target": "workspace/godman-protocols/pact/src/registry.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-964"
+    },
+    {
+      "id": "964-03",
+      "title": "PACT src/index.ts — add coordinator + registry exports",
+      "type": "feature",
+      "task_target": "workspace/godman-protocols/pact/src/index.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-964"
+    }
+  ]
+}

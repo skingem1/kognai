@@ -32,5 +32,11 @@ export {
   paymentAllowed,
 } from './verifier.js';
 
+// Coordination frame lifecycle
+export { CoordinationError, openFrame, closeFrame, abortFrame, addParticipant, addMandateToFrame } from './coordinator.js';
+
+// Mandate registry
+export { MandateRegistry, defaultRegistry } from './registry.js';
+
 /** Protocol version constant */
 export const PACT_VERSION = '0.2' as const;
