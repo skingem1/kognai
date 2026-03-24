@@ -1,67 +1,184 @@
-# SIGNAL — Event Bus and Pub/Sub
+# SIGNAL — Event Bus and Pub/Sub for Agent Swarms
 
-> **Status:** Skeleton — not published. Part of the Godman Protocols portfolio.
+> **v0.2.0** · Apache 2.0 · `@godman-protocols/signal` · Node 20+ / Deno 1.40+
 
-SIGNAL is an open protocol that provides Protocol for event bus and pub/sub for agent swarms — enabling asynchronous, topic-based communication between agents.
+SIGNAL is an open protocol for real-time event delivery between AI agents — with glob-based topic matching, idempotency deduplication, and delivery receipts, so your swarm stays coordinated without polling.
 
-## Overview
+```bash
+npx skills add https://github.com/godman-protocols/signal
+# or
+npm install @godman-protocols/signal
+```
 
-| Property | Value |
-|----------|-------|
-| Version | 0.1.0-skeleton |
-| License | Apache 2.0 |
-| Namespace | `@godman-protocols/signal` |
-| Runtime target | Node 20+ / Deno 1.40+ / Edge |
+---
+
+## The Problem
+
+Multi-agent systems need to react to events: a mandate was signed, a task completed, a resource released. Without an event bus:
+
+- **Polling everywhere** — agents waste cycles checking each other's state
+- **Lost events** — no delivery guarantees means agents miss critical signals
+- **Duplicate processing** — without idempotency, retries cause double execution
+
+SIGNAL is the missing communication backbone for agent swarms.
+
+---
 
 ## Core Concepts
 
-- **Topic** —a named channel that agents can publish to or subscribe to
-- **Event** —a timestamped, typed message published to a Topic
-- **Subscription** —a binding between an agent and a Topic with optional filters
-- **EventLog** —an append-only ledger of all Events on a Topic (retention-bounded)
-- **DeliveryGuarantee** —the QoS level for event delivery (at-most-once, at-least-once, exactly-once)
+| Concept | What it is |
+|---------|-----------|
+| **Event** | A signed, timestamped message on a dot-notation topic (e.g. `task.completed`) |
+| **Subscription** | A registration to receive events matching a glob-style topic filter |
+| **EventBus** | In-memory pub/sub engine with topic matching and delivery tracking |
+| **DeliveryReceipt** | Confirmation that an event was delivered and processed (or failed) |
+| **IdempotencyKey** | Deduplication key — same key = same event, skip re-delivery |
 
-## Repository Structure
+---
 
+## Quickstart
+
+```typescript
+import { EventBus, createEvent } from '@godman-protocols/signal';
+
+const bus = new EventBus();
+const SECRET = process.env.SIGNAL_SECRET!;
+
+// 1. Subscribe to task completion events
+const delivered: string[] = [];
+bus.subscribe('did:kognai:sherlock', 'task.*', (event) => {
+  delivered.push(event.topic);
+});
+
+// 2. Publish an event
+const event = createEvent(
+  'did:kognai:messi',         // publisher
+  'task.completed',            // topic
+  { taskId: 'sprint-973-01' }, // payload
+  SECRET
+);
+
+const receipts = await bus.publish(event);
+// → [{ status: 'processed', ... }]
+
+// 3. Idempotency — publishing the same event again is a no-op
+const dupeReceipts = await bus.publish(event);
+// → [{ status: 'duplicate-skipped', ... }]
+
+// 4. Wildcard matching
+bus.subscribe('did:kognai:guardiola', 'mandate.**', (event) => {
+  // Matches: mandate.signed, mandate.revoked, mandate.frame.closed
+});
 ```
-signal/
-├── README.md
-├── LICENSE
-├── package.json
-├── src/
-│   ├── index.ts          # Public API surface
-│   └── types.ts          # Core type definitions
-├── .claude-plugin        # Claude Code integration (INTEL-005)
-├── .cursor-plugin        # Cursor IDE integration (INTEL-005)
-├── .codex               # Codex integration (INTEL-005)
-└── .openclaw            # ClaWHub / OpenClaw integration (INTEL-005)
-```
 
-## Roadmap
+---
 
-- [ ] Core type definitions
-- [ ] Reference implementation stubs
-- [ ] TypeScript SDK (this repo)
-- [ ] Python SDK
-- [ ] Integration tests with PACT mandates
-- [ ] x402 payment-gated operations
+## API Summary
+
+### Event Creation (`src/bus.ts`)
+
+| Function | Description |
+|----------|-------------|
+| `createEvent(publisher, topic, payload, secret, options?)` | Create a signed event |
+
+### EventBus (`src/bus.ts`)
+
+| Method | Description |
+|--------|-------------|
+| `subscribe(agent, topicFilter, handler, deliveryMode?)` | Subscribe to matching events |
+| `unsubscribe(subscriptionId)` | Cancel a subscription |
+| `publish(event)` | Deliver event to all matching subscribers |
+| `getReceipts()` | Get all delivery receipts |
+| `subscriptionCount` | Number of active subscriptions |
+
+### Topic Matching (`src/bus.ts`)
+
+| Function | Description |
+|----------|-------------|
+| `topicMatches(filter, topic)` | Test if a topic matches a glob filter |
+
+### Singleton
+
+| Export | Description |
+|--------|-------------|
+| `defaultBus` | Pre-created singleton EventBus for single-process use |
+
+---
+
+## Topic Matching Rules
+
+Topics use dot notation: `task.completed`, `mandate.frame.closed`
+
+Filters support two wildcards:
+- **`*`** — matches exactly one segment: `task.*` matches `task.completed` but not `task.sub.completed`
+- **`**`** — matches zero or more segments: `mandate.**` matches `mandate`, `mandate.signed`, `mandate.frame.closed`
+
+---
+
+## Delivery Modes
+
+| Mode | Guarantee |
+|------|-----------|
+| `at-least-once` (default) | Event delivered at least once; handler may see retries |
+| `at-most-once` | Event delivered at most once; may be lost on failure |
+
+Idempotency deduplication applies regardless of delivery mode — duplicate events (same `idempotencyKey`) are always skipped.
+
+---
+
+## Security Model
+
+SIGNAL v0.2 uses HMAC-SHA256 for event signing. The signature covers: event ID, topic, publisher, and timestamp.
+
+**Production upgrade path:**
+- Replace HMAC with Ed25519 for publisher identity verification
+- Add Supabase Realtime or Redis Streams transport adapter
+- Add WebSocket transport for cross-process delivery
+- Persistent event log with replay capability
+
+---
+
+## Compatibility
+
+| System | How it connects |
+|--------|----------------|
+| **Kognai** (event bus) | SIGNAL formalises the Supabase `kognai_events` table pattern |
+| **PACT** (mandates) | Mandate lifecycle events: `mandate.signed`, `mandate.revoked`, `mandate.expired` |
+| **SCORE** (evaluations) | Evaluation events: `score.evaluation.completed`, `score.reputation.updated` |
+| **DRS** (resources) | Resource events: `resource.allocated`, `resource.released`, `resource.preempted` |
+
+---
 
 ## Related Protocols
 
 | Protocol | Purpose |
 |----------|---------|
-| PACT | Agent coordination and trust |
-| LAX | Latency-aware execution scheduling |
-| SCORE | Scoring and reputation for agent outputs |
-| AMF | Agent Message Format |
-| DRS | Dynamic Resource Scheduling |
-| SOUL | Constitutional constraints and safety |
-| SIGNAL | Event bus and pub/sub for agent swarms |
+| **PACT** | Agent coordination and trust |
+| **LAX** | Latency-aware execution scheduling |
+| **SCORE** | Scoring and reputation for agent outputs |
+| **AMF** | Agent Message Format |
+| **DRS** | Dynamic Resource Scheduling |
+| **SOUL** | Constitutional constraints and safety |
+| **SIGNAL** (this repo) | Event bus and pub/sub for agent swarms |
 
-## Contributing
+---
 
-Not open for contributions yet. Skeleton phase — internal design only.
+## Roadmap
+
+- [x] Signed event creation (v0.2)
+- [x] In-memory EventBus with glob topic matching (v0.2)
+- [x] Idempotency deduplication (v0.2)
+- [x] Delivery receipts with status tracking (v0.2)
+- [ ] Supabase Realtime transport adapter (v0.3)
+- [ ] Redis Streams transport adapter (v0.3)
+- [ ] Event replay from persistent log (v0.4)
+- [ ] Python SDK (v0.5)
+- [ ] Cross-process WebSocket delivery (v0.5)
+
+---
 
 ## License
 
 Apache License 2.0 — see [LICENSE](./LICENSE)
+
+Part of the [Godman Protocols](https://github.com/godman-protocols) portfolio.
