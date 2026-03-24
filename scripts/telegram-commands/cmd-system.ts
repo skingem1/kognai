@@ -3275,3 +3275,25 @@ export function cmdPm2Errors(): string {
 
   return lines.join('\n');
 }
+
+/**
+ * Sprint 1173: /godman-tag — create git tags for all 8 godman packages
+ * Usage: /godman-tag (dry-run preview) | /godman-tag confirm (actually tag)
+ */
+export function cmdGodmanTag(args?: string): string {
+  const confirm = (args ?? '').trim().toLowerCase() === 'confirm';
+  const scriptPath = path.join(ROOT, 'scripts', 'godman-tag-all.sh');
+  if (!fs.existsSync(scriptPath)) {
+    return '❌ scripts/godman-tag-all.sh not found — run Sprint 1172 first';
+  }
+  const flags = confirm ? '' : '--dry-run';
+  const label = confirm ? 'LIVE — creating + pushing tags' : 'DRY-RUN — no git ops';
+  try {
+    const out = execSync(`bash "${scriptPath}" ${flags} 2>&1`, { encoding: 'utf-8', timeout: 30000, cwd: ROOT, stdio: ['pipe','pipe','pipe'] });
+    const summary = out.split('\n').filter(l => l.trim()).slice(-6).join('\n');
+    return `*Godman Tag All* (${label})\n\`\`\`\n${summary}\n\`\`\`\n${confirm ? '✅ Tags created and pushed.' : 'Run /godman-tag confirm to apply.'}`;
+  } catch (e: any) {
+    const err = ((e.stdout ?? e.stderr ?? e.message ?? '') as string).trim().slice(0, 300);
+    return `❌ godman-tag-all.sh failed:\n\`\`\`\n${err}\n\`\`\``;
+  }
+}

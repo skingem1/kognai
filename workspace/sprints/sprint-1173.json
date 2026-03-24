@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-1173",
+  "title": "GODMAN-LAUNCH — add /godman-tag Telegram command (runs godman-tag-all.sh)",
+  "description": "Add cmdGodmanTag() to cmd-system.ts that runs scripts/godman-tag-all.sh --dry-run (safe by default). Operator runs /godman-tag to preview tags and /godman-tag confirm to actually create them.",
+  "source": "queue-empty-strategic",
+  "block": "GODMAN-LAUNCH",
+  "tasks": [
+    {
+      "id": "1173-01",
+      "title": "Add cmdGodmanTag() to cmd-system.ts",
+      "type": "feature",
+      "task_type": "ux",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-1173"
+    }
+  ]
+}
