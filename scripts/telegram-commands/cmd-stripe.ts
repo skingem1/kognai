@@ -477,15 +477,25 @@ export function cmdAchiri(): string {
     } catch { /* skip */ }
 
     // Sprint 1074: Re-engagement stats
+    // Sprint 1138 (wave 17): re-engagement success rate (sent vs replied)
     const reengagePath = path.join(ROOT, 'workspace', 'achiri', 'reengage-log.jsonl');
     if (fs.existsSync(reengagePath)) {
       const reLines = fs.readFileSync(reengagePath, 'utf-8').split('\n').filter(l => l.trim());
       const today = new Date().toISOString().slice(0, 10);
       let todayCount = 0;
+      let repliedCount = 0;
+      const reengagedUids = new Set<string>();
       for (const l of reLines) {
-        try { if (JSON.parse(l).sentAt?.startsWith(today)) todayCount++; } catch {}
+        try {
+          const re = JSON.parse(l);
+          if (re.sentAt?.startsWith(today)) todayCount++;
+          if (re.uid) reengagedUids.add(re.uid);
+          if (re.replied === true) repliedCount++;
+        } catch {}
       }
-      lines.push(`*Re-engagement:* ${todayCount} today / ${reLines.length} total`);
+      const replyPct = reLines.length > 0 ? Math.round((repliedCount / reLines.length) * 100) : 0;
+      const replyStr = reLines.length > 0 ? ` · *${replyPct}%* reply rate (${repliedCount}/${reLines.length})` : '';
+      lines.push(`*Re-engagement:* ${todayCount} today / ${reLines.length} total${replyStr}`);
       lines.push('');
     }
 

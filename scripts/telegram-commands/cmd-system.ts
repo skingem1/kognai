@@ -215,7 +215,19 @@ export function cmdHealth(): string {
     hetznerSection = '\n\n*Hetzner VPS:* ⚠️ HETZNER_TAILSCALE_IP not set or ping failed';
   }
 
-  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${ollamaSection}${memWarnSection}${memTableSection}${supabaseSection}${diskSection}${watchdogSection}${runtimeSection}${tailscaleSection}${hetznerSection}`;
+  // Sprint 1139 (wave 17): telegram-bot process uptime
+  let botUptimeSection = '';
+  try {
+    const procs = getPm2List();
+    const botProc = procs.find(p => p.name === 'telegram-bot');
+    if (botProc) {
+      const uptimeStr = fmtUptime(botProc.uptimeMs);
+      const icon = botProc.status === 'online' ? '✅' : '❌';
+      botUptimeSection = `\n\n*Telegram Bot:* ${icon} ${botProc.status} · uptime ${uptimeStr}`;
+    }
+  } catch { /* skip */ }
+
+  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${botUptimeSection}${ollamaSection}${memWarnSection}${memTableSection}${supabaseSection}${diskSection}${watchdogSection}${runtimeSection}${tailscaleSection}${hetznerSection}`;
 }
 
 export function cmdTier(): string {
@@ -330,6 +342,19 @@ export function cmdReport(): string {
     }
   } catch { /* skip */ }
 
+  // Sprint 1143 (wave 17): days since last git commit
+  let commitLine = '';
+  try {
+    const lastCommitTs = execSync('git log -1 --format=%ct 2>/dev/null', { cwd: ROOT, encoding: 'utf-8', timeout: 5000 }).trim();
+    if (lastCommitTs) {
+      const ageH = (Date.now() - parseInt(lastCommitTs) * 1000) / 3600000;
+      const ageStr = ageH < 1 ? `${Math.round(ageH * 60)}m ago` : ageH < 24 ? `${Math.round(ageH)}h ago` : `${Math.round(ageH / 24)}d ago`;
+      const devIcon = ageH > 48 ? '⚠️' : '✅';
+      const msg = execSync('git log -1 --format=%s 2>/dev/null', { cwd: ROOT, encoding: 'utf-8', timeout: 5000 }).trim().slice(0, 60);
+      commitLine = `\n*Last commit:* ${devIcon} ${ageStr} — ${msg}`;
+    }
+  } catch { /* skip */ }
+
   return (
     `${statusIcon} *Kognai System Report*\n${now}\n${alertBlock}\n` +
     `*PM2* (${online}/${procs.length} live):\n${pm2Lines || '  (no data)'}\n\n` +
@@ -337,7 +362,7 @@ export function cmdReport(): string {
     `Last heartbeat: ${lastBeat} UTC\n\n` +
     `*Beta:* agents_onboarded=${beta.agents_onboarded ?? 0}, companies=${beta.companies_onboarded ?? 0}, txns=${beta.transactions_monitored ?? 0}\n` +
     `*Financials:* MRR $${mrr} | Tier: ${tier} | Billing activation: ${billingDate}\n\n` +
-    `*Gate:* ${gateLine}${achiriTestLine}\n` +
+    `*Gate:* ${gateLine}${achiriTestLine}${commitLine}\n` +
     `*Sprint:* ${sprintLine}`
   );
 }
@@ -1082,7 +1107,10 @@ export function cmdErrors(filterProcess?: string): string {
       }
     } catch { /* skip */ }
 
-    output.push(`⚠️ *PM2 Errors (last 24h)* — ${countStr}${trendStr} · _${windowStr}_\n`);
+    // Sprint 1142 (wave 17): unique processes affected
+    const uniqueProcs = new Set(errored.map(e => e.name)).size;
+    const procsStr = ` · ${uniqueProcs} process${uniqueProcs !== 1 ? 'es' : ''} affected`;
+    output.push(`⚠️ *PM2 Errors (last 24h)* — ${countStr}${trendStr}${procsStr} · _${windowStr}_\n`);
 
     // Sprint 1111: group by error type, show top 3
     const typeCounts = new Map<string, number>();
@@ -1368,6 +1396,16 @@ export async function cmdSmoke(chatId: string): Promise<void> {
         lines.push('');
         lines.push(`⚠️ Telegram bot: TELEGRAM_BOT_TOKEN not set`);
       }
+    } catch { /* skip */ }
+
+    // Sprint 1141 (wave 17): check that morning-brief PM2 cron exists
+    try {
+      const pm2Procs = getPm2List();
+      const hasMorningBrief = pm2Procs.some(p => p.name === 'scs001-morning-brief');
+      lines.push('');
+      lines.push(hasMorningBrief
+        ? `✅ Morning brief cron: registered in PM2`
+        : `⚠️ Morning brief cron: *missing from PM2* — run \`pm2 start ecosystem.config.js --only scs001-morning-brief\``);
     } catch { /* skip */ }
 
     await sendMessage(chatId, lines.join('\n'));

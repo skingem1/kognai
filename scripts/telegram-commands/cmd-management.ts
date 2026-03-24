@@ -1815,8 +1815,21 @@ export function cmdStatus(): string {
   const viewFilled = Math.round(viewPct / 5);
   const viewBar = '█'.repeat(viewFilled) + '░'.repeat(20 - viewFilled);
 
+  // Sprint 1136 (wave 17): active sprint number from sprint-queue.json
+  let activeSprintStr = '';
+  try {
+    const qPath = path.join(ROOT, 'workspace', 'sprint-queue.json');
+    if (fs.existsSync(qPath)) {
+      const q = JSON.parse(fs.readFileSync(qPath, 'utf-8'));
+      const pending = (q.queue ?? []).filter((i: any) => i.status === 'pending');
+      const lastDone = (q.queue ?? []).filter((i: any) => i.status === 'done').slice(-1)[0];
+      const nextSprint = pending[0]?.sprint ?? lastDone?.sprint;
+      if (nextSprint) activeSprintStr = ` · Sprint *#${nextSprint}*`;
+    }
+  } catch { /* skip */ }
+
   const lines = [
-    '📊 *Kognai Status Dashboard*',
+    `📊 *Kognai Status Dashboard*${activeSprintStr}`,
     '',
     `\`[${bar}]\` ${pct}% posts`,
     `\`[${viewBar}]\` ${viewPct}% views`,

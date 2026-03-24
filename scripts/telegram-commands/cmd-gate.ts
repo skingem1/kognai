@@ -156,6 +156,28 @@ export function cmdGate(): string {
         return `📅 Last 7d: *${last7.length} posts* (${rate7d}/day)`;
       } catch { return ''; }
     })(),
+    // Sprint 1137 (wave 17): posts-per-weekday bar (Mon-Sun)
+    (() => {
+      if (!fs.existsSync(manualPostsPath)) return '';
+      try {
+        const dayLabels = ['Mo','Tu','We','Th','Fr','Sa','Su'];
+        const counts = [0,0,0,0,0,0,0];
+        const lines = fs.readFileSync(manualPostsPath, 'utf-8').split('\n').filter(l => l.trim());
+        for (const l of lines) {
+          try {
+            const p = JSON.parse(l);
+            const ts = p.posted_at ?? p.recorded_at;
+            if (!ts) continue;
+            const dow = (new Date(ts).getDay() + 6) % 7; // 0=Mon
+            counts[dow]++;
+          } catch { /* skip */ }
+        }
+        const maxC = Math.max(...counts, 1);
+        const sparkChars = ['▁','▂','▃','▄','▅','▆','▇','█'];
+        const bars = counts.map((n,i) => `${dayLabels[i]}${sparkChars[Math.min(7,Math.floor(n/maxC*7))]}`).join(' ');
+        return `📊 Weekday: \`${bars}\``;
+      } catch { return ''; }
+    })(),
     ``,
     `*── Infrastructure ──*`,
     `🔥 Warmup: ${warmupStatus}`,
@@ -539,6 +561,28 @@ export function cmdPace(): string {
       lines.push(`🎯 *Post ${todayRemaining} more today* (${todayPostedCount}/${todayObligation} done)`);
     }
   }
+
+  // Sprint 1140 (wave 17): estimated gate completion date at current pace
+  try {
+    const mpLines = fs.readFileSync(manualPostsPath, 'utf-8').split('\n').filter((l: string) => l.trim());
+    if (mpLines.length > 1) {
+      const timestamps = mpLines
+        .map((l: string) => { try { const p = JSON.parse(l); return new Date(p.posted_at ?? p.recorded_at).getTime(); } catch { return 0; } })
+        .filter((t: number) => t > 0)
+        .sort((a: number, b: number) => a - b);
+      const daysSinceFirst = Math.max(1, (Date.now() - timestamps[0]) / 86_400_000);
+      const actualPacePerDay = mpLines.length / daysSinceFirst;
+      if (actualPacePerDay > 0) {
+        const daysToComplete = Math.ceil(postsNeeded / actualPacePerDay);
+        const etaDate = new Date(Date.now() + daysToComplete * 86_400_000).toISOString().slice(0, 10);
+        const gateDate = '2026-04-07';
+        const onTrack = etaDate <= gateDate;
+        const etaIcon = onTrack ? '✅' : '⚠️';
+        lines.push('');
+        lines.push(`${etaIcon} *Gate ETA:* ${etaDate} at *${actualPacePerDay.toFixed(1)}/day* pace${onTrack ? ' — on track' : ' — behind gate!'}`);
+      }
+    }
+  } catch { /* skip */ }
 
   // Sprint 1137 (wave 16): time-boxed daily posting schedule
   if (postsNeeded > 0 && todayObligation > 0) {

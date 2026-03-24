@@ -609,6 +609,25 @@ export function cmdToday(): string {
   lines.push('• 12:00 PM — lunch break');
   lines.push('• 7:00 PM — evening scroll');
 
+  // Sprint 1144 (wave 17): next posting slot countdown
+  try {
+    const nowMs = Date.now();
+    const todayBase = new Date(new Date().toISOString().slice(0, 10) + 'T00:00:00');
+    const slots = [
+      { label: '7:00 AM', ms: todayBase.getTime() + 7 * 3600000 },
+      { label: '12:00 PM', ms: todayBase.getTime() + 12 * 3600000 },
+      { label: '7:00 PM', ms: todayBase.getTime() + 19 * 3600000 },
+    ];
+    const next = slots.find(s => s.ms > nowMs);
+    if (next) {
+      const diffMs = next.ms - nowMs;
+      const diffH = Math.floor(diffMs / 3600000);
+      const diffM = Math.floor((diffMs % 3600000) / 60000);
+      const countdownStr = diffH > 0 ? `${diffH}h ${diffM}m` : `${diffM}m`;
+      lines.push(`\n⏱ *Next slot:* ${next.label} — in *${countdownStr}*`);
+    }
+  } catch { /* skip */ }
+
   // Sprint 1141 (wave 15): Telegram bot env check
   const botToken = process.env.TELEGRAM_BOT_TOKEN;
   const chatId = process.env.OWNER_TELEGRAM_CHAT_ID;
