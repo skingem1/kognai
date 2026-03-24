@@ -1,0 +1,41 @@
+{
+  "sprint_id": "sprint-1154",
+  "title": "OPS — Telegram operator UX wave 33: revenue summary, content diversity, cost log in /health",
+  "description": "Add 3 compact /health signals: (1) reports/revenue-summary.json MRR + paid users, (2) reports/content-diversity-audit.json unique hooks + topics count, (3) workspace/scs001/cost-log.json monthly spend + cost per video.",
+  "source": "queue-empty-auto",
+  "tasks": [
+    {
+      "id": "1154-01",
+      "title": "Add revenue-summary.json MRR + paid users to /health",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1154"
+    },
+    {
+      "id": "1154-02",
+      "title": "Add content-diversity-audit.json unique hooks + topics to /health",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1154"
+    },
+    {
+      "id": "1154-03",
+      "title": "Add cost-log.json monthly spend + cost/video to /health",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1154"
+    }
+  ]
+}

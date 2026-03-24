@@ -774,7 +774,50 @@ export function cmdHealth(): string {
     }
   } catch { /* skip */ }
 
-  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${botUptimeSection}${ollamaSection}${memWarnSection}${memTableSection}${supabaseSection}${supabaseSyncSection}${diskSection}${watchdogSection}${runtimeSection}${tailscaleSection}${hetznerSection}${anthropicSection}${ioSection}${morningBriefSection}${digestSection}${staleCronsSection}${supabaseDomainSection}${anthropicBudgetSection}${pipelineValidationSection}${worktreeSection}${botMemSection}${gateDaysSection}${backupSection}${postingHealthSection}${exportFilesSection}${tokenHealthSection}${statsSection}${inventorySection}${gateAuditSection}${autoDeliverSection}${bulkCaptionsSection}${playbackSection}${qcSection}${smokeSection}${achiriDauSection}${achiriE2eSection}${videoValidSection}${pipelineMetricsSection}${achiriSafetySection}${leaderboardSection}${brainxSection}${achiriLaunchSection}${postingScheduleSection}${phase15GateSection}${batchProduceSection}`;
+  // Sprint 1154 (wave 33): revenue-summary.json MRR + paid users
+  let revenueSummarySection = '';
+  try {
+    const rvPath = path.join(ROOT, 'reports', 'revenue-summary.json');
+    if (fs.existsSync(rvPath)) {
+      const rv = JSON.parse(fs.readFileSync(rvPath, 'utf-8'));
+      const mrr = rv.mrr ?? 0;
+      const paidUsers = rv.paid_users ?? 0;
+      const totalUsers = rv.total_users ?? 0;
+      const rvIcon = mrr > 0 ? '💰' : paidUsers > 0 ? '🟡' : '⚪';
+      revenueSummarySection = `\n\n${rvIcon} *Revenue:* €${mrr} MRR · ${paidUsers} paid / ${totalUsers} total users`;
+    }
+  } catch { /* skip */ }
+
+  // Sprint 1154 (wave 33): content-diversity-audit.json unique hooks + topics
+  let contentDiversitySection = '';
+  try {
+    const cdPath = path.join(ROOT, 'reports', 'content-diversity-audit.json');
+    if (fs.existsSync(cdPath)) {
+      const cd = JSON.parse(fs.readFileSync(cdPath, 'utf-8'));
+      const totalVideos = cd.total_videos ?? 0;
+      const uniqueHooks = cd.unique_hooks ?? 0;
+      const uniqueTopics = cd.unique_topics ?? 0;
+      const cdIcon = uniqueHooks >= 5 && uniqueTopics >= 10 ? '✅' : uniqueHooks >= 3 ? '🟡' : '⚠️';
+      contentDiversitySection = `\n\n${cdIcon} *Content diversity:* ${totalVideos} vids · ${uniqueHooks} hooks · ${uniqueTopics} topics`;
+    }
+  } catch { /* skip */ }
+
+  // Sprint 1154 (wave 33): cost-log.json monthly spend + cost per video
+  let costLogSection = '';
+  try {
+    const clPath = path.join(ROOT, 'workspace', 'scs001', 'cost-log.json');
+    if (fs.existsSync(clPath)) {
+      const cl = JSON.parse(fs.readFileSync(clPath, 'utf-8'));
+      const monthly = cl.monthly_summary ?? cl.all_time ?? {};
+      const totalCost = monthly.total_cost ?? cl.all_time?.total_cost ?? 0;
+      const costPerVideo = cl.all_time?.cost_per_video ?? 0;
+      const videosGenerated = monthly.videos_generated ?? cl.all_time?.total_videos ?? 0;
+      const clIcon = totalCost < 10 ? '🟢' : totalCost < 50 ? '🟡' : '🔴';
+      costLogSection = `\n\n${clIcon} *Cost:* $${totalCost.toFixed(2)} this month · $${costPerVideo.toFixed(3)}/video · ${videosGenerated} generated`;
+    }
+  } catch { /* skip */ }
+
+  return `${statusIcon} *Health* — \`${h.status}\`\n${beat}${beatStaleWarning}\nPhase: ${h.phase} | Day ${h.beta?.day_number ?? '?'}\n\n*Infra checks:*\n${checks}${pm2}${critDown}${botUptimeSection}${ollamaSection}${memWarnSection}${memTableSection}${supabaseSection}${supabaseSyncSection}${diskSection}${watchdogSection}${runtimeSection}${tailscaleSection}${hetznerSection}${anthropicSection}${ioSection}${morningBriefSection}${digestSection}${staleCronsSection}${supabaseDomainSection}${anthropicBudgetSection}${pipelineValidationSection}${worktreeSection}${botMemSection}${gateDaysSection}${backupSection}${postingHealthSection}${exportFilesSection}${tokenHealthSection}${statsSection}${inventorySection}${gateAuditSection}${autoDeliverSection}${bulkCaptionsSection}${playbackSection}${qcSection}${smokeSection}${achiriDauSection}${achiriE2eSection}${videoValidSection}${pipelineMetricsSection}${achiriSafetySection}${leaderboardSection}${brainxSection}${achiriLaunchSection}${postingScheduleSection}${phase15GateSection}${batchProduceSection}${revenueSummarySection}${contentDiversitySection}${costLogSection}`;
 }
 
 export function cmdTier(): string {
