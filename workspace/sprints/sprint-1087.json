@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1087",
+  "title": "GODMAN-LAUNCH — /godman-smoke: detailed failure output when a protocol test fails",
+  "description": "Already implemented in Sprint 1070 — failure output shows up to 4 relevant error lines per protocol. No changes needed.",
+  "block": "GODMAN-PROTOCOLS",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1087-01",
+      "title": "Verify detailed failure output already present in godman-smoke.ts",
+      "type": "validation",
+      "task_target": "scripts/godman-smoke.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1087"
+    }
+  ]
+}
