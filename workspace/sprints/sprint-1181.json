@@ -1,0 +1,21 @@
+{
+  "sprint_id": "sprint-1181",
+  "title": "GODMAN-LAUNCH — scripts/godman-version-bump.sh to bump all 8 packages to same version",
+  "description": "Create scripts/godman-version-bump.sh that bumps all 8 godman package.json version fields (pact, lax, score, signal, soul, amf, drs, sdk) to a specified version string. Supports --dry-run. Uses node for JSON editing to preserve formatting.",
+  "source": "queue-prescribed",
+  "block": "GODMAN-LAUNCH",
+  "swarm_bypassed": false,
+  "tasks": [
+    {
+      "id": "1181-01",
+      "title": "Create scripts/godman-version-bump.sh",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/godman-version-bump.sh",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1181"
+    }
+  ]
+}
