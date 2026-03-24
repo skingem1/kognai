@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-972",
+  "title": "GODMAN-INTEGRATION — Cross-protocol integration test (all 7 protocols)",
+  "description": "End-to-end integration test proving all 7 Godman Protocols work together: PACT mandate → SOUL constitutional check → SIGNAL event → SCORE evaluation → AMF envelope → DRS allocation → LAX routing. Single test file, comprehensive assertions.",
+  "block": "GODMAN-PROTOCOLS",
+  "source": "qwen-recommendation",
+  "tasks": [
+    {
+      "id": "972-01",
+      "title": "Integration test: workspace/godman-protocols/integration.test.ts",
+      "type": "test",
+      "task_target": "workspace/godman-protocols/integration.test.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-972"
+    }
+  ]
+}
