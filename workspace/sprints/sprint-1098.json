@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1098",
+  "title": "GODMAN-LAUNCH — /godman: check npm pack --dry-run passes for each protocol",
+  "description": "Added npm pack --dry-run check per protocol to /godman dashboard. Shows packable/failed status for each of the 7 protocols.",
+  "block": "GODMAN-PROTOCOLS",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1098-01",
+      "title": "Add npm pack --dry-run check to cmdGodman",
+      "type": "feature",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1098"
+    }
+  ]
+}

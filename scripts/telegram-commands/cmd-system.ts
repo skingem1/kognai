@@ -1370,6 +1370,24 @@ export function cmdGodman(): string {
     lines.push(`  ${ver ? `✅ @godman-protocols/${proto} v${ver}` : `❌ @godman-protocols/${proto} — NOT PUBLISHED`}`);
   }
 
+  // Sprint 1098: npm pack --dry-run check per protocol
+  lines.push('');
+  lines.push('*npm pack (dry-run):*');
+  for (const proto of protocols) {
+    const protoDir = path.join(BASE, proto);
+    if (!fs.existsSync(path.join(protoDir, 'package.json'))) {
+      lines.push(`  ❌ ${proto} — no package.json`);
+      continue;
+    }
+    try {
+      execSync('npm pack --dry-run 2>&1', { cwd: protoDir, encoding: 'utf-8', timeout: 10000, stdio: ['pipe','pipe','pipe'] });
+      lines.push(`  ✅ ${proto} — packable`);
+    } catch (e: any) {
+      const msg = (e.stderr || e.message || '').split('\n')[0].slice(0, 60);
+      lines.push(`  ❌ ${proto} — ${msg}`);
+    }
+  }
+
   // X engagement replies (intel reply drafts)
   const xRepliesDir = path.join(ROOT, 'workspace', 'social', 'x-replies');
   let xCount = 0;
