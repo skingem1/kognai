@@ -125,9 +125,13 @@ export interface XMandateHeaders {
  * Build X-Mandate headers from a RecurringMandate.
  */
 export function buildXMandateHeaders(
-  _mandate: RecurringMandate,
+  mandate: RecurringMandate,
 ): XMandateHeaders {
-  throw new Error('buildXMandateHeaders: not implemented — design phase');
+  return {
+    'X-Mandate-Id': mandate.mandateId,
+    'X-Mandate-Signature': mandate.signature,
+    'X-Mandate-Nonce': String(mandate.nonce),
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -222,12 +226,40 @@ export type ModelEnforcementPath =
   | 'reject'         // Mandate explicitly forbids this tier
   | 'escalate';      // Mandate requires approval from grantor
 
+/** Tier numeric ranking — higher = more powerful/expensive */
+const TIER_RANK: Record<string, number> = {
+  'T1': 1, 'T2': 2, 'T3': 3, 'T4': 4, '*': 99,
+};
+
+/** Map known models to their tiers */
+const MODEL_TIERS: Record<string, string> = {
+  'qwen3:0.6b': 'T1', 'qwen3:4b': 'T1',
+  'qwen3:14b': 'T2', 'deepseek-r1:14b': 'T2',
+  'claude-sonnet-4-6': 'T3', 'gpt-4o': 'T3',
+  'claude-opus-4-6': 'T4',
+};
+
+/**
+ * Get the tier for a model ID. Returns 'T3' as default for unknown models.
+ */
+export function getModelTier(model: string): string {
+  return MODEL_TIERS[model] ?? 'T3';
+}
+
 /**
  * Determine the enforcement path for a model request.
+ * Logic follows enforcement-paths.md default resolution.
  */
 export function resolveEnforcementPath(
-  _mandateTier: string,
-  _requestedModel: string,
+  mandateTier: string,
+  requestedModel: string,
 ): ModelEnforcementPath {
-  throw new Error('resolveEnforcementPath: not implemented — design phase');
+  if (mandateTier === '*') return 'allow';
+
+  const requestedTier = getModelTier(requestedModel);
+  const mandateRank = TIER_RANK[mandateTier] ?? 0;
+  const requestedRank = TIER_RANK[requestedTier] ?? 0;
+
+  if (requestedRank <= mandateRank) return 'allow';
+  return 'reject';
 }

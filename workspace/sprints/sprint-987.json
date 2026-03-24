@@ -1,0 +1,11 @@
+{
+  "sprint_id": "sprint-987",
+  "title": "BOND-IMPL-01 — Mandate manager + enforcement + X-Mandate headers",
+  "description": "Implement BOND runtime: MandateManager (create, execute, revoke, budget check), buildXMandateHeaders, resolveEnforcementPath. Replace design stubs with working code. Node.js crypto only.",
+  "block": "BOND",
+  "source": "queue-exhausted-protocol-impl",
+  "tasks": [
+    { "id": "987-01", "title": "Implement BOND runtime in workspace/bond/bond-runtime.ts", "type": "feature", "task_target": "workspace/bond/bond-runtime.ts", "agent": "coder", "status": "pending", "priority": "high", "sprint_id": "sprint-987" },
+    { "id": "987-02", "title": "Update bond-schema.ts stubs with real implementations", "type": "fix", "task_target": "workspace/bond/bond-schema.ts", "agent": "coder", "status": "pending", "priority": "high", "sprint_id": "sprint-987" }
+  ]
+}
