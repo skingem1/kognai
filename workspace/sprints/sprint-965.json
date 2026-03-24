@@ -1,0 +1,29 @@
+{
+  "sprint_id": "sprint-965",
+  "title": "PACT-DOCS — README + API reference for April 14 launch",
+  "description": "Write PACT README.md (quickstart, install, concept, usage examples, upgrade path) and docs/api.md (full API reference for all exported functions). These are the launch artifacts for GitHub, X thread, and ClaWHub listing on April 14.",
+  "block": "GODMAN-PROTOCOLS",
+  "source": "qwen-recommendation",
+  "tasks": [
+    {
+      "id": "965-01",
+      "title": "PACT README.md — quickstart, concept, usage, upgrade path",
+      "type": "docs",
+      "task_target": "workspace/godman-protocols/pact/README.md",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-965"
+    },
+    {
+      "id": "965-02",
+      "title": "PACT docs/api.md — full API reference",
+      "type": "docs",
+      "task_target": "workspace/godman-protocols/pact/docs/api.md",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-965"
+    }
+  ]
+}
