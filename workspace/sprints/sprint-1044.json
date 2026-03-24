@@ -1,17 +1,27 @@
 {
   "sprint_id": "sprint-1044",
-  "title": "GODMAN-LAUNCH — SDK docs/api.md: full API reference for all 7 protocols",
-  "description": "The SDK docs/ directory was empty. Created docs/api.md with complete API reference for all 7 Godman Protocols via the unified SDK — import styles, function signatures, code examples, version constants.",
-  "block": "GODMAN-PROTOCOLS",
-  "source": "queue-prescribed",
+  "title": "OPS — /bottest: run smoke tests from Telegram + backfill legacy timestamps",
+  "description": "Add /bottest Telegram command that runs test-telegram-commands.ts and test-posting-flow.ts, reports results. Backfill timestamps on legacy manual-posts entries.",
+  "block": "OPS",
+  "source": "queue-empty-auto",
   "tasks": [
     {
       "id": "1044-01",
-      "title": "Create workspace/godman-protocols/sdk/docs/api.md",
+      "title": "Add cmdBotTest to cmd-management.ts + register /bottest in telegram-bot.ts",
       "type": "feature",
-      "task_target": "workspace/godman-protocols/sdk/docs/api.md",
+      "task_target": "scripts/telegram-commands/cmd-management.ts",
       "agent": "coder",
-      "status": "done",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1044"
+    },
+    {
+      "id": "1044-02",
+      "title": "Backfill timestamps on legacy manual-posts.jsonl entries",
+      "type": "fix",
+      "task_target": "workspace/scs001/manual-posts.jsonl",
+      "agent": "coder",
+      "status": "pending",
       "priority": "medium",
       "sprint_id": "sprint-1044"
     }

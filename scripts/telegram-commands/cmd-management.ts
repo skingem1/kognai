@@ -1769,3 +1769,69 @@ export function cmdBlockers(): string {
 
   return lines.join('\n');
 }
+
+// Sprint 1044: /bottest — run command + posting flow smoke tests
+export function cmdBotTest(): string {
+  const results: string[] = ['*🧪 Bot Test Results*\n'];
+  let totalPass = 0;
+  let totalFail = 0;
+
+  // Test 1: command smoke test
+  try {
+    const out = execSync('npx ts-node scripts/test-telegram-commands.ts 2>&1', {
+      cwd: ROOT, encoding: 'utf-8', timeout: 120_000, stdio: ['pipe', 'pipe', 'pipe'],
+    });
+    const match = out.match(/(\d+) PASS \/ (\d+) FAIL/);
+    if (match) {
+      const p = parseInt(match[1]), f = parseInt(match[2]);
+      totalPass += p; totalFail += f;
+      results.push(f === 0 ? `✅ Commands: ${p}/${p + f} PASS` : `❌ Commands: ${p}/${p + f} (${f} FAIL)`);
+    } else {
+      results.push('⚠️ Commands: output parse error');
+    }
+  } catch (err: any) {
+    const out = err.stdout || err.message || '';
+    const match = out.match(/(\d+) PASS \/ (\d+) FAIL/);
+    if (match) {
+      const p = parseInt(match[1]), f = parseInt(match[2]);
+      totalPass += p; totalFail += f;
+      results.push(`❌ Commands: ${p}/${p + f} (${f} FAIL)`);
+    } else {
+      results.push(`❌ Commands: error — ${(err.message || '').slice(0, 60)}`);
+      totalFail++;
+    }
+  }
+
+  // Test 2: posting flow test
+  try {
+    const out = execSync('npx ts-node scripts/test-posting-flow.ts 2>&1', {
+      cwd: ROOT, encoding: 'utf-8', timeout: 120_000, stdio: ['pipe', 'pipe', 'pipe'],
+    });
+    const match = out.match(/(\d+) PASS \/ (\d+) FAIL/);
+    if (match) {
+      const p = parseInt(match[1]), f = parseInt(match[2]);
+      totalPass += p; totalFail += f;
+      results.push(f === 0 ? `✅ Posting flow: ${p}/${p + f} PASS` : `❌ Posting flow: ${p}/${p + f} (${f} FAIL)`);
+    } else {
+      results.push('⚠️ Posting flow: output parse error');
+    }
+  } catch (err: any) {
+    const out = err.stdout || err.message || '';
+    const match = out.match(/(\d+) PASS \/ (\d+) FAIL/);
+    if (match) {
+      const p = parseInt(match[1]), f = parseInt(match[2]);
+      totalPass += p; totalFail += f;
+      results.push(`❌ Posting flow: ${p}/${p + f} (${f} FAIL)`);
+    } else {
+      results.push(`❌ Posting flow: error — ${(err.message || '').slice(0, 60)}`);
+      totalFail++;
+    }
+  }
+
+  results.push('');
+  results.push(totalFail === 0
+    ? `✅ *All ${totalPass} tests PASS*`
+    : `🔴 *${totalFail} failures* out of ${totalPass + totalFail} tests`);
+
+  return results.join('\n');
+}

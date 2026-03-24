@@ -53,11 +53,7 @@ if (postsExist) {
     .map(l => { try { return JSON.parse(l); } catch { return null; } })
     .filter(Boolean);
   assert('Posts have video_id', posts.every((e: any) => typeof e.video_id === 'string'));
-  const withTimestamp = posts.filter((e: any) => typeof e.timestamp === 'string');
-  const missingTs = posts.length - withTimestamp.length;
-  assert('Posts have timestamp (or legacy)', missingTs === 0 || missingTs <= posts.length,
-    missingTs > 0 ? `${missingTs} legacy entries without timestamp` : 'all have timestamps');
-  if (missingTs > 0) console.log(`    WARNING: ${missingTs} entries lack timestamp (legacy data)`);
+  assert('Posts have posted_at timestamp', posts.every((e: any) => typeof e.posted_at === 'string'));
 }
 
 // ─── Test 3: dry-run filtering ───────────────────────────────────────
