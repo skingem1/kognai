@@ -2723,7 +2723,7 @@
       "sprint": 1164,
       "title": "GODMAN-LAUNCH — /godman: show npm registry status (npmjs.com reachable)",
       "block": "GODMAN-PROTOCOLS",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "Before launch day, /godman should verify npmjs.com is reachable with a quick curl check so operator knows publish will work before attempting it."
     },
