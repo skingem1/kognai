@@ -1,114 +1,90 @@
 {
-  "_note": "AUTHORITATIVE sprint execution order. The brief generator reads this and injects the first item as a MANDATORY directive, bypassing Qwen's recommendation. Pop items by setting status=done after each sprint ships. Human-maintained \u2014 edit to re-prioritise.",
-  "updated": "2026-03-22T22:45",
+  "_note": "AUTHORITATIVE sprint execution order. The brief generator reads this and injects the first item as a MANDATORY directive, bypassing Qwen's recommendation. Pop items by setting status=done after each sprint ships. Human-maintained — edit to re-prioritise.",
+  "updated": "2026-03-24T21:30",
   "owner": "Tarek (human)",
-  "_plan_rationale": "RESEEDED 2026-03-22 (round 8). INTEL-002 insight: WARMUP-01 is P0 PRECONDITION before any posting. 10 new docs: AMD-19-23, PACT, Chomsky, INTEL-002, WARMUP-01, V2 implementation. Achiri PAUSED.",
-  "_achiri_status": "PAUSED \u2014 resume after April 7 gate.",
-  "_critical_path": "WARMUP-01 (human 3 days) \u2192 BROWSER-01 (install + wire) \u2192 SCS-001-V2 (5 sprints) \u2192 POSTING \u2192 GATE",
+  "_plan_rationale": "RESEEDED 2026-03-24 (round 9). 15 new docs analyzed (BOND, AMD-25, ARCH-001, EVAL-011, INTEL-004-011, Godman Protocols, Spielberg). SCS-001 VIDEO PRODUCTION PAUSED — infrastructure/architecture sprint block only. No produce-vlog, no batch-produce, no entertainment. Resume video production only after Godman reviews all generated videos.",
+  "_scs001_status": "PAUSED — no video generation. Swarm must NOT run any produce-vlog.ts, batch-produce.ts, entertainment.ts, or code-demo.ts tasks.",
+  "_critical_path": "EVAL-011 env migration → Godman Protocols repo setup → ARCH-001 tmux layer → AMD-25 design → Spielberg scaffold",
   "queue": [
     {
-      "sprint": 783,
-      "title": "WARMUP-01 \u2014 TikTok algorithm warmup agent tasks (W01-02 + W01-03)",
-      "block": "WARMUP-01",
-      "status": "done",
+      "sprint": 953,
+      "title": "EVAL-011-01 — OpenClaw env var migration (CLAWDBOT_*/MOLTBOT_* → OPENCLAW_*)",
+      "block": "EVAL-011",
+      "status": "pending",
       "priority": "critical",
-      "rationale": "INTEL-002 insight: Larry creator confirms fresh accounts posting AI content immediately get throttled. HUMAN PRECONDITION: Godman must do 3 days of manual TikTok scrolling/following/commenting FIRST (Task W01-01 \u2014 cannot be delegated). This sprint handles agent tasks: (1) W01-02: create scripts/scs001/verify-warmup-signal.ts \u2014 after /warmup-complete, check if algorithm is trained on AI/tech niche. (2) W01-03: wire Stripe/RevenueCat post-attribution for revenue tracking per video. (3) Add /warmup-complete Telegram command that unlocks posting pipeline."
+      "rationale": "P0 CRITICAL from EVAL-011. OpenClaw v2026.3.22-beta.1 removes CLAWDBOT_*/MOLTBOT_* env vars. Search all files for legacy env vars and rename to OPENCLAW_*. Also migrate ~/.moltbot state dir to ~/.openclaw if referenced. Fix any nano-banana-pro skill wrapper references."
     },
     {
-      "sprint": 784,
-      "title": "BROWSER-01 \u2014 Install Browser Use CLI + test TikTok upload",
-      "block": "EVAL-009",
-      "status": "done",
-      "priority": "critical",
-      "rationale": "P0 \u2014 UNBLOCKS GATE. BLOCKED on WARMUP-01 completion. Install Browser Use CLI. Test TikTok upload via Chrome Default profile. HUMAN PREREQUISITE: logged into TikTok + warmup complete."
-    },
-    {
-      "sprint": 785,
-      "title": "BROWSER-01 \u2014 Create post-tiktok.sh helper + wire into scs001-publishing",
-      "block": "EVAL-009",
-      "status": "done",
-      "priority": "critical",
-      "rationale": "Wire Browser Use CLI into publishing agent. post-tiktok.sh: MP4 + caption \u2192 navigate \u2192 upload \u2192 fill \u2192 post \u2192 screenshot. Add /post-browser Telegram command."
-    },
-    {
-      "sprint": 786,
-      "title": "SCS-001-V2-001 \u2014 Scorsese agent + ScenarioBundle contract",
-      "block": "SCS-001-V2",
-      "status": "done",
+      "sprint": 954,
+      "title": "GODMAN-REPO-01 — Create godman-protocols GitHub org + PACT repo skeleton",
+      "block": "GODMAN-PROTOCOLS",
+      "status": "pending",
       "priority": "high",
-      "rationale": "SCS-001 v2 Sprint V2-001. (1) Create contracts/scs-001-v2/scenario-bundle-v1.ts with types. (2) Create agents/scs001-scorsese/index.ts (max 300 lines). T3 APEX Claude Sonnet. Receives TrendSignal \u2192 produces ScenarioBundle. Hook_test is constitutional: must prove 10M+ view format. Includes system prompt from spec."
+      "rationale": "From Godman Protocols Portfolio Strategy. Create the GitHub org structure under skingem1. PACT repo with: README.md, LICENSE (Apache 2.0), package.json, src/ skeleton, .claude-plugin, .cursor-plugin, .codex, .openclaw configs (INTEL-005 four-target pattern + .openclaw for ClaWHub). Do NOT publish yet — skeleton only."
     },
     {
-      "sprint": 787,
-      "title": "SCS-001-V2-002 \u2014 MovieEditor agent (FFmpeg + C4 TTS + C5 Music)",
-      "block": "SCS-001-V2",
-      "status": "done",
+      "sprint": 955,
+      "title": "GODMAN-REPO-02 — Create remaining 6 protocol repo skeletons (LAX, SCORE, AMF, DRS, SOUL, SIGNAL)",
+      "block": "GODMAN-PROTOCOLS",
+      "status": "pending",
       "priority": "high",
-      "rationale": "SCS-001 v2 Sprint V2-002. Create agents/scs001-movie-editor/index.ts. Consumes ScenarioBundle scenes \u2192 assembles final video. FFmpeg composition + C4 TTS voiceover + C5 background music. Max 400 lines."
+      "rationale": "From Godman Protocols Portfolio Strategy + 7-Week Calendar. Create 6 repos following same structure as PACT. Each with README, Apache 2.0, package.json, src/, all 5 plugin config dirs. Use consistent template. Skeleton only — no implementation code."
     },
     {
-      "sprint": 788,
-      "title": "SCS-001-V2-003 \u2014 ArtDirector quality gate agent",
-      "block": "SCS-001-V2",
-      "status": "done",
+      "sprint": 956,
+      "title": "SPIELBERG-01 — Demo recording agent scaffold + demo script JSON schema",
+      "block": "SPIELBERG",
+      "status": "pending",
       "priority": "high",
-      "rationale": "SCS-001 v2 Sprint V2-003. Create agents/scs001-art-director/index.ts. T2.5 Haiku. Two questions: 'Does this serve the message?' + 'Would a human stop scrolling?' Replaces QC agent for v2 pipeline."
+      "rationale": "From Spielberg Agent Spec (Sprint 545). Tasks 545-01 to 545-03: Install asciinema + agg, create demo script JSON schema (TypeScript types), create agents/spielberg/index.ts orchestrator (max 250 lines). Verify asciinema recording works. T1 qwen3:4b."
     },
     {
-      "sprint": 789,
-      "title": "SCS-001-V2-004 \u2014 Integration test + v2 pipeline runner",
-      "block": "SCS-001-V2",
-      "status": "done",
+      "sprint": 957,
+      "title": "SPIELBERG-02 — asciinema recording mode + post-production pipeline",
+      "block": "SPIELBERG",
+      "status": "pending",
       "priority": "high",
-      "rationale": "SCS-001 v2 Sprint V2-004. Create scripts/scs001/run-v2-pipeline.ts. Wire: Scorsese \u2192 VideoGen \u2192 MovieEditor \u2192 ArtDirector \u2192 Publishing. End-to-end test: produce 1 video through full v2 pipeline."
+      "rationale": "From Spielberg Spec tasks 545-04 to 545-06. Build asciinema recording mode (headless, programmatic keypress timing). Build post-production pipeline (reuse SCS-001 v2 Movie Editor FFmpeg patterns: title card 3s, caption overlays, closing card 5s). Output: 1920x1080, H.264+AAC, 30fps."
     },
     {
-      "sprint": 790,
-      "title": "SCS-001-V2-005 \u2014 Browser Use publishing + first real post",
-      "block": "SCS-001-V2",
-      "status": "done",
-      "priority": "high",
-      "rationale": "SCS-001 v2 Sprint V2-005. Wire Browser Use CLI into v2 publishing stage. Post first Art Director-approved video to TikTok. Godman reviews + approves for posting."
-    },
-    {
-      "sprint": 791,
-      "title": "AMD-18 \u2014 Add psychological_resilience ACP dimension + Sherlock tone audit",
-      "block": "AMD-18",
-      "status": "done",
+      "sprint": 958,
+      "title": "ARCH-001-PREP — tmux session setup + adaptive heartbeat + observer agent prompt template",
+      "block": "ARCH-001",
+      "status": "pending",
       "priority": "medium",
-      "rationale": "AMD-18 Sprint 509. Add psychological_resilience (weight 0.05) to trust-scores.json. Update ACP weights. Sherlock Emotional Tone Audit function."
+      "rationale": "From ARCH-001 tasks 01-04. Create tmux named session kognai-amd21 with 4 windows (orchestrator + 3 observers). Write heartbeat.sh (max 60 lines, adaptive intervals 30s/120s/300s). Write observer agent prompt template (max 400 words, AMF schema). Write _orchestrator/ directory structure + worker status JSON schema."
     },
     {
-      "sprint": 792,
-      "title": "CHOMSKY \u2014 Prompt Engineer agent scaffold + first audit",
-      "block": "CHOMSKY",
-      "status": "done",
+      "sprint": 959,
+      "title": "AMD-25-DESIGN — Domain Knowledge Architecture schema + Curator agent spec",
+      "block": "AMD-25",
+      "status": "pending",
       "priority": "medium",
-      "rationale": "Sprint 519. Create agents/chomsky/index.ts + prompt.md + SOUL.md. T1 qwen3:4b. 5 optimisation criteria. Harvey approval gate on every change. First audit: review 5 highest-cost agent prompts."
+      "rationale": "From AMD-25 Sprint 560. Design DKA schema with AMF-extended vector format. Define 5 domain knowledge stores (Trading, BizDev, Research, Content, Regulatory). Write Curator agent spec template. Define knowledge boundary rules and constitutional retrieval filter spec. Design only — no implementation."
     },
     {
-      "sprint": 793,
-      "title": "AMD-19 \u2014 ERC-8004 identity token mint + Genesis prep",
-      "block": "AMD-19",
-      "status": "done",
+      "sprint": 960,
+      "title": "BOND-DESIGN — Mandate schema validation + PayAI executor interface",
+      "block": "BOND",
+      "status": "pending",
       "priority": "medium",
-      "rationale": "Sprint 511. Mint ERC-721 identity token on Base. Token URI contains Founding Charter SHA-256 hash + swarm metadata. EAS attestation = Genesis Ceremony on-chain component. Use existing EAS schemas."
+      "rationale": "From BOND Protocol v0.1 spec. Validate recurring mandate EIP-712 schema. Define PayAI mandate executor TypeScript interface. Define the three X-Mandate headers. Draft default model enforcement paths. Design only — no on-chain deployment."
     },
     {
-      "sprint": 794,
-      "title": "GATE \u2014 April 7 readiness report with warmup + posting status",
-      "block": "GATE",
-      "status": "done",
+      "sprint": 961,
+      "title": "INTEL-REPLIES — Draft X reply content for Atenov, Spisak, Clawcard, OpenClaw Masterclass",
+      "block": "INTEL-ACTIONS",
+      "status": "pending",
       "priority": "medium",
-      "rationale": "Full gate assessment: warmup status, Browser Use CLI posting status, total publishable videos, manual posting progress, days remaining. Surface via /gate."
+      "rationale": "From INTEL-004 (Atenov AMD-24 validation), INTEL-008 (Spisak constitutional constraints), INTEL-009 (Clawcard composability), INTEL-010 (OpenClaw masterclass). Draft 4 X reply threads from @invoica_ai. Each max 280 chars. Save to workspace/social/x-replies/."
     },
     {
-      "sprint": 795,
-      "title": "CONTENT \u2014 Batch production: 5 videos via multiformat pipeline",
-      "block": "CONTENT",
-      "status": "done",
+      "sprint": 962,
+      "title": "CLAWCARD-EVAL — Evaluate Clawcard phone for TikTok autonomous verification",
+      "block": "INTEL-009",
+      "status": "pending",
       "priority": "medium",
-      "rationale": "Continue content production while v2 pipeline is being built. 5 videos via existing multiformat pipeline."
+      "rationale": "From INTEL-009. Clawcard provides agent email + phone — could solve Sprint 508-BROWSER-01 TikTok phone verification blocker. Install @clawcard/cli (npm). Test phone number acquisition. Verify if number can receive SMS for TikTok verification. Document findings."
     }
   ]
 }
