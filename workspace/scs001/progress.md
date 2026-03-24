@@ -5098,3 +5098,13 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - Swarm used: no (hook auto-created files)
 - Issues: tmux not installed (brew install tmux needed before live session use)
 - Timestamp: 2026-03-24T23:00:00Z
+
+## Sprint 959 — AMD-25-DESIGN
+- Status: PASS
+- Commit: da017cc6
+- Files created: workspace/amd25/dka-schema.ts, workspace/amd25/curator-spec.md, workspace/amd25/boundary-rules.ts
+- Test: TypeScript typecheck — PASS
+- Block: AMD-25
+- Swarm used: no (design docs, direct write)
+- Issues: none
+- Timestamp: 2026-03-24T23:15:00Z
