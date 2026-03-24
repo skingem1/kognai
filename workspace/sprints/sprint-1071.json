@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1071",
+  "title": "GATE — /record: validate video_id exists in auto-delivered or publish-ledger before recording",
+  "description": "Add validation to cmdRecord that warns if video_id is not found in publish-ledger.jsonl or auto-delivered.jsonl. Still allows recording (user may have manually created video) but warns.",
+  "block": "GATE",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1071-01",
+      "title": "Add video_id existence check in cmdRecord with warning for unknown IDs",
+      "type": "feature",
+      "task_target": "scripts/telegram-commands/cmd-content.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1071"
+    }
+  ]
+}

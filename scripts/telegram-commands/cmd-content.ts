@@ -45,6 +45,22 @@ export function cmdRecord(args: string): string {
     return `⚠️ Video \`${videoId}\` already recorded. Use /queue to see unposted videos.`;
   }
 
+  // Sprint 1071: warn if video_id not found in ledger or auto-delivered (likely a typo)
+  const isForced = args.includes('--force');
+  const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
+  const autoDelivered = readLines(path.join(ROOT, 'workspace', 'scs001', 'auto-delivered.jsonl'));
+  const knownVideo = ledger.some((e: any) => e.video_id === videoId || e.clip_id === videoId) ||
+    autoDelivered.some((e: any) => e.video_id === videoId || e.clip_id === videoId);
+  if (!knownVideo && !isForced) {
+    return (
+      `⚠️ *Video ID not found in pipeline.*\n\n` +
+      `\`${videoId}\` is not in auto-delivered or publish-ledger.\n` +
+      `This may be a typo — check with /queue.\n\n` +
+      `To record anyway (non-pipeline post):\n` +
+      `\`/record ${videoId} ${views}${rest ? ' ' + rest : ''} --force\``
+    );
+  }
+
   // Sprint 404: Enrich with experiment metadata for A/B analysis
   const expData = getExperimentData(videoId);
   const entry: Record<string, unknown> = {
@@ -69,10 +85,12 @@ export function cmdRecord(args: string): string {
   const gateDate = new Date('2026-04-07T00:00:00Z');
   const daysLeft = Math.max(0, Math.ceil((gateDate.getTime() - Date.now()) / 86_400_000));
 
+  const unknownWarn = !knownVideo ? `\n⚠️ _Video ID not found in ledger — recording anyway_` : '';
+
   return (
     `✅ *Post recorded!*\n\n` +
     `Video: \`${videoId}\`\n` +
-    `Views: ${views}${title ? `\nTitle: ${title}` : ''}${tiktokUrl ? `\n🔗 TikTok URL saved (views will update automatically)` : ''}\n\n` +
+    `Views: ${views}${title ? `\nTitle: ${title}` : ''}${tiktokUrl ? `\n🔗 TikTok URL saved (views will update automatically)` : ''}${unknownWarn}\n\n` +
     `📊 *Gate progress:* ${postCount}/30 posts · ${totalViews}/500 views\n` +
     `${postsLeft > 0 ? `⏳ ${postsLeft} more posts needed · ${daysLeft}d to Apr 7` : '✅ Post target met!'}`
   );

@@ -672,7 +672,8 @@
       "sprint": 1070,
       "title": "QUALITY — /godman-smoke: show per-protocol test output on failure",
       "block": "GODMAN-PROTOCOLS",
-      "status": "pending",
+      "status": "done",
+      "_note": "Already implemented — shows up to 4 lines of error output per failed protocol.",
       "priority": "medium",
       "rationale": "/godman-smoke runs smoke tests but output is terse on failure. Add per-protocol assertion detail so operator can debug before launch day (21d)."
     },
@@ -680,7 +681,7 @@
       "sprint": 1071,
       "title": "GATE — /record: validate video_id exists in auto-delivered before recording",
       "block": "GATE",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "Operator sometimes mistypes /record IDs. Add a check that the video_id exists in auto-delivered.jsonl before writing to manual-posts.jsonl, with a warning if not found."
     },
