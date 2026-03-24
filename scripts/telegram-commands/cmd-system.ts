@@ -1305,11 +1305,20 @@ export function cmdGodman(): string {
   } catch {}
   lines.push(`📣 X megathread: ${tweetCount > 0 ? `✅ ready (${tweetCount} tweets) — /godman-thread to preview` : '❌ not found'}`);
 
-  // Sprint 1062: CHANGELOG.md presence check
-  const allHaveChangelog = PROTOCOLS.concat(['sdk']).every(p =>
-    fs.existsSync(path.join(BASE, p, 'CHANGELOG.md'))
-  );
-  lines.push(`📋 CHANGELOGs: ${allHaveChangelog ? '✅ all 8 present' : '❌ some missing'}`);
+  // Sprint 1062 + 1089: CHANGELOG.md per-protocol check
+  const changelogResults = PROTOCOLS.concat(['sdk']).map(p => ({
+    name: p,
+    ok: fs.existsSync(path.join(BASE, p, 'CHANGELOG.md')),
+  }));
+  const missingChangelog = changelogResults.filter(r => !r.ok);
+  if (missingChangelog.length === 0) {
+    lines.push(`📋 CHANGELOGs: ✅ all 8 present`);
+  } else {
+    lines.push(`📋 CHANGELOGs: ❌ missing in: ${missingChangelog.map(r => r.name).join(', ')}`);
+    for (const r of changelogResults) {
+      lines.push(`  ${r.ok ? '✅' : '❌'} ${r.name}`);
+    }
+  }
 
   // Sprint 1062: SDK api.md presence check
   const apiMdPath = path.join(BASE, 'sdk', 'docs', 'api.md');
