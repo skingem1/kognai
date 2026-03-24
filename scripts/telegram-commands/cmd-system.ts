@@ -1453,6 +1453,41 @@ export function cmdGodman(): string {
     }
   }
 
+  // Sprint 1112: per-protocol test pass counts
+  lines.push('');
+  lines.push('*Test coverage:*');
+  for (const proto of PROTOCOLS.concat(['sdk'])) {
+    const protoDir = path.join(BASE, proto);
+    if (!fs.existsSync(path.join(protoDir, 'package.json'))) {
+      lines.push(`  ⚠️ ${proto} — no package.json`);
+      continue;
+    }
+    const pkgJson = JSON.parse(fs.readFileSync(path.join(protoDir, 'package.json'), 'utf-8'));
+    if (!pkgJson.scripts?.test) {
+      lines.push(`  ℹ️ ${proto} — no test script`);
+      continue;
+    }
+    try {
+      const out = execSync('npm test 2>&1', { cwd: protoDir, encoding: 'utf-8', timeout: 30000, stdio: ['pipe','pipe','pipe'] });
+      const passMatch = out.match(/(\d+)\s+passing/);
+      const failMatch = out.match(/(\d+)\s+failing/);
+      const passing = passMatch ? parseInt(passMatch[1]) : null;
+      const failing = failMatch ? parseInt(failMatch[1]) : 0;
+      if (passing !== null) {
+        lines.push(failing === 0 ? `  ✅ ${proto} — ${passing} tests pass` : `  ❌ ${proto} — ${passing} pass, ${failing} fail`);
+      } else {
+        lines.push(`  ✅ ${proto} — tests ok`);
+      }
+    } catch (e: any) {
+      const out = (e.stdout ?? e.stderr ?? e.message ?? '') as string;
+      const failMatch = out.match(/(\d+)\s+failing/);
+      const passMatch = out.match(/(\d+)\s+passing/);
+      const failing = failMatch ? parseInt(failMatch[1]) : '?';
+      const passing = passMatch ? passMatch[1] : '0';
+      lines.push(`  ❌ ${proto} — ${passing} pass, ${failing} fail`);
+    }
+  }
+
   // Sprint 1098: npm pack --dry-run check per protocol
   lines.push('');
   lines.push('*npm pack (dry-run):*');
