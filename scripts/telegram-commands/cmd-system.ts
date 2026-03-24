@@ -2878,6 +2878,7 @@ export function cmdGodman(): string {
 
   // Protocol status
   let allOk = true;
+  const noTestScript: string[] = []; // Sprint 1163: track missing test scripts
   for (const proto of PROTOCOLS) {
     const pkgPath = path.join(BASE, proto, 'package.json');
     const distPath = path.join(BASE, proto, 'dist');
@@ -2886,11 +2887,18 @@ export function cmdGodman(): string {
     try {
       const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'));
       version = pkg.version || '?';
-    } catch { /* skip */ }
+      if (!pkg.scripts?.test) noTestScript.push(proto); // Sprint 1163
+    } catch { noTestScript.push(proto); } // Sprint 1163: no package.json = no test
     try { hasDist = fs.existsSync(distPath) && fs.readdirSync(distPath).length > 0; } catch {}
     const icon = hasDist ? '✅' : '⚠️';
     if (!hasDist) allOk = false;
     lines.push(`${icon} \`@godman-protocols/${proto}\` v${version}${hasDist ? ' — built' : ' — needs build'}`);
+  }
+  // Sprint 1163: warn about protocols missing test scripts
+  if (noTestScript.length > 0) {
+    lines.push(`\n⚠️ *No test script:* ${noTestScript.join(', ')} — add npm test before launch`);
+  } else {
+    lines.push('\n✅ All protocols have test scripts');
   }
 
   // SDK

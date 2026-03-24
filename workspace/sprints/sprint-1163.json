@@ -1,0 +1,21 @@
+{
+  "sprint_id": "sprint-1163",
+  "title": "GODMAN-LAUNCH — /godman: warn if any protocol has no tests (missing test script)",
+  "description": "In cmdGodman(), check each protocol's package.json for a 'test' script. Collect protocols missing it and append a warning line listing them, e.g. '⚠️ No test script: pact, lax'. If all have tests, show '✅ All protocols have test scripts'.",
+  "source": "queue-prescribed",
+  "block": "GODMAN-PROTOCOLS",
+  "tasks": [
+    {
+      "id": "1163-01",
+      "title": "Check test script presence per protocol in cmdGodman(), emit warning if missing",
+      "type": "feature",
+      "task_type": "ux",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1163",
+      "notes": "File >3000 lines — swarm bypassed, written directly."
+    }
+  ]
+}
