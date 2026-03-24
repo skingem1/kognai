@@ -1,0 +1,31 @@
+{
+  "sprint_id": "sprint-1015",
+  "title": "GODMAN-LAUNCH — scripts/godman-smoke.ts: all-7 smoke test runner",
+  "description": "Pre-publish smoke validation. Create scripts/godman-smoke.ts that runs npm run test in each of 7 protocol dirs. Shows pass/fail per protocol. Called by /godman-smoke Telegram command. Also register /godman-smoke in telegram-bot.ts.",
+  "block": "GODMAN-PROTOCOLS",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1015-01",
+      "title": "Create scripts/godman-smoke.ts",
+      "type": "feature",
+      "task_target": "scripts/godman-smoke.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1015",
+      "description": "Create scripts/godman-smoke.ts (max 80 lines). For each of 7 protocols: spawnSync('npm', ['run','test'], {cwd: path.join(ROOT,'workspace/godman-protocols/<proto>'), encoding:'utf8'}). Show PASS/FAIL per protocol. Print summary. Export runGodmanSmoke(): string for Telegram use."
+    },
+    {
+      "id": "1015-02",
+      "title": "Register /godman-smoke in telegram-bot.ts",
+      "type": "feature",
+      "task_target": "scripts/telegram-bot.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1015",
+      "description": "Import runGodmanSmoke from godman-smoke.ts. Add case '/godman-smoke': response = runGodmanSmoke(); break; in sync commands section of telegram-bot.ts."
+    }
+  ]
+}
