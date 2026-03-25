@@ -47,8 +47,8 @@ export function cmdRecord(args: string): string {
   const dir = path.dirname(manualPostsPath);
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
 
-  // Check for duplicate
-  const existing = readLines(manualPostsPath);
+  // Sprint 1229: use readRealPosts for duplicate check — dry-run entries must not block real records
+  const existing = readRealPosts();
   if (existing.some((e: any) => e.video_id === videoId)) {
     return `⚠️ Video \`${videoId}\` already recorded. Use /queue to see unposted videos.`;
   }
@@ -333,8 +333,8 @@ export function cmdPosted(): string {
   const videoId = latest.video_id;
   const manualPostsPath = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
 
-  // Check for duplicate
-  const existing = readLines(manualPostsPath);
+  // Sprint 1229: use readRealPosts for duplicate check — dry-run entries must not block real records
+  const existing = readRealPosts();
   if (existing.some((e: any) => e.video_id === videoId)) {
     return `⚠️ \`${videoId}\` already recorded. Send \`/posted\` again after posting the next delivered video.`;
   }

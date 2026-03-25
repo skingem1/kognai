@@ -412,7 +412,6 @@ export function cmdDashboard(): string {
 
 export function cmdDigest(): string {
   // Gate status (Sprint 1220: exclude dry-runs)
-  const manualPostsPath = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
   const realPosts = readRealPosts();
   const postCount = realPosts.length;
   const totalViews = realPosts.reduce((s: number, p: any) => s + (p.views ?? 0), 0);

@@ -8,7 +8,7 @@ import * as path from 'path';
 import * as https from 'https';
 import { execSync } from 'child_process';
 import { sendMessage } from './telegram-api';
-import { ROOT, readLines, findCaptionedMp4 } from './shared';
+import { ROOT, readLines, readRealPosts, findCaptionedMp4 } from './shared';
 
 export async function cmdCheckout(chatId: string, args: string): Promise<void> {
   const stripeKey = process.env.STRIPE_SECRET_KEY || '';
@@ -289,7 +289,8 @@ export function cmdFunnel(): string {
     captionedCount = seen.size;
   } catch { /* skip */ }
 
-  const posts = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  // Sprint 1229: use readRealPosts to exclude dry-run entries from funnel stats
+  const posts = readRealPosts();
   const postedCount = posts.length;
 
   const over500 = posts.filter((p: any) => (p.views ?? 0) >= 500).length;

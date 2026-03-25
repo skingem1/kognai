@@ -1,0 +1,16 @@
+{
+  "sprint": 1229,
+  "title": "DRY-RUN FIX — cmd-stripe/content/posting.ts: final readRealPosts() sweep",
+  "type": "BUG",
+  "status": "done",
+  "track": "SCS-001",
+  "completed_at": "2026-03-24",
+  "changes": [
+    "cmd-stripe.ts: cmdFunnel — added readRealPosts import, use readRealPosts() for posted count/views",
+    "cmd-content.ts: cmdRecord duplicate check — use readRealPosts() so dry-run entries don't block real records",
+    "cmd-content.ts: cmdPosted duplicate check — use readRealPosts() so dry-run entries don't block real records",
+    "cmd-posting.ts: cmdDigest — removed now-unused manualPostsPath variable"
+  ],
+  "root_cause": "Remaining readLines(manual-posts.jsonl) calls in cmd-stripe and cmd-content duplicate checks",
+  "tsc": "clean (1 pre-existing unrelated error unchanged)"
+}
