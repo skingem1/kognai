@@ -3089,23 +3089,25 @@
       "sprint": 1227,
       "title": "LEMON-SCAFFOLD-01 \u2014 LemonSqueezy webhook handler + Supabase subscribers schema",
       "block": "REVENUE",
-      "status": "pending",
+      "status": "skipped",
       "priority": "critical",
-      "rationale": "Build Playbook Step 1.5 (Sprint 067). LemonSqueezy subscription flow is UNBUILT \u2014 zero code exists. Create: scripts/payments/lemon-webhook.ts (verify signature, parse order_created/subscription_created events, upsert to Supabase subscribers table). Create Supabase migration: subscribers table (id, email, lemon_customer_id, lemon_subscription_id, plan, status, created_at). Create scripts/payments/lemon-config.ts (LEMON_SIGNING_SECRET env var, product IDs). Add PM2 process entry. BLOCKED on account setup but code can be built now. Max 200 lines total."
+      "rationale": "Build Playbook Step 1.5 (Sprint 067). LemonSqueezy subscription flow is UNBUILT \u2014 zero code exists. Create: scripts/payments/lemon-webhook.ts (verify signature, parse order_created/subscription_created events, upsert to Supabase subscribers table). Create Supabase migration: subscribers table (id, email, lemon_customer_id, lemon_subscription_id, plan, status, created_at). Create scripts/payments/lemon-config.ts (LEMON_SIGNING_SECRET env var, product IDs). Add PM2 process entry. BLOCKED on account setup but code can be built now. Max 200 lines total.",
+      "_note": "Auto-skipped: sprint-1227 already committed"
     },
     {
       "sprint": 1228,
       "title": "LEMON-SCAFFOLD-02 \u2014 Bloomberg onboarding email + /subscribe Telegram command + /revenue wiring",
       "block": "REVENUE",
-      "status": "pending",
+      "status": "skipped",
       "priority": "high",
-      "rationale": "Completes Step 1.5. Bloomberg agent sends onboarding email on new subscriber event (template: welcome + what-you-get + first resource link). Add /subscribe command to Telegram bot: shows signup link + current subscriber count from Supabase. Wire subscriber count into /status and /revenue commands. Add test mode: LEMON_TEST=true bypasses signature check for local testing."
+      "rationale": "Completes Step 1.5. Bloomberg agent sends onboarding email on new subscriber event (template: welcome + what-you-get + first resource link). Add /subscribe command to Telegram bot: shows signup link + current subscriber count from Supabase. Wire subscriber count into /status and /revenue commands. Add test mode: LEMON_TEST=true bypasses signature check for local testing.",
+      "_note": "Auto-skipped: sprint-1228 already committed"
     },
     {
       "sprint": 1229,
       "title": "GODMAN-PUSH-PREP \u2014 push-protocols.sh + GitHub Actions CI for all 7 repos",
       "block": "GODMAN-PROTOCOLS",
-      "status": "pending",
+      "status": "done",
       "priority": "high",
       "rationale": "Prepare scripts/godman-push-to-github.sh that (1) creates bare git repos from workspace/godman-protocols/* local directories, (2) adds remote origin for github.com/godman-protocols/<name>, (3) pushes all branches+tags. BLOCKED on human creating GitHub org under skingem1. Also add .github/workflows/ci.yml to each protocol (npm install + npm test). This unblocks the human action: once they create the org, one command publishes all 7 repos. Generate a GITHUB-SETUP.md human action guide."
     },
