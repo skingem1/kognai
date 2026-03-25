@@ -114,7 +114,8 @@ export function cmdRecord(args: string): string {
 
 export function cmdQueue(): string {
   const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
-  const recorded = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  // Sprint 1227: use readRealPosts — dry-run posts must not hide real videos from queue
+  const recorded = readRealPosts();
   const recordedIds = new Set(recorded.map((e: any) => e.video_id).filter(Boolean));
 
   // Sprint 434: Load viral scores + metadata for ranking and display
@@ -271,8 +272,8 @@ export function cmdReview(): string {
     } catch { /* skip */ }
   }
 
-  // Check if already posted
-  const recorded = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  // Check if already posted — Sprint 1227: use readRealPosts to exclude dry-run posts
+  const recorded = readRealPosts();
   const isPosted = recorded.some((e: any) => e.video_id === videoId);
 
   return (
@@ -372,7 +373,8 @@ export function cmdPosted(): string {
 }
 
 export function cmdOnboard(): string {
-  const posts = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  // Sprint 1227: use readRealPosts to exclude dry-run entries from post count
+  const posts = readRealPosts();
   const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
   const daysLeft = Math.max(1, Math.ceil((new Date('2026-04-07').getTime() - Date.now()) / 86400000));
   const postsLeft = Math.max(0, 30 - posts.length);
@@ -443,7 +445,8 @@ export function cmdPipeline(): string {
 
   // 2. Total inventory
   const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
-  const recorded = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  // Sprint 1227: use readRealPosts to exclude dry-run entries from posted count
+  const recorded = readRealPosts();
   const recordedIds = new Set(recorded.map((e: any) => e.video_id).filter(Boolean));
   const unposted = (ledger as any[]).filter((e: any) => !recordedIds.has(e.video_id) && e.video_id);
 
@@ -1033,7 +1036,6 @@ export function cmdBacktest(): string {
 export function cmdFormatStats(): string {
   const expPath = path.join(ROOT, 'workspace', 'scs001', 'experiments.jsonl');
   const ledgerPath = path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl');
-  const manualPath = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
 
   const formatStats: Record<string, { produced: number; published: number; posted: number; totalViews: number; totalViral: number; viralCount: number }> = {};
   const knownFormats = ['explainer', 'debate', 'vision', 'listicle'];
@@ -1072,18 +1074,12 @@ export function cmdFormatStats(): string {
     }
   }
 
-  // Count from manual posts (posted + views)
-  if (fs.existsSync(manualPath)) {
-    for (const line of fs.readFileSync(manualPath, 'utf-8').split('\n')) {
-      if (!line.trim()) continue;
-      try {
-        const e = JSON.parse(line);
-        const fmt = e.format || 'explainer';
-        if (formatStats[fmt]) {
-          formatStats[fmt].posted++;
-          formatStats[fmt].totalViews += e.views ?? 0;
-        }
-      } catch { /* skip */ }
+  // Count from manual posts (posted + views) — Sprint 1227: use readRealPosts to exclude dry-run entries
+  for (const e of readRealPosts()) {
+    const fmt = (e as any).format || 'explainer';
+    if (formatStats[fmt]) {
+      formatStats[fmt].posted++;
+      formatStats[fmt].totalViews += (e as any).views ?? 0;
     }
   }
 

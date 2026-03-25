@@ -1,0 +1,18 @@
+{
+  "sprint": 1227,
+  "title": "DRY-RUN FIX — cmd-content.ts: replace remaining raw manual-posts.jsonl reads with readRealPosts()",
+  "type": "BUG",
+  "status": "done",
+  "track": "SCS-001",
+  "completed_at": "2026-03-24",
+  "changes": [
+    "scripts/telegram-commands/cmd-content.ts: cmdQueue() — replaced readLines(manual-posts.jsonl) with readRealPosts()",
+    "scripts/telegram-commands/cmd-content.ts: cmdReview() — replaced readLines(manual-posts.jsonl) with readRealPosts()",
+    "scripts/telegram-commands/cmd-content.ts: cmdOnboard() — replaced readLines(manual-posts.jsonl) with readRealPosts()",
+    "scripts/telegram-commands/cmd-content.ts: cmdPipeline() — replaced readLines(manual-posts.jsonl) with readRealPosts()",
+    "scripts/telegram-commands/cmd-content.ts: cmdFormatStats() — replaced manual readFileSync loop with readRealPosts(), removed manualPath variable"
+  ],
+  "root_cause": "Commands reading manual-posts.jsonl directly included dry-run entries (method: browser-post-dry, batch-browser-dry), inflating posted counts and hiding real unposted videos from queue",
+  "fix": "All 5 functions now use readRealPosts() which filters out dry-run entries",
+  "tsc": "clean"
+}
