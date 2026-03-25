@@ -6866,3 +6866,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (single-file edit, direct write)
 - Issues: none
 - Timestamp: 2026-03-25T12:00:00Z
+
+## Sprint 1248 — DIGEST-SPEND
+- Status: PASS
+- Commit: da895866
+- Files modified: scripts/daily-digest.ts
+- Files created: workspace/sprints/sprint-1248.json
+- Test: DIGEST_DRY_RUN=1 — PASS (shows $65.40/mo, 436 videos, $0.15/vid)
+- Pipeline: daily digest now shows MRR + spend + Stripe in one financial section
+- Swarm used: no (single-file edit, direct write)
+- Issues: none
+- Timestamp: 2026-03-25T12:15:00Z
