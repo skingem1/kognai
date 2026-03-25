@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1257",
+  "title": "GODMAN-LAUNCH \u2014 npm provenance + publish checklist script for all 8 packages",
+  "description": "Godman launch in 20d. Build a publish-all.sh that runs npm publish in correct order (protocols first, then SDK). Add --provenance flag for npm trust scores.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1257-01",
+      "title": "GODMAN-LAUNCH \u2014 npm provenance + publish checklist script for all 8 packages",
+      "type": "feature",
+      "task_type": "godman_protocols",
+      "task_target": "workspace/sprints/sprint-1257-output.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1257"
+    }
+  ]
+}
