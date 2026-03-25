@@ -1420,5 +1420,21 @@ module.exports = {
       out_file: "/Users/tarekmnif/kognai/logs/achiri-alpha-weekly-out.log",
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
+    {
+      name: "curator-trading",
+      script: "./scripts/agents/curator-trading.ts",
+      interpreter: "npx",
+      interpreter_args: "tsx",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: false,
+      watch: false,
+      cron_restart: "0 6 * * *",
+      env: {
+        NODE_ENV: "production",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/curator-trading-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/curator-trading-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
   ]
 };

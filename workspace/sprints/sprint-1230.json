@@ -1,18 +1,41 @@
 {
-  "sprint": 1230,
-  "title": "DRY-RUN FIX — standalone scripts: add readRealPosts helpers to daily-digest/morning-brief/watchdog/generate-daily-report/weekly-report",
-  "type": "BUG",
-  "status": "done",
-  "track": "SCS-001",
-  "completed_at": "2026-03-24",
-  "changes": [
-    "scripts/daily-digest.ts: added readRealPostsDD(), fixed getQueueStats() and getPostingStreak() to use it",
-    "scripts/morning-brief.ts: added readRealPostsMB(), fixed gate ETA pace calculation to use it",
-    "scripts/scs001/watchdog.ts: added readRealPostsWD(), fixed checkGateDeadline() to use it",
-    "scripts/generate-daily-report.ts: added readRealPostsDR(), fixed getPipelineOutput() and getGateProgress() to use it",
-    "scripts/weekly-report.ts: added readRealPostsWR(), fixed weekly post/view stats to use it"
-  ],
-  "root_cause": "Standalone cron scripts (not using shared.ts) had raw readLines(manual-posts.jsonl) calls that included dry-run entries, inflating gate/streak/queue metrics in automated reports",
-  "fix": "Added readRealPosts helper (unique name per file to avoid conflicts) after readLines in each script",
-  "tsc": "clean"
+  "sprint_id": "sprint-1230",
+  "title": "AMD25-IMPL-01 — Trading knowledge store + Curator agent scaffold",
+  "description": "Phase 1 implementation of AMD-25 DKA. Create trading knowledge store schema, curator-trading agent that reads topic-radar for finance signals, and PM2 cron config.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1230-01",
+      "title": "Create workspace/knowledge/trading/schema.json with DKA trading store config",
+      "type": "feature",
+      "task_type": "architecture",
+      "task_target": "workspace/knowledge/trading/schema.json",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1230"
+    },
+    {
+      "id": "1230-02",
+      "title": "Create scripts/agents/curator-trading.ts — reads topic-radar, filters finance signals, stores to knowledge/trading/",
+      "type": "feature",
+      "task_type": "agent",
+      "task_target": "scripts/agents/curator-trading.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1230"
+    },
+    {
+      "id": "1230-03",
+      "title": "Add curator-trading PM2 process to ecosystem.config.js",
+      "type": "feature",
+      "task_type": "devops",
+      "task_target": "ecosystem.config.js",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1230"
+    }
+  ]
 }

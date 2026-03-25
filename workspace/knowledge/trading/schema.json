@@ -1,0 +1,91 @@
+{
+  "domain": "trading",
+  "name": "Trading Intelligence",
+  "version": "1.0.0",
+  "description": "Market data, price signals, trade execution patterns, portfolio analysis, x402 transaction history",
+  "store": {
+    "path": "workspace/knowledge/trading/records/",
+    "maxRecords": 50000,
+    "retentionDays": 365,
+    "defaultClassification": "restricted"
+  },
+  "record_schema": {
+    "type": "object",
+    "required": ["id", "timestamp", "asset_class", "source", "confidence"],
+    "properties": {
+      "id": {
+        "type": "string",
+        "description": "Unique record ID (uuid or topic_id)"
+      },
+      "timestamp": {
+        "type": "string",
+        "format": "date-time",
+        "description": "ISO 8601 when this signal was captured"
+      },
+      "asset_class": {
+        "type": "string",
+        "enum": ["crypto", "equities", "forex", "commodities", "defi", "nft", "macro"],
+        "description": "Asset classification"
+      },
+      "timeframe": {
+        "type": "string",
+        "enum": ["intraday", "daily", "weekly", "monthly", "long-term"],
+        "description": "Signal timeframe"
+      },
+      "strategy_type": {
+        "type": "string",
+        "enum": ["momentum", "mean-reversion", "breakout", "fundamental", "sentiment", "trend-following", "news-driven"],
+        "description": "Strategy classification"
+      },
+      "source": {
+        "type": "string",
+        "description": "Data source (coingecko, topic-radar, manual, etc.)"
+      },
+      "source_url": {
+        "type": "string",
+        "description": "URL to the source data"
+      },
+      "title": {
+        "type": "string",
+        "description": "Signal title or headline"
+      },
+      "summary": {
+        "type": "string",
+        "description": "Brief summary of the signal"
+      },
+      "keywords": {
+        "type": "array",
+        "items": { "type": "string" },
+        "description": "Relevant keywords for retrieval"
+      },
+      "confidence": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 100,
+        "description": "Confidence score (0-100)"
+      },
+      "price_change_pct": {
+        "type": "number",
+        "description": "Price change percentage if applicable"
+      },
+      "curated_by": {
+        "type": "string",
+        "default": "curator-trading",
+        "description": "Agent that curated this record"
+      }
+    }
+  },
+  "access": {
+    "read": ["satoshi", "ceo", "cfo", "intelligence"],
+    "write": ["curator-trading", "satoshi", "intelligence"]
+  },
+  "filters": {
+    "finance_keywords": [
+      "crypto", "bitcoin", "btc", "ethereum", "eth", "defi", "trading",
+      "market", "price", "stock", "forex", "commodity", "gold", "silver",
+      "nft", "token", "coin", "blockchain", "yield", "apy", "staking",
+      "liquidity", "swap", "exchange", "bull", "bear", "rally", "correction",
+      "hedge", "portfolio", "investment", "futures", "options", "leverage"
+    ]
+  }
+}

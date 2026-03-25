@@ -1,0 +1,208 @@
+{
+  "batch_id": "batch-2026-03-25T09-41-46",
+  "count": 10,
+  "records": [
+    {
+      "id": "cg-dae735d95742",
+      "timestamp": "2026-03-23T04:04:13.823Z",
+      "asset_class": "defi",
+      "timeframe": "daily",
+      "strategy_type": "momentum",
+      "source": "coingecko",
+      "source_url": "https://www.coingecko.com/en/coins/siren-2",
+      "title": "Siren (SIREN) 📈 136.9%",
+      "summary": "Trending on CoinGecko — rank #1",
+      "keywords": [
+        "siren",
+        "siren",
+        "crypto",
+        "defi"
+      ],
+      "confidence": 80,
+      "price_change_pct": 136.9,
+      "curated_by": "curator-trading"
+    },
+    {
+      "id": "cg-6b88c087247a-lst",
+      "timestamp": "2026-03-23T04:04:13.823Z",
+      "asset_class": "defi",
+      "timeframe": "daily",
+      "strategy_type": "trend-following",
+      "source": "coingecko",
+      "source_url": "https://www.coingecko.com/en/coins/bitcoin",
+      "title": "Top 3 bitcoin btc tools you need to know",
+      "summary": "Trending on CoinGecko — rank #5",
+      "keywords": [
+        "bitcoin",
+        "btc",
+        "crypto",
+        "defi"
+      ],
+      "confidence": 51.91529574075979,
+      "price_change_pct": null,
+      "curated_by": "curator-trading"
+    },
+    {
+      "id": "cg-03f20e5f173b",
+      "timestamp": "2026-03-23T04:44:34.465Z",
+      "asset_class": "defi",
+      "timeframe": "daily",
+      "strategy_type": "momentum",
+      "source": "coingecko",
+      "source_url": "https://www.coingecko.com/en/coins/resolv-usr",
+      "title": "Resolv USR (USR) 📉 -59.6%",
+      "summary": "Trending on CoinGecko — rank #5",
+      "keywords": [
+        "resolv usr",
+        "usr",
+        "crypto",
+        "defi"
+      ],
+      "confidence": 80,
+      "price_change_pct": -59.6,
+      "curated_by": "curator-trading"
+    },
+    {
+      "id": "reddit-aad30ee18052",
+      "timestamp": "2026-03-23T04:44:36.797Z",
+      "asset_class": "crypto",
+      "timeframe": "daily",
+      "strategy_type": "sentiment",
+      "source": "reddit",
+      "source_url": "https://www.reddit.com/r/CryptoCurrency/comments/1s12vyh/daily_crypto_discussion_march_23_2026_gmt0/",
+      "title": "Daily Crypto Discussion - March 23, 2026 (GMT+0)",
+      "summary": "Reddit r/cryptocurrency (1 pts, 9 comments)",
+      "keywords": [
+        "daily",
+        "crypto",
+        "discussion",
+        "march",
+        "2026",
+        "(gmt+0)"
+      ],
+      "confidence": 40,
+      "price_change_pct": null,
+      "curated_by": "curator-trading"
+    },
+    {
+      "id": "cg-6b88c087247a",
+      "timestamp": "2026-03-23T04:06:57.091Z",
+      "asset_class": "defi",
+      "timeframe": "daily",
+      "strategy_type": "trend-following",
+      "source": "coingecko",
+      "source_url": "https://www.coingecko.com/en/coins/bitcoin",
+      "title": "Bitcoin (BTC) 📉 -1.9%",
+      "summary": "Trending on CoinGecko — rank #5",
+      "keywords": [
+        "bitcoin",
+        "btc",
+        "crypto",
+        "defi"
+      ],
+      "confidence": 51.91529574075979,
+      "price_change_pct": -1.9,
+      "curated_by": "curator-trading"
+    },
+    {
+      "id": "cg-b60d7bdd334c",
+      "timestamp": "2026-03-23T04:36:01.039Z",
+      "asset_class": "defi",
+      "timeframe": "daily",
+      "strategy_type": "trend-following",
+      "source": "coingecko",
+      "source_url": "https://www.coingecko.com/en/coins/ethereum",
+      "title": "Ethereum (ETH) 📉 -2.7%",
+      "summary": "Trending on CoinGecko — rank #9",
+      "keywords": [
+        "ethereum",
+        "eth",
+        "crypto",
+        "defi"
+      ],
+      "confidence": 52.65119455025503,
+      "price_change_pct": -2.7,
+      "curated_by": "curator-trading"
+    },
+    {
+      "id": "cg-e181b3dfcbf4",
+      "timestamp": "2026-03-23T05:10:11.547Z",
+      "asset_class": "defi",
+      "timeframe": "daily",
+      "strategy_type": "momentum",
+      "source": "coingecko",
+      "source_url": "https://www.coingecko.com/en/coins/katana-network-token",
+      "title": "Katana (KAT) 📈 16.2%",
+      "summary": "Trending on CoinGecko — rank #7",
+      "keywords": [
+        "katana",
+        "kat",
+        "crypto",
+        "defi"
+      ],
+      "confidence": 66.20903984658665,
+      "price_change_pct": 16.2,
+      "curated_by": "curator-trading"
+    },
+    {
+      "id": "cg-5f5a8ed8f139",
+      "timestamp": "2026-03-23T05:10:11.547Z",
+      "asset_class": "defi",
+      "timeframe": "daily",
+      "strategy_type": "momentum",
+      "source": "coingecko",
+      "source_url": "https://www.coingecko.com/en/coins/river",
+      "title": "River (RIVER) 📈 10.6%",
+      "summary": "Trending on CoinGecko — rank #4",
+      "keywords": [
+        "river",
+        "river",
+        "crypto",
+        "defi"
+      ],
+      "confidence": 60.63588920331501,
+      "price_change_pct": 10.6,
+      "curated_by": "curator-trading"
+    },
+    {
+      "id": "cg-b4bfe090fdd6",
+      "timestamp": "2026-03-23T05:24:44.112Z",
+      "asset_class": "defi",
+      "timeframe": "daily",
+      "strategy_type": "trend-following",
+      "source": "coingecko",
+      "source_url": "https://www.coingecko.com/en/coins/chainlink",
+      "title": "Chainlink (LINK) 📉 -1.8%",
+      "summary": "Trending on CoinGecko — rank #6",
+      "keywords": [
+        "chainlink",
+        "link",
+        "crypto",
+        "defi"
+      ],
+      "confidence": 51.78640548606489,
+      "price_change_pct": -1.8,
+      "curated_by": "curator-trading"
+    },
+    {
+      "id": "cg-b4bfe090fdd6-lst",
+      "timestamp": "2026-03-23T05:00:01.532Z",
+      "asset_class": "defi",
+      "timeframe": "daily",
+      "strategy_type": "trend-following",
+      "source": "coingecko",
+      "source_url": "https://www.coingecko.com/en/coins/chainlink",
+      "title": "Top 3 chainlink link tools you need to know",
+      "summary": "Trending on CoinGecko — rank #9",
+      "keywords": [
+        "chainlink",
+        "link",
+        "crypto",
+        "defi"
+      ],
+      "confidence": 52.26838602484081,
+      "price_change_pct": null,
+      "curated_by": "curator-trading"
+    }
+  ]
+}
