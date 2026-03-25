@@ -1,0 +1,55 @@
+{
+  "coder::sprint-execution": {
+    "agentId": "coder",
+    "skillId": "sprint-execution",
+    "latestSprintId": "sprint-1231",
+    "latestScore": 75,
+    "latestAction": "Sprint sprint-1231 success (score: 75)",
+    "latestTimestamp": "2026-03-25T09:43:52.645Z",
+    "entryCount": 1092,
+    "avgScore": 69.19963369963371
+  },
+  "coder::feature": {
+    "agentId": "coder",
+    "skillId": "feature",
+    "latestSprintId": "test-governance-sprint",
+    "latestScore": 70,
+    "latestAction": "Create workspace/governance-test.md with timestamp",
+    "latestTimestamp": "2026-03-21T13:41:33.565Z",
+    "entryCount": 8,
+    "avgScore": 87.875
+  },
+  "coder::modify": {
+    "agentId": "coder",
+    "skillId": "modify",
+    "latestSprintId": "sprint-173",
+    "latestScore": 0,
+    "latestAction": "ClawRouter HTTP Gateway — Express server (scripts/services/clawrouter-http-server.ts)",
+    "latestTimestamp": "2026-03-18T19:10:41.252Z",
+    "entryCount": 3,
+    "avgScore": 0
+  },
+  "coder::create": {
+    "agentId": "coder",
+    "skillId": "create",
+    "latestSprintId": "sprint-178",
+    "latestScore": 0,
+    "latestAction": "OMEL Wipe Witness module — scripts/lib/omel/wipe-witness.ts",
+    "latestTimestamp": "2026-03-18T19:45:37.254Z",
+    "entryCount": 2,
+    "avgScore": 0
+  },
+  "undefined::undefined": {
+    "entryCount": 1
+  },
+  "coder::ops": {
+    "agentId": "coder",
+    "skillId": "ops",
+    "latestSprintId": "sprint-855",
+    "latestScore": 70,
+    "latestAction": "Run batch content production",
+    "latestTimestamp": "2026-03-23T04:31:50.139Z",
+    "entryCount": 1,
+    "avgScore": 70
+  }
+}

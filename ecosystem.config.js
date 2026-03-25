@@ -1436,5 +1436,19 @@ module.exports = {
       out_file: "/Users/tarekmnif/kognai/logs/curator-trading-out.log",
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
+    {
+      name: "arch001-observers",
+      script: "./scripts/arch001/launch-observers.sh",
+      interpreter: "bash",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: false,
+      watch: false,
+      env: {
+        NODE_ENV: "production",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/arch001-observers-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/arch001-observers-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
   ]
 };
