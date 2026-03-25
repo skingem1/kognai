@@ -98,23 +98,30 @@ export async function generateBrollVideo(
         `print(json.dumps({"url": url}))`,
       ].join('\n');
 
+      // Sprint 1370: use start_new_session=True + os.killpg(SIGKILL) to kill entire
+      // process group (inner Python + all fal_client grandchildren). Grandchildren
+      // inherited the pipe write-end so proc.communicate(timeout=5) could block even
+      // after proc.kill(). Group kill closes all pipe writers instantly. Use
+      // proc.wait(timeout=3) — no pipe drain needed after SIGKILL to the group.
       const outerCode = [
-        'import subprocess, sys, json',
+        'import subprocess, sys, json, os, signal',
         `proc = subprocess.Popen([sys.executable, ${JSON.stringify(innerScript)}],`,
-        '    stdout=subprocess.PIPE, stderr=subprocess.PIPE)',
+        '    stdout=subprocess.PIPE, stderr=subprocess.PIPE,',
+        '    start_new_session=True)',
         'try:',
         '    out, err = proc.communicate(timeout=85)',
         '    data = json.loads(out.decode().strip())',
         '    print(json.dumps(data))',
         'except subprocess.TimeoutExpired:',
-        '    proc.kill()',
-        // Sprint 1332: use timeout=5 to prevent hanging if grandchildren hold the pipe open
-        '    try: proc.communicate(timeout=5)',
+        '    try: os.killpg(os.getpgid(proc.pid), signal.SIGKILL)',
+        '    except Exception: proc.kill()',
+        '    try: proc.wait(timeout=3)',
         '    except subprocess.TimeoutExpired: pass',
         '    raise TimeoutError("fal.ai subscribe timed out after 85s")',
         'except Exception as e:',
-        '    proc.kill()',
-        '    try: proc.communicate(timeout=5)',
+        '    try: os.killpg(os.getpgid(proc.pid), signal.SIGKILL)',
+        '    except Exception: proc.kill()',
+        '    try: proc.wait(timeout=3)',
         '    except subprocess.TimeoutExpired: pass',
         '    raise',
       ].join('\n');
@@ -123,7 +130,7 @@ export async function generateBrollVideo(
       writeFileSync(outerScript, outerCode);
 
       const result = execSync(`python3 "${outerScript}"`, {
-        timeout: 120000,  // Sprint 1332: 120s safety net (35s past Python 85s kill)
+        timeout: 150000,  // Sprint 1370: 150s (Python 85s+group kill+3s wait = ~88s; 62s margin)
         encoding: 'utf-8',
       });
 

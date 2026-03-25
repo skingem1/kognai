@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1370",
+  "title": "BUGFIX — fal.ai scene generation ETIMEDOUT: outer Python subprocess hangs after kill, blocking Node execSync",
+  "block": "BUGFIX",
+  "source": "queue-prescribed",
+  "rationale": "fal-video-client.ts outer Python script kills inner proc on timeout, then calls proc.communicate(timeout=5) to drain pipes. But fal_client spawns grandchildren that inherit the pipe's write-end, so communicate() blocks for the full 5s then passes. Python takes ~90s to exit. Node execSync timeout is 120s — should have 30s buffer, but actual Python cleanup can exceed it. Fix: use start_new_session=True (new process group) + os.killpg(SIGKILL) to kill the entire process group, then proc.wait(timeout=3) instead of communicate — no pipe drain needed after group kill. Also bump Node execSync timeout 120s→150s for safety margin.",
+  "tasks": [
+    {
+      "id": "1370-fal-etimedout-fix",
+      "description": "In scripts/scs001/fal-video-client.ts: change outer Python script to use start_new_session=True + os.killpg(os.getpgid(proc.pid), signal.SIGKILL) to kill entire process group on timeout. Replace proc.communicate(timeout=5) with proc.wait(timeout=3). Add signal import to outer script. Bump Node execSync timeout from 120000 to 150000.",
+      "file": "scripts/scs001/fal-video-client.ts",
+      "status": "done",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}
