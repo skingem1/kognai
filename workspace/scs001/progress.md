@@ -6833,3 +6833,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Migration applied: CREATE TABLE subscribers on Supabase (invoica-backend project)
 - Swarm used: no (Supabase MCP tool)
 - Timestamp: 2026-03-25T12:40:00Z
+
+## Sprint 1245 — DIGEST-MRR
+- Status: PASS
+- Commit: 4d298d9b
+- Files modified: scripts/daily-digest.ts
+- Files created: workspace/sprints/sprint-1245.json
+- Test: DIGEST_DRY_RUN=1 npx ts-node scripts/daily-digest.ts — PASS
+- Pipeline: daily digest now shows MRR + subscriber count from Supabase
+- Swarm used: no (single-file edit, direct write)
+- Issues: CTO gate module not found (warned, did not block)
+- Timestamp: 2026-03-25T11:30:00Z
