@@ -1,12 +1,20 @@
 {
   "sprint": 1226,
-  "title": "OPS — /analytics /diversity: exclude dry-run posts",
-  "status": "done",
-  "track": "OPS",
-  "summary": "Fixed cmdAnalytics() and cmdDiversity() in cmd-content.ts to use readRealPosts() instead of raw readLines(manual-posts.jsonl). Dry-run posts no longer inflate recorded count in /analytics or distort distribution in /diversity.",
-  "files": [
-    "scripts/telegram-commands/cmd-content.ts"
-  ],
-  "root_cause": "cmdAnalytics 'Recorded' count and cmdDiversity diversity analysis both read manual-posts.jsonl including dry-runs.",
-  "fix": "Replace readLines(manualPostsPath) with readRealPosts() in both functions."
+  "title": "FEATURE — /preflight: pre-posting session checklist with actionable steps",
+  "status": "in-progress",
+  "track": "FEATURE",
+  "tasks": [
+    {
+      "id": "1226-01",
+      "title": "Create preflight.ts — comprehensive pre-posting session checker",
+      "file": "scripts/scs001/preflight.ts",
+      "status": "pending"
+    },
+    {
+      "id": "1226-02",
+      "title": "Wire /preflight Telegram command",
+      "file": "scripts/telegram-commands/cmd-posting.ts + telegram-bot.ts + cmd-help.ts",
+      "status": "pending"
+    }
+  ]
 }

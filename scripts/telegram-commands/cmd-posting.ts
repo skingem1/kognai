@@ -1648,6 +1648,24 @@ export function cmdBulkCaptions(): string {
   }
 }
 
+// Sprint 1226: preflight check
+export function cmdPreflight(): string {
+  try {
+    const { runPreflight } = require('../scs001/preflight');
+    const { checks, summary, steps } = runPreflight();
+    const lines = ['🛫 *Pre-Flight Check*', ''];
+    for (const c of checks) {
+      lines.push(`${c.pass ? '✅' : '❌'} *${c.name}*: ${c.detail}`);
+      if (c.action) lines.push(`  → _${c.action}_`);
+    }
+    lines.push('', summary, '', '*Next Steps:*');
+    steps.forEach(s => lines.push(`• ${s}`));
+    return lines.join('\n');
+  } catch (e: any) {
+    return `❌ Preflight error: ${e.message}`;
+  }
+}
+
 // Sprint 1225: queue-fill command
 export function cmdQueueFill(): string {
   try {

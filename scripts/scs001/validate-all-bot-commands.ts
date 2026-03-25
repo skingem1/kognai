@@ -67,7 +67,7 @@ import {
   cmdViral, cmdDashboard, cmdDigest, cmdSchedule, cmdLeaderboard,
   cmdBestTime, cmdHookTest, cmdHookStats, cmdViralStats, cmdQueueOpt,
   cmdGateAnalytics, cmdBatch, cmdPostLog, cmdXPost,
-  cmdCosts, cmdWeeklyDigest, cmdQueueFill,
+  cmdCosts, cmdWeeklyDigest, cmdQueueFill, cmdPreflight,
 } from '../telegram-commands/cmd-posting';
 
 import {
@@ -156,6 +156,7 @@ test('gateanalytics', () => cmdGateAnalytics());
 // test('revenue',       () => cmdRevenue());
 test('batch',         () => cmdBatch(''));
 test('queuefill',     () => cmdQueueFill());
+test('preflight',     () => cmdPreflight());
 test('postlog',       () => cmdPostLog());
 test('xpost',         () => cmdXPost(''));
 test('costs',         () => cmdCosts());
