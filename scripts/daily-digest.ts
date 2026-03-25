@@ -484,6 +484,18 @@ async function fetchMRRForDigest(): Promise<{ mrr: number; subscribers: number }
   } catch { return { mrr: 0, subscribers: 0 }; }
 }
 
+// Sprint 1248: Read monthly cloud spend from cost-log.json
+function getMonthlySpend(): { total: number; perVideo: number; videos: number } {
+  try {
+    const data = JSON.parse(fs.readFileSync(path.join(ROOT, 'workspace', 'scs001', 'cost-log.json'), 'utf-8'));
+    return {
+      total: data.monthly_summary?.total_cost ?? 0,
+      perVideo: data.all_time?.cost_per_video ?? 0,
+      videos: data.monthly_summary?.videos_generated ?? 0,
+    };
+  } catch { return { total: 0, perVideo: 0, videos: 0 }; }
+}
+
 async function buildDigest(): Promise<string> {
   const gate     = getGateProgress();
   const ledger   = getLedgerStats();
@@ -496,6 +508,8 @@ async function buildDigest(): Promise<string> {
   const calendarItems = getCalendarToday();
   // Sprint 1245: MRR + subscriber count
   const revenue  = await fetchMRRForDigest();
+  // Sprint 1248: Monthly cloud spend
+  const spend    = getMonthlySpend();
   // Sprint 1116: Stripe webhook health — show last event age
   let stripeStatus = process.env.STRIPE_SECRET_KEY
     ? '💳 Stripe: 🟢 LIVE'
@@ -585,6 +599,8 @@ async function buildDigest(): Promise<string> {
     stripeStatus,
     // Sprint 1245: MRR + subscriber count from Supabase
     `💰 MRR: €${revenue.mrr}${revenue.subscribers > 0 ? ` (${revenue.subscribers} subscriber${revenue.subscribers !== 1 ? 's' : ''})` : ''}`,
+    // Sprint 1248: Monthly cloud spend
+    `💸 Spend: $${spend.total.toFixed(2)}/mo (${spend.videos} videos · $${spend.perVideo.toFixed(2)}/vid)`,
     `🤖 Auto-post: ${autoPost.status}${autoPost.detail ? ` — ${autoPost.detail}` : ''}`,
     ...(autoPost.action ? [`   _${autoPost.action}_`] : []),
     '',
