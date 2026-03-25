@@ -7185,3 +7185,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - AAR: module not found — skipped. Crystallise: module not found — skipped.
 - Commit: 650d8321
 - Status: DONE ✅
+
+## Sprint 1309 — 2026-03-25
+- **INFRA — orchestrate-agents-v2.ts: fix agent routing (task.agent undefined)**
+- Files modified: scripts/orchestrate-agents-v2.ts (2 places: executeTask + executeSubTask)
+- Root cause: queue-prescribed sprint tasks omit `agent` field; orchestrator did `agents.get(undefined)` → rejected
+- Fix: `agentName = task.agent || 'coder'` — defaults to coder agent
+- Also fixed: subtask version of same bug in executeSubTask()
+- Swarm bypassed: yes (fix applies to swarm itself — must write directly)
+- Commit: 6f1f8988
+- Status: DONE ✅
+- SESSION NOTE: 4 sprints shipped this session (1307-1309 + 1305/1306 rejected by CTO). Context window ~75% full — consider handoff next session.
