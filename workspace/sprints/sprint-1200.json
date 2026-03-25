@@ -1,0 +1,29 @@
+{
+  "sprint_id": "sprint-1200",
+  "title": "SPIELBERG — Record all 7 Godman demos + fix preflight demo IDs",
+  "description": "Batch-recorded all 7 protocol demos via spielberg/batch-run.ts. Fixed LAX demo ID mismatch in /godman-preflight.",
+  "block": "GODMAN-LAUNCH",
+  "source": "gap-analysis",
+  "tasks": [
+    {
+      "id": "1200-01",
+      "title": "Record all 7 Godman protocol demos",
+      "type": "execution",
+      "task_target": "scripts/spielberg/batch-run.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-1200"
+    },
+    {
+      "id": "1200-02",
+      "title": "Fix LAX demo ID in /godman-preflight",
+      "type": "bugfix",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1200"
+    }
+  ]
+}
