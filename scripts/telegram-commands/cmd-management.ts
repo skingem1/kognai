@@ -2676,10 +2676,18 @@ export function cmdLaunches(): string {
   }
   const envContent = (() => { try { return fs.readFileSync(path.join(ROOT, '.env'), 'utf-8'); } catch { return ''; } })();
   const hasAchiriToken = envContent.includes('ACHIRI_TELEGRAM_BOT_TOKEN=') && !envContent.match(/ACHIRI_TELEGRAM_BOT_TOKEN=\s*$/m);
+  // Sprint 1198: Hetzner server check
+  const hetznerLive = (() => {
+    try {
+      execSync('curl -sf --max-time 3 http://65.108.90.178:3420/stats/health > /dev/null 2>&1', { timeout: 5000 });
+      return true;
+    } catch { return false; }
+  })();
   launches[2].checks.push(
     { label: 'Readiness', pass: readinessScore >= 70, detail: `${readinessScore}%` },
     { label: 'Whitelist', pass: wlCount > 0, detail: `${wlCount} users` },
     { label: 'Bot token', pass: hasAchiriToken, detail: hasAchiriToken ? 'SET' : 'MISSING' },
+    { label: 'Hetzner API', pass: hetznerLive, detail: hetznerLive ? 'LIVE :3420' : 'DOWN — init-hetzner.sh' },
   );
 
   const lines: string[] = ['🗓 *Launch Calendar*\n'];

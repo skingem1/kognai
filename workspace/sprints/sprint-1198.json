@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-1198",
+  "title": "ACHIRI — /deploy-status + /launches: add Hetzner server check + ACHIRI_TELEGRAM_BOT_TOKEN",
+  "description": "Sprint 1197 created init-hetzner.sh. Now surface Hetzner deployment status in /deploy-status and /launches. Add: (1) ACHIRI_TELEGRAM_BOT_TOKEN env var check to /deploy-status, (2) Hetzner server reachable check (curl port 3420, 3s timeout) to /deploy-status, (3) Hetzner check to /launches Achiri section. Makes the Hetzner deployment gap immediately visible in all ops dashboards.",
+  "source": "queue-empty-sonnet",
+  "tasks": [
+    {
+      "id": "1198-01",
+      "title": "cmd-stripe.ts cmdDeployStatus: add ACHIRI_TELEGRAM_BOT_TOKEN check + Hetzner reachable check",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-commands/cmd-stripe.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-1198"
+    },
+    {
+      "id": "1198-02",
+      "title": "cmd-management.ts cmdLaunches: add Hetzner deployed check to Achiri section",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-commands/cmd-management.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-1198"
+    }
+  ]
+}

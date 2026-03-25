@@ -1216,6 +1216,20 @@ export function cmdDeployStatus(): string {
   // 8. ELEVENLABS for TTS
   checks.push({ name: 'ElevenLabs TTS', pass: !!process.env.ELEVENLABS_API_KEY, detail: process.env.ELEVENLABS_API_KEY ? 'SET' : 'MISSING' });
 
+  // 9. ACHIRI_TELEGRAM_BOT_TOKEN — Sprint 1198
+  const envContent = (() => { try { return fs.readFileSync(path.join(ROOT, '.env'), 'utf-8'); } catch { return ''; } })();
+  const hasAchiriToken = envContent.includes('ACHIRI_TELEGRAM_BOT_TOKEN=') && !envContent.match(/ACHIRI_TELEGRAM_BOT_TOKEN=\s*(\r?\n|$)/m);
+  checks.push({ name: 'Achiri bot token', pass: hasAchiriToken, detail: hasAchiriToken ? 'SET' : 'MISSING — fill .env before pm2 start' });
+
+  // 10. Hetzner server reachable — Sprint 1198
+  const hetznerLive = (() => {
+    try {
+      execSync('curl -sf --max-time 3 http://65.108.90.178:3420/stats/health > /dev/null 2>&1', { timeout: 5000 });
+      return true;
+    } catch { return false; }
+  })();
+  checks.push({ name: 'Hetzner API', pass: hetznerLive, detail: hetznerLive ? 'LIVE (65.108.90.178:3420)' : 'DOWN — run: bash scripts/achiri/init-hetzner.sh' });
+
   const passCount = checks.filter(c => c.pass).length;
   const allPass = passCount === checks.length;
   const daysToAlpha = Math.max(0, Math.ceil((new Date('2026-04-25T00:00:00Z').getTime() - Date.now()) / 86_400_000));
