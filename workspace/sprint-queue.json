@@ -3003,6 +3003,15 @@
       "priority": "high",
       "rationale": "Bug: cmdGodmanLaunch referenced godman-publish-all.sh (non-existent). Fixed to use godman-launch-day.sh (Sprint 992). Step 2 now shows ✅.",
       "_note": "Shipped 2026-03-25 — Sprint 1204. cmd-system.ts only. tsc clean."
+    },
+    {
+      "sprint": 1205,
+      "title": "GODMAN-LAUNCH — Create suite-launch/clawcard-listing.md (ClaWHub suite listing)",
+      "block": "GODMAN-LAUNCH",
+      "status": "done",
+      "priority": "high",
+      "rationale": "cmdGodmanLaunch() step 3 checked for clawcard-listing.md — file was missing, showing ❌. Created full suite ClaWHub listing for all 7 protocols. Step 3 now shows ✅.",
+      "_note": "Shipped 2026-03-25 — Sprint 1205. workspace/social/suite-launch/clawcard-listing.md created."
     }
   ]
 }
