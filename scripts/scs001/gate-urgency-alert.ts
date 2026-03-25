@@ -38,11 +38,14 @@ interface ManualPost {
 
 function loadPosts(): ManualPost[] {
   if (!existsSync(MANUAL_POSTS_PATH)) return [];
+  // Sprint 1353: Filter dry-run posts — gate requires real TikTok posts only
+  const DRY_METHODS = ['browser-post-dry', 'batch-browser-dry', 'dry'];
   return readFileSync(MANUAL_POSTS_PATH, 'utf-8')
     .split('\n')
     .filter(l => l.trim())
     .map(l => { try { return JSON.parse(l); } catch { return null; } })
-    .filter(Boolean) as ManualPost[];
+    .filter(Boolean)
+    .filter((e: any) => !e.method || !DRY_METHODS.some(d => String(e.method).includes(d))) as ManualPost[];
 }
 
 function getUrgencyEmoji(daysLeft: number, postsLeft: number, postsCount: number): string {

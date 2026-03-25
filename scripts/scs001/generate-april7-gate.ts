@@ -31,7 +31,11 @@ function generate() {
   const isGateDay = daysLeft === 0;
 
   // --- Posts & Views ---
-  const manualPosts = readJSONL(join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  // Sprint 1354: Filter dry-run posts — gate requires real TikTok posts only
+  const DRY_METHODS_G = ['browser-post-dry', 'batch-browser-dry', 'dry'];
+  const allManualPosts = readJSONL(join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  const manualPosts = allManualPosts.filter((e: any) =>
+    !e.method || !DRY_METHODS_G.some((d: string) => String(e.method).includes(d)));
   const postCount = manualPosts.length;
   const totalViews = manualPosts.reduce((s, p) => s + (p.views ?? 0), 0);
   const postsNeeded = Math.max(0, 30 - postCount);

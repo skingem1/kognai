@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1354",
+  "title": "BUGFIX — generate-april7-gate: exclude dry-run posts from gate post count",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "scripts/scs001/generate-april7-gate.ts uses manualPosts.length without filtering dry-runs. postCount shows 16 instead of 13. Fix: add DRY_METHODS_G filter after readJSONL.",
+  "tasks": [
+    {
+      "id": "1354-april7-gate-dry-run-filter",
+      "description": "In scripts/scs001/generate-april7-gate.ts: add DRY_METHODS_G filter after readJSONL for manual-posts.",
+      "file": "scripts/scs001/generate-april7-gate.ts",
+      "status": "done",
+      "priority": "low",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}

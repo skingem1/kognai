@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1353",
+  "title": "BUGFIX — gate-urgency-alert: exclude dry-run posts from gate post count",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "scripts/scs001/gate-urgency-alert.ts loadPosts() returns all manual-posts including dry-runs. postsCount shows 16 instead of 13. Fix: add DRY_METHODS filter in loadPosts().",
+  "tasks": [
+    {
+      "id": "1353-urgency-alert-dry-run-filter",
+      "description": "In scripts/scs001/gate-urgency-alert.ts: add DRY_METHODS filter in loadPosts() return chain.",
+      "file": "scripts/scs001/gate-urgency-alert.ts",
+      "status": "done",
+      "priority": "low",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}
