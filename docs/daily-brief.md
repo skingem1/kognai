@@ -1,17 +1,17 @@
-# KOGNAI DAILY BRIEF — 2026-03-24
-## Tuesday, March 24, 2026
+# KOGNAI DAILY BRIEF — 2026-03-25
+## Wednesday, March 25, 2026
 
-**Generated:** 2026-03-24 12:10
-**Active Sprint:** sprint-1056
-**Hours Today:** 4h
-**Midday Block:** NO (Tuesday/Thursday)
+**Generated:** 2026-03-25 09:09
+**Active Sprint:** sprint-1205
+**Hours Today:** 6h
+**Midday Block:** YES (12:00-14:00)
 
 ---
 
 ## LIVE STATUS (auto-generated)
-**Gate:** 🟢 ON_TRACK — 4/30 posts · 26 needed · 14d to Apr 7
-**Godman launch:** 21d — April 14  |  **Achiri alpha:** 32d — April 25
-**Next queued sprint:** Sprint 1048 — GODMAN-LAUNCH — CHANGELOG.md for each protocol package (v0.2.0 initial release)
+**Gate:** 🟢 ON_TRACK — 5/30 posts · 25 needed · 13d to Apr 7
+**Godman launch:** 20d — April 14  |  **Achiri alpha:** 31d — April 25
+**Next sprint:** queue empty — run /replenish or pick manually
 
 ---
 
@@ -20,39 +20,44 @@
 | Block | Time | Available |
 |-------|------|-----------|
 | AM | 07:00–09:30 | YES |
-| MID | 12:00–14:00 | NO |
+| MID | 12:00–14:00 | YES |
 | PM | 18:00–19:30 | YES |
 
 ---
 
 ## TODAY'S TASKS
 
-### Tuesday, March 24
+### Wednesday, March 25
 
 **AM 07:00–09:30**
-- [ ] ⚠️ **Post 2 TikTok video(s) today** (4/30 · 14d left · /today for top picks)
-- [ ] 🛠️ **Sprint 1055: OPS — Daily brief task generator: replace stale timeline tasks with li…** — /sprint to view queue
+- [ ] ⚠️ **Post 2 TikTok video(s) today** (5/30 · 13d left · /today for top picks)
+- [ ] 🔄 Queue empty — run /replenish to generate next sprint
 - [ ] /errors — check for overnight process errors
 - [ ] /status — confirm gate pace and cron health
+
+**MID 12:00–14:00**
+- [ ] 📱 **[YOU] Post today's video(s)** — /pickup then /caption-next for text
+- [ ] 🚀 Godman: 20d to launch — /godman for readiness checklist
+- [ ] 🤖 Achiri: set ACHIRI_TELEGRAM_BOT_TOKEN in .env → ./scripts/achiri/start-bot.sh
 
 **PM 18:00–19:30**
 - [ ] Review AM sprint output — /changelog to see what shipped
 - [ ] Check today's post count: /gate (need 2/day to stay on track)
-- [ ] Achiri: 32d to alpha — /achiri for readiness summary
+- [ ] Achiri: 31d to alpha — /achiri for readiness summary
 - [ ] Write session log to workspace/agents/memory/
 
 ---
 
 ## TOMORROW PREVIEW
 
-### Tuesday, March 25
-**AM 07:00–09:30**
-- [ ] Review overnight content generation — 3 new posts queued?
-- [ ] Post daily content batch
-- [ ] Check 72h engagement on earliest posts — first full cycle complete?
-- [ ] Review subscriber count: any paying subscribers yet?
+### Wednesday, March 26
+**Sprint 068 — Monitoring Dashboard**
 
-**NO MIDDAY BLOCK**
+**AM 07:00–09:30**
+- [ ] [SWARM] Kick off sprint-068
+- [ ] Review early dashboard code in `frontend/`
+- [ ] Continue daily content posting routine
+- [ ] Check engagement trends — any posts gaining traction?
 
 ---
 
