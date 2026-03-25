@@ -6732,3 +6732,13 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (multi-file architecture task)
 - Issues: none
 - Timestamp: 2026-03-25T11:20:00Z
+
+## Sprint 1232 — E2E-SMOKE
+- Status: PASS
+- Commit: 9352c2a2
+- Files created: scripts/scs001/validate-e2e-pipeline.ts
+- Test: 4 PASS, 3 WARN, 1 FAIL (TikTok creds missing — known blocker). Pipeline core healthy.
+- Pipeline: Full E2E smoke test operational — 40 scripts, 1242 ledger entries, fresh reports
+- Swarm used: no (single file)
+- Issues: TikTok ACCESS_TOKEN still missing (human action required)
+- Timestamp: 2026-03-25T11:30:00Z
