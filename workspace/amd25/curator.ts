@@ -14,9 +14,9 @@
 
 import { readFileSync, writeFileSync, appendFileSync, existsSync, mkdirSync } from 'fs';
 import { join } from 'path';
-import { KnowledgeStore, type AddEntryParams } from './dka-store.js';
-import type { DomainId, Classification, DKAVector } from './dka-schema.js';
-import { DOMAIN_STORES } from './dka-schema.js';
+import { KnowledgeStore, type AddEntryParams } from './dka-store';
+import type { DomainId, Classification, DKAVector } from './dka-schema';
+import { DOMAIN_STORES } from './dka-schema';
 
 // ---------------------------------------------------------------------------
 // Persistence

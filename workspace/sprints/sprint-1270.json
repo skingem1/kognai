@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1270",
+  "title": "AMD25-DKA-SMOKE — Fix AMD-25 import extensions + verify smoke test passes",
+  "description": "AMD-25 DKA store smoke test fails with MODULE_NOT_FOUND because imports use .js extensions but ts-node runs in CJS mode. Fix all .js extension imports in workspace/amd25/ to use no-extension. Also add SOUL-integration constitutional filter to the Curator that rejects non-public vectors for unauthorized agents.",
+  "source": "queue-post-exhaustion",
+  "tasks": [
+    {
+      "id": "1270-01",
+      "title": "Fix .js import extensions in workspace/amd25/ — dka-store.ts, dka-schema.ts, smoke.test.ts, curator.ts, boundary-rules.ts",
+      "type": "bugfix",
+      "task_type": "amd25",
+      "task_target": "workspace/amd25/",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1270"
+    }
+  ]
+}

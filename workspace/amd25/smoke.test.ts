@@ -3,7 +3,7 @@
  * Sprint 997
  */
 
-import { KnowledgeStore } from './dka-store.js';
+import { KnowledgeStore } from './dka-store';
 
 let pass = 0; let fail = 0;
 const ok = (msg: string) => { console.log(`  ✓ ${msg}`); pass++; };

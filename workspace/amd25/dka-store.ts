@@ -10,7 +10,7 @@ import { createHash } from 'crypto';
 import type {
   DKAVector, DKAQuery, DKAResult, DomainId, AgentId, Classification
 } from './dka-schema.js';
-import { DOMAIN_STORES } from './dka-schema.js';
+import { DOMAIN_STORES } from './dka-schema';
 
 // ---------------------------------------------------------------------------
 // Types

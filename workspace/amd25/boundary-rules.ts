@@ -6,7 +6,7 @@
  * plus constitutional filters applied at retrieval time.
  */
 
-import type { DomainId, AgentId, Classification, DKAVector, DKAResult } from './dka-schema.js';
+import type { DomainId, AgentId, Classification, DKAVector, DKAResult } from './dka-schema';
 
 // ---------------------------------------------------------------------------
 // Boundary Rules
