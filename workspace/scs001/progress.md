@@ -7219,3 +7219,15 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Commit: a477f9ce
 - Status: DONE ✅
 - SESSION HANDOFF: Context window approaching limits after 2 sprints (1310-1311). Session shipped 1310 (sprint-runner rolling cap TS fix) + 1311 (brief regen). Next session start: queue empty, use sprint-brief.md which now shows Sprint 1312 as next.
+
+## Sprint 1312 — 2026-03-25
+- **SCS-001 — TikTok Live Setup + Gate Readiness Daily Check**
+- Files created: scripts/scs001/tiktok-live-setup.ts, scripts/scs001/gate-readiness-check.ts, reports/tiktok-live-setup.json
+- tiktok-live-setup.ts: validates LIVE credentials, dry-run mode, 4/5 checks pass (missing TIKTOK_ACCESS_TOKEN expected)
+- gate-readiness-check.ts: reads posting-health.json, prints "14/30 posts · 13 days left · need 1.2/day — ON TRACK"
+- Gate status: ON_TRACK — 14/30 posts, 13 days remaining
+- Swarm bypassed: yes (ClawRouter timeout on task 1; reasoning text on task 2 — both written directly)
+- AAR: aar-middleware module not found — skipped
+- Commit: b17f3b71
+- Status: DONE ✅
+- NOTE: CTO swarm added 3 new queue items (Sprint 1312 clip-detection timeout, 1313 live mode, 1314 batch Telegram). _scs001_status changed to ACTIVE.
