@@ -7377,3 +7377,62 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Effect: daily 9am batch videos (educational/entertainment/code-demo) will now appear in publish-ledger.jsonl and be auto-delivered to operator at noon
 - Swarm used: no (direct writes for precision)
 - Timestamp: 2026-03-25T21:00:00Z
+
+## Sprint 1327 — BUGFIX: code-demo script templates fallback when Ollama unavailable
+- Status: PASS
+- Commit: 48bd2a32
+- Files modified:
+  - scripts/scs001/code-demo-scriptgen.ts
+- Fix: Added SCRIPT_TEMPLATES (3 complete CodeDemoScript objects: FastAPI, Stripe, Claude API — 4 steps each). Wrapped LLM script generation block in try/catch. Returns rotating template when Ollama returns invalid JSON or 0 steps. Sets demo_id and language on template before returning.
+- Effect: code-demo pipeline (P2) now produces a complete video even when Ollama is fully unavailable — no more 'No JSON in LLM response' or 'LLM generated 0 steps' crashes.
+- Swarm used: no (direct code modification)
+- Timestamp: 2026-03-25T21:15:00Z
+
+## Sprint 1328 — BUGFIX: entertainment-scriptgen scene templates fallback when Ollama unavailable
+- Status: PASS
+- Commit: 7b928e34
+- Files modified:
+  - scripts/scs001/entertainment-scriptgen.ts
+- Fix 1: callOllama() wrapped in try/catch returning '' on any error (curl throw protection)
+- Fix 2: Added SCENE_TEMPLATES (3 complete EntertainmentScript objects: AI future, quantum computing, space exploration — 4 scenes each with fal.ai-compatible visual prompts)
+- Fix 3: LLM generation block wrapped in try/catch; returns rotating template when Ollama returns invalid JSON or 0 scenes
+- Effect: entertainment pipeline (P3) now fully resilient — all 3 pipelines can produce videos without Ollama
+- Swarm used: no (direct code modification)
+- Timestamp: 2026-03-25T21:30:00Z
+
+## Sprint 1329 — BUGFIX: produce-vlog vlog script templates fallback when Ollama unavailable
+- Status: PASS
+- Commit: f47b45f9
+- Files modified:
+  - scripts/scs001/produce-vlog.ts
+- Fix: Added VLOG_TEMPLATES (3 VlogScript objects: AI agents, automation wave, future of work) with 750-char monologues and 2 fal.ai-compatible B-roll prompts each. Wrapped LLM execSync+JSON parse in try/catch returning rotating template on failure.
+- Effect: All 3 pipelines (educational P1, code-demo P2, entertainment P3) now fully resilient without Ollama. Tomorrow's 9am batch should produce 3 videos even if qwen3:14b is unavailable.
+- Swarm used: no (direct code modification)
+- Timestamp: 2026-03-25T21:45:00Z
+
+## Sprint 1330 — BUGFIX: code-demo step renders wrapped in try/catch
+- Status: PASS
+- Commit: b120e075
+- Files modified:
+  - scripts/scs001/pipelines/code-demo.ts
+- Fix: Wrapped renderCodeFrames() + framesToVideo() per step in try/catch. Failed steps are skipped with warning; assembleCodeDemo handles partial renders via existsSync filter. One Pillow/FFmpeg error no longer aborts the full pipeline.
+- Effect: code-demo pipeline now continues on per-step failures. Only throws if ALL steps fail.
+- Swarm used: no (direct code modification)
+- Timestamp: 2026-03-25T22:00:00Z
+
+## Sprint 1331 — BUGFIX: achiri-telegram autorestart disabled
+- Status: PASS
+- Commit: 493768fe
+- Files modified:
+  - ecosystem.config.js
+- Fix: achiri-telegram autorestart changed to false. The bot is manually-gated (requires ACHIRI_TELEGRAM_BOT_TOKEN). PM2 was crash-looping (48 restarts, errored state) because token not set → process.exit(0) → PM2 restarts immediately. Now: when token is set, start manually with pm2 start ecosystem.config.js --only achiri-telegram
+- Swarm used: no
+- Timestamp: 2026-03-25T22:15:00Z
+
+## Sprint 1332 — BUGFIX: fal-video-client proc.communicate() hang after kill
+- Status: PASS
+- Files modified:
+  - scripts/scs001/fal-video-client.ts
+- Fix: In the outer Python script, replaced bare proc.communicate() (after proc.kill()) with proc.communicate(timeout=5) wrapped in try/except TimeoutExpired to prevent pipe-drain hang when inner fal_client.subscribe() leaves grandchildren holding the pipe. Also increased Node.js execSync timeout from 95000ms to 120000ms for a 35s margin past the Python 85s kill. Addresses: [fal.ai] spawnSync /bin/sh ETIMEDOUT causing Scene s6 generation failed in entertainment pipeline.
+- Swarm used: no
+- Timestamp: 2026-03-25T22:30:00Z

@@ -108,11 +108,14 @@ export async function generateBrollVideo(
         '    print(json.dumps(data))',
         'except subprocess.TimeoutExpired:',
         '    proc.kill()',
-        '    proc.communicate()',
+        // Sprint 1332: use timeout=5 to prevent hanging if grandchildren hold the pipe open
+        '    try: proc.communicate(timeout=5)',
+        '    except subprocess.TimeoutExpired: pass',
         '    raise TimeoutError("fal.ai subscribe timed out after 85s")',
         'except Exception as e:',
         '    proc.kill()',
-        '    proc.communicate()',
+        '    try: proc.communicate(timeout=5)',
+        '    except subprocess.TimeoutExpired: pass',
         '    raise',
       ].join('\n');
 
@@ -120,7 +123,7 @@ export async function generateBrollVideo(
       writeFileSync(outerScript, outerCode);
 
       const result = execSync(`python3 "${outerScript}"`, {
-        timeout: 95000,  // 95s safety net; Python subprocess kill fires at 85s
+        timeout: 120000,  // Sprint 1332: 120s safety net (35s past Python 85s kill)
         encoding: 'utf-8',
       });
 

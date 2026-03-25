@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1332",
+  "title": "BUGFIX — fal-video-client: prevent proc.communicate() hang after proc.kill()",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "In fal-video-client.ts the outer Python script calls proc.kill() then proc.communicate() (no timeout) after subprocess.TimeoutExpired. If the inner fal_client.subscribe() spawned threads or grandchildren that still hold the stdout/stderr pipe open, proc.communicate() blocks indefinitely — until the Node.js 95s safety net fires with 'spawnSync /bin/sh ETIMEDOUT'. This is causing all entertainment pipeline runs to fail (Scene s6: All fal.ai models failed. Last error: spawnSync /bin/sh ETIMEDOUT). Fix: (1) Replace bare proc.communicate() in the except handlers with proc.communicate(timeout=5), wrapped in a nested try/except subprocess.TimeoutExpired that is silently ignored. (2) Increase Node.js execSync timeout from 95000 to 120000 to give 35s margin past the Python kill.",
+  "tasks": [
+    {
+      "id": "1332-fal-communicate-timeout",
+      "description": "In scripts/scs001/fal-video-client.ts, update the outerCode array: (1) In the 'except subprocess.TimeoutExpired' block, replace 'proc.communicate()' with a try/except that calls proc.communicate(timeout=5) and silently passes on TimeoutExpired. Apply same fix to the 'except Exception' block. (2) Change the Node.js execSync timeout from 95000 to 120000.",
+      "file": "scripts/scs001/fal-video-client.ts",
+      "status": "done",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}
