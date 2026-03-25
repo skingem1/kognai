@@ -1,0 +1,17 @@
+{
+  "sprint_id": "sprint-1316",
+  "title": "SCS-001 — Wire publish-ledger writes into pipeline-registry (code-demo + entertainment never delivered)",
+  "source": "self-directed",
+  "rationale": "scs001-pipeline PM2 runs batch-produce --pipeline all (all 3: educational, code-demo, entertainment) but pipeline-registry.ts never writes to publish-ledger.jsonl. Only multiformat pipeline and old hailuo pipeline write to the ledger. Fix: add logToPublishLedger() call in runPipeline() so all 3 batch pipelines get their videos queued for auto-deliver to Telegram.",
+  "tasks": [
+    {
+      "id": "wire-publish-ledger",
+      "description": "In scripts/scs001/pipeline-registry.ts, add logToPublishLedger() function that appends a publish-ledger entry after each successful runPipeline() call. Entry format: {video_id, video_path, published_at, title, duration_s, cost_usd, source, pipeline}. Call it after logMetrics() in runPipeline().",
+      "file": "scripts/scs001/pipeline-registry.ts",
+      "status": "pending",
+      "priority": "high",
+      "agent": "coder",
+      "type": "feature"
+    }
+  ]
+}

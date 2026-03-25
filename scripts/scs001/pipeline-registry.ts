@@ -14,6 +14,7 @@ import { join } from 'path';
 
 const ROOT = join(__dirname, '..', '..');
 const METRICS_DIR = join(ROOT, 'logs', 'pipeline-metrics');
+const LEDGER_PATH = join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl');
 
 // ── Types ────────────────────────────────────────────
 
@@ -88,6 +89,9 @@ export async function runPipeline(input: PipelineInput): Promise<PipelineRunResu
   // Log metrics
   logMetrics(result, parseInt(elapsed));
 
+  // Sprint 1316: Write to publish-ledger so auto-deliver picks up code-demo + entertainment videos
+  logToPublishLedger(result);
+
   return result;
 }
 
@@ -105,6 +109,30 @@ function logMetrics(result: PipelineRunResult, elapsed_s: number): void {
       join(METRICS_DIR, 'pipeline-runs.jsonl'),
       JSON.stringify(entry) + '\n'
     );
+  } catch {}
+}
+
+// ── Publish Ledger ───────────────────────────────────
+
+function logToPublishLedger(result: PipelineRunResult): void {
+  try {
+    const entry = {
+      video_id: result.runId,
+      video_path: result.videoPath,
+      file_path: result.videoPath,
+      file_exists: true,
+      published_at: result.produced_at,
+      title: result.title,
+      topic: result.title,
+      duration_s: result.duration_s,
+      cost_usd: result.cost_usd,
+      source: 'batch-pipeline',
+      pipeline: result.pipeline,
+      viral_score: result.quality_score,
+    };
+    mkdirSync(join(ROOT, 'workspace', 'scs001'), { recursive: true });
+    appendFileSync(LEDGER_PATH, JSON.stringify(entry) + '\n');
+    console.log(`[pipeline-registry] Ledger entry added: ${result.runId}`);
   } catch {}
 }
 
