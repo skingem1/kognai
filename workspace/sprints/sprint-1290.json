@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1290",
+  "title": "AMD25 — DKA LRU cache: evict least-recently-used entries when store exceeds 1000 docs",
+  "description": "Add LRU eviction to KnowledgeStore in dka-store.ts. Global cap of 1000 docs with accessOrder Map for LRU tracking. onEvict callback for metrics. getById refreshes access time. remove() cleans accessOrder. Test: add 1005 entries → size=1000, evictionCount=5 PASS.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1290-01",
+      "title": "Add LRU eviction to KnowledgeStore in dka-store.ts",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "workspace/amd25/dka-store.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1290"
+    }
+  ]
+}

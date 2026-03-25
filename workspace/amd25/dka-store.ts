@@ -1,6 +1,7 @@
 /**
  * AMD-25 — Domain Knowledge Architecture: KnowledgeStore
  * Sprint 997 — In-memory keyword store (no embeddings, no external deps)
+ * Sprint 1290 — LRU eviction: cap total store at MAX_STORE_SIZE (1000) docs
  *
  * Keyword search replaces vector cosine similarity with token overlap scoring.
  * Compatible with DKAQuery/DKAResult types from dka-schema.ts.
@@ -31,8 +32,25 @@ export interface AddEntryParams {
 // KnowledgeStore
 // ---------------------------------------------------------------------------
 
+/** Global LRU cap — evict oldest-accessed entries when exceeded. Sprint 1290. */
+const MAX_STORE_SIZE = 1000;
+
+export interface EvictionEvent {
+  evictedId: string;
+  evictedDomain: DomainId;
+  reason: 'lru-cap';
+  storeSize: number;
+  timestamp: string;
+}
+
 export class KnowledgeStore {
   private entries: Map<string, DKAVector> = new Map();
+  /** LRU tracking: id → last access timestamp (ms). Updated on add + getById. Sprint 1290. */
+  private accessOrder: Map<string, number> = new Map();
+  /** Cumulative eviction count for metrics. Sprint 1290. */
+  evictionCount = 0;
+  /** Optional eviction listener for metrics/logging. Sprint 1290. */
+  onEvict?: (event: EvictionEvent) => void;
 
   /** Add a knowledge entry. Returns the entry id, or throws if domain is full. */
   add(params: AddEntryParams): string {
@@ -63,12 +81,44 @@ export class KnowledgeStore {
       expiresAt: params.expiresAt,
     };
     this.entries.set(id, vector);
+    this.accessOrder.set(id, Date.now());
+
+    // Sprint 1290: LRU eviction — cap global store at MAX_STORE_SIZE
+    if (this.entries.size > MAX_STORE_SIZE) {
+      this._evictLRU();
+    }
+
     return id;
   }
 
-  /** Retrieve a single entry by id. */
+  /** Evict the least-recently-used entry. Sprint 1290. */
+  private _evictLRU(): void {
+    let lruId: string | null = null;
+    let lruTime = Infinity;
+    for (const [id, t] of this.accessOrder) {
+      if (t < lruTime) { lruTime = t; lruId = id; }
+    }
+    if (!lruId) return;
+    const evicted = this.entries.get(lruId);
+    this.entries.delete(lruId);
+    this.accessOrder.delete(lruId);
+    this.evictionCount++;
+    if (evicted && this.onEvict) {
+      this.onEvict({
+        evictedId: lruId,
+        evictedDomain: evicted.domain,
+        reason: 'lru-cap',
+        storeSize: this.entries.size,
+        timestamp: new Date().toISOString(),
+      });
+    }
+  }
+
+  /** Retrieve a single entry by id. Updates LRU access time. Sprint 1290. */
   getById(id: string): DKAVector | undefined {
-    return this.entries.get(id);
+    const entry = this.entries.get(id);
+    if (entry) this.accessOrder.set(id, Date.now()); // refresh LRU
+    return entry;
   }
 
   /** Retrieve all entries for a domain. */
@@ -121,6 +171,7 @@ export class KnowledgeStore {
 
   /** Remove an entry by id. Returns true if removed. */
   remove(id: string): boolean {
+    this.accessOrder.delete(id);
     return this.entries.delete(id);
   }
 
