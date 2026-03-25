@@ -887,7 +887,13 @@ async function produceVlog(topic: string, mode: 'avatar' | 'tts' = 'avatar'): Pr
   if (mode === 'tts') {
     await generateTTSBackbone(script.full_monologue, avatarPath);
   } else {
-    await generateAvatar(script.full_monologue, avatarPath, creator);
+    // Sprint 1334: Fall back to TTS backbone if HeyGen is unavailable
+    try {
+      await generateAvatar(script.full_monologue, avatarPath, creator);
+    } catch (avatarErr: any) {
+      console.warn(`[produce-vlog] HeyGen failed (${avatarErr.message?.slice(0, 80)}) — falling back to TTS backbone`);
+      await generateTTSBackbone(script.full_monologue, avatarPath);
+    }
   }
 
   // 2b. Overlay Kognai neon logo behind avatar ("sign on the wall" branding)

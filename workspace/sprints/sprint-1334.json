@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1334",
+  "title": "BUGFIX — produce-vlog: add HeyGen→ElevenLabs fallback in produceVlog()",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "In scripts/scs001/produce-vlog.ts produceVlog() at lines 885-891, the generateAvatar() call (HeyGen API) has no error handling. If HEYGEN_API_KEY is missing, HeyGen quota is exceeded, or the API returns an error, the entire educational pipeline fails. generateTTSBackbone() (ElevenLabs TTS) already exists as a lower-cost alternative but is only used when mode='tts'. Fix: wrap generateAvatar() in try/catch and call generateTTSBackbone() on failure. This makes the educational pipeline resilient when HeyGen is unavailable — same pattern as Sprints 1327-1329 (LLM scriptgen fallbacks).",
+  "tasks": [
+    {
+      "id": "1334-heygen-fallback",
+      "description": "In scripts/scs001/produce-vlog.ts produceVlog() (around line 889): wrap the `await generateAvatar()` call in a try/catch. On catch: log '[produce-vlog] HeyGen failed (err.message) — falling back to TTS backbone' and call `await generateTTSBackbone(script.full_monologue, avatarPath)`. Keep the `if (mode === 'tts')` path unchanged.",
+      "file": "scripts/scs001/produce-vlog.ts",
+      "status": "done",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}
