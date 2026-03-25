@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1291",
+  "title": "AMD25 — DKA curator SOUL filter: reject non-public vectors for PROVISIONAL-tier agents",
+  "description": "Implement canAccess() and applyTierFilter() in boundary-rules.ts. PROVISIONAL → public only; RESTRICTED/STANDARD → up to restricted; FULL → all; REJECTED → nothing. Tests: 4/4 tier scenarios pass.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1291-01",
+      "title": "Implement canAccess(), applyTierFilter(), tierCanAccess() in boundary-rules.ts",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "workspace/amd25/boundary-rules.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1291"
+    }
+  ]
+}

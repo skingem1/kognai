@@ -1,12 +1,16 @@
 /**
  * AMD-25 — Knowledge Boundary Rules + Constitutional Retrieval Filters
  * Sprint 959 — Design only, no implementation
+ * Sprint 1291 — SOUL tier filter: reject non-public vectors for PROVISIONAL-tier agents
  *
  * Defines access control rules between agents and domain knowledge stores,
  * plus constitutional filters applied at retrieval time.
  */
 
 import type { DomainId, AgentId, Classification, DKAVector, DKAResult } from './dka-schema';
+
+/** Cerberus gateway tier (mirrors CredScoreTier in scripts/amd23/chamber2-cred-score.ts). */
+export type AgentTier = 'FULL' | 'STANDARD' | 'RESTRICTED' | 'PROVISIONAL' | 'REJECTED';
 
 // ---------------------------------------------------------------------------
 // Boundary Rules
@@ -46,12 +50,62 @@ export const CLASSIFICATION_HIERARCHY: Classification[] = [
 
 /**
  * Check if an agent's clearance level can access a given classification.
+ * Sprint 1291: implemented (replaces design-phase stub).
  */
 export function canAccess(
-  _agentMaxClassification: Classification,
-  _vectorClassification: Classification,
+  agentMaxClassification: Classification,
+  vectorClassification: Classification,
 ): boolean {
-  throw new Error('canAccess: not implemented — design phase');
+  const agentIdx  = CLASSIFICATION_HIERARCHY.indexOf(agentMaxClassification);
+  const vectorIdx = CLASSIFICATION_HIERARCHY.indexOf(vectorClassification);
+  return agentIdx >= vectorIdx;
+}
+
+// ---------------------------------------------------------------------------
+// SOUL Tier Filter — Sprint 1291
+// ---------------------------------------------------------------------------
+
+/**
+ * Maximum classification accessible per Cerberus tier.
+ *
+ * PROVISIONAL  → public only (unverified agents see no internal/restricted/confidential data)
+ * RESTRICTED   → up to restricted
+ * STANDARD     → up to restricted
+ * FULL         → everything including confidential
+ * REJECTED     → nothing (all blocked)
+ */
+const TIER_MAX_CLASSIFICATION: Record<AgentTier, Classification | null> = {
+  FULL:        'confidential',
+  STANDARD:    'restricted',
+  RESTRICTED:  'restricted',
+  PROVISIONAL: 'public',
+  REJECTED:    null, // blocked entirely
+};
+
+/**
+ * Apply SOUL tier filter to a set of retrieval results.
+ * Removes vectors whose classification exceeds the agent's tier limit.
+ * Sprint 1291: PROVISIONAL-tier agents only receive public vectors.
+ *
+ * @param results  Raw DKAResult[] from KnowledgeStore.search()
+ * @param tier     Agent's Cerberus tier from GatewayDecision
+ * @returns        Filtered results safe to deliver to the agent
+ */
+export function applyTierFilter(results: DKAResult[], tier: AgentTier): DKAResult[] {
+  const maxClassification = TIER_MAX_CLASSIFICATION[tier];
+  if (maxClassification === null) return []; // REJECTED — return nothing
+
+  return results.filter(r => canAccess(maxClassification, r.vector.classification));
+}
+
+/**
+ * Convenience check: can this tier access any vector of the given classification?
+ * Sprint 1291.
+ */
+export function tierCanAccess(tier: AgentTier, classification: Classification): boolean {
+  const maxClassification = TIER_MAX_CLASSIFICATION[tier];
+  if (maxClassification === null) return false;
+  return canAccess(maxClassification, classification);
 }
 
 // ---------------------------------------------------------------------------
