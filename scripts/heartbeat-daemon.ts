@@ -315,9 +315,28 @@ async function runHealthChecks(): Promise<HealthState['checks']> {
 
 // ─── MRR Calculation ─────────────────────────────────────────────────
 
+const PLAN_PRICE_EUR: Record<string, number> = { default: 9 };
+
 async function fetchMRR(): Promise<number> {
-  // TODO: Connect to Stripe API or Supabase billing table to get real MRR
-  // For now, read from tier.json (manually updated or by CEO agent)
+  // Sprint 1243: Query Supabase subscribers table for real MRR
+  const url = process.env['SUPABASE_URL'] ?? '';
+  const key = process.env['SUPABASE_SERVICE_KEY'] ?? process.env['SUPABASE_KEY'] ?? '';
+  if (url && key) {
+    try {
+      const { createClient } = await import('@supabase/supabase-js');
+      const supabase = createClient(url, key);
+      const { data, error } = await supabase
+        .from('subscribers')
+        .select('plan, status')
+        .eq('status', 'active');
+      if (!error && data) {
+        const mrr = (data as Array<{ plan: string; status: string }>)
+          .reduce((sum, s) => sum + (PLAN_PRICE_EUR[s.plan] ?? PLAN_PRICE_EUR['default'] ?? 9), 0);
+        return mrr;
+      }
+    } catch { /* fall through to tier.json */ }
+  }
+  // Fallback: read from tier.json (manually updated or by CEO agent)
   try {
     const tier = readJSON<TierState>(TIER_FILE);
     return tier.mrr;
