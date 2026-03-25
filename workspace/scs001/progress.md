@@ -7255,3 +7255,13 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Commit: 2bf98f23
 - Status: DONE ✅
 - Next queue item: Sprint 1314 (batch-deliver top 10 unposted videos to Telegram)
+
+## Sprint 1314 — 2026-03-25
+- **SCS-001 — Batch-deliver top 10 unposted captioned videos to Telegram**
+- Ran: npx ts-node scripts/scs001/posting-auto-deliver.ts --batch 10
+- Result: 10/10 videos sent ✅
+- Videos: video-a5f822ee, exp-3760d8ad, exp-f3c9dbb8, exp-7ff189fd, dbt-28750945, exp-1937cfe1, exp-af218f4c, dbt-79df7fa1, exp-93f4ae07, exp-5b853a93
+- No new code — existing --batch flag used (posting-auto-deliver.ts Sprint 525/780)
+- Queue item 1314 marked done. Queue now EMPTY.
+- Commit: c10b54c4
+- Status: DONE ✅
