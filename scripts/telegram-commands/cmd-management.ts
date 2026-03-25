@@ -2849,7 +2849,18 @@ export function cmdNextActions(): string {
     }
   }
 
-  // 6. Update views if posts have no views
+  // 6. Sprint 1206: Posts without TikTok URLs can't auto-track views
+  const noUrl = posts.filter(p => !p.tiktok_url);
+  if (noUrl.length > 0 && posts.length > 0) {
+    actions.push({
+      urgency: posts.length >= 5 ? 'MEDIUM' : 'LOW',
+      icon: posts.length >= 5 ? '🟡' : '🟢',
+      text: `${noUrl.length}/${posts.length} posts missing TikTok URL (can't auto-track views)`,
+      cmd: '/updateviews',
+    });
+  }
+
+  // 7. Update views if posts have no views but have URLs
   const noViews = posts.filter(p => (p.views ?? 0) === 0 && p.tiktok_url);
   if (noViews.length > 0) {
     actions.push({
