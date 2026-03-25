@@ -1745,6 +1745,98 @@ function generateItems(startSprint: number, existingTitles: Set<string> = new Se
     rationale: 'Data backups are easy to forget. Show timestamp of last successful backup from any backup script log or backup-status.json if present, or warn if none found.',
   });
 
+  // Wave 14 templates — AMD-23/AMD-25 integration + Godman post-launch + phase 2 hardening
+  // Added Sprint 1273 after all prior templates exhausted (342 done, 50 skipped)
+  infraItems.push({
+    title: 'AMD23 — Cerberus gateway integration test: end-to-end agent eval via HTTP',
+    block: 'AMD23',
+    rationale: 'Cerberus gateway runs on port 3419. Write a test script that sends a full evaluate request and confirms the signed GatewayDecision is returned with valid HMAC.',
+  });
+
+  infraItems.push({
+    title: 'AMD25 — DKA LRU cache: evict least-recently-used entries when store exceeds 1000 docs',
+    block: 'AMD25',
+    rationale: 'DKA store is in-memory with JSONL persistence. Add LRU eviction so store does not grow unbounded. Cap at 1000 documents and emit eviction events to metrics.',
+  });
+
+  infraItems.push({
+    title: 'AMD25 — DKA curator SOUL filter: reject non-public vectors for PROVISIONAL-tier agents',
+    block: 'AMD25',
+    rationale: 'curator.ts has boundary rules but SOUL attestation tier check is incomplete. Add explicit PROVISIONAL tier check that blocks access to confidential domain vectors.',
+  });
+
+  infraItems.push({
+    title: 'GODMAN-POST-LAUNCH — /godman: show live npm version badge per protocol after publish',
+    block: 'GODMAN-PROTOCOLS',
+    rationale: `After Apr 14 npm publish, /godman should query the npm registry (registry.npmjs.org/-/package/<pkg>/dist-tags) and show the published version for each of the 8 packages.`,
+  });
+
+  infraItems.push({
+    title: 'GODMAN-POST-LAUNCH — Godman DeerFlow deployment: push SKILL.md to deerflow-skills repo',
+    block: 'GODMAN-PROTOCOLS',
+    rationale: 'SKILL.md is authored and verified. Post-launch, submit a PR to the deerflow-skills registry with the Godman Pact + SOUL skill definitions to expand agent discovery.',
+  });
+
+  infraItems.push({
+    title: 'OPS — /sprint-log: show last 10 sprint commits with titles from git log',
+    block: 'OPS',
+    rationale: 'Operator has no quick way to see what was shipped recently without running git log. /sprint-log parses git log --oneline -10 and formats sprint IDs + titles for Telegram.',
+  });
+
+  infraItems.push({
+    title: 'PHASE2 — Achiri Hetzner deploy: pm2 start achiri-telegram + health check script',
+    block: 'PHASE2',
+    rationale: 'Once ACHIRI_TELEGRAM_BOT_TOKEN is set, a single script should start the bot on Hetzner. Add scripts/achiri/deploy-hetzner.sh with pm2 start + curl health check.',
+  });
+
+  infraItems.push({
+    title: 'INFRA — YouTube Shorts auto-upload: wire yt-dlp + YouTube Data API v3 upload',
+    block: 'INFRA',
+    rationale: 'YouTube credentials are configured. Add scripts/scs001/youtube-upload.ts that takes a video path, uploads as a Short (aspect ratio check + title from caption), and logs the video ID.',
+  });
+
+  infraItems.push({
+    title: 'QUALITY — /errors: deduplicate repeated error lines and show count',
+    block: 'QUALITY',
+    rationale: '/errors can show the same error repeated many times if a cron looped. Add dedup: show "Error message (×N times)" instead of N identical lines. Cap output at 8 unique errors.',
+  });
+
+  infraItems.push({
+    title: 'OPS — Daily brief generator: replace static KOGNAI_DAILY_TIMELINE.md tasks with live gate state',
+    block: 'OPS',
+    rationale: 'generate-daily-brief.py sources TODAY tasks from KOGNAI_DAILY_TIMELINE.md which is static. Replace with dynamic generator that reads gate state, open blockers, and launch countdowns.',
+  });
+
+  infraItems.push({
+    title: 'GATE — TikTok OAuth token refresh: add /refresh-token Telegram command',
+    block: 'GATE',
+    rationale: 'TIKTOK_ACCESS_TOKEN expires and blocks auto-posting. Add /refresh-token command that triggers the OAuth refresh flow and shows new token expiry time to operator.',
+  });
+
+  infraItems.push({
+    title: 'AMD23 — Cerberus PM2 smoke: add cerberus-gateway to /smoke test suite',
+    block: 'AMD23',
+    rationale: 'Cerberus gateway is in PM2 ecosystem but not in smoke tests. Add a check to reports/smoke-test-latest.json that verifies cerberus-gateway is online and /health returns 200.',
+  });
+
+  infraItems.push({
+    title: 'GODMAN-LAUNCH — publish-all.sh: serial npm publish for 8 packages in dependency order',
+    block: 'GODMAN-PROTOCOLS',
+    rationale: `Apr 14 launch: need a single script to publish all 8 Godman packages in order (pact, lax, score, amf, drs, soul, signal, sdk). Add --provenance flag and dry-run mode.`,
+  });
+
+  infraItems.push({
+    title: 'PHASE2 — Achiri SIWA upgrade: wire Supabase auth provider for PROVISIONAL→STANDARD tier',
+    block: 'PHASE2',
+    rationale: 'AMD-23 Chamber 4 caps PROVISIONAL agents to RESTRICTED. Achiri users who complete SIWA (Sign In With Apple) should upgrade to STANDARD tier. Wire the Supabase auth event to the tier upgrade.',
+  });
+
+  infraItems.push({
+    title: 'INFRA — /health: add Tailscale VPN status check (online/offline)',
+    block: 'INFRA',
+    rationale: 'If Tailscale drops, Mac Mini vault is unreachable and local model inference silently fails. Add a tailscale status ping to /health output so operator catches VPN issues early.',
+  });
+
   // Fill remaining slots (skip duplicates of already-completed items)
   for (const item of infraItems) {
     if (items.length >= 10) break;
@@ -1811,9 +1903,11 @@ function main(): void {
   const startSprint = lastSprint + 2; // +2 because current sprint is lastSprint+1
   // Sprint 1245: only dedup against pending items (not done/skipped) for prefix match to avoid false positives
   // Sprint 1248: also pass all titles (incl. done/skipped) for exact-match dedup to prevent regenerating completed work
+  // Sprint 1273: exclude 'skipped'/'skip' from allExistingTitles — skipped items were deprioritised not shipped,
+  //              so they can be regenerated when the queue is empty again.
   const DONE_STATUSES = new Set(['done', 'skipped', 'skip']);
   const existingTitles = new Set(existing.queue.filter(i => !DONE_STATUSES.has(i.status)).map(i => i.title));
-  const allExistingTitles = new Set(existing.queue.map(i => i.title));
+  const allExistingTitles = new Set(existing.queue.filter(i => i.status === 'done').map(i => i.title));
   const newItems = generateItems(startSprint, existingTitles, allExistingTitles);
 
   console.log(`\n=== Sprint Queue Replenisher ===`);

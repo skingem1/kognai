@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1273",
+  "title": "REPLENISHER-FIX — Un-block skipped items + add Wave 14 templates",
+  "description": "The replenisher generates 0 items because all Wave 1-13 infraItems templates have been exhausted (342 done, 50 skipped). Fix: (1) exclude 'skipped' items from exact-match dedup so they can be regenerated, (2) add Wave 14 sprint templates covering AMD-23/AMD-25 integration, Godman post-launch ops, new Telegram commands, and phase 2 readiness.",
+  "source": "queue-post-exhaustion",
+  "tasks": [
+    {
+      "id": "1273-01",
+      "title": "Fix exact-match dedup: exclude skipped from allExistingTitles + add Wave 14 templates",
+      "type": "bugfix",
+      "task_type": "ops",
+      "task_target": "scripts/replenish-sprint-queue.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-1273"
+    }
+  ]
+}
