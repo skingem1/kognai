@@ -6448,3 +6448,13 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Test: dry-run shows 8/8 correct tags (pact-v0.2.0, lax-v0.2.0, etc.)
 - Swarm used: no (single-line shell script fix)
 - Timestamp: 2026-03-24T23:10:00Z
+
+## Sprint 1196 — ACHIRI
+- Status: PASS
+- Commit: 2fbc60e5
+- Files modified: scripts/telegram-commands/cmd-spielberg.ts, scripts/telegram-bot.ts, scripts/telegram-commands/cmd-help.ts
+- Files created: workspace/sprints/sprint-1196.json
+- Function: cmdAchiriPing() — async HTTP GET to 65.108.90.178:3420/stats/health, 5s timeout. LIVE: shows response time + tier/model. DOWN: error + deploy command. Registered as /achiri-ping.
+- Test: runtime validation — shows "DOWN (ECONNREFUSED)" correctly (Achiri not deployed on Hetzner yet)
+- Swarm used: no (telegram-bot.ts too large)
+- Timestamp: 2026-03-25T00:00:00Z
