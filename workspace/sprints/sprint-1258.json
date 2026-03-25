@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1258",
+  "title": "GODMAN-LAUNCH \u2014 CHANGELOG.md for each protocol package (v0.2.0 initial release)",
+  "description": "npm shows CHANGELOG if present. Add CHANGELOG.md to all 8 packages documenting v0.2.0 feature set for first-time visitors.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1258-01",
+      "title": "GODMAN-LAUNCH \u2014 CHANGELOG.md for each protocol package (v0.2.0 initial release)",
+      "type": "feature",
+      "task_type": "godman_protocols",
+      "task_target": "workspace/sprints/sprint-1258-output.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1258"
+    }
+  ]
+}
