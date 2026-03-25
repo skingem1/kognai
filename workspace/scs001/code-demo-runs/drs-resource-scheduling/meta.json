@@ -1,0 +1,323 @@
+{
+  "script": {
+    "version": "1.0",
+    "id": "drs-resource-scheduling",
+    "title": "DRS — Dynamic Resource Scheduling",
+    "description": "Demonstrates the DRS protocol: creating resource pools (GPU, API quotas, memory), allocating to tasks, handling contention with preemption, and releasing resources. The capacity manager for compute-constrained agent pipelines.",
+    "scenes": [
+      {
+        "type": "clear"
+      },
+      {
+        "type": "comment",
+        "text": "Scene 1: Create resource pools"
+      },
+      {
+        "type": "output",
+        "text": "$ node --input-type=module",
+        "caption": "DRS Protocol — dynamic resource scheduling demo"
+      },
+      {
+        "type": "pause",
+        "durationMs": 600
+      },
+      {
+        "type": "type",
+        "text": "import { ResourceScheduler } from '@godman-protocols/drs';",
+        "keystrokeDelayMs": 30,
+        "caption": "Import DRS ResourceScheduler from npm"
+      },
+      {
+        "type": "pause",
+        "durationMs": 700
+      },
+      {
+        "type": "type",
+        "text": "const scheduler = new ResourceScheduler();",
+        "keystrokeDelayMs": 40
+      },
+      {
+        "type": "pause",
+        "durationMs": 700
+      },
+      {
+        "type": "clear"
+      },
+      {
+        "type": "output",
+        "text": "// Step 1: Register compute resource pools",
+        "caption": "Register compute pools"
+      },
+      {
+        "type": "pause",
+        "durationMs": 500
+      },
+      {
+        "type": "type",
+        "text": "scheduler.registerPool({ id: 'gpu-0', type: 'gpu', totalUnits: 1, priority: 'high' });",
+        "keystrokeDelayMs": 22
+      },
+      {
+        "type": "pause",
+        "durationMs": 400
+      },
+      {
+        "type": "type",
+        "text": "scheduler.registerPool({ id: 'api-quota', type: 'api', totalUnits: 100, priority: 'medium' });",
+        "keystrokeDelayMs": 22
+      },
+      {
+        "type": "pause",
+        "durationMs": 400
+      },
+      {
+        "type": "type",
+        "text": "scheduler.registerPool({ id: 'ram-pool', type: 'memory', totalUnits: 32768, priority: 'low' });",
+        "keystrokeDelayMs": 22
+      },
+      {
+        "type": "pause",
+        "durationMs": 800
+      },
+      {
+        "type": "output",
+        "text": "",
+        "caption": "3 pools registered: GPU, API quota, memory"
+      },
+      {
+        "type": "output",
+        "text": "pools: gpu-0(1 unit) | api-quota(100 units) | ram-pool(32768 MB)"
+      },
+      {
+        "type": "pause",
+        "durationMs": 1200
+      },
+      {
+        "type": "clear"
+      },
+      {
+        "type": "comment",
+        "text": "Scene 2: Allocate resources to tasks"
+      },
+      {
+        "type": "output",
+        "text": "// Step 2: Allocate resources — automatic contention handling",
+        "caption": "Allocate resources to agents"
+      },
+      {
+        "type": "pause",
+        "durationMs": 500
+      },
+      {
+        "type": "type",
+        "text": "const a1 = scheduler.allocate('video-agent', 'gpu-0', 1);     // GPU — full unit",
+        "keystrokeDelayMs": 20
+      },
+      {
+        "type": "pause",
+        "durationMs": 600
+      },
+      {
+        "type": "output",
+        "text": "a1 → { granted: true,  pool: 'gpu-0',    units: 1,    allocationId: 'alc_1a2b' }"
+      },
+      {
+        "type": "pause",
+        "durationMs": 500
+      },
+      {
+        "type": "type",
+        "text": "const a2 = scheduler.allocate('script-agent', 'api-quota', 10); // 10 API calls",
+        "keystrokeDelayMs": 20
+      },
+      {
+        "type": "pause",
+        "durationMs": 600
+      },
+      {
+        "type": "output",
+        "text": "a2 → { granted: true,  pool: 'api-quota', units: 10,   allocationId: 'alc_3c4d' }"
+      },
+      {
+        "type": "pause",
+        "durationMs": 500
+      },
+      {
+        "type": "type",
+        "text": "const a3 = scheduler.allocate('tts-agent', 'gpu-0', 1);        // GPU — contended!",
+        "keystrokeDelayMs": 20
+      },
+      {
+        "type": "pause",
+        "durationMs": 600
+      },
+      {
+        "type": "output",
+        "text": "a3 → { granted: false, pool: 'gpu-0',    reason: 'pool exhausted (0/1 available)' }"
+      },
+      {
+        "type": "pause",
+        "durationMs": 1200
+      },
+      {
+        "type": "clear"
+      },
+      {
+        "type": "comment",
+        "text": "Scene 3: Preempt lower-priority task"
+      },
+      {
+        "type": "output",
+        "text": "// Step 3: Preemption — urgent task evicts lower-priority allocation",
+        "caption": "Preempt for urgent task"
+      },
+      {
+        "type": "pause",
+        "durationMs": 500
+      },
+      {
+        "type": "type",
+        "text": "// Urgent tts-agent preempts video-agent from GPU",
+        "keystrokeDelayMs": 35
+      },
+      {
+        "type": "pause",
+        "durationMs": 400
+      },
+      {
+        "type": "type",
+        "text": "scheduler.preempt('video-agent', 'gpu-0', { reason: 'urgent-tts' });",
+        "keystrokeDelayMs": 28
+      },
+      {
+        "type": "pause",
+        "durationMs": 700
+      },
+      {
+        "type": "output",
+        "text": "→ PREEMPT  video-agent evicted from gpu-0"
+      },
+      {
+        "type": "pause",
+        "durationMs": 500
+      },
+      {
+        "type": "type",
+        "text": "const a4 = scheduler.allocate('tts-agent', 'gpu-0', 1);",
+        "keystrokeDelayMs": 35
+      },
+      {
+        "type": "pause",
+        "durationMs": 600
+      },
+      {
+        "type": "output",
+        "text": "a4 → { granted: true,  pool: 'gpu-0', units: 1, allocationId: 'alc_5e6f' }"
+      },
+      {
+        "type": "pause",
+        "durationMs": 1200
+      },
+      {
+        "type": "clear"
+      },
+      {
+        "type": "comment",
+        "text": "Scene 4: Release and check utilisation"
+      },
+      {
+        "type": "output",
+        "text": "// Step 4: Release resources — returned to pool immediately",
+        "caption": "Release and check utilisation"
+      },
+      {
+        "type": "pause",
+        "durationMs": 500
+      },
+      {
+        "type": "type",
+        "text": "scheduler.release('alc_5e6f');  // tts-agent done",
+        "keystrokeDelayMs": 35
+      },
+      {
+        "type": "pause",
+        "durationMs": 500
+      },
+      {
+        "type": "type",
+        "text": "scheduler.release('alc_3c4d');  // script-agent done",
+        "keystrokeDelayMs": 35
+      },
+      {
+        "type": "pause",
+        "durationMs": 700
+      },
+      {
+        "type": "type",
+        "text": "scheduler.getUtilisation();",
+        "keystrokeDelayMs": 45
+      },
+      {
+        "type": "pause",
+        "durationMs": 700
+      },
+      {
+        "type": "output",
+        "text": "",
+        "caption": "All resources returned to pools"
+      },
+      {
+        "type": "output",
+        "text": "gpu-0      → 0/1 used  (100% free)"
+      },
+      {
+        "type": "output",
+        "text": "api-quota  → 0/100 used (100% free)"
+      },
+      {
+        "type": "output",
+        "text": "ram-pool   → 0/32768 MB used"
+      },
+      {
+        "type": "pause",
+        "durationMs": 1000
+      },
+      {
+        "type": "output",
+        "text": "",
+        "caption": "DRS — intelligent resource sharing for agent pipelines"
+      },
+      {
+        "type": "pause",
+        "durationMs": 2000
+      }
+    ],
+    "terminal": {
+      "cols": 90,
+      "rows": 26,
+      "fontSize": 16,
+      "theme": "monokai"
+    },
+    "postProduction": {
+      "resolution": "1920x1080",
+      "fps": 30,
+      "titleCard": {
+        "text": "DRS Protocol — Dynamic Resource Scheduling",
+        "durationSec": 3
+      },
+      "closingCard": {
+        "text": "godman-protocols.github.io  |  @invoica_ai",
+        "durationSec": 5
+      }
+    }
+  },
+  "result": {
+    "scriptId": "drs-resource-scheduling",
+    "castPath": "/Users/tarekmnif/kognai/workspace/scs001/code-demo-runs/drs-resource-scheduling/drs-resource-scheduling.cast",
+    "gifPath": "/Users/tarekmnif/kognai/workspace/scs001/code-demo-runs/drs-resource-scheduling/drs-resource-scheduling.gif",
+    "mp4Path": "/Users/tarekmnif/kognai/workspace/scs001/code-demo-runs/drs-resource-scheduling/drs-resource-scheduling.mp4",
+    "durationSec": 74.837,
+    "recordedAt": "2026-03-25T07:48:03.103Z",
+    "status": "success"
+  }
+}

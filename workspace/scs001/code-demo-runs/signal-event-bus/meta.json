@@ -1,0 +1,320 @@
+{
+  "script": {
+    "version": "1.0",
+    "id": "signal-event-bus",
+    "title": "SIGNAL — Agent Event Bus",
+    "description": "Demonstrates the SIGNAL protocol: creating a typed event bus, subscribing to topics with glob patterns, publishing events with delivery receipts, and idempotency deduplication. The messaging backbone for multi-agent systems.",
+    "scenes": [
+      {
+        "type": "clear"
+      },
+      {
+        "type": "comment",
+        "text": "Scene 1: Create the event bus"
+      },
+      {
+        "type": "output",
+        "text": "$ node --input-type=module",
+        "caption": "SIGNAL Protocol — agent event bus demo"
+      },
+      {
+        "type": "pause",
+        "durationMs": 600
+      },
+      {
+        "type": "type",
+        "text": "import { EventBus } from '@godman-protocols/signal';",
+        "keystrokeDelayMs": 30,
+        "caption": "Import SIGNAL EventBus from npm"
+      },
+      {
+        "type": "pause",
+        "durationMs": 600
+      },
+      {
+        "type": "type",
+        "text": "const bus = new EventBus();",
+        "keystrokeDelayMs": 50
+      },
+      {
+        "type": "pause",
+        "durationMs": 800
+      },
+      {
+        "type": "output",
+        "text": "",
+        "caption": "EventBus created — in-memory, zero dependencies"
+      },
+      {
+        "type": "output",
+        "text": "bus.stats() → { subscribers: 0, published: 0, delivered: 0 }"
+      },
+      {
+        "type": "pause",
+        "durationMs": 1200
+      },
+      {
+        "type": "clear"
+      },
+      {
+        "type": "comment",
+        "text": "Scene 2: Subscribe to topics"
+      },
+      {
+        "type": "output",
+        "text": "// Step 1: Subscribe agents to topics — glob patterns supported",
+        "caption": "Subscribe with glob patterns"
+      },
+      {
+        "type": "pause",
+        "durationMs": 500
+      },
+      {
+        "type": "type",
+        "text": "// Agent A: watches all task events",
+        "keystrokeDelayMs": 35
+      },
+      {
+        "type": "pause",
+        "durationMs": 400
+      },
+      {
+        "type": "type",
+        "text": "bus.subscribe('agent-a', 'task.*', event => {",
+        "keystrokeDelayMs": 35
+      },
+      {
+        "type": "type",
+        "text": "  console.log('Agent A received:', event.type);",
+        "keystrokeDelayMs": 30
+      },
+      {
+        "type": "type",
+        "text": "});",
+        "keystrokeDelayMs": 50
+      },
+      {
+        "type": "pause",
+        "durationMs": 500
+      },
+      {
+        "type": "type",
+        "text": "// Agent B: watches only failures",
+        "keystrokeDelayMs": 35
+      },
+      {
+        "type": "pause",
+        "durationMs": 400
+      },
+      {
+        "type": "type",
+        "text": "bus.subscribe('agent-b', 'task.failed', event => {",
+        "keystrokeDelayMs": 35
+      },
+      {
+        "type": "type",
+        "text": "  console.log('Supervisor alert:', event.payload);",
+        "keystrokeDelayMs": 30
+      },
+      {
+        "type": "type",
+        "text": "});",
+        "keystrokeDelayMs": 50
+      },
+      {
+        "type": "pause",
+        "durationMs": 800
+      },
+      {
+        "type": "output",
+        "text": "",
+        "caption": "2 agents subscribed to the bus"
+      },
+      {
+        "type": "output",
+        "text": "bus.stats() → { subscribers: 2, published: 0, delivered: 0 }"
+      },
+      {
+        "type": "pause",
+        "durationMs": 1200
+      },
+      {
+        "type": "clear"
+      },
+      {
+        "type": "comment",
+        "text": "Scene 3: Publish events and receive receipts"
+      },
+      {
+        "type": "output",
+        "text": "// Step 2: Publish events — automatic delivery receipts",
+        "caption": "Publish events with receipts"
+      },
+      {
+        "type": "pause",
+        "durationMs": 500
+      },
+      {
+        "type": "type",
+        "text": "const r1 = await bus.publish({",
+        "keystrokeDelayMs": 40
+      },
+      {
+        "type": "type",
+        "text": "  type: 'task.completed', payload: { taskId: 'T-001', score: 95 }",
+        "keystrokeDelayMs": 25
+      },
+      {
+        "type": "type",
+        "text": "});",
+        "keystrokeDelayMs": 40
+      },
+      {
+        "type": "pause",
+        "durationMs": 700
+      },
+      {
+        "type": "output",
+        "text": "Agent A received: task.completed"
+      },
+      {
+        "type": "output",
+        "text": "r1.delivered → 1   (only agent-a matched 'task.*')"
+      },
+      {
+        "type": "pause",
+        "durationMs": 600
+      },
+      {
+        "type": "type",
+        "text": "const r2 = await bus.publish({",
+        "keystrokeDelayMs": 40
+      },
+      {
+        "type": "type",
+        "text": "  type: 'task.failed', payload: { taskId: 'T-002', error: 'timeout' }",
+        "keystrokeDelayMs": 25
+      },
+      {
+        "type": "type",
+        "text": "});",
+        "keystrokeDelayMs": 40
+      },
+      {
+        "type": "pause",
+        "durationMs": 700
+      },
+      {
+        "type": "output",
+        "text": "Agent A received: task.failed"
+      },
+      {
+        "type": "output",
+        "text": "Supervisor alert: { taskId: 'T-002', error: 'timeout' }"
+      },
+      {
+        "type": "output",
+        "text": "r2.delivered → 2   (both agents matched 'task.failed')"
+      },
+      {
+        "type": "pause",
+        "durationMs": 1200
+      },
+      {
+        "type": "clear"
+      },
+      {
+        "type": "comment",
+        "text": "Scene 4: Idempotency deduplication"
+      },
+      {
+        "type": "output",
+        "text": "// Step 3: Idempotency — same event ID never delivered twice",
+        "caption": "Idempotency prevents duplicate delivery"
+      },
+      {
+        "type": "pause",
+        "durationMs": 500
+      },
+      {
+        "type": "type",
+        "text": "const event = { id: 'evt-abc-123', type: 'task.completed', payload: {} };",
+        "keystrokeDelayMs": 25
+      },
+      {
+        "type": "pause",
+        "durationMs": 500
+      },
+      {
+        "type": "type",
+        "text": "await bus.publish(event);  // first delivery",
+        "keystrokeDelayMs": 35
+      },
+      {
+        "type": "pause",
+        "durationMs": 600
+      },
+      {
+        "type": "output",
+        "text": "Agent A received: task.completed  (delivered: 1)"
+      },
+      {
+        "type": "pause",
+        "durationMs": 400
+      },
+      {
+        "type": "type",
+        "text": "await bus.publish(event);  // duplicate — rejected",
+        "keystrokeDelayMs": 35
+      },
+      {
+        "type": "pause",
+        "durationMs": 600
+      },
+      {
+        "type": "output",
+        "text": "→ DEDUP  event evt-abc-123 already delivered, skipped"
+      },
+      {
+        "type": "pause",
+        "durationMs": 800
+      },
+      {
+        "type": "output",
+        "text": "",
+        "caption": "SIGNAL — reliable async messaging for agent swarms"
+      },
+      {
+        "type": "pause",
+        "durationMs": 2000
+      }
+    ],
+    "terminal": {
+      "cols": 90,
+      "rows": 26,
+      "fontSize": 16,
+      "theme": "monokai"
+    },
+    "postProduction": {
+      "resolution": "1920x1080",
+      "fps": 30,
+      "titleCard": {
+        "text": "SIGNAL Protocol — Agent Event Bus",
+        "durationSec": 3
+      },
+      "closingCard": {
+        "text": "godman-protocols.github.io  |  @invoica_ai",
+        "durationSec": 5
+      }
+    }
+  },
+  "result": {
+    "scriptId": "signal-event-bus",
+    "castPath": "/Users/tarekmnif/kognai/workspace/scs001/code-demo-runs/signal-event-bus/signal-event-bus.cast",
+    "gifPath": "/Users/tarekmnif/kognai/workspace/scs001/code-demo-runs/signal-event-bus/signal-event-bus.gif",
+    "mp4Path": "/Users/tarekmnif/kognai/workspace/scs001/code-demo-runs/signal-event-bus/signal-event-bus.mp4",
+    "durationSec": 70.986,
+    "recordedAt": "2026-03-25T07:52:52.765Z",
+    "status": "success"
+  }
+}

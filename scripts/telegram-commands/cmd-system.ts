@@ -3003,7 +3003,7 @@ export function cmdGodman(): string {
   const demoBase = path.join(ROOT, 'workspace', 'scs001', 'code-demo-runs');
   const demoScriptMap: Record<string, string> = {
     pact: 'pact-mandate-lifecycle',
-    lax: 'lax-latency-budget',
+    lax: 'lax-latency-routing',
     score: 'score-reputation-engine',
     signal: 'signal-event-bus',
     soul: 'soul-constitutional-engine',
