@@ -133,6 +133,16 @@ Return ONLY the code, no markdown fences, no explanation. Keep it under 30 lines
     codeToExplain = codeToExplain.replace(/^```\w*\n?/, '').replace(/\n?```$/, '').trim();
   }
 
+  // Sprint 1315: Auto-discover topic when neither code nor prompt provided (pipeline automated mode)
+  if (!codeToExplain && !input.prompt) {
+    const discovered = await discoverCodeDemoTopic();
+    console.log(`  Auto-discovered topic: ${discovered.prompt} (${discovered.source})`);
+    const genPrompt = `Write clean, working code for: "${discovered.prompt}"
+Return ONLY the code, no markdown fences, no explanation. Keep it under 30 lines.`;
+    codeToExplain = callOllama(genPrompt, { maxTokens: 800, temperature: 0.3 }).trim();
+    codeToExplain = codeToExplain.replace(/^```\w*\n?/, '').replace(/\n?```$/, '').trim();
+  }
+
   if (!codeToExplain) throw new Error('No code to explain (provide --code or --prompt)');
 
   language = detectLanguage(codeToExplain);

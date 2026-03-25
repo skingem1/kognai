@@ -1,0 +1,17 @@
+{
+  "sprint_id": "sprint-1315",
+  "title": "SCS-001 — Fix code-demo pipeline auto-discover (Pipeline 2 fails every run)",
+  "source": "qwen-recommendation",
+  "rationale": "Pipeline 2 (code-demo) fails on every automated run with 'No code to explain (provide --code or --prompt)' because discoverCodeDemoTopic() exists but is never called as fallback when no input is provided. Fix: wire auto-discover into generateCodeDemoScript when neither code nor prompt is given.",
+  "tasks": [
+    {
+      "id": "fix-code-demo-auto-discover",
+      "description": "In scripts/scs001/code-demo-scriptgen.ts, add auto-discover fallback in generateCodeDemoScript: when neither input.code nor input.prompt is provided, call discoverCodeDemoTopic() and generate code from the result. This ensures Pipeline 2 runs successfully in automated mode.",
+      "file": "scripts/scs001/code-demo-scriptgen.ts",
+      "status": "pending",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}
