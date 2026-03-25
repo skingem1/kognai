@@ -6476,3 +6476,13 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Test: tsc --noEmit clean for modified files
 - Swarm used: no (direct edit, files too large)
 - Timestamp: 2026-03-25T00:20:00Z
+
+## Sprint 1201 — GODMAN-LAUNCH
+- Status: PASS
+- Files modified: scripts/telegram-commands/cmd-system.ts, scripts/telegram-bot.ts, scripts/telegram-commands/cmd-help.ts
+- Files created: workspace/sprints/sprint-1201.json
+- Function: cmdGodmanLaunch() — 3-step launch day runbook: pre-flight (npm login + git tags + CHANGELOGs), publish (bash godman-publish-all.sh), announce (X thread + ClaWHub). Registered as /godman-launch.
+- Bug fix: removed duplicate /stripe key from asyncHandlers in telegram-bot.ts (pre-existing TS error TS1117)
+- Test: tsc --noEmit clean for modified files
+- Swarm used: no (cmd-system.ts too large for swarm)
+- Timestamp: 2026-03-25T00:35:00Z
