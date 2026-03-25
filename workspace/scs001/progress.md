@@ -6467,3 +6467,12 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Test: dry-run validated — all 7 steps correct
 - Swarm used: no (new bash script, direct write)
 - Timestamp: 2026-03-25T00:10:00Z
+
+## Sprint 1198 — ACHIRI
+- Status: PASS
+- Files modified: scripts/telegram-commands/cmd-stripe.ts, scripts/telegram-commands/cmd-management.ts
+- Files created: workspace/sprints/sprint-1198.json
+- Function: /deploy-status + /launches — added ACHIRI_TELEGRAM_BOT_TOKEN check + Hetzner server reachable check (curl :3420 3s). /launches Achiri section now shows 4 checks incl. Hetzner API status.
+- Test: tsc --noEmit clean for modified files
+- Swarm used: no (direct edit, files too large)
+- Timestamp: 2026-03-25T00:20:00Z
