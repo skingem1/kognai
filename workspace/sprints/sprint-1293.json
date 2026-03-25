@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1293",
+  "title": "GODMAN-POST-LAUNCH — Godman DeerFlow deployment: push SKILL.md to deerflow-skills repo",
+  "description": "Create scripts/godman-push-deerflow-skills.sh — dry-run by default, --execute for actual PR submission. Validates 8/8 SKILL.md files present, clones deerflow-skills repo, copies files to skills/godman-protocols/, creates PR.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1293-01",
+      "title": "Create scripts/godman-push-deerflow-skills.sh",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/godman-push-deerflow-skills.sh",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1293"
+    }
+  ]
+}
