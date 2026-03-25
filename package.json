@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "description": "Countable - Financial OS for AI Agents (x402 invoice middleware)",
   "private": true,
+  "bin": {
+    "kognai": "./scripts/init/kognai-init.ts"
+  },
   "scripts": {
     "sprint": "ts-node scripts/orchestrate-agents-v2.ts sprints/week-2.json",
     "sprint:v1": "ts-node scripts/orchestrate-agents-minimax.ts sprints/week-2.json",

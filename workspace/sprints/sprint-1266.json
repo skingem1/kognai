@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-1266",
+  "title": "AMD24-AGENT-COMPUTER — Path B cloud vault installer in npx kognai init",
+  "description": "INTEL-017: agentcomputer.ai — 0.5s spin-up, $20/month, 25 VMs. AMD-24 Path B (cloud vault alternative to local Mac Mini). Add Path B selection to npx kognai init installer. When user has no local VM, offer agentcomputer.ai provisioning. Store agent_computer_api_key in Sovereign Vault. Document in AMD-24 Distributed Runtime Protocol.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1266-01",
+      "title": "Implement scripts/init/kognai-init.ts with Path A/B vault selection",
+      "type": "feature",
+      "task_type": "amd24",
+      "task_target": "scripts/init/kognai-init.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1266"
+    },
+    {
+      "id": "1266-02",
+      "title": "Create workspace/arch001/amd24-drp-config.json — AMD-24 DRP path selection record",
+      "type": "config",
+      "task_type": "amd24",
+      "task_target": "workspace/arch001/amd24-drp-config.json",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1266"
+    }
+  ]
+}

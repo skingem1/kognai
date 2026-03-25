@@ -1,0 +1,25 @@
+{
+  "_comment": "AMD-24 Distributed Runtime Protocol — vault path selection (kognai init)",
+  "_sprint": "Sprint 1266 (AMD24-AGENT-COMPUTER)",
+  "_rationale": "INTEL-017: agentcomputer.ai provides a Path B cloud vault alternative for operators with no local Mac Mini. 0.5s spin-up, $20/month, 25 VMs. Path A remains the default for existing Kognai deployments (Mac Mini M4 + Hetzner).",
+  "version": "1.0",
+  "selectedPath": null,
+  "configuredAt": null,
+  "pathA": {
+    "_description": "Local Mac Mini / Hetzner VPS. Ollama required. Lowest cost ($0/mo model inference).",
+    "vaultHost": "http://127.0.0.1:11434",
+    "vaultPort": 11434,
+    "localModelPower": "qwen3:4b",
+    "localModelNano": "qwen3:0.6b",
+    "_available_models": ["qwen3:0.6b", "qwen3:4b", "qwen3:14b", "deepseek-r1:14b"]
+  },
+  "pathB": {
+    "_description": "agentcomputer.ai cloud vault. No hardware required. $20/month for 25 VMs.",
+    "agentComputerApiKey": "<set-via-kognai-init>",
+    "vmRegion": "eu-west",
+    "cloudModelPower": "agentcomputer:qwen3-4b",
+    "_available_regions": ["eu-west", "us-east", "us-west", "ap-southeast"],
+    "_pricing": "$20/month, 25 VMs, 0.5s spin-up",
+    "_docs": "https://agentcomputer.ai/docs/api"
+  }
+}

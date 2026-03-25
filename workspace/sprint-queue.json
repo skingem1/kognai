@@ -3583,19 +3583,21 @@
       "sprint": 1265,
       "title": "HELIXA-PACT-CHAMBER4 — Soul Handshake + bidirectional session outcomes (AMD-23)",
       "block": "HELIXA-INTEGRATION",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "INTEL-019 + PACT×Helixa plan v0.1: Chamber 4 Soul Handshake — external agent proves constitutional alignment via SOUL attestation before full access granted. Wire bidirectional session outcome reporting back to Helixa for score updates (Webhook v2 format). Follows Sprint 1264 (Chamber 2). Together: complete PACT × Helixa integration.",
-      "added_at": "2026-03-25T12:21:41.000Z"
+      "added_at": "2026-03-25T12:21:41.000Z",
+      "_note": "Shipped 2026-03-25 — commit 6d5ca594. 5/5 unit tests pass. SOUL attestation + tier cap + Webhook v2 outcome reporting."
     },
     {
       "sprint": 1266,
       "title": "AMD24-AGENT-COMPUTER — Path B cloud vault installer in npx kognai init",
       "block": "AMD24-DRP",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "INTEL-017: agentcomputer.ai — 0.5s spin-up, $20/month, 25 VMs. AMD-24 Path B (cloud vault alternative to local Mac Mini). Add Path B selection to npx kognai init installer. When user has no local VM, offer agentcomputer.ai provisioning. Store agent_computer_api_key in Sovereign Vault. Document in AMD-24 Distributed Runtime Protocol. After April 7 gate.",
-      "added_at": "2026-03-25T12:21:41.000Z"
+      "added_at": "2026-03-25T12:21:41.000Z",
+      "_note": "Shipped 2026-03-25. scripts/init/kognai-init.ts + amd24-drp-config.json. Path A/B interactive wizard. bin[kognai] wired in package.json."
     }
   ]
 }
