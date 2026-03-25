@@ -19,7 +19,9 @@ import { readFileSync, readdirSync, existsSync, statSync } from 'fs';
 import { join } from 'path';
 import { execSync } from 'child_process';
 
-const ROOT = join(import.meta.dirname ?? __dirname, '..', '..');
+try { require('dotenv').config({ path: join(__dirname, '..', '..', '.env') }); } catch {}
+
+const ROOT = join(__dirname, '..', '..');
 const SCS = join(ROOT, 'workspace', 'scs001');
 
 interface Check {

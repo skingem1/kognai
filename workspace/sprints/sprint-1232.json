@@ -11,7 +11,7 @@
       "task_type": "testing",
       "task_target": "scripts/scs001/validate-e2e-pipeline.ts",
       "agent": "coder",
-      "status": "pending",
+      "status": "done",
       "priority": "high",
       "sprint_id": "sprint-1232"
     }
