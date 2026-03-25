@@ -1,0 +1,27 @@
+{
+  "sprint_id": "sprint-1325",
+  "title": "BUGFIX — Fix pipeline errors: fal.ai ETIMEDOUT + FFmpeg subtitle filter",
+  "block": "BUGFIX",
+  "source": "queue-prescribed",
+  "rationale": "Two pipeline errors detected in scs001-pipeline-error.log (2026-03-25): (1) Scene s6 generation failed: All fal.ai models failed — spawnSync /bin/sh ETIMEDOUT. signal.alarm(90) doesn't interrupt blocking C extension calls. Fix: use subprocess.Popen with explicit kill. (2) FFmpeg 8.x subtitles filter rejects force_style without 'f=' prefix. Fix: add f= prefix to srt path.",
+  "tasks": [
+    {
+      "id": "1325-fal-timeout",
+      "description": "In scripts/scs001/fal-video-client.ts, replace the signal.alarm(90) Python timeout approach with subprocess.Popen + communicate(timeout=85) + proc.kill(). This ensures the fal.ai Python call is reliably killed after 85s even when fal_client.subscribe is blocking in a C extension. Change: rewrite the pyCode to spawn an inner subprocess (subprocess.Popen) for the actual fal_client.subscribe call, catching subprocess.TimeoutExpired and calling proc.kill().",
+      "file": "scripts/scs001/fal-video-client.ts",
+      "status": "pending",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    },
+    {
+      "id": "1325-ffmpeg-subtitle",
+      "description": "In agents/scs001-caption/index.ts line 148, fix the FFmpeg 8.x subtitles filter: change vfArg from 'subtitles=${srtPath}:force_style=...' to 'subtitles=f=${srtPath}:force_style=...' (add 'f=' prefix for explicit filename option). This fixes 'No option name near' parse error in FFmpeg 8.x.",
+      "file": "agents/scs001-caption/index.ts",
+      "status": "pending",
+      "priority": "medium",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}

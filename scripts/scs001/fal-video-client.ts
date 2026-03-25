@@ -79,35 +79,53 @@ export async function generateBrollVideo(
         args.resolution = '1080p';
       }
 
-      // Write Python script to temp file to avoid shell escaping issues
-      const tmpScript = join('/tmp', `fal_gen_${Date.now()}.py`);
-      // Wrap fal_client.subscribe in a signal.alarm(90s) timeout so a hung API call
-      // fails fast rather than blocking for 5 minutes (ETIMEDOUT from execSync).
-      const pyCode = [
-        'import fal_client, os, json, signal',
+      // Write two Python scripts: an inner script that calls fal_client.subscribe,
+      // and an outer script that spawns it via subprocess.Popen with a hard kill
+      // on timeout. This is more reliable than signal.alarm(90) which can be
+      // blocked by fal_client C extensions holding the GIL.
+      const ts = Date.now();
+      const innerScript = join('/tmp', `fal_inner_${ts}.py`);
+      const outerScript = join('/tmp', `fal_outer_${ts}.py`);
+
+      const innerCode = [
+        'import fal_client, os, json',
         `os.environ["FAL_KEY"] = ${JSON.stringify(falKey)}`,
-        'def _timeout_handler(sig, frame): raise TimeoutError("fal.ai subscribe timed out after 90s")',
-        'signal.signal(signal.SIGALRM, _timeout_handler)',
-        'signal.alarm(90)',
-        `try:`,
-        `    result = fal_client.subscribe(`,
-        `        ${JSON.stringify(MODEL_SLUGS[model])},`,
-        `        arguments=${JSON.stringify(args)},`,
-        `    )`,
-        `finally:`,
-        `    signal.alarm(0)`,
+        `result = fal_client.subscribe(`,
+        `    ${JSON.stringify(MODEL_SLUGS[model])},`,
+        `    arguments=${JSON.stringify(args)},`,
+        `)`,
         `url = result.get("video", {}).get("url", "")`,
         `print(json.dumps({"url": url}))`,
       ].join('\n');
 
-      writeFileSync(tmpScript, pyCode);
+      const outerCode = [
+        'import subprocess, sys, json',
+        `proc = subprocess.Popen([sys.executable, ${JSON.stringify(innerScript)}],`,
+        '    stdout=subprocess.PIPE, stderr=subprocess.PIPE)',
+        'try:',
+        '    out, err = proc.communicate(timeout=85)',
+        '    data = json.loads(out.decode().strip())',
+        '    print(json.dumps(data))',
+        'except subprocess.TimeoutExpired:',
+        '    proc.kill()',
+        '    proc.communicate()',
+        '    raise TimeoutError("fal.ai subscribe timed out after 85s")',
+        'except Exception as e:',
+        '    proc.kill()',
+        '    proc.communicate()',
+        '    raise',
+      ].join('\n');
 
-      const result = execSync(`python3 "${tmpScript}"`, {
-        timeout: 120000,  // 2 min safety net; Python signal.alarm(90) fires first
+      writeFileSync(innerScript, innerCode);
+      writeFileSync(outerScript, outerCode);
+
+      const result = execSync(`python3 "${outerScript}"`, {
+        timeout: 95000,  // 95s safety net; Python subprocess kill fires at 85s
         encoding: 'utf-8',
       });
 
-      try { unlinkSync(tmpScript); } catch {}
+      try { unlinkSync(innerScript); } catch {}
+      try { unlinkSync(outerScript); } catch {}
 
       const { url } = JSON.parse(result.trim());
       if (!url) throw new Error(`${model}: no video URL in response`);
