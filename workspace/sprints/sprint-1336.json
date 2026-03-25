@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1336",
+  "title": "BUGFIX — batch-produce: skip ledger fallback write when primary write succeeded",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "In scripts/scs001/batch-produce.ts writeLedgerFallback() is called unconditionally after every successful pipeline run (line 177-178), even when pipeline-registry already wrote the entry to publish-ledger.jsonl. This creates duplicate entries (e.g., demo-mn6i8r28 appears twice: once with source='batch-pipeline' file_exists=true, once with source='batch-produce' file_exists=false). The deduplication in posting-auto-deliver.ts (seenVids set) handles the duplicate correctly, but the ledger grows unnecessarily. Fix: in writeLedgerFallback, read the current ledger and skip write if result.runId already appears in it.",
+  "tasks": [
+    {
+      "id": "1336-ledger-dedup",
+      "description": "In scripts/scs001/batch-produce.ts writeLedgerFallback(): before building the entry object, read LEDGER_PATH (if it exists) and check if result.runId appears in the file content using String.includes(). If found, log '[batch-produce] Ledger primary write succeeded — no fallback needed' and return early. Also add file_exists: existsSync(videoPath) to the entry object for when fallback IS needed.",
+      "file": "scripts/scs001/batch-produce.ts",
+      "status": "done",
+      "priority": "low",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}

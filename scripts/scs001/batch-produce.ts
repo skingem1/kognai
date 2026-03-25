@@ -24,13 +24,23 @@ import type { PipelineName, PipelineInput, PipelineRunResult } from './pipeline-
 
 // Sprint 1326: Fallback ledger write — ensures batch-produce videos are always registered
 // in publish-ledger.jsonl even if pipeline-registry's logToPublishLedger fails silently.
+// Sprint 1336: Skip write if primary pipeline-registry write already registered this runId.
 const LEDGER_PATH = join(__dirname, '..', '..', 'workspace', 'scs001', 'publish-ledger.jsonl');
 function writeLedgerFallback(result: PipelineRunResult): void {
   try {
+    if (existsSync(LEDGER_PATH)) {
+      const content = readFileSync(LEDGER_PATH, 'utf-8');
+      if (content.includes(`"${result.runId}"`)) {
+        console.log(`[batch-produce] Ledger primary write succeeded — no fallback needed (${result.runId})`);
+        return;
+      }
+    }
+    const videoPath = String(result.videoPath || '');
     const entry = {
       video_id: String(result.runId || ''),
-      video_path: String(result.videoPath || ''),
-      file_path: String(result.videoPath || ''),
+      video_path: videoPath,
+      file_path: videoPath,
+      file_exists: existsSync(videoPath),
       published_at: result.produced_at,
       title: String(result.title || ''),
       topic: String(result.title || ''),
