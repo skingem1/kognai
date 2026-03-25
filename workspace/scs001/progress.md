@@ -7322,3 +7322,13 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (surgical 2-file bugfix, direct write)
 - AAR module not found — skipped
 - Timestamp: 2026-03-25T20:15:00+01:00
+
+## Sprint 1321 — BUGFIX (self-directed)
+- Status: PASS
+- Commit: 9495df64
+- Files modified: agents/scs001-orchestrator/index.ts
+- Files created: workspace/sprints/sprint-1321.json
+- Fix: Skip stage 3 ClipDetection when viralClipsCount===0 (saves 10min timeout per run)
+- Sprint 1322 in queue marked skipped (duplicate of Sprint 1320 fal.ai fix)
+- Swarm used: no (surgical 1-line fix)
+- Timestamp: 2026-03-25T20:25:00+01:00
