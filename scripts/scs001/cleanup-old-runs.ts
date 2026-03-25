@@ -18,6 +18,8 @@ interface CleanupResult {
   multiformat: { deleted: number; kept: number; freedMB: number };
   radar: { deleted: number; kept: number; freedKB: number };
   scripts: { deleted: number; kept: number; freedKB: number };
+  codeDemoRuns: { deleted: number; kept: number; freedMB: number }; // Sprint 1218
+  vlogRuns: { deleted: number; kept: number; freedMB: number };     // Sprint 1218
   totalFreedMB: number;
   dryRun: boolean;
 }
@@ -184,6 +186,8 @@ function run(): CleanupResult {
   const mfDir = path.join(ROOT, 'workspace', 'scs001', 'multiformat-runs');
   const radarDir = path.join(ROOT, 'workspace', 'scs001', 'topic-radar');
   const scriptsDir = path.join(ROOT, 'workspace', 'scs001', 'scripts');
+  const codeDemoDir = path.join(ROOT, 'workspace', 'scs001', 'code-demo-runs'); // Sprint 1218
+  const vlogDir = path.join(ROOT, 'workspace', 'scs001', 'vlog-runs');           // Sprint 1218
 
   // Sprint 826: Protect run dirs that contain ready-to-post videos
   const protectedRuns = getProtectedRunIds();
@@ -201,12 +205,20 @@ function run(): CleanupResult {
     scriptResult.freedBytes += r.freedBytes;
   }
 
-  const totalFreedMB = (mf.freedBytes + radar.freedBytes + scriptResult.freedBytes) / (1024 * 1024);
+  // Sprint 1218: code-demo-runs (demo-*) — keep latest 20
+  const codeDemo = cleanDir(codeDemoDir, 'demo-', 20, true);
+
+  // Sprint 1218: vlog-runs (vlog-*) — keep latest 30
+  const vlog = cleanDir(vlogDir, 'vlog-', 30, true);
+
+  const totalFreedMB = (mf.freedBytes + radar.freedBytes + scriptResult.freedBytes + codeDemo.freedBytes + vlog.freedBytes) / (1024 * 1024);
 
   return {
     multiformat: { deleted: mf.deleted, kept: mf.kept, freedMB: Math.round(mf.freedBytes / (1024 * 1024)) },
     radar: { deleted: radar.deleted, kept: radar.kept, freedKB: Math.round(radar.freedBytes / 1024) },
     scripts: { deleted: scriptResult.deleted, kept: scriptResult.kept, freedKB: Math.round(scriptResult.freedBytes / 1024) },
+    codeDemoRuns: { deleted: codeDemo.deleted, kept: codeDemo.kept, freedMB: Math.round(codeDemo.freedBytes / (1024 * 1024)) },
+    vlogRuns: { deleted: vlog.deleted, kept: vlog.kept, freedMB: Math.round(vlog.freedBytes / (1024 * 1024)) },
     totalFreedMB: Math.round(totalFreedMB),
     dryRun: DRY_RUN,
   };
@@ -232,6 +244,14 @@ export function formatCleanupResult(r: CleanupResult): string {
     `*Script JSONs:*`,
     `  Deleted: ${r.scripts.deleted} files (~${r.scripts.freedKB} KB)`,
     `  Kept: ${r.scripts.kept} (latest)`,
+    '',
+    `*Code Demo runs:*`,
+    `  Deleted: ${r.codeDemoRuns.deleted} dirs (~${r.codeDemoRuns.freedMB} MB)`,
+    `  Kept: ${r.codeDemoRuns.kept} (latest)`,
+    '',
+    `*Vlog runs:*`,
+    `  Deleted: ${r.vlogRuns.deleted} dirs (~${r.vlogRuns.freedMB} MB)`,
+    `  Kept: ${r.vlogRuns.kept} (latest)`,
     '',
     `*Total freed: ~${r.totalFreedMB} MB*`,
   ].join('\n');

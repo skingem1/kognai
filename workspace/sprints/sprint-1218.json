@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1218",
+  "title": "OPS — cleanup-old-runs.ts: add code-demo-runs and vlog-runs cleanup",
+  "description": "code-demo-runs has 150+ dirs and vlog-runs has 167 dirs — neither is cleaned by the /cleanup cron. Add cleanDir() calls for demo-* (keep 20) and vlog-* (keep 30) in run(). Extend CleanupResult interface and formatCleanupResult() to display the new stats.",
+  "source": "autonomous-loop",
+  "tasks": [
+    {
+      "id": "1218-01",
+      "title": "Add code-demo-runs + vlog-runs cleanup to cleanup-old-runs.ts",
+      "type": "enhancement",
+      "task_type": "ops",
+      "task_target": "scripts/scs001/cleanup-old-runs.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1218"
+    }
+  ]
+}
