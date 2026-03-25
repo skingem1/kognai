@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-1196",
+  "title": "ACHIRI — /achiri-ping: check if Achiri API is live on Hetzner (health check)",
+  "description": "New async /achiri-ping command. Makes HTTP GET to http://65.108.90.178:3420/stats/health with 5s timeout. Shows: LIVE (response time + version) or DOWN (error + deploy command). Added to cmd-spielberg.ts and registered in telegram-bot.ts.",
+  "source": "queue-empty-sonnet",
+  "tasks": [
+    {
+      "id": "1196-01",
+      "title": "Add cmdAchiriPing() to scripts/telegram-commands/cmd-spielberg.ts",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-commands/cmd-spielberg.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1196"
+    },
+    {
+      "id": "1196-02",
+      "title": "Register /achiri-ping in scripts/telegram-bot.ts + cmd-help.ts",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-bot.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1196"
+    }
+  ]
+}

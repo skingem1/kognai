@@ -1,10 +1,12 @@
 /**
- * Telegram bot commands — Spielberg demo agent
- * Sprint 1194
+ * Telegram bot commands — Spielberg demo agent + Achiri Hetzner ops
+ * Sprint 1194 (demos), Sprint 1196 (achiri-ping)
  */
 
 import * as fs from 'fs';
 import * as path from 'path';
+import * as https from 'https';
+import * as http from 'http';
 import { ROOT } from './shared';
 
 const SCRIPTS_DIR = path.join(ROOT, 'workspace', 'spielberg-scripts');
@@ -73,4 +75,66 @@ export function cmdDemos(): string {
   }
 
   return lines.join('\n');
+}
+
+/**
+ * Sprint 1196: /achiri-ping — check if Achiri API is live on Hetzner
+ * Makes HTTP GET to /stats/health with 5s timeout.
+ * Shows: LIVE (response time + version info) or DOWN (error + deploy command).
+ */
+export async function cmdAchiriPing(): Promise<string> {
+  const HETZNER_IP = '65.108.90.178';
+  const PORT = 3420;
+  const PATH = '/stats/health';
+  const TIMEOUT_MS = 5000;
+
+  const t0 = Date.now();
+
+  return new Promise((resolve) => {
+    const req = http.get(
+      { hostname: HETZNER_IP, port: PORT, path: PATH, timeout: TIMEOUT_MS },
+      (res) => {
+        let body = '';
+        res.on('data', (c: Buffer) => (body += c.toString()));
+        res.on('end', () => {
+          const elapsed = Date.now() - t0;
+          let info = '';
+          try {
+            const d = JSON.parse(body);
+            const tier = d.tier ?? d.defaultTier ?? '?';
+            const model = d.model ?? d.defaultModel ?? '?';
+            const uptime = d.uptime_seconds != null ? `${Math.round(d.uptime_seconds / 60)}m uptime` : '';
+            info = [tier !== '?' ? `tier: ${tier}` : '', model !== '?' ? `model: ${model}` : '', uptime].filter(Boolean).join(' · ');
+          } catch { info = `HTTP ${res.statusCode}`; }
+          const statusIcon = res.statusCode === 200 ? '✅' : '⚠️';
+          resolve(
+            `${statusIcon} *Achiri API — Hetzner*\n\n` +
+            `*Status:* LIVE\n` +
+            `*Response:* ${elapsed}ms\n` +
+            (info ? `*Info:* ${info}\n` : '') +
+            `\n_${HETZNER_IP}:${PORT}${PATH}_`
+          );
+        });
+      }
+    );
+    req.on('error', (e: Error) => {
+      resolve(
+        `❌ *Achiri API — Hetzner*\n\n` +
+        `*Status:* DOWN\n` +
+        `*Error:* ${e.message}\n\n` +
+        `_Deploy:_ \`bash scripts/achiri/deploy-hetzner.sh\`\n` +
+        `_Check:_ \`/deploy-status\` for readiness checklist`
+      );
+    });
+    req.on('timeout', () => {
+      req.destroy();
+      resolve(
+        `⏱ *Achiri API — Hetzner*\n\n` +
+        `*Status:* TIMEOUT (${TIMEOUT_MS}ms)\n` +
+        `*Target:* ${HETZNER_IP}:${PORT}\n\n` +
+        `_Deploy:_ \`bash scripts/achiri/deploy-hetzner.sh\``
+      );
+    });
+    req.setTimeout(TIMEOUT_MS);
+  });
 }

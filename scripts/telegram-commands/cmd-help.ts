@@ -92,6 +92,7 @@ export function cmdHelp(): string {
     `/godman-smoke — Run smoke tests on all 7 Godman protocols\n` +
     `/godman-thread — Show X launch megathread (10 tweets, copy-paste)\n` +
     `/demos      — Godman demo recording status (7 protocols)\n` +
+    `/achiri-ping — Check if Achiri API is live on Hetzner\n` +
     `/caption-next — Auto-pick top unposted video + show TikTok caption\n` +
     `/deliver-next — Send top unposted video mp4 file to Telegram\n` +
     `/changelog — Recent sprints shipped\n` +
