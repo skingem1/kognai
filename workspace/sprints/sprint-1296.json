@@ -1,0 +1,18 @@
+{
+  "sprint": 1296,
+  "title": "PHASE2 Achiri Hetzner deploy: pm2 start achiri-telegram + health check",
+  "block": "PHASE2",
+  "status": "done",
+  "tasks": [
+    {
+      "id": "token-check",
+      "description": "Add ACHIRI_TELEGRAM_BOT_TOKEN check before starting telegram bot",
+      "status": "done"
+    },
+    {
+      "id": "tg-health",
+      "description": "Add post-restart PM2 status health check for achiri-telegram",
+      "status": "done"
+    }
+  ]
+}

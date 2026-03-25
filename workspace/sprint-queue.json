@@ -3793,7 +3793,7 @@
       "sprint": 1296,
       "title": "PHASE2 \u2014 Achiri Hetzner deploy: pm2 start achiri-telegram + health check script",
       "block": "PHASE2",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "Once ACHIRI_TELEGRAM_BOT_TOKEN is set, a single script should start the bot on Hetzner. Add scripts/achiri/deploy-hetzner.sh with pm2 start + curl health check.",
       "added_at": "2026-03-25T13:52:59.872Z"

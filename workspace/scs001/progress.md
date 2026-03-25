@@ -7062,3 +7062,10 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Registered `/sprint-log` + `/sprintlog` aliases in both switch blocks in telegram-bot.ts
 - Validated output: shows last 10 sprints with hash prefix, sprint number, block tag, truncated title
 - Status: DONE ✅
+
+## Sprint 1296 — 2026-03-25
+- **PHASE2 — Achiri Hetzner deploy: achiri-telegram token check + health check**
+- Enhanced `scripts/achiri/deploy-hetzner.sh`: added ACHIRI_TELEGRAM_BOT_TOKEN check on remote before starting telegram bot process
+- Added post-restart PM2 status health check specifically for achiri-telegram (online/warning)
+- Dry-run tested — shows new token check section correctly
+- Status: DONE ✅
