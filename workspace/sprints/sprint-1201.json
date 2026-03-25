@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-1201",
+  "title": "GODMAN-LAUNCH — /godman-launch: April 14 launch day runbook command",
+  "description": "New /godman-launch Telegram command showing an ordered launch day runbook: Step 1 pre-flight (npm login + git tags + CHANGELOGs), Step 2 publish (bash godman-publish-all.sh), Step 3 announce (X thread + ClaWHub). Each step shows go/no-go status. Reduces operator cognitive load on April 14.",
+  "source": "queue-empty-sonnet",
+  "tasks": [
+    {
+      "id": "1201-01",
+      "title": "Add cmdGodmanLaunch() to cmd-system.ts — 3-step launch day runbook",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-1201"
+    },
+    {
+      "id": "1201-02",
+      "title": "Register /godman-launch in telegram-bot.ts + add to cmd-help.ts",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-bot.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-1201"
+    }
+  ]
+}

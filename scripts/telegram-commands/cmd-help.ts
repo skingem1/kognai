@@ -91,6 +91,7 @@ export function cmdHelp(): string {
     `/godman   — Godman Protocols launch readiness\n` +
     `/godman-smoke — Run smoke tests on all 7 Godman protocols\n` +
     `/godman-thread — Show X launch megathread (10 tweets, copy-paste)\n` +
+    `/godman-launch — April 14 launch day runbook (pre-flight + publish + announce)\n` +
     `/demos      — Godman demo recording status (7 protocols)\n` +
     `/achiri-ping — Check if Achiri API is live on Hetzner\n` +
     `/caption-next — Auto-pick top unposted video + show TikTok caption\n` +

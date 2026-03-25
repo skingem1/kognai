@@ -20,7 +20,7 @@ import {
 } from './telegram-commands/telegram-api';
 
 // Sprint 455: Import extracted command modules (Part 1: A-M)
-import { cmdPm2, cmdHealth, cmdTier, cmdSprint, cmdReport, cmdCrons, cmdTikTokAuth, cmdQuickStart, cmdEnvCheck, cmdStripeStatus, cmdReadiness, cmdGitStats, cmdBoot, cmdShutdown, cmdReload, cmdSwarmStats, cmdErrors, cmdTokenCheck, cmdLogs, cmdChangelog, cmdPreflight, cmdSmoke, cmdTestSuite, cmdApproveFinetune, cmdBrainxStatus, cmdSwarmHealth, cmdBrowserTest, cmdGodman, cmdGodmanThread, cmdGodmanTag, cmdGodmanPublish, cmdGodmanPreflight, cmdGodmanStatusPage, cmdPm2Errors } from './telegram-commands/cmd-system'; // Sprint 1186: added cmdGodmanStatusPage
+import { cmdPm2, cmdHealth, cmdTier, cmdSprint, cmdReport, cmdCrons, cmdTikTokAuth, cmdQuickStart, cmdEnvCheck, cmdStripeStatus, cmdReadiness, cmdGitStats, cmdBoot, cmdShutdown, cmdReload, cmdSwarmStats, cmdErrors, cmdTokenCheck, cmdLogs, cmdChangelog, cmdPreflight, cmdSmoke, cmdTestSuite, cmdApproveFinetune, cmdBrainxStatus, cmdSwarmHealth, cmdBrowserTest, cmdGodman, cmdGodmanThread, cmdGodmanTag, cmdGodmanPublish, cmdGodmanPreflight, cmdGodmanStatusPage, cmdGodmanLaunch, cmdPm2Errors } from './telegram-commands/cmd-system'; // Sprint 1201: added cmdGodmanLaunch
 import { cmdDemos, cmdAchiriPing } from './telegram-commands/cmd-spielberg'; // Sprint 1194-1196
 import { cmdGate, cmdGoLive, cmdAudit, cmdStreak, cmdPace, cmdCalendar, cmdGateAudit, cmdGateRefresh, cmdGateSim } from './telegram-commands/cmd-gate';
 import { runGodmanSmoke } from './godman-smoke';
@@ -119,7 +119,6 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     '/postauto':        () => cmdPostAuto(chatId, cmdArgs),
     '/quickstart':      () => cmdQuickstart(chatId),
     '/revenue':          async () => { const r = await cmdRevenue(); await sendMessage(chatId, r); },
-    '/stripe':           async () => { const r = await cmdStripe(); await sendMessage(chatId, r); },
   };
 
   const asyncHandler = asyncHandlers[cmdName];
@@ -274,6 +273,8 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/godmanpreflight': response = cmdGodmanPreflight();        break; // Sprint 1177
     case '/godman-status-page': response = cmdGodmanStatusPage();   break; // Sprint 1186
     case '/godmanstatuspage':   response = cmdGodmanStatusPage();   break; // Sprint 1186
+    case '/godman-launch':      response = cmdGodmanLaunch();       break; // Sprint 1201
+    case '/godmanlaunch':       response = cmdGodmanLaunch();       break; // Sprint 1201
     case '/demos':              response = cmdDemos();              break; // Sprint 1194
     case '/achiri-ping':        response = await cmdAchiriPing();  break; // Sprint 1196
     case '/log':         response = cmdLog();         break;
