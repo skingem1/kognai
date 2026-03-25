@@ -138,3 +138,44 @@ export async function cmdAchiriPing(): Promise<string> {
     req.setTimeout(TIMEOUT_MS);
   });
 }
+
+// Sprint 1202: /achiri-deploy — deploy Achiri to Hetzner via SSH
+import { execSync } from 'child_process';
+
+export function cmdAchiriDeploy(mode: string = ''): string {
+  const isDryRun = mode.includes('--dry-run') || mode.includes('dry');
+  const scriptPath = path.join(ROOT, 'scripts', 'achiri', 'deploy-hetzner.sh');
+
+  if (!fs.existsSync(scriptPath)) {
+    return '❌ Deploy script not found: scripts/achiri/deploy-hetzner.sh';
+  }
+
+  try {
+    const args = isDryRun ? '--dry-run' : '';
+    const output = execSync(
+      `bash ${scriptPath} ${args}`,
+      { cwd: ROOT, encoding: 'utf-8', timeout: 60000, env: { ...process.env, HOME: process.env.HOME || '/Users/tarekmnif' } }
+    );
+
+    const lines = output.split('\n').filter(l => l.trim());
+    const statusLines = lines.filter(l =>
+      l.includes('✅') || l.includes('❌') || l.includes('▶') || l.includes('🚀') || l.includes('dry-run')
+    ).slice(0, 15);
+
+    const success = !output.includes('FAILED') && !output.includes('❌');
+    const icon = isDryRun ? '🧪' : (success ? '✅' : '❌');
+
+    return [
+      `${icon} *Achiri Deploy${isDryRun ? ' (dry-run)' : ''}*`,
+      '',
+      ...statusLines.map(l => l.trim()),
+      '',
+      success
+        ? (isDryRun ? '_Looks good! Run `/achiri-deploy` to deploy for real._' : '✅ *Deploy complete!* Run `/achiri-ping` to verify.')
+        : '❌ *Deploy failed.* Check logs.',
+    ].join('\n');
+  } catch (e: any) {
+    const errMsg = (e.stderr || e.message || '').slice(0, 300);
+    return `❌ *Achiri Deploy Failed*\n\n\`${errMsg}\`\n\n_Check SSH access and Hetzner status._`;
+  }
+}

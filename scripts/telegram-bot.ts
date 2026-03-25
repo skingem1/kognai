@@ -279,6 +279,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/godmanlaunch':       response = cmdGodmanLaunch();       break; // Sprint 1201
     case '/demos':              response = cmdDemos();              break; // Sprint 1194
     case '/achiri-ping':        response = await cmdAchiriPing();  break; // Sprint 1196
+    case '/achiri-deploy': case '/achirideploy': response = cmdAchiriDeploy(cmdArgs); break; // Sprint 1202
     case '/log':         response = cmdLog();         break;
     case '/help':        response = cmdHelp();        break;
     default:
