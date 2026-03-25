@@ -2999,12 +2999,25 @@ export function cmdGodman(): string {
   const hasApiMd = fs.existsSync(apiMdPath);
   lines.push(`📖 SDK docs/api.md: ${hasApiMd ? '✅ present' : '❌ missing'}`);
 
-  // Sprint 1013: Demo videos + npm status
+  // Sprint 1198: Check all 7 protocol demo recordings
   const demoBase = path.join(ROOT, 'workspace', 'scs001', 'code-demo-runs');
-  const hasPactDemo = fs.existsSync(path.join(demoBase, 'pact-demo-v1/pact-demo-v1.mp4'));
-  const hasIntegDemo = fs.existsSync(path.join(demoBase, 'godman-integration-v1/godman-integration-v1.mp4'));
-  lines.push(`🎬 PACT demo mp4: ${hasPactDemo ? 'ready' : 'run Spielberg'}`);
-  lines.push(`🎬 Integration demo mp4: ${hasIntegDemo ? 'ready (all-7)' : 'run Spielberg'}`);
+  const demoScriptMap: Record<string, string> = {
+    pact: 'pact-mandate-lifecycle',
+    lax: 'lax-latency-budget',
+    score: 'score-reputation-engine',
+    signal: 'signal-event-bus',
+    soul: 'soul-constitutional-engine',
+    amf: 'amf-message-format',
+    drs: 'drs-resource-scheduling',
+  };
+  let demosReady = 0;
+  const demoNames = Object.keys(demoScriptMap);
+  for (const proto of demoNames) {
+    const demoDir = path.join(demoBase, demoScriptMap[proto]);
+    const mp4 = fs.existsSync(path.join(demoDir, `${demoScriptMap[proto]}.mp4`));
+    if (mp4) demosReady++;
+  }
+  lines.push(`🎬 Demos: ${demosReady}/${demoNames.length} recorded${demosReady < demoNames.length ? ' — run `npx ts-node scripts/spielberg/batch-run.ts`' : ' ✅'}`);
 
   // Sprint 1014: npm registry versions
   const protocols = ['pact', 'lax', 'score', 'signal', 'soul', 'amf', 'drs'];
