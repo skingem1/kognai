@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# deploy-hetzner.sh — Sprint 1160
+# deploy-hetzner.sh — Sprint 1160, Sprint 1296
 #
 # Deploys Achiri API to Hetzner VPS (65.108.90.178).
 # Run from local Mac or CI:
@@ -81,7 +81,25 @@ ssh_run "cd ${APP_PATH} && npm ci --omit=dev 2>&1 | tail -5" "npm ci"
 echo ""
 echo "🔄 Restarting PM2 processes..."
 ssh_run "cd ${APP_PATH} && pm2 restart achiri-api || pm2 start ecosystem.config.js --only achiri-api" "pm2 restart achiri-api"
-ssh_run "cd ${APP_PATH} && pm2 restart achiri-telegram || pm2 start ecosystem.config.js --only achiri-telegram" "pm2 restart achiri-telegram"
+
+# Sprint 1296: check ACHIRI_TELEGRAM_BOT_TOKEN is set on remote before starting telegram bot
+echo ""
+echo "🔑 Checking ACHIRI_TELEGRAM_BOT_TOKEN on remote..."
+if [[ "$DRY_RUN" == "false" ]]; then
+  TOKEN_CHECK=$(ssh -i "$DEPLOY_KEY" "${HETZNER_USER}@${HETZNER_IP}" \
+    "grep -q 'ACHIRI_TELEGRAM_BOT_TOKEN=.' ${APP_PATH}/.env 2>/dev/null && echo SET || echo MISSING")
+  if [[ "$TOKEN_CHECK" == "MISSING" ]]; then
+    echo "❌ ACHIRI_TELEGRAM_BOT_TOKEN not set in ${APP_PATH}/.env on remote"
+    echo "   Set it: echo 'ACHIRI_TELEGRAM_BOT_TOKEN=bot<TOKEN>' >> ${APP_PATH}/.env"
+    echo "   Skipping achiri-telegram start."
+  else
+    echo "   ✅ ACHIRI_TELEGRAM_BOT_TOKEN is set"
+    ssh_run "cd ${APP_PATH} && pm2 restart achiri-telegram || pm2 start ecosystem.config.js --only achiri-telegram" "pm2 restart achiri-telegram"
+  fi
+else
+  echo "     [dry-run] would check ACHIRI_TELEGRAM_BOT_TOKEN before starting telegram bot"
+  ssh_run "cd ${APP_PATH} && pm2 restart achiri-telegram || pm2 start ecosystem.config.js --only achiri-telegram" "pm2 restart achiri-telegram"
+fi
 
 # ── 6. Health check ──────────────────────────────────────────────────────────
 echo ""
@@ -95,6 +113,20 @@ if [[ "$DRY_RUN" == "false" ]]; then
     echo "⚠️ Health check failed — check PM2 logs: pm2 logs achiri-api"
   else
     echo "   ✅ Achiri API is UP"
+  fi
+fi
+
+# ── 6b. Telegram bot health check (PM2 process status) — Sprint 1296 ─────────
+echo ""
+echo "🤖 Telegram bot health check..."
+if [[ "$DRY_RUN" == "false" ]]; then
+  TG_STATUS=$(ssh -i "$DEPLOY_KEY" "${HETZNER_USER}@${HETZNER_IP}" \
+    "pm2 jlist 2>/dev/null | python3 -c \"import json,sys; procs=json.load(sys.stdin); [print(p['pm2_env']['status']) for p in procs if p['name']=='achiri-telegram']\" 2>/dev/null | head -1 || echo 'not found'")
+  if [[ "$TG_STATUS" == "online" ]]; then
+    echo "   ✅ achiri-telegram: online"
+  else
+    echo "   ⚠️ achiri-telegram: ${TG_STATUS}"
+    echo "   Check logs: pm2 logs achiri-telegram --lines 20"
   fi
 fi
 
