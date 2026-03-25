@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-1209",
+  "title": "GODMAN-LAUNCH — /godman-changelog: show v0.2.0 CHANGELOG summary for all 7 protocols",
+  "description": "New /godman-changelog Telegram command that reads CHANGELOG.md for each of the 7 Godman protocols, extracts the [0.2.0] section header and first few bullet points, and shows a compact pre-launch review. Useful for operator to verify what shipped before npm publish on April 14.",
+  "source": "queue-empty-sonnet",
+  "tasks": [
+    {
+      "id": "1209-01",
+      "title": "Add cmdGodmanChangelog() to cmd-system.ts — compact v0.2.0 changelog per protocol",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1209"
+    },
+    {
+      "id": "1209-02",
+      "title": "Register /godman-changelog in telegram-bot.ts + add to cmd-help.ts",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-bot.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1209"
+    }
+  ]
+}

@@ -3743,3 +3743,60 @@ export function cmdGodmanNpmCheck(): string {
 
   return lines.join('\n');
 }
+
+/**
+ * Sprint 1209: /godman-changelog — compact v0.2.0 CHANGELOG summary for all 7 protocols
+ *
+ * Reads CHANGELOG.md for each protocol, extracts the [0.2.0] section,
+ * shows first 3 bullet points per protocol. Useful pre-launch review.
+ */
+export function cmdGodmanChangelog(): string {
+  const PROTOCOLS = ['pact', 'lax', 'score', 'signal', 'soul', 'amf', 'drs'];
+  const BASE = path.join(ROOT, 'workspace', 'godman-protocols');
+  const daysLeft = Math.max(0, Math.ceil((new Date('2026-04-14T00:00:00Z').getTime() - Date.now()) / 86_400_000));
+
+  const lines: string[] = [
+    `📋 *Godman Protocols — v0.2.0 Changelog*`,
+    `🗓 April 14 · ${daysLeft}d to launch`,
+    '',
+  ];
+
+  for (const proto of PROTOCOLS) {
+    const clPath = path.join(BASE, proto, 'CHANGELOG.md');
+    if (!fs.existsSync(clPath)) {
+      lines.push(`❌ *${proto}* — CHANGELOG.md missing`);
+      lines.push('');
+      continue;
+    }
+
+    const content = fs.readFileSync(clPath, 'utf-8');
+    // Find the [0.2.0] section
+    const sectionMatch = content.match(/## \[0\.2\.0\][^\n]*\n([\s\S]*?)(?=\n## \[|$)/);
+    if (!sectionMatch) {
+      lines.push(`⚠️ *${proto}* — no [0.2.0] section`);
+      lines.push('');
+      continue;
+    }
+
+    // Extract bullet points (lines starting with - or *)
+    const bullets = sectionMatch[1]
+      .split('\n')
+      .filter(l => /^\s*[-*]/.test(l))
+      .map(l => l.replace(/^\s*[-*]\s*/, '').trim())
+      .filter(l => l.length > 0)
+      .slice(0, 3);
+
+    const totalBullets = sectionMatch[1].split('\n').filter(l => /^\s*[-*]/.test(l)).length;
+    lines.push(`✅ *@godman-protocols/${proto}* — ${totalBullets} items`);
+    for (const b of bullets) {
+      // Truncate long lines
+      const truncated = b.length > 60 ? b.substring(0, 57) + '...' : b;
+      lines.push(`  · ${truncated}`);
+    }
+    if (totalBullets > 3) lines.push(`  _…and ${totalBullets - 3} more_`);
+    lines.push('');
+  }
+
+  lines.push(`_Full changelogs in workspace/godman-protocols/<proto>/CHANGELOG.md_`);
+  return lines.join('\n');
+}
