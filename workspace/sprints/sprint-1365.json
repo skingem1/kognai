@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1365",
+  "title": "BUGFIX — 15s videos always fail QC: only 5 pattern interrupts but gate requires >= 8",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "buildPatternInterrupts uses a fixed 2.5s interval. For a 15s video this yields 5 interrupts (at 2.5, 5, 7.5, 10, 12.5s). QC gate checkVisualChangeCadence requires >= 8 interrupts — 15s videos 100% fail QC. Fix: dynamic interval = Math.min(2.5, totalDuration/9) ensures >= 9 interrupts for 15s, unchanged for 30s and 60s.",
+  "tasks": [
+    {
+      "id": "1365-pattern-interrupts",
+      "description": "In agents/scs001-script/index.ts buildPatternInterrupts: change fixed 2.5s interval to Math.min(2.5, totalDuration/9) to guarantee >= 9 interrupts for all video durations.",
+      "file": "agents/scs001-script/index.ts",
+      "status": "done",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}

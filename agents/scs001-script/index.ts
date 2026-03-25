@@ -285,8 +285,10 @@ function selectTemplate(insightId: string): VideoTemplate {
 
 function buildPatternInterrupts(totalDuration: number): PatternInterrupt[] {
   const interrupts: PatternInterrupt[] = [];
-  // Place interrupts every 2.5 seconds (ensures >= 8 for 24s, >= 10 for 28s)
-  const interval = 2.5;
+  // Sprint 1365: Use dynamic interval to ensure >= 8 interrupts for any video length.
+  // 15s videos with fixed 2.5s interval only produce 5 interrupts → QC fails.
+  // Math.min(2.5, totalDuration/9) gives <=2.5 for long videos and ~1.67 for 15s.
+  const interval = Math.min(2.5, totalDuration / 9);
   let t = interval;
   let typeIdx = 0;
   while (t < totalDuration) {
