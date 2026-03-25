@@ -167,7 +167,7 @@ def extract_active_sprint(content: str, target_date: datetime) -> str:
 
 
 def extract_gate_tracker(content: str) -> str:
-    """Extract the gate tracker table from the timeline."""
+    """Extract the gate tracker table from the timeline (legacy fallback)."""
     gate_start = content.find("# GATE TRACKER")
     if gate_start == -1:
         return "No gate tracker found."
@@ -178,6 +178,91 @@ def extract_gate_tracker(content: str) -> str:
         gate_section = gate_section[:gate_end]
 
     return gate_section.strip()
+
+
+def _build_live_gate_tracker(repo_root: Path) -> str:
+    """Build a live gate tracker from workspace/gates/phase1-5-gate.json.
+
+    Sprint 1299: replaces static KOGNAI_DAILY_TIMELINE.md gate section with
+    dynamic content showing real post counts, urgency, and days remaining.
+    """
+    import json as _json
+    from datetime import date as _date
+
+    today = _date.today()
+    lines = ["# GATE TRACKER", f"*Updated: {today.isoformat()} (live)*", ""]
+
+    # Phase 1.5 gate (primary active gate)
+    gate_path = repo_root / "workspace" / "gates" / "phase1-5-gate.json"
+    if gate_path.exists():
+        try:
+            gate = _json.loads(gate_path.read_text())
+            urgency = gate.get("urgency", "?")
+            days = gate.get("days_remaining", "?")
+            deadline = gate.get("deadline", "2026-04-07")
+            posts_done = gate.get("raw", {}).get("posts_count", 0)
+            posts_remaining = gate.get("raw", {}).get("posts_remaining", "?")
+            total_views = gate.get("raw", {}).get("total_views", 0)
+            overall_pass = gate.get("overall_pass", False)
+            recommendation = gate.get("recommendation", "")
+            pass_icon = "✅" if overall_pass else ("🔴" if urgency == "CRITICAL" else ("🟠" if urgency == "BEHIND" else "🟡"))
+
+            lines.append("## Phase 1.5 Gate — TikTok Kill Switch")
+            lines.append(f"**Deadline:** {deadline}  |  **Days remaining:** {days}  |  **Status:** {pass_icon} {urgency}")
+            lines.append("")
+            lines.append("| Criterion | Target | Actual | Pass |")
+            lines.append("|-----------|--------|--------|------|")
+
+            for c in gate.get("criteria", []):
+                c_pass = "✅" if c.get("pass") else "❌"
+                details = c.get("details", "?").replace("|", "·")
+                lines.append(f"| {c.get('name','?')} | — | {details} | {c_pass} |")
+
+            lines.append("")
+            if recommendation:
+                lines.append(f"**Recommendation:** {recommendation}")
+            lines.append("")
+        except Exception as e:
+            lines.append(f"*Could not read phase1-5-gate.json: {e}*")
+            lines.append("")
+    else:
+        lines.append("*phase1-5-gate.json not found — run /gate to generate*")
+        lines.append("")
+
+    # Upcoming gate schedule
+    upcoming_gates = [
+        ("Phase 0 → Phase 1", "2026-03-13"),
+        ("Phase 1.5 Decision", "2026-04-07"),
+        ("Phase 1 → Phase 2A", "2026-04-11"),
+        ("Achiri Lite Alpha Launch", "2026-04-25"),
+        ("Lite Alpha Gate (voice works?)", "2026-05-01"),
+        ("Full Alpha Gate (memory works?)", "2026-05-14"),
+        ("Phase 2A → Phase 2B", "2026-05-30"),
+        ("Phase 2B Gate", "2026-06-27"),
+        ("Phase 3 Gate", "2026-09-26"),
+        ("Year-End Review", "2026-12-19"),
+    ]
+
+    lines.append("## Upcoming Gates")
+    lines.append("")
+    lines.append("| Gate | Target Date | Days | Status |")
+    lines.append("|------|-------------|------|--------|")
+    for gate_name, gate_date_str in upcoming_gates:
+        gate_date = _date.fromisoformat(gate_date_str)
+        days_to = (gate_date - today).days
+        if days_to < 0:
+            status = "⬜ Past"
+        elif days_to == 0:
+            status = "🔴 TODAY"
+        elif days_to <= 7:
+            status = f"🔴 {days_to}d"
+        elif days_to <= 21:
+            status = f"🟠 {days_to}d"
+        else:
+            status = f"🟢 {days_to}d"
+        lines.append(f"| {gate_name} | {gate_date_str} | {days_to} | {status} |")
+
+    return "\n".join(lines)
 
 
 def extract_strategic_summary(dev_plan_content: str) -> str:
@@ -217,10 +302,12 @@ def extract_strategic_summary(dev_plan_content: str) -> str:
 def _build_live_focus(repo_root: Path) -> str:
     """Build a live focus section from gate JSON and sprint queue."""
     import json as _json
+    import re as _re
     lines = ["## LIVE STATUS (auto-generated)"]
 
     # Gate status
     gate_path = repo_root / "workspace" / "gates" / "phase1-5-gate.json"
+    urgency = "?"
     if gate_path.exists():
         try:
             gate = _json.loads(gate_path.read_text())
@@ -228,7 +315,14 @@ def _build_live_focus(repo_root: Path) -> str:
             days = gate.get("days_remaining", "?")
             posts_remaining = gate.get("raw", {}).get("posts_remaining", "?")
             posts_done = gate.get("raw", {}).get("posts_count", "?")
-            urgency_icon = "✅" if urgency == "DONE" else ("⚠️" if urgency == "WARNING" else "🟢")
+            if urgency == "DONE":
+                urgency_icon = "✅"
+            elif urgency in ("CRITICAL", "BEHIND"):
+                urgency_icon = "🔴" if urgency == "CRITICAL" else "🟠"
+            elif urgency == "WARNING":
+                urgency_icon = "⚠️"
+            else:
+                urgency_icon = "🟢"
             lines.append(f"**Gate:** {urgency_icon} {urgency} — {posts_done}/30 posts · {posts_remaining} needed · {days}d to Apr 7")
         except Exception:
             lines.append("**Gate:** could not read phase1-5-gate.json")
@@ -255,6 +349,28 @@ def _build_live_focus(repo_root: Path) -> str:
                 lines.append("**Next sprint:** queue empty — run /replenish or pick manually")
         except Exception:
             pass
+
+    # Open blocker detection
+    blockers = []
+    env_path = repo_root / ".env"
+    if env_path.exists():
+        try:
+            env_text = env_path.read_text()
+            if not _re.search(r"^TIKTOK_ACCESS_TOKEN=\S+", env_text, _re.MULTILINE):
+                blockers.append("🔴 **TIKTOK_ACCESS_TOKEN** not set — live TikTok posting blocked (set in .env)")
+        except Exception:
+            pass
+    else:
+        blockers.append("⚠️ **.env file not found** — check environment setup")
+
+    if urgency not in ("?", "DONE", "ON_TRACK"):
+        blockers.append(f"🟠 **Gate urgency: {urgency}** — posting pace needs attention")
+
+    if blockers:
+        lines.append("")
+        lines.append("**Blockers:**")
+        for b in blockers:
+            lines.append(f"- {b}")
 
     return "\n".join(lines)
 
@@ -310,7 +426,7 @@ def _build_dynamic_tasks(repo_root: Path, target_date: datetime, has_midday: boo
     if queue_path.exists():
         try:
             queue = _json.loads(queue_path.read_text())
-            pending = [i for i in queue.get("queue", []) if i.get("status") == "pending"]
+            pending = [i for i in queue.get("queue", []) if i.get("status") not in ("done", "skipped")]
             if pending:
                 nxt = pending[0]
                 t = nxt['title']
@@ -490,8 +606,8 @@ Swarm is idle. Rest.
 
 ---
 
-*Source: KOGNAI_DAILY_TIMELINE.md | Dev Plan: KOGNAI_FULL_DEVELOPMENT_PLAN.md*
-*Auto-generated by generate-daily-brief.py*
+*Source: live gate state + sprint queue | Dev Plan: KOGNAI_FULL_DEVELOPMENT_PLAN.md*
+*Auto-generated by generate-daily-brief.py (Sprint 1299: fully dynamic)*
 """
 
     # Write brief
@@ -502,9 +618,9 @@ Swarm is idle. Rest.
     print(f"  Sprint: {active_sprint}")
     print(f"  Hours: {hours_today}")
 
-    # Write gate tracker
-    gate_content = extract_gate_tracker(content)
-    GATE_TRACKER_OUTPUT.write_text(f"# GATE TRACKER\n*Updated: {date_str}*\n\n{gate_content}\n")
+    # Write gate tracker (Sprint 1299: live from gate JSON, not static timeline)
+    gate_content = _build_live_gate_tracker(repo_root)
+    GATE_TRACKER_OUTPUT.write_text(gate_content + "\n")
     print(f"Gate tracker written to {GATE_TRACKER_OUTPUT}")
 
     # Write strategic context (from dev plan, if available)

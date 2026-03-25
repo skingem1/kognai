@@ -1,0 +1,34 @@
+{
+  "sprint": 1299,
+  "title": "OPS — Daily brief generator: live gate tracker + fix status filter + blocker detection",
+  "block": "OPS",
+  "status": "done",
+  "source": "queue-prescribed",
+  "rationale": "generate-daily-brief.py already has dynamic task blocks (Sprint 1055) but gate-tracker.md still reads from static KOGNAI_DAILY_TIMELINE.md showing only generic Pending status. Fix 4 issues: (1) replace extract_gate_tracker() with live version reading phase1-5-gate.json, (2) fix _build_dynamic_tasks status filter bug (== pending vs not-in-done/skipped), (3) add live blocker detection to _build_live_focus, (4) update brief footer.",
+  "tasks": [
+    {
+      "id": "fix-status-filter",
+      "description": "Fix _build_dynamic_tasks() sprint queue filter: change status == 'pending' to status not in ('done', 'skipped') to match _build_live_focus and correctly surface queue items",
+      "file": "scripts/generate-daily-brief.py",
+      "status": "pending"
+    },
+    {
+      "id": "live-gate-tracker",
+      "description": "Replace extract_gate_tracker() with _build_live_gate_tracker() that reads workspace/gates/phase1-5-gate.json and builds a markdown table with real post count, urgency, days_remaining, and upcoming gate dates. Update generate_brief() to call new function.",
+      "file": "scripts/generate-daily-brief.py",
+      "status": "pending"
+    },
+    {
+      "id": "live-blocker-detection",
+      "description": "Add TIKTOK_ACCESS_TOKEN blocker check to _build_live_focus(): read .env, flag missing token with icon and action message. Surface gate urgency when not ON_TRACK.",
+      "file": "scripts/generate-daily-brief.py",
+      "status": "pending"
+    },
+    {
+      "id": "update-brief-footer",
+      "description": "Update the brief footer to replace 'Source: KOGNAI_DAILY_TIMELINE.md' with 'Source: live gate state + sprint queue' since today's tasks are now fully dynamic.",
+      "file": "scripts/generate-daily-brief.py",
+      "status": "pending"
+    }
+  ]
+}
