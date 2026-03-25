@@ -709,10 +709,12 @@ export class SCS001Orchestrator {
   // Sprint 1359: clip-detection reduced 900s→300s — input capped to 20 clips × concurrency 4 = 5 batches.
   //   Normal Ollama: ~30s/clip → 150s total. 300s = 2× buffer. When Ollama is down, saves 10min vs 900s.
   //   Sprint 1356 fallback handles the 0-clips case after timeout gracefully.
+  // Sprint 1367: script bumped 600s→1200s — LLM brief cap=5 at ~2.72 min/brief worst = 13.6 min.
+  //   1200s = 20 min = safe buffer. Cap prevents runaway >5 LLM calls.
   private static STAGE_TIMEOUTS: Record<string, number> = {
-    '3-clip-detection': 300_000,  // 5min — Sprint 1359: reduced from 15min (20 clips × ~30s × 2× buffer)
-    '4-insight': 600_000,         // 10min — LLM calls (was 5min, qwen3:14b slow on local)
-    '5-script': 600_000,          // 10min — LLM calls (was 5min, script gen for 11 clips needs time)
+    '3-clip-detection': 300_000,   // 5min — Sprint 1359: reduced from 15min (20 clips × ~30s × 2× buffer)
+    '4-insight': 600_000,          // 10min — LLM calls (was 5min, qwen3:14b slow on local)
+    '5-script': 1_200_000,         // 20min — Sprint 1367: LLM brief cap=5, worst case 5×2.72min=13.6min+buffer
     default: 180_000,             // 3min — all other stages
   };
 
