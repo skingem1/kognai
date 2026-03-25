@@ -7096,3 +7096,17 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm bypassed: yes (Python surgical edits, swarm optimised for TypeScript)
 - Commit: e7ac5fc0
 - Status: DONE ✅
+
+## Sprint 1300 — 2026-03-25
+- **GATE — /refresh-token Telegram command for TikTok OAuth token refresh**
+- Added `cmdRefreshToken(chatId)` async function to `scripts/telegram-commands/cmd-system.ts`
+  - Guards: checks TIKTOK_CLIENT_KEY/SECRET + TIKTOK_REFRESH_TOKEN present
+  - Guides to /tiktokauth if refresh token missing
+  - Shells out to existing `tiktok-refresh-token.ts` (execSync, 30s timeout)
+  - Reads `data/tiktok-token-meta.json` to show new expiry: access token hours + refresh token days
+  - Reminds operator to `pm2 restart kognai-telegram-bot` to load new token into process env
+- Wired `/refresh-token` + `/refreshtoken` alias in `scripts/telegram-bot.ts` asyncHandlers
+- Validated: `ts-node --transpile-only` confirms cmdRefreshToken is exported correctly
+- Swarm bypassed: yes (TypeScript surgical edits)
+- Commit: fc660628
+- Status: DONE ✅

@@ -3830,10 +3830,11 @@
       "sprint": 1300,
       "title": "GATE — TikTok OAuth token refresh: add /refresh-token Telegram command",
       "block": "GATE",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "TIKTOK_ACCESS_TOKEN expires and blocks auto-posting. Add /refresh-token command that triggers the OAuth refresh flow and shows new token expiry time to operator.",
-      "added_at": "2026-03-25T13:52:59.872Z"
+      "added_at": "2026-03-25T13:52:59.872Z",
+      "_note": "Shipped 2026-03-25 — commit fc660628. cmdRefreshToken added to cmd-system.ts. Swarm bypassed (TypeScript surgical)."
     },
     {
       "sprint": 1301,
