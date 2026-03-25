@@ -1,0 +1,11 @@
+{
+  "sprint_id": "sprint-1239",
+  "title": "LEMON-SCAFFOLD-02 — Bloomberg onboarding email + /subscribe + /revenue Telegram commands",
+  "date": "2026-03-24",
+  "status": "done",
+  "changes": [
+    {"file": "scripts/agents/bloomberg/onboarding-email.ts", "description": "Bloomberg CFO welcome email via Resend API"},
+    {"file": "scripts/telegram-commands/cmd-subscribe.ts", "description": "/subscribe command showing pricing tiers and LemonSqueezy checkout URLs"},
+    {"file": "scripts/telegram-commands/cmd-revenue.ts", "description": "/revenue (cmdLemonRevenue) querying Supabase subscribers table for MRR and active count"}
+  ]
+}
