@@ -1,0 +1,18 @@
+{
+  "tasks": [
+    {
+      "id": "monitor-manual-posting",
+      "description": "Create scripts/scs001/monitor-manual-posting.ts. Logic: (1) Read workspace/scs001/manual-posts.jsonl as JSONL array. (2) If TIKTOK_ACCESS_TOKEN env not set, skip API calls, log dry-run mode. (3) Find entries with tiktok_post_id field. (4) For each such entry, call TikTok API: POST https://open.tiktokapis.com/v2/video/query/ with fields=[view_count] and filter={video_ids:[id]}. Set Authorization: Bearer TIKTOK_ACCESS_TOKEN. (5) Update views field in the entry. (6) Rewrite workspace/scs001/manual-posts.jsonl with updated data. (7) Write workspace/reports/posting-health.json: {timestamp, posts_checked, posts_with_tiktok_id, views_updated, total_views, avg_views, dry_run}. Use only stdlib (fs, path, https). Under 120 lines.",
+      "file": "scripts/scs001/monitor-manual-posting.ts",
+      "status": "rejected",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Create scripts/scs001/monitor-manual-posting.ts. Logic: (1) Read workspace/scs001/manual-posts.jsonl as JSONL array. (2) If TIKTOK_ACCESS_TOKEN env not set, skip API calls, log dry-run mode. (3) Find entries with tiktok_post_id field. (4) For each such entry, call TikTok API: POST https://open.tiktokapis.com/v2/video/query/ with fields=[view_count] and filter={video_ids:[id]}. Set Authorization: Bearer TIKTOK_ACCESS_TOKEN. (5) Update views field in the entry. (6) Rewrite workspace/scs001/manual-posts.jsonl with updated data. (7) Write workspace/reports/posting-health.json: {timestamp, posts_checked, posts_with_tiktok_id, views_updated, total_views, avg_views, dry_run}. Use only stdlib (fs, path, https). Under 120 lines.",
+      "priority": "medium",
+      "sprint_id": "sprint-1308"
+    }
+  ]
+}
