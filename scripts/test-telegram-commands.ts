@@ -10,7 +10,8 @@
 import { cmdPm2, cmdHealth, cmdTier, cmdSprint, cmdReport, cmdCrons, cmdTikTokAuth, cmdQuickStart, cmdEnvCheck, cmdReadiness, cmdGitStats, cmdSwarmStats, cmdErrors, cmdTokenCheck, cmdLogs, cmdPreflight, cmdChangelog, cmdBrainxStatus, cmdSwarmHealth, cmdBrowserTest, cmdGodman, cmdGodmanThread, cmdPm2Errors } from './telegram-commands/cmd-system';
 
 // Sync commands from cmd-gate.ts
-import { cmdGate, cmdGoLive, cmdAudit, cmdStreak, cmdPace, cmdCalendar, cmdGateAudit, cmdGateRefresh } from './telegram-commands/cmd-gate';
+import { cmdGate, cmdGoLive, cmdAudit, cmdStreak, cmdPace, cmdCalendar, cmdGateAudit, cmdGateRefresh, cmdGateSim } from './telegram-commands/cmd-gate';
+import { cmdDemos, cmdAchiriDeploy } from './telegram-commands/cmd-spielberg';
 
 // Sync commands from cmd-content.ts
 import { cmdRecord, cmdQueue, cmdReview, cmdCaption, cmdPosted, cmdOnboard, cmdPipeline, cmdToday, cmdAnalytics, cmdDiversity, cmdThumbnail, cmdCompetitor, cmdStats, cmdQuality, cmdRadar, cmdBacktest, cmdFormatStats, cmdManifesto, cmdValErrors, cmdCaptionNext } from './telegram-commands/cmd-content';
@@ -19,13 +20,13 @@ import { cmdRecord, cmdQueue, cmdReview, cmdCaption, cmdPosted, cmdOnboard, cmdP
 import { cmdMetrics, cmdPostPlan, cmdYouTube, cmdAutoPost, cmdLastRun, cmdViral, cmdDashboard, cmdDigest, cmdSchedule, cmdLeaderboard, cmdBestTime, cmdHookTest, cmdHookStats, cmdViralStats, cmdQueueOpt, cmdGateAnalytics, cmdRevenue, cmdBatch, cmdPostLog, cmdXPost, cmdCosts, cmdWeeklyDigest, cmdPostNext, cmdPostingHealth, cmdBulkCaptions } from './telegram-commands/cmd-posting';
 
 // Sync commands from cmd-management.ts
-import { cmdHistory, cmdArchive, cmdUnarchive, cmdStale, cmdPurge, cmdNote, cmdUpdateViews, cmdExport, cmdWeeklyReport, cmdSpeakerTest, cmdFilmKit, cmdContentPlan, cmdSuggest, cmdCompare, cmdScorecard, cmdProgress, cmdCleanup, cmdDedup, cmdTop30, cmdAbResults, cmdStatus, cmdReplenish, cmdEnrich, cmdBlockers, cmdSprintNext, cmdLog } from './telegram-commands/cmd-management';
+import { cmdHistory, cmdArchive, cmdUnarchive, cmdStale, cmdPurge, cmdNote, cmdUpdateViews, cmdExport, cmdWeeklyReport, cmdSpeakerTest, cmdFilmKit, cmdContentPlan, cmdSuggest, cmdCompare, cmdScorecard, cmdProgress, cmdCleanup, cmdDedup, cmdTop30, cmdAbResults, cmdStatus, cmdReplenish, cmdEnrich, cmdBlockers, cmdSprintNext, cmdLog, cmdLaunches, cmdPostPulse, cmdNextActions } from './telegram-commands/cmd-management';
 
 // Sync commands from cmd-delivery.ts
 import { cmdInventory } from './telegram-commands/cmd-delivery';
 
 // Sync commands from cmd-stripe.ts
-import { cmdPortal, cmdFunnel, cmdAchiri, cmdAlpha, cmdUsage, cmdAchiriData, cmdWaitlist, cmdStripe, cmdDeployStatus, cmdInviteAchiri } from './telegram-commands/cmd-stripe';
+import { cmdPortal, cmdFunnel, cmdAchiri, cmdAlpha, cmdUsage, cmdAchiriData, cmdWaitlist, cmdStripe, cmdDeployStatus, cmdInviteAchiri, cmdAchiriStats } from './telegram-commands/cmd-stripe';
 
 // Sync commands from cmd-warmup.ts
 import { cmdWarmupStart, cmdWarmupStatus } from './telegram-commands/cmd-warmup';
@@ -78,6 +79,11 @@ const tests: TestCase[] = [
   { name: 'cmdCalendar', fn: () => cmdCalendar() },
   { name: 'cmdGateAudit', fn: () => cmdGateAudit() },
   { name: 'cmdGateRefresh', fn: () => cmdGateRefresh() },
+  { name: 'cmdGateSim', fn: () => cmdGateSim() },
+
+  // cmd-spielberg.ts
+  { name: 'cmdDemos', fn: () => cmdDemos() },
+  { name: 'cmdAchiriDeploy', fn: () => cmdAchiriDeploy('--dry-run') },
 
   // cmd-content.ts
   { name: 'cmdRecord', fn: () => cmdRecord('') },
@@ -155,6 +161,9 @@ const tests: TestCase[] = [
   { name: 'cmdBlockers', fn: () => cmdBlockers() },
   { name: 'cmdSprintNext', fn: () => cmdSprintNext() },
   { name: 'cmdLog', fn: () => cmdLog() },
+  { name: 'cmdLaunches', fn: () => cmdLaunches() },
+  { name: 'cmdPostPulse', fn: () => cmdPostPulse() },
+  { name: 'cmdNextActions', fn: () => cmdNextActions() },
 
   // cmd-delivery.ts
   { name: 'cmdInventory', fn: () => cmdInventory() },
@@ -170,6 +179,7 @@ const tests: TestCase[] = [
   { name: 'cmdStripe', fn: () => cmdStripe() },
   { name: 'cmdDeployStatus', fn: () => cmdDeployStatus() },
   { name: 'cmdInviteAchiri', fn: () => cmdInviteAchiri('') },
+  { name: 'cmdAchiriStats', fn: () => cmdAchiriStats() },
 
   // cmd-warmup.ts
   { name: 'cmdWarmupStart', fn: () => cmdWarmupStart() },
