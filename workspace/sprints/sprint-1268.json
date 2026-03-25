@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1268",
+  "title": "AMD23-CERBERUS-GATEWAY — Full Cerberus gateway combining Chamber 2+4",
+  "description": "Create scripts/amd23/cerberus-gateway.ts: the single entry-point that external agents call to access Kognai services. Runs Chamber 2 (Cred Score) then Chamber 4 (SOUL Handshake) in sequence. Returns a signed access token or rejection. Exposes an HTTP POST /cerberus/evaluate endpoint on port 3419. Dry-run safe.",
+  "source": "queue-post-exhaustion",
+  "tasks": [
+    {
+      "id": "1268-01",
+      "title": "Implement scripts/amd23/cerberus-gateway.ts — full C2+C4 pipeline + HTTP endpoint",
+      "type": "feature",
+      "task_type": "amd23",
+      "task_target": "scripts/amd23/cerberus-gateway.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1268"
+    }
+  ]
+}
