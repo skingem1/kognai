@@ -3956,6 +3956,47 @@ export function cmdCerberus(): string {
 }
 
 // Sprint 1276: /sprint-next — show next planned sprint from queue (or "queue empty" notice)
+// Sprint 1294: /sprint-log — show last 10 sprint commits with hash + title from git log
+export function cmdSprintLog(count: number = 10): string {
+  const lines: string[] = ['*Sprint Log*\n'];
+  try {
+    const raw = execSync(`git log --oneline -80 2>/dev/null`, {
+      cwd: ROOT, timeout: 5000, encoding: 'utf-8',
+    });
+    const sprintCommits = raw.split('\n')
+      .filter(l => /Sprint \d+:/.test(l) && !l.includes('state:'))
+      .slice(0, count);
+
+    if (sprintCommits.length === 0) {
+      lines.push('📭 No sprint commits found in recent git log.');
+      return lines.join('\n');
+    }
+
+    for (const line of sprintCommits) {
+      const m = line.match(/^([a-f0-9]+)\s+Sprint (\d+):\s*(.+)/);
+      if (m) {
+        const [, hash, num, title] = m;
+        // Extract block tag if present (e.g. "INFRA — title" or "OPS — title")
+        const blockMatch = title.match(/^([A-Z][A-Z0-9-]+)\s*[—\-]+\s*(.+)/);
+        if (blockMatch) {
+          lines.push(`\`${hash}\` *#${num}* \`${blockMatch[1]}\` ${blockMatch[2].slice(0, 55)}`);
+        } else {
+          lines.push(`\`${hash}\` *#${num}* ${title.slice(0, 65)}`);
+        }
+      } else {
+        lines.push(`  ${line.slice(0, 72)}`);
+      }
+    }
+
+    lines.push('');
+    lines.push(`_${sprintCommits.length} sprint${sprintCommits.length !== 1 ? 's' : ''} shown_`);
+  } catch (err) {
+    lines.push('❌ Could not read git log.');
+    lines.push(`_${(err as Error).message}_`);
+  }
+  return lines.join('\n');
+}
+
 export function cmdSprintNext(): string {
   const queuePath = path.join(ROOT, 'workspace', 'sprint-queue.json');
   const lines: string[] = ['*Next Sprint*\n'];
