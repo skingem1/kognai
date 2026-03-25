@@ -2844,7 +2844,7 @@ export function cmdNextActions(): string {
         urgency: achiriDays <= 14 ? 'HIGH' : 'LOW',
         icon: achiriDays <= 14 ? '🟠' : '🟢',
         text: `Set ACHIRI_TELEGRAM_BOT_TOKEN (alpha in ${achiriDays}d)`,
-        cmd: '/deploy-status',
+        cmd: '/achiri-bot-setup', // Sprint 1211: was /deploy-status; /achiri-bot-setup is more actionable
       });
     }
   }

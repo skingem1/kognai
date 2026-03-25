@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1211",
+  "title": "OPS — /next-actions: update Achiri token action to link /achiri-bot-setup",
+  "description": "cmdNextActions() action item #5 points to '/deploy-status' for the Achiri bot token blocker. Since Sprint 1210 added /achiri-bot-setup (the direct BotFather guide), the action item should now point to /achiri-bot-setup for a more actionable one-tap workflow. Also update the /next-actions button map in telegram-bot.ts if present.",
+  "source": "queue-empty-sonnet",
+  "tasks": [
+    {
+      "id": "1211-01",
+      "title": "Update cmdNextActions() in cmd-management.ts: Achiri token action cmd → /achiri-bot-setup",
+      "type": "bugfix",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-commands/cmd-management.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1211"
+    }
+  ]
+}
