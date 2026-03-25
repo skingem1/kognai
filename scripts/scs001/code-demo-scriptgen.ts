@@ -206,28 +206,187 @@ Return JSON only:
   "hashtags": ["#coding", "#${language}", "#tutorial"]
 }`;
 
-  const llmResponse = callOllama(scriptPrompt, { maxTokens: 1500, temperature: 0.5 });
-  const first = llmResponse.indexOf('{');
-  const last = llmResponse.lastIndexOf('}');
-  if (first < 0 || last <= first) throw new Error('No JSON in LLM response');
+  // Sprint 1327: Pre-built fallback templates — used when Ollama is unavailable or returns invalid JSON
+  const SCRIPT_TEMPLATES: CodeDemoScript[] = [
+    {
+      demo_id: demoId,
+      title: 'Build a REST API with FastAPI in 30 seconds',
+      language: 'python',
+      total_duration_s: 30,
+      steps: [
+        {
+          step_id: 's1',
+          title: 'Step 1: Install & Import',
+          code_lines: ['from fastapi import FastAPI', 'from pydantic import BaseModel', '', 'app = FastAPI()'],
+          language: 'python',
+          explanation: 'FastAPI gives you a production-ready REST API with zero boilerplate.',
+          duration_s: 7,
+          highlight_lines: [1, 2],
+        },
+        {
+          step_id: 's2',
+          title: 'Step 2: Define the Model',
+          code_lines: ['class Item(BaseModel):', '    name: str', '    price: float', '    in_stock: bool = True'],
+          language: 'python',
+          explanation: 'Pydantic models auto-validate your request body — no manual parsing needed.',
+          duration_s: 8,
+          highlight_lines: [1, 2, 3],
+        },
+        {
+          step_id: 's3',
+          title: 'Step 3: Add Endpoints',
+          code_lines: ['@app.get("/items/{item_id}")', 'def read_item(item_id: int):', '    return {"id": item_id}', '', '@app.post("/items")', 'def create_item(item: Item):', '    return item'],
+          language: 'python',
+          explanation: 'Type hints in the function signature automatically generate OpenAPI docs.',
+          duration_s: 8,
+          highlight_lines: [1, 5],
+        },
+        {
+          step_id: 's4',
+          title: 'Step 4: Run It',
+          code_lines: ['# uvicorn main:app --reload', '# Docs at http://localhost:8000/docs'],
+          language: 'python',
+          explanation: 'One command and you have live docs, auto-reload, and schema validation. Try it yourself!',
+          duration_s: 7,
+          highlight_lines: [1],
+        },
+      ],
+      hashtags: ['#python', '#fastapi', '#coding', '#webdev', '#tutorial'],
+      intro_hook: 'Build a fully documented REST API in Python with just 10 lines of code.',
+    },
+    {
+      demo_id: demoId,
+      title: 'Stripe Checkout in Node.js — 30 seconds',
+      language: 'typescript',
+      total_duration_s: 32,
+      steps: [
+        {
+          step_id: 's1',
+          title: 'Step 1: Init Stripe',
+          code_lines: ["import Stripe from 'stripe';", "const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);"],
+          language: 'typescript',
+          explanation: 'One import and your Stripe client is ready — fully typed with the official SDK.',
+          duration_s: 7,
+          highlight_lines: [1, 2],
+        },
+        {
+          step_id: 's2',
+          title: 'Step 2: Create Session',
+          code_lines: ['const session = await stripe.checkout.sessions.create({', "  mode: 'payment',", '  line_items: [{', "    price: 'price_xyz',", '    quantity: 1,', '  }],', "  success_url: 'https://yoursite.com/success',", '});'],
+          language: 'typescript',
+          explanation: 'Define your product, quantity, and redirect URLs — Stripe handles the rest.',
+          duration_s: 9,
+          highlight_lines: [1, 2, 3],
+        },
+        {
+          step_id: 's3',
+          title: 'Step 3: Redirect User',
+          code_lines: ['res.redirect(303, session.url!);', '// User lands on Stripe-hosted payment page'],
+          language: 'typescript',
+          explanation: 'Redirect to the hosted checkout page — PCI compliant with no extra setup.',
+          duration_s: 8,
+          highlight_lines: [1],
+        },
+        {
+          step_id: 's4',
+          title: 'Step 4: Handle Webhook',
+          code_lines: ["stripe.webhooks.constructEvent(payload, sig, secret);", "// Listen for 'checkout.session.completed'"],
+          language: 'typescript',
+          explanation: 'Verify the webhook signature and fulfill orders automatically. Try it yourself!',
+          duration_s: 8,
+          highlight_lines: [1],
+        },
+      ],
+      hashtags: ['#stripe', '#nodejs', '#typescript', '#payments', '#coding'],
+      intro_hook: 'Accept payments in Node.js in under 10 lines — here\'s how Stripe Checkout works.',
+    },
+    {
+      demo_id: demoId,
+      title: 'Call Claude AI API in Python — 30 seconds',
+      language: 'python',
+      total_duration_s: 30,
+      steps: [
+        {
+          step_id: 's1',
+          title: 'Step 1: Install & Import',
+          code_lines: ['# pip install anthropic', 'import anthropic', '', 'client = anthropic.Anthropic()'],
+          language: 'python',
+          explanation: 'The Anthropic SDK is one pip install away — fully async-capable.',
+          duration_s: 7,
+          highlight_lines: [2, 4],
+        },
+        {
+          step_id: 's2',
+          title: 'Step 2: Send a Message',
+          code_lines: ['message = client.messages.create(', '    model="claude-opus-4-6",', '    max_tokens=1024,', '    messages=[{"role": "user", "content": "Explain recursion"}]', ')'],
+          language: 'python',
+          explanation: 'Pass your model, token limit, and messages — same structure as the OpenAI SDK.',
+          duration_s: 8,
+          highlight_lines: [1, 2, 4],
+        },
+        {
+          step_id: 's3',
+          title: 'Step 3: Read the Response',
+          code_lines: ['print(message.content[0].text)', '# Stop reason: message.stop_reason', '# Usage: message.usage.input_tokens'],
+          language: 'python',
+          explanation: 'The response includes the text, stop reason, and token counts for billing.',
+          duration_s: 8,
+          highlight_lines: [1],
+        },
+        {
+          step_id: 's4',
+          title: 'Step 4: Stream It',
+          code_lines: ['with client.messages.stream(model="claude-opus-4-6",', '    max_tokens=1024, messages=[...]) as s:', '    for text in s.text_stream:', '        print(text, end="", flush=True)'],
+          language: 'python',
+          explanation: 'For real-time UX, use the streaming API — token by token output. Try it yourself!',
+          duration_s: 7,
+          highlight_lines: [1, 3],
+        },
+      ],
+      hashtags: ['#anthropic', '#claude', '#python', '#ai', '#llm', '#coding'],
+      intro_hook: 'Here\'s how to call the Claude AI API in Python — it\'s simpler than you think.',
+    },
+  ];
 
-  let jsonStr = llmResponse.substring(first, last + 1);
-  jsonStr = jsonStr.replace(/,\s*([}\]])/g, '$1');
+  let steps: CodeDemoStep[];
+  let parsed: any;
 
-  const parsed = JSON.parse(jsonStr);
+  try {
+    const llmResponse = callOllama(scriptPrompt, { maxTokens: 1500, temperature: 0.5 });
+    const first = llmResponse.indexOf('{');
+    const last = llmResponse.lastIndexOf('}');
+    if (first < 0 || last <= first) throw new Error('No JSON in LLM response');
 
-  // Validate and normalize
-  const steps: CodeDemoStep[] = (parsed.steps || []).map((s: any, i: number) => ({
-    step_id: s.step_id || `s${i + 1}`,
-    title: s.title || `Step ${i + 1}`,
-    code_lines: Array.isArray(s.code_lines) ? s.code_lines : (s.code_lines || '').split('\n'),
-    language: s.language || language,
-    explanation: s.explanation || '',
-    duration_s: Math.max(4, Math.min(s.duration_s || 7, 12)),
-    highlight_lines: s.highlight_lines || [],
-  }));
+    let jsonStr = llmResponse.substring(first, last + 1);
+    jsonStr = jsonStr.replace(/,\s*([}\]])/g, '$1');
 
-  if (steps.length === 0) throw new Error('LLM generated 0 steps');
+    parsed = JSON.parse(jsonStr);
+
+    // Validate and normalize
+    steps = (parsed.steps || []).map((s: any, i: number) => ({
+      step_id: s.step_id || `s${i + 1}`,
+      title: s.title || `Step ${i + 1}`,
+      code_lines: Array.isArray(s.code_lines) ? s.code_lines : (s.code_lines || '').split('\n'),
+      language: s.language || language,
+      explanation: s.explanation || '',
+      duration_s: Math.max(4, Math.min(s.duration_s || 7, 12)),
+      highlight_lines: s.highlight_lines || [],
+    }));
+
+    if (steps.length === 0) {
+      console.warn('[code-demo] LLM script gen failed — using template (0 steps returned)');
+      const tmpl = SCRIPT_TEMPLATES[Date.now() % SCRIPT_TEMPLATES.length];
+      tmpl.demo_id = demoId;
+      tmpl.language = language;
+      return tmpl;
+    }
+  } catch (err: any) {
+    console.warn(`[code-demo] LLM script gen failed — using template (${err.message})`);
+    const tmpl = SCRIPT_TEMPLATES[Date.now() % SCRIPT_TEMPLATES.length];
+    tmpl.demo_id = demoId;
+    tmpl.language = language;
+    return tmpl;
+  }
 
   const totalDuration = steps.reduce((sum, s) => sum + s.duration_s, 0);
 

@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1327",
+  "title": "BUGFIX — code-demo: add complete script templates as LLM fallback",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "The code-demo pipeline (P2) still fails when Ollama's script generation returns invalid JSON or 0 steps (errors at line 212/230 in code-demo-scriptgen.ts). Sprint 1322 added a code fallback (template Python snippet) but NOT a script fallback — the LLM is still needed to build the JSON steps array. When Ollama is unreachable, generateCodeDemoScript throws 'No JSON in LLM response' or 'LLM generated 0 steps'. Fix: add 3 complete pre-built CodeDemoScript templates and use them as fallback when script generation fails.",
+  "tasks": [
+    {
+      "id": "1327-script-templates",
+      "description": "In scripts/scs001/code-demo-scriptgen.ts: (1) Add a SCRIPT_TEMPLATES constant — array of 3 complete CodeDemoScript-shaped objects (FastAPI REST API, Stripe checkout session, Anthropic Claude API call), each with 4 steps. (2) Wrap the LLM script generation block (lines 209-246) in a try/catch. In the catch block (and also when steps.length===0 after parse), log '[code-demo] LLM script gen failed — using template' and return a template script, rotating by Date.now() % SCRIPT_TEMPLATES.length. (3) Set the template's demo_id to demoId and language to the detected language. This ensures code-demo always produces a complete video even when Ollama is fully unavailable.",
+      "file": "scripts/scs001/code-demo-scriptgen.ts",
+      "status": "done",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}
