@@ -1279,21 +1279,23 @@ export function cmdReport(): string {
     }
   } catch { /* skip */ }
 
-  // Sprint 1143 (wave 26): show Godman npm publish status per package in /report
+  // Sprint 1286: show Godman npm publish status per package in /report
   let godmanNpmReportLine = '';
   try {
-    const godmanPkgs26 = ['@godman/pact', '@godman/amf', '@godman/signal', '@godman/soul', '@godman/score', '@godman/lax', '@godman/drs', '@godman/sdk'];
+    const godmanPkgs26 = ['pact', 'amf', 'signal', 'soul', 'score', 'lax', 'drs', 'sdk'];
     const pkgResults: string[] = [];
     for (const pkg of godmanPkgs26) {
       try {
-        const ver = execSync(`npm view ${pkg} version 2>/dev/null`, { timeout: 5000, encoding: 'utf-8', stdio: ['pipe','pipe','pipe'] }).trim();
-        pkgResults.push(`✅ \`${pkg.replace('@godman/', '')}\`@${ver}`);
+        const ver = execSync(`npm view @godman-protocols/${pkg} version 2>/dev/null`, { timeout: 5000, encoding: 'utf-8', stdio: ['pipe','pipe','pipe'] }).trim();
+        pkgResults.push(`  ✅ \`${pkg}\`@${ver}`);
       } catch {
-        pkgResults.push(`❌ \`${pkg.replace('@godman/', '')}\``);
+        pkgResults.push(`  ❌ \`${pkg}\` — not published`);
       }
     }
-    const pubCount = pkgResults.filter(r => r.startsWith('✅')).length;
-    godmanNpmReportLine = `\n*Godman npm (${pubCount}/${godmanPkgs26.length}):* ${pkgResults.join(' · ')}`;
+    const pubCount = pkgResults.filter(r => r.includes('✅')).length;
+    const daysLeft26 = Math.max(0, Math.ceil((new Date('2026-04-14T00:00:00Z').getTime() - Date.now()) / 86_400_000));
+    const npmIcon = pubCount === godmanPkgs26.length ? '✅' : pubCount === 0 ? '❌' : '⚠️';
+    godmanNpmReportLine = `\n${npmIcon} *Godman npm (${pubCount}/${godmanPkgs26.length}) · ${daysLeft26}d to Apr 14:*\n${pkgResults.join('\n')}`;
   } catch { /* skip */ }
 
   // Sprint 1147 (wave 27): cost efficiency from stats-latest.json

@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1286",
+  "title": "OPS — /report: show Godman npm publish status for each package",
+  "description": "Fix @godman/ namespace to @godman-protocols/ in cmdReport godman npm check. Improve format to show each package on its own line for readability.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1286-01",
+      "title": "Fix @godman-protocols/ namespace and per-package line format in cmdReport()",
+      "type": "fix",
+      "task_type": "bot",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1286"
+    }
+  ]
+}
