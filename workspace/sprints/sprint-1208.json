@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1208",
+  "title": "ACHIRI — Create scripts/achiri/notify-waitlist.sh (unlock /achiri-launch Step 3)",
+  "description": "cmdAchiriLaunch() Step 3 checks for scripts/achiri/notify-waitlist.sh or broadcast-waitlist.ts and shows ⚠️ 'not found — use /broadcast' if missing. Create notify-waitlist.sh that: reads workspace/achiri/waitlist.jsonl, extracts chat_ids, sends a Telegram message to each waitlisted user via ACHIRI_TELEGRAM_BOT_TOKEN. Supports --dry-run and --message args. Unlocks ✅ for Step 3.",
+  "source": "queue-empty-sonnet",
+  "tasks": [
+    {
+      "id": "1208-01",
+      "title": "Create scripts/achiri/notify-waitlist.sh — broadcast Telegram messages to waitlisted users",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/achiri/notify-waitlist.sh",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-1208"
+    }
+  ]
+}
