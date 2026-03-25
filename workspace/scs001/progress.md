@@ -6923,3 +6923,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Notes: cmdGodmanThread() already has copy-paste tip + line count (Sprint 1102). Verification only.
 - Swarm used: no (verification task)
 - Timestamp: 2026-03-25T13:35:00Z
+
+## Sprint 1260 — ACHIRI-PREDEPLOY Fix pre-deploy-check.ts
+- Status: PASS
+- Commit: 879dc48a
+- Files modified: scripts/achiri/pre-deploy-check.ts, workspace/sprint-queue.json, scripts/replenish-sprint-queue.ts
+- Files created: workspace/sprints/sprint-1260.json
+- Test: npx ts-node pre-deploy-check.ts — 14 PASS, 2 WARN, 0 FAIL (was 1 FAIL before)
+- Fix 1: /stats/health → /health (404 → 200)
+- Fix 2: ANTHROPIC_API_KEY REQUIRED → OPTIONAL (free tier uses local models)
+- Swarm used: no (surgical 2-line fix)
+- Timestamp: 2026-03-25T13:45:00Z
