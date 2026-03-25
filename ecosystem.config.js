@@ -264,29 +264,27 @@ module.exports = {
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
     {
-      // sprint-runner: checks every 30 min for pending sprint tasks, runs MiniMax orchestrator
-      // This closes the loop: CEO issues → sprint JSON → auto-execution
-      // To queue work: write a sprints/week-N.json with status:"pending" tasks
+      // sprint-runner: checks every 30 min for pending sprint tasks
+      // Rate-limited: 30 min cooldown between runs + 20 sprint/day hard cap
+      // Protects the Claude Code 5h rolling token budget
       name: "sprint-runner",
       script: "./scripts/sprint-runner.ts",
       interpreter: "node",
       interpreter_args: "-r ts-node/register",
-      cwd: "/home/invoica/apps/Invoica",
+      cwd: "/Users/tarekmnif/kognai",
       autorestart: false,
       watch: false,
       cron_restart: "*/30 * * * *",
       env: {
         TS_NODE_TRANSPILE_ONLY: "true",
-        TS_NODE_PROJECT: "/home/invoica/apps/Invoica/tsconfig.json",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.json",
+        SPRINT_COOLDOWN_MINUTES: "30",
+        DAILY_SPRINT_CAP: "20",
         CEO_TELEGRAM_BOT_TOKEN: process.env.CEO_TELEGRAM_BOT_TOKEN || "",
         OWNER_TELEGRAM_CHAT_ID: process.env.OWNER_TELEGRAM_CHAT_ID || "",
-        // x402 wallet spending: code agent wallet pays 0.001 USDC per LLM call
-        // Seller wallet = CTO agent wallet (receives USDC from inference payments)
-        X402_SELLER_WALLET: "0x3e127c918C83714616CF2416f8A620F1340C19f1",
-        INFERENCE_API_URL: "http://localhost:3001",
       },
-      error_file: "/home/invoica/apps/Invoica/logs/sprint-runner-error.log",
-      out_file: "/home/invoica/apps/Invoica/logs/sprint-runner-out.log",
+      error_file: "/Users/tarekmnif/kognai/logs/sprint-runner-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/sprint-runner-out.log",
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
     {

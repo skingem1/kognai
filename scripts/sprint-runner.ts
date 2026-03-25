@@ -33,10 +33,14 @@ const LOCK       = join(ROOT, 'logs', 'sprint-runner.lock');
 const LOG        = join(ROOT, 'logs', 'sprint-runner.log');
 const ACTIVE     = join(ROOT, 'logs', 'sprint-runner-active.json');
 const COOLDOWN   = join(ROOT, 'logs', 'sprint-runner-cooldown.json');
+const DAILY_LOG  = join(ROOT, 'logs', 'sprint-runner-daily.json');
 const MAX_HOURS  = 6; // kill orchestrator if it runs longer than this
 // Rate limiter: minimum gap between sprint executions (prevents burning Claude 5h limit)
-// Default: 10 min. Override via SPRINT_COOLDOWN_MINUTES env var.
-const COOLDOWN_MINUTES = parseInt(process.env.SPRINT_COOLDOWN_MINUTES ?? '10', 10);
+// Default: 30 min. Override via SPRINT_COOLDOWN_MINUTES env var.
+const COOLDOWN_MINUTES = parseInt(process.env.SPRINT_COOLDOWN_MINUTES ?? '30', 10);
+// Daily cap: max sprints per calendar day (prevents rolling-window exhaustion)
+// Default: 20. Override via DAILY_SPRINT_CAP env var.
+const DAILY_SPRINT_CAP = parseInt(process.env.DAILY_SPRINT_CAP ?? '20', 10);
 
 interface Task { id: string; status: string; agent?: string; sprint_id?: string; [k: string]: unknown; }
 interface Sprint { sprint_id: string; tasks: Task[]; [k: string]: unknown; }
@@ -113,6 +117,28 @@ function setCooldown(): void {
     writeFileSync(COOLDOWN, JSON.stringify({ until, set_at: new Date().toISOString(), cooldown_minutes: COOLDOWN_MINUTES }));
     log(`Cooldown set: next sprint no earlier than ${new Date(until).toISOString()} (+${COOLDOWN_MINUTES} min)`);
   } catch { /* non-fatal */ }
+}
+
+// ── Daily Cap (Claude 5h rolling window protection) ──────────────────────────
+function isDailyCapReached(): boolean {
+  try {
+    const today  = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+    const aarDir = join(ROOT, 'logs', 'aar');
+    const aarFile = join(aarDir, `${today}.jsonl`);
+    if (!existsSync(aarFile)) return false;
+    const lines = readFileSync(aarFile, 'utf8')
+      .trim().split('\n').filter(l => l.trim().length > 0);
+    // Count unique sprint IDs to avoid inflating count from multi-task sprints
+    const uniqueSprints = new Set(lines.map(l => { try { return JSON.parse(l).sprintId ?? l; } catch { return l; } }));
+    const count = uniqueSprints.size;
+    if (count >= DAILY_SPRINT_CAP) {
+      log(`Daily cap reached: ${count}/${DAILY_SPRINT_CAP} sprints today. Pausing until midnight.`);
+      sendTelegram(`🚫 *Sprint Runner* — daily cap reached\\n\\n${count}/${DAILY_SPRINT_CAP} sprints today.\\nResuming tomorrow.`);
+      return true;
+    }
+    log(`Daily sprint count: ${count}/${DAILY_SPRINT_CAP}`);
+  } catch { /* non-fatal — don't block on AAR read errors */ }
+  return false;
 }
 
 // ── Sprint ID Injection ────────────────────────────────────────────────────
@@ -198,6 +224,7 @@ function main(): void {
   }
 
   if (isInCooldown()) return;
+  if (isDailyCapReached()) return;
 
   acquireLock();
   log('Starting sprint runner...');
