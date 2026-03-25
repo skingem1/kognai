@@ -7085,3 +7085,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Fix: strip timestamp prefix with regex before building dedup key and storing display line
 - Result: same cron errors now aggregate correctly (e.g. ×268 for same fetch error)
 - Status: DONE ✅
+
+## Sprint 1299 — 2026-03-25
+- **OPS — Daily brief generator: live gate tracker + fix status filter + blocker detection**
+- `_build_live_gate_tracker()`: new function replaces `extract_gate_tracker()`. Reads phase1-5-gate.json, generates markdown table with real post counts, urgency, days remaining, and upcoming gate countdown table (10 gates with day count + color icons)
+- Fixed `_build_dynamic_tasks()` status filter bug: was `status == 'pending'` (never matched any items), now `status not in ('done', 'skipped')` matching `_build_live_focus` pattern
+- Added open blocker detection to `_build_live_focus()`: flags missing TIKTOK_ACCESS_TOKEN from .env and non-ON_TRACK gate urgency with icons
+- Updated brief footer: removed stale "Source: KOGNAI_DAILY_TIMELINE.md" reference
+- Validated: `python3 scripts/generate-daily-brief.py` — PASS. Gate tracker now shows 9/30 posts, 13d, ON_TRACK with real data
+- Swarm bypassed: yes (Python surgical edits, swarm optimised for TypeScript)
+- Commit: e7ac5fc0
+- Status: DONE ✅
