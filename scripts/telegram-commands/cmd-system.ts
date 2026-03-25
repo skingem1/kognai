@@ -3623,8 +3623,9 @@ export function cmdGodmanStatusPage(): string {
  *
  * Shows ordered steps for launch day with go/no-go status per step:
  *   Step 1: Pre-flight (npm login, smoke, tags, CHANGELOGs)
- *   Step 2: Publish (bash scripts/godman-publish-all.sh)
+ *   Step 2: Publish (bash scripts/godman-launch-day.sh)
  *   Step 3: Announce (post X thread + ClaWHub listing)
+ * Sprint 1204: fixed publish script reference (godman-publish-all.sh → godman-launch-day.sh)
  */
 export function cmdGodmanLaunch(): string {
   const PROTO_BASE = path.join(ROOT, 'workspace', 'godman-protocols');
@@ -3649,8 +3650,8 @@ export function cmdGodmanLaunch(): string {
 
   const preflightPass = npmReady && taggedCount === 7 && changelogsPresent;
 
-  // Publish script
-  const publishScriptExists = fs.existsSync(path.join(ROOT, 'scripts', 'godman-publish-all.sh'));
+  // Publish script (Sprint 1204: fixed — godman-launch-day.sh is the correct script)
+  const publishScriptExists = fs.existsSync(path.join(ROOT, 'scripts', 'godman-launch-day.sh'));
 
   // Announce assets
   const megathreadPath = path.join(ROOT, 'workspace', 'social', 'suite-launch', 'x-megathread.md');
@@ -3672,7 +3673,7 @@ export function cmdGodmanLaunch(): string {
     '',
     `*── Step 2: Publish ──*`,
     `${publishScriptExists ? '✅' : '❌'} Publish script ready`,
-    `_Run:_ \`bash scripts/godman-publish-all.sh\``,
+    `_Run:_ \`bash scripts/godman-launch-day.sh\``,
     '',
     `*── Step 3: Announce ──*`,
     `${tweetCount > 0 ? `✅ X thread: ${tweetCount} tweets ready` : '❌ X thread missing'}`,

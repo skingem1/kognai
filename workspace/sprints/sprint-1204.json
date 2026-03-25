@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1204",
+  "title": "GODMAN-LAUNCH — /godman-launch: fix wrong publish script path",
+  "description": "cmdGodmanLaunch() in cmd-system.ts references 'scripts/godman-publish-all.sh' which does not exist. The actual launch script is 'scripts/godman-launch-day.sh' (Sprint 992). Fix the publishScriptExists check and the run instruction to point at godman-launch-day.sh.",
+  "source": "queue-empty-sonnet",
+  "tasks": [
+    {
+      "id": "1204-01",
+      "title": "Fix cmdGodmanLaunch() — change godman-publish-all.sh → godman-launch-day.sh",
+      "type": "bugfix",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-1204"
+    }
+  ]
+}
