@@ -2290,6 +2290,31 @@ export function cmdErrors(filterProcess?: string): string {
     }
   } catch { /* skip */ }
 
+  // Sprint 1261: detect rotated/cleared log files by comparing against size snapshot
+  try {
+    const snapshotPath = path.join(ROOT, 'workspace', 'errors-log-size-snapshot.json');
+    const allLogs1261 = fs.readdirSync(logDir).filter((f: string) => f.endsWith('-error.log'));
+    const currentSizes: Record<string, number> = {};
+    for (const f of allLogs1261) {
+      try { currentSizes[f] = fs.statSync(path.join(logDir, f)).size; } catch { currentSizes[f] = 0; }
+    }
+    if (fs.existsSync(snapshotPath)) {
+      const snapshot: Record<string, number> = JSON.parse(fs.readFileSync(snapshotPath, 'utf-8'));
+      const rotated: string[] = [];
+      for (const [f, prevSize] of Object.entries(snapshot)) {
+        const currSize = currentSizes[f] ?? 0;
+        // Rotated: file shrank significantly (>1KB smaller or was non-empty now empty)
+        if (prevSize > 1024 && currSize < prevSize * 0.5) {
+          rotated.push(`\`${f.replace('-error.log', '')}\` (${Math.round(prevSize / 1024)}KB → ${Math.round(currSize / 1024)}KB)`);
+        }
+      }
+      if (rotated.length > 0) {
+        output.push(`\n🔄 *Log files rotated/cleared today:* ${rotated.join(', ')}\n_Errors before rotation are no longer visible in /errors_`);
+      }
+    }
+    fs.writeFileSync(snapshotPath, JSON.stringify(currentSizes));
+  } catch { /* skip */ }
+
   return output.join('\n');
 }
 

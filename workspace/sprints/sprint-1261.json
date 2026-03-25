@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1261",
+  "title": "OPS — /errors: show which error log files were cleared/rotated today",
+  "description": "Detect log rotation in /errors output by comparing current log file sizes against a persisted snapshot. Flag files that shrank >50% since last check.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1261-01",
+      "title": "Add rotation detection block to cmdErrors() in cmd-system.ts",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1261"
+    }
+  ]
+}
