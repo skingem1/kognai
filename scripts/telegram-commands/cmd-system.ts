@@ -3687,3 +3687,59 @@ export function cmdGodmanLaunch(): string {
 
   return lines.join('\n');
 }
+
+/**
+ * Sprint 1207: /godman-npm-check — live npm registry publish status for all 8 packages
+ *
+ * Queries npm registry live for each of 7 protocols + SDK.
+ * Shows ✅/❌ per package with published version or pending status.
+ */
+export function cmdGodmanNpmCheck(): string {
+  const PKGS = ['pact', 'lax', 'score', 'signal', 'soul', 'amf', 'drs', 'sdk'];
+  const daysLeft = Math.max(0, Math.ceil((new Date('2026-04-14T00:00:00Z').getTime() - Date.now()) / 86_400_000));
+
+  // npm login check
+  let npmUser = '';
+  try { npmUser = execSync('npm whoami 2>/dev/null', { encoding: 'utf-8', timeout: 5000 }).trim(); } catch {}
+
+  const results: { pkg: string; version: string | null }[] = [];
+  for (const pkg of PKGS) {
+    let version: string | null = null;
+    try {
+      const out = execSync(`npm view @godman-protocols/${pkg} version 2>/dev/null`, {
+        encoding: 'utf-8', timeout: 8000, stdio: ['pipe', 'pipe', 'pipe'],
+      }).trim();
+      if (out && out.match(/^\d+\.\d+\.\d+/)) version = out;
+    } catch {}
+    results.push({ pkg, version });
+  }
+
+  const published = results.filter(r => r.version !== null).length;
+  const urgency = daysLeft <= 3 ? '🔴' : daysLeft <= 7 ? '🟠' : daysLeft <= 14 ? '🟡' : '🟢';
+
+  const lines: string[] = [
+    `📦 *Godman npm Publish Status*`,
+    `${urgency} *${daysLeft}d* to April 14 · ${published}/8 published`,
+    `npm user: ${npmUser || '❌ not logged in — run: npm login'}`,
+    '',
+  ];
+
+  for (const { pkg, version } of results) {
+    if (version) {
+      lines.push(`✅ @godman-protocols/${pkg} — v${version}`);
+    } else {
+      lines.push(`❌ @godman-protocols/${pkg} — NOT PUBLISHED`);
+    }
+  }
+
+  lines.push('');
+  if (published === 8) {
+    lines.push('🎉 *All 8 packages live on npm!*');
+  } else if (published === 0) {
+    lines.push(`_Publish on launch day:_ \`bash scripts/godman-launch-day.sh\``);
+  } else {
+    lines.push(`_${8 - published} remaining. Run:_ \`bash scripts/godman-launch-day.sh\``);
+  }
+
+  return lines.join('\n');
+}

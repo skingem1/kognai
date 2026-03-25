@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-1207",
+  "title": "GODMAN-LAUNCH — /godman-npm-check: live npm registry publish status",
+  "description": "New /godman-npm-check command that queries npm registry live for each of the 7 Godman protocols + SDK. Shows ✅/❌ per package with published version, or 'NOT PUBLISHED' if pending. Summary: X/8 published. Essential for tracking launch day progress. Also shows npm login status.",
+  "source": "queue-empty-sonnet",
+  "tasks": [
+    {
+      "id": "1207-01",
+      "title": "Add cmdGodmanNpmCheck() to cmd-system.ts — live npm publish status",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-1207"
+    },
+    {
+      "id": "1207-02",
+      "title": "Register /godman-npm-check in telegram-bot.ts + add to cmd-help.ts",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-bot.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-1207"
+    }
+  ]
+}
