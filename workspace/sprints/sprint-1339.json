@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1339",
+  "title": "BUGFIX — entertainment-assembler: local gradient fallback when fal.ai scene fails",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "In scripts/scs001/entertainment-assembler.ts generateSceneClip(), when fal.ai fails (ETIMEDOUT or all models fail), the scene is skipped (return false). assembleEntertainmentVideo() only throws if ALL scenes fail (sceneClips.length === 0). But if most scenes time out, the result is a truncated video missing many scenes. Fix: in the catch block, try to generate a local colored gradient background video via ffmpeg lavfi before returning false. 5 distinct dark colors (indexed by sceneIndex) produce visually varied scenes at $0.00. This means entertainment videos ALWAYS produce content even when fal.ai is completely down, matching the resilience pattern of produce-vlog (HeyGen→ElevenLabs→macOS say) and code-demo (Ollama→templates).",
+  "tasks": [
+    {
+      "id": "1339-entertainment-gradient-fallback",
+      "description": "In scripts/scs001/entertainment-assembler.ts generateSceneClip(): in the catch block, before `return false`, attempt ffmpeg lavfi gradient: `ffmpeg -y -f lavfi -i 'color=c=0xHHHHHH:s=1080x1920:r=30' -t {duration_s} -c:v libx264 -preset fast -pix_fmt yuv420p '{outPath}'`. Use 5 rotating dark colors indexed by sceneIndex. Return true if clip was created. Only return false if gradient generation also fails.",
+      "file": "scripts/scs001/entertainment-assembler.ts",
+      "status": "done",
+      "priority": "medium",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}

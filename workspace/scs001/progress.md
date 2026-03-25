@@ -7429,6 +7429,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no
 - Timestamp: 2026-03-25T22:15:00Z
 
+## Sprint 1339 — BUGFIX: entertainment-assembler local gradient fallback when fal.ai fails
+- Status: PASS
+- Commit: (next)
+- Files: scripts/scs001/entertainment-assembler.ts
+- Fix: generateSceneClip() catch block now tries to produce a local ffmpeg lavfi gradient background video before returning false. 5 rotating dark colors (indexed by sceneIndex). When fal.ai times out, scenes still produce content. Entertainment pipeline now fully resilient: fal.ai → local gradient ($0.00).
+- Swarm used: no
+- Timestamp: 2026-03-26T00:15:00Z
+
 ## Sprint 1338 — BUGFIX: stats-report gate calculation uses manual-posts not auto-delivered
 - Status: PASS
 - Commit: (next)
