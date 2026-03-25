@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1275",
+  "title": "QUALITY — Entertainment pipeline integration: register assembler + scriptgen in PM2",
+  "description": "entertainment-assembler.ts and entertainment-scriptgen.ts are untracked. Added scs001-entertainment PM2 process entry in ecosystem.config.js. autorestart: false, no cron_restart — manual start only since SCS-001 pipeline is PAUSED. Operator can start a run with: pm2 start ecosystem.config.js --only scs001-entertainment",
+  "source": "queue-auto-replenish",
+  "tasks": [
+    {
+      "id": "1275-01",
+      "title": "Add scs001-entertainment to ecosystem.config.js (manual-start, no cron)",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "ecosystem.config.js",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1275"
+    }
+  ]
+}

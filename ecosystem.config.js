@@ -1549,5 +1549,31 @@ module.exports = {
       out_file: "/Users/tarekmnif/kognai/logs/cerberus-out.log",
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
+    // ─── Sprint 1275: SCS-001 Entertainment Producer — manual-start only ─────
+    // Requires: FAL_KEY in .env (fal.ai Kling/Wan for scene generation)
+    // SCS-001 is PAUSED — do NOT add cron_restart until pipeline is unpaused.
+    // To start a single run: pm2 start ecosystem.config.js --only scs001-entertainment
+    // Or directly: npx ts-node scripts/scs001/produce-entertainment.ts --topic "AI Topic"
+    {
+      name: "scs001-entertainment",
+      script: "scripts/scs001/produce-entertainment.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: false,
+      watch: false,
+      // No cron_restart — operator starts manually when pipeline is unpaused
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
+        FAL_KEY: process.env.FAL_KEY || "",
+        ELEVENLABS_API_KEY: process.env.ELEVENLABS_API_KEY || "",
+        OLLAMA_HOST: process.env.OLLAMA_HOST || "http://127.0.0.1:11434",
+        SCS_ENTERTAINMENT_TOPIC: process.env.SCS_ENTERTAINMENT_TOPIC || "",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/scs001-entertainment-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/scs001-entertainment-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
   ]
 };
