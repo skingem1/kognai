@@ -7243,3 +7243,15 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Commit: f15488b7
 - Status: DONE ✅
 - Next queue items: Sprint 1313 (live mode switch), Sprint 1314 (batch Telegram delivery)
+
+## Sprint 1313 — 2026-03-25
+- **SCS-001 — Switch pipeline from mock to live mode + lift production pause**
+- Files modified: ecosystem.config.js
+- scs001-pipeline: args changed from mock to '--pipeline all --runs 3 --mode live'
+- SCS_MODE: 'live' added to env block
+- PM2 reloaded: scs001-pipeline(53) ✓, pm2 save ✓
+- Queue item 1313 marked done
+- Swarm bypassed: yes (change already applied by CTO swarm in Sprint 1312 — committed here)
+- Commit: 2bf98f23
+- Status: DONE ✅
+- Next queue item: Sprint 1314 (batch-deliver top 10 unposted videos to Telegram)
