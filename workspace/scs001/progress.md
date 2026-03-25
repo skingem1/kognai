@@ -6888,3 +6888,13 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (validation task, direct execution)
 - Issues: CTO gate module not found (warned, proceeded per instructions)
 - Timestamp: 2026-03-25T13:10:00Z
+
+## Sprint 1256 — ACHIRI-ALPHA Pre-launch Smoke Test
+- Status: PASS
+- Commit: d708dfb9
+- Files created: workspace/sprints/sprint-1256.json, workspace/sprints/sprint-1256-output.md
+- Test: smoke 6/6, E2E 27/27, onboarding 7/7, waitlist dry-run OK (40 total PASS)
+- Pipeline: Achiri alpha-ready locally. Hetzner deploy is the remaining blocker.
+- Swarm used: no (validation task, direct execution)
+- Issues: ACHIRI_TELEGRAM_BOT_TOKEN not set (human action), Hetzner deploy pending
+- Timestamp: 2026-03-25T13:20:00Z
