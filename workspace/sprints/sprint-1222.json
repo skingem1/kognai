@@ -1,0 +1,12 @@
+{
+  "sprint": 1222,
+  "title": "OPS — orchestrator: increase insight+script stage timeouts to 600s",
+  "status": "done",
+  "track": "OPS",
+  "summary": "Increased STAGE_TIMEOUTS for '4-insight' and '5-script' from 300s to 600s in scs001-orchestrator/index.ts. qwen3:14b on Mac Mini M4 needs more than 5min to generate insights and scripts for 11+ clips, causing pipeline to produce 0 scripts.",
+  "files": [
+    "agents/scs001-orchestrator/index.ts"
+  ],
+  "root_cause": "Pipeline latest.json shows scripts_produced:0 and two Stage timeout after 300s errors. Stages 4+5 are LLM-heavy and need more than 5min on local hardware.",
+  "fix": "Bump insight and script stage timeouts from 300_000 to 600_000."
+}
