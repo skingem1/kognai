@@ -3748,7 +3748,7 @@
       "sprint": 1290,
       "title": "AMD25 \u2014 DKA LRU cache: evict least-recently-used entries when store exceeds 1000 docs",
       "block": "AMD25",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "DKA store is in-memory with JSONL persistence. Add LRU eviction so store does not grow unbounded. Cap at 1000 documents and emit eviction events to metrics.",
       "added_at": "2026-03-25T13:23:29.168Z"

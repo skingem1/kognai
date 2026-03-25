@@ -7021,3 +7021,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Test: CERBERUS_DRY_RUN=1 — 10/10 pass (health, evaluate, agentId, HMAC, tamper detection, 400)
 - Swarm used: no (new file, direct write)
 - Timestamp: 2026-03-25T13:42:00Z
+
+## Sprint 1290 — AMD25-DKA-LRU-CACHE
+- Status: PASS
+- Commit: 5c06f1ca
+- Files modified: workspace/amd25/dka-store.ts
+- Files created: workspace/sprints/sprint-1290.json
+- Feature: MAX_STORE_SIZE=1000 global LRU cap, accessOrder Map, _evictLRU() method
+- Feature: onEvict callback + EvictionEvent type for metrics
+- Test: add 1005 entries → size=1000, evictionCount=5 ✅
+- Swarm used: no (surgical edit, direct write)
+- Timestamp: 2026-03-25T13:45:00Z
