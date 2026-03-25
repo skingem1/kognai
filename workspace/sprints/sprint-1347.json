@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1347",
+  "title": "BUGFIX — telegram-bot: duplicate cmdSprintNext import causes TS2300 error",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "scripts/telegram-bot.ts imports cmdSprintNext from both cmd-system.ts (Sprint 1276) and cmd-management.ts (Sprint 1056). TypeScript TS2300: Duplicate identifier 'cmdSprintNext'. Additionally, /sprint-next is handled in two separate switch blocks (line 251 and 303). Fix: remove cmdSprintNext from the cmd-system import (cmd-management has the older, more complete version). Remove duplicate case at line 303. Keep cmd-management version.",
+  "tasks": [
+    {
+      "id": "1347-dedup-cmdSprintNext",
+      "description": "In scripts/telegram-bot.ts: 1) Remove 'cmdSprintNext' from the cmd-system import on line 23. 2) Remove duplicate 'case /sprint-next' entry at line 303 (keep line 251 which uses cmd-management's version).",
+      "file": "scripts/telegram-bot.ts",
+      "status": "done",
+      "priority": "low",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}
