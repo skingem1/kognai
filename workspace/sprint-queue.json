@@ -3730,7 +3730,7 @@
       "sprint": 1288,
       "title": "OPS \u2014 /health: show last backup timestamp from backup log if available",
       "block": "OPS",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "Data backups are easy to forget. Show timestamp of last successful backup from any backup script log or backup-status.json if present, or warn if none found.",
       "added_at": "2026-03-25T13:23:29.168Z"

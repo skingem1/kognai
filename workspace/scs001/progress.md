@@ -7001,3 +7001,15 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Feature: Shows actual pending message count with icons (✅/📨/⚠️/🔴)
 - Swarm used: no (surgical fix, direct write)
 - Timestamp: 2026-03-25T14:40:00Z
+
+## Sprint 1288 — OPS-HEALTH-BACKUP-TIMESTAMP
+- Status: PASS
+- Commit: 2e392240
+- Files created: scripts/backup-data.ts, workspace/backup-status.json, workspace/sprints/sprint-1288.json
+- Files modified: ecosystem.config.js (added kognai-daily-backup cron at 03:00)
+- Feature: daily backup of 7 key data files → ~/.kognai-backups/ tarball
+- Feature: writes workspace/backup-status.json with timestamp + size + count
+- First backup run: 7 files, 0.06 MB archived
+- /health now shows ✅ Last backup: Xm ago
+- Swarm used: no (new file + surgical edit, direct write)
+- Timestamp: 2026-03-25T13:40:00Z
