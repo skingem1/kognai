@@ -20,6 +20,7 @@ const ROOT = path.resolve(__dirname, '..');
 const HEALTH_FILE = path.join(ROOT, 'health.json');
 const TIER_FILE = path.join(ROOT, 'tier.json');
 const AUDIT_LOG = path.join(ROOT, 'audit.log');
+const COST_LOG_PATH = path.join(ROOT, 'workspace', 'scs001', 'cost-log.json');
 const LOGS_DIR = path.join(ROOT, 'logs');
 
 // ─── PM2 Cron Service Registry ───────────────────────────────────────
@@ -521,7 +522,7 @@ async function heartbeat(): Promise<void> {
     financials: {
       mrr,
       monthly_budget: 200,
-      monthly_spend: 0, // TODO: Track from API costs
+      monthly_spend: (() => { try { return readJSON<{ monthly_summary: { total_cost: number } }>(COST_LOG_PATH).monthly_summary.total_cost; } catch { return 0; } })(),
       gas_reserve_sol: 0,
       credit_balance_usd: 0,
     },
