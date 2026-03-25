@@ -7208,3 +7208,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - AAR: module not found — skipped
 - Commit: 71f0175b
 - Status: DONE ✅
+
+## Sprint 1311 — 2026-03-25
+- **INFRA — regenerate sprint brief + daily brief (stale after 1310)**
+- Files modified: workspace/sprint-brief.md, docs/daily-brief.md, docs/gate-tracker.md
+- Files created: workspace/sprints/sprint-1311.json
+- Brief now shows Sprint 1310 as last completed, Sprint 1311 as next needed
+- Gate status: ON_TRACK — 11/30 posts, 13 days remaining, 0 views (no TikTok URLs linked)
+- Swarm bypassed: yes (operational task — ran python3 scripts/generate-sprint-brief.py)
+- Commit: a477f9ce
+- Status: DONE ✅
+- SESSION HANDOFF: Context window approaching limits after 2 sprints (1310-1311). Session shipped 1310 (sprint-runner rolling cap TS fix) + 1311 (brief regen). Next session start: queue empty, use sprint-brief.md which now shows Sprint 1312 as next.
