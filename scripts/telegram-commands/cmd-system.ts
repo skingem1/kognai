@@ -202,6 +202,21 @@ export function cmdHealth(): string {
     tailscaleSection = '\n\n*Tailscale:* ℹ️ not installed or not running';
   }
 
+  // Sprint 1304 (INFRA): Mac Mini vault reachability via VAULT_TAILSCALE_IP
+  // Tailscale running locally does NOT mean vault is reachable — check explicitly.
+  try {
+    const vaultIp = process.env.VAULT_TAILSCALE_IP ?? '';
+    if (vaultIp) {
+      const pingOut = execSync(`ping -c 1 -W 2 ${vaultIp} 2>&1`, { encoding: 'utf-8', timeout: 5000 }).trim();
+      const reachable = pingOut.includes('1 packets received') || pingOut.includes('1 received');
+      tailscaleSection += `\n*Vault (Mac Mini):* ${reachable ? '✅ reachable' : '❌ unreachable'} (${vaultIp})`;
+    } else {
+      tailscaleSection += `\n*Vault (Mac Mini):* ⚠️ VAULT_TAILSCALE_IP not set`;
+    }
+  } catch {
+    tailscaleSection += `\n*Vault (Mac Mini):* ⚠️ ping failed — Tailscale may be down`;
+  }
+
   // Sprint 1136 (wave 14): ping Hetzner VPS via Tailscale IP from shared-infra
   let hetznerSection = '';
   try {

@@ -1,0 +1,16 @@
+{
+  "sprint": 1304,
+  "title": "INFRA — /health: add Tailscale VPN vault reachability check (Mac Mini ping)",
+  "block": "INFRA",
+  "status": "done",
+  "source": "queue-prescribed",
+  "rationale": "Tailscale running locally ≠ vault reachable. Add VAULT_TAILSCALE_IP ping to /health (alongside existing Hetzner ping pattern). Shows vault online/offline so operator catches VPN issues before inference silently fails.",
+  "tasks": [
+    {
+      "id": "vault-ping-check",
+      "description": "Add VAULT_TAILSCALE_IP ping check to cmdHealth() in scripts/telegram-commands/cmd-system.ts. Pattern: same as HETZNER_TAILSCALE_IP check. Append vaultSection to tailscaleSection output. Show ✅/❌/⚠️ vault reachability.",
+      "file": "scripts/telegram-commands/cmd-system.ts",
+      "status": "pending"
+    }
+  ]
+}
