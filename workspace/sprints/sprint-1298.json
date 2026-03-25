@@ -1,0 +1,13 @@
+{
+  "sprint": 1298,
+  "title": "QUALITY /errors: deduplicate repeated error lines and show count",
+  "block": "QUALITY",
+  "status": "done",
+  "tasks": [
+    {
+      "id": "strip-timestamps",
+      "description": "Strip PM2 timestamp prefix from error lines before dedup key",
+      "status": "done"
+    }
+  ]
+}

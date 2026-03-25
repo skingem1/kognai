@@ -3811,7 +3811,7 @@
       "sprint": 1298,
       "title": "QUALITY \u2014 /errors: deduplicate repeated error lines and show count",
       "block": "QUALITY",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "/errors can show the same error repeated many times if a cron looped. Add dedup: show \"Error message (\u00d7N times)\" instead of N identical lines. Cap output at 8 unique errors.",
       "added_at": "2026-03-25T13:52:59.872Z"

@@ -7078,3 +7078,10 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Delegates upload to existing `uploadShort()` from youtube-shorts.ts
 - Dry-run tested: correctly extracted title "The Hook - You've Been Doing It Wrong", ratio 9:16
 - Status: DONE ✅
+
+## Sprint 1298 — 2026-03-25
+- **QUALITY — /errors: fix deduplication of PM2 timestamp-prefixed error lines**
+- Root cause: PM2 prepends `YYYY-MM-DD HH:MM:SS +HH:MM: ` to every log line, making identical errors appear unique in dedup key
+- Fix: strip timestamp prefix with regex before building dedup key and storing display line
+- Result: same cron errors now aggregate correctly (e.g. ×268 for same fetch error)
+- Status: DONE ✅
