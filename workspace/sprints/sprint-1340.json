@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1340",
+  "title": "BUGFIX — entertainment-assembler: fix 'wan' model type mismatch → 'ltx'",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "In scripts/scs001/entertainment-assembler.ts line 55, generateSceneClip() passes `'wan' as any` to generateBrollVideo() which only accepts `'kling' | 'ltx'`. The 'wan' string bypasses TypeScript type checking and evaluates to the same result as 'ltx' (preferredModel !== 'kling' → try LTX first). There is no 'wan' entry in MODEL_SLUGS in fal-video-client.ts. Fix: change `'wan'` to `'ltx'` directly with proper type annotation, removing the misleading comment and `as any` cast.",
+  "tasks": [
+    {
+      "id": "1340-wan-to-ltx",
+      "description": "In scripts/scs001/entertainment-assembler.ts generateSceneClip(): change `const model = sceneIndex === 0 ? 'kling' : 'wan'` with `as any` to `const model: 'kling' | 'ltx' = sceneIndex === 0 ? 'kling' : 'ltx'` with updated comment.",
+      "file": "scripts/scs001/entertainment-assembler.ts",
+      "status": "done",
+      "priority": "low",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}

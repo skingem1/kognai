@@ -7429,6 +7429,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no
 - Timestamp: 2026-03-25T22:15:00Z
 
+## Sprint 1340 — BUGFIX: entertainment-assembler 'wan' model → 'ltx' type fix
+- Status: PASS
+- Commit: (next)
+- Files: scripts/scs001/entertainment-assembler.ts
+- Fix: Changed `'wan' as any` to `'ltx'` with proper type `'kling' | 'ltx'`. 'wan' was being bypassed with `as any` and resolving to LTX preference anyway (since 'wan' !== 'kling'). No behavior change, type safety restored.
+- Swarm used: no
+- Timestamp: 2026-03-26T00:30:00Z
+
 ## Sprint 1339 — BUGFIX: entertainment-assembler local gradient fallback when fal.ai fails
 - Status: PASS
 - Commit: (next)

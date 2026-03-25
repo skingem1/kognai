@@ -52,8 +52,9 @@ function normalizeClip(input: string, output: string, duration: number): void {
 async function generateSceneClip(scene: EntertainmentScene, sceneIndex: number, outPath: string): Promise<boolean> {
   try {
     const { generateBrollVideo } = await import('./fal-video-client');
-    const model = sceneIndex === 0 ? 'kling' : 'wan';  // hero=kling, rest=wan
-    await generateBrollVideo(scene.visual_prompt, scene.duration_s, outPath, model as any);
+    // Sprint 1340: hero scene uses Kling (best quality), rest use LTX (cost-efficient)
+    const model: 'kling' | 'ltx' = sceneIndex === 0 ? 'kling' : 'ltx';
+    await generateBrollVideo(scene.visual_prompt, scene.duration_s, outPath, model);
 
     // Normalize to canonical format (two-pass for Kling/Wan format quirks)
     const norm = outPath.replace('.mp4', '_norm.mp4');
