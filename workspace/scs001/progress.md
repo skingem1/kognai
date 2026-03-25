@@ -6991,3 +6991,13 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Improvement: per-package on own line + Apr-14 countdown + summary icon
 - Swarm used: no (surgical edit, direct write)
 - Timestamp: 2026-03-25T14:35:00Z
+
+## Sprint 1287 — OPS-STATUS-BOT-BACKLOG
+- Status: PASS
+- Commit: 92944ba8
+- Files modified: scripts/telegram-commands/cmd-management.ts
+- Files created: workspace/sprints/sprint-1287.json
+- Fix: Replace log-scanning approach with real Telegram getUpdates API call using saved offset
+- Feature: Shows actual pending message count with icons (✅/📨/⚠️/🔴)
+- Swarm used: no (surgical fix, direct write)
+- Timestamp: 2026-03-25T14:40:00Z

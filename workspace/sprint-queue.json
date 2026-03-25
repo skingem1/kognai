@@ -3721,7 +3721,7 @@
       "sprint": 1287,
       "title": "OPS \u2014 /status: show count of unread Telegram bot messages (backlog)",
       "block": "OPS",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "If the bot has a pending message backlog (from users waiting for replies), operator needs to know. Show unread/queued message count from the Achiri bot log.",
       "added_at": "2026-03-25T13:23:29.168Z"
