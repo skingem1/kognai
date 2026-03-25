@@ -96,6 +96,8 @@ This file is the single source of truth for infrastructure shared between the In
 | scs001-healer | Kognai | every 5 min | PM2 auto-healer for SCS-001 |
 | scs001-queue-archiver | Kognai | daily 00:05 | Archive stale pipeline queue items |
 | scs001-validator | Kognai | daily 06:00 | Validate pipeline output quality |
+| scs001-pipeline-codedemo | Kognai | daily 13:00 | Midday code-demo production (free, $0.00) — Sprint 1333 |
+| achiri-telegram | Kognai | manual-start | Achiri Telegram bot — autorestart:false (needs ACHIRI_TELEGRAM_BOT_TOKEN) — Sprint 1331 |
 
 ## X402 PAYMENT PROTOCOL
 
