@@ -754,29 +754,29 @@ module.exports = {
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
     {
-      // SCS-001 Pipeline — runs 4x daily at posting slot times (Charter schedule)
-      // Slots: 07:00, 12:00, 18:00, 21:00 UTC
-      // Runs full 12-stage pipeline: Trend→Discovery→ClipDetection→Insight→Script→
-      // Editing→Caption→QC→Publishing→Analytics→Flywheel→FailureLibrary
-      // Default: mock mode (no cloud costs). Set SCS_MODE=live for real API calls.
+      // SCS-001 Pipeline — 1 video per pipeline per day (P1 + P2 + P3 = 3 total)
+      // Runs once daily at 09:00 UTC via batch-produce --pipeline all --runs 3
+      // Round-robins: educational → code-demo → entertainment (1 each)
       name: "scs001-pipeline",
-      script: "agents/scs001-orchestrator/run-pipeline.ts",
+      script: "scripts/scs001/batch-produce.ts",
       interpreter: "node",
       interpreter_args: "-r ts-node/register",
       cwd: "/Users/tarekmnif/kognai",
       autorestart: false,
       watch: false,
-      cron_restart: "0 7,12,18,21 * * *",
-      args: process.env.SCS_MODE || "mock",
+      cron_restart: "0 9 * * *",
+      args: "--pipeline all --runs 3 --mode live",
       env: {
         TS_NODE_TRANSPILE_ONLY: "true",
         TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
         OLLAMA_HOST: "http://127.0.0.1:11434",
+        SCS_MODE: "live",
         SCS_CLIPS_DIR: "/Users/tarekmnif/kognai/clips",
         SCS_EDITING_MODE: "production",
         LLM_REWRITE: "1",
         ELEVENLABS_API_KEY: process.env.ELEVENLABS_API_KEY || "",
         YOUTUBE_API_KEY: process.env.YOUTUBE_API_KEY || "",
+        HEYGEN_API_KEY: process.env.HEYGEN_API_KEY || "",
       },
       error_file: "/Users/tarekmnif/kognai/logs/scs001-pipeline-error.log",
       out_file: "/Users/tarekmnif/kognai/logs/scs001-pipeline-out.log",
