@@ -28,6 +28,7 @@ import { cmdRecord, cmdQueue, cmdReview, cmdCaption, cmdPosted, cmdOnboard, cmdP
 import { cmdMetrics, cmdPostPlan, cmdYouTube, cmdAutoPost, cmdLastRun, cmdViral, cmdDashboard, cmdDigest, cmdSchedule, cmdLeaderboard, cmdBestTime, cmdHookTest, cmdHookStats, cmdViralStats, cmdQueueOpt, cmdGateAnalytics, cmdRevenue, cmdBatch, cmdPostLog, cmdXPost, cmdCosts, cmdWeeklyDigest, cmdPostNext, cmdPostingHealth, cmdBulkCaptions, cmdQueueFill, cmdPreflight } from './telegram-commands/cmd-posting';
 import { cmdHistory, cmdArchive, cmdUnarchive, cmdStale, cmdPurge, cmdNote, cmdUpdateViews, cmdExport, cmdWeeklyReport, cmdSpeakerTest, cmdFilmKit, cmdContentPlan, cmdSuggest, cmdCompare, cmdScorecard, cmdProgress, cmdCleanup, cmdDedup, cmdTop30, cmdAbResults, cmdStatus, cmdReplenish, cmdEnrich, cmdBlockers, cmdBotTest, cmdSprintNext, cmdLog, cmdLaunches, cmdPostPulse, cmdNextActions, cmdSetUrl } from './telegram-commands/cmd-management';
 import { cmdHelp } from './telegram-commands/cmd-help';
+import { cmdSubscribe } from './telegram-commands/cmd-subscribe';
 
 // Sprint 496: Import extracted command modules (Part 2: N-Z + interactive)
 import { cmdSession, cmdDone, cmdEndSession, cmdMenu } from './telegram-commands/cmd-session';
@@ -123,6 +124,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     '/postauto':        () => cmdPostAuto(chatId, cmdArgs),
     '/quickstart':      () => cmdQuickstart(chatId),
     '/revenue':          async () => { const r = await cmdRevenue(); await sendMessage(chatId, r); },
+    '/subscribe':        async () => { await sendMessage(chatId, cmdSubscribe()); },
   };
 
   const asyncHandler = asyncHandlers[cmdName];
