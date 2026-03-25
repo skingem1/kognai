@@ -6657,3 +6657,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (multi-file bugfix)
 - Issues: none
 - Timestamp: 2026-03-25T10:02:00Z
+
+## Sprint 1223 — FEATURE — Phase 1.5 readiness: gate projection + manual post queue + post-now CLI
+- Status: PASS
+- Commit: 4dd88ad5
+- Files created: scripts/scs001/manual-post-queue.ts, scripts/scs001/post-now.ts
+- Files modified: scripts/scs001/audit-gate-count.ts
+- Test: audit-gate-count shows pace AT-RISK (6/30, 1.71/day needed, 14d left). manual-post-queue list/add/remove/next all pass. post-now dry-run mode works.
+- Pipeline: gate audit extended, manual posting tooling ready
+- Swarm used: no (multi-file feature, wrote directly)
+- Issues: TIKTOK_ACCESS_TOKEN still not set — human action required for live posting
+- Timestamp: 2026-03-25T09:05:00Z
