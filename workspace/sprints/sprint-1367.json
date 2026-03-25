@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1367",
+  "title": "BUGFIX — ScriptAgent LLM rewrite always times out when briefs > 5",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "ScriptAgent in LLM rewrite mode processes all N briefs sequentially at ~2 min each (qwen3:14b). For 11 briefs = 22 min, but stage-5 timeout is 10 min. Result: always times out, 0 scripts produced every live run with qualified clips. Fix: cap LLM rewrites at 5 briefs (5 × 2 min = 10 min, fits within timeout). Remaining briefs get deterministic fallthrough within the same stage. Total bundle count is still N — no loss in video output.",
+  "tasks": [
+    {
+      "id": "1367-script-llm-brief-cap",
+      "description": "In agents/scs001-orchestrator/index.ts stage-5: cap LLM-rewritten briefs at 5. Remaining briefs beyond cap processed deterministically (agent.run) and concatenated to bundles. 5 × ~2min = ~10min stays within 600s stage timeout.",
+      "file": "agents/scs001-orchestrator/index.ts",
+      "status": "done",
+      "priority": "critical",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}

@@ -249,8 +249,16 @@ export class SCS001Orchestrator {
       stages.push(await this.runStage('5-script', 'ScriptAgent', async () => {
         const agent = new ScriptAgent();
         if (llmRewriteEnabled) {
-          console.log('[Orchestrator] LLM rewrite enabled (' + transcriptStore.size + ' transcripts)');
-          bundles = await agent.runAsync(briefs, transcriptStore);
+          // Sprint 1367: Cap LLM briefs at 5 to fit within the 10-min stage timeout.
+          // Each LLM rewrite takes ~2 min (qwen3:14b). 11 briefs = 22 min → always times out.
+          // 5 briefs capped = ~10 min max. Remaining briefs get deterministic fallthrough.
+          const LLM_BRIEF_CAP = 5;
+          const llmBriefs = briefs.slice(0, LLM_BRIEF_CAP);
+          console.log('[Orchestrator] LLM rewrite enabled (' + transcriptStore.size + ' transcripts, ' + llmBriefs.length + '/' + briefs.length + ' briefs capped)');
+          const llmBundles = await agent.runAsync(llmBriefs, transcriptStore);
+          const remaining = briefs.slice(LLM_BRIEF_CAP);
+          const detBundles = remaining.length > 0 ? agent.run(remaining) : [];
+          bundles = llmBundles.concat(detBundles);
         } else {
           bundles = agent.run(briefs);
         }
