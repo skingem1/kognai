@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1265",
+  "title": "HELIXA-PACT-CHAMBER4 — Soul Handshake + bidirectional session outcomes (AMD-23)",
+  "description": "Chamber 4 Soul Handshake: external agent proves constitutional alignment via SOUL attestation before full Cerberus access is granted. Wire bidirectional session outcome reporting back to Helixa (Webhook v2 format) for score updates. Completes PACT × Helixa integration alongside Sprint 1264 (Chamber 2).",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1265-01",
+      "title": "Implement scripts/amd23/chamber4-soul-handshake.ts",
+      "type": "feature",
+      "task_type": "amd23",
+      "task_target": "scripts/amd23/chamber4-soul-handshake.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1265"
+    }
+  ]
+}
