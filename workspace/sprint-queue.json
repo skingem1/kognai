@@ -3048,6 +3048,15 @@
       "priority": "medium",
       "rationale": "New /godman-changelog command reads all 7 protocol CHANGELOGs, extracts [0.2.0] section, shows bullet count + first 3 items per protocol. Pre-launch review tool for operator.",
       "_note": "Shipped 2026-03-25 \u2014 Sprint 1209. cmd-system.ts + telegram-bot.ts + cmd-help.ts. tsc clean."
+    },
+    {
+      "sprint": 1210,
+      "title": "ACHIRI \u2014 /achiri-bot-setup: BotFather setup guide (unblock ACHIRI_TELEGRAM_BOT_TOKEN)",
+      "block": "ACHIRI",
+      "status": "done",
+      "priority": "high",
+      "rationale": "Primary blocker for Achiri alpha is ACHIRI_TELEGRAM_BOT_TOKEN not set. New /achiri-bot-setup command guides operator through @BotFather: create bot, copy token, add to .env, set profile, deploy. If token already set, shows next deployment steps.",
+      "_note": "Shipped 2026-03-25 \u2014 Sprint 1210. cmd-stripe.ts + telegram-bot.ts + cmd-help.ts. tsc clean."
     }
   ]
 }

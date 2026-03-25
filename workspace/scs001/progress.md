@@ -6548,3 +6548,12 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Test: tsc --noEmit clean
 - Swarm used: no (cmd-system.ts too large)
 - Timestamp: 2026-03-25T02:15:00Z
+
+## Sprint 1210 — ACHIRI BotFather setup guide
+- Status: PASS
+- Files modified: scripts/telegram-commands/cmd-stripe.ts, scripts/telegram-bot.ts, scripts/telegram-commands/cmd-help.ts
+- Files created: workspace/sprints/sprint-1210.json
+- Function: cmdAchiriBotSetup() — step-by-step @BotFather guide: create bot, copy token, add to .env, set profile, deploy command. If token already set, shows next deployment steps (init-hetzner.sh, start-bot.sh, /achiri-ping, /achiri-launch).
+- Test: tsc --noEmit clean
+- Swarm used: no
+- Timestamp: 2026-03-25T02:30:00Z
