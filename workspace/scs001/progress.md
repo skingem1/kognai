@@ -7429,6 +7429,30 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no
 - Timestamp: 2026-03-25T22:15:00Z
 
+## Sprint 1336 — TBD
+- Status: PENDING
+
+## Sprint 1335 — BUGFIX: produce-vlog macOS say fallback in generateTTSBackbone()
+- Status: PASS
+- Commit: 5ff2f0cf
+- Files: scripts/scs001/produce-vlog.ts
+- Fix: generateTTSBackbone() now tries ElevenLabs → macOS say → silent audio. No longer throws when ELEVENLABS_API_KEY missing. Educational pipeline is fully offline-capable: HeyGen→ElevenLabs→macOS say→video always ships.
+- Timestamp: 2026-03-25T23:00:00Z
+
+## Sprint 1334 — BUGFIX: produce-vlog HeyGen→ElevenLabs fallback
+- Status: PASS
+- Commit: 136400ad
+- Files: scripts/scs001/produce-vlog.ts
+- Fix: generateAvatar() wrapped in try/catch; falls back to generateTTSBackbone() on HeyGen failure.
+- Timestamp: 2026-03-25T22:45:00Z
+
+## Sprint 1333 — FEAT: scs001-pipeline-codedemo midday cron
+- Status: PASS (validated live: demo-mn6i8r28 "Talk to Claude with Python", 82s, $0.00)
+- Commit: 0f40b163
+- Files: ecosystem.config.js
+- Fix: Added scs001-pipeline-codedemo PM2 process (cron 13:00, code-demo --runs 1)
+- Timestamp: 2026-03-25T22:00:00Z
+
 ## Sprint 1332 — BUGFIX: fal-video-client proc.communicate() hang after kill
 - Status: PASS
 - Files modified:
