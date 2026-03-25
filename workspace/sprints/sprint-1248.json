@@ -1,0 +1,9 @@
+{
+  "sprint_id": "1248",
+  "title": "QUALITY-FRESHNESS — Content freshness decay: auto-archive stale queue items",
+  "status": "done",
+  "shipped": "2026-03-25",
+  "commit": "pending",
+  "summary": "Added added_at ISO timestamp to QueueItem interface. New archiveStaleItems() function archives pending items older than STALE_DAYS (7) by setting status=skipped. Wired into main() before pending check so stale items are cleaned before replenish decides whether to generate. New items stamped with added_at on write.",
+  "files_changed": ["scripts/replenish-sprint-queue.ts"]
+}
