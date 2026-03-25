@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-1263",
+  "title": "AMD21-SPRINT520-PATCH — Add forceFlushTranscriptBytes: '2mb' to Sprint 520 compaction spec",
+  "description": "INTEL-016: BentoBoi gap. Add forceFlushTranscriptBytes: '2mb' to AMD-21 compaction config. Also queue @BentoBoiNFT SOUL Week 6 reply.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1263-01",
+      "title": "Create workspace/arch001/compaction-config.json with forceFlushTranscriptBytes: '2mb'",
+      "type": "feature",
+      "task_type": "amd21",
+      "task_target": "workspace/arch001/compaction-config.json",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-1263"
+    },
+    {
+      "id": "1263-02",
+      "title": "Queue @BentoBoiNFT SOUL Week 6 X reply",
+      "type": "content",
+      "task_type": "social",
+      "task_target": "workspace/social/x-replies/intel-016-bentoboi-soul-week6.md",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1263"
+    }
+  ]
+}

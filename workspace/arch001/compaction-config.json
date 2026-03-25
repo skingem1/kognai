@@ -1,0 +1,35 @@
+{
+  "_comment": "AMD-21 ASMR Memory Architecture — Compaction Agent Config",
+  "_sprint": "Sprint 520 spec (patched Sprint 1263 — INTEL-016 BentoBoi gap)",
+  "_rationale": "forceFlushTranscriptBytes was missing. Without it, compaction agent cannot reliably flush transcript buffers when observer accumulates >2MB of raw AAR + ASMR transcript data.",
+  "version": "1.0",
+  "compaction": {
+    "forceFlushTranscriptBytes": "2mb",
+    "maxTranscriptAgeHours": 24,
+    "retainASMRVectors": true,
+    "flushStrategy": "rolling",
+    "flushTriggers": {
+      "onSizeExceed": true,
+      "onSessionEnd": true,
+      "onContextCompaction": true
+    }
+  },
+  "observer": {
+    "intervalSec": 300,
+    "stallThresholdSec": 600,
+    "asmrWritePath": "logs/asmr/",
+    "memoryDeltaPath": "workspace/memory/"
+  },
+  "asmr": {
+    "vectorFields": [
+      "semantic_core",
+      "emotional_valence",
+      "temporal_context",
+      "causal_chain",
+      "agent_signature",
+      "confidence_score"
+    ],
+    "minConfidenceScore": 0.5,
+    "maxVectorsPerFlush": 100
+  }
+}
