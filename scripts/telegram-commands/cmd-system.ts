@@ -3828,3 +3828,57 @@ export function cmdGodmanChangelog(): string {
   lines.push(`_Full changelogs in workspace/godman-protocols/<proto>/CHANGELOG.md_`);
   return lines.join('\n');
 }
+
+// ---------------------------------------------------------------------------
+// Sprint 1271: /cerberus — AMD-23 Cerberus Gateway status
+// ---------------------------------------------------------------------------
+
+export function cmdCerberus(): string {
+  const lines: string[] = ['*AMD-23 Cerberus Gateway*\n'];
+
+  // Check PM2 process status
+  const procs = getPm2List();
+  const gw = procs.find(p => p.name === 'cerberus-gateway');
+  if (gw) {
+    const icon = gw.status === 'online' ? '🟢' : '🔴';
+    const uptime = fmtUptime(gw.uptimeMs);
+    const mem = fmtMem(gw.memory);
+    lines.push(`${icon} *Gateway:* ${gw.status} (${uptime}${mem})`);
+  } else {
+    lines.push('⚪ *Gateway:* not running in PM2');
+    lines.push('  _start: pm2 start ecosystem.config.js --only cerberus-gateway_');
+  }
+
+  const port = process.env['CERBERUS_PORT'] ?? '3419';
+  const apiKeySet = !!process.env['HELIXA_API_KEY'];
+  const dryRun = !apiKeySet || process.env['CERBERUS_DRY_RUN'] === '1';
+  const secretSet = !!process.env['CERBERUS_SECRET'];
+
+  lines.push(`\n*Config:*`);
+  lines.push(`  Port: \`${port}\``);
+  lines.push(`  Mode: ${dryRun ? '🏜 DRY-RUN' : '🔴 LIVE'}`);
+  lines.push(`  HELIXA\\_API\\_KEY: ${apiKeySet ? '✅ set' : '❌ not set'}`);
+  lines.push(`  CERBERUS\\_SECRET: ${secretSet ? '✅ set' : '⚠️ using default'}`);
+
+  // SOUL.md hash
+  const soulPath = path.join(ROOT, 'SOUL.md');
+  if (fs.existsSync(soulPath)) {
+    const { createHash } = require('crypto');
+    const hash = createHash('sha256').update(fs.readFileSync(soulPath, 'utf8'), 'utf8').digest('hex');
+    lines.push(`\n*SOUL attestation:*`);
+    lines.push(`  Hash: \`${hash.slice(0, 16)}…\``);
+    lines.push(`  Version: 0.2.0`);
+    const killSwitchCount = (fs.readFileSync(soulPath, 'utf8').match(/^kill_switch:/gm) || []).length;
+    lines.push(`  Kill switches: ${killSwitchCount}/6`);
+  } else {
+    lines.push(`\n⚠️ *SOUL.md:* not found at project root`);
+  }
+
+  lines.push(`\n*Endpoints:*`);
+  lines.push(`  POST \`/cerberus/evaluate\``);
+  lines.push(`  GET  \`/cerberus/health\``);
+  lines.push(`\n_Chamber 2 (Cred Score) + Chamber 4 (SOUL Handshake)_`);
+  lines.push(`_Sprint 1264–1268 · AMD-23 complete_`);
+
+  return lines.join('\n');
+}

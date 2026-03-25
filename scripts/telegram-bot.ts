@@ -20,7 +20,7 @@ import {
 } from './telegram-commands/telegram-api';
 
 // Sprint 455: Import extracted command modules (Part 1: A-M)
-import { cmdPm2, cmdHealth, cmdTier, cmdSprint, cmdReport, cmdCrons, cmdTikTokAuth, cmdQuickStart, cmdEnvCheck, cmdStripeStatus, cmdReadiness, cmdGitStats, cmdBoot, cmdShutdown, cmdReload, cmdSwarmStats, cmdErrors, cmdTokenCheck, cmdLogs, cmdChangelog, cmdPreflight as cmdPreflightSystem, cmdSmoke, cmdTestSuite, cmdApproveFinetune, cmdBrainxStatus, cmdSwarmHealth, cmdBrowserTest, cmdGodman, cmdGodmanThread, cmdGodmanTag, cmdGodmanPublish, cmdGodmanPreflight, cmdGodmanStatusPage, cmdGodmanLaunch, cmdGodmanNpmCheck, cmdGodmanChangelog, cmdPm2Errors } from './telegram-commands/cmd-system'; // Sprint 1201: added cmdGodmanLaunch; Sprint 1207: added cmdGodmanNpmCheck; Sprint 1209: added cmdGodmanChangelog
+import { cmdPm2, cmdHealth, cmdTier, cmdSprint, cmdReport, cmdCrons, cmdTikTokAuth, cmdQuickStart, cmdEnvCheck, cmdStripeStatus, cmdReadiness, cmdGitStats, cmdBoot, cmdShutdown, cmdReload, cmdSwarmStats, cmdErrors, cmdTokenCheck, cmdLogs, cmdChangelog, cmdPreflight as cmdPreflightSystem, cmdSmoke, cmdTestSuite, cmdApproveFinetune, cmdBrainxStatus, cmdSwarmHealth, cmdBrowserTest, cmdGodman, cmdGodmanThread, cmdGodmanTag, cmdGodmanPublish, cmdGodmanPreflight, cmdGodmanStatusPage, cmdGodmanLaunch, cmdGodmanNpmCheck, cmdGodmanChangelog, cmdPm2Errors, cmdCerberus } from './telegram-commands/cmd-system'; // Sprint 1201: added cmdGodmanLaunch; Sprint 1207: added cmdGodmanNpmCheck; Sprint 1209: added cmdGodmanChangelog; Sprint 1271: added cmdCerberus
 import { cmdDemos, cmdAchiriPing, cmdAchiriDeploy } from './telegram-commands/cmd-spielberg'; // Sprint 1194-1196, 1202
 import { cmdGate, cmdGoLive, cmdAudit, cmdStreak, cmdPace, cmdCalendar, cmdGateAudit, cmdGateRefresh, cmdGateSim } from './telegram-commands/cmd-gate';
 import { runGodmanSmoke } from './godman-smoke';
@@ -295,6 +295,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/demos':              response = cmdDemos();              break; // Sprint 1194
     case '/achiri-ping':        response = await cmdAchiriPing();  break; // Sprint 1196
     case '/achiri-deploy': case '/achirideploy': response = cmdAchiriDeploy(cmdArgs); break; // Sprint 1202
+    case '/cerberus':    response = cmdCerberus();    break; // Sprint 1271
     case '/log':         response = cmdLog();         break;
     case '/help':        response = cmdHelp();        break;
     default:

@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-1271",
+  "title": "BOT-CERBERUS — /cerberus Telegram command for AMD-23 gateway status",
+  "description": "Add /cerberus Telegram command to cmd-system.ts. Shows: gateway running status (PM2 process check), port, dry-run mode, SOUL.md hash, HELIXA_API_KEY set status. Wire into telegram-bot.ts case switch.",
+  "source": "queue-post-exhaustion",
+  "tasks": [
+    {
+      "id": "1271-01",
+      "title": "Add cmdCerberus() to scripts/telegram-commands/cmd-system.ts",
+      "type": "feature",
+      "task_type": "bot",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1271"
+    },
+    {
+      "id": "1271-02",
+      "title": "Wire /cerberus into telegram-bot.ts command switch",
+      "type": "feature",
+      "task_type": "bot",
+      "task_target": "scripts/telegram-bot.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1271"
+    }
+  ]
+}
