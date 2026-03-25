@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1232",
+  "title": "E2E-SMOKE — End-to-end pipeline smoke test validating full operator posting flow",
+  "description": "Creates scripts/scs001/validate-e2e-pipeline.ts that runs a comprehensive smoke test of the operator posting workflow: checks script inventory, caption generation, export kit, preflight checks, gate status, and Telegram bot readiness. Reports a pass/fail summary.",
+  "source": "qwen-recommended",
+  "tasks": [
+    {
+      "id": "1232-01",
+      "title": "Create validate-e2e-pipeline.ts — comprehensive pipeline smoke test",
+      "type": "feature",
+      "task_type": "testing",
+      "task_target": "scripts/scs001/validate-e2e-pipeline.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1232"
+    }
+  ]
+}
