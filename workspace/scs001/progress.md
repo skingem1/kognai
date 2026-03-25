@@ -7143,3 +7143,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm bypassed: yes (TypeScript surgical edit in existing server.ts)
 - Commit: bf6590b1
 - Status: DONE ✅
+
+## Sprint 1304 — 2026-03-25
+- **INFRA — /health: Mac Mini vault reachability via VAULT_TAILSCALE_IP ping**
+- Extended Tailscale section in `cmdHealth()` in `scripts/telegram-commands/cmd-system.ts`
+- Reads `VAULT_TAILSCALE_IP` env var, pings vault via `ping -c 1 -W 2`
+- Shows ✅/❌/⚠️ vault reachability alongside existing Tailscale status line
+- Matches Hetzner VPS ping pattern from Sprint 1136
+- Swarm bypassed: yes (TypeScript surgical edit)
+- Commit: 657f433a
+- **Queue now EMPTY — 0 pending items remaining**
+- Status: DONE ✅
