@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1259",
+  "title": "GODMAN-LAUNCH \u2014 /godman-thread: add copy-paste instructions to Telegram output",
+  "description": "Make /godman-thread output include \"tap each tweet to copy\" tip and thread summary line count. Reduce friction for X launch day.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1259-01",
+      "title": "GODMAN-LAUNCH \u2014 /godman-thread: add copy-paste instructions to Telegram output",
+      "type": "feature",
+      "task_type": "godman_protocols",
+      "task_target": "workspace/sprints/sprint-1259-output.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1259"
+    }
+  ]
+}
