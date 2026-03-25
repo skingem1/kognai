@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1321",
+  "title": "BUGFIX — Skip ClipDetection stage when ViralTikTokDownloader returns 0 clips",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "Every pipeline run wastes 10 minutes because ClipDetectionAgent tries to LLM-score 45 stage-2 metadata discoveries when ViralTikTokDownloader returns 0 (RapidAPI 403 subscription lapsed). ClipDetection is designed for actual downloaded video files, not trend metadata. When viralClipsCount===0, skip stage 3 entirely — InsightAgent static-fallback handles pipeline continuation.",
+  "tasks": [
+    {
+      "id": "skip-clip-detection-when-no-viral",
+      "description": "In agents/scs001-orchestrator/index.ts, around lines 149-172: after stage 2.5 viral-tiktok, track viralClipsCount separately. Change the stage 3 guard from `if (discoveries.length > 0)` to `if (viralClipsCount > 0)`. This ensures ClipDetection only runs when there are actual viral TikTok video files to analyze. Add a log line: '[Orchestrator] Skipping stage 3 (no viral clips from stage 2.5)' when skipped.",
+      "file": "agents/scs001-orchestrator/index.ts",
+      "status": "pending",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}

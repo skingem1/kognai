@@ -147,6 +147,7 @@ export class SCS001Orchestrator {
     }
 
     // --- Stage 2.5: Viral TikTok Downloader (RapidAPI) ---
+    let viralClipsCount = 0;
     const viralStatus = isViralDownloaderAvailable();
     if (viralStatus.enabled) {
       stages.push(await this.runStage('2.5-viral-tiktok', 'ViralTikTokDownloader', async () => {
@@ -154,12 +155,18 @@ export class SCS001Orchestrator {
         const viralClips = await downloader.run(trendBatch ?? undefined);
         // Merge viral TikTok clips into discovery pool — they flow through normal pipeline
         discoveries.push(...viralClips);
+        viralClipsCount = viralClips.length;
         return viralClips.length;
       }));
     }
 
     // --- Stage 3: Clip Detection Agent (Ollama-dependent, retryable) ---
-    if (discoveries.length > 0) {
+    // Sprint 1321: Only run when viral clips exist — ClipDetection is for actual downloaded
+    // video files, not stage-2 metadata. Skipping saves 10min timeout when RapidAPI returns 0.
+    if (viralClipsCount === 0 && discoveries.length > 0) {
+      console.log('[Orchestrator] Skipping stage 3 (no viral clips from stage 2.5 — ClipDetection requires video files)');
+    }
+    if (viralClipsCount > 0) {
       stages.push(await this.runStage('3-clip-detection', 'ClipDetectionAgent', async () => {
         const agent = new ClipDetectionAgent();
         clips = await withRetry(
