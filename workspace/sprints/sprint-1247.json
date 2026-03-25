@@ -1,0 +1,15 @@
+{
+  "sprint_id": "sprint-1247",
+  "title": "CTA-SUBSCRIBE — Add subscription link CTA to TikTok captions",
+  "description": "Add 'Link in bio' subscription CTAs to engagement caption builder. Mix subscription CTAs with existing engagement CTAs to drive €9/mo conversions.",
+  "date": "2026-03-25",
+  "status": "in-progress",
+  "tasks": [
+    {
+      "id": "1247-01",
+      "title": "Add subscription CTAs + bio link mention to engagement-caption.ts",
+      "file": "scripts/scs001/engagement-caption.ts",
+      "description": "Add 4-5 subscription-focused CTAs. Mix 30% subscription CTAs with 70% engagement CTAs. Add 'Link in bio' footer line."
+    }
+  ]
+}

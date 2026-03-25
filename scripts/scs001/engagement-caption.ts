@@ -80,6 +80,15 @@ export const ENGAGEMENT_CTAS = [
   'Double tap if this blew your mind',
 ];
 
+// Sprint 1247: Subscription-focused CTAs (drive €9/mo conversions)
+export const SUBSCRIBE_CTAS = [
+  'Want more like this? Link in bio',
+  'Full breakdowns daily — link in bio',
+  'Go deeper — subscribe via link in bio',
+  'Get exclusive content — link in bio',
+  'Level up your tech game — link in bio',
+];
+
 // Sprint 426: Speaker description variations (replaces static "explains it all")
 const SPEAKER_DESCRIPTIONS = [
   '{speaker} just dropped this',
@@ -155,7 +164,11 @@ export function buildEngagementCaption(opts: {
   const templates = HOOK_TEMPLATES[hook] ?? HOOK_TEMPLATES.curiosity_gap;
   const h = hashVideoId(opts.videoId);
   const hookLine = templates[Math.abs(h) % templates.length];
-  const cta = ENGAGEMENT_CTAS[Math.abs(h >> 3) % ENGAGEMENT_CTAS.length];
+  // Sprint 1247: Mix subscription CTAs (~30%) with engagement CTAs (~70%)
+  const useSubscribeCta = (Math.abs(h >> 3) % 10) < 3; // 30% chance
+  const cta = useSubscribeCta
+    ? SUBSCRIBE_CTAS[Math.abs(h >> 3) % SUBSCRIBE_CTAS.length]
+    : ENGAGEMENT_CTAS[Math.abs(h >> 3) % ENGAGEMENT_CTAS.length];
 
   // Niche-specific tags from topic
   const topicLower = (opts.topic ?? '').toLowerCase();
