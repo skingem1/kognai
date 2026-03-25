@@ -1,0 +1,23 @@
+{
+  "sprint_id": "sprint-1311",
+  "title": "INFRA — regenerate sprint brief (stale after 1310)",
+  "source": "queue-empty-operational",
+  "tasks": [
+    {
+      "id": "regen-sprint-brief",
+      "description": "Run scripts/generate-daily-brief.py to regenerate workspace/sprint-brief.md. The brief is stale (shows Sprint 1309 as last, actual is Sprint 1310). Command: python3 scripts/generate-daily-brief.py. This updates the brief with correct sprint state, gate status, and Qwen recommendation for Sprint 1312.",
+      "file": "workspace/sprint-brief.md",
+      "status": "pending",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": ["workspace/sprint-brief.md"]
+      },
+      "context": "Sprint brief was generated at 18:32 showing Sprint 1309 as last completed. Sprints 1310 have since shipped. Regenerate so next Claude Code session starts with accurate brief.",
+      "priority": "high",
+      "agent": "coder",
+      "type": "ops",
+      "sprint_id": "sprint-1311"
+    }
+  ]
+}

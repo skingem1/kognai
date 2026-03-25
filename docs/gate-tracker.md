@@ -6,10 +6,10 @@
 
 | Criterion | Target | Actual | Pass |
 |-----------|--------|--------|------|
-| Manual TikTok Posts (target: 30) | — | 9 posts recorded in manual-posts.jsonl | ❌ |
+| Manual TikTok Posts (target: 30) | — | 11 posts recorded in manual-posts.jsonl | ❌ |
 | Total Views Across Posts (target: 500) | — | 0 total views · avg 0 views/post | ❌ |
 
-**Recommendation:** ON TRACK — 9/30 posts, 13 days remaining. Keep posting at current pace.
+**Recommendation:** ON TRACK — 11/30 posts, 13 days remaining. Keep posting at current pace.
 
 ## Upcoming Gates
 
