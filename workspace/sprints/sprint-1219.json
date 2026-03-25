@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1219",
+  "title": "BUGFIX — cmd-gate.ts: use readRealPosts() in cmdStreak/cmdPace/cmdGateSim to exclude dry-runs",
+  "description": "cmdStreak(), cmdPace(), cmdGateSim() were using readLines(manual-posts.jsonl) which includes dry-run posts. This inflates streak counts, pace calculations, and gate simulations. Fix: import readRealPosts from shared and replace all 4 occurrences. Dry-run post methods: 'browser-post-dry', 'batch-browser-dry'.",
+  "source": "autonomous-loop",
+  "tasks": [
+    {
+      "id": "1219-01",
+      "title": "Import readRealPosts and replace readLines(manual-posts.jsonl) in cmd-gate.ts",
+      "type": "bugfix",
+      "task_type": "pipeline",
+      "task_target": "scripts/telegram-commands/cmd-gate.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-1219"
+    }
+  ]
+}

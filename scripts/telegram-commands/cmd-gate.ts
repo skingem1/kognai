@@ -6,11 +6,11 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { execSync } from 'child_process';
 import {
-  ROOT, readJSON, readLines, getPm2List, fmtUptime, fmtMem, latestSprintFile,
+  ROOT, readJSON, readLines, readRealPosts, getPm2List, fmtUptime, fmtMem, latestSprintFile,
   findCaptionedMp4, getExperimentData, buildTikTokCaption,
   loadSpeakerMap, diversifyBySpeaker, loadHookMap, diversifyByHook,
   freshnessScore, loadArchived, saveArchived, ARCHIVE_PATH,
-} from './shared';
+} from './shared'; // Sprint 1219: added readRealPosts
 
 export function cmdGate(): string {
   const manualPostsPath = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
@@ -505,7 +505,7 @@ export function cmdAudit(): string {
 }
 
 export function cmdStreak(): string {
-  const posts = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  const posts = readRealPosts(); // Sprint 1219: was readLines(manual-posts.jsonl) — dry-runs excluded
   if (posts.length === 0) {
     return (
       `🔥 *Posting Streak*\n\n` +
@@ -577,8 +577,7 @@ export function cmdStreak(): string {
 }
 
 export function cmdPace(): string {
-  const manualPostsPath = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
-  const posts = readLines(manualPostsPath);
+  const posts = readRealPosts(); // Sprint 1219: was readLines(manual-posts.jsonl) — dry-runs excluded
   const postCount = posts.length;
 
   const GATE_TARGET = 30;
@@ -684,10 +683,10 @@ export function cmdPace(): string {
 
   // Sprint 1140 (wave 17): estimated gate completion date at current pace
   try {
-    const mpLines = fs.readFileSync(manualPostsPath, 'utf-8').split('\n').filter((l: string) => l.trim());
+    const mpLines = posts; // Sprint 1219: use already-loaded posts (readRealPosts)
     if (mpLines.length > 1) {
       const timestamps = mpLines
-        .map((l: string) => { try { const p = JSON.parse(l); return new Date(p.posted_at ?? p.recorded_at).getTime(); } catch { return 0; } })
+        .map((p: any) => new Date(p.posted_at ?? p.recorded_at).getTime())
         .filter((t: number) => t > 0)
         .sort((a: number, b: number) => a - b);
       const daysSinceFirst = Math.max(1, (Date.now() - timestamps[0]) / 86_400_000);
@@ -716,7 +715,7 @@ export function cmdPace(): string {
   try {
     const sevenDaysAgo = new Date(Date.now() - 7 * 86_400_000).toISOString().slice(0, 10);
     const fourteenDaysAgo = new Date(Date.now() - 14 * 86_400_000).toISOString().slice(0, 10);
-    const allPosts = readLines(manualPostsPath);
+    const allPosts = posts; // Sprint 1219: posts already loaded via readRealPosts()
     const last7Views = (allPosts as any[]).filter((p: any) => {
       const d = (p.posted_at ?? p.recorded_at ?? '').slice(0, 10);
       return d >= sevenDaysAgo;
@@ -832,10 +831,7 @@ export function cmdPace(): string {
       const weekStart = new Date(now.getTime() - (todayDow === 0 ? 6 : todayDow - 1) * 86_400_000).toISOString().slice(0, 10);
       let thisWeekCount = 0;
       try {
-        const mpLinesW = fs.readFileSync(manualPostsPath, 'utf-8').split('\n').filter(l => l.trim());
-        thisWeekCount = mpLinesW.filter(l => {
-          try { const p = JSON.parse(l); return (p.posted_at ?? p.recorded_at ?? '').slice(0, 10) >= weekStart; } catch { return false; }
-        }).length;
+        thisWeekCount = posts.filter((p: any) => (p.posted_at ?? p.recorded_at ?? '').slice(0, 10) >= weekStart).length; // Sprint 1219
       } catch { /* skip */ }
       const thisWeekNeeded = Math.max(0, postsPerWeek - thisWeekCount);
       const weekIcon = thisWeekNeeded === 0 ? '✅' : thisWeekNeeded <= 2 ? '⚠️' : '❌';
@@ -990,8 +986,7 @@ export function cmdGateRefresh(): string {
 
 // Sprint 1131: /gate-sim — posting pace simulator
 export function cmdGateSim(): string {
-  const posts = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'))
-    .filter((p: any) => p.video_id);
+  const posts = readRealPosts(); // Sprint 1219: was readLines(manual-posts.jsonl) — dry-runs excluded
   const totalPosts = posts.length;
   const totalViews = posts.reduce((s: number, p: any) => s + (p.views ?? 0), 0);
   const now = new Date();
