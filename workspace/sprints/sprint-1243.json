@@ -1,0 +1,13 @@
+{
+  "sprint_id": "sprint-1243",
+  "title": "LEMON-MIGRATE — Apply subscribers table migration to Supabase",
+  "description": "Applied CREATE TABLE subscribers + indexes to shared Supabase (invoica-backend). IF NOT EXISTS ensures idempotency.",
+  "date": "2026-03-25",
+  "status": "done",
+  "changes": [
+    {
+      "file": "supabase/migrations/20260325_subscribers.sql",
+      "description": "Applied to production Supabase — subscribers table with lemon_subscription_id unique constraint, email + status indexes"
+    }
+  ]
+}

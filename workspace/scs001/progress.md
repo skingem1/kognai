@@ -6819,3 +6819,17 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (surgical wiring — 2 files)
 - Issues: LEMONSQUEEZY_* env vars not yet set; PM2 process not added yet
 - Timestamp: 2026-03-25T12:30:00Z
+
+## Sprint 1242 — LEMON-PM2
+- Status: PASS
+- Commit: bd55624f
+- Files modified: ecosystem.config.js
+- Swarm used: no (surgical edit)
+- Timestamp: 2026-03-25T12:35:00Z
+
+## Sprint 1243 — LEMON-MIGRATE
+- Status: PASS
+- Commit: (pending — sprint JSON only)
+- Migration applied: CREATE TABLE subscribers on Supabase (invoica-backend project)
+- Swarm used: no (Supabase MCP tool)
+- Timestamp: 2026-03-25T12:40:00Z
