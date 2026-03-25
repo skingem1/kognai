@@ -1,0 +1,55 @@
+{
+  "generated_at": "2026-03-25T09:50:03.059Z",
+  "overall_status": "ok",
+  "summary": "7 ok, 1 warn, 0 critical",
+  "metrics": [
+    {
+      "name": "gate_progress",
+      "value": 0,
+      "status": "warn",
+      "detail": "0/30 posts, 13d left, need 3/day"
+    },
+    {
+      "name": "script_inventory",
+      "value": 40,
+      "status": "ok",
+      "detail": "40 scripts ready"
+    },
+    {
+      "name": "ledger_entries",
+      "value": 1242,
+      "status": "ok",
+      "detail": "1242 entries"
+    },
+    {
+      "name": "reports_freshness",
+      "value": 3,
+      "status": "ok",
+      "detail": "3/3 fresh"
+    },
+    {
+      "name": "knowledge_trading",
+      "value": 10,
+      "status": "ok",
+      "detail": "10 records in 1 batches"
+    },
+    {
+      "name": "observer_status",
+      "value": 1107,
+      "status": "ok",
+      "detail": "1107 AAR entries, last run 0h ago"
+    },
+    {
+      "name": "aar_volume",
+      "value": 1108,
+      "status": "ok",
+      "detail": "1108 entries across 19 files"
+    },
+    {
+      "name": "git_head",
+      "value": "b7b1ec0a",
+      "status": "ok",
+      "detail": "b7b1ec0a state: update after Sprint 1232"
+    }
+  ]
+}

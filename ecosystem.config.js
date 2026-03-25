@@ -1450,5 +1450,24 @@ module.exports = {
       out_file: "/Users/tarekmnif/kognai/logs/arch001-observers-out.log",
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
+    {
+      name: "system-health",
+      script: "./scripts/system-health.ts",
+      interpreter: "npx",
+      interpreter_args: "tsx",
+      args: "--telegram",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: false,
+      watch: false,
+      cron_restart: "0 7 * * *",
+      env: {
+        NODE_ENV: "production",
+        TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN || "",
+        OWNER_TELEGRAM_CHAT_ID: process.env.OWNER_TELEGRAM_CHAT_ID || "",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/system-health-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/system-health-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
   ]
 };

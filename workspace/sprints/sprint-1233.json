@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1233",
+  "title": "HEALTH-DASH — System health aggregator with daily metrics tracking",
+  "description": "Creates scripts/system-health.ts that aggregates all critical metrics (gate progress, pipeline health, PM2 status, report freshness, knowledge stores, observer status) into reports/system-health.json. Adds as PM2 daily cron. Provides a /health Telegram integration point.",
+  "source": "qwen-recommended",
+  "tasks": [
+    {
+      "id": "1233-01",
+      "title": "Create scripts/system-health.ts — daily health aggregator",
+      "type": "feature",
+      "task_type": "monitoring",
+      "task_target": "scripts/system-health.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1233"
+    }
+  ]
+}
