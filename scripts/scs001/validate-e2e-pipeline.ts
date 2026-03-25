@@ -108,10 +108,11 @@ check('Gate status (Apr 7)', () => {
     const gate = JSON.parse(readFileSync(gateFile, 'utf-8'));
     const deadline = new Date('2026-04-07');
     const daysLeft = Math.ceil((deadline.getTime() - Date.now()) / (24 * 60 * 60 * 1000));
-    const posts = gate.current_posts ?? gate.posts ?? 0;
+    const posts = gate.raw?.posts_count ?? gate.current_posts ?? gate.posts ?? 0;
+    const views = gate.raw?.total_views ?? gate.total_views ?? 0;
     return {
       status: posts >= 30 ? 'PASS' : (daysLeft < 7 ? 'FAIL' : 'WARN'),
-      detail: `${posts}/30 posts, ${daysLeft} days until Apr 7 deadline`,
+      detail: `${posts}/30 posts · ${views}/500 views · ${daysLeft}d left`,
     };
   } catch {
     return { status: 'WARN', detail: 'Gate file unreadable' };

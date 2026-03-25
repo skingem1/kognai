@@ -35,7 +35,7 @@ function collectGateMetrics(): Metric {
     const gate = JSON.parse(readFileSync(gateFile, 'utf-8'));
     const deadline = new Date('2026-04-07');
     const daysLeft = Math.ceil((deadline.getTime() - Date.now()) / (86400000));
-    const posts = gate.current_posts ?? gate.posts ?? 0;
+    const posts = gate.raw?.posts_count ?? gate.current_posts ?? gate.posts ?? 0;
     const paceNeeded = daysLeft > 0 ? Math.ceil((30 - posts) / daysLeft) : 999;
     return {
       name: 'gate_progress',
