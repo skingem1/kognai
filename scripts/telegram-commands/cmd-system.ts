@@ -3830,6 +3830,59 @@ export function cmdGodmanChangelog(): string {
 }
 
 // ---------------------------------------------------------------------------
+// Sprint 1272: /godman-validate — read pre-launch-report.json summary
+// ---------------------------------------------------------------------------
+
+export function cmdGodmanValidate(): string {
+  const reportPath = path.join(ROOT, 'workspace', 'godman-protocols', 'pre-launch-report.json');
+  if (!fs.existsSync(reportPath)) {
+    return '❌ *Godman Pre-launch Report* — not found\n\n_Run: `npx ts-node scripts/godman-pre-launch-validate.ts`_';
+  }
+
+  let report: any;
+  try {
+    report = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
+  } catch {
+    return '❌ *Godman Pre-launch Report* — could not parse pre-launch-report.json';
+  }
+
+  const { summary, generatedAt, daysUntilLaunch } = report;
+  const ready = summary?.ready ?? false;
+  const statusIcon = ready ? '🟢' : '🔴';
+  const lines: string[] = [
+    `*Godman Pre-launch Gate* ${statusIcon}\n`,
+    `Launch: April 14, 2026 (${daysUntilLaunch}d away)`,
+    `Report: ${new Date(generatedAt).toLocaleString('en-GB', { dateStyle: 'short', timeStyle: 'short' })}`,
+    '',
+    `✅ PASS: ${summary?.passed ?? 0}  ❌ FAIL: ${summary?.failed ?? 0}  ⚠️ WARN: ${summary?.warned ?? 0}`,
+    '',
+  ];
+
+  if (ready) {
+    lines.push('🚀 *READY FOR PUBLISH*');
+    lines.push('_Next: `npm login` then `./workspace/godman-protocols/publish-all.sh --live`_');
+  } else {
+    lines.push('*Failed checks:*');
+    const failures = (report.results || []).filter((r: any) => r.status === 'FAIL');
+    for (const f of failures.slice(0, 5)) {
+      lines.push(`  ✗ \`${f.check}\`: ${f.detail?.slice(0, 60)}`);
+    }
+    if (failures.length > 5) lines.push(`  _…and ${failures.length - 5} more_`);
+    lines.push('\n_Fix failures then re-run the validation script._');
+  }
+
+  const warnings = (report.results || []).filter((r: any) => r.status === 'WARN');
+  if (warnings.length > 0) {
+    lines.push('\n*Warnings:*');
+    for (const w of warnings.slice(0, 3)) {
+      lines.push(`  ⚠️ \`${w.check}\`: ${w.detail?.slice(0, 60)}`);
+    }
+  }
+
+  return lines.join('\n');
+}
+
+// ---------------------------------------------------------------------------
 // Sprint 1271: /cerberus — AMD-23 Cerberus Gateway status
 // ---------------------------------------------------------------------------
 

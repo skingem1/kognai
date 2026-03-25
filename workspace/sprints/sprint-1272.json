@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1272",
+  "title": "BOT-GODMAN-VALIDATE — /godman-validate Telegram command for pre-launch gate",
+  "description": "Add /godman-validate Telegram command that reads the pre-launch-report.json and shows a compact pass/fail/warn summary. Lets operator check Godman April 14 readiness from phone without running the full script.",
+  "source": "queue-post-exhaustion",
+  "tasks": [
+    {
+      "id": "1272-01",
+      "title": "Add cmdGodmanValidate() to cmd-system.ts, wire into telegram-bot.ts",
+      "type": "feature",
+      "task_type": "bot",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1272"
+    }
+  ]
+}
