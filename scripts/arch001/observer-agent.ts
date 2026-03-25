@@ -10,14 +10,14 @@
  * In tmux: window 3 of kognai-amd21 session
  */
 
-import { readFileSync, writeFileSync, readdirSync, existsSync, mkdirSync } from 'fs';
+import { readFileSync, writeFileSync, appendFileSync, readdirSync, existsSync, mkdirSync } from 'fs';
 import { join } from 'path';
 
 // ---------------------------------------------------------------------------
 // Config
 // ---------------------------------------------------------------------------
 
-const PROJECT_ROOT = join(import.meta.dirname ?? __dirname, '..', '..');
+const PROJECT_ROOT = join(__dirname, '..', '..');
 const AAR_DIR = join(PROJECT_ROOT, 'logs', 'aar');
 const MEMORY_DIR = join(PROJECT_ROOT, 'workspace', 'memory');
 const STATE_FILE = join(MEMORY_DIR, '.observer-state.json');
@@ -49,6 +49,18 @@ interface MemoryDelta {
   latestTimestamp: string;
   entryCount: number;
   avgScore: number;
+}
+
+// Sprint 1236: AMD-21 six-vector ASMR (Associative Semantic Memory Record) format
+interface ASMRVector {
+  semantic_core:     string;  // what was built or achieved
+  emotional_valence: string;  // sprint outcome tone: success | partial | failure | blocked
+  temporal_context:  string;  // sprint date + sequence (ISO date + sprintId)
+  causal_chain:      string;  // what triggered this sprint / task context
+  agent_signature:   string;  // which agent + skill produced this
+  confidence_score:  number;  // 0-1 reliability of extracted info
+  source_sprint:     string;  // sprintId for traceability
+  extracted_at:      string;  // ISO timestamp of extraction
 }
 
 interface ObserverState {
@@ -187,6 +199,54 @@ function writeDeltas(deltas: Map<string, MemoryDelta>): void {
 }
 
 // ---------------------------------------------------------------------------
+// Sprint 1236: ASMR vector extraction + write to logs/asmr/
+// ---------------------------------------------------------------------------
+
+const ASMR_DIR = join(PROJECT_ROOT, 'logs', 'asmr');
+
+function extractASMRVector(entry: AAREntry): ASMRVector {
+  // Infer emotional valence from outcomeScore
+  let valence: string;
+  if (entry.outcomeScore >= 0.8)        valence = 'success';
+  else if (entry.outcomeScore >= 0.5)   valence = 'partial';
+  else if (entry.outcomeScore >= 0.2)   valence = 'blocked';
+  else                                   valence = 'failure';
+
+  // Confidence: inverse of ambiguity — penalise empty summaries
+  const hasDetail = entry.actionSummary && entry.actionSummary.length > 20;
+  const confidence = hasDetail ? Math.min(1, 0.6 + entry.outcomeScore * 0.4) : 0.3;
+
+  return {
+    semantic_core:     entry.actionSummary || `${entry.skillId} execution`,
+    emotional_valence: valence,
+    temporal_context:  `${entry.timestamp.slice(0, 10)} :: ${entry.sprintId}`,
+    causal_chain:      `task:${entry.taskId} → skill:${entry.skillId}`,
+    agent_signature:   `${entry.agentId}/${entry.skillId}`,
+    confidence_score:  Math.round(confidence * 100) / 100,
+    source_sprint:     entry.sprintId,
+    extracted_at:      new Date().toISOString(),
+  };
+}
+
+function writeASMRVectors(entries: AAREntry[]): number {
+  if (entries.length === 0) return 0;
+
+  mkdirSync(ASMR_DIR, { recursive: true });
+
+  const today = new Date().toISOString().slice(0, 10);
+  const outFile = join(ASMR_DIR, `${today}.jsonl`);
+
+  let written = 0;
+  for (const entry of entries) {
+    const vector = extractASMRVector(entry);
+    appendFileSync(outFile, JSON.stringify(vector) + '\n');
+    written++;
+  }
+
+  return written;
+}
+
+// ---------------------------------------------------------------------------
 // Main cycle
 // ---------------------------------------------------------------------------
 
@@ -204,11 +264,14 @@ function cycle(): void {
   const deltas = mergeEntries(entries);
   writeDeltas(deltas);
 
+  // Sprint 1236: Extract and persist AMD-21 ASMR vectors
+  const asmrCount = writeASMRVectors(entries);
+
   state.totalProcessed += entries.length;
   state.lastRunAt = new Date().toISOString();
   saveState(state);
 
-  console.log(`[observer-agent] ${new Date().toISOString()} — processed ${entries.length} AAR entries → ${deltas.size} memory deltas`);
+  console.log(`[observer-agent] ${new Date().toISOString()} — processed ${entries.length} AAR entries → ${deltas.size} memory deltas, ${asmrCount} ASMR vectors`);
 }
 
 // ---------------------------------------------------------------------------
