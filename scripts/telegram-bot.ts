@@ -31,7 +31,7 @@ import { cmdHelp } from './telegram-commands/cmd-help';
 
 // Sprint 496: Import extracted command modules (Part 2: N-Z + interactive)
 import { cmdSession, cmdDone, cmdEndSession, cmdMenu } from './telegram-commands/cmd-session';
-import { cmdDeliver, cmdPublish, cmdPostNow, cmdPickup, cmdTodayCaptions, cmdBroadcast, cmdRefresh, cmdProduce, cmdProduceTopic, cmdInstagram, cmdInventory, cmdBatchDeliver, cmdStockpile, cmdBroadcastPause, cmdBroadcastResume, cmdPostBrowser, cmdPostAuto, cmdQuickstart, cmdV2Produce, cmdDeliverNext, cmdProduceVlog } from './telegram-commands/cmd-delivery'; // Sprint 1217: added cmdProduceVlog
+import { cmdDeliver, cmdPublish, cmdPostNow, cmdPickup, cmdTodayCaptions, cmdBroadcast, cmdRefresh, cmdProduce, cmdProduceTopic, cmdInstagram, cmdInventory, cmdBatchDeliver, cmdStockpile, cmdBroadcastPause, cmdBroadcastResume, cmdPostBrowser, cmdPostAuto, cmdQuickstart, cmdV2Produce, cmdDeliverNext, cmdProduceVlog, cmdProduceEntertainment } from './telegram-commands/cmd-delivery'; // Sprint 1217: added cmdProduceVlog; Sprint 1223: added cmdProduceEntertainment
 import { cmdCheckout, cmdSubscribers, cmdPortal, cmdFunnel, cmdAchiri, cmdAlpha, cmdTestStripe, cmdUsage, cmdAchiriData, cmdWaitlist, cmdStripe, cmdDeployStatus, cmdInviteAchiri, cmdAchiriStats, cmdAchiriLaunch, cmdAchiriBotSetup } from './telegram-commands/cmd-stripe'; // Sprint 1180: added cmdAchiriStats; Sprint 1202: added cmdAchiriLaunch; Sprint 1210: added cmdAchiriBotSetup
 import { cmdStart, cmdTrial, cmdPlans } from './telegram-commands/cmd-onboarding';
 import { cmdLoraEval } from './telegram-commands/cmd-lora-eval';
@@ -82,6 +82,8 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     '/v2produce':    () => cmdV2Produce(chatId, cmdArgs),
     '/produce-vlog': () => cmdProduceVlog(chatId, cmdArgs), // Sprint 1217
     '/producevlog':  () => cmdProduceVlog(chatId, cmdArgs), // Sprint 1217 alias
+    '/produce-entertainment': () => cmdProduceEntertainment(chatId, cmdArgs), // Sprint 1223
+    '/produceentertainment':  () => cmdProduceEntertainment(chatId, cmdArgs), // Sprint 1223 alias
     '/postnow':      () => cmdPostNow(chatId),
     '/todaycaptions': () => cmdTodayCaptions(chatId),
     '/broadcast':    () => cmdBroadcast(chatId, cmdArgs),
