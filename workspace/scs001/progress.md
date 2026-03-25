@@ -6742,3 +6742,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (single file)
 - Issues: TikTok ACCESS_TOKEN still missing (human action required)
 - Timestamp: 2026-03-25T11:30:00Z
+
+## Sprint 1233 — HEALTH-DASH
+- Status: PASS
+- Commit: e023a615
+- Files created: scripts/system-health.ts, reports/system-health.json, reports/system-health-history.jsonl
+- Files modified: ecosystem.config.js
+- Test: 7/8 OK, 1 WARN (gate 0/30 — expected). All metrics collected successfully.
+- Pipeline: System health dashboard operational — daily PM2 cron at 7am with Telegram
+- Swarm used: no (single file)
+- Issues: none
+- Timestamp: 2026-03-25T11:40:00Z
