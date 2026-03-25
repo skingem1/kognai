@@ -7429,6 +7429,30 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no
 - Timestamp: 2026-03-25T22:15:00Z
 
+## Sprint 1348 — BUGFIX: generate-stats-report exclude dry-run posts from postsDelivered
+- Status: PASS
+- Commit: f6a4c564
+- Files: scripts/scs001/generate-stats-report.ts
+- Fix: manualEntries.length was 16 (including 3 dry-runs). Added DRY_METHODS filter matching generate-phase1-5-gate.ts. postsDelivered now 13 (consistent with gate-audit.json real_posts count).
+- Swarm used: no
+- Timestamp: 2026-03-26T02:30:00Z
+
+## Sprint 1347 — BUGFIX: telegram-bot duplicate cmdSprintNext import TS2300
+- Status: PASS
+- Commit: 1b8090ff
+- Files: scripts/telegram-bot.ts
+- Fix: cmdSprintNext was imported from both cmd-system and cmd-management. Removed from cmd-system import (cmd-management version retained). Removed duplicate /sprint-next case in second switch block.
+- Swarm used: no
+- Timestamp: 2026-03-26T02:15:00Z
+
+## Sprint 1346 — BUGFIX: generate-stats-report on_track inconsistent with urgency field
+- Status: PASS
+- Commit: 3db32a7a
+- Files: scripts/scs001/generate-stats-report.ts
+- Fix: on_track was postsDelivered >= 30 (only true when gate PASSED). With 16/30 posts and urgency=ON_TRACK, on_track showed false. Changed to: urgency === 'ON_TRACK' || urgency === 'PASSED'.
+- Swarm used: no
+- Timestamp: 2026-03-26T02:00:00Z
+
 ## Sprint 1345 — BUGFIX: generate-stats-report TS2448 manualEntries used before declaration
 - Status: PASS
 - Commit: 14ad3a7c
