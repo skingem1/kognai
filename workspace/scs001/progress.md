@@ -7343,3 +7343,12 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Code-demo pipeline P2 now resilient to Mac Mini vault being unreachable
 - Swarm used: no (surgical 2-change fix)
 - Timestamp: 2026-03-25T20:35:00+01:00
+
+## Sprint 1323 — BUGFIX (self-directed)
+- Status: PASS
+- Commit: 2055b3e7
+- Files modified: agents/scs001-viral-downloader/index.ts
+- Files created: workspace/sprints/sprint-1323.json
+- Fix: break search loop on 403 "not subscribed" — saves 25-45s per batch run
+- Swarm used: no (surgical 3-line fix)
+- Timestamp: 2026-03-25T20:42:00+01:00
