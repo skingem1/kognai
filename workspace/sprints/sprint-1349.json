@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1349",
+  "title": "BUGFIX — posting-health: exclude dry-run posts from gate progress count",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "posting-health.ts uses posts.length (16 total) but 3 are dry-runs (method: browser-post-dry, batch-browser-dry, dry). Report shows 16/30 gate progress but actual real posts are 13/30. Fix: apply DRY_METHODS filter matching generate-phase1-5-gate.ts so gate progress reflects real TikTok posts only.",
+  "tasks": [
+    {
+      "id": "1349-posting-health-dry-run-filter",
+      "description": "In scripts/scs001/posting-health.ts: add DRY_METHODS constant and filter posts to exclude dry-run entries before counting `posted`.",
+      "file": "scripts/scs001/posting-health.ts",
+      "status": "done",
+      "priority": "medium",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}

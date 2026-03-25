@@ -92,8 +92,13 @@ function main() {
   }
 
   // 2. Gate progress
+  // Sprint 1349: Filter dry-run posts (method: browser-post-dry, batch-browser-dry, dry)
+  // Only real TikTok posts count toward the gate target.
+  const DRY_METHODS = ['browser-post-dry', 'batch-browser-dry', 'dry'];
   const posts = readJsonLines(MANUAL_POSTS);
-  const posted = posts.length;
+  const realPosts = posts.filter((e: any) =>
+    !e.method || !DRY_METHODS.some((d: string) => String(e.method).includes(d)));
+  const posted = realPosts.length;
   const remaining = Math.max(0, GATE_TARGET - posted);
   const daysLeft = Math.max(0, Math.ceil((GATE_DATE.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)));
   const paceNeeded = daysLeft > 0 ? remaining / daysLeft : Infinity;
