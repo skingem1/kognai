@@ -6844,3 +6844,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (single-file edit, direct write)
 - Issues: CTO gate module not found (warned, did not block)
 - Timestamp: 2026-03-25T11:30:00Z
+
+## Sprint 1246 — BOOT-UPGRADE
+- Status: PASS
+- Commit: e8f9434b
+- Files modified: ecosystem.config.js, scripts/telegram-commands/cmd-system.ts
+- Files created: workspace/sprints/sprint-1246.json
+- Test: npx tsc --noEmit — PASS (clean compile)
+- Pipeline: kognai-heartbeat PM2 cron added (6h interval), lemon-webhooks + kognai-heartbeat added to /boot essential list
+- Swarm used: no (multi-file config edit, direct write)
+- Issues: Initially built redundant /startup command before discovering /boot already exists. Pivoted to upgrading /boot instead.
+- Timestamp: 2026-03-25T11:45:00Z
