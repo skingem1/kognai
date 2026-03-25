@@ -32,6 +32,7 @@ const ROOT = join(__dirname, '..', '..');
 const WORKSPACE = join(ROOT, 'workspace', 'scs001');
 const FFMPEG = '/opt/homebrew/bin/ffmpeg';
 const FFPROBE = '/opt/homebrew/bin/ffprobe';
+const NEON_LOGO_PATH = join(ROOT, 'assets', 'branding', 'kognai-neon-logo.png');
 
 // Load .env
 try { require('dotenv').config({ path: join(ROOT, '.env') }); } catch {}
@@ -333,62 +334,114 @@ async function generateTTSBackbone(monologue: string, outPath: string): Promise<
   try { execSync(`rm -f "${audioPath}"`, { stdio: 'pipe' }); } catch {}
 }
 
-// ── Step 3: Generate B-roll (FLUX images + Ken Burns zoom) ────
+// ── Step 2b: Overlay Kognai neon logo (cosmetic brand, "sign on the wall") ──
 //
-// Uses FLUX/schnell on fal.ai ($0.03/image) instead of Kling ($0.42/5s video).
-// Each image gets a slow Ken Burns zoompan effect via FFmpeg to create motion.
-// Cost: ~$0.06 for 2 B-roll clips (93% cheaper than video).
+// Composites the fluorescent teal KOGNAI neon PNG into the dark background
+// area of the HeyGen avatar video. Positioned upper-centre (~y=140) so it
+// reads as a glowing neon sign on the wall behind the presenter.
+// Opacity: 38% — decorative, not distracting.
+// Falls back to plain avatar if the logo PNG is missing or FFmpeg fails.
+
+function overlayNeonLogo(inputPath: string, outputPath: string): void {
+  if (!existsSync(NEON_LOGO_PATH)) {
+    console.warn('  ⚠️  Neon logo not found — skipping brand overlay');
+    execSync(`cp "${inputPath}" "${outputPath}"`, { stdio: 'pipe' });
+    return;
+  }
+  console.log('✨ Overlaying Kognai neon logo (fluorescent sign on the wall)...');
+  try {
+    // Scale logo to 480px wide (44% of 1080 frame), centre horizontally,
+    // position at y=140 so it sits in the dark wall area above the avatar head.
+    // colorchannelmixer aa=0.38 multiplies alpha → 38% opacity.
+    execSync(
+      `${FFMPEG} -y -i "${inputPath}" -i "${NEON_LOGO_PATH}" ` +
+      `-filter_complex "[1:v]scale=480:-1,format=rgba,colorchannelmixer=aa=0.38[logo];` +
+      `[0:v][logo]overlay=x=(main_w-overlay_w)/2:y=140" ` +
+      `-c:v libx264 -preset fast -crf 20 -pix_fmt yuv420p ` +
+      `-c:a aac -b:a 128k -ar 44100 -ac 2 "${outputPath}"`,
+      { stdio: 'pipe', timeout: 60000 }
+    );
+    console.log('  ✅ Neon logo overlaid (480px wide, 38% opacity, y=140)');
+  } catch (err: any) {
+    console.warn(`  ❌ Neon overlay failed: ${(err as Error).message?.slice(0, 80)} — plain avatar`);
+    execSync(`cp "${inputPath}" "${outputPath}"`, { stdio: 'pipe' });
+  }
+}
+
+// ── Step 3: Generate B-roll (Pexels stock photos + Ken Burns zoom) ────
+//
+// Uses Pexels API (free, topic-relevant) for B-roll images.
+// Each image gets a slow Ken Burns zoompan effect via FFmpeg.
+// Cost: $0.00 — completely free stock photos.
+// Fallback: Picsum (random photos if no Pexels key).
 
 async function generateBroll(
   cutaways: VlogScript['broll_cutaways'],
   outDir: string,
 ): Promise<Array<{ path: string; timestamp_s: number; duration_s: number }>> {
-  console.log(`🎬 Generating ${cutaways.length} B-roll images (FLUX + Ken Burns)...`);
+  console.log(`🎬 Generating ${cutaways.length} B-roll images (stock photos + Ken Burns)...`);
 
+  const pexelsKey = process.env.PEXELS_API_KEY || '';
   const results: Array<{ path: string; timestamp_s: number; duration_s: number }> = [];
 
   for (let i = 0; i < cutaways.length; i++) {
     const cut = cutaways[i];
-    const imgPath = join(outDir, `broll_${i}.png`);
+    const imgPath = join(outDir, `broll_${i}.jpg`);
     const outPath = join(outDir, `broll_${i}.mp4`);
 
     try {
-      // 1. Generate image with FLUX/schnell
-      const falKey = process.env.FAL_KEY || '';
-      const pyScript = `/tmp/flux_broll_${Date.now()}.py`;
-      writeFileSync(pyScript, `
-import fal_client, os, json, subprocess
-os.environ["FAL_KEY"] = ${JSON.stringify(falKey)}
-result = fal_client.subscribe("fal-ai/flux/schnell", arguments={
-    "prompt": ${JSON.stringify(cut.visual_prompt + ', cinematic lighting, photorealistic, vertical 9:16, no text or writing visible')},
-    "image_size": {"width": 1080, "height": 1920},
-    "num_images": 1,
-})
-url = result.get("images", [{}])[0].get("url", "")
-if url:
-    subprocess.run(["curl", "-sL", url, "-o", ${JSON.stringify(imgPath)}], capture_output=True)
-    print("OK")
-else:
-    print("FAIL")
-`);
-      const fluxResult = execSync(`python3 "${pyScript}"`, { encoding: 'utf-8', timeout: 60000 });
-      try { execSync(`rm -f "${pyScript}"`, { stdio: 'pipe' }); } catch {}
+      // 1. Fetch stock photo (Pexels or Picsum fallback)
+      // Extract 2-3 keywords from the visual_prompt for search
+      const keywords = cut.visual_prompt
+        .replace(/[^a-zA-Z ]/g, '')
+        .split(' ')
+        .filter(w => w.length > 3 && !['with', 'from', 'that', 'this', 'they', 'their', 'about', 'into', 'visible', 'cinematic'].includes(w.toLowerCase()))
+        .slice(0, 3)
+        .join('+');
 
-      if (!fluxResult.includes('OK') || !existsSync(imgPath)) {
-        console.warn(`  ❌ B-roll ${i} FLUX failed`);
+      let downloaded = false;
+
+      if (pexelsKey) {
+        // Pexels API: topic-relevant portrait photos
+        try {
+          const searchUrl = `https://api.pexels.com/v1/search?query=${encodeURIComponent(keywords)}&per_page=3&orientation=portrait`;
+          const pexelsResult = execSync(
+            `curl -s "${searchUrl}" -H "Authorization: ${pexelsKey}"`,
+            { encoding: 'utf-8', timeout: 10000 }
+          );
+          const photos = JSON.parse(pexelsResult).photos || [];
+          if (photos.length > 0) {
+            // Pick a random photo from top 3 results
+            const photo = photos[Math.floor(Math.random() * Math.min(photos.length, 3))];
+            const photoUrl = photo.src?.portrait || photo.src?.large2x || photo.src?.original;
+            if (photoUrl) {
+              execSync(`curl -sL "${photoUrl}" -o "${imgPath}"`, { timeout: 15000 });
+              downloaded = existsSync(imgPath);
+              if (downloaded) console.log(`    Pexels: "${keywords}" → ${photo.photographer}`);
+            }
+          }
+        } catch {}
+      }
+
+      if (!downloaded) {
+        // Fallback: Picsum (random high-quality photo, no topic relevance)
+        execSync(`curl -sL "https://picsum.photos/1080/1920" -o "${imgPath}"`, { timeout: 15000 });
+        downloaded = existsSync(imgPath);
+        if (downloaded) console.log(`    Picsum fallback (random photo)`);
+      }
+
+      if (!downloaded) {
+        console.warn(`  ❌ B-roll ${i}: no image available`);
         continue;
       }
 
       // 2. Convert image to video with Ken Burns zoompan effect
-      // Slow zoom in from 100% to 115% over the clip duration
       execSync(
         `${FFMPEG} -y -loop 1 -i "${imgPath}" ` +
-        `-vf "zoompan=z='min(zoom+0.0005,1.15)':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=${cut.duration_s * 30}:s=1080x1920:fps=30" ` +
+        `-vf "scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,zoompan=z='min(zoom+0.0005,1.15)':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=${cut.duration_s * 30}:s=1080x1920:fps=30" ` +
         `-c:v libx264 -preset fast -crf 20 -pix_fmt yuv420p -an -t ${cut.duration_s} "${outPath}"`,
         { stdio: 'pipe', timeout: 30000 }
       );
-
-      // No need to normalize — already 1080x1920 from zoompan
 
       results.push({ path: outPath, timestamp_s: cut.timestamp_s, duration_s: cut.duration_s });
       console.log(`  ✅ B-roll ${i}: ${cut.visual_prompt.slice(0, 40)}... (${cut.duration_s}s at ${cut.timestamp_s}s)`);
@@ -799,12 +852,17 @@ async function produceVlog(topic: string, mode: 'avatar' | 'tts' = 'avatar'): Pr
     await generateAvatar(script.full_monologue, avatarPath, creator);
   }
 
+  // 2b. Overlay Kognai neon logo behind avatar ("sign on the wall" branding)
+  const avatarBrandedPath = join(runDir, 'avatar_branded.mp4');
+  overlayNeonLogo(avatarPath, avatarBrandedPath);
+  const avatarForComposite = existsSync(avatarBrandedPath) ? avatarBrandedPath : avatarPath;
+
   // 3. Generate B-roll cutaways
   const brollClips = await generateBroll(script.broll_cutaways || [], join(runDir, 'broll'));
 
   // 4. Overlay B-roll on avatar (audio stays continuous — no cut)
   const compositedPath = join(runDir, 'composited.mp4');
-  compositeVideo(avatarPath, brollClips, compositedPath);
+  compositeVideo(avatarForComposite, brollClips, compositedPath);
 
   // 5. Add TikTok subtitles
   const subtitledPath = join(runDir, 'subtitled.mp4');
