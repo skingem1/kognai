@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1356",
+  "title": "BUGFIX — P1 live pipeline: InsightAgent static fallback when 0 qualified clips",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "Sprint 1321 skips ClipDetection when ViralDownloader returns 0 clips. Result: qualifiedClips=[], InsightAgent not called in live mode, briefs=[], ScriptAgent not called, pipeline exits with 0 videos. This has been happening since RapidAPI lapsed (403 from ViralDownloader). Fix: add else branch for live mode with 0 clips — call getMockInsightBriefs() so pipeline still produces deterministic content. Combined with Sprint 1355 ScriptAgent fallback, live mode will now generate ~5 videos per run even without viral clips.",
+  "tasks": [
+    {
+      "id": "1356-live-insight-static-fallback",
+      "description": "In agents/scs001-orchestrator/index.ts: add else branch after mock InsightAgent fallback — in live mode with 0 qualified clips, use getMockInsightBriefs() to keep pipeline producing content.",
+      "file": "agents/scs001-orchestrator/index.ts",
+      "status": "done",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}

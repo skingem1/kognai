@@ -230,6 +230,15 @@ export class SCS001Orchestrator {
         briefs = getMockInsightBriefs();
         return briefs.length;
       }));
+    } else {
+      // Sprint 1356: Live mode with 0 qualified clips (ViralDownloader empty + ClipDetection skipped).
+      // Use static mock briefs so live pipeline still produces deterministic content.
+      // Without this, the pipeline exits with 0 videos — gate progress stalls.
+      console.warn('[Orchestrator] Live mode: 0 qualified clips — using static briefs for deterministic content');
+      stages.push(await this.runStage('4-insight', 'InsightAgent (live-static-fallback)', async () => {
+        briefs = getMockInsightBriefs();
+        return briefs.length;
+      }));
     }
 
     const transcriptStore = this.loadTranscripts();
