@@ -7265,3 +7265,15 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Queue item 1314 marked done. Queue now EMPTY.
 - Commit: c10b54c4
 - Status: DONE ✅
+
+## Sprint 1315 — 2026-03-25
+- **SCS-001 — Fix code-demo pipeline auto-discover (Pipeline 2 fails every run)**
+- Root cause: generateCodeDemoScript() threw "No code to explain" when called with no input in automated mode
+- Fix: Added auto-discover fallback in code-demo-scriptgen.ts — calls discoverCodeDemoTopic() when neither code nor prompt provided, then generates code from the result
+- Files modified: scripts/scs001/code-demo-scriptgen.ts (+9 lines)
+- Validation: PASS — generateCodeDemoScript({}) → "Build a Chat App with Python & Supabase" (5 steps, 30s)
+- Swarm bypassed: yes (small surgical edit, 1 file, straightforward)
+- AAR: score 90 — clean fix, tested, follows existing patterns
+- Queue: was already empty (sprint was qwen/self-directed)
+- Commit: 5302fc66
+- Status: DONE ✅
