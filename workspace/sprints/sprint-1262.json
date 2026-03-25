@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1262",
+  "title": "DEERFLOW-CHECK — Verify skills/public format for 6th Godman deployment target",
+  "description": "DeerFlow (ByteDance, 22.7K stars) uses skills/public as deployment target. Add skills/public/godman-[protocol]/SKILL.md to all 8 packages before April 14 launch.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1262-01",
+      "title": "Create skills/public/godman-[protocol]/SKILL.md for all 8 packages",
+      "type": "feature",
+      "task_type": "godman_protocols",
+      "task_target": "workspace/godman-protocols/*/skills/public/*/SKILL.md",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-1262"
+    }
+  ]
+}
