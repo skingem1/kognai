@@ -6809,3 +6809,13 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (single file, direct write)
 - Issues: none
 - Timestamp: 2026-03-25T12:20:00Z
+
+## Sprint 1241 — LEMON-WIRE
+- Status: PASS
+- Commit: 4ff09e53
+- Files created: scripts/payments/lemon-server.ts
+- Files modified: scripts/telegram-bot.ts
+- Test: TypeScript compiles clean
+- Swarm used: no (surgical wiring — 2 files)
+- Issues: LEMONSQUEEZY_* env vars not yet set; PM2 process not added yet
+- Timestamp: 2026-03-25T12:30:00Z
