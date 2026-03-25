@@ -67,13 +67,15 @@ async function produceCodeDemo(input: PipelineInput): Promise<PipelineRunResult>
 
     console.log(`  Step ${i + 1}/${script.steps.length}: "${step.title}" (${step.duration_s}s)`);
 
-    // Render frames
-    renderCodeFrames(step, i, script.steps.length, stepDir);
-
-    // Convert to video
-    framesToVideo(stepDir, videoPath);
-
-    stepVideos.push({ stepId: step.step_id, videoPath });
+    // Sprint 1330: Wrap render + framesToVideo in try/catch so one bad step
+    // doesn't abort the entire pipeline — assembleCodeDemo handles partial renders.
+    try {
+      renderCodeFrames(step, i, script.steps.length, stepDir);
+      framesToVideo(stepDir, videoPath);
+      stepVideos.push({ stepId: step.step_id, videoPath });
+    } catch (stepErr: any) {
+      console.warn(`  [code-demo] Step ${i + 1} render failed (skipping): ${stepErr.message?.slice(0, 80)}`);
+    }
 
     // Cleanup frames (keep only MP4)
     try {

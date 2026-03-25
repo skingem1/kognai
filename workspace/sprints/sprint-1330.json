@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1330",
+  "title": "BUGFIX — code-demo pipeline: wrap step renders in try/catch to prevent single failure from aborting all steps",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "In scripts/scs001/pipelines/code-demo.ts, the rendering loop calls renderCodeFrames() and framesToVideo() without try/catch. If Pillow errors out, the Python render script crashes, or FFmpeg fails on a single step, the uncaught exception propagates up and fails the entire pipeline (all remaining steps are skipped). Fix: wrap each step's render+framesToVideo in try/catch. Log the error and continue. The assembler already handles missing steps via validSteps.filter(existsSync). A partial render is better than a total failure.",
+  "tasks": [
+    {
+      "id": "1330-step-render-resilience",
+      "description": "In scripts/scs001/pipelines/code-demo.ts, wrap the renderCodeFrames() + framesToVideo() calls in a try/catch per step. On catch: log '[code-demo] Step N render failed: err.message' and continue to the next step (don't push to stepVideos). The existing assembleCodeDemo call handles the case where some steps have no video (validSteps filter). Only if ALL steps fail will the assembler throw 'No valid step videos'.",
+      "file": "scripts/scs001/pipelines/code-demo.ts",
+      "status": "done",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}
