@@ -2286,9 +2286,11 @@ ONLY output the JSON array. No markdown, no explanation.`;
   // ===== Sub-task executor (limited retries, no recursive decomposition) =====
 
   private async executeSubTask(subtask: AgentTask, maxRetries: number): Promise<boolean> {
-    const agent = this.agents.get(subtask.agent);
+    // Sprint 1309: default to 'coder' when subtask.agent is not set
+    const subAgentName = (subtask.agent as string | undefined) || 'coder';
+    const agent = this.agents.get(subAgentName);
     if (!agent) {
-      log(c.red, `  Agent not found for sub-task: ${subtask.agent}`);
+      log(c.red, `  Agent not found for sub-task: ${subAgentName}`);
       return false;
     }
 
@@ -2350,9 +2352,11 @@ ONLY output the JSON array. No markdown, no explanation.`;
   // ===== Main task executor with CTO auto-decomposition =====
 
   private async executeTask(task: AgentTask): Promise<void> {
-    const agent = this.agents.get(task.agent);
+    // Sprint 1309: default to 'coder' when task.agent is not set (queue-prescribed sprints omit agent field)
+    const agentName = (task.agent as string | undefined) || 'coder';
+    const agent = this.agents.get(agentName);
     if (!agent) {
-      log(c.red, `Agent not found: ${task.agent}`);
+      log(c.red, `Agent not found: ${agentName}`);
       task.status = 'rejected';
       // Record failure in taskRuns
       this.taskRuns.push({
@@ -2360,7 +2364,7 @@ ONLY output the JSON array. No markdown, no explanation.`;
         task_target: (task as any).task_target || 'cloud-code',
         status: 'rejected', attempts: 0, model_used: '', provider: '',
         tokens_total: 0, duration_seconds: 0, files_written: [],
-        review: null, error: `Agent not found: ${task.agent}`, rejection_reason: 'Agent not found',
+        review: null, error: `Agent not found: ${agentName}`, rejection_reason: 'Agent not found',
       });
       return;
     }
