@@ -2001,7 +2001,10 @@ export function cmdErrors(filterProcess?: string): string {
           const lower = raw.toLowerCase();
           if (!(lower.includes('error') || lower.includes('fatal') ||
                 lower.includes('exception') || lower.includes('fail'))) continue;
-          const trimmed = raw.slice(0, 120);
+          // Sprint 1298: strip PM2 timestamp prefix (e.g. "2026-03-19 23:10:15 +01:00: ")
+          // before building the dedup key so repeated cron errors aggregate correctly
+          const stripped = raw.replace(/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} [+\-]\d{2}:\d{2}:\s*/, '').trim();
+          const trimmed = stripped.slice(0, 120);
           const key = `${processName}::${trimmed}`;
           const existing = dedupMap.get(key);
           if (existing) {
@@ -2009,7 +2012,7 @@ export function cmdErrors(filterProcess?: string): string {
             existing.mtime = Math.max(existing.mtime, stat.mtimeMs);
             existing.firstMtime = Math.min(existing.firstMtime, stat.mtimeMs);
           } else {
-            dedupMap.set(key, { name: processName, line: trimmed, count: 1, mtime: stat.mtimeMs, firstMtime: stat.mtimeMs });
+            dedupMap.set(key, { name: processName, line: trimmed, count: 1, mtime: stat.mtimeMs, firstMtime: stat.mtimeMs }); // Sprint 1298: trimmed is already timestamp-stripped
           }
         }
       } catch { /* skip unreadable */ }
