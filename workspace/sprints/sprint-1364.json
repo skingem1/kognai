@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1364",
+  "title": "BUGFIX — static mock brief insight-mock-005 fails why_does_this_matter specificity QC check",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "QC gate checkWhyDoesThisMatter requires text to contain a number, proper noun pattern, or consequence keyword (cost|billion|million|delay|risk|threat|impact|cause|lead to|result in). The 5th static mock brief's why field: 'Developers can now run production-quality AI without paying per token. This shifts power from cloud providers to hardware makers and open-source communities.' — contains none of these. This causes 1 out of 5 static mock briefs (insight-mock-005) to fail QC every run. Fix: rewrite the why field to include specificity indicators.",
+  "tasks": [
+    {
+      "id": "1364-mock-brief-specificity",
+      "description": "In agents/scs001-insight/index.ts: update insight-mock-005 why field to include numbers and consequence words to pass QC specificity check.",
+      "file": "agents/scs001-insight/index.ts",
+      "status": "done",
+      "priority": "medium",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}
