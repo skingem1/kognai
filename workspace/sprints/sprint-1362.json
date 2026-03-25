@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1362",
+  "title": "BUGFIX — avatar-presenter: use /submit+/poll instead of broken /avatarVideoFromUrl (404)",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "createAvatarJob in avatar-presenter.ts calls https://api.captions.ai/api/creator/avatarVideoFromUrl which returns 404 {"detail":"Not Found"}. The correct endpoint pattern is /submit + /poll (confirmed working 2026-03-23, also used by generateAvatarVideo). Fix: replace createAvatarJob + pollJobStatus calls in generateAvatarSegments with a direct call to generateAvatarVideo, which handles submit→poll→download internally using the working endpoints.",
+  "tasks": [
+    {
+      "id": "1362-avatar-endpoint-fix",
+      "description": "In scripts/scs001/avatar-presenter.ts: replace createAvatarJob+pollJobStatus+downloadVideo call in generateAvatarSegments with generateAvatarVideo (uses /submit+/poll, confirmed working).",
+      "file": "scripts/scs001/avatar-presenter.ts",
+      "status": "done",
+      "priority": "medium",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}

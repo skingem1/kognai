@@ -290,17 +290,12 @@ export async function generateAvatarSegments(
       continue;
     }
 
-    // Find matching voiceover audio for lip-sync
-    const voAudio = voiceover?.segments.find((v) => v.segment_name === seg.segment_name);
-
     try {
+      // Sprint 1362: Use /submit + /poll endpoints (confirmed working) instead of
+      // /avatarVideoFromUrl which returns 404. generateAvatarVideo handles the full
+      // submit → poll → download cycle using the working API pattern.
       console.log(`  Generating avatar for ${seg.segment_name}...`);
-      const job = await createAvatarJob(seg.voiceover_text, config, voAudio?.audio_path);
-      const completed = await pollJobStatus(job.job_id);
-
-      if (completed.video_url) {
-        await downloadVideo(completed.video_url, videoPath);
-      }
+      await generateAvatarVideo(seg.voiceover_text, videoPath, DEFAULT_CREATOR);
 
       segments.push({
         segment_name: seg.segment_name,
