@@ -1469,5 +1469,24 @@ module.exports = {
       out_file: "/Users/tarekmnif/kognai/logs/system-health-out.log",
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
+    {
+      name: "lemon-webhooks",
+      script: "npx",
+      args: "tsx scripts/payments/lemon-server.ts",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: true,
+      watch: false,
+      max_memory_restart: "128M",
+      env: {
+        NODE_ENV: "production",
+        LEMON_WEBHOOK_PORT: "3090",
+        SUPABASE_URL: process.env.SUPABASE_URL || "",
+        SUPABASE_SERVICE_KEY: process.env.SUPABASE_SERVICE_KEY || "",
+        LEMONSQUEEZY_SIGNING_SECRET: process.env.LEMONSQUEEZY_SIGNING_SECRET || "",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/lemon-webhooks-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/lemon-webhooks-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
   ]
 };

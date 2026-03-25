@@ -1,0 +1,13 @@
+{
+  "sprint_id": "sprint-1242",
+  "title": "LEMON-PM2 — Add lemon-webhooks PM2 process config",
+  "description": "Add lemon-webhooks process to ecosystem.config.js for persistent LemonSqueezy webhook handling on port 3090.",
+  "date": "2026-03-25",
+  "status": "done",
+  "changes": [
+    {
+      "file": "ecosystem.config.js",
+      "description": "Add lemon-webhooks PM2 app config (port 3090, autorestart, env passthrough)"
+    }
+  ]
+}
