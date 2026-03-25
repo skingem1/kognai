@@ -7615,4 +7615,28 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Sprint 1356 fallback already handles 0-clips case, so 900s is pure waste
 - 20 clips × concurrency 4 × ~30s/clip = 150s normal; 300s = 2× buffer
 - Saves 10 min per failed run, 4 runs/day = up to 40 min saved daily
-- Commit: pending
+- Commit: 9691c8ca
+
+**Sprint 1360** — BUGFIX: Gitignore auto-delivered.jsonl to prevent git-clobber re-delivery
+- .gitignore + git rm --cached workspace/scs001/auto-delivered.jsonl
+- Root cause: git restore/checkout overwrote auto-delivered.jsonl to last committed state
+- Lost 2026-03-24 delivery records → 3 v2 videos re-delivered on 2026-03-25 noon
+- Fix: gitignore + untrack the file; it's append-only runtime state, not code
+- Commit: 6097be5e
+
+**Sprint 1361** — BUGFIX: batch-produce duplicate ledger write: content-based dedup
+- scripts/scs001/batch-produce.ts
+- Both pipeline-registry AND batch-produce were writing to publish-ledger for every video
+- result.ledgerWritten flag check wasn't preventing the fallback (flag not propagating)
+- Added: read last 8KB of ledger, skip fallback write if runId already present
+- Belt-and-suspenders alongside existing ledgerWritten flag check
+- Commit: 030f6d26
+
+## Sprint 1370 — BUGFIX fal.ai ETIMEDOUT
+- Status: PASS
+- Commit: d0c06347430b0be0e5c273750d2565a053628578
+- Files modified: scripts/scs001/fal-video-client.ts
+- Fix: outer Python subprocess now uses start_new_session=True + os.killpg(SIGKILL) to kill entire process group on timeout. Replaced proc.communicate(timeout=5) with proc.wait(timeout=3). Bumped Node execSync timeout 120s→150s.
+- Root cause: fal_client spawns grandchildren that inherit pipe write-end; proc.kill() doesn't close them; proc.communicate(timeout=5) blocks for 5s then hangs Python; Node's 120s fires.
+- Swarm bypassed: yes (Python string generation in complex file). AAR module: not found. Crystallise module: not found.
+- Timestamp: 2026-03-26T00:00:00Z
