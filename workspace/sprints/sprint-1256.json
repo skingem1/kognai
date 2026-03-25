@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1256",
+  "title": "ACHIRI-ALPHA \u2014 Pre-launch smoke test + waitlist notification prep",
+  "description": "Achiri alpha launch in 31d (Apr 25). Run full E2E test suite, verify waitlist users can be notified, test onboarding flow.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1256-01",
+      "title": "ACHIRI-ALPHA \u2014 Pre-launch smoke test + waitlist notification prep",
+      "type": "feature",
+      "task_type": "phase2",
+      "task_target": "workspace/sprints/sprint-1256-output.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1256"
+    }
+  ]
+}
