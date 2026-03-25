@@ -3021,6 +3021,15 @@
       "priority": "high",
       "rationale": "Bug: r.passed === true was always false because achiri-e2e-latest.json has passed: 33 (numeric). Fixed to handle numeric, boolean, and pass_count patterns. /achiri-launch Step 1 now shows \u2705 E2E.",
       "_note": "Shipped 2026-03-25 \u2014 Sprint 1206. cmd-stripe.ts only. tsc clean."
+    },
+    {
+      "sprint": 1207,
+      "title": "GODMAN-LAUNCH \u2014 /godman-npm-check: live npm registry publish status",
+      "block": "GODMAN-LAUNCH",
+      "status": "done",
+      "priority": "high",
+      "rationale": "New /godman-npm-check Telegram command queries npm live for all 8 @godman-protocols packages. Shows \u2705/\u274c per package with version, npm login status, count. Essential for April 14 launch day.",
+      "_note": "Shipped 2026-03-25 \u2014 Sprint 1207. cmd-system.ts + telegram-bot.ts + cmd-help.ts. tsc clean."
     }
   ]
 }

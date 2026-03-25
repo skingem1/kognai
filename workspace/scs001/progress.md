@@ -6521,3 +6521,12 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Test: tsc --noEmit clean
 - Swarm used: no
 - Timestamp: 2026-03-25T01:30:00Z
+
+## Sprint 1207 — GODMAN npm check command
+- Status: PASS
+- Files modified: scripts/telegram-commands/cmd-system.ts, scripts/telegram-bot.ts, scripts/telegram-commands/cmd-help.ts
+- Files created: workspace/sprints/sprint-1207.json
+- Function: cmdGodmanNpmCheck() — queries npm registry live for all 8 @godman-protocols packages (7 protocols + SDK). Shows npm login status, ✅/❌ per package with version, X/8 published count, and publish command.
+- Test: tsc --noEmit clean
+- Swarm used: no (cmd-system.ts too large)
+- Timestamp: 2026-03-25T01:45:00Z
