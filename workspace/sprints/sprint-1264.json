@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1264",
+  "title": "HELIXA-PACT-CHAMBER2 — Chamber 2 Cred Score API integration (AMD-23)",
+  "description": "Wire Helixa Cred Score API into AMD-23 Cerberus airlock. Score mapping: 85-100=FULL, 70-84=STANDARD, 50-69=RESTRICTED, <30=REJECTED, unverified=PROVISIONAL. SIWA+score>=60 upgrades to STANDARD.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1264-01",
+      "title": "Implement scripts/amd23/chamber2-cred-score.ts",
+      "type": "feature",
+      "task_type": "amd23",
+      "task_target": "scripts/amd23/chamber2-cred-score.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1264"
+    }
+  ]
+}
