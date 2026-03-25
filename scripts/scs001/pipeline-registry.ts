@@ -51,6 +51,8 @@ export interface PipelineRunResult {
   quality_score: number;
   metadata: Record<string, unknown>;
   produced_at: string;
+  /** Sprint 1342: Set true by logToPublishLedger() on successful primary write */
+  ledgerWritten?: boolean;
 }
 
 export interface PipelineRunner {
@@ -90,6 +92,7 @@ export async function runPipeline(input: PipelineInput): Promise<PipelineRunResu
   logMetrics(result, parseInt(elapsed));
 
   // Sprint 1316: Write to publish-ledger so auto-deliver picks up code-demo + entertainment videos
+  // Sprint 1342: logToPublishLedger sets result.ledgerWritten = true on success
   logToPublishLedger(result);
 
   return result;
@@ -133,6 +136,8 @@ function logToPublishLedger(result: PipelineRunResult): void {
     };
     mkdirSync(join(ROOT, 'workspace', 'scs001'), { recursive: true });
     appendFileSync(LEDGER_PATH, JSON.stringify(entry) + '\n');
+    // Sprint 1342: Signal to batch-produce that fallback write is unnecessary
+    result.ledgerWritten = true;
     console.log(`[pipeline-registry] Ledger entry added: ${result.runId}`);
   } catch (e: any) {
     // Sprint 1326: expose ledger write failures so they don't silently break auto-deliver

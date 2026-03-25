@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1342",
+  "title": "BUGFIX — batch-produce: eliminate duplicate ledger entries via ledgerWritten flag",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "Sprint 1336 added an includes() check in writeLedgerFallback to detect if pipeline-registry already wrote the ledger, but the check is not triggering (log shows both 'Ledger entry added' and 'Ledger fallback' for same runId). Root cause uncertain (path resolution, file buffering). Cleanest fix: add `ledgerWritten: boolean` to PipelineRunResult in pipeline-registry.ts. logToPublishLedger() sets result.ledgerWritten = true on success. writeLedgerFallback() in batch-produce.ts skips write entirely if result.ledgerWritten === true. This makes the fallback truly conditional on primary write failure, eliminating duplicates unconditionally.",
+  "tasks": [
+    {
+      "id": "1342-ledger-written-flag",
+      "description": "1) In scripts/scs001/pipeline-registry.ts: add `ledgerWritten?: boolean` to PipelineRunResult interface. In logToPublishLedger(), set result.ledgerWritten = true after successful appendFileSync. 2) In scripts/scs001/batch-produce.ts: in writeLedgerFallback(), add early return if result.ledgerWritten === true before reading file. Remove the file-read/includes check (Sprint 1336) which is not working reliably.",
+      "files": ["scripts/scs001/pipeline-registry.ts", "scripts/scs001/batch-produce.ts"],
+      "status": "done",
+      "priority": "medium",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}
