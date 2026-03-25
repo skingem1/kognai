@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1289",
+  "title": "AMD23 — Cerberus gateway integration test: end-to-end agent eval via HTTP",
+  "description": "Create cerberus-integration-test.ts — starts server in dry-run mode on port 3420, sends full evaluate request, verifies signed GatewayDecision with HMAC. 10 tests covering health, evaluation, sessionId, HMAC signing, tamper detection, 400 error handling.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1289-01",
+      "title": "Create cerberus-integration-test.ts end-to-end test",
+      "type": "test",
+      "task_type": "infra",
+      "task_target": "scripts/amd23/cerberus-integration-test.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1289"
+    }
+  ]
+}
