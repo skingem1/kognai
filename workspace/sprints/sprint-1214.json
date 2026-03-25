@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1214",
+  "title": "BUGFIX — spielberg/batch-run.ts: fix JSON parse error when running Godman demos",
+  "description": "All 7 Godman code-demo batch runs fail with SyntaxError at position 1. Root cause: index.ts outputs pretty-printed JSON (multi-line). batch-run.ts line 76 filters lines starting with '{' and joins them, producing invalid concatenated JSON when nested objects span multiple '{'-prefixed lines. Fix: use lastIndexOf('\\n{') to find the last top-level JSON object boundary and parse from there.",
+  "source": "autonomous-loop",
+  "tasks": [
+    {
+      "id": "1214-01",
+      "title": "Fix JSON parsing in runDemo() in scripts/spielberg/batch-run.ts",
+      "type": "bugfix",
+      "task_type": "ops",
+      "task_target": "scripts/spielberg/batch-run.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-1214"
+    }
+  ]
+}

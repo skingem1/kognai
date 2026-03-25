@@ -73,7 +73,12 @@ function runDemo(scriptPath: string, dryRun: boolean): BatchResult {
       `npx ts-node "${resolve(__dirname, 'index.ts')}" "${scriptPath}"`,
       { cwd: REPO_ROOT, encoding: 'utf-8', timeout: 300_000 }
     );
-    const result = JSON.parse(out.trim().split('\n').filter(l => l.startsWith('{')).join(''));
+    // Sprint 1214: index.ts pretty-prints JSON (multi-line), so filtering lines starting with '{' and
+    // joining produces invalid JSON when nested objects are present. Instead, find the last top-level
+    // JSON object in the output (everything after the last '\n{' boundary).
+    const jsonStart = out.lastIndexOf('\n{');
+    const jsonStr = jsonStart >= 0 ? out.slice(jsonStart + 1) : out.trim();
+    const result = JSON.parse(jsonStr);
     const durationSec = (Date.now() - t0) / 1000;
     return { scriptId: script.id, scriptPath, status: result.status === 'success' ? 'success' : 'failed', mp4Path: result.mp4Path ?? undefined, durationSec, error: result.error };
   } catch (e) {
