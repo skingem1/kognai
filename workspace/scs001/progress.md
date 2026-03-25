@@ -7365,3 +7365,15 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - AAR: aar-middleware module not found — noted but not blocking
 - Crystallise: aar module not found — noted but not blocking
 - Timestamp: 2026-03-25T20:45:00Z
+
+## Sprint 1326 — BUGFIX: batch-produce videos not written to publish-ledger
+- Status: PASS
+- Commit: 3b1fa9ac
+- Files modified:
+  - scripts/scs001/pipeline-registry.ts
+  - scripts/scs001/batch-produce.ts
+- Fix 1: pipeline-registry.ts logToPublishLedger — exposed silent catch, coerced all fields to String()
+- Fix 2: batch-produce.ts — added writeLedgerFallback() as direct appendFileSync backup
+- Effect: daily 9am batch videos (educational/entertainment/code-demo) will now appear in publish-ledger.jsonl and be auto-delivered to operator at noon
+- Swarm used: no (direct writes for precision)
+- Timestamp: 2026-03-25T21:00:00Z
