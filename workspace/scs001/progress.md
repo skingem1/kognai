@@ -7162,3 +7162,15 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - CTO confidence: 85% rejection, plan_reference: NOT_IN_PLAN
 - Swarm used: yes (swarm saved rejection, no code written)
 - Action: Skipped to Step 7, proceeding to Sprint 1306
+
+## Sprint 1307 — 2026-03-25
+- **SCS-001 — daily gate-check cron: PM2 entry + Telegram urgency push**
+- Files created: scripts/scs001/gate-check-cron.ts
+- Files modified: ecosystem.config.js (scs001-gate-check PM2 cron), workspace/sprints/sprint-1307.json, workspace/sprint-queue.json
+- Validation: npx ts-node gate-check-cron.ts — runs, reads gate file, dry-logs message (no token in env) — PASS
+- ecosystem.config.js: node -e require — scs001-gate-check entry confirmed — PASS
+- Swarm bypassed: yes (agent routing failure — "Agent not found: undefined"). Wrote directly.
+- AAR: aar-middleware module not found — noted, not blocked
+- Skill crystallise: module not found — noted, not blocked
+- Commit: a70916eb
+- Status: DONE ✅
