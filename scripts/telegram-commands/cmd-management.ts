@@ -2773,3 +2773,106 @@ export function cmdPostPulse(): string {
     `_Next: /caption-next to get video + caption · /deliver-next to send mp4_`,
   ].join('\n');
 }
+
+// Sprint 1204: /next-actions — prioritized operator action list
+export function cmdNextActions(): string {
+  const actions: Array<{ urgency: string; icon: string; text: string; cmd: string }> = [];
+  const now = new Date();
+
+  // 1. Phase 1.5 Gate
+  const posts = readRealPosts();
+  const postsNeeded = Math.max(0, 30 - posts.length);
+  const gateDays = Math.max(0, Math.ceil((new Date('2026-04-07T00:00:00Z').getTime() - now.getTime()) / 86_400_000));
+  if (postsNeeded > 0) {
+    const daily = gateDays > 0 ? Math.ceil(postsNeeded / gateDays) : postsNeeded;
+    actions.push({
+      urgency: gateDays <= 7 ? 'CRITICAL' : 'HIGH',
+      icon: gateDays <= 7 ? '🔴' : '🟠',
+      text: `Post *${daily}* videos today (${posts.length}/30, ${gateDays}d left)`,
+      cmd: '/pickup',
+    });
+  }
+
+  // 2. TikTok token
+  if (!process.env.TIKTOK_ACCESS_TOKEN) {
+    actions.push({
+      urgency: 'HIGH', icon: '🟠',
+      text: 'Set `TIKTOK_ACCESS_TOKEN` in .env for auto-posting',
+      cmd: '/tiktokauth',
+    });
+  }
+
+  // 3. Boot crons if stopped
+  try {
+    const procs = getPm2List();
+    const criticalNames = ['kognai-daily-digest', 'kognai-gate-tracker-update', 'kognai-view-tracker'];
+    const stopped = criticalNames.filter(n => {
+      const p = procs.find(proc => proc.name === n);
+      return !p || p.status !== 'online';
+    });
+    if (stopped.length > 0) {
+      actions.push({
+        urgency: 'MEDIUM', icon: '🟡',
+        text: `${stopped.length} crons stopped (${stopped.slice(0, 2).join(', ')}...)`,
+        cmd: '/boot',
+      });
+    }
+  } catch {}
+
+  // 4. Godman launch
+  const godmanDays = Math.max(0, Math.ceil((new Date('2026-04-14T00:00:00Z').getTime() - now.getTime()) / 86_400_000));
+  if (godmanDays > 0 && godmanDays <= 21) {
+    let npmReady = false;
+    try { npmReady = !!execSync('npm whoami 2>/dev/null', { encoding: 'utf-8', timeout: 3000 }).trim(); } catch {}
+    if (!npmReady) {
+      actions.push({
+        urgency: godmanDays <= 7 ? 'HIGH' : 'MEDIUM',
+        icon: godmanDays <= 7 ? '🟠' : '🟡',
+        text: `npm login needed for Godman launch (${godmanDays}d)`,
+        cmd: '/godman-preflight',
+      });
+    }
+  }
+
+  // 5. Achiri bot token
+  const envContent = (() => { try { return fs.readFileSync(path.join(ROOT, '.env'), 'utf-8'); } catch { return ''; } })();
+  const achiriDays = Math.max(0, Math.ceil((new Date('2026-04-25T00:00:00Z').getTime() - now.getTime()) / 86_400_000));
+  if (achiriDays > 0 && achiriDays <= 35) {
+    const hasToken = envContent.includes('ACHIRI_TELEGRAM_BOT_TOKEN=') && !envContent.match(/ACHIRI_TELEGRAM_BOT_TOKEN=\s*$/m);
+    if (!hasToken) {
+      actions.push({
+        urgency: achiriDays <= 14 ? 'HIGH' : 'LOW',
+        icon: achiriDays <= 14 ? '🟠' : '🟢',
+        text: `Set ACHIRI_TELEGRAM_BOT_TOKEN (alpha in ${achiriDays}d)`,
+        cmd: '/deploy-status',
+      });
+    }
+  }
+
+  // 6. Update views if posts have no views
+  const noViews = posts.filter(p => (p.views ?? 0) === 0 && p.tiktok_url);
+  if (noViews.length > 0) {
+    actions.push({
+      urgency: 'LOW', icon: '🟢',
+      text: `${noViews.length} posts need view count updates`,
+      cmd: '/updateviews',
+    });
+  }
+
+  // Sort by urgency
+  const order: Record<string, number> = { CRITICAL: 0, HIGH: 1, MEDIUM: 2, LOW: 3 };
+  actions.sort((a, b) => (order[a.urgency] ?? 9) - (order[b.urgency] ?? 9));
+
+  if (actions.length === 0) {
+    return '✅ *No pending actions!* All systems green.\n\n_/status for dashboard · /launches for countdown_';
+  }
+
+  const lines = [
+    '⚡ *Next Actions* — do these now\n',
+    ...actions.map((a, i) => `${a.icon} *${i + 1}.* ${a.text}\n   → ${a.cmd}`),
+    '',
+    `_${actions.length} action${actions.length > 1 ? 's' : ''} pending_`,
+  ];
+
+  return lines.join('\n');
+}
