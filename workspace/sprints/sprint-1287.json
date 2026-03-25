@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1287",
+  "title": "OPS — /status: show count of unread Telegram bot messages (backlog)",
+  "description": "Replace log-scanning approach (that never found backlog lines) with real Telegram getUpdates API call using saved offset. Shows actual pending message count.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1287-01",
+      "title": "Fix Telegram bot backlog check in cmdStatus to use getUpdates API",
+      "type": "fix",
+      "task_type": "bot",
+      "task_target": "scripts/telegram-commands/cmd-management.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1287"
+    }
+  ]
+}

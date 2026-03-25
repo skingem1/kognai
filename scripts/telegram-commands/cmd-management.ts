@@ -1767,27 +1767,30 @@ export function cmdStatus(): string {
     }
   } catch { /* skip */ }
 
-  // Sprint 1144 (wave 26): show count of unread Telegram bot messages (backlog)
+  // Sprint 1287: show count of unread Telegram bot messages via getUpdates API
   let unreadBotLine = '';
   try {
     const offsetPath = path.join(ROOT, 'data', 'telegram-bot-offset.txt');
-    const botOutLogPath = path.join(ROOT, 'logs', 'telegram-bot-out.log');
-    // Check if there's a queue of unprocessed messages by looking at offset vs latest update
-    if (fs.existsSync(botOutLogPath)) {
-      const logStat = fs.statSync(botOutLogPath);
-      const logAgeMin = (Date.now() - logStat.mtimeMs) / 60000;
-      const logLines = fs.readFileSync(botOutLogPath, 'utf-8').split('\n').filter(Boolean);
-      const recentQueueLines = logLines.filter(l => l.toLowerCase().includes('queued') || l.toLowerCase().includes('pending') || l.toLowerCase().includes('backlog'));
-      if (recentQueueLines.length > 0) {
-        const numMatch = recentQueueLines[recentQueueLines.length - 1].match(/\d+/);
-        const count = numMatch ? parseInt(numMatch[0]) : recentQueueLines.length;
-        const qIcon = count >= 10 ? '🔴' : count >= 3 ? '⚠️' : '📨';
-        unreadBotLine = `\n${qIcon} *Bot backlog:* ${count} messages queued`;
-      } else if (logAgeMin > 60) {
-        unreadBotLine = `\n⚠️ *Bot log:* last activity ${Math.round(logAgeMin)}m ago`;
+    const token = process.env.TELEGRAM_BOT_TOKEN;
+    if (token && fs.existsSync(offsetPath)) {
+      const savedOffset = parseInt(fs.readFileSync(offsetPath, 'utf-8').trim(), 10) || 0;
+      // Query pending updates since saved offset (limit 100 to count backlog)
+      const curlOut = execSync(
+        `curl -s --max-time 5 "https://api.telegram.org/bot${token}/getUpdates?offset=${savedOffset}&limit=100"`,
+        { encoding: 'utf-8', timeout: 7000 }
+      );
+      const upd = JSON.parse(curlOut);
+      if (upd.ok && Array.isArray(upd.result)) {
+        const pending = upd.result.length;
+        if (pending > 0) {
+          const qIcon = pending >= 10 ? '🔴' : pending >= 3 ? '⚠️' : '📨';
+          unreadBotLine = `\n${qIcon} *Bot backlog:* ${pending} unread message${pending !== 1 ? 's' : ''}`;
+        } else {
+          unreadBotLine = `\n✅ *Bot backlog:* 0 pending`;
+        }
       }
     }
-  } catch { /* skip */ }
+  } catch { /* skip — non-critical, network call */ }
 
   // Sprint 1060: Watchdog alerts
   let watchdogLine = '';
