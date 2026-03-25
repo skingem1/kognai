@@ -7311,3 +7311,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - AAR: score 90 — clean implementation, tested, high-impact improvement
 - Commit: 18ca3314
 - Status: DONE ✅
+
+## Sprint 1320 — BUGFIX
+- Status: PASS
+- Commit: 8cba1827
+- Files modified: agents/scs001-caption/index.ts, scripts/scs001/fal-video-client.ts
+- Files created: workspace/sprints/sprint-1320.json
+- Fix 1: execSync string → execFileSync args-array for FFmpeg subtitles force_style (shell quote stripping)
+- Fix 2: Python signal.alarm(90s) in fal_client.subscribe + execSync timeout 300s→120s
+- Swarm used: no (surgical 2-file bugfix, direct write)
+- AAR module not found — skipped
+- Timestamp: 2026-03-25T20:15:00+01:00
