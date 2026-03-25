@@ -31,6 +31,7 @@ export function cmdHelp(): string {
     `/queue     — Unposted videos ranked by viral score\n` +
     `/review    — Latest generated video details\n` +
     `/record    — Record a manual TikTok post (usage: /record <id> <views> [tiktok_url])\n` +
+    `/seturl    — Add TikTok URL to a recorded post for view tracking\n` +
     `/posted    — Mark last auto-delivered video as posted\n` +
     `/deliver   — Batch-send ready videos with captions\n` +
     `/publish   — One-tap publish to TikTok + IG + YouTube via Blotato\n` +
@@ -41,6 +42,7 @@ export function cmdHelp(): string {
     `/pipeline  — Content pipeline inventory & health\n` +
     `/produce   — Produce video with local TTS ($0.00)\n` +
     `/v2        — V2 pipeline: AI video (fal.ai + Captions.ai)\n` +
+    `/produce-vlog — Produce avatar vlog video (Captions.ai + B-roll + neon logo)\n` +
     `/stockpile — Batch-produce N videos (multiformat pipeline)\n` +
     `/inventory — Video inventory: unique topics + gate status\n` +
     `/batchdeliver — Send N unposted videos to Telegram\n` +

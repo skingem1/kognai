@@ -26,12 +26,12 @@ import { cmdGate, cmdGoLive, cmdAudit, cmdStreak, cmdPace, cmdCalendar, cmdGateA
 import { runGodmanSmoke } from './godman-smoke';
 import { cmdRecord, cmdQueue, cmdReview, cmdCaption, cmdPosted, cmdOnboard, cmdPipeline, cmdToday, cmdAnalytics, cmdDiversity, cmdThumbnail, cmdCompetitor, cmdStats, cmdQuality, cmdRadar, cmdBacktest, cmdFormatStats, cmdManifesto, cmdValErrors, cmdCaptionNext } from './telegram-commands/cmd-content';
 import { cmdMetrics, cmdPostPlan, cmdYouTube, cmdAutoPost, cmdLastRun, cmdViral, cmdDashboard, cmdDigest, cmdSchedule, cmdLeaderboard, cmdBestTime, cmdHookTest, cmdHookStats, cmdViralStats, cmdQueueOpt, cmdGateAnalytics, cmdRevenue, cmdBatch, cmdPostLog, cmdXPost, cmdCosts, cmdWeeklyDigest, cmdPostNext, cmdPostingHealth, cmdBulkCaptions } from './telegram-commands/cmd-posting';
-import { cmdHistory, cmdArchive, cmdUnarchive, cmdStale, cmdPurge, cmdNote, cmdUpdateViews, cmdExport, cmdWeeklyReport, cmdSpeakerTest, cmdFilmKit, cmdContentPlan, cmdSuggest, cmdCompare, cmdScorecard, cmdProgress, cmdCleanup, cmdDedup, cmdTop30, cmdAbResults, cmdStatus, cmdReplenish, cmdEnrich, cmdBlockers, cmdBotTest, cmdSprintNext, cmdLog, cmdLaunches, cmdPostPulse, cmdNextActions } from './telegram-commands/cmd-management';
+import { cmdHistory, cmdArchive, cmdUnarchive, cmdStale, cmdPurge, cmdNote, cmdUpdateViews, cmdExport, cmdWeeklyReport, cmdSpeakerTest, cmdFilmKit, cmdContentPlan, cmdSuggest, cmdCompare, cmdScorecard, cmdProgress, cmdCleanup, cmdDedup, cmdTop30, cmdAbResults, cmdStatus, cmdReplenish, cmdEnrich, cmdBlockers, cmdBotTest, cmdSprintNext, cmdLog, cmdLaunches, cmdPostPulse, cmdNextActions, cmdSetUrl } from './telegram-commands/cmd-management';
 import { cmdHelp } from './telegram-commands/cmd-help';
 
 // Sprint 496: Import extracted command modules (Part 2: N-Z + interactive)
 import { cmdSession, cmdDone, cmdEndSession, cmdMenu } from './telegram-commands/cmd-session';
-import { cmdDeliver, cmdPublish, cmdPostNow, cmdPickup, cmdTodayCaptions, cmdBroadcast, cmdRefresh, cmdProduce, cmdProduceTopic, cmdInstagram, cmdInventory, cmdBatchDeliver, cmdStockpile, cmdBroadcastPause, cmdBroadcastResume, cmdPostBrowser, cmdPostAuto, cmdQuickstart, cmdV2Produce, cmdDeliverNext } from './telegram-commands/cmd-delivery';
+import { cmdDeliver, cmdPublish, cmdPostNow, cmdPickup, cmdTodayCaptions, cmdBroadcast, cmdRefresh, cmdProduce, cmdProduceTopic, cmdInstagram, cmdInventory, cmdBatchDeliver, cmdStockpile, cmdBroadcastPause, cmdBroadcastResume, cmdPostBrowser, cmdPostAuto, cmdQuickstart, cmdV2Produce, cmdDeliverNext, cmdProduceVlog } from './telegram-commands/cmd-delivery'; // Sprint 1217: added cmdProduceVlog
 import { cmdCheckout, cmdSubscribers, cmdPortal, cmdFunnel, cmdAchiri, cmdAlpha, cmdTestStripe, cmdUsage, cmdAchiriData, cmdWaitlist, cmdStripe, cmdDeployStatus, cmdInviteAchiri, cmdAchiriStats, cmdAchiriLaunch, cmdAchiriBotSetup } from './telegram-commands/cmd-stripe'; // Sprint 1180: added cmdAchiriStats; Sprint 1202: added cmdAchiriLaunch; Sprint 1210: added cmdAchiriBotSetup
 import { cmdStart, cmdTrial, cmdPlans } from './telegram-commands/cmd-onboarding';
 import { cmdLoraEval } from './telegram-commands/cmd-lora-eval';
@@ -80,6 +80,8 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     '/producetopic': () => cmdProduceTopic(chatId, cmdArgs),
     '/v2':           () => cmdV2Produce(chatId, cmdArgs),
     '/v2produce':    () => cmdV2Produce(chatId, cmdArgs),
+    '/produce-vlog': () => cmdProduceVlog(chatId, cmdArgs), // Sprint 1217
+    '/producevlog':  () => cmdProduceVlog(chatId, cmdArgs), // Sprint 1217 alias
     '/postnow':      () => cmdPostNow(chatId),
     '/todaycaptions': () => cmdTodayCaptions(chatId),
     '/broadcast':    () => cmdBroadcast(chatId, cmdArgs),
@@ -169,6 +171,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/bulk-captions': case '/bulkcaptions': response = cmdBulkCaptions(); break;
     case '/leaderboard': response = cmdLeaderboard(); break;
     case '/updateviews': response = cmdUpdateViews(cmdArgs); break;
+    case '/seturl': response = cmdSetUrl(cmdArgs); break;
     case '/achiri':      response = cmdAchiri();             break;
     case '/deploy-status': case '/deploystatus': response = cmdDeployStatus(); break;
     case '/invite-achiri': case '/inviteachiri': response = cmdInviteAchiri(cmdArgs); break;

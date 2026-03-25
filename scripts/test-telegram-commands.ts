@@ -20,7 +20,7 @@ import { cmdRecord, cmdQueue, cmdReview, cmdCaption, cmdPosted, cmdOnboard, cmdP
 import { cmdMetrics, cmdPostPlan, cmdYouTube, cmdAutoPost, cmdLastRun, cmdViral, cmdDashboard, cmdDigest, cmdSchedule, cmdLeaderboard, cmdBestTime, cmdHookTest, cmdHookStats, cmdViralStats, cmdQueueOpt, cmdGateAnalytics, cmdRevenue, cmdBatch, cmdPostLog, cmdXPost, cmdCosts, cmdWeeklyDigest, cmdPostNext, cmdPostingHealth, cmdBulkCaptions } from './telegram-commands/cmd-posting';
 
 // Sync commands from cmd-management.ts
-import { cmdHistory, cmdArchive, cmdUnarchive, cmdStale, cmdPurge, cmdNote, cmdUpdateViews, cmdExport, cmdWeeklyReport, cmdSpeakerTest, cmdFilmKit, cmdContentPlan, cmdSuggest, cmdCompare, cmdScorecard, cmdProgress, cmdCleanup, cmdDedup, cmdTop30, cmdAbResults, cmdStatus, cmdReplenish, cmdEnrich, cmdBlockers, cmdSprintNext, cmdLog, cmdLaunches, cmdPostPulse, cmdNextActions, cmdBotTest } from './telegram-commands/cmd-management';
+import { cmdHistory, cmdArchive, cmdUnarchive, cmdStale, cmdPurge, cmdNote, cmdUpdateViews, cmdExport, cmdWeeklyReport, cmdSpeakerTest, cmdFilmKit, cmdContentPlan, cmdSuggest, cmdCompare, cmdScorecard, cmdProgress, cmdCleanup, cmdDedup, cmdTop30, cmdAbResults, cmdStatus, cmdReplenish, cmdEnrich, cmdBlockers, cmdSprintNext, cmdLog, cmdLaunches, cmdPostPulse, cmdNextActions, cmdBotTest, cmdSetUrl } from './telegram-commands/cmd-management';
 
 // Sync commands from cmd-delivery.ts
 import { cmdInventory } from './telegram-commands/cmd-delivery';
@@ -174,6 +174,7 @@ const tests: TestCase[] = [
   { name: 'cmdPostPulse', fn: () => cmdPostPulse() },
   { name: 'cmdNextActions', fn: () => cmdNextActions() },
   { name: 'cmdBotTest', fn: () => cmdBotTest() },
+  { name: 'cmdSetUrl', fn: () => cmdSetUrl('') },
 
   // cmd-delivery.ts
   { name: 'cmdInventory', fn: () => cmdInventory() },

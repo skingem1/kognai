@@ -2887,3 +2887,48 @@ export function cmdNextActions(): string {
 
   return lines.join('\n');
 }
+
+export function cmdSetUrl(args: string): string {
+  const parts = args.trim().split(/\s+/);
+  if (parts.length < 2) {
+    return (
+      `*Usage:* \`/seturl <video_id> <tiktok_url>\`\n\n` +
+      `Example: \`/seturl exp-4aaca82f https://www.tiktok.com/@you/video/123\`\n\n` +
+      `Adds or updates the TikTok URL for a recorded post, enabling automatic view tracking via oEmbed.`
+    );
+  }
+
+  const videoId = parts[0];
+  const url = parts[1];
+
+  if (!url.startsWith('https://')) {
+    return `❌ Invalid URL: must start with \`https://\``;
+  }
+
+  const manualPostsPath = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
+  const entries = readLines(manualPostsPath);
+
+  const idx = entries.findIndex((e: any) => e.video_id === videoId);
+  if (idx === -1) {
+    return `❌ Video \`${videoId}\` not found in posted videos.\nRecord it first with \`/record ${videoId} 0 ${url}\``;
+  }
+
+  const oldUrl = entries[idx].tiktok_url ?? null;
+  entries[idx].tiktok_url = url;
+  entries[idx].url_updated_at = new Date().toISOString();
+
+  const content = entries.map((e: any) => JSON.stringify(e)).join('\n') + '\n';
+  fs.writeFileSync(manualPostsPath, content, 'utf-8');
+
+  const withUrl = entries.filter((e: any) => e.tiktok_url).length;
+  const total = entries.length;
+
+  return (
+    `✅ *TikTok URL set!*\n\n` +
+    `Video: \`${videoId}\`\n` +
+    (oldUrl ? `Old URL: ${oldUrl}\n` : '') +
+    `URL: ${url}\n\n` +
+    `📊 ${withUrl}/${total} posts have URLs for view tracking\n` +
+    `_View scraper will auto-update views on next run._`
+  );
+}
