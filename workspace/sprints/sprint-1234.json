@@ -1,0 +1,11 @@
+{
+  "sprint_id": "sprint-1234",
+  "title": "FIX — orchestrator TS2339: trendBatch.topics on type 'never'",
+  "description": "Fixed TypeScript control-flow narrowing issue: trendBatch declared as TrendingTopicBatch | null but assigned only inside async callback, so TypeScript narrows it to null in outer scope. Added type casts at lines 141 and 532 of agents/scs001-orchestrator/index.ts.",
+  "date": "2026-03-24",
+  "status": "done",
+  "errors_fixed": [
+    "agents/scs001-orchestrator/index.ts(141,34): error TS2339: Property 'topics' does not exist on type 'never'",
+    "agents/scs001-orchestrator/index.ts(532,41): error TS2339: Property 'topics' does not exist on type 'never'"
+  ]
+}

@@ -138,7 +138,7 @@ export class SCS001Orchestrator {
     }));
 
     // --- Stage 2: Discovery Agent ---
-    if (trendBatch && trendBatch.topics.length > 0) {
+    if (trendBatch && (trendBatch as TrendingTopicBatch).topics.length > 0) {
       stages.push(await this.runStage('2-discovery', 'DiscoveryAgent', async () => {
         const agent = new DiscoveryAgent();
         discoveries = await agent.run(trendBatch!);
@@ -529,7 +529,7 @@ export class SCS001Orchestrator {
       total_elapsed_ms: totalMs,
       stages,
       summary: {
-        topics_found:       trendBatch?.topics.length ?? 0,
+        topics_found:       (trendBatch as TrendingTopicBatch | null)?.topics.length ?? 0,
         clips_discovered:   discoveries.length,
         clips_qualified:    qualifiedClips.length,
         insights_generated: briefs.length,
