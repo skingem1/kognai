@@ -18,8 +18,9 @@ interface CleanupResult {
   multiformat: { deleted: number; kept: number; freedMB: number };
   radar: { deleted: number; kept: number; freedKB: number };
   scripts: { deleted: number; kept: number; freedKB: number };
-  codeDemoRuns: { deleted: number; kept: number; freedMB: number }; // Sprint 1218
-  vlogRuns: { deleted: number; kept: number; freedMB: number };     // Sprint 1218
+  codeDemoRuns: { deleted: number; kept: number; freedMB: number };         // Sprint 1218
+  vlogRuns: { deleted: number; kept: number; freedMB: number };             // Sprint 1218
+  entertainmentRuns: { deleted: number; kept: number; freedMB: number };   // Sprint 1224
   totalFreedMB: number;
   dryRun: boolean;
 }
@@ -186,8 +187,9 @@ function run(): CleanupResult {
   const mfDir = path.join(ROOT, 'workspace', 'scs001', 'multiformat-runs');
   const radarDir = path.join(ROOT, 'workspace', 'scs001', 'topic-radar');
   const scriptsDir = path.join(ROOT, 'workspace', 'scs001', 'scripts');
-  const codeDemoDir = path.join(ROOT, 'workspace', 'scs001', 'code-demo-runs'); // Sprint 1218
-  const vlogDir = path.join(ROOT, 'workspace', 'scs001', 'vlog-runs');           // Sprint 1218
+  const codeDemoDir = path.join(ROOT, 'workspace', 'scs001', 'code-demo-runs');       // Sprint 1218
+  const vlogDir = path.join(ROOT, 'workspace', 'scs001', 'vlog-runs');               // Sprint 1218
+  const entertainmentDir = path.join(ROOT, 'workspace', 'scs001', 'entertainment-runs'); // Sprint 1224
 
   // Sprint 826: Protect run dirs that contain ready-to-post videos
   const protectedRuns = getProtectedRunIds();
@@ -211,7 +213,10 @@ function run(): CleanupResult {
   // Sprint 1218: vlog-runs (vlog-*) — keep latest 30
   const vlog = cleanDir(vlogDir, 'vlog-', 30, true);
 
-  const totalFreedMB = (mf.freedBytes + radar.freedBytes + scriptResult.freedBytes + codeDemo.freedBytes + vlog.freedBytes) / (1024 * 1024);
+  // Sprint 1224: entertainment-runs (ent-*) — keep latest 20
+  const entertainment = cleanDir(entertainmentDir, 'ent-', 20, true);
+
+  const totalFreedMB = (mf.freedBytes + radar.freedBytes + scriptResult.freedBytes + codeDemo.freedBytes + vlog.freedBytes + entertainment.freedBytes) / (1024 * 1024);
 
   return {
     multiformat: { deleted: mf.deleted, kept: mf.kept, freedMB: Math.round(mf.freedBytes / (1024 * 1024)) },
@@ -219,6 +224,7 @@ function run(): CleanupResult {
     scripts: { deleted: scriptResult.deleted, kept: scriptResult.kept, freedKB: Math.round(scriptResult.freedBytes / 1024) },
     codeDemoRuns: { deleted: codeDemo.deleted, kept: codeDemo.kept, freedMB: Math.round(codeDemo.freedBytes / (1024 * 1024)) },
     vlogRuns: { deleted: vlog.deleted, kept: vlog.kept, freedMB: Math.round(vlog.freedBytes / (1024 * 1024)) },
+    entertainmentRuns: { deleted: entertainment.deleted, kept: entertainment.kept, freedMB: Math.round(entertainment.freedBytes / (1024 * 1024)) },
     totalFreedMB: Math.round(totalFreedMB),
     dryRun: DRY_RUN,
   };
@@ -252,6 +258,10 @@ export function formatCleanupResult(r: CleanupResult): string {
     `*Vlog runs:*`,
     `  Deleted: ${r.vlogRuns.deleted} dirs (~${r.vlogRuns.freedMB} MB)`,
     `  Kept: ${r.vlogRuns.kept} (latest)`,
+    '',
+    `*Entertainment runs:*`,
+    `  Deleted: ${r.entertainmentRuns.deleted} dirs (~${r.entertainmentRuns.freedMB} MB)`,
+    `  Kept: ${r.entertainmentRuns.kept} (latest)`,
     '',
     `*Total freed: ~${r.totalFreedMB} MB*`,
   ].join('\n');

@@ -1,0 +1,12 @@
+{
+  "sprint": 1224,
+  "title": "OPS — /cleanup: add entertainment-runs purge (keep latest 20)",
+  "status": "done",
+  "track": "OPS",
+  "summary": "Added entertainment-runs (ent-* dirs) to cleanup-old-runs.ts. Keeps latest 20, purges older runs. 16 entertainment runs already present after Sprint 1223 wired up the pipeline.",
+  "files": [
+    "scripts/scs001/cleanup-old-runs.ts"
+  ],
+  "root_cause": "entertainment-runs/ directory not in cleanup cron — would grow unbounded as /produce-entertainment generates videos.",
+  "fix": "Add entertainmentRuns to CleanupResult interface, run cleanDir(entertainmentDir, 'ent-', 20, true), include in totalFreedMB and formatCleanupResult."
+}
