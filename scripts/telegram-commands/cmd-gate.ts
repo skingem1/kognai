@@ -13,7 +13,6 @@ import {
 } from './shared'; // Sprint 1219: added readRealPosts
 
 export function cmdGate(): string {
-  const manualPostsPath = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
   const ledgerPath = path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl');
   const warmupPath = path.join(ROOT, 'workspace', 'scs001', 'warmup-status.json');
   const postTiktokPath = path.join(ROOT, 'scripts', 'scs001', 'post-tiktok.sh');
@@ -23,16 +22,10 @@ export function cmdGate(): string {
   const now = new Date();
   const daysLeft = Math.max(0, Math.ceil((gateDate.getTime() - now.getTime()) / 86_400_000));
 
-  // --- Posts & Views ---
-  let postCount = 0;
-  let totalViews = 0;
-  if (fs.existsSync(manualPostsPath)) {
-    const lines = fs.readFileSync(manualPostsPath, 'utf-8').split('\n').filter(l => l.trim());
-    postCount = lines.length;
-    for (const line of lines) {
-      try { totalViews += JSON.parse(line).views ?? 0; } catch {}
-    }
-  }
+  // --- Posts & Views (Sprint 1220: exclude dry-runs) ---
+  const realPosts = readRealPosts();
+  const postCount = realPosts.length;
+  const totalViews = realPosts.reduce((s: number, p: any) => s + (p.views ?? 0), 0);
   const postsNeeded = Math.max(0, 30 - postCount);
   const postsPerDay = daysLeft > 0 ? (postsNeeded / daysLeft).toFixed(1) : '∞';
   const viewsNeeded = Math.max(0, 500 - totalViews);
@@ -40,11 +33,8 @@ export function cmdGate(): string {
   // --- Publishable Videos ---
   let ledgerCount = 0;
   const postedIds = new Set<string>();
-  if (fs.existsSync(manualPostsPath)) {
-    for (const l of fs.readFileSync(manualPostsPath, 'utf-8').split('\n').filter(l => l.trim())) {
-      try { const p = JSON.parse(l); if (p.video_id) postedIds.add(p.video_id); } catch {}
-    }
-  }
+  // Sprint 1220: use realPosts so dry-run posts don't mark videos as already posted
+  for (const p of realPosts) { if (p.video_id) postedIds.add(p.video_id as string); }
   if (fs.existsSync(autoDeliveredPath)) {
     for (const l of fs.readFileSync(autoDeliveredPath, 'utf-8').split('\n').filter(l => l.trim())) {
       try { const p = JSON.parse(l); if (p.video_id) postedIds.add(p.video_id); } catch {}
@@ -128,13 +118,12 @@ export function cmdGate(): string {
     `✅ *${passed}/4 criteria met*`,
     ``,
     `*── Posting ──*`,
-    // Sprint 1135 (wave 15): hours since last post
+    // Sprint 1135 (wave 15): hours since last post (Sprint 1220: uses realPosts)
     (() => {
-      if (!fs.existsSync(manualPostsPath)) return '';
+      if (realPosts.length === 0) return '';
       try {
-        const postLines = fs.readFileSync(manualPostsPath, 'utf-8').split('\n').filter((l: string) => l.trim());
-        const lastTs = postLines
-          .map((l: string) => { try { const p = JSON.parse(l); return new Date(p.posted_at ?? p.recorded_at).getTime(); } catch { return 0; } })
+        const lastTs = realPosts
+          .map((p: any) => { try { return new Date(p.posted_at ?? p.recorded_at).getTime(); } catch { return 0; } })
           .filter((t: number) => t > 0)
           .sort((a: number, b: number) => b - a)[0];
         if (!lastTs) return '';
@@ -146,13 +135,12 @@ export function cmdGate(): string {
     })(),
     `${postIcon} Posts: ${postCount}/30 (need ${postsNeeded} more)`,
     `${viewIcon} Views: ${totalViews}/500 (need ${viewsNeeded} more)`,
-    // Sprint 1145 (wave 21): stale views warning
+    // Sprint 1145 (wave 21): stale views warning (Sprint 1220: uses realPosts)
     ...(() => {
-      if (!fs.existsSync(manualPostsPath)) return [];
+      if (realPosts.length === 0) return [];
       try {
-        const lines = fs.readFileSync(manualPostsPath, 'utf-8').split('\n').filter((l: string) => l.trim());
-        const lastTs = lines
-          .map((l: string) => { try { const p = JSON.parse(l); return new Date(p.updated_at ?? p.posted_at ?? p.recorded_at).getTime(); } catch { return 0; } })
+        const lastTs = realPosts
+          .map((p: any) => { try { return new Date(p.updated_at ?? p.posted_at ?? p.recorded_at).getTime(); } catch { return 0; } })
           .filter((t: number) => t > 0 && !isNaN(t))
           .sort((a: number, b: number) => b - a)[0];
         if (lastTs) {
@@ -170,30 +158,27 @@ export function cmdGate(): string {
     // Sprint 1139 (wave 18): average views per post
     ...(postCount > 0 ? [`📈 Avg views/post: *${(totalViews / postCount).toFixed(1)}*${totalViews / postCount < 10 ? ' — boost quality' : ''}`] : []),
     `📊 Pace needed: ${postsPerDay} posts/day`,
-    // Sprint 1132 (wave 14): posts/day over last 7 days
+    // Sprint 1132 (wave 14): posts/day over last 7 days (Sprint 1220: uses realPosts)
     (() => {
-      if (!fs.existsSync(manualPostsPath)) return '';
+      if (realPosts.length === 0) return '';
       try {
         const sevenDaysAgo = new Date(Date.now() - 7 * 86_400_000).toISOString().slice(0, 10);
-        const lines7d = fs.readFileSync(manualPostsPath, 'utf-8').split('\n').filter(l => l.trim());
-        const last7 = lines7d.filter(l => {
-          try { const p = JSON.parse(l); return (p.posted_at ?? p.recorded_at ?? '').slice(0, 10) >= sevenDaysAgo; } catch { return false; }
+        const last7 = realPosts.filter((p: any) => {
+          try { return (p.posted_at ?? p.recorded_at ?? '').slice(0, 10) >= sevenDaysAgo; } catch { return false; }
         });
         const rate7d = (last7.length / 7).toFixed(1);
         return `📅 Last 7d: *${last7.length} posts* (${rate7d}/day)`;
       } catch { return ''; }
     })(),
-    // Sprint 1137 (wave 17): posts-per-weekday bar (Mon-Sun)
+    // Sprint 1137 (wave 17): posts-per-weekday bar (Mon-Sun) (Sprint 1220: uses realPosts)
     (() => {
-      if (!fs.existsSync(manualPostsPath)) return '';
+      if (realPosts.length === 0) return '';
       try {
         const dayLabels = ['Mo','Tu','We','Th','Fr','Sa','Su'];
         const counts = [0,0,0,0,0,0,0];
-        const lines = fs.readFileSync(manualPostsPath, 'utf-8').split('\n').filter(l => l.trim());
-        for (const l of lines) {
+        for (const p of realPosts) {
           try {
-            const p = JSON.parse(l);
-            const ts = p.posted_at ?? p.recorded_at;
+            const ts = (p as any).posted_at ?? (p as any).recorded_at;
             if (!ts) continue;
             const dow = (new Date(ts).getDay() + 6) % 7; // 0=Mon
             counts[dow]++;
@@ -220,14 +205,12 @@ export function cmdGate(): string {
       const perWeek = Math.ceil(postsNeeded / weeksLeft);
       return [`📋 *Weekly target:* ${perWeek} posts/week (${weeksLeft} week${weeksLeft !== 1 ? 's' : ''} left)`];
     })(),
-    // Sprint 1140 (wave 24): days since last post was recorded (cadence gap)
+    // Sprint 1140 (wave 24): days since last post was recorded (cadence gap) (Sprint 1220: realPosts)
     ...(() => {
-      if (!fs.existsSync(manualPostsPath)) return [];
+      if (realPosts.length === 0) return [];
       try {
-        const postLines2 = fs.readFileSync(manualPostsPath, 'utf-8').split('\n').filter((l: string) => l.trim());
-        if (postLines2.length === 0) return [];
-        const lastTs2 = postLines2
-          .map((l: string) => { try { const p = JSON.parse(l); return new Date(p.posted_at ?? p.recorded_at).getTime(); } catch { return 0; } })
+        const lastTs2 = realPosts
+          .map((p: any) => { try { return new Date(p.posted_at ?? p.recorded_at).getTime(); } catch { return 0; } })
           .filter((t: number) => t > 0)
           .sort((a: number, b: number) => b - a)[0];
         if (!lastTs2) return [];
@@ -251,17 +234,15 @@ export function cmdGate(): string {
         return [`${e2eIcon} *Achiri E2E:* ${e2ePass && e2eFail === 0 ? 'all pass' : `${e2eFail} failing`}${e2eAge}`];
       } catch { return []; }
     })(),
-    // Sprint 1141 (wave 22): is current week on track vs weekly target
+    // Sprint 1141 (wave 22): is current week on track vs weekly target (Sprint 1220: realPosts)
     ...(() => {
       if (postsNeeded <= 0 || daysLeft <= 0) return [];
       try {
-        if (!fs.existsSync(manualPostsPath)) return [];
         const todayDow = now.getDay(); // 0=Sun
         const weekStartOffset = (todayDow === 0 ? 6 : todayDow - 1) * 86_400_000; // Mon=0
         const weekStartDate = new Date(now.getTime() - weekStartOffset).toISOString().slice(0, 10);
-        const thisWeekPosts = fs.readFileSync(manualPostsPath, 'utf-8').split('\n').filter((l: string) => {
-          if (!l.trim()) return false;
-          try { const p = JSON.parse(l); return (p.posted_at ?? p.recorded_at ?? '').slice(0, 10) >= weekStartDate; } catch { return false; }
+        const thisWeekPosts = realPosts.filter((p: any) => {
+          try { return (p.posted_at ?? p.recorded_at ?? '').slice(0, 10) >= weekStartDate; } catch { return false; }
         }).length;
         const weeksLeft2 = Math.max(1, Math.ceil(daysLeft / 7));
         const weekTarget = Math.ceil(postsNeeded / weeksLeft2);
@@ -269,12 +250,11 @@ export function cmdGate(): string {
         return [`${weekIcon} *This week:* ${thisWeekPosts}/${weekTarget} posts (${weekTarget - thisWeekPosts > 0 ? `${weekTarget - thisWeekPosts} more needed` : 'on track'})`];
       } catch { return []; }
     })(),
-    // Sprint 1141 (wave 23): top performing post (highest views) as proof of quality
+    // Sprint 1141 (wave 23): top performing post (highest views) as proof of quality (Sprint 1220: realPosts)
     ...(() => {
-      if (!fs.existsSync(manualPostsPath)) return [];
+      if (realPosts.length === 0) return [];
       try {
-        const postLines = fs.readFileSync(manualPostsPath, 'utf-8').split('\n').filter((l: string) => l.trim());
-        const parsed = postLines.map((l: string) => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
+        const parsed = realPosts;
         if (parsed.length === 0) return [];
         const best = parsed.reduce((best: any, p: any) => (p.views ?? 0) > (best.views ?? 0) ? p : best, parsed[0]);
         const bestViews = best.views ?? 0;

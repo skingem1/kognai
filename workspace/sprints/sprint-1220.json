@@ -1,0 +1,12 @@
+{
+  "sprint": 1220,
+  "title": "OPS — /gate: exclude dry-run posts from all gate metrics",
+  "status": "done",
+  "track": "OPS",
+  "summary": "Fixed cmdGate() in cmd-gate.ts to use readRealPosts() throughout. Replaced all manualPostsPath readFileSync calls (postedIds, last post time, stale views warning, last 7d pace, weekday bar, cadence gap, this-week on-track, best post) with realPosts array. Removed now-unused manualPostsPath variable.",
+  "files": [
+    "scripts/telegram-commands/cmd-gate.ts"
+  ],
+  "root_cause": "cmdGate() read manual-posts.jsonl directly without filtering dry-run entries, inflating post count, views, and pace metrics.",
+  "fix": "Use readRealPosts() for all post data in cmdGate(). 7 separate readFileSync calls replaced. manualPostsPath variable removed."
+}
