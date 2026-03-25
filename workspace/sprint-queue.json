@@ -3712,7 +3712,7 @@
       "sprint": 1286,
       "title": "OPS \u2014 /report: show Godman npm publish status for each package",
       "block": "OPS",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "/report shows launch countdown but not per-package publish status. Add a line listing which Godman packages are published and which are still local-only.",
       "added_at": "2026-03-25T13:23:29.168Z"

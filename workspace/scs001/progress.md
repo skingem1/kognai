@@ -6981,3 +6981,13 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Feature: Runtime vs prev comparison now reads from smoke-test-latest.json (any run type contributes)
 - Swarm used: no (surgical edits, direct write)
 - Timestamp: 2026-03-25T14:30:00Z
+
+## Sprint 1286 — OPS-REPORT-GODMAN-NPM
+- Status: PASS
+- Commit: b727f334
+- Files modified: scripts/telegram-commands/cmd-system.ts
+- Files created: workspace/sprints/sprint-1286.json
+- Fix: @godman/ namespace → @godman-protocols/ in cmdReport() Godman npm section
+- Improvement: per-package on own line + Apr-14 countdown + summary icon
+- Swarm used: no (surgical edit, direct write)
+- Timestamp: 2026-03-25T14:35:00Z
