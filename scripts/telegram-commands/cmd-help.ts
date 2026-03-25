@@ -95,6 +95,7 @@ export function cmdHelp(): string {
     `/achiri-launch — April 25 alpha launch day runbook (pre-flight + deploy + announce)\n` +
     `/demos      — Godman demo recording status (7 protocols)\n` +
     `/achiri-ping — Check if Achiri API is live on Hetzner\n` +
+    `/achiri-deploy — Deploy Achiri to Hetzner (--dry-run for preview)\n` +
     `/caption-next — Auto-pick top unposted video + show TikTok caption\n` +
     `/deliver-next — Send top unposted video mp4 file to Telegram\n` +
     `/changelog — Recent sprints shipped\n` +
