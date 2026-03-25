@@ -6530,3 +6530,12 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Test: tsc --noEmit clean
 - Swarm used: no (cmd-system.ts too large)
 - Timestamp: 2026-03-25T01:45:00Z
+
+## Sprint 1208 — ACHIRI notify-waitlist.sh
+- Status: PASS
+- Files created: scripts/achiri/notify-waitlist.sh, workspace/sprints/sprint-1208.json
+- Script: Broadcast Telegram messages to all users in workspace/achiri/waitlist.jsonl. Supports --dry-run (1 user identified: Skingem @SkinGem), --message, --template (alpha-invite, reminder). Uses ACHIRI_TELEGRAM_BOT_TOKEN.
+- Impact: /achiri-launch Step 3 "Broadcast script" now shows ✅ (was ⚠️)
+- Validated: dry-run shows 1 recipient correctly
+- Swarm used: no
+- Timestamp: 2026-03-25T02:00:00Z
