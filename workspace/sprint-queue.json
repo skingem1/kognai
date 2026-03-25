@@ -3850,10 +3850,11 @@
       "sprint": 1302,
       "title": "GODMAN-LAUNCH — publish-all.sh: serial npm publish for 8 packages in dependency order",
       "block": "GODMAN-PROTOCOLS",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "Apr 14 launch: need a single script to publish all 8 Godman packages in order (pact, lax, score, amf, drs, soul, signal, sdk). Add --provenance flag and dry-run mode.",
-      "added_at": "2026-03-25T13:52:59.872Z"
+      "added_at": "2026-03-25T13:52:59.872Z",
+      "_note": "Shipped 2026-03-25 — commit 6ba26cab. publish-all.sh already existed (Sprint 1254). Added npm whoami pre-check in --live mode."
     },
     {
       "sprint": 1303,

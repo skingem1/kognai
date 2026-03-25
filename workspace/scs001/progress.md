@@ -7123,3 +7123,11 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm bypassed: yes (TypeScript surgical edit in large file)
 - Commit: c56c33a0
 - Status: DONE ✅
+
+## Sprint 1302 — 2026-03-25
+- **GODMAN-LAUNCH — publish-all.sh npm whoami pre-check**
+- Script already existed from Sprint 1254 with dry-run + --provenance + serial 8-pkg order
+- Added npm whoami pre-check in `--live` mode: fail early if not logged in or wrong npm account
+- Validated: bash -n syntax check passes
+- Commit: 6ba26cab
+- Status: DONE ✅
