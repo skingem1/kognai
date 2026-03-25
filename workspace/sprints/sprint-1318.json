@@ -1,0 +1,17 @@
+{
+  "sprint_id": "sprint-1318",
+  "title": "SCS-001 — Load trending topics from viral-topics.json in batch-produce (no more generic content)",
+  "source": "self-directed",
+  "rationale": "PM2 scs001-pipeline runs batch-produce.ts with no --topic args, so educational and entertainment pipelines use hardcoded generic topics ('AI is changing everything you know'). viral-topics.json is refreshed by topic-radar before each run. Fix: in batch-produce main(), when topics array is empty, load from viral-topics.json and shuffle/select N topics for the run.",
+  "tasks": [
+    {
+      "id": "load-viral-topics",
+      "description": "In scripts/scs001/batch-produce.ts, after parseArgs(), if topics.length === 0, load from workspace/scs001/viral-topics.json (try 'viral_topics' array field first, then 'topics'). Shuffle and take up to 'runs' topics. Log the source. Fall through silently if file missing or parse fails.",
+      "file": "scripts/scs001/batch-produce.ts",
+      "status": "pending",
+      "priority": "high",
+      "agent": "coder",
+      "type": "feature"
+    }
+  ]
+}

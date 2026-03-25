@@ -17,7 +17,7 @@
  */
 
 import { join } from 'path';
-import { existsSync, readFileSync, writeFileSync } from 'fs';
+import { existsSync, readFileSync, writeFileSync, readdirSync } from 'fs';
 import { execSync } from 'child_process';
 import { initRegistry, runPipeline, listPipelines } from './pipeline-registry';
 import type { PipelineName, PipelineInput, PipelineRunResult } from './pipeline-registry';
@@ -71,9 +71,45 @@ function parseArgs(): {
   return { pipeline, runs, dryRun, topics, code, withVoiceover, withMusic, mode };
 }
 
+// Sprint 1318: Load trending topics from radar files when no --topic args provided
+function loadRadarTopics(count: number): string[] {
+  const radarDir = join(ROOT, 'workspace', 'scs001', 'topic-radar');
+  if (!existsSync(radarDir)) return [];
+  try {
+    const now = Date.now();
+    const files = readdirSync(radarDir)
+      .filter(f => f.startsWith('radar-') && f.endsWith('.json'))
+      .map(f => join(radarDir, f))
+      .filter(f => {
+        try { return now - require('fs').statSync(f).mtimeMs < 86_400_000; } catch { return false; }
+      });
+    const titles: string[] = [];
+    for (const f of files.slice(-6)) {
+      try {
+        const data = JSON.parse(readFileSync(f, 'utf-8'));
+        for (const t of (data.topics || [])) {
+          if (t.title && typeof t.title === 'string') titles.push(t.title);
+        }
+      } catch {}
+    }
+    // Shuffle and return up to count
+    for (let i = titles.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [titles[i], titles[j]] = [titles[j], titles[i]];
+    }
+    return titles.slice(0, count);
+  } catch { return []; }
+}
+
 async function main(): Promise<void> {
   await initRegistry();
-  const { pipeline, runs, dryRun, topics, code, withVoiceover, withMusic, mode } = parseArgs();
+  const { pipeline, runs, dryRun, topics: argsTopics, code, withVoiceover, withMusic, mode } = parseArgs();
+
+  // Sprint 1318: Auto-load trending topics from radar when none provided via CLI
+  const topics = argsTopics.length > 0 ? argsTopics : loadRadarTopics(runs);
+  if (topics.length > 0 && argsTopics.length === 0) {
+    console.log(`[batch-produce] Loaded ${topics.length} trending topic(s) from radar`);
+  }
 
   const available = listPipelines();
   console.log(`\n=== SCS-001 Batch Production (v2) ===`);
