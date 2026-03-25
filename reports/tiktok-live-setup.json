@@ -1,0 +1,40 @@
+{
+  "generated_at": "2026-03-25T18:12:23.520Z",
+  "token_valid": false,
+  "client_creds_present": true,
+  "dry_run": true,
+  "checks": [
+    {
+      "name": "Client Key",
+      "pass": true,
+      "detail": "TIKTOK_CLIENT_KEY is set"
+    },
+    {
+      "name": "Client Secret",
+      "pass": true,
+      "detail": "TIKTOK_CLIENT_SECRET is set"
+    },
+    {
+      "name": "Access Token",
+      "pass": false,
+      "detail": "TIKTOK_ACCESS_TOKEN missing — dry-run mode active",
+      "action": "Obtain token via TikTok Developer Portal OAuth flow"
+    },
+    {
+      "name": "Reports Directory",
+      "pass": true,
+      "detail": "reports/ directory exists"
+    },
+    {
+      "name": "PM2 scs001-live Config",
+      "pass": true,
+      "detail": "scs001-live process found in ecosystem.config.js"
+    }
+  ],
+  "next_steps": [
+    "Obtain TIKTOK_ACCESS_TOKEN via TikTok Developer Portal",
+    "Add TIKTOK_ACCESS_TOKEN to .env",
+    "Re-run this script to verify live readiness",
+    "Obtain token via TikTok Developer Portal OAuth flow"
+  ]
+}

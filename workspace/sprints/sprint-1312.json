@@ -1,0 +1,68 @@
+{
+  "tasks": [
+    {
+      "id": "tiktok-live-setup",
+      "description": "Create scripts/scs001/tiktok-live-setup.ts — a TikTok LIVE stream initialization and validation script. Checks: TIKTOK_ACCESS_TOKEN env var, TIKTOK_CLIENT_KEY, TIKTOK_CLIENT_SECRET. Simulates live setup in dry-run mode when token is missing (no real API calls). Outputs JSON report to reports/tiktok-live-setup.json with fields: { generated_at, token_valid, client_creds_present, dry_run, checks: [{name, pass, detail}], next_steps }. Must import dotenv, fs, path from stdlib only — no external npm packages. Use dotenv with config({ path: join(ROOT, '.env') }). Print a human-readable summary to stdout. Exit 0 on pass, exit 1 if critical checks fail.",
+      "file": "scripts/scs001/tiktok-live-setup.ts",
+      "status": "done",
+      "deliverables": {
+        "code": [
+          "scripts/scs001/tiktok-live-setup.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "context": "TikTok LIVE is a separate flow from regular posting. TIKTOK_ACCESS_TOKEN is not yet set in .env (live posting blocked). This script validates readiness and produces a setup report so operator knows exactly what is needed when token is obtained. No real TikTok API calls — validation only.",
+      "priority": "high",
+      "agent": "coder",
+      "type": "feature",
+      "sprint_id": "sprint-1312",
+      "output": {
+        "files": [
+          "scripts/scs001/tiktok-live-setup.ts"
+        ],
+        "commit": "",
+        "model": "qwen3:14b",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 70,
+          "summary": "Dual-approved: Claude (70/100) + Codex (70/100)",
+          "issues": [],
+          "strengths": []
+        }
+      }
+    },
+    {
+      "id": "gate-readiness-check",
+      "description": "Create scripts/scs001/gate-readiness-check.ts — lightweight daily gate progress check. Read reports/posting-health.json if it exists to get posted/target/days_left values. Also check workspace/gates/phase1-5-gate.json for gate status. Output: { generated_at, posts_done, posts_target, posts_remaining, days_left, pace_needed, on_track, gate_date, message }. Write to reports/gate-readiness-check.json. Print a one-line summary: e.g. '✓ Gate: 14/30 posts (13 days left, need 1.2/day — ON TRACK)'. stdlib only: fs, path. Load dotenv. Exit 0.",
+      "file": "scripts/scs001/gate-readiness-check.ts",
+      "status": "done",
+      "deliverables": {
+        "code": [
+          "scripts/scs001/gate-readiness-check.ts"
+        ],
+        "tests": [],
+        "docs": []
+      },
+      "context": "posting-health.json exists at reports/posting-health.json with gate progress (14/30 posts, 13 days left). gate-readiness-final.ts is a comprehensive 250-line report for the final 2 days before Apr 7. This is a lightweight daily check script operators can run any time. Different purpose from gate-readiness-final.ts.",
+      "priority": "medium",
+      "agent": "coder",
+      "type": "feature",
+      "sprint_id": "sprint-1312",
+      "output": {
+        "files": [
+          "scripts/scs001/gate-readiness-check.ts"
+        ],
+        "commit": "",
+        "model": "qwen3:14b",
+        "review": {
+          "verdict": "APPROVED",
+          "score": 70,
+          "summary": "Dual-approved: Claude (70/100) + Codex (70/100)",
+          "issues": [],
+          "strengths": []
+        }
+      }
+    }
+  ]
+}
