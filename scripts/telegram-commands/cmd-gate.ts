@@ -796,6 +796,26 @@ export function cmdPace(): string {
     }
   } catch { /* skip */ }
 
+  // Sprint 1282: time since last pipeline run (content freshness)
+  try {
+    const latestRunPath = path.join(ROOT, 'reports', 'pipeline-runs', 'latest.json');
+    if (fs.existsSync(latestRunPath)) {
+      const run = JSON.parse(fs.readFileSync(latestRunPath, 'utf-8'));
+      const runTs = run.completed_at ?? run.timestamp ?? run.started_at ?? run.ts;
+      if (runTs) {
+        const ageMs = Date.now() - new Date(runTs).getTime();
+        const ageH = ageMs / 3600000;
+        const ageStr = ageH < 1 ? `${Math.round(ageH * 60)}m ago`
+          : ageH < 24 ? `${Math.round(ageH)}h ago`
+          : `${Math.round(ageH / 24)}d ago`;
+        const pipeIcon = ageH < 6 ? '✅' : ageH < 24 ? '⚠️' : '🔴';
+        const statusStr = run.status ?? run.outcome ?? '';
+        lines.push('');
+        lines.push(`${pipeIcon} *Last pipeline run:* ${ageStr}${statusStr ? ` · ${statusStr}` : ''}`);
+      }
+    }
+  } catch { /* skip */ }
+
   lines.push('');
   lines.push('_Use /postnow to get your next video, /posted after posting._');
 

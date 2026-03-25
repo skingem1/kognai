@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1282",
+  "title": "GATE — /pace: show time since last pipeline run (content freshness)",
+  "description": "Added pipeline freshness section to cmdPace() in cmd-gate.ts. Reads reports/pipeline-runs/latest.json, computes age, and shows color-coded status: ✅ <6h, ⚠️ <24h, 🔴 ≥24h. Non-fatal: silently skips if file missing.",
+  "source": "queue-auto-replenish",
+  "tasks": [
+    {
+      "id": "1282-01",
+      "title": "Add pipeline freshness block to cmdPace() in cmd-gate.ts",
+      "type": "feature",
+      "task_type": "bot",
+      "task_target": "scripts/telegram-commands/cmd-gate.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1282"
+    }
+  ]
+}
