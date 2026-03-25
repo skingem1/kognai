@@ -141,21 +141,37 @@ function checkConstitutionalFilter(bundle: ScriptBundle): { pass: boolean; reaso
 }
 
 function checkClipUnderstandable(bundle: ScriptBundle): { pass: boolean; reason: string } {
-  // Verify that the video has enough context segments to be understandable
-  // without watching the original source
-  const hasContext    = bundle.segments.some(s => s.segment_name === 'context' && s.voiceover_text.length > 10);
-  const hasInsight    = bundle.segments.some(s => s.segment_name === 'insight' && s.voiceover_text.length > 10);
-  const hasCommentary = bundle.segments.some(s => s.segment_name === 'commentary' && s.voiceover_text.length > 10);
+  // Sprint 1366: Template-aware — reaction/listicle use different segment names.
+  // Standard: requires context + insight + commentary segments.
+  // Reaction: reaction segment doubles as context+commentary; insight must exist.
+  // Listicle: point segments provide all content; require >= 2 substantive points.
 
-  if (!hasContext) {
-    return { pass: false, reason: 'Missing context segment — viewer cannot understand clip without source' };
+  const segs = bundle.segments;
+
+  if (bundle.template === 'reaction') {
+    const hasReaction = segs.some(s => s.segment_name === 'reaction' && s.voiceover_text.length > 10);
+    const hasInsight  = segs.some(s => s.segment_name === 'insight'  && s.voiceover_text.length > 10);
+    if (!hasReaction) return { pass: false, reason: 'Reaction template missing reaction segment' };
+    if (!hasInsight)  return { pass: false, reason: 'Reaction template missing insight segment' };
+    return { pass: true, reason: '' };
   }
-  if (!hasInsight) {
-    return { pass: false, reason: 'Missing insight — no takeaway for viewer' };
+
+  if (bundle.template === 'listicle') {
+    const points = segs.filter(s => s.segment_name === 'point' && s.voiceover_text.length > 10);
+    if (points.length < 2) {
+      return { pass: false, reason: 'Listicle has only ' + points.length + ' substantive point(s) (need >= 2)' };
+    }
+    return { pass: true, reason: '' };
   }
-  if (!hasCommentary) {
-    return { pass: false, reason: 'Missing commentary — clip lacks analysis' };
-  }
+
+  // Standard template (default)
+  const hasContext    = segs.some(s => s.segment_name === 'context'    && s.voiceover_text.length > 10);
+  const hasInsight    = segs.some(s => s.segment_name === 'insight'    && s.voiceover_text.length > 10);
+  const hasCommentary = segs.some(s => s.segment_name === 'commentary' && s.voiceover_text.length > 10);
+
+  if (!hasContext)    return { pass: false, reason: 'Missing context segment — viewer cannot understand clip without source' };
+  if (!hasInsight)    return { pass: false, reason: 'Missing insight — no takeaway for viewer' };
+  if (!hasCommentary) return { pass: false, reason: 'Missing commentary — clip lacks analysis' };
 
   return { pass: true, reason: '' };
 }

@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1366",
+  "title": "BUGFIX — QC clip_understandable always fails for reaction and listicle templates",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "checkClipUnderstandable required segment names 'context', 'insight', 'commentary' — but reaction template uses 'reaction'+'insight'+'cta' and listicle uses 'point'+'point'+'point'+'cta'. Both templates (50% of all videos) always failed this QC gate. Fix: make check template-aware using bundle.template field. Reaction: accept 'reaction' segment as context+commentary substitute. Listicle: require >= 2 substantive 'point' segments.",
+  "tasks": [
+    {
+      "id": "1366-qc-clip-understandable-template-aware",
+      "description": "In agents/scs001-qc/index.ts: make checkClipUnderstandable template-aware. Reaction template: check for 'reaction' + 'insight' segments. Listicle: check for >= 2 'point' segments. Standard (default): existing context+insight+commentary check.",
+      "file": "agents/scs001-qc/index.ts",
+      "status": "done",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}
