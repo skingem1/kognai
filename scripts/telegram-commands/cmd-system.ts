@@ -1496,6 +1496,71 @@ export function cmdTikTokAuth(): string {
   );
 }
 
+// Sprint 1300: /refresh-token — refresh TikTok OAuth access token
+export async function cmdRefreshToken(chatId: string): Promise<void> {
+  const hasClientKey    = !!process.env.TIKTOK_CLIENT_KEY;
+  const hasClientSecret = !!process.env.TIKTOK_CLIENT_SECRET;
+  const hasRefreshToken = !!process.env.TIKTOK_REFRESH_TOKEN;
+
+  if (!hasClientKey || !hasClientSecret) {
+    await sendMessage(chatId,
+      '❌ *TIKTOK\\_CLIENT\\_KEY / TIKTOK\\_CLIENT\\_SECRET* not set\\.\n\n' +
+      'Add them to \\.env first, then run `/tiktokauth` to get initial tokens\\.'
+    );
+    return;
+  }
+
+  if (!hasRefreshToken) {
+    await sendMessage(chatId,
+      '❌ *TIKTOK\\_REFRESH\\_TOKEN not set*\\.\n\n' +
+      'Run the full OAuth flow first:\n' +
+      '`/tiktokauth` → follow steps → saves TIKTOK\\_REFRESH\\_TOKEN to \\.env\\.\n\n' +
+      'After that, `/refresh\\-token` will work automatically\\.'
+    );
+    return;
+  }
+
+  await sendMessage(chatId, '🔄 *Refreshing TikTok token…*');
+
+  try {
+    execSync('npx ts-node scripts/tiktok-refresh-token.ts', {
+      cwd: ROOT,
+      env: process.env,
+      encoding: 'utf-8',
+      timeout: 30000,
+    });
+
+    // Read updated meta to report new expiry
+    const metaPath = path.join(ROOT, 'data', 'tiktok-token-meta.json');
+    let expiryMsg = '';
+    if (fs.existsSync(metaPath)) {
+      try {
+        const meta = JSON.parse(fs.readFileSync(metaPath, 'utf-8'));
+        if (meta.expires_at) {
+          const expiresAt = new Date(meta.expires_at);
+          const hoursLeft = Math.round((expiresAt.getTime() - Date.now()) / 3600000);
+          expiryMsg += `\n\n✅ Access token expires in *${hoursLeft}h* \\(${expiresAt.toISOString().slice(0, 10)}\\)`;
+        }
+        if (meta.refresh_expires_at) {
+          const refExpAt = new Date(meta.refresh_expires_at);
+          const refDaysLeft = Math.round((refExpAt.getTime() - Date.now()) / 86400000);
+          expiryMsg += `\n⏳ Refresh token expires in *${refDaysLeft}d*`;
+        }
+      } catch { /* ignore parse error */ }
+    }
+
+    await sendMessage(chatId,
+      `✅ *Token refreshed\\!*${expiryMsg}\n\n` +
+      `⚠️ Restart bot to load new token: \`pm2 restart kognai-telegram-bot\``
+    );
+  } catch (e: any) {
+    const errMsg = ((e as any).stderr || (e as any).message || '').toString().slice(0, 300);
+    await sendMessage(chatId,
+      `❌ *Refresh failed*\\.\n\`\`\`\n${errMsg}\n\`\`\``
+    );
+  }
+}
+
 export function cmdQuickStart(): string {
   const expPath = path.join(ROOT, 'workspace', 'scs001', 'experiments.jsonl');
   const ledgerPath = path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl');

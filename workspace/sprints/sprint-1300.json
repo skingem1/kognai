@@ -1,0 +1,22 @@
+{
+  "sprint": 1300,
+  "title": "GATE — TikTok OAuth token refresh: add /refresh-token Telegram command",
+  "block": "GATE",
+  "status": "done",
+  "source": "queue-prescribed",
+  "rationale": "TIKTOK_ACCESS_TOKEN expires and blocks auto-posting. Existing tiktok-refresh-token.ts script does the refresh but has no Telegram interface. Add /refresh-token command: check TIKTOK_REFRESH_TOKEN set, run refresh script, report new expiry time.",
+  "tasks": [
+    {
+      "id": "cmd-refresh-token",
+      "description": "Add cmdRefreshToken(chatId) async function to scripts/telegram-commands/cmd-system.ts. Check client creds + refresh token present, run tiktok-refresh-token.ts via execSync, read data/tiktok-token-meta.json, report new expiry to operator.",
+      "file": "scripts/telegram-commands/cmd-system.ts",
+      "status": "pending"
+    },
+    {
+      "id": "wire-telegram-bot",
+      "description": "Add /refresh-token to asyncHandlers in scripts/telegram-bot.ts. Import cmdRefreshToken from cmd-system. Add alias /refreshtoken.",
+      "file": "scripts/telegram-bot.ts",
+      "status": "pending"
+    }
+  ]
+}

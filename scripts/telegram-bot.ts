@@ -20,7 +20,7 @@ import {
 } from './telegram-commands/telegram-api';
 
 // Sprint 455: Import extracted command modules (Part 1: A-M)
-import { cmdPm2, cmdHealth, cmdTier, cmdSprint, cmdReport, cmdCrons, cmdTikTokAuth, cmdQuickStart, cmdEnvCheck, cmdStripeStatus, cmdReadiness, cmdGitStats, cmdBoot, cmdShutdown, cmdReload, cmdSwarmStats, cmdErrors, cmdTokenCheck, cmdLogs, cmdChangelog, cmdPreflight as cmdPreflightSystem, cmdSmoke, cmdTestSuite, cmdApproveFinetune, cmdBrainxStatus, cmdSwarmHealth, cmdBrowserTest, cmdGodman, cmdGodmanThread, cmdGodmanTag, cmdGodmanPublish, cmdGodmanPreflight, cmdGodmanStatusPage, cmdGodmanLaunch, cmdGodmanNpmCheck, cmdGodmanChangelog, cmdPm2Errors, cmdCerberus, cmdGodmanValidate, cmdSprintNext, cmdSprintLog } from './telegram-commands/cmd-system'; // Sprint 1201: added cmdGodmanLaunch; Sprint 1207: added cmdGodmanNpmCheck; Sprint 1209: added cmdGodmanChangelog; Sprint 1271: added cmdCerberus; Sprint 1272: added cmdGodmanValidate; Sprint 1276: added cmdSprintNext; Sprint 1294: added cmdSprintLog
+import { cmdPm2, cmdHealth, cmdTier, cmdSprint, cmdReport, cmdCrons, cmdTikTokAuth, cmdRefreshToken, cmdQuickStart, cmdEnvCheck, cmdStripeStatus, cmdReadiness, cmdGitStats, cmdBoot, cmdShutdown, cmdReload, cmdSwarmStats, cmdErrors, cmdTokenCheck, cmdLogs, cmdChangelog, cmdPreflight as cmdPreflightSystem, cmdSmoke, cmdTestSuite, cmdApproveFinetune, cmdBrainxStatus, cmdSwarmHealth, cmdBrowserTest, cmdGodman, cmdGodmanThread, cmdGodmanTag, cmdGodmanPublish, cmdGodmanPreflight, cmdGodmanStatusPage, cmdGodmanLaunch, cmdGodmanNpmCheck, cmdGodmanChangelog, cmdPm2Errors, cmdCerberus, cmdGodmanValidate, cmdSprintNext, cmdSprintLog } from './telegram-commands/cmd-system'; // Sprint 1201: added cmdGodmanLaunch; Sprint 1207: added cmdGodmanNpmCheck; Sprint 1209: added cmdGodmanChangelog; Sprint 1271: added cmdCerberus; Sprint 1272: added cmdGodmanValidate; Sprint 1276: added cmdSprintNext; Sprint 1294: added cmdSprintLog; Sprint 1300: added cmdRefreshToken
 import { cmdDemos, cmdAchiriPing, cmdAchiriDeploy } from './telegram-commands/cmd-spielberg'; // Sprint 1194-1196, 1202
 import { cmdGate, cmdGoLive, cmdAudit, cmdStreak, cmdPace, cmdCalendar, cmdGateAudit, cmdGateRefresh, cmdGateSim } from './telegram-commands/cmd-gate';
 import { runGodmanSmoke } from './godman-smoke';
@@ -125,6 +125,8 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     '/quickstart':      () => cmdQuickstart(chatId),
     '/revenue':          async () => { const r = await cmdRevenue(); await sendMessage(chatId, r); },
     '/subscribe':        async () => { await sendMessage(chatId, cmdSubscribe()); },
+    '/refresh-token':    () => cmdRefreshToken(chatId), // Sprint 1300
+    '/refreshtoken':     () => cmdRefreshToken(chatId), // Sprint 1300 alias
   };
 
   const asyncHandler = asyncHandlers[cmdName];
