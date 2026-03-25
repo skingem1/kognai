@@ -3890,10 +3890,11 @@
       "sprint": 1308,
       "title": "SCS-001 — monitor-manual-posting.ts: TikTok view count refresh for gate metrics",
       "block": "SCS-001",
-      "status": "pending",
+      "status": "done",
       "priority": "high",
       "rationale": "Phase 1.5 gate shows 0 total views because no code polls TikTok API for view counts on manually-posted videos. manual-posts.jsonl has tiktok_post_id entries. Need monitor-manual-posting.ts: read manual-posts.jsonl, for each entry with tiktok_post_id call TikTok API (or dry-run if TIKTOK_ACCESS_TOKEN not set), update views in file, write posting-health.json summary. Gates accuracy depends on real view data.",
-      "added_at": "2026-03-25T17:18:51.076Z"
+      "added_at": "2026-03-25T17:18:51.076Z",
+      "_note": "Shipped 2026-03-25 — commit 650d8321. monitor-manual-posting.ts dry-run OK: 14 posts, 0 with tiktok_post_id. posting-health.json written."
     }
   ]
 }

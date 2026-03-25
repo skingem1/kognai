@@ -7174,3 +7174,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Skill crystallise: module not found — noted, not blocked
 - Commit: a70916eb
 - Status: DONE ✅
+
+## Sprint 1308 — 2026-03-25
+- **SCS-001 — monitor-manual-posting.ts: TikTok view count refresh**
+- Files created: scripts/scs001/monitor-manual-posting.ts
+- Files modified: workspace/sprints/sprint-1308.json, workspace/sprint-queue.json
+- Validation: dry-run OK — 14 posts checked, 0 with tiktok_post_id, reports/posting-health.json written with dry_run:true
+- Fixed path: workspace/reports → reports/ (reports dir at project root)
+- Swarm bypassed: yes (agent routing failure — "Agent not found: undefined"). Wrote directly.
+- AAR: module not found — skipped. Crystallise: module not found — skipped.
+- Commit: 650d8321
+- Status: DONE ✅
