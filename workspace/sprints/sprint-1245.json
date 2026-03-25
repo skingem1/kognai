@@ -1,0 +1,15 @@
+{
+  "sprint_id": "sprint-1245",
+  "title": "DIGEST-MRR — Wire MRR + subscriber count into daily digest",
+  "description": "Add MRR and active subscriber count from Supabase to the daily Telegram digest. Reuses the heartbeat fetchMRR pattern (Sprint 1243). Shows revenue alongside Stripe status.",
+  "date": "2026-03-25",
+  "status": "in-progress",
+  "tasks": [
+    {
+      "id": "1245-01",
+      "title": "Add async fetchMRR + subscriber count to daily-digest.ts",
+      "file": "scripts/daily-digest.ts",
+      "description": "Query Supabase subscribers table for active count + MRR. Display as '💰 MRR: €X (Y subscribers)' after Stripe status line."
+    }
+  ]
+}

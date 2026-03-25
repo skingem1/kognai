@@ -457,7 +457,34 @@ function escapeMd(text: string): string {
 
 // ── Format digest message ─────────────────────────────────────────────────────
 
-function buildDigest(): string {
+// Sprint 1245: Fetch MRR + subscriber count from Supabase (mirrors heartbeat fetchMRR)
+async function fetchMRRForDigest(): Promise<{ mrr: number; subscribers: number }> {
+  const url = process.env['SUPABASE_URL'] ?? '';
+  const key = process.env['SUPABASE_SERVICE_KEY'] ?? process.env['SUPABASE_KEY'] ?? '';
+  if (url && key) {
+    try {
+      const { createClient } = await import('@supabase/supabase-js');
+      const supabase = createClient(url, key);
+      const { data, error } = await supabase
+        .from('subscribers')
+        .select('plan, status')
+        .eq('status', 'active');
+      if (!error && data) {
+        const PLAN_PRICE: Record<string, number> = { default: 9 };
+        const rows = data as Array<{ plan: string; status: string }>;
+        const mrr = rows.reduce((sum, s) => sum + (PLAN_PRICE[s.plan] ?? PLAN_PRICE['default'] ?? 9), 0);
+        return { mrr, subscribers: rows.length };
+      }
+    } catch { /* fall through */ }
+  }
+  // Fallback: read from health.json
+  try {
+    const health = JSON.parse(fs.readFileSync(path.join(ROOT, 'health.json'), 'utf-8'));
+    return { mrr: health?.financials?.mrr ?? 0, subscribers: 0 };
+  } catch { return { mrr: 0, subscribers: 0 }; }
+}
+
+async function buildDigest(): Promise<string> {
   const gate     = getGateProgress();
   const ledger   = getLedgerStats();
   const queue    = getQueueStats();
@@ -467,6 +494,8 @@ function buildDigest(): string {
   const achiri   = getAchiriAlphaStats();
   const achiriEng = getAchiriEngagement();
   const calendarItems = getCalendarToday();
+  // Sprint 1245: MRR + subscriber count
+  const revenue  = await fetchMRRForDigest();
   // Sprint 1116: Stripe webhook health — show last event age
   let stripeStatus = process.env.STRIPE_SECRET_KEY
     ? '💳 Stripe: 🟢 LIVE'
@@ -554,6 +583,8 @@ function buildDigest(): string {
     ...getPipelineMetricsSummary(),
     '',
     stripeStatus,
+    // Sprint 1245: MRR + subscriber count from Supabase
+    `💰 MRR: €${revenue.mrr}${revenue.subscribers > 0 ? ` (${revenue.subscribers} subscriber${revenue.subscribers !== 1 ? 's' : ''})` : ''}`,
     `🤖 Auto-post: ${autoPost.status}${autoPost.detail ? ` — ${autoPost.detail}` : ''}`,
     ...(autoPost.action ? [`   _${autoPost.action}_`] : []),
     '',
@@ -734,7 +765,7 @@ function sendPlainText(chatId: string, text: string): Promise<void> {
 // ── Entry ─────────────────────────────────────────────────────────────────────
 
 async function main(): Promise<void> {
-  const digest = buildDigest();
+  const digest = await buildDigest();
 
   if (DRY_RUN) {
     process.stdout.write('=== DIGEST DRY RUN ===\n');
