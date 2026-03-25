@@ -6575,3 +6575,19 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Test: tsc --noEmit clean
 - Swarm used: no
 - Timestamp: 2026-03-25T03:00:00Z
+
+## Sprint 1213 — 2026-03-24
+- **Status:** done
+- **Title:** OPS — /weeklydigest: add Godman + Achiri alpha launch countdown
+- **Files:** scripts/telegram-commands/cmd-posting.ts
+- **Impact:** /weeklydigest now mirrors /digest — shows Godman (Apr 14) + Achiri alpha (Apr 25) countdowns with urgency icons after gate progress line
+
+## Sprint 1212 — QUALITY
+- Status: PASS
+- Commit: e4a37bfa
+- Files modified: scripts/test-telegram-commands.ts
+- Test: 136 PASS / 0 FAIL (was 124)
+- New commands tested: cmdGodmanChangelog, cmdGodmanLaunch, cmdGodmanNpmCheck, cmdGodmanPreflight, cmdGodmanPublish, cmdGodmanStatusPage, cmdGodmanTag, cmdStripeStatus, cmdAchiriPing, cmdBotTest, cmdAchiriBotSetup, cmdAchiriLaunch
+- Swarm used: no (single-file edit, direct write)
+- Issues: none
+- Timestamp: 2026-03-25T09:32:00Z
