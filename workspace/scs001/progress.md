@@ -6486,3 +6486,12 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Test: tsc --noEmit clean for modified files
 - Swarm used: no (cmd-system.ts too large for swarm)
 - Timestamp: 2026-03-25T00:35:00Z
+
+## Sprint 1202 — ACHIRI-LAUNCH
+- Status: PASS
+- Files modified: scripts/telegram-commands/cmd-stripe.ts, scripts/telegram-bot.ts, scripts/telegram-commands/cmd-help.ts
+- Files created: workspace/sprints/sprint-1202.json
+- Function: cmdAchiriLaunch() — 3-step April 25 alpha launch day runbook: pre-flight (ACHIRI_TELEGRAM_BOT_TOKEN SET, Hetzner LIVE, whitelist populated, E2E test pass), deploy (init-hetzner.sh / start-bot.sh), announce (waitlist count + broadcast script). Registered as /achiri-launch.
+- Test: tsc --noEmit clean for modified files
+- Swarm used: no (cmd-stripe.ts/telegram-bot.ts too large)
+- Timestamp: 2026-03-25T00:50:00Z
