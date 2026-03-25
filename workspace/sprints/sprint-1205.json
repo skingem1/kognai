@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1205",
+  "title": "GODMAN-LAUNCH — Create suite-launch/clawcard-listing.md (ClaWHub suite listing)",
+  "description": "cmdGodmanLaunch() checks for workspace/social/suite-launch/clawcard-listing.md to show ✅ on Step 3 (Announce). File is missing. Create the ClaWHub marketplace listing for the full Godman Protocols Suite (all 7 protocols), following the same format as the individual protocol listings in workspace/social/pact-launch/clawcard-listing.md.",
+  "source": "queue-empty-sonnet",
+  "tasks": [
+    {
+      "id": "1205-01",
+      "title": "Create workspace/social/suite-launch/clawcard-listing.md — Godman Suite ClaWHub listing",
+      "type": "feature",
+      "task_type": "content",
+      "task_target": "workspace/social/suite-launch/clawcard-listing.md",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-1205"
+    }
+  ]
+}
