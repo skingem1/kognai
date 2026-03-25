@@ -32,7 +32,18 @@ if $DRY_RUN; then
   echo "(Pass --live to actually publish)"
 else
   echo "=== Godman Protocols — npm PUBLISH LIVE ==="
-  echo "WARNING: This will publish to npm. Press Ctrl+C within 5s to abort."
+  # Sprint 1302: pre-check npm login before attempting any publish
+  local_npm_user=$(npm whoami 2>/dev/null || true)
+  if [[ -z "$local_npm_user" ]]; then
+    echo "ERROR: Not logged in to npm. Run: npm login --auth-type=web"
+    exit 1
+  fi
+  if [[ "$local_npm_user" != "skingem1" ]]; then
+    echo "ERROR: Logged in as '$local_npm_user' but expected 'skingem1'. Switch accounts or re-login."
+    exit 1
+  fi
+  echo "npm user: $local_npm_user ✓"
+  echo "WARNING: This will publish 8 packages to npm. Press Ctrl+C within 5s to abort."
   sleep 5
 fi
 echo ""

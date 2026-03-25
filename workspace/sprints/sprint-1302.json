@@ -1,0 +1,16 @@
+{
+  "sprint": 1302,
+  "title": "GODMAN-LAUNCH — publish-all.sh: serial npm publish for 8 packages in dependency order",
+  "block": "GODMAN-PROTOCOLS",
+  "status": "done",
+  "source": "queue-prescribed",
+  "rationale": "publish-all.sh already exists (Sprint 1254) with dry-run + --provenance + serial order. Sprint 1302 adds: npm whoami pre-check in --live mode to fail early if not authenticated, and improves error messaging.",
+  "tasks": [
+    {
+      "id": "npm-whoami-precheck",
+      "description": "Add npm whoami pre-check to publish-all.sh --live mode: verify npm is logged in as skingem1 before attempting any package publish. Fail early with clear message instead of failing at each package.",
+      "file": "workspace/godman-protocols/publish-all.sh",
+      "status": "done"
+    }
+  ]
+}
