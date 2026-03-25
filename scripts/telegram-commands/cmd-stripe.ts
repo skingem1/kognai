@@ -1480,3 +1480,60 @@ export function cmdAchiriLaunch(): string {
 
   return lines.join('\n');
 }
+
+/**
+ * Sprint 1210: /achiri-bot-setup — Step-by-step BotFather setup guide
+ *
+ * Primary blocker for Achiri alpha is ACHIRI_TELEGRAM_BOT_TOKEN not set.
+ * This command shows exact steps to create the bot via @BotFather.
+ */
+export function cmdAchiriBotSetup(): string {
+  // Check if token is already set
+  let tokenSet = false;
+  try {
+    const envContent = fs.readFileSync(path.join(ROOT, '.env'), 'utf-8');
+    tokenSet = envContent.includes('ACHIRI_TELEGRAM_BOT_TOKEN=') &&
+               !envContent.match(/ACHIRI_TELEGRAM_BOT_TOKEN=\s*(\r?\n|$)/m);
+  } catch {}
+
+  if (tokenSet) {
+    return [
+      `✅ *ACHIRI_TELEGRAM_BOT_TOKEN is already set!*`,
+      '',
+      'Next steps:',
+      '1. Run: `bash scripts/achiri/init-hetzner.sh` — deploy to Hetzner',
+      '2. Run: `bash scripts/achiri/start-bot.sh` — start the bot',
+      '3. Verify: /achiri-ping — check Hetzner is live',
+      '4. Run: /achiri-launch — full launch day runbook',
+    ].join('\n');
+  }
+
+  return [
+    `🤖 *Achiri Bot Setup — BotFather Guide*`,
+    '',
+    '*Step 1 — Create the bot*',
+    '1. Open Telegram → search for `@BotFather`',
+    '2. Send: `/newbot`',
+    '3. Name: `Achiri`',
+    '4. Username: `AchiriBot` (or `AchiriAlphaBot` if taken)',
+    '5. Copy the token BotFather gives you',
+    '',
+    '*Step 2 — Add token to .env*',
+    '```',
+    'echo "ACHIRI_TELEGRAM_BOT_TOKEN=<paste_token_here>" >> ~/kognai/.env',
+    '```',
+    '',
+    '*Step 3 — Set bot profile (optional)*',
+    'In @BotFather:',
+    '  · `/setdescription` → "Your culturally adaptive AI companion"',
+    '  · `/setabouttext` → "Achiri by Kognai — Arabic + Derja AI"',
+    '  · `/setuserpic` → upload assets/avatars/achiri.jpg',
+    '',
+    '*Step 4 — Deploy*',
+    '`bash scripts/achiri/init-hetzner.sh`',
+    '',
+    '*Verify token is set:*',
+    '/deploy-status — check Achiri bot token row',
+    '/achiri-launch — full pre-flight runbook',
+  ].join('\n');
+}

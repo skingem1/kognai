@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-1210",
+  "title": "ACHIRI — /achiri-bot-setup: BotFather setup guide (unblock ACHIRI_TELEGRAM_BOT_TOKEN)",
+  "description": "The primary blocker for Achiri alpha launch is ACHIRI_TELEGRAM_BOT_TOKEN not set. Create /achiri-bot-setup Telegram command that shows step-by-step: 1) Message @BotFather /newbot, 2) Set name + username, 3) Copy token to .env, 4) Set bot description and profile pic. Operator can run this from their phone without SSH.",
+  "source": "queue-empty-sonnet",
+  "tasks": [
+    {
+      "id": "1210-01",
+      "title": "Add cmdAchiriBotSetup() to cmd-stripe.ts — BotFather setup guide",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-commands/cmd-stripe.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-1210"
+    },
+    {
+      "id": "1210-02",
+      "title": "Register /achiri-bot-setup in telegram-bot.ts + add to cmd-help.ts",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-bot.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-1210"
+    }
+  ]
+}

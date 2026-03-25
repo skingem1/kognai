@@ -95,6 +95,7 @@ export function cmdHelp(): string {
     `/godman-npm-check — Live npm registry publish status for all 8 Godman packages\n` +
     `/godman-changelog — v0.2.0 changelog summary for all 7 Godman protocols\n` +
     `/achiri-launch — April 25 alpha launch day runbook (pre-flight + deploy + announce)\n` +
+    `/achiri-bot-setup — Step-by-step BotFather guide to create ACHIRI_TELEGRAM_BOT_TOKEN\n` +
     `/demos      — Godman demo recording status (7 protocols)\n` +
     `/achiri-ping — Check if Achiri API is live on Hetzner\n` +
     `/achiri-deploy — Deploy Achiri to Hetzner (--dry-run for preview)\n` +

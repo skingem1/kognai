@@ -32,7 +32,7 @@ import { cmdHelp } from './telegram-commands/cmd-help';
 // Sprint 496: Import extracted command modules (Part 2: N-Z + interactive)
 import { cmdSession, cmdDone, cmdEndSession, cmdMenu } from './telegram-commands/cmd-session';
 import { cmdDeliver, cmdPublish, cmdPostNow, cmdPickup, cmdTodayCaptions, cmdBroadcast, cmdRefresh, cmdProduce, cmdProduceTopic, cmdInstagram, cmdInventory, cmdBatchDeliver, cmdStockpile, cmdBroadcastPause, cmdBroadcastResume, cmdPostBrowser, cmdPostAuto, cmdQuickstart, cmdV2Produce, cmdDeliverNext } from './telegram-commands/cmd-delivery';
-import { cmdCheckout, cmdSubscribers, cmdPortal, cmdFunnel, cmdAchiri, cmdAlpha, cmdTestStripe, cmdUsage, cmdAchiriData, cmdWaitlist, cmdStripe, cmdDeployStatus, cmdInviteAchiri, cmdAchiriStats, cmdAchiriLaunch } from './telegram-commands/cmd-stripe'; // Sprint 1180: added cmdAchiriStats; Sprint 1202: added cmdAchiriLaunch
+import { cmdCheckout, cmdSubscribers, cmdPortal, cmdFunnel, cmdAchiri, cmdAlpha, cmdTestStripe, cmdUsage, cmdAchiriData, cmdWaitlist, cmdStripe, cmdDeployStatus, cmdInviteAchiri, cmdAchiriStats, cmdAchiriLaunch, cmdAchiriBotSetup } from './telegram-commands/cmd-stripe'; // Sprint 1180: added cmdAchiriStats; Sprint 1202: added cmdAchiriLaunch; Sprint 1210: added cmdAchiriBotSetup
 import { cmdStart, cmdTrial, cmdPlans } from './telegram-commands/cmd-onboarding';
 import { cmdLoraEval } from './telegram-commands/cmd-lora-eval';
 import { cmdWarmupStart, cmdWarmupComplete, cmdWarmupStatus } from './telegram-commands/cmd-warmup';
@@ -251,6 +251,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/achiri-stats': case '/achiristats': response = cmdAchiriStats(); break; // Sprint 1180
     case '/achiri-launch':  response = cmdAchiriLaunch();    break; // Sprint 1202
     case '/achirilaunche':  response = cmdAchiriLaunch();    break; // Sprint 1202 alias
+    case '/achiri-bot-setup': case '/achiribotsetup': response = cmdAchiriBotSetup(); break; // Sprint 1210
     case '/alpha':      response = cmdAlpha();               break;
     case '/waitlist':   response = cmdWaitlist(cmdArgs);      break;
     case '/brainxstatus': response = cmdBrainxStatus();       break;
