@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1212",
+  "title": "OPS — /digest: add Godman + Achiri alpha launch countdown lines",
+  "description": "The /digest command shows gate, queue, Achiri stats, Stripe, TikTok. Missing: Godman Protocols launch (Apr 14) and Achiri alpha (Apr 25) countdowns. Add 2 lines after the gate section showing days remaining for each launch. Operator sees both countdowns in their daily morning brief without needing /launches.",
+  "source": "queue-empty-sonnet",
+  "tasks": [
+    {
+      "id": "1212-01",
+      "title": "Update cmdDigest() in cmd-posting.ts — add Godman + Achiri countdown after gate section",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-commands/cmd-posting.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1212"
+    }
+  ]
+}

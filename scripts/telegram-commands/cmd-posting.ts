@@ -498,6 +498,21 @@ export function cmdDigest(): string {
     out.push(`⏱ Pace: ${postsPerDay} posts/day needed`);
   }
 
+  // Sprint 1212: Godman + Achiri alpha launch countdown
+  const godmanDays = Math.max(0, Math.ceil((new Date('2026-04-14T00:00:00Z').getTime() - now.getTime()) / 86_400_000));
+  const achiriAlphaDays = Math.max(0, Math.ceil((new Date('2026-04-25T00:00:00Z').getTime() - now.getTime()) / 86_400_000));
+  if (godmanDays > 0 || achiriAlphaDays > 0) {
+    out.push('');
+    if (godmanDays > 0) {
+      const gIcon = godmanDays <= 3 ? '🔴' : godmanDays <= 7 ? '🟠' : godmanDays <= 14 ? '🟡' : '🚀';
+      out.push(`${gIcon} *Godman launch:* ${godmanDays}d — April 14 · /godman-launch`);
+    }
+    if (achiriAlphaDays > 0) {
+      const aIcon = achiriAlphaDays <= 3 ? '🔴' : achiriAlphaDays <= 7 ? '🟠' : achiriAlphaDays <= 14 ? '🟡' : '🤖';
+      out.push(`${aIcon} *Achiri alpha:* ${achiriAlphaDays}d — April 25 · /achiri-launch`);
+    }
+  }
+
   out.push('');
   if (top3.length > 0) {
     out.push(`📦 *Queue:* ${queueCount} videos`);
