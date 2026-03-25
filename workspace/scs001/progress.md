@@ -6677,3 +6677,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (single-line fix)
 - Issues: none
 - Timestamp: 2026-03-25T09:10:00Z
+
+## Sprint 1225 — FEATURE — /queue-fill: auto-populate post queue from export manifest
+- Status: PASS
+- Commit: 0ee3d69f
+- Files created: scripts/scs001/queue-fill.ts
+- Files modified: scripts/telegram-commands/cmd-posting.ts, cmd-help.ts, telegram-bot.ts, validate-all-bot-commands.ts
+- Test: 82/82 bot commands pass. queue-fill reads 9 videos from manifest, idempotent.
+- Pipeline: export manifest → post-queue.jsonl → post-now.ts (full manual posting chain)
+- Swarm used: no (multi-file feature)
+- Issues: none
+- Timestamp: 2026-03-25T09:16:00Z
