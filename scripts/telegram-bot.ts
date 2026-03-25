@@ -320,6 +320,15 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
       [{ text: '📊 Gate', callback_data: 'cmd:/gate' }, { text: '🤖 Achiri', callback_data: 'cmd:/achiri' }],
       [{ text: '🔄 Refresh', callback_data: 'cmd:/refresh' }, { text: '📈 A/B Results', callback_data: 'cmd:/abresults' }],
     ],
+    // Sprint 1205: action buttons for /next-actions
+    '/next-actions': [
+      [{ text: '🎬 Pickup', callback_data: 'cmd:/pickup' }, { text: '🚀 Boot Crons', callback_data: 'cmd:/boot' }],
+      [{ text: '📊 Status', callback_data: 'cmd:/status' }, { text: '🗓 Launches', callback_data: 'cmd:/launches' }],
+    ],
+    '/next': [
+      [{ text: '🎬 Pickup', callback_data: 'cmd:/pickup' }, { text: '🚀 Boot Crons', callback_data: 'cmd:/boot' }],
+      [{ text: '📊 Status', callback_data: 'cmd:/status' }, { text: '🗓 Launches', callback_data: 'cmd:/launches' }],
+    ],
   };
 
   const buttons = buttonMap[cmdName];
