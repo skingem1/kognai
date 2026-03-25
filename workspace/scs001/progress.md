@@ -6934,3 +6934,13 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Fix 2: ANTHROPIC_API_KEY REQUIRED → OPTIONAL (free tier uses local models)
 - Swarm used: no (surgical 2-line fix)
 - Timestamp: 2026-03-25T13:45:00Z
+
+## Sprint 1261 — OPS /errors rotation detection
+- Status: PASS
+- Commit: 6a4d88e3
+- Files modified: scripts/telegram-commands/cmd-system.ts
+- Files created: workspace/sprints/sprint-1261.json
+- Feature: /errors now detects log files that shrank >50% since last call (rotation indicator)
+- Test: cmdErrors() runs without error — 54 output lines
+- Swarm used: no (single-function edit, direct write)
+- Timestamp: 2026-03-25T13:50:00Z
