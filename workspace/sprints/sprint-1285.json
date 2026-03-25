@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-1285",
+  "title": "QUALITY — /smoke: show total runtime vs previous run (performance trend)",
+  "description": "Add total_duration_ms to smoke-test-full.ts report so cron runs track duration. Add total_duration_ms to Telegram /smoke save block so every run contributes to trend. Update comparison to use smoke-test-latest.json as unified duration store.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1285-01",
+      "title": "Add total_duration_ms to smoke-test-full.ts report",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/smoke-test-full.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1285"
+    },
+    {
+      "id": "1285-02",
+      "title": "Add total_duration_ms to /smoke save block + read prev from smoke-test-latest.json",
+      "type": "feature",
+      "task_type": "bot",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1285"
+    }
+  ]
+}

@@ -2410,8 +2410,9 @@ export async function cmdSmoke(chatId: string): Promise<void> {
     const failed = failMatch ? parseInt(failMatch[1]) : 0;
     const icon = failed === 0 ? '✅' : '❌';
 
-    // Sprint 1095: show last run timestamp
+    // Sprint 1095: show last run timestamp; Sprint 1285: read prev duration for trend comparison
     let lastRunStr = '';
+    let prevDurationMs = 0;
     try {
       const smokePath = path.join(ROOT, 'reports', 'smoke-test-latest.json');
       if (fs.existsSync(smokePath)) {
@@ -2420,6 +2421,7 @@ export async function cmdSmoke(chatId: string): Promise<void> {
           const ageH = (Date.now() - new Date(prevSmoke.timestamp).getTime()) / 3600000;
           lastRunStr = ` · _prev: ${ageH < 1 ? `${Math.round(ageH * 60)}m ago` : `${Math.round(ageH)}h ago`}_`;
         }
+        if (prevSmoke.total_duration_ms) prevDurationMs = prevSmoke.total_duration_ms;
       }
     } catch {}
 
@@ -2475,6 +2477,7 @@ export async function cmdSmoke(chatId: string): Promise<void> {
         failed: failed,
         status: failed === 0 ? 'pass' : 'fail',
         pass: failed === 0,
+        total_duration_ms: Date.now() - t0,
         history: [...smokeHistory, { pass: failed === 0, timestamp: new Date().toISOString() }].slice(-7),
       };
       fs.writeFileSync(path.join(ROOT, 'reports', 'smoke-test-latest.json'), JSON.stringify(smokeResult, null, 2));
@@ -2599,23 +2602,19 @@ export async function cmdSmoke(chatId: string): Promise<void> {
       lines.push(`${envIcon} *Env vars:* ${setCount}/${total} set (${envPct}%)${missingVars.length > 0 ? ` · missing: ${missingVars.map(v => `\`${v}\``).join(', ')}` : ''}`);
     } catch { /* skip */ }
 
-    // Sprint 1142 (wave 26): compare runtime with previous smoke run (performance trend)
+    // Sprint 1285: compare runtime with previous smoke run (performance trend)
+    // prevDurationMs sourced from smoke-test-latest.json (unified — cron + Telegram both save it)
     try {
-      const smokeRuntimePath = path.join(ROOT, 'workspace', 'smoke-runtime-prev.json');
       const currentMs = Date.now() - t0;
-      if (fs.existsSync(smokeRuntimePath)) {
-        const prevRun = JSON.parse(fs.readFileSync(smokeRuntimePath, 'utf-8'));
-        const prevMs = prevRun.ms ?? 0;
-        if (prevMs > 0) {
-          const delta = currentMs - prevMs;
-          const pctChange = ((delta / prevMs) * 100).toFixed(0);
-          const trendIcon = delta > 5000 ? '🔴' : delta > 2000 ? '⚠️' : delta < -2000 ? '✅' : '🟢';
-          const trendStr = delta > 0 ? `+${(delta / 1000).toFixed(1)}s (+${pctChange}%)` : `${(delta / 1000).toFixed(1)}s (${pctChange}%)`;
-          lines.push('');
-          lines.push(`${trendIcon} *Runtime vs prev:* ${trendStr} (prev: ${(prevMs / 1000).toFixed(1)}s)`);
-        }
+      const prevMs = prevDurationMs;
+      if (prevMs > 0) {
+        const delta = currentMs - prevMs;
+        const pctChange = ((delta / prevMs) * 100).toFixed(0);
+        const trendIcon = delta > 5000 ? '🔴' : delta > 2000 ? '⚠️' : delta < -2000 ? '✅' : '🟢';
+        const trendStr = delta > 0 ? `+${(delta / 1000).toFixed(1)}s (+${pctChange}%)` : `${(delta / 1000).toFixed(1)}s (${pctChange}%)`;
+        lines.push('');
+        lines.push(`${trendIcon} *Runtime vs prev:* ${trendStr} (prev: ${(prevMs / 1000).toFixed(1)}s)`);
       }
-      fs.writeFileSync(smokeRuntimePath, JSON.stringify({ ms: currentMs, timestamp: new Date().toISOString() }));
     } catch { /* skip */ }
 
     // Sprint 1142 (wave 21): show total elapsed time

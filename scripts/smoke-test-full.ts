@@ -209,6 +209,8 @@ async function testSupabase(): Promise<{ status: 'PASS' | 'FAIL' | 'SKIP'; detai
 // ── Main ──────────────────────────────────────────────────────────────────────
 
 (async () => {
+  // Sprint 1285: track total duration for performance trend
+  const t0 = Date.now();
   console.log('\n=== Kognai Full System Smoke Test ===\n');
 
   await test('1. Ollama (local models)', testOllama);
@@ -243,6 +245,7 @@ async function testSupabase(): Promise<{ status: 'PASS' | 'FAIL' | 'SKIP'; detai
     timestamp: new Date().toISOString(),
     pass, fail, skip,
     total: results.length,
+    total_duration_ms: Date.now() - t0,
     results
   }, null, 2));
   console.log(`\nReport: reports/smoke-test-latest.json`);
