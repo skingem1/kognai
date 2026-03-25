@@ -6566,3 +6566,12 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Test: tsc --noEmit clean
 - Swarm used: no
 - Timestamp: 2026-03-25T02:45:00Z
+
+## Sprint 1212 — OPS /digest launch countdown
+- Status: PASS
+- Files modified: scripts/telegram-commands/cmd-posting.ts
+- Files created: workspace/sprints/sprint-1212.json
+- Enhancement: cmdDigest() now shows Godman (Apr 14) + Achiri (Apr 25) countdown lines after gate section. Urgency icons (🚀/🟡/🟠/🔴) scale with days remaining. Links to /godman-launch and /achiri-launch.
+- Test: tsc --noEmit clean
+- Swarm used: no
+- Timestamp: 2026-03-25T03:00:00Z

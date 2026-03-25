@@ -3066,6 +3066,15 @@
       "priority": "medium",
       "rationale": "cmdNextActions item #5 (Achiri bot token) was pointing to /deploy-status. Updated to /achiri-bot-setup (Sprint 1210) \u2014 more actionable direct guide to create token via BotFather.",
       "_note": "Shipped 2026-03-25 \u2014 Sprint 1211. cmd-management.ts only. tsc clean."
+    },
+    {
+      "sprint": 1212,
+      "title": "OPS \u2014 /digest: add Godman + Achiri alpha launch countdown lines",
+      "block": "OPS",
+      "status": "done",
+      "priority": "medium",
+      "rationale": "/digest (morning brief) was missing Godman/Achiri launch countdowns. Added 2 lines after gate section: Godman: Xd \u2192 /godman-launch, Achiri: Xd \u2192 /achiri-launch. Urgency icons change as dates approach.",
+      "_note": "Shipped 2026-03-25 \u2014 Sprint 1212. cmd-posting.ts only. tsc clean."
     }
   ]
 }
