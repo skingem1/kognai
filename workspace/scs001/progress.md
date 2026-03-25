@@ -6591,3 +6591,31 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (single-file edit, direct write)
 - Issues: none
 - Timestamp: 2026-03-25T09:32:00Z
+
+## Sprint 1214 — 2026-03-24
+- **Status:** done
+- **Title:** BUGFIX — spielberg/batch-run.ts: fix JSON parse error on Godman demo runs
+- **Files:** scripts/spielberg/batch-run.ts
+- **Impact:** All 7 Godman code-demo batch runs were failing with SyntaxError. Fixed by using lastIndexOf('\n{') to extract the last JSON object from pretty-printed index.ts output instead of joining all '{'-prefixed lines.
+
+## Sprint 1215 — 2026-03-24
+- **Status:** done
+- **Title:** BUGFIX — scs001-script-validator: widen DURATION_MAX_S from 35 to 60
+- **Files:** agents/scs001-script-validator/index.ts, scripts/telegram-commands/cmd-content.ts
+- **Impact:** Stops recurring "Duration out of range" validation errors for 56s scripts. TikTok supports 60s and longer content improves retention metrics.
+
+## Sprint 1216 — 2026-03-24
+- **Status:** done
+- **Title:** BUGFIX — pipeline-cron.ts: increase multiformat pipeline timeout 5min → 10min
+- **Files:** scripts/scs001/pipeline-cron.ts
+- **Impact:** Prevents false multiformat pipeline failures. TTS + avatar generation needs 2-3min/video; 5min was too tight for 3 videos.
+
+## Sprint 1216 — OPS
+- Status: PASS
+- Commit: e2593c8a
+- Files modified: scripts/telegram-commands/cmd-management.ts, scripts/telegram-bot.ts, scripts/test-telegram-commands.ts, scripts/telegram-commands/cmd-help.ts
+- New feature: /seturl <video_id> <tiktok_url> — adds TikTok URL to existing posts for oEmbed view tracking
+- Test: 137 PASS / 0 FAIL
+- Swarm used: no (multi-file, direct write)
+- Issues: none
+- Timestamp: 2026-03-25T09:45:00Z
