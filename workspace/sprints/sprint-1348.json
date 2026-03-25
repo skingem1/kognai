@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1348",
+  "title": "BUGFIX — generate-stats-report: exclude dry-run posts from postsDelivered count",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "generate-stats-report.ts uses manualEntries.length (all 16 entries) for postsDelivered. But gate-audit.json shows only 13 real posts — 3 are dry-runs (method: browser-post-dry, batch-browser-dry, dry). The gate requires 30 REAL TikTok posts, not test/dry-run posts. generate-phase1-5-gate.ts already filters DRY_METHODS correctly and shows 13. Fix: apply the same DRY_METHODS filter to manualEntries in generate-stats-report.ts so postsDelivered = 13 (real posts only).",
+  "tasks": [
+    {
+      "id": "1348-stats-dry-run-filter",
+      "description": "In scripts/scs001/generate-stats-report.ts: add DRY_METHODS constant. Filter manualEntries to exclude dry-run posts before counting postsDelivered: `const DRY_METHODS = ['browser-post-dry', 'batch-browser-dry', 'dry']; const realManualEntries = manualEntries.filter((e: any) => !e.method || !DRY_METHODS.some(d => String(e.method).includes(d))); const postsDelivered = realManualEntries.length;`",
+      "file": "scripts/scs001/generate-stats-report.ts",
+      "status": "done",
+      "priority": "medium",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}

@@ -113,13 +113,17 @@ function main() {
   // Sprint 1345: Declare manualEntries BEFORE gate calculation (fix Sprint 1338 TS2448 use-before-decl)
   // Sprint 1338: Use manual-posts.jsonl as ground truth for TikTok posts.
   // auto-delivered.jsonl tracks Telegram sends, NOT TikTok posts — do not count those as gate posts.
+  // Sprint 1348: Filter out dry-run posts (matches generate-phase1-5-gate.ts logic)
+  const DRY_METHODS = ['browser-post-dry', 'batch-browser-dry', 'dry'];
   const manualPath = join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
   const manualEntries = readJsonLines(manualPath);
+  const realManualEntries = manualEntries.filter((e: any) =>
+    !e.method || !DRY_METHODS.some((d: string) => String(e.method).includes(d)));
 
   // Gate calculation (Apr 7 = 2026-04-07)
   const gateDate = new Date('2026-04-07');
   const daysRemaining = Math.max(0, Math.ceil((gateDate.getTime() - Date.now()) / 86400000));
-  const postsDelivered = manualEntries.length;
+  const postsDelivered = realManualEntries.length;
 
   // Sprint 586: Urgency level
   const postsLeft = Math.max(0, 30 - postsDelivered);
