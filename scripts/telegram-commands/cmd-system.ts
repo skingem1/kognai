@@ -3935,3 +3935,38 @@ export function cmdCerberus(): string {
 
   return lines.join('\n');
 }
+
+// Sprint 1276: /sprint-next — show next planned sprint from queue (or "queue empty" notice)
+export function cmdSprintNext(): string {
+  const queuePath = path.join(ROOT, 'workspace', 'sprint-queue.json');
+  const lines: string[] = ['*Next Sprint*\n'];
+
+  try {
+    const queue = JSON.parse(fs.readFileSync(queuePath, 'utf8'));
+    const pending = (queue.queue as any[]).filter((i: any) => i.status === 'pending');
+
+    if (pending.length === 0) {
+      lines.push('📭 *Queue empty* — no pending sprints');
+      lines.push('');
+      lines.push('Run `/replenish` to generate new items, or add one manually to `workspace/sprint-queue.json`.');
+    } else {
+      const next = pending[0];
+      const icon = next.priority === 'critical' ? '🔴' : next.priority === 'high' ? '🟠' : '🟢';
+      lines.push(`${icon} *Sprint ${next.sprint}:* ${next.title}`);
+      lines.push('');
+      lines.push(`*Block:* \`${next.block}\``);
+      lines.push(`*Priority:* ${next.priority}`);
+      lines.push(`*Rationale:* ${next.rationale ?? 'n/a'}`);
+      if (pending.length > 1) {
+        lines.push('');
+        lines.push(`*Queue depth:* ${pending.length} items pending`);
+        lines.push(`_Next up: ${pending.slice(1, 3).map((i: any) => i.title.split(' — ')[0]).join(', ')}_`);
+      }
+    }
+  } catch (err) {
+    lines.push('❌ Could not read sprint-queue.json');
+    lines.push(`_${(err as Error).message}_`);
+  }
+
+  return lines.join('\n');
+}

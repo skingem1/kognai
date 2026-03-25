@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1276",
+  "title": "INFRA — /sprint-next: show next planned sprint title + rationale from queue",
+  "description": "When queue is empty, operator has no visibility into what Claude Code will work on next. /sprint-next shows top pending item with title, block, priority, rationale, and queue depth. Shows 'queue empty — run /replenish' when no pending items.",
+  "source": "queue-auto-replenish",
+  "tasks": [
+    {
+      "id": "1276-01",
+      "title": "Add cmdSprintNext() to cmd-system.ts, wire into telegram-bot.ts",
+      "type": "feature",
+      "task_type": "bot",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1276"
+    }
+  ]
+}
