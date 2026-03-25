@@ -81,13 +81,21 @@ export async function generateBrollVideo(
 
       // Write Python script to temp file to avoid shell escaping issues
       const tmpScript = join('/tmp', `fal_gen_${Date.now()}.py`);
+      // Wrap fal_client.subscribe in a signal.alarm(90s) timeout so a hung API call
+      // fails fast rather than blocking for 5 minutes (ETIMEDOUT from execSync).
       const pyCode = [
-        'import fal_client, os, json',
+        'import fal_client, os, json, signal',
         `os.environ["FAL_KEY"] = ${JSON.stringify(falKey)}`,
-        `result = fal_client.subscribe(`,
-        `    ${JSON.stringify(MODEL_SLUGS[model])},`,
-        `    arguments=${JSON.stringify(args)},`,
-        `)`,
+        'def _timeout_handler(sig, frame): raise TimeoutError("fal.ai subscribe timed out after 90s")',
+        'signal.signal(signal.SIGALRM, _timeout_handler)',
+        'signal.alarm(90)',
+        `try:`,
+        `    result = fal_client.subscribe(`,
+        `        ${JSON.stringify(MODEL_SLUGS[model])},`,
+        `        arguments=${JSON.stringify(args)},`,
+        `    )`,
+        `finally:`,
+        `    signal.alarm(0)`,
         `url = result.get("video", {}).get("url", "")`,
         `print(json.dumps({"url": url}))`,
       ].join('\n');
@@ -95,7 +103,7 @@ export async function generateBrollVideo(
       writeFileSync(tmpScript, pyCode);
 
       const result = execSync(`python3 "${tmpScript}"`, {
-        timeout: 300000,
+        timeout: 120000,  // 2 min safety net; Python signal.alarm(90) fires first
         encoding: 'utf-8',
       });
 

@@ -1,0 +1,27 @@
+{
+  "sprint_id": "sprint-1320",
+  "title": "BUGFIX — Fix pipeline errors: FFmpeg subtitles force_style quoting + fal.ai ETIMEDOUT",
+  "block": "BUGFIX",
+  "source": "queue-prescribed",
+  "rationale": "Two pipeline errors from 2026-03-25 logs: (1) scs001-caption agent fails to burn subtitles — FFmpeg rejects force_style options due to shell single-quote stripping in execSync string mode. (2) fal.ai video generation hangs for 5 min per model (ETIMEDOUT) blocking pipeline for hours on each scene. Fix both with surgical edits.",
+  "tasks": [
+    {
+      "id": "fix-caption-ffmpeg-quoting",
+      "description": "In agents/scs001-caption/index.ts, replace execSync string-based ffmpeg call with execFileSync args-array call to avoid shell interpretation of single quotes in force_style. Import execFileSync from child_process. Replace the burnCmd string + execSync(burnCmd) with execFileSync(FFMPEG, ['-y','-i',video.file_path,'-vf',`subtitles=${srtPath}:force_style='FontSize=24,PrimaryColour=&H00FFFFFF,OutlineColour=&H00000000,Outline=2,Alignment=2,MarginV=80'`,'-c:a','copy',captionedPath], {stdio:'pipe',timeout:60_000}).",
+      "file": "agents/scs001-caption/index.ts",
+      "status": "pending",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    },
+    {
+      "id": "fix-fal-timeout",
+      "description": "In scripts/scs001/fal-video-client.ts, add a Python signal.alarm timeout (90 seconds) to the generated Python script so fal_client.subscribe() fails fast instead of hanging for 5 minutes. Also reduce execSync timeout from 300000 to 120000. The Python code should wrap fal_client.subscribe in try/finally with signal.alarm(90) and signal.signal(signal.SIGALRM, handler) that raises TimeoutError.",
+      "file": "scripts/scs001/fal-video-client.ts",
+      "status": "pending",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}

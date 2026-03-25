@@ -5,7 +5,7 @@
 // Block C mock: generates SRT files, passes through video (no overlay without libass)
 
 import { existsSync, mkdirSync, writeFileSync, copyFileSync } from 'fs';
-import { execSync } from 'child_process';
+import { execSync, execFileSync } from 'child_process';
 import type { ScriptBundle, ScriptSegment } from '../scs001-script/index';
 import type { EditedVideo } from '../scs001-editing/index';
 
@@ -143,11 +143,11 @@ export class CaptionAgent {
     if (productionMode) {
       // Production mode: burn subtitles into video via FFmpeg subtitles filter
       const FFMPEG = process.env.FFMPEG_PATH ?? '/opt/homebrew/bin/ffmpeg';
-      const burnCmd = FFMPEG + ' -y -i "' + video.file_path + '" -vf "subtitles=' + srtPath +
-        ':force_style=\'FontSize=24,PrimaryColour=&H00FFFFFF,OutlineColour=&H00000000,Outline=2,Alignment=2,MarginV=80\'" ' +
-        '-c:a copy "' + captionedPath + '"';
+      // Use execFileSync (not execSync) to pass -vf as a literal arg, avoiding shell
+      // single-quote stripping that breaks force_style in FFmpeg 8.x.
+      const vfArg = `subtitles=${srtPath}:force_style='FontSize=24,PrimaryColour=&H00FFFFFF,OutlineColour=&H00000000,Outline=2,Alignment=2,MarginV=80'`;
       try {
-        execSync(burnCmd, { stdio: 'pipe', timeout: 60_000 });
+        execFileSync(FFMPEG, ['-y', '-i', video.file_path, '-vf', vfArg, '-c:a', 'copy', captionedPath], { stdio: 'pipe', timeout: 60_000 });
       } catch (err) {
         console.warn('[CaptionAgent] subtitle burn-in failed, falling back to copy: ' + (err as Error).message);
         copyFileSync(video.file_path, captionedPath);
