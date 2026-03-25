@@ -72,9 +72,17 @@ function checkGates() {
   let totalViews = 0;
 
   if (existsSync(postsPath)) {
-    const lines = readFileSync(postsPath, 'utf-8').trim().split('\n').filter(Boolean);
-    postCount = lines.length;
-    for (const l of lines) {
+    // Sprint 1351: Filter dry-run posts — gate requires real TikTok posts only
+    const DRY_METHODS = ['browser-post-dry', 'batch-browser-dry', 'dry'];
+    const allLines = readFileSync(postsPath, 'utf-8').trim().split('\n').filter(Boolean);
+    const realLines = allLines.filter((l: string) => {
+      try {
+        const e = JSON.parse(l);
+        return !e.method || !DRY_METHODS.some((d: string) => String(e.method).includes(d));
+      } catch { return true; }
+    });
+    postCount = realLines.length;
+    for (const l of realLines) {
       try { totalViews += JSON.parse(l).views || 0; } catch { /* skip */ }
     }
   }

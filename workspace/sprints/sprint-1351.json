@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1351",
+  "title": "BUGFIX — production-preflight: exclude dry-run posts from gate post count",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "scripts/production-preflight.ts checkGates() uses lines.length on raw manual-posts.jsonl. Gate requires real TikTok posts. Fix: add DRY_METHODS filter before counting postCount.",
+  "tasks": [
+    {
+      "id": "1351-preflight-dry-run-filter",
+      "description": "In scripts/production-preflight.ts: add DRY_METHODS filter in checkGates() before using lines.length for postCount.",
+      "file": "scripts/production-preflight.ts",
+      "status": "done",
+      "priority": "low",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}

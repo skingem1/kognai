@@ -120,7 +120,11 @@ async function main(): Promise<void> {
   }
 
   // Pipeline is stale — build alert
-  const manualPosts = readLines(MANUAL_POSTS_PATH);
+  // Sprint 1352: Filter dry-run posts — gate requires real TikTok posts only
+  const DRY_METHODS = ['browser-post-dry', 'batch-browser-dry', 'dry'];
+  const allManualPosts = readLines(MANUAL_POSTS_PATH);
+  const manualPosts = allManualPosts.filter((e: any) =>
+    !e.method || !DRY_METHODS.some((d: string) => String(e.method).includes(d)));
   const recordedPosts = manualPosts.length;
   const APR_7 = new Date('2026-04-07T00:00:00Z');
   const daysToGate = Math.ceil((APR_7.getTime() - now) / 86_400_000);
