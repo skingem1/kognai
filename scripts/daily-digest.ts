@@ -48,6 +48,14 @@ function readLines(filePath: string): any[] {
   } catch { return []; }
 }
 
+// Sprint 1230: helper that mirrors shared.ts readRealPosts — excludes dry-run entries
+const DRY_RUN_METHODS_DD = ['browser-post-dry', 'batch-browser-dry', 'dry'];
+function readRealPostsDD(): any[] {
+  return readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl')).filter(
+    (e: any) => e.video_id && !(e.method && DRY_RUN_METHODS_DD.some((d: string) => String(e.method).includes(d)))
+  );
+}
+
 function readJSON<T>(filePath: string): T | null {
   if (!fs.existsSync(filePath)) return null;
   try { return JSON.parse(fs.readFileSync(filePath, 'utf-8')); }
@@ -166,7 +174,8 @@ function loadViralScoresForDigest(): Map<string, number> {
 
 function getQueueStats(): { ledgerCount: number; recordedCount: number; unposted: number; readyCount: number; top3: string[] } {
   const ledger   = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
-  const recorded = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  // Sprint 1230: use readRealPostsDD so dry-run posts don't hide videos from queue stats
+  const recorded = readRealPostsDD();
   const recordedIds = new Set(recorded.map((e: any) => e.video_id).filter(Boolean));
   const viralScores = loadViralScoresForDigest();
   const unpostedEntries = (ledger as any[])
@@ -295,7 +304,8 @@ function getDaysUntil(isoDate: string): number {
 // ── Sprint 282: Posting streak ────────────────────────────────────────────────
 
 function getPostingStreak(): { current: number; best: number; todayPosts: number; yesterdayPosts: number } {
-  const posts = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  // Sprint 1230: use readRealPostsDD to exclude dry-run entries from streak calc
+  const posts = readRealPostsDD();
   if (posts.length === 0) return { current: 0, best: 0, todayPosts: 0, yesterdayPosts: 0 };
 
   const daySet: Record<string, number> = {};

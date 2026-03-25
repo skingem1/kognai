@@ -31,6 +31,14 @@ function readLines(filePath: string): any[] {
   } catch { return []; }
 }
 
+// Sprint 1230: excludes dry-run entries from report metrics
+function readRealPostsDR(): any[] {
+  const dryMethods = ['browser-post-dry', 'batch-browser-dry', 'dry'];
+  return readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl')).filter(
+    (e: any) => e.video_id && !(e.method && dryMethods.some((d: string) => String(e.method).includes(d)))
+  );
+}
+
 function getToday(): string {
   return new Date().toISOString().slice(0, 10);
 }
@@ -68,7 +76,8 @@ function getGitActivity(date: string): { commits: number; files_changed: number;
 // Pipeline output for today
 function getPipelineOutput(date: string): { videos_generated: number; videos_posted: number; total_views: number } {
   const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
-  const posts = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  // Sprint 1230: use readRealPostsDR to exclude dry-run entries from daily report
+  const posts = readRealPostsDR();
 
   const todayVideos = ledger.filter((e: any) => (e.published_at ?? '').startsWith(date)).length;
   const todayPosts = posts.filter((e: any) => (e.posted_at ?? e.timestamp ?? '').startsWith(date)).length;
@@ -79,7 +88,8 @@ function getPipelineOutput(date: string): { videos_generated: number; videos_pos
 
 // Gate progress
 function getGateProgress(): { posts: number; target_posts: number; views: number; target_views: number; days_remaining: number } {
-  const posts = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  // Sprint 1230: use readRealPostsDR to exclude dry-run entries from gate progress
+  const posts = readRealPostsDR();
   const totalViews = posts.reduce((s: number, e: any) => s + (e.views ?? 0), 0);
   const gateDate = new Date('2026-04-07T00:00:00Z');
   const daysRemaining = Math.max(0, Math.ceil((gateDate.getTime() - Date.now()) / 86400000));

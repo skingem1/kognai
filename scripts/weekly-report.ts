@@ -38,6 +38,14 @@ function readLines(filePath: string): any[] {
   } catch { return []; }
 }
 
+// Sprint 1230: excludes dry-run entries from weekly report metrics
+function readRealPostsWR(): any[] {
+  const dryMethods = ['browser-post-dry', 'batch-browser-dry', 'dry'];
+  return readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl')).filter(
+    (e: any) => e.video_id && !(e.method && dryMethods.some((d: string) => String(e.method).includes(d)))
+  );
+}
+
 function sendTelegram(chatId: string, text: string): Promise<void> {
   const payload = JSON.stringify({ chat_id: chatId, text, parse_mode: 'Markdown' });
   return new Promise((resolve, reject) => {
@@ -73,8 +81,8 @@ function buildWeeklyReport(): string {
   const weekStartStr = weekStart.toISOString().slice(0, 10);
   const todayStr = now.toISOString().slice(0, 10);
 
-  // Manual posts
-  const allPosts = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  // Manual posts — Sprint 1230: use readRealPostsWR to exclude dry-run entries
+  const allPosts = readRealPostsWR();
   const weekPosts = allPosts.filter((p: any) => {
     const date = (p.posted_at ?? p.recorded_at ?? '').slice(0, 10);
     return date >= weekStartStr && date <= todayStr;

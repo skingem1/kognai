@@ -18,6 +18,14 @@ function readJsonLines(filePath: string): any[] {
     .filter(Boolean);
 }
 
+// Sprint 1230: helper that excludes dry-run entries from manual-posts.jsonl
+function readRealPostsMB(): any[] {
+  const dryMethods = ['browser-post-dry', 'batch-browser-dry', 'dry'];
+  return readJsonLines(path.join(ROOT, 'workspace/scs001/manual-posts.jsonl')).filter(
+    (e: any) => e.video_id && !(e.method && dryMethods.some((d: string) => String(e.method).includes(d)))
+  );
+}
+
 function sendTelegram(text: string): void {
   const token = process.env.TELEGRAM_BOT_TOKEN;
   const chatId = process.env.OWNER_TELEGRAM_CHAT_ID;
@@ -106,12 +114,11 @@ function main(): void {
     .filter((p: any) => !DRY_METHODS.some(d => String(p.method || '').includes(d)))
     .reduce((s: number, p: any) => s + (p.views ?? 0), 0);
 
-  // Sprint 1127: gate ETA from manual-posts history
+  // Sprint 1127: gate ETA from manual-posts history — Sprint 1230: use readRealPostsMB
   let gateEtaLine = '';
   if (postsNeeded > 0) {
     try {
-      const allPosts = fs.readFileSync(path.join(ROOT, 'workspace/scs001/manual-posts.jsonl'), 'utf-8')
-        .split('\n').filter(l => l.trim()).map(l => JSON.parse(l));
+      const allPosts = readRealPostsMB();
       if (allPosts.length > 1) {
         const dates = allPosts
           .map((p: any) => new Date(p.posted_at ?? p.recorded_at))

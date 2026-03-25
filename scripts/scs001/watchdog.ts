@@ -56,6 +56,14 @@ function readLines(filePath: string): unknown[] {
   } catch { return []; }
 }
 
+// Sprint 1230: excludes dry-run entries from gate checks
+function readRealPostsWD(): any[] {
+  const dryMethods = ['browser-post-dry', 'batch-browser-dry', 'dry'];
+  return (readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl')) as any[]).filter(
+    (e: any) => e.video_id && !(e.method && dryMethods.some((d: string) => String(e.method).includes(d)))
+  );
+}
+
 function readJSON<T>(filePath: string): T | null {
   if (!fs.existsSync(filePath)) return null;
   try { return JSON.parse(fs.readFileSync(filePath, 'utf-8')); }
@@ -125,7 +133,8 @@ function checkPipelineStaleness(): Alert | null {
 }
 
 function checkGateDeadline(): Alert | null {
-  const manualPosts = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl')) as any[];
+  // Sprint 1230: use readRealPostsWD to exclude dry-run entries from gate deadline check
+  const manualPosts = readRealPostsWD();
   const postsCount  = manualPosts.length;
   const totalViews: number = manualPosts.reduce((s: number, e: any) => s + (e.views ?? 0), 0);
   const daysLeft    = Math.max(1, Math.ceil((GATE_DATE.getTime() - Date.now()) / 86400000));
