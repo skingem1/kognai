@@ -1,0 +1,34 @@
+{
+  "sprint": 1223,
+  "title": "FEATURE — Phase 1.5 readiness: gate projection + manual post queue + post-now CLI",
+  "status": "in-progress",
+  "track": "FEATURE",
+  "tasks": [
+    {
+      "id": "1223-01",
+      "title": "Extend audit-gate-count.ts with Phase 1.5 readiness projection",
+      "file": "scripts/scs001/audit-gate-count.ts",
+      "description": "Add pace projection: days until Apr 7, posts/day needed, pace assessment (on-track/at-risk/critical). Add to both JSON output and console summary.",
+      "status": "pending"
+    },
+    {
+      "id": "1223-02",
+      "title": "Create manual-post-queue.ts — queue manager for pending posts",
+      "file": "scripts/scs001/manual-post-queue.ts",
+      "description": "CLI tool: list/add/remove posts from a queue file (workspace/scs001/post-queue.jsonl). Commands: list, add <video_id> <title>, remove <video_id>, next (show next to post).",
+      "status": "pending"
+    },
+    {
+      "id": "1223-03",
+      "title": "Create post-now.ts — manual posting CLI with dry-run fallback",
+      "file": "scripts/scs001/post-now.ts",
+      "description": "Posts a video to TikTok via API if TIKTOK_ACCESS_TOKEN is set. Falls back to dry-run mode (logs to manual-posts.jsonl with method=dry-run). Accepts video_id as argument.",
+      "status": "pending"
+    }
+  ],
+  "acceptance_criteria": [
+    "audit-gate-count.ts shows pace projection in output",
+    "manual-post-queue.ts list/add/remove/next commands work",
+    "post-now.ts runs in dry-run mode when no token, logs to manual-posts.jsonl"
+  ]
+}

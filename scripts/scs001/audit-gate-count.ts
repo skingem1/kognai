@@ -84,6 +84,15 @@ function main() {
     recommended_count: recommendedCount,
     gate_target: 30,
     gate_remaining: Math.max(0, 30 - recommendedCount),
+    readiness: (() => {
+      const deadline = new Date('2026-04-07T23:59:59Z');
+      const now = new Date();
+      const daysLeft = Math.max(0, Math.ceil((deadline.getTime() - now.getTime()) / 86400000));
+      const remaining = Math.max(0, 30 - recommendedCount);
+      const postsPerDay = daysLeft > 0 ? +(remaining / daysLeft).toFixed(2) : remaining > 0 ? Infinity : 0;
+      const pace = remaining === 0 ? 'DONE' : postsPerDay <= 1.5 ? 'on-track' : postsPerDay <= 3 ? 'at-risk' : 'critical';
+      return { deadline: '2026-04-07', days_left: daysLeft, posts_remaining: remaining, posts_per_day_needed: postsPerDay, pace };
+    })(),
   };
 
   fs.mkdirSync(path.join(ROOT, 'reports'), { recursive: true });
@@ -100,6 +109,12 @@ function main() {
   if (result.discrepancy_note !== 'Sources agree.') {
     console.log(`⚠️  ${result.discrepancy_note}`);
   }
+  const r = result.readiness;
+  console.log(`\n--- Phase 1.5 Readiness ---`);
+  console.log(`Deadline          : ${r.deadline} (${r.days_left} days left)`);
+  console.log(`Posts remaining   : ${r.posts_remaining}`);
+  console.log(`Posts/day needed  : ${r.posts_per_day_needed}`);
+  console.log(`Pace              : ${r.pace.toUpperCase()}`);
   console.log(`\nReport written to: ${OUT}`);
 }
 
