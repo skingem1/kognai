@@ -1,0 +1,27 @@
+{
+  "sprint_id": "sprint-1363",
+  "title": "BUGFIX — hook_timing QC failures: listicle end_s=3 and 60s template end_s=4 violate <=2s gate",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "QC gate requires hook_end_s <= 2s (TikTok hook must grab in first 2s). Two codepaths violate this: (1) buildListicleSegments in scs001-script/index.ts sets hook.end_s=3, causing 100% QC failure for listicle template (~25% of videos). (2) 60s template in scs001-script/length-optimizer.ts sets hook:[0,4], causing 100% QC failure for deep-dive videos. Both fixes: change hook end to 2s and shift following segments accordingly.",
+  "tasks": [
+    {
+      "id": "1363-listicle-hook-end",
+      "description": "In agents/scs001-script/index.ts buildListicleSegments: change hook end_s from 3 to 2, adjust point segment start_s from 3 to 2.",
+      "file": "agents/scs001-script/index.ts",
+      "status": "done",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    },
+    {
+      "id": "1363-60s-hook-end",
+      "description": "In agents/scs001-script/length-optimizer.ts 60s case: change hook from [0,4] to [0,2], context from [4,12] to [2,12].",
+      "file": "agents/scs001-script/length-optimizer.ts",
+      "status": "done",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}

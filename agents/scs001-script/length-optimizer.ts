@@ -123,8 +123,8 @@ function buildDurationConfig(duration: VideoDuration, reason: string): DurationC
         target_duration: 60,
         reason,
         segment_timings: {
-          hook:       [0, 4],
-          context:    [4, 12],
+          hook:       [0, 2],  // Sprint 1363: QC gate requires hook_end_s <= 2; was [0,4] causing 100% QC fail
+          context:    [2, 12],
           clip:       [12, 30],
           commentary: [30, 44],
           insight:    [44, 56],

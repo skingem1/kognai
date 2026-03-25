@@ -244,14 +244,14 @@ function buildListicleSegments(brief: InsightBrief): ScriptSegment[] {
     {
       segment_name:     'hook',
       start_s:          0,
-      end_s:            3,
+      end_s:            2,  // Sprint 1363: QC gate requires hook_end_s <= 2; was 3 causing 100% QC fail
       voiceover_text:   hookText,
       visual_directive: 'title_card',
       caption_text:     hookText,
     },
     {
       segment_name:     'point',
-      start_s:          3,
+      start_s:          2,
       end_s:            10,
       voiceover_text:   '1. ' + points[0],
       visual_directive: 'source_clip',
