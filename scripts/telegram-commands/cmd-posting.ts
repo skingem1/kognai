@@ -1647,3 +1647,24 @@ export function cmdBulkCaptions(): string {
     return `❌ Error: ${e.message}`;
   }
 }
+
+// Sprint 1225: queue-fill command
+export function cmdQueueFill(): string {
+  try {
+    const { queueFill } = require('../scs001/queue-fill');
+    const result = queueFill();
+    const lines = ['📥 *Queue Fill*', ''];
+    lines.push(`Manifest entries: ${result.total}`);
+    lines.push(`Added to queue: ${result.added}`);
+    lines.push(`Skipped: ${result.skipped}`);
+    if (result.added > 0) {
+      lines.push('', 'Use /post-next to see the next video to post.');
+    }
+    if (result.total === 0) {
+      lines.push('', '⚠️ No export manifest found. Run the pipeline first.');
+    }
+    return lines.join('\n');
+  } catch (e: any) {
+    return `❌ Queue fill error: ${e.message}`;
+  }
+}

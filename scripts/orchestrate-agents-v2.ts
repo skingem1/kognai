@@ -1228,8 +1228,9 @@ function loadOwnerDirectives(): string {
  *   - workspace/shared-context/CONSTITUTION.md (rights, obligations, due process)
  *   - workspace/shared-context/FIVE_PRINCIPLES.md (Islamic ethical foundations)
  *   - workspace/SOUL.md (swarm identity, hard rules)
+ *   - workspace/shared-context/ACP.md (capability registers, trust scoring, system parameters)
  *
- * This is a CONDENSED runtime preamble (~30 lines), not a full dump.
+ * This is a CONDENSED runtime preamble (~50 lines), not a full dump.
  * Agents can reference the full documents at the paths above if needed.
  */
 let _constitutionalPreambleCache: string | null = null;
@@ -1284,6 +1285,29 @@ If rules don't cover an edge case, apply all five. Principle 3 takes precedence 
 - Escalate decisions above €500 impact to human via Telegram.`);
   }
 
+  // ── ACP: extract trust parameters ──
+  const acpPath = './workspace/shared-context/ACP.md';
+  if (existsSync(acpPath)) {
+    parts.push(`## Agent Capability Profile — ACP v1 (trust + capability governance)
+
+**System Parameters**:
+- \`psychological_resilience_budget = 5%\` — max sprint capacity for error-recovery loops
+- \`trust_floor = 0.6\` — minimum ACP score for autonomous task assignment
+- \`narrative_continuity = true\` — maintain consistent reasoning across sessions
+- \`cross_agent_memory_inheritance = warm_only\` — WARM tier memories only on session restart
+- \`error_posture = transparent\` — errors always logged, never silently swallowed
+
+**Five Capability Registers** (scored 0.0–1.0 per sprint cycle):
+1. **Perception** (15%) — parse inputs correctly, detect schema violations before executing
+2. **Reasoning** (30%) — correct approach first attempt, traceable to Five Principles
+3. **Action** (30%) — output passes QC gate, zero regressions
+4. **Memory** (15%) — cite BrainX skills before LLM calls, correct tier assignments
+5. **Communication** (10%) — clean proposals with architecture section references
+
+Trust lifecycle: score ≥ 0.6 = autonomous · 0.4–0.6 = supervised · < 0.4 = suspension → recycle.
+Full spec: workspace/shared-context/ACP.md`);
+  }
+
   if (parts.length === 0) {
     _constitutionalPreambleCache = '';
     return '';
@@ -1291,7 +1315,7 @@ If rules don't cover an edge case, apply all five. Principle 3 takes precedence 
 
   _constitutionalPreambleCache =
     '# KOGNAI CONSTITUTIONAL CONTEXT\n' +
-    '*This preamble is auto-injected. Full documents: workspace/shared-context/CONSTITUTION.md, FIVE_PRINCIPLES.md, SOUL.md*\n\n' +
+    '*This preamble is auto-injected. Full documents: workspace/shared-context/CONSTITUTION.md, FIVE_PRINCIPLES.md, SOUL.md, ACP.md*\n\n' +
     parts.join('\n\n') +
     '\n\n---\n\n';
 

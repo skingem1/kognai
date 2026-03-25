@@ -67,7 +67,7 @@ import {
   cmdViral, cmdDashboard, cmdDigest, cmdSchedule, cmdLeaderboard,
   cmdBestTime, cmdHookTest, cmdHookStats, cmdViralStats, cmdQueueOpt,
   cmdGateAnalytics, cmdBatch, cmdPostLog, cmdXPost,
-  cmdCosts, cmdWeeklyDigest,
+  cmdCosts, cmdWeeklyDigest, cmdQueueFill,
 } from '../telegram-commands/cmd-posting';
 
 import {
@@ -155,6 +155,7 @@ test('gateanalytics', () => cmdGateAnalytics());
 // cmdRevenue is async — skipped (Sprint 1224: fix TS2322)
 // test('revenue',       () => cmdRevenue());
 test('batch',         () => cmdBatch(''));
+test('queuefill',     () => cmdQueueFill());
 test('postlog',       () => cmdPostLog());
 test('xpost',         () => cmdXPost(''));
 test('costs',         () => cmdCosts());

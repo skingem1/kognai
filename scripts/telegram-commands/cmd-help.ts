@@ -78,6 +78,7 @@ export function cmdHelp(): string {
     `/gateanalytics — April 7 gate progress + projections\n` +
     `/youtube    — YouTube Shorts upload status\n` +
     `/queueopt   — Diversity-optimized posting order\n` +
+    `/queue-fill — Fill post queue from export manifest\n` +
     `/viralstats — Viral score summary + top 3\n` +
     `/checkout  — Generate Stripe checkout link\n` +
     `/subscribers — Active Stripe subscribers + MRR\n` +
