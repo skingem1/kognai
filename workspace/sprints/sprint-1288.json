@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-1288",
+  "title": "OPS — /health: show last backup timestamp from backup log if available",
+  "description": "Create scripts/backup-data.ts that tarballs key workspace data files and writes workspace/backup-status.json. Register as PM2 daily cron at 03:00. /health already reads backup-status.json — this makes the feature functional.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1288-01",
+      "title": "Create scripts/backup-data.ts backup script",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "scripts/backup-data.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1288"
+    },
+    {
+      "id": "1288-02",
+      "title": "Register kognai-daily-backup cron in ecosystem.config.js",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "ecosystem.config.js",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1288"
+    }
+  ]
+}

@@ -529,6 +529,25 @@ module.exports = {
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
     {
+      // Sprint 1288: Daily backup — 03:00, tarballs key data files, writes workspace/backup-status.json
+      // To start: pm2 start ecosystem.config.js --only kognai-daily-backup
+      name: "kognai-daily-backup",
+      script: "scripts/backup-data.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: false,
+      watch: false,
+      cron_restart: "0 3 * * *",
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/backup-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/backup-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
+    {
       // Sprint 283: Weekly Report — Sunday 20:00, gate progress + streak + pipeline recap
       // To start: pm2 start ecosystem.config.js --only kognai-weekly-report
       name: "kognai-weekly-report",
