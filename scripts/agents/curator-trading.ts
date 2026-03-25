@@ -16,7 +16,7 @@ import { join } from 'path';
 // Config
 // ---------------------------------------------------------------------------
 
-const PROJECT_ROOT = join(import.meta.dirname ?? __dirname, '..', '..');
+const PROJECT_ROOT = join(__dirname, '..', '..');
 const RADAR_DIR = join(PROJECT_ROOT, 'workspace', 'scs001', 'topic-radar');
 const RECORDS_DIR = join(PROJECT_ROOT, 'workspace', 'knowledge', 'trading', 'records');
 const SCHEMA_PATH = join(PROJECT_ROOT, 'workspace', 'knowledge', 'trading', 'schema.json');

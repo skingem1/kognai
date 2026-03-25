@@ -20,7 +20,7 @@ import {
 } from './telegram-commands/telegram-api';
 
 // Sprint 455: Import extracted command modules (Part 1: A-M)
-import { cmdPm2, cmdHealth, cmdTier, cmdSprint, cmdReport, cmdCrons, cmdTikTokAuth, cmdQuickStart, cmdEnvCheck, cmdStripeStatus, cmdReadiness, cmdGitStats, cmdBoot, cmdShutdown, cmdReload, cmdSwarmStats, cmdErrors, cmdTokenCheck, cmdLogs, cmdChangelog, cmdPreflight, cmdSmoke, cmdTestSuite, cmdApproveFinetune, cmdBrainxStatus, cmdSwarmHealth, cmdBrowserTest, cmdGodman, cmdGodmanThread, cmdGodmanTag, cmdGodmanPublish, cmdGodmanPreflight, cmdGodmanStatusPage, cmdGodmanLaunch, cmdGodmanNpmCheck, cmdGodmanChangelog, cmdPm2Errors } from './telegram-commands/cmd-system'; // Sprint 1201: added cmdGodmanLaunch; Sprint 1207: added cmdGodmanNpmCheck; Sprint 1209: added cmdGodmanChangelog
+import { cmdPm2, cmdHealth, cmdTier, cmdSprint, cmdReport, cmdCrons, cmdTikTokAuth, cmdQuickStart, cmdEnvCheck, cmdStripeStatus, cmdReadiness, cmdGitStats, cmdBoot, cmdShutdown, cmdReload, cmdSwarmStats, cmdErrors, cmdTokenCheck, cmdLogs, cmdChangelog, cmdPreflight as cmdPreflightSystem, cmdSmoke, cmdTestSuite, cmdApproveFinetune, cmdBrainxStatus, cmdSwarmHealth, cmdBrowserTest, cmdGodman, cmdGodmanThread, cmdGodmanTag, cmdGodmanPublish, cmdGodmanPreflight, cmdGodmanStatusPage, cmdGodmanLaunch, cmdGodmanNpmCheck, cmdGodmanChangelog, cmdPm2Errors } from './telegram-commands/cmd-system'; // Sprint 1201: added cmdGodmanLaunch; Sprint 1207: added cmdGodmanNpmCheck; Sprint 1209: added cmdGodmanChangelog
 import { cmdDemos, cmdAchiriPing, cmdAchiriDeploy } from './telegram-commands/cmd-spielberg'; // Sprint 1194-1196, 1202
 import { cmdGate, cmdGoLive, cmdAudit, cmdStreak, cmdPace, cmdCalendar, cmdGateAudit, cmdGateRefresh, cmdGateSim } from './telegram-commands/cmd-gate';
 import { runGodmanSmoke } from './godman-smoke';
@@ -146,7 +146,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/report':  response = cmdReport(); break;
     case '/pm2':     response = cmdPm2();    break;
     case '/health':  response = cmdHealth(); break;
-    case '/preflight': response = cmdPreflight(); break;
+    case '/preflight': response = cmdPreflightSystem(); break;
     case '/tier':    response = cmdTier();   break;
     case '/sprint':  response = cmdSprint(); break;
     case '/gate':    response = cmdGate();   break;
@@ -195,7 +195,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/hookstats':   response = cmdHookStats();          break;
     case '/queueopt':    response = cmdQueueOpt();           break;
     case '/queue-fill': case '/queuefill': response = cmdQueueFill(); break;
-    case '/preflight': response = cmdPreflight(); break;
+    case '/posting-preflight': response = cmdPreflight(); break;
     case '/gateanalytics': response = cmdGateAnalytics();   break;
     case '/youtube':     response = cmdYouTube();            break;
     case '/portal':      response = cmdPortal(cmdArgs);        break;

@@ -6,7 +6,7 @@
  * PM2: lemon-webhooks process
  */
 
-import * as express from 'express';
+import express from 'express';
 import { lemonWebhookHandler } from './lemon-webhook';
 
 const PORT = parseInt(process.env['LEMON_WEBHOOK_PORT'] ?? '3090', 10);
