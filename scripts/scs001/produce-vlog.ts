@@ -330,32 +330,62 @@ async function generateAvatar(monologue: string, outPath: string, creator: strin
 async function generateTTSBackbone(monologue: string, outPath: string): Promise<void> {
   console.log(`🎤 Generating TTS backbone (ElevenLabs + gradient bg)...`);
 
-  const apiKey = process.env.ELEVENLABS_API_KEY;
-  if (!apiKey) throw new Error('ELEVENLABS_API_KEY not set');
-
-  const voiceId = process.env.TTS_VOICE_ID || 'EXAVITQu4vr4xnSDxMaL'; // Sarah
-  const modelId = process.env.TTS_MODEL_ID || 'eleven_flash_v2_5';
-
-  // 1. Generate voiceover audio
   const audioPath = outPath.replace('.mp4', '_tts.mp3');
-  const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
-    method: 'POST',
-    headers: { 'xi-api-key': apiKey, 'Content-Type': 'application/json', Accept: 'audio/mpeg' },
-    body: JSON.stringify({
-      text: monologue,
-      model_id: modelId,
-      voice_settings: { stability: 0.5, similarity_boost: 0.75, style: 0.0, use_speaker_boost: true },
-    }),
-  });
-  if (!res.ok) throw new Error(`ElevenLabs ${res.status}: ${await res.text()}`);
-  writeFileSync(audioPath, Buffer.from(await res.arrayBuffer()));
+  let audioGenerated = false;
 
-  // 2. Get audio duration
+  // Sprint 1335: ElevenLabs with macOS say fallback — pipeline never fails on missing keys
+  const apiKey = process.env.ELEVENLABS_API_KEY;
+  if (apiKey) {
+    try {
+      const voiceId = process.env.TTS_VOICE_ID || 'EXAVITQu4vr4xnSDxMaL'; // Sarah
+      const modelId = process.env.TTS_MODEL_ID || 'eleven_flash_v2_5';
+      const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
+        method: 'POST',
+        headers: { 'xi-api-key': apiKey, 'Content-Type': 'application/json', Accept: 'audio/mpeg' },
+        body: JSON.stringify({
+          text: monologue,
+          model_id: modelId,
+          voice_settings: { stability: 0.5, similarity_boost: 0.75, style: 0.0, use_speaker_boost: true },
+        }),
+      });
+      if (!res.ok) throw new Error(`ElevenLabs ${res.status}: ${(await res.text()).slice(0, 80)}`);
+      writeFileSync(audioPath, Buffer.from(await res.arrayBuffer()));
+      audioGenerated = true;
+      console.log('  ElevenLabs audio generated');
+    } catch (elevenErr: any) {
+      console.warn(`  [produce-vlog] ElevenLabs failed (${elevenErr.message?.slice(0, 60)}) — using macOS say`);
+    }
+  } else {
+    console.warn('  [produce-vlog] ELEVENLABS_API_KEY not set — using macOS say TTS');
+  }
+
+  // macOS say fallback ($0.00, always available on Mac)
+  if (!audioGenerated) {
+    const aiffPath = audioPath.replace('.mp3', '.aiff');
+    const sanitized = monologue.replace(/"/g, "'").replace(/[\\`$]/g, ' ').slice(0, 500);
+    try {
+      execSync(`say -v Samantha -r 175 -o "${aiffPath}" "${sanitized}"`, { stdio: 'pipe', timeout: 60000 });
+      execSync(`${FFMPEG} -y -i "${aiffPath}" -acodec libmp3lame -ab 128k -ar 44100 "${audioPath}"`, { stdio: 'pipe', timeout: 30000 });
+      try { execSync(`rm -f "${aiffPath}"`, { stdio: 'pipe' }); } catch {}
+      audioGenerated = true;
+      console.log('  macOS say TTS audio generated');
+    } catch (sayErr: any) {
+      console.warn(`  [produce-vlog] macOS say also failed (${sayErr.message?.slice(0, 60)}) — silent audio`);
+      const estDuration = Math.max(20, monologue.split(/\s+/).length / 2.9);
+      execSync(
+        `${FFMPEG} -y -f lavfi -i anullsrc=r=44100:cl=stereo -t ${estDuration.toFixed(1)} "${audioPath}"`,
+        { stdio: 'pipe', timeout: 15000 }
+      );
+      audioGenerated = true;
+    }
+  }
+
+  // Get audio duration
   const duration = parseFloat(
     execSync(`${FFPROBE} -v quiet -show_entries format=duration -of csv=p=0 "${audioPath}"`, { encoding: 'utf-8' }).trim()
   ) || 30;
 
-  // 3. Generate dark gradient background video matching audio length
+  // Generate dark gradient background video matching audio length
   execSync(
     `${FFMPEG} -y -f lavfi -i "color=c=0x0a0a1a:s=1080x1920:d=${duration + 1},format=yuv420p,fps=30" ` +
     `-i "${audioPath}" ` +
@@ -366,7 +396,7 @@ async function generateTTSBackbone(monologue: string, outPath: string): Promise<
   );
 
   const finalDur = getVideoDuration(outPath);
-  console.log(`  ✅ TTS backbone: ${finalDur.toFixed(1)}s (ElevenLabs + dark bg)`);
+  console.log(`  ✅ TTS backbone: ${finalDur.toFixed(1)}s`);
 
   // Cleanup temp audio
   try { execSync(`rm -f "${audioPath}"`, { stdio: 'pipe' }); } catch {}

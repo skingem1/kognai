@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1335",
+  "title": "BUGFIX — produce-vlog: add macOS say fallback inside generateTTSBackbone()",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "After Sprint 1334 (HeyGen→ElevenLabs fallback), the educational pipeline still fails completely when ELEVENLABS_API_KEY is also missing or ElevenLabs is down — because generateTTSBackbone() throws 'ELEVENLABS_API_KEY not set'. Fix: add macOS `say` TTS as a third-level fallback inside generateTTSBackbone(). When ElevenLabs is unavailable, use `say -v Samantha -r 175 -o /tmp/tts.aiff '<text>'` + ffmpeg AIFF→mp3 conversion, then combine with the same dark background video. Cost: $0.00. This makes the educational pipeline fully offline-capable: HeyGen → ElevenLabs → macOS say → video always ships.",
+  "tasks": [
+    {
+      "id": "1335-macsay-fallback",
+      "description": "In scripts/scs001/produce-vlog.ts generateTTSBackbone(): (1) Remove the hard throw when ELEVENLABS_API_KEY is missing. (2) Wrap the ElevenLabs fetch block in try/catch. (3) In the catch (or when key missing): log '[produce-vlog] ElevenLabs unavailable — using macOS say TTS', then: sanitize monologue (replace double-quotes), run `say -v Samantha -r 175 -o /tmp/tts_audio.aiff '<sanitized>'`, convert with ffmpeg AIFF→mp3, get duration. (4) Continue with the existing dark background video generation (step 3) using the local mp3.",
+      "file": "scripts/scs001/produce-vlog.ts",
+      "status": "done",
+      "priority": "medium",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}
