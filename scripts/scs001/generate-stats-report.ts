@@ -176,7 +176,8 @@ function main() {
       posts_target: 30,
       posts_delivered: postsDelivered,
       days_remaining: daysRemaining,
-      on_track: postsDelivered >= 30,
+      // Sprint 1346: on_track = true when urgency is ON_TRACK or PASSED (consistent with urgency field)
+      on_track: urgency === 'ON_TRACK' || urgency === 'PASSED',
       urgency,
       urgency_signal: urgencySignal,
     },

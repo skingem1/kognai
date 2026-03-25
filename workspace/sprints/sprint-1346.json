@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1346",
+  "title": "BUGFIX — generate-stats-report: on_track field inconsistent with urgency field",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "In scripts/scs001/generate-stats-report.ts line 179: `on_track: postsDelivered >= 30` is only true when gate is already PASSED. With 16/30 posts and 13 days left (urgency=ON_TRACK), on_track shows false — contradicting urgency. Fix: on_track should be true when urgency is 'ON_TRACK' or 'PASSED', false when 'FAILED', 'CRITICAL', or 'WARNING'. This makes on_track consistent with urgency and usable as a quick boolean indicator.",
+  "tasks": [
+    {
+      "id": "1346-on-track-fix",
+      "description": "In scripts/scs001/generate-stats-report.ts: change `on_track: postsDelivered >= 30` to `on_track: urgency === 'ON_TRACK' || urgency === 'PASSED'`.",
+      "file": "scripts/scs001/generate-stats-report.ts",
+      "status": "done",
+      "priority": "low",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}
