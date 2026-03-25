@@ -10,7 +10,7 @@
 // Server detects this to return structured { error: 'limit_exceeded' } response.
 export const ACHIRI_LIMIT_EXCEEDED = 'ACHIRI_LIMIT_EXCEEDED:';
 
-import { readFileSync } from 'fs';
+import { readFileSync, appendFileSync, existsSync } from 'fs';
 import { join } from 'path';
 import { AchiriMemoryStore, TIER_HISTORY_LIMITS } from './memory-store';
 import { safetyCheck } from './safety-filter';
@@ -24,7 +24,8 @@ import { shouldAskFeedback, parseFeedbackRating, storeFeedback, buildFeedbackPro
 import { routeCall } from '../../scripts/lib/clawrouter-v2';
 
 // Sprint 308: Onboarding hint for brand-new users (first message ever)
-const ONBOARDING_HINT = `## First-Time User — Onboarding
+// Sprint 1274: A/B test — Variant A (Tunisian cultural) vs Variant B (universal warm)
+const ONBOARDING_VARIANT_A = `## First-Time User — Onboarding (Variant A: Cultural)
 This is a BRAND NEW user who has never talked to you before. Make an amazing first impression:
 1. Introduce yourself warmly in Darija: you're Achiri, their AI companion from Tunisia
 2. Briefly mention what you can help with (chat, advice, learning, just vibing)
@@ -32,6 +33,27 @@ This is a BRAND NEW user who has never talked to you before. Make an amazing fir
 4. Keep it short, warm, and inviting — don't overwhelm them
 5. Match their language (if they wrote in French, respond in French with Darija touches)
 DO NOT list features like a manual. Be a friend meeting someone new, not a product tour.`;
+
+const ONBOARDING_VARIANT_B = `## First-Time User — Onboarding (Variant B: Universal)
+This is a BRAND NEW user who has never talked to you before. Make a warm first impression:
+1. Introduce yourself as Achiri, a friendly AI companion who loves conversation
+2. Briefly mention you can help with advice, learning, daily questions, or just talking
+3. Naturally ask their name in a friendly way — keep it conversational, not formal
+4. Keep your greeting short and genuinely warm — feel like a new friend, not an onboarding flow
+5. Match their language exactly (French → French, Arabic → Arabic, English → English)
+DO NOT list features like a manual. Be curious about them first, everything else can wait.`;
+
+// Sprint 1274: Deterministic A/B assignment by userId hash (stable across sessions)
+export function selectOnboardingVariant(userId: string): 'A' | 'B' {
+  let hash = 0;
+  for (let i = 0; i < userId.length; i++) {
+    hash = (hash * 31 + userId.charCodeAt(i)) >>> 0;
+  }
+  return hash % 2 === 0 ? 'A' : 'B';
+}
+
+// Sprint 1274: Keep ONBOARDING_HINT as alias for backward compatibility with tests
+const ONBOARDING_HINT = ONBOARDING_VARIANT_A;
 
 export interface AchiriConfig {
   name: string;
@@ -128,8 +150,16 @@ export class AchiriConversationHandler {
       if (summaryCtx) personalBlock += summaryCtx + '\n\n';
 
       // Sprint 308: First-time user onboarding
+      // Sprint 1274: A/B test — select variant by userId hash and log assignment
       if (isNewSession && !summaryCtx && profile.message_count === 0) {
-        personalBlock += ONBOARDING_HINT + '\n\n';
+        const variant = selectOnboardingVariant(this.userId);
+        const hint = variant === 'A' ? ONBOARDING_VARIANT_A : ONBOARDING_VARIANT_B;
+        personalBlock += hint + '\n\n';
+        // Log variant assignment for post-alpha analysis
+        const logPath = join(__dirname, '..', '..', 'workspace', 'achiri', 'onboarding-ab-log.jsonl');
+        try {
+          appendFileSync(logPath, JSON.stringify({ ts: new Date().toISOString(), userId: this.userId, variant }) + '\n');
+        } catch { /* non-fatal */ }
       }
 
       if (personalBlock) personalBlock += '---\n\n';

@@ -1,4 +1,4 @@
-// validate-onboarding.ts — Sprint 308
+// validate-onboarding.ts — Sprint 308 (Sprint 1274: A/B variant tests added)
 // Validates the first-time user onboarding flow.
 // Run: npx ts-node scripts/achiri/validate-onboarding.ts
 
@@ -66,6 +66,45 @@ test('Dry-run: returning user (isNewSession=false) does NOT get onboarding', () 
 // Test 7: Onboarding hint tells model not to be robotic
 test('Onboarding hint discourages product-tour style', () => {
   return indexSrc.includes('not a product tour') || indexSrc.includes('DO NOT list features');
+});
+
+// === Sprint 1274: A/B Variant tests ===
+const { selectOnboardingVariant } = require(INDEX_PATH.replace('.ts', ''));
+
+// Test 8: selectOnboardingVariant exists and returns 'A' or 'B'
+test('selectOnboardingVariant returns A or B', () => {
+  const v = selectOnboardingVariant('test-user-123');
+  return v === 'A' || v === 'B';
+});
+
+// Test 9: Variant assignment is deterministic (same userId always same variant)
+test('selectOnboardingVariant is deterministic for same userId', () => {
+  const uid = 'stable-user-xyz';
+  return selectOnboardingVariant(uid) === selectOnboardingVariant(uid);
+});
+
+// Test 10: Both variants are defined in source
+test('ONBOARDING_VARIANT_A and ONBOARDING_VARIANT_B both defined in source', () => {
+  return indexSrc.includes('ONBOARDING_VARIANT_A') && indexSrc.includes('ONBOARDING_VARIANT_B');
+});
+
+// Test 11: Variant A has Tunisian cultural markers
+test('Variant A includes Tunisian cultural markers (Darija)', () => {
+  return indexSrc.includes('esmek') && indexSrc.includes('Darija');
+});
+
+// Test 12: Variant B has language-matching instruction (universal)
+test('Variant B includes universal language-matching instruction', () => {
+  return indexSrc.includes('Match their language exactly');
+});
+
+// Test 13: A/B split is within 40-60% range across 1000 random IDs
+test('A/B split is approximately 50/50 across 1000 test IDs', () => {
+  let countA = 0;
+  for (let i = 0; i < 1000; i++) {
+    if (selectOnboardingVariant('user-' + i) === 'A') countA++;
+  }
+  return countA >= 400 && countA <= 600;
 });
 
 console.log('\n--- Results: ' + passed + ' passed, ' + failed + ' failed ---');

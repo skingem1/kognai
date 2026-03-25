@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-1274",
+  "title": "ACHIRI-ALPHA — Onboarding message A/B test: cultural vs. universal tone",
+  "description": "Achiri has 10/10 voice validation. Before alpha, implement A/B test for two onboarding message variants: Variant A (Tunisian cultural greetings, Darija-heavy) and Variant B (universal warm tone, multilingual). Assign users deterministically by userId hash. Log variant assignment to workspace/achiri/onboarding-ab-log.jsonl for post-alpha analysis.",
+  "source": "queue-auto-replenish",
+  "tasks": [
+    {
+      "id": "1274-01",
+      "title": "Add ONBOARDING_VARIANT_A/B + selectOnboardingVariant() to agents/achiri/index.ts",
+      "type": "feature",
+      "task_type": "achiri",
+      "task_target": "agents/achiri/index.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1274"
+    },
+    {
+      "id": "1274-02",
+      "title": "Update validate-onboarding.ts with A/B variant tests",
+      "type": "feature",
+      "task_type": "achiri",
+      "task_target": "scripts/achiri/validate-onboarding.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1274"
+    }
+  ]
+}
