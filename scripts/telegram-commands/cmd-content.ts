@@ -701,9 +701,9 @@ export function cmdAnalytics(): string {
     .sort((a, b) => b.avg - a.avg)
     .slice(0, 5);
 
-  // Pipeline stats
+  // Pipeline stats (Sprint 1226: use readRealPosts — excludes dry-runs from posted count)
   const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
-  const recorded = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  const recorded = readRealPosts();
 
   const lines = [
     `📊 *Content Analytics*`,
@@ -742,7 +742,7 @@ export function cmdAnalytics(): string {
 // Sprint 478: /diversity — niche distribution analysis
 export function cmdDiversity(): string {
   const topicMap = loadTopicMap();
-  const posts = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  const posts = readRealPosts(); // Sprint 1226: exclude dry-runs from diversity analysis
   const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
 
   // Last 10 posts diversity
