@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1333",
+  "title": "FEAT — Add midday code-demo cron to ecosystem.config.js (scs001-pipeline-codedemo)",
+  "block": "FEAT",
+  "source": "self-directed",
+  "rationale": "scs001-pipeline runs at 9am and produces 3 videos/day (1 per pipeline). With 13 days remaining and 18 posts needed, an extra code-demo run at 13:00 (free — all local: Ollama + Pillow + FFmpeg) adds 1 video/day at zero API cost. The code-demo pipeline now has LLM fallback templates (Sprint 1327) and per-step render isolation (Sprint 1330) so it runs reliably without Ollama. This increases daily video inventory from 3 to 4 without increasing fal.ai/ElevenLabs/HeyGen spend.",
+  "tasks": [
+    {
+      "id": "1333-codedemo-cron",
+      "description": "In ecosystem.config.js, add a new PM2 process 'scs001-pipeline-codedemo' after the existing scs001-pipeline block (line ~784). Config: same interpreter/env as scs001-pipeline, cron_restart: '0 13 * * *', args: '--pipeline code-demo --runs 1 --mode live', autorestart: false, error_file/out_file to scs001-pipeline-error.log/out.log.",
+      "file": "ecosystem.config.js",
+      "status": "done",
+      "priority": "medium",
+      "agent": "coder",
+      "type": "feat"
+    }
+  ]
+}

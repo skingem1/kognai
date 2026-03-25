@@ -783,6 +783,30 @@ module.exports = {
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
     {
+      // Sprint 1333: Midday code-demo production — 1 free video at 13:00 daily
+      // Cost: $0.00 (all local: Ollama + Pillow + FFmpeg). No API spend.
+      // Resilient: Sprint 1327 templates + Sprint 1330 per-step isolation.
+      name: "scs001-pipeline-codedemo",
+      script: "scripts/scs001/batch-produce.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: false,
+      watch: false,
+      cron_restart: "0 13 * * *",
+      args: "--pipeline code-demo --runs 1 --mode live",
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
+        OLLAMA_HOST: "http://127.0.0.1:11434",
+        SCS_MODE: "live",
+        SCS_EDITING_MODE: "production",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/scs001-pipeline-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/scs001-pipeline-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
+    {
       // Vault Dashboard — FastAPI on port 11436 (localhost only)
       // 13-panel monitoring: sprints, tasks, costs, agents, routing, chain,
       // security, assets, pipeline runs, amendments, revenue, blockers
