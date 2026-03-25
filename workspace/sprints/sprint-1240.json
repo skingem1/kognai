@@ -1,9 +1,13 @@
 {
   "sprint_id": "sprint-1240",
   "title": "CFO-PROMPT-WIRE — Create kognai-agents/cfo/prompt.md with Constitutional Mandate",
-  "date": "2026-03-24",
+  "description": "Bloomberg CFO agent prompt with Constitutional Mandate + Five Principles wiring, budget rules, CFOProposal output format, and reporting cadence.",
+  "date": "2026-03-25",
   "status": "done",
   "changes": [
-    {"file": "kognai-agents/cfo/prompt.md", "description": "Created with Constitutional Mandate (#3/#5), Five Principles Mandate (Principle 3/5), agent identity (Bloomberg, T1 qwen3:4b), capabilities list, budget rules, CFOProposal output format."}
+    {
+      "file": "kognai-agents/cfo/prompt.md",
+      "description": "Full CFO prompt: identity, capabilities, budget rules, output format, reporting cadence, constitutional mandates"
+    }
   ]
 }
