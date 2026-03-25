@@ -1,15 +1,16 @@
 {
-  "validated_at": "2026-03-24T12:58Z",
+  "validated_at": "2026-03-25T13:00Z",
   "launch_date": "2026-04-14",
-  "days_until_launch": 21,
+  "days_until_launch": 20,
   "protocols": {
-    "pact": { "version": "0.2.0", "smoke": "PASS", "npm_dry_run": "PASS", "files": 33 },
-    "lax": { "version": "0.2.0", "smoke": "PASS", "npm_dry_run": "PASS", "files": 18 },
-    "score": { "version": "0.2.0", "smoke": "PASS", "npm_dry_run": "PASS", "files": 18 },
-    "signal": { "version": "0.2.0", "smoke": "PASS", "npm_dry_run": "PASS", "files": 18 },
-    "soul": { "version": "0.2.0", "smoke": "PASS", "npm_dry_run": "PASS", "files": 18 },
-    "amf": { "version": "0.2.0", "smoke": "PASS", "npm_dry_run": "PASS", "files": 18 },
-    "drs": { "version": "0.2.0", "smoke": "PASS", "npm_dry_run": "PASS", "files": 18 }
+    "pact":   { "version": "0.2.0", "build": "PASS", "npm_dry_run": "PASS", "files": 33 },
+    "lax":    { "version": "0.2.0", "build": "PASS", "npm_dry_run": "PASS", "files": 18 },
+    "score":  { "version": "0.2.0", "build": "PASS", "npm_dry_run": "PASS", "files": 18 },
+    "signal": { "version": "0.2.0", "build": "PASS", "npm_dry_run": "PASS", "files": 18 },
+    "soul":   { "version": "0.2.0", "build": "PASS", "npm_dry_run": "PASS", "files": 18 },
+    "amf":    { "version": "0.2.0", "build": "PASS", "npm_dry_run": "PASS", "files": 18 },
+    "drs":    { "version": "0.2.0", "build": "PASS", "npm_dry_run": "PASS", "files": 18 },
+    "sdk":    { "version": "0.2.0", "build": "PASS", "npm_dry_run": "PASS", "files": 10 }
   },
   "launch_assets": {
     "x_threads": ["pact-launch/x-thread.md", "score-launch/x-thread.md", "soul-launch/x-thread.md", "suite-launch/x-megathread.md"],
@@ -17,6 +18,6 @@
     "demo_videos": ["pact-demo-v1/pact-demo-v1.mp4", "pact-demo-v1/pact-demo-v1.gif"],
     "x_replies": 8
   },
-  "blockers": ["npm login required (human action)"],
-  "status": "READY_FOR_LAUNCH"
+  "blockers": ["npm login required (human action)", "npm org @godman-protocols publish rights"],
+  "status": "READY_FOR_PUBLISH"
 }

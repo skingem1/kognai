@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1255",
+  "title": "GODMAN-LAUNCH \u2014 Pre-launch checklist validation + npm publish dry-run",
+  "description": "Godman launch in 20d (Apr 14). Validate all 7 protocols build clean, run npm publish --dry-run, verify X thread assets.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1255-01",
+      "title": "GODMAN-LAUNCH \u2014 Pre-launch checklist validation + npm publish dry-run",
+      "type": "feature",
+      "task_type": "godman_protocols",
+      "task_target": "workspace/sprints/sprint-1255-output.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1255"
+    }
+  ]
+}
