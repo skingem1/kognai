@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1331",
+  "title": "BUGFIX — achiri-telegram: disable autorestart to prevent crash loop when token not set",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "achiri-telegram PM2 process is in 'errored' state with 48 restarts. The bot correctly exits with process.exit(0) when ACHIRI_TELEGRAM_BOT_TOKEN is not set, but PM2's autorestart:true causes it to restart immediately each time. With max_restarts:3 and min_uptime:10s, PM2 marks it as errored after 3 rapid restarts. This repeats each time PM2 is started/resurrected, accumulating restarts. Fix: change autorestart:false in ecosystem.config.js for achiri-telegram. The bot requires manual start when the token is available — autorestart is not appropriate for a manually-gated process.",
+  "tasks": [
+    {
+      "id": "1331-achiri-autorestart",
+      "description": "In ecosystem.config.js, for the achiri-telegram process (line ~864): change autorestart:true to autorestart:false. Remove max_restarts:3 and min_uptime:'10s' as they are no longer needed. This prevents the PM2 crash loop when ACHIRI_TELEGRAM_BOT_TOKEN is not set. The process should be started manually once the token is configured.",
+      "file": "ecosystem.config.js",
+      "status": "done",
+      "priority": "medium",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}

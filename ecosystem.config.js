@@ -861,9 +861,7 @@ module.exports = {
       script: "npx",
       args: "ts-node --transpile-only agents/achiri/telegram-bot.ts",
       cwd: "/Users/tarekmnif/kognai",
-      autorestart: true,
-      max_restarts: 3,
-      min_uptime: "10s",
+      autorestart: false,  // Sprint 1331: manually-gated process; crashes when token not set
       watch: false,
       env: {
         NODE_ENV: "production",
