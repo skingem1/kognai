@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-1217",
+  "title": "OPS — /produce-vlog: add Telegram command to trigger vlog video production",
+  "description": "produce-vlog.ts exists and was enhanced in Sprint 869+ (avatar pipeline, B-roll, neon logo). But there's no Telegram command to trigger it. Add /produce-vlog [topic] that starts async production, sends a loading message, and sends the final video file when complete.",
+  "source": "autonomous-loop",
+  "tasks": [
+    {
+      "id": "1217-01",
+      "title": "Add cmdProduceVlog() to cmd-delivery.ts",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-commands/cmd-delivery.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1217"
+    },
+    {
+      "id": "1217-02",
+      "title": "Register /produce-vlog in telegram-bot.ts and cmd-help.ts",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-bot.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1217"
+    }
+  ]
+}
