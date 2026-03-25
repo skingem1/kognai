@@ -1796,6 +1796,8 @@ export async function cmdBoot(chatId: string): Promise<void> {
     'kognai-watchdog',
     'kognai-caption-push',
     'scs001-pipeline',
+    'lemon-webhooks',      // Sprint 1246: LemonSqueezy subscription handler
+    'kognai-heartbeat',    // Sprint 1246: MRR + infra monitoring
   ];
 
   await sendMessage(chatId, `🔄 *Booting ${ESSENTIAL_CRONS.length} essential crons...*`);

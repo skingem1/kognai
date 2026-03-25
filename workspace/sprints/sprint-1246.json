@@ -1,0 +1,17 @@
+{
+  "sprint_id": "sprint-1246",
+  "title": "BOOT-UPGRADE — Add heartbeat PM2 config + lemon-webhooks to /boot",
+  "description": "Add kognai-heartbeat PM2 cron (6h interval) to ecosystem.config.js. Add lemon-webhooks + kognai-heartbeat to /boot essential crons list so they start with other critical services.",
+  "date": "2026-03-25",
+  "status": "done",
+  "changes": [
+    {
+      "file": "ecosystem.config.js",
+      "description": "Add kognai-heartbeat PM2 entry (cron_restart every 6h, runs heartbeat-daemon.ts)"
+    },
+    {
+      "file": "scripts/telegram-commands/cmd-system.ts",
+      "description": "Add lemon-webhooks + kognai-heartbeat to /boot ESSENTIAL_CRONS list"
+    }
+  ]
+}

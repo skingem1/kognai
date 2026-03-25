@@ -1503,5 +1503,24 @@ module.exports = {
       out_file: "/Users/tarekmnif/kognai/logs/lemon-webhooks-out.log",
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
+    {
+      // Sprint 1246: Kognai heartbeat daemon — runs every 6 hours
+      // Monitors: MRR, agent health, API status, PM2 cron watchdog
+      // Writes state to health.json and tier.json
+      name: "kognai-heartbeat",
+      script: "npx",
+      args: "ts-node scripts/heartbeat-daemon.ts",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: false,
+      watch: false,
+      cron_restart: "0 */6 * * *",
+      max_memory_restart: "256M",
+      env: {
+        NODE_ENV: "production",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/heartbeat-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/heartbeat-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
   ]
 };
