@@ -7032,3 +7032,15 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Test: add 1005 entries → size=1000, evictionCount=5 ✅
 - Swarm used: no (surgical edit, direct write)
 - Timestamp: 2026-03-25T13:45:00Z
+
+## Sprint 1291 — AMD25-DKA-SOUL-TIER-FILTER
+- Status: PASS
+- Commit: 8cf425f1
+- Files modified: workspace/amd25/boundary-rules.ts
+- Files created: workspace/sprints/sprint-1291.json
+- Feature: canAccess() implemented (was design stub), TIER_MAX_CLASSIFICATION map
+- Feature: applyTierFilter(results, tier) — PROVISIONAL only sees public vectors
+- Feature: tierCanAccess(tier, classification) predicate
+- Test: 4 tier scenarios + 3 predicate checks — all PASS
+- Swarm used: no (surgical edit, direct write)
+- Timestamp: 2026-03-25T13:50:00Z

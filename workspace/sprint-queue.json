@@ -3757,7 +3757,7 @@
       "sprint": 1291,
       "title": "AMD25 \u2014 DKA curator SOUL filter: reject non-public vectors for PROVISIONAL-tier agents",
       "block": "AMD25",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "curator.ts has boundary rules but SOUL attestation tier check is incomplete. Add explicit PROVISIONAL tier check that blocks access to confidential domain vectors.",
       "added_at": "2026-03-25T13:23:29.168Z"
