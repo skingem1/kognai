@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1361",
+  "title": "BUGFIX — batch-produce duplicate ledger write: content-based dedup in writeLedgerFallback",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "batch-produce.ts writes two entries for every video: one from pipeline-registry.ts (logToPublishLedger) and one from writeLedgerFallback. Despite result.ledgerWritten = true being set by pipeline-registry, the flag check in writeLedgerFallback doesn't prevent the second write. Root cause unclear (possible ts-node module scope issue). Fix: add content-based dedup — read last 8KB of publish-ledger.jsonl and skip fallback write if runId already present. Belt-and-suspenders alongside the ledgerWritten flag check.",
+  "tasks": [
+    {
+      "id": "1361-ledger-dedup-check",
+      "description": "In scripts/scs001/batch-produce.ts: add content-based dedup check in writeLedgerFallback — read last 8KB of publish-ledger.jsonl and return early if runId is already present.",
+      "file": "scripts/scs001/batch-produce.ts",
+      "status": "done",
+      "priority": "medium",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}

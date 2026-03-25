@@ -35,6 +35,17 @@ function writeLedgerFallback(result: PipelineRunResult): void {
       // Primary write succeeded — no fallback needed
       return;
     }
+    // Sprint 1361: Belt-and-suspenders — even if ledgerWritten flag didn't propagate,
+    // scan the ledger tail to avoid duplicate entries. Reads up to 8KB from end of file.
+    if (existsSync(LEDGER_PATH)) {
+      const { readFileSync, statSync } = require('fs') as typeof import('fs');
+      const stats = statSync(LEDGER_PATH);
+      const readBytes = Math.min(8192, stats.size);
+      const tail = readFileSync(LEDGER_PATH).slice(-readBytes).toString('utf-8');
+      if (tail.includes(`"${String(result.runId)}"`)) {
+        return; // Already in ledger
+      }
+    }
     const videoPath = String(result.videoPath || '');
     const entry = {
       video_id: String(result.runId || ''),
