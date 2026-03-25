@@ -1,16 +1,41 @@
 {
-  "sprint": 1229,
-  "title": "DRY-RUN FIX — cmd-stripe/content/posting.ts: final readRealPosts() sweep",
-  "type": "BUG",
-  "status": "done",
-  "track": "SCS-001",
-  "completed_at": "2026-03-24",
-  "changes": [
-    "cmd-stripe.ts: cmdFunnel — added readRealPosts import, use readRealPosts() for posted count/views",
-    "cmd-content.ts: cmdRecord duplicate check — use readRealPosts() so dry-run entries don't block real records",
-    "cmd-content.ts: cmdPosted duplicate check — use readRealPosts() so dry-run entries don't block real records",
-    "cmd-posting.ts: cmdDigest — removed now-unused manualPostsPath variable"
-  ],
-  "root_cause": "Remaining readLines(manual-posts.jsonl) calls in cmd-stripe and cmd-content duplicate checks",
-  "tsc": "clean (1 pre-existing unrelated error unchanged)"
+  "sprint_id": "sprint-1229",
+  "title": "GODMAN-PUSH-PREP — push-protocols.sh + GitHub Actions CI for all 7 repos",
+  "description": "Create scripts/godman-push-to-github.sh that initializes git repos from workspace/godman-protocols/* dirs, adds remote origins for github.com/godman-protocols/<name>, pushes all branches+tags. Add .github/workflows/ci.yml to each protocol. Generate GITHUB-SETUP.md human action guide.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1229-01",
+      "title": "Create scripts/godman-push-to-github.sh",
+      "type": "feature",
+      "task_type": "devops",
+      "task_target": "scripts/godman-push-to-github.sh",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1229"
+    },
+    {
+      "id": "1229-02",
+      "title": "Add .github/workflows/ci.yml to each protocol",
+      "type": "feature",
+      "task_type": "devops",
+      "task_target": "workspace/godman-protocols/*/ci.yml",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1229"
+    },
+    {
+      "id": "1229-03",
+      "title": "Create GITHUB-SETUP.md human action guide",
+      "type": "feature",
+      "task_type": "docs",
+      "task_target": "workspace/godman-protocols/GITHUB-SETUP.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1229"
+    }
+  ]
 }
