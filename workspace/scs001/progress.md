@@ -7332,3 +7332,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Sprint 1322 in queue marked skipped (duplicate of Sprint 1320 fal.ai fix)
 - Swarm used: no (surgical 1-line fix)
 - Timestamp: 2026-03-25T20:25:00+01:00
+
+## Sprint 1322 — BUGFIX (self-directed)
+- Status: PASS
+- Commit: 241cd14e
+- Files modified: scripts/scs001/code-demo-scriptgen.ts
+- Files created: workspace/sprints/sprint-1322.json
+- Fix 1: callOllama() wrapped in try-catch — returns '' instead of throwing on network failure
+- Fix 2: Hardcoded Python fallback before throw when codeToExplain still empty
+- Code-demo pipeline P2 now resilient to Mac Mini vault being unreachable
+- Swarm used: no (surgical 2-change fix)
+- Timestamp: 2026-03-25T20:35:00+01:00
