@@ -65,7 +65,11 @@ function readJSON(filePath: string): any {
 }
 
 function getGateMetrics(): GateMetrics {
-  const posts = readJSONL(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  // Sprint 1350: Filter dry-run posts — gate requires 30 real TikTok posts
+  const DRY_METHODS = ['browser-post-dry', 'batch-browser-dry', 'dry'];
+  const allPosts = readJSONL(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  const posts = allPosts.filter((e: any) =>
+    !e.method || !DRY_METHODS.some((d: string) => String(e.method).includes(d)));
   const totalViews = posts.reduce((s: number, e: any) => s + (e.views ?? 0), 0);
   const gateDate = new Date('2026-04-07T00:00:00Z');
   const daysRemaining = Math.max(0, Math.ceil((gateDate.getTime() - Date.now()) / 86400000));

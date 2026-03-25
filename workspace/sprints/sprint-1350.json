@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1350",
+  "title": "BUGFIX — gate-readiness-final: exclude dry-run posts from gate post count",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "scripts/scs001/gate-readiness-final.ts uses posts.length (16) without filtering dry-runs. Gate requires 30 real TikTok posts. Fix: add DRY_METHODS filter before counting gate.posts.",
+  "tasks": [
+    {
+      "id": "1350-gate-readiness-dry-run-filter",
+      "description": "In scripts/scs001/gate-readiness-final.ts: add DRY_METHODS filter to the posts array before using posts.length for gate.posts.",
+      "file": "scripts/scs001/gate-readiness-final.ts",
+      "status": "done",
+      "priority": "low",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}
