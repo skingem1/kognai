@@ -6753,3 +6753,43 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (single file)
 - Issues: none
 - Timestamp: 2026-03-25T11:40:00Z
+
+## Sprint 1234 — FIX (orchestrator TS2339)
+- Status: PASS
+- Commit: 5b97c0b0
+- Files modified: agents/scs001-orchestrator/index.ts
+- Test: TypeScript compiles clean
+- Swarm used: no (surgical type-cast fix)
+- Timestamp: 2026-03-25T11:45:00Z
+
+## Sprint 1235 — SPIELBERG-CONSTITUTION-WIRE
+- Status: PASS
+- Commit: 4d02255b
+- Files modified: kognai-agents/spielberg/prompt.md
+- Swarm used: no (surgical edit)
+- Timestamp: 2026-03-25T11:50:00Z
+
+## Sprint 1236 — AMD21-ASMR-IMPL
+- Status: PASS
+- Commit: 8218951d
+- Files modified: scripts/arch001/observer-agent.ts
+- Files created: logs/asmr/.gitkeep
+- Test: ASMR six-vector extraction implemented (ASMRVector interface + extractASMRVector + writeASMRVectors)
+- Swarm used: no (direct write)
+- Timestamp: 2026-03-25T11:55:00Z
+
+## Sprint 1237 — CODEBOOK-RESTORE
+- Status: PASS
+- Commit: 0c2d2e2a
+- Files created: workspace/symbols.json, workspace/codebook/symbols.json, workspace/codebook/compression-log.md, vault/skills/crystallised-skills.jsonl
+- Swarm used: no (direct write + git recovery)
+- Timestamp: 2026-03-25T12:00:00Z
+
+## Sprint 1238 — LEMON-SCAFFOLD-01
+- Status: PASS
+- Commit: bd2d977b (sprint JSON update; code committed at be168ce2)
+- Files created: scripts/payments/lemon-webhook.ts, scripts/payments/lemon-config.ts, supabase/migrations/20260325_subscribers.sql
+- Test: TypeScript compiles clean
+- Swarm used: no (direct write — multi-file, cross-domain)
+- Issues: LEMONSQUEEZY_* env vars not yet set (human action needed)
+- Timestamp: 2026-03-25T12:10:00Z

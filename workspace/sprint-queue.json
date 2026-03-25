@@ -3185,7 +3185,8 @@
       "sprint": 1236,
       "title": "AMD21-ASMR-IMPL \u2014 Six-vector memory extraction in observer-agent.ts",
       "block": "AMD-21",
-      "status": "pending",
+      "status": "done",
+      "_note": "Committed 8218951d — ASMR extraction in observer-agent.ts",
       "priority": "high",
       "rationale": "Sprint 1231 built scripts/arch001/observer-agent.ts as a shell. AMD-21 content is ZERO \u2014 six-vector extraction not implemented. Implement the extraction logic: read AMD-21 spec (workspace/shared-context/ or AMD docs). Add extractASMRVectors(content: string) function returning ASMRVector with 6 fields: (1) semantic_core (what was built), (2) emotional_valence (sprint outcome tone), (3) temporal_context (sprint date + sequence), (4) causal_chain (what triggered this sprint), (5) agent_signature (which agent did it), (6) confidence_score (0-1). Call this on each new commit/sprint event. Write vectors to logs/asmr/YYYY-MM-DD.jsonl. Wire into BrainX via brainx-client.ts insertMemory() call with tier=WARM. File to edit: scripts/arch001/observer-agent.ts. Also create logs/asmr/ directory init.",
       "_exact_files": [
@@ -3199,7 +3200,8 @@
       "sprint": 1237,
       "title": "CODEBOOK-RESTORE \u2014 Recover workspace/codebook + symbols.json from git + seed vault/skills",
       "block": "KNOWLEDGE",
-      "status": "pending",
+      "status": "done",
+      "_note": "Committed 0c2d2e2a — codebook recovered + skills seeded",
       "priority": "high",
       "rationale": "workspace/codebook/ and workspace/symbols.json are MISSING from disk but existed at commit 35cc15a. vault/skills/ is completely empty (0 skills crystallised despite 500+ sprints). Task: (1) Recover symbols.json from git: git show 35cc15a:workspace/symbols.json > workspace/symbols.json. (2) Recover codebook/ dir: git checkout 35cc15a -- workspace/codebook/ if it exists. (3) Seed vault/skills/ \u2014 parse 20 most recent sprint files in workspace/sprints/, extract each sprint's tasks, write one JSONL line per task to vault/skills/crystallised-skills.jsonl with fields: sprintId, taskId, skillType, approach, keyPatterns, score, timestamp. This is the knowledge compounding baseline. Maximum 3 files created/modified.",
       "_exact_files": [
