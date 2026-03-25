@@ -247,6 +247,16 @@ export class SCS001Orchestrator {
         }
         return bundles.length;
       }));
+      // Sprint 1355: If ScriptAgent timed out or errored (Ollama unavailable/slow),
+      // fall back to deterministic script gen — same pattern as InsightAgent fallback.
+      if (bundles.length === 0 && briefs.length > 0) {
+        console.warn('[Orchestrator] ScriptAgent returned 0 bundles — falling back to deterministic script gen');
+        stages.push(await this.runStage('5-script', 'ScriptAgent (fallback-deterministic)', async () => {
+          const agent = new ScriptAgent();
+          bundles = agent.run(briefs);
+          return bundles.length;
+        }));
+      }
     }
 
     // --- Stage 5.5: Content Quality Scorer ---

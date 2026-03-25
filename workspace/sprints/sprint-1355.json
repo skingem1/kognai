@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1355",
+  "title": "BUGFIX — P1 orchestrator ScriptAgent timeout: add deterministic fallback",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "Pipeline analysis shows stage 5 (ScriptAgent) times out at 600s when LLM rewrite is enabled and Ollama is slow/unresponsive. bundles=[] causes all downstream stages (5.5-score, 6-validate, 6-editing) to skip. Live pipeline produces 0 videos even when 11 InsightBriefs exist. Fix: add fallback to agent.run(briefs) (deterministic, no Ollama) when bundles.length===0 after LLM runAsync() — mirrors InsightAgent fallback from Sprint 292.",
+  "tasks": [
+    {
+      "id": "1355-script-agent-fallback",
+      "description": "In agents/scs001-orchestrator/index.ts: after stage 5 ScriptAgent, if bundles.length===0 and briefs.length>0, run fallback stage using agent.run(briefs) (deterministic, no Ollama).",
+      "file": "agents/scs001-orchestrator/index.ts",
+      "status": "done",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}
