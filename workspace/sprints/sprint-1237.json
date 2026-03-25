@@ -1,0 +1,24 @@
+{
+  "sprint_id": "sprint-1237",
+  "title": "CODEBOOK-RESTORE — Recover workspace/codebook + symbols.json from git + seed vault/skills",
+  "date": "2026-03-24",
+  "status": "done",
+  "changes": [
+    {
+      "file": "workspace/symbols.json",
+      "description": "Recovered from git commit fdd13370 (Phase 0 completion)"
+    },
+    {
+      "file": "workspace/codebook/symbols.json",
+      "description": "Recovered and placed in workspace/codebook/ directory"
+    },
+    {
+      "file": "workspace/codebook/compression-log.md",
+      "description": "Recovered from fdd13370"
+    },
+    {
+      "file": "vault/skills/crystallised-skills.jsonl",
+      "description": "Seeded from last 20 sprint files with skillType, approach, keyPatterns, score fields"
+    }
+  ]
+}
