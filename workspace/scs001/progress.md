@@ -7429,6 +7429,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no
 - Timestamp: 2026-03-25T22:15:00Z
 
+## Sprint 1350 — BUGFIX: gate-readiness-final exclude dry-run posts from gate count
+- Status: PASS
+- Commit: 1e13fe81
+- Files: scripts/scs001/gate-readiness-final.ts
+- Fix: getGateMetrics() now filters DRY_METHODS before counting gate.posts. Shows 13 real posts.
+- Swarm used: no
+- Timestamp: 2026-03-26T03:00:00Z
+
 ## Sprint 1349 — BUGFIX: posting-health exclude dry-run posts from gate progress count
 - Status: PASS
 - Commit: 22ccbac5
@@ -7569,3 +7577,26 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Fix: In the outer Python script, replaced bare proc.communicate() (after proc.kill()) with proc.communicate(timeout=5) wrapped in try/except TimeoutExpired to prevent pipe-drain hang when inner fal_client.subscribe() leaves grandchildren holding the pipe. Also increased Node.js execSync timeout from 95000ms to 120000ms for a 35s margin past the Python 85s kill. Addresses: [fal.ai] spawnSync /bin/sh ETIMEDOUT causing Scene s6 generation failed in entertainment pipeline.
 - Swarm used: no
 - Timestamp: 2026-03-25T22:30:00Z
+
+## Sprints 1351-1356 — BUGFIX batch: dry-run filter sweep + P1 pipeline revival
+
+**Sprints 1351-1354** — Dry-run filter sweep (completing 1338-1350 sweep)
+- production-preflight.ts, pipeline-watchdog.ts, gate-urgency-alert.ts, generate-april7-gate.ts
+- All now apply DRY_METHODS=['browser-post-dry','batch-browser-dry','dry'] filter
+- Real post count consistently 13 across all gate scripts
+- Commits: 67df4cc0 (1351-1352), feb5d3af (1353-1354)
+
+**Sprint 1355** — BUGFIX: ScriptAgent Ollama timeout → deterministic fallback
+- agents/scs001-orchestrator/index.ts
+- Stage 5 ScriptAgent timed out at 600s (Ollama unavailable), leaving bundles=[]
+- Added: if bundles.length===0 after LLM runAsync(), run agent.run(briefs) (deterministic)
+- Mirrors InsightAgent Sprint 292 fallback pattern
+- Commit: 635b46f0
+
+**Sprint 1356** — BUGFIX: P1 live pipeline static InsightBriefs when 0 qualified clips
+- agents/scs001-orchestrator/index.ts
+- Sprint 1321 skips ClipDetection when ViralDownloader=0 → qualifiedClips=[] → no briefs
+- Live mode had NO fallback for 0 clips (mock mode had static-fallback, live didn't)
+- Added: live-mode else branch calls getMockInsightBriefs() → ~5 deterministic briefs
+- Combined with Sprint 1355: live P1 pipeline now produces ~5 educational videos/run
+- Commit: ab01fec0
