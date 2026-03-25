@@ -157,21 +157,59 @@ Return JSON only:
     think: false,
     options: { num_predict: 1000, temperature: 0.7 },
   }));
-  const result = execSync(
-    `curl -s --max-time 180 ${host}/api/generate -d @"${payloadFile}"`,
-    { encoding: 'utf-8', timeout: 200000 }
-  );
-  try { execSync(`rm -f "${payloadFile}"`, { stdio: 'pipe' }); } catch {}
+  // Sprint 1329: Pre-built fallback templates — used when Ollama is unavailable or returns invalid JSON
+  const VLOG_TEMPLATES: VlogScript[] = [
+    {
+      title: 'AI Agents Are Taking Over Software Development',
+      full_monologue: 'AI agents just crossed a line that changes everything. They\'re not just writing code anymore — they\'re planning, debugging, and shipping entire features autonomously. The best engineers I know aren\'t fighting this. They\'re using AI agents to 10x their output while their competitors are still debating whether to adopt it. The question isn\'t whether AI will replace developers. The question is: which developers will learn to command these agents? Are you building with AI or being replaced by it?',
+      broll_cutaways: [
+        { timestamp_s: 6, duration_s: 6, visual_prompt: 'cinematic close-up of glowing circuit boards with neural network patterns of light pulsing through them, blue and white illumination, no text or writing visible, photorealistic, vertical 9:16' },
+        { timestamp_s: 18, duration_s: 6, visual_prompt: 'aerial drone shot of a modern tech campus at golden hour, sleek glass buildings surrounded by trees, people walking between buildings, no text or writing visible, photorealistic, vertical 9:16' },
+      ],
+      hashtags: ['#ai', '#coding', '#artificialintelligence', '#softwareengineering', '#tech'],
+    },
+    {
+      title: 'The Automation Wave Nobody Warned You About',
+      full_monologue: 'Here\'s the thing about automation that nobody tells you: it doesn\'t just eliminate jobs — it reorganizes entire industries overnight. We\'ve automated farming, manufacturing, and now we\'re automating knowledge work. The people winning right now are the ones who understand how to work alongside automated systems, not compete against them. Your edge isn\'t doing what a machine can do. Your edge is telling the machine what to do. So what skill are you building that no algorithm can replace?',
+      broll_cutaways: [
+        { timestamp_s: 6, duration_s: 6, visual_prompt: 'wide shot of a modern automated factory floor with robotic arms assembling products in precise synchronized motion, dramatic industrial lighting, no text or writing visible, photorealistic, vertical 9:16' },
+        { timestamp_s: 18, duration_s: 6, visual_prompt: 'close-up of a human hand and a robotic hand reaching toward each other, symbolic partnership between human and machine, soft studio lighting, no text or writing visible, photorealistic, vertical 9:16' },
+      ],
+      hashtags: ['#automation', '#future', '#tech', '#ai', '#career'],
+    },
+    {
+      title: 'Your Job in 5 Years Will Look Nothing Like Today',
+      full_monologue: 'Five years ago, nobody was using AI to write emails, analyze data, or generate images. Now it\'s table stakes. In five years, every profession will look completely different — medicine, law, finance, engineering. The jobs that survive aren\'t the ones that are hardest to automate. They\'re the ones that learn to use automation as a superpower. The most valuable skill you can develop right now is the ability to adapt faster than the technology changes. What are you learning today that will matter in 2030?',
+      broll_cutaways: [
+        { timestamp_s: 6, duration_s: 6, visual_prompt: 'time-lapse of a bustling city street transitioning from day to night, light trails from vehicles, people moving fast, energy and motion, no text or writing visible, photorealistic, vertical 9:16' },
+        { timestamp_s: 18, duration_s: 6, visual_prompt: 'dramatic shot of a person standing at the edge of a glass skyscraper looking out over a futuristic city skyline, contemplative and forward-looking, no text or writing visible, photorealistic, vertical 9:16' },
+      ],
+      hashtags: ['#future', '#career', '#ai', '#skills', '#growth'],
+    },
+  ];
 
-  const llmResponse = JSON.parse(result).response || '';
-  const first = llmResponse.indexOf('{');
-  const last = llmResponse.lastIndexOf('}');
-  if (first < 0 || last <= first) throw new Error('No JSON in LLM response');
+  let script: VlogScript;
+  try {
+    const result = execSync(
+      `curl -s --max-time 180 ${host}/api/generate -d @"${payloadFile}"`,
+      { encoding: 'utf-8', timeout: 200000 }
+    );
+    try { execSync(`rm -f "${payloadFile}"`, { stdio: 'pipe' }); } catch {}
 
-  let jsonStr = llmResponse.substring(first, last + 1);
-  jsonStr = jsonStr.replace(/,\s*([}\]])/g, '$1');
+    const llmResponse = JSON.parse(result).response || '';
+    const first = llmResponse.indexOf('{');
+    const last = llmResponse.lastIndexOf('}');
+    if (first < 0 || last <= first) throw new Error('No JSON in LLM response');
 
-  const script = JSON.parse(jsonStr) as VlogScript;
+    let jsonStr = llmResponse.substring(first, last + 1);
+    jsonStr = jsonStr.replace(/,\s*([}\]])/g, '$1');
+
+    script = JSON.parse(jsonStr) as VlogScript;
+  } catch (err: any) {
+    try { execSync(`rm -f "${payloadFile}"`, { stdio: 'pipe' }); } catch {}
+    console.warn(`[produce-vlog] LLM script gen failed — using template (${err.message})`);
+    script = VLOG_TEMPLATES[Date.now() % VLOG_TEMPLATES.length];
+  }
 
   if (script.full_monologue.length > 800) {
     script.full_monologue = script.full_monologue.slice(0, 797) + '...';

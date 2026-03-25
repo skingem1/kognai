@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1329",
+  "title": "BUGFIX — produce-vlog: add vlog script templates as LLM fallback",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "produce-vlog.ts writeScript() has the same Ollama vulnerability pattern as code-demo and entertainment scriptgens before Sprints 1327/1328: (1) execSync for curl is not wrapped in try/catch, (2) line 169 throws 'No JSON in LLM response' with no fallback. When Ollama is unavailable the educational pipeline (P1) fails completely. Fix: add VLOG_TEMPLATES (3 complete VlogScript objects: AI agents, software automation, future of work), wrap the execSync+JSON parse block in try/catch, return rotating template on failure.",
+  "tasks": [
+    {
+      "id": "1329-vlog-templates",
+      "description": "In scripts/scs001/produce-vlog.ts writeScript(): (1) Add VLOG_TEMPLATES constant (array of 3 VlogScript-shaped objects — AI agents, software automation, future of work — each with full_monologue under 750 chars and 2 broll_cutaways). (2) Wrap the execSync curl call and JSON parsing in try/catch. In the catch block (and when 'No JSON in LLM response'), log '[produce-vlog] LLM script gen failed — using template' and return a template rotating by Date.now() % VLOG_TEMPLATES.length.",
+      "file": "scripts/scs001/produce-vlog.ts",
+      "status": "done",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}
