@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1359",
+  "title": "PERF — Reduce ClipDetection timeout 900s→300s to save 10min when Ollama is down",
+  "block": "PERF",
+  "source": "self-directed",
+  "rationale": "scs001-live 7:00 and 18:00 CET runs: ViralDownloader returned some clips → ClipDetection ran → Ollama unavailable → timeout at 900s. Sprint 1356 fallback fires after timeout, producing content. But the 15-min wait is wasteful. ClipDetection input is capped to 20 clips × concurrency 4 = 5 batches × ~30s/clip = 150s normal run. 300s = 2× buffer. When Ollama is down, reduces wasted time from 15min to 5min.",
+  "tasks": [
+    {
+      "id": "1359-clip-detection-timeout",
+      "description": "In agents/scs001-orchestrator/index.ts: reduce STAGE_TIMEOUTS['3-clip-detection'] from 900_000 to 300_000.",
+      "file": "agents/scs001-orchestrator/index.ts",
+      "status": "done",
+      "priority": "medium",
+      "agent": "coder",
+      "type": "perf"
+    }
+  ]
+}

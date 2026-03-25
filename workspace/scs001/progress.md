@@ -7607,4 +7607,12 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - posting-auto-deliver.ts reads publish-ledger.jsonl — but scs001-live never wrote to it
 - Added Stage 9.5: if live mode + published=0 + passedGates>0, append each QC-passed video to publish-ledger.jsonl
 - Completes the P1 live pipeline revival (1355+1356+1357): produce → QC → auto-deliver queue
+- Commit: fbd3ca2e
+
+**Sprint 1359** — PERF: Reduce ClipDetection timeout 900s→300s
+- agents/scs001-orchestrator/index.ts
+- 7:00 and 18:00 CET live runs: some clips → ClipDetection → Ollama down → 900s wait
+- Sprint 1356 fallback already handles 0-clips case, so 900s is pure waste
+- 20 clips × concurrency 4 × ~30s/clip = 150s normal; 300s = 2× buffer
+- Saves 10 min per failed run, 4 runs/day = up to 40 min saved daily
 - Commit: pending

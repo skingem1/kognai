@@ -698,8 +698,11 @@ export class SCS001Orchestrator {
 
   // Sprint 739: Per-stage timeout to prevent pipeline hangs
   // Sprint 1222: insight + script bumped 300s→600s (qwen3:14b on Mac Mini M4 needs more time per batch)
+  // Sprint 1359: clip-detection reduced 900s→300s — input capped to 20 clips × concurrency 4 = 5 batches.
+  //   Normal Ollama: ~30s/clip → 150s total. 300s = 2× buffer. When Ollama is down, saves 10min vs 900s.
+  //   Sprint 1356 fallback handles the 0-clips case after timeout gracefully.
   private static STAGE_TIMEOUTS: Record<string, number> = {
-    '3-clip-detection': 900_000,  // 15min — Sprint 1312b: bumped from 10min (input capped to 20 + safety buffer)
+    '3-clip-detection': 300_000,  // 5min — Sprint 1359: reduced from 15min (20 clips × ~30s × 2× buffer)
     '4-insight': 600_000,         // 10min — LLM calls (was 5min, qwen3:14b slow on local)
     '5-script': 600_000,          // 10min — LLM calls (was 5min, script gen for 11 clips needs time)
     default: 180_000,             // 3min — all other stages
