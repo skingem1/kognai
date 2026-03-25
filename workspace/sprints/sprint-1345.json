@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1345",
+  "title": "BUGFIX — generate-stats-report: fix TS2448 manualEntries used before declaration",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "Sprint 1338 added `const postsDelivered = manualEntries.length` on line 118, but `const manualEntries = readJsonLines(manualPath)` is declared on line 140. TypeScript TS2448 error: Block-scoped variable 'manualEntries' used before its declaration. The script crashes on ts-node compile, meaning stats-latest.json hasn't been regenerated since the fix. Fix: move the manualEntries declaration (and manualPath, postedIds, unposted, top3VideoIds block) above the gate calculation section, or inline the manual posts read earlier.",
+  "tasks": [
+    {
+      "id": "1345-stats-manual-entries-order",
+      "description": "In scripts/scs001/generate-stats-report.ts: move `const manualPath = join(ROOT, ...); const manualEntries = readJsonLines(manualPath);` to BEFORE line 113 (the gate calculation section). Update all subsequent references to use the already-declared variable.",
+      "file": "scripts/scs001/generate-stats-report.ts",
+      "status": "done",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}

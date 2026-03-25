@@ -110,9 +110,13 @@ function main() {
     } catch {}
   }
 
-  // Gate calculation (Apr 7 = 2026-04-07)
+  // Sprint 1345: Declare manualEntries BEFORE gate calculation (fix Sprint 1338 TS2448 use-before-decl)
   // Sprint 1338: Use manual-posts.jsonl as ground truth for TikTok posts.
   // auto-delivered.jsonl tracks Telegram sends, NOT TikTok posts — do not count those as gate posts.
+  const manualPath = join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
+  const manualEntries = readJsonLines(manualPath);
+
+  // Gate calculation (Apr 7 = 2026-04-07)
   const gateDate = new Date('2026-04-07');
   const daysRemaining = Math.max(0, Math.ceil((gateDate.getTime() - Date.now()) / 86400000));
   const postsDelivered = manualEntries.length;
@@ -136,8 +140,6 @@ function main() {
   // Sprint 586: Queue stats — ready-to-post videos
   const ledgerPath2 = join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl');
   const ledgerEntries = readJsonLines(ledgerPath2);
-  const manualPath = join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
-  const manualEntries = readJsonLines(manualPath);
   const postedIds = new Set(manualEntries.map((e: any) => e.video_id).filter(Boolean));
   const unposted = ledgerEntries.filter((e: any) => e.video_id && !postedIds.has(e.video_id));
   const top3VideoIds = unposted.slice(0, 3).map((e: any) => e.video_id as string);
