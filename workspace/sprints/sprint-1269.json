@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-1269",
+  "title": "AMD23-PM2-WIRE — Add cerberus-gateway PM2 process + Godman pre-launch validation",
+  "description": "Wire AMD-23 Cerberus Gateway into PM2 ecosystem (port 3419). Add pre-launch validation script that checks all 8 Godman packages are built + dry-run ready before April 14 npm publish.",
+  "source": "queue-post-exhaustion",
+  "tasks": [
+    {
+      "id": "1269-01",
+      "title": "Add cerberus-gateway PM2 process to ecosystem.config.js",
+      "type": "feature",
+      "task_type": "amd23",
+      "task_target": "ecosystem.config.js",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1269"
+    },
+    {
+      "id": "1269-02",
+      "title": "Create scripts/godman-pre-launch-validate.ts — final package validation before April 14",
+      "type": "feature",
+      "task_type": "godman",
+      "task_target": "scripts/godman-pre-launch-validate.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1269"
+    }
+  ]
+}

@@ -1522,5 +1522,32 @@ module.exports = {
       out_file: "/Users/tarekmnif/kognai/logs/heartbeat-out.log",
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
+    {
+      // AMD-23 Cerberus Gateway — Sprint 1269
+      // External agent access control: Chamber 2 (Cred Score) + Chamber 4 (SOUL Handshake)
+      // POST /cerberus/evaluate  GET /cerberus/health  (port 3419)
+      // To start: pm2 start ecosystem.config.js --only cerberus-gateway
+      name: "cerberus-gateway",
+      script: "scripts/amd23/cerberus-gateway.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: true,
+      watch: false,
+      max_memory_restart: "128M",
+      min_uptime: "5s",
+      max_restarts: 5,
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
+        CERBERUS_PORT: process.env.CERBERUS_PORT || "3419",
+        CERBERUS_SECRET: process.env.CERBERUS_SECRET || "",
+        HELIXA_API_KEY: process.env.HELIXA_API_KEY || "",
+        HELIXA_API_BASE: process.env.HELIXA_API_BASE || "https://api.helixa.ai",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/cerberus-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/cerberus-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
   ]
 };

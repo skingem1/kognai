@@ -1,0 +1,251 @@
+{
+  "generatedAt": "2026-03-25T12:48:32.070Z",
+  "targetVersion": "0.2.0",
+  "launchDate": "2026-04-14",
+  "daysUntilLaunch": 20,
+  "summary": {
+    "total": 47,
+    "passed": 46,
+    "failed": 0,
+    "warned": 1,
+    "skipped": 0,
+    "ready": true
+  },
+  "results": [
+    {
+      "check": "version:pact",
+      "status": "PASS",
+      "detail": "@godman-protocols/pact@0.2.0"
+    },
+    {
+      "check": "version:lax",
+      "status": "PASS",
+      "detail": "@godman-protocols/lax@0.2.0"
+    },
+    {
+      "check": "version:score",
+      "status": "PASS",
+      "detail": "@godman-protocols/score@0.2.0"
+    },
+    {
+      "check": "version:signal",
+      "status": "PASS",
+      "detail": "@godman-protocols/signal@0.2.0"
+    },
+    {
+      "check": "version:soul",
+      "status": "PASS",
+      "detail": "@godman-protocols/soul@0.2.0"
+    },
+    {
+      "check": "version:amf",
+      "status": "PASS",
+      "detail": "@godman-protocols/amf@0.2.0"
+    },
+    {
+      "check": "version:drs",
+      "status": "PASS",
+      "detail": "@godman-protocols/drs@0.2.0"
+    },
+    {
+      "check": "version:sdk",
+      "status": "PASS",
+      "detail": "@godman-protocols/sdk@0.2.0"
+    },
+    {
+      "check": "build:pact",
+      "status": "PASS",
+      "detail": "tsc --noEmit OK"
+    },
+    {
+      "check": "build:lax",
+      "status": "PASS",
+      "detail": "tsc --noEmit OK"
+    },
+    {
+      "check": "build:score",
+      "status": "PASS",
+      "detail": "tsc --noEmit OK"
+    },
+    {
+      "check": "build:signal",
+      "status": "PASS",
+      "detail": "tsc --noEmit OK"
+    },
+    {
+      "check": "build:soul",
+      "status": "PASS",
+      "detail": "tsc --noEmit OK"
+    },
+    {
+      "check": "build:amf",
+      "status": "PASS",
+      "detail": "tsc --noEmit OK"
+    },
+    {
+      "check": "build:drs",
+      "status": "PASS",
+      "detail": "tsc --noEmit OK"
+    },
+    {
+      "check": "build:sdk",
+      "status": "PASS",
+      "detail": "tsc --noEmit OK"
+    },
+    {
+      "check": "dry-run:pact",
+      "status": "PASS",
+      "detail": "npm publish --dry-run OK"
+    },
+    {
+      "check": "dry-run:lax",
+      "status": "PASS",
+      "detail": "npm publish --dry-run OK"
+    },
+    {
+      "check": "dry-run:score",
+      "status": "PASS",
+      "detail": "npm publish --dry-run OK"
+    },
+    {
+      "check": "dry-run:signal",
+      "status": "PASS",
+      "detail": "npm publish --dry-run OK"
+    },
+    {
+      "check": "dry-run:soul",
+      "status": "PASS",
+      "detail": "npm publish --dry-run OK"
+    },
+    {
+      "check": "dry-run:amf",
+      "status": "PASS",
+      "detail": "npm publish --dry-run OK"
+    },
+    {
+      "check": "dry-run:drs",
+      "status": "PASS",
+      "detail": "npm publish --dry-run OK"
+    },
+    {
+      "check": "dry-run:sdk",
+      "status": "PASS",
+      "detail": "npm publish --dry-run OK"
+    },
+    {
+      "check": "soul:exists",
+      "status": "PASS",
+      "detail": "SOUL.md present"
+    },
+    {
+      "check": "soul:kill_switch:account_banned",
+      "status": "PASS",
+      "detail": "present"
+    },
+    {
+      "check": "soul:kill_switch:view_threshold",
+      "status": "PASS",
+      "detail": "present"
+    },
+    {
+      "check": "soul:kill_switch:retention_threshold",
+      "status": "PASS",
+      "detail": "present"
+    },
+    {
+      "check": "soul:kill_switch:approval_threshold",
+      "status": "PASS",
+      "detail": "present"
+    },
+    {
+      "check": "soul:kill_switch:memory_limit",
+      "status": "PASS",
+      "detail": "present"
+    },
+    {
+      "check": "soul:kill_switch:oversight_limit",
+      "status": "PASS",
+      "detail": "present"
+    },
+    {
+      "check": "soul:all_kill_switches",
+      "status": "PASS",
+      "detail": "all 6/6 kill switches present"
+    },
+    {
+      "check": "soul:version",
+      "status": "PASS",
+      "detail": "constraint version 0.2.0 referenced"
+    },
+    {
+      "check": "amd23:chamber2-cred-score.ts",
+      "status": "PASS",
+      "detail": "scripts/amd23/chamber2-cred-score.ts present"
+    },
+    {
+      "check": "amd23:chamber4-soul-handshake.ts",
+      "status": "PASS",
+      "detail": "scripts/amd23/chamber4-soul-handshake.ts present"
+    },
+    {
+      "check": "amd23:cerberus-gateway.ts",
+      "status": "PASS",
+      "detail": "scripts/amd23/cerberus-gateway.ts present"
+    },
+    {
+      "check": "deerflow:pact",
+      "status": "PASS",
+      "detail": "SKILL.md present"
+    },
+    {
+      "check": "deerflow:lax",
+      "status": "PASS",
+      "detail": "SKILL.md present"
+    },
+    {
+      "check": "deerflow:score",
+      "status": "PASS",
+      "detail": "SKILL.md present"
+    },
+    {
+      "check": "deerflow:signal",
+      "status": "PASS",
+      "detail": "SKILL.md present"
+    },
+    {
+      "check": "deerflow:soul",
+      "status": "PASS",
+      "detail": "SKILL.md present"
+    },
+    {
+      "check": "deerflow:amf",
+      "status": "PASS",
+      "detail": "SKILL.md present"
+    },
+    {
+      "check": "deerflow:drs",
+      "status": "PASS",
+      "detail": "SKILL.md present"
+    },
+    {
+      "check": "assets:demos",
+      "status": "PASS",
+      "detail": "7/7 demos recorded"
+    },
+    {
+      "check": "assets:x-thread",
+      "status": "PASS",
+      "detail": "X megathread present"
+    },
+    {
+      "check": "assets:publish-script",
+      "status": "PASS",
+      "detail": "publish-all.sh present"
+    },
+    {
+      "check": "npm:auth",
+      "status": "WARN",
+      "detail": "not logged in to npm — run `npm login` before April 14 publish"
+    }
+  ]
+}
