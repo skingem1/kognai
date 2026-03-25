@@ -7429,6 +7429,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no
 - Timestamp: 2026-03-25T22:15:00Z
 
+## Sprint 1349 — BUGFIX: posting-health exclude dry-run posts from gate progress count
+- Status: PASS
+- Commit: 22ccbac5
+- Files: scripts/scs001/posting-health.ts
+- Fix: posts.length was 16 (including 3 dry-runs). Added DRY_METHODS filter. Gate progress now shows 13/30 real posts. Consistent with generate-phase1-5-gate.ts and gate-audit.json.
+- Swarm used: no
+- Timestamp: 2026-03-26T02:45:00Z
+
 ## Sprint 1348 — BUGFIX: generate-stats-report exclude dry-run posts from postsDelivered
 - Status: PASS
 - Commit: f6a4c564
