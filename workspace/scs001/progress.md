@@ -6855,3 +6855,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (multi-file config edit, direct write)
 - Issues: Initially built redundant /startup command before discovering /boot already exists. Pivoted to upgrading /boot instead.
 - Timestamp: 2026-03-25T11:45:00Z
+
+## Sprint 1247 — CTA-SUBSCRIBE
+- Status: PASS
+- Commit: 6d141447
+- Files modified: scripts/scs001/engagement-caption.ts
+- Files created: workspace/sprints/sprint-1247.json
+- Test: npx ts-node caption builder — 38% subscribe CTAs, 62% engagement CTAs (target ~30%)
+- Pipeline: TikTok captions now include "link in bio" subscription CTAs for €9/mo conversions
+- Swarm used: no (single-file edit, direct write)
+- Issues: none
+- Timestamp: 2026-03-25T12:00:00Z
