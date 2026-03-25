@@ -2785,8 +2785,14 @@ ONLY output the JSON array. No markdown, no explanation.`;
       const localWave = wave.filter(t => (t as any).task_target === 'local');
       const cloudWave = wave.filter(t => (t as any).task_target !== 'local');
 
-      if (cloudWave.length > 1) {
-        log(c.blue, `  [B.16] Parallel fan-out: ${cloudWave.length} cloud tasks executing concurrently`);
+      // B.16-RL: Cloud concurrency cap — prevents burning the Claude 5h token budget.
+      // Default: 1 (serial). Override: MAX_CLOUD_CONCURRENCY env var.
+      const MAX_CLOUD_CONCURRENCY = parseInt(process.env.MAX_CLOUD_CONCURRENCY ?? '1', 10);
+
+      if (cloudWave.length > 1 && MAX_CLOUD_CONCURRENCY > 1) {
+        log(c.blue, `  [B.16] Parallel fan-out: ${cloudWave.length} cloud tasks (cap: ${MAX_CLOUD_CONCURRENCY})`);
+      } else if (cloudWave.length > 1) {
+        log(c.blue, `  [B.16-RL] Serial cloud execution: ${cloudWave.length} tasks (MAX_CLOUD_CONCURRENCY=1)`);
       }
       if (localWave.length > 1) {
         log(c.blue, `  [B.16] Sequential execution: ${localWave.length} local tasks (Ollama serialized)`);
@@ -2794,7 +2800,11 @@ ONLY output the JSON array. No markdown, no explanation.`;
         // single task, no label needed
       }
 
-      await Promise.all(cloudWave.map(t => this.executeTask(t)));
+      // Execute cloud tasks in batches of MAX_CLOUD_CONCURRENCY
+      for (let i = 0; i < cloudWave.length; i += MAX_CLOUD_CONCURRENCY) {
+        const batch = cloudWave.slice(i, i + MAX_CLOUD_CONCURRENCY);
+        await Promise.all(batch.map(t => this.executeTask(t)));
+      }
       for (const t of localWave) {
         await this.executeTask(t);
       }

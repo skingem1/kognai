@@ -32,7 +32,11 @@ const SPRINTS    = existsSync(join(ROOT, 'workspace', 'sprints')) ? join(ROOT, '
 const LOCK       = join(ROOT, 'logs', 'sprint-runner.lock');
 const LOG        = join(ROOT, 'logs', 'sprint-runner.log');
 const ACTIVE     = join(ROOT, 'logs', 'sprint-runner-active.json');
+const COOLDOWN   = join(ROOT, 'logs', 'sprint-runner-cooldown.json');
 const MAX_HOURS  = 6; // kill orchestrator if it runs longer than this
+// Rate limiter: minimum gap between sprint executions (prevents burning Claude 5h limit)
+// Default: 10 min. Override via SPRINT_COOLDOWN_MINUTES env var.
+const COOLDOWN_MINUTES = parseInt(process.env.SPRINT_COOLDOWN_MINUTES ?? '10', 10);
 
 interface Task { id: string; status: string; agent?: string; sprint_id?: string; [k: string]: unknown; }
 interface Sprint { sprint_id: string; tasks: Task[]; [k: string]: unknown; }
@@ -87,6 +91,28 @@ function acquireLock(): void {
 }
 function releaseLock(): void {
   try { unlinkSync(LOCK); } catch { /* ignore */ }
+}
+
+// ── Rate Limiter (Claude 5h token budget protection) ────────────────────────
+function isInCooldown(): boolean {
+  if (!existsSync(COOLDOWN)) return false;
+  try {
+    const { until } = JSON.parse(readFileSync(COOLDOWN, 'utf8'));
+    if (Date.now() < until) {
+      const remaining = Math.ceil((until - Date.now()) / 60000);
+      log(`Rate limit cooldown active — ${remaining} min remaining. Exiting.`);
+      return true;
+    }
+  } catch { /* stale/corrupt cooldown file — ignore */ }
+  return false;
+}
+
+function setCooldown(): void {
+  const until = Date.now() + COOLDOWN_MINUTES * 60 * 1000;
+  try {
+    writeFileSync(COOLDOWN, JSON.stringify({ until, set_at: new Date().toISOString(), cooldown_minutes: COOLDOWN_MINUTES }));
+    log(`Cooldown set: next sprint no earlier than ${new Date(until).toISOString()} (+${COOLDOWN_MINUTES} min)`);
+  } catch { /* non-fatal */ }
 }
 
 // ── Sprint ID Injection ────────────────────────────────────────────────────
@@ -171,6 +197,8 @@ function main(): void {
     return;
   }
 
+  if (isInCooldown()) return;
+
   acquireLock();
   log('Starting sprint runner...');
 
@@ -225,9 +253,10 @@ function main(): void {
 
   const elapsed = Math.round((Date.now() - start) / 60000);
   const status = result.status === 0 ? '✅ Completed' : `❌ Failed (exit ${result.status})`;
-  
+
   log(`Orchestrator finished: ${status} (${elapsed} min)`);
-  sendTelegram(`🏁 *Sprint Runner* finished\\n\\n${status}\\nDuration: ${elapsed} min`);
+  setCooldown(); // Rate limiter: enforce gap before next sprint
+  sendTelegram(`🏁 *Sprint Runner* finished\\n\\n${status}\\nDuration: ${elapsed} min\\nNext sprint in: ${COOLDOWN_MINUTES} min`);
 
   // Clean up ACTIVE file after run
   try {
