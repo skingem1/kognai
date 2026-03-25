@@ -6539,3 +6539,12 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Validated: dry-run shows 1 recipient correctly
 - Swarm used: no
 - Timestamp: 2026-03-25T02:00:00Z
+
+## Sprint 1209 — GODMAN changelog command
+- Status: PASS
+- Files modified: scripts/telegram-commands/cmd-system.ts, scripts/telegram-bot.ts, scripts/telegram-commands/cmd-help.ts
+- Files created: workspace/sprints/sprint-1209.json
+- Function: cmdGodmanChangelog() — reads CHANGELOG.md for all 7 protocols, extracts [0.2.0] section, shows bullet count + first 3 items per protocol. Registered as /godman-changelog.
+- Test: tsc --noEmit clean
+- Swarm used: no (cmd-system.ts too large)
+- Timestamp: 2026-03-25T02:15:00Z

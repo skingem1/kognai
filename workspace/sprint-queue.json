@@ -3039,6 +3039,15 @@
       "priority": "high",
       "rationale": "cmdAchiriLaunch Step 3 showed \u26a0\ufe0f broadcast script not found. Created notify-waitlist.sh: reads waitlist.jsonl, sends Telegram messages via ACHIRI_TELEGRAM_BOT_TOKEN. Supports --dry-run, --message, --template (alpha-invite, reminder). Step 3 now shows \u2705.",
       "_note": "Shipped 2026-03-25 \u2014 Sprint 1208. scripts/achiri/notify-waitlist.sh (100 lines). Dry-run validated."
+    },
+    {
+      "sprint": 1209,
+      "title": "GODMAN-LAUNCH \u2014 /godman-changelog: v0.2.0 changelog summary for all 7 protocols",
+      "block": "GODMAN-LAUNCH",
+      "status": "done",
+      "priority": "medium",
+      "rationale": "New /godman-changelog command reads all 7 protocol CHANGELOGs, extracts [0.2.0] section, shows bullet count + first 3 items per protocol. Pre-launch review tool for operator.",
+      "_note": "Shipped 2026-03-25 \u2014 Sprint 1209. cmd-system.ts + telegram-bot.ts + cmd-help.ts. tsc clean."
     }
   ]
 }
