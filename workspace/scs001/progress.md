@@ -6619,3 +6619,25 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (multi-file, direct write)
 - Issues: none
 - Timestamp: 2026-03-25T09:45:00Z
+
+## Sprint 1217 — 2026-03-24
+- **Status:** done
+- **Title:** OPS — /produce-vlog: Telegram command for vlog video production
+- **Files:** scripts/telegram-commands/cmd-delivery.ts, scripts/telegram-bot.ts, scripts/telegram-commands/cmd-help.ts
+- **Impact:** Operator can now trigger avatar vlog production directly from Telegram with /produce-vlog [topic]. Sends video file when complete.
+
+## Sprint 1218 — 2026-03-24
+- **Status:** done
+- **Title:** OPS — cleanup-old-runs.ts: add code-demo-runs and vlog-runs cleanup
+- **Files:** scripts/scs001/cleanup-old-runs.ts
+- **Impact:** /cleanup now also removes old demo-* runs (keep 20) and vlog-* runs (keep 30). Prevents unbounded disk growth from 150+ code-demo-runs and 167+ vlog-runs.
+
+## Sprint 1218 — BUGFIX
+- Status: PASS
+- Commit: 5fd717eb
+- Files modified: scripts/telegram-commands/cmd-management.ts
+- Fix: /next-actions item #5 now points to /seturl instead of /updateviews
+- Test: 137 PASS / 0 FAIL
+- Swarm used: no (single-line fix)
+- Issues: none
+- Timestamp: 2026-03-25T09:52:00Z
