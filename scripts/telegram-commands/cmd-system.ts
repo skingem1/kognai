@@ -79,7 +79,7 @@ export function cmdHealth(): string {
   let memWarnSection = '';
   try {
     const procs = getPm2List();
-    const highMem = procs.filter(p => p.memory > MEM_WARN_MB * 1024 * 1024);
+    const highMem = procs.filter(p => (p.memory ?? 0) > MEM_WARN_MB * 1024 * 1024);
     const highRestarts = procs.filter(p => p.restarts > RESTART_WARN);
     const warnLines: string[] = [];
     if (highMem.length > 0) {
@@ -93,13 +93,13 @@ export function cmdHealth(): string {
     // Sprint 1136 (wave 15): restart rate (restarts/hour) for high-restart procs
     const highRestartRate = procs.filter(p => {
       if (p.restarts < 5) return false;
-      const uptimeH = p.uptimeMs > 0 ? p.uptimeMs / 3600000 : 1;
+      const uptimeH = (p.uptimeMs ?? 0) > 0 ? (p.uptimeMs ?? 0) / 3600000 : 1;
       return p.restarts / Math.max(1, uptimeH) >= 1; // ≥1 restart/hour is notable
     });
     if (highRestartRate.length > 0) {
       warnLines.push(`⚠️ *High restart rate (≥1/hr):*`);
       for (const p of highRestartRate) {
-        const uptimeH = p.uptimeMs > 0 ? p.uptimeMs / 3600000 : 1;
+        const uptimeH = (p.uptimeMs ?? 0) > 0 ? (p.uptimeMs ?? 0) / 3600000 : 1;
         const rate = (p.restarts / Math.max(1, uptimeH)).toFixed(1);
         warnLines.push(`  🔁 \`${p.name}\` — ${rate}/hr (${p.restarts} total)`);
       }
@@ -113,10 +113,10 @@ export function cmdHealth(): string {
   try {
     const procs = getPm2List();
     const top5 = procs
-      .filter(p => p.memory > 0)
-      .sort((a, b) => b.memory - a.memory)
+      .filter(p => (p.memory ?? 0) > 0)
+      .sort((a, b) => (b.memory ?? 0) - (a.memory ?? 0))
       .slice(0, 5);
-    const totalMemBytes = procs.reduce((s, p) => s + p.memory, 0);
+    const totalMemBytes = procs.reduce((s, p) => s + (p.memory ?? 0), 0);
     const totalMemStr = fmtMem(totalMemBytes);
     const footprintIcon = totalMemBytes > 1024 * 1024 * 1024 ? '⚠️' : '✅';
     if (top5.length > 0) {
@@ -1107,7 +1107,8 @@ export function cmdReport(): string {
   // 2. Health
   const h = readJSON<any>(path.join(ROOT, 'health.json'));
   const healthStatus = h?.status ?? 'unknown';
-  const statusIcon = { healthy: '✅', degraded: '⚠️', critical: '🔴', dead: '💀' }[healthStatus] ?? '❓';
+  const STATUS_ICONS: Record<string, string> = { healthy: '✅', degraded: '⚠️', critical: '🔴', dead: '💀' };
+  const statusIcon = STATUS_ICONS[healthStatus] ?? '❓';
   const phase = h?.phase ?? '?';
   const day = h?.beta?.day_number ?? '?';
   const lastBeat = h?.last_heartbeat?.replace('T', ' ').slice(0, 16) ?? 'never';

@@ -1,0 +1,17 @@
+{
+  "sprint": 1231,
+  "title": "TSC FIX — resolve all known pre-existing TypeScript errors across 4 files",
+  "type": "BUG",
+  "status": "done",
+  "track": "OPS",
+  "completed_at": "2026-03-24",
+  "changes": [
+    "cmd-delivery.ts:1063 — added explicit (l: string) type annotation on filter lambda",
+    "cmd-posting.ts:1647 — cast steps as string[] in cmdPreflight forEach",
+    "validate-all-bot-commands.ts — aliased cmd-system cmdPreflight as cmdPreflightSystem to resolve duplicate import with cmd-posting",
+    "cmd-system.ts lines 82,96,102,116-119 — added ?? 0 null coalescing for p.memory and p.uptimeMs (possibly null PM2 fields)",
+    "cmd-system.ts:1110 — changed healthStatus object lookup to use Record<string,string> typed variable STATUS_ICONS to fix TS7053"
+  ],
+  "root_cause": "PM2 process fields (memory, uptimeMs) typed as nullable in getPm2List() return type. healthStatus was any type so object index lookup failed strict mode. Two cmdPreflight exports (cmd-system + cmd-posting) caused duplicate import collision.",
+  "tsc": "clean (all 0 errors)"
+}

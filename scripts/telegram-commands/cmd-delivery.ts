@@ -1060,7 +1060,7 @@ export async function cmdPostAuto(chatId: string, args: string): Promise<void> {
       { cwd: ROOT, timeout: 180_000, stdio: 'pipe', env: { ...process.env, AUTO_POST_MAX: String(count) } }
     ).toString();
 
-    const lines = result.split('\n').filter(l => l.includes('[auto-post-browser]'));
+    const lines = result.split('\n').filter((l: string) => l.includes('[auto-post-browser]'));
     const summary = lines.slice(-3).join('\n') || result.slice(-300);
     await sendMessage(chatId, `✅ Auto-post complete:\n\n\`\`\`\n${summary}\n\`\`\``);
   } catch (err: any) {

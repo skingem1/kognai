@@ -1644,7 +1644,7 @@ export function cmdPreflight(): string {
       if (c.action) lines.push(`  → _${c.action}_`);
     }
     lines.push('', summary, '', '*Next Steps:*');
-    steps.forEach(s => lines.push(`• ${s}`));
+    (steps as string[]).forEach(s => lines.push(`• ${s}`));
     return lines.join('\n');
   } catch (e: any) {
     return `❌ Preflight error: ${e.message}`;

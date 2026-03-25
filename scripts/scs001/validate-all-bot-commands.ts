@@ -48,7 +48,7 @@ import {
   cmdTikTokAuth, cmdQuickStart, cmdEnvCheck, cmdStripeStatus,
   cmdReadiness, cmdGitStats, cmdBoot, cmdShutdown, cmdReload,
   cmdSwarmStats, cmdErrors, cmdTokenCheck, cmdLogs, cmdChangelog,
-  cmdPreflight,
+  cmdPreflight as cmdPreflightSystem, // Sprint 1231: aliased — cmd-posting also exports cmdPreflight
 } from '../telegram-commands/cmd-system';
 
 import {
@@ -99,7 +99,7 @@ test('errors',     () => cmdErrors());
 test('tokencheck', () => cmdTokenCheck());
 test('logs',       () => cmdLogs());
 test('changelog',  () => cmdChangelog(5));
-test('preflight',  () => cmdPreflight());
+test('preflight',  () => cmdPreflightSystem()); // Sprint 1231: aliased — see import
 // cmdSmoke is async (sends Telegram messages) — skipped
 
 // ── Gate commands ────────────────────────────────────────────────────────────
