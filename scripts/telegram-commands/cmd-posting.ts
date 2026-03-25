@@ -202,9 +202,9 @@ export function cmdAutoPost(): string {
     lines.push(`Add TIKTOK\\_CLIENT\\_KEY and TIKTOK\\_CLIENT\\_SECRET to .env first.`);
   }
 
-  // Queue stats
+  // Queue stats — Sprint 1228: use readRealPosts so dry-run posts don't hide queue entries
   const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
-  const recorded = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  const recorded = readRealPosts();
   const recordedIds = new Set(recorded.map((e: any) => e.video_id).filter(Boolean));
   const unposted = ledger.filter((e: any) => !recordedIds.has(e.video_id) && e.video_id).length;
 
@@ -343,9 +343,8 @@ export function cmdViral(): string {
 export function cmdDashboard(): string {
   const lines: string[] = ['🏠 *Kognai Dashboard*', ''];
 
-  // 1. TikTok Gate
-  const manualPostsPath = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
-  const posts = readLines(manualPostsPath);
+  // 1. TikTok Gate — Sprint 1228: use readRealPosts to exclude dry-run entries
+  const posts = readRealPosts();
   const posted = posts.length;
   const totalViews = posts.reduce((s: number, p: any) => s + (p.views ?? 0), 0);
   const gateDate = new Date('2026-04-07');
@@ -431,9 +430,9 @@ export function cmdDigest(): string {
   else if (postCount === 0) urgency = '🟡 WARNING — 0 posts';
   else if (daysLeft <= 14 && postsNeeded > 0) urgency = '🟡 WARNING';
 
-  // Queue — top 3
+  // Queue — top 3 — Sprint 1228: use readRealPosts so dry-run posts don't hide queue entries
   const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
-  const recorded = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  const recorded = readRealPosts();
   const recordedIds = new Set(recorded.map((e: any) => e.video_id).filter(Boolean));
 
   const viralScores = new Map<string, number>();
@@ -1099,7 +1098,8 @@ export function cmdBatch(args: string): string {
   const count = Math.min(Math.max(parseInt(args) || 5, 1), 10);
 
   const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
-  const recorded = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  // Sprint 1228: use readRealPosts so dry-run posts don't hide videos from batch
+  const recorded = readRealPosts();
   const recordedIds = new Set(recorded.map((e: any) => e.video_id).filter(Boolean));
   const archivedIds = loadArchived();
 
@@ -1169,7 +1169,8 @@ export function cmdBatch(args: string): string {
 
 // Sprint 459: /postlog — recent posting activity log
 export function cmdPostLog(): string {
-  const posts = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  // Sprint 1228: use readRealPosts to exclude dry-run entries from post log
+  const posts = readRealPosts();
 
   if (posts.length === 0) {
     return '📝 *Post Log* — No posts recorded yet.\n\nUse `/deliver` then `/record <id> <views>` after posting.';
@@ -1385,18 +1386,12 @@ export function cmdWeeklyDigest(): string {
     sprintNames = lines.slice(0, 5).map(l => l.replace(/^[a-f0-9]+ /, ''));
   } catch {}
 
-  // Posts recorded this week
+  // Posts recorded this week — Sprint 1228: use readRealPosts to exclude dry-run entries
   let postsThisWeek = 0;
   let viewsThisWeek = 0;
-  const postsPath = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
-  if (fs.existsSync(postsPath)) {
-    for (const line of fs.readFileSync(postsPath, 'utf-8').split('\n').filter(l => l.trim())) {
-      try {
-        const e = JSON.parse(line);
-        const ts = (e.timestamp || e.created_at || '').slice(0, 10);
-        if (ts >= weekAgoStr) { postsThisWeek++; viewsThisWeek += e.views ?? 0; }
-      } catch {}
-    }
+  for (const e of readRealPosts()) {
+    const ts = ((e as any).timestamp || (e as any).created_at || '').slice(0, 10);
+    if (ts >= weekAgoStr) { postsThisWeek++; viewsThisWeek += (e as any).views ?? 0; }
   }
 
   // Achiri DAU trend (from daily-counts.json)
@@ -1455,13 +1450,10 @@ export function cmdWeeklyDigest(): string {
     }
   }
 
-  // Gate progress
+  // Gate progress — Sprint 1228: use readRealPosts to exclude dry-run entries
   const gateDate = new Date('2026-04-07');
   const daysToGate = Math.max(0, Math.ceil((gateDate.getTime() - now.getTime()) / 86_400_000));
-  const totalPosts = (() => {
-    if (!fs.existsSync(postsPath)) return 0;
-    return fs.readFileSync(postsPath, 'utf-8').split('\n').filter(l => l.trim()).length;
-  })();
+  const totalPosts = readRealPosts().length;
   out.push('');
   out.push(`🎯 *Gate:* ${totalPosts}/30 posts · ${daysToGate} days to Apr 7`);
 
@@ -1490,15 +1482,9 @@ export function cmdWeeklyDigest(): string {
 export function cmdPostNext(): string {
   const ledgerPath = path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl');
   const deliveredPath = path.join(ROOT, 'workspace', 'scs001', 'auto-delivered.jsonl');
-  const manualPath = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
 
-  // Load already-posted IDs
-  const postedIds = new Set<string>();
-  if (fs.existsSync(manualPath)) {
-    fs.readFileSync(manualPath, 'utf-8').split('\n').filter(l => l.trim()).forEach(l => {
-      try { const e = JSON.parse(l); if (e.video_id) postedIds.add(e.video_id); } catch {}
-    });
-  }
+  // Sprint 1228: use readRealPosts so dry-run posts don't hide videos from postnext
+  const postedIds = new Set<string>(readRealPosts().map((e: any) => e.video_id).filter(Boolean));
 
   // Build candidate list with scores
   const candidates: Array<{ video_id: string; viral_score: number; mp4: string; source: string; topic?: string; format?: string }> = [];

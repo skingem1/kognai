@@ -1,0 +1,17 @@
+{
+  "sprint": 1228,
+  "title": "DRY-RUN FIX — cmd-management/delivery/session/posting.ts: replace all remaining raw manual-posts.jsonl reads with readRealPosts()",
+  "type": "BUG",
+  "status": "done",
+  "track": "SCS-001",
+  "completed_at": "2026-03-24",
+  "changes": [
+    "cmd-management.ts: cmdHistory, cmdStale, cmdPurge, cmdExport, cmdWeeklyReport, cmdFilmKit, cmdProgress, cmdDedup, cmdTop30, cmdAbResults, cmdStatus, cmdPostPulse — all now use readRealPosts()",
+    "cmd-delivery.ts: cmdDeliver, cmdCaptionNext, cmdPostNow, cmdPickup, cmdDeliverNext, cmdQuickstart — all now use readRealPosts()",
+    "cmd-session.ts: getNextUnpostedVideo, cmdSession, cmdEndSession — added readRealPosts import, all now use readRealPosts()",
+    "cmd-posting.ts: cmdAutoPost queue stats, cmdDashboard, cmdDigest queue section, cmdBatch, cmdPostLog, cmdWeeklyDigest posts section, cmdPostNext — all now use readRealPosts()"
+  ],
+  "root_cause": "Commands reading manual-posts.jsonl directly included dry-run entries (browser-post-dry, batch-browser-dry), inflating posted counts and hiding real unposted videos from delivery/queue/gate commands",
+  "fix": "All commands now use readRealPosts() which filters out dry-run entries. cmdUpdateViews and cmdSetUrl kept using readLines (they do full file rewrites and need all entries).",
+  "tsc": "clean (2 pre-existing unrelated errors unchanged)"
+}

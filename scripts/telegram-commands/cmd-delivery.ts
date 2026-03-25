@@ -18,7 +18,8 @@ export async function cmdDeliver(chatId: string, args: string): Promise<string> 
   const count = Math.min(Math.max(parseInt(args) || 3, 1), 10);
 
   const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
-  const recorded = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  // Sprint 1228: use readRealPosts so dry-run posts don't hide videos from delivery
+  const recorded = readRealPosts();
   const recordedIds = new Set(recorded.map((e: any) => e.video_id).filter(Boolean));
 
   const viralScores = new Map<string, number>();
@@ -121,7 +122,8 @@ export async function cmdPublish(chatId: string, args: string): Promise<void> {
   let videoId = args.trim();
   if (!videoId) {
     const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
-    const recorded = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+    // Sprint 1228: use readRealPosts so dry-run posts don't hide videos from caption
+    const recorded = readRealPosts();
     const recordedIds = new Set(recorded.map((e: any) => e.video_id).filter(Boolean));
     const viralScores = new Map<string, number>();
     const expPath = path.join(ROOT, 'workspace', 'scs001', 'experiments.jsonl');
@@ -294,7 +296,8 @@ export async function cmdPublish(chatId: string, args: string): Promise<void> {
 
 export async function cmdPostNow(chatId: string): Promise<void> {
   const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
-  const recorded = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  // Sprint 1228: use readRealPosts so dry-run posts don't hide videos from postnow
+  const recorded = readRealPosts();
   const recordedIds = new Set(recorded.map((e: any) => e.video_id).filter(Boolean));
 
   const viralScores = new Map<string, number>();
@@ -362,7 +365,8 @@ export async function cmdPostNow(chatId: string): Promise<void> {
 
 export async function cmdPickup(chatId: string): Promise<void> {
   const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
-  const recorded = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  // Sprint 1228: use readRealPosts so dry-run posts don't hide videos from pickup
+  const recorded = readRealPosts();
   const recordedIds = new Set(recorded.map((e: any) => e.video_id).filter(Boolean));
   const archivedIds = loadArchived();
 
@@ -983,7 +987,8 @@ export async function cmdPostBrowser(chatId: string, args: string): Promise<void
   let videoId = args.trim();
   if (!videoId) {
     const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
-    const recorded = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+    // Sprint 1228: use readRealPosts so dry-run posts don't hide videos from deliver-next
+    const recorded = readRealPosts();
     const recordedIds = new Set((recorded as any[]).map((e: any) => e.video_id).filter(Boolean));
     const unposted = (ledger as any[])
       .filter((e: any) => !recordedIds.has(e.video_id) && e.video_id && findCaptionedMp4(e.video_id))
@@ -1072,7 +1077,8 @@ export async function cmdQuickstart(chatId: string): Promise<void> {
   // Find best unposted video
   const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
   const delivered = readLines(path.join(ROOT, 'workspace', 'scs001', 'auto-delivered.jsonl'));
-  const recorded = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  // Sprint 1228: use readRealPosts so dry-run posts don't hide videos from quickstart
+  const recorded = readRealPosts();
   const recordedIds = new Set((recorded as any[]).map((e: any) => e.video_id).filter(Boolean));
 
   // Get best delivered video with file on disk

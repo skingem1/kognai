@@ -14,8 +14,8 @@ import {
 } from './shared';
 
 export function cmdHistory(): string {
-  const manualPostsPath = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
-  const posts = readLines(manualPostsPath) as Array<{ video_id: string; views?: number; posted_at?: string; recorded_at?: string; title?: string }>;
+  // Sprint 1228: use readRealPosts to exclude dry-run entries from history
+  const posts = readRealPosts() as Array<{ video_id: string; views?: number; posted_at?: string; recorded_at?: string; title?: string }>;
 
   if (posts.length === 0) {
     return (
@@ -170,7 +170,8 @@ export function cmdUnarchive(args: string): string {
 export function cmdStale(args: string): string {
   const STALE_DAYS = 14; // Sprint 1065: threshold raised to 14d (topic shelf-life)
   const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
-  const recorded = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  // Sprint 1228: use readRealPosts so dry-run posts don't hide videos from stale detection
+  const recorded = readRealPosts();
   const recordedIds = new Set(recorded.map((e: any) => e.video_id).filter(Boolean));
   const archivedIds = loadArchived();
   const now = Date.now();
@@ -227,7 +228,8 @@ export function cmdStale(args: string): string {
 
 export function cmdPurge(args: string): string {
   const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
-  const recorded = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  // Sprint 1228: use readRealPosts so dry-run posts don't protect videos from purge
+  const recorded = readRealPosts();
   const recordedIds = new Set(recorded.map((e: any) => e.video_id).filter(Boolean));
   const archivedIds = loadArchived();
 
@@ -408,7 +410,8 @@ export function cmdExport(args: string): string {
   const count = Math.min(Math.max(parseInt(args) || 10, 1), 30);
 
   const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
-  const recorded = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  // Sprint 1228: use readRealPosts so dry-run posts don't hide videos from export
+  const recorded = readRealPosts();
   const recordedIds = new Set(recorded.map((e: any) => e.video_id).filter(Boolean));
 
   // Load viral scores
@@ -501,8 +504,8 @@ export function cmdWeeklyReport(): string {
   const weekAgoStr = weekAgo.toISOString().slice(0, 10);
   const todayStr = now.toISOString().slice(0, 10);
 
-  // Posts this week
-  const posts = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  // Posts this week — Sprint 1228: use readRealPosts to exclude dry-run entries
+  const posts = readRealPosts();
   const thisWeekPosts = posts.filter((p: any) => {
     const d = (p.posted_at ?? p.recorded_at ?? '').slice(0, 10);
     return d >= weekAgoStr && d <= todayStr;
@@ -699,7 +702,8 @@ export function cmdSpeakerTest(): string {
 
 export function cmdFilmKit(): string {
   const experiments = readLines(path.join(ROOT, 'workspace', 'scs001', 'experiments.jsonl'));
-  const posts = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  // Sprint 1228: use readRealPosts to exclude dry-run entries from gate count
+  const posts = readRealPosts();
 
   const GATE_DATE = new Date('2026-04-07T00:00:00Z');
   const now = new Date();
@@ -1174,7 +1178,8 @@ export function cmdScorecard(): string {
 }
 
 export function cmdProgress(): string {
-  const posts = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  // Sprint 1228: use readRealPosts — dry-run posts must not count toward gate
+  const posts = readRealPosts();
   const now = new Date();
   const GATE_DATE = new Date('2026-04-07T00:00:00Z');
   const daysLeft = Math.max(0, Math.ceil((GATE_DATE.getTime() - now.getTime()) / 86_400_000));
@@ -1261,7 +1266,8 @@ export function cmdCleanup(): string {
 
 export function cmdDedup(): string {
   const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
-  const recorded = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  // Sprint 1228: use readRealPosts so dry-run posts don't hide videos from dedup analysis
+  const recorded = readRealPosts();
   const recordedIds = new Set(recorded.map((e: any) => e.video_id).filter(Boolean));
   const archivedIds = loadArchived();
 
@@ -1382,7 +1388,8 @@ export function cmdDedup(): string {
 
 export function cmdTop30(): string {
   const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
-  const recorded = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  // Sprint 1228: use readRealPosts so dry-run posts don't exclude videos from top-30 selection
+  const recorded = readRealPosts();
   const recordedIds = new Set(recorded.map((e: any) => e.video_id).filter(Boolean));
   const archivedIds = loadArchived();
 
@@ -1481,7 +1488,8 @@ export function cmdTop30(): string {
 }
 
 export function cmdAbResults(): string {
-  const posts = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  // Sprint 1228: use readRealPosts to exclude dry-run entries from A/B analysis
+  const posts = readRealPosts();
 
   if (posts.length === 0) {
     return '📊 *A/B Results* — No posts recorded yet.\n\nStart posting with `/session` or `/deliver`, then check back!';
@@ -1582,10 +1590,10 @@ export function cmdAbResults(): string {
 }
 
 export function cmdStatus(): string {
-  const allPosts = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  // Sprint 1228: unified — readRealPosts for both gate stats and queue filter
   const posts = readRealPosts();
   const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
-  const recordedIds = new Set(allPosts.map((e: any) => e.video_id).filter(Boolean));
+  const recordedIds = new Set(posts.map((e: any) => e.video_id).filter(Boolean));
   const archivedIds = loadArchived();
 
   // Gate stats
@@ -2725,14 +2733,9 @@ export function cmdPostPulse(): string {
   const oneDayAgoStr = oneDayAgo.toISOString();
   const todayStr = now.toISOString().slice(0, 10);
 
-  // Load posts (excluding dry runs)
-  const postsPath = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
-  const allPosts: any[] = fs.existsSync(postsPath)
-    ? fs.readFileSync(postsPath, 'utf-8').split('\n').filter(l => l.trim()).map(l => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean)
-    : [];
-
-  const realPosts = allPosts.filter(p => !['browser-post-dry', 'batch-browser-dry'].includes(p.method ?? ''));
-  const postsLast24h = realPosts.filter(p => (p.posted_at ?? p.recorded_at ?? '') >= oneDayAgoStr);
+  // Sprint 1228: use readRealPosts (replaces inline dry-run filter)
+  const realPosts = readRealPosts();
+  const postsLast24h = realPosts.filter((p: any) => (p.posted_at ?? p.recorded_at ?? '') >= oneDayAgoStr);
   const viewsLast24h = postsLast24h.reduce((sum, p) => sum + (p.views ?? 0), 0);
   const totalPosts = realPosts.length;
   const totalViews = realPosts.reduce((sum, p) => sum + (p.views ?? 0), 0);

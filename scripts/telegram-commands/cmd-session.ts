@@ -6,7 +6,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { sendMessage, sendMessageWithButtons, sendVideoWithButtons } from './telegram-api';
-import { ROOT, readLines, findCaptionedMp4, getExperimentData, buildTikTokCaption } from './shared';
+import { ROOT, readLines, readRealPosts, findCaptionedMp4, getExperimentData, buildTikTokCaption } from './shared';
 
 // ─── Posting session state ────────────────────────────────────────
 interface PostingSession {
@@ -21,7 +21,8 @@ let postingSession: PostingSession = { active: false, chatId: '', startedAt: '',
 
 function getNextUnpostedVideo(): { video_id: string; mp4Path: string; caption: string; viralScore: number | null; speaker: string } | null {
   const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
-  const recorded = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  // Sprint 1228: use readRealPosts so dry-run posts don't hide videos from session queue
+  const recorded = readRealPosts();
   const recordedIds = new Set(recorded.map((e: any) => e.video_id).filter(Boolean));
   for (const id of postingSession.videosPosted) recordedIds.add(id);
 
@@ -102,7 +103,8 @@ export async function cmdSession(chatId: string): Promise<void> {
     return;
   }
 
-  const manualPosts = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  // Sprint 1228: use readRealPosts to exclude dry-run entries from gate count
+  const manualPosts = readRealPosts();
   const postsNeeded = Math.max(0, 30 - manualPosts.length);
   const gateDate = new Date('2026-04-07T00:00:00Z');
   const daysLeft = Math.max(1, Math.ceil((gateDate.getTime() - Date.now()) / 86_400_000));
@@ -197,7 +199,8 @@ export async function cmdEndSession(chatId: string): Promise<void> {
   const startTime = new Date(postingSession.startedAt);
   const elapsed = Math.ceil((Date.now() - startTime.getTime()) / 60_000);
 
-  const allPosts = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  // Sprint 1228: use readRealPosts to exclude dry-run entries from gate count
+  const allPosts = readRealPosts();
   const totalPosts = allPosts.length;
   const postsLeft = Math.max(0, 30 - totalPosts);
   const gateDate = new Date('2026-04-07T00:00:00Z');
