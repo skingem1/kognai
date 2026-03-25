@@ -293,6 +293,11 @@ export class ViralTikTokDownloader {
         await new Promise((r) => setTimeout(r, 1500));
       } catch (err: any) {
         console.warn(`  [ViralDownloader] Search failed for "${topic.topic_name}": ${err.message}`);
+        // Sprint 1323: abort search loop on 403 (subscription lapsed) to avoid 25-45s of wasted retries
+        if (err.message?.includes('403') || err.message?.toLowerCase().includes('not subscribed')) {
+          console.warn('[ViralDownloader] RapidAPI subscription lapsed — aborting remaining searches');
+          break;
+        }
       }
     }
 

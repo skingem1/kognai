@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1323",
+  "title": "BUGFIX — ViralDownloader: abort search loop on RapidAPI 403 (not subscribed)",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "ViralDownloader makes 5+ API calls when RapidAPI subscription is lapsed (403). Each call hits a 429 rate-limit wait (5s+) before the 403. With 5 topics, this wastes 25-45 seconds per pipeline run. Fix: when a 403 'not subscribed' error is detected, break the search loop immediately instead of continuing to the next topic.",
+  "tasks": [
+    {
+      "id": "viral-downloader-403-fast-fail",
+      "description": "In agents/scs001-viral-downloader/index.ts, in the catch block at line 294, add detection for 403 subscription error: if err.message includes '403' or 'not subscribed', log a warning '[ViralDownloader] RapidAPI subscription lapsed — aborting search' and break out of the topics for-loop. This prevents wasting 25-45s on retries when the API key is not subscribed.",
+      "file": "agents/scs001-viral-downloader/index.ts",
+      "status": "pending",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}
