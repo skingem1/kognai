@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-1267",
+  "title": "GODMAN-SOUL-BOOTSTRAP — Canonical SOUL.md bootstrap file with all kill switches",
+  "description": "Summer Yu rule: safety constraints must be in bootstrap files, not chat-only. Create the canonical SOUL.md for the Kognai runtime with all 6 kill switches encoded. This file is loaded at boot, survives context compaction, and is hashed by AMD-23 Chamber 4 SOUL attestation. Also create workspace/godman-protocols/soul/SOUL.md as the Godman reference implementation.",
+  "source": "queue-post-exhaustion",
+  "tasks": [
+    {
+      "id": "1267-01",
+      "title": "Create SOUL.md — Kognai runtime bootstrap safety file",
+      "type": "feature",
+      "task_type": "soul",
+      "task_target": "SOUL.md",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-1267"
+    },
+    {
+      "id": "1267-02",
+      "title": "Create workspace/godman-protocols/soul/SOUL.md — Godman reference SOUL",
+      "type": "feature",
+      "task_type": "soul",
+      "task_target": "workspace/godman-protocols/soul/SOUL.md",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-1267"
+    }
+  ]
+}
