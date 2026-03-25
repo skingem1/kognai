@@ -6557,3 +6557,12 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Test: tsc --noEmit clean
 - Swarm used: no
 - Timestamp: 2026-03-25T02:30:00Z
+
+## Sprint 1211 — OPS /next-actions fix
+- Status: PASS
+- Files modified: scripts/telegram-commands/cmd-management.ts
+- Files created: workspace/sprints/sprint-1211.json
+- Fix: cmdNextActions() Achiri bot token action now points to /achiri-bot-setup instead of /deploy-status. More actionable one-tap workflow.
+- Test: tsc --noEmit clean
+- Swarm used: no
+- Timestamp: 2026-03-25T02:45:00Z
