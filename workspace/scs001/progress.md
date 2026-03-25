@@ -6688,3 +6688,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (multi-file feature)
 - Issues: none
 - Timestamp: 2026-03-25T09:16:00Z
+
+## Sprint 1226 — FEATURE — /preflight: pre-posting session checklist with actionable steps
+- Status: PASS
+- Commit: 4716ccd4
+- Files created: scripts/scs001/preflight.ts
+- Files modified: cmd-posting.ts, cmd-help.ts, telegram-bot.ts, validate-all-bot-commands.ts
+- Test: 83/83 bot commands pass. Preflight shows 3/6 checks (token+queue+gate at-risk). 10 videos ready.
+- Pipeline: Complete manual posting toolchain: /export → /queue-fill → /preflight → /post-next → /post-browser
+- Swarm used: no (multi-file feature)
+- Issues: none
+- Timestamp: 2026-03-25T09:22:00Z
