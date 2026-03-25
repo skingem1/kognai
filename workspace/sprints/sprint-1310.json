@@ -1,0 +1,39 @@
+{
+  "sprint_id": "sprint-1310",
+  "title": "INFRA — Sprint runner daily cap + gate urgency alert",
+  "source": "queue-empty-qwen-recommendation",
+  "tasks": [
+    {
+      "id": "sprint-runner-daily-cap",
+      "description": "Add daily sprint cap enforcement to scripts/sprint-runner.ts. The constant DAILY_SPRINT_CAP is already declared (line 42). Add: (1) function getDailySprintCount() — reads logs/sprint-runner-daily.json, returns count for today (key: YYYY-MM-DD). Returns 0 if file missing or date differs. (2) function incrementDailySprintCount() — reads same file, increments count for today, writes back. (3) In main() after isInCooldown() check (line 203), add: if (getDailySprintCount() >= DAILY_SPRINT_CAP) { log('Daily sprint cap reached: ' + DAILY_SPRINT_CAP + ' sprints today. Exiting.'); sendTelegram('⚠️ Daily sprint cap reached — ' + DAILY_SPRINT_CAP + ' sprints today. Runner paused until midnight.'); return; }. (4) After setCooldown() call (line 261), add: incrementDailySprintCount(). Use only stdlib (fs, path). Surgical edit only — do not rewrite the file.",
+      "file": "scripts/sprint-runner.ts",
+      "status": "pending",
+      "deliverables": {
+        "code": ["scripts/sprint-runner.ts"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "DAILY_SPRINT_CAP constant declared at line 42 but not enforced. Add getDailySprintCount and incrementDailySprintCount functions, enforce cap check in main(), increment after each successful sprint run.",
+      "priority": "high",
+      "agent": "coder",
+      "type": "feature",
+      "sprint_id": "sprint-1310"
+    },
+    {
+      "id": "gate-urgency-alert",
+      "description": "Create scripts/scs001/gate-urgency-alert.ts. Logic: (1) Read workspace/gates/phase1-5-gate.json. (2) Parse: days_remaining, posts_count (from raw.posts_count), posts_remaining (from raw.posts_remaining), pace_needed. (3) Determine urgency level: CRITICAL if days_remaining <= 5, or if pace_needed >= 3.0. WARNING if days_remaining <= 10 or pace_needed >= 2.0. OK otherwise. (4) Build Telegram message: '⚡ Gate Urgency Alert\\n\\nLevel: [LEVEL]\\nPosts: [posts_count]/30\\nDays left: [days_remaining]\\nPace needed: [pace_needed]/day\\n\\n[action_message]'. Action message: CRITICAL='🚨 POST TODAY — falling behind gate', WARNING='⚠️ Post at least [pace_needed] videos today', OK='✅ On track — keep posting'. (5) Send via TELEGRAM_BOT_TOKEN to OWNER_TELEGRAM_CHAT_ID. (6) Write result to logs/gate-urgency-alert.jsonl: {timestamp, urgency_level, days_remaining, posts_count, pace_needed, alert_sent}. Use only stdlib (fs, path, https). Under 100 lines.",
+      "file": "scripts/scs001/gate-urgency-alert.ts",
+      "status": "pending",
+      "deliverables": {
+        "code": ["scripts/scs001/gate-urgency-alert.ts"],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Gate shows 11/30 posts, 13 days remaining. This script sends urgency alerts when posting pace is at risk. Intended for PM2 cron (daily at 08:00).",
+      "priority": "medium",
+      "agent": "coder",
+      "type": "feature",
+      "sprint_id": "sprint-1310"
+    }
+  ]
+}

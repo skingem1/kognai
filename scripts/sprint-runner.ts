@@ -33,14 +33,15 @@ const LOCK       = join(ROOT, 'logs', 'sprint-runner.lock');
 const LOG        = join(ROOT, 'logs', 'sprint-runner.log');
 const ACTIVE     = join(ROOT, 'logs', 'sprint-runner-active.json');
 const COOLDOWN   = join(ROOT, 'logs', 'sprint-runner-cooldown.json');
-const DAILY_LOG  = join(ROOT, 'logs', 'sprint-runner-daily.json');
 const MAX_HOURS  = 6; // kill orchestrator if it runs longer than this
 // Rate limiter: minimum gap between sprint executions (prevents burning Claude 5h limit)
 // Default: 30 min. Override via SPRINT_COOLDOWN_MINUTES env var.
-const COOLDOWN_MINUTES = parseInt(process.env.SPRINT_COOLDOWN_MINUTES ?? '30', 10);
-// Daily cap: max sprints per calendar day (prevents rolling-window exhaustion)
-// Default: 20. Override via DAILY_SPRINT_CAP env var.
-const DAILY_SPRINT_CAP = parseInt(process.env.DAILY_SPRINT_CAP ?? '20', 10);
+const COOLDOWN_MINUTES    = parseInt(process.env.SPRINT_COOLDOWN_MINUTES  ?? '30',  10);
+// Daily cap: max sprints per calendar day. Default: 100.
+const DAILY_SPRINT_CAP    = parseInt(process.env.DAILY_SPRINT_CAP         ?? '100', 10);
+// Rolling window cap: max sprints within the last N hours. Default: 20 per 5h.
+const ROLLING_CAP         = parseInt(process.env.ROLLING_SPRINT_CAP       ?? '20',  10);
+const ROLLING_WINDOW_HRS  = parseInt(process.env.ROLLING_WINDOW_HOURS     ?? '5',   10);
 
 interface Task { id: string; status: string; agent?: string; sprint_id?: string; [k: string]: unknown; }
 interface Sprint { sprint_id: string; tasks: Task[]; [k: string]: unknown; }
@@ -119,25 +120,76 @@ function setCooldown(): void {
   } catch { /* non-fatal */ }
 }
 
-// ── Daily Cap (Claude 5h rolling window protection) ──────────────────────────
+// ── Rate Guards (Claude token budget protection) ─────────────────────────────
+
+/** Parse unique sprint IDs from a JSONL AAR file */
+function readUniqueSprintIds(filePath: string): Map<string, number> {
+  // Returns Map<sprintId, latestTimestampMs>
+  const out = new Map<string, number>();
+  if (!existsSync(filePath)) return out;
+  try {
+    const lines = readFileSync(filePath, 'utf8').trim().split('\n').filter(l => l.trim());
+    for (const l of lines) {
+      try {
+        const obj = JSON.parse(l);
+        const id  = obj.sprintId ?? l;
+        const ts  = obj.timestamp ? new Date(obj.timestamp).getTime() : Date.now();
+        if (!out.has(id) || ts > out.get(id)!) out.set(id, ts);
+      } catch { /* skip corrupt lines */ }
+    }
+  } catch { /* non-fatal */ }
+  return out;
+}
+
+/** Hard daily cap: max DAILY_SPRINT_CAP unique sprints per calendar day */
 function isDailyCapReached(): boolean {
   try {
-    const today  = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
-    const aarDir = join(ROOT, 'logs', 'aar');
-    const aarFile = join(aarDir, `${today}.jsonl`);
-    if (!existsSync(aarFile)) return false;
-    const lines = readFileSync(aarFile, 'utf8')
-      .trim().split('\n').filter(l => l.trim().length > 0);
-    // Count unique sprint IDs to avoid inflating count from multi-task sprints
-    const uniqueSprints = new Set(lines.map(l => { try { return JSON.parse(l).sprintId ?? l; } catch { return l; } }));
-    const count = uniqueSprints.size;
+    const today   = new Date().toISOString().slice(0, 10);
+    const aarFile = join(ROOT, 'logs', 'aar', `${today}.jsonl`);
+    const ids     = readUniqueSprintIds(aarFile);
+    const count   = ids.size;
     if (count >= DAILY_SPRINT_CAP) {
       log(`Daily cap reached: ${count}/${DAILY_SPRINT_CAP} sprints today. Pausing until midnight.`);
       sendTelegram(`🚫 *Sprint Runner* — daily cap reached\\n\\n${count}/${DAILY_SPRINT_CAP} sprints today.\\nResuming tomorrow.`);
       return true;
     }
     log(`Daily sprint count: ${count}/${DAILY_SPRINT_CAP}`);
-  } catch { /* non-fatal — don't block on AAR read errors */ }
+  } catch { /* non-fatal */ }
+  return false;
+}
+
+/** Rolling window cap: max ROLLING_CAP unique sprints in the last ROLLING_WINDOW_HRS hours */
+function isRollingCapReached(): boolean {
+  try {
+    const now       = Date.now();
+    const windowMs  = ROLLING_WINDOW_HRS * 60 * 60 * 1000;
+    const cutoff    = now - windowMs;
+
+    // Collect IDs from today's AND yesterday's AAR (window may span midnight)
+    const todayStr     = new Date().toISOString().slice(0, 10);
+    const yesterdayStr = new Date(now - 86_400_000).toISOString().slice(0, 10);
+    const aarDir       = join(ROOT, 'logs', 'aar');
+
+    const allIds = new Map<string, number>();
+    for (const day of [yesterdayStr, todayStr]) {
+      const ids = readUniqueSprintIds(join(aarDir, `${day}.jsonl`));
+      ids.forEach((ts, id) => {
+        if (!allIds.has(id) || ts > allIds.get(id)!) allIds.set(id, ts);
+      });
+    }
+
+    const recentTimestamps: number[] = [];
+    allIds.forEach(ts => { if (ts >= cutoff) recentTimestamps.push(ts); });
+    const recentCount = recentTimestamps.length;
+    if (recentCount >= ROLLING_CAP) {
+      const oldest = recentTimestamps.reduce((min, ts) => ts < min ? ts : min, recentTimestamps[0]);
+      const resumeAt = new Date(oldest + windowMs);
+      log(`Rolling window cap: ${recentCount}/${ROLLING_CAP} sprints in last ${ROLLING_WINDOW_HRS}h. Resume ~${resumeAt.toISOString()}`);
+      sendTelegram(`⏳ *Sprint Runner* — rolling cap reached\\n\\n${recentCount}/${ROLLING_CAP} sprints in the last ${ROLLING_WINDOW_HRS}h.\\nResume: ~${resumeAt.toISOString().slice(11, 16)} UTC`);
+      return true;
+    }
+    log(`Rolling window: ${recentCount}/${ROLLING_CAP} sprints in last ${ROLLING_WINDOW_HRS}h`);
+  } catch { /* non-fatal */ }
   return false;
 }
 
@@ -224,6 +276,7 @@ function main(): void {
   }
 
   if (isInCooldown()) return;
+  if (isRollingCapReached()) return;
   if (isDailyCapReached()) return;
 
   acquireLock();
