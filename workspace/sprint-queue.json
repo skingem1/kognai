@@ -2985,6 +2985,24 @@
       "priority": "high",
       "rationale": "New /achiri-launch command showing ordered 3-step Achiri alpha launch runbook: Step 1 pre-flight (ACHIRI_TELEGRAM_BOT_TOKEN SET, Hetzner API LIVE, whitelist populated, E2E test pass), Step 2 deploy (bash scripts/achiri/init-hetzner.sh), Step 3 announce (waitlist notification cmd). Go/no-go per step.",
       "_note": "Shipped 2026-03-25 — Sprint 1202. cmd-stripe.ts + telegram-bot.ts + cmd-help.ts. tsc clean."
+    },
+    {
+      "sprint": 1203,
+      "title": "OPS — /help: add /achiri-deploy command",
+      "block": "ACHIRI",
+      "status": "done",
+      "priority": "medium",
+      "rationale": "Parallel session added /achiri-deploy command (one-tap Hetzner deployment) and updated cmd-help.ts.",
+      "_note": "Shipped 2026-03-25 — parallel session. commit fd5fa1da."
+    },
+    {
+      "sprint": 1204,
+      "title": "GODMAN-LAUNCH — /godman-launch: fix wrong publish script path",
+      "block": "GODMAN-LAUNCH",
+      "status": "done",
+      "priority": "high",
+      "rationale": "Bug: cmdGodmanLaunch referenced godman-publish-all.sh (non-existent). Fixed to use godman-launch-day.sh (Sprint 992). Step 2 now shows ✅.",
+      "_note": "Shipped 2026-03-25 — Sprint 1204. cmd-system.ts only. tsc clean."
     }
   ]
 }

@@ -6495,3 +6495,12 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Test: tsc --noEmit clean for modified files
 - Swarm used: no (cmd-stripe.ts/telegram-bot.ts too large)
 - Timestamp: 2026-03-25T00:50:00Z
+
+## Sprint 1204 — GODMAN-LAUNCH bugfix
+- Status: PASS
+- Files modified: scripts/telegram-commands/cmd-system.ts
+- Files created: workspace/sprints/sprint-1204.json
+- Bug fix: cmdGodmanLaunch() referenced godman-publish-all.sh (non-existent). Fixed to godman-launch-day.sh (the actual Sprint 992 launch script). Step 2 now shows ✅ and correct run command.
+- Test: tsc --noEmit clean
+- Swarm used: no
+- Timestamp: 2026-03-25T01:00:00Z
