@@ -12,7 +12,7 @@ import { readFileSync, writeFileSync, readdirSync, existsSync, statSync } from '
 import { join } from 'path';
 import { execSync } from 'child_process';
 
-const ROOT = join(import.meta.dirname ?? __dirname, '..');
+const ROOT = join(__dirname, '..');
 const REPORT_PATH = join(ROOT, 'reports', 'system-health.json');
 const HISTORY_PATH = join(ROOT, 'reports', 'system-health-history.jsonl');
 const SEND_TELEGRAM = process.argv.includes('--telegram');

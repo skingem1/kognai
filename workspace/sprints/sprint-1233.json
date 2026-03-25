@@ -11,7 +11,7 @@
       "task_type": "monitoring",
       "task_target": "scripts/system-health.ts",
       "agent": "coder",
-      "status": "pending",
+      "status": "done",
       "priority": "high",
       "sprint_id": "sprint-1233"
     }
