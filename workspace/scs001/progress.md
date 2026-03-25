@@ -7429,6 +7429,46 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no
 - Timestamp: 2026-03-25T22:15:00Z
 
+## Sprint 1345 — BUGFIX: generate-stats-report TS2448 manualEntries used before declaration
+- Status: PASS
+- Commit: 14ad3a7c
+- Files: scripts/scs001/generate-stats-report.ts
+- Fix: Sprint 1338 added postsDelivered = manualEntries.length on line 118 but manualEntries was declared on line 140. TS2448 blocked ts-node compilation. Moved manualPath/manualEntries before gate calculation. Stats report now generates correctly: 16/30 posts, ON_TRACK.
+- Swarm used: no
+- Timestamp: 2026-03-26T01:45:00Z
+
+## Sprint 1344 — BUGFIX: generate-phase1-5-gate views unverifiable when TIKTOK_ACCESS_TOKEN absent
+- Status: PASS
+- Commit: 87c400df
+- Files: scripts/scs001/generate-phase1-5-gate.ts
+- Fix: Same fix as Sprint 1341 for generate-gate-report.ts. Detects token absence + zero views → pass: null (unverifiable). overallPass only requires posts when views unverifiable. Prevents false KILL SWITCH trigger from missing API token.
+- Swarm used: no
+- Timestamp: 2026-03-26T01:30:00Z
+
+## Sprint 1343 — BUGFIX: batch-produce add DedupLedger.compact() after each batch
+- Status: PASS
+- Commit: 2edb2035
+- Files: scripts/scs001/batch-produce.ts
+- Fix: Added DedupLedger.compact() call at end of runBatch() (after auto-deliver). batch-produce.ts replaced run-pipeline.ts but never inherited Sprint 300's dedup compact. video-75ac1293 was written 9x because old orchestrator ran. Now cleaned on each batch.
+- Swarm used: no
+- Timestamp: 2026-03-26T01:15:00Z
+
+## Sprint 1342 — BUGFIX: batch-produce duplicate ledger entries via ledgerWritten flag
+- Status: PASS
+- Commit: 54a4e1a8
+- Files: scripts/scs001/batch-produce.ts, scripts/scs001/pipeline-registry.ts
+- Fix: pipeline-registry.ts sets result.ledgerWritten = true on successful appendFileSync. writeLedgerFallback() skips unconditionally when ledgerWritten === true. Eliminates duplicate publish-ledger.jsonl entries (e.g. demo-mn6i8r28 was written twice: once as batch-pipeline, once as batch-produce).
+- Swarm used: no
+- Timestamp: 2026-03-26T01:00:00Z
+
+## Sprint 1341 — BUGFIX: generate-gate-report views unverifiable when TIKTOK_ACCESS_TOKEN absent
+- Status: PASS
+- Commit: 5890e206
+- Files: scripts/generate-gate-report.ts
+- Fix: When TIKTOK_ACCESS_TOKEN not set and totalViews === 0, views criterion now shows pass: null (⚠️ unverifiable) instead of pass: false (❌). Excluded from overallPass logic. Kill switch shows NOT EVALUATED. Prevents false gate FAIL when token simply isn't configured.
+- Swarm used: no
+- Timestamp: 2026-03-26T00:45:00Z
+
 ## Sprint 1340 — BUGFIX: entertainment-assembler 'wan' model → 'ltx' type fix
 - Status: PASS
 - Commit: (next)
