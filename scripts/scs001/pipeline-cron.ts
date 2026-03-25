@@ -94,7 +94,7 @@ async function main() {
   const mfOk = run(
     `npx ts-node --transpile-only scripts/scs001/run-multiformat-pipeline.ts --force-refresh --max=${limit}`,
     `Multiformat pipeline (${limit} videos)`,
-    300000 // 5min
+    600000 // Sprint 1216: 10min (was 5min — TTS + avatar generation per video needs more time)
   );
 
   if (!mfOk) {

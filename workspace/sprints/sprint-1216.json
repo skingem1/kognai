@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1216",
+  "title": "BUGFIX — pipeline-cron.ts: increase multiformat pipeline timeout from 5min to 10min",
+  "description": "Multiformat pipeline (TTS + avatar generation + FFmpeg composition per video) consistently times out at 5min (300000ms) with 3 videos. TTS + Captions.ai API calls alone take 2-3min per video. Increase timeout to 10min (600000ms) to prevent false failure alerts and missing videos.",
+  "source": "autonomous-loop",
+  "tasks": [
+    {
+      "id": "1216-01",
+      "title": "Increase multiformat pipeline timeout 300000 → 600000 in pipeline-cron.ts",
+      "type": "bugfix",
+      "task_type": "pipeline",
+      "task_target": "scripts/scs001/pipeline-cron.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-1216"
+    }
+  ]
+}
