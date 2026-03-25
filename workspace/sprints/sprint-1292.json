@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1292",
+  "title": "GODMAN-POST-LAUNCH — /godman: show live npm version badge per protocol after publish",
+  "description": "Prefetch npm versions for all 8 packages at top of cmdGodman(). Show inline npm badge on each protocol line. Works before launch (no badge) and after publish (badge appears).",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1292-01",
+      "title": "Add inline npm version badge to each protocol line in cmdGodman()",
+      "type": "feature",
+      "task_type": "bot",
+      "task_target": "scripts/telegram-commands/cmd-system.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1292"
+    }
+  ]
+}

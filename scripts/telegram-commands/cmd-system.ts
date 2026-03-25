@@ -2919,6 +2919,19 @@ export function cmdGodman(): string {
 
   lines.push(`📅 *Launch: April 14* — ${daysLeft} days remaining\n`);
 
+  // Sprint 1292: prefetch npm versions for all protocols + SDK for inline badges
+  const npmVersions: Map<string, string> = new Map();
+  try {
+    for (const proto of [...PROTOCOLS, 'sdk']) {
+      try {
+        const v = execSync(`npm view @godman-protocols/${proto} version 2>/dev/null`, {
+          encoding: 'utf-8', timeout: 6000, stdio: ['pipe','pipe','pipe'],
+        }).trim();
+        if (v && v.match(/^\d+\.\d+\.\d+/)) npmVersions.set(proto, v);
+      } catch { /* not published yet */ }
+    }
+  } catch { /* skip npm check entirely if npm unavailable */ }
+
   // Protocol status
   let allOk = true;
   const noTestScript: string[] = []; // Sprint 1163: track missing test scripts
@@ -2935,7 +2948,10 @@ export function cmdGodman(): string {
     try { hasDist = fs.existsSync(distPath) && fs.readdirSync(distPath).length > 0; } catch {}
     const icon = hasDist ? '✅' : '⚠️';
     if (!hasDist) allOk = false;
-    lines.push(`${icon} \`@godman-protocols/${proto}\` v${version}${hasDist ? ' — built' : ' — needs build'}`);
+    // Sprint 1292: inline npm version badge
+    const npmVer = npmVersions.get(proto);
+    const npmBadge = npmVer ? ` · 📦 npm:v${npmVer}` : '';
+    lines.push(`${icon} \`@godman-protocols/${proto}\` v${version}${hasDist ? ' — built' : ' — needs build'}${npmBadge}`);
   }
   // Sprint 1163: warn about protocols missing test scripts
   if (noTestScript.length > 0) {
@@ -2948,7 +2964,9 @@ export function cmdGodman(): string {
   const sdkPkg = path.join(BASE, 'sdk', 'package.json');
   let sdkVersion = '?';
   try { sdkVersion = JSON.parse(fs.readFileSync(sdkPkg, 'utf-8')).version || '?'; } catch {}
-  lines.push(`📦 \`@godman-protocols/sdk\` v${sdkVersion}`);
+  const sdkNpmVer = npmVersions.get('sdk');
+  const sdkNpmBadge = sdkNpmVer ? ` · 📦 npm:v${sdkNpmVer}` : ''; // Sprint 1292
+  lines.push(`📦 \`@godman-protocols/sdk\` v${sdkVersion}${sdkNpmBadge}`);
 
   // Sprint 1189: semver version validation — flag placeholder/missing versions
   {
