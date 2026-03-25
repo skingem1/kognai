@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1328",
+  "title": "BUGFIX — entertainment-scriptgen: add scene templates as LLM fallback",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "entertainment-scriptgen.ts has the same vulnerability as code-demo-scriptgen before Sprint 1327: (1) callOllama() is not wrapped in try/catch — if curl throws, the whole pipeline fails, (2) line 93 throws 'No JSON in entertainment script response' with no fallback, (3) line 109 throws 'LLM generated 0 scenes' with no fallback. Fix mirrors Sprint 1327: add SCENE_TEMPLATES (3 complete EntertainmentScript objects), wrap callOllama in try/catch returning empty string, wrap LLM generation in try/catch returning a rotating template.",
+  "tasks": [
+    {
+      "id": "1328-scene-templates",
+      "description": "In scripts/scs001/entertainment-scriptgen.ts: (1) Wrap callOllama body in try/catch returning '' on any error. (2) Add SCENE_TEMPLATES constant — array of 3 complete EntertainmentScript-shaped objects (AI future, quantum computing, space exploration), each with 4 scenes with valid visual prompts. (3) Wrap the LLM generation block (lines 90-109) in try/catch; in catch and when scenes.length===0, log '[entertainment] LLM script gen failed — using template' and return a template rotating by Date.now() % SCENE_TEMPLATES.length with script_id and topic set.",
+      "file": "scripts/scs001/entertainment-scriptgen.ts",
+      "status": "done",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}
