@@ -3585,11 +3585,19 @@ export function cmdGodmanStatusPage(): string {
   md.push(`\n**Publish status: ${publishedCount}/8 packages published**`);
 
   md.push('', '## Launch Assets');
+  // Sprint 1201: Check all 7 protocol demos (same map as /godman-preflight)
   const demoBase = path.join(ROOT, 'workspace', 'scs001', 'code-demo-runs');
-  const hasPactDemo = fs.existsSync(path.join(demoBase, 'pact-demo-v1/pact-demo-v1.mp4'));
-  const hasIntegDemo = fs.existsSync(path.join(demoBase, 'godman-integration-v1/godman-integration-v1.mp4'));
-  md.push(`- ${hasPactDemo ? '✅' : '❌'} PACT demo mp4`);
-  md.push(`- ${hasIntegDemo ? '✅' : '❌'} Integration demo mp4`);
+  const statusDemoMap: Record<string, string> = {
+    pact: 'pact-mandate-lifecycle', lax: 'lax-latency-routing', score: 'score-reputation-engine',
+    signal: 'signal-event-bus', soul: 'soul-constitutional-engine', amf: 'amf-message-format', drs: 'drs-resource-scheduling',
+  };
+  let statusDemosReady = 0;
+  for (const [proto, dirId] of Object.entries(statusDemoMap)) {
+    const hasMp4 = fs.existsSync(path.join(demoBase, dirId, `${dirId}.mp4`));
+    if (hasMp4) statusDemosReady++;
+    md.push(`- ${hasMp4 ? '✅' : '❌'} ${proto.toUpperCase()} demo mp4`);
+  }
+  md.push(`- **${statusDemosReady}/7 demos recorded**`);
   const megathreadPath = path.join(ROOT, 'workspace', 'social', 'suite-launch', 'x-megathread.md');
   let tweetCount = 0;
   try { if (fs.existsSync(megathreadPath)) tweetCount = (fs.readFileSync(megathreadPath, 'utf-8').match(/^## Tweet \d/gm) || []).length; } catch {}
@@ -3608,4 +3616,73 @@ export function cmdGodmanStatusPage(): string {
   } catch (e: any) {
     return `❌ Failed to write LAUNCH-STATUS.md: ${e.message}`;
   }
+}
+
+/**
+ * Sprint 1201: /godman-launch — April 14 launch day runbook
+ *
+ * Shows ordered steps for launch day with go/no-go status per step:
+ *   Step 1: Pre-flight (npm login, smoke, tags, CHANGELOGs)
+ *   Step 2: Publish (bash scripts/godman-publish-all.sh)
+ *   Step 3: Announce (post X thread + ClaWHub listing)
+ */
+export function cmdGodmanLaunch(): string {
+  const PROTO_BASE = path.join(ROOT, 'workspace', 'godman-protocols');
+  const PROTOCOLS = ['pact', 'lax', 'score', 'signal', 'soul', 'amf', 'drs'];
+  const daysLeft = Math.max(0, Math.ceil((new Date('2026-04-14T00:00:00Z').getTime() - Date.now()) / 86_400_000));
+
+  // Pre-flight: npm login
+  let npmUser = '';
+  try { npmUser = execSync('npm whoami 2>/dev/null', { encoding: 'utf-8', timeout: 3000 }).trim(); } catch {}
+  const npmReady = !!npmUser;
+
+  // Pre-flight: git tags
+  const taggedCount = PROTOCOLS.reduce((n, p) => {
+    try {
+      const tag = execSync(`git tag --list "${p}-v*" 2>/dev/null`, { encoding: 'utf-8', timeout: 3000 }).trim();
+      return n + (tag ? 1 : 0);
+    } catch { return n; }
+  }, 0);
+
+  // Pre-flight: CHANGELOGs
+  const changelogsPresent = PROTOCOLS.every(p => fs.existsSync(path.join(PROTO_BASE, p, 'CHANGELOG.md')));
+
+  const preflightPass = npmReady && taggedCount === 7 && changelogsPresent;
+
+  // Publish script
+  const publishScriptExists = fs.existsSync(path.join(ROOT, 'scripts', 'godman-publish-all.sh'));
+
+  // Announce assets
+  const megathreadPath = path.join(ROOT, 'workspace', 'social', 'suite-launch', 'x-megathread.md');
+  let tweetCount = 0;
+  try { if (fs.existsSync(megathreadPath)) tweetCount = (fs.readFileSync(megathreadPath, 'utf-8').match(/^## Tweet \d/gm) || []).length; } catch {}
+  const clawHubPath = path.join(ROOT, 'workspace', 'social', 'suite-launch', 'clawcard-listing.md');
+  const clawHubReady = fs.existsSync(clawHubPath);
+
+  const urgency = daysLeft <= 3 ? '🔴' : daysLeft <= 7 ? '🟠' : daysLeft <= 14 ? '🟡' : '🟢';
+  const lines: string[] = [
+    `🚀 *Godman Protocols — Launch Day Runbook*`,
+    `${urgency} *${daysLeft}d* to April 14, 2026`,
+    '',
+    `*── Step 1: Pre-flight ──*`,
+    `${npmReady ? '✅' : '❌'} npm login${npmReady ? ` (${npmUser})` : ' — run: \`npm login\`'}`,
+    `${taggedCount === 7 ? '✅' : '❌'} Git tags: ${taggedCount}/7 protocols tagged`,
+    `${changelogsPresent ? '✅' : '❌'} CHANGELOGs: all 7 present`,
+    `${preflightPass ? '✅ Pre-flight: GO' : '⚠️ Pre-flight: NOT READY'}`,
+    '',
+    `*── Step 2: Publish ──*`,
+    `${publishScriptExists ? '✅' : '❌'} Publish script ready`,
+    `_Run:_ \`bash scripts/godman-publish-all.sh\``,
+    '',
+    `*── Step 3: Announce ──*`,
+    `${tweetCount > 0 ? `✅ X thread: ${tweetCount} tweets ready` : '❌ X thread missing'}`,
+    `${clawHubReady ? '✅' : '❌'} ClaWHub listing: ${clawHubReady ? 'ready' : 'missing'}`,
+    `_Copy-paste X thread:_ /godman-thread`,
+    '',
+    preflightPass
+      ? `✅ *All pre-flight checks PASS — ready to launch April 14!*`
+      : `⚠️ *Fix ❌ items before launch day.* See /godman for details.`,
+  ];
+
+  return lines.join('\n');
 }

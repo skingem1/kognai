@@ -1,5 +1,5 @@
 # Godman Protocols — Launch Status
-*Generated: 2026-03-24T18:48:06.298Z | 21d until April 14 launch*
+*Generated: 2026-03-25T07:58:45.008Z | 20d until April 14 launch*
 
 ## Protocol Versions
 - ✅ `@godman-protocols/pact` v0.2.0
@@ -25,7 +25,13 @@
 
 ## Launch Assets
 - ✅ PACT demo mp4
-- ✅ Integration demo mp4
+- ✅ LAX demo mp4
+- ✅ SCORE demo mp4
+- ✅ SIGNAL demo mp4
+- ✅ SOUL demo mp4
+- ✅ AMF demo mp4
+- ✅ DRS demo mp4
+- **7/7 demos recorded**
 - ✅ X megathread (10 tweets)
 - ✅ godman-launch-day.sh
 
