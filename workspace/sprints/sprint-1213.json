@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1213",
+  "title": "OPS — /weeklydigest: add Godman + Achiri alpha launch countdown",
+  "description": "Mirror Sprint 1212's daily digest countdown in cmdWeeklyDigest(). Weekly digest showed gate progress only — now also shows Godman (Apr 14) and Achiri alpha (Apr 25) countdowns with urgency icons, same logic as /digest.",
+  "source": "autonomous-loop",
+  "tasks": [
+    {
+      "id": "1213-01",
+      "title": "Add Godman + Achiri countdown block after gate line in cmdWeeklyDigest()",
+      "type": "enhancement",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-commands/cmd-posting.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1213"
+    }
+  ]
+}
