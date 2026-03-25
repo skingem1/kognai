@@ -7299,3 +7299,15 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - AAR: score 88 — clean feature, tested compilation, follows existing patterns
 - Commit: 849a083b
 - Status: DONE ✅
+
+## Sprint 1318 — 2026-03-25
+- **SCS-001 — Load trending topics from radar in batch-produce**
+- Problem: PM2 scs001-pipeline ran batch-produce with no --topic args → generic fallback topics used
+- Fix: Added loadRadarTopics() in batch-produce.ts — reads today's radar files, extracts titles, shuffles, uses for run. Falls through silently if files missing.
+- Result: All 3 batch pipelines now produce content about real trending topics (Harvey $11B, Claude Code, etc.)
+- Files modified: scripts/scs001/batch-produce.ts (+27 lines, +1 import)
+- Validation: tsc PASS, manual topic load test PASS (25 topics loaded)
+- Swarm bypassed: yes (targeted feature, 1 file)
+- AAR: score 90 — clean implementation, tested, high-impact improvement
+- Commit: 18ca3314
+- Status: DONE ✅
