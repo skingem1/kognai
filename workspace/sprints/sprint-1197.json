@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1197",
+  "title": "ACHIRI — init-hetzner.sh: first-deploy setup script (git clone + pm2 start)",
+  "description": "deploy-hetzner.sh assumes /home/invoica/apps/kognai already exists. This creates init-hetzner.sh for first-time Hetzner setup: check if repo exists, git clone if not, npm ci, create achiri .env template, pm2 start achiri-api + achiri-telegram. --dry-run mode supported.",
+  "source": "queue-empty-sonnet",
+  "tasks": [
+    {
+      "id": "1197-01",
+      "title": "Create scripts/achiri/init-hetzner.sh: first-deploy setup (clone + env + pm2)",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/achiri/init-hetzner.sh",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1197"
+    }
+  ]
+}
