@@ -7131,3 +7131,15 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Validated: bash -n syntax check passes
 - Commit: 6ba26cab
 - Status: DONE ✅
+
+## Sprint 1303 — 2026-03-25
+- **PHASE2 — Achiri POST /auth-webhook: SIWA → tnd_basic tier upgrade**
+- Added `POST /auth-webhook` to `agents/achiri/server.ts`
+  - Handles Supabase auth webhooks (configure at Supabase → Auth → Hooks → URL: http://server:3420/auth-webhook)
+  - Verifies optional `ACHIRI_WEBHOOK_SECRET` header
+  - Extracts user.id + app_metadata.provider from Supabase payload
+  - If provider == 'apple' (SIWA) and tier == 'free': upgrades to tnd_basic via setUserTier
+  - Returns {ok, upgraded, tier, provider, userId}
+- Swarm bypassed: yes (TypeScript surgical edit in existing server.ts)
+- Commit: bf6590b1
+- Status: DONE ✅

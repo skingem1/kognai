@@ -3860,10 +3860,11 @@
       "sprint": 1303,
       "title": "PHASE2 — Achiri SIWA upgrade: wire Supabase auth provider for PROVISIONAL→STANDARD tier",
       "block": "PHASE2",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "AMD-23 Chamber 4 caps PROVISIONAL agents to RESTRICTED. Achiri users who complete SIWA (Sign In With Apple) should upgrade to STANDARD tier. Wire the Supabase auth event to the tier upgrade.",
-      "added_at": "2026-03-25T13:52:59.872Z"
+      "added_at": "2026-03-25T13:52:59.872Z",
+      "_note": "Shipped 2026-03-25 — commit bf6590b1. POST /auth-webhook added to Achiri server.ts. SIWA provider → tnd_basic tier upgrade."
     },
     {
       "sprint": 1304,
