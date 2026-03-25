@@ -311,19 +311,12 @@ export function cmdGoLive(): string {
   const stripeSet = stripeKeys.filter(k => !!process.env[k]).length;
   lines.push(stripeSet === stripeKeys.length ? '✅ Stripe: READY' : `⚠️ Stripe: ${stripeSet}/${stripeKeys.length} keys set`);
 
-  // 3. Gate progress
+  // 3. Gate progress (Sprint 1221: use readRealPosts — excludes dry-runs)
   const GATE_DATE = new Date('2026-04-07T00:00:00Z');
   const daysLeft = Math.max(0, Math.ceil((GATE_DATE.getTime() - Date.now()) / 86_400_000));
-  let postsCount = 0;
-  let totalViews = 0;
-  const mpPath = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
-  if (fs.existsSync(mpPath)) {
-    const posts = fs.readFileSync(mpPath, 'utf-8').split('\n').filter((l: string) => l.trim());
-    postsCount = posts.length;
-    for (const l of posts) {
-      try { const p = JSON.parse(l); totalViews += (p.views ?? 0); } catch {}
-    }
-  }
+  const goLivePosts = readRealPosts();
+  const postsCount = goLivePosts.length;
+  const totalViews = goLivePosts.reduce((s: number, p: any) => s + (p.views ?? 0), 0);
   const postsLeft = Math.max(0, 30 - postsCount);
   const viewsLeft = Math.max(0, 500 - totalViews);
   const paceNeeded = daysLeft > 0 && postsLeft > 0 ? Math.round(postsLeft / daysLeft * 10) / 10 : 0;
@@ -334,16 +327,11 @@ export function cmdGoLive(): string {
   lines.push(`👁 Views: ${totalViews}/500 ${viewsLeft > 0 ? `(${viewsLeft} more needed)` : '✅'}`);
   if (paceNeeded > 0) lines.push(`⏱ Pace: ${paceNeeded} posts/day`);
 
-  // 4. Queue
+  // 4. Queue (Sprint 1221: postedIds from goLivePosts — excludes dry-runs)
   const ledgerPath = path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl');
   let queueCount = 0;
   if (fs.existsSync(ledgerPath)) {
-    const postedIds = new Set<string>();
-    if (fs.existsSync(mpPath)) {
-      for (const l of fs.readFileSync(mpPath, 'utf-8').split('\n').filter((l: string) => l.trim())) {
-        try { const p = JSON.parse(l); if (p.video_id) postedIds.add(p.video_id); } catch {}
-      }
-    }
+    const postedIds = new Set<string>(goLivePosts.map((p: any) => p.video_id).filter(Boolean));
     for (const l of fs.readFileSync(ledgerPath, 'utf-8').split('\n').filter((l: string) => l.trim())) {
       try { const e = JSON.parse(l); if (e.video_id && !postedIds.has(e.video_id)) queueCount++; } catch {}
     }
@@ -383,7 +371,6 @@ export function cmdGoLive(): string {
 export function cmdAudit(): string {
   const expPath = path.join(ROOT, 'workspace', 'scs001', 'experiments.jsonl');
   const ledgerPath = path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl');
-  const mpPath = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
 
   // Load experiments for scores
   const scores = new Map<string, number>();
@@ -406,13 +393,8 @@ export function cmdAudit(): string {
     }
   }
 
-  // Load posted IDs
-  const postedIds = new Set<string>();
-  if (fs.existsSync(mpPath)) {
-    for (const l of fs.readFileSync(mpPath, 'utf-8').split('\n').filter((l: string) => l.trim())) {
-      try { const p = JSON.parse(l); if (p.video_id) postedIds.add(p.video_id); } catch {}
-    }
-  }
+  // Load posted IDs (Sprint 1221: use readRealPosts — excludes dry-runs)
+  const postedIds = new Set<string>(readRealPosts().map((p: any) => p.video_id).filter(Boolean));
 
   // Load unposted videos from ledger
   const unposted: Array<{ id: string; score: number }> = [];
@@ -713,17 +695,11 @@ export function cmdPace(): string {
     }
   } catch { /* skip */ }
 
-  // Sprint 1141 (wave 20): queue size vs obligation buffer
+  // Sprint 1141 (wave 20): queue size vs obligation buffer (Sprint 1221: posts=readRealPosts)
   try {
     const ledgerPath = path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl');
-    const manualPath2 = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
     if (fs.existsSync(ledgerPath)) {
-      const postedIds2 = new Set<string>();
-      if (fs.existsSync(manualPath2)) {
-        for (const l of fs.readFileSync(manualPath2, 'utf-8').split('\n').filter(l => l.trim())) {
-          try { const p = JSON.parse(l); if (p.video_id) postedIds2.add(p.video_id); } catch {}
-        }
-      }
+      const postedIds2 = new Set<string>(posts.map((p: any) => p.video_id).filter(Boolean));
       let qCount = 0;
       for (const l of fs.readFileSync(ledgerPath, 'utf-8').split('\n').filter(l => l.trim())) {
         try { const e = JSON.parse(l); if (e.video_id && !postedIds2.has(e.video_id)) qCount++; } catch {}
@@ -849,12 +825,8 @@ export function cmdCalendar(): string {
       return '📅 No upcoming dates in calendar. Regenerate:\n`npx ts-node scripts/scs001/generate-content-calendar.ts`';
     }
 
-    // Count manual posts
-    const manualPath = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
-    let posted = 0;
-    if (fs.existsSync(manualPath)) {
-      posted = fs.readFileSync(manualPath, 'utf-8').split('\n').filter(l => l.trim()).length;
-    }
+    // Count manual posts (Sprint 1221: use readRealPosts — excludes dry-runs)
+    const posted = readRealPosts().length;
     const postsLeft = Math.max(0, 30 - posted);
     const gateDate = new Date('2026-04-07');
     const daysLeft = Math.max(0, Math.ceil((gateDate.getTime() - Date.now()) / 86_400_000));

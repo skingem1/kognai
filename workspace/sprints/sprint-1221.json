@@ -1,0 +1,12 @@
+{
+  "sprint": 1221,
+  "title": "OPS — /golive /audit /pace /calendar: exclude dry-run posts",
+  "status": "done",
+  "track": "OPS",
+  "summary": "Fixed cmdGoLive(), cmdAudit(), cmdPace() queue section, and cmdCalendar() to use readRealPosts() instead of raw manual-posts.jsonl reads. Dry-run posts no longer inflate post counts or incorrectly mark videos as posted in these commands.",
+  "files": [
+    "scripts/telegram-commands/cmd-gate.ts"
+  ],
+  "root_cause": "cmdGoLive, cmdAudit, cmdPace queue section, and cmdCalendar all built postedIds or postsCount from raw manual-posts.jsonl, including dry-run entries.",
+  "fix": "Use readRealPosts() (already imported) in each function. Removed unused mpPath and manualPath/manualPath2 variables."
+}
