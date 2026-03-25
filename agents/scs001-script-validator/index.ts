@@ -27,11 +27,18 @@ export class ScriptValidator {
   validate(bundle: ScriptBundle): ValidationResult {
     const errors: string[] = [];
 
-    // Check hook segment text length
+    // Check hook segment text length — Sprint 1368: template-aware.
+    // Only the listicle template has a dedicated 'hook' segment_name.
+    // Standard template opens with 'context'; reaction opens with 'clip'/'reaction'.
+    // Enforcing a named 'hook' segment for non-listicle bundles always fails → rejects 75% of output.
     const hookSeg = bundle.segments.find(s => s.segment_name === 'hook');
-    if (!hookSeg || hookSeg.voiceover_text.length < HOOK_MIN_LENGTH) {
-      errors.push('Hook text too short (' + (hookSeg?.voiceover_text.length ?? 0) + ' chars, min ' + HOOK_MIN_LENGTH + ')');
+    if (bundle.template === 'listicle') {
+      // Listicle always has a 'hook' segment — enforce minimum length
+      if (!hookSeg || hookSeg.voiceover_text.length < HOOK_MIN_LENGTH) {
+        errors.push('Hook text too short (' + (hookSeg?.voiceover_text.length ?? 0) + ' chars, min ' + HOOK_MIN_LENGTH + ')');
+      }
     }
+    // Standard and reaction: no dedicated 'hook' segment — skip check
 
     // Check segment count
     if (bundle.segments.length < SEGMENTS_MIN || bundle.segments.length > SEGMENTS_MAX) {

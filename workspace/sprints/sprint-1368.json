@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1368",
+  "title": "BUGFIX — ScriptValidator hook check rejects 75% of bundles (standard + reaction templates have no 'hook' segment)",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "ScriptValidator.validate() always looks for a segment_name='hook' to check minimum length. Only listicle template has this segment. Standard template uses 'context'/'clip'/'commentary'/'insight'; reaction uses 'clip'/'reaction'/'insight'/'cta'. Both lack a named 'hook' segment, so !hookSeg is always true → 'Hook text too short (0 chars)' error → bundle rejected. With templates distributed 50% standard + 25% reaction + 25% listicle, ~75% of bundles are silently dropped before editing. Fix: make hook-segment check listicle-only. Standard and reaction templates skip the check.",
+  "tasks": [
+    {
+      "id": "1368-validator-hook-template-aware",
+      "description": "In agents/scs001-script-validator/index.ts validate(): only enforce hook segment presence+length for listicle template. Standard and reaction templates have no 'hook' segment_name — skip the check for them.",
+      "file": "agents/scs001-script-validator/index.ts",
+      "status": "done",
+      "priority": "critical",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}
