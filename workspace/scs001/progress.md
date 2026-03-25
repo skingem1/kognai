@@ -6970,3 +6970,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Feature: Helixa Cred Score API → access tier mapping + SIWA upgrade logic
 - Swarm used: no (new file, direct write)
 - Timestamp: 2026-03-25T14:20:00Z
+
+## Sprint 1285 — QUALITY-SMOKE-RUNTIME
+- Status: PASS
+- Commit: 502cd94a
+- Files modified: scripts/smoke-test-full.ts, scripts/telegram-commands/cmd-system.ts
+- Files created: workspace/sprints/sprint-1285.json
+- Feature: total_duration_ms added to smoke-test-full.ts cron report
+- Feature: total_duration_ms added to Telegram /smoke save block (unified store)
+- Feature: Runtime vs prev comparison now reads from smoke-test-latest.json (any run type contributes)
+- Swarm used: no (surgical edits, direct write)
+- Timestamp: 2026-03-25T14:30:00Z
