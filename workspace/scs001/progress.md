@@ -6641,3 +6641,19 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (single-line fix)
 - Issues: none
 - Timestamp: 2026-03-25T09:52:00Z
+
+## Sprint 1219 — 2026-03-24
+- **Status:** done
+- **Title:** BUGFIX — cmd-gate.ts: use readRealPosts() in cmdStreak/cmdPace/cmdGateSim
+- **Files:** scripts/telegram-commands/cmd-gate.ts
+- **Impact:** Streak counts, pace calculations, and gate simulator now show only real posts. Dry-run posts (browser-post-dry, batch-browser-dry) no longer inflate metrics.
+
+## Sprint 1220 — BUGFIX
+- Status: PASS
+- Commit: e2bc7a6f
+- Files modified: scripts/telegram-commands/cmd-gate.ts, cmd-content.ts, cmd-posting.ts
+- Fix: /gate, /today, /digest now use readRealPosts() to exclude dry-run entries from gate counts
+- Test: 137 PASS / 0 FAIL
+- Swarm used: no (multi-file bugfix)
+- Issues: none
+- Timestamp: 2026-03-25T10:02:00Z
