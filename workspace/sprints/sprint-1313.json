@@ -1,0 +1,17 @@
+{
+  "sprint_id": "sprint-1313",
+  "title": "SCS-001 — Switch pipeline from mock to live mode + lift production pause",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "ecosystem-live-mode",
+      "description": "Surgical edit to ecosystem.config.js: in the scs001-pipeline entry (line ~770), change args: process.env.SCS_MODE || 'mock' to args: 'live'. Also add SCS_MODE: 'live' to the env block. Then run: pm2 reload ecosystem.config.js --only scs001-pipeline --update-env && pm2 save.",
+      "file": "ecosystem.config.js",
+      "status": "pending",
+      "priority": "critical",
+      "agent": "coder",
+      "type": "fix",
+      "sprint_id": "sprint-1313"
+    }
+  ]
+}
