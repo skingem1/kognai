@@ -7069,3 +7069,12 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Added post-restart PM2 status health check specifically for achiri-telegram (online/warning)
 - Dry-run tested — shows new token check section correctly
 - Status: DONE ✅
+
+## Sprint 1297 — 2026-03-25
+- **INFRA — YouTube Shorts auto-upload CLI**
+- Created `scripts/scs001/youtube-upload.ts`: CLI that takes video path + optional title
+- Aspect ratio check: reads metadata.json first, fallback to ffprobe, warns on non-9:16
+- Title derivation: Hook scene name from segments/ dir → video_id → sanitised filename
+- Delegates upload to existing `uploadShort()` from youtube-shorts.ts
+- Dry-run tested: correctly extracted title "The Hook - You've Been Doing It Wrong", ratio 9:16
+- Status: DONE ✅

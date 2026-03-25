@@ -1,0 +1,23 @@
+{
+  "sprint": 1297,
+  "title": "INFRA YouTube Shorts auto-upload: youtube-upload.ts CLI",
+  "block": "INFRA",
+  "status": "done",
+  "tasks": [
+    {
+      "id": "create-cli",
+      "description": "Create youtube-upload.ts CLI script",
+      "status": "done"
+    },
+    {
+      "id": "aspect-check",
+      "description": "Aspect ratio check via metadata.json and ffprobe",
+      "status": "done"
+    },
+    {
+      "id": "title-derive",
+      "description": "Title derivation from scene names",
+      "status": "done"
+    }
+  ]
+}

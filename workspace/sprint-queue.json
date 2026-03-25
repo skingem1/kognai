@@ -3802,7 +3802,7 @@
       "sprint": 1297,
       "title": "INFRA \u2014 YouTube Shorts auto-upload: wire yt-dlp + YouTube Data API v3 upload",
       "block": "INFRA",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "YouTube credentials are configured. Add scripts/scs001/youtube-upload.ts that takes a video path, uploads as a Short (aspect ratio check + title from caption), and logs the video ID.",
       "added_at": "2026-03-25T13:52:59.872Z"
