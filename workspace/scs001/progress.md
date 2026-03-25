@@ -6898,3 +6898,12 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (validation task, direct execution)
 - Issues: ACHIRI_TELEGRAM_BOT_TOKEN not set (human action), Hetzner deploy pending
 - Timestamp: 2026-03-25T13:20:00Z
+
+## Sprint 1257 — GODMAN-LAUNCH npm Provenance Script Verified
+- Status: PASS
+- Commit: 7de310e9
+- Files created: workspace/sprints/sprint-1257.json, workspace/sprints/sprint-1257-output.md
+- Test: publish-all.sh dry-run — 8/8 PASS
+- Notes: Sprint 1254 already built publish-all.sh with --provenance. Sprint 1257 was verification only.
+- Swarm used: no (verification task, direct execution)
+- Timestamp: 2026-03-25T13:25:00Z
