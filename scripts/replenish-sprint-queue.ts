@@ -145,19 +145,25 @@ function generateItems(startSprint: number, existingTitles: Set<string> = new Se
     for (let i = 0; i < existingTitleArray.length; i++) {
       if (existingTitleArray[i].toLowerCase().slice(0, 40) === normalised) return true;
     }
-    // Check git log for shipped sprints with similar titles
-    for (const gt of gitTitles) {
-      if (gt.toLowerCase().includes(normalised.slice(0, 25))) return true;
+    // Check git log for shipped sprints with similar titles (Sprint 1245: raised from 25→35 to reduce false positives)
+    const matchKey = normalised.slice(0, 35);
+    if (matchKey.length >= 35) {
+      for (const gt of gitTitles) {
+        if (gt.toLowerCase().includes(matchKey)) return true;
+      }
     }
     // Extract /command from title and check if feature was already shipped
     const cmdMatch = title.match(/\/(\w[\w-]*)/);
     if (cmdMatch) {
       const cmd = cmdMatch[1].toLowerCase();
-      // Check if git has a commit about this command + the specific enhancement
-      const enhancementWords = title.toLowerCase().split(/\s+/).filter(w => w.length > 5);
+      // Sprint 1245: require 2+ enhancement words to match (avoid false positives from common words)
+      const enhancementWords = title.toLowerCase().split(/\s+/).filter(w => w.length > 6);
       for (const gt of gitTitles) {
         const gtLower = gt.toLowerCase();
-        if (gtLower.includes('/' + cmd) && enhancementWords.some(w => gtLower.includes(w))) return true;
+        if (gtLower.includes('/' + cmd)) {
+          const matchCount = enhancementWords.filter(w => gtLower.includes(w)).length;
+          if (matchCount >= 2) return true;
+        }
       }
     }
     return false;
@@ -1772,7 +1778,9 @@ function main(): void {
 
   const lastSprint = getLastSprintNumber();
   const startSprint = lastSprint + 2; // +2 because current sprint is lastSprint+1
-  const existingTitles = new Set(existing.queue.map(i => i.title));
+  // Sprint 1245: only dedup against pending items (not done/skipped) to allow re-queuing relevant work
+  const DONE_STATUSES = new Set(['done', 'skipped', 'skip']);
+  const existingTitles = new Set(existing.queue.filter(i => !DONE_STATUSES.has(i.status)).map(i => i.title));
   const newItems = generateItems(startSprint, existingTitles);
 
   console.log(`\n=== Sprint Queue Replenisher ===`);
