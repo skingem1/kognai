@@ -7044,3 +7044,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Test: 4 tier scenarios + 3 predicate checks — all PASS
 - Swarm used: no (surgical edit, direct write)
 - Timestamp: 2026-03-25T13:50:00Z
+
+## Sprint 1292 — GODMAN-NPM-BADGE
+- Status: PASS
+- Commit: 04b22513
+- Files modified: scripts/telegram-commands/cmd-system.ts
+- Files created: workspace/sprints/sprint-1292.json
+- Feature: Prefetch npm versions for all 8 packages at top of cmdGodman()
+- Feature: Inline npm badge on each protocol line: "built · 📦 npm:v0.2.0"
+- SDK line also gets inline badge
+- Swarm used: no (surgical edit, direct write)
+- Timestamp: 2026-03-25T13:55:00Z

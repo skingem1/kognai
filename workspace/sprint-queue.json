@@ -3766,7 +3766,7 @@
       "sprint": 1292,
       "title": "GODMAN-POST-LAUNCH \u2014 /godman: show live npm version badge per protocol after publish",
       "block": "GODMAN-PROTOCOLS",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "After Apr 14 npm publish, /godman should query the npm registry (registry.npmjs.org/-/package/<pkg>/dist-tags) and show the published version for each of the 8 packages.",
       "added_at": "2026-03-25T13:23:29.168Z"
