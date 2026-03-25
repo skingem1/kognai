@@ -1,0 +1,34 @@
+{
+  "sprint": 1305,
+  "title": "SCS-001 — Phase 1.5 gate Telegram alert + TikTok view count refresher",
+  "block": "SCS-001",
+  "status": "cto-rejected",
+  "source": "qwen-recommendation",
+  "rationale": "Queue exhausted. Two genuine gaps: (1) no single command to check gate + alert operator via Telegram; (2) all manual-posts.jsonl entries have views=0 because nothing polls TikTok. Build ensure-phase-1-5-gate.ts (gate check + Telegram push) and monitor-manual-posting.ts (view count refresh via TikTok API). Enables real gate pass/fail visibility as Apr 7 deadline approaches.",
+  "tasks": [
+    {
+      "id": "ensure-phase-1-5-gate",
+      "description": "Create scripts/scs001/ensure-phase-1-5-gate.ts. Runs generate-phase1-5-gate.ts via execSync, reads the resulting JSON from workspace/gates/phase1-5-gate.json, formats a concise Telegram message with gate status (posts/views/urgency/recommendation), and sends it via TELEGRAM_BOT_TOKEN + OWNER_TELEGRAM_CHAT_ID. Exit 0 if gate passes, exit 1 if fails. Use only stdlib (fs, path, child_process, https). No external npm deps.",
+      "file": "scripts/scs001/ensure-phase-1-5-gate.ts",
+      "status": "pending"
+    },
+    {
+      "id": "monitor-manual-posting",
+      "description": "Create scripts/scs001/monitor-manual-posting.ts. Reads workspace/scs001/manual-posts.jsonl, finds entries where source=auto-deliver or method=post-now-api (real posts, not dry runs). For each entry that has a tiktok_post_id, calls TikTok Query Creator Info API to fetch view count. Updates the views field in manual-posts.jsonl in-place (rewrite the file). If TIKTOK_ACCESS_TOKEN is not set, logs dry-run mode and exits cleanly. Writes a summary to workspace/reports/posting-health.json with posts_checked, views_updated, total_views, avg_views. Use only stdlib. No external npm deps.",
+      "file": "scripts/scs001/monitor-manual-posting.ts",
+      "status": "pending"
+    }
+  ],
+  "acceptance_criteria": [
+    "npx ts-node scripts/scs001/ensure-phase-1-5-gate.ts runs without crash, reads phase1-5-gate.json, sends (or dry-logs) Telegram message",
+    "npx ts-node scripts/scs001/monitor-manual-posting.ts runs without crash, handles missing TIKTOK_ACCESS_TOKEN gracefully, writes posting-health.json",
+    "Both scripts compile with tsc --noEmit"
+  ],
+  "cto_gate": {
+    "approved": false,
+    "reason": "The sprint introduces new functionality (Telegram alert and TikTok view count refresher) not explicitly requested by the human founder and does not directly map to an item in the execution plan or work plan.",
+    "plan_reference": "NOT_IN_PLAN",
+    "confidence": 85,
+    "timestamp": "2026-03-25T17:03:13.578Z"
+  }
+}
