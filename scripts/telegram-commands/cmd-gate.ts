@@ -285,6 +285,35 @@ export function cmdGate(): string {
     `🎬 Pipeline: ${pipelineStatus}`,
     `💳 Stripe: ${stripeReady ? '✅ Ready' : '⚠️ Incomplete'}`,
     ``,
+    // Sprint 1283: subscriber count required to hit MRR target
+    ...(() => {
+      const MRR_TARGET = 500; // €500/mo target
+      const PRICE_PER_SUB = 9; // €9/mo subscription
+      const subsNeeded = Math.ceil(MRR_TARGET / PRICE_PER_SUB);
+      // Try to read current subscriber count from Stripe data or watchdog report
+      let currentSubs: number | null = null;
+      try {
+        const statsPath = path.join(ROOT, 'reports', 'stats-latest.json');
+        if (fs.existsSync(statsPath)) {
+          const stats = JSON.parse(fs.readFileSync(statsPath, 'utf-8'));
+          const v = stats.stripe_subscribers ?? stats.subscribers ?? stats.active_subscriptions ?? null;
+          if (typeof v === 'number') currentSubs = v;
+        }
+      } catch { /* non-fatal */ }
+      const gapSubs = currentSubs !== null ? Math.max(0, subsNeeded - currentSubs) : null;
+      const mrrNow = currentSubs !== null ? currentSubs * PRICE_PER_SUB : null;
+      const lines2: string[] = [];
+      lines2.push(`*── Revenue Path ──*`);
+      lines2.push(`💶 *MRR target:* €${MRR_TARGET}/mo @ €${PRICE_PER_SUB}/sub → *${subsNeeded} subscribers needed*`);
+      if (currentSubs !== null) {
+        const subIcon = currentSubs >= subsNeeded ? '✅' : currentSubs >= subsNeeded / 2 ? '⚠️' : '🔴';
+        lines2.push(`${subIcon} *Current subs:* ${currentSubs} → MRR €${mrrNow} (need ${gapSubs} more)`);
+      } else {
+        lines2.push(`📊 *Current subs:* n/a — connect Stripe or run /record`);
+      }
+      return lines2;
+    })(),
+    ``,
     `*── Action Items ──*`,
     ...(postCount === 0 ? ['⚠️ START POSTING NOW — 0 posts recorded'] : []),
     ...(warmupStatus.startsWith('❌') ? ['⚠️ Complete TikTok warmup (3 days scrolling)'] : []),

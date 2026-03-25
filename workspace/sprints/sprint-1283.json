@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1283",
+  "title": "GATE — /gate: show subscriber count required to hit MRR target",
+  "description": "Added Revenue Path section to cmdGate() in cmd-gate.ts. Shows MRR target (€500), price per sub (€9), subscribers needed (56), current subs from stats-latest.json if available, and gap to target. Non-fatal: falls back to 'n/a' if Stripe data not present.",
+  "source": "queue-auto-replenish",
+  "tasks": [
+    {
+      "id": "1283-01",
+      "title": "Add Revenue Path / subscriber MRR section to cmdGate() in cmd-gate.ts",
+      "type": "feature",
+      "task_type": "bot",
+      "task_target": "scripts/telegram-commands/cmd-gate.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "medium",
+      "sprint_id": "sprint-1283"
+    }
+  ]
+}

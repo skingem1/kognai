@@ -3693,10 +3693,11 @@
       "sprint": 1283,
       "title": "GATE \u2014 /gate: show subscriber count required to hit MRR target",
       "block": "GATE",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "/gate tracks posts and views but not the revenue path. Show how many \u20ac9/mo subscribers are needed to hit the MRR target (e.g. \u20ac500) to tie content KPIs to revenue.",
-      "added_at": "2026-03-25T13:04:37.798Z"
+      "added_at": "2026-03-25T13:04:37.798Z",
+      "_note": "Shipped 2026-03-25. Added Revenue Path section to cmdGate(). €500 MRR target, €9/sub, 56 subs needed. Reads current subs from stats-latest.json."
     }
   ]
 }
