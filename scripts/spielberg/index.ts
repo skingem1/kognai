@@ -89,9 +89,10 @@ function renderGif(script: DemoScript, castPath: string, outDir: string): string
   const gifPath = resolve(outDir, `${script.id}.gif`);
   const { cols, rows, fontSize, theme } = script.terminal;
   log(`rendering GIF → ${basename(gifPath)}`);
+  // Sprint 1225: use 'pipe' — 'inherit' pollutes batch-run.ts captured stdout, breaking JSON parse
   execSync(
     `agg --cols ${cols} --rows ${rows} --font-size ${fontSize} --theme ${theme} "${castPath}" "${gifPath}"`,
-    { cwd: REPO_ROOT, stdio: 'inherit' }
+    { cwd: REPO_ROOT, stdio: 'pipe' }
   );
   return gifPath;
 }

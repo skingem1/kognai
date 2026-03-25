@@ -1,0 +1,13 @@
+{
+  "sprint": 1225,
+  "title": "BUG — spielberg: suppress tool stdout to fix batch JSON parse errors",
+  "status": "done",
+  "track": "BUG",
+  "summary": "Fixed 7/7 spielberg demo batch failures. Root cause: agg and ffmpeg in index.ts/post-produce.ts used stdio:'inherit', piping tool output into the stdout captured by batch-run.ts execSync. The JSON parser then found the last line starting with '{' in the mixed output (possibly from agg progress or ffmpeg info) instead of the final result JSON. Fix: change all stdio:'inherit' to stdio:'pipe' in agg call (index.ts) and all ffmpeg calls (post-produce.ts) + asciinema (headlessRecord).",
+  "files": [
+    "scripts/spielberg/index.ts",
+    "scripts/spielberg/post-produce.ts"
+  ],
+  "root_cause": "agg/ffmpeg/asciinema used stdio:'inherit' — their stdout mixed with index.ts stdout. batch-run.ts captured all of it, and lastIndexOf('\\n{') found a garbage line instead of final JSON.",
+  "fix": "Change all stdio:'inherit' to stdio:'pipe' in spielberg pipeline — tool output suppressed, only log() and final JSON.stringify reach batch-run.ts captured stdout."
+}

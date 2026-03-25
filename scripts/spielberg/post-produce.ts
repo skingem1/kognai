@@ -32,7 +32,7 @@ function buildColorCard(color: string, durationSec: number, outPath: string): vo
   execSync(
     `ffmpeg -y -f lavfi -i "color=c=${color}:size=${W}x${H}:duration=${durationSec}:rate=${FPS},format=yuv420p" ` +
     `-c:v libx264 -preset fast -crf 23 -pix_fmt yuv420p "${outPath}"`,
-    { stdio: 'inherit' }
+    { stdio: 'pipe' }
   );
 }
 
@@ -42,7 +42,7 @@ function scaleToFull(inputPath: string, outPath: string): void {
   execSync(
     `ffmpeg -y -i "${inputPath}" -vf "${scaleFilter}" ` +
     `-c:v libx264 -preset medium -crf 23 -pix_fmt yuv420p -r ${FPS} "${outPath}"`,
-    { stdio: 'inherit' }
+    { stdio: 'pipe' }
   );
 }
 
@@ -56,7 +56,7 @@ function writeConcatList(parts: string[], listPath: string): void {
 function concatParts(listPath: string, outPath: string): void {
   execSync(
     `ffmpeg -y -f concat -safe 0 -i "${listPath}" -c:v libx264 -preset medium -crf 23 -pix_fmt yuv420p -r ${FPS} "${outPath}"`,
-    { stdio: 'inherit' }
+    { stdio: 'pipe' }
   );
 }
 
@@ -124,7 +124,7 @@ export function headlessRecord(opts: {
   execSync(
     `asciinema rec --cols ${cols} --rows ${rows} --overwrite -c "bash '${runnerScript}'" "${castPath}"`,
     {
-      stdio: ['pipe', 'inherit', 'inherit'],
+      stdio: ['pipe', 'pipe', 'pipe'],  // Sprint 1225: pipe all — inherit pollutes batch-run.ts stdout
       env: { ...process.env, TERM: 'xterm-256color' },
     }
   );
