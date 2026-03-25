@@ -6458,3 +6458,12 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Test: runtime validation — shows "DOWN (ECONNREFUSED)" correctly (Achiri not deployed on Hetzner yet)
 - Swarm used: no (telegram-bot.ts too large)
 - Timestamp: 2026-03-25T00:00:00Z
+
+## Sprint 1197 — ACHIRI
+- Status: PASS
+- Commit: 10cb214e
+- Files created: scripts/achiri/init-hetzner.sh, workspace/sprints/sprint-1197.json
+- Function: init-hetzner.sh — first-time Hetzner deploy (clone + env + pm2). Complements deploy-hetzner.sh.
+- Test: dry-run validated — all 7 steps correct
+- Swarm used: no (new bash script, direct write)
+- Timestamp: 2026-03-25T00:10:00Z
