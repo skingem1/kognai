@@ -3123,7 +3123,7 @@
       "sprint": 1231,
       "title": "ARCH-001-COMPLETE \u2014 Wire 3 AMD-21 observer agents into kognai-amd21 tmux session",
       "block": "ARCH-001",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "ARCH-001 prep done (Sprint 958): tmux session structure, heartbeat.sh, observer prompt template, worker status JSON schema. Now complete it: (1) Create scripts/arch001/launch-observers.sh that starts the kognai-amd21 tmux session with 4 windows: orchestrator + 3 observer agents (each running qwen3:14b via Ollama). (2) Create scripts/arch001/observer-agent.ts (~150 lines): reads heartbeat state, pulls AMF messages from logs/aar/, applies temporal supersession merge, writes merged memory delta to workspace/memory/. (3) Add PM2 process for auto-launch. After this, MEMORY.md retirement becomes possible."
     }

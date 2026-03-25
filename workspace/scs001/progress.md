@@ -6721,3 +6721,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (multi-file architecture task)
 - Issues: none
 - Timestamp: 2026-03-25T11:10:00Z
+
+## Sprint 1231 — ARCH-001-COMPLETE
+- Status: PASS
+- Commit: 339d41fb
+- Files created: scripts/arch001/launch-observers.sh, scripts/arch001/observer-agent.ts, workspace/memory/aar-merged-deltas.json
+- Files modified: ecosystem.config.js
+- Test: observer-agent.ts --once — processed 1107 AAR entries → 6 memory deltas. launch-observers.sh --dry-run PASS
+- Pipeline: ARCH-001 complete — AMD-21 observer agents wired, tmux session launchable
+- Swarm used: no (multi-file architecture task)
+- Issues: none
+- Timestamp: 2026-03-25T11:20:00Z
