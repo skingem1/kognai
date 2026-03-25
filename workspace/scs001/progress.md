@@ -7288,3 +7288,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - AAR: score 88 — clean fix, type-safe, tested compilation. Runtime test deferred to next pipeline run.
 - Commit: b89bcdff
 - Status: DONE ✅
+
+## Sprint 1317 — 2026-03-25
+- **SCS-001 — Auto-deliver after batch-produce**
+- Problem: batch-produce.ts produced videos but never delivered them. Operator waited up to 9 hours for next auto-deliver cron.
+- Fix: Added execSync call to posting-auto-deliver.ts --batch N at end of batch-produce main(). Wrapped in try/catch (non-fatal). Skip if dryRun or no results.
+- Files modified: scripts/scs001/batch-produce.ts (+11 lines, +1 import)
+- Validation: tsc --noEmit PASS
+- Swarm bypassed: yes (2 surgical edits, 1 file)
+- AAR: score 88 — clean feature, tested compilation, follows existing patterns
+- Commit: 849a083b
+- Status: DONE ✅
