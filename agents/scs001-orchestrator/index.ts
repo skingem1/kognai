@@ -629,7 +629,7 @@ export class SCS001Orchestrator {
   // Sprint 739: Per-stage timeout to prevent pipeline hangs
   // Sprint 1222: insight + script bumped 300s→600s (qwen3:14b on Mac Mini M4 needs more time per batch)
   private static STAGE_TIMEOUTS: Record<string, number> = {
-    '3-clip-detection': 600_000,  // 10min — clip detection is slow
+    '3-clip-detection': 900_000,  // 15min — Sprint 1312b: bumped from 10min (input capped to 20 + safety buffer)
     '4-insight': 600_000,         // 10min — LLM calls (was 5min, qwen3:14b slow on local)
     '5-script': 600_000,          // 10min — LLM calls (was 5min, script gen for 11 clips needs time)
     default: 180_000,             // 3min — all other stages

@@ -1,0 +1,27 @@
+{
+  "sprint_id": "sprint-1312b",
+  "title": "SCS-001 — Fix Stage 3 clip-detection timeout: cap input + increase timeout",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "clip-detection-max-input",
+      "description": "Surgical edit to agents/scs001-clip-detection/index.ts: After line 51 (CONCURRENCY constant), add: const MAX_DISCOVERIES = parseInt(process.env.CLIP_DETECTION_MAX_INPUT ?? '20', 10); Then in the run() method (line ~136), replace 'for (const disc of discoveries)' with 'const capped = discoveries.slice(0, MAX_DISCOVERIES); for (const disc of capped)'. This caps LLM calls from 45 to 20, cutting stage 3 from >600s to ~200s.",
+      "file": "agents/scs001-clip-detection/index.ts",
+      "status": "pending",
+      "priority": "critical",
+      "agent": "coder",
+      "type": "fix",
+      "sprint_id": "sprint-1312b"
+    },
+    {
+      "id": "orchestrator-stage3-timeout",
+      "description": "Surgical edit to agents/scs001-orchestrator/index.ts line 632: change '3-clip-detection': 600_000 to '3-clip-detection': 900_000. This gives stage 3 a 50% longer timeout as a safety buffer even after the input cap.",
+      "file": "agents/scs001-orchestrator/index.ts",
+      "status": "pending",
+      "priority": "critical",
+      "agent": "coder",
+      "type": "fix",
+      "sprint_id": "sprint-1312b"
+    }
+  ]
+}

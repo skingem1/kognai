@@ -49,6 +49,7 @@ const QUALITY_GATE    = 20;
 const MIN_DURATION    = 5;
 const MAX_DURATION    = 20;
 const CONCURRENCY     = parseInt(process.env.CLIP_DETECTION_CONCURRENCY ?? '4', 10);
+const MAX_DISCOVERIES = parseInt(process.env.CLIP_DETECTION_MAX_INPUT ?? '20', 10); // Sprint 1312b: cap to prevent stage 3 timeout
 const OLLAMA_BASE     = (() => { const h = process.env.OLLAMA_HOST ?? 'http://localhost:11434'; return h.startsWith('http') ? h : `http://${h}`; })();
 const MODEL           = process.env.CLIP_DETECTION_MODEL ?? 'qwen3:14b';
 
@@ -137,8 +138,14 @@ export class ClipDetectionAgent {
     const results: ClipQualityScore[] = [];
     const scoringTasks: ScoringTask[] = [];
 
+    // Sprint 1312b: cap input to prevent stage 3 timeout (45 items @ ~15s each = >600s)
+    const capped = discoveries.slice(0, MAX_DISCOVERIES);
+    if (capped.length < discoveries.length) {
+      console.log(`[ClipDetection] Capped input: ${discoveries.length} → ${capped.length} discoveries (MAX_DISCOVERIES=${MAX_DISCOVERIES})`);
+    }
+
     // First pass: duration gate + collect LLM scoring tasks
-    for (const disc of discoveries) {
+    for (const disc of capped) {
       for (const ts of disc.timestamps) {
         const duration = ts.end_seconds - ts.start_seconds;
 
