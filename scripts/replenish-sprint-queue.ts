@@ -131,17 +131,34 @@ function generateItems(startSprint: number, existingTitles: Set<string> = new Se
   const errors = getPipelineErrors();
   const existingCmds = getExistingCommands();
 
-  // Dedup: check queue titles AND git log for already-shipped work
+  // Sprint 1198: Aggressive dedup — check queue titles, git log, AND keyword matching
   const existingTitleArray = Array.from(existingTitles);
   const gitTitles = getGitLogTitles();
+  // Build a keyword index from git log for faster matching
+  const gitKeywords = new Set<string>();
+  for (const gt of gitTitles) {
+    const words = gt.toLowerCase().replace(/[^a-z0-9/\-_ ]/g, '').split(/\s+/);
+    for (const w of words) if (w.length > 4) gitKeywords.add(w);
+  }
   function isDuplicate(title: string): boolean {
     const normalised = title.toLowerCase().slice(0, 40);
     for (let i = 0; i < existingTitleArray.length; i++) {
       if (existingTitleArray[i].toLowerCase().slice(0, 40) === normalised) return true;
     }
-    // Also check git log for shipped sprints with similar titles
+    // Check git log for shipped sprints with similar titles
     for (const gt of gitTitles) {
       if (gt.toLowerCase().includes(normalised.slice(0, 25))) return true;
+    }
+    // Extract /command from title and check if feature was already shipped
+    const cmdMatch = title.match(/\/(\w[\w-]*)/);
+    if (cmdMatch) {
+      const cmd = cmdMatch[1].toLowerCase();
+      // Check if git has a commit about this command + the specific enhancement
+      const enhancementWords = title.toLowerCase().split(/\s+/).filter(w => w.length > 5);
+      for (const gt of gitTitles) {
+        const gtLower = gt.toLowerCase();
+        if (gtLower.includes('/' + cmd) && enhancementWords.some(w => gtLower.includes(w))) return true;
+      }
     }
     return false;
   }
@@ -1665,6 +1682,58 @@ function generateItems(startSprint: number, existingTitles: Set<string> = new Se
     title: 'OPS — /health: show Node.js memory usage (RSS + heap) of telegram-bot process',
     block: 'OPS',
     rationale: 'telegram-bot is the operator\'s primary interface. Show its RSS and heap usage so operator can detect memory leaks before they cause crashes.',
+  });
+
+  // Wave 26 templates
+  infraItems.push({
+    title: 'OPS — /status: show pending Achiri waitlist request count',
+    block: 'OPS',
+    rationale: 'Waitlist signups are a lead metric for Achiri alpha. Show count of users on waitlist not yet whitelisted so operator knows demand backlog at a glance in /status.',
+  });
+  infraItems.push({
+    title: 'OPS — /health: show how many days until the Phase 1.5 gate deadline',
+    block: 'OPS',
+    rationale: '/health shows infrastructure state but not deadline pressure. Add a prominent "Gate in Xd" line to /health so operators always know the deadline without opening /gate.',
+  });
+  infraItems.push({
+    title: 'ACHIRI — /achiri: show Derja profiler test pass rate from latest run',
+    block: 'ACHIRI',
+    rationale: 'Derja profiling is core to Achiri personality. Show the latest test pass rate (from validate-derja-profiler.ts output or saved report) in /achiri for quick validation.',
+  });
+  infraItems.push({
+    title: 'OPS — /errors: show processes with zero errors today (all-clear list)',
+    block: 'OPS',
+    rationale: 'Operators focus on errors but a zero-error list builds confidence. Show processes that have been clean all day to offset the error noise and signal overall stability.',
+  });
+  infraItems.push({
+    title: 'GATE — /pace: show time since last pipeline run (content freshness)',
+    block: 'GATE',
+    rationale: '/pace focuses on posting pace but content freshness also matters. Show how long since the last pipeline run produced new videos so operator knows if the supply is stale.',
+  });
+  infraItems.push({
+    title: 'GATE — /gate: show subscriber count required to hit MRR target',
+    block: 'GATE',
+    rationale: '/gate tracks posts and views but not the revenue path. Show how many €9/mo subscribers are needed to hit the MRR target (e.g. €500) to tie content KPIs to revenue.',
+  });
+  infraItems.push({
+    title: 'QUALITY — /smoke: show total runtime vs previous run (performance trend)',
+    block: 'QUALITY',
+    rationale: 'If smoke test runtime grows, it may indicate pipeline bloat. Show current run duration vs the previous saved run to detect performance regressions early.',
+  });
+  infraItems.push({
+    title: 'OPS — /report: show Godman npm publish status for each package',
+    block: 'OPS',
+    rationale: '/report shows launch countdown but not per-package publish status. Add a line listing which Godman packages are published and which are still local-only.',
+  });
+  infraItems.push({
+    title: 'OPS — /status: show count of unread Telegram bot messages (backlog)',
+    block: 'OPS',
+    rationale: 'If the bot has a pending message backlog (from users waiting for replies), operator needs to know. Show unread/queued message count from the Achiri bot log.',
+  });
+  infraItems.push({
+    title: 'OPS — /health: show last backup timestamp from backup log if available',
+    block: 'OPS',
+    rationale: 'Data backups are easy to forget. Show timestamp of last successful backup from any backup script log or backup-status.json if present, or warn if none found.',
   });
 
   // Fill remaining slots (skip duplicates of already-completed items)
