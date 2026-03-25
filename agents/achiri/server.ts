@@ -11,6 +11,7 @@
 //   DELETE /memory/:userId      → { ok: true }
 //   GET    /stats               → { users, total_turns, uptime_s }
 //   GET    /health              → { status: 'ok', version: '301' }
+//   POST   /auth-webhook        { Supabase auth event } → { ok, upgraded, tier } — SIWA → tnd_basic
 
 import * as http from 'http';
 import { AchiriConversationHandler, ACHIRI_LIMIT_EXCEEDED } from './index';
@@ -375,12 +376,54 @@ const server = http.createServer(async (req, res) => {
     return send(res, 200, { userId, tier });
   }
 
+  // Sprint 1303 (PHASE2): POST /auth-webhook — Supabase SIWA (Sign In With Apple) tier upgrade
+  // Supabase sends auth events here when configured under Project → Auth → Hooks.
+  // When provider is 'apple', upgrades user from free → tnd_basic (PROVISIONAL → STANDARD).
+  if (method === 'POST' && url === '/auth-webhook') {
+    // Verify webhook secret if configured
+    const webhookSecret = process.env.ACHIRI_WEBHOOK_SECRET ?? '';
+    if (webhookSecret) {
+      const incomingSecret = req.headers['x-webhook-secret'] ?? req.headers['authorization'] ?? '';
+      if (incomingSecret !== webhookSecret && incomingSecret !== `Bearer ${webhookSecret}`) {
+        return send(res, 401, { error: 'invalid webhook secret' });
+      }
+    }
+
+    let body: string;
+    try { body = await readBody(req); } catch { return send(res, 400, { error: 'bad request' }); }
+
+    let event: any;
+    try { event = JSON.parse(body); } catch { return send(res, 400, { error: 'invalid JSON' }); }
+
+    // Supabase auth hook payload: event.session.user or event.record.user
+    const user = event?.session?.user ?? event?.record ?? event?.user ?? null;
+    const userId: string | undefined = user?.id;
+    const provider: string = user?.app_metadata?.provider ?? user?.identities?.[0]?.provider ?? '';
+
+    if (!userId) {
+      return send(res, 200, { ok: true, upgraded: false, reason: 'no user id in payload' });
+    }
+
+    if (provider === 'apple') {
+      const currentTier = getUserTier(userId);
+      if (currentTier === 'free') {
+        setUserTier(userId, 'tnd_basic', 'siwa-upgrade');
+        console.log(`[Achiri-Auth] SIWA upgrade: ${userId} free→tnd_basic`);
+        return send(res, 200, { ok: true, upgraded: true, tier: 'tnd_basic', provider, userId });
+      }
+      // Already on a paid tier — no downgrade
+      return send(res, 200, { ok: true, upgraded: false, tier: currentTier, provider, userId, reason: 'already upgraded' });
+    }
+
+    return send(res, 200, { ok: true, upgraded: false, provider, userId, reason: 'provider not apple' });
+  }
+
   return send(res, 404, { error: 'not found' });
 });
 
 server.listen(PORT, () => {
   console.log('[Achiri API] listening on port ' + PORT);
-  console.log('[Achiri API] routes: POST /chat, POST /voice, GET /upgrade, POST /webhook/paymee, GET /tier/:userId, GET /summary/:userId, GET /profile/:userId, GET /export/:userId, DELETE /memory/:userId, GET /analytics, GET /stats, GET /health');
+  console.log('[Achiri API] routes: POST /chat, POST /voice, GET /upgrade, POST /webhook/paymee, POST /auth-webhook, GET /tier/:userId, GET /summary/:userId, GET /profile/:userId, GET /export/:userId, DELETE /memory/:userId, GET /analytics, GET /stats, GET /health');
 });
 
 export { server };

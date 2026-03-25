@@ -1,0 +1,16 @@
+{
+  "sprint": 1303,
+  "title": "PHASE2 — Achiri SIWA upgrade: wire Supabase auth provider for PROVISIONAL→STANDARD tier",
+  "block": "PHASE2",
+  "status": "done",
+  "source": "queue-prescribed",
+  "rationale": "Add POST /auth-webhook to Achiri server.ts that handles Supabase auth events. When provider is 'apple' (SIWA), upgrade user from free→tnd_basic tier via setUserTier. Verify optional ACHIRI_WEBHOOK_SECRET header.",
+  "tasks": [
+    {
+      "id": "auth-webhook-endpoint",
+      "description": "Add POST /auth-webhook route to agents/achiri/server.ts. Parse Supabase auth event body, extract user.id and app_metadata.provider. If provider == 'apple', call setUserTier(userId, 'tnd_basic', 'siwa-upgrade'). Verify ACHIRI_WEBHOOK_SECRET header if env var is set. Return {ok, upgraded, tier}.",
+      "file": "agents/achiri/server.ts",
+      "status": "pending"
+    }
+  ]
+}
