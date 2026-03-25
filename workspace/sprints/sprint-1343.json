@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1343",
+  "title": "BUGFIX — batch-produce: add DedupLedger.compact() after each batch run",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "batch-produce.ts replaced old run-pipeline.ts as the primary pipeline runner (Sprint 899+). run-pipeline.ts called DedupLedger.compact() at Sprint 300 to clean up duplicate ledger entries after each run. batch-produce.ts never had this call. Result: 9 identical video-75ac1293 entries in publish-ledger.jsonl from a single old educational pipeline run. Fix: import DedupLedger from agents/scs001-orchestrator/dedup-ledger.ts and call compact() at end of batch run in batch-produce.ts. The compact() call deduplicates by video_id/clip_id keeping first occurrence, preventing auto-deliver from sending the same video multiple times.",
+  "tasks": [
+    {
+      "id": "1343-dedup-compact",
+      "description": "In scripts/scs001/batch-produce.ts: import DedupLedger from '../../agents/scs001-orchestrator/dedup-ledger'. At end of runBatch() (after auto-deliver call), call: const dedup = new DedupLedger(); const { before, after } = dedup.compact(); if (before > after) console.log(`[batch-produce] Ledger compacted: ${before} → ${after} entries`);",
+      "file": "scripts/scs001/batch-produce.ts",
+      "status": "done",
+      "priority": "medium",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}

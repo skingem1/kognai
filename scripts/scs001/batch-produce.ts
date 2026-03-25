@@ -21,6 +21,8 @@ import { existsSync, readFileSync, writeFileSync, readdirSync, appendFileSync } 
 import { execSync } from 'child_process';
 import { initRegistry, runPipeline, listPipelines } from './pipeline-registry';
 import type { PipelineName, PipelineInput, PipelineRunResult } from './pipeline-registry';
+// Sprint 1343: Dedup ledger after each batch to clean up duplicate entries
+import { DedupLedger } from '../../agents/scs001-orchestrator/dedup-ledger';
 
 // Sprint 1326: Fallback ledger write — ensures batch-produce videos are always registered
 // in publish-ledger.jsonl even if pipeline-registry's logToPublishLedger fails silently.
@@ -234,6 +236,19 @@ async function main(): Promise<void> {
       );
     } catch (e: any) {
       console.warn(`[batch-produce] Auto-deliver failed (non-fatal): ${e.message?.slice(0, 100)}`);
+    }
+  }
+
+  // Sprint 1343: Compact ledger after each batch to remove duplicate entries
+  if (!dryRun) {
+    try {
+      const dedup = new DedupLedger();
+      const { before, after } = dedup.compact();
+      if (before > after) {
+        console.log(`[batch-produce] Ledger compacted: ${before} → ${after} entries (removed ${before - after} duplicates)`);
+      }
+    } catch (e: any) {
+      console.warn(`[batch-produce] Ledger compact failed (non-fatal): ${e.message?.slice(0, 80)}`);
     }
   }
 }
