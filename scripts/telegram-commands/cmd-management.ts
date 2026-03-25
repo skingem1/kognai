@@ -2856,7 +2856,7 @@ export function cmdNextActions(): string {
       urgency: posts.length >= 5 ? 'MEDIUM' : 'LOW',
       icon: posts.length >= 5 ? '🟡' : '🟢',
       text: `${noUrl.length}/${posts.length} posts missing TikTok URL (can't auto-track views)`,
-      cmd: '/updateviews',
+      cmd: '/seturl',
     });
   }
 

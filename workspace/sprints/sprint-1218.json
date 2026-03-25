@@ -1,18 +1,18 @@
 {
   "sprint_id": "sprint-1218",
-  "title": "OPS — cleanup-old-runs.ts: add code-demo-runs and vlog-runs cleanup",
-  "description": "code-demo-runs has 150+ dirs and vlog-runs has 167 dirs — neither is cleaned by the /cleanup cron. Add cleanDir() calls for demo-* (keep 20) and vlog-* (keep 30) in run(). Extend CleanupResult interface and formatCleanupResult() to display the new stats.",
-  "source": "autonomous-loop",
+  "title": "BUGFIX — /next-actions: URL action should point to /seturl not /updateviews",
+  "description": "Sprint 1216 added /seturl for adding TikTok URLs to posts. The /next-actions item #5 still pointed to /updateviews. Fix to point to /seturl which is the correct command for adding URLs.",
+  "source": "queue-empty-sonnet",
   "tasks": [
     {
       "id": "1218-01",
-      "title": "Add code-demo-runs + vlog-runs cleanup to cleanup-old-runs.ts",
-      "type": "enhancement",
+      "title": "Fix cmdNextActions() URL action cmd: /updateviews → /seturl",
+      "type": "bugfix",
       "task_type": "ops",
-      "task_target": "scripts/scs001/cleanup-old-runs.ts",
+      "task_target": "scripts/telegram-commands/cmd-management.ts",
       "agent": "coder",
       "status": "done",
-      "priority": "medium",
+      "priority": "low",
       "sprint_id": "sprint-1218"
     }
   ]
