@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-1215",
+  "title": "BUGFIX — scs001-script-validator: widen DURATION_MAX_S from 35 to 60",
+  "description": "Scripts consistently generate 56s bundles but validator caps at 35s (Sprint 672), causing repeated 'Duration out of range' validation errors. TikTok supports up to 60s and longer content improves retention. Fix: widen DURATION_MAX_S to 60. Also update cmd-content.ts threshold display string.",
+  "source": "autonomous-loop",
+  "tasks": [
+    {
+      "id": "1215-01",
+      "title": "Widen DURATION_MAX_S from 35 to 60 in agents/scs001-script-validator/index.ts",
+      "type": "bugfix",
+      "task_type": "pipeline",
+      "task_target": "agents/scs001-script-validator/index.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-1215"
+    },
+    {
+      "id": "1215-02",
+      "title": "Update threshold display in cmd-content.ts: 20-35s → 20-60s",
+      "type": "bugfix",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-commands/cmd-content.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "low",
+      "sprint_id": "sprint-1215"
+    }
+  ]
+}

@@ -21,7 +21,7 @@ const SEGMENTS_MIN        = 4;   // Sprint 672: widened from 5 (4-seg scripts ar
 const SEGMENTS_MAX        = 7;   // Sprint 672: widened from 6 (allow longer scripts)
 const INTERRUPTS_MIN      = 6;   // Sprint 672: widened from 8 (proportional to shorter scripts)
 const DURATION_MIN_S      = 20;  // Sprint 672: widened from 24 (20s+ is viable for TikTok)
-const DURATION_MAX_S      = 35;  // Sprint 672: widened from 28 (allow up to 35s)
+const DURATION_MAX_S      = 60;  // Sprint 1215: widened from 35 (scripts consistently generate 56s; TikTok supports up to 60s)
 
 export class ScriptValidator {
   validate(bundle: ScriptBundle): ValidationResult {

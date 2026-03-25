@@ -1146,7 +1146,7 @@ export function cmdValErrors(): string {
     out.push(`\n*${e.clip_id ?? e.script_id ?? '?'}* (${ts})`);
     for (const err of (e.errors ?? [])) out.push(`  • ${err}`);
   }
-  out.push('\n_Thresholds: 4-7 segments, 20-35s, 6+ interrupts_');
+  out.push('\n_Thresholds: 4-7 segments, 20-60s, 6+ interrupts_'); // Sprint 1215: max widened 35→60
   return out.join('\n');
 }
 
