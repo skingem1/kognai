@@ -2598,6 +2598,50 @@ export async function cmdSmoke(chatId: string): Promise<void> {
         : `⚠️ Morning brief cron: *missing from PM2* — run \`pm2 start ecosystem.config.js --only scs001-morning-brief\``);
     } catch { /* skip */ }
 
+    // Sprint 1301 (AMD23): cerberus-gateway PM2 + /health check
+    let cerberusOnline = false;
+    let cerberusHealthOk = false;
+    try {
+      const cerberusPort = process.env['CERBERUS_PORT'] ?? '3419';
+      const cerberusProcList = getPm2List();
+      const cGw = cerberusProcList.find(p => p.name === 'cerberus-gateway');
+      cerberusOnline = !!(cGw && cGw.status === 'online');
+      if (cerberusOnline) {
+        const cHtStart = Date.now();
+        const healthRes = await new Promise<{ ok: boolean; status: number }>((resolve) => {
+          const http = require('http');
+          const req = http.get(`http://localhost:${cerberusPort}/cerberus/health`, (r: any) => {
+            resolve({ ok: r.statusCode === 200, status: r.statusCode });
+            r.resume();
+          });
+          req.setTimeout(3000, () => { req.destroy(); resolve({ ok: false, status: 0 }); });
+          req.on('error', () => resolve({ ok: false, status: 0 }));
+        });
+        cerberusHealthOk = healthRes.ok;
+        checkTimings.push({ name: 'cerberus-health', ms: Date.now() - cHtStart });
+        const gwUptime = cGw ? ` · ${fmtUptime(cGw.uptimeMs)}` : '';
+        lines.push('');
+        lines.push(cerberusHealthOk
+          ? `✅ *Cerberus gateway:* online · /health 200${gwUptime}`
+          : `⚠️ *Cerberus gateway:* online but /health returned ${healthRes.status} · port ${cerberusPort}`);
+      } else {
+        lines.push('');
+        lines.push(cGw
+          ? `🔴 *Cerberus gateway:* ${cGw.status} — restart: \`pm2 restart cerberus-gateway\``
+          : `⚪ *Cerberus gateway:* not in PM2 — start: \`pm2 start ecosystem.config.js --only cerberus-gateway\``);
+      }
+      // Persist cerberus status to smoke-test-latest.json
+      try {
+        const smokePath2 = path.join(ROOT, 'reports', 'smoke-test-latest.json');
+        if (fs.existsSync(smokePath2)) {
+          const s = JSON.parse(fs.readFileSync(smokePath2, 'utf-8'));
+          s.cerberus_online = cerberusOnline;
+          s.cerberus_health = cerberusHealthOk;
+          fs.writeFileSync(smokePath2, JSON.stringify(s, null, 2));
+        }
+      } catch { /* skip */ }
+    } catch { /* skip */ }
+
     // Sprint 1140 (wave 20): show slowest check
     if (checkTimings.length >= 2) {
       const slowest = [...checkTimings].sort((a, b) => b.ms - a.ms)[0];

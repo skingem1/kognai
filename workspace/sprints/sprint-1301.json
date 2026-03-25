@@ -1,0 +1,16 @@
+{
+  "sprint": 1301,
+  "title": "AMD23 — Cerberus PM2 smoke: add cerberus-gateway to /smoke test suite",
+  "block": "AMD23",
+  "status": "done",
+  "source": "queue-prescribed",
+  "rationale": "Cerberus gateway is in PM2 ecosystem but not checked by /smoke. Add check that verifies cerberus-gateway is online in PM2 and /health returns 200. Save cerberus_online + cerberus_health to smoke-test-latest.json.",
+  "tasks": [
+    {
+      "id": "add-cerberus-smoke-check",
+      "description": "In cmdSmoke() in scripts/telegram-commands/cmd-system.ts: add cerberus-gateway PM2 check (getPm2List, find cerberus-gateway by name) and HTTP health check (localhost:CERBERUS_PORT/cerberus/health, 3s timeout). Show result in smoke output lines. Update smoke-test-latest.json with cerberus_online and cerberus_health fields.",
+      "file": "scripts/telegram-commands/cmd-system.ts",
+      "status": "pending"
+    }
+  ]
+}
