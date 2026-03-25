@@ -7352,3 +7352,16 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Fix: break search loop on 403 "not subscribed" — saves 25-45s per batch run
 - Swarm used: no (surgical 3-line fix)
 - Timestamp: 2026-03-25T20:42:00+01:00
+
+## Sprint 1325 — BUGFIX: fal.ai ETIMEDOUT + FFmpeg 8.x subtitle filter
+- Status: PASS
+- Commit: 9edc3cc1
+- Files modified:
+  - scripts/scs001/fal-video-client.ts
+  - agents/scs001-caption/index.ts
+- Fix 1: fal.ai ETIMEDOUT — replaced signal.alarm(90) with subprocess.Popen+communicate(timeout=85)+proc.kill(). Reliable kill even when C extensions block GIL.
+- Fix 2: FFmpeg 8.x subtitles filter — added f= prefix so filename is explicit option key.
+- Swarm used: no (code generation for subprocess.Popen approach required precision; swarm bypassed)
+- AAR: aar-middleware module not found — noted but not blocking
+- Crystallise: aar module not found — noted but not blocking
+- Timestamp: 2026-03-25T20:45:00Z
