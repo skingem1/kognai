@@ -38,10 +38,12 @@ function skip(name: string, detail: string) { checks.push({ name, status: 'SKIP'
 
 // ── 1. Required env vars ─────────────────────────────────────────────────────
 const REQUIRED_ENV = [
-  'ANTHROPIC_API_KEY', 'TELEGRAM_BOT_TOKEN', 'OWNER_TELEGRAM_CHAT_ID',
+  'TELEGRAM_BOT_TOKEN', 'OWNER_TELEGRAM_CHAT_ID',
   'OLLAMA_HOST', 'VAULT_LOCAL_MODEL_POWER',
 ];
-const OPTIONAL_ENV = ['PAYMEE_API_KEY', 'ELEVENLABS_API_KEY', 'MINIMAX_API_KEY'];
+// Sprint 1260: ANTHROPIC_API_KEY moved to optional — free tier uses local models (qwen3:4b).
+// Only tnd_basic/tnd_premium tiers use Anthropic. OK to deploy without it; set on Hetzner for paid tiers.
+const OPTIONAL_ENV = ['ANTHROPIC_API_KEY', 'PAYMEE_API_KEY', 'ELEVENLABS_API_KEY', 'MINIMAX_API_KEY'];
 
 for (const key of REQUIRED_ENV) {
   if (process.env[key]) pass(`env:${key}`, 'SET');
@@ -104,7 +106,8 @@ function httpGet(url: string): Promise<{ status: number; body: string }> {
 
 async function runAsync() {
   try {
-    const { status, body } = await httpGet(`http://localhost:${ACHIRI_PORT}/stats/health`);
+    // Sprint 1260: fixed endpoint /stats/health → /health (server serves /health, not /stats/health)
+    const { status, body } = await httpGet(`http://localhost:${ACHIRI_PORT}/health`);
     if (status === 200) {
       const data = JSON.parse(body);
       pass('health:endpoint', `HTTP 200 — status: ${data.status ?? 'ok'}`);

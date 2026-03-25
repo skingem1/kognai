@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-1260",
+  "title": "ACHIRI-PREDEPLOY — Fix pre-deploy-check.ts: health endpoint + ANTHROPIC_API_KEY handling",
+  "description": "pre-deploy-check.ts hits /stats/health (404) but server serves /health (200). Also ANTHROPIC_API_KEY is required but not in .env — free tier works with local models. Fix both.",
+  "source": "post-queue",
+  "tasks": [
+    {
+      "id": "1260-01",
+      "title": "Fix health endpoint: /stats/health → /health",
+      "type": "bugfix",
+      "task_type": "achiri",
+      "task_target": "scripts/achiri/pre-deploy-check.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1260"
+    },
+    {
+      "id": "1260-02",
+      "title": "Move ANTHROPIC_API_KEY from REQUIRED to OPTIONAL (free tier uses local models)",
+      "type": "bugfix",
+      "task_type": "achiri",
+      "task_target": "scripts/achiri/pre-deploy-check.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1260"
+    }
+  ]
+}

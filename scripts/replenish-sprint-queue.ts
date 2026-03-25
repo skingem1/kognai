@@ -124,7 +124,7 @@ function daysUntil(dateStr: string): number {
   return Math.max(0, Math.ceil((new Date(dateStr).getTime() - Date.now()) / 86_400_000));
 }
 
-function generateItems(startSprint: number, existingTitles: Set<string> = new Set()): QueueItem[] {
+function generateItems(startSprint: number, existingTitles: Set<string> = new Set(), allExistingTitles: Set<string> = new Set()): QueueItem[] {
   const items: QueueItem[] = [];
   let sprint = startSprint;
   const gate = getGateState();
@@ -142,6 +142,8 @@ function generateItems(startSprint: number, existingTitles: Set<string> = new Se
     for (const w of words) if (w.length > 4) gitKeywords.add(w);
   }
   function isDuplicate(title: string): boolean {
+    // Sprint 1248: exact-title match against ALL items (including done/skipped) prevents regenerating completed work
+    if (allExistingTitles.has(title)) return true;
     const normalised = title.toLowerCase().slice(0, 40);
     for (let i = 0; i < existingTitleArray.length; i++) {
       if (existingTitleArray[i].toLowerCase().slice(0, 40) === normalised) return true;
@@ -1807,10 +1809,12 @@ function main(): void {
 
   const lastSprint = getLastSprintNumber();
   const startSprint = lastSprint + 2; // +2 because current sprint is lastSprint+1
-  // Sprint 1245: only dedup against pending items (not done/skipped) to allow re-queuing relevant work
+  // Sprint 1245: only dedup against pending items (not done/skipped) for prefix match to avoid false positives
+  // Sprint 1248: also pass all titles (incl. done/skipped) for exact-match dedup to prevent regenerating completed work
   const DONE_STATUSES = new Set(['done', 'skipped', 'skip']);
   const existingTitles = new Set(existing.queue.filter(i => !DONE_STATUSES.has(i.status)).map(i => i.title));
-  const newItems = generateItems(startSprint, existingTitles);
+  const allExistingTitles = new Set(existing.queue.map(i => i.title));
+  const newItems = generateItems(startSprint, existingTitles, allExistingTitles);
 
   console.log(`\n=== Sprint Queue Replenisher ===`);
   console.log(`Last shipped: Sprint ${lastSprint}`);
