@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1322",
+  "title": "BUGFIX — Code-demo pipeline crashes with 'No code to explain' when Ollama returns empty",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "code-demo pipeline (P2) fails on every batch run: callOllama() returns empty string (Ollama unreachable or returns null response), codeToExplain stays empty, throws 'No code to explain'. Fix: (1) wrap callOllama in try-catch to prevent unhandled throws, (2) add hardcoded Python fallback before the throw at line 146 so code-demo always produces content.",
+  "tasks": [
+    {
+      "id": "fix-code-demo-ollama-empty",
+      "description": "In scripts/scs001/code-demo-scriptgen.ts: (1) Wrap callOllama() body in try-catch returning '' on error so it never throws. (2) Before the 'throw new Error(No code to explain...)' at line 146, add a fallback that generates a minimal Python snippet using the topic name (input.prompt or 'Python automation'). Log a warning '[code-demo] LLM unavailable — using template fallback'. This ensures code-demo always produces something even when Ollama is down.",
+      "file": "scripts/scs001/code-demo-scriptgen.ts",
+      "status": "pending",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}

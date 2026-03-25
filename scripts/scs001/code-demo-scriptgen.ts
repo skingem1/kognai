@@ -28,12 +28,17 @@ function callOllama(prompt: string, opts?: { maxTokens?: number; temperature?: n
   });
   const tmpFile = `/tmp/ollama_payload_${Date.now()}.json`;
   writeFileSync(tmpFile, payload);
-  const result = execSync(
-    `curl -s --max-time 180 ${host}/api/generate -d @"${tmpFile}"`,
-    { encoding: 'utf-8', timeout: 200000 }
-  );
-  try { execSync(`rm "${tmpFile}"`, { stdio: 'pipe' }); } catch {}
-  return JSON.parse(result).response || '';
+  try {
+    const result = execSync(
+      `curl -s --max-time 180 ${host}/api/generate -d @"${tmpFile}"`,
+      { encoding: 'utf-8', timeout: 200000 }
+    );
+    try { execSync(`rm "${tmpFile}"`, { stdio: 'pipe' }); } catch {}
+    return JSON.parse(result).response || '';
+  } catch {
+    try { execSync(`rm "${tmpFile}"`, { stdio: 'pipe' }); } catch {}
+    return ''; // Ollama unreachable — caller handles empty string
+  }
 }
 
 export interface CodeDemoStep {
@@ -143,7 +148,27 @@ Return ONLY the code, no markdown fences, no explanation. Keep it under 30 lines
     codeToExplain = codeToExplain.replace(/^```\w*\n?/, '').replace(/\n?```$/, '').trim();
   }
 
-  if (!codeToExplain) throw new Error('No code to explain (provide --code or --prompt)');
+  // Sprint 1322: If LLM is unavailable and all generation paths returned empty,
+  // fall back to a generic template so the pipeline doesn't crash.
+  if (!codeToExplain) {
+    const topicHint = (input.prompt || 'Python automation').replace(/[^a-zA-Z0-9 ]/g, '').trim().slice(0, 50);
+    console.warn(`[code-demo] LLM unavailable — using template fallback for "${topicHint}"`);
+    codeToExplain = [
+      `# ${topicHint} — demo`,
+      'def process(items):',
+      '    """Process a list of items efficiently."""',
+      '    results = []',
+      '    for item in items:',
+      '        result = str(item).upper().strip()',
+      '        results.append(result)',
+      '    return results',
+      '',
+      'if __name__ == "__main__":',
+      '    data = ["hello", "world", "ai", "demo"]',
+      '    print(process(data))',
+    ].join('\n');
+    language = 'python';
+  }
 
   language = detectLanguage(codeToExplain);
   console.log(`  Language detected: ${language}`);
