@@ -1470,6 +1470,21 @@ module.exports = {
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
     {
+      name: "kognai-video-validator",
+      script: "npx",
+      args: "tsx scripts/scs001/pipeline-output-validator.ts",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: false,
+      watch: false,
+      cron_restart: "30 3 * * *",
+      env: {
+        NODE_ENV: "production",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/video-validator-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/video-validator-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
+    {
       name: "lemon-webhooks",
       script: "npx",
       args: "tsx scripts/payments/lemon-server.ts",
