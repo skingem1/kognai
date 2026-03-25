@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1337",
+  "title": "BUGFIX — CaptionAgent: resolve outputDir to absolute path to fix ffmpeg subtitles filter",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "In agents/scs001-caption/index.ts the CaptionAgent constructor has a relative default outputDir ('workspace/scs001/caption-outputs'). When the orchestrator calls new CaptionAgent(this.workDir + '/caption'), this.workDir is also relative. The resulting srtPath passed to ffmpeg's subtitles filter is relative, which causes 'Error parsing filterchain' / 'No option name near' failures when ffmpeg's cwd differs from the kognai root. Fix: call resolve() on outputDir in the constructor to always produce an absolute path. The fallback (copyFileSync) still protects production, but this fix makes subtitle burn-in reliable across cwd contexts.",
+  "tasks": [
+    {
+      "id": "1337-caption-abspath",
+      "description": "In agents/scs001-caption/index.ts: (1) import { resolve } from 'path'. (2) In constructor, replace `this.outputDir = outputDir` with `this.outputDir = resolve(outputDir)`. This ensures srtPath and captionedPath are always absolute, making the ffmpeg subtitles=f='...' filter work regardless of process cwd.",
+      "file": "agents/scs001-caption/index.ts",
+      "status": "done",
+      "priority": "medium",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}

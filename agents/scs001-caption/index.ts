@@ -5,6 +5,7 @@
 // Block C mock: generates SRT files, passes through video (no overlay without libass)
 
 import { existsSync, mkdirSync, writeFileSync, copyFileSync } from 'fs';
+import { resolve } from 'path';
 import { execSync, execFileSync } from 'child_process';
 import type { ScriptBundle, ScriptSegment } from '../scs001-script/index';
 import type { EditedVideo } from '../scs001-editing/index';
@@ -90,7 +91,8 @@ export class CaptionAgent {
   private outputDir: string;
 
   constructor(outputDir: string = 'workspace/scs001/caption-outputs') {
-    this.outputDir = outputDir;
+    // Sprint 1337: Resolve to absolute path so ffmpeg subtitles filter works regardless of cwd
+    this.outputDir = resolve(outputDir);
     if (!existsSync(this.outputDir)) {
       mkdirSync(this.outputDir, { recursive: true });
     }

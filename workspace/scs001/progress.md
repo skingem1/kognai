@@ -7429,8 +7429,21 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no
 - Timestamp: 2026-03-25T22:15:00Z
 
-## Sprint 1336 — TBD
-- Status: PENDING
+## Sprint 1337 — BUGFIX: CaptionAgent outputDir resolved to absolute path
+- Status: PASS
+- Commit: (next)
+- Files: agents/scs001-caption/index.ts
+- Fix: Constructor now calls resolve(outputDir) so srtPath and captionedPath are always absolute. Prevents ffmpeg subtitles filter failure when process cwd differs from kognai root (error: "No option name near workspace/scs001/...srt"). The existing try/catch copy fallback still protects production.
+- Swarm used: no
+- Timestamp: 2026-03-25T23:45:00Z
+
+## Sprint 1336 — BUGFIX: batch-produce skip duplicate ledger fallback write
+- Status: PASS
+- Commit: 6a2aeca5
+- Files: scripts/scs001/batch-produce.ts
+- Fix: writeLedgerFallback() now reads LEDGER_PATH first and skips write if result.runId already present (primary pipeline-registry write succeeded). Eliminates duplicate entries (e.g. demo-mn6i8r28 appearing twice). Also adds file_exists field to fallback entries.
+- Swarm used: no
+- Timestamp: 2026-03-25T23:30:00Z
 
 ## Sprint 1335 — BUGFIX: produce-vlog macOS say fallback in generateTTSBackbone()
 - Status: PASS
