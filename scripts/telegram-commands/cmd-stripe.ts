@@ -1402,3 +1402,80 @@ export function cmdAchiriStats(): string {
 
   return lines.join('\n');
 }
+
+/**
+ * Sprint 1202: /achiri-launch — April 25 alpha launch day runbook
+ *
+ * 3-step ordered runbook with go/no-go per step:
+ *   Step 1: Pre-flight (bot token + Hetzner + whitelist + E2E test)
+ *   Step 2: Deploy (init-hetzner.sh or confirm LIVE)
+ *   Step 3: Announce (waitlist notification)
+ */
+export function cmdAchiriLaunch(): string {
+  const daysLeft = Math.max(0, Math.ceil((new Date('2026-04-25T00:00:00Z').getTime() - Date.now()) / 86_400_000));
+
+  // Step 1: Pre-flight checks
+  const envContent = (() => { try { return fs.readFileSync(path.join(ROOT, '.env'), 'utf-8'); } catch { return ''; } })();
+  const hasAchiriToken = envContent.includes('ACHIRI_TELEGRAM_BOT_TOKEN=') && !envContent.match(/ACHIRI_TELEGRAM_BOT_TOKEN=\s*(\r?\n|$)/m);
+
+  const hetznerLive = (() => {
+    try {
+      execSync('curl -sf --max-time 3 http://65.108.90.178:3420/stats/health > /dev/null 2>&1', { timeout: 5000 });
+      return true;
+    } catch { return false; }
+  })();
+
+  const wlPath = path.join(ROOT, 'workspace', 'achiri', 'alpha-whitelist.jsonl');
+  const wlCount = fs.existsSync(wlPath) ? fs.readFileSync(wlPath, 'utf-8').split('\n').filter(l => l.trim()).length : 0;
+
+  let e2ePass = false;
+  try {
+    const e2ePath = path.join(ROOT, 'reports', 'achiri-e2e-latest.json');
+    if (fs.existsSync(e2ePath)) {
+      const r = JSON.parse(fs.readFileSync(e2ePath, 'utf-8'));
+      e2ePass = r.passed === true || (r.pass_count > 0 && r.fail_count === 0);
+    }
+  } catch {}
+
+  const preflightPass = hasAchiriToken && hetznerLive && wlCount > 0;
+
+  // Step 2: Deploy readiness
+  const initScriptExists = fs.existsSync(path.join(ROOT, 'scripts', 'achiri', 'init-hetzner.sh'));
+  const startScriptExists = fs.existsSync(path.join(ROOT, 'scripts', 'achiri', 'start-bot.sh'));
+
+  // Step 3: Announce
+  const waitPath = path.join(ROOT, 'workspace', 'achiri', 'waitlist.jsonl');
+  const waitCount = fs.existsSync(waitPath) ? fs.readFileSync(waitPath, 'utf-8').split('\n').filter(l => l.trim()).length : 0;
+  const broadcastExists = fs.existsSync(path.join(ROOT, 'scripts', 'achiri', 'notify-waitlist.sh')) ||
+    fs.existsSync(path.join(ROOT, 'scripts', 'achiri', 'broadcast-waitlist.ts'));
+
+  const urgency = daysLeft <= 3 ? '🔴' : daysLeft <= 7 ? '🟠' : daysLeft <= 14 ? '🟡' : '🟢';
+  const lines: string[] = [
+    `🤖 *Achiri Alpha — Launch Day Runbook*`,
+    `${urgency} *${daysLeft}d* to April 25, 2026`,
+    '',
+    `*── Step 1: Pre-flight ──*`,
+    `${hasAchiriToken ? '✅' : '❌'} Achiri bot token${hasAchiriToken ? ': SET' : ': MISSING — fill .env'}`,
+    `${hetznerLive ? '✅' : '❌'} Hetzner API${hetznerLive ? ': LIVE :3420' : ': DOWN — run init-hetzner.sh'}`,
+    `${wlCount > 0 ? '✅' : '❌'} Whitelist: ${wlCount} user${wlCount !== 1 ? 's' : ''}`,
+    `${e2ePass ? '✅' : '⚠️'} E2E test: ${e2ePass ? 'pass' : 'run /achiri for status'}`,
+    `${preflightPass ? '✅ Pre-flight: GO' : '⚠️ Pre-flight: NOT READY'}`,
+    '',
+    `*── Step 2: Deploy ──*`,
+    `${initScriptExists ? '✅' : '❌'} Init script: \`scripts/achiri/init-hetzner.sh\``,
+    `${startScriptExists ? '✅' : '❌'} Start script: \`scripts/achiri/start-bot.sh\``,
+    hetznerLive ? `✅ Server already LIVE — skip this step` : `_Run:_ \`bash scripts/achiri/init-hetzner.sh\``,
+    '',
+    `*── Step 3: Announce ──*`,
+    `${waitCount > 0 ? `✅ Waitlist: ${waitCount} user${waitCount !== 1 ? 's' : ''} to notify` : '⚠️ Waitlist empty — invite users first'}`,
+    `${broadcastExists ? '✅' : '⚠️'} Broadcast script${broadcastExists ? ': ready' : ': not found — use /broadcast'}`,
+    `_Invite users:_ /invite-achiri <chat_id>`,
+    `_Manage waitlist:_ /waitlist`,
+    '',
+    preflightPass
+      ? `✅ *All pre-flight checks PASS — ready to launch April 25!*`
+      : `⚠️ *Fix ❌ items before launch day.* See /deploy-status for details.`,
+  ];
+
+  return lines.join('\n');
+}

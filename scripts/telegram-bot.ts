@@ -21,7 +21,7 @@ import {
 
 // Sprint 455: Import extracted command modules (Part 1: A-M)
 import { cmdPm2, cmdHealth, cmdTier, cmdSprint, cmdReport, cmdCrons, cmdTikTokAuth, cmdQuickStart, cmdEnvCheck, cmdStripeStatus, cmdReadiness, cmdGitStats, cmdBoot, cmdShutdown, cmdReload, cmdSwarmStats, cmdErrors, cmdTokenCheck, cmdLogs, cmdChangelog, cmdPreflight, cmdSmoke, cmdTestSuite, cmdApproveFinetune, cmdBrainxStatus, cmdSwarmHealth, cmdBrowserTest, cmdGodman, cmdGodmanThread, cmdGodmanTag, cmdGodmanPublish, cmdGodmanPreflight, cmdGodmanStatusPage, cmdGodmanLaunch, cmdPm2Errors } from './telegram-commands/cmd-system'; // Sprint 1201: added cmdGodmanLaunch
-import { cmdDemos, cmdAchiriPing } from './telegram-commands/cmd-spielberg'; // Sprint 1194-1196
+import { cmdDemos, cmdAchiriPing, cmdAchiriDeploy } from './telegram-commands/cmd-spielberg'; // Sprint 1194-1196, 1202
 import { cmdGate, cmdGoLive, cmdAudit, cmdStreak, cmdPace, cmdCalendar, cmdGateAudit, cmdGateRefresh, cmdGateSim } from './telegram-commands/cmd-gate';
 import { runGodmanSmoke } from './godman-smoke';
 import { cmdRecord, cmdQueue, cmdReview, cmdCaption, cmdPosted, cmdOnboard, cmdPipeline, cmdToday, cmdAnalytics, cmdDiversity, cmdThumbnail, cmdCompetitor, cmdStats, cmdQuality, cmdRadar, cmdBacktest, cmdFormatStats, cmdManifesto, cmdValErrors, cmdCaptionNext } from './telegram-commands/cmd-content';
@@ -32,7 +32,7 @@ import { cmdHelp } from './telegram-commands/cmd-help';
 // Sprint 496: Import extracted command modules (Part 2: N-Z + interactive)
 import { cmdSession, cmdDone, cmdEndSession, cmdMenu } from './telegram-commands/cmd-session';
 import { cmdDeliver, cmdPublish, cmdPostNow, cmdPickup, cmdTodayCaptions, cmdBroadcast, cmdRefresh, cmdProduce, cmdProduceTopic, cmdInstagram, cmdInventory, cmdBatchDeliver, cmdStockpile, cmdBroadcastPause, cmdBroadcastResume, cmdPostBrowser, cmdPostAuto, cmdQuickstart, cmdV2Produce, cmdDeliverNext } from './telegram-commands/cmd-delivery';
-import { cmdCheckout, cmdSubscribers, cmdPortal, cmdFunnel, cmdAchiri, cmdAlpha, cmdTestStripe, cmdUsage, cmdAchiriData, cmdWaitlist, cmdStripe, cmdDeployStatus, cmdInviteAchiri, cmdAchiriStats } from './telegram-commands/cmd-stripe'; // Sprint 1180: added cmdAchiriStats
+import { cmdCheckout, cmdSubscribers, cmdPortal, cmdFunnel, cmdAchiri, cmdAlpha, cmdTestStripe, cmdUsage, cmdAchiriData, cmdWaitlist, cmdStripe, cmdDeployStatus, cmdInviteAchiri, cmdAchiriStats, cmdAchiriLaunch } from './telegram-commands/cmd-stripe'; // Sprint 1180: added cmdAchiriStats; Sprint 1202: added cmdAchiriLaunch
 import { cmdStart, cmdTrial, cmdPlans } from './telegram-commands/cmd-onboarding';
 import { cmdLoraEval } from './telegram-commands/cmd-lora-eval';
 import { cmdWarmupStart, cmdWarmupComplete, cmdWarmupStatus } from './telegram-commands/cmd-warmup';
@@ -248,6 +248,8 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/changelog': response = cmdChangelog(parseInt(cmdArgs) || 10); break;
     case '/achiridata': response = cmdAchiriData();          break;
     case '/achiri-stats': case '/achiristats': response = cmdAchiriStats(); break; // Sprint 1180
+    case '/achiri-launch':  response = cmdAchiriLaunch();    break; // Sprint 1202
+    case '/achirilaunche':  response = cmdAchiriLaunch();    break; // Sprint 1202 alias
     case '/alpha':      response = cmdAlpha();               break;
     case '/waitlist':   response = cmdWaitlist(cmdArgs);      break;
     case '/brainxstatus': response = cmdBrainxStatus();       break;

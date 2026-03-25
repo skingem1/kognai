@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-1202",
+  "title": "ACHIRI — /achiri-launch: April 25 alpha launch day runbook command",
+  "description": "New /achiri-launch command showing ordered 3-step Achiri alpha launch runbook: Step 1 pre-flight (ACHIRI_TELEGRAM_BOT_TOKEN SET, Hetzner API LIVE, whitelist populated, E2E test pass), Step 2 deploy (bash scripts/achiri/init-hetzner.sh — or show LIVE if already up), Step 3 announce (waitlist notification cmd). Go/no-go per step. Mirrors /godman-launch from Sprint 1201.",
+  "source": "queue-empty-sonnet",
+  "tasks": [
+    {
+      "id": "1202-01",
+      "title": "Add cmdAchiriLaunch() to cmd-stripe.ts — 3-step Achiri launch day runbook",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-commands/cmd-stripe.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-1202"
+    },
+    {
+      "id": "1202-02",
+      "title": "Register /achiri-launch in telegram-bot.ts + add to cmd-help.ts",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "scripts/telegram-bot.ts",
+      "agent": "coder",
+      "status": "done",
+      "priority": "high",
+      "sprint_id": "sprint-1202"
+    }
+  ]
+}
