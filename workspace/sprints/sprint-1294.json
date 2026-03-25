@@ -1,0 +1,23 @@
+{
+  "sprint": 1294,
+  "title": "OPS /sprint-log: show last 10 sprint commits with titles from git log",
+  "block": "OPS",
+  "status": "done",
+  "tasks": [
+    {
+      "id": "add-cmdSprintLog",
+      "description": "Add cmdSprintLog() to cmd-system.ts",
+      "status": "done"
+    },
+    {
+      "id": "register-route",
+      "description": "Register /sprint-log in telegram-bot.ts switch blocks",
+      "status": "done"
+    },
+    {
+      "id": "validate",
+      "description": "Validate output via ts-node",
+      "status": "done"
+    }
+  ]
+}

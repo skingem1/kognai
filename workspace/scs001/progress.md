@@ -7055,3 +7055,10 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - SDK line also gets inline badge
 - Swarm used: no (surgical edit, direct write)
 - Timestamp: 2026-03-25T13:55:00Z
+
+## Sprint 1294 — 2026-03-25
+- **OPS — /sprint-log command**
+- Added `cmdSprintLog()` to cmd-system.ts: parses `git log --oneline -80`, filters sprint commits, shows `hash #num BLOCK title` per line
+- Registered `/sprint-log` + `/sprintlog` aliases in both switch blocks in telegram-bot.ts
+- Validated output: shows last 10 sprints with hash prefix, sprint number, block tag, truncated title
+- Status: DONE ✅
