@@ -7231,3 +7231,15 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Commit: b17f3b71
 - Status: DONE ✅
 - NOTE: CTO swarm added 3 new queue items (Sprint 1312 clip-detection timeout, 1313 live mode, 1314 batch Telegram). _scs001_status changed to ACTIVE.
+
+## Sprint 1312b — 2026-03-25
+- **SCS-001 — Fix Stage 3 clip-detection timeout: cap input + increase timeout**
+- Files modified: agents/scs001-clip-detection/index.ts, agents/scs001-orchestrator/index.ts
+- clip-detection: added MAX_DISCOVERIES=20 constant, capped discoveries.slice(0,20) before main loop
+- orchestrator: stage 3 timeout 600_000 → 900_000 (15min safety buffer)
+- TypeScript: 0 errors in modified files (pre-existing errors in other files, unrelated)
+- Queue item: sprint-1312 marked done
+- Swarm bypassed: yes (surgical 3-line edits, swarm timing out today)
+- Commit: f15488b7
+- Status: DONE ✅
+- Next queue items: Sprint 1313 (live mode switch), Sprint 1314 (batch Telegram delivery)
