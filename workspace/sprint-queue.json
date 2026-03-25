@@ -3840,10 +3840,11 @@
       "sprint": 1301,
       "title": "AMD23 — Cerberus PM2 smoke: add cerberus-gateway to /smoke test suite",
       "block": "AMD23",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "Cerberus gateway is in PM2 ecosystem but not in smoke tests. Add a check to reports/smoke-test-latest.json that verifies cerberus-gateway is online and /health returns 200.",
-      "added_at": "2026-03-25T13:52:59.872Z"
+      "added_at": "2026-03-25T13:52:59.872Z",
+      "_note": "Shipped 2026-03-25 — commit c56c33a0. cerberus-gateway PM2 + /health check added to cmdSmoke. smoke-test-latest.json updated with cerberus_online/cerberus_health fields."
     },
     {
       "sprint": 1302,

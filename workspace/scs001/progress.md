@@ -7110,3 +7110,16 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm bypassed: yes (TypeScript surgical edits)
 - Commit: fc660628
 - Status: DONE ✅
+
+## Sprint 1301 — 2026-03-25
+- **AMD23 — cerberus-gateway PM2 + health check added to /smoke**
+- Added cerberus-gateway check to `cmdSmoke()` in `scripts/telegram-commands/cmd-system.ts`
+  - Checks PM2 for `cerberus-gateway` process by name
+  - If online: HTTP GET `localhost:CERBERUS_PORT/cerberus/health` with 3s timeout
+  - Shows ✅ if online + /health 200, ⚠️ if online but non-200, ⚪/🔴 if offline
+  - Pushes timing to checkTimings array (cerberus-health)
+  - Persists `cerberus_online` + `cerberus_health` fields to `reports/smoke-test-latest.json`
+- Validated: ts-node --transpile-only confirms cmdSmoke still exports correctly
+- Swarm bypassed: yes (TypeScript surgical edit in large file)
+- Commit: c56c33a0
+- Status: DONE ✅
