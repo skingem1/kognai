@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1357",
+  "title": "BUGFIX — P1 live orchestrator: write QC-passed videos to publish-ledger when PublishingAgent returns 0",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "scs001-live orchestrator produces captioned MP4 files but PublishingAgent returns 0 in live mode (posts via Telegram auto-deliver, not direct publish). Result: QC-passed videos never enter publish-ledger.jsonl, so posting-auto-deliver.ts never picks them up for Telegram delivery. Videos are stranded in workspace/scs001/run-<ts>/caption/ dirs. Fix: add Stage 9.5 ledger fallback — when live mode + published=0 + passedGates>0, write each QC-passed captioned video to publish-ledger.jsonl so auto-deliver can queue it.",
+  "tasks": [
+    {
+      "id": "1357-live-publish-ledger-fallback",
+      "description": "In agents/scs001-orchestrator/index.ts: add Stage 9.5 after PublishingAgent — in live mode with published=0 and passedGates>0, append each QC-passed captioned video to workspace/scs001/publish-ledger.jsonl for auto-deliver pickup.",
+      "file": "agents/scs001-orchestrator/index.ts",
+      "status": "done",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}

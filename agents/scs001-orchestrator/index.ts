@@ -27,7 +27,7 @@ import { generateCaptions as generateAnimatedCaptions } from '../../scripts/scs0
 // Sprint QUALITY-01: TTS voiceover + audio mix
 import { generateVoiceover, type VoiceoverResult } from '../../scripts/scs001/tts-voiceover';
 import { mixAudio, type MixResult } from '../../scripts/scs001/audio-mixer';
-import { existsSync, readFileSync, writeFileSync, readdirSync } from 'fs';
+import { existsSync, readFileSync, writeFileSync, readdirSync, appendFileSync, mkdirSync } from 'fs';
 import { resolve, join, basename } from 'path';
 
 export interface StageResult {
@@ -482,6 +482,50 @@ export class SCS001Orchestrator {
         this.ledger.recordPublished(ledgerEntries);
         return published.length;
       }));
+    }
+
+    // --- Stage 9.5: Publish-Ledger Fallback (Sprint 1357) ---
+    // When live mode PublishingAgent returns 0 (TIKTOK_ACCESS_TOKEN not set, API down),
+    // write QC-passed captioned videos to publish-ledger.jsonl so auto-deliver can send
+    // them to Telegram for manual posting. Without this, orchestrator MP4 files are stranded.
+    if (this.mode === 'live' && published.length === 0 && passedGates.length > 0) {
+      console.log('[Orchestrator] PublishingAgent returned 0 — writing QC-passed videos to publish-ledger for auto-deliver');
+      const LEDGER_PATH = resolve('workspace/scs001/publish-ledger.jsonl');
+      const captionMap2 = new Map(captionedVideos.map(cv => [cv.video_id, cv]));
+      const editedByVideoId3 = new Map(editedVideos.map(ev => [ev.video_id, ev]));
+      const bundleByInsightId3 = new Map(bundles.map(b => [b.insight_id, b]));
+      let ledgerFallbackCount = 0;
+      for (const gate of passedGates) {
+        const cv = captionMap2.get(gate.video_id);
+        const edited = editedByVideoId3.get(gate.video_id);
+        const bundle = edited ? bundleByInsightId3.get(edited.insight_id) : undefined;
+        const filePath = (cv as any)?.file_path ?? cv?.video_id;
+        if (!filePath || !existsSync(filePath)) continue;
+        try {
+          mkdirSync(resolve('workspace/scs001'), { recursive: true });
+          const entry = {
+            video_id: gate.video_id,
+            video_path: filePath,
+            file_path: filePath,
+            file_exists: true,
+            published_at: new Date().toISOString(),
+            title: bundle?.hook?.text?.slice(0, 80) ?? 'AI Content',
+            topic: bundle?.why_does_this_matter?.slice(0, 60) ?? '',
+            duration_s: 0,
+            cost_usd: 0,
+            source: 'scs001-live-orchestrator',
+            pipeline: 'educational',
+          };
+          appendFileSync(LEDGER_PATH, JSON.stringify(entry) + '\n');
+          ledgerFallbackCount++;
+          console.log(`[Orchestrator] Ledger fallback: ${gate.video_id} → ${filePath}`);
+        } catch (e: any) {
+          console.warn(`[Orchestrator] Ledger fallback failed for ${gate.video_id}: ${e.message}`);
+        }
+      }
+      if (ledgerFallbackCount > 0) {
+        console.log(`[Orchestrator] ${ledgerFallbackCount} video(s) added to publish-ledger for auto-deliver`);
+      }
     }
 
     // --- Stage 10: Analytics Agent ---

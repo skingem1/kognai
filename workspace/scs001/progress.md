@@ -7600,3 +7600,11 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Added: live-mode else branch calls getMockInsightBriefs() → ~5 deterministic briefs
 - Combined with Sprint 1355: live P1 pipeline now produces ~5 educational videos/run
 - Commit: ab01fec0
+
+**Sprint 1357** — BUGFIX: P1 live orchestrator write QC-passed videos to publish-ledger
+- agents/scs001-orchestrator/index.ts
+- QC-passed captioned MP4s were stranded — PublishingAgent returns 0 in live mode (Telegram auto-deliver handles posting)
+- posting-auto-deliver.ts reads publish-ledger.jsonl — but scs001-live never wrote to it
+- Added Stage 9.5: if live mode + published=0 + passedGates>0, append each QC-passed video to publish-ledger.jsonl
+- Completes the P1 live pipeline revival (1355+1356+1357): produce → QC → auto-deliver queue
+- Commit: pending
