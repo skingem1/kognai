@@ -3739,7 +3739,7 @@
       "sprint": 1289,
       "title": "AMD23 \u2014 Cerberus gateway integration test: end-to-end agent eval via HTTP",
       "block": "AMD23",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "Cerberus gateway runs on port 3419. Write a test script that sends a full evaluate request and confirms the signed GatewayDecision is returned with valid HMAC.",
       "added_at": "2026-03-25T13:23:29.168Z"

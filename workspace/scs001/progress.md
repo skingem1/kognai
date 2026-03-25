@@ -7013,3 +7013,11 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - /health now shows ✅ Last backup: Xm ago
 - Swarm used: no (new file + surgical edit, direct write)
 - Timestamp: 2026-03-25T13:40:00Z
+
+## Sprint 1289 — AMD23-CERBERUS-INTEGRATION-TEST
+- Status: PASS (10/10 tests)
+- Commit: 485188e9
+- Files created: scripts/amd23/cerberus-integration-test.ts, workspace/sprints/sprint-1289.json
+- Test: CERBERUS_DRY_RUN=1 — 10/10 pass (health, evaluate, agentId, HMAC, tamper detection, 400)
+- Swarm used: no (new file, direct write)
+- Timestamp: 2026-03-25T13:42:00Z
