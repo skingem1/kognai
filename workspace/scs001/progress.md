@@ -6668,3 +6668,12 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (multi-file feature, wrote directly)
 - Issues: TIKTOK_ACCESS_TOKEN still not set — human action required for live posting
 - Timestamp: 2026-03-25T09:05:00Z
+
+## Sprint 1224 — BUGFIX — validate-all-bot-commands.ts: fix async cmdRevenue TS error
+- Status: PASS
+- Commit: aaa2c2a2
+- Files modified: scripts/scs001/validate-all-bot-commands.ts
+- Test: 81/81 bot commands pass. tsc --noEmit clean (no Kognai-specific errors).
+- Swarm used: no (single-line fix)
+- Issues: none
+- Timestamp: 2026-03-25T09:10:00Z
