@@ -1433,7 +1433,8 @@ export function cmdAchiriLaunch(): string {
     const e2ePath = path.join(ROOT, 'reports', 'achiri-e2e-latest.json');
     if (fs.existsSync(e2ePath)) {
       const r = JSON.parse(fs.readFileSync(e2ePath, 'utf-8'));
-      e2ePass = r.passed === true || (r.pass_count > 0 && r.fail_count === 0);
+      // Sprint 1206: r.passed may be a number (count of passing tests), not a boolean
+      e2ePass = (r.passed === true) || (typeof r.passed === 'number' && r.passed > 0) || (r.pass_count > 0 && r.fail_count === 0);
     }
   } catch {}
 
