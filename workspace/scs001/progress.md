@@ -6793,3 +6793,19 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (direct write — multi-file, cross-domain)
 - Issues: LEMONSQUEEZY_* env vars not yet set (human action needed)
 - Timestamp: 2026-03-25T12:10:00Z
+
+## Sprint 1239 — LEMON-SCAFFOLD-02
+- Status: PASS
+- Commit: 46fcaa2b
+- Files created: scripts/agents/bloomberg/onboarding-email.ts, scripts/telegram-commands/cmd-subscribe.ts, scripts/telegram-commands/cmd-revenue.ts
+- Swarm used: no (direct write)
+- Issues: Resend API key not yet configured
+- Timestamp: 2026-03-25T12:15:00Z
+
+## Sprint 1240 — CFO-PROMPT-WIRE
+- Status: PASS
+- Commit: d1b6fb1b
+- Files created: kognai-agents/cfo/prompt.md
+- Swarm used: no (single file, direct write)
+- Issues: none
+- Timestamp: 2026-03-25T12:20:00Z
