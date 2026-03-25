@@ -111,9 +111,11 @@ function main() {
   }
 
   // Gate calculation (Apr 7 = 2026-04-07)
+  // Sprint 1338: Use manual-posts.jsonl as ground truth for TikTok posts.
+  // auto-delivered.jsonl tracks Telegram sends, NOT TikTok posts — do not count those as gate posts.
   const gateDate = new Date('2026-04-07');
   const daysRemaining = Math.max(0, Math.ceil((gateDate.getTime() - Date.now()) / 86400000));
-  const postsDelivered = delivered.length + telegramSent.length;
+  const postsDelivered = manualEntries.length;
 
   // Sprint 586: Urgency level
   const postsLeft = Math.max(0, 30 - postsDelivered);

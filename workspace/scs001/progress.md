@@ -7429,6 +7429,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no
 - Timestamp: 2026-03-25T22:15:00Z
 
+## Sprint 1338 — BUGFIX: stats-report gate calculation uses manual-posts not auto-delivered
+- Status: PASS
+- Commit: (next)
+- Files: scripts/scs001/generate-stats-report.ts
+- Fix: postsDelivered was counted as auto-delivered.jsonl (562 Telegram sends) + telegram-sent.jsonl (15) = 577, making gate show "PASSED" when actual TikTok posts (manual-posts.jsonl) is only 12-16. Now uses manualEntries.length for the gate calculation. Fixes urgency = PASSED when gate is actually 16/30.
+- Swarm used: no
+- Timestamp: 2026-03-26T00:00:00Z
+
 ## Sprint 1337 — BUGFIX: CaptionAgent outputDir resolved to absolute path
 - Status: PASS
 - Commit: (next)

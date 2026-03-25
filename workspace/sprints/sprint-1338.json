@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1338",
+  "title": "BUGFIX — generate-stats-report: gate calculation uses manual-posts not auto-delivered",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "In scripts/scs001/generate-stats-report.ts line 116, postsDelivered = delivered.length + telegramSent.length counts auto-delivered.jsonl (Telegram delivery events, 562 entries) + telegram-sent.jsonl (15 entries) = 577 total. This makes postsLeft = max(0, 30-577) = 0 and urgency = 'PASSED' (Gate criteria met — PROCEED). But the actual gate requires TikTok posts recorded in manual-posts.jsonl, which only has 12 entries (16 per posting-health.json). The gate-tracker correctly reads manual-posts.jsonl. Fix: replace the gate postsDelivered calculation to use manualEntries.length (actual TikTok posts).",
+  "tasks": [
+    {
+      "id": "1338-gate-fix",
+      "description": "In scripts/scs001/generate-stats-report.ts: change line 116 from `const postsDelivered = delivered.length + telegramSent.length` to `const postsDelivered = manualEntries.length`. Add comment explaining the distinction between Telegram delivery events (auto-delivered.jsonl) and actual TikTok posts (manual-posts.jsonl).",
+      "file": "scripts/scs001/generate-stats-report.ts",
+      "status": "done",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}
