@@ -589,6 +589,26 @@ module.exports = {
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
     {
+      // Sprint 1307: Gate check cron — runs 08:00 daily, reads phase1-5-gate.json, pushes status to Telegram
+      // Operator morning briefing: posts/views/days-remaining/recommendation
+      // To start: pm2 start ecosystem.config.js --only scs001-gate-check
+      name: "scs001-gate-check",
+      script: "scripts/scs001/gate-check-cron.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: "/Users/tarekmnif/kognai",
+      autorestart: false,
+      watch: false,
+      cron_restart: "0 8 * * *",
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
+      },
+      error_file: "/Users/tarekmnif/kognai/logs/gate-check-error.log",
+      out_file: "/Users/tarekmnif/kognai/logs/gate-check-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
+    {
       // Sprint 169: Gate tracker auto-update — runs 07:08 UTC daily (after gate-regen at 06:55)
       // Rewrites docs/gate-tracker.md with accurate Phase 0→1 PASS + Phase 1.5 progress.
       // Keeps gate-tracker current so Claude Code sessions start with correct context.

@@ -1,0 +1,32 @@
+{
+  "tasks": [
+    {
+      "id": "gate-check-cron-ts",
+      "description": "Create scripts/scs001/gate-check-cron.ts. Reads workspace/gates/phase1-5-gate.json. If file does not exist, logs 'gate file not found, skipping' and exits 0. Formats a Telegram message: '📊 Phase 1.5 Gate — <date>\\nPosts: X/30 | Views: X | Days left: X\\nStatus: <status>\\nRecommendation: <recommendation>'. Sends via TELEGRAM_BOT_TOKEN + OWNER_TELEGRAM_CHAT_ID using https.request. Use only stdlib (fs, path, https). No external npm deps. Under 80 lines.",
+      "file": "scripts/scs001/gate-check-cron.ts",
+      "status": "rejected",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Create scripts/scs001/gate-check-cron.ts. Reads workspace/gates/phase1-5-gate.json. If file does not exist, logs 'gate file not found, skipping' and exits 0. Formats a Telegram message: '📊 Phase 1.5 Gate — <date>\\nPosts: X/30 | Views: X | Days left: X\\nStatus: <status>\\nRecommendation: <recommendation>'. Sends via TELEGRAM_BOT_TOKEN + OWNER_TELEGRAM_CHAT_ID using https.request. Use only stdlib (fs, path, https). No external npm deps. Under 80 lines.",
+      "priority": "medium",
+      "sprint_id": "sprint-1307"
+    },
+    {
+      "id": "pm2-gate-cron",
+      "description": "Edit ecosystem.config.js. Add a new PM2 app entry named 'scs001-gate-check' using the cron_restart pattern (like other cron entries in the file). Set: name: 'scs001-gate-check', script: 'npx', args: 'ts-node --transpile-only scripts/scs001/gate-check-cron.ts', cwd: project root, cron_restart: '0 8 * * *', autorestart: false, watch: false. Match the style of other cron entries in ecosystem.config.js.",
+      "file": "ecosystem.config.js",
+      "status": "rejected",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Edit ecosystem.config.js. Add a new PM2 app entry named 'scs001-gate-check' using the cron_restart pattern (like other cron entries in the file). Set: name: 'scs001-gate-check', script: 'npx', args: 'ts-node --transpile-only scripts/scs001/gate-check-cron.ts', cwd: project root, cron_restart: '0 8 * * *', autorestart: false, watch: false. Match the style of other cron entries in ecosystem.config.js.",
+      "priority": "medium",
+      "sprint_id": "sprint-1307"
+    }
+  ]
+}
