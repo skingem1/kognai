@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1360",
+  "title": "BUGFIX — Gitignore auto-delivered.jsonl to prevent git-clobber re-delivery",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "auto-delivered.jsonl is tracked by git. When git restore/checkout runs (e.g. during sprint commits or manual operations), it overwrites the file to its last committed state, losing delivery records for all videos delivered since that commit. Result: auto-deliver re-sends those videos on the next run. Confirmed: 3 v2 videos delivered on 2026-03-24 morning were re-delivered on 2026-03-25 noon. Fix: gitignore the file + untrack it. It is append-only runtime state — git has no business touching it.",
+  "tasks": [
+    {
+      "id": "1360-gitignore-auto-delivered",
+      "description": "Add workspace/scs001/auto-delivered.jsonl to .gitignore and run git rm --cached to untrack it. This prevents git restore/checkout from clobbering delivery history.",
+      "file": ".gitignore",
+      "status": "done",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}

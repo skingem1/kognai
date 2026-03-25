@@ -145,3 +145,6 @@ workspace/godman-protocols/**/package-lock.json
 
 # SCS-001 runtime state files
 workspace/scs001/.creator-rotation.json
+# Sprint 1360: auto-delivered.jsonl must NOT be tracked — git restore/checkout clobbers it,
+# causing re-delivery of already-sent videos. It's append-only runtime state, not code.
+workspace/scs001/auto-delivered.jsonl
