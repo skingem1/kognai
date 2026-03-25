@@ -3115,7 +3115,7 @@
       "sprint": 1230,
       "title": "AMD25-IMPL-01 \u2014 Trading knowledge store + Curator agent scaffold",
       "block": "AMD-25",
-      "status": "pending",
+      "status": "done",
       "priority": "medium",
       "rationale": "AMD-25 Domain Knowledge Architecture design is done (Sprint 959, workspace/amd25/). Phase 1 implementation: (1) Create workspace/knowledge/trading/ directory with schema.json (asset_class, timeframe, strategy_type, source, confidence). (2) Create scripts/agents/curator-trading.ts (~150 lines): reads trending topics from topic-radar, filters for finance/trading signals, stores to knowledge/trading/ as timestamped JSON records. (3) Wire curator-trading as PM2 process (daily cron). Max 200 lines. Uses T1 qwen3:4b."
     },

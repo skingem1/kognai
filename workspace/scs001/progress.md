@@ -6710,3 +6710,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (multi-file devops task)
 - Issues: AAR/crystallise modules not found (non-blocking). CTO gate module missing (non-blocking, queue-prescribed = auto-approve)
 - Timestamp: 2026-03-25T11:00:00Z
+
+## Sprint 1230 — AMD25-IMPL-01
+- Status: PASS
+- Commit: 2782fb49
+- Files created: workspace/knowledge/trading/schema.json, scripts/agents/curator-trading.ts, workspace/knowledge/trading/records/batch-*.json
+- Files modified: ecosystem.config.js
+- Test: curator-trading.ts ran successfully — 10 finance signals ingested from 20 radar files
+- Pipeline: AMD-25 Phase 1 complete — trading knowledge store operational, curator-trading PM2 cron added
+- Swarm used: no (multi-file architecture task)
+- Issues: none
+- Timestamp: 2026-03-25T11:10:00Z
