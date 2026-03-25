@@ -17,10 +17,34 @@
  */
 
 import { join } from 'path';
-import { existsSync, readFileSync, writeFileSync, readdirSync } from 'fs';
+import { existsSync, readFileSync, writeFileSync, readdirSync, appendFileSync } from 'fs';
 import { execSync } from 'child_process';
 import { initRegistry, runPipeline, listPipelines } from './pipeline-registry';
 import type { PipelineName, PipelineInput, PipelineRunResult } from './pipeline-registry';
+
+// Sprint 1326: Fallback ledger write — ensures batch-produce videos are always registered
+// in publish-ledger.jsonl even if pipeline-registry's logToPublishLedger fails silently.
+const LEDGER_PATH = join(__dirname, '..', '..', 'workspace', 'scs001', 'publish-ledger.jsonl');
+function writeLedgerFallback(result: PipelineRunResult): void {
+  try {
+    const entry = {
+      video_id: String(result.runId || ''),
+      video_path: String(result.videoPath || ''),
+      file_path: String(result.videoPath || ''),
+      published_at: result.produced_at,
+      title: String(result.title || ''),
+      topic: String(result.title || ''),
+      duration_s: result.duration_s || 0,
+      cost_usd: result.cost_usd || 0,
+      source: 'batch-produce',
+      pipeline: result.pipeline,
+    };
+    appendFileSync(LEDGER_PATH, JSON.stringify(entry) + '\n');
+    console.log(`[batch-produce] Ledger fallback: ${result.runId}`);
+  } catch (e: any) {
+    console.error(`[batch-produce] Ledger fallback FAILED: ${e.message}`);
+  }
+}
 
 const ROOT = join(__dirname, '..', '..');
 
@@ -150,6 +174,8 @@ async function main(): Promise<void> {
 
       const result = await runPipeline(input);
       results.push(result);
+      // Sprint 1326: Fallback ledger write (in case pipeline-registry's write failed)
+      writeLedgerFallback(result);
 
       const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
       console.log(`  Completed in ${elapsed}s — ${result.title}`);

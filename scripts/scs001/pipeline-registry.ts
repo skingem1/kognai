@@ -116,24 +116,28 @@ function logMetrics(result: PipelineRunResult, elapsed_s: number): void {
 
 function logToPublishLedger(result: PipelineRunResult): void {
   try {
+    // Coerce to string to prevent JSON.stringify from omitting undefined values
     const entry = {
-      video_id: result.runId,
-      video_path: result.videoPath,
-      file_path: result.videoPath,
+      video_id: String(result.runId || ''),
+      video_path: String(result.videoPath || ''),
+      file_path: String(result.videoPath || ''),
       file_exists: true,
       published_at: result.produced_at,
-      title: result.title,
-      topic: result.title,
-      duration_s: result.duration_s,
-      cost_usd: result.cost_usd,
+      title: String(result.title || ''),
+      topic: String(result.title || ''),
+      duration_s: result.duration_s || 0,
+      cost_usd: result.cost_usd || 0,
       source: 'batch-pipeline',
       pipeline: result.pipeline,
-      viral_score: result.quality_score,
+      viral_score: result.quality_score || 0,
     };
     mkdirSync(join(ROOT, 'workspace', 'scs001'), { recursive: true });
     appendFileSync(LEDGER_PATH, JSON.stringify(entry) + '\n');
     console.log(`[pipeline-registry] Ledger entry added: ${result.runId}`);
-  } catch {}
+  } catch (e: any) {
+    // Sprint 1326: expose ledger write failures so they don't silently break auto-deliver
+    console.error(`[pipeline-registry] Ledger write FAILED for ${result.runId}: ${e.message ?? e}`);
+  }
 }
 
 // ── Auto-register pipelines on import ────────────────

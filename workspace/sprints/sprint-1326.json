@@ -1,0 +1,27 @@
+{
+  "sprint_id": "sprint-1326",
+  "title": "BUGFIX — batch-produce videos not written to publish-ledger (silent catch)",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "batch-produce (educational/entertainment/code-demo) runs succeed daily at 9am but the produced videos never appear in publish-ledger.jsonl, so auto-deliver cannot deliver them to the operator. Root cause: logToPublishLedger() in pipeline-registry.ts has 'catch {}' that silently swallows the write error. Fix: (1) log the error instead of swallowing it, and (2) ensure the video_path is a serializable string (not undefined). Also add fallback: batch-produce.ts writes to the ledger directly after a successful run.",
+  "tasks": [
+    {
+      "id": "1326-ledger-fix",
+      "description": "In scripts/scs001/pipeline-registry.ts, fix logToPublishLedger: change 'catch {}' to 'catch (e: any) { console.error('[pipeline-registry] Ledger write FAILED:', e.message ?? e); }'. Also ensure result.videoPath is converted to string before stringifying (to avoid undefined): replace 'video_path: result.videoPath' with 'video_path: String(result.videoPath || '')'. This exposes the silent error so we can see what's failing, and prevents JSON.stringify from omitting undefined values.",
+      "file": "scripts/scs001/pipeline-registry.ts",
+      "status": "pending",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    },
+    {
+      "id": "1326-batch-fallback",
+      "description": "In scripts/scs001/batch-produce.ts, after 'results.push(result)' (line ~152), add a direct ledger append as fallback: append JSON entry to workspace/scs001/publish-ledger.jsonl with video_id=result.runId, video_path=result.videoPath, pipeline=result.pipeline, title=result.title, produced_at=result.produced_at, source='batch-produce'. This ensures videos are registered even if pipeline-registry's logToPublishLedger fails.",
+      "file": "scripts/scs001/batch-produce.ts",
+      "status": "pending",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}
