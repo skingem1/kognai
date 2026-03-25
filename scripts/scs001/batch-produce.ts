@@ -18,6 +18,7 @@
 
 import { join } from 'path';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
+import { execSync } from 'child_process';
 import { initRegistry, runPipeline, listPipelines } from './pipeline-registry';
 import type { PipelineName, PipelineInput, PipelineRunResult } from './pipeline-registry';
 
@@ -152,6 +153,19 @@ async function main(): Promise<void> {
   const reportPath = join(ROOT, 'reports', 'batch-produce-latest.json');
   writeFileSync(reportPath, JSON.stringify(report, null, 2));
   console.log(`\nReport: ${reportPath}`);
+
+  // Sprint 1317: Auto-deliver freshly produced videos to Telegram immediately
+  if (!dryRun && results.length > 0) {
+    console.log(`\n[batch-produce] Auto-delivering ${results.length} video(s) to Telegram...`);
+    try {
+      execSync(
+        `npx ts-node --transpile-only scripts/scs001/posting-auto-deliver.ts --batch ${results.length}`,
+        { cwd: ROOT, stdio: 'inherit', timeout: 120000 }
+      );
+    } catch (e: any) {
+      console.warn(`[batch-produce] Auto-deliver failed (non-fatal): ${e.message?.slice(0, 100)}`);
+    }
+  }
 }
 
 main().catch(err => {

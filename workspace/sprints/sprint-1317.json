@@ -1,0 +1,17 @@
+{
+  "sprint_id": "sprint-1317",
+  "title": "SCS-001 — Auto-deliver immediately after batch-produce (close the loop)",
+  "source": "self-directed",
+  "rationale": "batch-produce.ts produces videos and writes to publish-ledger (Sprint 1316) but never delivers them to Telegram. The operator waits up to 9 hours for the next auto-deliver cron (07:30/12:00/18:00). Fix: add execSync posting-auto-deliver.ts --batch N call at end of batch-produce main(), so videos reach Telegram within seconds of production.",
+  "tasks": [
+    {
+      "id": "batch-produce-auto-deliver",
+      "description": "In scripts/scs001/batch-produce.ts, after saving the report, add execSync call to run posting-auto-deliver.ts --batch N (where N = results.length). Wrap in try/catch so delivery failure doesn't fail the batch. Skip if no results or dryRun. Use 120000ms timeout.",
+      "file": "scripts/scs001/batch-produce.ts",
+      "status": "pending",
+      "priority": "high",
+      "agent": "coder",
+      "type": "feature"
+    }
+  ]
+}
