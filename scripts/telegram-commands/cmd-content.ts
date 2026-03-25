@@ -494,7 +494,7 @@ export function cmdPipeline(): string {
 }
 
 export function cmdToday(): string {
-  const posts = readLines(path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl'));
+  const posts = readRealPosts(); // Sprint 1220: exclude dry-runs from gate counting
   const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
   const recordedIds = new Set(posts.map((e: any) => e.video_id).filter(Boolean));
   const today = new Date().toISOString().slice(0, 10);

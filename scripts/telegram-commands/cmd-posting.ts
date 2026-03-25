@@ -7,7 +7,7 @@ import * as path from 'path';
 import * as https from 'https';
 import { execSync } from 'child_process';
 import {
-  ROOT, readJSON, readLines, getPm2List, fmtUptime, fmtMem, latestSprintFile,
+  ROOT, readJSON, readLines, readRealPosts, getPm2List, fmtUptime, fmtMem, latestSprintFile,
   findCaptionedMp4, getExperimentData, buildTikTokCaption,
   loadSpeakerMap, diversifyBySpeaker, loadHookMap, diversifyByHook,
   freshnessScore, loadArchived, saveArchived, ARCHIVE_PATH,
@@ -412,17 +412,11 @@ export function cmdDashboard(): string {
 }
 
 export function cmdDigest(): string {
-  // Gate status
+  // Gate status (Sprint 1220: exclude dry-runs)
   const manualPostsPath = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
-  let postCount = 0;
-  let totalViews = 0;
-  if (fs.existsSync(manualPostsPath)) {
-    const lines = fs.readFileSync(manualPostsPath, 'utf-8').split('\n').filter(l => l.trim());
-    postCount = lines.length;
-    for (const line of lines) {
-      try { totalViews += JSON.parse(line).views ?? 0; } catch {}
-    }
-  }
+  const realPosts = readRealPosts();
+  const postCount = realPosts.length;
+  const totalViews = realPosts.reduce((s: number, p: any) => s + (p.views ?? 0), 0);
   const gateDate = new Date('2026-04-07T00:00:00Z');
   const now = new Date();
   const daysLeft = Math.max(0, Math.ceil((gateDate.getTime() - now.getTime()) / 86_400_000));
@@ -473,16 +467,7 @@ export function cmdDigest(): string {
   const yesterday = new Date(now);
   yesterday.setDate(yesterday.getDate() - 1);
   const yesterdayStr = yesterday.toISOString().slice(0, 10);
-  let yesterdayPosts = 0;
-  if (fs.existsSync(manualPostsPath)) {
-    const allLines = fs.readFileSync(manualPostsPath, 'utf-8').split('\n').filter(l => l.trim());
-    for (const line of allLines) {
-      try {
-        const e = JSON.parse(line);
-        if ((e.posted_at ?? e.recorded_at ?? '').startsWith(yesterdayStr)) yesterdayPosts++;
-      } catch {}
-    }
-  }
+  const yesterdayPosts = realPosts.filter((e: any) => (e.posted_at ?? e.recorded_at ?? '').startsWith(yesterdayStr)).length;
 
   // Build message
   const out: string[] = [
