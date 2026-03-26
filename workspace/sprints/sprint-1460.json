@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1460",
+  "title": "BUGFIX — Achiri persistent typing indicator (refresh every 4s)",
+  "block": "ACHIRI",
+  "source": "queue-empty-autonomous",
+  "rationale": "Telegram 'typing' action expires in ~5s. Achiri uses qwen3:4b which takes 30-60s+ off-peak. After Sprint 1459 (60s timeout), users see typing for 5s then nothing for 55s — very poor UX. Fix: add setInterval that refreshes sendChatAction every 4s while waiting for handler.chat(), cleared in finally block. One surgical edit to agents/achiri/telegram-bot.ts around line 1011.",
+  "tasks": [
+    {
+      "id": "1460-typing-loop",
+      "description": "agents/achiri/telegram-bot.ts: wrap handler.chat() with a setInterval that calls sendChatAction('typing') every 4s. Clear in finally block. Ensures typing indicator stays visible for the full LLM response duration.",
+      "files": ["agents/achiri/telegram-bot.ts"],
+      "status": "done",
+      "priority": "critical",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}

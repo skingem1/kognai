@@ -1007,8 +1007,12 @@ async function handleMessage(chatId: string, text: string, firstName: string, us
 
   // Chat with Achiri
   try {
-    // Show "typing" indicator
+    // Show "typing" indicator — refresh every 4s (Telegram typing expires in ~5s)
+    // Sprint 1460: persistent typing loop for slow models (qwen3:4b ~30-60s off-peak)
     tgApi('sendChatAction', { chat_id: chatId, action: 'typing' }).catch(() => {});
+    const typingInterval = setInterval(() => {
+      tgApi('sendChatAction', { chat_id: chatId, action: 'typing' }).catch(() => {});
+    }, 4000);
 
     const handler = getHandler(chatId);
     // Inject language preference as prefix hint
@@ -1019,7 +1023,12 @@ async function handleMessage(chatId: string, text: string, firstName: string, us
       english: '[User prefers English. Respond primarily in English.] ',
     };
     const effectiveMsg = langPref && langHints[langPref] ? langHints[langPref] + text : text;
-    const reply = await handler.chat(effectiveMsg);
+    let reply: string;
+    try {
+      reply = await handler.chat(effectiveMsg);
+    } finally {
+      clearInterval(typingInterval);
+    }
 
     // Check for limit exceeded
     if (reply.startsWith(ACHIRI_LIMIT_EXCEEDED)) {
