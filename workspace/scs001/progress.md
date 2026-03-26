@@ -8104,3 +8104,17 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Key finding: SFT only for now. GRPO viable in Phase 3 (~Q3 2026) when mlx-lm gets GRPO trainer. Sherlock 4-dim score = natural GRPO reward function.
 - Swarm used: no (direct write — research sprint)
 - Timestamp: 2026-03-26T14:30:00.000Z
+
+## Sprint SPRINT-508-BROWSER-01 — Browser Use install + TikTok poster
+- Status: PASS
+- Commit: 2da3cd5c
+- Files created: scripts/scs001/tiktok-browser-poster.ts
+- Files modified: ecosystem.config.js (added kognai-tiktok-browser-poster cron)
+- Test: dry-run PASS — picked exp-a3b81b2a, warmup_verified=false (correct)
+- Pipeline: browser-use 0.12.5 installed, playwright chromium installed, venv at .venv-browser-use
+- Warmup gate: AUTO_POST_DRY_RUN=1 until 2026-03-29. Change to 0 after /warmup-complete.
+- Cron: kognai-tiktok-browser-poster at 12:00+19:00 = 2 posts/day
+- April 7 gate: 30 posts × 2/day → gate pass ~2026-04-12
+- Swarm used: no (direct write — multi-file, install task not suitable for swarm)
+- AAR: swarm bypassed — complex multi-step (pip install + ts file + ecosystem edit). Score: 88.
+- Timestamp: 2026-03-26T15:00:00.000Z
