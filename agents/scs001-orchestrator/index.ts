@@ -547,7 +547,7 @@ export class SCS001Orchestrator {
             file_path: filePath,
             file_exists: true,
             published_at: new Date().toISOString(),
-            title: bundle?.hook?.text?.slice(0, 80) ?? 'AI Content',
+            title: bundle?.segments.find(s => s.segment_name === 'hook')?.voiceover_text?.slice(0, 80) ?? 'AI Content',
             topic: bundle?.why_does_this_matter?.slice(0, 60) ?? '',
             duration_s: 0,
             cost_usd: 0,

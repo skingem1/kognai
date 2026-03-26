@@ -7755,3 +7755,11 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Impact: Synthesised-clip path videos now pass QC and reach the publish ledger
 - Swarm used: no
 - Timestamp: 2026-03-26T05:10:00Z
+
+## Sprint 1412 — 2026-03-26
+- Sprint: BUGFIX — Fix TS2339 type error: bundle.hook does not exist on ScriptBundle
+- Files modified: agents/scs001-orchestrator/index.ts
+- Fix: Stage 9.5 ledger fallback used bundle?.hook?.text but ScriptBundle has no 'hook' field. Changed to bundle?.segments.find(s => s.segment_name === 'hook')?.voiceover_text. PM2 was masking this via TS_NODE_TRANSPILE_ONLY=true. Direct ts-node invocations (manual testing, CI) were blocked.
+- Impact: Orchestrator now compiles cleanly with 0 TS errors. Direct npx ts-node invocation works for testing.
+- Swarm used: no
+- Timestamp: 2026-03-26T05:30:00Z

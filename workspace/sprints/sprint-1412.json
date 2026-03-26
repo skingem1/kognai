@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1412",
+  "title": "BUGFIX — Fix TS2339 type error: bundle.hook does not exist on ScriptBundle (blocks direct ts-node invocation)",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "agents/scs001-orchestrator/index.ts line 550 uses bundle?.hook?.text but ScriptBundle interface has no 'hook' field (it has hook_formula_used and the hook text is in segments). PM2 uses TS_NODE_TRANSPILE_ONLY=true so this is suppressed in production, but running 'npx ts-node agents/scs001-orchestrator/index.ts' directly fails with TS2339 — blocking local testing and all manual invocations. Fix: replace bundle?.hook?.text with bundle?.segments.find(s => s.segment_name === 'hook')?.voiceover_text.",
+  "tasks": [
+    {
+      "id": "1412-fix-bundle-hook",
+      "description": "Fix agents/scs001-orchestrator/index.ts line 550: change 'bundle?.hook?.text?.slice(0, 80) ?? \"AI Content\"' to 'bundle?.segments.find(s => s.segment_name === \"hook\")?.voiceover_text?.slice(0, 80) ?? \"AI Content\"'. This is Stage 9.5 ledger fallback entry title field.",
+      "files": ["agents/scs001-orchestrator/index.ts"],
+      "status": "done",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}

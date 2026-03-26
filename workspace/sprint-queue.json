@@ -4205,6 +4205,11 @@
       "sprint": 1411,
       "title": "BUGFIX \u2014 Allow production-mode videos through QC when clips synthesised",
       "status": "done"
+    },
+    {
+      "sprint": 1412,
+      "title": "BUGFIX \u2014 Fix TS2339 bundle.hook type error blocking direct ts-node invocation",
+      "status": "done"
     }
   ],
   "_last_sprint_completed": "sprint-1368",
