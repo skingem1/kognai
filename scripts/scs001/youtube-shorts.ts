@@ -59,6 +59,26 @@ const YOUTUBE_DRY_RUN = process.env.YOUTUBE_DRY_RUN === "1";
 
 const ROOT = join(__dirname, "..", "..");
 const UPLOAD_LOG = join(ROOT, "workspace", "scs001", "youtube-uploads.jsonl");
+// Sprint TICKET-010-YT-01: quota tracking — stays under 10K units/day (upload = 1,600 units each)
+const QUOTA_PATH = join(ROOT, "data", "youtube-quota.json");
+const UPLOAD_QUOTA_COST = 1600; // YouTube Data API v3 video insert = 1,600 units
+
+function updateQuotaTracker(units: number = UPLOAD_QUOTA_COST): void {
+  try {
+    const today = new Date().toISOString().slice(0, 10);
+    let quota: { date: string; count: number; units_used?: number } = { date: today, count: 0, units_used: 0 };
+    if (existsSync(QUOTA_PATH)) {
+      const raw = readFileSync(QUOTA_PATH, 'utf-8');
+      const parsed = JSON.parse(raw);
+      if (parsed.date === today) quota = parsed;
+      // else: reset for new day
+    }
+    quota.date = today;
+    quota.count = (quota.count || 0) + 1;
+    quota.units_used = (quota.units_used || 0) + units;
+    writeFileSync(QUOTA_PATH, JSON.stringify(quota, null, 2));
+  } catch { /* non-blocking */ }
+}
 
 const TOKEN_URL = "https://oauth2.googleapis.com/token";
 const UPLOAD_URL = "https://www.googleapis.com/upload/youtube/v3/videos?uploadType=resumable&part=snippet,status";
@@ -222,6 +242,10 @@ function logUpload(result: UploadResult, opts: UploadOptions): void {
     const line = JSON.stringify(entry) + "\n";
     writeFileSync(UPLOAD_LOG, line, { flag: "a" });
   } catch { /* ignore log errors */ }
+  // Sprint TICKET-010-YT-01: update quota tracker for real uploads only
+  if (result.success && !result.dry_run) {
+    updateQuotaTracker(UPLOAD_QUOTA_COST);
+  }
 }
 
 // ── Readiness Check ───────────────────────────────────

@@ -1,0 +1,24 @@
+{
+  "sprint_id": "sprint-TICKET-010-YT-01",
+  "title": "TICKET-010-YT-01 — YouTube quota tracking wired into youtube-shorts.ts",
+  "block": "TICKET-010",
+  "source": "queue-prescribed",
+  "status": "partial — YOUTUBE_REFRESH_TOKEN requires manual OAuth",
+  "rationale": "Added quota tracking to youtube-shorts.ts: updateQuotaTracker() called after each real upload, increments data/youtube-quota.json (count + units_used). Upload cost = 1,600 units. Quota resets daily. Gate partial: quota tracking wired and verified. YOUTUBE_REFRESH_TOKEN still missing — run: npx ts-node scripts/scs001/youtube-oauth.ts",
+  "tasks": [
+    {
+      "id": "TICKET-010-YT-01-01",
+      "description": "Wire updateQuotaTracker() into logUpload() in youtube-shorts.ts — updates data/youtube-quota.json",
+      "files": ["scripts/scs001/youtube-shorts.ts"],
+      "status": "done",
+      "type": "feature"
+    },
+    {
+      "id": "TICKET-010-YT-01-02",
+      "description": "MANUAL: run npx ts-node scripts/scs001/youtube-oauth.ts to get YOUTUBE_REFRESH_TOKEN",
+      "status": "blocked-manual",
+      "type": "manual-action",
+      "blocker": "requires browser OAuth flow — cannot be automated"
+    }
+  ]
+}
