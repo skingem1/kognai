@@ -4322,8 +4322,18 @@
       "rationale": "ElevenLabs quota 0/40000 — pipeline TTS failing in production. tts-voiceover.ts only falls back to local TTS when key missing, not when quota exhausted. Fix: detect quota_exceeded (401) and fall back to macOS say for remaining segments.",
       "added_at": "2026-03-26T06:58:43.917Z",
       "_note": "Shipped 2026-03-26 — commit 816fa24e. Swarm bypassed (direct write)."
+    },
+    {
+      "sprint": 1441,
+      "title": "PHASE2 — Achiri API rate limiter for alpha launch protection",
+      "block": "PHASE2",
+      "status": "done",
+      "priority": "high",
+      "rationale": "Achiri alpha Apr 25 needs public URL. API has no rate limiting — bots can exhaust Anthropic/Ollama capacity. Add per-IP 30 req/min sliding window to POST /chat and POST /voice.",
+      "added_at": "2026-03-26T08:45:00.000Z",
+      "_note": "Shipped 2026-03-26. 17/17 tests pass. Swarm bypassed (direct write)."
     }
   ],
-  "_last_sprint_completed": "sprint-1440",
+  "_last_sprint_completed": "sprint-1441",
   "_last_sprint_date": "2026-03-26"
 }

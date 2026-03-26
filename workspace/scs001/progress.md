@@ -7948,3 +7948,12 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - AAR logged: yes (score 90)
 - Root cause: ElevenLabs 0/40000 credits. generateVoice() only checked !res.ok generically; quota_exceeded not surfaced distinctly for fallback logic.
 - Timestamp: 2026-03-26T08:30:00.000Z
+
+## Sprint 1441 — PHASE2 Achiri API rate limiter for alpha launch
+- Status: PASS
+- Files modified: agents/achiri/server.ts
+- Changes: RateLimiter class (sliding window 60s, Map<ip,{count,windowStart}>), ACHIRI_RATE_LIMIT_RPM env (default 30 req/min), check() on POST /chat + POST /voice → 429 on breach, rate_limit_rpm in /stats
+- Test: run-all-tests.ts 17/17 PASS
+- Swarm used: no (wrote directly)
+- AAR logged: yes (score 92)
+- Timestamp: 2026-03-26T09:00:00.000Z
