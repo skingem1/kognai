@@ -52,12 +52,16 @@ async function main(): Promise<void> {
 
   assert(Array.isArray(published), 'Output is an array');
   assert(published.length >= 1, 'At least 1 PublishedVideo (' + published.length + ')');
-  assert(published.length === passedGates.length, 'Published count matches QC-passed count');
+  // Sprint 1432: Blotato multi-platform publishes to 9 platforms per QC-passed video.
+  // Old assertion was published.length === passedGates.length (1:1, written before Blotato).
+  // In mock/dry-run mode all 9 platforms succeed: published.length === passedGates.length × 9.
+  assert(published.length === passedGates.length * 9, 'Published count = QC-passed × 9 Blotato platforms (' + published.length + ' = ' + passedGates.length + ' × 9)');
   console.log('');
 
   // --- Stage 4: PublishedVideo contract validation ---
   console.log('Stage 4: PublishedVideo contract validation');
-  const validPlatforms = ['tiktok', 'instagram_reels', 'youtube_shorts'];
+  // Sprint 1432: All 9 Blotato platforms (was 3-platform TikTok-era list)
+  const validPlatforms = ['instagram', 'youtube', 'tiktok', 'facebook', 'linkedin', 'threads', 'x', 'pinterest', 'bluesky'];
   const validSlots = ['morning_0700_0900', 'midday_1200_1300', 'evening_1800_2000', 'late_night_2100_2300'];
   const passedVideoIds = new Set(passedGates.map(g => g.video_id));
 
@@ -98,7 +102,7 @@ async function main(): Promise<void> {
   assert(videos.length === bundles.length, 'Block C: Editing Agent processed all');
   assert(captioned.length === videos.length, 'Block C: Caption Agent processed all');
   assert(gates.length === captioned.length, 'QC Gate: reviewed all');
-  assert(published.length === passedGates.length, 'Block E: Published all QC-passed');
+  assert(published.length === passedGates.length * 9, 'Block E: 9 Blotato posts per QC-passed video');
 
   // Only QC-passed videos were published (no leakage)
   const publishedIds = new Set(published.map(p => p.video_id));

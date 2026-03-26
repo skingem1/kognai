@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-1432",
+  "title": "BUGFIX — Fix stale Block E publishing assertions (Blotato 9-platform era)",
+  "block": "SCS001",
+  "source": "validation-scan",
+  "rationale": "validate-publishing-output.ts had three stale assertions written before Blotato multi-platform was added. (1) published.length === passedGates.length — now fails because Blotato produces 9 PublishedVideo entries per QC-passed video (one per platform). Fixed to published.length === passedGates.length * 9. (2) validPlatforms was ['tiktok', 'instagram_reels', 'youtube_shorts'] — TikTok-era 3-platform list. Blotato uses 9 different names: 'instagram', 'youtube', 'tiktok', 'facebook', 'linkedin', 'threads', 'x', 'pinterest', 'bluesky'. Fixed to all 9. (3) Same published.length === passedGates.length on line 101 (Block E integrity check). Fixed identically.",
+  "tasks": [
+    {
+      "id": "1432-fix-publishing-assertions",
+      "description": "In scripts/scs001/validate-publishing-output.ts: (1) line 55: replace published.length === passedGates.length with published.length === passedGates.length * 9 with comment. (2) line 60: replace validPlatforms 3-platform list with all 9 Blotato platforms. (3) line 101: same fix as (1) for Block E integrity check.",
+      "files": [
+        "scripts/scs001/validate-publishing-output.ts"
+      ],
+      "status": "done",
+      "priority": "medium",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}
