@@ -176,10 +176,13 @@ export function cmdStale(args: string): string {
   const archivedIds = loadArchived();
   const now = Date.now();
 
+  // Sprint 1398: deduplicate by video_id — ledger has multiple entries per video
+  const seenVidsStale = new Set<string>();
   const withAge = (ledger as any[])
     .filter((e: any) => {
-      if (!e.video_id || recordedIds.has(e.video_id) || archivedIds.has(e.video_id)) return false;
+      if (!e.video_id || recordedIds.has(e.video_id) || archivedIds.has(e.video_id) || seenVidsStale.has(e.video_id)) return false;
       if (!e.published_at) return false;
+      seenVidsStale.add(e.video_id);
       return true;
     })
     .map((e: any) => ({
@@ -250,9 +253,13 @@ export function cmdPurge(args: string): string {
   }
 
   // Get active queue (not posted, not archived)
-  const active = (ledger as any[]).filter((e: any) =>
-    e.video_id && !recordedIds.has(e.video_id) && !archivedIds.has(e.video_id)
-  );
+  // Sprint 1398: deduplicate by video_id — ledger has multiple entries per video
+  const seenVidsPurge = new Set<string>();
+  const active = (ledger as any[]).filter((e: any) => {
+    if (!e.video_id || recordedIds.has(e.video_id) || archivedIds.has(e.video_id) || seenVidsPurge.has(e.video_id)) return false;
+    seenVidsPurge.add(e.video_id);
+    return true;
+  });
 
   if (active.length === 0) {
     return '📊 *Queue Quality* — No active videos in queue.';
@@ -441,9 +448,12 @@ export function cmdExport(args: string): string {
   }
 
   // Find unposted videos with captioned mp4
+  // Sprint 1398: deduplicate by video_id — ledger has multiple entries per video
+  const seenVidsExport = new Set<string>();
   const ready: Array<{ video_id: string; filePath: string; score: number }> = [];
   for (const e of ledger as any[]) {
-    if (!e.video_id || recordedIds.has(e.video_id)) continue;
+    if (!e.video_id || recordedIds.has(e.video_id) || seenVidsExport.has(e.video_id)) continue;
+    seenVidsExport.add(e.video_id);
     const mp4 = findCaptionedMp4(e.video_id);
     if (mp4) {
       ready.push({ video_id: e.video_id, filePath: mp4, score: viralScores.get(e.video_id) ?? -1 });
@@ -1283,8 +1293,14 @@ export function cmdDedup(): string {
   const recordedIds = new Set(recorded.map((e: any) => e.video_id).filter(Boolean));
   const archivedIds = loadArchived();
 
+  // Sprint 1398: deduplicate by video_id — ledger has multiple entries per video
+  const seenVidsDedup = new Set<string>();
   const unposted = (ledger as any[])
-    .filter((e: any) => !recordedIds.has(e.video_id) && e.video_id && !archivedIds.has(e.video_id));
+    .filter((e: any) => {
+      if (!e.video_id || recordedIds.has(e.video_id) || archivedIds.has(e.video_id) || seenVidsDedup.has(e.video_id)) return false;
+      seenVidsDedup.add(e.video_id);
+      return true;
+    });
 
   if (unposted.length === 0) {
     return '📋 *Dedup* — Queue is empty. Nothing to analyze.';
@@ -1428,8 +1444,14 @@ export function cmdTop30(): string {
   }
 
   // Get unposted videos with mp4 on disk
+  // Sprint 1398: deduplicate by video_id — ledger has multiple entries per video
+  const seenVidsTop30 = new Set<string>();
   const unposted = (ledger as any[])
-    .filter((e: any) => !recordedIds.has(e.video_id) && e.video_id && !archivedIds.has(e.video_id))
+    .filter((e: any) => {
+      if (!e.video_id || recordedIds.has(e.video_id) || archivedIds.has(e.video_id) || seenVidsTop30.has(e.video_id)) return false;
+      seenVidsTop30.add(e.video_id);
+      return true;
+    })
     .filter((e: any) => findCaptionedMp4(e.video_id) !== null)
     .sort((a: any, b: any) => (viralScores.get(b.video_id) ?? -1) - (viralScores.get(a.video_id) ?? -1));
 
@@ -1640,8 +1662,14 @@ export function cmdStatus(): string {
     } catch { /* skip */ }
   }
 
+  // Sprint 1398: deduplicate by video_id — ledger has multiple entries per video
+  const seenVidsStatus = new Set<string>();
   const unposted = (ledger as any[])
-    .filter((e: any) => !recordedIds.has(e.video_id) && e.video_id && !archivedIds.has(e.video_id));
+    .filter((e: any) => {
+      if (!e.video_id || recordedIds.has(e.video_id) || archivedIds.has(e.video_id) || seenVidsStatus.has(e.video_id)) return false;
+      seenVidsStatus.add(e.video_id);
+      return true;
+    });
   const readyCount = unposted.filter((e: any) => findCaptionedMp4(e.video_id) !== null).length;
 
   // Streak

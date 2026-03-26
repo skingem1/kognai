@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1398",
+  "title": "BUGFIX — cmd-management.ts ledger dedup sweep (6 functions missing seenVids)",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "Continuation of Sprint 1395/1396/1397 dedup sweep. cmd-management.ts has 6 functions reading publish-ledger.jsonl that build unposted/active/ready lists without deduplicating by video_id: cmdStale, cmdPurge, cmdExport, cmdDedup, cmdTop30, cmdStatus. All show inflated counts or could display duplicate video IDs to operator. Fix with seenVids Set pattern.",
+  "tasks": [
+    {
+      "id": "1398-management-dedup",
+      "description": "Add seenVids dedup to cmdStale, cmdPurge, cmdExport, cmdDedup, cmdTop30, cmdStatus in scripts/telegram-commands/cmd-management.ts",
+      "files": ["scripts/telegram-commands/cmd-management.ts"],
+      "status": "pending",
+      "priority": "medium",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}
