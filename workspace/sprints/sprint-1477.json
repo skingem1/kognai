@@ -1,0 +1,40 @@
+{
+  "tasks": [
+    {
+      "id": "1477-diagnose-publish-stall",
+      "description": "Create scripts/scs001/diagnose-publish-stall.ts: read workspace/scs001/post-queue.jsonl, count pending/posted/failed entries, list top 5 pending video titles, check if TIKTOK_ACCESS_TOKEN is set, print stall reason to console, then send a compact Telegram message to OWNER_TELEGRAM_CHAT_ID via TELEGRAM_BOT_TOKEN summarising the queue state. Use node fetch or https module (no external npm deps). Standalone script, runs via npx ts-node.",
+      "files": [
+        "scripts/scs001/diagnose-publish-stall.ts"
+      ],
+      "status": "rejected",
+      "priority": "P1",
+      "agent": "coder",
+      "type": "bugfix",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Create scripts/scs001/diagnose-publish-stall.ts: read workspace/scs001/post-queue.jsonl, count pending/posted/failed entries, list top 5 pending video titles, check if TIKTOK_ACCESS_TOKEN is set, print stall reason to console, then send a compact Telegram message to OWNER_TELEGRAM_CHAT_ID via TELEGRAM_BOT_TOKEN summarising the queue state. Use node fetch or https module (no external npm deps). Standalone script, runs via npx ts-node.",
+      "sprint_id": "sprint-1477"
+    },
+    {
+      "id": "1477-verify-bot-token",
+      "description": "Create scripts/achiri/verify-bot-token.ts: read ACHIRI_TELEGRAM_BOT_TOKEN and OWNER_TELEGRAM_CHAT_ID from process.env, call Telegram getMe API to validate the token, then send a test message '🤖 Achiri bot token verified at <ISO timestamp>'. Print success or error to console. Exit code 0 on success, 1 on failure. No external npm deps.",
+      "files": [
+        "scripts/achiri/verify-bot-token.ts"
+      ],
+      "status": "rejected",
+      "priority": "P1",
+      "agent": "coder",
+      "type": "bugfix",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Create scripts/achiri/verify-bot-token.ts: read ACHIRI_TELEGRAM_BOT_TOKEN and OWNER_TELEGRAM_CHAT_ID from process.env, call Telegram getMe API to validate the token, then send a test message '🤖 Achiri bot token verified at <ISO timestamp>'. Print success or error to console. Exit code 0 on success, 1 on failure. No external npm deps.",
+      "sprint_id": "sprint-1477"
+    }
+  ]
+}
