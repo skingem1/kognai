@@ -317,9 +317,10 @@ export class AchiriConversationHandler {
         // Ollama chat API — Sprint 298: 30s timeout to avoid 5-min waits when Ollama is down
         // Sprint 1455: use OLLAMA_HOST (consistent with all other agents) — OLLAMA_URL was never set
         // Sprint 1459: increased to 60s (qwen3:0.6b is fast but belt-and-suspenders for 4b fallback)
+        // Sprint 1469: increased to 130s — measured 115s off-peak with full 4409-char system prompt
         const ollamaUrl = (() => { const h = process.env.OLLAMA_HOST ?? 'http://localhost:11434'; return h.startsWith('http') ? h : `http://${h}`; })();
         const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 60_000);
+        const timeout = setTimeout(() => controller.abort(), 130_000);
         try {
           const res = await fetch(ollamaUrl + '/api/chat', {
             method: 'POST',

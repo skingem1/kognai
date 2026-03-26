@@ -1,0 +1,29 @@
+{
+  "sprint_id": "sprint-1469",
+  "title": "BUGFIX — Achiri Ollama timeout 60s → 130s (measured 115s off-peak)",
+  "block": "ACHIRI",
+  "source": "queue-empty-autonomous",
+  "rationale": "Background benchmark confirmed: qwen3:4b with 4409-char Achiri system prompt takes 115.87s even with no pipeline competition. Sprint 1459 set timeout at 60s — too low. Sprint 1464 added graceful Derja retry message on timeout, but users still get a failed response for a perfectly valid model invocation. Fix: increase Ollama timeout to 130s (15s headroom over measured worst-case). Typing loop (Sprint 1460) keeps UX active during the wait.",
+  "inputs": [
+    "agents/achiri/index.ts"
+  ],
+  "outputs": [
+    "agents/achiri/index.ts (timeout 60_000 → 130_000)"
+  ],
+  "success_criteria": [
+    "Ollama fetch timeout is 130s",
+    "qwen3:4b 115s off-peak response completes within timeout",
+    "Bot restarted and polling"
+  ],
+  "tasks": [
+    {
+      "id": "1469-timeout-increase",
+      "description": "agents/achiri/index.ts: change AbortController timeout from 60_000 to 130_000",
+      "files": ["agents/achiri/index.ts"],
+      "status": "done",
+      "priority": "critical",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}
