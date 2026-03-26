@@ -7997,3 +7997,12 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (wrote directly)
 - Notes: YOUTUBE_CLIENT_ID confirmed valid (42491656961-...). Run once to unblock Shorts.
 - Timestamp: 2026-03-26T10:45:00.000Z
+
+## Sprint 1448 — PHASE2 Batch YouTube Shorts uploader
+- Status: PASS
+- Commit: c17092dc
+- Files created: scripts/scs001/batch-youtube-upload.ts, workspace/sprints/sprint-1448.json
+- Test: dry-run PASS — 27 videos found, 5 would upload (--max=5 default)
+- Swarm used: no (wrote directly — fixed glob→stdlib, single file)
+- Notes: youtube-ledger.jsonl will be created on first --live run
+- Timestamp: 2026-03-26T11:00:00.000Z
