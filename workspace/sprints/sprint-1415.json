@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1415",
+  "title": "FEAT — Achiri /health endpoint: add capabilities block (API keys + Ollama model status)",
+  "block": "ACHIRI",
+  "source": "self-directed",
+  "rationale": "Achiri /health returns only {status:'ok', version, uptime_s, cached_handlers}. When deployed to Hetzner for the Apr 25 alpha, there's no fast way to see which features are available (Ollama model loaded? ANTHROPIC_API_KEY set for paid tiers? ELEVENLABS for voice? PAYMEE for payments?). The pre-deploy check script only runs locally. Add a 'capabilities' object to /health so deployed status is visible in one curl.",
+  "tasks": [
+    {
+      "id": "1415-health-capabilities",
+      "description": "In agents/achiri/server.ts GET /health handler: add a capabilities object to the response. Check: (1) ollama_ready: fetch http://localhost:11434/api/tags synchronously and see if VAULT_LOCAL_MODEL_POWER model is in the list; (2) anthropic_key: !!process.env.ANTHROPIC_API_KEY; (3) elevenlabs_key: !!process.env.ELEVENLABS_API_KEY; (4) paymee_key: !!process.env.PAYMEE_API_KEY. Also bump version from '301' to '1415'. Return degraded status in the health response only if a REQUIRED capability is missing (ollama_ready=false → status:'degraded', optional API keys don't affect status).",
+      "files": ["agents/achiri/server.ts"],
+      "status": "done",
+      "priority": "medium",
+      "agent": "coder",
+      "type": "feature"
+    }
+  ]
+}

@@ -7779,3 +7779,12 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Impact: Prevents stale overnight errors from generating repeated duplicate sprint queue entries
 - Swarm used: no
 - Timestamp: 2026-03-26T06:10:00Z
+
+## Sprint 1415 — 2026-03-26
+- Sprint: FEAT — Achiri /health endpoint capabilities block
+- Files modified: agents/achiri/server.ts
+- Change: GET /health now returns { status: 'ok'|'degraded', version: '1415', uptime_s, cached_handlers, capabilities: { ollama_ready, anthropic_key, elevenlabs_key, paymee_key } }. ollama_ready is determined by a 2s timeout GET /api/tags to Ollama, checking if VAULT_LOCAL_MODEL_POWER is in the models list. status='degraded' if ollama is unreachable (required), optional keys don't affect status.
+- Impact: One curl to the deployed Hetzner instance immediately shows which features are available. Aids debugging when alpha users report degraded responses.
+- Note: Live server (PM2 achiri-api) needs restart to pick up new code
+- Swarm used: no
+- Timestamp: 2026-03-26T06:30:00Z

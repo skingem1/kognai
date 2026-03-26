@@ -10,7 +10,7 @@
 //   GET    /export/:userId       → { userId, turns, profile, summary_facts, conversation }
 //   DELETE /memory/:userId      → { ok: true }
 //   GET    /stats               → { users, total_turns, uptime_s }
-//   GET    /health              → { status: 'ok', version: '301' }
+//   GET    /health              → { status: 'ok'|'degraded', version, uptime_s, cached_handlers, capabilities }
 //   POST   /auth-webhook        { Supabase auth event } → { ok, upgraded, tier } — SIWA → tnd_basic
 
 import * as http from 'http';
@@ -77,8 +77,33 @@ const server = http.createServer(async (req, res) => {
   const method = req.method ?? 'GET';
 
   // GET /health
+  // Sprint 1415: includes capabilities block for deployment visibility.
   if (method === 'GET' && url === '/health') {
-    return send(res, 200, { status: 'ok', version: '301', uptime_s: Math.floor((Date.now() - START_TIME) / 1000), cached_handlers: handlerCache.size });
+    // Check Ollama model availability (required capability)
+    let ollama_ready = false;
+    try {
+      const ollamaHost = process.env.OLLAMA_HOST ?? 'http://localhost:11434';
+      const targetModel = process.env.VAULT_LOCAL_MODEL_POWER ?? 'qwen3:4b';
+      const ollamaRes = await new Promise<{ models?: Array<{ name: string }> }>((resolve, reject) => {
+        const req = require('http').get(ollamaHost + '/api/tags', { timeout: 2000 }, (r: any) => {
+          let body = '';
+          r.on('data', (chunk: any) => { body += chunk; });
+          r.on('end', () => { try { resolve(JSON.parse(body)); } catch { resolve({}); } });
+        });
+        req.on('error', reject);
+        req.on('timeout', () => { req.destroy(); reject(new Error('timeout')); });
+      });
+      ollama_ready = (ollamaRes.models ?? []).some((m: { name: string }) => m.name.includes(targetModel.split(':')[0]));
+    } catch { /* Ollama unreachable */ }
+
+    const capabilities = {
+      ollama_ready,
+      anthropic_key: !!process.env.ANTHROPIC_API_KEY,
+      elevenlabs_key: !!process.env.ELEVENLABS_API_KEY,
+      paymee_key:     !!process.env.PAYMEE_API_KEY,
+    };
+    const status = ollama_ready ? 'ok' : 'degraded';
+    return send(res, 200, { status, version: '1415', uptime_s: Math.floor((Date.now() - START_TIME) / 1000), cached_handlers: handlerCache.size, capabilities });
   }
 
   // GET /upgrade?tier=tnd_basic&userId=xxx
