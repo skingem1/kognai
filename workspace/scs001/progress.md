@@ -8273,3 +8273,13 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm: not used (direct write — multi-file, straightforward)
 - Issues: none
 - Timestamp: 2026-03-26T12:30:00Z
+
+## Sprint 1474 — Achiri Ollama Timeout Fallback
+- Status: PASS
+- Commit: 66c8c06a
+- Files created: workspace/sprints/sprint-1474.json
+- Files modified: agents/achiri/index.ts (Anthropic fallback in catch block)
+- Validation: ACHIRI_DRY_RUN=1 OK, tsc compile clean (index.ts only)
+- Swarm: not used (direct edit — one-file surgical fix)
+- Issues: 'standard' was not valid TextComplexity — fixed to 'power'
+- Timestamp: 2026-03-26T13:00:00Z
