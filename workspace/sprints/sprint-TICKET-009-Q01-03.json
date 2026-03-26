@@ -1,0 +1,28 @@
+{
+  "sprint_id": "sprint-TICKET-009-Q01-03",
+  "title": "Q01-03 — QC hardening: has_real_clip + has_audio gates (qc-agent.ts)",
+  "block": "TICKET-009",
+  "source": "queue-prescribed",
+  "rationale": "QUALITY-01 Rev.3 Sprint 3/4. Add two ffprobe-based QC gate checks to scripts/scs001/qc-agent.ts. has_real_clip: file exists, size>100KB, video duration>1s, video stream present. has_audio: audio stream present (codec_type=audio), audio duration>0.5s. If either fails: QC FAIL, do NOT proceed to publishing, log to logs/qc-failures/YYYY-MM-DD.jsonl.",
+  "inputs": [],
+  "outputs": [
+    "scripts/scs001/qc-agent.ts (new — ffprobe-based has_real_clip + has_audio gates)"
+  ],
+  "success_criteria": [
+    "has_real_clip gate: file exists, >100KB, video stream, duration>1s",
+    "has_audio gate: audio stream present, duration>0.5s",
+    "failures logged to logs/qc-failures/YYYY-MM-DD.jsonl",
+    "empty/silent video inputs correctly rejected"
+  ],
+  "tasks": [
+    {
+      "id": "TICKET-009-Q01-03-01",
+      "description": "Create scripts/scs001/qc-agent.ts with ffprobe-based checkHasRealClip() and checkHasAudio(), QC failure logger",
+      "files": ["scripts/scs001/qc-agent.ts"],
+      "status": "done",
+      "priority": "P0-CRITICAL",
+      "agent": "coder",
+      "type": "feature"
+    }
+  ]
+}
