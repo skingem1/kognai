@@ -8193,3 +8193,13 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Pipeline: TICKET-008 PROMO-05/5 COMPLETE — all 5 sprints done
 - Swarm used: no
 - Timestamp: 2026-03-26T00:00:00Z
+
+## Sprint 1456 — BUGFIX (warmup days_active auto-compute)
+- Status: PASS
+- Files modified: scripts/scs001/verify-warmup-signal.ts (auto-compute days from warmup_started_at)
+- Test: verify-warmup-signal.ts — shows 1 days active (was 0), JSON updated
+- Root cause: days_active was never auto-updated — verifyWarmupSignal() read stored value only
+- Fix: compute daysElapsed from warmup_started_at, use max(elapsed, stored), persist if higher
+- Impact: TikTok posting unblocked ~2026-03-27 (when days >= 3)
+- Swarm used: no (single-file surgical edit)
+- Timestamp: 2026-03-26T00:00:00Z
