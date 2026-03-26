@@ -8314,3 +8314,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm: ran but produced no files (1 task). Wrote edit directly.
 - Effect: post-queue.jsonl now has 6 entries (all have valid files — today's vlog runs). Cleanup script now atomically cleans queue on every run.
 - Timestamp: 2026-03-26T14:00:00Z
+
+## Sprint 1479 — BUGFIX: posting-auto-deliver gate excludes source=auto-deliver
+- Status: PASS
+- Commit: c98c5ac3
+- Files modified: scripts/scs001/posting-auto-deliver.ts (gate count now filters source=auto-deliver), workspace/sprints/sprint-1479.json
+- Validation: TSC clean. Smoke test with fake token: gate no longer skips, attempts deliveries.
+- Swarm: bypassed (one-line fix, swarm was 0/2 last 2 sprints)
+- Root cause: 157/160 manual-posts.jsonl entries had source=auto-deliver (delivery receipts). Gate counted all 160 → 160>=30 → always skipped. Fix: manualPostCount = posts where source != auto-deliver = 3.
+- Effect: auto-deliver now active. Will send pending videos (6 in queue, caption/ run dirs) via Telegram.
+- Queue item: TICKET-016-DELIVER-01 marked done
+- Timestamp: 2026-03-26T14:30:00Z
