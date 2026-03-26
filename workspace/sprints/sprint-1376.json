@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1376",
+  "title": "BUGFIX — /gate shows URL-missing warning when views stuck at 0 (16 posts with no tiktok_url)",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "Gate shows views=0/500 with no action hint. All 16 posts have no tiktok_url — views can't be tracked. The operator checks /gate often but gets no hint about the root cause. Fix: in cmdGate(), when totalViews===0 AND posts exist without tiktok_url, append a prominent warning with the count of URL-missing posts and a /pending-urls shortcut. This surfaces the action item in the most frequently-checked command.",
+  "tasks": [
+    {
+      "id": "1376-gate-url-warning",
+      "description": "In scripts/telegram-commands/cmd-gate.ts cmdGate(): after the views line, add a sprint-1376 inline block: if totalViews === 0 and realPosts.length > 0, count posts without tiktok_url; if any, push a warning line: '⚠️ _[N] posts have no URL — run /pending-urls to add them (views can't track without URL)_'.",
+      "file": "scripts/telegram-commands/cmd-gate.ts",
+      "status": "done",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}

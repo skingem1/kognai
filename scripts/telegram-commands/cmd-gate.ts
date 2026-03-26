@@ -135,6 +135,13 @@ export function cmdGate(): string {
     })(),
     `${postIcon} Posts: ${postCount}/30 (need ${postsNeeded} more)`,
     `${viewIcon} Views: ${totalViews}/500 (need ${viewsNeeded} more)`,
+    // Sprint 1376: URL-missing warning when views stuck at 0
+    ...(() => {
+      if (totalViews > 0 || realPosts.length === 0) return [];
+      const missingUrl = realPosts.filter((p: any) => !p.tiktok_url).length;
+      if (missingUrl === 0) return [];
+      return [`⚠️ _${missingUrl} post(s) have no TikTok URL — views can't be tracked. Run /pending-urls to fix._`];
+    })(),
     // Sprint 1145 (wave 21): stale views warning (Sprint 1220: uses realPosts)
     ...(() => {
       if (realPosts.length === 0) return [];
