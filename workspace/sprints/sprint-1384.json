@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1384",
+  "title": "BUGFIX — fal.ai ETIMEDOUT circuit breaker (stop wasting 150s per scene when API down)",
+  "block": "BUGFIX",
+  "source": "queue-prescribed",
+  "rationale": "fal.ai ETIMEDOUT happening for all scenes in a run (19:26–19:38 log). Each failed scene wastes 150s (Node execSync timeout) × 2 models = 300s per scene. With 6 scenes = 30 min wasted. Pipeline already falls back to color blocks correctly. Fix: circuit breaker in fal-video-client.ts — after 2 consecutive ETIMEDOUT failures, throw immediately so callers reach color fallback in <1s instead of 150s.",
+  "tasks": [
+    {
+      "id": "1384-circuit-breaker",
+      "description": "Add circuit breaker to fal-video-client.ts: module-level counter, after 2 consecutive ETIMEDOUT errors skip fal.ai immediately with clear message. Reset counter on success. Check err.code === 'ETIMEDOUT' OR err.message includes 'ETIMEDOUT' OR err.message includes 'spawnSync'.",
+      "files": ["scripts/scs001/fal-video-client.ts"],
+      "status": "pending",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}

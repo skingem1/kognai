@@ -37,6 +37,21 @@ export interface BrollResult {
   duration_s: number;
 }
 
+// Circuit breaker: after FAL_CIRCUIT_THRESHOLD consecutive ETIMEDOUT failures,
+// skip fal.ai calls immediately rather than waiting 150s each time.
+// This prevents 30+ min of wasted time when fal.ai is unreachable for a whole run.
+let falConsecutiveTimeouts = 0;
+const FAL_CIRCUIT_THRESHOLD = 2;
+
+function isTimeoutError(err: any): boolean {
+  return (
+    err?.code === 'ETIMEDOUT' ||
+    err?.message?.includes('ETIMEDOUT') ||
+    err?.message?.includes('spawnSync') ||
+    err?.message?.includes('timed out')
+  );
+}
+
 const MODEL_SLUGS = {
   kling: 'fal-ai/kling-video/v2.5-turbo/pro/text-to-video',
   ltx: 'fal-ai/ltx-2.3/text-to-video',
@@ -62,6 +77,11 @@ export async function generateBrollVideo(
     : ['ltx', 'kling'];
 
   for (const model of models) {
+    // Circuit breaker: fal.ai unreachable this run — skip immediately
+    if (falConsecutiveTimeouts >= FAL_CIRCUIT_THRESHOLD) {
+      throw new Error(`fal.ai circuit open after ${falConsecutiveTimeouts} consecutive timeouts — skipping`);
+    }
+
     try {
       console.log(`  [fal.ai] Generating ${model} video: "${prompt.slice(0, 50)}..."`);
 
@@ -148,11 +168,17 @@ export async function generateBrollVideo(
       const cost = costPerSec * durationS;
 
       console.log(`  [fal.ai] ✅ ${model} video saved: ${outPath} (~$${cost.toFixed(2)})`);
+      falConsecutiveTimeouts = 0; // reset circuit on success
 
       return { path: outPath, source: model, cost_usd: cost, duration_s: durationS };
 
     } catch (err: any) {
-      console.warn(`  [fal.ai] ❌ ${model} failed: ${err.message?.slice(0, 200)}`);
+      if (isTimeoutError(err)) {
+        falConsecutiveTimeouts++;
+        console.warn(`  [fal.ai] ❌ ${model} ETIMEDOUT (consecutive: ${falConsecutiveTimeouts}/${FAL_CIRCUIT_THRESHOLD})`);
+      } else {
+        console.warn(`  [fal.ai] ❌ ${model} failed: ${err.message?.slice(0, 200)}`);
+      }
       if (model === models[models.length - 1]) {
         throw new Error(`All fal.ai models failed. Last error: ${err.message?.slice(0, 200)}`);
       }
