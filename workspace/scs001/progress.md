@@ -7702,3 +7702,13 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Reduces friction: operator copies TikTok URL + types /posted <url> instead of full /record <id> 0 <url>
 - Swarm used: no (direct surgical edit — 2 files)
 - Timestamp: 2026-03-26T02:30:00Z
+
+## Sprint 1406 — BUGFIX FFmpeg subtitle force_style comma escaping
+- Status: PASS
+- Commit: ea23b39c
+- Files modified: agents/scs001-caption/index.ts
+- Fix: Changed vfArg from single-quote-wrapped commas to \, backslash-escaped commas in force_style. FFmpeg 8.1 was not honouring single-quote escaping in filter option values, causing all production-mode caption burn-ins to fail with "No option name near" and fall back to uncaptioned video copy.
+- Root cause: commas in `force_style='FontSize=24,PrimaryColour=...'` parsed as filter option separators by FFmpeg 8.1 despite single-quote quoting
+- Swarm used: no (direct surgical edit — 1 line change)
+- AAR: module not found, skipped
+- Timestamp: 2026-03-26T04:00:00Z
