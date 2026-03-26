@@ -1,0 +1,24 @@
+{
+  "sprint_id": "sprint-TICKET-015-QS-01",
+  "title": "TICKET-015-QS-01 — pipeline-quality-scorer.ts — per-video auto-scoring",
+  "block": "TICKET-015",
+  "source": "queue-prescribed",
+  "status": "done",
+  "rationale": "Built scripts/scs001/pipeline-quality-scorer.ts: 5-dimension scoring (duration_ok 25pts, has_audio 20pts, has_subtitles 20pts, hook_timing 20pts, resolution_ok 15pts). Composite score < 60 → flagged. Logs to logs/pipeline-metrics/quality-scores.jsonl. Wired into batch-produce.ts after existing QC gates (line ~207): scoreVideo() called after runQCGates() passes, skip ledger write if score < 60. FFprobe-based scene detection for hook_timing check (first cut ≤3s). Compiles clean.",
+  "tasks": [
+    {
+      "id": "TICKET-015-QS-01-01",
+      "description": "Build pipeline-quality-scorer.ts with 5 scoring dimensions",
+      "files": ["scripts/scs001/pipeline-quality-scorer.ts"],
+      "status": "done",
+      "type": "feature"
+    },
+    {
+      "id": "TICKET-015-QS-01-02",
+      "description": "Wire scoreVideo() into batch-produce.ts after QC gates",
+      "files": ["scripts/scs001/batch-produce.ts"],
+      "status": "done",
+      "type": "feature"
+    }
+  ]
+}

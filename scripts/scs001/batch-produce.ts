@@ -25,6 +25,7 @@ import type { PipelineName, PipelineInput, PipelineRunResult } from './pipeline-
 import { DedupLedger } from '../../agents/scs001-orchestrator/dedup-ledger';
 // Sprint 1471: QC gates — reject videos failing has_real_clip or has_audio before ledger write
 import { runQCGates } from './qc-agent';
+import { scoreVideo } from './pipeline-quality-scorer';
 
 // Sprint 1326: Fallback ledger write — ensures batch-produce videos are always registered
 // in publish-ledger.jsonl even if pipeline-registry's logToPublishLedger fails silently.
@@ -207,6 +208,19 @@ async function main(): Promise<void> {
           errors.push({ run: runNum, error: `QC FAIL: ${reasons}` });
           continue;  // skip ledger write — do NOT publish
         }
+
+        // Sprint TICKET-015-QS-01: pipeline quality scorer — composite score < 60 → skip
+        const qs = scoreVideo(String(result.runId || `run-${runNum}`), videoPath);
+        if (!qs.pass) {
+          const dims = Object.entries(qs.dimensions)
+            .filter(([, d]) => !d.pass)
+            .map(([k, d]) => `${k}: ${d.reason}`)
+            .join(' | ');
+          console.warn(`  [QS] FLAGGED ${result.runId} score=${qs.composite_score}/100: ${dims}`);
+          errors.push({ run: runNum, error: `QUALITY SCORE ${qs.composite_score}/100 < 60: ${dims}` });
+          continue;  // skip ledger write
+        }
+        console.log(`  [QS] score=${qs.composite_score}/100 ✓`);
       }
 
       results.push(result);
