@@ -1,0 +1,27 @@
+{
+  "sprint_id": "sprint-1375",
+  "title": "BUGFIX — /updateviews accepts optional tiktok_url to retroactively set URL on existing posts (12 posts have no URL, 0 views tracked)",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "Sprint 1373 fixed future /record calls to warn on missing URL. But 12 existing posts in manual-posts.jsonl have tiktok_url: undefined. The gate needs 500 views by Apr 7; views can only be tracked (oEmbed) if URL is present. /record rejects re-runs for existing posts (line 52-53). /updateviews only updates view count, not URL. Fix: extend cmdUpdateViews() to accept an optional 3rd arg: /updateviews <id> <views> [tiktok_url]. If tiktok_url starts with 'https://', persist it to the entry. Update usage message and reply to show URL was saved. Operator can then run /updateviews for each of the 12 existing posts to add URLs.",
+  "tasks": [
+    {
+      "id": "1375-updateviews-url",
+      "description": "In scripts/telegram-commands/cmd-management.ts cmdUpdateViews(): (1) parse optional 3rd arg as tiktok_url if it starts with 'https://'; (2) if provided, set entries[idx].tiktok_url = tiktokUrl; (3) update usage message to show /updateviews <id> <views> [tiktok_url]; (4) include URL confirmation in success reply; (5) add note about /pending-urls for remaining posts without URLs.",
+      "file": "scripts/telegram-commands/cmd-management.ts",
+      "status": "pending",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    },
+    {
+      "id": "1375-pending-urls-cmd",
+      "description": "In scripts/telegram-commands/cmd-content.ts: add cmdPendingUrls() that reads manual-posts.jsonl and returns a list of all posts missing tiktok_url with formatted /updateviews commands to make it trivial to fix each one. Wire it up in the router as /pending-urls.",
+      "file": "scripts/telegram-commands/cmd-content.ts",
+      "status": "pending",
+      "priority": "high",
+      "agent": "coder",
+      "type": "feature"
+    }
+  ]
+}

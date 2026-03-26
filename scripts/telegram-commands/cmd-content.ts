@@ -374,6 +374,31 @@ export function cmdPosted(): string {
   );
 }
 
+// Sprint 1375: list posts missing tiktok_url so operator can retroactively add URLs via /updateviews
+export function cmdPendingUrls(): string {
+  const manualPostsPath = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
+  const entries = readRealPosts();
+  if (entries.length === 0) {
+    return `⚠️ No posts recorded yet. Use /record to log your first post.`;
+  }
+  const missing = entries.filter((e: any) => !e.tiktok_url);
+  if (missing.length === 0) {
+    return `✅ All ${entries.length} posts have TikTok URLs — views will auto-track.`;
+  }
+  const lines: string[] = [
+    `⚠️ *${missing.length}/${entries.length} posts missing TikTok URL* (views can't be tracked without URL)`,
+    ``,
+    `Run each command after retrieving the URL from TikTok:`,
+    ``,
+  ];
+  for (const e of missing) {
+    lines.push(`\`/updateviews ${e.video_id} ${e.views ?? 0} https://tiktok.com/@you/video/...\``);
+  }
+  lines.push(``);
+  lines.push(`_Gate needs 500 views by Apr 7 — URLs required to track._`);
+  return lines.join('\n');
+}
+
 export function cmdOnboard(): string {
   // Sprint 1227: use readRealPosts to exclude dry-run entries from post count
   const posts = readRealPosts();

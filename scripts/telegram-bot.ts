@@ -24,7 +24,7 @@ import { cmdPm2, cmdHealth, cmdTier, cmdSprint, cmdReport, cmdCrons, cmdTikTokAu
 import { cmdDemos, cmdAchiriPing, cmdAchiriDeploy } from './telegram-commands/cmd-spielberg'; // Sprint 1194-1196, 1202
 import { cmdGate, cmdGoLive, cmdAudit, cmdStreak, cmdPace, cmdCalendar, cmdGateAudit, cmdGateRefresh, cmdGateSim } from './telegram-commands/cmd-gate';
 import { runGodmanSmoke } from './godman-smoke';
-import { cmdRecord, cmdQueue, cmdReview, cmdCaption, cmdPosted, cmdOnboard, cmdPipeline, cmdToday, cmdAnalytics, cmdDiversity, cmdThumbnail, cmdCompetitor, cmdStats, cmdQuality, cmdRadar, cmdBacktest, cmdFormatStats, cmdManifesto, cmdValErrors, cmdCaptionNext } from './telegram-commands/cmd-content';
+import { cmdRecord, cmdQueue, cmdReview, cmdCaption, cmdPosted, cmdOnboard, cmdPipeline, cmdToday, cmdAnalytics, cmdDiversity, cmdThumbnail, cmdCompetitor, cmdStats, cmdQuality, cmdRadar, cmdBacktest, cmdFormatStats, cmdManifesto, cmdValErrors, cmdCaptionNext, cmdPendingUrls } from './telegram-commands/cmd-content';
 import { cmdMetrics, cmdPostPlan, cmdYouTube, cmdAutoPost, cmdLastRun, cmdViral, cmdDashboard, cmdDigest, cmdSchedule, cmdLeaderboard, cmdBestTime, cmdHookTest, cmdHookStats, cmdViralStats, cmdQueueOpt, cmdGateAnalytics, cmdRevenue, cmdBatch, cmdPostLog, cmdXPost, cmdCosts, cmdWeeklyDigest, cmdPostNext, cmdPostingHealth, cmdBulkCaptions, cmdQueueFill, cmdPreflight } from './telegram-commands/cmd-posting';
 import { cmdHistory, cmdArchive, cmdUnarchive, cmdStale, cmdPurge, cmdNote, cmdUpdateViews, cmdExport, cmdWeeklyReport, cmdSpeakerTest, cmdFilmKit, cmdContentPlan, cmdSuggest, cmdCompare, cmdScorecard, cmdProgress, cmdCleanup, cmdDedup, cmdTop30, cmdAbResults, cmdStatus, cmdReplenish, cmdEnrich, cmdBlockers, cmdBotTest, cmdSprintNext, cmdLog, cmdLaunches, cmdPostPulse, cmdNextActions, cmdSetUrl } from './telegram-commands/cmd-management';
 import { cmdHelp } from './telegram-commands/cmd-help';
@@ -155,8 +155,9 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/gate-audit': case '/gateaudit': response = cmdGateAudit(); break;
     case '/gate-refresh': case '/gaterefresh': response = cmdGateRefresh(); break;
     case '/gate-sim': case '/gatesim': response = cmdGateSim(); break;
-    case '/record':  response = cmdRecord(cmdArgs); break;
-    case '/posted':  response = cmdPosted(); break;
+    case '/record':        response = cmdRecord(cmdArgs); break;
+    case '/posted':        response = cmdPosted(); break;
+    case '/pending-urls':  response = cmdPendingUrls(); break;
     case '/tiktokauth': response = cmdTikTokAuth(); break;
     case '/crons':      response = cmdCrons(); break;
     case '/queue':   response = cmdQueue();  break;

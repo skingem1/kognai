@@ -363,9 +363,11 @@ export function cmdUpdateViews(args: string): string {
   const parts = args.trim().split(/\s+/);
   if (parts.length < 2) {
     return (
-      `*Usage:* \`/updateviews <video_id> <views>\`\n\n` +
-      `Example: \`/updateviews clip_abc123 250\`\n\n` +
-      `Updates the view count for an already-recorded video.\n` +
+      `*Usage:* \`/updateviews <video_id> <views> [tiktok_url]\`\n\n` +
+      `Example: \`/updateviews clip_abc123 250\`\n` +
+      `With URL: \`/updateviews clip_abc123 250 https://tiktok.com/@you/video/...\`\n\n` +
+      `Updates view count (and optionally sets TikTok URL) for an already-recorded video.\n` +
+      `Use /pending-urls to see posts missing TikTok URLs.\n` +
       `Use /posted to see your recorded videos.`
     );
   }
@@ -375,6 +377,9 @@ export function cmdUpdateViews(args: string): string {
   if (isNaN(views) || views < 0) {
     return `❌ Invalid views count: \`${parts[1]}\` — must be a non-negative number.`;
   }
+
+  // Sprint 1375: optional 3rd arg — tiktok_url for retroactive URL set on existing posts
+  const tiktokUrl = parts[2]?.startsWith('https://') ? parts[2] : undefined;
 
   const manualPostsPath = path.join(ROOT, 'workspace', 'scs001', 'manual-posts.jsonl');
   const entries = readLines(manualPostsPath);
@@ -388,6 +393,9 @@ export function cmdUpdateViews(args: string): string {
   const oldViews = entries[idx].views ?? 0;
   entries[idx].views = views;
   entries[idx].views_updated_at = new Date().toISOString();
+  if (tiktokUrl) {
+    entries[idx].tiktok_url = tiktokUrl;
+  }
 
   // Rewrite the file
   const content = entries.map((e: any) => JSON.stringify(e)).join('\n') + '\n';
@@ -396,13 +404,16 @@ export function cmdUpdateViews(args: string): string {
   // Gate stats
   const totalViews = entries.reduce((s: number, e: any) => s + (e.views ?? 0), 0);
   const viewsNeeded = Math.max(0, 500 - totalViews);
+  const missingUrls = entries.filter((e: any) => !e.tiktok_url).length;
 
   return (
     `✅ *Views updated!*\n\n` +
     `Video: \`${videoId}\`\n` +
-    `Views: ${oldViews} → *${views}*\n\n` +
-    `📊 Total views: ${totalViews}/500 (${viewsNeeded} more needed)\n` +
-    `📝 ${entries.length}/30 posts recorded`
+    `Views: ${oldViews} → *${views}*\n` +
+    (tiktokUrl ? `🔗 URL saved — views will auto-track\n` : '') +
+    `\n📊 Total views: ${totalViews}/500 (${viewsNeeded} more needed)\n` +
+    `📝 ${entries.length}/30 posts recorded` +
+    (missingUrls > 0 ? `\n⚠️ ${missingUrls} post(s) still missing URL — run /pending-urls` : '')
   );
 }
 
