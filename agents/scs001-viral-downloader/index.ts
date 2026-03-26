@@ -59,6 +59,9 @@ const COOLDOWN_HOURS = 12;
 const CLIPS_DIR = process.env.SCS_CLIPS_DIR ?? join(__dirname, "..", "..", "clips");
 const VIRAL_URLS_PATH = join(__dirname, "..", "..", "workspace", "scs001", "viral-tiktok-urls.json");
 const LAST_RUN_PATH = join(__dirname, "..", "..", "workspace", "scs001", "viral-last-run.json");
+// Sprint 1371: persist RapidAPI subscription-lapse state so we skip searches for 24h
+const LAPSE_PATH = join(__dirname, "..", "..", "data", "rapidapi-lapse.json");
+const LAPSE_TTL_H = 24;
 
 // ── Dedup Ledger ─────────────────────────────────────────
 
@@ -126,6 +129,11 @@ export class ViralTikTokDownloader {
 
     if (!isRapidAPIConfigured()) {
       console.log("[ViralDownloader] RAPIDAPI_KEY not set — skipping TikTok downloads");
+      return [];
+    }
+
+    // Sprint 1371: Skip searches if subscription is known-lapsed (24h cache)
+    if (isSubscriptionLapsed()) {
       return [];
     }
 
@@ -296,6 +304,7 @@ export class ViralTikTokDownloader {
         // Sprint 1323: abort search loop on 403 (subscription lapsed) to avoid 25-45s of wasted retries
         if (err.message?.includes('403') || err.message?.toLowerCase().includes('not subscribed')) {
           console.warn('[ViralDownloader] RapidAPI subscription lapsed — aborting remaining searches');
+          markSubscriptionLapsed(); // Sprint 1371: persist so next 24h of runs skip immediately
           break;
         }
       }
@@ -396,6 +405,37 @@ function formatCount(n: number): string {
 }
 
 // ── Cooldown Gate ──────────────────────────────────────
+
+// Sprint 1371: RapidAPI subscription-lapse cache helpers
+/** Returns true if RapidAPI subscription is known-lapsed (403 seen within LAPSE_TTL_H hours) */
+function isSubscriptionLapsed(): boolean {
+  if (!existsSync(LAPSE_PATH)) return false;
+  try {
+    const d = JSON.parse(readFileSync(LAPSE_PATH, "utf8"));
+    const elapsed = Date.now() - new Date(d.lapsed_at).getTime();
+    const ttlMs = LAPSE_TTL_H * 3600_000;
+    if (elapsed < ttlMs) {
+      const hoursLeft = ((ttlMs - elapsed) / 3600_000).toFixed(1);
+      console.log(`[ViralDownloader] RapidAPI subscription lapse cached — skipping searches (clears in ${hoursLeft}h)`);
+      return true;
+    }
+    return false;
+  } catch {
+    return false;
+  }
+}
+
+/** Persist the subscription-lapse state to disk so future runs skip immediately */
+function markSubscriptionLapsed(): void {
+  try {
+    mkdirSync(join(LAPSE_PATH, ".."), { recursive: true });
+    writeFileSync(LAPSE_PATH, JSON.stringify({
+      lapsed_at: new Date().toISOString(),
+      reason: "RapidAPI 403 — not subscribed",
+    }, null, 2));
+    console.warn("[ViralDownloader] Subscription lapse persisted — searches suppressed for 24h");
+  } catch { /* non-fatal */ }
+}
 
 /** Check if the cooldown period is still active (last run too recent) */
 function isCooldownActive(): boolean {

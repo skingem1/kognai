@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1371",
+  "title": "BUGFIX — ViralDownloader persists RapidAPI 403 lapse state (24h cooldown) to stop wasting 15s per pipeline run",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "Sprint 1323 added abort-on-first-403, but only within a single run. Every pipeline run still makes 1-3 RapidAPI search calls before hitting 403, wasting ~15s and producing log noise. Fix: persist a 'subscription-lapsed' flag to data/rapidapi-lapse.json with a timestamp. On ViralDownloader startup, check if lapse was seen in the last 24h — if so, skip all searches and return [] immediately. When RapidAPI starts returning 200 again, the flag expires naturally. This allows the rest of the pipeline (Sprint 1356 static-brief fallback) to proceed faster.",
+  "tasks": [
+    {
+      "id": "1371-viral-downloader-lapse-cache",
+      "description": "In agents/scs001-viral-downloader/index.ts: add isSubscriptionLapsed()/markSubscriptionLapsed() helpers that read/write data/rapidapi-lapse.json (timestamp + reason). In run(): after RAPIDAPI check, call isSubscriptionLapsed() — if true, log and return []. In discoverFromTopics() 403 catch block: call markSubscriptionLapsed(). Cache expires after LAPSE_TTL_H=24 hours.",
+      "file": "agents/scs001-viral-downloader/index.ts",
+      "status": "done",
+      "priority": "medium",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}
