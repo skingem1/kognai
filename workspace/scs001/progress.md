@@ -8118,3 +8118,12 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (direct write — multi-file, install task not suitable for swarm)
 - AAR: swarm bypassed — complex multi-step (pip install + ts file + ecosystem edit). Score: 88.
 - Timestamp: 2026-03-26T15:00:00.000Z
+
+## Sprint 1453 — BUGFIX TTS local fallback
+- Status: PASS (compile + logic verified; next pipeline run will validate live)
+- Commit: 42a020dd
+- Files modified: scripts/scs001/tts-voiceover.ts
+- Root cause: generateVoice() only caught HTTP 401 for quota, but ElevenLabs uses 422. Also added fallback on any ElevenLabs API error.
+- Fix: catch 422+429 as quota errors; generateVoiceover() catch falls back to local TTS on any ElevenLabs error.
+- Swarm used: no (single-file surgical edit)
+- Timestamp: 2026-03-26T15:30:00.000Z
