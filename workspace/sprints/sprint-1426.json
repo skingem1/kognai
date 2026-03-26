@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-1426",
+  "title": "BUGFIX — Fix init-hetzner.sh .env template: add missing required + optional env vars",
+  "block": "ACHIRI",
+  "source": "self-directed",
+  "rationale": "pre-deploy-check.ts (Sprint 1160) requires TELEGRAM_BOT_TOKEN, OWNER_TELEGRAM_CHAT_ID, OLLAMA_HOST, and VAULT_LOCAL_MODEL_POWER — but the .env template written by init-hetzner.sh was missing VAULT_LOCAL_MODEL_POWER. A fresh Hetzner init would pass PM2 start but fail pre-deploy-check with FAIL on env:VAULT_LOCAL_MODEL_POWER. Also missing: PAYMEE_API_KEY and MINIMAX_API_KEY (optional, used by Achiri paid tiers). Fixed: added all 4 vars with correct grouping and comments matching pre-deploy-check categories (required vs optional).",
+  "tasks": [
+    {
+      "id": "1426-fix-env-template",
+      "description": "Add VAULT_LOCAL_MODEL_POWER=qwen3:4b (required), PAYMEE_API_KEY= and MINIMAX_API_KEY= (optional) to .env template in init-hetzner.sh. Reorganised with section comments matching pre-deploy-check.ts categories. Validated: template now covers all 4 REQUIRED_ENV and all 4 OPTIONAL_ENV vars from pre-deploy-check.ts.",
+      "files": [
+        "scripts/achiri/init-hetzner.sh"
+      ],
+      "status": "done",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}

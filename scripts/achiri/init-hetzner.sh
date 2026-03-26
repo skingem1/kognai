@@ -84,15 +84,26 @@ run_remote "create .env" "
   if [ ! -f '${APP_PATH}/.env' ]; then
     cat > ${APP_PATH}/.env <<'ENVEOF'
 # Achiri Production .env — fill in all values before starting PM2
-ANTHROPIC_API_KEY=
-OLLAMA_HOST=http://localhost:11434
+
+# Required (pre-deploy-check will FAIL if missing)
 TELEGRAM_BOT_TOKEN=
 OWNER_TELEGRAM_CHAT_ID=
+OLLAMA_HOST=http://localhost:11434
+VAULT_LOCAL_MODEL_POWER=qwen3:4b
+
+# Achiri bot token (separate from main bot)
+ACHIRI_TELEGRAM_BOT_TOKEN=
+
+# Supabase
 SUPABASE_URL=
 SUPABASE_ANON_KEY=
 SUPABASE_SERVICE_KEY=
+
+# Optional — feature-degraded if missing
+ANTHROPIC_API_KEY=
 ELEVENLABS_API_KEY=
-ACHIRI_TELEGRAM_BOT_TOKEN=
+PAYMEE_API_KEY=
+MINIMAX_API_KEY=
 ENVEOF
     echo 'Created .env template — fill in values before pm2 start'
   else
