@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1424",
+  "title": "FEATURE — Auto-write/clear data/rapidapi-lapse.json from rapidapi-tiktok-client.ts",
+  "block": "SCS001",
+  "source": "self-directed",
+  "rationale": "data/rapidapi-lapse.json was pre-seeded manually by Sprint 1371 and has a 24h TTL for /status and /blockers warnings. This breaks the automation loop — if the subscription lapses again in the future, nobody writes the file and the operator gets no warning. Fix: add markRapidApiLapse() and clearRapidApiLapse() helpers to rapidapi-tiktok-client.ts. Call markRapidApiLapse() on 403 in searchByKeyword(), getTrendingFeed(), and getVideoInfo(). Call clearRapidApiLapse() on success so the file is removed when the subscription is renewed.",
+  "tasks": [
+    {
+      "id": "1424-rapidapi-auto-lapse",
+      "description": "Add markRapidApiLapse() (writes data/rapidapi-lapse.json) and clearRapidApiLapse() (deletes it) to scripts/scs001/rapidapi-tiktok-client.ts. Call mark on 403 in searchByKeyword, getTrendingFeed, getVideoInfo. Call clear on success path in all 3. This closes the automation loop for /status and /blockers lapse warnings.",
+      "files": ["scripts/scs001/rapidapi-tiktok-client.ts"],
+      "status": "done",
+      "priority": "medium",
+      "agent": "coder",
+      "type": "feature"
+    }
+  ]
+}

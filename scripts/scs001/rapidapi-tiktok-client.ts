@@ -9,9 +9,25 @@
  * Requires: RAPIDAPI_KEY env var
  */
 
-import { writeFileSync, mkdirSync, existsSync } from "fs";
+import { writeFileSync, mkdirSync, existsSync, unlinkSync } from "fs";
 import { join, basename } from "path";
 import { createHash } from "crypto";
+
+// Sprint 1424: Auto-write rapidapi-lapse.json on 403, clear on success
+const LAPSE_FILE = join(__dirname, '..', '..', 'data', 'rapidapi-lapse.json');
+
+function markRapidApiLapse(status: number, detail: string): void {
+  try {
+    mkdirSync(join(__dirname, '..', '..', 'data'), { recursive: true });
+    writeFileSync(LAPSE_FILE, JSON.stringify({ lapsed_at: new Date().toISOString(), reason: `RapidAPI ${status} — ${detail}` }), 'utf-8');
+  } catch { /* non-fatal */ }
+}
+
+function clearRapidApiLapse(): void {
+  try {
+    if (existsSync(LAPSE_FILE)) unlinkSync(LAPSE_FILE);
+  } catch { /* non-fatal */ }
+}
 
 // ── Types ──────────────────────────────────────────────
 
@@ -136,8 +152,13 @@ export async function getVideoInfo(tiktokUrl: string): Promise<TikTokVideoInfo> 
 
   if (!postRes.ok) {
     const errText = await postRes.text();
+    // Sprint 1424: auto-mark lapse on 403 (subscription expired)
+    if (postRes.status === 403) markRapidApiLapse(postRes.status, 'not subscribed');
     throw new Error(`RapidAPI TikTok ${postRes.status}: ${errText}`);
   }
+
+  // Sprint 1424: clear lapse file on successful call
+  clearRapidApiLapse();
 
   const data: any = await postRes.json();
 
@@ -280,8 +301,13 @@ export async function searchByKeyword(
 
   if (!res.ok) {
     const errText = await res.text();
+    // Sprint 1424: auto-mark lapse on 403 (subscription expired)
+    if (res.status === 403) markRapidApiLapse(res.status, 'not subscribed');
     throw new Error(`RapidAPI search ${res.status}: ${errText}`);
   }
+
+  // Sprint 1424: clear lapse file on successful call
+  clearRapidApiLapse();
 
   const data: any = await res.json();
   const videos = data?.data?.videos ?? data?.data ?? [];
@@ -318,8 +344,13 @@ export async function getTrendingFeed(
 
   if (!res.ok) {
     const errText = await res.text();
+    // Sprint 1424: auto-mark lapse on 403 (subscription expired)
+    if (res.status === 403) markRapidApiLapse(res.status, 'not subscribed');
     throw new Error(`RapidAPI trending ${res.status}: ${errText}`);
   }
+
+  // Sprint 1424: clear lapse file on successful call
+  clearRapidApiLapse();
 
   const data: any = await res.json();
   const videos = data?.data?.videos ?? data?.data ?? [];
