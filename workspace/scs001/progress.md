@@ -7877,3 +7877,24 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Impact: Fresh Hetzner init no longer fails pre-deploy-check on missing VAULT_LOCAL_MODEL_POWER
 - Swarm used: no
 - Timestamp: 2026-03-26T08:40:00Z
+
+## Sprint 1434 — 2026-03-26
+- Sprint: CTO REJECTED — Phase 1.5 Gate Projection (Panel 14 & post-now --list)
+- Status: CTO-REJECTED (not shipped, no code written)
+- CTO reason: "The sprint introduces new features not requested by the human founder and the queue still has pending items."
+- Note: Queue was actually empty (0 pending items). CTO confidence: 85%. Incorrect gate state assessment.
+- Swarm used: yes (ran gate check, rejected before execution)
+- Next: Sprint 1435 — Disk cleanup (watchdog alert: scs001/ 6.1GB > 5GB threshold)
+- Timestamp: 2026-03-26T06:50:00Z
+
+## Sprint 1435 — 2026-03-26
+- Sprint: INFRA — Add run-* dir cleanup to cleanup-old-runs.ts
+- Status: PASS
+- Commit: 1c547a2a
+- Files modified: scripts/scs001/cleanup-old-runs.ts
+- Added: legacyRuns field to CleanupResult interface + cleanup block in run() + formatCleanupResult()
+- Change: Scans workspace/scs001/ for run-\d+ dirs, keeps latest 2, deletes the rest
+- Impact: 6 legacy dirs deleted immediately, ~5.3GB freed (workspace went from ~9.7GB run-* to 3.6GB in 2 kept dirs)
+- Swarm used: yes (CTO approved) but produced no files — written directly as fallback
+- AAR: module not compiled (noted)
+- Timestamp: 2026-03-26T07:05:00Z

@@ -1,0 +1,38 @@
+{
+  "sprint_id": "sprint-1434",
+  "title": "Phase 1.5 Gate Projection — Panel 14 & post-now --list flag",
+  "block": "SCS001",
+  "source": "qwen-recommendation",
+  "rationale": "Queue is empty. Qwen recommendation: Phase 1.5 Gate Readiness. manual-posts.jsonl has 159 entries (gate target: 30 posts — already exceeded). Key missing deliverable is a Panel 14 gate projection in aggregate-pipeline-metrics.ts showing post count, gate status, days remaining to Apr 7, and required pace. Also add --list flag to post-now.ts so operators can see available unposted videos before selecting one to post.",
+  "tasks": [
+    {
+      "id": "1434-gate-projection",
+      "description": "Add Phase 1.5 gate projection (Panel 14) to scripts/scs001/aggregate-pipeline-metrics.ts. Read workspace/scs001/manual-posts.jsonl, count posted videos, show: current count vs gate target (30), gate status (PASS/IN_PROGRESS), days remaining to Apr 7 2026, posts per day needed to hit target, and posts per day actual rate. Add 'gate_phase15' key to the JSON output file.",
+      "files": [
+        "scripts/scs001/aggregate-pipeline-metrics.ts"
+      ],
+      "status": "pending",
+      "priority": "high",
+      "agent": "coder",
+      "type": "feature"
+    },
+    {
+      "id": "1434-post-now-list",
+      "description": "Add --list flag to scripts/scs001/post-now.ts. When called with --list (and no video_id), read workspace/scs001/publish-ledger.jsonl, cross-reference with manual-posts.jsonl to find unposted video_ids, and print the top 10 unposted videos with their run_id and topic (if available). Exit cleanly after printing.",
+      "files": [
+        "scripts/scs001/post-now.ts"
+      ],
+      "status": "pending",
+      "priority": "medium",
+      "agent": "coder",
+      "type": "feature"
+    }
+  ],
+  "cto_gate": {
+    "approved": false,
+    "reason": "The sprint introduces new features not requested by the human founder and the queue still has pending items.",
+    "plan_reference": "NOT_IN_PLAN",
+    "confidence": 85,
+    "timestamp": "2026-03-26T05:42:34.727Z"
+  }
+}
