@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1374",
+  "title": "VERIFY — Confirm queue item 1374 (Scene s6 ETIMEDOUT) already resolved by Sprint 1370",
+  "block": "VERIFY",
+  "source": "queue-prescribed",
+  "rationale": "Queue item 1374 referenced scs001-pipeline-error.log errors at 2026-03-25 19:26–19:38 +01:00 (kling/ltx ETIMEDOUT, Scene s6 failed). Sprint 1370 fixed the root cause (orphaned fal_client grandchildren holding pipe open) at 2026-03-26 00:54 +01:00 — 5h+ after the logged failures. Sprint 1372 already verified the fix (start_new_session=True + os.killpg SIGKILL present at fal-video-client.ts:110,116,122). No new ETIMEDOUT entries appear in the error log after 19:38 on March 25. Queue item 1374 is a stale auto-generated duplicate of Sprint 1372. No code changes needed.",
+  "tasks": [
+    {
+      "id": "1374-verify-duplicate",
+      "description": "Confirm queue item references pre-Sprint-1370 errors (March 25 19:38 +01:00). Sprint 1370 deployed at March 26 00:54 +01:00. fal-video-client.ts lines 110,116,122 contain start_new_session=True + killpg fix. Sprint 1372 already verified the same fix. No new ETIMEDOUT after fix deployment. No action needed.",
+      "file": "scripts/scs001/fal-video-client.ts",
+      "status": "done",
+      "priority": "high",
+      "agent": "coder",
+      "type": "verification"
+    }
+  ]
+}

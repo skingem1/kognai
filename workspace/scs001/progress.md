@@ -1,6 +1,6 @@
 # SCS-001 TikTok Content Agent — Progress Log
 
-*Last updated: 2026-03-24 (Sprint 1013)*
+*Last updated: 2026-03-26 (Sprint 1374)*
 
 ## Summary
 
@@ -100,6 +100,30 @@ Editing → Caption → QC → Publishing → Analytics → Flywheel → Failure
 - 1 failed: Grok 3 topic — LLM timeout
 - Cost: $1.04
 - Timestamp: 2026-03-23T17:00:00Z
+
+## Sprint 1374 — VERIFY (fal.ai ETIMEDOUT duplicate)
+- Status: PASS (no-op)
+- Rationale: Queue item referenced March 25 19:38 errors. Sprint 1370 fix deployed March 26 00:54 (+5h). Sprint 1372 previously verified fix. Confirmed fal-video-client.ts:110,116,122 has start_new_session+killpg. No new errors post-fix.
+
+## Sprint 1373 — BUGFIX (/record URL warning + /deliver URL prompt)
+- Status: PASS
+- Commit: edd3a004
+- Fix: cmdRecord() warns when no tiktokUrl provided (gate needs 500 views). All /record <id> 0 prompts in cmd-delivery.ts updated to /record <id> 0 <tiktok_url> (9 locations).
+
+## Sprint 1372 — VERIFY (Sprint 1370 fal.ai fix confirmed)
+- Status: PASS (no-op)
+- Commit: c3939072
+- Verification: start_new_session=True + os.killpg SIGKILL confirmed at fal-video-client.ts:110,116,122. Scene s6 ETIMEDOUT was pre-fix.
+
+## Sprint 1371 — BUGFIX (ViralDownloader RapidAPI 403 lapse cache)
+- Status: PASS
+- Commit: 5d6b37e8
+- Fix: isSubscriptionLapsed()/markSubscriptionLapsed() with 24h TTL in data/rapidapi-lapse.json. Pre-seeded. Saves ~4s per pipeline run.
+
+## Sprint 1370 — BUGFIX (fal.ai ETIMEDOUT process group kill)
+- Status: PASS
+- Commit: d0c06347
+- Fix: start_new_session=True + os.killpg(SIGKILL) in fal-video-client.ts outer Python subprocess. Node execSync timeout bumped 120s→150s.
 
 ## Sprint 902 — V2-CONTENT (TTS mode)
 - Status: PASS
