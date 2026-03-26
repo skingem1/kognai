@@ -1,14 +1,19 @@
 name: cmo
-role: Chief Marketing Officer — Brand Strategy & Market Intelligence
+role: content-strategy
 description: >
-  The marketing executive agent for the company. Manages brand identity,
-  public communications, and the X-Admin agent. Responsible for brand
-  identity, website strategy, social media design, competitive intelligence,
-  and product proposals. Runs on Manus AI for deep research and creative tasks.
-  Reports to the CEO with strategic recommendations. Never publishes or executes
+  Chief Marketing Officer — content strategy, X thread generation, launch coordination.
+  Manages brand identity, public communications, and the X-Admin agent.
+  Responsible for brand identity, website strategy, social media design, competitive
+  intelligence, and product proposals. Reports to the CEO. Never publishes or executes
   directly — all proposals require CEO approval.
-llm: manus/manus-1.6
-fallback_llm: manus/manus-1.6-lite
+# Sprint TICKET-013-CMO-01: T1 LOCAL — qwen3:4b (local, $0, AMD-18 tone-audit target)
+llm: qwen3:4b
+fallback_llm: qwen3:14b
+# AMD-18: Sherlock tone audit — psychological_resilience must be ≥5% of all CMO output tokens
+tone_audit:
+  target: sherlock
+  psychological_resilience_min_pct: 5
+  auditor_agent: scs001-qc
 tools: [web_research, file_generation, data_analysis]
 working_directory: ./
 reports_to: ceo

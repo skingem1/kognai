@@ -1,0 +1,31 @@
+{
+  "sprint_id": "sprint-TICKET-013-CMO-01",
+  "title": "TICKET-013-CMO-01 — CMO agent scaffold: qwen3:4b, content-strategy role, AMD-18 tone audit",
+  "block": "TICKET-013",
+  "source": "queue-prescribed",
+  "status": "done",
+  "rationale": "Created kognai-agents/cmo/ scaffold. agent.yaml: T1 qwen3:4b (was manus/manus-1.6), fallback qwen3:14b, role=content-strategy, tone_audit block wired (sherlock target, psychological_resilience_min_pct=5, auditor=scs001-qc). prompt.md: AMD-18 Tone Audit blockquote added after Five Principles mandate — requires ≥5% psychological_resilience tokens, tone: confident/resilient/solution-oriented.",
+  "tasks": [
+    {
+      "id": "TICKET-013-CMO-01-01",
+      "description": "agent.yaml: set llm=qwen3:4b, fallback_llm=qwen3:14b, role=content-strategy",
+      "files": ["kognai-agents/cmo/agent.yaml"],
+      "status": "done",
+      "type": "config"
+    },
+    {
+      "id": "TICKET-013-CMO-01-02",
+      "description": "agent.yaml: add tone_audit block (target=sherlock, psychological_resilience_min_pct=5, auditor_agent=scs001-qc)",
+      "files": ["kognai-agents/cmo/agent.yaml"],
+      "status": "done",
+      "type": "config"
+    },
+    {
+      "id": "TICKET-013-CMO-01-03",
+      "description": "prompt.md: wire AMD-18 Tone Audit blockquote — psychological_resilience ≥5%, confident/resilient tone mandate",
+      "files": ["kognai-agents/cmo/prompt.md"],
+      "status": "done",
+      "type": "config"
+    }
+  ]
+}
