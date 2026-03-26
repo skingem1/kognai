@@ -76,7 +76,25 @@ test('corpus has >= 3 task types', () => types.size >= 3);
 const sprints = new Set(entries.map((e: any) => e.metadata.sprint_id));
 test('corpus spans >= 10 sprints', () => sprints.size >= 10);
 
+// AMD-15 §4.4 — Reasoning/Non-Reasoning 75/25 balance rule (TICKET-007-AMD15-SPEC)
+const REASONING_TASK_TYPES = new Set(['quality', 'validation', 'gate-push', 'governance', 'architecture', 'review', 'audit', 'constitutional']);
+const REASONING_KEYWORDS = ['think', 'reason', 'analyz', 'constitutional', 'decision', 'evaluat', 'score', 'review', 'audit', 'compliance', 'safety'];
+const reasoningEntries = entries.filter((e: any) => {
+  const taskType: string = ((e.metadata || e.meta || {}).task_type || '').toLowerCase();
+  if (REASONING_TASK_TYPES.has(taskType)) return true;
+  const text = (e.instruction + ' ' + e.response).toLowerCase();
+  return REASONING_KEYWORDS.some(k => text.includes(k));
+});
+const reasoningRatio = reasoningEntries.length / entries.length;
+// Hard block: < 25% reasoning is a corpus quality failure
+test('corpus reasoning ratio >= 25% (AMD-15 §4.4 hard floor)', () => reasoningRatio >= 0.25);
+// Soft warning: < 50% is below target
+if (reasoningRatio < 0.50) {
+  console.log(`  ⚠️  WARN: Reasoning ratio ${(reasoningRatio * 100).toFixed(1)}% < 50% target (goal: 75%) — rebalance before production fine-tuning`);
+}
+
 console.log(`\n=== Results: ${pass} pass, ${fail} fail ===`);
 console.log(`   Corpus: ${entries.length} entries across ${sprints.size} sprints, ${types.size} task types`);
+console.log(`   Reasoning ratio: ${(reasoningRatio * 100).toFixed(1)}% (${reasoningEntries.length}/${entries.length}) — target: >= 75%`);
 if (fail > 0) { console.log('\n❌ FAIL'); process.exit(1); }
 else { console.log('\n✅ ALL PASS'); }

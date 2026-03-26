@@ -1,0 +1,21 @@
+{
+  "sprint_id": "sprint-TICKET-007-AMD15-SPEC",
+  "title": "TICKET-007-AMD15-SPEC — AMD-15 spec doc + 75/25 corpus rule",
+  "block": "TICKET-007",
+  "source": "queue-prescribed",
+  "rationale": "Create AMD-15 spec document (docs/governance/amd-15-spec.md). Training framework: mlx-lm (NOT Unsloth — see TICKET-007-UNSLOTH-INSTALL, Unsloth is incompatible with macOS). Training time: 5-15 min on M4 (not 6-12h). Add 75/25 reasoning/non-reasoning corpus rule to validate-lora-corpus.ts.",
+  "tasks": [
+    {
+      "id": "AMD15-spec-doc",
+      "description": "Create docs/governance/amd-15-spec.md with Section 4 (75/25 corpus rule) and Section 5 (mlx-lm training framework, not Unsloth)",
+      "files": ["docs/governance/amd-15-spec.md"],
+      "status": "pending"
+    },
+    {
+      "id": "AMD15-corpus-check",
+      "description": "Add 75/25 reasoning ratio check to scripts/scs001/validate-lora-corpus.ts. Warn if reasoning_ratio < 0.5 (soft warning, not hard fail).",
+      "files": ["scripts/scs001/validate-lora-corpus.ts"],
+      "status": "pending"
+    }
+  ]
+}
