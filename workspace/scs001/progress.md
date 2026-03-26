@@ -7681,3 +7681,15 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (direct surgical edit — single file, well-understood fix)
 - AAR: module not found, skipped
 - Timestamp: 2026-03-26T00:00:00Z
+
+## Sprint 1385 — FEAT /remind command + PM2 remind crons
+- Status: PASS
+- Commit: 24ffc55a
+- Files modified: scripts/telegram-commands/cmd-posting.ts, scripts/telegram-bot.ts
+- Added: cmdRemind() — gate progress bar [████░░░░░░] 13/30 + next video + /record command
+- Wired: /remind case in telegram-bot.ts
+- PM2: scs001-remind-noon (12:00) + scs001-remind-evening (19:00) registered and saved
+- Note: scripts sent immediate reminder on pm2 start (02:09 AM) — cron will fire at noon/7pm daily going forward
+- Swarm used: no (direct surgical edit — 2 files, well-understood)
+- AAR: module not found, skipped
+- Timestamp: 2026-03-26T02:10:00Z
