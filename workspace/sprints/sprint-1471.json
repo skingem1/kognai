@@ -1,0 +1,26 @@
+{
+  "sprint_id": "sprint-1471",
+  "title": "FEATURE — wire QC gates into batch-produce.ts (reject before ledger write)",
+  "block": "SCS-001",
+  "source": "queue-empty-autonomous",
+  "rationale": "qc-agent.ts (Sprint TICKET-009-Q01-03) built has_real_clip + has_audio gate checks but was not wired into the production pipeline. batch-produce.ts writes all results to the publish ledger without QC checks. Wire runQCGates() after runPipeline() — if QC fails, skip ledger write and log the rejection. Prevents silent/empty videos from reaching the publish queue.",
+  "inputs": ["scripts/scs001/batch-produce.ts", "scripts/scs001/qc-agent.ts"],
+  "outputs": ["scripts/scs001/batch-produce.ts (QC gate before ledger write)"],
+  "success_criteria": [
+    "QC gate runs after every pipeline run",
+    "Videos failing has_real_clip or has_audio are NOT written to ledger",
+    "QC failure logged to logs/qc-failures/YYYY-MM-DD.jsonl",
+    "batch-produce dry-run compiles and works"
+  ],
+  "tasks": [
+    {
+      "id": "1471-qc-gate-integration",
+      "description": "batch-produce.ts: import runQCGates, check after runPipeline, skip ledger write on QC FAIL",
+      "files": ["scripts/scs001/batch-produce.ts"],
+      "status": "done",
+      "priority": "P1",
+      "agent": "coder",
+      "type": "feature"
+    }
+  ]
+}

@@ -23,6 +23,8 @@ import { initRegistry, runPipeline, listPipelines } from './pipeline-registry';
 import type { PipelineName, PipelineInput, PipelineRunResult } from './pipeline-registry';
 // Sprint 1343: Dedup ledger after each batch to clean up duplicate entries
 import { DedupLedger } from '../../agents/scs001-orchestrator/dedup-ledger';
+// Sprint 1471: QC gates — reject videos failing has_real_clip or has_audio before ledger write
+import { runQCGates } from './qc-agent';
 
 // Sprint 1326: Fallback ledger write — ensures batch-produce videos are always registered
 // in publish-ledger.jsonl even if pipeline-registry's logToPublishLedger fails silently.
@@ -194,6 +196,19 @@ async function main(): Promise<void> {
       }
 
       const result = await runPipeline(input);
+
+      // Sprint 1471: QC gates — has_real_clip + has_audio before ledger write
+      const videoPath = String(result.videoPath || '');
+      if (videoPath && existsSync(videoPath)) {
+        const qc = runQCGates(String(result.runId || `run-${runNum}`), videoPath);
+        if (!qc.overall_pass) {
+          const reasons = [qc.has_real_clip.reason, qc.has_audio.reason].filter(Boolean).join(' | ');
+          console.warn(`  [QC] REJECTED ${result.runId}: ${reasons}`);
+          errors.push({ run: runNum, error: `QC FAIL: ${reasons}` });
+          continue;  // skip ledger write — do NOT publish
+        }
+      }
+
       results.push(result);
       // Sprint 1326: Fallback ledger write (in case pipeline-registry's write failed)
       writeLedgerFallback(result);
