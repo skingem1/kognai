@@ -8044,3 +8044,12 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Test: neutral-prompt-checker.ts compiles; CTO gate integrates rule1Check before LLM review for autonomous sprints
 - Swarm used: no (direct write — governance sprint)
 - Timestamp: 2026-03-26T11:00:00.000Z
+
+## Sprint TICKET-005-RULE2 — Research/Implementation Separation (Governance)
+- Status: PASS
+- Commit: 02865fbf
+- Files created: scripts/governance/research-impl-gate.ts (new, 75 lines), workspace/sprints/sprint-TICKET-005-RULE2.json
+- Files modified: scripts/lib/cto-approval-gate.ts (phase/research_sprint_id fields + Rule 2 gate call)
+- Test: 6 unit tests all pass (research phase passthrough, no id passthrough, missing blocked, done w/ prefix, done without prefix, pending blocked)
+- Swarm used: no (direct write — governance sprint)
+- Timestamp: 2026-03-26T11:30:00.000Z
