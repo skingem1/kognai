@@ -138,10 +138,11 @@
       "sprint": "TICKET-008-PROMO-04",
       "title": "PROMO-04 \u2014 HeyGen Studio avatar integration + Telegram /promo command end-to-end",
       "block": "TICKET-008",
-      "status": "pending",
+      "status": "done",
       "priority": "P1",
       "rationale": "TICKET-008 P1-PROMO Sprint 4/5. Wire HeyGen Studio avatars (photorealistic highest quality, 3-5x credits vs standard \u2014 API = different avatar_id only). Add HEYGEN_STUDIO_AVATARS constant map (3-5 options). Full pipeline runner: pipelines/promo.ts. Telegram /promo <url> command: progress messages (Scraping.../Writing script.../Assembling.../Rendering.../Done!), job dir workspace/promo-jobs/{jobId}/. Gate: /promo <amazon_url> via Telegram returns complete video within 5 mins using Studio avatar, progress messages visible, 1080x1920 with subtitles. HUMAN PREREQ: HeyGen Studio credits topped up.",
-      "added_at": "2026-03-26T09:10:28.926160Z"
+      "added_at": "2026-03-26T09:10:28.926160Z",
+      "completed_at": "2026-03-26T00:00:00Z"
     },
     {
       "sprint": "TICKET-008-PROMO-05",

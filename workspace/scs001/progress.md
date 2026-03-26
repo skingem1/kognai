@@ -8175,3 +8175,12 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (multi-file FFmpeg pipeline)
 - AAR: aar-middleware module missing
 - Timestamp: 2026-03-26T00:00:00Z
+
+## Sprint TICKET-008-PROMO-04 — PROMO-04 (HeyGen Studio + Telegram /promo)
+- Status: PASS
+- Files created: scripts/promo/heygen-studio-avatars.ts, scripts/promo/pipelines/promo.ts, agents/telegram-bot/promo-command.ts, workspace/sprints/sprint-TICKET-008-PROMO-04.json
+- Files modified: agents/telegram-bot/index.ts (added /promo case + handlePromo import)
+- Test: pipelines/promo.ts --dry-run — PASS (all 5 steps, 49s final.mp4)
+- Pipeline: TICKET-008 PROMO-04/5 complete
+- Swarm used: no (multi-file, complex pipeline orchestration)
+- Timestamp: 2026-03-26T00:00:00Z
