@@ -7957,3 +7957,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (wrote directly)
 - AAR logged: yes (score 92)
 - Timestamp: 2026-03-26T09:00:00.000Z
+
+## Sprint 1444 — INFRA Fix sprint brief MEMORY path drift
+- Status: PASS
+- Commit: c1be5fd1
+- Files modified: scripts/generate-sprint-brief.py
+- Changes: (1) Added _discover_kognai_memory() — tries ~/.claude/projects/-Users-tarekmnif-kognai/memory/MEMORY.md first (auto-memory, current), falls back to ~/kognai/.claude/... (legacy, was at Sprint 919). Uses mtime comparison. (2) Added _discover_kognai_memory_dir() — reads project_*.md auto-memory files (project_sprint_state, project_achiri_state, project_scs001_state) and appends to Qwen's context. (3) PROJECTS['kognai']['memory'] now uses dynamic path discovery instead of hardcoded legacy path.
+- Test: python3 -c "import py_compile; py_compile.compile('scripts/generate-sprint-brief.py', doraise=True)" — SYNTAX OK
+- Swarm used: no (wrote directly — path fix, single file, no swarm needed)
+- AAR logged: no (aar-middleware module not found)
+- Root cause: generate-sprint-brief.py hardcoded ~/kognai/.claude/projects/-Users-tarekmnif-Documents-Kognai/memory/MEMORY.md which hasn't been updated since Sprint 919 (2026-03-23). Auto-memory system writes to ~/.claude/projects/-Users-tarekmnif-kognai/memory/ instead. Result: sprint brief showed stale state every session.
+- Timestamp: 2026-03-26T10:00:00.000Z
