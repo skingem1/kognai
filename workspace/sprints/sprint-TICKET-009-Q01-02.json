@@ -1,0 +1,30 @@
+{
+  "sprint_id": "sprint-TICKET-009-Q01-02",
+  "title": "Q01-02 — edge-tts TTS integration for P1 pipeline (tts-voiceover.ts)",
+  "block": "TICKET-009",
+  "source": "queue-prescribed",
+  "rationale": "QUALITY-01 Rev.3 Sprint 2/4. Update scripts/scs001/tts-voiceover.ts for P1 Educational pipeline. Use edge-tts as default TTS (MiMo-V2 free API expired ~2026-03-25, CR-AMD-001 closed). edge-tts already installed and active in P3 pipeline. Ensure voiceover audio written to temp file and passed to compositor. Gate: TTS voiceover file produced >10KB, compatible with AudioMixer interface.",
+  "inputs": [
+    "scripts/scs001/tts-voiceover.ts"
+  ],
+  "outputs": [
+    "scripts/scs001/tts-voiceover.ts (edge-tts as default fallback, before macOS say)"
+  ],
+  "success_criteria": [
+    "edge-tts used when ElevenLabs quota exceeded or not set",
+    "voiceover file produced >10KB",
+    "AudioMixer interface (VoiceoverResult) preserved",
+    "macOS say remains as last-resort fallback"
+  ],
+  "tasks": [
+    {
+      "id": "TICKET-009-Q01-02-01",
+      "description": "tts-voiceover.ts: add isEdgeTTSAvailable() + generateEdgeTTSVoice(), update fallback chain to ElevenLabs → edge-tts → macOS say",
+      "files": ["scripts/scs001/tts-voiceover.ts"],
+      "status": "done",
+      "priority": "P0-CRITICAL",
+      "agent": "coder",
+      "type": "feature"
+    }
+  ]
+}

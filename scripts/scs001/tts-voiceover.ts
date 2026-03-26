@@ -12,8 +12,40 @@
 
 import { writeFileSync, mkdirSync, existsSync } from "fs";
 import { join, basename } from "path";
+import { execSync } from "child_process";
 import type { ScriptBundle, ScriptSegment } from "../../agents/scs001-script/index";
 import { generateLocalVoiceover, generateLocalVoiceovers, isLocalTTSAvailable } from "./tts-local";
+
+// ── edge-tts (TICKET-009-Q01-02) ───────────────────────
+// Microsoft Neural TTS via edge-tts Python package.
+// Free, high-quality, replaces MiMo-V2 (CR-AMD-001 closed).
+// Priority: ElevenLabs → edge-tts → macOS say
+
+const EDGE_TTS_VOICE = process.env.EDGE_TTS_VOICE ?? "en-US-JennyNeural";
+
+function isEdgeTTSAvailable(): boolean {
+  try {
+    execSync("python3 -c \"import edge_tts\"", { stdio: "pipe", timeout: 5000 });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function generateEdgeTTSVoice(
+  text: string,
+  outputPath: string
+): { duration_s: number } {
+  // edge-tts writes mp3 directly; safe quote via JSON.stringify
+  const pyCode = `import asyncio, edge_tts; asyncio.run(edge_tts.Communicate(${JSON.stringify(text)}, "${EDGE_TTS_VOICE}").save(${JSON.stringify(outputPath)}))`;
+  execSync(`python3 -c '${pyCode.replace(/'/g, "'\\''")}'`, {
+    stdio: "pipe",
+    timeout: 30000,
+  });
+  // Estimate duration: ~150 wpm
+  const words = text.trim().split(/\s+/).length;
+  return { duration_s: Math.round((words / 150) * 60 * 10) / 10 };
+}
 
 // ── Types ──────────────────────────────────────────────
 
@@ -112,13 +144,18 @@ export async function generateVoiceover(
   outDir: string = DEFAULT_OUT_DIR,
   dryRun: boolean = false
 ): Promise<VoiceoverResult> {
-  // Auto-fallback to local TTS when ElevenLabs key not set
+  // Auto-fallback when ElevenLabs key not set:
+  // Priority: edge-tts (neural, free) → macOS say → warn
   if (!ELEVENLABS_API_KEY && !dryRun) {
+    if (isEdgeTTSAvailable()) {
+      console.log("  [TTS] ELEVENLABS_API_KEY not set — using edge-tts (neural, $0.00)");
+      return generateEdgeTTSVoiceover(bundle, outDir);
+    }
     if (isLocalTTSAvailable()) {
-      console.log("  [TTS] ELEVENLABS_API_KEY not set — using local TTS (macOS say, $0.00)");
+      console.log("  [TTS] edge-tts unavailable — using macOS say ($0.00)");
       return generateLocalVoiceover(bundle, outDir, false);
     }
-    console.warn("  [TTS] No TTS available — ELEVENLABS_API_KEY not set and local TTS unavailable");
+    console.warn("  [TTS] No TTS available — ELEVENLABS_API_KEY not set, edge-tts and macOS say unavailable");
   }
 
   mkdirSync(outDir, { recursive: true });
@@ -155,9 +192,16 @@ export async function generateVoiceover(
 
     try {
       // Sprint 1440: if quota already exceeded on a prior segment, skip ElevenLabs
-      if (useLocalFallback && isLocalTTSAvailable()) {
-        console.log(`  [TTS] quota fallback → local TTS for ${seg.segment_name}`);
-        return generateLocalVoiceover(bundle, outDir, false);
+      // TICKET-009-Q01-02: prefer edge-tts over macOS say for quota fallback
+      if (useLocalFallback) {
+        if (isEdgeTTSAvailable()) {
+          console.log(`  [TTS] quota fallback → edge-tts for ${seg.segment_name}`);
+          return generateEdgeTTSVoiceover(bundle, outDir);
+        }
+        if (isLocalTTSAvailable()) {
+          console.log(`  [TTS] quota fallback → macOS say for ${seg.segment_name}`);
+          return generateLocalVoiceover(bundle, outDir, false);
+        }
       }
       console.log(`  Generating ${seg.segment_name}: "${seg.voiceover_text.substring(0, 50)}..."`);
       const result = await generateVoice(seg.voiceover_text, audioPath);
@@ -173,12 +217,18 @@ export async function generateVoiceover(
     } catch (err: any) {
       // Sprint 1440: quota exhausted → switch all remaining to local TTS
       // Sprint 1453: also fallback on ANY ElevenLabs API error (not just quota) to prevent silent 0-segment results
-      if (isLocalTTSAvailable() &&
-          (err.message.startsWith('ELEVENLABS_QUOTA_EXCEEDED') || err.message.startsWith('ElevenLabs '))) {
+      if (err.message.startsWith('ELEVENLABS_QUOTA_EXCEEDED') || err.message.startsWith('ElevenLabs ')) {
         const reason = err.message.startsWith('ELEVENLABS_QUOTA_EXCEEDED') ? 'quota exceeded' : 'API error';
-        console.warn(`  [TTS] ElevenLabs ${reason} — switching to local TTS ($0.00): ${err.message.slice(0, 80)}`);
         useLocalFallback = true;
-        return generateLocalVoiceover(bundle, outDir, false);
+        // TICKET-009-Q01-02: prefer edge-tts over macOS say
+        if (isEdgeTTSAvailable()) {
+          console.warn(`  [TTS] ElevenLabs ${reason} — switching to edge-tts ($0.00): ${err.message.slice(0, 80)}`);
+          return generateEdgeTTSVoiceover(bundle, outDir);
+        }
+        if (isLocalTTSAvailable()) {
+          console.warn(`  [TTS] ElevenLabs ${reason} — switching to macOS say ($0.00): ${err.message.slice(0, 80)}`);
+          return generateLocalVoiceover(bundle, outDir, false);
+        }
       }
       console.warn(`  Failed ${seg.segment_name}: ${err.message}`);
     }
@@ -196,6 +246,52 @@ export async function generateVoiceover(
 }
 
 /**
+ * Generate voiceover for a ScriptBundle using edge-tts (Microsoft Neural).
+ * Free, no API key required. Same VoiceoverResult interface.
+ */
+async function generateEdgeTTSVoiceover(
+  bundle: ScriptBundle,
+  outDir: string
+): Promise<VoiceoverResult> {
+  mkdirSync(outDir, { recursive: true });
+
+  const segments: VoiceoverSegment[] = [];
+  let totalDuration = 0;
+
+  for (const seg of bundle.segments) {
+    if (!seg.voiceover_text || seg.voiceover_text.trim() === "") continue;
+
+    const filename = `${bundle.script_id}_${seg.segment_name}.mp3`;
+    const audioPath = join(outDir, filename);
+
+    try {
+      console.log(`  [edge-tts] ${seg.segment_name}: "${seg.voiceover_text.substring(0, 50)}..."`);
+      const result = generateEdgeTTSVoice(seg.voiceover_text, audioPath);
+      segments.push({
+        segment_name: seg.segment_name,
+        audio_path: audioPath,
+        duration_s: result.duration_s,
+        text: seg.voiceover_text,
+        cost_usd: 0,
+      });
+      totalDuration += result.duration_s;
+    } catch (err: any) {
+      console.warn(`  [edge-tts] Failed ${seg.segment_name}: ${err.message?.slice(0, 80)}`);
+    }
+  }
+
+  return {
+    script_id: bundle.script_id,
+    segments,
+    total_cost_usd: 0,
+    total_duration_s: Math.round(totalDuration * 10) / 10,
+    voice_id: `edge-tts-${EDGE_TTS_VOICE}`,
+    model_id: "edge-tts",
+    generated_at: new Date().toISOString(),
+  };
+}
+
+/**
  * Batch generate voiceover for multiple ScriptBundles.
  */
 export async function generateVoiceovers(
@@ -203,10 +299,20 @@ export async function generateVoiceovers(
   outDir: string = DEFAULT_OUT_DIR,
   dryRun: boolean = false
 ): Promise<VoiceoverResult[]> {
-  // Auto-fallback to local TTS for batch too
-  if (!ELEVENLABS_API_KEY && !dryRun && isLocalTTSAvailable()) {
-    console.log("  [TTS] ELEVENLABS_API_KEY not set — batch using local TTS (macOS say, $0.00)");
-    return generateLocalVoiceovers(bundles, outDir, false);
+  // Auto-fallback for batch: edge-tts → macOS say
+  if (!ELEVENLABS_API_KEY && !dryRun) {
+    if (isEdgeTTSAvailable()) {
+      console.log("  [TTS] ELEVENLABS_API_KEY not set — batch using edge-tts (neural, $0.00)");
+      const results: VoiceoverResult[] = [];
+      for (const bundle of bundles) {
+        results.push(await generateEdgeTTSVoiceover(bundle, outDir));
+      }
+      return results;
+    }
+    if (isLocalTTSAvailable()) {
+      console.log("  [TTS] batch fallback — macOS say ($0.00)");
+      return generateLocalVoiceovers(bundles, outDir, false);
+    }
   }
 
   const results: VoiceoverResult[] = [];
