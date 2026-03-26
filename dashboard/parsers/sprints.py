@@ -10,7 +10,24 @@ def parse_sprint(path: Path) -> dict:
     try:
         data = json.loads(path.read_text())
     except (json.JSONDecodeError, OSError):
-        return {"id": path.stem, "error": "Failed to parse"}
+        sprint_num = path.stem.replace("sprint-", "")
+        return {
+            "id": path.stem,
+            "number": sprint_num,
+            "title": f"Sprint {sprint_num} (parse error)",
+            "phase": "",
+            "status": "error",
+            "goal": "",
+            "created_at": "",
+            "total_tasks": 0,
+            "completed_tasks": 0,
+            "completion_pct": 0,
+            "status_counts": {},
+            "priority_counts": {},
+            "target_counts": {},
+            "tasks": [],
+            "error": "Failed to parse",
+        }
 
     sprint_num = path.stem.replace("sprint-", "")
     tasks = data.get("tasks", [])
