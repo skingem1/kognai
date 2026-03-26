@@ -7988,3 +7988,12 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Test: npx ts-node scripts/update-gate-tracker.ts — gate-tracker.md shows Phase 1.5 PASS + Phase 2A PASS correctly
 - Swarm used: no (wrote directly)
 - Timestamp: 2026-03-26T10:30:00.000Z
+
+## Sprint 1447 — PHASE2 YouTube OAuth token helper
+- Status: PASS
+- Commit: 8e887b80
+- Files created: scripts/scs001/youtube-oauth.ts, workspace/sprints/sprint-1447.json
+- Test: Script starts, prints auth URL, listens on port 8080. Smoke test passed (full flow requires browser).
+- Swarm used: no (wrote directly)
+- Notes: YOUTUBE_CLIENT_ID confirmed valid (42491656961-...). Run once to unblock Shorts.
+- Timestamp: 2026-03-26T10:45:00.000Z
