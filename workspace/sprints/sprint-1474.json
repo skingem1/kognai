@@ -1,0 +1,27 @@
+{
+  "sprint_id": "sprint-1474",
+  "title": "BUGFIX — Achiri: Ollama timeout falls back to Anthropic haiku instead of error message",
+  "block": "ACHIRI",
+  "source": "queue-empty-autonomous",
+  "rationale": "logs/achiri-api-error.log shows repeated timeout errors from Ollama (qwen3:4b) every 30-60s today: 'DOMException [AbortError]: This operation was aborted'. Free tier users are getting 'Serveur chwaya b6i2 tawa' error messages instead of responses. The 130s Ollama timeout fires because qwen3:4b is slow under load. Fix: when local/Ollama call throws AbortError/timeout, attempt a 45s Anthropic haiku fallback before returning the error message. This ensures the user always gets a reply even when the local model is too slow.",
+  "inputs": ["agents/achiri/index.ts"],
+  "outputs": ["agents/achiri/index.ts (add Anthropic fallback in catch block for local timeout)"],
+  "success_criteria": [
+    "When Ollama times out, an Anthropic claude-haiku-4-5 fallback is attempted",
+    "If fallback succeeds, user gets a real reply (not the error message)",
+    "If both fail, original error message is returned",
+    "ACHIRI_DRY_RUN=1 still works",
+    "npx tsc --noEmit compiles clean"
+  ],
+  "tasks": [
+    {
+      "id": "1474-ollama-fallback",
+      "description": "agents/achiri/index.ts: in the catch block for local provider timeout, attempt Anthropic haiku fallback with 45s timeout before returning the 'server slow' message. Log '[Achiri] ollama-timeout → anthropic-fallback' when fallback fires.",
+      "files": ["agents/achiri/index.ts"],
+      "status": "pending",
+      "priority": "P0",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}

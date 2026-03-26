@@ -358,6 +358,32 @@ export class AchiriConversationHandler {
       const errMsg = err?.message ?? String(err);
       const isTimeout = errMsg.includes('TIMEOUT') || errMsg.includes('timeout') || errMsg.includes('abort');
       console.error('[Achiri] chat() error' + (isTimeout ? ' (timeout)' : '') + ':', err);
+      // Sprint 1474: If local model (Ollama) timed out, attempt Anthropic haiku fallback
+      // before returning the user-visible error message. Prevents silent failures.
+      if (isTimeout && model.provider === 'local') {
+        try {
+          console.log('[Achiri] ollama-timeout → anthropic-fallback');
+          const conversationText = chatMessages.map((m: {role: string, content: string}) => (m.role === 'user' ? 'User' : 'Assistant') + ': ' + m.content).join('\n');
+          const fallbackTimeout = new Promise<never>((_, reject) =>
+            setTimeout(() => reject(new Error('ACHIRI_FALLBACK_TIMEOUT')), 45_000)
+          );
+          const fallbackCall = routeCall({
+            task_type:           'conversation',
+            tier_class:          'text',
+            complexity:          'power',
+            context_tokens:      1024,
+            constitutional_flag: true,
+            agent_id:            'achiri-fallback',
+            payload:             { prompt: systemPrompt + '\n\n' + conversationText },
+          });
+          const fallbackResult = await Promise.race([fallbackCall, fallbackTimeout]);
+          console.log('[Achiri] anthropic-fallback succeeded');
+          return fallbackResult.content;
+        } catch (fallbackErr: any) {
+          console.error('[Achiri] anthropic-fallback also failed:', fallbackErr?.message);
+        }
+        return 'Serveur chwaya b6i2 tawa — 3awedha ba3d chwaya. (Server is slow, try again in a moment.)';
+      }
       if (isTimeout) {
         return 'Serveur chwaya b6i2 tawa — 3awedha ba3d chwaya. (Server is slow, try again in a moment.)';
       }
