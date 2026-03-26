@@ -1,0 +1,40 @@
+{
+  "tasks": [
+    {
+      "id": "1438-achiri-analytics-export",
+      "description": "Create scripts/achiri/export-analytics.ts. This script reads workspace/achiri/session-logs/ (JSONL files per user) and workspace/achiri/daily-counts.json and workspace/achiri/user-tiers.json to produce a structured analytics export. The export function should compute: (1) total_users: count of distinct userId files in workspace/achiri/memory/; (2) total_messages: sum of all message counts across all user session files; (3) dau_7d: array of {date, count} for the last 7 days from daily-counts.json; (4) tier_distribution: {free: N, tnd_basic: N, tnd_premium: N} from user-tiers.json; (5) avg_session_length: average messages per user across all memory files; (6) retention_7d: percentage of users who had at least 1 message in last 7 days. Write the result to reports/achiri-analytics.json with a generated_at timestamp. Export a main() function that runs this export and prints a summary. Handle missing files gracefully. File must be under 150 lines. Use only fs, path, and built-in Node modules.",
+      "files": [
+        "scripts/achiri/export-analytics.ts"
+      ],
+      "status": "rejected",
+      "priority": "high",
+      "agent": "coder",
+      "type": "feature",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Create scripts/achiri/export-analytics.ts. This script reads workspace/achiri/session-logs/ (JSONL files per user) and workspace/achiri/daily-counts.json and workspace/achiri/user-tiers.json to produce a structured analytics export. The export function should compute: (1) total_users: count of distinct userId files in workspace/achiri/memory/; (2) total_messages: sum of all message counts across all user session files; (3) dau_7d: array of {date, count} for the last 7 days from daily-counts.json; (4) tier_distribution: {free: N, tnd_basic: N, tnd_premium: N} from user-tiers.json; (5) avg_session_length: average messages per user across all memory files; (6) retention_7d: percentage of users who had at least 1 message in last 7 days. Write the result to reports/achiri-analytics.json with a generated_at timestamp. Export a main() function that runs this export and prints a summary. Handle missing files gracefully. File must be under 150 lines. Use only fs, path, and built-in Node modules.",
+      "sprint_id": "sprint-1438"
+    },
+    {
+      "id": "1438-validate-analytics",
+      "description": "Create scripts/achiri/validate-analytics-export.ts — a validation script that runs export-analytics.ts and checks: (1) reports/achiri-analytics.json exists and was just written; (2) total_users >= 0 (number); (3) total_messages >= 0 (number); (4) generated_at is a valid ISO string. Print PASS or FAIL with details for each check. Exit 0 on all PASS, exit 1 on any FAIL. File must be under 80 lines.",
+      "files": [
+        "scripts/achiri/validate-analytics-export.ts"
+      ],
+      "status": "rejected",
+      "priority": "high",
+      "agent": "coder",
+      "type": "validation",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Create scripts/achiri/validate-analytics-export.ts — a validation script that runs export-analytics.ts and checks: (1) reports/achiri-analytics.json exists and was just written; (2) total_users >= 0 (number); (3) total_messages >= 0 (number); (4) generated_at is a valid ISO string. Print PASS or FAIL with details for each check. Exit 0 on all PASS, exit 1 on any FAIL. File must be under 80 lines.",
+      "sprint_id": "sprint-1438"
+    }
+  ]
+}
