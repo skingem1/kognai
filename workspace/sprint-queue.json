@@ -40,10 +40,11 @@
       "sprint": "TICKET-009-Q01-04",
       "title": "Q01-04 — E2E integration test: all 3 QC gates passing (test-quality01-e2e.ts)",
       "block": "TICKET-009",
-      "status": "queued",
+      "status": "done",
       "priority": "P0-CRITICAL",
       "rationale": "QUALITY-01 Rev.3 Sprint 4/4. Create scripts/scs001/test-quality01-e2e.ts. Trigger full P1 pipeline run (1 video). Assert: ClawRouter C3 called for clip. Assert: TTS voiceover file produced >10KB. Assert: QC passes has_real_clip gate. Assert: QC passes has_audio gate. Assert: video reaches publishing stage (or mock publish). Print: PASS/FAIL per gate with timing. Gate: all 4 assertions pass, test runtime <5min.",
-      "added_at": "2026-03-26T09:49:19.383095Z"
+      "added_at": "2026-03-26T09:49:19.383095Z",
+      "completed_at": "2026-03-26T10:47:45.957Z"
     },
     {
       "sprint": "SPRINT-508-BROWSER-01",
