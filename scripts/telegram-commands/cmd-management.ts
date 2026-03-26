@@ -2179,6 +2179,20 @@ export function cmdStatus(): string {
     }
   } catch { /* skip */ }
 
+  // Sprint 1402: RapidAPI subscription lapse warning
+  let rapidApiLapseLine = '';
+  try {
+    const lapsePath = path.join(ROOT, 'data', 'rapidapi-lapse.json');
+    if (fs.existsSync(lapsePath)) {
+      const lapseData = JSON.parse(fs.readFileSync(lapsePath, 'utf-8'));
+      const elapsed = Date.now() - new Date(lapseData.lapsed_at).getTime();
+      if (elapsed < 24 * 3600_000) {
+        const hoursLeft = ((24 * 3600_000 - elapsed) / 3600_000).toFixed(1);
+        rapidApiLapseLine = `\n🔴 *RapidAPI subscription lapsed* — pipeline blind to new content · renew at rapidapi.com (clears in ${hoursLeft}h)`;
+      }
+    }
+  } catch { /* skip */ }
+
   const lines = [
     `📊 *Kognai Status Dashboard*${activeSprintStr}${envAlertStr}`,
     '',
@@ -2207,7 +2221,7 @@ export function cmdStatus(): string {
       return oblStreak >= 2 ? `📋 Obligation streak: *${oblStreak}d* met in a row ✅` : '';
     })(),
     `📦 Queue: *${readyCount}* ready · ${unposted.length} total${viralDistLine}${lastPostAge}${bestHookLine}${viewsTrendLine}${todayObligationLine}${warmupScoreLine}${errorSpikeLine}`,
-    pipelineLine,
+    pipelineLine + rapidApiLapseLine,
     cronLine + cronsFiredLine,
     watchdogLine,
     trustLine,
