@@ -58,6 +58,15 @@ function getActiveDays(): { days: number; startedAt: string | null } {
     ? Math.floor((Date.now() - new Date(status.warmup_started_at).getTime()) / MS_PER_DAY)
     : 0;
   const effectiveDays = Math.max(daysElapsed, status.days_active || 0);
+  // Sprint 1468: auto-set warmup_complete when threshold reached
+  const wasComplete = !!status.warmup_complete;
+  const nowComplete = effectiveDays >= MIN_DAYS;
+  if (nowComplete && !wasComplete) {
+    status.days_active = effectiveDays;
+    status.warmup_complete = true;
+    status.warmup_completed_at = new Date().toISOString();
+    fs.writeFileSync(WARMUP_FILE, JSON.stringify(status, null, 2));
+  }
   return { days: effectiveDays, startedAt: status.warmup_started_at || null };
 }
 

@@ -1,0 +1,33 @@
+{
+  "sprint_id": "sprint-1468",
+  "title": "BUGFIX — Auto-set warmup_complete=true in warmup-status.json when threshold reached",
+  "block": "SCS-001",
+  "source": "queue-empty-autonomous",
+  "rationale": "check-ready.ts and go-live.ts both compute effectiveDays and exit 0 when >= 3, but neither wrote warmup_complete=true back to warmup-status.json. Any downstream script checking status.warmup_complete directly would still see false forever. Fix: add auto-write of warmup_complete + warmup_completed_at to both scripts when threshold is first crossed.",
+  "inputs": [
+    "scripts/scs001/check-ready.ts",
+    "scripts/scs001/go-live.ts"
+  ],
+  "outputs": [
+    "scripts/scs001/check-ready.ts (auto-complete write)",
+    "scripts/scs001/go-live.ts (auto-complete write)",
+    "workspace/scs001/warmup-status.json (warmup_complete=true set tomorrow)"
+  ],
+  "success_criteria": [
+    "When effectiveDays >= MIN_DAYS, warmup_complete=true written to warmup-status.json",
+    "warmup_completed_at timestamp written on first completion",
+    "Idempotent — subsequent runs don't overwrite if already complete",
+    "WARMUP_OVERRIDE_DAYS env skips file write (test isolation preserved)"
+  ],
+  "tasks": [
+    {
+      "id": "1468-warmup-autocomplete",
+      "description": "check-ready.ts + go-live.ts: write warmup_complete=true + warmup_completed_at when effectiveDays >= MIN_DAYS for first time",
+      "files": ["scripts/scs001/check-ready.ts", "scripts/scs001/go-live.ts"],
+      "status": "done",
+      "priority": "medium",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}
