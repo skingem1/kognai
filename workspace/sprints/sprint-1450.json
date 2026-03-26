@@ -1,0 +1,37 @@
+{
+  "sprint_id": "sprint-1450",
+  "title": "PHASE2 — Hetzner PM2 achiri-telegram + Godman npm token auth",
+  "block": "PHASE2",
+  "source": "queue-empty-autonomous",
+  "rationale": "Two small but critical gaps: (1) infra/ecosystem-hetzner-achiri.config.js only starts achiri-api — achiri-telegram bot is missing so pm2 start won't launch the bot. deploy-hetzner.sh does pm2 restart achiri-telegram but it fails if the process never started. Fix: add achiri-telegram app entry to the Hetzner config. (2) Godman April 14 launch (19 days) is blocked on npm login which is interactive. Non-interactive alternative: npm auth token via ~/.npmrc or workspace/godman-protocols/.npmrc. Create scripts/godman/configure-npm-auth.sh that shows the user how to get an npm access token and writes the .npmrc file — then godman-launch-day.sh can publish without npm login.",
+  "tasks": [
+    {
+      "id": "1450-hetzner-pm2-bot",
+      "description": "Edit infra/ecosystem-hetzner-achiri.config.js to add achiri-telegram app entry. Copy pattern from main ecosystem.config.js (line 904+). Entry: name='achiri-telegram', script='npx', args='ts-node --transpile-only agents/achiri/telegram-bot.ts', cwd='/home/invoica/apps/kognai', autorestart=true, max_restarts=10, restart_delay=5000. Add TS_NODE_TRANSPILE_ONLY and TS_NODE_PROJECT env vars. error_file + out_file in /home/invoica/apps/kognai/logs/. Also add a comment 'Bot exits cleanly if ACHIRI_TELEGRAM_BOT_TOKEN not set — safe to start'. File stays under 80 lines total.",
+      "files": [
+        "infra/ecosystem-hetzner-achiri.config.js"
+      ],
+      "status": "pending",
+      "priority": "high",
+      "agent": "coder",
+      "type": "feature"
+    },
+    {
+      "id": "1450-godman-npm-auth",
+      "description": "Create scripts/godman/configure-npm-auth.sh. (1) Check if GODMAN_NPM_TOKEN env var or $HOME/.npmrc already has registry auth. (2) If token provided via env: write '//registry.npmjs.org/:_authToken=${GODMAN_NPM_TOKEN}' to workspace/godman-protocols/.npmrc (NOT ~/.npmrc — scoped to project). (3) Verify: run npm whoami from workspace/godman-protocols/ dir and print result. (4) If no token: print instructions to get one from https://www.npmjs.com/settings/<username>/tokens (type: Automation), then 'GODMAN_NPM_TOKEN=<token> bash scripts/godman/configure-npm-auth.sh'. Print final status: READY or NEEDS_TOKEN. Under 60 lines.",
+      "files": [
+        "scripts/godman/configure-npm-auth.sh"
+      ],
+      "status": "pending",
+      "priority": "high",
+      "agent": "coder",
+      "type": "feature"
+    }
+  ],
+  "status": "cto-rejected",
+  "cto_rejection": {
+    "reason": "Not aligned with Phase 1 execution plan. No Sev-1 bug or critical path blocker.",
+    "timestamp": "2026-03-26T08:06:23.207Z",
+    "confidence": 85
+  }
+}

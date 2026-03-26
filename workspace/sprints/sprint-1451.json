@@ -1,0 +1,31 @@
+{
+  "sprint_id": "sprint-1451",
+  "title": "SCS-001 Phase 1 — TikTok URL recorder + views backfill helper",
+  "block": "SCS-001",
+  "source": "queue-empty-autonomous",
+  "rationale": "Phase 1.5 gate views criterion ('total views >= 500') is unverifiable because manual-posts.jsonl entries have views=0 and no tiktok_url. fetch-tiktok-views.ts (Sprint 266) can auto-fetch views but requires tiktok_url field. This sprint builds: (1) scripts/scs001/record-post-url.ts — CLI to add tiktok_url to an existing manual-posts.jsonl entry by video_id or latest entry. Validates URL format (tiktok.com/@user/video/ID). Triggers an immediate oEmbed view fetch after recording. (2) scripts/scs001/views-summary.ts — reads manual-posts.jsonl, shows views distribution (0 views, has_url, fetched_at), tells user how many posts need URLs. Enables human to efficiently backfill all post URLs. Under 80 lines each.",
+  "tasks": [
+    {
+      "id": "1451-record-url",
+      "description": "Create scripts/scs001/record-post-url.ts. Args: --video-id=<id> --url=<tiktok_url>. If --video-id omitted: update the most recent manual-posts.jsonl entry. Validate URL matches https://www.tiktok.com/@*/video/* pattern. Update the matching entry in manual-posts.jsonl (read all, find by video_id, add tiktok_url field, write back). After write: call fetch-tiktok-views.ts logic (single entry, inline — don't import full script) to fetch oEmbed views and update views + views_updated_at. Print: 'Recorded URL for <video_id>. Views: N'. Exit 0 on success, 1 if video_id not found.",
+      "files": [
+        "scripts/scs001/record-post-url.ts"
+      ],
+      "status": "pending",
+      "priority": "high",
+      "agent": "coder",
+      "type": "feature"
+    },
+    {
+      "id": "1451-views-summary",
+      "description": "Create scripts/scs001/views-summary.ts. Reads workspace/scs001/manual-posts.jsonl. Prints: total posts, posts with tiktok_url set, posts with views > 0, total views sum, top 5 posts by views (video_id, views, url). Shows: 'Posts missing URL: N — run record-post-url.ts to backfill'. Returns JSON to stdout if --json flag. Exit 0.",
+      "files": [
+        "scripts/scs001/views-summary.ts"
+      ],
+      "status": "pending",
+      "priority": "medium",
+      "agent": "coder",
+      "type": "feature"
+    }
+  ]
+}
