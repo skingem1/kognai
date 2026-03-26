@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1409",
+  "title": "BUGFIX — Skip live InsightAgent when clips synthesised from discovery (saves 10min per run)",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "Sprint-1408 synthesises pre-qualified clips from discovery metadata when viralClipsCount=0. But in Stage 4, the live InsightAgent still runs and times out after 10 minutes (Ollama tries to process YouTube URLs with no video files). The mock fallback then kicks in instantly. We can save 10min/run by detecting the synthesis path and skipping directly to generateMockBriefs. Add clipsAreSynthesized flag; exclude synthesised clips from live InsightAgent condition.",
+  "tasks": [
+    {
+      "id": "1409-insight-skip-synthesised",
+      "description": "agents/scs001-orchestrator/index.ts: (1) declare 'let clipsAreSynthesized = false' near the clips variable declaration. (2) Set clipsAreSynthesized=true in the sprint-1408 synthesis block. (3) Add '&& !clipsAreSynthesized' to the Stage 4 InsightAgent live condition so synthesised clips skip the live agent and go directly to generateMockBriefs via the else-if(qualifiedClips.length > 0) path. Log message should note the shortcut.",
+      "files": ["agents/scs001-orchestrator/index.ts"],
+      "status": "done",
+      "priority": "medium",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}

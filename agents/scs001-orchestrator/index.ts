@@ -95,6 +95,7 @@ export class SCS001Orchestrator {
     let trendBatch: TrendingTopicBatch | null = null;
     let discoveries: DiscoveryOutput[] = [];
     let clips: ClipQualityScore[] = [];
+    let clipsAreSynthesized = false; // Sprint 1409: true when clips come from discovery metadata (not viral video files)
     let briefs: InsightBrief[] = [];
     let bundles: ScriptBundle[] = [];
     let scorerFiltered: ScriptScore[] = [];
@@ -169,6 +170,7 @@ export class SCS001Orchestrator {
     // producing 0 videos every run while RapidAPI subscription was lapsed).
     if (viralClipsCount === 0 && discoveries.length > 0) {
       console.log(`[Orchestrator] No viral clips (RapidAPI unavailable) — synthesising ${discoveries.length} pre-qualified clips from discovery metadata`);
+      clipsAreSynthesized = true; // Sprint 1409: skip live InsightAgent (no video files to analyse)
       clips = discoveries.map(d => ({
         clip_id:                 d.discovery_id,
         discovery_id:            d.discovery_id,
@@ -217,7 +219,10 @@ export class SCS001Orchestrator {
     }
 
     // --- Stage 4: Insight Agent ---
-    if (qualifiedClips.length > 0 && this.mode === 'live') {
+    // Sprint 1409: skip live InsightAgent when clips were synthesised from discovery metadata
+    // (sprint-1408 path). InsightAgent requires video files; synthesised clips only have URLs
+    // and would time out after 10min before the mock fallback kicks in. Go straight to mock.
+    if (qualifiedClips.length > 0 && this.mode === 'live' && !clipsAreSynthesized) {
       stages.push(await this.runStage('4-insight', 'InsightAgent (live)', async () => {
         const agent = new InsightAgent();
         briefs = await withRetry(
