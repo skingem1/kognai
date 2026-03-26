@@ -401,10 +401,11 @@ export function cmdUpdateViews(args: string): string {
   const content = entries.map((e: any) => JSON.stringify(e)).join('\n') + '\n';
   fs.writeFileSync(manualPostsPath, content, 'utf-8');
 
-  // Gate stats
-  const totalViews = entries.reduce((s: number, e: any) => s + (e.views ?? 0), 0);
+  // Gate stats — Sprint 1391: use readRealPosts for display count (excludes dry-runs)
+  const realPosts = readRealPosts();
+  const totalViews = realPosts.reduce((s: number, e: any) => s + (e.views ?? 0), 0);
   const viewsNeeded = Math.max(0, 500 - totalViews);
-  const missingUrls = entries.filter((e: any) => !e.tiktok_url).length;
+  const missingUrls = realPosts.filter((e: any) => !e.tiktok_url).length;
 
   return (
     `✅ *Views updated!*\n\n` +
@@ -412,7 +413,7 @@ export function cmdUpdateViews(args: string): string {
     `Views: ${oldViews} → *${views}*\n` +
     (tiktokUrl ? `🔗 URL saved — views will auto-track\n` : '') +
     `\n📊 Total views: ${totalViews}/500 (${viewsNeeded} more needed)\n` +
-    `📝 ${entries.length}/30 posts recorded` +
+    `📝 ${realPosts.length}/30 posts recorded` +
     (missingUrls > 0 ? `\n⚠️ ${missingUrls} post(s) still missing URL — run /pending-urls` : '')
   );
 }

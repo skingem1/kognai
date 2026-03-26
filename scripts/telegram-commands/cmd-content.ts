@@ -362,8 +362,8 @@ export function cmdPosted(args?: string): string {
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
   fs.appendFileSync(manualPostsPath, JSON.stringify(entry) + '\n', 'utf-8');
 
-  // Gate stats
-  const updated = readLines(manualPostsPath);
+  // Gate stats — Sprint 1391: use readRealPosts to exclude dry-runs from display count
+  const updated = readRealPosts();
   const postCount = updated.length;
   const totalViews = updated.reduce((s: number, p: any) => s + (p.views ?? 0), 0);
   const postsLeft = Math.max(0, 30 - postCount);

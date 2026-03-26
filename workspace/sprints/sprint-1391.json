@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1391",
+  "title": "BUGFIX — Gate display counts include dry-run posts in /posted and /updateviews",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "cmdPosted() uses readLines(manualPostsPath).length for gate display (shows 17 including 3 dry-runs). cmdUpdateViews() same issue. Both should use readRealPosts() which filters dry-runs. Fix ensures gate display matches actual gate progress.",
+  "tasks": [
+    {
+      "id": "1391-dry-run-count",
+      "description": "In scripts/telegram-commands/cmd-content.ts cmdPosted(): replace `readLines(manualPostsPath)` with `readRealPosts()` for gate display. In scripts/telegram-commands/cmd-management.ts cmdUpdateViews(): same fix.",
+      "files": ["scripts/telegram-commands/cmd-content.ts", "scripts/telegram-commands/cmd-management.ts"],
+      "status": "pending",
+      "priority": "low",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}
