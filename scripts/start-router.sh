@@ -7,4 +7,4 @@ cd "${KOGNAI_ROOT}/runtime"
 nohup python3 router_server.py > "${KOGNAI_ROOT}/logs/router-out.log" 2>"${KOGNAI_ROOT}/logs/router-error.log" &
 echo "KognaiRouter started PID=$!"
 sleep 1
-curl -s http://localhost:11435/health && echo ' — healthy' || echo ' — not responding yet'
+curl -s http://127.0.0.1:11435/health && echo ' — healthy' || echo ' — not responding yet'  # SEC3: loopback-only

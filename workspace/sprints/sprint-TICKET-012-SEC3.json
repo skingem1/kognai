@@ -1,0 +1,31 @@
+{
+  "sprint_id": "sprint-TICKET-012-SEC3",
+  "title": "TICKET-012-SEC3 — Rebind router_server to 127.0.0.1:11435 + ClawRouter gateway to loopback",
+  "block": "TICKET-012",
+  "source": "queue-prescribed",
+  "status": "done",
+  "rationale": "SEC3 security prerequisite. router_server.py was already binding to 127.0.0.1:11435 (line 147). Updated ClawRouter client defaults: (1) clawrouter-v2.ts CLAWROUTER_GATEWAY: localhost:18789 → 127.0.0.1:18789; (2) clawrouter-client.ts CLAWROUTER_URL: localhost:18789 → 127.0.0.1:18789, health probe hostname localhost → 127.0.0.1; (3) start-router.sh health check: localhost:11435 → 127.0.0.1:11435. Extended OMEL network audit: added auditClawRouterLoopback() to network-audit.ts and exported from index.ts.",
+  "tasks": [
+    {
+      "id": "TICKET-012-SEC3-01",
+      "description": "clawrouter-v2.ts + clawrouter-client.ts: update localhost:18789 defaults to 127.0.0.1:18789",
+      "files": ["scripts/lib/clawrouter-v2.ts", "scripts/lib/clawrouter-client.ts"],
+      "status": "done",
+      "type": "security"
+    },
+    {
+      "id": "TICKET-012-SEC3-02",
+      "description": "start-router.sh: health check localhost:11435 → 127.0.0.1:11435",
+      "files": ["scripts/start-router.sh"],
+      "status": "done",
+      "type": "security"
+    },
+    {
+      "id": "TICKET-012-SEC3-03",
+      "description": "OMEL: add auditClawRouterLoopback() to network-audit.ts, export from index.ts",
+      "files": ["scripts/lib/omel/network-audit.ts", "scripts/lib/omel/index.ts"],
+      "status": "done",
+      "type": "security"
+    }
+  ]
+}

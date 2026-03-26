@@ -12,7 +12,7 @@
 import * as http from 'http';
 import * as https from 'https';
 
-const CLAWROUTER_URL = process.env.CLAWROUTER_GATEWAY_URL || 'http://localhost:18789/v1';
+const CLAWROUTER_URL = process.env.CLAWROUTER_GATEWAY_URL || 'http://127.0.0.1:18789/v1'; // SEC3: loopback-only default
 
 export interface ClawRouterOptions {
   model: string;
@@ -134,7 +134,7 @@ export async function callClawRouter(opts: ClawRouterOptions): Promise<ClawRoute
 export async function clawRouterIsAvailable(): Promise<boolean> {
   return new Promise((resolve) => {
     const req = http.request(
-      { hostname: 'localhost', port: 18789, path: '/v1/models', method: 'GET' },
+      { hostname: '127.0.0.1', port: 18789, path: '/v1/models', method: 'GET' }, // SEC3: loopback-only
       (res) => {
         let data = '';
         res.on('data', (chunk: string) => (data += chunk));

@@ -11,5 +11,5 @@ export { humanBrake }                               from './human-brake';
 export type { HighRiskOp, ApprovalResult }           from './human-brake';
 export { contaminationGuard }                        from './contamination-guard';
 export type { ContaminationContext }                 from './contamination-guard';
-export { auditOllamaLoopback }                       from './network-audit';
-export type { NetworkAuditResult }                   from './network-audit';
+export { auditOllamaLoopback, auditClawRouterLoopback } from './network-audit';
+export type { NetworkAuditResult }                      from './network-audit';

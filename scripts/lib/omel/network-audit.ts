@@ -85,3 +85,38 @@ export function auditOllamaLoopback(): NetworkAuditResult {
   logAudit(result);
   return result;
 }
+
+/**
+ * SEC3: Verify CLAWROUTER_GATEWAY_URL is not bound to 0.0.0.0 (all interfaces).
+ * Same logic as auditOllamaLoopback but for the ClawRouter gateway at :18789.
+ */
+export function auditClawRouterLoopback(): NetworkAuditResult {
+  const host = process.env.CLAWROUTER_GATEWAY_URL || 'http://127.0.0.1:18789/v1';
+  const audited_at = new Date().toISOString();
+
+  let hostname = host;
+  try {
+    const url = new URL(host.startsWith('http') ? host : `http://${host}`);
+    hostname = url.hostname;
+  } catch {
+    const result: NetworkAuditResult = {
+      check: 'ollama_loopback',
+      pass: false,
+      ollama_host: host,
+      reason: `Malformed CLAWROUTER_GATEWAY_URL: "${host}" — cannot verify loopback binding`,
+      audited_at,
+    };
+    logAudit(result);
+    return result;
+  }
+
+  const isLoopback = hostname === '127.0.0.1' || hostname === 'localhost' || hostname === '::1';
+  const pass = isLoopback;
+  const reason = isLoopback
+    ? `CLAWROUTER_GATEWAY_URL="${host}" is loopback (${hostname}) — SEC3 compliant`
+    : `SECURITY VIOLATION: CLAWROUTER_GATEWAY_URL="${host}" is non-loopback (${hostname}) — SEC3 requires 127.0.0.1`;
+
+  const result: NetworkAuditResult = { check: 'ollama_loopback', pass, ollama_host: host, reason, audited_at };
+  logAudit(result);
+  return result;
+}
