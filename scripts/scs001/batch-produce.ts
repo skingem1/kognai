@@ -26,6 +26,8 @@ import { DedupLedger } from '../../agents/scs001-orchestrator/dedup-ledger';
 // Sprint 1471: QC gates — reject videos failing has_real_clip or has_audio before ledger write
 import { runQCGates } from './qc-agent';
 import { scoreVideo } from './pipeline-quality-scorer';
+// Sprint 1472: Disk guardian — free intermediate files after ledger write
+import { cleanupRunIntermediates } from './cleanup-run-intermediates';
 
 // Sprint 1326: Fallback ledger write — ensures batch-produce videos are always registered
 // in publish-ledger.jsonl even if pipeline-registry's logToPublishLedger fails silently.
@@ -226,6 +228,12 @@ async function main(): Promise<void> {
       results.push(result);
       // Sprint 1326: Fallback ledger write (in case pipeline-registry's write failed)
       writeLedgerFallback(result);
+      // Sprint 1472: Disk guardian — delete intermediates after ledger write
+      const bytesFreed = cleanupRunIntermediates(String(result.runId || ''));
+      if (bytesFreed > 0) {
+        const mb = (bytesFreed / 1e6).toFixed(1);
+        console.log(`  [disk] freed ${mb}MB of intermediates for ${result.runId}`);
+      }
 
       const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
       console.log(`  Completed in ${elapsed}s — ${result.title}`);

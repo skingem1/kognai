@@ -1,0 +1,44 @@
+{
+  "sprint_id": "sprint-1472",
+  "title": "FEATURE — disk guardian: auto-cleanup intermediate run files after ledger write",
+  "block": "SCS-001",
+  "source": "queue-empty-autonomous",
+  "rationale": "watchdog-latest.json: workspace/scs001/ is 10.5GB (threshold 5GB). Each vlog/multiformat run directory keeps avatar.mp4, avatar_branded.mp4, broll/, composited.mp4, subtitled.mp4, script.json after the final video is written to the publish ledger. These intermediates serve no purpose post-ledger-write and are consuming excessive disk. Solution: cleanup-run-intermediates.ts scans ledger, deletes intermediates from confirmed run dirs, keeps final video + meta.json. Wire into batch-produce.ts after each successful ledger write.",
+  "inputs": [
+    "workspace/scs001/publish-ledger.jsonl",
+    "workspace/scs001/vlog-runs/",
+    "workspace/scs001/multiformat-runs/",
+    "scripts/scs001/batch-produce.ts"
+  ],
+  "outputs": [
+    "scripts/scs001/cleanup-run-intermediates.ts (new)",
+    "scripts/scs001/batch-produce.ts (wire cleanup after ledger write)"
+  ],
+  "success_criteria": [
+    "cleanup-run-intermediates.ts --dry-run lists intermediates to delete without modifying disk",
+    "cleanup-run-intermediates.ts (live) deletes intermediates for ledger-confirmed runs",
+    "Final video file (.mp4) and meta.json preserved in each run dir",
+    "batch-produce.ts calls cleanup after successful ledger write",
+    "npx ts-node scripts/scs001/batch-produce.ts --dry-run compiles without error"
+  ],
+  "tasks": [
+    {
+      "id": "1472-cleanup-script",
+      "description": "Create scripts/scs001/cleanup-run-intermediates.ts: scan publish-ledger.jsonl, for each confirmed run dir in vlog-runs/ or multiformat-runs/ delete avatar.mp4, avatar_branded.mp4, broll/, composited.mp4, subtitled.mp4, script.json. Keep final .mp4 and meta.json. Support --dry-run flag. Log bytes freed.",
+      "files": ["scripts/scs001/cleanup-run-intermediates.ts"],
+      "status": "pending",
+      "priority": "P1",
+      "agent": "coder",
+      "type": "feature"
+    },
+    {
+      "id": "1472-wire-batch-produce",
+      "description": "batch-produce.ts: after writeLedgerFallback() call, import and call cleanupRunIntermediates(runId) from cleanup-run-intermediates.ts to free disk space immediately after ledger write.",
+      "files": ["scripts/scs001/batch-produce.ts"],
+      "status": "pending",
+      "priority": "P1",
+      "agent": "coder",
+      "type": "feature"
+    }
+  ]
+}
