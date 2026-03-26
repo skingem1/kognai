@@ -1,0 +1,70 @@
+{
+  "generated_at": "2026-03-26T07:09:53.210Z",
+  "packages": [
+    {
+      "name": "@godman-protocols/pact",
+      "version": "0.2.0",
+      "dist_ok": true,
+      "fields_ok": true,
+      "pack_ok": true,
+      "status": "GO"
+    },
+    {
+      "name": "@godman-protocols/lax",
+      "version": "0.2.0",
+      "dist_ok": true,
+      "fields_ok": true,
+      "pack_ok": true,
+      "status": "GO"
+    },
+    {
+      "name": "@godman-protocols/score",
+      "version": "0.2.0",
+      "dist_ok": true,
+      "fields_ok": true,
+      "pack_ok": true,
+      "status": "GO"
+    },
+    {
+      "name": "@godman-protocols/signal",
+      "version": "0.2.0",
+      "dist_ok": true,
+      "fields_ok": true,
+      "pack_ok": true,
+      "status": "GO"
+    },
+    {
+      "name": "@godman-protocols/soul",
+      "version": "0.2.0",
+      "dist_ok": true,
+      "fields_ok": true,
+      "pack_ok": true,
+      "status": "GO"
+    },
+    {
+      "name": "@godman-protocols/amf",
+      "version": "0.2.0",
+      "dist_ok": true,
+      "fields_ok": true,
+      "pack_ok": true,
+      "status": "GO"
+    },
+    {
+      "name": "@godman-protocols/drs",
+      "version": "0.2.0",
+      "dist_ok": true,
+      "fields_ok": true,
+      "pack_ok": true,
+      "status": "GO"
+    },
+    {
+      "name": "@godman-protocols/sdk",
+      "version": "0.2.0",
+      "dist_ok": true,
+      "fields_ok": true,
+      "pack_ok": true,
+      "status": "GO"
+    }
+  ],
+  "overall": "GO"
+}

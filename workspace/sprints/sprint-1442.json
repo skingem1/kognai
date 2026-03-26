@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-1442",
+  "title": "GODMAN — Pre-publish validation: smoke tests + npm pack dry-run for all 8 packages",
+  "block": "GODMAN-PROTOCOLS",
+  "source": "queue-prescribed",
+  "rationale": "Godman Protocols Apr 14 launch: 0/8 packages published to npm. All packages have dist/ built and smoke tests pass (8/8). Sprint 1442 creates scripts/godman/validate-pre-publish.ts — runs npm pack --dry-run on all 8 packages, verifies dist/ exists, verifies package.json required fields, and writes reports/godman-prepublish.json with go/no-go per package. This is the final gate before operator runs npm publish on Apr 14.",
+  "tasks": [
+    {
+      "id": "1442-prepublish-validate",
+      "description": "Create scripts/godman/validate-pre-publish.ts. For each of the 8 packages (pact, lax, score, signal, soul, amf, drs, sdk) in workspace/godman-protocols/: (1) Check dist/ directory exists and has at least 1 file; (2) Read package.json and verify required fields: name, version, description, main, license; (3) Run npm pack --dry-run in the package dir using child_process.execSync — capture output and parse for any errors; (4) Record PASS/FAIL per check per package. Write reports/godman-prepublish.json with { generated_at, packages: [{name, version, dist_ok, fields_ok, pack_ok, status}], overall: 'GO'|'NO_GO' }. Print a summary table. Exit 0 on all GO, exit 1 on any NO_GO. File must be under 120 lines.",
+      "files": [
+        "scripts/godman/validate-pre-publish.ts"
+      ],
+      "status": "done",
+      "priority": "high",
+      "agent": "coder",
+      "type": "validation"
+    }
+  ]
+}
