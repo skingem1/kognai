@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1050",
+  "title": "ACHIRI-ALPHA \u2014 Onboarding message A/B test: cultural vs. universal tone",
+  "description": "Needs live alpha users to A/B test; skip until ACHIRI_TELEGRAM_BOT_TOKEN is set and users onboarded",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1050-01",
+      "title": "ACHIRI-ALPHA \u2014 Onboarding message A/B test: cultural vs. universal tone",
+      "type": "feature",
+      "task_type": "phase2",
+      "task_target": "workspace/sprints/sprint-1050-output.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1050"
+    }
+  ]
+}

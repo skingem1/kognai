@@ -1,0 +1,111 @@
+{
+  "scenario_id": "scn-ai7x92",
+  "trend_signal_id": "custom-v2-1774263385684",
+  "title": "5 AI Tools That Will Save You 10 Hours Every Week",
+  "angle": "Most people waste 10 hours weekly on tasks AI already solved — this exposes the exact tools hiding in plain sight that top creators and execs quietly use.",
+  "scenes": [
+    {
+      "scene_id": "sc-01",
+      "scene_name": "The Hook — Time Theft Reveal",
+      "duration_s": 5,
+      "voiceover": "You are wasting 10 hours every single week. And these 5 AI tools will give them all back.",
+      "visual_style": "kinetic_text",
+      "visual_description": "Bold red countdown timer drops from top of screen — freezes at 10:00:00. Smash cut to black. White text explodes: '5 TOOLS.' Fast zoom in.",
+      "caption_overlay": "You're losing 10 hours a week. Stop it.",
+      "emotion": "shock",
+      "music_cue": "impact_hit",
+      "pattern_interrupts": 3
+    },
+    {
+      "scene_id": "sc-02",
+      "scene_name": "Tool 1 & 2 — The Quick Wins",
+      "duration_s": 7,
+      "voiceover": "Tool one: Notion AI writes your meeting notes before you finish talking. Tool two: Otter AI transcribes calls in real time — instantly.",
+      "visual_style": "screen_recording",
+      "visual_description": "Split screen — Notion AI auto-filling notes left, Otter.ai live transcript right. Cursor circles key outputs. Green checkmarks slam onto screen.",
+      "caption_overlay": "Tool 1: Notion AI — Tool 2: Otter AI",
+      "emotion": "curiosity",
+      "music_cue": "tension_build",
+      "pattern_interrupts": 3
+    },
+    {
+      "scene_id": "sc-03",
+      "scene_name": "Tool 3 — The Hidden Weapon",
+      "duration_s": 6,
+      "voiceover": "Tool three is the one nobody talks about. Perplexity AI replaces 2 hours of research with one question. No ads. No fluff.",
+      "visual_style": "screen_recording",
+      "visual_description": "Browser opens — Google search shown cluttered with ads, then hard cut to Perplexity clean answer page. Timer graphic: '2 HRS → 4 MIN' animates in.",
+      "caption_overlay": "This one hits different. 👀",
+      "emotion": "revelation",
+      "music_cue": "tension_build",
+      "pattern_interrupts": 2
+    },
+    {
+      "scene_id": "sc-04",
+      "scene_name": "Tools 4 & 5 — The Power Pair",
+      "duration_s": 7,
+      "voiceover": "Tool four: Zapier AI automates your entire inbox workflow. Tool five: Runway Gen-3 edits your videos while you sleep. Seriously.",
+      "visual_style": "b_roll_montage",
+      "visual_description": "Fast-cut montage — Zapier dashboard showing automated email chains, then Runway video timeline editing itself. Clock graphic spinning forward. Text badge: 'RUNS 24/7'.",
+      "caption_overlay": "Tool 4: Zapier AI — Tool 5: Runway Gen-3",
+      "emotion": "urgency",
+      "music_cue": "upbeat",
+      "pattern_interrupts": 3
+    },
+    {
+      "scene_id": "sc-05",
+      "scene_name": "The Payoff — Stack the Hours",
+      "duration_s": 5,
+      "voiceover": "Stack all five and you're getting 10 hours back every week. That's 40 hours a month. What will you do with yours?",
+      "visual_style": "kinetic_text",
+      "visual_description": "Hours stack on screen like coins — 2+2+2+2+2 = 10. Counter animates to 40 hrs/month. Final frame: bold question mark pulses on screen.",
+      "caption_overlay": "10 hrs/week = 40 hrs/month back in your life.",
+      "emotion": "satisfaction",
+      "music_cue": "impact_hit",
+      "pattern_interrupts": 2
+    },
+    {
+      "scene_id": "sc-06",
+      "scene_name": "Loop Closer — The Scroll Trap",
+      "duration_s": 4,
+      "voiceover": "Still scrolling? That's exactly the problem. Start with tool one. Right now.",
+      "visual_style": "react_cam",
+      "visual_description": "Kognai looks directly into lens, pauses for 1 full second of silence, then points at viewer. Smash cut back to opening red countdown timer — loop complete.",
+      "caption_overlay": "👆 The answer was here the whole time.",
+      "emotion": "loop",
+      "music_cue": "silence",
+      "pattern_interrupts": 2
+    }
+  ],
+  "hook_test": {
+    "format_reference": "X things you didn't know about Y",
+    "viral_proof": "Listicle AI tool videos using this format have repeatedly crossed 10M+ views on TikTok — notably MattVidPro and AI Explained channels with tool roundups averaging 8-15M views in 2023-2024.",
+    "why_it_works": "Numbered listicles trigger completion compulsion — viewers must see all 5. Pairing with time-saving stakes (10 hours) makes it personally urgent. Every scroll stopped = someone who wants their time back.",
+    "estimated_hook_rate": 42
+  },
+  "total_duration_s": 34,
+  "target_emotion_arc": [
+    "shock",
+    "curiosity",
+    "revelation",
+    "urgency",
+    "satisfaction",
+    "loop"
+  ],
+  "speaker_name": "Kognai",
+  "tts_voice": "default",
+  "hashtags": [
+    "#AIProductivity",
+    "#AIToolsForWork",
+    "#NotionAI",
+    "#PerplexityAI",
+    "#RunwayML",
+    "#WorkSmarter",
+    "#ProductivityHacks",
+    "#TechTok",
+    "#AI",
+    "#LearnOnTikTok"
+  ],
+  "created_at": "2026-03-23T10:56:55.806Z",
+  "model_used": "claude-sonnet-4-6"
+}

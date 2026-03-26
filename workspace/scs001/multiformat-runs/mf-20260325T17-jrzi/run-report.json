@@ -1,0 +1,46 @@
+{
+  "run_id": "mf-20260325T17-jrzi",
+  "started_at": "2026-03-25T17:10:10.948Z",
+  "completed_at": "2026-03-25T17:17:13.926Z",
+  "topics_found": 3,
+  "scripts_generated": 3,
+  "videos_composited": 3,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "exp-93f4ae07",
+      "format": "explainer",
+      "title": "Harvey confirms $11B valuation: Sequoia triples down",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260325T17-jrzi/output/exp-93f4ae07_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260325T17-jrzi/output/exp-93f4ae07.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "exp-5b853a93",
+      "format": "explainer",
+      "title": "Granola raises $125M, hits $1.5B valuation as it expands from meeting notetaker to enterprise AI app",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260325T17-jrzi/output/exp-5b853a93_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260325T17-jrzi/output/exp-5b853a93.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "dbt-c9a1b9aa",
+      "format": "debate",
+      "title": "Siren (SIREN) 📈 105.3%",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260325T17-jrzi/output/dbt-c9a1b9aa_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260325T17-jrzi/output/dbt-c9a1b9aa.srt",
+      "duration_s": 27,
+      "success": true,
+      "avatar_cost": 0.25,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 0.95
+}

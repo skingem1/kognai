@@ -1,0 +1,29 @@
+{
+  "run_id": "v2-run-2026-03-23T11-19-47",
+  "signal": {
+    "topic_id": "custom-v2-1774264787270",
+    "topic_name": "Google Gemini 2.5 Just Destroyed Every AI Benchmark",
+    "confidence_score": 80,
+    "keyword_cluster": [
+      "google",
+      "gemini",
+      "just",
+      "destroyed",
+      "every"
+    ],
+    "domain_tags": [
+      "tech",
+      "AI"
+    ],
+    "provenance_source": "custom-topic-v2"
+  },
+  "status": "error",
+  "published": false,
+  "dry_run": false,
+  "retries_used": 0,
+  "timestamps": {
+    "started": "2026-03-23T11:19:47.270Z",
+    "finished": "2026-03-23T11:19:47.271Z"
+  },
+  "error": "ANTHROPIC_API_KEY not set — Scorsese requires cloud LLM"
+}

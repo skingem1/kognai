@@ -1,67 +1,37 @@
 {
-  "run_id": "scs001-2026-03-23T20-00-01-066Z",
+  "run_id": "scs001-2026-03-25T20-00-01-001Z",
   "mode": "live",
-  "started_at": "2026-03-23T20:00:01.066Z",
-  "completed_at": "2026-03-23T20:17:30.135Z",
-  "total_elapsed_ms": 1049069,
+  "started_at": "2026-03-25T20:00:01.001Z",
+  "completed_at": "2026-03-25T20:00:03.344Z",
+  "total_elapsed_ms": 2343,
   "stages": [
     {
       "stage": "1-trend",
       "agent": "TrendAgent",
-      "count": 8,
-      "elapsed_ms": 441,
+      "count": 12,
+      "elapsed_ms": 465,
       "status": "ok"
     },
     {
       "stage": "2-discovery",
       "agent": "DiscoveryAgent",
-      "count": 12,
-      "elapsed_ms": 2,
+      "count": 19,
+      "elapsed_ms": 492,
       "status": "ok"
     },
     {
       "stage": "2.5-viral-tiktok",
       "agent": "ViralTikTokDownloader",
       "count": 0,
-      "elapsed_ms": 30514,
+      "elapsed_ms": 1380,
       "status": "empty"
-    },
-    {
-      "stage": "3-clip-detection",
-      "agent": "ClipDetectionAgent",
-      "count": 40,
-      "elapsed_ms": 418090,
-      "status": "ok"
-    },
-    {
-      "stage": "4-insight",
-      "agent": "InsightAgent (live)",
-      "count": 0,
-      "elapsed_ms": 300004,
-      "status": "error",
-      "error": "Stage timeout after 300s"
-    },
-    {
-      "stage": "4-insight",
-      "agent": "InsightAgent (fallback-mock)",
-      "count": 11,
-      "elapsed_ms": 1,
-      "status": "ok"
-    },
-    {
-      "stage": "5-script",
-      "agent": "ScriptAgent",
-      "count": 0,
-      "elapsed_ms": 300005,
-      "status": "error",
-      "error": "Stage timeout after 300s"
     }
   ],
   "summary": {
-    "topics_found": 8,
-    "clips_discovered": 12,
-    "clips_qualified": 11,
-    "insights_generated": 11,
+    "topics_found": 12,
+    "clips_discovered": 19,
+    "clips_qualified": 0,
+    "insights_generated": 0,
     "scripts_produced": 0,
     "scripts_scored": 0,
     "scripts_filtered": 0,

@@ -1,0 +1,12 @@
+{
+  "scenario_id": "scn-kgn7x2",
+  "verdict": "PASS",
+  "message_score": 92,
+  "scroll_stop_score": 94,
+  "message_analysis": "Crystal clear single message: agentic AI has made traditional chatbots obsolete, and users need to shift now or fall behind. Every scene reinforces this—from the Nokia 3310 comparison (dead tech) to the autonomous agent doing work solo to the widening gap between adopters and typists. The angle is original: not 'AI is cool,' but 'you're using yesterday's paradigm.' The hook (Scene 1) promises a paradigm shift and every subsequent scene delivers proof. This will resonate with tech-savvy audiences who fear missing competitive edges. Highly shareable premise.",
+  "scroll_stop_analysis": "The first 1.5 seconds are a gut-punch: 'ChatGPT just became the Nokia 3310 of AI' + camera shake + status anxiety trigger. This works. Pattern interrupts are consistent: kinetic text slams, screen recordings with hamster wheel, autonomous agent sequences, split-screen comparison, callback to opener. Pacing is tight—no dead air, scenes flow into each other with music/visual continuity. Emotion arc (shock→curiosity→revelation→urgency→intrigue→loop) builds logically and pays off with the callback. Feels native TikTok, not an ad—the tone is 'insider knowledge dropping,' which is TikTok native. The 30s duration is perfect. Would stop a scroll.",
+  "fixes": [],
+  "confidence": 94,
+  "model_used": "claude-haiku-4-5-20251001",
+  "reviewed_at": "2026-03-23T11:36:21.838Z"
+}

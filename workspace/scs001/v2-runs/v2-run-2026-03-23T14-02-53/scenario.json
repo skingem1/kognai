@@ -1,0 +1,111 @@
+{
+  "scenario_id": "scn-ai2026-x7k",
+  "trend_signal_id": "custom-v2-1774274573197",
+  "title": "The AI Revolution Nobody Is Prepared For in 2026",
+  "angle": "By 2026, AI won't replace jobs gradually — it will collapse entire industries in a single quarterly earnings cycle, and most people are sleepwalking into it.",
+  "scenes": [
+    {
+      "scene_id": "s1",
+      "scene_name": "The Blindside Hook",
+      "duration_s": 5,
+      "voiceover": "In 2026, millions of people will wake up and realize their career no longer exists. Not declining. Gone.",
+      "visual_style": "kinetic_text",
+      "visual_description": "Black screen. Bold white text slams in word by word. Final word GONE flashes red. Rapid zoom pulse on each word.",
+      "caption_overlay": "This already started. You just haven't felt it yet.",
+      "emotion": "shock",
+      "music_cue": "silence",
+      "pattern_interrupts": 3
+    },
+    {
+      "scene_id": "s2",
+      "scene_name": "The Proof Drop",
+      "duration_s": 6,
+      "voiceover": "Goldman Sachs said 300 million jobs. But that number is already outdated. The new models are 10x faster than projected.",
+      "visual_style": "b_roll_montage",
+      "visual_description": "Fast cuts: Goldman Sachs report headline, empty office floors, server farms glowing at night, stock ticker crashing. Each cut under 1.5s.",
+      "caption_overlay": "The forecast was wrong. It's worse.",
+      "emotion": "intrigue",
+      "music_cue": "tension_build",
+      "pattern_interrupts": 4
+    },
+    {
+      "scene_id": "s3",
+      "scene_name": "The Industries Nobody Warned",
+      "duration_s": 6,
+      "voiceover": "Legal. Accounting. Radiology. Software engineering. These aren't at risk — they're already being restructured right now.",
+      "visual_style": "kinetic_text",
+      "visual_description": "Industry names appear one by one with a red X slashing through each. Camera shake on every X. White background for contrast shock.",
+      "caption_overlay": "Your degree didn't come with an expiration date. Until now.",
+      "emotion": "urgency",
+      "music_cue": "impact_hit",
+      "pattern_interrupts": 4
+    },
+    {
+      "scene_id": "s4",
+      "scene_name": "The Hidden Timeline",
+      "duration_s": 6,
+      "voiceover": "2023: ChatGPT shocks the world. 2024: Agents arrive. 2025: Workflows automate. 2026: The invoices stop coming.",
+      "visual_style": "documentary",
+      "visual_description": "Minimalist timeline graphic animates left to right. Each year pulses in, with a short visual metaphor — chat bubble, robot arm, calendar, empty inbox.",
+      "caption_overlay": "The timeline is a cliff. Most people are still running.",
+      "emotion": "revelation",
+      "music_cue": "tension_build",
+      "pattern_interrupts": 3
+    },
+    {
+      "scene_id": "s5",
+      "scene_name": "The Survival Signal",
+      "duration_s": 5,
+      "voiceover": "The people who thrive won't fight AI. They'll become the layer between AI and the world. That skill is learnable.",
+      "visual_style": "react_cam",
+      "visual_description": "Close-up face, direct eye contact, calm but intense. Slight lean-in on the word learnable. No cuts — sustained gaze creates intimacy and trust.",
+      "caption_overlay": "This is not doom. This is a window. It's closing fast.",
+      "emotion": "urgency",
+      "music_cue": "ambient",
+      "pattern_interrupts": 2
+    },
+    {
+      "scene_id": "s6",
+      "scene_name": "The Loop Back",
+      "duration_s": 5,
+      "voiceover": "Millions will wake up in 2026 and realize they missed the window. You're watching this before it closes. What happens next?",
+      "visual_style": "kinetic_text",
+      "visual_description": "Exact same black screen and white bold text as scene 1 — but now the final phrase is YOU DECIDE flashing in gold. Creates visual loop recognition.",
+      "caption_overlay": "Watch again. You'll catch what you missed.",
+      "emotion": "loop",
+      "music_cue": "silence",
+      "pattern_interrupts": 2
+    }
+  ],
+  "hook_test": {
+    "format_reference": "This changes everything",
+    "viral_proof": "Videos using the 'This changes everything' format around GPT-4 launch and Sam Altman congressional hearing clips each exceeded 15M–40M views on TikTok in 2023. The formula: alarming opening stat + credible source drop + personal stakes = sustained watch time.",
+    "why_it_works": "Opens with a future-tense personal threat (career gone), immediately grounds it with a credible institutional source, then escalates to a hidden timeline the viewer feels they are racing against. The loop ending rewards rewatches and signals algorithm-friendly completion rate.",
+    "estimated_hook_rate": 42
+  },
+  "total_duration_s": 33,
+  "target_emotion_arc": [
+    "shock",
+    "intrigue",
+    "urgency",
+    "revelation",
+    "urgency",
+    "loop"
+  ],
+  "speaker_name": "Kognai",
+  "tts_voice": "default",
+  "hashtags": [
+    "#AIRevolution2026",
+    "#FutureOfWork",
+    "#AIAutomation",
+    "#CareerAdvice2025",
+    "#ArtificialIntelligence",
+    "#JobsAtRisk",
+    "#TechTrends",
+    "#LearnAI",
+    "#AITakeover",
+    "#DigitalFuture"
+  ],
+  "created_at": "2026-03-23T14:03:21.480Z",
+  "model_used": "claude-sonnet-4-6"
+}

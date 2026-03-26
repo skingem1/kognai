@@ -1,0 +1,117 @@
+{
+  "radar_id": "radar-20260325T09-28dd45",
+  "collected_at": "2026-03-25T09:10:17.941Z",
+  "topics": [
+    {
+      "topic_id": "reddit-4e38cf28c636",
+      "title": "OpenAI Will Shut Down Sora Video Platform",
+      "summary": "Reddit r/technology (18136 pts, 1511 comments)",
+      "format": "explainer",
+      "source": "reddit",
+      "source_url": "https://www.reddit.com/r/technology/comments/1s2piv1/openai_will_shut_down_sora_video_platform/",
+      "confidence": 85,
+      "keywords": [
+        "openai",
+        "will",
+        "shut",
+        "down",
+        "sora",
+        "video"
+      ],
+      "collected_at": "2026-03-25T09:10:13.237Z"
+    },
+    {
+      "topic_id": "reddit-71e1048994ec",
+      "title": "Tired of authors using ChatGPT in their books",
+      "summary": "Reddit r/ChatGPT (4282 pts, 396 comments)",
+      "format": "explainer",
+      "source": "reddit",
+      "source_url": "https://www.reddit.com/r/ChatGPT/comments/1s2jnpg/tired_of_authors_using_chatgpt_in_their_books/",
+      "confidence": 82,
+      "keywords": [
+        "tired",
+        "authors",
+        "using",
+        "chatgpt",
+        "their",
+        "books"
+      ],
+      "collected_at": "2026-03-25T09:10:17.124Z"
+    },
+    {
+      "topic_id": "cg-dae735d95742",
+      "title": "Siren (SIREN) 📈 114.5%",
+      "summary": "Trending on CoinGecko — rank #1",
+      "format": "debate",
+      "source": "coingecko",
+      "source_url": "https://www.coingecko.com/en/coins/siren-2",
+      "confidence": 80,
+      "keywords": [
+        "siren",
+        "siren",
+        "crypto",
+        "defi"
+      ],
+      "debate_sides": {
+        "side_a": "Siren is overvalued",
+        "side_b": "Siren rally is justified"
+      },
+      "collected_at": "2026-03-25T09:10:12.886Z"
+    },
+    {
+      "topic_id": "tc-69a39fae8368",
+      "title": "A former Thiel fellow&#8217;s startup just launched a drone it says can replace police helicopters",
+      "summary": "TechCrunch — Brinc launched its newest 911 response drone this week, as the company seeks to expand its prominenc",
+      "format": "vision",
+      "source": "techcrunch",
+      "source_url": "https://techcrunch.com/2026/03/24/a-former-thiel-fellows-startup-just-launched-a-drone-it-says-can-replace-police-helicopters/",
+      "confidence": 75,
+      "keywords": [
+        "former",
+        "thiel",
+        "fellow&#8217;s",
+        "startup",
+        "just",
+        "launched"
+      ],
+      "vision_angles": [
+        "Brinc launched its newest 911 response drone this week, as the company seeks to expand its prominence in the public safety industry"
+      ],
+      "collected_at": "2026-03-25T09:10:12.892Z"
+    },
+    {
+      "topic_id": "lobsters-d386bc8c81e8",
+      "title": "Hegel, a universal property-based testing protocol and family of PBT libraries",
+      "summary": "Lobste.rs (41 pts, 19 comments, tags: testing vibecoding)",
+      "format": "listicle",
+      "source": "lobsters",
+      "source_url": "https://hegel.dev",
+      "confidence": 53,
+      "keywords": [
+        "hegel",
+        "universal",
+        "property",
+        "based",
+        "testing",
+        "protocol"
+      ],
+      "listicle_items": [
+        "Hegel",
+        "Universal",
+        "Property"
+      ],
+      "collected_at": "2026-03-25T09:10:14.842Z"
+    }
+  ],
+  "sources_hit": [
+    "hacker_news",
+    "github",
+    "arxiv",
+    "coingecko",
+    "reddit",
+    "dev_to",
+    "lobsters",
+    "techcrunch"
+  ],
+  "errors": []
+}

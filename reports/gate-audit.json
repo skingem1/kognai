@@ -1,9 +1,9 @@
 {
-  "audited_at": "2026-03-25T09:03:58.863Z",
+  "audited_at": "2026-03-26T02:29:27.585Z",
   "sources": {
     "manual_posts": {
-      "total": 9,
-      "real": 6,
+      "total": 45,
+      "real": 42,
       "dry_runs": 3,
       "real_ids": [
         "exp-4aaca82f",
@@ -11,7 +11,43 @@
         "exp-e13848fd",
         "video-57484819",
         "exp-429e2006",
-        "exp-287e9abf"
+        "exp-287e9abf",
+        "v2-8955235f",
+        "v2-17e85bc3",
+        "v2-cbb33aa5",
+        "exp-cf28b84e",
+        "exp-a044af98",
+        "exp-5b853a93",
+        "dbt-c9a1b9aa",
+        "exp-93f4ae07",
+        "dbt-79df7fa1",
+        "exp-af218f4c",
+        "exp-1937cfe1",
+        "dbt-28750945",
+        "exp-7ff189fd",
+        "exp-f3c9dbb8",
+        "exp-3760d8ad",
+        "video-a5f822ee",
+        "exp-7746309f",
+        "exp-9091c5ad",
+        "exp-d6b13c99",
+        "dbt-c170ca34",
+        "v2-734a863a",
+        "video-ca37b5a0",
+        "v2-f749aa06",
+        "v2-2b7450b5",
+        "v2-e3bd4c40",
+        "dbt-7c3375ff",
+        "exp-552c0c33",
+        "v2-e6f7467b",
+        "v2-cee99e8c",
+        "v2-9907a992",
+        "v2-06b3cacd",
+        "v2-d1ede3ef",
+        "v2-35a6d962",
+        "v2-55f66699",
+        "exp-acd650d4",
+        "exp-085525f5"
       ],
       "dry_ids": [
         "video-0b084cc1",
@@ -20,27 +56,27 @@
       ]
     },
     "publish_ledger": {
-      "total": 1239,
+      "total": 1263,
       "with_post_id": 0
     },
     "gate_report": {
       "file": "workspace/gates/phase1-5-gate.json",
-      "gate_count": 6,
-      "date": "2026-03-25",
+      "gate_count": 41,
+      "date": "2026-03-26",
       "urgency": "ON_TRACK"
     }
   },
-  "reconciled_count": 6,
-  "discrepancy": 0,
-  "discrepancy_note": "Sources agree.",
-  "recommended_count": 6,
+  "reconciled_count": 42,
+  "discrepancy": -1,
+  "discrepancy_note": "Gate file shows 41 posts but manual-posts.jsonl has 42 real (non-dry) posts.",
+  "recommended_count": 42,
   "gate_target": 30,
-  "gate_remaining": 24,
+  "gate_remaining": 0,
   "readiness": {
     "deadline": "2026-04-07",
-    "days_left": 14,
-    "posts_remaining": 24,
-    "posts_per_day_needed": 1.71,
-    "pace": "at-risk"
+    "days_left": 13,
+    "posts_remaining": 0,
+    "posts_per_day_needed": 0,
+    "pace": "DONE"
   }
 }

@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1053",
+  "title": "QUALITY \u2014 Entertainment pipeline integration: register assembler + scriptgen in PM2",
+  "description": "1052: needs pipeline running; 1053: entertainment pipeline paused per session notes",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1053-01",
+      "title": "QUALITY \u2014 Entertainment pipeline integration: register assembler + scriptgen in PM2",
+      "type": "feature",
+      "task_type": "scs001",
+      "task_target": "workspace/sprints/sprint-1053-output.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1053"
+    }
+  ]
+}

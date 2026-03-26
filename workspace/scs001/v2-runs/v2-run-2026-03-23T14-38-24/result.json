@@ -1,0 +1,29 @@
+{
+  "run_id": "v2-run-2026-03-23T14-38-24",
+  "signal": {
+    "topic_id": "custom-v2-1774276704906",
+    "topic_name": "I Built an AI Limbic System — Emotion and Memory as MCP Servers",
+    "confidence_score": 80,
+    "keyword_cluster": [
+      "built",
+      "limbic",
+      "system",
+      "emotion",
+      "memory"
+    ],
+    "domain_tags": [
+      "tech",
+      "AI"
+    ],
+    "provenance_source": "custom-topic-v2"
+  },
+  "status": "error",
+  "published": false,
+  "dry_run": true,
+  "retries_used": 0,
+  "timestamps": {
+    "started": "2026-03-23T14:38:24.906Z",
+    "finished": "2026-03-23T14:38:24.908Z"
+  },
+  "error": "ANTHROPIC_API_KEY not set — Scorsese requires cloud LLM"
+}

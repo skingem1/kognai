@@ -1,7 +1,7 @@
 {
   "name": "@godman-protocols/pact",
   "version": "0.2.0",
-  "description": "Protocol for Agent Coordination and Trust \u2014 the missing coordination layer for autonomous AI agents",
+  "description": "Protocol for Agent Coordination and Trust — the missing coordination layer for autonomous AI agents",
   "type": "module",
   "main": "dist/index.js",
   "exports": "./dist/index.js",
@@ -40,10 +40,12 @@
     "node": ">=20.0.0"
   },
   "devDependencies": {
+    "@supabase/supabase-js": "^2.100.0",
+    "dotenv": "^17.3.1",
+    "tsx": "^4.7.0",
     "typescript": "^5.4.0",
-    "tsx": "^4.7.0"
+    "viem": "^2.47.6"
   },
-  "dependencies": {},
   "homepage": "https://github.com/skingem1/godman-protocols/tree/main/pact#readme",
   "bugs": {
     "url": "https://github.com/skingem1/godman-protocols/issues"

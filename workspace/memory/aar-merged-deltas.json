@@ -2,12 +2,12 @@
   "coder::sprint-execution": {
     "agentId": "coder",
     "skillId": "sprint-execution",
-    "latestSprintId": "sprint-1231",
+    "latestSprintId": "sprint-1235",
     "latestScore": 75,
-    "latestAction": "Sprint sprint-1231 success (score: 75)",
-    "latestTimestamp": "2026-03-25T09:43:52.645Z",
-    "entryCount": 1092,
-    "avgScore": 69.19963369963371
+    "latestAction": "Sprint sprint-1235 success (score: 75)",
+    "latestTimestamp": "2026-03-25T09:54:57.799Z",
+    "entryCount": 4,
+    "avgScore": 75
   },
   "coder::feature": {
     "agentId": "coder",

@@ -1,0 +1,115 @@
+{
+  "radar_id": "radar-20260325T09-bb7443",
+  "collected_at": "2026-03-25T09:00:11.915Z",
+  "topics": [
+    {
+      "topic_id": "reddit-4e38cf28c636",
+      "title": "OpenAI Will Shut Down Sora Video Platform",
+      "summary": "Reddit r/technology (18053 pts, 1509 comments)",
+      "format": "explainer",
+      "source": "reddit",
+      "source_url": "https://www.reddit.com/r/technology/comments/1s2piv1/openai_will_shut_down_sora_video_platform/",
+      "confidence": 85,
+      "keywords": [
+        "openai",
+        "will",
+        "shut",
+        "down",
+        "sora",
+        "video"
+      ],
+      "collected_at": "2026-03-25T09:00:02.803Z"
+    },
+    {
+      "topic_id": "reddit-71e1048994ec",
+      "title": "Tired of authors using ChatGPT in their books",
+      "summary": "Reddit r/ChatGPT (4250 pts, 396 comments)",
+      "format": "explainer",
+      "source": "reddit",
+      "source_url": "https://www.reddit.com/r/ChatGPT/comments/1s2jnpg/tired_of_authors_using_chatgpt_in_their_books/",
+      "confidence": 82,
+      "keywords": [
+        "tired",
+        "authors",
+        "using",
+        "chatgpt",
+        "their",
+        "books"
+      ],
+      "collected_at": "2026-03-25T09:00:11.083Z"
+    },
+    {
+      "topic_id": "tc-4cb45811f8fd",
+      "title": "Anthropic hands Claude Code more control, but keeps it on a leash",
+      "summary": "TechCrunch — Anthropic’s new auto mode for Claude Code lets AI execute tasks with fewer approvals, reflecting a b",
+      "format": "debate",
+      "source": "techcrunch",
+      "source_url": "https://techcrunch.com/2026/03/24/anthropic-hands-claude-code-more-control-but-keeps-it-on-a-leash/",
+      "confidence": 75,
+      "keywords": [
+        "anthropic",
+        "hands",
+        "claude",
+        "code",
+        "more",
+        "control"
+      ],
+      "collected_at": "2026-03-25T09:00:02.159Z"
+    },
+    {
+      "topic_id": "tc-69a39fae8368",
+      "title": "A former Thiel fellow&#8217;s startup just launched a drone it says can replace police helicopters",
+      "summary": "TechCrunch — Brinc launched its newest 911 response drone this week, as the company seeks to expand its prominenc",
+      "format": "vision",
+      "source": "techcrunch",
+      "source_url": "https://techcrunch.com/2026/03/24/a-former-thiel-fellows-startup-just-launched-a-drone-it-says-can-replace-police-helicopters/",
+      "confidence": 75,
+      "keywords": [
+        "former",
+        "thiel",
+        "fellow&#8217;s",
+        "startup",
+        "just",
+        "launched"
+      ],
+      "vision_angles": [
+        "Brinc launched its newest 911 response drone this week, as the company seeks to expand its prominence in the public safety industry"
+      ],
+      "collected_at": "2026-03-25T09:00:02.158Z"
+    },
+    {
+      "topic_id": "lobsters-d386bc8c81e8",
+      "title": "Hegel, a universal property-based testing protocol and family of PBT libraries",
+      "summary": "Lobste.rs (41 pts, 19 comments, tags: testing vibecoding)",
+      "format": "listicle",
+      "source": "lobsters",
+      "source_url": "https://hegel.dev",
+      "confidence": 53,
+      "keywords": [
+        "hegel",
+        "universal",
+        "property",
+        "based",
+        "testing",
+        "protocol"
+      ],
+      "listicle_items": [
+        "Hegel",
+        "Universal",
+        "Property"
+      ],
+      "collected_at": "2026-03-25T09:00:04.510Z"
+    }
+  ],
+  "sources_hit": [
+    "hacker_news",
+    "github",
+    "arxiv",
+    "coingecko",
+    "reddit",
+    "dev_to",
+    "lobsters",
+    "techcrunch"
+  ],
+  "errors": []
+}

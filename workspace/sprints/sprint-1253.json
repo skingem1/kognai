@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1253",
+  "title": "PHASE2 \u2014 Achiri conversation analytics dashboard data export",
+  "description": "Achiri is at 100% readiness. Export conversation analytics (DAU, retention, topics) as JSON for future web dashboard.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1253-01",
+      "title": "PHASE2 \u2014 Achiri conversation analytics dashboard data export",
+      "type": "feature",
+      "task_type": "phase2",
+      "task_target": "workspace/sprints/sprint-1253-output.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1253"
+    }
+  ]
+}

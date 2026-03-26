@@ -1,0 +1,12 @@
+{
+  "scenario_id": "scn-fx9k42",
+  "verdict": "PASS",
+  "message_score": 92,
+  "scroll_stop_score": 94,
+  "message_analysis": "Single, crystalline message: Perplexity AI solves ChatGPT's core limitation (real-time internet access) and it's free. Every scene reinforces this — refusal → reveal → capability gap → proof → urgency → loop back to proof. No filler. The angle is sharp (forbidden knowledge + cost removal + concrete differentiator) and absolutely original in framing. Psychological reactance trigger is weaponized perfectly. Viewer will walk away knowing exactly what Perplexity does and why it matters. High shareability — this is the 'you need to know this' format.",
+  "scroll_stop_analysis": "First 1.5s is lethal: ChatGPT refusal + red X + hard cut to rival UI = pattern interrupt overload. Curiosity hooks instantly ('it's called...', 'something ChatGPT cannot do'). Pacing is relentless — 6 scenes in 32s means no dead air. Emotion arc lands perfectly: shock → curiosity → 'oh damn, that's real' → 'everyone should know this' → urgency → satisfying loop. Split-screen proof in Scene 3 is the cinematic moment. React cam in Scene 5 grounds it in human validation. Would absolutely stop a thumb mid-scroll. Feels native, not preachy — it's a hype transfer, not a lecture.",
+  "fixes": [],
+  "confidence": 96,
+  "model_used": "claude-haiku-4-5-20251001",
+  "reviewed_at": "2026-03-23T10:28:03.231Z"
+}

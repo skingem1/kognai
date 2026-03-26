@@ -1,0 +1,111 @@
+{
+  "scenario_id": "scn-kgn7x2",
+  "trend_signal_id": "custom-v2-1774265747169",
+  "title": "The AI Feature That Makes ChatGPT Look Outdated",
+  "angle": "Most people are still using ChatGPT like it's 2023 while one overlooked AI feature has quietly made the entire chat-bot paradigm obsolete — and almost nobody is talking about it.",
+  "scenes": [
+    {
+      "scene_id": "s1",
+      "scene_name": "The Gut-Punch Hook",
+      "duration_s": 4,
+      "voiceover": "ChatGPT just became the Nokia 3310 of AI. Here is the feature nobody warned you about.",
+      "visual_style": "kinetic_text",
+      "visual_description": "Black screen. White bold text slams in word by word: CHATGPT IS NOW OUTDATED. Camera shakes on the word OUTDATED. Flash cut to a Nokia 3310 dissolving into a ChatGPT logo.",
+      "caption_overlay": "ChatGPT is already outdated??",
+      "emotion": "shock",
+      "music_cue": "impact_hit",
+      "pattern_interrupts": 3
+    },
+    {
+      "scene_id": "s2",
+      "scene_name": "The Problem With Chatbots",
+      "duration_s": 5,
+      "voiceover": "Every AI chatbot just answers questions. You ask, it answers. That loop never changes. Until now.",
+      "visual_style": "screen_recording",
+      "visual_description": "Fast montage of a ChatGPT conversation — question, answer, question, answer — shown as a hamster wheel animation overlaid on the screen. Speed ramps up, then hard freeze.",
+      "caption_overlay": "Ask. Answer. Repeat. That model is DEAD.",
+      "emotion": "curiosity",
+      "music_cue": "tension_build",
+      "pattern_interrupts": 2
+    },
+    {
+      "scene_id": "s3",
+      "scene_name": "The Reveal",
+      "duration_s": 6,
+      "voiceover": "Agentic AI. It does not wait for you. It sets goals, takes actions, browses, codes, and ships work — alone.",
+      "visual_style": "screen_recording",
+      "visual_description": "Live screen recording of an AI agent autonomously opening tabs, writing code, executing a file, and sending a summary email — all without a single human prompt shown. Text callouts highlight each autonomous action.",
+      "caption_overlay": "It just... did the whole job. By itself.",
+      "emotion": "revelation",
+      "music_cue": "impact_hit",
+      "pattern_interrupts": 3
+    },
+    {
+      "scene_id": "s4",
+      "scene_name": "Why This Matters To You",
+      "duration_s": 6,
+      "voiceover": "This is not a feature. It is a shift. One agent can replace hours of your work every single day.",
+      "visual_style": "b_roll_montage",
+      "visual_description": "Rapid-fire b-roll: empty office chair, clock spinning fast, a to-do list auto-completing itself, a person closing a laptop and walking away relaxed. Each clip lasts 1 second. High contrast color grade.",
+      "caption_overlay": "Hours of work. Done. While you slept.",
+      "emotion": "urgency",
+      "music_cue": "tension_build",
+      "pattern_interrupts": 2
+    },
+    {
+      "scene_id": "s5",
+      "scene_name": "The Bigger Reveal — The Gap Is Widening",
+      "duration_s": 5,
+      "voiceover": "People using agents right now are 10x faster. Everyone else is still typing prompts like it is 2023.",
+      "visual_style": "kinetic_text",
+      "visual_description": "Split screen: left side shows a person slowly typing into ChatGPT, right side shows an agent completing 12 tasks in a cascade. A bold counter ticks up on the agent side while the human side shows 0.",
+      "caption_overlay": "The gap is already massive. And growing.",
+      "emotion": "intrigue",
+      "music_cue": "ambient",
+      "pattern_interrupts": 2
+    },
+    {
+      "scene_id": "s6",
+      "scene_name": "The Loop Close — Are You Still Typing?",
+      "duration_s": 4,
+      "voiceover": "So next time you type a question into ChatGPT — remember: somewhere, an agent already finished the job.",
+      "visual_style": "kinetic_text",
+      "visual_description": "Callback to scene 1 visuals: Nokia 3310 image reappears, morphs into a person typing into ChatGPT. Bold text asks: STILL TYPING? Screen fades to black with a single blinking cursor.",
+      "caption_overlay": "Still using ChatGPT like it is 2023?",
+      "emotion": "loop",
+      "music_cue": "silence",
+      "pattern_interrupts": 2
+    }
+  ],
+  "hook_test": {
+    "format_reference": "This changes everything",
+    "viral_proof": "Videos using the 'This changes everything' format around AI reveals — including Midjourney V6 and GPT-4o voice demos — have consistently crossed 10M–40M views on TikTok in 2023-2024 by pairing a bold obsolescence claim with a live screen reveal.",
+    "why_it_works": "The word 'outdated' triggers status anxiety in tech-savvy audiences. Viewers fear missing a paradigm shift, so they stop scrolling to protect their competitive edge. The format promises a shortcut to insider knowledge in under 30 seconds.",
+    "estimated_hook_rate": 42
+  },
+  "total_duration_s": 30,
+  "target_emotion_arc": [
+    "shock",
+    "curiosity",
+    "revelation",
+    "urgency",
+    "intrigue",
+    "loop"
+  ],
+  "speaker_name": "Kognai",
+  "tts_voice": "default",
+  "hashtags": [
+    "#agenticai",
+    "#aiagents",
+    "#chatgptoutdated",
+    "#futureofai",
+    "#aiproductivity",
+    "#llmagents",
+    "#techshift",
+    "#artificialintelligence",
+    "#technology",
+    "#learnontiktok"
+  ],
+  "created_at": "2026-03-23T11:36:15.979Z",
+  "model_used": "claude-sonnet-4-6"
+}

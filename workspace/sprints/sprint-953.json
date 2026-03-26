@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-953",
+  "title": "EVAL-011-01 \u2014 OpenClaw env var migration (CLAWDBOT_*/MOLTBOT_* \u2192 OPENCLAW_*)",
+  "description": "P0 CRITICAL from EVAL-011. OpenClaw v2026.3.22-beta.1 removes CLAWDBOT_*/MOLTBOT_* env vars. Search all files for legacy env vars and rename to OPENCLAW_*. Also migrate ~/.moltbot state dir to ~/.openclaw if referenced. Fix any nano-banana-pro skill wrapper references.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "953-01",
+      "title": "EVAL-011-01 \u2014 OpenClaw env var migration (CLAWDBOT_*/MOLTBOT_* \u2192 OPENCLAW_*)",
+      "type": "feature",
+      "task_type": "eval_011",
+      "task_target": "workspace/sprints/sprint-953-output.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "critical",
+      "sprint_id": "sprint-953"
+    }
+  ]
+}

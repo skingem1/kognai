@@ -1,0 +1,46 @@
+{
+  "run_id": "mf-20260324T13-zkqr",
+  "started_at": "2026-03-24T13:10:12.599Z",
+  "completed_at": "2026-03-24T13:12:16.633Z",
+  "topics_found": 3,
+  "scripts_generated": 3,
+  "videos_composited": 3,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "exp-9091c5ad",
+      "format": "explainer",
+      "title": "Mirage raises $75M to continue building models for its AI video editing app Captions",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260324T13-zkqr/output/exp-9091c5ad_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260324T13-zkqr/output/exp-9091c5ad.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "exp-429e2006",
+      "format": "explainer",
+      "title": "Insight Partners scrubs investment post about Delve amid &#8216;fake compliance&#8217; allegations",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260324T13-zkqr/output/exp-429e2006_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260324T13-zkqr/output/exp-429e2006.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "dbt-5a7e209c",
+      "format": "debate",
+      "title": "Siren (SIREN) 📉 -57.6%",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260324T13-zkqr/output/dbt-5a7e209c_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260324T13-zkqr/output/dbt-5a7e209c.srt",
+      "duration_s": 27,
+      "success": true,
+      "avatar_cost": 0.25,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 0.95
+}

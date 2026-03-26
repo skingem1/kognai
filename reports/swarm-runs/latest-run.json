@@ -1,45 +1,67 @@
 {
-  "run_id": "fb070876-7c26-4815-8f0f-1b2a4305c1f7",
+  "run_id": "7973ef3e-c081-47c9-b682-c01f0e97eb3c",
   "project": "kognai",
-  "sprint_file": "workspace/sprints/sprint-855.json",
-  "started_at": "2026-03-23T04:30:39.465Z",
-  "finished_at": "2026-03-23T04:33:49.008Z",
-  "duration_seconds": 190,
+  "sprint_file": "workspace/sprints/sprint-1312.json",
+  "started_at": "2026-03-25T18:01:02.137Z",
+  "finished_at": "2026-03-25T18:11:00.568Z",
+  "duration_seconds": 598,
   "git_branch": "main",
-  "git_head_before": "eae644d",
-  "git_head_after": "d0d947d",
+  "git_head_before": "1f609a9f",
+  "git_head_after": "adb806c1",
   "sovereign_mode": false,
   "summary": {
-    "total_tasks": 1,
-    "done": 1,
+    "total_tasks": 2,
+    "done": 2,
     "rejected": 0,
     "skipped": 0,
     "approval_rate": 1,
-    "total_tokens": 0,
+    "total_tokens": 5488,
     "supervisor_conflicts": 0,
     "ceo_escalations": 0
   },
   "models_used": {
-    "claude-sonnet-4-6": {
-      "calls": 1,
-      "tokens": 0
+    "qwen3:14b": {
+      "calls": 2,
+      "tokens": 5488
     }
   },
-  "total_cost_usd": 0,
+  "total_cost_usd": 0.0027,
   "tasks": [
     {
-      "task_id": "855-01",
-      "title": "Run batch content production",
-      "type": "ops",
-      "task_target": "scripts/scs001/batch-produce.ts",
+      "task_id": "tiktok-live-setup",
+      "title": "tiktok-live-setup",
+      "type": "feature",
+      "task_target": "cloud-code",
       "status": "done",
       "attempts": 1,
-      "model_used": "claude-sonnet-4-6",
+      "model_used": "qwen3:14b",
       "provider": "",
       "tokens_total": 0,
-      "duration_seconds": 32,
+      "duration_seconds": 221,
       "files_written": [
-        "scripts/scs001/batch-produce.ts"
+        "scripts/scs001/tiktok-live-setup.ts"
+      ],
+      "review": {
+        "verdict": "APPROVED",
+        "score": 70,
+        "strengths": []
+      },
+      "error": null,
+      "rejection_reason": null
+    },
+    {
+      "task_id": "gate-readiness-check",
+      "title": "gate-readiness-check",
+      "type": "feature",
+      "task_target": "cloud-code",
+      "status": "done",
+      "attempts": 1,
+      "model_used": "qwen3:14b",
+      "provider": "",
+      "tokens_total": 5488,
+      "duration_seconds": 168,
+      "files_written": [
+        "scripts/scs001/gate-readiness-check.ts"
       ],
       "review": {
         "verdict": "APPROVED",

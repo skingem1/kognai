@@ -1,0 +1,12 @@
+{
+  "scenario_id": "scn-ai7x92",
+  "verdict": "PASS",
+  "message_score": 92,
+  "scroll_stop_score": 88,
+  "message_analysis": "Single, crystalline message: 'These 5 AI tools will reclaim 10 hours of your week.' Every scene reinforces this through concrete time savings (2hrs, 4mins, 40hrs/month stacking). The angle is original — not 'AI tools exist' but 'you're losing time and here's the exact fix.' Hook promises reclaimed time; rest delivers it with proof (Notion, Otter, Perplexity, Zapier, Runway). Viewers will take away: 'I need to try these tools.' High share potential due to personal urgency and specificity.",
+  "scroll_stop_analysis": "First 1.5 seconds are exceptional: red countdown timer (shock), hard cut to black, explosive '5 TOOLS' text. Creates immediate curiosity: 'What are these tools?' Pattern interrupts are consistent (3-3-2-3-2-2 across scenes) with visual variety: kinetic text, split screen, browser hard cut, fast-cut montage, stacking graphics, direct-to-camera finale. Pacing is tight — 34s with no dead air, each scene under 7s except Scene 2-4 which earn their length through density. Emotion arc lands cleanly: shock→curiosity→revelation (Perplexity reveal)→urgency→satisfaction→loop. Scene 6 (direct camera + silence) is a native TikTok micro-pattern. Feels like insider knowledge, not a lecture.",
+  "fixes": [],
+  "confidence": 94,
+  "model_used": "claude-haiku-4-5-20251001",
+  "reviewed_at": "2026-03-23T10:57:02.445Z"
+}

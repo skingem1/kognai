@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-f3c9dbb8",
+  "topic_id": "reddit-4e38cf28c636",
+  "format": "explainer",
+  "title": "OpenAI Will Shut Down Sora Video Platform",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "OpenAI is shutting down Sora — the AI video platform that created realistic videos from text.",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This comes just weeks after it launched, sparking major debate on Reddit and beyond.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Sora was an AI tool that could turn simple text prompts into high-quality videos.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Its most impressive feature was generating complex scenes with accurate physics and lighting.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Content creators, filmmakers, and developers relying on Sora are now left in the dark.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The shutdown raises big questions about the future of AI-generated media.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "What do you think OpenAI should have done differently?",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "OpenAI Will Shut Down Sora Video Platform",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#openai",
+    "#will",
+    "#shut"
+  ],
+  "generated_at": "2026-03-25T09:10:32.352Z",
+  "llm_used": true
+}

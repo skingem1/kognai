@@ -2,9 +2,9 @@
   "report_id": "phase-1.5-gate-report",
   "gate_name": "Phase 1.5 Decision Gate",
   "gate_date": "2026-04-07",
-  "generated_at": "2026-03-24T10:57:06.390Z",
+  "generated_at": "2026-03-25T21:15:56.182Z",
   "is_gate_day": false,
-  "days_until_gate": 14,
+  "days_until_gate": 13,
   "overall_status": "FAIL",
   "criteria_passed": "2/4",
   "criteria": [
@@ -12,7 +12,7 @@
       "id": "post-count",
       "name": "30 TikTok Posts",
       "target": 30,
-      "actual": 3,
+      "actual": 13,
       "pass": false
     },
     {
@@ -20,14 +20,15 @@
       "name": "500 Total Views",
       "target": 500,
       "actual": 0,
-      "pass": false,
-      "avg_per_post": 0
+      "pass": null,
+      "avg_per_post": 0,
+      "note": "TIKTOK_ACCESS_TOKEN not set — view count cannot be fetched"
     },
     {
       "id": "pipeline-operational",
       "name": "Pipeline Producing Videos",
       "target": "10+ in ledger",
-      "actual": 1355,
+      "actual": 1263,
       "pass": true
     },
     {
@@ -38,15 +39,15 @@
       "pass": true
     }
   ],
-  "kill_switch": "NOT TRIGGERED",
+  "kill_switch": "NOT EVALUATED — TIKTOK_ACCESS_TOKEN not set, view count unavailable",
   "system_health": {
-    "smoke_test": "11/11 pass",
-    "commits": 2015,
-    "pipeline_videos": 1355,
+    "smoke_test": "undefined/undefined pass",
+    "commits": 2518,
+    "pipeline_videos": 1263,
     "agents": 44,
     "sprints_shipped": "487+"
   },
-  "decision": "HOLD — 2 criteria not met. 14 days remaining to remediate.",
+  "decision": "HOLD — 2 criteria not met. 13 days remaining to remediate.",
   "next_actions": [
     "Review remediation plan (workspace/gates/remediation-plan.json)",
     "Prioritize posting",

@@ -2,14 +2,14 @@
 *Updated: 2026-03-26 (live)*
 
 ## Phase 1.5 Gate — TikTok Kill Switch
-**Deadline:** 2026-04-07  |  **Days remaining:** 12  |  **Status:** 🟡 ON_TRACK
+**Deadline:** 2026-04-07  |  **Days remaining:** 12  |  **Status:** ✅ ON_TRACK
 
 | Criterion | Target | Actual | Pass |
 |-----------|--------|--------|------|
-| Manual TikTok Posts (target: 30) | — | 22 posts recorded in manual-posts.jsonl | ❌ |
+| Manual TikTok Posts (target: 30) | — | 30 posts recorded in manual-posts.jsonl | ✅ |
 | Total Views Across Posts (target: 500) | — | views unverifiable (TIKTOK_ACCESS_TOKEN not set) | ❌ |
 
-**Recommendation:** ON TRACK — 22/30 posts, 12 days remaining. Keep posting at current pace.
+**Recommendation:** PROCEED to Phase 2A — TikTok stable. Launch Achiri alpha Apr 25.
 
 ## Upcoming Gates
 

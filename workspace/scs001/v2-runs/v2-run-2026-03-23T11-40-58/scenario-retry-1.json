@@ -1,0 +1,111 @@
+{
+  "scenario_id": "scn-xm7k29",
+  "trend_signal_id": "custom-v2-1774266058593",
+  "title": "Elon's AI Actually Thinks Like You — And That's Terrifying",
+  "angle": "While everyone celebrates Grok's 'human-like' thinking, we expose what it actually means when an AI mirrors human cognition — including our biases, fears, and blind spots.",
+  "scenes": [
+    {
+      "scene_id": "s1",
+      "scene_name": "The Hook — Stop Everything",
+      "duration_s": 5,
+      "voiceover": "Elon just launched an AI that thinks like a human. That sounds amazing. It's not.",
+      "visual_style": "kinetic_text",
+      "visual_description": "Bold white text slams onto black screen. Cut to Elon on stage. Zoom crash into his face mid-sentence.",
+      "caption_overlay": "⚠️ This changes how AI works FOREVER",
+      "emotion": "shock",
+      "music_cue": "impact_hit",
+      "pattern_interrupts": 3
+    },
+    {
+      "scene_id": "s2",
+      "scene_name": "What They're Claiming",
+      "duration_s": 5,
+      "voiceover": "Grok 3 doesn't just answer questions. It reasons, doubts, and reconsiders — just like you do.",
+      "visual_style": "b_roll_montage",
+      "visual_description": "Split screen: human brain scan pulsing beside Grok UI typing in real time. Fast cuts every 1.5s.",
+      "caption_overlay": "It questions itself. Like a human brain.",
+      "emotion": "curiosity",
+      "music_cue": "tension_build",
+      "pattern_interrupts": 3
+    },
+    {
+      "scene_id": "s3",
+      "scene_name": "The Hidden Problem",
+      "duration_s": 6,
+      "voiceover": "But here's what nobody's saying — humans are irrational, biased, and wrong constantly. So is this AI.",
+      "visual_style": "kinetic_text",
+      "visual_description": "Text glitches and corrupts mid-sentence. Red tint floods frame. Words fragment and reassemble wrong.",
+      "caption_overlay": "Thinking like a human = thinking like us 😬",
+      "emotion": "intrigue",
+      "music_cue": "tension_build",
+      "pattern_interrupts": 4
+    },
+    {
+      "scene_id": "s4",
+      "scene_name": "The Real Reveal",
+      "duration_s": 6,
+      "voiceover": "It inherits our cognitive biases. Confirmation bias. Overconfidence. Even motivated reasoning. All of it.",
+      "visual_style": "documentary",
+      "visual_description": "Rapid b-roll of AI output screens with highlighted errors. Expert quote cards flash for 0.8s each.",
+      "caption_overlay": "AI that thinks like us... makes mistakes like us",
+      "emotion": "revelation",
+      "music_cue": "impact_hit",
+      "pattern_interrupts": 3
+    },
+    {
+      "scene_id": "s5",
+      "scene_name": "Why This Matters Now",
+      "duration_s": 5,
+      "voiceover": "This AI will write your news, run your search, advise your doctor. With human-level irrationality baked in.",
+      "visual_style": "b_roll_montage",
+      "visual_description": "Montage: news ticker, hospital screen, Google-style search, stock market — all fed by one AI pipeline.",
+      "caption_overlay": "Who's checking the AI's blind spots?",
+      "emotion": "urgency",
+      "music_cue": "tension_build",
+      "pattern_interrupts": 2
+    },
+    {
+      "scene_id": "s6",
+      "scene_name": "The Loop — Back to Start",
+      "duration_s": 5,
+      "voiceover": "Elon said thinking like a human is the goal. Watch the clip again — and ask if that's actually good.",
+      "visual_style": "kinetic_text",
+      "visual_description": "Same opening crash zoom replays in 0.5x slow motion. Final frame freezes on Elon's face. Loop cue pulses.",
+      "caption_overlay": "👆 Watch again. You'll catch what you missed.",
+      "emotion": "loop",
+      "music_cue": "silence",
+      "pattern_interrupts": 2
+    }
+  ],
+  "hook_test": {
+    "format_reference": "This changes everything",
+    "viral_proof": "Videos using the 'sounds amazing, it's not' reversal format — including MrBeast tech reveals and Fireship AI breakdowns — consistently hit 10M-80M views by weaponizing cognitive dissonance in the first 3 seconds.",
+    "why_it_works": "The hook makes a claim, immediately invalidates the expected reaction, and forces the viewer to resolve the contradiction — they cannot scroll until they know why. Pairs with the loop ending to drive rewatches.",
+    "estimated_hook_rate": 42
+  },
+  "total_duration_s": 32,
+  "target_emotion_arc": [
+    "shock",
+    "curiosity",
+    "intrigue",
+    "revelation",
+    "urgency",
+    "loop"
+  ],
+  "speaker_name": "Kognai",
+  "tts_voice": "default",
+  "hashtags": [
+    "#grok3",
+    "#elonmusk",
+    "#aibiases",
+    "#artificialintelligence",
+    "#techexplained",
+    "#AIthinking",
+    "#xai",
+    "#futureofai",
+    "#tech",
+    "#AI"
+  ],
+  "created_at": "2026-03-23T11:42:01.361Z",
+  "model_used": "claude-sonnet-4-6"
+}

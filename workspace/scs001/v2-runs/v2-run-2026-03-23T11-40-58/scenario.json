@@ -1,0 +1,111 @@
+{
+  "scenario_id": "scn-xm7k92",
+  "trend_signal_id": "custom-v2-1774266058593",
+  "title": "Elon Just Broke the AI Barrier Nobody Thought Was Possible",
+  "angle": "This isn't another chatbot — Grok 3 mimics human reasoning chains, meaning AI just stopped being a tool and started being a mind. Here's what that actually means for you.",
+  "scenes": [
+    {
+      "scene_id": "s1",
+      "scene_name": "The Shock Hook",
+      "duration_s": 5,
+      "voiceover": "Elon just launched an AI that doesn't search for answers — it actually thinks through them. Like a human.",
+      "visual_style": "kinetic_text",
+      "visual_description": "Bold white text explodes onto black screen: 'IT THINKS.' Camera flash effect. Red glow pulse behind text.",
+      "caption_overlay": "🚨 This changes the game FOREVER",
+      "emotion": "shock",
+      "music_cue": "impact_hit",
+      "pattern_interrupts": 3
+    },
+    {
+      "scene_id": "s2",
+      "scene_name": "What Makes It Different",
+      "duration_s": 6,
+      "voiceover": "Every other AI matches patterns. This one builds a reasoning chain — step by step — before it answers. That's new.",
+      "visual_style": "b_roll_montage",
+      "visual_description": "Split screen: left shows ChatGPT spitting instant text, right shows Grok 3 visibly 'pausing' then constructing layered logic nodes.",
+      "caption_overlay": "Old AI: pattern match. New AI: actual reasoning 🧠",
+      "emotion": "curiosity",
+      "music_cue": "tension_build",
+      "pattern_interrupts": 2
+    },
+    {
+      "scene_id": "s3",
+      "scene_name": "The Proof Drop",
+      "duration_s": 6,
+      "voiceover": "They gave it a math problem with a trick hidden inside. It caught the trick. GPT-4 didn't. Neither did Gemini.",
+      "visual_style": "screen_recording",
+      "visual_description": "Live screen capture: problem typed in, Grok flags the embedded trick mid-solution in yellow highlight, competitors shown failing side by side.",
+      "caption_overlay": "It caught what the others MISSED 👀",
+      "emotion": "intrigue",
+      "music_cue": "tension_build",
+      "pattern_interrupts": 2
+    },
+    {
+      "scene_id": "s4",
+      "scene_name": "The Real Implication",
+      "duration_s": 6,
+      "voiceover": "When AI stops retrieving and starts reasoning — doctors, lawyers, engineers — every expert job just changed overnight.",
+      "visual_style": "b_roll_montage",
+      "visual_description": "Rapid cuts: surgeon reviewing scan, lawyer reading brief, coder typing — each with a subtle AI overlay ghosting their screen in real time.",
+      "caption_overlay": "Your job description just got rewritten 📄",
+      "emotion": "urgency",
+      "music_cue": "impact_hit",
+      "pattern_interrupts": 3
+    },
+    {
+      "scene_id": "s5",
+      "scene_name": "The Bigger Reveal",
+      "duration_s": 5,
+      "voiceover": "And here's what nobody's saying — Elon built this OUTSIDE OpenAI specifically so there are no safety guardrails slowing it down.",
+      "visual_style": "documentary",
+      "visual_description": "Dark cinematic framing, slow zoom on xAI logo dissolving into a brain scan image, text overlay 'No Guardrails' fades in ominously.",
+      "caption_overlay": "This is the part they don't want trending 🔇",
+      "emotion": "revelation",
+      "music_cue": "silence",
+      "pattern_interrupts": 2
+    },
+    {
+      "scene_id": "s6",
+      "scene_name": "Loop Closer",
+      "duration_s": 5,
+      "voiceover": "So next time you ask an AI something — ask yourself: is it thinking, or just guessing? Because now one of them actually thinks.",
+      "visual_style": "kinetic_text",
+      "visual_description": "Text rewinds back to opening frame: 'IT THINKS.' — loop-perfect cut back to s1 energy. Subtle rewind glitch effect.",
+      "caption_overlay": "Watch this again. You missed something. 🔁",
+      "emotion": "loop",
+      "music_cue": "ambient",
+      "pattern_interrupts": 2
+    }
+  ],
+  "hook_test": {
+    "format_reference": "This changes everything",
+    "viral_proof": "MrBeast Tech and Waveform clips using 'X just changed everything' cold-open format have each cleared 10M–40M views; the format works by opening with a definitive claim that forces the viewer to either accept or disprove it — both outcomes require watching.",
+    "why_it_works": "The word 'thinks' in the hook is doing all the work — humans are hardwired to react to agency in non-human things. Pairing it with Elon's name (high-recognition trigger) and a visual impact cut creates a 2-second pattern interrupt that beats the scroll threshold.",
+    "estimated_hook_rate": 42
+  },
+  "total_duration_s": 33,
+  "target_emotion_arc": [
+    "shock",
+    "curiosity",
+    "intrigue",
+    "urgency",
+    "revelation",
+    "loop"
+  ],
+  "speaker_name": "Kognai",
+  "tts_voice": "default",
+  "hashtags": [
+    "#grok3",
+    "#xai",
+    "#elonmuskai",
+    "#aibreakthrough",
+    "#artificialintelligence",
+    "#futureofwork",
+    "#techalert",
+    "#aivsai",
+    "#tech",
+    "#ai"
+  ],
+  "created_at": "2026-03-23T11:41:28.405Z",
+  "model_used": "claude-sonnet-4-6"
+}

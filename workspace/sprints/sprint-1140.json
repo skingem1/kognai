@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1140",
+  "title": "GATE \u2014 /pace: show time since last pipeline run (content freshness)",
+  "description": "/pace focuses on posting pace but content freshness also matters. Show how long since the last pipeline run produced new videos so operator knows if the supply is stale.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1140-01",
+      "title": "GATE \u2014 /pace: show time since last pipeline run (content freshness)",
+      "type": "feature",
+      "task_type": "gate",
+      "task_target": "workspace/sprints/sprint-1140-output.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1140"
+    }
+  ]
+}

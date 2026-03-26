@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1250",
+  "title": "INFRA \u2014 Pipeline output validator cron (verify captioned videos are playable)",
+  "description": "Pipeline produces videos but no automated check verifies they are playable. Add ffprobe validation step.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1250-01",
+      "title": "INFRA \u2014 Pipeline output validator cron (verify captioned videos are playable)",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "workspace/sprints/sprint-1250-output.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1250"
+    }
+  ]
+}

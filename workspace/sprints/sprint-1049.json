@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1049",
+  "title": "ACHIRI-ALPHA — Bot startup health check script + pm2 start instructions",
+  "description": "Create scripts/achiri/start-bot.sh: checks ACHIRI_TELEGRAM_BOT_TOKEN in .env, validates Ollama is reachable, starts achiri-telegram PM2 process, reports health.",
+  "block": "PHASE2",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1049-01",
+      "title": "Create scripts/achiri/start-bot.sh health check + start script",
+      "type": "feature",
+      "task_target": "scripts/achiri/start-bot.sh",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1049"
+    }
+  ]
+}

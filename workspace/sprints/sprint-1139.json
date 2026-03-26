@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1139",
+  "title": "OPS \u2014 /errors: show processes with zero errors today (all-clear list)",
+  "description": "Operators focus on errors but a zero-error list builds confidence. Show processes that have been clean all day to offset the error noise and signal overall stability.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1139-01",
+      "title": "OPS \u2014 /errors: show processes with zero errors today (all-clear list)",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "workspace/sprints/sprint-1139-output.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1139"
+    }
+  ]
+}

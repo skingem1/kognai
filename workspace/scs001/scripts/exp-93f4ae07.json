@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-93f4ae07",
+  "topic_id": "tc-19725ffec99d",
+  "format": "explainer",
+  "title": "Harvey confirms $11B valuation: Sequoia triples down",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Harvey just confirmed a mind-blowing $11 billion valuation — and Sequoia is doubling down.",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "AI legal tools are the next big thing, and top investors are all in.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Harvey is an AI-powered legal assistant that automates contract work and legal research.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Sequoia tripled their investment, showing huge confidence in Harvey’s potential.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Lawyers, startups, and legal teams will save hours of work with this tech.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The key takeaway? AI is reshaping the legal world faster than most expect.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "What’s next for AI in law — and should you be paying attention?",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "Harvey confirms $11B valuation: Sequoia triples down",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#harvey",
+    "#confirms",
+    "#$11b"
+  ],
+  "generated_at": "2026-03-25T17:11:12.368Z",
+  "llm_used": true
+}

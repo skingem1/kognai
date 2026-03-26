@@ -1,0 +1,46 @@
+{
+  "run_id": "mf-20260324T05-x3fb",
+  "started_at": "2026-03-24T05:10:11.718Z",
+  "completed_at": "2026-03-24T05:12:09.899Z",
+  "topics_found": 3,
+  "scripts_generated": 3,
+  "videos_composited": 3,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "exp-e13848fd",
+      "format": "explainer",
+      "title": "Bengaluru food delivery startup Swish raises $38M, its third round in 18 months",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260324T05-x3fb/output/exp-e13848fd_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260324T05-x3fb/output/exp-e13848fd.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "exp-3760d8ad",
+      "format": "explainer",
+      "title": "Air Street becomes one of the largest solo VCs in Europe with $232M fund",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260324T05-x3fb/output/exp-3760d8ad_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260324T05-x3fb/output/exp-3760d8ad.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "dbt-c170ca34",
+      "format": "debate",
+      "title": "Siren (SIREN) 📉 -58.9%",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260324T05-x3fb/output/dbt-c170ca34_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260324T05-x3fb/output/dbt-c170ca34.srt",
+      "duration_s": 27,
+      "success": true,
+      "avatar_cost": 0.25,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 0.95
+}

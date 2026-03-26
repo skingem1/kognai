@@ -1,0 +1,12 @@
+{
+  "scenario_id": "scn-apl7x9",
+  "verdict": "PASS",
+  "message_score": 92,
+  "scroll_stop_score": 89,
+  "message_analysis": "Crystal clear single message: Apple rebranded basic features as AI to drive upgrades they didn't earn. Every scene reinforces this—promise → reality gap → benchmark proof → financial motive → loop back to the lie. The angle is original (most tech criticism focuses on features, not corporate deception), and it stands out in a feed of product reviews. The hook promises 'proof of lying' and delivers benchmarks + internal awareness. Shareability is high because it validates user frustration (paying premium for underwhelming AI) while creating cognitive dissonance for Apple loyalists (cognitive dissonance drives comments).",
+  "scroll_stop_analysis": "Hook (Scene 1) is a slam: 'Apple just got caught lying' + glitching logo + red flash. Instant curiosity and shock. Pattern interrupts are aggressive: kinetic text, screen glitches, audio impacts, split-screen reality check, fast scrolling charts, quick-cut montage, loop back. Pacing is tight—no dead air, each scene builds tension. Emotion arc executes cleanly: shock → curiosity (what did they promise?) → intrigue (split screen reveal) → revelation (benchmarks) → urgency (financial motive) → satisfaction (loop closure). Feels native to TikTok exposé format (MrBeast-adjacent, not preachy). Would stop most scrollers in first 3 seconds.",
+  "fixes": [],
+  "confidence": 94,
+  "model_used": "claude-haiku-4-5-20251001",
+  "reviewed_at": "2026-03-23T11:03:14.776Z"
+}

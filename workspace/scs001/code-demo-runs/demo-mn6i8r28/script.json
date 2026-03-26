@@ -1,0 +1,71 @@
+{
+  "demo_id": "demo-mn6i8r28",
+  "title": "Talk to Claude with Python",
+  "language": "python",
+  "total_duration_s": 25,
+  "steps": [
+    {
+      "step_id": "s1",
+      "title": "Step 1: Setup",
+      "code_lines": [
+        "import anthropic",
+        "client = anthropic.Anthropic()"
+      ],
+      "language": "python",
+      "explanation": "First, we import the Anthropic library and create a client.",
+      "duration_s": 6,
+      "highlight_lines": [
+        1
+      ]
+    },
+    {
+      "step_id": "s2",
+      "title": "Step 2: Send a Prompt",
+      "code_lines": [
+        "response = client.messages.create(",
+        "    model=\"claude-3-sonnet-20240229\",",
+        "    messages=[{\"role\": \"user\", \"content\": prompt}])"
+      ],
+      "language": "python",
+      "explanation": "We send a prompt to Claude using the messages.create method.",
+      "duration_s": 7,
+      "highlight_lines": [
+        1
+      ]
+    },
+    {
+      "step_id": "s3",
+      "title": "Step 3: Get the Response",
+      "code_lines": [
+        "return response.content[0].text"
+      ],
+      "language": "python",
+      "explanation": "Finally, we extract and return the response text from Claude.",
+      "duration_s": 5,
+      "highlight_lines": [
+        1
+      ]
+    },
+    {
+      "step_id": "s4",
+      "title": "Step 4: Try It Yourself",
+      "code_lines": [
+        "print(control_claude(\"Hello, Claude!\"))"
+      ],
+      "language": "python",
+      "explanation": "Try running this code and chat with Claude in real time!",
+      "duration_s": 7,
+      "highlight_lines": [
+        1
+      ]
+    }
+  ],
+  "hashtags": [
+    "#coding",
+    "#python",
+    "#ai",
+    "#claude",
+    "#tutorial"
+  ],
+  "intro_hook": "Want to chat with Claude? Let's code it!"
+}

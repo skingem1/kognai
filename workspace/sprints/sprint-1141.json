@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1141",
+  "title": "GATE \u2014 /gate: show subscriber count required to hit MRR target",
+  "description": "/gate tracks posts and views but not the revenue path. Show how many \u20ac9/mo subscribers are needed to hit the MRR target (e.g. \u20ac500) to tie content KPIs to revenue.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1141-01",
+      "title": "GATE \u2014 /gate: show subscriber count required to hit MRR target",
+      "type": "feature",
+      "task_type": "gate",
+      "task_target": "workspace/sprints/sprint-1141-output.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1141"
+    }
+  ]
+}

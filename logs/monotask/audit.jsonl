@@ -71,3 +71,9 @@
 {"ts":"2026-03-23T04:31:18.568Z","agentId":"coder","taskId":"855-01","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
 {"ts":"2026-03-23T04:31:18.569Z","agentId":"coder","taskId":"855-01","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
 {"ts":"2026-03-23T04:31:50.878Z","agentId":"coder","taskId":"855-01","transition":"ACTIVE→IDLE","from":"ACTIVE","to":"IDLE","depth":0}
+{"ts":"2026-03-25T18:02:19.832Z","agentId":"coder","taskId":"tiktok-live-setup","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-25T18:02:19.833Z","agentId":"coder","taskId":"tiktok-live-setup","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-25T18:06:01.111Z","agentId":"coder","taskId":"tiktok-live-setup","transition":"ACTIVE→IDLE","from":"ACTIVE","to":"IDLE","depth":0}
+{"ts":"2026-03-25T18:06:01.117Z","agentId":"coder","taskId":"gate-readiness-check","transition":"IDLE→RESERVED","from":"IDLE","to":"RESERVED","depth":0}
+{"ts":"2026-03-25T18:06:01.117Z","agentId":"coder","taskId":"gate-readiness-check","transition":"RESERVED→ACTIVE","from":"RESERVED","to":"ACTIVE","depth":0}
+{"ts":"2026-03-25T18:08:48.933Z","agentId":"coder","taskId":"gate-readiness-check","transition":"ACTIVE→IDLE","from":"ACTIVE","to":"IDLE","depth":0}

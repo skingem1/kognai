@@ -1,0 +1,111 @@
+{
+  "scenario_id": "scn-dev8421",
+  "trend_signal_id": "custom-v2-1774276863156",
+  "title": "Why Every Developer Needs an AI Code Review Agent in 2026",
+  "angle": "Your code reviews are silently killing your team's velocity — and most devs have no idea until it's too late.",
+  "scenes": [
+    {
+      "scene_id": "s1",
+      "scene_name": "The Hook — The Bug That Shipped",
+      "duration_s": 5,
+      "voiceover": "A single unreviewed line of code cost this startup $2.3 million. And it passed code review.",
+      "visual_style": "kinetic_text",
+      "visual_description": "Bold red text slams onto black screen: '$2.3M LOST'. Then a blinking cursor on a 3-line code snippet.",
+      "caption_overlay": "This code passed review. Then destroyed everything.",
+      "emotion": "shock",
+      "music_cue": "impact_hit",
+      "pattern_interrupts": 3
+    },
+    {
+      "scene_id": "s2",
+      "scene_name": "The Problem — Human Review Is Broken",
+      "duration_s": 6,
+      "voiceover": "Devs review 200+ lines per hour. Studies show accuracy drops to 60% after just 400 lines. You're missing bugs.",
+      "visual_style": "b_roll_montage",
+      "visual_description": "Split screen: tired dev scrolling a PR at 2am vs. a clock ticking fast. Red X marks multiply on code lines.",
+      "caption_overlay": "Your brain misses 40% of bugs after 400 lines.",
+      "emotion": "curiosity",
+      "music_cue": "tension_build",
+      "pattern_interrupts": 2
+    },
+    {
+      "scene_id": "s3",
+      "scene_name": "The Reveal — What an AI Agent Actually Does",
+      "duration_s": 6,
+      "voiceover": "An AI code review agent catches security holes, logic errors, and style drift — in seconds, not hours.",
+      "visual_style": "screen_recording",
+      "visual_description": "Screen shows a PR. AI agent comments appear in rapid fire: security flag, logic flaw, dead code — all highlighted.",
+      "caption_overlay": "AI found 7 issues in 4 seconds. Human missed them all.",
+      "emotion": "revelation",
+      "music_cue": "impact_hit",
+      "pattern_interrupts": 3
+    },
+    {
+      "scene_id": "s4",
+      "scene_name": "The Stakes — 2026 Is Already Here",
+      "duration_s": 5,
+      "voiceover": "Teams using AI review agents ship 35% faster with 50% fewer production bugs. The gap is widening fast.",
+      "visual_style": "kinetic_text",
+      "visual_description": "Two bar charts animate side by side: AI teams vs. manual teams. Gap grows in real time. Numbers punch in.",
+      "caption_overlay": "35% faster. 50% fewer bugs. No contest.",
+      "emotion": "urgency",
+      "music_cue": "tension_build",
+      "pattern_interrupts": 2
+    },
+    {
+      "scene_id": "s5",
+      "scene_name": "The Payoff — What You Should Do Today",
+      "duration_s": 5,
+      "voiceover": "You don't replace your team. You give every dev a senior engineer watching every single line, always.",
+      "visual_style": "react_cam",
+      "visual_description": "Developer looks up from screen, smiles, leans back. Overlay: a green checkmark flooding across the PR diff.",
+      "caption_overlay": "Every dev. Senior-level review. Zero extra headcount.",
+      "emotion": "satisfaction",
+      "music_cue": "upbeat",
+      "pattern_interrupts": 2
+    },
+    {
+      "scene_id": "s6",
+      "scene_name": "The Loop — Back to the Bug",
+      "duration_s": 4,
+      "voiceover": "That $2.3M bug? An AI agent flags that exact pattern in under a second. Still think you don't need one?",
+      "visual_style": "kinetic_text",
+      "visual_description": "Original code snippet returns. AI agent instantly underlines the fatal line in red. Dollar amount flashes again.",
+      "caption_overlay": "Still reviewing code manually in 2026?",
+      "emotion": "loop",
+      "music_cue": "silence",
+      "pattern_interrupts": 2
+    }
+  ],
+  "hook_test": {
+    "format_reference": "Wait, what? — Hook with surprising claim → proof → bigger reveal",
+    "viral_proof": "The 'shocking financial loss caused by invisible mistake' hook format has driven 10M+ views across tech channels. Examples: Fireship's 'This bug cost $X' format and similar fintech breach explainers consistently hit 8-15M views on TikTok and YouTube Shorts in 2023-2025.",
+    "why_it_works": "Loss aversion is the strongest cognitive trigger. Opening with a concrete dollar loss tied to something every developer does daily (code review) creates immediate personal stakes. The viewer thinks: 'Could this happen to me?' — that question locks them in.",
+    "estimated_hook_rate": 42
+  },
+  "total_duration_s": 31,
+  "target_emotion_arc": [
+    "shock",
+    "curiosity",
+    "revelation",
+    "urgency",
+    "satisfaction",
+    "loop"
+  ],
+  "speaker_name": "Kognai",
+  "tts_voice": "default",
+  "hashtags": [
+    "#aicodereview",
+    "#developertools",
+    "#softwareengineering2026",
+    "#codequality",
+    "#devops",
+    "#aiagents",
+    "#programming",
+    "#tech",
+    "#coding",
+    "#AI"
+  ],
+  "created_at": "2026-03-23T14:41:31.598Z",
+  "model_used": "claude-sonnet-4-6"
+}

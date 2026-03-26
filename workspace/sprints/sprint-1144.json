@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1144",
+  "title": "OPS \u2014 /status: show count of unread Telegram bot messages (backlog)",
+  "description": "If the bot has a pending message backlog (from users waiting for replies), operator needs to know. Show unread/queued message count from the Achiri bot log.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1144-01",
+      "title": "OPS \u2014 /status: show count of unread Telegram bot messages (backlog)",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "workspace/sprints/sprint-1144-output.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1144"
+    }
+  ]
+}

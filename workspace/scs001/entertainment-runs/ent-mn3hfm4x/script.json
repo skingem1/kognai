@@ -1,0 +1,64 @@
+{
+  "script_id": "ent-mn3hfm4x",
+  "topic": "Why robots will replace all delivery drivers by 2028",
+  "title": "Robots Taking Over Delivery by 2028",
+  "scenes": [
+    {
+      "scene_id": "s1",
+      "visual_prompt": "cinematic aerial shot of a futuristic city at sunset, golden light reflecting off glass buildings, flying vehicles in the distance, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 5,
+      "voiceover_text": "The future is closer than you think",
+      "caption_text": "THE FUTURE IS CLOSER THAN YOU THINK",
+      "transition": "fade"
+    },
+    {
+      "scene_id": "s2",
+      "visual_prompt": "a group of humanoid robots walking in formation on a busy street, avoiding pedestrians and navigating traffic with precision, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 6,
+      "voiceover_text": "By 2028, robots will be the new delivery drivers",
+      "caption_text": "ROBOTS WILL REPLACE DELIVERY DRIVERS",
+      "transition": "fade"
+    },
+    {
+      "scene_id": "s3",
+      "visual_prompt": "a close-up of a robot arm placing a package on a doorstep, surrounded by a quiet suburban neighborhood, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 5,
+      "voiceover_text": "They're faster, cheaper, and never get tired",
+      "caption_text": "FAST, CHEAP, AND NEVER TIRED",
+      "transition": "fade"
+    },
+    {
+      "scene_id": "s4",
+      "visual_prompt": "a crowd of people watching a delivery drone land smoothly on a rooftop, with a robotic arm retrieving the package, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 6,
+      "voiceover_text": "Human drivers may soon be a thing of the past",
+      "caption_text": "HUMAN DRIVERS MAY BE GONE",
+      "transition": "fade"
+    },
+    {
+      "scene_id": "s5",
+      "visual_prompt": "a dramatic wide shot of a city skyline with robotic delivery vehicles moving in perfect synchronization across the streets, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 6,
+      "voiceover_text": "The rise of AI is here—and it's unstoppable",
+      "caption_text": "AI IS HERE AND UNSTOPPABLE",
+      "transition": "cut"
+    },
+    {
+      "scene_id": "s6",
+      "visual_prompt": "a glowing neon sign with a robotic face, blinking rapidly as it pulses with light, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 4,
+      "voiceover_text": "Ready for the robot revolution?",
+      "caption_text": "READY FOR THE ROBOT REVOLUTION?",
+      "transition": "fade"
+    }
+  ],
+  "total_duration_s": 32,
+  "with_voiceover": true,
+  "with_music": true,
+  "hashtags": [
+    "#ai",
+    "#futuretech",
+    "#robotdelivery",
+    "#2028"
+  ]
+}

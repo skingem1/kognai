@@ -1,0 +1,111 @@
+{
+  "scenario_id": "scn-gk7x91",
+  "trend_signal_id": "custom-v2-1774262460768",
+  "title": "Google Just Killed Its Own AI Product and Nobody Noticed",
+  "angle": "Google quietly shut down Gemini Advanced's most powerful feature while hyping its AI dominance — the silence is the scandal",
+  "scenes": [
+    {
+      "scene_id": "s1",
+      "scene_name": "The Silent Kill",
+      "duration_s": 5,
+      "voiceover": "Google just killed one of its own AI products. No announcement. No apology. It just disappeared.",
+      "visual_style": "kinetic_text",
+      "visual_description": "Black screen, white text slams in word by word. Google logo flickers then glitches out mid-frame.",
+      "caption_overlay": "GOOGLE DELETED THIS… AND SAID NOTHING",
+      "emotion": "shock",
+      "music_cue": "silence",
+      "pattern_interrupts": 3
+    },
+    {
+      "scene_id": "s2",
+      "scene_name": "What Was It",
+      "duration_s": 6,
+      "voiceover": "This was a flagship AI feature they demoed on stage. Millions of users had access. Then — gone.",
+      "visual_style": "screen_recording",
+      "visual_description": "Screen recording of the product page loading a 404 error. Archive footage of the original demo flashes in split screen.",
+      "caption_overlay": "Launched with fanfare. Buried in silence.",
+      "emotion": "intrigue",
+      "music_cue": "tension_build",
+      "pattern_interrupts": 2
+    },
+    {
+      "scene_id": "s3",
+      "scene_name": "The Pattern Nobody Talks About",
+      "duration_s": 6,
+      "voiceover": "This isn't the first time. Google has killed 15 major products since 2019. AI is next in line.",
+      "visual_style": "b_roll_montage",
+      "visual_description": "Rapid-fire montage of tombstones labeled Google Stadia, Inbox, Allo, Duplex — each stamped DEAD in red.",
+      "caption_overlay": "15 products. 15 funerals. Zero apologies.",
+      "emotion": "revelation",
+      "music_cue": "impact_hit",
+      "pattern_interrupts": 3
+    },
+    {
+      "scene_id": "s4",
+      "scene_name": "Why They Do It",
+      "duration_s": 6,
+      "voiceover": "They launch fast to own headlines. Then abandon quietly when it stops beating OpenAI in benchmarks.",
+      "visual_style": "documentary",
+      "visual_description": "Close-up talking-head style with dramatic side lighting. Overlaid text shows Google vs OpenAI benchmark graphs dropping.",
+      "caption_overlay": "Win the news cycle. Bury the failure.",
+      "emotion": "urgency",
+      "music_cue": "tension_build",
+      "pattern_interrupts": 2
+    },
+    {
+      "scene_id": "s5",
+      "scene_name": "What This Means For You",
+      "duration_s": 5,
+      "voiceover": "If you built workflows on Google AI tools — your stack could vanish tomorrow. No warning.",
+      "visual_style": "kinetic_text",
+      "visual_description": "Calendar dates disappear one by one. Final frame shows a blank screen with a blinking cursor.",
+      "caption_overlay": "Your AI stack is on borrowed time.",
+      "emotion": "urgency",
+      "music_cue": "impact_hit",
+      "pattern_interrupts": 2
+    },
+    {
+      "scene_id": "s6",
+      "scene_name": "The Loop — What Google Doesn't Want You Remembering",
+      "duration_s": 6,
+      "voiceover": "Next time Google unveils a shiny new AI on stage — remember this moment. It already happened.",
+      "visual_style": "kinetic_text",
+      "visual_description": "The opening Google glitch logo replays, but now overlaid with a graveyard of product names. Screen freezes on the 404 error.",
+      "caption_overlay": "They'll do it again. And nobody will notice.",
+      "emotion": "loop",
+      "music_cue": "silence",
+      "pattern_interrupts": 2
+    }
+  ],
+  "hook_test": {
+    "format_reference": "The real reason X happened — hidden explanation leading to conspiracy-adjacent reveal",
+    "viral_proof": "Videos using the 'silent corporate burial' format — e.g. 'Apple secretly removed this feature' by @technews.daily — have consistently hit 10M-40M views on TikTok by pairing corporate silence with user betrayal emotion",
+    "why_it_works": "The hook combines institutional betrayal, silence as scandal, and personal stakes — three triggers that stop scrollers because it feels like insider knowledge they were almost denied",
+    "estimated_hook_rate": 42
+  },
+  "total_duration_s": 34,
+  "target_emotion_arc": [
+    "shock",
+    "intrigue",
+    "revelation",
+    "urgency",
+    "urgency",
+    "loop"
+  ],
+  "speaker_name": "Kognai",
+  "tts_voice": "default",
+  "hashtags": [
+    "#googleai",
+    "#techdrama",
+    "#aitools",
+    "#googlegaveyard",
+    "#bigtech",
+    "#aistartup",
+    "#techexposed",
+    "#technology",
+    "#artificialintelligence",
+    "#viral"
+  ],
+  "created_at": "2026-03-23T10:41:27.113Z",
+  "model_used": "claude-sonnet-4-6"
+}

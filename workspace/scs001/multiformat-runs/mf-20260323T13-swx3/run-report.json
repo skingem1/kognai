@@ -1,0 +1,46 @@
+{
+  "run_id": "mf-20260323T13-swx3",
+  "started_at": "2026-03-23T13:10:16.579Z",
+  "completed_at": "2026-03-23T13:12:53.286Z",
+  "topics_found": 3,
+  "scripts_generated": 3,
+  "videos_composited": 3,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "exp-552c0c33",
+      "format": "explainer",
+      "title": "Solana (SOL) 📈 3.6%",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T13-swx3/output/exp-552c0c33_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T13-swx3/output/exp-552c0c33.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "exp-287e9abf",
+      "format": "explainer",
+      "title": "Bitcoin (BTC) 📈 3.2%",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T13-swx3/output/exp-287e9abf_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T13-swx3/output/exp-287e9abf.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "dbt-7c3375ff",
+      "format": "debate",
+      "title": "Backpack (BP) 📉 -39.2%",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T13-swx3/output/dbt-7c3375ff_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260323T13-swx3/output/dbt-7c3375ff.srt",
+      "duration_s": 27,
+      "success": true,
+      "avatar_cost": 0.25,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 0.95
+}

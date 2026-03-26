@@ -1,0 +1,12 @@
+{
+  "scenario_id": "scn-dev9x47",
+  "verdict": "PASS",
+  "message_score": 92,
+  "scroll_stop_score": 94,
+  "message_analysis": "Crystal clear single message: AI agents are replacing traditional developer workflows, and the gap between those who adopt and those who don't is widening NOW. Every scene reinforces this—no filler. Hook promises insider knowledge of a stealth startup threat, and delivers proof (4 min vs 3 days). The angle is sharp and original. Developers will absolutely share this because it triggers existential career anxiety + FOMO. Message lands.",
+  "scroll_stop_analysis": "Scene 1 is lethal: 'made 10 years of coding experience feel worthless overnight' + kinetic text + red glow = immediate stop. Pattern interrupts are consistent (3, 3, 2, 3, 2, 2). Pacing is tight—no dead air, speed ramps accelerate tension. Emotion arc builds from shock → intrigue → revelation → dual urgency (developer panic + adoption gap), then loops back to hook. Feels native TikTok: rapid cuts, real tweets, kinetic design, no lecture tone. This will stop scrolls.",
+  "fixes": [],
+  "confidence": 94,
+  "model_used": "claude-haiku-4-5-20251001",
+  "reviewed_at": "2026-03-23T11:08:43.902Z"
+}

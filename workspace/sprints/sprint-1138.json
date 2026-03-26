@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1138",
+  "title": "ACHIRI \u2014 /achiri: show Derja profiler test pass rate from latest run",
+  "description": "Derja profiling is core to Achiri personality. Show the latest test pass rate (from validate-derja-profiler.ts output or saved report) in /achiri for quick validation.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1138-01",
+      "title": "ACHIRI \u2014 /achiri: show Derja profiler test pass rate from latest run",
+      "type": "feature",
+      "task_type": "achiri",
+      "task_target": "workspace/sprints/sprint-1138-output.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1138"
+    }
+  ]
+}

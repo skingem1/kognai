@@ -1,0 +1,65 @@
+{
+  "script_id": "ent-mn3goytv",
+  "topic": "The dark truth about social media algorithms",
+  "title": "The Dark Truth About Algorithms",
+  "scenes": [
+    {
+      "scene_id": "s1",
+      "visual_prompt": "cinematic aerial shot of a futuristic city at sunset, golden light reflecting off glass buildings, flying vehicles in the distance, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 5,
+      "voiceover_text": "What if your thoughts aren’t yours anymore?",
+      "caption_text": "WHAT IF YOUR THOUGHTS AREN’T YOURS?",
+      "transition": "fade"
+    },
+    {
+      "scene_id": "s2",
+      "visual_prompt": "crowd of people staring at glowing screens, faces lit with blue light, no visible text on screens, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 6,
+      "voiceover_text": "Social media isn’t just a platform—it’s a puppeteer.",
+      "caption_text": "SOCIAL MEDIA IS A PUPPETEER",
+      "transition": "fade"
+    },
+    {
+      "scene_id": "s3",
+      "visual_prompt": "abstract motion of glowing lines and particles forming a tangled web in the air, pulsing with light, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 5,
+      "voiceover_text": "Algorithms shape your reality, one click at a time.",
+      "caption_text": "ALGORITHMS SHAPE YOUR REALITY",
+      "transition": "fade"
+    },
+    {
+      "scene_id": "s4",
+      "visual_prompt": "a single person walking through a dark tunnel, lights flickering on the walls as they move forward, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 6,
+      "voiceover_text": "You think you’re in control. You’re not.",
+      "caption_text": "YOU THINK YOU’RE IN CONTROL",
+      "transition": "fade"
+    },
+    {
+      "scene_id": "s5",
+      "visual_prompt": "a close-up of hands typing rapidly on a keyboard, surrounded by floating data points in the air, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 5,
+      "voiceover_text": "Wake up. See the truth.",
+      "caption_text": "WAKE UP. SEE THE TRUTH.",
+      "transition": "cut"
+    },
+    {
+      "scene_id": "s6",
+      "visual_prompt": "a person standing at the edge of a cliff, looking out over a vast ocean, sunrise behind them, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 4,
+      "voiceover_text": "Break free from the algorithm.",
+      "caption_text": "BREAK FREE FROM THE ALGORITHM",
+      "transition": "fade"
+    }
+  ],
+  "total_duration_s": 31,
+  "with_voiceover": true,
+  "with_music": true,
+  "hashtags": [
+    "#algorithms",
+    "#socialmedia",
+    "#truth",
+    "#ai",
+    "#mindcontrol"
+  ]
+}

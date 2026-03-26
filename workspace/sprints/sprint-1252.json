@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1252",
+  "title": "INFRA \u2014 PM2 process auto-healer \u2014 restart failed crons after 3 consecutive failures",
+  "description": "Cron processes may fail silently. Auto-healer detects 3+ failures and restarts with Telegram alert.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1252-01",
+      "title": "INFRA \u2014 PM2 process auto-healer \u2014 restart failed crons after 3 consecutive failures",
+      "type": "feature",
+      "task_type": "infra",
+      "task_target": "workspace/sprints/sprint-1252-output.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1252"
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-25T09:50:03.059Z",
+  "generated_at": "2026-03-25T09:52:09.208Z",
   "overall_status": "ok",
   "summary": "7 ok, 1 warn, 0 critical",
   "metrics": [
@@ -41,15 +41,15 @@
     },
     {
       "name": "aar_volume",
-      "value": 1108,
+      "value": 1110,
       "status": "ok",
-      "detail": "1108 entries across 19 files"
+      "detail": "1110 entries across 19 files"
     },
     {
       "name": "git_head",
-      "value": "b7b1ec0a",
+      "value": "ac091adc",
       "status": "ok",
-      "detail": "b7b1ec0a state: update after Sprint 1232"
+      "detail": "ac091adc Sprint 1232: E2E-SMOKE — end-to-end pipeline smoke test"
     }
   ]
 }

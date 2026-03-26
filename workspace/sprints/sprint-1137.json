@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1137",
+  "title": "OPS \u2014 /health: show how many days until the Phase 1.5 gate deadline",
+  "description": "/health shows infrastructure state but not deadline pressure. Add a prominent \"Gate in Xd\" line to /health so operators always know the deadline without opening /gate.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1137-01",
+      "title": "OPS \u2014 /health: show how many days until the Phase 1.5 gate deadline",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "workspace/sprints/sprint-1137-output.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1137"
+    }
+  ]
+}

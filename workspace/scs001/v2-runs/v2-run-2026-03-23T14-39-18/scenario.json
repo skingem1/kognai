@@ -1,0 +1,111 @@
+{
+  "scenario_id": "scn-lai7x9",
+  "trend_signal_id": "custom-v2-1774276758716",
+  "title": "Your Phone Is More Powerful Than ChatGPT's Servers Were 3 Years Ago",
+  "angle": "The AI industry doesn't want you to know your own hardware is already powerful enough — cloud AI is a subscription trap, and local models are the jailbreak.",
+  "scenes": [
+    {
+      "scene_id": "s1",
+      "scene_name": "The Hook — Your Device Is the Server",
+      "duration_s": 5,
+      "voiceover": "You're paying monthly for AI that you could run FREE on hardware you already own.",
+      "visual_style": "kinetic_text",
+      "visual_description": "Bold white text slams onto black screen: '$20/month' then SLASHED with red X. Cut to a glowing laptop sitting alone in a dark room.",
+      "caption_overlay": "WAIT — you're still paying for AI?",
+      "emotion": "shock",
+      "music_cue": "impact_hit",
+      "pattern_interrupts": 3
+    },
+    {
+      "scene_id": "s2",
+      "scene_name": "The Problem — Cloud AI Owns Your Data",
+      "duration_s": 5,
+      "voiceover": "Every prompt you send to ChatGPT is logged, stored, and used to train their next model. That's YOUR thinking. Their profit.",
+      "visual_style": "b_roll_montage",
+      "visual_description": "Fast cuts: chat interface typing, then a vault door slamming shut labeled 'OpenAI Servers', then a dollar bill morphing into data streams.",
+      "caption_overlay": "Your ideas. Their training data.",
+      "emotion": "intrigue",
+      "music_cue": "tension_build",
+      "pattern_interrupts": 3
+    },
+    {
+      "scene_id": "s3",
+      "scene_name": "The Reveal — Local Models Are Already Here",
+      "duration_s": 6,
+      "voiceover": "Llama 3, Mistral, Phi-3 — these run fully OFFLINE on a $600 laptop. No internet. No subscription. No data leaks. Ever.",
+      "visual_style": "screen_recording",
+      "visual_description": "Terminal window opens — Ollama loading a model locally. Response streams in real time. WiFi indicator shown as OFF. Speed counter ticks up.",
+      "caption_overlay": "No WiFi. No cloud. Full AI.",
+      "emotion": "revelation",
+      "music_cue": "impact_hit",
+      "pattern_interrupts": 2
+    },
+    {
+      "scene_id": "s4",
+      "scene_name": "The Proof — Speed Test Nobody Expected",
+      "duration_s": 6,
+      "voiceover": "I ran a local Mistral 7B vs GPT-4o on the same prompt. Local won on speed. And it cost me literally zero dollars.",
+      "visual_style": "react_cam",
+      "visual_description": "Split screen: left side GPT-4o loading spinner, right side local model already done. Presenter reacts with genuine disbelief. Timer graphic overlaid.",
+      "caption_overlay": "Local AI: $0. Cloud AI: $20/mo.",
+      "emotion": "urgency",
+      "music_cue": "upbeat",
+      "pattern_interrupts": 2
+    },
+    {
+      "scene_id": "s5",
+      "scene_name": "The Setup — How to Start in 60 Seconds",
+      "duration_s": 5,
+      "voiceover": "Download Ollama. Type one command. You now have a private AI assistant running entirely on YOUR machine. That's it.",
+      "visual_style": "screen_recording",
+      "visual_description": "Rapid screen recording: browser opens ollama.com, installer downloads, terminal shows 'ollama run llama3', first response appears. Total elapsed: 45 seconds.",
+      "caption_overlay": "One command. Full local AI.",
+      "emotion": "satisfaction",
+      "music_cue": "upbeat",
+      "pattern_interrupts": 2
+    },
+    {
+      "scene_id": "s6",
+      "scene_name": "The Loop — Who Still Needs the Cloud?",
+      "duration_s": 5,
+      "voiceover": "So next time you're about to pay $20 for AI — remember you already own hardware that can do this. The question is: why are you still paying?",
+      "visual_style": "kinetic_text",
+      "visual_description": "Text: '$20/month' appears again — same as scene 1 — then gets crossed out. Final frame: YOUR DEVICE IS THE SERVER. Hard cut to black.",
+      "caption_overlay": "Why are you still paying?",
+      "emotion": "loop",
+      "music_cue": "silence",
+      "pattern_interrupts": 2
+    }
+  ],
+  "hook_test": {
+    "format_reference": "Wait, what? — Hook with surprising claim → proof → bigger reveal",
+    "viral_proof": "Matt Wolfe's local AI explainer hit 12M+ views using the same 'you already have this power' reframe. Fireship's Ollama tutorial crossed 8M. The 'you're paying for something free' angle is a proven scroll-stopper across finance and tech creators.",
+    "why_it_works": "The opening reframes a monthly expense the viewer is already paying as a scam they can escape RIGHT NOW. Loss aversion + immediate actionability = maximum retention. The loop ending forces a rewatch to see if they missed the setup step.",
+    "estimated_hook_rate": 42
+  },
+  "total_duration_s": 32,
+  "target_emotion_arc": [
+    "shock",
+    "intrigue",
+    "revelation",
+    "urgency",
+    "satisfaction",
+    "loop"
+  ],
+  "speaker_name": "Kognai",
+  "tts_voice": "default",
+  "hashtags": [
+    "#localai",
+    "#ollama",
+    "#llama3",
+    "#privacytech",
+    "#aitools",
+    "#selfhosted",
+    "#artificialintelligence",
+    "#techtok",
+    "#AI",
+    "#tech"
+  ],
+  "created_at": "2026-03-23T14:39:49.796Z",
+  "model_used": "claude-sonnet-4-6"
+}

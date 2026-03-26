@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1119",
+  "title": "OPS \u2014 /status: show today obligation met/unmet in a single bold line",
+  "description": "/status shows today posts but the obligation status is not prominent enough. Replace the today line with a bold OBLIGATION MET or OBLIGATION UNMET banner.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1119-01",
+      "title": "OPS \u2014 /status: show today obligation met/unmet in a single bold line",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "workspace/sprints/sprint-1119-output.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1119"
+    }
+  ]
+}

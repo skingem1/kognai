@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-23T01:47:15.477Z",
+  "generated_at": "2026-03-26T03:08:27.427Z",
   "all_pass": true,
   "checks": [
     {
@@ -10,37 +10,27 @@
     {
       "name": "Schedule freshness",
       "pass": true,
-      "detail": "0.0h old"
+      "detail": "7.1h old"
     },
     {
       "name": "Gate progress",
       "pass": true,
-      "detail": "4/30 posted · 26 remaining · 15d left · 1.7/day needed"
+      "detail": "71/30 posted · 0 remaining · 12d left · 0.0/day needed"
     },
     {
       "name": "Video inventory",
       "pass": true,
-      "detail": "39 unposted videos with MP4 files (need 26)"
-    },
-    {
-      "name": "Scheduled video files",
-      "pass": true,
-      "detail": "All 26 scheduled slots have MP4 files"
-    },
-    {
-      "name": "Today's slots",
-      "pass": true,
-      "detail": "2 videos scheduled for today (Mon)"
+      "detail": "4 unposted videos with MP4 files (need 0)"
     }
   ],
   "gate": {
-    "posted": 4,
+    "posted": 71,
     "target": 30,
-    "remaining": 26,
-    "days_left": 15,
-    "pace_needed": 1.7
+    "remaining": 0,
+    "days_left": 12,
+    "pace_needed": 0
   },
   "inventory": {
-    "videos_with_files": 39
+    "videos_with_files": 4
   }
 }

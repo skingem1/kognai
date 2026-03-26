@@ -1,26 +1,14 @@
 {
-  "batch_at": "2026-03-23T16:06:46.770Z",
-  "pipeline_filter": "entertainment",
-  "runs_planned": 3,
-  "runs_completed": 3,
+  "batch_at": "2026-03-25T20:38:43.860Z",
+  "pipeline_filter": "code-demo",
+  "runs_planned": 1,
+  "runs_completed": 1,
   "results": [
     {
-      "pipeline": "entertainment",
-      "runId": "ent-mn3d7vpg",
-      "title": "The 100 Billion Dollar AI Chip War",
-      "cost": 1.7500000000000002
-    },
-    {
-      "pipeline": "entertainment",
-      "runId": "ent-mn3ddsff",
-      "title": "The 100 Billion Dollar AI Chip War",
-      "cost": 1.7500000000000002
-    },
-    {
-      "pipeline": "entertainment",
-      "runId": "ent-mn3djfd9",
-      "title": "The 100 Billion Dollar AI Chip War",
-      "cost": 1.7500000000000002
+      "pipeline": "code-demo",
+      "runId": "demo-mn6i8r28",
+      "title": "Talk to Claude with Python",
+      "cost": 0
     }
   ],
   "errors": []

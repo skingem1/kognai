@@ -1,0 +1,12 @@
+{
+  "scenario_id": "scn-ggl7x9",
+  "verdict": "PASS",
+  "message_score": 92,
+  "scroll_stop_score": 88,
+  "message_analysis": "The message is crystalline: Google's AI silently personalizes your search results without your knowledge, making you a product being filtered rather than a searcher. Every scene reinforces this thesis—hook establishes personal stakes ('you already used it'), setup proves invisibility ('no announcement'), reveal shows the mechanism ('re-ranks based on behavior'), and loop hammers home the inversion ('it's searching you'). The angle is sharp and original—not 'Google has AI,' but 'Google's AI is secretly reordering reality for you right now.' This resonates because it's both true-ish and alarming. Viewers will share because it feels like they discovered a hack or caught a manipulation.",
+  "scroll_stop_analysis": "Hook is elite. 'You've probably already used it. You just didn't know.' creates immediate personal stakes within the first 2 seconds—the viewer is not watching something happen to someone else; they are told they are already complicit. This spikes curiosity into self-interest. Scene 1 delivers 3 pattern interrupts (word slam, color shift, caption prompt). Pacing is relentless: 5s hook, 6s setup, 7s reveal, 6s urgency, 6s proof, 5s loop—no dead air. Emotion arc climbs (shock → intrigue → revelation → urgency) and resolves with a visual mirror loop in Scene 6 that feels native to TikTok trends. The 'try this right now' call-to-action in Scene 5 is a scroll-stop moment. Tension music sustains throughout. This feels like breaking news, not a lecture.",
+  "fixes": [],
+  "confidence": 94,
+  "model_used": "claude-haiku-4-5-20251001",
+  "reviewed_at": "2026-03-23T14:41:02.428Z"
+}

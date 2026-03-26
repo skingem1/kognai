@@ -1,0 +1,46 @@
+{
+  "run_id": "mf-20260325T09-rkdn",
+  "started_at": "2026-03-25T09:10:12.709Z",
+  "completed_at": "2026-03-25T09:12:22.062Z",
+  "topics_found": 3,
+  "scripts_generated": 3,
+  "videos_composited": 3,
+  "videos_failed": 0,
+  "results": [
+    {
+      "script_id": "exp-f3c9dbb8",
+      "format": "explainer",
+      "title": "OpenAI Will Shut Down Sora Video Platform",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260325T09-rkdn/output/exp-f3c9dbb8_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260325T09-rkdn/output/exp-f3c9dbb8.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "exp-7ff189fd",
+      "format": "explainer",
+      "title": "Tired of authors using ChatGPT in their books",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260325T09-rkdn/output/exp-7ff189fd_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260325T09-rkdn/output/exp-7ff189fd.srt",
+      "duration_s": 25,
+      "success": true,
+      "avatar_cost": 0.35000000000000003,
+      "llm_used": true
+    },
+    {
+      "script_id": "dbt-28750945",
+      "format": "debate",
+      "title": "Siren (SIREN) 📈 114.5%",
+      "video_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260325T09-rkdn/output/dbt-28750945_final.mp4",
+      "srt_path": "/Users/tarekmnif/kognai/workspace/scs001/multiformat-runs/mf-20260325T09-rkdn/output/dbt-28750945.srt",
+      "duration_s": 27,
+      "success": true,
+      "avatar_cost": 0.25,
+      "llm_used": true
+    }
+  ],
+  "dry_run": false,
+  "total_cost_usd": 0.95
+}

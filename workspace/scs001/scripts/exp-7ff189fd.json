@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-7ff189fd",
+  "topic_id": "reddit-71e1048994ec",
+  "format": "explainer",
+  "title": "Tired of authors using ChatGPT in their books",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "\"Did you know some bestselling authors are using ChatGPT to write their books?\"",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "\"This trend is blowing up on Reddit’s r/ChatGPT with 4,282 points and 396 comments.\"",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "\"ChatGPT is being used to generate entire chapters and dialogue in novels.\"",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "\"The AI can mimic specific authors’ styles with just a few sample paragraphs.\"",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "\"Readers are upset because they’re paying for work that wasn’t actually written by humans.\"",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "\"Authors using AI risk losing credibility and facing backlash from fans and critics.\"",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "\"Want to know how to spot AI-generated writing in your next favorite book?\"",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "Tired of authors using ChatGPT in their books",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#tired",
+    "#authors",
+    "#using"
+  ],
+  "generated_at": "2026-03-25T09:10:48.206Z",
+  "llm_used": true
+}

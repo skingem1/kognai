@@ -1,0 +1,12 @@
+{
+  "scenario_id": "scn-ai2026-x7k",
+  "verdict": "PASS",
+  "message_score": 92,
+  "scroll_stop_score": 94,
+  "message_analysis": "The message is laser-focused: AI will collapse industries in 2026, most people are unprepared, but there's a learnable survival strategy. Every scene reinforces this without filler. Scene 1 hooks on personal threat (career gone), Scene 2 grounds it with credible proof (Goldman Sachs), Scenes 3-4 escalate urgency with specific industries and a cliff timeline, Scene 5 pivots to actionable hope (become the layer), Scene 6 closes the loop with 'you decide.' The angle is original—not 'AI will change jobs' but 'entire industries will collapse in a single quarter and you're sleepwalking.' This will resonate and drive shares because it feels like insider knowledge with stakes.",
+  "scroll_stop_analysis": "The hook is devastating: 'millions of people will wake up and realize their career no longer exists. Not declining. Gone.' Five words and a color flash (red GONE) create immediate curiosity and threat. Pattern interrupts are dense: kinetic text slams, fast cuts, camera shakes, timeline animations, sustained eye contact, visual loop closure. Pacing is relentless—no scene drags past 6s, no dead air. The emotion arc (shock→intrigue→urgency→revelation→urgency→loop) builds and pays off. Scene 5's sustained close-up after kinetic chaos creates breathing room before the loop, which feels native to TikTok's short-form language. The 'watch again, you'll catch what you missed' signal is algorithm-friendly and rewards rewatches. This will stop scrolls.",
+  "fixes": [],
+  "confidence": 96,
+  "model_used": "claude-haiku-4-5-20251001",
+  "reviewed_at": "2026-03-23T14:03:28.289Z"
+}

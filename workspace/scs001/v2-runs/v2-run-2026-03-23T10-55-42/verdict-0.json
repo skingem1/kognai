@@ -1,0 +1,16 @@
+{
+  "scenario_id": "scn-alt7x92",
+  "verdict": "REJECT",
+  "message_score": 72,
+  "scroll_stop_score": 68,
+  "message_analysis": "The scenario has a clear throughline: Altman's casual comment signals an AGI timeline closer than publicly admitted. However, the message conflates three separate claims (his slip-up, internal timelines, researcher leaks) without proof hierarchy. Scene 3's 'internal leaked memos' and Scene 5's 'three researchers' are sourced as rumor, not fact. For a conspiracy-reveal format to land, the evidence chain must hold. Here it weakens mid-video, making the payoff feel speculative rather than revelatory. The message *could* work, but it's built on unverified claims presented as insider knowledge.",
+  "scroll_stop_analysis": "The hook is strong (47% est. rate is solid). Scenes 1–2 nail the shock-to-intrigue arc with real audio and kinetic text. Scene 4 hits urgency hard with the profession-erasure sequence. BUT: Scenes 3, 5, and 6 lose momentum. Scene 3's 'leaked memos' visual is unsubstantiated and feels cheap. Scene 5 introduces anonymous researchers without credibility markers — the silhouettes signal 'we can't prove this.' By Scene 6, the loop-back lands weakly because the evidence was never solid enough to make the re-listen feel like a revelatory catch. The video grips for 12s, then relies on inference instead of proof.",
+  "fixes": [
+    "Replace Scene 3's unverified 'leaked memos' with a documented timeline of Altman's public statements (date, source, quote) showing the pattern of him stepping back language over time. Make the contradiction provable.",
+    "Scene 5: Either cite the researchers by credible source (journalist byline, publication name) or remove the 2025–2027 claim entirely. Anonymous insiders are conspiracy-signal; specificity is proof-signal.",
+    "Shorten Scene 6's loop to 3s and cut the replay. Instead, end on the real question: 'So what are you going to do with this timeline?' to prompt shares and comments. Current ending feels like closure; TikTok wants action."
+  ],
+  "confidence": 78,
+  "model_used": "claude-haiku-4-5-20251001",
+  "reviewed_at": "2026-03-23T10:56:17.411Z"
+}

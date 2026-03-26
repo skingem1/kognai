@@ -1,0 +1,111 @@
+{
+  "scenario_id": "scn-fx9k42",
+  "trend_signal_id": "custom-v2-1774261651301",
+  "title": "This Free AI Tool Does What ChatGPT Can't",
+  "angle": "ChatGPT has a hidden wall — and one free tool quietly destroys it. Most people don't know it exists yet.",
+  "scenes": [
+    {
+      "scene_id": "s1",
+      "scene_name": "The Forbidden Question",
+      "duration_s": 5,
+      "voiceover": "I asked ChatGPT this one question. It refused. So I tried THIS instead.",
+      "visual_style": "screen_recording",
+      "visual_description": "ChatGPT screen with a blunt refusal message. Red X flashes over it. Hard cut to a clean rival UI loading fast.",
+      "caption_overlay": "ChatGPT said NO. This said YES.",
+      "emotion": "shock",
+      "music_cue": "impact_hit",
+      "pattern_interrupts": 3
+    },
+    {
+      "scene_id": "s2",
+      "scene_name": "The Tool Revealed",
+      "duration_s": 5,
+      "voiceover": "It's called Perplexity AI. It's free. And it does something ChatGPT literally cannot do.",
+      "visual_style": "kinetic_text",
+      "visual_description": "Tool name slams onto screen in bold. FREE badge animates in. Checkmarks pop next to each capability.",
+      "caption_overlay": "FREE. No login wall. No paywall.",
+      "emotion": "curiosity",
+      "music_cue": "tension_build",
+      "pattern_interrupts": 2
+    },
+    {
+      "scene_id": "s3",
+      "scene_name": "The Capability Gap",
+      "duration_s": 7,
+      "voiceover": "ChatGPT's knowledge cuts off. This tool searches the live internet IN REAL TIME. Right now. Today.",
+      "visual_style": "screen_recording",
+      "visual_description": "Split screen: ChatGPT returning outdated info vs Perplexity pulling today's headlines with live source links.",
+      "caption_overlay": "LIVE internet vs. 2023 cutoff. Not even close.",
+      "emotion": "revelation",
+      "music_cue": "tension_build",
+      "pattern_interrupts": 3
+    },
+    {
+      "scene_id": "s4",
+      "scene_name": "The Proof Montage",
+      "duration_s": 7,
+      "voiceover": "Breaking news, stock prices, live research — it cites every source. ChatGPT just guesses.",
+      "visual_style": "b_roll_montage",
+      "visual_description": "Rapid cuts: live query results, clickable source citations, news timestamps from today, researcher nodding approvingly.",
+      "caption_overlay": "Every answer. Every source. Verified.",
+      "emotion": "intrigue",
+      "music_cue": "upbeat",
+      "pattern_interrupts": 4
+    },
+    {
+      "scene_id": "s5",
+      "scene_name": "The Urgency Drop",
+      "duration_s": 4,
+      "voiceover": "If you're still using only ChatGPT, you're working with yesterday's internet. Stop that.",
+      "visual_style": "react_cam",
+      "visual_description": "Close-up face reacting with disbelief. Text counter ticking up showing how many queries happen per second on Perplexity.",
+      "caption_overlay": "You're already behind. Fix it now.",
+      "emotion": "urgency",
+      "music_cue": "impact_hit",
+      "pattern_interrupts": 2
+    },
+    {
+      "scene_id": "s6",
+      "scene_name": "The Loop Hook",
+      "duration_s": 4,
+      "voiceover": "Go ask it the question ChatGPT refused. You'll see exactly what I mean. Link in bio.",
+      "visual_style": "screen_recording",
+      "visual_description": "Returns to the original ChatGPT refusal screen, then whip-pans to Perplexity answering it perfectly. Loop implied.",
+      "caption_overlay": "Ask it. Right now. Free.",
+      "emotion": "loop",
+      "music_cue": "silence",
+      "pattern_interrupts": 2
+    }
+  ],
+  "hook_test": {
+    "format_reference": "Wait, what? — Hook with surprising claim → proof → bigger reveal",
+    "viral_proof": "Videos using the 'X refused but THIS did it' format on TikTok consistently hit 10M+ views. Example: multiple ChatGPT vs rival tool comparison videos in 2023-2024 averaging 12-40M views. The refusal-then-reveal structure exploits pattern interruption and forbidden-knowledge curiosity loops.",
+    "why_it_works": "The refusal frame triggers psychological reactance — viewers want what they're told they can't have. Adding 'free' removes the cost barrier objection instantly, and the live-internet differentiator is a concrete, demonstrable proof point that validates the claim visually in seconds.",
+    "estimated_hook_rate": 47
+  },
+  "total_duration_s": 32,
+  "target_emotion_arc": [
+    "shock",
+    "curiosity",
+    "revelation",
+    "intrigue",
+    "urgency",
+    "loop"
+  ],
+  "speaker_name": "Kognai",
+  "tts_voice": "default",
+  "hashtags": [
+    "#perplexityai",
+    "#chatgptalternative",
+    "#freeaitool",
+    "#aitools2024",
+    "#chatgptvs",
+    "#aiproductivity",
+    "#techhacks",
+    "#artificialintelligence",
+    "#techtok",
+    "#learnontiktok"
+  ],
+  "created_at": "2026-03-23T10:27:57.975Z",
+  "model_used": "claude-sonnet-4-6"
+}

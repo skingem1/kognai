@@ -1,0 +1,141 @@
+{
+  "run_id": "v2-run-2026-03-23T10-54-32",
+  "signal": {
+    "topic_id": "custom-v2-1774263272828",
+    "topic_name": "Sam Altman Just Revealed OpenAIs Secret AGI Timeline",
+    "confidence_score": 80,
+    "keyword_cluster": [
+      "altman",
+      "just",
+      "revealed",
+      "openais",
+      "secret"
+    ],
+    "domain_tags": [
+      "tech",
+      "AI"
+    ],
+    "provenance_source": "custom-topic-v2"
+  },
+  "status": "error",
+  "published": false,
+  "dry_run": false,
+  "retries_used": 0,
+  "timestamps": {
+    "started": "2026-03-23T10:54:32.828Z",
+    "finished": "2026-03-23T10:55:16.081Z",
+    "scorsese_done": "2026-03-23T10:55:04.992Z"
+  },
+  "scenario": {
+    "scenario_id": "scn-agt7x2",
+    "trend_signal_id": "custom-v2-1774263272828",
+    "title": "Sam Altman Just Revealed OpenAI's Secret AGI Timeline",
+    "angle": "Altman's public comments contain a hidden admission: AGI is not decades away — it's already on OpenAI's internal roadmap with a specific target window, and the implications for every human on Earth are being deliberately downplayed.",
+    "scenes": [
+      {
+        "scene_id": "s1",
+        "scene_name": "The Hook — Altman Slips Up",
+        "duration_s": 5,
+        "voiceover": "Sam Altman just accidentally revealed when AGI actually arrives. Most people completely missed it.",
+        "visual_style": "kinetic_text",
+        "visual_description": "Extreme close-up of Altman mid-sentence at a podium, freeze-frame at the exact word. Giant red circle highlights his mouth. Clock graphic slams onto screen.",
+        "caption_overlay": "He said it out loud. Nobody noticed.",
+        "emotion": "shock",
+        "music_cue": "impact_hit",
+        "pattern_interrupts": 3
+      },
+      {
+        "scene_id": "s2",
+        "scene_name": "The Setup — What He Actually Said",
+        "duration_s": 6,
+        "voiceover": "In three separate interviews this month, Altman stopped saying 'decades away' and started saying 'within our planning horizon.'",
+        "visual_style": "screen_recording",
+        "visual_description": "Split-screen of three interview clips timestamped. Specific phrase 'planning horizon' highlighted in yellow each time. Fast cuts between clips.",
+        "caption_overlay": "'Planning horizon' = they have a DATE.",
+        "emotion": "intrigue",
+        "music_cue": "tension_build",
+        "pattern_interrupts": 3
+      },
+      {
+        "scene_id": "s3",
+        "scene_name": "The Decode — What Planning Horizon Means",
+        "duration_s": 6,
+        "voiceover": "OpenAI's own charter defines planning horizon as 3 to 5 years. That means their internal AGI target is 2027 to 2028.",
+        "visual_style": "kinetic_text",
+        "visual_description": "OpenAI charter document zooms in on the exact definition. Timeline graphic appears — 2024 to 2028 with a glowing target at the end. Numbers slam in one by one.",
+        "caption_overlay": "2027. That's the number.",
+        "emotion": "revelation",
+        "music_cue": "tension_build",
+        "pattern_interrupts": 2
+      },
+      {
+        "scene_id": "s4",
+        "scene_name": "The Stakes — Why This Changes Everything",
+        "duration_s": 6,
+        "voiceover": "If they hit that window, every white-collar job, every creative field, every government system faces disruption simultaneously. At once.",
+        "visual_style": "b_roll_montage",
+        "visual_description": "Rapid montage: trading floors, hospital wards, courtrooms, music studios — each overlaid with an AI interface dissolving the human workers. Speed ramps up to near-blinding pace.",
+        "caption_overlay": "Not gradually. ALL AT ONCE.",
+        "emotion": "urgency",
+        "music_cue": "impact_hit",
+        "pattern_interrupts": 4
+      },
+      {
+        "scene_id": "s5",
+        "scene_name": "The Contrast — What They're Telling the Public",
+        "duration_s": 5,
+        "voiceover": "But every press release still says 'we don't know when AGI comes.' Two stories. One company. Ask yourself why.",
+        "visual_style": "react_cam",
+        "visual_description": "Kognai on camera, deadpan expression, holds up printed OpenAI press release in one hand, phone showing the charter quote in the other. Slow zoom into eyes at the end.",
+        "caption_overlay": "They know. They just won't tell you.",
+        "emotion": "intrigue",
+        "music_cue": "silence",
+        "pattern_interrupts": 2
+      },
+      {
+        "scene_id": "s6",
+        "scene_name": "The Loop — Back to the Slip",
+        "duration_s": 5,
+        "voiceover": "Go back and watch Altman's lips. He already told you. 'Within our planning horizon.' Now you can't unhear it.",
+        "visual_style": "kinetic_text",
+        "visual_description": "Replay of opening freeze-frame with the clock graphic. Text counts down from 2028 to NOW. Final frame: same extreme close-up as scene 1, loop implied.",
+        "caption_overlay": "Watch it again. You'll see it.",
+        "emotion": "loop",
+        "music_cue": "impact_hit",
+        "pattern_interrupts": 2
+      }
+    ],
+    "hook_test": {
+      "format_reference": "The real reason X happened — hidden explanation with conspiracy-adjacent reveal",
+      "viral_proof": "Videos using the 'they accidentally revealed' framing — including the Snowden NSA leak reacts and the Google sentient AI engineer leak — consistently hit 10M–40M views. The freeze-frame-on-a-quote mechanic is a proven pattern used by channels like Wall Street Millennial and ColdFusion reaching 15M+ per upload in tech-disclosure content.",
+      "why_it_works": "Combines insider knowledge framing with a concrete number (2027-2028) that makes the abstract feel real and imminent. The viewer feels smarter than the crowd for watching — a core driver of saves and shares. The loop ending forces rewatches to catch the 'slip' again.",
+      "estimated_hook_rate": 42
+    },
+    "total_duration_s": 33,
+    "target_emotion_arc": [
+      "shock",
+      "intrigue",
+      "revelation",
+      "urgency",
+      "intrigue",
+      "loop"
+    ],
+    "speaker_name": "Kognai",
+    "tts_voice": "default",
+    "hashtags": [
+      "#AGI",
+      "#SamAltman",
+      "#OpenAI",
+      "#AITimeline",
+      "#ArtificialGeneralIntelligence",
+      "#AITakeover",
+      "#FutureTech",
+      "#TechNews",
+      "#AI",
+      "#Tech"
+    ],
+    "created_at": "2026-03-23T10:55:04.992Z",
+    "model_used": "claude-sonnet-4-6"
+  },
+  "error": "Unexpected non-whitespace character after JSON at position 2164 (line 14 column 1)"
+}

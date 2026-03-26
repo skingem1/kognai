@@ -1,0 +1,60 @@
+{
+  "script_id": "dbt-79df7fa1",
+  "topic_id": "cg-dae735d95742",
+  "format": "debate",
+  "title": "Siren (SIREN) 📈 117.1%",
+  "lines": [
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Siren's price is a bubble—its protocol lacks real-world adoption and scalability to justify such a valuation.",
+      "start_s": 0,
+      "end_s": 4,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "Siren's decentralized governance and AI-driven analytics are transforming DeFi, with real user growth and institutional interest.",
+      "start_s": 4,
+      "end_s": 10,
+      "emotion": "skeptical"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "Its transaction fees are 3x higher than competitors, and its consensus mechanism hasn't been stress-tested at scale.",
+      "start_s": 10,
+      "end_s": 16,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Vector",
+      "avatar_id": "vector",
+      "text": "The recent partnership with Chainlink and on-chain volume spikes prove Siren's infrastructure is battle-tested and expanding.",
+      "start_s": 16,
+      "end_s": 22,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Cipher",
+      "avatar_id": "cipher",
+      "text": "This rally is justified—Siren is solving critical DeFi pain points with proven tech and a growing ecosystem.",
+      "start_s": 22,
+      "end_s": 27,
+      "emotion": "thoughtful"
+    }
+  ],
+  "total_duration_s": 27,
+  "caption_text": "Siren is overvalued vs Siren rally is justified",
+  "hashtags": [
+    "#AIDebate",
+    "#Tech",
+    "#Versus",
+    "#siren",
+    "#siren",
+    "#crypto"
+  ],
+  "generated_at": "2026-03-25T13:10:56.849Z",
+  "llm_used": true
+}

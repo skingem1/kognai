@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1145",
+  "title": "OPS \u2014 /health: show last backup timestamp from backup log if available",
+  "description": "Data backups are easy to forget. Show timestamp of last successful backup from any backup script log or backup-status.json if present, or warn if none found.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1145-01",
+      "title": "OPS \u2014 /health: show last backup timestamp from backup log if available",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "workspace/sprints/sprint-1145-output.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1145"
+    }
+  ]
+}

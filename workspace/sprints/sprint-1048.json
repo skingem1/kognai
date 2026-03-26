@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1048",
+  "title": "GODMAN-LAUNCH \u2014 CHANGELOG.md for each protocol package (v0.2.0 initial release)",
+  "description": "Already done \u2014 all 8 CHANGELOG.md files exist from prior sprint",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1048-01",
+      "title": "GODMAN-LAUNCH \u2014 CHANGELOG.md for each protocol package (v0.2.0 initial release)",
+      "type": "feature",
+      "task_type": "godman_protocols",
+      "task_target": "workspace/sprints/sprint-1048-output.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1048"
+    }
+  ]
+}

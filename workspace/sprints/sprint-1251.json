@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1251",
+  "title": "QUALITY \u2014 Content freshness decay \u2014 auto-archive stale queue items older than 7 days",
+  "description": "Queue items may become stale (old trending topics). Auto-archive after 7 days to keep queue fresh.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1251-01",
+      "title": "QUALITY \u2014 Content freshness decay \u2014 auto-archive stale queue items older than 7 days",
+      "type": "feature",
+      "task_type": "quality",
+      "task_target": "workspace/sprints/sprint-1251-output.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1251"
+    }
+  ]
+}

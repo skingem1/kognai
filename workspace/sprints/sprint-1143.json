@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1143",
+  "title": "OPS \u2014 /report: show Godman npm publish status for each package",
+  "description": "/report shows launch countdown but not per-package publish status. Add a line listing which Godman packages are published and which are still local-only.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1143-01",
+      "title": "OPS \u2014 /report: show Godman npm publish status for each package",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "workspace/sprints/sprint-1143-output.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1143"
+    }
+  ]
+}

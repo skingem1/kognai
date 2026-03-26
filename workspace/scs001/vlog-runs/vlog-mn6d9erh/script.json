@@ -1,0 +1,21 @@
+{
+  "title": "AI Agents Revolutionize Coding",
+  "full_monologue": "**AI agents are transforming software development.** These intelligent systems are streamlining tasks like debugging, testing, and even writing code. They're not just tools—they're collaborators. Developers are now focusing on creativity, while AI handles the repetitive work. The future of coding is here, and it's smarter than ever. What do you think? Are you ready for this shift?",
+  "broll_cutaways": [
+    {
+      "timestamp_s": 6,
+      "duration_s": 6,
+      "visual_prompt": "Hands typing rapidly on a keyboard, surrounded by glowing circuit boards, no text or writing visible, photorealistic, cinematic"
+    },
+    {
+      "timestamp_s": 18,
+      "duration_s": 6,
+      "visual_prompt": "A group of people in a modern office, working together with high-tech equipment, no text or writing visible, photorealistic, cinematic"
+    }
+  ],
+  "hashtags": [
+    "#ai",
+    "#tech",
+    "#coding"
+  ]
+}

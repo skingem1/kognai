@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-5b853a93",
+  "topic_id": "tc-2d81e09a46f0",
+  "format": "explainer",
+  "title": "Granola raises $125M, hits $1.5B valuation as it expands from meeting notetaker to enterprise AI app",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Granola just hit a $1.5B valuation after a $125M funding round — and it’s not just another startup.",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This move shows how AI note-taking is evolving into a serious enterprise tool.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Granola started as a meeting notetaker but now builds AI apps for businesses.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Its newest feature uses AI to auto-summarize meetings and generate action items.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This affects teams across industries, streamlining workflows and boosting productivity.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The takeaway? AI tools are no longer just handy — they’re reshaping how companies operate.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "What’s next for Granola? Follow along to see how it changes the game.",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "Granola raises $125M, hits $1.5B valuation as it expands from meeting notetaker to enterprise AI app",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#granola",
+    "#raises",
+    "#$125m"
+  ],
+  "generated_at": "2026-03-25T17:13:22.233Z",
+  "llm_used": true
+}

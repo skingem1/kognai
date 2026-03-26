@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-af218f4c",
+  "topic_id": "tc-f5e063df2699",
+  "format": "explainer",
+  "title": "After pivoting, Y Combinator grad Glimpse raises $35M led by a16z",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "A startup just raised $35M — and it's not your average tech company.",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This is a major win for AI tools that help people focus and be productive.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Glimpse, a Y Combinator grad, is building an AI app that blocks distractions during work.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Its standout feature is real-time focus tracking using your phone's sensors.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This affects knowledge workers who struggle with attention and productivity.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The takeaway? AI is finally solving a real problem for everyday users.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Ever wondered how AI could help you stay focused?",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "After pivoting, Y Combinator grad Glimpse raises $35M led by a16z",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#after",
+    "#pivoting",
+    "#combinator"
+  ],
+  "generated_at": "2026-03-25T13:10:41.635Z",
+  "llm_used": true
+}

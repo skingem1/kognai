@@ -1,0 +1,35 @@
+{
+  "sprint": 1306,
+  "title": "PHASE2 — Achiri Hetzner deployment script for Apr 25 alpha",
+  "block": "PHASE2",
+  "status": "pending",
+  "source": "plan-prescribed",
+  "rationale": "Achiri alpha is April 25 (31 days). Achiri state: all T3 skills done, voice validated 10/10. Next mandatory step per Achiri master plan = Hetzner deployment for public URL. Currently achiri-api runs only on Mac Mini (port 3420). Need (1) deploy-hetzner.sh to rsync agents/achiri + ecosystem config to Hetzner VPS and restart PM2 achiri-api there; (2) nginx config snippet for reverse proxy to port 3420. Both files under 150 lines, stdlib-only, no swarm deps.",
+  "tasks": [
+    {
+      "id": "deploy-hetzner-sh",
+      "description": "Create scripts/achiri/deploy-hetzner.sh. Bash script that: (1) reads HETZNER_HOST (default: 65.108.90.178), HETZNER_USER (default: root), HETZNER_KOGNAI_PATH (default: /home/kognai/kognai); (2) runs rsync -avz --delete agents/achiri/ to Hetzner; (3) rsyncs kognai-agents/achiri/; (4) rsyncs tsconfig.scripts.json and package.json; (5) SSHs to Hetzner and runs: cd $HETZNER_KOGNAI_PATH && npm ci --production && pm2 restart achiri-api || pm2 start ecosystem.config.js --only achiri-api; (6) tails last 10 lines of pm2 log for confirmation. Supports --dry-run flag (default: dry-run like publish-all.sh pattern). Use only stdlib (bash). No external deps.",
+      "file": "scripts/achiri/deploy-hetzner.sh",
+      "status": "pending"
+    },
+    {
+      "id": "nginx-achiri-conf",
+      "description": "Create scripts/achiri/nginx-achiri.conf. Nginx server block config for proxying api.achiri.app (or configurable SERVER_NAME) → localhost:3420 (achiri-api). Include: listen 80, location / proxy_pass http://127.0.0.1:3420, proxy headers (Host, X-Real-IP, X-Forwarded-For, X-Forwarded-Proto), proxy_read_timeout 60s, client_max_body_size 1m. Add comment block at top: usage instructions (copy to /etc/nginx/sites-available/achiri, symlink to sites-enabled, certbot for HTTPS). Static file, no compilation needed.",
+      "file": "scripts/achiri/nginx-achiri.conf",
+      "status": "pending"
+    }
+  ],
+  "acceptance_criteria": [
+    "scripts/achiri/deploy-hetzner.sh exists, is executable (chmod +x), runs in dry-run mode without errors",
+    "scripts/achiri/nginx-achiri.conf exists and contains valid nginx server block with proxy_pass to 3420",
+    "bash -n scripts/achiri/deploy-hetzner.sh passes (syntax check)",
+    "nginx -t -c scripts/achiri/nginx-achiri.conf would pass (config valid)"
+  ],
+  "cto_gate": {
+    "approved": false,
+    "reason": "The sprint proposal does not directly map to any item in the execution plan or work plan, and it introduces new deployment-related tasks not aligned with the current phase goals or requested by the human founder.",
+    "plan_reference": "NOT_IN_PLAN",
+    "confidence": 85,
+    "timestamp": "2026-03-25T17:08:53.170Z"
+  }
+}

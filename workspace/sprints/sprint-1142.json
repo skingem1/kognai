@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1142",
+  "title": "QUALITY \u2014 /smoke: show total runtime vs previous run (performance trend)",
+  "description": "If smoke test runtime grows, it may indicate pipeline bloat. Show current run duration vs the previous saved run to detect performance regressions early.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1142-01",
+      "title": "QUALITY \u2014 /smoke: show total runtime vs previous run (performance trend)",
+      "type": "feature",
+      "task_type": "quality",
+      "task_target": "workspace/sprints/sprint-1142-output.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1142"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1136",
+  "title": "OPS \u2014 /status: show pending Achiri waitlist request count",
+  "description": "Waitlist signups are a lead metric for Achiri alpha. Show count of users on waitlist not yet whitelisted so operator knows demand backlog at a glance in /status.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1136-01",
+      "title": "OPS \u2014 /status: show pending Achiri waitlist request count",
+      "type": "feature",
+      "task_type": "ops",
+      "task_target": "workspace/sprints/sprint-1136-output.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "medium",
+      "sprint_id": "sprint-1136"
+    }
+  ]
+}

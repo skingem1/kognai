@@ -1,0 +1,76 @@
+{
+  "script_id": "exp-1937cfe1",
+  "topic_id": "arxiv-1413722383a5",
+  "format": "explainer",
+  "title": "SpecEyes: Accelerating Agentic Multimodal LLMs via Speculative Perception and Planning",
+  "lines": [
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Did you know AI can now *see* and *think* at the same time?",
+      "start_s": 0,
+      "end_s": 3,
+      "emotion": "excited"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This breakthrough changes how we interact with AI in real time.",
+      "start_s": 3,
+      "end_s": 6,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "SpecEyes is a new system that speeds up agentic multimodal AI like Gemini and o3.",
+      "start_s": 6,
+      "end_s": 11,
+      "emotion": "neutral"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "It uses speculative perception to predict and plan actions before they happen.",
+      "start_s": 11,
+      "end_s": 15,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "This means faster, smarter responses in complex tasks like vision and reasoning.",
+      "start_s": 15,
+      "end_s": 19,
+      "emotion": "passionate"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "The key is reducing delays between seeing, thinking, and acting.",
+      "start_s": 19,
+      "end_s": 22,
+      "emotion": "thoughtful"
+    },
+    {
+      "speaker": "Nova",
+      "avatar_id": "nova",
+      "text": "Want to know how this could change your next AI interaction?",
+      "start_s": 22,
+      "end_s": 25,
+      "emotion": "passionate"
+    }
+  ],
+  "total_duration_s": 25,
+  "caption_text": "SpecEyes: Accelerating Agentic Multimodal LLMs via Speculative Perception and Planning",
+  "hashtags": [
+    "#AI",
+    "#Tech",
+    "#Innovation",
+    "#speceyes:",
+    "#accelerating",
+    "#agentic"
+  ],
+  "generated_at": "2026-03-25T13:10:27.967Z",
+  "llm_used": true
+}

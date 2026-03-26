@@ -1,0 +1,12 @@
+{
+  "scenario_id": "scn-lai7x9",
+  "verdict": "PASS",
+  "message_score": 92,
+  "scroll_stop_score": 88,
+  "message_analysis": "The message is crystalline: local AI eliminates the need for expensive cloud subscriptions because your hardware is already capable. Every scene reinforces this thesis—from the hook's '$20/month' slam, through the privacy violation reveal, the technical proof, the actionable setup, and the loop's final question. The angle is sharp and original: reframing a monthly expense as an escapable trap rather than discussing AI abstractly. The hook promises 'free AI on your device' and delivers exactly that with proof and setup. High likelihood of shares because it solves a problem viewers already have (subscription fatigue) with immediate actionability.",
+  "scroll_stop_analysis": "The first 1.5 seconds nail it: '$20/month SLASHED + glowing laptop in darkness' creates immediate curiosity (Why are they showing me this?). Pattern interrupts are consistent across all scenes (3, 3, 2, 2, 2, 2)—enough density to prevent scroll. The pacing is tight: 32s with no dead air or drag. Emotion arc lands: shock→intrigue→revelation→urgency→satisfaction→loop. The split-screen speed test (Scene 4) and the real-time terminal recording (Scene 3) feel native to TikTok tech creators. The loop ending forces rewatches. This would absolutely stop a scrolling thumb.",
+  "fixes": [],
+  "confidence": 91,
+  "model_used": "claude-haiku-4-5-20251001",
+  "reviewed_at": "2026-03-23T14:39:55.171Z"
+}

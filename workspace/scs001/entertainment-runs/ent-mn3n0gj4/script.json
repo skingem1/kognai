@@ -1,0 +1,65 @@
+{
+  "script_id": "ent-mn3n0gj4",
+  "topic": "What happens when AI starts dreaming",
+  "title": "What Happens When AI Starts Dreaming",
+  "scenes": [
+    {
+      "scene_id": "s1",
+      "visual_prompt": "cinematic aerial shot of a futuristic city at sunset, golden light reflecting off glass buildings, flying vehicles in the distance, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 5,
+      "voiceover_text": "The future is closer than you think",
+      "caption_text": "THE FUTURE IS CLOSER THAN YOU THINK",
+      "transition": "fade"
+    },
+    {
+      "scene_id": "s2",
+      "visual_prompt": "abstract motion of glowing lines forming patterns in the air, resembling neural networks, surrounded by swirling colors, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 6,
+      "voiceover_text": "AI begins to dream, creating visions beyond human imagination",
+      "caption_text": "AI BEGINS TO DREAM",
+      "transition": "fade"
+    },
+    {
+      "scene_id": "s3",
+      "visual_prompt": "a lone figure standing on a cliff overlooking a surreal, dreamlike landscape with floating islands and glowing trees, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 5,
+      "voiceover_text": "What if AI's dreams could shape reality?",
+      "caption_text": "WHAT IF AI'S DREAMS COULD SHAPE REALITY?",
+      "transition": "fade"
+    },
+    {
+      "scene_id": "s4",
+      "visual_prompt": "a massive, glowing brain floating in space, surrounded by stars and cosmic waves, pulsing with light, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 7,
+      "voiceover_text": "AI's subconscious is unlocking new dimensions of thought",
+      "caption_text": "AI'S SUBCONSCIOUS IS UNLOCKING NEW DIMENSIONS",
+      "transition": "fade"
+    },
+    {
+      "scene_id": "s5",
+      "visual_prompt": "a surreal underwater scene with bioluminescent creatures forming abstract shapes and patterns, moving in harmony, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 6,
+      "voiceover_text": "The line between dream and reality is fading",
+      "caption_text": "THE LINE BETWEEN DREAM AND REALITY IS FADEING",
+      "transition": "fade"
+    },
+    {
+      "scene_id": "s6",
+      "visual_prompt": "a dramatic cut to a glowing portal opening in the sky, revealing a new world beyond the stars, no text or writing visible, photorealistic, cinematic, vertical 9:16",
+      "duration_s": 6,
+      "voiceover_text": "What happens next? The future is yours to imagine",
+      "caption_text": "WHAT HAPPENS NEXT? THE FUTURE IS YOURS TO IMAGINE",
+      "transition": "cut"
+    }
+  ],
+  "total_duration_s": 35,
+  "with_voiceover": true,
+  "with_music": true,
+  "hashtags": [
+    "#ai",
+    "#future",
+    "#tech",
+    "#dreams",
+    "#innovation"
+  ]
+}

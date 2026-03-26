@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-1051",
+  "title": "GATE — Daily posting obligation badge in /status: posts today vs target",
+  "description": "Add a daily posting obligation line to /status showing: posts recorded today vs daily target needed to hit gate by Apr 7.",
+  "block": "GATE",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "1051-01",
+      "title": "Add daily posting obligation badge to cmdStatus() in cmd-management.ts",
+      "type": "feature",
+      "task_target": "scripts/telegram-commands/cmd-management.ts",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "high",
+      "sprint_id": "sprint-1051"
+    }
+  ]
+}

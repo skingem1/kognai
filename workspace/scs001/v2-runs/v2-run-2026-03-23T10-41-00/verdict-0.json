@@ -1,0 +1,12 @@
+{
+  "scenario_id": "scn-gk7x91",
+  "verdict": "PASS",
+  "message_score": 92,
+  "scroll_stop_score": 88,
+  "message_analysis": "Crystal clear single message: Google launches AI products for headlines, then buries them quietly when they fail to compete—and users should be wary. Every scene reinforces this: the silent kill (shock), the pattern (revelation), the mechanism (why), the consequence (personal stakes), and the loop (remember next time). The angle is original—framing corporate product death as a scandal of *silence* rather than failure itself. The hook promises insider knowledge of a cover-up and delivers exactly that. This would resonate because it taps institutional distrust + personal vulnerability (your tools could vanish).",
+  "scroll_stop_analysis": "The first 1.5 seconds are lethal: black screen, white text slamming in, Google logo glitching out mid-frame, caption 'GOOGLE DELETED THIS… AND SAID NOTHING.' This creates immediate curiosity (What was deleted?) + shock (No announcement?). Pattern interrupts are strong: kinetic text, screen recordings, rapid-fire montage, talking-head, calendar animation, logo replay. Pacing is tight—no scene exceeds 6s, no dead air. Emotion arc builds: shock → intrigue → revelation → urgency (repeated). The loop callback to Scene 1's glitch is native TikTok (symmetry + rewatchability). Feels like insider tech commentary, not a lecture. Would stop a scroller.",
+  "fixes": [],
+  "confidence": 91,
+  "model_used": "claude-haiku-4-5-20251001",
+  "reviewed_at": "2026-03-23T10:41:32.873Z"
+}
