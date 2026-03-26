@@ -171,7 +171,8 @@ export async function cmdDone(chatId: string): Promise<void> {
   postingSession.videosPosted.push(videoId);
   postingSession.currentVideoId = null;
 
-  const allPosts = readLines(manualPostsPath);
+  // Sprint 1394: use readRealPosts to exclude dry-runs from gate count (same as Sprint 1391/1393)
+  const allPosts = readRealPosts();
   const postCount = allPosts.length;
   const postsLeft = Math.max(0, 30 - postCount);
 
