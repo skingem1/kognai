@@ -1,0 +1,29 @@
+{
+  "sprint_id": "sprint-1479",
+  "title": "BUGFIX — posting-auto-deliver.ts gate excludes auto-deliver entries",
+  "block": "SCS-001",
+  "source": "queue-prescribed",
+  "rationale": "TICKET-016-DELIVER-01: manual-posts.jsonl has 160 entries, 157 of which have source=auto-deliver (records of what the script sent to Telegram). Gate check counts all 160 → 160>=30 → permanently skips. Fix: filter source=='auto-deliver' from gate count. Real manual posts = 3. 3<30 → auto-deliver resumes. Also: GATE_DATE=2026-04-07 is still future (12 days), so gate math should work correctly once count is fixed.",
+  "inputs": [
+    "scripts/scs001/posting-auto-deliver.ts"
+  ],
+  "outputs": [
+    "scripts/scs001/posting-auto-deliver.ts (one-line fix to gate check)"
+  ],
+  "success_criteria": [
+    "Gate count uses manualPosts.filter(e => e.source !== 'auto-deliver').length",
+    "npx ts-node posting-auto-deliver.ts --dry-run (or simulation) no longer prints 'Gate target met' immediately",
+    "tsc compile clean"
+  ],
+  "tasks": [
+    {
+      "id": "1479-fix-gate",
+      "description": "In scripts/scs001/posting-auto-deliver.ts, find the gate check (around line 233-236). Change: const manualPosts = readJsonLines(MANUAL_POSTS_PATH); if (manualPosts.length >= GATE_TARGET) to: const manualPosts = readJsonLines(MANUAL_POSTS_PATH); const manualPostCount = manualPosts.filter((e: any) => e.source !== 'auto-deliver').length; if (manualPostCount >= GATE_TARGET). Update all subsequent references to manualPosts.length (gate math postsLeft calculation at ~line 241) to use manualPostCount instead. Keep change minimal.",
+      "files": ["scripts/scs001/posting-auto-deliver.ts"],
+      "status": "pending",
+      "priority": "P0",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}

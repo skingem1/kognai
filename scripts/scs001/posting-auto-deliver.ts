@@ -230,15 +230,17 @@ async function main(): Promise<void> {
   console.log(`[auto-deliver] Starting auto-deliver (batch: ${batchSize})...`);
 
   // Check if gate already met
+  // Sprint 1479: exclude source=auto-deliver entries — these are delivery receipts, not actual TikTok posts
   const manualPosts = readJsonLines(MANUAL_POSTS_PATH);
-  if (manualPosts.length >= GATE_TARGET) {
+  const manualPostCount = manualPosts.filter((e: any) => e.source !== 'auto-deliver').length;
+  if (manualPostCount >= GATE_TARGET) {
     console.log('[auto-deliver] Gate target met (30+ posts). Skipping.');
     return;
   }
 
   // Gate math
   const daysLeft = Math.max(1, Math.ceil((GATE_DATE.getTime() - Date.now()) / 86_400_000));
-  const postsLeft = Math.max(0, GATE_TARGET - manualPosts.length);
+  const postsLeft = Math.max(0, GATE_TARGET - manualPostCount);
   const dailyTarget = Math.ceil(postsLeft / daysLeft);
 
   // Sprint 665: Load ALL delivered IDs (not just today) to prevent re-delivery
