@@ -1789,7 +1789,13 @@ export function cmdReadiness(): string {
   lines.push('');
   lines.push('*📦 Pipeline*');
   const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
-  const readyCount = ledger.filter((e: any) => findCaptionedMp4(e.video_id) !== null).length;
+  // Sprint 1400: deduplicate by video_id — ledger has multiple entries per video
+  const seenVidsSys = new Set<string>();
+  const readyCount = (ledger as any[]).filter((e: any) => {
+    if (!e.video_id || seenVidsSys.has(e.video_id)) return false;
+    seenVidsSys.add(e.video_id);
+    return findCaptionedMp4(e.video_id) !== null;
+  }).length;
   const pipelineOk = readyCount >= 5;
   lines.push(`  ${pipelineOk ? '✅' : '❌'} Captioned videos: ${readyCount} ready`);
   lines.push(`  📋 Ledger: ${ledger.length} total entries`);

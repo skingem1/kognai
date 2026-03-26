@@ -206,7 +206,13 @@ export function cmdAutoPost(): string {
   const ledger = readLines(path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jsonl'));
   const recorded = readRealPosts();
   const recordedIds = new Set(recorded.map((e: any) => e.video_id).filter(Boolean));
-  const unposted = ledger.filter((e: any) => !recordedIds.has(e.video_id) && e.video_id).length;
+  // Sprint 1400: deduplicate by video_id — ledger has multiple entries per video
+  const seenVidsGate = new Set<string>();
+  const unposted = (ledger as any[]).filter((e: any) => {
+    if (!e.video_id || recordedIds.has(e.video_id) || seenVidsGate.has(e.video_id)) return false;
+    seenVidsGate.add(e.video_id);
+    return true;
+  }).length;
 
   lines.push('');
   lines.push(`📋 Queue: *${unposted}* unposted videos`);
@@ -447,8 +453,14 @@ export function cmdDigest(): string {
     }
   }
 
+  // Sprint 1400: deduplicate by video_id — ledger has multiple entries per video
+  const seenVidsStatus = new Set<string>();
   const unposted = (ledger as any[])
-    .filter((e: any) => !recordedIds.has(e.video_id) && e.video_id)
+    .filter((e: any) => {
+      if (!e.video_id || recordedIds.has(e.video_id) || seenVidsStatus.has(e.video_id)) return false;
+      seenVidsStatus.add(e.video_id);
+      return true;
+    })
     .sort((a: any, b: any) => (viralScores.get(b.video_id) ?? -1) - (viralScores.get(a.video_id) ?? -1));
   const queueCount = unposted.length;
   const top3 = unposted.slice(0, 3);
@@ -1119,8 +1131,14 @@ export function cmdBatch(args: string): string {
   }
 
   // Get unposted, unarchived, sorted by viral score
+  // Sprint 1400: deduplicate by video_id — ledger has multiple entries per video
+  const seenVidsBatch = new Set<string>();
   const unposted = (ledger as any[])
-    .filter((e: any) => e.video_id && !recordedIds.has(e.video_id) && !archivedIds.has(e.video_id))
+    .filter((e: any) => {
+      if (!e.video_id || recordedIds.has(e.video_id) || archivedIds.has(e.video_id) || seenVidsBatch.has(e.video_id)) return false;
+      seenVidsBatch.add(e.video_id);
+      return true;
+    })
     .sort((a: any, b: any) => (viralScores.get(b.video_id) ?? -1) - (viralScores.get(a.video_id) ?? -1));
 
   // Filter to only those with captioned mp4
