@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1455",
+  "title": "BUGFIX — Achiri uses OLLAMA_URL but env only has OLLAMA_HOST",
+  "block": "Achiri",
+  "source": "queue-empty-autonomous",
+  "rationale": "agents/achiri/index.ts:318 uses OLLAMA_URL env var which is never set. All other agents use OLLAMA_HOST (which IS set via Tailscale to vault). Achiri falls back to localhost:11434, which times out when Ollama is on the remote vault. Root cause of 'chat() error (timeout): DOMException [AbortError]' in logs. Fix: one-line change to use OLLAMA_HOST consistently.",
+  "tasks": [
+    {
+      "id": "1455-ollama-host-fix",
+      "description": "agents/achiri/index.ts line ~318: change OLLAMA_URL to OLLAMA_HOST with http:// prefix normalization (same pattern as other agents).",
+      "files": ["agents/achiri/index.ts"],
+      "status": "done",
+      "priority": "critical",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}

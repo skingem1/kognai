@@ -315,7 +315,8 @@ export class AchiriConversationHandler {
     try {
       if (model.provider === 'local') {
         // Ollama chat API — Sprint 298: 30s timeout to avoid 5-min waits when Ollama is down
-        const ollamaUrl = process.env.OLLAMA_URL ?? 'http://localhost:11434';
+        // Sprint 1455: use OLLAMA_HOST (consistent with all other agents) — OLLAMA_URL was never set
+        const ollamaUrl = (() => { const h = process.env.OLLAMA_HOST ?? 'http://localhost:11434'; return h.startsWith('http') ? h : `http://${h}`; })();
         const controller = new AbortController();
         const timeout = setTimeout(() => controller.abort(), 30_000);
         try {
