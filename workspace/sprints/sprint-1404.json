@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1404",
+  "title": "FEATURE — fal.ai persisted circuit breaker to skip 5-min timeout waste across pipeline runs",
+  "block": "FEATURE",
+  "source": "self-directed",
+  "rationale": "fal-video-client.ts has an in-memory circuit breaker (FAL_CIRCUIT_THRESHOLD=2) that resets on process restart. When fal.ai is down, each new pipeline run wastes 2x150s=5min waiting before tripping. Fix: write data/fal-circuit.json when circuit trips; check it on startup; auto-clear after 10min TTL. Gradient fallback (Sprint 1339) already handles production correctly — this only saves 5min/run during outages.",
+  "tasks": [
+    {
+      "id": "1404-fal-circuit-persist",
+      "description": "In scripts/scs001/fal-video-client.ts: on circuit trip, write data/fal-circuit.json {tripped_at, ttl_ms:600000}. On module load, check if file exists and is within TTL; if so, set falConsecutiveTimeouts=FAL_CIRCUIT_THRESHOLD immediately. Clear file when circuit resets (successful call).",
+      "files": ["scripts/scs001/fal-video-client.ts"],
+      "status": "done",
+      "priority": "medium",
+      "agent": "coder",
+      "type": "feature"
+    }
+  ]
+}

@@ -9,10 +9,39 @@
  */
 
 import { execSync } from 'child_process';
-import { existsSync, mkdirSync, writeFileSync, unlinkSync } from 'fs';
+import { existsSync, mkdirSync, writeFileSync, unlinkSync, readFileSync } from 'fs';
 import { join, dirname } from 'path';
 
 const ROOT = join(__dirname, '..', '..');
+
+// Sprint 1404: Persisted circuit breaker — survives process restarts
+const FAL_CIRCUIT_PATH = join(ROOT, 'data', 'fal-circuit.json');
+const FAL_CIRCUIT_TTL_MS = 10 * 60_000; // 10 minutes
+
+function loadPersistedCircuit(): void {
+  try {
+    if (existsSync(FAL_CIRCUIT_PATH)) {
+      const d = JSON.parse(readFileSync(FAL_CIRCUIT_PATH, 'utf-8'));
+      const elapsed = Date.now() - new Date(d.tripped_at).getTime();
+      if (elapsed < FAL_CIRCUIT_TTL_MS) {
+        falConsecutiveTimeouts = FAL_CIRCUIT_THRESHOLD; // trip immediately
+        console.warn(`  [fal.ai] Circuit still open from ${Math.round(elapsed / 60000)}min ago — skipping fal.ai calls`);
+      } else {
+        unlinkSync(FAL_CIRCUIT_PATH); // TTL expired, clear it
+      }
+    }
+  } catch { /* skip */ }
+}
+
+function tripPersistedCircuit(): void {
+  try {
+    writeFileSync(FAL_CIRCUIT_PATH, JSON.stringify({ tripped_at: new Date().toISOString(), ttl_ms: FAL_CIRCUIT_TTL_MS }));
+  } catch { /* skip */ }
+}
+
+function clearPersistedCircuit(): void {
+  try { if (existsSync(FAL_CIRCUIT_PATH)) unlinkSync(FAL_CIRCUIT_PATH); } catch { /* skip */ }
+}
 
 function loadFalKey(): string {
   if (process.env.FAL_KEY) return process.env.FAL_KEY;
@@ -39,9 +68,10 @@ export interface BrollResult {
 
 // Circuit breaker: after FAL_CIRCUIT_THRESHOLD consecutive ETIMEDOUT failures,
 // skip fal.ai calls immediately rather than waiting 150s each time.
-// This prevents 30+ min of wasted time when fal.ai is unreachable for a whole run.
+// Sprint 1404: also persisted to data/fal-circuit.json so restarts don't reset it.
 let falConsecutiveTimeouts = 0;
 const FAL_CIRCUIT_THRESHOLD = 2;
+loadPersistedCircuit(); // Sprint 1404: check disk on startup
 
 function isTimeoutError(err: any): boolean {
   return (
@@ -169,6 +199,7 @@ export async function generateBrollVideo(
 
       console.log(`  [fal.ai] ✅ ${model} video saved: ${outPath} (~$${cost.toFixed(2)})`);
       falConsecutiveTimeouts = 0; // reset circuit on success
+      clearPersistedCircuit(); // Sprint 1404: clear disk circuit on success
 
       return { path: outPath, source: model, cost_usd: cost, duration_s: durationS };
 
@@ -176,6 +207,7 @@ export async function generateBrollVideo(
       if (isTimeoutError(err)) {
         falConsecutiveTimeouts++;
         console.warn(`  [fal.ai] ❌ ${model} ETIMEDOUT (consecutive: ${falConsecutiveTimeouts}/${FAL_CIRCUIT_THRESHOLD})`);
+        if (falConsecutiveTimeouts >= FAL_CIRCUIT_THRESHOLD) tripPersistedCircuit(); // Sprint 1404
       } else {
         console.warn(`  [fal.ai] ❌ ${model} failed: ${err.message?.slice(0, 200)}`);
       }
