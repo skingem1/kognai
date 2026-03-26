@@ -8215,3 +8215,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - AAR: aar-middleware module missing — noted only
 - Issues: Orchestrator bug fixed (Rule 3 contract fields not propagated to CTO proposal). Next run of swarm with autonomous sprints should pass Rule 3.
 - Timestamp: 2026-03-26T10:00:00Z
+
+## Sprint 1458 — Achiri Telegram bot live connection test
+- Status: PASS
+- Commit: 380e9963
+- Files created: scripts/achiri/verify-bot-token.ts, scripts/achiri/validate-bot-token.ts, workspace/sprints/sprint-1458.json
+- Test: validate-bot-token.ts — PASS (4/4)
+- Live test: verify-bot-token.ts — PASS (@achiriibot, ID 8611421491 CONNECTED)
+- Achievement: Achiri Telegram bot @achiriibot confirmed live and operational
+- Swarm: CTO gate PASSED (Rule 3 fix in orchestrate-agents-v2.ts working), qwen3:14b produced no files — wrote directly
+- AAR: aar-middleware module missing — noted only
+- Timestamp: 2026-03-26T10:30:00Z
