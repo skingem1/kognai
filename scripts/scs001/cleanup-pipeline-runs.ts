@@ -21,7 +21,7 @@
  * Sprint 1476
  */
 
-import { existsSync, readdirSync, statSync, rmSync } from 'fs';
+import { existsSync, readdirSync, statSync, rmSync, readFileSync, writeFileSync } from 'fs';
 import { join } from 'path';
 
 const ROOT = join(__dirname, '..', '..');
@@ -109,6 +109,38 @@ if (require.main === module) {
 
   console.log(`\n[cleanup-pipeline-runs] ${dryRun ? 'Would free' : 'Freed'} ${formatBytes(totalFreed)} across ${cleaned} run(s) (${skipped} skipped)`);
   if (dryRun) console.log('[cleanup-pipeline-runs] Run without --dry-run to apply changes');
+
+  // --- Post-queue purge: remove pending entries referencing deleted files ---
+  const QUEUE_FILE = join(SCS001_DIR, 'post-queue.jsonl');
+  if (existsSync(QUEUE_FILE)) {
+    const lines = readFileSync(QUEUE_FILE, 'utf-8').split('\n').filter(Boolean);
+    const kept: string[] = [];
+    const purged: string[] = [];
+    for (const line of lines) {
+      let entry: any;
+      try { entry = JSON.parse(line); } catch { kept.push(line); continue; }
+      const isPending = !entry.status || entry.status === 'pending';
+      const hasFile = typeof entry.file === 'string' && entry.file.length > 0;
+      const fileMissing = hasFile && !existsSync(entry.file);
+      if (isPending && fileMissing) {
+        purged.push(`  - ${entry.video_id}: ${(entry.title || 'untitled').slice(0, 60)}`);
+      } else {
+        kept.push(line);
+      }
+    }
+    console.log(`\n[cleanup-pipeline-runs] Post-queue: ${purged.length} stale entries (pending + file missing)`);
+    purged.forEach(p => console.log(p));
+    if (purged.length > 0) {
+      if (!dryRun) {
+        writeFileSync(QUEUE_FILE, kept.join('\n') + '\n');
+        console.log(`[cleanup-pipeline-runs] Queue purged — kept ${kept.length}, removed ${purged.length}`);
+      } else {
+        console.log(`[cleanup-pipeline-runs] DRY RUN — queue unchanged (would remove ${purged.length})`);
+      }
+    } else {
+      console.log('[cleanup-pipeline-runs] Queue is clean — no stale entries');
+    }
+  }
 }
 
 export { cleanPipelineRun };
