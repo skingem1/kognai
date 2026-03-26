@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1410",
+  "title": "BUGFIX — Bypass dedup ledger for synthesised clips to prevent 0-clip runs after first discovery-fallback pass",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "Sprint-1408 synthesises pre-qualified clips from discovery metadata when viralClipsCount=0. The discovery_id is deterministic (sha256(url:topicId)), so after the first synthesised run the dedup ledger (Stage 3.5) records these clip_ids. On the next run the same discovery_ids are generated again and filterNewClips() filters them all out, producing 0 clips. The dedup ledger was designed for actual downloaded video clips, not metadata-only synthesised entries. Fix: when clipsAreSynthesized=true, skip ledger.filterNewClips and use qualifiedClipsRaw directly. Log the bypass so it's visible in pipeline output.",
+  "tasks": [
+    {
+      "id": "1410-dedup-bypass-synthesised",
+      "description": "agents/scs001-orchestrator/index.ts Stage 3.5: change 'const qualifiedClipsDeduped = this.ledger.filterNewClips(qualifiedClipsRaw)' to bypass the ledger when clipsAreSynthesized=true. Use: 'const qualifiedClipsDeduped = clipsAreSynthesized ? (console.log(\"[Orchestrator] Synthesised clips — skipping dedup ledger\"), qualifiedClipsRaw) : this.ledger.filterNewClips(qualifiedClipsRaw);'. Keep clipsDeduplicated=0 for synthesised path.",
+      "files": ["agents/scs001-orchestrator/index.ts"],
+      "status": "done",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}

@@ -199,9 +199,14 @@ export class SCS001Orchestrator {
     }
 
     // --- Stage 3.5: Deduplication ---
+    // Sprint 1410: Skip ledger dedup for synthesised clips — their clip_ids are deterministic
+    // (sha256(url:topicId)) so the ledger would block ALL clips on the 2nd+ synthesised run.
+    // Dedup ledger was designed for actual downloaded video clips, not discovery-metadata entries.
     const qualifiedClipsRaw = clips.filter(c => c.qualified);
-    const qualifiedClipsDeduped = this.ledger.filterNewClips(qualifiedClipsRaw);
-    const clipsDeduplicated = qualifiedClipsRaw.length - qualifiedClipsDeduped.length;
+    const qualifiedClipsDeduped = clipsAreSynthesized
+      ? (console.log('[Orchestrator] Synthesised clips — skipping dedup ledger (clip_ids are deterministic)'), qualifiedClipsRaw)
+      : this.ledger.filterNewClips(qualifiedClipsRaw);
+    const clipsDeduplicated = clipsAreSynthesized ? 0 : qualifiedClipsRaw.length - qualifiedClipsDeduped.length;
 
     // --- Stage 3.6: Speaker diversity quota (Sprint 428) ---
     // Cap clips per speaker to ensure content variety. Without this,

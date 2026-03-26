@@ -7739,3 +7739,11 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Impact: Pipeline runs ~10min faster when RapidAPI subscription lapsed
 - Swarm used: no (file 750 lines, too large for swarm)
 - Timestamp: 2026-03-26T04:35:00Z
+
+## Sprint 1410 — 2026-03-26
+- Sprint: BUGFIX — Bypass dedup ledger for synthesised clips to prevent 0-clip runs after first discovery-fallback pass
+- Files modified: agents/scs001-orchestrator/index.ts
+- Fix: Stage 3.5 dedup now bypasses ledger.filterNewClips() when clipsAreSynthesized=true. Synthesised clip_ids are deterministic (sha256(url:topicId)), so the ledger would block ALL clips on 2nd+ synthesised runs. Root cause: dedup ledger designed for downloaded video files, not metadata-only entries.
+- Impact: Synthesised-clip path now produces content on every run (not just the first), while RapidAPI is unavailable
+- Swarm used: no
+- Timestamp: 2026-03-26T04:50:00Z
