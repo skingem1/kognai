@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-1447",
+  "title": "PHASE2 — YouTube OAuth token helper for Shorts automation",
+  "block": "PHASE2",
+  "source": "queue-empty-autonomous",
+  "rationale": "YouTube Shorts automated publishing is a Phase 2A goal. YOUTUBE_CLIENT_ID and YOUTUBE_CLIENT_SECRET are already set. Missing: YOUTUBE_REFRESH_TOKEN (OAuth). Create scripts/scs001/youtube-oauth.ts: generates Google OAuth URL (YouTube upload scope), starts local HTTP server on port 8080 to catch redirect, exchanges code for tokens, appends YOUTUBE_REFRESH_TOKEN to .env. Running this script once unblocks youtube-shorts.ts and multi-platform publishing via YouTube. Under 90 lines.",
+  "tasks": [
+    {
+      "id": "1447-youtube-oauth",
+      "description": "Create scripts/scs001/youtube-oauth.ts. (1) Read YOUTUBE_CLIENT_ID + YOUTUBE_CLIENT_SECRET from env/.env (fail fast with clear message if missing). (2) Build Google OAuth URL: https://accounts.google.com/o/oauth2/v2/auth with scope=https://www.googleapis.com/auth/youtube.upload, redirect_uri=http://localhost:8080/callback, access_type=offline, response_type=code. (3) Print URL and optionally open in browser (use 'open' command on macOS, catch error). (4) Start http.createServer on port 8080, wait for GET /callback?code=... (5) Exchange code for tokens: POST https://oauth2.googleapis.com/token with client_id/secret/code/redirect_uri/grant_type=authorization_code. (6) Extract refresh_token from response. (7) Read .env, append or replace YOUTUBE_REFRESH_TOKEN=<value>. (8) Print confirmation. Close server. Exit 0. On error: print clear message and exit 1. File must be under 90 lines.",
+      "files": [
+        "scripts/scs001/youtube-oauth.ts"
+      ],
+      "status": "pending",
+      "priority": "high",
+      "agent": "coder",
+      "type": "feature"
+    }
+  ]
+}
