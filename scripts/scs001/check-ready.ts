@@ -90,7 +90,9 @@ function main(): void {
   if (pending.length > 0) {
     console.log('\n  Next videos to post:');
     pending.slice(0, 5).forEach((v, i) => {
-      const score = v.score || '?';
+      // Normalize invalid scores (e.g. "-100%" from multiformat backfill bug)
+      const rawScore = v.score || '?';
+      const score = rawScore.startsWith('-') ? 'N/A' : rawScore;
       const title = (v.title || v.video_id || 'untitled').slice(0, 55);
       const filePart = v.file ? path.basename(v.file) : 'no file';
       console.log(`  ${i + 1}. [${score}] ${title}`);

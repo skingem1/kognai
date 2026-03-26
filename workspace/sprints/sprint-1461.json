@@ -1,0 +1,27 @@
+{
+  "sprint_id": "sprint-1461",
+  "title": "BUGFIX — Post-queue score normalization (fix -100% display)",
+  "block": "SCS-001",
+  "source": "queue-empty-autonomous",
+  "rationale": "Post-queue had 10 entries with score '-100%' from multiformat backfill. Origin: unknown script wrote viral_score * 100 as negative string. Fix: (1) check-ready.ts normalizes negative scores to N/A in display; (2) repair-post-queue-scores.ts one-time repair replaced -100% entries with N/A in the JSONL file. Post-queue now shows accurate N/A for unscored videos.",
+  "tasks": [
+    {
+      "id": "1461-normalize-display",
+      "description": "scripts/scs001/check-ready.ts: normalize negative score strings to N/A in display",
+      "files": ["scripts/scs001/check-ready.ts"],
+      "status": "done",
+      "priority": "medium",
+      "agent": "coder",
+      "type": "bugfix"
+    },
+    {
+      "id": "1461-repair-script",
+      "description": "scripts/scs001/repair-post-queue-scores.ts: one-time repair for invalid scores. Run to fix existing data. 10 entries repaired.",
+      "files": ["scripts/scs001/repair-post-queue-scores.ts"],
+      "status": "done",
+      "priority": "medium",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}
