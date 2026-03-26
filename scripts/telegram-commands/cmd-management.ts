@@ -2432,6 +2432,20 @@ export function cmdBlockers(): string {
     }
   } catch { /* skip */ }
 
+  // Sprint 1403: RapidAPI subscription lapse detection
+  try {
+    const lapsePath = path.join(ROOT, 'data', 'rapidapi-lapse.json');
+    if (fs.existsSync(lapsePath)) {
+      const lapseData = JSON.parse(fs.readFileSync(lapsePath, 'utf-8'));
+      const elapsed = Date.now() - new Date(lapseData.lapsed_at).getTime();
+      if (elapsed < 24 * 3600_000) {
+        const hoursLeft = ((24 * 3600_000 - elapsed) / 3600_000).toFixed(1);
+        lines.push(`  🔴 RapidAPI subscription lapsed — pipeline blind to new content (${hoursLeft}h until retry) · renew at rapidapi.com`);
+        autoFound++;
+      }
+    }
+  } catch { /* skip */ }
+
   lines.push('');
   if (autoFound > 0) totalBlocked += autoFound;
 

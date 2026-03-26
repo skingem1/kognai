@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1403",
+  "title": "FEATURE — /blockers show RapidAPI subscription lapse warning",
+  "block": "FEATURE",
+  "source": "self-directed",
+  "rationale": "Sprint 1402 added RapidAPI lapse visibility to /status. /blockers is the operator's action-items view and should also surface this — pipeline is blind to new viral content when subscription lapses. Add same lapse check to cmdBlockers() auto-scan section in cmd-management.ts.",
+  "tasks": [
+    {
+      "id": "1403-blockers-rapidapi-lapse",
+      "description": "In scripts/telegram-commands/cmd-management.ts cmdBlockers(): after recent-errors check, add RapidAPI lapse detection that reads data/rapidapi-lapse.json and emits a blocker line when lapsed_at is within 24h TTL.",
+      "files": ["scripts/telegram-commands/cmd-management.ts"],
+      "status": "done",
+      "priority": "medium",
+      "agent": "coder",
+      "type": "feature"
+    }
+  ]
+}
