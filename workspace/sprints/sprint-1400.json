@@ -1,15 +1,18 @@
 {
   "sprint_id": "sprint-1400",
-  "title": "BUGFIX — cmd-posting.ts + cmd-system.ts ledger dedup sweep",
+  "title": "BUGFIX \u2014 cmd-posting.ts + cmd-system.ts ledger dedup sweep",
   "block": "BUGFIX",
   "source": "self-directed",
-  "rationale": "Remaining ledger dedup gaps. cmd-posting.ts: line 209 inflates queue count display; line 451 inflates queueCount + top3 can show duplicates; line 1122 cmdBatch can include duplicate video IDs in batch list. cmd-system.ts: line 1792 readyCount inflated — can cause pipelineOk to be true even when it shouldn't. Same seenVids pattern as Sprint 1395-1399.",
+  "rationale": "Remaining ledger dedup gaps. cmd-posting.ts: line 209 inflates queue count display; line 451 inflates queueCount + top3 can show duplicates; line 1122 cmdBatch can include duplicate video IDs in batch list. cmd-system.ts: line 1792 readyCount inflated \u2014 can cause pipelineOk to be true even when it shouldn't. Same seenVids pattern as Sprint 1395-1399.",
   "tasks": [
     {
       "id": "1400-posting-system-dedup",
       "description": "Add seenVids Set to 3 filter sites in cmd-posting.ts and 1 in cmd-system.ts",
-      "files": ["scripts/telegram-commands/cmd-posting.ts", "scripts/telegram-commands/cmd-system.ts"],
-      "status": "pending",
+      "files": [
+        "scripts/telegram-commands/cmd-posting.ts",
+        "scripts/telegram-commands/cmd-system.ts"
+      ],
+      "status": "done",
       "priority": "medium",
       "agent": "coder",
       "type": "bugfix"

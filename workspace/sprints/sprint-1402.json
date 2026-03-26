@@ -1,15 +1,17 @@
 {
   "sprint_id": "sprint-1402",
-  "title": "FEATURE — /status show RapidAPI subscription lapse warning",
+  "title": "FEATURE \u2014 /status show RapidAPI subscription lapse warning",
   "block": "FEATURE",
   "source": "self-directed",
-  "rationale": "RapidAPI subscription lapsed on 2026-03-26T00:09Z — pipeline cannot discover new viral content. /status shows no warning about this. data/rapidapi-lapse.json exists when lapsed. Add a check to cmdStatus() in cmd-system.ts to surface a visible warning when subscription is lapsed, so operator knows to renew. RAPIDAPI lapse = pipeline blind to new viral content.",
+  "rationale": "RapidAPI subscription lapsed on 2026-03-26T00:09Z \u2014 pipeline cannot discover new viral content. /status shows no warning about this. data/rapidapi-lapse.json exists when lapsed. Add a check to cmdStatus() in cmd-system.ts to surface a visible warning when subscription is lapsed, so operator knows to renew. RAPIDAPI lapse = pipeline blind to new viral content.",
   "tasks": [
     {
       "id": "1402-status-rapidapi-lapse",
       "description": "In scripts/telegram-commands/cmd-system.ts cmdStatus(): check if data/rapidapi-lapse.json exists and is within LAPSE_TTL_H=24h, add warning line to status output.",
-      "files": ["scripts/telegram-commands/cmd-system.ts"],
-      "status": "pending",
+      "files": [
+        "scripts/telegram-commands/cmd-system.ts"
+      ],
+      "status": "done",
       "priority": "high",
       "agent": "coder",
       "type": "feature"

@@ -1,6 +1,6 @@
 {
   "sprint_id": "sprint-1401",
-  "title": "BUGFIX — dashboard crashes on sprint list (sprint-1362.json malformed JSON)",
+  "title": "BUGFIX \u2014 dashboard crashes on sprint list (sprint-1362.json malformed JSON)",
   "block": "BUGFIX",
   "source": "self-directed",
   "rationale": "dashboard/parsers/sprints.py list_sprints() crashes with KeyError: 'number' because sprint-1362.json has unescaped double quotes in its rationale field ({\"detail\":\"Not Found\"}), causing parse_sprint() to return the minimal error dict that lacks 'number'. Fix both: repair sprint-1362.json and make parse_sprint() error path include all required keys.",
@@ -8,8 +8,10 @@
     {
       "id": "1401-sprint-1362-repair",
       "description": "Fix unescaped double quotes in sprint-1362.json rationale field.",
-      "files": ["workspace/sprints/sprint-1362.json"],
-      "status": "pending",
+      "files": [
+        "workspace/sprints/sprint-1362.json"
+      ],
+      "status": "done",
       "priority": "high",
       "agent": "coder",
       "type": "bugfix"
@@ -17,8 +19,10 @@
     {
       "id": "1401-parser-resilience",
       "description": "In dashboard/parsers/sprints.py parse_sprint() error path, add all required keys (number, title, phase, etc.) so list_sprints() never throws KeyError on a bad file.",
-      "files": ["dashboard/parsers/sprints.py"],
-      "status": "pending",
+      "files": [
+        "dashboard/parsers/sprints.py"
+      ],
+      "status": "done",
       "priority": "medium",
       "agent": "coder",
       "type": "bugfix"
