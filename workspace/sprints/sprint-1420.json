@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1420",
+  "title": "BUGFIX — Move ts-node and typescript to production dependencies",
+  "block": "DEPLOY",
+  "source": "self-directed",
+  "rationale": "deploy-hetzner.sh runs 'npm ci --omit=dev' on the Hetzner VPS. ts-node and typescript were devDependencies, so they would NOT be installed on Hetzner. All PM2 processes (achiri-api, achiri-telegram, and all scs001 cron scripts) use 'npx ts-node' to run TypeScript directly. Without ts-node on Hetzner, every PM2 process would fail to start. Fix: move ts-node (^10.9.2) and typescript (^5.7.0) from devDependencies to dependencies in package.json.",
+  "tasks": [
+    {
+      "id": "1420-ts-node-prod-dep",
+      "description": "Move ts-node@^10.9.2 and typescript@^5.7.0 from devDependencies to dependencies in package.json. This ensures 'npm ci --omit=dev' on Hetzner installs both packages, allowing 'npx ts-node' to work for all PM2 processes.",
+      "files": ["package.json"],
+      "status": "done",
+      "priority": "critical",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}
