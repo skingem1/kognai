@@ -8235,3 +8235,11 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - PM2: achiri-telegram restarted with new model config
 - Swarm: not used (single-line config fix, direct edit)
 - Timestamp: 2026-03-26T11:00:00Z
+
+## Sprint 1460 — BUGFIX Achiri persistent typing indicator
+- Status: PASS
+- Commit: 71099638
+- Files modified: agents/achiri/telegram-bot.ts (setInterval 4s typing refresh + clearInterval)
+- UX fix: users see continuous typing indicator while qwen3:4b processes (was: silent for 55s)
+- Swarm: not used (surgical edit)
+- Timestamp: 2026-03-26T11:15:00Z
