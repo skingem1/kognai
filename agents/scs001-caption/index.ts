@@ -145,10 +145,12 @@ export class CaptionAgent {
     if (productionMode) {
       // Production mode: burn subtitles into video via FFmpeg subtitles filter
       const FFMPEG = process.env.FFMPEG_PATH ?? '/opt/homebrew/bin/ffmpeg';
-      // Use execFileSync (not execSync) to pass -vf as a literal arg.
-      // FFmpeg 8.x requires explicit 'f=' prefix for the subtitle filename option;
-      // without it the parser rejects the filter string with "No option name near".
-      const vfArg = `subtitles=f='${srtPath}':force_style='FontSize=24,PrimaryColour=&H00FFFFFF,OutlineColour=&H00000000,Outline=2,Alignment=2,MarginV=80'`;
+      // Use execFileSync (not execSync) to pass -vf as a literal arg (no shell quoting).
+      // Sprint 1406: FFmpeg 8.1 does NOT honour single-quote escaping inside filter option
+      // values — commas in force_style were parsed as filter option separators, causing
+      // "No option name near" parse errors. Fix: use \, backslash-escaped commas, which
+      // FFmpeg's filter parser treats as literal commas regardless of quoting context.
+      const vfArg = `subtitles=${srtPath}:force_style=FontSize=24\\,PrimaryColour=&H00FFFFFF\\,OutlineColour=&H00000000\\,Outline=2\\,Alignment=2\\,MarginV=80`;
       try {
         execFileSync(FFMPEG, ['-y', '-i', video.file_path, '-vf', vfArg, '-c:a', 'copy', captionedPath], { stdio: 'pipe', timeout: 60_000 });
       } catch (err) {

@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1406",
+  "title": "BUGFIX — Fix FFmpeg subtitle force_style comma escaping in caption agent",
+  "block": "BUGFIX",
+  "source": "queue-prescribed",
+  "rationale": "agents/scs001-caption/index.ts line 151: force_style='FontSize=24,PrimaryColour=...' — FFmpeg 8.1 does not correctly parse single-quoted filter option values containing commas. The commas are interpreted as filter option separators causing 'No option name near' parse error. Fix: remove single-quote quoting and use \\, backslash-escaped commas instead, which FFmpeg's filter parser treats as literal commas. This caused every production-mode caption burn-in to fail (fallback to copy without captions).",
+  "tasks": [
+    {
+      "id": "1406-caption-force-style",
+      "description": "Fix agents/scs001-caption/index.ts line 151: change vfArg to use \\, escaped commas in force_style instead of single-quote quoting. Remove f='...' quoting around srtPath (unnecessary since path has no special chars). New vfArg: subtitles=${srtPath}:force_style=FontSize=24\\,PrimaryColour=&H00FFFFFF\\,OutlineColour=&H00000000\\,Outline=2\\,Alignment=2\\,MarginV=80",
+      "files": ["agents/scs001-caption/index.ts"],
+      "status": "done",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}
