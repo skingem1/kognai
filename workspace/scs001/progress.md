@@ -8251,3 +8251,15 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Files modified: scripts/scs001/check-ready.ts (normalize negative scores → N/A), workspace/scs001/post-queue.jsonl (10 entries repaired)
 - Swarm: not used (surgical fix)
 - Timestamp: 2026-03-26T11:30:00Z
+
+## Sprint 1472 — SCS-001 Disk Guardian
+- Status: PASS
+- Commit: 070a1423
+- Files created: scripts/scs001/cleanup-run-intermediates.ts, workspace/sprints/sprint-1472.json
+- Files modified: scripts/scs001/batch-produce.ts (Sprint 1472 hook — cleanup after ledger write)
+- Validation: dry-run identified 276.2MB across 16 runs; live run freed 276.2MB. tsc compile: clean.
+- Pipeline: disk guardian wired — future runs auto-cleanup intermediates post-ledger-write
+- Swarm: not used (multi-file, straightforward — direct write)
+- AAR: aar-middleware module not found (non-blocking)
+- Issues: workspace/scs001 was at 10.5GB (threshold 5GB). Freed 276MB immediately.
+- Timestamp: 2026-03-26T12:00:00Z
