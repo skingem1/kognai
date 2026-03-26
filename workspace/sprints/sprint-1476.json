@@ -1,0 +1,26 @@
+{
+  "sprint_id": "sprint-1476",
+  "title": "FEATURE — disk cleanup: delete intermediate dirs from run-TIMESTAMP pipeline outputs",
+  "block": "SCS-001",
+  "source": "queue-empty-autonomous",
+  "rationale": "disk watchdog: workspace/scs001/ is 11GB. Investigating with du shows 6 run-TIMESTAMP dirs (1.3-1.9GB each). Each has: editing/ (~600MB), mixed-output/ (~640MB), voiceover-audio/ (~9MB), caption/ (publishable videos — KEEP). Deleting editing/mixed-output/voiceover-audio frees ~1.2GB/run = ~7.2GB total. caption/ must be preserved as these are the publishable captioned videos. Script: cleanup-pipeline-runs.ts — scan workspace/scs001/run-* dirs, delete editing/ + mixed-output/ + voiceover-audio/ subdirs, keep caption/. Log bytes freed. --dry-run flag.",
+  "inputs": ["workspace/scs001/run-*/"],
+  "outputs": ["scripts/scs001/cleanup-pipeline-runs.ts (new)"],
+  "success_criteria": [
+    "dry-run identifies ~7GB to free across 6 run dirs",
+    "live run deletes editing/ mixed-output/ voiceover-audio/ subdirs",
+    "caption/ directories preserved in all run dirs",
+    "tsc compile clean"
+  ],
+  "tasks": [
+    {
+      "id": "1476-cleanup-pipeline-runs",
+      "description": "Create scripts/scs001/cleanup-pipeline-runs.ts: scan workspace/scs001/run-* dirs, for each delete editing/, mixed-output/, voiceover-audio/ subdirs (keep caption/). Log bytes freed per run. --dry-run flag.",
+      "files": ["scripts/scs001/cleanup-pipeline-runs.ts"],
+      "status": "pending",
+      "priority": "P1",
+      "agent": "coder",
+      "type": "feature"
+    }
+  ]
+}
