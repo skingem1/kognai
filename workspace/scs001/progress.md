@@ -7730,3 +7730,12 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Impact: CRITICAL — pipeline was dead every run since RapidAPI lapse. This restores content production regardless of RapidAPI status.
 - Swarm used: no (file 749 lines, too large for swarm)
 - Timestamp: 2026-03-26T04:20:00Z
+
+## Sprint 1409 — BUGFIX Skip live InsightAgent for synthesised clips
+- Status: PASS
+- Commit: 7638acde
+- Files modified: agents/scs001-orchestrator/index.ts
+- Fix: Added clipsAreSynthesized flag. When viralClipsCount=0 (sprint-1408 path), live InsightAgent is skipped. Goes directly to generateMockBriefs via the else-if path. Saves 10min per pipeline run when RapidAPI is unavailable.
+- Impact: Pipeline runs ~10min faster when RapidAPI subscription lapsed
+- Swarm used: no (file 750 lines, too large for swarm)
+- Timestamp: 2026-03-26T04:35:00Z
