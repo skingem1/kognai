@@ -148,10 +148,11 @@
       "sprint": "TICKET-008-PROMO-05",
       "title": "PROMO-05 \u2014 Quality pass: script tone tuning, image timing polish, Stripe per-video billing",
       "block": "TICKET-008",
-      "status": "pending",
+      "status": "done",
       "priority": "P1",
       "rationale": "TICKET-008 P1-PROMO Sprint 5/5. Run 10 real product URLs through pipeline, score hook strength + CTA clarity, tune promo-scriptgen.ts system prompt. Tune Ken Burns zoompan parameters. Add Stripe billing gate to /promo: check credit balance before run, deduct 1 credit on completion, send Stripe payment link when credits=0. Free tier: 1 video. Gate: 10-video batch hook strength >=70% avg, no pricing/legal errors, Stripe deduction confirmed for 3 test transactions, zero-credit user receives payment link not error. HUMAN PREREQ: Stripe account active.",
-      "added_at": "2026-03-26T09:10:28.926160Z"
+      "added_at": "2026-03-26T09:10:28.926160Z",
+      "completed_at": "2026-03-26T00:00:00Z"
     },
     {
       "sprint": "TICKET-007-GRPO-RESEARCH",

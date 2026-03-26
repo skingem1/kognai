@@ -8184,3 +8184,12 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Pipeline: TICKET-008 PROMO-04/5 complete
 - Swarm used: no (multi-file, complex pipeline orchestration)
 - Timestamp: 2026-03-26T00:00:00Z
+
+## Sprint TICKET-008-PROMO-05 — PROMO-05 (quality pass + Stripe billing)
+- Status: PASS
+- Files created: scripts/promo/promo-credits.ts, scripts/promo/score-promo.ts, workspace/sprints/sprint-TICKET-008-PROMO-05.json
+- Files modified: scripts/promo/promo-scriptgen.ts (enhanced BEAT_GUIDE with quality criteria), scripts/promo/product-visual-assembler.ts (zoom 1.25→1.35 + pan), agents/telegram-bot/promo-command.ts (credit gate wired)
+- Test: score-promo.ts --dry-run — PASS (10/10, avg 73/100, CTA 100%)
+- Pipeline: TICKET-008 PROMO-05/5 COMPLETE — all 5 sprints done
+- Swarm used: no
+- Timestamp: 2026-03-26T00:00:00Z
