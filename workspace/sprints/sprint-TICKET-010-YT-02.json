@@ -1,0 +1,17 @@
+{
+  "sprint_id": "sprint-TICKET-010-YT-02",
+  "title": "TICKET-010-YT-02 — PM2 cadence: batch-youtube-upload.ts 2x/day wired",
+  "block": "TICKET-010",
+  "source": "queue-prescribed",
+  "status": "partial — YOUTUBE_REFRESH_TOKEN required for live uploads",
+  "rationale": "Updated ecosystem.config.js: scs001-youtube-upload now runs batch-youtube-upload.ts (was cross-platform-publish.ts), 2x/day cron (7:30am + 7:30pm), 3 videos per run = 6 videos/day = 9,600 quota units (under 10K limit). YOUTUBE_DRY_RUN auto-disables when YOUTUBE_REFRESH_TOKEN is set. Gate: PM2 config updated and verified. Live upload gate requires manual YOUTUBE_REFRESH_TOKEN.",
+  "tasks": [
+    {
+      "id": "TICKET-010-YT-02-01",
+      "description": "ecosystem.config.js: update scs001-youtube-upload to use batch-youtube-upload.ts, cron 30 7,19 * * *, --max=3",
+      "files": ["ecosystem.config.js"],
+      "status": "done",
+      "type": "feature"
+    }
+  ]
+}

@@ -1418,18 +1418,19 @@ module.exports = {
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
     {
-      // Sprint 1005: YouTube Shorts auto-upload — uploads pending delivered videos daily at 7:30am
-      // No-op until YOUTUBE_REFRESH_TOKEN is set in .env. Run youtube-oauth-setup.ts to get token.
+      // Sprint TICKET-010-YT-02: YouTube Shorts auto-upload via batch-youtube-upload.ts
+      // 2 runs/day: 7:30am + 7:30pm, 3 videos per run = 6 videos/day = 9,600 units (under 10K limit)
+      // No-op until YOUTUBE_REFRESH_TOKEN is set in .env. Run: npx ts-node scripts/scs001/youtube-oauth.ts
       // To start: pm2 start ecosystem.config.js --only scs001-youtube-upload
       name: "scs001-youtube-upload",
-      script: "./scripts/scs001/cross-platform-publish.ts",
+      script: "./scripts/scs001/batch-youtube-upload.ts",
       interpreter: "node",
       interpreter_args: "-r ts-node/register",
       cwd: __dirname,
       autorestart: false,
       watch: false,
-      cron_restart: "30 7 * * *",
-      args: "--all-pending",
+      cron_restart: "30 7,19 * * *",
+      args: "--live --max=3",
       env: {
         TS_NODE_TRANSPILE_ONLY: "true",
         TS_NODE_PROJECT: __dirname + "/tsconfig.scripts.json",

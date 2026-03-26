@@ -53,10 +53,11 @@
       "sprint": "TICKET-010-YT-02",
       "title": "Sprint 173 — Automated YouTube Shorts upload: wire batch-youtube-upload.ts into PM2 cadence",
       "block": "TICKET-010",
-      "status": "queued",
+      "status": "done",
       "priority": "P1",
       "rationale": "SPRINT-171-PUB Plan B Sprint 2/2. Wire scripts/scs001/batch-youtube-upload.ts into PM2 schedule (2 uploads/day). Auto-populate metadata: title, description, tags, thumbnail from video ledger. Gate: first real YouTube Shorts video uploaded via API (not manual), PM2 schedule confirmed active.",
-      "added_at": "2026-03-26T11:13:43.042092Z"
+      "added_at": "2026-03-26T11:13:43.042092Z",
+      "completed_at": "2026-03-26T11:29:48.322Z"
     },
     {
       "sprint": "TICKET-013-CMO-01",
