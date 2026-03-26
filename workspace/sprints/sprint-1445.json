@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-1445",
+  "title": "GATE — Phase 1→Phase 2A readiness validator",
+  "block": "GATE",
+  "source": "queue-empty-autonomous",
+  "rationale": "Phase 1→Phase 2A gate is Apr 11 (16 days). No validator script exists for it. Phase 1.5 gate already has sprint-095/096 pattern (generate-gate-report.ts + JSON output). Create scripts/generate-phase2a-gate.ts that checks all Phase 2A readiness criteria and writes workspace/gates/phase1-phase2a-gate.json. This lets the operator see exactly what's passing/failing without running manual checks.",
+  "tasks": [
+    {
+      "id": "1445-phase2a-gate",
+      "description": "Create scripts/generate-phase2a-gate.ts. Reads state files and writes workspace/gates/phase1-phase2a-gate.json. Criteria: (1) phase15_gate_pass — read workspace/gates/phase1-5-gate.json, check overall_pass===true; (2) achiri_tests_pass — read workspace/achiri/alpha-launch-validation.json, check test_suite.failed===0; (3) stripe_live — check STRIPE_SECRET_KEY in .env (len > 5, starts with sk_live_); (4) pipeline_operational — check reports/pipeline-runs/latest.json exists and status==='complete'; (5) bot_token_set — check ACHIRI_TELEGRAM_BOT_TOKEN in .env. Criteria 1-4 must all pass for overall_pass. Criterion 5 is informational (pending human). Output JSON: {gate, generated_at, deadline:'2026-04-11', days_remaining, criteria:[{id,name,pass,details}], overall_pass, recommendation, blockers:[]}. Executable via: npx ts-node scripts/generate-phase2a-gate.ts. Also add to update-gate-tracker.ts if it exists. File must be under 120 lines.",
+      "files": [
+        "scripts/generate-phase2a-gate.ts"
+      ],
+      "status": "pending",
+      "priority": "high",
+      "agent": "coder",
+      "type": "feature"
+    }
+  ]
+}

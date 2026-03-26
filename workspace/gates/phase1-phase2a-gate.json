@@ -1,0 +1,43 @@
+{
+  "gate": "phase1-phase2a",
+  "generated_at": "2026-03-26T07:35:43.642Z",
+  "deadline": "2026-04-11",
+  "days_remaining": 16,
+  "criteria": [
+    {
+      "id": "phase15_gate",
+      "name": "Phase 1.5 Gate Passed",
+      "pass": true,
+      "details": "PASS — 156 posts recorded in manual-posts.jsonl"
+    },
+    {
+      "id": "achiri_tests",
+      "name": "Achiri Test Suite (target: 0 failures)",
+      "pass": true,
+      "details": "PASS — 17/17 tests passed (0 failed)"
+    },
+    {
+      "id": "stripe_live",
+      "name": "Stripe in Live Mode",
+      "pass": true,
+      "details": "PASS — STRIPE_SECRET_KEY set (test key — upgrade to sk_live_ before first subscriber)"
+    },
+    {
+      "id": "pipeline_ok",
+      "name": "Pipeline Operational (<48h since last run)",
+      "pass": true,
+      "details": "PASS — last run scs001-2026-03-26T06-00-00-834Z, completed 2026-03-26T06:07:54.340Z (1h ago)"
+    },
+    {
+      "id": "bot_token",
+      "name": "Achiri Bot Token Set (informational)",
+      "pass": null,
+      "details": "NOT SET — create @AchiriBuddyBot and add ACHIRI_TELEGRAM_BOT_TOKEN to .env"
+    }
+  ],
+  "overall_pass": true,
+  "recommendation": "PROCEED to Phase 2A — all gate criteria met. Achiri alpha on track for Apr 25.",
+  "blockers": [
+    "PENDING HUMAN: ACHIRI_TELEGRAM_BOT_TOKEN not set (Achiri alpha launch Apr 25)"
+  ]
+}

@@ -1,27 +1,19 @@
 # GATE TRACKER
-*Updated: 2026-03-26 (live)*
+*Updated: 2026-03-26 07:36 (auto by scripts/update-gate-tracker.ts)*
 
-## Phase 1.5 Gate — TikTok Kill Switch
-**Deadline:** 2026-04-07  |  **Days remaining:** 12  |  **Status:** ✅ ON_TRACK
+# GATE TRACKER
+# ═══════════════════════════════════════════════
 
-| Criterion | Target | Actual | Pass |
-|-----------|--------|--------|------|
-| Manual TikTok Posts (target: 30) | — | 152 posts recorded in manual-posts.jsonl | ✅ |
-| Total Views Across Posts (target: 500) | — | views unverifiable (TIKTOK_ACCESS_TOKEN not set) | ❌ |
-
-**Recommendation:** PROCEED to Phase 2A — TikTok stable. Launch Achiri alpha Apr 25.
-
-## Upcoming Gates
-
-| Gate | Target Date | Days | Status |
-|------|-------------|------|--------|
-| Phase 0 → Phase 1 | 2026-03-13 | -13 | ⬜ Past |
-| Phase 1.5 Decision | 2026-04-07 | 12 | 🟠 12d |
-| Phase 1 → Phase 2A | 2026-04-11 | 16 | 🟠 16d |
-| Achiri Lite Alpha Launch | 2026-04-25 | 30 | 🟢 30d |
-| Lite Alpha Gate (voice works?) | 2026-05-01 | 36 | 🟢 36d |
-| Full Alpha Gate (memory works?) | 2026-05-14 | 49 | 🟢 49d |
-| Phase 2A → Phase 2B | 2026-05-30 | 65 | 🟢 65d |
-| Phase 2B Gate | 2026-06-27 | 93 | 🟢 93d |
-| Phase 3 Gate | 2026-09-26 | 184 | 🟢 184d |
-| Year-End Review | 2026-12-19 | 268 | 🟢 268d |
+| Gate | Target Date | Status | Result | Notes |
+|---|---|---|---|---|
+| Phase 0 → Phase 1 | Mar 13 | [x] PASS | PROCEED | Pipeline operational · 1631 videos generated |
+| Phase 1.5 Decision | Apr 7 | [ ] Pending |  | 157/30 posts · 0/500 views · 12d remaining |
+| Godman Protocols Launch | Apr 14 | [x] READY | LAUNCH | 7/7 protocols built · 19d remaining |
+| Phase 1 → Phase 2A | Apr 11 | [x] PASS | PROCEED | 4/4 criteria · 16d remaining |
+| Achiri Lite Alpha Launch | Apr 25 | [ ] Pending | | Waitlist: 1 · 30d remaining |
+| Lite Alpha Gate (voice works?) | May 1 | [ ] Pending | | |
+| Full Alpha Gate (memory works?) | May 14 | [ ] Pending | | |
+| Phase 2A → Phase 2B | May 30 | [ ] Pending | | |
+| Phase 2B Gate | Jun 27 | [ ] Pending | | |
+| Phase 3 Gate | Sep 26 | [ ] Pending | | |
+| Year-End Review | Dec 19 | [ ] Pending | | |

@@ -65,6 +65,17 @@ const daysGodman    = daysUntil('2026-04-14T00:00:00Z');
 const daysPhase2A   = daysUntil('2026-04-11T00:00:00Z');
 const daysAchiri    = daysUntil('2026-04-25T00:00:00Z');
 
+// Phase 1→2A gate: read from generated JSON (Sprint 1445)
+const phase2aGateData = readJSON<any>(path.join(ROOT, 'workspace', 'gates', 'phase1-phase2a-gate.json'));
+const phase2aPass   = phase2aGateData?.overall_pass === true;
+const phase2aStatus = phase2aPass ? '[x] PASS' : '[ ] Pending';
+const phase2aResult = phase2aPass ? 'PROCEED' : '';
+const phase2aPassedCount = (phase2aGateData?.criteria ?? []).filter((c: any) => c.pass === true).length;
+const phase2aTotalCriteria = (phase2aGateData?.criteria ?? []).filter((c: any) => c.pass !== null).length;
+const phase2aNotes  = phase2aGateData
+  ? `${phase2aPassedCount}/${phase2aTotalCriteria} criteria · ${daysPhase2A}d remaining`
+  : `${daysPhase2A}d remaining`;
+
 // Godman launch readiness: check if all 7 protocol dist/ dirs exist
 const GODMAN_PROTOS = ['pact', 'lax', 'score', 'signal', 'soul', 'amf', 'drs'];
 const godmanReady = GODMAN_PROTOS.every(p =>
@@ -86,7 +97,7 @@ const content = `# GATE TRACKER
 | Phase 0 → Phase 1 | Mar 13 | ${phase01Pass ? '[x] PASS' : '[ ] Pending'} | ${phase01Pass ? 'PROCEED' : ''} | Pipeline operational · ${ledgerCount} videos generated |
 | Phase 1.5 Decision | Apr 7 | ${phase15Status} | ${phase15Pass ? 'PROCEED' : ''} | ${phase15Notes} · ${daysPhase15}d remaining |
 | Godman Protocols Launch | Apr 14 | ${godmanReady ? '[x] READY' : '[ ] Pending'} | ${godmanReady ? 'LAUNCH' : ''} | 7/7 protocols ${godmanReady ? 'built' : 'pending'} · ${daysGodman}d remaining |
-| Phase 1 → Phase 2A | Apr 11 | [ ] Pending | | ${daysPhase2A}d remaining |
+| Phase 1 → Phase 2A | Apr 11 | ${phase2aStatus} | ${phase2aResult} | ${phase2aNotes} |
 | Achiri Lite Alpha Launch | Apr 25 | [ ] Pending | | Waitlist: ${waitlistCount} · ${daysAchiri}d remaining |
 | Lite Alpha Gate (voice works?) | May 1 | [ ] Pending | | |
 | Full Alpha Gate (memory works?) | May 14 | [ ] Pending | | |
