@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-SPRINT-508-BROWSER-01",
+  "title": "SPRINT-508-BROWSER-01 \u2014 Install Browser Use CLI + wire TikTok posting",
+  "description": "Human prerequisites MET (2026-03-26): TikTok logged in on Chrome Default profile. WARMUP-01 started 2026-03-26 \u2014 do NOT activate TikTok posting until WARMUP complete (2026-03-29). Tasks: (1) pip install browser-use, (2) wire scripts/scs001/tiktok-browser-poster.ts, (3) test dry-run on Chrome Default profile, (4) add posting cron to ecosystem.config.js (post WARMUP-01), (5) validate 2 posts/day cadence. Source: kognai_sprint_508_browser01_tiktok.docx. Unblocks April 7 gate (30 posts \u00d7 2/day = gate pass by ~2026-04-09).",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "SPRINT-508-BROWSER-01-01",
+      "title": "SPRINT-508-BROWSER-01 \u2014 Install Browser Use CLI + wire TikTok posting",
+      "type": "feature",
+      "task_type": "sprint_508",
+      "task_target": "workspace/sprints/sprint-SPRINT-508-BROWSER-01-output.md",
+      "agent": "coder",
+      "status": "pending",
+      "priority": "P0-CRITICAL",
+      "sprint_id": "sprint-SPRINT-508-BROWSER-01"
+    }
+  ]
+}

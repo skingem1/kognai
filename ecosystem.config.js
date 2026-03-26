@@ -975,6 +975,26 @@ module.exports = {
       out_file: __dirname + "/logs/auto-post-browser-out.log",
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
+    // ─── SPRINT-508-BROWSER-01: Direct browser poster — 2x/day at 12:00 + 19:00 ─
+    // WARMUP-01 gate: AUTO_POST_DRY_RUN=1 until 2026-03-29. Change to 0 after warmup complete.
+    {
+      name: "kognai-tiktok-browser-poster",
+      script: "scripts/scs001/tiktok-browser-poster.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: __dirname,
+      cron_restart: "0 12,19 * * *",
+      autorestart: false,
+      watch: false,
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: __dirname + "/tsconfig.scripts.json",
+        AUTO_POST_DRY_RUN: "1",  // CHANGE TO "0" after WARMUP-01 complete (2026-03-29)
+      },
+      error_file: __dirname + "/logs/tiktok-browser-poster-error.log",
+      out_file: __dirname + "/logs/tiktok-browser-poster-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
     // ─── Sprint 234: Token auto-refresh — daily at 03:00 ──────────────────────
     {
       name: "kognai-token-refresh",
