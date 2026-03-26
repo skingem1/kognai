@@ -1,0 +1,22 @@
+{
+  "tasks": [
+    {
+      "id": "1436-test-artifact-cleanup",
+      "description": "In scripts/scs001/cleanup-old-runs.ts: (1) Add testRuns field to CleanupResult interface: { deleted: number; kept: number; freedMB: number }. (2) In run() after the legacyRuns block (Sprint 1435), add a testRuns block: for prefixes ['analytics-test-', 'caption-test-', 'publishing-test-', 'qc-test-'], call cleanDir(scsDir, prefix, 0, true) and accumulate results into a single testRuns result. (3) Include testRuns.freedBytes in totalFreedMB. (4) Add testRuns to the return object. (5) Add 'Test artifact dirs:' section to formatCleanupResult. Do NOT modify any other logic.",
+      "files": [
+        "scripts/scs001/cleanup-old-runs.ts"
+      ],
+      "status": "rejected",
+      "priority": "high",
+      "agent": "coder",
+      "type": "feature",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": []
+      },
+      "context": "In scripts/scs001/cleanup-old-runs.ts: (1) Add testRuns field to CleanupResult interface: { deleted: number; kept: number; freedMB: number }. (2) In run() after the legacyRuns block (Sprint 1435), add a testRuns block: for prefixes ['analytics-test-', 'caption-test-', 'publishing-test-', 'qc-test-'], call cleanDir(scsDir, prefix, 0, true) and accumulate results into a single testRuns result. (3) Include testRuns.freedBytes in totalFreedMB. (4) Add testRuns to the return object. (5) Add 'Test artifact dirs:' section to formatCleanupResult. Do NOT modify any other logic.",
+      "sprint_id": "sprint-1436"
+    }
+  ]
+}

@@ -22,6 +22,7 @@ interface CleanupResult {
   vlogRuns: { deleted: number; kept: number; freedMB: number };             // Sprint 1218
   entertainmentRuns: { deleted: number; kept: number; freedMB: number };   // Sprint 1224
   legacyRuns: { deleted: number; kept: number; freedMB: number };          // Sprint 1435
+  testRuns: { deleted: number; kept: number; freedMB: number };            // Sprint 1436
   totalFreedMB: number;
   dryRun: boolean;
 }
@@ -241,7 +242,19 @@ function run(): CleanupResult {
     freedBytes: legacyFreedBytes,
   };
 
-  const totalFreedMB = (mf.freedBytes + radar.freedBytes + scriptResult.freedBytes + codeDemo.freedBytes + vlog.freedBytes + entertainment.freedBytes + legacy.freedBytes) / (1024 * 1024);
+  // Sprint 1436: Test artifact dirs — keep 0 (always ephemeral)
+  let testFreedBytes = 0;
+  let testDeleted = 0;
+  let testKept = 0;
+  for (const prefix of ['analytics-test-', 'caption-test-', 'publishing-test-', 'qc-test-']) {
+    const r = cleanDir(scsDir, prefix, 0, true);
+    testFreedBytes += r.freedBytes;
+    testDeleted += r.deleted;
+    testKept += r.kept;
+  }
+  const testResult = { deleted: testDeleted, kept: testKept, freedBytes: testFreedBytes };
+
+  const totalFreedMB = (mf.freedBytes + radar.freedBytes + scriptResult.freedBytes + codeDemo.freedBytes + vlog.freedBytes + entertainment.freedBytes + legacy.freedBytes + testResult.freedBytes) / (1024 * 1024);
 
   return {
     multiformat: { deleted: mf.deleted, kept: mf.kept, freedMB: Math.round(mf.freedBytes / (1024 * 1024)) },
@@ -251,6 +264,7 @@ function run(): CleanupResult {
     vlogRuns: { deleted: vlog.deleted, kept: vlog.kept, freedMB: Math.round(vlog.freedBytes / (1024 * 1024)) },
     entertainmentRuns: { deleted: entertainment.deleted, kept: entertainment.kept, freedMB: Math.round(entertainment.freedBytes / (1024 * 1024)) },
     legacyRuns: { deleted: legacy.deleted, kept: legacy.kept, freedMB: Math.round(legacy.freedBytes / (1024 * 1024)) },
+    testRuns: { deleted: testResult.deleted, kept: testResult.kept, freedMB: Math.round(testResult.freedBytes / (1024 * 1024)) },
     totalFreedMB: Math.round(totalFreedMB),
     dryRun: DRY_RUN,
   };
@@ -292,6 +306,10 @@ export function formatCleanupResult(r: CleanupResult): string {
     `*Legacy pipeline runs (run-*):*`,
     `  Deleted: ${r.legacyRuns.deleted} dirs (~${r.legacyRuns.freedMB} MB)`,
     `  Kept: ${r.legacyRuns.kept} (latest)`,
+    '',
+    `*Test artifact dirs:*`,
+    `  Deleted: ${r.testRuns.deleted} dirs (~${r.testRuns.freedMB} MB)`,
+    `  Kept: ${r.testRuns.kept}`,
     '',
     `*Total freed: ~${r.totalFreedMB} MB*`,
   ].join('\n');
