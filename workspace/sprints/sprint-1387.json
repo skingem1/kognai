@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1387",
+  "title": "BUGFIX — telegram-bot PM2 max_memory_restart too low: bot restarts every ~30s",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "telegram-bot uses 234MB at steady state (ts-node + 10 large imported modules). max_memory_restart was 128M — PM2 OOM-kills and restarts it every ~30 seconds (65 restarts observed). Fix: raise ceiling to 512M, reload PM2, verify restarts stop.",
+  "tasks": [
+    {
+      "id": "1387-memory-limit",
+      "description": "In ecosystem.config.js, change max_memory_restart for telegram-bot from '128M' to '512M'. Then pm2 reload ecosystem.config.js --only telegram-bot to apply.",
+      "files": ["ecosystem.config.js"],
+      "status": "pending",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}

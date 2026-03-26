@@ -385,7 +385,7 @@ module.exports = {
       cwd: "/Users/tarekmnif/kognai",
       autorestart: true,
       watch: false,
-      max_memory_restart: "128M",
+      max_memory_restart: "512M", // Sprint 1387: was 128M — bot uses 234MB+ with ts-node + 10 imported modules
       env: {
         TS_NODE_TRANSPILE_ONLY: "true",
         TS_NODE_PROJECT: "/Users/tarekmnif/kognai/tsconfig.scripts.json",
