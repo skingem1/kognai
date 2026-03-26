@@ -8135,3 +8135,12 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - After /warmup-complete 3 <score> on 2026-03-29: next cron fires live automatically
 - Swarm used: no (multi-file edit)
 - Timestamp: 2026-03-26T16:00:00.000Z
+
+## Sprint 1455 — BUGFIX Achiri OLLAMA_URL→OLLAMA_HOST
+- Status: PASS (compile verified; vault connectivity will confirm live)
+- Commit: 9bc851bd
+- Files modified: agents/achiri/index.ts (1 line)
+- Root cause: OLLAMA_URL was never set, Achiri connected to localhost:11434 instead of vault
+- Fix: use OLLAMA_HOST with http:// normalization (matches all other agents)
+- Swarm used: no (single-line surgical edit)
+- Timestamp: 2026-03-26T16:30:00.000Z
