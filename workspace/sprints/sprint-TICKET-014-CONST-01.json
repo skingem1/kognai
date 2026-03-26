@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-TICKET-014-CONST-01",
+  "title": "TICKET-014-CONST-01 — Wire ACP.md into all 28 agent prompts",
+  "block": "TICKET-014",
+  "source": "queue-prescribed",
+  "status": "done",
+  "rationale": "Added ACP Mandate blockquote to all 28 kognai-agents/*/prompt.md files. Pattern: inserted after Five Principles block (line ending 'these principles do.'). Block references workspace/shared-context/ACP.md, ratified 2026-03-25, specifies trust_floor=0.6, max_autonomous_spend=$0.10/task. All 28 agents now constitutionally compliant with ACP v1 (AMD-17 §3.2 + AMD-21 §2.4 + CONSTITUTION.md §Agent Rights #1).",
+  "tasks": [
+    {
+      "id": "TICKET-014-CONST-01-01",
+      "description": "Add ACP Mandate blockquote to all 28 kognai-agents/*/prompt.md files after Five Principles block",
+      "files": ["kognai-agents/*/prompt.md (all 28)"],
+      "status": "done",
+      "type": "constitutional-compliance",
+      "agents_modified": 28
+    }
+  ]
+}
