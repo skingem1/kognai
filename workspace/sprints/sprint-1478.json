@@ -1,32 +1,22 @@
 {
-  "sprint_id": "sprint-1478",
-  "title": "BUGFIX — Wire post-queue purge into cleanup-pipeline-runs.ts",
-  "block": "SCS-001",
-  "source": "queue-empty-autonomous",
-  "rationale": "Sprint 1477 revealed: cleanup-pipeline-runs.ts deletes video files but post-queue.jsonl still references them (30/36 stale entries). Fix: after cleanup-pipeline-runs.ts deletes files from a run dir, immediately purge post-queue.jsonl entries whose files no longer exist. Inline the purge logic (don't call queue-purge-stale.ts as a subprocess — copy the logic directly). Also run a one-time purge now to clean the existing 30 stale entries.",
-  "inputs": [
-    "scripts/scs001/cleanup-pipeline-runs.ts",
-    "scripts/scs001/queue-purge-stale.ts",
-    "workspace/scs001/post-queue.jsonl"
-  ],
-  "outputs": [
-    "scripts/scs001/cleanup-pipeline-runs.ts (modified — inline queue purge after file deletion)"
-  ],
-  "success_criteria": [
-    "cleanup-pipeline-runs.ts --dry-run shows: X files to delete + Y queue entries to purge",
-    "cleanup-pipeline-runs.ts live run deletes files AND removes matching queue entries in one pass",
-    "tsc compile clean",
-    "queue-purge-stale.ts --dry-run shows 0 stale after cleanup runs"
-  ],
   "tasks": [
     {
       "id": "1478-wire-queue-purge",
       "description": "Modify scripts/scs001/cleanup-pipeline-runs.ts: after deleting video files from run dirs, read workspace/scs001/post-queue.jsonl (if it exists), filter out any pending entry whose file no longer exists on disk, write the filtered queue back. Log how many entries were purged. Also add --dry-run support for the queue purge step (show what would be purged without writing). Keep the change surgical — add ~20 lines to the existing cleanup script.",
-      "files": ["scripts/scs001/cleanup-pipeline-runs.ts"],
-      "status": "pending",
+      "files": [
+        "scripts/scs001/cleanup-pipeline-runs.ts"
+      ],
+      "status": "rejected",
       "priority": "P1",
       "agent": "coder",
-      "type": "bugfix"
+      "type": "bugfix",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Modify scripts/scs001/cleanup-pipeline-runs.ts: after deleting video files from run dirs, read workspace/scs001/post-queue.jsonl (if it exists), filter out any pending entry whose file no longer exists on disk, write the filtered queue back. Log how many entries were purged. Also add --dry-run support for the queue purge step (show what would be purged without writing). Keep the change surgical — add ~20 lines to the existing cleanup script.",
+      "sprint_id": "sprint-1478"
     }
   ]
 }

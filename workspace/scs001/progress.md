@@ -8305,3 +8305,12 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Issues: verify-bot-token.ts already existed from Sprint 1458 — only diagnose-publish-stall.ts was new
 - Key finding: 30/36 queue entries reference video files deleted by Sprint 1476 cleanup. Queue needs purging of stale entries. TikTok token needed for any auto-publish.
 - Timestamp: 2026-03-26T13:30:00Z
+
+## Sprint 1478 — BUGFIX: wire post-queue purge into cleanup-pipeline-runs.ts
+- Status: PASS
+- Commit: dda5552c
+- Files modified: scripts/scs001/cleanup-pipeline-runs.ts (added inline queue purge after file deletion), workspace/sprints/sprint-1478.json, workspace/scs001/post-queue.jsonl
+- Validation: dry-run showed 30 stale entries; live run purged them; queue-purge-stale.ts --dry-run = 0 stale. tsc compile: clean.
+- Swarm: ran but produced no files (1 task). Wrote edit directly.
+- Effect: post-queue.jsonl now has 6 entries (all have valid files — today's vlog runs). Cleanup script now atomically cleans queue on every run.
+- Timestamp: 2026-03-26T14:00:00Z
