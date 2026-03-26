@@ -1,3 +1,0 @@
-file '/Users/tarekmnif/kognai/workspace/scs001/code-demo-runs/pact-mandate-lifecycle/pact-mandate-lifecycle-title.mp4'
-file '/Users/tarekmnif/kognai/workspace/scs001/code-demo-runs/pact-mandate-lifecycle/pact-mandate-lifecycle-content.mp4'
-file '/Users/tarekmnif/kognai/workspace/scs001/code-demo-runs/pact-mandate-lifecycle/pact-mandate-lifecycle-closing.mp4'

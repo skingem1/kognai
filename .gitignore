@@ -148,3 +148,9 @@ workspace/scs001/.creator-rotation.json
 # Sprint 1360: auto-delivered.jsonl must NOT be tracked — git restore/checkout clobbers it,
 # causing re-delivery of already-sent videos. It's append-only runtime state, not code.
 workspace/scs001/auto-delivered.jsonl
+
+# Sprint 1421: SCS-001 generated pipeline artifact directories — created/deleted each run
+# These are per-run output files; tracking them pollutes git status with hundreds of D/M entries.
+workspace/scs001/scripts/
+workspace/scs001/code-demo-runs/
+workspace/scs001/topic-radar/

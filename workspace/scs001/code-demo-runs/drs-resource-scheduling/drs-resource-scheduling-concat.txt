@@ -1,3 +1,0 @@
-file '/Users/tarekmnif/kognai/workspace/scs001/code-demo-runs/drs-resource-scheduling/drs-resource-scheduling-title.mp4'
-file '/Users/tarekmnif/kognai/workspace/scs001/code-demo-runs/drs-resource-scheduling/drs-resource-scheduling-content.mp4'
-file '/Users/tarekmnif/kognai/workspace/scs001/code-demo-runs/drs-resource-scheduling/drs-resource-scheduling-closing.mp4'

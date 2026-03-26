@@ -1,3 +1,0 @@
-file '/Users/tarekmnif/kognai/workspace/scs001/code-demo-runs/signal-event-bus/signal-event-bus-title.mp4'
-file '/Users/tarekmnif/kognai/workspace/scs001/code-demo-runs/signal-event-bus/signal-event-bus-content.mp4'
-file '/Users/tarekmnif/kognai/workspace/scs001/code-demo-runs/signal-event-bus/signal-event-bus-closing.mp4'

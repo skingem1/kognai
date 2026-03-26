@@ -1,3 +1,0 @@
-file '/Users/tarekmnif/kognai/workspace/scs001/code-demo-runs/soul-constitutional-engine/soul-constitutional-engine-title.mp4'
-file '/Users/tarekmnif/kognai/workspace/scs001/code-demo-runs/soul-constitutional-engine/soul-constitutional-engine-content.mp4'
-file '/Users/tarekmnif/kognai/workspace/scs001/code-demo-runs/soul-constitutional-engine/soul-constitutional-engine-closing.mp4'

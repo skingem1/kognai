@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1421",
+  "title": "CHORE — Add SCS-001 generated artifact dirs to .gitignore, untrack cached files",
+  "block": "SCS001",
+  "source": "self-directed",
+  "rationale": "workspace/scs001/scripts/, workspace/scs001/code-demo-runs/, and workspace/scs001/topic-radar/ are generated per pipeline run. They were tracked in git causing hundreds of D (deleted) entries in git status after each pipeline cleanup cycle. This pollutes git status, slows git operations, and creates noise in commits. Added all 3 dirs to .gitignore and ran git rm --cached -r to stop tracking existing files.",
+  "tasks": [
+    {
+      "id": "1421-gitignore-artifacts",
+      "description": "Add workspace/scs001/scripts/, workspace/scs001/code-demo-runs/, workspace/scs001/topic-radar/ to .gitignore. Run git rm --cached -r on all 3 directories to stop tracking. These are generated pipeline output files (dbt-/exp-/lst-/vis-*.json, demo-*/meta.json, radar-*.json) created and deleted each pipeline run.",
+      "files": [".gitignore"],
+      "status": "done",
+      "priority": "low",
+      "agent": "coder",
+      "type": "chore"
+    }
+  ]
+}

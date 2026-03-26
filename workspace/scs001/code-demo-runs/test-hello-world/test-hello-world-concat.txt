@@ -1,3 +1,0 @@
-file '/Users/tarekmnif/kognai/workspace/scs001/code-demo-runs/test-hello-world/test-hello-world-title.mp4'
-file '/Users/tarekmnif/kognai/workspace/scs001/code-demo-runs/test-hello-world/test-hello-world-content.mp4'
-file '/Users/tarekmnif/kognai/workspace/scs001/code-demo-runs/test-hello-world/test-hello-world-closing.mp4'

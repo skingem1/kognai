@@ -1,3 +1,0 @@
-file '/Users/tarekmnif/kognai/workspace/scs001/code-demo-runs/godman-integration-v1/godman-integration-v1-title.mp4'
-file '/Users/tarekmnif/kognai/workspace/scs001/code-demo-runs/godman-integration-v1/godman-integration-v1-content.mp4'
-file '/Users/tarekmnif/kognai/workspace/scs001/code-demo-runs/godman-integration-v1/godman-integration-v1-closing.mp4'
