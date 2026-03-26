@@ -17,6 +17,7 @@ import * as dotenv from 'dotenv';
 dotenv.config({ path: path.join(process.cwd(), '.env') });
 
 import { getUpdates, getMe, sendMessage, TelegramUpdate } from './bot';
+import { handlePromo } from './promo-command';
 import {
   handleStart, handleHelp, handlePreview,
   handleSchedule, handleStats, handleStatus, handleSubscribe, handleUnknown,
@@ -199,6 +200,7 @@ async function dispatch(update: TelegramUpdate): Promise<void> {
     case '/todaycaptions': await handleTodayCaptions(chatId, OWNER_CHAT_ID);     break;
     case '/leaderboard':   await handleLeaderboard(chatId, OWNER_CHAT_ID);       break;
     case '/broadcast':     await handleBroadcast(chatId, OWNER_CHAT_ID, text);   break;
+    case '/promo':         await handlePromo(chatId, text, OWNER_CHAT_ID);             break;
     default:                 await handleUnknown(chatId, text);                          break;
   }
 }

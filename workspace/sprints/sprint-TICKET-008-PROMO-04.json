@@ -1,0 +1,36 @@
+{
+  "sprint_id": "sprint-TICKET-008-PROMO-04",
+  "title": "PROMO-04 — HeyGen Studio avatar integration + Telegram /promo command end-to-end",
+  "block": "TICKET-008",
+  "source": "queue-prescribed",
+  "rationale": "TICKET-008 P1-PROMO Sprint 4/5. HeyGen Studio avatar constants, full pipeline runner (promo.ts), Telegram /promo <url> command with progress messages. commands.ts is missing (pre-existing) — add /promo as standalone import in index.ts.",
+  "tasks": [
+    {
+      "id": "PROMO-04-heygen-avatars",
+      "description": "Create scripts/promo/heygen-studio-avatars.ts — HEYGEN_STUDIO_AVATARS constant map with 3-5 Studio avatar options (avatar_id, voice_id, gender).",
+      "files": ["scripts/promo/heygen-studio-avatars.ts"],
+      "status": "pending",
+      "priority": "P1",
+      "agent": "coder",
+      "type": "feature"
+    },
+    {
+      "id": "PROMO-04-pipeline",
+      "description": "Create scripts/promo/pipelines/promo.ts — full pipeline runner: scrape → script → assemble → heygen avatar render. Outputs workspace/promo-jobs/{jobId}/final.mp4.",
+      "files": ["scripts/promo/pipelines/promo.ts"],
+      "status": "pending",
+      "priority": "P1",
+      "agent": "coder",
+      "type": "feature"
+    },
+    {
+      "id": "PROMO-04-telegram",
+      "description": "Create agents/telegram-bot/promo-command.ts — handlePromo(chatId, url, ownerChatId). Wire into agents/telegram-bot/index.ts as case '/promo'.",
+      "files": ["agents/telegram-bot/promo-command.ts"],
+      "status": "pending",
+      "priority": "P1",
+      "agent": "coder",
+      "type": "feature"
+    }
+  ]
+}
