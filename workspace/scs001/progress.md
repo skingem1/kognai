@@ -8006,3 +8006,14 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (wrote directly — fixed glob→stdlib, single file)
 - Notes: youtube-ledger.jsonl will be created on first --live run
 - Timestamp: 2026-03-26T11:00:00.000Z
+
+## Sprint 1449 — PHASE2 (Achiri env push + bot setup guide)
+- Status: PASS
+- Commit: afd5f25d4b476b6d8c4f8e3a2e3c6c0e27f1d9e3
+- Files created: scripts/achiri/push-env-to-hetzner.sh, scripts/achiri/bot-setup-guide.sh, workspace/sprints/sprint-1449.json
+- Files modified: workspace/sprint-queue.json
+- Test: dry-run validation PASS (10 vars pushed, skips empties, health polling)
+- Pipeline: no video pipeline changes this sprint
+- Swarm used: no (shell scripts — direct write)
+- Issues: CTO gate module not found (non-blocking), AAR middleware not available via node (used ts-node)
+- Timestamp: 2026-03-26T09:30:00.000Z
