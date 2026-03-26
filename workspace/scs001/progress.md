@@ -7640,3 +7640,11 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Root cause: fal_client spawns grandchildren that inherit pipe write-end; proc.kill() doesn't close them; proc.communicate(timeout=5) blocks for 5s then hangs Python; Node's 120s fires.
 - Swarm bypassed: yes (Python string generation in complex file). AAR module: not found. Crystallise module: not found.
 - Timestamp: 2026-03-26T00:00:00Z
+
+## Sprint 1371 — BUGFIX ViralDownloader RapidAPI 403 lapse cache
+- Status: PASS
+- Commit: 5d6b37e8
+- Files modified: agents/scs001-viral-downloader/index.ts, data/rapidapi-lapse.json (new)
+- Fix: Added isSubscriptionLapsed()/markSubscriptionLapsed() helpers writing data/rapidapi-lapse.json. When RapidAPI returns 403, lapse is persisted for 24h. Subsequent pipeline runs skip all searches immediately. Pre-seeded lapse file for current subscription outage.
+- Swarm bypassed: yes (complex TS file with multiple insertion points). AAR/crystallise modules not found.
+- Timestamp: 2026-03-26T00:10:00Z
