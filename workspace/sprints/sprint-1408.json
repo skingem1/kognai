@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1408",
+  "title": "BUGFIX — Pipeline qualification fallback: synthesise clips from discovery when viral downloader returns 0",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "agents/scs001-orchestrator/index.ts: when ViralTikTokDownloader returns 0 clips (RapidAPI subscription lapse), clips[] stays empty, qualifiedClips=0, and the pipeline stops in 2.3s with 0 videos produced — even though DiscoveryAgent found 19 clips. Sprint 1321 added the skip-clause to avoid 10min ClipDetection timeout on empty viral clips, but left no fallback. Fix: when viralClipsCount=0 && discoveries.length>0, synthesise pre-qualified ClipQualityScore[] from discovery metadata so InsightAgent and ScriptAgent can still run. Pipeline metrics show this was happening every run on March 25 after RapidAPI 403.",
+  "tasks": [
+    {
+      "id": "1408-pipeline-discovery-fallback",
+      "description": "Fix agents/scs001-orchestrator/index.ts lines 167-169: when viralClipsCount===0 && discoveries.length>0, instead of just logging and skipping, synthesise clips[] from discoveries: set clip_id=discovery_id, quality_score=50, qualified=true, score_breakdown all-10s, start/end from timestamps[0]. This lets InsightAgent and ScriptAgent run using topic metadata when RapidAPI is unavailable.",
+      "files": ["agents/scs001-orchestrator/index.ts"],
+      "status": "done",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}

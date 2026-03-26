@@ -164,8 +164,25 @@ export class SCS001Orchestrator {
     // --- Stage 3: Clip Detection Agent (Ollama-dependent, retryable) ---
     // Sprint 1321: Only run when viral clips exist — ClipDetection is for actual downloaded
     // video files, not stage-2 metadata. Skipping saves 10min timeout when RapidAPI returns 0.
+    // Sprint 1408: When no viral clips but discoveries exist, synthesise pre-qualified clips
+    // from discovery metadata so InsightAgent → ScriptAgent can still run (pipeline was
+    // producing 0 videos every run while RapidAPI subscription was lapsed).
     if (viralClipsCount === 0 && discoveries.length > 0) {
-      console.log('[Orchestrator] Skipping stage 3 (no viral clips from stage 2.5 — ClipDetection requires video files)');
+      console.log(`[Orchestrator] No viral clips (RapidAPI unavailable) — synthesising ${discoveries.length} pre-qualified clips from discovery metadata`);
+      clips = discoveries.map(d => ({
+        clip_id:                 d.discovery_id,
+        discovery_id:            d.discovery_id,
+        url:                     d.url,
+        start_seconds:           d.timestamps[0]?.start_seconds ?? 0,
+        end_seconds:             d.timestamps[0]?.end_seconds ?? 30,
+        duration_seconds:        (d.timestamps[0]?.end_seconds ?? 30) - (d.timestamps[0]?.start_seconds ?? 0),
+        quality_score:           50,
+        score_breakdown:         { curiosity: 10, emotion: 10, clarity: 10, insight: 10, controversy: 10 },
+        phrase_triggers_matched: [] as string[],
+        speaker:                 d.speaker,
+        topic_tags:              d.topic_tags,
+        qualified:               true,
+      } as ClipQualityScore));
     }
     if (viralClipsCount > 0) {
       stages.push(await this.runStage('3-clip-detection', 'ClipDetectionAgent', async () => {
