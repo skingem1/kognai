@@ -2758,7 +2758,7 @@ export function cmdLaunches(): string {
   // Sprint 1198: Hetzner server check
   const hetznerLive = (() => {
     try {
-      execSync('curl -sf --max-time 3 http://65.108.90.178:3420/stats/health > /dev/null 2>&1', { timeout: 5000 });
+      execSync('curl -sf --max-time 3 http://65.108.90.178:3420/health > /dev/null 2>&1', { timeout: 5000 });
       return true;
     } catch { return false; }
   })();

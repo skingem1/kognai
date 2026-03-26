@@ -1225,7 +1225,7 @@ export function cmdDeployStatus(): string {
   // 10. Hetzner server reachable — Sprint 1198
   const hetznerLive = (() => {
     try {
-      execSync('curl -sf --max-time 3 http://65.108.90.178:3420/stats/health > /dev/null 2>&1', { timeout: 5000 });
+      execSync('curl -sf --max-time 3 http://65.108.90.178:3420/health > /dev/null 2>&1', { timeout: 5000 });
       return true;
     } catch { return false; }
   })();
@@ -1421,7 +1421,7 @@ export function cmdAchiriLaunch(): string {
 
   const hetznerLive = (() => {
     try {
-      execSync('curl -sf --max-time 3 http://65.108.90.178:3420/stats/health > /dev/null 2>&1', { timeout: 5000 });
+      execSync('curl -sf --max-time 3 http://65.108.90.178:3420/health > /dev/null 2>&1', { timeout: 5000 });
       return true;
     } catch { return false; }
   })();

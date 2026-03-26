@@ -115,7 +115,7 @@ echo ""
 if ! $DRY_RUN; then
   echo "❤️  Health check (port ${ACHIRI_PORT})..."
   sleep 3
-  if curl -sf "http://${HETZNER_IP}:${ACHIRI_PORT}/stats/health" > /dev/null 2>&1; then
+  if curl -sf "http://${HETZNER_IP}:${ACHIRI_PORT}/health" > /dev/null 2>&1; then
     echo "   ✅ Achiri API responding on :${ACHIRI_PORT}"
   else
     echo "   ⚠️  Health check failed — check pm2 logs: pm2 logs achiri-api"

@@ -80,13 +80,13 @@ export function cmdDemos(): string {
 
 /**
  * Sprint 1196: /achiri-ping — check if Achiri API is live on Hetzner
- * Makes HTTP GET to /stats/health with 5s timeout.
+ * Makes HTTP GET to /health with 5s timeout.
  * Shows: LIVE (response time + version info) or DOWN (error + deploy command).
  */
 export async function cmdAchiriPing(): Promise<string> {
   const HETZNER_IP = '65.108.90.178';
   const PORT = 3420;
-  const PATH = '/stats/health';
+  const PATH = '/health';
   const TIMEOUT_MS = 5000;
 
   const t0 = Date.now();

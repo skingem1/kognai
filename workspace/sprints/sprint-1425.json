@@ -1,0 +1,23 @@
+{
+  "sprint_id": "sprint-1425",
+  "title": "BUGFIX — Replace stale /stats/health with /health across 4 script files",
+  "block": "ACHIRI",
+  "source": "self-directed",
+  "rationale": "Sprint 1415 renamed Achiri health endpoint from /stats/health to /health. Five places still referenced the old path: init-hetzner.sh (curl health check), cmd-management.ts cmdBlockers() Hetzner check, cmd-stripe.ts (2 occurrences), and cmd-spielberg.ts cmdAchiriPing(). All returned 404 when called — Hetzner live-check always returned false, /achiri-ping always reported DOWN. Fixed: replaced all 5 stale /stats/health references with /health.",
+  "tasks": [
+    {
+      "id": "1425-fix-stale-health-endpoint",
+      "description": "Replace /stats/health with /health in: scripts/achiri/init-hetzner.sh, scripts/telegram-commands/cmd-management.ts, scripts/telegram-commands/cmd-stripe.ts (2x), scripts/telegram-commands/cmd-spielberg.ts. Verified: grep for /stats/health in scripts/ returns 0 matches (excluding comments in pre-deploy-check and deploy-hetzner which correctly reference the old path for documentation only).",
+      "files": [
+        "scripts/achiri/init-hetzner.sh",
+        "scripts/telegram-commands/cmd-management.ts",
+        "scripts/telegram-commands/cmd-stripe.ts",
+        "scripts/telegram-commands/cmd-spielberg.ts"
+      ],
+      "status": "done",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}
