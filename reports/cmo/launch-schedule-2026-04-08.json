@@ -1,0 +1,159 @@
+{
+  "document": "Kognai Launch Schedule — April 8-15, 2026",
+  "generated_at": "2026-03-26T00:00:00Z",
+  "sprint": "TICKET-013-CMO-02",
+  "gate": "Triggered after April 7 kill switch: 30 TikTok posts + 500 views confirmed",
+  "launch_phase": "launch-week",
+  "days": {
+    "2026-04-08": {
+      "label": "Day 1 — Formation Day",
+      "theme": "Manifesto launch. Introduce Kognai to the world.",
+      "actions": [
+        {
+          "time_utc": "09:00",
+          "element": "Manifesto Thread",
+          "detail": "Deploy 15-post X thread (manifesto-thread.json). Post 1 at 09:00, 3-min cadence. Pin post 1 immediately after last post goes live.",
+          "owner": "x-admin",
+          "requires_ceo_approval": true
+        },
+        {
+          "time_utc": "09:45",
+          "element": "Landing Page",
+          "detail": "kognai.ai goes live. Civilizational narrative above the fold. CTA: 'Join the formation.'",
+          "owner": "devops",
+          "requires_ceo_approval": true
+        },
+        {
+          "time_utc": "12:00",
+          "element": "Docs Site",
+          "detail": "docs.kognai.ai goes live. SCS-001 quickstart, API reference, Constitution summary.",
+          "owner": "devops",
+          "requires_ceo_approval": true
+        },
+        {
+          "time_utc": "18:00",
+          "element": "GitHub Public Branch",
+          "detail": "Publish selected open modules (NOT main repo). Tag release v0.1.0-alpha.",
+          "owner": "cto",
+          "requires_ceo_approval": true
+        }
+      ]
+    },
+    "2026-04-09": {
+      "label": "Day 2 — Technical Depth",
+      "theme": "Show the builders how it works.",
+      "actions": [
+        {
+          "time_utc": "09:00",
+          "element": "X Thread: Technical Architecture",
+          "detail": "5-post thread on SCS formation mechanics. How batch-produce.ts, QC gates, and publish-ledger work as a pipeline.",
+          "owner": "x-admin"
+        },
+        {
+          "time_utc": "14:00",
+          "element": "Strategic QTs",
+          "detail": "CMO proposes 3-5 quote-tweets of ecosystem builders (Nookplot, Fetch.ai threads). Substantive commentary only. No promotional tone.",
+          "owner": "cmo + x-admin"
+        }
+      ]
+    },
+    "2026-04-10": {
+      "label": "Day 3 — Founder Voice",
+      "theme": "Harvey speaks. Raw, first-principles, unscripted feel.",
+      "actions": [
+        {
+          "time_utc": "10:00",
+          "element": "X Space",
+          "detail": "Founder session. Read SOUL.md live. Q&A with builders. Topic: 'What does it mean for an AI to have rights?'",
+          "owner": "ceo",
+          "requires_ceo_approval": true
+        },
+        {
+          "time_utc": "11:30",
+          "element": "Post-Space X Post",
+          "detail": "Single tweet: key insight from the Space. Founder voice. No summarising — one sharp observation.",
+          "owner": "x-admin"
+        }
+      ]
+    },
+    "2026-04-11": {
+      "label": "Day 4 — Community Formation",
+      "theme": "Invite builders to form the next SCS.",
+      "actions": [
+        {
+          "time_utc": "09:00",
+          "element": "SCS Co-founder Narrative Post",
+          "detail": "What is an SCS? How do you ratify one? Frame ALX Discovery as the path. No ETAs or roadmap — frame as the mission ahead.",
+          "owner": "x-admin"
+        },
+        {
+          "time_utc": "14:00",
+          "element": "Paid X Ads — Start",
+          "detail": "Begin amplifying the manifesto thread (post 1). Target: AI builders, technical founders, crypto-native communities. Budget: lean. CEO approves spend.",
+          "owner": "cmo",
+          "requires_ceo_approval": true
+        }
+      ]
+    },
+    "2026-04-12": {
+      "label": "Day 5 — Evidence Day",
+      "theme": "Show the numbers. Only what's verifiable.",
+      "actions": [
+        {
+          "time_utc": "09:00",
+          "element": "SCS-001 Progress Post",
+          "detail": "TikTok metrics from git-committed reports. Views, post count, pipeline health. Source: reports/stats-latest.json. No fabrication.",
+          "owner": "x-admin"
+        }
+      ]
+    },
+    "2026-04-13": {
+      "label": "Day 6 — Philosophical Depth",
+      "theme": "The Khaldunian arc. For thinkers.",
+      "actions": [
+        {
+          "time_utc": "10:00",
+          "element": "X Thread: Ibn Khaldun + AI Civilisation",
+          "detail": "4-post thread exploring asabiyyah as the theory behind SCS formation. Target: intellectuals, historians, AI researchers.",
+          "owner": "x-admin"
+        }
+      ]
+    },
+    "2026-04-14": {
+      "label": "Day 7 — Creator Outreach",
+      "theme": "Speak directly to TikTok creators.",
+      "actions": [
+        {
+          "time_utc": "09:00",
+          "element": "Creator Narrative Post",
+          "detail": "What SCS-001 means for TikTok creators: an AI that produces content at your direction, posts on your schedule, and improves with every run. No hype — describe the pipeline.",
+          "owner": "x-admin"
+        }
+      ]
+    },
+    "2026-04-15": {
+      "label": "Day 8 — Close of Launch Window",
+      "theme": "First-week retrospective. Set the tone for Phase 2.",
+      "actions": [
+        {
+          "time_utc": "09:00",
+          "element": "Launch Week Retrospective Post",
+          "detail": "What we shipped this week. What we learned. What's next (without roadmap disclosure). Harvey voice: honest, grounded, forward-facing.",
+          "owner": "x-admin"
+        },
+        {
+          "time_utc": "12:00",
+          "element": "CMO Strategy Report",
+          "detail": "Full launch-week debrief to CEO. Element-by-element performance. Recommendations for post-launch phase.",
+          "owner": "cmo",
+          "output": "reports/cmo/strategy-2026-04-15.md"
+        }
+      ]
+    }
+  },
+  "kill_switch_conditions": {
+    "gate": "30 TikTok posts + 500 views by 2026-04-07",
+    "if_not_met": "Launch window does NOT open. Escalate to CEO immediately.",
+    "if_met": "Confirm in sprint-queue.json gate field. Deploy Day 1 actions as scheduled."
+  }
+}

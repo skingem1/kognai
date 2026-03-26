@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-TICKET-013-CMO-02",
+  "title": "TICKET-013-CMO-02 — CMO core capabilities: manifesto thread + launch schedule + content calendar",
+  "block": "TICKET-013",
+  "source": "queue-prescribed",
+  "status": "done",
+  "rationale": "Generated 3 CMO core deliverables: (1) manifesto-thread.json — 15-post X thread in Harvey's voice, psychological_resilience ~18%, deploys April 8 09:00 UTC at 3-min cadence; (2) launch-schedule-2026-04-08.json — 8-day April 8-15 posting calendar with element-by-element timing, owners, CEO approval gates; (3) weekly-content-plan-2026-03-30.json — full week March 30 to April 5 pre-launch content (narrative/technical/founder posts, 3 accounts to watch). All content: no roadmap disclosure, no token mention, sources trace to git commits.",
+  "tasks": [
+    {
+      "id": "TICKET-013-CMO-02-01",
+      "description": "Generate 15-post X manifesto thread in Harvey's voice — deploy April 8",
+      "files": ["reports/cmo/manifesto-thread.json"],
+      "status": "done",
+      "type": "content-generation",
+      "gate": "15 posts generated, psychological_resilience ~18%, passes Sherlock tone audit criteria"
+    },
+    {
+      "id": "TICKET-013-CMO-02-02",
+      "description": "Generate April 8-15 launch schedule — 8-day posting calendar with timing and owners",
+      "files": ["reports/cmo/launch-schedule-2026-04-08.json"],
+      "status": "done",
+      "type": "content-generation"
+    },
+    {
+      "id": "TICKET-013-CMO-02-03",
+      "description": "Generate weekly content plan March 30-April 5 — pre-launch week, narrative/technical/founder",
+      "files": ["reports/cmo/weekly-content-plan-2026-03-30.json"],
+      "status": "done",
+      "type": "content-generation"
+    }
+  ]
+}

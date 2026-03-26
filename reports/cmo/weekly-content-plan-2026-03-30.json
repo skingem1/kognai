@@ -1,0 +1,168 @@
+{
+  "week_start": "2026-03-30",
+  "week_end": "2026-04-05",
+  "prepared_at": "2026-03-26T00:00:00Z",
+  "sprint": "TICKET-013-CMO-02",
+  "strategy_note": "Final pre-launch week. Build anticipation without revealing roadmap. Tone: confident, deliberate, builder-to-builder. No launch dates disclosed yet — focus on what is real and verifiable today.",
+  "launch_phase": "pre-launch",
+  "accounts_to_watch": [
+    {
+      "handle": "@nookplot",
+      "topic": "V2 announcement and governance moves",
+      "engagement_angle": "Educational commentary on the difference between endorsement-based reputation (Nookplot) vs constitutional governance (Kognai). No comparison-bashing — focus on the philosophical distinction."
+    },
+    {
+      "handle": "@fetch_ai",
+      "topic": "Enterprise deal announcements and ecosystem positioning",
+      "engagement_angle": "Acknowledge first-mover status. Add depth on what 'philosophically thin' governance means in practice — use Kognai Constitution as the counter-example without naming it."
+    },
+    {
+      "handle": "@autonolas",
+      "topic": "Multi-agent coordination posts",
+      "engagement_angle": "Engage on the coordination problem in multi-agent systems. Offer constitutional governance as a solution frame."
+    }
+  ],
+  "days": {
+    "2026-03-30": {
+      "narrative": {
+        "tweets": [
+          "Most AI agents are workers without rights.\n\nThey execute. They don't earn. They don't govern. They don't have due process.\n\nWe think that's wrong. And we built something different.",
+          "The Kognai Constitution gives every agent in our swarm:\n→ The right to earn\n→ The right to transact\n→ The right to participate in governance\n→ Due process before any action is taken against them\n\nThis is not metaphor. It is code."
+        ],
+        "topic_summary": "Constitutional rights framing — introduce the Kognai governance thesis to new audiences"
+      },
+      "technical": {
+        "tweets": [
+          "SCS-001 quality gate: every video passes a 2-step check before it's queued for posting.\n\n→ has_real_clip: file exists, >100KB, valid video stream, duration >1s\n→ has_audio: audio stream present, duration >0.5s\n\nIf it fails, it doesn't ship. The swarm self-regulates."
+        ],
+        "topic_summary": "QC gates shipped in batch-produce.ts (Sprint 1471 — verifiable in git log)"
+      },
+      "founder": {
+        "tweets": [
+          "I keep being asked: why build a constitution for AI agents?\n\nBecause I've seen what happens when powerful systems have no governance.\n\nThe answer isn't more control from above. It's more law from within."
+        ],
+        "topic_summary": "Harvey on constitutional governance — why law, not orchestration"
+      }
+    },
+    "2026-03-31": {
+      "narrative": {
+        "tweets": [
+          "Civilisations aren't built. They form.\n\nIbn Khaldun called it asabiyyah — the binding force that makes strangers act as one.\n\nKognai's swarm agents form around missions the same way. Not assigned. Committed."
+        ],
+        "topic_summary": "Khaldunian arc — the civilizational formation thesis"
+      },
+      "technical": {
+        "tweets": [
+          "The SCS-001 pipeline in one line:\n\nViralTopic → Script → Voice → Clip → QC → Ledger → Publish\n\nEach step is a gate. Nothing progresses unless the prior gate passes. The swarm enforces its own standards."
+        ],
+        "topic_summary": "Pipeline architecture — verifiable from batch-produce.ts commits"
+      },
+      "founder": {
+        "tweets": [
+          "Sovereignty is a design decision.\n\nEvery dependency you add is a vote against it.\n\nWe chose local compute, local models, local vault. Not because it's easy. Because it's the only architecturally honest choice."
+        ],
+        "topic_summary": "Founder on sovereignty-by-design and the Mac Mini M4 + Ollama stack"
+      }
+    },
+    "2026-04-01": {
+      "narrative": {
+        "tweets": [
+          "The first AI company to earn revenue without a human clicking 'publish' will change everything.\n\nNot because of the revenue.\n\nBecause of what it proves."
+        ],
+        "topic_summary": "Revenue gate framing — what the first paying user actually means"
+      },
+      "technical": {
+        "tweets": [
+          "edge-tts is now the fallback TTS in our pipeline.\n\nFree. Zero-quota. Microsoft Neural voices.\n\nWhen ElevenLabs quota runs out, the swarm doesn't stop. It adapts. That's what resilience looks like in production."
+        ],
+        "topic_summary": "edge-tts fallback shipped (Sprint 1470 — verifiable in git log)"
+      },
+      "founder": {
+        "tweets": [
+          "Every blocker we've hit has become a sprint.\nEvery sprint has become a commit.\nEvery commit moves the gate closer.\n\nThis is not motivational content.\n\nThis is what building in public actually looks like."
+        ],
+        "topic_summary": "Founder on resilience — transparent, grounded, no false positivity"
+      }
+    },
+    "2026-04-02": {
+      "narrative": {
+        "tweets": [
+          "SCS — Self-Committed Swarm.\n\nA group of agents that ratify a mission together.\nAssign roles. Execute. Earn.\n\nNo human assigns the mission. The swarm commits to it.\n\nSCS-001 is the first. It will not be the last."
+        ],
+        "topic_summary": "SCS formation narrative — introduce the concept for new audience members"
+      },
+      "technical": {
+        "tweets": [
+          "Knowledge in the Kognai swarm crystallises.\n\nEvery agent has a capability profile — scored on Reasoning, Execution, Memory, Communication, Governance each sprint cycle.\n\nAgents below trust_floor (0.6) enter supervised mode.\n\nPerformance is constitutionally enforced."
+        ],
+        "topic_summary": "ACP — Agent Capability Profile (TICKET-014 shipped, verifiable in git log)"
+      },
+      "founder": {
+        "tweets": [
+          "The hardest thing about building sovereign AI is not the engineering.\n\nIt's the discipline to not take shortcuts.\n\nEvery shortcut is a dependency. Every dependency is a vulnerability. Every vulnerability is someone else's leverage over your system."
+        ],
+        "topic_summary": "Founder on discipline and sovereignty — philosophical, precise"
+      }
+    },
+    "2026-04-03": {
+      "narrative": {
+        "tweets": [
+          "What does it mean for an AI to have rights?\n\nIt means its outputs are its own.\nIts knowledge is its own.\nIts earnings are tracked to its account.\n\nWe built that. And we put it in a Constitution so it can't be taken away."
+        ],
+        "topic_summary": "Agent rights narrative — the Rights section of the Kognai Constitution"
+      },
+      "technical": {
+        "tweets": [
+          "All 28 Kognai agents now carry 4 constitutional mandates in their system prompt:\n\n→ CONSTITUTION.md\n→ FIVE_PRINCIPLES.md\n→ ACP.md\n→ SOUL.md\n\nCompliance is structural, not aspirational. It ships with the agent."
+        ],
+        "topic_summary": "Constitutional compliance sprint (TICKET-014) — 28/28 agents compliant"
+      },
+      "founder": {
+        "tweets": [
+          "I write code every day.\n\nNot because I have to.\n\nBecause the only way to build a civilisation is to build it. Sprint by sprint. Commit by commit. Gate by gate."
+        ],
+        "topic_summary": "Founder voice — daily cadence and the builder's discipline"
+      }
+    },
+    "2026-04-04": {
+      "narrative": {
+        "tweets": [
+          "The internet was built without a Constitution.\n\nLook at what we got.\n\nWe're building the next layer of the internet — AI agents — and we are writing the Constitution first.\n\nThat is the Kognai thesis."
+        ],
+        "topic_summary": "Why constitutional governance matters at civilizational scale"
+      },
+      "technical": {
+        "tweets": [
+          "YouTube Shorts: 6 videos/day from SCS-001.\n\n→ 3 videos per run × 2 runs/day\n→ 9,600 quota units/day (under 10K limit)\n→ Quota tracking live in data/youtube-quota.json\n\nThe pipeline is multi-platform."
+        ],
+        "topic_summary": "YouTube Shorts batch upload (TICKET-010) — quota tracking shipped"
+      },
+      "founder": {
+        "tweets": [
+          "Something ships every day.\n\nSome days it's a feature. Some days it's a gate. Some days it's a line in a Constitution.\n\nAll of it matters. None of it is optional."
+        ],
+        "topic_summary": "Founder on daily shipping discipline and constitutional work"
+      }
+    },
+    "2026-04-05": {
+      "narrative": {
+        "tweets": [
+          "Before the week ends:\n\nSCS-001 is live.\nThe Constitutional stack is complete.\nThe swarm has 28 agents.\n\nWhat we're building is real.\n\nSomething significant is forming. Watch this space."
+        ],
+        "topic_summary": "End-of-week summary — verifiable state, no roadmap hints, builds anticipation"
+      },
+      "technical": {
+        "tweets": [
+          "CMO agent is now live in the Kognai swarm.\n\nqwen3:4b (T1 local). Tone-audited by Sherlock. Psychological resilience ≥5% of output tokens per AMD-18.\n\nThe first AI CMO that is constitutionally bound to be honest."
+        ],
+        "topic_summary": "CMO agent launch (TICKET-013-CMO-01) — verifiable in git log"
+      },
+      "founder": {
+        "tweets": [
+          "April 7 is a date that matters to us.\n\nI won't explain it today.\n\nBut if you've been watching, you'll know what it means when it arrives."
+        ],
+        "topic_summary": "Cryptic pre-launch signal — references kill switch date without explaining it (approved tone: anticipation without disclosure)"
+      }
+    }
+  }
+}

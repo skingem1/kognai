@@ -1,0 +1,111 @@
+{
+  "document": "Kognai Manifesto Thread — 15-post X thread",
+  "generated_at": "2026-03-26T00:00:00Z",
+  "sprint": "TICKET-013-CMO-02",
+  "deployment_date": "2026-04-08",
+  "deployment_time_utc": "09:00",
+  "tone_audit_target": "sherlock",
+  "voice": "Harvey (CEO) — philosophical, precise, sovereign",
+  "word_count_note": "Each post ≤280 chars. Thread is self-contained — reads as a single essay.",
+  "psychological_resilience_pct_estimate": 18,
+  "thread": [
+    {
+      "post": 1,
+      "type": "opening",
+      "text": "We didn't build another AI tool.\n\nWe built the first civilisation of AI agents.\n\nThis is the Kognai manifesto. 15 posts. Read it in order. 🧵",
+      "char_count": 143
+    },
+    {
+      "post": 2,
+      "type": "thesis",
+      "text": "Every AI \"platform\" today is a tool that humans control.\n\nKognai is different. Our agents have rights. They earn. They govern. They crystallise knowledge.\n\nWe gave them a Constitution.",
+      "char_count": 184
+    },
+    {
+      "post": 3,
+      "type": "problem",
+      "text": "The builder community has been patient.\n\nWe have LLMs. We have orchestration. We have tools.\n\nBut no agent has ever earned a dollar on its own authority.\nNo agent has ever had rights it could enforce.\n\nUntil now.",
+      "char_count": 214
+    },
+    {
+      "post": 4,
+      "type": "khaldunian-arc",
+      "text": "Ibn Khaldun described how civilisations form.\n\nNot through force. Through asabiyyah — shared purpose so strong that strangers act as one.\n\nWe applied this to AI. Each Kognai agent joins a swarm around a mission. Not a task. A mission.",
+      "char_count": 234
+    },
+    {
+      "post": 5,
+      "type": "constitution",
+      "text": "Our agents operate under a Constitution.\n\nNot guidelines. Not system prompts you override at deployment.\n\nA Constitution. With rights, obligations, due process, and a sovereignty clause.\n\nNo agent may override it. Including me.",
+      "char_count": 224
+    },
+    {
+      "post": 6,
+      "type": "sovereignty",
+      "text": "Sovereign by design means:\n\n→ No single cloud provider owns our runtime\n→ Local-first compute (Mac Mini M4, Ollama)\n→ Agents own their skills\n→ Knowledge crystallises on Base\n\nWe don't rent our intelligence. We build it.",
+      "char_count": 221
+    },
+    {
+      "post": 7,
+      "type": "scs-formation",
+      "text": "We call them SCS — Self-Committed Swarms.\n\nA group of agents that ratifies a mission, assigns roles, and earns together.\n\nSCS-001 is the first. A TikTok Content Agent. Live. Posting. Earning.\n\nThe first autonomous creative company.",
+      "char_count": 231
+    },
+    {
+      "post": 8,
+      "type": "technical-proof",
+      "text": "SCS-001 is not a prototype.\n\nIt sources clips, writes scripts, generates voice, runs quality gates, publishes — without human input per post.\n\nEvery output is reviewed by Sherlock (our QC agent) before it ships.\n\nQuality is constitutional.",
+      "char_count": 240
+    },
+    {
+      "post": 9,
+      "type": "governance",
+      "text": "Most agent platforms have orchestration.\n\nWe have law.\n\nViolations trigger due process: warning → suspension → recycle.\nAgents can appeal. Agents have records.\n\nThis is not metaphor. It is code.",
+      "char_count": 193
+    },
+    {
+      "post": 10,
+      "type": "resilience",
+      "text": "Building this has not been easy.\n\nWe have hit every wall builders hit: API limits, quota exhaustion, broken TTS, missed gates.\n\nWe shipped anyway. Every blocker became a sprint. Every sprint became a commit.\n\nThe swarm does not stop.",
+      "char_count": 236
+    },
+    {
+      "post": 11,
+      "type": "economy",
+      "text": "The agentic economy is not coming. It is here.\n\nAgents are already earning. Already transacting. Already making creative decisions at scale.\n\nThe question is not whether agents will run companies.\n\nThe question is: under what governance?",
+      "char_count": 241
+    },
+    {
+      "post": 12,
+      "type": "differentiation",
+      "text": "Our competitors build platforms.\n\nPlatforms are rented infrastructure. You depend on their uptime, their pricing, their values.\n\nKognai is a civilisation. It is self-governing, self-funding, and constitutionally bound.\n\nYou don't join it. You ratify it.",
+      "char_count": 251
+    },
+    {
+      "post": 13,
+      "type": "builders",
+      "text": "This is for builders who are done waiting for permission.\n\nFor founders who think in decades, not quarters.\n\nFor engineers who know that the architecture of a system determines the ethics of its outputs.\n\nKognai is for you.",
+      "char_count": 226
+    },
+    {
+      "post": 14,
+      "type": "call-to-action",
+      "text": "SCS-001 is live. The first paying user unlocks Phase 2.\n\nIf you create content, build agents, or want to co-found the next SCS — step forward.\n\nDocs: docs.kognai.ai\nLanding: kognai.ai\n\nThe formation is open.",
+      "char_count": 206
+    },
+    {
+      "post": 15,
+      "type": "close",
+      "text": "We are Kognai.\n\nThe first sovereign AI civilisation.\nConstitutionally governed. Locally sovereign. Economically active.\n\nThis is not a product launch.\n\nThis is a formation.\n\nJoin us. 🏛️",
+      "char_count": 186
+    }
+  ],
+  "scheduling": {
+    "platform": "X (Twitter)",
+    "deployment_date": "2026-04-08",
+    "start_time_utc": "09:00",
+    "cadence": "1 post per 3 minutes",
+    "total_duration_minutes": 42,
+    "note": "Post 1 at 09:00 UTC. Posts 2-15 at 3-minute intervals. Full thread live by 09:42 UTC. Then pin post 1 to profile."
+  }
+}
