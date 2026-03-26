@@ -1,0 +1,40 @@
+{
+  "tasks": [
+    {
+      "id": "achiri-bot-live",
+      "description": "Write a script that checks the Achiri bot connection. Use the bot token from the environment to call the Telegram info endpoint. If the request succeeds, print the bot name and ID, then exit with code 0. If the token is missing or the request fails, print a clear error and exit with code 1. No external npm packages. Keep under 60 lines.",
+      "files": [
+        "scripts/achiri/verify-bot-token.ts"
+      ],
+      "status": "rejected",
+      "priority": "high",
+      "agent": "coder",
+      "type": "feature",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Write a script that checks the Achiri bot connection. Use the bot token from the environment to call the Telegram info endpoint. If the request succeeds, print the bot name and ID, then exit with code 0. If the token is missing or the request fails, print a clear error and exit with code 1. No external npm packages. Keep under 60 lines.",
+      "sprint_id": "sprint-1458"
+    },
+    {
+      "id": "achiri-bot-test",
+      "description": "Write a test harness for the bot connection checker. Intercept the HTTP call and simulate two scenarios: (1) a valid bot response — verify exit code 0 and output contains a bot name; (2) an HTTP error response — verify exit code 1. Print PASS or FAIL at the end. Keep under 60 lines.",
+      "files": [
+        "scripts/achiri/validate-bot-token.ts"
+      ],
+      "status": "rejected",
+      "priority": "high",
+      "agent": "coder",
+      "type": "test",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": []
+      },
+      "context": "Write a test harness for the bot connection checker. Intercept the HTTP call and simulate two scenarios: (1) a valid bot response — verify exit code 0 and output contains a bot name; (2) an HTTP error response — verify exit code 1. Print PASS or FAIL at the end. Keep under 60 lines.",
+      "sprint_id": "sprint-1458"
+    }
+  ]
+}
