@@ -1,0 +1,37 @@
+{
+  "sprint_id": "sprint-TICKET-007-UNSLOTH-INSTALL",
+  "title": "TICKET-007-UNSLOTH-INSTALL — Unsloth + mlx-lm benchmark on Mac Mini M4",
+  "block": "TICKET-007",
+  "source": "queue-prescribed",
+  "status": "done",
+  "rationale": "Install unsloth (FAILED — xformers/OpenMP incompatible with macOS clang). Benchmark mlx-lm as alternative. Results: mlx 3.14 TFLOPS matmul, 18.5ms/step LoRA training at qwen3-14B dims. Recommendation: mlx-lm is the correct fine-tuning stack for Mac M4.",
+  "deliverables": [
+    "workspace/spikes/TICKET-007-unsloth-benchmark.md"
+  ],
+  "tasks": [
+    {
+      "id": "T007-install-attempt",
+      "description": "Attempt unsloth install — FAILED due to xformers OpenMP incompatibility on macOS",
+      "status": "done",
+      "result": "FAILED — platform incompatible"
+    },
+    {
+      "id": "T007-mlx-install",
+      "description": "Install and verify mlx-lm 0.29.1",
+      "status": "done",
+      "result": "SUCCESS — mlx-lm 0.29.1 installed"
+    },
+    {
+      "id": "T007-benchmark",
+      "description": "Benchmark mlx matmul and LoRA training simulation at qwen3-14B dimensions",
+      "status": "done",
+      "result": "3.14 TFLOPS matmul, 18.5ms/step LoRA (rank=16, seq=512)"
+    },
+    {
+      "id": "T007-report",
+      "description": "Document results in workspace/spikes/TICKET-007-unsloth-benchmark.md",
+      "status": "done",
+      "files": ["workspace/spikes/TICKET-007-unsloth-benchmark.md"]
+    }
+  ]
+}
