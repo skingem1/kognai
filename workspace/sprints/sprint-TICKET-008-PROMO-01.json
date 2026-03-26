@@ -1,0 +1,36 @@
+{
+  "sprint_id": "sprint-TICKET-008-PROMO-01",
+  "title": "PROMO-01 — product-scraper.ts: Browser Use CLI extracts ProductData from marketplace URLs",
+  "block": "TICKET-008",
+  "source": "queue-prescribed",
+  "rationale": "TICKET-008 P1-PROMO Sprint 1/5. SPRINT-508-BROWSER-01 done (browser-use installed in .venv-browser-use). Scrapes Amazon/Etsy/Shopify/Product Hunt URLs via Browser Use AI agent. Outputs ProductData JSON to workspace/promo-jobs/{jobId}/product.json. Gate: 3 test URLs return valid ProductData with >=3 images, name, price, >=2 bullet points.",
+  "tasks": [
+    {
+      "id": "PROMO-01-python-scraper",
+      "description": "Create scripts/promo/product-scraper.py — Python browser_use Agent that navigates to a marketplace URL, extracts ProductData schema (name, brand, price, description, bulletPoints[], images[], rating, reviewCount, topReviews[], category, url), and outputs JSON to stdout.",
+      "files": ["scripts/promo/product-scraper.py"],
+      "status": "pending",
+      "priority": "P1",
+      "agent": "coder",
+      "type": "feature"
+    },
+    {
+      "id": "PROMO-01-ts-cli",
+      "description": "Create scripts/promo/product-scraper.ts — TypeScript CLI that accepts --url and --job-id flags, calls product-scraper.py via .venv-browser-use python, saves result to workspace/promo-jobs/{jobId}/product.json.",
+      "files": ["scripts/promo/product-scraper.ts"],
+      "status": "pending",
+      "priority": "P1",
+      "agent": "coder",
+      "type": "feature"
+    },
+    {
+      "id": "PROMO-01-validator",
+      "description": "Create scripts/promo/validate-product-scraper.ts — loads a product.json, checks it has name, price, >=3 images, >=2 bulletPoints. Outputs PASS/FAIL.",
+      "files": ["scripts/promo/validate-product-scraper.ts"],
+      "status": "pending",
+      "priority": "P1",
+      "agent": "coder",
+      "type": "validation"
+    }
+  ]
+}
