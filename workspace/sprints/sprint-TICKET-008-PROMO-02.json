@@ -1,0 +1,27 @@
+{
+  "sprint_id": "sprint-TICKET-008-PROMO-02",
+  "title": "PROMO-02 — promo-scriptgen.ts: qwen3:14b AIDA promotional script with image cue points",
+  "block": "TICKET-008",
+  "source": "queue-prescribed",
+  "rationale": "TICKET-008 P1-PROMO Sprint 2/5. Reads ProductData JSON, generates PromoScript via qwen3:14b (OLLAMA_HOST, local $0). AIDA: hook, problem, solution, benefit1, benefit2, proof, cta. Each beat: text, image_index (null=avatar only), duration_s. 45-65s total. Tone: Professional/Enthusiastic/Conversational. Gate: 7-beat AIDA, image_index in bounds, total 45-65s.",
+  "tasks": [
+    {
+      "id": "PROMO-02-scriptgen",
+      "description": "Create scripts/promo/promo-scriptgen.ts — reads workspace/promo-jobs/{jobId}/product.json, builds AIDA prompt, calls qwen3:14b at OLLAMA_HOST via HTTP, parses PromoScript JSON, saves to workspace/promo-jobs/{jobId}/script.json.",
+      "files": ["scripts/promo/promo-scriptgen.ts"],
+      "status": "pending",
+      "priority": "P1",
+      "agent": "coder",
+      "type": "feature"
+    },
+    {
+      "id": "PROMO-02-validator",
+      "description": "Create scripts/promo/validate-promo-scriptgen.ts — loads script.json, validates 7-beat AIDA, image_index in bounds vs images[], total duration 45-65s. Outputs PASS/FAIL per check.",
+      "files": ["scripts/promo/validate-promo-scriptgen.ts"],
+      "status": "pending",
+      "priority": "P1",
+      "agent": "coder",
+      "type": "validation"
+    }
+  ]
+}
