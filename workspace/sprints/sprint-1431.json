@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-1431",
+  "title": "BUGFIX — Fix stale published<=qc_passed assertion in Block F Orchestrator validation",
+  "block": "SCS001",
+  "source": "validation-scan",
+  "rationale": "validate-orchestrator.ts (Block F integration test) had the same stale assert(s.published <= s.qc_passed) assertion as Sprint 1430 fixed in validate-flywheel-output.ts. After Blotato multi-platform was added, published = qc_passed × 9 platforms, so the old upper-bound assertion always fails. Fixed: replaced with published >= qc_passed (at least 1 platform per video) and published <= qc_passed×9 (max 9 Blotato platforms). Same pattern as Sprint 1430.",
+  "tasks": [
+    {
+      "id": "1431-fix-validation-assertion",
+      "description": "In scripts/scs001/validate-orchestrator.ts line 76: replace assert(s.published <= s.qc_passed) with two assertions: (1) s.published >= s.qc_passed (each QC-passed video published to at least 1 platform), (2) s.published <= s.qc_passed * 9 (max 9 Blotato platforms). Added comment explaining Blotato multi-platform rationale.",
+      "files": [
+        "scripts/scs001/validate-orchestrator.ts"
+      ],
+      "status": "done",
+      "priority": "medium",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}

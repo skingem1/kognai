@@ -73,7 +73,10 @@ async function main(): Promise<void> {
   assert(s.viral + s.performing >= 1, 'at least 1 viral or performing');
 
   // Pipeline integrity: no count inflation
-  assert(s.published <= s.qc_passed, 'published <= qc_passed');
+  // Sprint 1431: Blotato multi-platform publishes up to 9 posts per QC-passed video.
+  // Old assertion was published <= qc_passed (written before Blotato). Now published = qc_passed × platforms.
+  assert(s.published >= s.qc_passed, 'published >= qc_passed (each video on ≥1 platform)');
+  assert(s.published <= s.qc_passed * 9, 'published <= qc_passed×9 (max 9 Blotato platforms)');
   assert(s.qc_passed + s.qc_failed <= s.videos_captioned,
     'qc total <= captioned');
 
