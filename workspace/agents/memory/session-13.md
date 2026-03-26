@@ -33,8 +33,18 @@
 5. npm login → cd workspace/godman-protocols && ./publish-all.sh --live (Godman Apr 14)
 6. YouTube: run npx ts-node scripts/scs001/youtube-oauth.ts to unblock Shorts
 
+## Sprints Shipped (Session 13 — Full)
+
+| Sprint | Block | Title | Commit |
+|--------|-------|-------|--------|
+| 1444 | INFRA | Fix sprint brief MEMORY path drift (919→1443 gap) | c1be5fd1 |
+| 1445 | GATE | Phase 1→Phase 2A readiness validator | c22b6e75 |
+| 1446 | INFRA | Fix Phase 1.5 gate display + wire Phase 2A gate PM2 | 59a2ba8a |
+| 1447 | PHASE2 | YouTube OAuth token helper for Shorts automation | 8e887b80 |
+| 1448 | PHASE2 | Batch YouTube Shorts uploader (27 videos ready) | c17092dc |
+
 ## Next Sprint Suggestions
 
-- Sprint 1448: Add YouTube Shorts to publishing pipeline (wire youtube-upload.ts into scs001-publishing agent when YOUTUBE_REFRESH_TOKEN is set)
-- Sprint 1449: Instagram Reels format adapter (multiformat pipeline Phase 2A goal)
-- Sprint 1450: Blotato OAuth setup helper (same pattern as youtube-oauth.ts)
+- Sprint 1449: Wire /youtube Telegram command to show ledger + trigger batch upload
+- Sprint 1450: Instagram Reels support — add to multiformat pipeline output
+- Sprint 1451: Blotato readiness validator (checks BLOTATO_API_KEY, shows platform status)
