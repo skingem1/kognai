@@ -1,0 +1,31 @@
+{
+  "sprint_id": "sprint-1465",
+  "title": "queue-purge-stale: remove pending entries with missing video files",
+  "block": "SCS-001",
+  "source": "queue-empty-autonomous",
+  "rationale": "Post-queue has 10 pending entries with score 50% from batch-produce runs (run-1774471249834, run-1774495319521) whose video files no longer exist on disk. go-live.ts now sorts file-exists above file-missing, so these 10 dead entries sit at the bottom but bloat the queue count (43 pending when only 33 are postable). Script: scan pending entries, check file existence, remove entries with missing files. Run once now, can be re-run after any pipeline cleanup.",
+  "inputs": [
+    "workspace/scs001/post-queue.jsonl"
+  ],
+  "outputs": [
+    "scripts/scs001/queue-purge-stale.ts",
+    "workspace/scs001/post-queue.jsonl (10 stale entries removed)"
+  ],
+  "success_criteria": [
+    "Script reports how many entries were removed",
+    "Only removes pending entries with missing files (never touches posted/skipped)",
+    "Supports --dry-run flag",
+    "Queue count drops from 43 to 33 after run"
+  ],
+  "tasks": [
+    {
+      "id": "1465-purge-stale",
+      "description": "Create scripts/scs001/queue-purge-stale.ts: remove pending entries whose file path does not exist on disk",
+      "files": ["scripts/scs001/queue-purge-stale.ts"],
+      "status": "done",
+      "priority": "medium",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}
