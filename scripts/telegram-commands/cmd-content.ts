@@ -487,7 +487,13 @@ export function cmdPipeline(): string {
   // Sprint 1227: use readRealPosts to exclude dry-run entries from posted count
   const recorded = readRealPosts();
   const recordedIds = new Set(recorded.map((e: any) => e.video_id).filter(Boolean));
-  const unposted = (ledger as any[]).filter((e: any) => !recordedIds.has(e.video_id) && e.video_id);
+  // Sprint 1397: deduplicate by video_id — ledger has multiple entries per video
+  const seenVidsPipeline = new Set<string>();
+  const unposted = (ledger as any[]).filter((e: any) => {
+    if (!e.video_id || recordedIds.has(e.video_id) || seenVidsPipeline.has(e.video_id)) return false;
+    seenVidsPipeline.add(e.video_id);
+    return true;
+  });
 
   // Count captioned mp4s available
   let captionedCount = 0;
@@ -799,7 +805,13 @@ export function cmdDiversity(): string {
 
   // Queue diversity (ready to post)
   const recordedIds = new Set(posts.map((p: any) => p.video_id).filter(Boolean));
-  const ready = (ledger as any[]).filter((e: any) => !recordedIds.has(e.video_id) && e.video_id);
+  // Sprint 1397: deduplicate by video_id — ledger has multiple entries per video
+  const seenVidsDiversity = new Set<string>();
+  const ready = (ledger as any[]).filter((e: any) => {
+    if (!e.video_id || recordedIds.has(e.video_id) || seenVidsDiversity.has(e.video_id)) return false;
+    seenVidsDiversity.add(e.video_id);
+    return true;
+  });
   const queueDiversity = getNicheDiversityScore(ready.slice(0, 20), topicMap);
 
   const lines = [

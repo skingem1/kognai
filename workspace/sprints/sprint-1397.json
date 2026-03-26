@@ -1,0 +1,27 @@
+{
+  "sprint_id": "sprint-1397",
+  "title": "BUGFIX — cmdPipeline + cmdDiversity inflate counts from duplicate ledger entries",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "Same root cause as Sprint 1395/1396: publish-ledger.jsonl has multiple entries per video_id. cmdPipeline() line 490 builds unposted without dedup — inflates captionedCount display. cmdDiversity() line 802 builds ready without dedup — skews queue diversity analysis. Both need seenVids Set same as Sprint 1395/1396 pattern.",
+  "tasks": [
+    {
+      "id": "1397-pipeline-dedup",
+      "description": "In cmdPipeline() ~line 490: add seenVids Set when filtering unposted from ledger.",
+      "files": ["scripts/telegram-commands/cmd-content.ts"],
+      "status": "pending",
+      "priority": "low",
+      "agent": "coder",
+      "type": "bugfix"
+    },
+    {
+      "id": "1397-diversity-dedup",
+      "description": "In cmdDiversity() ~line 802: add seenVids Set when filtering ready from ledger.",
+      "files": ["scripts/telegram-commands/cmd-content.ts"],
+      "status": "pending",
+      "priority": "low",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}
