@@ -7712,3 +7712,11 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (direct surgical edit — 1 line change)
 - AAR: module not found, skipped
 - Timestamp: 2026-03-26T04:00:00Z
+
+## Sprint 1407 — BUGFIX clip-maker caption-composer force_style comma escaping
+- Status: PASS
+- Commit: f053bff8
+- Files modified: workspace/tools/clip-maker/src/caption-composer.ts
+- Fix: Changed srtStyle join(',') to join('\\,') and removed force_style='...' single-quote wrapping. Same FFmpeg 8.1 bug as sprint-1406.
+- Swarm used: no (direct surgical edit — 1 block change)
+- Timestamp: 2026-03-26T04:10:00Z
