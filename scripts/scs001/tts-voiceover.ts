@@ -79,6 +79,10 @@ async function generateVoice(
 
   if (!res.ok) {
     const err = await res.text();
+    // Sprint 1440: surface quota exhaustion distinctly so callers can fall back to local TTS
+    if (res.status === 401 && err.includes('quota_exceeded')) {
+      throw new Error('ELEVENLABS_QUOTA_EXCEEDED: ' + err.slice(0, 200));
+    }
     throw new Error(`ElevenLabs ${res.status}: ${err}`);
   }
 
@@ -120,6 +124,8 @@ export async function generateVoiceover(
   const segments: VoiceoverSegment[] = [];
   let totalCost = 0;
   let totalDuration = 0;
+  // Sprint 1440: set true on first quota_exceeded — use local TTS for all subsequent segments
+  let useLocalFallback = false;
 
   for (const seg of bundle.segments) {
     if (!seg.voiceover_text || seg.voiceover_text.trim() === "") {
@@ -146,6 +152,11 @@ export async function generateVoiceover(
     }
 
     try {
+      // Sprint 1440: if quota already exceeded on a prior segment, skip ElevenLabs
+      if (useLocalFallback && isLocalTTSAvailable()) {
+        console.log(`  [TTS] quota fallback → local TTS for ${seg.segment_name}`);
+        return generateLocalVoiceover(bundle, outDir, false);
+      }
       console.log(`  Generating ${seg.segment_name}: "${seg.voiceover_text.substring(0, 50)}..."`);
       const result = await generateVoice(seg.voiceover_text, audioPath);
       segments.push({
@@ -158,6 +169,12 @@ export async function generateVoiceover(
       totalCost += result.cost_usd;
       totalDuration += result.duration_s;
     } catch (err: any) {
+      // Sprint 1440: quota exhausted → switch all remaining to local TTS
+      if (err.message.startsWith('ELEVENLABS_QUOTA_EXCEEDED') && isLocalTTSAvailable()) {
+        console.warn(`  [TTS] ElevenLabs quota exceeded — switching remaining segments to local TTS ($0.00)`);
+        useLocalFallback = true;
+        return generateLocalVoiceover(bundle, outDir, false);
+      }
       console.warn(`  Failed ${seg.segment_name}: ${err.message}`);
     }
   }

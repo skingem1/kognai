@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-1440",
+  "title": "BUGFIX — TTS ElevenLabs quota_exceeded fallback to local TTS",
+  "block": "SCS001",
+  "source": "queue-prescribed",
+  "rationale": "ElevenLabs quota exhausted (0/40000 credits) causing TTS failures in scs001-live pipeline. tts-voiceover.ts only falls back to local TTS when ELEVENLABS_API_KEY is missing, not when quota is exceeded. Fix: detect quota_exceeded 401 response, set useLocalFallback flag, fall back to generateLocalVoiceover for remaining segments. Local TTS (macOS say) is available and free.",
+  "tasks": [
+    {
+      "id": "1440-tts-quota-fallback",
+      "description": "In scripts/scs001/tts-voiceover.ts: (1) In generateVoice(), after checking !res.ok, add detection for quota_exceeded: if status=401 and body contains quota_exceeded, throw Error('ELEVENLABS_QUOTA_EXCEEDED: ...'). (2) In generateVoiceover(), add a useLocalFallback boolean flag after the segments array init. (3) In the segment try/catch, when err.message starts with ELEVENLABS_QUOTA_EXCEEDED and isLocalTTSAvailable(), set useLocalFallback=true and return generateLocalVoiceover(bundle, outDir, false). (4) At the start of each segment's try block, if useLocalFallback is true and isLocalTTSAvailable(), also return generateLocalVoiceover to skip ElevenLabs for remaining segments.",
+      "files": [
+        "scripts/scs001/tts-voiceover.ts"
+      ],
+      "status": "done",
+      "priority": "critical",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}
