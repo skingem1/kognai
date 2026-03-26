@@ -312,7 +312,9 @@ export function cmdCaption(args: string): string {
   );
 }
 
-export function cmdPosted(): string {
+// Sprint 1386: accepts optional tiktok_url arg: /posted https://tiktok.com/...
+export function cmdPosted(args?: string): string {
+  const tiktokUrl = args?.trim().startsWith('http') ? args.trim() : undefined;
   const deliveredPath = path.join(ROOT, 'workspace', 'scs001', 'auto-delivered.jsonl');
   if (!fs.existsSync(deliveredPath)) {
     return `⚠️ No auto-delivered videos found. Use \`/deliver\` first, then \`/record <id> 0\`.`;
@@ -343,7 +345,7 @@ export function cmdPosted(): string {
 
   // Record the post (Sprint 404: enriched with experiment metadata)
   const expData = getExperimentData(videoId);
-  const entry = {
+  const entry: Record<string, any> = {
     video_id: videoId,
     views: 0,
     speaker: expData.speaker !== 'unknown' ? expData.speaker : undefined,
@@ -354,6 +356,7 @@ export function cmdPosted(): string {
     recorded_at: new Date().toISOString(),
     source: 'auto-deliver',
   };
+  if (tiktokUrl) entry.tiktok_url = tiktokUrl; // Sprint 1386
   const dir = path.dirname(manualPostsPath);
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
   fs.appendFileSync(manualPostsPath, JSON.stringify(entry) + '\n', 'utf-8');
@@ -366,8 +369,10 @@ export function cmdPosted(): string {
   const gateDate = new Date('2026-04-07T00:00:00Z');
   const daysLeft = Math.max(0, Math.ceil((gateDate.getTime() - Date.now()) / 86_400_000));
 
+  const urlLine = tiktokUrl ? `🔗 URL saved: ${tiktokUrl}\n` : `_No URL — use /updateviews ${videoId} <views> <url> later_\n`;
   return (
     `✅ *Posted!* \`${videoId}\`\n\n` +
+    urlLine + `\n` +
     `📊 *Gate:* ${postCount}/30 posts · ${totalViews}/500 views\n` +
     `${postsLeft > 0 ? `⏳ ${postsLeft} more · ${daysLeft}d to Apr 7` : '🎉 Post target met!'}\n\n` +
     `_Next video will auto-deliver at the next posting time._`

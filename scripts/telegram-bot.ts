@@ -156,7 +156,7 @@ async function handleCommand(chatId: string, text: string): Promise<void> {
     case '/gate-refresh': case '/gaterefresh': response = cmdGateRefresh(); break;
     case '/gate-sim': case '/gatesim': response = cmdGateSim(); break;
     case '/record':        response = cmdRecord(cmdArgs); break;
-    case '/posted':        response = cmdPosted(); break;
+    case '/posted':        response = cmdPosted(cmdArgs); break; // Sprint 1386: pass URL arg
     case '/pending-urls':  response = cmdPendingUrls(); break;
     case '/tiktokauth': response = cmdTikTokAuth(); break;
     case '/crons':      response = cmdCrons(); break;

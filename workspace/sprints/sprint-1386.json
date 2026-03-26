@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1386",
+  "title": "FEAT — /posted <tiktok_url> shortcut: auto-record last video with URL",
+  "block": "FEAT",
+  "source": "self-directed",
+  "rationale": "Queue empty. Operator friction: after posting to TikTok, operator must type '/record <id> 0 <url>' — requires knowing video_id. The /posted command already auto-detects last delivered video_id but doesn't accept a URL arg. Fix: /posted <tiktok_url> saves the URL with the entry, reducing friction to one copy-paste.",
+  "tasks": [
+    {
+      "id": "1386-posted-url",
+      "description": "Modify cmdPosted() in scripts/telegram-commands/cmd-content.ts to accept an optional url arg. If provided, save tiktok_url in the manual-posts.jsonl entry. Also update the success message to confirm URL was saved. Also update telegram-bot.ts to pass cmdArgs to cmdPosted(args).",
+      "files": ["scripts/telegram-commands/cmd-content.ts", "scripts/telegram-bot.ts"],
+      "status": "pending",
+      "priority": "medium",
+      "agent": "coder",
+      "type": "feature"
+    }
+  ]
+}
