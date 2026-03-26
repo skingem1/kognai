@@ -1,0 +1,33 @@
+{
+  "sprint_id": "sprint-TICKET-009-Q01-04",
+  "title": "Q01-04 — E2E integration test: all 3 QC gates passing (test-quality01-e2e.ts)",
+  "block": "TICKET-009",
+  "source": "queue-prescribed",
+  "rationale": "QUALITY-01 Rev.3 Sprint 4/4. Create scripts/scs001/test-quality01-e2e.ts. Assert all 4 QUALITY-01 gates pass: ClawRouter C3 log entry written, TTS voiceover >10KB, QC has_real_clip PASS, QC has_audio PASS. Uses FFmpeg-generated test video + edge-tts for TTS. No API spend.",
+  "inputs": [
+    "scripts/scs001/clip-source-c3.ts",
+    "scripts/scs001/tts-voiceover.ts",
+    "scripts/scs001/qc-agent.ts"
+  ],
+  "outputs": [
+    "scripts/scs001/test-quality01-e2e.ts (new)"
+  ],
+  "success_criteria": [
+    "Gate 1 (C3): ClawRouter C3 log entry written",
+    "Gate 2 (TTS): voiceover file produced >10KB",
+    "Gate 3 (QC has_real_clip): FFmpeg test video passes real_clip check",
+    "Gate 4 (QC has_audio): test video with audio passes audio check",
+    "Total runtime <5min"
+  ],
+  "tasks": [
+    {
+      "id": "TICKET-009-Q01-04-01",
+      "description": "Create scripts/scs001/test-quality01-e2e.ts with 4 gate assertions",
+      "files": ["scripts/scs001/test-quality01-e2e.ts"],
+      "status": "done",
+      "priority": "P0-CRITICAL",
+      "agent": "coder",
+      "type": "test"
+    }
+  ]
+}
