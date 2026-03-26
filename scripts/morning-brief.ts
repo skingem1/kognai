@@ -150,7 +150,7 @@ function main(): void {
   if (top) {
     lines.push(`🎬 *Top pick:* \`${top.video_id}\``);
     if (top.topic) lines.push(`📝 ${String(top.topic).slice(0, 60)}`);
-    lines.push(`_/pickup or /caption-next to post · /record ${top.video_id} 0 after posting_`);
+    lines.push(`_/pickup or /caption-next to post · /record ${top.video_id} 0 <tiktok_url> after posting_`);  // Sprint 1381
   } else {
     lines.push('_No unposted videos — run /refresh to check pipeline_');
   }

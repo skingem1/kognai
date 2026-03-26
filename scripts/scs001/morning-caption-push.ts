@@ -229,7 +229,7 @@ async function main(): Promise<void> {
     ].filter(Boolean).join('\n'));
 
     await sendTelegram('```\n' + caption + '\n```');
-    await sendTelegram(`_After posting: \`/record ${slot.video_id} 0\`_`);
+    await sendTelegram(`_After posting: \`/record ${slot.video_id} 0 <tiktok_url>\`_`);  // Sprint 1381
   }
 
   console.log(`[caption-push] Sent ${todaySlots.length} captions to operator.`);

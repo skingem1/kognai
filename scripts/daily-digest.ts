@@ -585,7 +585,7 @@ async function buildDigest(): Promise<string> {
     ...(showKillReminder && queue.top3.length > 0 ? [
       '',
       '📌 *Post these now:*',
-      ...queue.top3.map((id, i) => `${i + 1}. \`/record ${id} 0\``),
+      ...queue.top3.map((id, i) => `${i + 1}. \`/record ${id} 0 <tiktok_url>\``),  // Sprint 1381
     ] : []),
     '',
     `🎬 *Pipeline* (dry-run)`,
@@ -833,7 +833,7 @@ async function main(): Promise<void> {
           const tags = (vt.topics ?? []).slice(0, 4).map((t: string) => `#${t}`);
           if (tags.length > 0) hashtags = [...tags, '#fyp', '#viral', '#learnontiktok'].join(' ');
         } catch { /* fallback */ }
-        await sendVideoTelegram(OWNER_ID, mp4Path, `Post this now!\n${hashtags}\n\n/record ${topId} 0`);
+        await sendVideoTelegram(OWNER_ID, mp4Path, `Post this now!\n${hashtags}\n\n/record ${topId} 0 <tiktok_url>`);  // Sprint 1381
         process.stdout.write(`[daily-digest] Top video sent: ${topId}\n`);
       }
     }

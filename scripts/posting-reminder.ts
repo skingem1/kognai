@@ -275,7 +275,7 @@ async function main(): Promise<void> {
     lines.push('');
     lines.push(`🏷️ ${hashtags}`);
     lines.push('');
-    lines.push(`_After posting each: \`/record <id> 0\`_`);
+    lines.push(`_After posting each: \`/record <id> 0 <tiktok_url>\`_`);  // Sprint 1381
   }
 
   try {

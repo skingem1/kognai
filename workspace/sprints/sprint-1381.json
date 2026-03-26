@@ -1,0 +1,23 @@
+{
+  "sprint_id": "sprint-1381",
+  "title": "BUGFIX — Final sweep: /record 0 without tiktok_url in daily-digest, morning-brief, morning-caption-push, posting-reminder",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "After Sprints 1373/1379/1380 fixed the main delivery paths, grep still finds 5 operator-visible locations showing /record <id> 0 without the URL placeholder. These fire daily (daily-digest 07:00 top-3 push, daily-digest morning video send, morning-brief, morning-caption-push, posting-reminder). All need <tiktok_url> added.",
+  "tasks": [
+    {
+      "id": "1381-final-sweep",
+      "description": "Fix remaining 5 occurrences: daily-digest.ts:588 (top3 list), daily-digest.ts:836 (direct video send), morning-brief.ts:153, morning-caption-push.ts:232, posting-reminder.ts:278 (generic instruction).",
+      "files": [
+        "scripts/daily-digest.ts",
+        "scripts/morning-brief.ts",
+        "scripts/scs001/morning-caption-push.ts",
+        "scripts/posting-reminder.ts"
+      ],
+      "status": "done",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}
