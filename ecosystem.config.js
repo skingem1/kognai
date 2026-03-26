@@ -280,8 +280,8 @@ module.exports = {
         TS_NODE_PROJECT: __dirname + "/tsconfig.json",
         SPRINT_COOLDOWN_MINUTES: "30",
         DAILY_SPRINT_CAP: "100",
-        ROLLING_SPRINT_CAP: "20",
-        ROLLING_WINDOW_HOURS: "5",
+        ROLLING_SPRINT_CAP: "50",
+        ROLLING_WINDOW_HOURS: "3",
         CEO_TELEGRAM_BOT_TOKEN: process.env.CEO_TELEGRAM_BOT_TOKEN || "",
         OWNER_TELEGRAM_CHAT_ID: process.env.OWNER_TELEGRAM_CHAT_ID || "",
       },
@@ -606,6 +606,26 @@ module.exports = {
       },
       error_file: __dirname + "/logs/gate-check-error.log",
       out_file: __dirname + "/logs/gate-check-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss Z"
+    },
+    {
+      // Sprint 1446: Phase 2A gate regen — runs daily at 06:56 UTC
+      // Regenerates workspace/gates/phase1-phase2a-gate.json (after phase1-5 regen, before tracker-update at 07:08)
+      // To start: pm2 start ecosystem.config.js --only kognai-phase2a-gate-regen
+      name: "kognai-phase2a-gate-regen",
+      script: "scripts/generate-phase2a-gate.ts",
+      interpreter: "node",
+      interpreter_args: "-r ts-node/register",
+      cwd: __dirname,
+      autorestart: false,
+      watch: false,
+      cron_restart: "56 6 * * *",
+      env: {
+        TS_NODE_TRANSPILE_ONLY: "true",
+        TS_NODE_PROJECT: __dirname + "/tsconfig.scripts.json",
+      },
+      error_file: __dirname + "/logs/phase2a-gate-regen-error.log",
+      out_file: __dirname + "/logs/phase2a-gate-regen-out.log",
       log_date_format: "YYYY-MM-DD HH:mm:ss Z"
     },
     {

@@ -1,0 +1,27 @@
+{
+  "sprint_id": "sprint-1446",
+  "title": "INFRA — Fix Phase 1.5 gate display + wire Phase 2A gate into PM2",
+  "block": "INFRA",
+  "source": "queue-empty-autonomous",
+  "rationale": "Two small fixes: (1) update-gate-tracker.ts reads gateData from phase1-5-gate.json but doesn't use overall_pass — it recalculates manually (postCount>=30 && totalViews>=500), showing Pending even though overall_pass=true. Fix: use gateData.overall_pass. (2) generate-phase2a-gate.ts was created in Sprint 1445 but has no PM2 cron to run daily — add it to ecosystem.config.js alongside the existing kognai-gate-regen process.",
+  "tasks": [
+    {
+      "id": "1446-gate-display-fix",
+      "description": "Fix scripts/update-gate-tracker.ts: replace manual phase15Pass calculation (postCount>=30 && totalViews>=500) with gateData?.overall_pass===true. This uses the authoritative phase1-5-gate.json which correctly marks views as null (unverifiable) when TIKTOK_ACCESS_TOKEN is not set. Also update phase15Notes to use the more accurate data from gateData.",
+      "files": ["scripts/update-gate-tracker.ts"],
+      "status": "pending",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    },
+    {
+      "id": "1446-pm2-phase2a-gate",
+      "description": "Add generate-phase2a-gate.ts to ecosystem.config.js as a PM2 cron process. Name: 'kognai-phase2a-gate-regen'. Run daily at 06:56 UTC (after gate-regen at 06:55, before gate-tracker-update at 07:08). Script: scripts/generate-phase2a-gate.ts. Same pattern as existing kognai-gate-regen entry. This ensures workspace/gates/phase1-phase2a-gate.json is always fresh when the gate-tracker-update runs.",
+      "files": ["ecosystem.config.js"],
+      "status": "pending",
+      "priority": "medium",
+      "agent": "coder",
+      "type": "ops"
+    }
+  ]
+}

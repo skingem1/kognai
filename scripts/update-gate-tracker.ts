@@ -49,12 +49,13 @@ const ledgerPath    = path.join(ROOT, 'workspace', 'scs001', 'publish-ledger.jso
 const ledgerCount   = countLines(ledgerPath);
 const phase01Pass   = ledgerCount > 0;
 
-// Phase 1.5: posts + views vs targets
-const phase15Pass   = postCount >= 30 && totalViews >= 500;
-const phase15Status = phase15Pass
-  ? `[x] PASS`
-  : `[ ] Pending`;
-const phase15Notes  = `${postCount}/30 posts · ${totalViews}/500 views`;
+// Phase 1.5: use overall_pass from gate JSON (handles unverifiable views correctly)
+// Sprint 1446: was recalculating manually (>=30 posts && >=500 views), which showed
+// Pending even when overall_pass=true (views null when no TIKTOK_ACCESS_TOKEN).
+const phase15Pass   = gateData?.overall_pass === true;
+const phase15Status = phase15Pass ? `[x] PASS` : `[ ] Pending`;
+const viewsNote     = gateData?.criteria?.find((c: any) => c.id === 'total-views')?.details ?? `${totalViews}/500 views`;
+const phase15Notes  = `${postCount}/30 posts · ${viewsNote}`;
 
 // Achiri waitlist count
 const waitlistPath  = path.join(ROOT, 'workspace', 'achiri', 'waitlist.jsonl');

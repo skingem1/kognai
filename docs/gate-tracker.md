@@ -1,5 +1,5 @@
 # GATE TRACKER
-*Updated: 2026-03-26 07:36 (auto by scripts/update-gate-tracker.ts)*
+*Updated: 2026-03-26 07:38 (auto by scripts/update-gate-tracker.ts)*
 
 # GATE TRACKER
 # ═══════════════════════════════════════════════
@@ -7,7 +7,7 @@
 | Gate | Target Date | Status | Result | Notes |
 |---|---|---|---|---|
 | Phase 0 → Phase 1 | Mar 13 | [x] PASS | PROCEED | Pipeline operational · 1631 videos generated |
-| Phase 1.5 Decision | Apr 7 | [ ] Pending |  | 157/30 posts · 0/500 views · 12d remaining |
+| Phase 1.5 Decision | Apr 7 | [x] PASS | PROCEED | 157/30 posts · views unverifiable (TIKTOK_ACCESS_TOKEN not set) · 12d remaining |
 | Godman Protocols Launch | Apr 14 | [x] READY | LAUNCH | 7/7 protocols built · 19d remaining |
 | Phase 1 → Phase 2A | Apr 11 | [x] PASS | PROCEED | 4/4 criteria · 16d remaining |
 | Achiri Lite Alpha Launch | Apr 25 | [ ] Pending | | Waitlist: 1 · 30d remaining |
