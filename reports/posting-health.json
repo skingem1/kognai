@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-26T03:14:01.490Z",
+  "generated_at": "2026-03-26T03:41:48.646Z",
   "all_pass": true,
   "checks": [
     {
@@ -10,27 +10,27 @@
     {
       "name": "Schedule freshness",
       "pass": true,
-      "detail": "7.2h old"
+      "detail": "0.2h old"
     },
     {
       "name": "Gate progress",
       "pass": true,
-      "detail": "75/30 posted · 0 remaining · 12d left · 0.0/day needed"
+      "detail": "94/30 posted · 0 remaining · 12d left · 0.0/day needed"
     },
     {
       "name": "Video inventory",
       "pass": true,
-      "detail": "4 unposted videos with MP4 files (need 0)"
+      "detail": "3 unposted videos with MP4 files (need 0)"
     }
   ],
   "gate": {
-    "posted": 75,
+    "posted": 94,
     "target": 30,
     "remaining": 0,
     "days_left": 12,
     "pace_needed": 0
   },
   "inventory": {
-    "videos_with_files": 4
+    "videos_with_files": 3
   }
 }

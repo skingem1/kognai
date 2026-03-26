@@ -1,8 +1,8 @@
 # TikTok Posting Manifest
-# Generated: 2026-03-26T03:14:02.665Z
-# Videos: 1 (sorted by viral score)
+# Generated: 2026-03-26T03:41:49.824Z
+# Videos: 10 (sorted by viral score)
 
---- Video 1 of 1 ---
+--- Video 1 of 10 ---
 ID: video-75ac1293
 File: /Users/tarekmnif/kognai/workspace/scs001/run-1774471249834/caption/video-75ac1293-captioned.mp4
 Score: 50%
@@ -15,5 +15,149 @@ Jensen Huang explains it all
 
 Full breakdowns daily — link in bio
 
-#artificialintelligence #machinelearning #deeplearning #humanoidrobot #figure02 #teslaoptimus #roboticsai #embodiedai #Figure02 #TeslaOptimus #fyp #viral
+#artificialintelligence #machinelearning #deeplearning #chinaai #baidu #bytedance #doubao #ernie #ChinaAI #Baidu #ByteDance #fyp
 After posting: /record video-75ac1293 0 <tiktok_url>
+
+--- Video 2 of 10 ---
+ID: video-00293108
+File: /Users/tarekmnif/kognai/workspace/scs001/run-1774495319521/caption/video-00293108-captioned.mp4
+Score: 50%
+Speaker: TED
+Hook: contrarian
+Caption:
+Unpopular opinion but hear me out
+
+TED breaks it down in 60 seconds
+
+Full breakdowns daily — link in bio
+
+#artificialintelligence #machinelearning #deeplearning #chinaai #baidu #bytedance #doubao #ernie #ChinaAI #Baidu #ByteDance #fyp
+After posting: /record video-00293108 0 <tiktok_url>
+
+--- Video 3 of 10 ---
+ID: video-89fdb5b3
+File: /Users/tarekmnif/kognai/workspace/scs001/run-1774495319521/caption/video-89fdb5b3-captioned.mp4
+Score: 50%
+Speaker: TED
+Hook: curiosity_gap
+Caption:
+Wait for it... this changes everything
+
+TED with a hot take
+
+Go deeper — subscribe via link in bio
+
+#artificialintelligence #machinelearning #deeplearning #chinaai #baidu #bytedance #doubao #ernie #ChinaAI #Baidu #ByteDance #fyp
+After posting: /record video-89fdb5b3 0 <tiktok_url>
+
+--- Video 4 of 10 ---
+ID: video-24f1d601
+File: /Users/tarekmnif/kognai/workspace/scs001/run-1774495319521/caption/video-24f1d601-captioned.mp4
+Score: 50%
+Speaker: ThePrimeagen
+Hook: contrarian
+Caption:
+I'm about to upset a lot of people
+
+ThePrimeagen — this is a must-watch
+
+Go deeper — subscribe via link in bio
+
+#programming #developer #coding #chinaai #baidu #bytedance #doubao #ernie #ChinaAI #Baidu #ByteDance #fyp
+After posting: /record video-24f1d601 0 <tiktok_url>
+
+--- Video 5 of 10 ---
+ID: video-fe5f4a51
+File: /Users/tarekmnif/kognai/workspace/scs001/run-1774495319521/caption/video-fe5f4a51-captioned.mp4
+Score: 50%
+Speaker: ThePrimeagen
+Hook: authority
+Caption:
+Years of experience in 60 seconds
+
+ThePrimeagen explains it all
+
+Double tap if this blew your mind
+
+#programming #developer #coding #chinaai #baidu #bytedance #doubao #ernie #ChinaAI #Baidu #ByteDance #fyp
+After posting: /record video-fe5f4a51 0 <tiktok_url>
+
+--- Video 6 of 10 ---
+ID: video-c3076a1c
+File: /Users/tarekmnif/kognai/workspace/scs001/run-1774495319521/caption/video-c3076a1c-captioned.mp4
+Score: 50%
+Speaker: CNET
+Hook: secret
+Caption:
+Here's what they're hiding from you
+
+CNET explains it all
+
+Follow for the stuff they don't teach you
+
+#artificialintelligence #machinelearning #deeplearning #chinaai #baidu #bytedance #doubao #ernie #ChinaAI #Baidu #ByteDance #fyp
+After posting: /record video-c3076a1c 0 <tiktok_url>
+
+--- Video 7 of 10 ---
+ID: video-f9e97fdd
+File: /Users/tarekmnif/kognai/workspace/scs001/run-1774495319521/caption/video-f9e97fdd-captioned.mp4
+Score: 50%
+Speaker: TheAIGRID
+Hook: curiosity_gap
+Caption:
+Watch till the end, trust me
+
+TheAIGRID breaks it down in 60 seconds
+
+Double tap if this blew your mind
+
+#artificialintelligence #machinelearning #deeplearning #chinaai #baidu #bytedance #doubao #ernie #ChinaAI #Baidu #ByteDance #fyp
+After posting: /record video-f9e97fdd 0 <tiktok_url>
+
+--- Video 8 of 10 ---
+ID: video-f51c6b53
+File: /Users/tarekmnif/kognai/workspace/scs001/run-1774495319521/caption/video-f51c6b53-captioned.mp4
+Score: 50%
+Speaker: Theoretically Media
+Hook: contrarian
+Caption:
+Everyone is wrong about this
+
+Theoretically Media explains it all
+
+Tag someone who needs to see this
+
+#artificialintelligence #machinelearning #deeplearning #chinaai #baidu #bytedance #doubao #ernie #ChinaAI #Baidu #ByteDance #fyp
+After posting: /record video-f51c6b53 0 <tiktok_url>
+
+--- Video 9 of 10 ---
+ID: video-40ce6d9f
+File: /Users/tarekmnif/kognai/workspace/scs001/run-1774495319521/caption/video-40ce6d9f-captioned.mp4
+Score: 50%
+Speaker: Futurepedia
+Hook: authority
+Caption:
+Years of experience in 60 seconds
+
+Futurepedia just dropped this
+
+Double tap if this blew your mind
+
+#artificialintelligence #machinelearning #deeplearning #chinaai #baidu #bytedance #doubao #ernie #ChinaAI #Baidu #ByteDance #fyp
+After posting: /record video-40ce6d9f 0 <tiktok_url>
+
+--- Video 10 of 10 ---
+ID: video-eae08759
+File: /Users/tarekmnif/kognai/workspace/scs001/run-1774495319521/caption/video-eae08759-captioned.mp4
+Score: 50%
+Speaker: PyCascades
+Hook: secret
+Caption:
+They really don't want this going viral
+
+PyCascades with a hot take
+
+Double tap if this blew your mind
+
+#artificialintelligence #machinelearning #deeplearning #chinaai #baidu #bytedance #doubao #ernie #ChinaAI #Baidu #ByteDance #fyp
+After posting: /record video-eae08759 0 <tiktok_url>

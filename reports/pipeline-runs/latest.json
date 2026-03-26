@@ -1,53 +1,152 @@
 {
-  "run_id": "scs001-2026-03-25T20-00-01-001Z",
-  "mode": "live",
-  "started_at": "2026-03-25T20:00:01.001Z",
-  "completed_at": "2026-03-25T20:00:03.344Z",
-  "total_elapsed_ms": 2343,
+  "run_id": "scs001-2026-03-26T03-21-59-521Z",
+  "mode": "mock",
+  "started_at": "2026-03-26T03:21:59.521Z",
+  "completed_at": "2026-03-26T03:29:29.095Z",
+  "total_elapsed_ms": 449574,
   "stages": [
     {
       "stage": "1-trend",
       "agent": "TrendAgent",
-      "count": 12,
-      "elapsed_ms": 465,
+      "count": 30,
+      "elapsed_ms": 3,
       "status": "ok"
     },
     {
       "stage": "2-discovery",
       "agent": "DiscoveryAgent",
-      "count": 19,
-      "elapsed_ms": 492,
+      "count": 45,
+      "elapsed_ms": 3,
       "status": "ok"
     },
     {
       "stage": "2.5-viral-tiktok",
       "agent": "ViralTikTokDownloader",
       "count": 0,
-      "elapsed_ms": 1380,
+      "elapsed_ms": 0,
       "status": "empty"
+    },
+    {
+      "stage": "4-insight",
+      "agent": "InsightAgent (mock-from-clips)",
+      "count": 44,
+      "elapsed_ms": 0,
+      "status": "ok"
+    },
+    {
+      "stage": "5-script",
+      "agent": "ScriptAgent",
+      "count": 44,
+      "elapsed_ms": 352744,
+      "status": "ok"
+    },
+    {
+      "stage": "5.5-score",
+      "agent": "ScriptScorer",
+      "count": 33,
+      "elapsed_ms": 2,
+      "status": "ok"
+    },
+    {
+      "stage": "6-validate",
+      "agent": "ScriptValidator",
+      "count": 33,
+      "elapsed_ms": 0,
+      "status": "ok"
+    },
+    {
+      "stage": "6-editing",
+      "agent": "EditingAgent",
+      "count": 33,
+      "elapsed_ms": 60516,
+      "status": "ok"
+    },
+    {
+      "stage": "6.5-avatar",
+      "agent": "AvatarPresenter",
+      "count": 0,
+      "elapsed_ms": 27756,
+      "status": "empty"
+    },
+    {
+      "stage": "6.8-tts-mix",
+      "agent": "TTS+AudioMix",
+      "count": 0,
+      "elapsed_ms": 6612,
+      "status": "empty"
+    },
+    {
+      "stage": "7-caption",
+      "agent": "CaptionAgent",
+      "count": 33,
+      "elapsed_ms": 1811,
+      "status": "ok"
+    },
+    {
+      "stage": "8-qc",
+      "agent": "QCAgent",
+      "count": 33,
+      "elapsed_ms": 5,
+      "status": "ok"
+    },
+    {
+      "stage": "9-experiment",
+      "agent": "ExperimentTracker",
+      "count": 33,
+      "elapsed_ms": 3,
+      "status": "ok"
+    },
+    {
+      "stage": "9-publishing",
+      "agent": "PublishingAgent",
+      "count": 297,
+      "elapsed_ms": 29,
+      "status": "ok"
+    },
+    {
+      "stage": "10-analytics",
+      "agent": "AnalyticsAgent",
+      "count": 297,
+      "elapsed_ms": 4,
+      "status": "ok"
+    },
+    {
+      "stage": "11-flywheel",
+      "agent": "ContentFlywheelAgent",
+      "count": 396,
+      "elapsed_ms": 36,
+      "status": "ok"
+    },
+    {
+      "stage": "12-failure-library",
+      "agent": "FailureLibraryAgent",
+      "count": 99,
+      "elapsed_ms": 38,
+      "status": "ok"
     }
   ],
   "summary": {
-    "topics_found": 12,
-    "clips_discovered": 19,
-    "clips_qualified": 0,
-    "insights_generated": 0,
-    "scripts_produced": 0,
-    "scripts_scored": 0,
-    "scripts_filtered": 0,
+    "topics_found": 30,
+    "clips_discovered": 45,
+    "clips_qualified": 44,
+    "insights_generated": 44,
+    "scripts_produced": 44,
+    "scripts_scored": 44,
+    "scripts_filtered": 11,
     "scripts_validation_skipped": 0,
-    "videos_edited": 0,
-    "videos_captioned": 0,
-    "qc_passed": 0,
+    "videos_edited": 33,
+    "videos_captioned": 33,
+    "qc_passed": 33,
     "qc_failed": 0,
-    "published": 0,
-    "viral": 0,
-    "performing": 0,
-    "failure_library": 0,
-    "flywheel_derivatives": 0,
-    "failure_entries": 0,
+    "qc_failures": [],
+    "published": 297,
+    "viral": 99,
+    "performing": 99,
+    "failure_library": 99,
+    "flywheel_derivatives": 396,
+    "failure_entries": 99,
     "clips_deduplicated": 0,
-    "platforms_targeted": 0,
-    "publish_method": "none"
+    "platforms_targeted": 9,
+    "publish_method": "blotato"
   }
 }
