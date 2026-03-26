@@ -8027,3 +8027,11 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: no (direct write)
 - Notes: Sprint 1450 CTO-rejected (Phase 2 work). Sprint 1451 CTO-approved (95%).
 - Timestamp: 2026-03-26T10:00:00.000Z
+
+## Sprint TICKET-005-RULE4 — Context Hygiene Audit (Governance)
+- Status: PASS
+- Commit: fc9581c4
+- Files created: scripts/governance/context-hygiene-audit.ts, docs/governance/context-scope-standard.md, workspace/sprints/sprint-TICKET-005-RULE4.json
+- Test: Audit ran — 28 agents scanned, 28 undeclared (baseline). Log written to logs/context-hygiene/2026-03-26.jsonl
+- Swarm used: no (direct write — governance sprint, multi-file)
+- Timestamp: 2026-03-26T10:30:00.000Z
