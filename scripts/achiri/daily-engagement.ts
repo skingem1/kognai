@@ -107,10 +107,12 @@ function getActiveUsers(counts: DailyCounts): string[] {
   }
 
   // Sprint 1416: filter out test/E2E synthetic user IDs — only real Telegram chatIds are numeric
+  // Sprint 1475: also filter low numeric IDs (< 100_000) — real Telegram user IDs are always ≥ 1M
+  const MIN_USER_ID = 100_000;
   const all = Array.from(users);
-  const real = all.filter(id => REAL_USER_REGEX.test(id));
+  const real = all.filter(id => REAL_USER_REGEX.test(id) && Number(id) >= MIN_USER_ID);
   if (all.length > real.length) {
-    console.log(`[achiri-daily-engage] Skipping ${all.length - real.length} non-numeric test user(s) (e.g. e2e-test-*, validate-sprint-*)`);
+    console.log(`[achiri-daily-engage] Skipping ${all.length - real.length} test/fake user(s) (non-numeric or ID < ${MIN_USER_ID})`);
   }
   return real;
 }

@@ -124,12 +124,14 @@ async function main(): Promise<void> {
   }
 
   // Sprint 1417: filter out test/E2E synthetic user IDs — only real Telegram chatIds are numeric
+  // Sprint 1475: also filter low numeric IDs (< 100_000) — real Telegram user IDs are always ≥ 1M
+  const MIN_USER_ID = 100_000;
   const allUsersRaw = allUsers.size;
   for (const userId of Array.from(allUsers)) {
-    if (!REAL_USER_REGEX.test(userId)) allUsers.delete(userId);
+    if (!REAL_USER_REGEX.test(userId) || Number(userId) < MIN_USER_ID) allUsers.delete(userId);
   }
   if (allUsersRaw > allUsers.size) {
-    console.log(`[reengage] Skipping ${allUsersRaw - allUsers.size} non-numeric test user(s) (e.g. e2e-test-*, validate-sprint-*)`);
+    console.log(`[reengage] Skipping ${allUsersRaw - allUsers.size} test/fake user(s) (non-numeric or ID < ${MIN_USER_ID})`);
   }
 
   console.log(`[reengage] Total unique users: ${allUsers.size}`);

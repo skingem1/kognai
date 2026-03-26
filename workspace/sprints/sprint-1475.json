@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-1475",
+  "title": "BUGFIX — Achiri engage/reengage: add MIN_USER_ID=100000 to filter fake IDs like 99999",
+  "block": "ACHIRI",
+  "source": "queue-empty-autonomous",
+  "rationale": "logs/achiri-daily-engage-error.log and logs/achiri-reengage-error.log show 400 'chat not found' errors from Telegram. The scripts already have REAL_USER_REGEX=/^-?\\d+$/ (Sprint 1416/1417) to filter out e2e-test-* IDs, but this misses low numeric IDs like '99999' (workspace/achiri/memory/99999.jsonl = test user). Real Telegram user IDs are always ≥ 1,000,000 (6001921477 is a real user). Add MIN_USER_ID = 100_000 check after the regex filter in both scripts.",
+  "inputs": [
+    "scripts/achiri/daily-engagement.ts",
+    "scripts/achiri/achiri-reengage.ts"
+  ],
+  "outputs": [
+    "scripts/achiri/daily-engagement.ts (add MIN_USER_ID filter)",
+    "scripts/achiri/achiri-reengage.ts (add MIN_USER_ID filter)"
+  ],
+  "success_criteria": [
+    "User '99999' is filtered out before sending",
+    "Real user '6001921477' is NOT filtered out",
+    "Both scripts compile clean",
+    "Error logs stop showing 400 'chat not found' for test user IDs"
+  ],
+  "tasks": [
+    {
+      "id": "1475-min-user-id-filter",
+      "description": "daily-engagement.ts + achiri-reengage.ts: after REAL_USER_REGEX filter, add const MIN_USER_ID = 100_000; filter that drops numeric IDs < MIN_USER_ID. Log how many were filtered.",
+      "files": ["scripts/achiri/daily-engagement.ts", "scripts/achiri/achiri-reengage.ts"],
+      "status": "pending",
+      "priority": "P1",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}
