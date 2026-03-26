@@ -190,7 +190,7 @@ const { buildEngagementCaption: _buildCaptionShared } = require('./scs001/engage
 function buildReminderCaption(videoId: string, hook_formula: string | null, speaker: string | null, hashtags: string): string {
   const extraHashtags = hashtags.split(' ').filter(t => t.startsWith('#'));
   const caption = _buildCaptionShared({ videoId, hookFormula: hook_formula, speaker, extraHashtags });
-  return caption + '\n\n/record ' + videoId + ' 0';
+  return caption + '\n\n/record ' + videoId + ' 0 <tiktok_url>';  // Sprint 1380
 }
 
 async function main(): Promise<void> {

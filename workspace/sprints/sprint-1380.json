@@ -1,0 +1,32 @@
+{
+  "sprint_id": "sprint-1380",
+  "title": "BUGFIX — Sweep remaining /record <id> 0 occurrences missing tiktok_url placeholder",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "Sprint 1373 fixed cmd-delivery.ts, Sprint 1379 fixed posting-auto-deliver.ts. But grep found 5 more occurrences still using /record <id> 0 without <tiktok_url>: posting-reminder.ts (2 files), weekend-blitz.ts, cmd-content.ts (x2), and telegram-bot.ts (inline 'posted:' callback that auto-records with no URL). All need the URL placeholder added. The telegram-bot.ts callback is special — it currently auto-records with no URL when operator taps 'Posted' button; should instead send a prompt asking for the URL.",
+  "tasks": [
+    {
+      "id": "1380-display-messages",
+      "description": "In scripts/scs001/posting-reminder.ts:133, scripts/scs001/weekend-blitz.ts:224, scripts/posting-reminder.ts:193, scripts/telegram-commands/cmd-content.ts:289 and :311: change '/record ${videoId} 0' to '/record ${videoId} 0 <tiktok_url>'.",
+      "files": [
+        "scripts/scs001/posting-reminder.ts",
+        "scripts/scs001/weekend-blitz.ts",
+        "scripts/posting-reminder.ts",
+        "scripts/telegram-commands/cmd-content.ts"
+      ],
+      "status": "done",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    },
+    {
+      "id": "1380-bot-callback",
+      "description": "In scripts/telegram-bot.ts: the 'posted:' callback auto-calls handleCommand('/record ${videoId} 0') with no URL. Change to send a Telegram message prompting operator to run '/record ${videoId} 0 <tiktok_url>' instead of auto-recording.",
+      "file": "scripts/telegram-bot.ts",
+      "status": "done",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}

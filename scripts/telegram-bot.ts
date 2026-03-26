@@ -440,8 +440,11 @@ async function poll(): Promise<void> {
           }
           if (cbChatId && cbData.startsWith('posted:')) {
             const videoId = cbData.slice(7);
-            answerCallbackQuery(cb.id, 'Recording post...').catch(() => {});
-            await handleCommand(cbChatId, `/record ${videoId} 0`).catch((e: any) => {
+            // Sprint 1380: Don't auto-record — operator must supply tiktok_url for view tracking
+            answerCallbackQuery(cb.id, 'Paste the TikTok URL to record').catch(() => {});
+            await sendMessage(cbChatId,
+              `📎 *Paste the TikTok URL to record this post:*\n\`/record ${videoId} 0 <tiktok_url>\`\n\n_Views can only be tracked with the URL._`
+            ).catch((e: any) => {
               console.error(`[Bot] Posted callback error: ${e.message}`);
             });
           }

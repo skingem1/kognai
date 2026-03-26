@@ -286,7 +286,7 @@ export function cmdReview(): string {
     `QC: ${qcStatus}\n` +
     `Viral score: ${viralScore}\n` +
     `Posted: ${isPosted ? '✅ yes' : '❌ not yet'}\n\n` +
-    (isPosted ? '' : `_To post: \`/record ${videoId} 0\`_`)
+    (isPosted ? '' : `_To post: \`/record ${videoId} 0 <tiktok_url>\`_`)  // Sprint 1380
   );
 }
 
@@ -308,7 +308,7 @@ export function cmdCaption(args: string): string {
     `🧬 Viral score: ${exp.viral_score ?? 'n/a'}\n` +
     `🎬 MP4: ${mp4Path ? '✅ ready' : '❌ not found'}\n\n` +
     `_Copy the caption above and paste into TikTok._\n` +
-    `_After posting: \`/record ${videoId} 0\`_`
+    `_After posting: \`/record ${videoId} 0 <tiktok_url>\`_`  // Sprint 1380
   );
 }
 

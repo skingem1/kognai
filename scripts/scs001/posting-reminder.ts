@@ -130,7 +130,7 @@ function buildCaption(videoId: string, topic?: string): string {
   if (topic) lines.push(topic);
   lines.push('#ai #tech #viral #shorts');
   lines.push('');
-  lines.push(`After posting: /record ${videoId} 0`);
+  lines.push(`After posting: /record ${videoId} 0 <tiktok_url>`);  // Sprint 1380
   return lines.join('\n');
 }
 

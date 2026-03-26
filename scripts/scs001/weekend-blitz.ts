@@ -221,7 +221,7 @@ async function main(): Promise<void> {
     const tgCaption =
       `🚀 *Blitz ${sent + 1}/${batch.length}* ${vsStr}\n\n` +
       `${safeCaption}\n\n` +
-      `After posting: /record ${videoId} 0`;
+      `After posting: /record ${videoId} 0 <tiktok_url>`;  // Sprint 1380
 
     try {
       await sendVideoFile(mp4Path, tgCaption);
