@@ -1,0 +1,16 @@
+{
+  "sprint_id": "sprint-TICKET-011-EVAL-01",
+  "title": "EVAL-011-01 — OpenClaw env var migration: CLAWDBOT_*/MOLTBOT_* → OPENCLAW_*",
+  "block": "TICKET-011",
+  "source": "queue-prescribed",
+  "status": "already-done",
+  "rationale": "Migration was completed by a prior session. grep returns zero CLAWDBOT_/MOLTBOT_* refs in source code. ~/.moltbot does not exist. ~/.openclaw exists with full config. .env uses OPENCLAW_* vars. Only references to old names are in sprint description text (non-executable). Gate: PASS.",
+  "tasks": [
+    {
+      "id": "TICKET-011-EVAL-01-01",
+      "description": "Verify migration complete — grep returns 0 source code hits, ~/.openclaw exists",
+      "status": "done",
+      "type": "verify"
+    }
+  ]
+}
