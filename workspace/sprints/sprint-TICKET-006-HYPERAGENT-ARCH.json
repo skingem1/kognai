@@ -1,0 +1,23 @@
+{
+  "sprint_id": "sprint-TICKET-006-HYPERAGENT-ARCH",
+  "title": "TICKET-006-HYPERAGENT-ARCH — Hyperagents (DGM-H) Architectural Spike",
+  "block": "TICKET-006",
+  "source": "queue-prescribed",
+  "status": "done",
+  "rationale": "Architectural spike for DGM-H Hyperagents (Zhang et al. arXiv:2603.19461). Output: AMD-26 amendment draft, SIGNAL v2 hyperagent topic schema, constitutional compatibility report against Five Seed Principles.",
+  "deliverables": [
+    "workspace/spikes/TICKET-006-hyperagents.md"
+  ],
+  "godman_decision": "Human Brake at weight-modification level only — approved 2026-03-26",
+  "tasks": [
+    {
+      "id": "T006-spike",
+      "description": "Write workspace/spikes/TICKET-006-hyperagents.md covering AMD-26 amendment draft, SIGNAL v2 hyperagent loop, constitutional compatibility report",
+      "files": ["workspace/spikes/TICKET-006-hyperagents.md"],
+      "status": "done",
+      "priority": "P1",
+      "agent": "harvey",
+      "type": "architecture"
+    }
+  ]
+}
