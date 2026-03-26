@@ -1,0 +1,27 @@
+{
+  "sprint_id": "sprint-1373",
+  "title": "BUGFIX — /record warns on missing TikTok URL; /deliver shows URL in prompt (gate views stuck at 0)",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "16 posts recorded in manual-posts.jsonl but 0 with tiktok_url, 0 total views. Gate requires 500 views by Apr 7. Operator runs /record <id> 0 (without URL) because /deliver only shows /record <id> 0 in its prompts. Fix: (1) cmdRecord warns when no URL provided and reminds how to update; (2) cmd-delivery.ts updates key /record prompts to include URL placeholder. Views gate can only be met if URLs are captured.",
+  "tasks": [
+    {
+      "id": "1373-record-url-warning",
+      "description": "In scripts/telegram-commands/cmd-content.ts cmdRecord(): when tiktokUrl is undefined, append a warning to the success message: '\\n\\n⚠️ No TikTok URL — views won\\'t be tracked. Update later: `/record <id> <views> https://tiktok.com/@you/video/...`'",
+      "file": "scripts/telegram-commands/cmd-content.ts",
+      "status": "done",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    },
+    {
+      "id": "1373-deliver-url-prompt",
+      "description": "In scripts/telegram-commands/cmd-delivery.ts: update the 3-4 main /record prompts from `/record <id> 0` to `/record <id> 0 <tiktok_url>` to remind operator that URL is needed.",
+      "file": "scripts/telegram-commands/cmd-delivery.ts",
+      "status": "done",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}

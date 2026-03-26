@@ -81,7 +81,7 @@ export async function cmdDeliver(chatId: string, args: string): Promise<string> 
     const ageStr = ageDays > 0 ? ` · ${ageDays}d old` : '';
     const hook = hookMap.get(videoId);
     const hookStr = hook ? ` · 🎣 ${hook}` : '';
-    const tgCaption = `📦 *Post this to TikTok* ${vsStr} ${spkStr}${hookStr}${ageStr}\n\n${caption}\n\n\`/record ${videoId} 0\``;
+    const tgCaption = `📦 *Post this to TikTok* ${vsStr} ${spkStr}${hookStr}${ageStr}\n\n${caption}\n\n\`/record ${videoId} 0 <tiktok_url>\``;
 
     const deliverButtons = [
       [
@@ -350,14 +350,14 @@ export async function cmdPostNow(chatId: string): Promise<void> {
     caption,
     '```',
     '',
-    `After posting: \`/record ${best.video_id} 0\``,
+    `After posting: \`/record ${best.video_id} 0 <tiktok_url>\``,
     `Queue: ${ready.length} more ready`,
   ].join('\n');
 
   await sendMessage(chatId, header);
 
   try {
-    await sendVideoFile(chatId, best.filePath, `${exp.speaker} · /record ${best.video_id} 0`);
+    await sendVideoFile(chatId, best.filePath, `${exp.speaker} · /record ${best.video_id} 0 <tiktok_url>`);
   } catch (err) {
     await sendMessage(chatId, `⚠️ Could not send video: ${(err as Error).message?.slice(0, 100)}`);
   }
@@ -513,7 +513,7 @@ export async function cmdTodayCaptions(chatId: string): Promise<void> {
       await sendMessage(chatId, '```\n' + caption + '\n```');
     }
 
-    await sendMessage(chatId, `_After posting: \`/record ${slot.video_id} 0\`_`);
+    await sendMessage(chatId, `_After posting: \`/record ${slot.video_id} 0 <tiktok_url>\`_`);
   }
 }
 
@@ -1035,7 +1035,7 @@ export async function cmdPostBrowser(chatId: string, args: string): Promise<void
       '',
       'Review in browser, then:',
       '• Click Post in browser to publish',
-      `• Then run: /record ${videoId} 0`,
+      `• Then run: /record ${videoId} 0 <tiktok_url>`,
       '',
       '_Or re-run with --post: `bash scripts/scs001/post-tiktok.sh "${mp4Path}" "${caption}" --post`_',
     ].join('\n'));
@@ -1112,7 +1112,7 @@ export async function cmdQuickstart(chatId: string): Promise<void> {
     `*Step 3:* Upload the video I'm sending next`,
     `*Step 4:* Paste the caption (sent after the video)`,
     `*Step 5:* Post it!`,
-    `*Step 6:* Run \`/record ${bestVideo?.video_id || 'VIDEO_ID'} 0\` to log it`,
+    `*Step 6:* Run \`/record ${bestVideo?.video_id || 'VIDEO_ID'} 0 <tiktok_url>\` to log it`,
     '',
     `_That's it! Repeat 2x/day to hit the gate._`,
   ].join('\n'));
@@ -1125,7 +1125,7 @@ export async function cmdQuickstart(chatId: string): Promise<void> {
       await sendMessage(chatId, `🎬 Video: \`${bestVideo.video_id}\` (file too large for Telegram)`);
     }
     await sendMessage(chatId, `📋 *Caption (copy-paste):*\n\n\`\`\`\n${caption}\n\`\`\``);
-    await sendMessage(chatId, `_After posting: \`/record ${bestVideo.video_id} 0\`_`);
+    await sendMessage(chatId, `_After posting: \`/record ${bestVideo.video_id} 0 <tiktok_url>\`_`);
   } else {
     await sendMessage(chatId, `⚠️ No unposted videos found with files. Run /produce first.`);
   }
@@ -1275,11 +1275,11 @@ export async function cmdDeliverNext(chatId: string): Promise<void> {
     '',
     `_Caption:_\n\`\`\`\n${caption}\n\`\`\``,
     '',
-    `_After posting: \`/record ${top.video_id} 0\`_`,
+    `_After posting: \`/record ${top.video_id} 0 <tiktok_url>\`_`,
   ].filter(Boolean).join('\n'));
 
   try {
-    await sendVideoFile(chatId, top.mp4, `${top.video_id} · /record ${top.video_id} 0`);
+    await sendVideoFile(chatId, top.mp4, `${top.video_id} · /record ${top.video_id} 0 <tiktok_url>`);
   } catch (err: any) {
     await sendMessage(chatId, `⚠️ Could not send video file: ${err.message?.slice(0, 100)}\n📁 Path: \`${top.mp4}\``);
   }
@@ -1340,7 +1340,7 @@ export async function cmdProduceVlog(chatId: string, args: string): Promise<void
             `_Caption: /caption-next · Post: /deliver-next_`,
           ].join('\n'));
           try {
-            await sendVideoFile(chatId, mp4Path, `${videoId} — /record ${videoId} 0`);
+            await sendVideoFile(chatId, mp4Path, `${videoId} — /record ${videoId} 0 <tiktok_url>`);
           } catch (err: any) {
             await sendMessage(chatId, `⚠️ Could not send video: ${err.message?.slice(0, 100)}\n📁 \`${mp4Path}\``);
           }
@@ -1408,7 +1408,7 @@ export async function cmdProduceEntertainment(chatId: string, args: string): Pro
             `_Caption: /caption-next · Post: /deliver-next_`,
           ].join('\n'));
           try {
-            await sendVideoFile(chatId, mp4Path, `${videoId} — /record ${videoId} 0`);
+            await sendVideoFile(chatId, mp4Path, `${videoId} — /record ${videoId} 0 <tiktok_url>`);
           } catch (err: any) {
             await sendMessage(chatId, `⚠️ Could not send video: ${err.message?.slice(0, 100)}\n📁 \`${mp4Path}\``);
           }

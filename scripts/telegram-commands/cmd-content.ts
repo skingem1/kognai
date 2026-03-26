@@ -108,7 +108,9 @@ export function cmdRecord(args: string): string {
     `\`[${viewBar}]\` ${viewPct}% views toward gate\n` +
     `${postsLeft > 0 ? `⏳ ${postsLeft} more posts needed · ${daysLeft}d to Apr 7` : '✅ Post target met!'}` +
     // Sprint 1129: suggest view-update if URL was saved
-    (tiktokUrl ? `\n\n💡 _To update views later: \`/updateviews ${videoId}\`_` : '')
+    (tiktokUrl ? `\n\n💡 _To update views later: \`/updateviews ${videoId}\`_` : '') +
+    // Sprint 1373: warn when no URL provided — gate requires 500 views, can't track without URL
+    (!tiktokUrl ? `\n\n⚠️ _No TikTok URL — views won't be tracked (gate needs 500 total)._\n_After posting, re-record with URL:_\n\`/record ${videoId} <views> https://tiktok.com/@you/video/...\`` : '')
   );
 }
 
