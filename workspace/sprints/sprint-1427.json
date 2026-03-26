@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-1427",
+  "title": "BUGFIX — FailureLibraryAgent: dedup by video_id to prevent triple-filing",
+  "block": "SCS001",
+  "source": "pipeline-run-observation",
+  "rationale": "PublishingAgent (Blotato path) emits one PublishedVideo per successful platform — 9 platforms × 33 videos = 297 published entries. AnalyticsAgent creates one PerformanceSignal per PublishedVideo. When mock KPIs assign completion_rate < 40% to 3/9 platform signals for each video, FailureLibraryAgent files 3 entries per video (99 total instead of 33). Root cause: FailureLibraryAgent had no dedup by video_id. Fix: before processing failure signals, group by video_id and keep only the worst-performing signal (lowest completion_rate) per unique video. From 99 → 33 unique failure entries, one per video.",
+  "tasks": [
+    {
+      "id": "1427-dedup-failure-library",
+      "description": "In FailureLibraryAgent.run(), add dedup pass before the processing loop: build worstByVideo Map<string, PerformanceSignal> keyed by video_id, keeping the signal with the lowest completion_rate. Process only the deduped signals. Updated log line shows unique video count vs total signal count. Confirmed: 297 signals → 99 failure flagged → 33 unique videos filed (was 99).",
+      "files": [
+        "agents/scs001-failure-library/index.ts"
+      ],
+      "status": "done",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}

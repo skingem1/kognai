@@ -102,9 +102,22 @@ export class FailureLibraryAgent {
   }
 
   run(signals: PerformanceSignal[]): FailureEntry[] {
-    const failureSignals = signals.filter(s => s.failure_library_entry);
-    console.log('[FailureLibrary] ' + failureSignals.length + '/' + signals.length +
-      ' signals flagged for failure library');
+    const allFailureSignals = signals.filter(s => s.failure_library_entry);
+
+    // Dedup by video_id: same video published across 9 platforms (Blotato) produces
+    // 9 PerformanceSignals with the same video_id. Keep only the worst-performing
+    // signal (lowest completion_rate) per unique video to avoid triple/9× filing.
+    const worstByVideo = new Map<string, PerformanceSignal>();
+    for (const sig of allFailureSignals) {
+      const existing = worstByVideo.get(sig.video_id);
+      if (!existing || sig.kpis.completion_rate < existing.kpis.completion_rate) {
+        worstByVideo.set(sig.video_id, sig);
+      }
+    }
+    const failureSignals = Array.from(worstByVideo.values());
+
+    console.log('[FailureLibrary] ' + failureSignals.length + ' unique video(s) flagged (' +
+      allFailureSignals.length + ' signals, ' + signals.length + ' total)');
 
     if (failureSignals.length === 0) {
       console.log('[FailureLibrary] No failures to file');
