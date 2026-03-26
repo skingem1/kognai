@@ -443,7 +443,9 @@ export class SCS001Orchestrator {
     if (captionedVideos.length > 0) {
       stages.push(await this.runStage('8-qc', 'QCAgent', async () => {
         const agent = new QCAgent();
-        gates = agent.run(captionedVideos, bundles, editedVideos);
+        // Sprint 1411: allow production-mode renders through QC when clips are synthesised
+        // (sprint-1408 path) — no real footage available, production mode is intentional.
+        gates = agent.run(captionedVideos, bundles, editedVideos, { allowProductionClip: clipsAreSynthesized });
         return gates.length;
       }));
     }

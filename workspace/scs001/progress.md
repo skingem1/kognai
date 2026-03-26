@@ -7747,3 +7747,11 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Impact: Synthesised-clip path now produces content on every run (not just the first), while RapidAPI is unavailable
 - Swarm used: no
 - Timestamp: 2026-03-26T04:50:00Z
+
+## Sprint 1411 — 2026-03-26
+- Sprint: BUGFIX — Allow production-mode videos through QC when clips synthesised from discovery
+- Files modified: agents/scs001-qc/index.ts, agents/scs001-orchestrator/index.ts
+- Fix: checkHasRealClip() now accepts allowProductionClip flag. QCAgent.run() accepts opts.allowProductionClip. Orchestrator Stage 8 passes clipsAreSynthesized. Without this fix, 0 videos would pass QC in the synthesised-clips path (production-mode renders have has_real_clip=false, which fails the QUALITY-01 Rev.3 check in live mode).
+- Impact: Synthesised-clip path videos now pass QC and reach the publish ledger
+- Swarm used: no
+- Timestamp: 2026-03-26T05:10:00Z

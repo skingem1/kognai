@@ -177,8 +177,11 @@ function checkClipUnderstandable(bundle: ScriptBundle): { pass: boolean; reason:
 }
 
 // QUALITY-01 Rev.3: Real clip check — only enforced in live mode
-function checkHasRealClip(edited: EditedVideo): { pass: boolean; reason: string } {
+// Sprint 1411: allowProductionClip=true bypasses the check when synthesised-clip path
+// intentionally produces production-mode renders (no real footage available).
+function checkHasRealClip(edited: EditedVideo, allowProductionClip: boolean): { pass: boolean; reason: string } {
   if (process.env.SCS_MODE !== 'live') return { pass: true, reason: '' };
+  if (allowProductionClip) return { pass: true, reason: '' };
   if (edited.has_real_clip) return { pass: true, reason: '' };
   return { pass: false, reason: 'Video uses ' + (edited.clip_source ?? 'mock') + ' mode — not publishable (need real or Hailuo clip)' };
 }
@@ -195,6 +198,7 @@ export class QCAgent {
     captionedVideos: CaptionedVideo[],
     bundles: ScriptBundle[],
     editedVideos: EditedVideo[],
+    opts?: { allowProductionClip?: boolean },
   ): QualityControlGate[] {
     console.log('[QCAgent] ' + captionedVideos.length + ' CaptionedVideos in for review');
 
@@ -212,7 +216,7 @@ export class QCAgent {
         if (!bundle || !edited) {
           throw new Error('Missing upstream data for video ' + cv.video_id);
         }
-        const gate = this.review(cv, bundle, edited);
+        const gate = this.review(cv, bundle, edited, opts?.allowProductionClip ?? false);
         gates.push(gate);
         const status = gate.overall_pass ? '\u2713 PASS' : '\u2717 FAIL';
         console.log('[QCAgent] ' + status + ' ' + cv.video_id + (gate.failure_reason ? ' (' + gate.failure_reason + ')' : ''));
@@ -230,6 +234,7 @@ export class QCAgent {
     captioned: CaptionedVideo,
     bundle: ScriptBundle,
     edited: EditedVideo,
+    allowProductionClip: boolean,
   ): QualityControlGate {
     const checks = {
       why_does_this_matter:  checkWhyDoesThisMatter(bundle),
@@ -239,7 +244,7 @@ export class QCAgent {
       audio_balance:         checkAudioBalance(),
       constitutional_filter: checkConstitutionalFilter(bundle),
       clip_understandable:   checkClipUnderstandable(bundle),
-      has_real_clip:         checkHasRealClip(edited),
+      has_real_clip:         checkHasRealClip(edited, allowProductionClip),
       has_audio:             checkHasAudio(edited),
     };
 
