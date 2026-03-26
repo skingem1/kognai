@@ -1,0 +1,22 @@
+{
+  "tasks": [
+    {
+      "id": "1435-legacy-run-cleanup",
+      "description": "In scripts/scs001/cleanup-old-runs.ts: (1) Add legacyRuns field to CleanupResult interface: { deleted: number; kept: number; freedMB: number }. (2) In the run() function, after the entertainmentRuns block, add a new block for legacy run-* dirs: scan workspace/scs001/ for dirs matching /^run-\\d+$/, sort by name descending (newest first by timestamp), keep latest 2, delete the rest using rmSync with recursive:true. Set result.legacyRuns. (3) In the summary printout, add a 'Legacy pipeline runs:' line. (4) In the JSON output written to reports/cleanup-latest.json, include legacyRuns stats. Do NOT touch any other cleanup logic.",
+      "files": [
+        "scripts/scs001/cleanup-old-runs.ts"
+      ],
+      "status": "rejected",
+      "priority": "high",
+      "agent": "coder",
+      "type": "feature",
+      "deliverables": {
+        "code": [],
+        "tests": [],
+        "docs": []
+      },
+      "context": "In scripts/scs001/cleanup-old-runs.ts: (1) Add legacyRuns field to CleanupResult interface: { deleted: number; kept: number; freedMB: number }. (2) In the run() function, after the entertainmentRuns block, add a new block for legacy run-* dirs: scan workspace/scs001/ for dirs matching /^run-\\d+$/, sort by name descending (newest first by timestamp), keep latest 2, delete the rest using rmSync with recursive:true. Set result.legacyRuns. (3) In the summary printout, add a 'Legacy pipeline runs:' line. (4) In the JSON output written to reports/cleanup-latest.json, include legacyRuns stats. Do NOT touch any other cleanup logic.",
+      "sprint_id": "sprint-1435"
+    }
+  ]
+}

@@ -21,6 +21,7 @@ interface CleanupResult {
   codeDemoRuns: { deleted: number; kept: number; freedMB: number };         // Sprint 1218
   vlogRuns: { deleted: number; kept: number; freedMB: number };             // Sprint 1218
   entertainmentRuns: { deleted: number; kept: number; freedMB: number };   // Sprint 1224
+  legacyRuns: { deleted: number; kept: number; freedMB: number };          // Sprint 1435
   totalFreedMB: number;
   dryRun: boolean;
 }
@@ -216,7 +217,31 @@ function run(): CleanupResult {
   // Sprint 1224: entertainment-runs (ent-*) — keep latest 20
   const entertainment = cleanDir(entertainmentDir, 'ent-', 20, true);
 
-  const totalFreedMB = (mf.freedBytes + radar.freedBytes + scriptResult.freedBytes + codeDemo.freedBytes + vlog.freedBytes + entertainment.freedBytes) / (1024 * 1024);
+  // Sprint 1435: Legacy pipeline run-* dirs — keep latest 2, delete the rest
+  const scsDir = path.join(ROOT, 'workspace', 'scs001');
+  const legacyRunDirs = fs.existsSync(scsDir)
+    ? fs.readdirSync(scsDir)
+        .filter(name => /^run-\d+$/.test(name))
+        .map(name => {
+          const full = path.join(scsDir, name);
+          try { return { name, full, mtime: fs.statSync(full).mtimeMs }; } catch { return null; }
+        })
+        .filter((e): e is { name: string; full: string; mtime: number } => e !== null)
+        .sort((a, b) => b.mtime - a.mtime)
+    : [];
+  const legacyRemove = legacyRunDirs.slice(2);
+  let legacyFreedBytes = 0;
+  for (const entry of legacyRemove) {
+    legacyFreedBytes += dirSizeMB(entry.full) * 1024 * 1024;
+    if (!DRY_RUN) rmRecursive(entry.full);
+  }
+  const legacy = {
+    deleted: legacyRemove.length,
+    kept: legacyRunDirs.length - legacyRemove.length,
+    freedBytes: legacyFreedBytes,
+  };
+
+  const totalFreedMB = (mf.freedBytes + radar.freedBytes + scriptResult.freedBytes + codeDemo.freedBytes + vlog.freedBytes + entertainment.freedBytes + legacy.freedBytes) / (1024 * 1024);
 
   return {
     multiformat: { deleted: mf.deleted, kept: mf.kept, freedMB: Math.round(mf.freedBytes / (1024 * 1024)) },
@@ -225,6 +250,7 @@ function run(): CleanupResult {
     codeDemoRuns: { deleted: codeDemo.deleted, kept: codeDemo.kept, freedMB: Math.round(codeDemo.freedBytes / (1024 * 1024)) },
     vlogRuns: { deleted: vlog.deleted, kept: vlog.kept, freedMB: Math.round(vlog.freedBytes / (1024 * 1024)) },
     entertainmentRuns: { deleted: entertainment.deleted, kept: entertainment.kept, freedMB: Math.round(entertainment.freedBytes / (1024 * 1024)) },
+    legacyRuns: { deleted: legacy.deleted, kept: legacy.kept, freedMB: Math.round(legacy.freedBytes / (1024 * 1024)) },
     totalFreedMB: Math.round(totalFreedMB),
     dryRun: DRY_RUN,
   };
@@ -262,6 +288,10 @@ export function formatCleanupResult(r: CleanupResult): string {
     `*Entertainment runs:*`,
     `  Deleted: ${r.entertainmentRuns.deleted} dirs (~${r.entertainmentRuns.freedMB} MB)`,
     `  Kept: ${r.entertainmentRuns.kept} (latest)`,
+    '',
+    `*Legacy pipeline runs (run-*):*`,
+    `  Deleted: ${r.legacyRuns.deleted} dirs (~${r.legacyRuns.freedMB} MB)`,
+    `  Kept: ${r.legacyRuns.kept} (latest)`,
     '',
     `*Total freed: ~${r.totalFreedMB} MB*`,
   ].join('\n');
