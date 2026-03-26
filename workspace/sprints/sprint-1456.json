@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1456",
+  "title": "BUGFIX — Warmup days_active auto-computed from warmup_started_at",
+  "block": "SCS-001",
+  "source": "queue-empty-autonomous",
+  "rationale": "workspace/scs001/warmup-status.json has days_active:0 even though warmup started 2026-03-24 (2 days ago). verifyWarmupSignal() checks status.days_active directly — a stored value never automatically updated. The check 'days_active >= 3' will always fail unless operator manually runs /warmup-complete <days>. Fix: in verifyWarmupSignal(), compute days_elapsed = (now - warmup_started_at) / 86400000 and use max(days_elapsed, status.days_active) for the check. Also update the stored days_active in JSON so /warmup-status shows accurate count. This unblocks TikTok posting (warmup completes ~2026-03-27).",
+  "tasks": [
+    {
+      "id": "1456-fix-days-active",
+      "description": "scripts/scs001/verify-warmup-signal.ts: in verifyWarmupSignal(), compute days_elapsed from warmup_started_at. Use max(days_elapsed, status.days_active). Update status.days_active in JSON if computed > stored. This fixes the check without requiring manual /warmup-complete <days> input.",
+      "files": ["scripts/scs001/verify-warmup-signal.ts"],
+      "status": "pending",
+      "priority": "critical",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}

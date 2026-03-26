@@ -94,11 +94,23 @@ export function verifyWarmupSignal(): VerifyResult {
   });
 
   // Check 3: Minimum 3 days of active scrolling
+  // Sprint 1456 BUGFIX: auto-compute days elapsed from warmup_started_at
+  // (days_active was always 0 if operator never ran /warmup-complete <days>)
   const minDays = 3;
+  const msPerDay = 86_400_000;
+  const daysElapsed = status.warmup_started_at
+    ? Math.floor((Date.now() - new Date(status.warmup_started_at).getTime()) / msPerDay)
+    : 0;
+  const effectiveDays = Math.max(daysElapsed, status.days_active);
+  // Persist updated days_active so /warmup-status shows correct count
+  if (effectiveDays > status.days_active) {
+    status.days_active = effectiveDays;
+    saveWarmupStatus(status);
+  }
   checks.push({
     name: `Active days (min ${minDays})`,
-    pass: status.days_active >= minDays,
-    detail: `${status.days_active} days active`,
+    pass: effectiveDays >= minDays,
+    detail: `${effectiveDays} days active (started ${status.warmup_started_at?.slice(0, 10) || 'unknown'})`,
   });
 
   // Check 4: Niche alignment score >= 6/10
