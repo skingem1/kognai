@@ -182,8 +182,14 @@ export function cmdQueue(): string {
 
   // Sprint 392: Filter archived videos from queue
   const archivedIds = loadArchived();
+  // Sprint 1396: deduplicate by video_id — ledger has multiple entries per video
+  const seenVids = new Set<string>();
   const unposted = (ledger as any[])
-    .filter((e: any) => !recordedIds.has(e.video_id) && e.video_id && !archivedIds.has(e.video_id))
+    .filter((e: any) => {
+      if (!e.video_id || recordedIds.has(e.video_id) || archivedIds.has(e.video_id) || seenVids.has(e.video_id)) return false;
+      seenVids.add(e.video_id);
+      return true;
+    })
     .sort((a: any, b: any) => (viralScores.get(b.video_id) ?? -1) - (viralScores.get(a.video_id) ?? -1));
 
   if (unposted.length === 0) {

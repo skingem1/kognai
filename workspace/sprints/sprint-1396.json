@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1396",
+  "title": "BUGFIX — /queue shows inflated count from duplicate video_ids in ledger",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "cmdQueue() at line 185 builds unposted from publish-ledger.jsonl without deduplicating by video_id. Same root cause as Sprint 1395 (/today). Ledger has multiple entries per video_id so unposted.length and readyCount are inflated, and top-5 may show duplicates. Fix: add seenVids Set in the filter, same pattern as Sprint 1395.",
+  "tasks": [
+    {
+      "id": "1396-queue-dedup",
+      "description": "In scripts/telegram-commands/cmd-content.ts cmdQueue(): add seenVids Set in the unposted filter to deduplicate by video_id before sort. Same pattern as Sprint 1395 fix to cmdToday().",
+      "files": ["scripts/telegram-commands/cmd-content.ts"],
+      "status": "pending",
+      "priority": "medium",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}
