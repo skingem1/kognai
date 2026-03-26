@@ -7898,3 +7898,13 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Swarm used: yes (CTO approved) but produced no files — written directly as fallback
 - AAR: module not compiled (noted)
 - Timestamp: 2026-03-26T07:05:00Z
+
+## Sprint 1436 — 2026-03-26
+- Sprint: INFRA — Add test-artifact dir cleanup to cleanup-old-runs.ts
+- Status: PASS
+- Commit: a4cb38a7
+- Files modified: scripts/scs001/cleanup-old-runs.ts
+- Added: testRuns field + cleanup block for analytics-test-*, caption-test-*, publishing-test-*, qc-test-* dirs (keep 0)
+- Impact: 4 test dirs deleted, 976MB freed. workspace/scs001/ now 4.9GB (was 5.8GB) — under 5GB threshold
+- Swarm used: yes (CTO approved) but produced no files — written directly as fallback
+- Timestamp: 2026-03-26T07:15:00Z
