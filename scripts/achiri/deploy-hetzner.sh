@@ -15,7 +15,7 @@
 #   2. SSH: git pull latest from main
 #   3. SSH: npm ci --omit=dev
 #   4. SSH: pm2 restart achiri-api achiri-telegram
-#   5. SSH: health check (GET /stats/health)
+#   5. SSH: health check (GET /health — Sprint 1416: was /stats/health which 404s)
 #   6. Reports deploy status + PM2 state
 
 set -euo pipefail
@@ -107,7 +107,7 @@ echo "❤️ Health check (port ${ACHIRI_PORT})..."
 sleep 3
 if [[ "$DRY_RUN" == "false" ]]; then
   HEALTH=$(ssh -i "$DEPLOY_KEY" "${HETZNER_USER}@${HETZNER_IP}" \
-    "curl -sf --max-time 5 http://localhost:${ACHIRI_PORT}/stats/health || echo 'UNREACHABLE'")
+    "curl -sf --max-time 5 http://localhost:${ACHIRI_PORT}/health || echo 'UNREACHABLE'")
   echo "   Response: ${HEALTH:0:120}"
   if echo "$HEALTH" | grep -q "UNREACHABLE"; then
     echo "⚠️ Health check failed — check PM2 logs: pm2 logs achiri-api"

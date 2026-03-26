@@ -7788,3 +7788,12 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Note: Live server (PM2 achiri-api) needs restart to pick up new code
 - Swarm used: no
 - Timestamp: 2026-03-26T06:30:00Z
+
+## Sprint 1416 — 2026-03-26
+- Sprint: BUGFIX — daily-engagement.ts filters test/E2E users + deploy script health URL fix
+- Files modified: scripts/achiri/daily-engagement.ts, scripts/achiri/deploy-hetzner.sh
+- Fix 1: getActiveUsers() now filters non-numeric user IDs (e2e-test-*, validate-sprint-*, etc). E2E validation scripts create synthetic user IDs that persist in daily-counts.json. Telegram sendMessage would fail with 400 'chat not found' for these IDs, causing achiri-daily-engage to log errors and stop. Real Telegram chatIds are always numeric.
+- Fix 2: deploy-hetzner.sh health check used /stats/health which returns 404. Changed to /health (the actual endpoint, enhanced in sprint-1415).
+- Impact: achiri-daily-engage can now run cleanly, correctly targeting only real Telegram users. Deployment health check will show actual Achiri status including capabilities.
+- Swarm used: no
+- Timestamp: 2026-03-26T06:50:00Z

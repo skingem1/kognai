@@ -83,6 +83,11 @@ function loadDailyCounts(): DailyCounts {
   }
 }
 
+// Sprint 1416: Real Telegram chatIds are numeric (positive for users, negative for groups).
+// Test/E2E users injected by validate-e2e-alpha.ts have IDs like 'e2e-test-...', 'e2e-safety-...',
+// 'validate-sprint-...' — these fail with 400 "chat not found" when we try to message them.
+const REAL_USER_REGEX = /^-?\d+$/;
+
 function getActiveUsers(counts: DailyCounts): string[] {
   const today = todayKey();
   const users = new Set<string>();
@@ -101,7 +106,13 @@ function getActiveUsers(counts: DailyCounts): string[] {
     users.delete(userId);
   }
 
-  return Array.from(users);
+  // Sprint 1416: filter out test/E2E synthetic user IDs — only real Telegram chatIds are numeric
+  const all = Array.from(users);
+  const real = all.filter(id => REAL_USER_REGEX.test(id));
+  if (all.length > real.length) {
+    console.log(`[achiri-daily-engage] Skipping ${all.length - real.length} non-numeric test user(s) (e.g. e2e-test-*, validate-sprint-*)`);
+  }
+  return real;
 }
 
 function getEngagementStreak(counts: DailyCounts, userId: string): number {

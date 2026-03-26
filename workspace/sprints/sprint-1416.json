@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1416",
+  "title": "BUGFIX — daily-engagement.ts: filter test/E2E users from active user list",
+  "block": "ACHIRI",
+  "source": "self-directed",
+  "rationale": "logs/achiri-daily-engage-error.log shows 400 'chat not found' errors for e2e-test-1773963856108, e2e-safety-..., validate-sprint-..., etc. The daily engagement script reads daily-counts.json which includes all users ever processed — including synthetic test IDs injected by validate-e2e-alpha.ts. Telegram sendMessage fails for these non-existent chat IDs. Fix: in getActiveUsers(), skip users whose ID does not match the numeric Telegram chatId pattern (/^-?\\d+$/).",
+  "tasks": [
+    {
+      "id": "1416-filter-test-users",
+      "description": "In scripts/achiri/daily-engagement.ts getActiveUsers(): after building the users Set, filter to only keep user IDs that look like real Telegram chatIds (numeric, optionally negative for groups). Add: const REAL_USER_REGEX = /^-?\\d+$/; and filter the returned array. Add a console.log for skipped non-numeric IDs so the log shows how many test users were excluded.",
+      "files": ["scripts/achiri/daily-engagement.ts"],
+      "status": "done",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}
