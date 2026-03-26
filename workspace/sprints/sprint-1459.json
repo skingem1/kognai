@@ -1,13 +1,13 @@
 {
   "sprint_id": "sprint-1459",
-  "title": "BUGFIX — Achiri free tier qwen3:0.6b (fix 30s timeout)",
+  "title": "BUGFIX — Achiri Ollama timeout 30s→60s (qwen3:4b reverted after 0.6b quality fail)",
   "block": "ACHIRI",
   "source": "queue-empty-autonomous",
-  "rationale": "Achiri bot @achiriibot went live (Sprint 1458) and received real user messages on 2026-03-26T09:00. All chat() calls timed out after 30s because qwen3:4b is too slow on the Mac Mini under load. Fix: change free tier model from local/qwen3:4b to local/qwen3:0.6b (2.3s response time vs 30s+). Also increase Ollama timeout from 30s to 60s as belt-and-suspenders. Both changes are config/1-line surgical edits.",
+  "rationale": "Achiri bot @achiriibot live. chat() timed out at 30s during 09:00 pipeline load. Tried qwen3:0.6b (2.3s) but quality failed (echoed user, no Derja). Reverted to qwen3:4b. Real fix: 60s timeout — during pipeline hours qwen3:4b was 2min cold start, but off-peak should be <60s. If qwen3:4b still times out after 60s, next fix is to block Achiri during pipeline hours or add pipeline-aware scheduling.",
   "tasks": [
     {
       "id": "1459-model-switch",
-      "description": "kognai-agents/achiri/config.json: change free tier model from local/qwen3:4b to local/qwen3:0.6b",
+      "description": "kognai-agents/achiri/config.json: REVERTED back to local/qwen3:4b (qwen3:0.6b tested and rejected — echoed user, no Derja capability)",
       "files": ["kognai-agents/achiri/config.json"],
       "status": "done",
       "priority": "critical",
