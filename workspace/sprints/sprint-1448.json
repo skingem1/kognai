@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-1448",
+  "title": "PHASE2 — Batch YouTube Shorts uploader for multiformat pipeline output",
+  "block": "PHASE2",
+  "source": "queue-empty-autonomous",
+  "rationale": "Sprint 1447 added youtube-oauth.ts to get YOUTUBE_REFRESH_TOKEN. Now build the batch uploader that leverages it. Videos exist in workspace/scs001/multiformat-runs/*/output/*_final_av.mp4. Create scripts/scs001/batch-youtube-upload.ts: scans all multiformat runs for final videos, skips already-uploaded (tracked in workspace/scs001/youtube-ledger.jsonl), uploads remaining via youtube-shorts.ts uploadShort(). Dry-run default. Under 90 lines.",
+  "tasks": [
+    {
+      "id": "1448-batch-youtube",
+      "description": "Create scripts/scs001/batch-youtube-upload.ts. Args: --live (default dry-run), --max=N (default 5 per run). (1) Glob workspace/scs001/multiformat-runs/*/output/*_final_av.mp4. (2) Read workspace/scs001/youtube-ledger.jsonl (array of {video_path, youtube_id, uploaded_at}) — create if missing. (3) For each mp4, check if already in ledger (match by video_path or filename). (4) If not uploaded and under max limit: call uploadShort({videoPath, title: basename without extension, description: 'AI-generated content by Kognai', tags: ['ai', 'tech', 'aitools']}). (5) On success: append {video_path, youtube_id, uploaded_at} to youtube-ledger.jsonl. (6) Print summary: found N videos, N already uploaded, N uploaded this run, N skipped (max). Dry-run prints what would be uploaded without calling uploadShort. Exit 0.",
+      "files": [
+        "scripts/scs001/batch-youtube-upload.ts"
+      ],
+      "status": "pending",
+      "priority": "high",
+      "agent": "coder",
+      "type": "feature"
+    }
+  ]
+}
