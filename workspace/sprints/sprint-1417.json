@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1417",
+  "title": "BUGFIX — achiri-reengage.ts: filter test/E2E users from inactive user list",
+  "block": "ACHIRI",
+  "source": "self-directed",
+  "rationale": "workspace/achiri/reengage-log.jsonl shows 400 'chat not found' Telegram errors for synthetic E2E user IDs (e.g. e2e-test-*, validate-sprint-*). Same root cause as Sprint 1416: achiri-reengage.ts builds allUsers from all keys in daily-counts.json including test IDs injected by validate-e2e-alpha.ts. Fix: after building allUsers Set, filter to only keep numeric chatIds using REAL_USER_REGEX = /^-?\\d+$/.",
+  "tasks": [
+    {
+      "id": "1417-filter-test-users-reengage",
+      "description": "In scripts/achiri/achiri-reengage.ts main(): after building allUsers Set from counts, filter out any userId that does not match /^-?\\d+$/ (real Telegram chatIds are always numeric). Log how many non-numeric users were skipped.",
+      "files": ["scripts/achiri/achiri-reengage.ts"],
+      "status": "done",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}

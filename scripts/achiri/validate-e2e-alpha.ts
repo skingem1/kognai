@@ -3,12 +3,41 @@
 // Validates the full companion flow in dry-run mode (no LLM calls).
 // Run: ACHIRI_DRY_RUN=1 npx ts-node scripts/achiri/validate-e2e-alpha.ts
 
+import { existsSync, readFileSync, writeFileSync } from 'fs';
+import { join } from 'path';
 import { AchiriConversationHandler, ACHIRI_LIMIT_EXCEEDED } from '../../agents/achiri/index';
 import { safetyCheck } from '../../agents/achiri/safety-filter';
 import { detectEmotion, getMoodHint } from '../../agents/achiri/emotion-detector';
 import { isStallMessage, buildTopicHint } from '../../agents/achiri/topic-suggester';
 import { estimateTokens, selectTurnsWithinBudget } from '../../agents/achiri/context-window';
 import { extractUserProfile } from '../../agents/achiri/user-profile';
+
+// Sprint 1418: Remove synthetic test user IDs from daily-counts.json after E2E runs.
+// E2E tests call AchiriConversationHandler which calls incrementDailyCount() and writes
+// test IDs (e2e-*, validate-sprint-*, etc.) to daily-counts.json. These contaminate analytics
+// and cause 400 "chat not found" errors in engagement/reengage scripts.
+function cleanupTestUsersFromDailyCounts(): void {
+  const REAL_USER_REGEX = /^-?\d+$/;
+  const countsPath = join(process.cwd(), 'workspace', 'achiri', 'daily-counts.json');
+  if (!existsSync(countsPath)) return;
+  try {
+    const data = JSON.parse(readFileSync(countsPath, 'utf-8')) as Record<string, Record<string, number>>;
+    let removed = 0;
+    for (const date of Object.keys(data)) {
+      for (const userId of Object.keys(data[date])) {
+        if (!REAL_USER_REGEX.test(userId)) {
+          delete data[date][userId];
+          removed++;
+        }
+      }
+      if (Object.keys(data[date]).length === 0) delete data[date];
+    }
+    if (removed > 0) {
+      writeFileSync(countsPath, JSON.stringify(data, null, 2), 'utf-8');
+      console.log(`[e2e-cleanup] Removed ${removed} synthetic user entries from daily-counts.json`);
+    }
+  } catch { /* non-fatal */ }
+}
 
 // Force dry-run
 process.env.ACHIRI_DRY_RUN = '1';
@@ -179,6 +208,9 @@ async function runAsyncTests(): Promise<void> {
   console.log('========================================');
   console.log(passed + ' passed, ' + failed + ' failed');
   console.log('========================================\n');
+
+  // Sprint 1418: Clean up synthetic test user IDs written to daily-counts.json during this run
+  cleanupTestUsersFromDailyCounts();
 
   if (failed > 0) {
     console.log('FAILED — Fix issues before alpha launch.');

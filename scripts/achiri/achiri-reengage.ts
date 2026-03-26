@@ -29,6 +29,11 @@ const LAPSE_DAYS = 3;        // Days of inactivity before re-engagement
 const COOLDOWN_DAYS = 7;     // Don't re-engage same user within this many days
 const MAX_PER_RUN = 5;       // Max users to re-engage per run
 
+// Sprint 1417: Real Telegram chatIds are numeric (positive for users, negative for groups).
+// Test/E2E users injected by validate-e2e-alpha.ts have IDs like 'e2e-test-...', 'e2e-safety-...',
+// 'validate-sprint-...' — these fail with 400 "chat not found" when we try to message them.
+const REAL_USER_REGEX = /^-?\d+$/;
+
 // Check-in messages — casual, multilingual (Darija + French + English)
 const CHECKIN_MESSAGES = [
   "Hey! 👋 Winek? Ma 7keytlich men zouz. Kifech el 7al?",
@@ -116,6 +121,15 @@ async function main(): Promise<void> {
     for (const userId of Object.keys(day)) {
       allUsers.add(userId);
     }
+  }
+
+  // Sprint 1417: filter out test/E2E synthetic user IDs — only real Telegram chatIds are numeric
+  const allUsersRaw = allUsers.size;
+  for (const userId of Array.from(allUsers)) {
+    if (!REAL_USER_REGEX.test(userId)) allUsers.delete(userId);
+  }
+  if (allUsersRaw > allUsers.size) {
+    console.log(`[reengage] Skipping ${allUsersRaw - allUsers.size} non-numeric test user(s) (e.g. e2e-test-*, validate-sprint-*)`);
   }
 
   console.log(`[reengage] Total unique users: ${allUsers.size}`);

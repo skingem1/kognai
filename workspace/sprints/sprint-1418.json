@@ -1,0 +1,27 @@
+{
+  "sprint_id": "sprint-1418",
+  "title": "BUGFIX — Purge synthetic test users from daily-counts.json + add E2E cleanup",
+  "block": "ACHIRI",
+  "source": "self-directed",
+  "rationale": "workspace/achiri/daily-counts.json had 82 synthetic test user IDs (e2e-test-*, e2e-safety-*, validate-sprint-*, tarek-test, smoke-test, etc.) vs 1 real user (6001921477). These inflated user counts in all 7 analytics scripts (achiri-retention, achiri-quality-monitor, achiri-readiness, achiri-dashboard-export, achiri-topic-analytics, export-analytics, weekly-usage-digest). Sprint 1416/1417 filtered at send-time but didn't fix the data. This sprint does a one-time purge and adds cleanup to validate-e2e-alpha.ts to prevent future recurrence.",
+  "tasks": [
+    {
+      "id": "1418-purge-test-users-data",
+      "description": "One-time: purge all non-numeric user keys from workspace/achiri/daily-counts.json. Used python3 to filter in-place. Removed 84 entries (84 synthetic, 0 real users affected). File now only contains userId '6001921477' on 2026-03-19 and 2026-03-20.",
+      "files": ["workspace/achiri/daily-counts.json"],
+      "status": "done",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    },
+    {
+      "id": "1418-e2e-cleanup-hook",
+      "description": "Add cleanupTestUsersFromDailyCounts() to validate-e2e-alpha.ts. Runs after all tests complete — removes any non-numeric userId keys written to daily-counts.json during the test run. In practice dry-run mode skips incrementDailyCount() so no test users are written; function is a safeguard for future non-dry-run test scenarios.",
+      "files": ["scripts/achiri/validate-e2e-alpha.ts"],
+      "status": "done",
+      "priority": "medium",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}
