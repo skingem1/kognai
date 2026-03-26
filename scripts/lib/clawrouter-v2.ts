@@ -54,10 +54,20 @@ const TIER_MODELS = {
   T0_NANO:  'qwen3:0.6b',
   T1_LOCAL: 'qwen3:4b',
   T2_POWER: 'qwen3:14b',
+  T2_5_THINK: 'qwen3:14b',               // T2.5-LOCAL: thinking mode (TICKET-007-CLAWROUTER-THINK)
   T2_5_EXEC: 'google/gemini-2.5-flash',    // via OpenClaw gateway
   T2_5_MIMO: 'mimo-v2-pro',               // A/B test candidate (CR-AMD-001)
   T3_APEX:  'anthropic/claude-sonnet-4-20250514', // via OpenClaw gateway
 } as const;
+
+// T2.5-LOCAL: thinking mode config (TICKET-007-CLAWROUTER-THINK)
+const THINKING_MODE_ENABLED = process.env.THINKING_MODE_LOCAL_ENABLED === 'true';
+const THINKING_MODE_THRESHOLD = parseFloat(process.env.THINKING_MODE_THRESHOLD || '0.85');
+// Markers that indicate the model is uncertain — trigger escalation to T3 APEX
+const UNCERTAINTY_MARKERS = [
+  /\b(I am not sure|I cannot determine|I don't have enough|requires human judgment|uncertain|ambiguous)\b/i,
+  /\b(cannot confidently|low confidence|unclear|insufficient context)\b/i,
+];
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -146,8 +156,11 @@ export function getDailyCostDigest(): {
 // ── Routing Matrix ────────────────────────────────────────────────────────────
 
 function resolveTextTier(req: ClawRouterV2Request): { tier: string; model: string; local: boolean } {
-  // Constitutional flag always forces APEX
+  // Constitutional flag: T2.5-LOCAL (thinking mode) when enabled and not apex; T3 APEX otherwise
   if (req.constitutional_flag) {
+    if (THINKING_MODE_ENABLED && req.complexity !== 'apex') {
+      return { tier: 'T2.5-LOCAL', model: TIER_MODELS.T2_5_THINK, local: true };
+    }
     return { tier: 'T3', model: TIER_MODELS.T3_APEX, local: false };
   }
 
@@ -259,6 +272,36 @@ async function callOllamaLocal(model: string, prompt: string, systemPrompt?: str
   content = content.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
   return {
     content,
+    input_tokens: json.prompt_eval_count || 0,
+    output_tokens: json.eval_count || 0,
+  };
+}
+
+// ── Ollama Thinking Mode Call (T2.5-LOCAL, TICKET-007-CLAWROUTER-THINK) ─────────
+
+async function callOllamaThink(model: string, prompt: string, systemPrompt?: string, maxTokens: number = 4096): Promise<{
+  content: string; thinking: string; input_tokens: number; output_tokens: number;
+}> {
+  const body = JSON.stringify({
+    model,
+    prompt,
+    system: systemPrompt,
+    stream: false,
+    think: true,  // Enable qwen3 thinking mode
+    options: { num_predict: maxTokens, temperature: 0.1 },
+  });
+
+  const res = await httpRequest(`${OLLAMA_BASE}/api/generate`, body, 'POST', {}, OLLAMA_TIMEOUT_MS);
+  if (res.status !== 200) throw new Error(`Ollama think ${model} returned ${res.status}: ${res.data.slice(0, 300)}`);
+
+  const json = JSON.parse(res.data);
+  // Ollama returns thinking content in json.thinking (separate from json.response)
+  const thinking = json.thinking || '';
+  let content = json.response || '';
+  // Also strip any inline <think> tags in case model mixes formats
+  content = content.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
+  return {
+    content, thinking,
     input_tokens: json.prompt_eval_count || 0,
     output_tokens: json.eval_count || 0,
   };
@@ -496,7 +539,7 @@ export async function routeCall(req: ClawRouterV2Request): Promise<ClawRouterV2R
   const timestamp = new Date().toISOString();
 
   // 1. Resolve tier & model
-  const route = req.tier_class === 'creative'
+  let route = req.tier_class === 'creative'
     ? resolveCreativeTier(req)
     : resolveTextTier(req);
 
@@ -537,7 +580,26 @@ export async function routeCall(req: ClawRouterV2Request): Promise<ClawRouterV2R
   let output_tokens = 0;
   let cost_usd = 0;
 
-  if (route.local) {
+  if (route.tier === 'T2.5-LOCAL') {
+    // T2.5-LOCAL: thinking mode call with confidence-based escalation
+    const thinkResult = await callOllamaThink(route.model, prompt, systemPrompt, payload.max_tokens);
+    content = thinkResult.content;
+    input_tokens = thinkResult.input_tokens;
+    output_tokens = thinkResult.output_tokens;
+    cost_usd = 0;
+    // Confidence-based escalation: if response contains uncertainty markers, escalate to T3 APEX
+    const isUncertain = UNCERTAINTY_MARKERS.some(rx => rx.test(thinkResult.content));
+    if (isUncertain) {
+      console.warn(`[ClawRouter] T2.5-LOCAL confidence below threshold — escalating to T3 APEX`);
+      const apexResult = await callCloudGateway(TIER_MODELS.T3_APEX, messages, payload.max_tokens || 4096);
+      content = apexResult.content;
+      input_tokens += apexResult.input_tokens;
+      output_tokens += apexResult.output_tokens;
+      cost_usd = apexResult.cost_usd;
+      if (cost_usd > 0) recordSpend(cost_usd);
+      route = { tier: 'T3', model: TIER_MODELS.T3_APEX, local: false };
+    }
+  } else if (route.local) {
     const result = await callOllamaLocal(route.model, prompt, systemPrompt, payload.max_tokens);
     content = result.content;
     input_tokens = result.input_tokens;

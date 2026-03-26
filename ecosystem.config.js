@@ -284,6 +284,9 @@ module.exports = {
         ROLLING_WINDOW_HOURS: "3",
         CEO_TELEGRAM_BOT_TOKEN: process.env.CEO_TELEGRAM_BOT_TOKEN || "",
         OWNER_TELEGRAM_CHAT_ID: process.env.OWNER_TELEGRAM_CHAT_ID || "",
+        // T2.5-LOCAL thinking mode tier (TICKET-007-CLAWROUTER-THINK)
+        THINKING_MODE_LOCAL_ENABLED: "true",
+        THINKING_MODE_THRESHOLD: "0.85",
       },
       error_file: __dirname + "/logs/sprint-runner-error.log",
       out_file: __dirname + "/logs/sprint-runner-out.log",
@@ -912,6 +915,7 @@ module.exports = {
         TS_NODE_TRANSPILE_ONLY: "true",
         TS_NODE_PROJECT: __dirname + "/tsconfig.scripts.json",
         OLLAMA_URL: "http://127.0.0.1:11434",
+        ACHIRI_TELEGRAM_BOT_TOKEN: process.env.ACHIRI_TELEGRAM_BOT_TOKEN || "",
       },
       error_file: __dirname + "/logs/achiri-telegram-error.log",
       out_file: __dirname + "/logs/achiri-telegram-out.log",

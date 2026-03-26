@@ -1,0 +1,27 @@
+{
+  "sprint_id": "sprint-TICKET-007-CLAWROUTER-THINK",
+  "title": "TICKET-007-CLAWROUTER-THINK — T2.5-LOCAL thinking mode tier in ClawRouter",
+  "block": "TICKET-007",
+  "source": "queue-prescribed",
+  "rationale": "Add T2.5-LOCAL tier: constitutional_flag=true AND complexity!='apex' → qwen3:14b thinking mode (local, $0). Confidence-based escalation to T3 APEX. THINKING_MODE_LOCAL_ENABLED env flag. Preserve T3 APEX for apex complexity.",
+  "tasks": [
+    {
+      "id": "CR-THINK-tier",
+      "description": "Add T2_5_THINK tier model, callOllamaThink function (think:true), and T2.5-LOCAL routing branch to resolveTextTier in clawrouter-v2.ts",
+      "files": ["scripts/lib/clawrouter-v2.ts"],
+      "status": "pending"
+    },
+    {
+      "id": "CR-THINK-escalation",
+      "description": "Add confidence-based escalation in routeCall: after T2.5-LOCAL call, check response for UNCERTAINTY_MARKERS. If any match, re-call T3 APEX and log escalation.",
+      "files": ["scripts/lib/clawrouter-v2.ts"],
+      "status": "pending"
+    },
+    {
+      "id": "CR-THINK-env",
+      "description": "Add THINKING_MODE_LOCAL_ENABLED=true and THINKING_MODE_THRESHOLD=0.85 to sprint-runner env block in ecosystem.config.js",
+      "files": ["ecosystem.config.js"],
+      "status": "pending"
+    }
+  ]
+}
