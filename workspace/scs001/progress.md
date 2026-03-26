@@ -8325,3 +8325,12 @@ Next session: Sprint 979 — npm publish PACT or Achiri Hetzner deploy.
 - Effect: auto-deliver now active. Will send pending videos (6 in queue, caption/ run dirs) via Telegram.
 - Queue item: TICKET-016-DELIVER-01 marked done
 - Timestamp: 2026-03-26T14:30:00Z
+
+## Sprint 1480 — FEATURE: auto-deliver also delivers post-queue.jsonl videos
+- Status: PASS
+- Commit: ea4324ff
+- Files modified: scripts/scs001/posting-auto-deliver.ts (post-queue second pass + fix manualPosts.length→manualPostCount in caption), workspace/sprints/sprint-1480.json
+- Validation: TSC clean. Smoke test: "Post-queue: 7 ready, sending 3" — fires correctly after ledger batch. Failures expected (fake token).
+- Swarm: bypassed (direct write)
+- Effect: auto-deliver now delivers multiformat + vlog videos from post-queue.jsonl after ledger batch. 7 pending vlogs will be delivered next PM2 cron run with real token.
+- Timestamp: 2026-03-26T15:00:00Z
