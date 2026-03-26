@@ -66,11 +66,34 @@ MODEL = "qwen3:14b"
 KOGNAI_ROOT = Path.home() / "kognai"
 INVOICA_ROOT = Path.home() / "Documents" / "Invoica"
 
+def _discover_kognai_memory() -> Path:
+    """Discover the most current MEMORY.md for Kognai.
+
+    Tries the new auto-memory path first (~/.claude/projects/-Users-tarekmnif-kognai/),
+    then the legacy path (~/kognai/.claude/projects/-Users-tarekmnif-Documents-Kognai/).
+    Returns whichever exists and was modified more recently.
+    """
+    new_path = Path.home() / ".claude" / "projects" / "-Users-tarekmnif-kognai" / "memory" / "MEMORY.md"
+    old_path = Path.home() / "kognai" / ".claude" / "projects" / "-Users-tarekmnif-Documents-Kognai" / "memory" / "MEMORY.md"
+    if new_path.exists() and old_path.exists():
+        return new_path if new_path.stat().st_mtime >= old_path.stat().st_mtime else old_path
+    if new_path.exists():
+        return new_path
+    return old_path  # fallback (may not exist — caller handles None)
+
+
+def _discover_kognai_memory_dir() -> Optional[Path]:
+    """Return the directory containing auto-memory project_*.md files, if it exists."""
+    new_dir = Path.home() / ".claude" / "projects" / "-Users-tarekmnif-kognai" / "memory"
+    return new_dir if new_dir.exists() else None
+
+
 # Project-specific configs
 PROJECTS = {
     "kognai": {
         "root": KOGNAI_ROOT,
-        "memory": Path.home() / "kognai" / ".claude" / "projects" / "-Users-tarekmnif-Documents-Kognai" / "memory" / "MEMORY.md",
+        "memory": _discover_kognai_memory(),
+        "memory_dir": _discover_kognai_memory_dir(),
         "progress": KOGNAI_ROOT / "workspace" / "scs001" / "progress.md",
         "sprints_dir": KOGNAI_ROOT / "workspace" / "sprints",
         "output": KOGNAI_ROOT / "workspace" / "sprint-brief.md",
@@ -399,7 +422,22 @@ def generate_brief(project_name: str):
 
     # --- Phase 1: Gather raw data ---
     print("\n[1/6] Reading MEMORY.md...")
-    memory_raw = read_file_safe(config["memory"])
+    memory_path = config.get("memory")
+    memory_raw = read_file_safe(memory_path) if memory_path else None
+    if memory_path:
+        print(f"       → Using: {memory_path}")
+
+    # Augment with auto-memory project_*.md files if available
+    memory_dir = config.get("memory_dir")
+    if memory_dir and Path(memory_dir).exists():
+        extra_parts = []
+        for md_file in sorted(Path(memory_dir).glob("project_*.md")):
+            content = read_file_safe(md_file, max_lines=50)
+            if content:
+                extra_parts.append(f"=== {md_file.name} ===\n{content}")
+        if extra_parts:
+            memory_raw = (memory_raw or "") + "\n\n--- AUTO-MEMORY PROJECT FILES ---\n" + "\n\n".join(extra_parts)
+            print(f"       → Augmented with {len(extra_parts)} auto-memory project file(s)")
 
     print("[2/6] Reading progress.md...")
     progress_raw = read_file_safe(config["progress"], max_lines=200)

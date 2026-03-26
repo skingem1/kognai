@@ -1,0 +1,31 @@
+{
+  "sprint_id": "sprint-1444",
+  "title": "INFRA — Fix sprint brief MEMORY path drift (Sprint 919→1443 gap)",
+  "block": "INFRA",
+  "source": "queue-empty-qwen-fallback",
+  "rationale": "The sprint brief generator reads ~/kognai/.claude/projects/-Users-tarekmnif-Documents-Kognai/memory/MEMORY.md which was last updated at Sprint 919 (2026-03-23). The auto-memory system writes to ~/.claude/projects/-Users-tarekmnif-kognai/memory/MEMORY.md (Sprint 1443). Qwen gets stale state (shows '0/30 posts', Sprint 920 as next) causing wrong recommendations every session. Fix: (1) update generator to discover the correct MEMORY path, (2) update the stale MEMORY.md to reflect Sprint 1443 reality.",
+  "tasks": [
+    {
+      "id": "1444-memory-path",
+      "description": "Fix scripts/generate-sprint-brief.py: update PROJECTS['kognai']['memory'] path. Currently reads ~/kognai/.claude/projects/-Users-tarekmnif-Documents-Kognai/memory/MEMORY.md (stale since Sprint 919). New logic: try Path.home() / '.claude' / 'projects' / '-Users-tarekmnif-kognai' / 'memory' / 'MEMORY.md' first. If it exists and is newer than the old path, use it. Also read any project_*.md files in that directory and include them in the Qwen prompt as supplementary context. Fallback to old path if new path doesn't exist.",
+      "files": [
+        "scripts/generate-sprint-brief.py"
+      ],
+      "status": "pending",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    },
+    {
+      "id": "1444-memory-sync",
+      "description": "Update ~/kognai/.claude/projects/-Users-tarekmnif-Documents-Kognai/memory/MEMORY.md to current state. Change: (1) 'Last updated: Sprint 1443 — 2026-03-26', (2) Current sprint: 1444 (next), (3) Gate status: 156/30 posts PASSING, 0/500 views unverifiable, overall_pass: true, (4) Last commit: 87086673, (5) Achiri: 17/17 tests PASS, rate limiter + tier CLI shipped (1441, 1443), blocked on bot token + Hetzner URL, (6) Godman: 7/7 demos ready, 0/8 published (needs npm login), (7) Phase 1.5 gate: PASSING — proceed to Phase 2A. Add Build Priority Sequence rows for sprints 920-1443 as summarized blocks.",
+      "files": [
+        ".claude/projects/-Users-tarekmnif-Documents-Kognai/memory/MEMORY.md"
+      ],
+      "status": "pending",
+      "priority": "high",
+      "agent": "coder",
+      "type": "state-sync"
+    }
+  ]
+}
