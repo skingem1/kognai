@@ -119,6 +119,14 @@ async function main(): Promise<void> {
     process.exit(0);
   }
 
+  // Sprint 1389: Quiet hours 22:00-07:00 — suppress Telegram alert to avoid 2am spam.
+  // The pipeline cron runs at 09:00; stale ledger overnight is expected, not actionable.
+  const localHour = new Date().getHours();
+  if (localHour >= 22 || localHour < 7) {
+    process.stdout.write(`[pipeline-watchdog] STALE — ledger ${staleHours.toFixed(1)}h ago — quiet hours (${localHour}:xx) — skipping alert\n`);
+    process.exit(0);
+  }
+
   // Pipeline is stale — build alert
   // Sprint 1352: Filter dry-run posts — gate requires real TikTok posts only
   const DRY_METHODS = ['browser-post-dry', 'batch-browser-dry', 'dry'];

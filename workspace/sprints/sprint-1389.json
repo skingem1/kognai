@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-1389",
+  "title": "BUGFIX — Pipeline watchdog sends 2am Telegram spam: add quiet hours 22:00-07:00",
+  "block": "BUGFIX",
+  "source": "self-directed",
+  "rationale": "pipeline-watchdog runs every 30 min and sends Telegram alerts when ledger is >4h stale. At 02:00-06:30 the ledger is naturally stale (pipeline cron runs at 09:00), causing repeated 2am spam alerts. Fix: suppress Telegram send during 22:00-07:00 quiet hours. Still log to stdout.",
+  "tasks": [
+    {
+      "id": "1389-quiet-hours",
+      "description": "In scripts/pipeline-watchdog.ts, add a quiet hours check before sendTelegram. If local hour is between 22 and 7 (inclusive), log '[pipeline-watchdog] STALE but quiet hours — skipping alert' to stdout and exit 0. Add after the staleHours threshold check.",
+      "files": ["scripts/pipeline-watchdog.ts"],
+      "status": "pending",
+      "priority": "medium",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}
