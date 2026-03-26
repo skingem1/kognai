@@ -1,0 +1,31 @@
+{
+  "sprint_id": "sprint-1423",
+  "title": "BUGFIX — Fix hardcoded /Users/tarekmnif paths in kognai.ecosystem.config.js and shell scripts",
+  "block": "DEPLOY",
+  "source": "self-directed",
+  "rationale": "Sprint 1419 fixed ecosystem.config.js but missed kognai.ecosystem.config.js (the Kognai-native PM2 config with router/dashboard/drain/heartbeat processes) and 3 shell scripts. kognai.ecosystem.config.js had /Users/tarekmnif hardcoded in cwd, out_file, error_file, PYTHONPATH, and TS_NODE_PROJECT fields. scripts/start-router.sh, generate-daily-brief.sh, and install-clawhub-skills.sh all had hardcoded project root paths. Fixed: kognai.ecosystem.config.js uses __dirname, shell scripts use $(cd $(dirname $0)/.. && pwd) to resolve root dynamically.",
+  "tasks": [
+    {
+      "id": "1423-kognai-ecosystem-dirname",
+      "description": "Replace all /Users/tarekmnif/kognai in kognai.ecosystem.config.js with __dirname. Add path require. Validated: node -e require() -> VALID — 4 apps.",
+      "files": ["kognai.ecosystem.config.js"],
+      "status": "done",
+      "priority": "high",
+      "agent": "coder",
+      "type": "bugfix"
+    },
+    {
+      "id": "1423-shell-scripts-dynamic-root",
+      "description": "Replace hardcoded /Users/tarekmnif/kognai in scripts/start-router.sh, scripts/generate-daily-brief.sh, scripts/install-clawhub-skills.sh with KOGNAI_ROOT=$(cd $(dirname $0)/.. && pwd). All 3 scripts now self-locate the project root at runtime.",
+      "files": [
+        "scripts/start-router.sh",
+        "scripts/generate-daily-brief.sh",
+        "scripts/install-clawhub-skills.sh"
+      ],
+      "status": "done",
+      "priority": "medium",
+      "agent": "coder",
+      "type": "bugfix"
+    }
+  ]
+}

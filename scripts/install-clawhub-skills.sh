@@ -3,7 +3,8 @@
 # Prerequisites: npx clawhub login
 set -e
 
-SKILLS_DIR="/Users/tarekmnif/kognai/skills"
+KOGNAI_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+SKILLS_DIR="${KOGNAI_ROOT}/skills"
 mkdir -p "$SKILLS_DIR"
 
 echo "Installing T1 OpenClaw skills to $SKILLS_DIR..."
