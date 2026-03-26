@@ -1,0 +1,19 @@
+{
+  "sprint_id": "sprint-TICKET-009-Q01-01",
+  "title": "Q01-01 \u2014 Hailuo 2.3 via ClawRouter C3 (clip-source-c3.ts)",
+  "description": "QUALITY-01 Rev.3 Sprint 1/4. Create scripts/scs001/clip-source-c3.ts. Route all clip generation through ClawRouter C3 tier (Hailuo 2.3). Zero new env vars (per EVAL-007 Rev.2). Replaces any direct Seedance/clip API calls. Output: ClipSource interface compatible with existing P1 pipeline. Gate: ClawRouter C3 called for clip (no direct API), clip file produced >100KB.",
+  "source": "queue-prescribed",
+  "tasks": [
+    {
+      "id": "TICKET-009-Q01-01-01",
+      "title": "Q01-01 \u2014 Hailuo 2.3 via ClawRouter C3 (clip-source-c3.ts)",
+      "type": "feature",
+      "task_type": "ticket_009",
+      "task_target": "workspace/sprints/sprint-TICKET-009-Q01-01-output.md",
+      "agent": "coder",
+      "status": "done",
+      "priority": "P0-CRITICAL",
+      "sprint_id": "sprint-TICKET-009-Q01-01"
+    }
+  ]
+}
