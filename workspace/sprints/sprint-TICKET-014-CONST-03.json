@@ -1,0 +1,18 @@
+{
+  "sprint_id": "sprint-TICKET-014-CONST-03",
+  "title": "TICKET-014-CONST-03 — Constitutional stack audit: all 28 agents verified compliant",
+  "block": "TICKET-014",
+  "source": "queue-prescribed",
+  "status": "done",
+  "rationale": "Ran grep audit across all 28 kognai-agents/*/prompt.md. All 28 agents carry all 4 mandates: CONSTITUTION.md, FIVE_PRINCIPLES.md, ACP.md, SOUL.md. Report written to workspace/gates/constitutional-compliance-2026-03-26.json. Gate: PASS — 28/28 agents fully compliant with constitutional stack.",
+  "tasks": [
+    {
+      "id": "TICKET-014-CONST-03-01",
+      "description": "Grep audit 28 agents for all 4 constitutional mandates, output compliance JSON",
+      "files": ["workspace/gates/constitutional-compliance-2026-03-26.json"],
+      "status": "done",
+      "type": "audit",
+      "result": "28/28 PASS"
+    }
+  ]
+}

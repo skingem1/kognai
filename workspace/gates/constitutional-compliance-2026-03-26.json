@@ -1,0 +1,259 @@
+{
+  "audit_at": "2026-03-26T11:38:09.760Z",
+  "total_agents": 28,
+  "all_compliant": true,
+  "results": {
+    "achiri": {
+      "pass": true,
+      "checks": {
+        "CONSTITUTION.md": true,
+        "FIVE_PRINCIPLES.md": true,
+        "ACP.md": true,
+        "SOUL.md": true
+      }
+    },
+    "backend-core": {
+      "pass": true,
+      "checks": {
+        "CONSTITUTION.md": true,
+        "FIVE_PRINCIPLES.md": true,
+        "ACP.md": true,
+        "SOUL.md": true
+      }
+    },
+    "backend-ledger": {
+      "pass": true,
+      "checks": {
+        "CONSTITUTION.md": true,
+        "FIVE_PRINCIPLES.md": true,
+        "ACP.md": true,
+        "SOUL.md": true
+      }
+    },
+    "backend-tax": {
+      "pass": true,
+      "checks": {
+        "CONSTITUTION.md": true,
+        "FIVE_PRINCIPLES.md": true,
+        "ACP.md": true,
+        "SOUL.md": true
+      }
+    },
+    "bizdev": {
+      "pass": true,
+      "checks": {
+        "CONSTITUTION.md": true,
+        "FIVE_PRINCIPLES.md": true,
+        "ACP.md": true,
+        "SOUL.md": true
+      }
+    },
+    "ceo": {
+      "pass": true,
+      "checks": {
+        "CONSTITUTION.md": true,
+        "FIVE_PRINCIPLES.md": true,
+        "ACP.md": true,
+        "SOUL.md": true
+      }
+    },
+    "cfo": {
+      "pass": true,
+      "checks": {
+        "CONSTITUTION.md": true,
+        "FIVE_PRINCIPLES.md": true,
+        "ACP.md": true,
+        "SOUL.md": true
+      }
+    },
+    "cmo": {
+      "pass": true,
+      "checks": {
+        "CONSTITUTION.md": true,
+        "FIVE_PRINCIPLES.md": true,
+        "ACP.md": true,
+        "SOUL.md": true
+      }
+    },
+    "conflict-analyzer": {
+      "pass": true,
+      "checks": {
+        "CONSTITUTION.md": true,
+        "FIVE_PRINCIPLES.md": true,
+        "ACP.md": true,
+        "SOUL.md": true
+      }
+    },
+    "conway-integration": {
+      "pass": true,
+      "checks": {
+        "CONSTITUTION.md": true,
+        "FIVE_PRINCIPLES.md": true,
+        "ACP.md": true,
+        "SOUL.md": true
+      }
+    },
+    "cto": {
+      "pass": true,
+      "checks": {
+        "CONSTITUTION.md": true,
+        "FIVE_PRINCIPLES.md": true,
+        "ACP.md": true,
+        "SOUL.md": true
+      }
+    },
+    "devops": {
+      "pass": true,
+      "checks": {
+        "CONSTITUTION.md": true,
+        "FIVE_PRINCIPLES.md": true,
+        "ACP.md": true,
+        "SOUL.md": true
+      }
+    },
+    "execution-verifier": {
+      "pass": true,
+      "checks": {
+        "CONSTITUTION.md": true,
+        "FIVE_PRINCIPLES.md": true,
+        "ACP.md": true,
+        "SOUL.md": true
+      }
+    },
+    "execution-watchdog": {
+      "pass": true,
+      "checks": {
+        "CONSTITUTION.md": true,
+        "FIVE_PRINCIPLES.md": true,
+        "ACP.md": true,
+        "SOUL.md": true
+      }
+    },
+    "frontend": {
+      "pass": true,
+      "checks": {
+        "CONSTITUTION.md": true,
+        "FIVE_PRINCIPLES.md": true,
+        "ACP.md": true,
+        "SOUL.md": true
+      }
+    },
+    "invoica-x-admin": {
+      "pass": true,
+      "checks": {
+        "CONSTITUTION.md": true,
+        "FIVE_PRINCIPLES.md": true,
+        "ACP.md": true,
+        "SOUL.md": true
+      }
+    },
+    "market-intelligence": {
+      "pass": true,
+      "checks": {
+        "CONSTITUTION.md": true,
+        "FIVE_PRINCIPLES.md": true,
+        "ACP.md": true,
+        "SOUL.md": true
+      }
+    },
+    "pipeline-health-monitor": {
+      "pass": true,
+      "checks": {
+        "CONSTITUTION.md": true,
+        "FIVE_PRINCIPLES.md": true,
+        "ACP.md": true,
+        "SOUL.md": true
+      }
+    },
+    "security": {
+      "pass": true,
+      "checks": {
+        "CONSTITUTION.md": true,
+        "FIVE_PRINCIPLES.md": true,
+        "ACP.md": true,
+        "SOUL.md": true
+      }
+    },
+    "skills": {
+      "pass": true,
+      "checks": {
+        "CONSTITUTION.md": true,
+        "FIVE_PRINCIPLES.md": true,
+        "ACP.md": true,
+        "SOUL.md": true
+      }
+    },
+    "spielberg": {
+      "pass": true,
+      "checks": {
+        "CONSTITUTION.md": true,
+        "FIVE_PRINCIPLES.md": true,
+        "ACP.md": true,
+        "SOUL.md": true
+      }
+    },
+    "sprint-retrospective": {
+      "pass": true,
+      "checks": {
+        "CONSTITUTION.md": true,
+        "FIVE_PRINCIPLES.md": true,
+        "ACP.md": true,
+        "SOUL.md": true
+      }
+    },
+    "supervisor": {
+      "pass": true,
+      "checks": {
+        "CONSTITUTION.md": true,
+        "FIVE_PRINCIPLES.md": true,
+        "ACP.md": true,
+        "SOUL.md": true
+      }
+    },
+    "telegram-support": {
+      "pass": true,
+      "checks": {
+        "CONSTITUTION.md": true,
+        "FIVE_PRINCIPLES.md": true,
+        "ACP.md": true,
+        "SOUL.md": true
+      }
+    },
+    "test-failure-predictor": {
+      "pass": true,
+      "checks": {
+        "CONSTITUTION.md": true,
+        "FIVE_PRINCIPLES.md": true,
+        "ACP.md": true,
+        "SOUL.md": true
+      }
+    },
+    "test-runner": {
+      "pass": true,
+      "checks": {
+        "CONSTITUTION.md": true,
+        "FIVE_PRINCIPLES.md": true,
+        "ACP.md": true,
+        "SOUL.md": true
+      }
+    },
+    "test-utility-generator": {
+      "pass": true,
+      "checks": {
+        "CONSTITUTION.md": true,
+        "FIVE_PRINCIPLES.md": true,
+        "ACP.md": true,
+        "SOUL.md": true
+      }
+    },
+    "x-admin": {
+      "pass": true,
+      "checks": {
+        "CONSTITUTION.md": true,
+        "FIVE_PRINCIPLES.md": true,
+        "ACP.md": true,
+        "SOUL.md": true
+      }
+    }
+  }
+}
