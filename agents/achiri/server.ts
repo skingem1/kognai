@@ -45,6 +45,30 @@ function send(res: http.ServerResponse, status: number, payload: unknown): void 
 
 const memStore = new AchiriMemoryStore();
 
+// Sprint 1441: per-IP sliding-window rate limiter for alpha launch protection
+const RATE_LIMIT_RPM = parseInt(process.env.ACHIRI_RATE_LIMIT_RPM ?? '30', 10);
+class RateLimiter {
+  private windows = new Map<string, { count: number; windowStart: number }>();
+  check(ip: string): boolean {
+    const now = Date.now();
+    const win = this.windows.get(ip);
+    if (!win || now - win.windowStart >= 60000) {
+      this.windows.set(ip, { count: 1, windowStart: now });
+      return true;
+    }
+    win.count++;
+    return win.count <= RATE_LIMIT_RPM;
+  }
+  cleanup(): void {
+    const now = Date.now();
+    for (const [ip, win] of this.windows) {
+      if (now - win.windowStart >= 60000) this.windows.delete(ip);
+    }
+  }
+}
+const rateLimiter = new RateLimiter();
+setInterval(() => rateLimiter.cleanup(), 60000);
+
 // Sprint 296: LRU handler cache — evicts oldest when exceeding MAX_CACHED_HANDLERS
 const MAX_CACHED_HANDLERS = 100;
 const handlerCache = new Map<string, AchiriConversationHandler>();
@@ -194,7 +218,7 @@ const server = http.createServer(async (req, res) => {
   // GET /stats
   if (method === 'GET' && url === '/stats') {
     const stats = memStore.getStats();
-    return send(res, 200, { ...stats, uptime_s: Math.floor((Date.now() - START_TIME) / 1000) });
+    return send(res, 200, { ...stats, uptime_s: Math.floor((Date.now() - START_TIME) / 1000), rate_limit_rpm: RATE_LIMIT_RPM });
   }
 
   // GET /summary/:userId — Sprint 302: conversation summary
@@ -256,6 +280,10 @@ const server = http.createServer(async (req, res) => {
 
   // POST /voice — tnd_premium only (Sprint 127)
   if (method === 'POST' && url === '/voice') {
+    const voiceIp = req.socket.remoteAddress ?? 'unknown';
+    if (!rateLimiter.check(voiceIp)) {
+      return send(res, 429, { error: 'rate_limit_exceeded', retry_after_s: 60 });
+    }
     let body: { userId?: string; tier?: string; audioText?: string; audioFilePath?: string };
     try {
       body = JSON.parse(await readBody(req));
@@ -282,6 +310,10 @@ const server = http.createServer(async (req, res) => {
 
   // POST /chat
   if (method === 'POST' && url === '/chat') {
+    const chatIp = req.socket.remoteAddress ?? 'unknown';
+    if (!rateLimiter.check(chatIp)) {
+      return send(res, 429, { error: 'rate_limit_exceeded', retry_after_s: 60 });
+    }
     let body: { userId?: string; tier?: string; message?: string };
     try {
       body = JSON.parse(await readBody(req));

@@ -1,0 +1,20 @@
+{
+  "sprint_id": "sprint-1441",
+  "title": "PHASE2 — Achiri API rate limiter for alpha launch protection",
+  "block": "PHASE2",
+  "source": "queue-prescribed",
+  "rationale": "Achiri alpha launches Apr 25 with a public Hetzner URL. The HTTP API (port 3420) has no rate limiting — any user or bot can hammer POST /chat and exhaust Anthropic/Ollama capacity. Fix: add a per-IP sliding-window rate limiter (30 req/min default) to POST /chat and POST /voice. Return 429 with retry_after_s on breach. In-memory Map, auto-cleanup, configurable via ACHIRI_RATE_LIMIT_RPM env var.",
+  "tasks": [
+    {
+      "id": "1441-rate-limiter",
+      "description": "In agents/achiri/server.ts: (1) Add a RateLimiter class above the server definition — Map<ip, {count, windowStart}>, with check(ip): boolean and cleanup() methods, window=60s, max=ACHIRI_RATE_LIMIT_RPM (default 30). (2) Instantiate rateLimiter and set setInterval(cleanup, 60000). (3) In POST /chat and POST /voice handlers, extract IP from req.socket.remoteAddress, call rateLimiter.check(ip) — if false, return send(res, 429, { error: 'rate_limit_exceeded', retry_after_s: 60 }). (4) Include rate_limited: true in /stats response. No changes to /health or GET endpoints.",
+      "files": [
+        "agents/achiri/server.ts"
+      ],
+      "status": "done",
+      "priority": "high",
+      "agent": "coder",
+      "type": "feature"
+    }
+  ]
+}
